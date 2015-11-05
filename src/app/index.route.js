@@ -1,5 +1,6 @@
-export function routerConfig ($stateProvider, $urlRouterProvider) {
+export function routerConfig ($stateProvider, $urlRouterProvider, $httpProvider) {
   'ngInject';
+  $httpProvider.interceptors.push('AuthTokenInterceptor');
   $stateProvider
     .state('home', {
       url: '/',
@@ -7,18 +8,6 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
       controller: 'HomeController',
       controllerAs: 'main'
     })
-    .state('users', {
-      url: '/users',
-      abstract: true,
-      template: '<ui-view/>',
-      replace: true
-    })
-    .state('users.create', {
-      url: '/create',
-      templateUrl: 'app/components/user/create.html',
-      controller: 'UserController',
-      controllerAs: 'vm'
-    });
 
   $urlRouterProvider.otherwise('/');
 }

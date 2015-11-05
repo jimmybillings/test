@@ -16,8 +16,9 @@ export function NavbarDirective() {
 }
 
 class NavbarController {
-  constructor () {
+  constructor (SessionService) {
     'ngInject';
+    this.SessionService = SessionService;
 
     // "this.creation" is avaible by directive option "bindToController: true"
     this.relativeDate = '11/01/2015'
