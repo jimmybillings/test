@@ -1,0 +1,32 @@
+{
+  "name": "node-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "",
+    "routes": "routes"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^0.8.3",
+    "body-parser": "^1.13.2",
+    "colors": "^1.1.2",
+    "cors": "^2.7.1",
+    "express": "^4.13.1",
+    "express-jwt": "^3.0.1",
+    "express-ls-routes": "^1.0.2",
+    "jsonwebtoken": "^5.0.4",
+    "lodash": "^3.10.0",
+    "method-override": "^2.3.4",
+    "mongoose": "^4.0.8",
+    "morgan": "^1.6.1",
+    "xml2json": "*"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "supertest": "^1.0.1"
+  }
+}

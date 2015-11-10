@@ -1,0 +1,5 @@
+<ul>
+<li ng-repeat='clip in vm.SearchService.getResults().data["clip-list"].clip'>
+<p>{{clip.value}}</p>
+<p>{{clip.description.$t}}</p>
+</li>
