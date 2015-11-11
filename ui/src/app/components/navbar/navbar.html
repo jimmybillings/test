@@ -2,7 +2,10 @@
 
   <md-button href="https://github.com/Swiip/generator-gulp-angular" ui-sref="home">WAZEE DIGITAL</md-button>
 
-  <section flex layout="row" layout-align="left center"></section>
+  <section flex layout="row" layout-align="left center">
+  	<md-button class="md-raised" ui-sref="search.index" ng-if="vm.SessionService.getLoggedIn()">Search</md-button>
+  	<md-button class="md-raised" ui-sref="users.index" ng-if="vm.SessionService.getLoggedIn()">Users</md-button>
+  </section>
   
   <md-button class="md-raised" ui-sref="auth.create" ng-if="!vm.SessionService.getLoggedIn()">Login</md-button>
   <md-button class="md-raised" ui-sref="home" ng-click="vm.SessionService.logout()" ng-if="vm.SessionService.getLoggedIn()">Logout</md-button>

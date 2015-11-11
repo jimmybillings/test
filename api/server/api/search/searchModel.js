@@ -1,18 +1,18 @@
 var https = require('https');
 var parser = require('xml2json');
+var queryString = require('querystring');
 
-exports.get = function() {
+exports.get = function(params) {
 
-  // do a thing, possibly async, then…
   var options = {
     hostname: 'api.wzplatform.com',
-    path: '/video/services/search/?keywords=%2BitemType%3Aclip&filter=%2Bphylum%3Atitle&page=1&pageSize=50&view=deep&filterString=allSearchable%3D%2BitemType%3Aclip%2F%2FluceneQuery%3Dcategory%3A%22Episodic+Television%22&sortBy=-ingestedDateTimeSort%3B-supplierTier%3B-quality&resultPageNumber=1&resultPageSize=10&auth=T3Delivery-api%3Adeliver-mAdre4ec%3A2c3afb058e344237a1f508c3fe39a06d',
+    path: '/video/services/search/?'+queryString.stringify(params),
     method: 'GET'
   };
-    
+
   return new Promise(function(resolve, reject) {
     
-
+    console.log(options.path)
     var req = https.request(options, function(res) {
       var str = '';
 
@@ -26,7 +26,7 @@ exports.get = function() {
           object: false,
           reversible: false,
           coerce: false,
-          sanitize: true,
+          sanitize: false,
           trim: true,
           arrayNotation: false
         };
