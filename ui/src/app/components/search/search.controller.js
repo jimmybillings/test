@@ -17,6 +17,6 @@ export class SearchController {
             return rend;
         }
       })[0].url;
-    return bestRendition;
+    return bestRendition || '';
   }
 }

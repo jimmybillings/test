@@ -8,7 +8,7 @@ export class SearchService {
       page: "1",
       pageSize:"50",
       resultPageNumber:"1",
-      resultPageSize:"50",
+      resultPageSize:"50"
     };
   }
 

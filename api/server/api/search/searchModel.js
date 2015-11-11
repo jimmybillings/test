@@ -2,7 +2,7 @@ var https = require('https');
 var parser = require('xml2json');
 var queryString = require('querystring');
 
-exports.get = function(params) {
+exports.get = (params) => {
 
   var options = {
     hostname: 'api.wzplatform.com',

@@ -1,5 +1,6 @@
-export function authRouter ($stateProvider) {
+export function authRouter ($stateProvider, $httpProvider) {
   'ngInject';
+  $httpProvider.interceptors.push('AuthTokenInterceptor');
   $stateProvider
     .state('auth', {
       url: '/auth',

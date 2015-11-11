@@ -1,6 +1,5 @@
-export function routerConfig ($stateProvider, $urlRouterProvider, $httpProvider) {
+export function homeRouter ($stateProvider, $urlRouterProvider) {
   'ngInject';
-  $httpProvider.interceptors.push('AuthTokenInterceptor');
   $stateProvider
     .state('home', {
       url: '/',
