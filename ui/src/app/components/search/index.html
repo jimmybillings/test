@@ -1,8 +1,0 @@
-<div layout="row" layout-padding layout-wrap layout-fill style="padding-bottom: 32px;" ng-cloak>
-
-
-<md-whiteframe ng-style="{'background-image':'url({{vm.clipRendition(clip.rendition)}})'}" ng-repeat='clip in vm.SearchService.getResults().data["clip-list"].clip' class="md-whiteframe-6dp" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center">
-	<p>{{clip.value}}</p>
-</md-whiteframe>
-</div>
-

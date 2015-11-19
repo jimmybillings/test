@@ -1,4 +1,4 @@
-import '../app/components/search/search.module'
+import '../../bower_components/wz_search/search.module'
 import '../app/components/user/user.module'
 import '../app/components/auth/auth.module'
 import '../app/components/home/home.module'
