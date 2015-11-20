@@ -4,7 +4,7 @@ export class AuthController {
     this.$state = $state;
     this.AuthService = AuthService
     this.user = {}
-  }
+   }
 
   create() {
     this.AuthService.create(this.user)

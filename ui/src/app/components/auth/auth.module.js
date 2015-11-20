@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { AuthTokenInterceptor } from './auth.interceptor';
 import { SessionService } from './session.service';
 
-angular.module('portalUi.AuthModule', ['ngTouch', 'ngSanitize', 'ngAria', 'ui.router', 'ngMaterial'])
+angular.module('portalUi.AuthModule', ['ngTouch', 'ngSanitize', 'ngAria', 'ui.router', 'ngMaterial', 'ngMessages'])
 	.config(authRouter)
 	.controller('AuthController', AuthController)
 	.service('AuthService', AuthService)
