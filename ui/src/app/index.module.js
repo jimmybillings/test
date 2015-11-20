@@ -14,6 +14,7 @@ angular.module('portalUi',
   'ngAria', 
   'ui.router', 
   'ngMaterial', 
+  'ngMessages', 
   
   // Custom Modules for the Portal Application
   'portalUi.SearchModule', 

@@ -7,8 +7,8 @@
   	<md-button class="md-raised" ui-sref="users.index" ng-if="vm.SessionService.getLoggedIn()">Users</md-button>
   </section>
   
-  <md-button class="md-raised" ui-sref="auth.create" ng-if="!vm.SessionService.getLoggedIn()">Login</md-button>
-  <md-button class="md-raised" ui-sref="home" ng-click="vm.SessionService.logout()" ng-if="vm.SessionService.getLoggedIn()">Logout</md-button>
-  <md-button class="md-raised" ui-sref="users.create" ng-if="!vm.SessionService.getLoggedIn()">Register</md-button>
+  <md-button class="md-flat" ui-sref="auth.create" ng-if="!vm.SessionService.getLoggedIn()">Login</md-button>
+  <md-button class="md-flat" ui-sref="home" ng-click="vm.SessionService.logout()" ng-if="vm.SessionService.getLoggedIn()">Logout</md-button>
+  <md-button class="md-flat" ui-sref="users.create" ng-if="!vm.SessionService.getLoggedIn()">Register</md-button>
 
 </md-toolbar>
