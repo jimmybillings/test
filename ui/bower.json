@@ -2,15 +2,15 @@
   "name": "portalUi",
   "version": "0.0.0",
   "dependencies": {
-    "angular-touch": "~1.4.2",
-    "angular-sanitize": "~1.4.2",
-    "angular-aria": "~1.4.2",
+    "angular-touch": "~1.4.8",
+    "angular-sanitize": "~1.4.8",
+    "angular-aria": "~1.4.8",
     "angular-ui-router": "~0.2.15",
     "angular-material": "~0.11.2",
     "material-design-iconfont": "~0.0.2",
     "animate.css": "~3.4.0",
-    "angular": "~1.4.2",
-    "wz_search": "https://github.com/jimmybillings/wz_search.git"
+    "angular": "~1.4.8",
+    "wz_search": "https://github.com/t3mediacorp/wz_search.git"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.2"
