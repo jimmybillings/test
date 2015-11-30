@@ -6,3 +6,4 @@ angular.module('portalUi.HomeModule', ['ngTouch', 'ngSanitize', 'ngAria', 'ui.ro
 	.config(homeRouter)
 	.service('HomeService', HomeService)
 	.controller('HomeController', HomeController)
+
