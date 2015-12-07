@@ -11,7 +11,7 @@
     "material-design-iconfont": "~0.0.2",
     "animate.css": "~3.4.0",
     "angular": "~1.4.8",
-    "wz_search": "https://github.com/t3mediacorp/wz_search.git"
+    "wz_search": "git@github.com:t3mediacorp/wz_search.git"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.2"
