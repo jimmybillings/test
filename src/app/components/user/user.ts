@@ -9,5 +9,5 @@ import {bootstrap, Component, View, FORM_DIRECTIVES, CORE_DIRECTIVES} from 'angu
 })
 
 export class User {   
-    public text = 'Super Simple User Component'
+    public text = 'Super Simple Jeff Component'
 }
