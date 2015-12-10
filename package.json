@@ -1,0 +1,26 @@
+{
+  "name": "projectx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc -p src -w",
+    "start": "live-server --open=dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "angular2": "2.0.0-alpha.48",
+    "es6-shim": "^0.33.13",
+    "systemjs": "0.19.6"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.10.0",
+    "gulp": "^3.9.0",
+    "gulp-tsc": "^1.1.4",
+    "gulp-watch": "^4.3.5",
+    "live-server": "^0.8.2",
+    "typescript": "^1.7.3"
+  }
+}
