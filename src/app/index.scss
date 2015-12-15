@@ -1,7 +1,9 @@
 body {
-  background: deeppink;
-
+  h1 {
+    color: darkorange;
+  }
   li {
     font-size: 20px;
+    list-style-type: none;
   }
 }

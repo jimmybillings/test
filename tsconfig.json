@@ -13,7 +13,15 @@
     "suppressImplicitAnyIndexErrors": false
   },
   "files": [
-    "./src/typings/tsd.d.ts",
-    "./src/app/app.ts"
-  ]
+    "./src/app/app.ts",
+    "./src/app/components/user-management/login.ts",
+    "./src/app/components/user-management/register.ts",
+    "./src/app/services/sampleService.ts"
+  ],
+  "filesGlob": [
+    "./src/app/**/*.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": true
+  }
 }
