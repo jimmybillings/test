@@ -38,7 +38,7 @@ gulp.task('images', function(){
     .pipe(gulp.dest('build/images'))
 });
 
-gulp.task('build', ['scripts']);
+gulp.task('build', ['scripts', 'html', 'styles', 'images']);
 
 gulp.task('default', ['scripts', 'html', 'styles', 'images', 'server'], function() {
   gulp.watch('./src/**/*.scss', ['styles']);
