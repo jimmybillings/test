@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": ".",
+    "target": "ES5",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "noLib": false,
+    "removeComments": false,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": false
+  },
+  "files": [
+    "./src/typings/tsd.d.ts",
+    "./src/app/app.ts"
+  ]
+}

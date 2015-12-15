@@ -1,48 +1,53 @@
 var gulp = require('gulp');
-var browserSync = require('browser-sync').create();
-var typescript = require('gulp-tsc');
-var watch = require('gulp-watch')
+var webpack = require('gulp-webpack');
+var browserSync = require('browser-sync')
+var sass = require('gulp-sass');
+var concat = require('gulp-concat');
+var flatten = require('gulp-flatten');
 
-function isTSFile(event) {
-    return event.path.indexOf('.ts') !== -1
-}
+gulp.task('server', function() {
+  browserSync({
+      server: {
+          baseDir: ["./build"]
+      }
+  });
+});
 
-gulp.task('ts', function(){
-  return gulp.src('src/**/*.ts')
-    .pipe(typescript({
-      experimentalDecorators: true
-    }))
-    .pipe(gulp.dest('dist/'))
+gulp.task('scripts', function() {
+	return gulp.src('./src/app.ts')
+    .pipe(webpack(require('./webpack.config.js')))
+    .pipe(gulp.dest('./build'))
+  ;
+});
+
+gulp.task('styles', function() {
+  return gulp.src('src/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(concat('app.css'))
+    .pipe(gulp.dest('build/css/'));
 });
 
 gulp.task('html', function(){
     return gulp.src('src/**/*.html')
-    .pipe(gulp.dest('dist/'))
-})
+    .pipe(gulp.dest('build/'))
+});
 
-gulp.task('libs', function() {
-    return gulp.src([
-        'node_modules/es6-shim/es6-shim.js', 
-        'node_modules/systemjs/dist/system.src.js', 
-        'node_modules/angular2/bundles/angular2.dev.js'
-    ]).pipe(gulp.dest('dist/lib/'))
-})
+gulp.task('images', function(){
+    return gulp.src(['src/**/*.png', 'src/**/*.jpg'])
+    .pipe(flatten())
+    .pipe(gulp.dest('build/images'))
+});
 
-// use default task to launch Browsersync and watch JS files
-gulp.task('serve', ['libs', 'ts', 'html'], function () {
-    // Serve files from the root of this project
-    browserSync.init({
-        server: {
-            baseDir: "./dist"
-        }
-    });
-    // add browserSync.reload to the tasks array to make
-    // all browsers reload after tasks are complete.
-    gulp.watch(['src/**/*.html', 'src/**/*.ts'], function(event){
-        if(isTSFile(event)) {
-            gulp.start('ts', browserSync.reload)
-        } else {
-            gulp.start('html', browserSync.reload)
-        } 
-    });
+gulp.task('build', ['scripts']);
+
+gulp.task('default', ['scripts', 'html', 'styles', 'images', 'server'], function() {
+  gulp.watch('./src/**/*.scss', ['styles']);
+  gulp.watch('./build/css/app.css', browserSync.reload);
+
+  gulp.watch('./src/**/*.ts', function(){
+    gulp.start('scripts', browserSync.reload)
+  });
+  gulp.watch('./src/**/*.html', function(){
+    gulp.start('html', browserSync.reload)
+  });
 });
