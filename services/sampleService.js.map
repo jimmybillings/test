@@ -1,1 +1,0 @@
-{"version":3,"file":"sampleService.js","sourceRoot":"","sources":["../src/app/services/sampleService.ts"],"names":[],"mappings":";;;;;;;;;;AAAA,yBAA2B,mBAAmB,CAAC,CAAA;AAG/C;IAGE;QACE,IAAI,CAAC,OAAO,GAAG,6BAA6B,CAAC;IAC/C,CAAC;IAEM,8BAAU,GAAjB;QACE,MAAM,CAAC,IAAI,CAAC,OAAO,CAAC;IACtB,CAAC;IAVH;QAAC,qBAAU,EAAE;;iBAAA;IAYb,gBAAC;AAAD,CAAC,AAXD,IAWC;AAXY,iBAAS,YAWrB,CAAA"}
