@@ -8,7 +8,7 @@
   },
   "author": "Wazee Digital @t3mediacorp",
   "scripts": {
-    "test": "gulp build"
+    "start": "gulp build"
   },
   "homepage": "http://t3media.com",
   "dependencies": {
