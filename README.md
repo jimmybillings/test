@@ -13,10 +13,16 @@ Installation:
 npm install
 ```
 
+To build:  - this will create the /build directory and spin up a local server for development
+```bash
+
+npm run build
+```
+
 To run:
 
 ```bash
-npm start - this will create the /build directory with all the assets you need to deploy to the web server. 
+npm start - this will create the /build directory so that you can deploy to a web server.
 ```
 
 ###Usage
