@@ -59,7 +59,7 @@ gulp.task('images', function(){
     .pipe(gulp.dest('build/images'))
 });
 
-gulp.task('build', ['scripts:app', 'templates', 'scripts:vendor', 'styles', 'images']);
+gulp.task('build', ['templates', 'html', 'scripts:app', 'scripts:vendor', 'styles', 'images']);
 
 gulp.task('default', ['templates', 'html', 'scripts:app', 'scripts:vendor', 'styles', 'images', 'server'], function() {
   gulp.watch('./app/**/*.scss', ['styles']);
