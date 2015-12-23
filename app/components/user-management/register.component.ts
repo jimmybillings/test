@@ -1,14 +1,8 @@
-import {Component, View} from 'angular2/angular2';
-
+import {Component} from 'angular2/core';
 import { MyService } from '../../services/sampleService';
-import {ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from 'angular2/router';
-import {ROUTER_DIRECTIVES, RouteConfig, Router, Location, Route, RouterOutlet} from 'angular2/router';
 
 @Component({
-  selector: 'register'
-})
-
-@View({
+  selector: 'register',
   template: `
     <div class="row">
       <h3>{{register}}</h3>
