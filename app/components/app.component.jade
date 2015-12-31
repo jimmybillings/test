@@ -1,0 +1,23 @@
+// Always shows a header, even in smaller screens.
+.mdl-layout.mdl-js-layout.mdl-layout--fixed-header
+  header.mdl-layout__header
+    .mdl-layout__header-row
+      // Title
+      span.mdl-layout-title Wazee Digital
+      // Add spacer, to align navigation to the right
+      .mdl-layout-spacer
+      // Navigation. We hide it in small screens.
+      nav.mdl-navigation.mdl-layout--large-screen-only
+        a.mdl-navigation__link(href='') Login
+        a.mdl-navigation__link(href='') Register
+
+  main.mdl-layout__content
+
+    .page-content
+       main
+          .mdl-grid
+            .mdl-cell.mdl-cell--12-col
+                ul
+                    li {{ appStatus }}
+                    li {{ serviceStatus }}
+                login

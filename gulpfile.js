@@ -59,6 +59,16 @@ gulp.task('images', function(){
     .pipe(gulp.dest('build/images'))
 });
 
+gulp.task('test', function (done) {
+  var Server = require('karma').Server;
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
+
+
+
 gulp.task('build', ['templates', 'html', 'scripts:app', 'scripts:vendor', 'styles', 'images']);
 
 gulp.task('default', ['templates', 'html', 'scripts:app', 'scripts:vendor', 'styles', 'images', 'server'], function() {

@@ -1,8 +1,13 @@
 h3 {{login}}
-form.login(method='post')
-  .input-field
-    input(type='text', name='name', value='', placeholder='Email')
-  .input-field
-    input(type='password', name='name', value='', placeholder='Password')
-  .input-field
-    a.waves-effect.waves-light.btn Login
+form(action='#')
+  .mdl-grid
+    .mdl-cell.mdl-cell--6-col
+        .mdl-textfield.mdl-js-textfield
+            input#sample1.mdl-textfield__input(type='text')
+            label.mdl-textfield__label(for='email')
+    .mdl-cell.mdl-cell--6-col
+        .mdl-textfield.mdl-js-textfield
+            input#sample1.mdl-textfield__input(type='password')
+            label.mdl-textfield__label(for='password')
+    .mdl-cell.mdl-cell--6-col
+        button.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent Button
