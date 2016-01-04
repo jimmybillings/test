@@ -27,10 +27,10 @@ module.exports = function(config) {
       {pattern: 'build/**/*.css', included: false, watched: true}
      
     ],
-    proxies: {
-      // required for component assests fetched by Angular's compiler
-      "/app/": "/base/build/app/"
-    },
+    // proxies: {
+    //   // required for component assests fetched by Angular's compiler
+    //   "/app/": "/build/app/"
+    // },
     exclude: [],
     preprocessors: {},
     reporters: ['progress'],
