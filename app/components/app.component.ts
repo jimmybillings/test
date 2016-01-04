@@ -6,6 +6,7 @@ import {Login} from './user-management/login.component'
   selector: 'app',
   bindings: [MyService],
   templateUrl: 'app/components/app.component.html',
+  styles: [`p {color:red}`],
   directives: [Login],
   providers: [MyService]
 })
