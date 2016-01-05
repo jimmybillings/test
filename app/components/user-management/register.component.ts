@@ -1,5 +1,4 @@
 import {Component} from 'angular2/core';
-import { MyService } from '../../services/sampleService';
 
 @Component({
   selector: 'register',

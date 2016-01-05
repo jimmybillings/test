@@ -2,9 +2,10 @@
   "name": "wazee-ui",
   "version": "1.0.0",
   "scripts": {
-    "start": "gulp",
-    "build": "gulp build.prod",
+    "start": "gulp dev.server",
+    "prod": "gulp prod",
     "test": "gulp test"
+    
   },
   "license": "ISC",
   "dependencies": {
@@ -25,6 +26,7 @@
     "gulp-flatten": "^0.2.0",
     "gulp-inline-ng2-template": "0.0.9",
     "gulp-jade": "^1.1.0",
+    "gulp-minify": "0.0.5",
     "gulp-run-sequence": "^0.3.2",
     "gulp-sass": "^2.1.1",
     "gulp-typescript": "^2.10.0",
