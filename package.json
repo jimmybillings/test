@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "gulp dev.server",
-    "prod": "gulp prod",
+    "build": "gulp prod",
     "test": "gulp test"
-    
   },
   "license": "ISC",
   "dependencies": {
