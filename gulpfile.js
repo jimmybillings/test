@@ -40,10 +40,11 @@ gulp.task('scripts:vendor', () => {
 
 gulp.task('css:vendor', () => {
     return gulp.src([
-        'node_modules/ng2-material/dist/ng2-material.css',
-        'node_modules/ng2-material/dist/font.css'
+        'node_modules/ng2-material/source/all.scss',
+        'node_modules/ng2-material/dist/font.scss'
     ])
-    .pipe(gulp.dest('build/lib'))
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('build/app/css'))
 })
 
 gulp.task('templates', () => {
@@ -141,7 +142,8 @@ gulp.task('dev.server', () => {
         'html', 
         'scripts:app', 
         'scripts:vendor', 
-        'styles', 
+        'styles',
+        'css:vendor', 
         'images', 
         'server', 
         function() {

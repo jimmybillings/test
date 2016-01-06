@@ -20,7 +20,7 @@ export class AppComponent {
   constructor(myService: MyService) {
 
     this.serviceStatus = myService.getMessage();
-    this.appStatus = 'Application is working.';
+    this.appStatus = 'Application is working';
   }
 
   make() {
