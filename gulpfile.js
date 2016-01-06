@@ -10,6 +10,9 @@ var del = require('del');
 var runSequence = require('gulp-run-sequence');
 var inlineNg2Template = require('gulp-inline-ng2-template');
 var minify = require('gulp-minify');
+var plumber = require('gulp-plumber');
+var join = require('path').join;
+var sourcemaps = require('gulp-sourcemaps');
 
 
 gulp.task('server', () => {
@@ -21,7 +24,20 @@ gulp.task('server', () => {
 });
 
 gulp.task('scripts:app', () => {
-    
+    //  var src = [
+    //             join('app/**/*.ts'),
+    //             '!' + join('app/**/*.spec.ts')
+    //           ];
+    // var result = gulp.src(src)
+    //   .pipe(plumber())
+    //   .pipe(sourcemaps.init())
+    //   .pipe(typescript(tsProject));
+
+    // return result.js
+    //   .pipe(sourcemaps.write())
+    //   .pipe(gulp.dest('build'));
+      
+      
 	return tsProject.src('./app/**/*.ts') 
 		.pipe(typescript(tsProject))
         .js.pipe(gulp.dest('build'));
@@ -75,18 +91,27 @@ gulp.task('images', () => {
 });
 
 gulp.task('test', (done) => {
-  var Server = require('karma').Server;
-  new Server({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: true
-  }, done).start();
+    var Server = require('karma').Server;
+    new Server({
+      configFile: __dirname + '/karma.conf.js',
+      singleRun: true
+    }).start(done);
 });
 
 gulp.task('ng2Template', () => {
-    return tsProject.src('./app/**/*.ts') 
-    .pipe(inlineNg2Template({ base: '/build' }))
-    .pipe(typescript(tsProject))
-    .pipe(gulp.dest('build'));
+    var src = [
+                join('app/**/*.ts'),
+                '!' + join('app/**/*.spec.ts')
+              ];
+    var result = gulp.src(src)
+      .pipe(plumber())
+      .pipe(inlineNg2Template({ base: '/build' }))
+      .pipe(sourcemaps.init())
+      .pipe(typescript(tsProject));
+
+    return result.js
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest('build'));
 });
 
 
