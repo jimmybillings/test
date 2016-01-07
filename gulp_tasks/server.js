@@ -9,6 +9,14 @@ gulp.task('server', () => {
   });
 });
 
+gulp.task('coverage', () => {
+  browserSync({
+      server: {
+          baseDir: ["./coverage"]
+      }
+  });
+});
+
 gulp.task('reload.server', () => {
     browserSync.reload()
 })
