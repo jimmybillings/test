@@ -4,5 +4,11 @@
 # Build #
 /build
 
+# test #
+/test
+
 # idea
 /.idea
+
+#test coverage
+/coverage
