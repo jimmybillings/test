@@ -31,7 +31,7 @@ module.exports = function(config) {
     ],
     
     preprocessors: {},
-    reporters: ['mocha'],
+    reporters: ['mocha', 'coverage'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
