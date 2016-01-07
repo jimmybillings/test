@@ -62,7 +62,9 @@ gulp.task('scripts.vendor', () => {
         'node_modules/angular2/bundles/angular2-polyfills.js',
         'node_modules/systemjs/dist/system.src.js',
         'node_modules/rxjs/bundles/Rx.js',
-        'node_modules/angular2/bundles/angular2.dev.js'
+        'node_modules/angular2/bundles/angular2.dev.js',
+        'node_modules/angular2/bundles/router.dev.js',
+        'node_modules/angular2/bundles/http.dev.js'
     ])
     .pipe(concat('vendor.js'))
     .pipe(gulp.dest('build/lib'))

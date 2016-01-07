@@ -6,7 +6,7 @@ var jade = require('gulp-jade');
 gulp.task('templates.reload', (done) => {
     runSequence(
         'templates', 
-        'server.reload',
+        'reload.server',
         done
     )
 });

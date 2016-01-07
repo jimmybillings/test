@@ -3,7 +3,7 @@ import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, LocationStrategy, Hash
 
 import {Login} from './user-management/login.component';
 import {Register} from './user-management/register.component'
-// import {Home} from './home/home.component'
+import {Home} from './home/home.component'
 
 import { MyService } from '../services/sampleService';
 
@@ -17,7 +17,7 @@ import { MyService } from '../services/sampleService';
 })
 
 @RouteConfig([
-  // { path: '/home',  name: 'Home', component: Home, useAsDefault: true},
+  { path: '/home',  name: 'Home', component: Home, useAsDefault: true},
   { path: '/user-management/register',  name: 'Register', component: Register},
   { path: '/user-management/login', name: 'Login', component: Login}
 ])
