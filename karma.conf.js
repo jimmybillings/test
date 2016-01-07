@@ -20,9 +20,9 @@ module.exports = function(config) {
       {pattern: 'node_modules/angular2/bundles/testing.dev.js', included: true, watched: true},
 
       // paths loaded via module imports
-      {pattern: 'build/app/**/*.js', included: false, watched: true},
-      {pattern: 'build/**/*.html', included: false, watched: true},
-      {pattern: 'build/**/*.css', included: false, watched: true},
+      {pattern: 'test/app/**/*.js', included: false, watched: true},
+      {pattern: 'test/**/*.html', included: false, watched: true},
+      {pattern: 'test/**/*.css', included: false, watched: true},
       'karma-test-shim.js'
     ],
 
