@@ -21,6 +21,7 @@ import { MyService } from '../services/sampleService';
   { path: '/user-management/register',  name: 'Register', component: Register},
   { path: '/user-management/login', name: 'Login', component: Login}
 ])
+
 export class AppComponent {
   location: Location;
   appStatus: string;

@@ -38,10 +38,7 @@ gulp.task('scripts.reload', (done) => {
 })
 
 gulp.task('scripts.test', () => {
-     var src = [
-                join('app/**/*.ts'),
-                '!' + join('app/**/*.spec.ts')
-              ];
+     var src = ['app/**/*.ts'];
     var result = gulp.src(src)
       .pipe(plumber())
       .pipe(sourcemaps.init())
@@ -87,9 +84,7 @@ gulp.task('ng2Template', () => {
 });
 
 gulp.task('ng2Template.test', () => {
-    var src = [
-        join('app/**/*.ts')
-    ];
+    var src = ['app/**/*.ts'];
     var result = gulp.src(src)
       .pipe(plumber())
       .pipe(inlineNg2Template({ base: '/test' }))
