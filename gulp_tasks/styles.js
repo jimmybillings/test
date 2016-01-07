@@ -33,6 +33,28 @@ gulp.task('styles.vendor', () => {
     ])
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('build/app/css'))
+});
+
+gulp.task('font.vendor', () =>{
+    return gulp.src([
+        'node_modules/ng2-material/dist/MaterialIcons-Regular.eot',
+        'node_modules/ng2-material/dist/MaterialIcons-Regular.ijmap',
+        'node_modules/ng2-material/dist/MaterialIcons-Regular.ttf',
+        'node_modules/ng2-material/dist/MaterialIcons-Regular.woff',
+        'node_modules/ng2-material/dist/MaterialIcons-Regular.woff2'
+    ])
+    .pipe(gulp.dest('build/app/css'))
+})
+
+gulp.task('font.vendor.test', () =>{
+    return gulp.src([
+        'node_modules/ng2-material/dist/MaterialIcons-Regular.eot',
+        'node_modules/ng2-material/dist/MaterialIcons-Regular.ijmap',
+        'node_modules/ng2-material/dist/MaterialIcons-Regular.ttf',
+        'node_modules/ng2-material/dist/MaterialIcons-Regular.woff',
+        'node_modules/ng2-material/dist/MaterialIcons-Regular.woff2'
+    ])
+    .pipe(gulp.dest('test/app/css'))
 })
 
 gulp.task('styles.vendor.test', () => {
