@@ -7,7 +7,7 @@
 // } from 'angular2/testing';
 // import {Component, View} from 'angular2/core';
 // import {DOM} from 'angular2/src/platform/dom/dom_adapter';
-// import {HomeCmp} from './home';
+// import {Home} from '../home/home.component'
 
 // export function main() {
 //   describe('Home component', () => {
@@ -24,5 +24,5 @@
 // }
 
 // @Component({selector: 'test-cmp'})
-// @View({directives: [HomeCmp]})
+// @View({directives: [Home]})
 // class TestComponent {}

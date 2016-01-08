@@ -17,10 +17,11 @@ import { MyService } from '../services/sampleService';
 })
 
 @RouteConfig([
-  { path: '/home',  name: 'Home', component: Home, useAsDefault: true},
+  { path: '/',  name: 'Home', component: Home, useAsDefault: true},
   { path: '/user-management/register',  name: 'Register', component: Register},
   { path: '/user-management/login', name: 'Login', component: Login}
 ])
+
 export class AppComponent {
   location: Location;
   appStatus: string;
