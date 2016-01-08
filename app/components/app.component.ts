@@ -15,7 +15,7 @@ import {Home} from './home/home.component'
 
 @Component({
   selector: 'app',
-  templateUrl: 'app/components/app.component.html',
+  templateUrl: 'app/components/app.html',
   directives: [ROUTER_DIRECTIVES, Header, Login]
 })
 
