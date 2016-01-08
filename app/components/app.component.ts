@@ -19,9 +19,9 @@ import {Home} from './home/home.component'
 })
 
 @RouteConfig([
-  { path: '/home',  name: 'Home', component: Home, useAsDefault: true},
-  { path: '/user/register',  name: 'Register', component: Register},
-  { path: '/user/login', name: 'Login', component: Login}
+  { path: '/',  name: 'Home', component: Home, useAsDefault: true},
+  { path: '/user-management/register',  name: 'Register', component: Register},
+  { path: '/user-management/login', name: 'Login', component: Login}
 ])
 
 export class AppComponent {}
