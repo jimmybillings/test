@@ -7,14 +7,14 @@ import {
     AsyncRoute
 } from 'angular2/router';
 
-import {Header} from './application/header.component'
-import {Login} from './user/login/login.component';
-import {Register} from './user/register/register.component'
-import {Home} from './home/home.component'
+import {Header} from './header/header.component'
+import {Login} from '../user/login/login.component';
+import {Register} from '../user/register/register.component'
+import {Home} from '../home/home.component'
 
 @Component({
   selector: 'app',
-  templateUrl: 'app/components/app.html',
+  templateUrl: 'app/components/application/app.html',
   directives: [ROUTER_DIRECTIVES, Header, Login]
 })
 
