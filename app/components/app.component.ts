@@ -1,19 +1,22 @@
 import {Component} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from 'angular2/router';
+import {
+    RouteConfig, 
+    ROUTER_DIRECTIVES,
+    ROUTER_PROVIDERS, 
+    LocationStrategy, 
+    HashLocationStrategy,
+    AsyncRoute
+} from 'angular2/router';
 
-import {Login} from './user-management/login.component';
-import {Register} from './user-management/register.component'
+import {Header} from './application/header.component'
+import {Login} from './user-management/login/login.component';
+import {Register} from './user-management/register/register.component'
 import {Home} from './home/home.component'
-
-import { MyService } from '../services/sampleService';
 
 @Component({
   selector: 'app',
-  bindings: [MyService],
-  templateUrl: 'app/components/app.component.html',
-  styles: [`pre {color:red}`],
-  directives: [ROUTER_DIRECTIVES, Login],
-  providers: [MyService]
+  templateUrl: 'app/components/app.html',
+  directives: [ROUTER_DIRECTIVES, Header, Login]
 })
 
 @RouteConfig([
@@ -21,6 +24,7 @@ import { MyService } from '../services/sampleService';
   { path: '/user-management/register',  name: 'Register', component: Register},
   { path: '/user-management/login', name: 'Login', component: Login}
 ])
+<<<<<<< HEAD
 
 export class AppComponent {
   location: Location;
@@ -33,8 +37,7 @@ export class AppComponent {
     this.serviceStatus = myService.getMessage();
     this.appStatus = 'Application is working Jeff';
   }
+=======
+>>>>>>> df38dc27eb37963f523a5d4d864dd321f42b7c37
 
-  make() {
-    this.makey = 'hello'
-  }
-}
+export class AppComponent {}

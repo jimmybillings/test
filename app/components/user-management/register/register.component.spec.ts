@@ -10,12 +10,15 @@ import {
   beforeEachProviders
 } from 'angular2/testing';
 import {provide} from 'angular2/core';
-import {Home} from './home.component';
+import {Register} from './register.component';
 import {Component, View} from 'angular2/core';
 
-describe('Home Component', () => {
+
+describe('Register Component', () => {
+
   beforeEachProviders(() => []);
-  it('should expect 4 to be 4', () => {
-    expect(4).toBe(4)
+  it('should expect 15 to be 15', () => {
+    expect(15).toBe(15)
   });
+
 });

@@ -16,8 +16,8 @@ module.exports = function(config) {
       'node_modules/angular2/bundles/angular2-polyfills.js',
       'node_modules/systemjs/dist/system.src.js',
       'node_modules/rxjs/bundles/Rx.js',
-      {pattern: 'node_modules/angular2/bundles/angular2.js', included: true, watched: true},
-      {pattern: 'node_modules/angular2/bundles/testing.dev.js', included: true, watched: true},
+      'node_modules/angular2/bundles/angular2.js',
+      'node_modules/angular2/bundles/testing.dev.js',
 
       // paths loaded via module imports
       {pattern: 'test/app/**/*.js', included: false, watched: true},
