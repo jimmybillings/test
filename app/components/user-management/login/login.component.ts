@@ -8,7 +8,13 @@ import {MATERIAL_DIRECTIVES, MATERIAL_PROVIDERS} from 'ng2-material/all';
 
 export class Login {    
   login: string;
+  user: Object;
+  
   constructor() {
     this.login = 'Login'
+  }
+  
+  signup(user) {
+     this.user = user; 
   }
 }

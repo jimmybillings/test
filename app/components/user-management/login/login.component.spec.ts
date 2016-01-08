@@ -17,8 +17,24 @@ import {Component, View} from 'angular2/core';
 describe('Login Component', () => {
 
   beforeEachProviders(() => []);
-  it('should expect 12 to be 12', () => {
-    expect(8).toBe(8)
+  it('Excepts a object containing a email and password', () => {
+    login.signup({email: 'james_billings@me.com', password: '12345678'})
   });
 
 });
+
+/** Test component that contains an MdButton. */
+@Component({
+  selector: 'test-app',
+  directives: [Login],
+  template:
+      `<button md-button type="button" (click)="increment()" [disabled]="isDisabled">Go</button>`,
+})
+class TestApp {
+  clickCount: number = 0;
+  isDisabled: boolean = false;
+
+  increment() {
+    this.clickCount++;
+  }
+}

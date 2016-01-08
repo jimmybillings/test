@@ -13,11 +13,11 @@ module.exports = function(config) {
       'node_modules/es6-module-loader/dist/es6-module-loader.js',
       'node_modules/traceur/bin/traceur-runtime.js', // Required by PhantomJS2, otherwise it shouts ReferenceError: Can't find variable: require
       'node_modules/traceur/bin/traceur.js',
-      'node_modules/angular2/bundles/angular2-polyfills.js',
-      'node_modules/systemjs/dist/system.src.js',
-      'node_modules/rxjs/bundles/Rx.js',
-      'node_modules/angular2/bundles/angular2.js',
-      'node_modules/angular2/bundles/testing.dev.js',
+      {pattern: 'node_modules/angular2/bundles/angular2-polyfills.js', included: true, watched: true},
+      {pattern: 'node_modules/systemjs/dist/system.src.js', included: true, watched: true},
+      {pattern: 'node_modules/rxjs/bundles/Rx.js', included: true, watched: true},
+      {pattern: 'node_modules/angular2/bundles/angular2.js', included: true, watched: true},
+      {pattern: 'node_modules/angular2/bundles/testing.dev.js', included: true, watched: true},
 
       // paths loaded via module imports
       {pattern: 'test/app/**/*.js', included: false, watched: true},
@@ -25,7 +25,13 @@ module.exports = function(config) {
       {pattern: 'test/**/*.css', included: false, watched: true},
       'karma-test-shim.js'
     ],
-
+    
+    proxies: {
+      // required for component assests fetched by Angular's compiler
+      "/app/": "/base/test/app/",
+      "/components/": "/base/test/app/components/",
+    },
+    
     exclude: [
       'node_modules/angular2/**/*_spec.js'
     ],
