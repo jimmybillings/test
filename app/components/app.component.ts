@@ -24,20 +24,5 @@ import {Home} from './home/home.component'
   { path: '/user-management/register',  name: 'Register', component: Register},
   { path: '/user-management/login', name: 'Login', component: Login}
 ])
-<<<<<<< HEAD
-
-export class AppComponent {
-  location: Location;
-  appStatus: string;
-  serviceStatus: string;
-  makey: string;
-
-  constructor(myService: MyService) {
-
-    this.serviceStatus = myService.getMessage();
-    this.appStatus = 'Application is working Jeff';
-  }
-=======
->>>>>>> df38dc27eb37963f523a5d4d864dd321f42b7c37
 
 export class AppComponent {}
