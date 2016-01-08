@@ -8,8 +8,8 @@ import {
 } from 'angular2/router';
 
 import {Header} from './application/header.component'
-import {Login} from './user-management/login/login.component';
-import {Register} from './user-management/register/register.component'
+import {Login} from './user/login/login.component';
+import {Register} from './user/register/register.component'
 import {Home} from './home/home.component'
 
 @Component({
@@ -20,8 +20,8 @@ import {Home} from './home/home.component'
 
 @RouteConfig([
   { path: '/',  name: 'Home', component: Home, useAsDefault: true},
-  { path: '/user-management/register',  name: 'Register', component: Register},
-  { path: '/user-management/login', name: 'Login', component: Login}
+  { path: '/user/register',  name: 'Register', component: Register},
+  { path: '/user/login', name: 'Login', component: Login}
 ])
 
 export class AppComponent {}
