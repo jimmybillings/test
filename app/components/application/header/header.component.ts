@@ -11,7 +11,7 @@ import {
 
 @Component({
   selector: 'header',
-  templateUrl: '/app/components/application/header.html',
+  templateUrl: '/app/components/application/header/header.html',
   directives: [ROUTER_DIRECTIVES]
 })
 
