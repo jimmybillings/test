@@ -8,24 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="favicon.ico" />
     <link rel="stylesheet" href="app/app.css" />
-    <!-- 1. Load libraries-->
-    <script src="lib/vendor.js"></script>
-    <!-- 2. Configure SystemJS-->
-    <script>
-      System.config({
-        packages: {
-            app: {
-                format: 'register',
-                defaultExtension: 'js'
-            }
-        }
-      });
-      System.import('app/boot')
-        .then(null, console.error.bind(console));
-    </script>
   </head>
-  <!-- 3. Display the application-->
   <body>
     <app>Loading...</app>
   </body>
+  <script src="lib/vendor.js"></script>
 </html>
