@@ -1,13 +1,16 @@
-h3 {{login}}
-form(action='#')
-  .mdl-grid
-    .mdl-cell.mdl-cell--6-col
-        .mdl-textfield.mdl-js-textfield
-            input#sample1.mdl-textfield__input(type='text')
-            label.mdl-textfield__label(for='email')
-    .mdl-cell.mdl-cell--6-col
-        .mdl-textfield.mdl-js-textfield
-            input#sample1.mdl-textfield__input(type='password')
-            label.mdl-textfield__label(for='password')
-    .mdl-cell.mdl-cell--6-col
-        button.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent Button
+.row
+  h1 Login
+
+.md-inline-form(layout='column')
+  md-content(layout-padding='')
+    form(action='#', method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
+      md-input-container
+        label Email
+        input.md-input(type='text', name='email', value='', ngControl="email")
+      md-input-container
+        label Password
+        input.md-input(type='password', name='password', value='', ngControl="password")
+        
+      section(layout='row', layout-sm='column', layout-align='end center', layout-wrap='')  
+        button.md-raised(md-raised-button='') Cancel
+        button.md-raised.md-primary(md-raised-button='', type='submit') Sign In
