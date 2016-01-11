@@ -1,6 +1,4 @@
 import {Component} from 'angular2/core';
-
-
 import {
     RouteConfig, 
     ROUTER_DIRECTIVES,
@@ -13,13 +11,11 @@ import {Header} from './header/header.component'
 import {Login} from '../user/login/login.component'
 import {Register} from '../user/register/register.component'
 import {Home} from '../home/home.component'
-import {User} from 'sample/user';
 
 @Component({
   selector: 'app',
   templateUrl: 'app/components/application/app.html',
-  directives: [ROUTER_DIRECTIVES, Header, Login],
-  providers: [User]
+  directives: [ROUTER_DIRECTIVES, Header, Login]
 })
 
 @RouteConfig([
@@ -29,7 +25,7 @@ import {User} from 'sample/user';
 ])
 
 export class AppComponent {
-    constructor(User: User) {
-        User.sayHello();
+    constructor() {
+        
     }  
 }

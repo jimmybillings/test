@@ -6,7 +6,7 @@ System.config({
         }
     },
     map: {
-        'sample/user': 'lib/user.js'
+       
     }
 });
 System.import('app/boot')

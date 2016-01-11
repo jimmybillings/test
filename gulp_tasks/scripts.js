@@ -68,8 +68,10 @@ gulp.task('scripts.vendor', () => {
     .pipe(gulp.dest('build/lib'))
 });
 
-gulp.task('scripts.ours', () =>{
-    var src = ['node_modules/sample/user.ts'];
+gulp.task('scripts.wzComponents', () =>{
+    var src = [
+        'node_modules/ng2-material/source/components/button/button.ts',
+        'node_modules/ng2-material/source/core/util/**/*.ts'];
     var result = gulp.src(src)
       .pipe(plumber())
       .pipe(sourcemaps.init())
