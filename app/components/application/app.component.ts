@@ -8,7 +8,7 @@ import {
 } from 'angular2/router';
 
 import {Header} from './header/header.component'
-import {Login} from '../user/login/login.component';
+import {Login} from '../user/login/login.component'
 import {Register} from '../user/register/register.component'
 import {Home} from '../home/home.component'
 

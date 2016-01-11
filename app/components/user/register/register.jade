@@ -1,20 +1,31 @@
 .row
-  h3 Register
-  form.login(method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
-    .input-field.col.s6
-      input(type='text', name='name', value='', placeholder='First Name', ngControl="firstName")
-    .input-field.col.s6
-      input(type='text', name='name', value='', placeholder='Last Name', ngControl="lastName")
-    .input-field.col.s6
-      input(type='text', name='name', value='', placeholder='Street', ngControl="street")
-    .input-field.col.s6
-      input(type='text', name='name', value='', placeholder='State', ngControl="state")
-    .input-field.col.s6
-      input(type='text', name='name', value='', placeholder='City', ngControl="city")
-    .input-field.col.s6
-      input(type='text', name='name', value='', placeholder='Zip code', ngControl="zipCode")
-    .input-field.col.s6
-      input(type='password', name='name', value='', placeholder='Password', ngControl="password")
-    .input-field.col.s12
-      button.waves-effect.waves-light.btn(type='submit') Register
+  h1 Register
 
+.md-inline-form(layout='column')
+  md-content(layout-padding='')
+    form(method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
+      md-input-container
+        label First Name
+        input.md-input(type='text', name='firstName', value='', ngControl="firstName")
+      md-input-container
+        label Last Name
+        input.md-input(type='text', name='lastName', value='', ngControl="lastName")
+      md-input-container
+        label Street
+        input.md-input(type='text', name='street', value='', ngControl="street")
+      md-input-container
+        label City
+        input.md-input(type='text', name='city', value='', ngControl="city")
+      md-input-container
+        label State
+        input.md-input(type='text', name='state', value='', ngControl="state")
+      md-input-container
+        label Zip Code
+        input.md-input(type='text', name='zipCode', value='', ngControl="zipCode")
+      md-input-container
+        label Password
+        input.md-input(type='password', name='password', value='', ngControl="password")
+        
+      section(layout='row', layout-sm='column', layout-align='end center', layout-wrap='')  
+        button.md-raised(md-raised-button='') Cancel
+        button.md-raised.md-primary(md-raised-button='', type='submit') Register
