@@ -58,7 +58,7 @@ gulp.task('dev.server', (done) => {
         'templates', 
         'html', 
         'scripts.app', 
-        'scripts.vendor', 
+        'scripts.vendor',
         'styles',
         'styles.vendor', 
         'font.vendor',

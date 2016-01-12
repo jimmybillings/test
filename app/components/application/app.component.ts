@@ -24,4 +24,8 @@ import {Home} from '../home/home.component'
   { path: '/user/login', name: 'Login', component: Login}
 ])
 
-export class AppComponent {}
+export class AppComponent {
+    constructor() {
+        
+    }  
+}

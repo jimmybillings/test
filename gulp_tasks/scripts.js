@@ -61,11 +61,26 @@ gulp.task('scripts.vendor', () => {
         'node_modules/rxjs/bundles/Rx.js',
         'node_modules/angular2/bundles/angular2.dev.js',
         'node_modules/angular2/bundles/router.dev.js',
-        'node_modules/angular2/bundles/http.dev.js'
+        'node_modules/angular2/bundles/http.dev.js',
+        'app/config.js'
     ])
     .pipe(concat('vendor.js'))
     .pipe(gulp.dest('build/lib'))
 });
+
+gulp.task('scripts.wzComponents', () =>{
+    var src = [
+        'node_modules/ng2-material/source/components/button/button.ts',
+        'node_modules/ng2-material/source/core/util/**/*.ts'];
+    var result = gulp.src(src)
+      .pipe(plumber())
+      .pipe(sourcemaps.init())
+      .pipe(typescript(tsProject));
+
+    return result.js
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest('build/lib'));
+})
 
 gulp.task('ng2Template', () => {
     var src = [
