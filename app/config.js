@@ -3,9 +3,6 @@ System.config({
         app: {
             defaultExtension: 'js'
         }
-    },
-    map: {
-       
     }
 });
 System.import('app/boot')

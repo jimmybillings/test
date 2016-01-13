@@ -55,6 +55,8 @@ gulp.task('scripts.test', () => {
 });
 
 gulp.task('scripts.vendor', () => {
+    gulp.src(['app/xmlToJson.js'])
+    .pipe(gulp.dest('build/lib'))
     return gulp.src([
         'node_modules/angular2/bundles/angular2-polyfills.js',
         'node_modules/systemjs/dist/system.src.js',
@@ -64,7 +66,7 @@ gulp.task('scripts.vendor', () => {
         'node_modules/angular2/bundles/http.dev.js',
         'app/config.js'
     ])
-    .pipe(concat('vendor.js'))
+    // .pipe(concat('vendor.js'))
     .pipe(gulp.dest('build/lib'))
 });
 
