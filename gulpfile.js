@@ -27,7 +27,8 @@ gulp.task('prod', done =>
      'styles.vendor',
      'font.vendor',
      'ng2Template', 
-     'images', 
+     'images',
+     'favicons',
      'clean.html',
      done)
 );
@@ -44,7 +45,8 @@ gulp.task('prod.server', done =>
      'styles.vendor',
      'font.vendor',
      'ng2Template', 
-     'images', 
+     'images',
+     'favicons',
      'clean.html',
      'server',
      done)
@@ -62,7 +64,8 @@ gulp.task('dev.server', (done) => {
         'styles',
         'styles.vendor', 
         'font.vendor',
-        'images', 
+        'images',
+        'favicons',
         'server',
         () => {
             gulp.watch('./app/**/*.scss', ['styles.reload']);
@@ -83,7 +86,8 @@ gulp.task('test', (done) => {
         'styles.vendor.test',
         'font.vendor.test',
         'ng2Template.test', 
-        'images.test', 
+        'images.test',
+        'favicons',
         'clean.html.test',
         'run.test',
         done
