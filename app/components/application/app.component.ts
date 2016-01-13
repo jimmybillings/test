@@ -8,20 +8,18 @@ import {
 } from 'angular2/router';
 
 import {Header} from './header/header.component'
-import {Login} from '../user/login/login.component'
-import {Register} from '../user/register/register.component'
+import {User} from '../user/user.component'
 import {Home} from '../home/home.component'
 
 @Component({
   selector: 'app',
   templateUrl: 'app/components/application/app.html',
-  directives: [ROUTER_DIRECTIVES, Header, Login]
+  directives: [ROUTER_DIRECTIVES, Header, User]
 })
 
 @RouteConfig([
   { path: '/',  name: 'Home', component: Home, useAsDefault: true},
-  { path: '/user/register',  name: 'Register', component: Register},
-  { path: '/user/login', name: 'Login', component: Login}
+  { path: '/user/...', component: User, as: 'User'},
 ])
 
 export class AppComponent {

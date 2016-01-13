@@ -1,5 +1,6 @@
 import {Component} from 'angular2/core';
 
+
 @Component({
   selector: 'login',
   templateUrl: '/app/components/user/login/login.html'
@@ -8,7 +9,7 @@ import {Component} from 'angular2/core';
 export class Login {    
   login: string;
   user: Object;
-
+  
   constructor() {
     this.login = 'Login'
   }
