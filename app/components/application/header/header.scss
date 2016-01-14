@@ -1,9 +1,3 @@
-$glb-color: #999;
-
-.note {
-  color: $glb-color;
-}
-
 header.hero {
   @include background-image(url("/images/bktx_contour_lines_light.png"), linear-gradient(#0143A3 0, #0273d4 100%));
   color: #fff;
