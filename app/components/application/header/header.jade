@@ -1,11 +1,16 @@
-md-toolbar.md-whiteframe-z1
-  nav.md-toolbar-tools
+md-toolbar.md-whiteframe-z1.md-tall.md-primary
+  span(flex='')
+  nav.md-toolbar-tools.md-toolbar-tools-bottom
     md-button.md-icon-button(arial-label='Settings')
     i.material-icons(md-icon) menu
-    a.md-icon-button(alt='Home', md-button='', [routerLink]="['Home']")
+    // a.md-icon-button(alt='Home', md-button='', [routerLink]="['Home']")
       span.md-button-wrapper
         i.material-icons(md-icon) home
-    h1(flex='') Wazee Digital
+    // h1(flex='') Wazee Digital
+    a.home(flex='', [routerLink]="['Home']", title='Home')
+      .logo
+        img(src='/images/logo_connect_rev_colr.svg')
+        
     a.md-button(alt='Login', md-button='', [routerLink]="['User', 'Login']")
       span.md-button-wrapper Login
     a.md-button(alt='Register', md-button='', [routerLink]="['User', 'Register']")
