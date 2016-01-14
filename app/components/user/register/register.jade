@@ -11,20 +11,17 @@
         label Last Name
         input.md-input(type='text', name='lastName', value='', ngControl="lastName")
       md-input-container
-        label Street
-        input.md-input(type='text', name='street', value='', ngControl="street")
-      md-input-container
-        label City
-        input.md-input(type='text', name='city', value='', ngControl="city")
-      md-input-container
-        label State
-        input.md-input(type='text', name='state', value='', ngControl="state")
-      md-input-container
-        label Zip Code
-        input.md-input(type='text', name='zipCode', value='', ngControl="zipCode")
+        label Email
+        input.md-input(type='text', name='street', value='', ngControl="emailAddress")
       md-input-container
         label Password
         input.md-input(type='password', name='password', value='', ngControl="password")
+      md-input-container
+        select(ngControl='accountIdentifier')
+            option(value="poc1")
+                | poc1
+            option(value="poc2")
+                | poc2
         
       section(layout='row', layout-sm='column', layout-align='end center', layout-wrap='')  
         button.md-raised(md-raised-button='') Cancel
