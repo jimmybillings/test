@@ -1,8 +1,8 @@
 import {Component} from 'angular2/core';
-import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
+import {FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
 import {HTTP_PROVIDERS, Http, Response, Headers} from 'angular2/http';
 
-import {User} from '../user.interface'
+import {RegisterUser} from './register.interface'
 @Component({
   selector: 'register',
   templateUrl: '/app/components/user/register/register.html',
@@ -10,31 +10,36 @@ import {User} from '../user.interface'
 })
 
 export class Register {
-    public user: User;
-    public registerForm: Object;
+    public user: RegisterUser;
+    public form: Object;
     public http: Http;
-    public headers: Headers;
+    public fb: FormBuilder;
 
-  constructor(fb: FormBuilder, http: Http, headers: Headers) {
-     this.user = new User()
+  constructor(fb: FormBuilder, http: Http) {
+     this.user = new RegisterUser()
      this.http = http;
-     this.registerForm = fb.group({
-        firstName: [this.user.firstName],
-        lastName: [this.user.lastName],
-        emailAddress: [this.user.emailAddress],
+     this.fb = fb;
+     this.registerForm();
+  }
+  
+  registerForm() {
+     this.form = this.fb.group({
+        firstName: String,
+        lastName: String,
+        emailAddress: String,
         accountIdentifier: 'poc1',
-        password: [this.user.password]
-     }) 
+        password: String
+     })  
   }
   
   onSubmit(user: Object) {
-       this.headers.append('Content-Type', 'application/json');
-       this.http.post('http://poc1.crux.t3sandbox.xyz./users-api/user/register', user.toString(), {
-           headers: this.headers
-        })
-        .subscribe((res:Response) => {
+       this.http.post('http://poc1.crux.t3sandbox.xyz./users-api/user/register', 
+        JSON.stringify(user), {
+           headers: new Headers({'Content-Type': 'application/json'})
+        }
+       ).subscribe((res:Response) => {
             console.log(res)
-        });
+       });
   }
 }
 
