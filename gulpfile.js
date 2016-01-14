@@ -62,7 +62,7 @@ gulp.task('dev.server', (done) => {
         'scripts.app', 
         'scripts.vendor',
         'styles',
-        'styles.vendor', 
+        // 'styles.vendor', 
         'font.vendor',
         'images',
         'favicons',

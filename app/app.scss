@@ -1,8 +1,18 @@
 // @import 'https://storage.googleapis.com/code.getmdl.io/1.0.6/material.deep_orange-indigo.min.css';
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 @import '../node_modules/bourbon/app/assets/stylesheets/bourbon';
-@import './css/all.css';
-@import './css/font.css';
+@import '../node_modules/ng2-material/source/all';
+
+$md-font-url: './css/';
+@import '../node_modules/ng2-material/font/font.scss';
+
+$md-primary: md-palette($md-deep-orange, 500, 100, 700, $md-contrast-palettes);
+$md-accent: md-palette($md-pink, 500, 300, 700, $md-contrast-palettes);
+$md-background: md-palette($md-grey, 500, 0, 600, $md-contrast-palettes);
+$md-warn: md-palette($md-red, 500, 100, 700, $md-contrast-palettes);
+$md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme-foreground);
+
+
 
 @import './components/home/home';
 @import './components/application/header/header';
