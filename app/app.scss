@@ -16,3 +16,4 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 
 @import './components/home/home';
 @import './components/application/header/header';
+@import './components/user/login/login';

@@ -26,7 +26,7 @@ import {Search} from '../search/search.component'
 ])
 
 export class AppComponent {
+    public showHero = true;
     constructor() {
-        
     }  
 }

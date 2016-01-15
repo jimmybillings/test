@@ -4,13 +4,13 @@ var runSequence = require('gulp-run-sequence');
 var flatten = require('gulp-flatten');
 
 gulp.task('images', () => {
-    return gulp.src(['app/**/*.svg', 'app/**/*.png', 'src/**/*.jpg', '!app/resources/favicon/*.png'])
+    return gulp.src(['app/**/*.svg', 'app/**/*.png', 'app/**/*.jpg', '!app/resources/favicon/*.png'])
     .pipe(flatten())
     .pipe(gulp.dest('build/images'))
 });
 
 gulp.task('images.test', () => {
-    return gulp.src(['app/**/*.svg', 'app/**/*.png', 'src/**/*.jpg', '!app/resources/favicon/*.png'])
+    return gulp.src(['app/**/*.svg', 'app/**/*.png', 'app/**/*.jpg', '!app/resources/favicon/*.png'])
     .pipe(flatten())
     .pipe(gulp.dest('test/images'))
 });

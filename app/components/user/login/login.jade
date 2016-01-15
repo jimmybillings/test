@@ -1,17 +1,23 @@
-md-whiteframe.md-whiteframe-9dp
-  md-card-content
-    h1 Login
+header.login.hero 
+  div(layout='row', layout-xs="column", md-scroll-y='', layout-align='start center', layout-padding='')
+    div(flex="")
+    div(flex-lt-sm="40" flex="40")
+      md-whiteframe.md-whiteframe-9dp
+        md-card-content
+          h1 Login
 
-    .md-inline-form(layout='column')
-      md-content(layout-padding='')
-        form(action='#', method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
-          md-input-container
-            label Email
-            input.md-input(type='text', name='email', value='', ngControl="email")
-          md-input-container
-            label Password
-            input.md-input(type='password', name='password', value='', ngControl="password")
-            
-          section(layout='row', layout-sm='column', layout-align='end center', layout-wrap='')  
-            button.md-raised(md-raised-button='') Cancel
-            button.md-raised.md-primary(md-raised-button='', type='submit') Sign In
+          .md-inline-form(layout='column')
+            md-content(layout-padding='')
+              form(action='#', method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
+                md-input-container
+                  label Email
+                  input.md-input(type='text', name='email', value='', ngControl="email")
+                md-input-container
+                  label Password
+                  input.md-input(type='password', name='password', value='', ngControl="password")
+                  
+                section(layout='row', layout-sm='column', layout-align='end center', layout-wrap='')  
+                  button.md-raised(md-raised-button='') Cancel
+                  button.md-raised.md-primary(md-raised-button='', type='submit') Sign In
+
+    div(flex="")
