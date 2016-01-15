@@ -1,41 +1,51 @@
 import {Component} from 'angular2/core';
-import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
+import {FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
 import {HTTP_PROVIDERS, Http, Response, Headers} from 'angular2/http';
+import {User} from '../user'
+import {RouteConfig, RouteParams, ROUTER_DIRECTIVES, Router, APP_BASE_HREF, ROUTER_BINDINGS} from 'angular2/router'
 
-import {User} from '../user.interface'
 @Component({
   selector: 'register',
   templateUrl: '/app/components/user/register/register.html',
-  directives: [FORM_DIRECTIVES]
+  directives: [FORM_DIRECTIVES],
+  providers: [User]
+  
 })
 
-export class Register {
-    public user: User;
-    public registerForm: Object;
-    public http: Http;
-    public headers: Headers;
 
-  constructor(fb: FormBuilder, http: Http, headers: Headers) {
-     this.user = new User()
-     this.http = http;
-     this.registerForm = fb.group({
-        firstName: [this.user.firstName],
-        lastName: [this.user.lastName],
-        emailAddress: [this.user.emailAddress],
-        accountIdentifier: 'poc1',
-        password: [this.user.password]
-     }) 
+export class Register {
+    public _user: User;
+    public _form: Object;
+    public _fb: FormBuilder;
+
+  constructor(
+      _fb: FormBuilder, 
+      _user: User) {
+     this._fb = _fb;
+     this._user = _user;
+     this._registerForm();
   }
   
-  onSubmit(user: Object) {
-       this.headers.append('Content-Type', 'application/json');
-       this.http.post('http://poc1.crux.t3sandbox.xyz./users-api/user/register', user.toString(), {
-           headers: this.headers
-        })
-        .subscribe((res:Response) => {
-            console.log(res)
-        });
+  public onSubmit(user: Object) {
+       this._user.create(user)
+            .subscribe((res:Response) => {
+                console.log(res)
+            });
+  }
+  
+  //   PRIVATE METHODS HERE
+  private _registerForm() {
+     this._form = this._fb.group({
+        firstName: String,
+        lastName: String,
+        emailAddress: String,
+        accountIdentifier: 'poc1',
+        password: String
+     })  
   }
 }
+
+
+
 
 

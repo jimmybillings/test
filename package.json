@@ -39,6 +39,7 @@
     "karma-js-coverage": "^0.4.0",
     "karma-mocha-reporter": "^1.1.1",
     "karma-phantomjs2-launcher": "^0.4.0",
+    "systemjs-builder": "^0.15.3",
     "traceur": "^0.0.91",
     "typescript": "^1.7.3",
     "wrench": "^1.5.8"

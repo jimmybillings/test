@@ -8,6 +8,8 @@ var inlineNg2Template = require('gulp-inline-ng2-template');
 var plumber = require('gulp-plumber');
 var join = require('path').join;
 var sourcemaps = require('gulp-sourcemaps');
+var Builder = require('systemjs-builder');
+
 
 gulp.task('scripts.app', () => {
      var src = [
@@ -22,11 +24,6 @@ gulp.task('scripts.app', () => {
     return result.js
       .pipe(sourcemaps.write())
       .pipe(gulp.dest('build/app'));
-      
-      
-	// return tsProject.src('./app/**/*.ts') 
-	// 	.pipe(typescript(tsProject))
-    //     .js.pipe(gulp.dest('build'));
 });
 
 gulp.task('scripts.reload', (done) => {
@@ -38,7 +35,7 @@ gulp.task('scripts.reload', (done) => {
 })
 
 gulp.task('scripts.test', () => {
-     var src = ['app/**/*.ts'];
+    var src = ['app/**/*.ts'];
     var result = gulp.src(src)
       .pipe(plumber())
       .pipe(sourcemaps.init())
@@ -47,11 +44,19 @@ gulp.task('scripts.test', () => {
     return result.js
       .pipe(sourcemaps.write())
       .pipe(gulp.dest('test/app'));
-      
-      
-	// return tsProject.src('./app/**/*.ts') 
-	// 	.pipe(typescript(tsProject))
-    //     .js.pipe(gulp.dest('build'));
+});
+
+gulp.task('script.ts.vendor', () => {
+    var src = ['node_modules/ng2-material/source/components/**/*.ts', 
+    'node_modules/ng2-material/source/core/**/*.ts'];
+    var result = gulp.src(src)
+      .pipe(plumber())
+      .pipe(sourcemaps.init())
+      .pipe(typescript(tsProject));
+
+    return result.js
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest('build/lib'));   
 });
 
 gulp.task('scripts.vendor', () => {
@@ -66,14 +71,11 @@ gulp.task('scripts.vendor', () => {
         'node_modules/angular2/bundles/http.dev.js',
         'app/config.js'
     ])
-    // .pipe(concat('vendor.js'))
     .pipe(gulp.dest('build/lib'))
 });
 
-gulp.task('scripts.wzComponents', () =>{
-    var src = [
-        'node_modules/ng2-material/source/components/button/button.ts',
-        'node_modules/ng2-material/source/core/util/**/*.ts'];
+gulp.task('scripts.wzComponents', () => {
+    var src = ['node_modules/ng2-material/dist/ng2-material.js'];
     var result = gulp.src(src)
       .pipe(plumber())
       .pipe(sourcemaps.init())
@@ -97,8 +99,21 @@ gulp.task('ng2Template', () => {
 
     return result.js
       .pipe(sourcemaps.write())
+      .pipe(concat('app.js'))
       .pipe(gulp.dest('build/app'));
 });
+
+// var builder = new Builder('path/to/baseURL', 'path/to/system/config-file.js');
+
+// builder
+// .bundle('local/module.js', 'outfile.js')
+// .then(function() {
+//   console.log('Build complete');
+// })
+// .catch(function(err) {
+//   console.log('Build error');
+//   console.log(err);
+// });
 
 gulp.task('ng2Template.test', () => {
     var src = ['app/**/*.ts'];
