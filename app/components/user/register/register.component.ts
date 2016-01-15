@@ -1,7 +1,8 @@
 import {Component} from 'angular2/core';
-import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
+import {FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
 import {HTTP_PROVIDERS, Http, Response, Headers} from 'angular2/http';
 import {User} from '../user'
+import {RouteConfig, RouteParams, ROUTER_DIRECTIVES, Router, APP_BASE_HREF, ROUTER_BINDINGS} from 'angular2/router'
 
 @Component({
   selector: 'register',
@@ -10,6 +11,7 @@ import {User} from '../user'
   providers: [User]
   
 })
+
 
 export class Register {
     public _user: User;
@@ -20,11 +22,12 @@ export class Register {
       _fb: FormBuilder, 
       _user: User) {
      this._fb = _fb;
+     this._user = _user;
      this._registerForm();
   }
   
   public onSubmit(user: Object) {
-       this._user.new(user)
+       this._user.create(user)
             .subscribe((res:Response) => {
                 console.log(res)
             });

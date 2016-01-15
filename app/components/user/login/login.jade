@@ -7,10 +7,16 @@ md-whiteframe.md-whiteframe-9dp
         form(action='#', method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
           md-input-container
             label Email
-            input.md-input(type='text', name='email', value='', ngControl="email")
+            input.md-input(type='email', name='userId', value='', ngControl="userId")
           md-input-container
             label Password
             input.md-input(type='password', name='password', value='', ngControl="password")
+          md-input-container
+            select(ngControl='accountIdentifier')
+                option(value="poc1")
+                    | poc1
+                option(value="poc2")
+                    | poc2
             
           section(layout='row', layout-sm='column', layout-align='end center', layout-wrap='')  
             button.md-raised(md-raised-button='') Cancel
