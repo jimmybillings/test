@@ -10,7 +10,7 @@ import {
 } from 'angular2/router';
 
 @Component({
-  selector: 'header',
+  selector: 'app-header',
   templateUrl: '/app/components/application/header/header.html',
   directives: [ROUTER_DIRECTIVES]
 })

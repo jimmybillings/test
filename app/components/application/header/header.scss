@@ -1,5 +1,20 @@
-header.hero {
-  @include background-image(url("/images/bktx_contour_lines_light.png"), linear-gradient(#0143A3 0, #0273d4 100%));
-  color: #fff;
-  min-height: 300px;
+
+app-header md-toolbar {
+  background-color:rgba(#000, .3); 
+  position: relative;
+}
+.home {
+  overflow: hidden;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 25px;
+  margin-left: 25px;
+  .logo {
+    width: 261px;
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
 }
