@@ -1,4 +1,4 @@
-header.login.hero {
+header.hero {
   overflow: hidden;
   width: 100%;
   position: relative;
@@ -9,15 +9,11 @@ header.login.hero {
   @include background-image(url("/images/hero_meeting.jpg"), linear-gradient(#000 60%, #000 0%));
   margin-bottom: 0;
   min-height: 1000px;
-
-  .bktxt {
-    @include background-image(url("/images/bktx_dgl_lines_light.png"), linear-gradient(rgba(darken(#BF360C, 30%), 0.3), rgba(#444, 0.85)));
-    min-height: 1000px;
-    width: 100%;
-    position: relative;
-    margin: 0 auto;
-  }
-  h1 {
-    color: rgba(darken(#444, 20%), 0.89)
-  }
 }
+.bktxt {
+  @include background-image(url("/images/bktx_dgl_lines_light.jpg"), linear-gradient(#000 60%, #000 0%));
+  min-height: 1000px;
+  width: 100%;
+  position: relative;
+  margin: 0 auto;
+}  
