@@ -16,13 +16,15 @@ import {
   directives: [ROUTER_DIRECTIVES, NgStyle, CORE_DIRECTIVES],
   viewProviders: [HTTP_PROVIDERS]
 })
+
 export class Search {
     public url: string;
     public http: Http;
     public results: Object;
+    
     constructor(http: Http){
         this.http = http;
-        this.url = 'http://localhost:3000/api/search/index?keywords=+itemType:clip&page=1&pageSize=50&resultsPageNumber=1&resultPageSize=20'
+        this.url = 'http://localhost:3000/api/search/index?keywords=+itemType:clip&page=10&pageSize=50&resultsPageNumber=10&resultPageSize=20'
         this.getResults();
     }
     

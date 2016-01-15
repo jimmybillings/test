@@ -21,7 +21,7 @@ export class Login {
   }
   
   public onSubmit(user: Object) {
-        console.log(user)
+       console.log(user)
        this._user.login(user)
   }
   
