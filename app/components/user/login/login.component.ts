@@ -6,6 +6,7 @@ import {User} from '../user'
 @Component({
   selector: 'login',
   templateUrl: '/app/components/user/login/login.html',
+  styles:['p:{color:white;}'],
   providers: [User]
 })
 
@@ -25,7 +26,6 @@ export class Login {
        this._user.login(user)
   }
   
-  //   PRIVATE METHODS HERE
   private _loginForm() {
      this._form = this._fb.group({
         userId: String,
