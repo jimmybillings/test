@@ -1,29 +1,29 @@
 import {Component} from 'angular2/core';
 import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
 import {HTTP_PROVIDERS, Http, Response, Headers} from 'angular2/http';
-import {User} from '../user'
+import {Session} from '../session.service'
+import { ApiConfig } from '../../../../services/api.config'
 
 @Component({
   selector: 'login',
-  templateUrl: '/app/components/user/login/login.html',
+  templateUrl: '/app/components/user-management/session/login/login.html',
   styles:['p:{color:white;}'],
-  providers: [User]
+  providers: [Session, ApiConfig]
 })
 
 export class Login {    
     public _form: Object;
     public _fb: FormBuilder;
-    public _user: User;
+    public _session: Session;
   
-  constructor(_fb: FormBuilder, _user: User) {
+  constructor(_fb: FormBuilder, _session: Session) {
      this._fb = _fb;
-     this._user = _user;
+     this._session = _session;
      this._loginForm();
   }
   
   public onSubmit(user: Object) {
-       console.log(user)
-       this._user.login(user)
+       this._session.create(user)
   }
   
   private _loginForm() {

@@ -7,11 +7,12 @@ md-toolbar.md-whiteframe-z1.md-tall.glb-h
       .home
         .logo
           img(src='/images/logo_connect_rev_colr.svg')
-    a.md-button(alt='Login', md-button='', [routerLink]="['Search']")
+    a.md-button(*ngIf="session.isActive()", alt='Login', md-button='', [routerLink]="['Search']")
       span.md-button-wrapper Search
-    a.md-button(alt='Login', md-button='', [routerLink]="['User', 'Login']")
+    a.md-button(*ngIf="!session.isActive()", alt='Login', md-button='', [routerLink]="['User', 'Login']")
       span.md-button-wrapper Login
-    a.md-button(alt='Register', md-button='', [routerLink]="['User', 'Register']")
+    a.md-button(*ngIf="!session.isActive()", alt='Register', md-button='', [routerLink]="['User', 'Register']")
       span.md-button-wrapper Register
     a.md-icon-button(md-button='', title='More',[routerLink]="['Home']")
       i.material-icons(md-icon='') more_vert
+    logout(*ngIf="session.isActive()")
