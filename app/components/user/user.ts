@@ -17,7 +17,7 @@ export class User {
     this._apiUrls = {
       create: 'http://poc1.crux.t3sandbox.xyz./users-api/user/register',
       login: 'http://poc1.crux.t3sandbox.xyz./users-api/login',
-      get: 'http://poc1.crux.t3sandbox.xyz./users-api/user/currentUser'
+      get: 'http://ec2-54-201-187-186.us-west-2.compute.amazonaws.com/users-api/user/currentUser'
     }
   }
         
@@ -35,16 +35,15 @@ export class User {
       }).subscribe((res:Response) => {
        console.log(res.json())
        this.token = res.json().token
+       this.get()
       });
   }
         
   get() {
-    let headers = new Headers({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token})
-    this.http.get(this._apiUrls.get, {
+    let headers = new Headers({'Content-Type': 'application/json', 'Authorization': 'Bearer '+this.token})
+    var some = this.http.get(this._apiUrls.get, {
       headers: headers
-    }).subscribe((res:Response) => {
-      console.log(res.json())
-    });
+    }).map(response => response.json());
   }            
 }
 

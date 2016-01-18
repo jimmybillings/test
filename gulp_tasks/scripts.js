@@ -60,8 +60,6 @@ gulp.task('script.ts.vendor', () => {
 });
 
 gulp.task('scripts.vendor', () => {
-    gulp.src(['app/xmlToJson.js'])
-    .pipe(gulp.dest('build/lib'))
     return gulp.src([
         'node_modules/angular2/bundles/angular2-polyfills.js',
         'node_modules/systemjs/dist/system.src.js',
