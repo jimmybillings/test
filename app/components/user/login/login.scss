@@ -11,7 +11,7 @@ header.login.hero {
   min-height: 1000px;
 
   .bktxt {
-    @include background-image(url("/images/bktx_dgl_lines_light.png"), linear-gradient(rgba(darken(#BF360C, 30%), 0.3), rgba(#444, 0.85)));
+    @include background-image(url("/images/bktx_dgl_lines_light.png"), linear-gradient(rgba(darken(#37474F, 30%), 0.6), rgba(#000, 0.95)));
     min-height: 1000px;
     width: 100%;
     position: relative;
@@ -19,5 +19,8 @@ header.login.hero {
   }
   h1 {
     color: rgba(darken(#444, 20%), 0.89)
+  }
+  md-card {
+    min-width: 336px;
   }
 }
