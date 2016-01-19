@@ -24,5 +24,21 @@ export class Header {
   
   constructor(session: Session) {
     this.session = session;
+    window.addEventListener('scroll', this._showScrollingHeader, false);
   }
+
+  private _showScrollingHeader(e) {
+    let isScrolled: boolean = false;
+    
+    if (window.pageYOffset > 80)
+    {
+      isScrolled = true;
+      console.log(isScrolled);
+      console.log(window.pageYOffset);
+    }
+    else
+      isScrolled = false;
+      console.log(isScrolled);
+  }
+  
 }

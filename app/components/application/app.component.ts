@@ -3,7 +3,6 @@ import {
     RouteConfig, 
     ROUTER_DIRECTIVES,
     LocationStrategy, 
-    Location, 
     HashLocationStrategy,
     AsyncRoute
 } from 'angular2/router';
@@ -27,10 +26,6 @@ import {Search} from '../search/search.component'
 ])
 
 export class AppComponent {
-    public showHero = false;
-    public location: Location;
-    
-    constructor(location: Location) {
-      console.log(this.location);
+    constructor() {
     }  
 }
