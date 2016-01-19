@@ -1,6 +1,6 @@
 import { Injectable } from 'angular2/core';
 import {HTTP_PROVIDERS, Http, Response, Headers} from 'angular2/http';
-import { ApiConfig } from '../../../services/api.config'
+import { ApiConfig } from '../config/api.config'
 
 @Injectable()
 export class User {

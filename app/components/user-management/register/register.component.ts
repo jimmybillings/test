@@ -1,15 +1,12 @@
 import {Component} from 'angular2/core';
-import {FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
-import {HTTP_PROVIDERS, Http, Response, Headers} from 'angular2/http';
-import {User} from '../user.service'
-import {RouteConfig, RouteParams, ROUTER_DIRECTIVES, Router, APP_BASE_HREF, ROUTER_BINDINGS} from 'angular2/router'
-import { ApiConfig } from '../../../../services/api.config'
+import {FormBuilder} from 'angular2/common';
+import {Response} from 'angular2/http';
+import {User} from '../../../common/services/user.data.service';
 
 @Component({
   selector: 'register',
-  templateUrl: '/app/components/user-management/user/register/register.html',
-  directives: [FORM_DIRECTIVES],
-  providers: [User, ApiConfig]
+  templateUrl: '/app/components/user-management/register/register.html',
+  providers: [User]
 })
 
 export class Register {

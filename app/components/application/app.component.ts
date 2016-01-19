@@ -1,13 +1,5 @@
 import {Component} from 'angular2/core';
-import {
-    RouteConfig, 
-    ROUTER_DIRECTIVES,
-    LocationStrategy, 
-    Location, 
-    HashLocationStrategy,
-    AsyncRoute
-} from 'angular2/router';
-
+import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {Header} from './header/header.component'
 import {User} from '../user-management/user-management.component'
 import {Home} from '../home/home.component'
@@ -28,9 +20,7 @@ import {Search} from '../search/search.component'
 
 export class AppComponent {
     public showHero = false;
-    public location: Location;
     
-    constructor(location: Location) {
-      console.log(this.location);
+    constructor() {
     }  
 }

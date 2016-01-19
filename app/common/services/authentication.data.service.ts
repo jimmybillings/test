@@ -1,10 +1,10 @@
-import { Injectable } from 'angular2/core';
-import {HTTP_PROVIDERS, Http, Response, Headers} from 'angular2/http';
-import { ApiConfig } from '../../../services/api.config'
-import {Router} from 'angular2/router'
+import { Injectable, Inject } from 'angular2/core';
+import { Http, Response } from 'angular2/http';
+import { ApiConfig } from '../config/api.config'
+import { Router } from 'angular2/router'
 
 @Injectable()
-export class Session {
+export class Authentication {
   
   public http: Http;
   private token: string;
@@ -31,8 +31,8 @@ export class Session {
         headers: this.apiConfig.getApiHeaders()
       }).subscribe((res:Response) => {
        localStorage.setItem('token', res.json().token);
-       this.router.navigateByUrl('/')
-      });
+       this.router.navigate(['/Home'])
+      })
   } 
   
   public destory() {
@@ -41,10 +41,6 @@ export class Session {
       }).subscribe((res:Response) => {
        localStorage.clear();
       });
-  } 
-  
-  public isActive() {
-    return (localStorage.getItem('token') !== null)
   }        
 }
 

@@ -1,7 +1,7 @@
 import {Component} from 'angular2/core';
-import {RouteConfig, RouteParams, ROUTER_DIRECTIVES, Router, APP_BASE_HREF, ROUTER_BINDINGS} from 'angular2/router'
-import {Login} from './session/login/login.component'
-import {Register} from './user/register/register.component'
+import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router'
+import {Login} from './login/login.component'
+import {Register} from './register/register.component'
 
 @Component({
   selector: 'user',
