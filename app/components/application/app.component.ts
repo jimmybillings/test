@@ -14,13 +14,9 @@ import {Search} from '../search/search.component'
 @RouteConfig([
   { path: '/',  name: 'Home', component: Home, useAsDefault: true},
   { path: '/user/...', component: User, as: 'User'},
-  { path: '/search', component: Search, as: 'Search'},
-  
+  { path: '/search', component: Search, as: 'Search'}, 
 ])
 
-export class AppComponent {
-    public showHero = false;
-    
-    constructor() {
-    }  
+export class AppComponent {    
+    constructor() {}  
 }
