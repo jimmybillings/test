@@ -1,29 +1,20 @@
 import {Component} from 'angular2/core';
-import {
-    RouteConfig, 
-    ROUTER_DIRECTIVES,
-    ROUTER_PROVIDERS, 
-    LocationStrategy, 
-    HashLocationStrategy,
-    AsyncRoute
-} from 'angular2/router';
-
-import {Logout} from '../../user-management/session/logout/logout.component'
-import {Session} from '../../user-management/session/session.service'
-import { ApiConfig } from '../../../services/api.config'
+import {ROUTER_DIRECTIVES} from 'angular2/router';
+import {Logout} from '../../user-management/logout/logout.component'
+import {CurrentUser} from '../../../common/models/current-user.model'
 
 @Component({
   selector: 'app-header',
   templateUrl: '/app/components/application/header/header.html',
   directives: [ROUTER_DIRECTIVES, Logout],
-  providers:[Session, ApiConfig]
+  providers:[CurrentUser]
 })
 
 export class Header {    
-  public session: Session;
+  public currentUser: CurrentUser;
   
-  constructor(session: Session) {
-    this.session = session;
+  constructor(currentUser: CurrentUser) {
+    this.currentUser = currentUser;
     window.addEventListener('scroll', this._showScrollingHeader, false);
   }
 

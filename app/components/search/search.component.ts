@@ -2,18 +2,10 @@ import {Component} from 'angular2/core';
 import {NgStyle, CORE_DIRECTIVES} from 'angular2/common';
 import {HTTP_PROVIDERS, Http, Response} from 'angular2/http';
 
-import {
-    RouteConfig, 
-    ROUTER_DIRECTIVES, 
-    ROUTER_PROVIDERS, 
-    LocationStrategy, 
-    HashLocationStrategy
-} from 'angular2/router';
-
 @Component({
   selector: 'search',
   templateUrl: '/app/components/search/search.html',
-  directives: [ROUTER_DIRECTIVES, NgStyle, CORE_DIRECTIVES],
+  directives: [NgStyle, CORE_DIRECTIVES],
   viewProviders: [HTTP_PROVIDERS]
 })
 
