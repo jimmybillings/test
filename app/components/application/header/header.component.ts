@@ -24,14 +24,15 @@ export class Header {
   ngOnInit() {
     window.addEventListener('scroll', () => {
       this.showScrollingHeader()
-    });
+    }, false);
   }
   
   public toggle(newState) {
     this.isScrolled = newState;
   }
+  
 
-  public showScrollingHeader(event) {
+  showScrollingHeader() {
     if (window.pageYOffset > 80)
     {
       this.isScrolled = true;

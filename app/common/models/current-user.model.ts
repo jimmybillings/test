@@ -4,23 +4,23 @@ export class CurrentUser {
     emailAddress: string  
     firstName: string
     lastName: string
+    accounts: Object
   };
   
   constructor() {
     this._currentUser = {
       emailAddress: undefined,
       firstName: null,
-      lastName: null
+      lastName: null,
+      accounts: []
     }
-  }
-  
-  ngOnInIt() {
     this.set();
   }
     
   public set(user=false) {
     if(user) localStorage.setItem('currentUser', JSON.stringify(user))
     this._currentUser = JSON.parse(localStorage.getItem('currentUser')) || this._currentUser 
+    console.log(this._currentUser)
   }
   
   public loggedIn() {
@@ -41,6 +41,10 @@ export class CurrentUser {
   
   public fullName() {
     return this._currentUser.firstName+' '+this._currentUser.lastName;
+  }
+  
+  public account() {
+    return this._currentUser.accounts[0].name
   }
   
   
