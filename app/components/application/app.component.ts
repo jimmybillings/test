@@ -4,6 +4,7 @@ import {Header} from './header/header.component'
 import {User} from '../user-management/user-management.component'
 import {Home} from '../home/home.component'
 import {Search} from '../search/search.component'
+import {CurrentUser} from '../../common/models/current-user.model'
 
 @Component({
   selector: 'app',
@@ -17,6 +18,9 @@ import {Search} from '../search/search.component'
   { path: '/search', component: Search, as: 'Search'}, 
 ])
 
-export class AppComponent {    
-    constructor() {}  
+export class AppComponent { 
+    public currentUser: CurrentUser   
+    constructor(currentUser: CurrentUser) {
+      this.currentUser = currentUser;
+    }  
 }

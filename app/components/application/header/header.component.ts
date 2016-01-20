@@ -1,19 +1,19 @@
-import {Component} from 'angular2/core';
+import {Component, ChangeDetectionStrategy, Input} from 'angular2/core';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
 import {Logout} from '../../user-management/logout/logout.component'
-import {CurrentUser} from '../../../common/models/current-user.model'
+
 
 @Component({
   selector: 'app-header',
   templateUrl: '/app/components/application/header/header.html',
   directives: [ROUTER_DIRECTIVES, Logout],
-  providers:[CurrentUser]
+  inputs: ['currentUser']
 })
 
-export class Header {    
-  public currentUser: CurrentUser;
+export class Header {   
+  @Input() currentUser; 
   
-  constructor(currentUser: CurrentUser) {
-    this.currentUser = currentUser;
+  constructor() {
+    
   }
 }

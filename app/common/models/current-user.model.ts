@@ -1,24 +1,47 @@
-import { Injectable } from 'angular2/core';
-
-@Injectable()
 export class CurrentUser {
   
-  private currentUser: Object;
+  public _currentUser: {
+    emailAddress: string  
+    firstName: string
+    lastName: string
+  };
   
-  constructor() {}
-    
-  public set(user:Object) {
-    this.currentUser = user;
-    localStorage.setItem('currentUser', JSON.stringify(user))
+  constructor() {
+    this._currentUser = {
+      emailAddress: undefined,
+      firstName: null,
+      lastName: null
+    }
+    this.set();
   }
-  
-  public get() {
     
+  public set(user=false) {
+    if(user) localStorage.setItem('currentUser', JSON.stringify(user))
+    this._currentUser = JSON.parse(localStorage.getItem('currentUser')) || this._currentUser 
   }
   
   public loggedIn() {
     return (localStorage.getItem('token') !== null)
   } 
+  
+  public email() {
+    return this._currentUser.emailAddress;
+  }
+  
+  public firstName() {
+    return this._currentUser.firstName;
+  }
+  
+  public lastName() {
+    return this._currentUser.lastName;
+  }
+  
+  public fullName() {
+    return this._currentUser.firstName+' '+this._currentUser.lastName;
+  }
+  
+  
      
 }
+
 

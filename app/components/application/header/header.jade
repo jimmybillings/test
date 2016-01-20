@@ -7,6 +7,7 @@ md-toolbar.md-whiteframe-z1.md-tall.glb-h
       .home
         .logo
           img(src='/images/logo_connect_rev_colr.svg')
+    p(*ngIf="currentUser.loggedIn()") {{currentUser.email()}}
     a.md-button(*ngIf="currentUser.loggedIn()", alt='Login', md-button='', [routerLink]="['Search']")
       span.md-button-wrapper Search
     a.md-button(*ngIf="!currentUser.loggedIn()", alt='Login', md-button='', [routerLink]="['User', 'Login']")

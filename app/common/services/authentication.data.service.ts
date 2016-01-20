@@ -2,6 +2,7 @@ import { Injectable, Inject } from 'angular2/core';
 import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../config/api.config'
 import { Router } from 'angular2/router'
+import { User } from './user.data.service'
 
 @Injectable()
 export class Authentication {
@@ -10,15 +11,17 @@ export class Authentication {
   private token: string;
   private apiConfig: ApiConfig;
   private router: Router;
+  private _user: User;
   private _sessionUrls: {
     create: string,
     destroy: string
   };
   
-  constructor(http: Http, apiConfig: ApiConfig, router: Router) {
+  constructor(http: Http, apiConfig: ApiConfig, router: Router, _user: User) {
     this.http = http;
     this.apiConfig = apiConfig;
     this.router = router
+    this._user = _user;
     this._sessionUrls = {
       create: this.apiConfig.getApiRoot()+ 'users-api/login',
       destroy: this.apiConfig.getApiRoot()+ 'users-api/invalidate'
@@ -31,6 +34,7 @@ export class Authentication {
         headers: this.apiConfig.getApiHeaders()
       }).subscribe((res:Response) => {
        localStorage.setItem('token', res.json().token);
+       this._user.get()
        this.router.navigate(['/Home'])
       })
   } 
