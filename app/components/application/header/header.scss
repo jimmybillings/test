@@ -5,6 +5,10 @@ app-header md-toolbar.glb-h {
   position: absolute;
   top: 0;
   left: 0;
+  &.scrolled {
+    background-color:#fff; 
+    position: fixed;
+  }
 }
 .home {
   overflow: hidden;

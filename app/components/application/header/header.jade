@@ -16,3 +16,4 @@ md-toolbar.glb-h([ngClass]="{scrolled: isScrolled}")
     a.md-icon-button(md-button='', title='More',[routerLink]="['Home']")
       i.material-icons(md-icon='') more_vert
     logout(*ngIf="currentUser.loggedIn()")
+    button.md-raised.md-primary(md-raised-button='', type='button', (click)="toggle(!isScrolled)") FUN
