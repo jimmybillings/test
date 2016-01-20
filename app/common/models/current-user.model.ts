@@ -12,6 +12,9 @@ export class CurrentUser {
       firstName: null,
       lastName: null
     }
+  }
+  
+  ngOnInIt() {
     this.set();
   }
     

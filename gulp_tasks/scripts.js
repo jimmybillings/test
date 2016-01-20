@@ -101,18 +101,6 @@ gulp.task('ng2Template', () => {
       .pipe(gulp.dest('build/app'));
 });
 
-// var builder = new Builder('path/to/baseURL', 'path/to/system/config-file.js');
-
-// builder
-// .bundle('local/module.js', 'outfile.js')
-// .then(function() {
-//   console.log('Build complete');
-// })
-// .catch(function(err) {
-//   console.log('Build error');
-//   console.log(err);
-// });
-
 gulp.task('ng2Template.test', () => {
     var src = ['app/**/*.ts'];
     var result = gulp.src(src)
