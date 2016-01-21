@@ -16,7 +16,9 @@
 #   Full URL of this job, like http://server:port/jenkins/job/foo/ (Jenkins URL must be set)
 #
 # For a full list, see http://build.thoughtequity.com:8080/jenkins/env-vars.html/
+# set -x
 
+baseDir=$( dirname "$0" )
 
 # add jenkins tools to the path
 PATH=/home/video/bin/tools/jenkins:$PATH
@@ -38,19 +40,19 @@ buildVersion=$(update-package-version-for-build.sh)         || exit 1
 
 # Build
 npm install
-npm run build                                               || exit 1
+npm run build.prod                                          || exit 1
 
 zipFile=target/wazee-ui-${buildVersion}.zip
 
 # package into a zip
-mkdir -p target
-cd build
-zip -r ../${zipFile} .
-cd ..
+mkdir -p ${baseDir}/target
+pushd dist/prod
+zip -r ../../${zipFile} .                                   || exit 1
+popd
 
 
 # Push to our nexus server
 deploy-to-nexus.sh --version=${buildVersion} --artifact=wazee-ui --file=${zipFile} || exit 1
 
 # tag the repository with this build version so we can find it again
-add-and-push-git-tag.sh "$buildVersion"                                            || exit 1
+add-and-push-git-tag.sh "$buildVersion"                     || exit 1

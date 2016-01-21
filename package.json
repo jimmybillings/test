@@ -1,9 +1,9 @@
 {
-  "name": "angular2-seed",
+  "name": "wazee-ui",
   "version": "0.0.0",
-  "description": "Seed for Angular 2 apps",
+  "description": "Wazee Portal UI Application",
   "repository": {
-    "url": "https://github.com/mgechev/angular2-seed"
+    "url": "https://github.com/t3mediacorp/wazee_ui.git"
   },
   "scripts": {
     "build.dev": "gulp build.dev",
@@ -27,8 +27,7 @@
     "webdriver-update": "webdriver-manager update",
     "webdriver-start": "webdriver-manager start"
   },
-  "author": "Minko Gechev <mgechev>",
-  "license": "MIT",
+  "author": "James Billings <jimmybillings>, Jeff Hyde <jhyde>",
   "devDependencies": {
     "angular2-hot-loader": "0.0.16",
     "async": "^1.4.2",
