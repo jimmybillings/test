@@ -1,6 +1,6 @@
 import {APP_DEST} from '../config';
 
-export = function buildFontsDev(gulp, plugins, option) {
+export = function buildFontsProd(gulp, plugins, option) {
   return function () {
     return gulp.src([
       'node_modules/ng2-material/dist/MaterialIcons-Regular.eot',
