@@ -3,7 +3,7 @@
 @import '../node_modules/bourbon/app/assets/stylesheets/bourbon';
 @import '../node_modules/ng2-material/source/all';
 
-$md-font-url: './css/';
+$md-font-url: './resources/fonts/';
 @import '../node_modules/ng2-material/font/font.scss';
 
 @import './components/home/home';

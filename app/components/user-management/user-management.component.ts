@@ -1,7 +1,7 @@
 import {Component} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router'
-import {Login} from './login/login.component'
-import {Register} from './register/register.component'
+import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
+import {Login} from './login/login.component';
+import {Register} from './register/register.component';
 
 @Component({
   selector: 'user',
@@ -14,10 +14,9 @@ import {Register} from './register/register.component'
   { path: '/login', component: Login, as: 'Login'}
 ])
 
-export class User {    
+export class User { 
   router: Router;
   constructor(router: Router) {
       this.router = router;
   }
- 
 }

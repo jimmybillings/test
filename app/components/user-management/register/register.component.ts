@@ -5,7 +5,7 @@ import {User} from '../../../common/services/user.data.service';
 
 @Component({
   selector: 'register',
-  templateUrl: '/app/components/user-management/register/register.html',
+  templateUrl: 'components/user-management/register/register.html',
   providers: [User]
 })
 
@@ -25,7 +25,7 @@ export class Register {
   public onSubmit(user: Object) {
        this._user.create(user)
             .subscribe((res:Response) => {
-                console.log(res)
+                console.log(res);
             });
   }
   
@@ -37,7 +37,7 @@ export class Register {
         emailAddress: String,
         accountIdentifier: 'poc1',
         password: String
-     })  
+     }); 
   }
 }
 

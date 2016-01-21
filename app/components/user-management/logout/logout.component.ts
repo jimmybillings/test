@@ -1,11 +1,11 @@
 import {Component} from 'angular2/core';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
-import {Authentication} from '../../../common/services/authentication.data.service'
+import {Authentication} from '../../../common/services/authentication.data.service';
 
 
 @Component({
   selector: 'logout',
-  templateUrl: '/app/components/user-management/logout/logout.html',
+  templateUrl: 'components/user-management/logout/logout.html',
   directives: [ROUTER_DIRECTIVES],
   providers: [Authentication]
 })
@@ -18,6 +18,6 @@ export class Logout {
   }
   
   public onSubmit() {
-       this._authentication.destory()
+       this._authentication.destory();
   }
 }

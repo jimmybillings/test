@@ -3,7 +3,7 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
 
 @Component({
   selector: 'home',
-  templateUrl: '/app/components/home/home.html',
+  templateUrl: 'components/home/home.html',
   directives: [ROUTER_DIRECTIVES]
 })
 
