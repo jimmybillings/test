@@ -26,14 +26,20 @@ PATH=/home/video/bin/node-v5.4.1-linux-x64/bin:$PATH
 # debugging information
 print-build-environment.sh
 
-# deploy the artifact with the correct build version
-buildVersion=$(update-maven-version-for-build.sh)
-
-# TODO: Update package.json with version/build info
+# update the artifact with the correct build version
+buildVersion=$(update-package-version-for-build.sh)
 
 # Build
 npm install
 npm run build
 
+# package into a zip
+mkdir target
+cd build
+zip -r ../target/wazee-ui-${buildVersion}.zip .
+cd ..
+
+restore-package-version.sh
+
 # tag the repository with this build version so we can find it again
-#add-and-push-git-tag.sh "$buildVersion"
+add-and-push-git-tag.sh "$buildVersion"
