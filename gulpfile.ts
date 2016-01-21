@@ -28,6 +28,7 @@ gulp.task('build.dev', done =>
               'build.jade.dev',
               'build.fonts.dev',
               'build.assets.dev',
+              'build.favicon',
               'build.js.dev',
               'build.index.dev',
               done));
