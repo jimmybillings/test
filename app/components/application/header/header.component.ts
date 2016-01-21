@@ -2,11 +2,11 @@
 import {Component, Input} from 'angular2/core';
 import {NgClass} from 'angular2/common';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
-import {Logout} from '../../user-management/logout/logout.component'
+import {Logout} from '../../user-management/logout/logout.component';
 
 @Component({
   selector: 'app-header',
-  templateUrl: '/app/components/application/header/header.html',
+  templateUrl: 'components/application/header/header.html',
   directives: [ROUTER_DIRECTIVES, Logout, NgClass],
   inputs: ['currentUser']
 })
@@ -14,35 +14,34 @@ import {Logout} from '../../user-management/logout/logout.component'
 
 export class Header {
   @Input() currentUser; 
-
-  public isScrolled: boolean;
+  public showFixed: boolean;
+  public slideUp: boolean;
   
   constructor() {
-    this.isScrolled = false; 
+    this.showFixed = false; 
+    this.slideUp = false; 
   }
   
   ngOnInit() {
+     this.showFixedHeader();
+  }
+  
+  public showFixedHeader() {
     window.addEventListener('scroll', () => {
-      this.showScrollingHeader()
+      if (window.pageYOffset > 68) { 
+        this.showFixed = true;
+        console.log(window.pageYOffset);
+      } else { 
+        this.showFixed = false;
+        console.log(window.pageYOffset);
+      }
+      if (window.pageYOffset < 65 && window.pageYOffset > 70) { 
+        this.slideUp = true;
+        console.log(window.pageYOffset);
+      } else { 
+        this.slideUp = false;
+        console.log(window.pageYOffset);
+      }
     }, false);
-  }
-  
-  public toggle(newState) {
-    this.isScrolled = newState;
-  }
-  
-
-  showScrollingHeader() {
-    if (window.pageYOffset > 80)
-    {
-      this.isScrolled = true;
-      console.log(this.isScrolled);
-      console.log(window.pageYOffset);
-    }
-    else
-    {
-      this.isScrolled = false;
-      console.log(this.isScrolled);
-    }
   }
 }

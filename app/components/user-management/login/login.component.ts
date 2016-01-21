@@ -4,7 +4,7 @@ import {Authentication} from '../../../common/services/authentication.data.servi
 
 @Component({
   selector: 'login',
-  templateUrl: '/app/components/user-management/login/login.html',
+  templateUrl: 'components/user-management/login/login.html',
   providers: [Authentication]
 })
 
@@ -20,15 +20,15 @@ export class Login {
   }
   
   public onSubmit(user: Object) {
-       this._authentication.create(user)
+       this._authentication.create(user);
   }
   
   private _loginForm() {
      this._form = this._fb.group({
         userId: String,
         password: String,
-        accountIdentifier: 'poc1',
-     })  
+        accountIdentifier: 'poc1'
+     });
   }
 }
 

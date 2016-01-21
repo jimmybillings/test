@@ -1,12 +1,12 @@
-md-toolbar.glb-h([ngClass]="{scrolled: isScrolled}")
+md-toolbar.glb([ngClass]="{'fixed': showFixed, 'slide-up': slideUp}")
   span(flex='')
-  nav.md-toolbar-tools.md-toolbar-tools-bottom
+  nav.md-toolbar-tools
     md-button.md-icon-button(arial-label='Settings')
     i.material-icons(md-icon) menu
-    a(flex='', [routerLink]="['Home']", title='Home')
-      .home
+    a.home-link(flex='', [routerLink]="['Home']", title='Home')
+      .logo-wrapper
         .logo
-          img(src='/images/logo_connect_rev_colr.svg')
+          img(src='resources/img/logo_connect_rev_colr.svg')
     p(*ngIf="currentUser.loggedIn()") 
       span {{currentUser.fullName()}} | 
       span {{currentUser.email()}} | 
@@ -20,4 +20,3 @@ md-toolbar.glb-h([ngClass]="{scrolled: isScrolled}")
     a.md-icon-button(md-button='', title='More',[routerLink]="['Home']")
       i.material-icons(md-icon='') more_vert
     logout(*ngIf="currentUser.loggedIn()")
-    button.md-raised.md-primary(md-raised-button='', type='button', (click)="toggle(!isScrolled)") FUN
