@@ -1,0 +1,26 @@
+header.login.hero {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  margin: 0 auto;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  @include background-image(url("resources/img/hero_meeting.jpg"), linear-gradient(rgba(#000, .1) 100%, #000 0%));
+  margin-bottom: 0;
+  min-height: 1000px;
+
+  .bktxt {
+    @include background-image(url("resources/img/bktx_dgl_lines_light.png"), linear-gradient(rgba(darken(#37474F, 30%), 0.5), rgba(#000, 0.85)));
+    min-height: 1000px;
+    width: 100%;
+    position: relative;
+    margin: 0 auto;
+  }
+  h1 {
+    color: rgba(darken(#444, 20%), 0.89)
+  }
+  md-card {
+    min-width: 336px;
+  }
+}

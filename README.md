@@ -13,10 +13,10 @@ Installation:
 npm install
 ```
 
-To build: - this will create the /build directory so that you can deploy to a web server. 
+To build: - this will create the /dev/prod directory so that you can deploy to a web server. 
 ```bash
 
-npm run build
+npm run build.prod
 ```
 
 To run: - this will create the /build directory and spin up a local server for development

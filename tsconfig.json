@@ -1,27 +1,17 @@
 {
-  "compilerOptions": {
-    "outDir": ".",
-    "target": "ES5",
-    "sourceMap": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "moduleResolution": "node",
-    "module": "commonjs",
-    "noLib": false,
-    "removeComments": false,
-    "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": false
-  },
-  "files": [
-    "./src/app/app.ts",
-    "./src/app/components/user-management/login.ts",
-    "./src/app/components/user-management/register.ts",
-    "./src/app/services/sampleService.ts"
-  ],
-  "filesGlob": [
-    "./src/app/**/*.ts"
-  ],
-  "atom": {
-    "rewriteTsconfig": true
-  }
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "sourceMap": true
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "compileOnSave": false
 }
