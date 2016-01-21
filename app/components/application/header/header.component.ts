@@ -15,11 +15,9 @@ import {Logout} from '../../user-management/logout/logout.component';
 export class Header {
   @Input() currentUser; 
   public showFixed: boolean;
-  public slideUp: boolean;
   
   constructor() {
     this.showFixed = false; 
-    this.slideUp = false; 
   }
   
   ngOnInit() {
@@ -30,17 +28,8 @@ export class Header {
     window.addEventListener('scroll', () => {
       if (window.pageYOffset > 68) { 
         this.showFixed = true;
-        console.log(window.pageYOffset);
       } else { 
         this.showFixed = false;
-        console.log(window.pageYOffset);
-      }
-      if (window.pageYOffset < 65 && window.pageYOffset > 70) { 
-        this.slideUp = true;
-        console.log(window.pageYOffset);
-      } else { 
-        this.slideUp = false;
-        console.log(window.pageYOffset);
       }
     }, false);
   }

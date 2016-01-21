@@ -27,13 +27,9 @@ app-header md-toolbar.glb {
     position: fixed;
     top: 0;
     margin-top: 0;
-    @include transition(margin .3s ease-in-out);
+    @include transition(margin .4s ease-in-out);
     border-bottom: none;
     box-shadow: $whiteframe-shadow-z1;
-    &.slide-up {
-      margin-top: -100px;
-      @include transition(all .3s ease-in-out);
-    }
     a.home-link > .logo-wrapper{
       height: 38px;
       top: 12px;
