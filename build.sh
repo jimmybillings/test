@@ -33,13 +33,18 @@ buildVersion=$(update-package-version-for-build.sh)
 npm install
 npm run build
 
+zipFile=target/wazee-ui-${buildVersion}.zip
+
 # package into a zip
 mkdir target
 cd build
-zip -r ../target/wazee-ui-${buildVersion}.zip .
+zip -r ../${zipFile} .
 cd ..
 
 restore-package-version.sh
+
+# Push to our nexus server
+deploy-to-nexus.sh --version=${buildVersion} --artifact=wazee-ui --file=${zipFile}
 
 # tag the repository with this build version so we can find it again
 add-and-push-git-tag.sh "$buildVersion"
