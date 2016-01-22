@@ -39,6 +39,7 @@ print-build-environment.sh
 buildVersion=$(update-package-version-for-build.sh)         || exit 1 
 
 # Build
+npm cache clean
 npm install
 npm run build.prod                                          || exit 1
 
