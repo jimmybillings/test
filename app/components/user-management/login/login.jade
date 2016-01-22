@@ -2,7 +2,7 @@
 header.login.hero
   div(layout='row', layout-xs="column", md-scroll-y='', layout-align='start center', layout-padding='')
     div(flex='')
-    div(flex-gt-lg="25",flex-gt-md="35", flex-gt-sm="50", flex-gt-xs="80", flex="100")
+    div(flex-gt-lg="25",flex-gt-md="40", flex-gt-sm="50", flex-gt-xs="80", flex="100")
       md-card.md-whiteframe-z2
         md-card-content
           h1 Login
@@ -19,9 +19,10 @@ header.login.hero
                   label Account
                   input(md-input="", type='text', name='accountIdentifier', ngControl="accountIdentifier")
                   
-                section(layout='row', layout-sm='column', layout-align='end center', layout-wrap='')  
-                  button.md-raised(md-raised-button='') Cancel
-                  button.md-raised.md-primary(md-raised-button='', type='submit') Sign In
+            md-card-actions(layout='row', layout-sm='column', layout-align='end center', layout-wrap='')  
+              button.md-raised.md-primary(md-raised-button='', type='submit') Sign In
+      
+      a.md-raised(md-raised-button='', [routerLink]="['Register']", title='') Register
     div(flex='')
 
     

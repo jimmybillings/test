@@ -10,13 +10,13 @@ header.hero {
   position: relative;
   margin: 0 auto;
   @include background-image(
-    linear-gradient(rgba(darken(#37474F, 30%), 0.3), rgba(#000, 0.5)),
+    linear-gradient(rgba(darken(#37474F, 30%), 0.55), rgba(#37474F, 0.44)),
     url("resources/img/hero_masters_js3.jpg")
   );
   background-position: 0 0, center center;
   background-repeat: no-repeat, no-repeat;
   background-size: cover, cover;
-  padding-top: 140px;
+  padding-top: 30px;
   margin-bottom: 0;
   min-height: 802px;
   .logo-wrapper {
