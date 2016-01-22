@@ -40,6 +40,7 @@ buildVersion=$(update-package-version-for-build.sh)         || exit 1
 
 # Build
 npm cache clean
+npm remove angular2
 npm install
 npm run build.prod                                          || exit 1
 
