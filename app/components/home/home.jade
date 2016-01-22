@@ -1,10 +1,13 @@
 header.hero 
     div(layout='row', layout-xs="column", layout-margin='', md-scroll-y='', layout-align='start center', layout-padding='')
       div(flex="")
-      div(flex-gt-sm="66" flex="100")
-        h1 Howdy!
+      // div(flex-gt-sm="66" flex="100")
+      div(flex-gt-lg="50",flex-gt-md="60", flex-gt-sm="70", flex-gt-xs="90", flex="100")
+        .logo-wrapper
+          .logo
+        
         p.note
-          | Wazee Digital is the leader in content management, delivery and monetization services for media and entertainment companies. We provide one of the world’s-largest managed video and metadata platforms as a cloud-based service, reducing or eliminating the impact of people intensive processes, legacy hardware and monolithic software on our customers as they transition to digital.
+          | Documentarians, film &amp; television producers, sports broadcasters, top brand marketers, and agencies all look to us for incredible footage, killer research and unmatched clearance expertise that saves time and minimizes risk.
         a([routerLink]="['User', 'Login']") Login
         a([routerLink]="['User', 'Register']") Register
       div(flex="")

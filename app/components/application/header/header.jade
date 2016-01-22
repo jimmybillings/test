@@ -7,11 +7,13 @@ md-toolbar.glb([ngClass]="{'fixed': showFixed, 'slide-up': slideUp}")
       .logo-wrapper
         .logo
           img(src='resources/img/logo_connect_rev_colr.svg')
-    p(*ngIf="currentUser.loggedIn()") 
+    // p(*ngIf="currentUser.loggedIn()") 
       span {{currentUser.fullName()}} | 
       span {{currentUser.email()}} | 
       span {{currentUser.account()}} | 
-    a.md-button(*ngIf="currentUser.loggedIn()", alt='Login', md-button='', [routerLink]="['Search']")
+    a.top-link(*ngIf="currentUser.loggedIn()")
+      {{currentUser.fullName()}}
+    a.md-button(*ngIf="currentUser.loggedIn()", alt='Search', md-button='', [routerLink]="['Search']")
       span.md-button-wrapper Search
     a.md-button(*ngIf="!currentUser.loggedIn()", alt='Login', md-button='', [routerLink]="['User', 'Login']")
       span.md-button-wrapper Login

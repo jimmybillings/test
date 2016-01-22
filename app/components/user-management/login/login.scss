@@ -5,12 +5,13 @@ header.login.hero {
   margin: 0 auto;
   @include background-image(
     url("resources/img/bktx_dgl_lines_light.png"),
-    linear-gradient(rgba(darken(#37474F, 30%), 0.5), rgba(#000, 0.9)),
+    linear-gradient(rgba(darken(#37474F, 20%), 0.7), rgba(#000, 0.6)),
     url("resources/img/hero_meeting.jpg")
   );
   background-position: 0 0, 0 0, center center;
   background-repeat: repeat, no-repeat, no-repeat;
   background-size: auto, cover, cover;
+  
   margin-bottom: 0;
   min-height: 1000px;
   h1 {
