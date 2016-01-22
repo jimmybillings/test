@@ -1,11 +1,12 @@
 import { Component } from 'angular2/core';
 import { FormBuilder } from 'angular2/common';
 import {Authentication} from '../../../common/services/authentication.data.service';
+import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 
 @Component({
   selector: 'login',
   templateUrl: 'components/user-management/login/login.html',
-  providers: [Authentication]
+  providers: [Authentication, MATERIAL_DIRECTIVES]
 })
 
 export class Login {    
