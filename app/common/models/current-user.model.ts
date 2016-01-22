@@ -1,20 +1,16 @@
+import {CurrentUserInterface} from '../interfaces/current-user.interface';
+
 export class CurrentUser {
 
-  public _currentUser: {
-    emailAddress: string
-    firstName: string
-    lastName: string
-    accounts: Object
-  };
+  private _currentUser: CurrentUserInterface;
 
   constructor() {
     this._currentUser = {
-      emailAddress: undefined,
+      emailAddress: null,
       firstName: null,
       lastName: null,
-      accounts: []
-    };
-    this.set();
+      accounts: null
+    };  
   }
 
   public set(user=false) {
@@ -43,7 +39,7 @@ export class CurrentUser {
   }
 
   public account() {
-    return this._currentUser.accounts[0].name;
+    return this._currentUser.accounts;
   }
 }
 

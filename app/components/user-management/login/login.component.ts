@@ -26,11 +26,11 @@ export class Login {
   }
   
   private _loginForm() {
-    //  this._form = this._fb.group({
-    //     userId: String,
-    //     password: String,
-    //     accountIdentifier: 'poc1'
-    //  });
+     this._form = this._fb.group({
+        userId: String,
+        password: String,
+        accountIdentifier: 'poc1'
+     });
   }
 }
 
