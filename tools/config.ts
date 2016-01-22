@@ -70,7 +70,7 @@ export const PROD_NPM_DEPENDENCIES: InjectableDependency[] = normalizeDependenci
   { src: 'reflect-metadata/Reflect.js', inject: 'shims' },
   { src: 'es6-shim/es6-shim.min.js', inject: 'shims' },
   { src: 'angular2/bundles/angular2-polyfills.min.js', inject: 'libs' }
-  // { src: 'bootstrap/dist/css/bootstrap.min.css', inject: true }
+  // { src: 'ng2-material/all.js', inject: 'libs' }
 ]);
 
 // Declare local files that needs to be injected

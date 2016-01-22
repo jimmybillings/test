@@ -76,6 +76,11 @@ gulp.task('serve', done =>
               'watch.serve',
               done));
 
+gulp.task('serve.prod', done =>
+  runSequence('build.prod',
+              'server.start',
+              done));
+
 // --------------
 // Docs
 // Disabled until https://github.com/sebastian-lenz/typedoc/issues/162 gets resolved
