@@ -6,7 +6,8 @@ import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 @Component({
   selector: 'login',
   templateUrl: 'components/user-management/login/login.html',
-  providers: [Authentication, MATERIAL_DIRECTIVES]
+  providers: [Authentication],
+  directives: [MATERIAL_DIRECTIVES]
 })
 
 export class Login {    
@@ -25,11 +26,11 @@ export class Login {
   }
   
   private _loginForm() {
-     this._form = this._fb.group({
-        userId: String,
-        password: String,
-        accountIdentifier: 'poc1'
-     });
+    //  this._form = this._fb.group({
+    //     userId: String,
+    //     password: String,
+    //     accountIdentifier: 'poc1'
+    //  });
   }
 }
 

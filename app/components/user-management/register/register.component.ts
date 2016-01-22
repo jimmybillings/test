@@ -2,11 +2,13 @@ import {Component} from 'angular2/core';
 import {FormBuilder} from 'angular2/common';
 import {Response} from 'angular2/http';
 import {User} from '../../../common/services/user.data.service';
+import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 
 @Component({
   selector: 'register',
   templateUrl: 'components/user-management/register/register.html',
-  providers: [User]
+  providers: [User],
+  directives: [MATERIAL_DIRECTIVES]
 })
 
 export class Register {

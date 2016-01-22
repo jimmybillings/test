@@ -6,11 +6,10 @@ import {AppComponent} from './components/application/app.component';
 import { ApiConfig } from './common/config/api.config';
 import {CurrentUser} from './common/models/current-user.model';
 import { User } from './common/services/user.data.service';
-import {MATERIAL_PROVIDERS} from 'ng2-material/all';
+// import {MATERIAL_PROVIDERS} from 'ng2-material/all';
 
 bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
-  MATERIAL_PROVIDERS,
   provide(LocationStrategy, { useClass: HashLocationStrategy }),
   HTTP_PROVIDERS,
   HTTP_BINDINGS,

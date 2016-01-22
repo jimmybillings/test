@@ -1,3 +1,4 @@
+
 header.login.hero
   div(layout='row', layout-xs="column", md-scroll-y='', layout-align='start center', layout-padding='')
     div(flex='')
@@ -8,18 +9,19 @@ header.login.hero
           .md-inline-form(layout='column')
             md-content(layout-padding='')
               form(action='#', method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
-                md-input-container.md-block
+                md-input-container.md-block.flex-gt-sm
                   label Email
-                  input.md-input(type='email', name='userId', value='', ngControl="userId")
-                md-input-container.md-block
+                  input(md-input="", type='email', name='userId', value='', ngControl="userId")
+                md-input-container.md-block.flex-gt-sm
                   label Password
-                  input.md-input(type='password', name='password', value='', ngControl="password")
-                md-input-container.md-block
+                  input(md-input="", type='password', name='password', value='', ngControl="password")
+                md-input-container.md-block.flex-gt-sm
                   label Account
-                  input.md-input(type='text', name='accountIdentifier', ngControl="accountIdentifier")
+                  input(md-input="", type='text', name='accountIdentifier', ngControl="accountIdentifier")
                   
                 section(layout='row', layout-sm='column', layout-align='end center', layout-wrap='')  
                   button.md-raised(md-raised-button='') Cancel
                   button.md-raised.md-primary(md-raised-button='', type='submit') Sign In
     div(flex='')
-    eddsComponent
+
+    
