@@ -23,4 +23,8 @@ export class AppComponent {
     constructor(currentUser: CurrentUser) {
       this.currentUser = currentUser;
     }
+    
+    ngOnInit() {
+      this.currentUser.set();
+    }
 }
