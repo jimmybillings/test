@@ -1,28 +1,36 @@
 
-header.login.hero
+section.login.hero
   div(layout='row', layout-xs="column", md-scroll-y='', layout-align='start center', layout-padding='')
     div(flex='')
-    div(flex-gt-lg="25",flex-gt-md="40", flex-gt-sm="50", flex-gt-xs="80", flex="100")
+    div(flex-xl="25", flex-gt-lg="30",flex-gt-md="40", flex-gt-sm="55", flex-gt-xs="100", flex="100")
       md-card.md-whiteframe-z2
+        md-card-header
+          .logo-wrapper
+            .logo
+        md-card-title
+          md-card-title-text(layout='column', layout-align='center center')
+            span.md-headline Login Into Your Account
         md-card-content
-          h1 Login
-          .md-inline-form(layout='column')
-            md-content(layout-padding='')
-              form(action='#', method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
-                md-input-container.md-block.flex-gt-sm
-                  label Email
-                  input(md-input="", type='email', name='userId', value='', ngControl="userId")
-                md-input-container.md-block.flex-gt-sm
-                  label Password
-                  input(md-input="", type='password', name='password', value='', ngControl="password")
-                md-input-container.md-block.flex-gt-sm
-                  label Account
-                  input(md-input="", type='text', name='accountIdentifier', ngControl="accountIdentifier")
-                  
-            md-card-actions(layout='row', layout-sm='column', layout-align='end center', layout-wrap='')  
-              button.md-raised.md-primary(md-raised-button='', type='submit') Sign In
-      
-      a.md-raised(md-raised-button='', [routerLink]="['Register']", title='') Register
+          form.md-inline-form(layout='column', method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
+            md-content( layout-sm="row", layout-padding='')
+              md-input-container.md-block.flex-gt-sm
+                label Email
+                input(md-input="", type='email', name='userId', value='', ngControl="userId")
+              md-input-container.md-block.flex-gt-sm
+                label Password
+                input(md-input="", type='password', name='password', value='', ngControl="password")
+              md-input-container.md-block.flex-gt-sm
+                label Account
+                input(md-input="", type='text', name='accountIdentifier', ngControl="accountIdentifier")
+                
+            md-card-actions(layout='column', layout-align='center center', layout-wrap='')  
+              button.md-raised.md-primary.conversion(md-raised-button='', type='submit') Login
+              
+            div.md-body-2( layout="column", layout-align='center center')  
+              a.md-primary(layout='row', flex='', md-button="", [routerLink]="['Register']") Forgot Your Password?
+              
+      div(md-theme="docs-dark", layout='column', layout-align='start center', layout-wrap='')
+        span.md-title Don't have an account? #[a.md-accent(md-button="", [routerLink]="['Register']") Sign Up]
     div(flex='')
 
     

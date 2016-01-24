@@ -1,34 +1,41 @@
-header.login.hero
-  div(layout='row', layout-xs="column", md-scroll-y='', layout-align='start center', layout-padding='')
-    div(flex="")
-    div(flex-gt-lg="25", flex-gt-md="35", flex-gt-sm="65", flex-gt-xs="90", flex="100")
-      md-card.md-whiteframe-z2
-        md-card-content
-          h1 Register
 
-          .md-inline-form(layout='column')
-            md-content(layout-padding='')
-              form(method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
-                md-input-container.md-block
-                  label First Name
-                  input.md-input(type='text', name='firstName', value='', ngControl="firstName")
-                md-input-container.md-block
-                  label Last Name
-                  input.md-input(type='text', name='lastName', value='', ngControl="lastName")
-                md-input-container.md-block
-                  label Email
-                  input.md-input(type='text', name='street', value='', ngControl="emailAddress")
-                md-input-container.md-block
-                  label Password
-                  input.md-input(type='password', name='password', value='', ngControl="password")
-                md-input-container.md-block
-                  select(ngControl='accountIdentifier')
-                      option(value="poc1")
-                          | poc1
-                      option(value="poc2")
-                          | poc2
-                  
-                section(layout='row', layout-sm='column', layout-align='end center', layout-wrap='')  
-                  button.md-raised(md-raised-button='') Cancel
-                  button.md-raised.md-primary(md-raised-button='', type='submit') Register
+section.login.hero
+  div(layout='row', layout-xs="column", md-scroll-y='', layout-align='start center', layout-padding='')
+    div(flex='')
+    div(flex-gt-lg="30",flex-gt-md="40", flex-gt-sm="55", flex-gt-xs="100", flex="100")
+      md-card.md-whiteframe-z2
+        md-card-header
+          .logo-wrapper
+            .logo
+        md-card-title
+          md-card-title-text(layout='column', layout-align='center center')
+            span.md-headline Get Started With Wazee
+        md-card-content
+          form.md-inline-form(layout='column', method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
+            md-content( layout-sm="row", layout-padding='')
+              md-input-container.md-block
+                label First Name
+                input.md-input(type='text', name='firstName', value='', ngControl="firstName")
+              md-input-container.md-block
+                label Last Name
+                input.md-input(type='text', name='lastName', value='', ngControl="lastName")
+              md-input-container.md-block
+                label Email
+                input.md-input(type='text', name='street', value='', ngControl="emailAddress")
+              md-input-container.md-block
+                label Password
+                input.md-input(type='password', name='password', value='', ngControl="password")
+              md-input-container.md-block
+                select(ngControl='accountIdentifier')
+                    option(value="poc1")
+                        | poc1
+                    option(value="poc2")
+                        | poc2
+    
+            md-card-actions(layout='column', layout-align='center center', layout-wrap='')  
+              button.md-raised.md-primary.conversion(md-raised-button='', type='submit') Sign Up
+      
+      div(md-theme="docs-dark", layout='column', layout-align='center center', layout-wrap='')
+        span.md-title Already have an account? #[a.md-accent(md-button="", [routerLink]="['Login']") Log In]
+        
     div(flex="")

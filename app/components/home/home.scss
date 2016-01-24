@@ -1,16 +1,16 @@
-$glb-color: rgba(#fff, .7);
+$glb-color: rgba(#fff, .877);
 
-.note {
-  color: $glb-color;
-}
+// .note {
+//   color: $glb-color;
+// }
 header.hero {
-  color: #fff;
+  color: rgba(#fff, .877);
   overflow: hidden;
   width: 100%;
   position: relative;
   margin: 0 auto;
   @include background-image(
-    linear-gradient(rgba(darken(#37474F, 30%), 0.55), rgba(#37474F, 0.44)),
+    linear-gradient(md-color($md-blue-grey, 900, .55), md-color($md-blue-grey, 800, .44)),
     url("resources/img/hero_masters_js3.jpg")
   );
   background-position: 0 0, center center;
@@ -30,6 +30,15 @@ header.hero {
       background-size: 300px;
       height: 300px;
       opacity: .7;
+    }
+  }
+  .conversion {
+    &[md-button] {
+      font-size: 18px;
+      min-width: 300px;
+      padding: 4px 40px;
+      // opacity: .8;
+      background-color: md-color($md-deep-orange, 700, .8);
     }
   }
 }

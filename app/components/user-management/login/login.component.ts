@@ -22,6 +22,10 @@ export class Login {
      this._loginForm();
   }
   
+  // ngOnInit() {
+  //    document.getElementsByTagName('md-input-container')[0].classList.remove('md-input-has-value');
+  // }
+  
   public onSubmit(user: Object) {
        this._authentication.create(user);
   }

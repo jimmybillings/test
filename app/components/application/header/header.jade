@@ -2,16 +2,23 @@ md-toolbar.glb([ngClass]="{'fixed': showFixed, 'slide-up': slideUp}")
   span(flex='')
   nav.md-toolbar-tools
     md-button.md-icon-button(arial-label='Settings')
-    i.material-icons(md-icon) menu
+    button.md-icon-button(md-button='', title='More',[routerLink]="['Home']")
+      i.material-icons(md-icon) menu
     a.home-link(flex='', [routerLink]="['Home']", title='Home')
       .logo-wrapper
         .logo
           img(src='resources/img/logo_connect_rev_colr.svg')
-    a.top-link(*ngIf="currentUser.loggedIn()") {{currentUser.fullName()}}
-    button.md-button(*ngIf="currentUser.loggedIn()", alt='Search', md-button='', [routerLink]="['Search']") Search
-    button.md-button(*ngIf="!currentUser.loggedIn()", alt='Login', md-button='', [routerLink]="['User', 'Login']") Login
-    button.md-button(*ngIf="!currentUser.loggedIn()", alt='Register', md-button='', [routerLink]="['User', 'Register']") Register
+    button.md-caption.top-link(md-button='', *ngIf="currentUser.loggedIn()") {{currentUser.fullName()}}
+    
+    md-button(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['User', 'Login']") Login
+    md-button(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['User', 'Register']") Sign Up
+    logout(*ngIf="currentUser.loggedIn()")
+    // md-button(*ngIf="currentUser.loggedIn()", title='Search', md-button='', [routerLink]="['Search']") Search
+    
+    button.md-icon-button(md-button='', *ngIf="currentUser.loggedIn()", title='Search', [routerLink]="['Search']")
+      i.material-icons(md-icon='') search
+    
+
     button.md-icon-button(md-button='', title='More',[routerLink]="['Home']")
       i.material-icons(md-icon='') more_vert
-    logout(*ngIf="currentUser.loggedIn()")
     

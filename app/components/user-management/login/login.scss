@@ -1,4 +1,4 @@
-header.login.hero {
+section.login.hero {
   overflow: hidden;
   width: 100%;
   position: relative;
@@ -6,19 +6,44 @@ header.login.hero {
   padding-top: 90px;
   @include background-image(
     url("resources/img/bktx_dgl_lines_light.png"),
-    linear-gradient(rgba(darken(#37474F, 20%), 0.65), rgba(#000, 0.95)),
+    linear-gradient(md-color($md-blue-grey, 900, .7), md-color($md-grey, 1000, .95)),
     url("resources/img/hero_meeting.jpg")
   );
   background-position: 0 0, 0 0, center center;
   background-repeat: repeat, no-repeat, no-repeat;
   background-size: auto, cover, cover;
-  
   margin-bottom: 0;
   min-height: 1000px;
-  h1 {
-    color: rgba(darken(#444, 20%), 0.89)
-  }
+  // md-card {
+    // 
+  // }
   md-card {
+    padding: 20px 26px 0 26px;
     min-width: 336px;
   }
+  
+  md-card-header .logo-wrapper {
+    height: 76px;
+    width: 100%;
+    .logo {
+      @include background-image(url("resources/img/logo.svg"));
+      background-position: top center;
+      background-repeat:no-repeat;
+      background-size: 140px;
+      height: 56px;
+      opacity: .5;
+    }
+  }
+}
+form button {
+  &.conversion {
+    // font-size: 18px;
+    min-width: 100%;
+    padding: 2px 40px;
+    // opacity: .8;
+    // background-color: md-color($md-orange, 900, .9);
+  }
+}
+[md-theme="docs-dark"] {
+  color: rgba(#fff, .8777);
 }
