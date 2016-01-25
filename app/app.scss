@@ -4,17 +4,16 @@
 $md-font-url: '/node_modules/ng2-material/dist/';
 @import '../node_modules/ng2-material/font/font.scss';
 
-// @import '../node_modules/ng2-material/source/all';
 @import '../node_modules/ng2-material/source/core/style/variables';
 @import '../node_modules/ng2-material/source/core/style/mixins';
 @import '../node_modules/ng2-material/source/core/style/shadows';
 @import '../node_modules/ng2-material/source/core/style/structure';
 @import '../node_modules/ng2-material/source/core/style/typography';
 @import '../node_modules/ng2-material/source/core/style/layout';
-// @import '../node_modules/ng2-material/source/core/style/default-theme';
 @import '../node_modules/ng2-material/source/core/style/palette';
 @import '../node_modules/ng2-material/source/core/style/theme-functions';
 
+// change theme colors and any other global variables
 $md-is-dark-theme: false !default;
 
 $md-button-border-radius: 2px !default;
