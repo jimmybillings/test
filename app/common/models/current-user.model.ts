@@ -9,7 +9,7 @@ export class CurrentUser {
   }
   
   user() {
-    return {
+    return JSON.parse(localStorage.getItem('currentUser')) || {
       emailAddress: null,
       firstName: null,
       lastName: null,
@@ -19,7 +19,7 @@ export class CurrentUser {
 
   public set(user=false) {
     if(user) localStorage.setItem('currentUser', JSON.stringify(user));
-    this._currentUser = JSON.parse(localStorage.getItem('currentUser')) || this.user();
+    this._currentUser = this.user();
   }
 
   public loggedIn() {
