@@ -1,6 +1,6 @@
 import {Component} from 'angular2/core';
 import {FormBuilder, ControlGroup, FORM_DIRECTIVES} from 'angular2/common';
-// import {Response} from 'angular2/http';
+import {Response} from 'angular2/http';
 import {User} from '../../../common/services/user.data.service';
 import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
@@ -30,11 +30,10 @@ export class Register {
   }
   
   public onSubmit(user: any) {
-    console.log(user);
-    // this._user.create(user)
-    //   .subscribe((res:Response) => {
-    //     console.log(res);
-    //   });
+    this._user.create(user)
+      .subscribe((res:Response) => {
+        console.log(res);
+      });
   }
   
   //   PRIVATE METHODS HERE
