@@ -9,11 +9,10 @@ import {CurrentUser} from '../../common/models/current-user.model';
 })
 
 export class Home {
-
   public currentUser: CurrentUser;
+  
   constructor(currentUser: CurrentUser) {
     this.currentUser = currentUser;
     console.log(this.currentUser);
   }
- 
 }
