@@ -13,6 +13,5 @@ export class Home {
   
   constructor(currentUser: CurrentUser) {
     this.currentUser = currentUser;
-    console.log(this.currentUser);
   }
 }
