@@ -3,19 +3,23 @@ import {CurrentUserInterface} from '../interfaces/current-user.interface';
 export class CurrentUser {
 
   private _currentUser: CurrentUserInterface;
-
+  
   constructor() {
-    this._currentUser = {
+    this._currentUser = this.user();
+  }
+  
+  user() {
+    return {
       emailAddress: null,
       firstName: null,
       lastName: null,
       accounts: null
-    };  
+    };
   }
 
   public set(user=false) {
     if(user) localStorage.setItem('currentUser', JSON.stringify(user));
-    this._currentUser = JSON.parse(localStorage.getItem('currentUser')) || this._currentUser;
+    this._currentUser = JSON.parse(localStorage.getItem('currentUser')) || this.user();
   }
 
   public loggedIn() {
@@ -41,5 +45,6 @@ export class CurrentUser {
   public account() {
     return this._currentUser.accounts;
   }
+ 
 }
 

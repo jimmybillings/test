@@ -22,12 +22,12 @@ export class Header {
   }
   
   ngOnInit() {
-     this.showFixedHeader();
+    window.addEventListener('scroll', () => this._showFixedHeader());
   }
   
-  public showFixedHeader() {
-    window.addEventListener('scroll', () => {
-      this.showFixed = (window.pageYOffset > 68) ? true : false;
-    }, false);
+  private _showFixedHeader() { 
+    this.showFixed = (window.pageYOffset > 68) ? true : false;
   }
+  
+  
 }
