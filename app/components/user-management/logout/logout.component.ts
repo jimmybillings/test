@@ -18,6 +18,6 @@ export class Logout {
   }
   
   public onSubmit() {
-       this._authentication.destory();
+       this._authentication.destroy();
   }
 }

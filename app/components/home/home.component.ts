@@ -1,13 +1,19 @@
-import {Component, Input} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
+import {CurrentUser} from '../../common/models/current-user.model';
 
 @Component({
   selector: 'home',
   templateUrl: 'components/home/home.html',
-  directives: [ROUTER_DIRECTIVES],
-  inputs: ['currentUser']
+  directives: [ROUTER_DIRECTIVES]
 })
 
 export class Home {
-  @Input() currentUser; 
+
+  public currentUser: CurrentUser;
+  constructor(currentUser: CurrentUser) {
+    this.currentUser = currentUser;
+    console.log(this.currentUser);
+  }
+ 
 }
