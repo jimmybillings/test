@@ -1,4 +1,3 @@
-
 import {Component, Input} from 'angular2/core';
 import {NgClass} from 'angular2/common';
 import {ROUTER_DIRECTIVES} from 'angular2/router';

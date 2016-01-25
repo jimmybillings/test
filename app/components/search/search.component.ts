@@ -1,6 +1,7 @@
 import {Component} from 'angular2/core';
 import {NgStyle, CORE_DIRECTIVES} from 'angular2/common';
 import {HTTP_PROVIDERS, Http, Response} from 'angular2/http';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'search',
@@ -17,14 +18,7 @@ export class Search {
     constructor(http: Http) {
         this.http = http;
         this.url = '';
-        this.getResults();
-    }
-
-    getResults() {
-        this.http.get(this.url)
-            .subscribe((res:Response) => {
-               this.results = res.json()['clip-list']['clip'];
-            });
+        this._getResults();
     }
 
     clipRendition(rendition) {
@@ -36,6 +30,13 @@ export class Search {
             }
         })[0];
         return bestRendition || '';
+    }
+    
+    private _getResults() {
+      this.results = this.http.get(this.url)
+        .map((res:Response) => {
+            return res.json()['clip-list']['clip'];
+        });
     }
 }
 

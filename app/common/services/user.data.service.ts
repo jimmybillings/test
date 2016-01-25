@@ -1,7 +1,7 @@
 import { Injectable } from 'angular2/core';
-import {Http, Response} from 'angular2/http';
+import { Http } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
-import {CurrentUser} from '../models/current-user.model';
+import { CurrentUser } from '../models/current-user.model';
 
 @Injectable()
 export class User {
@@ -32,10 +32,8 @@ export class User {
   }
 
   get() {
-    this.http.get(this._apiUrls.get, {
+    return this.http.get(this._apiUrls.get, {
       headers: this.apiConfig.getAuthHeader()
-    }).subscribe((res: Response) => {
-      this._currentUser.set(res.json().user);
     });
   }
 }

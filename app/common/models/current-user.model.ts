@@ -5,23 +5,14 @@ export class CurrentUser {
   private _currentUser: CurrentUserInterface;
   
   constructor() {
-    this._currentUser = this.user();
+    this._currentUser = this._user();
   }
   
-  user() {
-    return JSON.parse(localStorage.getItem('currentUser')) || {
-      emailAddress: null,
-      firstName: null,
-      lastName: null,
-      accounts: null
-    };
-  }
-
   public set(user=false): void {
     if(user) localStorage.setItem('currentUser', JSON.stringify(user));
-    this._currentUser = this.user();
+    this._currentUser = this._user();
   }
-
+  
   public loggedIn() {
     return (localStorage.getItem('token') !== null);
   }
@@ -45,6 +36,14 @@ export class CurrentUser {
   public account() {
     return this._currentUser.accounts;
   }
- 
+  
+  private _user() {
+    return JSON.parse(localStorage.getItem('currentUser')) || {
+      emailAddress: null,
+      firstName: null,
+      lastName: null,
+      accounts: null
+    };
+  }
 }
 

@@ -1,9 +1,9 @@
-import {Component} from 'angular2/core';
-import {FormBuilder, ControlGroup, FORM_DIRECTIVES} from 'angular2/common';
-import {Response} from 'angular2/http';
-import {User} from '../../../common/services/user.data.service';
-import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
-import {ROUTER_DIRECTIVES} from 'angular2/router';
+import { Component } from 'angular2/core';
+import { FormBuilder, ControlGroup, FORM_DIRECTIVES } from 'angular2/common';
+import { Response } from 'angular2/http';
+import { User } from '../../../common/services/user.data.service';
+import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
+import { ROUTER_DIRECTIVES } from 'angular2/router';
 import { ApiConfig } from '../../../common/config/api.config';
 
 @Component({
@@ -26,10 +26,10 @@ export class Register {
      this._fb = _fb;
      this._user = _user;
      this._ApiConfig = _ApiConfig;
-     this._registerForm();
+     this._setForm();
   }
   
-  public onSubmit(user: any) {
+  public onSubmit(user: Object): void {
     this._user.create(user)
       .subscribe((res:Response) => {
         console.log(res);
@@ -37,7 +37,7 @@ export class Register {
   }
   
   //   PRIVATE METHODS HERE
-  private _registerForm() {
+  private _setForm(): void {
      this.registerForm = this._fb.group({
         'firstName': null,
         'lastName': null,
