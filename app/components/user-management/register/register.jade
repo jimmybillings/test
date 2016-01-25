@@ -11,26 +11,20 @@ section.login.hero
           md-card-title-text(layout='column', layout-align='center center')
             span.md-headline Get Started With Wazee
         md-card-content
-          form.md-inline-form(layout='column', method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
+          form.md-inline-form(layout='column', [ngFormModel]="registerForm", (ngSubmit)="onSubmit(registerForm.value)")
             md-content( layout-sm="row", layout-padding='')
               md-input-container.md-block
                 label First Name
-                input.md-input(type='text', name='firstName', value='', ngControl="firstName")
+                input.md-input(type='text', [ngFormControl]="registerForm.controls['firstName']")
               md-input-container.md-block
                 label Last Name
-                input.md-input(type='text', name='lastName', value='', ngControl="lastName")
+                input.md-input(type='text', [ngFormControl]="registerForm.controls['lastName']")
               md-input-container.md-block
                 label Email
-                input.md-input(type='text', name='street', value='', ngControl="emailAddress")
+                input.md-input(type='text', [ngFormControl]="registerForm.controls['emailAddress']")
               md-input-container.md-block
                 label Password
-                input.md-input(type='password', name='password', value='', ngControl="password")
-              md-input-container.md-block
-                select(ngControl='accountIdentifier')
-                    option(value="poc1")
-                        | poc1
-                    option(value="poc2")
-                        | poc2
+                input.md-input(type='password', [ngFormControl]="registerForm.controls['password']")
     
             md-card-actions(layout='column', layout-align='center center', layout-wrap='')  
               button.md-raised.md-primary.conversion(md-raised-button='', type='submit') Sign Up

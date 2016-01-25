@@ -16,6 +16,10 @@ export class ApiConfig {
   public getApiHeaders() {
     return new Headers({'Content-Type': 'application/json'});
   }
+  
+  public getPortal() {
+    return 'poc2';
+  }
 
 }
 

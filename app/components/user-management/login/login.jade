@@ -11,18 +11,14 @@ section.login.hero
           md-card-title-text(layout='column', layout-align='center center')
             span.md-headline Login To Your Account
         md-card-content
-          form.md-inline-form(layout='column', method='post', #f="ngForm", (ngSubmit)="onSubmit(f.value)")
+          form.md-inline-form(layout='column', [ngFormModel]="loginForm", (ngSubmit)="onSubmit(loginForm.value)" )
             md-content( layout-sm="row", layout-padding='')
               md-input-container.md-block.flex-gt-sm
                 label Email
-                input(md-input="", type='email', name='userId', value='', ngControl="userId")
+                input(md-input="", type='email', [ngFormControl]="loginForm.controls['userId']")
               md-input-container.md-block.flex-gt-sm
                 label Password
-                input(md-input="", type='password', name='password', value='', ngControl="password")
-              md-input-container.md-block.flex-gt-sm
-                label Account
-                input(md-input="", type='text', name='accountIdentifier', ngControl="accountIdentifier")
-                
+                input(md-input="", type='password', [ngFormControl]="loginForm.controls['password']")
             md-card-actions(layout='column', layout-align='center center', layout-wrap='')  
               button.md-raised.md-primary.conversion(md-raised-button='', type='submit') Login
               
@@ -33,4 +29,3 @@ section.login.hero
         span.md-title Don't have an account? #[a.md-accent(md-button="", [routerLink]="['Register']") Sign Up]
     div(flex='')
 
-    

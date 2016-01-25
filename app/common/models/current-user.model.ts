@@ -17,7 +17,7 @@ export class CurrentUser {
     };
   }
 
-  public set(user=false) {
+  public set(user=false): void {
     if(user) localStorage.setItem('currentUser', JSON.stringify(user));
     this._currentUser = this.user();
   }
