@@ -1,7 +1,7 @@
 section.login.hero
   div(layout='row', layout-xs="column", md-scroll-y='', layout-align='start center', layout-padding='')
     div(flex='')
-    div(flex-xl="25", flex-gt-lg="30",flex-gt-md="40", flex-gt-sm="55", flex-gt-xs="100", flex="100")
+    div(flex-xl="40", flex-gt-lg="40", flex-gt-md="40", flex-gt-sm="55", flex-gt-xs="100", flex="100")
       md-card.md-whiteframe-z2
         md-card-header
           .logo-wrapper
@@ -13,11 +13,14 @@ section.login.hero
           md-list
             md-list-item
               h3 {{currentUser.fullName()}}
+            md-divider
             md-list-item
               h3 {{currentUser.email()}}
+            md-divider
             div( *ngFor="#account of currentUser.account()") 
               md-list-item
                 h3 Account: {{account.accountIdentifier}}
+              md-divider
               md-list-item
                 p Name: {{account.name}}
               md-list-item
