@@ -1,13 +1,17 @@
 header.hero 
     div(layout='row', layout-xs="column", layout-margin='', md-scroll-y='', layout-align='start center', layout-padding='')
       div(flex="")
-      div(flex-gt-lg="50",flex-gt-md="60", flex-gt-sm="70", flex-gt-xs="90", flex="100")
-        div(layout='row', layout-sm='column', layout-align='center center', layout-wrap='')
+      div(flex-xl="35",flex-gt-lg="50",flex-gt-md="55",flex-gt-sm="70",flex-gt-xs="90",flex="100")
+        div(layout='column', layout-align='start center', layout-wrap='')
           .logo-wrapper
             .logo
-          p.note
-            | Documentarians, film &amp; television producers, sports broadcasters, top brand marketers, and agencies all look to us for incredible footage, killer research and unmatched clearance expertise that saves time and minimizes risk.
-          md-button.md-block.conversion(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['User', 'Register']") Get Started! 
+          .search
+            form.md-inline-form(layout='column')
+              input(md-input="", type='text', placeholder='Search For Videos and Photos...')
+              button(type='submit') Search
+                i.material-icons(md-icon='') search
+          h4.md-headline
+            | Incredible footage, killer research and unmatched clearance expertise
       div(flex="")
       
 section.vendor-marquee
@@ -38,3 +42,13 @@ section.vendor-marquee
 
 section.collection-highlights
 section.mrkt-call-to-action
+  div(layout='row', layout-xs="column", layout-align='start center', layout-padding='')
+    div(flex="")
+    div(flex-gt-lg="50",flex-gt-md="60", flex-gt-sm="70", flex-gt-xs="90", flex="100")
+      div(layout='column', layout-align='center center', layout-wrap='')
+        h2.md-display-1
+          | Experience what more than 67,000 customers know. Access #[strong 4 million+ assets] &amp; expert research support.
+        md-button.md-block.conversion(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['User', 'Register']") Start Your Project! 
+    div(flex="")
+    
+
