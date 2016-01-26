@@ -1,16 +1,12 @@
-$glb-color: rgba(#fff, .877);
 
-// .note {
-//   color: $glb-color;
-// }
 header.hero {
-  color: rgba(#fff, .877);
+  color: $white-87-opacity;
   overflow: hidden;
   width: 100%;
   position: relative;
   margin: 0 auto;
   @include background-image(
-    linear-gradient(md-color($md-blue-grey, 900, .55), md-color($md-blue-grey, 800, .44)),
+    linear-gradient(md-color($md-blue-grey, 900, .7), md-color($md-blue-grey, 900, .6)),
     url("resources/img/hero_masters_js3.jpg")
   );
   background-position: 0 0, center center;
@@ -38,7 +34,112 @@ header.hero {
       min-width: 300px;
       padding: 4px 40px;
       // opacity: .8;
-      background-color: md-color($md-deep-orange, 700, .8);
+      background-color: md-color($md-orange, 600, .8);
     }
   }
+}
+// scrolling vendor marquee
+@mixin center-vertically($pseudo-el: 'before') {
+    position: relative;
+
+    &:#{$pseudo-el} {
+        content: '';
+        position: relative;
+        height: 100%;
+        width: 0;
+    }
+
+    &:#{$pseudo-el},
+    > * {
+        vertical-align: middle;
+        display: inline-block;
+    }
+}
+
+@mixin justify($vertical-align: top, $childs: '*') {
+    text-align: justify;
+    text-justify: distribute-all-lines;
+    line-height: 0;
+    // clear inline-block spacing
+    letter-spacing: -0.31em;
+
+    &:after {
+        content: '.';
+        display: inline-block;
+        height: 0!important;
+        width: 100%;
+        overflow: hidden!important;
+        visibility: hidden;
+
+        font-size: 0;
+        word-spacing: 100%;
+    }
+
+    > #{unquote($childs)} {
+        display: inline-block;
+        vertical-align: $vertical-align;
+        text-align: left;
+        line-height: 1;
+
+        // reset `inline-block spacing` trick
+        letter-spacing: 0;
+    }
+}
+
+
+// MARQUEE
+
+@include keyframes(loop) {
+    0%   {
+        @include transform( translateX(0) );
+    }
+    100% {
+        @include transform( translateX(-(33.3% * 2)));
+    }
+}
+
+
+$height: 183px;
+
+.vendor-marquee {
+    background: md-color($md-grey, 300, .8) url('resources/img/bktx_contour_lines_light.png');
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+
+    > ul {
+       list-style: none;
+       position: relative;
+       margin: 0;
+       z-index: 1;
+       top: 0;
+       left: 0;
+       width: 300%!important;
+       height: $height;
+       @include transform(translate3d(0, 0, 0));
+       @include animation(loop 16s linear infinite);
+    }
+
+    > ul > li {
+        @include center-vertically();
+        @include justify(middle);
+        float: left;
+        width: 33.333333%;
+        height: $height;
+        overflow: hidden;
+        margin: -12px 0 0;
+        img {
+          opacity: .3;
+          margin: 0 1.66%;
+        }
+    }
+}
+
+.collection-highlights {
+  min-height: 650px;
+  background-color:  md-color($md-grey, 100);
+}
+.mrkt-call-to-action {
+  min-height: 440px;
+  background:  md-color($md-blue-grey, 700)  url('resources/img/bktx_dgl_lines_light.png');
 }

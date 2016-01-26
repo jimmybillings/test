@@ -46,6 +46,9 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 @import '../node_modules/ng2-material/source/components/toolbar/toolbar';
 @import '../node_modules/ng2-material/source/components/tabs/tabs';
 
+// @import './common/common';
+
 @import './components/home/home';
 @import './components/application/header/header';
+@import './components/application/footer/footer';
 @import './components/user-management/login/login';

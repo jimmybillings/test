@@ -1,0 +1,27 @@
+app-footer {
+  .glb {
+    // @include background-image(
+    //   url("resources/img/bktx_maze_light.png"),
+    //   linear-gradient(md-color($md-grey, 200, .8), md-color($md-grey, 200, .8))
+    // );
+
+    // background-position: 0 0, 0 0;
+    // background-repeat: repeat, no-repeat;
+    // background-size: auto, cover;
+    
+    background-color: md-color($md-grey, 200);
+    .logo-wrapper {
+      height: 100px;
+      width: 100%;
+      margin-top: 20px;
+      .logo {
+        @include background-image(url("resources/img/logo.svg"));
+        background-position: bottom center;
+        background-repeat:no-repeat;
+        background-size: 100px;
+        height: 100px;
+        opacity: .45;
+      }
+    }
+  }
+}
