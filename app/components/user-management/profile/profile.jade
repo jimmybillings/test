@@ -1,0 +1,32 @@
+section.login.hero
+  div(layout='row', layout-xs="column", md-scroll-y='', layout-align='start center', layout-padding='')
+    div(flex='')
+    div(flex-xl="25", flex-gt-lg="30",flex-gt-md="40", flex-gt-sm="55", flex-gt-xs="100", flex="100")
+      md-card.md-whiteframe-z2
+        md-card-header
+          .logo-wrapper
+            .logo
+        md-card-title
+          md-card-title-text(layout='column', layout-align='center center')
+            span.md-headline Profile
+        md-card-content
+          md-list
+            md-list-item
+              h3 {{currentUser.fullName()}}
+            md-list-item
+              h3 {{currentUser.email()}}
+            div( *ngFor="#account of currentUser.account()") 
+              md-list-item
+                h3 Account: {{account.accountIdentifier}}
+              md-list-item
+                p Name: {{account.name}}
+              md-list-item
+                p Created: {{account.createdOn}}
+              md-list-item
+                p Last Updated: {{account.lastUpdated}}
+              md-list-item
+                p Admin: {{account.isAdmin}}
+              
+    div(flex='')
+    
+   

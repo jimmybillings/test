@@ -8,7 +8,7 @@ md-toolbar.glb([ngClass]="{'fixed': showFixed}")
       .logo-wrapper
         .logo
           img(src='resources/img/logo_connect_rev_colr.svg')
-    button.md-caption.top-link(md-button='', *ngIf="currentUser.loggedIn()") {{currentUser.fullName()}}
+    button.md-caption.top-link(md-button='', *ngIf="currentUser.loggedIn()", [routerLink]="['User', 'Profile']") {{currentUser.fullName()}}
     
     md-button(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['User', 'Login']") Login
     md-button(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['User', 'Register']") Sign Up
