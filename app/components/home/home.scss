@@ -1,145 +1,214 @@
-
-header.hero {
-  color: $white-87-opacity;
-  overflow: hidden;
-  width: 100%;
-  position: relative;
-  margin: 0 auto;
-  @include background-image(
-    linear-gradient(md-color($md-blue-grey, 900, .7), md-color($md-blue-grey, 900, .6)),
-    url("resources/img/hero_masters_js3.jpg")
-  );
-  background-position: 0 0, center center;
-  background-repeat: no-repeat, no-repeat;
-  background-size: cover, cover;
-  padding-top: 30px;
-  margin-bottom: 0;
-  min-height: 802px;
-  .logo-wrapper {
-    height: 300px;
-    width: 100%;
-    margin-top: 20px;
-    .logo {
-      @include background-image(url("resources/img/logo_rev.svg"));
-      background-position: bottom center;
-      background-repeat:no-repeat;
-      background-size: 300px;
-      height: 300px;
-      opacity: .7;
-    }
-  }
-  .conversion {
-    &[md-button] {
-      font-size: 18px;
-      min-width: 300px;
-      padding: 4px 40px;
-      // opacity: .8;
-      background-color: md-color($md-orange, 600, .8);
-    }
-  }
-}
-// scrolling vendor marquee
-@mixin center-vertically($pseudo-el: 'before') {
-    position: relative;
-
-    &:#{$pseudo-el} {
-        content: '';
-        position: relative;
-        height: 100%;
-        width: 0;
-    }
-
-    &:#{$pseudo-el},
-    > * {
-        vertical-align: middle;
-        display: inline-block;
-    }
-}
-
-@mixin justify($vertical-align: top, $childs: '*') {
-    text-align: justify;
-    text-justify: distribute-all-lines;
-    line-height: 0;
-    // clear inline-block spacing
-    letter-spacing: -0.31em;
-
-    &:after {
-        content: '.';
-        display: inline-block;
-        height: 0!important;
-        width: 100%;
-        overflow: hidden!important;
-        visibility: hidden;
-
-        font-size: 0;
-        word-spacing: 100%;
-    }
-
-    > #{unquote($childs)} {
-        display: inline-block;
-        vertical-align: $vertical-align;
-        text-align: left;
-        line-height: 1;
-
-        // reset `inline-block spacing` trick
-        letter-spacing: 0;
-    }
-}
-
-
-// MARQUEE
-
-@include keyframes(loop) {
-    0%   {
-        @include transform( translateX(0) );
-    }
-    100% {
-        @include transform( translateX(-(33.3% * 2)));
-    }
-}
-
-
-$height: 183px;
-
-.vendor-marquee {
-    background: md-color($md-grey, 300, .8) url('resources/img/bktx_contour_lines_light.png');
-    position: relative;
-    width: 100%;
+home {
+  .hero {
+    text-align: center;
+    color: $white-87-opacity;
     overflow: hidden;
-
-    > ul {
-       list-style: none;
-       position: relative;
-       margin: 0;
-       z-index: 1;
-       top: 0;
-       left: 0;
-       width: 300%!important;
-       height: $height;
-       @include transform(translate3d(0, 0, 0));
-       @include animation(loop 16s linear infinite);
+    width: 100%;
+    position: relative;
+    margin: 0 auto;
+    @include background-image(
+      linear-gradient(md-color($md-blue-grey, 900, .7), md-color($md-blue-grey, 900, .6)),
+      url("resources/img/hero_masters_js3.jpg")
+    );
+    background-position: 0 0, center center;
+    background-repeat: no-repeat, no-repeat;
+    background-size: cover, cover;
+    padding-top: 20px;
+    margin-bottom: 0;
+    min-height: 802px;
+    .logo-wrapper {
+      height: 260px;
+      width: 100%;
+      .logo {
+        @include background-image(url("resources/img/logo_rev.svg"));
+        background-position: bottom center;
+        background-repeat:no-repeat;
+        background-size: 260px;
+        height: 260px;
+        opacity: .7;
+      }
     }
+  }
+  // scrolling vendor marquee
+  @mixin center-vertically($pseudo-el: 'before') {
+      position: relative;
 
-    > ul > li {
-        @include center-vertically();
-        @include justify(middle);
-        float: left;
-        width: 33.333333%;
+      &:#{$pseudo-el} {
+          content: '';
+          position: relative;
+          height: 100%;
+          width: 0;
+      }
+
+      &:#{$pseudo-el},
+      > * {
+          vertical-align: middle;
+          display: inline-block;
+      }
+  }
+
+  @mixin justify($vertical-align: top, $childs: '*') {
+      text-align: justify;
+      text-justify: distribute-all-lines;
+      line-height: 0;
+      // clear inline-block spacing
+      letter-spacing: -0.31em;
+
+      &:after {
+          content: '.';
+          display: inline-block;
+          height: 0!important;
+          width: 100%;
+          overflow: hidden!important;
+          visibility: hidden;
+
+          font-size: 0;
+          word-spacing: 100%;
+      }
+
+      > #{unquote($childs)} {
+          display: inline-block;
+          vertical-align: $vertical-align;
+          text-align: left;
+          line-height: 1;
+
+          // reset `inline-block spacing` trick
+          letter-spacing: 0;
+      }
+  }
+
+
+  // MARQUEE
+
+  @include keyframes(loop) {
+      0%   {
+          @include transform( translateX(0) );
+      }
+      100% {
+          @include transform( translateX(-(33.3% * 2)));
+      }
+  }
+
+
+  $height: 183px;
+
+  .vendor-marquee {
+      background: md-color($md-grey, 300, .8) url('resources/img/bktx_contour_lines_light.png');
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+
+      > ul {
+        list-style: none;
+        position: relative;
+        margin: 0;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        width: 300%!important;
         height: $height;
-        overflow: hidden;
-        margin: -12px 0 0;
-        img {
-          opacity: .3;
-          margin: 0 1.66%;
-        }
+        @include transform(translate3d(0, 0, 0));
+        @include animation(loop 16s linear infinite);
+      }
+
+      > ul > li {
+          @include center-vertically();
+          @include justify(middle);
+          float: left;
+          width: 33.333333%;
+          height: $height;
+          overflow: hidden;
+          margin: -12px 0 0;
+          img {
+            opacity: .3;
+            margin: 0 1.66%;
+          }
+      }
+  }
+
+  .collection-highlights {
+    min-height: 650px;
+    background-color:  md-color($md-grey, 100);
+  }
+  .mrkt-call-to-action {
+    min-height: 440px;
+    background:  md-color($md-blue-grey, 700)  url('resources/img/bktx_dgl_lines_light.png');
+    @include text-contrast(md-color($md-blue-grey, 700));
+    text-align: center;
+  }
+  .search {
+    width: 100%;
+    margin: 56px 0 26px 0;
+    position: relative;
+    overflow: hidden;
+    input {
+      width: 100%;
+      padding-left: rem(1);
+      height: rem(4.4);
+      border: none;
+      background-color:  md-color($md-grey, 100, .9);
+      @include transition($swift-ease-in);
+      &:focus {
+        outline: none;
+        background-color: #fff; 
+      }
     }
+    button[type="submit"] {
+      cursor: pointer;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: rem(5);
+      font-size: 0;
+      border: none; 
+      background-color: md-color($md-orange, 800, .99);
+      @include transition($swift-ease-in);
+      i.material-icons {
+        font-size: rem(4);
+        color: $white-87-opacity;
+        text-shadow: md-color($md-grey, 900, .2) 0 1px 2px;
+      }
+      &:hover {
+        background-color: md-color($md-orange, 700, 1);
+        // i.material-icons {
+        //   text-shadow: md-color($md-grey, 900, .4) 0 1px 3px;
+        // }
+      }
+      // &:after {
+      //   @include text-contrast(md-color($md-accent, 900));
+      //   @include transition(opacity 0.4s);
+      //   // content: "\f002";
+      //   font-family: 'Material Icons';
+      //   content: "\";
+      //   // font-family: $icon-custom-font-family;
+      //   font-size: rem(2.7);
+      //   opacity: .4;
+      //   position: absolute;
+      //   right: rem(.2);
+      //   top: rem(-.1);
+      // }
+      // &:hover:after {
+      //   opacity: .6;
+      // }
+    }
+  }
 }
 
-.collection-highlights {
-  min-height: 650px;
-  background-color:  md-color($md-grey, 100);
-}
-.mrkt-call-to-action {
-  min-height: 440px;
-  background:  md-color($md-blue-grey, 700)  url('resources/img/bktx_dgl_lines_light.png');
+// this should go in some kind of glb scss file
+.conversion {
+  &[md-button] {
+    font-size: 18px;
+    min-width: 300px;
+    padding: 4px 40px;
+    // opacity: .8;
+    background-color: md-color($md-orange, 700, .8);
+    border: 1px solid transparent;
+    @include transition($swift-ease-in);
+    &:hover {
+      border: 1px solid $white-87-opacity;
+      background-color: md-color($md-orange, 700, .9);
+      box-shadow: $whiteframe-shadow-3dp;
+    }
+  }
 }
