@@ -26,7 +26,7 @@ PATH=/home/video/bin/tools/jenkins:$PATH
 PATH=/home/video/bin/node-v5.4.1-linux-x64/bin:$PATH
 
 # Special PhantomJS build that works with Centos
-PHANTOMJS_BIN=/home/video/bin/phantomjs.2.0.1.patch_12506
+export PHANTOMJS_BIN=/home/video/bin/phantomjs.2.0.1.patch_12506
 
 cleanup() {
   echo "Removing backup package.json"
