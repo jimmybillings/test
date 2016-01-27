@@ -25,6 +25,9 @@ PATH=/home/video/bin/tools/jenkins:$PATH
 # add latest node to path
 PATH=/home/video/bin/node-v5.4.1-linux-x64/bin:$PATH
 
+# Special PhantomJS build that works with Centos
+PHANTOMJS_BIN=/home/video/bin/phantomjs.2.0.1.patch_12506
+
 cleanup() {
   echo "Removing backup package.json"
   restore-package-version.sh
@@ -43,7 +46,7 @@ npm install
 npm run build.prod                                                                       || exit 1
 
 # create build.properties file
-set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion} || exit 1
+set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion}     || exit 1
 
 zipFile=target/wazee-ui-${buildVersion}.zip
 

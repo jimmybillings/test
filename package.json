@@ -8,7 +8,7 @@
   "scripts": {
     "build.dev": "gulp build.dev",
     "build.dev.watch": "gulp build.dev.watch",
-    "build.prod": "gulp build.prod",
+    "build.prod": "npm test && gulp build.prod",
     "build.test": "gulp build.test",
     "build.test.watch": "gulp build.test.watch",
     "docs": "npm run gulp -- build.docs && npm run gulp -- serve.docs",
