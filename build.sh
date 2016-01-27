@@ -36,23 +36,26 @@ trap cleanup EXIT
 print-build-environment.sh
 
 # update the artifact with the correct build version
-buildVersion=$(update-package-version-for-build.sh)         || exit 1 
+buildVersion=$(update-package-version-for-build.sh)                                      || exit 1 
 
 # Build
 npm install
-npm run build.prod                                          || exit 1
+npm run build.prod                                                                       || exit 1
+
+# create build.properties file
+$( set-maven-build-information.sh --path=${baseDir}/dist/prod --version=$buildVersion )  || exit 1
 
 zipFile=target/wazee-ui-${buildVersion}.zip
 
 # package into a zip
 mkdir -p ${baseDir}/target
 pushd dist/prod
-zip -r ../../${zipFile} .                                   || exit 1
+zip -r ../../${zipFile} .                                                                || exit 1
 popd
 
 
 # Push to our nexus server
-deploy-to-nexus.sh --version=${buildVersion} --artifact=wazee-ui --file=${zipFile} || exit 1
+deploy-to-nexus.sh --version=${buildVersion} --artifact=wazee-ui --file=${zipFile}       || exit 1
 
 # tag the repository with this build version so we can find it again
-add-and-push-git-tag.sh "$buildVersion"                     || exit 1
+add-and-push-git-tag.sh "$buildVersion"                                                  || exit 1
