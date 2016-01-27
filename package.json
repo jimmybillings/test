@@ -8,7 +8,7 @@
   "scripts": {
     "build.dev": "gulp build.dev",
     "build.dev.watch": "gulp build.dev.watch",
-    "build.prod": "gulp build.prod",
+    "build.prod": "npm test && gulp build.prod",
     "build.test": "gulp build.test",
     "build.test.watch": "gulp build.test.watch",
     "docs": "npm run gulp -- build.docs && npm run gulp -- serve.docs",
@@ -20,7 +20,7 @@
     "postinstall": "tsd reinstall --clean && tsd link && tsd rebundle && gulp check.versions && gulp postinstall",
     "reinstall": "rimraf node_modules && npm cache clean && npm install",
     "start": "gulp serve --env dev",
-    "serve.prod": "gulp serve.prod",
+    "serve.prod": "npm test && gulp serve.prod",
     "serve.dev": "gulp serve --env dev",
     "tasks.list": "gulp --tasks-simple",
     "test": "gulp test",

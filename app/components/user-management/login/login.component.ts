@@ -19,26 +19,14 @@ import { CurrentUser } from '../../../common/models/current-user.model';
 export class Login {    
     
     public loginForm: ControlGroup;
-    public _fb: FormBuilder;
-    public _authentication: Authentication;
-    public _user: User;
-    public router: Router;
-    private _ApiConfig: ApiConfig;
-    private _currentUser: CurrentUser;
    
   constructor(
-    _fb: FormBuilder, 
-    _authentication: Authentication, 
-    _user: User, 
-    router: Router, 
-    _ApiConfig: ApiConfig, 
-    _currentUser: CurrentUser) {
-     this._fb = _fb;
-     this._authentication = _authentication;
-     this._user = _user;
-     this.router = router;
-     this._ApiConfig = _ApiConfig;
-     this._currentUser = _currentUser;
+    public _fb: FormBuilder,
+    public _authentication: Authentication,
+    public _user: User,
+    public router: Router,
+    private _ApiConfig: ApiConfig,
+    private _currentUser: CurrentUser) { 
   }
   
   ngOnInit() {
