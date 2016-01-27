@@ -166,6 +166,6 @@
     @include transform(rotate(0deg));
   }
   to {
-    @include transform(rotate(360deg));
+    @include transform(rotate(359deg));
   }
 }

@@ -1,0 +1,19 @@
+// button modifiers
+
+[md-button] {
+  &.is-outlined {
+    border: 1px solid rgba(md-color($md-foreground, secondary-text), .2);
+    // border: 1px solid md-color($md-foreground, secondary-text);
+    line-height: $md-button-line-height - rem(0.300);
+    &.md-primary {
+      border: 1px solid md-color($md-primary, 500, .4);
+    }
+    &.md-accent {
+      border: 1px solid md-color($md-accent, 500, .4);
+    }
+    &.md-warn {
+      border: 1px solid md-color($md-warn, 500, .4);
+    }
+    
+  }
+}

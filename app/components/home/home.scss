@@ -1,13 +1,13 @@
 home {
   .hero {
     text-align: center;
-    color: $white-87-opacity;
+    @include text-contrast(md-color($md-primary, 900));
     overflow: hidden;
     width: 100%;
     position: relative;
     margin: 0 auto;
     @include background-image(
-      linear-gradient(md-color($md-blue-grey, 900, .7), md-color($md-blue-grey, 900, .6)),
+      linear-gradient(md-color($md-primary, 900, .7), md-color($md-primary, 900, .6)),
       url("resources/img/hero_masters_js3.jpg")
     );
     background-position: 0 0, center center;
@@ -29,6 +29,9 @@ home {
       }
     }
   }
+  
+  
+  
   // scrolling vendor marquee
   @mixin center-vertically($pseudo-el: 'before') {
       position: relative;
@@ -126,14 +129,19 @@ home {
       }
   }
 
+
+
   .collection-highlights {
     min-height: 650px;
-    background-color:  md-color($md-grey, 100);
+    background-color:  md-color($md-background, 100);
   }
+  
+  
+  
   .mrkt-call-to-action {
     min-height: 440px;
-    background:  md-color($md-blue-grey, 700)  url('resources/img/bktx_dgl_lines_light.png');
-    @include text-contrast(md-color($md-blue-grey, 700));
+    background:  md-color($md-primary, 700)  url('resources/img/bktx_dgl_lines_light.png');
+    @include text-contrast(md-color($md-primary, 700));
     text-align: center;
   }
   .search {
@@ -144,13 +152,14 @@ home {
     input {
       width: 100%;
       padding-left: rem(1);
-      height: rem(4.4);
+      height: rem(4.6);
       border: none;
-      background-color:  md-color($md-grey, 100, .9);
+      background-color:  md-color($md-background, 100, .9);
       @include transition($swift-ease-in);
       &:focus {
         outline: none;
-        background-color: #fff; 
+        background-color: lighten(md-color($md-background, 100), 40%);
+        box-shadow: $whiteframe-shadow-z1;
       }
     }
     button[type="submit"] {
@@ -162,15 +171,15 @@ home {
       width: rem(5);
       font-size: 0;
       border: none; 
-      background-color: md-color($md-orange, 800, .99);
+      background-color: md-color($md-accent, 800, .95);
       @include transition($swift-ease-in);
       i.material-icons {
         font-size: rem(4);
-        color: $white-87-opacity;
-        text-shadow: md-color($md-grey, 900, .2) 0 1px 2px;
+        @include text-contrast(md-color($md-background, 900));
+        text-shadow: md-color($md-background, 900, .2) 0 1px 2px;
       }
       &:hover {
-        background-color: md-color($md-orange, 700, 1);
+        background-color: md-color($md-accent, 700, 1);
         // i.material-icons {
         //   text-shadow: md-color($md-grey, 900, .4) 0 1px 3px;
         // }
@@ -202,12 +211,12 @@ home {
     min-width: 300px;
     padding: 4px 40px;
     // opacity: .8;
-    background-color: md-color($md-orange, 700, .8);
+    background-color: md-color($md-accent, 700, .8);
     border: 1px solid transparent;
     @include transition($swift-ease-in);
     &:hover {
       border: 1px solid $white-87-opacity;
-      background-color: md-color($md-orange, 700, .9);
+      background-color: md-color($md-accent, 700, .9);
       box-shadow: $whiteframe-shadow-3dp;
     }
   }

@@ -1,7 +1,7 @@
 
 app-header md-toolbar.glb {
-  background-color:rgba(darken(#37474F, 20%), .2);
-  border-bottom: solid 1px rgba(#fff, .2);
+  background-color:rgba(md-color($md-primary, 900), .3);
+  border-bottom: solid 1px rgba(contrast-color(md-color($md-primary, 900)), .25);
   position: absolute;
   top: 100px;
   left: 0;
@@ -27,8 +27,8 @@ app-header md-toolbar.glb {
     }
   }
   &.fixed {
-    background-color:rgba(lighten(#37474F, 80%), .95);
-    color: rgba(#000, .6);
+    background-color:rgba(md-color($md-background, 100), .95);
+    @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
     position: fixed;
     top: 0;
     margin-top: 0;
@@ -45,6 +45,38 @@ app-header md-toolbar.glb {
     }
   }
 }
+
+
+
+app-header md-toolbar.glb:not(.md-menu-toolbar) [md-button] {
+  &.md-accent {
+    color: rgba(md-color($md-accent, 500), .8);
+  }
+}
+
+
+
+
+
+button.dd-indicator[md-button] .md-button-wrapper {
+  position: relative;
+  display: block;
+  padding-right: 18px;
+  &:after {
+    @include text-contrast(md-color($md-primary, 900));
+    @include transition(opacity 0.4s);
+    font-family: 'Material Icons';
+    content: "\e5c5";
+    font-size: rem(2.2);
+    opacity: .9;
+    position: absolute;
+    right: rem(-.5);
+    top: rem(-.1);
+  }
+  &:hover:after {
+    opacity: .6;
+  }
+ }
 app-header md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-button] {
-  color: rgba(#000, .6);
+  @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
 }
