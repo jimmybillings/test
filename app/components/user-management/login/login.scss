@@ -21,7 +21,7 @@ section.login.hero {
   md-card {
     padding: 20px 26px 0 26px;
     min-width: 336px;
-    color: md-color($md-foreground, secondary-text); // '{{foreground-2}}';
+    color: md-color($md-foreground, secondary-text);
   }
   
   md-card-header .logo-wrapper {
@@ -31,8 +31,8 @@ section.login.hero {
       @include background-image(url("resources/img/logo.svg"));
       background-position: top center;
       background-repeat:no-repeat;
-      background-size: 140px;
-      height: 56px;
+      background-size: 155px;
+      height: 61px;
       opacity: .5;
     }
   }
