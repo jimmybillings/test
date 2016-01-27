@@ -1,5 +1,5 @@
 import {Component, Input} from 'angular2/core';
-import {NgClass} from 'angular2/common';
+import {NgClass, NgIf} from 'angular2/common';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
 import {Logout} from '../../user-management/logout/logout.component';
 import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
@@ -7,7 +7,7 @@ import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 @Component({
   selector: 'app-header',
   templateUrl: 'components/application/header/header.html',
-  directives: [ROUTER_DIRECTIVES, Logout, NgClass, MATERIAL_DIRECTIVES],
+  directives: [ROUTER_DIRECTIVES, Logout, NgClass, MATERIAL_DIRECTIVES, NgIf],
   inputs: ['currentUser']
 })
 
@@ -21,11 +21,11 @@ export class Header {
   }
   
   ngOnInit() {
-    window.addEventListener('scroll', () => this._showFixedHeader());
+    window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
   }
   
-  private _showFixedHeader() { 
-    this.showFixed = (window.pageYOffset > 68) ? true : false;
+  public showFixedHeader(offset) { 
+    this.showFixed = (offset > 68) ? true : false;
   }
   
   

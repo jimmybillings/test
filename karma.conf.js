@@ -29,7 +29,7 @@ module.exports = function(config) {
       { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
       { pattern: 'test/**/*.js', included: false, watched: true },
       { pattern: 'node_modules/systemjs/dist/system-polyfills.js', included: false, watched: false }, // PhantomJS2 (and possibly others) might require it
-
+      { pattern: 'node_modules/ng2-material/**/*.js', included: false, watched: false },
       'test-main.js'
     ],
 
@@ -72,8 +72,7 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
-      'PhantomJS2',
-      'Chrome'
+      'PhantomJS2'
     ],
 
 
