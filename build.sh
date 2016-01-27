@@ -43,7 +43,7 @@ npm install
 npm run build.prod                                                                       || exit 1
 
 # create build.properties file
-$(set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion}) || exit 1
+set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion} || exit 1
 
 zipFile=target/wazee-ui-${buildVersion}.zip
 
