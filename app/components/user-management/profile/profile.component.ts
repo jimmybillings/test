@@ -1,9 +1,11 @@
 import {Component} from 'angular2/core';
 import {CurrentUser} from '../../../common/models/current-user.model';
+import {NgFor} from 'angular2/common';
 
 @Component({
   selector: 'profile',
-  templateUrl: 'components/user-management/profile/profile.html'
+  templateUrl: 'components/user-management/profile/profile.html',
+  directives:[NgFor]
 })
 
 export class Profile {    
@@ -11,6 +13,5 @@ export class Profile {
   
   constructor(currentUser: CurrentUser) {
      this.currentUser = currentUser;
-     console.log(this.currentUser.account());
   }
 }

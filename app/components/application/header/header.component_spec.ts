@@ -23,6 +23,14 @@ export function main() {
       provide(Router, {useClass: RootRouter})
     ]);
     
+    it('Should have a header instance', 
+      injectAsync([TestComponentBuilder], (tcb) => {
+        return tcb.createAsync(Header).then((fixture) => {
+          let instance = fixture.debugElement.componentInstance;
+          expect(instance instanceof Header).toBeTruthy();
+        });
+    }));
+    
     it('Should initialize the header position to be abosulte positioned by setting \'showFixed\' to be false', 
       injectAsync([TestComponentBuilder], (tcb) => {
         return tcb.createAsync(Header).then((fixture) => {

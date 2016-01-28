@@ -27,6 +27,4 @@ export class Header {
   public showFixedHeader(offset) { 
     this.showFixed = (offset > 68) ? true : false;
   }
-  
-  
 }

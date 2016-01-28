@@ -1,7 +1,6 @@
-import {Component} from 'angular2/core';
+import {Component, Input} from 'angular2/core';
 import {NgClass} from 'angular2/common';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
-import {CurrentUser} from '../../../common/models/current-user.model';
 import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 
 @Component({
@@ -13,9 +12,5 @@ import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 
 
 export class Footer {
-  public currentUser: CurrentUser;
-  
-  constructor(currentUser: CurrentUser) {
-    this.currentUser = currentUser;
-  }
+  @Input() currentUser; 
 }
