@@ -15,9 +15,8 @@
       border: 1px solid md-color($md-warn, 500, .4);
     }
   }
-  
 // drop down indicator on a button
-  .is-dd[md-button] {
+  &.is-dd[md-button] {
     position: relative;
     display: block;
     padding-right: rem(2.40);
