@@ -1,12 +1,7 @@
-import {
-  describe,
-  beforeEachProviders,
-  expect,
-  inject
-} from 'angular2/testing';
-
+import {it,describe,expect,inject,injectAsync,beforeEachProviders} from 'angular2/testing';
+import {provide, Injector} from 'angular2/core';
 import {MockBackend} from 'angular2/http/testing';
-import {HTTP_PROVIDERS} from 'angular2/http';
+
 
 import {User} from './user.data.service';
 import { ApiConfig } from '../config/api.config';
