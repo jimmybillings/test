@@ -76,7 +76,7 @@ button.dd-indicator[md-button] .md-button-wrapper {
   &:hover:after {
     opacity: .6;
   }
- }
+}
 app-header md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-button] {
   @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
 }
