@@ -54,29 +54,6 @@ app-header md-toolbar.glb:not(.md-menu-toolbar) [md-button] {
   }
 }
 
-
-
-
-
-button.dd-indicator[md-button] .md-button-wrapper {
-  position: relative;
-  display: block;
-  padding-right: 18px;
-  &:after {
-    @include text-contrast(md-color($md-primary, 900));
-    @include transition(opacity 0.4s);
-    font-family: 'Material Icons';
-    content: "\e5c5";
-    font-size: rem(2.2);
-    opacity: .9;
-    position: absolute;
-    right: rem(-.5);
-    top: rem(-.1);
-  }
-  &:hover:after {
-    opacity: .6;
-  }
-}
 app-header md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-button] {
   @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
 }

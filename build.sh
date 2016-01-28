@@ -62,3 +62,6 @@ deploy-to-nexus.sh --version=${buildVersion} --artifact=wazee-ui --file=${zipFil
 
 # tag the repository with this build version so we can find it again
 add-and-push-git-tag.sh "$buildVersion"                                                  || exit 1
+
+# put the calculated artifact version into a properties file so jenkins can find it
+echo "ARTIFACT_VERSION=${buildVersion}" > jenkins.properties
