@@ -18,7 +18,6 @@ export class Search {
     constructor(http: Http) {
         this.http = http;
         this.url = '';
-        this._getResults();
     }
 
     clipRendition(rendition) {
@@ -29,6 +28,7 @@ export class Search {
                 return rend;
             }
         })[0];
+        this._getResults();
         return bestRendition || '';
     }
     

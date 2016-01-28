@@ -1,5 +1,4 @@
 import {Component} from 'angular2/core';
-import {NgIf} from 'angular2/common';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {Header} from './header/header.component';
 import {Footer} from './footer/footer.component';
@@ -11,7 +10,7 @@ import {CurrentUser} from '../../common/models/current-user.model';
 @Component({
   selector: 'app',
   templateUrl: 'components/application/app.html',
-  directives: [ROUTER_DIRECTIVES, Header, Footer, User, NgIf]
+  directives: [ROUTER_DIRECTIVES, Header, Footer, User]
 })
 
 @RouteConfig([
@@ -28,7 +27,5 @@ export class AppComponent {
 
     ngOnInit() {
       this.currentUser.set();
-    }
-    
-    
+    }  
 }

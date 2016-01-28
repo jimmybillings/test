@@ -8,10 +8,11 @@ md-toolbar.glb([ngClass]="{'fixed': showFixed}")
       .logo-wrapper
         .logo
           img(src='resources/img/logo_connect_rev_colr.svg')
-    button.md-caption.top-link(md-button='', *ngIf="currentUser.loggedIn()", [routerLink]="['User', 'Profile']") {{currentUser.fullName()}}
+    button.is-dd(md-button='', *ngIf="currentUser.loggedIn()", [routerLink]="['User', 'Profile']", [ngClass]="{'md-primary': !showFixed}") 
+      | {{currentUser.fullName()}}
     
     md-button(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['User', 'Login']") Login
-    md-button(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['User', 'Register']") Sign Up
+    md-button.is-outlined([ngClass]="{'md-accent': !showFixed}", *ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['User', 'Register']") Sign Up
     logout(*ngIf="currentUser.loggedIn()")
     
     button.md-icon-button(md-button='', *ngIf="currentUser.loggedIn()", title='Search', [routerLink]="['Search']")
