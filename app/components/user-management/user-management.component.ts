@@ -16,4 +16,4 @@ import {Profile} from './profile/profile.component';
   { path: '/profile', component: Profile, as: 'Profile'}
 ])
 
-export class User { }
+export class UserManagement { }

@@ -43,7 +43,7 @@ section.vendor-marquee(hide-xs='')
 section.mrkt-collections(layout='row', layout-xs="column", layout-align='start top')
   div(flex="")
   div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-xs="column", layout-align='center top')
-    a.mrkt-collections__highlight(flex-gt-sm='33',flex="100", layout-margin='',[routerLink]="['User', 'Register']")
+    a.mrkt-collections__highlight(flex-gt-sm='33',flex="100", layout-margin='',[routerLink]="['UserManagement', 'Register']")
       .mrkt-collections__highlight_img
       .mrkt-collections__highlight_content
         h5.md-title highlight one highlight one
@@ -64,8 +64,8 @@ section.mrkt-call-to-action
       div(layout='column', layout-align='center center', layout-wrap='')
         h2.md-display-1
           | Experience what more than 67,000 customers know. Access #[strong 4 million+ assets] &amp; expert research support.
-        md-button.md-block.conversion(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['User', 'Register']") Start Your Project! 
-        md-button.md-block.conversion(*ngIf="currentUser.loggedIn()", md-button='', [routerLink]="['User', 'Profile']") Start Your Project! 
+        md-button.md-block.conversion(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['UserManagement', 'Register']") Start Your Project! 
+        md-button.md-block.conversion(*ngIf="currentUser.loggedIn()", md-button='', [routerLink]="['UserManagement', 'Profile']") Start Your Project! 
     div(flex="")
     
 

@@ -1,5 +1,4 @@
 import { it, describe, expect, inject, beforeEachProviders } from 'angular2/testing';
-// import { provide } from 'angular2/angular2';
 import { CurrentUser } from './current-user.model';
 
 
