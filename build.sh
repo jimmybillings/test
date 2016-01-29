@@ -37,8 +37,8 @@ print-build-environment.sh
 buildVersion=$(update-maven-version-for-build.sh)                                        || exit 1 
 
 # Build
-#npm install
-#npm run build.prod                                                                       || exit 1
+npm install
+npm run build.prod                                                                       || exit 1
 
 # create build.properties file
 set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion}
@@ -53,7 +53,7 @@ popd
 
 
 # Push to our nexus server
-deploy-to-nexus.sh --safe --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui --file=${zipFile}       || exit 1
+deploy-to-nexus.sh --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui --file=${zipFile}       || exit 1
 
 # tag the repository with this build version so we can find it again
 add-and-push-git-tag.sh                                                                 || exit 1
