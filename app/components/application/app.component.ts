@@ -15,8 +15,8 @@ import {CurrentUser} from '../../common/models/current-user.model';
 
 @RouteConfig([
   { path: '/',  name: 'Home', component: Home, useAsDefault: true},
-  { path: '/user/...', component: UserManagement, as: 'UserManagement'},
-  { path: '/search', component: Search, as: 'Search'},
+  { path: '/user/...', component: UserManagement, name: 'UserManagement'},
+  { path: '/search', component: Search, name: 'Search'},
 ])
 
 export class AppComponent {
