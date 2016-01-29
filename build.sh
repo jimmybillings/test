@@ -20,13 +20,15 @@
 
 baseDir=$( dirname "$0" )
 
-# add jenkins tools to the path
-PATH=/home/video/bin/tools/jenkins:$PATH
-# add latest node to path
-PATH=/home/video/bin/node-v5.4.1-linux-x64/bin:$PATH
+if [ -n "$JENKINS_HOME" ]; then
+	# add jenkins tools to the path
+	PATH=/home/video/bin/tools/jenkins:$PATH
+	# add latest node to path
+	PATH=/home/video/bin/node-v5.4.1-linux-x64/bin:$PATH
 
-# Special PhantomJS build that works with Centos
-export PHANTOMJS_BIN=/home/video/bin/phantomjs.2.0.1.patch_12506
+	# Special PhantomJS build that works with Centos
+	export PHANTOMJS_BIN=/home/video/bin/phantomjs.2.0.1.patch_12506
+fi
 
 cleanup() {
   echo "Removing backup package.json"
@@ -39,7 +41,7 @@ trap cleanup EXIT
 print-build-environment.sh
 
 # update the artifact with the correct build version
-buildVersion=$(update-package-version-for-build.sh)                                      || exit 1 
+buildVersion=$(update-package-version-for-build.sh --long)                               || exit 1 
 
 # Build
 npm install
@@ -58,7 +60,7 @@ popd
 
 
 # Push to our nexus server
-deploy-to-nexus.sh --version=${buildVersion} --artifact=wazee-ui --file=${zipFile}       || exit 1
+deploy-to-nexus.sh --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui --file=${zipFile}       || exit 1
 
 # tag the repository with this build version so we can find it again
 add-and-push-git-tag.sh "$buildVersion"                                                  || exit 1
