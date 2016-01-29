@@ -40,14 +40,22 @@ section.vendor-marquee(hide-xs='')
       // img(src='resources/img/client_fox.png')
       img(src='resources/img/client_paramount.png')
 
-section.collection-highlights
-  div(layout='row', layout-xs="column", layout-align='start center', layout-padding='')
-    div(flex="")
-    div(flex-xl="50",flex-gt-lg="55",flex-gt-md="60",flex-gt-sm="75",flex-gt-xs="95",flex="100")
-      div( flex='33')
-      div( flex='33')
-      div( flex='33')
-    div( flex='')
+section.mrkt-collections(layout='row', layout-xs="column", layout-align='start top')
+  div(flex="")
+  div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-xs="column", layout-align='center top')
+    a.mrkt-collections__highlight(flex-gt-sm='33',flex="100", layout-margin='',[routerLink]="['User', 'Register']")
+      .mrkt-collections__highlight_img
+      .mrkt-collections__highlight_content
+        h5.md-title highlight one highlight one
+    a.mrkt-collections__highlight(flex-gt-sm='33',flex="100", layout-margin='')
+      .mrkt-collections__highlight_img
+      .mrkt-collections__highlight_content
+        h5.md-title highlight two highlight two
+    a.mrkt-collections__highlight(flex-gt-sm='33',flex="100", layout-margin='')
+      .mrkt-collections__highlight_img
+      .mrkt-collections__highlight_content
+        h5.md-title highlight three highlight three
+  div( flex='')
 
 section.mrkt-call-to-action
   div(layout='row', layout-xs="column", layout-align='start center', layout-padding='')
