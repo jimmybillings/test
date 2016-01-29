@@ -30,8 +30,6 @@ home {
     }
   }
   
-  
-  
   // scrolling vendor marquee
   @mixin center-vertically($pseudo-el: 'before') {
       position: relative;
@@ -131,9 +129,54 @@ home {
 
 
 
-  .collection-highlights {
+  .mrkt-collections {
     min-height: 650px;
     background-color:  md-color($md-background, 100);
+    a.mrkt-collections__highlight {
+      display: block;
+      position: relative;
+      height: rem(24);
+      &::before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        @include background-image(linear-gradient(4deg, rgba(md-color($md-background, 900),0.9), rgba(md-color($md-background, 900),0) 50%));
+        opacity: 0.6;
+        @include transition(opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2));
+        z-index: 1;
+      }
+      &[layout-margin] {
+        margin: 8px 4px;
+      }
+      .mrkt-collections__highlight_img {
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+      }
+      .mrkt-collections__highlight_content {
+        @include text-contrast(md-color($md-background, 800));
+        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        padding: 0 8px 8px 8px;
+        z-index: 2;
+      }
+      &:nth-child(1n) .mrkt-collections__highlight_img {
+        @include background-image(url('resources/img/highlights/dimoc.jpg'));
+      }
+      &:nth-child(2n) .mrkt-collections__highlight_img{
+        @include background-image(url('resources/img/highlights/sec_fb.jpg'));
+      }
+      &:nth-child(3n) .mrkt-collections__highlight_img{
+        @include background-image(url('resources/img/highlights/masters_js.jpg'));
+      }
+    }
   }
   
   
