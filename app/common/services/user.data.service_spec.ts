@@ -28,14 +28,26 @@ export function main() {
       expect(service._apiUrls).toBeDefined();
     }));
     
-    it('Should make a request to create a new user', inject([User, MockBackend], (service, mockBackend) => {
+    it('Should make a request to create a new user', inject([User, ApiConfig, MockBackend], (service, apiConfig, mockBackend) => {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       service.create(setUser()).subscribe((res) => {
-        expect(res).toEqual(setUser());
+        expect(connection.request.url).toBe(apiConfig.getApiRoot()+'users-api/user/register');
+        expect(connection.request._body).toEqual(JSON.stringify(setUser()));
       });
-      connection.mockRespond(setUser());
+      connection.mockRespond(200);
     }));
+    
+    it('Should make a request to get a current user object', inject([User, ApiConfig, MockBackend], (service, apiConfig, mockBackend) => {
+      let connection;
+      mockBackend.connections.subscribe(c => connection = c);
+      service.get().subscribe((res) => {
+        expect(connection.request.headers._headersMap.entries_[3]).toEqual(['Bearer null']);
+        expect(connection.request.url).toBe(apiConfig.getApiRoot()+'users-api/user/currentUser');
+      });
+      connection.mockRespond(200);
+    }));
+    
   }); 
 
   function setUser() {
