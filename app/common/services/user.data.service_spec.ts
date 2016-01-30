@@ -42,7 +42,7 @@ export function main() {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       service.get().subscribe((res) => {
-        expect(connection.request.headers._headersMap.entries_[3]).toEqual(['Bearer null']);
+        expect(connection.request.headers._headersMap.entries_[2]).toEqual('Authorization');
         expect(connection.request.url).toBe(apiConfig.getApiRoot()+'users-api/user/currentUser');
       });
       connection.mockRespond(200);
