@@ -40,14 +40,19 @@ export function main() {
       mockBackend.connections.subscribe(c => connection = c);
       service.destroy(setUser()).subscribe((res) => {
         expect(connection.request.url).toBe(service.apiConfig.getApiRoot()+'users-api/invalidate');
-        expect(connection.request.headers._headersMap.entries_[2]).toEqual('Authorization');
+        let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
+        expect(authorizationHeader).toEqual(['Authorization']);
       });
       connection.mockRespond(200);
     }));
     
     
   }); 
-
+  
+  function checkAuthInHeader(headers) {
+    return headers.filter((header) => (header === 'Authorization'));
+  }
+  
   function setUser() {
     return {
       'username': 'test@email.com',

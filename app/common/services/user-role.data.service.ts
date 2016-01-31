@@ -1,14 +1,12 @@
 import { Injectable } from 'angular2/core';
 import { Http } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
-import { CurrentUser } from '../models/current-user.model';
 
 @Injectable()
 export class UserRole {
 
   public http: Http;
   private apiConfig: ApiConfig;
-  private _currentUser: CurrentUser;
   private _apiUrls: {
     create: string,
     show: string,
@@ -17,10 +15,9 @@ export class UserRole {
     destroy: string
   };
 
-  constructor(http: Http, apiConfig: ApiConfig, _currentUser: CurrentUser) {
+  constructor(http: Http, apiConfig: ApiConfig) {
     this.http = http;
     this.apiConfig = apiConfig;
-    this._currentUser = _currentUser;
     this._apiUrls = {
       create: this.apiConfig.getApiRoot()+ 'users-api/user/userRole',
       show: this.apiConfig.getApiRoot()+ 'users-api/user/userRole/',
@@ -33,13 +30,13 @@ export class UserRole {
   create(userRole: Object) {
     return this.http.post(this._apiUrls.create,
       JSON.stringify(userRole), {
-        headers: this.apiConfig.getApiHeaders()
+        headers: this.apiConfig.getAuthHeader()
       });
   }
 
   show(id: number) {
     return this.http.get(this._apiUrls.show+id, {
-        headers: this.apiConfig.getApiHeaders()
+        headers: this.apiConfig.getAuthHeader()
       });
   }
   
@@ -52,13 +49,13 @@ export class UserRole {
   update(userRole: any) {
     return this.http.put(this._apiUrls.update+userRole.id, 
       JSON.stringify(userRole), {
-        headers: this.apiConfig.getApiHeaders()
+        headers: this.apiConfig.getAuthHeader()
       });
   }
   
   destroy(id: number) {
     return this.http.delete(this._apiUrls.show+id, {
-        headers: this.apiConfig.getApiHeaders()
+        headers: this.apiConfig.getAuthHeader()
       });
   }
 }

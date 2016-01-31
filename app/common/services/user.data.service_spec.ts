@@ -42,14 +42,19 @@ export function main() {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       service.get().subscribe((res) => {
-        expect(connection.request.headers._headersMap.entries_[2]).toEqual('Authorization');
+        let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
+        expect(authorizationHeader).toEqual(['Authorization']);
         expect(connection.request.url).toBe(service.apiConfig.getApiRoot()+'users-api/user/currentUser');
       });
       connection.mockRespond(200);
     }));
     
   }); 
-
+  
+  function checkAuthInHeader(headers) {
+    return headers.filter((header) => (header === 'Authorization'));
+  }
+  
   function setUser() {
     return {
       'lastUpdated': '2016-01-14T16:46:21Z',
