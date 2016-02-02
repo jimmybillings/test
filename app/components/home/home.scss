@@ -182,10 +182,10 @@ home {
         @include background-image(url('resources/img/highlights/sec_fb.jpg'));
       }
       &:nth-child(3n) .mrkt-collections__highlight_img{
-        @include background-image(url('resources/img/highlights/masters_js.jpg'));
+        @include background-image(url('resources/img/highlights/jfk_historic.jpg'));
       }
       &:nth-child(4n) .mrkt-collections__highlight_img{
-        @include background-image(url('resources/img/highlights/jfk_historic.jpg'));
+        @include background-image(url('resources/img/highlights/masters_js.jpg'));
       }
       &:nth-child(5n) .mrkt-collections__highlight_img{
         @include background-image(url('resources/img/highlights/nat_geo.jpg'));
