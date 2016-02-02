@@ -42,25 +42,43 @@ section.vendor-marquee(hide-xs='')
 
 section.mrkt-collections(layout='row', layout-xs="column", layout-align='start top')
   div(flex="")
-  div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-xs="column", layout-align='center top')
-    a.mrkt-collections__highlight(flex-gt-sm='33',flex="100", layout-margin='',[routerLink]="['UserManagement', 'Register']")
-      .mrkt-collections__highlight_img
-      .mrkt-collections__highlight_content
-        h5.md-title highlight one highlight one
-    a.mrkt-collections__highlight(flex-gt-sm='33',flex="100", layout-margin='')
-      .mrkt-collections__highlight_img
-      .mrkt-collections__highlight_content
-        h5.md-title highlight two highlight two
-    a.mrkt-collections__highlight(flex-gt-sm='33',flex="100", layout-margin='')
-      .mrkt-collections__highlight_img
-      .mrkt-collections__highlight_content
-        h5.md-title highlight three highlight three
+  div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-xs="column",layout-wrap='')
+    .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
+      a([routerLink]="['UserManagement', 'Register']")
+        .mrkt-collections__highlight_img
+        .mrkt-collections__highlight_content
+          h5.md-title highlight one highlight one
+    .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
+      a([routerLink]="['UserManagement', 'Register']")
+        .mrkt-collections__highlight_img
+        .mrkt-collections__highlight_content
+          h5.md-title highlight two highlight two
+    .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
+      a([routerLink]="['UserManagement', 'Register']")
+        .mrkt-collections__highlight_img
+        .mrkt-collections__highlight_content
+          h5.md-title highlight three highlight three
+    .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
+      a([routerLink]="['UserManagement', 'Register']")
+        .mrkt-collections__highlight_img
+        .mrkt-collections__highlight_content
+          h5.md-title highlight four highlight four
+    .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
+      a([routerLink]="['UserManagement', 'Register']")
+        .mrkt-collections__highlight_img
+        .mrkt-collections__highlight_content
+          h5.md-title highlight five highlight five
+    .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
+      a([routerLink]="['UserManagement', 'Register']")
+        .mrkt-collections__highlight_img
+        .mrkt-collections__highlight_content
+          h5.md-title highlight six highlight six
   div( flex='')
 
 section.mrkt-call-to-action
   div(layout='row', layout-xs="column", layout-align='start center', layout-padding='')
     div(flex="")
-    div(flex-xl="50",flex-gt-lg="55",flex-gt-md="60",flex-gt-sm="75",flex-gt-xs="95",flex="100")
+    div(flex-xl="50",flex-gt-lg="60",flex-gt-md="70",flex-gt-sm="80",flex="100")
       div(layout='column', layout-align='center center', layout-wrap='')
         h2.md-display-1
           | Experience what more than 67,000 customers know. Access #[strong 4 million+ assets] &amp; expert research support.
