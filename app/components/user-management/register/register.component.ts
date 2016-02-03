@@ -42,7 +42,7 @@ export class Register {
         'firstName': null,
         'lastName': null,
         'emailAddress': null,
-        'accountIdentifier': this._ApiConfig.getPortal(),
+        'siteName': this._ApiConfig.getPortal(),
         'password': null
      }); 
   }

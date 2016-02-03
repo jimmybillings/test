@@ -5,11 +5,11 @@ import { Headers } from 'angular2/http';
 export class ApiConfig {
 
   public getApiRoot() {
-    return 'http://poc1.crux.t3sandbox.xyz./';
+    return 'http://dev.crux.t3sandbox.xyz.:8080/';
   }
 
   public getAuthHeader() {
-    return new Headers({'Content-Type': 'application/json', 'Authorization': 'Bearer '+ localStorage.getItem('token')});
+    return new Headers({'Content-Type': 'application/json', 'Authorization': 'Bearer '+ JSON.parse(localStorage.getItem('token'))});
   }
 
   public getApiHeaders() {
@@ -17,8 +17,7 @@ export class ApiConfig {
   }
   
   public getPortal() {
-    return 'poc2';
+    return 'cnn';
   }
 
 }
-

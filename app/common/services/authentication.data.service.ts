@@ -16,8 +16,8 @@ export class Authentication {
     this.http = http;
     this.apiConfig = apiConfig;
     this._apiUrls = {
-      create: this.apiConfig.getApiRoot()+ 'users-api/login',
-      destroy: this.apiConfig.getApiRoot()+ 'users-api/invalidate'
+      create: this.apiConfig.getApiRoot()+ 'api/identities/login',
+      destroy: this.apiConfig.getApiRoot()+ 'api/identities/invalidate'
     };
   }
 

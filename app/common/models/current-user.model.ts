@@ -30,11 +30,27 @@ export class CurrentUser {
   }
 
   public fullName() {
-    return this._currentUser.firstName+' '+this._currentUser.lastName;
+    return `${this._currentUser.firstName} ${this._currentUser.lastName}`;
+  }
+  
+  public createdOn() {
+    return this._currentUser.createdOn;
+  }
+
+  public lastUpdated() {
+    return this._currentUser.lastUpdated;
+  }
+  
+  public siteName() {
+    return this._currentUser.siteName;
+  }
+
+  public id() {
+    return this._currentUser.id;
   }
 
   public account() {
-    return this._currentUser.accounts;
+    return this._currentUser.accountIds;
   }
   
   private _user() {
