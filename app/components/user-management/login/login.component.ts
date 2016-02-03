@@ -18,7 +18,7 @@ import { CurrentUser } from '../../../common/models/current-user.model';
 
 export class Login {    
     
-    public loginForm: ControlGroup;
+  public loginForm: ControlGroup;
    
   constructor(
     public _fb: FormBuilder,
@@ -34,20 +34,20 @@ export class Login {
   }
   
   public onSubmit(user: Object): void {
-     this._authentication.create(user).subscribe((res:Response) => {
-       localStorage.setItem('token', res.json().token);
-       this._user.get().subscribe((res: Response) => {
-          this._currentUser.set(res.json().user);
-          this.router.navigate(['/Home']);
-        });;
-      });;
+    this._authentication.create(user).subscribe((res:Response) => {
+      localStorage.setItem('token', JSON.stringify(res.json().token.token));
+      // localStorage.setItem('token', res.json().token.token);
+      this._currentUser.set(res.json().user);
+      this._currentUser = res.json().user;
+      this.router.navigate(['/Home']);
+    });
   }
   
   public setForm(): void {
      this.loginForm = this._fb.group({
         'userId': null,
         'password': ['',Validators.required],
-        'accountIdentifier': this._ApiConfig.getPortal()
+        'siteName': this._ApiConfig.getPortal()
      });
   }
 }
