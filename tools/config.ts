@@ -86,9 +86,15 @@ export const PROD_DEPENDENCIES = PROD_NPM_DEPENDENCIES.concat(APP_ASSETS);
 const SYSTEM_CONFIG_DEV = {
   defaultJSExtensions: true,
   paths: {
-    'main': `${APP_ROOT}main`,
+    [BOOTSTRAP_MODULE]: `${APP_ROOT}${BOOTSTRAP_MODULE}`,
     'hot_loader_main': `${APP_ROOT}hot_loader_main`,
+    'angular2/*': `${APP_ROOT}angular2/*`,
+    'rxjs/*': `${APP_ROOT}rxjs/*`,
     '*': `${APP_BASE}node_modules/*`
+  },
+  packages: {
+    angular2: { defaultExtension: false },
+    rxjs: { defaultExtension: false }
   }
 };
 
@@ -99,8 +105,8 @@ export const SYSTEM_CONFIG = SYSTEM_CONFIG_DEV;
 
 function normalizeDependencies(deps: InjectableDependency[]) {
   deps
-    .filter(d => !/\*/.test(d.src)) // Skip globs
-    .forEach(d => d.src = require.resolve(d.src));
+    .filter((d:InjectableDependency) => !/\*/.test(d.src)) // Skip globs
+    .forEach((d:InjectableDependency) => d.src = require.resolve(d.src));
   return deps;
 }
 
@@ -110,7 +116,7 @@ function appVersion(): number|string {
 }
 
 function getEnvironment() {
-  let base = argv['_'];
+  let base:string[] = argv['_'];
   let prodKeyword = !!base.filter(o => o.indexOf(ENVIRONMENTS.PRODUCTION) >= 0).pop();
   if (base && prodKeyword || argv['env'] === ENVIRONMENTS.PRODUCTION) {
     return ENVIRONMENTS.PRODUCTION;
