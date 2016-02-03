@@ -22,8 +22,8 @@ export class Logout {
   
   public onSubmit(): void {
     this._authentication.destroy().subscribe((res:Response) => {
-       localStorage.clear();
-       this._currentUser.set();
-      });;
+      localStorage.clear();
+      this._currentUser.set();
+    });
   }
 }

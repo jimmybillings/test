@@ -35,7 +35,7 @@ export function main() {
       connection.mockRespond(200);
     }));
     
-    it('Should make a request to dstroy the login of a user', inject([Authentication, MockBackend], (service, mockBackend) => {
+    it('Should make a request to destroy the login of a user', inject([Authentication, MockBackend], (service, mockBackend) => {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       service.destroy(setUser()).subscribe((res) => {

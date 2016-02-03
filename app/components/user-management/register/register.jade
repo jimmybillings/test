@@ -15,7 +15,7 @@ section.login.hero
             md-content( layout-sm="row", layout-padding='')
               md-input-container.md-block
                 label First Name
-                input.md-input(type='text', [ngFormControl]="registerForm.controls['firstName']")
+                input.md-input(autofocus, type='text', [ngFormControl]="registerForm.controls['firstName']")
               md-input-container.md-block
                 label Last Name
                 input.md-input(type='text', [ngFormControl]="registerForm.controls['lastName']")

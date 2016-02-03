@@ -179,7 +179,7 @@ home {
         @include background-image(url('resources/img/highlights/dimoc.jpg'));
       }
       &:nth-child(2n) .mrkt-collections__highlight_img{
-        @include background-image(url('resources/img/highlights/sec_fb.jpg'));
+        @include background-image(url('resources/img/highlights/ncaa_basketball.jpg'));
       }
       &:nth-child(3n) .mrkt-collections__highlight_img{
         @include background-image(url('resources/img/highlights/jfk_historic.jpg'));
