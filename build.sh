@@ -37,6 +37,7 @@ print-build-environment.sh
 buildVersion=$(update-maven-version-for-build.sh)                                        || exit 1 
 
 # Build
+rm -rf node_modules
 npm install
 npm run build.prod                                                                       || exit 1
 

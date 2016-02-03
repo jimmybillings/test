@@ -15,7 +15,6 @@ $md-font-url: '/node_modules/ng2-material/dist/';
 
 // change theme colors and any other global variables
 $md-is-dark-theme: false !default;
-
 $md-button-border-radius: 2px !default;
 
 $md-primary: md-palette($md-blue-grey, 500, 100, 700, $md-contrast-palettes) !default;
@@ -47,7 +46,6 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 @import '../node_modules/ng2-material/source/components/tabs/tabs';
 
 @import './common/common';
-
 @import './components/home/home';
 @import './components/application/header/header';
 @import './components/application/footer/footer';

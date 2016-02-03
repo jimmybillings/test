@@ -20,8 +20,6 @@ export = function buildJSDev(gulp, plugins) {
     }
 
     function minifyComponentCss() {
-      
-      
       return gulp.src(APP_SRC+'/app.scss')
         .pipe(plugins.sass().on('error', plugins.sass.logError))
         // .pipe(plugins.cssnano())
