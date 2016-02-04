@@ -54,6 +54,7 @@ app-header md-toolbar.glb:not(.md-menu-toolbar) [md-button] {
   }
 }
 
-app-header md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-button] {
+app-header md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-button],
+app-header md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-icon] {
   @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
 }

@@ -32,7 +32,7 @@ export function main() {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       service.create(setUser()).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot()+'users-api/user/register');
+        expect(connection.request.url).toBe(service.apiConfig.getApiRoot()+'api/identities/user/register');
         expect(connection.request._body).toEqual(JSON.stringify(setUser()));
       });
       connection.mockRespond(200);
@@ -44,7 +44,7 @@ export function main() {
       service.get().subscribe((res) => {
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot()+'users-api/user/currentUser');
+        expect(connection.request.url).toBe(service.apiConfig.getApiRoot()+'api/identities/user/currentUser');
       });
       connection.mockRespond(200);
     }));
@@ -64,18 +64,8 @@ export function main() {
       'password': '5daf7de08c0014ec2baa13a64b35a4e0',
       'firstName': 'first',
       'lastName': 'last',
-      'accounts': [
-        {
-          'lastUpdated': '2016-01-07T23:27:09Z',
-          'createdOn': '2016-01-07T23:27:09Z',
-          'id': 3,
-          'accountIdentifier': 'poc2',
-          'name': 'Proof of Concept 2',
-          'description': 'Proof of Concept 2',
-          'isAdmin': false
-        }
-      ]
+      'siteName': 'cnn',
+      'accountIds': [4]
     }; 
   }
-
 }

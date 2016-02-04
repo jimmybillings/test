@@ -49,7 +49,7 @@ export class CurrentUser {
     return this._currentUser.id;
   }
 
-  public account() {
+  public accounts() {
     return this._currentUser.accountIds;
   }
   
@@ -58,7 +58,8 @@ export class CurrentUser {
       emailAddress: null,
       firstName: null,
       lastName: null,
-      accounts: null
+      id: null,
+      accountIds: null
     };
   }
 }

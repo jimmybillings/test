@@ -14,7 +14,7 @@ section.login.hero
             md-content( layout-sm="row", layout-padding='')
               md-input-container.md-block.flex-gt-sm
                 label Email
-                input(autofocus='', md-input="", type='email', [ngFormControl]="loginForm.controls['userId']")
+                input(md-autofocus='', md-input="", type='email', [ngFormControl]="loginForm.controls['userId']")
               md-input-container.md-block.flex-gt-sm
                 label Password
                 input(md-input="", type='password', [ngFormControl]="loginForm.controls['password']")

@@ -93,18 +93,8 @@ export function main() {
       'password': '5daf7de08c0014ec2baa13a64b35a4e0',
       'firstName': 'first',
       'lastName': 'last',
-      'accounts': [
-        {
-          'lastUpdated': '2016-01-07T23:27:09Z',
-          'createdOn': '2016-01-07T23:27:09Z',
-          'id': 3,
-          'accountIdentifier': 'poc2',
-          'name': 'Proof of Concept 2',
-          'description': 'Proof of Concept 2',
-          'isAdmin': false
-        }
-      ]
-    }; 
+      'siteName': 'cnn',
+      'accountIds': [4]
+    };
   }
-
 }
