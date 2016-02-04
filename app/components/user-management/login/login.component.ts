@@ -36,7 +36,7 @@ export class Login {
   public onSubmit(user: Object): void {
 
     this._authentication.create(user).subscribe((res:Response) => {
-      localStorage.setItem('token', JSON.stringify(res.json().token.token));
+      localStorage.setItem('token', res.json().token.token);
       this._currentUser.set(res.json().user);
       this.router.navigate(['/Home']);
     });
