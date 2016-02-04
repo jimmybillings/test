@@ -9,7 +9,7 @@ export class ApiConfig {
   }
 
   public getAuthHeader() {
-    return new Headers({'Content-Type': 'application/json', 'Authorization': 'Bearer '+ JSON.parse(localStorage.getItem('token'))});
+    return new Headers({'Content-Type': 'application/json', 'Authorization': 'Bearer '+ localStorage.getItem('token')});
   }
 
   public getApiHeaders() {
