@@ -48,6 +48,17 @@ gulp.task('build.prod', done =>
               done));
 
 // --------------
+// Build exportable library.
+gulp.task('build.library.export', done =>
+  runSequence('clean.dist',
+              'clean.tmp',
+              'tslint',
+              'build.html_css.prod',
+              'build.lib.export',
+              'build.js.lib.export',
+              done));
+
+// --------------
 // Watch.
 gulp.task('build.dev.watch', done =>
   runSequence('build.dev',

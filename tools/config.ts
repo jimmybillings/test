@@ -7,7 +7,8 @@ import {normalize, join} from 'path';
 
 const ENVIRONMENTS = {
   DEVELOPMENT: 'dev',
-  PRODUCTION: 'prod'
+  PRODUCTION: 'prod',
+  LIBRARY: 'libs'
 };
 
 export const PROJECT_ROOT         = normalize(join(__dirname, '..'));
@@ -117,6 +118,7 @@ function appVersion(): number|string {
 
 function getEnvironment() {
   let base:string[] = argv['_'];
+  if (base[0] === 'build.library.export') {return ENVIRONMENTS.LIBRARY;}
   let prodKeyword = !!base.filter(o => o.indexOf(ENVIRONMENTS.PRODUCTION) >= 0).pop();
   if (base && prodKeyword || argv['env'] === ENVIRONMENTS.PRODUCTION) {
     return ENVIRONMENTS.PRODUCTION;
