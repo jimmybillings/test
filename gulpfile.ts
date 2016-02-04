@@ -53,7 +53,7 @@ gulp.task('build.library.export', done =>
   runSequence('clean.dist',
               'clean.tmp',
               'tslint',
-              'build.html_css.prod',
+              'build.html_css.lib',
               'build.lib.export',
               'build.js.lib.export',
               done));
