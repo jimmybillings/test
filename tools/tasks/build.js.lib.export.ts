@@ -18,9 +18,12 @@ export = function buildJsLibExport(gulp, plugins) {
       .pipe(plugins.plumber())
       .pipe(plugins.inlineNg2Template({ base: TMP_DIR }))
       .pipe(plugins.typescript(tsProject));
-
-    return result.js
-      .pipe(plugins.template(templateLocals()))
-      .pipe(gulp.dest(APP_DEST));
+    
+    return plugins.merge([
+        result.dts.pipe(gulp.dest(APP_DEST)),
+        result.js.pipe(plugins.template(templateLocals()))
+        .pipe(gulp.dest(APP_DEST))
+    ]);
+    
   };
 };

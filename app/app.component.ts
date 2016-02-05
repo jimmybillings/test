@@ -1,15 +1,15 @@
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
-import {Header} from './header/header.component';
-import {Footer} from './footer/footer.component';
-import {UserManagement} from '../user-management/user-management.component';
-import {Home} from '../home/home.component';
-import {Search} from '../search/search.component';
-import {CurrentUser} from '../../common/models/current-user.model';
+import {Header} from './components/layout/header/header.component';
+import {Footer} from './components/layout/footer/footer.component';
+import {UserManagement} from './components/user-management/user-management.component';
+import {Home} from './components/home/home.component';
+import {Search} from './components/search/search.component';
+import {CurrentUser} from './common/models/current-user.model';
 
 @Component({
   selector: 'app',
-  templateUrl: 'components/application/app.html',
+  templateUrl: './app.html',
   directives: [ROUTER_DIRECTIVES, Header, Footer]
 })
 

@@ -2,6 +2,7 @@ import { Injectable } from 'angular2/core';
 import { Http } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
 import { CurrentUser } from '../models/current-user.model';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class User {
@@ -24,14 +25,14 @@ export class User {
     };
   }
 
-  create(user: Object) {
+  create(user: Object): Observable<any> {
     return this.http.post(this._apiUrls.create,
       JSON.stringify(user), {
         headers: this.apiConfig.getApiHeaders()
       });
   }
 
-  get() {
+  get(): Observable<any> {
     return this.http.get(this._apiUrls.get, {
       headers: this.apiConfig.getAuthHeader()
     });

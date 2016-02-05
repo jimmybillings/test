@@ -1,6 +1,7 @@
 import { Injectable } from 'angular2/core';
 import { Http } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class Authentication {
@@ -21,14 +22,14 @@ export class Authentication {
     };
   }
 
-  public create(user:Object) {
+  public create(user:Object): Observable<any> {
     return this.http.post(this._apiUrls.create,
       JSON.stringify(user), {
         headers: this.apiConfig.getApiHeaders()
       });
   }
 
-  public destroy() {
+  public destroy(): Observable<any> {
     return this.http.post(this._apiUrls.destroy, null, {
         headers: this.apiConfig.getAuthHeader()
       });

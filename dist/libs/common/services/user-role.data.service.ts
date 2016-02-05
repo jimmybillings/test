@@ -1,7 +1,7 @@
 import { Injectable } from 'angular2/core';
 import { Http } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
-
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class UserRole {
@@ -28,33 +28,33 @@ export class UserRole {
     };
   }
 
-  create(userRole: Object) {
+  create(userRole: Object): Observable<any> {
     return this.http.post(this._apiUrls.create,
       JSON.stringify(userRole), {
         headers: this.apiConfig.getAuthHeader()
       });
   }
 
-  show(id: number) {
+  show(id: number): Observable<any> {
     return this.http.get(this._apiUrls.show+id, {
         headers: this.apiConfig.getAuthHeader()
       });
   }
   
-  search(criteria: string) {
+  search(criteria: string): Observable<any> {
     return this.http.get(this._apiUrls.search+criteria, {
       headers: this.apiConfig.getAuthHeader()
     }); 
   }
   
-  update(userRole: any) {
+  update(userRole: any): Observable<any> {
     return this.http.put(this._apiUrls.update+userRole.id, 
       JSON.stringify(userRole), {
         headers: this.apiConfig.getAuthHeader()
       });
   }
   
-  destroy(id: number) {
+  destroy(id: number): Observable<any> {
     return this.http.delete(this._apiUrls.show+id, {
         headers: this.apiConfig.getAuthHeader()
       });

@@ -12,7 +12,7 @@ import {provide} from 'angular2/core';
 import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
 import {SpyLocation} from 'angular2/src/mock/location_mock';
 import {RootRouter} from 'angular2/src/router/router';
-import {CurrentUser} from '../../common/models/current-user.model';
+import {CurrentUser} from './common/models/current-user.model';
 
 export function main() {
   describe('App Component', () => {

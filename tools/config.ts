@@ -24,7 +24,7 @@ export const HOT_LOADER_PORT      = 5578;
 
 export const BOOTSTRAP_MODULE     = ENABLE_HOT_LOADING ? 'hot_loader_main' : 'main';
 
-export const APP_TITLE            = 'My Angular2 App';
+export const APP_TITLE            = 'Wazee UI Components';
 
 export const APP_SRC              = 'app';
 export const ASSETS_SRC           = `${APP_SRC}/assets`;
