@@ -6,7 +6,7 @@ import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 
 @Component({
   selector: 'app-header',
-  templateUrl: 'components/application/header/header.html',
+  templateUrl: 'components/layout/header/header.html',
   directives: [ROUTER_DIRECTIVES, Logout, NgClass, MATERIAL_DIRECTIVES, NgIf],
   inputs: ['currentUser']
 })

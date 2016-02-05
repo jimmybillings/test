@@ -20,11 +20,16 @@ export class User {
     this.apiConfig = apiConfig;
     this._currentUser = _currentUser;
     this._apiUrls = {
-      create: this.apiConfig.getApiRoot()+ 'api/identities/user/register',
+      create: this.apiConfig.getApiRoot()+ 'identities-api/user/register',
       get: this.apiConfig.getApiRoot()+ 'api/identities/user/currentUser'
     };
   }
-
+  
+  /**
+   * Creates a new user by registration form.
+   * @param user  registration form fields.
+   * @returns prepared request to register a new user.
+  */
   create(user: Object): Observable<any> {
     return this.http.post(this._apiUrls.create,
       JSON.stringify(user), {

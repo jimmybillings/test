@@ -9,15 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('angular2/core');
 var router_1 = require('angular2/router');
-var header_component_1 = require('./header/header.component');
-var footer_component_1 = require('./footer/footer.component');
-var user_management_component_1 = require('../user-management/user-management.component');
-var home_component_1 = require('../home/home.component');
-var search_component_1 = require('../search/search.component');
-var current_user_model_1 = require('../../common/models/current-user.model');
+var header_component_1 = require('./components/layout/header/header.component');
+var footer_component_1 = require('./components/layout/footer/footer.component');
+var user_management_component_1 = require('./components/user-management/user-management.component');
+var home_component_1 = require('./components/home/home.component');
+var search_component_1 = require('./components/search/search.component');
+var current_user_model_1 = require('./common/models/current-user.model');
+var api_config_1 = require('./common/config/api.config');
 var AppComponent = (function () {
-    function AppComponent(currentUser) {
+    function AppComponent(currentUser, _apiConfig) {
         this.currentUser = currentUser;
+        this._apiConfig = _apiConfig;
+        this._apiConfig.setPortal('cnn');
     }
     AppComponent.prototype.ngOnInit = function () {
         this.currentUser.set();
@@ -33,7 +36,7 @@ var AppComponent = (function () {
             { path: '/user/...', component: user_management_component_1.UserManagement, name: 'UserManagement' },
             { path: '/search', component: search_component_1.Search, name: 'Search' },
         ]), 
-        __metadata('design:paramtypes', [current_user_model_1.CurrentUser])
+        __metadata('design:paramtypes', [current_user_model_1.CurrentUser, api_config_1.ApiConfig])
     ], AppComponent);
     return AppComponent;
 })();

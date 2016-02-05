@@ -3,7 +3,10 @@ import { Headers } from 'angular2/http';
 
 @Injectable()
 export class ApiConfig {
-
+  private _portal: string;
+  constructor() {
+    this._portal = null;
+  }
   public getApiRoot() {
     return 'http://dev.crux.t3sandbox.xyz.:8080/';
   }
@@ -16,8 +19,12 @@ export class ApiConfig {
     return new Headers({'Content-Type': 'application/json'});
   }
   
+  public setPortal(portal: string) {
+    this._portal = portal;
+  }
+  
   public getPortal() {
-    return 'cnn';
+    return this._portal;
   }
 
 }

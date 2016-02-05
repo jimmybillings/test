@@ -30,6 +30,7 @@ var Login = (function () {
     };
     Login.prototype.onSubmit = function (user) {
         var _this = this;
+        console.log(user);
         this._authentication.create(user).subscribe(function (res) {
             localStorage.setItem('token', res.json().token.token);
             _this._currentUser.set(res.json().user);

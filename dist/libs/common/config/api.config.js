@@ -11,6 +11,7 @@ var core_1 = require('angular2/core');
 var http_1 = require('angular2/http');
 var ApiConfig = (function () {
     function ApiConfig() {
+        this._portal = null;
     }
     ApiConfig.prototype.getApiRoot = function () {
         return 'http://dev.crux.t3sandbox.xyz.:8080/';
@@ -21,8 +22,11 @@ var ApiConfig = (function () {
     ApiConfig.prototype.getApiHeaders = function () {
         return new http_1.Headers({ 'Content-Type': 'application/json' });
     };
+    ApiConfig.prototype.setPortal = function (portal) {
+        this._portal = portal;
+    };
     ApiConfig.prototype.getPortal = function () {
-        return 'cnn';
+        return this._portal;
     };
     ApiConfig = __decorate([
         core_1.Injectable(), 
