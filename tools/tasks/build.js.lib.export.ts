@@ -2,8 +2,10 @@ import {join} from 'path';
 import {APP_SRC, TMP_DIR, APP_DEST} from '../config';
 import {templateLocals, tsProjectFn} from '../utils';
 
+
 export = function buildJsLibExport(gulp, plugins) {
   return function () {
+    var merge2 = require('merge2');
     let tsProject = tsProjectFn(plugins);
     let src = [
       'typings/browser.d.ts',
@@ -19,14 +21,14 @@ export = function buildJsLibExport(gulp, plugins) {
       .pipe(plugins.inlineNg2Template({ base: TMP_DIR }))
       .pipe(plugins.typescript(tsProject));
     
-    // return plugins.merge([
-    //     result.dts.pipe(gulp.dest(APP_DEST)),
-    //     result.js.pipe(plugins.template(templateLocals()))
-    //     .pipe(gulp.dest(APP_DEST))
-    // ]);
+    return merge2([
+        result.dts.pipe(gulp.dest(APP_DEST)),
+        result.js.pipe(plugins.template(templateLocals()))
+        .pipe(gulp.dest(APP_DEST))
+    ]);
     
-    return result.js.pipe(plugins.template(templateLocals()))
-      .pipe(gulp.dest(APP_DEST));
+    // return result.js.pipe(plugins.template(templateLocals()))
+    //   .pipe(gulp.dest(APP_DEST));
     
   };
 };
