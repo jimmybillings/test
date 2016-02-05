@@ -13,6 +13,7 @@ import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from 'angular
 import {SpyLocation} from 'angular2/src/mock/location_mock';
 import {RootRouter} from 'angular2/src/router/router';
 import {CurrentUser} from './common/models/current-user.model';
+import {ApiConfig} from './common/config/api.config';
 
 export function main() {
   describe('App Component', () => {
@@ -21,7 +22,8 @@ export function main() {
       provide(Location, {useClass: SpyLocation}),
       provide(ROUTER_PRIMARY_COMPONENT, {useValue: AppComponent}),
       provide(Router, {useClass: RootRouter}),
-      CurrentUser
+      CurrentUser,
+      ApiConfig
     ]);
     
     it('Create instance of app and assign the CurrentUser to an instance variable inside of app', 
