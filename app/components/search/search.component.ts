@@ -20,7 +20,7 @@ export class Search {
         this.url = '';
     }
 
-    clipRendition(rendition) {
+    clipRendition(rendition): String {
         let bestRendition;
         bestRendition = (rendition.url) ? rendition.url :
         rendition.filter(function(rend){
@@ -32,7 +32,7 @@ export class Search {
         return bestRendition || '';
     }
     
-    private _getResults() {
+    private _getResults(): void {
       this.results = this.http.get(this.url)
         .map((res:Response) => {
             return res.json()['clip-list']['clip'];

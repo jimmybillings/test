@@ -13,47 +13,47 @@ export class CurrentUser {
     this._currentUser = this._user();
   }
   
-  public loggedIn() {
+  public loggedIn(): Boolean {
     return (localStorage.getItem('token') !== null);
   }
 
-  public email() {
+  public email(): String {
     return this._currentUser.emailAddress;
   }
 
-  public firstName() {
+  public firstName(): String {
     return this._currentUser.firstName;
   }
 
-  public lastName() {
+  public lastName(): String {
     return this._currentUser.lastName;
   }
 
-  public fullName() {
+  public fullName(): String {
     return `${this._currentUser.firstName} ${this._currentUser.lastName}`;
   }
   
-  public createdOn() {
+  public createdOn(): Date {
     return this._currentUser.createdOn;
   }
 
-  public lastUpdated() {
+  public lastUpdated(): Date {
     return this._currentUser.lastUpdated;
   }
   
-  public siteName() {
+  public siteName(): String {
     return this._currentUser.siteName;
   }
 
-  public id() {
+  public id(): Number {
     return this._currentUser.id;
   }
 
-  public accounts() {
+  public accountIds(): Object {
     return this._currentUser.accountIds;
   }
   
-  private _user() {
+  private _user(): CurrentUserInterface {
     return JSON.parse(localStorage.getItem('currentUser')) || {
       emailAddress: null,
       firstName: null,

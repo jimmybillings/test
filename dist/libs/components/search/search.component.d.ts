@@ -4,6 +4,6 @@ export declare class Search {
     http: Http;
     results: Object;
     constructor(http: Http);
-    clipRendition(rendition: any): any;
+    clipRendition(rendition: any): String;
     private _getResults();
 }

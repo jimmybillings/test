@@ -7,23 +7,23 @@ export class ApiConfig {
   constructor() {
     this._portal = null;
   }
-  public getApiRoot() {
+  public getApiRoot(): string {
     return 'http://dev.crux.t3sandbox.xyz.:8080/';
   }
 
-  public getAuthHeader() {
+  public getAuthHeader(): Headers {
     return new Headers({'Content-Type': 'application/json', 'Authorization': 'Bearer '+ localStorage.getItem('token')});
   }
 
-  public getApiHeaders() {
+  public getApiHeaders(): Headers {
     return new Headers({'Content-Type': 'application/json'});
   }
   
-  public setPortal(portal: string) {
+  public setPortal(portal: string): void {
     this._portal = portal;
   }
   
-  public getPortal() {
+  public getPortal(): string {
     return this._portal;
   }
 

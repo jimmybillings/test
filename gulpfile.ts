@@ -54,7 +54,6 @@ gulp.task('build.library.export', done =>
               'clean.tmp',
               'tslint',
               'build.html_css.lib',
-              'build.lib.export',
               'build.js.lib.export',
               done));
 

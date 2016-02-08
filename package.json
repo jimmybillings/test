@@ -9,6 +9,7 @@
     "build.dev": "gulp build.dev",
     "build.dev.watch": "gulp build.dev.watch",
     "build.prod": "gulp build.prod",
+    "build.library": "gulp build.library.export",
     "build.test": "gulp build.test",
     "build.test.watch": "gulp build.test.watch",
     "clean-ng2": "rimraf node_modules/angular2/manual_typings node_modules/angular2/typings",

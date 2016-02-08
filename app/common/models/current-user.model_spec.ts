@@ -43,8 +43,7 @@ export function main() {
     
     it('should return the correct accounts of a user', inject([CurrentUser], (service) => {
       service.set(loggedInUser);
-      expect(service.accounts())
-        .toEqual([4]);
+      expect(service.accountIds()).toEqual([4]);
     }));
     
     it('should return the loggedIn state of a user as false', inject([CurrentUser], (service) => {

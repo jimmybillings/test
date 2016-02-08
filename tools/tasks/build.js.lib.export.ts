@@ -11,6 +11,7 @@ export = function buildJsLibExport(gulp, plugins) {
       'typings/browser.d.ts',
       join(APP_SRC, '**/*.ts'),
       '!' + join(APP_SRC, '**/hot_loader_main.ts'),
+      '!' + join(APP_SRC, '**/app.component.ts'),
       '!' + join(APP_SRC, '**/main.ts'),
       '!' + join(APP_SRC, '**/*.e2e.ts'),
       '!' + join(APP_SRC, '**/*_spec.ts')

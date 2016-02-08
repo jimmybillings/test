@@ -29,7 +29,7 @@ export class Login {
     private _currentUser: CurrentUser) { 
   }
   
-  ngOnInit() {
+  ngOnInit(): void {
     this.setForm();
   }
   

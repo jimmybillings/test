@@ -35,7 +35,7 @@ var CurrentUser = (function () {
     CurrentUser.prototype.id = function () {
         return this._currentUser.id;
     };
-    CurrentUser.prototype.accounts = function () {
+    CurrentUser.prototype.accountIds = function () {
         return this._currentUser.accountIds;
     };
     CurrentUser.prototype._user = function () {

@@ -3,6 +3,7 @@ import {NgClass, NgIf} from 'angular2/common';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
 import {Logout} from '../../user-management/logout/logout.component';
 import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
+import {Config} from '../../../common/config/config';
 
 @Component({
   selector: 'app-header',
@@ -15,16 +16,17 @@ import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 export class Header {
   @Input() currentUser; 
   public showFixed: boolean;
-  
-  constructor() {
+  public ui: Object;
+  constructor(ui: Config) {
+    this.ui = ui.ui();
     this.showFixed = false; 
   }
   
-  ngOnInit() {
+  ngOnInit(): void {
     window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
   }
   
-  public showFixedHeader(offset) { 
+  public showFixedHeader(offset): void { 
     this.showFixed = (offset > 68) ? true : false;
   }
 }

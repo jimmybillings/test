@@ -7,7 +7,7 @@ md-toolbar.glb([ngClass]="{'fixed': showFixed}")
     a.home-link(flex='', [routerLink]="['Home']", title='Home')
       .logo-wrapper
         .logo
-          img(src='resources/img/logo_connect_rev_colr.svg')
+          img(src='{{ui.header.logo}}')
     button.is-dd(md-button='', *ngIf="currentUser.loggedIn()", [routerLink]="['UserManagement', 'Profile']", [ngClass]="{'md-primary': !showFixed}") 
       | {{currentUser.fullName()}}
     
