@@ -8,7 +8,7 @@ import {normalize, join} from 'path';
 const ENVIRONMENTS = {
   DEVELOPMENT: 'dev',
   PRODUCTION: 'prod',
-  LIBRARY: 'libs'
+  LIBRARY: 'library'
 };
 
 export const PORT                 = argv['port']        || 5555;
