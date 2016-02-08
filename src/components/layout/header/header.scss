@@ -1,0 +1,60 @@
+
+app-header md-toolbar.glb {
+  background-color:rgba(md-color($md-primary, 900), .3);
+  border-bottom: solid 1px rgba(contrast-color(md-color($md-primary, 900)), .25);
+  position: absolute;
+  top: 100px;
+  left: 0;
+  margin-top:-100px;
+  a.home-link > .logo-wrapper {
+    @include transition(all .4s ease-in-out);
+    opacity: .7;
+    &:hover {
+      opacity: 1;
+    }
+    overflow: hidden;
+    width: 100px;
+    height: 50px;
+    position: absolute;
+    top: 9px;
+    margin-left: 7px;
+    .logo {
+      width: 272px;
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+    }
+  }
+  &.fixed {
+    background-color:rgba(md-color($md-background, 100), .95);
+    @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
+    position: fixed;
+    top: 0;
+    margin-top: 0;
+    @include transition(margin .4s ease-in-out);
+    border-bottom: none;
+    box-shadow: $whiteframe-shadow-z1;
+    a.home-link > .logo-wrapper {
+      opacity: .95;
+      height: 38px;
+      top: 12px;
+      .logo {
+        width: 228px;
+      }
+    }
+  }
+}
+
+
+
+app-header md-toolbar.glb:not(.md-menu-toolbar) [md-button] {
+  &.md-accent {
+    color: rgba(md-color($md-accent, 500), .8);
+  }
+}
+
+app-header md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-button],
+app-header md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-icon] {
+  @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
+}
