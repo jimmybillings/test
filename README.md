@@ -13,16 +13,30 @@ Installation:
 npm install
 ```
 
-To build: - this will create the /dev/prod directory so that you can deploy to a web server. 
-```bash
-
-npm run build.prod
-```
-
-To run: - this will create the /build directory and spin up a local server for development
+To run: - this will create the /dist/dev directory and spin up a local server for development
 
 ```bash
 npm start
+```
+
+To run unit test: - this will create the /test directory, build a production ready version of the app and run all unit tests with Karma and phantomJS2. 
+```bash
+npm test
+```
+
+To build a production version for deploy: - this will create the /dist/prod directory so that you can deploy to a web server. It will also automatically run the unit tests, if they fail so will the build. 
+```bash
+npm run build.prod
+```
+
+To build an exportable library: - this will create the /dist/library directory so that it can be loaded as a node module in other applications. 
+```bash
+npm run build.library
+```
+
+To build docs: - this will create the /docs directory and create a static website that documents the TypeScript Code. 
+```bash
+npm run docs
 ```
 
 ###Usage
