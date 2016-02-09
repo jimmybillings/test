@@ -82,12 +82,18 @@ build_library() {
   if [ -n "$JENKINS_HOME" ]; then
     # push to github. ||| NOTE: Eventually we want to move this to the nexus repo, but we're waiting on
     # nexus to get upgraded to include support for node modules
-    git clone https://github.com/t3mediacorp/wazee-ui-library $TMPDIR/wazee-ui-library
+    git clone git@github.com:t3mediacorp/wazee-ui-library.git $TMPDIR/wazee-ui-library || exit 1
     rm -rf $TMPDIR/wazee-ui-library/*
-    mv dist/library/* $TMPDIR/wazee-ui-library
-    pushd $TMPDIR/wazee-ui-library
-    git commit -m "Version ${buildVersion}"  $TMPDIR/wazee-ui-library
-    git push origin $TMPDIR/wazee-ui-library
+    mv dist/library/* $TMPDIR/wazee-ui-library || exit 1
+    pushd $TMPDIR/wazee-ui-library || exit 1
+
+    # only push if there are changes
+    if [ -n "$( git status -s )" ]; then
+      git commit -m "Version ${buildVersion}"  $TMPDIR/wazee-ui-library
+      git push origin $TMPDIR/wazee-ui-library
+
+      add-and-push-git-tag.sh
+    fi
     popd
   fi
 
