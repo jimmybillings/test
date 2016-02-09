@@ -34,7 +34,6 @@ export class Login {
   }
   
   public onSubmit(user: Object): void {
-    console.log(user);
     this._authentication.create(user).subscribe((res:Response) => {
       localStorage.setItem('token', res.json().token.token);
       this._currentUser.set(res.json().user);

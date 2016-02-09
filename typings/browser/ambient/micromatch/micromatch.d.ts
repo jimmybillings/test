@@ -1,4 +1,4 @@
-// Compiled using typings@0.6.6
+// Compiled using typings@0.6.7
 // Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/7cda84786520fd0673c934fde1aa722083e05f7b/micromatch/micromatch.d.ts
 // Type definitions for micromatch 2.3.7
 // Project: https://github.com/jonschlinkert/micromatch
