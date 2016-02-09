@@ -47,7 +47,7 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 
 @import './common/common';
 @import './components/home/home';
-@import './components/application/header/header';
-@import './components/application/footer/footer';
+@import './components/layout/header/header';
+@import './components/layout/footer/footer';
 @import './components/home/search-box/search-box';
 @import './components/user-management/login/login';
