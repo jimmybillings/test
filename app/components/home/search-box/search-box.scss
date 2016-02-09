@@ -38,21 +38,12 @@ search-box {
       //   text-shadow: md-color($md-grey, 900, .4) 0 1px 3px;
       // }
     }
-    // &:after {
-    //   @include text-contrast(md-color($md-accent, 900));
-    //   @include transition(opacity 0.4s);
-    //   // content: "\f002";
-    //   font-family: 'Material Icons';
-    //   content: "\";
-    //   // font-family: $icon-custom-font-family;
-    //   font-size: rem(2.7);
-    //   opacity: .4;
-    //   position: absolute;
-    //   right: rem(.2);
-    //   top: rem(-.1);
-    // }
-    // &:hover:after {
-    //   opacity: .6;
-    // }
+    &[disabled] {
+      cursor: default;
+      background-color: md-color($md-accent, 800, .95);
+      i.material-icons {
+        opacity: .6;
+       }
+    }
   }
 }
