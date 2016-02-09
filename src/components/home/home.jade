@@ -5,11 +5,7 @@ header.hero
         div(layout='column', layout-align='start center', layout-wrap='')
           .logo-wrapper
             .logo
-          .search
-            form.md-inline-form(layout='column')
-              input(md-input="", type='text', placeholder='Search For Videos and Photos...')
-              button(type='submit') Search
-                i.material-icons(md-icon='') search
+          search-box((runSearch)="searchAssets($event)")
           h4.md-headline
             | Incredible footage, killer research and unmatched clearance expertise
       div(flex="")
