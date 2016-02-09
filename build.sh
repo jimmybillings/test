@@ -45,6 +45,28 @@ clean_up() {
 }
 trap clean_up EXIT 
 
+build_rpm() {
+  pushd dist/prod
+
+  fpm \
+      -s dir \
+      -t rpm \
+      -n wazee-ui \
+      -a all \
+      -v "${buildVersion}" \
+      --rpm-user video \
+      --rpm-group video \
+      --exclude .git \
+      --exclude log \
+      --exclude 'tmp/*' \
+      --prefix /var/www/hosts/dev \
+      --after-install ../../post_install.sh \
+      --workdir "${TMPDIR}" \
+      .
+  mv wazee-ui*.rpm ../../target
+
+  popd
+}
 build_prod() {
   npm run build.prod || exit 1
 
@@ -55,15 +77,13 @@ build_prod() {
 
   # package into a zip
   mkdir -p ${baseDir}/target
-  pushd dist/prod
-  zip -r ../../${zipFile} . || exit 1
-  popd  
+  build_rpm
 
   # Only deploy & tag if we're on Jenkins
   if [ -n "$JENKINS_HOME" ]; then
 
     # Push to our nexus server
-    deploy-to-nexus.sh --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui --file=target/wazee-ui-${buildVersion}.zip  || exit 1
+    deploy-to-nexus.sh --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui --file=target/*.rpm  || exit 1
 
     # tag the repository with this build version so we can find it again
     add-and-push-git-tag.sh    || exit 1
