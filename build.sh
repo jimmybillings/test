@@ -20,45 +20,98 @@
 
 baseDir=$( dirname "$0" )
 
-if [ -n "$JENKINS_HOME" ]; then
-	# add jenkins tools to the path
-	PATH=/home/video/bin/tools/jenkins:$PATH
-	# add latest node to path
-	PATH=/home/video/bin/node-v5.4.1-linux-x64/bin:$PATH
+artifactName=wazee-ui
 
-	# Special PhantomJS build that works with Centos
-	export PHANTOMJS_BIN=/home/video/bin/phantomjs.2.0.1.patch_12506
+baseDir=$( dirname "$0" )
+
+if [ -n "$JENKINS_HOME" ]; then
+  # add jenkins tools to the path
+  export PATH=/home/video/bin/nodejs-v5.5.0/bin:/home/video/bin/tools/jenkins:$PATH
+
+  # Special PhantomJS build that works with Centos
+  export PHANTOMJS_BIN=/home/video/bin/phantomjs.2.0.1.patch_12506
+
+  # Setup a tmpdir on a volume with more space
+  export TMPDIR=/home/video/tmp/$artifactName
 fi
+
+clean_up() {
+  # Remove anything in the tmp directory
+  if [ -n "$JENKINS_HOME" ]; then
+    rm -rf /home/video/tmp/$artifactName
+    rm -rf $TMPDIR/wazee-ui-library
+  fi
+  restore-maven-version.sh
+}
+trap clean_up EXIT 
+
+build_prod() {
+  npm run build.prod || exit 1
+
+  # create build.properties file
+  set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion}
+
+  zipFile=target/$artifactName-${buildVersion}.zip
+
+  # package into a zip
+  mkdir -p ${baseDir}/target
+  pushd dist/prod
+  zip -r ../../${zipFile} . || exit 1
+  popd  
+
+  # Only deploy & tag if we're on Jenkins
+  if [ -n "$JENKINS_HOME" ]; then
+
+    # Push to our nexus server
+    deploy-to-nexus.sh --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui --file=target/wazee-ui-${buildVersion}.zip  || exit 1
+
+    # tag the repository with this build version so we can find it again
+    add-and-push-git-tag.sh    || exit 1
+    restore-maven-version.sh   || exit 1
+
+    # put the calculated artifact version into a properties file so jenkins can find it
+    create-jenkins-properties.sh ${buildVersion}
+  fi
+  return 0
+}
+
+build_library() {
+  npm run build.library  || exit 1
+
+  # Only deploy & tag if we're on Jenkins
+  if [ -n "$JENKINS_HOME" ]; then
+    # push to github. ||| NOTE: Eventually we want to move this to the nexus repo, but we're waiting on
+    # nexus to get upgraded to include support for node modules
+    git clone git@github.com:t3mediacorp/wazee-ui-library.git $TMPDIR/wazee-ui-library || exit 1
+    rm -rf $TMPDIR/wazee-ui-library/*
+    mv dist/library/* $TMPDIR/wazee-ui-library || exit 1
+    pushd $TMPDIR/wazee-ui-library || exit 1
+
+    # only push if there are changes
+    if [ -n "$( git status -s )" ]; then
+      git commit -m "Version ${buildVersion}"  $TMPDIR/wazee-ui-library
+      git push origin $TMPDIR/wazee-ui-library
+
+      add-and-push-git-tag.sh
+    fi
+    popd
+  fi
+
+  return 0
+}
 
 # debugging information
 print-build-environment.sh
 
 # update the artifact with the correct build version
-buildVersion=$(update-maven-version-for-build.sh)                                        || exit 1 
+buildVersion=$(update-maven-version-for-build.sh)  || exit 1 
 
-# Build
-rm -rf node_modules
+# Install modules
 npm install
-npm run build.prod                                                                       || exit 1
 
-# create build.properties file
-set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion}
+# Build the dev webapp
+build_prod 
 
-zipFile=target/wazee-ui-${buildVersion}.zip
+# build the UI library
+build_library
 
-# package into a zip
-mkdir -p ${baseDir}/target
-pushd dist/prod
-zip -r ../../${zipFile} .                                                                || exit 1
-popd
-
-
-# Push to our nexus server
-deploy-to-nexus.sh --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui --file=${zipFile}       || exit 1
-
-# tag the repository with this build version so we can find it again
-add-and-push-git-tag.sh                                                                 || exit 1
-restore-maven-version.sh                                                                || exit 1
-
-# put the calculated artifact version into a properties file so jenkins can find it
-create-jenkins-properties.sh ${buildVersion}

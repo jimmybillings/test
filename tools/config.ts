@@ -7,14 +7,14 @@ import {normalize, join} from 'path';
 
 const ENVIRONMENTS = {
   DEVELOPMENT: 'dev',
-  PRODUCTION: 'prod'
+  PRODUCTION: 'prod',
+  LIBRARY: 'library'
 };
 
+export const PORT                 = argv['port']        || 5555;
 export const PROJECT_ROOT         = normalize(join(__dirname, '..'));
 export const ENV                  = getEnvironment();
 export const DEBUG                = argv['debug']       || false;
-export const PORT                 = argv['port']        || 5555;
-export const LIVE_RELOAD_PORT     = argv['reload-port'] || 4002;
 export const DOCS_PORT            = argv['docs-port']   || 4003;
 export const APP_BASE             = argv['base']        || '/';
 
@@ -23,9 +23,9 @@ export const HOT_LOADER_PORT      = 5578;
 
 export const BOOTSTRAP_MODULE     = ENABLE_HOT_LOADING ? 'hot_loader_main' : 'main';
 
-export const APP_TITLE            = 'My Angular2 App';
+export const APP_TITLE            = 'Wazee UI Components';
 
-export const APP_SRC              = 'app';
+export const APP_SRC              = 'src';
 export const ASSETS_SRC           = `${APP_SRC}/assets`;
 
 export const TOOLS_DIR            = 'tools';
@@ -86,10 +86,9 @@ export const PROD_DEPENDENCIES = PROD_NPM_DEPENDENCIES.concat(APP_ASSETS);
 const SYSTEM_CONFIG_DEV = {
   defaultJSExtensions: true,
   paths: {
-    [BOOTSTRAP_MODULE]: `${APP_ROOT}${BOOTSTRAP_MODULE}`,
-    'hot_loader_main': `${APP_ROOT}hot_loader_main`,
-    'angular2/*': `${APP_ROOT}angular2/*`,
-    'rxjs/*': `${APP_ROOT}rxjs/*`,
+    [BOOTSTRAP_MODULE]: `${APP_BASE}${BOOTSTRAP_MODULE}`,
+    'angular2/*': `${APP_BASE}angular2/*`,
+    'rxjs/*': `${APP_BASE}rxjs/*`,
     '*': `${APP_BASE}node_modules/*`
   },
   packages: {
@@ -117,6 +116,7 @@ function appVersion(): number|string {
 
 function getEnvironment() {
   let base:string[] = argv['_'];
+  if (base[0] === 'build.library.export') {return ENVIRONMENTS.LIBRARY;}
   let prodKeyword = !!base.filter(o => o.indexOf(ENVIRONMENTS.PRODUCTION) >= 0).pop();
   if (base && prodKeyword || argv['env'] === ENVIRONMENTS.PRODUCTION) {
     return ENVIRONMENTS.PRODUCTION;

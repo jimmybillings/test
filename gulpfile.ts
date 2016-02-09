@@ -19,6 +19,7 @@ gulp.task('postinstall', done =>
               'npm',
               done));
 
+              
 // --------------
 // Build dev.
 gulp.task('build.dev', done =>
@@ -31,7 +32,7 @@ gulp.task('build.dev', done =>
               'build.js.dev',
               'build.index.dev',
               done));
-
+              
 // --------------
 // Build prod.
 gulp.task('build.prod', done =>
@@ -47,6 +48,16 @@ gulp.task('build.prod', done =>
               'build.index.prod',
               done));
 
+// --------------
+// Build exportable library.
+gulp.task('build.library.export', done =>
+  runSequence('clean.dist',
+              'clean.tmp',
+              'tslint',
+              'build.html_css.lib',
+              'build.js.lib.export',
+              done));
+              
 // --------------
 // Watch.
 gulp.task('build.dev.watch', done =>
