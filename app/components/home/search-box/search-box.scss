@@ -1,0 +1,58 @@
+search-box {
+  width: 100%;
+  margin: 56px 0 26px 0;
+  position: relative;
+  overflow: hidden;
+  input {
+    width: 100%;
+    padding-left: rem(1);
+    height: rem(4.6);
+    border: none;
+    background-color:  md-color($md-background, 100, .9);
+    @include transition($swift-ease-in);
+    &:focus {
+      outline: none;
+      background-color: lighten(md-color($md-background, 100), 40%);
+      box-shadow: $whiteframe-shadow-z1;
+    }
+  }
+  button[type="submit"] {
+    cursor: pointer;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: rem(5);
+    font-size: 0;
+    border: none; 
+    background-color: md-color($md-accent, 800, .95);
+    @include transition($swift-ease-in);
+    i.material-icons {
+      font-size: rem(4);
+      @include text-contrast(md-color($md-background, 900));
+      text-shadow: md-color($md-background, 900, .2) 0 1px 2px;
+    }
+    &:hover {
+      background-color: md-color($md-accent, 700, 1);
+      // i.material-icons {
+      //   text-shadow: md-color($md-grey, 900, .4) 0 1px 3px;
+      // }
+    }
+    // &:after {
+    //   @include text-contrast(md-color($md-accent, 900));
+    //   @include transition(opacity 0.4s);
+    //   // content: "\f002";
+    //   font-family: 'Material Icons';
+    //   content: "\";
+    //   // font-family: $icon-custom-font-family;
+    //   font-size: rem(2.7);
+    //   opacity: .4;
+    //   position: absolute;
+    //   right: rem(.2);
+    //   top: rem(-.1);
+    // }
+    // &:hover:after {
+    //   opacity: .6;
+    // }
+  }
+}
