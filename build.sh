@@ -83,7 +83,8 @@ build_prod() {
   if [ -n "$JENKINS_HOME" ]; then
 
     # Push to our nexus server
-    deploy-to-nexus.sh --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui --file=target/*.rpm  || exit 1
+    deliverable=target/*.rpm
+    deploy-to-nexus.sh --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui "--file=$deliverable"  || exit 1
 
     # tag the repository with this build version so we can find it again
     add-and-push-git-tag.sh    || exit 1
