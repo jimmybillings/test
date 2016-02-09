@@ -1,4 +1,4 @@
-// Compiled using typings@0.6.6
+// Compiled using typings@0.6.7
 // Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/1ae2ddf27c6e9b98ad7e7fa496788f1aadf37933/parse-glob/parse-glob.d.ts
 // Type definitions for parse-glob 3.0.4
 // Project: https://github.com/jonschlinkert/parse-glob

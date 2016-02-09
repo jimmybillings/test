@@ -1,7 +1,7 @@
-// Compiled using typings@0.6.6
+// Compiled using typings@0.6.7
 // Source: https://raw.githubusercontent.com/gdi2290/typed-xhr2/69f2b8d40d0cd407c1b2a2f2f41fecc6852cabbb/lib/xhr2.d.ts
 declare module 'xhr2/lib/xhr2' {
- var Element: {
+var Element: {
   prototype: Element;
   new(): Element;
 }
@@ -28,7 +28,7 @@ interface Event {
   CAPTURING_PHASE: number;
 }
 
- var Event: {
+var Event: {
   prototype: Event;
   new(type: string, eventInitDict?: EventInit): Event;
   AT_TARGET: number;
@@ -64,13 +64,13 @@ interface ErrorEvent extends Event {
     initErrorEvent(typeArg: string, canBubbleArg: boolean, cancelableArg: boolean, messageArg: string, filenameArg: string, linenoArg: number): void;
 }
 
- var ErrorEvent: {
+var ErrorEvent: {
     prototype: ErrorEvent;
     new(): ErrorEvent;
 }
 
 
- var ProgressEvent: {
+var ProgressEvent: {
   prototype: ProgressEvent;
   new(type: string, eventInitDict?: ProgressEventInit): ProgressEvent;
 }
@@ -140,7 +140,7 @@ interface XMLHttpRequest extends EventTarget, XMLHttpRequestEventTarget {
   addEventListener(type: string, listener: EventListenerOrEventListenerObject, useCapture?: boolean): void;
 }
 
- var XMLHttpRequest: {
+var XMLHttpRequest: {
   XMLHttpRequestUpload: XMLHttpRequestUpload;
   XMLHttpRequest: XMLHttpRequest;
   prototype: XMLHttpRequest;
@@ -158,7 +158,7 @@ interface XMLHttpRequestUpload extends EventTarget, XMLHttpRequestEventTarget {
     addEventListener(type: string, listener: EventListenerOrEventListenerObject, useCapture?: boolean): void;
 }
 
- var XMLHttpRequestUpload: {
+var XMLHttpRequestUpload: {
   prototype: XMLHttpRequestUpload;
   new(): XMLHttpRequestUpload;
 }
