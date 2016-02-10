@@ -63,27 +63,26 @@ build_rpm() {
       --after-install ../../post_install.sh \
       --workdir "${TMPDIR}" \
       .
+  mkdir -p ../../target
   mv wazee-ui*.rpm ../../target
 
   popd
 }
+
 build_prod() {
   npm run build.prod || exit 1
 
   # create build.properties file
   set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion}
 
-  zipFile=target/$artifactName-${buildVersion}.zip
-
-  # package into a zip
-  mkdir -p ${baseDir}/target
+  # package into an rpm
   build_rpm
 
   # Only deploy & tag if we're on Jenkins
   if [ -n "$JENKINS_HOME" ]; then
 
     # Push to our nexus server
-    deliverable=target/*.rpm
+    deliverable=$( ls target/*.rpm )
     deploy-to-nexus.sh --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui "--file=$deliverable"  || exit 1
 
     # tag the repository with this build version so we can find it again
