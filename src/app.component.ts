@@ -7,6 +7,8 @@ import {Home} from './components/home/home.component';
 import {Search} from './components/search/search.component';
 import {CurrentUser} from './common/models/current-user.model';
 import {ApiConfig} from './common/config/api.config';
+import {UiConfig} from './common/config/ui.config';
+import {Response} from 'angular2/http';
 
 @Component({
   selector: 'app',
@@ -21,14 +23,21 @@ import {ApiConfig} from './common/config/api.config';
 ])
 
 export class AppComponent {
-  
+    public ui: Object;
+    
     constructor(
       public currentUser: CurrentUser, 
-      private _apiConfig: ApiConfig) {
-      this._apiConfig.setPortal('cnn');
-    }
-
-    ngOnInit() {
-      this.currentUser.set();
-    }  
+      private _apiConfig: ApiConfig,
+      public uiConfig: UiConfig) {
+          this._apiConfig.setPortal('core');
+      }
+      
+      ngOnInit() {
+        this.uiConfig.get('core')
+            .subscribe((res: Response) => {
+              this.uiConfig.set(res.json());
+              this.ui = this.uiConfig.ui();
+            });
+        this.currentUser.set();
+      }             
 }

@@ -13,23 +13,23 @@ export class CurrentUser {
     this._currentUser = this._user();
   }
   
-  public loggedIn(): Boolean {
+  public loggedIn(): boolean {
     return (localStorage.getItem('token') !== null);
   }
 
-  public email(): String {
+  public email(): string {
     return this._currentUser.emailAddress;
   }
 
-  public firstName(): String {
+  public firstName(): string {
     return this._currentUser.firstName;
   }
 
-  public lastName(): String {
+  public lastName(): string {
     return this._currentUser.lastName;
   }
 
-  public fullName(): String {
+  public fullName(): string {
     return `${this._currentUser.firstName} ${this._currentUser.lastName}`;
   }
   
@@ -41,15 +41,15 @@ export class CurrentUser {
     return this._currentUser.lastUpdated;
   }
   
-  public siteName(): String {
+  public siteName(): string {
     return this._currentUser.siteName;
   }
 
-  public id(): Number {
+  public id(): number {
     return this._currentUser.id;
   }
 
-  public accountIds(): Object {
+  public accountIds(): Array<any> {
     return this._currentUser.accountIds;
   }
   

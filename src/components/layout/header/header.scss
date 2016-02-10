@@ -24,7 +24,12 @@ app-header md-toolbar.glb {
         max-width: 100%;
         height: auto;
       }
-    }
+    } 
+  }
+  a.home-link > h1 {
+    float: left;
+    padding-left: 100px;
+    color: #aaa;
   }
   &.fixed {
     background-color:rgba(md-color($md-background, 100), .95);
