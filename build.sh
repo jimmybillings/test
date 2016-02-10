@@ -59,7 +59,7 @@ build_rpm() {
       --exclude .git \
       --exclude log \
       --exclude 'tmp/*' \
-      --prefix /var/www/hosts/dev \
+      --prefix /var/www/hosts/dev/docs \
       --after-install ../../post_install.sh \
       --workdir "${TMPDIR}" \
       .
