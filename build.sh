@@ -70,6 +70,7 @@ build_rpm() {
 }
 
 build_prod() {
+  set -x
   npm run build.prod || exit 1
 
   # create build.properties file
@@ -96,6 +97,7 @@ build_prod() {
 }
 
 build_library() {
+  set -x
   npm run build.library  || exit 1
 
   # Only deploy & tag if we're on Jenkins
