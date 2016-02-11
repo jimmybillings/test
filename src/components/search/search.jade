@@ -4,7 +4,9 @@ section.search-results
     div(flex-xl="70", flex-gt-lg="80",flex-gt-md="90", flex="100")
       div(layout='row')
         // img(width="465", NgIf='clipRendition(result.rendition).url != ""', *ngFor='#result of results' src="{{clipRendition(result.rendition).url}}")
-    div(flex='')
+    
+        asset-list([assets]="assets")
+        .alert.warning([hidden]="!errorMessage && (!assets || assets.length > 0)")
+          No items can be found with that search
 
-    
-    
+    div(flex='')

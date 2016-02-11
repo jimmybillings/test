@@ -1,0 +1,4 @@
+ul.grid-asset-list
+  li(*ngFor="#asset of assets")
+    .meta {{asset.name}}
+    .meta {{asset.renditions[0].format}}

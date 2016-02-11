@@ -1,4 +1,5 @@
-form.md-inline-form(layout='column', [ngFormModel]="searchForm", (submit)="$event.preventDefault(); runSearch.next(searchForm.value.query)")
+// form.md-inline-form(layout='column', [ngFormModel]="searchForm", (submit)="$event.preventDefault(); runSearch.next(searchForm.value.query)")
+form.md-inline-form(layout='column', [ngFormModel]="searchForm", (ngSubmit)="onSubmit(searchForm.value.query)")
   input(md-input="", type='text', placeholder='Search For Videos and Photos...', ngControl="query")
   button(type='submit',[disabled]="!searchForm.valid") Search
     i.material-icons(md-icon='') search

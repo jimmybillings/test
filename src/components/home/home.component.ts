@@ -18,8 +18,8 @@ export class Home {
     public router: Router) {
   }
   
-  searchAssets(text: string): void {
-    console.log(text);
-    this.router.navigate(['/Search']);
-  }
+  // searchAssets(query: string): void {
+    // console.log(query);
+    // this.router.navigate(['/Search', {q: query}]);
+  // }
 }
