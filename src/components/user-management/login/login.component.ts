@@ -30,7 +30,6 @@ export class Login {
   
   ngOnInit(): void {
     this.setForm();
-    console.log('test');
   }
   
   public onSubmit(user: Object): void {

@@ -22,6 +22,9 @@ export = function buildJsLibExport(gulp, plugins) {
       .pipe(plugins.inlineNg2Template({ base: TMP_DIR }))
       .pipe(plugins.typescript(tsProject));
     
+    gulp.src('library/package.json')
+      .pipe(gulp.dest(APP_DEST));
+    
     return merge2([
         result.dts.pipe(gulp.dest(APP_DEST)),
         result.js.pipe(plugins.template(templateLocals()))
