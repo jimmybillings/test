@@ -29,7 +29,7 @@ section.login.hero
             md-list-item
               p #[strong Id: ]{{currentUser.id()}}
             md-divider
-            div(*ngFor="#account of currentUser.accountIds()") 
+            div( *ngFor="#account of currentUser.accountIds()") 
               md-list-item
                 h3 Account: {{account}}
               // md-divider

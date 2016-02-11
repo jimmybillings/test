@@ -3,10 +3,9 @@ import { FormBuilder, ControlGroup, FORM_DIRECTIVES, Validators } from 'angular2
 import { Response } from 'angular2/http';
 import { Authentication } from '../../../common/services/authentication.data.service';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
-import { ROUTER_DIRECTIVES } from 'angular2/router';
+import { ROUTER_DIRECTIVES, Router } from 'angular2/router';
 import { ApiConfig } from '../../../common/config/api.config';
 import { User } from '../../../common/services/user.data.service';
-import { Router } from 'angular2/router';
 import { CurrentUser } from '../../../common/models/current-user.model';
 
 @Component({

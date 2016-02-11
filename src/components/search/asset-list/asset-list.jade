@@ -1,0 +1,6 @@
+ul.grid-asset-list
+  li(*ngFor="#asset of assets")
+    .asset-name {{asset.name}}
+    a(flex='', [routerLink]="['Home']", title='Home')
+      img(src='resources/img/highlights/dimoc.jpg')
+      // .meta {{asset.renditions[0].format}}

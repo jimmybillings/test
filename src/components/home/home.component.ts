@@ -20,8 +20,8 @@ export class Home {
       this.ui = this.uiConfig.ui();
   }
   
-  searchAssets(text: string): void {
-    console.log(text);
-    this.router.navigate(['/Search']);
-  }
+  // searchAssets(query: string): void {
+    // console.log(query);
+    // this.router.navigate(['/Search', {q: query}]);
+  // }
 }
