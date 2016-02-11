@@ -7,7 +7,7 @@ import { ApiConfig } from './common/config/api.config';
 import {CurrentUser} from './common/models/current-user.model';
 import { User } from './common/services/user.data.service';
 import {MATERIAL_PROVIDERS} from 'ng2-material/all';
-import {Config} from './common/config/config';
+import {UiConfig} from './common/config/ui.config';
 
 bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
@@ -18,6 +18,6 @@ bootstrap(AppComponent, [
   ApiConfig,
   CurrentUser,
   User,
-  Config
+  UiConfig
 ]);
 

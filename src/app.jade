@@ -1,5 +1,6 @@
-app-header([currentUser]="currentUser")
-md-content.main-content(layout='column', flex='')
-  router-outlet
-app-footer([currentUser]="currentUser")
+div(*ngIf="ui")
+  app-header([currentUser]="currentUser", [ui]="ui.site")
+  md-content.main-content(layout='column', flex='')
+    router-outlet
+  app-footer([currentUser]="currentUser")
   

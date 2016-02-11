@@ -32,7 +32,7 @@ export function main() {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       service.create(setUser()).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot()+'identities-api/user/register');
+        expect(connection.request.url).toBe(service.apiConfig.getApiRoot()+'api/identities/user/register');
         expect(connection.request._body).toEqual(JSON.stringify(setUser()));
       });
       connection.mockRespond(200);
