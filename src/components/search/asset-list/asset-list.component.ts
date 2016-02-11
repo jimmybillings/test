@@ -16,8 +16,4 @@ export class AssetList {
   // @Input() public Assets: Array<Asset>;
   @Input() assets;
 
-
-  constructor() {
-    console.log('asset-list has been hit');
-  }
 }

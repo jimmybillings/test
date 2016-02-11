@@ -9,17 +9,22 @@ import {
 
 import {Search} from './search.component';
 import {provide} from 'angular2/core';
-import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
+import {Location, Router, RouteRegistry, RouteParams, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
 import {SpyLocation} from 'angular2/src/mock/location_mock';
-import {RootRouter} from 'angular2/src/router/router';
+import {RootRouter, } from 'angular2/src/router/router';
+import { ApiConfig } from '../../common/config/api.config';
+import {CurrentUser} from '../../common/models/current-user.model';
 
 export function main() {
   describe('Search Component', () => {
     beforeEachProviders(() => [
       RouteRegistry,
+      provide(RouteParams, { useValue: new RouteParams({ q: 'blue' }) }),
       provide(Location, {useClass: SpyLocation}),
       provide(ROUTER_PRIMARY_COMPONENT, {useValue: Search}),
       provide(Router, {useClass: RootRouter}),
+      CurrentUser,
+      ApiConfig
     ]);
     
     it('Should have a search instance', 

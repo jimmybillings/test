@@ -1,6 +1,6 @@
 import {Component} from 'angular2/core';
 import {Router, RouteParams} from 'angular2/router';
-import {HTTP_PROVIDERS, Response} from 'angular2/http';
+import {HTTP_PROVIDERS} from 'angular2/http';
 import {NgStyle, CORE_DIRECTIVES} from 'angular2/common';
 import { AssetData } from '../../common/services/asset.data.service';
 import { AssetList }  from './asset-list/asset-list.component';
@@ -38,22 +38,8 @@ export class Search {
         .subscribe(
           assets => this.assets = assets,
           error =>  this.errorMessage = <any>error);
-        
-    // this._asset.getAssets(this._query).subscribe((res:Response) => {
-    //   console.log(res.json());
-    // });
   }
 
-   public searchAssets2(): void {
-    // this._assetData.getAssets(this._params)
-      // .subscribe(
-      //   assets => this.assets = assets,
-      //   error =>  this.errorMessage = <any>error);
-    this._assetData.getAssets(this._params).subscribe((res:Response) => {
-      console.log(res.json());
-    });
-  }
- 
  
  
  

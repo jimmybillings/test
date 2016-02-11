@@ -23,7 +23,7 @@ ul.grid-asset-list {
     @media screen and (max-width: $layout-breakpoint-sm) {
       width: 49%;      
     }
-    @media screen and (max-width: $layout-breakpoint-xs -1) {
+    @media screen and (max-width: 400px) {
       width: 99%;      
     }
     .asset-name {
