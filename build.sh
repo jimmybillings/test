@@ -38,6 +38,7 @@ fi
 clean_up() {
   # Remove anything in the tmp directory
   if [ -n "$JENKINS_HOME" ]; then
+    echo "Cleaning turned off"
     #rm -rf /home/video/tmp/$artifactName
     #rm -rf $TMPDIR/wazee-ui-library
   fi
