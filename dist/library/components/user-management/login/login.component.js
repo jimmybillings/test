@@ -14,7 +14,6 @@ var all_1 = require('ng2-material/all');
 var router_1 = require('angular2/router');
 var api_config_1 = require('../../../common/config/api.config');
 var user_data_service_1 = require('../../../common/services/user.data.service');
-var router_2 = require('angular2/router');
 var current_user_model_1 = require('../../../common/models/current-user.model');
 var Login = (function () {
     function Login(_fb, _authentication, _user, router, _ApiConfig, _currentUser) {
@@ -30,7 +29,6 @@ var Login = (function () {
     };
     Login.prototype.onSubmit = function (user) {
         var _this = this;
-        console.log(user);
         this._authentication.create(user).subscribe(function (res) {
             localStorage.setItem('token', res.json().token.token);
             _this._currentUser.set(res.json().user);
@@ -51,7 +49,7 @@ var Login = (function () {
             providers: [authentication_data_service_1.Authentication],
             directives: [all_1.MATERIAL_DIRECTIVES, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES]
         }), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, authentication_data_service_1.Authentication, user_data_service_1.User, router_2.Router, api_config_1.ApiConfig, current_user_model_1.CurrentUser])
+        __metadata('design:paramtypes', [common_1.FormBuilder, authentication_data_service_1.Authentication, user_data_service_1.User, router_1.Router, api_config_1.ApiConfig, current_user_model_1.CurrentUser])
     ], Login);
     return Login;
 })();

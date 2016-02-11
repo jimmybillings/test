@@ -1,9 +1,8 @@
-import { Config } from '../../../common/config/config';
 export declare class Header {
     currentUser: any;
+    ui: any;
     showFixed: boolean;
-    ui: Object;
-    constructor(ui: Config);
+    constructor();
     ngOnInit(): void;
     showFixedHeader(offset: any): void;
 }

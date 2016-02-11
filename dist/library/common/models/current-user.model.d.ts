@@ -2,15 +2,15 @@ export declare class CurrentUser {
     private _currentUser;
     constructor();
     set(user?: boolean): void;
-    loggedIn(): Boolean;
-    email(): String;
-    firstName(): String;
-    lastName(): String;
-    fullName(): String;
+    loggedIn(): boolean;
+    email(): string;
+    firstName(): string;
+    lastName(): string;
+    fullName(): string;
     createdOn(): Date;
     lastUpdated(): Date;
-    siteName(): String;
-    id(): Number;
-    accountIds(): Object;
+    siteName(): string;
+    id(): number;
+    accountIds(): Array<any>;
     private _user();
 }

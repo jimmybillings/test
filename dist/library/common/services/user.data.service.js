@@ -17,7 +17,7 @@ var User = (function () {
         this.apiConfig = apiConfig;
         this._currentUser = _currentUser;
         this._apiUrls = {
-            create: this.apiConfig.getApiRoot() + 'identities-api/user/register',
+            create: this.apiConfig.getApiRoot() + 'api/identities/user/register',
             get: this.apiConfig.getApiRoot() + 'api/identities/user/currentUser'
         };
     }

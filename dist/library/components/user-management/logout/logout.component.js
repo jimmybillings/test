@@ -17,11 +17,9 @@ var Logout = (function () {
         this._currentUser = _currentUser;
     }
     Logout.prototype.onSubmit = function () {
-        var _this = this;
-        this._authentication.destroy().subscribe(function (res) {
-            localStorage.clear();
-            _this._currentUser.set();
-        });
+        localStorage.clear();
+        this._currentUser.set();
+        this._authentication.destroy().subscribe();
     };
     Logout = __decorate([
         core_1.Component({
