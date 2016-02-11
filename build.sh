@@ -38,8 +38,8 @@ fi
 clean_up() {
   # Remove anything in the tmp directory
   if [ -n "$JENKINS_HOME" ]; then
-    rm -rf /home/video/tmp/$artifactName
-    rm -rf $TMPDIR/wazee-ui-library
+    #rm -rf /home/video/tmp/$artifactName
+    #rm -rf $TMPDIR/wazee-ui-library
   fi
   restore-maven-version.sh
 }
