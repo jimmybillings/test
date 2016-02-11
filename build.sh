@@ -38,9 +38,8 @@ fi
 clean_up() {
   # Remove anything in the tmp directory
   if [ -n "$JENKINS_HOME" ]; then
-    echo "Cleaning turned off"
-    #rm -rf /home/video/tmp/$artifactName
-    #rm -rf $TMPDIR/wazee-ui-library
+    rm -rf /home/video/tmp/$artifactName
+    rm -rf $TMPDIR/wazee-ui-library
   fi
   restore-maven-version.sh
 }
@@ -98,7 +97,6 @@ build_prod() {
 }
 
 build_library() {
-  set -x
   npm run build.library  || exit 1
 
   # Only deploy & tag if we're on Jenkins
@@ -116,10 +114,9 @@ build_library() {
       if [[ $( echo $changes | grep -q '??' ) == 0 ]]; then
         git add .
       fi
-      git commit -m "Version ${buildVersion} ${BUILD_NUMBER}"  $TMPDIR/wazee-ui-library
-      git push origin
-
-      add-and-push-git-tag.sh
+      git commit -m "Version ${buildVersion}_${BUILD_NUMBER}"  $TMPDIR/wazee-ui-library
+      git tag "${buildVersion}_${BUILD_NUMBER}"
+      git push --tags origin
     fi
     popd
   fi
