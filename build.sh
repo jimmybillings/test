@@ -111,7 +111,8 @@ build_library() {
     # only push if there are changes
     changes=$( git status -s )
     if [ -n "${changes}" ]; then
-      if [[ $( echo $changes | grep -q '??' ) == 0 ]]; then
+      echo $changes | grep -q '??'
+      if [[ $? == 0 ]]; then
         git add .
       fi
       git commit -m "Version ${buildVersion}_${BUILD_NUMBER}"  $TMPDIR/wazee-ui-library
