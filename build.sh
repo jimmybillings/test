@@ -111,9 +111,13 @@ build_library() {
     pushd $TMPDIR/wazee-ui-library || exit 1
 
     # only push if there are changes
-    if [ -n "$( git status -s )" ]; then
-      git commit -m "Version ${buildVersion}"  $TMPDIR/wazee-ui-library
-      git push origin $TMPDIR/wazee-ui-library
+    changes=$( git status -s )
+    if [ -n "${changes}" ]; then
+      if [[ $( echo $changes | grep -q '??' ) == 0 ]]; then
+        git add .
+      fi
+      git commit -m "Version ${buildVersion} ${BUILD_NUMBER}"  $TMPDIR/wazee-ui-library
+      git push origin
 
       add-and-push-git-tag.sh
     fi
