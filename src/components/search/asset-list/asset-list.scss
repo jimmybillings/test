@@ -3,20 +3,55 @@ asset-list {
 }
 ul.grid-asset-list {
   list-style: none;
-  font-size: 0px;
-  line-height: 24px;
-  margin: 30px 0 20px -1%; 
+  font-size: 0;
+  line-height: 0;
+  margin: 40px 0 30px -1%;
+  padding: 0;
   & > li {
-    background-color:  md-color($md-background, 400);
     font-size: 1em;
     position: relative;
     display: inline-block;
     vertical-align: bottom;
     margin: 0 0 1% 1%;
-    width: 24%;
-    .meta {
-      font-size: .75rem;
-      padding-left: 8px;
+    width: 19%;
+    @media screen and (max-width: $layout-breakpoint-lg) {
+      width: 24%  
+    }
+    @media screen and (max-width: $layout-breakpoint-md) {
+      width: 32.3333%
+    }
+    @media screen and (max-width: $layout-breakpoint-sm) {
+      width: 49%;      
+    }
+    @media screen and (max-width: $layout-breakpoint-xs -1) {
+      width: 99%;      
+    }
+    .asset-name {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      font-size: rem(1.2);
+      line-height: rem(1.2);
+      z-index: 2;
+      @include text-contrast(md-color($md-background, 800));
+    }
+    a {
+      display: block;
+      height: 100%;
+      width: 100%;
+      position: relative;
+      &::before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        @include background-image(linear-gradient(2deg, rgba(md-color($md-background, 900),0.9), rgba(md-color($md-background, 900),0) 30%));
+        opacity: 0.6;
+        @include transition(opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2));
+        z-index: 1;
+      }
     }
     img {
       width: 100%;
