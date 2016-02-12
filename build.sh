@@ -60,7 +60,7 @@ build_prod() {
   if [ -n "$JENKINS_HOME" ]; then
 
     # Push to our nexus server
-    deliverable=$( ls target/*.rpm )
+    deliverable=$( ls *.rpm )
     deploy-to-nexus.sh --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui "--file=$deliverable"  || exit 1
 
     # tag the repository with this build version so we can find it again
