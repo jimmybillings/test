@@ -5,6 +5,7 @@ export = function buildTsLibExport(gulp, plugins) {
   return function () {
     return gulp.src([
         join(APP_SRC, '**', '*.ts'),
+        join(APP_SRC, 'library', 'package.jsons'),
         '!' + join(APP_SRC, '**/hot_loader_main.ts'),
         '!' + join(APP_SRC, '**/main.ts'),
         '!' + join(APP_SRC, '**/*.e2e.ts'),

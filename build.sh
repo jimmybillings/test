@@ -70,6 +70,7 @@ build_rpm() {
 }
 
 build_prod() {
+  set -x
   npm run build.prod || exit 1
 
   # create build.properties file
@@ -108,11 +109,15 @@ build_library() {
     pushd $TMPDIR/wazee-ui-library || exit 1
 
     # only push if there are changes
-    if [ -n "$( git status -s )" ]; then
-      git commit -m "Version ${buildVersion}"  $TMPDIR/wazee-ui-library
-      git push origin $TMPDIR/wazee-ui-library
-
-      add-and-push-git-tag.sh
+    changes=$( git status -s )
+    if [ -n "${changes}" ]; then
+      echo $changes | grep -q '??'
+      if [[ $? == 0 ]]; then
+        git add .
+      fi
+      git commit -m "Version ${buildVersion}_${BUILD_NUMBER}"  $TMPDIR/wazee-ui-library
+      git tag "${buildVersion}_${BUILD_NUMBER}"
+      git push --tags origin
     fi
     popd
   fi

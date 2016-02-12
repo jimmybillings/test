@@ -1,6 +1,5 @@
 import {Component} from 'angular2/core';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
-import { Response } from 'angular2/http';
 import {Authentication} from '../../../common/services/authentication.data.service';
 import {CurrentUser} from '../../../common/models/current-user.model';
 
@@ -21,9 +20,8 @@ export class Logout {
   }
   
   public onSubmit(): void {
-    this._authentication.destroy().subscribe((res:Response) => {
-      localStorage.clear();
-      this._currentUser.set();
-    });
+    localStorage.clear();
+    this._currentUser.set();
+    this._authentication.destroy().subscribe();
   }
 }

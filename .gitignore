@@ -36,8 +36,7 @@ node_modules
 .idea
 .vscode
 
-dist/dev
-dist/prod
+dist
 dev
 docs
 lib
