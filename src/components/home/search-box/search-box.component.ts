@@ -30,6 +30,6 @@ export class SearchBox {
   }
   
   public onSubmit(query: string): void {
-    this.router.navigate(['/Search', {q: query}]);
+    this.router.navigate(['/Search', {q: query, n: 25}]);
   }
 }
