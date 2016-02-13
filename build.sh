@@ -45,29 +45,6 @@ clean_up() {
 }
 trap clean_up EXIT 
 
-build_rpm() {
-  pushd dist/prod
-
-  fpm \
-      -s dir \
-      -t rpm \
-      -n wazee-ui \
-      -a all \
-      -v "${buildVersion}" \
-      --rpm-user video \
-      --rpm-group video \
-      --exclude .git \
-      --exclude log \
-      --exclude 'tmp/*' \
-      --prefix /var/www/hosts/dev/docs \
-      --after-install ../../post_install.sh \
-      --workdir "${TMPDIR}" \
-      .
-  mkdir -p ../../target
-  mv wazee-ui*.rpm ../../target
-
-  popd
-}
 
 build_prod() {
   set -x
@@ -77,13 +54,13 @@ build_prod() {
   set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion}
 
   # package into an rpm
-  build_rpm
+  build-rpm.sh --srcDir=dist/prod --dstDir=. --artifactName=${artifactName} --targetDir=/var/www/hosts/dev/docs --version=${buildVersion} || exit 1
 
   # Only deploy & tag if we're on Jenkins
   if [ -n "$JENKINS_HOME" ]; then
 
     # Push to our nexus server
-    deliverable=$( ls target/*.rpm )
+    deliverable=$( ls *.rpm )
     deploy-to-nexus.sh --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui "--file=$deliverable"  || exit 1
 
     # tag the repository with this build version so we can find it again

@@ -12,8 +12,5 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
 })
 
 export class AssetList {
-
-  // @Input() public Assets: Array<Asset>;
-  @Input() assets;
-
+  @Input() public assets: Array<AssetList>;
 }

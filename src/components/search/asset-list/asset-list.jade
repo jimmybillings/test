@@ -1,6 +1,8 @@
 ul.grid-asset-list
   li(*ngFor="#asset of assets")
-    .asset-name {{asset.name}}
-    a(flex='', [routerLink]="['Home']", title='Home')
-      img(src='resources/img/highlights/dimoc.jpg')
-      // .meta {{asset.renditions[0].format}}
+    .asset
+      .asset-name {{asset.name}}
+      span(*ngFor="#mdata of asset.metaData; #i = index", class="mdata-{{i}}") 
+        span {{mdata.value}}
+      a(flex='', [routerLink]="['Home']")
+        img(src='{{asset.thumbnail.urls.https}}')
