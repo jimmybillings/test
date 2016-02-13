@@ -12,8 +12,11 @@ import {provide} from 'angular2/core';
 import {Location, Router, RouteRegistry, RouteParams, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
 import {SpyLocation} from 'angular2/src/mock/location_mock';
 import {RootRouter, } from 'angular2/src/router/router';
+import { MockBackend } from 'angular2/http/testing';
+import { BaseRequestOptions, Http } from 'angular2/http';
 import { ApiConfig } from '../../common/config/api.config';
 import {CurrentUser} from '../../common/models/current-user.model';
+import {UiConfig} from '../../common/config/ui.config';
 
 export function main() {
   describe('Search Component', () => {
@@ -23,8 +26,15 @@ export function main() {
       provide(Location, {useClass: SpyLocation}),
       provide(ROUTER_PRIMARY_COMPONENT, {useValue: Search}),
       provide(Router, {useClass: RootRouter}),
+      MockBackend,
+      BaseRequestOptions,
+      provide(Http, {
+        useFactory: (backend, defaultOptions) => new Http(backend, defaultOptions),
+        deps: [MockBackend, BaseRequestOptions]
+      }),
       CurrentUser,
-      ApiConfig
+      ApiConfig,
+      UiConfig
     ]);
     
     it('Should have a search instance', 
