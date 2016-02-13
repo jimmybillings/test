@@ -5,7 +5,7 @@ import {NgStyle, CORE_DIRECTIVES} from 'angular2/common';
 import { AssetData } from '../../common/services/asset.data.service';
 import { AssetList }  from './asset-list/asset-list.component';
 import {Asset} from '../../common/interfaces/asset.interface';
-
+import {UiConfig} from '../../common/config/ui.config';
 // import 'rxjs/add/operator/map';
 
 @Component({
@@ -16,7 +16,7 @@ import {Asset} from '../../common/interfaces/asset.interface';
 })
 
 export class Search {
-  
+  public ui: Object;
   public assets: Asset[];
   public errorMessage: string;
   private _params: Object;
@@ -24,8 +24,11 @@ export class Search {
   constructor(
     private _router: Router,
     public routeParams: RouteParams,
-    public _assetData: AssetData) {
+    public _assetData: AssetData,
+    public uiConfig: UiConfig) {
     this._params = routeParams.params;
+    this.ui = this.uiConfig.ui();
+    console.log(this.ui);
   }
   
   ngOnInit(): void {
