@@ -29,11 +29,11 @@ export class AppComponent {
       public currentUser: CurrentUser, 
       private _apiConfig: ApiConfig,
       public uiConfig: UiConfig) {
-          this._apiConfig.setPortal('core');
+          this._apiConfig.setPortal('cnn');
       }
       
       ngOnInit() {
-        this.uiConfig.get('core')
+        this.uiConfig.get('cnn')
             .subscribe((res: Response) => {
               this.uiConfig.set(res.json());
               this.ui = this.uiConfig.ui();
