@@ -24,27 +24,29 @@ export class AssetData {
     };
   }
 
-  public getAssets(params: Object): Observable<any> {
+  public searchAssets(params: Object): Observable<any> {
+    
+    // method in api.conf
     const search: URLSearchParams = new URLSearchParams();
     for(var param in params) {
       search.set(param, params[param]);
     }
-    // console.log('is currentUser logged in ' + this.currentUser.loggedIn());
-    
     if (!this.currentUser.loggedIn()) {
       search.set('siteName', this.apiConfig.getPortal());  
     };
-   
     let url = (this.currentUser.loggedIn()) ? this._apiUrls.getAssets : this._apiUrls.getAssetsAnonymous;
     let headers = (this.currentUser.loggedIn()) ? this.apiConfig.getAuthHeader() : null;
     let options = (this.currentUser.loggedIn()) ? 
       new RequestOptions({ headers: headers, search: search }) : 
       new RequestOptions({search: search });
+
+
+   
    
     return this.http.get(url, options)
       .map((res: any) => {
         console.log(res.json());
-        return res.json().items;
+        return res.json();
       });
       // .map((assets: Array<{asset: Asset}>) => assets.map((asset: {asset: Asset}) => asset.asset));
       // .catch(this.handleError);

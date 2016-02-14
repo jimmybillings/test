@@ -1,17 +1,16 @@
-// import {Component, Output, EventEmitter} from 'angular2/core';
-import {Component} from 'angular2/core';
+import {Component, Input} from 'angular2/core';
 import {FormBuilder, Validators, ControlGroup, FORM_DIRECTIVES} from 'angular2/common';
 import {Router} from 'angular2/router';
 
 @Component({
   selector: 'search-box',
   templateUrl: 'components/home/search-box/search-box.html',
-  directives: [FORM_DIRECTIVES]
+  directives: [FORM_DIRECTIVES],
+    inputs: ['ui']
 })
 
 export class SearchBox {
-  // @Output() runSearch: EventEmitter<any> = new EventEmitter();
-
+  @Input() ui; 
   private searchForm: ControlGroup;
 
   constructor(
@@ -30,6 +29,6 @@ export class SearchBox {
   }
   
   public onSubmit(query: string): void {
-    this.router.navigate(['/Search', {q: query, n: 25}]);
+    this.router.navigate(['/Search', {q: query, n: this.ui.pageSize.value}]);
   }
 }
