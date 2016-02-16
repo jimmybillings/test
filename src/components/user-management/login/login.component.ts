@@ -15,37 +15,37 @@ import { CurrentUser } from '../../../common/models/current-user.model';
   directives: [MATERIAL_DIRECTIVES, ROUTER_DIRECTIVES, FORM_DIRECTIVES]
 })
 
-export class Login {    
-    
+export class Login {
+
   public loginForm: ControlGroup;
-   
+
   constructor(
     public _fb: FormBuilder,
     public _authentication: Authentication,
     public _user: User,
     public router: Router,
     private _ApiConfig: ApiConfig,
-    private _currentUser: CurrentUser) { 
+    private _currentUser: CurrentUser) {
   }
-  
+
   ngOnInit(): void {
     this.setForm();
   }
-  
+
   public onSubmit(user: Object): void {
-    this._authentication.create(user).subscribe((res:Response) => {
+    this._authentication.create(user).subscribe((res: Response) => {
       localStorage.setItem('token', res.json().token.token);
       this._currentUser.set(res.json().user);
       this.router.navigate(['/Home']);
     });
   }
-  
+
   public setForm(): void {
-     this.loginForm = this._fb.group({
-        'userId': null,
-        'password': ['',Validators.required],
-        'siteName': this._ApiConfig.getPortal()
-     });
+    this.loginForm = this._fb.group({
+      'userId': null,
+      'password': ['', Validators.required],
+      'siteName': this._ApiConfig.getPortal()
+    });
   }
 }
 

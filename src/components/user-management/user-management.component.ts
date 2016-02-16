@@ -11,9 +11,9 @@ import {Profile} from './profile/profile.component';
 })
 
 @RouteConfig([
-  { path: '/register', component: Register, name: 'Register'},
-  { path: '/login', component: Login, name: 'Login'},
-  { path: '/profile', component: Profile, name: 'Profile'}
+  { path: '/register', component: Register, name: 'Register' },
+  { path: '/login', component: Login, name: 'Login' },
+  { path: '/profile', component: Profile, name: 'Profile' }
 ])
 
 export class UserManagement { }

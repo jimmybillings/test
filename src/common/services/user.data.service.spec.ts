@@ -27,34 +27,34 @@ export function main() {
       expect(service._currentUser).toBeDefined();
       expect(service._apiUrls).toBeDefined();
     }));
-    
+
     it('Should make a request to create a new user', inject([User, MockBackend], (service, mockBackend) => {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       service.create(setUser()).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot()+'api/identities/user/register');
+        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/user/register');
         expect(connection.request._body).toEqual(JSON.stringify(setUser()));
       });
       connection.mockRespond(200);
     }));
-    
+
     it('Should make a request to get a current user object', inject([User, MockBackend], (service, mockBackend) => {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       service.get().subscribe((res) => {
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot()+'api/identities/user/currentUser');
+        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/user/currentUser');
       });
       connection.mockRespond(200);
     }));
-    
-  }); 
-  
+
+  });
+
   function checkAuthInHeader(headers) {
     return headers.filter((header) => (header === 'Authorization'));
   }
-  
+
   function setUser() {
     return {
       'lastUpdated': '2016-01-14T16:46:21Z',
@@ -66,6 +66,6 @@ export function main() {
       'lastName': 'last',
       'siteName': 'cnn',
       'accountIds': [4]
-    }; 
+    };
   }
 }

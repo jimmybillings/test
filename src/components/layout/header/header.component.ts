@@ -14,18 +14,18 @@ import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 
 export class Header {
   @Input() currentUser;
-  @Input() ui; 
+  @Input() ui;
   public showFixed: boolean;
 
   constructor() {
-    this.showFixed = false; 
+    this.showFixed = false;
   }
-  
+
   ngOnInit(): void {
     window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
   }
-  
-  public showFixedHeader(offset): void { 
+
+  public showFixedHeader(offset): void {
     this.showFixed = (offset > 68) ? true : false;
   }
 }

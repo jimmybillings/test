@@ -45,7 +45,11 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 @import '../node_modules/ng2-material/source/components/toolbar/toolbar';
 @import '../node_modules/ng2-material/source/components/tabs/tabs';
 
-@import './common/common';
+@import './resources/styles/animations';
+@import './resources/styles/text_contrast';
+@import './resources/styles/modifiers';
+@import './resources/styles/sticky_footer';
+
 @import './components/home/home';
 @import './components/layout/header/header';
 @import './components/layout/footer/footer';

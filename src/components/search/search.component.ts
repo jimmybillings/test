@@ -24,22 +24,21 @@ export class Search {
 
   constructor(
     private _router: Router,
-    public routeParams: RouteParams,
-    public _assetData: AssetData,
+    private routeParams: RouteParams,
+    private _assetData: AssetData,
     public uiConfig: UiConfig) {
     this._params = routeParams.params;
     this.ui = this.uiConfig.ui();
-    console.log(this.ui);
   }
-  
+
   ngOnInit(): void {
     this.searchAssets();
   }
-  
+
   public searchAssets(): void {
     this._assetData.searchAssets(this._params)
       .subscribe(
-        assets => this.assets = assets.items,
-        error =>  this.errorMessage = <any>error);
+      assets => this.assets = assets.items,
+      error => this.errorMessage = <any>error);
   }
 }

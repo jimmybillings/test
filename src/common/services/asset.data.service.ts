@@ -16,25 +16,25 @@ export class AssetData {
 
   constructor(
     public currentUser: CurrentUser,
-    private http: Http, 
+    private http: Http,
     private apiConfig: ApiConfig) {
     this._apiUrls = {
-      getAssets: this.apiConfig.getApiRoot()+ 'assets-api/clip/user/search',
-      getAssetsAnonymous: this.apiConfig.getApiRoot()+ 'assets-api/clip/anonymous/search'
+      getAssets: this.apiConfig.getApiRoot() + 'assets-api/clip/user/search',
+      getAssetsAnonymous: this.apiConfig.getApiRoot() + 'assets-api/clip/anonymous/search'
     };
   }
 
-  public getAssets(params: Object): Observable<any> {
-    
+  public searchAssets(params: Object): Observable<any> {
+
     const search: URLSearchParams = new URLSearchParams();
-    for(var param in params) search.set(param, params[param]);
+    for (var param in params) search.set(param, params[param]);
 
     let loggedIn = this.currentUser.loggedIn();
-    if (!loggedIn) search.set('siteName', this.apiConfig.getPortal());  
-   
+    if (!loggedIn) search.set('siteName', this.apiConfig.getPortal());
+
     let url = (loggedIn) ? this._apiUrls.getAssets : this._apiUrls.getAssetsAnonymous;
     let headers = (loggedIn) ? this.apiConfig.getAuthHeader() : void 0;
-    let options = (loggedIn) ? { headers: headers, search: search } :{search: search };
+    let options = (loggedIn) ? { headers: headers, search: search } : { search: search };
     options = new RequestOptions(options);
 
     return this.http.get(url, options)

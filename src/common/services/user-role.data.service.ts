@@ -20,11 +20,11 @@ export class UserRole {
     this.http = http;
     this.apiConfig = apiConfig;
     this._apiUrls = {
-      create: this.apiConfig.getApiRoot()+ 'api/identities/userRole',
-      show: this.apiConfig.getApiRoot()+ 'api/identities/userRole/',
-      search: this.apiConfig.getApiRoot()+ 'api/identities/userRole/search?text=',
-      update: this.apiConfig.getApiRoot()+ 'api/identities/userRole/',
-      destroy: this.apiConfig.getApiRoot()+ 'api/identities/userRole/'
+      create: this.apiConfig.getApiRoot() + 'api/identities/userRole',
+      show: this.apiConfig.getApiRoot() + 'api/identities/userRole/',
+      search: this.apiConfig.getApiRoot() + 'api/identities/userRole/search?text=',
+      update: this.apiConfig.getApiRoot() + 'api/identities/userRole/',
+      destroy: this.apiConfig.getApiRoot() + 'api/identities/userRole/'
     };
   }
 
@@ -36,27 +36,27 @@ export class UserRole {
   }
 
   show(id: number): Observable<any> {
-    return this.http.get(this._apiUrls.show+id, {
-        headers: this.apiConfig.getAuthHeader()
-      });
-  }
-  
-  search(criteria: string): Observable<any> {
-    return this.http.get(this._apiUrls.search+criteria, {
+    return this.http.get(this._apiUrls.show + id, {
       headers: this.apiConfig.getAuthHeader()
-    }); 
+    });
   }
-  
+
+  search(criteria: string): Observable<any> {
+    return this.http.get(this._apiUrls.search + criteria, {
+      headers: this.apiConfig.getAuthHeader()
+    });
+  }
+
   update(userRole: any): Observable<any> {
-    return this.http.put(this._apiUrls.update+userRole.id, 
+    return this.http.put(this._apiUrls.update + userRole.id,
       JSON.stringify(userRole), {
         headers: this.apiConfig.getAuthHeader()
       });
   }
-  
+
   destroy(id: number): Observable<any> {
-    return this.http.delete(this._apiUrls.show+id, {
-        headers: this.apiConfig.getAuthHeader()
-      });
+    return this.http.delete(this._apiUrls.show + id, {
+      headers: this.apiConfig.getAuthHeader()
+    });
   }
 }

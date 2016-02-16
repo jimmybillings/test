@@ -14,37 +14,37 @@ import { ApiConfig } from '../../../common/config/api.config';
 })
 
 export class Register {
-    public _user: User;
-    public registerForm: ControlGroup;
-    public _fb: FormBuilder;
-    private _ApiConfig: ApiConfig;
+  public _user: User;
+  public registerForm: ControlGroup;
+  public _fb: FormBuilder;
+  private _ApiConfig: ApiConfig;
 
   constructor(
-      _fb: FormBuilder, 
-      _user: User,
-      _ApiConfig: ApiConfig) {
-     this._fb = _fb;
-     this._user = _user;
-     this._ApiConfig = _ApiConfig;
-     this._setForm();
+    _fb: FormBuilder,
+    _user: User,
+    _ApiConfig: ApiConfig) {
+    this._fb = _fb;
+    this._user = _user;
+    this._ApiConfig = _ApiConfig;
+    this._setForm();
   }
-  
+
   public onSubmit(user: Object): void {
     this._user.create(user)
-      .subscribe((res:Response) => {
+      .subscribe((res: Response) => {
         console.log(res);
       });
   }
   
   //   PRIVATE METHODS HERE
   private _setForm(): void {
-     this.registerForm = this._fb.group({
-        'firstName': null,
-        'lastName': null,
-        'emailAddress': null,
-        'siteName': this._ApiConfig.getPortal(),
-        'password': null
-     }); 
+    this.registerForm = this._fb.group({
+      'firstName': null,
+      'lastName': null,
+      'emailAddress': null,
+      'siteName': this._ApiConfig.getPortal(),
+      'password': null
+    });
   }
 }
 

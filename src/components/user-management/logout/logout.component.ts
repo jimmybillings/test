@@ -10,15 +10,15 @@ import {CurrentUser} from '../../../common/models/current-user.model';
   providers: [Authentication]
 })
 
-export class Logout {    
-    private _authentication: Authentication;
-    private _currentUser: CurrentUser;
-  
+export class Logout {
+  private _authentication: Authentication;
+  private _currentUser: CurrentUser;
+
   constructor(_authentication: Authentication, _currentUser: CurrentUser) {
-     this._authentication = _authentication;
-     this._currentUser = _currentUser;
+    this._authentication = _authentication;
+    this._currentUser = _currentUser;
   }
-  
+
   public onSubmit(): void {
     localStorage.clear();
     this._currentUser.set();

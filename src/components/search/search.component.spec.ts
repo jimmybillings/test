@@ -1,10 +1,10 @@
 import {
-  TestComponentBuilder,
-  describe,
-  expect,
-  injectAsync,
-  it,
-  beforeEachProviders
+TestComponentBuilder,
+describe,
+expect,
+injectAsync,
+it,
+beforeEachProviders
 } from 'angular2/testing';
 
 import {Search} from './search.component';
@@ -23,9 +23,9 @@ export function main() {
     beforeEachProviders(() => [
       RouteRegistry,
       provide(RouteParams, { useValue: new RouteParams({ q: 'blue' }) }),
-      provide(Location, {useClass: SpyLocation}),
-      provide(ROUTER_PRIMARY_COMPONENT, {useValue: Search}),
-      provide(Router, {useClass: RootRouter}),
+      provide(Location, { useClass: SpyLocation }),
+      provide(ROUTER_PRIMARY_COMPONENT, { useValue: Search }),
+      provide(Router, { useClass: RootRouter }),
       MockBackend,
       BaseRequestOptions,
       provide(Http, {
@@ -36,14 +36,14 @@ export function main() {
       ApiConfig,
       UiConfig
     ]);
-    
-    it('Should have a search instance', 
+
+    it('Should have a search instance',
       injectAsync([TestComponentBuilder], (tcb) => {
         return tcb.createAsync(Search).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Search).toBeTruthy();
         });
-    }));
-    
+      }));
+
   });
 }

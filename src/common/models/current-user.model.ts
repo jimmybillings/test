@@ -3,16 +3,16 @@ import {CurrentUserInterface} from '../interfaces/current-user.interface';
 export class CurrentUser {
 
   private _currentUser: CurrentUserInterface;
-  
+
   constructor() {
     this._currentUser = this._user();
   }
-  
-  public set(user=false): void {
-    if(user) localStorage.setItem('currentUser', JSON.stringify(user));
+
+  public set(user = false): void {
+    if (user) localStorage.setItem('currentUser', JSON.stringify(user));
     this._currentUser = this._user();
   }
-  
+
   public loggedIn(): boolean {
     return (localStorage.getItem('token') !== null);
   }
@@ -32,7 +32,7 @@ export class CurrentUser {
   public fullName(): string {
     return `${this._currentUser.firstName} ${this._currentUser.lastName}`;
   }
-  
+
   public createdOn(): Date {
     return this._currentUser.createdOn;
   }
@@ -40,7 +40,7 @@ export class CurrentUser {
   public lastUpdated(): Date {
     return this._currentUser.lastUpdated;
   }
-  
+
   public siteName(): string {
     return this._currentUser.siteName;
   }
@@ -52,7 +52,7 @@ export class CurrentUser {
   public accountIds(): Array<any> {
     return this._currentUser.accountIds;
   }
-  
+
   private _user(): CurrentUserInterface {
     return JSON.parse(localStorage.getItem('currentUser')) || {
       emailAddress: null,

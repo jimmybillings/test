@@ -1,10 +1,10 @@
 import {
-  TestComponentBuilder,
-  describe,
-  expect,
-  injectAsync,
-  it,
-  beforeEachProviders
+TestComponentBuilder,
+describe,
+expect,
+injectAsync,
+it,
+beforeEachProviders
 } from 'angular2/testing';
 
 import {provide} from 'angular2/core';
@@ -22,9 +22,9 @@ export function main() {
   describe('Register Component', () => {
     beforeEachProviders(() => [
       RouteRegistry,
-      provide(Location, {useClass: SpyLocation}),
-      provide(ROUTER_PRIMARY_COMPONENT, {useValue: Register}),
-      provide(Router, {useClass: RootRouter}),
+      provide(Location, { useClass: SpyLocation }),
+      provide(ROUTER_PRIMARY_COMPONENT, { useValue: Register }),
+      provide(Router, { useClass: RootRouter }),
       MockBackend,
       BaseRequestOptions,
       provide(Http, {
@@ -35,14 +35,14 @@ export function main() {
       CurrentUser,
       Authentication
     ]);
-    
-    it('Should have a Register instance', 
+
+    it('Should have a Register instance',
       injectAsync([TestComponentBuilder], (tcb) => {
         return tcb.createAsync(Register).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Register).toBeTruthy();
         });
-    }));
-    
+      }));
+
   });
 }
