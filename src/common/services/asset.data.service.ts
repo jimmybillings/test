@@ -25,28 +25,22 @@ export class AssetData {
   }
 
   public getAssets(params: Object): Observable<any> {
-    const search: URLSearchParams = new URLSearchParams();
-    for(var param in params) {
-      search.set(param, params[param]);
-    }
-    // console.log('is currentUser logged in ' + this.currentUser.loggedIn());
     
-    if (!this.currentUser.loggedIn()) {
-      search.set('siteName', this.apiConfig.getPortal());  
-    };
+    const search: URLSearchParams = new URLSearchParams();
+    for(var param in params) search.set(param, params[param]);
+
+    let loggedIn = this.currentUser.loggedIn();
+    if (!loggedIn) search.set('siteName', this.apiConfig.getPortal());  
    
-    let url = (this.currentUser.loggedIn()) ? this._apiUrls.getAssets : this._apiUrls.getAssetsAnonymous;
-    let headers = (this.currentUser.loggedIn()) ? this.apiConfig.getAuthHeader() : null;
-    let options = (this.currentUser.loggedIn()) ? 
-      new RequestOptions({ headers: headers, search: search }) : 
-      new RequestOptions({search: search });
+    let url = (loggedIn) ? this._apiUrls.getAssets : this._apiUrls.getAssetsAnonymous;
+    let headers = (loggedIn) ? this.apiConfig.getAuthHeader() : void 0;
+    let options = (loggedIn) ? { headers: headers, search: search } :{search: search };
+    options = new RequestOptions(options);
    
     return this.http.get(url, options)
       .map((res: any) => {
         console.log(res.json());
         return res.json().items;
       });
-      // .map((assets: Array<{asset: Asset}>) => assets.map((asset: {asset: Asset}) => asset.asset));
-      // .catch(this.handleError);
   }
 }
