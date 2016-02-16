@@ -10,7 +10,6 @@ import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
   inputs: ['currentUser']
 })
 
-
 export class Footer {
-  @Input() currentUser; 
+  @Input() currentUser;
 }

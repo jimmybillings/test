@@ -17,6 +17,6 @@ export class Home {
     public currentUser: CurrentUser,
     public router: Router,
     public uiConfig: UiConfig) {
-      this.ui = this.uiConfig.ui();
+    this.ui = this.uiConfig.ui();
   }
 }

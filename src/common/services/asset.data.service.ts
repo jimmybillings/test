@@ -12,8 +12,7 @@ export class AssetData {
   constructor(
     public currentUser: CurrentUser,
     private http: Http,
-    private apiConfig: ApiConfig) {
-  }
+    private apiConfig: ApiConfig) {}
 
   public searchAssetsUrl(loggedIn: boolean): string {
     return this.apiConfig.getApiRoot() + this.apiConfig.getAssetSearchPath(loggedIn);

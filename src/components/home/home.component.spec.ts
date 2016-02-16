@@ -1,10 +1,10 @@
 import {
-  TestComponentBuilder,
-  describe,
-  expect,
-  injectAsync,
-  it,
-  beforeEachProviders
+TestComponentBuilder,
+describe,
+expect,
+injectAsync,
+it,
+beforeEachProviders
 } from 'angular2/testing';
 
 import {Home} from './home.component';
@@ -22,9 +22,9 @@ export function main() {
   describe('Home Component', () => {
     beforeEachProviders(() => [
       RouteRegistry,
-      provide(Location, {useClass: SpyLocation}),
-      provide(ROUTER_PRIMARY_COMPONENT, {useValue: Home}),
-      provide(Router, {useClass: RootRouter}),
+      provide(Location, { useClass: SpyLocation }),
+      provide(ROUTER_PRIMARY_COMPONENT, { useValue: Home }),
+      provide(Router, { useClass: RootRouter }),
       MockBackend,
       BaseRequestOptions,
       provide(Http, {
@@ -35,15 +35,15 @@ export function main() {
       UiConfig,
       ApiConfig
     ]);
-    
-    it('Create instance of home and assign the CurrentUser to an instance variable inside of home', 
+
+    it('Create instance of home and assign the CurrentUser to an instance variable inside of home',
       injectAsync([TestComponentBuilder], (tcb) => {
         return tcb.createAsync(Home).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Home).toBeTruthy();
           expect(instance.currentUser instanceof CurrentUser).toBeTruthy();
         });
-    }));
-    
+      }));
+
   });
 }

@@ -25,18 +25,18 @@ export class Search {
 
   constructor(
     private _router: Router,
-    public routeParams: RouteParams,
-    public _assetData: AssetData,
+    private routeParams: RouteParams,
+    private _assetData: AssetData,
     public uiConfig: UiConfig) {
     this._params = routeParams.params;
     this.ui = this.uiConfig.ui();
-    this.results =  {
+    this.results = {
       currentPage: 0,
       totalCount: null,
       pageSize: 0
     };
   }
-  
+
   ngOnInit(): void {
     this.searchAssets();
   }
@@ -44,8 +44,8 @@ export class Search {
   public searchAssets(): void {
     this._assetData.searchAssets(this._params)
       .subscribe(
-        results => this.results = results,
-        error =>  this.errorMessage = <any>error);
-        // console.log(this.assets);
+      results => this.results = results,
+      error => this.errorMessage = <any>error);
+    // console.log(this.assets);
   }
 }

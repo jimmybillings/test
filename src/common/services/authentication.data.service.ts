@@ -17,12 +17,12 @@ export class Authentication {
     this.http = http;
     this.apiConfig = apiConfig;
     this._apiUrls = {
-      create: this.apiConfig.getApiRoot()+ 'api/identities/login',
-      destroy: this.apiConfig.getApiRoot()+ 'api/identities/invalidate'
+      create: this.apiConfig.getApiRoot() + 'api/identities/login',
+      destroy: this.apiConfig.getApiRoot() + 'api/identities/invalidate'
     };
   }
 
-  public create(user:Object): Observable<any> {
+  public create(user: Object): Observable<any> {
     return this.http.post(this._apiUrls.create,
       JSON.stringify(user), {
         headers: this.apiConfig.getApiHeaders()
@@ -31,8 +31,8 @@ export class Authentication {
 
   public destroy(): Observable<any> {
     return this.http.post(this._apiUrls.destroy, null, {
-        headers: this.apiConfig.getAuthHeader()
-      });
+      headers: this.apiConfig.getAuthHeader()
+    });
   }
 }
 

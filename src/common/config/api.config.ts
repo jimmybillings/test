@@ -12,17 +12,17 @@ export class ApiConfig {
   }
 
   public getAuthHeader(): Headers {
-    return new Headers({'Content-Type': 'application/json', 'Authorization': 'Bearer '+ localStorage.getItem('token')});
+    return new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('token') });
   }
 
   public getApiHeaders(): Headers {
-    return new Headers({'Content-Type': 'application/json'});
+    return new Headers({ 'Content-Type': 'application/json' });
   }
-  
+
   public setPortal(portal: string): void {
     this._portal = portal;
   }
-  
+
   public getPortal(): string {
     return this._portal || 'core';
   }

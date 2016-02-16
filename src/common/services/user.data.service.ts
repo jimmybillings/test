@@ -20,8 +20,8 @@ export class User {
     this.apiConfig = apiConfig;
     this._currentUser = _currentUser;
     this._apiUrls = {
-      create: this.apiConfig.getApiRoot()+ 'api/identities/user/register',
-      get: this.apiConfig.getApiRoot()+ 'api/identities/user/currentUser'
+      create: this.apiConfig.getApiRoot() + 'api/identities/user/register',
+      get: this.apiConfig.getApiRoot() + 'api/identities/user/currentUser'
     };
   }
   

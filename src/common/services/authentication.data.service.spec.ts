@@ -24,40 +24,40 @@ export function main() {
       expect(service.apiConfig).toBeDefined();
       expect(service._apiUrls).toBeDefined();
     }));
-    
+
     it('Should make a request to login a new user', inject([Authentication, MockBackend], (service, mockBackend) => {
       let connection;
       connection = mockBackend.connections.subscribe(c => connection = c);
       service.create(setUser()).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot()+'api/identities/login');
+        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/login');
         expect(connection.request._body).toEqual(JSON.stringify(setUser()));
       });
       connection.mockRespond(200);
     }));
-    
+
     it('Should make a request to destroy the login of a user', inject([Authentication, MockBackend], (service, mockBackend) => {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       service.destroy(setUser()).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot()+'api/identities/invalidate');
+        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/invalidate');
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
       });
       connection.mockRespond(200);
     }));
-    
-    
-  }); 
-  
+
+
+  });
+
   function checkAuthInHeader(headers) {
     return headers.filter((header) => (header === 'Authorization'));
   }
-  
+
   function setUser() {
     return {
       'username': 'test@email.com',
       'password': 'password'
-    }; 
+    };
   }
 
 }

@@ -1,10 +1,10 @@
 import {
-  TestComponentBuilder,
-  describe,
-  expect,
-  injectAsync,
-  it,
-  beforeEachProviders
+TestComponentBuilder,
+describe,
+expect,
+injectAsync,
+it,
+beforeEachProviders
 } from 'angular2/testing';
 
 import {Footer} from './footer.component';
@@ -17,18 +17,18 @@ export function main() {
   describe('Footer Component', () => {
     beforeEachProviders(() => [
       RouteRegistry,
-      provide(Location, {useClass: SpyLocation}),
-      provide(ROUTER_PRIMARY_COMPONENT, {useValue: Footer}),
-      provide(Router, {useClass: RootRouter})
+      provide(Location, { useClass: SpyLocation }),
+      provide(ROUTER_PRIMARY_COMPONENT, { useValue: Footer }),
+      provide(Router, { useClass: RootRouter })
     ]);
-    
-    it('Should have a footer instance', 
+
+    it('Should have a footer instance',
       injectAsync([TestComponentBuilder], (tcb) => {
         return tcb.createAsync(Footer).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Footer).toBeTruthy();
         });
-    }));
-    
+      }));
+
   });
 }

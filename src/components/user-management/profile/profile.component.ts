@@ -5,13 +5,13 @@ import {NgFor} from 'angular2/common';
 @Component({
   selector: 'profile',
   templateUrl: 'components/user-management/profile/profile.html',
-  directives:[NgFor]
+  directives: [NgFor]
 })
 
-export class Profile {    
-    public currentUser: CurrentUser;
-  
+export class Profile {
+  public currentUser: CurrentUser;
+
   constructor(currentUser: CurrentUser) {
-     this.currentUser = currentUser;
+    this.currentUser = currentUser;
   }
 }
