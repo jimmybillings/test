@@ -36,11 +36,11 @@ export class AssetData {
     let headers = (loggedIn) ? this.apiConfig.getAuthHeader() : void 0;
     let options = (loggedIn) ? { headers: headers, search: search } :{search: search };
     options = new RequestOptions(options);
-   
+
     return this.http.get(url, options)
       .map((res: any) => {
         console.log(res.json());
-        return res.json().items;
+        return res.json();
       });
   }
 }

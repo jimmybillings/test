@@ -37,9 +37,9 @@ export class Search {
   }
   
   public searchAssets(): void {
-    this._assetData.getAssets(this._params)
+    this._assetData.searchAssets(this._params)
       .subscribe(
-        assets => this.assets = assets,
+        assets => this.assets = assets.items,
         error =>  this.errorMessage = <any>error);
   }
 }

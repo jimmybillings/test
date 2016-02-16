@@ -37,6 +37,7 @@ export class AppComponent {
             .subscribe((res: Response) => {
               this.uiConfig.set(res.json());
               this.ui = this.uiConfig.ui();
+              // console.log(this.ui);
             });
         this.currentUser.set();
       }             

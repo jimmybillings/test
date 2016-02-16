@@ -19,9 +19,4 @@ export class Home {
     public uiConfig: UiConfig) {
       this.ui = this.uiConfig.ui();
   }
-  
-  // searchAssets(query: string): void {
-    // console.log(query);
-    // this.router.navigate(['/Search', {q: query}]);
-  // }
 }
