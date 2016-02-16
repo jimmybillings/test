@@ -37,11 +37,8 @@ export class ApiConfig {
     
     if (!isUserLoggedIn) search.set('siteName', this.getPortal());  
     
-    let headers = (isUserLoggedIn) ? this.getAuthHeader() : null;
-    let options = (isUserLoggedIn) ? 
-      new RequestOptions({ headers: headers, search: search }) : 
-      new RequestOptions({search: search });
-    return options;
-    
+    let headers = (isUserLoggedIn) ? this.getAuthHeader() : void null;
+    let options = (isUserLoggedIn) ? {headers: headers, search: search} : {search: search};
+    return options = new RequestOptions(options);
   }
 }
