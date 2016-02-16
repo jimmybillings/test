@@ -5,14 +5,14 @@ ul.grid-asset-list {
   list-style: none;
   font-size: 0;
   line-height: 0;
-  margin: 40px 0 30px -1%;
+  margin: 0 0 30px -1%;
   padding: 0;
   & > li {
     font-size: 1em;
     position: relative;
     display: inline-block;
     vertical-align: bottom;
-    margin: 2% 0 1% 1%;
+    margin: 1% 0 1.75% 1%;
     width: 19%;
     @include transition($swift-ease-out);
     .asset {

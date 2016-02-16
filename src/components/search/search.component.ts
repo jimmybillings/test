@@ -4,7 +4,7 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 import {NgStyle, CORE_DIRECTIVES} from 'angular2/common';
 import { AssetData } from '../../common/services/asset.data.service';
 import { AssetList }  from './asset-list/asset-list.component';
-import {Asset} from '../../common/interfaces/asset.interface';
+import {Asset, SearchResult} from '../../common/interfaces/asset.interface';
 import {UiConfig} from '../../common/config/ui.config';
 // import 'rxjs/add/operator/map';
 
@@ -18,6 +18,7 @@ import {UiConfig} from '../../common/config/ui.config';
 
 export class Search {
   public ui: Object;
+  public results: SearchResult;
   public assets: Asset[];
   public errorMessage: string;
   private _params: Object;
@@ -29,17 +30,22 @@ export class Search {
     public uiConfig: UiConfig) {
     this._params = routeParams.params;
     this.ui = this.uiConfig.ui();
-    console.log(this.ui);
+    this.results =  {
+      currentPage: 0,
+      totalCount: null,
+      pageSize: 0
+    };
   }
   
   ngOnInit(): void {
     this.searchAssets();
   }
-  
+
   public searchAssets(): void {
     this._assetData.searchAssets(this._params)
       .subscribe(
-        assets => this.assets = assets.items,
+        results => this.results = results,
         error =>  this.errorMessage = <any>error);
+        // console.log(this.assets);
   }
 }

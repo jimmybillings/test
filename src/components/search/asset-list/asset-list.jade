@@ -5,4 +5,5 @@ ul.grid-asset-list
       span(*ngFor="#mdata of asset.metaData; #i = index", class="mdata-{{i}}") 
         span {{mdata.value}}
       a(flex='', [routerLink]="['Home']")
-        img(src='{{asset.thumbnail.urls.https}}')
+        img(*ngIf="asset.thumbnail", src='{{asset.thumbnail.urls.https}}')
+        img(*ngIf="!asset.thumbnail", src="resources/img/highlights/dimoc.jpg")

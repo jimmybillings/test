@@ -2,12 +2,13 @@ section.search-results
   div(layout='row', layout-xs="column", md-scroll-y='', layout-align='start center', layout-padding='')
     div(flex='')
     div(flex-xl="85", flex-gt-lg="95", flex="100")
+      .pagination.md-body-2(layout='row' layout-align='end center') {{results.totalCount}} results
       div(layout='row')
         // img(width="465", NgIf='clipRendition(result.rendition).url != ""', *ngFor='#result of results' src="{{clipRendition(result.rendition).url}}")
-    
-        asset-list([assets]="assets", class="{{ui.search.viewType.value}}")
+        // asset-list([assets]="assets", class="{{ui.search.viewType.value}}")
+        asset-list([assets]="results.items", class="{{ui.search.viewType.value}}")
         
         .alert.warning([hidden]="!errorMessage && (!assets || assets.length > 0)")
-          No items can be found with that search
+          | No items can be found for that search
 
     div(flex='')
