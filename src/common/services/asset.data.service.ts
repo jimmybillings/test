@@ -1,5 +1,5 @@
 import { Injectable } from 'angular2/core';
-import { Http, RequestOptions, URLSearchParams } from 'angular2/http';
+import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -9,46 +9,24 @@ import {CurrentUser} from '../../common/models/current-user.model';
 @Injectable()
 export class AssetData {
 
-  private _apiUrls: {
-    getAssets: string,
-    getAssetsAnonymous: string
-  };
-
   constructor(
     public currentUser: CurrentUser,
-    private http: Http, 
+    private http: Http,
     private apiConfig: ApiConfig) {
-    this._apiUrls = {
-      getAssets: this.apiConfig.getApiRoot()+ 'assets-api/clip/user/search',
-      getAssetsAnonymous: this.apiConfig.getApiRoot()+ 'assets-api/clip/anonymous/search'
-    };
   }
 
+  public searchAssetsUrl(loggedIn: boolean): string {
+    return this.apiConfig.getApiRoot() + this.apiConfig.getAssetSearchPath(loggedIn);
+  }
+  
   public searchAssets(params: Object): Observable<any> {
-    
-    // method in api.conf
-    const search: URLSearchParams = new URLSearchParams();
-    for(var param in params) {
-      search.set(param, params[param]);
-    }
-    if (!this.currentUser.loggedIn()) {
-      search.set('siteName', this.apiConfig.getPortal());  
-    };
-    let url = (this.currentUser.loggedIn()) ? this._apiUrls.getAssets : this._apiUrls.getAssetsAnonymous;
-    let headers = (this.currentUser.loggedIn()) ? this.apiConfig.getAuthHeader() : null;
-    let options = (this.currentUser.loggedIn()) ? 
-      new RequestOptions({ headers: headers, search: search }) : 
-      new RequestOptions({search: search });
-
-
-   
-   
-    return this.http.get(url, options)
-      .map((res: any) => {
-        console.log(res.json());
+    let options = this.apiConfig.getAssetSearchOptions(params, this.currentUser.loggedIn());
+    return this.http.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options)
+      .map((res: Response) => {
+        // console.log(res.json());
         return res.json();
       });
-      // .map((assets: Array<{asset: Asset}>) => assets.map((asset: {asset: Asset}) => asset.asset));
-      // .catch(this.handleError);
+    // .map((assets: Array<{asset: Asset}>) => assets.map((asset: {asset: Asset}) => asset.asset));
+    // .catch(this.handleError);
   }
 }

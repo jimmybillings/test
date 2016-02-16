@@ -1,5 +1,5 @@
 import { Injectable } from 'angular2/core';
-import { Headers } from 'angular2/http';
+import { Headers, RequestOptions, URLSearchParams } from 'angular2/http';
 
 @Injectable()
 export class ApiConfig {
@@ -24,7 +24,24 @@ export class ApiConfig {
   }
   
   public getPortal(): string {
-    return this._portal;
+    return this._portal || 'core';
   }
-
+  
+  public getAssetSearchPath(isUserLoggedIn : boolean): string {
+    return (isUserLoggedIn) ? 'assets-api/clip/user/search' : 'assets-api/clip/anonymous/search';
+  }
+  
+  public getAssetSearchOptions(params: Object, isUserLoggedIn : boolean): Object {
+    const search: URLSearchParams = new URLSearchParams();
+    for(var param in params) search.set(param, params[param]);
+    
+    if (!isUserLoggedIn) search.set('siteName', this.getPortal());  
+    
+    let headers = (isUserLoggedIn) ? this.getAuthHeader() : null;
+    let options = (isUserLoggedIn) ? 
+      new RequestOptions({ headers: headers, search: search }) : 
+      new RequestOptions({search: search });
+    return options;
+    
+  }
 }
