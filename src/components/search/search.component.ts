@@ -44,6 +44,5 @@ export class Search {
       .subscribe(
       results => this.results = results,
       error => this.errorMessage = <any>error);
-    // console.log(this.assets);
   }
 }
