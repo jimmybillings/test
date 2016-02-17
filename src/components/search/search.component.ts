@@ -21,14 +21,12 @@ export class Search {
   public results: SearchResult;
   public assets: Asset[];
   public errorMessage: string;
-  private _params: {[key: string]: string};
 
   constructor(
     private _router: Router,
     private routeParams: RouteParams,
     private _assetData: AssetData,
     public uiConfig: UiConfig) {
-    this._params = routeParams.params;
     this.ui = this.uiConfig.ui();
     this.results = {
       currentPage: 0,
@@ -42,7 +40,7 @@ export class Search {
   }
 
   public searchAssets(): void {
-    this._assetData.searchAssets(this._params)
+    this._assetData.searchAssets(this.routeParams.params)
       .subscribe(
       results => this.results = results,
       error => this.errorMessage = <any>error);
