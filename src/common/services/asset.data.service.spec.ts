@@ -58,10 +58,10 @@ export function main() {
             currentPage: 1,
             hasNextPage: true,
             hasPreviousPage: true,
-            items: {
+            items: [{
               assetId: 33438201,
               name: '19F005_038'
-            },
+            }],
             numberOfPages: 5,
             pageSize: 25,
             totalCount: 122
