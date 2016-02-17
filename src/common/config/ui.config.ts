@@ -5,13 +5,13 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class UiConfig {
 
-  private _settings: Object;
+  private _config: Object;
   private _apiUrls: {
     get: string
   };
 
   constructor(private _http: Http, private _apiConfig: ApiConfig) {
-    this._settings = {};
+    this._config = {};
     this._apiUrls = {
       get: this._apiConfig.getApiRoot() + 'api/identities/configuration/site?siteName='
     };
@@ -24,10 +24,10 @@ export class UiConfig {
   }
 
   public set(config: Object): void {
-    this._settings = config;
+    this._config = config;
   }
 
   public ui(): Object {
-    return this._settings;
+    return this._config;
   }
 }

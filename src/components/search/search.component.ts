@@ -21,7 +21,7 @@ export class Search {
   public results: SearchResult;
   public assets: Asset[];
   public errorMessage: string;
-  private _params: Object;
+  private _params: {[key: string]: string};
 
   constructor(
     private _router: Router,

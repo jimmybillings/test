@@ -18,11 +18,10 @@ export class AssetData {
     return this.apiConfig.getApiRoot() + this.apiConfig.getAssetSearchPath(loggedIn);
   }
   
-  public searchAssets(params: Object): Observable<any> {
+  public searchAssets(params: {[key: string]: string}): Observable<any> {
     let options = this.apiConfig.getAssetSearchOptions(params, this.currentUser.loggedIn());
     return this.http.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options)
       .map((res: Response) => {
-        // console.log(res.json());
         return res.json();
       });
     // .map((assets: Array<{asset: Asset}>) => assets.map((asset: {asset: Asset}) => asset.asset));

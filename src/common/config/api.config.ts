@@ -4,6 +4,7 @@ import { Headers, RequestOptions, URLSearchParams } from 'angular2/http';
 @Injectable()
 export class ApiConfig {
   private _portal: string;
+  
   constructor() {
     this._portal = null;
   }
@@ -31,7 +32,7 @@ export class ApiConfig {
     return (isUserLoggedIn) ? 'assets-api/clip/user/search' : 'assets-api/clip/anonymous/search';
   }
   
-  public getAssetSearchOptions(params: Object, isUserLoggedIn : boolean): Object {
+  public getAssetSearchOptions(params: {[key: string]: string}, isUserLoggedIn : boolean): RequestOptions {
     const search: URLSearchParams = new URLSearchParams();
     for(var param in params) search.set(param, params[param]);
     
@@ -39,6 +40,6 @@ export class ApiConfig {
     
     let headers = (isUserLoggedIn) ? this.getAuthHeader() : void null;
     let options = (isUserLoggedIn) ? {headers: headers, search: search} : {search: search};
-    return options = new RequestOptions(options);
+    return new RequestOptions(options);
   }
 }
