@@ -4,7 +4,7 @@ ul.asset-list
       .asset-name {{asset.name}}
       a(flex='', [routerLink]="['Home']")
         img(*ngIf="asset.thumbnail", src='{{asset.thumbnail.urls.https}}')
-        img(*ngIf="!asset.thumbnail", src="resources/img/highlights/dimoc.jpg")
+        img(*ngIf="!asset.thumbnail", src="/resources/img/highlights/dimoc.jpg")
         
         span(*ngFor="#mdata of asset.metaData; #i = index", class="mdata-{{i}}") 
           span(*ngIf="i != 2") {{mdata.value}}
