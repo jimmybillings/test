@@ -72,7 +72,7 @@ asset-list {
         height: 30%;
         @include text-contrast(md-color($md-background, 100));
         span {
-          line-height: rem(1.7);
+          line-height: rem(1.5);
           opacity: .65;
           padding: 2.5% 3% 0 3%;
           overflow: hidden;
