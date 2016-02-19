@@ -1,6 +1,6 @@
 div(*ngIf="ui")
   app-header([currentUser]="currentUser", [ui]="ui.site")
-  md-content.main-content(layout='column', flex='')
+  .main-content
     router-outlet
   app-footer([currentUser]="currentUser")
   

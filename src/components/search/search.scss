@@ -1,6 +1,10 @@
 search {
+  display: block;
   background-color:  md-color($md-background, 300);
   border-top: 64px solid md-color($md-primary, 900, .7);
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    border-top-width: 56px;    
+  }
 }
 
 .pagination {

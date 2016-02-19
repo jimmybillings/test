@@ -24,7 +24,14 @@ app-header md-toolbar.glb {
         max-width: 100%;
         height: auto;
       }
-    } 
+    }
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      width: 72px;
+      height: 32px;
+      .logo {
+        width: 188px;
+      }
+    }
   }
   a.home-link > h1 {
     float: left;
@@ -46,6 +53,13 @@ app-header md-toolbar.glb {
       top: 12px;
       .logo {
         width: 228px;
+      }
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        width: 72px;
+        height: 32px;
+        .logo {
+          width: 188px;
+        }
       }
     }
   }

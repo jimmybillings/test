@@ -1,7 +1,7 @@
 header.hero 
-    div(layout='row', layout-xs="column", layout-margin='', md-scroll-y='', layout-align='start center', layout-padding='')
+    div(layout='row',layout-xs='column',md-scroll-y='',layout-align='start center',layout-padding='')
       div(flex="")
-      div(flex-xl="35",flex-gt-lg="50",flex-gt-md="55",flex-gt-sm="70",flex-gt-xs="90",flex="100")
+      div(flex-xl="35",flex-gt-lg="50",flex-gt-md="55",flex-gt-sm="70",flex="100")
         div(layout='column', layout-align='start center', layout-wrap='')
           .logo-wrapper
             .logo
@@ -10,7 +10,7 @@ header.hero
             | Incredible footage, killer research and unmatched clearance expertise
       div(flex="")
       
-section.vendor-marquee(hide-xs='')
+section.vendor-marquee(hide-xs='', layout="column")
   ul
     li
       img(src='resources/img/client_dimoc.png')
@@ -36,9 +36,9 @@ section.vendor-marquee(hide-xs='')
       // img(src='resources/img/client_fox.png')
       img(src='resources/img/client_paramount.png')
 
-section.mrkt-collections(layout='row', layout-xs="column", layout-align='start top')
+section.mrkt-collections(layout='row', layout-align='start top')
   div(flex="")
-  div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-xs="column",layout-wrap='')
+  div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-wrap='')
     .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
       a([routerLink]="['UserManagement', 'Register']")
         .mrkt-collections__highlight_img
@@ -72,9 +72,9 @@ section.mrkt-collections(layout='row', layout-xs="column", layout-align='start t
   div( flex='')
 
 section.mrkt-call-to-action
-  div(layout='row', layout-xs="column", layout-align='start center', layout-padding='')
+  div(layout='row', layout-xs="column", layout-align='start center', layout-gt-xs-padding='')
     div(flex="")
-    div(flex-xl="50",flex-gt-lg="60",flex-gt-md="70",flex-gt-sm="80",flex="100")
+    div(flex-xl="50",flex-gt-lg="60",flex-gt-md="70",flex="95")
       div(layout='column', layout-align='center center', layout-wrap='')
         h2.md-display-1
           | Experience what more than 67,000 customers know. Access #[strong 4 million+ assets] &amp; expert research support.

@@ -13,19 +13,22 @@ home {
     background-position: 0 0, center center;
     background-repeat: no-repeat, no-repeat;
     background-size: cover, cover;
-    padding-top: 20px;
+    padding-top: 64px;
     margin-bottom: 0;
     min-height: 802px;
     .logo-wrapper {
-      height: 260px;
+      height: 250px;
       width: 100%;
       .logo {
         @include background-image(url("resources/img/logo_rev.svg"));
         background-position: bottom center;
         background-repeat:no-repeat;
-        background-size: 260px;
-        height: 260px;
+        background-size: 255px;
+        height: 255px;
         opacity: .7;
+        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+          background-size: 220px;
+        }
       }
     }
   }
@@ -109,7 +112,7 @@ home {
         width: 300%!important;
         height: $height;
         @include transform(translate3d(0, 0, 0));
-        @include animation(loop 16s linear infinite);
+        @include animation(loop 10s linear infinite);
       }
 
       > ul > li {
@@ -140,7 +143,7 @@ home {
         display: block;
         position: relative;
         height: rem(24);
-        max-height: rem(24);
+        // max-height: rem(24);
         margin: 8px 8px 0 0;
         &::before {
           content: " ";
@@ -149,7 +152,7 @@ home {
           bottom: 0;
           left: 0;
           width: 100%;
-          @include background-image(linear-gradient(4deg, rgba(md-color($md-background, 900),0.9), rgba(md-color($md-background, 900),0) 50%));
+          @include background-image(linear-gradient(6deg, rgba(md-color($md-background, 900),0.9), rgba(md-color($md-background, 900),0) 50%));
           opacity: 0.6;
           @include transition(opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2));
           z-index: 1;
@@ -213,71 +216,11 @@ home {
     }
   }
   
-  
-  
   .mrkt-call-to-action {
     min-height: 440px;
     background:  md-color($md-primary, 700)  url('resources/img/bktx_dgl_lines_light.png');
     @include text-contrast(md-color($md-primary, 700));
     text-align: center;
-  }
-  .search {
-    width: 100%;
-    margin: 56px 0 26px 0;
-    position: relative;
-    overflow: hidden;
-    input {
-      width: 100%;
-      padding-left: rem(1);
-      height: rem(4.6);
-      border: none;
-      background-color:  md-color($md-background, 100, .9);
-      @include transition($swift-ease-in);
-      &:focus {
-        outline: none;
-        background-color: lighten(md-color($md-background, 100), 40%);
-        box-shadow: $whiteframe-shadow-z1;
-      }
-    }
-    button[type="submit"] {
-      cursor: pointer;
-      height: 100%;
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: rem(5);
-      font-size: 0;
-      border: none; 
-      background-color: md-color($md-accent, 800, .95);
-      @include transition($swift-ease-in);
-      i.material-icons {
-        font-size: rem(4);
-        @include text-contrast(md-color($md-background, 900));
-        text-shadow: md-color($md-background, 900, .2) 0 1px 2px;
-      }
-      &:hover {
-        background-color: md-color($md-accent, 700, 1);
-        // i.material-icons {
-        //   text-shadow: md-color($md-grey, 900, .4) 0 1px 3px;
-        // }
-      }
-      // &:after {
-      //   @include text-contrast(md-color($md-accent, 900));
-      //   @include transition(opacity 0.4s);
-      //   // content: "\f002";
-      //   font-family: 'Material Icons';
-      //   content: "\";
-      //   // font-family: $icon-custom-font-family;
-      //   font-size: rem(2.7);
-      //   opacity: .4;
-      //   position: absolute;
-      //   right: rem(.2);
-      //   top: rem(-.1);
-      // }
-      // &:hover:after {
-      //   opacity: .6;
-      // }
-    }
   }
 }
 

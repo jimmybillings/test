@@ -1,6 +1,6 @@
 search-box {
   width: 100%;
-  margin: 56px 0 26px 0;
+  margin: 20px 0 0 0;
   position: relative;
   overflow: hidden;
   input {
@@ -10,6 +10,7 @@ search-box {
     border: none;
     background-color:  md-color($md-background, 100, .9);
     @include transition($swift-ease-in);
+    border-radius: 0;
     &:focus {
       outline: none;
       background-color: lighten(md-color($md-background, 100), 40%);
