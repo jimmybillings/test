@@ -3,7 +3,7 @@ section.login.hero {
   width: 100%;
   position: relative;
   margin: 0 auto;
-  padding-top: 90px;
+  padding-top: 74px;
   @include text-contrast(md-color($md-background, 900));
   @include background-image(
     url("resources/img/bktx_dgl_lines_light.png"),
@@ -20,19 +20,18 @@ section.login.hero {
   // }
   md-card {
     padding: 20px 26px 0 26px;
-    min-width: 336px;
     color: md-color($md-foreground, secondary-text);
   }
   
   md-card-header .logo-wrapper {
-    height: 76px;
+    height: 60px;
     width: 100%;
     .logo {
       @include background-image(url("resources/img/logo.svg"));
       background-position: top center;
       background-repeat:no-repeat;
-      background-size: 155px;
-      height: 61px;
+      background-size: 170px;
+      height: 70px;
       opacity: .5;
     }
   }
