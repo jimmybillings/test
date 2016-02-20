@@ -25,5 +25,19 @@ app-footer {
         opacity: .35;
       }
     }
+    ul.social {
+      margin: 0;
+      padding:0;
+      li {
+        list-style: none;
+        display: block;
+        float: left;
+        margin-right: 3px;
+        a {
+          @include text-contrast(md-color($md-background, 200), md-color($md-background, 700), md-color($md-background, 100));
+          opacity: .35;
+        }
+      }
+    }
   }
 }

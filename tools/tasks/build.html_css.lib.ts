@@ -8,7 +8,7 @@ import {
 export = function buildHtmlCssLib(gulp, plugins) {
   return function () {
 
-    return merge(moveSass(), moveImages(), moveFavicons(), prepareTemplates());
+    return merge(moveSass(), moveImages(), moveFonts(), moveFavicons(), prepareTemplates());
 
     function prepareTemplates() {
       return gulp.src(APP_SRC+'/**/*.jade')
@@ -26,6 +26,11 @@ export = function buildHtmlCssLib(gulp, plugins) {
     function moveImages() {
       return gulp.src(APP_SRC+'/resources/img/*')
         .pipe(gulp.dest(APP_DEST+'/resources/img'));
+    }
+    
+    function moveFonts() {
+      return gulp.src(APP_SRC+'/resources/fonts/*')
+        .pipe(gulp.dest(APP_DEST+'/resources/fonts'));
     }
     
     function moveFavicons() {
