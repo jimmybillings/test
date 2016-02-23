@@ -17,16 +17,26 @@ export class UiConfig {
     };
   }
 
+  /**
+   * @params Site  Name of the site to retrieve configuration information for
+   * @returns      When observable is subscribed to it returns configuration object for a give site.
+   */
   public get(site: string): Observable<any> {
     return this._http.get(this._apiUrls.get + site, {
       headers: this._apiConfig.getApiHeaders()
     });
   }
 
+  /**
+   * @params config   Configuration options to establish a configuration object.  
+   */
   public set(config: Object): void {
     this._config = config;
   }
 
+  /**
+   * @returns  Currently set configuration object.
+   */
   public ui(): Object {
     return this._config;
   }

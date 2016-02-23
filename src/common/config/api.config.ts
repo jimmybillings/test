@@ -8,30 +8,59 @@ export class ApiConfig {
   constructor() {
     this._portal = null;
   }
+  /**
+   * @returns   Api hardcoded root path 'http://dev.crux.t3sandbox.xyz.:8080/'.
+   */
   public getApiRoot(): string {
     return 'http://dev.crux.t3sandbox.xyz.:8080/';
   }
-
+  /**
+   * @returns   Request Headers include Content-Type: application/json, 
+   *            and Authorization: Bearer with token value from localStorage
+   */
   public getAuthHeader(): Headers {
     return new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('token') });
   }
 
+  /**
+   * @returns   Request Header information 'Content-Type': 'application/json'
+   */
   public getApiHeaders(): Headers {
     return new Headers({ 'Content-Type': 'application/json' });
   }
 
+  /**
+   * @param portal    Sets value passed as the name of the portal. Examples: 'cnn', 'core'  
+   */
   public setPortal(portal: string): void {
     this._portal = portal;
   }
 
+  /**
+   * @returns  Portal name. If no value is set, return value defaults to 'core'
+   */
   public getPortal(): string {
     return this._portal || 'core';
   }
-  
+
+  /**
+   * @param isUserLoggedIn  True if current user is logged in and has localStorage information
+   * @returns               appropriate api search path based on whether or not user is logged in
+   */
   public getAssetSearchPath(isUserLoggedIn : boolean): string {
     return (isUserLoggedIn) ? 'assets-api/clip/user/search' : 'assets-api/clip/anonymous/search';
   }
-  
+
+  /**
+   * @param isUserLoggedIn  True if current user is logged in and has localStorage information, and is
+   *                        used to set api header information. 
+   * @param params          These are the url params when accessing search like q='' (query string in search), n=25 (assets per page)
+   * @returns               If user is not logged you get Query String Parameters that look like
+   *                        (q:derby n:25 siteName: core) if the user is logged in additional info is 
+   *                        passed into the Request Header like (Authorization:Bearer 48a0ecaa46e2770a7a82810daed4272 
+   *                        Content-Type:application/json) and Query String Parameters would be like (q:derby n:25)
+   *                        
+   */
   public getAssetSearchOptions(params: {[key: string]: string}, isUserLoggedIn : boolean): RequestOptions {
     const search: URLSearchParams = new URLSearchParams();
     for(var param in params) search.set(param, params[param]);

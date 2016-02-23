@@ -33,7 +33,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.uiConfig.get('core')
+    this.uiConfig.get(this._apiConfig.getPortal())
       .subscribe((res: Response) => {
         this.uiConfig.set(res.json());
         this.ui = this.uiConfig.ui();
