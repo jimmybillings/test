@@ -1,14 +1,53 @@
 .glb(layout='row', layout-align='start center')
-  div(flex="")
-  div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="95", layout='row', layout-wrap='')
-    div(flex-gt-sm='33',flex="100")
-      .logo-wrapper
+  div(flex='')
+  div(flex-xl="85", flex-gt-lg="95", flex="100", layout='row', layout-wrap='', layout-padding='')
+    div(hide='', show-gt-md='',flex-gt-md='25',flex='100',layout='column',layout-align='start center', layout-align-gt-md='start start')
+      a.logo-wrapper([routerLink]="['Home']")
         .logo
-    div(flex-gt-sm='33',flex="100")
-      // h4 Contact Us
-    div(flex-gt-sm='33',flex="100")
-      // h4 Media
-  //  div(flex-gt-md="25",flex-gt-xs="35",flex="50")
-  //  div(flex-gt-md="25",flex-gt-xs="35",flex="50")
-  //  div(flex-gt-md="25",flex-gt-xs="35",flex="50")
+    div(flex-gt-md='25',flex='100',layout='column',layout-align='start stretch', layout-align-gt-md='start start')
+      h3.md-title Office
+      p.md-body-1
+        | 1515 Arapahoe Street Tower 3, Suite 400 <br/>Denver, CO 80202
+
+    div.sales(flex-gt-md='25',flex='100',layout='column',layout-align='start stretch', layout-align-gt-md='start start')
+      h3.md-title Sales
+      md-list
+        md-list-item
+          a(md-button='', href='mailto:platformsales@wazeedigital.com')
+            p.email-icon.md-body-1 platformsales@wazeedigital.com
+              i.material-icons(md-icons='') mail
+        md-list-item
+          .phone(md-button='')
+            p.phone-icon.md-body-1 866-815-6599
+              i.material-icons(md-icons='') phone_iphone
+ 
+    div(flex-gt-md='25',flex='100',layout='column',layout-align='start center', layout-align-gt-md='start start')
+      h3.md-title Community
+      ul.social
+        li
+          a.facebook(href="https://www.facebook.com/WazeeDigital", target="_blank")
+            span.fa-stack.fa-lg
+              i.fa.fa-circle.fa-stack-2x
+              i.fa.fa-facebook.fa-stack-1x.fa-inverse
+        li
+          a.twitter(href="https://twitter.com/wazee_digital", target="_blank")
+            span.fa-stack.fa-lg
+              i.fa.fa-circle.fa-stack-2x
+              i.fa.fa-twitter.fa-stack-1x.fa-inverse
+        li
+          a.google-plus(href="https://plus.google.com/114252139629653219287/about", target="_blank")
+            span.fa-stack.fa-lg
+              i.fa.fa-circle.fa-stack-2x
+              i.fa.fa-google-plus.fa-stack-1x.fa-inverse
+        li
+          a.linkedin(href="https://www.linkedin.com/company/wazeedigital?trk=top_nav_home", target="_blank")
+            span.fa-stack.fa-lg
+              i.fa.fa-circle.fa-stack-2x
+              i.fa.fa-linkedin.fa-stack-1x.fa-inverse
+        li
+          a.youtube(href="https://www.youtube.com/user/thoughtequity", target="_blank")
+            span.fa-stack.fa-lg
+              i.fa.fa-circle.fa-stack-2x
+              i.fa.fa-youtube.fa-stack-1x.fa-inverse
+
   div(flex="")

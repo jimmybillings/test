@@ -1,7 +1,8 @@
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 @import '../node_modules/bourbon/app/assets/stylesheets/bourbon';
 
-$md-font-url: '/node_modules/ng2-material/dist/';
+// $md-font-url: '/node_modules/ng2-material/dist/';
+$md-font-url: '/resources/fonts/';
 @import '../node_modules/ng2-material/font/font.scss';
 
 @import '../node_modules/ng2-material/source/core/style/variables';
@@ -46,6 +47,7 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 @import '../node_modules/ng2-material/source/components/tabs/tabs';
 
 @import './resources/styles/animations';
+@import './resources/styles/font-awesome/font-awesome';
 @import './resources/styles/text_contrast';
 @import './resources/styles/modifiers';
 @import './resources/styles/sticky_footer';
