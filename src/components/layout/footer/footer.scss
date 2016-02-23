@@ -10,32 +10,87 @@ app-footer {
     // background-position: 0 0, 0 0;
     // background-repeat: repeat, no-repeat;
     // background-size: auto, cover;
-    padding-top: rem(2.4);
+    padding-top: rem(1);
+    padding-bottom: rem(4);
+    // opacity: .75;
     @include text-contrast(md-color($md-background, 200), md-color($md-background, 700), md-color($md-background, 100));
     .logo-wrapper {
-      height: 150px;
+      height: 170px;
       width: 100%;
       .logo {
-        margin: rem(.7) 0 0 rem(-.9);
+        margin: rem(.3) 0 0 0;
         @include background-image(url("resources/img/logo.svg"));
-        background-position: top left;
+        background-position: center center;
         background-repeat:no-repeat;
-        background-size: 100px;
-        height: 100px;
-        opacity: .35;
+        background-size: 133px;
+        height: 133px;
+        opacity: .25;
       }
     }
     ul.social {
-      margin: 0;
+      margin: 0 0 25px 0;
       padding:0;
       li {
         list-style: none;
         display: block;
         float: left;
-        margin-right: 3px;
+        // margin-left: 3px;
         a {
           @include text-contrast(md-color($md-background, 200), md-color($md-background, 700), md-color($md-background, 100));
-          opacity: .35;
+          opacity: .25;
+          @include transition($swift-ease-in);
+          &:hover {
+            color: md-color($md-primary, 500, .9);
+            opacity: 1;
+          } 
+        }
+      }
+    }
+    h3.md-title {
+      margin-bottom: .7em;
+    }
+    h3.md-title + .md-body-1 {
+      margin: 8px 0 0 0;
+    }
+    .sales {
+      md-list {
+        padding: 0;
+      }
+      md-list-item, .md-list-item-inner {
+        padding: 0;
+        min-height: 0;
+      }
+      *[md-button] {
+        margin: 0;
+        padding: 9px 6px;
+        @include text-contrast(md-color($md-background, 200), md-color($md-background, 700), md-color($md-background, 100));
+        &:hover {
+          background: #fff;
+          color: md-color($md-primary, 500, .9);
+        }
+        &.phone:hover {
+          cursor: default;
+          background: transparent;
+          @include text-contrast(md-color($md-background, 200), md-color($md-background, 700), md-color($md-background, 100));
+        }
+        &.phone:hover .md-button-wrapper .md-body-1 i[md-icons] {
+          opacity: .25;
+        }
+        &:hover .md-button-wrapper .md-body-1 i[md-icons] {
+          opacity: .75;
+        }
+        .md-button-wrapper .md-body-1 {
+          text-transform: initial;
+          margin: 0;
+          padding: 0 0 0 30px;
+          position: relative;
+          i[md-icons] {
+            position: absolute;
+            top: -3px;
+            left: -1px;
+            opacity: .25;
+            @include transition($swift-ease-in);
+          }
         }
       }
     }
