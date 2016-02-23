@@ -14,7 +14,7 @@ section.search-results
 
     div(flex-xl="70", flex-gt-lg="80", flex="100", *ngIf="ui.search.viewType.value == 'list'")
       .pagination.md-body-2(layout='row' layout-align='end center') 
-        .results-count{{results.totalCount}} results
+        .results-count {{results.totalCount}} results
       div(layout='row')
         asset-list([assets]="results.items", class="{{ui.search.viewType.value}}")
         
