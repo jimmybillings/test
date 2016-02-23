@@ -1,6 +1,6 @@
 app-footer {
   display: block;
-  background-color: md-color($md-background, 200);
+  background-color: md-color($md-background, 200, .7);
   .glb {
     // @include background-image(
     //   url("resources/img/bktx_maze_light.png"),
@@ -65,7 +65,7 @@ app-footer {
         padding: 9px 6px;
         @include text-contrast(md-color($md-background, 200), md-color($md-background, 700), md-color($md-background, 100));
         &:hover {
-          background: #fff;
+          background: md-color($md-background, 50);
           color: md-color($md-primary, 500, .9);
         }
         &.phone:hover {
