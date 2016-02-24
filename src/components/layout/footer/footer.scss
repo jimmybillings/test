@@ -1,6 +1,6 @@
 app-footer {
   display: block;
-  background-color: md-color($md-background, 200, .7);
+  background-color: md-color($md-primary, 900, .9);
   .glb {
     // @include background-image(
     //   url("resources/img/bktx_maze_light.png"),
@@ -13,13 +13,13 @@ app-footer {
     padding-top: rem(1);
     padding-bottom: rem(4);
     // opacity: .75;
-    @include text-contrast(md-color($md-background, 200), md-color($md-background, 700), md-color($md-background, 100));
+    @include text-contrast(md-color($md-primary, 900), md-color($md-background, 700), md-color($md-background, 400, .8));
     .logo-wrapper {
       height: 170px;
       width: 100%;
       .logo {
         margin: rem(.3) 0 0 0;
-        @include background-image(url("resources/img/logo.svg"));
+        @include background-image(url("resources/img/logo_rev.svg"));
         background-position: center center;
         background-repeat:no-repeat;
         background-size: 133px;
@@ -36,7 +36,7 @@ app-footer {
         float: left;
         // margin-left: 3px;
         a {
-          @include text-contrast(md-color($md-background, 200), md-color($md-background, 700), md-color($md-background, 100));
+          @include text-contrast(md-color($md-background, 200), md-color($md-background, 900), md-color($md-background, 100));
           opacity: .25;
           @include transition($swift-ease-in);
           &:hover {
@@ -63,21 +63,21 @@ app-footer {
       *[md-button] {
         margin: 0;
         padding: 9px 6px;
-        @include text-contrast(md-color($md-background, 200), md-color($md-background, 700), md-color($md-background, 100));
+        @include text-contrast(md-color($md-primary, 900), md-color($md-background, 700), md-color($md-background, 400, .8));
         &:hover {
-          background: md-color($md-background, 50);
-          color: md-color($md-primary, 500, .9);
+          background: md-color($md-background, 900, .25);
+          color: md-color($md-primary, 300);
         }
         &.phone:hover {
           cursor: default;
           background: transparent;
-          @include text-contrast(md-color($md-background, 200), md-color($md-background, 700), md-color($md-background, 100));
+          @include text-contrast(md-color($md-primary, 900), md-color($md-background, 700), md-color($md-background, 400, .8));
         }
         &.phone:hover .md-button-wrapper .md-body-1 i[md-icons] {
           opacity: .25;
         }
         &:hover .md-button-wrapper .md-body-1 i[md-icons] {
-          opacity: .75;
+          opacity: .8;
         }
         .md-button-wrapper .md-body-1 {
           text-transform: initial;

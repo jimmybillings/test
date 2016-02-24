@@ -14,10 +14,23 @@ export class AssetData {
     private http: Http,
     private apiConfig: ApiConfig) {}
 
+  /**
+   * @param loggedIn  Current user is logged in if localStorage token exists otherwise current user is not logged in.
+   *                  This is needed to return URL from getAssetSearchPath()
+   * @returns         URL for search api  concatenates the root URL with the search URL. Examples:
+   *                  http://dev.crux.t3sandbox.xyz.:8080/assets-api/clip/user/search if you're logged in
+   *                  http://dev.crux.t3sandbox.xyz.:8080/assets-api/clip/anonymous/search if you're logged out
+   */
   public searchAssetsUrl(loggedIn: boolean): string {
     return this.apiConfig.getApiRoot() + this.apiConfig.getAssetSearchPath(loggedIn);
   }
   
+  /**
+   * Ajax get request to search api to return matching assets and pagination information.
+   * @param params    These are the url params when accessing search like q=goats (query string in search), n=25 (assets per page)
+   * @returns         Response from search api. This includes information for pagination and assets for the search query.
+   *                  Example: {items: Array[25], totalCount: 122, currentPage: 1, pageSize: 25, hasNextPage: true}
+   */
   public searchAssets(params: {[key: string]: string}): Observable<any> {
     let options = this.apiConfig.getAssetSearchOptions(params, this.currentUser.loggedIn());
     return this.http.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options)
