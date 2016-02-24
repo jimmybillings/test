@@ -21,14 +21,23 @@ export class Authentication {
       destroy: this.apiConfig.getApiRoot() + 'api/identities/invalidate'
     };
   }
-
+  
+  /**
+   * Ajax post request to login a user.
+   * @param user   Typically from the login form. Example:{"userId": "admin@wazeedigital.com","password": "admin","siteName": "core"}
+   * @returns      Response from login api which is a user object with a token, permissions, and accountIds.
+   */
   public create(user: Object): Observable<any> {
     return this.http.post(this._apiUrls.create,
       JSON.stringify(user), {
         headers: this.apiConfig.getApiHeaders()
       });
   }
-
+  
+  /**
+   * Ajax post request to invalidate user token (log out). 
+   * @returns      Response from api Token invalidated if successful
+   */
   public destroy(): Observable<any> {
     return this.http.post(this._apiUrls.destroy, null, {
       headers: this.apiConfig.getAuthHeader()

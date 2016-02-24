@@ -18,8 +18,9 @@ export class UiConfig {
   }
 
   /**
-   * @params Site  Name of the site to retrieve configuration information for
-   * @returns      When observable is subscribed to it returns configuration object for a give site.
+   * Ajax http.get request to return site configuration.
+   * @param site  site name to retrieve configuration information for example: 'cnn' or 'core'.
+   * @returns      When observable is subscribed to it returns configuration object for the given site name.
    */
   public get(site: string): Observable<any> {
     return this._http.get(this._apiUrls.get + site, {
@@ -28,14 +29,15 @@ export class UiConfig {
   }
 
   /**
-   * @params config   Configuration options to establish a configuration object.  
+   * 
+   * @param config   Configuration options to establish a configuration object.
    */
   public set(config: Object): void {
     this._config = config;
   }
 
   /**
-   * @returns  Currently set configuration object.
+   * @returns  The currently set configuration object.
    */
   public ui(): Object {
     return this._config;

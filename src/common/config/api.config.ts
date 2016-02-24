@@ -5,11 +5,14 @@ import { Headers, RequestOptions, URLSearchParams } from 'angular2/http';
 export class ApiConfig {
   private _portal: string;
   
+  /**
+   * Initializes private var 'portal' to null
+   */  
   constructor() {
     this._portal = null;
   }
   /**
-   * @returns   Api hardcoded root path 'http://dev.crux.t3sandbox.xyz.:8080/'.
+   * @returns   Api root path. Example: 'http://dev.crux.t3sandbox.xyz.:8080/'.
    */
   public getApiRoot(): string {
     return 'http://dev.crux.t3sandbox.xyz.:8080/';
@@ -30,6 +33,7 @@ export class ApiConfig {
   }
 
   /**
+   * set the private var 'portal' to the name passed in.
    * @param portal    Sets value passed as the name of the portal. Examples: 'cnn', 'core'  
    */
   public setPortal(portal: string): void {
@@ -44,6 +48,7 @@ export class ApiConfig {
   }
 
   /**
+   * The search api requires a different URL depending if you are a logged in user or not.
    * @param isUserLoggedIn  True if current user is logged in and has localStorage information
    * @returns               appropriate api search path based on whether or not user is logged in
    */
@@ -54,7 +59,7 @@ export class ApiConfig {
   /**
    * @param isUserLoggedIn  True if current user is logged in and has localStorage information, and is
    *                        used to set api header information. 
-   * @param params          These are the url params when accessing search like q='' (query string in search), n=25 (assets per page)
+   * @param params          These are the url params when accessing search like q=goats (query string in search), n=25 (assets per page)
    * @returns               If user is not logged you get Query String Parameters that look like
    *                        (q:derby n:25 siteName: core) if the user is logged in additional info is 
    *                        passed into the Request Header like (Authorization:Bearer 48a0ecaa46e2770a7a82810daed4272 

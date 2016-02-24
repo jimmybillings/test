@@ -20,8 +20,9 @@ export class Logout {
   }
 
   public onSubmit(): void {
-    localStorage.clear();
-    this._currentUser.set();
-    this._authentication.destroy().subscribe();
+    this._authentication.destroy().subscribe(() => {
+      localStorage.clear();
+      this._currentUser.set();
+    });
   }
 }
