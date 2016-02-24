@@ -24,6 +24,11 @@ artifactName=wazee-ui
 
 baseDir=$( dirname "$0" )
 
+# This is used as the apache host directory for the site. It should match the 
+# first part of the hostname for the site.
+# Ex: cnn.dev.t3mediasource.xyz. => has a sitename of 'cnn'
+siteName=dev
+
 if [ -n "$JENKINS_HOME" ]; then
   # add jenkins tools to the path
   export PATH=/home/video/bin/nodejs-v5.5.0/bin:/home/video/bin/tools/jenkins:$PATH
@@ -54,7 +59,7 @@ build_prod() {
   set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion}
 
   # package into an rpm
-  build-rpm.sh --srcDir=dist/prod --dstDir=. --artifactName=${artifactName} --targetDir=/var/www/hosts/dev/docs --version=${buildVersion} || exit 1
+  build-rpm.sh --srcDir=dist/prod --dstDir=. --artifactName=${artifactName} --targetDir=/opt/app/apache/htdocs/hosts/${siteName}/docs --version=${buildVersion} || exit 1
 
   # Only deploy & tag if we're on Jenkins
   if [ -n "$JENKINS_HOME" ]; then
