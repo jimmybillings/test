@@ -4,11 +4,13 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 import {NgStyle, CORE_DIRECTIVES} from 'angular2/common';
 import { AssetData } from '../../common/services/asset.data.service';
 import { AssetList }  from './asset-list/asset-list.component';
-import {Asset, SearchResult} from '../../common/interfaces/asset.interface';
+import {SearchResult} from '../../common/interfaces/asset.interface';
 import {UiConfig} from '../../common/config/ui.config';
 // import 'rxjs/add/operator/map';
 
-
+/**
+ * Asset search page component - renders search page results
+ */  
 @Component({
   selector: 'search',
   templateUrl: 'components/search/search.html',
@@ -19,7 +21,6 @@ import {UiConfig} from '../../common/config/ui.config';
 export class Search {
   public ui: Object;
   public results: SearchResult;
-  public assets: Asset[];
   public errorMessage: string;
 
   constructor(
@@ -38,7 +39,10 @@ export class Search {
   ngOnInit(): void {
     this.searchAssets();
   }
-
+  
+  /**
+   * Subscribes to a api search for assets, and sends the search parameters from the URL 
+  */
   public searchAssets(): void {
     this._assetData.searchAssets(this.routeParams.params)
       .subscribe(
