@@ -8,6 +8,9 @@ import { ApiConfig } from '../../../common/config/api.config';
 import { User } from '../../../common/services/user.data.service';
 import { CurrentUser } from '../../../common/models/current-user.model';
 
+/**
+ * Login page component - renders login page and handles login form submission
+ */  
 @Component({
   selector: 'login',
   templateUrl: 'components/user-management/login/login.html',
@@ -32,7 +35,13 @@ export class Login {
     this.setForm();
   }
 
+  /**
+   * Logs in a user - stores returned token value in local storage.
+   * Also sets current user with response values, and navigates to the home page.
+   * @param user  Login form fields sent to the authentication service.
+  */
   public onSubmit(user: Object): void {
+    console.log(this.loginForm.value);
     this._authentication.create(user).subscribe((res: Response) => {
       localStorage.setItem('token', res.json().token.token);
       this._currentUser.set(res.json().user);
@@ -40,6 +49,9 @@ export class Login {
     });
   }
 
+/**
+ * setup the login form inputs
+ */  
   public setForm(): void {
     this.loginForm = this._fb.group({
       'userId': null,

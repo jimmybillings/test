@@ -6,6 +6,9 @@ import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
 import { ApiConfig } from '../../../common/config/api.config';
 
+/**
+ * Registration page component - renders registration page and handles submiting registation form.
+ */  
 @Component({
   selector: 'register',
   templateUrl: 'components/user-management/register/register.html',
@@ -29,6 +32,10 @@ export class Register {
     this._setForm();
   }
 
+  /**
+   * Register a new user by subscribing to the user data services create method
+   * @param user  Register form fields sent to the user data service.
+  */
   public onSubmit(user: Object): void {
     this._user.create(user)
       .subscribe((res: Response) => {
@@ -37,6 +44,10 @@ export class Register {
   }
   
   //   PRIVATE METHODS HERE
+  
+  /**
+   * setup the registration form inputs
+   */  
   private _setForm(): void {
     this.registerForm = this._fb.group({
       'firstName': null,
@@ -47,8 +58,3 @@ export class Register {
     });
   }
 }
-
-
-
-
-

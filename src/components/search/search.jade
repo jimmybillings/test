@@ -4,11 +4,11 @@ section.search-results
 
     div(flex-xl="85", flex-gt-lg="95", flex="100", *ngIf="ui.search.viewType.value == 'grid'")
       .pagination.md-body-2(layout='row' layout-align='end center') 
-        .results-count {{results.totalCount}} results
-      div(layout='row')
+        .results-count(*ngIf="results.totalCount") {{results.totalCount}} results
+      div(layout='column')
         asset-list([assets]="results.items", class="{{ui.search.viewType.value}}")
         
-        .alert.warning([hidden]="!errorMessage && (!assets || assets.length > 0)")
+        h1.md-display-1.alert.warning([hidden]="!errorMessage && (results.totalCount == null || results.totalCount > 0)")
           | No items can be found for that search
 
 

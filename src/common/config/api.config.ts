@@ -1,5 +1,10 @@
 import { Injectable } from 'angular2/core';
 import { Headers, RequestOptions, URLSearchParams } from 'angular2/http';
+  
+/**
+ * Service that exposes low level api paths, api request header information 
+ * for authorization, and some getter and setters for portal names.
+ */  
 
 @Injectable()
 export class ApiConfig {

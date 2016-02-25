@@ -1,7 +1,7 @@
 section.login.hero
   div(layout='row' md-scroll-y='', layout-align='start center')
     div(flex='')
-    div(flex-xl="25", flex-gt-lg="30",flex-gt-md="35", flex-gt-sm="55",flex="100")
+    div(flex-gt-lg="30",flex-gt-md="40", flex-gt-sm="55",flex="100")
       md-card.md-whiteframe-z2
         md-card-header
           .logo-wrapper
@@ -19,7 +19,7 @@ section.login.hero
                 label Password
                 input(md-input="", type='password', [ngFormControl]="loginForm.controls['password']")
             md-card-actions(layout='column', layout-align='center center', layout-wrap='')  
-              button.md-raised.md-primary.conversion(md-raised-button='', type='submit') Login
+              button.md-raised.md-primary.conversion(md-raised-button='', type='submit',[disabled]="loginForm.errors") Login
               
             div.md-body-2( layout="column", layout-align='center center')  
               a.md-primary(layout='row', flex='', md-button="", [routerLink]="['Register']") Forgot Your Password?

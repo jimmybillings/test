@@ -5,7 +5,11 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import {CurrentUser} from '../../common/models/current-user.model';
 // import {Asset} from '../../common/interfaces/asset.interface';
-
+  
+/**
+ * Service that provides access to the search api  
+ * and returns search results
+ */  
 @Injectable()
 export class AssetData {
 

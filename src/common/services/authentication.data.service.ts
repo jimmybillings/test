@@ -3,6 +3,9 @@ import { Http } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
 import {Observable} from 'rxjs/Observable';
 
+/**
+ * Service that provides access to the api for logging user in and out.  
+ */  
 @Injectable()
 export class Authentication {
 

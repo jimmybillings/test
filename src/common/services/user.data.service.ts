@@ -4,6 +4,9 @@ import { ApiConfig } from '../config/api.config';
 import { CurrentUser } from '../models/current-user.model';
 import {Observable} from 'rxjs/Observable';
 
+/**
+ * Service that provides api access registering new users.  
+ */  
 @Injectable()
 export class User {
 
@@ -27,8 +30,8 @@ export class User {
   
   /**
    * Creates a new user by registration form.
-   * @param user  registration form fields.
-   * @returns prepared request to register a new user.
+   * @param user  Registration form fields.
+   * @returns     Prepared request to register a new user.
   */
   create(user: Object): Observable<any> {
     return this.http.post(this._apiUrls.create,
