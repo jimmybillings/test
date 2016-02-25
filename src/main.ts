@@ -8,6 +8,9 @@ import {CurrentUser} from './common/models/current-user.model';
 import { User } from './common/services/user.data.service';
 import {MATERIAL_PROVIDERS} from 'ng2-material/all';
 import {UiConfig} from './common/config/ui.config';
+import 'rxjs/Rx';
+// import { enableProdMode } from 'angular2/core';
+// enableProdMode();
 
 bootstrap(AppComponent, [
   ROUTER_PROVIDERS,

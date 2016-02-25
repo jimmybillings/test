@@ -28,6 +28,8 @@ export function main() {
         expect(service.getAuthHeader().getAll('Content-Type')).toEqual(['application/json']);
         expect(service.getAuthHeader().has('Authorization')).toBeTruthy();
         expect(service.getAuthHeader().getAll('Authorization')).toEqual(['Bearer null']);
+        expect(service.getAuthHeader().has('Accept')).toBeTruthy();
+        expect(service.getAuthHeader().getAll('Accept')).toEqual(['application/json']);
       }));
       
     it('Should create an instance of api headers, with correct header info',
@@ -35,7 +37,8 @@ export function main() {
         expect(service.getApiHeaders() instanceof Headers).toBeTruthy();
         expect(service.getApiHeaders().has('Content-Type')).toBeTruthy();
         expect(service.getApiHeaders().getAll('Content-Type')).toEqual(['application/json']);
-        expect(service.getApiHeaders().values()).toEqual([['application/json']]);
+        expect(service.getAuthHeader().has('Accept')).toBeTruthy();
+        expect(service.getAuthHeader().getAll('Accept')).toEqual(['application/json']);
       }));
       
     it('should return portal name. If none is set, it should return "core"', inject([ApiConfig], (service) => {
