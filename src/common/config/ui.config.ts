@@ -1,7 +1,8 @@
 import { Injectable } from 'angular2/core';
-import { Http } from 'angular2/http';
+import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
 import {Observable} from 'rxjs/Observable';
+
 @Injectable()
 export class UiConfig {
 
@@ -25,6 +26,9 @@ export class UiConfig {
   public get(site: string): Observable<any> {
     return this._http.get(this._apiUrls.get + site, {
       headers: this._apiConfig.getApiHeaders()
+    }).map((res: Response) => {
+      this.set(res.json());
+      return this._config;
     });
   }
 

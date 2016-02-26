@@ -8,7 +8,6 @@ import {Search} from './components/search/search.component';
 import {CurrentUser} from './common/models/current-user.model';
 import {ApiConfig} from './common/config/api.config';
 import {UiConfig} from './common/config/ui.config';
-import {Response} from 'angular2/http';
 
 @Component({
   selector: 'app',
@@ -34,10 +33,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.uiConfig.get(this._apiConfig.getPortal())
-      .subscribe((res: Response) => {
-        this.uiConfig.set(res.json());
-        this.ui = this.uiConfig.ui();
-      });
+      .subscribe((config) => this.ui = config);
     this.currentUser.set();
   }
 }

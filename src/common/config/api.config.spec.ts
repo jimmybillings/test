@@ -15,7 +15,6 @@ export function main() {
       ApiConfig
     ]);
 
-
     it('Should return the api root path',
       inject([ApiConfig], (service) => {
         expect(service.getApiRoot()).toEqual('http://dev.crux.t3sandbox.xyz.:8080/');
