@@ -27,14 +27,18 @@ export class ApiConfig {
    *            and Authorization: Bearer with token value from localStorage
    */
   public getAuthHeader(): Headers {
-    return new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('token') });
+    return new Headers({ 
+      'Content-Type': 'application/json', 
+      'Accept': 'application/json', 
+      'Authorization': 'Bearer ' + localStorage.getItem('token') 
+    });
   }
 
   /**
    * @returns   Request Header information 'Content-Type': 'application/json'
    */
   public getApiHeaders(): Headers {
-    return new Headers({ 'Content-Type': 'application/json' });
+    return new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' });
   }
 
   /**
