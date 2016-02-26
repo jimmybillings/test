@@ -1,6 +1,5 @@
 section.login.hero
-  div(layout='row', md-scroll-y='', layout-align='start center')
-    div(flex='')
+  div(layout='row', md-scroll-y='', layout-align='center start')
     div(flex-gt-lg="30",flex-gt-md="40", flex-gt-sm="55", flex="100")
       md-card.md-whiteframe-z2
         md-card-header
@@ -13,22 +12,29 @@ section.login.hero
           form.md-inline-form(layout='column', [ngFormModel]="registerForm", (ngSubmit)="onSubmit(registerForm.value)")
             md-content( layout-sm="row", layout-padding='')
               md-input-container.md-block
-                label First Name
-                input.md-input(autofocus, type='text', [ngFormControl]="registerForm.controls['firstName']")
+                label(for='firstName') First Name
+                input.md-input(autofocus, type='text',ngControl="firstName",id="firstName")
+                div(md-messages='firstName', role='alert')
+                  div(md-message='required') You must supply a first name
               md-input-container.md-block
-                label Last Name
-                input.md-input(type='text', [ngFormControl]="registerForm.controls['lastName']")
+                label(for='lastName') Last Name
+                input.md-input(type='text',ngControl='lastName',id='lastName')
+                div(md-messages='lastName', role='alert')
+                  div(md-message='required') You must supply a last name
               md-input-container.md-block
-                label Email
-                input.md-input(type='text', [ngFormControl]="registerForm.controls['emailAddress']")
+                label(for='emailAddress') Email
+                input.md-input(type='email',ngControl='emailAddress',id='emailAddress')
+                div(md-messages='emailAddress', role='alert')
+                  div(md-message='') Your email must be between 8 and 50 characters long and look like an e-mail address.
               md-input-container.md-block
-                label Password
-                input.md-input(type='password', [ngFormControl]="registerForm.controls['password']")
+                label(for='password') Password
+                input.md-input(type='password',ngControl='password',id='password')
+                div(md-messages="password",role='alert')
+                  div(md-message='required') You must supply a Password
+                  div(md-message='minlength') Password must be at least 8 characters
     
             md-card-actions(layout='column', layout-align='center center', layout-wrap='')  
               button.md-raised.md-primary.conversion(md-raised-button='', type='submit') Sign Up
       
       div(md-theme="docs-dark", layout='column', layout-align='center center', layout-wrap='')
         span.md-title Already have an account? #[a.md-accent(md-button="", [routerLink]="['Login']") Login]
-        
-    div(flex="")

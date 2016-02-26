@@ -1,8 +1,8 @@
 import { Component } from 'angular2/core';
-import { FormBuilder, ControlGroup, FORM_DIRECTIVES } from 'angular2/common';
+import { FORM_DIRECTIVES, Validators, FormBuilder, ControlGroup } from 'angular2/common';
 import { Response } from 'angular2/http';
 import { User } from '../../../common/services/user.data.service';
-import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
+import { MATERIAL_DIRECTIVES, MdPatternValidator } from 'ng2-material/all';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
 import { ApiConfig } from '../../../common/config/api.config';
 
@@ -17,44 +17,50 @@ import { ApiConfig } from '../../../common/config/api.config';
 })
 
 export class Register {
-  public _user: User;
   public registerForm: ControlGroup;
-  public _fb: FormBuilder;
-  private _ApiConfig: ApiConfig;
 
   constructor(
-    _fb: FormBuilder,
-    _user: User,
-    _ApiConfig: ApiConfig) {
-    this._fb = _fb;
-    this._user = _user;
-    this._ApiConfig = _ApiConfig;
-    this._setForm();
+    public fb: FormBuilder,
+    public user: User,
+    private _ApiConfig: ApiConfig) {
+    this._setForm(fb);
   }
 
   /**
    * Register a new user by subscribing to the user data services create method
-   * @param user  Register form fields sent to the user data service.
+   * @param user  Regiatration form field values sent to the user data service.
   */
   public onSubmit(user: Object): void {
-    this._user.create(user)
-      .subscribe((res: Response) => {
-        console.log(res);
+    if (this.registerForm.valid) {
+      this.user.create(user)
+        .subscribe((res: Response) => {
+          console.log(res);
       });
+
+    } else {
+      console.log('if failing fields are not showing error, display errors');
+    }
   }
-  
-  //   PRIVATE METHODS HERE
-  
+
   /**
-   * setup the registration form inputs
+   * setup the registration form inputs and validation requirements
+   * @param fb  FormBuilder is needed to set setup the form group
    */  
-  private _setForm(): void {
-    this.registerForm = this._fb.group({
-      'firstName': null,
-      'lastName': null,
-      'emailAddress': null,
-      'siteName': this._ApiConfig.getPortal(),
-      'password': null
+  private _setForm(fb: FormBuilder): void {
+    this.registerForm = fb.group({
+      'firstName': [null, Validators.required],
+      'lastName': [null, Validators.required],
+      'emailAddress': [null, Validators.compose([
+        MdPatternValidator.inline('^.+@.+\..+$'),
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(50)
+      ])],
+      'password': [null, Validators.compose([
+        Validators.required,
+        Validators.minLength(8)
+      ])],
+      'siteName': this._ApiConfig.getPortal()
     });
   }
 }
