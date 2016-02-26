@@ -1,6 +1,5 @@
 section.login.hero
-  div(layout='row' md-scroll-y='', layout-align='start center')
-    div(flex='')
+  div(layout='row' md-scroll-y='', layout-align='center start')
     div(flex-gt-lg="30",flex-gt-md="40", flex-gt-sm="55",flex="100")
       md-card.md-whiteframe-z2
         md-card-header
@@ -12,13 +11,19 @@ section.login.hero
         md-card-content
           form.md-inline-form(layout='column', [ngFormModel]="loginForm", (ngSubmit)="onSubmit(loginForm.value)" )
             md-content( layout-sm="row", layout-padding='')
-              md-input-container.md-block.flex-gt-sm
-                label Email
-                input(md-autofocus='', md-input="", type='email', [ngFormControl]="loginForm.controls['userId']")
-              md-input-container.md-block.flex-gt-sm
-                label Password
-                input(md-input="", type='password', [ngFormControl]="loginForm.controls['password']")
-            md-card-actions(layout='column', layout-align='center center', layout-wrap='')  
+              md-input-container.md-block
+                label(for='userId') Email
+                input.md-input(autofocus, type='email',ngControl="userId",id="userId")
+                div(md-messages='userId', role='alert')
+                  div(md-message='required') You must supply an email address
+                
+              md-input-container.md-block
+                label(for='password') Password
+                input.md-input(type='password',ngControl="password",id="password")
+                div(md-messages='password', role='alert')
+                  div(md-message='required') You must supply a password
+
+            md-card-actions(layout='column', layout-align='center center', layout-wrap='')
               button.md-raised.md-primary.conversion(md-raised-button='', type='submit',[disabled]="loginForm.errors") Login
               
             div.md-body-2( layout="column", layout-align='center center')  
@@ -26,5 +31,4 @@ section.login.hero
               
       div(md-theme="docs-dark", layout='column', layout-align='start center', layout-wrap='')
         span.md-title Don't have an account? #[a.md-accent(md-button="", [routerLink]="['Register']") Sign Up]
-    div(flex='')
 

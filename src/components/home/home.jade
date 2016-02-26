@@ -1,17 +1,14 @@
 header.hero 
-    div(layout='row',layout-xs='column',md-scroll-y='',layout-align='start center',layout-padding='')
-      div(flex="")
+    div(layout='row',layout-xs='column',md-scroll-y='',layout-align='center start',layout-padding='')
       div(flex-xl="35",flex-gt-lg="50",flex-gt-md="55",flex-gt-sm="70",flex="100")
-        div(layout='column', layout-align='start center', layout-wrap='')
+        div(layout='column', layout-align='center start', layout-wrap='')
           .logo-wrapper
             .logo
           search-box([ui]="ui.search")
           h4.md-headline
             | Incredible footage, killer research and unmatched clearance expertise
-      div(flex="")
 
-section.mrkt-collections(layout='row', layout-align='start top')
-  div(flex="")
+section.mrkt-collections(layout='row', layout-align='center start')
   div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-wrap='')
     .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
       a([routerLink]="['UserManagement', 'Register']")
@@ -43,18 +40,14 @@ section.mrkt-collections(layout='row', layout-align='start top')
         .mrkt-collections__highlight_img
         .mrkt-collections__highlight_content
           h5.md-title highlight six highlight six
-  div( flex='')
 
 section.mrkt-call-to-action
-  div(layout='row', layout-xs="column", layout-align='start center', layout-gt-xs-padding='')
-    div(flex="")
-    div(flex-xl="50",flex-gt-lg="60",flex-gt-md="70",flex="95")
-      div(layout='column', layout-align='center center', layout-wrap='')
-        h2.md-display-1
-          | Experience what more than 67,000 customers know. Access #[strong 4 million+ assets] &amp; expert research support.
-        md-button.md-block.conversion(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['UserManagement', 'Register']") Start Your Project! 
-        md-button.md-block.conversion(*ngIf="currentUser.loggedIn()", md-button='', [routerLink]="['UserManagement', 'Profile']") Start Your Project! 
-    div(flex="")
+  div(layout='row', layout-align='center start', layout-padding='')
+    div(flex-xl="50",flex-gt-lg="60",flex-gt-md="70",flex="95",layout-align='center start')
+      h2.md-display-1
+        | Experience what more than 67,000 customers know. Access #[strong 4 million+ assets] &amp; expert research support.
+      md-button.md-block.conversion(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['UserManagement', 'Register']") Start Your Project! 
+      md-button.md-block.conversion(*ngIf="currentUser.loggedIn()", md-button='', [routerLink]="['UserManagement', 'Profile']") Start Your Project! 
     
       
 section.vendor-marquee(hide-xs='', layout="column")

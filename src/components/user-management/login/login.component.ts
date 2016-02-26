@@ -1,5 +1,5 @@
 import { Component } from 'angular2/core';
-import { FormBuilder, ControlGroup, FORM_DIRECTIVES, Validators } from 'angular2/common';
+import { FORM_DIRECTIVES, Validators, FormBuilder, ControlGroup } from 'angular2/common';
 import { Response } from 'angular2/http';
 import { Authentication } from '../../../common/services/authentication.data.service';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
@@ -41,12 +41,15 @@ export class Login {
    * @param user  Login form fields sent to the authentication service.
   */
   public onSubmit(user: Object): void {
-    console.log(this.loginForm.value);
-    this._authentication.create(user).subscribe((res: Response) => {
-      localStorage.setItem('token', res.json().token.token);
-      this._currentUser.set(res.json().user);
-      this.router.navigate(['/Home']);
-    });
+    if (this.loginForm.valid) {
+      this._authentication.create(user).subscribe((res: Response) => {
+        localStorage.setItem('token', res.json().token.token);
+        this._currentUser.set(res.json().user);
+        this.router.navigate(['/Home']);
+      });
+    } else {
+      console.log('trigger display of invalid fields');
+    }
   }
 
 /**
@@ -54,7 +57,7 @@ export class Login {
  */  
   public setForm(): void {
     this.loginForm = this._fb.group({
-      'userId': null,
+      'userId': ['', Validators.required],
       'password': ['', Validators.required],
       'siteName': this._ApiConfig.getPortal()
     });
