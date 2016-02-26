@@ -51,21 +51,11 @@ export function main() {
             connection.request.url).toBe(service.apiConfig.getApiRoot() 
             + 'assets-api/clip/anonymous/search?q=green&n=25&siteName=core'
           );
+          expect(res).toEqual(mockResponse());
         });
       connection.mockRespond(new Response(
         new ResponseOptions({
-          body: [{
-            currentPage: 1,
-            hasNextPage: true,
-            hasPreviousPage: true,
-            items: [{
-              assetId: 33438201,
-              name: '19F005_038'
-            }],
-            numberOfPages: 5,
-            pageSize: 25,
-            totalCount: 122
-          }]
+          body: mockResponse()
         })
       ));
     }));
@@ -77,4 +67,21 @@ export function main() {
       'n':'25'
     };
   }
+  
+  function mockResponse() {
+    return {
+      currentPage: 1,
+      hasNextPage: true,
+      hasPreviousPage: true,
+      items: [{
+        assetId: 33438201,
+        name: '19F005_038'
+      }],
+      numberOfPages: 5,
+      pageSize: 25,
+      totalCount: 122
+    };
+  }
+  
+  
 }
