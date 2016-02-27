@@ -47,7 +47,11 @@ export function main() {
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
       });
-      connection.mockRespond(200);
+      connection.mockRespond(new Response(
+        new ResponseOptions({
+          body: {}
+        })
+      ));
     }));
 
 

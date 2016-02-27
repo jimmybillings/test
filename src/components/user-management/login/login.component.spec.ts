@@ -46,6 +46,17 @@ export function main() {
         });
       })
     );
+    
+    it('Should set up the login for when the component initializes', inject([Login], (login) => {
+      spyOn(login, 'setForm');
+      login.ngOnInit();
+      expect(login.setForm).toHaveBeenCalled();
+    }));
+    
+    it('Should set up the login form object', inject([Login], (login) => {
+      login.setForm();
+      expect(login.loginForm.value).toEqual({ userId: '', password: '', siteName: 'core' });
+    }));
 
     it('Should set token in localStorage, set the new user, navigate to home page on succesful login', 
       inject([Login], (login) => {
