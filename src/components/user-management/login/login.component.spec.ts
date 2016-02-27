@@ -52,6 +52,7 @@ export function main() {
         login.router.config([ { path: '/', name: 'Home', component: Home }]);
         login.loginForm = {};
         login.loginForm.valid = true;
+        localStorage.clear();
         spyOn(localStorage, 'setItem');
         spyOn(login._currentUser, 'set');
         spyOn(login.router, 'navigate');
