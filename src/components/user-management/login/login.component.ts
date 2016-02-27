@@ -1,6 +1,5 @@
 import { Component } from 'angular2/core';
 import { FORM_DIRECTIVES, Validators, FormBuilder, ControlGroup } from 'angular2/common';
-import { Response } from 'angular2/http';
 import { Authentication } from '../../../common/services/authentication.data.service';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { ROUTER_DIRECTIVES, Router } from 'angular2/router';
@@ -42,9 +41,9 @@ export class Login {
   */
   public onSubmit(user: Object): void {
     if (this.loginForm.valid) {
-      this._authentication.create(user).subscribe((res: Response) => {
-        localStorage.setItem('token', res.json().token.token);
-        this._currentUser.set(res.json().user);
+      this._authentication.create(user).subscribe((res) => {
+        localStorage.setItem('token', res.token.token);
+        this._currentUser.set(res.user);
         this.router.navigate(['/Home']);
       });
     } else {
