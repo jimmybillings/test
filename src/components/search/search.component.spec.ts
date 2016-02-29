@@ -26,6 +26,11 @@ export function main() {
   describe('Search Component', () => {
     
     
+    class MockUiConfig {
+      public ui() {
+        return {search:{}};
+      }
+    }
     class MockAssetData {
       public searchAssets() {
         return Observable.of(MockSearchResultsResponse());
@@ -47,8 +52,8 @@ export function main() {
       }),
       CurrentUser,
       ApiConfig,
-      UiConfig,
       provide(AssetData, {useClass: MockAssetData}),
+      provide(UiConfig, {useClass: MockUiConfig}),
     ]);
 
     it('Should have a search instance',

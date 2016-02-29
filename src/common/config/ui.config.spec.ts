@@ -22,7 +22,6 @@ export function main() {
     it('Should set up the api endpoint to get a sites UI config object and setup an empty config object',
       inject([UiConfig], (service) => {
         expect(service._apiUrls.get).toEqual(service._apiConfig.getApiRoot() + 'api/identities/configuration/site?siteName=');
-        expect(service._config).toEqual({});
       })
     );
     
