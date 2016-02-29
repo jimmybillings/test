@@ -20,6 +20,7 @@ import { CurrentUser } from '../../../common/models/current-user.model';
 export class Login {
 
   public loginForm: ControlGroup;
+  public errorMessage: string;
 
   constructor(
     public _fb: FormBuilder,
@@ -39,11 +40,19 @@ export class Login {
    * Also sets current user with response values, and navigates to the home page.
    * @param user  Login form fields sent to the authentication service.
   */
+
   public onSubmit(user: Object): void {
     if (this.loginForm.valid) {
       this._authentication.create(user).subscribe((res) => {
         localStorage.setItem('token', res.token.token);
         this._currentUser.set(res.user);
+      },(err) => {
+        // console.log('we are in the error');
+        // console.log(err.status);
+        // console.log(err.statusText);
+        console.log('trigger display that says incorrect email or password');
+      },() => {
+        console.log('Call this when done');
         this.router.navigate(['/Home']);
       });
     } else {

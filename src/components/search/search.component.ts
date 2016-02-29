@@ -6,7 +6,6 @@ import { AssetData } from '../../common/services/asset.data.service';
 import { AssetList }  from './asset-list/asset-list.component';
 import {SearchResult} from '../../common/interfaces/asset.interface';
 import {UiConfig} from '../../common/config/ui.config';
-// import 'rxjs/add/operator/map';
 
 /**
  * Asset search page component - renders search page results
@@ -16,10 +15,11 @@ import {UiConfig} from '../../common/config/ui.config';
   templateUrl: 'components/search/search.html',
   directives: [NgStyle, CORE_DIRECTIVES, AssetList],
   viewProviders: [HTTP_PROVIDERS, AssetData]
+  
 })
 
 export class Search {
-  public ui: Object;
+  public config: Object;
   public results: SearchResult;
   public errorMessage: string;
 
@@ -28,7 +28,7 @@ export class Search {
     private routeParams: RouteParams,
     private _assetData: AssetData,
     public uiConfig: UiConfig) {
-    this.ui = this.uiConfig.ui();
+    this.config = this.uiConfig.ui().search;
     this.results = {
       currentPage: 0,
       totalCount: null,
