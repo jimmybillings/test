@@ -1,18 +1,21 @@
 import { Injectable } from 'angular2/core';
 import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
+import {IuiConfig} from '../../common/interfaces/config.interface';
 import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class UiConfig {
 
-  private _config: Object;
+  private _config: IuiConfig;
   private _apiUrls: {
     get: string
   };
 
-  constructor(private _http: Http, private _apiConfig: ApiConfig) {
-    this._config = {};
+  constructor(
+    private _http: Http,
+    private _apiConfig: ApiConfig) {
+    
     this._apiUrls = {
       get: this._apiConfig.getApiRoot() + 'api/identities/configuration/site?siteName='
     };
@@ -36,14 +39,14 @@ export class UiConfig {
    * 
    * @param config   Configuration options to establish a configuration object.
    */
-  public set(config: Object): void {
+  public set(config: IuiConfig): void {
     this._config = config;
   }
 
   /**
    * @returns  The currently set configuration object.
    */
-  public ui(): Object {
+  public ui(): IuiConfig {
     return this._config;
   }
 }
