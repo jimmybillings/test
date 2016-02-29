@@ -5,6 +5,9 @@ import {CurrentUser} from '../../common/models/current-user.model';
 import {SearchBox} from './search-box/search-box.component';
 import {UiConfig} from '../../common/config/ui.config';
 
+/**
+ * Home page component - renders the home page
+ */  
 @Component({
   selector: 'home',
   templateUrl: 'components/home/home.html',
@@ -12,11 +15,12 @@ import {UiConfig} from '../../common/config/ui.config';
 })
 
 export class Home {
-  public ui: Object;
+  public config: Object;
+  
   constructor(
     public currentUser: CurrentUser,
     public router: Router,
     public uiConfig: UiConfig) {
-    this.ui = this.uiConfig.ui();
+    this.config = this.uiConfig.ui();
   }
 }

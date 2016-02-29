@@ -1,6 +1,6 @@
-div(*ngIf="ui")
-  app-header([currentUser]="currentUser", [ui]="ui.site")
+div(*ngIf="config")
+  app-header([currentUser]="currentUser", [config]="config.site")
   .main-content
     router-outlet
-  app-footer([currentUser]="currentUser", [ui]="ui.site")
+  app-footer([currentUser]="currentUser", [config]="config.footer")
   

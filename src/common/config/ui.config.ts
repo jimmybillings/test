@@ -3,9 +3,13 @@ import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
 import {IuiConfig} from '../../common/interfaces/config.interface';
 import {Observable} from 'rxjs/Observable';
+  
+/**
+ * Service that exposes low level api paths for site configuration information. 
+ * This information is how will customize different portals.
+ */
 @Injectable()
 export class UiConfig {
-
   private _config: IuiConfig;
   private _apiUrls: {
     get: string
@@ -23,7 +27,7 @@ export class UiConfig {
   /**
    * Ajax http.get request to return site configuration.
    * @param site  site name to retrieve configuration information for example: 'cnn' or 'core'.
-   * @returns      When observable is subscribed to it returns configuration object for the given site name.
+   * @returns     When observable is subscribed to it returns configuration object for the given site name.
    */
   public get(site: string): Observable<any> {
     return this._http.get(this._apiUrls.get + site, {

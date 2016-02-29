@@ -22,7 +22,7 @@ import {UiConfig} from './common/config/ui.config';
 ])
 
 export class AppComponent {
-  public ui: Object;
+  public config: Object;
 
   constructor(
     public currentUser: CurrentUser,
@@ -33,7 +33,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.uiConfig.get(this._apiConfig.getPortal())
-      .subscribe((config) => this.ui = config);
+      .subscribe((res) => this.config = res);
     this.currentUser.set();
   }
 }

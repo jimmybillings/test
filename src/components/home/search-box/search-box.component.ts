@@ -8,11 +8,11 @@ import {Router} from 'angular2/router';
   selector: 'search-box',
   templateUrl: 'components/home/search-box/search-box.html',
   directives: [FORM_DIRECTIVES],
-  inputs: ['ui']
+  inputs: ['config']
 })
 
 export class SearchBox {
-  @Input() ui;
+  @Input() config;
   private searchForm: ControlGroup;
 
   constructor(
@@ -37,6 +37,6 @@ export class SearchBox {
    * @param query  Value of search input
   */
   public onSubmit(query: string): void {
-    this.router.navigate(['/Search', { q: query, n: this.ui.pageSize.value }]);
+    this.router.navigate(['/Search', { q: query, n: this.config.pageSize.value }]);
   }
 }

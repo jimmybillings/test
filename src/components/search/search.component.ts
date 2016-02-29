@@ -41,10 +41,9 @@ export class Search {
   }
   
   /**
-   * Subscribes to a api search for assets, and sends the search parameters from the URL 
+   * Subscribes to an api search for assets, and sends the search parameters from the URL 
   */
   public searchAssets(): void {
-    
     this._assetData.searchAssets(this.routeParams.params)
       .subscribe(
       results => this.results = results,

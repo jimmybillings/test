@@ -14,13 +14,17 @@ import {CurrentUser} from '../../../common/models/current-user.model';
 })
 
 export class Logout {
-
   constructor(
     private _authentication: Authentication,
     public router: Router, 
     private _currentUser: CurrentUser) {
   }
-
+  
+  /**
+   * remove current user by invalidating token on the server, 
+   * clearing localStorage user information, resetting current user object with null values,
+   * and finally redirecting url to the home page.
+   */  
   public onSubmit(): void {
     this._authentication.destroy().subscribe();
     localStorage.clear();

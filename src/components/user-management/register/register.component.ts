@@ -31,7 +31,7 @@ export class Register {
 
   /**
    * Register a new user by subscribing to the user data services create method
-   * @param user  Regiatration form field values sent to the user data service.
+   * @param user  Registration form field values sent to the user data service.
   */
   public onSubmit(user: Object): void {
     if (this.registerForm.valid) {
