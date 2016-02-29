@@ -24,6 +24,8 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 export function main() {
   describe('Logout Component', () => {
     
+    class Home {} 
+    
     const res = {'test': 'test'};
     
     class MockAuthentication {
@@ -61,11 +63,14 @@ export function main() {
       }));
     
     it('Should log out a user, clear localStorage, reset currentUser', inject([Logout], (logout) => {
+      logout.router.config([ { path: '/', name: 'Home', component: Home }]);
       spyOn(localStorage, 'clear');
       spyOn(logout._currentUser, 'set');
+      spyOn(logout.router, 'navigate');
       logout.onSubmit();
       expect(localStorage.clear).toHaveBeenCalled();
       expect(logout._currentUser.set).toHaveBeenCalled();
+      expect(logout.router.navigate).toHaveBeenCalledWith(['/Home']);
     }));
 
   });
