@@ -1,5 +1,5 @@
 import { Injectable } from 'angular2/core';
-import { Http } from 'angular2/http';
+import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
 import {Observable} from 'rxjs/Observable';
 
@@ -34,7 +34,7 @@ export class Authentication {
     return this.http.post(this._apiUrls.create,
       JSON.stringify(user), {
         headers: this.apiConfig.getApiHeaders()
-      });
+      }).map((res:Response) => res.json());
   }
   
   /**
@@ -44,7 +44,7 @@ export class Authentication {
   public destroy(): Observable<any> {
     return this.http.post(this._apiUrls.destroy, null, {
       headers: this.apiConfig.getAuthHeader()
-    });
+    }).map((res:Response) => res.json());
   }
 }
 

@@ -3,7 +3,6 @@ import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
 import {IuiConfig} from '../../common/interfaces/config.interface';
 import {Observable} from 'rxjs/Observable';
-
 @Injectable()
 export class UiConfig {
 

@@ -3,7 +3,7 @@ import { provide } from 'angular2/core';
 import { Authentication } from './authentication.data.service';
 import { ApiConfig } from '../config/api.config';
 import { MockBackend } from 'angular2/http/testing';
-import { BaseRequestOptions, Http } from 'angular2/http';
+import { BaseRequestOptions, Http, Response, ResponseOptions } from 'angular2/http';
 
 export function main() {
   describe('Authentication data service', () => {
@@ -32,7 +32,11 @@ export function main() {
         expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/login');
         expect(connection.request._body).toEqual(JSON.stringify(setUser()));
       });
-      connection.mockRespond(200);
+      connection.mockRespond(new Response(
+        new ResponseOptions({
+          body: setUser()
+        })
+      ));
     }));
 
     it('Should make a request to destroy the login of a user', inject([Authentication, MockBackend], (service, mockBackend) => {
@@ -43,7 +47,11 @@ export function main() {
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
       });
-      connection.mockRespond(200);
+      connection.mockRespond(new Response(
+        new ResponseOptions({
+          body: {}
+        })
+      ));
     }));
 
 

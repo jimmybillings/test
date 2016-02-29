@@ -8,7 +8,7 @@ import { ApiConfig } from '../../../common/config/api.config';
 
 /**
  * Registration page component - renders registration page and handles submiting registation form.
- */  
+ */
 @Component({
   selector: 'register',
   templateUrl: 'components/user-management/register/register.html',
@@ -23,7 +23,10 @@ export class Register {
     public fb: FormBuilder,
     public user: User,
     private _ApiConfig: ApiConfig) {
-    this._setForm(fb);
+  }
+  
+  ngOnInit(): void {
+    this._setForm();
   }
 
   /**
@@ -35,8 +38,7 @@ export class Register {
       this.user.create(user)
         .subscribe((res: Response) => {
           console.log(res);
-      });
-
+        });
     } else {
       console.log('if failing fields are not showing error, display errors');
     }
@@ -45,9 +47,9 @@ export class Register {
   /**
    * setup the registration form inputs and validation requirements
    * @param fb  FormBuilder is needed to set setup the form group
-   */  
-  private _setForm(fb: FormBuilder): void {
-    this.registerForm = fb.group({
+   */
+  private _setForm(): void {
+    this.registerForm = this.fb.group({
       'firstName': [null, Validators.required],
       'lastName': [null, Validators.required],
       'emailAddress': [null, Validators.compose([

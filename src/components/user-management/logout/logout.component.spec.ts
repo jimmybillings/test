@@ -3,6 +3,7 @@ TestComponentBuilder,
 describe,
 expect,
 injectAsync,
+inject,
 it,
 beforeEachProviders
 } from 'angular2/testing';
@@ -17,23 +18,36 @@ import { BaseRequestOptions, Http } from 'angular2/http';
 import { ApiConfig } from '../../../common/config/api.config';
 import {CurrentUser} from '../../../common/models/current-user.model';
 import {Authentication} from '../../../common/services/authentication.data.service';
+import {Observable} from 'rxjs/Rx';
+import {HTTP_PROVIDERS} from 'angular2/http';
 
 export function main() {
   describe('Logout Component', () => {
+    
+    const res = {'test': 'test'};
+    
+    class MockAuthentication {
+      destroy() {
+        return Observable.of(res);
+      }
+    }
+    
     beforeEachProviders(() => [
+      Logout,
       RouteRegistry,
       provide(Location, { useClass: SpyLocation }),
       provide(ROUTER_PRIMARY_COMPONENT, { useValue: Logout }),
       provide(Router, { useClass: RootRouter }),
       MockBackend,
+      HTTP_PROVIDERS,
       BaseRequestOptions,
       provide(Http, {
         useFactory: (backend, defaultOptions) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
+      provide(Authentication, { useClass: MockAuthentication }),
       ApiConfig,
       CurrentUser,
-      Authentication
     ]);
 
     it('Should have a logout instance',
@@ -41,8 +55,18 @@ export function main() {
         return tcb.createAsync(Logout).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Logout).toBeTruthy();
+          expect(instance._currentUser instanceof CurrentUser).toBeDefined();
+          expect(instance._authentication instanceof Authentication).toBeDefined();
         });
       }));
+    
+    it('Should log out a user, clear localStorage, reset currentUser', inject([Logout], (logout) => {
+      spyOn(localStorage, 'clear');
+      spyOn(logout._currentUser, 'set');
+      logout.onSubmit();
+      expect(localStorage.clear).toHaveBeenCalled();
+      expect(logout._currentUser.set).toHaveBeenCalled();
+    }));
 
   });
 }
