@@ -22,7 +22,7 @@ import {UiConfig} from './common/config/ui.config';
 ])
 
 export class AppComponent {
-  public config: Object;
+  public config: {header: Object, footer: Object};
 
   constructor(
     public currentUser: CurrentUser,
@@ -32,8 +32,12 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.uiConfig.get(this._apiConfig.getPortal())
-      .subscribe((res) => this.config = res);
+    this.uiConfig.initialize(this._apiConfig.getPortal())
+      .subscribe(() => {
+        this.config = {header: {}, footer: {}};
+        this.config.header = this.uiConfig.get('header');
+        this.config.footer = this.uiConfig.get('footer');
+      });
     this.currentUser.set();
   }
 }

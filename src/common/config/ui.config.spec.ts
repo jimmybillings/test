@@ -30,11 +30,10 @@ export function main() {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       let site = 'core';
-      service.get(site).subscribe((res) => {
+      service.initialize(site).subscribe((res) => {
         expect(connection.request.url).toBe(
           service._apiConfig.getApiRoot() + 'api/identities/configuration/site?siteName='+site
         );
-        // expect(service.set).toHaveBeenCalledWith(configObj());
         expect(service._config).toEqual(configObj());
       });
       connection.mockRespond(new Response(
@@ -44,14 +43,23 @@ export function main() {
       ));
     }));
     
-    it('Should set a UI config object', inject([UiConfig], (service) => {
-      service.set(configObj());
-      expect(service._config).toEqual(configObj());
-    }));
     
-    it('Should get a UI config object', inject([UiConfig], (service) => {
-      service.set(configObj());
-      expect(service.ui()).toEqual(configObj());
+    it('Should get a UI config object', inject([UiConfig, MockBackend], (service, mockBackend) => {
+      let connection;
+      mockBackend.connections.subscribe(c => connection = c);
+      let site = 'core';
+      service.initialize(site).subscribe((res) => {
+        expect(connection.request.url).toBe(
+          service._apiConfig.getApiRoot() + 'api/identities/configuration/site?siteName='+site
+        );
+        expect(service._config).toEqual(configObj());
+      });
+      connection.mockRespond(new Response(
+        new ResponseOptions({
+          body: configObj()
+        })
+      ));
+      expect(service.get('search')).toEqual(configObj().search);
     }));
     
     

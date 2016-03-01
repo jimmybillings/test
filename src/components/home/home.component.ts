@@ -21,6 +21,9 @@ export class Home {
     public currentUser: CurrentUser,
     public router: Router,
     public uiConfig: UiConfig) {
-    this.config = this.uiConfig.ui();
+  }
+  
+  ngOnInit() {
+    this.config = this.uiConfig.get('home');
   }
 }

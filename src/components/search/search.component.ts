@@ -28,7 +28,7 @@ export class Search {
     private routeParams: RouteParams,
     private _assetData: AssetData,
     public uiConfig: UiConfig) {
-    this.config = this.uiConfig.ui().search;
+    
     this.results = {
       currentPage: 0,
       totalCount: null,
@@ -37,6 +37,7 @@ export class Search {
   }
 
   ngOnInit(): void {
+    this.config = this.uiConfig.get('search');
     this.searchAssets();
   }
   

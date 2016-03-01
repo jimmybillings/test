@@ -29,27 +29,19 @@ export class UiConfig {
    * @param site  configuration for a portal by site name: 'cnn' or 'core'.
    * @returns     Observable that sets the new configuration state from the server.
    */
-  public get(site: string): Observable<any> {
+  public initialize(site: string): Observable<any> {
     return this._http.get(this._apiUrls.get + site, {
       headers: this._apiConfig.getApiHeaders()
     }).map((res: Response) => {
-      this.set(res.json());
+      this._config = res.json();
       return this._config;
     });
   }
 
   /**
-   * 
-   * @param config   options to establish a configuration state.
-   */
-  public set(config: IuiConfig): void {
-    this._config = config;
-  }
-
-  /**
    * @returns  The current configuration state.
    */
-  public ui(): IuiConfig {
-    return this._config;
+  public get(component): IuiConfig {
+    return this._config[component];
   }
 }

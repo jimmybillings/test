@@ -27,7 +27,7 @@ export function main() {
     
     
     class MockUiConfig {
-      public ui() {
+      public get(component) {
         return {search:{}};
       }
     }
