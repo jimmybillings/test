@@ -20,7 +20,7 @@ export class UiConfig {
     private _apiConfig: ApiConfig) {
     
     this._apiUrls = {
-      get: this._apiConfig.getApiRoot() + 'api/identities/configuration/site?siteName='
+      get: this._apiConfig.baseUrl() + 'api/identities/configuration/site?siteName='
     };
   }
 
@@ -31,7 +31,7 @@ export class UiConfig {
    */
   public initialize(site: string): Observable<any> {
     return this._http.get(this._apiUrls.get + site, {
-      headers: this._apiConfig.getApiHeaders()
+      headers: this._apiConfig.headers()
     }).map((res: Response) => {
       this._config = res.json();
       return this._config;

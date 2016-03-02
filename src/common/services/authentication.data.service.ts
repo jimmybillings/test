@@ -20,8 +20,8 @@ export class Authentication {
     this.http = http;
     this.apiConfig = apiConfig;
     this._apiUrls = {
-      create: this.apiConfig.getApiRoot() + 'api/identities/login',
-      destroy: this.apiConfig.getApiRoot() + 'api/identities/invalidate'
+      create: this.apiConfig.baseUrl() + 'api/identities/login',
+      destroy: this.apiConfig.baseUrl() + 'api/identities/invalidate'
     };
   }
   
@@ -33,7 +33,7 @@ export class Authentication {
   public create(user: Object): Observable<any> {
     return this.http.post(this._apiUrls.create,
       JSON.stringify(user), {
-        headers: this.apiConfig.getApiHeaders()
+        headers: this.apiConfig.headers()
       }).map((res:Response) => res.json());
   }
   
@@ -43,7 +43,7 @@ export class Authentication {
    */
   public destroy(): Observable<any> {
     return this.http.post(this._apiUrls.destroy, null, {
-      headers: this.apiConfig.getAuthHeader()
+      headers: this.apiConfig.authHeaders()
     });
   }
 }

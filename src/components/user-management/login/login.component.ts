@@ -47,12 +47,8 @@ export class Login {
         localStorage.setItem('token', res.token.token);
         this._currentUser.set(res.user);
       },(err) => {
-        // console.log('we are in the error');
-        // console.log(err.status);
-        // console.log(err.statusText);
         console.log('trigger display that says incorrect email or password');
       },() => {
-        console.log('Call this when done');
         this.router.navigate(['/Home']);
       });
     } else {

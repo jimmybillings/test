@@ -28,7 +28,7 @@ export function main() {
     it('Should make a request to create a new user role', inject([UserRole, MockBackend], (service, mockBackend) => {
       mockBackend.connections.subscribe(c => connection = c);
       service.create(setUser()).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/userRole');
+        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/userRole');
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
         expect(connection.request._body).toEqual(JSON.stringify(setUser()));
@@ -39,7 +39,7 @@ export function main() {
     it('Should make a request to get data on a single user role', inject([UserRole, MockBackend], (service, mockBackend) => {
       mockBackend.connections.subscribe(c => connection = c);
       service.show(1).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/userRole/' + 1);
+        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/userRole/' + 1);
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
       });
@@ -49,7 +49,7 @@ export function main() {
     it('Should make a search request to get relevant user roles', inject([UserRole, MockBackend], (service, mockBackend) => {
       mockBackend.connections.subscribe(c => connection = c);
       service.search('admin').subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/userRole/search?text=admin');
+        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/userRole/search?text=admin');
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
       });
@@ -59,7 +59,7 @@ export function main() {
     it('Should make a request to update an existing user role', inject([UserRole, MockBackend], (service, mockBackend) => {
       mockBackend.connections.subscribe(c => connection = c);
       service.update(setUser()).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/userRole/' + setUser().id);
+        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/userRole/' + setUser().id);
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
         expect(connection.request._body).toEqual(JSON.stringify(setUser()));
@@ -70,7 +70,7 @@ export function main() {
     it('Should make a request to delete a user role by id', inject([UserRole, MockBackend], (service, mockBackend) => {
       mockBackend.connections.subscribe(c => connection = c);
       service.destroy(1).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/userRole/' + 1);
+        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/userRole/' + 1);
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
       });

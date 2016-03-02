@@ -31,14 +31,14 @@ export function main() {
     it('Should return correct api URL for a logged out user', inject([AssetData, MockBackend], (service, mockBackend) => {
       let loggedIn = false;
       expect(service.searchAssetsUrl(loggedIn)).toEqual(
-        service.apiConfig.getApiRoot() + service.apiConfig.getAssetSearchPath(loggedIn)
+        service.apiConfig.baseUrl() + service.apiConfig.getAssetSearchPath(loggedIn)
       );
     }));
 
     it('Should return correct api URL for a logged in user', inject([AssetData, MockBackend], (service, mockBackend) => {
       let loggedIn = true;
       expect(service.searchAssetsUrl(loggedIn)).toEqual(
-        service.apiConfig.getApiRoot() + service.apiConfig.getAssetSearchPath(loggedIn)
+        service.apiConfig.baseUrl() + service.apiConfig.getAssetSearchPath(loggedIn)
       );
     }));
 
@@ -48,7 +48,7 @@ export function main() {
         mockBackend.connections.subscribe(c => connection = c);
         service.searchAssets(searchParams()).subscribe((res) => {
           expect(
-            connection.request.url).toBe(service.apiConfig.getApiRoot() 
+            connection.request.url).toBe(service.apiConfig.baseUrl() 
             + 'assets-api/clip/anonymous/search?q=green&n=25&siteName=core'
           );
           expect(res).toEqual(mockResponse());

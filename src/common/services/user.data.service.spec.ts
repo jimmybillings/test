@@ -4,7 +4,7 @@ import { User } from './user.data.service';
 import { ApiConfig } from '../config/api.config';
 import { CurrentUser } from '../models/current-user.model';
 import { MockBackend } from 'angular2/http/testing';
-import { BaseRequestOptions, Http } from 'angular2/http';
+import { BaseRequestOptions, Http, Response, ResponseOptions } from 'angular2/http';
 
 export function main() {
   describe('User data service', () => {
@@ -32,10 +32,14 @@ export function main() {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       service.create(setUser()).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/user/register');
+        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/user/register');
         expect(connection.request._body).toEqual(JSON.stringify(setUser()));
       });
-      connection.mockRespond(200);
+      connection.mockRespond(new Response(
+        new ResponseOptions({
+          body: setUser()
+        })
+      ));
     }));
 
     it('Should make a request to get a current user object', inject([User, MockBackend], (service, mockBackend) => {
@@ -44,7 +48,7 @@ export function main() {
       service.get().subscribe((res) => {
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/user/currentUser');
+        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/user/currentUser');
       });
       connection.mockRespond(200);
     }));

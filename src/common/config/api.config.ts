@@ -19,14 +19,14 @@ export class ApiConfig {
   /**
    * @returns   Api root path. Example: 'http://dev.crux.t3sandbox.xyz.:8080/'.
    */
-  public getApiRoot(): string {
+  public baseUrl(): string {
     return 'http://dev.crux.t3sandbox.xyz.:8080/';
   }
   /**
    * @returns   Request Headers include Content-Type: application/json, 
    *            and Authorization: Bearer with token value from localStorage
    */
-  public getAuthHeader(): Headers {
+  public authHeaders(): Headers {
     return new Headers({ 
       'Content-Type': 'application/json', 
       'Accept': 'application/json', 
@@ -37,7 +37,7 @@ export class ApiConfig {
   /**
    * @returns   Request Header information 'Content-Type': 'application/json'
    */
-  public getApiHeaders(): Headers {
+  public headers(): Headers {
     return new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' });
   }
 
@@ -81,7 +81,7 @@ export class ApiConfig {
     
     if (!isUserLoggedIn) search.set('siteName', this.getPortal());  
     
-    let headers = (isUserLoggedIn) ? this.getAuthHeader() : void null;
+    let headers = (isUserLoggedIn) ? this.authHeaders() : void null;
     let options = (isUserLoggedIn) ? {headers: headers, search: search} : {search: search};
     return new RequestOptions(options);
   }

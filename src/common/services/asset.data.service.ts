@@ -26,7 +26,7 @@ export class AssetData {
    *                  http://dev.crux.t3sandbox.xyz.:8080/assets-api/clip/anonymous/search if you're logged out
    */
   public searchAssetsUrl(loggedIn: boolean): string {
-    return this.apiConfig.getApiRoot() + this.apiConfig.getAssetSearchPath(loggedIn);
+    return this.apiConfig.baseUrl() + this.apiConfig.getAssetSearchPath(loggedIn);
   }
   
   /**

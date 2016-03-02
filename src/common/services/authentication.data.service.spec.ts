@@ -29,7 +29,7 @@ export function main() {
       let connection;
       connection = mockBackend.connections.subscribe(c => connection = c);
       service.create(setUser()).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/login');
+        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/login');
         expect(connection.request._body).toEqual(JSON.stringify(setUser()));
       });
       connection.mockRespond(new Response(
@@ -43,7 +43,7 @@ export function main() {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       service.destroy(setUser()).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.getApiRoot() + 'api/identities/invalidate');
+        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/invalidate');
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
       });

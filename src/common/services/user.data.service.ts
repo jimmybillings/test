@@ -1,5 +1,5 @@
 import { Injectable } from 'angular2/core';
-import { Http } from 'angular2/http';
+import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
 import { CurrentUser } from '../models/current-user.model';
 import {Observable} from 'rxjs/Observable';
@@ -23,8 +23,8 @@ export class User {
     this.apiConfig = apiConfig;
     this._currentUser = _currentUser;
     this._apiUrls = {
-      create: this.apiConfig.getApiRoot() + 'api/identities/user/register',
-      get: this.apiConfig.getApiRoot() + 'api/identities/user/currentUser'
+      create: this.apiConfig.baseUrl() + 'api/identities/user/register',
+      get: this.apiConfig.baseUrl() + 'api/identities/user/currentUser'
     };
   }
   
@@ -36,13 +36,13 @@ export class User {
   create(user: Object): Observable<any> {
     return this.http.post(this._apiUrls.create,
       JSON.stringify(user), {
-        headers: this.apiConfig.getApiHeaders()
-      });
+        headers: this.apiConfig.headers()
+      }).map((res:Response) => res.json());
   }
 
   get(): Observable<any> {
     return this.http.get(this._apiUrls.get, {
-      headers: this.apiConfig.getAuthHeader()
+      headers: this.apiConfig.authHeaders()
     });
   }
 }
