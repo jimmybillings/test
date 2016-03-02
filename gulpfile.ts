@@ -32,6 +32,7 @@ gulp.task('build.dev', done =>
               'build.favicon',
               'build.js.dev',
               'build.index.dev',
+              'build.status',
               done));
               
 // --------------
@@ -47,6 +48,7 @@ gulp.task('build.prod', done =>
               'build.js.prod',
               'build.bundles',
               'build.index.prod',
+              'build.status',
               done));
 
 // --------------
