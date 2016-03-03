@@ -57,7 +57,8 @@ build_prod() {
 
   # create build.properties file
   set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion}
-
+  create-status-html.sh "${baseDir}/dist/prod/build.properties" "${baseDir}/dist/prod/status.html"
+  
   # package into an rpm
   build-rpm.sh --srcDir=dist/prod --dstDir=. --artifactName=${artifactName} --targetDir=/opt/app/apache/htdocs/hosts/${siteName}/docs --version=${buildVersion} || exit 1
 
