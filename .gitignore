@@ -35,6 +35,8 @@ build/Release
 .vscode
 *.iml
 
+.DS_Store
+
 dist
 dev
 docs
