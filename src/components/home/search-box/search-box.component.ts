@@ -7,8 +7,7 @@ import {Router} from 'angular2/router';
 @Component({
   selector: 'search-box',
   templateUrl: 'components/home/search-box/search-box.html',
-  directives: [FORM_DIRECTIVES],
-  inputs: ['config']
+  directives: [FORM_DIRECTIVES]
 })
 
 export class SearchBox {

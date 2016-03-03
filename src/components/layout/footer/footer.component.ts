@@ -9,8 +9,7 @@ import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 @Component({
   selector: 'app-footer',
   templateUrl: 'components/layout/footer/footer.html',
-  directives: [ROUTER_DIRECTIVES, NgClass, NgIf, MATERIAL_DIRECTIVES],
-  inputs: ['currentUser', 'config']
+  directives: [ROUTER_DIRECTIVES, NgClass, NgIf, MATERIAL_DIRECTIVES]
 })
 
 export class Footer {

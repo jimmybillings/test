@@ -9,8 +9,7 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
 @Component({
   selector: 'asset-list',
   templateUrl: 'components/search/asset-list/asset-list.html',
-  directives: [COMMON_DIRECTIVES, ROUTER_DIRECTIVES],
-  inputs: ['assets']
+  directives: [COMMON_DIRECTIVES, ROUTER_DIRECTIVES]
 })
 
 export class AssetList {
