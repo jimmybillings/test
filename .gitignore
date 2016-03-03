@@ -13,10 +13,6 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
-#test coverage
-/coverage
-.DS_Store
-
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
@@ -26,20 +22,22 @@ build/Release
 # Dependency directory
 # Commenting this out is preferred by some people, see
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
-node_modules
+/node_modules/
+/typings/
 
 # Users Environment Variables
 .lock-wscript
 .tsdrc
+.typingsrc
 
 #IDE configuration files
 .idea
 .vscode
+*.iml
 
 dist
 dev
 docs
 lib
 test
-tools/typings/tsd
 tmp

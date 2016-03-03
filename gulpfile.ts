@@ -3,43 +3,33 @@ import {runSequence, task} from './tools/utils';
 
 // --------------
 // Clean (override).
-gulp.task('clean',       task('clean', 'all'));
-gulp.task('clean.dist',  task('clean', 'dist'));
-gulp.task('clean.test',  task('clean', 'test'));
-gulp.task('clean.tmp',   task('clean', 'tmp'));
+gulp.task('clean', done => task('clean', 'all')(done));
+gulp.task('clean.dev', done => task('clean', 'dev')(done));
+gulp.task('clean.library', done => task('clean', 'library')(done));
+gulp.task('clean.prod', done => task('clean', 'prod')(done));
+gulp.task('check.versions', () => task('check.versions'));
+gulp.task('build.docs', () => task('build.docs'));
+gulp.task('serve.docs', () => task('serve.docs'));
+gulp.task('serve.coverage', task('serve.coverage'));
 
-gulp.task('check.versions', task('check.versions'));
-gulp.task('build.docs', task('build.docs'));
-gulp.task('serve.docs', task('serve.docs'));
-
-// --------------
-// Postinstall.
-gulp.task('postinstall', done =>
-  runSequence('clean',
-              'npm',
-              done));
-
-              
 // --------------
 // Build dev.
 gulp.task('build.dev', done =>
-  runSequence('clean.dist',
+  runSequence('clean.dev',
               'tslint',
-              'build.sass.dev',
+              'build.sass',
               'build.jade.dev',
               'build.assets',
               'build.fonts',
               'build.favicon',
               'build.js.dev',
               'build.index.dev',
-              'build.status',
               done));
-              
+
 // --------------
 // Build prod.
 gulp.task('build.prod', done =>
-  runSequence('clean.dist',
-              'clean.tmp',
+  runSequence('clean.prod',
               'tslint',
               'build.assets',
               'build.fonts',
@@ -47,54 +37,52 @@ gulp.task('build.prod', done =>
               'build.html_css.prod',
               'build.js.prod',
               'build.bundles',
+              'build.bundles.app',
               'build.index.prod',
-              'build.status',
               done));
 
 // --------------
 // Build exportable library.
 gulp.task('build.library.export', done =>
-  runSequence('clean.dist',
-              'clean.tmp',
+  runSequence('clean.library',
               'tslint',
               'build.html_css.lib',
               'build.js.lib.export',
               done));
-              
+                         
 // --------------
-// Watch.
+// Build dev watch.
 gulp.task('build.dev.watch', done =>
   runSequence('build.dev',
               'watch.dev',
               done));
 
+// --------------
+// Build e2e.
+gulp.task('build.e2e', done =>
+  runSequence('clean.dev',
+              'tslint',
+              'build.assets.dev',
+              'build.js.e2e',
+              'build.index.dev',
+              done));
+
+// --------------
+// Build test.
+gulp.task('build.test', done =>
+  runSequence('clean.dev',
+              'tslint',
+              'build.assets',
+              'build.jade.dev',
+              'build.js.test',
+              'build.index.dev',
+              done));
+
+// --------------
+// Build test watch.
 gulp.task('build.test.watch', done =>
   runSequence('build.test',
               'watch.test',
-              done));
-
-// --------------
-// Test.
-gulp.task('test', done =>
-  runSequence('clean.test',
-              'tslint',
-              'build.jade.test',
-              'build.assets.test',
-              'build.test',
-              'karma.start',
-              done));
-
-// --------------
-// Serve.
-gulp.task('serve', done =>
-  runSequence('build.dev',
-              'server.start',
-              'watch.serve',
-              done));
-
-gulp.task('serve.prod', done =>
-  runSequence('build.prod',
-              'server.start',
               done));
 
 // --------------
@@ -103,4 +91,35 @@ gulp.task('serve.prod', done =>
 gulp.task('docs', done =>
   runSequence('build.docs',
               'serve.docs',
+              done));
+
+// --------------
+// Serve dev
+gulp.task('serve.dev', done =>
+  runSequence('build.dev',
+              'server.start',
+              'watch.serve',
+              done));
+
+// --------------
+// Serve e2e
+gulp.task('serve.e2e', done =>
+  runSequence('build.e2e',
+              'server.start',
+              'watch.serve',
+              done));
+
+// --------------
+// Serve prod
+gulp.task('serve.prod', done =>
+  runSequence('build.prod',
+              'server.start',
+              'watch.serve',
+              done));
+
+// --------------
+// Test.
+gulp.task('test', done =>
+  runSequence('build.test',
+              'karma.start',
               done));

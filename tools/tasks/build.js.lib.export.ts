@@ -31,8 +31,7 @@ export = function buildJsLibExport(gulp, plugins) {
         .pipe(gulp.dest(APP_DEST))
     ]);
     
-    // return result.js.pipe(plugins.template(templateLocals()))
-    //   .pipe(gulp.dest(APP_DEST));
+   
     
   };
 };
