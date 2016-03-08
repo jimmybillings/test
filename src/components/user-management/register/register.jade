@@ -11,27 +11,13 @@ section.login.hero
         md-card-content
           form.md-inline-form(layout='column', [ngFormModel]="registerForm", (ngSubmit)="onSubmit(registerForm.value)")
             md-content( layout-sm="row", layout-padding='')
-              md-input-container.md-block
-                label(for='firstName') First Name
-                input.md-input(autofocus, type='text',ngControl="firstName",id="firstName")
-                div(md-messages='firstName', role='alert')
-                  div(md-message='required') You must supply a first name
-              md-input-container.md-block
-                label(for='lastName') Last Name
-                input.md-input(type='text',ngControl='lastName',id='lastName')
-                div(md-messages='lastName', role='alert')
-                  div(md-message='required') You must supply a last name
-              md-input-container.md-block
-                label(for='emailAddress') Email
-                input.md-input(type='email',ngControl='emailAddress',id='emailAddress')
-                div(md-messages='emailAddress', role='alert')
-                  div(md-message='') Your email must be between 8 and 50 characters long and look like an e-mail address.
-              md-input-container.md-block
-                label(for='password') Password
-                input.md-input(type='password',ngControl='password',id='password')
-                div(md-messages="password",role='alert')
-                  div(md-message='required') You must supply a Password
-                  div(md-message='minlength') Password must be at least 8 characters
+              div(*ngFor="#field of fields")
+                md-input-container.md-block(*ngIf='field.name != "siteName"')
+                  label {{field.label}}
+                  input.md-input(autofocus, type='{{field.type}}', ngControl="{{field.name}}", id="{{field.name}}")
+                  div(md-messages='{{field.name}}', role='alert')
+                    div(md-message='') You must supply a valid {{field.label}}
+            
     
             md-card-actions(layout='column', layout-align='center center', layout-wrap='')  
               button.md-raised.md-primary.conversion(md-raised-button='', type='submit') Sign Up

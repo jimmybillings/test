@@ -33,7 +33,7 @@ export class UiConfig {
     return this._http.get(this._apiUrls.get + site, {
       headers: this._apiConfig.headers()
     }).map((res: Response) => {
-      this._config = res.json();
+      this._config = res.json().configs;
       return this._config;
     });
   }
@@ -42,6 +42,6 @@ export class UiConfig {
    * @returns  The current configuration state.
    */
   public get(component): IuiConfig {
-    return this._config[component];
+    return this._config[component].items;
   }
 }

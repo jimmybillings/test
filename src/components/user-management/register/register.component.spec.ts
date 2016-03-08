@@ -21,6 +21,9 @@ import { ApiConfig } from '../../../common/config/api.config';
 import {CurrentUser} from '../../../common/models/current-user.model';
 import {Authentication} from '../../../common/services/authentication.data.service';
 import {User} from '../../../common/services/user.data.service';
+import {UiConfig} from '../../../common/config/ui.config';
+import {Valid} from '../../../common/services/validator.form.service';
+
 export function main() {
   describe('Register Component', () => {
     
@@ -48,7 +51,9 @@ export function main() {
       provide(User, { useClass: MockUser }),
       ApiConfig,
       CurrentUser,
-      Authentication
+      UiConfig,
+      Authentication,
+      Valid
     ]);
 
     it('Should have a Register instance',
@@ -72,16 +77,5 @@ export function main() {
         expect(console.log).toHaveBeenCalled();
     }));
     
-    it('Should set up the register form when the component initializes', inject([Register], (register) => {
-      spyOn(register, '_setForm');
-      register.ngOnInit();
-      expect(register._setForm).toHaveBeenCalled();
-    }));
-    
-    it('Should set up the register form object', inject([Register], (register) => {
-      register._setForm();
-      expect(register.registerForm.value).toEqual(
-        { firstName: null, lastName: null, emailAddress: null, password: null, siteName: 'core' });
-    }));
   });
 }

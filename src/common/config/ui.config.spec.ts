@@ -34,7 +34,7 @@ export function main() {
         expect(connection.request.url).toBe(
           service._apiConfig.baseUrl() + 'api/identities/configuration/site?siteName='+site
         );
-        expect(service._config).toEqual(configObj());
+        expect(service._config).toEqual(configObj().configs);
       });
       connection.mockRespond(new Response(
         new ResponseOptions({
@@ -52,14 +52,14 @@ export function main() {
         expect(connection.request.url).toBe(
           service._apiConfig.baseUrl() + 'api/identities/configuration/site?siteName='+site
         );
-        expect(service._config).toEqual(configObj());
+        expect(service._config).toEqual(configObj().configs);
       });
       connection.mockRespond(new Response(
         new ResponseOptions({
           body: configObj()
         })
       ));
-      expect(service.get('search')).toEqual(configObj().search);
+      expect(service.get('search')).toEqual(configObj().configs.search.items);
     }));
     
     
@@ -67,10 +67,12 @@ export function main() {
   
  function configObj() {
     return {
-      'search': {},
-      'home': {},
-      'header': {},
-      'footer': {}
+      'configs': {
+        'search': {'items': {}},
+        'home': {'items': {}},
+        'header': {'items': {}},
+        'footer': {'items': {}},
+      }
     };
   };
 }

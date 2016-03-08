@@ -2,6 +2,7 @@ import {provide} from 'angular2/core';
 import {bootstrap} from 'angular2/platform/browser';
 import {ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from 'angular2/router';
 import {HTTP_PROVIDERS, HTTP_BINDINGS} from 'angular2/http';
+import { Validators } from 'angular2/common';
 import {AppComponent} from './app.component';
 import { ApiConfig } from './common/config/api.config';
 import {CurrentUser} from './common/models/current-user.model';
@@ -18,6 +19,7 @@ bootstrap(AppComponent, [
   provide(LocationStrategy, { useClass: HashLocationStrategy }),
   HTTP_PROVIDERS,
   HTTP_BINDINGS,
+  Validators,
   ApiConfig,
   CurrentUser,
   User,

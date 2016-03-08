@@ -1,11 +1,13 @@
 import { Component } from 'angular2/core';
-import { FORM_DIRECTIVES, Validators, FormBuilder, ControlGroup } from 'angular2/common';
+import { FORM_DIRECTIVES, FormBuilder, ControlGroup } from 'angular2/common';
 import { Response } from 'angular2/http';
 import { User } from '../../../common/services/user.data.service';
-import { MATERIAL_DIRECTIVES, MdPatternValidator } from 'ng2-material/all';
+import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
 import { ApiConfig } from '../../../common/config/api.config';
-
+import {UiConfig} from '../../../common/config/ui.config';
+import {Valid} from '../../../common/services/validator.form.service';
+import { IFormFields } from '../../../common/interfaces/forms.interface';
 /**
  * Registration page component - renders registration page and handles submiting registation form.
  */
@@ -18,15 +20,27 @@ import { ApiConfig } from '../../../common/config/api.config';
 
 export class Register {
   public registerForm: ControlGroup;
-
+  public config: any;
+  public fields: IFormFields[];
+  
   constructor(
     public fb: FormBuilder,
     public user: User,
-    private _ApiConfig: ApiConfig) {
+    private _ApiConfig: ApiConfig,
+    public uiConfig: UiConfig,
+    private _valid: Valid) {
+      this.fields = [
+        {'name': 'firstName', 'type': 'text', 'value': 'null', 'label': 'First Name', 'validation': 'TEXT_INPUT'},
+        {'name': 'lastName', 'type': 'text', 'value': 'null', 'label': 'Last Name', 'validation': 'TEXT_INPUT'},
+        {'name': 'emailAddress', 'type': 'email', 'value': 'null', 'label': 'Email', 'validation': 'EMAIL'},
+        {'name': 'password', 'type': 'password', 'value': 'null', 'label': 'Password', 'validation': 'PASSWORD'},
+        {'name': 'siteName', 'type': 'hidden', 'value': 'core', 'label': 'CORE', 'validation': 'TEXT_INPUT'}
+    ];
   }
   
   ngOnInit(): void {
-    this._setForm();
+    this.config = this.uiConfig.get('register');
+    this.registerForm = this.fb.group(this._valid.createForm(this.fields));
   }
 
   /**
@@ -42,27 +56,5 @@ export class Register {
     } else {
       console.log('if failing fields are not showing error, display errors');
     }
-  }
-
-  /**
-   * setup the registration form inputs and validation requirements
-   * @param fb  FormBuilder is needed to set setup the form group
-   */
-  private _setForm(): void {
-    this.registerForm = this.fb.group({
-      'firstName': [null, Validators.required],
-      'lastName': [null, Validators.required],
-      'emailAddress': [null, Validators.compose([
-        MdPatternValidator.inline('^.+@.+\..+$'),
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(50)
-      ])],
-      'password': [null, Validators.compose([
-        Validators.required,
-        Validators.minLength(8)
-      ])],
-      'siteName': this._ApiConfig.getPortal()
-    });
   }
 }
