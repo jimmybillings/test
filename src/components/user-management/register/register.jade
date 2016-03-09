@@ -9,7 +9,7 @@ section.login.hero
           md-card-title-text(layout='column', layout-align='center center')
             span.md-headline Get Started With Wazee
         md-card-content
-          wz-form([items]="fields", (submit)="onSubmit($event)")
+          wz-form([items]="fields", (formSubmit)="onSubmit($event)")
       
       div(md-theme="docs-dark", layout='column', layout-align='center center', layout-wrap='')
         span.md-title Already have an account? #[a.md-accent(md-button="", [routerLink]="['Login']") Login]

@@ -9,25 +9,10 @@ section.login.hero
           md-card-title-text(layout='column', layout-align='center center')
             span.md-headline Login To Your Account
         md-card-content
-          form.md-inline-form(layout='column', [ngFormModel]="loginForm", (ngSubmit)="onSubmit(loginForm.value)" )
-            md-content( layout-sm="row", layout-padding='')
-              md-input-container.md-block
-                label(for='userId') Email
-                input.md-input(autofocus, type='email',ngControl="userId",id="userId")
-                div(md-messages='userId', role='alert')
-                  div(md-message='required') You must supply an email address
-                
-              md-input-container.md-block
-                label(for='password') Password
-                input.md-input(type='password',ngControl="password",id="password")
-                div(md-messages='password', role='alert')
-                  div(md-message='required') You must supply a password
-
-            md-card-actions(layout='column', layout-align='center center', layout-wrap='')
-              button.md-raised.md-primary.conversion(md-raised-button='', type='submit',[disabled]="loginForm.errors") Login
-              
-            div.md-body-2( layout="column", layout-align='center center')  
-              a.md-primary(layout='row', flex='', md-button="", [routerLink]="['Register']") Forgot Your Password?
+          wz-form([items]="fields", (formSubmit)="onSubmit($event)")
+            
+          div.md-body-2( layout="column", layout-align='center center')  
+            a.md-primary(layout='row', flex='', md-button="", [routerLink]="['Register']") Forgot Your Password?
               
       div(md-theme="docs-dark", layout='column', layout-align='start center', layout-wrap='')
         span.md-title Don't have an account? #[a.md-accent(md-button="", [routerLink]="['Register']") Sign Up]

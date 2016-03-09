@@ -15,7 +15,7 @@ import {Valid} from '../../../common/services/validator.form.service';
 
 export class WzForm {
   @Input() items;
-  @Output() onSubmit = new EventEmitter();
+  @Output() formSubmit = new EventEmitter();
   
   public form: ControlGroup;
     
@@ -28,10 +28,10 @@ export class WzForm {
     this.form = this.fb.group(this._valid.createForm(this.items));
   }
   
-  public submit(data:any): void {
+  public onSubmit(data:any): void {
     // console.log(this.form);
     if (this.form.valid) {
-      this.onSubmit.emit(data);
+      this.formSubmit.emit(data);
       // call callback in parent component
     } else {
       console.log('error');

@@ -43,7 +43,9 @@ export class Register {
    * @param user  Registration form field values sent to the user data service.
   */
   public onSubmit(user:any): void {
+      
       user.siteName = this._ApiConfig.getPortal();
+      console.log(user);
       this.user.create(user)
         .subscribe((res: Response) => {
           console.log(res);
