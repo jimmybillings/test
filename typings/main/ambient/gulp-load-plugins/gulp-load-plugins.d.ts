@@ -1,4 +1,4 @@
-// Compiled using typings@0.6.9
+// Compiled using typings@0.6.10
 // Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/e081148d88b857d66509e3b46edbd08b3f75f96a/gulp-load-plugins/gulp-load-plugins.d.ts
 // Type definitions for gulp-load-plugins
 // Project: https://github.com/jackfranklin/gulp-load-plugins

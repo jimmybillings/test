@@ -1,4 +1,4 @@
-// Compiled using typings@0.6.9
+// Compiled using typings@0.6.10
 // Source: https://raw.githubusercontent.com/gdi2290/typed-xhr2/69f2b8d40d0cd407c1b2a2f2f41fecc6852cabbb/lib/xhr2.d.ts
 declare module 'xhr2/lib/xhr2' {
 var Element: {

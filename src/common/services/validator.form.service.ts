@@ -26,7 +26,7 @@ export class Valid {
   
   public getValidator(type): Validators {
     switch (type) {
-      case 'TEXT_INPUT':
+      case 'REQUIRED':
         return this._getRequiredValidator();
       case 'EMAIL':
         return this._getEmailValidator();

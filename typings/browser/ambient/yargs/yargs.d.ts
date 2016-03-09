@@ -1,4 +1,4 @@
-// Compiled using typings@0.6.9
+// Compiled using typings@0.6.10
 // Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/6a287502dab374e7d4cbf18ea1ac5dff7f74726a/yargs/yargs.d.ts
 // Type definitions for yargs
 // Project: https://github.com/chevex/yargs

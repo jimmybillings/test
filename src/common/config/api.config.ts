@@ -17,7 +17,7 @@ export class ApiConfig {
     this._portal = null;
   }
   /**
-   * @returns   Api root path. Example: 'http://dev.crux.t3sandbox.xyz.:8080/'.
+   * @returns   Api root path. Example: 'https://crxextapi.dev.wzplatform.com/'.
    */
   public baseUrl(): string {
     return 'http://dev.crux.t3sandbox.xyz.:8080/';

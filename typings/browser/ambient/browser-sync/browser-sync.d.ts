@@ -1,4 +1,4 @@
-// Compiled using typings@0.6.9
+// Compiled using typings@0.6.10
 // Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/d9b5b35ba3a79ac778c5890531393442439df5dd/browser-sync/browser-sync.d.ts
 // Type definitions for browser-sync
 // Project: http://www.browsersync.io/

@@ -1,4 +1,4 @@
-// Compiled using typings@0.6.9
+// Compiled using typings@0.6.10
 // Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/5c3e47967affa3c4128a3875d1664ba206ae1b0f/minimatch/minimatch.d.ts
 // Type definitions for Minimatch 2.0.8
 // Project: https://github.com/isaacs/minimatch
