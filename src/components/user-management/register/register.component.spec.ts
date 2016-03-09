@@ -66,8 +66,6 @@ export function main() {
 
     it('Should register new user and console log the response for now.', 
       inject([Register], (register) => {
-        register.registerForm = {};
-        register.registerForm.valid = true;
         spyOn(console, 'log');
         register.onSubmit({ 'firstName': 'first',
                             'lastName': 'second',

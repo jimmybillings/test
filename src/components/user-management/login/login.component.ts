@@ -39,14 +39,14 @@ export class Login {
    * Also sets current user with response values, and navigates to the home page.
    * @param user  Login form fields sent to the authentication service.
   */
-  public onSubmit(user: Object): void {
+  public onSubmit(user: any): void {
+    user.siteName = this._ApiConfig.getPortal();
     this._authentication.create(user).subscribe((res) => {
       localStorage.setItem('token', res.token.token);
       this._currentUser.set(res.user);
+      this.router.navigate(['/Home']);
     },(err) => {
       console.log('trigger display that says incorrect email or password');
-    },() => {
-      this.router.navigate(['/Home']);
     });
   }
 }

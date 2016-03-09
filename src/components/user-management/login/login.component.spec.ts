@@ -5,6 +5,7 @@ import { ApiConfig } from '../../../common/config/api.config';
 import {CurrentUser} from '../../../common/models/current-user.model';
 import {Authentication} from '../../../common/services/authentication.data.service';
 import { User } from '../../../common/services/user.data.service';
+import {Valid} from '../../../common/services/validator.form.service';
 
 import {Login} from './login.component';
 import {HTTP_PROVIDERS} from 'angular2/http';
@@ -30,6 +31,7 @@ export function main() {
       ApiConfig,
       CurrentUser,
       User,
+      Valid,
       HTTP_PROVIDERS,
       RouteConfig,
       RouteRegistry,
@@ -46,28 +48,18 @@ export function main() {
         });
       })
     );
-    
-    it('Should set up the login for when the component initializes', inject([Login], (login) => {
-      spyOn(login, 'setForm');
-      login.ngOnInit();
-      expect(login.setForm).toHaveBeenCalled();
-    }));
-    
-    it('Should set up the login form object', inject([Login], (login) => {
-      login.setForm();
-      expect(login.loginForm.value).toEqual({ userId: '', password: '', siteName: 'core' });
-    }));
 
     it('Should set token in localStorage, set the new user, navigate to home page on succesful login', 
       inject([Login], (login) => {
         login.router.config([ { path: '/', name: 'Home', component: Home }]);
-        login.loginForm = {};
-        login.loginForm.valid = true;
+
         localStorage.clear();
         spyOn(localStorage, 'setItem');
         spyOn(login._currentUser, 'set');
         spyOn(login.router, 'navigate');
+        
         login.onSubmit({ userId: 'some@email.com', password: 'password', siteName: 'sample' });
+       
         expect(localStorage.setItem).toHaveBeenCalledWith('token', 'newToken');
         expect(login._currentUser.set).toHaveBeenCalledWith({ 'test': 'one' });
         expect(login.router.navigate).toHaveBeenCalledWith(['/Home']);
