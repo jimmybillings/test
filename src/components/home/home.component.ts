@@ -16,6 +16,7 @@ import {UiConfig} from '../../common/config/ui.config';
 
 export class Home {
   public config: Object;
+  public components: Object;
   
   constructor(
     public currentUser: CurrentUser,
@@ -24,6 +25,9 @@ export class Home {
   }
   
   ngOnInit() {
-    this.config = this.uiConfig.get('home');
+    let component = this.uiConfig.get('home');
+    this.components = component.components;
+    this.config = component.config;
   }
+  
 }

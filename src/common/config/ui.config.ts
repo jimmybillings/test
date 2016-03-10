@@ -20,7 +20,7 @@ export class UiConfig {
     private _apiConfig: ApiConfig) {
     
     this._apiUrls = {
-      get: this._apiConfig.baseUrl() + 'api/identities/configuration/site?siteName='
+      get: this._apiConfig.baseUrl() + 'identities-api/v1/configuration/site?siteName='
     };
   }
 
@@ -33,7 +33,7 @@ export class UiConfig {
     return this._http.get(this._apiUrls.get + site, {
       headers: this._apiConfig.headers()
     }).map((res: Response) => {
-      this._config = res.json().configs;
+      this._config = res.json();
       return this._config;
     });
   }
@@ -42,6 +42,6 @@ export class UiConfig {
    * @returns  The current configuration state.
    */
   public get(component): IuiConfig {
-    return this._config[component].items;
+    return this._config.components[component];
   }
 }

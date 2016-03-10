@@ -13,13 +13,15 @@ import {Router} from 'angular2/router';
 export class SearchBox {
   @Input() config;
   private searchForm: ControlGroup;
-
+  
   constructor(
     public fb: FormBuilder,
     public router: Router) {
+      
   }
 
   ngOnInit(): void {
+    this.config = this.config.config;
     this.setForm();
   }
 
@@ -39,3 +41,4 @@ export class SearchBox {
     this.router.navigate(['/Search', { q: query, n: this.config.pageSize.value }]);
   }
 }
+

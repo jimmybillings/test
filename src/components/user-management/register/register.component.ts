@@ -19,7 +19,8 @@ import { WzForm } from '../../../common/components/wz-form/wz.form.component';
 })
 
 export class Register {
-  public config: any;
+   public config: Object;
+  public components: Object;
   public fields: IFormFields[];
   
   constructor(

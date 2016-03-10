@@ -29,6 +29,7 @@ export class Header {
   */
   ngOnInit(): void {
     window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
+    this.config = this.config.config;
   }
   
   /**

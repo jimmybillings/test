@@ -20,6 +20,7 @@ import {UiConfig} from '../../common/config/ui.config';
 
 export class Search {
   public config: Object;
+  public components: Object;
   public results: SearchResult;
   public errorMessage: string;
 
@@ -37,7 +38,11 @@ export class Search {
   }
 
   ngOnInit(): void {
-    this.config = this.uiConfig.get('search');
+    let component = this.uiConfig.get('search');
+    this.components = component.components;
+    this.config = component.config;
+    
+    
     this.searchAssets();
   }
   
@@ -51,3 +56,4 @@ export class Search {
       error => this.errorMessage = <any>error);
   }
 }
+
