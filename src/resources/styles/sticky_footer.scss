@@ -19,11 +19,11 @@ body > app > div app-footer {
 .main-content {
   @include flex(1 0 auto); /* 2 */
   width: 100%;
-  background-color:  md-color($md-background, 300);
+  background-color: md-color($md-background, 300);
 }
 .main-content::after {
   content: '\00a0'; /* &nbsp; */
   display: block;
-  height: 0px;
+  height: 0;
   visibility: hidden;
 }

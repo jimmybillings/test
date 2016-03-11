@@ -18,9 +18,14 @@
 // drop down indicator on a button
   &.is-dd[md-button] {
     position: relative;
-    display: block;
     padding-right: rem(2.40);
     padding-left: rem(1.00);
+    &:not[hide] {
+      display: block;
+    }
+    // &[hide] {
+    //   display: none;
+    // }
     .md-button-wrapper::after {
       color: md-color($md-foreground, secondary-text);
       @include transition(opacity 0.4s);
@@ -39,6 +44,14 @@
     }
     &.md-warn .md-button-wrapper::after {
       color: contrast-contrast(md-color($md-warn, 500));
+    }
+    &.md-icon-button {
+      width: rem(5.3);
+      border-radius: rem(.3);
+      .md-button-wrapper::after {
+        right: rem(.1);
+        top: rem(.7);
+      }
     }
   }
 }

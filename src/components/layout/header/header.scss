@@ -26,10 +26,12 @@ app-header md-toolbar.glb {
       }
     }
     @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-      width: 72px;
+      width: 66px;
       height: 32px;
+      top: 14px;
+      margin-left: -5px;
       .logo {
-        width: 188px;
+        width: 170px;
       }
     }
   }
@@ -55,17 +57,17 @@ app-header md-toolbar.glb {
         width: 228px;
       }
       @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-        width: 72px;
+        width: 66px;
         height: 32px;
+        top: 14px;
+        margin-left: -5px;
         .logo {
-          width: 188px;
+          width: 170px;
         }
       }
     }
   }
 }
-
-
 
 app-header md-toolbar.glb:not(.md-menu-toolbar) [md-button] {
   &.md-accent {
