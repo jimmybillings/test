@@ -20,8 +20,8 @@ export class Authentication {
     this.http = http;
     this.apiConfig = apiConfig;
     this._apiUrls = {
-      create: this.apiConfig.baseUrl() + 'api/identities/login',
-      destroy: this.apiConfig.baseUrl() + 'api/identities/invalidate'
+      create: this.apiConfig.baseUrl() + 'api/identities/v1/login',
+      destroy: this.apiConfig.baseUrl() + 'api/identities/v1/invalidate'
     };
   }
   

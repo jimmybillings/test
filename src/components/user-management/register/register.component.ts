@@ -19,7 +19,7 @@ import { WzForm } from '../../../common/components/wz-form/wz.form.component';
 })
 
 export class Register {
-   public config: Object;
+  public config: any;
   public components: Object;
   public fields: IFormFields[];
   
@@ -27,16 +27,12 @@ export class Register {
     public user: User,
     private _ApiConfig: ApiConfig,
     public uiConfig: UiConfig) {
-      this.fields = [
-        {'name': 'firstName', 'type': 'text', 'value': 'null', 'label': 'First Name', 'validation': 'REQUIRED'},
-        {'name': 'lastName', 'type': 'text', 'value': 'null', 'label': 'Last Name', 'validation': 'REQUIRED'},
-        {'name': 'emailAddress', 'type': 'email', 'value': 'null', 'label': 'Email', 'validation': 'EMAIL'},
-        {'name': 'password', 'type': 'password', 'value': 'null', 'label': 'Password', 'validation': 'PASSWORD'}
-    ];
   }
   
   ngOnInit(): void {
     this.config = this.uiConfig.get('register');
+    this.config = this.config.config;
+    this.fields = this.config.form.items;
   }
   
   /**

@@ -20,7 +20,7 @@ export class ApiConfig {
    * @returns   Api root path. Example: 'https://crxextapi.dev.wzplatform.com/'.
    */
   public baseUrl(): string {
-    return 'http://dev.crux.t3sandbox.xyz.:8080/';
+    return 'https://crxextapi.dev.wzplatform.com/';
   }
   /**
    * @returns   Request Headers include Content-Type: application/json, 
@@ -62,7 +62,7 @@ export class ApiConfig {
    * @returns               appropriate api search path based on whether or not user is logged in
    */
   public getAssetSearchPath(isUserLoggedIn : boolean): string {
-    return (isUserLoggedIn) ? 'assets-api/clip/user/search' : 'assets-api/clip/anonymous/search';
+    return (isUserLoggedIn) ? 'api/assets/v1/clip/user/search' : 'api/assets/v1/clip/anonymous/search';
   }
 
   /**
@@ -82,6 +82,7 @@ export class ApiConfig {
     if (!isUserLoggedIn) search.set('siteName', this.getPortal());  
     
     let headers = (isUserLoggedIn) ? this.authHeaders() : void null;
+    console.log(headers);
     let options = (isUserLoggedIn) ? {headers: headers, search: search} : {search: search};
     return new RequestOptions(options);
   }

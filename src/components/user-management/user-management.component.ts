@@ -18,4 +18,5 @@ import {Valid} from '../../common/services/validator.form.service';
   { path: '/profile', component: Profile, name: 'Profile' }
 ])
 
-export class UserManagement { }
+export class UserManagement {
+ }

@@ -1,9 +1,16 @@
 form.md-inline-form(layout='column', [ngFormModel]="form", (ngSubmit)="onSubmit(form.value)")
   md-content( layout-sm="row", layout-padding='')  
     md-input-container.md-block(*ngFor="#field of items")
-      label {{field.label}}
-      input.md-input(autofocus, type='{{field.type}}', ngControl="{{field.name}}", id="{{field.name}}")
+    
+      div(*ngIf="field.type == 'text' || field.type == 'password' || field.type == 'email'")
+        label {{field.label}}
+        input.md-input(autofocus, type='{{field.type}}', ngControl="{{field.name}}", id="{{field.name}}")
       
+      div(*ngIf="field.type == 'select'")
+
+        select(ngControl="{{field.name}}")
+          option(*ngFor="#option of parseOptions(field.options)") {{option}}
+        
       div(md-messages='{{field.name}}', role='alert')
         div(*ngIf="field.validation == 'REQUIRED'")
           div(md-message='required') You must supply a {{field.label}}
@@ -14,4 +21,4 @@ form.md-inline-form(layout='column', [ngFormModel]="form", (ngSubmit)="onSubmit(
           div(md-message='minlength') Password must be at least 8 characters
       
     md-card-actions(layout='column', layout-align='center center', layout-wrap='')  
-      button.md-raised.md-primary.conversion(md-raised-button='', type='submit') Sign Up
+      button.md-raised.md-primary.conversion(md-raised-button='', type='submit') {{submitLabel}}

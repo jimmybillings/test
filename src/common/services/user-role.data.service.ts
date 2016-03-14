@@ -20,11 +20,11 @@ export class UserRole {
     this.http = http;
     this.apiConfig = apiConfig;
     this._apiUrls = {
-      create: this.apiConfig.baseUrl() + 'api/identities/userRole',
-      show: this.apiConfig.baseUrl() + 'api/identities/userRole/',
-      search: this.apiConfig.baseUrl() + 'api/identities/userRole/search?text=',
-      update: this.apiConfig.baseUrl() + 'api/identities/userRole/',
-      destroy: this.apiConfig.baseUrl() + 'api/identities/userRole/'
+      create: this.apiConfig.baseUrl() + 'api/identities/v1/userRole',
+      show: this.apiConfig.baseUrl() + 'api/identities/v1/userRole/',
+      search: this.apiConfig.baseUrl() + 'api/identities/v1/userRole/search?text=',
+      update: this.apiConfig.baseUrl() + 'api/identities/v1/userRole/',
+      destroy: this.apiConfig.baseUrl() + 'api/identities/v1/userRole/'
     };
   }
 

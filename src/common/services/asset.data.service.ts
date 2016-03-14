@@ -22,8 +22,8 @@ export class AssetData {
    * @param loggedIn  Current user is logged in if localStorage token exists otherwise current user is not logged in.
    *                  This is needed to return URL from getAssetSearchPath()
    * @returns         URL for search api  concatenates the root URL with the search URL. Examples:
-   *                  http://dev.crux.t3sandbox.xyz.:8080/assets-api/clip/user/search if you're logged in
-   *                  http://dev.crux.t3sandbox.xyz.:8080/assets-api/clip/anonymous/search if you're logged out
+   *                  http://dev.crux.t3sandbox.xyz.:8080/api/assets/v1/clip/user/search if you're logged in
+   *                  http://dev.crux.t3sandbox.xyz.:8080/api/assets/v1/clip/anonymous/search if you're logged out
    */
   public searchAssetsUrl(loggedIn: boolean): string {
     return this.apiConfig.baseUrl() + this.apiConfig.getAssetSearchPath(loggedIn);

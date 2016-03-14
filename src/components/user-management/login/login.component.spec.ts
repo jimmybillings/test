@@ -12,6 +12,7 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 import {Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT, Location, RouteConfig} from 'angular2/router';
 import {RootRouter} from 'angular2/src/router/router';
 import {SpyLocation} from 'angular2/src/mock/location_mock';
+import {UiConfig} from '../../../common/config/ui.config';
 
 export function main() {
 
@@ -30,6 +31,7 @@ export function main() {
       provide(ROUTER_PRIMARY_COMPONENT, { useValue: Login }),
       ApiConfig,
       CurrentUser,
+      UiConfig,
       User,
       Valid,
       HTTP_PROVIDERS,

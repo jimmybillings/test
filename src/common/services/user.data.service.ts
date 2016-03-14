@@ -23,8 +23,8 @@ export class User {
     this.apiConfig = apiConfig;
     this._currentUser = _currentUser;
     this._apiUrls = {
-      create: this.apiConfig.baseUrl() + 'api/identities/user/register',
-      get: this.apiConfig.baseUrl() + 'api/identities/user/currentUser'
+      create: this.apiConfig.baseUrl() + 'api/identities/v1/user/register',
+      get: this.apiConfig.baseUrl() + 'api/identities/v1/user/currentUser'
     };
   }
   

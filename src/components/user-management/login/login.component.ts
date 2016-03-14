@@ -7,6 +7,7 @@ import { User } from '../../../common/services/user.data.service';
 import { CurrentUser } from '../../../common/models/current-user.model';
 import { IFormFields } from '../../../common/interfaces/forms.interface';
 import { WzForm } from '../../../common/components/wz-form/wz.form.component';
+import { UiConfig } from '../../../common/config/ui.config';
 
 /**
  * Login page component - renders login page and handles login form submission
@@ -19,7 +20,7 @@ import { WzForm } from '../../../common/components/wz-form/wz.form.component';
 })
 
 export class Login {
-
+  public config: any;
   public fields: IFormFields[];
 
   constructor(
@@ -27,11 +28,14 @@ export class Login {
     public _user: User,
     public router: Router,
     private _ApiConfig: ApiConfig,
-    private _currentUser: CurrentUser) {
-      this.fields = [
-        {'name': 'userId', 'type': 'text', 'value': 'null', 'label': 'Email', 'validation': 'REQUIRED'},
-        {'name': 'password', 'type': 'password', 'value': 'null', 'label': 'Password', 'validation': 'REQUIRED'}
-    ];
+    private _currentUser: CurrentUser,
+    public uiConfig: UiConfig) {
+  }
+  
+  ngOnInit(): void {
+    this.config = this.uiConfig.get('login');
+    this.config = this.config.config;
+    this.fields = this.config.form.items;
   }
 
   /**

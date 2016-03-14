@@ -9,7 +9,7 @@ section.login.hero
           md-card-title-text(layout='column', layout-align='center center')
             span.md-headline Login To Your Account
         md-card-content
-          wz-form([items]="fields", (formSubmit)="onSubmit($event)")
+          wz-form([items]="fields", submitLabel="Sign In", (formSubmit)="onSubmit($event)")
             
           div.md-body-2( layout="column", layout-align='center center')  
             a.md-primary(layout='row', flex='', md-button="", [routerLink]="['Register']") Forgot Your Password?

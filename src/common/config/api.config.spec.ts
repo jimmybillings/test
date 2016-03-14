@@ -17,7 +17,7 @@ export function main() {
 
     it('Should return the api root path',
       inject([ApiConfig], (service) => {
-        expect(service.baseUrl()).toEqual('http://dev.crux.t3sandbox.xyz.:8080/');
+        expect(service.baseUrl()).toEqual('https://crxextapi.dev.wzplatform.com/');
       }));
 
     it('Should create an instance of authorization headers, with correct header info',
@@ -52,12 +52,12 @@ export function main() {
       
     it('Should return correct api URL path for a logged out user', inject([ApiConfig], (service) => {
       let loggedIn = false;
-      expect(service.getAssetSearchPath(loggedIn)).toEqual('assets-api/clip/anonymous/search');
+      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/clip/anonymous/search');
     }));
 
     it('Should return correct api URL path for a logged in user', inject([ApiConfig], (service) => {
       let loggedIn = true;
-      expect(service.getAssetSearchPath(loggedIn)).toEqual('assets-api/clip/user/search');
+      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/clip/user/search');
     }));
 
 

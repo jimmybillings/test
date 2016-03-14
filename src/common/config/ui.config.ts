@@ -20,7 +20,7 @@ export class UiConfig {
     private _apiConfig: ApiConfig) {
     
     this._apiUrls = {
-      get: this._apiConfig.baseUrl() + 'identities-api/v1/configuration/site?siteName='
+      get: this._apiConfig.baseUrl() + 'api/identities/v1/configuration/site?siteName='
     };
   }
 
