@@ -19,10 +19,10 @@ import { MockBackend } from 'angular2/http/testing';
 import { BaseRequestOptions, Http } from 'angular2/http';
 import { ApiConfig } from '../../../common/config/api.config';
 import {CurrentUser} from '../../../common/models/current-user.model';
-import {Authentication} from '../../../common/services/authentication.data.service';
-import {User} from '../../../common/services/user.data.service';
+import {Authentication} from '../authentication.data.service';
+import {User} from '../user.data.service';
 import {UiConfig} from '../../../common/config/ui.config';
-import {Valid} from '../../../common/components/wz-form/validator.form.service';
+import {Form} from '../../../common/components/wz-form/wz.form.model';
 
 export function main() {
   describe('Register Component', () => {
@@ -53,7 +53,7 @@ export function main() {
       CurrentUser,
       UiConfig,
       Authentication,
-      Valid
+      Form
     ]);
 
     it('Should have a Register instance',

@@ -17,7 +17,7 @@ import { MockBackend } from 'angular2/http/testing';
 import { BaseRequestOptions, Http } from 'angular2/http';
 import { ApiConfig } from '../../../common/config/api.config';
 import {CurrentUser} from '../../../common/models/current-user.model';
-import {Authentication} from '../../../common/services/authentication.data.service';
+import {Authentication} from '../authentication.data.service';
 import {Observable} from 'rxjs/Rx';
 import {HTTP_PROVIDERS} from 'angular2/http';
 

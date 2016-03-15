@@ -1,30 +1,24 @@
 import { Injectable } from 'angular2/core';
 import { Validators } from 'angular2/common';
 import { MdPatternValidator } from 'ng2-material/all';
-import { ApiConfig } from '../../../common/config/api.config';
 import { IFormFields } from '../../../common/interfaces/forms.interface';
 
 /**
- * Service that provides api access registering new users.  
+ * Service that creates a dynamic model to drive a form. 
  */  
 @Injectable()
-export class Valid {
+export class Form {
   
-  constructor(private _ApiConfig: ApiConfig) {
-   
-  }
-  
-  createForm(form:IFormFields[]): Object {
+  create(form:IFormFields[]): Object {
     let newForm = {};
     form.forEach((field) => {
       newForm[field.name] = [field.value];
-      newForm[field.name].push(this.getValidator(field.validation));
+      newForm[field.name].push(this._getValidator(field.validation));
     });
-
     return newForm;
   }
   
-  public getValidator(type): Validators {
+  private _getValidator(type): Validators {
     switch (type) {
       case 'REQUIRED':
         return this._getRequiredValidator();

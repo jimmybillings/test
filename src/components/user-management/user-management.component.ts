@@ -3,11 +3,13 @@ import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {Login} from './login/login.component';
 import {Register} from './register/register.component';
 import {Profile} from './profile/profile.component';
+import { User } from './user.data.service';
 
 @Component({
   selector: 'user',
   template: '<router-outlet></router-outlet>',
-  directives: ROUTER_DIRECTIVES
+  directives: ROUTER_DIRECTIVES,
+  providers: [User]
 })
 
 @RouteConfig([

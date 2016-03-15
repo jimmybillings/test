@@ -1,12 +1,13 @@
 import { it, describe, expect, inject, beforeEachProviders } from 'angular2/testing';
 import { provide } from 'angular2/core';
-import { Authentication } from './authentication.data.service';
-import { ApiConfig } from '../config/api.config';
+import { User } from './user.data.service';
+import { ApiConfig } from '../../common/config/api.config';
+import { CurrentUser } from '../../common/models/current-user.model';
 import { MockBackend } from 'angular2/http/testing';
 import { BaseRequestOptions, Http, Response, ResponseOptions } from 'angular2/http';
 
 export function main() {
-  describe('Authentication data service', () => {
+  describe('User data service', () => {
 
     beforeEachProviders(() => [
       MockBackend,
@@ -15,21 +16,23 @@ export function main() {
         useFactory: (backend, defaultOptions) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
+      User,
       ApiConfig,
-      Authentication
+      CurrentUser
     ]);
 
-    it('Should create instance variables for http, apiconfig, apiUrls', inject([Authentication, MockBackend], (service, mockBackend) => {
+    it('Should create instance variables for http, apiconfig, currentUser, apiUrls', inject([User, MockBackend], (service, mockBackend) => {
       expect(service.http).toBeDefined();
       expect(service.apiConfig).toBeDefined();
+      expect(service._currentUser).toBeDefined();
       expect(service._apiUrls).toBeDefined();
     }));
 
-    it('Should make a request to login a new user', inject([Authentication, MockBackend], (service, mockBackend) => {
+    it('Should make a request to create a new user', inject([User, MockBackend], (service, mockBackend) => {
       let connection;
-      connection = mockBackend.connections.subscribe(c => connection = c);
+      mockBackend.connections.subscribe(c => connection = c);
       service.create(setUser()).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/v1/login');
+        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/v1/user/register');
         expect(connection.request._body).toEqual(JSON.stringify(setUser()));
       });
       connection.mockRespond(new Response(
@@ -39,21 +42,16 @@ export function main() {
       ));
     }));
 
-    it('Should make a request to destroy the login of a user', inject([Authentication, MockBackend], (service, mockBackend) => {
+    it('Should make a request to get a current user object', inject([User, MockBackend], (service, mockBackend) => {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
-      service.destroy(setUser()).subscribe((res) => {
-        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/v1/invalidate');
+      service.get().subscribe((res) => {
         let authorizationHeader = checkAuthInHeader(connection.request.headers._headersMap.entries_);
         expect(authorizationHeader).toEqual(['Authorization']);
+        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/v1/user/currentUser');
       });
-      connection.mockRespond(new Response(
-        new ResponseOptions({
-          body: {}
-        })
-      ));
+      connection.mockRespond(200);
     }));
-
 
   });
 
@@ -63,9 +61,15 @@ export function main() {
 
   function setUser() {
     return {
-      'username': 'test@email.com',
-      'password': 'password'
+      'lastUpdated': '2016-01-14T16:46:21Z',
+      'createdOn': '2016-01-14T16:46:21Z',
+      'id': 6,
+      'emailAddress': 'test_email@email.com',
+      'password': '5daf7de08c0014ec2baa13a64b35a4e0',
+      'firstName': 'first',
+      'lastName': 'last',
+      'siteName': 'cnn',
+      'accountIds': [4]
     };
   }
-
 }

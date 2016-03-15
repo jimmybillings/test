@@ -9,16 +9,13 @@ inject
 } from 'angular2/testing';
 
 import {WzForm} from './wz.form.component';
-import {Valid} from './validator.form.service';
-import { ApiConfig } from '../../../common/config/api.config';
-
+import {Form} from './wz.form.model';
 
 export function main() {
   describe('Form Component', () => {
     beforeEachProviders(() => [
       WzForm,
-      Valid,
-      ApiConfig
+      Form
     ]);
 
     it('Should create instance of WzForm',

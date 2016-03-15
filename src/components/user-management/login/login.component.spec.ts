@@ -3,9 +3,9 @@ import {describe, expect, it, inject, injectAsync, TestComponentBuilder, beforeE
 import {Observable} from 'rxjs/Rx';
 import { ApiConfig } from '../../../common/config/api.config';
 import {CurrentUser} from '../../../common/models/current-user.model';
-import {Authentication} from '../../../common/services/authentication.data.service';
-import { User } from '../../../common/services/user.data.service';
-import {Valid} from '../../../common/components/wz-form/validator.form.service';
+import {Authentication} from '../authentication.data.service';
+import { User } from '../user.data.service';
+import {Form} from '../../../common/components/wz-form/wz.form.model';
 
 import {Login} from './login.component';
 import {HTTP_PROVIDERS} from 'angular2/http';
@@ -33,7 +33,7 @@ export function main() {
       CurrentUser,
       UiConfig,
       User,
-      Valid,
+      Form,
       HTTP_PROVIDERS,
       RouteConfig,
       RouteRegistry,

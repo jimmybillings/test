@@ -2,14 +2,15 @@ import {Component, Input, Output, EventEmitter} from 'angular2/core';
 import {NgFor} from 'angular2/common';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
-import {Valid} from './validator.form.service';
+import {Form} from './wz.form.model';
 /**
  * Home page component - renders the home page
  */  
 @Component({
   selector: 'wz-form',
   templateUrl: 'common/components/wz-form/wz.form.html',
-  directives: [NgFor, MATERIAL_DIRECTIVES, FORM_DIRECTIVES]
+  directives: [NgFor, MATERIAL_DIRECTIVES, FORM_DIRECTIVES],
+  providers: [Form]
 })
 
 export class WzForm {
@@ -21,11 +22,11 @@ export class WzForm {
     
   constructor(
     public fb: FormBuilder,
-    private _valid: Valid) {
+    private _form: Form) {
   }
   
   ngOnInit(): void {
-    this.form = this.fb.group(this._valid.createForm(this.items));
+    this.form = this.fb.group(this._form.create(this.items));
   }
   
   public parseOptions(options) {

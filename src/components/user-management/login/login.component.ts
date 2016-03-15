@@ -1,9 +1,9 @@
 import { Component } from 'angular2/core';
-import { Authentication } from '../../../common/services/authentication.data.service';
+import { Authentication } from '../authentication.data.service';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { ROUTER_DIRECTIVES, Router } from 'angular2/router';
 import { ApiConfig } from '../../../common/config/api.config';
-import { User } from '../../../common/services/user.data.service';
+import { User } from '../user.data.service';
 import { CurrentUser } from '../../../common/models/current-user.model';
 import { IFormFields } from '../../../common/interfaces/forms.interface';
 import { WzForm } from '../../../common/components/wz-form/wz.form.component';

@@ -1,6 +1,6 @@
 import {Component} from 'angular2/core';
 import {ROUTER_DIRECTIVES, Router} from 'angular2/router';
-import {Authentication} from '../../../common/services/authentication.data.service';
+import {Authentication} from '../authentication.data.service';
 import {CurrentUser} from '../../../common/models/current-user.model';
 
 /**
