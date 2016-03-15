@@ -2,17 +2,6 @@ app-footer {
   display: block;
   background-color: md-color($md-primary, 900, .9);
   .glb {
-    // @include background-image(
-    //   url("resources/img/bktx_maze_light.png"),
-    //   linear-gradient(md-color($md-grey, 200, .8), md-color($md-grey, 200, .8))
-    // );
-
-    // background-position: 0 0, 0 0;
-    // background-repeat: repeat, no-repeat;
-    // background-size: auto, cover;
-    padding-top: rem(1);
-    padding-bottom: rem(4);
-    // opacity: .75;
     @include text-contrast(md-color($md-primary, 900), md-color($md-background, 700), md-color($md-background, 400, .8));
     .logo-wrapper {
       height: 170px;

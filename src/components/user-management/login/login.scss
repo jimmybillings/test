@@ -6,9 +6,9 @@ section.login.hero {
   padding-top: 74px;
   @include text-contrast(md-color($md-background, 900));
   @include background-image(
-    url("resources/img/bktx_dgl_lines_light.png"),
+    url("resources/img/bk/tex/bktx_dgl_lines_light.png"),
     linear-gradient(md-color($md-primary, 900, .7), md-color($md-background, 900, .94)),
-    url("resources/img/hero_meeting.jpg")
+    url($bk-img-user-management)
   );
   background-position: 0 0, 0 0, center center;
   background-repeat: repeat, no-repeat, no-repeat;
