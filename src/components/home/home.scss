@@ -20,7 +20,7 @@ home {
       height: 250px;
       width: 100%;
       .logo {
-        @include background-image(url($logo-m-rev));
+        @include background-image(url($logo-home));
         background-position: bottom center;
         background-repeat:no-repeat;
         background-size: 255px;
@@ -85,49 +85,49 @@ home {
   // MARQUEE
 
   @include keyframes(loop) {
-      0%   {
-          @include transform( translateX(0) );
-      }
-      100% {
-          @include transform( translateX(-(33.3% * 2)));
-      }
+    0%   {
+      @include transform( translateX(0) );
+    }
+    100% {
+      @include transform( translateX(-(33.3% * 2)));
+    }
   }
 
 
   $height: 183px;
 
   .vendor-marquee {
-      background: md-color($md-grey, 300, .8) url('resources/img/bktx_contour_lines_light.png');
+    background: md-color($md-grey, 300, .8) url('resources/img/bktx_contour_lines_light.png');
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+
+    > ul {
+      list-style: none;
       position: relative;
-      width: 100%;
+      margin: 0;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      width: 300%!important;
+      height: $height;
+      @include transform(translate3d(0, 0, 0));
+      @include animation(loop 10s linear infinite);
+    }
+
+    > ul > li {
+      @include center-vertically();
+      @include justify(middle);
+      float: left;
+      width: 33.333333%;
+      height: $height;
       overflow: hidden;
-
-      > ul {
-        list-style: none;
-        position: relative;
-        margin: 0;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        width: 300%!important;
-        height: $height;
-        @include transform(translate3d(0, 0, 0));
-        @include animation(loop 10s linear infinite);
+      margin: -12px 0 0;
+      img {
+        opacity: .3;
+        margin: 0 1.66%;
       }
-
-      > ul > li {
-          @include center-vertically();
-          @include justify(middle);
-          float: left;
-          width: 33.333333%;
-          height: $height;
-          overflow: hidden;
-          margin: -12px 0 0;
-          img {
-            opacity: .3;
-            margin: 0 1.66%;
-          }
-      }
+    }
   }
 
 
