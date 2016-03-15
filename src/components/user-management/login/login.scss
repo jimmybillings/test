@@ -27,7 +27,7 @@ section.login.hero {
     height: 60px;
     width: 100%;
     .logo {
-      @include background-image(url("resources/img/logo.svg"));
+      @include background-image(url($logo-simple-form));
       background-position: top center;
       background-repeat:no-repeat;
       background-size: 170px;

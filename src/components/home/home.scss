@@ -20,7 +20,7 @@ home {
       height: 250px;
       width: 100%;
       .logo {
-        @include background-image(url("resources/img/logo_rev.svg"));
+        @include background-image(url($logo-m-rev));
         background-position: bottom center;
         background-repeat:no-repeat;
         background-size: 255px;

@@ -19,7 +19,7 @@ app-footer {
       width: 100%;
       .logo {
         margin: rem(.3) 0 0 0;
-        @include background-image(url("resources/img/logo_rev.svg"));
+        @include background-image(url($logo-footer));
         background-position: center center;
         background-repeat:no-repeat;
         background-size: 133px;

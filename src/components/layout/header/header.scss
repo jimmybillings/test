@@ -16,29 +16,25 @@ app-header md-toolbar.glb {
     width: 100px;
     height: 50px;
     position: absolute;
-    top: 9px;
+    top: 8px;
     margin-left: 7px;
-    .logo {
-      width: 272px;
-      img {
-        max-width: 100%;
-        height: auto;
-      }
+    .logo img {
+      @include background-image(url($logo-header));
+      background-position: top left;
+      background-repeat:no-repeat;
+      background-size: 272px;
+      width: 95px;
+      height: 50px;
     }
     @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-      width: 66px;
-      height: 32px;
-      top: 14px;
-      margin-left: -5px;
-      .logo {
-        width: 170px;
+      width: 72px;
+      height: 37px;
+      top: 10px;
+      .logo img {
+        background-size: 200px;
+        height: 37px;
       }
     }
-  }
-  a.home-link > h1 {
-    float: left;
-    padding-left: 100px;
-    color: #aaa;
   }
   &.fixed {
     background-color:rgba(md-color($md-background, 100), .95);
@@ -51,20 +47,6 @@ app-header md-toolbar.glb {
     box-shadow: $whiteframe-shadow-z1;
     a.home-link > .logo-wrapper {
       opacity: .95;
-      height: 38px;
-      top: 12px;
-      .logo {
-        width: 228px;
-      }
-      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-        width: 66px;
-        height: 32px;
-        top: 14px;
-        margin-left: -5px;
-        .logo {
-          width: 170px;
-        }
-      }
     }
   }
 }

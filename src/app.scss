@@ -46,6 +46,7 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 @import '../node_modules/ng2-material/source/components/toolbar/toolbar';
 @import '../node_modules/ng2-material/source/components/tabs/tabs';
 
+@import './resources/styles/config';
 @import './resources/styles/animations';
 @import './resources/styles/font-awesome/font-awesome';
 @import './resources/styles/text_contrast';
