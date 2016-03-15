@@ -1,8 +1,8 @@
 import { Injectable } from 'angular2/core';
 import { Validators } from 'angular2/common';
 import { MdPatternValidator } from 'ng2-material/all';
-import { ApiConfig } from '../../common/config/api.config';
-import { IFormFields } from '../../common/interfaces/forms.interface';
+import { ApiConfig } from '../../../common/config/api.config';
+import { IFormFields } from '../../../common/interfaces/forms.interface';
 
 /**
  * Service that provides api access registering new users.  
