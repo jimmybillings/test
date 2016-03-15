@@ -2,7 +2,7 @@ import {Component, Input, Output, EventEmitter} from 'angular2/core';
 import {NgFor} from 'angular2/common';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
-import {Valid} from '../../../common/services/validator.form.service';
+import {Valid} from './validator.form.service';
 /**
  * Home page component - renders the home page
  */  

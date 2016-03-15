@@ -57,7 +57,7 @@ export function main() {
 
     it('Should return correct api URL path for a logged in user', inject([ApiConfig], (service) => {
       let loggedIn = true;
-      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/clip/user/search');
+      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/clip/search');
     }));
 
 

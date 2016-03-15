@@ -5,7 +5,7 @@ import { ApiConfig } from '../../../common/config/api.config';
 import {CurrentUser} from '../../../common/models/current-user.model';
 import {Authentication} from '../../../common/services/authentication.data.service';
 import { User } from '../../../common/services/user.data.service';
-import {Valid} from '../../../common/services/validator.form.service';
+import {Valid} from '../../../common/components/wz-form/validator.form.service';
 
 import {Login} from './login.component';
 import {HTTP_PROVIDERS} from 'angular2/http';

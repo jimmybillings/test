@@ -62,7 +62,7 @@ export class ApiConfig {
    * @returns               appropriate api search path based on whether or not user is logged in
    */
   public getAssetSearchPath(isUserLoggedIn : boolean): string {
-    return (isUserLoggedIn) ? 'api/assets/v1/clip/user/search' : 'api/assets/v1/clip/anonymous/search';
+    return (isUserLoggedIn) ? 'api/assets/v1/clip/search' : 'api/assets/v1/clip/anonymous/search';
   }
 
   /**
@@ -82,7 +82,6 @@ export class ApiConfig {
     if (!isUserLoggedIn) search.set('siteName', this.getPortal());  
     
     let headers = (isUserLoggedIn) ? this.authHeaders() : void null;
-    console.log(headers);
     let options = (isUserLoggedIn) ? {headers: headers, search: search} : {search: search};
     return new RequestOptions(options);
   }

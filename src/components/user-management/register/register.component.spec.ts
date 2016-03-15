@@ -22,7 +22,7 @@ import {CurrentUser} from '../../../common/models/current-user.model';
 import {Authentication} from '../../../common/services/authentication.data.service';
 import {User} from '../../../common/services/user.data.service';
 import {UiConfig} from '../../../common/config/ui.config';
-import {Valid} from '../../../common/services/validator.form.service';
+import {Valid} from '../../../common/components/wz-form/validator.form.service';
 
 export function main() {
   describe('Register Component', () => {
