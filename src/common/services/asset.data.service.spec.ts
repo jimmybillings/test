@@ -49,7 +49,7 @@ export function main() {
         service.searchAssets(searchParams()).subscribe((res) => {
           expect(
             connection.request.url).toBe(service.apiConfig.baseUrl() 
-            + 'api/assets/v1/clip/anonymous/search?q=green&n=25&siteName=core'
+            + 'api/assets/v1/search/anonymous?q=green&n=25&siteName=core'
           );
           expect(res).toEqual(mockResponse());
         });

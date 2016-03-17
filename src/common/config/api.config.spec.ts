@@ -52,12 +52,12 @@ export function main() {
       
     it('Should return correct api URL path for a logged out user', inject([ApiConfig], (service) => {
       let loggedIn = false;
-      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/clip/anonymous/search');
+      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/search/anonymous');
     }));
 
     it('Should return correct api URL path for a logged in user', inject([ApiConfig], (service) => {
       let loggedIn = true;
-      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/clip/search');
+      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/search');
     }));
 
 
