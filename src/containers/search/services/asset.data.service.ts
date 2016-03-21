@@ -1,9 +1,9 @@
 import { Injectable } from 'angular2/core';
 import { Http, Response } from 'angular2/http';
-import { ApiConfig } from '../config/api.config';
+import { ApiConfig } from '../../../common/config/api.config';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import {CurrentUser} from '../../common/models/current-user.model';
+import {CurrentUser} from '../../../common/models/current-user.model';
 // import {Asset} from '../../common/interfaces/asset.interface';
 
 import { Store, Reducer, Action} from '@ngrx/store/dist/index';

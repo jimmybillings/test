@@ -18,7 +18,7 @@ import {UiConfig, config} from './common/config/ui.config';
 import { MockBackend } from 'angular2/http/testing';
 import { BaseRequestOptions, Http } from 'angular2/http';
 import { provideStore } from '@ngrx/store/dist/index';
-import {Authentication} from './containers/user-management/authentication.data.service';
+import {Authentication} from './containers/user-management/services/authentication.data.service';
 
 
 export function main() {

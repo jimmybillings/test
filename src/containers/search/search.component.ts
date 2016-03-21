@@ -2,7 +2,7 @@ import {Component} from 'angular2/core';
 import {Router, RouteParams} from 'angular2/router';
 import {HTTP_PROVIDERS} from 'angular2/http';
 import {NgStyle, CORE_DIRECTIVES} from 'angular2/common';
-import { AssetData } from '../../common/services/asset.data.service';
+import { AssetData } from './services/asset.data.service';
 import { AssetList }  from '../../components/asset-list/asset-list.component';
 import {UiConfig} from '../../common/config/ui.config';
 import {Observable} from 'rxjs/Observable';

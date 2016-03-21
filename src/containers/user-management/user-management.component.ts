@@ -3,7 +3,7 @@ import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {Login} from './login/login.component';
 import {Register} from './register/register.component';
 import {Profile} from './profile/profile.component';
-import { User } from './user.data.service';
+import { User } from './services/user.data.service';
 
 @Component({
   selector: 'user',

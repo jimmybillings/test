@@ -1,7 +1,7 @@
 import { it, describe, expect, inject, beforeEachProviders } from 'angular2/testing';
 import { provide } from 'angular2/core';
 import { Authentication } from './authentication.data.service';
-import { ApiConfig } from '../../common/config/api.config';
+import { ApiConfig } from '../../../common/config/api.config';
 import { MockBackend } from 'angular2/http/testing';
 import { BaseRequestOptions, Http, Response, ResponseOptions } from 'angular2/http';
 

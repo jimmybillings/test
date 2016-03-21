@@ -1,8 +1,8 @@
 import { it, describe, expect, inject, beforeEachProviders } from 'angular2/testing';
 import { provide } from 'angular2/core';
 import { User } from './user.data.service';
-import { ApiConfig } from '../../common/config/api.config';
-import { CurrentUser, currentUser } from '../../common/models/current-user.model';
+import { ApiConfig } from '../../../common/config/api.config';
+import { CurrentUser, currentUser } from '../../../common/models/current-user.model';
 import { MockBackend } from 'angular2/http/testing';
 import { BaseRequestOptions, Http, Response, ResponseOptions } from 'angular2/http';
 import { provideStore } from '@ngrx/store/dist/index';

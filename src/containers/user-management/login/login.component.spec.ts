@@ -3,8 +3,8 @@ import {describe, expect, it, inject, injectAsync, TestComponentBuilder, beforeE
 import {Observable} from 'rxjs/Rx';
 import { ApiConfig } from '../../../common/config/api.config';
 import {CurrentUser} from '../../../common/models/current-user.model';
-import {Authentication} from '../authentication.data.service';
-import { User } from '../user.data.service';
+import {Authentication} from '../services/authentication.data.service';
+import { User } from '../services/user.data.service';
 import {Form} from '../../../components/wz-form/wz.form.model';
 
 import {Login} from './login.component';

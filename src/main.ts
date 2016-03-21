@@ -3,7 +3,7 @@ import { bootstrap } from 'angular2/platform/browser';
 import { ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy } from 'angular2/router';
 import { HTTP_PROVIDERS, HTTP_BINDINGS } from 'angular2/http';
 import { provideStore } from '@ngrx/store/dist/index';
-import { assets } from './common/services/asset.data.service';
+import { assets } from './containers/search/services/asset.data.service';
 import { Validators } from 'angular2/common';
 import { AppComponent } from './app.component';
 import { ApiConfig } from './common/config/api.config';

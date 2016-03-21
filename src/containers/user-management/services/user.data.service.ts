@@ -1,7 +1,7 @@
 import { Injectable } from 'angular2/core';
 import { Http, Response } from 'angular2/http';
-import { ApiConfig } from '../../common/config/api.config';
-import { CurrentUser } from '../../common/models/current-user.model';
+import { ApiConfig } from '../../../common/config/api.config';
+import { CurrentUser } from '../../../common/models/current-user.model';
 import {Observable} from 'rxjs/Observable';
 
 /**

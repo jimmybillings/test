@@ -19,7 +19,7 @@ import { BaseRequestOptions, Http } from 'angular2/http';
 import { ApiConfig } from '../../common/config/api.config';
 import {CurrentUser} from '../../common/models/current-user.model';
 import {UiConfig, config} from '../../common/config/ui.config';
-import {AssetData} from '../../common/services/asset.data.service';
+import {AssetData} from './services/asset.data.service';
 import {Observable} from 'rxjs/Rx';
 import { provideStore } from '@ngrx/store/dist/index';
 

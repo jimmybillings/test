@@ -1,6 +1,6 @@
 import { Component } from 'angular2/core';
 import { Response } from 'angular2/http';
-import { User } from '../user.data.service';
+import { User } from '../services/user.data.service';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
 import { ApiConfig } from '../../../common/config/api.config';

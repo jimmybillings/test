@@ -6,7 +6,7 @@ import {UserManagement} from './containers/user-management/user-management.compo
 import {Home} from './containers/home/home.component';
 import {Search} from './containers/search/search.component';
 import {CurrentUser} from './common/models/current-user.model';
-import {Authentication} from './containers/user-management/authentication.data.service';
+import {Authentication} from './containers/user-management/services/authentication.data.service';
 import {ApiConfig} from './common/config/api.config';
 import {UiConfig} from './common/config/ui.config';
 import {Observable} from 'rxjs/Observable';
