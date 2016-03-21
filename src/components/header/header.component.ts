@@ -2,6 +2,7 @@ import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from 'a
 import {NgClass, NgIf} from 'angular2/common';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
 import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
+import {TranslatePipe} from 'ng2-translate/ng2-translate';
 
 /**
  * site header component - renders the header information
@@ -10,6 +11,7 @@ import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
   selector: 'app-header',
   templateUrl: 'components/header/header.html',
   directives: [ROUTER_DIRECTIVES, NgClass, MATERIAL_DIRECTIVES, NgIf],
+  pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 

@@ -13,7 +13,7 @@ import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from 'angular
 import {SpyLocation} from 'angular2/src/mock/location_mock';
 import {RootRouter} from 'angular2/src/router/router';
 import {CurrentUser, currentUser} from '../../../common/models/current-user.model';
-import { provideStore } from '@ngrx/store/dist/index';
+import { provideStore } from '@ngrx/store';
 
 export function main() {
   describe('Profile Component', () => {

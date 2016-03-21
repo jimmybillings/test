@@ -1,6 +1,6 @@
 import {CurrentUserInterface} from '../interfaces/current-user.interface';
 import { Observable} from 'rxjs/Observable';
-import { Store, Reducer, Action} from '@ngrx/store/dist/index';
+import { Store, Reducer, Action} from '@ngrx/store';
 import { Injectable } from 'angular2/core';
 
 

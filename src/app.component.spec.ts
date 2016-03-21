@@ -18,6 +18,7 @@ import {UiConfig, config} from './common/config/ui.config';
 import { MockBackend } from 'angular2/http/testing';
 import { BaseRequestOptions, Http } from 'angular2/http';
 import { provideStore } from '@ngrx/store/dist/index';
+import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
 import {Authentication} from './containers/user-management/services/authentication.data.service';
 
 
@@ -35,8 +36,13 @@ export function main() {
         useFactory: (backend, defaultOptions) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
+      provide(TranslateLoader, {
+          useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
+          deps: [Http]
+      }),
       provideStore({config: config}),
       CurrentUser,
+      TranslateService,
       ApiConfig,
       Authentication,
       UiConfig

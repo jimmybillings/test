@@ -23,7 +23,7 @@ import {Authentication} from '../services/authentication.data.service';
 import {User} from '../services/user.data.service';
 import {UiConfig, config} from '../../../common/config/ui.config';
 import {Form} from '../../../components/wz-form/wz.form.model';
-import { provideStore } from '@ngrx/store/dist/index';
+import { provideStore } from '@ngrx/store';
 
 export function main() {
   describe('Register Component', () => {

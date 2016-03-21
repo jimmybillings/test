@@ -1,6 +1,6 @@
 import { it, describe, expect, inject, beforeEachProviders } from 'angular2/testing';
 import { CurrentUser, currentUser } from './current-user.model';
-import { provideStore } from '@ngrx/store/dist/index';
+import { provideStore } from '@ngrx/store';
 
 export function main() {
 

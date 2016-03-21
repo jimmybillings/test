@@ -4,7 +4,7 @@ import { UiConfig, config } from './ui.config';
 import { ApiConfig } from './api.config';
 import { BaseRequestOptions, Http, Response, ResponseOptions} from 'angular2/http';
 import { MockBackend } from 'angular2/http/testing';
-import { provideStore } from '@ngrx/store/dist/index';
+import { provideStore } from '@ngrx/store';
 
 export function main() {
   describe('UI config', () => {

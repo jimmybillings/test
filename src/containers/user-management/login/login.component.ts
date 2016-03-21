@@ -1,4 +1,5 @@
 import { Component } from 'angular2/core';
+import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Authentication } from '../services/authentication.data.service';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { ROUTER_DIRECTIVES, Router } from 'angular2/router';
@@ -16,7 +17,8 @@ import { UiConfig } from '../../../common/config/ui.config';
   selector: 'login',
   templateUrl: 'containers/user-management/login/login.html',
   providers: [Authentication],
-  directives: [MATERIAL_DIRECTIVES, ROUTER_DIRECTIVES, WzForm]
+  directives: [MATERIAL_DIRECTIVES, ROUTER_DIRECTIVES, WzForm],
+  pipes: [TranslatePipe]
 })
 
 export class Login {

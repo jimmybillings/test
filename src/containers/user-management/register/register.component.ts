@@ -1,4 +1,5 @@
 import { Component } from 'angular2/core';
+import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Response } from 'angular2/http';
 import { User } from '../services/user.data.service';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
@@ -15,7 +16,8 @@ import { WzForm } from '../../../components/wz-form/wz.form.component';
   selector: 'register',
   templateUrl: 'containers/user-management/register/register.html',
   providers: [User],
-  directives: [MATERIAL_DIRECTIVES, ROUTER_DIRECTIVES, WzForm]
+  directives: [MATERIAL_DIRECTIVES, ROUTER_DIRECTIVES, WzForm],
+  pipes: [TranslatePipe]
 })
 
 export class Register {

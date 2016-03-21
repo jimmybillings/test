@@ -35,6 +35,7 @@ module.exports = function(config) {
       { pattern: 'node_modules/systemjs/dist/system-polyfills.js', included: false, watched: false }, // PhantomJS2 (and possibly others) might require it
       { pattern: 'node_modules/ng2-material/**/*.js', included: false, watched: false },
       { pattern: 'node_modules/@ngrx/**/*.js', included: false, watched: false },
+      { pattern: 'node_modules/ng2-translate/**/*.js', included: false, watched: false },
       'test-main.js'
     ],
 

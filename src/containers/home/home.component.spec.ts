@@ -18,7 +18,7 @@ import { ApiConfig } from '../../common/config/api.config';
 import {CurrentUser} from '../../common/models/current-user.model';
 import {UiConfig, config} from '../../common/config/ui.config';
 
-import { provideStore } from '@ngrx/store/dist/index';
+import { provideStore } from '@ngrx/store';
 
 export function main() {
   describe('Home Component', () => {

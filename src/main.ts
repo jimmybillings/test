@@ -1,8 +1,9 @@
 import { provide } from 'angular2/core';
 import { bootstrap } from 'angular2/platform/browser';
 import { ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy } from 'angular2/router';
-import { HTTP_PROVIDERS, HTTP_BINDINGS } from 'angular2/http';
-import { provideStore } from '@ngrx/store/dist/index';
+import { HTTP_PROVIDERS, HTTP_BINDINGS, Http } from 'angular2/http';
+import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
+import { provideStore } from '@ngrx/store';
 import { assets } from './containers/search/services/asset.data.service';
 import { Validators } from 'angular2/common';
 import { AppComponent } from './app.component';
@@ -21,6 +22,12 @@ bootstrap(AppComponent, [
   provideStore({config, assets, currentUser}),
   HTTP_PROVIDERS,
   HTTP_BINDINGS,
+  provide(TranslateLoader, {
+        useFactory: (http: Http) => new TranslateStaticLoader(http, 'resources/i18n', '.json'),
+        deps: [Http]
+    }),
+    // use TranslateService here, and not TRANSLATE_PROVIDERS (which will define a default TranslateStaticLoader)
+  TranslateService,
   Validators,
   ApiConfig,
   CurrentUser,

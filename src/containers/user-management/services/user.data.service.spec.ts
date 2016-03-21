@@ -5,7 +5,7 @@ import { ApiConfig } from '../../../common/config/api.config';
 import { CurrentUser, currentUser } from '../../../common/models/current-user.model';
 import { MockBackend } from 'angular2/http/testing';
 import { BaseRequestOptions, Http, Response, ResponseOptions } from 'angular2/http';
-import { provideStore } from '@ngrx/store/dist/index';
+import { provideStore } from '@ngrx/store';
 
 export function main() {
   describe('User data service', () => {

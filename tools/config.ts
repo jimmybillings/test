@@ -104,6 +104,7 @@ const SYSTEM_CONFIG_DEV = {
     [BOOTSTRAP_MODULE]: `${APP_BASE}${BOOTSTRAP_MODULE}`,
     'angular2/*': `${APP_BASE}angular2/*`,
     'rxjs/*': `${APP_BASE}rxjs/*`,
+    '@ngrx/*': `${APP_BASE}node_modules/@ngrx/store/dist/index.js`,
     '*': `${APP_BASE}node_modules/*`
   },
   packages: {
@@ -118,6 +119,7 @@ export const SYSTEM_BUILDER_CONFIG = {
   defaultJSExtensions: true,
   paths: {
     [`${TMP_DIR}/*`]: `${TMP_DIR}/*`,
+    '@ngrx/store': 'node_modules/@ngrx/store/dist/index.js',
     '*': 'node_modules/*'
   }
 };

@@ -1,6 +1,7 @@
 import {Component} from 'angular2/core';
 import {Router, RouteParams} from 'angular2/router';
 import {HTTP_PROVIDERS} from 'angular2/http';
+import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {NgStyle, CORE_DIRECTIVES} from 'angular2/common';
 import { AssetData } from './services/asset.data.service';
 import { AssetList }  from '../../components/asset-list/asset-list.component';
@@ -14,7 +15,8 @@ import {Observable} from 'rxjs/Observable';
   selector: 'search',
   templateUrl: 'containers/search/search.html',
   directives: [NgStyle, CORE_DIRECTIVES, AssetList],
-  viewProviders: [HTTP_PROVIDERS, AssetData]
+  viewProviders: [HTTP_PROVIDERS, AssetData],
+  pipes: [TranslatePipe]
   
 })
 
