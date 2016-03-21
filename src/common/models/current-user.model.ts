@@ -48,7 +48,6 @@ export class CurrentUser {
    *               current user is logged out.
    */
   public loggedInState(): Observable<any> {
-    // return (localStorage.getItem('token') !== null);
     return this._currentUser.map((user) => {
       return user.emailAddress;
     });
@@ -62,7 +61,6 @@ export class CurrentUser {
    * @returns      Current user email address.
    */
   public email(): Observable<any> {
-    // return this._currentUser.emailAddress;
     return this._currentUser.map((user) => {
       return user.emailAddress;
     });
@@ -72,7 +70,6 @@ export class CurrentUser {
    * @returns      Current user first name
    */
   public firstName(): Observable<any> {
-    // return this._currentUser.firstName;
     return this._currentUser.map((user) => {
       return user.firstName;
     });
@@ -82,7 +79,6 @@ export class CurrentUser {
    * @returns      Current user last name
    */
   public lastName(): Observable<any> {
-    // return this._currentUser.lastName;
     return this._currentUser.map((user) => {
       return user.lastName;
     });
@@ -92,7 +88,6 @@ export class CurrentUser {
    * @returns      Current user full name. Concatenated first and last name
    */
   public fullName(): Observable<any> {
-    // return `${this._currentUser.firstName} ${this._currentUser.lastName}`;
     return this._currentUser.map((user) => {
       return `${user.firstName} ${user.lastName}`;
     });
@@ -102,7 +97,6 @@ export class CurrentUser {
    * @returns      Current user createdOn time stamp
    */
   public createdOn(): Observable<any> {
-    // return this._currentUser.createdOn;
     return this._currentUser.map((user) => {
       return user.createdOn;
     });
@@ -112,7 +106,6 @@ export class CurrentUser {
    * @returns      Current user lastUpdated time stamp
    */
   public lastUpdated(): Observable<any> {
-    // return this._currentUser.lastUpdated;
     return this._currentUser.map((user) => {
       return user.lastUpdated;
     });
@@ -122,7 +115,6 @@ export class CurrentUser {
    * @returns      Current user siteName value
    */
   public siteName(): Observable<any> {
-    // return this._currentUser.siteName;
     return this._currentUser.map((user) => {
       return user.siteName;
     });
@@ -132,7 +124,6 @@ export class CurrentUser {
    * @returns      Current user id value
    */
   public id(): Observable<any> {
-    // return this._currentUser.id;
     return this._currentUser.map((user) => {
       return user.id;
     });
@@ -142,7 +133,6 @@ export class CurrentUser {
    * @returns      Current user accountIds
    */
   public accountIds(): Observable<Array<number>> {
-    // return this._currentUser.accountIds;
     return this._currentUser.map((user) => {
       return user.accountIds;
     });
