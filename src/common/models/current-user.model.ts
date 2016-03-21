@@ -1,17 +1,36 @@
 import {CurrentUserInterface} from '../interfaces/current-user.interface';
-  
+import { Observable} from 'rxjs/Observable';
+import { Store, Reducer, Action} from '@ngrx/store/dist/index';
+import { Injectable } from 'angular2/core';
+
+
+
+export const currentUser:Reducer<any> = (state = {}, action:Action) => {
+
+    switch (action.type) {
+        case 'SET_USER':
+            return Object.assign({}, state, action.payload);
+
+        default:
+            return state;
+    }
+};
+
+@Injectable()
 /**
  * Model that describes current user, and provides  
  * methods for retrieving user attributes.
  */  
 export class CurrentUser {
 
-  private _currentUser: CurrentUserInterface;
+  private _currentUser: Observable<any>;
   // we don't need a constructor because currentUser.set() is called from the app.component.
   // having both calls _user() multiple times.
-  // constructor() {
-  //   this._currentUser = this._user();
-  // }
+  constructor(private store: Store<any>) {
+    this._currentUser = this.store.select('currentUser');
+    
+    
+  }
 
   /**
    * @param user    Stores current user in localStorage and establishes private _currentUser var.
@@ -20,16 +39,21 @@ export class CurrentUser {
    *                 
    */
   public set(user: CurrentUserInterface = null): void {
-    // console.log('hit currentUser.set method');
     if (user) localStorage.setItem('currentUser', JSON.stringify(user));
-    this._currentUser = this._user();
-    // console.log(this._currentUser);
+    this.store.dispatch({type: 'SET_USER', payload: this._user()});
   }
 
   /**
    * @returns      Current user is logged in if a localStorage token exists. If it doesn't exist,
    *               current user is logged out.
    */
+  public loggedInState(): Observable<any> {
+    // return (localStorage.getItem('token') !== null);
+    return this._currentUser.map((user) => {
+      return user.emailAddress;
+    });
+  }
+  
   public loggedIn(): boolean {
     return (localStorage.getItem('token') !== null);
   }
@@ -37,71 +61,97 @@ export class CurrentUser {
   /**
    * @returns      Current user email address.
    */
-  public email(): string {
-    return this._currentUser.emailAddress;
+  public email(): Observable<any> {
+    // return this._currentUser.emailAddress;
+    return this._currentUser.map((user) => {
+      return user.emailAddress;
+    });
   }
 
   /**
    * @returns      Current user first name
    */
-  public firstName(): string {
-    return this._currentUser.firstName;
+  public firstName(): Observable<any> {
+    // return this._currentUser.firstName;
+    return this._currentUser.map((user) => {
+      return user.firstName;
+    });
   }
 
   /**
    * @returns      Current user last name
    */
-  public lastName(): string {
-    return this._currentUser.lastName;
+  public lastName(): Observable<any> {
+    // return this._currentUser.lastName;
+    return this._currentUser.map((user) => {
+      return user.lastName;
+    });
   }
 
   /**
    * @returns      Current user full name. Concatenated first and last name
    */
-  public fullName(): string {
-    return `${this._currentUser.firstName} ${this._currentUser.lastName}`;
+  public fullName(): Observable<any> {
+    // return `${this._currentUser.firstName} ${this._currentUser.lastName}`;
+    return this._currentUser.map((user) => {
+      return `${user.firstName} ${user.lastName}`;
+    });
   }
 
   /**
    * @returns      Current user createdOn time stamp
    */
-  public createdOn(): Date {
-    return this._currentUser.createdOn;
+  public createdOn(): Observable<any> {
+    // return this._currentUser.createdOn;
+    return this._currentUser.map((user) => {
+      return user.createdOn;
+    });
   }
 
   /**
    * @returns      Current user lastUpdated time stamp
    */
-  public lastUpdated(): Date {
-    return this._currentUser.lastUpdated;
+  public lastUpdated(): Observable<any> {
+    // return this._currentUser.lastUpdated;
+    return this._currentUser.map((user) => {
+      return user.lastUpdated;
+    });
   }
 
   /**
    * @returns      Current user siteName value
    */
-  public siteName(): string {
-    return this._currentUser.siteName;
+  public siteName(): Observable<any> {
+    // return this._currentUser.siteName;
+    return this._currentUser.map((user) => {
+      return user.siteName;
+    });
   }
 
   /**
    * @returns      Current user id value
    */
-  public id(): number {
-    return this._currentUser.id;
+  public id(): Observable<any> {
+    // return this._currentUser.id;
+    return this._currentUser.map((user) => {
+      return user.id;
+    });
   }
 
   /**
    * @returns      Current user accountIds
    */
-  public accountIds(): Array<any> {
-    return this._currentUser.accountIds;
+  public accountIds(): Observable<Array<number>> {
+    // return this._currentUser.accountIds;
+    return this._currentUser.map((user) => {
+      return user.accountIds;
+    });
   }
 
   /**
    * @returns      Current user from localStorage, or if that doesn't exist, return current user with null value attributes.
    */
   private _user(): CurrentUserInterface {
-    // console.log('hit _user method');
     return JSON.parse(localStorage.getItem('currentUser')) || {
       emailAddress: null,
       firstName: null,

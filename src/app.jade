@@ -1,5 +1,5 @@
-div(*ngIf="config || components")
-  app-header([currentUser]="currentUser", [config]="components.header")
+div(*ngIf="header")
+  app-header([currentUser]="currentUser", [config]="(header | async)", (onLogOut)="logout()")
   .main-content
     router-outlet
-  app-footer([currentUser]="currentUser", [config]="components.footer")
+  app-footer([currentUser]="currentUser", [config]="(footer | async)")
