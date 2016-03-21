@@ -20,7 +20,7 @@ export class ApiConfig {
    * @returns   Api root path. Example: 'https://crxextapi.dev.wzplatform.com/'.
    */
   public baseUrl(): string {
-    return 'https://crxextapi.dev.wzplatform.com/';
+    return window['baseUrl'];
   }
   /**
    * @returns   Request Headers include Content-Type: application/json, 

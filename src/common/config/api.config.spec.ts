@@ -11,6 +11,7 @@ export function main() {
 
     it('Should return the api root path',
       inject([ApiConfig], (service) => {
+        window['baseUrl'] = 'https://crxextapi.dev.wzplatform.com/';
         expect(service.baseUrl()).toEqual('https://crxextapi.dev.wzplatform.com/');
       }));
 
