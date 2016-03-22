@@ -1,8 +1,8 @@
 import {
-  TestComponentBuilder,
   describe,
   expect,
   injectAsync,
+  TestComponentBuilder,
   it,
   beforeEachProviders
 } from 'angular2/testing';
@@ -20,12 +20,15 @@ import { BaseRequestOptions, Http } from 'angular2/http';
 import { provideStore } from '@ngrx/store/dist/index';
 import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
 import {Authentication} from './containers/user-management/services/authentication.data.service';
+import {MultilingualService, multilingualReducer} from './common/services/multilingual.service';
 
 
 export function main() {
   
   describe('App Component', () => {
+    
     beforeEachProviders(() => [
+      AppComponent,
       RouteRegistry,
       provide(Location, {useClass: SpyLocation}),
       provide(ROUTER_PRIMARY_COMPONENT, {useValue: AppComponent}),
@@ -40,7 +43,8 @@ export function main() {
           useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
           deps: [Http]
       }),
-      provideStore({config: config}),
+      MultilingualService,
+      provideStore({config: config, i18n: multilingualReducer}),
       CurrentUser,
       TranslateService,
       ApiConfig,

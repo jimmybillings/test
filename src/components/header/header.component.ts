@@ -1,8 +1,9 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from 'angular2/core';
-import {NgClass, NgIf} from 'angular2/common';
+import {NgClass, NgIf, NgFor} from 'angular2/common';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
 import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
+import {ControlGroup, Control} from 'angular2/common';
 
 /**
  * site header component - renders the header information
@@ -10,7 +11,7 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 @Component({
   selector: 'app-header',
   templateUrl: 'components/header/header.html',
-  directives: [ROUTER_DIRECTIVES, NgClass, MATERIAL_DIRECTIVES, NgIf],
+  directives: [ROUTER_DIRECTIVES, NgClass, MATERIAL_DIRECTIVES, NgIf, NgFor],
   pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -19,16 +20,20 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 export class Header {
   @Input() currentUser;
   @Input() config;
+  @Input() supportedLanguages;
   @Output() onLogOut = new EventEmitter();
-
+  @Output() onChangeLang = new EventEmitter();
   public showFixed: boolean;
   
-  
+  public langForm: ControlGroup;
   public loggedInState: boolean;
 
 
   constructor() {
     this.showFixed = false;
+    this.langForm = new ControlGroup({
+      lang: new Control('en')
+    });
   }
 
   /**
@@ -51,6 +56,10 @@ export class Header {
   
   public logOut(event) {
     this.onLogOut.emit(event);
+  }
+  
+  public changeLang(lang) {
+    this.onChangeLang.emit(lang);
   }
   
 }

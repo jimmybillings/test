@@ -1,6 +1,8 @@
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
-import { TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
+import {MultilingualService} from './common/services/multilingual.service';
+import {ILang} from './common/interfaces/language.interface';
+import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {Header} from './components/header/header.component';
 import {Footer} from './components/footer/footer.component';
 import {UserManagement} from './containers/user-management/user-management.component';
@@ -18,7 +20,6 @@ import {Observable} from 'rxjs/Observable';
   directives: [ROUTER_DIRECTIVES, Header, Footer],
   providers: [Authentication],
   pipes: [TranslatePipe]
-
 })
 
 @RouteConfig([
@@ -30,41 +31,41 @@ import {Observable} from 'rxjs/Observable';
 export class AppComponent {
   public header: Observable<any>;
   public footer: Observable<any>;
+  public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   
   constructor(
     public currentUser: CurrentUser,
     private _apiConfig: ApiConfig,
     public uiConfig: UiConfig,
     private _authentication: Authentication,
-    public router: Router, 
+    public router: Router,
     private _currentUser: CurrentUser,
-    public translate: TranslateService) {
-    this._apiConfig.setPortal('core');
-    
-    var userLang = navigator.language.split('-')[0]; // use navigator lang if available
-    userLang = /(fr|en)/gi.test(userLang) ? userLang : 'en';
-
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('en');
-
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use(userLang);
+    public multiLingual: MultilingualService) {
+      this._apiConfig.setPortal('core');
+      
+      let userLang = window.navigator.language.split('-')[0];
+      console.log(window.navigator.language);
+      multiLingual.setLanguage(userLang);
   }
 
   ngOnInit() {
     this.uiConfig.initialize(this._apiConfig.getPortal())
-      .subscribe(() => {        
+      .subscribe(() => {
         this.header = this.uiConfig.get('header');
         this.footer = this.uiConfig.get('footer');
       });
-    
+
     this.currentUser.set();
   }
-  
+
   public logout(): void {
     this._authentication.destroy().subscribe();
     localStorage.clear();
     this._currentUser.set();
     this.router.navigate(['/Home']);
+  }
+  
+  public changeLang(data): void {
+    this.multiLingual.setLanguage(data.lang);
   }
 }
