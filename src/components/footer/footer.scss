@@ -35,6 +35,16 @@ app-footer {
         }
       }
     }
+    .language-selector label   {
+      margin: 0;
+      padding: 9px 6px;
+      i {
+        @include text-contrast(md-color($md-primary, 900), md-color($md-background, 700), md-color($md-background, 400, .25));
+        &:hover {
+          color: md-color($md-primary, 300);
+        }
+      }
+    }
     h3.md-title {
       margin-bottom: .7em;
     }

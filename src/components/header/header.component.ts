@@ -3,7 +3,6 @@ import {NgClass, NgIf, NgFor} from 'angular2/common';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
 import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
-import {ControlGroup, Control} from 'angular2/common';
 
 /**
  * site header component - renders the header information
@@ -16,50 +15,22 @@ import {ControlGroup, Control} from 'angular2/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-
 export class Header {
   @Input() currentUser;
   @Input() config;
+  @Input() showFixed;
   @Input() supportedLanguages;
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
-  public showFixed: boolean;
-  
-  public langForm: ControlGroup;
   public loggedInState: boolean;
 
 
-  constructor() {
-    this.showFixed = false;
-    this.langForm = new ControlGroup({
-      lang: new Control('en')
-    });
-  }
-
-  /**
-   * When the header component loads, setup a listener for window scrolling events, and call
-   * the showFixedHeader() method when scrolling.
-  */
   ngOnInit(): void {
-    window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
     this.config = this.config.config;
     this.loggedInState = this.currentUser.loggedInState();
   }
-  
-  /**
-   * Display a fixed headerwith different styling when the page scrolls down past 68 pixels.
-   * @param offset  window scrolling offset value used to calcuate which header to display.
-  */
-  public showFixedHeader(offset): void {
-    this.showFixed = (offset > 68) ? true : false;
-  }
-  
+
   public logOut(event) {
     this.onLogOut.emit(event);
   }
-  
-  public changeLang(lang) {
-    this.onChangeLang.emit(lang);
-  }
-  
 }
