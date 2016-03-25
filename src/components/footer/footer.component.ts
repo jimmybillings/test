@@ -1,5 +1,5 @@
-import {Component, Input, ChangeDetectionStrategy} from 'angular2/core';
-import {NgClass, NgIf} from 'angular2/common';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from 'angular2/core';
+import {ControlGroup, Control, NgClass, NgIf} from 'angular2/common';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
 import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
@@ -18,4 +18,18 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 export class Footer {
   @Input() currentUser;
   @Input() config;
+  @Input() supportedLanguages;
+  @Output() onChangeLang = new EventEmitter();
+  public langForm: ControlGroup;
+
+
+  constructor() {
+    this.langForm = new ControlGroup({
+      lang: new Control('en')
+    });
+  }
+
+  public changeLang(lang) {
+    this.onChangeLang.emit(lang);
+  }
 }

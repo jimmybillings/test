@@ -61,5 +61,31 @@ export function main() {
         });
     }));
     
+    
+    it('Should initialize the header position to be absolulte positioned by setting \'showFixed\' to be false',
+      injectAsync([TestComponentBuilder], (tcb) => {
+        return tcb.createAsync(AppComponent).then((fixture) => {
+          let instance = fixture.debugElement.componentInstance;
+          expect(instance.showFixed).toEqual(false);
+        });
+      }));
+
+    it('Should set the header to absolute by setting \'showFixed\' to be false if the page scrolls less than 68px\'s',
+      injectAsync([TestComponentBuilder], (tcb) => {
+        return tcb.createAsync(AppComponent).then((fixture) => {
+          let instance = fixture.debugElement.componentInstance;
+          instance.showFixedHeader(70);
+          expect(instance.showFixed).toEqual(true);
+        });
+      }));
+
+    it('Should set the header to fixed by setting \'showFixed\' to be true if the page scrolls down more than 68px\'s',
+      injectAsync([TestComponentBuilder], (tcb) => {
+        return tcb.createAsync(AppComponent).then((fixture) => {
+          let instance = fixture.debugElement.componentInstance;
+          instance.showFixedHeader(66);
+          expect(instance.showFixed).toEqual(false);
+        });
+      }));
   });
 }

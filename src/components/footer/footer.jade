@@ -49,5 +49,12 @@
             span.fa-stack.fa-lg
               i.fa.fa-circle.fa-stack-2x
               i.fa.fa-youtube.fa-stack-1x.fa-inverse
+      form.language-selector([ngFormModel]="langForm")
+        label(for="lang")
+          i.material-icons(md-icons='') language
+
+        select(id="lang", ngControl="lang", (change)="changeLang(langForm.value)")
+          option(*ngFor="#l of supportedLanguages", [value]="l.code") {{l.title}}
+
 
   div(flex="")
