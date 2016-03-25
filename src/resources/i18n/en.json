@@ -1,8 +1,54 @@
 {
-  "HOME": {
-    "DESCRIPTION": "Incredible footage, killer research and unmatched clearance expertise"
+  "HEADER": {
+    "LOGIN_LABEL": "Login",
+    "LOGOUT_LABEL": "Logout",
+    "SIGN_UP_LABEL": "Sign Up"
   },
-  "LOGIN_LABEL": "Login",
-  "LOGOUT_LABEL": "Logout",
-  "SIGN_UP_LABEL": "Sign Up"
+  "FOOTER": {
+    "OFFICE": "Office",
+    "SALES": "Sales",
+    "COMMUNITY": "Community"
+  },
+  "HOME": {
+    "SEARCH_HEADING": "Incredible footage, killer research and unmatched clearance expertise",
+    "SEARCH_BOX_LABEL": "Search for Videos and Photos...",
+    "DESCRIPTION": {
+      "FIRST": "Experience what more than 67,000 customers know. Access",
+      "SECOND": "4 million+ assets",
+      "THIRD": "expert research support"
+    },
+    "START_PROJECT": "START YOUR PROJECT!",
+    "HIGHLIGHT": {
+      "ONE": "Highlight One, Hightlight One",
+      "TWO": "Highlight Two, Hightlight Two",
+      "THREE": "Highlight Three, Hightlight Three",
+      "FOUR": "Highlight Four, Hightlight Five",
+      "FIVE": "Highlight Five, Hightlight Five",
+      "SIX": "Highlight Six, Hightlight Six"
+    }
+  },
+  "REGISTER": {
+    "TITLE": "Get Started With Wazee",
+    "ALREADY_HAVE_ACCOUNT": "Already have an account?",
+    "LOGIN": "LOGIN",
+    "FORM": {
+      "FIRST_NAME_LABEL": "First Name",
+      "LAST_NAME_LABEL": "Last Name",
+      "EMAIL_LABEL": "Email",
+      "PASSWORD_LABEL": "Password",
+      "SUBMIT_LABEL": "SIGN UP"
+    }
+  },
+  "LOGIN": {
+    "TITLE": "Login To Your Account",
+    "FORGOT_PASSWORD": "Forgot Your Password?",
+    "GET_ACCOUNT": "Don't have an account?",
+    "SIGN_UP": "SIGN UP",
+    "FORM": {
+      "EMAIL_LABEL": "Email",
+      "PASSWORD_LABEL": "Password",
+      "SUBMIT_LABEL": "SIGN IN"
+    }
+  }
 }
+

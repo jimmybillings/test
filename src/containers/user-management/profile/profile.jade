@@ -32,15 +32,6 @@ section.login.hero
             div( *ngFor="#account of currentUser.accountIds() | async") 
               md-list-item
                 h3 Account: {{account}}
-              // md-divider
-              // md-list-item
-              //   p Name: {{account.name}}
-              // md-list-item
-              //   p Created: {{account.createdOn}}
-              // md-list-item
-              //   p Last Updated: {{account.lastUpdated}}
-              // md-list-item
-              //   p Admin: {{account.isAdmin}}
               
     div(flex='')
     

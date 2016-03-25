@@ -1,6 +1,8 @@
 import {Component, Input, ChangeDetectionStrategy} from 'angular2/core';
 import {FormBuilder, Validators, ControlGroup, FORM_DIRECTIVES} from 'angular2/common';
 import {Router} from 'angular2/router';
+import {TranslatePipe} from 'ng2-translate/ng2-translate';
+
 /**
  * Home page search component - renders search form passes form values to search component.
  */  
@@ -8,6 +10,7 @@ import {Router} from 'angular2/router';
   selector: 'search-box',
   templateUrl: 'components/search-box/search-box.html',
   directives: [FORM_DIRECTIVES],
+  pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

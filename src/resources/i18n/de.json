@@ -1,8 +1,53 @@
 {
-  "HOME": {
-    "DESCRIPTION": "Unglaubliche Aufnahmen , Killer Forschung und unübertroffene Expertise Clearance"
+  "HEADER": {
+    "LOGIN_LABEL": "Anmeldung",
+    "LOGOUT_LABEL": "Ausloggen",
+    "SIGN_UP_LABEL": "Anmelden"
   },
-  "LOGIN_LABEL": "Anmeldung",
-  "LOGOUT_LABEL": "Ausloggen",
-  "SIGN_UP_LABEL": "Anmelden"
+  "FOOTER": {
+    "OFFICE": "Büro",
+    "SALES": "Der Umsatz",
+    "COMMUNITY": "Gemeinschaft"
+  },
+  "HOME": {
+    "SEARCH_HEADING": "Unglaubliche Aufnahmen , Killer Forschung und unübertroffene Expertise Clearance",
+    "SEARCH_BOX_LABEL": "Suche nach Videos und Fotos...",
+    "DESCRIPTION": {
+      "FIRST": "Erleben Sie , was mehr als 67.000 Kunden wissen . Zugriff",
+      "SECOND": "4 Millionen + Vermögen",
+      "THIRD": "Experten- Forschungsförderung"
+    },
+    "START_PROJECT": "START Ihr Projekt!",
+    "HIGHLIGHT": {
+      "ONE": "Markieren Sie ein , Hightlight One",
+      "TWO": "Markieren Sie zwei , Hightlight Zwei",
+      "THREE": "Highlight Drei , Hightlight Drei",
+      "FOUR": "Highlight Vier , Vier Hightlight",
+      "FIVE": "Highlight Five, Hightlight Five",
+      "SIX": "Markieren Sie Six, Hightlight Six"
+    }
+  },
+  "REGISTER": {
+    "TITLE": "Erste Schritte mit Wazee",
+    "ALREADY_HAVE_ACCOUNT": "Hast du schon ein Konto?",
+    "LOGIN": "Anmeldung",
+    "FORM": {
+      "FIRST_NAME_LABEL": "Vorname",
+      "LAST_NAME_LABEL": "Familienname",
+      "EMAIL_LABEL": "E-Mail-Addresse",
+      "PASSWORD_LABEL": "Passwort",
+      "SUBMIT_LABEL": "Anmelden"
+    }
+  },
+  "LOGIN": {
+    "TITLE": "Melde dich in deinem Konto an",
+    "FORGOT_PASSWORD": "Haben Sie Ihr Passwort vergessen?",
+    "GET_ACCOUNT": "Sie haben noch kein Konto?",
+    "SIGN_UP": "Anmelden",
+    "FORM": {
+      "EMAIL_LABEL": "E-Mail-Addresse",
+      "PASSWORD_LABEL": "Passwort",
+      "SUBMIT_LABEL": "Anmelden"
+    }
+  }
 }

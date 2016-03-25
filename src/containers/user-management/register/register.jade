@@ -7,9 +7,9 @@ section.login.hero
             .logo
         md-card-title
           md-card-title-text(layout='column', layout-align='center center')
-            span.md-headline Get Started With Wazee
+            span.md-headline {{ 'REGISTER.TITLE' | translate }}
         md-card-content
-          wz-form([items]="fields", submitLabel="Sign Up", (formSubmit)="onSubmit($event)")
+          wz-form([items]="fields", submitLabel="REGISTER.FORM.SUBMIT_LABEL", (formSubmit)="onSubmit($event)")
       
       div(md-theme="docs-dark", layout='column', layout-align='center center', layout-wrap='')
-        span.md-title Already have an account? #[a.md-accent(md-button="", [routerLink]="['Login']") Login]
+        span.md-title {{'REGISTER.ALREADY_HAVE_ACCOUNT' | translate }} #[a.md-accent(md-button="", [routerLink]="['Login']") {{'REGISTER.LOGIN' | translate }}]

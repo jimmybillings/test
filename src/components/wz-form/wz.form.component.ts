@@ -3,6 +3,8 @@ import {NgFor} from 'angular2/common';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
 import {Form} from './wz.form.model';
+import {TranslatePipe} from 'ng2-translate/ng2-translate';
+
 /**
  * Home page component - renders the home page
  */  
@@ -12,6 +14,7 @@ import {Form} from './wz.form.model';
   directives: [NgFor, MATERIAL_DIRECTIVES, FORM_DIRECTIVES],
   providers: [Form],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  pipes: [TranslatePipe]
 })
 
 export class WzForm {

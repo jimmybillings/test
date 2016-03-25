@@ -1,5 +1,10 @@
 div(*ngIf="header")
-  app-header([currentUser]="currentUser", [config]="(header | async)", [supportedLanguages]="supportedLanguages", (onLogOut)="logout()", (onChangeLang)="changeLang($event)")
+  app-header([currentUser]="currentUser", 
+  [config]="(header | async)", 
+  [supportedLanguages]="supportedLanguages", 
+  [showFixed]="showFixed",
+  (onLogOut)="logout()", 
+  (onChangeLang)="changeLang($event)")
 
   .main-content
     router-outlet

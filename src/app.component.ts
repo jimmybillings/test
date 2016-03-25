@@ -32,6 +32,7 @@ export class AppComponent {
   public header: Observable<any>;
   public footer: Observable<any>;
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
+  public showFixed: boolean;
   
   constructor(
     public currentUser: CurrentUser,
@@ -56,8 +57,17 @@ export class AppComponent {
       });
 
     this.currentUser.set();
+    window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
   }
-
+  
+   /**
+   * Display a fixed headerwith different styling when the page scrolls down past 68 pixels.
+   * @param offset  window scrolling offset value used to calcuate which header to display.
+  */
+  public showFixedHeader(offset): void {
+    this.showFixed = (offset > 68) ? true : false;
+  }
+  
   public logout(): void {
     this._authentication.destroy().subscribe();
     localStorage.clear();

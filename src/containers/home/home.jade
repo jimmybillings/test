@@ -6,7 +6,7 @@ header.hero
             .logo
           search-box([config]="components.searchBox")
           h4.md-headline
-            | {{ 'HOME.DESCRIPTION' | translate }}
+            | {{ 'HOME.SEARCH_HEADING' | translate }}
 
 section.mrkt-collections(layout='row', layout-align='center start')
   div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-wrap='')
@@ -14,40 +14,42 @@ section.mrkt-collections(layout='row', layout-align='center start')
       a([routerLink]="['UserManagement', 'Register']")
         .mrkt-collections__highlight_img
         .mrkt-collections__highlight_content
-          h5.md-title highlight one highlight one
+          h5.md-title {{ 'HOME.HIGHLIGHT.ONE' | translate }}
     .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
       a([routerLink]="['UserManagement', 'Register']")
         .mrkt-collections__highlight_img
         .mrkt-collections__highlight_content
-          h5.md-title highlight two highlight two
+          h5.md-title {{ 'HOME.HIGHLIGHT.TWO' | translate }}
     .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
       a([routerLink]="['UserManagement', 'Register']")
         .mrkt-collections__highlight_img
         .mrkt-collections__highlight_content
-          h5.md-title highlight three highlight three
+          h5.md-title {{ 'HOME.HIGHLIGHT.THREE' | translate }}
     .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
       a([routerLink]="['UserManagement', 'Register']")
         .mrkt-collections__highlight_img
         .mrkt-collections__highlight_content
-          h5.md-title highlight four highlight four
+          h5.md-title {{ 'HOME.HIGHLIGHT.FOUR' | translate }}
     .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
       a([routerLink]="['UserManagement', 'Register']")
         .mrkt-collections__highlight_img
         .mrkt-collections__highlight_content
-          h5.md-title highlight five highlight five
+          h5.md-title {{ 'HOME.HIGHLIGHT.FIVE' | translate }}
     .mrkt-collections__highlight(flex-gt-sm='33',flex="100")
       a([routerLink]="['UserManagement', 'Register']")
         .mrkt-collections__highlight_img
         .mrkt-collections__highlight_content
-          h5.md-title highlight six highlight six
+          h5.md-title {{ 'HOME.HIGHLIGHT.SIX' | translate }}
 
 section.mrkt-call-to-action
   div(layout='row', layout-align='center start', layout-padding='')
     div(flex-xl="50",flex-gt-lg="60",flex-gt-md="70",flex="95",layout-align='center start')
       h2.md-display-1
-        | Experience what more than 67,000 customers know. Access #[strong 4 million+ assets] &amp; expert research support.
-      md-button.md-block.conversion(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['UserManagement', 'Register']") Start Your Project! 
-      md-button.md-block.conversion(*ngIf="currentUser.loggedIn()", md-button='', [routerLink]="['UserManagement', 'Profile']") Start Your Project! 
+        | {{ 'HOME.DESCRIPTION.FIRST' | translate}}
+        | #[strong {{ 'HOME.DESCRIPTION.SECOND' | translate}}] 
+        | &amp; {{ 'HOME.DESCRIPTION.THIRD' | translate}}
+      md-button.md-block.conversion(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['UserManagement', 'Register']") {{'HOME.START_PROJECT' | translate }} 
+      md-button.md-block.conversion(*ngIf="currentUser.loggedIn()", md-button='', [routerLink]="['UserManagement', 'Profile']") {{'HOME.START_PROJECT' | translate }} 
     
       
 section.vendor-marquee(hide-xs='', layout="column")

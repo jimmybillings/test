@@ -16,11 +16,11 @@ md-toolbar.glb([ngClass]="{'fixed': showFixed}")
     button.is-dd(md-button='', *ngIf="loggedInState | async", [routerLink]="['UserManagement', 'Profile']", [ngClass]="{'md-primary': !showFixed}", hide='', show-gt-sm='') 
       | {{currentUser.fullName() | async}}
 
-    md-button(*ngIf="!(loggedInState | async)", md-button='', [routerLink]="['UserManagement', 'Login']") {{ 'LOGIN_LABEL' | translate}}
+    md-button(*ngIf="!(loggedInState | async)", md-button='', [routerLink]="['UserManagement', 'Login']") {{ 'HEADER.LOGIN_LABEL' | translate}}
 
-    md-button.is-outlined([ngClass]="{'md-accent': !showFixed}", *ngIf="!(loggedInState | async)", md-button='', [routerLink]="['UserManagement', 'Register']") {{ 'SIGN_UP_LABEL' | translate}}
+    md-button.is-outlined([ngClass]="{'md-accent': !showFixed}", *ngIf="!(loggedInState | async)", md-button='', [routerLink]="['UserManagement', 'Register']") {{ 'HEADER.SIGN_UP_LABEL' | translate}}
     
-    md-button.md-caption.md-primary.md-hue-2(*ngIf="loggedInState | async", md-button='', (click)="logOut()", [routerLink]="['Home']", hide='', show-gt-sm='') {{ 'LOGOUT_LABEL' | translate}}
+    md-button.md-caption.md-primary.md-hue-2(*ngIf="loggedInState | async", md-button='', (click)="logOut()", [routerLink]="['Home']", hide='', show-gt-sm='') {{ 'HEADER.LOGOUT_LABEL' | translate}}
     
     button.md-icon-button(md-button='', *ngIf="loggedInState | async", title='Search', [routerLink]="['Search']")
       i.material-icons(md-icon='') search

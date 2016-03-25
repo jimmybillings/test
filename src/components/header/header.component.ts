@@ -21,16 +21,15 @@ export class Header {
   @Input() currentUser;
   @Input() config;
   @Input() supportedLanguages;
+  @Input() showFixed;
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
-  public showFixed: boolean;
   
   public langForm: ControlGroup;
   public loggedInState: boolean;
 
 
   constructor() {
-    this.showFixed = false;
     this.langForm = new ControlGroup({
       lang: new Control('en')
     });
@@ -41,17 +40,8 @@ export class Header {
    * the showFixedHeader() method when scrolling.
   */
   ngOnInit(): void {
-    window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
     this.config = this.config.config;
     this.loggedInState = this.currentUser.loggedInState();
-  }
-  
-  /**
-   * Display a fixed headerwith different styling when the page scrolls down past 68 pixels.
-   * @param offset  window scrolling offset value used to calcuate which header to display.
-  */
-  public showFixedHeader(offset): void {
-    this.showFixed = (offset > 68) ? true : false;
   }
   
   public logOut(event) {

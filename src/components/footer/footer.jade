@@ -5,12 +5,12 @@
       a.logo-wrapper([routerLink]="['Home']")
         .logo
     div(flex-gt-md='25',flex='100',layout='column',layout-align='start stretch', layout-align-gt-md='start start')
-      h3.md-title Office
+      h3.md-title {{'FOOTER.OFFICE' | translate }}
       p.md-body-1
         | 1515 Arapahoe Street Tower 3, Suite 400 <br/>Denver, CO 80202
 
     div.sales(flex-gt-md='25',flex='100',layout='column',layout-align='start stretch', layout-align-gt-md='start start')
-      h3.md-title Sales
+      h3.md-title {{'FOOTER.SALES' | translate }}
       md-list
         md-list-item
           a(md-button='', href='mailto:platformsales@wazeedigital.com')
@@ -22,7 +22,7 @@
               i.material-icons(md-icons='') phone_iphone
  
     div(flex-gt-md='25',flex='100',layout='column',layout-align='start center', layout-align-gt-md='start start')
-      h3.md-title Community
+      h3.md-title {{'FOOTER.COMMUNITY' | translate }}
       ul.social
         li
           a.facebook(href="https://www.facebook.com/WazeeDigital", target="_blank")
