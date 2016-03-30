@@ -4,10 +4,9 @@ section.preview-bk.theater
       div(flex-gt-sm='66',flex="100")
         // preview component
         img.preview(src='{{assetDetail.thumbnail.urls.http}}')
-        
       div(flex-gt-sm='33',flex="100")
         // asset-primary-info component
-        .primary-info
+        md-card.primary-info
           md-toolbar( layout-align='center end')
             span(flex='')
               nav.md-toolbar-tools
@@ -19,12 +18,15 @@ section.preview-bk.theater
                   i.material-icons(md-icon) library_add
                 button.md-icon-button(md-button='', title='More',[routerLink]="['Home']")
                   i.material-icons(md-icon) more_vert
-          .content
+          md-card-content
             .asset-name.md-caption {{assetDetail.name}}
             .sd-hd([ngClass]="{hd: assetDetail.metaData[2].value == 'High Definition', sd: assetDetail.metaData[2].value == 'Standard Definition'}")
-            
+            // ROYALTY FREE / RIGHTS MANAGED
             h5.md-subhead {{assetDetail.metaData[1].value}}
-
+            
+            md-card-actions(layout='column', layout-align='center center', layout-wrap='')
+              button.md-raised.md-primary.md-hue-7(md-raised-button='', type='button') Add to Cart
+              button.is-outlined(md-button='', type='button') Calculate Price
         
 section.data-bk
   div(layout='row' md-scroll-y='', layout-align='center start')
@@ -34,7 +36,7 @@ section.data-bk
         template(md-tab='', label='Meta Data')
           md-content.md-padding
 
-            .plans-full-details
+            .m-data
               .row
                 .cell
                   h5.md-subhead Event
@@ -61,6 +63,60 @@ section.data-bk
                   h5.md-subhead Owner
                 .cell
                   p.md-body-1 Supplier: Augusta National Golf Club [Augusta National Golf Club]
+
+
+
+              .row.divider
+                .cell
+                .cell
+                  
+                  
+                  
+              .row
+                .cell
+                  h5.md-subhead Aspect
+                .cell
+                  p.md-body-1 16:9
+              .row
+                .cell
+                  h5.md-subhead Frame Rate
+                .cell
+                  p.md-body-1 29.97 fps
+              .row
+                .cell
+                  h5.md-subhead Frame Size
+                .cell
+                  p.md-body-1  1920 x 1080  
+              .row
+                .cell
+                  h5.md-subhead Broadcast Standard
+                .cell
+                  p.md-body-1 1080i
+              .row
+                .cell
+                  h5.md-subhead Shot On
+                .cell
+                  p.md-body-1 Other HD
+              .row
+                .cell
+                  h5.md-subhead Length
+                .cell
+                  p.md-body-1 00:01:25;24
+              .row
+                .cell
+                  h5.md-subhead Stored Online
+                .cell
+                  p.md-body-1 QuickTime / AVdn
+              .row
+                .cell
+                  h5.md-subhead Speed
+                .cell
+                  p.md-body-1 Slow Motion
+              .row
+                .cell
+                  h5.md-subhead Color
+                .cell
+                  p.md-body-1 Color
 
 
 
