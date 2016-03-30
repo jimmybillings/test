@@ -14,4 +14,15 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
 
 export class AssetDetail {
   @Input() public assetDetail: AssetDetail;
+  @Input() currentUser;
+  // @Input() config;
+  
+  ngOnInit(): void {
+    // this.config = this.config.config;
+    console.log(this.assetDetail);
+  }
 }
+
+
+
+

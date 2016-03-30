@@ -5,7 +5,7 @@ section.search-results
       .pagination.md-body-2(layout='row' layout-align='end center') 
         .results-count(*ngIf="assets.totalCount") {{assets.totalCount}} results
       div(layout='column')
-        asset-list([assets]="(assets | async)?.items", class="{{config.viewType.value}}")
+        asset-list([assets]="(assets | async)?.items", class="{{config.viewType.value}}", (onShowAsset)="showAsset($event)")
         
         h1.md-display-1.alert.warning([hidden]="!errorMessage && (assets.totalCount == null || assets.totalCount > 0)")
           | No items can be found for that search

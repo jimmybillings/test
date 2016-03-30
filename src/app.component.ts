@@ -27,7 +27,8 @@ import {Observable} from 'rxjs/Observable';
   { path: '/', name: 'Home', component: Home, useAsDefault: true },
   { path: '/user/...', component: UserManagement, name: 'UserManagement' },
   { path: '/search', component: Search, name: 'Search' },
-  { path: '/asset/...', component: Asset, name: 'Asset' },
+  // { path: '/asset/...', component: Asset, name: 'Asset' },
+  { path: '/asset/:name', component: Asset, name: 'Asset' },
 ])
 
 export class AppComponent {
@@ -55,7 +56,7 @@ export class AppComponent {
     window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
     this.uiConfig.initialize(this._apiConfig.getPortal())
       .subscribe(() => {
-        this.header = this.uiConfig.get('header');
+          this.header = this.uiConfig.get('header');
           this.footer = this.uiConfig.get('footer');
         });
     this.currentUser.set();

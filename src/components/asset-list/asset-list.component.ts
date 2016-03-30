@@ -1,4 +1,4 @@
-import {Component, Input, ChangeDetectionStrategy} from 'angular2/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from 'angular2/core';
 import {COMMON_DIRECTIVES} from 'angular2/common';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
 // import {Asset} from '../../../common/interfaces/asset.interface';
@@ -15,4 +15,10 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
 
 export class AssetList {
   @Input() public assets: Array<AssetList>;
+  @Output() onShowAsset = new EventEmitter();
+
+ 
+  showAsset(asset): void {
+    this.onShowAsset.emit(asset);
+  }
 }

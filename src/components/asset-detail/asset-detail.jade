@@ -1,0 +1,76 @@
+section.preview-bk.theater
+  div(layout='row' md-scroll-y='', layout-align='center start')
+    div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-wrap='', layout-align='center start')
+      div(flex-gt-sm='66',flex="100")
+        // preview component
+        img.preview(src='{{assetDetail.thumbnail.urls.http}}')
+        
+      div(flex-gt-sm='33',flex="100")
+        // asset-primary-info component
+        .primary-info
+          md-toolbar( layout-align='center end')
+            span(flex='')
+              nav.md-toolbar-tools
+                button.md-icon-button(md-button='', title='More',[routerLink]="['Home']")
+                  i.material-icons(md-icon) share
+                button.md-icon-button(md-button='', title='More',[routerLink]="['Home']")
+                  i.material-icons(md-icon) file_download
+                button.md-icon-button(md-button='', title='More',[routerLink]="['Home']")
+                  i.material-icons(md-icon) library_add
+                button.md-icon-button(md-button='', title='More',[routerLink]="['Home']")
+                  i.material-icons(md-icon) more_vert
+          .content
+            .asset-name.md-caption {{assetDetail.name}}
+            .sd-hd([ngClass]="{hd: assetDetail.metaData[2].value == 'High Definition', sd: assetDetail.metaData[2].value == 'Standard Definition'}")
+            
+            h5.md-subhead {{assetDetail.metaData[1].value}}
+
+        
+section.data-bk
+  div(layout='row' md-scroll-y='', layout-align='center start')
+    div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-wrap='', layout-align='center start')
+
+
+
+
+      // asset-data component
+      md-tabs(md-dynamic-height='', md-border-bottom='')
+            template(md-tab='', label='one')
+              md-content.md-padding
+                h1.md-display-2 Tab One
+                p
+                  | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque
+                  | ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est,
+                  | sollicitudin consectetur felis nec, feugiat ultricies mi.
+            template(md-tab='', label='two')
+              md-content.md-padding
+                h1.md-display-2 Tab Two
+                p
+                  | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque
+                  | ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est,
+                  | sollicitudin consectetur felis nec, feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in
+                  | ultrices porttitor, orci enim rutrum enim, vel tempor sapien arcu a tellus. Vivamus convallis sodales ante
+                  | varius gravida. Curabitur a purus vel augue ultrices ultricies id a nisl. Nullam malesuada consequat diam, a
+                  | facilisis tortor volutpat et. Sed urna dolor, aliquet vitae posuere vulputate, euismod ac lorem. Sed felis
+                  | risus, pulvinar at interdum quis, vehicula sed odio. Phasellus in enim venenatis, iaculis tortor eu, bibendum
+                  | ante. Donec ac tellus dictum neque volutpat blandit. Praesent efficitur faucibus risus, ac auctor purus
+                  | porttitor vitae. Phasellus ornare dui nec orci posuere, nec luctus mauris semper.
+                p
+                  | Morbi viverra, ante vel aliquet tincidunt, leo dolor pharetra quam, at semper massa orci nec magna. Donec
+                  | posuere nec sapien sed laoreet. Etiam cursus nunc in condimentum facilisis. Etiam in tempor tortor. Vivamus
+                  | faucibus egestas enim, at convallis diam pulvinar vel. Cras ac orci eget nisi maximus cursus. Nunc urna libero,
+                  | viverra sit amet nisl at, hendrerit tempor turpis. Maecenas facilisis convallis mi vel tempor. Nullam vitae nunc
+                  | leo. Cras sed nisl consectetur, rhoncus sapien sit amet, tempus sapien.
+                p
+                  | Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum.
+                  | Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum
+                  | nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus
+                  | commodo lectus.
+            template(md-tab='', label='three')
+              md-content.md-padding
+                h1.md-display-2 Tab Three
+                p
+                  | Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum.
+                  | Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum
+                  | nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus
+                  | commodo lectus.

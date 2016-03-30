@@ -2,7 +2,7 @@ ul.asset-list
   li(*ngFor="#asset of assets")
     .asset
       .asset-name {{asset.name}}
-      a(flex='', [routerLink]="['Home']")
+      a(flex='', (click)='showAsset(asset)')
         img(*ngIf="asset.thumbnail", src='{{asset.thumbnail.urls.https}}')
         img(*ngIf="!asset.thumbnail", src="/resources/img/highlights/dimoc.jpg")
         
