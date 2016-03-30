@@ -26,8 +26,8 @@ section.preview-bk {
     padding-bottom: rem(6);
     @include text-contrast(md-color($md-background, 900));
     @include background-image(
-      linear-gradient(md-color($md-background, 900, .7), md-color($md-background, 900, .66)),
-      linear-gradient(md-color($md-primary, 900, .66), md-color($md-primary, 900, .4))
+      linear-gradient(md-color($md-background, 900, .5), md-color($md-background, 900, .4)),
+      linear-gradient(md-color($md-primary, 900, .9), md-color($md-primary, 900, .8))
     );
   }
   background-position: 0 0, 0 0, center center;
@@ -113,6 +113,74 @@ section.preview-bk {
           color:rgba(md-color($md-background, 900),1);
           opacity: 0.9;
         }
+      }
+    }
+  }
+}
+
+.data-bk {
+  background-color: transparent !important;
+  md-tabs {
+    width: 100%;
+    background: rgba(md-color($md-background, 100),.9);
+    border-bottom: 1px solid rgba(md-color($md-background, 200),.9);
+    md-tabs-canvas, md-pagination-wrapper {
+      height: rem(6.4);
+    }
+    .md-tab {
+      color: rgba(md-color($md-background, 900), .75);
+      padding: rem(2.4);
+      padding-bottom: rem(1.2);
+      &.md-active {
+        color: rgba(md-color($md-primary, 500), 1);
+        border-bottom: rgba(md-color($md-primary, 500), 1) 4px solid;
+      }
+    }
+    md-tabs-wrapper {
+      background: rgba(md-color($md-background, 50), .9);
+    }
+    md-content {
+      background-color: transparent;  
+      &.md-padding {
+        padding: rem(2.8);
+      }
+    }
+  }
+  h1:first-child {
+    margin-top: 0;
+  }
+}
+.plans-full-details {
+  text-align: left;
+  overflow: hidden;
+  padding: 0;
+  background-color: rgba(md-color($md-background, 50), .9);
+  border: 1px solid rgba(md-color($md-background, 400),.8);
+  display: table;
+  border-bottom-width: 0;
+  min-width: 100%;
+
+  & > .row {
+    display: table-row;
+    .cell {
+      border-bottom: 1px solid rgba(md-color($md-background, 400),.8);
+      display: table-cell;
+      padding: 10px 20px 10px 12px;
+      vertical-align: top;
+      p {
+        margin: 0;
+        line-height: 24px;
+        opacity: .9;
+      }
+    }
+    .cell:first-child {
+      border-right: 1px solid rgba(md-color($md-background, 400),.8);
+      background: rgba(md-color($md-background, 300),.6);
+      text-align: right;
+      white-space: nowrap;
+      padding: 10px 12px 10px 40px;
+      h5 {
+        margin: 0;
       }
     }
   }
