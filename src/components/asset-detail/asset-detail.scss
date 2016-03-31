@@ -37,7 +37,7 @@ section.preview-bk {
         url("resources/img/bk/tex/bktx_dgl_lines_light.png")
       );
       opacity: .5;
-      @include filter(blur(3px));
+      // @include filter(blur(3px));
       z-index: 1;
     }
   }
@@ -88,15 +88,19 @@ section.preview-bk {
     }
     & > md-card-content {
       position: relative;
+      z-index: 1;
       @include calc(height, "100% - 96px");
       md-card-actions {
         @include calc(width, "100% - 48px");
         position: absolute;
         bottom: rem(3.2);
-        button {
+        md-button {
           width: 90%;
           &.md-primary.md-hue-7 {
             background-color: scale-color(md-color($md-primary, 500), $lightness: -15%, $alpha: -50%);
+            &:hover {
+              background-color: scale-color(md-color($md-primary, 500), $lightness: 0%, $alpha: -40%);
+            }
           }
           &.is-outlined {
             color: scale-color(md-color($md-background, 50), $lightness: 0%, $alpha: -15%);
