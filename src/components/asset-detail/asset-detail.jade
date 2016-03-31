@@ -1,12 +1,18 @@
-section.preview-bk.theater
-  div(layout='row' md-scroll-y='', layout-align='center start')
-    div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-wrap='', layout-align='center start')
-      div(flex-gt-sm='66',flex="100")
-        // preview component
-        img.preview(src='{{assetDetail.thumbnail.urls.http}}')
-      div(flex-gt-sm='33',flex="100")
-        // asset-primary-info component
-        md-card.primary-info
+// there probably should be some kind of toggle for theater mode (dark background where preview is VS light)
+section.preview-bk.theater(layout='row',flex='', layout-align='center start')
+  div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-wrap='', layout-align='center start', layout-fill='')
+
+    video.responsive-video(flex-gt-sm='66',flex="100", layout='column',layout-fill='', poster='{{assetDetail.thumbnail.urls.http}}', autoplay='autoplay', controls='controls', loop='')
+      source(src='{{f4VideoUrl}}', type='video/mp4')
+
+
+
+    div(flex-gt-sm='33',flex="100" layout='column',layout-fill='')
+      // .some-class(style="background-color: red", flex='', layout='column',layout-fill='')
+      //   h5 Parent layout is set to fill available space.
+      // asset-primary-info component
+      div.primary-info-wrapper(flex='', layout='column',layout-fill='')
+        md-card.primary-info(flex='', layout='column',layout-fill='')
           md-toolbar( layout-align='center end')
             span(flex='')
               nav.md-toolbar-tools
@@ -22,11 +28,17 @@ section.preview-bk.theater
             .asset-name.md-caption {{assetDetail.name}}
             .sd-hd([ngClass]="{hd: assetDetail.metaData[2].value == 'High Definition', sd: assetDetail.metaData[2].value == 'Standard Definition'}")
             // ROYALTY FREE / RIGHTS MANAGED
+            // span.rights.md-caption rights managed
             h5.md-subhead {{assetDetail.metaData[1].value}}
             
             md-card-actions(layout='column', layout-align='center center', layout-wrap='')
               md-button.md-raised.md-primary.md-hue-7(md-raised-button='', (click)="someFunction()") Add to Cart
               md-button.is-outlined(md-button='', (click)="someFunction()") Calculate Price
+  
+  
+  
+  
+  
         
 section.data-bk
   div(layout='row' md-scroll-y='', layout-align='center start')
