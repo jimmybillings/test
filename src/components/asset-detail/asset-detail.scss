@@ -19,7 +19,6 @@ section.preview-bk {
     // @include calc(height, "100% + 236px");
     padding-top: rem(14.6);
     padding-bottom: rem(9);
-    // box-shadow: 0 1px 3px 0 md-color($md-background, 700, .72);
     box-shadow: $whiteframe-shadow-3dp;
     @include text-contrast(md-color($md-background, 900));
     @include background-image(
