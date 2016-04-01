@@ -48,7 +48,7 @@ export class Search {
   showAsset(asset): void {
     this.assetService.set(asset);
     this.router.navigate(['/Asset', {name: asset.name}]);
-    console.log(asset);
+    // console.log(asset);
   }
   
   /**

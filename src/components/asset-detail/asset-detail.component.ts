@@ -16,11 +16,19 @@ import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 export class AssetDetail {
   @Input() public assetDetail: AssetDetail;
   @Input() currentUser;
+  public f4VideoUrl: Object;
   // @Input() config;
   
   ngOnInit(): void {
     // this.config = this.config.config;
     console.log(this.assetDetail);
+    this.getF4vVideo(this.assetDetail);
+  }
+  public getF4vVideo(assetDetail) {
+    this.f4VideoUrl = assetDetail.renditions.filter(function(rend) {
+      return rend.format === 'Flash-4 Video' &&  rend.size === 'Large' &&  rend.purpose === 'Preview';
+    })[0].internalUrls['http-Html5Preview'];
+    
   }
 }
 
