@@ -7,6 +7,7 @@ import {Header} from './components/header/header.component';
 import {Footer} from './components/footer/footer.component';
 import {UserManagement} from './containers/user-management/user-management.component';
 import {Home} from './containers/home/home.component';
+import {Content} from './containers/content/content.component';
 import {Search} from './containers/search/search.component';
 import {Asset} from './containers/asset/asset.component';
 import {CurrentUser} from './common/models/current-user.model';
@@ -27,8 +28,8 @@ import {Observable} from 'rxjs/Observable';
   { path: '/', name: 'Home', component: Home, useAsDefault: true },
   { path: '/user/...', component: UserManagement, name: 'UserManagement' },
   { path: '/search', component: Search, name: 'Search' },
-  // { path: '/asset/...', component: Asset, name: 'Asset' },
   { path: '/asset/:name', component: Asset, name: 'Asset' },
+  { path: '/content/:id', component: Content, name: 'Content'}
 ])
 
 export class AppComponent {
