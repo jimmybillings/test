@@ -8,6 +8,10 @@
 // }
     
 section.preview-bk {
+  
+  md-toolbar {
+    background-color: transparent;
+  }
   overflow: hidden;
   width: 100%;
   position: relative;
@@ -64,10 +68,11 @@ section.preview-bk {
       z-index: 1;
     }
   }
-  .primary-info-wrapper {
-    padding-left: rem(2);
-  }
+  // .primary-info-wrapper {
+  //   padding-left: rem(2);
+  // }
   md-card.primary-info {
+    box-shadow: none;
     position: relative;
     // height: rem(46);
     height: 100%;
@@ -89,18 +94,23 @@ section.preview-bk {
       z-index: 1;
     }
     & > md-toolbar {
-      background-color: rgba(md-color($md-background, 900),.2);
+      background-color: rgba(md-color($md-background, 900),.3);
     }
     & > md-card-content {
+      padding: rem(2.5);
+      background-color: rgba(md-color($md-background, 900),.2);
       position: relative;
       z-index: 1;
       @include calc(height, "100% - 96px");
+      .md-subhead {
+        margin-bottom: 15%;
+      }
       md-card-actions {
-        @include calc(width, "100% - 48px");
+        @include calc(width, "100% - 68px");
         position: absolute;
         bottom: rem(3.2);
         md-button {
-          width: 90%;
+          width: 95%;
           &.md-primary.md-hue-7 {
             background-color: scale-color(md-color($md-primary, 500), $lightness: -15%, $alpha: -50%);
             &:hover {
@@ -114,7 +124,7 @@ section.preview-bk {
         }
       }
       .asset-name {
-        margin-bottom: rem(.5);
+        margin-bottom: rem(1.5);
       }
       .sd-hd {
         height: rem(2);
@@ -146,6 +156,12 @@ section.preview-bk {
           color:rgba(md-color($md-background, 900),1);
           opacity: 0.9;
         }
+      }
+      .rights {
+        padding-left: rem(1);
+        padding-top: rem(.4);
+        text-transform: uppercase;
+        font-size: .75em;
       }
     }
   }
