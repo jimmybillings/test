@@ -4,13 +4,11 @@ ul.asset-list
       .asset-name {{asset.name}}
       a(flex='', (click)='showAsset(asset)')
         img(*ngIf="asset.thumbnail", src='{{asset.thumbnail.urls.https}}')
-        img(*ngIf="!asset.thumbnail", src="/resources/img/highlights/dimoc.jpg")
         
         span(*ngFor="#mdata of asset.metaData; #i = index", class="mdata-{{i}}") 
           span(*ngIf="i != 2") {{mdata.value}}
-          span(*ngIf="i == 2", 
-            [ngClass]="{hd: mdata.value == 'High Definition', sd: mdata.value == 'Standard Definition'}") {{mdata.value}}
-
+          span.sd-hd(*ngIf="i == 2", 
+            [ngClass]="{hd: mdata.value == 'High Definition', sd: mdata.value == 'Standard Definition', dv: mdata.value == 'Digital Video'}") {{mdata.value}}
       // div(*ngFor="#mdata of asset.metaData; #i = index", class="mdata-{{i}}") 
       //   span( *ngIf="i == 1") {{mdata.value}}
  
