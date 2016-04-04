@@ -66,8 +66,11 @@ export class AssetData {
    * @param isUserLoggedIn  True if current user is logged in and has localStorage information
    * @returns               appropriate api search path based on whether or not user is logged in
   */
+  
+  
+  
   public getAssetSearchPath(isUserLoggedIn: boolean): string {
-    return (isUserLoggedIn) ? 'api/assets/v1/search' : 'api/assets/v1/search/anonymous';
+    return (isUserLoggedIn) ? 'api/assets/v1/search/solrcloud' : 'api/assets/v1/search/anonymous/solrcloud';
   }
 
   /**

@@ -1,13 +1,14 @@
 section.search-results
   div(layout='row', md-scroll-y='', layout-align='center start', layout-padding='')
-
     div(flex-xl="85", flex-gt-lg="95", flex="100", *ngIf="config.viewType.value == 'grid'")
       .pagination.md-body-2(layout='row' layout-align='end center') 
-        .results-count(*ngIf="assets.totalCount") {{assets.totalCount}} results
+        // .results-count(*ngIf="assets.totalCount") {{assets.totalCount}} results
+        .results-count(*ngIf="assets.destination._value.assets.totalCount") {{assets.destination._value.assets.totalCount}} results
       div(layout='column')
         asset-list([assets]="(assets | async)?.items", class="{{config.viewType.value}}", (onShowAsset)="showAsset($event)")
         
-        h1.md-display-1.alert.warning([hidden]="!errorMessage && (assets.totalCount == null || assets.totalCount > 0)")
+        // h1.md-display-1.alert.warning([hidden]="!errorMessage && (assets.totalCount == null || assets.totalCount > 0)")
+        h1.md-display-1.alert.warning([hidden]="!errorMessage && (assets.destination._value.assets.totalCount == null || assets.destination._value.assets.totalCount > 0)")
           | No items can be found for that search
 
 
