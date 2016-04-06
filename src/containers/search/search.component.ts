@@ -4,7 +4,6 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {NgStyle, CORE_DIRECTIVES} from 'angular2/common';
 import { AssetData } from './services/asset.data.service';
-import { AssetService } from '../../containers/asset/services/asset.service';
 import { AssetList }  from '../../components/asset-list/asset-list.component';
 import {UiConfig} from '../../common/config/ui.config';
 import {Observable} from 'rxjs/Observable';
@@ -31,7 +30,6 @@ export class Search {
     private _router: Router,
     private routeParams: RouteParams,
     public assetData: AssetData,
-    public assetService: AssetService,
     public router: Router,
     public uiConfig: UiConfig) {
       this.assets = this.assetData.assets;
@@ -46,9 +44,7 @@ export class Search {
   }
   
   showAsset(asset): void {
-    this.assetService.set(asset);
-    this.router.navigate(['/Asset', {name: asset.name}]);
-    // console.log(asset);
+    this.router.navigate(['/Asset', {name: asset.assetId}]);
   }
   
   /**

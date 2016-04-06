@@ -12,7 +12,7 @@ export class ContentService {
   constructor(public http: Http, public apiConfig: ApiConfig) {}
   
   public get(id: string): Observable<any> {
-    return this.http.get('http://localhost/wazee-cms/'+this.apiConfig.getPortal()+'/wp-json/wp/v2/pages/'+id).map((res:Response) => res.json());
+    return this.http.get('http://localhost/wazee-cms/commerce/wp-json/wp/v2/pages/'+id).map((res:Response) => res.json());
   }
 }
 

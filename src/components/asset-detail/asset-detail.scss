@@ -250,6 +250,9 @@ section.preview-bk {
   }
 }
 
-video.responsive-video {
+.responsive-video {
   z-index: 1;
+  iframe {
+    border: transparent;
+  }
 }

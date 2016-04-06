@@ -1,4 +1,4 @@
-export interface Asset {
+export interface AssetDetailI {
   name: string;
   metadata?: Array<Object>;
 }

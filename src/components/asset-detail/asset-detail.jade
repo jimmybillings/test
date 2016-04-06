@@ -1,12 +1,8 @@
 // there probably should be some kind of toggle for theater mode (dark background where preview is VS light)
 section.preview-bk.theater(layout='row',flex='', layout-align='center stretch')
   div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-wrap='', layout-align='center stretch', layout-fill='')
-
-    video.responsive-video(flex-gt-sm='66',flex="100", layout='column',layout-fill='', poster='{{assetDetail.thumbnail.urls.http}}', autoplay='autoplay', controls='controls', loop='')
-      source(src='{{f4VideoUrl}}', type='video/mp4')
-
-
-
+    div.responsive-video(id="player", flex-gt-sm='66',flex="100", layout='column',layout-fill='')
+    
     div(flex-gt-sm='33',flex="100" layout='column',layout-fill='')
       // .some-class(style="background-color: red", flex='', layout='column',layout-fill='')
       //   h5 Parent layout is set to fill available space.
@@ -28,19 +24,14 @@ section.preview-bk.theater(layout='row',flex='', layout-align='center stretch')
         
           .asset-name.md-caption(flex='', layout='column') {{assetDetail.name}}
           div(layout='row', layout-wrap='')
-            .sd-hd([ngClass]="{hd: assetDetail.metaData[2].value == 'High Definition', sd: assetDetail.metaData[2].value == 'Standard Definition'}")
+            .sd-hd([ngClass]="{hd: assetDetail.clipData[2]?.value == 'High Definition', sd: assetDetail.clipData[2]?.value == 'Standard Definition'}")
             .rights.md-caption(flex='') rights managed 
           
-          h5.md-subhead {{assetDetail.metaData[1].value}}
+          h5.md-subhead {{assetDetail.clipData[1]?.value}}
           
           md-card-actions(layout='column', layout-align='center center', layout-wrap='')
             md-button.md-raised.md-primary.md-hue-7(md-raised-button='', (click)="someFunction()") Add to Cart
             md-button.is-outlined(md-button='', (click)="someFunction()") Calculate Price
-  
-  
-  
-  
-  
         
 section.data-bk
   div(layout='row' md-scroll-y='', layout-align='center start')
