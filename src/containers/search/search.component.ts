@@ -7,6 +7,7 @@ import { AssetData } from './services/asset.data.service';
 import { AssetList }  from '../../components/asset-list/asset-list.component';
 import {UiConfig} from '../../common/config/ui.config';
 import {Observable} from 'rxjs/Observable';
+import {CurrentUser} from '../../common/models/current-user.model';
 
 /**
  * Asset search page component - renders search page results
@@ -31,7 +32,8 @@ export class Search {
     private routeParams: RouteParams,
     public assetData: AssetData,
     public router: Router,
-    public uiConfig: UiConfig) {
+    public uiConfig: UiConfig,
+    public currentUser: CurrentUser) {
       this.assets = this.assetData.assets;
   }
 

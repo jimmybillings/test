@@ -5,7 +5,7 @@ section.search-results
         // .results-count(*ngIf="assets.totalCount") {{assets.totalCount}} results
         .results-count(*ngIf="(assets | async)?.totalCount") {{(assets | async)?.totalCount}} results
       div(layout='column')
-        asset-list([assets]="(assets | async)?.items", class="{{config.viewType.value}}", (onShowAsset)="showAsset($event)")        
+        asset-list([assets]="(assets | async)?.items", class="{{config.viewType.value}}", [currentUser]="currentUser", (onShowAsset)="showAsset($event)")        
         h1.md-display-1.alert.warning([hidden]="!errorMessage && ((assets | async)?.totalCount == null || (assets | async)?.totalCount > 0)")
           | No items can be found for that search
 

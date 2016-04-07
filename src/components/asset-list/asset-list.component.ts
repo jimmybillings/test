@@ -1,6 +1,7 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from 'angular2/core';
 import {COMMON_DIRECTIVES} from 'angular2/common';
-import {ROUTER_DIRECTIVES} from 'angular2/router';
+import {ROUTER_DIRECTIVES, Router} from 'angular2/router';
+
 // import {Asset} from '../../../common/interfaces/asset.interface';
 
 /**
@@ -15,10 +16,12 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
 
 export class AssetList {
   @Input() public assets: Array<AssetList>;
+  @Input() public currentUser;
   @Output() onShowAsset = new EventEmitter();
-
+  
+  constructor(private _router: Router) {}
  
   showAsset(asset): void {
-    this.onShowAsset.emit(asset);
+    this.currentUser.loggedIn() ? this.onShowAsset.emit(asset) : this._router.navigate(['/UserManagement/Login']);;
   }
 }
