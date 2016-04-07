@@ -76,7 +76,6 @@ export class AppComponent {
     this.multiLingual.setLanguage(data.lang);
   }
   
-
   /**
    * Display a fixed header with different styling when the page scrolls down past 68 pixels.
    * @param offset  window scrolling offset value used to calcuate which header to display.

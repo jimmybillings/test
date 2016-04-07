@@ -25,6 +25,7 @@ import {Observable} from 'rxjs/Observable';
 export class Asset {
   public assetDetail: Observable<any>;
   public config: UiConfig;
+  public subscription: any;
 
   constructor(
     private _router: Router,
@@ -32,20 +33,24 @@ export class Asset {
     public currentUser: CurrentUser,
     public uiConfig: UiConfig,
     public assetService: AssetService,
-    public dcl: DynamicComponentLoader, 
+    public dcl: DynamicComponentLoader,
     public injector: Injector) {
-      this.assetDetail = assetService.asset;
-      assetService.get(this.routeParams.get('name'));
+    this.assetDetail = assetService.asset;
+    assetService.set(this.routeParams.get('name'));
   }
 
   ngOnInit() {
-    this.assetDetail.subscribe(data => {
+    this.subscription = this.assetDetail.subscribe(data => {
       this.assetDetail = data;
-      console.log(data);
       if (data.name) this._loadVideo(data.name);
     });
   }
-  
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.assetService.reset();
+  }
+
   private _loadVideo(video: string): void {
     this.dcl.loadAsRoot(Player, '#player', this.injector).then(component => component.instance.set(video));
   }

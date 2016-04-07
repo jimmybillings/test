@@ -8,6 +8,8 @@ export const asset: Reducer<any> = (state = initAsset, action: Action) => {
   switch (action.type) {
     case 'SET_ASSET':
       return Object.assign({}, state, action.payload);
+    case 'RESET':
+      return Object.assign({}, initAsset);
     default:
       return state;
   }
@@ -28,14 +30,14 @@ export class AssetService {
     this._apiUrl = this._apiConfig.baseUrl() + 'api/assets/v1/clip/';
   }
 
-  public get(id): void {
+  public set(id): void {
     this._http.get(this._apiUrl + id, { headers: this._apiConfig.authHeaders() })
       .map((res: Response) => res.json())
-      .subscribe(asset => this.set(asset));
+      .subscribe(asset => this.store.dispatch({ type: 'SET_ASSET', payload: asset }));
   }
-
-  public set(asset): void {
-    this.store.dispatch({ type: 'SET_ASSET', payload: asset });
+  
+  public reset() {
+    this.store.dispatch({ type: 'RESET' });
   }
 
 }
