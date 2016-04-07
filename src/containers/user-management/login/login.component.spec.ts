@@ -18,7 +18,7 @@ import { provideStore } from '@ngrx/store';
 export function main() {
 
   const res = { 'user': { 'test': 'one' }, token: {token: 'newToken'}};
-  
+
   describe('Login Component', () => {
     class Home {}
     class MockAuthentication {
@@ -43,7 +43,7 @@ export function main() {
       provide(Location, { useClass: SpyLocation }),
       provideStore({config: config}),
     ]);
-    
+
     it('Should have a Login instance',
       injectAsync([TestComponentBuilder], (tcb) => {
         return tcb.createAsync(Login).then((fixture) => {
@@ -53,7 +53,7 @@ export function main() {
       })
     );
 
-    it('Should set token in localStorage, set the new user, navigate to home page on succesful login', 
+    it('Should set token in localStorage, set the new user, navigate to home page on succesful login',
       inject([Login], (login) => {
         login.router.config([ { path: '/', name: 'Home', component: Home }]);
 
@@ -61,7 +61,7 @@ export function main() {
         spyOn(localStorage, 'setItem');
         spyOn(login._currentUser, 'set');
         spyOn(login.router, 'navigate');
-        
+
         login.onSubmit({ userId: 'some@email.com', password: 'password', siteName: 'sample' });
        
         expect(localStorage.setItem).toHaveBeenCalledWith('token', 'newToken');
