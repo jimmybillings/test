@@ -1,5 +1,5 @@
 div(*ngIf="header")
-  app-header([showFixed]="showFixed", [currentUser]="currentUser", [config]="(header | async)", (onLogOut)="logout()")
+  app-header([showFixed]="showFixed", [currentUser]="currentUser", [showSearch]="showSearch", [config]="(header | async)", (onLogOut)="logout()")
 
   .main-content
     router-outlet

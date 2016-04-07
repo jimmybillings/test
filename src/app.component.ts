@@ -1,5 +1,5 @@
 import {Component} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
+import {RouteConfig, ROUTER_DIRECTIVES, Router, Location} from 'angular2/router';
 import {MultilingualService} from './common/services/multilingual.service';
 import {ILang} from './common/interfaces/language.interface';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
@@ -21,7 +21,7 @@ import {Observable} from 'rxjs/Observable';
   templateUrl: './app.html',
   directives: [ROUTER_DIRECTIVES, Header, Footer],
   providers: [Authentication],
-  pipes: [TranslatePipe]
+  pipes: [TranslatePipe],
 })
 
 @RouteConfig([
@@ -37,20 +37,22 @@ export class AppComponent {
   public footer: Observable<any>;
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public showFixed: boolean = false;
+  public showSearch: boolean = false;
   
   constructor(
-  public currentUser: CurrentUser,
-  private _apiConfig: ApiConfig,
-  public uiConfig: UiConfig,
-  private _authentication: Authentication,
-  public router: Router,
-  private _currentUser: CurrentUser,
-  public multiLingual: MultilingualService) {
+    public currentUser: CurrentUser,
+    private _apiConfig: ApiConfig,
+    public uiConfig: UiConfig,
+    private _authentication: Authentication,
+    public router: Router,
+    private _currentUser: CurrentUser,
+    public multiLingual: MultilingualService,
+    public location: Location) {
     this._apiConfig.setPortal('core');
       
     let userLang = window.navigator.language.split('-')[0];
-    console.log(window.navigator.language);
     multiLingual.setLanguage(userLang);
+    this.router.subscribe(state => this.showSearch = (state === '' || !currentUser.loggedIn()));
   }
       
   ngOnInit() {
@@ -84,4 +86,5 @@ export class AppComponent {
     let setFixed: boolean = (offset > 68) ? true : false;
     if (setFixed !== isfixed) this.showFixed = !this.showFixed;
   }
+  
 }

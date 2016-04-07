@@ -41,6 +41,7 @@ export class Asset {
   ngOnInit() {
     this.assetDetail.subscribe(data => {
       this.assetDetail = data;
+      console.log(data);
       if (data.name) this._loadVideo(data.name);
     });
   }

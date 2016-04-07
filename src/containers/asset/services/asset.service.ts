@@ -3,12 +3,11 @@ import { Store, Reducer, Action} from '@ngrx/store';
 import { Injectable } from 'angular2/core';
 import { ApiConfig } from '../../../common/config/api.config';
 import { Http, Response } from 'angular2/http';
-
-export const asset: Reducer<any> = (state = { clipData: [] }, action: Action) => {
+const initAsset = { clipData: [] };
+export const asset: Reducer<any> = (state = initAsset, action: Action) => {
   switch (action.type) {
     case 'SET_ASSET':
       return Object.assign({}, state, action.payload);
-
     default:
       return state;
   }
