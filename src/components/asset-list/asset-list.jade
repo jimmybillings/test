@@ -5,10 +5,15 @@ ul.asset-list
       a(flex='', (click)='showAsset(asset)')
         img(*ngIf="asset.thumbnail", src='{{asset.thumbnail.urls.https}}')
         
-        span(*ngFor="#mdata of asset.metaData; #i = index", class="mdata-{{i}}") 
-          span(*ngIf="i != 2") {{mdata.value}}
-          span.sd-hd(*ngIf="i == 2", 
-            [ngClass]="{hd: mdata.value == 'High Definition', sd: mdata.value == 'Standard Definition', dv: mdata.value == 'Digital Video'}") {{mdata.value}}
-      // div(*ngFor="#mdata of asset.metaData; #i = index", class="mdata-{{i}}") 
-      //   span( *ngIf="i == 1") {{mdata.value}}
- 
+        span(class="mdata-0", *ngIf="asset.metaData[0]") 
+          span {{asset.metaData[0].value}}
+          
+        span(class="mdata-1", *ngIf="asset.metaData[1]") 
+          span {{asset.metaData[1].value}}
+          
+        span(class="mdata-2", *ngIf="asset.metaData[2]") 
+          span.sd-hd([ngClass]="formatType(asset.metaData[2].value)") {{asset.metaData[2].value}}
+        
+        span(class="mdata-3", *ngIf="asset.metaData[3]") 
+          span {{asset.metaData[3].value}}
+          

@@ -16,11 +16,15 @@ export const currentUser:Reducer<any> = (state = {}, action:Action) => {
     }
 };
 
-@Injectable()
+export function isLoggedIn() {
+  return !!localStorage.getItem('token');
+}
 /**
  * Model that describes current user, and provides  
  * methods for retrieving user attributes.
  */  
+
+@Injectable()
 export class CurrentUser {
 
   private _currentUser: Observable<any>;
@@ -54,7 +58,7 @@ export class CurrentUser {
   }
   
   public loggedIn(): boolean {
-    return (localStorage.getItem('token') !== null);
+    return !!localStorage.getItem('token');
   }
 
   /**

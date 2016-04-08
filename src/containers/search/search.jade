@@ -9,7 +9,6 @@ section.search-results
         h1.md-display-1.alert.warning([hidden]="!errorMessage && ((assets | async)?.totalCount == null || (assets | async)?.totalCount > 0)")
           | No items can be found for that search
 
-
     div(flex-xl="70", flex-gt-lg="80", flex="100", *ngIf="config.viewType.value == 'list'")
       .pagination.md-body-2(layout='row' layout-align='end center') 
         .results-count {{assets.totalCount}} results

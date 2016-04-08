@@ -22,6 +22,20 @@ export class AssetList {
   constructor(private _router: Router) {}
  
   showAsset(asset): void {
-    this.currentUser.loggedIn() ? this.onShowAsset.emit(asset) : this._router.navigate(['/UserManagement/Login']);;
+    this.onShowAsset.emit(asset);
+    // this.currentUser.loggedIn() ? this.onShowAsset.emit(asset) : this._router.navigate(['/UserManagement/Login']);
+  }
+  
+  public formatType(format) {
+    switch (format) {
+      case 'High Definition':
+        return 'hd';
+      case 'Standard Definition':
+        return 'sd';
+      case 'Digital Video':
+        return 'dv';
+      default:
+        return 'hd';
+    }
   }
 }

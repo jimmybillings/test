@@ -4,7 +4,7 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {NgStyle, CORE_DIRECTIVES} from 'angular2/common';
 import {AssetDetail} from '../../components/asset-detail/asset-detail.component';
-import {CurrentUser} from '../../common/models/current-user.model';
+import {CurrentUser, isLoggedIn} from '../../common/models/current-user.model';
 import {UiConfig} from '../../common/config/ui.config';
 import {AssetService} from './services/asset.service';
 import {Player} from '../../components/player/player.component';
@@ -39,16 +39,20 @@ export class Asset {
     assetService.set(this.routeParams.get('name'));
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.subscription = this.assetDetail.subscribe(data => {
       this.assetDetail = data;
       if (data.name) this._loadVideo(data.name);
     });
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  ngOnDestroy(): void {
+    if (this.subscription) this.subscription.unsubscribe();
     this.assetService.reset();
+  }
+  
+  routerOnActivate(): void {
+    if (!isLoggedIn()) this._router.navigate(['/UserManagement/Login']);
   }
 
   private _loadVideo(video: string): void {
