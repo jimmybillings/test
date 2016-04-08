@@ -16,8 +16,9 @@ import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 export class AssetDetail {
   @Input() public assetDetail;
   @Input() currentUser;
+  
+  public getMetaField(field) {
+    let meta = this.assetDetail.clipData.filter(item => item.name === field)[0];  
+    if (meta) return meta.value; 
+  }
 }
-
-
-
-

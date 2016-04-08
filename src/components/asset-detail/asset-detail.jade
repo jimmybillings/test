@@ -27,7 +27,8 @@ section.preview-bk.theater(layout='row',flex='', layout-align='center stretch')
             .sd-hd([ngClass]="{hd: assetDetail.clipData[2]?.value == 'High Definition', sd: assetDetail.clipData[2]?.value == 'Standard Definition'}")
             .rights.md-caption(flex='') rights managed 
           
-          h5.md-subhead {{assetDetail.clipData[1]?.value}}
+          h4 {{getMetaField('Title')}}
+          h5.md-subhead {{getMetaField('Description')}}
           
           md-card-actions(layout='column', layout-align='center center', layout-wrap='')
             md-button.md-raised.md-primary.md-hue-7(md-raised-button='', (click)="someFunction()") Add to Cart
