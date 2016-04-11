@@ -56,6 +56,6 @@ export class Asset {
   }
 
   private _loadVideo(video: string): void {
-    this.dcl.loadAsRoot(Player, '#player', this.injector).then(component => component.instance.set(video));
+    this.dcl.loadAsRoot(Player, '#player', this.injector).then(component => component.instance.play(video));
   }
 }

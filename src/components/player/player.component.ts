@@ -12,23 +12,10 @@ declare var PlayerApi, PlayerEnvironment;
 export class Player {
   @Input() clip: string;
   public player: {load};
-  constructor() {
-    if (this.clip) this.play();
-    
-  }
   
-  public set(clip) {
+  public play(clip) {
     this.clip = clip;
-    console.log(document.querySelector('iframe#player'));
     this.player = new PlayerApi(document.querySelector('iframe#player'), {environment: PlayerEnvironment.PRODUCTION});
-    this.play();
-    
-  }
-  
-  public play() {
-    console.log(this.player);
     this.player.load(this.clip, 'tem-r5tHustu');
-    // sldkfj
   }
-  
 }

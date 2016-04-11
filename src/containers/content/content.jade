@@ -1,3 +1,9 @@
-section
-  div(layout='row', md-scroll-y='', layout-align='center start', layout-padding='')
-    div(flex-xl="85", flex-gt-lg="95", flex="100", [innerHTML]="content")
+section.content-page
+  div(layout='row' md-scroll-y='', layout-align='center start')
+    div(flex-gt-lg="80",flex-gt-md="80", flex-gt-sm="80",flex="100")
+      md-card.md-whiteframe-z2
+        md-card-header
+        md-card-title
+          md-card-title-text(layout='column', layout-align='center center')
+            span.md-headline([innerHTML]="title")
+        md-card-content([innerHTML]="content")

@@ -49,7 +49,6 @@ export class AppComponent {
     public multiLingual: MultilingualService,
     public location: Location) {
     this._apiConfig.setPortal('core');
-      
     let userLang = window.navigator.language.split('-')[0];
     multiLingual.setLanguage(userLang);
     this.router.subscribe(state => this.showSearch = (state === '' || !currentUser.loggedIn()));
