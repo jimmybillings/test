@@ -21,13 +21,15 @@ export class Header {
   @Input() config;
   @Input() supportedLanguages;
   @Input() showFixed;
-  @Input() showSearch;
+  @Input() state;
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
   public loggedInState: boolean;
   public components: Object;
+  public displaySearchBox: boolean;
   
   constructor(private _router: Router) {}
+  
   ngOnInit(): void {
     this.components = this.config.components;
     this.config = this.config.config;
@@ -37,4 +39,11 @@ export class Header {
   public logOut(event) {
     this.onLogOut.emit(event);
   }
+  
+  ngOnChanges(changes) {
+    if (changes.state) this.displaySearchBox = (changes.state.currentValue === '');
+  }
+  
+  
+  
 }

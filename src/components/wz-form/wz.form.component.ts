@@ -24,10 +24,7 @@ export class WzForm {
   
   public form: ControlGroup;
     
-  constructor(
-    public fb: FormBuilder,
-    private _form: Form) {
-  }
+  constructor(public fb: FormBuilder, private _form: Form) {}
   
   ngOnInit(): void {
     this.form = this.fb.group(this._form.create(this.items));

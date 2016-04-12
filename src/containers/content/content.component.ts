@@ -23,9 +23,9 @@ export class Content {
     private _router: Router,
     private routeParams: RouteParams,
     private contentService: ContentService) {
-      contentService.get(this.routeParams.get('id')).subscribe(data => {
-        this.content = data.content.rendered;
-        this.title = data.title.rendered;
+      contentService.get(this.routeParams.get('page')).subscribe(data => {
+        this.content = data[0].content.rendered;
+        this.title = data[0].title.rendered;
       });
   }
  
