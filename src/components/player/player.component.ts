@@ -13,9 +13,11 @@ export class Player {
   @Input() clip: string;
   public player: {load};
   
-  public play(clip) {
-    this.clip = clip;
+  ngOnInit() {
     this.player = new PlayerApi(document.querySelector('iframe#player'), {environment: PlayerEnvironment.PRODUCTION});
-    this.player.load(this.clip, 'tem-r5tHustu');
+  }
+  
+  ngOnChanges(changes): void {
+    if (changes.clip.currentValue) this.player.load(changes.clip.currentValue, 'tem-r5tHustu');
   }
 }

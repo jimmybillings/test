@@ -7,7 +7,7 @@ import {AssetDetail} from '../../components/asset-detail/asset-detail.component'
 import {CurrentUser, isLoggedIn} from '../../common/models/current-user.model';
 import {UiConfig} from '../../common/config/ui.config';
 import {AssetService} from './services/asset.service';
-import {Player} from '../../components/player/player.component';
+// import {Player} from '../../components/player/player.component';
 import {Observable} from 'rxjs/Observable';
 
 /**
@@ -42,7 +42,7 @@ export class Asset {
   ngOnInit(): void {
     this.subscription = this.assetDetail.subscribe(data => {
       this.assetDetail = data;
-      if (data.name) this._loadVideo(data.name);
+      // if (data.name) this._loadVideo(data.name);
     });
   }
 
@@ -55,7 +55,7 @@ export class Asset {
     if (!isLoggedIn()) this._router.navigate(['/UserManagement/Login']);
   }
 
-  private _loadVideo(video: string): void {
-    this.dcl.loadAsRoot(Player, '#player', this.injector).then(component => component.instance.play(video));
-  }
+  // private _loadVideo(video: string): void {
+  //   this.dcl.loadAsRoot(Player, '#player', this.injector).then(component => component.instance.play(video));
+  // }
 }

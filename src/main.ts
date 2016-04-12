@@ -1,4 +1,4 @@
-import { provide } from 'angular2/core';
+import { provide, enableProdMode } from 'angular2/core';
 import { bootstrap } from 'angular2/platform/browser';
 import { ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy } from 'angular2/router';
 import { HTTP_PROVIDERS, HTTP_BINDINGS, Http } from 'angular2/http';
@@ -14,8 +14,9 @@ import { CurrentUser, currentUser} from './common/models/current-user.model';
 import { MATERIAL_PROVIDERS } from 'ng2-material/all';
 import { UiConfig, config } from './common/config/ui.config';
 import 'rxjs/Rx';
-// import { enableProdMode } from 'angular2/core';
-// enableProdMode();
+
+if ('<%= ENV %>' === 'prod') { enableProdMode(); }
+
 
 bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
