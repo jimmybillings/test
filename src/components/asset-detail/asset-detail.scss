@@ -253,8 +253,8 @@ section.preview-bk {
 
 .responsive-video {
   z-index: 1;
-  background: black;
+  background-color: transparent;
   iframe {
-    border: transparent;
+    border: none;
   }
 }
