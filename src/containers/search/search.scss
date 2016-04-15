@@ -1,7 +1,7 @@
 search {
   display: block;
   background-color:  md-color($md-background, 300);
-  border-top: rem(6.4) solid md-color($md-primary, 900, .7);
+  border-top: rem(11.6) solid md-color($md-primary, 900, .7);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     border-top-width: rem(5.6);    
   }
