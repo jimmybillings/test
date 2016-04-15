@@ -143,17 +143,6 @@ export class CurrentUser {
   }
   
   /**
-   * @returns      True if current user is an admin, otherwise returns false
-   */
-  public isAdmin(): boolean {
-    if (localStorage.getItem('currentUser')) {
-      let userPermissions = JSON.parse(localStorage.getItem('currentUser')).permissions;
-      return userPermissions.indexOf('Root') > -1;
-    };
-    return false;
-  }
-  
-  /**
    * @returns      Current user from localStorage, or if that doesn't exist, return current user with null value attributes.
    */
   private _user(): CurrentUserInterface {

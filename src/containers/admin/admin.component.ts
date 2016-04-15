@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
+import {Component} from 'angular2/core';
+import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {CurrentUser} from '../../common/models/current-user.model';
 import {Dashboard} from './dashboard/dashboard.component';
 import {Account} from './account/account.component';
@@ -15,20 +15,10 @@ import {Account} from './account/account.component';
   { path: '/accounts', component: Account, name: 'Account' }
 ])
 
-export class Admin implements OnInit {
+export class Admin {
   public currentUser: CurrentUser;
   
-  constructor(currentUser: CurrentUser, private _router: Router) {
+  constructor(currentUser: CurrentUser) {
     this.currentUser = currentUser;
   }
-  
-  ngOnInit() {
-    this.authorization();
-  }
-  
-  authorization(): void {
-    if (!this.currentUser.isAdmin()) {
-      this._router.navigate(['/Home']);
-    };
-  } 
 }
