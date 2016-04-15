@@ -84,7 +84,7 @@ app-header md-toolbar.glb .search-tools {
       }
       button[type="submit"] {
         background-color: md-color($md-primary, 500);
-        height:rem(5.4);
+        height:rem(5.2);
         width:rem(5.7);
         i.material-icons {
           font-size: rem(3);
@@ -123,8 +123,11 @@ app-header md-toolbar.glb.fixed .search-tools {
       input {
         background-color: transparent;
       }
-      button[type="submit"] i.material-icons {
-        @include text-contrast(md-color($md-primary, 700), md-color($md-background, 700), md-color($md-background, 100));
+      button[type="submit"] {
+        height:rem(5.1);
+        i.material-icons {
+          @include text-contrast(md-color($md-primary, 700), md-color($md-background, 700), md-color($md-background, 100));
+        }
       }
     }
   }
