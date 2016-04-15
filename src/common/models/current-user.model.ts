@@ -141,7 +141,7 @@ export class CurrentUser {
       return user.accountIds;
     });
   }
-  
+
   /**
    * @returns      Current user from localStorage, or if that doesn't exist, return current user with null value attributes.
    */
