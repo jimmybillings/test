@@ -3,7 +3,9 @@ import { Observable} from 'rxjs/Observable';
 import { Store, Reducer, Action} from '@ngrx/store';
 import { Injectable } from 'angular2/core';
 
-
+const permissionMap = {
+  'root' : 'Root'
+};
 
 export const currentUser:Reducer<any> = (state = {}, action:Action) => {
 
@@ -141,6 +143,16 @@ export class CurrentUser {
       return user.accountIds;
     });
   }
+  
+  /**
+   * @returns      True or false based on Current User's permissions
+   */
+  public is(permission:  string): Observable<any> {
+    let permissionToCheck = permissionMap[permission];
+    return this._currentUser.map((user) => {
+      return user.permissions.indexOf(permissionToCheck) > -1;
+    });
+  }
 
   /**
    * @returns      Current user from localStorage, or if that doesn't exist, return current user with null value attributes.
@@ -151,8 +163,8 @@ export class CurrentUser {
       firstName: null,
       lastName: null,
       id: null,
-      accountIds: null
+      accountIds: null,
+      permissions: []
     };
   }
 }
-
