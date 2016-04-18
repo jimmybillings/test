@@ -63,3 +63,72 @@ app-header md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-button],
 app-header md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-icon] {
   @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
 }
+
+// search box in the header
+app-header md-toolbar.glb .search-tools {
+  background-color: md-color($md-background, 100);
+  .md-toolbar-tools {
+    height: rem(5.2);
+    max-height: rem(5.2);
+    padding: 0;
+    search-box {
+      // border-width: 0 0 0 1px;
+      // border-style: solid;
+      // border-color: rgba(md-color($md-background, 700), .25);
+      margin: 0;
+      input {
+        height:rem(5.2);
+        color: rgba(md-color($md-background, 900), .7);
+        padding-left: rem(2.7);
+        font-size: 1.1em;
+      }
+      button[type="submit"] {
+        background-color: md-color($md-primary, 500);
+        height:rem(5.2);
+        width:rem(5.7);
+        i.material-icons {
+          font-size: rem(3);
+          text-shadow: none;
+        }
+      }
+    }
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      height: rem(4.4);
+      max-height: rem(4.4);
+      search-box {
+        input {
+          height: rem(4.4);
+          font-size: .97em;
+        }
+        button[type="submit"] {
+          height:rem(4.4);
+          width:rem(4.6);
+          i.material-icons {
+            font-size: rem(2.6);
+          }
+        }
+      }
+    }
+  }
+}
+app-header md-toolbar.glb.fixed .search-tools {
+  background-color: transparent;
+  .md-toolbar-tools {
+    background-color: transparent;
+    search-box {
+      border-width: 1px 0 0 0;
+      border-style: solid;
+      border-color: rgba(md-color($md-background, 500), .25);
+      background-color: transparent;
+      input {
+        background-color: transparent;
+      }
+      button[type="submit"] {
+        height:rem(5.1);
+        i.material-icons {
+          @include text-contrast(md-color($md-primary, 700), md-color($md-background, 700), md-color($md-background, 100));
+        }
+      }
+    }
+  }
+}

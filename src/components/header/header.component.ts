@@ -41,9 +41,12 @@ export class Header {
   }
   
   ngOnChanges(changes) {
-    if (changes.state) this.displaySearchBox = (changes.state.currentValue === '');
+    // console.log(changes.state);
+    if (changes.state) this.displaySearchBox = (
+      changes.state.currentValue === ''
+      || changes.state.currentValue === 'user/profile' 
+      || changes.state.currentValue === 'user/login' 
+      || changes.state.currentValue === 'user/register'
+      );
   }
-  
-  
-  
 }

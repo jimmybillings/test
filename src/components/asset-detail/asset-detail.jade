@@ -46,30 +46,50 @@ section.data-bk
             .m-data
               .row
                 .cell
-                  h5.md-subhead Event
+                  h5.md-subhead Player
                 .cell
-                  p.md-body-1
-                    | Up to 1 gigabit (1,000 Mbps) upload and download speeds.
+                  p.md-body-1 {{getMetaField('Sport.Players')}}
+              .row
+                .cell
+                  h5.md-subhead Course
+                .cell
+                  p.md-body-1 {{getMetaField('Sport.Golf.Course.Name')}}  
               .row
                 .cell
                   h5.md-subhead Date
                 .cell
-                  p.md-body-1 4/11/2010
-              .row
-                .cell
-                  h5.md-subhead Location
-                .cell
-                  p.md-body-1 Augusta National Golf Course Augusta, GA  
+                  p.md-body-1 {{getMetaField('Description.Date')}}
               .row
                 .cell
                   h5.md-subhead Year
                 .cell
-                  p.md-body-1 2012
+                  p.md-body-1 {{getMetaField('Sport.Year')}}
+              .row
+                .cell
+                  h5.md-subhead Round
+                .cell
+                  p.md-body-1 {{getMetaField('Sport.GameRound')}}
+              .row
+                .cell
+                  h5.md-subhead Hole Number
+                .cell
+                  p.md-body-1 {{getMetaField('Sport.Golf.Hole.Number')}}
+              .row
+                .cell
+                  h5.md-subhead Hole Score
+                .cell
+                  p.md-body-1 {{getMetaField('Sport.Golf.Hole.Strokes')}}
+              .row
+              .row
+                .cell
+                  h5.md-subhead Stroke Number
+                .cell
+                  p.md-body-1 {{getMetaField('Sport.Golf.Stroke.Number')}}
               .row
                 .cell
                   h5.md-subhead Owner
                 .cell
-                  p.md-body-1 Supplier: Augusta National Golf Club [Augusta National Golf Club]
+                  p.md-body-1 {{getMetaField('Owner')}}
 
 
 
@@ -83,48 +103,72 @@ section.data-bk
                 .cell
                   h5.md-subhead Aspect
                 .cell
-                  p.md-body-1 16:9
+                  p.md-body-1 {{getMetaField('Format.AspectRatio')}}
               .row
                 .cell
                   h5.md-subhead Frame Rate
                 .cell
-                  p.md-body-1 29.97 fps
+                  p.md-body-1 {{getMetaField('Format.FrameRate')}}
               .row
                 .cell
                   h5.md-subhead Frame Size
                 .cell
-                  p.md-body-1  1920 x 1080  
+                  p.md-body-1  {{getMetaField('Format.FrameSize')}}
               .row
                 .cell
                   h5.md-subhead Broadcast Standard
                 .cell
-                  p.md-body-1 1080i
+                  p.md-body-1 {{getMetaField('Format.BroadcastStandard')}}
               .row
                 .cell
-                  h5.md-subhead Shot On
+                  h5.md-subhead Digital Format
                 .cell
-                  p.md-body-1 Other HD
+                  p.md-body-1 {{getMetaField('TE.DigitalFormat')}}
               .row
                 .cell
                   h5.md-subhead Length
                 .cell
-                  p.md-body-1 00:01:25;24
+                  p.md-body-1 {{getMetaField('Format.Duration')}}
               .row
                 .cell
                   h5.md-subhead Stored Online
                 .cell
-                  p.md-body-1 QuickTime / AVdn
-              .row
-                .cell
-                  h5.md-subhead Speed
-                .cell
-                  p.md-body-1 Slow Motion
-              .row
-                .cell
-                  h5.md-subhead Color
-                .cell
-                  p.md-body-1 Color
+                  p.md-body-1 {{getMetaField('Format.MasterStandard')}} / {{getMetaField('Format.QuickTime.Codec')}}
 
+
+
+              .row.divider
+                .cell
+                .cell
+                  
+                  
+                  
+              .row
+                .cell
+                  h5.md-subhead Audio Codec
+                .cell
+                  p.md-body-1 {{getMetaField('Format.Audio.Codec')}}
+              .row
+                .cell
+                  h5.md-subhead Audio Bit Depth
+                .cell
+                  p.md-body-1 {{getMetaField('Format.AudioBitDepth')}}
+              .row
+                .cell
+                  h5.md-subhead Audio Channels
+                .cell
+                  p.md-body-1 {{getMetaField('Format.AudioChannelConfiguration')}}
+              .row
+                .cell
+                  h5.md-subhead Audio Data Rate
+                .cell
+                  p.md-body-1 {{getMetaField('Format.AudioDataRate')}}
+              .row
+                .cell
+                  h5.md-subhead Audio Sampling Rate
+                .cell
+                  p.md-body-1 {{getMetaField('Format.AudioSamplingRate')}}
+ 
 
 
 
