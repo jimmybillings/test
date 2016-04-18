@@ -90,7 +90,7 @@ export function main() {
     
     it('should return false when the current user does not have the permission that is being checked for', inject([CurrentUser], (service) => {
       service.set(loggedInUser);
-      service.is('edit').subscribe(result => {
+      service.is('notAPermission').subscribe(result => {
         expect(result).toBe(false);
       });
       localStorage.clear();

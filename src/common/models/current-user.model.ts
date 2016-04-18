@@ -144,6 +144,9 @@ export class CurrentUser {
     });
   }
   
+  /**
+   * @returns      True or false based on Current User's permissions
+   */
   public is(permission:  string): Observable<any> {
     let permissionToCheck = permissionMap[permission];
     return this._currentUser.map((user) => {
