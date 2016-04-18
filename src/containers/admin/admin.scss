@@ -4,6 +4,11 @@
     min-height: 50px;
     height: 50px;
     margin-top: 64px;
+    .md-toolbar-tools {
+      a {
+        margin-left: 1rem;
+      }
+    }
     nav {
       height: 50px;
     }

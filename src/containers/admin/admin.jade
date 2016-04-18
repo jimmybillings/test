@@ -3,6 +3,7 @@ section.admin-dashboard
     div(class="admin-nav" layout='row' md-scroll-y='', layout-align='center start')
       md-toolbar
         nav.md-toolbar-tools
-          a.md-body-1.md-primary.md-hue-2([routerLink]="['Account']", title='Accounts for {{ currentUser.fullName() | async }}') Accounts
+          a.md-body-1.md-primary.md-hue-2([routerLink]="['Dashboard']", title='Dashboard') Dashboard
+          a.md-body-1.md-primary.md-hue-2([routerLink]="['Account']", title='Accounts') Accounts
           
 router-outlet
