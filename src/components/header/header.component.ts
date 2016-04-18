@@ -47,6 +47,7 @@ export class Header {
       || changes.state.currentValue === 'user/profile' 
       || changes.state.currentValue === 'user/login' 
       || changes.state.currentValue === 'user/register'
+      || changes.state.currentValue.indexOf('admin/') > -1
       );
   }
 }
