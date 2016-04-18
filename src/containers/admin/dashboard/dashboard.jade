@@ -1,10 +1,4 @@
 section.admin-dashboard
-  section.admin-dash-header
-    div(class="admin-nav" layout='row' md-scroll-y='', layout-align='center start')
-      md-toolbar
-        nav.md-toolbar-tools
-          a.md-body-1.md-primary.md-hue-2([routerLink]="['Account']", title='Accounts for {{ currentUser.fullName() | async }}') Accounts
-        
   section.admin-dash-user-info
     div(layout='row' md-scroll-y='', layout-align='center start')
       div(flex-xl="90",flex-gt-lg="80",flex-gt-md="90",flex="100")
