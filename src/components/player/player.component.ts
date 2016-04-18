@@ -18,6 +18,6 @@ export class Player {
   }
   
   ngOnChanges(changes): void {
-    if (changes.clip.currentValue) this.player.load(changes.clip.currentValue, 'tem-r5tHustu');
+    if (changes.clip && changes.clip.currentValue) this.player.load(changes.clip.currentValue, 'tem-r5tHustu');
   }
 }

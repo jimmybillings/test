@@ -40,10 +40,7 @@ export class Asset {
   }
 
   ngOnInit(): void {
-    this.subscription = this.assetDetail.subscribe(data => {
-      this.assetDetail = data;
-      // if (data.name) this._loadVideo(data.name);
-    });
+    this.subscription = this.assetDetail.subscribe(data => this.assetDetail = data);
   }
 
   ngOnDestroy(): void {
@@ -55,7 +52,4 @@ export class Asset {
     if (!isLoggedIn()) this._router.navigate(['/UserManagement/Login']);
   }
 
-  // private _loadVideo(video: string): void {
-  //   this.dcl.loadAsRoot(Player, '#player', this.injector).then(component => component.instance.play(video));
-  // }
 }
