@@ -1,12 +1,4 @@
 section.admin-dashboard
-  section.admin-dash-user-info
-    div(layout='row' md-scroll-y='', layout-align='center start')
-      div(flex-xl="90",flex-gt-lg="80",flex-gt-md="90",flex="100")
-        h1.md-display-1 Admin Dashboard - {{ currentUser.fullName() | async }}
-        p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique vero repellat voluptatibus cumque asperiores numquam, harum odit voluptatem totam fugiat tempore quaerat hic eaque earum debitis, pariatur itaque ab facilis!    
-        
-  section.admin-dash-content
-    div(layout='row' md-scroll-y='', layout-align='center start')
-      div(flex-xl="90",flex-gt-lg="80",flex-gt-md="90",flex="100")
-        h3.md-display-1 Recent Uploads
-        p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt odit tenetur dignissimos hic nam cumque reprehenderit quibusdam dolores obcaecati optio, necessitatibus unde assumenda sequi porro error perspiciatis! Perspiciatis, a, neque!
+  div(layout='row' md-scroll-y='', layout-align='center start')
+    div(flex-xl="90",flex-gt-lg="80",flex-gt-md="90",flex="100")
+      h1.md-display-1 Admin Dashboard - {{ currentUser.fullName() | async }}

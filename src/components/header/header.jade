@@ -19,6 +19,8 @@ md-toolbar.glb([ngClass]="{'fixed': showFixed}")
     
     md-button.md-caption.md-primary.md-hue-2(*ngIf="loggedInState | async", md-button='', (click)="logOut()", [routerLink]="['Home']", hide='', show-gt-sm='') {{ 'HEADER.LOGOUT_LABEL' | translate}}
     
+    md-button.md-caption.md-primary.md-hue-2(*ngIf="currentUser.is('root') | async", md-button='', [routerLink]="['Admin', 'Dashboard']", hide='', show-gt-sm='') Admin
+    
     button.md-icon-button(md-button='', *ngIf="loggedInState | async", title='Search', [routerLink]="['Search']")
       i.material-icons(md-icon='') search
     
