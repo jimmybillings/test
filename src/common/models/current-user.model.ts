@@ -150,7 +150,7 @@ export class CurrentUser {
   public is(permission:  string): Observable<any> {
     let permissionToCheck = permissionMap[permission];
     return this._currentUser.map((user) => {
-      return user.permissions.indexOf(permissionToCheck) > -1;
+      return user.permissions ? user.permissions.indexOf(permissionToCheck) > -1 : false;
     });
   }
 

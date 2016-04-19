@@ -7,6 +7,7 @@ export function main() {
   describe('CurrentUser Model', () => {
     let loggedInUser = setLoggedInUser();
     let loggedOutUser = setLoggedOutUser();
+    let loggedInUserWithoutPermissions = setLoggedInUserWithoutPermissions();
 
     beforeEachProviders(() => [
       CurrentUser,
@@ -96,8 +97,16 @@ export function main() {
       localStorage.clear();
     }));
     
-    it('should return false when the user is logged out and has no permissions', inject([CurrentUser], (service) => {
+    it('should return false when the user is logged out and does not have permissions', inject([CurrentUser], (service) => {
       service.set(loggedOutUser);
+      service.is('root').subscribe(result => {
+        expect(result).toBe(false);
+      });
+      localStorage.clear();
+    }));
+    
+    it('should return false when the user is logged in and does not have permissions', inject([CurrentUser], (service) => {
+      service.set(loggedInUserWithoutPermissions);
       service.is('root').subscribe(result => {
         expect(result).toBe(false);
       });
@@ -130,6 +139,20 @@ export function main() {
       'id': null,
       'accountIds': null,
       'permissions': []
+    };
+  }
+  
+  function setLoggedInUserWithoutPermissions() {
+    return {
+      'lastUpdated': '2016-01-14T16:46:21Z',
+      'createdOn': '2016-01-14T16:46:21Z',
+      'id': 6,
+      'emailAddress': 'test_email@email.com',
+      'password': '5daf7de08c0014ec2baa13a64b35a4e0',
+      'firstName': 'first',
+      'lastName': 'last',
+      'siteName': 'cnn',
+      'accountIds': [4]
     };
   }
 }
