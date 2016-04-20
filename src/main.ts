@@ -1,6 +1,6 @@
 import { provide, enableProdMode } from 'angular2/core';
 import { bootstrap } from 'angular2/platform/browser';
-import { ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy } from 'angular2/router';
+import { ROUTER_PROVIDERS, APP_BASE_HREF } from 'angular2/router';
 import { HTTP_PROVIDERS, HTTP_BINDINGS, Http } from 'angular2/http';
 import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
 import { MultilingualService, multilingualReducer } from './common/services/multilingual.service';
@@ -21,7 +21,7 @@ if ('<%= ENV %>' === 'prod') { enableProdMode(); }
 bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
   MATERIAL_PROVIDERS,
-  provide(LocationStrategy, { useClass: HashLocationStrategy }),
+  provide(APP_BASE_HREF, { useValue: '/' }),
   provideStore({config, assets, asset, currentUser, i18n: multilingualReducer}),
   HTTP_PROVIDERS,
   HTTP_BINDINGS,
@@ -29,7 +29,6 @@ bootstrap(AppComponent, [
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'resources/i18n', '.json'),
         deps: [Http]
     }),
-  // use TranslateService here, and not TRANSLATE_PROVIDERS (which will define a default TranslateStaticLoader)
   MultilingualService,
   TranslateService,
   Validators,
