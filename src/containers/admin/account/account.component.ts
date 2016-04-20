@@ -20,13 +20,14 @@ export class Account {
   constructor(currentUser: CurrentUser, accountService: AccountService) {
     this.currentUser = currentUser;
     this.accountService = accountService;
-    this.getAccounts();
     this._currentUserAccounts = this.accountService.currentUserAccounts;
-    console.log('constructor', this._currentUserAccounts);
+  }
+  
+  ngOnInit(): void {
+    this.getAccounts();
   }
   
   getAccounts(): void {
     this.accountService.getAccountsForUser(this.currentUser);
-    console.log('getAccounts()', this._currentUserAccounts);
   }
 }
