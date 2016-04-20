@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 export const currentUserAccounts: Reducer<any> = (state = [], action: Action) => {
   switch (action.type) {
     case 'ADD_ACCOUNT':
-      return [...state, action.payload];
+      return Object.assign([], state, action.payload);
     default:
       return state;
   }
@@ -19,7 +19,6 @@ export class AccountService {
   public currentUserAccounts: Observable<Array<any>>;
   private _http: Http;
   private _apiConfig: ApiConfig;
-  private _userAccountIds: any;
   private _apiUrls: {
     get: string
   };
@@ -27,21 +26,19 @@ export class AccountService {
   constructor(
     http: Http,
     apiConfig: ApiConfig,
-    private store: Store<any>) { 
+    private store: Store<any>
+    ) { 
       this._http = http;
       this.currentUserAccounts = this.store.select('currentUserAccounts');
       this._apiConfig = apiConfig;
       this._apiUrls = {
-        get: this._apiConfig.baseUrl() + 'api/identities/v1/account/'
+        get: this._apiConfig.baseUrl() + 'api/identities/v1/account/search/?q=a&s=createdOn&d=false&i=0&n=20'
       };
     }
   
   public getAccountsForUser(user: any): void {
-    user._currentUser.subscribe(data => this._userAccountIds = data.accountIds);
-    this._userAccountIds.forEach(id => {
-      return this._http.get(this._apiUrls.get + id, {headers: this._apiConfig.authHeaders()})
-        .map((res: Response) => res.json())
-        .subscribe(account => this.store.dispatch({ type: 'ADD_ACCOUNT', payload: account}));
-    });
+    this._http.get(this._apiUrls.get, {headers: this._apiConfig.authHeaders()})
+      .map((res: Response) => res.json().items)
+      .subscribe(data => this.store.dispatch({type: 'ADD_ACCOUNT', payload: data}));
   }
 }
