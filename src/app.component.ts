@@ -15,6 +15,7 @@ import {Authentication} from './containers/user-management/services/authenticati
 import {ApiConfig} from './common/config/api.config';
 import {UiConfig} from './common/config/ui.config';
 import {Notification} from './components/notification/notification';
+import {Admin} from './containers/admin/admin.component';
 import {Observable} from 'rxjs/Observable';
 
 @Component({
@@ -30,7 +31,8 @@ import {Observable} from 'rxjs/Observable';
   { path: '/user/...', component: UserManagement, name: 'UserManagement' },
   { path: '/search', component: Search, name: 'Search' },
   { path: '/asset/:name', component: Asset, name: 'Asset' },
-  { path: '/content/:page', component: Content, name: 'Content' }
+  { path: '/content/:page', component: Content, name: 'Content' },
+  { path: '/admin/...', component: Admin, name: 'Admin' }
 ])
 
 export class AppComponent {

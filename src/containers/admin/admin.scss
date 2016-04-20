@@ -1,0 +1,19 @@
+.admin-dash-header {
+  max-height: 74px;
+  md-toolbar {
+    min-height: 50px;
+    height: 50px;
+    margin-top: 64px;
+    .md-toolbar-tools {
+      a {
+        margin-left: 1rem;
+      }
+    }
+    nav {
+      height: 50px;
+    }
+  }
+  admin-nav {
+    margin-top: -64px;
+  }
+}
