@@ -26,7 +26,8 @@ export class Header {
   @Output() onChangeLang = new EventEmitter();
   public loggedInState: boolean;
   public components: Object;
-  public displaySearchBox: boolean;
+  public searchBarIsActive: boolean;
+  
   
   constructor(private _router: Router) {}
   
@@ -41,13 +42,11 @@ export class Header {
   }
   
   ngOnChanges(changes) {
-    // console.log(changes.state);
-    if (changes.state) this.displaySearchBox = (
-      changes.state.currentValue === ''
-      || changes.state.currentValue === 'user/profile' 
-      || changes.state.currentValue === 'user/login' 
-      || changes.state.currentValue === 'user/register'
-      || changes.state.currentValue.indexOf('admin/') > -1
-      );
+    if (changes.state) this.searchBarIsActive = this.checkRouteForSearchBar(changes.state.currentValue);  
+  }
+  
+  public checkRouteForSearchBar(currentState: string): boolean {
+    return ['', 'user/profile', 'user/login', 'user/register', 'admin/']
+      .filter((state) => state.indexOf(currentState) > -1).length === 0; 
   }
 }

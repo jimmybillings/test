@@ -4,7 +4,7 @@ import {HTTP_PROVIDERS} from 'angular2/http';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {NgStyle, CORE_DIRECTIVES} from 'angular2/common';
 import {AssetDetail} from '../../components/asset-detail/asset-detail.component';
-import {CurrentUser, isLoggedIn} from '../../common/models/current-user.model';
+import {CurrentUser} from '../../common/models/current-user.model';
 import {UiConfig} from '../../common/config/ui.config';
 import {AssetService} from './services/asset.service';
 // import {Player} from '../../components/player/player.component';
@@ -48,8 +48,8 @@ export class Asset {
     this.assetService.reset();
   }
   
-  routerOnActivate(): void {
-    if (!isLoggedIn()) this._router.navigate(['/UserManagement/Login']);
-  }
+  // routerOnActivate(): void {
+  //   if (!isLoggedIn()) this._router.navigate(['/UserManagement/Login']);
+  // }
 
 }

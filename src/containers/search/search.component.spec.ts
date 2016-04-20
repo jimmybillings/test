@@ -23,6 +23,7 @@ import {AssetData} from './services/asset.data.service';
 import { AssetService } from '../../containers/asset/services/asset.service';
 import {Observable} from 'rxjs/Rx';
 import { provideStore } from '@ngrx/store';
+import { Error } from '../../common/services/error.service';
 
 export function main() {
   describe('Search Component', () => {
@@ -59,6 +60,7 @@ export function main() {
       AssetService,
       provide(AssetData, {useClass: MockAssetData}),
       provide(UiConfig, {useClass: MockUiConfig}),
+      Error
     ]);
 
     it('Should have a search instance',

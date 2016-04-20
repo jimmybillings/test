@@ -7,6 +7,10 @@ import { MockBackend } from 'angular2/http/testing';
 import { BaseRequestOptions, Http } from 'angular2/http';
 import { provideStore } from '@ngrx/store/dist/index';
 import {Observable} from 'rxjs/Rx';
+import { Error } from '../../../common/services/error.service';
+import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
+import {RootRouter} from 'angular2/src/router/router';
+import {SpyLocation} from 'angular2/src/mock/location_mock';
 
 export function main() {
   describe('Asset data service', () => {
@@ -24,10 +28,15 @@ export function main() {
         useFactory: (backend, defaultOptions) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
+      RouteRegistry,
+      provide(Location, { useClass: SpyLocation }),
+      provide(ROUTER_PRIMARY_COMPONENT, { useValue: AssetData }),
+      provide(Router, { useClass: RootRouter }),
       provideStore({assets: assets}),
       AssetData,
       ApiConfig,
-      CurrentUser
+      CurrentUser,
+      Error
     ]);
 
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls',

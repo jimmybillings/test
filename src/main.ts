@@ -13,6 +13,8 @@ import { ApiConfig } from './common/config/api.config';
 import { CurrentUser, currentUser} from './common/models/current-user.model';
 import { MATERIAL_PROVIDERS } from 'ng2-material/all';
 import { UiConfig, config } from './common/config/ui.config';
+import { Error } from './common/services/error.service';
+
 import 'rxjs/Rx';
 // enable prod mode
 if ('<%= ENV %>' === 'prod') { enableProdMode(); }
@@ -34,6 +36,7 @@ bootstrap(AppComponent, [
   Validators,
   ApiConfig,
   CurrentUser,
-  UiConfig
+  UiConfig,
+  Error
 ]);
 

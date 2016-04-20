@@ -30,7 +30,7 @@ md-toolbar.glb([ngClass]="{'fixed': showFixed}")
       i.material-icons(md-icon='') more_vert
       
       
-  div.search-tools([hidden]="displaySearchBox")
+  div.search-tools(*ngIf="searchBarIsActive")
     .md-toolbar-tools(layout='row', layout-align='center start')
       div(flex="100", layout='row', layout-align='center start')
         search-box([config]="components.searchBox")
