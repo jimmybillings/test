@@ -1,24 +1,4 @@
-.md-table {
+md-data-table {
   background-color: #fff;
   min-width: 100%;
-  border-collapse: collapse;
-  thead, tr, th.md-table-header {
-    border-bottom: 1px solid #e0e0e0;
-    color: #828282;
-    text-align: center;
-    font-size: 0.9em;
-    padding: 12px 12px 12px 12px;
-  }
-  tbody{
-    tr:hover, tr:focus {
-      cursor: pointer;
-      background-color: rgba(230, 240, 255, 0.4);
-    }
-    td.md-table-content {
-      white-space: nowrap;
-      font-size: 1em;
-      padding: 6px 6px 6px 0;
-      height: 1.6em;
-    }
-  }
 }

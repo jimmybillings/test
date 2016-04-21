@@ -45,6 +45,7 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 @import '../node_modules/ng2-material/source/components/switcher/switch';
 @import '../node_modules/ng2-material/source/components/toolbar/toolbar';
 @import '../node_modules/ng2-material/source/components/tabs/tabs';
+@import "../node_modules/ng2-material/source/components/data_table/data_table";
 
 @import './resources/styles/config';
 @import './resources/styles/animations';

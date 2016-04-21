@@ -1,13 +1,13 @@
-table.md-table
+md-data-table(layout-fill='')
   thead
     tr
-      th.md-table-header Name
-      th.md-table-header Status
-      th.md-table-header Creation Date
-      th.md-table-header Contact Name
+      th.md-text-cell Name
+      th.md-text-cell Status
+      th.md-text-cell Creation Date
+      th.md-text-cell Contact Name
   tbody
     tr(*ngFor="#item of items")
-      td.md-table-content {{ item.name }}
-      td.md-table-content {{ item.status }}
-      td.md-table-content {{ item.createdOn }}
-      td.md-table-content {{ item.contact }}
+      td.md-text-cell {{ item.name }}
+      td.md-text-cell {{ item.status }}
+      td.md-text-cell {{ item.createdOn }}
+      td.md-text-cell {{ item.contact }}
