@@ -4,10 +4,10 @@ import { ApiConfig } from '../../../common/config/api.config';
 import { Store, Reducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-export const currentUserAccounts: Reducer<any> = (state = [], action: Action) => {
+export const admin: Reducer<any> = (state = {}, action: Action) => {
   switch (action.type) {
-    case 'ADD_ACCOUNT':
-      return Object.assign([], state, action.payload);
+    case 'SET_ACCOUNTS':
+      return Object.assign({}, state, action.payload);
     default:
       return state;
   }
@@ -16,7 +16,7 @@ export const currentUserAccounts: Reducer<any> = (state = [], action: Action) =>
 @Injectable()
 export class AccountService {
   
-  public currentUserAccounts: Observable<Array<any>>;
+  public admin: Observable<any>;
   private _http: Http;
   private _apiConfig: ApiConfig;
   private _apiUrls: {
@@ -29,16 +29,19 @@ export class AccountService {
     private store: Store<any>
     ) { 
       this._http = http;
-      this.currentUserAccounts = this.store.select('currentUserAccounts');
+      this.admin = this.store.select('admin');
       this._apiConfig = apiConfig;
       this._apiUrls = {
-        get: this._apiConfig.baseUrl() + 'api/identities/v1/account/search/?q=a&s=createdOn&d=false&i=0&n=2'
+        get: this._apiConfig.baseUrl() + 'api/identities/v1/account/search/?q=a&s=createdOn&d=false'
       };
     }
   
-  public getAccountsForUser(user: any): void {
-    this._http.get(this._apiUrls.get, {headers: this._apiConfig.authHeaders()})
-      .map((res: Response) => res.json().items)
-      .subscribe(data => this.store.dispatch({type: 'ADD_ACCOUNT', payload: data}));
+  public getAccountsForUser(user: Object, i: number): void {
+    let url = this._apiUrls.get + `&i=${i}&n=2`;
+    this._http.get(url, {headers: this._apiConfig.authHeaders()})
+      .map((res: Response) => res.json())
+      .subscribe(data => {
+        this.store.dispatch({type: 'SET_ACCOUNTS', payload: {'accounts': data.items, 'currentPage': data.currentPage}});
+      });
   }
 }

@@ -1,5 +1,6 @@
 section.admin-accounts
-  div(layout='row' md-scroll-y='', layout-align='left start')
+  div(layout='row' md-scroll-y='', layout-align='start center')
     div(class='account-table' flex-xl="60",flex-gt-lg="50",flex-gt-md="60",flex="70")
-      wz-list([items]="currentUserAccounts | async")
-           
+      wz-list([items]="currentUserAccounts")
+      div(layout='row' md-scroll-y='', layout-align='end center')
+        pagination((nextPage)="getNextPage($event)", (prevPage)="getPrevPage($event)", [currentPageNumber]="currentPageNumber")

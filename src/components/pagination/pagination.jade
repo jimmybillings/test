@@ -1,5 +1,7 @@
-button.md-icon-button(md-button='', show-xs='') 
-      i.material-icons(md-icon='') keyboard_arrow_left
+md-button.md-icon-button(md-button='', show-xs='', (click)="getPrevPage(currentPageNumber)")
+  i.material-icons(md-icon='') keyboard_arrow_left
 
-button.md-icon-button(md-button='', show-xs='') 
-      i.material-icons(md-icon='') keyboard_arrow_right
+input(class="md-input" value="{{ currentPageNumber }}")
+
+md-button.md-icon-button(md-button='', show-xs='', (click)="getNextPage(currentPageNumber)")
+  i.material-icons(md-icon='') keyboard_arrow_right
