@@ -2,4 +2,7 @@ section.admin-accounts
   div(layout='row' md-scroll-y='', layout-align='center start')
     div(flex-xl="90",flex-gt-lg="80",flex-gt-md="90",flex="100")
       h1.md-display-1 Accounts
-      wz-list([items]="currentUserAccounts | async")
+      div(layout='row' md-scroll-y='', layout-align='left start')
+        div(class='account-table' flex-xl="60",flex-gt-lg="50",flex-gt-md="60",flex="70")
+          wz-list([items]="currentUserAccounts | async")
+           

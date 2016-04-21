@@ -1,2 +1,13 @@
-div(*ngFor="#item of items")
-  p {{item.name}} - {{item.siteName}}
+table.md-table
+  thead
+    tr
+      th.md-table-header Name
+      th.md-table-header Status
+      th.md-table-header Creation Date
+      th.md-table-header Contact Name
+  tbody
+    tr(*ngFor="#item of items")
+      td.md-table-content {{ item.name }}
+      td.md-table-content {{ item.status }}
+      td.md-table-content {{ item.createdOn }}
+      td.md-table-content {{ item.contact }}

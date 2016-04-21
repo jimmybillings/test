@@ -32,7 +32,7 @@ export class AccountService {
       this.currentUserAccounts = this.store.select('currentUserAccounts');
       this._apiConfig = apiConfig;
       this._apiUrls = {
-        get: this._apiConfig.baseUrl() + 'api/identities/v1/account/search/?q=a&s=createdOn&d=false&i=0&n=20'
+        get: this._apiConfig.baseUrl() + 'api/identities/v1/account/search/?q=a&s=createdOn&d=false&i=0&n=2'
       };
     }
   
