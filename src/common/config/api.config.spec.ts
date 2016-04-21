@@ -1,10 +1,9 @@
 import { it, describe, expect, inject, beforeEachProviders } from 'angular2/testing';
 import { ApiConfig } from './api.config';
 import { Headers} from 'angular2/http';
-
 export function main() {
   describe('Api config', () => {
-
+    
     beforeEachProviders(() => [
       ApiConfig
     ]);
@@ -47,11 +46,4 @@ export function main() {
     }));
       
   });
-
-  // function searchParams() {
-  //   return {  
-  //     'q':'green',
-  //     'n':'25'
-  //   };
-  // }
 }
