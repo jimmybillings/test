@@ -1,0 +1,65 @@
+import { Injectable } from 'angular2/core';
+import { Http, Response } from 'angular2/http';
+import { ApiConfig } from '../../../common/config/api.config';
+import { Store, Reducer, Action} from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+
+export const admin: Reducer<any> = (state = {}, action: Action) => {
+  switch (action.type) {
+    case 'SET_RESOURCE':
+      return Object.assign({}, state, action.payload);
+    default:
+      return state;
+  }
+};
+
+@Injectable()
+export class AdminService {
+  
+  public admin: Observable<any>;
+  private _http: Http;
+  private _apiConfig: ApiConfig;
+  private _routeConfig: {
+    resource: string,
+    q: string;
+    s: string;
+    d: boolean;
+    i: number;
+    n: number
+  };
+
+  constructor(http: Http, apiConfig: ApiConfig, private store: Store<any>) { 
+      this._http = http;
+      this.admin = this.store.select('admin');
+      this._apiConfig = apiConfig;
+      this._routeConfig = {
+        resource: '',
+        q: 'a',
+        s: 'createdOn',
+        d: false,
+        i: 0,
+        n: 2
+      };
+    }
+  
+  public getResourceForUser(resource: string, i: number): Observable<any> {
+    let url = this.buildUrl(resource, i);
+    return this._http.get(url, {headers: this._apiConfig.authHeaders()})
+      .map((res: Response) => res.json());
+  }
+  
+  public buildUrl(resource: string, i: number): string {
+    this._routeConfig.resource = resource;
+    this._routeConfig.i = i;
+    return this._apiConfig.baseUrl() + `api/identities/v1/${this._routeConfig.resource}/search/?q=${this._routeConfig.q}&s=${this._routeConfig.s}&d=${this._routeConfig.d}&i=${this._routeConfig.i}&n=${this._routeConfig.n}`;
+  }
+
+    
+  public setResource(data: any): void {
+    this.store.dispatch({type: 'SET_RESOURCE', payload: {
+            'resource': data.items,
+            'currentPage': data.currentPage
+          }
+    });
+  }
+}

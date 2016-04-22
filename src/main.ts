@@ -13,7 +13,7 @@ import { ApiConfig } from './common/config/api.config';
 import { CurrentUser, currentUser} from './common/models/current-user.model';
 import { MATERIAL_PROVIDERS } from 'ng2-material/all';
 import { UiConfig, config } from './common/config/ui.config';
-import { admin } from './containers/admin/services/account.service';
+import { admin } from './containers/admin/services/admin.service';
 
 import 'rxjs/Rx';
 // enable prod mode

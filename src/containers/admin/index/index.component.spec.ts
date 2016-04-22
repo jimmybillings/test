@@ -7,8 +7,8 @@ it,
 beforeEachProviders
 } from 'angular2/testing';
 
-import {Account} from './account.component';
-import {AccountService} from '../services/account.service';
+import {Index} from './index.component';
+import {AdminService} from '../services/admin.service';
 import {BaseRequestOptions, Http} from 'angular2/http';
 import {provide} from 'angular2/core';
 import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
@@ -20,7 +20,7 @@ import {MockBackend} from 'angular2/http/testing';
 import {ApiConfig} from '../../../common/config/api.config';
 
 export function main() {
-  describe('Admin Account component', () => {
+  describe('Admin Index component', () => {
     beforeEachProviders(() => [
       MockBackend,
       BaseRequestOptions,
@@ -30,19 +30,19 @@ export function main() {
       }),
       RouteRegistry,
       provide(Location, { useClass: SpyLocation }),
-      provide(ROUTER_PRIMARY_COMPONENT, { useValue: Account }),
+      provide(ROUTER_PRIMARY_COMPONENT, { useValue: Index }),
       provide(Router, { useClass: RootRouter }),
       provideStore({currentUser: currentUser}),
       CurrentUser,
-      AccountService,
+      AdminService,
       ApiConfig
     ]);
     
-  it('Create instance of account and assign the CurrentUser to an instance variable inside of account',
+  it('Create instance of list and assign the CurrentUser to an instance variable inside of account',
     injectAsync([TestComponentBuilder], (tcb) => {
-      return tcb.createAsync(Account).then((fixture) => {
+      return tcb.createAsync(Index).then((fixture) => {
         let instance = fixture.debugElement.componentInstance;
-        expect(instance instanceof Account).toBeTruthy();
+        expect(instance instanceof Index).toBeTruthy();
         expect(instance.currentUser instanceof CurrentUser).toBeTruthy();
       });
     }));

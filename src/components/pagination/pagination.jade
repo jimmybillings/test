@@ -1,7 +1,9 @@
-md-button.md-icon-button(md-button='', show-xs='', (click)="getPrevPage(currentPageNumber)")
-  i.material-icons(md-icon='') keyboard_arrow_left
-
-input(class="md-input" value="{{ currentPageNumber }}")
-
-md-button.md-icon-button(md-button='', show-xs='', (click)="getNextPage(currentPageNumber)")
-  i.material-icons(md-icon='') keyboard_arrow_right
+span(flex='')
+  nav.md-toolbar-tools
+    form.md-inline-form(layout='row')
+      input(md-input="", type='text', value="{{ currentPageNumber }}")
+      button.md-icon-button(md-button='', title='previous page', (click)="getPrevPage(currentPageNumber)")
+        i.material-icons(md-icon) keyboard_arrow_left
+      .divider
+      button.md-icon-button(md-button='', title='next page', (click)="getNextPage(currentPageNumber)")
+        i.material-icons(md-icon) keyboard_arrow_right
