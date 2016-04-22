@@ -4,9 +4,10 @@ import { ApiConfig } from '../../../common/config/api.config';
 import { Store, Reducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-export const admin: Reducer<any> = (state = {}, action: Action) => {
+const adminState = {items: [], pagination: {}};
+export const adminResources: Reducer<any> = (state = adminState, action: Action) => {
   switch (action.type) {
-    case 'SET_RESOURCE':
+    case 'ADMIN_SERVICE.SET_RESOURCES':
       return Object.assign({}, state, action.payload);
     default:
       return state;
@@ -16,7 +17,8 @@ export const admin: Reducer<any> = (state = {}, action: Action) => {
 @Injectable()
 export class AdminService {
   
-  public admin: Observable<any>;
+  public adminStore: Observable<any>;
+  public pageStore: Observable<any>;
   private _http: Http;
   private _apiConfig: ApiConfig;
   private _routeConfig: {
@@ -30,7 +32,7 @@ export class AdminService {
 
   constructor(http: Http, apiConfig: ApiConfig, private store: Store<any>) { 
       this._http = http;
-      this.admin = this.store.select('admin');
+      this.adminStore = this.store.select('adminResources');
       this._apiConfig = apiConfig;
       this._routeConfig = {
         resource: '',
@@ -56,10 +58,16 @@ export class AdminService {
 
     
   public setResource(data: any): void {
-    this.store.dispatch({type: 'SET_RESOURCE', payload: {
-            'resource': data.items,
-            'currentPage': data.currentPage
-          }
-    });
+    this.store.dispatch({type: 'ADMIN_SERVICE.SET_RESOURCES', payload: {
+      'items': data.items,
+      'pagination': {
+        'totalCount': data.totalCount,
+        'currentPage': data.currentPage,
+        'hasNextPage': data.hasNextPage,
+        'hasPreviousPage': data.hasPreviousPage,
+        'numberOfPages': data.numberOfPages,
+        'pageSize': data.pageSize
+      }
+    }});
   }
 }

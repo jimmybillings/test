@@ -13,7 +13,7 @@ import { ApiConfig } from './common/config/api.config';
 import { CurrentUser, currentUser} from './common/models/current-user.model';
 import { MATERIAL_PROVIDERS } from 'ng2-material/all';
 import { UiConfig, config } from './common/config/ui.config';
-import { admin } from './containers/admin/services/admin.service';
+import { adminResources } from './containers/admin/services/admin.service';
 
 import 'rxjs/Rx';
 // enable prod mode
@@ -24,7 +24,7 @@ bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
   MATERIAL_PROVIDERS,
   provide(LocationStrategy, { useClass: HashLocationStrategy }),
-  provideStore({config, assets, asset, currentUser, i18n: multilingualReducer, admin}),
+  provideStore({config, assets, asset, currentUser, i18n: multilingualReducer, adminResources}),
   HTTP_PROVIDERS,
   HTTP_BINDINGS,
   provide(TranslateLoader, {
