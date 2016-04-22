@@ -5,7 +5,12 @@ declare var PlayerApi, PlayerEnvironment;
  */ 
 @Component({
   selector: 'player',
-  template: '<iframe allowfullscreen="allowfullscreen" aria-hidden="true" class="hide" data-player-loaded="false" height="100%" id="player" itemallowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" width="100%"></iframe>',
+  template: `
+    <iframe 
+      allowfullscreen="allowfullscreen" aria-hidden="true" 
+      class="hide" data-player-loaded="false" height="100%" id="player" 
+      itemallowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" width="100%">
+    </iframe>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 

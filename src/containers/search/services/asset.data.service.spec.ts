@@ -90,18 +90,19 @@ export function main() {
       expect(!sOptions.search.has('siteName')).toBeTruthy();
     }));
 
-    it('Should make a request to the search api with the correct url and params', inject([AssetData, MockBackend], (service, mockBackend) => {  
-      let connection;
-      connection = mockBackend.connections.subscribe(c => connection = c);
-      service.searchAssets(searchParams()).subscribe((payload) => {
-        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/assets/v1/search/anonymous/solrcloud?q=green&n=25&siteName=core');
-        expect(payload).toEqual( { type: 'SEARCH', payload: MockSearchResultsResponse()});
-      });
-      connection.mockRespond(new Response(
-        new ResponseOptions({
-          body: MockSearchResultsResponse()
-        })
-      ));
+    it('Should make a request to the search api with the correct url and params and return the correct payload to cache in the store', 
+      inject([AssetData, MockBackend], (service, mockBackend) => {  
+        let connection;
+        connection = mockBackend.connections.subscribe(c => connection = c);
+        service.searchAssets(searchParams()).subscribe((payload) => {
+          expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/assets/v1/search/anonymous/solrcloud?q=green&n=25&siteName=core');
+          expect(payload).toEqual( { type: 'SEARCH', payload: MockSearchResultsResponse()});
+        });
+        connection.mockRespond(new Response(
+          new ResponseOptions({
+            body: MockSearchResultsResponse()
+          })
+        ));
     }));
   }); 
 

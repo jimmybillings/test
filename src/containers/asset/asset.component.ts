@@ -7,8 +7,8 @@ import {AssetDetail} from '../../components/asset-detail/asset-detail.component'
 import {CurrentUser} from '../../common/models/current-user.model';
 import {UiConfig} from '../../common/config/ui.config';
 import {AssetService} from './services/asset.service';
-// import {Player} from '../../components/player/player.component';
 import {Observable} from 'rxjs/Observable';
+import { Error } from '../../common/services/error.service';
 
 /**
  * Asset page component - renders an asset show page
@@ -34,22 +34,22 @@ export class Asset {
     public uiConfig: UiConfig,
     public assetService: AssetService,
     public dcl: DynamicComponentLoader,
-    public injector: Injector) {
-    this.assetDetail = assetService.asset;
-    assetService.set(this.routeParams.get('name'));
+    public injector: Injector,
+    public error: Error) {
+      this.assetDetail = assetService.asset;
   }
 
   ngOnInit(): void {
     this.subscription = this.assetDetail.subscribe(data => this.assetDetail = data);
+    this.assetService.initialize(this.routeParams.get('name')).subscribe(
+      payload => this.assetService.set(payload),
+      error => this.error.handle(error)
+    );
   }
 
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();
     this.assetService.reset();
   }
-  
-  // routerOnActivate(): void {
-  //   if (!isLoggedIn()) this._router.navigate(['/UserManagement/Login']);
-  // }
 
 }

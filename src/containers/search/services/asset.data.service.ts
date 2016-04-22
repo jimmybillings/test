@@ -1,12 +1,9 @@
 import { Injectable } from 'angular2/core';
 import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../../../common/config/api.config';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import {CurrentUser} from '../../../common/models/current-user.model';
-// import {Asset} from '../../common/interfaces/asset.interface';
-
-import { Store, Reducer, Action} from '@ngrx/store/dist/index';
+import { Observable} from 'rxjs/Observable';
+import { CurrentUser} from '../../../common/models/current-user.model';
+import { Store, Reducer, Action} from '@ngrx/store';
 import { RequestOptions, URLSearchParams } from 'angular2/http';
 
 
@@ -56,8 +53,7 @@ export class AssetData {
   public searchAssets(params: { [key: string]: string }): Observable<any> {
     let options = this.getAssetSearchOptions(params, this.currentUser.loggedIn());
     return this.http.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options)
-      .map((res: Response) => res.json())
-      .map(payload => ({ type: 'SEARCH', payload }));
+      .map((res: Response) => ({ type: 'SEARCH', payload: res.json() }));
   }
   
   public storeAssets(payload): void {
