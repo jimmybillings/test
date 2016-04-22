@@ -5,7 +5,6 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import {CurrentUser} from '../../../common/models/current-user.model';
 // import {Asset} from '../../common/interfaces/asset.interface';
-import { Error } from '../../../common/services/error.service';
 
 import { Store, Reducer, Action} from '@ngrx/store/dist/index';
 import { RequestOptions, URLSearchParams } from 'angular2/http';
@@ -31,7 +30,6 @@ export class AssetData {
   public assets: Observable<any>;
   constructor(
     public currentUser: CurrentUser,
-    public error: Error,
     private http: Http,
     private apiConfig: ApiConfig,
     private store: Store<any>) {
@@ -55,13 +53,15 @@ export class AssetData {
    * @returns         Response from search api. This includes information for pagination and assets for the search query.
    *                  Example: {items: Array[25], totalCount: 122, currentPage: 1, pageSize: 25, hasNextPage: true}
    */
-  public searchAssets(params: { [key: string]: string }): void {
+  public searchAssets(params: { [key: string]: string }): Observable<any> {
     let options = this.getAssetSearchOptions(params, this.currentUser.loggedIn());
-    this.http.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options)
+    return this.http.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options)
       .map((res: Response) => res.json())
-      .map(payload => ({ type: 'SEARCH', payload }))
-      .subscribe(action => this.store.dispatch(action),
-                 error => this.error.handle(error));
+      .map(payload => ({ type: 'SEARCH', payload }));
+  }
+  
+  public storeAssets(payload): void {
+    this.store.dispatch(payload);
   }
 
   /**

@@ -1,11 +1,7 @@
 // angular
 import {Injectable} from 'angular2/core';
-
-// libs
 import {Store, Reducer, Action} from '@ngrx/store';
 import {TranslateService} from 'ng2-translate/ng2-translate';
-
-// app
 import {ILang, MultilingualStateI} from '../interfaces/language.interface';
 
 

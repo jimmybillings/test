@@ -32,12 +32,16 @@ export function main() {
     class MockUiConfig {
       public get(component) {
         return Observable.of(MockConfigResponse());
-      }
-      
+      } 
     }
+    
     class MockAssetData {
       public searchAssets() {
         return Observable.of(MockSearchResultsResponse());
+      }
+      
+      public storeAssets(payload) {
+        return payload;
       }
     }
     beforeEachProviders(() => [
@@ -72,7 +76,7 @@ export function main() {
       })
     );
     
-    it('Should call the search method on component instantiation', inject([Search], (search) => {
+    it('Should make a search request on instantiation', inject([Search], (search) => {
       spyOn(search, 'searchAssets');
       search.ngOnInit();
       expect(search.searchAssets).toHaveBeenCalled();
@@ -81,8 +85,9 @@ export function main() {
     it('Should complete a search and assign response to search.results', 
       inject([Search], (search) => {
         search.routeParams.params = {q: 'Obama', n: '25'};
+        spyOn(search.assetData, 'storeAssets');
         search.searchAssets();
-        // expect(search.results).toEqual(MockSearchResultsResponse());
+        expect(search.assetData.storeAssets).toHaveBeenCalledWith(MockSearchResultsResponse());
     }));
 
   });

@@ -21,22 +21,26 @@ export function main() {
       ApiConfig
     ]);
 
-    it('Should set up the api endpoint to get a sites UI config object and setup an empty config object',
+    it('Should set the api endpoint to get a UI configuration object',
       inject([UiConfig], (service) => {
         expect(service._apiUrls.get).toEqual(service._apiConfig.baseUrl() + 'api/identities/v1/configuration/site?siteName=');
       })
     );
     
-    it('Should make a request to the server for the UI config and store it in this._config', 
+    it('Should call the server for the configuration object and send the response to the Redux store for storage', 
       inject([UiConfig, MockBackend], (service, mockBackend) => {
       let connection;
-      mockBackend.connections.subscribe(c => connection = c);
       let site = 'core';
+      mockBackend.connections.subscribe(c => connection = c);
+      spyOn(service.store, 'dispatch').and.callThrough();
       
       service.initialize(site).subscribe((res) => {
         expect(connection.request.url).toBe(
           service._apiConfig.baseUrl() + 'api/identities/v1/configuration/site?siteName='+site
         );
+       expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'INITIALIZE', payload: configObj() });
+       let config = service.store.select('config');
+       config.subscribe((conf) => expect(conf).toEqual(configObj()));
       });
       
       connection.mockRespond(new Response(
@@ -47,22 +51,22 @@ export function main() {
     }));
     
     
-    it('Should get a UI config object', inject([UiConfig, MockBackend], (service, mockBackend) => {
+    it('Should return the configuration for a specific component as an argument', inject([UiConfig, MockBackend], (service, mockBackend) => {
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
       let site = 'core';
+      
       service.initialize(site).subscribe((res) => {
-        expect(connection.request.url).toBe(
-          service._apiConfig.baseUrl() + 'api/identities/v1/configuration/site?siteName='+site
-        );
-        // expect(service._config).toEqual(configObj());
+        service.get('search').subscribe((data) => {
+          expect(data).toEqual(configObj().components.search);
+        });
       });
+      
       connection.mockRespond(new Response(
         new ResponseOptions({
           body: configObj()
         })
       ));
-      // expect(service.get('search')).toEqual(configObj().components.search);
     }));
     
     
