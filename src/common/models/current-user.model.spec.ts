@@ -30,6 +30,14 @@ export function main() {
       });
       localStorage.clear();
     }));
+    
+    it('Should destroy the current user by resetting the user object and clearing localStorage', inject([CurrentUser], (service) => {
+      spyOn(localStorage, 'clear');
+      spyOn(service, 'set');
+      service.destroy();
+      expect(localStorage.clear).toHaveBeenCalled();
+      expect(service.set).toHaveBeenCalled();
+    }));
 
     it('should return the correct email address of a user', inject([CurrentUser], (service) => {
       service.set(loggedInUser);
