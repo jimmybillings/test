@@ -4,7 +4,8 @@ describe,
 expect,
 injectAsync,
 it,
-beforeEachProviders
+beforeEachProviders,
+inject
 } from 'angular2/testing';
 
 import {Footer} from './footer.component';
@@ -16,6 +17,7 @@ import {RootRouter} from 'angular2/src/router/router';
 export function main() {
   describe('Footer Component', () => {
     beforeEachProviders(() => [
+      Footer,
       RouteRegistry,
       provide(Location, { useClass: SpyLocation }),
       provide(ROUTER_PRIMARY_COMPONENT, { useValue: Footer }),
@@ -29,6 +31,12 @@ export function main() {
           expect(instance instanceof Footer).toBeTruthy();
         });
       }));
-
+    
+    it('Should fire an event to change the current selected language', inject([Footer], (component) => {
+      spyOn(component.onChangeLang, 'emit');
+      component.changeLang('fr');
+      expect(component.onChangeLang.emit).toHaveBeenCalledWith('fr');
+    }));
+    
   });
 }

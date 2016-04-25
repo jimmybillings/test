@@ -4,7 +4,8 @@ describe,
 expect,
 injectAsync,
 it,
-beforeEachProviders
+beforeEachProviders,
+inject
 } from 'angular2/testing';
 
 import {Header} from './header.component';
@@ -18,6 +19,7 @@ import {ViewportHelper} from 'ng2-material/all';
 export function main() {
   describe('Header Component', () => {
     beforeEachProviders(() => [
+      Header,
       RouteRegistry,
       ViewportHelper,
       provide(Location, { useClass: SpyLocation }),
@@ -33,5 +35,24 @@ export function main() {
           expect(instance instanceof Header).toBeTruthy();
         });
       }));
+    
+    it('Should fire an event to logout a user', inject([Header], (component) => {
+      spyOn(component.onLogOut, 'emit');
+      component.logOut(event);
+      expect(component.onLogOut.emit).toHaveBeenCalledWith(event);
+    }));
+    
+    it('Should hide the search bar on certain routes', inject([Header], (component) => {
+      ['', '?confirmed=true', 'user/profile', 'user/login', 'user/register', 'admin/'].forEach((item) => {
+        expect(component.checkRouteForSearchBar(item)).toEqual(false);
+      });
+    }));
+    
+    it('Should show the search bar on other routes', inject([Header], (component) => {
+      ['asdf', 'fdsadsf', 'fdsf', 'wefwer', 'aasfasdf'].forEach((item) => {
+        expect(component.checkRouteForSearchBar(item)).toEqual(true);
+      });
+    }));
+    
   });
 }
