@@ -8,7 +8,7 @@ import { CurrentUser, currentUser } from '../../../common/models/current-user.mo
 import { provideStore} from '@ngrx/store';
 
 export function main() {
-  describe('Authentication data service', () => {
+  describe('Admin Service', () => {
 
     beforeEachProviders(() => [
       MockBackend,
@@ -23,10 +23,9 @@ export function main() {
       CurrentUser
     ]);
 
-    it('Should create instance variables for http, apiconfig, apiUrls', inject([AdminService, MockBackend], (service, mockBackend) => {
+    it('Should create instance variables for http, and apiconfig', inject([AdminService, MockBackend], (service, mockBackend) => {
       expect(service._http).toBeDefined();
       expect(service._apiConfig).toBeDefined();
-      expect(service._apiUrls).toBeDefined();
     }));
   });
 }

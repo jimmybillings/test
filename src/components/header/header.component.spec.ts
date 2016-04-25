@@ -13,6 +13,7 @@ import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from 'angular
 import {SpyLocation} from 'angular2/src/mock/location_mock';
 import {RootRouter} from 'angular2/src/router/router';
 import {UiConfig} from '../../common/config/ui.config';
+import {ViewportHelper} from 'ng2-material/core/util/viewport';
 
 export function main() {
   describe('Header Component', () => {
@@ -21,7 +22,8 @@ export function main() {
       provide(Location, { useClass: SpyLocation }),
       provide(ROUTER_PRIMARY_COMPONENT, { useValue: Header }),
       provide(Router, { useClass: RootRouter }),
-      UiConfig
+      UiConfig,
+      ViewportHelper
     ]);
 
     it('Should have a header instance',
