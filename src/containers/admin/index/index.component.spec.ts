@@ -2,6 +2,7 @@ import {
 describe,
 expect,
 injectAsync,
+inject,
 TestComponentBuilder,
 it,
 beforeEachProviders
@@ -35,16 +36,29 @@ export function main() {
       provideStore({currentUser: currentUser}),
       CurrentUser,
       AdminService,
-      ApiConfig
+      ApiConfig,
+      Index
     ]);
     
-  it('Create instance of list and assign the CurrentUser to an instance variable inside of account',
-    injectAsync([TestComponentBuilder], (tcb) => {
-      return tcb.createAsync(Index).then((fixture) => {
-        let instance = fixture.debugElement.componentInstance;
-        expect(instance instanceof Index).toBeTruthy();
-        expect(instance.currentUser instanceof CurrentUser).toBeTruthy();
-      });
+    it('Create instance of index and assign the CurrentUser to an instance variable inside of account',
+      injectAsync([TestComponentBuilder], (tcb) => {
+        return tcb.createAsync(Index).then((fixture) => {
+          let instance = fixture.debugElement.componentInstance;
+          expect(instance instanceof Index).toBeTruthy();
+          expect(instance.currentUser instanceof CurrentUser).toBeTruthy();
+        });
+      }));
+      
+    it('Should create an instance variable of AdminService, CurrentUser, and resource', inject([Index], (index) => {
+      expect(index.currentUser).toBeDefined();
+      expect(index.adminService).toBeDefined();
+      expect(index.resource).toBeDefined();
+    }));
+      
+    it('Should call .index() on init', inject([Index], (index) => {
+      spyOn(index, 'getIndex');
+      index.ngOnInit();
+      expect(index.getIndex).toHaveBeenCalled();
     }));
   });
 }

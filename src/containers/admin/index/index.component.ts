@@ -2,7 +2,6 @@ import {Component} from 'angular2/core';
 import {CurrentUser} from '../../../common/models/current-user.model';
 import {AdminService} from '../services/admin.service';
 import {WzList} from '../../../components/wz-list/wz.list.component';
-// import {Observable} from 'rxjs/Observable';
 import {Pagination} from '../../../components/pagination/pagination';
 import {Location} from 'angular2/router';
 
@@ -14,7 +13,7 @@ import {Location} from 'angular2/router';
 })
 
 /**
- * Admin List Component - Creates a component that generates lists. It is instantiated with the current user
+ * Admin Index Component - Creates a component that generates lists. It is instantiated with the current user
  */
 export class Index {
   public currentUser: CurrentUser;
@@ -29,24 +28,24 @@ export class Index {
   }
   
   ngOnInit(): void {
-    this.index();
+    this.getIndex();
     this.adminService.adminStore.subscribe(data => this.currentUserResources = data);
   }
   
-  public index(): void {
-    this.adminService.getResourceForUser(this.resource, 0).subscribe(data => {
+  public getIndex(): void {
+    this.adminService.getResource(this.resource, 0).subscribe(data => {
       this.adminService.setResource(data); 
     });
   }
   
   public getNextPage(pageNum:any): void  {
-    this.adminService.getResourceForUser(this.resource, pageNum + 1).subscribe(data => {
+    this.adminService.getResource(this.resource, pageNum + 1).subscribe(data => {
       this.adminService.setResource(data); 
     });
   }
   
   public getPrevPage(pageNum:any): void  {
-    this.adminService.getResourceForUser(this.resource, pageNum - 1).subscribe(data => {
+    this.adminService.getResource(this.resource, pageNum - 1).subscribe(data => {
       this.adminService.setResource(data); 
     });
   }

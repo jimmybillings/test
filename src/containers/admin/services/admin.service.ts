@@ -44,7 +44,7 @@ export class AdminService {
       };
     }
   
-  public getResourceForUser(resource: string, i: number): Observable<any> {
+  public getResource(resource: string, i: number): Observable<any> {
     let url = this.buildUrl(resource, i);
     return this._http.get(url, {headers: this._apiConfig.authHeaders()})
       .map((res: Response) => res.json());
