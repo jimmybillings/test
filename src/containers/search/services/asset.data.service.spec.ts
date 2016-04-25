@@ -6,7 +6,6 @@ import { CurrentUser } from '../../../common/models/current-user.model';
 import { MockBackend } from 'angular2/http/testing';
 import { BaseRequestOptions, Http, RequestOptions, Headers, Response, ResponseOptions } from 'angular2/http';
 import { provideStore } from '@ngrx/store/dist/index';
-import {Observable} from 'rxjs/Rx';
 import { Error } from '../../../common/services/error.service';
 import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
 import {RootRouter} from 'angular2/src/router/router';
@@ -14,12 +13,6 @@ import {SpyLocation} from 'angular2/src/mock/location_mock';
 
 export function main() {
   describe('Asset data service', () => {
-    
-    class MockAuthentication {
-      create() {
-        return Observable.of(mockResponse());
-      }
-    }
     
     
     beforeEachProviders(() => [
@@ -113,20 +106,20 @@ export function main() {
     };
   }
   
-  function mockResponse() {
-    return {
-      currentPage: 1,
-      hasNextPage: true,
-      hasPreviousPage: true,
-      items: [{
-        assetId: 33438201,
-        name: '19F005_038'
-      }],
-      numberOfPages: 5,
-      pageSize: 25,
-      totalCount: 122
-    };
-  }
+  // function mockResponse() {
+  //   return {
+  //     currentPage: 1,
+  //     hasNextPage: true,
+  //     hasPreviousPage: true,
+  //     items: [{
+  //       assetId: 33438201,
+  //       name: '19F005_038'
+  //     }],
+  //     numberOfPages: 5,
+  //     pageSize: 25,
+  //     totalCount: 122
+  //   };
+  // }
   
   function MockSearchResultsResponse() {
     return {'items':[{'assetId':28068744,'name':'80805947_032','metaData':[{'name':'Title','value':''},{'name':'Description','value':'Rubber dog toys fill a bin at Kirkhill Rubber Manufacturing.'},{'name':'TE.DigitalFormat','value':'High Definition'},{'name':'Format.Duration','value':'9600'}],'thumbnail':{'name':'80805947_032_lt.jpg','urls':{'http-download':'http://s3-t3m-previewpub-or-1.s3.amazonaws.com/808/059/47/80805947_032_lt.jpg?Expires=1456627681&response-content-disposition=attachment&AWSAccessKeyId=AKIAJEMCZ6EAEHB5KSYA&Signature=rLzXU%2BAF8SzmGsQNV3yCUw8K2gc%3D','http':'//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_lt.jpg','https':'//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_lt.jpg','http-browser':'//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_lt.jpg','https-browser':'//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_lt.jpg','https-download':'https://s3-t3m-previewpub-or-1.s3.amazonaws.com/808/059/47/80805947_032_lt.jpg?Expires=1456627681&response-content-disposition=attachment&AWSAccessKeyId=AKIAJEMCZ6EAEHB5KSYA&Signature=rLzXU%2BAF8SzmGsQNV3yCUw8K2gc%3D'}},'renditions':[{'id':28098478,'name':'80805947_032_st.jpg','format':'Image','purpose':'Thumbnail','size':'Small','url':'http://cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_st.jpg','internalUrls':{'http-download':'http://s3-t3m-previewpub-or-1.s3.amazonaws.com/808/059/47/80805947_032_st.jpg?Expires=1456627681&response-content-disposition=attachment&AWSAccessKeyId=AKIAJEMCZ6EAEHB5KSYA&Signature=nVfVOqcH66oZsa2OwevnifPrhAs%3D','http':'//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_st.jpg','https':'//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_st.jpg','http-browser':'//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_st.jpg','https-browser':'//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_st.jpg','https-download':'https://s3-t3m-previewpub-or-1.s3.amazonaws.com/808/059/47/80805947_032_st.jpg?Expires=1456627681&response-content-disposition=attachment&AWSAccessKeyId=AKIAJEMCZ6EAEHB5KSYA&Signature=nVfVOqcH66oZsa2OwevnifPrhAs%3D'},'internalUri':'t3://S3ViaAkamai:f3427bd4-e75c-4e4d-9c16-7e4bb2ef8bf8@s3-t3m-previewpub-or-1.s3.amazonaws.com/808/059/47/80805947_032_st.jpg'}]}],'totalCount':76,'currentPage':1,'pageSize':25,'hasNextPage':true,'hasPreviousPage':true,'numberOfPages':4};

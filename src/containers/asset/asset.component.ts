@@ -18,7 +18,6 @@ import { Error } from '../../common/services/error.service';
   templateUrl: 'containers/asset/asset.html',
   directives: [NgStyle, CORE_DIRECTIVES, AssetDetail],
   viewProviders: [HTTP_PROVIDERS],
-  providers: [AssetService],
   pipes: [TranslatePipe]
 })
 

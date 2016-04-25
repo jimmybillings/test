@@ -70,8 +70,7 @@ export class AppComponent {
 
   public logout(): void {
     this._authentication.destroy().subscribe();
-    localStorage.clear();
-    this._currentUser.set();
+    this._currentUser.destroy();
     this.router.navigate(['/Home']);
   }
 

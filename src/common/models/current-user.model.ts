@@ -48,6 +48,11 @@ export class CurrentUser {
     if (user) localStorage.setItem('currentUser', JSON.stringify(user));
     this.store.dispatch({type: 'SET_USER', payload: this._user()});
   }
+  
+  public destroy() {
+    localStorage.clear();
+    this.set();
+  }
 
   /**
    * @returns      Current user is logged in if a localStorage token exists. If it doesn't exist,

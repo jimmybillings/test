@@ -14,6 +14,7 @@ import { CurrentUser, currentUser} from './common/models/current-user.model';
 import { MATERIAL_PROVIDERS } from 'ng2-material/all';
 import { UiConfig, config } from './common/config/ui.config';
 import { Error } from './common/services/error.service';
+import {AssetService} from './containers/asset/services/asset.service';
 
 import 'rxjs/Rx';
 // enable prod mode
@@ -37,6 +38,7 @@ bootstrap(AppComponent, [
   ApiConfig,
   CurrentUser,
   UiConfig,
-  Error
+  Error,
+  AssetService
 ]);
 
