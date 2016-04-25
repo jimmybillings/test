@@ -9,7 +9,7 @@ import { provideStore } from '@ngrx/store/dist/index';
 import { Error } from '../../../common/services/error.service';
 
 export function main() {
-  describe('Asset data service', () => {
+  describe('Asset service', () => {
     
     beforeEachProviders(() => [
       MockBackend,

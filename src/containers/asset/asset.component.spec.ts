@@ -39,6 +39,9 @@ export function main() {
       set(asset) {
         return true;
       }
+      reset() {
+        return true;
+      }
     }
     
     beforeEachProviders(() => [
@@ -75,6 +78,12 @@ export function main() {
       spyOn(service.assetService, 'set');
       service.ngOnInit();
       expect(service.assetService.set).toHaveBeenCalledWith(MockAssetResponse());
+    }));
+    
+    it('Should reset the asset store when the component is destroyed', inject([Asset], (service) => {
+      spyOn(service.assetService, 'reset');
+      service.ngOnDestroy();
+      expect(service.assetService.reset).toHaveBeenCalled();
     }));
 
   });

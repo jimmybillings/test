@@ -42,7 +42,7 @@ export class AssetService {
     this.store.dispatch(payload);
   }
   
-  public reset() {
+  public reset(): void {
     this.store.dispatch({ type: 'RESET' });
   }
 

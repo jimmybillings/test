@@ -5,11 +5,16 @@ import { Headers } from 'angular2/http';
  * Service that exposes low level api paths, api request header information 
  * for authorization, and some getter and setters for portal names.
  */  
+const cmsApi = {
+  root: 'http://ec2-52-32-235-105.us-west-2.compute.amazonaws.com/',
+  path: '/wp-json/wp/v2/pages',
+  query: '?filter[name]='
+};
 
 @Injectable()
 export class ApiConfig {
-  private _portal: string;
   
+  private _portal: string;
   /**
    * Initializes private var 'portal' to null
    */  
@@ -54,6 +59,10 @@ export class ApiConfig {
    */
   public getPortal(): string {
     return this._portal || 'core';
+  }
+  
+  public cms(piece): string {
+    return cmsApi[piece];
   }
 
 }

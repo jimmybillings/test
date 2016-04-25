@@ -44,6 +44,12 @@ export function main() {
       service.setPortal(portalName);
       expect(service.getPortal()).toEqual(portalName);
     }));
+    
+    it('Should return the Root, path, query for the CMS enpoint', inject([ApiConfig], (service) => {
+      expect(service.cms('root')).toEqual('http://ec2-52-32-235-105.us-west-2.compute.amazonaws.com/');
+      expect(service.cms('path')).toEqual('/wp-json/wp/v2/pages');
+      expect(service.cms('query')).toEqual('?filter[name]=');
+    }));
       
   });
 }

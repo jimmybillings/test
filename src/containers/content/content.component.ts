@@ -22,11 +22,13 @@ export class Content {
   constructor(
     private _router: Router,
     private routeParams: RouteParams,
-    private contentService: ContentService) {
-      contentService.get(this.routeParams.get('page')).subscribe(data => {
-        this.content = data[0].content.rendered;
-        this.title = data[0].title.rendered;
-      });
+    private contentService: ContentService) {}
+  
+  ngOnInit(): void {
+    this.contentService.get(this.routeParams.get('page')).subscribe(data => {
+      this.content = data[0].content.rendered;
+      this.title = data[0].title.rendered;
+    });
   }
  
 }
