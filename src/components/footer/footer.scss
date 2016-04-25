@@ -1,0 +1,97 @@
+app-footer {
+  display: block;
+  background-color: md-color($md-primary, 900, .9);
+  .glb {
+    @include text-contrast(md-color($md-primary, 900), md-color($md-background, 700), md-color($md-background, 400, .8));
+    .logo-wrapper {
+      height: 170px;
+      width: 100%;
+      .logo {
+        margin: rem(.3) 0 0 0;
+        @include background-image(url($logo-footer));
+        background-position: center center;
+        background-repeat:no-repeat;
+        background-size: 133px;
+        height: 133px;
+        opacity: .25;
+      }
+    }
+    ul.social {
+      margin: 0 0 25px 0;
+      padding:0;
+      li {
+        list-style: none;
+        display: block;
+        float: left;
+        // margin-left: 3px;
+        a {
+          @include text-contrast(md-color($md-background, 200), md-color($md-background, 900), md-color($md-background, 100));
+          opacity: .25;
+          @include transition($swift-ease-in);
+          &:hover {
+            color: md-color($md-primary, 500, .9);
+            opacity: 1;
+          } 
+        }
+      }
+    }
+    .language-selector label   {
+      margin: 0;
+      padding: 9px 6px;
+      i {
+        @include text-contrast(md-color($md-primary, 900), md-color($md-background, 700), md-color($md-background, 400, .25));
+        &:hover {
+          color: md-color($md-primary, 300);
+        }
+      }
+    }
+    h3.md-title {
+      margin-bottom: .7em;
+    }
+    h3.md-title + .md-body-1 {
+      margin: 8px 0 0 0;
+    }
+    .sales {
+      md-list {
+        padding: 0;
+      }
+      md-list-item, .md-list-item-inner {
+        padding: 0;
+        min-height: 0;
+      }
+      *[md-button] {
+        margin: 0;
+        padding: 9px 6px;
+        @include text-contrast(md-color($md-primary, 900), md-color($md-background, 700), md-color($md-background, 400, .8));
+        &:hover {
+          background: md-color($md-background, 900, .25);
+          color: md-color($md-primary, 300);
+        }
+        &.phone:hover {
+          cursor: default;
+          background: transparent;
+          @include text-contrast(md-color($md-primary, 900), md-color($md-background, 700), md-color($md-background, 400, .8));
+        }
+        &.phone:hover .md-button-wrapper .md-body-1 i[md-icons] {
+          opacity: .25;
+        }
+        &:hover .md-button-wrapper .md-body-1 i[md-icons] {
+          opacity: .8;
+        }
+        .md-button-wrapper .md-body-1 {
+          text-transform: initial;
+          margin: 0;
+          padding: 0 0 0 30px;
+          position: relative;
+          i[md-icons] {
+            position: absolute;
+            top: -3px;
+            left: -1px;
+            opacity: .25;
+            @include transition($swift-ease-in);
+          }
+        }
+      }
+    }
+  }
+}

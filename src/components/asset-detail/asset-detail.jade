@@ -1,0 +1,201 @@
+// there probably should be some kind of toggle for theater mode (dark background where preview is VS light)
+section.preview-bk.theater(layout='row',flex='', layout-align='center stretch')
+  div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-wrap='', layout-align='center stretch', layout-fill='')
+    
+    player.responsive-video([clip]="assetDetail.name", flex-gt-sm='66',flex="100", layout='column',layout-fill='')
+    
+    div(flex-gt-sm='33',flex="100" layout='column',layout-fill='')
+      // .some-class(style="background-color: red", flex='', layout='column',layout-fill='')
+      //   h5 Parent layout is set to fill available space.
+      // asset-primary-info component
+      // div.primary-info-wrapper(flex='', layout='column',layout-fill='')
+      md-card.primary-info(flex='', layout='column',layout-fill='')
+        md-toolbar( layout-align='center end')
+          span(flex='')
+            nav.md-toolbar-tools
+              button.md-icon-button(md-button='', title='Sharing Options',[routerLink]="['Home']")
+                i.material-icons(md-icon) share
+              button.md-icon-button(md-button='', title='Download Comp',[routerLink]="['Home']")
+                i.material-icons(md-icon) file_download
+              button.md-icon-button(md-button='', title='Add to Collection',[routerLink]="['Home']")
+                i.material-icons(md-icon) library_add
+              button.md-icon-button(md-button='', title='More',[routerLink]="['Home']")
+                i.material-icons(md-icon) more_vert
+        md-card-content
+        
+          .asset-name.md-caption(flex='', layout='column') {{assetDetail.name}}
+          div(layout='row', layout-wrap='')
+            .sd-hd([ngClass]="{hd: assetDetail.clipData[2]?.value == 'High Definition', sd: assetDetail.clipData[2]?.value == 'Standard Definition'}")
+            .rights.md-caption(flex='') rights managed 
+          
+          h4 {{getMetaField('Title')}}
+          h5.md-subhead {{getMetaField('Description')}}
+          
+          md-card-actions(layout='column', layout-align='center center', layout-wrap='')
+            md-button.md-raised.md-primary.md-hue-7(md-raised-button='', (click)="someFunction()") Add to Cart
+            md-button.is-outlined(md-button='', (click)="someFunction()") Calculate Price
+        
+section.data-bk
+  div(layout='row' md-scroll-y='', layout-align='center start')
+    div(flex-xl="70",flex-gt-lg="80",flex-gt-md="90",flex="100", layout='row', layout-wrap='', layout-align='center start')
+
+      md-tabs(md-dynamic-height='', md-border-bottom='')
+        template(md-tab='', label='Meta Data')
+          md-content.md-padding
+
+            .m-data
+              .row
+                .cell
+                  h5.md-subhead Player
+                .cell
+                  p.md-body-1 {{getMetaField('Sport.Players')}}
+              .row
+                .cell
+                  h5.md-subhead Course
+                .cell
+                  p.md-body-1 {{getMetaField('Sport.Golf.Course.Name')}}  
+              .row
+                .cell
+                  h5.md-subhead Date
+                .cell
+                  p.md-body-1 {{getMetaField('Description.Date')}}
+              .row
+                .cell
+                  h5.md-subhead Year
+                .cell
+                  p.md-body-1 {{getMetaField('Sport.Year')}}
+              .row
+                .cell
+                  h5.md-subhead Round
+                .cell
+                  p.md-body-1 {{getMetaField('Sport.GameRound')}}
+              .row
+                .cell
+                  h5.md-subhead Hole Number
+                .cell
+                  p.md-body-1 {{getMetaField('Sport.Golf.Hole.Number')}}
+              .row
+                .cell
+                  h5.md-subhead Hole Score
+                .cell
+                  p.md-body-1 {{getMetaField('Sport.Golf.Hole.Strokes')}}
+              .row
+              .row
+                .cell
+                  h5.md-subhead Stroke Number
+                .cell
+                  p.md-body-1 {{getMetaField('Sport.Golf.Stroke.Number')}}
+              .row
+                .cell
+                  h5.md-subhead Owner
+                .cell
+                  p.md-body-1 {{getMetaField('Owner')}}
+
+
+
+              .row.divider
+                .cell
+                .cell
+                  
+                  
+                  
+              .row
+                .cell
+                  h5.md-subhead Aspect
+                .cell
+                  p.md-body-1 {{getMetaField('Format.AspectRatio')}}
+              .row
+                .cell
+                  h5.md-subhead Frame Rate
+                .cell
+                  p.md-body-1 {{getMetaField('Format.FrameRate')}}
+              .row
+                .cell
+                  h5.md-subhead Frame Size
+                .cell
+                  p.md-body-1  {{getMetaField('Format.FrameSize')}}
+              .row
+                .cell
+                  h5.md-subhead Broadcast Standard
+                .cell
+                  p.md-body-1 {{getMetaField('Format.BroadcastStandard')}}
+              .row
+                .cell
+                  h5.md-subhead Digital Format
+                .cell
+                  p.md-body-1 {{getMetaField('TE.DigitalFormat')}}
+              .row
+                .cell
+                  h5.md-subhead Length
+                .cell
+                  p.md-body-1 {{getMetaField('Format.Duration')}}
+              .row
+                .cell
+                  h5.md-subhead Stored Online
+                .cell
+                  p.md-body-1 {{getMetaField('Format.MasterStandard')}} / {{getMetaField('Format.QuickTime.Codec')}}
+
+
+
+              .row.divider
+                .cell
+                .cell
+                  
+                  
+                  
+              .row
+                .cell
+                  h5.md-subhead Audio Codec
+                .cell
+                  p.md-body-1 {{getMetaField('Format.Audio.Codec')}}
+              .row
+                .cell
+                  h5.md-subhead Audio Bit Depth
+                .cell
+                  p.md-body-1 {{getMetaField('Format.AudioBitDepth')}}
+              .row
+                .cell
+                  h5.md-subhead Audio Channels
+                .cell
+                  p.md-body-1 {{getMetaField('Format.AudioChannelConfiguration')}}
+              .row
+                .cell
+                  h5.md-subhead Audio Data Rate
+                .cell
+                  p.md-body-1 {{getMetaField('Format.AudioDataRate')}}
+              .row
+                .cell
+                  h5.md-subhead Audio Sampling Rate
+                .cell
+                  p.md-body-1 {{getMetaField('Format.AudioSamplingRate')}}
+ 
+
+
+
+
+
+
+
+        template(md-tab='', label='Related')
+          md-content.md-padding
+            h3.md-headline Related
+            p
+              | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque
+              | ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est,
+              | sollicitudin consectetur felis nec, feugiat ultricies mi.
+        template(md-tab='', label='Rights and Clearances')
+          md-content.md-padding
+            h3.md-headline Rights and Clearances
+            p
+              | Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum.
+              | Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum
+              | nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus
+              | commodo lectus.
+        template(md-tab='', label='Storyboards')
+          md-content.md-padding
+            h3.md-headline Storyboards
+            p
+              | Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum.
+              | Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum
+              | nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus
+              | commodo lectus.

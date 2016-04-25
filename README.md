@@ -32,6 +32,8 @@ npm run serve.prod
 
 To build a production version for deploy: - this will create the /dist/prod directory so that you can deploy to a web server. It will also automatically run the unit tests, if they fail so will the build. 
 
+
+To build a production version for deploy: - this will create the /dist/prod directory so that you can deploy to a web server. It will also automatically run the unit tests, if they fail so will the build. 
 ```bash
 npm run build.prod
 ```
@@ -42,8 +44,15 @@ To build an exportable library: - this will create the /dist/library directory s
 npm run build.library
 ```
 
+
+To build docs: - this will create the /docs directory and create a static website that documents the TypeScript Code. 
+
+npm run build.library
+```
+
 To build docs: - this will create the /docs directory and create a static website that documents the TypeScript Code. 
 ```bash
+
 npm run docs
 ```
 

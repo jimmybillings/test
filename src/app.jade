@@ -1,0 +1,6 @@
+div(*ngIf="header")
+  app-header([showFixed]="showFixed", [currentUser]="currentUser", [state]="state", [config]="(header | async)", (onLogOut)="logout()")
+  notification([state]="state")
+  .main-content
+    router-outlet
+  app-footer([currentUser]="currentUser", [config]="(footer | async)", [supportedLanguages]="supportedLanguages", (onChangeLang)="changeLang($event)")

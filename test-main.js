@@ -1,5 +1,16 @@
+if (!Object.hasOwnProperty('name')) {
+  Object.defineProperty(Function.prototype, 'name', {
+    get: function() {
+      var matches = this.toString().match(/^\s*function\s*(\S*)\s*\(/);
+      var name = matches && matches.length > 1 ? matches[1] : "";
+      Object.defineProperty(this, 'name', {value: name});
+      return name;
+    }
+  });
+}
+
 // Turn on full stack traces in errors to help debugging
-Error.stackTraceLimit=Infinity;
+Error.stackTraceLimit = Infinity;
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 
@@ -12,11 +23,24 @@ System.config({
   defaultJSExtensions: true,
   paths: {
     'angular2/*': 'node_modules/angular2/*.js',
-    'rxjs/*': 'node_modules/rxjs/*.js'
+    'rxjs/*': 'node_modules/rxjs/*.js',
+    'ng2-material/*': 'node_modules/ng2-material/*.js',
+    '@ngrx/*': 'node_modules/@ngrx/store/dist/index.js',
+    'ng2-translate/*': 'node_modules/ng2-translate/*.js'
   }
 });
 
-System.import('angular2/src/platform/browser/browser_adapter').then(function(browser_adapter) {
+Promise.all([
+  System.import('angular2/src/platform/browser/browser_adapter'),
+  System.import('angular2/platform/testing/browser'),
+  System.import('angular2/testing')
+]).then(function (modules) {
+  var browser_adapter = modules[0];
+  var providers = modules[1];
+  var testing = modules[2];
+  testing.setBaseTestProviders(providers.TEST_BROWSER_PLATFORM_PROVIDERS,
+                       providers.TEST_BROWSER_APPLICATION_PROVIDERS);
+
   browser_adapter.BrowserDomAdapter.makeCurrent();
 }).then(function() {
   return Promise.all(
@@ -40,9 +64,12 @@ System.import('angular2/src/platform/browser/browser_adapter').then(function(bro
   __karma__.start();
 });
 
-
 function onlySpecFiles(path) {
-  return /[\.|_]spec\.js$/.test(path);
+  // check for individual files, if not given, always matches to all
+  var patternMatched = __karma__.config.files ?
+    path.match(new RegExp(__karma__.config.files)) : true;
+
+  return patternMatched && /[\.|_]spec\.js$/.test(path);
 }
 
 // Normalize paths to module names.

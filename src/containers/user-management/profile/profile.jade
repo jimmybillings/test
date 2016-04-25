@@ -1,0 +1,38 @@
+section.login.hero
+  div(layout='row', layout-xs="column", md-scroll-y='', layout-align='start center', layout-padding='')
+    div(flex='')
+    div(flex-xl="40", flex-gt-lg="40", flex-gt-md="40", flex-gt-sm="55", flex-gt-xs="100", flex="100")
+      md-card.md-whiteframe-z2
+        md-card-header
+          .logo-wrapper
+            .logo
+        md-card-title
+          md-card-title-text(layout='column', layout-align='center center')
+            span.md-headline Profile
+        md-card-content
+          md-list
+            md-list-item
+              p #[strong Name: ] {{currentUser.fullName() | async}}
+            md-divider
+            md-list-item
+              p #[strong Email: ] {{currentUser.email() | async}}
+            md-divider
+            md-list-item
+              p #[strong Created On: ]{{currentUser.createdOn() | async}}
+            md-divider
+            md-list-item
+              p #[strong Last Updated: ]{{currentUser.lastUpdated() | async}}
+            md-divider
+            md-list-item
+              p #[strong Site Name: ]{{currentUser.siteName() | async}}
+            md-divider
+            md-list-item
+              p #[strong Id: ]{{currentUser.id() | async}}
+            md-divider
+            div( *ngFor="#account of currentUser.accountIds() | async") 
+              md-list-item
+                h3 Account: {{account}}
+              
+    div(flex='')
+    
+   
