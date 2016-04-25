@@ -20,7 +20,6 @@ import 'rxjs/Rx';
 // enable prod mode
 if ('<%= ENV %>' === 'prod') { enableProdMode(); }
 
-
 bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
   MATERIAL_PROVIDERS,
