@@ -38,14 +38,8 @@ export class Index {
     });
   }
   
-  public getNextPage(pageNum:any): void  {
-    this.adminService.getResource(this.resource, pageNum + 1).subscribe(data => {
-      this.adminService.setResource(data); 
-    });
-  }
-  
-  public getPrevPage(pageNum:any): void  {
-    this.adminService.getResource(this.resource, pageNum - 1).subscribe(data => {
+  public getPageNumber(pageNum: any): void  {
+    this.adminService.getResource(this.resource, pageNum).subscribe(data => {
       this.adminService.setResource(data); 
     });
   }

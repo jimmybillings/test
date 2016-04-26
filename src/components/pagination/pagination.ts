@@ -1,12 +1,13 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 'angular2/core';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { NgIf, NgFor, NgClass} from 'angular2/common';
+import { FORM_DIRECTIVES, FormBuilder, Validators } from 'angular2/common';
 
 @Component({
   selector: 'pagination',
   templateUrl: 'components/pagination/pagination.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  directives: [MATERIAL_DIRECTIVES, NgIf, NgFor, NgClass]
+  directives: [MATERIAL_DIRECTIVES, FORM_DIRECTIVES, NgIf, NgFor, NgClass]
 })
 
 export class Pagination {
@@ -15,15 +16,16 @@ export class Pagination {
   @Output() nextPage = new EventEmitter();
   @Output() getPage = new EventEmitter();
   
-  public getNextPage(currentPage): void {
-    this.nextPage.emit(currentPage);
-  }
+  public form: Object;
+  public currentPage = Number;
   
-  public getPrevPage(currentPage): void {
-    this.prevPage.emit(currentPage);
+  constructor(public fb: FormBuilder) {
+    this.form = fb.group({
+      page: ['' ,Validators.required]
+    });
   }
   
   public getPageNumber(pageNumber): void {
-    this.getPage.emit(pageNumber);
+    pageNumber > this.pagination.numberOfPages ? console.log('page doesnt exist') : this.getPage.emit(pageNumber);
   }
 }

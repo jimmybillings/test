@@ -18,21 +18,7 @@ export function main() {
         });
       })
     );
-    
-    it('Should have a getNextPage() function that emits a nextPage event', inject([Pagination], (pagination) => {
-      expect(pagination.getNextPage).toBeDefined();
-      spyOn(pagination.nextPage, 'emit');
-      pagination.getNextPage(2);
-      expect(pagination.nextPage.emit).toHaveBeenCalled();
-    }));
-    
-    it('Should have a getPrevPage() function that emits a prevPage event', inject([Pagination], (pagination) => {
-      expect(pagination.getPrevPage).toBeDefined();
-      spyOn(pagination.prevPage, 'emit');
-      pagination.getPrevPage(2);
-      expect(pagination.prevPage.emit).toHaveBeenCalled();
-    }));
-    
+        
     it('Should have a getPageNumber() function that emits a getPage event', inject([Pagination], (pagination) => {
       expect(pagination.getPageNumber).toBeDefined();
       spyOn(pagination.getPage, 'emit');
