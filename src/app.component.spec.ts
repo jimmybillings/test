@@ -4,7 +4,8 @@ import {
   injectAsync,
   TestComponentBuilder,
   it,
-  beforeEachProviders
+  beforeEachProviders,
+  inject
 } from 'angular2/testing';
 
 import {AppComponent} from './app.component';
@@ -87,5 +88,21 @@ export function main() {
           expect(instance.showFixed).toEqual(false);
         });
       }));
+    
+    it('Should log out a user', inject([AppComponent], (component) => {
+      spyOn(component._authentication, 'destroy').and.callThrough();
+      spyOn(component._currentUser, 'destroy');
+      spyOn(component.router, 'navigate');
+      component.logout();
+      expect(component._authentication.destroy).toHaveBeenCalled();
+      expect(component._currentUser.destroy).toHaveBeenCalled();
+      expect(component.router.navigate).toHaveBeenCalledWith(['/Home']);
+    }));
+    
+    it('Should change the current language', inject([AppComponent], (component) => {
+      spyOn(component.multiLingual, 'setLanguage');
+      component.changeLang({lang: 'fr'});
+      expect(component.multiLingual.setLanguage).toHaveBeenCalledWith('fr');
+    }));
   });
 }

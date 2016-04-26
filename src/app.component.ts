@@ -53,8 +53,7 @@ export class AppComponent {
     public location: Location) {
 
       this._apiConfig.setPortal('core');
-      let userLang = window.navigator.language.split('-')[0];
-      multiLingual.setLanguage(userLang);
+      multiLingual.setLanguage(window.navigator.language.split('-')[0]);
       this.router.subscribe(state => this.state = state);
   }
 

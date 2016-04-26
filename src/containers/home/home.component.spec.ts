@@ -4,7 +4,8 @@ describe,
 expect,
 injectAsync,
 it,
-beforeEachProviders
+beforeEachProviders,
+inject
 } from 'angular2/testing';
 
 import {Home} from './home.component';
@@ -17,12 +18,20 @@ import { BaseRequestOptions, Http } from 'angular2/http';
 import { ApiConfig } from '../../common/config/api.config';
 import {CurrentUser} from '../../common/models/current-user.model';
 import {UiConfig, config} from '../../common/config/ui.config';
-
 import { provideStore } from '@ngrx/store';
+import {Observable} from 'rxjs/Rx';
 
 export function main() {
   describe('Home Component', () => {
+    
+    class MockUiConfig {
+      get(comp) {
+        return Observable.of({'components': {'component': 'true'}, 'config': {'config': 'true'}});
+      }
+    }
+    
     beforeEachProviders(() => [
+      Home,
       RouteRegistry,
       provide(Location, { useClass: SpyLocation }),
       provide(ROUTER_PRIMARY_COMPONENT, { useValue: Home }),
@@ -35,7 +44,7 @@ export function main() {
       }),
       provideStore({config: config}),
       CurrentUser,
-      UiConfig,
+      provide(UiConfig, {useClass: MockUiConfig}),
       ApiConfig
     ]);
 
@@ -47,6 +56,14 @@ export function main() {
           expect(instance.currentUser instanceof CurrentUser).toBeTruthy();
         });
       }));
+    
+    it('Should call the config service for the home component config options', inject([Home], (component) => {
+      spyOn(component.uiConfig, 'get').and.callThrough();
+      component.ngOnInit();
+      expect(component.uiConfig.get).toHaveBeenCalledWith('home');
+      expect(component.components).toEqual({'component': 'true'});
+      expect(component.config).toEqual({'config': 'true'});
+    }));
 
   });
 }
