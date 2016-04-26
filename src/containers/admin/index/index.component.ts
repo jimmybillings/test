@@ -44,6 +44,12 @@ export class Index {
     });
   }
   
+  public getSortedCollection(attribute: string): void {
+    this.adminService.getSortedResources(this.resource, attribute).subscribe(data => {
+      this.adminService.setResource(data); 
+    });
+  }
+  
   public getResource() {
     switch (location.hash.split('#/admin/')[1]) {
       case 'users':

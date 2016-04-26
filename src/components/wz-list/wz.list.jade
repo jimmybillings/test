@@ -1,10 +1,10 @@
 md-data-table(layout-fill='')
   thead
     tr
-      th.md-text-cell Name
-      th.md-text-cell Status
-      th.md-text-cell Creation Date
-      th.md-text-cell Contact Name
+      th.md-text-cell((click)="sortBy('name')") Name
+      th.md-text-cell((click)="sortBy('status')") Status
+      th.md-text-cell((click)="sortBy('created')") Creation Date
+      th.md-text-cell((click)="sortBy('contact')") Contact Name
   tbody
     tr(*ngFor="#item of items")
       td.md-text-cell {{ item.name }}

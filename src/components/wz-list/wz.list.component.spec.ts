@@ -1,10 +1,13 @@
-import { describe, expect, it, beforeEachProviders, injectAsync, TestComponentBuilder } from 'angular2/testing';
+import { describe, expect, it, beforeEachProviders, inject, injectAsync, TestComponentBuilder } from 'angular2/testing';
+import { provide } from 'angular2/core';
+import { SpyLocation } from 'angular2/src/mock/location_mock';
 import {WzList} from './wz.list.component';
 
 export function main() {
   describe('WZ List component', () => {
     beforeEachProviders(() => [
-      WzList
+      WzList,
+      provide(Location, { useClass: SpyLocation })
     ]);
     
     it('Should create instance of WzList',
@@ -15,5 +18,11 @@ export function main() {
         });
       })
     );
+    
+    it('should have a sortBy function that emits a sort event', inject([WzList], (list) => {
+      spyOn(list.sort, 'emit');
+      list.sortBy('createdOn');
+      expect(list.sort.emit).toHaveBeenCalledWith('createdOn');
+    }));
   });
 }

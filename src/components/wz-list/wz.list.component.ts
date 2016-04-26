@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from 'angular2/core';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 'angular2/core';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { NgFor } from 'angular2/common';
 
@@ -11,4 +11,9 @@ import { NgFor } from 'angular2/common';
 
 export class WzList {
   @Input() items;
+  @Output() sort = new EventEmitter();
+  
+  public sortBy(attribute: string): void {
+    this.sort.emit(attribute);
+  }
 }

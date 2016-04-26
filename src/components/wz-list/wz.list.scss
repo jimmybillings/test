@@ -1,4 +1,7 @@
 md-data-table {
   background-color: #fff;
   min-width: 100%;
+  thead, th {
+    cursor: pointer;
+  }
 }

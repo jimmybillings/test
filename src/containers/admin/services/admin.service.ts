@@ -36,7 +36,7 @@ export class AdminService {
       this._apiConfig = apiConfig;
       this._routeConfig = {
         resource: '',
-        q: 'a',
+        q: '',
         s: 'createdOn',
         d: false,
         i: 0,
@@ -45,14 +45,21 @@ export class AdminService {
     }
   
   public getResource(resource: string, i: number): Observable<any> {
-    let url = this.buildUrl(resource, i);
+    let url = this.buildUrl(resource, i, this._routeConfig.s);
     return this._http.get(url, {headers: this._apiConfig.authHeaders()})
       .map((res: Response) => res.json());
   }
   
-  public buildUrl(resource: string, i: number): string {
+  public getSortedResources(resource: string, attribute: string): Observable<any> {
+    let url = this.buildUrl(resource, 0, attribute);
+    return this._http.get(url, {headers: this._apiConfig.authHeaders()})
+      .map((res: Response) => res.json());
+  }
+  
+  public buildUrl(resource: string, i: number, s: string): string {
     this._routeConfig.resource = resource;
     this._routeConfig.i = i;
+    this._routeConfig.s = s;
     return this._apiConfig.baseUrl() + `api/identities/v1/${this._routeConfig.resource}/search/?q=${this._routeConfig.q}&s=${this._routeConfig.s}&d=${this._routeConfig.d}&i=${this._routeConfig.i}&n=${this._routeConfig.n}`;
   }
 

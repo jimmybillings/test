@@ -12,8 +12,6 @@ import { FORM_DIRECTIVES, FormBuilder, Validators } from 'angular2/common';
 
 export class Pagination {
   @Input() pagination;
-  @Output() prevPage = new EventEmitter();
-  @Output() nextPage = new EventEmitter();
   @Output() getPage = new EventEmitter();
   
   public form: Object;
@@ -26,6 +24,12 @@ export class Pagination {
   }
   
   public getPageNumber(pageNumber): void {
-    pageNumber > this.pagination.numberOfPages ? console.log('page doesnt exist') : this.getPage.emit(pageNumber);
+    if (pageNumber < 0) {
+      this.getPage.emit(0);
+    } else if (pageNumber > this.pagination.numberOfPages - 1) {
+      this.getPage.emit(this.pagination.numberOfPages - 1);
+    } else {
+      this.getPage.emit(pageNumber);
+    } 
   }
 }
