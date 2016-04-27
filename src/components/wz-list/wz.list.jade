@@ -1,14 +1,8 @@
 md-data-table(layout-fill='')
   thead
     tr
-      th.md-text-cell((click)="sortBy('name')") Name
-      th.md-text-cell((click)="sortBy('status')") Status
-      th.md-text-cell((click)="sortBy('created')") Creation Date
-      th.md-text-cell((click)="sortBy('contact')") Contact Name
+      th.md-text-cell(*ngFor="#header of headers", (click)="sortBy(header.field)") {{ header.label }}
   tbody
-    tr(*ngFor="#item of items")
-      td.md-text-cell {{ item.name }}
-      td.md-text-cell {{ item.status }}
-      td.md-text-cell {{ item.createdOn }}
-      td.md-text-cell {{ item.contact }}
+    tr(*ngFor="#row of items")
+      td.md-text-cell(*ngFor="#header of headers") {{ row[header.field] }}
       

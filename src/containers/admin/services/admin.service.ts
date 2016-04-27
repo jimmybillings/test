@@ -40,26 +40,27 @@ export class AdminService {
         s: 'createdOn',
         d: false,
         i: 0,
-        n: 2
+        n: 10
       };
     }
   
   public getResource(resource: string, i: number): Observable<any> {
-    let url = this.buildUrl(resource, i, this._routeConfig.s);
+    let url = this.buildUrl(resource, i, this._routeConfig.s, this._routeConfig.d);
     return this._http.get(url, {headers: this._apiConfig.authHeaders()})
       .map((res: Response) => res.json());
   }
   
-  public getSortedResources(resource: string, attribute: string): Observable<any> {
-    let url = this.buildUrl(resource, 0, attribute);
+  public getSortedResources(resource: string, attribute: string, toggleOrder: boolean): Observable<any> {
+    let url = this.buildUrl(resource, 0, attribute, toggleOrder);
     return this._http.get(url, {headers: this._apiConfig.authHeaders()})
       .map((res: Response) => res.json());
   }
   
-  public buildUrl(resource: string, i: number, s: string): string {
+  public buildUrl(resource: string, i: number, s: string, d: boolean): string {
     this._routeConfig.resource = resource;
     this._routeConfig.i = i;
     this._routeConfig.s = s;
+    this._routeConfig.d = d;
     return this._apiConfig.baseUrl() + `api/identities/v1/${this._routeConfig.resource}/search/?q=${this._routeConfig.q}&s=${this._routeConfig.s}&d=${this._routeConfig.d}&i=${this._routeConfig.i}&n=${this._routeConfig.n}`;
   }
 

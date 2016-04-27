@@ -19,10 +19,18 @@ export function main() {
       })
     );
     
-    it('should have a sortBy function that emits a sort event', inject([WzList], (list) => {
+    it('should have a sortBy function that emits a sort event.', inject([WzList], (list) => {
+      list._toggleSort = 0;
       spyOn(list.sort, 'emit');
       list.sortBy('createdOn');
-      expect(list.sort.emit).toHaveBeenCalledWith('createdOn');
+      expect(list.sort.emit).toHaveBeenCalledWith({'attr': 'createdOn', 'toggle': true});
+    }));
+    
+    it('should have a sortBy function that emits a sort event with order reversed based on counter', inject([WzList], (list) => {
+      list._toggleSort = 1;
+      spyOn(list.sort, 'emit');
+      list.sortBy('createdOn');
+      expect(list.sort.emit).toHaveBeenCalledWith({'attr': 'createdOn', 'toggle': false});
     }));
   });
 }

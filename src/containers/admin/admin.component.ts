@@ -19,7 +19,7 @@ import {Index} from './index/index.component';
 export class Admin {
   public currentUser: CurrentUser;
   public resource: string;
-  
+    
   constructor(currentUser: CurrentUser) {
     this.currentUser = currentUser;
   }

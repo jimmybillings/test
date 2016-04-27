@@ -3,13 +3,14 @@ import {CurrentUser} from '../../../common/models/current-user.model';
 import {AdminService} from '../services/admin.service';
 import {WzList} from '../../../components/wz-list/wz.list.component';
 import {Pagination} from '../../../components/pagination/pagination';
-import {Location} from 'angular2/router';
+import {ROUTER_DIRECTIVES, Location, Router} from 'angular2/router';
+import {UiConfig} from '../../../common/config/ui.config';
 
 @Component({
   selector: 'admin-index',
   templateUrl: 'containers/admin/index/index.html',
   providers: [AdminService],
-  directives: [WzList, Pagination]
+  directives: [WzList, Pagination, ROUTER_DIRECTIVES]
 })
 
 /**
@@ -20,14 +21,26 @@ export class Index {
   public adminService: AdminService;
   public resource: string;
   public currentUserResources: Object;
-   
-  constructor(currentUser: CurrentUser, adminService: AdminService, location: Location) {
+  public config: Object;
+  public components: Object;
+  public headers: Array<string>;
+  
+  constructor(currentUser: CurrentUser,
+              adminService: AdminService,
+              public uiConfig: UiConfig,
+              public location: Location,
+              public router: Router) {
     this.currentUser = currentUser;
     this.adminService = adminService;
-    this.resource = this.getResource();
   }
   
   ngOnInit(): void {
+    this.resource = this.getResource();
+    this.uiConfig.get('admin').subscribe((config) => {
+      this.components = config.components;
+      this.config = config.config;
+      this.headers = config.config[this.resource].items;
+    });
     this.getIndex();
     this.adminService.adminStore.subscribe(data => this.currentUserResources = data);
   }
@@ -44,18 +57,18 @@ export class Index {
     });
   }
   
-  public getSortedCollection(attribute: string): void {
-    this.adminService.getSortedResources(this.resource, attribute).subscribe(data => {
+  public getSortedCollection(args: any): void {
+    this.adminService.getSortedResources(this.resource, args.attr, args.toggle).subscribe(data => {
       this.adminService.setResource(data); 
     });
   }
   
   public getResource() {
-    switch (location.hash.split('#/admin/')[1]) {
+    switch (location.hash.split('admin/')[1]) {
       case 'users':
-        return this.resource = 'user';
-      default:
-        return this.resource = 'account';
+        return 'user';
+      case 'accounts':
+        return 'account';
     }
   }
 }

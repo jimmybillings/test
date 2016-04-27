@@ -19,6 +19,7 @@ import {CurrentUser, currentUser} from '../../../common/models/current-user.mode
 import {provideStore} from '@ngrx/store';
 import {MockBackend} from 'angular2/http/testing';
 import {ApiConfig} from '../../../common/config/api.config';
+import {UiConfig, config} from '../../../common/config/ui.config';
 
 export function main() {
   describe('Admin Index component', () => {
@@ -37,6 +38,8 @@ export function main() {
       CurrentUser,
       AdminService,
       ApiConfig,
+      provideStore({config: config}),
+      UiConfig,
       Index
     ]);
     
@@ -49,16 +52,9 @@ export function main() {
         });
       }));
       
-    it('Should create an instance variable of AdminService, CurrentUser, and resource', inject([Index], (index) => {
+    it('Should create an instance variable of AdminService and CurrentUser', inject([Index], (index) => {
       expect(index.currentUser).toBeDefined();
       expect(index.adminService).toBeDefined();
-      expect(index.resource).toBeDefined();
-    }));
-      
-    it('Should call .index() on init', inject([Index], (index) => {
-      spyOn(index, 'getIndex');
-      index.ngOnInit();
-      expect(index.getIndex).toHaveBeenCalled();
     }));
   });
 }
