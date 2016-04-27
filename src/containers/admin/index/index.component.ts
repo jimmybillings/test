@@ -24,6 +24,7 @@ export class Index implements CanReuse {
   public config: Object;
   public components: Object;
   public headers: Array<string>;
+  public subscription: any;
   
   constructor(currentUser: CurrentUser,
               adminService: AdminService,
@@ -42,8 +43,12 @@ export class Index implements CanReuse {
       this.config = config.config;
       this.headers = config.config[this.resource].items;
     });
-    this.adminService.adminStore.subscribe(data => this.currentUserResources = data);
+    this.subscription = this.adminService.adminStore.subscribe(data => this.currentUserResources = data);
     this.getIndex();
+  }
+  
+  ngOnDestroy(): void {
+    if (this.subscription) this.subscription.unsubscribe();
   }
   
   public getIndex(): void {
