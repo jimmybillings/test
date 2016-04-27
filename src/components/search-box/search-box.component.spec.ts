@@ -31,7 +31,7 @@ export function main() {
       UiConfig
     ]);
 
-    it('Should have a header instance',
+    it('Should have a search box instance',
       injectAsync([TestComponentBuilder], (tcb) => {
         return tcb.createAsync(SearchBox).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;

@@ -14,7 +14,7 @@ import {CurrentUser} from './common/models/current-user.model';
 import {Authentication} from './containers/user-management/services/authentication.data.service';
 import {ApiConfig} from './common/config/api.config';
 import {UiConfig} from './common/config/ui.config';
-import {Notification} from './components/notification/notification';
+import {Notification} from './components/notification/notification.component';
 import {Admin} from './containers/admin/admin.component';
 import {Observable} from 'rxjs/Observable';
 
