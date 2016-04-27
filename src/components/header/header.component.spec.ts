@@ -25,7 +25,8 @@ export function main() {
       provide(Location, { useClass: SpyLocation }),
       provide(ROUTER_PRIMARY_COMPONENT, { useValue: Header }),
       provide(Router, { useClass: RootRouter }),
-      UiConfig
+      UiConfig,
+      ViewportHelper
     ]);
 
     it('Should have a header instance',

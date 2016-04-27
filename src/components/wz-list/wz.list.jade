@@ -1,0 +1,8 @@
+md-data-table(layout-fill='')
+  thead
+    tr
+      th.md-text-cell(*ngFor="#header of headers", (click)="sortBy(header.field)") {{ header.label }}
+  tbody
+    tr(*ngFor="#row of items")
+      td.md-text-cell(*ngFor="#header of headers") {{ row[header.field] }}
+      

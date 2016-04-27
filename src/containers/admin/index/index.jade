@@ -1,0 +1,6 @@
+section.admin-index
+  div(layout='row', layout-align='start center')
+    div(class='account-table' flex-xl="60",flex-gt-lg="50",flex-gt-md="60",flex="70")
+      wz-list([items]="currentUserResources.items", [headers]="headers", (sort)="getSortedCollection($event)")
+      div(layout='row', layout-align='end center')
+        pagination((getPage)="getPageNumber($event)", [pagination]="currentUserResources.pagination")
