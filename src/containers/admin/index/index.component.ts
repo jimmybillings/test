@@ -3,7 +3,7 @@ import {CurrentUser} from '../../../common/models/current-user.model';
 import {AdminService} from '../services/admin.service';
 import {WzList} from '../../../components/wz-list/wz.list.component';
 import {Pagination} from '../../../components/pagination/pagination';
-import {ROUTER_DIRECTIVES, Location, Router} from 'angular2/router';
+import {ROUTER_DIRECTIVES, Router, CanReuse, ComponentInstruction} from 'angular2/router';
 import {UiConfig} from '../../../common/config/ui.config';
 
 @Component({
@@ -16,7 +16,7 @@ import {UiConfig} from '../../../common/config/ui.config';
 /**
  * Admin Index Component - Creates a component that generates lists. It is instantiated with the current user
  */
-export class Index {
+export class Index implements CanReuse {
   public currentUser: CurrentUser;
   public adminService: AdminService;
   public resource: string;
@@ -28,11 +28,12 @@ export class Index {
   constructor(currentUser: CurrentUser,
               adminService: AdminService,
               public uiConfig: UiConfig,
-              public location: Location,
               public router: Router) {
     this.currentUser = currentUser;
     this.adminService = adminService;
   }
+  
+  routerCanReuse(next: ComponentInstruction, prev: ComponentInstruction) { return false; }
   
   ngOnInit(): void {
     this.resource = this.getResource();
@@ -41,8 +42,8 @@ export class Index {
       this.config = config.config;
       this.headers = config.config[this.resource].items;
     });
-    this.getIndex();
     this.adminService.adminStore.subscribe(data => this.currentUserResources = data);
+    this.getIndex();
   }
   
   public getIndex(): void {
@@ -64,10 +65,10 @@ export class Index {
   }
   
   public getResource() {
-    switch (location.hash.split('admin/')[1]) {
+    switch (window.location.pathname.split('/admin/')[1]) {
       case 'users':
         return 'user';
-      case 'accounts':
+      default:
         return 'account';
     }
   }

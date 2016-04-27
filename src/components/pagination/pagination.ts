@@ -19,7 +19,7 @@ export class Pagination {
   
   constructor(public fb: FormBuilder) {
     this.form = fb.group({
-      page: ['' ,Validators.required]
+      page: ['1' ,Validators.required]
     });
   }
   
