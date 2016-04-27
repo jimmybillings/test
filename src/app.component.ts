@@ -55,10 +55,11 @@ export class AppComponent {
 
       this._apiConfig.setPortal('core');
       multiLingual.setLanguage(window.navigator.language.split('-')[0]);
-      this.router.subscribe(state => this.state = state);
+      
   }
 
   ngOnInit() {
+    this.router.subscribe(state => this.state = state);
     window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
     this.uiConfig.initialize(this._apiConfig.getPortal())
       .subscribe(() => {
