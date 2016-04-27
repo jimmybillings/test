@@ -18,6 +18,7 @@ import {Notification} from './components/notification/notification.component';
 import {Admin} from './containers/admin/admin.component';
 import {Observable} from 'rxjs/Observable';
 
+
 @Component({
   selector: 'app',
   templateUrl: './app.html',
