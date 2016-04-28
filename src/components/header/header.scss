@@ -91,7 +91,7 @@ app-header md-toolbar.glb .search-tools {
         // min-height: rem(4.6);
         // color: rgba(md-color($md-background, 900), .7);
         // padding: 0 0 0 3%;
-        width: calc(100% - 84px);
+        width: calc(100% - 78px);
         font-size: 1.1em;
       }
       button[type="submit"] {
@@ -101,7 +101,7 @@ app-header md-toolbar.glb .search-tools {
         // height:100%;
         // width:rem(5.7);
         i.material-icons {
-          font-size: rem(3);
+          font-size: rem(3.3);
           text-shadow: none;
         }
       }
@@ -127,18 +127,19 @@ app-header md-toolbar.glb .search-tools {
       }
     }
     @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-      height: rem(4.4);
-      max-height: rem(4.4);
       search-box {
         input {
-          height: rem(4.4);
-          font-size: .97em;
+          width: calc(100% - 70px);
+          max-height: rem(4);
+          min-height: rem(4);
+          // height: rem(4.4);
+          font-size: .8em;
         }
         button[type="submit"] {
           // height:rem(4.4);
-          width:rem(4.6);
+          // width:rem(4);
           i.material-icons {
-            font-size: rem(2.6);
+            font-size: rem(2.8);
           }
         }
       }

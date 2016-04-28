@@ -15,6 +15,15 @@ ul.asset-list
           span {{asset.metaData[3].value}}
 
       section.actions
-      
+        md-toolbar
+          nav.md-toolbar-tools(layout-align="end stretch")
+            button.md-icon-button(md-button='', title='Sharing Options')
+              i.material-icons(md-icon) shopping_cart
+            button.md-icon-button(md-button='', title='Download Comp')
+              i.material-icons(md-icon) file_download
+            button.md-icon-button(md-button='', title='Add to Collection')
+              i.material-icons(md-icon) library_add
+            button.md-icon-button(md-button='', title='More')
+              i.material-icons(md-icon) more_vert
       a.asset-desc((click)='showAsset(asset)')   
         span(class="mdata-1", *ngIf="asset.metaData[1]") {{asset.metaData[1].value}}

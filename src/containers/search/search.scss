@@ -4,7 +4,7 @@ search {
   // border-top: rem(11.6) solid md-color($md-primary, 900, .7);
   border-top: rem(10.2) solid md-color($md-primary, 900, .7);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    border-top-width: rem(10);    
+    border-top-width: rem(9);    
   }
 }
 .pagination {
