@@ -70,20 +70,20 @@ export function main() {
         });
       }));
 
-    it('Should set the header to absolute by setting \'showFixed\' to be false if the page scrolls less than 68px\'s',
+    it('Should set the header to absolute by setting \'showFixed\' to be false if the page scrolls less than 111px\'s',
       injectAsync([TestComponentBuilder], (tcb) => {
         return tcb.createAsync(AppComponent).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
-          instance.showFixedHeader(70);
+          instance.showFixedHeader(114);
           expect(instance.showFixed).toEqual(true);
         });
       }));
 
-    it('Should set the header to fixed by setting \'showFixed\' to be true if the page scrolls down more than 68px\'s',
+    it('Should set the header to fixed by setting \'showFixed\' to be true if the page scrolls down more than 111px\'s',
       injectAsync([TestComponentBuilder], (tcb) => {
         return tcb.createAsync(AppComponent).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
-          instance.showFixedHeader(66);
+          instance.showFixedHeader(108);
           expect(instance.showFixed).toEqual(false);
         });
       }));

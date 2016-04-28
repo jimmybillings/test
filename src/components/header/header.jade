@@ -1,4 +1,4 @@
-md-toolbar.glb([ngClass]="{'fixed': showFixed}")
+md-toolbar.glb([ngClass]="{'fixed': showFixed, 'search-closed': false}")
   span(flex='')
   nav.md-toolbar-tools
     md-button.md-icon-button(arial-label='Settings')
@@ -31,7 +31,7 @@ md-toolbar.glb([ngClass]="{'fixed': showFixed}")
       
       
   div.search-tools(*ngIf="searchBarIsActive")
-    .md-toolbar-tools(layout='row', layout-align='center start')
-      div(flex="100", layout='row', layout-align='center start')
+    .md-toolbar-tools(layout='row', layout-align='start start')
+      div(flex="100", layout='row', layout-align='start start')
         search-box([config]="components.searchBox")
 

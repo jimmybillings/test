@@ -66,6 +66,8 @@ export class AppComponent {
         this.footer = this.uiConfig.get('footer');
       });
     this.currentUser.set();
+    // let x = window.document.querySelectorAll("md-toolbar.glb");
+    // console.log(document.querySelectorAll("md-toolbar.glb").offsetHeight);
   }
 
   public logout(): void {
@@ -84,7 +86,7 @@ export class AppComponent {
   */
   public showFixedHeader(offset): void {
     let isfixed: boolean = this.showFixed;
-    let setFixed: boolean = (offset > 68) ? true : false;
+    let setFixed: boolean = (offset > 111) ? true : false;
     if (setFixed !== isfixed) this.showFixed = !this.showFixed;
   }
 

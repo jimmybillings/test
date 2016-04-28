@@ -2,18 +2,21 @@ ul.asset-list
   li(*ngFor="#asset of assets")
     .asset
       .asset-name {{asset.name}}
-      a(flex='', (click)='showAsset(asset)')
+      a.asset-thb(flex='', (click)='showAsset(asset)')
         img(*ngIf="asset.thumbnail", src='{{asset.thumbnail.urls.https}}')
         
         span(class="mdata-0", *ngIf="asset.metaData[0]") 
           span {{asset.metaData[0].value}}
-          
-        span(class="mdata-1", *ngIf="asset.metaData[1]") 
-          span {{asset.metaData[1].value}}
           
         span(class="mdata-2", *ngIf="asset.metaData[2]") 
           span.sd-hd([ngClass]="formatType(asset.metaData[2].value)") {{asset.metaData[2].value}}
         
         span(class="mdata-3", *ngIf="asset.metaData[3]") 
           span {{asset.metaData[3].value}}
+
+
+      section.actions
+      a.asset-desc((click)='showAsset(asset)')   
+        span(class="mdata-1", *ngIf="asset.metaData[1]") 
+          {{asset.metaData[1].value}}
           

@@ -4,10 +4,12 @@ search-box {
   position: relative;
   overflow: hidden;
   input {
-    width: 100%;
-    padding-left: rem(1);
-    height: rem(4.6);
+    width: calc(100% - 64px);
+    padding: 0 0 0 3%;
+    max-height: rem(4.6);
+    min-height: rem(4.6);
     border: none;
+    color: rgba(md-color($md-background, 900), .7);
     background-color:  md-color($md-background, 100, .9);
     @include transition($swift-ease-in);
     border-radius: 0;
@@ -19,10 +21,10 @@ search-box {
   }
   button[type="submit"] {
     cursor: pointer;
-    height: 100%;
-    position: absolute;
-    right: 0;
-    top: 0;
+    // height: 100%;
+    // position: absolute;
+    // right: 0;
+    // top: 0;
     width: rem(5);
     font-size: 0;
     border: none; 
@@ -46,5 +48,8 @@ search-box {
         opacity: .6;
        }
     }
+  }
+  button.close {
+   display: none; 
   }
 }

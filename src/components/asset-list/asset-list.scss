@@ -16,9 +16,9 @@ asset-list {
     width: 19%;
     @include transition($swift-ease-out);
     .asset {
-     padding: 1px 1px 17% 1px;
-     background-color: md-color($md-background, 100);
-     box-shadow: 0 1px 1px 0 md-color($md-background, 700, .2);
+      padding: 1px 1px 17% 1px;
+      background-color: md-color($md-background, 100);
+      box-shadow: 0 1px 1px 0 md-color($md-background, 700, .2);
     }
     @media screen and (max-width: $layout-breakpoint-lg) {
       width: 24%  
@@ -42,7 +42,7 @@ asset-list {
       @include text-contrast(md-color($md-background, 100));
       opacity: 0;
     }
-    a {
+    .asset a.asset-thb {
       display: block;
       height: 0;
       width: 100%;
@@ -52,6 +52,9 @@ asset-list {
         linear-gradient(rgba(md-color($md-background, 900),1), rgba(md-color($md-background, 900),.6)),
         linear-gradient(rgba(md-color($md-background, 900),.5), rgba(md-color($md-background, 900),1))
       );
+      &:hover {
+        cursor: pointer;
+      }
       &::before {
         content: " ";
         position: absolute;
@@ -82,25 +85,70 @@ asset-list {
         // if you want to stretch 4:3 SD thumbs
       }
     }
+    .asset a.asset-desc {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left:0;
+      width: calc(100% - 2px);
+      margin: 0 1px;
+      height: 23%;
+      @include transition(all .2s ease-in-out);
+      span.mdata-1 {
+        display: block;
+        position: static;
+        font-size: rem(1.2);
+        line-height: rem(1.55);
+        height: 72%;
+        @include text-contrast(md-color($md-background, 100));
+        padding: 2.5% 3% 0 3%;
+        opacity: .65;
+        overflow: hidden;
+        // span {
+        //   display: block;
+        //   position: static;
+        //   margin: 2.5% 3% 0 3%;
+        //   line-height: rem(1.5);
+        //   opacity: .65;
+        //   overflow: hidden;
+        //   height: 72%;
+        // } 
+      }
+    }
+    .asset:hover a.asset-desc {
+      // @include transition(all .2s ease-in-out);
+      height: auto;
+      min-height: 23%;
+      max-height: 86%;
+      background-color: md-color($md-background, 900, .75);
+      border-color: md-color($md-background, 900, 0);
+      bottom: 23%;
+      span.mdata-1 {
+        padding-bottom: 2%;
+        opacity: 1;
+        @include text-contrast(md-color($md-background, 900));
+        overflow-y: hidden;
+      }
+    }
     span {
       display: block;
       position: absolute;
       font-size: rem(1.2);
       line-height: rem(1.55);
-      &.mdata-1 {
-        bottom: -30%;
-        left:0;
-        width: 100%;
-        height: 30%;
-        @include text-contrast(md-color($md-background, 100));
-        span {
-          line-height: rem(1.5);
-          opacity: .65;
-          padding: 2.5% 3% 0 3%;
-          overflow: hidden;
-          height: 70%;
-        }
-      }
+      // &.mdata-1 {
+      //   bottom: -30%;
+      //   left:0;
+      //   width: 100%;
+      //   height: 30%;
+      //   @include text-contrast(md-color($md-background, 100));
+      //   span {
+      //     line-height: rem(1.5);
+      //     opacity: .65;
+      //     padding: 2.5% 3% 0 3%;
+      //     overflow: hidden;
+      //     height: 70%;
+      //   }
+      // }
       &.mdata-0 {
         display: none;
       }
