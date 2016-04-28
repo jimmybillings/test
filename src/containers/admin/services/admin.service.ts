@@ -61,7 +61,12 @@ export class AdminService {
     this._routeConfig.i = i;
     this._routeConfig.s = s;
     this._routeConfig.d = d;
-    return this._apiConfig.baseUrl() + `api/identities/v1/${this._routeConfig.resource}/search/?q=${this._routeConfig.q}&s=${this._routeConfig.s}&d=${this._routeConfig.d}&i=${this._routeConfig.i}&n=${this._routeConfig.n}`;
+    return this._apiConfig.baseUrl() + 'api/identities/v1/' + this._routeConfig.resource
+                                     + '/search/?q=' + this._routeConfig.q
+                                     + '&s=' + this._routeConfig.s
+                                     + '&d=' + this._routeConfig.d
+                                     + '&i=' + this._routeConfig.i
+                                     + '&n=' + this._routeConfig.n;
   }
 
     
