@@ -2,7 +2,7 @@ import {Component} from 'angular2/core';
 import {CurrentUser} from '../../../common/models/current-user.model';
 import {AdminService} from '../services/admin.service';
 import {WzList} from '../../../components/wz-list/wz.list.component';
-import {Pagination} from '../../../components/pagination/pagination';
+import {Pagination} from '../../../components/pagination/pagination.component';
 import {ROUTER_DIRECTIVES, Router, CanReuse, ComponentInstruction} from 'angular2/router';
 import {UiConfig} from '../../../common/config/ui.config';
 
@@ -37,7 +37,7 @@ export class Index implements CanReuse {
   routerCanReuse(next: ComponentInstruction, prev: ComponentInstruction) { return false; }
   
   ngOnInit(): void {
-    this.resource = this.getResource();
+    this.resource = this.getResourceFromUrl();
     this.uiConfig.get('admin').subscribe((config) => {
       this.components = config.components;
       this.config = config.config;
@@ -52,24 +52,24 @@ export class Index implements CanReuse {
   }
   
   public getIndex(): void {
-    this.adminService.getResource(this.resource, 0).subscribe(data => {
-      this.adminService.setResource(data); 
+    this.adminService.getResources(this.resource, 0).subscribe(data => {
+      this.adminService.setResources(data); 
     });
   }
   
   public getPageNumber(pageNum: any): void  {
-    this.adminService.getResource(this.resource, pageNum).subscribe(data => {
-      this.adminService.setResource(data); 
+    this.adminService.getResources(this.resource, pageNum).subscribe(data => {
+      this.adminService.setResources(data); 
     });
   }
   
   public getSortedCollection(args: any): void {
     this.adminService.getSortedResources(this.resource, args.attr, args.toggle).subscribe(data => {
-      this.adminService.setResource(data); 
+      this.adminService.setResources(data); 
     });
   }
   
-  public getResource() {
+  public getResourceFromUrl() {
     switch (window.location.pathname.split('/admin/')[1]) {
       case 'users':
         return 'user';

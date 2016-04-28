@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEachProviders, inject, injectAsync, TestComponentBuilder } from 'angular2/testing';
-import { Pagination } from './pagination';
+import { Pagination } from './pagination.component';
 import { provide } from 'angular2/core';
 import { SpyLocation } from 'angular2/src/mock/location_mock';
 

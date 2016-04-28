@@ -44,7 +44,7 @@ export class AdminService {
       };
     }
   
-  public getResource(resource: string, i: number): Observable<any> {
+  public getResources(resource: string, i: number): Observable<any> {
     let url = this.buildUrl(resource, i, this._routeConfig.s, this._routeConfig.d);
     return this._http.get(url, {headers: this._apiConfig.authHeaders()})
       .map((res: Response) => res.json());
@@ -70,7 +70,7 @@ export class AdminService {
   }
 
     
-  public setResource(data: any): void {
+  public setResources(data: any): void {
     this.store.dispatch({type: 'ADMIN_SERVICE.SET_RESOURCES', payload: {
       'items': data.items,
       'pagination': {
