@@ -1,5 +1,5 @@
-import {Component, DynamicComponentLoader, Injector} from 'angular2/core';
-import {Router, RouteParams} from 'angular2/router';
+import {Component} from 'angular2/core';
+import {RouteParams} from 'angular2/router';
 import {HTTP_PROVIDERS} from 'angular2/http';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {NgStyle, CORE_DIRECTIVES} from 'angular2/common';
@@ -25,15 +25,12 @@ export class Asset {
   public assetDetail: Observable<any>;
   public config: UiConfig;
   public subscription: any;
-
+  
   constructor(
-    private _router: Router,
     private routeParams: RouteParams,
     public currentUser: CurrentUser,
     public uiConfig: UiConfig,
     public assetService: AssetService,
-    public dcl: DynamicComponentLoader,
-    public injector: Injector,
     public error: Error) {
       this.assetDetail = assetService.asset;
   }
@@ -50,5 +47,7 @@ export class Asset {
     if (this.subscription) this.subscription.unsubscribe();
     this.assetService.reset();
   }
+  
+  
 
 }

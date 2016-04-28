@@ -21,7 +21,6 @@ export class SearchBox {
   constructor(
     public fb: FormBuilder,
     public router: Router) {
-      
   }
 
   ngOnInit(): void {

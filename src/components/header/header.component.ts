@@ -46,7 +46,7 @@ export class Header {
   }
   
   public checkRouteForSearchBar(currentState: string): boolean {
-    return ['', '?confirmed=true', 'user/profile', 'user/login', 'user/register', 'admin/']
+    return ['', 'loggedOut=true', '?confirmed=true', 'user/profile', 'user/login', 'user/register', 'admin/']
       .filter((state) => state.indexOf(currentState) > -1).length === 0; 
   }
 }

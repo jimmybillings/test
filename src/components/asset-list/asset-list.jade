@@ -14,9 +14,8 @@ ul.asset-list
         span(class="mdata-3", *ngIf="asset.metaData[3]") 
           span {{asset.metaData[3].value}}
 
-
       section.actions
+      
       a.asset-desc((click)='showAsset(asset)')   
         span(class="mdata-1", *ngIf="asset.metaData[1]") 
           {{asset.metaData[1].value}}
-          

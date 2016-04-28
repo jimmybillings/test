@@ -6,13 +6,22 @@ import { CurrentUser} from '../../../common/models/current-user.model';
 import { Store, Reducer, Action} from '@ngrx/store';
 import { RequestOptions, URLSearchParams } from 'angular2/http';
 
+const initAssets = {
+  hasNextPage: false,
+  hasPreviousPage: false,
+  items: [],
+  numberOfPages: 0,
+  pageSize: 100,
+  totalCount: 0
+};
 
-export const assets: Reducer<any> = (state: any = {}, action: Action) => {
+export const assets: Reducer<any> = (state: any = initAssets, action: Action) => {
 
   switch (action.type) {
     case 'SEARCH':
       return Object.assign({}, action.payload);
-
+    case 'SEARCH.RESET':
+      return Object.assign({}, initAssets);
     default:
       return state;
   }
@@ -58,6 +67,10 @@ export class AssetData {
   
   public storeAssets(payload): void {
     this.store.dispatch(payload);
+  }
+  
+  public reset(): void {
+    this.store.dispatch({ type: 'SEARCH.RESET' });
   }
 
   /**

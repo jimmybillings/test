@@ -5,7 +5,7 @@ section.search-results
         .results-count(*ngIf="(assets | async)?.totalCount") {{(assets | async)?.totalCount}} results
       div(layout='column')
         asset-list([assets]="(assets | async)?.items", class="{{config.viewType.value}}", [currentUser]="currentUser", (onShowAsset)="showAsset($event)")        
-        h1.md-display-1.alert.warning([hidden]="!errorMessage && ((assets | async)?.totalCount == null || (assets | async)?.totalCount > 0)")
+        h1.md-display-1.alert.warning(*ngIf="!((assets | async)?.items)")
           | No items can be found for that search
 
     div(flex-xl="70", flex-gt-lg="80", flex="100", *ngIf="config.viewType.value == 'list'")
@@ -14,6 +14,6 @@ section.search-results
       div(layout='row')
         asset-list([assets]="(assets | async)?.items", class="{{config.viewType.value}}")
         
-        .alert.warning([hidden]="!errorMessage && (!assets || assets.length > 0)")
+        .alert.warning(*ngIf="!((assets | async)?.items)")
           | No items can be found for that search
           

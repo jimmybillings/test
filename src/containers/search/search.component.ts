@@ -46,6 +46,10 @@ export class Search {
     });
     this.searchAssets();
   }
+  
+  ngOnDestroy(): void {
+    this.assetData.reset();
+  }
 
   showAsset(asset): void {
     this.router.navigate(['/Asset', { name: asset.assetId }]);

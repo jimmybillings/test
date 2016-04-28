@@ -14,9 +14,10 @@ import {CurrentUser} from './common/models/current-user.model';
 import {Authentication} from './containers/user-management/services/authentication.data.service';
 import {ApiConfig} from './common/config/api.config';
 import {UiConfig} from './common/config/ui.config';
-import {Notification} from './components/notification/notification';
+import {Notification} from './components/notification/notification.component';
 import {Admin} from './containers/admin/admin.component';
 import {Observable} from 'rxjs/Observable';
+
 
 @Component({
   selector: 'app',
@@ -53,12 +54,12 @@ export class AppComponent {
     public location: Location) {
 
       this._apiConfig.setPortal('core');
-      let userLang = window.navigator.language.split('-')[0];
-      multiLingual.setLanguage(userLang);
-      this.router.subscribe(state => this.state = state);
+      multiLingual.setLanguage(window.navigator.language.split('-')[0]);
+      
   }
 
   ngOnInit() {
+    this.router.subscribe(state => this.state = state);
     window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
     this.uiConfig.initialize(this._apiConfig.getPortal())
       .subscribe(() => {

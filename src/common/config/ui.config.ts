@@ -44,10 +44,13 @@ export class UiConfig {
     return this._http.get(this._apiUrls.get + site, {
       headers: this._apiConfig.headers()
     }).map((res: Response) => {
-      this.store.dispatch({ type: 'INITIALIZE', payload: res.json() });
+      this.set(res.json());
     });
   }
-
+  
+  public set(config) {
+    this.store.dispatch({ type: 'INITIALIZE', payload: config });
+  }
   /**
    * @returns  The current configuration state.
    */
