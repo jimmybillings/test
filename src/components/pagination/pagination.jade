@@ -1,0 +1,11 @@
+span(flex='')
+  nav.md-toolbar-tools
+    form.md-inline-form(layout='row', [ngFormModel]="form", (ngSubmit)="getPageNumber(form.value.page - 1)")
+      .text-nav
+        span displaying page
+        input(type='text', ngControl="page", value="{{ pagination.currentPage + 1 }}")
+        span of {{ pagination.numberOfPages }}
+    button.md-icon-button(*ngIf="pagination.hasPreviousPage", md-button='', title='previous page', (click)="getPageNumber(pagination.currentPage - 1)")
+      i.material-icons(md-icon) keyboard_arrow_left
+    button.md-icon-button(*ngIf="pagination.hasNextPage", md-button='', title='next page', (click)="getPageNumber(pagination.currentPage + 1)")
+      i.material-icons(md-icon) keyboard_arrow_right

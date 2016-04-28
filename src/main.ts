@@ -15,6 +15,7 @@ import { MATERIAL_PROVIDERS } from 'ng2-material/all';
 import { UiConfig, config } from './common/config/ui.config';
 import { Error } from './common/services/error.service';
 import {AssetService} from './containers/asset/services/asset.service';
+import { adminResources } from './containers/admin/services/admin.service';
 
 import 'rxjs/Rx';
 // enable prod mode
@@ -24,7 +25,7 @@ bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
   MATERIAL_PROVIDERS,
   provide(APP_BASE_HREF, { useValue: '/' }),
-  provideStore({config, assets, asset, currentUser, i18n: multilingualReducer}),
+  provideStore({config, assets, asset, currentUser, i18n: multilingualReducer, adminResources}),
   HTTP_PROVIDERS,
   HTTP_BINDINGS,
   provide(TranslateLoader, {

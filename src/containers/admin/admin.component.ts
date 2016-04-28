@@ -2,7 +2,7 @@ import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {CurrentUser} from '../../common/models/current-user.model';
 import {Dashboard} from './dashboard/dashboard.component';
-import {Account} from './account/account.component';
+import {Index} from './index/index.component';
 
 @Component({
   selector: 'admin',
@@ -12,12 +12,14 @@ import {Account} from './account/account.component';
 
 @RouteConfig([
   { path: '/dashboard', component: Dashboard, name: 'Dashboard' },
-  { path: '/accounts', component: Account, name: 'Account' }
+  { path: '/accounts', component: Index, name: 'Accounts' },
+  { path: '/users', component: Index, name: 'Users' }
 ])
 
 export class Admin {
   public currentUser: CurrentUser;
-  
+  public resource: string;
+    
   constructor(currentUser: CurrentUser) {
     this.currentUser = currentUser;
   }

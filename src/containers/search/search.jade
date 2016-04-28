@@ -4,6 +4,7 @@ section.search-results
       .pagination.md-body-2(layout='row' layout-align='end center') 
         .results-count(*ngIf="(assets | async)?.totalCount") {{(assets | async)?.totalCount}} results
       div(layout='column')
+        // pagination([pagination]="(assets | async)?.pagination")
         asset-list([assets]="(assets | async)?.items", class="{{config.viewType.value}}", [currentUser]="currentUser", (onShowAsset)="showAsset($event)")        
         h1.md-display-1.alert.warning(*ngIf="!((assets | async)?.items)")
           | No items can be found for that search
