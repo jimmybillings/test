@@ -47,11 +47,11 @@ export function main() {
       expect(builtUrl).toEqual(service._apiConfig.baseUrl() + 'api/identities/v1/account/search/?q=&s=createdOn&d=false&i=2&n=10');
     }));
     
-    it('should have a getResource function that makes a request for a resource with given params', inject([AdminService, MockBackend], (service, mockBackend) => {
+    it('should have a getResources function that makes a request for a resource with given params', inject([AdminService, MockBackend], (service, mockBackend) => {
       spyOn(service, 'buildUrl');
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
-      service.getResource('user', 1).subscribe((res) => {
+      service.getResources('user', 1).subscribe((res) => {
         expect(service.buildUrl).toHaveBeenCalledWith('user', 1, 'createdOn', false);
         expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/v1/user/search/?q=&s=createdOn&d=false&i=1&n=10');
       });
