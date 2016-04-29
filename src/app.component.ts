@@ -75,11 +75,7 @@ export class AppComponent {
     this.currentUser.set();
     console.log(this.uiConfig.get('searchBox'));
   }
-    
-  // ngOnChanges(changes) {
-  //   if (changes.state) this.searchBarIsActive = this.checkRouteForSearchBar(changes.state.currentValue);  
-  // }
-  
+
   public logout(): void {
     this._authentication.destroy().subscribe();
     this._currentUser.destroy();
@@ -99,6 +95,10 @@ export class AppComponent {
     let setFixed: boolean = (offset > 111) ? true : false;
     if (setFixed !== isfixed) this.showFixed = !this.showFixed;
   }
+  /**
+   * There are certain pages we don't want the searchbox to display on
+   * @param currentState state that determines current page.
+  */
   public checkRouteForSearchBar(currentState: string): boolean {
     return ['', 'loggedOut=true', '?confirmed=true', 'user/profile', 'user/login', 'user/register', 'admin/dashboard', 'admin/accounts', 'admin/users']
       .filter((state) => state.indexOf(currentState) > -1).length === 0;
