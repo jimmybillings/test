@@ -1,7 +1,6 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from 'angular2/core';
 import {NgClass, NgIf, NgFor} from 'angular2/common';
 import {ROUTER_DIRECTIVES, Router} from 'angular2/router';
-import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {SearchBox} from '../search-box/search-box.component';
 
@@ -11,7 +10,7 @@ import {SearchBox} from '../search-box/search-box.component';
 @Component({
   selector: 'app-header',
   templateUrl: 'components/header/header.html',
-  directives: [ROUTER_DIRECTIVES, NgClass, MATERIAL_DIRECTIVES, NgIf, NgFor, SearchBox],
+  directives: [ROUTER_DIRECTIVES, NgClass, NgIf, NgFor, SearchBox],
   pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

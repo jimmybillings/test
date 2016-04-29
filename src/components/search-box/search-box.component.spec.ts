@@ -13,7 +13,6 @@ import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT, RouteConfig} 
 import {SpyLocation} from 'angular2/src/mock/location_mock';
 import {RootRouter} from 'angular2/src/router/router';
 import {UiConfig} from '../../common/config/ui.config';
-import {ViewportHelper} from 'ng2-material/all';
 
 export function main() {
   describe('Search Box Component', () => {
@@ -23,7 +22,6 @@ export function main() {
       RouteConfig,
       RouteRegistry,
       RouteRegistry,
-      ViewportHelper,
       provide(Location, { useClass: SpyLocation }),
       provide(ROUTER_PRIMARY_COMPONENT, { useValue: SearchBox }),
       provide(Router, { useClass: RootRouter }),

@@ -2,7 +2,6 @@ import {Component} from 'angular2/core';
 import {Router, RouteParams} from 'angular2/router';
 import {CORE_DIRECTIVES} from 'angular2/common';
 import {ContentService} from './content.service';
-import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 
 /**
  * Asset page component - renders an asset show page
@@ -10,7 +9,7 @@ import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 @Component({
   selector: 'cms',
   templateUrl: 'containers/content/content.html',
-  directives: [CORE_DIRECTIVES, MATERIAL_DIRECTIVES],
+  directives: [CORE_DIRECTIVES],
   providers: [ContentService]
 })
 

@@ -11,7 +11,6 @@ import { Validators } from 'angular2/common';
 import { AppComponent } from './app.component';
 import { ApiConfig } from './common/config/api.config';
 import { CurrentUser, currentUser} from './common/models/current-user.model';
-import { MATERIAL_PROVIDERS } from 'ng2-material/all';
 import { UiConfig, config } from './common/config/ui.config';
 import { Error } from './common/services/error.service';
 import {AssetService} from './containers/asset/services/asset.service';
@@ -23,7 +22,6 @@ if ('<%= ENV %>' === 'prod') { enableProdMode(); }
 
 bootstrap(AppComponent, [
   ROUTER_PROVIDERS,
-  MATERIAL_PROVIDERS,
   provide(APP_BASE_HREF, { useValue: '/' }),
   provideStore({config, assets, asset, currentUser, i18n: multilingualReducer, adminResources}),
   HTTP_PROVIDERS,

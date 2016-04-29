@@ -19,7 +19,6 @@ import {CurrentUser} from '../../common/models/current-user.model';
 import {UiConfig, config} from '../../common/config/ui.config';
 import { Error } from '../../common/services/error.service';
 import { provideStore } from '@ngrx/store';
-import {ViewportHelper} from 'ng2-material/all';
 import {AssetService, asset} from './services/asset.service';
 import {Observable} from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
@@ -53,7 +52,6 @@ export function main() {
       provide(AssetService, {useClass: MockAssetService}),
       MockBackend,
       BaseRequestOptions,
-      ViewportHelper,
       provide(Http, {
         useFactory: (backend, defaultOptions) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]

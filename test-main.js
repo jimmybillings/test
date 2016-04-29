@@ -24,7 +24,6 @@ System.config({
   paths: {
     'angular2/*': 'node_modules/angular2/*.js',
     'rxjs/*': 'node_modules/rxjs/*.js',
-    'ng2-material/*': 'node_modules/ng2-material/*.js',
     '@ngrx/*': 'node_modules/@ngrx/store/dist/index.js',
     'ng2-translate/*': 'node_modules/ng2-translate/*.js'
   }

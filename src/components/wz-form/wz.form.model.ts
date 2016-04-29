@@ -1,6 +1,5 @@
 import { Injectable } from 'angular2/core';
 import { Validators } from 'angular2/common';
-import { MdPatternValidator } from 'ng2-material/all';
 import { IFormFields } from '../../common/interfaces/forms.interface';
 
 /**
@@ -42,8 +41,6 @@ export class Form {
   
   private _getEmailValidator(): Validators {
     return Validators.compose([
-      MdPatternValidator.inline('^.+@.+\..+$'),
-      Validators.required,
       Validators.minLength(8),
       Validators.maxLength(50)
     ]);

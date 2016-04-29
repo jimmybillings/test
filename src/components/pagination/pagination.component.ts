@@ -1,5 +1,4 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 'angular2/core';
-import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { NgIf, NgFor, NgClass} from 'angular2/common';
 import { FORM_DIRECTIVES, FormBuilder, Validators } from 'angular2/common';
 
@@ -7,7 +6,7 @@ import { FORM_DIRECTIVES, FormBuilder, Validators } from 'angular2/common';
   selector: 'pagination',
   templateUrl: 'components/pagination/pagination.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  directives: [MATERIAL_DIRECTIVES, FORM_DIRECTIVES, NgIf, NgFor, NgClass]
+  directives: [FORM_DIRECTIVES, NgIf, NgFor, NgClass]
 })
 
 export class Pagination {

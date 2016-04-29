@@ -1,7 +1,6 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from 'angular2/core';
 import {ControlGroup, Control, NgClass, NgIf} from 'angular2/common';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
-import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 
 /**
@@ -10,7 +9,7 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 @Component({
   selector: 'app-footer',
   templateUrl: 'components/footer/footer.html',
-  directives: [ROUTER_DIRECTIVES, NgClass, NgIf, MATERIAL_DIRECTIVES],
+  directives: [ROUTER_DIRECTIVES, NgClass, NgIf],
   pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

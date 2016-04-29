@@ -1,6 +1,5 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from 'angular2/core';
 import {NgFor} from 'angular2/common';
-import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
 import {Form} from './wz.form.model';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
@@ -11,7 +10,7 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 @Component({
   selector: 'wz-form',
   templateUrl: 'components/wz-form/wz.form.html',
-  directives: [NgFor, MATERIAL_DIRECTIVES, FORM_DIRECTIVES],
+  directives: [NgFor, FORM_DIRECTIVES],
   providers: [Form],
   changeDetection: ChangeDetectionStrategy.OnPush,
   pipes: [TranslatePipe]
