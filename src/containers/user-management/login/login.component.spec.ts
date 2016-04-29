@@ -1,5 +1,5 @@
 import {provide} from 'angular2/core';
-import {describe, expect, it, inject, injectAsync, TestComponentBuilder, beforeEachProviders} from 'angular2/testing';
+import {describe, expect, it, inject, TestComponentBuilder, beforeEachProviders} from 'angular2/testing';
 import {Observable} from 'rxjs/Rx';
 import { ApiConfig } from '../../../common/config/api.config';
 import {CurrentUser} from '../../../common/models/current-user.model';
@@ -45,8 +45,8 @@ export function main() {
     ]);
 
     it('Should have a Login instance',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(Login).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(Login).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Login).toBeTruthy();
         });

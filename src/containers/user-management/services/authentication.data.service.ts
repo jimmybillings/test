@@ -1,7 +1,7 @@
 import { Injectable } from 'angular2/core';
 import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../../../common/config/api.config';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx';
 
 /**
  * Service that provides access to the api for logging user in and out.  

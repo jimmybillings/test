@@ -2,10 +2,9 @@ import {
 TestComponentBuilder,
 describe,
 expect,
-injectAsync,
+inject,
 it,
-beforeEachProviders,
-inject
+beforeEachProviders
 } from 'angular2/testing';
 
 import {Footer} from './footer.component';
@@ -25,8 +24,8 @@ export function main() {
     ]);
 
     it('Should have a footer instance',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(Footer).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(Footer).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Footer).toBeTruthy();
         });

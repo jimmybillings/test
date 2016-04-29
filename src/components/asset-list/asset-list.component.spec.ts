@@ -2,10 +2,9 @@ import {
 TestComponentBuilder,
 describe,
 expect,
-injectAsync,
+inject,
 it,
-beforeEachProviders,
-inject
+beforeEachProviders
 } from 'angular2/testing';
 
 import {AssetList} from './asset-list.component';
@@ -25,8 +24,8 @@ export function main() {
     ]);
 
     it('Create instance of AssetList',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(AssetList).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(AssetList).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof AssetList).toBeTruthy();
         });

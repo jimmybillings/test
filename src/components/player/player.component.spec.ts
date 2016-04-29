@@ -2,7 +2,7 @@ import {
 TestComponentBuilder,
 describe,
 expect,
-injectAsync,
+inject,
 it,
 beforeEachProviders
 } from 'angular2/testing';
@@ -18,8 +18,8 @@ export function main() {
     ]);
 
     it('Should have a player instance',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(Player).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(Player).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Player).toBeTruthy();
         });

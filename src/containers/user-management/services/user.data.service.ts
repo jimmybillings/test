@@ -2,7 +2,7 @@ import { Injectable } from 'angular2/core';
 import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../../../common/config/api.config';
 import { CurrentUser } from '../../../common/models/current-user.model';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx';
 
 /**
  * Service that provides api access registering new users.  

@@ -1,7 +1,7 @@
 import {
 describe,
 expect,
-injectAsync,
+inject,
 TestComponentBuilder,
 it,
 beforeEachProviders
@@ -27,8 +27,8 @@ export function main() {
     ]);
     
   it('Create instance of dashboard and assign the CurrentUser to an instance variable inside of dashboard',
-    injectAsync([TestComponentBuilder], (tcb) => {
-      return tcb.createAsync(Dashboard).then((fixture) => {
+    inject([TestComponentBuilder], (tcb) => {
+      tcb.createAsync(Dashboard).then((fixture) => {
         let instance = fixture.debugElement.componentInstance;
         expect(instance instanceof Dashboard).toBeTruthy();
         expect(instance.currentUser instanceof CurrentUser).toBeTruthy();

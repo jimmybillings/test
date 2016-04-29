@@ -16,9 +16,8 @@ import {ApiConfig} from './common/config/api.config';
 import {UiConfig} from './common/config/ui.config';
 import {Notification} from './components/notification/notification.component';
 import {Admin} from './containers/admin/admin.component';
-import {Observable} from 'rxjs/Observable';
 import {SearchBox} from './components/search-box/search-box.component';
-
+import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'app',

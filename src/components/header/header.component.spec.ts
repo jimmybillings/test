@@ -2,10 +2,9 @@ import {
 TestComponentBuilder,
 describe,
 expect,
-injectAsync,
+inject,
 it,
-beforeEachProviders,
-inject
+beforeEachProviders
 } from 'angular2/testing';
 
 import {Header} from './header.component';
@@ -30,8 +29,8 @@ export function main() {
     ]);
 
     it('Should have a header instance',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(Header).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(Header).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Header).toBeTruthy();
         });

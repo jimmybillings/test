@@ -2,7 +2,7 @@ import {
 TestComponentBuilder,
 describe,
 expect,
-injectAsync,
+inject,
 it,
 beforeEachProviders
 } from 'angular2/testing';
@@ -27,8 +27,8 @@ export function main() {
     ]);
     
     it('Should have an admin instance',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(Admin).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(Admin).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Admin).toBeTruthy();
         });
