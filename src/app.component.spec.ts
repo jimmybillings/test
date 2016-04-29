@@ -105,7 +105,7 @@ export function main() {
     }));
         
     it('Should hide the search bar on certain routes', inject([AppComponent], (component) => {
-      ['', '?confirmed=true', 'user/profile', 'user/login', 'user/register', 'admin/'].forEach((item) => {
+      ['UserManagement', 'Home', 'Admin'].forEach((item) => {
         expect(component.checkRouteForSearchBar(item)).toEqual(false);
       });
     }));

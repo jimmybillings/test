@@ -62,7 +62,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.router.subscribe(state => {
-      this.searchBarIsActive = this.checkRouteForSearchBar(state);
+      this.searchBarIsActive = this.checkRouteForSearchBar(this.router.currentInstruction.component.routeName);
       this.state = state;
     });
     window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
@@ -100,7 +100,11 @@ export class AppComponent {
    * @param currentState state that determines current page.
   */
   public checkRouteForSearchBar(currentState: string): boolean {
-    return ['', 'loggedOut=true', '?confirmed=true', 'user/profile', 'user/login', 'user/register', 'admin/dashboard', 'admin/accounts', 'admin/users']
+    return ['UserManagement', 'Home', 'Admin']
       .filter((state) => state.indexOf(currentState) > -1).length === 0;
+  }
+  
+  public newSearchContext(data) {
+    this.router.navigate(['/Search', { q: data, n: 100 }]);
   }
 }

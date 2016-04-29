@@ -6,7 +6,7 @@ div(*ngIf="header")
           
       div.search-tools(*ngIf="searchBarIsActive")
         .md-toolbar-tools(flex='', layout='row', layout-align='start start')
-          search-box([config]="searchBox | async")
+          search-box([config]="searchBox | async", (searchContext)="newSearchContext($event)")
 
 
     

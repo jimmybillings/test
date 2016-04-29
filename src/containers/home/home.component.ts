@@ -33,4 +33,8 @@ export class Home {
     }); 
   }
   
+  public newSearchContext(data) {
+    this.router.navigate(['/Search', { q: data, n: 100 }]);
+  }
+  
 }
