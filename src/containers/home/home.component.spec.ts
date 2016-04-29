@@ -2,10 +2,9 @@ import {
 TestComponentBuilder,
 describe,
 expect,
-injectAsync,
+inject,
 it,
-beforeEachProviders,
-inject
+beforeEachProviders
 } from 'angular2/testing';
 
 import {Home} from './home.component';
@@ -49,8 +48,8 @@ export function main() {
     ]);
 
     it('Create instance of home and assign the CurrentUser to an instance variable inside of home',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(Home).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(Home).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Home).toBeTruthy();
           expect(instance.currentUser instanceof CurrentUser).toBeTruthy();

@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEachProviders, inject, injectAsync, TestComponentBuilder } from 'angular2/testing';
+import { describe, expect, it, beforeEachProviders, inject, TestComponentBuilder } from 'angular2/testing';
 import { provide } from 'angular2/core';
 import { SpyLocation } from 'angular2/src/mock/location_mock';
 import {WzList} from './wz.list.component';
@@ -11,8 +11,8 @@ export function main() {
     ]);
     
     it('Should create instance of WzList',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(WzList).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(WzList).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof WzList).toBeTruthy();
         });

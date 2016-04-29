@@ -1,7 +1,7 @@
 import { Injectable } from 'angular2/core';
 import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../../../common/config/api.config';
-import { Observable} from 'rxjs/Observable';
+import { Observable} from 'rxjs/Rx';
 import { CurrentUser} from '../../../common/models/current-user.model';
 import { Store, Reducer, Action} from '@ngrx/store';
 import { RequestOptions, URLSearchParams } from 'angular2/http';

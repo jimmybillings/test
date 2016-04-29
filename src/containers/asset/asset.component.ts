@@ -7,7 +7,7 @@ import {AssetDetail} from '../../components/asset-detail/asset-detail.component'
 import {CurrentUser} from '../../common/models/current-user.model';
 import {UiConfig} from '../../common/config/ui.config';
 import {AssetService} from './services/asset.service';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx';
 import { Error } from '../../common/services/error.service';
 
 /**

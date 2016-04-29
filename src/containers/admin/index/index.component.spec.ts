@@ -1,7 +1,6 @@
 import {
 describe,
 expect,
-injectAsync,
 inject,
 TestComponentBuilder,
 it,
@@ -66,8 +65,8 @@ export function main() {
     ]);
     
     it('Create instance of index and assign the CurrentUser to an instance variable inside of account',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(Index).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(Index).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Index).toBeTruthy();
           expect(instance.currentUser instanceof CurrentUser).toBeTruthy();

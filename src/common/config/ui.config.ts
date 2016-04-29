@@ -2,7 +2,7 @@ import { Injectable } from 'angular2/core';
 import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../config/api.config';
 import {IuiConfig} from '../../common/interfaces/config.interface';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx';
 import { Store, Reducer, Action} from '@ngrx/store';
 
 export const config:Reducer<any> = (state = {}, action:Action) => {

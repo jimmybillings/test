@@ -2,7 +2,7 @@ import { Injectable } from 'angular2/core';
 import { Http, Response } from 'angular2/http';
 import { ApiConfig } from '../../../common/config/api.config';
 import { Store, Reducer, Action} from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Rx';
 
 const adminState = {items: [], pagination: {}};
 export const adminResources: Reducer<any> = (state = adminState, action: Action) => {

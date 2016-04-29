@@ -1,11 +1,10 @@
 import {
   describe,
   expect,
-  injectAsync,
+  inject,
   TestComponentBuilder,
   it,
-  beforeEachProviders,
-  inject
+  beforeEachProviders
 } from 'angular2/testing';
 
 import {AppComponent} from './app.component';
@@ -54,8 +53,8 @@ export function main() {
     ]);
     
     it('Create instance of app and assign the CurrentUser to an instance variable inside of app', 
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(AppComponent).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(AppComponent).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance.currentUser instanceof CurrentUser).toBeTruthy();
           expect(instance instanceof AppComponent).toBeTruthy();
@@ -64,16 +63,16 @@ export function main() {
     
     
     it('Should initialize the header position to be absolulte positioned by setting \'showFixed\' to be false',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(AppComponent).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(AppComponent).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance.showFixed).toEqual(false);
         });
       }));
 
     it('Should set the header to absolute by setting \'showFixed\' to be false if the page scrolls less than 111px\'s',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(AppComponent).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(AppComponent).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           instance.showFixedHeader(114);
           expect(instance.showFixed).toEqual(true);
@@ -81,8 +80,8 @@ export function main() {
       }));
 
     it('Should set the header to fixed by setting \'showFixed\' to be true if the page scrolls down more than 111px\'s',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(AppComponent).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(AppComponent).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           instance.showFixedHeader(108);
           expect(instance.showFixed).toEqual(false);

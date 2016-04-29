@@ -2,7 +2,7 @@ import {
 TestComponentBuilder,
 describe,
 expect,
-injectAsync,
+inject,
 it,
 beforeEachProviders
 } from 'angular2/testing';
@@ -27,8 +27,8 @@ export function main() {
     ]);
 
     it('Create instance of profile and assign the CurrentUser to an instance variable inside of profile',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(Profile).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(Profile).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Profile).toBeTruthy();
           expect(instance.currentUser instanceof CurrentUser).toBeTruthy();

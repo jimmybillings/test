@@ -2,7 +2,6 @@ import {
 TestComponentBuilder,
 describe,
 expect,
-injectAsync,
 inject,
 it,
 beforeEachProviders
@@ -59,8 +58,8 @@ export function main() {
     ]);
 
     it('Should have a Register instance',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(Register).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(Register).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Register).toBeTruthy();
         });

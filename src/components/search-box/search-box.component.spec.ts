@@ -2,10 +2,9 @@ import {
 TestComponentBuilder,
 describe,
 expect,
-injectAsync,
+inject,
 it,
-beforeEachProviders,
-inject
+beforeEachProviders
 } from 'angular2/testing';
 
 import {SearchBox} from './search-box.component';
@@ -32,8 +31,8 @@ export function main() {
     ]);
 
     it('Should have a search box instance',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(SearchBox).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(SearchBox).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof SearchBox).toBeTruthy();
         });

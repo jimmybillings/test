@@ -2,10 +2,9 @@ import {
 TestComponentBuilder,
 describe,
 expect,
-injectAsync,
+inject,
 it,
-beforeEachProviders,
-inject
+beforeEachProviders
 } from 'angular2/testing';
 
 import {WzForm} from './wz.form.component';
@@ -19,8 +18,8 @@ export function main() {
     ]);
 
     it('Should create instance of WzForm',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(WzForm).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(WzForm).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof WzForm).toBeTruthy();
         });
@@ -52,8 +51,8 @@ export function main() {
     );
     
     it('Should pass as a valid form object and send to parent object using the event emitter', 
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(WzForm).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(WzForm).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           instance.items = validItems();
           instance.ngOnInit();

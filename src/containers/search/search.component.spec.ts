@@ -2,7 +2,6 @@ import {
 TestComponentBuilder,
 describe,
 expect,
-injectAsync,
 inject,
 it,
 beforeEachProviders
@@ -68,8 +67,8 @@ export function main() {
     ]);
 
     it('Should have a search instance',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(Search).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(Search).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof Search).toBeTruthy();
         });

@@ -2,7 +2,7 @@ import {
 TestComponentBuilder,
 describe,
 expect,
-injectAsync,
+inject,
 it,
 beforeEachProviders
 } from 'angular2/testing';
@@ -24,8 +24,8 @@ export function main() {
     ]);
 
     it('Should have a user-management instance',
-      injectAsync([TestComponentBuilder], (tcb) => {
-        return tcb.createAsync(UserManagement).then((fixture) => {
+      inject([TestComponentBuilder], (tcb) => {
+        tcb.createAsync(UserManagement).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof UserManagement).toBeTruthy();
         });
