@@ -19,15 +19,15 @@ export class Pagination {
   
   constructor(public fb: FormBuilder) {
     this.form = fb.group({
-      page: ['1' ,Validators.required]
+      page: ['' ,Validators.required]
     });
   }
   
   public getPageNumber(pageNumber): void {
-    if (pageNumber < 0) {
-      this.getPage.emit(0);
-    } else if (pageNumber > this.pagination.numberOfPages - 1) {
-      this.getPage.emit(this.pagination.numberOfPages - 1);
+    if (pageNumber <= 0) {
+      this.getPage.emit(1);
+    } else if (pageNumber > this.pagination.numberOfPages) {
+      this.getPage.emit(this.pagination.numberOfPages);
     } else {
       this.getPage.emit(pageNumber);
     } 

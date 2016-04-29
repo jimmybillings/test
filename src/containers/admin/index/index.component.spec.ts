@@ -11,7 +11,7 @@ import {Index} from './index.component';
 import {AdminService} from '../services/admin.service';
 import {BaseRequestOptions, Http} from 'angular2/http';
 import {provide, Injectable} from 'angular2/core';
-import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
+import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT, RouteParams} from 'angular2/router';
 import {SpyLocation} from 'angular2/src/mock/location_mock';
 import {RootRouter} from 'angular2/src/router/router';
 import {CurrentUser, currentUser} from '../../../common/models/current-user.model';
@@ -57,6 +57,7 @@ export function main() {
       provide(ROUTER_PRIMARY_COMPONENT, { useValue: Index }),
       provide(Router, { useClass: RootRouter }),
       provideStore({currentUser: currentUser}),
+      provide(RouteParams, { useValue: new RouteParams({ i: '1', n: '10', s: 'createdOn', d: 'false' }) }),
       CurrentUser,
       ApiConfig,
       provideStore({config: config}),
@@ -73,36 +74,28 @@ export function main() {
         });
       }));
       
-    it('Should create an instance variable of AdminService and CurrentUser', inject([Index], (component) => {
+    it('Should create an instance variable of routParams, AdminService, and CurrentUser', inject([Index], (component) => {
       expect(component.currentUser).toBeDefined();
       expect(component.adminService).toBeDefined();
+      expect(component.routeParams).toBeDefined();
     }));
     
-    it('Should have a getIndex() method that calls the getResource and setResources methods on the service', inject([Index], (component) => {
+    it('Should have a getIndex() function that calls the getResource and setResources functions on the service', inject([Index], (component) => {
       component.resource = 'account';
+      component.pageSize = {'value': '10'};
       spyOn(component.adminService, 'getResources').and.callThrough();
       spyOn(component.adminService, 'setResources').and.callThrough();
       component.getIndex();
-      expect(component.adminService.getResources).toHaveBeenCalledWith('account', 0);
+      expect(component.adminService.getResources).toHaveBeenCalledWith('account', 1, '10', 'createdOn', false);
       expect(component.adminService.setResources).toHaveBeenCalledWith(mockResponse());
     }));
     
-    it('Should have a getPageNumber() method that calls the getResource and setResources methods on the service', inject([Index], (component) => {
+    it('Should have a navigateToPageUrl function that navigates to a URL', inject([Index], (component) => {
       component.resource = 'account';
-      spyOn(component.adminService, 'getResources').and.callThrough();
-      spyOn(component.adminService, 'setResources').and.callThrough();
-      component.getPageNumber(2);
-      expect(component.adminService.getResources).toHaveBeenCalledWith('account', 2);
-      expect(component.adminService.setResources).toHaveBeenCalledWith(mockResponse());
-    }));
-    
-    it('Should have a getSortedCollection() method that calls the getSortedResources and setResources methods on the service', inject([Index], (component) => {
-      component.resource = 'account';
-      spyOn(component.adminService, 'getSortedResources').and.callThrough();
-      spyOn(component.adminService, 'setResources').and.callThrough();
-      component.getSortedCollection({attr: 'firstName', toggle: true});
-      expect(component.adminService.getSortedResources).toHaveBeenCalledWith('account', 'firstName', true);
-      expect(component.adminService.setResources).toHaveBeenCalledWith(mockResponse());
+      component.pageSize = {'value': '10'};
+      spyOn(component.router, 'navigate');
+      component.navigateToPageUrl(2);
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: '10', s: 'createdOn', d: true }) ]);
     }));
   });
   
