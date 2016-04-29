@@ -1,15 +1,13 @@
 
-app-header md-toolbar.glb {
+md-toolbar.glb {
   position: relative;
   // @include animation(slideDownHeader .75s ease-in-out);
   z-index: 3;
   background-color:rgba(md-color($md-primary, 900), .3);
   border-bottom: solid 1px rgba(contrast-color(md-color($md-primary, 900)), .25);
   position: absolute;
-  // top: 100px;
   top: 0;
   left: 0;
-  // margin-top:-100px;
   a.home-link > .logo-wrapper {
     @include transition(all .4s ease-in-out);
     opacity: .7;
@@ -56,21 +54,21 @@ app-header md-toolbar.glb {
   }
 }
 
-app-header md-toolbar.glb:not(.md-menu-toolbar) [md-button] {
+md-toolbar.glb:not(.md-menu-toolbar) [md-button] {
   &.md-accent {
     color: rgba(md-color($md-accent, 500), .8);
   }
 }
 
-app-header md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-button],
-app-header md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-icon] {
+md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-button],
+md-toolbar.glb.fixed :not(.md-menu-toolbar) [md-icon] {
   @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
 }
 
+
+
 // search box in the header
-app-header md-toolbar.glb .search-tools {
-  // min-height: rem(5.2);
-  // max-height: rem(5.2);
+md-toolbar.glb .search-tools {
   background-color: md-color($md-background, 100);
   .md-toolbar-tools {
     height: 100%;
@@ -78,28 +76,13 @@ app-header md-toolbar.glb .search-tools {
     min-height: 100%;
     padding: 0;
     search-box {
-      // border-width: 0 0 0 1px;
-      // border-style: solid;
-      // border-color: rgba(md-color($md-background, 700), .25);
       margin: 0;
       input {
-        // height:rem(5.2);
-        // height:100%;
-        // max-height: 100%;
-        // min-height: 100%;
-        // max-height: rem(4.6);
-        // min-height: rem(4.6);
-        // color: rgba(md-color($md-background, 900), .7);
-        // padding: 0 0 0 3%;
         width: calc(100% - 78px);
         font-size: 1.1em;
       }
       button[type="submit"] {
         background-color: md-color($md-primary, 500);
-        // right: rem(3.7);
-        // height:rem(5.2);
-        // height:100%;
-        // width:rem(5.7);
         i.material-icons {
           font-size: rem(3.3);
           text-shadow: none;
@@ -132,12 +115,9 @@ app-header md-toolbar.glb .search-tools {
           width: calc(100% - 70px);
           max-height: rem(4);
           min-height: rem(4);
-          // height: rem(4.4);
           font-size: .8em;
         }
         button[type="submit"] {
-          // height:rem(4.4);
-          // width:rem(4);
           i.material-icons {
             font-size: rem(2.8);
           }
@@ -146,7 +126,7 @@ app-header md-toolbar.glb .search-tools {
     }
   }
 }
-app-header md-toolbar.glb.fixed .search-tools {
+md-toolbar.glb.fixed .search-tools {
   background-color: transparent;
   .md-toolbar-tools {
     background-color: transparent;
@@ -164,7 +144,7 @@ app-header md-toolbar.glb.fixed .search-tools {
     }
   }
 }
-app-header md-toolbar.glb.search-closed .search-tools search-box {
+md-toolbar.glb.search-closed .search-tools search-box {
   input {
     max-height: 0;
     min-height: 0;
@@ -174,8 +154,6 @@ app-header md-toolbar.glb.search-closed .search-tools search-box {
     display: none;
   }
 }
-
-
 
 @include keyframes(slideDownHeader) {
   0% {
@@ -188,16 +166,3 @@ app-header md-toolbar.glb.search-closed .search-tools search-box {
     @include transform(translateY(0));
   }
 }
-
-
-// @include keyframes(slideUpHeader) {
-//   0% {
-//     opacity: 1;
-//     @include transform(translateY(-200px));
-//   }
-
-//   100% {
-//     opacity: 1;
-//     @include transform(translateY(0));
-//   }
-// }

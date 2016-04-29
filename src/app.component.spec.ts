@@ -104,5 +104,21 @@ export function main() {
       component.changeLang({lang: 'fr'});
       expect(component.multiLingual.setLanguage).toHaveBeenCalledWith('fr');
     }));
+        
+    it('Should hide the search bar on certain routes', inject([AppComponent], (component) => {
+      ['', '?confirmed=true', 'user/profile', 'user/login', 'user/register', 'admin/'].forEach((item) => {
+        expect(component.checkRouteForSearchBar(item)).toEqual(false);
+      });
+    }));
+    
+    it('Should show the search bar on other routes', inject([AppComponent], (component) => {
+      ['asdf', 'fdsadsf', 'fdsf', 'wefwer', 'aasfasdf'].forEach((item) => {
+        expect(component.checkRouteForSearchBar(item)).toEqual(true);
+      });
+    }));
+    
+    
+    
+    
   });
 }

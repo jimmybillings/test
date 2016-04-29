@@ -17,12 +17,13 @@ import {UiConfig} from './common/config/ui.config';
 import {Notification} from './components/notification/notification.component';
 import {Admin} from './containers/admin/admin.component';
 import {Observable} from 'rxjs/Observable';
+import {SearchBox} from './components/search-box/search-box.component';
 
 
 @Component({
   selector: 'app',
   templateUrl: './app.html',
-  directives: [ROUTER_DIRECTIVES, Header, Footer, Notification],
+  directives: [ROUTER_DIRECTIVES, Header, Footer, Notification, SearchBox],
   providers: [Authentication],
   pipes: [TranslatePipe],
 })
@@ -39,9 +40,11 @@ import {Observable} from 'rxjs/Observable';
 export class AppComponent {
   public header: Observable<any>;
   public footer: Observable<any>;
+  public searchBox: Observable<any>;
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public showFixed: boolean = false;
   public state: string = '';
+  public searchBarIsActive: boolean;
 
   constructor(
     public currentUser: CurrentUser,
@@ -59,18 +62,25 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.router.subscribe(state => this.state = state);
+    this.router.subscribe(state => {
+      this.searchBarIsActive = this.checkRouteForSearchBar(state);
+      this.state = state;
+    });
     window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
     this.uiConfig.initialize(this._apiConfig.getPortal())
       .subscribe(() => {
         this.header = this.uiConfig.get('header');
         this.footer = this.uiConfig.get('footer');
+        this.searchBox = this.uiConfig.get('searchBox');
       });
     this.currentUser.set();
-    // let x = window.document.querySelectorAll("md-toolbar.glb");
-    // console.log(document.querySelectorAll("md-toolbar.glb").offsetHeight);
+    console.log(this.uiConfig.get('searchBox'));
   }
-
+    
+  // ngOnChanges(changes) {
+  //   if (changes.state) this.searchBarIsActive = this.checkRouteForSearchBar(changes.state.currentValue);  
+  // }
+  
   public logout(): void {
     this._authentication.destroy().subscribe();
     this._currentUser.destroy();
@@ -90,5 +100,8 @@ export class AppComponent {
     let setFixed: boolean = (offset > 111) ? true : false;
     if (setFixed !== isfixed) this.showFixed = !this.showFixed;
   }
-
+  public checkRouteForSearchBar(currentState: string): boolean {
+    return ['', 'loggedOut=true', '?confirmed=true', 'user/profile', 'user/login', 'user/register', 'admin/dashboard', 'admin/accounts', 'admin/users']
+      .filter((state) => state.indexOf(currentState) > -1).length === 0;
+  }
 }
