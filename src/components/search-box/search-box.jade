@@ -1,4 +1,4 @@
-form.md-inline-form(layout='row', [ngFormModel]="searchForm", (ngSubmit)="onSubmit(searchForm.value.query)")
+form.md-inline-form(layout='row', flex='100', layout-align='start', [ngFormModel]="searchForm", (ngSubmit)="onSubmit(searchForm.value.query)")
   input(md-input="", type='text', placeholder="{{ 'HOME.SEARCH_BOX_LABEL' | translate }}", ngControl="query")
   button(type='submit',[disabled]="!searchForm.valid") Search
     i.material-icons(md-icon='') search

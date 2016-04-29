@@ -73,7 +73,6 @@ export class AppComponent {
         this.searchBox = this.uiConfig.get('searchBox');
       });
     this.currentUser.set();
-    console.log(this.uiConfig.get('searchBox'));
   }
 
   public logout(): void {

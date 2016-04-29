@@ -1,15 +1,7 @@
-div(*ngIf="header")
-  header
-    md-toolbar.glb([ngClass]="{'fixed': showFixed, 'search-closed': false}")
-      app-header([showFixed]="showFixed", [currentUser]="currentUser", [state]="state", [config]="(header | async)", (onLogOut)="logout()")
-
-          
-      div.search-tools(*ngIf="searchBarIsActive")
-        .md-toolbar-tools(flex='', layout='row', layout-align='start start')
-          search-box([config]="searchBox | async")
-
-
-    
+div.app(*ngIf="header")
+  header.app-header([ngClass]="{'fixed': showFixed, 'search-closed': false}")
+    app-nav([showFixed]="showFixed", [currentUser]="currentUser", [state]="state", [config]="(header | async)", (onLogOut)="logout()")
+    search-box(*ngIf="searchBarIsActive", [config]="searchBox | async")
   notification([state]="state")
   .main-content
     router-outlet
