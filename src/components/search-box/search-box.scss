@@ -21,11 +21,6 @@ search-box {
   }
   button[type="submit"] {
     cursor: pointer;
-    // height: 100%;
-    // position: absolute;
-    // right: 0;
-    // top: 0;
-    // width: rem(5);
     font-size: 0;
     border: none; 
     background-color: md-color($md-accent, 800, .95);
