@@ -1,32 +1,27 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 'angular2/core';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { NgFor } from 'angular2/common';
-import { ValuesPipe } from '../../common/pipes/values.pipe';
 
 @Component({
   selector: 'wz-list',
   templateUrl: 'components/wz-list/wz.list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   directives: [NgFor, MATERIAL_DIRECTIVES],
-  pipes: [ValuesPipe]
 })
 
+/**
+ * WzList component takes three inputs: The collection of items as an array, a string that represents
+ * a toggle, either true or false, and the headers from the UI config to build the table. It outputs a
+ * sortBy event that includes the attribute to sort by, and the opposite of the toggle flag that was
+ * passed in
+ */
 export class WzList {
   @Input() items;
   @Input() headers;
+  @Input() toggleFlag;
   @Output() sort = new EventEmitter();
-  private _toggleSort;
-  
-  constructor () {
-    this._toggleSort = 0;
-  }
-  
+
   public sortBy(attribute: string): void {
-    if (this._toggleSort % 2) {
-      this.sort.emit({'attr': attribute, 'toggle': false}); 
-    } else {
-      this.sort.emit({'attr': attribute, 'toggle': true});
-    }
-    this._toggleSort++;
+    this.sort.emit({'attr': attribute, 'toggle': !this.toggleFlag});
   }
 }

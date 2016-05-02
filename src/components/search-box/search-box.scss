@@ -17,7 +17,6 @@ search-box {
     &:focus {
       outline: none;
       background-color: lighten(md-color($md-background, 100), 40%);
-      // box-shadow: $whiteframe-shadow-z1;
     }
   }
   button[type="submit"] {
@@ -33,9 +32,6 @@ search-box {
     }
     &:hover {
       background-color: md-color($md-accent, 700, 1);
-      // i.material-icons {
-      //   text-shadow: md-color($md-grey, 900, .4) 0 1px 3px;
-      // }
     }
     &[disabled] {
       cursor: default;
@@ -49,15 +45,6 @@ search-box {
    display: none; 
   }
 }
-
-
-
-
-
-
-
-
-
 
 // search box in the header
 header.app-header {
@@ -89,7 +76,7 @@ header.app-header {
       border: none;
       .material-icons[md-icon] {
         font-size: rem(2.3);
-        line-height: 0;
+        line-height: .5;
         @include text-contrast(md-color($md-background, 50));
         opacity: .5;
       }
@@ -104,7 +91,7 @@ header.app-header {
         width: calc(100% - 70px);
         max-height: rem(4);
         min-height: rem(4);
-        font-size: .8em;
+        font-size: 1em;
       }
       button[type="submit"] {
         i.material-icons {
