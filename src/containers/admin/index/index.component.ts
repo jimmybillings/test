@@ -40,7 +40,6 @@ export class Index implements CanReuse {
   routerCanReuse(next: ComponentInstruction, prev: ComponentInstruction) { return false; }
   
   ngOnInit(): void {
-    console.log('new instance');
     this.resource = this.getResourceFromUrl();
     this.uiConfig.get('admin').subscribe((config) => {
       this.components = config.components;
@@ -65,8 +64,7 @@ export class Index implements CanReuse {
   public navigateToPageUrl(pageNum: number): void  {
     let searchQueryString = this.getRouteParams();
     let component = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
-    console.log(searchQueryString, component);
-    this.router.navigate(['/Admin/' + component, { i: pageNum, n: this.pageSize.value, s: searchQueryString.s, d: !searchQueryString.d }]);
+    this.router.navigate(['/Admin/' + component, { i: pageNum, n: this.pageSize.value, s: searchQueryString.s, d: searchQueryString.d }]);
   }
   
   public navigateToSortUrl(attr: string): void  {
@@ -77,7 +75,7 @@ export class Index implements CanReuse {
   
   public getRouteParams(): any {
     let sortAttr = this.routeParams.get('s') || 'createdOn';
-    let sortOrder = (this.routeParams.get('d') ?  false : true);
+    let sortOrder = this.routeParams.get('d');
     let pageNum = parseInt(this.routeParams.get('i')) || 1;
     let perPage = parseInt(this.routeParams.get('n')) || this.pageSize.value;
     return { 'i': pageNum, 'n': perPage, 's': sortAttr, 'd': sortOrder };

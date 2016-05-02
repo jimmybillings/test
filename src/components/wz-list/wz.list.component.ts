@@ -15,6 +15,6 @@ export class WzList {
   @Output() sort = new EventEmitter();
 
   public sortBy(attribute: string): void {
-    this.sort.emit(attribute); 
+    this.sort.emit(attribute);
   }
 }
