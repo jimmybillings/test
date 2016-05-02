@@ -10,12 +10,21 @@ section.search-results
         h1.md-display-1.alert.warning(*ngIf="!assets.items")
           | No items can be found for that search
 
+      .pagination.md-body-2.pg-bottom(layout='row' layout-align='end end') 
+        .results-count(flex='40', *ngIf="assets.pagination.totalCount") {{assets.pagination.totalCount}} results
+        pagination([pagination]="assets.pagination", [currentPage]="routeParams.params.i || 0", (getPage)="changePage($event)")
+
     div(flex-xl="70", flex-gt-lg="80", flex="100", *ngIf="config.viewType.value == 'list'")
-      // .pagination.md-body-2(layout='row' layout-align='end center') 
-        .results-count {{assets.totalCount}} results
+      .pagination.md-body-2(layout='row' layout-align='end end') 
+        .results-count(flex='40', *ngIf="assets.pagination.totalCount") {{assets.pagination.totalCount}} results
+        pagination([pagination]="assets.pagination", [currentPage]="routeParams.params.i || 0", (getPage)="changePage($event)")
       div(layout='row')
         asset-list([assets]="assets.items", class="{{config.viewType.value}}")
         
+      .pagination.md-body-2.pg-bottom(layout='row' layout-align='end end') 
+        .results-count(flex='40', *ngIf="assets.pagination.totalCount") {{assets.pagination.totalCount}} results
+
+
         .alert.warning(*ngIf="!assets.items")
           | No items can be found for that search
           

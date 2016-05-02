@@ -3,6 +3,10 @@
   min-height: rem(3.4);
   max-height: rem(3.4);
   opacity: .75;
+  &.pg-bottom {
+    margin-top: 0;  
+    margin-bottom: rem(3.4);  
+  }
 }
 pagination {
   .text-nav > span {
