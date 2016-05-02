@@ -36,6 +36,12 @@ pagination {
   }
   button[md-button].md-icon-button {
     margin: 0;
+    line-height: 1;
+    padding: rem(.5);
+    .material-icons {
+      font-size: rem(3);
+      opacity: .75;
+    }
   }
 }
 .results-count {
