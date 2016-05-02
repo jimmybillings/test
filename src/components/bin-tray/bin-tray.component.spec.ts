@@ -25,7 +25,7 @@ export function main() {
       RouteRegistry,
       ViewportHelper,
       provide(Location, { useClass: SpyLocation }),
-      provide(ROUTER_PRIMARY_COMPONENT, { useValue: SearchBox }),
+      provide(ROUTER_PRIMARY_COMPONENT, { useValue: BinTray }),
       provide(Router, { useClass: RootRouter }),
       UiConfig
     ]);
