@@ -43,7 +43,7 @@ export function main() {
     
     it('Should have a buildUrl function that builds the appropriate url given search parameters', inject([AdminService], (service) => {
       spyOn(service, 'buildUrl').and.callThrough();
-      let builtUrl = service.buildUrl('account', 2, 10, 'createdOn', 'false');
+      let builtUrl = service.buildUrl({resource: 'account', i: 2, n: 10, s: 'createdOn', d: 'false', q: ''});
       expect(builtUrl).toEqual(service._apiConfig.baseUrl() + 'api/identities/v1/account/search/?q=&s=createdOn&d=false&i=1&n=10');
     }));
     
