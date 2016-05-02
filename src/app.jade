@@ -1,8 +1,9 @@
+
 div.app(*ngIf="header")
   notification([state]="state")
   header.app-header([ngClass]="{'fixed': showFixed, 'bin-tray-closed': !binTrayIsOpen, 'search-closed': !searchIsOpen}")
     app-nav([showFixed]="showFixed", [currentUser]="currentUser", [state]="state", [config]="(header | async)", (onLogOut)="logout()", (onOpenSearch)="openSearch()", (onOpenBinTray)="openBinTray()")
-    search-box(*ngIf="searchBarIsActive", [config]="searchBox | async", (onCloseSearch)="closeSearch()")
+    search-box(*ngIf="searchBarIsActive", [config]="searchBox | async", (onCloseSearch)="closeSearch()", (searchContext)="newSearchContext($event)")
     bin-tray([showFixed]="showFixed", (onCloseBinTray)="closeBinTray()")
   .main-content([ngClass]="{'bin-tray-closed': !binTrayIsOpen, 'search-closed': !searchIsOpen}")
     router-outlet

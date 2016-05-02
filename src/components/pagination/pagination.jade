@@ -3,7 +3,7 @@ span(flex='')
     form.md-inline-form(layout='row', [ngFormModel]="form", (ngSubmit)="getPageNumber(form.value.page - 1)")
       .text-nav
         span displaying page
-        input(type='text', ngControl="page", value="{{ pagination.currentPage + 1 }}")
+        input(type='text', ngControl="page")
         span of {{ pagination.numberOfPages }}
     button.md-icon-button(*ngIf="pagination.hasPreviousPage", md-button='', title='previous page', (click)="getPageNumber(pagination.currentPage - 1)")
       i.material-icons(md-icon) keyboard_arrow_left

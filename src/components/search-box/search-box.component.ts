@@ -17,6 +17,7 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 export class SearchBox {
   @Input() config;
   @Output() onCloseSearch = new EventEmitter();
+  @Output() searchContext = new EventEmitter();
   private searchForm: ControlGroup;
   
   constructor(
@@ -41,8 +42,8 @@ export class SearchBox {
    * Changes URL to search page and sets search params to query string and page size
    * @param query  Value of search input
   */
-  public onSubmit(query: string): void {
-    this.router.navigate(['/Search', { q: query, n: this.config.pageSize.value }]);
+  public onSubmit(query): void {
+    this.searchContext.emit(query);
   }
     
   public closeSearch(event) {

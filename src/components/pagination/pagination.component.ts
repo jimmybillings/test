@@ -10,26 +10,35 @@ import { FORM_DIRECTIVES, FormBuilder, Validators } from 'angular2/common';
   directives: [MATERIAL_DIRECTIVES, FORM_DIRECTIVES, NgIf, NgFor, NgClass]
 })
 
+/**
+ * The Pagination component takes an input of the Pagination Object that is returned with 
+ * all API calls. It ouputs a getPage event with the pageNumber for the API to get.
+ */
 export class Pagination {
   @Input() pagination;
+  @Input() currentPage;
   @Output() getPage = new EventEmitter();
   
   public form: Object;
-  public currentPage = Number;
   
-  constructor(public fb: FormBuilder) {
-    this.form = fb.group({
-      page: ['1' ,Validators.required]
+  constructor(public fb: FormBuilder) {}
+  
+  ngOnInit() {
+    this.form = this.fb.group({
+      page: [parseInt(this.currentPage)+1 || 0, Validators.required]
     });
   }
   
   public getPageNumber(pageNumber): void {
-    if (pageNumber < 0) {
+    pageNumber = Number(pageNumber);
+    if (pageNumber <= 0) {
       this.getPage.emit(0);
-    } else if (pageNumber > this.pagination.numberOfPages - 1) {
-      this.getPage.emit(this.pagination.numberOfPages - 1);
+    } else if (pageNumber > this.pagination.numberOfPages) {
+      this.getPage.emit(this.pagination.numberOfPages);
     } else {
+      console.log(pageNumber);
       this.getPage.emit(pageNumber);
     } 
   }
+  
 }

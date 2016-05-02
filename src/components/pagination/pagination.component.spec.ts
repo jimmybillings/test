@@ -30,7 +30,7 @@ export function main() {
       component.pagination = {'numberOfPages': 3};
       spyOn(component.getPage, 'emit');
       component.getPageNumber(7);
-      expect(component.getPage.emit).toHaveBeenCalledWith(2);
+      expect(component.getPage.emit).toHaveBeenCalledWith(3);
     }));
     
     it('getPageNumber() should return the first page if a page of 0 or lower is entered', inject([Pagination], (component) => {

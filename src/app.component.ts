@@ -18,13 +18,14 @@ import {Notification} from './components/notification/notification.component';
 import {Admin} from './containers/admin/admin.component';
 import {SearchBox} from './components/search-box/search-box.component';
 import {BinTray} from './components/bin-tray/bin-tray.component';
+import {SearchContext} from './common/services/search-context.service';
 import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'app',
   templateUrl: './app.html',
   directives: [ROUTER_DIRECTIVES, Header, Footer, Notification, SearchBox, BinTray],
-  providers: [Authentication],
+  providers: [Authentication, SearchContext],
   pipes: [TranslatePipe],
 })
 
@@ -57,7 +58,8 @@ export class AppComponent {
     public router: Router,
     private _currentUser: CurrentUser,
     public multiLingual: MultilingualService,
-    public location: Location) {
+    public location: Location,
+    public searchContext: SearchContext) {
 
       this._apiConfig.setPortal('core');
       multiLingual.setLanguage(window.navigator.language.split('-')[0]);
@@ -66,7 +68,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.router.subscribe(state => {
-      this.searchBarIsActive = this.checkRouteForSearchBar(state);
+      this.searchBarIsActive = this.checkRouteForSearchBar(this.router.currentInstruction.component.routeName);
       this.state = state;
     });
     window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
@@ -87,9 +89,7 @@ export class AppComponent {
     this.router.navigate(['/Home']);
   }
 
-  public changeLang(data): void {
-    this.multiLingual.setLanguage(data.lang);
-  }
+  public changeLang(data): void { this.multiLingual.setLanguage(data.lang); }
 
   public closeBinTray(): void {
     this.binTrayIsOpen = false;
@@ -120,7 +120,9 @@ export class AppComponent {
    * @param currentState state that determines current page.
   */
   public checkRouteForSearchBar(currentState: string): boolean {
-    return ['', 'loggedOut=true', '?confirmed=true', 'user/profile', 'user/login', 'user/register', 'admin/dashboard', 'admin/accounts', 'admin/users']
+    return ['UserManagement', 'Home', 'Admin']
       .filter((state) => state.indexOf(currentState) > -1).length === 0;
   }
+  
+  public newSearchContext(data): void { this.searchContext.new({q: data, i: 0}); }
 }

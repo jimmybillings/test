@@ -5,6 +5,7 @@ import {NgIf} from 'angular2/common';
 import {CurrentUser} from '../../common/models/current-user.model';
 import {SearchBox} from '../../components/search-box/search-box.component';
 import {UiConfig} from '../../common/config/ui.config';
+import {SearchContext} from '../../common/services/search-context.service';
 
 /**
  * Home page component - renders the home page
@@ -23,7 +24,8 @@ export class Home {
   constructor(
     public currentUser: CurrentUser,
     public router: Router,
-    public uiConfig: UiConfig) {
+    public uiConfig: UiConfig,
+    public searchContext: SearchContext) {
   }
   
   ngOnInit() {
@@ -32,5 +34,7 @@ export class Home {
       this.config = config.config;
     }); 
   }
+  
+  public newSearchContext(query): void { this.searchContext.new({q: query, i: 0}); }
   
 }

@@ -4,7 +4,7 @@ header.hero
         div(layout='column', layout-align='center', layout-wrap='')
           .logo-wrapper
             .logo
-          search-box([config]="components.searchBox")
+          search-box([config]="components.searchBox", (searchContext)="newSearchContext($event)")
           h4.md-headline
             | {{ 'HOME.SEARCH_HEADING' | translate }}
 

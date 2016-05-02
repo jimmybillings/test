@@ -7,12 +7,14 @@ import { Store, Reducer, Action} from '@ngrx/store';
 import { RequestOptions, URLSearchParams } from 'angular2/http';
 
 const initAssets = {
-  hasNextPage: false,
-  hasPreviousPage: false,
   items: [],
-  numberOfPages: 0,
-  pageSize: 100,
-  totalCount: 0
+  pagination: {
+    hasNextPage: false,
+    hasPreviousPage: false,
+    numberOfPages: 0,
+    pageSize: 100,
+    totalCount: 0
+  }
 };
 
 export const assets: Reducer<any> = (state: any = initAssets, action: Action) => {
@@ -22,6 +24,8 @@ export const assets: Reducer<any> = (state: any = initAssets, action: Action) =>
       return Object.assign({}, action.payload);
     case 'SEARCH.RESET':
       return Object.assign({}, initAssets);
+    case 'SEARCH.CLEAR_ASSETS':
+      return Object.assign({}, state, state.items = []);
     default:
       return state;
   }
@@ -62,15 +66,29 @@ export class AssetData {
   public searchAssets(params: { [key: string]: string }): Observable<any> {
     let options = this.getAssetSearchOptions(params, this.currentUser.loggedIn());
     return this.http.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options)
-      .map((res: Response) => ({ type: 'SEARCH', payload: res.json() }));
+      .map((res: Response) => (res.json()));
   }
   
   public storeAssets(payload): void {
-    this.store.dispatch(payload);
+    this.store.dispatch({type: 'SEARCH', payload: {
+      'items': payload.items,
+      'pagination': {
+        'totalCount': payload.totalCount,
+        'currentPage': payload.currentPage,
+        'hasNextPage': payload.hasNextPage,
+        'hasPreviousPage': payload.hasPreviousPage,
+        'numberOfPages': payload.numberOfPages,
+        'pageSize': payload.pageSize
+      }
+    }});
   }
   
   public reset(): void {
     this.store.dispatch({ type: 'SEARCH.RESET' });
+  }
+  
+  public clearAssets(): void {
+    this.store.dispatch({ type: 'SEARCH.CLEAR_ASSETS' });
   }
 
   /**
