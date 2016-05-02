@@ -36,7 +36,6 @@ export class Pagination {
     } else if (pageNumber > this.pagination.numberOfPages) {
       this.getPage.emit(this.pagination.numberOfPages);
     } else {
-      console.log(pageNumber);
       this.getPage.emit(pageNumber);
     } 
   }
