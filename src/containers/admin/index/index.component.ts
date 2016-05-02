@@ -43,7 +43,7 @@ export class Index implements CanReuse {
   routerCanReuse(next: ComponentInstruction, prev: ComponentInstruction) { return false; }
   
   ngOnInit(): void {
-    this.resource = this.getResourceFromUrl();
+    this.resource = this._getResourceFromUrl();
     this.currentComponent = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
     this.uiConfig.get('admin').subscribe((config) => {
       this.components = config.components;
@@ -59,7 +59,7 @@ export class Index implements CanReuse {
   }
   
   public getIndex(): void {
-    let queryObject = this.buildQueryObject();
+    let queryObject = this._buildQueryObject();
     this.toggleFlag = queryObject.d;
     this.adminService.getResources(queryObject).subscribe(data => {
       this.adminService.setResources(data); 
@@ -67,7 +67,7 @@ export class Index implements CanReuse {
   }
   
   public navigateToPageUrl(i: number): void  {
-    let queryObject = this.buildQueryObject();
+    let queryObject = this._buildQueryObject();
     let urlParameters = { i, n: this.pageSize.value, s: queryObject.s, d: queryObject.d };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
@@ -78,17 +78,13 @@ export class Index implements CanReuse {
   }
   
   public navigateToFilterUrl(args: any): void {
-    /**
-     * function here to turn args into multiple field queryObject
-     * currently using first value of object that's passed in (which is required by wz-form)
-     */
-    let queryObject = this.buildQueryObject();
-    let q = args[Object.keys(args)[0]];
+    let queryObject = this._buildQueryObject();
+    let q = this._getSearchTerm(args);
     let urlParameters = { i: 1, n: this.pageSize.value, s: queryObject.s, d: queryObject.d, q };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
-  public buildQueryObject(): any {
+  private _buildQueryObject(): any {
     let resource = this.resource;
     let s = this.routeParams.get('s') || 'createdOn';
     let d = (this.routeParams.get('d') ? true : false);
@@ -102,8 +98,14 @@ export class Index implements CanReuse {
    * Uses the location of the url to pick out the resource to be passed through to the service
    * Eventually, this will have to change when there are more resources
    */
-  public getResourceFromUrl() {
+  private _getResourceFromUrl() {
     let path = window.location.pathname;
     return path.indexOf('users') > -1 ? 'user' : 'account';
+  }
+  
+  private _getSearchTerm(args: any): string {
+    return Object.keys(args).reduce((prev, key) => {
+      return prev + args[key];
+    }, '');
   }
 }
