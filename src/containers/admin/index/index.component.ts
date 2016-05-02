@@ -68,9 +68,8 @@ export class Index implements CanReuse {
   }
   
   public navigateToSortUrl(args: any): void  {
-    let searchQueryString = this.getRouteParams();
     let component = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
-    this.router.navigate(['/Admin/' + component, { i: searchQueryString.i, n: this.pageSize.value, s: args.attr, d: args.toggle }]);
+    this.router.navigate(['/Admin/' + component, { i: 1, n: this.pageSize.value, s: args.attr, d: args.toggle }]);
   }
   
   public getRouteParams(): any {
