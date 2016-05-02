@@ -13,7 +13,6 @@ export const searchContext: Reducer<any> = (state: any = initSearchContext, acti
 
   switch (action.type) {
     case 'SEARCHCONTEXT.SET':
-      console.log(state);
       return Object.assign({}, state, action.payload);
     case 'SEARCHCONTEXT.RESET':
       return Object.assign({}, initSearchContext);
@@ -31,7 +30,7 @@ export class SearchContext {
   
   public new(params: Object): void {
     this.set(params);
-    this.context.subscribe(params => { console.log(params); this.router.navigate(['/Search', params]); }).unsubscribe(); 
+    this.router.navigate(['/Search', this.store.getState().searchContext]);
   }
   
   public set(params: Object): void {

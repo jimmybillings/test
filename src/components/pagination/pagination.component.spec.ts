@@ -37,7 +37,7 @@ export function main() {
       component.pagination = {'numberOfPages': 3};
       spyOn(component.getPage, 'emit');
       component.getPageNumber(-1);
-      expect(component.getPage.emit).toHaveBeenCalledWith(1);
+      expect(component.getPage.emit).toHaveBeenCalledWith(0);
     }));
   });
 }

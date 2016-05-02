@@ -30,12 +30,15 @@ export class Pagination {
   }
   
   public getPageNumber(pageNumber): void {
-    if (pageNumber <= 1) {
-      this.getPage.emit(1);
+    pageNumber = Number(pageNumber);
+    if (pageNumber <= 0) {
+      this.getPage.emit(0);
     } else if (pageNumber > this.pagination.numberOfPages) {
       this.getPage.emit(this.pagination.numberOfPages);
     } else {
+      console.log(pageNumber);
       this.getPage.emit(pageNumber);
     } 
   }
+  
 }

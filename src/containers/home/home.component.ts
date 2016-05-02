@@ -35,6 +35,6 @@ export class Home {
     }); 
   }
   
-  public newSearchContext(data): void { this.searchContext.new({q: data, i: 0}); }
+  public newSearchContext(query): void { this.searchContext.new({q: query, i: 0}); }
   
 }

@@ -1,6 +1,6 @@
 span(flex='')
   nav.md-toolbar-tools
-    form.md-inline-form(layout='row', [ngFormModel]="form", (ngSubmit)="getPageNumber(form.value.page)")
+    form.md-inline-form(layout='row', [ngFormModel]="form", (ngSubmit)="getPageNumber(form.value.page - 1)")
       .text-nav
         span displaying page
         input(type='text', ngControl="page")
