@@ -21,13 +21,3 @@ header.app-header.bin-tray-closed + div.main-content search {
 header.app-header.bin-tray-closed.search-closed + div.main-content search {
   border-top: rem(6.4) solid md-color($md-primary, 900, .7);
 }
-
-
-
-
-.pagination {
-  margin: 26px 0 0 0;
-  .results-count {
-    opacity: .75;
-  }
-}

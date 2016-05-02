@@ -1,9 +1,9 @@
 section.search-results
   div(layout='row', md-scroll-y='', layout-align='center start', layout-padding='')
     div(flex-xl="85", flex-gt-lg="95", flex="100", *ngIf="config.viewType.value == 'grid'")
-      .pagination.md-body-2(layout='row' layout-align='end center') 
+      .pagination.md-body-2(layout='row' layout-align='end end') 
+        .results-count(flex='40', *ngIf="assets.pagination.totalCount") {{assets.pagination.totalCount}} results
         pagination([pagination]="assets.pagination", [currentPage]="routeParams.params.i || 0", (getPage)="changePage($event)")
-        .results-count(*ngIf="assets.pagination.totalCount") {{assets.pagination.totalCount}} results
 
       div(layout='column')        
         asset-list([assets]="assets.items", class="{{config.viewType.value}}", [currentUser]="currentUser", (onShowAsset)="showAsset($event)")        
@@ -11,7 +11,7 @@ section.search-results
           | No items can be found for that search
 
     div(flex-xl="70", flex-gt-lg="80", flex="100", *ngIf="config.viewType.value == 'list'")
-      .pagination.md-body-2(layout='row' layout-align='end center') 
+      // .pagination.md-body-2(layout='row' layout-align='end center') 
         .results-count {{assets.totalCount}} results
       div(layout='row')
         asset-list([assets]="assets.items", class="{{config.viewType.value}}")
