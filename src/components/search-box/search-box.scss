@@ -4,7 +4,8 @@ search-box {
   position: relative;
   overflow: hidden;
   input {
-    width: calc(100% - 64px);
+    font-size: 1.2em;
+    width: calc(100% - 46px);
     padding: 0 0 0 3%;
     max-height: rem(4.6);
     min-height: rem(4.6);
@@ -16,7 +17,7 @@ search-box {
     &:focus {
       outline: none;
       background-color: lighten(md-color($md-background, 100), 40%);
-      box-shadow: $whiteframe-shadow-z1;
+      // box-shadow: $whiteframe-shadow-z1;
     }
   }
   button[type="submit"] {
@@ -46,5 +47,96 @@ search-box {
   }
   button.close {
    display: none; 
+  }
+}
+
+
+
+
+
+
+
+
+
+
+// search box in the header
+header.app-header {
+  search-box {
+    form {
+      background-color: md-color($md-background, 100);
+    }
+    margin: 0;
+    input {
+      width: calc(100% - 78px);
+      font-size: 1.24em;
+    }
+    button[type="submit"] {
+      background-color: md-color($md-primary, 700, .45);
+      i.material-icons {
+        font-size: rem(3.3);
+        text-shadow: none;
+      }
+    }
+    button.close {
+      display: block;
+      margin: 0;
+      height: auto;
+      width: rem(3.4);
+      padding: 0;
+      border-radius: 0;
+      font-size: 0;
+      line-height: 0;
+      border: none;
+      .material-icons[md-icon] {
+        font-size: rem(2.3);
+        line-height: 0;
+        @include text-contrast(md-color($md-background, 50));
+        opacity: .5;
+      }
+    }
+    button:focus {
+      outline: none;
+    }
+  }
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    search-box {
+      input {
+        width: calc(100% - 70px);
+        max-height: rem(4);
+        min-height: rem(4);
+        font-size: .8em;
+      }
+      button[type="submit"] {
+        i.material-icons {
+          font-size: rem(2.8);
+        }
+      }
+    }
+  }
+}
+header.app-header.fixed {
+  search-box {
+    form {
+      border-width: 1px 0 0 0;
+      border-style: solid;
+      border-color: rgba(md-color($md-background, 500), .25);
+      background-color: transparent;
+    }
+    input {
+      background-color: transparent;
+    }
+    button[type="submit"] i.material-icons {
+      @include text-contrast(md-color($md-primary, 700), md-color($md-background, 700), md-color($md-background, 100));
+    }
+  }
+}
+header.app-header.search-closed search-box {
+  input {
+    max-height: 0;
+    min-height: 0;
+    font-size: 0; 
+  }
+  button, button.close {
+    display: none;
   }
 }

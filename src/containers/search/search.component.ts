@@ -9,14 +9,15 @@ import {UiConfig} from '../../common/config/ui.config';
 import {Observable} from 'rxjs/Rx';
 import {CurrentUser} from '../../common/models/current-user.model';
 import { Error } from '../../common/services/error.service';
-
+import {Pagination} from '../../components/pagination/pagination.component';
+import {SearchContext} from '../../common/services/search-context.service';
 /**
  * Asset search page component - renders search page results
  */
 @Component({
   selector: 'search',
   templateUrl: 'containers/search/search.html',
-  directives: [NgStyle, CORE_DIRECTIVES, AssetList],
+  directives: [NgStyle, CORE_DIRECTIVES, AssetList, Pagination],
   viewProviders: [HTTP_PROVIDERS, AssetData],
   pipes: [TranslatePipe]
 
@@ -35,8 +36,12 @@ export class Search {
     public router: Router,
     public uiConfig: UiConfig,
     public currentUser: CurrentUser,
-    public error: Error) {
+    public error: Error,
+    public searchContext: SearchContext) {
     this.assets = this.assetData.assets;
+    this.assets.subscribe(data => {
+      this.assets = data;
+    });
   }
 
   ngOnInit(): void {
@@ -48,17 +53,19 @@ export class Search {
   }
   
   ngOnDestroy(): void {
-    this.assetData.reset();
+    this.assetData.clearAssets();
   }
 
   showAsset(asset): void {
     this.router.navigate(['/Asset', { name: asset.assetId }]);
   }
+  
+  changePage(page): void {
+    this.searchContext.new({i: page});
+  }
 
-  /**
-   * Subscribes to an api search for assets, and sends the search parameters from the URL 
-  */
   public searchAssets(): void {
+    // this.searchContext.set(this.routeParams.params);
     this.assetData.searchAssets(this.routeParams.params).subscribe(
       payload => this.assetData.storeAssets(payload),
       error => this.error.handle(error)

@@ -21,6 +21,7 @@ import { provideStore } from '@ngrx/store/dist/index';
 import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
 import {Authentication} from './containers/user-management/services/authentication.data.service';
 import {MultilingualService, multilingualReducer} from './common/services/multilingual.service';
+import {SearchContext} from './common/services/search-context.service';
 
 
 export function main() {
@@ -49,7 +50,8 @@ export function main() {
       TranslateService,
       ApiConfig,
       Authentication,
-      UiConfig
+      UiConfig,
+      SearchContext
     ]);
     
     it('Create instance of app and assign the CurrentUser to an instance variable inside of app', 

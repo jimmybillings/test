@@ -17,13 +17,14 @@ import {UiConfig} from './common/config/ui.config';
 import {Notification} from './components/notification/notification.component';
 import {Admin} from './containers/admin/admin.component';
 import {SearchBox} from './components/search-box/search-box.component';
+import {SearchContext} from './common/services/search-context.service';
 import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'app',
   templateUrl: './app.html',
   directives: [ROUTER_DIRECTIVES, Header, Footer, Notification, SearchBox],
-  providers: [Authentication],
+  providers: [Authentication, SearchContext],
   pipes: [TranslatePipe],
 })
 
@@ -53,7 +54,8 @@ export class AppComponent {
     public router: Router,
     private _currentUser: CurrentUser,
     public multiLingual: MultilingualService,
-    public location: Location) {
+    public location: Location,
+    public searchContext: SearchContext) {
 
       this._apiConfig.setPortal('core');
       multiLingual.setLanguage(window.navigator.language.split('-')[0]);
@@ -73,7 +75,6 @@ export class AppComponent {
         this.searchBox = this.uiConfig.get('searchBox');
       });
     this.currentUser.set();
-    console.log(this.uiConfig.get('searchBox'));
   }
 
   public logout(): void {
@@ -82,9 +83,7 @@ export class AppComponent {
     this.router.navigate(['/Home']);
   }
 
-  public changeLang(data): void {
-    this.multiLingual.setLanguage(data.lang);
-  }
+  public changeLang(data): void { this.multiLingual.setLanguage(data.lang); }
 
   /**
    * Display a fixed header with different styling when the page scrolls down past 68 pixels.
@@ -104,7 +103,5 @@ export class AppComponent {
       .filter((state) => state.indexOf(currentState) > -1).length === 0;
   }
   
-  public newSearchContext(data) {
-    this.router.navigate(['/Search', { q: data, n: 100 }]);
-  }
+  public newSearchContext(data): void { this.searchContext.new({q: data, i: 0}); }
 }

@@ -89,7 +89,7 @@ export function main() {
         connection = mockBackend.connections.subscribe(c => connection = c);
         service.searchAssets(searchParams()).subscribe((payload) => {
           expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/assets/v1/search/anonymous/solrcloud?q=green&n=25&siteName=core');
-          expect(payload).toEqual( { type: 'SEARCH', payload: MockSearchResultsResponse()});
+          expect(payload).toEqual(MockSearchResultsResponse());
         });
         connection.mockRespond(new Response(
           new ResponseOptions({

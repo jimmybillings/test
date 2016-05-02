@@ -12,14 +12,16 @@ import { FORM_DIRECTIVES, FormBuilder, Validators } from 'angular2/common';
 
 export class Pagination {
   @Input() pagination;
+  @Input() currentPage;
   @Output() getPage = new EventEmitter();
   
   public form: Object;
-  public currentPage = Number;
   
-  constructor(public fb: FormBuilder) {
-    this.form = fb.group({
-      page: ['1' ,Validators.required]
+  constructor(public fb: FormBuilder) {}
+  
+  ngOnInit() {
+    this.form = this.fb.group({
+      page: [parseInt(this.currentPage)+1 || 0, Validators.required]
     });
   }
   
