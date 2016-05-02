@@ -1,4 +1,4 @@
-import {Component, Input, ChangeDetectionStrategy, Output, EventEmitter} from 'angular2/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from 'angular2/core';
 import {FormBuilder, Validators, ControlGroup, FORM_DIRECTIVES} from 'angular2/common';
 import {Router} from 'angular2/router';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
@@ -16,6 +16,7 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 
 export class SearchBox {
   @Input() config;
+  @Output() onCloseSearch = new EventEmitter();
   @Output() searchContext = new EventEmitter();
   private searchForm: ControlGroup;
   
@@ -43,6 +44,10 @@ export class SearchBox {
   */
   public onSubmit(query): void {
     this.searchContext.emit(query);
+  }
+    
+  public closeSearch(event) {
+    this.onCloseSearch.emit(event);
   }
 }
 
