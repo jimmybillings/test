@@ -21,11 +21,11 @@ export class AdminService {
   public pageStore: Observable<any>;
   private _http: Http;
   private _apiConfig: ApiConfig;
-  private _routeConfig: {
+  private _identitesSearchConfig: {
     resource: string,
     q: string;
     s: string;
-    d: boolean;
+    d: string;
     i: number;
     n: number
   };
@@ -34,39 +34,35 @@ export class AdminService {
       this._http = http;
       this.adminStore = this.store.select('adminResources');
       this._apiConfig = apiConfig;
-      this._routeConfig = {
+      this._identitesSearchConfig = {
         resource: '',
         q: '',
         s: 'createdOn',
-        d: false,
-        i: 0,
+        d: 'false',
+        i: 1,
         n: 10
       };
     }
   
-  public getResources(resource: string, i: number): Observable<any> {
-    let url = this.buildUrl(resource, i, this._routeConfig.s, this._routeConfig.d);
+  public getResources(resource: string, i: number, n: number, s: string, d: string): Observable<any> {
+    let url = this.buildUrl(resource, i, n, s, d);
     return this._http.get(url, {headers: this._apiConfig.authHeaders()})
       .map((res: Response) => res.json());
   }
   
-  public getSortedResources(resource: string, attribute: string, toggleOrder: boolean): Observable<any> {
-    let url = this.buildUrl(resource, 0, attribute, toggleOrder);
-    return this._http.get(url, {headers: this._apiConfig.authHeaders()})
-      .map((res: Response) => res.json());
-  }
-  
-  public buildUrl(resource: string, i: number, s: string, d: boolean): string {
-    this._routeConfig.resource = resource;
-    this._routeConfig.i = i;
-    this._routeConfig.s = s;
-    this._routeConfig.d = d;
-    return this._apiConfig.baseUrl() + 'api/identities/v1/' + this._routeConfig.resource
-                                     + '/search/?q=' + this._routeConfig.q
-                                     + '&s=' + this._routeConfig.s
-                                     + '&d=' + this._routeConfig.d
-                                     + '&i=' + this._routeConfig.i
-                                     + '&n=' + this._routeConfig.n;
+  public buildUrl(resource: string, i: number, n: number, s: string, d: string): string {
+    this._identitesSearchConfig.resource = resource;
+    this._identitesSearchConfig.q = '';
+    this._identitesSearchConfig.i = i;
+    this._identitesSearchConfig.n = n;
+    this._identitesSearchConfig.s = s;
+    this._identitesSearchConfig.d = d;
+    return this._apiConfig.baseUrl() + 'api/identities/v1/' + this._identitesSearchConfig.resource
+                                     + '/search/?q=' + this._identitesSearchConfig.q
+                                     + '&s=' + this._identitesSearchConfig.s
+                                     + '&d=' + this._identitesSearchConfig.d
+                                     + '&i=' + (this._identitesSearchConfig.i - 1) 
+                                     + '&n=' + this._identitesSearchConfig.n;
   }
 
     
@@ -75,7 +71,7 @@ export class AdminService {
       'items': data.items,
       'pagination': {
         'totalCount': data.totalCount,
-        'currentPage': data.currentPage,
+        'currentPage': data.currentPage + 1,
         'hasNextPage': data.hasNextPage,
         'hasPreviousPage': data.hasPreviousPage,
         'numberOfPages': data.numberOfPages,

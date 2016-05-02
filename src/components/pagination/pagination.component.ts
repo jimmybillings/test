@@ -24,10 +24,10 @@ export class Pagination {
   }
   
   public getPageNumber(pageNumber): void {
-    if (pageNumber < 0) {
-      this.getPage.emit(0);
-    } else if (pageNumber > this.pagination.numberOfPages - 1) {
-      this.getPage.emit(this.pagination.numberOfPages - 1);
+    if (pageNumber <= 0) {
+      this.getPage.emit(1);
+    } else if (pageNumber > this.pagination.numberOfPages) {
+      this.getPage.emit(this.pagination.numberOfPages);
     } else {
       this.getPage.emit(pageNumber);
     } 

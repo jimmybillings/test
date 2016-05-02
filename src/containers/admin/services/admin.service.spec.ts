@@ -28,42 +28,32 @@ export function main() {
     it('Should create instance variables for http, routeConfig, and apiConfig', inject([AdminService, MockBackend], (service, mockBackend) => {
       expect(service._http).toBeDefined();
       expect(service._apiConfig).toBeDefined();
-      expect(service._routeConfig).toBeDefined();
+      expect(service._identitesSearchConfig).toBeDefined();
     }));
     
     it('Should create a routeConfig instance variable with default attributes', inject([AdminService], (service) => {
-      let config = service._routeConfig;
+      let config = service._identitesSearchConfig;
       expect(config.resource).toEqual('');
       expect(config.q).toEqual('');
       expect(config.s).toEqual('createdOn');
-      expect(config.d).toEqual(false);
-      expect(config.i).toEqual(0);
+      expect(config.d).toEqual('false');
+      expect(config.i).toEqual(1);
       expect(config.n).toEqual(10);
     }));
     
     it('Should have a buildUrl function that builds the appropriate url given search parameters', inject([AdminService], (service) => {
       spyOn(service, 'buildUrl').and.callThrough();
-      let builtUrl = service.buildUrl('account', 2, 'createdOn', false);
-      expect(builtUrl).toEqual(service._apiConfig.baseUrl() + 'api/identities/v1/account/search/?q=&s=createdOn&d=false&i=2&n=10');
+      let builtUrl = service.buildUrl('account', 2, 10, 'createdOn', 'false');
+      expect(builtUrl).toEqual(service._apiConfig.baseUrl() + 'api/identities/v1/account/search/?q=&s=createdOn&d=false&i=1&n=10');
     }));
     
     it('should have a getResources function that makes a request for a resource with given params', inject([AdminService, MockBackend], (service, mockBackend) => {
       spyOn(service, 'buildUrl');
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
-      service.getResources('user', 1).subscribe((res) => {
-        expect(service.buildUrl).toHaveBeenCalledWith('user', 1, 'createdOn', false);
+      service.getResources('user', 1, 10, 'createdOn', 'false').subscribe((res) => {
+        expect(service.buildUrl).toHaveBeenCalledWith('user', 1, 10, 'createdOn', 'false');
         expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/v1/user/search/?q=&s=createdOn&d=false&i=1&n=10');
-      });
-    }));
-    
-    it('should have a getSortedResources function that makes a request for a resource with given params', inject([AdminService, MockBackend], (service, mockBackend) => {
-      spyOn(service, 'buildUrl');
-      let connection;
-      mockBackend.connections.subscribe(c => connection = c);
-      service.getSortedResources('user', 'name', false).subscribe((res) => {
-        expect(service.buildUrl).toHaveBeenCalledWith('user', 'name', false);
-        expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/v1/user/search/?q=&s=name&d=false&i=0&n=10');
       });
     }));
   });

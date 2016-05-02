@@ -12,8 +12,8 @@ import {Index} from './index/index.component';
 
 @RouteConfig([
   { path: '/dashboard', component: Dashboard, name: 'Dashboard' },
-  { path: '/accounts', component: Index, name: 'Accounts' },
-  { path: '/users', component: Index, name: 'Users' }
+  { path: '/accounts', component: Index, name: 'Account' },
+  { path: '/users', component: Index, name: 'User' }
 ])
 
 export class Admin {
