@@ -86,7 +86,7 @@ export function main() {
       spyOn(component.adminService, 'getResources').and.callThrough();
       spyOn(component.adminService, 'setResources').and.callThrough();
       component.getIndex();
-      expect(component.adminService.getResources).toHaveBeenCalledWith('account', 1, '10', 'createdOn', false);
+      expect(component.adminService.getResources).toHaveBeenCalledWith('account', 1, '10', 'createdOn', true);
       expect(component.adminService.setResources).toHaveBeenCalledWith(mockResponse());
     }));
     

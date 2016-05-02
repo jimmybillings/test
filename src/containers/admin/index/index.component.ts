@@ -67,15 +67,15 @@ export class Index implements CanReuse {
     this.router.navigate(['/Admin/' + component, { i: pageNum, n: this.pageSize.value, s: searchQueryString.s, d: searchQueryString.d }]);
   }
   
-  public navigateToSortUrl(attr: string): void  {
+  public navigateToSortUrl(args: any): void  {
     let searchQueryString = this.getRouteParams();
     let component = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
-    this.router.navigate(['/Admin/' + component, { i: searchQueryString.i, n: this.pageSize.value, s: attr, d: searchQueryString.d }]);
+    this.router.navigate(['/Admin/' + component, { i: searchQueryString.i, n: this.pageSize.value, s: args.attr, d: args.toggle }]);
   }
   
   public getRouteParams(): any {
     let sortAttr = this.routeParams.get('s') || 'createdOn';
-    let sortOrder = this.routeParams.get('d');
+    let sortOrder = (this.routeParams.get('d') ? true : false);
     let pageNum = parseInt(this.routeParams.get('i')) || 1;
     let perPage = parseInt(this.routeParams.get('n')) || this.pageSize.value;
     return { 'i': pageNum, 'n': perPage, 's': sortAttr, 'd': sortOrder };

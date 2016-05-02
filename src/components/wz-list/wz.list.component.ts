@@ -15,6 +15,7 @@ export class WzList {
   @Output() sort = new EventEmitter();
 
   public sortBy(attribute: string): void {
-    this.sort.emit(attribute);
+    let toggle = (window.location.pathname.indexOf('false') > -1 ? true : false);
+    this.sort.emit({'attr': attribute, 'toggle': toggle});
   }
 }
