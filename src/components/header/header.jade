@@ -18,14 +18,16 @@ md-toolbar
     md-button.md-caption.md-primary.md-hue-2(*ngIf="loggedInState | async", md-button='', (click)="logOut()", [routerLink]="['Home']", hide='', show-gt-sm='') {{ 'HEADER.LOGOUT_LABEL' | translate}}
     
     md-button.md-caption.md-primary.md-hue-2(*ngIf="currentUser.is('root') | async", md-button='', [routerLink]="['Admin', 'Dashboard']", hide='', show-gt-sm='') Admin
-    
-    // button.md-icon-button(md-button='', *ngIf="loggedInState | async", title='Search', [routerLink]="['Search']")
-    //   i.material-icons(md-icon='') search
-    
 
     button.md-icon-button.is-dd(md-button='', *ngIf="loggedInState | async", [routerLink]="['UserManagement', 'Profile']", [ngClass]="{'md-primary': !showFixed}", hide='', show-xs='') 
       i.material-icons(md-icon='') person
-      
-    button.md-icon-button(md-button='', title='More',[routerLink]="['Home']", hide='', show-gt-sm='')
-      i.material-icons(md-icon='') more_vert
+    
+    button.md-icon-button.open-bin-tray(md-button='', *ngIf="loggedInState | async", title='Open collections', (click)="openBinTray()")
+      i.material-icons(md-icon='') folder_open
+    
+    button.md-icon-button.open-search(md-button='', *ngIf="loggedInState | async", title='Search', (click)="openSearch()")
+      i.material-icons(md-icon='') search
+    
+    // button.md-icon-button(md-button='', title='More',[routerLink]="['Home']", hide='', show-gt-sm='')
+      // i.material-icons(md-icon='') more_vert
       
