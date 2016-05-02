@@ -19,6 +19,7 @@ import {CurrentUser} from '../../common/models/current-user.model';
 import {UiConfig, config} from '../../common/config/ui.config';
 import { provideStore } from '@ngrx/store';
 import {Observable} from 'rxjs/Rx';
+import {SearchContext} from '../../common/services/search-context.service';
 
 export function main() {
   describe('Home Component', () => {
@@ -44,7 +45,8 @@ export function main() {
       provideStore({config: config}),
       CurrentUser,
       provide(UiConfig, {useClass: MockUiConfig}),
-      ApiConfig
+      ApiConfig,
+      SearchContext
     ]);
 
     it('Create instance of home and assign the CurrentUser to an instance variable inside of home',
