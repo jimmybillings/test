@@ -3,8 +3,10 @@ nav(flex='100', layout='row', layout-align='end center')
     .text-nav(flex='')
       span page
       input(type='text', ngControl="page")
-      span of {{ pagination.numberOfPages }}
+      span of 
+      span {{ pagination.numberOfPages }}
   button.md-icon-button([disabled]="!pagination.hasPreviousPage", md-button='', title='previous page', (click)="getPageNumber(pagination.currentPage - 1)")
     i.material-icons(md-icon) keyboard_arrow_left
+  .divider
   button.md-icon-button([disabled]="!pagination.hasNextPage", md-button='', title='next page', (click)="getPageNumber(pagination.currentPage + 1)")
     i.material-icons(md-icon) keyboard_arrow_right

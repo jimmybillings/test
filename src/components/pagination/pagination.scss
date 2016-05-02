@@ -6,16 +6,20 @@
 }
 pagination {
   .text-nav > span {
-    margin-right: rem(.8);
-    margin-left: rem(.8);
+    &:nth-child(3n) {
+      margin-right: rem(.5);
+    }
+    &:nth-child(4n) {
+      margin-right: rem(.8);
+    }
   }
-  // .divider {
-  //   width: rem(.2);
-  //   height: rem(2.4);
-  //   margin-top: rem(.3);
-  //   margin-right: rem(.3);
-  //   box-shadow: -1px 0 0 0 rgba(md-color($md-background, 900), .4) inset, 1px 0 0 0 rgba(md-color($md-background, 100),.7);
-  // }
+  .divider {
+    display: none;
+    width: rem(.2);
+    height: rem(2.4);
+    margin-right: rem(.2);
+    box-shadow: -1px 0 0 0 rgba(md-color($md-background, 900), .4) inset, 1px 0 0 0 rgba(md-color($md-background, 100),.7);
+  }
   form {
     input {
       width: rem(2.8);
@@ -26,17 +30,17 @@ pagination {
       border-style: solid;
       border-width: 1px;
       border-color: rgba(md-color($md-background, 900), .35);
-      // box-shadow: inset 0 1px 1px 0 md-color($md-background, 800, .1);
+      margin-right: rem(.8);
+      margin-left: rem(.7);
     }
   }
   button[md-button].md-icon-button {
     margin: 0;
   }
 }
-
 .results-count {
   min-height: rem(4);
   line-height: rem(4);
   text-align: right;
-  padding-right: rem(2.0);
+  padding-right: rem(2.4);
 }  
