@@ -78,8 +78,13 @@ export class Index implements CanReuse {
   }
   
   public navigateToFilterUrl(args: any): void {
+    /**
+     * function here to turn args into multiple field queryObject
+     * currently using first value of object that's passed in (which is required by wz-form)
+     */
     let queryObject = this.buildQueryObject();
-    let urlParameters = { i: 1, n: this.pageSize.value, s: queryObject.s, d: queryObject.d, q: args[Object.keys(args)[0]] };
+    let q = args[Object.keys(args)[0]];
+    let urlParameters = { i: 1, n: this.pageSize.value, s: queryObject.s, d: queryObject.d, q };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
