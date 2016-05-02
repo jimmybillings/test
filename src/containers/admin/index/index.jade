@@ -5,4 +5,4 @@ section.admin-index
       div(layout='row', layout-align='end center')
         pagination((getPage)="navigateToPageUrl($event)", [pagination]="currentUserResources.pagination", [currentPage]="routeParams.params.i")
     div(class='admin-filter' flex-xl="35",flex-gt-lg="45",flex-gt-md="35",flex="25")
-      filter([fields]="headers")
+      filter([fields]="headers", (filterSubmit)="navigateToFilterUrl($event)")

@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from 'angular2/core';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 'angular2/core';
 import { WzForm } from '../wz-form/wz.form.component';
 
 @Component({
@@ -10,8 +10,9 @@ import { WzForm } from '../wz-form/wz.form.component';
 
 export class Filter {
   @Input() fields;
+  @Output() filterSubmit = new EventEmitter();
   
-  public onSubmit(): void {
-    console.log('emit an event and call a method in index that hits the service');
+  public onSubmit(formValues: any): void {
+    this.filterSubmit.emit(formValues);
   }
 }

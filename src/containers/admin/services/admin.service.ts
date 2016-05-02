@@ -44,19 +44,19 @@ export class AdminService {
       };
     }
   
-  public getResources(resource: string, i: number, n: number, s: string, d: string): Observable<any> {
-    let url = this.buildUrl(resource, i, n, s, d);
+  public getResources(queryObject: any): Observable<any> {
+    let url = this.buildUrl(queryObject);
     return this._http.get(url, {headers: this._apiConfig.authHeaders()})
       .map((res: Response) => res.json());
   }
   
-  public buildUrl(resource: string, i: number, n: number, s: string, d: string): string {
-    this._identitesSearchConfig.resource = resource;
-    this._identitesSearchConfig.q = '';
-    this._identitesSearchConfig.i = i;
-    this._identitesSearchConfig.n = n;
-    this._identitesSearchConfig.s = s;
-    this._identitesSearchConfig.d = d;
+  public buildUrl(queryObject): string {
+    this._identitesSearchConfig.resource = queryObject.resource;
+    this._identitesSearchConfig.q = queryObject.q;
+    this._identitesSearchConfig.i = queryObject.i;
+    this._identitesSearchConfig.n = queryObject.n;
+    this._identitesSearchConfig.s = queryObject.s;
+    this._identitesSearchConfig.d = queryObject.d;
     return this._apiConfig.baseUrl() + 'api/identities/v1/' + this._identitesSearchConfig.resource
                                      + '/search/?q=' + this._identitesSearchConfig.q
                                      + '&s=' + this._identitesSearchConfig.s
