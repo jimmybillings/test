@@ -26,6 +26,7 @@ export class Index implements CanReuse {
   public components: Object;
   public headers: Array<string>;
   public subscription: any;
+  public toggleFlag: string;
   
   constructor(currentUser: CurrentUser,
               adminService: AdminService,
@@ -56,6 +57,7 @@ export class Index implements CanReuse {
   
   public getIndex(): void {
     let searchQueryString = this.getRouteParams();
+    this.toggleFlag = searchQueryString.d;
     this.adminService.getResources(this.resource, searchQueryString.i, this.pageSize.value, searchQueryString.s, searchQueryString.d).subscribe(data => {
       this.adminService.setResources(data); 
     });

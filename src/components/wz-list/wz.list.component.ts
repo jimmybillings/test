@@ -9,13 +9,19 @@ import { NgFor } from 'angular2/common';
   directives: [NgFor, MATERIAL_DIRECTIVES],
 })
 
+/**
+ * WzList component takes three inputs: The collection of items as an array, a string that represents
+ * a toggle, either true or false, and the headers from the UI config to build the table. It outputs a
+ * sortBy event that includes the attribute to sort by, and the opposite of the toggle flag that was
+ * passed in
+ */
 export class WzList {
   @Input() items;
   @Input() headers;
+  @Input() toggleFlag;
   @Output() sort = new EventEmitter();
 
   public sortBy(attribute: string): void {
-    let toggle = (window.location.pathname.indexOf('false') > -1 ? true : false);
-    this.sort.emit({'attr': attribute, 'toggle': toggle});
+    this.sort.emit({'attr': attribute, 'toggle': !this.toggleFlag});
   }
 }
