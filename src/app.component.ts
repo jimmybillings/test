@@ -47,7 +47,7 @@ export class AppComponent {
   public showFixed: boolean = false;
   public state: string = '';
   public searchBarIsActive: boolean;
-  public binTrayIsOpen: boolean = true;
+  public binTrayIsOpen: boolean = false;
   public searchIsOpen: boolean = true;
 
   constructor(

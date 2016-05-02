@@ -12,7 +12,7 @@ search-box {
     border: none;
     color: rgba(md-color($md-background, 900), .7);
     background-color:  md-color($md-background, 100, .9);
-    @include transition($swift-ease-in);
+    @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
     border-radius: 0;
     &:focus {
       outline: none;
@@ -120,9 +120,12 @@ header.app-header.search-closed search-box {
   input {
     max-height: 0;
     min-height: 0;
-    font-size: 0; 
   }
   button, button.close {
-    display: none;
+    max-height: 0;
+    min-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }
