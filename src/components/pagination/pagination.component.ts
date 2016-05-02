@@ -30,7 +30,7 @@ export class Pagination {
   }
   
   public getPageNumber(pageNumber): void {
-    if (pageNumber <= 0) {
+    if (pageNumber === 1) {
       this.getPage.emit(1);
     } else if (pageNumber > this.pagination.numberOfPages) {
       this.getPage.emit(this.pagination.numberOfPages);
