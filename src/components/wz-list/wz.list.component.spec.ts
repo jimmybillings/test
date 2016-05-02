@@ -22,7 +22,7 @@ export function main() {
     it('should have a sortBy function that emits a sort event.', inject([WzList], (component) => {
       spyOn(component.sort, 'emit');
       component.sortBy('createdOn');
-      expect(component.sort.emit).toHaveBeenCalledWith({ attr: 'createdOn', toggle: false });
+      expect(component.sort.emit).toHaveBeenCalledWith({ attr: 'createdOn', toggle: true });
     }));
   });
 }
