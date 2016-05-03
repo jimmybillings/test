@@ -67,12 +67,13 @@ export class Index implements CanReuse {
   
   public navigateToPageUrl(i: number): void  {
     let queryObject = this._buildQueryObject();
-    let urlParameters = { i, n: this.pageSize.value, s: queryObject.s, d: queryObject.d };
+    let urlParameters = { i, n: queryObject.n, s: queryObject.s, d: queryObject.d };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
   public navigateToSortUrl(args: any): void  {
-    let urlParameters = { i: 0, n: this.pageSize.value, s: args.attr, d: args.toggle };
+    let queryObject = this._buildQueryObject();
+    let urlParameters = { i: 0, n: queryObject.n, s: args.attr, d: args.toggle };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
 

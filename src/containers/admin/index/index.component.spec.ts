@@ -94,7 +94,7 @@ export function main() {
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
       component.navigateToPageUrl(2);
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: '10', s: 'createdOn', d: true}) ]);
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: 10, s: 'createdOn', d: true}) ]);
     }));
   });
   
