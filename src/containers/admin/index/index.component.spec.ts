@@ -85,7 +85,7 @@ export function main() {
       spyOn(component.adminService, 'getResources').and.callThrough();
       spyOn(component.adminService, 'setResources').and.callThrough();
       component.getIndex();
-      expect(component.adminService.getResources).toHaveBeenCalledWith({resource: 'account', i: 1, n: 10, s: 'createdOn', d: true, q: ''});
+      expect(component.adminService.getResources).toHaveBeenCalledWith({i: 1, n: 10, s: 'createdOn', d: true, q: ''}, 'account');
       expect(component.adminService.setResources).toHaveBeenCalledWith(mockResponse());
     }));
     
@@ -94,7 +94,7 @@ export function main() {
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
       component.navigateToPageUrl(2);
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: 10, s: 'createdOn', d: true}) ]);
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: 10, s: 'createdOn', d: true, q: ''}) ]);
     }));
     
     it('Should have a navigateToSortUrl function that navigates to a URL with correct params', inject([Index], (component) => {
@@ -102,7 +102,7 @@ export function main() {
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
       component.navigateToSortUrl({attr: 'emailAddress', toggle: true});
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 1, n: 10, s: 'emailAddress', d: true }) ]);
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 1, n: 10, s: 'emailAddress', d: true, q: '' }) ]);
     }));
     
     it('Should have a navigateToFilterUrl function that navigates to a URL with correct params', inject([Index], (component) => {
