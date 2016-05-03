@@ -61,20 +61,20 @@ export class Index implements CanReuse {
   public getIndex(): void {
     let queryObject = this._buildQueryObject();
     this.toggleFlag = queryObject.d;
-    this.adminService.getResources(queryObject).subscribe(data => {
+    this.adminService.getResources(queryObject, this.resource).subscribe(data => {
       this.adminService.setResources(data); 
     });
   }
   
   public navigateToPageUrl(i: number): void  {
     let queryObject = this._buildQueryObject();
-    let urlParameters = { i, n: queryObject.n, s: queryObject.s, d: queryObject.d };
+    let urlParameters = { i, n: queryObject.n, s: queryObject.s, d: queryObject.d, q: queryObject.q };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
   public navigateToSortUrl(args: any): void  {
     let queryObject = this._buildQueryObject();
-    let urlParameters = { i: 1, n: queryObject.n, s: args.attr, d: args.toggle };
+    let urlParameters = { i: 1, n: queryObject.n, s: args.attr, d: args.toggle, q: queryObject.q };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
@@ -86,13 +86,12 @@ export class Index implements CanReuse {
   }
 
   private _buildQueryObject(): any {
-    let resource = this.resource;
     let s = this.routeParams.get('s') || 'createdOn';
     let d = (this.routeParams.get('d') ? true : false);
     let i = parseInt(this.routeParams.get('i')) || 0;
     let n = parseInt(this.routeParams.get('n')) || this.pageSize.value;
     let q = this.routeParams.get('q') || '';
-    return { resource, i, n, s, d, q };
+    return { i, n, s, d, q };
   }
   
   /**
