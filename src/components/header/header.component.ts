@@ -21,6 +21,7 @@ export class Header {
   @Input() supportedLanguages;
   @Input() showFixed;
   @Input() state;
+  @Input() searchBarIsActive;
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
   @Output() onOpenBinTray = new EventEmitter();
