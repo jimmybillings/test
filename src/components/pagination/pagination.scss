@@ -3,6 +3,10 @@
   min-height: rem(3.4);
   max-height: rem(3.4);
   opacity: .75;
+  &.pg-bottom {
+    margin-top: 0;  
+    margin-bottom: rem(3.4);  
+  }
 }
 pagination {
   .text-nav > span {
@@ -36,6 +40,12 @@ pagination {
   }
   button[md-button].md-icon-button {
     margin: 0;
+    line-height: 1;
+    padding: rem(.5);
+    .material-icons {
+      font-size: rem(3);
+      opacity: .75;
+    }
   }
 }
 .results-count {

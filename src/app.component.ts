@@ -80,7 +80,6 @@ export class AppComponent {
         // this.binTray = this.uiConfig.get('binTray');
       });
     this.currentUser.set();
-    console.log(this.binTrayIsOpen);
   }
 
   public logout(): void {
