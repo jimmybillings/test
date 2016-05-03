@@ -21,27 +21,11 @@ export class AdminService {
   public pageStore: Observable<any>;
   private _http: Http;
   private _apiConfig: ApiConfig;
-  private _identitesSearchConfig: {
-    resource: string,
-    q: string;
-    s: string;
-    d: string;
-    i: number;
-    n: number
-  };
 
   constructor(http: Http, apiConfig: ApiConfig, private store: Store<any>) { 
       this._http = http;
       this.adminStore = this.store.select('adminResources');
       this._apiConfig = apiConfig;
-      this._identitesSearchConfig = {
-        resource: '',
-        q: '',
-        s: 'createdOn',
-        d: 'false',
-        i: 1,
-        n: 10
-      };
     }
   
   public getResources(queryObject: any): Observable<any> {
@@ -51,18 +35,12 @@ export class AdminService {
   }
   
   public buildUrl(queryObject): string {
-    this._identitesSearchConfig.resource = queryObject.resource;
-    this._identitesSearchConfig.q = queryObject.q;
-    this._identitesSearchConfig.i = queryObject.i;
-    this._identitesSearchConfig.n = queryObject.n;
-    this._identitesSearchConfig.s = queryObject.s;
-    this._identitesSearchConfig.d = queryObject.d;
-    return this._apiConfig.baseUrl() + 'api/identities/v1/' + this._identitesSearchConfig.resource
-                                     + '/search/?q=' + this._identitesSearchConfig.q
-                                     + '&s=' + this._identitesSearchConfig.s
-                                     + '&d=' + this._identitesSearchConfig.d
-                                     + '&i=' + (this._identitesSearchConfig.i - 1) 
-                                     + '&n=' + this._identitesSearchConfig.n;
+    return this._apiConfig.baseUrl() + 'api/identities/v1/' + queryObject.resource
+                                     + '/search/?q=' + queryObject.q
+                                     + '&s=' + queryObject.s
+                                     + '&d=' + queryObject.d
+                                     + '&i=' + (queryObject.i - 1) 
+                                     + '&n=' + queryObject.n;
   }
 
     

@@ -25,20 +25,9 @@ export function main() {
       CurrentUser
     ]);
 
-    it('Should create instance variables for http, routeConfig, and apiConfig', inject([AdminService, MockBackend], (service, mockBackend) => {
+    it('Should create instance variables for http, and apiConfig', inject([AdminService, MockBackend], (service, mockBackend) => {
       expect(service._http).toBeDefined();
       expect(service._apiConfig).toBeDefined();
-      expect(service._identitesSearchConfig).toBeDefined();
-    }));
-    
-    it('Should create a routeConfig instance variable with default attributes', inject([AdminService], (service) => {
-      let config = service._identitesSearchConfig;
-      expect(config.resource).toEqual('');
-      expect(config.q).toEqual('');
-      expect(config.s).toEqual('createdOn');
-      expect(config.d).toEqual('false');
-      expect(config.i).toEqual(1);
-      expect(config.n).toEqual(10);
     }));
     
     it('Should have a buildUrl function that builds the appropriate url given search parameters', inject([AdminService], (service) => {
