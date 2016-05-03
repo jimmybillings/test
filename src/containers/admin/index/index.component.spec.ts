@@ -74,10 +74,9 @@ export function main() {
         });
       }));
       
-    it('Should create an instance variable of routParams, AdminService, and CurrentUser', inject([Index], (component) => {
+    it('Should create an instance variable of AdminService, and CurrentUser', inject([Index], (component) => {
       expect(component.currentUser).toBeDefined();
       expect(component.adminService).toBeDefined();
-      expect(component.routeParams).toBeDefined();
     }));
     
     it('Should have a getIndex() function that calls the getResource and setResources functions on the service', inject([Index], (component) => {
@@ -95,7 +94,7 @@ export function main() {
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
       component.navigateToPageUrl(2);
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: '10', s: 'createdOn', d: true }) ]);
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: '10', s: 'createdOn', d: true}) ]);
     }));
     
     it('Should have a navigateToSortUrl function that navigates to a URL with correct params', inject([Index], (component) => {

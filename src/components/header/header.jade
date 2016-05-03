@@ -22,10 +22,10 @@ md-toolbar
     button.md-icon-button.is-dd(md-button='', *ngIf="loggedInState | async", [routerLink]="['UserManagement', 'Profile']", [ngClass]="{'md-primary': !showFixed}", hide='', show-xs='') 
       i.material-icons(md-icon='') person
     
-    button.md-icon-button.open-bin-tray(md-button='', *ngIf="loggedInState | async", title='Open collections', (click)="openBinTray()")
+    button.md-icon-button.open-bin-tray(md-button='', *ngIf="searchBarIsActive", title='Open collections', (click)="openBinTray()")
       i.material-icons(md-icon='') folder_open
     
-    button.md-icon-button.open-search(md-button='', *ngIf="loggedInState | async", title='Search', (click)="openSearch()")
+    button.md-icon-button.open-search(md-button='', *ngIf="searchBarIsActive", title='Search', (click)="openSearch()")
       i.material-icons(md-icon='') search
     
     // button.md-icon-button(md-button='', title='More',[routerLink]="['Home']", hide='', show-gt-sm='')

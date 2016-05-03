@@ -68,27 +68,28 @@ export class Index implements CanReuse {
   
   public navigateToPageUrl(i: number): void  {
     let queryObject = this._buildQueryObject();
-    let urlParameters = { i, n: this.pageSize.value, s: queryObject.s, d: queryObject.d };
+    let urlParameters = { i, n: queryObject.n, s: queryObject.s, d: queryObject.d };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
   public navigateToSortUrl(args: any): void  {
-    let urlParameters = { i: 1, n: this.pageSize.value, s: args.attr, d: args.toggle };
+    let queryObject = this._buildQueryObject();
+    let urlParameters = { i: 1, n: queryObject.n, s: args.attr, d: args.toggle };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
   public navigateToFilterUrl(args: any): void {
     let queryObject = this._buildQueryObject();
     let q = this._getSearchTerm(args);
-    let urlParameters = { i: 1, n: this.pageSize.value, s: queryObject.s, d: queryObject.d, q };
+    let urlParameters = { i: 0, n: queryObject.n, s: queryObject.s, d: queryObject.d, q };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
-  
+
   private _buildQueryObject(): any {
     let resource = this.resource;
     let s = this.routeParams.get('s') || 'createdOn';
     let d = (this.routeParams.get('d') ? true : false);
-    let i = parseInt(this.routeParams.get('i')) || 1;
+    let i = parseInt(this.routeParams.get('i')) || 0;
     let n = parseInt(this.routeParams.get('n')) || this.pageSize.value;
     let q = this.routeParams.get('q') || '';
     return { resource, i, n, s, d, q };
