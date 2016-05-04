@@ -1,7 +1,5 @@
 import { Injectable } from 'angular2/core';
-import { Http, Response
-  // URLSearchParams, RequestOptions
-} from 'angular2/http';
+import { Http, Response, URLSearchParams, RequestOptions } from 'angular2/http';
 import { ApiConfig } from '../../../common/config/api.config';
 import { Store, Reducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
@@ -31,21 +29,21 @@ export class AdminService {
     }
   
   public getResources(queryObject: { [key: string]: string }, resource: string): Observable<any> {
-    // let url = this._getIdentiesSearchPath(resource);
-    let url = this.buildUrl(queryObject, resource);
-    let headers = this._apiConfig.authHeaders();
-    return this._http.get(url, {headers: headers})
+    queryObject['i'] = (parseFloat(queryObject['i']) - 1).toString();
+    let url = this._getIdentitiesSearchPath(resource);
+    let options = this._getIdentitiesSearchOptions(queryObject);
+    return this._http.get(url, options)
       .map((res: Response) => res.json());
   }
   
-  public buildUrl(queryObject: any, resource: string): string {
-    return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource
-                                     + '/search/?q=' + queryObject.q
-                                     + '&s=' + queryObject.s
-                                     + '&d=' + queryObject.d
-                                     + '&i=' + (queryObject.i - 1)
-                                     + '&n=' + queryObject.n;
-  }
+  // public buildUrl(queryObject: any, resource: string): string {
+  //   return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource
+  //                                    + '/search/?q=' + queryObject.q
+  //                                    + '&s=' + queryObject.s
+  //                                    + '&d=' + queryObject.d
+  //                                    + '&i=' + (queryObject.i - 1)
+  //                                    + '&n=' + queryObject.n;
+  // }
 
   public setResources(data: any): void {
     this.store.dispatch({type: 'ADMIN_SERVICE.SET_RESOURCES', payload: {
@@ -61,17 +59,17 @@ export class AdminService {
     }});
   }
   
-  // private _getIdentitiesSearchOptions(queryObject: { [key: string]: string }): RequestOptions {
-  //   const search: URLSearchParams = new URLSearchParams();
-  //   for (var param in queryObject) {
-  //     search.set(param, queryObject[param]);
-  //   }
-  //   let headers = this._apiConfig.authHeaders();
-  //   let options = { headers: headers, search: search};
-  //   return new RequestOptions(options);
-  // }
+  private _getIdentitiesSearchOptions(queryObject: { [key: string]: string }): RequestOptions {
+    const search: URLSearchParams = new URLSearchParams();
+    for (var param in queryObject) {
+      search.set(param, queryObject[param]);
+    }
+    let headers = this._apiConfig.authHeaders();
+    let options = { headers: headers, search: search};
+    return new RequestOptions(options);
+  }
   
-  // private _getIdentiesSearchPath(resource: string): string {
-  //   return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource + '/search';
-  // }
+  private _getIdentitiesSearchPath(resource: string): string {
+    return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource + '/search';
+  }
 }

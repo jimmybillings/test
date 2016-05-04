@@ -113,7 +113,6 @@ export class AssetData {
    *                        
   */
   public getAssetSearchOptions(params: { [key: string]: string }, isUserLoggedIn: boolean): RequestOptions {
-    console.log(params);
     const search: URLSearchParams = new URLSearchParams();
     for (var param in params) search.set(param, params[param]);
 
