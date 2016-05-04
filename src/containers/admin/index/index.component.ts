@@ -104,8 +104,13 @@ export class Index implements CanReuse {
   }
   
   private _getSearchTerm(args: any): string {
-    return Object.keys(args).reduce((prev, key) => {
-      return prev + args[key];
-    }, '');
+    return Object.keys(args).reduce((previous, key) => {
+      if (key.indexOf('Control') > -1) {
+        return previous;
+      } else {
+        previous.push(key + '=' + encodeURIComponent(args[key]));
+        return previous;  
+      }
+    },[]).join('&');
   }
 }
