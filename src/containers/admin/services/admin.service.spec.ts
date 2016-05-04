@@ -33,7 +33,7 @@ export function main() {
     it('Should have a buildUrl function that builds the appropriate url given search parameters', inject([AdminService], (service) => {
       spyOn(service, 'buildUrl').and.callThrough();
       let builtUrl = service.buildUrl({resource: 'account', i: 2, n: 10, s: 'createdOn', d: 'false', q: ''});
-      expect(builtUrl).toEqual(service._apiConfig.baseUrl() + 'api/identities/v1/account/search/?q=&s=createdOn&d=false&i=2&n=10');
+      expect(builtUrl).toEqual(service._apiConfig.baseUrl() + 'api/identities/v1/account/search/?q=&s=createdOn&d=false&i=1&n=10');
     }));
     
     it('should have a getResources function that makes a request for a resource with given params', inject([AdminService, MockBackend], (service, mockBackend) => {

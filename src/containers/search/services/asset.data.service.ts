@@ -13,7 +13,8 @@ const initAssets = {
     hasPreviousPage: false,
     numberOfPages: 0,
     pageSize: 100,
-    totalCount: 0
+    totalCount: 0,
+    currentPage: 1
   }
 };
 

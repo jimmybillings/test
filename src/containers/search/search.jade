@@ -3,7 +3,7 @@ section.search-results
     div(flex-xl="85", flex-gt-lg="95", flex="100", *ngIf="config.viewType.value == 'grid'")
       .pagination.md-body-2(layout='row' layout-align='end end') 
         .results-count(flex='40', *ngIf="assets.pagination.totalCount") {{assets.pagination.totalCount}} results
-        pagination([pagination]="assets.pagination", [currentPage]="routeParams.params.i || 0", (getPage)="changePage($event)")
+        pagination([pagination]="assets.pagination", [currentPage]="routeParams.params.i || 1", (getPage)="changePage($event)")
 
       div(layout='column')        
         asset-list([assets]="assets.items", class="{{config.viewType.value}}", [currentUser]="currentUser", (onShowAsset)="showAsset($event)")        

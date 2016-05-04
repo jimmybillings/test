@@ -39,7 +39,7 @@ export class AdminService {
                                      + '/search/?q=' + queryObject.q
                                      + '&s=' + queryObject.s
                                      + '&d=' + queryObject.d
-                                     + '&i=' + (queryObject.i) 
+                                     + '&i=' + (queryObject.i - 1)
                                      + '&n=' + queryObject.n;
   }
 
@@ -49,7 +49,7 @@ export class AdminService {
       'items': data.items,
       'pagination': {
         'totalCount': data.totalCount,
-        'currentPage': data.currentPage,
+        'currentPage': data.currentPage + 1,
         'hasNextPage': data.hasNextPage,
         'hasPreviousPage': data.hasPreviousPage,
         'numberOfPages': data.numberOfPages,

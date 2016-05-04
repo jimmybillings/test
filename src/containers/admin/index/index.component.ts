@@ -82,7 +82,7 @@ export class Index implements CanReuse {
     let resource = this.resource;
     let s = this.routeParams.get('s') || 'createdOn';
     let d = (this.routeParams.get('d') ? true : false);
-    let i = parseInt(this.routeParams.get('i')) || 0;
+    let i = parseInt(this.routeParams.get('i')) || 1;
     let n = parseInt(this.routeParams.get('n')) || this.pageSize.value;
     let q = this.routeParams.get('q') || '';
     return { resource, i, n, s, d, q };
