@@ -7,21 +7,21 @@ import {
   beforeEachProviders
 } from 'angular2/testing';
 
-import {AppComponent} from './app.component';
-import {provide} from 'angular2/core';
-import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
-import {SpyLocation} from 'angular2/src/mock/location_mock';
-import {RootRouter} from 'angular2/src/router/router';
-import {CurrentUser} from './common/models/current-user.model';
-import {ApiConfig} from './common/config/api.config';
-import {UiConfig, config} from './common/config/ui.config';
+import { AppComponent} from './app.component';
+import { provide} from 'angular2/core';
+import { Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
+import { SpyLocation} from 'angular2/src/mock/location_mock';
+import { RootRouter} from 'angular2/src/router/router';
+import { CurrentUser} from './common/models/current-user.model';
+import { ApiConfig} from './common/config/api.config';
+import { UiConfig, config} from './common/config/ui.config';
 import { MockBackend } from 'angular2/http/testing';
 import { BaseRequestOptions, Http } from 'angular2/http';
 import { provideStore } from '@ngrx/store/dist/index';
 import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
-import {Authentication} from './containers/user-management/services/authentication.data.service';
-import {MultilingualService, multilingualReducer} from './common/services/multilingual.service';
-import {SearchContext} from './common/services/search-context.service';
+import { Authentication} from './containers/user-management/services/authentication.data.service';
+import { MultilingualService, multilingualReducer} from './common/services/multilingual.service';
+import { SearchContext} from './common/services/search-context.service';
 
 
 export function main() {
@@ -91,12 +91,12 @@ export function main() {
       }));
     
     it('Should log out a user', inject([AppComponent], (component) => {
-      spyOn(component._authentication, 'destroy').and.callThrough();
-      spyOn(component._currentUser, 'destroy');
+      spyOn(component.authentication, 'destroy').and.callThrough();
+      spyOn(component.currentUser, 'destroy');
       spyOn(component.router, 'navigate');
       component.logout();
-      expect(component._authentication.destroy).toHaveBeenCalled();
-      expect(component._currentUser.destroy).toHaveBeenCalled();
+      expect(component.authentication.destroy).toHaveBeenCalled();
+      expect(component.currentUser.destroy).toHaveBeenCalled();
       expect(component.router.navigate).toHaveBeenCalledWith(['/Home']);
     }));
     

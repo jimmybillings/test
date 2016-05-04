@@ -3,7 +3,7 @@ import {RouteConfig, ROUTER_DIRECTIVES, Router, Location} from 'angular2/router'
 import {MultilingualService} from './common/services/multilingual.service';
 import {ILang} from './common/interfaces/language.interface';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
-import {Header} from './components/header/header.component';
+import {AppNav} from './components/app-nav/app-nav.component';
 import {Footer} from './components/footer/footer.component';
 import {UserManagement} from './containers/user-management/user-management.component';
 import {Home} from './containers/home/home.component';
@@ -24,7 +24,7 @@ import {Observable} from 'rxjs/Rx';
 @Component({
   selector: 'app',
   templateUrl: './app.html',
-  directives: [ROUTER_DIRECTIVES, Header, Footer, Notification, SearchBox, BinTray],
+  directives: [ROUTER_DIRECTIVES, AppNav, Footer, Notification, SearchBox, BinTray],
   providers: [Authentication, SearchContext],
   pipes: [TranslatePipe],
 })
@@ -51,17 +51,16 @@ export class AppComponent {
   public searchIsOpen: boolean = true;
 
   constructor(
-    public currentUser: CurrentUser,
-    private _apiConfig: ApiConfig,
     public uiConfig: UiConfig,
-    private _authentication: Authentication,
     public router: Router,
-    private _currentUser: CurrentUser,
     public multiLingual: MultilingualService,
     public location: Location,
-    public searchContext: SearchContext) {
+    public searchContext: SearchContext,
+    private apiConfig: ApiConfig,
+    private authentication: Authentication,
+    private currentUser: CurrentUser) {
 
-      this._apiConfig.setPortal('core');
+      this.apiConfig.setPortal('core');
       multiLingual.setLanguage(window.navigator.language.split('-')[0]);
       
   }
@@ -72,7 +71,7 @@ export class AppComponent {
       this.state = state;
     });
     window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
-    this.uiConfig.initialize(this._apiConfig.getPortal())
+    this.uiConfig.initialize(this.apiConfig.getPortal())
       .subscribe(() => {
         this.header = this.uiConfig.get('header');
         this.footer = this.uiConfig.get('footer');
@@ -83,8 +82,8 @@ export class AppComponent {
   }
 
   public logout(): void {
-    this._authentication.destroy().subscribe();
-    this._currentUser.destroy();
+    this.authentication.destroy().subscribe();
+    this.currentUser.destroy();
     this.router.navigate(['/Home']);
   }
 

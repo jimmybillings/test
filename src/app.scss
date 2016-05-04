@@ -56,7 +56,7 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 
 
 @import './containers/home/home';
-@import './components/header/header';
+@import './components/app-nav/app-nav';
 @import './components/footer/footer';
 @import './components/search-box/search-box';
 @import './components/bin-tray/bin-tray';
