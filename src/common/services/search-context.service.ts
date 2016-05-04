@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Rx';
 
 const initSearchContext = {
   q: null,
-  i: 0,
+  i: 1,
   n: 100
 };
 
@@ -30,7 +30,11 @@ export class SearchContext {
   
   public new(params: Object): void {
     this.set(params);
-    this.router.navigate(['/Search', this.store.getState().searchContext]);
+    this.router.navigate(['/Search', this.get()]);
+  }
+  
+  public get(): any {
+    return this.store.getState().searchContext;
   }
   
   public set(params: Object): void {

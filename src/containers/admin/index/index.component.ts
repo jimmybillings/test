@@ -75,11 +75,11 @@ export class Index implements CanReuse {
   }
   
   public getRouteParams(): any {
-    let sortAttr = this.routeParams.get('s') || 'createdOn';
-    let sortOrder = (this.routeParams.get('d') ? true : false);
-    let pageNum = parseInt(this.routeParams.get('i')) || 1;
-    let perPage = parseInt(this.routeParams.get('n')) || this.pageSize.value;
-    return { 'i': pageNum, 'n': perPage, 's': sortAttr, 'd': sortOrder };
+    let s = this.routeParams.get('s') || 'createdOn';
+    let d = (this.routeParams.get('d') ? true : false);
+    let i = parseInt(this.routeParams.get('i')) || 1;
+    let n = parseInt(this.routeParams.get('n')) || this.pageSize.value;
+    return { i, n, s, d };
   }
   
   /**

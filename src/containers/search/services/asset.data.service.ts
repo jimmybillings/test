@@ -64,6 +64,7 @@ export class AssetData {
    *                  Example: {items: Array[25], totalCount: 122, currentPage: 1, pageSize: 25, hasNextPage: true}
    */
   public searchAssets(params: { [key: string]: string }): Observable<any> {
+    params['i'] = (parseFloat(params['i']) - 1).toString();
     let options = this.getAssetSearchOptions(params, this.currentUser.loggedIn());
     return this.http.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options)
       .map((res: Response) => (res.json()));
@@ -74,7 +75,7 @@ export class AssetData {
       'items': payload.items,
       'pagination': {
         'totalCount': payload.totalCount,
-        'currentPage': payload.currentPage,
+        'currentPage': payload.currentPage + 1,
         'hasNextPage': payload.hasNextPage,
         'hasPreviousPage': payload.hasPreviousPage,
         'numberOfPages': payload.numberOfPages,

@@ -66,7 +66,7 @@ export class Search {
 
   public searchAssets(): void {
     this.searchContext.set(this.routeParams.params);
-    this.assetData.searchAssets(this.routeParams.params).subscribe(
+    this.assetData.searchAssets(this.searchContext.get()).subscribe(
       payload => this.assetData.storeAssets(payload),
       error => this.error.handle(error)
     );

@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 'angular2/core';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
 import { NgIf, NgFor, NgClass} from 'angular2/common';
-import { FORM_DIRECTIVES, FormBuilder, Validators } from 'angular2/common';
+import { FORM_DIRECTIVES, FormBuilder, Validators, ControlGroup } from 'angular2/common';
 
 @Component({
   selector: 'pagination',
@@ -19,24 +19,23 @@ export class Pagination {
   @Input() currentPage;
   @Output() getPage = new EventEmitter();
   
-  public form: Object;
+  public form: ControlGroup;
   
   constructor(public fb: FormBuilder) {}
   
   ngOnInit() {
     this.form = this.fb.group({
-      page: [parseInt(this.currentPage)+1 || 0, Validators.required]
+      page: [this.currentPage, Validators.required]
     });
   }
   
   public getPageNumber(pageNumber): void {
     pageNumber = Number(pageNumber);
-    if (pageNumber <= 0) {
-      this.getPage.emit(0);
+    if (pageNumber <= 1) {
+      this.getPage.emit(1);
     } else if (pageNumber > this.pagination.numberOfPages) {
       this.getPage.emit(this.pagination.numberOfPages);
     } else {
-      console.log(pageNumber);
       this.getPage.emit(pageNumber);
     } 
   }

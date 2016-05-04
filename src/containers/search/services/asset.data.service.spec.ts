@@ -88,7 +88,7 @@ export function main() {
         let connection;
         connection = mockBackend.connections.subscribe(c => connection = c);
         service.searchAssets(searchParams()).subscribe((payload) => {
-          expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/assets/v1/search/anonymous/solrcloud?q=green&n=25&siteName=core');
+          expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/assets/v1/search/anonymous/solrcloud?q=green&n=25&i=0&siteName=core');
           expect(payload).toEqual(MockSearchResultsResponse());
         });
         connection.mockRespond(new Response(
@@ -102,7 +102,8 @@ export function main() {
   function searchParams() {
     return {  
       'q':'green',
-      'n':'25'
+      'n':'25',
+      'i': '1'
     };
   }
   
