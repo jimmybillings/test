@@ -85,7 +85,6 @@ export class Index implements CanReuse {
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
 
-
   private _buildQueryObject(): any {
     let s = this.routeParams.get('s') || 'createdOn';
     let d = (this.routeParams.get('d') ? true : false);

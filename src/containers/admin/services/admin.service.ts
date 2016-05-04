@@ -35,15 +35,6 @@ export class AdminService {
     return this._http.get(url, options)
       .map((res: Response) => res.json());
   }
-  
-  // public buildUrl(queryObject: any, resource: string): string {
-  //   return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource
-  //                                    + '/search/?q=' + queryObject.q
-  //                                    + '&s=' + queryObject.s
-  //                                    + '&d=' + queryObject.d
-  //                                    + '&i=' + (queryObject.i - 1)
-  //                                    + '&n=' + queryObject.n;
-  // }
 
   public setResources(data: any): void {
     this.store.dispatch({type: 'ADMIN_SERVICE.SET_RESOURCES', payload: {
