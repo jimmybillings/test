@@ -2,7 +2,7 @@ form.md-inline-form(layout='column', [ngFormModel]="form", (ngSubmit)="onSubmit(
   md-content( layout-sm="row", layout-padding='')  
     md-input-container.md-block(*ngFor="#field of items")
     
-      div(*ngIf="field.type == 'text' || field.type == 'password' || field.type == 'email'")
+      div(*ngIf="field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date'")
         label {{field.label | translate}}
         input.md-input(autofocus, type='{{field.type}}', ngControl="{{field.name}}", id="{{field.name}}")
       
