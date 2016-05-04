@@ -123,5 +123,5 @@ export class AppComponent {
       .filter((state) => state.indexOf(currentState) > -1).length === 0;
   }
   
-  public newSearchContext(data): void { this.searchContext.new({q: data, i: 0}); }
+  public newSearchContext(data): void { this.searchContext.new({q: data, i: 1}); }
 }

@@ -81,14 +81,15 @@ export class Index implements CanReuse {
   public navigateToFilterUrl(args: any): void {
     let queryObject = this._buildQueryObject();
     let q = this._getSearchTerm(args);
-    let urlParameters = { i: 0, n: queryObject.n, s: queryObject.s, d: queryObject.d, q };
+    let urlParameters = { i: 1, n: queryObject.n, s: queryObject.s, d: queryObject.d, q };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
+
 
   private _buildQueryObject(): any {
     let s = this.routeParams.get('s') || 'createdOn';
     let d = (this.routeParams.get('d') ? true : false);
-    let i = parseInt(this.routeParams.get('i')) || 0;
+    let i = parseInt(this.routeParams.get('i')) || 1;
     let n = parseInt(this.routeParams.get('n')) || this.pageSize.value;
     let q = this.routeParams.get('q') || '';
     return { i, n, s, d, q };

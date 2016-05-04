@@ -110,7 +110,7 @@ export function main() {
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
       component.navigateToFilterUrl({firstName: 'john'});
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/User', Object({ i: 0, n: 10, s: 'createdOn', d: true, q: 'john' }) ]);
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/User', Object({ i: 1, n: 10, s: 'createdOn', d: true, q: 'john' }) ]);
     }));
   });
   

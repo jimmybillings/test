@@ -1,8 +1,13 @@
 section.admin-index
-  div(layout='row', layout-align='start start')
-    div(class='table' flex-xl="60",flex-gt-lg="50",flex-gt-md="60",flex="70")
-      wz-list([items]="currentUserResources.items", [headers]="headers", [toggleFlag]="toggleFlag", (sort)="navigateToSortUrl($event)")
+  div(layout='row', layout-align='start center')
+    div(class='account-table' flex-xl="60",flex-gt-lg="50",flex-gt-md="60",flex="70")
+      wz-list(
+        [items]="currentUserResources.items", 
+        [headers]="headers", 
+        [toggleFlag]="toggleFlag", 
+        (sort)="navigateToSortUrl($event)")
       div(layout='row', layout-align='end center')
-        pagination((getPage)="navigateToPageUrl($event)", [currentPage]="routeParams.params.i || 0", [pagination]="currentUserResources.pagination")
-    div(class='admin-filter' flex-xl="35",flex-gt-lg="45",flex-gt-md="35",flex="25")
-      filter([fields]="headers", (filterSubmit)="navigateToFilterUrl($event)")
+        pagination(
+          (getPage)="navigateToPageUrl($event)", 
+          [currentPage]="routeParams.params.i || 1", 
+          [pagination]="currentUserResources.pagination")
