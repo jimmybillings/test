@@ -1,37 +1,57 @@
+.pagination {
+  margin-top: rem(3.4);
+  min-height: rem(3.4);
+  max-height: rem(3.4);
+  opacity: .75;
+  &.pg-bottom {
+    margin-top: 0;  
+    margin-bottom: rem(3.4);  
+  }
+}
 pagination {
-  .text-nav {
-    span {
-      font-size: 0.8rem;
-      margin-right: rem(1);
-      margin-left: rem(1);
-      padding-top: rem(.8);
-    } 
+  margin-right: - rem(.8);
+  .text-nav > span {
+    &:nth-child(3n) {
+      margin-right: rem(.5);
+    }
+    &:nth-child(4n) {
+      margin-right: rem(.8);
+    }
   }
   .divider {
+    display: none;
     width: rem(.2);
     height: rem(2.4);
-    margin-top: rem(.3);
-    margin-right: rem(.3);
+    margin-right: rem(.2);
     box-shadow: -1px 0 0 0 rgba(md-color($md-background, 900), .4) inset, 1px 0 0 0 rgba(md-color($md-background, 100),.7);
   }
   form {
     input {
-    font-size: 0.8rem;
-      
-      width: rem(3.2);
-      height: rem(3.0);
+      width: rem(2.8);
+      height: rem(2.3);
       overflow: hidden;
       text-align: center;
+      background-color: rgba(md-color($md-background, 50), .9);
+      border-style: solid;
+      border-width: 1px;
+      border-color: rgba(md-color($md-background, 900), .35);
+      margin-right: rem(.8);
+      margin-left: rem(.7);
     }
   }
-  .total-count {
-    color: rgba(md-color($md-background, 900), .4);
-    font-size: em(1.44);
-    font-weight: 900;
-    padding-top: rem(.8);
-    & + nav.left {
-      margin-left: rem(2.2);
+  button[md-button].md-icon-button {
+    margin: 0;
+    line-height: 1;
+    padding: rem(.5);
+    .material-icons {
+      font-size: rem(3);
+      opacity: .75;
     }
   }
 }
-
+.results-count {
+  min-height: rem(4);
+  line-height: rem(4);
+  text-align: right;
+  padding-right: rem(2.4);
+}  

@@ -21,8 +21,12 @@ export class Header {
   @Input() supportedLanguages;
   @Input() showFixed;
   @Input() state;
+  @Input() searchBarIsActive;
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
+  @Output() onOpenBinTray = new EventEmitter();
+  @Output() onOpenSearch = new EventEmitter();
+
   public loggedInState: boolean;
   public components: Object;
   
@@ -36,5 +40,13 @@ export class Header {
 
   public logOut(event) {
     this.onLogOut.emit(event);
+  }
+  
+  public openSearch(event) {
+    this.onOpenSearch.emit(event);
+  }
+  
+  public openBinTray(event) {
+    this.onOpenBinTray.emit(event);
   }
 }

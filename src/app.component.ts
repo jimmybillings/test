@@ -17,13 +17,14 @@ import {UiConfig} from './common/config/ui.config';
 import {Notification} from './components/notification/notification.component';
 import {Admin} from './containers/admin/admin.component';
 import {SearchBox} from './components/search-box/search-box.component';
+import {BinTray} from './components/bin-tray/bin-tray.component';
 import {SearchContext} from './common/services/search-context.service';
 import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'app',
   templateUrl: './app.html',
-  directives: [ROUTER_DIRECTIVES, Header, Footer, Notification, SearchBox],
+  directives: [ROUTER_DIRECTIVES, Header, Footer, Notification, SearchBox, BinTray],
   providers: [Authentication, SearchContext],
   pipes: [TranslatePipe],
 })
@@ -41,10 +42,13 @@ export class AppComponent {
   public header: Observable<any>;
   public footer: Observable<any>;
   public searchBox: Observable<any>;
+  // public binTray: Observable<any>;
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public showFixed: boolean = false;
   public state: string = '';
   public searchBarIsActive: boolean;
+  public binTrayIsOpen: boolean = false;
+  public searchIsOpen: boolean = true;
 
   constructor(
     public currentUser: CurrentUser,
@@ -73,6 +77,7 @@ export class AppComponent {
         this.header = this.uiConfig.get('header');
         this.footer = this.uiConfig.get('footer');
         this.searchBox = this.uiConfig.get('searchBox');
+        // this.binTray = this.uiConfig.get('binTray');
       });
     this.currentUser.set();
   }
@@ -84,6 +89,21 @@ export class AppComponent {
   }
 
   public changeLang(data): void { this.multiLingual.setLanguage(data.lang); }
+
+  public closeBinTray(): void {
+    this.binTrayIsOpen = false;
+  }
+
+  public closeSearch(): void {
+    this.searchIsOpen = false;
+  }
+  public openBinTray(): void {
+    this.binTrayIsOpen = true;
+  }
+
+  public openSearch(): void {
+    this.searchIsOpen = true;
+  }
 
   /**
    * Display a fixed header with different styling when the page scrolls down past 68 pixels.

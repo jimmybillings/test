@@ -38,7 +38,7 @@ bootstrap(AppComponent, [
   ApiConfig,
   CurrentUser,
   UiConfig,
-  Error,
-  AssetService
+  AssetService,
+  Error
 ]);
 

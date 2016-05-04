@@ -1,0 +1,14 @@
+section.header-tray(layout='row', flex='100', layout-align='start')
+  .asset-carousel(flex='80')
+
+  .focused-collection(layout='row', flex='auto', layout-align='end center')
+    nav.focused
+      button.is-dd(md-button='')  London Tourism Project 
+      .asset-count
+        span.count
+    button.md-icon-button(flex='none', md-button='', title='more collection options', type="button")
+      i.material-icons(md-icon='') more_vert
+    
+  button.md-icon-button.close(md-button='', title='close collections', type="button", (click)="closeBinTray()")
+    i.material-icons(md-icon='') close
+    

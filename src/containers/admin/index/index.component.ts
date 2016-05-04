@@ -21,12 +21,13 @@ export class Index implements CanReuse {
   public adminService: AdminService;
   public routeParams: RouteParams;
   public resource: string;
-  public currentUserResources: Object;
+  public toggleFlag: string;
+  public currentComponent: string;
   public pageSize: any;
+  public subscription: any;
+  public currentUserResources: Object;
   public components: Object;
   public headers: Array<string>;
-  public subscription: any;
-  public toggleFlag: string;
   
   constructor(currentUser: CurrentUser,
               adminService: AdminService,
@@ -41,7 +42,8 @@ export class Index implements CanReuse {
   routerCanReuse(next: ComponentInstruction, prev: ComponentInstruction) { return false; }
   
   ngOnInit(): void {
-    this.resource = this.getResourceFromUrl();
+    this.resource = this._getResourceFromUrl();
+    this.currentComponent = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
     this.uiConfig.get('admin').subscribe((config) => {
       this.components = config.components;
       this.pageSize = config.config.pagination.config.pageSize;
@@ -56,37 +58,41 @@ export class Index implements CanReuse {
   }
   
   public getIndex(): void {
-    let searchQueryString = this.getRouteParams();
-    this.toggleFlag = searchQueryString.d;
-    this.adminService.getResources(this.resource, searchQueryString.i, this.pageSize.value, searchQueryString.s, searchQueryString.d).subscribe(data => {
+    let queryObject = this._buildQueryObject();
+    this.toggleFlag = queryObject.d;
+    this.adminService.getResources(queryObject).subscribe(data => {
       this.adminService.setResources(data); 
     });
   }
   
-  public navigateToPageUrl(pageNum: number): void  {
-    let searchQueryString = this.getRouteParams();
-    let component = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
-    this.router.navigate(['/Admin/' + component, { i: pageNum, n: this.pageSize.value, s: searchQueryString.s, d: searchQueryString.d }]);
+  public navigateToPageUrl(i: number): void  {
+    let queryObject = this._buildQueryObject();
+    let urlParameters = { i, n: queryObject.n, s: queryObject.s, d: queryObject.d };
+    this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
   public navigateToSortUrl(args: any): void  {
-    let component = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
-    this.router.navigate(['/Admin/' + component, { i: 1, n: this.pageSize.value, s: args.attr, d: args.toggle }]);
+    let queryObject = this._buildQueryObject();
+    let urlParameters = { i: 0, n: queryObject.n, s: args.attr, d: args.toggle };
+    this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
-  
-  public getRouteParams(): any {
+
+
+  private _buildQueryObject(): any {
+    let resource = this.resource;
     let s = this.routeParams.get('s') || 'createdOn';
     let d = (this.routeParams.get('d') ? true : false);
-    let i = parseInt(this.routeParams.get('i')) || 1;
+    let i = parseInt(this.routeParams.get('i')) || 0;
     let n = parseInt(this.routeParams.get('n')) || this.pageSize.value;
-    return { i, n, s, d };
+    let q = this.routeParams.get('q') || '';
+    return { resource, i, n, s, d, q };
   }
   
   /**
    * Uses the location of the url to pick out the resource to be passed through to the service
    * Eventually, this will have to change when there are more resources
    */
-  public getResourceFromUrl() {
+  private _getResourceFromUrl() {
     let path = window.location.pathname;
     return path.indexOf('users') > -1 ? 'user' : 'account';
   }

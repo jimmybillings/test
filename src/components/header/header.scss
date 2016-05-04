@@ -65,6 +65,15 @@ header.app-header.fixed md-toolbar:not(.md-menu-toolbar) [md-icon] {
   @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
 }
 
+header.app-header app-nav button.open-bin-tray,
+header.app-header app-nav button.open-search {
+  display: none;
+}
+
+header.app-header.bin-tray-closed app-nav button.open-bin-tray,
+header.app-header.search-closed app-nav button.open-search {
+  display: flex;
+}
 
 @include keyframes(slideDownHeader) {
   0% {

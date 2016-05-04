@@ -74,10 +74,9 @@ export function main() {
         });
       }));
       
-    it('Should create an instance variable of routParams, AdminService, and CurrentUser', inject([Index], (component) => {
+    it('Should create an instance variable of AdminService, and CurrentUser', inject([Index], (component) => {
       expect(component.currentUser).toBeDefined();
       expect(component.adminService).toBeDefined();
-      expect(component.routeParams).toBeDefined();
     }));
     
     it('Should have a getIndex() function that calls the getResource and setResources functions on the service', inject([Index], (component) => {
@@ -86,16 +85,16 @@ export function main() {
       spyOn(component.adminService, 'getResources').and.callThrough();
       spyOn(component.adminService, 'setResources').and.callThrough();
       component.getIndex();
-      expect(component.adminService.getResources).toHaveBeenCalledWith('account', 1, '10', 'createdOn', true);
+      expect(component.adminService.getResources).toHaveBeenCalledWith({resource: 'account', i: 1, n: 10, s: 'createdOn', d: true, q: ''});
       expect(component.adminService.setResources).toHaveBeenCalledWith(mockResponse());
     }));
     
     it('Should have a navigateToPageUrl function that navigates to a URL', inject([Index], (component) => {
-      component.resource = 'account';
+      component.currentComponent = 'Account';
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
       component.navigateToPageUrl(2);
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: '10', s: 'createdOn', d: true }) ]);
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: 10, s: 'createdOn', d: true}) ]);
     }));
   });
   

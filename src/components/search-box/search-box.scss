@@ -12,7 +12,7 @@ search-box {
     border: none;
     color: rgba(md-color($md-background, 900), .7);
     background-color:  md-color($md-background, 100, .9);
-    @include transition($swift-ease-in);
+    @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
     border-radius: 0;
     &:focus {
       outline: none;
@@ -64,26 +64,27 @@ header.app-header {
         text-shadow: none;
       }
     }
-    button.close {
-      display: block;
-      margin: 0;
-      height: auto;
-      width: rem(3.4);
-      padding: 0;
-      border-radius: 0;
-      font-size: 0;
-      line-height: 0;
-      border: none;
-      .material-icons[md-icon] {
-        font-size: rem(2.3);
-        line-height: .5;
-        @include text-contrast(md-color($md-background, 50));
-        opacity: .5;
-      }
+  }
+  button.close {
+    display: block;
+    margin: 0;
+    height: auto;
+    width: rem(3.4);
+    min-width: rem(3.4);
+    padding: 0;
+    border-radius: 0;
+    font-size: 0;
+    line-height: 0;
+    border: none;
+    .material-icons[md-icon] {
+      font-size: rem(2.3);
+      line-height: .5;
+      @include text-contrast(md-color($md-background, 50));
+      opacity: .5;
     }
-    button:focus {
-      outline: none;
-    }
+  }
+  button:focus {
+    outline: none;
   }
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     search-box {
@@ -104,9 +105,7 @@ header.app-header {
 header.app-header.fixed {
   search-box {
     form {
-      border-width: 1px 0 0 0;
-      border-style: solid;
-      border-color: rgba(md-color($md-background, 500), .25);
+      box-shadow: inset 0 1px 0 0 md-color($md-background, 800, .1);
       background-color: transparent;
     }
     input {
@@ -121,9 +120,12 @@ header.app-header.search-closed search-box {
   input {
     max-height: 0;
     min-height: 0;
-    font-size: 0; 
   }
   button, button.close {
-    display: none;
+    max-height: 0;
+    min-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }

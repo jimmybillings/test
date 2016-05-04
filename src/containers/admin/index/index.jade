@@ -3,4 +3,4 @@ section.admin-index
     div(class='account-table' flex-xl="60",flex-gt-lg="50",flex-gt-md="60",flex="70")
       wz-list([items]="currentUserResources.items", [headers]="headers", [toggleFlag]="toggleFlag", (sort)="navigateToSortUrl($event)")
       div(layout='row', layout-align='end center')
-        pagination((getPage)="navigateToPageUrl($event)", [pagination]="currentUserResources.pagination")
+        pagination((getPage)="navigateToPageUrl($event)", [currentPage]="routeParams.params.i || 0", [pagination]="currentUserResources.pagination")

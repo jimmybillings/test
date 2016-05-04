@@ -6,7 +6,7 @@
 //     border-top-width: rem(5.6);    
 //   }
 // }
-    
+
 section.preview-bk {
   
   md-toolbar {
@@ -19,10 +19,10 @@ section.preview-bk {
   margin: 0 auto;
   padding-top: rem(6.5);
   &.theater {
-    height: rem(70.08123);
+    // height: rem(69.08123);
     // height: rem(70.8234);
     // @include calc(height, "100% + 236px");
-    padding-top: rem(14.6);
+    // padding-top: rem(14.6);
     padding-bottom: rem(9);
     box-shadow: $whiteframe-shadow-3dp;
     @include text-contrast(md-color($md-background, 900));
@@ -256,5 +256,37 @@ section.preview-bk {
   background-color: transparent;
   iframe {
     border: none;
+  }
+}
+
+
+
+header.app-header + div.main-content asset section.preview-bk.theater {
+  @include transition(padding-top 0.35s, height 0.35s, $swift-ease-in-out-timing-function);
+  padding-top: rem(23.8);
+  height: rem(80.2);
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    border-top-width: rem(22.4);
+  }
+}
+header.app-header.bin-tray-closed + div.main-content asset section.preview-bk.theater {
+  padding-top: rem(18.2);
+  height: rem(74.6);
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    padding-top: rem(16.8);
+  }
+}
+header.app-header.bin-tray-closed.search-closed + div.main-content asset section.preview-bk.theater {
+  padding-top: rem(13.6);
+  height: rem(70);
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    padding-top: rem(12.8);
+  }
+}
+header.app-header.search-closed + div.main-content asset section.preview-bk.theater {
+  padding-top: rem(19.2);
+  height: rem(75.6);
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    padding-top: rem(18.4);
   }
 }
