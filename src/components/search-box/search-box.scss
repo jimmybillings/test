@@ -44,6 +44,9 @@ search-box {
   button.close {
    display: none; 
   }
+  select:empty {
+   display: none;
+  }
 }
 
 // search box in the header
