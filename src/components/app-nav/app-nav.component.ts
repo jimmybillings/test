@@ -9,13 +9,13 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
  */ 
 @Component({
   selector: 'app-nav',
-  templateUrl: 'components/header/header.html',
+  templateUrl: 'components/app-nav/app-nav.html',
   directives: [ROUTER_DIRECTIVES, NgClass, MATERIAL_DIRECTIVES, NgIf, NgFor],
   pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class Header {
+export class AppNav {
   @Input() currentUser;
   @Input() config;
   @Input() supportedLanguages;

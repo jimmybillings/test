@@ -14,7 +14,8 @@ import {SpyLocation} from 'angular2/src/mock/location_mock';
 import {RootRouter} from 'angular2/src/router/router';
 import {UiConfig} from '../../common/config/ui.config';
 import {ViewportHelper} from 'ng2-material/all';
-
+import { MockBackend } from 'angular2/http/testing';
+import { BaseRequestOptions, Http } from 'angular2/http';
 export function main() {
   describe('Search Box Component', () => {
     class Search {}
@@ -24,9 +25,15 @@ export function main() {
       RouteRegistry,
       RouteRegistry,
       ViewportHelper,
+      BaseRequestOptions,
+      MockBackend,
       provide(Location, { useClass: SpyLocation }),
       provide(ROUTER_PRIMARY_COMPONENT, { useValue: SearchBox }),
       provide(Router, { useClass: RootRouter }),
+      provide(Http, {
+        useFactory: (backend, defaultOptions) => new Http(backend, defaultOptions),
+        deps: [MockBackend, BaseRequestOptions]
+      }),
       UiConfig
     ]);
 
