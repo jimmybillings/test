@@ -59,33 +59,33 @@ export class Index implements CanReuse {
   }
   
   public getIndex(): void {
-    let queryObject = this._buildQueryObject();
-    this.toggleFlag = queryObject.d;
-    this.adminService.getResources(queryObject, this.resource).subscribe(data => {
+    let params = this._buildRouteParams();
+    this.toggleFlag = params.d;
+    this.adminService.getResources(params, this.resource).subscribe(data => {
       this.adminService.setResources(data); 
     });
   }
   
   public navigateToPageUrl(i: number): void  {
-    let queryObject = this._buildQueryObject();
-    let urlParameters = { i, n: queryObject.n, s: queryObject.s, d: queryObject.d, q: queryObject.q };
+    let params = this._buildRouteParams();
+    let urlParameters = { i, n: params.n, s: params.s, d: params.d, q: params.q };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
-  public navigateToSortUrl(args: any): void  {
-    let queryObject = this._buildQueryObject();
-    let urlParameters = { i: 1, n: queryObject.n, s: args.attr, d: args.toggle, q: queryObject.q };
+  public navigateToSortUrl(sortParams: any): void  {
+    let params = this._buildRouteParams();
+    let urlParameters = { i: 1, n: params.n, s: sortParams.attr, d: sortParams.toggle, q: params.q };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
-  public navigateToFilterUrl(args: any): void {
-    let queryObject = this._buildQueryObject();
-    let q = this._getSearchTerm(args);
-    let urlParameters = { i: 1, n: queryObject.n, s: queryObject.s, d: queryObject.d, q };
-    this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
+  public navigateToFilterUrl(filterParams: any): void {
+    let params = this._buildRouteParams();
+    let searchTerms = this._buildSearchTerm(filterParams);
+    params.q = searchTerms;
+    this.router.navigate(['/Admin/' + this.currentComponent, params ]);
   }
 
-  private _buildQueryObject(): any {
+  private _buildRouteParams(): any {
     let s = this.routeParams.get('s') || 'createdOn';
     let d = (this.routeParams.get('d') ? true : false);
     let i = parseInt(this.routeParams.get('i')) || 1;
@@ -103,14 +103,19 @@ export class Index implements CanReuse {
     return path.indexOf('users') > -1 ? 'user' : 'account';
   }
   
-  private _getSearchTerm(args: any): string {
-    return Object.keys(args).reduce((previous, key) => {
-      if (key.indexOf('Control') > -1) {
-        return previous;
-      } else {
-        previous.push(key + '=' + encodeURIComponent(args[key]));
-        return previous;  
-      }
+  private _buildSearchTerm(filterParams: any): string {
+   return Object.keys(filterParams).reduce((prev,current) => {
+      prev.push(current + '=' + encodeURIComponent(filterParams[current]));
+      return prev;
     },[]).join('&');
   }
+  
+  // private _getSearchTerm(filterParams: any): any {
+  //   let fields = 'fields=' + Object.keys(filterParams).join(',') + '&';
+  //   let values = 'values=' + Object.keys(filterParams).reduce((prev,current) => {
+  //     prev.push(encodeURIComponent(filterParams[current]));
+  //     return prev;
+  //   },[]).join(',');
+  //   return fields + values;
+  // }
 }
