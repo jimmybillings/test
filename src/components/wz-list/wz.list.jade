@@ -1,8 +1,8 @@
-md-data-table(layout-fill='')
+table(layout-fill='')
   thead
     tr
-      th.md-text-cell(*ngFor="#header of headers", (click)="sortBy(header.name)") {{ header.label }}
+      th(*ngFor="#header of headers", (click)="sortBy(header.name)") {{ header.label }}
   tbody
     tr(*ngFor="#row of items")
-      td.md-text-cell(*ngFor="#header of headers") {{ row[header.name] }}
+      td(*ngFor="#header of headers") {{ row[header.name] }}
       
