@@ -12,4 +12,4 @@ section.admin-index
           [currentPage]="routeParams.params.i || 1", 
           [pagination]="currentUserResources.pagination")
     div(class='admin-filter' flex-xl="30",flex-gt-lg="40",flex-gt-md="30",flex="20")
-      filter([fields]="headers", (filterSubmit)="navigateToFilterUrl($event)")
+      filter([fields]="fields", (filterSubmit)="navigateToFilterUrl($event)")

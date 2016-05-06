@@ -29,6 +29,7 @@ export class Index implements CanReuse {
   public currentUserResources: Object;
   public components: Object;
   public headers: Array<string>;
+  public fields: Array<string>;
   
   constructor(currentUser: CurrentUser,
               adminService: AdminService,
@@ -49,6 +50,7 @@ export class Index implements CanReuse {
       this.components = config.components;
       this.pageSize = config.config.pagination.config.pageSize;
       this.headers = config.config[this.resource].items;
+      this.fields = config.config[this.resource].config.form.items;
     });
     this.subscription = this.adminService.adminStore.subscribe(data => this.currentUserResources = data);
     this.getIndex();
@@ -104,18 +106,50 @@ export class Index implements CanReuse {
   }
   
   private _buildSearchTerm(filterParams: any): string {
-   return Object.keys(filterParams).reduce((prev,current) => {
-      prev.push(current + '=' + encodeURIComponent(filterParams[current]));
-      return prev;
-    },[]).join('&');
+    let params = this._removeEmptyParams(filterParams);
+    let rawFields = this._buildFields(params);
+    let rawValues = this._buildValues(params);
+    let processedFields = rawFields.reduce(this.removeFields,[]).join(',');
+    let processedValues = rawValues.reduce(this.removeFields,[]).join(',');
+    return `fields=${processedFields}&values=${processedValues}`;
   }
   
-  // private _getSearchTerm(filterParams: any): any {
-  //   let fields = 'fields=' + Object.keys(filterParams).join(',') + '&';
-  //   let values = 'values=' + Object.keys(filterParams).reduce((prev,current) => {
-  //     prev.push(encodeURIComponent(filterParams[current]));
-  //     return prev;
-  //   },[]).join(',');
-  //   return fields + values;
-  // }
+  private _removeEmptyParams(params: any): any {
+    for (var param in params) {
+      if (params[param] === '') {
+        delete params[param];
+      }
+    }
+    return params;
+  }
+  
+  private _buildValues(filterParams: any): Array<string> {
+    return Object.keys(filterParams).reduce((prev, current) => {
+      prev.push(encodeURI(filterParams[current]));
+      return prev;
+    }, []);
+  }
+  
+  private _buildFields(filterParams: any): Array<string> {
+    let fields = Object.keys(filterParams);
+    return fields.reduce((prev, current) => {
+      if (current === 'DATE') {
+        prev.push(current + ':' + filterParams[current] + ':');
+      } else {
+        prev.push(current);
+      }
+      return prev;
+    }, []);
+  }
+  
+  private removeFields(prev, field, index): Array<string> {
+    let fieldsToRemove = ['createdOn', 'lastUpdated', 'before', 'after'];
+    if (fieldsToRemove.indexOf(field) > -1) {
+      prev.push(field);
+      return prev.slice(0, index);
+    } else {
+      prev.push(encodeURI(field));
+      return prev;
+    }
+  }
 }
