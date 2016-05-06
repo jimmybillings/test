@@ -113,14 +113,32 @@ export function main() {
       expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/User', Object({ i: 1, n: 10, s: 'createdOn', d: true, q: 'fields=firstName&values=john' }) ]);
     }));
     
-    it('Should have a buildSearchTerm function that calls subsequent methods', inject([Index], (component) => {
+    it('Should have a buildSearchTerm function that calls subsequent functions', inject([Index], (component) => {
       spyOn(component, '_removeEmptyParams').and.callThrough();
       spyOn(component, '_buildFields').and.callThrough();
       spyOn(component, '_buildValues').and.callThrough();
-      component._buildSearchTerm({firstName: 'ross', lastName: 'edfort', emailAddress: '', DATE: 'before', createdOn: '2016-05-05'});
+      let result = component._buildSearchTerm({firstName: 'ross', lastName: 'edfort', emailAddress: '', DATE: 'before', createdOn: '2016-05-05'});
       expect(component._removeEmptyParams).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
       expect(component._buildFields).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
       expect(component._buildValues).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
+      expect(result).toEqual('fields=firstName,lastName,DATE:LT:createdOn&values=ross,edfort,1462406400');
+    }));
+    
+    it('Should have a _removeEmptyParams function that removes empty params from an object', inject([Index], (component) => {
+      let result = component._removeEmptyParams({firstName: 'ross', lastName: 'edfort', emailAddress: '', DATE: 'before', createdOn: '2016-05-05'});
+      expect(result).toEqual({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
+    }));
+    
+    it('Should have a _buildFields function that builds an array proper field params from an object', inject([Index], (component) => {
+      let result = component._buildFields({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
+      expect(result).toEqual(['firstName', 'lastName', 'DATE:LT:createdOn', 'createdOn']);
+      let otherResult = component._buildFields({firstName: 'ross', lastName: 'edfort', emailAddress: 'wazee', DATE: 'after', lastUpdated: '2016-05-05'});
+      expect(otherResult).toEqual(['firstName', 'lastName', 'emailAddress', 'DATE:GT:lastUpdated', 'lastUpdated']);
+    }));
+    
+    it('Should have a _buildValues function that builds an array proper value params from an object', inject([Index], (component) => {
+      let result = component._buildValues({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
+      expect(result).toEqual(['ross', 'edfort', 'before', '1462406400']);
     }));
   });
   

@@ -146,9 +146,9 @@ export class Index implements CanReuse {
   
   private _buildFields(filterParams: any): Array<string> {
     let fields = Object.keys(filterParams);
-    return fields.reduce((prev, current) => {
+    return fields.reduce((prev, current, index) => {
       if (current === 'DATE') {
-        prev.push(current + ':' + this.operatorMap[filterParams[current]] + ':');
+        prev.push(current + ':' + this.operatorMap[filterParams[current]] + ':' + fields[index + 1]);
       } else {
         prev.push(current);
       }
