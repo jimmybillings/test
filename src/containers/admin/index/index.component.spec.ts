@@ -110,7 +110,17 @@ export function main() {
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
       component.navigateToFilterUrl({firstName: 'john'});
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/User', Object({ i: 1, n: 10, s: 'createdOn', d: true, q: 'firstName=john' }) ]);
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/User', Object({ i: 1, n: 10, s: 'createdOn', d: true, q: 'fields=firstName&values=john' }) ]);
+    }));
+    
+    it('Should have a buildSearchTerm function that calls subsequent methods', inject([Index], (component) => {
+      spyOn(component, '_removeEmptyParams').and.callThrough();
+      spyOn(component, '_buildFields').and.callThrough();
+      spyOn(component, '_buildValues').and.callThrough();
+      component._buildSearchTerm({firstName: 'ross', lastName: 'edfort', emailAddress: '', DATE: 'before', createdOn: '2016-05-05'});
+      expect(component._removeEmptyParams).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
+      expect(component._buildFields).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
+      expect(component._buildValues).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
     }));
   });
   

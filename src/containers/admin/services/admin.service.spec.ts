@@ -41,7 +41,7 @@ export function main() {
       spyOn(service, '_getIdentitiesSearchOptions');
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
-      service.getResources({i: 1, n: 10, s: 'createdOn', d: 'false'}, 'account').subscribe((res) => {
+      service.getResources({i: 1, n: 10, s: 'createdOn', d: 'false', q: ''}, 'account').subscribe((res) => {
         expect(service._getIdentitiesSearchOptions).toHaveBeenCalledWith(1, 10, 'createdOn', 'false');
         expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/v1/user/search/?q=&s=createdOn&d=false&i=1&n=10');
       });

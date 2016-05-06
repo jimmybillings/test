@@ -26,6 +26,7 @@ export class Index implements CanReuse {
   public currentComponent: string;
   public pageSize: any;
   public subscription: any;
+  public operatorMap: Object;
   public currentUserResources: Object;
   public components: Object;
   public headers: Array<string>;
@@ -39,6 +40,10 @@ export class Index implements CanReuse {
     this.currentUser = currentUser;
     this.adminService = adminService;
     this.routeParams = routeParams;
+    this.operatorMap = {
+      'before': 'LT',
+      'after': 'GT'
+    };
   }
   
   routerCanReuse(next: ComponentInstruction, prev: ComponentInstruction) { return false; }
@@ -129,7 +134,12 @@ export class Index implements CanReuse {
   
   private _buildValues(filterParams: any): Array<string> {
     return Object.keys(filterParams).reduce((prev, current) => {
-      prev.push(encodeURI(filterParams[current]));
+      if (current === 'createdOn' || current === 'lastUpdated') {
+        let date = new Date(filterParams[current]);
+        prev.push(encodeURI((date.getTime()/1000).toString()));
+      } else {
+        prev.push(encodeURI(filterParams[current])); 
+      }
       return prev;
     }, []);
   }
@@ -138,7 +148,7 @@ export class Index implements CanReuse {
     let fields = Object.keys(filterParams);
     return fields.reduce((prev, current) => {
       if (current === 'DATE') {
-        prev.push(current + ':' + filterParams[current] + ':');
+        prev.push(current + ':' + this.operatorMap[filterParams[current]] + ':');
       } else {
         prev.push(current);
       }
