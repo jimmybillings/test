@@ -34,10 +34,6 @@ export class WzForm {
     return options.split(',');
   }
   
-  public clearForm(): void {
-    this.form = this.fb.group(this._form.create(this.items));
-  }
-  
   public onSubmit(data:any): void {
     // console.log(this.form);
     if (this.form.valid) {

@@ -11,8 +11,13 @@ import { WzForm } from '../wz-form/wz.form.component';
 export class Filter {
   @Input() fields;
   @Output() filterSubmit = new EventEmitter();
+  @Output() clearFilter = new EventEmitter();
   
   public onSubmit(formValues: any): void {
     this.filterSubmit.emit(formValues);
+  }
+  
+  public clearFilters(event: any): void {
+    this.clearFilter.emit(event);
   }
 }

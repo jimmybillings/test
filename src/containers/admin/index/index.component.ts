@@ -86,6 +86,10 @@ export class Index implements CanReuse {
     params.q = searchTerms;
     this.router.navigate(['/Admin/' + this.currentComponent, params ]);
   }
+  
+  public navigateToBaseUrl(event): void {
+    this.router.navigate(['/Admin/' + this.currentComponent]);
+  }
 
   private _buildRouteParams(): any {
     let s = this.routeParams.get('s') || 'createdOn';
