@@ -127,6 +127,18 @@ header.app-header {
         text-shadow: none;
       }
     }
+    ul.auto-complete {
+      width: 100%;
+      li button {
+        padding-right: rem(10.0);
+        span {
+          right: 60px;
+        }
+        &:focus::after {
+          right: rem(1.0);
+        }
+      }
+    }
   }
   button.close {
     display: block;
