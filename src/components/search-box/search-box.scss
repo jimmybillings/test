@@ -59,6 +59,7 @@ search-box {
     @include text-contrast(md-color($md-background, 100));
     max-height: rem(30);
     overflow: scroll;
+    @include transition($swift-ease-out);
     li {
       background-color: transparent;
       margin: 0; 
