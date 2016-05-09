@@ -89,6 +89,8 @@ export class Index implements CanReuse {
     let params = this._buildRouteParams();
     let searchTerms = this._buildSearchTerm(filterParams);
     let searchParams = Object.assign(params, searchTerms);
+    searchParams.i = 1;
+    searchParams.n = this.pageSize.value;
     this.router.navigate(['/Admin/' + this.currentComponent, searchParams ]);
   }
   
@@ -110,15 +112,11 @@ export class Index implements CanReuse {
    * Uses the location of the url to pick out the resource to be passed through to the service
    * Eventually, this will have to change when there are more resources
    */
-  private _getResourceFromUrl() {
+  private _getResourceFromUrl(): string {
     let path = window.location.pathname;
     return path.indexOf('users') > -1 ? 'user' : 'account';
   }
   
-  /**
-   * Everything below here is to build the url for the searchFields/? enpoint
-   * can this be condensed and cleaned up?
-   */
   private _buildSearchTerm(filterParams: any): any {
     let params = this._sanitizeFormInput(filterParams);
     let rawFields = this._buildFields(params);
