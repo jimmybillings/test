@@ -20,5 +20,5 @@ form.md-inline-form(layout='column', [ngFormModel]="form", (ngSubmit)="onSubmit(
           div(md-message='required') You must supply a Password
           div(md-message='minlength') Password must be at least 8 characters
       
-    md-card-actions(layout='row', layout-align='center center', layout-wrap='')  
+    md-card-actions(layout='column', layout-align='center center', layout-wrap='')  
       button.md-raised.md-primary.conversion(md-raised-button='', type='submit') {{submitLabel | translate}}
