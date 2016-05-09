@@ -1,12 +1,16 @@
 form.md-inline-form(layout='row', flex='100', layout-align='start', [ngFormModel]="searchForm", (ngSubmit)="onSubmit(searchForm.value.query)")
   input(md-input="", type='text', placeholder="{{ 'HOME.SEARCH_BOX_LABEL' | translate }}", ngControl="query")
-  button(type='submit',[disabled]="!searchForm.valid") Search
+  button(type='submit',[disabled]="!searchForm.valid",tabindex='-1') Search
     i.material-icons(md-icon='') search
     
   button.md-icon-button.close(md-button='', title='close search', type="button", (click)= "closeSearch()")
     i.material-icons(md-icon='') close
 
-div(layout='row', flex='100', layout-align='start')
-  select(autofocus="autofocus", (change)="onSubmit($event.target.value)")
-    option(*ngFor="#term of searchTerms | async", value="{{term.term}}") {{term.term}} ( {{term.count}} )
-  
+// select(autofocus="autofocus", (change)="onSubmit($event.target.value)",layout='row', flex='60', layout-align='start',layout-padding='')
+//   option(*ngFor="#term of searchTerms | async", value="{{term.term}}") {{term.term}} ( {{term.count}} )
+ 
+ul.auto-complete(tabindex='1')
+  li(*ngFor="#term of searchTerms | async", value="{{term.term}}")
+    button(type='button', (click)="onSubmit(term.term)") {{term.term}} 
+      span {{term.count}}
+    
