@@ -46,6 +46,7 @@ export class SearchBox {
   }
 
   public onSubmit(query): void {
+    this.searchTerms = this.listenForSearchTerms();
     this.searchContext.emit(query);
   }
     
