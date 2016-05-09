@@ -29,7 +29,6 @@ export class AdminService {
     }
   
   public getResources(queryObject: any, resource: string): Observable<any> {
-    console.log(arguments);
     queryObject['i'] = (parseFloat(queryObject['i']) - 1).toString();
     let url = this._getIdentitiesSearchPath(queryObject, resource);
     let options = this._getIdentitiesSearchOptions(queryObject);

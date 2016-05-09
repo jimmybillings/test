@@ -75,13 +75,13 @@ export class Index implements CanReuse {
   
   public navigateToPageUrl(i: number): void  {
     let params = this._buildRouteParams();
-    let urlParameters = { i, n: params.n, s: params.s, d: params.d };
+    let urlParameters = { i, n: params.n, s: params.s, d: params.d, fields: params.fields, values: params.values };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
   public navigateToSortUrl(sortParams: any): void  {
     let params = this._buildRouteParams();
-    let urlParameters = { i: 1, n: params.n, s: sortParams.attr, d: sortParams.toggle };
+    let urlParameters = { i: 1, n: params.n, s: sortParams.attr, d: sortParams.toggle, fields: params.fields, values: params.values };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
@@ -115,6 +115,10 @@ export class Index implements CanReuse {
     return path.indexOf('users') > -1 ? 'user' : 'account';
   }
   
+  /**
+   * Everything below here is to build the url for the searchFields/? enpoint
+   * can this be condensed and cleaned up?
+   */
   private _buildSearchTerm(filterParams: any): any {
     let params = this._removeEmptyParams(filterParams);
     let rawFields = this._buildFields(params);
