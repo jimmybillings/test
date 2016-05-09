@@ -41,29 +41,25 @@ export function main() {
       spyOn(service, '_getIdentitiesSearchOptions');
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
-      service.getResources({i: 1, n: 10, s: 'createdOn', d: 'false', q: ''}, 'account').subscribe((res) => {
+      service.getResources({i: 1, n: 10, s: 'createdOn', d: 'false'}, 'account').subscribe((res) => {
         expect(service._getIdentitiesSearchOptions).toHaveBeenCalledWith(1, 10, 'createdOn', 'false');
       });
     }));
     
     it('should have a getResources function that makes a searchFields request for a resource with given params', inject([AdminService, MockBackend], (service, mockBackend) => {
-      spyOn(service, '_getIdentitiesSearchPath');
+      spyOn(service, '_getIdentitiesSearchPath').and.callThrough();
       let connection;
       mockBackend.connections.subscribe(c => connection = c);
-      service.getResources({i: 1, n: 10, s: 'createdOn', d: 'false', q: 'fields=firstName,lastName&values=ross,edfort'}, 'account').subscribe((res) => {
-        expect(service._getIdentitiesSearchPath).toHaveBeenCalledWith({i: 1, n: 10, s: 'createdOn', d: 'false', q: 'fields=firstName,lastName&values=ross,edfort'}, 'account');
+      service.getResources({i: 1, n: 10, s: 'createdOn', d: 'false', fields: 'firstName,lastName', values: 'ross,edfort'}, 'account').subscribe((res) => {
+        expect(service._getIdentitiesSearchPath).toHaveBeenCalledWith({i: 1, n: 10, s: 'createdOn', d: 'false', fields: 'firstName,lastName', values: 'ross,edfort'}, 'account');
       });
     }));
     
     it('Should have a _getIdentitiesSearchPath function that returns the proper url', inject([AdminService], (service) => {
-      let result = service._getIdentitiesSearchPath('account');
-      expect(result).toEqual('https://crxextapi.dev.wzplatform.com/api/identities/v1/account/search');
-    }));
-    
-    it('Should have a _getIdentitiesSearchFieldsPath function that returns the proper url', inject([AdminService], (service) => {
-      let result = service._getIdentitiesSearchFieldsPath({i: 1, n: 10, s: 'createdOn', d: 'false', q: 'fields=firstName,lastName&values=ross,edfort'}, 'account');
-      let base = 'https://crxextapi.dev.wzplatform.com/api/identities/v1/';
-      expect(result).toEqual(base + 'account/searchFields/?fields=firstName,lastName&values=ross,edfort&createdOn&false&1&10');
+      let result = service._getIdentitiesSearchPath({i: 1, n: 10, s: 'createdOn', d: 'false', fields: 'firstName,lastName', values: 'ross,edfort'}, 'account');
+      expect(result).toEqual('https://crxextapi.dev.wzplatform.com/api/identities/v1/account/searchFields/?');
+      let otherResult = service._getIdentitiesSearchPath({i: 1, n: 10, s: 'createdOn', d: 'false'}, 'account');
+      expect(otherResult).toEqual('https://crxextapi.dev.wzplatform.com/api/identities/v1/account/search');
     }));
   });
 }

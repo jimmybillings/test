@@ -57,7 +57,7 @@ export function main() {
       provide(ROUTER_PRIMARY_COMPONENT, { useValue: Index }),
       provide(Router, { useClass: RootRouter }),
       provideStore({currentUser: currentUser}),
-      provide(RouteParams, { useValue: new RouteParams({ i: '1', n: '10', s: 'createdOn', d: 'false', q: '' }) }),
+      provide(RouteParams, { useValue: new RouteParams({ i: '1', n: '10', s: 'createdOn', d: 'false'}) }),
       CurrentUser,
       ApiConfig,
       provideStore({config: config}),
@@ -85,7 +85,7 @@ export function main() {
       spyOn(component.adminService, 'getResources').and.callThrough();
       spyOn(component.adminService, 'setResources').and.callThrough();
       component.getIndex();
-      expect(component.adminService.getResources).toHaveBeenCalledWith({i: 1, n: 10, s: 'createdOn', d: true, q: ''}, 'account');
+      expect(component.adminService.getResources).toHaveBeenCalledWith({i: 1, n: 10, s: 'createdOn', d: true, values: '', fields: ''}, 'account');
       expect(component.adminService.setResources).toHaveBeenCalledWith(mockResponse());
     }));
     
@@ -94,7 +94,7 @@ export function main() {
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
       component.navigateToPageUrl(2);
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: 10, s: 'createdOn', d: true, q: ''}) ]);
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: 10, s: 'createdOn', d: true}) ]);
     }));
     
     it('Should have a navigateToSortUrl function that navigates to a URL with correct params', inject([Index], (component) => {
@@ -102,7 +102,7 @@ export function main() {
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
       component.navigateToSortUrl({attr: 'emailAddress', toggle: true});
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 1, n: 10, s: 'emailAddress', d: true, q: '' }) ]);
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 1, n: 10, s: 'emailAddress', d: true}) ]);
     }));
     
     it('Should have a navigateToFilterUrl function that navigates to a URL with correct params', inject([Index], (component) => {
@@ -110,7 +110,7 @@ export function main() {
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
       component.navigateToFilterUrl({firstName: 'john'});
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/User', Object({ i: 1, n: 10, s: 'createdOn', d: true, q: 'fields=firstName&values=john' }) ]);
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/User', Object({ i: 1, n: 10, s: 'createdOn', d: true, fields: 'firstName', values: 'john' }) ]);
     }));
     
     it('Should have a buildSearchTerm function that calls subsequent functions', inject([Index], (component) => {
@@ -121,7 +121,7 @@ export function main() {
       expect(component._removeEmptyParams).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
       expect(component._buildFields).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
       expect(component._buildValues).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
-      expect(result).toEqual('fields=firstName,lastName,DATE:LT:createdOn&values=ross,edfort,1462406400');
+      expect(result).toEqual({fields: 'firstName,lastName,DATE:LT:createdOn', values: 'ross,edfort,1462406400'});
     }));
     
     it('Should have a _removeEmptyParams function that removes empty params from an object', inject([Index], (component) => {

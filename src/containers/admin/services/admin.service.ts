@@ -29,16 +29,11 @@ export class AdminService {
     }
   
   public getResources(queryObject: any, resource: string): Observable<any> {
+    console.log(arguments);
     queryObject['i'] = (parseFloat(queryObject['i']) - 1).toString();
-    if (queryObject.q.indexOf('fields') > -1) {
-      let url = this._getIdentitiesSearchFieldsPath(queryObject, resource);
-      let headers = this._apiConfig.authHeaders();
-      return this._http.get(url, {headers: headers}).map((res: Response) => res.json()); 
-    } else {
-      let url = this._getIdentitiesSearchPath(resource);
-      let options = this._getIdentitiesSearchOptions(queryObject);
-      return this._http.get(url, options).map((res: Response) => res.json());
-    }
+    let url = this._getIdentitiesSearchPath(queryObject, resource);
+    let options = this._getIdentitiesSearchOptions(queryObject);
+    return this._http.get(url, options).map((res: Response) => res.json());
   }
 
   public setResources(data: any): void {
@@ -65,19 +60,11 @@ export class AdminService {
     return new RequestOptions(options);
   }
   
-  private _getIdentitiesSearchPath(resource: string): string {
-    return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource + '/search';
-  }
-  
-  private _getIdentitiesSearchFieldsPath(queryObject: any, resource: string): string {
-    return this._apiConfig.baseUrl()
-      + 'api/identities/v1/'
-      + resource
-      + '/searchFields/?'
-      + queryObject.q + '&'
-      + queryObject.s + '&'
-      + queryObject.d + '&'
-      + queryObject.i + '&'
-      + queryObject.n;
+  private _getIdentitiesSearchPath(queryObject: any, resource: string): string {
+    if (Object.keys(queryObject).indexOf('fields') > -1) {
+      return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource + '/searchFields/?';
+    } else {
+      return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource + '/search';
+    }
   }
 }

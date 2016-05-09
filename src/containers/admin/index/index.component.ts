@@ -75,21 +75,21 @@ export class Index implements CanReuse {
   
   public navigateToPageUrl(i: number): void  {
     let params = this._buildRouteParams();
-    let urlParameters = { i, n: params.n, s: params.s, d: params.d, q: params.q };
+    let urlParameters = { i, n: params.n, s: params.s, d: params.d };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
   public navigateToSortUrl(sortParams: any): void  {
     let params = this._buildRouteParams();
-    let urlParameters = { i: 1, n: params.n, s: sortParams.attr, d: sortParams.toggle, q: params.q };
+    let urlParameters = { i: 1, n: params.n, s: sortParams.attr, d: sortParams.toggle };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
   public navigateToFilterUrl(filterParams: any): void {
     let params = this._buildRouteParams();
     let searchTerms = this._buildSearchTerm(filterParams);
-    params.q = searchTerms;
-    this.router.navigate(['/Admin/' + this.currentComponent, params ]);
+    let searchParams = Object.assign(params, searchTerms);
+    this.router.navigate(['/Admin/' + this.currentComponent, searchParams ]);
   }
   
   public navigateToBaseUrl(event): void {
@@ -101,8 +101,9 @@ export class Index implements CanReuse {
     let d = (this.routeParams.get('d') ? true : false);
     let i = parseInt(this.routeParams.get('i')) || 1;
     let n = parseInt(this.routeParams.get('n')) || this.pageSize.value;
-    let q = this.routeParams.get('q') || '';
-    return { i, n, s, d, q };
+    let fields = this.routeParams.get('fields') || '';
+    let values = this.routeParams.get('values') || '';
+    return { i, n, s, d, fields, values };
   }
   
   /**
@@ -114,13 +115,13 @@ export class Index implements CanReuse {
     return path.indexOf('users') > -1 ? 'user' : 'account';
   }
   
-  private _buildSearchTerm(filterParams: any): string {
+  private _buildSearchTerm(filterParams: any): any {
     let params = this._removeEmptyParams(filterParams);
     let rawFields = this._buildFields(params);
     let rawValues = this._buildValues(params);
-    let processedFields = rawFields.reduce(this.removeFields,[]).join(',');
-    let processedValues = rawValues.reduce(this.removeFields,[]).join(',');
-    return `fields=${processedFields}&values=${processedValues}`;
+    let fields = rawFields.reduce(this.removeFields,[]).join(',');
+    let values = rawValues.reduce(this.removeFields,[]).join(',');
+    return {fields, values};
   }
   
   private _removeEmptyParams(params: any): any {
