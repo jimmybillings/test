@@ -26,7 +26,6 @@ export class Index implements CanReuse {
   public currentComponent: string;
   public pageSize: any;
   public subscription: any;
-  public operatorMap: Object;
   public currentUserResources: Object;
   public components: Object;
   public headers: Array<string>;
@@ -40,16 +39,12 @@ export class Index implements CanReuse {
     this.currentUser = currentUser;
     this.adminService = adminService;
     this.routeParams = routeParams;
-    this.operatorMap = {
-      'before': 'LT',
-      'after': 'GT'
-    };
   }
   
   routerCanReuse(next: ComponentInstruction, prev: ComponentInstruction) { return false; }
   
   ngOnInit(): void {
-    this.resource = this._getResourceFromUrl();
+    this.resource = this.getResourceFromUrl();
     this.currentComponent = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
     this.uiConfig.get('admin').subscribe((config) => {
       this.components = config.components;
@@ -66,7 +61,7 @@ export class Index implements CanReuse {
   }
   
   public getIndex(): void {
-    let params = this._buildRouteParams();
+    let params = this.buildRouteParams();
     this.toggleFlag = params.d;
     this.adminService.getResources(params, this.resource).subscribe(data => {
       this.adminService.setResources(data); 
@@ -74,20 +69,20 @@ export class Index implements CanReuse {
   }
   
   public navigateToPageUrl(i: number): void  {
-    let params = this._buildRouteParams();
+    let params = this.buildRouteParams();
     let urlParameters = { i, n: params.n, s: params.s, d: params.d, fields: params.fields, values: params.values };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
   public navigateToSortUrl(sortParams: any): void  {
-    let params = this._buildRouteParams();
+    let params = this.buildRouteParams();
     let urlParameters = { i: 1, n: params.n, s: sortParams.attr, d: sortParams.toggle, fields: params.fields, values: params.values };
     this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
   }
   
   public navigateToFilterUrl(filterParams: any): void {
-    let params = this._buildRouteParams();
-    let searchTerms = this._buildSearchTerm(filterParams);
+    let params = this.buildRouteParams();
+    let searchTerms = this.adminService.buildSearchTerm(filterParams);
     let searchParams = Object.assign(params, searchTerms);
     searchParams.i = 1;
     searchParams.n = this.pageSize.value;
@@ -98,7 +93,7 @@ export class Index implements CanReuse {
     this.router.navigate(['/Admin/' + this.currentComponent]);
   }
 
-  private _buildRouteParams(): any {
+  private buildRouteParams(): any {
     let s = this.routeParams.get('s') || 'createdOn';
     let d = (this.routeParams.get('d') ? true : false);
     let i = parseInt(this.routeParams.get('i')) || 1;
@@ -112,51 +107,8 @@ export class Index implements CanReuse {
    * Uses the location of the url to pick out the resource to be passed through to the service
    * Eventually, this will have to change when there are more resources
    */
-  private _getResourceFromUrl(): string {
+  private getResourceFromUrl(): string {
     let path = window.location.pathname;
     return path.indexOf('users') > -1 ? 'user' : 'account';
-  }
-  
-  private _buildSearchTerm(filterParams: any): any {
-    let params = this._sanitizeFormInput(filterParams);
-    let rawFields = this._buildFields(params);
-    let rawValues = this._buildValues(params);
-    let fields = rawFields.filter(this.removeFields).join(',');
-    let values = rawValues.filter(this.removeFields).join(',');
-    return {fields, values};
-  }
-  
-  private _sanitizeFormInput(params: any): any {
-    for (var param in params) {if (params[param] === '') delete params[param];}
-    return params;
-  }
-  
-  private _buildValues(filterParams: any): Array<string> {
-    return Object.keys(filterParams).reduce((prev, current) => {
-      if (current === 'createdOn' || current === 'lastUpdated') {
-        let date = new Date(filterParams[current]);
-        prev.push(encodeURI((date.getTime()/1000).toString()));
-      } else {
-        prev.push(encodeURI(filterParams[current])); 
-      }
-      return prev;
-    }, []);
-  }
-  
-  private _buildFields(filterParams: any): Array<string> {
-    let fields = Object.keys(filterParams);
-    return fields.reduce((prev, current, index) => {
-      if (current === 'DATE') {
-        prev.push(current + ':' + this.operatorMap[filterParams[current]] + ':' + fields[index + 1]);
-      } else {
-        prev.push(current);
-      }
-      return prev;
-    }, []);
-  }
-  
-  private removeFields(value): boolean {
-    let fieldsToRemove = ['createdOn', 'lastUpdated', 'before', 'after'];
-    return !(fieldsToRemove.indexOf(value) > -1);
   }
 }
