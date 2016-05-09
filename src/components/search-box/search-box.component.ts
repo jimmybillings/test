@@ -20,7 +20,9 @@ export class SearchBox {
   @Output() onCloseSearch = new EventEmitter();
   @Output() searchContext = new EventEmitter();
   public searchTerms: Observable<any>;
+  public context: {search: ''};
   private searchForm: ControlGroup;
+ 
 
   constructor(public fb: FormBuilder, public router: Router, private http: Http) {}
 
@@ -46,6 +48,7 @@ export class SearchBox {
   }
 
   public onSubmit(query): void {
+    this.searchTerms = this.listenForSearchTerms();
     this.searchContext.emit(query);
   }
     

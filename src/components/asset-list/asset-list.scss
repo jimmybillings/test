@@ -53,7 +53,7 @@ asset-list {
         linear-gradient(rgba(md-color($md-background, 900),1), rgba(md-color($md-background, 900),.6)),
         linear-gradient(rgba(md-color($md-background, 900),.5), rgba(md-color($md-background, 900),1))
       );
-      &:hover {
+      &:hover, &:active {
         cursor: pointer;
       }
       &::before {
@@ -107,7 +107,7 @@ asset-list {
         overflow: hidden;
       }
     }
-    .asset:hover a.asset-desc {
+    .asset:hover a.asset-desc, .asset:active a.asset-desc {
       height: auto;
       min-height: 23%;
       max-height: 86%;
@@ -149,7 +149,7 @@ asset-list {
         }
       }
     }
-    .asset:hover section.actions {
+    .asset:hover section.actions, .asset:active section.actions {
       opacity: 1;
     } 
     span {
@@ -205,16 +205,14 @@ asset-list {
         }
       }
     }
-    &:hover .asset-name {
+    &:hover .asset-name, &:active .asset-name {
       opacity: .7;
     }
-    &:hover .mdata-3 {
+    &:hover .mdata-3, &:active .mdata-3 {
       opacity: 0;
     }
   }
 }
-
-
 
 .list ul.asset-list {
   list-style: none;
@@ -354,7 +352,7 @@ asset-list {
         }
       }
     }
-    &:hover .asset-name {
+    &:hover .asset-name, &:active .asset-name {
       opacity: .7;
     }
   }
