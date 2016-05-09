@@ -114,18 +114,18 @@ export function main() {
     }));
     
     it('Should have a buildSearchTerm function that calls subsequent functions', inject([Index], (component) => {
-      spyOn(component, '_removeEmptyParams').and.callThrough();
+      spyOn(component, '_sanitizeFormInput').and.callThrough();
       spyOn(component, '_buildFields').and.callThrough();
       spyOn(component, '_buildValues').and.callThrough();
       let result = component._buildSearchTerm({firstName: 'ross', lastName: 'edfort', emailAddress: '', DATE: 'before', createdOn: '2016-05-05'});
-      expect(component._removeEmptyParams).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
+      expect(component._sanitizeFormInput).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
       expect(component._buildFields).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
       expect(component._buildValues).toHaveBeenCalledWith({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
       expect(result).toEqual({fields: 'firstName,lastName,DATE:LT:createdOn', values: 'ross,edfort,1462406400'});
     }));
     
-    it('Should have a _removeEmptyParams function that removes empty params from an object', inject([Index], (component) => {
-      let result = component._removeEmptyParams({firstName: 'ross', lastName: 'edfort', emailAddress: '', DATE: 'before', createdOn: '2016-05-05'});
+    it('Should have a _sanitizeFormInput function that removes empty params from an object', inject([Index], (component) => {
+      let result = component._sanitizeFormInput({firstName: 'ross', lastName: 'edfort', emailAddress: '', DATE: 'before', createdOn: '2016-05-05'});
       expect(result).toEqual({firstName: 'ross', lastName: 'edfort', DATE: 'before', createdOn: '2016-05-05'});
     }));
     

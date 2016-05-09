@@ -120,20 +120,16 @@ export class Index implements CanReuse {
    * can this be condensed and cleaned up?
    */
   private _buildSearchTerm(filterParams: any): any {
-    let params = this._removeEmptyParams(filterParams);
+    let params = this._sanitizeFormInput(filterParams);
     let rawFields = this._buildFields(params);
     let rawValues = this._buildValues(params);
-    let fields = rawFields.reduce(this.removeFields,[]).join(',');
-    let values = rawValues.reduce(this.removeFields,[]).join(',');
+    let fields = rawFields.filter(this.removeFields).join(',');
+    let values = rawValues.filter(this.removeFields).join(',');
     return {fields, values};
   }
   
-  private _removeEmptyParams(params: any): any {
-    for (var param in params) {
-      if (params[param] === '') {
-        delete params[param];
-      }
-    }
+  private _sanitizeFormInput(params: any): any {
+    for (var param in params) {if (params[param] === '') delete params[param];}
     return params;
   }
   
@@ -161,14 +157,8 @@ export class Index implements CanReuse {
     }, []);
   }
   
-  private removeFields(prev, field, index): Array<string> {
+  private removeFields(value): boolean {
     let fieldsToRemove = ['createdOn', 'lastUpdated', 'before', 'after'];
-    if (fieldsToRemove.indexOf(field) > -1) {
-      prev.push(field);
-      return prev.slice(0, index);
-    } else {
-      prev.push(encodeURI(field));
-      return prev;
-    }
+    return !(fieldsToRemove.indexOf(value) > -1);
   }
 }
