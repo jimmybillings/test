@@ -17,6 +17,8 @@ import {Observable} from 'rxjs/Rx';
 
 export class SearchBox {
   @Input() config;
+  @Input() loggedIn: boolean;
+  @Input() site: string;
   @Output() onCloseSearch = new EventEmitter();
   @Output() searchContext = new EventEmitter();
   public searchTerms: Observable<any>;
@@ -44,12 +46,12 @@ export class SearchBox {
       .map((changes: {query:{}}) => this.makeUrl(changes.query))
       .switchMap(url => this.http.get(url))
       .map((res: Response) => res.json())
-      .map((terms) => terms.termsList); 
+      .map((terms) => terms.termsList);
   }
 
   public onSubmit(query): void {
     this.searchTerms = this.listenForSearchTerms();
-    this.searchContext.emit(query);
+    this.searchContext.emit('"'+query+'"');
   }
     
   public closeSearch(event): void {
@@ -57,7 +59,12 @@ export class SearchBox {
   }
   
   private makeUrl(query): string {
-    return 'https://crxextapi.dev.wzplatform.com/assets-api/v1/search/anonymous/solrcloud/searchTerms?siteName=core&text='+query+'&maxTerms=10&prefix=true';
+    console.log(this.loggedIn);
+    if (this.loggedIn) {
+      return 'https://crxextapi.dev.wzplatform.com/assets-api/v1/search/solrcloud/searchTerms?siteName='+this.site+'&text='+query+'&maxTerms=10&prefix=true';
+    } else {
+      return 'https://crxextapi.dev.wzplatform.com/assets-api/v1/search/anonymous/solrcloud/searchTerms?siteName='+this.site+'&text='+query+'&maxTerms=10&prefix=true';
+    }
   }
 }
 
