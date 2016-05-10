@@ -5,4 +5,4 @@ export = function buildFonts(gulp, plugins) {
     return gulp.src(APP_SRC+'/resources/fonts/*')
     .pipe(gulp.dest(APP_DEST+'/resources/fonts/'));
   };
-}
+};

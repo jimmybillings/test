@@ -6,4 +6,4 @@ export = function buildFavicon(gulp, plugins) {
     return gulp.src(APP_SRC+'/resources/favicon/*')
     .pipe(gulp.dest(APP_DEST));
   };
-}
+};
