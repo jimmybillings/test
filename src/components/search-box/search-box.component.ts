@@ -44,7 +44,7 @@ export class SearchBox {
 
   public onSubmit(query, searchTerm = false) {
     this.searchTerms = this.listenForSearchTerms();
-    query = (searchTerm) ? '"' + query + '"' : query;
+    query = (searchTerm) ? '(' + query + ')' : query;
     this.searchContext.emit(query);
   }
 
