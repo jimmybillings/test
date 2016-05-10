@@ -1,0 +1,258 @@
+
+<!-- there probably should be some kind of toggle for theater mode (dark background where preview is VS light)-->
+<section layout="row" flex="" layout-align="center stretch" class="preview-bk theater">
+  <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center stretch" layout-fill="">
+    <player [clip]="assetDetail.name" flex-gt-sm="66" flex="100" layout="column" layout-fill="" class="responsive-video"></player>
+    <div flex-gt-sm="33" flex="100" layout="column" layout-fill="">
+      <!-- .some-class(style="background-color: red", flex='', layout='column',layout-fill='')-->
+      <!--   h5 Parent layout is set to fill available space.-->
+      <!-- asset-primary-info component-->
+      <!-- div.primary-info-wrapper(flex='', layout='column',layout-fill='')-->
+      <md-card flex="" layout="column" layout-fill="" class="primary-info">
+        <md-toolbar layout-align="center end"><span flex="">
+            <nav class="md-toolbar-tools">
+              <button md-button="" title="Sharing Options" [routerLink]="['Home']" class="md-icon-button"><i md-icon="md-icon" class="material-icons">share</i></button>
+              <button md-button="" title="Download Comp" [routerLink]="['Home']" class="md-icon-button"><i md-icon="md-icon" class="material-icons">file_download</i></button>
+              <button md-button="" title="Add to Collection" [routerLink]="['Home']" class="md-icon-button"><i md-icon="md-icon" class="material-icons">library_add</i></button>
+              <button md-button="" title="More" [routerLink]="['Home']" class="md-icon-button"><i md-icon="md-icon" class="material-icons">more_vert</i></button>
+            </nav></span></md-toolbar>
+        <md-card-content>
+          <div flex="" layout="column" class="asset-name md-caption">{{assetDetail.name}}</div>
+          <div layout="row" layout-wrap="">
+            <div [ngClass]="{hd: assetDetail.clipData[2]?.value == 'High Definition', sd: assetDetail.clipData[2]?.value == 'Standard Definition'}" class="sd-hd"></div>
+            <div flex="" class="rights md-caption">rights managed </div>
+          </div>
+          <h4>{{getMetaField('Title')}}</h4>
+          <h5 class="md-subhead">{{getMetaField('Description')}}</h5>
+          <md-card-actions layout="column" layout-align="center center" layout-wrap="">
+            <md-button md-raised-button="" (click)="someFunction()" class="md-raised md-primary md-hue-7">Add to Cart</md-button>
+            <md-button md-button="" (click)="someFunction()" class="is-outlined">Calculate Price</md-button>
+          </md-card-actions>
+        </md-card-content>
+      </md-card>
+    </div>
+  </div>
+</section>
+<section class="data-bk">
+  <div layout="row" md-scroll-y="" layout-align="center start">
+    <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center start">
+      <md-tabs md-dynamic-height="" md-border-bottom="">
+        <template md-tab="" label="Meta Data">
+          <md-content class="md-padding">
+            <div class="m-data">
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Player</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Sport.Players')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Course</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Sport.Golf.Course.Name')}}  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Date</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Description.Date')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Year</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Sport.Year')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Round</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Sport.GameRound')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Hole Number</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Sport.Golf.Hole.Number')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Hole Score</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Sport.Golf.Hole.Strokes')}}</p>
+                </div>
+              </div>
+              <div class="row"></div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Stroke Number</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Sport.Golf.Stroke.Number')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Owner</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Owner')}}</p>
+                </div>
+              </div>
+              <div class="row divider">
+                <div class="cell"></div>
+                <div class="cell"></div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Aspect</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Format.AspectRatio')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Frame Rate</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Format.FrameRate')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Frame Size</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1"> {{getMetaField('Format.FrameSize')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Broadcast Standard</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Format.BroadcastStandard')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Digital Format</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('TE.DigitalFormat')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Length</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Format.Duration')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Stored Online</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Format.MasterStandard')}} / {{getMetaField('Format.QuickTime.Codec')}}</p>
+                </div>
+              </div>
+              <div class="row divider">
+                <div class="cell"></div>
+                <div class="cell"></div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Audio Codec</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Format.Audio.Codec')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Audio Bit Depth</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Format.AudioBitDepth')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Audio Channels</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Format.AudioChannelConfiguration')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Audio Data Rate</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Format.AudioDataRate')}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Audio Sampling Rate</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{getMetaField('Format.AudioSamplingRate')}}</p>
+                </div>
+              </div>
+            </div>
+          </md-content>
+        </template>
+        <template md-tab="" label="Related">
+          <md-content class="md-padding">
+            <h3 class="md-headline">Related</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque
+              ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est,
+              sollicitudin consectetur felis nec, feugiat ultricies mi.
+            </p>
+          </md-content>
+        </template>
+        <template md-tab="" label="Rights and Clearances">
+          <md-content class="md-padding">
+            <h3 class="md-headline">Rights and Clearances</h3>
+            <p>
+              Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum.
+              Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum
+              nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus
+              commodo lectus.
+            </p>
+          </md-content>
+        </template>
+        <template md-tab="" label="Storyboards">
+          <md-content class="md-padding">
+            <h3 class="md-headline">Storyboards</h3>
+            <p>
+              Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum.
+              Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum
+              nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus
+              commodo lectus.
+            </p>
+          </md-content>
+        </template>
+      </md-tabs>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,23 @@
+
+<md-toolbar><span flex=""></span>
+  <nav class="md-toolbar-tools">
+    <md-button arial-label="Settings" class="md-icon-button"></md-button>
+    <button md-button="" title="More" [routerLink]="['Home']" class="md-icon-button"><i md-icon="md-icon" class="material-icons">menu</i></button><a flex="" [routerLink]="['Home']" title="Home" class="home-link">
+      <div class="logo-wrapper">
+        <div class="logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIE1hY2ludG9zaCIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpGRkFGNEJDN0UyNDQxMUU1QjI4NTkxRkY3MTlEMUZBOCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpGRkFGNEJDOEUyNDQxMUU1QjI4NTkxRkY3MTlEMUZBOCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZGQUY0QkM1RTI0NDExRTVCMjg1OTFGRjcxOUQxRkE4IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkZGQUY0QkM2RTI0NDExRTVCMjg1OTFGRjcxOUQxRkE4Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+RndJVgAAABBJREFUeNpi+P//PwNAgAEACPwC/tuiTRYAAAAASUVORK5CYII=" alt="{{config.title.value}}"/></div>
+      </div></a>
+    <button md-button="" *ngIf="loggedInState | async" [routerLink]="['UserManagement', 'Profile']" [ngClass]="{'md-primary': !showFixed}" hide="" show-gt-sm="" class="is-dd">
+       
+      {{currentUser.fullName() | async}}
+    </button>
+    <md-button *ngIf="!(loggedInState | async)" md-button="" [routerLink]="['UserManagement', 'Login']">{{ 'HEADER.LOGIN_LABEL' | translate}}</md-button>
+    <md-button [ngClass]="{'md-accent': !showFixed}" *ngIf="!(loggedInState | async)" md-button="" [routerLink]="['UserManagement', 'Register']" class="is-outlined">{{ 'HEADER.SIGN_UP_LABEL' | translate}}</md-button>
+    <md-button *ngIf="loggedInState | async" md-button="" (click)="logOut()" [routerLink]="['Home']" hide="" show-gt-sm="" class="md-caption md-primary md-hue-2">{{ 'HEADER.LOGOUT_LABEL' | translate}}</md-button>
+    <md-button *ngIf="currentUser.is('root') | async" md-button="" [routerLink]="['Admin', 'Dashboard']" hide="" show-gt-sm="" class="md-caption md-primary md-hue-2">Admin</md-button>
+    <button md-button="" *ngIf="loggedInState | async" [routerLink]="['UserManagement', 'Profile']" [ngClass]="{'md-primary': !showFixed}" hide="" show-xs="" class="md-icon-button is-dd"> <i md-icon="" class="material-icons">person</i></button>
+    <button md-button="" *ngIf="searchBarIsActive" title="Open collections" (click)="openBinTray()" class="md-icon-button open-bin-tray"><i md-icon="" class="material-icons">folder_open</i></button>
+    <button md-button="" *ngIf="searchBarIsActive" title="Search" (click)="openSearch()" class="md-icon-button open-search"><i md-icon="" class="material-icons">search</i></button>
+    <!-- button.md-icon-button(md-button='', title='More',[routerLink]="['Home']", hide='', show-gt-sm='')// i.material-icons(md-icon='') more_vert
+    -->
+  </nav>
+</md-toolbar>

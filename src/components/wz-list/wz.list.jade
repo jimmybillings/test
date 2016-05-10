@@ -1,8 +1,0 @@
-table(layout-fill='')
-  thead
-    tr
-      th(*ngFor="#header of headers", (click)="sortBy(header.name)") {{ header.label }}
-  tbody
-    tr(*ngFor="#row of items")
-      td(*ngFor="#header of headers") {{ row[header.name] }}
-      

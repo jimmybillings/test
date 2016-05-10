@@ -15,8 +15,7 @@ export = function buildJSDev(gulp, plugins) {
     return merge(minifyComponentCss(), prepareTemplates(), processExternalCss());
 
     function prepareTemplates() {
-      return gulp.src(APP_SRC+'/**/*.jade')
-        .pipe(plugins.jade())
+      return gulp.src(APP_SRC+'/**/*.html')
         .pipe(gulp.dest(TMP_DIR));
     }
 
