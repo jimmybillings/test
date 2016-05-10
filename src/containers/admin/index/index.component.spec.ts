@@ -46,6 +46,10 @@ export function main() {
       buildSearchTerm() {
         return {fields: 'firstName', values: 'john'};
       }
+      
+      buildRouteParams(size, args?) {
+        return Object.assign({ i: '1', n: '10', s: 'createdOn', d: 'false',  fields: '', values: ''}, args);
+      }
     }
     
     beforeEachProviders(() => [
@@ -61,7 +65,7 @@ export function main() {
       provide(ROUTER_PRIMARY_COMPONENT, { useValue: Index }),
       provide(Router, { useClass: RootRouter }),
       provideStore({currentUser: currentUser}),
-      provide(RouteParams, { useValue: new RouteParams({ i: '1', n: '10', s: 'createdOn', d: 'false'}) }),
+      provide(RouteParams, { useValue: new RouteParams({ i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: ''}) }),
       CurrentUser,
       ApiConfig,
       provideStore({config: config}),
@@ -86,10 +90,12 @@ export function main() {
     it('Should have a getIndex() function that calls the getResource and setResources functions on the service', inject([Index], (component) => {
       component.resource = 'account';
       component.pageSize = {'value': '10'};
+      spyOn(component.adminService, 'buildRouteParams').and.callThrough();
       spyOn(component.adminService, 'getResources').and.callThrough();
       spyOn(component.adminService, 'setResources').and.callThrough();
       component.getIndex();
-      expect(component.adminService.getResources).toHaveBeenCalledWith({i: 1, n: 10, s: 'createdOn', d: true, values: '', fields: ''}, 'account');
+      expect(component.adminService.buildRouteParams).toHaveBeenCalledWith('10');
+      expect(component.adminService.getResources).toHaveBeenCalledWith({i: '1', n: '10', s: 'createdOn', d: 'false', values: '', fields: ''}, 'account');
       expect(component.adminService.setResources).toHaveBeenCalledWith(mockResponse());
     }));
     
@@ -97,24 +103,30 @@ export function main() {
       component.currentComponent = 'Account';
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
+      spyOn(component.adminService, 'buildRouteParams').and.callThrough();
       component.navigateToPageUrl(2);
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: 10, s: 'createdOn', d: true, fields: '', values: ''}) ]);
+      expect(component.adminService.buildRouteParams).toHaveBeenCalledWith('10', {i: 2});
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 2, n: '10', s: 'createdOn', d: 'false', fields: '', values: ''}) ]);
     }));
     
     it('Should have a navigateToSortUrl function that navigates to a URL with correct params', inject([Index], (component) => {
       component.currentComponent = 'Account';
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
-      component.navigateToSortUrl({attr: 'emailAddress', toggle: true});
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: 1, n: 10, s: 'emailAddress', d: true, fields: '', values: ''}) ]);
+      spyOn(component.adminService, 'buildRouteParams').and.callThrough();
+      component.navigateToSortUrl({s: 'emailAddress', d: true});
+      expect(component.adminService.buildRouteParams).toHaveBeenCalledWith('10', {s: 'emailAddress', d: true});
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/Account', Object({ i: '1', n: '10', s: 'emailAddress', d: true, fields: '', values: ''}) ]);
     }));
     
     it('Should have a navigateToFilterUrl function that navigates to a URL with correct params', inject([Index], (component) => {
       component.currentComponent = 'User';
       component.pageSize = {'value': '10'};
       spyOn(component.router, 'navigate');
+      spyOn(component.adminService, 'buildRouteParams').and.callThrough();
       component.navigateToFilterUrl({firstName: 'john'});
-      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/User', Object({ i: 1, n: '10', s: 'createdOn', d: true, fields: 'firstName', values: 'john' }) ]);
+      expect(component.adminService.buildRouteParams).toHaveBeenCalledWith('10', {fields: 'firstName', values: 'john'});
+      expect(component.router.navigate).toHaveBeenCalledWith([ '/Admin/User', Object({ i: '1', n: '10', s: 'createdOn', d: 'false', fields: 'firstName', values: 'john' }) ]);
     }));
   });
   

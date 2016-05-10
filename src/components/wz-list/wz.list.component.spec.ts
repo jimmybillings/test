@@ -19,10 +19,18 @@ export function main() {
       })
     );
     
-    it('should have a sortBy function that emits a sort event.', inject([WzList], (component) => {
+    it('should have a sortBy function that emits a sort event with opposite of toggleFlag - false', inject([WzList], (component) => {
       spyOn(component.sort, 'emit');
+      component.toggleFlag = false;
       component.sortBy('createdOn');
-      expect(component.sort.emit).toHaveBeenCalledWith({ attr: 'createdOn', toggle: true });
+      expect(component.sort.emit).toHaveBeenCalledWith({ s: 'createdOn', d: true });
+    }));
+    
+    it('should have a sortBy function that emits a sort event with opposite of toggleFlag - true', inject([WzList], (component) => {
+      spyOn(component.sort, 'emit');
+      component.toggleFlag = true;
+      component.sortBy('createdOn');
+      expect(component.sort.emit).toHaveBeenCalledWith({ s: 'createdOn', d: false });
     }));
   });
 }

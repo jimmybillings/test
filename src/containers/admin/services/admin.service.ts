@@ -1,4 +1,5 @@
 import { Injectable } from 'angular2/core';
+import { RouteParams } from 'angular2/router';
 import { Http, Response, URLSearchParams, RequestOptions } from 'angular2/http';
 import { ApiConfig } from '../../../common/config/api.config';
 import { Store, Reducer, Action} from '@ngrx/store';
@@ -20,13 +21,15 @@ export class AdminService {
   public adminStore: Observable<any>;
   public pageStore: Observable<any>;
   public operatorMap: Object;
+  public routeParams: RouteParams;
   private _http: Http;
   private _apiConfig: ApiConfig;
 
-  constructor(http: Http, apiConfig: ApiConfig, private store: Store<any>) { 
+  constructor(http: Http, apiConfig: ApiConfig, routeParams: RouteParams, private store: Store<any>) { 
       this._http = http;
       this.adminStore = this.store.select('adminResources');
       this._apiConfig = apiConfig;
+      this.routeParams = routeParams;
       this.operatorMap = {
         'before': 'LT',
         'after': 'GT'
@@ -61,6 +64,17 @@ export class AdminService {
     let fields = rawFields.filter(this.removeFields).join(',');
     let values = rawValues.filter(this.removeFields).join(',');
     return {fields, values};
+  }
+  
+  public buildRouteParams(pageSize, dynamicParams?: any): any {
+    let s = this.routeParams.get('s') || 'createdOn';
+    let d = (this.routeParams.get('d') ? true : false);
+    let i = parseInt(this.routeParams.get('i')) || 1;
+    let n = parseInt(this.routeParams.get('n')) || pageSize;
+    let fields = this.routeParams.get('fields') || '';
+    let values = this.routeParams.get('values') || '';
+    let params = { i, n, s, d, fields, values };
+    return dynamicParams ? Object.assign(params, dynamicParams) : params;
   }
   
   private getIdentitiesSearchOptions(queryObject: { [key: string]: string }): RequestOptions {

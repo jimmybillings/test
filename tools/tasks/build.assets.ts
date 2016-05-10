@@ -5,4 +5,4 @@ export = function buildAssetsDev(gulp, plugins) {
     return gulp.src(APP_SRC+'/resources/img/**/*')
     .pipe(gulp.dest(APP_DEST+'/resources/img/'));
   };
-}
+};
