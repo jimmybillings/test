@@ -28,7 +28,8 @@ section.preview-bk {
     @include text-contrast(md-color($md-background, 900));
     @include background-image(
       linear-gradient(md-color($md-background, 900, .5), md-color($md-background, 900, .4)),
-      linear-gradient(md-color($md-primary, 900, .8), md-color($md-primary, 900, .7))
+      linear-gradient(md-color($md-primary, 900, .1), md-color($md-primary, 600, .1)),
+      linear-gradient(md-color($md-background, 900, .7), md-color($md-background, 900, .6))
     );
     position: relative;
     &::before {
