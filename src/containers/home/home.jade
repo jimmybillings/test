@@ -43,7 +43,7 @@ section.mrkt-collections(layout='row', layout-align='center start')
 
 section.mrkt-call-to-action
   div(layout='row', layout-align='center start', layout-padding='')
-    div(flex-xl="50",flex-gt-lg="60",flex-gt-md="70",flex="95",layout-align='center start')
+    div(flex-gt-lg="60",flex-gt-md="70",flex="95",layout-align='center start')
       h2.md-display-1
         | {{ 'HOME.DESCRIPTION' | translate}}
       md-button.md-block.conversion(*ngIf="!currentUser.loggedIn()", md-button='', [routerLink]="['UserManagement', 'Register']") {{'HOME.START_PROJECT' | translate }} 

@@ -62,7 +62,6 @@ search-box {
     max-height: rem(30);
     overflow: scroll;
     @include transition(all .6s $swift-ease-in-out-timing-function);
-    // @include transition(all .6s ease-in-out);
     box-shadow: $whiteframe-shadow-z2;
     li {
       background-color: transparent;
