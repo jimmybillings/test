@@ -22,6 +22,6 @@ export class WzList {
   @Output() sort = new EventEmitter();
 
   public sortBy(attribute: string): void {
-    this.sort.emit({'attr': attribute, 'toggle': !this.toggleFlag});
+    this.sort.emit({'s': attribute, 'd': !this.toggleFlag});
   }
 }

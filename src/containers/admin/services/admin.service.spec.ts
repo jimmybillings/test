@@ -5,6 +5,7 @@ import { ApiConfig } from '../../../common/config/api.config';
 import { MockBackend } from 'angular2/http/testing';
 import { BaseRequestOptions, Http, RequestOptions, URLSearchParams } from 'angular2/http';
 import { CurrentUser, currentUser } from '../../../common/models/current-user.model';
+import { RouteParams } from 'angular2/router';
 import { provideStore } from '@ngrx/store';
 import { SpyLocation } from 'angular2/src/mock/location_mock';
 
@@ -19,6 +20,7 @@ export function main() {
         useFactory: (backend, defaultOptions) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
+      provide(RouteParams, { useValue: new RouteParams({ i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: ''}) }),
       provideStore({currentUser: currentUser}),
       ApiConfig,
       AdminService,
