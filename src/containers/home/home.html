@@ -1,0 +1,68 @@
+
+<header class="hero"> 
+  <div layout="row" layout-xs="column" md-scroll-y="" layout-align="center start" layout-padding="">
+    <div flex-xl="35" flex-gt-lg="50" flex-gt-md="55" flex-gt-sm="70" flex="100">
+      <div layout="column" layout-align="center" layout-wrap="">
+        <div class="logo-wrapper">
+          <div class="logo"></div>
+        </div>
+        <search-box [config]="components.searchBox" (searchContext)="newSearchContext($event)"></search-box>
+        <h4 class="md-headline">{{ 'HOME.SEARCH_HEADING' | translate }}</h4>
+      </div>
+    </div>
+  </div>
+</header>
+<section layout="row" layout-align="center start" class="mrkt-collections">
+  <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="">
+    <div flex-gt-sm="33" flex="100" class="mrkt-collections__highlight"><a [routerLink]="['UserManagement', 'Register']">
+        <div class="mrkt-collections__highlight_img"></div>
+        <div class="mrkt-collections__highlight_content">
+          <h5 class="md-title">{{ 'HOME.HIGHLIGHT.ONE' | translate }}</h5>
+        </div></a></div>
+    <div flex-gt-sm="33" flex="100" class="mrkt-collections__highlight"><a [routerLink]="['UserManagement', 'Register']">
+        <div class="mrkt-collections__highlight_img"></div>
+        <div class="mrkt-collections__highlight_content">
+          <h5 class="md-title">{{ 'HOME.HIGHLIGHT.TWO' | translate }}</h5>
+        </div></a></div>
+    <div flex-gt-sm="33" flex="100" class="mrkt-collections__highlight"><a [routerLink]="['UserManagement', 'Register']">
+        <div class="mrkt-collections__highlight_img"></div>
+        <div class="mrkt-collections__highlight_content">
+          <h5 class="md-title">{{ 'HOME.HIGHLIGHT.THREE' | translate }}</h5>
+        </div></a></div>
+    <div flex-gt-sm="33" flex="100" class="mrkt-collections__highlight"><a [routerLink]="['UserManagement', 'Register']">
+        <div class="mrkt-collections__highlight_img"></div>
+        <div class="mrkt-collections__highlight_content">
+          <h5 class="md-title">{{ 'HOME.HIGHLIGHT.FOUR' | translate }}</h5>
+        </div></a></div>
+    <div flex-gt-sm="33" flex="100" class="mrkt-collections__highlight"><a [routerLink]="['UserManagement', 'Register']">
+        <div class="mrkt-collections__highlight_img"></div>
+        <div class="mrkt-collections__highlight_content">
+          <h5 class="md-title">{{ 'HOME.HIGHLIGHT.FIVE' | translate }}</h5>
+        </div></a></div>
+    <div flex-gt-sm="33" flex="100" class="mrkt-collections__highlight"><a [routerLink]="['UserManagement', 'Register']">
+        <div class="mrkt-collections__highlight_img"></div>
+        <div class="mrkt-collections__highlight_content">
+          <h5 class="md-title">{{ 'HOME.HIGHLIGHT.SIX' | translate }}</h5>
+        </div></a></div>
+  </div>
+</section>
+<section class="mrkt-call-to-action">
+  <div layout="row" layout-align="center start" layout-padding="">
+    <div flex-xl="50" flex-gt-lg="60" flex-gt-md="70" flex="95" layout-align="center start">
+      <h2 class="md-display-1">{{ 'HOME.DESCRIPTION' | translate}}</h2>
+      <md-button *ngIf="!currentUser.loggedIn()" md-button="" [routerLink]="['UserManagement', 'Register']" class="md-block conversion">{{'HOME.START_PROJECT' | translate }} </md-button>
+      <md-button *ngIf="currentUser.loggedIn()" md-button="" [routerLink]="['UserManagement', 'Profile']" class="md-block conversion">{{'HOME.START_PROJECT' | translate }} </md-button>
+    </div>
+  </div>
+</section>
+<section hide-xs="" layout="column" class="vendor-marquee">
+  <ul>
+    <li><img src="resources/img/client-marquee/client_dimoc.png"/><img src="resources/img/client-marquee/client_usta.png"/><img src="resources/img/client-marquee/client_AFV.png"/><img src="resources/img/client-marquee/client_discovery.png"/><img src="resources/img/client-marquee/client_ncaa.png"/>
+      <!-- img(src='resources/img/client-marquee/client_fox.png')--><img src="resources/img/client-marquee/client_paramount.png"/>
+    </li>
+    <li><img src="resources/img/client-marquee/client_natgeo.png"/><img src="resources/img/client-marquee/client_pac12.png"/><img src="resources/img/client-marquee/client_usga.png"/><img src="resources/img/client-marquee/client_sony.png"/><img src="resources/img/client-marquee/client_big10.png"/><img src="resources/img/client-marquee/client_wpt.png"/></li>
+    <li><img src="resources/img/client-marquee/client_dimoc.png"/><img src="resources/img/client-marquee/client_usta.png"/><img src="resources/img/client-marquee/client_AFV.png"/><img src="resources/img/client-marquee/client_discovery.png"/><img src="resources/img/client-marquee/client_ncaa.png"/>
+      <!-- img(src='resources/client-marquee/img/client_fox.png')--><img src="resources/img/client-marquee/client_paramount.png"/>
+    </li>
+  </ul>
+</section>

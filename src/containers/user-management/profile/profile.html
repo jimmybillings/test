@@ -1,0 +1,52 @@
+
+<section class="login hero">
+  <div layout="row" layout-xs="column" md-scroll-y="" layout-align="start center" layout-padding="">
+    <div flex=""></div>
+    <div flex-xl="40" flex-gt-lg="40" flex-gt-md="40" flex-gt-sm="55" flex-gt-xs="100" flex="100">
+      <md-card class="md-whiteframe-z2">
+        <md-card-header>
+          <div class="logo-wrapper">
+            <div class="logo"></div>
+          </div>
+        </md-card-header>
+        <md-card-title>
+          <md-card-title-text layout="column" layout-align="center center"><span class="md-headline">Profile</span></md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+          <md-list>
+            <md-list-item>
+              <p><strong>Name: </strong> {{currentUser.fullName() | async}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+              <p><strong>Email: </strong> {{currentUser.email() | async}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+              <p><strong>Created On: </strong>{{currentUser.createdOn() | async}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+              <p><strong>Last Updated: </strong>{{currentUser.lastUpdated() | async}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+              <p><strong>Site Name: </strong>{{currentUser.siteName() | async}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+              <p><strong>Id: </strong>{{currentUser.id() | async}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <div *ngFor="#account of currentUser.accountIds() | async"> 
+              <md-list-item>
+                <h3>Account: {{account}}</h3>
+              </md-list-item>
+            </div>
+          </md-list>
+        </md-card-content>
+      </md-card>
+    </div>
+    <div flex=""></div>
+  </div>
+</section>
