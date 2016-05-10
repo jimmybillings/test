@@ -6,10 +6,8 @@ import {CurrentUser} from '../../common/models/current-user.model';
 import {SearchBox} from '../../components/search-box/search-box.component';
 import {UiConfig} from '../../common/config/ui.config';
 import {SearchContext} from '../../common/services/search-context.service';
+import {ApiConfig} from '../../common/config/api.config';
 
-/**
- * Home page component - renders the home page
- */  
 @Component({
   selector: 'home',
   templateUrl: 'containers/home/home.html',
@@ -25,7 +23,8 @@ export class Home {
     public currentUser: CurrentUser,
     public router: Router,
     public uiConfig: UiConfig,
-    public searchContext: SearchContext) {
+    public searchContext: SearchContext,
+    public apiConfig: ApiConfig) {
   }
   
   ngOnInit() {

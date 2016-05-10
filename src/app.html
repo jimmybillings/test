@@ -3,7 +3,7 @@
   <notification [state]="state"></notification>
   <header [ngClass]="{'fixed': showFixed, 'bin-tray-closed': !binTrayIsOpen, 'search-closed': !searchIsOpen}" class="app-header">
     <app-nav [showFixed]="showFixed" [searchBarIsActive]="searchBarIsActive" [currentUser]="currentUser" [state]="state" [config]="(header | async)" (onLogOut)="logout()" (onOpenSearch)="openSearch()" (onOpenBinTray)="openBinTray()"></app-nav>
-    <search-box *ngIf="searchBarIsActive" [config]="searchBox | async" (onCloseSearch)="closeSearch()" (searchContext)="newSearchContext($event)"></search-box>
+    <search-box *ngIf="searchBarIsActive" [loggedIn]="currentUser.loggedIn()" [apiConfig]="apiConfig" [config]="searchBox | async" (onCloseSearch)="closeSearch()" (searchContext)="newSearchContext($event)"></search-box>
     <bin-tray *ngIf="searchBarIsActive" [showFixed]="showFixed" (onCloseBinTray)="closeBinTray()"></bin-tray>
   </header>
   <div [ngClass]="{'bin-tray-closed': !binTrayIsOpen, 'search-closed': !searchIsOpen}" class="main-content">

@@ -8,6 +8,6 @@
 <!--   option(*ngFor="#term of searchTerms | async", value="{{term.term}}") {{term.term}} ( {{term.count}} )-->
 <ul tabindex="1" class="auto-complete">
   <li *ngFor="#term of searchTerms | async" value="{{term.term}}">
-    <button type="button" (click)="onSubmit(term.term)">{{term.term}} <span>{{term.count}}</span></button>
+    <button type="button" (click)="onSubmit(term.term, true)">{{term.term}} <span>{{term.count}}</span></button>
   </li>
 </ul>
