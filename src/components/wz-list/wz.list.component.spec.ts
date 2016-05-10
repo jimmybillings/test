@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEachProviders, inject, TestComponentBuilder } from 'angular2/testing';
 import { provide } from 'angular2/core';
 import { SpyLocation } from 'angular2/src/mock/location_mock';
-import {WzList} from './wz.list.component';
+import { WzList } from './wz.list.component';
 
 export function main() {
   describe('WZ List component', () => {

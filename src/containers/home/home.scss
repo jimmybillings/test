@@ -7,7 +7,7 @@ home {
     position: relative;
     margin: 0 auto;
     @include background-image(
-      linear-gradient(md-color($md-primary, 900, .7), md-color($md-primary, 900, .6)),
+      linear-gradient(md-color($md-background, 900, .7), md-color($md-background, 900, .6)),
       url($bk-img-home)
     );
     background-position: 0 0, center center;
@@ -97,7 +97,7 @@ home {
   $height: 183px;
 
   .vendor-marquee {
-    background: md-color($md-grey, 300, .8) url('resources/img/bk/tex/bktx_contour_lines_light.png');
+    background: md-color($md-background, 200, .8) url('resources/img/bk/tex/bktx_contour_lines_light.png');
     position: relative;
     width: 100%;
     overflow: hidden;

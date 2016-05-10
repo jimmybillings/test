@@ -1,0 +1,22 @@
+
+<section class="login hero">
+  <div layout="row" md-scroll-y="" layout-align="center start">
+    <div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
+      <md-card class="md-whiteframe-z2">
+        <md-card-header>
+          <div class="logo-wrapper">
+            <div class="logo"></div>
+          </div>
+        </md-card-header>
+        <md-card-title>
+          <md-card-title-text layout="column" layout-align="center center"><span class="md-headline">{{ 'LOGIN.TITLE' | translate }}</span></md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+          <wz-form [items]="fields" submitLabel="LOGIN.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
+          <div layout="column" layout-align="center center" class="md-body-2"> <a layout="row" flex="" md-button="" [routerLink]="['Register']" class="md-primary">{{ 'LOGIN.FORGOT_PASSWORD' | translate }}</a></div>
+        </md-card-content>
+      </md-card>
+      <div md-theme="docs-dark" layout="column" layout-align="start center" layout-wrap=""><span class="md-title">{{'LOGIN.GET_ACCOUNT' | translate }} <a md-button="" [routerLink]="['Register']" class="md-accent">{{'LOGIN.SIGN_UP' | translate }}</a></span></div>
+    </div>
+  </div>
+</section>

@@ -11,8 +11,7 @@ export = function buildHtmlCssLib(gulp, plugins) {
     return merge(moveSass(), moveImages(), moveFonts(), moveFavicons(), prepareTemplates());
 
     function prepareTemplates() {
-      return gulp.src(APP_SRC+'/**/*.jade')
-        .pipe(plugins.jade())
+      return gulp.src(APP_SRC+'/**/*.html')
         .pipe(gulp.dest(TMP_DIR));
     }
 

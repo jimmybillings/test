@@ -1,0 +1,13 @@
+
+<form layout="row" flex="100" layout-align="start" [ngFormModel]="searchForm" (ngSubmit)="onSubmit(searchForm.value.query)" class="md-inline-form">
+  <input md-input="" type="text" placeholder="{{ 'HOME.SEARCH_BOX_LABEL' | translate }}" ngControl="query"/>
+  <button type="submit" [disabled]="!searchForm.valid" tabindex="-1">Search<i md-icon="" class="material-icons">search</i></button>
+  <button md-button="" title="close search" type="button" (click)="closeSearch()" class="md-icon-button close"><i md-icon="" class="material-icons">close</i></button>
+</form>
+<!-- select(autofocus="autofocus", (change)="onSubmit($event.target.value)",layout='row', flex='60', layout-align='start',layout-padding='')-->
+<!--   option(*ngFor="#term of searchTerms | async", value="{{term.term}}") {{term.term}} ( {{term.count}} )-->
+<ul tabindex="1" class="auto-complete">
+  <li *ngFor="#term of searchTerms | async" value="{{term.term}}">
+    <button type="button" (click)="onSubmit(term.term)">{{term.term}} <span>{{term.count}}</span></button>
+  </li>
+</ul>
