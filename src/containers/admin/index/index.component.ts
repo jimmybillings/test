@@ -33,12 +33,12 @@ export class Index implements CanReuse {
   
   constructor(currentUser: CurrentUser,
               adminService: AdminService,
-              routeParams: RouteParams,
+              routeParams: RouteParams, 
               public uiConfig: UiConfig,
               public router: Router) {
     this.currentUser = currentUser;
-    this.adminService = adminService;
     this.routeParams = routeParams;
+    this.adminService = adminService;
   }
   
   routerCanReuse(next: ComponentInstruction, prev: ComponentInstruction) { return false; }
@@ -61,7 +61,7 @@ export class Index implements CanReuse {
   }
   
   public getIndex(): void {
-    let params = this.buildRouteParams();
+    let params = this.adminService.buildRouteParams(this.pageSize.value);
     this.toggleFlag = params.d;
     this.adminService.getResources(params, this.resource).subscribe(data => {
       this.adminService.setResources(data); 
@@ -69,38 +69,23 @@ export class Index implements CanReuse {
   }
   
   public navigateToPageUrl(i: number): void  {
-    let params = this.buildRouteParams();
-    let urlParameters = { i, n: params.n, s: params.s, d: params.d, fields: params.fields, values: params.values };
-    this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
+    let params = this.adminService.buildRouteParams(this.pageSize.value, {i});
+    this.router.navigate(['/Admin/' + this.currentComponent, params ]);
   }
   
   public navigateToSortUrl(sortParams: any): void  {
-    let params = this.buildRouteParams();
-    let urlParameters = { i: 1, n: params.n, s: sortParams.attr, d: sortParams.toggle, fields: params.fields, values: params.values };
-    this.router.navigate(['/Admin/' + this.currentComponent, urlParameters ]);
+    let params = this.adminService.buildRouteParams(this.pageSize.value, sortParams);
+    this.router.navigate(['/Admin/' + this.currentComponent, params ]);
   }
   
   public navigateToFilterUrl(filterParams: any): void {
-    let params = this.buildRouteParams();
     let searchTerms = this.adminService.buildSearchTerm(filterParams);
-    let searchParams = Object.assign(params, searchTerms);
-    searchParams.i = 1;
-    searchParams.n = this.pageSize.value;
-    this.router.navigate(['/Admin/' + this.currentComponent, searchParams ]);
+    let params = this.adminService.buildRouteParams(this.pageSize.value, searchTerms);
+    this.router.navigate(['/Admin/' + this.currentComponent, params ]);
   }
   
   public navigateToBaseUrl(event): void {
     this.router.navigate(['/Admin/' + this.currentComponent]);
-  }
-
-  private buildRouteParams(): any {
-    let s = this.routeParams.get('s') || 'createdOn';
-    let d = (this.routeParams.get('d') ? true : false);
-    let i = parseInt(this.routeParams.get('i')) || 1;
-    let n = parseInt(this.routeParams.get('n')) || this.pageSize.value;
-    let fields = this.routeParams.get('fields') || '';
-    let values = this.routeParams.get('values') || '';
-    return { i, n, s, d, fields, values };
   }
   
   /**

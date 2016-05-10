@@ -6,4 +6,4 @@ export = function buildSass(gulp, plugins, option) {
       .pipe(plugins.sass().on('error', plugins.sass.logError))
       .pipe(gulp.dest(APP_DEST));
   };
-}
+};

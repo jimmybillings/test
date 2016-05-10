@@ -5,4 +5,4 @@ export = function buildJadeDev(gulp, plugins, option) {
     return gulp.src(APP_SRC+'/**/*.html')
     .pipe(gulp.dest(APP_DEST));
   };
-}
+};

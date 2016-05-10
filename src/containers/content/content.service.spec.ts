@@ -24,7 +24,7 @@ export function main() {
        let connection;
         connection = mockBackend.connections.subscribe(c => connection = c);
         service.get('terms-conditions').subscribe((res) => {
-          expect(connection.request.url).toBe('http://ec2-52-32-235-105.us-west-2.compute.amazonaws.com/core/wp-json/wp/v2/pages?filter[name]=terms-conditions');
+          expect(connection.request.url).toBe('https://cms.dev.wzplatform.com/core/wp-json/wp/v2/pages?filter[name]=terms-conditions');
           expect(res).toEqual(mockContent());
         });
         connection.mockRespond(new Response(

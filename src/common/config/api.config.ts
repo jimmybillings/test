@@ -2,7 +2,7 @@ import { Injectable } from 'angular2/core';
 import { Headers } from 'angular2/http';
   
 const cmsApi = {
-  root: 'http://ec2-52-32-235-105.us-west-2.compute.amazonaws.com/',
+  root: 'https://cms.dev.wzplatform.com/',
   path: '/wp-json/wp/v2/pages',
   query: '?filter[name]='
 };

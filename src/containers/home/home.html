@@ -6,7 +6,12 @@
         <div class="logo-wrapper">
           <div class="logo"></div>
         </div>
-        <search-box [config]="components.searchBox" (searchContext)="newSearchContext($event)"></search-box>
+        <search-box 
+          [config]="components.searchBox" 
+          [loggedIn]="currentUser.loggedIn()" 
+          [apiConfig]="apiConfig"
+          (searchContext)="newSearchContext($event)">
+        </search-box>
         <h4 class="md-headline">{{ 'HOME.SEARCH_HEADING' | translate }}</h4>
       </div>
     </div>
