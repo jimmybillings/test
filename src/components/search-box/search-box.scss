@@ -47,11 +47,6 @@ search-box {
   select:empty {
     display: none;
   }
-  .auto-complete:empty {
-   max-height: 0;
-   opacity: 0;
-   display: none;
-  }
   ul.auto-complete {
     opacity: 1;
     list-style: none;
@@ -64,6 +59,12 @@ search-box {
     overflow: scroll;
     @include transition(all .6s $swift-ease-in-out-timing-function);
     box-shadow: $whiteframe-shadow-z2;
+    &:empty {
+      max-height: 0;
+      opacity: 0;
+      display: none;
+      overflow: hidden;
+    }
     li {
       background-color: transparent;
       margin: 0; 
@@ -137,6 +138,7 @@ header.app-header {
       width: 100%;
       li button {
         padding-right: rem(10.0);
+        padding-left: rem(4.4);
         span {
           right: rem(3.4);
         }

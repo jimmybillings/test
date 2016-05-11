@@ -31,6 +31,9 @@
             </div>
             <div flex="" class="rights md-caption">{{assetDetail.primary[3]?.value}}</div>
           </div>
+          <div layout="row" layout-wrap="" *ngIf='assetDetail.primary[4]?.value != null'>
+            <div flex="" class="restriction-banner">{{assetDetail.primary[4]?.value}}</div>
+          </div>
           <h4 class="title-txt" *ngIf="assetDetail.primary[5]?.value != null">{{assetDetail.primary[5]?.value}}</h4>
           <h5 class="description-txt md-subhead">{{assetDetail.primary[6]?.value}}</h5>
           <md-card-actions layout="column" layout-align="center center" layout-wrap="">
@@ -52,7 +55,7 @@
             <div class="m-data">
               <div class="row " *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[0]?.event; #i=index'>
                 <div class="cell">
-                  <h5 class="md-subhead">{{mdata.name}}</h5>
+                  <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
                 </div>
                 <div class="cell">
                   <p class="md-body-1">{{mdata.value}}</p>
@@ -64,7 +67,7 @@
               </div>
               <div class="row " *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[1]?.format; #i=index'>
                 <div class="cell">
-                  <h5 class="md-subhead">{{mdata.name}}</h5>
+                  <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
                 </div>
                 <div class="cell">
                   <p class="md-body-1">{{mdata.value}}</p>
@@ -76,7 +79,7 @@
               </div>
               <div class="row " *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[2]?.audio; #i=index'>
                 <div class="cell">
-                  <h5 class="md-subhead">{{mdata.name}}</h5>
+                  <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
                 </div>
                 <div class="cell">
                   <p class="md-body-1">{{mdata.value}}</p>

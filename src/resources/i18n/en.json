@@ -45,6 +45,27 @@
       "PASSWORD_LABEL": "Password",
       "SUBMIT_LABEL": "SIGN IN"
     }
+  },
+  "ASSETMETADATA": {
+    "DESCRIPTION_DATE": "Date",
+    "DESCRIPTION_LOCATION": "Location",
+    "DESCRIPTION_EVENT": "Event",
+    "TE_CATEGORY": "Category",
+    "OWNER": "Owner",
+    "FORMAT_ASPECTRATIO": "Aspect ratio",
+    "FORMAT_FRAMESIZE":"Frame size",
+    "FORMAT_FRAMERATE":"Frame rate",
+    "FORMAT_FILESIZE":"File size",
+    "FORMAT_BROADCASTSTANDARD":"Broadcast standard",
+    "TE_DIGITALFORMAT":"Digital format",
+    "FORMAT_DURATION":"Length",
+    "FORMAT_MASTERSTANDARD":"Stored online",
+    "FORMAT_QUICKTIME_CODEC":"QuickTime codec",
+    "FORMAT_AUDIO_CODEC":"Audio codec",
+    "FORMAT_AUDIOBITDEPTH":"Audio bit depth",
+    "FORMAT_AUDIOCHANNELCONFIGURATION":"Audio channels",
+    "FORMAT_AUDIODATARATE":"Audio data rate",
+    "FORMAT_AUDIOSAMPLINGRATE":"Audio sampling rate"
   }
 }
 
