@@ -1,7 +1,7 @@
 
 <section class="search-results">
   <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
-    <div flex-xl="100" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
+    <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
       <div layout="row" layout-align="end end" class="pagination md-body-2"> 
         <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
         <pagination [pagination]="assets.pagination" [currentPage]="routeParams.params.i || 1" (getPage)="changePage($event)"></pagination>
