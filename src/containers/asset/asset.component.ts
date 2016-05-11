@@ -38,9 +38,14 @@ export class Asset {
   ngOnInit(): void {
     this.subscription = this.assetDetail.subscribe(data => this.assetDetail = data);
     this.assetService.initialize(this.routeParams.get('name')).subscribe(
-      payload => this.assetService.set(payload),
+      payload => {
+        this.assetService.set(payload);
+        console.log(payload);
+      },
       error => this.error.handle(error)
+      
     );
+    
   }
 
   ngOnDestroy(): void {
