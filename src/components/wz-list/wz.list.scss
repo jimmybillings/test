@@ -1,16 +1,4 @@
--md-data-table {
-  background-color: #fff;
-  min-width: 100%;
-  thead th {
-    padding: 0.5rem;
-    border-bottom: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    cursor: pointer;
-  }
-  tbody tr td {
-    text-align: center;
-    padding: 0.7rem;
-    border-bottom: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-  }
+wz-list {
+  display: block;
+  margin-bottom:20px;
 }
