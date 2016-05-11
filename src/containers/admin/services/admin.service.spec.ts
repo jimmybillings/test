@@ -58,10 +58,8 @@ export function main() {
     }));
     
     it('Should have a getIdentitiesSearchPath function that returns the proper url', inject([AdminService], (service) => {
-      let result = service.getIdentitiesSearchPath({i: 1, n: 10, s: 'createdOn', d: 'false', fields: 'firstName,lastName', values: 'ross,edfort'}, 'account');
+      let result = service.getIdentitiesSearchPath('account');
       expect(result).toEqual('https://crxextapi.dev.wzplatform.com/api/identities/v1/account/searchFields/?');
-      let otherResult = service.getIdentitiesSearchPath({i: 1, n: 10, s: 'createdOn', d: 'false'}, 'account');
-      expect(otherResult).toEqual('https://crxextapi.dev.wzplatform.com/api/identities/v1/account/search');
     }));
     
     it('Should have a buildSearchTerm function that calls subsequent functions', inject([AdminService], (service) => {
