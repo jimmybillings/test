@@ -18,8 +18,11 @@ export class AssetDetail {
   @Input() public assetDetail;
   @Input() currentUser;
   
+  ngOnChanges(): void {
+    console.log(this.assetDetail);
+  }
   public getMetaField(field) {
     let meta = this.assetDetail.clipData.filter(item => item.name === field)[0];  
-    if (meta) return meta.value; 
+    if (meta) return meta.value;
   }
 }

@@ -28,7 +28,8 @@ section.preview-bk {
     @include text-contrast(md-color($md-background, 900));
     @include background-image(
       linear-gradient(md-color($md-background, 900, .5), md-color($md-background, 900, .4)),
-      linear-gradient(md-color($md-primary, 900, .8), md-color($md-primary, 900, .7))
+      linear-gradient(md-color($md-primary, 900, .1), md-color($md-primary, 600, .1)),
+      linear-gradient(md-color($md-background, 900, .7), md-color($md-background, 900, .6))
     );
     position: relative;
     &::before {
@@ -103,8 +104,15 @@ section.preview-bk {
       position: relative;
       z-index: 1;
       @include calc(height, "100% - 96px");
-      .md-subhead {
-        margin-bottom: 15%;
+      .title-txt {
+        margin-top: rem(1.2);
+        margin-bottom: 0;
+      }
+      .description-txt {
+        height: rem(12.1);
+        overflow-y: scroll;
+        margin-top: rem(1.2);
+        margin-bottom: 0;
       }
       md-card-actions {
         @include calc(width, "100% - 68px");
@@ -125,7 +133,7 @@ section.preview-bk {
         }
       }
       .asset-name {
-        margin-bottom: rem(1.5);
+        margin-bottom: rem(.7);
       }
       .sd-hd {
         height: rem(2);
@@ -150,8 +158,8 @@ section.preview-bk {
       .sd-hd.sd {
         width: rem(2.7);
         border-radius: rem(.2);
-        border-color: rgba(md-color($md-background, 900),1);
-        background-color: rgba(md-color($md-background, 100),.8);
+        border-color: rgba(md-color($md-background, 900), 1);
+        background-color: rgba(md-color($md-background, 100), .2);
         &::before {
           content: "SD";
           color:rgba(md-color($md-background, 900),1);

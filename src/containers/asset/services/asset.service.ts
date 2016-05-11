@@ -4,7 +4,7 @@ import { Injectable } from 'angular2/core';
 import { ApiConfig } from '../../../common/config/api.config';
 import { Http, Response } from 'angular2/http';
 
-const initAsset = { clipData: [] };
+const initAsset = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: ''};
 export const asset: Reducer<any> = (state = initAsset, action: Action) => {
   switch (action.type) {
     case 'SET_ASSET':
@@ -22,7 +22,6 @@ export class AssetService {
 
   public asset: Observable<any>;
   public errorMessage: any;
-  private _apiUrl: string;
   
 
   constructor(
@@ -30,11 +29,13 @@ export class AssetService {
     private _apiConfig: ApiConfig,
     private _http: Http) {
     this.asset = this.store.select('asset');
-    this._apiUrl = this._apiConfig.baseUrl() + 'api/assets/v1/clip/';
   }
 
   public initialize(id): Observable<any> {
-    return this._http.get(this._apiUrl + id, { headers: this._apiConfig.authHeaders() })
+    return this._http
+      .get(this._apiConfig.baseUrl() +'api/assets/v1/clip/'+ id +'/detail', 
+        { headers: this._apiConfig.authHeaders() }
+      )
       .map((res: Response) => ({ type: 'SET_ASSET', payload: res.json() }));
   }
   
