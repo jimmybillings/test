@@ -34,11 +34,14 @@ export class SearchBox {
   }
   
   ngOnChanges(changes) {
-    if (changes.state) this.updateSearchBoxValue(changes.state.currentValue);
+    if (changes.state) {
+      this.updateSearchBoxValue(changes.state.currentValue);
+    }
   }
   
   public updateSearchBoxValue(searchParams) {
     let params = searchParams.split('?')[1];
+    if (!params) return;
     let obj = {};
     params = params.split('&');
     params.forEach((pair) => {
