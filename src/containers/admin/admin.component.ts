@@ -3,6 +3,7 @@ import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {CurrentUser} from '../../common/models/current-user.model';
 import {Dashboard} from './dashboard/dashboard.component';
 import {Index} from './index/index.component';
+import {New} from './new/new.component';
 
 @Component({
   selector: 'admin',
@@ -13,7 +14,8 @@ import {Index} from './index/index.component';
 @RouteConfig([
   { path: '/dashboard', component: Dashboard, name: 'Dashboard' },
   { path: '/accounts', component: Index, name: 'Account' },
-  { path: '/users', component: Index, name: 'User' }
+  { path: '/users', component: Index, name: 'User' },
+  { path: '/new', component: New, name: 'New' },
 ])
 
 export class Admin {

@@ -1,5 +1,8 @@
 section.admin-index {
-  margin-top: rem(10);
+  .admin-actions {
+    padding: rem(2) 0;
+  }
+  margin-top: rem(5);
   margin-left: rem(5);
   .admin-filter {
     margin: 0rem 5rem 5rem;

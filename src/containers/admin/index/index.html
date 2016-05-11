@@ -1,14 +1,19 @@
 
 <section class="admin-index">
   <div layout="row" layout-align="start start">
-    <div flex-xl="60" flex-gt-lg="50" flex-gt-md="60" flex="70" class="account-table">
+    <div flex-xl="90" flex-gt-lg="80" flex-gt-md="90" flex="100" class="admin-actions">
+      <button md-raised-button="" type="button" class="md-raised md-primary conversion" (click)="newResource(resource)">new {{currentComponent}}</button>
+    </div>
+  </div>
+  <div layout="row" layout-align="start start" class="admin-table">
+    <div flex-xl="60" flex-gt-lg="50" flex-gt-md="60" flex="70">
       <wz-list [items]="currentUserResources.items" [headers]="config.tableHeaders.items" [toggleFlag]="toggleFlag" (sort)="navigateToSortUrl($event)"></wz-list>
       <div layout="row" layout-align="end center">
         <pagination (getPage)="navigateToPageUrl($event)" [currentPage]="routeParams.params.i || 1" [pagination]="currentUserResources.pagination"></pagination>
       </div>
     </div>
     <div flex-xl="30" flex-gt-lg="40" flex-gt-md="30" flex="20" class="admin-filter">
-      <filter [fields]="config.searchForm.items" (filterSubmit)="navigateToFilterUrl($event)" (clearFilter)="navigateToBaseUrl($event)"></filter>
+      <filter [fields]="config.searchForm.items" (filterSubmit)="navigateToFilterUrl($event)" (clearFilter)="navigateToBaseUrl()"></filter>
     </div>
   </div>
 </section>
