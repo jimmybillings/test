@@ -3,12 +3,12 @@ import { WzForm } from '../wz-form/wz.form.component';
 
 @Component({
   selector: 'filter',
-  templateUrl: 'components/filter/filter.html',
+  templateUrl: 'components/admin-filter/admin-filter.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   directives: [WzForm]
 })
 
-export class Filter {
+export class AdminFilter {
   @Input() fields;
   @Output() filterSubmit = new EventEmitter();
   @Output() clearFilter = new EventEmitter();

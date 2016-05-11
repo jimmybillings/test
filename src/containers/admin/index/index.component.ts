@@ -2,7 +2,7 @@ import {Component} from 'angular2/core';
 import {CurrentUser} from '../../../common/models/current-user.model';
 import {AdminService} from '../services/admin.service';
 import {WzList} from '../../../components/wz-list/wz.list.component';
-import {Filter} from '../../../components/filter/filter.component';
+import {AdminFilter} from '../../../components/admin-filter/admin-filter.component';
 import {Pagination} from '../../../components/pagination/pagination.component';
 import {ROUTER_DIRECTIVES, Router, CanReuse, ComponentInstruction, RouteParams} from 'angular2/router';
 import {UiConfig} from '../../../common/config/ui.config';
@@ -12,7 +12,7 @@ import {Subscription} from 'rxjs/Rx';
   selector: 'admin-index',
   templateUrl: 'containers/admin/index/index.html',
   providers: [AdminService],
-  directives: [WzList, Pagination, ROUTER_DIRECTIVES, Filter]
+  directives: [WzList, Pagination, ROUTER_DIRECTIVES, AdminFilter]
 })
 
 export class Index implements CanReuse {
