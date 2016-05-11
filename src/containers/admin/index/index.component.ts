@@ -80,6 +80,7 @@ export class Index implements CanReuse {
   }
  
   private getResourceFromUrl(): string {
+    console.log(this.router.currentInstruction.component.routeName);
     return this.router.parent.currentInstruction.component.routeName.toLowerCase();
   }
 }
