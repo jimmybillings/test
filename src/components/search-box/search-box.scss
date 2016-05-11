@@ -50,6 +50,7 @@ search-box {
   .auto-complete:empty {
    max-height: 0;
    opacity: 0;
+   display: none;
   }
   ul.auto-complete {
     opacity: 1;
