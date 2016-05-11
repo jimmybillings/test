@@ -2,13 +2,13 @@
 <section class="admin-index">
   <div layout="row" layout-align="start start">
     <div flex-xl="60" flex-gt-lg="50" flex-gt-md="60" flex="70" class="account-table">
-      <wz-list [items]="currentUserResources.items" [headers]="headers" [toggleFlag]="toggleFlag" (sort)="navigateToSortUrl($event)"></wz-list>
+      <wz-list [items]="currentUserResources.items" [headers]="config.tableHeaders.items" [toggleFlag]="toggleFlag" (sort)="navigateToSortUrl($event)"></wz-list>
       <div layout="row" layout-align="end center">
         <pagination (getPage)="navigateToPageUrl($event)" [currentPage]="routeParams.params.i || 1" [pagination]="currentUserResources.pagination"></pagination>
       </div>
     </div>
     <div flex-xl="30" flex-gt-lg="40" flex-gt-md="30" flex="20" class="admin-filter">
-      <filter [fields]="fields" (filterSubmit)="navigateToFilterUrl($event)" (clearFilter)="navigateToBaseUrl($event)"></filter>
+      <filter [fields]="config.searchForm.items" (filterSubmit)="navigateToFilterUrl($event)" (clearFilter)="navigateToBaseUrl($event)"></filter>
     </div>
   </div>
 </section>
