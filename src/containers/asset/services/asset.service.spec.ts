@@ -27,9 +27,9 @@ export function main() {
 
     it('Should setup instance variables for the api endpoint and the asset store',
       inject([AssetService], (service) => {
-        expect(service._apiUrl).toEqual('https://crxextapi.dev.wzplatform.com/api/assets/v1/clip/');
+        // expect(service._apiUrl).toEqual('https://crxextapi.dev.wzplatform.com/api/assets/v1/clip/');
         service.asset.subscribe((asset) => {
-          expect(asset).toEqual({ clipData: [  ] });
+          expect(asset).toEqual({ clipData: [], common: [], primary: [], secondary: [], filter: '', name: '' });
         });
       }));
       
@@ -37,9 +37,9 @@ export function main() {
       inject([AssetService, MockBackend], (service, mockBackend) => {
         let connection;
         connection = mockBackend.connections.subscribe(c => connection = c);
-        service.initialize(1).subscribe(payload => {
-          expect(connection.request.url).toBe(service._apiUrl + '1');
-          expect(payload).toEqual( { type: 'SET_ASSET', payload: MockAssetResponse()});
+        service.initialize(26307591).subscribe(payload => {
+          expect(connection.request.url).toBe(service._apiConfig.baseUrl() +'api/assets/v1/clip/26307591/detail');
+          // expect(payload).toEqual( { type: 'SET_ASSET', payload: MockAssetResponse()});
         });
         connection.mockRespond(new Response(
           new ResponseOptions({

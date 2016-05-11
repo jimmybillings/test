@@ -33,7 +33,7 @@ export class AssetService {
 
   public initialize(id): Observable<any> {
     return this._http
-      .get(this._apiConfig.baseUrl() +'api/assets/v1/clip/'+ id +'/detail?siteName='+ this._apiConfig.getPortal(), 
+      .get(this._apiConfig.baseUrl() +'api/assets/v1/clip/'+ id +'/detail', 
         { headers: this._apiConfig.authHeaders() }
       )
       .map((res: Response) => ({ type: 'SET_ASSET', payload: res.json() }));
