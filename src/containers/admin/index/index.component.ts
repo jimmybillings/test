@@ -19,12 +19,9 @@ export class Index implements CanReuse {
   public resource: string;
   public toggleFlag: string;
   public currentComponent: string;
-  public pageSize: {value: string};
   public subscription: Subscription;
   public currentUserResources: Object;
-  public components: Object;
-  public headers: Array<string>;
-  public fields: Array<string>;
+  public config: any;
   
   constructor(public currentUser: CurrentUser,
               public adminService: AdminService,
@@ -37,11 +34,8 @@ export class Index implements CanReuse {
   ngOnInit(): void {    
     this.resource = this.getResourceFromUrl();
     this.currentComponent = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
-    this.uiConfig.get('admin').subscribe((config) => {
-      this.components = config.components;
-      this.pageSize = config.config.pagination.config.pageSize;
-      this.headers = config.config[this.resource].items;
-      this.fields = config.config[this.resource].config.form.items;
+    this.uiConfig.get('admin' + this.currentComponent).subscribe((config) => {
+      this.config = config.config;
     });
     this.subscription = this.adminService.adminStore.subscribe(data => this.currentUserResources = data);
     this.getIndex();
@@ -52,7 +46,7 @@ export class Index implements CanReuse {
   }
   
   public getIndex(): void {
-    let params = this.adminService.buildRouteParams(this.pageSize.value);
+    let params = this.adminService.buildRouteParams(this.config.pageSize.value);
     this.toggleFlag = params.d;
     this.adminService.getResources(params, this.resource).subscribe(data => {
       this.adminService.setResources(data); 
@@ -60,18 +54,18 @@ export class Index implements CanReuse {
   }
   
   public navigateToPageUrl(i: number): void  {
-    let params = this.adminService.buildRouteParams(this.pageSize.value, {i});
+    let params = this.adminService.buildRouteParams(this.config.pageSize.value, {i});
     this.router.navigate(['/Admin/' + this.currentComponent, params ]);
   }
   
   public navigateToSortUrl(sortParams: any): void  {
-    let params = this.adminService.buildRouteParams(this.pageSize.value, sortParams);
+    let params = this.adminService.buildRouteParams(this.config.pageSize.value, sortParams);
     this.router.navigate(['/Admin/' + this.currentComponent, params ]);
   }
   
   public navigateToFilterUrl(filterParams: any): void {
     let searchTerms = this.adminService.buildSearchTerm(filterParams);
-    let params = this.adminService.buildRouteParams(this.pageSize.value, searchTerms);
+    let params = this.adminService.buildRouteParams(this.config.pageSize.value, searchTerms);
     this.router.navigate(['/Admin/' + this.currentComponent, params ]);
   }
   

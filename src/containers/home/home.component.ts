@@ -17,7 +17,6 @@ import {ApiConfig} from '../../common/config/api.config';
 
 export class Home {
   public config: Object;
-  public components: Object;
   
   constructor(
     public currentUser: CurrentUser,
@@ -28,10 +27,7 @@ export class Home {
   }
   
   ngOnInit() {
-    this.uiConfig.get('home').subscribe((config) => {
-      this.components = config.components;
-      this.config = config.config;
-    }); 
+    this.uiConfig.get('home').subscribe((config) => this.config = config.config); 
   }
   
   public newSearchContext(query): void { this.searchContext.new({q: query, i: 1}); }

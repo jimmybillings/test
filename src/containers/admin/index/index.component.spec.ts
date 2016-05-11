@@ -89,7 +89,7 @@ export function main() {
     
     it('Should have a getIndex() function that calls the getResource and setResources functions on the service', inject([Index], (component) => {
       component.resource = 'account';
-      component.pageSize = {'value': '10'};
+      component.config = {'pageSize': {'value': '10'}};
       spyOn(component.adminService, 'buildRouteParams').and.callThrough();
       spyOn(component.adminService, 'getResources').and.callThrough();
       spyOn(component.adminService, 'setResources').and.callThrough();
@@ -101,7 +101,7 @@ export function main() {
     
     it('Should have a navigateToPageUrl function that navigates to a URL', inject([Index], (component) => {
       component.currentComponent = 'Account';
-      component.pageSize = {'value': '10'};
+      component.config = {'pageSize': {'value': '10'}};
       spyOn(component.router, 'navigate');
       spyOn(component.adminService, 'buildRouteParams').and.callThrough();
       component.navigateToPageUrl(2);
@@ -111,7 +111,7 @@ export function main() {
     
     it('Should have a navigateToSortUrl function that navigates to a URL with correct params', inject([Index], (component) => {
       component.currentComponent = 'Account';
-      component.pageSize = {'value': '10'};
+      component.config = {'pageSize': {'value': '10'}};
       spyOn(component.router, 'navigate');
       spyOn(component.adminService, 'buildRouteParams').and.callThrough();
       component.navigateToSortUrl({s: 'emailAddress', d: true});
@@ -121,7 +121,7 @@ export function main() {
     
     it('Should have a navigateToFilterUrl function that navigates to a URL with correct params', inject([Index], (component) => {
       component.currentComponent = 'User';
-      component.pageSize = {'value': '10'};
+      component.config = {'pageSize': {'value': '10'}};
       spyOn(component.router, 'navigate');
       spyOn(component.adminService, 'buildRouteParams').and.callThrough();
       component.navigateToFilterUrl({firstName: 'john'});

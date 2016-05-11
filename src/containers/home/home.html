@@ -7,7 +7,7 @@
           <div class="logo"></div>
         </div>
         <search-box 
-          [config]="components.searchBox" 
+          [config]="config" 
           [loggedIn]="currentUser.loggedIn()" 
           [apiConfig]="apiConfig"
           (searchContext)="newSearchContext($event)">
