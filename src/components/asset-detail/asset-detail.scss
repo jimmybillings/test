@@ -147,9 +147,9 @@ section.preview-bk {
         &::before {
           content: "HD";
           position: absolute;
-          top: rem(.1);
-          left: rem(.4);
-          bottom: 0;
+          top: 50%;
+          left: 50%;
+          @include transform(translate(-50%, -50%));
           opacity: 0.8;
           font-size: .94em;
           font-weight: bold;
@@ -157,9 +157,10 @@ section.preview-bk {
       }
       .sd-hd.sd {
         width: rem(2.7);
-        border-radius: rem(.2);
-        border-color: rgba(md-color($md-background, 900), 1);
-        background-color: rgba(md-color($md-background, 100), .2);
+        height: rem(1.8);
+        border-radius: 50%;
+        border-color: rgba(md-color($md-background, 900), 0);
+        background-color: rgba(md-color($md-background, 100), .75);
         &::before {
           content: "SD";
           color:rgba(md-color($md-background, 900),1);

@@ -25,7 +25,6 @@ import {SearchContext} from '../../common/services/search-context.service';
 
 export class Search {
   public config: Object;
-  public components: Object;
   public assets: Observable<any>;
   public errorMessage: string;
 

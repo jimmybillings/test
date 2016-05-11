@@ -25,7 +25,10 @@
         <md-card-content>
           <div flex="" layout="column" class="asset-name md-caption">{{assetDetail.primary[1]?.value}}</div>
           <div layout="row" layout-wrap="">
-            <div [ngClass]="{hd: assetDetail.primary[2]?.value == 'High Definition', sd: assetDetail.primary[2]?.value == 'Standard Definition'}" class="sd-hd"></div>
+            <div 
+              [ngClass]="{hd: assetDetail.primary[2]?.value == 'High Definition', sd: assetDetail.primary[2]?.value == 'Standard Definition'}" 
+              class="sd-hd" *ngIf='assetDetail.primary[2]?.value != null'>
+            </div>
             <div flex="" class="rights md-caption">{{assetDetail.primary[3]?.value}}</div>
           </div>
           <h4 class="title-txt" *ngIf="assetDetail.primary[5]?.value != null">{{assetDetail.primary[5]?.value}}</h4>
