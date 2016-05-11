@@ -71,6 +71,7 @@ export class AssetData {
       .map((res: Response) => (res.json()));
   }
   
+  
   public storeAssets(payload): void {
     this.store.dispatch({type: 'SEARCH', payload: {
       'items': payload.items,
