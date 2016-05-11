@@ -79,9 +79,7 @@ export class AdminService {
   
   private getIdentitiesSearchOptions(queryObject: { [key: string]: string }): RequestOptions {
     const search: URLSearchParams = new URLSearchParams();
-    for (var param in queryObject) {
-      search.set(param, queryObject[param]);
-    }
+    for (var param in queryObject) search.set(param, queryObject[param]);
     let headers = this._apiConfig.authHeaders();
     let options = { headers: headers, search: search};
     return new RequestOptions(options);

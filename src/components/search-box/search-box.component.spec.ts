@@ -56,9 +56,7 @@ export function main() {
       component.config.pageSize.value = 25;
       component.router.config([ { path: '/Search', name: 'Search', component: Search }]);
       spyOn(component.searchContext, 'emit');
-      spyOn(component, 'listenForSearchTerms');
       component.onSubmit('Dogs');
-      expect(component.listenForSearchTerms).toHaveBeenCalled();
       expect(component.searchContext.emit).toHaveBeenCalledWith('Dogs');
     }));
     
