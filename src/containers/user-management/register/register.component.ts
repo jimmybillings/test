@@ -32,10 +32,7 @@ export class Register {
   }
   
   ngOnInit(): void {
-    this.uiConfig.get('register').subscribe( config => {
-      this.config = config.config;
-      this.fields = this.config.form.items;
-    });
+    this.uiConfig.get('register').subscribe( config => this.config = config.config);
   }
   
   /**

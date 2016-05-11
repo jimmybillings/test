@@ -36,7 +36,6 @@ export class Login {
   
   ngOnInit(): void {
     this.uiConfig.get('login').subscribe( config => this.config = config.config);
-    this.fields = this.config.form.items;
   }
 
   /**

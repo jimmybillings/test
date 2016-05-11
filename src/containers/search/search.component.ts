@@ -45,10 +45,7 @@ export class Search {
   }
 
   ngOnInit(): void {
-    this.uiConfig.get('search').subscribe((config) => {
-      this.config = config.config;
-      this.components = config.components;
-    });
+    this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.searchAssets();
   }
   
