@@ -62,7 +62,6 @@ export function main() {
       spyOn(component.uiConfig, 'get').and.callThrough();
       component.ngOnInit();
       expect(component.uiConfig.get).toHaveBeenCalledWith('home');
-      expect(component.components).toEqual({'component': 'true'});
       expect(component.config).toEqual({'config': 'true'});
     }));
 

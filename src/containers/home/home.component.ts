@@ -17,7 +17,6 @@ import {ApiConfig} from '../../common/config/api.config';
 
 export class Home {
   public config: Object;
-  public components: Object;
   
   constructor(
     public currentUser: CurrentUser,
