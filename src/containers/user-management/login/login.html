@@ -12,7 +12,7 @@
           <md-card-title-text layout="column" layout-align="center center"><span class="md-headline">{{ 'LOGIN.TITLE' | translate }}</span></md-card-title-text>
         </md-card-title>
         <md-card-content>
-          <wz-form [items]="fields" submitLabel="LOGIN.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
+          <wz-form [items]="config.form.items" submitLabel="LOGIN.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
           <div layout="column" layout-align="center center" class="md-body-2"> <a layout="row" flex="" md-button="" [routerLink]="['Register']" class="md-primary">{{ 'LOGIN.FORGOT_PASSWORD' | translate }}</a></div>
         </md-card-content>
       </md-card>

@@ -34,9 +34,7 @@ export class SearchBox {
   }
   
   ngOnChanges(changes) {
-    if (changes.state) {
-      this.updateSearchBoxValue(changes.state.currentValue);
-    }
+    if (changes.state) this.updateSearchBoxValue(changes.state.currentValue);
   }
   
   public updateSearchBoxValue(searchParams) {
