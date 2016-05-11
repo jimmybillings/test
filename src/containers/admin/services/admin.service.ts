@@ -38,7 +38,7 @@ export class AdminService {
   
   public getResources(queryObject: any, resource: string): Observable<any> {
     queryObject['i'] = (parseFloat(queryObject['i']) - 1).toString();
-    let url = this.getIdentitiesSearchPath(queryObject, resource);
+    let url = this.getIdentitiesSearchPath(resource);
     let options = this.getIdentitiesSearchOptions(queryObject);
     return this._http.get(url, options).map((res: Response) => res.json());
   }
@@ -85,12 +85,8 @@ export class AdminService {
     return new RequestOptions(options);
   }
   
-  private getIdentitiesSearchPath(queryObject: any, resource: string): string {
-    if (Object.keys(queryObject).indexOf('fields') > -1) {
-      return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource + '/searchFields/?';
-    } else {
-      return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource + '/search';
-    }
+  private getIdentitiesSearchPath(resource: string): string {
+    return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource + '/searchFields/?';
   }
   
   private sanitizeFormInput(params: any): any {
