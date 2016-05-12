@@ -7,7 +7,7 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 
 /**
  * Home page component - renders the home page
- */  
+ */
 @Component({
   selector: 'wz-form',
   templateUrl: 'components/wz-form/wz.form.html',
@@ -21,25 +21,24 @@ export class WzForm {
   @Input() items;
   @Input() submitLabel: string;
   @Output() formSubmit = new EventEmitter();
-  
+
   public form: ControlGroup;
-    
+
   constructor(public fb: FormBuilder, private _form: Form) {}
-  
+
   ngOnInit(): void {
     this.form = this.fb.group(this._form.create(this.items));
   }
-  
+
   public parseOptions(options) {
     return options.split(',');
   }
-  
+
   public radioSelect(field, option) {
     (<Control>this.form.controls[field]).updateValue(option);
   }
-  
+
   public onSubmit(data:any): void {
-    console.log(this.form.value);
     if (this.form.valid) {
       this.formSubmit.emit(data);
       // call callback in parent component
