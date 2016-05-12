@@ -57,6 +57,7 @@ search-box {
     @include text-contrast(md-color($md-background, 100));
     max-height: rem(30);
     overflow-y: scroll;
+    overflow-x: hidden;
     @include transition(all .6s $swift-ease-in-out-timing-function);
     box-shadow: $whiteframe-shadow-z2;
     &:empty, &:blank, &.empty {

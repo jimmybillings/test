@@ -17,7 +17,6 @@
     <button md-button="" *ngIf="loggedInState | async" [routerLink]="['UserManagement', 'Profile']" [ngClass]="{'md-primary': !showFixed}" hide="" show-xs="" class="md-icon-button is-dd"> <i md-icon="" class="material-icons">person</i></button>
     <button md-button="" *ngIf="searchBarIsActive" title="Open collections" (click)="openBinTray()" class="md-icon-button open-bin-tray"><i md-icon="" class="material-icons">folder_open</i></button>
     <button md-button="" *ngIf="searchBarIsActive" title="Search" (click)="openSearch()" class="md-icon-button open-search"><i md-icon="" class="material-icons">search</i></button>
-    <!-- button.md-icon-button(md-button='', title='More',[routerLink]="['Home']", hide='', show-gt-sm='')// i.material-icons(md-icon='') more_vert
-    -->
+    <button md-button="" title="More" [routerLink]="['Home']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></button>
   </nav>
 </md-toolbar>

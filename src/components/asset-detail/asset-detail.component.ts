@@ -17,12 +17,18 @@ import {Player} from '../../components/player/player.component';
 })
 
 export class AssetDetail {
+  public arrayOfKeys: Array<string>;
   @Input() public assetDetail;
   @Input() currentUser;
   
   ngOnChanges(): void {
-    console.log(this.assetDetail);
+    this.arrayOfKeys = Object.keys(this.assetDetail.secondary);
+    // console.log(this.assetDetail);
+    console.log(this.assetDetail.secondary[0]);
+    console.log(this.arrayOfKeys);
   }
+  
+  
   public getMetaField(field) {
     let meta = this.assetDetail.clipData.filter(item => item.name === field)[0];  
     if (meta) return meta.value;
