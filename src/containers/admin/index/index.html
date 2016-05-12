@@ -2,6 +2,11 @@
 <section class="admin-index">
   <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
     <div flex="95" flex-gt-lg="95" flex-xl="95">
+      <md-button md-raised-button="" [routerLink]="['../New', {resource: resource}]" class="md-primary">New {{currentComponent}}</md-button>
+    </div>
+  </div>
+  <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
+    <div flex="95" flex-gt-lg="95" flex-xl="95">
       <div layout="row" layout-align="space-around stretch">
         <div flex-xl="70" flex-gt-lg="70" flex-gt-md="70" flex="70" class="account-table">
           <wz-list [items]="currentUserResources.items" [headers]="config.tableHeaders.items" [toggleFlag]="toggleFlag" (sort)="navigateToSortUrl($event)"></wz-list>

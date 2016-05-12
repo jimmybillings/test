@@ -13,19 +13,19 @@ export class New {
   public resource: string;
   public currentComponent: string;
   public config: any;
-  
+
   constructor(public router: Router,
               public routeParams: RouteParams,
               public uiConfig: UiConfig) {}
-  
+
   ngOnInit(): void {
-    this.currentComponent = this.router.parent.currentInstruction.component.routeName;
-    this.resource = this.currentComponent.toLowerCase();
-    // this.uiConfig.get('new' + this.currentComponent).subscribe((config) => {
-    //   this.config = config.config;
-    // });
+    this.resource = this.routeParams.get('resource');
+    this.currentComponent = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
+    this.uiConfig.get('admin' + this.currentComponent).subscribe((config) => {
+      this.config = config.config;
+    });
   }
-  
+
   public onSubmit(formData: any): void {
     console.log(formData);
   }

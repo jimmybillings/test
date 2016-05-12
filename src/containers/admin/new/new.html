@@ -1,13 +1,13 @@
 
 <section class="admin-new">
-  <div layout="row" md-scroll-y="" layout-align="center start">
+  <div layout="row" md-scroll-y="" layout-align="space-around">
     <div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
       <md-card class="md-whiteframe-z2">
         <md-card-title>
-          <md-card-title-text layout="column" layout-align="center center"><span class="md-headline">New {{resource}}</span></md-card-title-text>
+          <md-card-title-text layout="column" layout-align="center center"><span class="md-headline">New {{currentComponent}}</span></md-card-title-text>
         </md-card-title>
         <md-card-content>
-          <wz-form [items]="fields" submitLabel="new" (formSubmit)="onSubmit($event)"></wz-form>
+          <wz-form [items]="config.newForm.items" submitLabel="new" (formSubmit)="onSubmit($event)"></wz-form>
         </md-card-content>
       </md-card>
     </div>
