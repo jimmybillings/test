@@ -1,30 +1,43 @@
 
 <form layout="column" [ngFormModel]="form" (ngSubmit)="onSubmit(form.value)" class="md-inline-form">
-  <md-content layout-sm="row" layout-padding=""> 
-    <md-input-container *ngFor="#field of items" class="md-block">
-      <div *ngIf="field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date'">
-        <label>{{field.label | translate}}</label>
-        <input autofocus="autofocus" type="{{field.type}}" ngControl="{{field.name}}" id="{{field.name}}" class="md-input"/>
-      </div>
+  <md-content layout-sm="row" layout-padding="">
+    <div *ngFor="#field of items">
+      <md-input-container class="md-block" *ngIf="field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date'">
+        <div>
+          <label>{{field.label | translate}}</label>
+          <input autofocus="autofocus" type="{{field.type}}" ngControl="{{field.name}}" id="{{field.name}}" class="md-input"/>
+        </div>
+        <div md-messages="{{field.name}}" role="alert">
+          <div *ngIf="field.validation == 'REQUIRED'">
+            <div md-message="required">You must supply a {{field.label | translate}}</div>
+          </div>
+          <div *ngIf="field.validation == 'EMAIL'">
+            <div md-message="">Your email must be between 8 and 50 characters long and look like an e-mail address.</div>
+          </div>
+          <div *ngIf="field.validation == 'PASSWORD'">
+            <div md-message="required">You must supply a Password</div>
+            <div md-message="minlength">Password must be at least 8 characters</div>
+          </div>
+        </div>
+      </md-input-container>
       <div *ngIf="field.type == 'select'">
-        <select ngControl="{{field.name}}">
-          <option *ngFor="#option of parseOptions(field.options)">{{option}}</option>
-        </select>
+        <md-input-group class="md-group">
+          <select ngControl="{{field.name}}">
+            <option *ngFor="#option of parseOptions(field.options)">{{option}}</option>
+          </select>
+        </md-input-group>
       </div>
-      <div md-messages="{{field.name}}" role="alert">
-        <div *ngIf="field.validation == 'REQUIRED'">
-          <div md-message="required">You must supply a {{field.label | translate}}</div>
-        </div>
-        <div *ngIf="field.validation == 'EMAIL'">
-          <div md-message="">Your email must be between 8 and 50 characters long and look like an e-mail address.</div>
-        </div>
-        <div *ngIf="field.validation == 'PASSWORD'">
-          <div md-message="required">You must supply a Password</div>
-          <div md-message="minlength">Password must be at least 8 characters</div>
-        </div>
-      </div>
-    </md-input-container>
-    <md-card-actions layout="column" layout-align="center center" layout-wrap=""> 
+      <md-radio-group *ngIf="field.type == 'radio'">
+        <md-radio-button
+          *ngFor="#option of parseOptions(field.options)"
+          [checked]="parseOptions(field.options)[0]==option"
+          [value]="option" class="md-primary"
+          (click)="radioSelect(field.name, option)">
+            {{option}}
+        </md-radio-button>
+      </md-radio-group>
+    </div>
+    <md-card-actions layout="column" layout-align="center center" layout-wrap="">
       <button md-raised-button="" type="submit" class="md-raised md-primary conversion">{{submitLabel | translate}}</button>
     </md-card-actions>
   </md-content>
