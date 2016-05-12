@@ -8,13 +8,13 @@ beforeEachProviders
 } from 'angular2/testing';
 
 import {WzForm} from './wz.form.component';
-import {Form} from './wz.form.model';
+import {FormModel} from './wz.form.model';
 
 export function main() {
   describe('Form Component', () => {
     beforeEachProviders(() => [
       WzForm,
-      Form
+      FormModel
     ]);
 
     it('Should create instance of WzForm',
