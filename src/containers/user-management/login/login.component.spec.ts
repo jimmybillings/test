@@ -5,7 +5,7 @@ import { ApiConfig } from '../../../common/config/api.config';
 import {CurrentUser} from '../../../common/models/current-user.model';
 import {Authentication} from '../services/authentication.data.service';
 import { User } from '../services/user.data.service';
-import {Form} from '../../../components/wz-form/wz.form.model';
+import {FormModel} from '../../../components/wz-form/wz.form.model';
 
 import {Login} from './login.component';
 import {HTTP_PROVIDERS} from 'angular2/http';
@@ -34,7 +34,7 @@ export function main() {
       CurrentUser,
       UiConfig,
       User,
-      Form,
+      FormModel,
       HTTP_PROVIDERS,
       RouteConfig,
       RouteRegistry,

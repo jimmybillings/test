@@ -10,7 +10,7 @@
           </div>
         </div>
         <div flex-xl="25" flex-gt-lg="25" flex-gt-md="25" flex="25" class="admin-filter">
-          <filter [fields]="config.searchForm.items" (filterSubmit)="navigateToFilterUrl($event)" (clearFilter)="navigateToBaseUrl($event)"></filter>
+          <wz-form [items]="config.searchForm.items" submitLabel="Find" (formSubmit)="navigateToFilterUrl($event)" (clearFilter)="navigateToBaseUrl($event)"></wz-form>
         </div>
       </div>
     </div>

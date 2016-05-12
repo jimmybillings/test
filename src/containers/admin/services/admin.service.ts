@@ -17,7 +17,7 @@ export const adminResources: Reducer<any> = (state = adminState, action: Action)
 
 @Injectable()
 export class AdminService {
-  
+
   public adminStore: Observable<any>;
   public pageStore: Observable<any>;
   public operatorMap: Object;
@@ -25,7 +25,7 @@ export class AdminService {
   private _http: Http;
   private _apiConfig: ApiConfig;
 
-  constructor(http: Http, apiConfig: ApiConfig, routeParams: RouteParams, private store: Store<any>) { 
+  constructor(http: Http, apiConfig: ApiConfig, routeParams: RouteParams, private store: Store<any>) {
       this._http = http;
       this.adminStore = this.store.select('adminResources');
       this._apiConfig = apiConfig;
@@ -35,7 +35,7 @@ export class AdminService {
         'after': 'GT'
       };
     }
-  
+
   public getResources(queryObject: any, resource: string): Observable<any> {
     queryObject['i'] = (parseFloat(queryObject['i']) - 1).toString();
     let url = this.getIdentitiesSearchPath(resource);
@@ -56,7 +56,7 @@ export class AdminService {
       }
     }});
   }
-  
+
   public buildSearchTerm(filterParams: any): any {
     let params = this.sanitizeFormInput(filterParams);
     let rawFields = this.buildFields(params);
@@ -65,7 +65,7 @@ export class AdminService {
     let values = rawValues.filter(this.removeFields).join(',');
     return {fields, values};
   }
-  
+
   public buildRouteParams(pageSize, dynamicParams?: any): any {
     let s = this.routeParams.get('s') || 'createdOn';
     let d = (this.routeParams.get('d') ? true : false);
@@ -76,7 +76,7 @@ export class AdminService {
     let params = { i, n, s, d, fields, values };
     return dynamicParams ? Object.assign(params, dynamicParams) : params;
   }
-  
+
   private getIdentitiesSearchOptions(queryObject: { [key: string]: string }): RequestOptions {
     const search: URLSearchParams = new URLSearchParams();
     for (var param in queryObject) search.set(param, queryObject[param]);
@@ -84,28 +84,35 @@ export class AdminService {
     let options = { headers: headers, search: search};
     return new RequestOptions(options);
   }
-  
+
   private getIdentitiesSearchPath(resource: string): string {
     return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource + '/searchFields/?';
   }
-  
+
   private sanitizeFormInput(params: any): any {
-    for (var param in params) {if (params[param] === '') delete params[param];}
+    for (var param in params) {
+      if ((param === 'createdOn' || param === 'lastUpdated') && params[param] === '' ) {
+        let date = new Date();
+        params[param] = date.setDate(date.getDate() + 1) * 1000;
+      } else if (params[param] === '') {
+        delete params[param];
+      }
+    }
     return params;
   }
-  
+
   private buildValues(filterParams: any): Array<string> {
     return Object.keys(filterParams).reduce((prev, current) => {
       if (current === 'createdOn' || current === 'lastUpdated') {
         let date = new Date(filterParams[current]);
         prev.push(encodeURI((date.getTime()/1000).toString()));
       } else {
-        prev.push(encodeURI(filterParams[current])); 
+        prev.push(encodeURI(filterParams[current]));
       }
       return prev;
     }, []);
   }
-  
+
   private buildFields(filterParams: any): Array<string> {
     let fields = Object.keys(filterParams);
     return fields.reduce((prev, current, index) => {
@@ -117,7 +124,7 @@ export class AdminService {
       return prev;
     }, []);
   }
-  
+
   private removeFields(value): boolean {
     let fieldsToRemove = ['createdOn', 'lastUpdated', 'before', 'after'];
     return !(fieldsToRemove.indexOf(value) > -1);

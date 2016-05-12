@@ -7,7 +7,7 @@ import { IFormFields } from '../../common/interfaces/forms.interface';
  * Service that creates a dynamic model to drive a form. 
  */  
 @Injectable()
-export class Form {
+export class FormModel {
   
   create(form:IFormFields[]): Object {
     let newForm = {};
