@@ -21,7 +21,7 @@ import {CurrentUser} from '../../../common/models/current-user.model';
 import {Authentication} from '../services/authentication.data.service';
 import {User} from '../services/user.data.service';
 import {UiConfig, config} from '../../../common/config/ui.config';
-import {Form} from '../../../components/wz-form/wz.form.model';
+import {FormModel} from '../../../components/wz-form/wz.form.model';
 import { provideStore } from '@ngrx/store';
 
 export function main() {
@@ -54,7 +54,7 @@ export function main() {
       CurrentUser,
       UiConfig,
       Authentication,
-      Form
+      FormModel
     ]);
 
     it('Should have a Register instance',
