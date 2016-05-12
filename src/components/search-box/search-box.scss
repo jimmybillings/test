@@ -47,11 +47,6 @@ search-box {
   select:empty {
     display: none;
   }
-  .auto-complete:empty {
-   max-height: 0;
-   opacity: 0;
-   display: none;
-  }
   ul.auto-complete {
     opacity: 1;
     list-style: none;
@@ -61,9 +56,15 @@ search-box {
     background-color: md-color($md-background, 50, .95);
     @include text-contrast(md-color($md-background, 100));
     max-height: rem(30);
-    overflow: scroll;
+    overflow-y: scroll;
     @include transition(all .6s $swift-ease-in-out-timing-function);
     box-shadow: $whiteframe-shadow-z2;
+    &:empty, &:blank, &.empty {
+      max-height: 0;
+      opacity: 0;
+      display: none;
+      overflow-y: hidden;
+    }
     li {
       background-color: transparent;
       margin: 0; 
@@ -115,6 +116,13 @@ search-box {
   }
 }
 
+// search-box ul.auto-complete:empty, search-box ul.auto-complete:blank, search-box ul.auto-complete.empty {
+//   max-height: 0;
+//   opacity: 0;
+//   display: none;
+//   overflow-y: hidden;
+// }
+
 // search box in the header
 header.app-header {
   search-box {
@@ -137,6 +145,7 @@ header.app-header {
       width: 100%;
       li button {
         padding-right: rem(10.0);
+        padding-left: rem(4.4);
         span {
           right: rem(3.4);
         }

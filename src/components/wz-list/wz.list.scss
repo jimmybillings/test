@@ -1,15 +1,4 @@
-table {
-  min-width: 100%;
-  thead {
-    background-color: #fff;
-  } th {
-    padding: 0.5rem;
-    cursor: pointer;
-  }
-  tbody {
-    background-color: #fff;
-  } tr td {
-    text-align: center;
-    padding: 0.7rem;
-  }
+wz-list {
+  display: block;
+  margin-bottom:20px;
 }

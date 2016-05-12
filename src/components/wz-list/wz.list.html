@@ -1,13 +1,13 @@
 
-<table layout-fill="">
+<md-data-table  layout-fill="">
   <thead>
     <tr>
-      <th *ngFor="#header of headers" (click)="sortBy(header.name)">{{ header.label }}</th>
+      <th class="md-text-cell" *ngFor="#header of headers" (click)="sortBy(header.name)">{{ header.label }}</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="#row of items">
-      <td *ngFor="#header of headers">{{ row[header.name] }}</td>
+      <td class="md-text-cell" *ngFor="#header of headers">{{ row[header.name] }}</td>
     </tr>
   </tbody>
-</table>
+</md-data-table >

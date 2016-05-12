@@ -31,6 +31,9 @@
             </div>
             <div flex="" class="rights md-caption">{{assetDetail.primary[3]?.value}}</div>
           </div>
+          <div layout="row" layout-wrap="" *ngIf='assetDetail.primary[4]?.value != null'>
+            <div flex="" class="restriction-banner">{{assetDetail.primary[4]?.value}}</div>
+          </div>
           <h4 class="title-txt" *ngIf="assetDetail.primary[5]?.value != null">{{assetDetail.primary[5]?.value}}</h4>
           <h5 class="description-txt md-subhead">{{assetDetail.primary[6]?.value}}</h5>
           <md-card-actions layout="column" layout-align="center center" layout-wrap="">
@@ -50,9 +53,9 @@
         <template md-tab="" label="Meta Data">
           <md-content class="md-padding">
             <div class="m-data">
-              <div class="row " *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[0]?.event; #i=index'>
+              <div class="row" *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[0]?.event; #i=index'>
                 <div class="cell">
-                  <h5 class="md-subhead">{{mdata.name}}</h5>
+                  <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
                 </div>
                 <div class="cell">
                   <p class="md-body-1">{{mdata.value}}</p>
@@ -62,9 +65,9 @@
                 <div class="cell"></div>
                 <div class="cell"></div>
               </div>
-              <div class="row " *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[1]?.format; #i=index'>
+              <div class="row" *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[1]?.format; #i=index'>
                 <div class="cell">
-                  <h5 class="md-subhead">{{mdata.name}}</h5>
+                  <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
                 </div>
                 <div class="cell">
                   <p class="md-body-1">{{mdata.value}}</p>
@@ -74,9 +77,9 @@
                 <div class="cell"></div>
                 <div class="cell"></div>
               </div>
-              <div class="row " *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[2]?.audio; #i=index'>
+              <div class="row" *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[2]?.audio; #i=index'>
                 <div class="cell">
-                  <h5 class="md-subhead">{{mdata.name}}</h5>
+                  <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
                 </div>
                 <div class="cell">
                   <p class="md-body-1">{{mdata.value}}</p>
@@ -86,178 +89,6 @@
                 <div class="cell"></div>
                 <div class="cell"></div>
               </div>
-<!--              
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Course</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Sport.Golf.Course.Name')}}  </p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Date</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Description.Date')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Year</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Sport.Year')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Round</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Sport.GameRound')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Hole Number</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Sport.Golf.Hole.Number')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Hole Score</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Sport.Golf.Hole.Strokes')}}</p>
-                </div>
-              </div>
-              <div class="row"></div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Stroke Number</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Sport.Golf.Stroke.Number')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Owner</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Owner')}}</p>
-                </div>
-              </div>
-              
-              <div class="row divider">
-                <div class="cell"></div>
-                <div class="cell"></div>
-              </div>
-              
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Aspect</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Format.AspectRatio')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Frame Rate</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Format.FrameRate')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Frame Size</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1"> {{getMetaField('Format.FrameSize')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Broadcast Standard</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Format.BroadcastStandard')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Digital Format</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('TE.DigitalFormat')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Length</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Format.Duration')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Stored Online</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Format.MasterStandard')}} / {{getMetaField('Format.QuickTime.Codec')}}</p>
-                </div>
-              </div>
-              <div class="row divider">
-                <div class="cell"></div>
-                <div class="cell"></div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Audio Codec</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Format.Audio.Codec')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Audio Bit Depth</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Format.AudioBitDepth')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Audio Channels</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Format.AudioChannelConfiguration')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Audio Data Rate</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Format.AudioDataRate')}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">Audio Sampling Rate</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{getMetaField('Format.AudioSamplingRate')}}</p>
-                </div>
-              </div>-->
             </div>
           </md-content>
         </template>

@@ -1,7 +1,7 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from 'angular2/core';
 import {NgFor} from 'angular2/common';
 import { MATERIAL_DIRECTIVES } from 'ng2-material/all';
-import { FORM_DIRECTIVES, ControlGroup, FormBuilder } from 'angular2/common';
+import { FORM_DIRECTIVES, ControlGroup, FormBuilder, Control } from 'angular2/common';
 import {Form} from './wz.form.model';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 
@@ -34,8 +34,12 @@ export class WzForm {
     return options.split(',');
   }
   
+  public radioSelect(field, option) {
+    (<Control>this.form.controls[field]).updateValue(option);
+  }
+  
   public onSubmit(data:any): void {
-    // console.log(this.form);
+    console.log(this.form.value);
     if (this.form.valid) {
       this.formSubmit.emit(data);
       // call callback in parent component

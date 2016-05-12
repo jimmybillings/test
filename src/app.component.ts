@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, HostListener} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router, Location} from 'angular2/router';
 import {MultilingualService} from './common/services/multilingual.service';
 import {ILang} from './common/interfaces/language.interface';
@@ -42,13 +42,16 @@ export class AppComponent {
   public header: Observable<any>;
   public footer: Observable<any>;
   public searchBox: Observable<any>;
-  // public binTray: Observable<any>;
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public showFixed: boolean = false;
   public state: string = '';
   public searchBarIsActive: boolean;
   public binTrayIsOpen: boolean = false;
   public searchIsOpen: boolean = true;
+
+  @HostListener('document:scroll', ['$event.target']) onscroll(target) {
+     this.showFixedHeader(window.pageYOffset);
+  }
 
   constructor(
     public uiConfig: UiConfig,
@@ -66,11 +69,12 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    
     this.router.subscribe(state => {
       this.searchBarIsActive = this.checkRouteForSearchBar(this.router.currentInstruction.component.routeName);
       this.state = state;
     });
-    window.addEventListener('scroll', () => this.showFixedHeader(window.pageYOffset));
+    
     this.uiConfig.initialize(this.apiConfig.getPortal())
       .subscribe(() => {
         this.header = this.uiConfig.get('header');

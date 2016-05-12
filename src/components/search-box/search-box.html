@@ -6,7 +6,7 @@
 </form>
 
 <ul tabindex="1" class="auto-complete">
-  <li *ngFor="#term of searchTerms | async" value="{{term.term}}">
+  <li *ngFor="#term of searchTerms | async">
     <button type="button" (click)="onSubmit(term.term, true)">{{term.term}} <span>{{term.count}}</span></button>
   </li>
 </ul>

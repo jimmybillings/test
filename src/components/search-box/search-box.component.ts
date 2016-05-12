@@ -59,7 +59,7 @@ export class SearchBox {
   }
 
   public onSubmit(query, searchTerm = false) {
-    query = (searchTerm) ? '(' + query + ')' : query;
+    query = (searchTerm) ? '"' + query + '"' : query;
     this.searchContext.emit(query);
   }
 

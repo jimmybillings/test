@@ -1,19 +1,18 @@
 
 <section class="admin-index">
-  <div layout="row" layout-align="start start">
-    <div flex-xl="90" flex-gt-lg="80" flex-gt-md="90" flex="100" class="admin-actions">
-      <button md-raised-button="" type="button" class="md-raised md-primary conversion" (click)="newResource(resource)">new {{currentComponent}}</button>
-    </div>
-  </div>
-  <div layout="row" layout-align="start start" class="admin-table">
-    <div flex-xl="60" flex-gt-lg="50" flex-gt-md="60" flex="70">
-      <wz-list [items]="currentUserResources.items" [headers]="config.tableHeaders.items" [toggleFlag]="toggleFlag" (sort)="navigateToSortUrl($event)"></wz-list>
-      <div layout="row" layout-align="end center">
-        <pagination (getPage)="navigateToPageUrl($event)" [currentPage]="routeParams.params.i || 1" [pagination]="currentUserResources.pagination"></pagination>
+  <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
+    <div flex="95" flex-gt-lg="95" flex-xl="95">
+      <div layout="row" layout-align="space-around stretch">
+        <div flex-xl="70" flex-gt-lg="70" flex-gt-md="70" flex="70" class="account-table">
+          <wz-list [items]="currentUserResources.items" [headers]="config.tableHeaders.items" [toggleFlag]="toggleFlag" (sort)="navigateToSortUrl($event)"></wz-list>
+          <div layout="row" layout-align="end center">
+            <pagination (getPage)="navigateToPageUrl($event)" [currentPage]="routeParams.params.i || 1" [pagination]="currentUserResources.pagination"></pagination>
+          </div>
+        </div>
+        <div flex-xl="25" flex-gt-lg="25" flex-gt-md="25" flex="25" class="admin-filter">
+          <filter [fields]="config.searchForm.items" (filterSubmit)="navigateToFilterUrl($event)" (clearFilter)="navigateToBaseUrl($event)"></filter>
+        </div>
       </div>
-    </div>
-    <div flex-xl="30" flex-gt-lg="40" flex-gt-md="30" flex="20" class="admin-filter">
-      <filter [fields]="config.searchForm.items" (filterSubmit)="navigateToFilterUrl($event)" (clearFilter)="navigateToBaseUrl()"></filter>
     </div>
   </div>
 </section>
