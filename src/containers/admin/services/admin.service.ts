@@ -43,6 +43,14 @@ export class AdminService {
     return this._http.get(url, options).map((res: Response) => res.json());
   }
 
+  public postResource(formData: any, resource: string): Observable<any> {
+    let url = this.buildPostUrl(resource);
+    let headers = this._apiConfig.authHeaders();
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify(formData);
+    return this._http.post(url, body, options).map((res: Response) => res.json());
+  }
+
   public setResources(data: any): void {
     this.store.dispatch({type: 'ADMIN_SERVICE.SET_RESOURCES', payload: {
       'items': data.items,
@@ -83,6 +91,10 @@ export class AdminService {
     let headers = this._apiConfig.authHeaders();
     let options = { headers: headers, search: search};
     return new RequestOptions(options);
+  }
+
+  private buildPostUrl(resource: string): string {
+    return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource;
   }
 
   private getIdentitiesSearchPath(resource: string): string {
