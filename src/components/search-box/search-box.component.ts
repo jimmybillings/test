@@ -29,7 +29,6 @@ export class SearchBox {
   }
 
   ngOnInit() {
-    this.config = this.config.config;
     if (!this.searchTerms) this.searchTerms = this.listenForSearchTerms();
   }
   

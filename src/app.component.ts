@@ -39,7 +39,7 @@ import {Observable} from 'rxjs/Rx';
 ])
 
 export class AppComponent {
-  public header: Observable<any>;
+  public header: any;
   public footer: Observable<any>;
   public searchBox: Observable<any>;
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
@@ -62,14 +62,11 @@ export class AppComponent {
     private apiConfig: ApiConfig,
     private authentication: Authentication,
     private currentUser: CurrentUser) {
-
       this.apiConfig.setPortal('core');
       multiLingual.setLanguage(window.navigator.language.split('-')[0]);
-      
   }
 
   ngOnInit() {
-    
     this.router.subscribe(state => {
       this.searchBarIsActive = this.checkRouteForSearchBar(this.router.currentInstruction.component.routeName);
       this.state = state;
@@ -77,10 +74,8 @@ export class AppComponent {
     
     this.uiConfig.initialize(this.apiConfig.getPortal())
       .subscribe(() => {
-        this.header = this.uiConfig.get('header');
-        this.footer = this.uiConfig.get('footer');
-        this.searchBox = this.uiConfig.get('searchBox');
-        // this.binTray = this.uiConfig.get('binTray');
+        this.uiConfig.get('header').subscribe(data => this.header = data.config);
+        this.uiConfig.get('searchBox').subscribe(data => this.searchBox = data.config);
       });
     this.currentUser.set();
   }

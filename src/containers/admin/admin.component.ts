@@ -4,6 +4,7 @@ import {CurrentUser} from '../../common/models/current-user.model';
 import {Dashboard} from './dashboard/dashboard.component';
 import {Index} from './index/index.component';
 import {New} from './new/new.component';
+import { Config} from './config/config.component';
 
 @Component({
   selector: 'admin',
@@ -16,12 +17,13 @@ import {New} from './new/new.component';
   { path: '/accounts', component: Index, name: 'Account' },
   { path: '/users', component: Index, name: 'User' },
   { path: '/new', component: New, name: 'New' },
+  { path: '/config', component: Config, name: 'Config' }
 ])
 
 export class Admin {
   public currentUser: CurrentUser;
   public resource: string;
-    
+
   constructor(currentUser: CurrentUser) {
     this.currentUser = currentUser;
   }
