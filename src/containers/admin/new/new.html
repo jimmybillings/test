@@ -2,8 +2,7 @@
 <section class="admin-new">
   <div layout="row" layout-align="center center">
     <div flex-xl="30" flex-gt-lg="30" flex-gt-md="30" flex="30">
-      <span class="md-headline" layout="column" layout-align="center center">New {{currentComponent}}</span>
-      <wz-form [items]="config.newForm.items" submitLabel="new" (formSubmit)="onSubmit($event)"></wz-form>
+      <wz-form layout-align="center center" [items]="config.newForm.items" submitLabel="create" (formSubmit)="onSubmit($event)"></wz-form>
     </div>
   </div>
 </section>

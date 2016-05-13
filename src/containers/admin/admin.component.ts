@@ -4,7 +4,7 @@ import {CurrentUser} from '../../common/models/current-user.model';
 import {Dashboard} from './dashboard/dashboard.component';
 import {Index} from './index/index.component';
 import {New} from './new/new.component';
-import { Config} from './config/config.component';
+import {Config} from './config/config.component';
 
 @Component({
   selector: 'admin',
