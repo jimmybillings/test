@@ -50,7 +50,8 @@
   <div layout="row" md-scroll-y="" layout-align="center start">
     <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center start">
       <md-tabs md-dynamic-height="" md-border-bottom="">
-        <template md-tab="" label="Meta Data">
+
+        <template md-tab="" label="meta data">
           <md-content class="md-padding">
             <div class="m-data">
               <div class="row" *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[0]?.event; #i=index'>
@@ -94,23 +95,52 @@
         </template>
         <template md-tab="" label="Related">
           <md-content class="md-padding">
-            <h3 class="md-headline">Related</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque
-              ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est,
-              sollicitudin consectetur felis nec, feugiat ultricies mi.
-            </p>
+            <div class="m-data">
+              <div class="row" *ngFor='#mdata of assetDetail.secondary[0]?.related.data[0]?.keywords; #i=index'>
+                <div class="cell">
+                  <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{mdata.value}}</p>
+                </div>
+              </div>
+              <div class="row divider">
+                <div class="cell"></div>
+                <div class="cell"></div>
+              </div>
+            </div>
           </md-content>
         </template>
         <template md-tab="" label="Rights and Clearances">
           <md-content class="md-padding">
-            <h3 class="md-headline">Rights and Clearances</h3>
-            <p>
-              Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum.
-              Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum
-              nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus
-              commodo lectus.
-            </p>
+            <div class="m-data">
+              <div class="row" *ngFor='#mdata of assetDetail.secondary[0]?.licensing.data[0]?.rights; #i=index'>
+                <div class="cell">
+                  <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{mdata.value}}</p>
+                </div>
+              </div>
+              
+              <div class="row divider">
+                <div class="cell"></div>
+                <div class="cell"></div>
+              </div>
+              
+              <div class="row" *ngFor= '#mdata of assetDetail.secondary[0]?.licensing.data[1]?.clearance; #i=index'>
+                <div class="cell">
+                  <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{mdata.value}}</p>
+                </div>
+              </div>
+              <div class="row divider">
+                <div class="cell"></div>
+                <div class="cell"></div>
+              </div>
+            </div>
           </md-content>
         </template>
         <template md-tab="" label="Storyboards">
