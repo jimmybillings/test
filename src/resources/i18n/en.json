@@ -65,7 +65,24 @@
     "FORMAT_AUDIOBITDEPTH":"Audio bit depth",
     "FORMAT_AUDIOCHANNELCONFIGURATION":"Audio channels",
     "FORMAT_AUDIODATARATE":"Audio data rate",
-    "FORMAT_AUDIOSAMPLINGRATE":"Audio sampling rate"
+    "FORMAT_AUDIOSAMPLINGRATE":"Audio sampling rate",
+    
+    "KEYWORDS":"Keywords",
+    "RIGHTS_REPRODUCTION":"Rights",
+    "ISLICENSABLE_TEM_AAA":"TEM Licensable in the Americas",
+    "ISLICENSABLE_EMA_AAA":"EMA Licensable in the Americas",
+    "SCOPE_TEM_AAA":"TEM scope in the Americas",
+    "SCOPE_TEM_EMA":"EMA scope in the Americas",
+    "RIGHTS_NOTE":"Additional Rights Notes",
+    "RIGHTS_MOREINFORMATION":"Additonal Rights Info",
+    "RIGHTS_AGENT":"Agent Rights",
+    
+    "RIGHTS_TALENT":"Talent Rights",
+    "RIGHTS_LOCATION":"Location Rights",
+    "RIGHTS_TRADEMARKS":"Trademarks Rights",
+    "RIGHTS_VOICE":"Voice Rights",
+    "RIGHTS_MUSIC":"Music Rights",
+    "RIGHTS_SOUNDEFFECTS":"Sound Effect Rights"
   }
 }
 
