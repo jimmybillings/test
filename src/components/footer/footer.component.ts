@@ -17,7 +17,6 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 
 export class Footer {
   @Input() currentUser;
-  @Input() config;
   @Input() supportedLanguages;
   @Output() onChangeLang = new EventEmitter();
   public langForm: ControlGroup;

@@ -1,0 +1,14 @@
+<!--<ul>
+  <li *ngFor="#item in config | values">
+    {{item}}
+  </li>
+</ul>-->
+
+<div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
+    <div flex-xl="85" flex-gt-lg="95" flex="100">
+      <form [ngFormModel]="configForm" (ngSubmit)="onSubmit(configForm.value)">
+        <textarea name="config" id="" cols="30" rows="50" ngControl="config"></textarea>
+        <button md-raised-button class="md-primary" type="submit">Update</button>
+      </form>
+  </div>
+</div>

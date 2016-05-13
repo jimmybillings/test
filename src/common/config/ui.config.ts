@@ -10,7 +10,6 @@ export const config:Reducer<any> = (state = {}, action:Action) => {
     switch (action.type) {
         case 'INITIALIZE':
             return Object.assign({}, state, action.payload);
-
         default:
             return state;
     }
@@ -54,9 +53,9 @@ export class UiConfig {
   /**
    * @returns  The current configuration state.
    */
-  public get(component): Observable<any> {
+  public get(component:string=''): Observable<any> {
     return this.store.select('config').map((config: IuiConfig) => {
-      return config.components[component];
+      return (component === '') ? config : config.components[component];
     });
   }
 }

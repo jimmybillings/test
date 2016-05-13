@@ -1,0 +1,12 @@
+admin-config { 
+  display: block;
+  padding-top:40px;
+  textarea {
+    width:100%;
+    border: 2px solid lightgrey;
+    padding:20px;
+    display: block;
+    unicode-bidi: embed;
+    white-space: pre;
+  }
+}

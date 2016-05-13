@@ -28,13 +28,10 @@ export class AppNav {
   @Output() onOpenSearch = new EventEmitter();
 
   public loggedInState: boolean;
-  public components: Object;
   
   constructor(private _router: Router) {}
   
   ngOnInit(): void {
-    this.components = this.config.components;
-    this.config = this.config.config;
     this.loggedInState = this.currentUser.loggedInState();
   }
 
