@@ -2,6 +2,7 @@ import {Component} from 'angular2/core';
 import {CurrentUser} from '../../../common/models/current-user.model';
 import {AdminService} from '../services/admin.service';
 import {WzList} from '../../../components/wz-list/wz.list.component';
+import {SearchBox} from '../../../components/search-box/search-box.component';
 import {WzForm} from '../../../components/wz-form/wz.form.component';
 import {Pagination} from '../../../components/pagination/pagination.component';
 import {ROUTER_DIRECTIVES, Router, CanReuse, ComponentInstruction, RouteParams} from 'angular2/router';
@@ -12,7 +13,7 @@ import {Subscription} from 'rxjs/Rx';
   selector: 'admin-index',
   templateUrl: 'containers/admin/index/index.html',
   providers: [AdminService],
-  directives: [WzList, Pagination, ROUTER_DIRECTIVES, WzForm]
+  directives: [WzList, Pagination, ROUTER_DIRECTIVES, WzForm, SearchBox]
 })
 
 export class Index implements CanReuse {
@@ -68,11 +69,15 @@ export class Index implements CanReuse {
     let params = this.adminService.buildRouteParams(this.config.pageSize.value, searchTerms);
     this.router.navigate(['/Admin/' + this.currentComponent, params ]);
   }
-
-  public navigateToBaseUrl(event): void {
+  
+  public navigateToBaseUrl(): void {
     this.router.navigate(['/Admin/' + this.currentComponent]);
   }
-
+  
+  public newResource(resource): void {
+    this.router.navigate(['/Admin/New', {resource}]);
+  }
+  
   private getResourceFromUrl(): string {
     return this.router.parent.currentInstruction.component.routeName.toLowerCase();
   }

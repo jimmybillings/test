@@ -70,5 +70,6 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 @import './containers/admin/config/config';
 @import './containers/admin/dashboard/dashboard';
 @import './containers/admin/admin';
+@import './containers/admin/new/new';
 @import './components/wz-list/wz.list';
 @import './components/pagination/pagination';

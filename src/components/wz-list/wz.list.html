@@ -6,8 +6,8 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="#row of items">
-      <td class="md-text-cell" *ngFor="#header of headers">{{ row[header.name] }}</td>
+    <tr *ngFor="#record of items" (click)="showRecord(record)">
+      <td class="md-text-cell" *ngFor="#header of headers">{{ record[header.name] }}</td>
     </tr>
   </tbody>
 </md-data-table >

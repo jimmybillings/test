@@ -33,11 +33,12 @@ export class WzForm {
   public parseOptions(options) {
     return options.split(',');
   }
+  
 
   public radioSelect(field, option) {
     (<Control>this.form.controls[field]).updateValue(option);
   }
-  
+
   public onSubmit(data:any) {
     (this.form.valid) ? this.formSubmit.emit(data) : console.log('error');
   }

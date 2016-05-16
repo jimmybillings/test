@@ -24,4 +24,8 @@ export class WzList {
   public sortBy(attribute: string): void {
     this.sort.emit({'s': attribute, 'd': !this.toggleFlag});
   }
+
+  public showRecord(record: any): void {
+    console.dir(record);
+  }
 }

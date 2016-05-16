@@ -25,7 +25,7 @@ export function main() {
       provideStore({currentUser: currentUser}),
       CurrentUser
     ]);
-    
+
     it('Should have an admin instance',
       inject([TestComponentBuilder], (tcb) => {
         tcb.createAsync(Admin).then((fixture) => {
