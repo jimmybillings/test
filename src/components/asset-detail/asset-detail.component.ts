@@ -1,4 +1,4 @@
-import {Component, Input, ChangeDetectionStrategy} from 'angular2/core';
+import {Component, Input, ChangeDetectionStrategy, HostListener} from 'angular2/core';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {COMMON_DIRECTIVES, NgIf, NgFor } from 'angular2/common';
 import {ROUTER_DIRECTIVES} from 'angular2/router';
@@ -22,9 +22,9 @@ export class AssetDetail {
   @Input() public assetDetail;
   @Input() currentUser;
 
-  // @HostListener('document:scroll', ['$event.target']) onscroll(target) {
-  //    this.showFixedHeader(window.pageYOffset);
-  // }
+  @HostListener('click', ['$event.target']) click(target) {
+     console.log('host listened click');
+  }
   ngOnChanges(changes): void {
     console.log('changes made');
     if (Object.keys(changes.assetDetail.currentValue.common).length > 0) {
@@ -33,8 +33,9 @@ export class AssetDetail {
       this.secondaryMdata = this.assetDetail.secondary[0];
       this.arrayOfKeys = Object.keys(this.secondaryMdata);
       console.log(this.arrayOfKeys);
-      // document.querySelectorAll('.md-tab')[0].click();
     }
+    let assetDetail = <HTMLElement>document.querySelector('asset-detail section.theater');
+    assetDetail.click();
   }
   ngOnInit(): void {
     console.log('init hit');
