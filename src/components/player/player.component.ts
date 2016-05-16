@@ -20,9 +20,12 @@ export class Player {
   
   ngOnInit() {
     this.player = new PlayerApi(document.querySelector('iframe#player'), {environment: PlayerEnvironment.PRODUCTION});
+    this.player.load(this.clip, 'tem-r5tHustu');
   }
   
-  ngOnChanges(changes): void {
-    if (changes.clip && changes.clip.currentValue) this.player.load(changes.clip.currentValue, 'tem-r5tHustu');
-  }
+  // ngOnChanges(changes): void {
+  //   console.log(changes.clip.currentValue);
+  //   console.log(changes.clip);
+  //   if (changes.clip && changes.clip.currentValue) this.player.load(changes.clip.currentValue, 'tem-r5tHustu');
+  // }
 }
