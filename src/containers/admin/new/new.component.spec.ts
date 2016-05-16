@@ -17,7 +17,6 @@ import {MockBackend} from 'angular2/http/testing';
 import {ApiConfig} from '../../../common/config/api.config';
 import {New} from './new.component';
 import {UiConfig, config} from '../../../common/config/ui.config';
-// import {Observable} from 'rxjs/Rx';
 import {provideStore} from '@ngrx/store';
 
 export function main() {
@@ -39,7 +38,7 @@ export function main() {
       provideStore({config: config}),
       UiConfig,
       AdminService,
-      New
+      New,
     ]);
 
     it('Should Create instance of New',
@@ -47,6 +46,28 @@ export function main() {
         tcb.createAsync(New).then((fixture) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof New).toBeTruthy();
+        });
+      }));
+
+      it('Should have an onSubmit function that accepts form data and calls the service', inject([New], (component) => {
+        component.resource = 'user';
+        component.currentComponent = 'user';
+        component.siteName = 'core';
+        spyOn(component.adminService, 'postResource').and.callThrough();
+        let formData = {firstName: 'John', lastName: 'Smith', emailAddress: 'johnsmith@email.com', password: 'password'};
+        component.onSubmit(formData);
+        expect(component.adminService.postResource).toHaveBeenCalledWith(formData, 'user');
+      }));
+
+      it('Should have a postResource function that returns an observable', inject([New], (component) => {
+        component.resource = 'user';
+        component.currentComponent = 'user';
+        component.siteName = 'core';
+        let formData = {firstName: 'John', lastName: 'Smith', emailAddress: 'johnsmith@email.com', password: 'password'};
+        spyOn(component.router, 'navigate').and.callThrough();
+        component.adminService.postResource(formData, component.resource).subscribe(data => {
+          expect(data).toBe(formData);
+          expect(component.router.navigate).toHaveBeenCalledWith(['/Admin/User']);
         });
       }));
   });
