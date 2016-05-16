@@ -23,6 +23,7 @@ import { Error } from '../../common/services/error.service';
 
 export class Asset {
   public assetDetail: Observable<any>;
+  public assetDetailDisplay: Object;
   public config: UiConfig;
   public subscription: any;
   
@@ -36,20 +37,28 @@ export class Asset {
   }
 
   ngOnInit(): void {
-    this.subscription = this.assetDetail.subscribe(data => this.assetDetail = data);
     this.assetService
       .initialize(this.routeParams.get('name'))
       .subscribe(
-        payload => this.assetService.set(payload),
+        (payload) => {
+          this.assetService.set(payload);
+          console.log('nothin yet...');
+          this.subscription = this.assetDetail.subscribe(data => this.assetDetailDisplay = data);
+        },
         error => this.error.handle(error)  
       );
   }
-
+  // ngOnInit(): void {
+  //   this.subscription = this.assetDetail.subscribe(data => this.assetDetail = data);
+  //   this.assetService
+  //     .initialize(this.routeParams.get('name'))
+  //     .subscribe(
+  //       payload => this.assetService.set(payload),
+  //       error => this.error.handle(error)  
+  //     );
+  // }
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();
     this.assetService.reset();
   }
-  
-  
-
 }

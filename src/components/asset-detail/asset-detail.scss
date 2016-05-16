@@ -217,7 +217,7 @@ section.preview-bk {
   border-top: 1px solid rgba(md-color($md-background, 400),.5);
   display: table;
   min-width: 100%;
-  margin-top: rem(1.2);
+  margin-top: rem(4.0);
   &:first-child {
     margin-top: 0;
   }
@@ -270,32 +270,33 @@ section.preview-bk {
 
 
 
-header.app-header + div.main-content asset section.preview-bk.theater {
-  @include transition(padding-top 0.35s, height 0.35s, $swift-ease-in-out-timing-function);
-  padding-top: rem(23.8);
-  height: rem(80.2);
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    border-top-width: rem(22.4);
-  }
-}
-header.app-header.bin-tray-closed + div.main-content asset section.preview-bk.theater {
-  padding-top: rem(18.2);
-  height: rem(74.6);
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    padding-top: rem(16.8);
-  }
-}
-header.app-header.bin-tray-closed.search-closed + div.main-content asset section.preview-bk.theater {
-  padding-top: rem(13.6);
-  height: rem(70);
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    padding-top: rem(12.8);
-  }
-}
-header.app-header.search-closed + div.main-content asset section.preview-bk.theater {
-  padding-top: rem(19.2);
-  height: rem(75.6);
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    padding-top: rem(18.4);
-  }
-}
+
+// header.app-header + div.main-content asset section.preview-bk.theater {
+//   @include transition(padding-top 0.35s, height 0.35s, $swift-ease-in-out-timing-function);
+//   padding-top: rem(23.8);
+//   height: rem(80.2);
+//   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+//     border-top-width: rem(22.4);
+//   }
+// }
+// header.app-header.bin-tray-closed + div.main-content asset section.preview-bk.theater {
+//   padding-top: rem(18.2);
+//   height: rem(74.6);
+//   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+//     padding-top: rem(16.8);
+//   }
+// }
+// header.app-header.bin-tray-closed.search-closed + div.main-content asset section.preview-bk.theater {
+//   padding-top: rem(13.6);
+//   height: rem(70);
+//   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+//     padding-top: rem(12.8);
+//   }
+// }
+// header.app-header.search-closed + div.main-content asset section.preview-bk.theater {
+//   padding-top: rem(19.2);
+//   height: rem(75.6);
+//   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+//     padding-top: rem(18.4);
+//   }
+// }

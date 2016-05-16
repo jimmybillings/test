@@ -64,6 +64,7 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 @import './components/asset-list/asset-list';
 @import './containers/search/search';
 @import './containers/content/content';
+@import './containers/asset/asset';
 @import './components/asset-detail/asset-detail';
 @import './containers/admin/index/index';
 @import './containers/admin/config/config';

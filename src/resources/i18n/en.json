@@ -47,6 +47,10 @@
     }
   },
   "ASSETMETADATA": {
+    "META_DATA": "Meta Data",
+    "RELATED": "Related",
+    "RIGHTS_AND_CLEARANCES":"Rights and Clearances",
+    
     "DESCRIPTION_DATE": "Date",
     "DESCRIPTION_LOCATION": "Location",
     "DESCRIPTION_EVENT": "Event",

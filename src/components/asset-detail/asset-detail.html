@@ -1,17 +1,13 @@
-
 <!-- there probably should be some kind of toggle for theater mode (dark background where preview is VS light)-->
 <section layout="row" flex="" layout-align="center stretch" class="preview-bk theater">
   <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center stretch" layout-fill="">
-    <player [clip]="assetDetail.common[5]?.value" flex-gt-sm="66" flex="100" layout="column" layout-fill="" class="responsive-video"></player>
+    <!--<player [clip]="assetDetail.common[5].value" flex-gt-sm="66" flex="100" layout="column" layout-fill="" class="responsive-video"></player>-->
     <div flex-gt-sm="33" flex="100" layout="column" layout-fill="">
       <!-- .some-class(style="background-color: red", flex='', layout='column',layout-fill='')-->
       <!--   h5 Parent layout is set to fill available space.-->
       <!-- asset-primary-info component-->
       <!-- div.primary-info-wrapper(flex='', layout='column',layout-fill='')-->
       <md-card flex="" layout="column" layout-fill="" class="primary-info">
-        <!--<div *ngFor='#data of assetDetail.primary; #i=index'>
-          <span>{{data.name}} : </span><span> {{data.value}}</span>
-        </div>-->
         <md-toolbar layout-align="center end">
           <span flex="">
             <nav class="md-toolbar-tools">
@@ -23,19 +19,18 @@
           </span>
         </md-toolbar>
         <md-card-content>
-          <div flex="" layout="column" class="asset-name md-caption">{{assetDetail.primary[1]?.value}}</div>
+          <div flex="" layout="column" class="asset-name md-caption">{{assetDetail.common[5].value}}</div>
           <div layout="row" layout-wrap="">
-            <div 
-              [ngClass]="{hd: assetDetail.primary[2]?.value == 'High Definition', sd: assetDetail.primary[2]?.value == 'Standard Definition'}" 
-              class="sd-hd" *ngIf='assetDetail.primary[2]?.value != null'>
+            <div [ngClass]="{hd: assetDetail.primary[2].value == 'High Definition', sd: assetDetail.primary[2].value == 'Standard Definition'}"
+              class="sd-hd" *ngIf='assetDetail.primary[2].value != null'>
             </div>
-            <div flex="" class="rights md-caption">{{assetDetail.primary[3]?.value}}</div>
+            <div flex="" class="rights md-caption">{{assetDetail.primary[3].value}}</div>
           </div>
-          <div layout="row" layout-wrap="" *ngIf='assetDetail.primary[4]?.value != null'>
-            <div flex="" class="restriction-banner">{{assetDetail.primary[4]?.value}}</div>
+          <div layout="row" layout-wrap="" *ngIf='assetDetail.primary[4].value != null'>
+            <div flex="" class="restriction-banner">{{assetDetail.primary[4].value}}</div>
           </div>
-          <h4 class="title-txt" *ngIf="assetDetail.primary[5]?.value != null">{{assetDetail.primary[5]?.value}}</h4>
-          <h5 class="description-txt md-subhead">{{assetDetail.primary[6]?.value}}</h5>
+          <h4 class="title-txt" *ngIf="assetDetail.primary[5].value != null">{{assetDetail.primary[5].value}}</h4>
+          <h5 class="description-txt md-subhead">{{assetDetail.primary[6].value}}</h5>
           <md-card-actions layout="column" layout-align="center center" layout-wrap="">
             <md-button md-raised-button="" (click)="someFunction()" class="md-raised md-primary md-hue-7">Add to Cart</md-button>
             <md-button md-button="" (click)="someFunction()" class="is-outlined">Calculate Price</md-button>
@@ -46,15 +41,76 @@
   </div>
 </section>
 
-<section class="data-bk">
+
+
+  
+<!--<section class="data-bk">
   <div layout="row" md-scroll-y="" layout-align="center start">
     <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center start">
-      <md-tabs md-dynamic-height="" md-border-bottom="">
+      <div *ngFor='#key of arrayOfKeys'>
+        <h3>{{secondaryMdata[key].name}}</h3>
+          <div *ngFor='#sData of secondaryMdata[key].data; #i=index'>
+            <div *ngFor='#m of sData.event'>
+              {{translationReady(m.name) | uppercase | translate}}  :  {{m.value}}
+            </div>
+            <div *ngFor='#m of sData.format'>
+              {{translationReady(m.name) | uppercase | translate}}  :  {{m.value}}
+            </div>
+            <div *ngFor='#m of sData.audio'>
+              {{translationReady(m.name) | uppercase | translate}}  :  {{m.value}}
+            </div>
+          </div>
+          <div *ngFor='#sData of secondaryMdata[key].data; #i=index'>
+            <div *ngFor='#m of sData.keywords'>
+              {{translationReady(m.name) | uppercase | translate}}  :  {{m.value}}
+            </div>
+          </div>
+          <div *ngFor='#sData of secondaryMdata[key].data; #i=index'>
+            <div *ngFor='#m of sData.rights'>
+              {{translationReady(m.name) | uppercase | translate}}  :  {{m.value}}
+            </div>
+            <div *ngFor='#m of sData.clearance'>
+              {{translationReady(m.name) | uppercase | translate}}  :  {{m.value}}
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>-->
 
-        <template md-tab="" label="meta data">
+
+<section class="data-bk"> 
+  <div layout="row" md-scroll-y="" layout-align="center start">
+    <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center start">
+      <md-tabs md-dynamic-height="" md-border-bottom="" md-autoselect>
+        <template md-tab label="meta data" *ngFor='#key of arrayOfKeys' [label]="translationReady(secondaryMdata[key].name) | uppercase | translate">
+          <md-content class="md-padding">
+            <div class="m-data" *ngFor='#sData of secondaryMdata[key].data; #i=index'>
+              <div class="row" *ngFor='#m of sData.section'>
+                <div class="cell">
+                  <h5 class="md-subhead">{{translationReady(m.name) | uppercase | translate}}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{m.value}}</p>
+                </div>
+              </div>
+          </div>
+        </md-content>
+      </template>
+      </md-tabs>
+    </div>
+  </div>
+</section>
+      
+  
+<!--<section class="data-bk">
+  <div layout="row" md-scroll-y="" layout-align="center start">
+    <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center start">
+      <md-tabs md-dynamic-height="" md-border-bottom="" md-autoselect>
+        <template md-tab label="meta data">
           <md-content class="md-padding">
             <div class="m-data">
-              <div class="row" *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[0]?.event; #i=index'>
+              <div class="row" *ngFor='#mdata of secondaryMdata.metaData.data[0].event; #i=index'>
                 <div class="cell">
                   <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
                 </div>
@@ -66,7 +122,7 @@
                 <div class="cell"></div>
                 <div class="cell"></div>
               </div>
-              <div class="row" *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[1]?.format; #i=index'>
+              <div class="row" *ngFor='#mdata of secondaryMdata.metaData.data[1].format; #i=index'>
                 <div class="cell">
                   <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
                 </div>
@@ -78,7 +134,7 @@
                 <div class="cell"></div>
                 <div class="cell"></div>
               </div>
-              <div class="row" *ngFor= '#mdata of assetDetail.secondary[0]?.metaData.data[2]?.audio; #i=index'>
+              <div class="row" *ngFor= '#mdata of secondaryMdata.metaData.data[2].audio; #i=index'>
                 <div class="cell">
                   <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
                 </div>
@@ -96,7 +152,7 @@
         <template md-tab="" label="Related">
           <md-content class="md-padding">
             <div class="m-data">
-              <div class="row" *ngFor='#mdata of assetDetail.secondary[0]?.related.data[0]?.keywords; #i=index'>
+              <div class="row" *ngFor='#mdata of secondaryMdata.related.data[0].keywords; #i=index'>
                 <div class="cell">
                   <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
                 </div>
@@ -114,7 +170,7 @@
         <template md-tab="" label="Rights and Clearances">
           <md-content class="md-padding">
             <div class="m-data">
-              <div class="row" *ngFor='#mdata of assetDetail.secondary[0]?.licensing.data[0]?.rights; #i=index'>
+              <div class="row" *ngFor='#mdata of secondaryMdata.licensing.data[0].rights; #i=index'>
                 <div class="cell">
                   <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
                 </div>
@@ -128,7 +184,7 @@
                 <div class="cell"></div>
               </div>
               
-              <div class="row" *ngFor= '#mdata of assetDetail.secondary[0]?.licensing.data[1]?.clearance; #i=index'>
+              <div class="row" *ngFor= '#mdata of secondaryMdata.licensing.data[1].clearance; #i=index'>
                 <div class="cell">
                   <h5 class="md-subhead">{{translationReady(mdata.name) | uppercase | translate}}</h5>
                 </div>
@@ -157,4 +213,4 @@
       </md-tabs>
     </div>
   </div>
-</section>
+</section>-->

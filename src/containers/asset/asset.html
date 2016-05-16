@@ -1,2 +1,3 @@
-
-<asset-detail [currentUser]="currentUser" [assetDetail]="assetDetail"></asset-detail>
+<div *ngIf="assetDetailDisplay">
+  <asset-detail [currentUser]="currentUser" [assetDetail]="assetDetailDisplay"></asset-detail>
+</div>

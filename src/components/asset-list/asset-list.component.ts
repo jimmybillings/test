@@ -18,7 +18,7 @@ export class AssetList {
    
   showAsset(asset): void {
     this.onShowAsset.emit(asset);
-    console.log(asset);
+    // console.log(asset);
   }
   
   public formatType(format): string {

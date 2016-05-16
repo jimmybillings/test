@@ -18,16 +18,27 @@ import {Player} from '../../components/player/player.component';
 
 export class AssetDetail {
   public arrayOfKeys: Array<string>;
+  public secondaryMdata: Object;
   @Input() public assetDetail;
   @Input() currentUser;
-  
-  ngOnChanges(): void {
-    this.arrayOfKeys = Object.keys(this.assetDetail.secondary);
-    // console.log(this.assetDetail);
-    console.log(this.assetDetail.secondary[0]);
-    console.log(this.arrayOfKeys);
+
+  // @HostListener('document:scroll', ['$event.target']) onscroll(target) {
+  //    this.showFixedHeader(window.pageYOffset);
+  // }
+  ngOnChanges(changes): void {
+    console.log('changes made');
+    if (Object.keys(changes.assetDetail.currentValue.common).length > 0) {
+      this.assetDetail = changes.assetDetail.currentValue;
+      console.log(this.assetDetail);
+      this.secondaryMdata = this.assetDetail.secondary[0];
+      this.arrayOfKeys = Object.keys(this.secondaryMdata);
+      console.log(this.arrayOfKeys);
+      // document.querySelectorAll('.md-tab')[0].click();
+    }
   }
-  
+  ngOnInit(): void {
+    console.log('init hit');
+  }
   
   public getMetaField(field) {
     let meta = this.assetDetail.clipData.filter(item => item.name === field)[0];  
