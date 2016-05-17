@@ -45,7 +45,7 @@
   <div layout="row" md-scroll-y="" layout-align="center start">
     <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center start">
       <md-tabs md-dynamic-height="" md-border-bottom="">
-        <template md-tab label="meta data" *ngFor='#key of arrayOfKeys' [label]="translationReady(secondaryMdata[key].name) | uppercase | translate">
+        <template md-tab label="meta data" *ngFor='#key of secondaryKeys' [label]="translationReady(secondaryMdata[key].name) | uppercase | translate">
           <md-content class="md-padding">
             <div class="m-data" *ngFor='#sData of secondaryMdata[key].data; #i=index'>
               <div class="row" *ngFor='#m of sData.section'>

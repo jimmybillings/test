@@ -17,7 +17,7 @@ import {Player} from '../../components/player/player.component';
 })
 
 export class AssetDetail {
-  public arrayOfKeys: Array<string>;
+  public secondaryKeys: Array<string>;
   public secondaryMdata: Object;
   @Input() public assetDetail;
   @Input() currentUser;
@@ -31,19 +31,22 @@ export class AssetDetail {
       this.assetDetail = changes.assetDetail.currentValue;
       console.log(this.assetDetail);
       this.secondaryMdata = this.assetDetail.secondary[0];
-      this.arrayOfKeys = Object.keys(this.secondaryMdata);
-      console.log(this.arrayOfKeys);
+      this.secondaryKeys = Object.keys(this.secondaryMdata);
     }
-    let assetDetail = <HTMLElement>document.querySelector('asset-detail section.theater');
-    assetDetail.click();
   }
   ngOnInit(): void {
     console.log('init hit');
+    this.showMetaData(); //this doesn't work.
   }
   
   public getMetaField(field) {
     let meta = this.assetDetail.clipData.filter(item => item.name === field)[0];  
     if (meta) return meta.value;
+  }
+  
+  public showMetaData() {
+    let assetDetail = <HTMLElement>document.querySelector('asset-detail section.theater');
+    assetDetail.click();
   }
   
   public translationReady(field) {

@@ -42,7 +42,6 @@ export class Asset {
       .subscribe(
         (payload) => {
           this.assetService.set(payload);
-          console.log('nothin yet...');
           this.subscription = this.assetDetail.subscribe(data => this.assetDetailDisplay = data);
         },
         error => this.error.handle(error)  
