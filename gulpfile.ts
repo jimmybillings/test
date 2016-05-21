@@ -70,7 +70,7 @@ gulp.task('build.library.export', (done: any) =>
 // Build test.
 gulp.task('build.test', (done: any) =>
   runSequence('clean.dev',
-              'tslint',
+              // 'tslint',
               'build.assets.dev',
               'build.js.test',
               'build.index.dev',
