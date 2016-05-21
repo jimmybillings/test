@@ -1,0 +1,29 @@
+
+<ul class="asset-list">
+  <li *ngFor="let asset of assets">
+    <div class="asset">
+      <div class="asset-name">{{asset.name}}</div>
+      <a flex="" (click)="showAsset(asset)" class="asset-thb">
+        <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
+        <span *ngIf="asset.metaData[0]" class="mdata-0"> 
+          <span>{{asset.metaData[0].value}}</span>
+        </span>
+        <span *ngIf="asset.metaData[2]" class="mdata-2"> 
+          <span [ngClass]="formatType(asset.metaData[2].value)" class="sd-hd">{{asset.metaData[2].value}}</span>
+        </span>
+        <span *ngIf="asset.metaData[3]" class="mdata-3"> 
+          <span>{{asset.metaData[3].value}}</span>
+        </span>
+      </a>
+      <section class="actions">
+        <nav class="asset-options" flex layout-align="end stretch">
+          <button md-icon-button title="Sharing Options"><md-icon>shopping_cart</md-icon></button>
+          <button md-icon-button title="Download Comp"><md-icon>file_download</md-icon></button>
+          <button md-icon-button title="Add to Collection"><md-icon>library_add</md-icon></button>
+          <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
+        </nav>
+      </section>
+      <a (click)="showAsset(asset)" class="asset-desc">  <span *ngIf="asset.metaData[1]" class="mdata-1">{{asset.metaData[1].value}}</span></a>
+    </div>
+  </li>
+</ul>

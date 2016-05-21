@@ -1,0 +1,11 @@
+
+<nav flex="100" layout="row" layout-align="end center">
+  <form flex="" [ngFormModel]="form" (ngSubmit)="getPageNumber(form.value.page)">
+    <div flex="" class="text-nav"><span>page</span>
+      <input type="text" ngControl="page"/><span>of </span><span>{{ pagination.numberOfPages }}</span>
+    </div>
+  </form>
+  <button [disabled]="!pagination.hasPreviousPage" md-icon-button title="previous page" (click)="getPageNumber(pagination.currentPage - 1)"><md-icon>keyboard_arrow_left</md-icon></button>
+  <div class="divider"></div>
+  <button [disabled]="!pagination.hasNextPage" md-icon-button title="next page" (click)="getPageNumber(pagination.currentPage + 1)"><md-icon>keyboard_arrow_right</md-icon></button>
+</nav>

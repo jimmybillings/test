@@ -1,0 +1,22 @@
+   
+<section class="login hero" *ngIf="config">
+  <div layout="row" md-scroll-y="" layout-align="center start">
+    <div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
+      <md-card>
+        <md-card-header>
+          <div class="logo-wrapper">
+            <div class="logo"></div>
+          </div>
+        </md-card-header>
+        
+        <md-card-title>        
+          {{ 'REGISTER.TITLE' | translate }}
+        </md-card-title>
+        <md-card-content>
+          <wz-form [items]="config.form.items" submitLabel="REGISTER.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
+        </md-card-content>
+      </md-card>
+      <div md-theme="docs-dark" layout="column" layout-align="center center" layout-wrap=""><span class="md-title">{{'REGISTER.ALREADY_HAVE_ACCOUNT' | translate }} <a md-button="" [routerLink]="['Login']" class="md-accent">{{'REGISTER.LOGIN' | translate }}</a></span></div>
+    </div>
+  </div>
+</section>

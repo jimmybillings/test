@@ -1,0 +1,64 @@
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+@import './assets/styles/normalize';
+
+@import 'node_modules/bourbon/app/assets/stylesheets/bourbon';
+
+@import "node_modules/@angular2-material/core/style/core.scss";
+
+@import 'node_modules/@angular2-material/core/style/palette';
+@import 'node_modules/@angular2-material/core/style/mixins';
+@import 'node_modules/@angular2-material/core/style/variables';
+@import 'node_modules/@angular2-material/core/style/elevation';
+@import 'node_modules/@angular2-material/core/style/theme-functions';
+// @import 'node_modules/@angular2-material/core/style/default-theme';
+
+// change theme colors and any other global variables
+$md-is-dark-theme: false !default;
+$md-button-border-radius: 2px !default;
+
+$md-primary: md-palette($md-blue-grey, 500, 100, 700, $md-contrast-palettes) !default;
+$md-accent: md-palette($md-orange, 500, 300, 800, $md-contrast-palettes) !default;
+$md-background: md-palette($md-grey, 500, 0, 600, $md-contrast-palettes) !default;
+$md-warn: md-palette($md-red, A700, 600, 900, $md-contrast-palettes) !default;
+$md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme-foreground) !default;
+
+
+@import "node_modules/@angular2-material/core/style/core";
+
+// these are not part of ng2material just yet, but are needed
+@import './assets/styles/variables_not_in_ng2';
+@import './assets/styles/mixins_not_in_ng2';
+
+@import './assets/styles/layout.attributes';
+// @import './assets/styles/layouts';
+@import './assets/styles/typography';
+
+
+@import './assets/styles/config';
+@import './assets/styles/animations';
+@import './assets/styles/font-awesome/font-awesome';
+@import './assets/styles/text_contrast';
+@import './assets/styles/modifiers';
+@import './assets/styles/sticky_footer';
+
+@import './app/+home/home';
+@import './app/shared/components/app-nav/app-nav';
+@import './app/shared/components/footer/footer';
+@import './app/shared/components/search-box/search-box';
+@import './app/shared/components/bin-tray/bin-tray';
+@import './app/+user-management/+login/login';
+@import './app/shared/components/asset-list/asset-list';
+@import './app/+search/search';
+@import './app/+content/content';
+@import './app/+asset/asset';
+@import './app/shared/components/asset-detail/asset-detail';
+
+@import './app/+admin/+index/index';
+@import './app/+admin/+config/config';
+@import './app/+admin/+dashboard/dashboard';
+@import './app/+admin/admin';
+@import './app/+admin/+new/new';
+
+@import './app/shared/components/wz-list/wz.list';
+@import './app/shared/components/pagination/pagination';

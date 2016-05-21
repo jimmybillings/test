@@ -1,0 +1,14 @@
+header.app-header + div.main-content admin {
+  display:flex;
+  @include transition(border-top-width 0.35s, $swift-ease-in-out-timing-function);
+  border-top: rem(16.6) solid md-color($md-background, 900, .7);
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    border-top-width: rem(15.2);
+  }
+}
+header.app-header + div.main-content admin {
+  border-top-width: rem(6.4);
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    border-top-width: rem(5.6);
+  }
+}

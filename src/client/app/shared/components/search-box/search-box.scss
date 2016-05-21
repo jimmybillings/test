@@ -1,0 +1,224 @@
+search-box {
+  width: 100%;
+  margin: 20px 0 0 0;
+  position: relative;
+  overflow: hidden;
+  input {
+    font-size: 1.2em;
+    width: calc(100% - 46px);
+    padding: 0 0 0 3%;
+    max-height: rem(4.6);
+    min-height: rem(4.6);
+    border: none;
+    color: rgba(md-color($md-background, 900), .7);
+    background-color:  md-color($md-background, 100, .9);
+    @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
+    border-radius: 0;
+    &:focus {
+      outline: none;
+      background-color: lighten(md-color($md-background, 100), 40%);
+    }
+  }
+  button[type="submit"] {
+    cursor: pointer;
+    font-size: 0;
+    border: none; 
+    background-color: md-color($md-accent, 800, .95);
+    @include transition($swift-ease-in);
+    md-icon.material-icons {
+      font-size: rem(3.4);
+      width: rem(3.4);
+      height: rem(3.4);
+      @include text-contrast(md-color($md-background, 900));
+      text-shadow: md-color($md-background, 900, .2) 0 1px 2px;
+    }
+    &:hover {
+      background-color: md-color($md-accent, 700, 1);
+    }
+    &[disabled] {
+      cursor: default;
+      background-color: md-color($md-accent, 800, .95);
+      md-icon.material-icons {
+        opacity: .6;
+       }
+    }
+  }
+  button.close {
+   display: none; 
+  }
+  select:empty {
+    display: none;
+  }
+  ul.auto-complete {
+    opacity: 1;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: calc(100% - 46px);
+    background-color: md-color($md-background, 50, .95);
+    @include text-contrast(md-color($md-background, 100));
+    max-height: rem(30);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    @include transition(all .6s $swift-ease-in-out-timing-function);
+    @include md-elevation(2);
+    &:empty, &:blank, &.empty {
+      max-height: 0;
+      opacity: 0;
+      display: none;
+      overflow-y: hidden;
+    }
+    li {
+      background-color: transparent;
+      margin: 0; 
+      padding: 0; 
+      display: flex;
+      position: relative;
+      button {
+        background-color: md-color($md-background, 100, .96);
+        @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
+        text-align: left;
+        width: 100%;
+        padding: rem(.8);
+        padding-left: rem(1.2);
+        padding-right: rem(4.5);
+        border-width: 0;
+        span {
+          background-color: md-color($md-background, 900, .3);
+          @include text-contrast(md-color($md-primary, 900));
+          padding: 3px 6px;
+          font-size: .83em;
+          line-height: 1;
+          display: inline-block;
+          margin-left: 0;
+          position: absolute;
+          right: rem(1.5);
+          bottom: 25%;
+        }
+        &:focus {
+          color: md-color($md-primary, 500);
+          outline: none;
+          background-color: md-color($md-background, 300, .7);
+          // box-shadow: 
+          //   inset 0 .7px 0 0 md-color($md-background, 700, .1),
+          //   inset 0 -.7px 0 0 md-color($md-background, 700, .1);
+          &::after {
+            @include text-contrast(md-color($md-background, 100));
+            position: absolute;
+            content: "\e037";
+            font-family: 'Material Icons';
+            font-size: rem(2.4);
+            opacity: 0    ;
+            position: absolute;
+            right: rem(.2);
+            bottom: 16%;
+          }
+        }
+      }
+    }
+  }
+}
+
+// search-box ul.auto-complete:empty, search-box ul.auto-complete:blank, search-box ul.auto-complete.empty {
+//   max-height: 0;
+//   opacity: 0;
+//   display: none;
+//   overflow-y: hidden;
+// }
+
+// search box in the header
+header.app-header {
+  search-box {
+    form {
+      background-color: md-color($md-background, 100);
+    }
+    margin: 0;
+    input {
+      width: calc(100% - 78px);
+      font-size: 1.24em;
+    }
+    button[type="submit"] {
+      background-color: md-color($md-primary, 700, .45);
+      md-icon.material-icons {
+        font-size: rem(3.3);
+        text-shadow: none;
+      }
+    }
+    ul.auto-complete {
+      width: 100%;
+      li button {
+        padding-right: rem(10.0);
+        padding-left: rem(4.4);
+        span {
+          right: rem(3.4);
+        }
+        &:focus::after {
+          right: rem(1.0);
+        }
+      }
+    }
+  }
+  button.close {
+    display: block;
+    margin: 0;
+    height: auto;
+    width: rem(3.4);
+    min-width: rem(3.4);
+    padding: 0;
+    border-radius: 0;
+    font-size: 0;
+    line-height: 0;
+    border: none;
+    md-icon.material-icons {
+      font-size: rem(2.3);
+      line-height: .5;
+      @include text-contrast(md-color($md-background, 50));
+      opacity: .5;
+    }
+  }
+  button:focus {
+    outline: none;
+  }
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    search-box {
+      input {
+        width: calc(100% - 70px);
+        max-height: rem(4);
+        min-height: rem(4);
+        font-size: 1em;
+      }
+      button[type="submit"] {
+        md-icon.material-icons {
+          font-size: rem(2.8);
+        }
+      }
+    }
+  }
+}
+header.app-header.fixed {
+  search-box {
+    form {
+      box-shadow: inset 0 1px 0 0 md-color($md-background, 800, .1);
+      background-color: transparent;
+    }
+    input {
+      background-color: transparent;
+    }
+    button[type="submit"] md-icon.material-icons {
+      @include text-contrast(md-color($md-primary, 700), md-color($md-background, 700), md-color($md-background, 100));
+    }
+  }
+}
+header.app-header.search-closed search-box {
+  input {
+    max-height: 0;
+    min-height: 0;
+  }
+  button, button.close {
+    max-height: 0;
+    min-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}

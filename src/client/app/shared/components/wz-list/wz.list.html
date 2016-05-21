@@ -1,0 +1,13 @@
+
+<table  layout-fill="">
+  <thead>
+    <tr>
+      <th class="md-text-cell" *ngFor="let header of headers" (click)="sortBy(header.name)">{{ header.label }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let record of items" (click)="showRecord(record)">
+      <td class="md-text-cell" *ngFor="let header of headers">{{ record[header.name] }}</td>
+    </tr>
+  </tbody>
+</table>

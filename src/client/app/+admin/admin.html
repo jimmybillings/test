@@ -1,0 +1,10 @@
+
+<div flex>
+  <md-toolbar>
+    <a md-button [routerLink]="['dashboard']" title="Dashboard">Dashboard</a>
+    <a md-button [routerLink]="['resource/account']" title="Accounts">Accounts</a>
+    <a md-button [routerLink]="['resource/user']" title="Users">Users</a>
+    <a md-button [routerLink]="['config']" title="Edit Config">Edit Config</a>
+  </md-toolbar>
+  <router-outlet></router-outlet>
+</div>

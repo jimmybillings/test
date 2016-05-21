@@ -1,0 +1,32 @@
+
+<section class="search-results" *ngIf="config">
+  <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
+    <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
+      <div layout="row" layout-align="end end" class="pagination md-body-2"> 
+        <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
+        <pagination [pagination]="assets.pagination" [currentPage]="routeSegment.getParam('i') || 1" (getPage)="changePage($event)"></pagination>
+      </div>
+      <div layout="column">       
+        <asset-list [assets]="assets.items" [currentUser]="currentUser" (onShowAsset)="showAsset($event)" class="{{config.viewType.value}}">       </asset-list>
+        <h1 *ngIf="!assets.items" class="md-display-1 alert warning">No items can be found for that search</h1>
+      </div>
+      <div layout="row" layout-align="end end" class="pagination md-body-2 pg-bottom"> 
+        <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
+        <pagination [pagination]="assets.pagination" [currentPage]="routeSegment.getParam('i') || 0" (getPage)="changePage($event)"></pagination>
+      </div>
+    </div>
+    <div flex-xl="70" flex-gt-lg="80" flex="100" *ngIf="config.viewType.value == 'list'">
+      <div layout="row" layout-align="end end" class="pagination md-body-2"> 
+        <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
+        <pagination [pagination]="assets.pagination" [currentPage]="routeSegment.getParam('i') || 0" (getPage)="changePage($event)"></pagination>
+      </div>
+      <div layout="row">
+        <asset-list [assets]="assets.items" class="{{config.viewType.value}}"></asset-list>
+      </div>
+      <div layout="row" layout-align="end end" class="pagination md-body-2 pg-bottom"> 
+        <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
+        <div *ngIf="!assets.items" class="alert warning">No items can be found for that search</div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,41 @@
+
+<div layout="row" layout-align="start center" class="glb">
+  <div flex=""></div>
+  <div flex-xl="85" flex-gt-lg="95" flex="100" layout="row" layout-wrap="" layout-padding="">
+    <div hide="" show-gt-md="" flex-gt-md="25" flex="100" layout="column" layout-align="start center" layout-align-gt-md="start start"><a [routerLink]="['Home']" class="logo-wrapper">
+        <div class="logo"></div></a></div>
+    <div flex-gt-md="25" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start">
+      <h3 class="md-title">{{'FOOTER.OFFICE' | translate }}</h3>
+      <p class="md-body-1">1515 Arapahoe Street Tower 3, Suite 400 <br/>Denver, CO 80202</p>
+    </div>
+    <div flex-gt-md="25" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start" class="sales">
+      <h3 class="md-title">{{'FOOTER.SALES' | translate }}</h3>
+      <md-list>
+        <md-list-item><a md-button href="mailto:platformsales@wazeedigital.com">
+            <p class="email-icon md-body-1">platformsales@wazeedigital.com<md-icon>mail</md-icon></p></a></md-list-item>
+        <md-list-item>
+          <div md-button class="phone">
+            <p class="phone-icon md-body-1">866-815-6599<md-icon>phone_iphone</md-icon></p>
+          </div>
+        </md-list-item>
+      </md-list>
+    </div>
+    <div flex-gt-md="25" flex="100" layout="column" layout-align="start center" layout-align-gt-md="start start">
+      <h3 class="md-title">{{'FOOTER.COMMUNITY' | translate }}</h3>
+      <ul class="social">
+        <li><a href="https://www.facebook.com/WazeeDigital" target="_blank" class="facebook"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-facebook fa-stack-1x fa-inverse"></i></span></a></li>
+        <li><a href="https://twitter.com/wazee_digital" target="_blank" class="twitter"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li>
+        <li><a href="https://plus.google.com/114252139629653219287/about" target="_blank" class="google-plus"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-google-plus fa-stack-1x fa-inverse"></i></span></a></li>
+        <li><a href="https://www.linkedin.com/company/wazeedigital?trk=top_nav_home" target="_blank" class="linkedin"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li>
+        <li><a href="https://www.youtube.com/user/thoughtequity" target="_blank" class="youtube"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-youtube fa-stack-1x fa-inverse"></i></span></a></li>
+      </ul>
+      <form [ngFormModel]="langForm" class="language-selector">
+        <label for="lang"><i md-icons="" class="material-icons">language</i></label>
+        <select id="lang" ngControl="lang" (change)="changeLang(langForm.value)">
+          <option *ngFor="let l of supportedLanguages" [value]="l.code">{{l.title}}</option>
+        </select>
+      </form>
+    </div>
+  </div>
+  <div flex=""></div>
+</div>

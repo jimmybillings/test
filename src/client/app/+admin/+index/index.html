@@ -1,0 +1,32 @@
+
+<section class="admin-index" *ngIf="config">
+  <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
+    <div flex="95" flex-gt-lg="95" flex-xl="95">
+      <a md-button [routerLink]="['new']">New {{currentComponent}}</a>
+      <a disabled="true" md-button="" [routerLink]="['/']">Export Current {{currentComponent}}s</a>
+      <a disabled="true" md-button="" [routerLink]="['/']">Export All {{currentComponent}}s</a>
+    </div>
+  </div>
+  <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
+    <div flex="95" flex-gt-lg="95" flex-xl="95">
+      <div layout="row" layout-align="space-around stretch">
+        <div flex-xl="70" flex-gt-lg="70" flex-gt-md="70" flex="70" class="account-table">
+          <wz-list [items]="currentUserResources.items" [headers]="config.tableHeaders.items" [toggleFlag]="toggleFlag" (sort)="navigateToSortUrl($event)"></wz-list>
+          <div layout="row" layout-align="end center">
+            <pagination (getPage)="navigateToPageUrl($event)" [currentPage]="routeSegment.getParam('i') || 1" [pagination]="currentUserResources.pagination"></pagination>
+          </div>
+        </div>
+        <div flex-xl="25" flex-gt-lg="25" flex-gt-md="25" flex="25" class="admin-filter">
+          <md-card>
+            <md-card-title>
+              search
+            </md-card-title>
+            <md-card-content>
+              <wz-form [items]="config.searchForm.items" submitLabel="Find" (formSubmit)="navigateToFilterUrl($event)"></wz-form>
+            </md-card-content>
+          </md-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

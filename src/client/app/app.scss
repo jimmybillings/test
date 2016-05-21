@@ -1,0 +1,75 @@
+// @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+// @import '../node_modules/bourbon/app/assets/stylesheets/bourbon';
+
+// // $md-font-url: '/node_modules/ng2-material/dist/';
+// $md-font-url: '/resources/fonts/';
+// @import '../node_modules/ng2-material/font/font.scss';
+
+// @import '../node_modules/ng2-material/source/core/style/variables';
+// @import '../node_modules/ng2-material/source/core/style/mixins';
+// @import '../node_modules/ng2-material/source/core/style/shadows';
+// @import '../node_modules/ng2-material/source/core/style/structure';
+// @import '../node_modules/ng2-material/source/core/style/typography';
+// @import '../node_modules/ng2-material/source/core/style/layout';
+// @import '../node_modules/ng2-material/source/core/style/palette';
+// @import '../node_modules/ng2-material/source/core/style/theme-functions';
+
+// // change theme colors and any other global variables
+// $md-is-dark-theme: false !default;
+// $md-button-border-radius: 2px !default;
+
+// $md-primary: md-palette($md-blue-grey, 500, 100, 700, $md-contrast-palettes) !default;
+// $md-accent: md-palette($md-orange, 500, 300, 800, $md-contrast-palettes) !default;
+// $md-background: md-palette($md-grey, 500, 0, 600, $md-contrast-palettes) !default;
+// $md-warn: md-palette($md-red, A700, 600, 900, $md-contrast-palettes) !default;
+// $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme-foreground) !default;
+
+// @import '../node_modules/ng2-material/source/components/backdrop/backdrop';
+// @import '../node_modules/ng2-material/source/components/button/button';
+// @import '../node_modules/ng2-material/source/components/card/card';
+// @import '../node_modules/ng2-material/source/components/content/content';
+// @import '../node_modules/ng2-material/source/components/checkbox/checkbox';
+// @import '../node_modules/ng2-material/source/components/dialog/dialog';
+// @import '../node_modules/ng2-material/source/components/divider/divider';
+// @import '../node_modules/ng2-material/source/components/icon/icon';
+// @import '../node_modules/ng2-material/source/components/input/input';
+// @import '../node_modules/ng2-material/source/components/list/list';
+// @import '../node_modules/ng2-material/source/components/form/messages';
+// @import '../node_modules/ng2-material/source/components/peekaboo/peekaboo';
+// @import '../node_modules/ng2-material/source/components/progress_circular/progress_circular';
+// @import '../node_modules/ng2-material/source/components/progress_linear/progress_linear';
+// @import '../node_modules/ng2-material/source/components/radio/radio_button';
+// @import '../node_modules/ng2-material/source/components/radio/radio_group';
+// @import '../node_modules/ng2-material/source/components/sidenav/sidenav';
+// @import '../node_modules/ng2-material/source/components/subheader/subheader';
+// @import '../node_modules/ng2-material/source/components/switcher/switch';
+// @import '../node_modules/ng2-material/source/components/toolbar/toolbar';
+// @import '../node_modules/ng2-material/source/components/tabs/tabs';
+// @import "../node_modules/ng2-material/source/components/data_table/data_table";
+
+// @import './resources/styles/config';
+// @import './resources/styles/animations';
+// @import './resources/styles/font-awesome/font-awesome';
+// @import './resources/styles/text_contrast';
+// @import './resources/styles/modifiers';
+// @import './resources/styles/sticky_footer';
+
+
+// @import './containers/home/home';
+// @import './components/app-nav/app-nav';
+// @import './components/footer/footer';
+// @import './components/search-box/search-box';
+// @import './components/bin-tray/bin-tray';
+// @import './containers/user-management/login/login';
+// @import './components/asset-list/asset-list';
+// @import './containers/search/search';
+// @import './containers/content/content';
+// @import './containers/asset/asset';
+// @import './components/asset-detail/asset-detail';
+// @import './containers/admin/index/index';
+// @import './containers/admin/config/config';
+// @import './containers/admin/dashboard/dashboard';
+// @import './containers/admin/admin';
+// @import './containers/admin/new/new';
+// @import './components/wz-list/wz.list';
+// @import './components/pagination/pagination';
