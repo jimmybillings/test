@@ -12,7 +12,7 @@
     "build.prod": "npm test && gulp build.prod --color",
     "build.test": "gulp build.test --color",
     "build.test.watch": "gulp build.test.watch --color",
-    "build.library.export": "gulp build.library.export --env library",
+    "build.library": "gulp build.library.export --env library",
     "generate.manifest": "gulp generate.manifest --color",
     "e2e": "protractor",
     "e2e.live": "protractor --elementExplorer",
