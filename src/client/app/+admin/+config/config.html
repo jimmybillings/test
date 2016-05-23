@@ -1,9 +1,15 @@
 
 <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="" *ngIf="config">
-    <div flex-xl="85" flex-gt-lg="95" flex="100">
-      <form [ngFormModel]="configForm" (ngSubmit)="onSubmit(configForm.value)">
+      <!-- <form [ngFormModel]="configForm" (ngSubmit)="onSubmit(configForm.value)">
         <textarea name="config" id="" cols="30" rows="50" ngControl="config"></textarea>
         <button md-raised-button class="md-primary" type="submit">Update</button>
-      </form>
+      </form> -->
+  <div flex-xl="40" flex-gt-lg="45" flex="50">
+    <h3>Ui Config</h3>
+    <wz-list [items]="uiItems" [headers]="headers"></wz-list>
+  </div>
+  <div flex-xl="40" flex-gt-lg="45" flex="50">
+    <h3>Site Config</h3>
+    <wz-list [items]="siteItems" [headers]="headers"></wz-list>
   </div>
 </div>
