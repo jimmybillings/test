@@ -6,7 +6,7 @@ section.login.hero {
   padding-top: 74px;
   @include text-contrast(md-color($md-background, 900));
   @include background-image(
-    url("assets/img/bk/tex/bktx_dgl_lines_light.png"),
+    url("../assets/img/bk/tex/bktx_dgl_lines_light.png"),
     linear-gradient(md-color($md-background, 900, .7), md-color($md-background, 900, .94)),
     url($bk-img-user-management)
   );

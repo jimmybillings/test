@@ -37,7 +37,7 @@ section.preview-bk {
       width: 100%;
       height:100%;
       @include background-image(
-        url("assets/img/bk/tex/bktx_dgl_lines_light.png")
+        url("../assets/img/bk/tex/bktx_dgl_lines_light.png")
       );
       opacity: .6;
       z-index: 1;

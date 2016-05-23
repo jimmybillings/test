@@ -97,7 +97,7 @@ home {
   $height: 183px;
 
   .vendor-marquee {
-    background: md-color($md-background, 200, .8) url('assets/img/bk/tex/bktx_contour_lines_light.png');
+    background: md-color($md-background, 200, .8) url('../assets/img/bk/tex/bktx_contour_lines_light.png');
     position: relative;
     width: 100%;
     overflow: hidden;
@@ -176,22 +176,22 @@ home {
       &:nth-child(1n) .mrkt-collections__highlight_img {
         height: 100%;
         width: 100%;
-        @include background-image(url('assets/img/highlights/dimoc.jpg'));
+        @include background-image(url('../assets/img/highlights/dimoc.jpg'));
       }
       &:nth-child(2n) .mrkt-collections__highlight_img{
-        @include background-image(url('assets/img/highlights/ncaa_basketball.jpg'));
+        @include background-image(url('../assets/img/highlights/ncaa_basketball.jpg'));
       }
       &:nth-child(3n) .mrkt-collections__highlight_img{
-        @include background-image(url('assets/img/highlights/jfk_historic.jpg'));
+        @include background-image(url('../assets/img/highlights/jfk_historic.jpg'));
       }
       &:nth-child(4n) .mrkt-collections__highlight_img{
-        @include background-image(url('assets/img/highlights/masters_js.jpg'));
+        @include background-image(url('../assets/img/highlights/masters_js.jpg'));
       }
       &:nth-child(5n) .mrkt-collections__highlight_img{
-        @include background-image(url('assets/img/highlights/nat_geo.jpg'));
+        @include background-image(url('../assets/img/highlights/nat_geo.jpg'));
       }
       &:nth-child(6n) .mrkt-collections__highlight_img{
-        @include background-image(url('assets/img/highlights/us_open.jpg'));
+        @include background-image(url('../assets/img/highlights/us_open.jpg'));
       }
     }
     @media screen and (max-width: $layout-breakpoint-xs) {
@@ -215,7 +215,7 @@ home {
   
   .mrkt-call-to-action {
     min-height: 440px;
-    background:  md-color($md-primary, 700)  url('assets/img/bk/tex/bktx_dgl_lines_light.png');
+    background:  md-color($md-primary, 700)  url('../assets/img/bk/tex/bktx_dgl_lines_light.png');
     @include text-contrast(md-color($md-primary, 700));
     text-align: center;
   }
