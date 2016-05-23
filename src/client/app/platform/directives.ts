@@ -2,7 +2,7 @@
  * These are globally available directives in any template
  */
 
-import { PLATFORM_DIRECTIVES, OpaqueToken } from '@angular/core';
+import { PLATFORM_DIRECTIVES, provide, Provider } from '@angular/core';
 // Angular 2 Router
 // import { ROUTER_DIRECTIVES } from '@angular/router';
 
@@ -17,6 +17,6 @@ export const APPLICATION_DIRECTIVES = [
   ...MATERIAL_DIRECTIVES
 ];
 
-export const DIRECTIVES = [
-  {provide: PLATFORM_DIRECTIVES, multi: true, useValue: APPLICATION_DIRECTIVES }
+export const DIRECTIVES:Provider[] = [
+  provide(PLATFORM_DIRECTIVES, { multi: true, useValue: APPLICATION_DIRECTIVES })
 ];

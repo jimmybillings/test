@@ -8,6 +8,8 @@ import { CurrentUser} from '../shared/services/current-user.model';
 import { UiConfig } from '../shared/services/ui.config';
 import { Error } from '../shared/services/error.service';
 import { AssetService} from '../+asset/services/asset.service';
+import { SearchContext} from '../shared/services/search-context.service';
+import { Authentication} from '../+user-management/services/authentication.data.service';
 
 // WAZEE STORES
 import { assets } from '../+search/services/asset.data.service';
@@ -37,6 +39,8 @@ export const WAZEE_PROVIDERS = [
   UiConfig,
   Error,
   AssetService,
+  SearchContext,
+  Authentication,
   TranslateService,
   MultilingualService,
   provide(TranslateLoader, {
@@ -45,7 +49,7 @@ export const WAZEE_PROVIDERS = [
   }),
 ];
 
-export const WAZEE_STORES = [
+export const WAZEE_STORES:Provider[][] = [
   provideStore({
     config,
     assets,

@@ -44,7 +44,7 @@ gulp.task('build.e2e', (done: any) =>
 // Build prod.
 gulp.task('build.prod', (done: any) =>
   runSequence('clean.prod',
-              // 'tslint',
+              'tslint',
               'css-lint',
               'build.sass',
               'build.assets.prod',
@@ -60,8 +60,7 @@ gulp.task('build.prod', (done: any) =>
 // Build exportable library.
 gulp.task('build.library.export', (done: any) =>
   runSequence(
-              // 'tslint',
-              // 'build.html_css.lib',
+              'tslint',
               'build.assets.prod',
               'build.html_css',
               'build.js.lib.export',
@@ -71,7 +70,7 @@ gulp.task('build.library.export', (done: any) =>
 // Build test.
 gulp.task('build.test', (done: any) =>
   runSequence('clean.dev',
-              // 'tslint',
+              'tslint',
               'build.assets.dev',
               'build.js.test',
               'build.index.dev',

@@ -1,26 +1,23 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {Routes, ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Routes, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {Observable} from 'rxjs/Rx';
 import {MultilingualService} from './shared/services/multilingual.service';
+
 
 // Interfaces
 import {ILang} from './shared/interfaces/language.interface';
 
 // Services
 import {CurrentUser} from './shared/services/current-user.model';
-import {Authentication} from './+user-management/services/authentication.data.service';
 import {ApiConfig} from './shared/services/api.config';
 import {UiConfig} from './shared/services/ui.config';
-import {SearchContext} from './shared/services/search-context.service';
+import { SearchContext} from './shared/services/search-context.service';
+import { Authentication} from './+user-management/services/authentication.data.service';
 
-// Components
-import {AppNavComponent} from './shared/components/app-nav/app-nav.component';
-import {FooterComponent} from './shared/components/footer/footer.component';
-import {NotificationComponent} from './shared/components/notification/notification.component';
-import {SearchBoxComponent} from './shared/components/search-box/search-box.component';
-import {BinTrayComponent} from './shared/components/bin-tray/bin-tray.component';
+// Directives
+import { APP_COMPONENT_DIRECTIVES } from './platform/app.component.directives';
 
 // Containers
 import {UserManagementComponent} from './+user-management/user-management.component';
@@ -33,19 +30,7 @@ import {AdminComponent} from './+admin/admin.component';
 @Component({
   selector: 'app',
   templateUrl: 'app/app.html',
-
-  directives: [
-    ROUTER_DIRECTIVES,
-    AppNavComponent,
-    FooterComponent,
-    NotificationComponent,
-    SearchBoxComponent,
-    BinTrayComponent
-  ],
-  providers: [
-    Authentication,
-    SearchContext,
-  ],
+  directives: APP_COMPONENT_DIRECTIVES,
   pipes: [TranslatePipe],
 })
 
