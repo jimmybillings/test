@@ -26,7 +26,7 @@ export function main() {
       spyOn(service.router, 'navigate');
       service.handle(error);
       expect(service._currentUser.destroy).toHaveBeenCalled();
-      expect(service.router.navigate).toHaveBeenCalledWith(['UserManagement/Login']);
+      expect(service.router.navigate).toHaveBeenCalledWith(['user/login']);
     }));
 
   });
