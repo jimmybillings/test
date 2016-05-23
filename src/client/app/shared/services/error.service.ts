@@ -22,7 +22,7 @@ export class Error {
   }
 
   private _unAuthorized(): void {
-    let redirect = (this._currentUser.loggedIn()) ? ['UserManagement/Login', { 'loggedOut': 'true' }] : ['UserManagement/Login'];
+    let redirect = (this._currentUser.loggedIn()) ? ['user/login', { 'loggedOut': 'true' }] : ['user/login'];
     this._currentUser.destroy();
     this.router.navigate(redirect);
   }
