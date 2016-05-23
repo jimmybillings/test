@@ -65,11 +65,11 @@ export class AppComponent implements OnInit {
     private apiConfig: ApiConfig,
     private authentication: Authentication,
     private currentUser: CurrentUser) {
-    this.apiConfig.setPortal(portal);
-    multiLingual.setLanguage(window.navigator.language.split('-')[0]);
   }
 
   ngOnInit() {
+    this.apiConfig.setPortal(portal);
+    this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
     this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
     this.state = 'Home';
     this.router.changes.subscribe(() => {

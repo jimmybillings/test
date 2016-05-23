@@ -24,7 +24,6 @@ import { SearchContext} from './shared/services/search-context.service';
 
 
 export function main() {
-
   describe('App Component', () => {
 
     beforeEachProviders(() => [
