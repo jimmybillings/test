@@ -5,13 +5,13 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {Observable} from 'rxjs/Rx';
 import {MultilingualService} from './shared/services/multilingual.service';
 
-import { 
-  APP_COMPONENT_DIRECTIVES, 
-  CurrentUser, 
-  ApiConfig, 
-  UiConfig, 
-  SearchContext, 
-  Authentication ,
+import {
+  APP_COMPONENT_DIRECTIVES,
+  CurrentUser,
+  ApiConfig,
+  UiConfig,
+  SearchContext,
+  Authentication,
   ILang,
   HomeComponent,
   UserManagementComponent,
