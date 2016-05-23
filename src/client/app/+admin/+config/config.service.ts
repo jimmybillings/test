@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
-import {Observable} from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class ConfigService {
@@ -28,6 +28,11 @@ export class ConfigService {
     return this.http.get(this.siteApiUlr + 'search',
       { headers: this.apiConfig.authHeaders() }
     );
+  }
+
+  public getConfig(site: string, configType: string): Observable<any> {
+    let url = configType === 'site' ? this.siteApiUlr : this.uiApiUrl;
+    return this.http.get(url + '?siteName=' + site, { headers: this.apiConfig.authHeaders() });
   }
 
   public update(data: any): Observable<any> {
