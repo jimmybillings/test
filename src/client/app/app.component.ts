@@ -5,27 +5,21 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {Observable} from 'rxjs/Rx';
 import {MultilingualService} from './shared/services/multilingual.service';
 
-
-// Interfaces
-import {ILang} from './shared/interfaces/language.interface';
-
-// Services
-import {CurrentUser} from './shared/services/current-user.model';
-import {ApiConfig} from './shared/services/api.config';
-import {UiConfig} from './shared/services/ui.config';
-import { SearchContext} from './shared/services/search-context.service';
-import { Authentication} from './+user-management/services/authentication.data.service';
-
-// Directives
-import { APP_COMPONENT_DIRECTIVES } from './platform/app.component.directives';
-
-// Containers
-import {UserManagementComponent} from './+user-management/user-management.component';
-import {HomeComponent} from './+home/home.component';
-import {ContentComponent} from './+content/content.component';
-import {SearchComponent} from './+search/search.component';
-import {AssetComponent} from './+asset/asset.component';
-import {AdminComponent} from './+admin/admin.component';
+import {
+  APP_COMPONENT_DIRECTIVES,
+  CurrentUser,
+  ApiConfig,
+  UiConfig,
+  SearchContext,
+  Authentication,
+  ILang,
+  HomeComponent,
+  UserManagementComponent,
+  SearchComponent,
+  AssetComponent,
+  ContentComponent,
+  AdminComponent
+} from './platform/app.component.imports';
 
 @Component({
   selector: 'app',
@@ -69,7 +63,6 @@ export class AppComponent implements OnInit {
     private currentUser: CurrentUser) {
     this.apiConfig.setPortal('core');
     multiLingual.setLanguage(window.navigator.language.split('-')[0]);
-
   }
 
   ngOnInit() {
