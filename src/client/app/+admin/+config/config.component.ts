@@ -4,6 +4,7 @@ import {ValuesPipe} from '../../shared/pipes/values.pipe';
 import {FormBuilder, Validators, ControlGroup, FORM_DIRECTIVES, Control} from '@angular/common';
 import {ConfigService} from './config.service';
 import {WzListComponent} from '../../shared/components/wz-list/wz.list.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'admin-config',
@@ -21,7 +22,7 @@ export class ConfigComponent implements OnInit {
   public headers: Array<any>;
   private configForm: ControlGroup;
 
-  constructor(public uiConfig: UiConfig, public fb: FormBuilder, public configService: ConfigService) { }
+  constructor(public uiConfig: UiConfig, public fb: FormBuilder, public configService: ConfigService, public router: Router) { }
 
   ngOnInit(): void {
     this.uiConfig.get().subscribe(config => this.config = config);
@@ -40,6 +41,14 @@ export class ConfigComponent implements OnInit {
 
   public setForm(): void {
     this.configForm = this.fb.group({ config: [JSON.stringify(this.config, undefined, 4), Validators.required] });
+  }
+
+  public navigateToShowUi(record: any): void {
+    this.router.navigate(['admin/ui-config/', record.siteName]);
+  }
+
+  public navigateToShowSite(record: any): void {
+    this.router.navigate(['admin/site-config/', record.siteName]);
   }
 
   public onSubmit(form: any): void {

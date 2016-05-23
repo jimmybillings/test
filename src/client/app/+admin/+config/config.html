@@ -6,10 +6,10 @@
       </form> -->
   <div flex-xl="40" flex-gt-lg="45" flex="50">
     <h3>Ui Config</h3>
-    <wz-list [items]="uiItems" [headers]="headers"></wz-list>
+    <wz-list [items]="uiItems" [headers]="headers" (clickRow)="navigateToShowUi($event)"></wz-list>
   </div>
   <div flex-xl="40" flex-gt-lg="45" flex="50">
     <h3>Site Config</h3>
-    <wz-list [items]="siteItems" [headers]="headers"></wz-list>
+    <wz-list [items]="siteItems" [headers]="headers" (clickRow)="navigateToShowSite($event)"></wz-list>
   </div>
 </div>

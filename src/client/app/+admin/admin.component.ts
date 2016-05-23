@@ -5,6 +5,7 @@ import {DashboardComponent} from './+dashboard/dashboard.component';
 import {IndexComponent} from './+index/index.component';
 import {NewComponent} from './+new/new.component';
 import {ConfigComponent} from './+config/config.component';
+import {EditConfigComponent} from './+config/edit-config.component';
 
 @Component({
   selector: 'admin',
@@ -15,7 +16,9 @@ import {ConfigComponent} from './+config/config.component';
 @Routes([
   { path: '/dashboard', component: DashboardComponent },
   { path: '/config', component: ConfigComponent },
-  { path: '/resource/:resource/new', component: NewComponent  },
+  { path: '/ui-config/:site', component: EditConfigComponent },
+  { path: '/site-config/:site', component: EditConfigComponent },
+  { path: '/resource/:resource/new', component: NewComponent },
   { path: '/resource/:resource', component: IndexComponent  },
 ])
 
