@@ -1,13 +1,10 @@
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
-
 @import '../assets/styles/normalize';
-
 @import 'node_modules/bourbon/app/assets/stylesheets/bourbon';
-
-@import "node_modules/@angular2-material/core/style/core";
 
 @import 'node_modules/@angular2-material/core/style/palette';
 @import 'node_modules/@angular2-material/core/style/mixins';
+@import "node_modules/@angular2-material/core/style/core";
 
 // change theme colors and any other global variables
 $md-is-dark-theme: false !default;
@@ -18,7 +15,6 @@ $md-accent: md-palette($md-orange, 500, 300, 800, $md-contrast-palettes) !defaul
 $md-background: md-palette($md-grey, 500, 0, 600, $md-contrast-palettes) !default;
 $md-warn: md-palette($md-red, A700, 600, 900, $md-contrast-palettes) !default;
 $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme-foreground) !default;
-
 
 // these are not part of ng2material just yet, but are needed
 @import '../assets/styles/variables_not_in_ng2';
@@ -35,22 +31,23 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 @import '../assets/styles/sticky_footer';
 
 @import '+home/home';
+
 @import 'shared/components/app-nav/app-nav';
 @import 'shared/components/footer/footer';
 @import 'shared/components/search-box/search-box';
 @import 'shared/components/bin-tray/bin-tray';
-@import '+user-management/+login/login';
 @import 'shared/components/asset-list/asset-list';
+@import 'shared/components/wz-list/wz.list';
+@import 'shared/components/pagination/pagination';
+@import 'shared/components/asset-detail/asset-detail';
+
+@import '+user-management/+login/login';
 @import '+search/search';
 @import '+content/content';
 @import '+asset/asset';
-@import 'shared/components/asset-detail/asset-detail';
 
 @import '+admin/+index/index';
 @import '+admin/+config/config';
 @import '+admin/+dashboard/dashboard';
 @import '+admin/admin';
 @import '+admin/+new/new';
-
-@import 'shared/components/wz-list/wz.list';
-@import 'shared/components/pagination/pagination';
