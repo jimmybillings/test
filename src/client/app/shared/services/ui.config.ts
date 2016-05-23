@@ -35,17 +35,17 @@ export class UiConfig {
   }
 
   public initialize(site: string): Observable<any> {
-    let localConfig = localStorage.getItem('uiConfig');
-    if (localConfig) this.set(JSON.parse(localConfig));
+    let localConfig = localStorage.getItem('uiConfig') || JSON.stringify(InitState);
+    this.set(JSON.parse(localConfig));
     return this._http.get(this._apiUrls.get + site, {
       headers: this._apiConfig.headers()
     }).map((res: Response) => {
-      localStorage.setItem('uiConfig', JSON.stringify(res.json()));
       this.set(res.json());
     });
   }
 
   public set(config: any) {
+    localStorage.setItem('uiConfig', JSON.stringify(config));
     this.store.dispatch({ type: 'INITIALIZE', payload: config });
   }
 

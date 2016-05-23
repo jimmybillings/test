@@ -6,6 +6,6 @@ export const APPLICATION_STORES = [
   ...WAZEE_STORES
 ];
 
-export const STORES = [
+export const STORES:Provider[][] = [
   ...APPLICATION_STORES
 ];
