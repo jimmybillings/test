@@ -4,6 +4,10 @@ import {Location} from '@angular/common';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {Observable} from 'rxjs/Rx';
 import {MultilingualService} from './shared/services/multilingual.service';
+// Portal is set as a global variable in the index.html page. 
+// It is the only unique part of the app component file for each portal
+// by taking it out we can now put the app component into the library.
+declare var portal: string;
 
 import {
   APP_COMPONENT_DIRECTIVES,
@@ -61,7 +65,7 @@ export class AppComponent implements OnInit {
     private apiConfig: ApiConfig,
     private authentication: Authentication,
     private currentUser: CurrentUser) {
-    this.apiConfig.setPortal('core');
+    this.apiConfig.setPortal(portal);
     multiLingual.setLanguage(window.navigator.language.split('-')[0]);
   }
 

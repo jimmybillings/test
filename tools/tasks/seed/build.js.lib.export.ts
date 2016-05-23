@@ -12,7 +12,6 @@ export = () => {
     'typings/browser.d.ts',
     join(APP_SRC, '**/*.ts'),
     '!' + join(APP_SRC, '**/hot_loader_main.ts'),
-    // '!' + join(APP_SRC, '**/platform/**/*.ts'),
     '!' + join(APP_SRC, '**/main.ts'),
     '!' + join(APP_SRC, '**/*.e2e.ts'),
     '!' + join(APP_SRC, '**/*.spec.ts')
