@@ -1,6 +1,6 @@
 <notification [state]="state"></notification>
-<!--<md-sidenav-layout fullscreen>-->
-  <!--<md-sidenav #sidenav>
+<md-sidenav-layout fullscreen>
+  <md-sidenav #sidenav>
     <md-nav-list>
       <a md-list-item>
         <md-icon md-list-icon>event_seat</md-icon>
@@ -11,8 +11,7 @@
         <span md-line>security</span>
       </a>
     </md-nav-list>
-  </md-sidenav>-->
-  
+  </md-sidenav>
   
   <div class="app">
     <header [ngClass]="{'fixed': showFixed, 'bin-tray-closed': !binTrayIsOpen, 'search-closed': !searchIsOpen}" class="app-header">
@@ -51,6 +50,4 @@
       (onChangeLang)="changeLang($event)">
     </app-footer>
   </div>
-  
-  
-<!--</md-sidenav-layout>-->
+</md-sidenav-layout>
