@@ -1,0 +1,17 @@
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+@import 'node_modules/bourbon/app/assets/stylesheets/bourbon';
+@import 'node_modules/normalize.css/normalize';
+
+@import '../assets/styles/font-awesome/font-awesome';
+
+@import 'node_modules/@angular2-material/core/style/palette';
+@import 'node_modules/@angular2-material/core/style/mixins';
+@import "node_modules/@angular2-material/core/style/core";
+
+// these are not part of ng2material just yet, but are needed
+@import '../assets/styles/variables_not_in_ng2';
+@import '../assets/styles/mixins_not_in_ng2';
+
+@import '../assets/styles/layout.attributes';
+@import '../assets/styles/typography';
