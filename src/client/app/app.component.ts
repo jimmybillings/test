@@ -71,7 +71,6 @@ export class AppComponent implements OnInit {
     this.apiConfig.setPortal(portal);
     this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
     this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
-    this.state = 'Home';
     this.router.changes.subscribe(() => {
       this.searchBarIsActive = this.checkRouteForSearchBar(this.location.path());
       this.state = this.location.path();
