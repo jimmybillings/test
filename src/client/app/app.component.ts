@@ -104,7 +104,7 @@ export class AppComponent implements OnInit {
   }
 
   public showFixedHeader(offset: any): void {
-    console.log(offset);
+    // console.log(offset);
     let isfixed: boolean = this.showFixed;
     let setFixed: boolean = (offset > 111) ? true : false;
     if (setFixed !== isfixed) this.showFixed = !this.showFixed;
