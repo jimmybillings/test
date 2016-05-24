@@ -1,3 +1,7 @@
 <div flex="100" *ngIf="assetDetailDisplay">
-  <asset-detail [currentUser]="currentUser" [assetDetail]="assetDetail | async"></asset-detail>
+  <asset-detail
+    [currentUser]="currentUser" 
+    [assetDetail]="assetDetail | async"
+  >
+  </asset-detail>
 </div>

@@ -4,6 +4,10 @@ import {Location} from '@angular/common';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {Observable} from 'rxjs/Rx';
 import {MultilingualService} from './shared/services/multilingual.service';
+// Portal is set as a global variable in the index.html page. 
+// It is the only unique part of the app component file for each portal
+// by taking it out we can now put the app component into the library.
+declare var portal: string;
 
 import {
   APP_COMPONENT_DIRECTIVES,
@@ -51,7 +55,6 @@ export class AppComponent implements OnInit {
   @HostListener('document:scroll', ['$event.target']) onscroll(target: any) {
     this.showFixedHeader(window.pageYOffset);
   }
-
   constructor(
     public uiConfig: UiConfig,
     public router: Router,
@@ -61,13 +64,13 @@ export class AppComponent implements OnInit {
     private apiConfig: ApiConfig,
     private authentication: Authentication,
     private currentUser: CurrentUser) {
-    this.apiConfig.setPortal('core');
-    multiLingual.setLanguage(window.navigator.language.split('-')[0]);
   }
 
   ngOnInit() {
+    // document.querySelector('md-sidenav-layout').addEventListener('scroll',(event) => {this.showFixedHeader(event.srcElement.scrollTop);});
+    this.apiConfig.setPortal(portal);
+    this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
     this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
-    this.state = 'Home';
     this.router.changes.subscribe(() => {
       this.searchBarIsActive = this.checkRouteForSearchBar(this.location.path());
       this.state = this.location.path();
@@ -101,6 +104,7 @@ export class AppComponent implements OnInit {
   }
 
   public showFixedHeader(offset: any): void {
+    console.log(offset);
     let isfixed: boolean = this.showFixed;
     let setFixed: boolean = (offset > 111) ? true : false;
     if (setFixed !== isfixed) this.showFixed = !this.showFixed;
