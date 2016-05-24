@@ -11,6 +11,7 @@ import {
   UiConfig,
   SearchContext,
   Authentication,
+  ILang,
   HomeComponent,
   UserManagementComponent,
   SearchComponent,
@@ -42,6 +43,7 @@ declare var portal: string;
 export class AppComponent implements OnInit {
   public header: Observable<any>;
   public searchBox: Observable<any>;
+  public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public showFixed: boolean = false;
   public state: string = '';
   public searchBarIsActive: boolean = true;
