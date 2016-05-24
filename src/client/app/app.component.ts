@@ -58,10 +58,10 @@ export class AppComponent implements OnInit {
     private authentication: Authentication,
     private currentUser: CurrentUser,
     private renderer: Renderer) {
-    renderer.listenGlobal('document', 'scroll', () => this.showFixedHeader(window.pageYOffset));
   }
 
   ngOnInit() {
+    this.renderer.listenGlobal('document', 'scroll', () => this.showFixedHeader(window.pageYOffset));
     this.apiConfig.setPortal(portal);
     this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
     this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
@@ -81,10 +81,10 @@ export class AppComponent implements OnInit {
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data.lang); }
-  
+
   public closeBinTray() { this.binTrayIsOpen = false; }
   public openBinTray() { this.binTrayIsOpen = true; }
-  
+
   public openSearch() { this.searchIsOpen = true; }
   public closeSearch() { this.searchIsOpen = false; }
 

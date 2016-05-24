@@ -6,7 +6,7 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-import { provide} from '@angular/core';
+import { provide, Renderer} from '@angular/core';
 import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { TestComponentBuilder } from '@angular/compiler/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
@@ -31,6 +31,7 @@ export function main() {
       ROUTER_FAKE_PROVIDERS,
       MockBackend,
       BaseRequestOptions,
+      Renderer,
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]

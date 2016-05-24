@@ -1,14 +1,18 @@
-// import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-// @Component({
-//   moduleId: module.id,
-//   selector: 'collection',
-//   templateUrl: 'collection.component.html'
-// })
-// export class CollectionComponent implements OnInit {
-//   constructor() { }
+@Component({
+  moduleId: module.id,
+  selector: 'collection',
+  templateUrl: 'collection.component.html'
+})
+export class CollectionComponent implements OnInit {
+  constructor() {
+    console.log('test');
+  }
 
-//   ngOnInit() { }
+  ngOnInit() {
+    console.log('test');
+  }
 
 
-// }
+}
