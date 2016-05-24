@@ -9,30 +9,34 @@ export class ConfigService {
   private http: Http;
   private apiConfig: ApiConfig;
   private uiApiUrl: string;
-  private siteApiUlr: string;
+  private siteApiUrl: string;
 
   constructor(http: Http, apiConfig: ApiConfig) {
     this.http = http;
     this.apiConfig = apiConfig;
     this.uiApiUrl = this.apiConfig.baseUrl() + 'api/identities/v1/configuration/site/';
-    this.siteApiUlr = this.apiConfig.baseUrl() + 'api/identities/v1/site/';
+    this.siteApiUrl = this.apiConfig.baseUrl() + 'api/identities/v1/site/';
   }
 
-  public getUi(): Observable<any> {
+  public getUi(siteName?: string): Observable<any> {
     return this.http.get(this.uiApiUrl + 'search',
       { headers: this.apiConfig.authHeaders() }
     );
   }
 
-  public getSite(): Observable<any> {
-    return this.http.get(this.siteApiUlr + 'search',
+  public getSite(siteName?: string): Observable<any> {
+    console.log(siteName);
+    return this.http.get(this.siteApiUrl + 'search',
       { headers: this.apiConfig.authHeaders() }
     );
   }
 
-  public getConfig(site: string, configType: string): Observable<any> {
-    let url = configType === 'site' ? this.siteApiUlr : this.uiApiUrl;
-    return this.http.get(url + '?siteName=' + site, { headers: this.apiConfig.authHeaders() });
+  public getUiConfig(site: string): Observable<any> {
+    return this.http.get(this.uiApiUrl + '?siteName=' + site, { headers: this.apiConfig.authHeaders() });
+  }
+
+  public getSiteConfig(siteId: number): Observable<any> {
+    return this.http.get(this.siteApiUrl + siteId, { headers: this.apiConfig.authHeaders() });
   }
 
   public update(data: any): Observable<any> {
