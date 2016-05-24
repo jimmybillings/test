@@ -15,9 +15,21 @@ export class AssetListComponent {
   @Input() public assets: Array<any>;
   @Input() public currentUser: any;
   @Output() onShowAsset = new EventEmitter();
+  @Output() onAddToCollection = new EventEmitter();
+  @Output() onAddToCart = new EventEmitter();
+  @Output() onDownloadComp = new EventEmitter();
 
   showAsset(asset: any): void {
     this.onShowAsset.emit(asset);
+  }
+  addToCollection(asset: any): void {
+    this.onAddToCollection.emit(asset.assetId);
+  }
+  addToCart(asset: any): void {
+    this.onAddToCart.emit(asset);
+  }
+  downloadComp(asset: any): void {
+    this.onDownloadComp.emit(asset);
   }
 
   public formatType(format: any): string {

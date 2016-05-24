@@ -17,9 +17,9 @@
       </a>
       <section class="actions">
         <nav class="asset-options" flex layout-align="end stretch">
-          <button md-icon-button title="Sharing Options"><md-icon>shopping_cart</md-icon></button>
-          <button md-icon-button title="Download Comp"><md-icon>file_download</md-icon></button>
-          <button md-icon-button title="Add to Collection"><md-icon>library_add</md-icon></button>
+          <button md-icon-button title="Add to cart" (click)="addToCart(asset)"><md-icon>shopping_cart</md-icon></button>
+          <button md-icon-button title="Download Comp" (click)="downloadComp(asset)"><md-icon>file_download</md-icon></button>
+          <button md-icon-button title="Add to Collection" (click)="addToCollection(asset)"><md-icon>library_add</md-icon></button>
           <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
         </nav>
       </section>
