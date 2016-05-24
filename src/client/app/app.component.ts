@@ -55,7 +55,6 @@ export class AppComponent implements OnInit {
   @HostListener('document:scroll', ['$event.target']) onscroll(target: any) {
     this.showFixedHeader(window.pageYOffset);
   }
-
   constructor(
     public uiConfig: UiConfig,
     public router: Router,
@@ -68,6 +67,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    // document.querySelector('md-sidenav-layout').addEventListener('scroll',(event) => {this.showFixedHeader(event.srcElement.scrollTop);});
     this.apiConfig.setPortal(portal);
     this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
     this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
@@ -105,6 +105,7 @@ export class AppComponent implements OnInit {
   }
 
   public showFixedHeader(offset: any): void {
+    console.log(offset);
     let isfixed: boolean = this.showFixed;
     let setFixed: boolean = (offset > 111) ? true : false;
     if (setFixed !== isfixed) this.showFixed = !this.showFixed;
