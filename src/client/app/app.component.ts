@@ -26,8 +26,9 @@ import {
 } from './platform/app.component.imports';
 
 @Component({
+  moduleId: module.id,
   selector: 'app',
-  templateUrl: 'app/app.html',
+  templateUrl: 'app.html',
   directives: APP_COMPONENT_DIRECTIVES,
   pipes: [TranslatePipe],
 })

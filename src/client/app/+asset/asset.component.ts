@@ -10,8 +10,9 @@ import { Error } from '../shared/services/error.service';
  * Asset page component - renders an asset show page
  */
 @Component({
+  moduleId: module.id,
   selector: 'asset',
-  templateUrl: 'app/+asset/asset.html',
+  templateUrl: 'asset.html',
   directives: [AssetDetailComponent]
 })
 

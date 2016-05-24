@@ -6,8 +6,9 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
  * site header component - renders the header information
  */
 @Component({
+  moduleId: module.id,
   selector: 'app-nav',
-  templateUrl: 'app/shared/components/app-nav/app-nav.html',
+  templateUrl: 'app-nav.html',
   directives: [ROUTER_DIRECTIVES],
   pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush

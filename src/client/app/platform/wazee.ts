@@ -25,13 +25,8 @@ import { multilingualReducer } from '../shared/services/multilingual.service';
 import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
 import { MultilingualService } from '../shared/services/multilingual.service';
 
-// export const MATERIAL_PIPES = [
-
-// ];
-
-// export const WAZEE_DIRECTIVES = [
-
-// ];
+// export const MATERIAL_PIPES = [];
+// export const WAZEE_DIRECTIVES = [];
 
 export const WAZEE_PROVIDERS = [
   ApiConfig,

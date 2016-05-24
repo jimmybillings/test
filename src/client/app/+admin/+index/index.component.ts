@@ -9,8 +9,9 @@ import {UiConfig} from '../../shared/services/ui.config';
 import {Subscription} from 'rxjs/Rx';
 
 @Component({
+  moduleId: module.id,
   selector: 'admin-index',
-  templateUrl: 'app/+admin/+index/index.html',
+  templateUrl: 'index.html',
   providers: [AdminService],
   directives: [WzListComponent, PaginationComponent, ROUTER_DIRECTIVES, WzFormComponent]
 })

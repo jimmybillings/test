@@ -7,8 +7,9 @@ import {PlayerComponent} from '../../components/player/player.component';
  * Directive that renders details of a single asset
  */
 @Component({
+  moduleId: module.id,
   selector: 'asset-detail',
-  templateUrl: 'app/shared/components/asset-detail/asset-detail.html',
+  templateUrl: 'asset-detail.html',
   directives: [
     ROUTER_DIRECTIVES,
     PlayerComponent

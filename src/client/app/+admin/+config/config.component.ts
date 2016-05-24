@@ -5,8 +5,9 @@ import {FormBuilder, Validators, ControlGroup, FORM_DIRECTIVES, Control} from '@
 import {ConfigService} from './config.service';
 
 @Component({
+  moduleId: module.id,
   selector: 'admin-config',
-  templateUrl: 'app/+admin/+config/config.html',
+  templateUrl: 'config.html',
   pipes: [ValuesPipe],
   directives: [FORM_DIRECTIVES],
   providers: [ConfigService]

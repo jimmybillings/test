@@ -8,8 +8,9 @@ import {SearchContext} from '../shared/services/search-context.service';
 import {ApiConfig} from '../shared/services/api.config';
 
 @Component({
+  moduleId: module.id,
   selector: 'home',
-  templateUrl: 'app/+home/home.html',
+  templateUrl: 'home.html',
   directives: [ROUTER_DIRECTIVES, SearchBoxComponent],
   pipes: [TranslatePipe]
 })

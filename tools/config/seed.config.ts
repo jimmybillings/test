@@ -80,6 +80,14 @@ export class SeedConfig {
   APP_BASE = argv['base'] || '/';
 
   /**
+  * The flag to include templates into JS app prod file.
+  * Per default the option is `true`, but can it can be set to false using `--inline-template false`
+  * flag when running `npm run build.prod`.
+  * @type {boolean}
+  */
+  INLINE_TEMPLATES = argv['inline-template'] !== 'false';
+
+  /**
    * The flag for the hot-loader option of the application.
    * Per default the option is not set, but can be set by the `--hot-loader`
    * flag when running `npm start`.
@@ -466,7 +474,7 @@ function getEnvironment() {
   let env = (argv['env'] || '').toLowerCase();
   if ((base && prodKeyword) || env === ENVIRONMENTS.PRODUCTION) {
     return ENVIRONMENTS.PRODUCTION;
-  } else if(base[0] === 'build.library.export') {
+  } else if (base[0] === 'build.library.export') {
     return ENVIRONMENTS.LIBRARY;
   } else {
     return ENVIRONMENTS.DEVELOPMENT;

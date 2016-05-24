@@ -7,8 +7,9 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
  * Home page component - renders the home page
  */
 @Component({
+  moduleId: module.id,
   selector: 'wz-form',
-  templateUrl: 'app/shared/components/wz-form/wz.form.html',
+  templateUrl: 'wz.form.html',
   directives: [
     FORM_DIRECTIVES
   ],

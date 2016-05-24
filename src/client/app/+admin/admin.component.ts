@@ -7,8 +7,9 @@ import {NewComponent} from './+new/new.component';
 import {ConfigComponent} from './+config/config.component';
 
 @Component({
+  moduleId: module.id,
   selector: 'admin',
-  templateUrl: 'app/+admin/admin.html',
+  templateUrl: 'admin.html',
   directives: [ROUTER_DIRECTIVES]
 })
 

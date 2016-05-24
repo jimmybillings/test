@@ -5,8 +5,9 @@ import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@
  * Directive that renders a list of assets
  */
 @Component({
+  moduleId: module.id,
   selector: 'asset-list',
-  templateUrl: 'app/shared/components/asset-list/asset-list.html',
+  templateUrl: 'asset-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

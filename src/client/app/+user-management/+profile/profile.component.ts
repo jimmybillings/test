@@ -3,8 +3,9 @@ import {CurrentUser} from '../../shared/services/current-user.model';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 
 @Component({
+  moduleId: module.id,
   selector: 'profile',
-  templateUrl: 'app/+user-management/+profile/profile.html',
+  templateUrl: 'profile.html',
   pipes: [TranslatePipe]
 })
 
