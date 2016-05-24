@@ -31,16 +31,22 @@ export class ConfigService {
     this.siteApiUrl = this.apiConfig.baseUrl() + 'api/identities/v1/site/';
   }
 
-  public getUi(siteName?: string): Observable<any> {
+  public getUi(): Observable<any> {
     return this.http.get(this.uiApiUrl + 'search',
       { headers: this.apiConfig.authHeaders() }
     );
   }
 
-  public getSite(siteName?: string): Observable<any> {
+  public getSite(): Observable<any> {
     return this.http.get(this.siteApiUrl + 'search',
       { headers: this.apiConfig.authHeaders() }
     );
+  }
+
+  public search(siteName: string): Observable<any> {
+    return this.http.get(this.siteApiUrl + 'search/?q=' + siteName,
+      { headers: this.apiConfig.authHeaders() }
+    ).map((res: Response) => res.json());
   }
 
   public getUiConfig(site: string): Observable<any> {
