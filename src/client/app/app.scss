@@ -1,4 +1,4 @@
-@import 'platform/vendor';
+@import 'platform/styles/vendor';
 
 // change theme colors and any other global variables
 $md-is-dark-theme: false !default;
@@ -11,7 +11,7 @@ $md-warn: md-palette($md-red, A700, 600, 900, $md-contrast-palettes) !default;
 $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme-foreground) !default;
 
 @import '../assets/styles/config';
-@import 'platform/wazee';
+@import 'platform/styles/wazee';
 
 @import 'shared/components/app-nav/app-nav';
 @import 'shared/components/footer/footer';
