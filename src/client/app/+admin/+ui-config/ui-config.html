@@ -1,14 +1,12 @@
 
-<div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
-  <div flex="95" flex-gt-lg="95" flex-xl="95">
+<div layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
+  <div flex="15" flex-gt-lg="15" flex-xl="15">
     <h1>{{site}} {{configType}} config</h1>
     <md-content>
       <md-list>
-        <md-list-item class="md-1-line" *ngFor="let item of items">
-          <div class="md-list-item-text" layout="column">
-            <h3>{{ item }}</h3>
-          </div>
-        </md-list-item>
+        <div *ngFor="let item of items">
+          <md-list-item (click)="show(item)" class="md-1-line">{{ item }}</md-list-item>
+        </div>
       </md-list>
     </md-content>
   </div>

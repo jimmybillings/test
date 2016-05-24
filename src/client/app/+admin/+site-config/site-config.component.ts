@@ -11,7 +11,8 @@ import { Subscription } from 'rxjs/Rx';
 
 export class SiteConfigComponent implements OnInit, OnDestroy {
   public site: string;
-  public config: Array<any>;
+  public config: any;
+  public items: Array<any>;
   public configType: string;
   public subscription: Subscription;
 
@@ -31,8 +32,13 @@ export class SiteConfigComponent implements OnInit, OnDestroy {
     this.configService.getSiteConfig(1).subscribe(data => {
       this.configService.setConfig(data);
       this.subscription = this.configService.configStore.subscribe(data => {
-        this.config = Object.keys(data);
+        this.config = data;
+        this.items = Object.keys(data);
       });
     });
+  }
+
+  public show(item: any): void {
+    console.log(this.config[item]);
   }
 }

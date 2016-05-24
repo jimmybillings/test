@@ -37,4 +37,8 @@ export class UiConfigComponent implements OnInit, OnDestroy {
       });
     });
   }
+
+  public show(item: any): void {
+    console.log(this.config.components[item]);
+  }
 }
