@@ -1,0 +1,19 @@
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+@import 'node_modules/bourbon/app/assets/stylesheets/bourbon';
+@import 'node_modules/normalize.css/normalize';
+
+// not currently used. We can put it back if we need it.
+// @import './styles/font-awesome/font-awesome';
+
+@import 'node_modules/@angular2-material/core/style/palette';
+@import 'node_modules/@angular2-material/core/style/mixins';
+@import "node_modules/@angular2-material/core/style/core";
+
+
+// these are not part of ng2material just yet, but are needed
+// hopefully these will be part of Ng2 Material, and then removed, and referenced above
+@import '../styles/vendor/variables_not_in_ng2';
+@import '../styles/vendor/mixins_not_in_ng2';
+@import '../styles/vendor/layout.attributes';
+@import '../styles/vendor/typography';
