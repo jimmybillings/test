@@ -1,10 +1,18 @@
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
-@import '../assets/styles/normalize';
+
 @import 'node_modules/bourbon/app/assets/stylesheets/bourbon';
 
+@import '../assets/styles/normalize';
 @import 'node_modules/@angular2-material/core/style/palette';
 @import 'node_modules/@angular2-material/core/style/mixins';
 @import "node_modules/@angular2-material/core/style/core";
+
+// these are not part of ng2material just yet, but are needed
+@import '../assets/styles/variables_not_in_ng2';
+@import '../assets/styles/mixins_not_in_ng2';
+
+@import '../assets/styles/layout.attributes';
+@import '../assets/styles/typography';
 
 // change theme colors and any other global variables
 $md-is-dark-theme: false !default;
@@ -16,21 +24,13 @@ $md-background: md-palette($md-grey, 500, 0, 600, $md-contrast-palettes) !defaul
 $md-warn: md-palette($md-red, A700, 600, 900, $md-contrast-palettes) !default;
 $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme-foreground) !default;
 
-// these are not part of ng2material just yet, but are needed
-@import '../assets/styles/variables_not_in_ng2';
-@import '../assets/styles/mixins_not_in_ng2';
-
-@import '../assets/styles/layout.attributes';
-@import '../assets/styles/typography';
-
 @import '../assets/styles/config';
+
 @import '../assets/styles/animations';
 @import '../assets/styles/font-awesome/font-awesome';
 @import '../assets/styles/text_contrast';
 @import '../assets/styles/modifiers';
 @import '../assets/styles/sticky_footer';
-
-@import '+home/home';
 
 @import 'shared/components/app-nav/app-nav';
 @import 'shared/components/footer/footer';
@@ -41,13 +41,14 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 @import 'shared/components/pagination/pagination';
 @import 'shared/components/asset-detail/asset-detail';
 
+@import '+home/home';
 @import '+user-management/+login/login';
-@import '+search/search';
-@import '+content/content';
-@import '+asset/asset';
+// @import '+search/search';
+// @import '+content/content';
+// @import '+asset/asset';
 
 @import '+admin/+index/index';
 @import '+admin/+config/config';
 @import '+admin/+dashboard/dashboard';
-@import '+admin/admin';
+// @import '+admin/admin';
 @import '+admin/+new/new';
