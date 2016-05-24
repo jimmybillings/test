@@ -14,8 +14,9 @@ import { UiConfig } from '../../shared/services/ui.config';
  * Login page component - renders login page and handles login form submission
  */
 @Component({
+  moduleId: module.id,
   selector: 'login',
-  templateUrl: 'app/+user-management/+login/login.html',
+  templateUrl: 'login.html',
   providers: [Authentication],
   directives: [
     ROUTER_DIRECTIVES,

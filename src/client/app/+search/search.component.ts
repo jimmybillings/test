@@ -13,8 +13,9 @@ import {SearchContext} from '../shared/services/search-context.service';
  * Asset search page component - renders search page results
  */
 @Component({
+  moduleId: module.id,
   selector: 'search',
-  templateUrl: 'app/+search/search.html',
+  templateUrl: 'search.html',
   directives: [AssetListComponent, PaginationComponent],
   providers: [AssetData],
   pipes: [TranslatePipe]

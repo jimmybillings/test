@@ -6,7 +6,7 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-import { provide} from '@angular/core';
+import { provide, Renderer} from '@angular/core';
 import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { TestComponentBuilder } from '@angular/compiler/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
@@ -22,15 +22,15 @@ import { Authentication} from './+user-management/services/authentication.data.s
 import { MultilingualService, multilingualReducer} from './shared/services/multilingual.service';
 import { SearchContext} from './shared/services/search-context.service';
 
-
 export function main() {
   describe('App Component', () => {
-
+     (<any>window).portal = 'core';
     beforeEachProviders(() => [
       AppComponent,
       ROUTER_FAKE_PROVIDERS,
       MockBackend,
       BaseRequestOptions,
+      Renderer,
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]

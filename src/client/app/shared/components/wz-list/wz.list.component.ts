@@ -1,8 +1,9 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 
 @Component({
+  moduleId: module.id,
   selector: 'wz-list',
-  templateUrl: 'app/shared/components/wz-list/wz.list.html',
+  templateUrl: 'wz.list.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

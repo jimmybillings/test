@@ -7,8 +7,9 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
  * site footer component - renders the footer information
  */
 @Component({
+  moduleId: module.id,
   selector: 'app-footer',
-  templateUrl: 'app/shared/components/footer/footer.html',
+  templateUrl: 'footer.html',
   directives: [ROUTER_DIRECTIVES],
   pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush

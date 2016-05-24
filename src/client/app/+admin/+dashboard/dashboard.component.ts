@@ -2,8 +2,9 @@ import {Component} from '@angular/core';
 import {CurrentUser} from '../../shared/services/current-user.model';
 
 @Component({
+  moduleId: module.id,
   selector: 'admin-dashboard',
-  templateUrl: 'app/+admin/+dashboard/dashboard.html'
+  templateUrl: 'dashboard.html'
 })
 
 /**

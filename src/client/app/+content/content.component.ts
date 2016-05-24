@@ -6,8 +6,9 @@ import {ContentService} from './content.service';
  * Asset page component - renders an asset show page
  */
 @Component({
+  moduleId: module.id,
   selector: 'cms',
-  templateUrl: 'app/+content/content.html',
+  templateUrl: 'content.html',
   providers: [ContentService]
 })
 

@@ -4,6 +4,7 @@ declare var PlayerApi: any, PlayerEnvironment: any;
  * site header component - renders the header information
  */
 @Component({
+  moduleId: module.id,
   selector: 'player',
   template: `
     <iframe 

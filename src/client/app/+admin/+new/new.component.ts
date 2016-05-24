@@ -6,8 +6,9 @@ import { ApiConfig } from '../../shared/services/api.config';
 import { AdminService } from '../services/admin.service';
 
 @Component({
+  moduleId: module.id,
   selector: 'admin-new',
-  templateUrl: 'app/+admin/+new/new.html',
+  templateUrl: 'new.html',
   providers: [AdminService],
   directives: [WzFormComponent]
 })

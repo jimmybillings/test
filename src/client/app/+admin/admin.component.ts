@@ -9,8 +9,9 @@ import {UiConfigComponent} from './+ui-config/ui-config.component';
 import {SiteConfigComponent} from './+site-config/site-config.component';
 
 @Component({
+  moduleId: module.id,
   selector: 'admin',
-  templateUrl: 'app/+admin/admin.html',
+  templateUrl: 'admin.html',
   directives: [ROUTER_DIRECTIVES]
 })
 

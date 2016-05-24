@@ -6,6 +6,7 @@ import {ProfileComponent} from './+profile/profile.component';
 import { User } from './services/user.data.service';
 
 @Component({
+  moduleId: module.id,
   selector: 'user',
   template: '<router-outlet></router-outlet>',
   directives: [ROUTER_DIRECTIVES],

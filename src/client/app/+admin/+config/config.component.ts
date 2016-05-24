@@ -7,8 +7,9 @@ import {WzListComponent} from '../../shared/components/wz-list/wz.list.component
 import {Router} from '@angular/router';
 
 @Component({
+  moduleId: module.id,
   selector: 'admin-config',
-  templateUrl: 'app/+admin/+config/config.html',
+  templateUrl: 'config.html',
   pipes: [ValuesPipe],
   directives: [FORM_DIRECTIVES, WzListComponent],
   providers: [ConfigService]

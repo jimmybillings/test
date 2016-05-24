@@ -3,6 +3,7 @@ import {Component, ChangeDetectionStrategy, Input, OnChanges} from '@angular/cor
  * site header component - renders the header information
  */
 @Component({
+  moduleId: module.id,
   selector: 'notification',
   template: '<div *ngIf="notice">{{notice}}</div>',
   styles: [`div {

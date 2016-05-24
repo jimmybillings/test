@@ -6,8 +6,9 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
  * Home page search component - renders search form passes form values to search component.
  */
 @Component({
+  moduleId: module.id,
   selector: 'bin-tray',
-  templateUrl: 'app/shared/components/bin-tray/bin-tray.html',
+  templateUrl: 'bin-tray.html',
   directives: [ROUTER_DIRECTIVES],
   pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,

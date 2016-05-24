@@ -6,8 +6,9 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {Observable} from 'rxjs/Rx';
 
 @Component({
+  moduleId: module.id,
   selector: 'search-box',
-  templateUrl: 'app/shared/components/search-box/search-box.html',
+  templateUrl: 'search-box.html',
   directives: [FORM_DIRECTIVES],
   pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush

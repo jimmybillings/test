@@ -3,8 +3,9 @@ import { FORM_DIRECTIVES, FormBuilder, Validators, ControlGroup} from '@angular/
 
 
 @Component({
+  moduleId: module.id,
   selector: 'pagination',
-  templateUrl: 'app/shared/components/pagination/pagination.html',
+  templateUrl: 'pagination.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   directives: [
     FORM_DIRECTIVES

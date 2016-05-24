@@ -13,8 +13,9 @@ import { WzFormComponent } from '../../shared/components/wz-form/wz.form.compone
  * Registration page component - renders registration page and handles submiting registation form.
  */
 @Component({
+  moduleId: module.id,
   selector: 'register',
-  templateUrl: 'app/+user-management/+register/register.html',
+  templateUrl: 'register.html',
   providers: [User],
   directives: [
     ROUTER_DIRECTIVES,
