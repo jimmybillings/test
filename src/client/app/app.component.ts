@@ -58,20 +58,28 @@ export class AppComponent implements OnInit {
     private authentication: Authentication,
     private currentUser: CurrentUser,
     private renderer: Renderer) {
+    this.apiConfig.setPortal(portal);
   }
 
   ngOnInit() {
     this.renderer.listenGlobal('document', 'scroll', () => this.showFixedHeader(window.pageYOffset));
-    this.apiConfig.setPortal(portal);
     this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
     this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
+    this.currentUser.set();
+    this.configChanges();
+    this.routerChanges();
+  }
+
+  public configChanges() {
+    this.uiConfig.get('header').subscribe((data) => this.header = data.config);
+    this.uiConfig.get('searchBox').subscribe(data => this.searchBox = data.config);
+  }
+
+  public routerChanges() {
     this.router.changes.subscribe(() => {
       this.searchBarIsActive = this.checkRouteForSearchBar(this.location.path());
       this.state = this.location.path();
     });
-    this.uiConfig.get('header').subscribe((data) => this.header = data.config);
-    this.uiConfig.get('searchBox').subscribe(data => this.searchBox = data.config);
-    this.currentUser.set();
   }
 
   public logout() {

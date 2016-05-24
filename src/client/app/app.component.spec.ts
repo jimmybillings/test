@@ -22,10 +22,9 @@ import { Authentication} from './+user-management/services/authentication.data.s
 import { MultilingualService, multilingualReducer} from './shared/services/multilingual.service';
 import { SearchContext} from './shared/services/search-context.service';
 
-
 export function main() {
   describe('App Component', () => {
-
+     (<any>window).portal = 'core';
     beforeEachProviders(() => [
       AppComponent,
       ROUTER_FAKE_PROVIDERS,
