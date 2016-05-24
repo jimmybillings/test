@@ -1,7 +1,7 @@
-@import '../assets/styles/animations';
-@import '../assets/styles/text_contrast';
-@import '../assets/styles/modifiers';
-@import '../assets/styles/sticky_footer';
+@import './styles/animations';
+@import './styles/text_contrast';
+@import './styles/modifiers';
+@import './styles/sticky_footer';
 
 @import 'shared/components/app-nav/app-nav';
 @import 'shared/components/footer/footer';
