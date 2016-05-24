@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UiConfig} from '../../shared/services/ui.config';
 import {ValuesPipe} from '../../shared/pipes/values.pipe';
 import {FormBuilder, Validators, ControlGroup, FORM_DIRECTIVES, Control} from '@angular/common';
-import {ConfigService} from './config.service';
+import {ConfigService} from '../services/config.service';
 import {WzListComponent} from '../../shared/components/wz-list/wz.list.component';
 import {Router} from '@angular/router';
 

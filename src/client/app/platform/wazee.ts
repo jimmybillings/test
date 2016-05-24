@@ -20,6 +20,7 @@ import { adminResources } from '../+admin/services/admin.service';
 import { searchContext} from '../shared/services/search-context.service';
 import { provideStore } from '@ngrx/store';
 import { multilingualReducer } from '../shared/services/multilingual.service';
+import { adminConfig } from '../+admin/services/config.service';
 
 // TRANSLATIONS
 import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
@@ -57,7 +58,7 @@ export const WAZEE_STORES:Provider[][] = [
     currentUser,
     adminResources,
     searchContext,
-    i18n: multilingualReducer
+    i18n: multilingualReducer,
+    adminConfig
   })
 ];
-

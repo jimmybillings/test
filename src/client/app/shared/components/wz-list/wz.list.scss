@@ -1,18 +1,13 @@
 wz-list {
-  background-color: white;
-  thead {
-    border-bottom: 1px solid lightgrey;
-    th {
+  display: block;
+  margin-bottom: 20px;
+  th {
+    padding: 1rem;
+  }
+  tbody tr {
+    text-align: center;
+    td {
       padding: 1rem;
     }
   }
-  tbody tr {
-    border-bottom: 1px solid lightgrey;
-    text-align: center;
-    td {
-      padding: 1rem 2rem;
-    }
-  }
-  display: block;
-  margin-bottom: 20px;
 }
