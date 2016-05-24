@@ -2,17 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Observable } from 'rxjs/Rx';
-import { Store, Reducer, Action} from '@ngrx/store';
-
-const configState: any = {};
-export const adminConfig: Reducer<any> = (state = configState, action: Action) => {
-  switch (action.type) {
-    case 'CONFIG_SERVICE.SET_CONFIG':
-      return Object.assign({}, state, action.payload);
-    default:
-      return state;
-  }
-};
 
 @Injectable()
 export class ConfigService {
@@ -23,10 +12,9 @@ export class ConfigService {
   private uiApiUrl: string;
   private siteApiUrl: string;
 
-  constructor(http: Http, apiConfig: ApiConfig, private store: Store<any>) {
+  constructor(http: Http, apiConfig: ApiConfig) {
     this.http = http;
     this.apiConfig = apiConfig;
-    this.configStore = this.store.select('adminConfig');
     this.uiApiUrl = this.apiConfig.baseUrl() + 'api/identities/v1/configuration/site/';
     this.siteApiUrl = this.apiConfig.baseUrl() + 'api/identities/v1/site/';
   }
@@ -59,10 +47,6 @@ export class ConfigService {
     return this.http.get(this.siteApiUrl + siteId,
       { headers: this.apiConfig.authHeaders() }
     ).map((res: Response) => res.json());
-  }
-
-  public setConfig(config: any): void {
-    this.store.dispatch({type: 'CONFIG_SERVICE.SET_CONFIG', payload: config});
   }
 
   public update(data: any): Observable<any> {

@@ -30,11 +30,8 @@ export class UiConfigComponent implements OnInit, OnDestroy {
 
   public getConfig(): void {
     this.configService.getUiConfig(this.site).subscribe(data => {
-      this.configService.setConfig(data);
-      this.subscription = this.configService.configStore.subscribe(data => {
-        this.config = data;
-        this.items = Object.keys(data.components);
-      });
+      this.config = data;
+      this.items = Object.keys(data.components);
     });
   }
 

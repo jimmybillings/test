@@ -1,13 +1,25 @@
 wz-list {
+  background-color: #fff;
   display: block;
   margin-bottom: 20px;
-  th {
-    padding: 1rem;
+  table {
+    border-collapse: collapse;
   }
-  tbody tr {
+  table, td {
+    border-bottom: 1px solid #ccc;
+  }
+  thead {
+    border-bottom: 1px solid #ccc;
+    th {
+      padding: .5rem 1rem;
+    }
+  }
+  tbody {
     text-align: center;
-    td {
-      padding: 1rem;
+    tr {
+      td {
+        padding: .8rem 1rem;
+      }
     }
   }
 }

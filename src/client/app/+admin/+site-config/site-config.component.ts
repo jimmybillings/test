@@ -31,11 +31,8 @@ export class SiteConfigComponent implements OnInit, OnDestroy {
   public getConfig(): void {
     this.configService.search(this.site).subscribe(data => {
       this.configService.getSiteConfig(data.items[0].id).subscribe(data => {
-        this.configService.setConfig(data);
-        this.subscription = this.configService.configStore.subscribe(data => {
-          this.config = data;
-          this.items = Object.keys(data);
-        });
+        this.config = data;
+        this.items = Object.keys(data);
       });
     });
   }
