@@ -1,15 +1,21 @@
 
-<div layout="row" md-scroll-y="" layout-align="center start" layout-padding="" *ngIf="config">
-      <!-- <form [ngFormModel]="configForm" (ngSubmit)="onSubmit(configForm.value)">
+<div *ngIf="config">
+  <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
+    <div flex-xl="40" flex-gt-lg="45" flex="50">
+      <h3>Ui Config</h3>
+      <wz-list [items]="uiItems" [headers]="headers" (clickRow)="navigateToShowUi($event)"></wz-list>
+    </div>
+    <div flex-xl="40" flex-gt-lg="45" flex="50">
+      <h3>Site Config</h3>
+      <wz-list [items]="siteItems" [headers]="headers" (clickRow)="navigateToShowSite($event)"></wz-list>
+    </div>
+  </div>
+  <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
+    <div flex-xl="80" flex-gt-xl="90" flex="100">      
+      <form [ngFormModel]="configForm" (ngSubmit)="onSubmit(configForm.value)">
         <textarea name="config" id="" cols="30" rows="50" ngControl="config"></textarea>
         <button md-raised-button class="md-primary" type="submit">Update</button>
-      </form> -->
-  <div flex-xl="40" flex-gt-lg="45" flex="50">
-    <h3>Ui Config</h3>
-    <wz-list [items]="uiItems" [headers]="headers" (clickRow)="navigateToShowUi($event)"></wz-list>
-  </div>
-  <div flex-xl="40" flex-gt-lg="45" flex="50">
-    <h3>Site Config</h3>
-    <wz-list [items]="siteItems" [headers]="headers" (clickRow)="navigateToShowSite($event)"></wz-list>
+      </form>
+    </div>
   </div>
 </div>

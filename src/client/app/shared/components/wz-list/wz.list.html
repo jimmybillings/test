@@ -7,7 +7,13 @@
   </thead>
   <tbody>
     <tr *ngFor="let record of items" (click)="showRecord(record)">
-      <td class="md-text-cell" *ngFor="let header of headers">{{ record[header.name] }}</td>
+      <td *ngFor="let header of headers">
+        <span [ngSwitch]="header.name">
+          <span *ngSwitchWhen="'lastUpdated'" class="md-text-cell">{{ date(record[header.name]) | date:'yMMMdjmZ' }}</span>
+          <span *ngSwitchWhen="'createdOn'" class="md-text-cell">{{ date(record[header.name]) | date:'yMMMdjmZ' }}</span>
+          <span *ngSwitchDefault class="md-text-cell">{{ record[header.name] }}</span>
+        </span>
+      </td>
     </tr>
   </tbody>
 </table>

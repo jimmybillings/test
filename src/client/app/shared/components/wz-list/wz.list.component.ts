@@ -26,4 +26,8 @@ export class WzListComponent {
   public showRecord(record: any): void {
     this.clickRow.emit(record);
   }
+
+  public date(date: any): Date {
+    return new Date(date);
+  }
 }
