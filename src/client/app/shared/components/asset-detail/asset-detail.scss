@@ -1,6 +1,6 @@
 // asset-detail {
 //   display: block;
-//   background-color:  md-color($md-background, 300);
+//   background-color:  md-color($md-grey, 300);
 //   border-top: rem(6.4) solid md-color($md-primary, 900, .9);
 //   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
 //     border-top-width: rem(5.6);    
@@ -24,11 +24,11 @@ section.preview-bk {
     // @include calc(height, "100% + 236px");
     // padding-top: rem(14.6);
     @include md-elevation(3);
-    @include text-contrast(md-color($md-background, 900));
+    @include text-contrast(md-color($md-grey, 900));
     @include background-image(
-      linear-gradient(md-color($md-background, 900, .5), md-color($md-background, 900, .4)),
+      linear-gradient(md-color($md-grey, 900, .5), md-color($md-grey, 900, .4)),
       linear-gradient(md-color($md-primary, 900, .1), md-color($md-primary, 600, .1)),
-      linear-gradient(md-color($md-background, 900, .7), md-color($md-background, 900, .6))
+      linear-gradient(md-color($md-grey, 900, .7), md-color($md-grey, 900, .6))
     );
     position: relative;
     &::after {
@@ -63,8 +63,8 @@ section.preview-bk {
       bottom: 0;
       left: 0;
       width: 100%;
-      background-color: rgba(md-color($md-background, 50), 1);
-      // @include background-image(linear-gradient(rgba(md-color($md-background, 100),0.5), rgba(md-color($md-background, 100),0.3) 80%));
+      background-color: rgba(md-color($md-grey, 50), 1);
+      // @include background-image(linear-gradient(rgba(md-color($md-grey, 100),0.5), rgba(md-color($md-grey, 100),0.3) 80%));
       // opacity: 0.5;
       @include transition(opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2));
       z-index: 1;
@@ -77,12 +77,12 @@ section.preview-bk {
       height: 100%;
       min-height: 100%;
       max-height: 100%;
-      background-color: rgba(md-color($md-background, 900),.4);
+      background-color: rgba(md-color($md-grey, 900),.4);
       padding-left: rem(.6);
       padding-right: rem(.6);
       padding-top: rem(1.2);
       button[md-icon-button] {
-        @include text-contrast(md-color($md-background, 900));
+        @include text-contrast(md-color($md-grey, 900));
         height: 36px;
         width: 36px;
         padding: rem(.6);
@@ -97,7 +97,7 @@ section.preview-bk {
           font-size: 22px;
         }
         &:hover {
-          background-color:  md-color($md-background, 100, .08);
+          background-color: rgba(md-color($md-background, background),.08);
         }
       }
     }
@@ -108,7 +108,7 @@ section.preview-bk {
     @include calc(height, "100% - 56px");
     @include calc(min-height, "100% - 56px");
     // margin: 0 0 0 20px;
-    background-color: rgba(md-color($md-background, 900),.2);
+    background-color: rgba(md-color($md-grey, 900),.2);
     // background-color: transparent;
     z-index: 2;
     // &::before {
@@ -118,15 +118,15 @@ section.preview-bk {
     //   bottom: 0;
     //   left: 0;
     //   width: 100%;
-    //   background-color: rgba(md-color($md-background, 100),0.3);
-    //   @include background-image(linear-gradient(rgba(md-color($md-background, 100),0.5), rgba(md-color($md-background, 100),0.3) 80%));
+    //   background-color: rgba(md-color($md-grey, 100),0.3);
+    //   @include background-image(linear-gradient(rgba(md-color($md-grey, 100),0.5), rgba(md-color($md-grey, 100),0.3) 80%));
     //   opacity: 0.1;
     //   @include transition(opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2));
     //   z-index: -1;
     // }
     md-card-content {
       // padding: rem(2.5);
-      // background-color: rgba(md-color($md-background, 900),.2);
+      // background-color: rgba(md-color($md-grey, 900),.2);
       // position: relative;
       // z-index: 1;
       // @include calc(height, "100% - 96px");
@@ -159,8 +159,8 @@ section.preview-bk {
             }
           }
           &.is-outlined {
-            color: scale-color(md-color($md-background, 50), $lightness: 0%, $alpha: -15%);
-            border-color: scale-color(md-color($md-background, 50), $lightness: 0%, $alpha: -40%);
+            color: scale-color(md-color($md-grey, 50), $lightness: 0%, $alpha: -15%);
+            border-color: scale-color(md-color($md-grey, 50), $lightness: 0%, $alpha: -40%);
           }
         }
       }
@@ -173,8 +173,8 @@ section.preview-bk {
         border-radius: rem(.3);
         border-width: 1px;
         border-style: solid;
-        border-color: rgba(md-color($md-background, 100),0.4);
-        background-color: rgba(md-color($md-background, 900),.8);
+        border-color: rgba(md-color($md-grey, 100),0.4);
+        background-color: rgba(md-color($md-grey, 900),.8);
         position: relative;
         &::before {
           content: "HD";
@@ -191,11 +191,11 @@ section.preview-bk {
         width: rem(2.7);
         height: rem(1.8);
         border-radius: 50%;
-        border-color: rgba(md-color($md-background, 900), 0);
-        background-color: rgba(md-color($md-background, 100), .75);
+        border-color: rgba(md-color($md-grey, 900), 0);
+        background-color: rgba(md-color($md-grey, 100), .75);
         &::before {
           content: "SD";
-          color:rgba(md-color($md-background, 900),1);
+          color:rgba(md-color($md-grey, 900),1);
           opacity: 0.9;
         }
       }
@@ -211,7 +211,7 @@ section.preview-bk {
 .data-bk {
   background-color: transparent !important;
   & > div > div {
-    background: rgba(md-color($md-background, 100),.9);
+    background: rgba(md-color($md-background, background),.7);
   }
   *[md-will-be-tabs] {
     min-width: 100%;
@@ -238,13 +238,13 @@ section.preview-bk {
   }
   md-tabs {
     width: 100%;
-    background: rgba(md-color($md-background, 100),.9);
-    border-bottom: 1px solid rgba(md-color($md-background, 200),.9);
+    background: rgba(md-color($md-grey, 100),.9);
+    border-bottom: 1px solid rgba(md-color($md-grey, 200),.9);
     md-tabs-canvas, md-pagination-wrapper {
       height: rem(6.4);
     }
     .md-tab {
-      color: rgba(md-color($md-background, 900), .75);
+      color: rgba(md-color($md-grey, 900), .75);
       padding: rem(2.4);
       padding-bottom: rem(1.2);
       &.md-active {
@@ -253,7 +253,7 @@ section.preview-bk {
       }
     }
     md-tabs-wrapper {
-      background: rgba(md-color($md-background, 50), .9);
+      background: rgba(md-color($md-grey, 50), .9);
     }
     md-content {
       background-color: transparent;  
@@ -270,8 +270,8 @@ section.preview-bk {
   text-align: left;
   overflow: hidden;
   padding: 0;
-  background-color: rgba(md-color($md-background, 100), 1);
-  border-top: 1px solid rgba(md-color($md-background, 400),.5);
+  background-color: rgba(md-color($md-grey, 100), 1);
+  border-top: 1px solid rgba(md-color($md-grey, 400),.5);
   display: table;
   min-width: 100%;
   margin-top: rem(4.0);
@@ -281,8 +281,8 @@ section.preview-bk {
   & > .row {
     display: table-row;
     .cell {
-      border-right: 1px solid rgba(md-color($md-background, 400),.5);
-      border-bottom: 1px solid rgba(md-color($md-background, 400),.5);
+      border-right: 1px solid rgba(md-color($md-grey, 400),.5);
+      border-bottom: 1px solid rgba(md-color($md-grey, 400),.5);
       display: table-cell;
       padding: 10px 20px 10px 12px;
       vertical-align: top;
@@ -293,8 +293,8 @@ section.preview-bk {
       }
     }
     .cell:first-child {
-      border-left: 1px solid rgba(md-color($md-background, 400),.5);
-      background: rgba(md-color($md-background, 300),.6);
+      border-left: 1px solid rgba(md-color($md-grey, 400),.5);
+      background: rgba(md-color($md-grey, 300),.6);
       text-align: right;
       white-space: nowrap;
       padding: 10px 12px 10px 40px;
@@ -305,7 +305,7 @@ section.preview-bk {
     }
   }
   & > .row.divider {
-    background-color: md-color($md-background, 100);
+    background-color: md-color($md-grey, 100);
     .cell {
       padding: 18px 0;
       border-right-width: 0;
@@ -319,7 +319,7 @@ section.preview-bk {
 
 .responsive-video {
   z-index: 1;
-  background-color:  md-color($md-background, 900);
+  background-color:  md-color($md-grey, 900);
   iframe {
     border: none;
   }

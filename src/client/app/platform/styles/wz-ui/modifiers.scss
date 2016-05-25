@@ -3,7 +3,7 @@
 [md-button] {
 // outlined button
   &.is-outlined {
-    border: 1px solid rgba(md-color($md-foreground, secondary-text), .2);
+    border: 1px solid md-color($md-foreground, divider);
     line-height: rem(3.300);
     &.md-primary {
       border: 1px solid md-color($md-primary, 500, .4);

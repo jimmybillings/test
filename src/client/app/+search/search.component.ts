@@ -56,6 +56,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   addToCollection(asset: any): void {
+
+    console.log(this.currentUser.loggedIn());
     console.log(asset);
   }
 

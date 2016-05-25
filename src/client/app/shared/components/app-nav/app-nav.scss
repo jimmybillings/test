@@ -2,8 +2,9 @@ header.app-header {
   position: relative;
   width: 100%;
   z-index: 3;
-  background-color:rgba(md-color($md-primary, 900), .3);
+  background-color:rgba(md-color($md-primary, 900), .2);
   border-bottom: solid 1px rgba(contrast-color(md-color($md-primary, 900)), .25);
+  @include md-elevation(0);
   position: absolute;
   top: 0;
   left: 0;
@@ -39,8 +40,8 @@ header.app-header {
     }
   }
   &.fixed {
-    background-color:rgba(md-color($md-background, 100), .95);
-    @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
+    background-color:rgba(md-color($md-background, app-bar), .95);
+    @include text-contrast(md-color($md-background, app-bar), md-color($md-foreground, secondary-text), md-color($md-background, app-bar));
     position: fixed;
     top: 0;
     @include animation(slideDownHeader .75s ease-in-out);
@@ -56,12 +57,12 @@ header.app-header md-toolbar {
 }
 header.app-header [md-button],
 header.app-header [md-icon-button] {
-  @include text-contrast(md-color($md-background, 900), md-color($md-background, 700), md-color($md-background, 100));
+  @include text-contrast(md-color($md-grey, 900), md-color($md-foreground, secondary-text), md-color($md-background, app-bar));
   text-transform: uppercase;
   margin-left: rem(.6);
   @include transition(all .4s ease-in-out);
   &:hover {
-    background-color: rgba(md-color($md-background, 100), .1);
+    background-color: rgba(md-color($md-background, background), .075);
   }
   &:first-child{
     margin-left: 0;
@@ -75,7 +76,7 @@ header.app-header md-toolbar:not(.md-menu-toolbar) [md-button] {
 
 header.app-header.fixed [md-button],
 header.app-header.fixed [md-icon-button] {
-  @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
+  @include text-contrast(md-color($md-background, app-bar), md-color($md-foreground, secondary-text), md-color($md-background, app-bar));
 }
 
 header.app-header app-nav button.open-bin-tray,
@@ -116,7 +117,7 @@ header.app-header + div.main-content search,
 header.app-header + div.main-content asset {
   display: block;
   @include transition(border-top-width 0.35s, $swift-ease-in-out-timing-function);
-  border-top: rem(16.6) solid md-color($md-background, 900, .7);
+  border-top: rem(16.6) solid md-color($md-grey, 900, .7);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     border-top-width: rem(15.2);
   }
@@ -150,7 +151,7 @@ header.app-header.search-closed + div.main-content asset {
 header.app-header + div.main-content admin{
   display: flex;
   @include transition(border-top-width 0.35s, $swift-ease-in-out-timing-function);
-  border-top: rem(16.6) solid md-color($md-background, 900, .7);
+  border-top: rem(16.6) solid md-color($md-grey, 900, .7);
   // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
   //   border-top-width: rem(15.2);
   // }

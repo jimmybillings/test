@@ -1,14 +1,21 @@
 @import 'platform/styles/vendor';
 
 // change theme colors and any other global variables
-$md-is-dark-theme: false !default;
-$md-button-border-radius: 2px !default;
+$md-is-dark-theme: false;
+$md-button-border-radius: 2px;
 
-$md-primary: md-palette($md-blue-grey, 600, 300, 800, $md-contrast-palettes) !default;
-$md-accent: md-palette($md-orange, 500, 300, 800, $md-contrast-palettes) !default;
-$md-background: md-palette($md-grey, 500, 0, 600, $md-contrast-palettes) !default;
-$md-warn: md-palette($md-red, A700, 600, 900, $md-contrast-palettes) !default;
-$md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme-foreground) !default;
+// $md-primary: md-palette($md-teal, 500, 100, 700, $md-contrast-palettes);
+// $md-accent: md-palette($md-purple, 500, 300,800, $md-contrast-palettes);
+// $md-warn: md-palette($md-red, 500, 300, 900, $md-contrast-palettes);
+
+$md-primary: md-palette($md-blue-grey, 600, 300, 800, $md-contrast-palettes);
+$md-accent: md-palette($md-orange, 500, 300, 800, $md-contrast-palettes);
+$md-warn: md-palette($md-red, A700, 600, 900, $md-contrast-palettes);
+
+$md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme-foreground);
+$md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme-background);
+
+
 
 @import '../assets/styles/config';
 @import 'platform/styles/wazee';

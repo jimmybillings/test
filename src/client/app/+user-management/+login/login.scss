@@ -3,10 +3,10 @@ section.login.hero {
   width: 100%;
   position: relative;
   margin: 0 auto;
-  @include text-contrast(md-color($md-background, 900));
+  @include text-contrast(md-color($md-grey, 900));
   @include background-image(
     url("../assets/img/bk/tex/bktx_dgl_lines_light.png"),
-    linear-gradient(md-color($md-background, 900, .7), md-color($md-background, 900, .94)),
+    linear-gradient(md-color($md-grey, 900, .7), md-color($md-grey, 900, .94)),
     url($bk-img-user-management)
   );
   background-position: 0 0, 0 0, center center;
@@ -65,7 +65,7 @@ wz-form form {
     font-size: 1.1em;
     // cannot override injected css
     // .md-input-underline {
-    //   border-top-color: md-color($md-background, 200, .3);
+    //   border-top-color: md-color($md-foreground, secondary-text);
     // }
   }
   md-card-actions {

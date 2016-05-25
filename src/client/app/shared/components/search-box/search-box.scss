@@ -10,13 +10,16 @@ search-box {
     max-height: rem(4.6);
     min-height: rem(4.6);
     border: none;
-    color: rgba(md-color($md-background, 900), .7);
-    background-color:  md-color($md-background, 100, .9);
+    @include placeholder {
+      color: md-color($md-foreground, hint-text);
+    }
+    color: md-color($md-foreground, secondary-text);
+    background-color:  rgba(md-color($md-background, app-bar), .9);
     @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
     border-radius: 0;
     &:focus {
       outline: none;
-      background-color: lighten(md-color($md-background, 100), 40%);
+      background-color: lighten(md-color($md-background, app-bar), 40%);
     }
   }
   button[type="submit"] {
@@ -29,8 +32,8 @@ search-box {
       font-size: rem(3.4);
       width: rem(3.4);
       height: rem(3.4);
-      @include text-contrast(md-color($md-background, 900));
-      text-shadow: md-color($md-background, 900, .2) 0 1px 2px;
+      color: $white-87-opacity;
+      text-shadow: md-color($md-grey, 900, .2) 0 1px 2px;
     }
     &:hover {
       background-color: md-color($md-accent, 700, 1);
@@ -55,8 +58,8 @@ search-box {
     margin: 0;
     padding: 0;
     width: calc(100% - 46px);
-    background-color: md-color($md-background, 50, .95);
-    @include text-contrast(md-color($md-background, 100));
+    background-color: rgba(md-color($md-background, card), .95);
+    color: md-color($md-foreground, text);
     max-height: rem(30);
     overflow-y: scroll;
     overflow-x: hidden;
@@ -75,8 +78,8 @@ search-box {
       display: flex;
       position: relative;
       button {
-        background-color: md-color($md-background, 100, .96);
-        @include text-contrast(md-color($md-background, 100), md-color($md-background, 700), md-color($md-background, 100));
+        background-color: md-color($md-background, app-bar);
+        @include text-contrast(md-color($md-background, app-bar), md-color($md-foreground, secondary-text), md-color($md-background, app-bar));
         text-align: left;
         width: 100%;
         padding: rem(.8);
@@ -84,8 +87,8 @@ search-box {
         padding-right: rem(4.5);
         border-width: 0;
         span {
-          background-color: md-color($md-background, 900, .3);
-          @include text-contrast(md-color($md-primary, 900));
+          background-color: rgba(md-color($md-foreground, base), .2);
+          @include text-contrast(md-color($md-foreground, base));
           padding: 3px 6px;
           font-size: .83em;
           line-height: 1;
@@ -96,14 +99,11 @@ search-box {
           bottom: 25%;
         }
         &:focus {
-          color: md-color($md-primary, 500);
+          color: md-color($md-foreground, text);
           outline: none;
-          background-color: md-color($md-background, 300, .7);
-          // box-shadow: 
-          //   inset 0 .7px 0 0 md-color($md-background, 700, .1),
-          //   inset 0 -.7px 0 0 md-color($md-background, 700, .1);
+          background-color: md-color($md-background, hover);
           &::after {
-            @include text-contrast(md-color($md-background, 100));
+            @include text-contrast(md-color($md-background, app-bar));
             position: absolute;
             content: "\e037";
             font-family: 'Material Icons';
@@ -130,7 +130,7 @@ search-box {
 header.app-header {
   search-box {
     form {
-      background-color: md-color($md-background, 100);
+      background-color: md-color($md-background, app-bar);
     }
     margin: 0;
     input {
@@ -172,7 +172,7 @@ header.app-header {
     md-icon.material-icons {
       font-size: rem(2.3);
       line-height: .5;
-      @include text-contrast(md-color($md-background, 50));
+      @include text-contrast(md-color($md-background, background));
       opacity: .5;
     }
   }
@@ -198,14 +198,14 @@ header.app-header {
 header.app-header.fixed {
   search-box {
     form {
-      box-shadow: inset 0 1px 0 0 md-color($md-background, 800, .1);
+      box-shadow: inset 0 1px 0 0 md-color($md-grey, 800, .1);
       background-color: transparent;
     }
     input {
       background-color: transparent;
     }
     button[type="submit"] md-icon.material-icons {
-      @include text-contrast(md-color($md-primary, 700), md-color($md-background, 700), md-color($md-background, 100));
+      @include text-contrast(md-color($md-primary, 700), md-color($md-grey, 700), md-color($md-grey, 100));
     }
   }
 }
