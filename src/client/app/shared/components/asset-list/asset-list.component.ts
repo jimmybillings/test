@@ -23,7 +23,7 @@ export class AssetListComponent {
     this.onShowAsset.emit(asset);
   }
   addToCollection(asset: any): void {
-    this.onAddToCollection.emit(asset.assetId);
+    this.onAddToCollection.emit(asset);
   }
   addToCart(asset: any): void {
     this.onAddToCart.emit(asset);

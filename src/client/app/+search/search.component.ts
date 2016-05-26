@@ -55,10 +55,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.router.navigate(['/asset', asset.assetId]);
   }
 
-  addToCollection(assetId: number): void {
+  addToCollection(asset: any): void {
     if (!this.currentUser.loggedIn()) this.router.navigate(['/user/login']);
 
-    console.log(assetId);
+    console.log(asset.assetId);
   }
 
   addToCart(asset: any): void {
