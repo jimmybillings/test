@@ -37,13 +37,13 @@
       top: rem(-.1);
     }
     &.md-primary .md-button-wrapper::after {
-      color: contrast-color(md-color($md-primary, 500));
+      color: contrast-color(md-color($md-primary));
     }
     &.md-accent .md-button-wrapper::after {
-      color: contrast-contrast(md-color($md-accent, 500));
+      color: contrast-contrast(md-color($md-accent));
     }
     &.md-warn .md-button-wrapper::after {
-      color: contrast-color(md-color($md-warn, 500));
+      color: contrast-color(md-color($md-warn));
     }
     &.md-icon-button {
       width: rem(5.3);

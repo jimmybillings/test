@@ -5,10 +5,10 @@ export interface Collection {
   siteName: string;
   name: string;
   owner: string;
-  editors: number[];
-  assets: number[];
-  tags: string[];
-  assetCount: number;
-  editorsCount: number;
-  tagCount: number;
+  editors?: number[];
+  assets?: number[];
+  tags?: string[];
+  assetCount?: number;
+  editorsCount?: number;
+  tagCount?: number;
 }
