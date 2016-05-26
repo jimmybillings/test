@@ -2,7 +2,7 @@ header.app-header {
   position: relative;
   width: 100%;
   z-index: 3;
-  background-color:rgba(md-color($md-primary, 900), .2);
+  background-color:rgba(md-color($md-primary, 900), .3);
   border-bottom: solid 1px rgba(contrast-color(md-color($md-primary, 900)), .25);
   @include md-elevation(0);
   position: absolute;

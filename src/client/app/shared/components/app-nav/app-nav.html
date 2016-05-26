@@ -17,7 +17,7 @@
     <a md-button *ngIf="currentUser.is('root') | async" [routerLink]="['admin/dashboard']" hide="" show-gt-sm="" class="md-caption md-primary md-hue-2">Admin</a>
     <a md-button *ngIf="loggedInState | async" [routerLink]="['user/profile']" [ngClass]="{'md-primary': !showFixed}" hide="" show-xs="" class="md-icon-button is-dd"> <i md-icon="" class="material-icons">person</i></a>
     
-    <button *ngIf="loggedInState | async" *ngIf="searchBarIsActive" md-icon-button title="Open collections" (click)="openBinTray()" class="open-bin-tray"><md-icon>folder_open</md-icon></button>
+    <button *ngIf="searchBarIsActive && (loggedInState | async)" md-icon-button title="Open collections" (click)="openBinTray()" class="open-bin-tray"><md-icon>folder_open</md-icon></button>
     <button *ngIf="searchBarIsActive" md-icon-button title="Search" (click)="openSearch()" class="open-search"><md-icon>search</md-icon></button>
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
 </md-toolbar>

@@ -80,15 +80,11 @@ wz-form form {
     background-color: md-color($md-primary, 700, .85);
   }
 }
-// md-card {
-//   .md-primary[md-raised-button],
-//   .md-primary[md-fab],
-//   .md-primary[md-mini-fab],
-//   .md-primary[md-button],
-//   .md-primary[md-icon-button] {
-//     color: md-color($md-primary, 500);
-//   }
-// }
+md-card {
+  .md-primary[md-button] {
+    color: md-color($md-primary, 600);
+  }
+}
  
 *[md-button] {
   text-transform: uppercase;
