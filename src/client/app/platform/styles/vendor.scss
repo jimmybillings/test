@@ -6,10 +6,9 @@
 // not currently used. We can put it back if we need it.
 // @import './styles/font-awesome/font-awesome';
 
-@import 'node_modules/@angular2-material/core/style/palette';
 @import 'node_modules/@angular2-material/core/style/mixins';
 @import "node_modules/@angular2-material/core/style/core";
-
+@import "node_modules/@angular2-material/core/style/default-theme";
 
 // these are not part of ng2material just yet, but are needed
 // hopefully these will be part of Ng2 Material, and then removed, and referenced above
