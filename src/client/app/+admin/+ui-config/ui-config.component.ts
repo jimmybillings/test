@@ -1,18 +1,23 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouteSegment } from '@angular/router';
 import { ConfigService } from '../services/config.service';
+import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
+import { ValuesPipe } from '../../shared/pipes/values.pipe';
 import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
   selector: 'admin-ui-config',
   templateUrl: 'ui-config.html',
-  providers: [ConfigService]
+  providers: [ConfigService],
+  directives: [WzListComponent],
+  pipes: [ValuesPipe]
 })
 
 export class UiConfigComponent implements OnInit, OnDestroy {
   public site: string;
   public config: any;
+  public currentConfigOptions: any;
   public items: Array<any>;
   public configType: string;
   public subscription: Subscription;
@@ -37,6 +42,10 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public show(item: any): void {
-    console.log(this.config.components[item]);
+    this.currentConfigOptions = Object.keys(this.config.components[item].config);
+  }
+
+  public buildForm(item: any): void {
+    console.log(item);
   }
 }

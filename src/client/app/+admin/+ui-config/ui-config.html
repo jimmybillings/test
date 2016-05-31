@@ -2,12 +2,36 @@
 <div class="admin-ui-config" layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
   <div flex="15" flex-gt-lg="15" flex-xl="15">
     <h3>{{site}} {{configType}} config</h3>
+  </div>
+</div>
+<div class="admin-ui-config" layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
+  <div flex="15" flex-gt-lg="15" flex-xl="15">
     <md-content>
       <md-list>
         <div *ngFor="let item of items">
           <md-list-item class="md-1-line">
-            <md-list-text>{{ item }}</md-list-text>
-            <i md-icon="" (click)="show(item)" class="material-icons">keyboard_arrow_right</i>
+            <div flex-gt-lg="90" flex-xl="90" flex="90">
+              <md-list-text>{{ item }}</md-list-text>
+            </div>
+            <div flex-gt-lg="10" flex-xl="10" flex="10">
+              <i md-icon="" (click)="show(item)" class="material-icons">keyboard_arrow_right</i>
+            </div>
+          </md-list-item>
+        </div>
+      </md-list>
+    </md-content>
+  </div>
+  <div flex="10" flex-gt-lg="10" flex-xl="10" *ngIf="currentConfigOptions">
+    <md-content>
+      <md-list>
+        <div *ngFor="let item of currentConfigOptions">
+          <md-list-item class="md-1-line">
+            <div flex-gt-lg="90" flex-xl="90" flex="90">
+              <md-list-text>{{ item }}</md-list-text>
+            </div>
+            <div flex-gt-lg="10" flex-xl="10" flex="10">
+              <i md-icon="" (click)="buildForm(item)" class="material-icons">keyboard_arrow_right</i>
+            </div>
           </md-list-item>
         </div>
       </md-list>

@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class ConfigService {
 
-  public configStore: Observable<any>;
   private http: Http;
   private apiConfig: ApiConfig;
   private uiApiUrl: string;
