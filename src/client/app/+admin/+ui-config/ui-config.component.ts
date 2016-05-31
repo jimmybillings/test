@@ -42,7 +42,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public show(item: any): void {
-    this.currentConfigOptions = Object.keys(this.config.components[item].config);
+    this.currentConfigOptions = this.config.components[item].config;
   }
 
   public buildForm(item: any): void {

@@ -1,7 +1,7 @@
 
-<div class="admin-ui-config" layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
-  <div flex="15" flex-gt-lg="15" flex-xl="15">
-    <h3>{{site}} {{configType}} config</h3>
+<div layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
+  <div class="config-title" flex="30" flex-gt-lg="30" flex-xl="30">
+    <strong>{{site.toUpperCase()}}</strong> {{configType}} config
   </div>
 </div>
 <div class="admin-ui-config" layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
@@ -21,13 +21,13 @@
       </md-list>
     </md-content>
   </div>
-  <div flex="10" flex-gt-lg="10" flex-xl="10" *ngIf="currentConfigOptions">
+  <div flex="15" flex-gt-lg="15" flex-xl="15" *ngIf="currentConfigOptions">
     <md-content>
       <md-list>
-        <div *ngFor="let item of currentConfigOptions">
+        <div *ngFor="let item of currentConfigOptions | values">
           <md-list-item class="md-1-line">
             <div flex-gt-lg="90" flex-xl="90" flex="90">
-              <md-list-text>{{ item }}</md-list-text>
+              <md-list-text>{{ item.key }}</md-list-text>
             </div>
             <div flex-gt-lg="10" flex-xl="10" flex="10">
               <i md-icon="" (click)="buildForm(item)" class="material-icons">keyboard_arrow_right</i>
