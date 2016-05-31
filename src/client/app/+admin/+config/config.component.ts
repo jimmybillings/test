@@ -31,13 +31,20 @@ export class ConfigComponent implements OnInit {
     this.getConfigs();
     this.headers = [
       {'name': 'siteName', 'label': 'Site'},
-      {'name': 'lastUpdated', 'label': 'Last Updated'}
+      {'name': 'lastUpdated', 'label': 'Last Updated'},
+      {'name': 'lastUpdateBy', 'label': 'Last Update By'}
     ];
   }
 
   public getConfigs(): void {
-    this.configService.getUi().subscribe((res) => {this.uiItems = res.json().items;});
-    this.configService.getSite().subscribe((res) => {this.siteItems = res.json().items;});
+    this.configService.getUi().subscribe((res) => {
+      this.uiItems = res.json().items;
+      this.uiItems.forEach(item => {Object.assign(item, {lastUpdateBy: 'Ross Edfort'});});
+    });
+    this.configService.getSite().subscribe((res) => {
+      this.siteItems = res.json().items;
+      this.siteItems.forEach(item => {Object.assign(item, {lastUpdateBy: 'Ross Edfort'});});
+    });
   }
 
   public setForm(): void {
