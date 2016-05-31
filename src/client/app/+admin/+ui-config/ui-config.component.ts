@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
-  selector: 'ui-config',
+  selector: 'admin-ui-config',
   templateUrl: 'ui-config.html',
   providers: [ConfigService]
 })
