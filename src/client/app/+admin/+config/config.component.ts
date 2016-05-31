@@ -52,11 +52,11 @@ export class ConfigComponent implements OnInit {
   }
 
   public navigateToShowUi(record: any): void {
-    console.log('navigate to ui', record);
+    this.router.navigate(['admin/ui-config/', record.siteName]);
   }
 
   public navigateToShowSite(record: any): void {
-    console.log('navigate to site', record);
+    this.router.navigate(['admin/site-config/', record.siteName]);
   }
 
   public onSubmit(form: any): void {
