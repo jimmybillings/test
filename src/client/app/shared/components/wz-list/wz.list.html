@@ -6,11 +6,19 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let record of items" (click)="showRecord(record)">
+    <tr *ngFor="let record of items">
       <td *ngFor="let header of headers">
         <span [ngSwitch]="header.name">
-          <span *ngSwitchWhen="'lastUpdated'" class="md-text-cell">{{ record[header.name] }}</span>
-          <span *ngSwitchWhen="'createdOn'" class="md-text-cell">{{ record[header.name] }}</span>
+          <span *ngSwitchWhen="'lastUpdated'" class="md-text-cell">{{ date(record[header.name]) }}</span>
+          <span *ngSwitchWhen="'createdOn'" class="md-text-cell">{{ date(record[header.name]) }}</span>
+          <span *ngSwitchWhen="'name'"><a [routerLink]="['/']">{{record[header.name]}}</a></span>
+          <span *ngSwitchWhen="'firstName'"><a [routerLink]="['/']">{{record[header.name]}}</a></span>
+          <span *ngIf="record.type === 'ui'">
+            <span *ngSwitchWhen="'siteName'"><a [routerLink]="['/admin/ui-config', record[header.name]]">{{record[header.name]}}</a></span>
+          </span>
+          <span *ngIf="record.type === 'site'">
+            <span *ngSwitchWhen="'siteName'"><a [routerLink]="['/admin/site-config', record[header.name]]">{{record[header.name]}}</a></span>
+          </span>
           <span *ngSwitchDefault class="md-text-cell">{{ record[header.name] }}</span>
         </span>
       </td>

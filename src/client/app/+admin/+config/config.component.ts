@@ -39,11 +39,11 @@ export class ConfigComponent implements OnInit {
   public getConfigs(): void {
     this.configService.getUi().subscribe((res) => {
       this.uiItems = res.json().items;
-      this.uiItems.forEach(item => {Object.assign(item, {lastUpdateBy: 'Ross Edfort'});});
+      this.uiItems.forEach(item => {Object.assign(item, {lastUpdateBy: 'Ross Edfort', type: 'ui'});});
     });
     this.configService.getSite().subscribe((res) => {
       this.siteItems = res.json().items;
-      this.siteItems.forEach(item => {Object.assign(item, {lastUpdateBy: 'Ross Edfort'});});
+      this.siteItems.forEach(item => {Object.assign(item, {lastUpdateBy: 'Ross Edfort', type: 'site'});});
     });
   }
 
