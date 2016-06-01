@@ -14,23 +14,7 @@
               <md-list-text>{{ item }}</md-list-text>
             </div>
             <div flex-gt-lg="10" flex-xl="10" flex="10">
-              <i md-icon="" (click)="show(item)" class="material-icons">keyboard_arrow_right</i>
-            </div>
-          </md-list-item>
-        </div>
-      </md-list>
-    </md-content>
-  </div>
-  <div flex="15" flex-gt-lg="15" flex-xl="15" *ngIf="currentConfigOptions">
-    <md-content>
-      <md-list>
-        <div *ngFor="let item of currentConfigOptions | values">
-          <md-list-item class="md-1-line">
-            <div flex-gt-lg="90" flex-xl="90" flex="90">
-              <md-list-text>{{ item.key }}</md-list-text>
-            </div>
-            <div flex-gt-lg="10" flex-xl="10" flex="10">
-              <i md-icon="" (click)="buildForm(item)" class="material-icons">keyboard_arrow_right</i>
+              <i md-icon="" (click)="show(item)" class="material-icons">keyboard_arrow_down</i>
             </div>
           </md-list-item>
         </div>
