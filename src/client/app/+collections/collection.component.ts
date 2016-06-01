@@ -33,7 +33,6 @@ export class CollectionComponent implements OnInit {
   public focusedCollection: Observable<Collection>;
   public errorMessage: string;
 
-
   constructor(
     public collectionsService: CollectionsService,
     // public uiConfig: UiConfig,
@@ -46,9 +45,9 @@ export class CollectionComponent implements OnInit {
     this.focusedCollection = this.collectionsService.focusedCollection;
 
     // this.collectionsService.loadCollections();
-    this.collectionsService.getFocusedCollectionId();
+    // this.collectionsService.getFocusedCollection;
     this.focusedCollection.subscribe(v => console.log(v));
-    console.log(this.focusedCollection);
+    // console.log(this.focusedCollection);
   }
 
   createCollection(collection: Collection) {

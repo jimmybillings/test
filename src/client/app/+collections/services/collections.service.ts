@@ -75,25 +75,13 @@ export class CollectionsService {
       .subscribe(action => this.store.dispatch(action));
   }
 
-  public getFocusedCollectionId() {
-    return this.http.get(`${this.apiUrls.CollectionBaseUrl}/focused`,
+  public getFocusedCollection() {
+    this.http.get(`${this.apiUrls.CollectionBaseUrl}/focused`,
       { headers: this.apiConfig.authHeaders() })
       .map(res => res.json())
       .map(payload => ({ type: 'FOCUSED_COLLECTION', payload }))
       .subscribe(action => this.store.dispatch(action));
   }
-  
-  public getFocusedCollection(id: number) {
-    this.http.get(`${this.apiUrls.CollectionBaseUrl}${id}`,
-      { headers: this.apiConfig.authHeaders() })
-      .map(res => res.json())
-      .map(payload => ({ type: 'FOCUSED_COLLECTION', payload }))
-      .subscribe(action => this.store.dispatch(action));
-  }
-  
-  
-  
-  
 
   public saveCollection(collection: Collection) {
     (collection.id) ? this.updateColleciton(collection) : this.createCollection(collection);
