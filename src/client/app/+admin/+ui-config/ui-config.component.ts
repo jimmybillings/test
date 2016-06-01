@@ -26,13 +26,19 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   constructor(public router: Router,
               public routeSegment: RouteSegment,
               public configService: ConfigService) {
-                this.sites = ['cnn', 'core', 'augusta', 'bbcws'];
+                this.sites = [];
               }
 
   ngOnInit() {
     this.configType = this.routeSegment.urlSegments[0].segment.split('-')[0];
     this.siteName = this.routeSegment.getParam('site');
     this.getConfig();
+    this.configService.getUi().subscribe(data => {
+      data.items.reduce((previous: any, current: any) => {
+        previous.push(current.siteName);
+        return previous;
+      }, this.sites);
+    });
   }
 
   ngOnDestroy() {

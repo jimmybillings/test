@@ -21,13 +21,13 @@ export class ConfigService {
   public getUi(): Observable<any> {
     return this.http.get(this.uiApiUrl + 'search',
       { headers: this.apiConfig.authHeaders() }
-    );
+    ).map((res: Response) => res.json());;
   }
 
   public getSite(): Observable<any> {
     return this.http.get(this.siteApiUrl + 'search',
       { headers: this.apiConfig.authHeaders() }
-    );
+    ).map((res: Response) => res.json());;
   }
 
   public search(siteName: string): Observable<any> {
