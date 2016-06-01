@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouteSegment } from '@angular/router';
 import { ConfigService } from '../services/config.service';
 import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
 import { ValuesPipe } from '../../shared/pipes/values.pipe';
-import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -14,14 +13,13 @@ import { Subscription } from 'rxjs/Rx';
   pipes: [ValuesPipe]
 })
 
-export class UiConfigComponent implements OnInit, OnDestroy {
+export class UiConfigComponent implements OnInit {
   public siteName: string;
   public config: any;
   public currentConfigOptions: any;
   public items: Array<any>;
   public sites: Array<any>;
   public configType: string;
-  public subscription: Subscription;
 
   constructor(public router: Router,
               public routeSegment: RouteSegment,
@@ -39,10 +37,6 @@ export class UiConfigComponent implements OnInit, OnDestroy {
         return previous;
       }, this.sites);
     });
-  }
-
-  ngOnDestroy() {
-    if (this.subscription) this.subscription.unsubscribe();
   }
 
   public getConfig(): void {

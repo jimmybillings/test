@@ -11,8 +11,6 @@
         <span [ngSwitch]="header.name">
           <span *ngSwitchWhen="'lastUpdated'" class="md-text-cell">{{ date(record[header.name]) }}</span>
           <span *ngSwitchWhen="'createdOn'" class="md-text-cell">{{ date(record[header.name]) }}</span>
-          <span *ngSwitchWhen="'name'"><a [routerLink]="['/']">{{record[header.name]}}</a></span>
-          <span *ngSwitchWhen="'firstName'"><a [routerLink]="['/']">{{record[header.name]}}</a></span>
           <span *ngIf="record.type === 'ui'">
             <span *ngSwitchWhen="'siteName'"><a [routerLink]="['/admin/ui-config', record[header.name]]">{{record[header.name]}}</a></span>
           </span>

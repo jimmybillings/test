@@ -20,7 +20,7 @@ import { provideStore } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 
 export function main() {
-  describe('Admin UI Config component', () => {
+  describe('Admin UI Config Component', () => {
     @Injectable()
     class MockConfigService {
       public getUiConfig(siteName: string) {
@@ -36,7 +36,7 @@ export function main() {
       ApiConfig,
       UiConfig,
       BaseRequestOptions,
-      provide(RouteSegment, { useValue: new RouteSegment([], { 'site': 'core' }, null, null, null) }),
+      provide(RouteSegment, { useValue: new RouteSegment([], { site: 'core' }, null, null, null) }),
       provideStore({ config: config }),
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
@@ -58,6 +58,13 @@ export function main() {
         component.getConfig();
         expect(component.config).toEqual(mockResponse());
         expect(component.items).toEqual(['header', 'searchBox']);
+      }));
+
+    it('Should have a goToSite method that given a siteName navigates to the ui-config page for that site',
+      inject([UiConfigComponent], (component:UiConfigComponent) => {
+        spyOn(component.router, 'navigate');
+        component.goToSite('bbcws');
+        expect(component.router.navigate).toHaveBeenCalledWith(['admin/ui-config/', 'bbcws']);
       }));
   });
 

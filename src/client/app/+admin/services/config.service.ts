@@ -6,10 +6,10 @@ import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class ConfigService {
 
-  private http: Http;
-  private apiConfig: ApiConfig;
-  private uiApiUrl: string;
-  private siteApiUrl: string;
+  public http: Http;
+  public apiConfig: ApiConfig;
+  public uiApiUrl: string;
+  public siteApiUrl: string;
 
   constructor(http: Http, apiConfig: ApiConfig) {
     this.http = http;
@@ -21,13 +21,13 @@ export class ConfigService {
   public getUi(): Observable<any> {
     return this.http.get(this.uiApiUrl + 'search',
       { headers: this.apiConfig.authHeaders() }
-    ).map((res: Response) => res.json());;
+    ).map((res: Response) => res.json());
   }
 
   public getSite(): Observable<any> {
     return this.http.get(this.siteApiUrl + 'search',
       { headers: this.apiConfig.authHeaders() }
-    ).map((res: Response) => res.json());;
+    ).map((res: Response) => res.json());
   }
 
   public search(siteName: string): Observable<any> {

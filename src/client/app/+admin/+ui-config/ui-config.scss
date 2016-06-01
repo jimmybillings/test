@@ -1,9 +1,7 @@
 .config-title {
-  form {
-    display: inline;
+  form, select {
+    width: 30%;
   }
-  margin-top: 1rem;
-  font-size: 2rem;
 }
 .admin-ui-config {
   md-list {

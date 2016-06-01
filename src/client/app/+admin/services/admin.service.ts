@@ -22,13 +22,13 @@ export class AdminService {
   public pageStore: Observable<any>;
   public operatorMap: any;
   public routeSegment: RouteSegment;
-  public _http: Http;
-  public _apiConfig: ApiConfig;
+  public http: Http;
+  public apiConfig: ApiConfig;
 
   constructor(http: Http, apiConfig: ApiConfig, routeSegment: RouteSegment, private store: Store<any>) {
-    this._http = http;
+    this.http = http;
     this.adminStore = this.store.select('adminResources');
-    this._apiConfig = apiConfig;
+    this.apiConfig = apiConfig;
     this.routeSegment = routeSegment;
     this.operatorMap = {
       'before': 'LT',
@@ -40,15 +40,15 @@ export class AdminService {
     queryObject['i'] = (parseFloat(queryObject['i']) - 1).toString();
     let url = this.getIdentitiesSearchPath(resource);
     let options = this.getIdentitiesSearchOptions(queryObject);
-    return this._http.get(url, options).map((res: Response) => res.json());
+    return this.http.get(url, options).map((res: Response) => res.json());
   }
 
   public postResource(formData: any, resource: string): Observable<any> {
     let url = this.buildPostUrl(resource);
-    let headers = this._apiConfig.authHeaders();
+    let headers = this.apiConfig.authHeaders();
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify(formData);
-    return this._http.post(url, body, options).map((res: Response) => res.json());
+    return this.http.post(url, body, options).map((res: Response) => res.json());
   }
 
   public setResources(data: any): void {
@@ -90,17 +90,17 @@ export class AdminService {
   public getIdentitiesSearchOptions(queryObject: any): RequestOptions {
     const search: URLSearchParams = new URLSearchParams();
     for (var param in queryObject) search.set(param, queryObject[param]);
-    let headers = this._apiConfig.authHeaders();
+    let headers = this.apiConfig.authHeaders();
     let options = { headers: headers, search: search };
     return new RequestOptions(options);
   }
 
   public buildPostUrl(resource: string): string {
-    return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource;
+    return this.apiConfig.baseUrl() + 'api/identities/v1/' + resource;
   }
 
   public getIdentitiesSearchPath(resource: string): string {
-    return this._apiConfig.baseUrl() + 'api/identities/v1/' + resource + '/searchFields/?';
+    return this.apiConfig.baseUrl() + 'api/identities/v1/' + resource + '/searchFields/?';
   }
 
   public sanitizeFormInput(params: any): any {
