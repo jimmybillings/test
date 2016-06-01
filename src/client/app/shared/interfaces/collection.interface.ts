@@ -12,3 +12,8 @@ export interface Collection {
   editorsCount?: number;
   tagCount?: number;
 }
+
+export interface CollectionStore {
+  collections: Collection[];
+  focusedCollection: Collection;
+}

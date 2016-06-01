@@ -87,6 +87,14 @@
     "RIGHTS_VOICE":"Voice Rights",
     "RIGHTS_MUSIC":"Music Rights",
     "RIGHTS_SOUNDEFFECTS":"Sound Effect Rights"
+  },
+  "COLLECTION": {
+    "NEW_TITLE": "Create a New Collection",
+    "FORM": {
+      "COLLECTION_NAME_LABEL": "Collection Name",
+      "TAGS_LABEL": "Tags",
+      "SUBMIT_LABEL": "CREATE"
+    }
   }
 }
 

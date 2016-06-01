@@ -17,6 +17,7 @@ import {
   SearchComponent,
   AssetComponent,
   ContentComponent,
+  CollectionComponent,
   AdminComponent
 } from './platform/app.component.imports';
 
@@ -35,6 +36,9 @@ declare var portal: string;
   { path: '/', component: HomeComponent },
   { path: '/user', component: UserManagementComponent },
   { path: '/search', component: SearchComponent },
+  { path: '/asset/:name', component: AssetComponent },
+  // { path: '/collection/:id', component: CollectionComponent },
+  { path: '/collection', component: CollectionComponent },
   { path: '/asset/:name', component: AssetComponent },
   { path: '/content/:page', component: ContentComponent },
   { path: '/admin', component: AdminComponent }
