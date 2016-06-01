@@ -15,18 +15,23 @@ import { Subscription } from 'rxjs/Rx';
 })
 
 export class UiConfigComponent implements OnInit, OnDestroy {
-  public site: string;
+  public siteName: string;
   public config: any;
   public currentConfigOptions: any;
   public items: Array<any>;
+  public sites: Array<any>;
   public configType: string;
   public subscription: Subscription;
 
-  constructor(public router: Router, public routeSegment: RouteSegment, public configService: ConfigService) {}
+  constructor(public router: Router,
+              public routeSegment: RouteSegment,
+              public configService: ConfigService) {
+                this.sites = ['cnn', 'core', 'augusta', 'bbcws'];
+              }
 
   ngOnInit() {
     this.configType = this.routeSegment.urlSegments[0].segment.split('-')[0];
-    this.site = this.routeSegment.getParam('site');
+    this.siteName = this.routeSegment.getParam('site');
     this.getConfig();
   }
 
@@ -35,10 +40,14 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public getConfig(): void {
-    this.configService.getUiConfig(this.site).subscribe(data => {
+    this.configService.getUiConfig(this.siteName).subscribe(data => {
       this.config = data;
       this.items = Object.keys(data.components);
     });
+  }
+
+  public goToSite(siteName: string): void {
+    this.router.navigate(['admin/ui-config/', siteName]);
   }
 
   public show(item: any): void {

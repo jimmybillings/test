@@ -1,7 +1,10 @@
 
 <div layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
   <div class="config-title" flex="30" flex-gt-lg="30" flex-xl="30">
-    <strong>{{site.toUpperCase()}}</strong> {{configType}} config
+    <strong>{{siteName.toUpperCase()}}</strong> {{configType}} config
+    <select value="{{siteName}}" (change)="goToSite($event.target.value)">
+      <option *ngFor="let site of sites" [value]="site">{{site}}</option>
+    </select>
   </div>
 </div>
 <div class="admin-ui-config" layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
