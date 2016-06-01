@@ -65,6 +65,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   public navigateToFilterUrl(filterParams: any): void {
     let searchTerms = this.adminService.buildSearchTerm(filterParams);
     let params = this.adminService.buildRouteParams(searchTerms);
+    params.i = 1;
     this.router.navigate(['/admin/resource/' + this.resource, params]);
   }
 

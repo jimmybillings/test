@@ -123,7 +123,7 @@ export function main() {
       component.navigateToFilterUrl({ firstName: 'john' });
       expect(component.adminService.buildRouteParams).toHaveBeenCalledWith({ fields: 'firstName', values: 'john' });
       expect(component.router.navigate)
-        .toHaveBeenCalledWith(['/admin/resource/user', Object({ i: '1', n: '10', s: 'createdOn', d: 'false', fields: 'firstName', values: 'john' })]);
+        .toHaveBeenCalledWith(['/admin/resource/user', Object({ i: 1, n: '10', s: 'createdOn', d: 'false', fields: 'firstName', values: 'john' })]);
     }));
   });
 

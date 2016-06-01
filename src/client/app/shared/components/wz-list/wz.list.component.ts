@@ -18,12 +18,17 @@ export class WzListComponent {
   @Input() headers: any;
   @Input() toggleFlag: any;
   @Output() sort = new EventEmitter();
+  @Output() clickRow = new EventEmitter();
 
   public sortBy(attribute: string): void {
     this.sort.emit({ 's': attribute, 'd': !this.toggleFlag });
   }
 
   public showRecord(record: any): void {
-    console.dir(record);
+    this.clickRow.emit(record);
+  }
+
+  public date(date: any): Date {
+    return new Date(date);
   }
 }

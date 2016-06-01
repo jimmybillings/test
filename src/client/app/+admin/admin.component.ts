@@ -16,7 +16,7 @@ import {ConfigComponent} from './+config/config.component';
 @Routes([
   { path: '/dashboard', component: DashboardComponent },
   { path: '/config', component: ConfigComponent },
-  { path: '/resource/:resource/new', component: NewComponent  },
+  { path: '/resource/:resource/new', component: NewComponent },
   { path: '/resource/:resource', component: IndexComponent  },
 ])
 
