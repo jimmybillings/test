@@ -3,6 +3,7 @@ import { Router, RouteSegment } from '@angular/router';
 import { ConfigService } from '../services/config.service';
 import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
 import { ValuesPipe } from '../../shared/pipes/values.pipe';
+import { ApiConfig } from '../../shared/services/api.config';
 
 @Component({
   moduleId: module.id,
@@ -15,6 +16,7 @@ import { ValuesPipe } from '../../shared/pipes/values.pipe';
 
 export class UiConfigComponent implements OnInit {
   public siteName: string;
+  public portal: string;
   public config: any;
   public currentConfigOptions: any;
   public items: Array<any>;
@@ -22,12 +24,14 @@ export class UiConfigComponent implements OnInit {
   public configType: string;
 
   constructor(public router: Router,
+              public apiConfig: ApiConfig,
               public routeSegment: RouteSegment,
               public configService: ConfigService) {
                 this.sites = [];
               }
 
   ngOnInit() {
+    this.portal = this.apiConfig.getPortal();
     this.configType = this.routeSegment.urlSegments[0].segment.split('-')[0];
     this.siteName = this.routeSegment.getParam('site');
     this.getConfig();
