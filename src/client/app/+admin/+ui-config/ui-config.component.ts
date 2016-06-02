@@ -32,15 +32,19 @@ export class UiConfigComponent implements OnInit {
 
   ngOnInit() {
     this.portal = this.apiConfig.getPortal();
-    this.configType = this.routeSegment.urlSegments[0].segment.split('-')[0];
     this.siteName = this.routeSegment.getParam('site');
-    this.getConfig();
-    this.configService.getUi().subscribe(data => {
-      data.items.reduce((previous: any, current: any) => {
-        previous.push(current.siteName);
-        return previous;
-      }, this.sites);
-    });
+    if (this.portal !== 'core' && !(this.portal === this.siteName)) {
+      this.router.navigate(['admin/ui-config/', this.portal]);
+    } else {
+      this.configType = this.routeSegment.urlSegments[0].segment.split('-')[0];
+      this.getConfig();
+      this.configService.getUi().subscribe(data => {
+        data.items.reduce((previous: any, current: any) => {
+          previous.push(current.siteName);
+          return previous;
+        }, this.sites);
+      });
+    }
   }
 
   public getConfig(): void {
