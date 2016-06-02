@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="admin-ui-config" layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
-  <div flex="15" flex-gt-lg="15" flex-xl="15">
+  <div class="menu" flex="15" flex-gt-lg="15" flex-xl="15">
     <md-content>
       <md-list>
         <div *ngFor="let item of items">
@@ -17,11 +17,56 @@
               <md-list-text>{{ item }}</md-list-text>
             </div>
             <div flex-gt-lg="10" flex-xl="10" flex="10">
-              <i md-icon="" (click)="show(item)" class="material-icons">keyboard_arrow_down</i>
+              <i md-icon="" (click)="show(item)" class="material-icons">keyboard_arrow_right</i>
             </div>
           </md-list-item>
         </div>
       </md-list>
     </md-content>
+  </div>
+  <div class="menu" flex="15" flex-gt-lg="15" flex-xl="15" *ngIf="subComponents">
+    <md-content>
+      <md-list>
+        <div *ngFor="let item of subItems">
+          <md-list-item class="md-1-line">
+            <div flex-gt-lg="90" flex-xl="90" flex="90">
+              <md-list-text>{{ item }}</md-list-text>
+            </div>
+            <div flex-gt-lg="10" flex-xl="10" flex="10">
+              <i md-icon="" (click)="buildForm(item)" class="material-icons">keyboard_arrow_right</i>
+            </div>
+          </md-list-item>
+        </div>
+      </md-list>
+    </md-content>
+  </div>
+  <div class="menu" flex="15" flex-gt-lg="15" flex-xl="15" *ngIf="formItems">
+    <md-content>
+      <md-list>
+        <div *ngFor="let item of formItems; let i = index">
+          <md-list-item class="md-1-line">
+            <div flex-gt-lg="80" flex-xl="80" flex="80">
+              <md-list-text>{{ item.name }}</md-list-text>
+            </div>
+            <div class="icons" flex-gt-lg="20" flex-xl="20" flex="20" layout="row" layout-align="end center">
+              <i md-icon="" class="material-icons">menu</i>
+              <i md-icon="" class="material-icons" (click)="buildFieldForm(i)">edit</i>
+            </div>
+          </md-list-item>
+        </div>
+      </md-list>
+    </md-content>
+  </div>
+  <div flex="40" flex-gt-lg="40" flex-xl="40" *ngIf="form">
+    <md-card>
+      <form layout="column" (ngSubmit)="onSubmit(form.value)" [ngFormModel]="form" class="md-inline-form">
+        <div *ngFor="let field of controls">
+          <md-input [(ngModel)]=form.controls[field].value placeholder="{{form.controls[field].value}}"></md-input>
+        </div>
+        <md-card-actions layout="row" layout-align="center center">
+          <button md-raised-button type="submit">update</button>
+        </md-card-actions>
+      </form>
+    </md-card>
   </div>
 </div>

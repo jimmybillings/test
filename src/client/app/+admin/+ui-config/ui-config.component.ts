@@ -1,7 +1,8 @@
+import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/common';
 import { Router, RouteSegment } from '@angular/router';
 import { ConfigService } from '../services/config.service';
-import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
 import { ValuesPipe } from '../../shared/pipes/values.pipe';
 import { ApiConfig } from '../../shared/services/api.config';
 
@@ -17,14 +18,19 @@ import { ApiConfig } from '../../shared/services/api.config';
 export class UiConfigComponent implements OnInit {
   public siteName: string;
   public portal: string;
+  public form: any;
   public config: any;
-  public currentConfigOptions: any;
+  public subComponents: any;
   public items: Array<any>;
+  public controls: Array<any>;
+  public subItems: Array<any>;
+  public formItems: Array<any>;
   public sites: Array<any>;
   public configType: string;
 
   constructor(public router: Router,
               public apiConfig: ApiConfig,
+              public fb: FormBuilder,
               public routeSegment: RouteSegment,
               public configService: ConfigService) {
                 this.sites = [];
@@ -59,6 +65,25 @@ export class UiConfigComponent implements OnInit {
   }
 
   public show(item: any): void {
-    console.log(item);
+    this.subComponents = this.config.components[item].config;
+    this.subItems = Object.keys(this.subComponents);
+  }
+
+  public buildForm(item: any): void {
+    let object = this.subComponents[item];
+    if (object.items) {
+      this.formItems = object.items;
+    } else {
+      this.form = this.fb.group({label: item, value: object.value});
+    }
+  }
+
+  public buildFieldForm(itemIndex: string): any {
+    this.form = this.fb.group(this.formItems[itemIndex]);
+    this.controls = Object.keys(this.form.controls);
+  }
+
+  public onSubmit(formValue: any): void {
+    console.log(formValue);
   }
 }
