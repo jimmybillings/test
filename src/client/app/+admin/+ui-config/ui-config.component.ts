@@ -17,19 +17,17 @@ import { UiConfig } from '../../shared/services/ui.config';
 })
 
 export class UiConfigComponent implements OnInit {
+  public subComponent: string;
+  public configType: string;
+  public component: string;
   public siteName: string;
   public portal: string;
-  public form: Object;
-  public config: any;
   public subComponents: any;
-  public subComponent: string;
-  public component: string;
+  public config: any;
+  public form: any;
   public items: Array<any>;
-  public controls: Array<any>;
-  public subItems: Array<any>;
-  public formItems: Array<any>;
   public sites: Array<any>;
-  public configType: string;
+  public formItems: Array<any>;
 
   constructor(public router: Router,
               public apiConfig: ApiConfig,
@@ -71,7 +69,6 @@ export class UiConfigComponent implements OnInit {
   public show(item: any): void {
     this.component = item;
     this.subComponents = this.config.components[item].config;
-    this.subItems = Object.keys(this.subComponents);
   }
 
   public buildForm(item: any): void {
@@ -81,13 +78,11 @@ export class UiConfigComponent implements OnInit {
       this.formItems = object.items;
     } else {
       this.form = {value: object.value};
-      this.controls = Object.keys(this.form);
     }
   }
 
-  public buildFieldForm(itemIndex: string): any {
+  public buildFieldForm(itemIndex: string): void {
     this.form = this.formItems[itemIndex];
-    this.controls = Object.keys(this.form);
   }
 
   public onSubmit(formValue: any): void {

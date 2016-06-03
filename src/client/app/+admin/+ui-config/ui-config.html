@@ -27,13 +27,13 @@
   <div class="menu" flex="15" flex-gt-lg="15" flex-xl="15" *ngIf="subComponents">
     <md-content>
       <md-list>
-        <div *ngFor="let item of subItems">
+        <div *ngFor="let item of subComponents | values">
           <md-list-item class="md-1-line">
             <div flex-gt-lg="90" flex-xl="90" flex="90">
-              <md-list-text>{{ item }}</md-list-text>
+              <md-list-text>{{ item.key }}</md-list-text>
             </div>
             <div flex-gt-lg="10" flex-xl="10" flex="10">
-              <i md-icon="" (click)="buildForm(item)" class="material-icons">keyboard_arrow_right</i>
+              <i md-icon="" (click)="buildForm(item.key)" class="material-icons">keyboard_arrow_right</i>
             </div>
           </md-list-item>
         </div>
@@ -60,8 +60,8 @@
   <div flex="40" flex-gt-lg="40" flex-xl="40" *ngIf="form">
     <md-card>
       <form layout="column" (ngSubmit)="onSubmit(config)" class="md-inline-form">
-        <div *ngFor="let control of controls; of let i = index">
-          <md-input [(ngModel)]="form[control]" ngControl="{{control}}" placeholder="{{control}}"></md-input>
+        <div *ngFor="let control of form | values; of let i = index">
+          <md-input [(ngModel)]="form[control.key]" ngControl="{{control.key}}" placeholder="{{control.key}}"></md-input>
         </div>
         <md-card-actions layout="row" layout-align="center center">
           <button md-raised-button type="submit">update</button>

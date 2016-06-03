@@ -10,12 +10,4 @@
       <wz-list [items]="siteItems" [headers]="headers" (clickRow)="navigateToShowSite($event)"></wz-list>
     </div>
   </div>
-  <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
-    <div flex-xl="80" flex-gt-xl="90" flex="100">
-      <form [ngFormModel]="configForm" (ngSubmit)="onSubmit(configForm.value)">
-        <textarea name="config" id="" cols="30" rows="50" ngControl="config"></textarea>
-        <button md-raised-button class="md-primary" type="submit">Update</button>
-      </form>
-    </div>
-  </div>
 </div>

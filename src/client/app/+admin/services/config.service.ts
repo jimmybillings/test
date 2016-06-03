@@ -49,7 +49,6 @@ export class ConfigService {
   }
 
   public update(siteId: number, data: any): Observable<any> {
-    console.log(data);
     return this.http.put(this.uiApiUrl + siteId,
       data, { headers: this.apiConfig.authHeaders() });
   }
