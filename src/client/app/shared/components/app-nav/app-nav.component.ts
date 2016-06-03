@@ -1,6 +1,7 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
+import { Collection } from '../../../shared/interfaces/collection.interface';
 
 /**
  * site header component - renders the header information
@@ -21,11 +22,14 @@ export class AppNavComponent implements OnInit {
   @Input() showFixed: any;
   @Input() state: any;
   @Input() searchBarIsActive: any;
+  @Input() collection: Collection;
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
   @Output() onOpenBinTray = new EventEmitter();
   @Output() onOpenSearch = new EventEmitter();
   @Output() onOpenSidenav = new EventEmitter();
+  @Output() onCreateNewCollection = new EventEmitter();
+
 
   public loggedInState: boolean;
 
@@ -49,5 +53,9 @@ export class AppNavComponent implements OnInit {
 
   public openSidenav(event: Event) {
     this.onOpenSidenav.emit(event);
+  }
+
+  public createNewCollection(event: Event) {
+    this.onCreateNewCollection.emit(event);
   }
 }

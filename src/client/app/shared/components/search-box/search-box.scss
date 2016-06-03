@@ -213,6 +213,9 @@ header.app-header.search-closed search-box {
   input {
     max-height: 0;
     min-height: 0;
+    @include placeholder {
+      opacity: 0;
+  }
   }
   button, button.close {
     max-height: 0;

@@ -3,6 +3,7 @@ import {Routes, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {Observable} from 'rxjs/Rx';
+import { Store } from '@ngrx/store';
 import {MultilingualService} from './shared/services/multilingual.service';
 import {
   APP_COMPONENT_DIRECTIVES,
@@ -17,6 +18,10 @@ import {
   SearchComponent,
   AssetComponent,
   ContentComponent,
+  CollectionsService,
+  CollectionComponent,
+  Collection,
+  CollectionStore,
   AdminComponent
 } from './platform/app.component.imports';
 
@@ -36,6 +41,9 @@ declare var portal: string;
   { path: '/user', component: UserManagementComponent },
   { path: '/search', component: SearchComponent },
   { path: '/asset/:name', component: AssetComponent },
+  // { path: '/collection/new/:assetId', component: CollectionComponent },
+  { path: '/collection', component: CollectionComponent },
+  { path: '/asset/:name', component: AssetComponent },
   { path: '/content/:page', component: ContentComponent },
   { path: '/admin', component: AdminComponent }
 ])
@@ -49,6 +57,8 @@ export class AppComponent implements OnInit {
   public searchBarIsActive: boolean = true;
   public binTrayIsOpen: boolean = false;
   public searchIsOpen: boolean = true;
+  public collections: Observable<Array<Collection>>;
+  public focusedCollection: Observable<any>;
 
   constructor(
     public uiConfig: UiConfig,
@@ -59,6 +69,8 @@ export class AppComponent implements OnInit {
     private apiConfig: ApiConfig,
     private authentication: Authentication,
     private currentUser: CurrentUser,
+    public collectionsService: CollectionsService,
+    public store: Store<CollectionStore>,
     private renderer: Renderer) {
     this.apiConfig.setPortal(portal);
   }
@@ -70,6 +82,14 @@ export class AppComponent implements OnInit {
     this.currentUser.set();
     this.configChanges();
     this.routerChanges();
+    this.focusedCollection = this.store.select('focusedCollection');
+    this.currentUser._currentUser.subscribe(u => {
+      this.UserHasFocusedCollection(u) ? this.collectionsService.getFocusedCollection() : console.log('you don\'t have a focused collection');
+    });
+  }
+
+  public UserHasFocusedCollection(user: any): boolean {
+    return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
   }
 
   public configChanges() {
@@ -87,6 +107,7 @@ export class AppComponent implements OnInit {
   public logout() {
     this.authentication.destroy().subscribe();
     this.currentUser.destroy();
+    this.collectionsService.resetFocused();
     this.router.navigate(['/']);
   }
 
@@ -94,7 +115,6 @@ export class AppComponent implements OnInit {
 
   public closeBinTray() { this.binTrayIsOpen = false; }
   public openBinTray() { this.binTrayIsOpen = true; }
-
   public openSearch() { this.searchIsOpen = true; }
   public closeSearch() { this.searchIsOpen = false; }
 

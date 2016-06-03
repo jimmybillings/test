@@ -55,10 +55,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.router.navigate(['/asset', asset.assetId]);
   }
 
-  addToCollection(asset: any): void {
+  addToCollection(asset: any) {
     if (!this.currentUser.loggedIn()) this.router.navigate(['/user/login']);
+    // if (this.currentUser.loggedIn() && focusedCollection) this.router.navigate(['/collection']);
 
-    console.log(asset.assetId);
+    // let params = { 'asset': asset.assetId };
+    // if (this.currentUser.loggedIn()) this.router.navigate(['/collection', params]);
+    // console.log(`what ID - ${this.currentUser.id() | async}`);
+    // console.log(`has a focused bin - ${this.currentUser.hasFocusedCollection()}`);
   }
 
   addToCart(asset: any): void {

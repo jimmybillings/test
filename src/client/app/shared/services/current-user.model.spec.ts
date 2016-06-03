@@ -7,6 +7,7 @@ import {
 } from '@angular/core/testing';
 import { provideStore } from '@ngrx/store';
 import { CurrentUser, currentUser } from './current-user.model';
+import { CurrentUserInterface} from '../interfaces/current-user.interface';
 
 export function main() {
 
@@ -146,7 +147,7 @@ export function main() {
     };
   }
 
-  function setLoggedOutUser() {
+  function setLoggedOutUser(): CurrentUserInterface {
     return {
       'lastUpdated': '',
       'createdOn': '',
@@ -157,9 +158,11 @@ export function main() {
       'lastName': '',
       'siteName': '',
       'accountIds': [0],
-      'permissions': [
-        ''
-      ]
+      'permissions': [''],
+      'focusedCollection': null,
+      'ownedCollections': null,
+      'editableCollections': null,
+      'accessibleCollections': null
     };
   }
 

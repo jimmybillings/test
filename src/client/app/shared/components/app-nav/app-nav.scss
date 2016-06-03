@@ -112,6 +112,7 @@ header.app-header.search-closed app-nav button.open-search {
 // there are a few different styles of pages.
 // Also the current mdToolbar does not change height for mobile. This could change, that is what the media queries are for.
 
+header.app-header + div.main-content collection,
 header.app-header + div.main-content cms,
 header.app-header + div.main-content search,
 header.app-header + div.main-content asset {
@@ -122,6 +123,7 @@ header.app-header + div.main-content asset {
     border-top-width: rem(15.2);
   }
 }
+header.app-header.bin-tray-closed + div.main-content collection,
 header.app-header.bin-tray-closed + div.main-content cms,
 header.app-header.bin-tray-closed + div.main-content search,
 header.app-header.bin-tray-closed + div.main-content asset {
@@ -130,6 +132,7 @@ header.app-header.bin-tray-closed + div.main-content asset {
     border-top-width: rem(9.6);
   }
 }
+header.app-header.bin-tray-closed.search-closed + div.main-content collection,
 header.app-header.bin-tray-closed.search-closed + div.main-content cms,
 header.app-header.bin-tray-closed.search-closed + div.main-content search,
 header.app-header.bin-tray-closed.search-closed + div.main-content asset {
@@ -138,6 +141,7 @@ header.app-header.bin-tray-closed.search-closed + div.main-content asset {
   //   border-top-width: rem(5.6);
   // }
 }
+header.app-header.search-closed + div.main-content collection,
 header.app-header.search-closed + div.main-content cms,
 header.app-header.search-closed + div.main-content search,
 header.app-header.search-closed + div.main-content asset {
