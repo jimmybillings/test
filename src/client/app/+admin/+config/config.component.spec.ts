@@ -43,15 +43,15 @@ export function main() {
       }));
 
       it('Should have a navigateToShowUi method that console.logs for now', inject([ConfigComponent], (component: ConfigComponent) => {
-        spyOn(console, 'log');
+        spyOn(component.router, 'navigate');
         component.navigateToShowUi({siteName: 'core'});
-        expect(console.log).toHaveBeenCalledWith('navigate to ui', {siteName: 'core'});
+        expect(component.router.navigate).toHaveBeenCalledWith(['admin/ui-config/', 'core']);
       }));
 
       it('Should have a navigateToShowSite method that console.logs for now', inject([ConfigComponent], (component: ConfigComponent) => {
-        spyOn(console, 'log');
+        spyOn(component.router, 'navigate');
         component.navigateToShowSite({siteName: 'core'});
-        expect(console.log).toHaveBeenCalledWith('navigate to site', {siteName: 'core'});
+        expect(component.router.navigate).toHaveBeenCalledWith(['admin/site-config/', 'core']);
       }));
   });
 }

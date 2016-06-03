@@ -37,13 +37,13 @@ export class ConfigComponent implements OnInit {
   }
 
   public getConfigs(): void {
-    this.configService.getUi().subscribe((res) => {
-      this.uiItems = res.json().items;
-      this.uiItems.forEach(item => {Object.assign(item, {lastUpdateBy: 'Ross Edfort'});});
+    this.configService.getUi().subscribe(data => {
+      this.uiItems = data.items;
+      this.uiItems.forEach(item => {Object.assign(item, {lastUpdateBy: 'Ross Edfort', type: 'ui'});});
     });
-    this.configService.getSite().subscribe((res) => {
-      this.siteItems = res.json().items;
-      this.siteItems.forEach(item => {Object.assign(item, {lastUpdateBy: 'Ross Edfort'});});
+    this.configService.getSite().subscribe(data => {
+      this.siteItems = data.items;
+      this.siteItems.forEach(item => {Object.assign(item, {lastUpdateBy: 'Ross Edfort', type: 'site'});});
     });
   }
 
@@ -52,11 +52,11 @@ export class ConfigComponent implements OnInit {
   }
 
   public navigateToShowUi(record: any): void {
-    console.log('navigate to ui', record);
+    this.router.navigate(['admin/ui-config/', record.siteName]);
   }
 
   public navigateToShowSite(record: any): void {
-    console.log('navigate to site', record);
+    this.router.navigate(['admin/site-config/', record.siteName]);
   }
 
   public onSubmit(form: any): void {

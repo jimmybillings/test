@@ -1,0 +1,13 @@
+.config-title {
+  form, select {
+    width: 30%;
+  }
+}
+.admin-ui-config {
+  md-list {
+    background-color: #fff;
+    md-list-item i {
+      cursor: pointer;
+    }
+  }
+}

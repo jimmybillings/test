@@ -34,8 +34,8 @@ export function main() {
     ]);
 
     it('Should create instance variables for http, and apiConfig', inject([AdminService, MockBackend], (service: AdminService, mockBackend: MockBackend) => {
-      expect(service._http).toBeDefined();
-      expect(service._apiConfig).toBeDefined();
+      expect(service.http).toBeDefined();
+      expect(service.apiConfig).toBeDefined();
     }));
 
     it('Should have a getIdentitiesSearchOptions function that builds the appropriate RequestOptions given search parameters', inject([AdminService], (service: AdminService) => {

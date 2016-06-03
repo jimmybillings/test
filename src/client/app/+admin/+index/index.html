@@ -2,9 +2,7 @@
 <section class="admin-index" *ngIf="config">
   <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
     <div flex="95" flex-gt-lg="95" flex-xl="95">
-      <a md-button [routerLink]="['new']">New {{currentComponent}}</a>
-      <a disabled="true" md-button="" [routerLink]="['/']">Export Current {{currentComponent}}s</a>
-      <a disabled="true" md-button="" [routerLink]="['/']">Export All {{currentComponent}}s</a>
+      <a md-raised-button="" [routerLink]="['new']">New {{currentComponent}}</a>
     </div>
   </div>
   <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
