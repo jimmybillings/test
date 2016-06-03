@@ -59,7 +59,7 @@
   </div>
   <div flex="40" flex-gt-lg="40" flex-xl="40" *ngIf="form">
     <md-card>
-      <form layout="column" (ngSubmit)="onSubmit(form)" class="md-inline-form">
+      <form layout="column" (ngSubmit)="onSubmit(config)" class="md-inline-form">
         <div *ngFor="let control of controls; of let i = index">
           <md-input [(ngModel)]="form[control]" ngControl="{{control}}" placeholder="{{control}}"></md-input>
         </div>

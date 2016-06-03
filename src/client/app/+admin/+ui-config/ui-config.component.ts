@@ -5,6 +5,7 @@ import { Router, RouteSegment } from '@angular/router';
 import { ConfigService } from '../services/config.service';
 import { ValuesPipe } from '../../shared/pipes/values.pipe';
 import { ApiConfig } from '../../shared/services/api.config';
+import { UiConfig } from '../../shared/services/ui.config';
 
 @Component({
   moduleId: module.id,
@@ -18,7 +19,7 @@ import { ApiConfig } from '../../shared/services/api.config';
 export class UiConfigComponent implements OnInit {
   public siteName: string;
   public portal: string;
-  public form: any;
+  public form: Object;
   public config: any;
   public subComponents: any;
   public subComponent: string;
@@ -32,6 +33,7 @@ export class UiConfigComponent implements OnInit {
 
   constructor(public router: Router,
               public apiConfig: ApiConfig,
+              public uiConfig: UiConfig,
               public fb: FormBuilder,
               public routeSegment: RouteSegment,
               public configService: ConfigService) {
@@ -89,7 +91,8 @@ export class UiConfigComponent implements OnInit {
   }
 
   public onSubmit(formValue: any): void {
-    console.log(this.config.components[this.component].config[this.subComponent]);
-    console.log(formValue);
+    this.configService.update(this.config.id, JSON.stringify(formValue)).subscribe((res) => {
+      this.uiConfig.set(res.json());
+    });
   }
 }

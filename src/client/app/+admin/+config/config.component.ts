@@ -60,7 +60,7 @@ export class ConfigComponent implements OnInit {
   }
 
   public onSubmit(form: any): void {
-    this.configService.update(form.config)
+    this.configService.update(1, form.config)
       .subscribe((res) => {
         this.uiConfig.set(res.json());
         (<Control>this.configForm.controls['config']).updateValue(JSON.stringify(res.json(), undefined, 4));
