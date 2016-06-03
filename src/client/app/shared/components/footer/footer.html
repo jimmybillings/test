@@ -36,6 +36,7 @@
           <option *ngFor="let l of supportedLanguages" [value]="l.code">{{l.title}}</option>
         </select>
       </form>
+      <h4>{{currentUser.hasFocusedCollection() | async}}</h4>
     </div>
   </div>
   <div flex=""></div>

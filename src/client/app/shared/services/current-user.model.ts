@@ -31,10 +31,9 @@ export class CurrentUser {
 
   public _currentUser: Observable<any>;
 
-  constructor(private store: Store<any>) {
-    this._currentUser = this.store.select('currentUser');
-
-
+  constructor(
+    private store: Store<any>) {
+      this._currentUser = this.store.select('currentUser');
   }
 
   public set(user: CurrentUserInterface = null): void {
@@ -111,6 +110,12 @@ export class CurrentUser {
     });
   }
 
+  public hasFocusedCollection(): Observable<any> {
+    return this._currentUser.map((user) => {
+      return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
+    });
+  }
+
   public is(permission: string): Observable<any> {
     let permissionToCheck = permissionMap[permission];
     return this._currentUser.map((user) => {
@@ -129,9 +134,11 @@ export class CurrentUser {
       'lastName': '',
       'siteName': '',
       'accountIds': [0],
-      'permissions': [
-        ''
-      ]
+      'permissions': [''],
+      'focusedCollection': null,
+      'ownedCollections': null,
+      'editableCollections': null,
+      'accessibleCollections': null
     };
   }
 }

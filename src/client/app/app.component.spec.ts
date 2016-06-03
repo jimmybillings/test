@@ -21,6 +21,7 @@ import { UiConfig, config} from './shared/services/ui.config';
 import { Authentication} from './+user-management/services/authentication.data.service';
 import { MultilingualService, multilingualReducer} from './shared/services/multilingual.service';
 import { SearchContext} from './shared/services/search-context.service';
+import { CollectionsService} from './+collections/services/collections.service';
 
 export function main() {
   describe('App Component', () => {
@@ -46,7 +47,8 @@ export function main() {
       ApiConfig,
       Authentication,
       UiConfig,
-      SearchContext
+      SearchContext,
+      CollectionsService
     ]);
 
     it('Create instance of app and assign the CurrentUser to an instance variable inside of app',
@@ -88,10 +90,12 @@ export function main() {
     it('Should log out a user', inject([AppComponent], (component: any) => {
       spyOn(component.authentication, 'destroy').and.callThrough();
       spyOn(component.currentUser, 'destroy');
+      spyOn(component.collectionsService, 'resetFocused');
       spyOn(component.router, 'navigate');
       component.logout();
       expect(component.authentication.destroy).toHaveBeenCalled();
       expect(component.currentUser.destroy).toHaveBeenCalled();
+      expect(component.collectionsService.resetFocused).toHaveBeenCalled();
       expect(component.router.navigate).toHaveBeenCalledWith(['/']);
     }));
 

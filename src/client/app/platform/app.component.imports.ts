@@ -18,9 +18,10 @@ export { ApiConfig} from '../shared/services/api.config';
 export { UiConfig} from '../shared/services/ui.config';
 export { SearchContext} from '../shared/services/search-context.service';
 export { Authentication} from '../+user-management/services/authentication.data.service';
-
+export { CollectionsService } from '../+collections/services/collections.service';
 // Interfaces
 export {ILang} from '../shared/interfaces/language.interface';
+export { Collection, CollectionStore } from '../shared/interfaces/collection.interface';
 
 // Pure Components
 import {AppNavComponent} from '../shared/components/app-nav/app-nav.component';

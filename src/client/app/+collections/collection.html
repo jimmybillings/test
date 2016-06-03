@@ -1,22 +1,24 @@
 
 <section class="login hero" style="padding-top: 30px;">
-
-
+  <h2>{{focusedCollection.name | async}}</h2>
       <div layout="row" flex="" layout-padding layout-margin>
     
         <collections-list
-          flex="70" 
+          flex="55" 
           [collections]="collections | async"
-          (selected)="selectCollection($event)" (deleted)="deleteCollection($event)">
+          (selected)="selectCollection($event)" 
+          (deleted)="deleteCollection($event)">
         </collections-list>
 
 
         <collection-form
           flex="30"
-          (create)="createCollection($event)" (cancelled)="resetCollection($event)"
+          (create)="createCollection($event)" 
+          (cancelled)="resetCollection($event)"
           [collection]="focusedCollection | async">
         </collection-form>
         
-        
       </div>
+
 </section>
+<!--<router-outlet></router-outlet>-->

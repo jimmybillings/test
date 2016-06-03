@@ -12,6 +12,7 @@ import { Store, Reducer, Action} from '@ngrx/store';
 /**
  * Collections store - 
  */
+
 export const collections: Reducer<any> = (state: any = [], action: Action) => {
   switch (action.type) {
     case 'ADD_COLLECTIONS':
@@ -34,9 +35,17 @@ export const collections: Reducer<any> = (state: any = [], action: Action) => {
 /**
  * Focused Collection store - 
  */
-
-
-export const focusedCollection = (state: any = null, action: Action) => {
+const focusedState: Collection = {
+  createdOn: '',
+  lastUpdated: '',
+  id: null,
+  siteName: '',
+  name: '',
+  owner: '',
+  assets: [],
+  tags: [],
+};
+export const focusedCollection = (state = focusedState, action: Action) => {
   switch (action.type) {
     case 'FOCUSED_COLLECTION':
       return action.payload;
@@ -61,7 +70,7 @@ export class CollectionsService {
     public apiConfig: ApiConfig,
     public http: Http) {
     this.collections = store.select('collections');
-    this.focusedCollection = store.select('focusedCollections');
+    // this.focusedCollection = store.select('focusedCollections');
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection'
     };
@@ -104,5 +113,9 @@ export class CollectionsService {
   public deleteCollection(collection: Collection) {
     this.http.delete(`${this.apiUrls.CollectionBaseUrl}${collection.id}`)
       .subscribe(action => this.store.dispatch({ type: 'DELETE_COLLECTION', payload: collection }));
+  }
+
+  public resetFocused(): void {
+    this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: focusedState });
   }
 }
