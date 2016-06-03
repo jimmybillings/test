@@ -59,9 +59,9 @@
   </div>
   <div flex="40" flex-gt-lg="40" flex-xl="40" *ngIf="form">
     <md-card>
-      <form layout="column" (ngSubmit)="onSubmit(form.value)" [ngFormModel]="form" class="md-inline-form">
-        <div *ngFor="let field of controls">
-          <md-input [(ngModel)]=form.controls[field].value placeholder="{{form.controls[field].value}}"></md-input>
+      <form layout="column" (ngSubmit)="onSubmit(form)" class="md-inline-form">
+        <div *ngFor="let control of controls; of let i = index">
+          <md-input [(ngModel)]="form[control]" ngControl="{{control}}" placeholder="{{control}}"></md-input>
         </div>
         <md-card-actions layout="row" layout-align="center center">
           <button md-raised-button type="submit">update</button>

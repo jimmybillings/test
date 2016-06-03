@@ -74,16 +74,18 @@ export class UiConfigComponent implements OnInit {
     if (object.items) {
       this.formItems = object.items;
     } else {
-      this.form = this.fb.group({label: item, value: object.value});
+      this.form = this.fb.group({value: object.value});
+      this.controls = Object.keys(this.form.controls);
     }
   }
 
   public buildFieldForm(itemIndex: string): any {
-    this.form = this.fb.group(this.formItems[itemIndex]);
-    this.controls = Object.keys(this.form.controls);
+    this.form = this.formItems[itemIndex];
+    this.controls = Object.keys(this.form);
+    console.log(this.form, this.controls);
   }
 
   public onSubmit(formValue: any): void {
-    console.log(formValue);
+    debugger;
   }
 }
