@@ -21,6 +21,8 @@ export class UiConfigComponent implements OnInit {
   public form: any;
   public config: any;
   public subComponents: any;
+  public subComponent: string;
+  public component: string;
   public items: Array<any>;
   public controls: Array<any>;
   public subItems: Array<any>;
@@ -65,6 +67,7 @@ export class UiConfigComponent implements OnInit {
   }
 
   public show(item: any): void {
+    this.component = item;
     this.subComponents = this.config.components[item].config;
     this.subItems = Object.keys(this.subComponents);
   }
@@ -72,20 +75,21 @@ export class UiConfigComponent implements OnInit {
   public buildForm(item: any): void {
     let object = this.subComponents[item];
     if (object.items) {
+      this.subComponent = item;
       this.formItems = object.items;
     } else {
-      this.form = this.fb.group({value: object.value});
-      this.controls = Object.keys(this.form.controls);
+      this.form = {value: object.value};
+      this.controls = Object.keys(this.form);
     }
   }
 
   public buildFieldForm(itemIndex: string): any {
     this.form = this.formItems[itemIndex];
     this.controls = Object.keys(this.form);
-    console.log(this.form, this.controls);
   }
 
   public onSubmit(formValue: any): void {
-    debugger;
+    console.log(this.config.components[this.component].config[this.subComponent]);
+    console.log(formValue);
   }
 }
