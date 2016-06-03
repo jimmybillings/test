@@ -19,15 +19,13 @@ import { UiConfig } from '../../shared/services/ui.config';
 export class UiConfigComponent implements OnInit {
   public subComponent: string;
   public configType: string;
-  public component: string;
   public siteName: string;
   public portal: string;
   public subComponents: any;
+  public formItems: any;
   public config: any;
-  public form: any;
-  public items: Array<any>;
+  public form: Object;
   public sites: Array<any>;
-  public formItems: Array<any>;
 
   constructor(public router: Router,
               public apiConfig: ApiConfig,
@@ -58,7 +56,6 @@ export class UiConfigComponent implements OnInit {
   public getConfig(): void {
     this.configService.getUiConfig(this.siteName).subscribe(data => {
       this.config = data;
-      this.items = Object.keys(data.components);
     });
   }
 
@@ -66,27 +63,31 @@ export class UiConfigComponent implements OnInit {
     this.router.navigate(['admin/ui-config/', siteName]);
   }
 
-  public show(item: any): void {
-    this.component = item;
+  public show(item: string): void {
     this.subComponents = this.config.components[item].config;
   }
 
-  public buildForm(item: any): void {
+  public buildForm(item: string): void {
     let object = this.subComponents[item];
-    if (object.items) {
-      this.subComponent = item;
-      this.formItems = object.items;
-    } else {
-      this.form = {value: object.value};
-    }
+    this.form = {value: object.value};
   }
 
-  public buildFieldForm(itemIndex: string): void {
+  public showSubItems(item: string): void {
+    let object = this.subComponents[item];
+    this.subComponent = item;
+    this.formItems = object.items;
+  }
+
+  public buildSubItemForm(itemIndex: string): void {
     this.form = this.formItems[itemIndex];
   }
 
   public onSubmit(formValue: any): void {
+    this.subComponents = null;
+    this.formItems = null;
+    this.form = null;
     this.configService.update(this.config.id, JSON.stringify(formValue)).subscribe((res) => {
+      console.warn('Success!');
       this.uiConfig.set(res.json());
     });
   }
