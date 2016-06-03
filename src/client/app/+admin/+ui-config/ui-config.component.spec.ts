@@ -57,7 +57,6 @@ export function main() {
         component.siteName = 'core';
         component.getConfig();
         expect(component.config).toEqual(mockResponse());
-        expect(component.items).toEqual(['header', 'searchBox']);
       }));
 
     it('Should have a goToSite method that given a siteName navigates to the ui-config page for that site',
