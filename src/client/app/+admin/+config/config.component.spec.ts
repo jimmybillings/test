@@ -41,17 +41,5 @@ export function main() {
           expect(instance instanceof ConfigComponent).toBeTruthy();
         });
       }));
-
-      it('Should have a navigateToShowUi method that console.logs for now', inject([ConfigComponent], (component: ConfigComponent) => {
-        spyOn(component.router, 'navigate');
-        component.navigateToShowUi({siteName: 'core'});
-        expect(component.router.navigate).toHaveBeenCalledWith(['admin/ui-config/', 'core']);
-      }));
-
-      it('Should have a navigateToShowSite method that console.logs for now', inject([ConfigComponent], (component: ConfigComponent) => {
-        spyOn(component.router, 'navigate');
-        component.navigateToShowSite({siteName: 'core'});
-        expect(component.router.navigate).toHaveBeenCalledWith(['admin/site-config/', 'core']);
-      }));
   });
 }

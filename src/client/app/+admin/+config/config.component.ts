@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UiConfig} from '../../shared/services/ui.config';
+import {IuiConfig} from '../../shared/interfaces/config.interface';
 import {ValuesPipe} from '../../shared/pipes/values.pipe';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {ConfigService} from '../services/config.service';
@@ -17,39 +18,35 @@ import {Router} from '@angular/router';
 
 export class ConfigComponent implements OnInit {
 
-  public config: any;
-  public uiItems: Array<any>;
-  public siteItems: Array<any>;
-  public headers: Array<any>;
+  public config: IuiConfig;
+  public uiConfigs: Array<IuiConfig>;
+  public siteConfigs: Array<Object>;
+  public headers: Array<Object>;
 
-  constructor(public uiConfig: UiConfig, public configService: ConfigService, public router: Router) { }
+  constructor(public uiConfig: UiConfig,
+              public configService: ConfigService,
+              public router: Router) { }
 
   ngOnInit(): void {
-    this.uiConfig.get().subscribe(config => this.config = config);
+    this.uiConfig.get().subscribe(config => {
+      this.config = config;
+      this.headers = config.components.configuration.config.tableHeaders.items;
+    });
     this.getConfigs();
-    this.headers = [
-      {'name': 'siteName', 'label': 'Site'},
-      {'name': 'lastUpdated', 'label': 'Last Updated'},
-      {'name': 'lastUpdateBy', 'label': 'Last Update By'}
-    ];
   }
 
   public getConfigs(): void {
     this.configService.getUi().subscribe(data => {
-      this.uiItems = data.items;
-      this.uiItems.forEach(item => {Object.assign(item, {lastUpdateBy: 'Ross Edfort', type: 'ui'});});
+      this.uiConfigs = data.items;
+      this.uiConfigs.forEach(item => {
+        Object.assign(item, {lastUpdateBy: 'Ross Edfort', type: 'ui'});
+      });
     });
     this.configService.getSite().subscribe(data => {
-      this.siteItems = data.items;
-      this.siteItems.forEach(item => {Object.assign(item, {lastUpdateBy: 'Ross Edfort', type: 'site'});});
+      this.siteConfigs = data.items;
+      this.siteConfigs.forEach(item => {
+        Object.assign(item, {lastUpdateBy: 'Ross Edfort', type: 'site'});
+      });
     });
-  }
-
-  public navigateToShowUi(record: any): void {
-    this.router.navigate(['admin/ui-config/', record.siteName]);
-  }
-
-  public navigateToShowSite(record: any): void {
-    this.router.navigate(['admin/site-config/', record.siteName]);
   }
 }

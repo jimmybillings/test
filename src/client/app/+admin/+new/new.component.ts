@@ -3,6 +3,7 @@ import { Router, RouteSegment } from '@angular/router';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { UiConfig } from '../../shared/services/ui.config';
+import { IuiConfig } from '../../shared/interfaces/config.interface';
 import { ApiConfig } from '../../shared/services/api.config';
 import { AdminService } from '../services/admin.service';
 
@@ -18,8 +19,8 @@ import { AdminService } from '../services/admin.service';
 export class NewComponent implements OnInit {
   public resource: string;
   public siteName: string;
+  public config: IuiConfig;
   public currentComponent: string;
-  public config: any;
 
   constructor(public router: Router,
     public apiConfig: ApiConfig,
@@ -39,7 +40,6 @@ export class NewComponent implements OnInit {
   public onSubmit(formData: any): void {
     Object.assign(formData, { siteName: this.siteName });
     this.adminService.postResource(formData, this.resource).subscribe(data => {
-      console.log(data);
       this.router.navigate(['/admin/resource/' + this.resource]);
     }, (error) => {
       console.log(error, 'this will pop up a notification showing what validations failed');

@@ -7,6 +7,7 @@ import {WzListComponent} from '../../shared/components/wz-list/wz.list.component
 import {WzFormComponent} from '../../shared/components/wz-form/wz.form.component';
 import {PaginationComponent} from '../../shared/components/pagination/pagination.component';
 import {UiConfig} from '../../shared/services/ui.config';
+import {IuiConfig} from '../../shared/interfaces/config.interface';
 import {Subscription} from 'rxjs/Rx';
 
 @Component({
@@ -24,7 +25,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   public currentComponent: string;
   public subscription: Subscription;
   public currentUserResources: Object;
-  public config: any;
+  public config: IuiConfig;
 
   constructor(public currentUser: CurrentUser,
     public adminService: AdminService,
