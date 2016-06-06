@@ -48,8 +48,8 @@ export class ConfigService {
     ).map((res: Response) => res.json());
   }
 
-  public update(data: any): Observable<any> {
-    return this.http.put(this.uiApiUrl + '1',
+  public update(siteId: number, data: any): Observable<any> {
+    return this.http.put(this.uiApiUrl + siteId,
       data, { headers: this.apiConfig.authHeaders() });
   }
 }

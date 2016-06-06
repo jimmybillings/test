@@ -2,10 +2,12 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router, RouteSegment} from '@angular/router';
 import {CurrentUser} from '../../shared/services/current-user.model';
 import {AdminService} from '../services/admin.service';
+import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {WzListComponent} from '../../shared/components/wz-list/wz.list.component';
 import {WzFormComponent} from '../../shared/components/wz-form/wz.form.component';
 import {PaginationComponent} from '../../shared/components/pagination/pagination.component';
 import {UiConfig} from '../../shared/services/ui.config';
+import {IuiConfig} from '../../shared/interfaces/config.interface';
 import {Subscription} from 'rxjs/Rx';
 
 @Component({
@@ -13,7 +15,8 @@ import {Subscription} from 'rxjs/Rx';
   selector: 'admin-index',
   templateUrl: 'index.html',
   providers: [AdminService],
-  directives: [WzListComponent, PaginationComponent, ROUTER_DIRECTIVES, WzFormComponent]
+  directives: [WzListComponent, PaginationComponent, ROUTER_DIRECTIVES, WzFormComponent],
+  pipes: [TranslatePipe]
 })
 
 export class IndexComponent implements OnInit, OnDestroy {
@@ -22,7 +25,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   public currentComponent: string;
   public subscription: Subscription;
   public currentUserResources: Object;
-  public config: any;
+  public config: IuiConfig;
 
   constructor(public currentUser: CurrentUser,
     public adminService: AdminService,

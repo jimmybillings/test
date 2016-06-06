@@ -4,10 +4,10 @@
     <div flex-xl="30" flex-gt-lg="30" flex-gt-md="30" flex="30">
       <md-card>
         <md-card-title>
-          new
+          {{ 'ADMIN.' + currentComponent.toUpperCase() + '.NEW_TITLE' | translate }}
         </md-card-title>
         <md-card-content>
-          <wz-form layout-align="center center" [items]="config.newForm.items" submitLabel="create" (formSubmit)="onSubmit($event)"></wz-form>
+          <wz-form layout-align="center center" [items]="config.newForm.items" submitLabel="ADMIN.CREATE_SUBMIT_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
         </md-card-content>
       </md-card>
     </div>

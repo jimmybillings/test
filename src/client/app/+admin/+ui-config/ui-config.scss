@@ -3,11 +3,34 @@
     width: 30%;
   }
 }
+.menu {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 .admin-ui-config {
   md-list {
+    .icons i {
+      font-size: 18px;
+      padding: 0 0.5rem;
+      margin: 0;
+    }
     background-color: #fff;
     md-list-item i {
       cursor: pointer;
+    }
+  }
+}
+md-card {
+  margin-left: 20%; 
+  form {
+    md-input {
+      width: 100%;
+    }
+    md-card-actions {
+      margin-top: 3rem;
+      button {
+        width: 25%;
+      }
     }
   }
 }
