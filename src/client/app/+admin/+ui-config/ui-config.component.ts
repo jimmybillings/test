@@ -1,6 +1,12 @@
+import {
+  IuiConfig,
+  IuiComponents,
+  IuiSubComponents,
+  IuiTableHeaders
+} from '../../shared/interfaces/config.interface';
+import { IFormFields } from '../../shared/interfaces/forms.interface.ts';
 import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/common';
 import { Router, RouteSegment } from '@angular/router';
 import { ConfigService } from '../services/config.service';
 import { ValuesPipe } from '../../shared/pipes/values.pipe';
@@ -17,20 +23,19 @@ import { UiConfig } from '../../shared/services/ui.config';
 })
 
 export class UiConfigComponent implements OnInit {
-  public subComponent: string;
-  public configType: string;
-  public siteName: string;
   public portal: string;
-  public subComponents: any;
-  public formItems: any;
-  public config: any;
-  public form: Object;
-  public sites: Array<any>;
+  public siteName: string;
+  public configType: string;
+  public sites: Array<string>;
+  public config: IuiConfig;
+  public components: IuiComponents;
+  public subComponents: IuiSubComponents;
+  public form: IuiTableHeaders | IFormFields | Object;
+  public configOptions: Array<IuiTableHeaders | IFormFields>;
 
   constructor(public router: Router,
               public apiConfig: ApiConfig,
               public uiConfig: UiConfig,
-              public fb: FormBuilder,
               public routeSegment: RouteSegment,
               public configService: ConfigService) {
                 this.sites = [];
@@ -45,7 +50,7 @@ export class UiConfigComponent implements OnInit {
       this.configType = this.routeSegment.urlSegments[0].segment.split('-')[0];
       this.getConfig();
       this.configService.getUi().subscribe(data => {
-        data.items.reduce((previous: any, current: any) => {
+        data.items.reduce((previous: Array<string>, current: IuiConfig) => {
           previous.push(current.siteName);
           return previous;
         }, this.sites);
@@ -56,6 +61,7 @@ export class UiConfigComponent implements OnInit {
   public getConfig(): void {
     this.configService.getUiConfig(this.siteName).subscribe(data => {
       this.config = data;
+      this.components = data.components;
     });
   }
 
@@ -63,28 +69,25 @@ export class UiConfigComponent implements OnInit {
     this.router.navigate(['admin/ui-config/', siteName]);
   }
 
-  public show(item: string): void {
-    this.subComponents = this.config.components[item].config;
+  public show(component: string): void {
+    this.subComponents = this.components[component].config;
   }
 
-  public buildForm(item: string): void {
-    let object = this.subComponents[item];
-    this.form = {value: object.value};
+  public buildForm(configOption: string): void {
+    this.form = {value: this.subComponents[configOption].value};
   }
 
-  public showSubItems(item: string): void {
-    let object = this.subComponents[item];
-    this.subComponent = item;
-    this.formItems = object.items;
+  public showSubItems(configOption: string): void {
+    this.configOptions = this.subComponents[configOption].items;
   }
 
-  public buildSubItemForm(itemIndex: string): void {
-    this.form = this.formItems[itemIndex];
+  public buildSubItemForm(configOptionIndex: number): void {
+    this.form = this.configOptions[configOptionIndex];
   }
 
-  public onSubmit(formValue: any): void {
+  public onSubmit(formValue: IuiConfig): void {
     this.subComponents = null;
-    this.formItems = null;
+    this.configOptions = null;
     this.form = null;
     this.configService.update(this.config.id, JSON.stringify(formValue)).subscribe((res) => {
       console.warn('Success!');

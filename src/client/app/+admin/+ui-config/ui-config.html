@@ -11,7 +11,7 @@
     <div class="menu" flex="15" flex-gt-lg="15" flex-xl="15">
       <md-content>
         <md-list>
-          <div *ngFor="let item of config.components | values">
+          <div *ngFor="let item of components | values">
             <md-list-item class="md-1-line">
               <div flex-gt-lg="90" flex-xl="90" flex="90">
                 <md-list-text>{{ item.key }}</md-list-text>
@@ -41,10 +41,10 @@
         </md-list>
       </md-content>
     </div>
-    <div class="menu" flex="15" flex-gt-lg="15" flex-xl="15" *ngIf="formItems">
+    <div class="menu" flex="15" flex-gt-lg="15" flex-xl="15" *ngIf="configOptions">
       <md-content>
         <md-list>
-          <div *ngFor="let item of formItems; let i = index">
+          <div *ngFor="let item of configOptions; let i = index">
             <md-list-item class="md-1-line">
               <div flex-gt-lg="80" flex-xl="80" flex="80">
                 <md-list-text>{{ item.name }}</md-list-text>
