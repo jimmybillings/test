@@ -78,8 +78,8 @@ export class SearchBoxComponent implements OnInit, OnChanges {
 
   private url(query: string): string {
     return (this.loggedIn)
-      ? 'assets-api/v1/search/solrcloud/searchTerms'
-      : 'assets-api/v1/search/anonymous/solrcloud/searchTerms';
+      ? 'assets-api/v1/search/searchTerms'
+      : 'assets-api/v1/search/anonymous/searchTerms';
   }
 
   private options(query: string): RequestOptions {
