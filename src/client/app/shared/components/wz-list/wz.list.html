@@ -2,7 +2,7 @@
 <table  layout-fill="">
   <thead>
     <tr>
-      <th class="md-text-cell" *ngFor="let header of headers" (click)="sortBy(header.name)">{{ header.label }}</th>
+      <th class="md-text-cell" *ngFor="let header of headers" (click)="sortBy(header.name)">{{ header.label | translate }}</th>
     </tr>
   </thead>
   <tbody>

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UiConfig} from '../../shared/services/ui.config';
 import {ValuesPipe} from '../../shared/pipes/values.pipe';
+import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {ConfigService} from '../services/config.service';
 import {WzListComponent} from '../../shared/components/wz-list/wz.list.component';
 import {Router} from '@angular/router';
@@ -9,7 +10,7 @@ import {Router} from '@angular/router';
   moduleId: module.id,
   selector: 'admin-config',
   templateUrl: 'config.html',
-  pipes: [ValuesPipe],
+  pipes: [ValuesPipe, TranslatePipe],
   directives: [WzListComponent],
   providers: [ConfigService]
 })

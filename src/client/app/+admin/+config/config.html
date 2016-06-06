@@ -2,11 +2,11 @@
 <div *ngIf="config">
   <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
     <div flex-xl="40" flex-gt-lg="45" flex="50">
-      <h3>Ui Config</h3>
+      <h3>{{ 'ADMIN.CONFIG.UI_TITLE' | translate }}</h3>
       <wz-list [items]="uiItems" [headers]="headers" (clickRow)="navigateToShowUi($event)"></wz-list>
     </div>
     <div flex-xl="40" flex-gt-lg="45" flex="50">
-      <h3>Site Config</h3>
+      <h3>{{ 'ADMIN.CONFIG.SITE_TITLE' | translate }}</h3>
       <wz-list [items]="siteItems" [headers]="headers" (clickRow)="navigateToShowSite($event)"></wz-list>
     </div>
   </div>

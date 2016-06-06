@@ -4,6 +4,7 @@ import {CurrentUser} from '../shared/services/current-user.model';
 import {DashboardComponent} from './+dashboard/dashboard.component';
 import {IndexComponent} from './+index/index.component';
 import {NewComponent} from './+new/new.component';
+import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {ConfigComponent} from './+config/config.component';
 import {UiConfigComponent} from './+ui-config/ui-config.component';
 import {SiteConfigComponent} from './+site-config/site-config.component';
@@ -12,7 +13,8 @@ import {SiteConfigComponent} from './+site-config/site-config.component';
   moduleId: module.id,
   selector: 'admin',
   templateUrl: 'admin.html',
-  directives: [ROUTER_DIRECTIVES]
+  directives: [ROUTER_DIRECTIVES],
+  pipes: [TranslatePipe]
 })
 
 @Routes([

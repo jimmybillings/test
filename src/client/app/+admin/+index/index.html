@@ -17,10 +17,10 @@
         <div flex-xl="25" flex-gt-lg="25" flex-gt-md="25" flex="25" class="admin-filter">
           <md-card>
             <md-card-title>
-              search
+              {{ 'ADMIN.' + currentComponent.toUpperCase() + '.SEARCH_TITLE' | translate }}
             </md-card-title>
             <md-card-content>
-              <wz-form [items]="config.searchForm.items" submitLabel="Find" (formSubmit)="navigateToFilterUrl($event)"></wz-form>
+              <wz-form [items]="config.searchForm.items" submitLabel="ADMIN.SEARCH_SUBMIT_LABEL" (formSubmit)="navigateToFilterUrl($event)"></wz-form>
             </md-card-content>
           </md-card>
         </div>

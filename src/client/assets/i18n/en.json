@@ -1,5 +1,6 @@
 {
   "HEADER": {
+    "ADMIN_LABEL": "Admin",
     "LOGIN_LABEL": "Login",
     "LOGOUT_LABEL": "Logout",
     "SIGN_UP_LABEL": "Sign Up"
@@ -50,7 +51,7 @@
     "META_DATA": "Meta Data",
     "RELATED": "Related",
     "RIGHTS_AND_CLEARANCES":"Rights and Clearances",
-    
+
     "DESCRIPTION_DATE": "Date",
     "DESCRIPTION_LOCATION": "Location",
     "DESCRIPTION_EVENT": "Event",
@@ -70,7 +71,7 @@
     "FORMAT_AUDIOCHANNELCONFIGURATION":"Audio channels",
     "FORMAT_AUDIODATARATE":"Audio data rate",
     "FORMAT_AUDIOSAMPLINGRATE":"Audio sampling rate",
-    
+
     "KEYWORDS":"Keywords",
     "RIGHTS_REPRODUCTION":"Rights",
     "ISLICENSABLE_TEM_AAA":"TEM Licensable in the Americas",
@@ -80,7 +81,7 @@
     "RIGHTS_NOTE":"Additional Rights Notes",
     "RIGHTS_MOREINFORMATION":"Additonal Rights Info",
     "RIGHTS_AGENT":"Agent Rights",
-    
+
     "RIGHTS_TALENT":"Talent Rights",
     "RIGHTS_LOCATION":"Location Rights",
     "RIGHTS_TRADEMARKS":"Trademarks Rights",
@@ -95,6 +96,43 @@
       "TAGS_LABEL": "Tags",
       "SUBMIT_LABEL": "CREATE"
     }
+  },
+  "ADMIN": {
+    "SEARCH_SUBMIT_LABEL": "FIND",
+    "CREATE_SUBMIT_LABEL": "CREATE",
+    "SUBHEADER": {
+      "DASHBOARD": "Dashboard",
+      "ACCOUNTS": "Accounts",
+      "USERS": "Users",
+      "CONFIG": "Config"
+    },
+    "USER": {
+      "SEARCH_TITLE": "Search Users",
+      "NEW_TITLE": "New User",
+      "FIRST_NAME_LABEL": "First Name",
+      "LAST_NAME_LABEL": "Last Name",
+      "EMAIL_LABEL": "Email Address",
+      "CREATED_ON_LABEL": "Created On",
+      "PASSWORD_LABEL": "Password"
+    },
+    "ACCOUNT": {
+      "SEARCH_TITLE": "Search Accounts",
+      "NEW_TITLE": "New Account",
+      "STATUS_LABEL": "Status",
+      "CONTACT_LABEL": "Contact Name",
+      "NAME_LABEL": "Name",
+      "CREATED_ON_LABEL": "Created On",
+      "ACCOUNT_IDENTIFIER_LABEL": "Account Identifier",
+      "DESCRIPTION_LABEL": "Description",
+      "EMAIL_LABEL": "Email Address",
+      "LOGO_URL_LABEL": "Logo URL"
+    },
+    "CONFIG": {
+      "SITE_TITLE": "Site Config",
+      "UI_TITLE": "User Interface Config",
+      "SITE_LABEL": "Site",
+      "LAST_UPDATED_LABEL": "Last Updated",
+      "LAST_UPDATE_BY_LABEL": "Last Updated By"
+    }
   }
 }
-

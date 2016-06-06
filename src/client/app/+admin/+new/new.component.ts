@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouteSegment } from '@angular/router';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { UiConfig } from '../../shared/services/ui.config';
 import { ApiConfig } from '../../shared/services/api.config';
@@ -10,7 +11,8 @@ import { AdminService } from '../services/admin.service';
   selector: 'admin-new',
   templateUrl: 'new.html',
   providers: [AdminService],
-  directives: [WzFormComponent]
+  directives: [WzFormComponent],
+  pipes: [TranslatePipe]
 })
 
 export class NewComponent implements OnInit {
