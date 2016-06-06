@@ -102,7 +102,7 @@ export class AssetData {
    * @returns               appropriate api search path based on whether or not user is logged in
   */
   public getAssetSearchPath(isUserLoggedIn: boolean): string {
-    return (isUserLoggedIn) ? 'api/assets/v1/search/solrcloud' : 'api/assets/v1/search/anonymous/solrcloud';
+    return (isUserLoggedIn) ? 'api/assets/v1/search' : 'api/assets/v1/search/anonymous';
   }
 
   /**
