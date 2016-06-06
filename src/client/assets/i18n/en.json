@@ -2,7 +2,9 @@
   "HEADER": {
     "LOGIN_LABEL": "Login",
     "LOGOUT_LABEL": "Logout",
-    "SIGN_UP_LABEL": "Sign Up"
+    "SIGN_UP_LABEL": "Sign Up",
+    "OPEN_COLLECTIONS_LABEL": "Open collections tray",
+    "NEW_COLLECTION_LABEL": "Create new collection"
   },
   "FOOTER": {
     "OFFICE": "Office",
