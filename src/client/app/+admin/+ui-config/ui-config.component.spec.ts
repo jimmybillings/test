@@ -16,6 +16,7 @@ import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { UiConfig , config } from '../../shared/services/ui.config';
+import { IuiConfig } from '../../shared/interfaces/config.interface';
 import { provideStore } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 
@@ -57,7 +58,6 @@ export function main() {
         component.siteName = 'core';
         component.getConfig();
         expect(component.config).toEqual(mockResponse());
-        expect(component.items).toEqual(['header', 'searchBox']);
       }));
 
     it('Should have a goToSite method that given a siteName navigates to the ui-config page for that site',
@@ -66,28 +66,58 @@ export function main() {
         component.goToSite('bbcws');
         expect(component.router.navigate).toHaveBeenCalledWith(['admin/ui-config/', 'bbcws']);
       }));
+
+    it('Should have a show() method that sets subComponents',
+      inject([UiConfigComponent], (component:UiConfigComponent) => {
+        component.components = mockResponse().components;
+        component.show('header');
+        expect(component.subComponents).toEqual(mockResponse().components['header'].config);
+      }));
+
+    it('Should have a buildForm() method that sets form',
+      inject([UiConfigComponent], (component:UiConfigComponent) => {
+        component.subComponents = mockResponse().components['header'].config;
+        component.buildForm('title');
+        expect(component.form).toEqual({value: 'Wazee Digital'});
+      }));
+
+    it('Should have a showSubItems() method that sets configOptions',
+      inject([UiConfigComponent], (component:UiConfigComponent) => {
+        component.subComponents = mockResponse().components['adminAccount'].config;
+        component.showSubItems('tableHeaders');
+        expect(component.configOptions).toEqual(mockResponse().components['adminAccount'].config['tableHeaders'].items);
+      }));
+
+    it('Should have a buildSubItemForm() method that sets form',
+      inject([UiConfigComponent], (component:UiConfigComponent) => {
+        component.configOptions = mockResponse().components['adminAccount'].config['tableHeaders'].items;
+        component.buildSubItemForm(1);
+        expect(component.form).toEqual(mockResponse().components['adminAccount'].config['tableHeaders'].items[1]);
+      }));
   });
 
   function mockResponse() {
-    return {
-            'siteName': 'core',
-            'id': '1',
-            'components': {
-              'header': {
-                'config': {
-                  'title': {
-                    'value': 'Wazee Digital'
-                  }
-                }
-              },
-              'searchBox': {
-                'config': {
-                  'pageSize': {
-                    'value': '100'
-                  }
-                }
-              }
-            }
-          };
+    let config: IuiConfig = {
+      'lastUpdated': '2016-06-06T16:44:59Z',
+      'createdOn': '2016-03-02T17:01:14Z',
+      'id': 1,
+      'siteName': 'core',
+      'config': {},
+      'components': {
+        'header': {'config': {'title': {'value': 'Wazee Digital'}}},
+        'searchBox': {'config': {'pageSize': {'value': '100'}}},
+        'search': {'config': {'viewType': {'value': 'grid'}}},
+        'home': {'config': {'pageSize': {'value': '100'}}},
+        'adminAccount': {'config': {
+          'tableHeaders': {'items': [
+            {'name': 'name','label': 'ADMIN.ACCOUNT.NAME_LABEL'},
+            {'name': 'status','label': 'ADMIN.ACCOUNT.STATUS_LABEL'},
+            {'name': 'contact','label': 'ADMIN.ACCOUNT.CONTACT_LABEL'},
+            {'name': 'createdOn','label': 'ADMIN.ACCOUNT.CREATED_ON_LABEL'}]}
+          }
+        }
+      }
+    };
+    return config;
   }
 }

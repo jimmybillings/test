@@ -5,7 +5,5 @@ export interface IFormFields {
   value: string;
   label: string;
   validation: string;
+  options?: string;
 }
-
-
-

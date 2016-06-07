@@ -18,18 +18,15 @@ export const adminResources: Reducer<any> = (state = adminState, action: Action)
 @Injectable()
 export class AdminService {
 
-  public adminStore: Observable<any>;
-  public pageStore: Observable<any>;
   public operatorMap: any;
-  public routeSegment: RouteSegment;
-  public http: Http;
-  public apiConfig: ApiConfig;
+  public pageStore: Observable<any>;
+  public adminStore: Observable<any>;
 
-  constructor(http: Http, apiConfig: ApiConfig, routeSegment: RouteSegment, private store: Store<any>) {
-    this.http = http;
+  constructor(public http: Http,
+              public apiConfig: ApiConfig,
+              public routeSegment: RouteSegment,
+              private store: Store<any>) {
     this.adminStore = this.store.select('adminResources');
-    this.apiConfig = apiConfig;
-    this.routeSegment = routeSegment;
     this.operatorMap = {
       'before': 'LT',
       'after': 'GT'

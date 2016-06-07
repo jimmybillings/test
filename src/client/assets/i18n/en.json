@@ -1,5 +1,6 @@
 {
   "HEADER": {
+    "ADMIN_LABEL": "Admin",
     "LOGIN_LABEL": "Login",
     "LOGOUT_LABEL": "Logout",
     "SIGN_UP_LABEL": "Sign Up",
