@@ -9,6 +9,10 @@ import {CurrentUser} from '../shared/services/current-user.model';
 import { Error } from '../shared/services/error.service';
 import {PaginationComponent} from '../shared/components/pagination/pagination.component';
 import {SearchContext} from '../shared/services/search-context.service';
+import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
+import { CollectionsService } from '../+collections/services/collections.service';
+import { Store } from '@ngrx/store';
+
 /**
  * Asset search page component - renders search page results
  */
@@ -26,6 +30,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   public config: Object;
   public assets: Observable<any>;
   public errorMessage: string;
+  public collections: Observable<Collections>;
+  public focusedCollection: Observable<any>;
 
   constructor(
     private _router: Router,
@@ -34,6 +40,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     public router: Router,
     public uiConfig: UiConfig,
     public currentUser: CurrentUser,
+    public collectionsService: CollectionsService,
+    public store: Store<CollectionStore>,
     public error: Error,
     public searchContext: SearchContext) {
     this.assets = this.assetData.assets;
@@ -45,6 +53,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.searchAssets();
+    // this.collectionsService.loadCollections();
+    // this.collections = this.collectionsService.collections;
+    this.focusedCollection = this.store.select('focusedCollection');
+    // this.focusedCollection.subscribe(f => console.log(f));
+    // this.collections.subscribe(c => console.log(c));
   }
 
   ngOnDestroy(): void {
@@ -55,14 +68,19 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.router.navigate(['/asset', asset.assetId]);
   }
 
-  addToCollection(asset: any) {
-    if (!this.currentUser.loggedIn()) this.router.navigate(['/user/login']);
-    // if (this.currentUser.loggedIn() && focusedCollection) this.router.navigate(['/collection']);
+  addToCollection(params: any): void {
+    let collection: Collection = params.collection;
+    collection.assets ? collection.assets.push(params.assetId) : collection.assets = [params.assetId];
+    this.collectionsService.addAssetsToCollection(collection, params.assetId);
+  }
 
-    // let params = { 'asset': asset.assetId };
-    // if (this.currentUser.loggedIn()) this.router.navigate(['/collection', params]);
-    // console.log(`what ID - ${this.currentUser.id() | async}`);
-    // console.log(`has a focused bin - ${this.currentUser.hasFocusedCollection()}`);
+  // NOT available yet
+  // selectFocusedCollection(collection: Collection) {
+  //   this.collectionsService.setFocusedCollection(collection);
+  // }
+
+  showNewCollection(asset: any): void {
+    !this.currentUser.loggedIn() ? this.router.navigate(['/user/login']) : this.router.navigate(['/collection', { 'asset': asset.assetId }]);
   }
 
   addToCart(asset: any): void {

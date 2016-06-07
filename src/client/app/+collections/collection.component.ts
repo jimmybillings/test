@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { Collection, CollectionStore } from '../shared/interfaces/collection.interface';
+import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from './services/collections.service';
 import { CollectionListComponent } from './collection-list.component';
 import { CollectionFormComponent } from './collection-form.component';
@@ -36,7 +36,7 @@ import { Error } from '../shared/services/error.service';
 ])
 
 export class CollectionComponent implements OnInit, OnDestroy {
-  public collections: Observable<Array<Collection>>;
+  public collections: Observable<Collections>;
   public focusedCollection: Observable<any>;
   public errorMessage: string;
 
@@ -48,47 +48,48 @@ export class CollectionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.collections = this.collectionsService.collections;
+    this.collectionsService.loadCollections();
+    this.collections = this.collectionsService.collections;
+    // this.collections = this.store.select('collections');
     this.focusedCollection = this.store.select('focusedCollection');
     // this.focusedCollection.subscribe(f => console.log(f));
-    this.currentUser._currentUser.subscribe(u => {
-      console.log(u);
-      this.UserHasFocusedCollection(u) ? this.collectionsService.getFocusedCollection() : console.log('you don\'t have a focused collection');
-    });
+    // this.currentUser._currentUser.subscribe(u => {
+    //   console.log(u);
+    //   this.UserHasFocusedCollection(u) ? this.collectionsService.getFocusedCollection() : console.log('you don\'t have a focused collection');
+    // });
+
+    // this.collections.subscribe(c => console.log(c));
+
     // console.log(this.store);
   }
 
   ngOnDestroy(): void {
-    console.log('collection component is toast');
-    this.collectionsService.resetFocused();
+    // console.log('collection component is toast');
+    // this.collectionsService.resetFocused();
     // this.FocusedCollection.destroy();
   }
 
   public UserHasFocusedCollection(user: any): boolean {
-    // console.log(`user has attribute FC: ${user.hasOwnProperty('focusedCollection')}`);
-    // console.log(`user FC attribute value is: ${user.hasOwnProperty('focusedCollection')}`);
     return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
   }
 
-  // resetFocusedCollection(): void {
-  //   let emptyCollection: Collection = {
-  //     createdOn: '',
-  //     lastUpdated: '',
-  //     id: null,
-  //     siteName: '',
-  //     name: '',
-  //     owner: '',
-  //     assets: [],
-  //     tags: [],
-  //   };
-  //   this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: emptyCollection });
+  // selectFocusedCollection(collection: Collection) {
+  //   this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: collection });
   // }
 
   selectFocusedCollection(collection: Collection) {
-    this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: collection });
+    // this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: collection });
+    this.collectionsService.setFocusedCollection(collection);
   }
 
-  createCollection(collection: Collection) {
+  public createCollection(collection: Collection) {
     this.collectionsService.createCollection(collection);
+    this.getFocusedCollection();
+  }
+  public getFocusedCollection() {
+    setTimeout(() => { this.collectionsService.getFocusedCollection(); },1200);
+  }
+  public deleteCollection(collection: Collection) {
+    this.collectionsService.deleteCollection(collection);
   }
 }

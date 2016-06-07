@@ -28,7 +28,7 @@ export class AppNavComponent implements OnInit {
   @Output() onOpenBinTray = new EventEmitter();
   @Output() onOpenSearch = new EventEmitter();
   @Output() onOpenSidenav = new EventEmitter();
-  @Output() onCreateNewCollection = new EventEmitter();
+  @Output() onShowNewCollection = new EventEmitter();
 
 
   public loggedInState: boolean;
@@ -55,7 +55,7 @@ export class AppNavComponent implements OnInit {
     this.onOpenSidenav.emit(event);
   }
 
-  public createNewCollection(event: Event) {
-    this.onCreateNewCollection.emit(event);
+  public showNewCollection(event: Event) {
+    this.onShowNewCollection.emit(event);
   }
 }

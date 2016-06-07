@@ -27,9 +27,9 @@ export class CollectionFormComponent implements OnInit {
   public assetId: string;
   public errorMessage: string;
   public focusedCollection: Collection;
+  public showForm: boolean;
 
   @Input() collection: Collection;
-  // @Input('collection') collection: Collection;
   @Output() create = new EventEmitter();
   @Output() cancelled = new EventEmitter();
 
@@ -45,14 +45,19 @@ export class CollectionFormComponent implements OnInit {
   // }
 
   ngOnInit(): void {
+    this.showForm = true;
     this.uiConfig.get('collection').subscribe((config) => this.config = config.config);
     this.assetId = this.routeSegment.getParam('asset');
-    // console.log(this.assetId);
   }
 
   createCollection(collection: Collection): void {
+    this.showForm = false;
+    setTimeout(() => { this.showForm = true; }, 700);
     collection.tags = collection.tags.split(',');
-    collection.assets = [this.assetId];
+    this.assetId ? collection.assets = [this.assetId] : collection.assets = [];
     this.create.emit(collection);
+    // clear the form so you can make another Collection
+    let cForm = <HTMLFormElement>document.querySelector('wz-form form');
+    cForm.reset();
   }
 }

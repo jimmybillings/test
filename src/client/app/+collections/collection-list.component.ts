@@ -6,7 +6,7 @@ import { Collection } from '../shared/interfaces/collection.interface';
  */
 @Component({
   moduleId: module.id,
-  selector: 'collection-list',
+  selector: 'collections-list',
   templateUrl: 'collection-list.html'
 })
 

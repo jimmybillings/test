@@ -83,6 +83,8 @@ export class AppComponent implements OnInit {
     this.configChanges();
     this.routerChanges();
     this.focusedCollection = this.store.select('focusedCollection');
+    // this.focusedCollection.subscribe(v => console.log(v));
+
     this.currentUser._currentUser.subscribe(u => {
       this.UserHasFocusedCollection(u) ? this.collectionsService.getFocusedCollection() : console.log('you don\'t have a focused collection');
     });
@@ -104,11 +106,15 @@ export class AppComponent implements OnInit {
     });
   }
 
-  public logout() {
+  public logout(): void {
     this.authentication.destroy().subscribe();
     this.currentUser.destroy();
-    this.collectionsService.resetFocused();
+    this.collectionsService.clearCollections();
     this.router.navigate(['/']);
+  }
+
+  public showNewCollection(): void {
+    this.router.navigate(['/collection']);
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data.lang); }

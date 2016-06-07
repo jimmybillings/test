@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
+import { Collection, Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
 // import { Http, Response } from '@angular/http';
 import { Http } from '@angular/http';
 // import { RequestOptions, URLSearchParams } from '@angular/http';
@@ -13,20 +13,35 @@ import { Store, Reducer, Action} from '@ngrx/store';
  * Collections store - 
  */
 
-export const collections: Reducer<any> = (state: any = [], action: Action) => {
+const collectionsState: Collections = {
+  items: [],
+  pagination: {
+    totalCount: 0,
+    currentPage: 1,
+    pageSize: 100,
+    hasNextPage: false,
+    hasPreviousPage: false,
+    numberOfPages: 0
+  }
+};
+
+
+export const collections: Reducer<any> = (state: Collections = collectionsState, action: Action) => {
   switch (action.type) {
-    case 'ADD_COLLECTIONS':
+    case 'GET_COLLECTIONS':
       return action.payload;
     case 'CREATE_COLLECTION':
-      return [...state, action.payload];
+      return Object.assign({}, state, state.items.push(action.payload));
     case 'UPDATE_COLLECTION':
-      return state.map((collection: Collection) => {
+      return state.items.map((collection: Collection) => {
         return collection.id === action.payload.id ? Object.assign({}, collection, action.payload) : collection;
       });
     case 'DELETE_COLLECTION':
-      return state.filter((collection: Collection) => {
+      return Object.assign({}, state, state.items = state.items.filter((collection: Collection) => {
         return collection.id !== action.payload.id;
-      });
+      }));
+    // return Object.assign({}, state, state.items = items);
+    // let items = state.items.filter((collection: Collection) => {collection.id !== action.payload.id});
     default:
       return state;
   }
@@ -45,7 +60,7 @@ const focusedState: Collection = {
   assets: [],
   tags: [],
 };
-export const focusedCollection = (state = focusedState, action: Action) => {
+export const focusedCollection: Reducer<any> = (state = focusedState, action: Action) => {
   switch (action.type) {
     case 'FOCUSED_COLLECTION':
       return action.payload;
@@ -70,17 +85,40 @@ export class CollectionsService {
     public apiConfig: ApiConfig,
     public http: Http) {
     this.collections = store.select('collections');
-    // this.focusedCollection = store.select('focusedCollections');
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection'
     };
   }
 
   public loadCollections() {
-    this.http.get(this.apiUrls.CollectionBaseUrl,
+    this.http.get(`${this.apiUrls.CollectionBaseUrl}/fetchBy?access-level=owner`,
       { headers: this.apiConfig.authHeaders() })
       .map(res => res.json())
-      .map(payload => ({ type: 'ADD_COLLECTIONS', payload }))
+      .subscribe(payload => this.storeCollections(payload));
+  }
+
+  public storeCollections(payload: any): void {
+    payload.items = payload.items === undefined ? [] : payload.items;
+    this.store.dispatch({
+      type: 'GET_COLLECTIONS', payload: {
+        'items': payload.items,
+        'pagination': {
+          'totalCount': payload.totalCount,
+          'currentPage': payload.currentPage + 1,
+          'hasNextPage': payload.hasNextPage,
+          'hasPreviousPage': payload.hasPreviousPage,
+          'numberOfPages': payload.numberOfPages,
+          'pageSize': payload.pageSize
+        }
+      }
+    });
+  }
+
+  public createCollection(collection: Collection) {
+    this.http.post(this.apiUrls.CollectionBaseUrl,
+      JSON.stringify(collection), { headers: this.apiConfig.authHeaders() })
+      .map(res => res.json())
+      .map(payload => ({ type: 'CREATE_COLLECTION', payload }))
       .subscribe(action => this.store.dispatch(action));
   }
 
@@ -92,30 +130,49 @@ export class CollectionsService {
       .subscribe(action => this.store.dispatch(action));
   }
 
-  public saveCollection(collection: Collection) {
-    (collection.id) ? this.updateColleciton(collection) : this.createCollection(collection);
+  public setFocusedCollection(collection: Collection) {
+    this.http.put(`${this.apiUrls.CollectionBaseUrl}/focused/${collection.id}`,
+      '', { headers: this.apiConfig.authHeaders() })
+      .subscribe(action => this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: collection }));
   }
 
-  public createCollection(collection: Collection) {
-    this.http.post(this.apiUrls.CollectionBaseUrl,
-      JSON.stringify(collection), { headers: this.apiConfig.authHeaders() })
+  // public saveCollection(collection: Collection) {
+  //   (collection.id) ? this.updateCollection(collection) : this.createCollection(collection);
+  // }
+
+  // public updateCollection(collection: Collection) {
+  //   this.http.put(`${this.apiUrls.CollectionBaseUrl}/${collection.id}`,
+  //     JSON.stringify(collection), { headers: this.apiConfig.headers() })
+  //     .subscribe(action => this.store.dispatch({ type: 'UPDATE_COLLECTION', payload: collection }));
+  // }
+
+  /**
+   * Ajax post request to identities api to add assets to a collection.
+   * @param collection    collection object
+   * @param assets-ids    comma separated list of asset.ids {35637550} or {35637550,15548547,29935259}
+   * @returns             
+   *                      
+   */
+  public addAssetsToCollection(collection: Collection, assetIds: any): void {
+    this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collection.id}/addAssets?asset-ids=${assetIds}`,
+      '', { headers: this.apiConfig.authHeaders() })
       .map(res => res.json())
-      .map(payload => ({ type: 'CREATE_COLLECTION', payload }))
+      .map(payload => ({ type: 'FOCUSED_COLLECTION', payload }))
       .subscribe(action => this.store.dispatch(action));
-  }
-
-  public updateColleciton(collection: Collection) {
-    this.http.put(`${this.apiUrls.CollectionBaseUrl}${collection.id}`,
-      JSON.stringify(collection), { headers: this.apiConfig.headers() })
-      .subscribe(action => this.store.dispatch({ type: 'UPDATE_COLLECTION', payload: collection }));
+    // console.log(`asset: ${assetIds} added to ${collection.name}!`);
   }
 
   public deleteCollection(collection: Collection) {
-    this.http.delete(`${this.apiUrls.CollectionBaseUrl}${collection.id}`)
+    // let stateItems:any = this.store.getState().collections.items.filter((collection: Collection) => {
+    //     return collection.id !== stateItems.id;
+    //   });
+    this.http.delete(`${this.apiUrls.CollectionBaseUrl}/${collection.id}`,
+      { headers: this.apiConfig.authHeaders() })
       .subscribe(action => this.store.dispatch({ type: 'DELETE_COLLECTION', payload: collection }));
   }
 
-  public resetFocused(): void {
+  public clearCollections(): void {
+    this.store.dispatch({ type: 'GET_COLLECTIONS', payload: collectionsState });
     this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: focusedState });
   }
 }

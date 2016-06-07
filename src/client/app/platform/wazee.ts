@@ -10,7 +10,7 @@ import { Error } from '../shared/services/error.service';
 import { AssetService} from '../+asset/services/asset.service';
 import { SearchContext} from '../shared/services/search-context.service';
 import { Authentication} from '../+user-management/services/authentication.data.service';
-import { CollectionsService} from '../+collections/services/collections.service';
+import { CollectionsService } from '../+collections/services/collections.service';
 
 // WAZEE STORES
 import { assets } from '../+search/services/asset.data.service';

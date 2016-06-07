@@ -1,37 +1,19 @@
 <section>
   <div layout="row" md-scroll-y="" layout-align="center start">
-    <div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
-      <md-card  *ngFor="let collection of collections" (click)="selected.emit(collection)">
-        <md-card-content>
-          <md-list>
-            <md-list-item>
-              <p><strong>Name: </strong> {{collection.name}}</p>
-            </md-list-item>
-            <md-divider></md-divider>
-            <md-list-item>
-              <p><strong>Id: </strong> {{collection.id}}</p>
-            </md-list-item>
-            <md-divider></md-divider>
-            <!--<md-list-item>
-              <p><strong>Created On: </strong>{{currentUser.createdOn() | async}}</p>
-            </md-list-item>
-            <md-divider></md-divider>
-            <md-list-item>
-              <p><strong>Last Updated: </strong>{{currentUser.lastUpdated() | async}}</p>
-            </md-list-item>
-            <md-divider></md-divider>
-            <md-list-item>
-              <p><strong>Site Name: </strong>{{currentUser.siteName() | async}}</p>
-            </md-list-item>
-            <md-divider></md-divider>
-            <md-list-item>
-              <p><strong>Id: </strong>{{currentUser.id() | async}}</p>
-            </md-list-item>
-            <md-divider></md-divider>-->
-            
-          </md-list>
-        </md-card-content>
-      </md-card>
+    <div flex="100">
+      <md-list *ngFor="let collection of collections.items">
+        <md-list-item style="display:block;background-color:#efefef;color:#333">
+          <span (click)="selected.emit(collection)">
+            <strong>Id: </strong> {{collection.id}}  
+            <strong>Name: </strong> {{collection.name}} 
+            <strong>Id: </strong> {{collection.id}}  
+            <strong>assets: </strong> 
+            <span *ngIf="collection.assets">{{collection.assets.length}}</span>
+            <span *ngIf="!collection.assets">0</span>
+          </span>
+          <span><button md-icon-button title="close collections" type="button"  (click)="deleted.emit(collection)" class="close"><md-icon>close</md-icon></button></span>
+        </md-list-item>
+      </md-list>
     </div>
   </div>
 </section>
