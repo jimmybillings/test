@@ -105,14 +105,14 @@ export class UiConfigComponent implements OnInit {
     this.reset();
   }
 
-  private reset(): void {
+  public reset(): void {
     this.currentComponent = null;
     this.subComponents = null;
     this.configOptions = null;
     this.form = null;
   }
 
-  private update(formValue: IuiConfig): void {
+  public update(formValue: IuiConfig): void {
     this.configService.update(formValue).subscribe((res) => {
       console.warn('Success!');
       this.uiConfig.set(res.json());
