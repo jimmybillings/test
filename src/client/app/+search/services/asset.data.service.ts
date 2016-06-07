@@ -57,6 +57,9 @@ export class AssetData {
   public searchAssetsUrl(loggedIn: boolean): string {
     return this.apiConfig.baseUrl() + this.getAssetSearchPath(loggedIn);
   }
+  public filterTreeUrl(loggedIn:boolean): string {
+    return this.apiConfig.baseUrl() + this.getFilterTreePath(loggedIn);
+  }
 
   /**
    * Ajax get request to search api to return matching assets and pagination information.
@@ -70,8 +73,11 @@ export class AssetData {
     return this.http.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options)
       .map((res: Response) => (res.json()));
   }
-
-
+  public getFilterTree(params:any) :Observable<any> {
+    params['counted']= 'true';
+    let options = this.getAssetSearchOptions(params, this.currentUser.loggedIn());
+    return this.http.get(this.filterTreeUrl(this.currentUser.loggedIn()), options).map((res: Response) => (res.json()));
+  }
   public storeAssets(payload: any): void {
     this.store.dispatch({
       type: 'SEARCH', payload: {
@@ -102,9 +108,8 @@ export class AssetData {
    * @returns               appropriate api search path based on whether or not user is logged in
   */
   public getAssetSearchPath(isUserLoggedIn: boolean): string {
-    return (isUserLoggedIn) ? 'api/assets/v1/search/solrcloud' : 'api/assets/v1/search/anonymous/solrcloud';
+    return (isUserLoggedIn) ? 'api/assets/v1/search' : 'api/assets/v1/search/anonymous';
   }
-
   /**
    * @param isUserLoggedIn  True if current user is logged in and has localStorage information, and is
    *                        used to set api header information. 
@@ -124,5 +129,8 @@ export class AssetData {
     let headers = (isUserLoggedIn) ? this.apiConfig.authHeaders() : void null;
     let options = (isUserLoggedIn) ? { headers: headers, search: search } : { search: search };
     return new RequestOptions(options);
+  }
+  public getFilterTreePath(isUserLoggedIn:boolean): string {
+    return (isUserLoggedIn) ? 'api/assets/v1/filter/filterTree' : 'api/assets/v1/filter/anonymous/filterTree';
   }
 }

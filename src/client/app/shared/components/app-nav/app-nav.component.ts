@@ -26,7 +26,6 @@ export class AppNavComponent implements OnInit {
   @Output() onOpenBinTray = new EventEmitter();
   @Output() onOpenSearch = new EventEmitter();
   @Output() onOpenSidenav = new EventEmitter();
-
   public loggedInState: boolean;
 
   constructor(private _router: Router) { }
@@ -46,7 +45,6 @@ export class AppNavComponent implements OnInit {
   public openBinTray(event: Event) {
     this.onOpenBinTray.emit(event);
   }
-
   public openSidenav(event: Event) {
     this.onOpenSidenav.emit(event);
   }

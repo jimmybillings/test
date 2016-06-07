@@ -58,12 +58,12 @@ export function main() {
 
     it('Should return correct api URL path for a logged out user', inject([AssetData], (service: AssetData) => {
       let loggedIn = false;
-      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/search/anonymous/solrcloud');
+      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/search/anonymous');
     }));
 
     it('Should return correct api URL path for a logged in user', inject([AssetData], (service: AssetData) => {
       let loggedIn = true;
-      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/search/solrcloud');
+      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/search');
     }));
 
 
@@ -90,7 +90,7 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.searchAssets(searchParams()).subscribe((payload) => {
-          expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/assets/v1/search/anonymous/solrcloud?q=green&n=25&i=0&siteName=core');
+          expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/assets/v1/search/anonymous?q=green&n=25&i=0&siteName=core');
           expect(payload).toEqual(MockSearchResultsResponse());
         });
         connection.mockRespond(new Response(
