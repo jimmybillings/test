@@ -18,7 +18,7 @@
               </div>
               <div flex-gt-lg="10" flex-xl="10" flex="10">
                 <i *ngIf="item.key !== currentComponent" md-icon="" (click)="show(item.key)" class="material-icons">keyboard_arrow_right</i>
-                <i *ngIf="item.key === currentComponent" md-icon="" (click)="hide()" class="material-icons">keyboard_arrow_left</i>
+                <i *ngIf="item.key === currentComponent" md-icon="" (click)="reset()" class="material-icons">keyboard_arrow_left</i>
               </div>
             </md-list-item>
           </div>
@@ -53,15 +53,19 @@
               <div class="icons" flex-gt-lg="20" flex-xl="20" flex="20" layout="row" layout-align="end center">
                 <i md-icon="" class="material-icons">menu</i>
                 <i md-icon="" class="material-icons" (click)="buildSubItemForm(i)">edit</i>
+                <i md-icon="" class="material-icons" (click)="removeItem(i)">delete</i>
               </div>
             </md-list-item>
+          </div>
+          <div class="add-item">
+            <i md-icon="" class="material-icons" (click)="addItem()">add</i>
           </div>
         </md-list>
       </md-content>
     </div>
     <div flex="40" flex-gt-lg="40" flex-xl="40" *ngIf="form">
       <md-card>
-        <form layout="column" (ngSubmit)="onSubmit(config)" class="md-inline-form">
+        <form layout="column" (ngSubmit)="onSubmit()" class="md-inline-form">
           <div *ngFor="let control of form | values; of let i = index">
             <md-input [(ngModel)]="form[control.key]" ngControl="{{control.key}}" placeholder="{{control.key}}"></md-input>
           </div>

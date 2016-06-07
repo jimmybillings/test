@@ -32,7 +32,7 @@ export class UiConfigComponent implements OnInit {
   public config: IuiConfig;
   public components: IuiComponents;
   public subComponents: IuiSubComponents;
-  public form: IuiTableHeaders | IFormFields | Object;
+  public form: any;
   public configOptions: Array<IuiTableHeaders | IFormFields>;
 
   constructor(public router: Router,
@@ -89,18 +89,31 @@ export class UiConfigComponent implements OnInit {
     this.form = this.configOptions[configOptionIndex];
   }
 
-  public hide(): void {
+  public removeItem(itemIndex: number): void {
+    this.configOptions.splice(itemIndex, 1);
+    this.update(this.config);
+  }
+
+  public addItem(): void {
+    this.form = Object.assign({}, this.configOptions[0]);
+    Object.keys(this.form).forEach(key => {this.form[key] = '';});
+    this.configOptions.push(this.form);
+  }
+
+  public onSubmit(): void {
+    this.update(this.config);
+    this.reset();
+  }
+
+  private reset(): void {
     this.currentComponent = null;
     this.subComponents = null;
     this.configOptions = null;
     this.form = null;
   }
 
-  public onSubmit(formValue: IuiConfig): void {
-    this.subComponents = null;
-    this.configOptions = null;
-    this.form = null;
-    this.configService.update(this.config.id, JSON.stringify(formValue)).subscribe((res) => {
+  private update(formValue: IuiConfig): void {
+    this.configService.update(formValue).subscribe((res) => {
       console.warn('Success!');
       this.uiConfig.set(res.json());
     });
