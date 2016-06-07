@@ -77,7 +77,7 @@ export class UiConfigComponent implements OnInit {
   }
 
   public buildForm(configOption: string): void {
-    this.form = {value: this.subComponents[configOption].value};
+    this.form = this.subComponents[configOption];
   }
 
   public showSubItems(configOption: string): void {
