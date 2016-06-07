@@ -27,6 +27,8 @@ export class UiConfigComponent implements OnInit {
   public siteName: string;
   public configType: string;
   public sites: Array<string>;
+  public currentOption: string;
+  public currentComponent: string;
   public config: IuiConfig;
   public components: IuiComponents;
   public subComponents: IuiSubComponents;
@@ -70,6 +72,7 @@ export class UiConfigComponent implements OnInit {
   }
 
   public show(component: string): void {
+    this.currentComponent = component;
     this.subComponents = this.components[component].config;
   }
 
@@ -78,11 +81,19 @@ export class UiConfigComponent implements OnInit {
   }
 
   public showSubItems(configOption: string): void {
+    this.currentOption = configOption;
     this.configOptions = this.subComponents[configOption].items;
   }
 
   public buildSubItemForm(configOptionIndex: number): void {
     this.form = this.configOptions[configOptionIndex];
+  }
+
+  public hide(): void {
+    this.currentComponent = null;
+    this.subComponents = null;
+    this.configOptions = null;
+    this.form = null;
   }
 
   public onSubmit(formValue: IuiConfig): void {

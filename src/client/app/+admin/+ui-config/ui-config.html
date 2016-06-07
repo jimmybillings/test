@@ -17,7 +17,8 @@
                 <md-list-text>{{ item.key }}</md-list-text>
               </div>
               <div flex-gt-lg="10" flex-xl="10" flex="10">
-                <i md-icon="" (click)="show(item.key)" class="material-icons">keyboard_arrow_right</i>
+                <i *ngIf="item.key !== currentComponent" md-icon="" (click)="show(item.key)" class="material-icons">keyboard_arrow_right</i>
+                <i *ngIf="item.key === currentComponent" md-icon="" (click)="hide()" class="material-icons">keyboard_arrow_left</i>
               </div>
             </md-list-item>
           </div>
