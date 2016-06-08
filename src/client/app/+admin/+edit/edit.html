@@ -1,0 +1,14 @@
+
+<admin-edit *ngIf="config">
+  <div layout="row" layout-align="center center">
+    <div flex-xl="30" flex-gt-lg="30" flex-gt-md="30" flex="30">
+      <md-card>
+        <md-card-title>
+        </md-card-title>
+        <md-card-content>
+          <wz-form layout-align="center center" [items]="config.editForm.items" submitLabel="UPDATE" (formSubmit)="onSubmit($event)"></wz-form>
+        </md-card-content>
+      </md-card>
+    </div>
+  </div>
+</admin-edit>
