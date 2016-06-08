@@ -55,6 +55,14 @@ export class AdminService {
     return this.http.post(url, body, options).map((res: Response) => res.json());
   }
 
+  public put(resource: string, resourceId: string, formData: any): Observable<any> {
+    let url = this.buildGetUrl(resource, resourceId);
+    let headers = this.apiConfig.authHeaders();
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify(formData);
+    return this.http.put(url, body, options).map((res: Response) => res.json());
+  }
+
   public setResources(data: any): void {
     this.store.dispatch({
       type: 'ADMIN_SERVICE.SET_RESOURCES', payload: {
