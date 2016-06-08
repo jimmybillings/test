@@ -14,7 +14,7 @@ export class FilterTree {
             return false;
         }
         for(var f of list) {
-            if(f.toString() === item.toString()) {
+            if(item && item !== null && f.toString() === item.toString()) {
                 return true;
             }
         }
@@ -49,7 +49,7 @@ export class FilterTree {
         }
     }
     getDisplay() :string {
-        let s:string = this.name;
+        let s:string = '['+this.filterId+'] '+this.name;
         if(this.type === 'Text' || this.type === 'DateRange' || this.type === 'List') {
             s += ' ... ';
         }
