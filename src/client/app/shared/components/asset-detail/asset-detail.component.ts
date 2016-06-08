@@ -1,4 +1,4 @@
-import {Component, Input, ChangeDetectionStrategy, OnInit, OnChanges, HostListener} from '@angular/core';
+import {Component, Input, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {PlayerComponent} from '../../components/player/player.component';
@@ -25,9 +25,9 @@ export class AssetDetailComponent implements OnInit, OnChanges {
   @Input() currentUser: any;
 
 
-  @HostListener('click', ['$event.target']) click(target: any) {
-    console.log('host listened click');
-  }
+  // @HostListener('click', ['$event.target']) click(target: any) {
+  //   console.log('host listened click');
+  // }
   ngOnChanges(changes: any): void {
     console.log('changes made');
     if (Object.keys(changes.assetDetail.currentValue.common).length > 0) {
