@@ -6,9 +6,27 @@ export interface Collection {
   name: string;
   owner: string;
   editors?: number[];
-  assets?: number[];
-  tags?: string[];
+  assets?: string[];
+  tags?: any;
   assetCount?: number;
   editorsCount?: number;
   tagCount?: number;
+}
+
+export interface Collections {
+  items?: Collection[];
+  pagination: {
+    totalCount: number;
+    currentPage: number;
+    pageSize: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    numberOfPages: number;
+  };
+}
+
+export interface CollectionStore {
+  collections: Collections;
+  // collectionList: Collection[];
+  focusedCollection: Collection;
 }

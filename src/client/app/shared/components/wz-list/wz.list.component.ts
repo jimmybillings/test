@@ -1,4 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
@@ -6,6 +7,7 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
   selector: 'wz-list',
   templateUrl: 'wz.list.html',
   directives: [ROUTER_DIRECTIVES],
+  pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

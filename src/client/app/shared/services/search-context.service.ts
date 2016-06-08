@@ -44,7 +44,6 @@ export class SearchContext {
     this.loc.go('/search;'+this.toQueryParam(this.get()));
   }
   private toQueryParam(params: any):string {
-    console.dir(params);
     let buffer = new Array();
     for (var name in params) {
        if(! params.hasOwnProperty(name)) {
@@ -56,10 +55,7 @@ export class SearchContext {
        }else {
          buffer.push(name +'=');
        }
-       console.log('name = '+name+' value= '+value);
-       //buffer.push(name + '=' + ( value === null ) ? '' : value );
     }
-    console.dir(buffer);
     var source = buffer.join( ';' );
     return( source );
   }

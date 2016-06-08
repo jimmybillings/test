@@ -12,8 +12,6 @@ export class FilterTreeComponent {
     @Output() onFilterChange: EventEmitter<any> = new EventEmitter();
     public searchComp:SearchComponent;
     constructor(@Inject(forwardRef(() => SearchComponent)) searchComp:SearchComponent) {
-        console.log('search component .......');
-        console.dir(searchComp);
         this.searchComp = searchComp;
     }
     filterCheck (filter:FilterTree) {

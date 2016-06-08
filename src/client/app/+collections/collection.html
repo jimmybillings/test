@@ -1,0 +1,18 @@
+
+<section class="login hero" style="padding-top: 30px;">
+  <div layout="row" flex="" layout-padding layout-margin>
+    <collections-list
+      flex="55" 
+      [collections]="collections | async"
+      (selected)="selectFocusedCollection($event)" 
+      (deleted)="deleteCollection($event)">
+    </collections-list>
+    <collection-form
+      flex="30"
+      (create)="createCollection($event)" 
+      (cancelled)="resetCollection($event)"
+      [collection]="focusedCollection | async">
+    </collection-form>
+  </div>
+</section>
+<!--<router-outlet></router-outlet>-->

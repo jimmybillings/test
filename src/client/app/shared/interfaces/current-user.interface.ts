@@ -9,5 +9,10 @@ export interface CurrentUserInterface {
   id: number;
   accountIds: number[];
   password: string;
+  permissions?: Object[];
+  ownedCollections?: number[];
+  editableCollections?: number[];
+  accessibleCollections?: number[];
+  focusedCollection?: number;
 }
 

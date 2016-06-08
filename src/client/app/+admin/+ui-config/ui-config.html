@@ -1,27 +1,75 @@
-
-<div layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
-  <div class="config-title" flex="30" flex-gt-lg="30" flex-xl="30">
-    <h1><strong>{{siteName.toUpperCase()}}</strong> {{configType}} config</h1>
-    <select *ngIf="portal === 'core'" (change)="goToSite($event.target.value)">
-      <option *ngFor="let site of sites" [selected]="siteName === site" [value]="site">{{site}}</option>
-    </select>
+<section *ngIf="config">
+  <div layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
+    <div class="config-title" flex="30" flex-gt-lg="30" flex-xl="30">
+      <h1><strong>{{siteName.toUpperCase()}}</strong> {{configType}} config</h1>
+      <select *ngIf="portal === 'core'" (change)="goToSite($event.target.value)">
+        <option *ngFor="let site of sites" [selected]="siteName === site" [value]="site">{{site}}</option>
+      </select>
+    </div>
   </div>
-</div>
-<div class="admin-ui-config" layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
-  <div flex="15" flex-gt-lg="15" flex-xl="15">
-    <md-content>
-      <md-list>
-        <div *ngFor="let item of items">
-          <md-list-item class="md-1-line">
-            <div flex-gt-lg="90" flex-xl="90" flex="90">
-              <md-list-text>{{ item }}</md-list-text>
-            </div>
-            <div flex-gt-lg="10" flex-xl="10" flex="10">
-              <i md-icon="" (click)="show(item)" class="material-icons">keyboard_arrow_down</i>
-            </div>
-          </md-list-item>
-        </div>
-      </md-list>
-    </md-content>
+  <div class="admin-ui-config" layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
+    <div class="menu" flex="15" flex-gt-lg="15" flex-xl="15">
+      <md-content>
+        <md-list>
+          <div *ngFor="let item of components | values">
+            <md-list-item class="md-1-line">
+              <div flex-gt-lg="90" flex-xl="90" flex="90">
+                <md-list-text>{{ item.key }}</md-list-text>
+              </div>
+              <div flex-gt-lg="10" flex-xl="10" flex="10">
+                <i *ngIf="item.key !== currentComponent" md-icon="" (click)="show(item.key)" class="material-icons">keyboard_arrow_right</i>
+                <i *ngIf="item.key === currentComponent" md-icon="" (click)="hide()" class="material-icons">keyboard_arrow_left</i>
+              </div>
+            </md-list-item>
+          </div>
+        </md-list>
+      </md-content>
+    </div>
+    <div class="menu" flex="15" flex-gt-lg="15" flex-xl="15" *ngIf="subComponents">
+      <md-content>
+        <md-list>
+          <div *ngFor="let item of subComponents | values">
+            <md-list-item class="md-1-line">
+              <div flex-gt-lg="90" flex-xl="90" flex="90">
+                <md-list-text>{{ item.key }}</md-list-text>
+              </div>
+              <div class="icons" flex-gt-lg="10" flex-xl="10" flex="10">
+                <i *ngIf="subComponents[item.key].items" md-icon="" (click)="showSubItems(item.key)" class="material-icons">keyboard_arrow_right</i>
+                <i *ngIf="!subComponents[item.key].items" md-icon="" (click)="buildForm(item.key)" class="material-icons">edit</i>
+              </div>
+            </md-list-item>
+          </div>
+        </md-list>
+      </md-content>
+    </div>
+    <div class="menu" flex="15" flex-gt-lg="15" flex-xl="15" *ngIf="configOptions">
+      <md-content>
+        <md-list>
+          <div *ngFor="let item of configOptions; let i = index">
+            <md-list-item class="md-1-line">
+              <div flex-gt-lg="80" flex-xl="80" flex="80">
+                <md-list-text>{{ item.name }}</md-list-text>
+              </div>
+              <div class="icons" flex-gt-lg="20" flex-xl="20" flex="20" layout="row" layout-align="end center">
+                <i md-icon="" class="material-icons">menu</i>
+                <i md-icon="" class="material-icons" (click)="buildSubItemForm(i)">edit</i>
+              </div>
+            </md-list-item>
+          </div>
+        </md-list>
+      </md-content>
+    </div>
+    <div flex="40" flex-gt-lg="40" flex-xl="40" *ngIf="form">
+      <md-card>
+        <form layout="column" (ngSubmit)="onSubmit(config)" class="md-inline-form">
+          <div *ngFor="let control of form | values; of let i = index">
+            <md-input [(ngModel)]="form[control.key]" ngControl="{{control.key}}" placeholder="{{control.key}}"></md-input>
+          </div>
+          <md-card-actions layout="row" layout-align="center center">
+            <button md-raised-button type="submit">update</button>
+          </md-card-actions>
+        </form>
+      </md-card>
+    </div>
   </div>
-</div>
+</section>

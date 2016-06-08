@@ -20,10 +20,12 @@
         [searchBarIsActive]="searchBarIsActive" 
         [currentUser]="currentUser" 
         [state]="state" 
-        [config]="header" 
+        [config]="header"
+        [collection]="focusedCollection | async" 
         (onLogOut)="logout()" 
         (onOpenSearch)="openSearch()" 
         (onOpenBinTray)="openBinTray()" 
+        (onShowNewCollection)="showNewCollection()"
         (onOpenSidenav)="sidenav.open()">
       </app-nav>
       <search-box 
@@ -38,7 +40,9 @@
       <bin-tray 
         *ngIf="searchBarIsActive" 
         [showFixed]="showFixed" 
-        (onCloseBinTray)="closeBinTray()">
+        [collection]="focusedCollection | async" 
+        (onCloseBinTray)="closeBinTray()"
+        (onShowNewCollection)="showNewCollection()">
       </bin-tray>
     </header>
     <div [ngClass]="{'bin-tray-closed': !binTrayIsOpen, 'search-closed': !searchIsOpen}" class="main-content">

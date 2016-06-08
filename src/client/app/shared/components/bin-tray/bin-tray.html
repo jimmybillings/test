@@ -3,9 +3,12 @@
   <div flex="80" class="asset-carousel"></div>
   <div layout="row" flex="auto" layout-align="end center" class="focused-collection">
     <nav class="focused">
-      <button md-button="" class="is-dd"> London Tourism Project </button>
+      <!--need to fix collection with no assets also in list-->
+      <button *ngIf="collection.assets" md-button="" class="is-dd"> {{collection.name}} {{collection.assets.length}}</button>
+      <button *ngIf="!collection.assets" md-button="" class="is-dd"> {{collection.name}} 0</button>
       <div class="asset-count"><span class="count"></span></div>
     </nav>
+    <button md-icon-button flex="none" title="create new" type="button" (click)="showNewCollection()"><md-icon>add_circle_outline</md-icon></button>
     <button md-icon-button flex="none" title="more collection options" type="button"><md-icon>more_vert</md-icon></button>
   </div>
   <button md-icon-button title="close collections" type="button" (click)="closeBinTray()" class="close"><md-icon>close</md-icon></button>

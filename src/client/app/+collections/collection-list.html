@@ -1,0 +1,19 @@
+<section>
+  <div layout="row" md-scroll-y="" layout-align="center start">
+    <div flex="100">
+      <md-list *ngFor="let collection of collections.items">
+        <md-list-item style="display:block;background-color:#efefef;color:#333">
+          <span (click)="selected.emit(collection)">
+            <strong>Id: </strong> {{collection.id}}  
+            <strong>Name: </strong> {{collection.name}} 
+            <strong>Id: </strong> {{collection.id}}  
+            <strong>assets: </strong> 
+            <span *ngIf="collection.assets">{{collection.assets.length}}</span>
+            <span *ngIf="!collection.assets">0</span>
+          </span>
+          <span><button md-icon-button title="close collections" type="button"  (click)="deleted.emit(collection)" class="close"><md-icon>close</md-icon></button></span>
+        </md-list-item>
+      </md-list>
+    </div>
+  </div>
+</section>

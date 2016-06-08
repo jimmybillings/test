@@ -1,0 +1,18 @@
+
+<!--<h2 *ngIf="focusedCollection.id">focused Collection id is {{focusedCollection.id}}</h2>
+<h2 *ngIf="!focusedCollection.id">There is not a focused collection</h2>-->
+<div [ngClass]="{hidden: !showForm, show: showForm}">
+  <h2>FOCUSED NAME:  {{collection.name}}</h2>
+  <h4>FOCUSED ID:  {{collection.id}}</h4>
+
+  <!--this will be it's own component -->
+
+  <md-card>
+    <md-card-title>        
+      {{ 'COLLECTION.NEW_TITLE' | translate }}
+    </md-card-title>
+    <md-card-content>
+      <wz-form [items]="config.form.items" submitLabel="COLLECTION.FORM.SUBMIT_LABEL" (formSubmit)="createCollection($event)"></wz-form>
+    </md-card-content>
+  </md-card>
+</div>
