@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from './services/collections.service';
 import { CollectionListComponent } from './collection-list.component';
@@ -35,7 +35,7 @@ import { Error } from '../shared/services/error.service';
   // { path: '/detail/:id', component: CollectionComponent }
 ])
 
-export class CollectionComponent implements OnInit, OnDestroy {
+export class CollectionComponent implements OnInit {
   public collections: Observable<Collections>;
   public focusedCollection: Observable<any>;
   public errorMessage: string;
@@ -48,33 +48,26 @@ export class CollectionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.collectionsService.loadCollections();
+    // this.collectionsService.loadCollections();
     this.collections = this.collectionsService.collections;
     // this.collections = this.store.select('collections');
     this.focusedCollection = this.store.select('focusedCollection');
     // this.focusedCollection.subscribe(f => console.log(f));
     // this.currentUser._currentUser.subscribe(u => {
-    //   console.log(u);
-    //   this.UserHasFocusedCollection(u) ? this.collectionsService.getFocusedCollection() : console.log('you don\'t have a focused collection');
+      // console.log(u);
+      // this.UserHasFocusedCollection(u) ? this.collectionsService.getFocusedCollection() : console.log('you don\'t have a focused collection');
+      // this.UserHasFocusedCollection(u) ? console.log('It thinks you have collections') : console.log('you don\'t have a focused collection');
     // });
 
-    // this.collections.subscribe(c => console.log(c));
+    // this.collections.subscribe(c => {
+    //   console.log(c);
+    // });
 
     // console.log(this.store);
   }
 
-  ngOnDestroy(): void {
-    // console.log('collection component is toast');
-    // this.collectionsService.resetFocused();
-    // this.FocusedCollection.destroy();
-  }
-
-  public UserHasFocusedCollection(user: any): boolean {
-    return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
-  }
-
-  // selectFocusedCollection(collection: Collection) {
-  //   this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: collection });
+  // public UserHasFocusedCollection(user: any): boolean {
+  //   return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
   // }
 
   selectFocusedCollection(collection: Collection) {
@@ -91,5 +84,14 @@ export class CollectionComponent implements OnInit, OnDestroy {
   }
   public deleteCollection(collection: Collection) {
     this.collectionsService.deleteCollection(collection);
+    // if we are deleting current focused, we need to get the new focused from the server.
+    if (collection.id === this.store.getState().focusedCollection.id &&
+      this.store.getState().collections.items.length > 1) {
+        this.getFocusedCollection();
+    }
+    // if we delete the last collection, reset the store to initial values (no focused collection)
+    if (this.store.getState().collections.items.length === 1) {
+      this.collectionsService.clearCollections();
+    }
   }
 }

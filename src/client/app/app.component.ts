@@ -82,12 +82,27 @@ export class AppComponent implements OnInit {
     this.currentUser.set();
     this.configChanges();
     this.routerChanges();
+
+    this.collections = this.collectionsService.collections;
     this.focusedCollection = this.store.select('focusedCollection');
     // this.focusedCollection.subscribe(v => console.log(v));
 
+    // this.collections.subscribe(c => {
+    //   console.log(c);
+    // });
+
     this.currentUser._currentUser.subscribe(u => {
-      this.UserHasFocusedCollection(u) ? this.collectionsService.getFocusedCollection() : console.log('you don\'t have a focused collection');
+      // console.log(u);
+      this.UserHasFocusedCollection(u) ?
+        this.getCollectionsAndFocused() :
+        // console.log(`I think user has a collection to make focused: ${u.focusedCollection}`):
+        console.log('you don\'t have a focused collection');
     });
+  }
+
+  public getCollectionsAndFocused() {
+    this.collectionsService.loadCollections();
+    this.collectionsService.getFocusedCollection();
   }
 
   public UserHasFocusedCollection(user: any): boolean {

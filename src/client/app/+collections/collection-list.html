@@ -5,8 +5,7 @@
         <md-list-item style="display:block;background-color:#efefef;color:#333">
           <span (click)="selected.emit(collection)">
             <strong>Id: </strong> {{collection.id}}  
-            <strong>Name: </strong> {{collection.name}} 
-            <strong>Id: </strong> {{collection.id}}  
+            <strong>Name: </strong> {{collection.name}}
             <strong>assets: </strong> 
             <span *ngIf="collection.assets">{{collection.assets.length}}</span>
             <span *ngIf="!collection.assets">0</span>
@@ -16,4 +15,16 @@
       </md-list>
     </div>
   </div>
+  <!--Testing simple tabs-->
+  <!--<md-tab-group>
+    <md-tab *ngFor="let collection of collections.items">
+      <template md-tab-label>{{collection.name}}</template>
+      <template md-tab-content>
+        <div *ngIf="collection.assets">
+          {{collection.assets}}
+        </div>
+      </template>
+    </md-tab>
+  </md-tab-group>-->
+
 </section>

@@ -163,9 +163,6 @@ export class CollectionsService {
   }
 
   public deleteCollection(collection: Collection) {
-    // let stateItems:any = this.store.getState().collections.items.filter((collection: Collection) => {
-    //     return collection.id !== stateItems.id;
-    //   });
     this.http.delete(`${this.apiUrls.CollectionBaseUrl}/${collection.id}`,
       { headers: this.apiConfig.authHeaders() })
       .subscribe(action => this.store.dispatch({ type: 'DELETE_COLLECTION', payload: collection }));
