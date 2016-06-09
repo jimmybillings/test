@@ -1,13 +1,17 @@
 
 <div *ngIf="config">
-  <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
-    <div flex-xl="40" flex-gt-lg="45" flex="50">
-      <h3>{{ 'ADMIN.CONFIG.UI_TITLE' | translate }}</h3>
-      <wz-list [items]="uiConfigs" [headers]="headers"></wz-list>
+  <div layout="row" md-scroll-y="" layout-align="center start">
+    <div flex-xl="40" flex-gt-lg="45" flex="45" flex-gt-md="45">
+      <div layout="column" md-scroll-y="" layout-align="center center">
+        <h3 class="md-display-1">{{ 'ADMIN.CONFIG.UI_TITLE' | translate }}</h3>
+        <wz-list [items]="uiConfigs" [headers]="headers"></wz-list>
+      </div>
     </div>
-    <div flex-xl="40" flex-gt-lg="45" flex="50">
-      <h3>{{ 'ADMIN.CONFIG.SITE_TITLE' | translate }}</h3>
-      <wz-list [items]="siteConfigs" [headers]="headers"></wz-list>
+    <div flex-xl="40" flex-gt-lg="45" flex="45" flex-gt-md="45">
+      <div layout="column" md-scroll-y="" layout-align="center center">
+        <h3 class="md-display-1">{{ 'ADMIN.CONFIG.SITE_TITLE' | translate }}</h3>
+        <wz-list [items]="siteConfigs" [headers]="headers"></wz-list>
+      </div>
     </div>
   </div>
 </div>

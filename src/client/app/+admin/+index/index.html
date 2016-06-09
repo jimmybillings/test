@@ -1,24 +1,26 @@
 
 <section class="admin-index" *ngIf="config">
-  <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
-    <div flex="95" flex-gt-lg="95" flex-xl="95">
-      <a md-raised-button="" [routerLink]="['new']">New {{currentComponent}}</a>
+  <div layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
+    <div flex="10" flex-gt-lg="10" flex-xl="10" flex-gt-md="10">
+      <a md-raised-button="" [routerLink]="['new']">{{ 'ADMIN.NEW_RESOURCE_TITLE' | translate }} {{currentComponent}}</a>
     </div>
   </div>
   <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
-    <div flex="95" flex-gt-lg="95" flex-xl="95">
+    <div flex="95" flex-gt-lg="95" flex-xl="95" flex-gt-md="95">
       <div layout="row" layout-align="space-around stretch">
-        <div flex-xl="70" flex-gt-lg="70" flex-gt-md="70" flex="70" class="account-table">
+        <div flex-xl="70" flex-gt-lg="70" flex-gt-md="70" flex="70">
           <wz-list [items]="currentUserResources.items" [headers]="config.tableHeaders.items" [toggleFlag]="toggleFlag" (sort)="navigateToSortUrl($event)"></wz-list>
           <div layout="row" layout-align="end center">
             <pagination (getPage)="navigateToPageUrl($event)" [currentPage]="routeSegment.getParam('i') || 1" [pagination]="currentUserResources.pagination"></pagination>
           </div>
         </div>
-        <div flex-xl="25" flex-gt-lg="25" flex-gt-md="25" flex="25" class="admin-filter">
+        <div flex-xl="25" flex-gt-lg="25" flex-gt-md="25" flex="25">
           <md-card>
-            <md-card-title>
-              {{ 'ADMIN.' + currentComponent.toUpperCase() + '.SEARCH_TITLE' | translate }}
-            </md-card-title>
+            <div layout="row" layout-align="center center">
+              <md-card-title>
+                {{ 'ADMIN.' + currentComponent.toUpperCase() + '.SEARCH_TITLE' | translate }}
+              </md-card-title>
+            </div>
             <md-card-content>
               <wz-form [items]="config.searchForm.items" submitLabel="ADMIN.SEARCH_SUBMIT_LABEL" (formSubmit)="navigateToFilterUrl($event)"></wz-form>
             </md-card-content>

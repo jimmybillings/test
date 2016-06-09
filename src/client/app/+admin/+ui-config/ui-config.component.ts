@@ -72,6 +72,7 @@ export class UiConfigComponent implements OnInit {
   }
 
   public show(component: string): void {
+    this.reset();
     this.currentComponent = component;
     this.subComponents = this.components[component].config;
   }
@@ -89,17 +90,16 @@ export class UiConfigComponent implements OnInit {
     this.form = this.configOptions[configOptionIndex];
   }
 
-  public hide(): void {
+  public reset(): void {
     this.currentComponent = null;
+    this.currentOption = null;
     this.subComponents = null;
     this.configOptions = null;
     this.form = null;
   }
 
   public onSubmit(formValue: IuiConfig): void {
-    this.subComponents = null;
-    this.configOptions = null;
-    this.form = null;
+    this.reset();
     this.configService.update(this.config.id, JSON.stringify(formValue)).subscribe((res) => {
       console.warn('Success!');
       this.uiConfig.set(res.json());
