@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { AdminService } from '../services/admin.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { ApiConfig } from '../../shared/services/api.config';
@@ -10,14 +11,16 @@ import { Router, RouteSegment } from '@angular/router';
   selector: 'admin-edit',
   templateUrl: 'edit.html',
   providers: [AdminService],
-  directives: [WzFormComponent]
+  directives: [WzFormComponent],
+  pipes: [TranslatePipe]
 })
 
 export class EditComponent implements OnInit {
   public config: any;
   public portal: string;
-  public resourceId: string;
   public resource: string;
+  public showForm: boolean;
+  public resourceId: string;
   public currentResource: any;
   public resourceFormItems: any;
   public currentComponent: string;
@@ -29,6 +32,7 @@ export class EditComponent implements OnInit {
               public routeSegment: RouteSegment) {
                 this.resourceFormItems = [];
                 this.portal = this.apiConfig.getPortal();
+                this.showForm = false;
               }
 
   ngOnInit(): void  {
@@ -45,6 +49,7 @@ export class EditComponent implements OnInit {
         this.config = config.config;
       });
     });
+    setTimeout(() => { this.showForm = true; }, 250);
   }
 
   public onSubmit(formData: any): void {

@@ -20,13 +20,16 @@ export class NewComponent implements OnInit {
   public resource: string;
   public siteName: string;
   public config: IuiConfig;
+  public showForm: boolean;
   public currentComponent: string;
 
   constructor(public router: Router,
     public apiConfig: ApiConfig,
     public adminService: AdminService,
     public routeSegment: RouteSegment,
-    public uiConfig: UiConfig) { }
+    public uiConfig: UiConfig) {
+      this.showForm = false;
+    }
 
   ngOnInit(): void {
     this.siteName = this.apiConfig.getPortal();
@@ -35,6 +38,7 @@ export class NewComponent implements OnInit {
     this.uiConfig.get('admin' + this.currentComponent).subscribe((config) => {
       this.config = config.config;
     });
+    setTimeout(() => { this.showForm = true; }, 250);
   }
 
   public onSubmit(formData: any): void {

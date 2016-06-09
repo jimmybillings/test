@@ -29,3 +29,5 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import '+collections/collections';
 
 @import '+admin/+ui-config/ui-config';
+@import '+admin/+edit/edit';
+@import '+admin/+new/new';
