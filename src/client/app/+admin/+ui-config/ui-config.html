@@ -25,7 +25,7 @@
         </md-list>
       </md-content>
     </div>
-    <div class="menu" flex="15" flex-gt-lg="15" flex-xl="15" *ngIf="subComponents">
+    <div *ngIf="subComponents" class="second-menu" flex="15" flex-gt-lg="15" flex-xl="15" [ngClass]="{show: subComponents}">
       <md-content>
         <md-list>
           <div *ngFor="let item of subComponents | values">
@@ -42,7 +42,7 @@
         </md-list>
       </md-content>
     </div>
-    <div class="menu" flex="15" flex-gt-lg="15" flex-xl="15" *ngIf="configOptions">
+    <div class="third-menu" flex="15" flex-gt-lg="15" flex-xl="15" *ngIf="configOptions" [ngClass]="{show: configOptions}">
       <md-content>
         <md-list>
           <div *ngFor="let item of configOptions; let i = index">
