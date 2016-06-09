@@ -102,6 +102,8 @@
   "ADMIN": {
     "SEARCH_SUBMIT_LABEL": "FIND",
     "CREATE_SUBMIT_LABEL": "CREATE",
+    "NEW_RESOURCE_TITLE": "New",
+    "DASHBOARD_TITLE": "Admin Dashboard",
     "SUBHEADER": {
       "DASHBOARD": "Dashboard",
       "ACCOUNTS": "Accounts",
@@ -111,6 +113,7 @@
     "USER": {
       "SEARCH_TITLE": "Search Users",
       "NEW_TITLE": "New User",
+      "EDIT_TITLE": "Edit User",
       "FIRST_NAME_LABEL": "First Name",
       "LAST_NAME_LABEL": "Last Name",
       "EMAIL_LABEL": "Email Address",
@@ -122,6 +125,7 @@
     "ACCOUNT": {
       "SEARCH_TITLE": "Search Accounts",
       "NEW_TITLE": "New Account",
+      "EDIT_TITLE": "Edit Account",
       "STATUS_LABEL": "Status",
       "CONTACT_LABEL": "Contact Name",
       "NAME_LABEL": "Name",
