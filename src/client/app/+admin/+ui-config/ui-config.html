@@ -12,13 +12,13 @@
       <md-content>
         <md-list>
           <div *ngFor="let item of components | values">
-            <md-list-item class="md-1-line">
+            <md-list-item class="md-1-line" [ngClass]="{focused: item.key === currentComponent}">
               <div flex-gt-lg="90" flex-xl="90" flex="90">
                 <md-list-text>{{ item.key }}</md-list-text>
               </div>
               <div flex-gt-lg="10" flex-xl="10" flex="10">
                 <i *ngIf="item.key !== currentComponent" md-icon="" (click)="show(item.key)" class="material-icons">keyboard_arrow_right</i>
-                <i *ngIf="item.key === currentComponent" md-icon="" (click)="hide()" class="material-icons">keyboard_arrow_left</i>
+                <i *ngIf="item.key === currentComponent" md-icon="" (click)="reset()" class="material-icons">keyboard_arrow_left</i>
               </div>
             </md-list-item>
           </div>
@@ -29,7 +29,7 @@
       <md-content>
         <md-list>
           <div *ngFor="let item of subComponents | values">
-            <md-list-item class="md-1-line">
+            <md-list-item class="md-1-line" [ngClass]="{focused: item.key === currentOption}">
               <div flex-gt-lg="90" flex-xl="90" flex="90">
                 <md-list-text>{{ item.key }}</md-list-text>
               </div>

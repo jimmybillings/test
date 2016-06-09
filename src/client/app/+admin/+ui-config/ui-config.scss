@@ -27,6 +27,11 @@
     md-list-item i {
       cursor: pointer;
     }
+    md-list-item {
+      &.focused {
+        color: rgba(50, 50, 50, 0.5);
+      }
+    }
   }
   md-card {
     margin-left: 20%;

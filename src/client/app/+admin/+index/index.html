@@ -14,9 +14,9 @@
             <pagination (getPage)="navigateToPageUrl($event)" [currentPage]="routeSegment.getParam('i') || 1" [pagination]="currentUserResources.pagination"></pagination>
           </div>
         </div>
-        <div flex-xl="30" flex-gt-lg="30" flex-gt-md="30" flex="30">
+        <div flex-xl="25" flex-gt-lg="25" flex-gt-md="25" flex="25">
           <md-card>
-            <div layout="row" layout-align="center center">              
+            <div layout="row" layout-align="center center">
               <md-card-title>
                 {{ 'ADMIN.' + currentComponent.toUpperCase() + '.SEARCH_TITLE' | translate }}
               </md-card-title>

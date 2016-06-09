@@ -92,7 +92,7 @@ export class AdminService {
     let s = this.routeSegment.getParam('s') || 'createdOn';
     let d = (this.routeSegment.getParam('d') ? true : false);
     let i = parseInt(this.routeSegment.getParam('i')) || 1;
-    let n = parseInt(this.routeSegment.getParam('n')) || 12;
+    let n = parseInt(this.routeSegment.getParam('n')) || 10;
     let fields = this.routeSegment.getParam('fields') || '';
     let values = this.routeSegment.getParam('values') || '';
     let params = { i, n, s, d, fields, values };

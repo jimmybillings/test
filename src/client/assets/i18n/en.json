@@ -115,6 +115,8 @@
       "LAST_NAME_LABEL": "Last Name",
       "EMAIL_LABEL": "Email Address",
       "CREATED_ON_LABEL": "Created On",
+      "USERNAME_LABEL": "User Name",
+      "PHONE_NUMBER_LABEL": "Phone Number",
       "PASSWORD_LABEL": "Password"
     },
     "ACCOUNT": {
