@@ -24,12 +24,29 @@ bin-tray {
       background-color:  md-color($md-primary, 800, .15);
       .focused {
         margin-left: rem(1.1);
-        min-height: 100%;
+        // min-height: 100%;
         width: auto;
-        button[md-button] {
+        white-space: nowrap;
+        button.is-dd[md-button] {
           color: rgba(md-color($md-foreground, secondary-text), .6);
           &:hover {
             background-color: rgba(md-color($md-foreground, base), .075);
+          }
+        }
+        .asset-count {
+          border-radius: $md-button-border-radius;
+          background-color: rgba(md-color($md-foreground, secondary-text), .4);
+          min-width: rem(2.4);
+          line-height: 1em;
+          margin-right: 0;
+          margin-left: 0;
+          padding: 2px 3px;
+          .count {
+            @include text-contrast(md-color($md-foreground, secondary-text));
+          }
+          &:hover {
+            background-color: rgba(md-color($md-foreground, secondary-text), .4);
+            cursor: default;
           }
         }
       }
