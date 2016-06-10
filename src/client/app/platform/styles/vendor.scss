@@ -3,8 +3,7 @@
 @import 'node_modules/bourbon/app/assets/stylesheets/bourbon';
 @import 'node_modules/normalize.css/normalize';
 
-// not currently used. We can put it back if we need it.
-// @import './styles/font-awesome/font-awesome';
+@import '../styles/vendor/font-awesome/font-awesome';
 
 @import 'node_modules/@angular2-material/core/style/mixins';
 @import "node_modules/@angular2-material/core/style/core";

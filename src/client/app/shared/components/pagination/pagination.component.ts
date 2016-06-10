@@ -41,5 +41,11 @@ export class PaginationComponent implements OnInit {
       this.getPage.emit(pageNumber);
     }
   }
+  public getCurrentPage() : Number {
+    if(this.pagination.numberOfPages > 0) {
+      return this.pagination.currentPage;
+    }
+    return 0;
+  }
 
 }

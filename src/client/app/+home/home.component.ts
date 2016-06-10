@@ -30,6 +30,6 @@ export class HomeComponent implements OnInit {
     this.uiConfig.get('home').subscribe((config) => this.config = config.config);
   }
 
-  public newSearchContext(query: any): void { this.searchContext.new({ q: query, i: 1 }); }
+  public newSearchContext(query: any): void { this.searchContext.new({ q: query, i: 1 },true); }
 
 }

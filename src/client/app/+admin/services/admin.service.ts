@@ -40,12 +40,27 @@ export class AdminService {
     return this.http.get(url, options).map((res: Response) => res.json());
   }
 
+  public getResource(resourceType: string, resourceId: string): Observable<any> {
+    let url = this.buildGetUrl(resourceType, resourceId);
+    let headers = this.apiConfig.authHeaders();
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(url, options).map((res: Response) => res.json());
+  }
+
   public postResource(formData: any, resource: string): Observable<any> {
     let url = this.buildPostUrl(resource);
     let headers = this.apiConfig.authHeaders();
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify(formData);
     return this.http.post(url, body, options).map((res: Response) => res.json());
+  }
+
+  public put(resource: string, resourceId: string, formData: any): Observable<any> {
+    let url = this.buildGetUrl(resource, resourceId);
+    let headers = this.apiConfig.authHeaders();
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify(formData);
+    return this.http.put(url, body, options).map((res: Response) => res.json());
   }
 
   public setResources(data: any): void {
@@ -94,6 +109,10 @@ export class AdminService {
 
   public buildPostUrl(resource: string): string {
     return this.apiConfig.baseUrl() + 'api/identities/v1/' + resource;
+  }
+
+  public buildGetUrl(resource: string, id: string): string {
+    return this.apiConfig.baseUrl() + 'api/identities/v1/' + resource + '/' + id;
   }
 
   public getIdentitiesSearchPath(resource: string): string {

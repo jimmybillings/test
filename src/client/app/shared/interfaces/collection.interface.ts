@@ -13,7 +13,20 @@ export interface Collection {
   tagCount?: number;
 }
 
+export interface Collections {
+  items?: Collection[];
+  pagination: {
+    totalCount: number;
+    currentPage: number;
+    pageSize: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    numberOfPages: number;
+  };
+}
+
 export interface CollectionStore {
-  collections: Collection[];
+  collections: Collections;
+  // collectionList: Collection[];
   focusedCollection: Collection;
 }

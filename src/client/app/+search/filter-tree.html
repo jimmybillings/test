@@ -1,0 +1,17 @@
+<ul style="list-style-type:none;">
+    <li *ngFor="let filter of rootFilter.subFilters">
+    <div style="cursor:pointer;" (click)="filter.toggle()">
+        <span *ngIf="filter.count > 0">
+            <input type="checkbox" [checked]="filter.checked" (click)="filterCheck(filter);" />
+        </span>
+        <span><b>{{filter.getIcon()}}</b>    {{filter.getDisplay()}}  <font color="blue" size="2.0em">{{filter.getCount()}}</font></span>
+    </div>
+    <div *ngIf="filter.expanded">
+        <ul style="list-style-type:none;">
+            <filter-tree 
+                 [rootFilter]="filter"
+            ></filter-tree>
+        </ul>
+    </div>
+    </li>
+</ul>

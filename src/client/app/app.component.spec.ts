@@ -90,12 +90,12 @@ export function main() {
     it('Should log out a user', inject([AppComponent], (component: any) => {
       spyOn(component.authentication, 'destroy').and.callThrough();
       spyOn(component.currentUser, 'destroy');
-      spyOn(component.collectionsService, 'resetFocused');
+      spyOn(component.collectionsService, 'clearCollections');
       spyOn(component.router, 'navigate');
       component.logout();
       expect(component.authentication.destroy).toHaveBeenCalled();
       expect(component.currentUser.destroy).toHaveBeenCalled();
-      expect(component.collectionsService.resetFocused).toHaveBeenCalled();
+      expect(component.collectionsService.clearCollections).toHaveBeenCalled();
       expect(component.router.navigate).toHaveBeenCalledWith(['/']);
     }));
 

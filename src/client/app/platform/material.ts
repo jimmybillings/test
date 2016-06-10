@@ -8,6 +8,8 @@ import { MdProgressBar } from '@angular2-material/progress-bar';
 import { MdProgressCircle, MdSpinner } from '@angular2-material/progress-circle';
 import { MdRadioButton, MdRadioDispatcher, MdRadioGroup } from '@angular2-material/radio';
 import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
+import { MdSlideToggle } from '@angular2-material/slide-toggle';
+import { MdTabGroup, MD_TABS_DIRECTIVES } from '@angular2-material/tabs';
 import { MdToolbar } from '@angular2-material/toolbar';
 import { MdIcon, MdIconRegistry} from '@angular2-material/icon';
 // import { MD_GRID_LIST_DIRECTIVES, MdGridList} from '@angular2-material/grid-list';
@@ -33,11 +35,14 @@ export const MATERIAL_DIRECTIVES = [
     MdProgressBar,
     MdProgressCircle,
     MdIcon,
+    MdTabGroup,
+    MdSlideToggle
     // MdGridList
   ],
   ...MD_INPUT_DIRECTIVES,
   ...MD_LIST_DIRECTIVES,
   ...MD_CARD_DIRECTIVES,
+  ...MD_TABS_DIRECTIVES
   // ...MD_GRID_LIST_DIRECTIVES
 ];
 

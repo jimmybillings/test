@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
-
+import { Collection } from '../../../shared/interfaces/collection.interface';
 
 /**
  * Directive that renders a list of assets
@@ -14,16 +14,25 @@ import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@
 export class AssetListComponent {
   @Input() public assets: Array<any>;
   @Input() public currentUser: any;
+  @Input() collection: Collection;
   @Output() onShowAsset = new EventEmitter();
   @Output() onAddToCollection = new EventEmitter();
   @Output() onAddToCart = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
+  @Output() onShowNewCollection = new EventEmitter();
 
   showAsset(asset: any): void {
     this.onShowAsset.emit(asset);
   }
-  addToCollection(asset: any): void {
-    this.onAddToCollection.emit(asset);
+  addToCollection(collection: Collection, assetId: any): void {
+    // let params = {'collection':collection, 'assetId':assetId};
+    // this.onAddToCollection.emit(params);
+    // console.log(collection);
+    // console.log(assetId);
+    this.onAddToCollection.emit({'collection':collection, 'assetId':assetId});
+  }
+  showNewCollection(asset: any): void {
+    this.onShowNewCollection.emit(asset);
   }
   addToCart(asset: any): void {
     this.onAddToCart.emit(asset);

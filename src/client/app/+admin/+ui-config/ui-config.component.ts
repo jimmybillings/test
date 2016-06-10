@@ -72,6 +72,7 @@ export class UiConfigComponent implements OnInit {
   }
 
   public show(component: string): void {
+    this.reset();
     this.currentComponent = component;
     this.subComponents = this.components[component].config;
   }
@@ -107,12 +108,14 @@ export class UiConfigComponent implements OnInit {
 
   public reset(): void {
     this.currentComponent = null;
+    this.currentOption = null;
     this.subComponents = null;
     this.configOptions = null;
     this.form = null;
   }
 
   public update(formValue: IuiConfig): void {
+    this.reset();
     this.configService.update(formValue).subscribe((res) => {
       console.warn('Success!');
       this.uiConfig.set(res.json());
