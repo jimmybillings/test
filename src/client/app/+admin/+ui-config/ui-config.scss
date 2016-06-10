@@ -17,29 +17,13 @@
   }
 }
 .admin-ui-config {
-  i {
-    cursor: pointer
-  }
   md-list {
-    .add-item {
-      text-align: right;
-      padding: .5rem 1.3rem .5rem 0;
-    }
     .icons i {
       font-size: 18px;
       padding: 0 0.5rem;
       margin: 0;
     }
     background-color: #fff;
-<<<<<<< HEAD
-  }
-}
-md-card {
-  margin-left: 20%;
-  form {
-    md-input {
-      width: 100%;
-=======
     md-list-item i {
       cursor: pointer;
     }
@@ -47,7 +31,6 @@ md-card {
       &.focused {
         color: rgba(50, 50, 50, 0.5);
       }
->>>>>>> develop
     }
   }
   md-card {
