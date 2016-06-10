@@ -42,7 +42,7 @@ export class UiConfigComponent implements OnInit {
               public routeSegment: RouteSegment,
               public configService: ConfigService) {
                 this.sites = [];
-                this.inputTypes = ['text', 'email', 'password', 'select', 'radio'];
+                this.inputTypes = ['text', 'date', 'checkbox', 'email', 'password', 'select', 'radio', 'table header'];
               }
 
   ngOnInit() {
@@ -80,6 +80,7 @@ export class UiConfigComponent implements OnInit {
   }
 
   public buildForm(configOption: string): void {
+    this.configOptions = null;
     this.form = this.subComponents[configOption];
   }
 
@@ -95,22 +96,18 @@ export class UiConfigComponent implements OnInit {
   public removeItem(itemIndex: number): void {
     this.configOptions.splice(itemIndex, 1);
     this.update(this.config);
+    this.form = null;
   }
 
   public addItem(form: any): void {
     let blankForm: any = this.form = {name: '', label: '', type: '', value: '', validation: ''};
-    switch (form.type) {
-      case 'text':
-        blankForm.type = 'text';
-        break;
-      case 'password':
-        blankForm.type = 'password';
-        break;
-      case 'email':
-        blankForm.type = 'email';
-        break;
-      default:
-        break;
+    if (['text', 'email', 'password', 'date'].indexOf(form.type) > -1) {
+      blankForm.type = form.type;
+    } else if (['radio', 'select', 'checkbox'].indexOf(form.type) > -1) {
+      blankForm.type = form.type;
+      Object.assign(blankForm, {options: ''});
+    } else {
+      blankForm = {name: '', label: ''};
     }
     this.form = blankForm;
     this.configOptions.push(this.form);
@@ -130,7 +127,6 @@ export class UiConfigComponent implements OnInit {
   }
 
   public update(formValue: IuiConfig): void {
-    this.reset();
     this.configService.update(formValue).subscribe((res) => {
       console.warn('Success!');
       this.uiConfig.set(res.json());
