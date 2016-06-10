@@ -29,6 +29,7 @@ export class UiConfigComponent implements OnInit {
   public sites: Array<string>;
   public currentOption: string;
   public currentComponent: string;
+  public inputTypes: Array<string>;
   public config: IuiConfig;
   public components: IuiComponents;
   public subComponents: IuiSubComponents;
@@ -41,6 +42,7 @@ export class UiConfigComponent implements OnInit {
               public routeSegment: RouteSegment,
               public configService: ConfigService) {
                 this.sites = [];
+                this.inputTypes = ['text', 'email', 'password', 'select', 'radio'];
               }
 
   ngOnInit() {
@@ -95,9 +97,22 @@ export class UiConfigComponent implements OnInit {
     this.update(this.config);
   }
 
-  public addItem(): void {
-    this.form = Object.assign({}, this.configOptions[0]);
-    Object.keys(this.form).forEach(key => {this.form[key] = '';});
+  public addItem(form: any): void {
+    let blankForm: any = this.form = {name: '', label: '', type: '', value: '', validation: ''};
+    switch (form.type) {
+      case 'text':
+        blankForm.type = 'text';
+        break;
+      case 'password':
+        blankForm.type = 'password';
+        break;
+      case 'email':
+        blankForm.type = 'email';
+        break;
+      default:
+        break;
+    }
+    this.form = blankForm;
     this.configOptions.push(this.form);
   }
 

@@ -58,7 +58,12 @@
             </md-list-item>
           </div>
           <div class="add-item">
-            <i md-icon="" class="material-icons" (click)="addItem()">add</i>
+            <form #form="ngForm" (ngSubmit)="addItem(form.value)">
+              <select ngControl="type">
+                <option *ngFor="let type of inputTypes" [value]="type">{{type}}</option>
+              </select>
+              <button md-button="" type="submit"><i md-icon="" class="material-icons">add</i></button>
+            </form>
           </div>
         </md-list>
       </md-content>

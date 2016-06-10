@@ -33,6 +33,17 @@
       }
     }
   }
+  .add-item {
+    select {
+      margin: 0 .5rem 1rem .5rem;
+      width: 60%;
+    }
+    button {
+      i {
+        margin: .5rem .3rem .3rem .3rem;
+      }
+    }
+  }
   md-card {
     margin-left: 20%;
     form {
