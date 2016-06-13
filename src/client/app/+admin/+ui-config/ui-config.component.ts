@@ -100,7 +100,7 @@ export class UiConfigComponent implements OnInit {
   }
 
   public addItem(form: any): void {
-    let blankForm: any = this.form = {name: '', label: '', type: '', value: '', validation: ''};
+    let blankForm: any = {name: '', label: '', type: '', value: '', validation: ''};
     if (['text', 'email', 'password', 'date'].indexOf(form.type) > -1) {
       blankForm.type = form.type;
     } else if (['radio', 'select', 'checkbox'].indexOf(form.type) > -1) {

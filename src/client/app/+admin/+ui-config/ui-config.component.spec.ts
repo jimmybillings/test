@@ -112,15 +112,10 @@ export function main() {
       inject([UiConfigComponent], (component:UiConfigComponent) => {
         component.config = mockResponse();
         component.configOptions = mockResponse().components['adminAccount'].config['tableHeaders'].items;
-        component.addItem();
-        expect(component.form).toEqual({'name': '', 'label': ''});
-        expect(component.configOptions).toEqual([
-          {'name': 'name','label': 'ADMIN.ACCOUNT.NAME_LABEL'},
-          {'name': 'status','label': 'ADMIN.ACCOUNT.STATUS_LABEL'},
-          {'name': 'contact','label': 'ADMIN.ACCOUNT.CONTACT_LABEL'},
-          {'name': 'createdOn','label': 'ADMIN.ACCOUNT.CREATED_ON_LABEL'},
-          {'name': '', 'label': ''}
-        ]);
+        component.addItem({type: 'text'});
+        expect(component.form).toEqual({name: '', label: '', type: 'text', value: '', validation: ''});
+        component.addItem({type: 'select'});
+        expect(component.form).toEqual({name: '', label: '', type: 'select', value: '', validation: '', options: ''});
       }));
 
     it('Should have a reset() method that deletes a configOption',
