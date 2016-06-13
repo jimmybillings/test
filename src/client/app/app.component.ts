@@ -51,12 +51,14 @@ declare var portal: string;
 export class AppComponent implements OnInit {
   public header: Observable<any>;
   public searchBox: Observable<any>;
+  public collectionFormConfig: Observable<any>;
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public showFixed: boolean = false;
   public state: string = '';
   public searchBarIsActive: boolean = true;
   public binTrayIsOpen: boolean = false;
   public searchIsOpen: boolean = true;
+  public newCollectionFormIsOpen: boolean = false;
   public collections: Observable<Array<Collection>>;
   public focusedCollection: Observable<any>;
 
@@ -112,6 +114,7 @@ export class AppComponent implements OnInit {
   public configChanges() {
     this.uiConfig.get('header').subscribe((data) => this.header = data.config);
     this.uiConfig.get('searchBox').subscribe(data => this.searchBox = data.config);
+    this.uiConfig.get('collection').subscribe((data) => this.collectionFormConfig = data.config);
   }
 
   public routerChanges() {
@@ -128,8 +131,23 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  public showNewCollection(): void {
+  public goToCollections(): void {
     this.router.navigate(['/collection']);
+  }
+  public showNewCollection(): void {
+
+    this.newCollectionFormIsOpen = true;
+  }
+  public closeNewCollection(): void {
+    this.newCollectionFormIsOpen = false;
+  }
+  public createCollection(collection: Collection) {
+    this.collectionsService.createCollection(collection);
+    this.getFocusedCollection();
+    this.closeNewCollection();
+  }
+  public getFocusedCollection() {
+    setTimeout(() => { this.collectionsService.getFocusedCollection(); }, 1200);
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data.lang); }

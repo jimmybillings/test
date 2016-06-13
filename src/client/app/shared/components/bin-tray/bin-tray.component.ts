@@ -20,6 +20,7 @@ export class BinTrayComponent {
   @Input() showFixed: any;
   @Output() onCloseBinTray = new EventEmitter();
   @Output() onShowNewCollection = new EventEmitter();
+  @Output() onGoToCollections = new EventEmitter();
 
   constructor(
     public router: Router) {
@@ -31,6 +32,10 @@ export class BinTrayComponent {
 
   public showNewCollection(event: Event): void {
     this.onShowNewCollection.emit(event);
+  }
+
+  public goToCollections(event: Event): void {
+    this.onGoToCollections.emit(event);
   }
 }
 

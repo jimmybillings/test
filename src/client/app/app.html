@@ -1,4 +1,14 @@
 <notification [state]="state"></notification>
+<collection-form
+  (create)="createCollection($event)" 
+  (cancelled)="closeNewCollection($event)"
+  [collection]="focusedCollection | async"
+  [newCollectionFormIsOpen]="newCollectionFormIsOpen"
+  [config]="collectionFormConfig"
+  [ngClass]="{'revealed': newCollectionFormIsOpen}"
+  layout="row" layout-align="center start">
+</collection-form>
+
 <!--<md-sidenav-layout fullscreen>
   <md-sidenav #sidenav>
     <md-nav-list>
@@ -25,8 +35,8 @@
         (onLogOut)="logout()" 
         (onOpenSearch)="openSearch()" 
         (onOpenBinTray)="openBinTray()" 
-        (onShowNewCollection)="showNewCollection()"
-        (onOpenSidenav)="sidenav.open()">
+        (onOpenSidenav)="sidenav.open()"
+        (onShowNewCollection)="showNewCollection()">
       </app-nav>
       <search-box 
         *ngIf="searchBarIsActive" 
@@ -42,6 +52,7 @@
         [showFixed]="showFixed" 
         [collection]="focusedCollection | async" 
         (onCloseBinTray)="closeBinTray()"
+        (onGoToCollections)="goToCollections()"
         (onShowNewCollection)="showNewCollection()">
       </bin-tray>
     </header>

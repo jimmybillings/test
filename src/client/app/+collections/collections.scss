@@ -1,10 +1,46 @@
-collection-form > div {
+collection-form div.bk-for-dialog {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  // display: none;
+  display: block;
+  z-index: -1;
+  // opacity: 0;
+  // @include transition(opacity, 1s, $md-fast-out-slow-in-timing-function, 1.6s);
+  // @include animation(fadeOut 1s ease-in-out);
+}
+collection-form div.bk-for-dialog.fade-in {
+  @include background-image(
+    url("../assets/img/bk/tex/bktx_dgl_lines_light.png"),
+    linear-gradient(md-color($md-grey, 900, .7), md-color($md-grey, 900, .7)));
+  // @include transition(background, 1200ms, $md-fast-out-slow-in-timing-function);
+  @include transition(opacity, 1200ms, $md-fast-out-slow-in-timing-function);
+  // @include animation(fadeIn 1000ms ease-in-out);
+  // @include animation-delay(500ms);
+  // @include animation-direction(alternate-reverse);
+  opacity: 1;
+}  
+collection-form div.bk-for-dialog.fade-out {
+  // @include animation(fadeOut 100ms ease-in-out);
   opacity: 0;
-  position: relative;
-  margin-top: -600px;
-  @include transition($swift-ease-in-out);
-  &.show {
-    opacity: 1;
+}  
+collection-form {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 20;
+  margin-top: -100%;
+  md-card.wz-form-card {
+    margin-top:-250%;
+    @include transition(margin-top, 600ms, $md-fast-out-slow-in-timing-function);
+  }
+  &.revealed {
     margin-top: 0;
+    position: fixed;
+    md-card.wz-form-card {
+      margin-top: 9%;
+    }
   }
 }

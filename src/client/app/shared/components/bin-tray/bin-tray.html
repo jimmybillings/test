@@ -3,7 +3,7 @@
   <div flex="80" class="asset-carousel"></div>
   <div layout="row" flex="auto" layout-align="end center" class="focused-collection">
     <button md-icon-button flex="none" title="create new" type="button" (click)="showNewCollection()"><md-icon>add</md-icon></button>
-    <nav class="focused" *ngIf="collection.name">
+    <nav class="focused" *ngIf="collection.name" (click)="goToCollections()">
       <button md-button class="is-dd">{{collection.name}}</button>
       <button md-button class="asset-count">
         <span class="count" *ngIf="collection.assets">{{collection.assets.length}}</span>

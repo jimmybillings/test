@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import { Collection } from '../shared/interfaces/collection.interface';
 
 /**
@@ -7,7 +7,8 @@ import { Collection } from '../shared/interfaces/collection.interface';
 @Component({
   moduleId: module.id,
   selector: 'collections-list',
-  templateUrl: 'collection-list.html'
+  templateUrl: 'collection-list.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class CollectionListComponent {

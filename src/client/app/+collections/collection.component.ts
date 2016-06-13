@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from './services/collections.service';
 import { CollectionListComponent } from './collection-list.component';
@@ -23,11 +23,10 @@ import { Error } from '../shared/services/error.service';
   directives: [
     ROUTER_DIRECTIVES,
     WzFormComponent,
-    CollectionListComponent,
-    CollectionFormComponent
+    // CollectionFormComponent,
+    CollectionListComponent
   ],
-  pipes: [TranslatePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  pipes: [TranslatePipe]
 })
 @Routes([
   { path: '/new', component: CollectionFormComponent },
@@ -48,7 +47,7 @@ export class CollectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.collectionsService.loadCollections();
+    this.collectionsService.loadCollections();
     this.collections = this.collectionsService.collections;
     // this.collections = this.store.select('collections');
     this.focusedCollection = this.store.select('focusedCollection');
@@ -75,10 +74,10 @@ export class CollectionComponent implements OnInit {
     this.collectionsService.setFocusedCollection(collection);
   }
 
-  public createCollection(collection: Collection) {
-    this.collectionsService.createCollection(collection);
-    this.getFocusedCollection();
-  }
+  // public createCollection(collection: Collection) {
+  //   this.collectionsService.createCollection(collection);
+  //   this.getFocusedCollection();
+  // }
   public getFocusedCollection() {
     setTimeout(() => { this.collectionsService.getFocusedCollection(); },1200);
   }

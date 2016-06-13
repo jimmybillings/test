@@ -29,6 +29,8 @@ import {FooterComponent} from '../shared/components/footer/footer.component';
 import {NotificationComponent} from '../shared/components/notification/notification.component';
 import {SearchBoxComponent} from '../shared/components/search-box/search-box.component';
 import {BinTrayComponent} from '../shared/components/bin-tray/bin-tray.component';
+// import { CollectionListComponent } from '../+collections/collection-list.component';
+import { CollectionFormComponent } from '../+collections/collection-form.component';
 
 // Angular
 import {ROUTER_DIRECTIVES} from '@angular/router';
@@ -39,6 +41,7 @@ export const APP_COMPONENT_DIRECTIVES = [
   NotificationComponent,
   SearchBoxComponent,
   BinTrayComponent,
+  CollectionFormComponent,
   ROUTER_DIRECTIVES
 ];
 
