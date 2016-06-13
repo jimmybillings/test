@@ -1,12 +1,8 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import { RouteSegment } from '@angular/router';
 import { Collection } from '../shared/interfaces/collection.interface';
-
-
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
+import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
-import {UiConfig} from '../shared/services/ui.config';
-import { Error } from '../shared/services/error.service';
 
 /**
  * Directive that renders a list of collections
@@ -19,24 +15,21 @@ import { Error } from '../shared/services/error.service';
     WzFormComponent
   ],
   pipes: [TranslatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class CollectionFormComponent implements OnInit {
-  public config: Object;
   public originalName: string;
   public assetId: string;
-  public errorMessage: string;
   public focusedCollection: Collection;
   public showForm: boolean;
-
+  @Input() config: Object;
   @Input() collection: Collection;
   @Output() create = new EventEmitter();
   @Output() cancelled = new EventEmitter();
 
   constructor(
-    public uiConfig: UiConfig,
-    public routeSegment: RouteSegment,
-    public error: Error) {
+    public routeSegment: RouteSegment) {
   }
 
   // set focused(value: Collection) {
@@ -46,7 +39,6 @@ export class CollectionFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.showForm = true;
-    this.uiConfig.get('collection').subscribe((config) => this.config = config.config);
     this.assetId = this.routeSegment.getParam('asset');
   }
 
