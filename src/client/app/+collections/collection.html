@@ -11,7 +11,8 @@
       flex="30"
       (create)="createCollection($event)" 
       (cancelled)="resetCollection($event)"
-      [collection]="focusedCollection | async">
+      [collection]="focusedCollection | async"
+      [config]="config">
     </collection-form>
   </div>
 </section>
