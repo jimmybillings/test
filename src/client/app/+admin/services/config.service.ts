@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
+import { IuiConfig } from '../../shared/interfaces/config.interface';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
@@ -48,8 +49,8 @@ export class ConfigService {
     ).map((res: Response) => res.json());
   }
 
-  public update(siteId: number, data: any): Observable<any> {
-    return this.http.put(this.uiApiUrl + siteId,
-      data, { headers: this.apiConfig.authHeaders() });
+  public update(data: IuiConfig): Observable<any> {
+    return this.http.put(this.uiApiUrl + data.id,
+      JSON.stringify(data), { headers: this.apiConfig.authHeaders() });
   }
 }
