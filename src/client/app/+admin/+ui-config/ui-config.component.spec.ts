@@ -94,6 +94,43 @@ export function main() {
         component.buildSubItemForm(1);
         expect(component.form).toEqual(mockResponse().components['adminAccount'].config['tableHeaders'].items[1]);
       }));
+
+    it('Should have a removeItem() method that deletes a configOption',
+      inject([UiConfigComponent], (component:UiConfigComponent) => {
+        spyOn(component, 'update');
+        component.config = mockResponse();
+        component.configOptions = mockResponse().components['adminAccount'].config['tableHeaders'].items;
+        component.removeItem(0);
+        expect(component.configOptions).toEqual([
+          {'name': 'status','label': 'ADMIN.ACCOUNT.STATUS_LABEL'},
+          {'name': 'contact','label': 'ADMIN.ACCOUNT.CONTACT_LABEL'},
+          {'name': 'createdOn','label': 'ADMIN.ACCOUNT.CREATED_ON_LABEL'}]);
+        expect(component.update).toHaveBeenCalled();
+      }));
+
+    it('Should have a addItem() method that adds a configOption',
+      inject([UiConfigComponent], (component:UiConfigComponent) => {
+        component.config = mockResponse();
+        component.configOptions = mockResponse().components['adminAccount'].config['tableHeaders'].items;
+        component.addItem({type: 'text'});
+        expect(component.form).toEqual({name: '', label: '', type: 'text', value: '', validation: ''});
+        component.addItem({type: 'select'});
+        expect(component.form).toEqual({name: '', label: '', type: 'select', value: '', validation: '', options: ''});
+      }));
+
+    it('Should have a reset() method that deletes a configOption',
+      inject([UiConfigComponent], (component:UiConfigComponent) => {
+        this.currentComponent = 'adminAccount';
+        this.subComponents = mockResponse().components['adminAccount'].config;
+        this.configOptions = mockResponse().components['adminAccount'].config['tableHeaders'].items;
+        this.form = mockResponse().components['adminAccount'].config['tableHeaders'].items[0];
+        component.reset();
+        expect(component.currentComponent).toEqual(null);
+        expect(component.subComponents).toEqual(null);
+        expect(component.configOptions).toEqual(null);
+        expect(component.form).toEqual(null);
+      }));
+
   });
 
   function mockResponse() {
