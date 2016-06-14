@@ -8,8 +8,8 @@ bin-tray {
     box-shadow: inset 0 1px 0 0 md-color($md-grey, 800, .1);
     width: 100%;
     .asset-carousel {
-      width: calc(100% - 306px);
-      padding: 0 0 0 3%;
+      width: calc(100% - 335px);
+      padding: 0 0 0 0;
       max-height: 100%;
       min-height: 100%;
       border: none;
@@ -65,7 +65,7 @@ bin-tray {
 }
 
 header.app-header.bin-tray-closed bin-tray section {
-  .focused-collection {
+  .focused-collection, .asset-carousel.grid ul.asset-list {
     max-height: 0;
     min-height: 0;
   }
@@ -73,5 +73,72 @@ header.app-header.bin-tray-closed bin-tray section {
     max-height: 0;
     min-height: 0;
     overflow: hidden;
+  }
+}
+
+
+
+
+.asset-carousel.grid ul.asset-list {
+  // list-style: none;
+  // font-size: 0;
+  // line-height: 0;
+  margin: 0 0 0 0;
+  white-space: nowrap;
+  overflow-y: hidden;
+  @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
+  min-height: rem(5.6);
+  max-height: rem(5.6);
+  // padding: 0;
+  & > li {
+    // font-size: 1em;
+    // position: relative;
+    // display: inline-block;
+    // vertical-align: bottom;
+    margin: 0 0 0 0;
+    width: rem(9.957);
+    opacity: .9;
+    // @include transition($swift-ease-out);
+    .asset {
+      padding: 0;
+      padding-bottom: 0;
+      // background-color: md-color($md-background, app-bar);
+      // box-shadow: 0 1px 1px 0 md-color($md-grey, 700, .2);
+      
+      span.asset-id {
+        color: md-color($md-background, background, .64);
+        top: 30%;
+        left: rem(.8);
+        z-index: 2;
+      }
+    }
+    .asset a.asset-thb {
+      @include background-image(
+        linear-gradient(rgba(md-color($md-grey, 900),.81), rgba(md-color($md-grey, 900),.56)),
+        linear-gradient(rgba(md-color($md-grey, 900),.15), rgba(md-color($md-grey, 900),.41))
+      );
+      &::before {
+        @include background-image(
+          linear-gradient(-90deg, rgba(md-color($md-grey, 900),0.9), rgba(md-color($md-grey, 900),.4) 80%),
+          linear-gradient(90deg, rgba(md-color($md-grey, 900),.6) 1%, rgba(md-color($md-grey, 900),.9))
+        );
+      }
+    }
+    @media screen and (max-width: $layout-breakpoint-lg) {
+      width: rem(9.957);
+    }
+    @media screen and (max-width: $layout-breakpoint-md) {
+      width: rem(9.957);
+    }
+    @media screen and (max-width: $layout-breakpoint-sm) {
+      width: rem(9.957);
+    }
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      width: rem(9.957);
+      margin-bottom: 0;          
+    }
+  }
+  & > li:first-child {
+    margin-left: 0;
   }
 }

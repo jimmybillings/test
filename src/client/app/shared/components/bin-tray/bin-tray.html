@@ -1,6 +1,17 @@
 
 <section layout="row" flex="100" layout-align="start" class="header-tray">
-  <div flex="80" class="asset-carousel"></div>
+  <div flex="80" class="asset-carousel grid">
+    <ul class="asset-list" *ngIf="collection.assets">
+      <li *ngFor="let asset of collection.assets">
+        <div class="asset">
+          <a flex="" [routerLink]="['asset/',asset]" class="asset-thb">
+            <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
+            <span class="asset-id">{{asset}}</span>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
   <div layout="row" flex="auto" layout-align="end center" class="focused-collection">
     <button md-icon-button flex="none" title="create new" type="button" (click)="showNewCollection()"><md-icon>add</md-icon></button>
     <nav class="focused" *ngIf="collection.name" (click)="goToCollections()">

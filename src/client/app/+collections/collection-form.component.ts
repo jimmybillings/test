@@ -40,7 +40,7 @@ export class CollectionFormComponent implements OnChanges {
     let cForm = <HTMLFormElement>document.querySelector('wz-form form');
     cForm.reset();
     // done with sessionStorage, so it can be removed.
-    sessionStorage.removeItem('assetForNewCollection');
+    if (this.assetForNewCollection) sessionStorage.removeItem('assetForNewCollection');
   }
 
   public cancelCollectionCreation(event: Event): void {
