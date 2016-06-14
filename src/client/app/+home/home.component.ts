@@ -16,7 +16,7 @@ import {ApiConfig} from '../shared/services/api.config';
 })
 
 export class HomeComponent implements OnInit {
-  public config: Object;
+  public config: any;
 
   constructor(
     public currentUser: CurrentUser,
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   }
 
   public newSearchContext(query: any): void {
-    this.searchContext.new({ q: query, i: 1 });
+    this.searchContext.new({ q: query, i: 1, n: this.config.pageSize.value });
   }
 
 }
