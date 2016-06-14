@@ -47,9 +47,7 @@ export class CurrentUser {
   }
 
   public loggedInState(): Observable<any> {
-    return this._currentUser.map((user) => {
-      return user.emailAddress;
-    });
+    return this._currentUser.map(user => user.emailAddress);
   }
 
   public loggedIn(): boolean {
@@ -57,57 +55,39 @@ export class CurrentUser {
   }
 
   public email(): Observable<any> {
-    return this._currentUser.map((user) => {
-      return user.emailAddress;
-    });
+    return this._currentUser.map(user => user.emailAddress);
   }
 
   public firstName(): Observable<any> {
-    return this._currentUser.map((user) => {
-      return user.firstName;
-    });
+    return this._currentUser.map(user => user.firstName);
   }
 
   public lastName(): Observable<any> {
-    return this._currentUser.map((user) => {
-      return user.lastName;
-    });
+    return this._currentUser.map(user => user.lastName );
   }
 
   public fullName(): Observable<any> {
-    return this._currentUser.map((user) => {
-      return `${user.firstName} ${user.lastName}`;
-    });
+    return this._currentUser.map(user => `${user.firstName} ${user.lastName}`);
   }
 
   public createdOn(): Observable<any> {
-    return this._currentUser.map((user) => {
-      return user.createdOn;
-    });
+    return this._currentUser.map(user => user.createdOn);
   }
 
   public lastUpdated(): Observable<any> {
-    return this._currentUser.map((user) => {
-      return user.lastUpdated;
-    });
+    return this._currentUser.map(user => user.lastUpdated);
   }
 
   public siteName(): Observable<any> {
-    return this._currentUser.map((user) => {
-      return user.siteName;
-    });
+    return this._currentUser.map((user) => user.siteName);
   }
 
   public id(): Observable<any> {
-    return this._currentUser.map((user) => {
-      return user.id;
-    });
+    return this._currentUser.map(user => user.id);
   }
 
   public accountIds(): Observable<Array<number>> {
-    return this._currentUser.map((user) => {
-      return user.accountIds;
-    });
+    return this._currentUser.map(user => user.accountIds);
   }
 
   public hasFocusedCollection(): Observable<any> {

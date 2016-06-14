@@ -1,11 +1,20 @@
 .config-title {
   form, select {
-    width: 30%;
+    width: 50%;
   }
 }
 .menu {
-  padding-left: 0 !important;
   padding-right: 0 !important;
+}
+.second-menu, .third-menu {
+  &.show {
+    padding-left: 0;
+    padding-right: 0;
+    position: relative;
+    animation-name: move;
+    animation-duration: 0.25s;
+    animation-timing-function: ease-in-out;
+  }
 }
 .admin-ui-config {
   md-list {
@@ -18,19 +27,34 @@
     md-list-item i {
       cursor: pointer;
     }
-  }
-}
-md-card {
-  margin-left: 20%; 
-  form {
-    md-input {
-      width: 100%;
-    }
-    md-card-actions {
-      margin-top: 3rem;
-      button {
-        width: 25%;
+    md-list-item {
+      &.focused {
+        color: rgba(50, 50, 50, 0.5);
       }
     }
+  }
+  md-card {
+    margin-left: 20%;
+    form {
+      md-input {
+        width: 100%;
+      }
+      md-card-actions {
+        margin-top: 3rem;
+        button {
+          width: 25%;
+        }
+      }
+    }
+  }
+}
+@keyframes move {
+  0% {
+    opacity: 0;
+    margin-left: -283px;
+  }
+  100% {
+    opacity: 1;
+    margin-left: 0rem;
   }
 }

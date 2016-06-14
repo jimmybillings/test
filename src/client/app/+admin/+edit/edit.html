@@ -1,19 +1,19 @@
 
-<admin-new *ngIf="config">
+<admin-edit *ngIf="config">
   <div [ngClass]="{hidden: !showForm, show: showForm}">
     <div layout="row" layout-align="center center">
       <div flex-xl="30" flex-gt-lg="30" flex-md="50" flex="50" flex-md="70" flex-sm="85" flex-xs="85">
         <md-card>
           <div layout="row" layout-align="center center">
             <md-card-title>
-              {{ 'ADMIN.' + currentComponent.toUpperCase() + '.NEW_TITLE' | translate }}
+              {{ 'ADMIN.' + currentComponent.toUpperCase() + '.EDIT_TITLE' | translate }}
             </md-card-title>
           </div>
           <md-card-content>
-            <wz-form layout-align="center center" [items]="config.newForm.items" submitLabel="ADMIN.CREATE_SUBMIT_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
+            <wz-form layout-align="center center" [items]="config.editForm.items" submitLabel="UPDATE" (formSubmit)="onSubmit($event)"></wz-form>
           </md-card-content>
         </md-card>
       </div>
     </div>
   </div>
-</admin-new>
+</admin-edit>

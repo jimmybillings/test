@@ -1,7 +1,5 @@
 import {Component, OnChanges, Input, Output, EventEmitter} from '@angular/core';
-// import { RouteSegment } from '@angular/router';
 import { Collection } from '../shared/interfaces/collection.interface';
-
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
 
@@ -15,14 +13,13 @@ import { WzFormComponent } from '../shared/components/wz-form/wz.form.component'
   directives: [
     WzFormComponent
   ],
-  pipes: [TranslatePipe],
+  pipes: [TranslatePipe]
 })
 
 export class CollectionFormComponent implements OnChanges {
   public originalName: string;
   public assetForNewCollection: any;
   public focusedCollection: Collection;
-
   @Input() collection: Collection;
   @Input() newCollectionFormIsOpen: boolean;
   @Input() config: Object;

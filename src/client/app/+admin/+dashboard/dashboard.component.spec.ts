@@ -6,18 +6,32 @@ import {
   it,
   beforeEachProviders
 } from '@angular/core/testing';
-
+import { provide } from '@angular/core';
 import { DashboardComponent} from './dashboard.component';
 import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { CurrentUser, currentUser} from '../../shared/services/current-user.model';
 import { provideStore } from '@ngrx/store';
+import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
+import { Http, BaseRequestOptions } from '@angular/http';
+import { MockBackend } from '@angular/http/testing';
 
 export function main() {
   describe('Admin Dashboard component', () => {
     beforeEachProviders(() => [
       ROUTER_FAKE_PROVIDERS,
       provideStore({ currentUser: currentUser }),
-      CurrentUser
+      CurrentUser,
+      MockBackend,
+      BaseRequestOptions,
+      provide(Http, {
+        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
+        deps: [MockBackend, BaseRequestOptions]
+      }),
+      provide(TranslateLoader, {
+        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
+        deps: [Http]
+      }),
+      TranslateService
     ]);
 
     it('Create instance of dashboard and assign the CurrentUser to an instance variable inside of dashboard',
