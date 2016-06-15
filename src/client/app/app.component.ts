@@ -41,7 +41,6 @@ declare var portal: string;
   { path: '/user', component: UserManagementComponent },
   { path: '/search', component: SearchComponent },
   { path: '/asset/:name', component: AssetComponent },
-  // { path: '/collection/new/:assetId', component: CollectionComponent },
   { path: '/collection', component: CollectionComponent },
   { path: '/asset/:name', component: AssetComponent },
   { path: '/content/:page', component: ContentComponent },
@@ -135,7 +134,6 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/collection']);
   }
   public showNewCollection(): void {
-
     this.newCollectionFormIsOpen = true;
   }
   public closeNewCollection(): void {
@@ -147,7 +145,7 @@ export class AppComponent implements OnInit {
     this.closeNewCollection();
   }
   public getFocusedCollection() {
-    setTimeout(() => { this.collectionsService.getFocusedCollection(); }, 1200);
+    setTimeout(() => { this.collectionsService.getFocusedCollection(); }, 1000);
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data.lang); }

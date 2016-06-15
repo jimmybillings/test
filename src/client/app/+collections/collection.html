@@ -1,10 +1,15 @@
 <section class="login hero" style="padding-top: 30px;">
   <div layout="row" flex="" layout-padding layout-margin>
     <collections-list
-      flex="55" 
+      flex="40" 
       [collections]="collections | async"
+      [focusedCollection]="focusedCollection | async"
       (selected)="selectFocusedCollection($event)" 
-      (deleted)="deleteCollection($event)">
+      (isFocused)="isFocusedCollection($event)" 
+      (deleted)="deleteCollection($event)"
+      (showSearch)="showCollectionSearch($event)"
+      (showFilter)="showCollectionFilter($event)"
+      (showSort)="showCollectionSort($event)">
     </collections-list>
   </div>
 </section>

@@ -28,8 +28,8 @@ import { UiConfig} from '../shared/services/ui.config';
   pipes: [TranslatePipe]
 })
 @Routes([
-  { path: '/list', component: CollectionListComponent }
-  // { path: '/detail/:id', component: CollectionComponent }
+  // { path: '/list', component: CollectionListComponent },
+  { path: '/detail/:id', component: CollectionComponent }
 ])
 
 export class CollectionComponent implements OnInit {
@@ -81,6 +81,14 @@ export class CollectionComponent implements OnInit {
   public getFocusedCollection() {
     setTimeout(() => { this.collectionsService.getFocusedCollection(); }, 1200);
   }
+
+
+  public isFocusedCollection(collection: Collection): boolean {
+    if (collection.id === this.store.getState().focusedCollection.id)
+      return true;
+    return false;
+  }
+
   public deleteCollection(collection: Collection) {
     this.collectionsService.deleteCollection(collection);
     // if we are deleting current focused, we need to get the new focused from the server.
@@ -92,5 +100,14 @@ export class CollectionComponent implements OnInit {
     if (this.store.getState().collections.items.length === 1) {
       this.collectionsService.clearCollections();
     }
+  }
+  public showCollectionSearch(event: Event): void {
+    console.log(event);
+  }
+  public showCollectionFilter(event: Event): void {
+    console.log(event);
+  }
+  public showCollectionSort(event: Event): void {
+    console.log(event);
   }
 }
