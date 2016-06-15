@@ -128,7 +128,7 @@ export class UiConfigComponent implements OnInit {
 
   public update(formValue: IuiConfig): void {
     this.configService.update(formValue).subscribe((res) => {
-      console.warn('Success!');
+      console.log('Success!');
       this.uiConfig.set(res.json());
     });
   }
