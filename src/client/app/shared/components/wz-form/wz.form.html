@@ -1,13 +1,13 @@
 <form layout="column" [ngFormModel]="form" (ngSubmit)="onSubmit(form.value)" class="md-inline-form">
   <!--<md-content layout-sm="row" layout-padding="">-->
     <div *ngFor="let field of items">
-      <md-input 
-        class="md-block" 
+      <md-input
+        class="md-block"
         *ngIf="field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date'"
-        placeholder="{{field.label | translate}}"  
+        placeholder="{{field.label | translate}}"
         autofocus="autofocus"
         type="{{field.type}}"
-        ngControl="{{field.name}}" 
+        ngControl="{{field.name}}"
         id="{{field.name}}"
       >
         <!--<div md-messages="{{field.name}}" role="alert">-->
@@ -32,6 +32,7 @@
       </div>
       <md-radio-group *ngIf="field.type == 'radio'" layout="row">
         <md-radio-button
+          style="margin-right: 1rem;"
           *ngFor="let option of parseOptions(field.options)"
           [checked]="parseOptions(field.options)[0]==option"
           [value]="option" class="md-primary"

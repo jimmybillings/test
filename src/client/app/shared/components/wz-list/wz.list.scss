@@ -1,15 +1,11 @@
 wz-list {
-  background-color: #fff;
   display: block;
   margin-bottom: 20px;
   table {
+    background-color: #fff;
     border-collapse: collapse;
   }
-  table, td {
-    border-bottom: 1px solid #ccc;
-  }
   thead {
-    border-bottom: 1px solid #ccc;
     th {
       padding: .5rem 1rem;
     }
@@ -17,6 +13,9 @@ wz-list {
   tbody {
     text-align: center;
     tr {
+      &.highlight {
+        background-color: map_get($md-grey, 200);
+      }
       td {
         padding: .8rem 1rem;
       }
