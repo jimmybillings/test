@@ -101,15 +101,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  public getCollectionsAndFocused() {
-    this.collectionsService.loadCollections();
-    this.collectionsService.getFocusedCollection();
-  }
-
-  public UserHasFocusedCollection(user: any): boolean {
-    return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
-  }
-
   public configChanges() {
     this.uiConfig.get('header').subscribe((data) => this.header = data.config);
     this.uiConfig.get('searchBox').subscribe(data => this.searchBox = data.config);
@@ -132,6 +123,17 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  public getCollectionsAndFocused() {
+    this.collectionsService.loadCollections();
+    this.collectionsService.getFocusedCollection();
+  }
+
+  public UserHasFocusedCollection(user: any): boolean {
+    return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
+  }
+  selectFocusedCollection(collection: Collection) {
+    this.collectionsService.setFocusedCollection(collection);
+  }
   public goToCollections(): void {
     this.router.navigate(['/collection']);
   }
@@ -141,7 +143,8 @@ export class AppComponent implements OnInit {
   public closeNewCollection(): void {
     this.newCollectionFormIsOpen = false;
   }
-  public showCollectionsList(): void {
+  public showCollectionsList(event: Event): void {
+    console.log(event);
     this.collectionsListIsOpen = true;
   }
   public closeCollectionsList(): void {

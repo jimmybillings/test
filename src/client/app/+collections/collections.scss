@@ -50,7 +50,10 @@ collections-list-dd {
     position: fixed;
   }
   .collections-dd-menu {
-    margin: 70px;
+    position: absolute;
+    right: 120px;
+    top: 120px;
+    min-width: rem(34.0);
     background-color: md-color($md-background, card);
     color: rgba(md-color($md-foreground, text), .7);
     padding: rem(2.0);
