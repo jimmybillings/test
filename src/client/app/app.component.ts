@@ -77,6 +77,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    // work around for scrolling to top when changing routes
+    this.router.changes.subscribe(e => {
+      window.scrollTo(0, 0);
+    });
     this.renderer.listenGlobal('document', 'scroll', () => this.showFixedHeader(window.pageYOffset));
     this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
     this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
