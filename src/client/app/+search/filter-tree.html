@@ -1,6 +1,6 @@
 <ul style="list-style-type:none;">
     <li *ngFor="let filter of rootFilter.subFilters">
-    <div style="cursor:pointer;" (click)="filter.toggle()">
+    <div style="cursor:pointer;" (click)="filter.toggle()" title="{{filter.filterId}}">
         <span *ngIf="filter.count > 0">
             <input type="checkbox" [checked]="filter.checked" (click)="filterCheck(filter);" />
         </span>

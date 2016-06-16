@@ -49,7 +49,7 @@ export class FilterTree {
         }
     }
     getDisplay() :string {
-        let s:string = '['+this.filterId+'] '+this.name;
+        let s:string = this.name;
         if(this.type === 'Text' || this.type === 'DateRange' || this.type === 'List') {
             s += ' ... ';
         }
