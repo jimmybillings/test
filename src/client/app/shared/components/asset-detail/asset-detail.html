@@ -8,7 +8,8 @@
           <button md-icon-button title="Sharing Options"><md-icon>share</md-icon></button>
           <button md-icon-button title="add to cart"><md-icon>shopping_cart</md-icon></button>
           <button md-icon-button title="Download Comp"><md-icon>file_download</md-icon></button>
-          <button md-icon-button title="Add to Collection"><md-icon>library_add</md-icon></button>
+          <button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(assetDetail.common[0].value)"><md-icon>library_add</md-icon></button>
+          <button md-icon-button *ngIf="collection.id === null"  title="Create collection" (click)="showNewCollection(assetDetail.common[0].value)"><md-icon>library_add</md-icon></button>
           <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
         </nav>
       </header>
@@ -83,7 +84,7 @@
 </section>
 
 <!--this is the actual section that was working-->
-<!--<section class="data-bk"> 
+<!--<section class="data-bk">
   <div layout="row" md-scroll-y="" layout-align="center start">
     <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center start">
       <md-tabs md-dynamic-height="" md-border-bottom="">
