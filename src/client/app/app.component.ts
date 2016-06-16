@@ -91,7 +91,6 @@ export class AppComponent implements OnInit {
     this.collections = this.collectionsService.collections;
     this.focusedCollection = this.store.select('focusedCollection');
     // this.focusedCollection.subscribe(v => console.log(v));
-
     // this.collections.subscribe(c => {
     //   console.log(c);
     // });
