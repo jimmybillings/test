@@ -19,6 +19,7 @@
   (showFilter)="showCollectionFilter($event)"
   (showSort)="showCollectionSort($event)"
   (closeCollectionsList)="closeCollectionsList($event)"
+  (showNewCollection)="showNewCollection($event)"
   [ngClass]="{'revealed': collectionsListIsOpen}"
   layout="row" layout-align="end start">
 </collections-list-dd>
@@ -67,7 +68,7 @@
         (closeBinTray)="closeBinTray()"
         (goToCollections)="goToCollections()"
         (showNewCollection)="showNewCollection()"
-        (showCollectionsList)="showCollectionsList()"
+        (showCollectionsList)="showCollectionsList($event)"
         >
       </bin-tray>
     </header>

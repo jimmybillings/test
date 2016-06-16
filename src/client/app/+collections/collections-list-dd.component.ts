@@ -18,8 +18,7 @@ export class CollectionListDdComponent {
   @Input() focusedCollection: Collection;
   @Output() selected = new EventEmitter();
   @Output() isFocused = new EventEmitter();
-  // @Output() deleted = new EventEmitter();
-
+  @Output() showNewCollection = new EventEmitter();
   @Output() showSearch = new EventEmitter();
   @Output() showFilter = new EventEmitter();
   @Output() showSort = new EventEmitter();

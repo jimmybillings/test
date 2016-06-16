@@ -133,12 +133,14 @@ export class AppComponent implements OnInit {
   }
   selectFocusedCollection(collection: Collection) {
     this.collectionsService.setFocusedCollection(collection);
+    this.closeCollectionsList();
   }
   public goToCollections(): void {
     this.router.navigate(['/collection']);
   }
   public showNewCollection(): void {
     this.newCollectionFormIsOpen = true;
+    this.closeCollectionsList();
   }
   public closeNewCollection(): void {
     this.newCollectionFormIsOpen = false;

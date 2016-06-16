@@ -26,17 +26,5 @@ export class BinTrayComponent {
   constructor(
     public router: Router) {
   }
-
-  // public closeBinTray(event: Event): void {
-  //   this.onCloseBinTray.emit(event);
-  // }
-
-  // public showNewCollection(event: Event): void {
-  //   this.onShowNewCollection.emit(event);
-  // }
-
-  // public goToCollections(event: Event): void {
-  //   this.onGoToCollections.emit(event);
-  // }
 }
 
