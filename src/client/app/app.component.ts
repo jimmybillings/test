@@ -25,7 +25,7 @@ import {
   AdminComponent
 } from './platform/app.component.imports';
 
-// Portal is set as a global variable in the index.html page. 
+// Portal is set as a global variable in the index.html page.
 declare var portal: string;
 
 @Component({
@@ -77,10 +77,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // work around for scrolling to top when changing routes
-    this.router.changes.subscribe(e => {
-      window.scrollTo(0, 0);
-    });
     this.renderer.listenGlobal('document', 'scroll', () => this.showFixedHeader(window.pageYOffset));
     this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
     this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
@@ -123,6 +119,8 @@ export class AppComponent implements OnInit {
     this.router.changes.subscribe(() => {
       this.searchBarIsActive = this.checkRouteForSearchBar(this.location.path());
       this.state = this.location.path();
+      // work around for scrolling to top when changing routes
+      window.scrollTo(0, 0);
     });
   }
 
