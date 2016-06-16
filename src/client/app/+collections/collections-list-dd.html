@@ -1,0 +1,40 @@
+<div class="collections-dd-menu md-elevation-z12">
+  <header layout="row">
+    <h4 class="md-headline" flex="50" layout-align="start center">
+      Select Collection
+    </h4>
+    <div class="tools" flex="auto" layout-align="end center">
+      <button md-icon-button title="Search collections" type="button" (click)="showSearch.emit($event)"><md-icon>search</md-icon></button>
+      <button md-icon-button title="Filter collections" type="button" (click)="showFilters.emit($event)"><md-icon>filter_list</md-icon></button>
+      <button md-icon-button title="Sort collections" type="button" (click)="showSort.emit($event)"><md-icon>sort</md-icon></button>
+    </div>
+  </header>
+  <md-list dense>
+    <md-list-item *ngFor="let collection of collections.items" [ngClass]="{focused: focusedCollection.id === collection.id}"
+      (click)="selected.emit(collection)">
+      <md-icon *ngIf="focusedCollection.id === collection.id">check_box</md-icon>
+      <md-icon *ngIf="focusedCollection.id !== collection.id">check_box_outline_blank</md-icon>
+      {{collection.name}}
+      <!--<button md-button class="asset-count">
+          <span class="count" *ngIf="collection.assets">{{collection.assets.length}}</span>
+          <span class="count" *ngIf="!collection.assets">0</span>
+        </button>-->
+    </md-list-item>
+  </md-list>
+  <footer layout="row" layout-align="center center">
+    <div class="actions" flex="85" layout="row" layout-align="center center">
+      <div flex="33" layout-align="center start">
+        <a md-button [routerLink]="['/collection']">
+          <md-icon>folder_open</md-icon><span class="label">View all</span></a>
+      </div>
+      <div flex="33" layout-align="center center">
+        <a md-button [routerLink]="['detail/',focusedCollection.id]">
+          <md-icon>open_in_browser</md-icon><span class="label">Open selected</span></a>
+      </div>
+      <div flex="33" layout-align="center end">
+        <button md-button type="button" (click)="showNewCollection.emit($event)"><md-icon>add_circle_outline</md-icon><span class="label">Create new</span></button>
+      </div>
+    </div>
+  </footer>
+</div>
+<div [ngClass]="{'fade-out': !newCollectionFormIsOpen, 'fade-in': newCollectionFormIsOpen}" class="bk-for-dd" (click)="closeCollectionsList.emit($event)"></div>

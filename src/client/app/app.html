@@ -8,7 +8,21 @@
   [ngClass]="{'revealed': newCollectionFormIsOpen}"
   layout="row" layout-align="center start">
 </collection-form>
-
+<collections-list-dd
+  [collections]="collections | async"
+  [focusedCollection]="focusedCollection | async"
+  [collectionsListIsOpen]="collectionsListIsOpen"
+  (selected)="selectFocusedCollection($event)" 
+  (isFocused)="isFocusedCollection($event)" 
+  (deleted)="deleteCollection($event)"
+  (showSearch)="showCollectionSearch($event)"
+  (showFilter)="showCollectionFilter($event)"
+  (showSort)="showCollectionSort($event)"
+  (closeCollectionsList)="closeCollectionsList($event)"
+  (showNewCollection)="showNewCollection($event)"
+  [ngClass]="{'revealed': collectionsListIsOpen}"
+  layout="row" layout-align="end start">
+</collections-list-dd>
 <!--<md-sidenav-layout fullscreen>
   <md-sidenav #sidenav>
     <md-nav-list>
@@ -51,9 +65,11 @@
         *ngIf="searchBarIsActive" 
         [showFixed]="showFixed" 
         [collection]="focusedCollection | async" 
-        (onCloseBinTray)="closeBinTray()"
-        (onGoToCollections)="goToCollections()"
-        (onShowNewCollection)="showNewCollection()">
+        (closeBinTray)="closeBinTray()"
+        (goToCollections)="goToCollections()"
+        (showNewCollection)="showNewCollection()"
+        (showCollectionsList)="showCollectionsList($event)"
+        >
       </bin-tray>
     </header>
     <div [ngClass]="{'bin-tray-closed': !binTrayIsOpen, 'search-closed': !searchIsOpen}" class="main-content">
