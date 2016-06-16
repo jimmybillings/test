@@ -58,6 +58,7 @@ export class AppComponent implements OnInit {
   public binTrayIsOpen: boolean = false;
   public searchIsOpen: boolean = true;
   public newCollectionFormIsOpen: boolean = false;
+  public collectionsListIsOpen: boolean = false;
   public collections: Observable<Array<Collection>>;
   public focusedCollection: Observable<any>;
 
@@ -139,6 +140,12 @@ export class AppComponent implements OnInit {
   }
   public closeNewCollection(): void {
     this.newCollectionFormIsOpen = false;
+  }
+  public showCollectionsList(): void {
+    this.collectionsListIsOpen = true;
+  }
+  public closeCollectionsList(): void {
+    this.collectionsListIsOpen = false;
   }
   public createCollection(collection: Collection) {
     this.collectionsService.createCollection(collection);
