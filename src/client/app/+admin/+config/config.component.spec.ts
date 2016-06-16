@@ -16,6 +16,7 @@ import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { UiConfig , config } from '../../shared/services/ui.config';
 import { provideStore } from '@ngrx/store';
+import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
 
 export function main() {
   describe('Admin Config component', () => {
@@ -31,7 +32,12 @@ export function main() {
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
-      })
+      }),
+      provide(TranslateLoader, {
+        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
+        deps: [Http]
+      }),
+      TranslateService
     ]);
 
     it('Create instance of config',

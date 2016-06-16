@@ -6,7 +6,7 @@ export interface Collection {
   name: string;
   owner: string;
   editors?: number[];
-  assets?: string[];
+  assets?: number[];
   tags?: any;
   assetCount?: number;
   editorsCount?: number;

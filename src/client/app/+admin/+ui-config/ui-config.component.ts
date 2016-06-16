@@ -29,10 +29,11 @@ export class UiConfigComponent implements OnInit {
   public sites: Array<string>;
   public currentOption: string;
   public currentComponent: string;
+  public inputTypes: Array<string>;
   public config: IuiConfig;
   public components: IuiComponents;
   public subComponents: IuiSubComponents;
-  public form: IuiTableHeaders | IFormFields | Object;
+  public form: any;
   public configOptions: Array<IuiTableHeaders | IFormFields>;
 
   constructor(public router: Router,
@@ -41,6 +42,7 @@ export class UiConfigComponent implements OnInit {
               public routeSegment: RouteSegment,
               public configService: ConfigService) {
                 this.sites = [];
+                this.inputTypes = ['text', 'date', 'checkbox', 'email', 'password', 'select', 'radio', 'table header'];
               }
 
   ngOnInit() {
@@ -72,11 +74,13 @@ export class UiConfigComponent implements OnInit {
   }
 
   public show(component: string): void {
+    this.reset();
     this.currentComponent = component;
     this.subComponents = this.components[component].config;
   }
 
   public buildForm(configOption: string): void {
+    this.configOptions = null;
     this.form = this.subComponents[configOption];
   }
 
@@ -89,19 +93,42 @@ export class UiConfigComponent implements OnInit {
     this.form = this.configOptions[configOptionIndex];
   }
 
-  public hide(): void {
+  public removeItem(itemIndex: number): void {
+    this.configOptions.splice(itemIndex, 1);
+    this.update(this.config);
+    this.form = null;
+  }
+
+  public addItem(form: any): void {
+    let blankForm: any = {name: '', label: '', type: '', value: '', validation: ''};
+    if (['text', 'email', 'password', 'date'].indexOf(form.type) > -1) {
+      blankForm.type = form.type;
+    } else if (['radio', 'select', 'checkbox'].indexOf(form.type) > -1) {
+      blankForm.type = form.type;
+      Object.assign(blankForm, {options: ''});
+    } else {
+      blankForm = {name: '', label: ''};
+    }
+    this.form = blankForm;
+    this.configOptions.push(this.form);
+  }
+
+  public onSubmit(): void {
+    this.update(this.config);
+    this.reset();
+  }
+
+  public reset(): void {
     this.currentComponent = null;
+    this.currentOption = null;
     this.subComponents = null;
     this.configOptions = null;
     this.form = null;
   }
 
-  public onSubmit(formValue: IuiConfig): void {
-    this.subComponents = null;
-    this.configOptions = null;
-    this.form = null;
-    this.configService.update(this.config.id, JSON.stringify(formValue)).subscribe((res) => {
-      console.warn('Success!');
+  public update(formValue: IuiConfig): void {
+    this.configService.update(formValue).subscribe((res) => {
+      console.log('Success!');
       this.uiConfig.set(res.json());
     });
   }

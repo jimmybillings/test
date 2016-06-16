@@ -5,15 +5,21 @@
         <md-list-item style="display:block;background-color:#efefef;color:#333">
           <span (click)="selected.emit(collection)">
             <strong>Id: </strong> {{collection.id}}  
-            <strong>Name: </strong> {{collection.name}} 
-            <strong>Id: </strong> {{collection.id}}  
+            <strong>Name: </strong> {{collection.name}}
             <strong>assets: </strong> 
             <span *ngIf="collection.assets">{{collection.assets.length}}</span>
             <span *ngIf="!collection.assets">0</span>
           </span>
-          <span><button md-icon-button title="close collections" type="button"  (click)="deleted.emit(collection)" class="close"><md-icon>close</md-icon></button></span>
+          <span><button md-icon-button title="delete collections" type="button"  (click)="deleted.emit(collection)" class="close"><md-icon>close</md-icon></button></span>
+          <span *ngIf="focusedCollection.id === collection.id">selected</span>
         </md-list-item>
       </md-list>
+      <div><h1></h1><h1></h1></div>
     </div>
   </div>
-</section>
+</section>  
+
+
+<div><h1></h1><h1></h1></div>
+<div>{{focusedCollection | json}}</div>
+

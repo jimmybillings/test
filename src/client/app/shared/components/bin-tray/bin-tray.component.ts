@@ -18,19 +18,13 @@ import { Collection } from '../../../shared/interfaces/collection.interface';
 export class BinTrayComponent {
   @Input() collection: Collection;
   @Input() showFixed: any;
-  @Output() onCloseBinTray = new EventEmitter();
-  @Output() onShowNewCollection = new EventEmitter();
+  @Output() closeBinTray = new EventEmitter();
+  @Output() showNewCollection = new EventEmitter();
+  @Output() showCollectionsList = new EventEmitter();
+  @Output() goToCollections = new EventEmitter();
 
   constructor(
     public router: Router) {
-  }
-
-  public closeBinTray(event: Event): void {
-    this.onCloseBinTray.emit(event);
-  }
-
-  public showNewCollection(event: Event): void {
-    this.onShowNewCollection.emit(event);
   }
 }
 

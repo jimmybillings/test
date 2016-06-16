@@ -18,9 +18,10 @@ import { UiConfig, config} from '../shared/services/ui.config';
 import { Error } from '../shared/services/error.service';
 import { provideStore } from '@ngrx/store';
 import { AssetService, asset} from './services/asset.service';
-import { Observable} from 'rxjs/Rx';
+import { CollectionsService } from '../+collections/services/collections.service';
+import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import {RouteSegment, Router} from '@angular/router';
+import { RouteSegment, Router}  from '@angular/router';
 
 export function main() {
   describe('Asset Component', () => {
@@ -46,6 +47,7 @@ export function main() {
       ROUTER_FAKE_PROVIDERS,
       provide(RouteSegment, {useFactory: (r: any) => r.routeTree.root, deps: [Router]}),
       provide(AssetService, { useClass: MockAssetService }),
+      CollectionsService,
       MockBackend,
       BaseRequestOptions,
       provide(Http, {
@@ -79,9 +81,36 @@ export function main() {
       expect(service.assetService.reset).toHaveBeenCalled();
     }));
 
+    it('Should have an addToCollection() method that adds an asset to a collection', inject([AssetComponent], (service: AssetComponent) => {
+      spyOn(service.collectionsService, 'addAssetsToCollection');
+      service.addToCollection({'collection': MockCollection(), assetId: '2'});
+      expect(service.collectionsService.addAssetsToCollection).toHaveBeenCalledWith(UpdatedMockCollection(), '2');
+    }));
   });
 
   function MockAssetResponse() {
     return { 'items': [{ 'assetId': 28068744, 'name': '80805947_032', 'metaData': [{ 'name': 'Title', 'value': '' }, { 'name': 'Description', 'value': 'Rubber dog toys fill a bin at Kirkhill Rubber Manufacturing.' }, { 'name': 'TE.DigitalFormat', 'value': 'High Definition' }, { 'name': 'Format.Duration', 'value': '9600' }], 'thumbnail': { 'name': '80805947_032_lt.jpg', 'urls': { 'http-download': 'http://s3-t3m-previewpub-or-1.s3.amazonaws.com/808/059/47/80805947_032_lt.jpg?Expires=1456627681&response-content-disposition=attachment&AWSAccessKeyId=AKIAJEMCZ6EAEHB5KSYA&Signature=rLzXU%2BAF8SzmGsQNV3yCUw8K2gc%3D', 'http': '//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_lt.jpg', 'https': '//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_lt.jpg', 'http-browser': '//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_lt.jpg', 'https-browser': '//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_lt.jpg', 'https-download': 'https://s3-t3m-previewpub-or-1.s3.amazonaws.com/808/059/47/80805947_032_lt.jpg?Expires=1456627681&response-content-disposition=attachment&AWSAccessKeyId=AKIAJEMCZ6EAEHB5KSYA&Signature=rLzXU%2BAF8SzmGsQNV3yCUw8K2gc%3D' } }, 'renditions': [{ 'id': 28098478, 'name': '80805947_032_st.jpg', 'format': 'Image', 'purpose': 'Thumbnail', 'size': 'Small', 'url': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_st.jpg', 'internalUrls': { 'http-download': 'http://s3-t3m-previewpub-or-1.s3.amazonaws.com/808/059/47/80805947_032_st.jpg?Expires=1456627681&response-content-disposition=attachment&AWSAccessKeyId=AKIAJEMCZ6EAEHB5KSYA&Signature=nVfVOqcH66oZsa2OwevnifPrhAs%3D', 'http': '//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_st.jpg', 'https': '//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_st.jpg', 'http-browser': '//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_st.jpg', 'https-browser': '//cdnt3m-a.akamaihd.net/tem/warehouse/808/059/47/80805947_032_st.jpg', 'https-download': 'https://s3-t3m-previewpub-or-1.s3.amazonaws.com/808/059/47/80805947_032_st.jpg?Expires=1456627681&response-content-disposition=attachment&AWSAccessKeyId=AKIAJEMCZ6EAEHB5KSYA&Signature=nVfVOqcH66oZsa2OwevnifPrhAs%3D' }, 'internalUri': 't3://S3ViaAkamai:f3427bd4-e75c-4e4d-9c16-7e4bb2ef8bf8@s3-t3m-previewpub-or-1.s3.amazonaws.com/808/059/47/80805947_032_st.jpg' }] }] };
+  }
+
+  function MockCollection() {
+    return {'assets': ['1'],
+            'tags': ['meow', 'purr'],
+            'createdOn':  '2016-06-16T17:53:17Z',
+            'id': 123,
+            'lastUpdated': '2016-06-16T17:53:17Z',
+            'name': 'Cat',
+            'owner': 'ross.edfort@wazeedigital.com',
+            'siteName': 'core'};
+  }
+
+  function UpdatedMockCollection() {
+    return {'assets': ['1', '2'],
+            'tags': ['meow', 'purr'],
+            'createdOn':  '2016-06-16T17:53:17Z',
+            'id': 123,
+            'lastUpdated': '2016-06-16T17:53:17Z',
+            'name': 'Cat',
+            'owner': 'ross.edfort@wazeedigital.com',
+            'siteName': 'core'};
   }
 }

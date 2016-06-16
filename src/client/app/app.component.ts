@@ -25,7 +25,7 @@ import {
   AdminComponent
 } from './platform/app.component.imports';
 
-// Portal is set as a global variable in the index.html page. 
+// Portal is set as a global variable in the index.html page.
 declare var portal: string;
 
 @Component({
@@ -41,7 +41,6 @@ declare var portal: string;
   { path: '/user', component: UserManagementComponent },
   { path: '/search', component: SearchComponent },
   { path: '/asset/:name', component: AssetComponent },
-  // { path: '/collection/new/:assetId', component: CollectionComponent },
   { path: '/collection', component: CollectionComponent },
   { path: '/asset/:name', component: AssetComponent },
   { path: '/content/:page', component: ContentComponent },
@@ -51,12 +50,15 @@ declare var portal: string;
 export class AppComponent implements OnInit {
   public header: Observable<any>;
   public searchBox: Observable<any>;
+  public collectionFormConfig: Observable<any>;
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public showFixed: boolean = false;
   public state: string = '';
   public searchBarIsActive: boolean = true;
   public binTrayIsOpen: boolean = false;
   public searchIsOpen: boolean = true;
+  public newCollectionFormIsOpen: boolean = false;
+  public collectionsListIsOpen: boolean = false;
   public collections: Observable<Array<Collection>>;
   public focusedCollection: Observable<any>;
 
@@ -82,27 +84,35 @@ export class AppComponent implements OnInit {
     this.currentUser.set();
     this.configChanges();
     this.routerChanges();
+
+    this.collections = this.collectionsService.collections;
     this.focusedCollection = this.store.select('focusedCollection');
     // this.focusedCollection.subscribe(v => console.log(v));
+    // this.collections.subscribe(c => {
+    //   console.log(c);
+    // });
 
     this.currentUser._currentUser.subscribe(u => {
-      this.UserHasFocusedCollection(u) ? this.collectionsService.getFocusedCollection() : console.log('you don\'t have a focused collection');
+      // console.log(u);
+      this.UserHasFocusedCollection(u) ?
+        this.getCollectionsAndFocused() :
+        // console.log(`I think user has a collection to make focused: ${u.focusedCollection}`):
+        console.log('you don\'t have a focused collection');
     });
-  }
-
-  public UserHasFocusedCollection(user: any): boolean {
-    return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
   }
 
   public configChanges() {
     this.uiConfig.get('header').subscribe((data) => this.header = data.config);
     this.uiConfig.get('searchBox').subscribe(data => this.searchBox = data.config);
+    this.uiConfig.get('collection').subscribe((data) => this.collectionFormConfig = data.config);
   }
 
   public routerChanges() {
     this.router.changes.subscribe(() => {
       this.searchBarIsActive = this.checkRouteForSearchBar(this.location.path());
       this.state = this.location.path();
+      // work around for scrolling to top when changing routes
+      window.scrollTo(0, 0);
     });
   }
 
@@ -113,8 +123,42 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  public showNewCollection(): void {
+  public getCollectionsAndFocused() {
+    this.collectionsService.loadCollections();
+    this.collectionsService.getFocusedCollection();
+  }
+
+  public UserHasFocusedCollection(user: any): boolean {
+    return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
+  }
+  selectFocusedCollection(collection: Collection) {
+    this.collectionsService.setFocusedCollection(collection);
+    this.closeCollectionsList();
+  }
+  public goToCollections(): void {
     this.router.navigate(['/collection']);
+  }
+  public showNewCollection(): void {
+    this.newCollectionFormIsOpen = true;
+    this.closeCollectionsList();
+  }
+  public closeNewCollection(): void {
+    this.newCollectionFormIsOpen = false;
+  }
+  public showCollectionsList(event: Event): void {
+    console.log(event);
+    this.collectionsListIsOpen = true;
+  }
+  public closeCollectionsList(): void {
+    this.collectionsListIsOpen = false;
+  }
+  public createCollection(collection: Collection) {
+    this.collectionsService.createCollection(collection);
+    this.getFocusedCollection();
+    this.closeNewCollection();
+  }
+  public getFocusedCollection() {
+    setTimeout(() => { this.collectionsService.getFocusedCollection(); }, 1000);
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data.lang); }

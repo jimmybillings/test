@@ -213,7 +213,7 @@ section.preview-bk {
   & > div > div {
     background: rgba(md-color($md-background, background),.7);
   }
-  *[md-will-be-tabs] {
+  md-tab-group, *[md-will-be-tabs] {
     min-width: 100%;
     & > div {
       margin-top: rem(1.4);
@@ -224,7 +224,7 @@ section.preview-bk {
         margin-bottom: rem(6.8);
       }
     }
-    .meta-data-header {
+    md-tab-header, .meta-data-header {
       font-size: 1.1em;
       text-transform: uppercase;
       padding: 28px 0 8px 0;

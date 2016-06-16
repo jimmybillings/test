@@ -13,7 +13,7 @@ import { FORM_DIRECTIVES, FormBuilder, Validators, ControlGroup} from '@angular/
 })
 
 /**
- * The Pagination component takes an input of the Pagination Object that is returned with 
+ * The Pagination component takes an input of the Pagination Object that is returned with
  * all API calls. It ouputs a getPage event with the pageNumber for the API to get.
  */
 export class PaginationComponent implements OnInit {
@@ -38,7 +38,7 @@ export class PaginationComponent implements OnInit {
     } else if (pageNumber > this.pagination.numberOfPages) {
       this.getPage.emit(this.pagination.numberOfPages);
     } else {
-      this.getPage.emit(pageNumber);
+      this.getPage.emit(Math.floor(pageNumber));
     }
   }
   public getCurrentPage() : Number {

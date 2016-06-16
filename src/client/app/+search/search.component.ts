@@ -23,7 +23,7 @@ import { Store } from '@ngrx/store';
   moduleId: module.id,
   selector: 'search',
   templateUrl: 'search.html',
-  directives: [AssetListComponent, PaginationComponent,FilterTreeComponent],
+  directives: [AssetListComponent, PaginationComponent, FilterTreeComponent],
   providers: [AssetData],
   pipes: [TranslatePipe]
 
@@ -55,7 +55,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.assets.subscribe(data => {
       this.assets = data;
     });
-    this.rootFilter = new FilterTree('','',[],'None',-1);
+    this.rootFilter = new FilterTree('', '', [], 'None', -1);
   }
 
   ngOnInit(): void {
@@ -89,7 +89,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   // }
 
   showNewCollection(asset: any): void {
-    !this.currentUser.loggedIn() ? this.router.navigate(['/user/login']) : this.router.navigate(['/collection', { 'asset': asset.assetId }]);
+    let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-bin-tray');
+    !this.currentUser.loggedIn() ?
+      this.router.navigate(['/user/login']) :
+      newCollectionButton.click();
+    sessionStorage.setItem('assetForNewCollection', JSON.stringify(asset));
   }
   addToCart(asset: any): void {
     console.log(asset);
@@ -119,8 +123,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.set(this.routeSegment.parameters);
     let v = this.searchContext.get();
     v['i'] = 1;
-    if(this.filterIds.length > 0) {
-      v['filterIds']=this.filterIds.join(',');
+    if (this.filterIds.length > 0) {
+      v['filterIds'] = this.filterIds.join(',');
     } else {
       delete v.filterIds;
     }
@@ -129,37 +133,37 @@ export class SearchComponent implements OnInit, OnDestroy {
     } else {
       delete v.filterValues;
     }
-     this.searchContext.go(v);
+    this.searchContext.go(v);
     this.assetData.searchAssets(v).subscribe(
       payload => this.assetData.storeAssets(payload),
       error => this.error.handle(error)
     );
   }
-  public getFilterTree():void {
+  public getFilterTree(): void {
     var fids = this.routeSegment.getParam('filterIds');
     if (fids && fids !== null) {
-      if(typeof fids === 'string') {
+      if (typeof fids === 'string') {
         fids.split(',').forEach(x => this.filterIds.push(x));
       }
     }
-    var v:Array<string> = this.filterIds;
+    var v: Array<string> = this.filterIds;
     this.assetData.getFilterTree(this.searchContext.get()).subscribe(
-      payload => {this.rootFilter = new FilterTree('','',[],'',-1).load(payload,null,v);},
+      payload => { this.rootFilter = new FilterTree('', '', [], '', -1).load(payload, null, v); },
       error => this.error.handle(error)
     );
   }
-  doFilter (filter:FilterTree): void {
+  doFilter(filter: FilterTree): void {
     //console.log('do event filter. Is filter checked:' + filter.checked +' filter id: '+filter.filterId);
     //i do not know why this.filterIds.indexOf(filter.filterId) doesn't work. Anyone?
     //something with the type that === comparison keeps failing (but == works)
-    if(filter.checked === true) {
-      if(filter.contains(this.filterIds,filter.filterId) === false) {
+    if (filter.checked === true) {
+      if (filter.contains(this.filterIds, filter.filterId) === false) {
         this.filterIds.push(filter.filterId);
       }
     } else {
-      for(var i = 0; i < this.filterIds.length; i++) {
-        if(this.filterIds[i].toString() === filter.filterId.toString()) {
-          this.filterIds.splice(i,1);
+      for (var i = 0; i < this.filterIds.length; i++) {
+        if (this.filterIds[i].toString() === filter.filterId.toString()) {
+          this.filterIds.splice(i, 1);
         }
       }
     }

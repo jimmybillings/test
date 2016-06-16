@@ -1,7 +1,10 @@
 <div flex="100" *ngIf="assetDetailDisplay">
   <asset-detail
-    [currentUser]="currentUser" 
+    [currentUser]="currentUser"
     [assetDetail]="assetDetail | async"
+    [collection]="focusedCollection | async"
+    (onAddToCollection)="addToCollection($event)"
+    (onShowNewCollection)="showNewCollection($event)"
   >
   </asset-detail>
 </div>

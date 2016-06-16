@@ -1,12 +1,7 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import { RouteSegment } from '@angular/router';
+import {Component, OnChanges, Input, Output, EventEmitter} from '@angular/core';
 import { Collection } from '../shared/interfaces/collection.interface';
-
-
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
-import {UiConfig} from '../shared/services/ui.config';
-import { Error } from '../shared/services/error.service';
 
 /**
  * Directive that renders a list of collections
@@ -18,46 +13,41 @@ import { Error } from '../shared/services/error.service';
   directives: [
     WzFormComponent
   ],
-  pipes: [TranslatePipe],
+  pipes: [TranslatePipe]
 })
 
-export class CollectionFormComponent implements OnInit {
-  public config: Object;
+export class CollectionFormComponent implements OnChanges {
   public originalName: string;
-  public assetId: string;
-  public errorMessage: string;
+  public assetForNewCollection: any;
   public focusedCollection: Collection;
-  public showForm: boolean;
-
   @Input() collection: Collection;
+  @Input() newCollectionFormIsOpen: boolean;
+  @Input() config: Object;
   @Output() create = new EventEmitter();
   @Output() cancelled = new EventEmitter();
 
-  constructor(
-    public uiConfig: UiConfig,
-    public routeSegment: RouteSegment,
-    public error: Error) {
-  }
 
-  // set focused(value: Collection) {
-  //   if (value) this.originalName = value.name;
-  //   this.focusedCollection = Object.assign({}, value);
-  // }
-
-  ngOnInit(): void {
-    this.showForm = true;
-    this.uiConfig.get('collection').subscribe((config) => this.config = config.config);
-    this.assetId = this.routeSegment.getParam('asset');
+  ngOnChanges(): void {
+    // for user without any collections, we need to get the asset that triggered the new form.
+    this.assetForNewCollection = JSON.parse(sessionStorage.getItem('assetForNewCollection'));
   }
 
   createCollection(collection: Collection): void {
-    this.showForm = false;
-    setTimeout(() => { this.showForm = true; }, 700);
     collection.tags = collection.tags.split(',');
-    this.assetId ? collection.assets = [this.assetId] : collection.assets = [];
+    this.assetForNewCollection ? collection.assets = [this.assetForNewCollection.assetId] : collection.assets = [];
     this.create.emit(collection);
     // clear the form so you can make another Collection
     let cForm = <HTMLFormElement>document.querySelector('wz-form form');
     cForm.reset();
+    // done with sessionStorage, so it can be removed.
+    if (this.assetForNewCollection) sessionStorage.removeItem('assetForNewCollection');
+  }
+
+  public cancelCollectionCreation(event: Event): void {
+    this.cancelled.emit(event);
+    let cForm = <HTMLFormElement>document.querySelector('wz-form form');
+    cForm.reset();
+    // done with sessionStorage, so it can be removed.
+    sessionStorage.removeItem('assetForNewCollection');
   }
 }
