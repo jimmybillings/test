@@ -46,11 +46,14 @@
       color: contrast-color(md-color($md-warn));
     }
     &.md-icon-button {
-      width: rem(5.3);
+      min-width: rem(3.2);
+      line-height: .7;
       border-radius: rem(.3);
+      padding-left: rem(.4);
+      padding-right: rem(1.4);
       .md-button-wrapper::after {
-        right: rem(.1);
-        top: rem(.7);
+        right: 0;
+        top: rem(.6);
       }
     }
   }
