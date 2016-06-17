@@ -73,6 +73,10 @@ collections-list-dd {
         margin: 0;
         margin-top: rem(.6);
         // color: md-color($md-foreground, secondary-text);
+        width: calc(100% - 120px);
+      }
+      .tools {
+        white-space: nowrap;
       }
     }
     md-list[dense] {
