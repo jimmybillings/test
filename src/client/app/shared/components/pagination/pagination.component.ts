@@ -26,14 +26,13 @@ export class PaginationComponent implements OnInit {
   constructor(public fb: FormBuilder) { }
 
   ngOnInit() {
-    console.log(this.currentPage);
     this.form = this.fb.group({
       page: [this.currentPage, Validators.required]
     });
   }
 
   public getPageNumber(pageNumber: any): void {
-    if (typeof(pageNumber) === 'string') {pageNumber = 1};
+    if (typeof(pageNumber) === 'string') {pageNumber = 1;};
     pageNumber = parseInt(pageNumber);
     if (pageNumber <= 1) {
       this.getPage.emit(1);
