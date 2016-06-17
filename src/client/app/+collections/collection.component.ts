@@ -5,15 +5,11 @@ import { CollectionListComponent } from './collection-list.component';
 import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
 import { Observable} from 'rxjs/Rx';
-
 import { Store } from '@ngrx/store';
 import { Routes, ROUTER_DIRECTIVES} from '@angular/router';
 import { CurrentUser} from '../shared/services/current-user.model';
-// import {CurrentUserInterface} from '../shared/interfaces/current-user.interface';
 import { Error } from '../shared/services/error.service';
 import { UiConfig} from '../shared/services/ui.config';
-
-// import {PaginationComponent} from '../shared/components/pagination/pagination.component';
 
 @Component({
   moduleId: module.id,
@@ -27,8 +23,8 @@ import { UiConfig} from '../shared/services/ui.config';
   ],
   pipes: [TranslatePipe]
 })
+
 @Routes([
-  // { path: '/list', component: CollectionListComponent },
   { path: '/detail/:id', component: CollectionComponent }
 ])
 
@@ -47,41 +43,25 @@ export class CollectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.collectionsService.loadCollections();
+    this.collectionsService.loadCollections().subscribe(
+      payload => this.collectionsService.storeCollections(payload),
+      error => this.error.handle(error)
+    );
     this.collections = this.collectionsService.collections;
-    // this.collections = this.store.select('collections');
     this.focusedCollection = this.store.select('focusedCollection');
-    // this.focusedCollection.subscribe(f => console.log(f));
-    // this.currentUser._currentUser.subscribe(u => {
-    // console.log(u);
-    // this.UserHasFocusedCollection(u) ? this.collectionsService.getFocusedCollection() : console.log('you don\'t have a focused collection');
-    // this.UserHasFocusedCollection(u) ? console.log('It thinks you have collections') : console.log('you don\'t have a focused collection');
-    // });
-
-    // this.collections.subscribe(c => {
-    //   console.log(c);
-    // });
-
-    // console.log(this.store);
   }
 
-  // public UserHasFocusedCollection(user: any): boolean {
-  //   return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
-  // }
-
-  selectFocusedCollection(collection: Collection) {
-    // this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: collection });
-    this.collectionsService.setFocusedCollection(collection);
+  public selectFocusedCollection(collection: Collection): void {
+    this.collectionsService.setFocusedCollection(collection).subscribe(payload => {
+      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: collection });
+    });;
   }
 
-  // public createCollection(collection: Collection) {
-  //   this.collectionsService.createCollection(collection);
-  //   this.getFocusedCollection();
-  // }
-  public getFocusedCollection() {
-    setTimeout(() => { this.collectionsService.getFocusedCollection(); }, 1200);
+  public getFocusedCollection(): void {
+    setTimeout(() => { this.collectionsService.getFocusedCollection().subscribe(payload => {
+      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload });
+    }); }, 1200);
   }
-
 
   public isFocusedCollection(collection: Collection): boolean {
     if (collection.id === this.store.getState().focusedCollection.id)
@@ -89,8 +69,10 @@ export class CollectionComponent implements OnInit {
     return false;
   }
 
-  public deleteCollection(collection: Collection) {
-    this.collectionsService.deleteCollection(collection);
+  public deleteCollection(collection: Collection): void {
+    this.collectionsService.deleteCollection(collection).subscribe(payload => {
+      this.store.dispatch({ type: 'DELETE_COLLECTION', payload: collection });
+    });
     // if we are deleting current focused, we need to get the new focused from the server.
     if (collection.id === this.store.getState().focusedCollection.id &&
       this.store.getState().collections.items.length > 1) {
@@ -101,12 +83,15 @@ export class CollectionComponent implements OnInit {
       this.collectionsService.clearCollections();
     }
   }
+
   public showCollectionSearch(event: Event): void {
     console.log(event);
   }
+
   public showCollectionFilter(event: Event): void {
     console.log(event);
   }
+
   public showCollectionSort(event: Event): void {
     console.log(event);
   }

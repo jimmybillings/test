@@ -87,16 +87,9 @@ export class AppComponent implements OnInit {
 
     this.collections = this.collectionsService.collections;
     this.focusedCollection = this.store.select('focusedCollection');
-    // this.focusedCollection.subscribe(v => console.log(v));
-    // this.collections.subscribe(c => {
-    //   console.log(c);
-    // });
-
     this.currentUser._currentUser.subscribe(u => {
-      // console.log(u);
       this.UserHasFocusedCollection(u) ?
         this.getCollectionsAndFocused() :
-        // console.log(`I think user has a collection to make focused: ${u.focusedCollection}`):
         console.log('you don\'t have a focused collection');
     });
   }
@@ -123,46 +116,62 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  public getCollectionsAndFocused() {
-    this.collectionsService.loadCollections();
-    this.collectionsService.getFocusedCollection();
+  public getCollectionsAndFocused(): void {
+    this.collectionsService.loadCollections().subscribe(payload => {
+      this.collectionsService.storeCollections(payload);
+    });
+    this.collectionsService.getFocusedCollection().subscribe(payload => {
+      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload });
+    });;
   }
 
   public UserHasFocusedCollection(user: any): boolean {
     return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
   }
-  selectFocusedCollection(collection: Collection) {
-    this.collectionsService.setFocusedCollection(collection);
+
+  public selectFocusedCollection(collection: Collection) {
+    this.collectionsService.setFocusedCollection(collection).subscribe(payload => {
+      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: collection });
+    });
     this.closeCollectionsList();
   }
+
   public goToCollections(): void {
     this.router.navigate(['/collection']);
   }
+
   public showNewCollection(): void {
     this.newCollectionFormIsOpen = true;
     this.closeCollectionsList();
   }
+
   public closeNewCollection(): void {
     this.newCollectionFormIsOpen = false;
   }
+
   public showCollectionsList(event: Event): void {
-    // console.log(event);
     this.collectionsListIsOpen = true;
   }
+
   public closeCollectionsList(): void {
     this.collectionsListIsOpen = false;
   }
+
   public createCollection(collection: Collection) {
-    this.collectionsService.createCollection(collection);
+    this.collectionsService.createCollection(collection).subscribe(payload => {
+      this.collectionsService.store.dispatch({ type: 'CREATE_COLLECTION', payload });
+    });
     this.getFocusedCollection();
     this.closeNewCollection();
   }
+
   public getFocusedCollection() {
-    setTimeout(() => { this.collectionsService.getFocusedCollection(); }, 1000);
+    setTimeout(() => { this.collectionsService.getFocusedCollection().subscribe(payload => {
+      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload });
+    }); }, 1000);
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data.lang); }
-
   public closeBinTray() { this.binTrayIsOpen = false; }
   public openBinTray() { this.binTrayIsOpen = true; }
   public openSearch() { this.searchIsOpen = true; }

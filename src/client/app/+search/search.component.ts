@@ -62,11 +62,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.searchAssets();
     this.getFilterTree();
-    // this.collectionsService.loadCollections();
-    // this.collections = this.collectionsService.collections;
     this.focusedCollection = this.store.select('focusedCollection');
-    // this.focusedCollection.subscribe(f => console.log(f));
-    // this.collections.subscribe(c => console.log(c));
   }
 
   ngOnDestroy(): void {
@@ -80,13 +76,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   addToCollection(params: any): void {
     let collection: Collection = params.collection;
     collection.assets ? collection.assets.push(params.assetId) : collection.assets = [params.assetId];
-    this.collectionsService.addAssetsToCollection(collection, params.assetId);
+    this.collectionsService.addAssetsToCollection(collection, params.assetId).subscribe(payload => {
+      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload });
+    });
   }
-
-  // NOT available yet
-  // selectFocusedCollection(collection: Collection) {
-  //   this.collectionsService.setFocusedCollection(collection);
-  // }
 
   showNewCollection(asset: any): void {
     let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-bin-tray');
@@ -95,6 +88,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       newCollectionButton.click();
     sessionStorage.setItem('assetForNewCollection', JSON.stringify(asset));
   }
+
   addToCart(asset: any): void {
     console.log(asset);
   }
@@ -104,7 +98,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   changePage(page: any): void {
-    var v = this.searchContext.get();
+    let v = this.searchContext.get();
     v.i = page;
     this.searchContext.go(v);
     this.assetData.searchAssets(v).subscribe(
@@ -112,6 +106,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       error => this.error.handle(error)
     );
   }
+
   public searchAssets(): void {
     this.searchContext.set(this.routeSegment.parameters);
     this.assetData.searchAssets(this.searchContext.get()).subscribe(
@@ -119,6 +114,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       error => this.error.handle(error)
     );
   }
+
   public filterAssets(): void {
     this.searchContext.set(this.routeSegment.parameters);
     let v = this.searchContext.get();
@@ -139,19 +135,21 @@ export class SearchComponent implements OnInit, OnDestroy {
       error => this.error.handle(error)
     );
   }
+
   public getFilterTree(): void {
-    var fids = this.routeSegment.getParam('filterIds');
+    let fids = this.routeSegment.getParam('filterIds');
     if (fids && fids !== null) {
       if (typeof fids === 'string') {
         fids.split(',').forEach(x => this.filterIds.push(x));
       }
     }
-    var v: Array<string> = this.filterIds;
+    let v: Array<string> = this.filterIds;
     this.assetData.getFilterTree(this.searchContext.get()).subscribe(
       payload => { this.rootFilter = new FilterTree('', '', [], '', -1).load(payload, null, v); },
       error => this.error.handle(error)
     );
   }
+
   doFilter(filter: FilterTree): void {
     //console.log('do event filter. Is filter checked:' + filter.checked +' filter id: '+filter.filterId);
     //i do not know why this.filterIds.indexOf(filter.filterId) doesn't work. Anyone?
@@ -161,7 +159,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.filterIds.push(filter.filterId);
       }
     } else {
-      for (var i = 0; i < this.filterIds.length; i++) {
+      for (let i = 0; i < this.filterIds.length; i++) {
         if (this.filterIds[i].toString() === filter.filterId.toString()) {
           this.filterIds.splice(i, 1);
         }
