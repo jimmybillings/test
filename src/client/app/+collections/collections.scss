@@ -65,18 +65,20 @@ collections-list-dd {
     @include animation-fill-mode(backwards);
   }
   .dd-menu-wrapper {
-    // opacity: 0;
     padding: rem(2.0);
   }
   .collections-dd-menu {
     @include transition($swift-ease-out);
     position: absolute;
-    right: rem(12.0);
-    top: rem(12.0);
+    right: rem(11.0);
+    top: rem(11.5);
     min-width: rem(32.0);
     max-width: rem(40.0);
     background-color: md-color($md-background, card);
     color: rgba(md-color($md-foreground, text), .7);
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      position: static;
+    }
     header {
       margin-bottom: rem(1.6);
       .md-headline {
