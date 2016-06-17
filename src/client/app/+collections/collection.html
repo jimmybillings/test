@@ -1,7 +1,7 @@
 <section class="login hero">
   <div layout="row" flex="100" layout-padding layout-margin  layout-align="center start">
     <collections-list
-      flex="70" 
+      flex="100" flex-gt-sm="80" 
       [collections]="collections | async"
       [focusedCollection]="focusedCollection | async"
       (selected)="selectFocusedCollection($event)" 
