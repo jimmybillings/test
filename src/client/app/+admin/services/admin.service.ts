@@ -19,7 +19,6 @@ export const adminResources: Reducer<any> = (state = adminState, action: Action)
 export class AdminService {
 
   public operatorMap: any;
-  public pageStore: Observable<any>;
   public adminStore: Observable<any>;
 
   constructor(public http: Http,

@@ -53,11 +53,18 @@ export function main() {
       expect(component.getPage.emit).toHaveBeenCalledWith(1);
     }));
 
-    it('floors the number input so a decimal input entered by a user is ok', inject([PaginationComponent], (component: PaginationComponent) => {
+    it('turns the input into an integer so a decimal input entered by a user is ok', inject([PaginationComponent], (component: PaginationComponent) => {
       component.pagination = { 'numberOfPages': 3 };
       spyOn(component.getPage, 'emit');
-      component.getPageNumber(1.2367485);
+      component.getPageNumber('1.2367485');
       expect(component.getPage.emit).toHaveBeenCalledWith(1);
+    }));
+
+    it('turns the input into an integer so a letter input entered by a user is ok', inject([PaginationComponent], (component: PaginationComponent) => {
+      component.pagination = { 'numberOfPages': 3 };
+      spyOn(component.getPage, 'emit');
+      component.getPageNumber('2sfg');
+      expect(component.getPage.emit).toHaveBeenCalledWith(2);
     }));
   });
 }
