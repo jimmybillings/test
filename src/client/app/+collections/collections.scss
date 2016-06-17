@@ -40,9 +40,18 @@ collections-list {
   li {
     background-color: md-color($md-background, card);
     color: rgba(md-color($md-foreground, text), .7);
-    margin-bottom: rem(.4);
+    margin-bottom: rem(.6);
+    padding: rem(.6);
     h3 {
       margin: 0;
+    }
+    .asset .asset-thb {
+      display: block;
+      height: 0;
+      width: 100%;
+      position: relative;
+      padding: 56.25% 0 0 0;
+      background-color: md-color(rgba(md-color($md-foreground, base), .2));
     }
   }
 }

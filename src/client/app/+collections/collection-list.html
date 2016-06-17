@@ -1,24 +1,28 @@
 <section collection-list>
   <ul>
-      <li flex="100" layout="row" *ngFor="let collection of collections.items">
-        <div flex="5">
+    <li flex="100" layout="row" *ngFor="let collection of collections.items">
+      <div flex="15" class="asset">
+        <div class="asset-thb">
           <md-icon *ngIf="focusedCollection.id === collection.id">check_box</md-icon>
-          <md-icon *ngIf="focusedCollection.id !== collection.id"></md-icon>
+          <img src=""/>
         </div>
-        <div flex="90" (click)="selected.emit(collection)">
-          <h3 class="md-headline">{{collection.name}}</h3>
-          <strong>Id: </strong> {{collection.id}}  
-          <strong>assets: </strong> 
-          <span *ngIf="collection.assets">{{collection.assets.length}}</span>
-          <span *ngIf="!collection.assets">0</span>
-        </div>
-        <div flex="5">
-          <button md-icon-button title="delete collections" type="button"  (click)="deleted.emit(collection)" class="close"><md-icon>close</md-icon></button>
-        </div>
-      </li>
-      <!--<span *ngIf="focusedCollection.id === collection.id">selected</span>-->
+      </div>
+      <div flex="80" (click)="selected.emit(collection)">
+        <h3 class="md-headline">{{collection.name}}</h3>
+        <strong>Id: </strong> {{collection.id}}
+        <strong>assets: </strong> 
+        <span *ngIf="collection.assets">{{collection.assets.length}}</span>
+        <span *ngIf="!collection.assets">0</span>
+        <strong>Owner: </strong> {{collection.owner}}
+        <strong>Last Update: </strong> {{collection.lastUpdated}}
+        <strong>Create On: </strong> {{collection.createdOn}}
+        <strong>Tags: </strong> {{collection.tags}}
+      </div>
+      <div flex="5">
+        <button md-icon-button title="delete collections" type="button"  (click)="deleted.emit(collection)" class="close"><md-icon>close</md-icon></button>
+      </div>
+    </li>
   </ul>
-
 </section>  
 
 
