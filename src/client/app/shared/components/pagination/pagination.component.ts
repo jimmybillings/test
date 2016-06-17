@@ -32,13 +32,14 @@ export class PaginationComponent implements OnInit {
   }
 
   public getPageNumber(pageNumber: any): void {
-    pageNumber = Number(pageNumber);
+    if (typeof(pageNumber) === 'string') {pageNumber = 1;};
+    pageNumber = parseInt(pageNumber);
     if (pageNumber <= 1) {
       this.getPage.emit(1);
     } else if (pageNumber > this.pagination.numberOfPages) {
       this.getPage.emit(this.pagination.numberOfPages);
     } else {
-      this.getPage.emit(Math.floor(pageNumber));
+      this.getPage.emit(pageNumber);
     }
   }
   public getCurrentPage() : Number {
