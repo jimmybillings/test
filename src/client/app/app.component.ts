@@ -146,7 +146,7 @@ export class AppComponent implements OnInit {
     this.newCollectionFormIsOpen = false;
   }
   public showCollectionsList(event: Event): void {
-    console.log(event);
+    // console.log(event);
     this.collectionsListIsOpen = true;
   }
   public closeCollectionsList(): void {

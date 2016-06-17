@@ -1,7 +1,7 @@
-<section class="login hero" style="padding-top: 30px;">
-  <div layout="row" flex="" layout-padding layout-margin>
+<section class="login hero">
+  <div layout="row" flex="100" layout-padding layout-margin  layout-align="center start">
     <collections-list
-      flex="40" 
+      flex="70" 
       [collections]="collections | async"
       [focusedCollection]="focusedCollection | async"
       (selected)="selectFocusedCollection($event)" 
