@@ -25,7 +25,6 @@ const collectionsState: Collections = {
   }
 };
 
-
 export const collections: Reducer<any> = (state: Collections = collectionsState, action: Action) => {
   switch (action.type) {
     case 'GET_COLLECTIONS':
