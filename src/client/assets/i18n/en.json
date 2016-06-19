@@ -97,6 +97,15 @@
       "COLLECTION_NAME_LABEL": "Collection Name",
       "TAGS_LABEL": "Tags",
       "SUBMIT_LABEL": "CREATE"
+    },
+    "DD_MENU": {
+      "HEADING": "Select collection",
+      "SEARCH_BTN_TITLE": "Search collections",
+      "FILTER_BTN_TITLE": "Filter collections",
+      "SORT_BTN_TITLE": "Sort collections",
+      "VIEW_BTN_LABEL": "View all",
+      "OPEN_BTN_LABEL": "Open selected",
+      "CREATE_BTN_LABEL": "Create new"
     }
   },
   "ADMIN": {

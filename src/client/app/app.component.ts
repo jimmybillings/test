@@ -95,10 +95,8 @@ export class AppComponent implements OnInit {
     // });
 
     this.currentUser._currentUser.subscribe(u => {
-      // console.log(u);
       this.UserHasFocusedCollection(u) ?
         this.getCollectionsAndFocused() :
-        // console.log(`I think user has a collection to make focused: ${u.focusedCollection}`):
         console.log('you don\'t have a focused collection');
     });
   }
@@ -125,9 +123,13 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  public getCollectionsAndFocused() {
-    this.collectionsService.loadCollections();
-    this.collectionsService.getFocusedCollection();
+  public getCollectionsAndFocused(): void {
+    this.collectionsService.loadCollections().subscribe(payload => {
+      this.collectionsService.storeCollections(payload);
+    });
+    this.collectionsService.getFocusedCollection().subscribe(payload => {
+      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload });
+    });;
   }
 
   public UserHasFocusedCollection(user: any): boolean {
@@ -135,7 +137,10 @@ export class AppComponent implements OnInit {
   }
 
   public selectFocusedCollection(collection: Collection) {
-    this.collectionsService.setFocusedCollection(collection);
+
+    this.collectionsService.setFocusedCollection(collection).subscribe(payload => {
+      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: collection });
+    });
     this.uiState.closeCollectionsList();
   }
 
@@ -149,13 +154,17 @@ export class AppComponent implements OnInit {
   }
 
   public createCollection(collection: Collection) {
-    this.collectionsService.createCollection(collection);
+    this.collectionsService.createCollection(collection).subscribe(payload => {
+      this.collectionsService.store.dispatch({ type: 'CREATE_COLLECTION', payload });
+    });
     this.getFocusedCollection();
     this.closeNewCollection();
   }
 
   public getFocusedCollection() {
-    setTimeout(() => { this.collectionsService.getFocusedCollection(); }, 1000);
+    setTimeout(() => { this.collectionsService.getFocusedCollection().subscribe(payload => {
+      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload });
+    }); }, 1000);
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data.lang); }

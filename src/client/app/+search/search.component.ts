@@ -62,11 +62,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.newSearch();
     this.getFilterTree();
-    // this.collectionsService.loadCollections();
-    // this.collections = this.collectionsService.collections;
     this.focusedCollection = this.store.select('focusedCollection');
-    // this.focusedCollection.subscribe(f => console.log(f));
-    // this.collections.subscribe(c => console.log(c));
   }
 
   ngOnDestroy(): void {
@@ -80,7 +76,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   public addToCollection(params: any): void {
     let collection: Collection = params.collection;
     collection.assets ? collection.assets.push(params.assetId) : collection.assets = [params.assetId];
-    this.collectionsService.addAssetsToCollection(collection, params.assetId);
+    this.collectionsService.addAssetsToCollection(collection, params.assetId).subscribe(payload => {
+      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload });
+    });
   }
 
   // NOT available yet
@@ -146,13 +144,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public getFilterTree(): void {
-    var fids = this.routeSegment.getParam('filterIds');
+    let fids = this.routeSegment.getParam('filterIds');
     if (fids && fids !== null) {
       if (typeof fids === 'string') {
         fids.split(',').forEach(x => this.filterIds.push(x));
       }
     }
-    var v: Array<string> = this.filterIds;
+    let v: Array<string> = this.filterIds;
     this.assetData.getFilterTree(this.searchContext.get()).subscribe(
       payload => { this.rootFilter = new FilterTree('', '', [], '', -1).load(payload, null, v); },
       error => this.error.handle(error)
@@ -168,7 +166,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.filterIds.push(filter.filterId);
       }
     } else {
-      for (var i = 0; i < this.filterIds.length; i++) {
+      for (let i = 0; i < this.filterIds.length; i++) {
         if (this.filterIds[i].toString() === filter.filterId.toString()) {
           this.filterIds.splice(i, 1);
         }
