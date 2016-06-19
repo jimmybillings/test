@@ -24,7 +24,7 @@ export const searchContext: Reducer<any> = (state: any = initSearchContext, acti
 @Injectable()
 export class SearchContext {
   public context: Observable<any>;
-  constructor(public router: Router, public store: Store<any>,public loc:Location) {
+  constructor(public router: Router, public store: Store<any>, public loc: Location) {
     this.context = this.store.select('searchContext');
   }
 
@@ -36,27 +36,29 @@ export class SearchContext {
   public get(): any {
     return this.store.getState().searchContext;
   }
+
   public set(params: Object): void {
     this.store.dispatch({ type: 'SEARCHCONTEXT.SET', payload: params });
   }
-  public go(params: Object): void {
-    this.set(params);
-    this.loc.go('/search;'+this.toQueryParam(this.get()));
+
+  public go(): void {
+    this.loc.go('/search;' + this.toQueryParam(this.get()));
   }
-  private toQueryParam(params: any):string {
+
+  private toQueryParam(params: any): string {
     let buffer = new Array();
     for (var name in params) {
-       if(! params.hasOwnProperty(name)) {
-         continue;
-       }
-       var value = params[name];
-       if(value !== null) {
-         buffer.push(name + '=' + value);
-       }else {
-         buffer.push(name +'=');
-       }
+      if (!params.hasOwnProperty(name)) {
+        continue;
+      }
+      var value = params[name];
+      if (value !== null) {
+        buffer.push(name + '=' + value);
+      } else {
+        buffer.push(name + '=');
+      }
     }
-    var source = buffer.join( ';' );
-    return( source );
+    var source = buffer.join(';');
+    return (source);
   }
 }
