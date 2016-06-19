@@ -16,11 +16,16 @@ import { Collection } from '../shared/interfaces/collection.interface';
 export class CollectionListDdComponent {
   @Input() collections: Collection[];
   @Input() focusedCollection: Collection;
+  @Input() UiState: any;
   @Output() selected = new EventEmitter();
   @Output() isFocused = new EventEmitter();
   @Output() showNewCollection = new EventEmitter();
   @Output() showSearch = new EventEmitter();
   @Output() showFilter = new EventEmitter();
   @Output() showSort = new EventEmitter();
-  @Output() closeCollectionsList = new EventEmitter();
+
+  public closeCollectionsList() {
+    this.UiState.closeCollectionsList();
+  }
+
 }

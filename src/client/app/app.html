@@ -9,18 +9,17 @@
   layout="row" layout-align="center start">
 </collection-form>
 <collections-list-dd
+  [UiState]="uiState"
   [collections]="collections | async"
   [focusedCollection]="focusedCollection | async"
-  [collectionsListIsOpen]="collectionsListIsOpen"
   (selected)="selectFocusedCollection($event)" 
   (isFocused)="isFocusedCollection($event)" 
   (deleted)="deleteCollection($event)"
   (showSearch)="showCollectionSearch($event)"
   (showFilter)="showCollectionFilter($event)"
   (showSort)="showCollectionSort($event)"
-  (closeCollectionsList)="closeCollectionsList($event)"
   (showNewCollection)="showNewCollection($event)"
-  [ngClass]="{'revealed': collectionsListIsOpen}"
+  [ngClass]="{'revealed': (uiState.uiState | async).collectionsListIsOpen}"
   layout="row" layout-align="end start">
 </collections-list-dd>
 <!--<md-sidenav-layout fullscreen>
@@ -38,41 +37,38 @@
   </md-sidenav>-->
   
   <div class="app">
-    <header [ngClass]="{'fixed': showFixed, 'bin-tray-closed': !binTrayIsOpen, 'search-closed': !searchIsOpen}" class="app-header">
+    <header [ngClass]="{'fixed': showFixed, 'bin-tray-closed': !(uiState.uiState | async).binTrayIsOpen, 'search-closed': !(uiState.uiState | async).searchIsOpen}" class="app-header">
       <app-nav 
         [showFixed]="showFixed" 
+        [UiState]="uiState"
         [searchBarIsActive]="searchBarIsActive" 
         [currentUser]="currentUser" 
         [state]="state" 
         [config]="header"
         [collection]="focusedCollection | async" 
         (onLogOut)="logout()" 
-        (onOpenSearch)="openSearch()" 
-        (onOpenBinTray)="openBinTray()" 
         (onOpenSidenav)="sidenav.open()"
         (onShowNewCollection)="showNewCollection()">
       </app-nav>
       <search-box 
         *ngIf="searchBarIsActive" 
         [state]="state" 
+        [UiState]="uiState"
         [loggedIn]="currentUser.loggedIn()" 
         [apiConfig]="apiConfig" 
         [config]="searchBox" 
-        (onCloseSearch)="closeSearch()" 
         (searchContext)="newSearchContext($event)">
       </search-box>
       <bin-tray 
         *ngIf="searchBarIsActive" 
+        [UiState]="uiState"
         [showFixed]="showFixed" 
         [collection]="focusedCollection | async" 
-        (closeBinTray)="closeBinTray()"
-        (goToCollections)="goToCollections()"
         (showNewCollection)="showNewCollection()"
-        (showCollectionsList)="showCollectionsList($event)"
         >
       </bin-tray>
     </header>
-    <div [ngClass]="{'bin-tray-closed': !binTrayIsOpen, 'search-closed': !searchIsOpen}" class="main-content">
+    <div [ngClass]="{'bin-tray-closed': !(uiState.uiState | async).binTrayIsOpen, 'search-closed': !(uiState.uiState | async).searchIsOpen}" class="main-content">
       <router-outlet></router-outlet>
     </div>
     <app-footer 

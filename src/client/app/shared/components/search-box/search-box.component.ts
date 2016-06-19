@@ -19,7 +19,7 @@ export class SearchBoxComponent implements OnInit, OnChanges {
   @Input() loggedIn: boolean;
   @Input() apiConfig: any;
   @Input() state: any;
-  @Output() onCloseSearch = new EventEmitter();
+  @Input() UiState: any;
   @Output() searchContext = new EventEmitter();
   public searchTerms: Observable<any>;
   public searchForm: ControlGroup;
@@ -49,8 +49,8 @@ export class SearchBoxComponent implements OnInit, OnChanges {
     this.searchTerms = this.listenForSearchTerms();
   }
 
-  public closeSearch(event: Event) {
-    this.onCloseSearch.emit(event);
+  public closeSearch() {
+    this.UiState.closeSearch();
   }
 
   public setForm() {

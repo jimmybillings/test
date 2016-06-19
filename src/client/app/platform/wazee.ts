@@ -11,12 +11,14 @@ import { AssetService} from '../+asset/services/asset.service';
 import { SearchContext} from '../shared/services/search-context.service';
 import { Authentication} from '../+user-management/services/authentication.data.service';
 import { CollectionsService } from '../+collections/services/collections.service';
+import { UiState } from '../shared/services/ui.state';
 
 // WAZEE STORES
 import { assets } from '../+search/services/asset.data.service';
 import { asset } from '../+asset/services/asset.service';
 import { currentUser} from '../shared/services/current-user.model';
 import { config } from '../shared/services/ui.config';
+import { uiState } from '../shared/services/ui.state';
 import { adminResources } from '../+admin/services/admin.service';
 import { searchContext} from '../shared/services/search-context.service';
 import { provideStore } from '@ngrx/store';
@@ -41,6 +43,7 @@ export const WAZEE_PROVIDERS = [
   Authentication,
   TranslateService,
   MultilingualService,
+  UiState,
   provide(TranslateLoader, {
     useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
     deps: [Http]
@@ -57,6 +60,7 @@ export const WAZEE_STORES: Provider[][] = [
     searchContext,
     collections,
     focusedCollection,
+    uiState,
     i18n: multilingualReducer
   })
 ];

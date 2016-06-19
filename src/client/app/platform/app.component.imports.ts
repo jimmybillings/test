@@ -19,6 +19,8 @@ export { UiConfig} from '../shared/services/ui.config';
 export { SearchContext} from '../shared/services/search-context.service';
 export { Authentication} from '../+user-management/services/authentication.data.service';
 export { CollectionsService } from '../+collections/services/collections.service';
+export { UiState} from '../shared/services/ui.state';
+
 // Interfaces
 export {ILang} from '../shared/interfaces/language.interface';
 export { Collection, CollectionStore } from '../shared/interfaces/collection.interface';

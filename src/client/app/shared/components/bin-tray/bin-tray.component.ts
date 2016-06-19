@@ -18,13 +18,16 @@ import { Collection } from '../../../shared/interfaces/collection.interface';
 export class BinTrayComponent {
   @Input() collection: Collection;
   @Input() showFixed: any;
-  @Output() closeBinTray = new EventEmitter();
+  @Input() UiState: any;
   @Output() showNewCollection = new EventEmitter();
-  @Output() showCollectionsList = new EventEmitter();
-  @Output() goToCollections = new EventEmitter();
 
   constructor(
     public router: Router) {
   }
+
+  public showCollectionsList() {
+    this.UiState.showCollectionsList();
+  }
+
 }
 

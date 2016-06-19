@@ -22,7 +22,8 @@ import {
   CollectionComponent,
   Collection,
   CollectionStore,
-  AdminComponent
+  AdminComponent,
+  UiState
 } from './platform/app.component.imports';
 
 // Portal is set as a global variable in the index.html page.
@@ -55,12 +56,11 @@ export class AppComponent implements OnInit {
   public showFixed: boolean = false;
   public state: string = '';
   public searchBarIsActive: boolean = true;
-  public binTrayIsOpen: boolean = false;
-  public searchIsOpen: boolean = true;
   public newCollectionFormIsOpen: boolean = false;
   public collectionsListIsOpen: boolean = false;
   public collections: Observable<Array<Collection>>;
   public focusedCollection: Observable<any>;
+  public uiStore: Observable<UiState>;
 
   constructor(
     public uiConfig: UiConfig,
@@ -73,6 +73,7 @@ export class AppComponent implements OnInit {
     private currentUser: CurrentUser,
     public collectionsService: CollectionsService,
     public store: Store<CollectionStore>,
+    public uiState: UiState,
     private renderer: Renderer) {
     this.apiConfig.setPortal(portal);
   }
@@ -84,9 +85,10 @@ export class AppComponent implements OnInit {
     this.currentUser.set();
     this.configChanges();
     this.routerChanges();
-
     this.collections = this.collectionsService.collections;
     this.focusedCollection = this.store.select('focusedCollection');
+    this.uiStore = this.uiState.uiState;
+
     // this.focusedCollection.subscribe(v => console.log(v));
     // this.collections.subscribe(c => {
     //   console.log(c);
@@ -131,42 +133,32 @@ export class AppComponent implements OnInit {
   public UserHasFocusedCollection(user: any): boolean {
     return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
   }
-  selectFocusedCollection(collection: Collection) {
+
+  public selectFocusedCollection(collection: Collection) {
     this.collectionsService.setFocusedCollection(collection);
-    this.closeCollectionsList();
+    this.uiState.closeCollectionsList();
   }
-  public goToCollections(): void {
-    this.router.navigate(['/collection']);
-  }
+
   public showNewCollection(): void {
     this.newCollectionFormIsOpen = true;
-    this.closeCollectionsList();
+    this.uiState.closeCollectionsList();
   }
+
   public closeNewCollection(): void {
     this.newCollectionFormIsOpen = false;
   }
-  public showCollectionsList(event: Event): void {
-    console.log(event);
-    this.collectionsListIsOpen = true;
-  }
-  public closeCollectionsList(): void {
-    this.collectionsListIsOpen = false;
-  }
+
   public createCollection(collection: Collection) {
     this.collectionsService.createCollection(collection);
     this.getFocusedCollection();
     this.closeNewCollection();
   }
+
   public getFocusedCollection() {
     setTimeout(() => { this.collectionsService.getFocusedCollection(); }, 1000);
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data.lang); }
-
-  public closeBinTray() { this.binTrayIsOpen = false; }
-  public openBinTray() { this.binTrayIsOpen = true; }
-  public openSearch() { this.searchIsOpen = true; }
-  public closeSearch() { this.searchIsOpen = false; }
 
   public showFixedHeader(offset: any) {
     let isfixed: boolean = this.showFixed;
