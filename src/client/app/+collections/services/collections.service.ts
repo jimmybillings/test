@@ -97,8 +97,12 @@ export class CollectionsService {
       .map(res => res.json());
   }
 
-  public setFocusedCollection(collection: Collection): Observable<any> {
-    return this.http.put(`${this.apiUrls.CollectionBaseUrl}/focused/${collection.id}`,
+  /**
+    Need to ask Dylan or write a story for why this api call does not respond
+    with the collection object that is being set to focused
+   */
+  public setFocusedCollection(collectionId: number): Observable<any> {
+    return this.http.put(`${this.apiUrls.CollectionBaseUrl}/focused/${collectionId}`,
       '', { headers: this.apiConfig.authHeaders() });
   }
 
@@ -108,14 +112,14 @@ export class CollectionsService {
    * @param assets-ids    comma separated list of asset.ids {35637550} or {35637550,15548547,29935259}
    * @returns Observable
    */
-  public addAssetsToCollection(collection: Collection, assetIds: any): Observable<any> {
-    return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collection.id}/addAssets?asset-ids=${assetIds}`,
+  public addAssetsToCollection(collectionId: number, assetIds: any): Observable<any> {
+    return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/addAssets?asset-ids=${assetIds}`,
       '', { headers: this.apiConfig.authHeaders() })
       .map(res => res.json());
   }
 
-  public deleteCollection(collection: Collection): Observable<any> {
-    return this.http.delete(`${this.apiUrls.CollectionBaseUrl}/${collection.id}`,
+  public deleteCollection(collectionId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrls.CollectionBaseUrl}/${collectionId}`,
       { headers: this.apiConfig.authHeaders() });
   }
 
@@ -124,8 +128,16 @@ export class CollectionsService {
     this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: focusedState });
   }
 
-  public updateFocusedCollection(payload: Collection) {
-    this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: payload });
+  public deleteCollectionFromStore(payload: Collection): void {
+    this.store.dispatch({ type: 'DELETE_COLLECTION', payload });
+  }
+
+  public updateFocusedCollection(payload: Collection): void {
+    this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload });
+  }
+
+  public createCollectionInStore(payload: Collection): void {
+    this.store.dispatch({ type: 'CREATE_COLLECTION', payload });
   }
 
   public storeCollections(payload: any): void {

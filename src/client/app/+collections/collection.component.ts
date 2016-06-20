@@ -52,14 +52,14 @@ export class CollectionComponent implements OnInit {
   }
 
   public selectFocusedCollection(collection: Collection): void {
-    this.collectionsService.setFocusedCollection(collection).subscribe(payload => {
-      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: collection });
+    this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
+      this.collectionsService.updateFocusedCollection(collection);
     });;
   }
 
   public getFocusedCollection(): void {
     setTimeout(() => { this.collectionsService.getFocusedCollection().subscribe(payload => {
-      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload });
+      this.collectionsService.updateFocusedCollection(payload);
     }); }, 1200);
   }
 
@@ -70,8 +70,9 @@ export class CollectionComponent implements OnInit {
   }
 
   public deleteCollection(collection: Collection): void {
-    this.store.dispatch({ type: 'DELETE_COLLECTION', payload: collection });
-    this.collectionsService.deleteCollection(collection).subscribe();
+    this.collectionsService.deleteCollection(collection.id).subscribe(payload => {
+      this.collectionsService.deleteCollectionFromStore(payload);
+    });
     // if we are deleting current focused, we need to get the new focused from the server.
     if (collection.id === this.store.getState().focusedCollection.id &&
       this.store.getState().collections.items.length > 1) {

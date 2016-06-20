@@ -12,7 +12,7 @@ import { provide } from '@angular/core';
 import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http, ResponseOptions, Response } from '@angular/http';
+import { BaseRequestOptions, Http, ResponseOptions, Response, RequestMethod } from '@angular/http';
 import { provideStore } from '@ngrx/store';
 import { Error } from '../../shared/services/error.service';
 
@@ -48,13 +48,14 @@ export function main() {
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
         let expectedUrl = service.apiUrls.CollectionBaseUrl + '/fetchBy?access-level=owner';
-        service.loadCollections().subscribe(payload => {
+        service.loadCollections().subscribe(response => {
           expect(connection.request.url).toBe(expectedUrl);
-          expect(payload).toEqual(mockGetResponse());
+          expect(connection.request.method).toBe(RequestMethod.Get);
+          expect(response).toEqual(mockCollectionResponse());
         });
         connection.mockRespond(new Response(
           new ResponseOptions({
-            body: mockGetResponse()
+            body: mockCollectionResponse()
           })
         ));
       }));
@@ -64,19 +65,85 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
-        service.createCollection(mockCreateResponse()).subscribe(payload => {
+        service.createCollection(mockCollection()).subscribe(response => {
           expect(connection.request.url).toBe('api/identites/v1/collection');
-          expect(payload).toEqual(mockGetResponse());
+          expect(connection.request.method).toBe(RequestMethod.Post);
+          expect(response).toEqual(mockCollectionResponse());
         });
         connection.mockRespond(new Response(
           new ResponseOptions({
-            body: mockGetResponse()
+            body: mockCollectionResponse()
           })
         ));
       }));
 
+    it('Should have a getFocusedCollection method that gets a users focused collection',
+      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
+        let connection: any;
+        connection = mockBackend.connections.subscribe((c: any) => connection = c);
+        service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
+        service.getFocusedCollection().subscribe(response => {
+          expect(connection.request.url).toBe('api/identites/v1/collection/focused');
+          expect(response).toEqual(mockCollectionResponse());
+        });
+        connection.mockRespond(new Response(
+          new ResponseOptions({
+            body: mockCollectionResponse()
+          })
+        ));
+      }));
 
-    function mockGetResponse() {
+    it('Should have a setFocusedCollection method that sets a users focused collection given an id',
+      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
+        let connection: any;
+        connection = mockBackend.connections.subscribe((c: any) => connection = c);
+        service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
+        service.setFocusedCollection(158).subscribe(response => {
+          expect(connection.request.url).toBe('api/identites/v1/collection/focused/158');
+          expect(connection.request.method).toBe(RequestMethod.Put);
+          expect(response._body).toEqual(mockCollection());
+          expect(response._body.id).toEqual(158);
+        });
+        connection.mockRespond(new Response(
+          new ResponseOptions({
+            body: mockCollection()
+          })
+        ));
+      }));
+
+    it('Should have a addAssetsToCollection method that adds assets to a collection',
+      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
+        let connection: any;
+        connection = mockBackend.connections.subscribe((c: any) => connection = c);
+        service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
+        service.addAssetsToCollection(158, 567890).subscribe(response => {
+          expect(connection.request.method).toBe(RequestMethod.Post);
+          expect(connection.request.url).toBe('api/identites/v1/collection/158/addAssets?asset-ids=567890');
+        });
+        connection.mockRespond(new Response(
+          new ResponseOptions({
+            body: mockCollection()
+          })
+        ));
+      }));
+
+    it('Should have a deleteCollection method that deletes a collection',
+      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
+        let connection: any;
+        connection = mockBackend.connections.subscribe((c: any) => connection = c);
+        service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
+        service.deleteCollection(158).subscribe(response => {
+          expect(connection.request.method).toBe(RequestMethod.Delete);
+          expect(connection.request.url).toBe('api/identites/v1/collection/158');
+        });
+        connection.mockRespond(new Response(
+          new ResponseOptions({
+            body: mockCollection()
+          })
+        ));
+      }));
+
+    function mockCollectionResponse() {
       return {
         'items': [
           {'lastUpdated':'2016-06-16T17:53:17Z',
@@ -96,7 +163,7 @@ export function main() {
          };
     }
 
-    function mockCreateResponse() {
+    function mockCollection() {
       return {
         'lastUpdated':'2016-06-17T21:44:12Z',
         'createdOn':'2016-06-17T21:44:12Z',
@@ -104,6 +171,7 @@ export function main() {
         'siteName':'core',
         'name':'golf',
         'owner':'ross.edfort@wazeedigital.com',
+        'assets':[123456],
         'tags':['golf','green','sport']
       };
     }

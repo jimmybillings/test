@@ -47,7 +47,7 @@ export class CollectionFormComponent implements OnChanges {
 
   public saveCollection(collection: Collection) {
     this.collectionsService.createCollection(collection).subscribe(payload => {
-      this.collectionsService.store.dispatch({ type: 'CREATE_COLLECTION', payload });
+      this.collectionsService.createCollectionInStore(payload);
       this.collectionsService.updateFocusedCollection(payload);
     });
 
