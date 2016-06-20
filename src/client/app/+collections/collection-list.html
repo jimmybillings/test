@@ -1,13 +1,15 @@
-<section collection-list>
+<section>
   <ul>
     <li flex="100" layout="row" *ngFor="let collection of collections.items">
-      <div flex="15" class="asset">
-        <div class="asset-thb">
-          <md-icon *ngIf="focusedCollection.id === collection.id">check_box</md-icon>
-          <img src=""/>
+      <div flex="25"> 
+        <div class="asset">
+          <div class="asset-thb">
+            <md-icon *ngIf="focusedCollection.id === collection.id">check_box</md-icon>
+            <img src="/assets/img/highlights/dimoc.jpg"/>
+          </div>
         </div>
       </div>
-      <div flex="80" (click)="selected.emit(collection)">
+      <div flex="70" (click)="selected.emit(collection)">
         <h3 class="md-headline">{{collection.name}}</h3>
         <strong>Id: </strong> {{collection.id}}
         <strong>assets: </strong> 
@@ -23,7 +25,31 @@
       </div>
     </li>
   </ul>
-</section>  
+
+
+
+
+
+
+
+  <md-card flex="100" layout="row" *ngFor="let collection of collections.items">
+    <div flex="25"> 
+      <div class="asset">
+        <div class="asset-thb">
+          <img src="/assets/img/highlights/dimoc.jpg"/>
+        </div>
+      </div>
+    </div>
+    <div flex="75">
+    <md-card-title-group>
+      <md-card-title>{{collection.name}}</md-card-title>
+      <md-card-subtitle>{{collection.owner}}</md-card-subtitle>
+    </md-card-title-group>
+    </div>
+</md-card>
+
+</section>
+
 
 
 <div><h1></h1><h1></h1></div>
