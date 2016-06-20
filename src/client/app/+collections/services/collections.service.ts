@@ -124,6 +124,10 @@ export class CollectionsService {
     this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: focusedState });
   }
 
+  public updateFocusedCollection(payload: Collection) {
+    this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: payload });
+  }
+
   public storeCollections(payload: any): void {
     payload.items = payload.items === undefined ? [] : payload.items;
     this.store.dispatch({

@@ -60,7 +60,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    this.searchAssets();
+    this.newSearch();
     this.getFilterTree();
     this.focusedCollection = this.store.select('focusedCollection');
   }
@@ -69,11 +69,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.assetData.clearAssets();
   }
 
-  showAsset(asset: any): void {
+  public showAsset(asset: any): void {
     this.router.navigate(['/asset', asset.assetId]);
   }
 
-  addToCollection(params: any): void {
+  public addToCollection(params: any): void {
     let collection: Collection = params.collection;
     collection.assets ? collection.assets.push(params.assetId) : collection.assets = [params.assetId];
     this.collectionsService.addAssetsToCollection(collection, params.assetId).subscribe(payload => {
@@ -81,7 +81,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  showNewCollection(asset: any): void {
+  // NOT available yet
+  // selectFocusedCollection(collection: Collection) {
+  //   this.collectionsService.setFocusedCollection(collection);
+  // }
+
+  public showNewCollection(asset: any): void {
     let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-bin-tray');
     !this.currentUser.loggedIn() ?
       this.router.navigate(['/user/login']) :
@@ -89,26 +94,26 @@ export class SearchComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('assetForNewCollection', JSON.stringify(asset));
   }
 
-  addToCart(asset: any): void {
+  public addToCart(asset: any): void {
     console.log(asset);
   }
 
-  downloadComp(asset: any): void {
+  public downloadComp(asset: any): void {
     console.log(asset);
   }
 
-  changePage(page: any): void {
-    let v = this.searchContext.get();
-    v.i = page;
-    this.searchContext.go(v);
-    this.assetData.searchAssets(v).subscribe(
-      payload => this.assetData.storeAssets(payload),
-      error => this.error.handle(error)
-    );
+  public changePage(page: any): void {
+    this.searchContext.set({ i: page });
+    this.searchContext.go();
+    this.newSearch();
   }
 
-  public searchAssets(): void {
+  public keywordSearch(): void {
     this.searchContext.set(this.routeSegment.parameters);
+    this.newSearch();
+  }
+
+  public newSearch() {
     this.assetData.searchAssets(this.searchContext.get()).subscribe(
       payload => this.assetData.storeAssets(payload),
       error => this.error.handle(error)
@@ -116,24 +121,19 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public filterAssets(): void {
-    this.searchContext.set(this.routeSegment.parameters);
-    let v = this.searchContext.get();
-    v['i'] = 1;
+    this.searchContext.set({ i: 1 });
     if (this.filterIds.length > 0) {
-      v['filterIds'] = this.filterIds.join(',');
+      this.searchContext.set({ 'filterIds': this.filterIds.join(',') });
     } else {
-      delete v.filterIds;
+      this.searchContext.set({ 'filterIds': null });
     }
     if (this.filterValues.length > 0 && this.filterIds.length > 0) {
-      v['filterValues'] = this.filterValues.join(',');
+      this.searchContext.set({ 'filterValues': this.filterValues.join(',') });
     } else {
-      delete v.filterValues;
+      this.searchContext.set({ 'filterValues': null });
     }
-    this.searchContext.go(v);
-    this.assetData.searchAssets(v).subscribe(
-      payload => this.assetData.storeAssets(payload),
-      error => this.error.handle(error)
-    );
+    this.searchContext.go();
+    this.newSearch();
   }
 
   public getFilterTree(): void {
@@ -150,7 +150,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     );
   }
 
-  doFilter(filter: FilterTree): void {
+  public doFilter(filter: FilterTree): void {
     //console.log('do event filter. Is filter checked:' + filter.checked +' filter id: '+filter.filterId);
     //i do not know why this.filterIds.indexOf(filter.filterId) doesn't work. Anyone?
     //something with the type that === comparison keeps failing (but == works)

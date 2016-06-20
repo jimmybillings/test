@@ -70,9 +70,8 @@ export class CollectionComponent implements OnInit {
   }
 
   public deleteCollection(collection: Collection): void {
-    this.collectionsService.deleteCollection(collection).subscribe(payload => {
-      this.store.dispatch({ type: 'DELETE_COLLECTION', payload: collection });
-    });
+    this.store.dispatch({ type: 'DELETE_COLLECTION', payload: collection });
+    this.collectionsService.deleteCollection(collection).subscribe();
     // if we are deleting current focused, we need to get the new focused from the server.
     if (collection.id === this.store.getState().focusedCollection.id &&
       this.store.getState().collections.items.length > 1) {
