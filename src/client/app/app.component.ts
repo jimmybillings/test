@@ -49,9 +49,6 @@ declare var portal: string;
 ])
 
 export class AppComponent implements OnInit {
-  public header: Observable<any>;
-  public searchBox: Observable<any>;
-  public collectionFormConfig: Observable<any>;
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public showFixed: boolean = false;
   public state: string = '';
@@ -69,7 +66,7 @@ export class AppComponent implements OnInit {
     public searchContext: SearchContext,
     private apiConfig: ApiConfig,
     private authentication: Authentication,
-    private currentUser: CurrentUser,
+    public currentUser: CurrentUser,
     public collectionsService: CollectionsService,
     public store: Store<CollectionStore>,
     public uiState: UiState,
@@ -82,16 +79,9 @@ export class AppComponent implements OnInit {
     this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
     this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
     this.currentUser.set();
-    this.configChanges();
     this.routerChanges();
     this.focusedCollection = this.store.select('focusedCollection');
     this.uiStore = this.uiState.uiState;
-  }
-
-  public configChanges() {
-    this.uiConfig.get('header').subscribe((data) => this.header = data.config);
-    this.uiConfig.get('searchBox').subscribe(data => this.searchBox = data.config);
-    this.uiConfig.get('collection').subscribe((data) => this.collectionFormConfig = data.config);
   }
 
   public routerChanges() {

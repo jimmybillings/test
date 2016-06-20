@@ -23,7 +23,7 @@ export class BinTrayComponent {
   constructor(
     public router: Router,
     public collectionsService: CollectionsService) {
-      this.getCollectionsAndFocused();
+    this.getCollectionsAndFocused();
   }
 
   public showCollectionsList() {

@@ -26,14 +26,14 @@ export function main() {
       UiConfig,
       CollectionsService,
       ApiConfig,
-      MockBackend, 
+      MockBackend,
       BaseRequestOptions,
       provideStore(collections),
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
-      
+
     ]);
 
     it('Should have a bin tray instance',

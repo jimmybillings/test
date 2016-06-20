@@ -9,7 +9,7 @@
           </div>
           <search-box
             [config]="config"
-            [loggedIn]="currentUser.loggedIn()"
+            [currentUser]="currentUser" 
             [apiConfig]="apiConfig"
             (searchContext)="newSearchContext($event)">
           </search-box>

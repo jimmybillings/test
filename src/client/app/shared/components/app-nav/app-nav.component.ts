@@ -44,9 +44,6 @@ export class AppNavComponent implements OnInit {
   public openBinTray() {
     this.UiState.openBinTray();
   }
-  public openSidenav(event: Event) {
-    this.onOpenSidenav.emit(event);
-  }
 
   public showNewCollection(event: Event) {
     this.UiState.showNewCollection();
