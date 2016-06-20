@@ -80,8 +80,7 @@ export class UiState {
   public showFixedHeader(offset: any) {
     let isfixed: boolean = this.store.getState().uiState.showFixed;
     let setFixed: boolean = (offset > 111) ? true : false;
-    if (setFixed !== isfixed) this.update({ showFixed: !this.store.getState().uiState.showFixed });
-
+    if (setFixed !== isfixed) this.update({ showFixed: !isfixed });
   }
 
 }

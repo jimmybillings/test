@@ -63,13 +63,13 @@ export function main() {
       }));
 
 
-    it('Should initialize the header position to be absolulte positioned by setting \'showFixed\' to be false',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(AppComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance.showFixed).toEqual(false);
-        });
-      }));
+    // it('Should initialize the header position to be absolulte positioned by setting \'showFixed\' to be false',
+    //   inject([TestComponentBuilder], (tcb: any) => {
+    //     tcb.createAsync(AppComponent).then((fixture: any) => {
+    //       let instance = fixture.debugElement.componentInstance;
+    //       expect(instance.showFixed).toEqual(false);
+    //     });
+    //   }));
 
     // it('Should set the header to absolute by setting \'showFixed\' to be false if the page scrolls less than 111px\'s',
     //   inject([TestComponentBuilder], (tcb: any) => {
