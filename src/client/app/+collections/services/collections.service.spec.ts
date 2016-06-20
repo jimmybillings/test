@@ -143,6 +143,34 @@ export function main() {
         ));
       }));
 
+    it('Should have a clearCollections method that sets the store back to its initial state',
+      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
+        spyOn(service.store, 'dispatch');
+        service.clearCollections();
+        expect(service.store.dispatch).toHaveBeenCalled();
+      }));
+
+    it('Should have a deleteCollectionFromStore method that removes a collection',
+      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
+        spyOn(service.store, 'dispatch');
+        service.deleteCollectionFromStore(mockCollection());
+        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'DELETE_COLLECTION', payload: mockCollection() });
+      }));
+
+    it('Should have a updateFocusedCollection method that updates the focused collection in the store',
+      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
+        spyOn(service.store, 'dispatch');
+        service.updateFocusedCollection(mockCollection());
+        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'FOCUSED_COLLECTION', payload: mockCollection()});
+      }));
+
+    it('Should have a createCollectionInStore method that creates a new collection in the store',
+      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
+        spyOn(service.store, 'dispatch');
+        service.createCollectionInStore(mockCollection());
+        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'CREATE_COLLECTION', payload: mockCollection() });
+      }));
+
     function mockCollectionResponse() {
       return {
         'items': [
