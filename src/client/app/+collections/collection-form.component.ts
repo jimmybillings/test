@@ -45,12 +45,11 @@ export class CollectionFormComponent implements OnChanges {
     if (this.assetForNewCollection) sessionStorage.removeItem('assetForNewCollection');
   }
 
-  public saveCollection(collection: Collection) {
+  public saveCollection(collection: Collection): void {
     this.collectionsService.createCollection(collection).subscribe(payload => {
       this.collectionsService.createCollectionInStore(payload);
       this.collectionsService.updateFocusedCollection(payload);
     });
-
     this.UiState.closeNewCollection();
   }
 
