@@ -16,7 +16,7 @@ import {Observable} from 'rxjs/Rx';
 
 export class SearchBoxComponent implements OnInit, OnChanges {
   @Input() config: any;
-  @Input() loggedIn: boolean;
+  @Input() currentUser: any;
   @Input() apiConfig: any;
   @Input() state: any;
   @Input() UiState: any;
@@ -77,7 +77,7 @@ export class SearchBoxComponent implements OnInit, OnChanges {
   }
 
   private url(query: string): string {
-    return (this.loggedIn)
+    return (this.currentUser.loggedIn())
       ? 'assets-api/v1/search/searchTerms'
       : 'assets-api/v1/search/anonymous/searchTerms';
   }
@@ -88,8 +88,8 @@ export class SearchBoxComponent implements OnInit, OnChanges {
     search.set('text', query);
     search.set('prefix', 'true');
     search.set('maxTerms', '10');
-    let headers = (this.loggedIn) ? this.apiConfig.authHeaders() : void null;
-    let options = (this.loggedIn) ? { headers, search } : { search };
+    let headers = (this.currentUser.loggedIn()) ? this.apiConfig.authHeaders() : void null;
+    let options = (this.currentUser.loggedIn()) ? { headers, search } : { search };
     return new RequestOptions(options);
   }
 }

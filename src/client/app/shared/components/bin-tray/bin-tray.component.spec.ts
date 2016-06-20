@@ -4,12 +4,18 @@ import {
   expect,
   inject,
   it,
-  beforeEachProviders
+  beforeEachProviders,
 } from '@angular/core/testing';
+import { provide} from '@angular/core';
 
 import { BinTrayComponent} from './bin-tray.component';
 import { UiConfig} from '../../services/ui.config';
 import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { CollectionsService, collections} from '../../../+collections/services/collections.service';
+import { provideStore } from '@ngrx/store';
+import { ApiConfig } from '../../../shared/services/api.config';
+import { MockBackend } from '@angular/http/testing';
+import { BaseRequestOptions, Http } from '@angular/http';
 
 export function main() {
   describe('Bin Tray Component', () => {
@@ -17,7 +23,17 @@ export function main() {
     beforeEachProviders(() => [
       BinTrayComponent,
       ROUTER_FAKE_PROVIDERS,
-      UiConfig
+      UiConfig,
+      CollectionsService,
+      ApiConfig,
+      MockBackend, 
+      BaseRequestOptions,
+      provideStore(collections),
+      provide(Http, {
+        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
+        deps: [MockBackend, BaseRequestOptions]
+      }),
+      
     ]);
 
     it('Should have a bin tray instance',

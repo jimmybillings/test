@@ -11,8 +11,8 @@
       </div>
     </header>
     <md-list dense>
-      <md-list-item *ngFor="let collection of collections.items" [ngClass]="{focused: focusedCollection.id === collection.id}"
-        (click)="selected.emit(collection)">
+      <md-list-item *ngFor="let collection of (collections | async).items" [ngClass]="{focused: focusedCollection.id === collection.id}"
+        (click)="selected(collection)">
         <md-icon *ngIf="focusedCollection.id === collection.id">check_box</md-icon>
         <md-icon *ngIf="focusedCollection.id !== collection.id">check_box_outline_blank</md-icon>
         {{collection.name}}
@@ -29,10 +29,10 @@
             <md-icon>open_in_browser</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.OPEN_BTN_LABEL' | translate }}</span></a>
         </div>
         <div flex="33" layout-align="center end">
-          <button md-button type="button" (click)="showNewCollection.emit($event)"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
+          <button md-button type="button" (click)="showNewCollection()"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
         </div>
       </div>
     </footer>
   </div>
 </div>
-<div [ngClass]="{'fade-out': !newCollectionFormIsOpen, 'fade-in': newCollectionFormIsOpen}" class="bk-for-dd" (click)="closeCollectionsList()"></div>
+<div [ngClass]="{'fade-out': !(UiState.uiState | async).newCollectionFormIsOpen, 'fade-in': (UiState.uiState | async).newCollectionFormIsOpen}" class="bk-for-dd" (click)="closeCollectionsList()"></div>

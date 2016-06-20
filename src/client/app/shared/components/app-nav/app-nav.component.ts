@@ -19,15 +19,12 @@ export class AppNavComponent implements OnInit {
   @Input() currentUser: any;
   @Input() config: any;
   @Input() supportedLanguages: any;
-  @Input() showFixed: any;
   @Input() state: any;
-  @Input() searchBarIsActive: any;
   @Input() collection: Collection;
   @Input() UiState: any;
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
   @Output() onOpenSidenav = new EventEmitter();
-  @Output() onShowNewCollection = new EventEmitter();
   public loggedInState: boolean;
 
   constructor(private _router: Router) { }
@@ -52,6 +49,6 @@ export class AppNavComponent implements OnInit {
   }
 
   public showNewCollection(event: Event) {
-    this.onShowNewCollection.emit(event);
+    this.UiState.showNewCollection();
   }
 }

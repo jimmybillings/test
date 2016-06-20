@@ -21,6 +21,7 @@ const collectionsState: Collections = {
 };
 
 export const collections: Reducer<any> = (state: Collections = collectionsState, action: Action) => {
+  console.log(state);
   switch (action.type) {
     case 'GET_COLLECTIONS':
       return action.payload;
@@ -122,6 +123,10 @@ export class CollectionsService {
   public clearCollections(): void {
     this.store.dispatch({ type: 'GET_COLLECTIONS', payload: collectionsState });
     this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: focusedState });
+  }
+
+  public updateFocusedCollection(payload: Collection) {
+    this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: payload });
   }
 
   public storeCollections(payload: any): void {

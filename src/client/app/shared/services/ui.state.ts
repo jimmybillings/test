@@ -6,7 +6,9 @@ const InitUiState: any = {
   collectionsListIsOpen: false,
   newCollectionFormIsOpen: false,
   binTrayIsOpen: false,
-  searchIsOpen: true
+  searchIsOpen: true,
+  searchBarIsActive: false,
+  showFixed: false
 };
 
 export const uiState: Reducer<any> = (state = InitUiState, action: Action) => {
@@ -51,11 +53,35 @@ export class UiState {
 
   public showCollectionsList() {
     this.update({ collectionsListIsOpen: true });
-    console.log(this.store.getState());
   }
 
   public closeCollectionsList() {
     this.update({ collectionsListIsOpen: false });
+  }
+
+  public closeNewCollection(): void {
+    this.update({ newCollectionFormIsOpen: false });
+  }
+
+  public showNewCollection(): void {
+    this.update({ newCollectionFormIsOpen: true });
+  }
+
+  public checkRouteForSearchBar(currentState: string) {
+    if (currentState === '') {
+      this.update({ searchBarIsActive: false });
+      return;
+    }
+    let showSearchBar = ['user', 'admin']
+      .filter((state) => currentState.indexOf(state) > -1).length === 0;
+    this.update({ searchBarIsActive: showSearchBar });
+  }
+
+  public showFixedHeader(offset: any) {
+    let isfixed: boolean = this.store.getState().uiState.showFixed;
+    let setFixed: boolean = (offset > 111) ? true : false;
+    if (setFixed !== isfixed) this.update({ showFixed: !this.store.getState().uiState.showFixed });
+
   }
 
 }

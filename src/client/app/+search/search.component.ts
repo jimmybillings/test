@@ -121,24 +121,17 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public filterAssets(): void {
-    // let params = Object.assign({}, this.routeSegment.parameters, {i: 1});
     this.searchContext.set({ i: 1 });
-
     if (this.filterIds.length > 0) {
       this.searchContext.set({ 'filterIds': this.filterIds.join(',') });
-      // v['filterIds'] = this.filterIds.join(',');
     } else {
       this.searchContext.set({ 'filterIds': null });
-      // delete v.filterIds;
     }
     if (this.filterValues.length > 0 && this.filterIds.length > 0) {
       this.searchContext.set({ 'filterValues': this.filterValues.join(',') });
-      // v['filterValues'] = this.filterValues.join(',');
     } else {
       this.searchContext.set({ 'filterValues': null });
-      // delete v.filterValues;
     }
-
     this.searchContext.go();
     this.newSearch();
   }
