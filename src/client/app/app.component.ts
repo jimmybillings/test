@@ -1,10 +1,10 @@
-import {Component, OnInit, Renderer} from '@angular/core';
-import {Routes, Router} from '@angular/router';
-import {Location} from '@angular/common';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
-import {Observable} from 'rxjs/Rx';
+import { Component, OnInit, Renderer } from '@angular/core';
+import { Routes, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
+import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import {MultilingualService} from './shared/services/multilingual.service';
+import { MultilingualService } from './shared/services/multilingual.service';
 import {
   APP_COMPONENT_DIRECTIVES,
   CurrentUser,
@@ -50,13 +50,9 @@ declare var portal: string;
 
 export class AppComponent implements OnInit {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
-  public showFixed: boolean = false;
   public state: string = '';
-  public searchBarIsActive: boolean = true;
-  public newCollectionFormIsOpen: boolean = false;
   public collections: Observable<Array<Collection>>;
   public focusedCollection: Observable<any>;
-  public uiStore: Observable<UiState>;
 
   constructor(
     public uiConfig: UiConfig,
@@ -81,7 +77,6 @@ export class AppComponent implements OnInit {
     this.currentUser.set();
     this.routerChanges();
     this.focusedCollection = this.store.select('focusedCollection');
-    this.uiStore = this.uiState.uiState;
   }
 
   public routerChanges() {
