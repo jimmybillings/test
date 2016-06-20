@@ -25,9 +25,9 @@
             </span>
           </h3>
           <div class="md-caption collection-info">
+            <span><strong>Owner: </strong>{{collection.owner}}</span>
             <span><strong>Created: </strong>{{ date(collection.createdOn) | date:'short' }}</span>
             <span><strong>Updated: </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
-            <span><strong>owner: </strong>{{collection.owner}}</span>
           </div>
           <div class="md-caption collection-tags">
             <strong>Tags: </strong> 
@@ -47,19 +47,16 @@
       <div
         flex="100" 
         layout="row"
-        class="actions"
-        layout-xs="column">
+        class="actions">
         <div flex="80">
            <button md-icon-button title="{{ 'COLLECTION.INDEX.FOCUS_BTN_TITLE' | translate }}" (click)="selected.emit(collection)"><md-icon>star</md-icon></button>
            <!--<button md-button title="more collection options" (click)="UiState.openMoreCollectionOptionsDd()">View</button>-->
-           <!--<button md-button title="more collection options" (click)="UiState.openMoreCollectionOptionsDd()">Share</button>-->
            <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showSearch.emit($event)"><md-icon>details</md-icon></button>
            <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showSearch.emit($event)"><md-icon>edit</md-icon></button>
            <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showSearch.emit($event)"><md-icon>share</md-icon></button>
            <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showSearch.emit($event)"><md-icon>mode_comment</md-icon></button>
         </div>
         <div flex="20" layout-align="end center">
-           <!--<button md-button title="" (click)="deleted.emit(collection)">Delete</button>-->
            <button md-icon-button title="{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}" (click)="deleted.emit(collection)"><md-icon>cancel</md-icon></button>
         </div>
       </div>
@@ -67,9 +64,3 @@
   </ul>
 
 </section>
-
-
-
-<div><h1></h1><h1></h1></div>
-<div>{{focusedCollection | json}}</div>
-
