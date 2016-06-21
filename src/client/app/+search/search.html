@@ -1,18 +1,4 @@
-
-<section class="search-results" *ngIf="config">
-  
-  <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
-    <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
-      <div layout="row" layout-align="end end" class="pagination md-body-2"> 
-        <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
-        <pagination [pagination]="assets.pagination" [currentPage]="routeSegment.getParam('i') || 1" (getPage)="changePage($event)"></pagination>
-      </div>
-      <div>
-        <span *ngFor="let filter of rootFilter.selectedFilters()" style="padding-right: 10px; font-size: 0.8em">
-          <img src="/assets/img/delete.png" style="align:middle;cursor:pointer;padding-right:5px; height:12px" (click)="filter.check();doFilter(filter);"/>{{filter.name}}</span>
-      </div>
-      <button md-icon-button (click)="searchFilter.toggle()"><md-icon>menu</md-icon></button>
-      <md-sidenav-layout style="min-height:800px">
+<md-sidenav-layout>
   <md-sidenav #searchFilter style="padding-right:50px;">
     <filter-tree 
       [rootFilter]="rootFilter" 
@@ -20,41 +6,58 @@
       > 
     </filter-tree> 
   </md-sidenav>
-     
-      <div layout="column">       
-        <asset-list 
-          [assets]="assets.items" 
-          [currentUser]="currentUser" 
-          [collection]="focusedCollection | async"
-          (onShowAsset)="showAsset($event)" 
-          (onAddToCollection)="addToCollection($event)"
-          (onShowNewCollection)="showNewCollection($event)"
-          (onAddToCart)="addToCart($event)" 
-          (onDownloadComp)="downloadComp($event)" 
-          class="{{config.viewType.value}}">
-        </asset-list>
-        <h1 *ngIf="!assets.items" class="md-display-1 alert warning">No items can be found for that search</h1>
+  <button md-icon-button (click)="searchFilter.toggle()" style="position:absolute;"><md-icon>menu</md-icon></button>
+
+
+  <section class="search-results" *ngIf="config">
+    <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
+      <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
+        <div layout="row" layout-align="end end" class="pagination md-body-2"> 
+          <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
+          <pagination [pagination]="assets.pagination" [currentPage]="routeSegment.getParam('i') || 1" (getPage)="changePage($event)"></pagination>
+        </div>
+        <div>
+          <span *ngFor="let filter of rootFilter.selectedFilters()" style="padding-right: 10px; font-size: 0.8em">
+            <img src="/assets/img/delete.png" style="align:middle;cursor:pointer;padding-right:5px; height:12px" (click)="filter.check();doFilter(filter);"/>{{filter.name}}
+          </span>
+        </div>
+      
+        <div layout="column">       
+          <asset-list 
+            [assets]="assets.items" 
+            [currentUser]="currentUser" 
+            [collection]="focusedCollection | async"
+            (onShowAsset)="showAsset($event)" 
+            (onAddToCollection)="addToCollection($event)"
+            (onShowNewCollection)="showNewCollection($event)"
+            (onAddToCart)="addToCart($event)" 
+            (onDownloadComp)="downloadComp($event)" 
+            class="{{config.viewType.value}}">
+          </asset-list>
+          <h1 *ngIf="!assets.items" class="md-display-1 alert warning">No items can be found for that search</h1>
+        </div>
+        
+        
+        <div layout="row" layout-align="end end" class="pagination md-body-2 pg-bottom"> 
+          <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
+          <pagination [pagination]="assets.pagination" [currentPage]="routeSegment.getParam('i') || 1" (getPage)="changePage($event)"></pagination>
+        </div>
       </div>
-      
-     </md-sidenav-layout>
-      
-      <div layout="row" layout-align="end end" class="pagination md-body-2 pg-bottom"> 
-        <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
-        <pagination [pagination]="assets.pagination" [currentPage]="routeSegment.getParam('i') || 1" (getPage)="changePage($event)"></pagination>
+      <div flex-xl="70" flex-gt-lg="80" flex="100" *ngIf="config.viewType.value == 'list'">
+        <div layout="row" layout-align="end end" class="pagination md-body-2"> 
+          <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
+          <pagination [pagination]="assets.pagination" [currentPage]="routeSegment.getParam('i') || 1" (getPage)="changePage($event)"></pagination>
+        </div>
+        <div layout="row">
+          <asset-list [assets]="assets.items" class="{{config.viewType.value}}"></asset-list>
+        </div>
+        <div layout="row" layout-align="end end" class="pagination md-body-2 pg-bottom"> 
+          <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
+          <div *ngIf="!assets.items" class="alert warning">No items can be found for that search</div>
+        </div>
       </div>
     </div>
-    <div flex-xl="70" flex-gt-lg="80" flex="100" *ngIf="config.viewType.value == 'list'">
-      <div layout="row" layout-align="end end" class="pagination md-body-2"> 
-        <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
-        <pagination [pagination]="assets.pagination" [currentPage]="routeSegment.getParam('i') || 1" (getPage)="changePage($event)"></pagination>
-      </div>
-      <div layout="row">
-        <asset-list [assets]="assets.items" class="{{config.viewType.value}}"></asset-list>
-      </div>
-      <div layout="row" layout-align="end end" class="pagination md-body-2 pg-bottom"> 
-        <div flex="40" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
-        <div *ngIf="!assets.items" class="alert warning">No items can be found for that search</div>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
+
+
+</md-sidenav-layout>

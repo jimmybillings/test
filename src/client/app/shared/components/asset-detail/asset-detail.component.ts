@@ -46,7 +46,6 @@ export class AssetDetailComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     console.log('init hit');
-    // this.showMetaData(); //this doesn't work.
   }
 
   public getMetaField(field: any) {
