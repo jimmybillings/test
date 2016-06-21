@@ -29,10 +29,5 @@ import {SiteConfigComponent} from './+site-config/site-config.component';
 ])
 
 export class AdminComponent {
-  public currentUser: CurrentUser;
-  public resource: string;
-
-  constructor(currentUser: CurrentUser) {
-    this.currentUser = currentUser;
-  }
+  constructor(public currentUser: CurrentUser) {}
 }
