@@ -1,4 +1,4 @@
-import {Component, OnChanges, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import { Collection } from '../shared/interfaces/collection.interface';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
@@ -17,7 +17,7 @@ import { CollectionsService} from './services/collections.service';
   pipes: [TranslatePipe]
 })
 
-export class CollectionFormComponent implements OnChanges {
+export class CollectionFormComponent {
   public originalName: string;
   public assetForNewCollection: any;
   public focusedCollection: Collection;
@@ -29,12 +29,19 @@ export class CollectionFormComponent implements OnChanges {
   @Output() cancelled = new EventEmitter();
 
   constructor(public collectionsService: CollectionsService) { }
-  ngOnChanges(): void {
-    // for user without any collections, we need to get the asset that triggered the new form.
-    this.assetForNewCollection = JSON.parse(sessionStorage.getItem('assetForNewCollection'));
-  }
+
+  // ngOnInit(): void {
+  // for user without any collections, we need to get the asset that triggered the new form.
+  // this.assetForNewCollection = JSON.parse(sessionStorage.getItem('assetForNewCollection'));
+  // }
+
+  // ngOnChanges(): void {
+  // for user without any collections, we need to get the asset that triggered the new form.
+  // this.assetForNewCollection = JSON.parse(sessionStorage.getItem('assetForNewCollection'));
+  // }
 
   createCollection(collection: Collection): void {
+    this.assetForNewCollection = JSON.parse(sessionStorage.getItem('assetForNewCollection'));
     collection.tags = collection.tags.split(',');
     this.assetForNewCollection ? collection.assets = [this.assetForNewCollection.assetId] : collection.assets = [];
     this.saveCollection(collection);

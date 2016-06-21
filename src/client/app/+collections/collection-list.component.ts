@@ -21,7 +21,6 @@ export class CollectionListComponent {
   @Output() selected = new EventEmitter();
   @Output() isFocused = new EventEmitter();
   @Output() deleted = new EventEmitter();
-
   @Output() showSearch = new EventEmitter();
   @Output() showFilter = new EventEmitter();
   @Output() showSort = new EventEmitter();
