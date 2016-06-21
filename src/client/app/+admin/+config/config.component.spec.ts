@@ -57,6 +57,8 @@ export function main() {
         component.getConfigs();
         let expectedUi = Object.assign(mockResponse().items[0], {lastUpdateBy: 'Ross Edfort', type: 'ui'});
         let expectedSite = Object.assign(mockResponse().items[0], {lastUpdateBy: 'Ross Edfort', type: 'site'});
+        expect(component.configService.getUi).toHaveBeenCalled();
+        expect(component.configService.getSite).toHaveBeenCalled();
         expect(component.uiConfigs).toEqual([expectedUi]);
         expect(component.siteConfigs).toEqual([expectedSite]);
       }));
