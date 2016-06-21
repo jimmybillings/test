@@ -7,14 +7,10 @@ import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class ConfigService {
 
-  public http: Http;
-  public apiConfig: ApiConfig;
   public uiApiUrl: string;
   public siteApiUrl: string;
 
-  constructor(http: Http, apiConfig: ApiConfig) {
-    this.http = http;
-    this.apiConfig = apiConfig;
+  constructor(public http: Http, public apiConfig: ApiConfig) {
     this.uiApiUrl = this.apiConfig.baseUrl() + 'api/identities/v1/configuration/site/';
     this.siteApiUrl = this.apiConfig.baseUrl() + 'api/identities/v1/site/';
   }

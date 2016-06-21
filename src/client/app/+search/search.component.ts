@@ -76,15 +76,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   public addToCollection(params: any): void {
     let collection: Collection = params.collection;
     collection.assets ? collection.assets.push(params.assetId) : collection.assets = [params.assetId];
-    this.collectionsService.addAssetsToCollection(collection, params.assetId).subscribe(payload => {
-      this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload });
+    this.collectionsService.addAssetsToCollection(collection.id, params.assetId).subscribe(payload => {
+      this.collectionsService.updateFocusedCollection(collection);
     });
   }
-
-  // NOT available yet
-  // selectFocusedCollection(collection: Collection) {
-  //   this.collectionsService.setFocusedCollection(collection);
-  // }
 
   public showNewCollection(asset: any): void {
     let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-bin-tray');

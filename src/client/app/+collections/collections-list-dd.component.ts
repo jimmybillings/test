@@ -42,8 +42,8 @@ export class CollectionListDdComponent {
     this.UiState.showNewCollection();
   }
 
-  public selected(collection: Collection): void {
-    this.collectionsService.setFocusedCollection(collection).subscribe(payload => {
+  public selected(collection: Collection) {
+    this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
       this.collectionsService.updateFocusedCollection(collection);
     });
     this.UiState.closeCollectionsList();

@@ -52,9 +52,9 @@ export class CollectionFormComponent {
     if (this.assetForNewCollection) sessionStorage.removeItem('assetForNewCollection');
   }
 
-  public saveCollection(collection: Collection) {
+  public saveCollection(collection: Collection): void {
     this.collectionsService.createCollection(collection).subscribe(payload => {
-      this.collectionsService.store.dispatch({ type: 'CREATE_COLLECTION', payload });
+      this.collectionsService.createCollectionInStore(payload);
       this.collectionsService.updateFocusedCollection(payload);
     });
     this.UiState.closeNewCollection();
