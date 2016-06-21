@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
-import { ROUTER_DIRECTIVES} from '@angular/router';
+import { ROUTER_DIRECTIVES, Router} from '@angular/router';
 import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { CollectionsService} from './services/collections.service';
@@ -27,11 +27,13 @@ export class CollectionListDdComponent {
   @Output() showSort = new EventEmitter();
   public collections: Observable<Collection[]>;
 
-  constructor(public collectionsService: CollectionsService) {
-    this.collections = this.collectionsService.collections;
+  constructor(
+    public router: Router,
+    public collectionsService: CollectionsService) {
+      this.collections = this.collectionsService.collections;
   }
 
-  public closeCollectionsList() {
+  public closeCollectionsList(): void {
     this.UiState.closeCollectionsList();
   }
 
@@ -40,11 +42,20 @@ export class CollectionListDdComponent {
     this.UiState.showNewCollection();
   }
 
-  public selected(collection: Collection) {
+  public selected(collection: Collection): void {
     this.collectionsService.setFocusedCollection(collection).subscribe(payload => {
       this.collectionsService.updateFocusedCollection(collection);
     });
     this.UiState.closeCollectionsList();
   }
 
+  public navigateToCollectionShow(assetId: number): void {
+    this.UiState.closeCollectionsList();
+    this.router.navigate(['/collection/', assetId]);
+  }
+
+  public navigateToCollectionsIndex(): void {
+    this.UiState.closeCollectionsList();
+    this.router.navigate(['/collection']);
+  }
 }

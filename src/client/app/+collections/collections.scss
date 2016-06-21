@@ -180,8 +180,7 @@ collections-list-dd {
     position: absolute;
     right: rem(11.0);
     top: rem(11.5);
-    min-width: rem(38.0);
-    max-width: rem(42.0);
+    min-width: rem(40.0);
     background-color: md-color($md-background, card);
     color: rgba(md-color($md-foreground, text), .7);
     @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
@@ -199,6 +198,14 @@ collections-list-dd {
       }
       .tools {
         white-space: nowrap;
+        text-align: right;
+        button {
+          @include transition($swift-ease-out);
+          &:hover {
+            color: md-color($md-primary);
+            background-color: md-color($md-background, hover);
+          }
+        }
       }
     }
     md-list[dense] {

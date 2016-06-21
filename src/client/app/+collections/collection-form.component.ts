@@ -50,7 +50,6 @@ export class CollectionFormComponent implements OnChanges {
       this.collectionsService.store.dispatch({ type: 'CREATE_COLLECTION', payload });
       this.collectionsService.updateFocusedCollection(payload);
     });
-
     this.UiState.closeNewCollection();
   }
 
@@ -61,5 +60,4 @@ export class CollectionFormComponent implements OnChanges {
     // done with sessionStorage, so it can be removed.
     sessionStorage.removeItem('assetForNewCollection');
   }
-
 }
