@@ -55,7 +55,7 @@ export class EditComponent implements OnInit {
   public onSubmit(formData: any): void {
     Object.assign(this.currentResource, formData);
     this.adminService.put(this.resource, this.resourceId, this.currentResource).subscribe(data => {
-      console.warn('Success!', data);
+      console.log('Success!', data);
       this.router.navigate(['/admin/resource/', this.resource]);
     });
   }
