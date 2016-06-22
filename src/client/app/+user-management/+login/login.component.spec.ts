@@ -19,6 +19,7 @@ import {LoginComponent} from './login.component';
 import {HTTP_PROVIDERS} from '@angular/http';
 import {UiConfig, config} from '../../shared/services/ui.config';
 import { provideStore } from '@ngrx/store';
+import { UiState, uiState} from '../../shared/services/ui.state';
 
 export function main() {
 
@@ -37,12 +38,13 @@ export function main() {
       ApiConfig,
       CurrentUser,
       UiConfig,
+      UiState,
       User,
       FormModel,
       HTTP_PROVIDERS,
       ROUTER_FAKE_PROVIDERS,
       provide(Authentication, { useClass: MockAuthentication }),
-      provideStore({ config: config }),
+      provideStore({ config: config, uiState: uiState }),
 
     ]);
 

@@ -1,0 +1,35 @@
+.notification {
+  animation-name: toasty;
+  animation-duration: .5s;
+  animation-timing-function: ease-in-out;
+  color: #fff;
+  position: fixed;
+  top: 100px;
+  right: 30px;
+  height: 50px;
+  z-index: 10000;
+  width: 350px;
+  text-align: center;
+  border-radius: 20px;
+  -webkit-box-shadow: 5px 5px 24px -1px rgba(56, 56, 56, 1);
+  -moz-box-shadow: 5px 5px 24px -1px rgba(56, 56, 56, 1);
+  box-shadow: 5px 5px 24px -1px rgba(56, 56, 56, 1);
+  &.alert {
+    background: md-color($md-accent);
+  }
+  &.success {
+    background: md-color($md-primary);
+  }
+  &.warn {
+    background: md-color($md-warn);
+  }
+}
+
+@keyframes toasty {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

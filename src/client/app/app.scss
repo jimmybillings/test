@@ -23,6 +23,7 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import 'shared/components/wz-list/wz.list';
 @import 'shared/components/pagination/pagination';
 @import 'shared/components/asset-detail/asset-detail';
+@import 'shared/components/notification/notification';
 
 @import '+home/home';
 @import '+user-management/+login/login';

@@ -5,36 +5,33 @@ import {Component, ChangeDetectionStrategy, Input, OnChanges} from '@angular/cor
 @Component({
   moduleId: module.id,
   selector: 'notification',
-  template: '<div *ngIf="notice">{{notice}}</div>',
-  styles: [`div {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 23px;
-    z-index: 10000;
-    width: 100%;
-    background: white;
-    text-align: center;
-    margin-top: 42px;
-    opacity: .5;
-    background: darkorange; }`],
+  templateUrl: 'notification.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class NotificationComponent implements OnChanges {
   @Input() state: string;
-  @Input() currentUser: Object;
+  @Input() UiState: any;
+
   public notice: string;
+  public type: string;
+
   constructor() {
     this.notice = null;
+    this.type = null;
   }
+
   ngOnChanges(changes: any) {
-    this.notice = null;
+    if (changes.UiState.currentValue) {
+      this.notice = changes.UiState.currentValue.message;
+      this.type = changes.UiState.currentValue.type;
+    } else {
+      this.notice = null;
+      this.type = null;
+    }
     if (Object.keys(changes).indexOf('state') !== -1) {
       if (changes.state.currentValue.indexOf('confirmed=true') > 0) this.notice = 'Welcome New User!';
       if (changes.state.currentValue.indexOf('loggedOut=true') > 0) this.notice = 'Your session has expired and you must login again.';
     }
-
-
   }
 }
