@@ -7,6 +7,12 @@
     margin-top: 0;  
     margin-bottom: rem(3.4);  
   }
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    &.md-body-2 {
+      font-size: .76em;
+      font-weight: normal;
+    }
+  }  
 }
 pagination {
   margin-right: - rem(.8);
@@ -56,8 +62,8 @@ pagination {
       opacity: .75;
     }
     &:hover {
-      opacity: .9;
-      background-color: rgba(md-color($md-background, background), .8);
+      opacity: 1;
+      background-color: rgba(md-color($md-foreground, base), .08);
     }
     &[disabled]:hover {
       background-color: transparent;
@@ -65,8 +71,7 @@ pagination {
   }
 }
 .results-count {
-  min-height: rem(4);
-  line-height: rem(4);
-  text-align: right;
+  display: flex;
+  min-height: rem(3.4);
   padding-right: rem(2.4);
 }  
