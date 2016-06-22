@@ -35,9 +35,6 @@ export class CollectionFormComponent {
     (collection.tags) ? collection.tags = collection.tags.split(/\s*,\s*/) : collection.tags = [];
     this.assetForNewCollection ? collection.assets = [this.assetForNewCollection.assetId] : collection.assets = [];
     this.saveCollection(collection);
-    // clear the form so you can make another Collection
-    // let cForm = <HTMLFormElement>document.querySelector('wz-form form');
-    // cForm.reset();
     // done with sessionStorage, so it can be removed.
     if (this.assetForNewCollection) sessionStorage.removeItem('assetForNewCollection');
   }
