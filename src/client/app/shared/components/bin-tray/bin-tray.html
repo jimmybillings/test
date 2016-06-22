@@ -6,7 +6,7 @@
         <div class="asset">
           <a flex="" [routerLink]="['asset/',asset]" class="asset-thb">
             <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
-            <span class="asset-id">{{asset}}</span>
+            <span class="asset-id">{{asset.assetId}}</span>
           </a>
         </div>
       </li>
