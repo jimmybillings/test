@@ -22,16 +22,26 @@ export class NotificationComponent implements OnChanges {
   }
 
   ngOnChanges(changes: any) {
-    if (changes.UiState.currentValue) {
-      this.notice = changes.UiState.currentValue.message;
-      this.type = changes.UiState.currentValue.type;
+    if (Object.keys(changes).indexOf('state') !== -1) {
+      this.checkStateChanges(changes.state);
+    }
+    if (Object.keys(changes).indexOf('UiState') !== -1) {
+      this.checkUiStateChanges(changes.UiState);
+    }
+  }
+
+  public checkStateChanges(changes: any): void {
+    if (changes.currentValue.indexOf('confirmed=true') > 0) this.notice = 'Welcome New User!';
+    if (changes.currentValue.indexOf('loggedOut=true') > 0) this.notice = 'Your session has expired and you must login again.';
+  }
+
+  public checkUiStateChanges(changes: any): void {
+    if (changes.currentValue.message) {
+      this.notice = changes.currentValue.message;
+      this.type = changes.currentValue.type;
     } else {
       this.notice = null;
       this.type = null;
-    }
-    if (Object.keys(changes).indexOf('state') !== -1) {
-      if (changes.state.currentValue.indexOf('confirmed=true') > 0) this.notice = 'Welcome New User!';
-      if (changes.state.currentValue.indexOf('loggedOut=true') > 0) this.notice = 'Your session has expired and you must login again.';
     }
   }
 }
