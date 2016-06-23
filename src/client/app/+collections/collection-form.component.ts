@@ -30,24 +30,11 @@ export class CollectionFormComponent {
 
   constructor(public collectionsService: CollectionsService) { }
 
-  // ngOnInit(): void {
-  // for user without any collections, we need to get the asset that triggered the new form.
-  // this.assetForNewCollection = JSON.parse(sessionStorage.getItem('assetForNewCollection'));
-  // }
-
-  // ngOnChanges(): void {
-  // for user without any collections, we need to get the asset that triggered the new form.
-  // this.assetForNewCollection = JSON.parse(sessionStorage.getItem('assetForNewCollection'));
-  // }
-
   createCollection(collection: Collection): void {
     this.assetForNewCollection = JSON.parse(sessionStorage.getItem('assetForNewCollection'));
-    collection.tags = collection.tags.split(',');
+    (collection.tags) ? collection.tags = collection.tags.split(/\s*,\s*/) : collection.tags = [];
     this.assetForNewCollection ? collection.assets = [this.assetForNewCollection.assetId] : collection.assets = [];
     this.saveCollection(collection);
-    // clear the form so you can make another Collection
-    let cForm = <HTMLFormElement>document.querySelector('wz-form form');
-    cForm.reset();
     // done with sessionStorage, so it can be removed.
     if (this.assetForNewCollection) sessionStorage.removeItem('assetForNewCollection');
   }
@@ -62,6 +49,8 @@ export class CollectionFormComponent {
 
   public cancelCollectionCreation(event: Event): void {
     this.UiState.closeNewCollection();
+    // TODO we need a way to clear the form access like: 
+    // WzFormComponent.resetForm();
     let cForm = <HTMLFormElement>document.querySelector('wz-form form');
     cForm.reset();
     // done with sessionStorage, so it can be removed.

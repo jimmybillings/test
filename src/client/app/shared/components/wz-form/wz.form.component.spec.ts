@@ -73,8 +73,10 @@ export function main() {
           instance.formSubmit.subscribe((x: any) => {
             expect(x.value).toEqual({ firstName: 'test', lastName: 'test', emailAddress: 'email@email.com', password: 'Test1233' });
           });
-          instance.onSubmit(instance.form);
           expect(instance.form.valid).toBeTruthy();
+          spyOn(instance, 'resetForm');
+          instance.onSubmit(instance.form);
+          expect(instance.resetForm).toHaveBeenCalled();
         });
       })
     );
