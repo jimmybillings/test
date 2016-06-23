@@ -6,7 +6,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let record of items; let i = index" [ngClass]="{highlight: !(i % 2)}">
+    <tr *ngFor="let record of items; let e = even" [ngClass]="{highlight: e}">
       <td *ngFor="let header of headers">
         <span [ngSwitch]="header.name">
           <span *ngSwitchWhen="'lastUpdated'" class="md-text-cell md-body-1">{{ date(record[header.name]) }}</span>
