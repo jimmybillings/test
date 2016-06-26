@@ -51,7 +51,7 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   addToCollection(params: any): void {
     let collection: Collection = params.collection;
-    collection.assets ? collection.assets.push(params.assetId) : collection.assets = [params.assetId];
+    collection.assets ? collection.assets.items.push(params) : collection.assets.items = [params];
     this.collectionsService.addAssetsToCollection(collection.id, params.assetId).subscribe(payload => {
       this.collectionsService.updateFocusedCollection(payload);
     });

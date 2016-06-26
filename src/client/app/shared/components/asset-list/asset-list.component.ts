@@ -25,12 +25,8 @@ export class AssetListComponent {
     this.onShowAsset.emit(asset);
     sessionStorage.setItem('assetForNewCollection', JSON.stringify(asset));
   }
-  addToCollection(collection: Collection, assetId: any): void {
-    // let params = {'collection':collection, 'assetId':assetId};
-    // this.onAddToCollection.emit(params);
-    // console.log(collection);
-    // console.log(assetId);
-    this.onAddToCollection.emit({'collection':collection, 'assetId':assetId});
+  addToCollection(collection: Collection, asset: any): void {
+    this.onAddToCollection.emit({'collection':collection, 'asset':asset});
   }
   showNewCollection(asset: any): void {
     this.onShowNewCollection.emit(asset);

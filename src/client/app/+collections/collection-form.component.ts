@@ -31,21 +31,40 @@ export class CollectionFormComponent {
   constructor(public collectionsService: CollectionsService) { }
 
   createCollection(collection: Collection): void {
+    let asset = {};
     this.assetForNewCollection = JSON.parse(sessionStorage.getItem('assetForNewCollection'));
     (collection.tags) ? collection.tags = collection.tags.split(/\s*,\s*/) : collection.tags = [];
-    this.assetForNewCollection ? collection.assets = [this.assetForNewCollection.assetId] : collection.assets = [];
-    this.saveCollection(collection);
+    this.assetForNewCollection ? asset = this.assetForNewCollection : asset = null;
+    this.createAndAddAsset(collection, asset);
     // done with sessionStorage, so it can be removed.
     if (this.assetForNewCollection) sessionStorage.removeItem('assetForNewCollection');
   }
 
-  public saveCollection(collection: Collection): void {
-    this.collectionsService.createCollection(collection).subscribe(payload => {
-      this.collectionsService.createCollectionInStore(payload);
-      this.collectionsService.updateFocusedCollection(payload);
+  public createAndAddAsset(collection: Collection, asset: any): void {
+    this.collectionsService.createCollection(collection).subscribe(created => {
+      this.collectionsService.createCollectionInStore(created);
+      this.collectionsService.setFocusedCollection(created.id).subscribe(focused => {
+        if (asset !== null) {
+          this.collectionsService.addAssetsToCollection(created.id, asset).subscribe(payload => {
+            this.collectionsService.getCollectionItems(payload.id, 100).subscribe(search => {
+              this.collectionsService.updateFocusedCollectionAssets(payload, search);
+            });
+          });
+        } else {
+          this.collectionsService.updateFocusedCollection(created);
+        }
+      });
     });
     this.UiState.closeNewCollection();
   }
+
+  // public saveCollection(collection: Collection): void {
+  //   this.collectionsService.createCollection(collection).subscribe(payload => {
+  //     this.collectionsService.createCollectionInStore(payload);
+  //     this.collectionsService.updateFocusedCollection(payload);
+  //   });
+  //   this.UiState.closeNewCollection();
+  // }
 
   public cancelCollectionCreation(event: Event): void {
     this.UiState.closeNewCollection();

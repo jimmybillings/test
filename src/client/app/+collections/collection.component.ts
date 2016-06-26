@@ -53,8 +53,16 @@ export class CollectionComponent implements OnInit {
 
   public selectFocusedCollection(collection: Collection): void {
     this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
-      this.collectionsService.updateFocusedCollection(collection);
-    });;
+      if (collection.assets) {
+        this.collectionsService.getCollectionItems(collection.id,100).subscribe(search => {
+          console.log(collection);
+          console.log(search);
+          this.collectionsService.updateFocusedCollectionAssets(collection, search);
+        });
+      }else {
+        this.collectionsService.updateFocusedCollection(collection);
+      }
+    });
   }
 
   public getFocusedCollection(): void {
@@ -73,13 +81,15 @@ export class CollectionComponent implements OnInit {
     this.collectionsService.deleteCollection(collection.id).subscribe(payload => {
       this.collectionsService.deleteCollectionFromStore(collection);
     });
+    console.log(this.store.getState());
     // if we are deleting current focused, we need to get the new focused from the server.
     if (collection.id === this.store.getState().focusedCollection.id &&
-      this.store.getState().collections.items.length > 0) {
+      this.store.getState().collections.items.length > 1) {
       this.getFocusedCollection();
     }
     // if we delete the last collection, reset the store to initial values (no focused collection)
-    if (this.store.getState().collections.items.length === 0) {
+    if (this.store.getState().collections.items.length === 1) {
+      console.log('this is the last one');
       this.collectionsService.clearCollections();
     }
   }

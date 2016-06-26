@@ -102,27 +102,19 @@ header.app-header.bin-tray-closed bin-tray section {
     .asset {
       padding: 0;
       padding-bottom: 0;
-      // background-color: md-color($md-background, app-bar);
-      // box-shadow: 0 1px 1px 0 md-color($md-grey, 700, .2);
-      
-      span.asset-id {
-        color: md-color($md-background, background, .64);
-        top: 30%;
-        left: rem(.8);
-        z-index: 2;
-      }
+      // span.asset-id {
+      //   color: md-color($md-background, background, .64);
+      //   top: 30%;
+      //   left: rem(.8);
+      //   z-index: 2;
+      // }
     }
     .asset a.asset-thb {
       @include background-image(
-        linear-gradient(rgba(md-color($md-grey, 900),.81), rgba(md-color($md-grey, 900),.56)),
-        linear-gradient(rgba(md-color($md-grey, 900),.15), rgba(md-color($md-grey, 900),.41))
+        linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.5)),
+        linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1))
       );
-      &::before {
-        @include background-image(
-          linear-gradient(-90deg, rgba(md-color($md-grey, 900),0.9), rgba(md-color($md-grey, 900),.4) 80%),
-          linear-gradient(90deg, rgba(md-color($md-grey, 900),.6) 1%, rgba(md-color($md-grey, 900),.9))
-        );
-      }
+      opacity: .9;
     }
     @media screen and (max-width: $layout-breakpoint-lg) {
       width: rem(9.957);

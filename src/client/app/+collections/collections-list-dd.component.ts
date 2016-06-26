@@ -44,7 +44,13 @@ export class CollectionListDdComponent {
 
   public selected(collection: Collection) {
     this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
-      this.collectionsService.updateFocusedCollection(collection);
+      if (collection.assets) {
+        this.collectionsService.getCollectionItems(collection.id,200).subscribe(search => {
+          this.collectionsService.updateFocusedCollectionAssets(collection, search);
+        });
+      }else {
+        this.collectionsService.updateFocusedCollection(collection);
+      }
     });
     this.UiState.closeCollectionsList();
   }
