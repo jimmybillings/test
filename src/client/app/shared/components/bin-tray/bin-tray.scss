@@ -102,19 +102,17 @@ header.app-header.bin-tray-closed bin-tray section {
     .asset {
       padding: 0;
       padding-bottom: 0;
-      // span.asset-id {
-      //   color: md-color($md-background, background, .64);
-      //   top: 30%;
-      //   left: rem(.8);
-      //   z-index: 2;
-      // }
     }
     .asset a.asset-thb {
+      @include transition($swift-ease-in-out);
       @include background-image(
         linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.5)),
         linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1))
       );
-      opacity: .9;
+      &:hover img {
+        opacity: .8;
+        // box-shadow: inset 0 -3px 0 0 md-color($md-grey, 50, 1);
+      }
     }
     @media screen and (max-width: $layout-breakpoint-lg) {
       width: rem(9.957);

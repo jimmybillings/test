@@ -8,7 +8,7 @@
           <button md-icon-button title="Sharing Options"><md-icon>share</md-icon></button>
           <button md-icon-button title="add to cart"><md-icon>shopping_cart</md-icon></button>
           <button md-icon-button title="Download Comp"><md-icon>file_download</md-icon></button>
-          <button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(assetDetail.common[0].value)"><md-icon>library_add</md-icon></button>
+          <button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(collection, assetDetail.common[0])"><md-icon>library_add</md-icon></button>
           <button md-icon-button *ngIf="collection.id === null"  title="Create collection" (click)="showNewCollection(assetDetail.common[0].value)"><md-icon>library_add</md-icon></button>
           <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
         </nav>
