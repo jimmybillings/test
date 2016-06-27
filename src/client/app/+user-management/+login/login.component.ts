@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Authentication } from '../services/authentication.data.service';
 
@@ -9,7 +9,7 @@ import { CurrentUser } from '../../shared/services/current-user.model';
 import { IFormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { UiConfig } from '../../shared/services/ui.config';
-import { UiState } from '../../shared/services/ui.state';
+import { ToastService } from '../../shared/components/toast/toast.service';
 /**
  * Login page component - renders login page and handles login form submission
  */
@@ -17,7 +17,7 @@ import { UiState } from '../../shared/services/ui.state';
   moduleId: module.id,
   selector: 'login',
   templateUrl: 'login.html',
-  providers: [Authentication],
+  providers: [Authentication, ToastService],
   directives: [
     ROUTER_DIRECTIVES,
     WzFormComponent
@@ -28,9 +28,10 @@ import { UiState } from '../../shared/services/ui.state';
 export class LoginComponent implements OnInit {
   public config: any;
   public fields: IFormFields[];
+  @ViewChild('target', { read: ViewContainerRef }) target: any;
 
   constructor(
-    public uiState: UiState,
+    public toastService: ToastService,
     public _authentication: Authentication,
     public _user: User,
     public router: Router,
@@ -54,10 +55,9 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('token', res.token.token);
       this._currentUser.set(res.user);
       this.router.navigate(['/']);
-      this.uiState.setNotification(`Welcome ${res.user.firstName}!`, 'success', 5000);
+      this.toastService.createToast(`Welcome ${res.user.firstName}!`, 'success', 5000, this.target);
     }, (err) => {
-      this.uiState.setNotification('wrong username or password', 'warn', 5000);
-      // console.log('trigger display that says incorrect email or password');
+      this.toastService.createToast('Wrong username or password', 'warn', 5000, this.target);
     });
   }
 }
