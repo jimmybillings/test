@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChild, ViewContainerRef } from '@angular/core';
 import { Routes, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
@@ -25,6 +25,8 @@ import {
   AdminComponent,
   UiState
 } from './platform/app.component.imports';
+// import { NotificationComponent, notficationState } from './shared/components/notification/notification.component';
+import { NotificationService } from './shared/components/notification/notification.service';
 
 // Portal is set as a global variable in the index.html page.
 declare var portal: string;
@@ -35,10 +37,12 @@ declare var portal: string;
   templateUrl: 'app.html',
   directives: APP_COMPONENT_DIRECTIVES,
   pipes: [TranslatePipe],
+  providers: [NotificationService]
 })
 
 @Routes([
   { path: '/', component: HomeComponent },
+  { path: '/notification', component: HomeComponent },
   { path: '/user', component: UserManagementComponent },
   { path: '/search', component: SearchComponent },
   { path: '/asset/:name', component: AssetComponent },
@@ -53,6 +57,7 @@ export class AppComponent implements OnInit {
   public state: string = '';
   public collections: Observable<Array<Collection>>;
   public focusedCollection: Observable<any>;
+  @ViewChild('target', { read: ViewContainerRef }) target: any;
 
   constructor(
     public uiConfig: UiConfig,
@@ -66,7 +71,8 @@ export class AppComponent implements OnInit {
     public collectionsService: CollectionsService,
     public store: Store<CollectionStore>,
     public uiState: UiState,
-    private renderer: Renderer) {
+    private renderer: Renderer,
+    private notification: NotificationService) {
     this.apiConfig.setPortal(portal);
   }
 
@@ -84,7 +90,9 @@ export class AppComponent implements OnInit {
       this.uiState.checkRouteForSearchBar(this.location.path());
       this.state = this.location.path();
       window.scrollTo(0, 0);
+      this.notification.check(this.state, this.target);
     });
+
   }
 
   public logout(): void {

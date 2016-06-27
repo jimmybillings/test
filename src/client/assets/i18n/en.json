@@ -151,5 +151,9 @@
       "LAST_UPDATED_LABEL": "Last Updated",
       "LAST_UPDATE_BY_LABEL": "Last Updated By"
     }
+  },
+  "NOTIFICATION": {
+    "NEW_USER": "Welcome New User!",
+    "EXPIRED_SESSION": "Your session has expired, please login again."
   }
 }

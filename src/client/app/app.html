@@ -1,4 +1,3 @@
-<notification [state]="state"></notification>
 <collection-form
   [UiState]="uiState"
   [collection]="focusedCollection | async"
@@ -13,7 +12,7 @@
   layout="row" layout-align="end start">
 </collections-list-dd>
   
-  <div class="app">
+  <div class="app" #target>
     <header [ngClass]="{
       'fixed': (uiState.uiState | async).showFixed, 
       'bin-tray-closed': !(uiState.uiState | async).binTrayIsOpen, 

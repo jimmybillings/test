@@ -1,11 +1,19 @@
-import {Component, ChangeDetectionStrategy, Input, OnChanges} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
+
 /**
  * site header component - renders the header information
  */
+
+export const notficationState:any = {
+  NEW_USER: 'confirmed=true',
+  EXPIRED_SESSION: 'loggedOut=true'
+};
+
 @Component({
   moduleId: module.id,
   selector: 'notification',
-  template: '<div *ngIf="notice">{{notice}}</div>',
+  template: '<div *ngIf="notice">{{notice | translate}}</div>',
   styles: [`div {
     position: fixed;
     top: 0;
@@ -19,22 +27,9 @@ import {Component, ChangeDetectionStrategy, Input, OnChanges} from '@angular/cor
     opacity: .5;
     background: darkorange; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  pipes: [TranslatePipe]
 })
 
-export class NotificationComponent implements OnChanges {
-  @Input() state: string;
-  @Input() currentUser: Object;
-  public notice: string;
-  constructor() {
-    this.notice = null;
-  }
-  ngOnChanges(changes: any) {
-    this.notice = null;
-    if (Object.keys(changes).indexOf('state') !== -1) {
-      if (changes.state.currentValue.indexOf('confirmed=true') > 0) this.notice = 'Welcome New User!';
-      if (changes.state.currentValue.indexOf('loggedOut=true') > 0) this.notice = 'Your session has expired and you must login again.';
-    }
-
-
-  }
+export class NotificationComponent {
+  @Input() notice: string;
 }
