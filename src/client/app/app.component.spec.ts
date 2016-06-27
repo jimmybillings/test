@@ -13,7 +13,7 @@ import { BaseRequestOptions, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { provideStore } from '@ngrx/store';
 import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
-
+import { NotificationService } from './shared/components/notification/notification.service';
 import { AppComponent} from './app.component';
 import { CurrentUser} from './shared/services/current-user.model';
 import { ApiConfig} from './shared/services/api.config';
@@ -50,7 +50,8 @@ export function main() {
       UiConfig,
       SearchContext,
       CollectionsService,
-      UiState
+      UiState,
+      NotificationService
     ]);
 
     it('Create instance of app and assign the CurrentUser to an instance variable inside of app',

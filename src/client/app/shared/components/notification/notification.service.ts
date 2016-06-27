@@ -12,7 +12,7 @@ export const notficationStrategy: any = {
 export class NotificationService {
   public cmpRef: ComponentRef<any>;
   public viewRef: any;
-  
+
   constructor(private renderer: Renderer,
     private resolver: ComponentResolver,
     public router: Router,
