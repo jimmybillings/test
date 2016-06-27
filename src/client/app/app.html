@@ -1,4 +1,5 @@
-<notification [UiState]="(uiState.uiState | async).notification" [state]="state"></notification>
+<notification [state]="state"></notification>
+<toast [UiState]="(uiState.uiState | async).notification"></toast>
 <collection-form
   [UiState]="uiState"
   [collection]="focusedCollection | async"
