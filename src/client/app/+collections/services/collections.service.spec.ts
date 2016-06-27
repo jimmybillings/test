@@ -27,7 +27,7 @@ export function main() {
         deps: [MockBackend, BaseRequestOptions]
       }),
       ROUTER_FAKE_PROVIDERS,
-      provideStore({focusedCollection: focusedCollection, collections: collections}),
+      provideStore({ focusedCollection: focusedCollection, collections: collections }),
       CollectionsService,
       ApiConfig,
       CurrentUser,
@@ -116,9 +116,9 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
-        service.addAssetsToCollection(158, 567890).subscribe(response => {
+        service.addAssetsToCollection(158, { 'list': [{ 'assetId': 567890 }] }).subscribe(response => {
           expect(connection.request.method).toBe(RequestMethod.Post);
-          expect(connection.request.url).toBe('api/identites/v1/collection/158/addAssets?asset-ids=567890');
+          expect(connection.request.url).toBe('api/identites/v1/collection/158/addAssets');
         });
         connection.mockRespond(new Response(
           new ResponseOptions({
@@ -157,11 +157,11 @@ export function main() {
         expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'DELETE_COLLECTION', payload: mockCollection() });
       }));
 
-    it('Should have a updateFocusedCollection method that updates the focused collection in the store',
+    it('Should have an updateFocusedCollection method that updates the focused collection in the store',
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         spyOn(service.store, 'dispatch');
-        service.updateFocusedCollection(mockCollection());
-        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'FOCUSED_COLLECTION', payload: mockCollection()});
+        service.updateFocusedCollectionAssets(mockcollectionAsset2(), mockcollectionAssetSearch());
+        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'FOCUSED_COLLECTION', payload: mockcollectionWithAssets() });
       }));
 
     it('Should have a createCollectionInStore method that creates a new collection in the store',
@@ -174,33 +174,186 @@ export function main() {
     function mockCollectionResponse() {
       return {
         'items': [
-          {'lastUpdated':'2016-06-16T17:53:17Z',
-           'createdOn':'2016-06-16T17:53:17Z',
-           'id':155,'siteName':'core',
-           'name':'Cat',
-           'owner':'ross.edfort@wazeedigital.com',
-           'assets':[28296444],
-           'tags':['meow']}
-         ],
-           'totalCount':2,
-           'currentPage':0,
-           'pageSize':2,
-           'hasNextPage':false,
-           'hasPreviousPage':false,
-           'numberOfPages':1
-         };
+          {
+            'createdOn': '2016-06-16T17:53:17Z',
+            'lastUpdated': '2016-06-16T17:53:17Z',
+            'id': 155, 'siteName': 'core',
+            'name': 'Cat',
+            'owner': 'ross.edfort@wazeedigital.com',
+            'assets': [28296444],
+            'tags': ['meow']
+          }
+        ],
+        'totalCount': 2,
+        'currentPage': 0,
+        'pageSize': 2,
+        'hasNextPage': false,
+        'hasPreviousPage': false,
+        'numberOfPages': 1
+      };
+    }
+
+    function mockcollectionAsset2() {
+      return {
+        'createdOn': '2016-06-03T17:09:16Z',
+        'lastUpdated': '2016-06-24T03:14:14Z',
+        'id': 16,
+        'siteName': 'core',
+        'name': 'Masters Opening Cerimony',
+        'owner': 'admin@wazeedigital.com',
+        'assets': [
+          {
+            'uuid': '8cb5197a-c9ba-4f98-a62a-ee4e40793ad9',
+            'assetId': 37432110,
+            'createdOn': '2016-06-24T03:14:14Z',
+            'lastUpdated': '2016-06-24T03:14:14Z'
+          },
+        ],
+        'tags': ['golf','masters','Augusta']
+      };
+    }
+    function mockcollectionAssetSearch() {
+      return {
+        'items': [
+          {
+            'assetId': 37432110,
+            'metaData': [
+              {
+                'name': 'Title',
+                'value': ''
+              },
+              {
+                'name': 'Description',
+                'value': 'A man paddles a kayak in the Arctic or Antarctic with an elephant seal on a nearby iceberg.'
+              },
+              {
+                'name': 'TE.DigitalFormat',
+                'value': 'High Definition'
+              },
+              {
+                'name': 'Format.Duration',
+                'value': '00:00:12'
+              }
+            ],
+            'name': '943301_0040',
+            'thumbnail': {
+              'name': 'thumbnail',
+              'urls': {
+                'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/943/301/943301_0040_lt.jpg'
+              }
+            },
+            'uuid': '8cb5197a-c9ba-4f98-a62a-ee4e40793ad9'
+          },
+        ],
+        'totalCount': 6,
+        'currentPage': 0,
+        'pageSize': 100,
+        'hasNextPage': false,
+        'hasPreviousPage': false,
+        'numberOfPages': 1
+      };
+    }
+    function mockcollectionWithAssets() {
+      return {
+        'createdOn': '2016-06-03T17:09:16Z',
+        'lastUpdated': '2016-06-24T03:14:14Z',
+        'id': 16,
+        'siteName': 'core',
+        'name': 'Masters Opening Cerimony',
+        'owner': 'admin@wazeedigital.com',
+        'assets': {
+          'items': [{
+            'assetId': 37432110,
+            'metaData': [
+              {
+                'name': 'Title',
+                'value': ''
+              },
+              {
+                'name': 'Description',
+                'value': 'A man paddles a kayak in the Arctic or Antarctic with an elephant seal on a nearby iceberg.'
+              },
+              {
+                'name': 'TE.DigitalFormat',
+                'value': 'High Definition'
+              },
+              {
+                'name': 'Format.Duration',
+                'value': '00:00:12'
+              }
+            ],
+            'name': '943301_0040',
+            'thumbnail': {
+              'name': 'thumbnail',
+              'urls': {
+                'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/943/301/943301_0040_lt.jpg'
+              }
+            },
+            'uuid': '8cb5197a-c9ba-4f98-a62a-ee4e40793ad9'
+          }],
+          'pagination': {
+            'totalCount': 6,
+            'currentPage': 1,
+            'pageSize': 100,
+            'hasNextPage': false,
+            'hasPreviousPage': false,
+            'numberOfPages': 1
+          },
+        },
+        'tags': ['golf','masters','Augusta']
+      };
     }
 
     function mockCollection() {
       return {
-        'lastUpdated':'2016-06-17T21:44:12Z',
-        'createdOn':'2016-06-17T21:44:12Z',
-        'id':158,
-        'siteName':'core',
-        'name':'golf',
-        'owner':'ross.edfort@wazeedigital.com',
-        'assets':[123456],
-        'tags':['golf','green','sport']
+        'lastUpdated': '2016-06-17T21:44:12Z',
+        'createdOn': '2016-06-17T21:44:12Z',
+        'id': 158,
+        'siteName': 'core',
+        'name': 'golf',
+        'owner': 'ross.edfort@wazeedigital.com',
+        'assets': {
+          'items': [
+            {
+              'assetId': 31997574,
+              'metaData': [
+                {
+                  'name': 'Title',
+                  'value': ''
+                },
+                {
+                  'name': 'Description',
+                  'value': 'POV of woman driving down tree lined road, Tuscany, Italy'
+                },
+                {
+                  'name': 'TE.DigitalFormat',
+                  'value': 'High Definition'
+                },
+                {
+                  'name': 'Format.Duration',
+                  'value': '00:00:59'
+                }
+              ],
+              'name': '962C823_816',
+              'thumbnail': {
+                'name': 'thumbnail',
+                'urls': {
+                  'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/962/C82/3/962C823_816_lt.jpg'
+                }
+              },
+              'uuid': '99e4280d-c323-43c2-9e50-98514c7d74ca'
+            }
+          ],
+          'pagination': {
+            'totalCount': 1,
+            'currentPage': 1,
+            'pageSize': 100,
+            'hasNextPage': false,
+            'hasPreviousPage': false,
+            'numberOfPages': 1
+          }
+        },
+        'tags': ['golf', 'green', 'sport']
       };
     }
   });

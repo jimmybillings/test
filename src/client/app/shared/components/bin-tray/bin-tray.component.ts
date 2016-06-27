@@ -19,7 +19,7 @@ import { CollectionsService} from '../../../+collections/services/collections.se
 export class BinTrayComponent {
   @Input() collection: Collection;
   @Input() UiState: any;
-
+  public i = 0;
   constructor(
     public router: Router,
     public collectionsService: CollectionsService) {
@@ -33,11 +33,21 @@ export class BinTrayComponent {
   public getCollectionsAndFocused(): void {
     this.collectionsService.loadCollections().subscribe(payload => {
       this.collectionsService.storeCollections(payload);
+      if (payload.totalCount > 0) {
+        this.collectionsService.getFocusedCollection().subscribe(collection => {
+          if (collection.assets) {
+            this.collectionsService.getCollectionItems(collection.id,100).subscribe(search => {
+              this.collectionsService.updateFocusedCollectionAssets(collection, search);
+            });
+          }else {
+            this.collectionsService.updateFocusedCollection(collection);
+          }
+        });
+      }
     });
-    this.collectionsService.getFocusedCollection().subscribe(collection => {
-      this.collectionsService.updateFocusedCollection(collection);
-    });;
   }
 
+  public showThumb(asset:any) {
+    return (asset.summary) ? asset.summary.thumbnail.urls.https : '';
+  }
 }
-

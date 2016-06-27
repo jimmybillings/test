@@ -46,7 +46,6 @@ export class AssetDetailComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     console.log('init hit');
-    // this.showMetaData(); //this doesn't work.
   }
 
   public getMetaField(field: any) {
@@ -63,8 +62,9 @@ export class AssetDetailComponent implements OnInit, OnChanges {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
-  public addToCollection(assetId: any): void {
-    this.onAddToCollection.emit({'collection': this.collection, 'assetId':assetId});
+  public addToCollection(collection: Collection, asset: any): void {
+    asset.assetId = asset.value;
+    this.onAddToCollection.emit({'collection':collection, 'asset':asset});
   }
 
   public showNewCollection(assetId: any): void {

@@ -1,31 +1,65 @@
-<section collection-list>
+<section>
   <ul>
-    <li flex="100" layout="row" *ngFor="let collection of collections.items">
-      <div flex="15" class="asset">
-        <div class="asset-thb">
-          <md-icon *ngIf="focusedCollection.id === collection.id">check_box</md-icon>
-          <img src=""/>
+    <li 
+      class="collection md-elevation-z2" 
+      [ngClass]="{'focused': focusedCollection.id === collection.id}" 
+      *ngFor="let collection of collections.items">
+      <div
+        flex="100" 
+        layout="row" 
+        layout-xs="column">
+        <div flex-gt-sm="40" flex-gt-lg="20" flex-gt-md="30" flex="100" layout-padding layout-fill> 
+          <div class="asset">
+            <div class="asset-thb">
+              <div class="selected" *ngIf="focusedCollection.id === collection.id"><md-icon>star</md-icon></div>
+              <span class="asset-id"><span class="id">{{collection.id}}</span></span>
+              <img src="/assets/img/highlights/masters_js.jpg"/>
+            </div>
+          </div>
+        </div>
+        <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" (click)="selected.emit(collection)" layout-padding layout-fill>
+          <h3 class="md-headline">{{collection.name}}
+            <span class="asset-count">
+              <span class="count" *ngIf="collection.assets">{{collection.assets.length}}</span>
+              <span class="count" *ngIf="!collection.assets">0</span>
+            </span>
+          </h3>
+          <div class="md-caption collection-info">
+            <span><strong>Owner: </strong>{{collection.owner}}</span>
+            <span><strong>Created: </strong>{{ date(collection.createdOn) | date:'short' }}</span>
+            <span><strong>Updated: </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
+          </div>
+          <div class="md-caption collection-tags">
+            <strong>Tags: </strong> 
+            <ul class="meta-data-tags">
+              <li class="tag md-elevation-z0" *ngFor="let tag of collection.tags">{{tag}}</li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div flex="80" (click)="selected.emit(collection)">
-        <h3 class="md-headline">{{collection.name}}</h3>
-        <strong>Id: </strong> {{collection.id}}
-        <strong>assets: </strong> 
-        <span *ngIf="collection.assets">{{collection.assets.length}}</span>
-        <span *ngIf="!collection.assets">0</span>
-        <strong>Owner: </strong> {{collection.owner}}
-        <strong>Last Update: </strong> {{collection.lastUpdated}}
-        <strong>Create On: </strong> {{collection.createdOn}}
-        <strong>Tags: </strong> {{collection.tags}}
+      <div
+        flex="100" 
+        layout="row" 
+        layout-xs="column"
+        layout-margin
+        class="divider">
       </div>
-      <div flex="5">
-        <button md-icon-button title="delete collections" type="button"  (click)="deleted.emit(collection)" class="close"><md-icon>close</md-icon></button>
+      <div
+        flex="100" 
+        layout="row"
+        class="actions">
+        <div flex="80">
+           <button md-icon-button title="{{ 'COLLECTION.INDEX.FOCUS_BTN_TITLE' | translate }}" (click)="selected.emit(collection)"><md-icon>star</md-icon></button>
+           <!--<button md-button title="more collection options" (click)="UiState.openMoreCollectionOptionsDd()">View</button>-->
+           <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showSearch.emit($event)"><md-icon>details</md-icon></button>
+           <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showSearch.emit($event)"><md-icon>edit</md-icon></button>
+           <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showSearch.emit($event)"><md-icon>share</md-icon></button>
+           <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showSearch.emit($event)"><md-icon>mode_comment</md-icon></button>
+        </div>
+        <div flex="20" layout-align="end center">
+           <button md-icon-button title="{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}" (click)="deleted.emit(collection)"><md-icon>cancel</md-icon></button>
+        </div>
       </div>
     </li>
   </ul>
-</section>  
-
-
-<div><h1></h1><h1></h1></div>
-<div>{{focusedCollection | json}}</div>
-
+</section>

@@ -9,7 +9,7 @@ import { CurrentUser } from '../../shared/services/current-user.model';
 import { IFormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { UiConfig } from '../../shared/services/ui.config';
-
+import { UiState } from '../../shared/services/ui.state';
 /**
  * Login page component - renders login page and handles login form submission
  */
@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
   public fields: IFormFields[];
 
   constructor(
+    public uiState: UiState,
     public _authentication: Authentication,
     public _user: User,
     public router: Router,
@@ -53,8 +54,10 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('token', res.token.token);
       this._currentUser.set(res.user);
       this.router.navigate(['/']);
+      this.uiState.setNotification(`Welcome ${res.user.firstName}!`, 'success', 5000);
     }, (err) => {
-      console.log('trigger display that says incorrect email or password');
+      this.uiState.setNotification('wrong username or password', 'warn', 5000);
+      // console.log('trigger display that says incorrect email or password');
     });
   }
 }

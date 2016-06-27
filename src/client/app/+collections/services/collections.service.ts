@@ -49,7 +49,17 @@ const focusedState: Collection = {
   siteName: '',
   name: '',
   owner: '',
-  assets: [],
+  assets: {
+    items: [],
+    pagination: {
+      totalCount: 0,
+      currentPage: 1,
+      pageSize: 100,
+      hasNextPage: false,
+      hasPreviousPage: false,
+      numberOfPages: 0
+    },
+  },
   tags: [],
 };
 
@@ -67,7 +77,8 @@ export class CollectionsService {
   public collections: Observable<any>;
   public focusedCollection: Observable<any>;
   public apiUrls: {
-    CollectionBaseUrl: string
+    CollectionBaseUrl: string,
+    CollectionItemsBaseUrl: string
   };
 
   constructor(
@@ -76,13 +87,14 @@ export class CollectionsService {
     public http: Http) {
     this.collections = store.select('collections');
     this.apiUrls = {
-      CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection'
+      CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
+      CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collection'
     };
   }
 
   public loadCollections(): Observable<any> {
     return this.http.get(`${this.apiUrls.CollectionBaseUrl}/fetchBy?access-level=owner`,
-      {headers: this.apiConfig.authHeaders()}).map(res => res.json());
+      { headers: this.apiConfig.authHeaders() }).map(res => res.json());
   }
 
   public createCollection(collection: Collection): Observable<any> {
@@ -106,15 +118,23 @@ export class CollectionsService {
       '', { headers: this.apiConfig.authHeaders() });
   }
 
+
+  public getCollectionItems(collectionId: number, numberPerPg: number): Observable<any> {
+    return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=0&n=${numberPerPg}`,
+      { headers: this.apiConfig.authHeaders() })
+      .map(res => res.json());
+  }
+
   /**
    * Ajax post request to identities api to add assets to a collection.
    * @param collection    collection object
    * @param assets-ids    comma separated list of asset.ids {35637550} or {35637550,15548547,29935259}
    * @returns Observable
    */
-  public addAssetsToCollection(collectionId: number, assetIds: any): Observable<any> {
-    return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/addAssets?asset-ids=${assetIds}`,
-      '', { headers: this.apiConfig.authHeaders() })
+  public addAssetsToCollection(collectionId: any, asset: any): Observable<any> {
+    return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/addAssets`,
+      `{"list": [{"assetId":${asset.assetId}}]}`,
+      { headers: this.apiConfig.authHeaders() })
       .map(res => res.json());
   }
 
@@ -132,12 +152,61 @@ export class CollectionsService {
     this.store.dispatch({ type: 'DELETE_COLLECTION', payload });
   }
 
-  public updateFocusedCollection(payload: Collection): void {
-    this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload });
-  }
-
   public createCollectionInStore(payload: Collection): void {
     this.store.dispatch({ type: 'CREATE_COLLECTION', payload });
+  }
+
+  public updateFocusedCollectionAssets(collection: Collection, search: any): void {
+    // console.log(collection);
+    // console.log(search);
+    search.items = search.items === undefined ? [] : search.items;
+    this.store.dispatch({
+      type: 'FOCUSED_COLLECTION', payload: {
+        createdOn: collection.createdOn,
+        lastUpdated: collection.lastUpdated,
+        id: collection.id,
+        siteName: collection.siteName,
+        name: collection.name,
+        owner: collection.owner,
+        assets: {
+          'items': search.items,
+          'pagination': {
+            'totalCount': search.totalCount,
+            'currentPage': search.currentPage + 1,
+            'pageSize': search.pageSize,
+            'hasNextPage': search.hasNextPage,
+            'hasPreviousPage': search.hasPreviousPage,
+            'numberOfPages': search.numberOfPages
+          }
+        },
+        tags: collection.tags
+      }
+    });
+  }
+
+  public updateFocusedCollection(collection: Collection): void {
+    this.store.dispatch({
+      type: 'FOCUSED_COLLECTION', payload: {
+        createdOn: collection.createdOn,
+        lastUpdated: collection.lastUpdated,
+        id: collection.id,
+        siteName: collection.siteName,
+        name: collection.name,
+        owner: collection.owner,
+        assets: {
+          'items': [],
+          'pagination': {
+            'totalCount': 0,
+            'currentPage': 1,
+            'pageSize': 100,
+            'hasNextPage': false,
+            'hasPreviousPage': false,
+            'numberOfPages': 0
+          }
+        },
+        tags: collection.tags
+      }
+    });
   }
 
   public storeCollections(payload: any): void {

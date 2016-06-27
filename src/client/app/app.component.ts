@@ -47,7 +47,7 @@ declare var portal: string;
   { path: '/search', component: SearchComponent },
   { path: '/asset/:name', component: AssetComponent },
   { path: '/collection', component: CollectionComponent },
-  { path: '/asset/:name', component: AssetComponent },
+  { path: '/collection/:id', component: CollectionComponent },
   { path: '/content/:page', component: ContentComponent },
   { path: '/admin', component: AdminComponent }
 ])

@@ -41,6 +41,16 @@ export class WzFormComponent implements OnInit {
   }
 
   public onSubmit(data: any) {
-    (this.form.valid) ? this.formSubmit.emit(data) : console.log('error');
+    if (this.form.valid) {
+      this.formSubmit.emit(data);
+      this.resetForm();
+    } else {
+      console.log('error');
+    }
+  }
+
+  public resetForm() {
+    this.formModel.updateForm(this.form, {});
+    this.formModel.markFormAsUntouched(this.form);
   }
 }

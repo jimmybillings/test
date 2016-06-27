@@ -6,7 +6,7 @@ export interface Collection {
   name: string;
   owner: string;
   editors?: number[];
-  assets?: number[];
+  assets?: Items;
   tags?: any;
   assetCount?: number;
   editorsCount?: number;
@@ -15,18 +15,33 @@ export interface Collection {
 
 export interface Collections {
   items?: Collection[];
-  pagination: {
-    totalCount: number;
-    currentPage: number;
-    pageSize: number;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-    numberOfPages: number;
-  };
+  pagination: Pagination;
 }
 
 export interface CollectionStore {
   collections: Collections;
   // collectionList: Collection[];
   focusedCollection: Collection;
+}
+
+export interface Items {
+  items?: Assets[];
+  pagination?: Pagination;
+}
+
+export interface Assets {
+  assetId: number;
+  metaData: { name: string, value: string }[];
+  name: string;
+  thumbnail: { name: string, urls: {} };
+  uuid: string;
+}
+
+export interface Pagination {
+  totalCount: number;
+  currentPage: number;
+  pageSize: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  numberOfPages: number;
 }

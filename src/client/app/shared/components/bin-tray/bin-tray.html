@@ -2,11 +2,10 @@
 <section layout="row" flex="100" layout-align="start" class="header-tray">
   <div flex="100" class="asset-carousel grid">
     <ul class="asset-list" *ngIf="collection.assets">
-      <li *ngFor="let asset of collection.assets">
+      <li *ngIf="collection.assets.items" *ngFor="let asset of collection.assets.items">
         <div class="asset">
-          <a flex="" [routerLink]="['asset/',asset]" class="asset-thb">
+          <a *ngIf="asset?.assetId" flex="" [routerLink]="['asset/', asset.assetId]" class="asset-thb">
             <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
-            <span class="asset-id">{{asset}}</span>
           </a>
         </div>
       </li>
@@ -16,12 +15,11 @@
     <nav class="focused" *ngIf="collection.name" (click)="showCollectionsList()">
       <button md-button class="is-dd">{{collection.name}}</button>
       <button md-button class="asset-count">
-        <span class="count" *ngIf="collection.assets">{{collection.assets.length}}</span>
+        <span class="count" *ngIf="collection.assets">{{collection.assets.pagination.totalCount}}</span>
         <span class="count" *ngIf="!collection.assets">0</span>
       </button>
     </nav>
-    <!--<a md-button md-icon-button flex="none" title="more collection options" [routerLink]="['/collection']"><md-icon>more_vert</md-icon></a>-->
-    <a button md-icon-button flex="none" title="more collection options" [routerLink]="['/collection']"><md-icon>more_vert</md-icon></a>
+    <button md-icon-button flex="none" title="more collection options" (click)="UiState.openMoreCollectionOptionsDd()"><md-icon>more_vert</md-icon></button>
   </div>
   <button md-icon-button title="close collections" type="button" (click)="UiState.closeBinTray()" class="close"><md-icon>close</md-icon></button>
 </section>

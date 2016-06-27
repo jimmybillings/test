@@ -49,11 +49,13 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.focusedCollection = this.store.select('focusedCollection');
   }
 
-  addToCollection(params: any): void {
+  public addToCollection(params: any): void {
     let collection: Collection = params.collection;
-    collection.assets ? collection.assets.push(params.assetId) : collection.assets = [params.assetId];
-    this.collectionsService.addAssetsToCollection(collection.id, params.assetId).subscribe(payload => {
-      this.collectionsService.updateFocusedCollection(payload);
+    collection.assets ? collection.assets.items.push(params.asset) : collection.assets.items = [params.asset];
+    this.collectionsService.addAssetsToCollection(collection.id, params.asset).subscribe(payload => {
+      this.collectionsService.getCollectionItems(collection.id,100).subscribe(search => {
+        this.collectionsService.updateFocusedCollectionAssets(collection, search);
+      });
     });
   }
 
