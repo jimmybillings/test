@@ -57,7 +57,7 @@ export class SecretConfigComponent implements OnInit {
         this.uiConfig.set(res.json());
         (<Control>this.configForm.controls['config']).updateValue(JSON.stringify(res.json(), undefined, 4));
       }, (err) => {
-        this.toastService.createToast('error!' + err._body, 'success', 5000, this.target);
+        this.toastService.createToast('error!' + err._body, 'warn', 5000, this.target);
       });
   }
 }
