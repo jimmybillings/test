@@ -67,12 +67,10 @@ export function main() {
         spyOn(localStorage, 'setItem');
         spyOn(login._currentUser, 'set');
         spyOn(login.router, 'navigate');
-        spyOn(login.toastService, 'createToast').and.returnValue(true);
         login.onSubmit({ userId: 'some@email.com', password: 'password', siteName: 'sample' });
         expect(localStorage.setItem).toHaveBeenCalledWith('token', 'newToken');
         expect(login._currentUser.set).toHaveBeenCalledWith({ 'test': 'one' });
         expect(login.router.navigate).toHaveBeenCalledWith(['/']);
-        expect(login.toastService.createToast).toHaveBeenCalled();
       }));
 
   });
