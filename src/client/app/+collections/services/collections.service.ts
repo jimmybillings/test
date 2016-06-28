@@ -27,9 +27,10 @@ export const collections: Reducer<any> = (state: Collections = collectionsState,
     case 'CREATE_COLLECTION':
       return Object.assign({}, state, state.items.push(action.payload));
     case 'UPDATE_COLLECTION':
-      return state.items.map((collection: Collection) => {
-        return collection.id === action.payload.id ? Object.assign({}, collection, action.payload) : collection;
+      state.items = state.items.map((collection: Collection) => {
+        return collection.id === action.payload.id ? action.payload : collection;
       });
+      return Object.assign({}, state);
     case 'DELETE_COLLECTION':
       return Object.assign({}, state, state.items = state.items.filter((collection: Collection) => {
         return collection.id !== action.payload.id;
@@ -60,7 +61,7 @@ const focusedState: Collection = {
       numberOfPages: 0
     },
   },
-  tags: [],
+  tags: []
 };
 
 export const focusedCollection: Reducer<any> = (state = focusedState, action: Action) => {
@@ -109,18 +110,13 @@ export class CollectionsService {
       .map(res => res.json());
   }
 
-  /**
-    Need to ask Dylan or write a story for why this api call does not respond
-    with the collection object that is being set to focused
-   */
   public setFocusedCollection(collectionId: number): Observable<any> {
     return this.http.put(`${this.apiUrls.CollectionBaseUrl}/focused/${collectionId}`,
       '', { headers: this.apiConfig.authHeaders() });
   }
 
-
-  public getCollectionItems(collectionId: number, numberPerPg: number): Observable<any> {
-    return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=0&n=${numberPerPg}`,
+  public getCollectionItems(collectionId: number, numberPerPg: number, pgIndex: number = 0): Observable<any> {
+    return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=${pgIndex}&n=${numberPerPg}`,
       { headers: this.apiConfig.authHeaders() })
       .map(res => res.json());
   }
@@ -157,8 +153,6 @@ export class CollectionsService {
   }
 
   public updateFocusedCollectionAssets(collection: Collection, search: any): void {
-    // console.log(collection);
-    // console.log(search);
     search.items = search.items === undefined ? [] : search.items;
     this.store.dispatch({
       type: 'FOCUSED_COLLECTION', payload: {
@@ -179,6 +173,31 @@ export class CollectionsService {
             'numberOfPages': search.numberOfPages
           }
         },
+        tags: collection.tags,
+        thumbnail: search.items[search.totalCount - 1].thumbnail
+      }
+    });
+  }
+  public updateCollectionInStore(collection: Collection, search: any): void {
+    search.items = search.items === undefined ? [] : search.items;
+    // console.log('this collection');
+    // console.log(collection);
+    let thumbnail = collection.thumbnail ? collection.thumbnail : search.items[search.totalCount - 1].thumbnail;
+    this.store.dispatch({
+      type: 'UPDATE_COLLECTION', payload: {
+        createdOn: collection.createdOn,
+        lastUpdated: collection.lastUpdated,
+        id: collection.id,
+        siteName: collection.siteName,
+        name: collection.name,
+        owner: collection.owner,
+        assets: {
+          'items': search.items,
+          'pagination': {
+            'totalCount': search.totalCount,
+          }
+        },
+        thumbnail: thumbnail,
         tags: collection.tags
       }
     });
