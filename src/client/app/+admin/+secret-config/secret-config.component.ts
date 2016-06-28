@@ -4,6 +4,7 @@ import { FormBuilder, Validators, ControlGroup, Control } from '@angular/common'
 import { ConfigService } from '../services/config.service';
 import { RouteSegment } from '@angular/router';
 import { ToastService } from '../../shared/components/toast/toast.service';
+import { IuiConfig } from '../../shared/interfaces/config.interface';
 
 @Component({
   moduleId: module.id,
@@ -26,9 +27,9 @@ import { ToastService } from '../../shared/components/toast/toast.service';
 })
 
 export class SecretConfigComponent implements OnInit {
-  public config: any;
-  public site: string;
   @ViewChild('target', { read: ViewContainerRef }) target: any;
+  private config: IuiConfig;
+  private site: string;
   private configForm: ControlGroup;
 
   constructor(public uiConfig: UiConfig,
