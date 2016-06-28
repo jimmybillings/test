@@ -1,33 +1,15 @@
-import { Component, ChangeDetectionStrategy, Input, OnChanges } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 
 @Component({
   moduleId: module.id,
   selector: 'toast',
   templateUrl: 'toast.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  pipes: [TranslatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class ToastComponent implements OnChanges {
-  @Input() UiState: any;
-  public message: string;
-  public type: string;
-
-  constructor() {
-    this.message = null;
-    this.type = null;
-  }
-
-  ngOnChanges(changes: any) {
-    if (changes.UiState.currentValue.message) {
-      this.updateMessage(changes.UiState.currentValue);
-    } else {
-      this.message = null;
-      this.type = null;
-    }
-  }
-
-  public updateMessage(changes: any): void {
-    this.message = changes.message;
-    this.type = changes.type;
-  }
+export class ToastComponent {
+  @Input() message: string;
+  @Input() type: string;
 }

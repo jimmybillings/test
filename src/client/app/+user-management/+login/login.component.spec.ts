@@ -8,7 +8,7 @@ import {
 } from '@angular/core/testing';
 
 import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
-import {provide} from '@angular/core';
+import {provide, Renderer} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 import { ApiConfig } from '../../shared/services/api.config';
 import {CurrentUser} from '../../shared/services/current-user.model';
@@ -20,6 +20,7 @@ import {HTTP_PROVIDERS} from '@angular/http';
 import {UiConfig, config} from '../../shared/services/ui.config';
 import { provideStore } from '@ngrx/store';
 import { UiState, uiState} from '../../shared/services/ui.state';
+import { ToastService } from '../../shared/components/toast/toast.service';
 
 export function main() {
 
@@ -35,6 +36,8 @@ export function main() {
 
     beforeEachProviders(() => [
       LoginComponent,
+      ToastService,
+      Renderer,
       ApiConfig,
       CurrentUser,
       UiConfig,

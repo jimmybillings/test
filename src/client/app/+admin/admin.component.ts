@@ -9,6 +9,7 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {ConfigComponent} from './+config/config.component';
 import {UiConfigComponent} from './+ui-config/ui-config.component';
 import {SiteConfigComponent} from './+site-config/site-config.component';
+import {SecretConfigComponent} from './+secret-config/secret-config.component';
 
 @Component({
   moduleId: module.id,
@@ -21,6 +22,7 @@ import {SiteConfigComponent} from './+site-config/site-config.component';
 @Routes([
   { path: '/dashboard', component: DashboardComponent },
   { path: '/config', component: ConfigComponent },
+  { path: '/secret-config/:site', component: SecretConfigComponent },
   { path: '/ui-config/:site', component: UiConfigComponent },
   { path: '/site-config/:site', component: SiteConfigComponent },
   { path: '/resource/:resource/new', component: NewComponent },

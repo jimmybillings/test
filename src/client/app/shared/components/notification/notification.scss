@@ -1,18 +1,16 @@
-.toast {
-  animation-name: toasty;
+.notification {
+  animation-name: notification;
   animation-duration: 5s;
   animation-timing-function: linear;
   color: #fff;
   position: fixed;
-  top: 0px;
-  right: 0px;
+  top: 7px;
+  right: 10%;
   height: 50px;
   z-index: 10000;
-  width: 350px;
-  margin-top: 100px;
-  margin-right: 30px;
+  width: 80%;
   text-align: center;
-  border-radius: 7px;
+  border-radius: 20px;
   -webkit-box-shadow: 5px 5px 24px -1px rgba(56, 56, 56, 1);
   -moz-box-shadow: 5px 5px 24px -1px rgba(56, 56, 56, 1);
   box-shadow: 5px 5px 24px -1px rgba(56, 56, 56, 1);
@@ -27,21 +25,19 @@
   }
 }
 
-@keyframes toasty {
+@keyframes notification {
   0% {
-    margin-top: 400px;
+    top: -107px;
     opacity: 0;
   }
   7% {
-    margin-top: 100px;
+    top: 7px;
     opacity: 1;
   }
-  95% {
-    margin-top: 100px;
+  90% {
     opacity: 1;
   }
   100% {
-    margin-top: 0px;
     opacity: 0;
   }
 }

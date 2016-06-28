@@ -1,5 +1,4 @@
 
-<toast [UiState]="(uiState.uiState | async).notification"></toast>
 <collection-form
   [UiState]="uiState"
   [collection]="focusedCollection | async"
@@ -13,7 +12,7 @@
   [ngClass]="{'revealed': (uiState.uiState | async).collectionsListIsOpen}"
   layout="row" layout-align="end start">
 </collections-list-dd>
-  
+
   <div class="app" #target>
     <header [ngClass]="{
       'fixed': (uiState.uiState | async).showFixed,
