@@ -55,9 +55,8 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('token', res.token.token);
       this._currentUser.set(res.user);
       this.router.navigate(['/']);
-      this.toastService.createToast(`Welcome ${res.user.firstName}!`, 'success', 5000, this.target);
     }, (err) => {
-      this.toastService.createToast('Wrong username or password', 'warn', 5000, this.target);
+      this.toastService.createToast('LOGIN.ERROR_TOAST', 'warn', 5000, this.target);
     });
   }
 }

@@ -53,11 +53,11 @@ export class SecretConfigComponent implements OnInit {
   public onSubmit(form: any): void {
     this.configService.update(JSON.parse(form.config))
       .subscribe((res) => {
-        this.toastService.createToast(`${this.site} config updated`, 'success', 5000, this.target);
+        this.toastService.createToast('ADMIN.CONFIG.UPDATE_SUCCESS_TOAST', 'success', 5000, this.target);
         this.uiConfig.set(res.json());
         (<Control>this.configForm.controls['config']).updateValue(JSON.stringify(res.json(), undefined, 4));
       }, (err) => {
-        this.toastService.createToast('error!' + err._body, 'warn', 5000, this.target);
+        this.toastService.createToast(err._body, 'warn', 5000, this.target);
       });
   }
 }

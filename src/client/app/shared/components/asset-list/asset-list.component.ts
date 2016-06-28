@@ -31,7 +31,7 @@ export class AssetListComponent {
     sessionStorage.setItem('assetForNewCollection', JSON.stringify(asset));
   }
   addToCollection(collection: Collection, asset: any): void {
-    this.toastService.createToast(`asset ${asset.name} added to ${collection.name}`, 'success', 5000, this.target);
+    this.toastService.createToast('COLLECTION.ADD_TO_COLLECTION_TOAST', 'success', 5000, this.target);
     this.onAddToCollection.emit({'collection':collection, 'asset':asset});
   }
   showNewCollection(asset: any): void {

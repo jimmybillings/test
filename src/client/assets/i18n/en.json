@@ -42,6 +42,7 @@
     "TITLE": "Login To Your Account",
     "FORGOT_PASSWORD": "Forgot Your Password?",
     "GET_ACCOUNT": "Don't have an account?",
+    "ERROR_TOAST": "Wrong username or password",
     "SIGN_UP": "SIGN UP",
     "FORM": {
       "EMAIL_LABEL": "Email",
@@ -92,6 +93,7 @@
     "RIGHTS_SOUNDEFFECTS":"Sound Effect Rights"
   },
   "COLLECTION": {
+    "ADD_TO_COLLECTION_TOAST": "Asset added to collection",
     "NEW_TITLE": "Create a New Collection",
     "FORM": {
       "COLLECTION_NAME_LABEL": "Collection Name",
@@ -145,6 +147,7 @@
       "LOGO_URL_LABEL": "Logo URL"
     },
     "CONFIG": {
+      "UPDATE_SUCCESS_TOAST": "Config Updated",
       "SITE_TITLE": "Site Config",
       "UI_TITLE": "User Interface Config",
       "SITE_LABEL": "Site",
