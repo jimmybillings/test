@@ -72,7 +72,7 @@ export class UiState {
       this.update({ searchBarIsActive: false });
       return;
     }
-    let showSearchBar = ['user', 'admin']
+    let showSearchBar = ['user', 'admin', 'notification']
       .filter((state) => currentState.indexOf(state) > -1).length === 0;
     this.update({ searchBarIsActive: showSearchBar });
   }

@@ -20,6 +20,7 @@ export { SearchContext} from '../shared/services/search-context.service';
 export { Authentication} from '../+user-management/services/authentication.data.service';
 export { CollectionsService } from '../+collections/services/collections.service';
 export { UiState} from '../shared/services/ui.state';
+export { NotificationService } from '../shared/components/notification/notification.service';
 
 // Interfaces
 export {ILang} from '../shared/interfaces/language.interface';
@@ -46,5 +47,5 @@ export const APP_COMPONENT_DIRECTIVES = [
   BinTrayComponent,
   CollectionFormComponent,
   CollectionListDdComponent,
-  ROUTER_DIRECTIVES
+  ROUTER_DIRECTIVES,
 ];
