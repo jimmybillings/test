@@ -40,6 +40,7 @@ export class BinTrayComponent {
         payload.items.forEach((item: any, index: number) => {
           if (item.assets) {
             this.collectionsService.getCollectionItems(item.id, 1, item.assets.length - 1).subscribe(search => {
+              // reformat the object this is how all collections will look including focused with assets
               let assets = Object.assign({},
                 { 'items': payload.items[index].assets },
                 { 'pagination': { 'totalCount': search.totalCount } }
@@ -59,7 +60,6 @@ export class BinTrayComponent {
           }
         });
       }
-      console.log(payload);
       this.collectionsService.storeCollections(payload);
 
       // get focused collection assets and thumbnails
