@@ -23,12 +23,10 @@ import {
   Collection,
   CollectionStore,
   AdminComponent,
-  UiState
+  UiState,
+  NotificationService
 } from './platform/app.component.imports';
-// import { NotificationComponent, notficationState } from './shared/components/notification/notification.component';
-import { NotificationService } from './shared/components/notification/notification.service';
 
-// Portal is set as a global variable in the index.html page.
 declare var portal: string;
 
 @Component({
@@ -65,14 +63,14 @@ export class AppComponent implements OnInit {
     public multiLingual: MultilingualService,
     public location: Location,
     public searchContext: SearchContext,
-    private apiConfig: ApiConfig,
-    private authentication: Authentication,
     public currentUser: CurrentUser,
     public collectionsService: CollectionsService,
     public store: Store<CollectionStore>,
     public uiState: UiState,
     private renderer: Renderer,
-    private notification: NotificationService) {
+    private notification: NotificationService,
+    private apiConfig: ApiConfig,
+    private authentication: Authentication) {
     this.apiConfig.setPortal(portal);
   }
 
@@ -92,7 +90,6 @@ export class AppComponent implements OnInit {
       window.scrollTo(0, 0);
       this.notification.check(this.state, this.target);
     });
-
   }
 
   public logout(): void {
