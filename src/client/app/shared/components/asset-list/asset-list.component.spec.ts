@@ -9,11 +9,16 @@ import {
 
 import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import {AssetListComponent} from './asset-list.component';
+import { ToastService } from '../toast/toast.service';
+import { Renderer } from '@angular/core';
+
 
 export function main() {
   describe('Asset List Component', () => {
     beforeEachProviders(() => [
       AssetListComponent,
+      ToastService,
+      Renderer,
       ROUTER_FAKE_PROVIDERS
     ]);
 
