@@ -1,17 +1,17 @@
 
-<ul class="asset-list">
+<ul class="asset-list" #target>
   <li *ngFor="let asset of assets">
     <div class="asset">
       <div class="asset-name">{{asset.name}}</div>
       <a flex="" (click)="showAsset(asset)" class="asset-thb">
         <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
-        <span *ngIf="asset.metaData[0]" class="mdata-0"> 
+        <span *ngIf="asset.metaData[0]" class="mdata-0">
           <span>{{asset.metaData[0].value}}</span>
         </span>
-        <span *ngIf="asset.metaData[2]" class="mdata-2"> 
+        <span *ngIf="asset.metaData[2]" class="mdata-2">
           <span [ngClass]="formatType(asset.metaData[2].value)" class="sd-hd">{{asset.metaData[2].value}}</span>
         </span>
-        <span *ngIf="asset.metaData[3]" class="mdata-3"> 
+        <span *ngIf="asset.metaData[3]" class="mdata-3">
           <span>{{asset.metaData[3].value}}</span>
         </span>
       </a>

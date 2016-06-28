@@ -8,8 +8,7 @@ const InitUiState: any = {
   binTrayIsOpen: false,
   searchIsOpen: true,
   searchBarIsActive: false,
-  showFixed: false,
-  notification: {}
+  showFixed: false
 };
 
 export const uiState: Reducer<any> = (state = InitUiState, action: Action) => {
@@ -83,12 +82,4 @@ export class UiState {
     let setFixed: boolean = (offset > 111) ? true : false;
     if (setFixed !== isfixed) this.update({ showFixed: !isfixed });
   }
-
-  public setNotification(message: string, type: string, duration: number): void {
-    this.update({notification: {message, type}});
-    setTimeout(() => {
-      this.update({notification: {}});
-    }, duration);
-  }
-
 }

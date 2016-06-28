@@ -34,7 +34,6 @@ import {BinTrayComponent} from '../shared/components/bin-tray/bin-tray.component
 // import { CollectionListComponent } from '../+collections/collection-list.component';
 import { CollectionFormComponent } from '../+collections/collection-form.component';
 import { CollectionListDdComponent } from '../+collections/collections-list-dd.component';
-import { ToastComponent } from '../shared/components/toast/toast.component';
 
 // Angular
 import {ROUTER_DIRECTIVES} from '@angular/router';
@@ -47,6 +46,5 @@ export const APP_COMPONENT_DIRECTIVES = [
   BinTrayComponent,
   CollectionFormComponent,
   CollectionListDdComponent,
-  ToastComponent,
   ROUTER_DIRECTIVES
 ];

@@ -8,7 +8,7 @@ import {
 } from '@angular/core/testing';
 
 import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
-import {provide} from '@angular/core';
+import {provide, Renderer} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 import { ApiConfig } from '../../shared/services/api.config';
 import {CurrentUser} from '../../shared/services/current-user.model';
@@ -20,6 +20,7 @@ import {HTTP_PROVIDERS} from '@angular/http';
 import {UiConfig, config} from '../../shared/services/ui.config';
 import { provideStore } from '@ngrx/store';
 import { UiState, uiState} from '../../shared/services/ui.state';
+import { ToastService } from '../../shared/components/toast/toast.service';
 
 export function main() {
 
@@ -35,6 +36,8 @@ export function main() {
 
     beforeEachProviders(() => [
       LoginComponent,
+      ToastService,
+      Renderer,
       ApiConfig,
       CurrentUser,
       UiConfig,
@@ -64,10 +67,12 @@ export function main() {
         spyOn(localStorage, 'setItem');
         spyOn(login._currentUser, 'set');
         spyOn(login.router, 'navigate');
+        spyOn(login.toastService, 'createToast').and.returnValue(true);
         login.onSubmit({ userId: 'some@email.com', password: 'password', siteName: 'sample' });
         expect(localStorage.setItem).toHaveBeenCalledWith('token', 'newToken');
         expect(login._currentUser.set).toHaveBeenCalledWith({ 'test': 'one' });
         expect(login.router.navigate).toHaveBeenCalledWith(['/']);
+        expect(login.toastService.createToast).toHaveBeenCalled();
       }));
 
   });
