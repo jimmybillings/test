@@ -7,7 +7,7 @@ import {
 } from '@angular/core/testing';
 
 import { provide, Renderer} from '@angular/core';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { TestComponentBuilder } from '@angular/compiler/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
@@ -29,7 +29,7 @@ export function main() {
      (<any>window).portal = 'core';
     beforeEachProviders(() => [
       AppComponent,
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       MockBackend,
       BaseRequestOptions,
       Renderer,

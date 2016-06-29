@@ -10,8 +10,8 @@ import {
 import { UiConfigComponent } from './ui-config.component';
 import { ConfigService } from '../services/config.service';
 import { provide, Injectable } from '@angular/core';
-import { RouteSegment } from '@angular/router';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { RouteSegment } from '@angular/router';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
@@ -32,12 +32,12 @@ export function main() {
     beforeEachProviders(() => [
       UiConfigComponent,
       provide(ConfigService, { useClass: MockConfigService }),
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       MockBackend,
       ApiConfig,
       UiConfig,
       BaseRequestOptions,
-      provide(RouteSegment, { useValue: new RouteSegment([], { site: 'core' }, null, null, null) }),
+      // provide(RouteSegment, { useValue: new RouteSegment([], { site: 'core' }, null, null, null) }),
       provideStore({ config: config }),
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),

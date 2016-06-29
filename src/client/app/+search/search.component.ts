@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Router, RouteSegment} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { AssetData } from './services/asset.data.service';
 import { AssetListComponent }  from '../shared/components/asset-list/asset-list.component';
@@ -26,7 +26,6 @@ import { Store } from '@ngrx/store';
   directives: [AssetListComponent, PaginationComponent, FilterTreeComponent],
   providers: [AssetData],
   pipes: [TranslatePipe]
-
 })
 
 
@@ -39,10 +38,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   public filterValues: Array<string> = new Array();
   public collections: Observable<Collections>;
   public focusedCollection: Observable<any>;
+  public sub: any;
 
   constructor(
     private _router: Router,
-    private routeSegment: RouteSegment,
+    private route: ActivatedRoute,
     public assetData: AssetData,
     public router: Router,
     public uiConfig: UiConfig,
@@ -67,6 +67,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.assetData.clearAssets();
+    this.sub.unsubscribe();
   }
 
   public showAsset(asset: any): void {
@@ -77,7 +78,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     let collection: Collection = params.collection;
     collection.assets ? collection.assets.items.push(params.asset) : collection.assets.items = [params.asset];
     this.collectionsService.addAssetsToCollection(collection.id, params.asset).subscribe(payload => {
-      this.collectionsService.getCollectionItems(collection.id,100).subscribe(search => {
+      this.collectionsService.getCollectionItems(collection.id, 100).subscribe(search => {
         this.collectionsService.updateFocusedCollectionAssets(collection, search);
       });
     });
@@ -106,8 +107,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public keywordSearch(): void {
-    this.searchContext.set(this.routeSegment.parameters);
-    this.newSearch();
+    this.route.params.subscribe(params => {
+      this.searchContext.set(params);
+      this.newSearch();
+    }).unsubscribe();
   }
 
   public newSearch() {
@@ -134,17 +137,17 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public getFilterTree(): void {
-    let fids = this.routeSegment.getParam('filterIds');
-    if (fids && fids !== null) {
-      if (typeof fids === 'string') {
-        fids.split(',').forEach(x => this.filterIds.push(x));
+    this.sub = this.route.params.subscribe(params => {
+      let fids = params['filterIds'];
+      if (fids && fids !== null) {
+        if (typeof fids === 'string') { fids.split(',').forEach(x => this.filterIds.push(x)); }
       }
-    }
-    let v: Array<string> = this.filterIds;
-    this.assetData.getFilterTree(this.searchContext.get()).subscribe(
-      payload => { this.rootFilter = new FilterTree('', '', [], '', -1).load(payload, null, v); },
-      error => this.error.handle(error)
-    );
+      let v: Array<string> = this.filterIds;
+      this.assetData.getFilterTree(this.searchContext.get()).subscribe(
+        payload => { this.rootFilter = new FilterTree('', '', [], '', -1).load(payload, null, v); },
+        error => this.error.handle(error)
+      );
+    });
   }
 
   public doFilter(filter: FilterTree): void {

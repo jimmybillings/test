@@ -10,7 +10,7 @@ import {
 import { ConfigComponent } from './config.component';
 import { ConfigService } from '../services/config.service';
 import { provide } from '@angular/core';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
@@ -23,7 +23,7 @@ export function main() {
     beforeEachProviders(() => [
       ConfigComponent,
       ConfigService,
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       MockBackend,
       ApiConfig,
       UiConfig,

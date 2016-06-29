@@ -18,7 +18,6 @@ import { FORM_DIRECTIVES, FormBuilder, Validators, ControlGroup} from '@angular/
  */
 export class PaginationComponent implements OnInit {
   @Input() pagination: any;
-  @Input() currentPage: any;
   @Output() getPage = new EventEmitter();
 
   public form: ControlGroup;
@@ -27,7 +26,7 @@ export class PaginationComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      page: [this.currentPage, Validators.required]
+      page: [this.pagination.currentPage, Validators.required]
     });
   }
 

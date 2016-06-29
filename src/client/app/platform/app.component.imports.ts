@@ -37,9 +37,6 @@ import { CollectionFormComponent } from '../+collections/collection-form.compone
 import { CollectionListDdComponent } from '../+collections/collections-list-dd.component';
 import { ToastComponent } from '../shared/components/toast/toast.component';
 
-// Angular
-import {ROUTER_DIRECTIVES} from '@angular/router';
-
 export const APP_COMPONENT_DIRECTIVES = [
   AppNavComponent,
   FooterComponent,
@@ -49,5 +46,4 @@ export const APP_COMPONENT_DIRECTIVES = [
   CollectionFormComponent,
   CollectionListDdComponent,
   ToastComponent,
-  ROUTER_DIRECTIVES,
 ];

@@ -7,7 +7,7 @@ import {
 } from '@angular/core/testing';
 
 import { CollectionsService, focusedCollection, collections } from './collections.service';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { provide } from '@angular/core';
 import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
@@ -26,7 +26,7 @@ export function main() {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       provideStore({ focusedCollection: focusedCollection, collections: collections }),
       CollectionsService,
       ApiConfig,

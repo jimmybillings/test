@@ -9,7 +9,7 @@
     <div flex-xl="75" flex-gt-lg="75" flex-gt-md="75" flex="75">
       <wz-list [items]="currentUserResources.items" [headers]="config.tableHeaders.items" [toggleFlag]="toggleFlag" (sort)="navigateToSortUrl($event)"></wz-list>
       <div layout="row" layout-align="end center">
-        <pagination (getPage)="navigateToPageUrl($event)" [currentPage]="routeSegment.getParam('i') || 1" [pagination]="currentUserResources.pagination"></pagination>
+        <pagination (getPage)="navigateToPageUrl($event)" [pagination]="currentUserResources.pagination"></pagination>
       </div>
     </div>
     <div style="margin-bottom: 3rem;" flex-xl="20" flex-gt-lg="20" flex-gt-md="20" flex="20" hide-md hide-sm hide-xs>

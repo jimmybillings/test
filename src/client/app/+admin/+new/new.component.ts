@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouteSegment } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { UiConfig } from '../../shared/services/ui.config';
@@ -16,29 +16,34 @@ import { AdminService } from '../services/admin.service';
   pipes: [TranslatePipe]
 })
 
-export class NewComponent implements OnInit {
+export class NewComponent implements OnInit, OnDestroy {
   public resource: string;
   public siteName: string;
   public config: IuiConfig;
   public showForm: boolean;
   public currentComponent: string;
+  public sub: any;
 
   constructor(public router: Router,
     public apiConfig: ApiConfig,
     public adminService: AdminService,
-    public routeSegment: RouteSegment,
+    public route: ActivatedRoute,
     public uiConfig: UiConfig) {
       this.showForm = false;
     }
 
   ngOnInit(): void {
     this.siteName = this.apiConfig.getPortal();
-    this.resource = this.routeSegment.getParam('resource');
-    this.currentComponent = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
-    this.uiConfig.get('admin' + this.currentComponent).subscribe((config) => {
-      this.config = config.config;
+    this.sub = this.route.params.subscribe(params => {
+      this.resource = params['resource'];
+      this.currentComponent = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
+      this.uiConfig.get('admin' + this.currentComponent).subscribe(config => this.config = config.config);
     });
     setTimeout(() => { this.showForm = true; }, 250);
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   public onSubmit(formData: any): void {

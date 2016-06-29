@@ -10,15 +10,15 @@ import { ContentService } from './content.service';
 import { ApiConfig } from '../shared/services/api.config';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http, ResponseOptions, Response } from '@angular/http';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
-import {RouteSegment, Router} from '@angular/router';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import {RouteSegment, Router} from '@angular/router';
 
 export function main() {
   describe('Content service', () => {
 
     beforeEachProviders(() => [
-      ROUTER_FAKE_PROVIDERS,
-      provide(RouteSegment, {useFactory: (r: any) => r.routeTree.root, deps: [Router]}),
+      // ROUTER_FAKE_PROVIDERS,
+      // provide(RouteSegment, {useFactory: (r: any) => r.routeTree.root, deps: [Router]}),
       MockBackend,
       BaseRequestOptions,
       provide(Http, {

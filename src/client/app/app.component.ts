@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer, ViewChild, ViewContainerRef } from '@angular/core';
-import { Routes, Router } from '@angular/router';
+import { RouterConfig, Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Observable } from 'rxjs/Rx';
@@ -26,29 +26,30 @@ import {
   UiState,
   NotificationService
 } from './platform/app.component.imports';
-
+import {ROUTER_DIRECTIVES} from '@angular/router';
+import {USER_ROUTES} from './+user-management/user-management.component';
+import {ADMIN_ROUTES} from './+admin/admin.component';
 declare var portal: string;
+
+export const APP_ROUTES: RouterConfig = [
+  { path: '', component: HomeComponent },
+  { path: 'notification', component: HomeComponent },
+  { path: 'user', component: UserManagementComponent, children: USER_ROUTES },
+  { path: 'search', component: SearchComponent },
+  { path: 'asset/:name', component: AssetComponent },
+  { path: 'collection', component: CollectionComponent },
+  { path: 'content/:page', component: ContentComponent },
+  { path: 'admin', component: AdminComponent, children: ADMIN_ROUTES }
+];
 
 @Component({
   moduleId: module.id,
   selector: 'app',
   templateUrl: 'app.html',
-  directives: APP_COMPONENT_DIRECTIVES,
+  directives: [ROUTER_DIRECTIVES, APP_COMPONENT_DIRECTIVES],
   pipes: [TranslatePipe],
   providers: [NotificationService]
 })
-
-@Routes([
-  { path: '/', component: HomeComponent },
-  { path: '/notification', component: HomeComponent },
-  { path: '/user', component: UserManagementComponent },
-  { path: '/search', component: SearchComponent },
-  { path: '/asset/:name', component: AssetComponent },
-  { path: '/collection', component: CollectionComponent },
-  { path: '/collection/:id', component: CollectionComponent },
-  { path: '/content/:page', component: ContentComponent },
-  { path: '/admin', component: AdminComponent }
-])
 
 export class AppComponent implements OnInit {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
@@ -70,8 +71,10 @@ export class AppComponent implements OnInit {
     private renderer: Renderer,
     private notification: NotificationService,
     private apiConfig: ApiConfig,
-    private authentication: Authentication) {
+    private authentication: Authentication,
+    private route: ActivatedRoute) {
     this.apiConfig.setPortal(portal);
+
   }
 
   ngOnInit() {
@@ -84,11 +87,14 @@ export class AppComponent implements OnInit {
   }
 
   public routerChanges() {
-    this.router.changes.subscribe(() => {
-      this.uiState.checkRouteForSearchBar(this.location.path());
-      this.state = this.location.path();
-      window.scrollTo(0, 0);
-      this.notification.check(this.state, this.target);
+    this.router.events.subscribe(event => {
+      var results = (/function (.{1,})\(/).exec((event).constructor.toString());
+      if (results[1] === 'NavigationEnd') {
+        this.uiState.checkRouteForSearchBar(event.url);
+        this.state = event.url;
+        window.scrollTo(0, 0);
+        this.notification.check(this.state, this.target);
+      }
     });
   }
 

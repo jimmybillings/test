@@ -6,7 +6,7 @@ import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
 import { Observable} from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import { Routes, ROUTER_DIRECTIVES} from '@angular/router';
+import { ROUTER_DIRECTIVES} from '@angular/router';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { Error } from '../shared/services/error.service';
 import { UiConfig} from '../shared/services/ui.config';
@@ -23,10 +23,6 @@ import { UiConfig} from '../shared/services/ui.config';
   ],
   pipes: [TranslatePipe]
 })
-
-@Routes([
-  { path: ':id', component: CollectionComponent }
-])
 
 export class CollectionComponent implements OnInit {
   public collections: Observable<Collections>;

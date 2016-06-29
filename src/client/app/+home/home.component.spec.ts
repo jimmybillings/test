@@ -7,7 +7,7 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import {HomeComponent} from './home.component';
 import {provide} from '@angular/core';
 import { MockBackend } from '@angular/http/testing';
@@ -30,7 +30,7 @@ export function main() {
 
     beforeEachProviders(() => [
       HomeComponent,
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       MockBackend,
       BaseRequestOptions,
       provide(Http, {

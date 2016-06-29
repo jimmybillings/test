@@ -69,7 +69,7 @@ export class UiState {
   }
 
   public checkRouteForSearchBar(currentState: string) {
-    if (currentState === '') {
+    if (currentState === '/') {
       this.update({ searchBarIsActive: false });
       return;
     }

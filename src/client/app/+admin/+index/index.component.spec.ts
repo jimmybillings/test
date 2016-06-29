@@ -11,8 +11,8 @@ import {IndexComponent} from './index.component';
 import {AdminService} from '../services/admin.service';
 import {BaseRequestOptions, Http} from '@angular/http';
 import {provide, Injectable} from '@angular/core';
-import {RouteSegment} from '@angular/router';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import {RouteSegment} from '@angular/router';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import {CurrentUser, currentUser} from '../../shared/services/current-user.model';
 import {provideStore} from '@ngrx/store';
 import {MockBackend} from '@angular/http/testing';
@@ -59,10 +59,10 @@ export function main() {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       provide(AdminService, { useClass: MockAdminService }),
       provideStore({ currentUser: currentUser }),
-      provide(RouteSegment, { useValue: new RouteSegment([], { i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' }, null, null, null) }),
+      // provide(RouteSegment, { useValue: new RouteSegment([], { i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' }, null, null, null) }),
       CurrentUser,
       ApiConfig,
       provideStore({ config: config }),
@@ -99,9 +99,7 @@ export function main() {
     it('Should have a navigateToPageUrl function that navigates to a URL', inject([IndexComponent], (component: IndexComponent) => {
       component.resource = 'account';
       spyOn(component.router, 'navigate');
-      spyOn(component.adminService, 'buildRouteParams').and.callThrough();
       component.navigateToPageUrl(2);
-      expect(component.adminService.buildRouteParams).toHaveBeenCalledWith({ i: 2 });
       expect(component.router.navigate)
         .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: 2, n: '10', s: 'createdOn', d: 'false', fields: '', values: '' })]);
     }));
@@ -109,9 +107,7 @@ export function main() {
     it('Should have a navigateToSortUrl function that navigates to a URL with correct params', inject([IndexComponent], (component: IndexComponent) => {
       component.resource = 'account';
       spyOn(component.router, 'navigate');
-      spyOn(component.adminService, 'buildRouteParams').and.callThrough();
       component.navigateToSortUrl({ s: 'emailAddress', d: true });
-      expect(component.adminService.buildRouteParams).toHaveBeenCalledWith({ s: 'emailAddress', d: true });
       expect(component.router.navigate)
         .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: '1', n: '10', s: 'emailAddress', d: true, fields: '', values: '' })]);
     }));
@@ -119,9 +115,7 @@ export function main() {
     it('Should have a navigateToFilterUrl function that navigates to a URL with correct params', inject([IndexComponent], (component: IndexComponent) => {
       component.resource = 'user';
       spyOn(component.router, 'navigate');
-      spyOn(component.adminService, 'buildRouteParams').and.callThrough();
       component.navigateToFilterUrl({ firstName: 'john' });
-      expect(component.adminService.buildRouteParams).toHaveBeenCalledWith({ fields: 'firstName', values: 'john' });
       expect(component.router.navigate)
         .toHaveBeenCalledWith(['/admin/resource/user', Object({ i: 1, n: '10', s: 'createdOn', d: 'false', fields: 'firstName', values: 'john' })]);
     }));

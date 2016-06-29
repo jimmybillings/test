@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, RouteSegment } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AssetDetailComponent } from '../shared/components/asset-detail/asset-detail.component';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { AssetService} from './services/asset.service';
@@ -27,7 +27,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   public subscription: any;
 
   constructor(
-    private routeSegment: RouteSegment,
+    private route: ActivatedRoute,
     public currentUser: CurrentUser,
     public assetService: AssetService,
     public error: Error,
@@ -38,14 +38,17 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.assetService
-      .initialize(this.routeSegment.getParam('name'))
-      .subscribe((payload) => {
-        this.assetService.set(payload);
-        this.subscription = this.assetDetail.subscribe(data => this.assetDetailDisplay = data);
-      },
-      error => this.error.handle(error)
-      );
+    this.route.params.subscribe(params => {
+      this.assetService
+        .initialize(params['name'])
+        .subscribe((payload) => {
+          this.assetService.set(payload);
+          this.subscription = this.assetDetail.subscribe(data => this.assetDetailDisplay = data);
+        },
+        error => this.error.handle(error)
+        );
+    });
+
     this.focusedCollection = this.store.select('focusedCollection');
   }
 
@@ -53,7 +56,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     let collection: Collection = params.collection;
     collection.assets ? collection.assets.items.push(params.asset) : collection.assets.items = [params.asset];
     this.collectionsService.addAssetsToCollection(collection.id, params.asset).subscribe(payload => {
-      this.collectionsService.getCollectionItems(collection.id,100).subscribe(search => {
+      this.collectionsService.getCollectionItems(collection.id, 100).subscribe(search => {
         this.collectionsService.updateFocusedCollectionAssets(collection, search);
       });
     });

@@ -9,7 +9,7 @@ import {
 
 import {provide} from '@angular/core';
 import {FooterComponent} from './footer.component';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { TranslateLoader, TranslateStaticLoader, TranslateService} from 'ng2-translate/ng2-translate';
 import { Http, BaseRequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
@@ -18,7 +18,7 @@ export function main() {
   describe('Footer Component', () => {
     beforeEachProviders(() => [
       FooterComponent,
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       TranslateService,
       MockBackend,
       BaseRequestOptions,

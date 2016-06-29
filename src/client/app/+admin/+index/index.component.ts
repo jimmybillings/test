@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router, RouteSegment} from '@angular/router';
+import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import {CurrentUser} from '../../shared/services/current-user.model';
 import {AdminService} from '../services/admin.service';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
@@ -26,29 +26,33 @@ export class IndexComponent implements OnInit, OnDestroy {
   public subscription: Subscription;
   public currentUserResources: Object;
   public config: IuiConfig;
+  private sub: any;
 
   constructor(public currentUser: CurrentUser,
     public adminService: AdminService,
-    public routeSegment: RouteSegment,
+    public route: ActivatedRoute,
     public uiConfig: UiConfig,
     public router: Router) { }
 
   ngOnInit(): void {
-    this.resource = this.getResourceFromUrl();
-    this.currentComponent = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
-    this.uiConfig.get('admin' + this.currentComponent).subscribe((config) => {
-      this.config = config.config;
-      this.getIndex();
+    this.sub = this.route.params.subscribe(param => {
+      this.resource = param['resource'];
+      this.currentComponent = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
+      this.uiConfig.get('admin' + this.currentComponent).subscribe((config) => {
+        this.config = config.config;
+        this.getIndex();
+      });
+      this.subscription = this.adminService.adminStore.subscribe(data => this.currentUserResources = data);
     });
-    this.subscription = this.adminService.adminStore.subscribe(data => this.currentUserResources = data);
   }
 
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();
+    this.sub.unsubscribe();
   }
 
   public getIndex(): void {
-    let params = this.adminService.buildRouteParams();
+    let params = this.buildRouteParams();
     this.toggleFlag = params.d;
     this.adminService.getResources(params, this.resource).subscribe(data => {
       this.adminService.setResources(data);
@@ -56,27 +60,33 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   public navigateToPageUrl(i: number): void {
-    let params = this.adminService.buildRouteParams({ i });
+    let params = this.buildRouteParams({ i });
     this.router.navigate(['/admin/resource/' + this.resource, params]);
   }
 
   public navigateToSortUrl(sortParams: any): void {
-    let params = this.adminService.buildRouteParams(sortParams);
+    let params = this.buildRouteParams(sortParams);
     this.router.navigate(['/admin/resource/' + this.resource, params]);
   }
 
   public navigateToFilterUrl(filterParams: any): void {
     let searchTerms = this.adminService.buildSearchTerm(filterParams);
-    let params = this.adminService.buildRouteParams(searchTerms);
+    let params = this.buildRouteParams(searchTerms);
     params.i = 1;
     this.router.navigate(['/admin/resource/' + this.resource, params]);
   }
 
-  public navigateToBaseUrl(): void {
-    this.router.navigate(['/admin/resource/' + this.resource]);
-  }
-
-  private getResourceFromUrl(): string {
-    return this.routeSegment.getParam('resource');
+  public buildRouteParams(dynamicParams?: any): any {
+    let s:string, d:boolean, i:number, n:number, fields:string, values:string;
+    this.route.params.subscribe(params => {
+      s = params['s'] || 'createdOn';
+      d = (params['d'] ? true : false);
+      i = parseInt(params['i']) || 1;
+      n = parseInt(params['n']) || 10;
+      fields = params['fields'] || '';
+      values = params['values'] || '';
+    }).unsubscribe();
+    let params = { i, n, s, d, fields, values };
+    return dynamicParams ? Object.assign(params, dynamicParams) : params;
   }
 }

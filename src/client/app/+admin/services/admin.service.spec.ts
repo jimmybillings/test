@@ -12,21 +12,21 @@ import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http, RequestOptions, URLSearchParams } from '@angular/http';
 import { CurrentUser, currentUser } from '../../shared/services/current-user.model';
 import { provideStore } from '@ngrx/store';
-import {RouteSegment} from '@angular/router';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import {RouteSegment} from '@angular/router';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 
 export function main() {
   describe('Admin Service', () => {
 
     beforeEachProviders(() => [
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       MockBackend,
       BaseRequestOptions,
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
-      provide(RouteSegment, { useValue: new RouteSegment([], { i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' }, null, null, null) }),
+      // provide(RouteSegment, { useValue: new RouteSegment([], { i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' }, null, null, null) }),
       provideStore({ currentUser: currentUser }),
       ApiConfig,
       AdminService,

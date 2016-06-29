@@ -7,14 +7,14 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import {AssetListComponent} from './asset-list.component';
 
 export function main() {
   describe('Asset List Component', () => {
     beforeEachProviders(() => [
       AssetListComponent,
-      ROUTER_FAKE_PROVIDERS
+      // ROUTER_FAKE_PROVIDERS
     ]);
 
     it('Create instance of AssetList',
