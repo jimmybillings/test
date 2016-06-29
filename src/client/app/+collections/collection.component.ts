@@ -4,12 +4,12 @@ import { CollectionsService } from './services/collections.service';
 import { CollectionListComponent } from './collection-list.component';
 import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
-import { Observable} from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import { Routes, ROUTER_DIRECTIVES} from '@angular/router';
-import { CurrentUser} from '../shared/services/current-user.model';
+import { ROUTER_DIRECTIVES } from '@angular/router';
+import { CurrentUser } from '../shared/services/current-user.model';
 import { Error } from '../shared/services/error.service';
-import { UiConfig} from '../shared/services/ui.config';
+import { UiConfig } from '../shared/services/ui.config';
 
 @Component({
   moduleId: module.id,
@@ -23,10 +23,6 @@ import { UiConfig} from '../shared/services/ui.config';
   ],
   pipes: [TranslatePipe]
 })
-
-@Routes([
-  { path: ':id', component: CollectionComponent }
-])
 
 export class CollectionComponent implements OnInit {
   public collections: Observable<Collections>;
@@ -86,17 +82,5 @@ export class CollectionComponent implements OnInit {
     if (this.store.getState().collections.items.length === 1) {
       this.collectionsService.clearCollections();
     }
-  }
-
-  public showCollectionSearch(event: Event): void {
-    console.log(event);
-  }
-
-  public showCollectionFilter(event: Event): void {
-    console.log(event);
-  }
-
-  public showCollectionSort(event: Event): void {
-    console.log(event);
   }
 }

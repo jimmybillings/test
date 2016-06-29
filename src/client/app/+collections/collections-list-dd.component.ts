@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import { ROUTER_DIRECTIVES, Router} from '@angular/router';
 import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Collection } from '../shared/interfaces/collection.interface';
@@ -21,10 +21,10 @@ export class CollectionListDdComponent {
 
   @Input() focusedCollection: Collection;
   @Input() UiState: any;
-  @Output() isFocused = new EventEmitter();
-  @Output() showSearch = new EventEmitter();
-  @Output() showFilter = new EventEmitter();
-  @Output() showSort = new EventEmitter();
+  // @Output() isFocused = new EventEmitter();
+  // @Output() showSearch = new EventEmitter();
+  // @Output() showFilter = new EventEmitter();
+  // @Output() showSort = new EventEmitter();
   public collections: Observable<Collection[]>;
 
   constructor(
@@ -42,7 +42,7 @@ export class CollectionListDdComponent {
     this.UiState.showNewCollection();
   }
 
-  public selected(collection: Collection) {
+  public selectFocusedCollection(collection: Collection) {
     this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
       if (collection.assets) {
         this.collectionsService.getCollectionItems(collection.id,200).subscribe(search => {
@@ -64,4 +64,17 @@ export class CollectionListDdComponent {
     this.UiState.closeCollectionsList();
     this.router.navigate(['/collection']);
   }
+
+  public showCollectionSearch(event: Event): void {
+    console.log(event);
+  }
+
+  public showCollectionFilter(event: Event): void {
+    console.log(event);
+  }
+
+  public showCollectionSort(event: Event): void {
+    console.log(event);
+  }
+
 }
