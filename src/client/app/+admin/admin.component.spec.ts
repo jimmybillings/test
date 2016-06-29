@@ -9,7 +9,7 @@ beforeEachProviders
 import { provide } from '@angular/core';
 import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
 import {CurrentUser, currentUser} from '../shared/services/current-user.model';
-import {ROUTER_FAKE_PROVIDERS} from '@angular/router/testing';
+// import {ROUTER_FAKE_PROVIDERS} from '@angular/router/testing';
 import {AdminComponent} from './admin.component';
 import {provideStore} from '@ngrx/store';
 import { MockBackend } from '@angular/http/testing';
@@ -18,7 +18,7 @@ import { BaseRequestOptions, Http } from '@angular/http';
 export function main() {
   describe('Admin Component', () => {
     beforeEachProviders(() => [
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       provideStore({currentUser: currentUser}),
       CurrentUser,
       TranslateService,

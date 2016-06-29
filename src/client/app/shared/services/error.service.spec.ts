@@ -6,7 +6,7 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 import { provideStore } from '@ngrx/store';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { Error } from './error.service';
 import { CurrentUser, currentUser} from '../services/current-user.model';
 
@@ -15,7 +15,7 @@ export function main() {
 
     beforeEachProviders(() => [
       Error,
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       CurrentUser,
       provideStore({ currentUser }),
     ]);

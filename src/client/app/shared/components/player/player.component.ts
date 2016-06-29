@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, Input, OnInit} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Input, OnChanges} from '@angular/core';
 declare var PlayerApi: any, PlayerEnvironment: any;
 /**
  * site header component - renders the header information
@@ -15,13 +15,14 @@ declare var PlayerApi: any, PlayerEnvironment: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class PlayerComponent implements OnInit {
+export class PlayerComponent implements OnChanges {
   @Input() clip: string;
   public player: { load: any };
 
-  ngOnInit() {
+  ngOnChanges(changes:any) {
+    console.log(changes);
     this.player = new PlayerApi(document.querySelector('iframe#player'), { environment: PlayerEnvironment.PRODUCTION });
-    this.player.load(this.clip, 'tem-r5tHustu');
+    this.player.load(changes.clip.currentValue, 'tem-r5tHustu');
   }
 
   // ngOnChanges(changes): void {

@@ -15,21 +15,23 @@ import {ApiConfig} from '../../shared/services/api.config';
 import {NewComponent} from './new.component';
 import {UiConfig, config} from '../../shared/services/ui.config';
 import {provideStore} from '@ngrx/store';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
-import {RouteSegment} from '@angular/router';
-
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import {provideRouter} from '@angular/router';
+// import {APP_ROUTER_PROVIDERS} from '../../platform/providers'
 export function main() {
   describe('Admin New component', () => {
 
     beforeEachProviders(() => [
       MockBackend,
       BaseRequestOptions,
-      ROUTER_FAKE_PROVIDERS,
+      provideRouter(
+        [{ path: 'resource/:resource/new', component: NewComponent }]
+      ),
       provide(Http, {
         useFactory: (backend:any, defaultOptions:any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
-      provide(RouteSegment, {useValue: new RouteSegment([], { resource: 'user' }, null, null, null)}),
+      // provide(RouteSegment, {useValue: new RouteSegment([], { resource: 'user' }, null, null, null)}),
       ApiConfig,
       provideStore({config: config}),
       UiConfig,

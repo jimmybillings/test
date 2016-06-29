@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router, RouteSegment} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {ContentService} from './content.service';
 
 /**
@@ -20,13 +20,15 @@ export class ContentComponent implements OnInit {
   constructor(
     public contentService: ContentService,
     private _router: Router,
-    private routeSegment: RouteSegment
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.contentService.get(this.routeSegment.getParam('page')).subscribe(data => {
-      this.content = data[0].content.rendered;
-      this.title = data[0].title.rendered;
+    this.route.params.subscribe(params => {
+      this.contentService.get(params['page']).subscribe(data => {
+        this.content = data[0].content.rendered;
+        this.title = data[0].title.rendered;
+      });
     });
   }
 

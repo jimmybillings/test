@@ -9,7 +9,7 @@ import {
 
 import {ContentComponent} from './content.component';
 import {provide} from '@angular/core';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../shared/services/api.config';
@@ -18,7 +18,7 @@ import {UiConfig, config} from '../shared/services/ui.config';
 import {ContentService} from './content.service';
 import { provideStore } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
-import {RouteSegment} from '@angular/router';
+// import {RouteSegment} from '@angular/router';
 
 export function main() {
   describe('Content Component', () => {
@@ -29,8 +29,8 @@ export function main() {
     }
     beforeEachProviders(() => [
       ContentComponent,
-      ROUTER_FAKE_PROVIDERS,
-      provide(RouteSegment, { useValue: new RouteSegment([], { page: 'terms-conditions' }, null, null, null) }),
+      // ROUTER_FAKE_PROVIDERS,
+      // provide(RouteSegment, { useValue: new RouteSegment([], { page: 'terms-conditions' }, null, null, null) }),
       MockBackend,
       BaseRequestOptions,
       provide(Http, {

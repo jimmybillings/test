@@ -8,14 +8,14 @@ import {
 } from '@angular/core/testing';
 
 import { AppNavComponent} from './app-nav.component';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { UiConfig} from '../../services/ui.config';
 
 export function main() {
   describe('Header Component', () => {
     beforeEachProviders(() => [
       AppNavComponent,
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       UiConfig,
     ]);
 

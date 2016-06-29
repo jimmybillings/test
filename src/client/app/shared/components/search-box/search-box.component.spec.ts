@@ -6,7 +6,7 @@ import {
   it,
   beforeEachProviders
 } from '@angular/core/testing';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { MockBackend } from '@angular/http/testing';
 import { provide} from '@angular/core';
 import { BaseRequestOptions, Http } from '@angular/http';
@@ -19,7 +19,7 @@ export function main() {
     class Search { }
     beforeEachProviders(() => [
       SearchBoxComponent,
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       BaseRequestOptions,
       MockBackend,
       provide(Http, {

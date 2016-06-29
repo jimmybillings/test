@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouteSegment } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ConfigService } from '../services/config.service';
 
 @Component({
@@ -9,16 +9,21 @@ import { ConfigService } from '../services/config.service';
   providers: [ConfigService]
 })
 
-export class SiteConfigComponent implements OnInit {
+export class SiteConfigComponent implements OnInit, OnDestroy {
   public siteName: string;
   public configType: string;
+  public sub: any;
 
   constructor(public router: Router,
-              public routeSegment: RouteSegment,
+              public route: ActivatedRoute,
               public configService: ConfigService) {}
 
   ngOnInit() {
-    this.configType = this.routeSegment.urlSegments[0].segment.split('-')[0];
-    this.siteName = this.routeSegment.getParam('site');
+    // this.configType = this.routeSegment.urlSegments[0].segment.split('-')[0];
+    this.sub = this.route.params.subscribe(params => this.siteName = params['site']);
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

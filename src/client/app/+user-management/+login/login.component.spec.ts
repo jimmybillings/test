@@ -7,7 +7,7 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import {provide, Renderer} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 import { ApiConfig } from '../../shared/services/api.config';
@@ -45,7 +45,7 @@ export function main() {
       User,
       FormModel,
       HTTP_PROVIDERS,
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       provide(Authentication, { useClass: MockAuthentication }),
       provideStore({ config: config, uiState: uiState }),
 

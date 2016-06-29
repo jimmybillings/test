@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { RouteSegment } from '@angular/router';
 import { Http, Response, URLSearchParams, RequestOptions } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Store, Reducer, Action} from '@ngrx/store';
@@ -23,7 +22,6 @@ export class AdminService {
 
   constructor(public http: Http,
               public apiConfig: ApiConfig,
-              public routeSegment: RouteSegment,
               private store: Store<any>) {
     this.adminStore = this.store.select('adminResources');
     this.operatorMap = {
@@ -85,17 +83,6 @@ export class AdminService {
     let fields = rawFields.filter(this.removeFields).join(',');
     let values = rawValues.filter(this.removeFields).join(',');
     return { fields, values };
-  }
-
-  public buildRouteParams(dynamicParams?: any): any {
-    let s = this.routeSegment.getParam('s') || 'createdOn';
-    let d = (this.routeSegment.getParam('d') ? true : false);
-    let i = parseInt(this.routeSegment.getParam('i')) || 1;
-    let n = parseInt(this.routeSegment.getParam('n')) || 10;
-    let fields = this.routeSegment.getParam('fields') || '';
-    let values = this.routeSegment.getParam('values') || '';
-    let params = { i, n, s, d, fields, values };
-    return dynamicParams ? Object.assign(params, dynamicParams) : params;
   }
 
   public getIdentitiesSearchOptions(queryObject: any): RequestOptions {

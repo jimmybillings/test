@@ -9,7 +9,7 @@ import {
 
 import { AssetComponent} from './asset.component';
 import { provide, Injectable} from '@angular/core';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../shared/services/api.config';
@@ -21,7 +21,8 @@ import { AssetService, asset} from './services/asset.service';
 import { CollectionsService } from '../+collections/services/collections.service';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import { RouteSegment, Router}  from '@angular/router';
+// import { RouteSegment}  from '@angular/router';
+// import { Router}  from '@angular/router';
 
 export function main() {
   describe('Asset Component', () => {
@@ -44,8 +45,8 @@ export function main() {
 
     beforeEachProviders(() => [
       AssetComponent,
-      ROUTER_FAKE_PROVIDERS,
-      provide(RouteSegment, {useFactory: (r: any) => r.routeTree.root, deps: [Router]}),
+      // ROUTER_FAKE_PROVIDERS,
+      // provide(RouteSegment, {useFactory: (r: any) => r.routeTree.root, deps: [Router]}),
       provide(AssetService, { useClass: MockAssetService }),
       CollectionsService,
       MockBackend,

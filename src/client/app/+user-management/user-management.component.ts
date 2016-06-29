@@ -1,9 +1,15 @@
 import {Component} from '@angular/core';
-import {Routes, ROUTER_DIRECTIVES} from '@angular/router';
+import {RouterConfig, ROUTER_DIRECTIVES} from '@angular/router';
 import {LoginComponent} from './+login/login.component';
 import {RegisterComponent} from './+register/register.component';
 import {ProfileComponent} from './+profile/profile.component';
 import { User } from './services/user.data.service';
+
+export const USER_ROUTES: RouterConfig =[
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'profile', component: ProfileComponent }
+];
 
 @Component({
   moduleId: module.id,
@@ -13,11 +19,4 @@ import { User } from './services/user.data.service';
   providers: [User]
 })
 
-@Routes([
-  { path: '/register', component: RegisterComponent },
-  { path: '/login', component: LoginComponent },
-  { path: '/profile', component: ProfileComponent }
-])
-
-export class UserManagementComponent {
-}
+export class UserManagementComponent {}

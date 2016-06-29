@@ -13,7 +13,7 @@ import { ApiConfig } from '../shared/services/api.config';
 import { UiConfig } from '../shared/services/ui.config';
 import { UiState, uiState } from '../shared/services/ui.state';
 import { provide, Injectable } from '@angular/core';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { provideStore } from '@ngrx/store';
@@ -40,7 +40,7 @@ export function main() {
       UiState,
       ApiConfig,
       UiConfig,
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       MockBackend,
       BaseRequestOptions,
       provideStore({collections: collections, focusedCollection: focusedCollection, uiState: uiState}),

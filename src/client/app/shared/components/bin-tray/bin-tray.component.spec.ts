@@ -10,7 +10,7 @@ import { provide} from '@angular/core';
 
 import { BinTrayComponent} from './bin-tray.component';
 import { UiConfig} from '../../services/ui.config';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { CollectionsService, collections} from '../../../+collections/services/collections.service';
 import { provideStore } from '@ngrx/store';
 import { ApiConfig } from '../../../shared/services/api.config';
@@ -22,7 +22,7 @@ export function main() {
     class Search { }
     beforeEachProviders(() => [
       BinTrayComponent,
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       UiConfig,
       CollectionsService,
       ApiConfig,

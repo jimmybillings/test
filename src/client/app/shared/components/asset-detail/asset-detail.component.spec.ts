@@ -6,7 +6,7 @@ import {
   it,
   beforeEachProviders
 } from '@angular/core/testing';
-import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import {provide} from '@angular/core';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
@@ -16,7 +16,7 @@ export function main() {
   describe('Asset Detail Component', () => {
     beforeEachProviders(() => [
       AssetDetailComponent,
-      ROUTER_FAKE_PROVIDERS,
+      // ROUTER_FAKE_PROVIDERS,
       MockBackend,
       BaseRequestOptions,
       provide(Http, {

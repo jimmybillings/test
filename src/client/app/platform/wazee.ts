@@ -1,6 +1,7 @@
 
 import { provide, Provider } from '@angular/core';
 import { Http } from '@angular/http';
+import { RouterConfig } from '@angular/router';
 
 // WAZEE PROVIDERS
 import { ApiConfig } from '../shared/services/api.config';
@@ -12,6 +13,9 @@ import { SearchContext} from '../shared/services/search-context.service';
 import { Authentication} from '../+user-management/services/authentication.data.service';
 import { CollectionsService } from '../+collections/services/collections.service';
 import { UiState } from '../shared/services/ui.state';
+
+// WAZEE ROUTES
+import {APP_ROUTES} from '../app.component';
 
 // WAZEE STORES
 import { assets } from '../+search/services/asset.data.service';
@@ -63,4 +67,8 @@ export const WAZEE_STORES: Provider[][] = [
     uiState,
     i18n: multilingualReducer
   })
+];
+
+export const WAZEE_ROUTES: RouterConfig = [
+  ...APP_ROUTES
 ];
