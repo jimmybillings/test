@@ -1,4 +1,4 @@
-import {Component, Output, EventEmitter, Input, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
+import {Component, Output, EventEmitter, Input, ChangeDetectionStrategy, OnChanges} from '@angular/core';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {PlayerComponent} from '../../components/player/player.component';
@@ -19,7 +19,7 @@ import { Collection } from '../../interfaces/collection.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class AssetDetailComponent implements OnInit, OnChanges {
+export class AssetDetailComponent implements OnChanges {
   public secondaryKeys: Array<string>;
   public secondaryMdata: Object;
   @Input() public assetDetail: any;
@@ -36,16 +36,12 @@ export class AssetDetailComponent implements OnInit, OnChanges {
     if (changes.assetDetail) {
       if (Object.keys(changes.assetDetail.currentValue.common).length > 0) {
         this.assetDetail = changes.assetDetail.currentValue;
-        console.log(this.assetDetail);
+        // console.log(this.assetDetail);
         this.secondaryMdata = this.assetDetail.secondary[0];
         this.secondaryKeys = Object.keys(this.secondaryMdata);
-        console.log(this.secondaryKeys);
+        // console.log(this.secondaryKeys);
       }
     }
-  }
-
-  ngOnInit(): void {
-    console.log('init hit');
   }
 
   public getMetaField(field: any) {

@@ -76,15 +76,7 @@
       <md-card>
         <form layout="column" (ngSubmit)="onSubmit()" class="md-inline-form">
           <div *ngFor="let control of form | values; of let i = index">
-            <span [ngSwitch]="control.key">
-              <span *ngSwitchWhen="'options'">
-                <md-input [(ngModel)]="form[control.key]" ngControl="{{control.key}}" placeholder="{{control.key}}"></md-input>
-                <label class="md-caption">please input a comma separated list of options</label>
-              </span>
-              <span *ngSwitchDefault>
-                <md-input [(ngModel)]="form[control.key]" ngControl="{{control.key}}" placeholder="{{control.key}}"></md-input>
-              </span>
-            </span>
+            <md-input [(ngModel)]="form[control.key]" ngControl="{{control.key}}" placeholder="{{control.key}}"></md-input>
           </div>
           <md-card-actions layout="row" layout-align="center center">
             <button md-raised-button type="submit">update</button>

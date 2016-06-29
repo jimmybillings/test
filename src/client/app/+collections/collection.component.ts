@@ -39,10 +39,6 @@ export class CollectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.collectionsService.loadCollections().subscribe(
-      payload => this.collectionsService.storeCollections(payload),
-      error => this.error.handle(error)
-    );
     this.collections = this.collectionsService.collections;
     this.focusedCollection = this.store.select('focusedCollection');
   }
@@ -50,21 +46,21 @@ export class CollectionComponent implements OnInit {
   public selectFocusedCollection(collection: Collection): void {
     this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
       if (collection.assets) {
-        this.collectionsService.getCollectionItems(collection.id,100).subscribe(search => {
-          console.log(collection);
-          console.log(search);
+        this.collectionsService.getCollectionItems(collection.id, 100).subscribe(search => {
           this.collectionsService.updateFocusedCollectionAssets(collection, search);
         });
-      }else {
+      } else {
         this.collectionsService.updateFocusedCollection(collection);
       }
     });
   }
 
   public getFocusedCollection(): void {
-    setTimeout(() => { this.collectionsService.getFocusedCollection().subscribe(payload => {
-      this.collectionsService.updateFocusedCollection(payload);
-    }); }, 1200);
+    setTimeout(() => {
+      this.collectionsService.getFocusedCollection().subscribe(payload => {
+        this.collectionsService.updateFocusedCollection(payload);
+      });
+    }, 1200);
   }
 
   public isFocusedCollection(collection: Collection): boolean {
@@ -77,7 +73,6 @@ export class CollectionComponent implements OnInit {
     this.collectionsService.deleteCollection(collection.id).subscribe(payload => {
       this.collectionsService.deleteCollectionFromStore(collection);
     });
-    console.log(this.store.getState());
     // if we are deleting current focused, we need to get the new focused from the server.
     if (collection.id === this.store.getState().focusedCollection.id &&
       this.store.getState().collections.items.length > 1) {
@@ -85,7 +80,6 @@ export class CollectionComponent implements OnInit {
     }
     // if we delete the last collection, reset the store to initial values (no focused collection)
     if (this.store.getState().collections.items.length === 1) {
-      console.log('this is the last one');
       this.collectionsService.clearCollections();
     }
   }

@@ -11,6 +11,7 @@ export interface Collection {
   assetCount?: number;
   editorsCount?: number;
   tagCount?: number;
+  thumbnail?: { name: string, urls: {} };
 }
 
 export interface Collections {
@@ -20,7 +21,6 @@ export interface Collections {
 
 export interface CollectionStore {
   collections: Collections;
-  // collectionList: Collection[];
   focusedCollection: Collection;
 }
 
@@ -31,17 +31,19 @@ export interface Items {
 
 export interface Assets {
   assetId: number;
-  metaData: { name: string, value: string }[];
-  name: string;
-  thumbnail: { name: string, urls: {} };
+  createdOn?: string;
+  lastUpdated?: string;
+  metaData?: { name: string, value: string }[];
+  name?: string;
+  thumbnail?: { name: string, urls: {} };
   uuid: string;
 }
 
 export interface Pagination {
   totalCount: number;
-  currentPage: number;
-  pageSize: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-  numberOfPages: number;
+  currentPage?: number;
+  pageSize?: number;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
+  numberOfPages?: number;
 }

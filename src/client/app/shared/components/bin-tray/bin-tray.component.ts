@@ -19,7 +19,7 @@ import { CollectionsService} from '../../../+collections/services/collections.se
 export class BinTrayComponent {
   @Input() collection: Collection;
   @Input() UiState: any;
-  public i = 0;
+
   constructor(
     public router: Router,
     public collectionsService: CollectionsService) {
@@ -30,24 +30,52 @@ export class BinTrayComponent {
     this.UiState.showCollectionsList();
   }
 
+
+  // make this 2 request with errors get collections and then focused
   public getCollectionsAndFocused(): void {
     this.collectionsService.loadCollections().subscribe(payload => {
+      // for each collection with assets get a thumbnail img
+      // this is used to identify collections
+      if (payload.totalCount > 0) {
+        payload.items.forEach((item: any, index: number) => {
+          if (item.assets) {
+            this.collectionsService.getCollectionItems(item.id, 1, item.assets.length - 1).subscribe(search => {
+              // reformat the object this is how all collections will look including focused with assets
+              let assets = Object.assign({},
+                { 'items': payload.items[index].assets },
+                { 'pagination': { 'totalCount': search.totalCount } }
+              );
+              payload.items[index] = Object.assign({},
+                { 'createdOn': payload.items[index].createdOn },
+                { 'id': payload.items[index].id },
+                { 'lastUpdated': payload.items[index].lastUpdated },
+                { 'name': payload.items[index].name },
+                { 'owner': payload.items[index].owner },
+                { 'siteName': payload.items[index].siteName },
+                { 'tags': payload.items[index].tags },
+                { 'thumbnail': search.items[0].thumbnail },
+                { 'assets': assets }
+              );
+            });
+          }
+        });
+      }
       this.collectionsService.storeCollections(payload);
+
+      // get focused collection assets and thumbnails
       if (payload.totalCount > 0) {
         this.collectionsService.getFocusedCollection().subscribe(collection => {
           if (collection.assets) {
-            this.collectionsService.getCollectionItems(collection.id,100).subscribe(search => {
+            this.collectionsService.getCollectionItems(collection.id, 300).subscribe(search => {
               this.collectionsService.updateFocusedCollectionAssets(collection, search);
             });
-          }else {
+          } else {
             this.collectionsService.updateFocusedCollection(collection);
           }
         });
       }
     });
   }
+  // error => this.error.handle(error);
 
-  public showThumb(asset:any) {
-    return (asset.summary) ? asset.summary.thumbnail.urls.https : '';
-  }
 }

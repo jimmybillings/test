@@ -4,13 +4,15 @@
   animation-timing-function: linear;
   color: #fff;
   position: fixed;
-  top: 100px;
-  right: 30px;
+  top: 0px;
+  right: 0px;
   height: 50px;
   z-index: 10000;
   width: 350px;
+  margin-top: 100px;
+  margin-right: 30px;
   text-align: center;
-  border-radius: 20px;
+  border-radius: 7px;
   -webkit-box-shadow: 5px 5px 24px -1px rgba(56, 56, 56, 1);
   -moz-box-shadow: 5px 5px 24px -1px rgba(56, 56, 56, 1);
   box-shadow: 5px 5px 24px -1px rgba(56, 56, 56, 1);
@@ -27,17 +29,19 @@
 
 @keyframes toasty {
   0% {
-    top: 400px;
+    margin-top: 400px;
     opacity: 0;
   }
   7% {
-    top: 100px;
+    margin-top: 100px;
     opacity: 1;
   }
-  90% {
+  95% {
+    margin-top: 100px;
     opacity: 1;
   }
   100% {
+    margin-top: 0px;
     opacity: 0;
   }
 }

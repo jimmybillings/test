@@ -201,15 +201,26 @@ export function main() {
         'siteName': 'core',
         'name': 'Masters Opening Cerimony',
         'owner': 'admin@wazeedigital.com',
-        'assets': [
-          {
-            'uuid': '8cb5197a-c9ba-4f98-a62a-ee4e40793ad9',
-            'assetId': 37432110,
-            'createdOn': '2016-06-24T03:14:14Z',
-            'lastUpdated': '2016-06-24T03:14:14Z'
-          },
-        ],
-        'tags': ['golf','masters','Augusta']
+        'assets': {
+          'items': [
+            {
+              'assetId': 37432110,
+              'createdOn': '2016-06-24T03:14:14Z',
+              'lastUpdated': '2016-06-24T03:14:14Z',
+              'uuid': '8cb5197a-c9ba-4f98-a62a-ee4e40793ad9'
+            }
+          ],
+          'pagination': {
+            'totalCount': 1
+          }
+        },
+        'tags': ['golf','masters','Augusta'],
+        'thumbnail': {
+          'name': 'thumbnail',
+          'urls': {
+            'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/943/301/943301_0040_lt.jpg'
+          }
+        },
       };
     }
     function mockcollectionAssetSearch() {
@@ -245,7 +256,7 @@ export function main() {
             'uuid': '8cb5197a-c9ba-4f98-a62a-ee4e40793ad9'
           },
         ],
-        'totalCount': 6,
+        'totalCount': 1,
         'currentPage': 0,
         'pageSize': 100,
         'hasNextPage': false,
@@ -292,7 +303,7 @@ export function main() {
             'uuid': '8cb5197a-c9ba-4f98-a62a-ee4e40793ad9'
           }],
           'pagination': {
-            'totalCount': 6,
+            'totalCount': 1,
             'currentPage': 1,
             'pageSize': 100,
             'hasNextPage': false,
@@ -300,7 +311,13 @@ export function main() {
             'numberOfPages': 1
           },
         },
-        'tags': ['golf','masters','Augusta']
+        'tags': ['golf','masters','Augusta'],
+        'thumbnail': {
+          'name': 'thumbnail',
+          'urls': {
+            'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/943/301/943301_0040_lt.jpg'
+          }
+        }
       };
     }
 

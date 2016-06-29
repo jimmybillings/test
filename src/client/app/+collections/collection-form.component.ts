@@ -58,14 +58,6 @@ export class CollectionFormComponent {
     this.UiState.closeNewCollection();
   }
 
-  // public saveCollection(collection: Collection): void {
-  //   this.collectionsService.createCollection(collection).subscribe(payload => {
-  //     this.collectionsService.createCollectionInStore(payload);
-  //     this.collectionsService.updateFocusedCollection(payload);
-  //   });
-  //   this.UiState.closeNewCollection();
-  // }
-
   public cancelCollectionCreation(event: Event): void {
     this.UiState.closeNewCollection();
     // TODO we need a way to clear the form access like: 
