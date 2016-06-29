@@ -1,6 +1,5 @@
 import { Component, OnInit, Renderer, ViewChild, ViewContainerRef } from '@angular/core';
-import { RouterConfig, Router, ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { RouterConfig, Router } from '@angular/router';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
@@ -62,7 +61,6 @@ export class AppComponent implements OnInit {
     public uiConfig: UiConfig,
     public router: Router,
     public multiLingual: MultilingualService,
-    public location: Location,
     public searchContext: SearchContext,
     public currentUser: CurrentUser,
     public collectionsService: CollectionsService,
@@ -71,10 +69,8 @@ export class AppComponent implements OnInit {
     private renderer: Renderer,
     private notification: NotificationService,
     private apiConfig: ApiConfig,
-    private authentication: Authentication,
-    private route: ActivatedRoute) {
+    private authentication: Authentication) {
     this.apiConfig.setPortal(portal);
-
   }
 
   ngOnInit() {

@@ -11,8 +11,7 @@ import {IndexComponent} from './index.component';
 import {AdminService} from '../services/admin.service';
 import {BaseRequestOptions, Http} from '@angular/http';
 import {provide, Injectable} from '@angular/core';
-// import {RouteSegment} from '@angular/router';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CurrentUser, currentUser} from '../../shared/services/current-user.model';
 import {provideStore} from '@ngrx/store';
 import {MockBackend} from '@angular/http/testing';
@@ -27,6 +26,7 @@ export function main() {
 
     class MockAdminService {
       public adminStore: Observable<any>;
+      public params: any;
       constructor(public store: Store<any>) {
         this.adminStore = this.store.select('adminResources');
       }
@@ -47,22 +47,29 @@ export function main() {
         return { fields: 'firstName', values: 'john' };
       }
 
-      buildRouteParams(args: any) {
-        return Object.assign({ i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' }, args);
+      updateRouteParams(args: any) {
+        return Object.assign(this.params, args);
       }
     }
+    class MockRouter {
+      navigate(params: any) {
+        return params;
+      }
+    }
+    class MockActivatedRoute {
 
+    }
     beforeEachProviders(() => [
       MockBackend,
+      { provide: Router, useClass: MockRouter },
+      { provide: ActivatedRoute, useClass: MockActivatedRoute },
       BaseRequestOptions,
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
-      // ROUTER_FAKE_PROVIDERS,
       provide(AdminService, { useClass: MockAdminService }),
       provideStore({ currentUser: currentUser }),
-      // provide(RouteSegment, { useValue: new RouteSegment([], { i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' }, null, null, null) }),
       CurrentUser,
       ApiConfig,
       provideStore({ config: config }),
@@ -87,6 +94,7 @@ export function main() {
     it('Should have a getIndex() function that calls the getResource and setResources functions on the service',
       inject([IndexComponent], (component: IndexComponent) => {
         component.resource = 'account';
+        component.params = mockParams();
         spyOn(component.adminService, 'getResources').and.callThrough();
         spyOn(component.adminService, 'setResources').and.callThrough();
         component.getIndex();
@@ -98,6 +106,7 @@ export function main() {
 
     it('Should have a navigateToPageUrl function that navigates to a URL', inject([IndexComponent], (component: IndexComponent) => {
       component.resource = 'account';
+      component.params = mockParams();
       spyOn(component.router, 'navigate');
       component.navigateToPageUrl(2);
       expect(component.router.navigate)
@@ -106,6 +115,7 @@ export function main() {
 
     it('Should have a navigateToSortUrl function that navigates to a URL with correct params', inject([IndexComponent], (component: IndexComponent) => {
       component.resource = 'account';
+      component.params = mockParams();
       spyOn(component.router, 'navigate');
       component.navigateToSortUrl({ s: 'emailAddress', d: true });
       expect(component.router.navigate)
@@ -114,6 +124,7 @@ export function main() {
 
     it('Should have a navigateToFilterUrl function that navigates to a URL with correct params', inject([IndexComponent], (component: IndexComponent) => {
       component.resource = 'user';
+      component.params = mockParams();
       spyOn(component.router, 'navigate');
       component.navigateToFilterUrl({ firstName: 'john' });
       expect(component.router.navigate)
@@ -142,5 +153,9 @@ export function main() {
       'hasPreviousPage': false,
       'numberOfPages': 1
     };
+  }
+
+  function mockParams() {
+    return Object.assign({ i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' });
   }
 }

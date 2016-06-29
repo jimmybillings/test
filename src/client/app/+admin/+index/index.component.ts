@@ -26,18 +26,22 @@ export class IndexComponent implements OnInit, OnDestroy {
   public subscription: Subscription;
   public currentUserResources: Object;
   public config: IuiConfig;
+  public params: any;
   private sub: any;
+
 
   constructor(public currentUser: CurrentUser,
     public adminService: AdminService,
     public route: ActivatedRoute,
     public uiConfig: UiConfig,
-    public router: Router) { }
+    public router: Router) {
+  }
 
   ngOnInit(): void {
     this.sub = this.route.params.subscribe(param => {
       this.resource = param['resource'];
       this.currentComponent = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
+      this.buildRouteParams(param);
       this.uiConfig.get('admin' + this.currentComponent).subscribe((config) => {
         this.config = config.config;
         this.getIndex();
@@ -52,41 +56,41 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   public getIndex(): void {
-    let params = this.buildRouteParams();
-    this.toggleFlag = params.d;
-    this.adminService.getResources(params, this.resource).subscribe(data => {
+    this.toggleFlag = this.params.d;
+    this.adminService.getResources(this.params, this.resource).subscribe(data => {
       this.adminService.setResources(data);
     });
   }
 
   public navigateToPageUrl(i: number): void {
-    let params = this.buildRouteParams({ i });
+    let params = this.updateRouteParams({ i });
     this.router.navigate(['/admin/resource/' + this.resource, params]);
   }
 
   public navigateToSortUrl(sortParams: any): void {
-    let params = this.buildRouteParams(sortParams);
+    let params = this.updateRouteParams(sortParams);
     this.router.navigate(['/admin/resource/' + this.resource, params]);
   }
 
   public navigateToFilterUrl(filterParams: any): void {
     let searchTerms = this.adminService.buildSearchTerm(filterParams);
-    let params = this.buildRouteParams(searchTerms);
+    let params = this.updateRouteParams(searchTerms);
     params.i = 1;
     this.router.navigate(['/admin/resource/' + this.resource, params]);
   }
 
-  public buildRouteParams(dynamicParams?: any): any {
-    let s:string, d:boolean, i:number, n:number, fields:string, values:string;
-    this.route.params.subscribe(params => {
-      s = params['s'] || 'createdOn';
-      d = (params['d'] ? true : false);
-      i = parseInt(params['i']) || 1;
-      n = parseInt(params['n']) || 10;
-      fields = params['fields'] || '';
-      values = params['values'] || '';
-    }).unsubscribe();
-    let params = { i, n, s, d, fields, values };
-    return dynamicParams ? Object.assign(params, dynamicParams) : params;
+  public updateRouteParams(dynamicParams?: any) {
+    return dynamicParams ? Object.assign(this.params, dynamicParams) : this.params;
+  }
+
+  public buildRouteParams(params: any): any {
+    let s: string, d: boolean, i: number, n: number, fields: string, values: string;
+    s = params['s'] || 'createdOn';
+    d = (params['d'] ? true : false);
+    i = parseInt(params['i']) || 1;
+    n = parseInt(params['n']) || 10;
+    fields = params['fields'] || '';
+    values = params['values'] || '';
+    this.params = { i, n, s, d, fields, values };
   }
 }

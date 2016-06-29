@@ -10,8 +10,7 @@ import {
 import { UiConfigComponent } from './ui-config.component';
 import { ConfigService } from '../services/config.service';
 import { provide, Injectable } from '@angular/core';
-// import { RouteSegment } from '@angular/router';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
@@ -28,11 +27,17 @@ export function main() {
         return Observable.of(mockResponse());
       }
     }
-
+    class MockRouter {
+      navigate(params: any) {
+        return params;
+      }
+    }
+    class MockActivatedRoute { }
     beforeEachProviders(() => [
       UiConfigComponent,
-      provide(ConfigService, { useClass: MockConfigService }),
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: ConfigService, useClass: MockConfigService },
+      { provide: Router, useClass: MockRouter },
+      { provide: ActivatedRoute, useClass: MockActivatedRoute },
       MockBackend,
       ApiConfig,
       UiConfig,

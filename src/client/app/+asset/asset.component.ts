@@ -48,7 +48,6 @@ export class AssetComponent implements OnInit, OnDestroy {
         error => this.error.handle(error)
         );
     });
-
     this.focusedCollection = this.store.select('focusedCollection');
   }
 
