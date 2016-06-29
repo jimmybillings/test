@@ -60,8 +60,11 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    this.newSearch();
-    this.getFilterTree();
+    
+    this.sub = this.route.params.subscribe(params => {
+      this.newSearch();
+      this.getFilterTree();
+    });
     this.focusedCollection = this.store.select('focusedCollection');
   }
 
@@ -138,8 +141,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public getFilterTree(): void {
-    this.sub = this.route.params.subscribe(params => {
-      let fids = params['filterIds'];
+      let fids = this.searchContext.get()['filterIds'];
       if (fids && fids !== null) {
         if (typeof fids === 'string') { fids.split(',').forEach(x => this.filterIds.push(x)); }
       }
@@ -148,7 +150,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         payload => { this.rootFilter = new FilterTree('', '', [], '', -1).load(payload, null, v); },
         error => this.error.handle(error)
       );
-    });
   }
 
   public doFilter(filter: FilterTree): void {

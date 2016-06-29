@@ -4,7 +4,7 @@
     <ul class="asset-list" *ngIf="collection.assets">
       <li *ngIf="collection.assets.items" *ngFor="let asset of collection.assets.items">
         <div class="asset">
-          <a *ngIf="asset?.assetId" flex="" [routerLink]="['asset/', asset.assetId]" class="asset-thb">
+          <a *ngIf="asset?.assetId" flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb">
             <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
           </a>
         </div>
