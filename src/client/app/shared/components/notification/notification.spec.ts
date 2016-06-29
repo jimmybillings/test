@@ -27,7 +27,7 @@ export function main() {
         deps: [Http]
       }),
       TranslateService,
-      MockBackend, 
+      MockBackend,
       BaseRequestOptions
     ]);
 
