@@ -46,10 +46,11 @@ export function main() {
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
         deps: [Http]
       }),
+      TranslateService,
       MultilingualService,
       provideStore({ config: config, i18n: multilingualReducer, uiState }),
       CurrentUser,
-      TranslateService,
+
       ApiConfig,
       Authentication,
       UiConfig,
