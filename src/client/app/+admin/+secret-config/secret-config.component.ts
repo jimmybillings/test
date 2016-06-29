@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 import { UiConfig } from '../../shared/services/ui.config';
 import { FormBuilder, Validators, ControlGroup, Control } from '@angular/common';
 import { ConfigService } from '../services/config.service';
-import { RouteSegment } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../shared/components/toast/toast.service';
 import { IuiConfig } from '../../shared/interfaces/config.interface';
-
+import { Subscription } from 'rxjs/Rx';
 @Component({
   moduleId: module.id,
   selector: 'secret-config',
@@ -26,24 +26,30 @@ import { IuiConfig } from '../../shared/interfaces/config.interface';
           ]
 })
 
-export class SecretConfigComponent implements OnInit {
+export class SecretConfigComponent implements OnInit, OnDestroy {
   @ViewChild('target', { read: ViewContainerRef }) target: any;
   private config: IuiConfig;
   private site: string;
   private configForm: ControlGroup;
-
+  private sub: Subscription;
   constructor(public uiConfig: UiConfig,
     public toastService: ToastService,
     public fb: FormBuilder,
     public configService: ConfigService,
-    public routeSegment: RouteSegment) { }
+    public route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.site = this.routeSegment.getParam('site');
-    this.configService.getUiConfig(this.site).subscribe((data: any) => {
-      this.config = data;
-      this.setForm();
+    this.sub = this.route.params.subscribe(params => {
+      this.site = params['site'];
+      this.configService.getUiConfig(this.site).subscribe((data: any) => {
+        this.config = data;
+        this.setForm();
+      });
     });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   public setForm(): void {

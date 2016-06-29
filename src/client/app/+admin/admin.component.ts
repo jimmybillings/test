@@ -18,7 +18,8 @@ export const ADMIN_ROUTES: RouterConfig = [
   { path: 'site-config/:site', component: SiteConfigComponent },
   { path: 'resource/:resource/new', component: NewComponent },
   { path: 'resource/:resource/:id', component: EditComponent  },
-  { path: 'resource/:resource', component: IndexComponent  }
+  { path: 'resource/:resource', component: IndexComponent  },
+  { path: 'secret-config/:site', component: SecretConfigComponent }
 ];
 
 @Component({
@@ -29,20 +30,6 @@ export const ADMIN_ROUTES: RouterConfig = [
   pipes: [TranslatePipe]
 })
 
-<<<<<<< HEAD
-=======
-@Routes([
-  { path: '/dashboard', component: DashboardComponent },
-  { path: '/config', component: ConfigComponent },
-  { path: '/secret-config/:site', component: SecretConfigComponent },
-  { path: '/ui-config/:site', component: UiConfigComponent },
-  { path: '/site-config/:site', component: SiteConfigComponent },
-  { path: '/resource/:resource/new', component: NewComponent },
-  { path: '/resource/:resource/:id', component: EditComponent  },
-  { path: '/resource/:resource', component: IndexComponent  },
-])
-
->>>>>>> fb3f00646e061c9647fb8d5c5d466c67b410bee8
 export class AdminComponent {
   constructor(public currentUser: CurrentUser) {}
 }
