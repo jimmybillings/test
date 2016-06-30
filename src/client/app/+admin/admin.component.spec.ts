@@ -9,7 +9,7 @@ beforeEachProviders
 import { provide } from '@angular/core';
 import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
 import {CurrentUser, currentUser} from '../shared/services/current-user.model';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute, RouterOutletMap} from '@angular/router';
 import {AdminComponent} from './admin.component';
 import {provideStore} from '@ngrx/store';
 import { MockBackend } from '@angular/http/testing';
@@ -20,6 +20,7 @@ export function main() {
     class MockRouter{}
     class MockActivatedRoute{}
     beforeEachProviders(() => [
+      RouterOutletMap,
       { provide: Router, useClass: MockRouter },
       { provide: ActivatedRoute, useClass: MockActivatedRoute },
       provideStore({currentUser: currentUser}),

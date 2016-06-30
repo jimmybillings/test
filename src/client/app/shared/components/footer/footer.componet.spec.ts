@@ -19,7 +19,6 @@ export function main() {
     class MockRouter{}
     class MockActivatedRoute{}
     beforeEachProviders(() => [
-      FooterComponent,
       { provide: Router, useClass: MockRouter },
       { provide: ActivatedRoute, useClass: MockActivatedRoute },
       TranslateService,
@@ -33,6 +32,7 @@ export function main() {
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
         deps: [Http]
       }),
+      FooterComponent
     ]);
 
     it('Should have a footer instance',
