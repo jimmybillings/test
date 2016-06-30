@@ -8,7 +8,6 @@ import {WzFormComponent} from '../../shared/components/wz-form/wz.form.component
 import {PaginationComponent} from '../../shared/components/pagination/pagination.component';
 import {UiConfig} from '../../shared/services/ui.config';
 import {UiState} from '../../shared/services/ui.state';
-// import {IuiConfig} from '../../shared/interfaces/config.interface';
 import {Subscription} from 'rxjs/Rx';
 
 @Component({
@@ -20,7 +19,7 @@ import {Subscription} from 'rxjs/Rx';
 })
 
 export class IndexComponent implements OnInit, OnDestroy {
-  public resource: string;
+  public resourceType: string;
   public toggleFlag: string;
   public currentComponent: string;
   public subscription: Subscription;
@@ -39,55 +38,45 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub = this.route.params.subscribe(param => {
-      this.params = this.buildRouteParams(param);
-      this.resource = param['resource'];
-      this.currentComponent = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
+      this.resourceType = param['resource'];
+      this.currentComponent = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1);
       this.buildRouteParams(param);
       this.uiConfig.get('admin' + this.currentComponent).subscribe((config) => {
         this.config = config.config;
-        this.getIndex(this.params);
-        this.adminService.adminStore.subscribe(data => {
-          this.currentResources = data;
-        });
+        this.getIndex();
       });
+      this.subscription = this.adminService.adminStore.subscribe(data => this.currentResources = data);
     });
   }
+
 
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();
     this.sub.unsubscribe();
   }
 
-  public getIndex(params: any): void {
-    this.toggleFlag = params.d;
-    this.adminService.getResources(params, this.resource).subscribe(data => {
+  public getIndex(): void {
+    this.toggleFlag = this.params.d;
+    this.adminService.getResources(this.params, this.resourceType).subscribe(data => {
       this.adminService.setResources(data);
     });
   }
 
   public navigateToPageUrl(i: number): void {
     let params = this.updateRouteParams({ i });
-    this.router.navigate(['/admin/resource/' + this.resource, params]);
+    this.router.navigate(['/admin/resource/' + this.resourceType, params]);
   }
 
   public navigateToSortUrl(sortParams: any): void {
     let params = this.updateRouteParams(sortParams);
-    this.router.navigate(['/admin/resource/' + this.resource, params]);
+    this.router.navigate(['/admin/resource/' + this.resourceType, params]);
   }
 
   public navigateToFilterUrl(filterParams: any): void {
     let searchTerms = this.adminService.buildSearchTerm(filterParams);
     let params = this.updateRouteParams(searchTerms);
     params.i = 1;
-    this.router.navigate(['/admin/resource/' + this.resource, params]);
-  }
-
-  public showEditForm(resource: any): void {
-    this.adminService.showEditComponent(this.config.editForm.items, resource, this.resource);
-  }
-
-  public showNewForm(): void {
-    this.adminService.showNewComponent(this.config.newForm.items, this.resource);
+    this.router.navigate(['/admin/resource/' + this.resourceType, params]);
   }
 
   public updateRouteParams(dynamicParams?: any) {
@@ -103,5 +92,13 @@ export class IndexComponent implements OnInit, OnDestroy {
     fields = params['fields'] || '';
     values = params['values'] || '';
     this.params = { i, n, s, d, fields, values };
+  }
+
+  public showEditForm(resource: any): void {
+    this.adminService.showEditComponent(this.config.editForm.items, resource, this.resourceType);
+  }
+
+  public showNewForm(): void {
+    this.adminService.showNewComponent(this.config.newForm.items, this.resourceType);
   }
 }

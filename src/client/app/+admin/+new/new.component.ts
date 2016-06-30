@@ -13,15 +13,17 @@ import { WzFormComponent } from '../../shared/components/wz-form/wz.form.compone
 export class NewComponent {
   @Input() formItems: any;
   @Input() resourceType: string;
+  @Input() cmpRef: any;
   @Output() updatedResource = new EventEmitter();
   @Output() removeEditComponent = new EventEmitter();
 
   public onSubmit(formData: any): void {
     console.log(formData);
+    this.cmpRef.destroy();
   }
 
   public destroyComponent(): void {
-   console.log('destroy');
+   this.cmpRef.destroy();
   }
 }
 

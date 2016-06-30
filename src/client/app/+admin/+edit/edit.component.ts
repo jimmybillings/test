@@ -14,6 +14,7 @@ export class EditComponent implements OnInit {
   @Input() resource: any;
   @Input() formItems: any;
   @Input() resourceType: string;
+  @Input() cmpRef: any;
   @Output() updatedResource = new EventEmitter();
   @Output() removeEditComponent = new EventEmitter();
 
@@ -24,11 +25,12 @@ export class EditComponent implements OnInit {
   }
 
   public onSubmit(formData: any): void {
-    console.log(formData);
     Object.assign(this.resource, formData);
+    console.log(formData);
+    this.cmpRef.destroy();
   }
 
   public destroyComponent(): void {
-   console.log('destroy');
+   this.cmpRef.destroy();
   }
 }
