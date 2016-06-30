@@ -103,12 +103,10 @@ export function main() {
       spyOn(component.authentication, 'destroy').and.callThrough();
       spyOn(component.currentUser, 'destroy');
       spyOn(component.collectionsService, 'clearCollections');
-      spyOn(component.router, 'navigate');
       component.logout();
       expect(component.authentication.destroy).toHaveBeenCalled();
       expect(component.currentUser.destroy).toHaveBeenCalled();
       expect(component.collectionsService.clearCollections).toHaveBeenCalled();
-      expect(component.router.navigate).toHaveBeenCalledWith(['/']);
     }));
 
     it('Should change the current language', inject([AppComponent], (component: any) => {

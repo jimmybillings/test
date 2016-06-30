@@ -5,17 +5,18 @@
         {{ 'COLLECTION.DD_MENU.HEADING' | translate }}
       </h4>
       <div class="tools" flex="auto" layout-align="end center">
-        <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showSearch.emit($event)"><md-icon>search</md-icon></button>
-        <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showFilters.emit($event)"><md-icon>filter_list</md-icon></button>
-        <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showSort.emit($event)"><md-icon>sort</md-icon></button>
+        <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showCollectionSearch($event)"><md-icon>search</md-icon></button>
+        <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showCollectionFilter($event)"><md-icon>filter_list</md-icon></button>
+        <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>
       </div>
     </header>
     <md-list dense>
-      <md-list-item *ngFor="let collection of (collections | async).items" [ngClass]="{focused: focusedCollection.id === collection.id}"
-        (click)="selected(collection)">
-        <md-icon *ngIf="focusedCollection.id === collection.id">check_box</md-icon>
-        <md-icon *ngIf="focusedCollection.id !== collection.id">check_box_outline_blank</md-icon>
-        {{collection.name}}
+      <md-list-item *ngFor="let collection of (collections | async).items" [ngClass]="{focused: focusedCollection.id === collection.id}">
+        <button (click)="selectFocusedCollection(collection)">
+          <md-icon *ngIf="focusedCollection.id === collection.id">check_box</md-icon>
+          <md-icon *ngIf="focusedCollection.id !== collection.id">check_box_outline_blank</md-icon>
+          {{collection.name}}
+        </button>
       </md-list-item>
     </md-list>
     <footer layout="row" layout-align="center center">
