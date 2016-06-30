@@ -60,7 +60,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    
+
     this.sub = this.route.params.subscribe(params => {
       this.newSearch();
       this.getFilterTree();
@@ -81,7 +81,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     let collection: Collection = params.collection;
     collection.assets ? collection.assets.items.push(params.asset) : collection.assets.items = [params.asset];
     this.collectionsService.addAssetsToCollection(collection.id, params.asset).subscribe(payload => {
-      this.collectionsService.getCollectionItems(collection.id,300).subscribe(search => {
+      this.collectionsService.getCollectionItems(collection.id, 300).subscribe(search => {
         this.collectionsService.updateFocusedCollectionAssets(payload, search);
         this.collectionsService.updateCollectionInStore(payload, search);
       });
@@ -141,15 +141,15 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public getFilterTree(): void {
-      let fids = this.searchContext.get()['filterIds'];
-      if (fids && fids !== null) {
-        if (typeof fids === 'string') { fids.split(',').forEach(x => this.filterIds.push(x)); }
-      }
-      let v: Array<string> = this.filterIds;
-      this.assetData.getFilterTree(this.searchContext.get()).subscribe(
-        payload => { this.rootFilter = new FilterTree('', '', [], '', -1).load(payload, null, v); },
-        error => this.error.handle(error)
-      );
+    let fids = this.searchContext.get()['filterIds'];
+    if (fids && fids !== null) {
+      if (typeof fids === 'string') { fids.split(',').forEach(x => this.filterIds.push(x)); }
+    }
+    let v: Array<string> = this.filterIds;
+    this.assetData.getFilterTree(this.searchContext.get()).subscribe(
+      payload => { this.rootFilter = new FilterTree('', '', [], '', -1).load(payload, null, v); },
+      error => this.error.handle(error)
+    );
   }
 
   public doFilter(filter: FilterTree): void {

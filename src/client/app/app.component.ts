@@ -20,6 +20,7 @@ import {
   ContentComponent,
   CollectionsService,
   CollectionComponent,
+  CollectionShowComponent,
   Collection,
   CollectionStore,
   AdminComponent,
@@ -38,6 +39,7 @@ export const APP_ROUTES: RouterConfig = [
   { path: 'search', component: SearchComponent },
   { path: 'asset/:name', component: AssetComponent },
   { path: 'collection', component: CollectionComponent },
+  { path: 'collection/:id', component: CollectionShowComponent },
   { path: 'content/:page', component: ContentComponent },
   { path: 'admin', component: AdminComponent, children: ADMIN_ROUTES }
 ];

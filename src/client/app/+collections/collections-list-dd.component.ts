@@ -21,10 +21,6 @@ export class CollectionListDdComponent {
 
   @Input() focusedCollection: Collection;
   @Input() UiState: any;
-  // @Output() isFocused = new EventEmitter();
-  // @Output() showSearch = new EventEmitter();
-  // @Output() showFilter = new EventEmitter();
-  // @Output() showSort = new EventEmitter();
   public collections: Observable<Collection[]>;
 
   constructor(

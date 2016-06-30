@@ -36,7 +36,7 @@ collection-form {
   }
 }
 // collections index pg
-collections-list {
+.collections-list {
   ul {
     margin: 0;
     padding: 0;
@@ -44,7 +44,7 @@ collections-list {
   }
   li.collection {
     position: relative;
-    background-color: rgba(md-color($md-background, card), .65);
+    background-color: rgba(md-color($md-background, card), .85);
     color: rgba(md-color($md-foreground, text), .7);
     margin-bottom: rem(1.2);
     padding: rem(.4);
