@@ -6,6 +6,7 @@ import {
   AssetComponent,
   ContentComponent,
   CollectionComponent,
+  CollectionShowComponent,
   AdminComponent,
 } from './platform/app.component.imports';
 import {USER_ROUTES} from './+user-management/user-management.routes';
@@ -18,6 +19,7 @@ export const APP_ROUTES: RouterConfig = [
   { path: 'search', component: SearchComponent },
   { path: 'asset/:name', component: AssetComponent },
   { path: 'collection', component: CollectionComponent },
+  { path: 'collection/:id', component: CollectionShowComponent },
   { path: 'content/:page', component: ContentComponent },
   { path: 'admin', component: AdminComponent, children: ADMIN_ROUTES }
 ];

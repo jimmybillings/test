@@ -91,9 +91,8 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public showCollection(collection: Collection): void {
     this.selectFocusedCollection(collection);
     setTimeout(() => {
-      console.log('navigate to show page');
       this.router.navigate(['/collection/', collection.id]);
-    }, 1200);
+    }, 300);
   }
 
   public ngOnDestroy(): void {
