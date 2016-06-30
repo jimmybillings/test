@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router} from '@angular/router';
 import { Store, Reducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
-import {Location} from '@angular/common';
+
 const initSearchContext: any = {
   q: null,
   i: 1,
@@ -24,13 +24,13 @@ export const searchContext: Reducer<any> = (state: any = initSearchContext, acti
 @Injectable()
 export class SearchContext {
   public context: Observable<any>;
-  constructor(public router: Router, public store: Store<any>, public loc: Location) {
+  constructor(public router: Router, public store: Store<any>) {
     this.context = this.store.select('searchContext');
   }
 
   public new(params: Object): void {
     this.set(params);
-    this.router.navigate(['/search', this.get()]);
+    this.go();
   }
 
   public get(): any {
@@ -42,23 +42,23 @@ export class SearchContext {
   }
 
   public go(): void {
-    this.loc.go('/search;' + this.toQueryParam(this.get()));
+    this.router.navigate(['/search', this.get()]);
   }
 
-  private toQueryParam(params: any): string {
-    let buffer = new Array();
-    for (var name in params) {
-      if (!params.hasOwnProperty(name)) {
-        continue;
-      }
-      var value = params[name];
-      if (value !== null) {
-        buffer.push(name + '=' + value);
-      } else {
-        buffer.push(name + '=');
-      }
-    }
-    var source = buffer.join(';');
-    return (source);
-  }
+  // private toQueryParam(params: any): string {
+  //   let buffer = new Array();
+  //   for (var name in params) {
+  //     if (!params.hasOwnProperty(name)) {
+  //       continue;
+  //     }
+  //     var value = params[name];
+  //     if (value !== null) {
+  //       buffer.push(name + '=' + value);
+  //     } else {
+  //       buffer.push(name + '=');
+  //     }
+  //   }
+  //   var source = buffer.join(';');
+  //   return (source);
+  // }
 }

@@ -7,7 +7,7 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import {provide, Renderer} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 import { ApiConfig } from '../../shared/services/api.config';
@@ -33,6 +33,11 @@ export function main() {
         return Observable.of(res);
       }
     }
+    class MockRouter {
+      navigate() {
+        return true;
+      }
+    }
 
     beforeEachProviders(() => [
       LoginComponent,
@@ -45,7 +50,7 @@ export function main() {
       User,
       FormModel,
       HTTP_PROVIDERS,
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
       provide(Authentication, { useClass: MockAuthentication }),
       provideStore({ config: config, uiState: uiState }),
 
@@ -62,7 +67,6 @@ export function main() {
 
     it('Should set token in localStorage, set the new user, navigate to home page on succesful login',
       inject([LoginComponent], (login: LoginComponent) => {
-        login.router.createUrlTree([{ path: '/', component: Home }]);
         localStorage.clear();
         spyOn(localStorage, 'setItem');
         spyOn(login._currentUser, 'set');

@@ -107,7 +107,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public changePage(page: any): void {
     this.searchContext.set({ i: page });
     this.searchContext.go();
-    this.newSearch();
   }
 
   public keywordSearch(): void {
@@ -137,7 +136,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchContext.set({ 'filterValues': null });
     }
     this.searchContext.go();
-    this.newSearch();
   }
 
   public getFilterTree(): void {
