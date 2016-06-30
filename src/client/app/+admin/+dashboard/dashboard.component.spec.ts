@@ -17,7 +17,7 @@ import { MockBackend } from '@angular/http/testing';
 
 export function main() {
   describe('Admin Dashboard component', () => {
-    class MockRouter{}
+    class MockRouter { }
     beforeEachProviders(() => [
       { provide: Router, useClass: MockRouter },
       provideStore({ currentUser: currentUser }),

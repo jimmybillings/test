@@ -34,17 +34,17 @@ export function main() {
         return true;
       }
     }
-    class MockRouter {}
-    beforeEachProviders(() => [      
+    class MockRouter { }
+    beforeEachProviders(() => [
       CollectionFormComponent,
-      provide(CollectionsService, {useClass: MockCollectionsService}),
+      provide(CollectionsService, { useClass: MockCollectionsService }),
       UiState,
       ApiConfig,
       UiConfig,
       { provide: Router, useClass: MockRouter },
       MockBackend,
       BaseRequestOptions,
-      provideStore({collections: collections, focusedCollection: focusedCollection, uiState: uiState}),
+      provideStore({ collections: collections, focusedCollection: focusedCollection, uiState: uiState }),
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]

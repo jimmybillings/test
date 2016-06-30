@@ -14,8 +14,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 export function main() {
   describe('Content service', () => {
-    class MockRouter{}
-    class MockActivatedRoute{}
+    class MockRouter { }
+    class MockActivatedRoute { }
     beforeEachProviders(() => [
       { provide: Router, useClass: MockRouter },
       { provide: ActivatedRoute, useClass: MockActivatedRoute },

@@ -15,7 +15,7 @@ import { Renderer } from '@angular/core';
 
 export function main() {
   describe('Asset List Component', () => {
-    class MockRouter{}
+    class MockRouter { }
     beforeEachProviders(() => [
       AssetListComponent,
       { provide: Router, useClass: MockRouter },

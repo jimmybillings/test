@@ -14,8 +14,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 export function main() {
   describe('Config Service', () => {
-    class MockRouter {}
-    class MockActivatedRoute{}
+    class MockRouter { }
+    class MockActivatedRoute { }
     beforeEachProviders(() => [
       { provide: Router, useClass: MockRouter },
       { provide: ActivatedRoute, useClass: MockActivatedRoute },
@@ -105,20 +105,20 @@ export function main() {
 
     function mockResponse() {
       return {
-        'items' : [ {
-          'lastUpdated' : '2016-06-20T15:14:12Z',
-          'createdOn' : '2016-03-02T17:01:14Z',
-          'id' : 2,
-          'siteName' : 'cnn',
-          'components' : {
-            'header' : {'config' : {'title' : {'value' : 'CNN Image Source'}}},
-            'searchBox' : {'config' : {'pageSize' : {'value' : '56'}}},
-            'search' : {'config' : {'viewType' : {'value' : 'grid'}}},
-            'home' : {'config' : {'pageSize' : {'value' : '56'}}}
+        'items': [{
+          'lastUpdated': '2016-06-20T15:14:12Z',
+          'createdOn': '2016-03-02T17:01:14Z',
+          'id': 2,
+          'siteName': 'cnn',
+          'components': {
+            'header': { 'config': { 'title': { 'value': 'CNN Image Source' } } },
+            'searchBox': { 'config': { 'pageSize': { 'value': '56' } } },
+            'search': { 'config': { 'viewType': { 'value': 'grid' } } },
+            'home': { 'config': { 'pageSize': { 'value': '56' } } }
           },
           'config': {}
-        } ],
-        'totalCount' : 1,'currentPage' : 0,'pageSize' : 20,'hasNextPage' : false,'hasPreviousPage' : false,'numberOfPages' : 1
+        }],
+        'totalCount': 1, 'currentPage': 0, 'pageSize': 20, 'hasNextPage': false, 'hasPreviousPage': false, 'numberOfPages': 1
       };
     }
   });

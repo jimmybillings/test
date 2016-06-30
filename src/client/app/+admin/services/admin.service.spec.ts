@@ -16,8 +16,8 @@ import {Router, ActivatedRoute} from '@angular/router';
 
 export function main() {
   describe('Admin Service', () => {
-    class MockRouter {}
-    class MockActivatedRoute{}
+    class MockRouter { }
+    class MockActivatedRoute { }
     beforeEachProviders(() => [
       { provide: Router, useClass: MockRouter },
       { provide: ActivatedRoute, useClass: MockActivatedRoute },

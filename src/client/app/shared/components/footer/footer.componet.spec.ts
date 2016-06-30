@@ -16,8 +16,8 @@ import { MockBackend } from '@angular/http/testing';
 
 export function main() {
   describe('Footer Component', () => {
-    class MockRouter{}
-    class MockActivatedRoute{}
+    class MockRouter { }
+    class MockActivatedRoute { }
     beforeEachProviders(() => [
       { provide: Router, useClass: MockRouter },
       { provide: ActivatedRoute, useClass: MockActivatedRoute },

@@ -18,7 +18,7 @@ import { Error } from '../../shared/services/error.service';
 
 export function main() {
   describe('Collection service', () => {
-    class MockRouter{}
+    class MockRouter { }
     beforeEachProviders(() => [
       MockBackend,
       BaseRequestOptions,
@@ -214,7 +214,7 @@ export function main() {
             'totalCount': 1
           }
         },
-        'tags': ['golf','masters','Augusta'],
+        'tags': ['golf', 'masters', 'Augusta'],
         'thumbnail': {
           'name': 'thumbnail',
           'urls': {
@@ -311,7 +311,7 @@ export function main() {
             'numberOfPages': 1
           },
         },
-        'tags': ['golf','masters','Augusta'],
+        'tags': ['golf', 'masters', 'Augusta'],
         'thumbnail': {
           'name': 'thumbnail',
           'urls': {

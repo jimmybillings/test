@@ -32,7 +32,7 @@ export function main() {
         return params;
       }
     }
-    class MockActivatedRoute{}
+    class MockActivatedRoute { }
     beforeEachProviders(() => [
       AppComponent,
       RouterOutletMap,

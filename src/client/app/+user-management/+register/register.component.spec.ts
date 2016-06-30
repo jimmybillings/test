@@ -33,7 +33,7 @@ export function main() {
         return Observable.of(res);
       }
     }
-    class MockRouter{}
+    class MockRouter { }
     beforeEachProviders(() => [
       RegisterComponent,
       { provide: Router, useClass: MockRouter },

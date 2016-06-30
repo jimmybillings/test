@@ -18,7 +18,7 @@ import { BaseRequestOptions, Http } from '@angular/http';
 
 export function main() {
   describe('Bin Tray Component', () => {
-    class MockRouter{}
+    class MockRouter { }
     class Search { }
     beforeEachProviders(() => [
       BinTrayComponent,

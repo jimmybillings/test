@@ -42,8 +42,8 @@ export function main() {
         return payload;
       }
     }
-    class MockRouter{}
-    class MockActivatedRoute{}
+    class MockRouter { }
+    class MockActivatedRoute { }
     beforeEachProviders(() => [
       SearchComponent,
       // provide(RouteSegment, { useValue: new RouteSegment([], { q: 'blue' }, null, null, null) }),

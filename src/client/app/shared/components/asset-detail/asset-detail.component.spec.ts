@@ -14,7 +14,7 @@ import {AssetDetailComponent} from './asset-detail.component';
 
 export function main() {
   describe('Asset Detail Component', () => {
-    class MockRouter{}
+    class MockRouter { }
     beforeEachProviders(() => [
       AssetDetailComponent,
       { provide: Router, useClass: MockRouter },

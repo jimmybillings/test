@@ -19,7 +19,7 @@ import { Error } from '../../shared/services/error.service';
 export function main() {
   describe('Asset data service', () => {
 
-    class MockRouter{}
+    class MockRouter { }
     beforeEachProviders(() => [
       MockBackend,
       BaseRequestOptions,

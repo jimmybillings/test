@@ -14,13 +14,13 @@ import { Router } from '@angular/router';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
-import { UiConfig , config } from '../../shared/services/ui.config';
+import { UiConfig, config } from '../../shared/services/ui.config';
 import { provideStore } from '@ngrx/store';
 import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
 
 export function main() {
   describe('Admin Config component', () => {
-    class MockRouter{}
+    class MockRouter { }
     beforeEachProviders(() => [
       ConfigComponent,
       ConfigService,

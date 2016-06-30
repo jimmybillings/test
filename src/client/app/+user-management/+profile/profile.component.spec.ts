@@ -15,7 +15,7 @@ import { provideStore } from '@ngrx/store';
 
 export function main() {
   describe('Profile Component', () => {
-    class MockRouter{}
+    class MockRouter { }
     beforeEachProviders(() => [
       { provide: Router, useClass: MockRouter },
       provideStore({ currentUser: currentUser }),
