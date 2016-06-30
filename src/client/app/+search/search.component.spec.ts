@@ -7,8 +7,7 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
-// import {RouteSegment} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {SearchComponent} from './search.component';
 import {provide} from '@angular/core';
 import { MockBackend } from '@angular/http/testing';
@@ -43,10 +42,13 @@ export function main() {
         return payload;
       }
     }
+    class MockRouter{}
+    class MockActivatedRoute{}
     beforeEachProviders(() => [
       SearchComponent,
       // provide(RouteSegment, { useValue: new RouteSegment([], { q: 'blue' }, null, null, null) }),
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
+      { provide: ActivatedRoute, useClass: MockActivatedRoute },
       HTTP_PROVIDERS,
       MockBackend,
       BaseRequestOptions,

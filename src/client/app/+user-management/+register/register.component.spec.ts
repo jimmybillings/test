@@ -7,7 +7,7 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router } from '@angular/router';
 
 import {Observable} from 'rxjs/Rx';
 import {provide} from '@angular/core';
@@ -33,10 +33,10 @@ export function main() {
         return Observable.of(res);
       }
     }
-
+    class MockRouter{}
     beforeEachProviders(() => [
       RegisterComponent,
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
       MockBackend,
       HTTP_PROVIDERS,
       BaseRequestOptions,

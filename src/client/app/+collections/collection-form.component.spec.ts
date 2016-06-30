@@ -13,7 +13,7 @@ import { ApiConfig } from '../shared/services/api.config';
 import { UiConfig } from '../shared/services/ui.config';
 import { UiState, uiState } from '../shared/services/ui.state';
 import { provide, Injectable } from '@angular/core';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { provideStore } from '@ngrx/store';
@@ -34,13 +34,14 @@ export function main() {
         return true;
       }
     }
-    beforeEachProviders(() => [
+    class MockRouter {}
+    beforeEachProviders(() => [      
       CollectionFormComponent,
       provide(CollectionsService, {useClass: MockCollectionsService}),
       UiState,
       ApiConfig,
       UiConfig,
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
       MockBackend,
       BaseRequestOptions,
       provideStore({collections: collections, focusedCollection: focusedCollection, uiState: uiState}),

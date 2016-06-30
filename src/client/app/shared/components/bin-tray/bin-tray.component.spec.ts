@@ -7,10 +7,9 @@ import {
   beforeEachProviders,
 } from '@angular/core/testing';
 import { provide} from '@angular/core';
-
 import { BinTrayComponent} from './bin-tray.component';
 import { UiConfig} from '../../services/ui.config';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import { CollectionsService, collections} from '../../../+collections/services/collections.service';
 import { provideStore } from '@ngrx/store';
 import { ApiConfig } from '../../../shared/services/api.config';
@@ -19,10 +18,11 @@ import { BaseRequestOptions, Http } from '@angular/http';
 
 export function main() {
   describe('Bin Tray Component', () => {
+    class MockRouter{}
     class Search { }
     beforeEachProviders(() => [
       BinTrayComponent,
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
       UiConfig,
       CollectionsService,
       ApiConfig,

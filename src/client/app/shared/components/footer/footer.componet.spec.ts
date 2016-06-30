@@ -9,16 +9,19 @@ import {
 
 import {provide} from '@angular/core';
 import {FooterComponent} from './footer.component';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateLoader, TranslateStaticLoader, TranslateService} from 'ng2-translate/ng2-translate';
 import { Http, BaseRequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
 export function main() {
   describe('Footer Component', () => {
+    class MockRouter{}
+    class MockActivatedRoute{}
     beforeEachProviders(() => [
       FooterComponent,
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
+      { provide: ActivatedRoute, useClass: MockActivatedRoute },
       TranslateService,
       MockBackend,
       BaseRequestOptions,

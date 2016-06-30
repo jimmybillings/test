@@ -10,14 +10,15 @@ import { ConfigService } from './config.service';
 import { ApiConfig } from '../../shared/services/api.config';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http, Response, ResponseOptions, RequestMethod } from '@angular/http';
-// import { RouteSegment } from '@angular/router';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router, ActivatedRoute } from '@angular/router';
 
 export function main() {
   describe('Config Service', () => {
-
+    class MockRouter {}
+    class MockActivatedRoute{}
     beforeEachProviders(() => [
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
+      { provide: ActivatedRoute, useClass: MockActivatedRoute },
       MockBackend,
       BaseRequestOptions,
       provide(Http, {

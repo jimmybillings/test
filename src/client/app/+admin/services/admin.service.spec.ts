@@ -12,14 +12,15 @@ import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http, RequestOptions, URLSearchParams } from '@angular/http';
 import { CurrentUser, currentUser } from '../../shared/services/current-user.model';
 import { provideStore } from '@ngrx/store';
-// import {RouteSegment} from '@angular/router';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import {Router, ActivatedRoute} from '@angular/router';
 
 export function main() {
   describe('Admin Service', () => {
-
+    class MockRouter {}
+    class MockActivatedRoute{}
     beforeEachProviders(() => [
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
+      { provide: ActivatedRoute, useClass: MockActivatedRoute },
       MockBackend,
       BaseRequestOptions,
       provide(Http, {

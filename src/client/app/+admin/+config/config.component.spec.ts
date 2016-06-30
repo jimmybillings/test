@@ -10,7 +10,7 @@ import {
 import { ConfigComponent } from './config.component';
 import { ConfigService } from '../services/config.service';
 import { provide } from '@angular/core';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router';
+import { Router } from '@angular/router';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
@@ -20,10 +20,11 @@ import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-tra
 
 export function main() {
   describe('Admin Config component', () => {
+    class MockRouter{}
     beforeEachProviders(() => [
       ConfigComponent,
       ConfigService,
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
       MockBackend,
       ApiConfig,
       UiConfig,

@@ -7,13 +7,14 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import {UserManagementComponent} from './user-management.component';
 
 export function main() {
   describe('User Management Component', () => {
+    class MockRouter{}
     beforeEachProviders(() => [
-      // ROUTER_FAKE_PROVIDERS
+      { provide: Router, useClass: MockRouter },
     ]);
 
     it('Should have a user-management instance',
