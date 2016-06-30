@@ -1,19 +1,17 @@
 
-<admin-edit *ngIf="config">
-  <div [ngClass]="{hidden: !showForm, show: showForm}">
-    <div layout="row" layout-align="center center">
-      <div flex-xl="30" flex-gt-lg="30" flex-md="50" flex="50" flex-md="70" flex-sm="85" flex-xs="85">
-        <md-card class="wz-form-card">
-          <div layout="row" layout-align="center center">
-            <md-card-title>
-              {{ 'ADMIN.' + currentComponent.toUpperCase() + '.EDIT_TITLE' | translate }}
-            </md-card-title>
-          </div>
-          <md-card-content>
-            <wz-form layout-align="center center" [items]="config.editForm.items" submitLabel="UPDATE" (formSubmit)="onSubmit($event)"></wz-form>
-          </md-card-content>
-        </md-card>
-      </div>
+<admin-edit>
+  <div layout="row" layout-align="center center">
+    <div flex-xl="30" flex-gt-lg="30" flex-md="50" flex="50" flex-md="70" flex-sm="85" flex-xs="85">
+      <md-card class="wz-form-card">
+        <div layout="row" layout-align="center center">
+          <md-card-title>
+            Edit
+          </md-card-title>
+        </div>
+        <md-card-content>
+          <wz-form layout-align="center center" [items]="formItems" submitLabel="UPDATE" (formSubmit)="onSubmit($event)"></wz-form>
+        </md-card-content>
+      </md-card>
     </div>
   </div>
 </admin-edit>

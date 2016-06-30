@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ComponentRef, ComponentResolver, Renderer } from '@angular/core';
 import { Http, Response, URLSearchParams, RequestOptions } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Store, Reducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
+import { EditComponent } from '../+edit/edit.component';
+// import { NewComponent } from '../+new/new.component';
 
 const adminState: any = { items: [], pagination: {} };
 export const adminResources: Reducer<any> = (state = adminState, action: Action) => {
@@ -19,10 +21,14 @@ export class AdminService {
 
   public operatorMap: any;
   public adminStore: Observable<any>;
+  public cmpRef: ComponentRef<any>;
+  public viewRef: any;
 
   constructor(public http: Http,
               public apiConfig: ApiConfig,
-              private store: Store<any>) {
+              private store: Store<any>,
+              private renderer: Renderer,
+              private resolver: ComponentResolver) {
     this.adminStore = this.store.select('adminResources');
     this.operatorMap = {
       'before': 'LT',
@@ -144,5 +150,20 @@ export class AdminService {
   public removeFields(value: any): boolean {
     let fieldsToRemove = ['createdOn', 'lastUpdated', 'before', 'after'];
     return !(fieldsToRemove.indexOf(value) > -1);
+  }
+
+  public showEditComponent(target: any, editFormItems: any, resource: any): void {
+    console.log(target);
+    this.resolver.resolveComponent(EditComponent).then((factory: any) => {
+      this.cmpRef = target.createComponent(factory);
+      this.cmpRef.instance.resource = resource;
+      this.cmpRef.instance.formItems = editFormItems;
+      this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.destroyEditComponent());
+    });
+  }
+
+  public destroyEditComponent(): void {
+    this.cmpRef.destroy();
+    this.viewRef();
   }
 }

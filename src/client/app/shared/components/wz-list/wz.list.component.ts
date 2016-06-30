@@ -22,14 +22,14 @@ export class WzListComponent {
   @Input() headers: any;
   @Input() toggleFlag: any;
   @Output() sort = new EventEmitter();
-  @Output() clickRow = new EventEmitter();
+  @Output() editForm = new EventEmitter();
 
   public sortBy(attribute: string): void {
     this.sort.emit({ 's': attribute, 'd': !this.toggleFlag });
   }
 
-  public showRecord(record: any): void {
-    this.clickRow.emit(record);
+  public showEditForm(record: any): void {
+    this.editForm.emit(record);
   }
 
   public date(date: any): Date {
