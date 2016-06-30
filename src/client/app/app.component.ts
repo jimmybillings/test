@@ -1,6 +1,5 @@
 import { Component, OnInit, Renderer, ViewChild, ViewContainerRef } from '@angular/core';
-import { RouterConfig, Router, ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
@@ -13,34 +12,14 @@ import {
   SearchContext,
   Authentication,
   ILang,
-  HomeComponent,
-  UserManagementComponent,
-  SearchComponent,
-  AssetComponent,
-  ContentComponent,
-  CollectionsService,
-  CollectionComponent,
   Collection,
   CollectionStore,
-  AdminComponent,
   UiState,
-  NotificationService
+  NotificationService,
+  CollectionsService
 } from './platform/app.component.imports';
 import {ROUTER_DIRECTIVES} from '@angular/router';
-import {USER_ROUTES} from './+user-management/user-management.component';
-import {ADMIN_ROUTES} from './+admin/admin.component';
 declare var portal: string;
-
-export const APP_ROUTES: RouterConfig = [
-  { path: '', component: HomeComponent },
-  { path: 'notification', component: HomeComponent },
-  { path: 'user', component: UserManagementComponent, children: USER_ROUTES },
-  { path: 'search', component: SearchComponent },
-  { path: 'asset/:name', component: AssetComponent },
-  { path: 'collection', component: CollectionComponent },
-  { path: 'content/:page', component: ContentComponent },
-  { path: 'admin', component: AdminComponent, children: ADMIN_ROUTES }
-];
 
 @Component({
   moduleId: module.id,
@@ -62,7 +41,6 @@ export class AppComponent implements OnInit {
     public uiConfig: UiConfig,
     public router: Router,
     public multiLingual: MultilingualService,
-    public location: Location,
     public searchContext: SearchContext,
     public currentUser: CurrentUser,
     public collectionsService: CollectionsService,
@@ -71,10 +49,8 @@ export class AppComponent implements OnInit {
     private renderer: Renderer,
     private notification: NotificationService,
     private apiConfig: ApiConfig,
-    private authentication: Authentication,
-    private route: ActivatedRoute) {
+    private authentication: Authentication) {
     this.apiConfig.setPortal(portal);
-
   }
 
   ngOnInit() {

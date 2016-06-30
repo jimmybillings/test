@@ -6,16 +6,20 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 import { provideStore } from '@ngrx/store';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
 import { Error } from './error.service';
 import { CurrentUser, currentUser} from '../services/current-user.model';
+import {Router} from '@angular/router';
 
 export function main() {
   describe('Error Service', () => {
-
+    class MockRouter {
+      navigate(params: any) {
+        return params;
+      }
+    }
     beforeEachProviders(() => [
       Error,
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
       CurrentUser,
       provideStore({ currentUser }),
     ]);

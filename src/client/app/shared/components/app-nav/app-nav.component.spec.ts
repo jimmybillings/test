@@ -8,14 +8,19 @@ import {
 } from '@angular/core/testing';
 
 import { AppNavComponent} from './app-nav.component';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import { UiConfig} from '../../services/ui.config';
 
 export function main() {
-  describe('Header Component', () => {
+  describe('App Nav Component', () => {
+    class MockRouter {
+      navigate(params: any) {
+        return params;
+      }
+    }
     beforeEachProviders(() => [
       AppNavComponent,
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
       UiConfig,
     ]);
 

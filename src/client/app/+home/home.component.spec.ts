@@ -7,7 +7,7 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import {HomeComponent} from './home.component';
 import {provide} from '@angular/core';
 import { MockBackend } from '@angular/http/testing';
@@ -27,10 +27,10 @@ export function main() {
         return Observable.of({ 'components': { 'component': 'true' }, 'config': { 'config': 'true' } });
       }
     }
-
+    class MockRouter {}
     beforeEachProviders(() => [
       HomeComponent,
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
       MockBackend,
       BaseRequestOptions,
       provide(Http, {

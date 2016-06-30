@@ -8,7 +8,7 @@ import {
 } from '@angular/core/testing';
 import { provide } from '@angular/core';
 import { DashboardComponent} from './dashboard.component';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import { CurrentUser, currentUser} from '../../shared/services/current-user.model';
 import { provideStore } from '@ngrx/store';
 import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
@@ -17,8 +17,9 @@ import { MockBackend } from '@angular/http/testing';
 
 export function main() {
   describe('Admin Dashboard component', () => {
+    class MockRouter { }
     beforeEachProviders(() => [
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
       provideStore({ currentUser: currentUser }),
       CurrentUser,
       MockBackend,

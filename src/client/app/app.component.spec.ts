@@ -7,7 +7,7 @@ import {
 } from '@angular/core/testing';
 
 import { provide, Renderer} from '@angular/core';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router, RouterOutletMap, ActivatedRoute } from '@angular/router';
 import { TestComponentBuilder } from '@angular/compiler/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
@@ -26,10 +26,18 @@ import { CollectionsService} from './+collections/services/collections.service';
 
 export function main() {
   describe('App Component', () => {
-     (<any>window).portal = 'core';
+    (<any>window).portal = 'core';
+    class MockRouter {
+      navigate(params: any) {
+        return params;
+      }
+    }
+    class MockActivatedRoute { }
     beforeEachProviders(() => [
       AppComponent,
-      // ROUTER_FAKE_PROVIDERS,
+      RouterOutletMap,
+      { provide: Router, useClass: MockRouter },
+      { provide: ActivatedRoute, useClass: MockActivatedRoute },
       MockBackend,
       BaseRequestOptions,
       Renderer,
@@ -41,10 +49,11 @@ export function main() {
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
         deps: [Http]
       }),
+      TranslateService,
       MultilingualService,
       provideStore({ config: config, i18n: multilingualReducer, uiState }),
       CurrentUser,
-      TranslateService,
+
       ApiConfig,
       Authentication,
       UiConfig,
