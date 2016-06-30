@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import {CurrentUser} from '../../shared/services/current-user.model';
 import {AdminService} from '../services/admin.service';
@@ -15,7 +15,6 @@ import {Subscription} from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'admin-index',
   templateUrl: 'index.html',
-  providers: [AdminService],
   directives: [WzListComponent, PaginationComponent, ROUTER_DIRECTIVES, WzFormComponent],
   pipes: [TranslatePipe]
 })
@@ -28,7 +27,6 @@ export class IndexComponent implements OnInit, OnDestroy {
   public currentResources: Object;
   public config: any;
   public params: any;
-  @ViewChild('target', { read: ViewContainerRef }) target: any;
   private sub: any;
 
   constructor(public currentUser: CurrentUser,
@@ -85,8 +83,11 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   public showEditForm(resource: any): void {
-    console.log(resource);
-    this.adminService.showEditComponent(this.target, this.config.editForm.items, resource);
+    this.adminService.showEditComponent(this.config.editForm.items, resource, this.resource);
+  }
+
+  public showNewForm(): void {
+    this.adminService.showNewComponent(this.config.newForm.items, this.resource);
   }
 
   public updateRouteParams(dynamicParams?: any) {

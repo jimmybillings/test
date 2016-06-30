@@ -1,10 +1,11 @@
-import { Injectable, ComponentRef, ComponentResolver, Renderer } from '@angular/core';
+import { Injectable, ComponentRef, ViewContainerRef, ComponentResolver, Renderer } from '@angular/core';
 import { Http, Response, URLSearchParams, RequestOptions } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
+import { ViewContainerService } from '../../shared/services/view-container.service';
 import { Store, Reducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 import { EditComponent } from '../+edit/edit.component';
-// import { NewComponent } from '../+new/new.component';
+import { NewComponent } from '../+new/new.component';
 
 const adminState: any = { items: [], pagination: {} };
 export const adminResources: Reducer<any> = (state = adminState, action: Action) => {
@@ -22,14 +23,17 @@ export class AdminService {
   public operatorMap: any;
   public adminStore: Observable<any>;
   public cmpRef: ComponentRef<any>;
-  public viewRef: any;
+  public viewRef: Function;
+  private vcRef: ViewContainerRef;
 
   constructor(public http: Http,
               public apiConfig: ApiConfig,
               private store: Store<any>,
               private renderer: Renderer,
-              private resolver: ComponentResolver) {
+              private resolver: ComponentResolver,
+              private viewContainerService: ViewContainerService) {
     this.adminStore = this.store.select('adminResources');
+    this.vcRef = this.viewContainerService.getRef();
     this.operatorMap = {
       'before': 'LT',
       'after': 'GT'
@@ -152,18 +156,24 @@ export class AdminService {
     return !(fieldsToRemove.indexOf(value) > -1);
   }
 
-  public showEditComponent(target: any, editFormItems: any, resource: any): void {
-    console.log(target);
+  public showEditComponent(editFormItems: any, resource: any, resourceType: string): void {
     this.resolver.resolveComponent(EditComponent).then((factory: any) => {
-      this.cmpRef = target.createComponent(factory);
+      this.cmpRef = this.vcRef.createComponent(factory);
       this.cmpRef.instance.resource = resource;
       this.cmpRef.instance.formItems = editFormItems;
-      this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.destroyEditComponent());
+      this.cmpRef.instance.resourceType = resourceType;
     });
   }
 
-  public destroyEditComponent(): void {
+  public showNewComponent(newFormItems: any, resourceType: string): void {
+    this.resolver.resolveComponent(NewComponent).then((factory: any) => {
+      this.cmpRef = this.vcRef.createComponent(factory);
+      this.cmpRef.instance.formItems = newFormItems;
+      this.cmpRef.instance.resourceType = resourceType;
+    });
+  }
+
+  public destroyComponent(): void {
     this.cmpRef.destroy();
-    this.viewRef();
   }
 }

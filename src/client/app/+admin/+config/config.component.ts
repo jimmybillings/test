@@ -12,8 +12,7 @@ import {Router} from '@angular/router';
   selector: 'admin-config',
   templateUrl: 'config.html',
   pipes: [ValuesPipe, TranslatePipe],
-  directives: [WzListComponent],
-  providers: [ConfigService]
+  directives: [WzListComponent]
 })
 
 export class ConfigComponent implements OnInit {

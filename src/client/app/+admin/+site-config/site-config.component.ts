@@ -5,8 +5,7 @@ import { ConfigService } from '../services/config.service';
 @Component({
   moduleId: module.id,
   selector: 'site-config',
-  templateUrl: 'site-config.html',
-  providers: [ConfigService]
+  templateUrl: 'site-config.html'
 })
 
 export class SiteConfigComponent implements OnInit, OnDestroy {
@@ -19,7 +18,6 @@ export class SiteConfigComponent implements OnInit, OnDestroy {
               public configService: ConfigService) {}
 
   ngOnInit() {
-    // this.configType = this.routeSegment.urlSegments[0].segment.split('-')[0];
     this.sub = this.route.params.subscribe(params => this.siteName = params['site']);
   }
 

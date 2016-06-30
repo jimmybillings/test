@@ -21,6 +21,8 @@ export { Authentication} from '../+user-management/services/authentication.data.
 export { CollectionsService } from '../+collections/services/collections.service';
 export { UiState} from '../shared/services/ui.state';
 export { NotificationService } from '../shared/components/notification/notification.service';
+export { ToastService } from '../shared/components/toast/toast.service';
+export { ViewContainerService } from '../shared/services/view-container.service';
 
 // Interfaces
 export {ILang} from '../shared/interfaces/language.interface';
@@ -45,5 +47,5 @@ export const APP_COMPONENT_DIRECTIVES = [
   SearchBoxComponent,
   BinTrayComponent,
   CollectionFormComponent,
-  CollectionListDdComponent,
+  CollectionListDdComponent
 ];

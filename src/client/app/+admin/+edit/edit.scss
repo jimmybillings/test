@@ -1,15 +1,31 @@
-admin-edit {
+.admin-bk-for-dialog {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  z-index: 100;
+  @include background-image(
+    url("../assets/img/bk/tex/bktx_dgl_lines_light.png"),
+    linear-gradient(md-color($md-grey, 900, .7), md-color($md-grey, 900, .7)));
+  @include transition(opacity, 1200ms, $md-fast-out-slow-in-timing-function);
+  opacity: 1;
+}
+
+.admin-edit {
+  padding: 0 33%;
+  width: 33%;
   animation-name: dialog;
   animation-duration: .25s;
-  animation-timing-function: linear;
-  width: 100%;
+  animation-timing-function: ease-in-out;
   position: fixed;
   top: 100px;
   z-index: 10000;
   md-card.wz-form-card {
-    -webkit-box-shadow: 5px 5px 24px -1px rgba(56, 56, 56, 1);
-    -moz-box-shadow: 5px 5px 24px -1px rgba(56, 56, 56, 1);
-    box-shadow: 5px 5px 24px -1px rgba(56, 56, 56, 1);
+    .md-card {
+      width: 90%;
+    }
   }
 }
 

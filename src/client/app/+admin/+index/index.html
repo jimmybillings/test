@@ -1,8 +1,8 @@
 
-<section #target class="admin-index" *ngIf="config">
+<section class="admin-index" *ngIf="config">
   <div layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
     <div flex="10" flex-gt-lg="10" flex-xl="10" flex-gt-md="10">
-      <a md-raised-button="" [routerLink]="['/new']">{{ 'ADMIN.NEW_RESOURCE_TITLE' | translate }} {{currentComponent}}</a>
+      <a md-raised-button="" (click)="showNewForm()">{{ 'ADMIN.NEW_RESOURCE_TITLE' | translate }} {{currentComponent}}</a>
     </div>
   </div>
   <div layout="row" layout-align="space-around stretch">
