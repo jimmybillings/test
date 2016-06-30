@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
+import { Component, OnInit } from '@angular/core';
+import { Collection, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from './services/collections.service';
-// import { CollectionListComponent } from './collection-list.component';
 import { TranslatePipe} from 'ng2-translate/ng2-translate';
-// import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
-import { Observable } from 'rxjs/Rx';
+import {PaginationComponent} from '../shared/components/pagination/pagination.component';
+// import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { CurrentUser } from '../shared/services/current-user.model';
@@ -13,18 +12,19 @@ import { UiConfig } from '../shared/services/ui.config';
 
 @Component({
   moduleId: module.id,
-  selector: 'collection',
-  templateUrl: 'collection.html',
+  selector: 'collections',
+  templateUrl: 'collections.html',
   providers: [CollectionsService],
   directives: [
     ROUTER_DIRECTIVES,
-    // CollectionListComponent
+    PaginationComponent
   ],
   pipes: [TranslatePipe]
 })
 
-export class CollectionComponent implements OnInit, OnDestroy {
-  public collections: Observable<Collections>;
+export class CollectionsComponent implements OnInit {
+  // public collections: Observable<Collections>;
+  public collections: any;
   public focusedCollection: any;
   public errorMessage: string;
   public config: Object;
@@ -41,7 +41,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.collections = this.collectionsService.collections;
+    // this.collections = this.collectionsService.collections;
+    this.store.select('collections').subscribe(collections => {
+      this.collections = collections;
+    });
     this.store.select('focusedCollection').subscribe(focusedCollection => {
       this.focusedCollection = focusedCollection;
     });
@@ -88,15 +91,4 @@ export class CollectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  public showCollection(collection: Collection): void {
-    this.selectFocusedCollection(collection);
-    setTimeout(() => {
-      this.router.navigate(['/collection/', collection.id]);
-    }, 300);
-  }
-
-  public ngOnDestroy(): void {
-    console.log('should unsubscribe on destroy');
-    // this.focusedCollection.unsubscribe();
-  }
 }

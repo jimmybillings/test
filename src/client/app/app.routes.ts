@@ -5,7 +5,7 @@ import {
   SearchComponent,
   AssetComponent,
   ContentComponent,
-  CollectionComponent,
+  CollectionsComponent,
   CollectionShowComponent,
   AdminComponent,
 } from './platform/app.component.imports';
@@ -18,7 +18,7 @@ export const APP_ROUTES: RouterConfig = [
   { path: 'user', component: UserManagementComponent, children: USER_ROUTES },
   { path: 'search', component: SearchComponent },
   { path: 'asset/:name', component: AssetComponent },
-  { path: 'collection', component: CollectionComponent },
+  { path: 'collection', component: CollectionsComponent },
   { path: 'collection/:id', component: CollectionShowComponent },
   { path: 'content/:page', component: ContentComponent },
   { path: 'admin', component: AdminComponent, children: ADMIN_ROUTES }

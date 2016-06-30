@@ -1,0 +1,11 @@
+collection-show .collections-list {
+  li.collection {
+    background-color: transparent;
+    margin-bottom: rem(1.2);
+    padding: 0;
+    border-radius: 0;
+    border-width: 0;
+    border-bottom: 1px solid md-color($md-foreground, divider);
+    @include transition($swift-ease-out);
+  }
+}

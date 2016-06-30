@@ -112,7 +112,8 @@ export class CollectionsService {
 
   public setFocusedCollection(collectionId: number): Observable<any> {
     return this.http.put(`${this.apiUrls.CollectionBaseUrl}/focused/${collectionId}`,
-      '', { headers: this.apiConfig.authHeaders() });
+      '', { headers: this.apiConfig.authHeaders() })
+      .map(res => res.json());
   }
 
   public getCollectionItems(collectionId: number, numberPerPg: number, pgIndex: number = 0): Observable<any> {

@@ -6,7 +6,7 @@
           <ul>
             <li class="collection">
               <div flex="100" layout="row" layout-xs="column">
-                <div flex-gt-sm="35" flex-gt-lg="15" flex-gt-md="25" flex="100" layout-padding layout-fill>
+                <div flex-gt-sm="30" flex-gt-lg="20" flex-gt-xl="15" flex-gt-md="25" flex="100" layout-padding layout-fill>
                   <div class="asset">
                     <div class="asset-thb">
                       <!--<div>
@@ -28,6 +28,7 @@
                   <div class="md-caption collection-info">
                     <span><strong>Owner: </strong>{{collection.owner}}</span>
                     <span><strong>Created: </strong>{{ date(collection.createdOn) }}</span>
+                    <!--<span><strong>Created: </strong>{{ date(collection.createdOn)  | date:'short' }}</span>-->
                     <span><strong>Updated: </strong>{{ date(collection.lastUpdated) }}</span>
                   </div>
                   <div class="md-caption collection-tags">
