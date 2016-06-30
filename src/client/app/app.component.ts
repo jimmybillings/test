@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer, ViewChild, ViewContainerRef } from '@angular/core';
-import { RouterConfig, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
@@ -12,36 +12,14 @@ import {
   SearchContext,
   Authentication,
   ILang,
-  HomeComponent,
-  UserManagementComponent,
-  SearchComponent,
-  AssetComponent,
-  ContentComponent,
-  CollectionsService,
-  CollectionComponent,
-  CollectionShowComponent,
   Collection,
   CollectionStore,
-  AdminComponent,
   UiState,
-  NotificationService
+  NotificationService,
+  CollectionsService
 } from './platform/app.component.imports';
 import {ROUTER_DIRECTIVES} from '@angular/router';
-import {USER_ROUTES} from './+user-management/user-management.component';
-import {ADMIN_ROUTES} from './+admin/admin.component';
 declare var portal: string;
-
-export const APP_ROUTES: RouterConfig = [
-  { path: '', component: HomeComponent },
-  { path: 'notification', component: HomeComponent },
-  { path: 'user', component: UserManagementComponent, children: USER_ROUTES },
-  { path: 'search', component: SearchComponent },
-  { path: 'asset/:name', component: AssetComponent },
-  { path: 'collection', component: CollectionComponent },
-  { path: 'collection/:id', component: CollectionShowComponent },
-  { path: 'content/:page', component: ContentComponent },
-  { path: 'admin', component: AdminComponent, children: ADMIN_ROUTES }
-];
 
 @Component({
   moduleId: module.id,

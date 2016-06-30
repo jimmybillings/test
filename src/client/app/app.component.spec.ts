@@ -7,7 +7,7 @@ import {
 } from '@angular/core/testing';
 
 import { provide, Renderer} from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterOutletMap, ActivatedRoute } from '@angular/router';
 import { TestComponentBuilder } from '@angular/compiler/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
@@ -32,9 +32,12 @@ export function main() {
         return params;
       }
     }
+    class MockActivatedRoute { }
     beforeEachProviders(() => [
       AppComponent,
+      RouterOutletMap,
       { provide: Router, useClass: MockRouter },
+      { provide: ActivatedRoute, useClass: MockActivatedRoute },
       MockBackend,
       BaseRequestOptions,
       Renderer,

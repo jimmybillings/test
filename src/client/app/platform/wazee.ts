@@ -15,7 +15,7 @@ import { CollectionsService } from '../+collections/services/collections.service
 import { UiState } from '../shared/services/ui.state';
 
 // WAZEE ROUTES
-import {APP_ROUTES} from '../app.component';
+import {APP_ROUTES} from '../app.routes';
 
 // WAZEE STORES
 import { assets } from '../+search/services/asset.data.service';

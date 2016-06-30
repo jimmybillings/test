@@ -7,7 +7,7 @@ import {
 } from '@angular/core/testing';
 
 import { CollectionsService, focusedCollection, collections } from './collections.service';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import { provide } from '@angular/core';
 import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
@@ -18,7 +18,7 @@ import { Error } from '../../shared/services/error.service';
 
 export function main() {
   describe('Collection service', () => {
-
+    class MockRouter { }
     beforeEachProviders(() => [
       MockBackend,
       BaseRequestOptions,
@@ -26,7 +26,7 @@ export function main() {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
       provideStore({ focusedCollection: focusedCollection, collections: collections }),
       CollectionsService,
       ApiConfig,
@@ -214,7 +214,7 @@ export function main() {
             'totalCount': 1
           }
         },
-        'tags': ['golf','masters','Augusta'],
+        'tags': ['golf', 'masters', 'Augusta'],
         'thumbnail': {
           'name': 'thumbnail',
           'urls': {
@@ -311,7 +311,7 @@ export function main() {
             'numberOfPages': 1
           },
         },
-        'tags': ['golf','masters','Augusta'],
+        'tags': ['golf', 'masters', 'Augusta'],
         'thumbnail': {
           'name': 'thumbnail',
           'urls': {

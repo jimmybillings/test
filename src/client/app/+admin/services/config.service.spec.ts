@@ -10,14 +10,15 @@ import { ConfigService } from './config.service';
 import { ApiConfig } from '../../shared/services/api.config';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http, Response, ResponseOptions, RequestMethod } from '@angular/http';
-// import { RouteSegment } from '@angular/router';
-// import { ROUTER_FAKE_PROVIDERS } from '@angular/router/testing';
+import { Router, ActivatedRoute } from '@angular/router';
 
 export function main() {
   describe('Config Service', () => {
-
+    class MockRouter { }
+    class MockActivatedRoute { }
     beforeEachProviders(() => [
-      // ROUTER_FAKE_PROVIDERS,
+      { provide: Router, useClass: MockRouter },
+      { provide: ActivatedRoute, useClass: MockActivatedRoute },
       MockBackend,
       BaseRequestOptions,
       provide(Http, {
@@ -104,20 +105,20 @@ export function main() {
 
     function mockResponse() {
       return {
-        'items' : [ {
-          'lastUpdated' : '2016-06-20T15:14:12Z',
-          'createdOn' : '2016-03-02T17:01:14Z',
-          'id' : 2,
-          'siteName' : 'cnn',
-          'components' : {
-            'header' : {'config' : {'title' : {'value' : 'CNN Image Source'}}},
-            'searchBox' : {'config' : {'pageSize' : {'value' : '56'}}},
-            'search' : {'config' : {'viewType' : {'value' : 'grid'}}},
-            'home' : {'config' : {'pageSize' : {'value' : '56'}}}
+        'items': [{
+          'lastUpdated': '2016-06-20T15:14:12Z',
+          'createdOn': '2016-03-02T17:01:14Z',
+          'id': 2,
+          'siteName': 'cnn',
+          'components': {
+            'header': { 'config': { 'title': { 'value': 'CNN Image Source' } } },
+            'searchBox': { 'config': { 'pageSize': { 'value': '56' } } },
+            'search': { 'config': { 'viewType': { 'value': 'grid' } } },
+            'home': { 'config': { 'pageSize': { 'value': '56' } } }
           },
           'config': {}
-        } ],
-        'totalCount' : 1,'currentPage' : 0,'pageSize' : 20,'hasNextPage' : false,'hasPreviousPage' : false,'numberOfPages' : 1
+        }],
+        'totalCount': 1, 'currentPage': 0, 'pageSize': 20, 'hasNextPage': false, 'hasPreviousPage': false, 'numberOfPages': 1
       };
     }
   });
