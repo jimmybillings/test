@@ -78,7 +78,6 @@ export class AppComponent implements OnInit {
     this.authentication.destroy().subscribe();
     this.currentUser.destroy();
     this.collectionsService.clearCollections();
-    this.router.navigate(['/']);
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data.lang); }
