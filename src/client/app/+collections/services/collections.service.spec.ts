@@ -146,7 +146,7 @@ export function main() {
     it('Should have a clearCollections method that sets the store back to its initial state',
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         spyOn(service.store, 'dispatch');
-        service.clearCollections();
+        service.destroyCollections();
         expect(service.store.dispatch).toHaveBeenCalled();
       }));
 
