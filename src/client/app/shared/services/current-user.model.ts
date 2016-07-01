@@ -42,7 +42,8 @@ export class CurrentUser {
   }
 
   public destroy() {
-    localStorage.clear();
+    localStorage.removeItem('currentUser');
+    localStorage.setItem('currentUser', JSON.stringify(this.mayflyUser()));
     this.set();
   }
 
@@ -104,7 +105,11 @@ export class CurrentUser {
   }
 
   private _user(): CurrentUserInterface {
-    return JSON.parse(localStorage.getItem('currentUser')) || {
+    return JSON.parse(localStorage.getItem('currentUser')) || this.mayflyUser();
+  }
+
+  private mayflyUser(): CurrentUserInterface {
+    return {
       'lastUpdated': '',
       'createdOn': '',
       'id': 0,

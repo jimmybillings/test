@@ -59,9 +59,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
     this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
-    this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
+    this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe(() => this.routerChanges());
     this.currentUser.set();
-    this.routerChanges();
     this.focusedCollection = this.store.select('focusedCollection');
     this.viewContainerService.set(this.target);
   }
@@ -81,7 +80,7 @@ export class AppComponent implements OnInit {
   public logout(): void {
     this.authentication.destroy().subscribe();
     this.currentUser.destroy();
-    this.collectionsService.clearCollections();
+    this.collectionsService.destroyCollections();
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data.lang); }

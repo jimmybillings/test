@@ -101,8 +101,8 @@ export function main() {
         service.setFocusedCollection(158).subscribe(response => {
           expect(connection.request.url).toBe('api/identites/v1/collection/focused/158');
           expect(connection.request.method).toBe(RequestMethod.Put);
-          expect(response._body).toEqual(mockCollection());
-          expect(response._body.id).toEqual(158);
+          expect(response).toEqual(mockCollection());
+          expect(response.id).toEqual(158);
         });
         connection.mockRespond(new Response(
           new ResponseOptions({
@@ -146,7 +146,7 @@ export function main() {
     it('Should have a clearCollections method that sets the store back to its initial state',
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         spyOn(service.store, 'dispatch');
-        service.clearCollections();
+        service.destroyCollections();
         expect(service.store.dispatch).toHaveBeenCalled();
       }));
 

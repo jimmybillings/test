@@ -28,7 +28,11 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 
 @import '+home/home';
 @import '+user-management/+login/login';
+
 @import '+collections/collections';
+@import '+collections/collection-form';
+@import '+collections/collections-list-dd';
+@import '+collections/collection-show';
 
 @import '+admin/+ui-config/ui-config';
 @import '+admin/+edit/edit';
