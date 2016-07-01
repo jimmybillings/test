@@ -40,10 +40,10 @@ export function main() {
     }));
 
     it('Should destroy the current user by resetting the user object and clearing localStorage', inject([CurrentUser], (service: CurrentUser) => {
-      spyOn(localStorage, 'clear');
+      spyOn(localStorage, 'removeItem');
       spyOn(service, 'set');
       service.destroy();
-      expect(localStorage.clear).toHaveBeenCalled();
+      expect(localStorage.removeItem).toHaveBeenCalledWith('currentUser');
       expect(service.set).toHaveBeenCalled();
     }));
 

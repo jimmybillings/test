@@ -80,7 +80,7 @@ export class CollectionComponent implements OnInit {
     }
     // if we delete the last collection, reset the store to initial values (no focused collection)
     if (this.store.getState().collections.items.length === 1) {
-      this.collectionsService.clearCollections();
+      this.collectionsService.destroyCollections();
     }
   }
 

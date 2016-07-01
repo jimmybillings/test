@@ -139,7 +139,7 @@ export class CollectionsService {
       { headers: this.apiConfig.authHeaders() });
   }
 
-  public clearCollections(): void {
+  public destroyCollections(): void {
     this.store.dispatch({ type: 'GET_COLLECTIONS', payload: collectionsState });
     this.store.dispatch({ type: 'FOCUSED_COLLECTION', payload: focusedState });
   }
