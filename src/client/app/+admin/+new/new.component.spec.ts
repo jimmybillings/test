@@ -16,6 +16,7 @@ import {NewComponent} from './new.component';
 import {UiConfig, config} from '../../shared/services/ui.config';
 import {provideStore} from '@ngrx/store';
 import {Router, ActivatedRoute} from '@angular/router';
+import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
 export function main() {
   describe('Admin New component', () => {
 
@@ -31,6 +32,11 @@ export function main() {
       { provide: ActivatedRoute, useClass: MockActivatedRoute },
       MockBackend,
       BaseRequestOptions,
+      TranslateService,
+      provide(TranslateLoader, {
+        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
+        deps: [Http]
+      }),
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
