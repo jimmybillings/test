@@ -60,9 +60,12 @@ header.app-header [md-icon-button] {
   @include text-contrast(md-color($md-grey, 900), md-color($md-foreground, secondary-text), md-color($md-background, app-bar));
   text-transform: uppercase;
   margin-left: rem(.6);
-  @include transition(all .4s ease-in-out);
+  @include transition($swift-ease-out);
   &:hover {
     background-color: rgba(md-color($md-background, background), .075);
+  }
+  &:hover::after {
+    background-color: transparent;
   }
   &:first-child{
     margin-left: 0;
@@ -77,6 +80,16 @@ header.app-header md-toolbar:not(.md-menu-toolbar) [md-button] {
 header.app-header.fixed [md-button],
 header.app-header.fixed [md-icon-button] {
   @include text-contrast(md-color($md-background, app-bar), md-color($md-foreground, secondary-text), md-color($md-background, app-bar));
+  @include transition($swift-ease-out);
+  &:hover {
+    background-color: rgba(md-color($md-background, hover), .08);
+  }
+  &:hover::after {
+    background-color: transparent;
+  }
+  &:first-child{
+    margin-left: 0;
+  }
 }
 
 header.app-header app-nav button.open-bin-tray,

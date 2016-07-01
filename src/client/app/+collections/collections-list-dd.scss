@@ -27,7 +27,7 @@ collections-list-dd {
     padding: rem(2.0);
   }
   .collections-dd-menu {
-    @include transition($swift-ease-out);
+    // @include transition($swift-ease-out);
     position: absolute;
     right: rem(11.0);
     top: rem(11.5);
@@ -55,6 +55,10 @@ collections-list-dd {
           &:hover {
             color: md-color($md-primary);
             background-color: md-color($md-background, hover);
+          }
+          // once they put a transition into the ::after pseudo class this can go away
+          &[md-icon-button]:hover::after {
+            background-color: transparent;
           }
         }
       }
@@ -127,6 +131,10 @@ collections-list-dd {
           md-icon {
             opacity: 1;
           }
+        }
+        // once they put a transition into the ::after pseudo class this can go away
+        &:hover::after {
+          background-color: transparent;
         }
       }
       md-icon {
