@@ -1,6 +1,6 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Collection } from '../shared/interfaces/collection.interface';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
 import { CollectionsService} from './services/collections.service';
 
@@ -25,8 +25,8 @@ export class CollectionFormComponent {
   @Input() newCollectionFormIsOpen: boolean;
   @Input() config: Object;
   @Input() UiState: any;
-  @Output() create = new EventEmitter();
-  @Output() cancelled = new EventEmitter();
+  // @Output() create = new EventEmitter();
+  // @Output() cancelled = new EventEmitter();
 
   constructor(public collectionsService: CollectionsService) { }
 

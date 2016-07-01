@@ -1,36 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
+import { Collection, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from './services/collections.service';
-import { CollectionListComponent } from './collection-list.component';
 import { TranslatePipe} from 'ng2-translate/ng2-translate';
-import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
-import { Observable} from 'rxjs/Rx';
+import {PaginationComponent} from '../shared/components/pagination/pagination.component';
+// import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import { ROUTER_DIRECTIVES} from '@angular/router';
-import { CurrentUser} from '../shared/services/current-user.model';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { CurrentUser } from '../shared/services/current-user.model';
 import { Error } from '../shared/services/error.service';
-import { UiConfig} from '../shared/services/ui.config';
+import { UiConfig } from '../shared/services/ui.config';
 
 @Component({
   moduleId: module.id,
-  selector: 'collection',
-  templateUrl: 'collection.html',
+  selector: 'collections',
+  templateUrl: 'collections.html',
   providers: [CollectionsService],
   directives: [
     ROUTER_DIRECTIVES,
-    WzFormComponent,
-    CollectionListComponent
+    PaginationComponent
   ],
   pipes: [TranslatePipe]
 })
 
-export class CollectionComponent implements OnInit {
-  public collections: Observable<Collections>;
-  public focusedCollection: Observable<any>;
+export class CollectionsComponent implements OnInit {
+  // public collections: Observable<Collections>;
+  public collections: any;
+  public focusedCollection: any;
   public errorMessage: string;
   public config: Object;
-
+  public date(date: any): Date {
+    return new Date(date);
+  }
   constructor(
+    public router: Router,
     public collectionsService: CollectionsService,
     public store: Store<CollectionStore>,
     public currentUser: CurrentUser,
@@ -39,8 +41,13 @@ export class CollectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.collections = this.collectionsService.collections;
-    this.focusedCollection = this.store.select('focusedCollection');
+    // this.collections = this.collectionsService.collections;
+    this.store.select('collections').subscribe(collections => {
+      this.collections = collections;
+    });
+    this.store.select('focusedCollection').subscribe(focusedCollection => {
+      this.focusedCollection = focusedCollection;
+    });
   }
 
   public selectFocusedCollection(collection: Collection): void {
@@ -84,15 +91,4 @@ export class CollectionComponent implements OnInit {
     }
   }
 
-  public showCollectionSearch(event: Event): void {
-    console.log(event);
-  }
-
-  public showCollectionFilter(event: Event): void {
-    console.log(event);
-  }
-
-  public showCollectionSort(event: Event): void {
-    console.log(event);
-  }
 }

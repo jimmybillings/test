@@ -10,7 +10,8 @@ export {ContentComponent} from '../+content/content.component';
 export {SearchComponent} from '../+search/search.component';
 export {AssetComponent} from '../+asset/asset.component';
 export {AdminComponent} from '../+admin/admin.component';
-export {CollectionComponent} from '../+collections/collection.component';
+export {CollectionsComponent} from '../+collections/collections.component';
+export {CollectionShowComponent} from '../+collections/collection-show.component';
 
 // Services
 export { CurrentUser} from '../shared/services/current-user.model';
