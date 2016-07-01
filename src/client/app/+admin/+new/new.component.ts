@@ -14,11 +14,10 @@ export class NewComponent {
   @Input() formItems: any;
   @Input() resourceType: string;
   @Input() cmpRef: any;
-  @Output() updatedResource = new EventEmitter();
-  @Output() removeEditComponent = new EventEmitter();
+  @Output() newResource = new EventEmitter();
 
   public onSubmit(formData: any): void {
-    console.log(formData);
+    this.newResource.emit(formData);
     this.cmpRef.destroy();
   }
 

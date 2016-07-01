@@ -18,14 +18,22 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
  * passed in
  */
 export class WzListComponent {
+  public map: any;
   @Input() items: any;
   @Input() headers: any;
   @Input() toggleFlag: any;
   @Output() sort = new EventEmitter();
   @Output() editForm = new EventEmitter();
 
+  constructor() {
+    this.map = {
+      'false': 'true',
+      'true': 'false'
+    };
+  }
+
   public sortBy(attribute: string): void {
-    this.sort.emit({ 's': attribute, 'd': !this.toggleFlag });
+    this.sort.emit({ 's': attribute, 'd': this.map[this.toggleFlag] });
   }
 
   public showEditForm(record: any): void {

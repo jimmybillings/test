@@ -24,6 +24,7 @@ export function main() {
       CurrentUser,
       MockBackend,
       BaseRequestOptions,
+      TranslateService,
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
@@ -31,8 +32,7 @@ export function main() {
       provide(TranslateLoader, {
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
         deps: [Http]
-      }),
-      TranslateService
+      })
     ]);
 
     it('Create instance of dashboard and assign the CurrentUser to an instance variable inside of dashboard',

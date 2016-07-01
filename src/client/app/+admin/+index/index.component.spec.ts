@@ -19,6 +19,7 @@ import {ApiConfig} from '../../shared/services/api.config';
 import {UiConfig, config} from '../../shared/services/ui.config';
 import {Observable} from 'rxjs/Rx';
 import {Store} from '@ngrx/store';
+import {UiState} from '../../shared/services/ui.state';
 
 export function main() {
   describe('Admin Index component', () => {
@@ -74,7 +75,8 @@ export function main() {
       ApiConfig,
       provideStore({ config: config }),
       UiConfig,
-      IndexComponent
+      IndexComponent,
+      UiState
     ]);
 
     it('Create instance of index and assign the CurrentUser to an instance variable inside of account',
@@ -93,7 +95,7 @@ export function main() {
 
     it('Should have a getIndex() function that calls the getResource and setResources functions on the service',
       inject([IndexComponent], (component: IndexComponent) => {
-        component.resource = 'account';
+        component.resourceType = 'account';
         component.params = mockParams();
         spyOn(component.adminService, 'getResources').and.callThrough();
         spyOn(component.adminService, 'setResources').and.callThrough();
@@ -105,7 +107,7 @@ export function main() {
       }));
 
     it('Should have a navigateToPageUrl function that navigates to a URL', inject([IndexComponent], (component: IndexComponent) => {
-      component.resource = 'account';
+      component.resourceType = 'account';
       component.params = mockParams();
       spyOn(component.router, 'navigate');
       component.navigateToPageUrl(2);
@@ -114,16 +116,16 @@ export function main() {
     }));
 
     it('Should have a navigateToSortUrl function that navigates to a URL with correct params', inject([IndexComponent], (component: IndexComponent) => {
-      component.resource = 'account';
+      component.resourceType = 'account';
       component.params = mockParams();
       spyOn(component.router, 'navigate');
       component.navigateToSortUrl({ s: 'emailAddress', d: true });
       expect(component.router.navigate)
-        .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: '1', n: '10', s: 'emailAddress', d: true, fields: '', values: '' })]);
+        .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: 1, n: '10', s: 'emailAddress', d: true, fields: '', values: '' })]);
     }));
 
     it('Should have a navigateToFilterUrl function that navigates to a URL with correct params', inject([IndexComponent], (component: IndexComponent) => {
-      component.resource = 'user';
+      component.resourceType = 'user';
       component.params = mockParams();
       spyOn(component.router, 'navigate');
       component.navigateToFilterUrl({ firstName: 'john' });

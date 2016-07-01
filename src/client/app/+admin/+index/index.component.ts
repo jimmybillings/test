@@ -19,8 +19,8 @@ import {Subscription} from 'rxjs/Rx';
 })
 
 export class IndexComponent implements OnInit, OnDestroy {
+  public toggleFlag: any;
   public resourceType: string;
-  public toggleFlag: string;
   public currentComponent: string;
   public subscription: Subscription;
   public currentResources: Object;
@@ -33,8 +33,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public uiConfig: UiConfig,
     public uiState: UiState,
-    public router: Router) {
-  }
+    public router: Router) {}
 
   ngOnInit(): void {
     this.sub = this.route.params.subscribe(param => {
@@ -49,7 +48,6 @@ export class IndexComponent implements OnInit, OnDestroy {
     });
   }
 
-
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();
     this.sub.unsubscribe();
@@ -63,30 +61,29 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   public navigateToPageUrl(i: number): void {
-    let params = this.updateRouteParams({ i });
-    this.router.navigate(['/admin/resource/' + this.resourceType, params]);
+    this.updateRouteParams({ i });
+    this.router.navigate(['/admin/resource/' + this.resourceType, this.params]);
   }
 
   public navigateToSortUrl(sortParams: any): void {
-    let params = this.updateRouteParams(sortParams);
+    let params = Object.assign(this.updateRouteParams(sortParams), {'i': 1});
     this.router.navigate(['/admin/resource/' + this.resourceType, params]);
   }
 
   public navigateToFilterUrl(filterParams: any): void {
     let searchTerms = this.adminService.buildSearchTerm(filterParams);
-    let params = this.updateRouteParams(searchTerms);
-    params.i = 1;
+    let params = Object.assign(this.updateRouteParams(searchTerms), {'i': 1});
     this.router.navigate(['/admin/resource/' + this.resourceType, params]);
   }
 
-  public updateRouteParams(dynamicParams?: any) {
-    return dynamicParams ? Object.assign(this.params, dynamicParams) : this.params;
+  public updateRouteParams(dynamicParams: any) {
+    return Object.assign(this.params, dynamicParams);
   }
 
   public buildRouteParams(params: any): any {
     let s: string, d: boolean, i: number, n: number, fields: string, values: string;
     s = params['s'] || 'createdOn';
-    d = (params['d'] ? true : false);
+    d = params['d'];
     i = parseInt(params['i']) || 1;
     n = parseInt(params['n']) || 10;
     fields = params['fields'] || '';

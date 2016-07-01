@@ -49,27 +49,5 @@ export function main() {
           expect(instance instanceof NewComponent).toBeTruthy();
         });
       }));
-
-    it('Should have an onSubmit function that accepts form data and calls the service', inject([NewComponent], (component: NewComponent) => {
-      component.resource = 'user';
-      component.currentComponent = 'user';
-      component.siteName = 'core';
-      spyOn(component.adminService, 'postResource').and.callThrough();
-      let formData = { firstName: 'John', lastName: 'Smith', emailAddress: 'johnsmith@email.com', password: 'password' };
-      component.onSubmit(formData);
-      expect(component.adminService.postResource).toHaveBeenCalledWith(formData, 'user');
-    }));
-
-    it('Should have a postResource function that returns an observable', inject([NewComponent], (component: NewComponent) => {
-      component.resource = 'user';
-      component.currentComponent = 'user';
-      component.siteName = 'core';
-      let formData = { firstName: 'John', lastName: 'Smith', emailAddress: 'johnsmith@email.com', password: 'password' };
-      spyOn(component.router, 'navigate').and.callThrough();
-      component.adminService.postResource(formData, component.resource).subscribe(data => {
-        expect(data).toBe(formData);
-        expect(component.router.navigate).toHaveBeenCalledWith(['/Admin/User']);
-      });
-    }));
   });
 }

@@ -13,10 +13,8 @@ import { WzFormComponent } from '../../shared/components/wz-form/wz.form.compone
 export class EditComponent implements OnInit {
   @Input() resource: any;
   @Input() formItems: any;
-  @Input() resourceType: string;
   @Input() cmpRef: any;
   @Output() updatedResource = new EventEmitter();
-  @Output() removeEditComponent = new EventEmitter();
 
   ngOnInit(): void {
     this.formItems.forEach((item: any) => {
@@ -26,7 +24,7 @@ export class EditComponent implements OnInit {
 
   public onSubmit(formData: any): void {
     Object.assign(this.resource, formData);
-    console.log(formData);
+    this.updatedResource.emit(this.resource);
     this.cmpRef.destroy();
   }
 

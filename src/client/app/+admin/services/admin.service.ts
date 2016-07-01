@@ -54,7 +54,7 @@ export class AdminService {
     return this.http.get(url, options).map((res: Response) => res.json());
   }
 
-  public postResource(formData: any, resourceType: string): Observable<any> {
+  public postResource(resourceType: string, formData: any): Observable<any> {
     let url = this.buildPostUrl(resourceType);
     let headers = this.apiConfig.authHeaders();
     let options = new RequestOptions({ headers: headers });
@@ -62,7 +62,7 @@ export class AdminService {
     return this.http.post(url, body, options).map((res: Response) => res.json());
   }
 
-  public put(resourceType: string, formData: any): Observable<any> {
+  public putResource(resourceType: string, formData: any): Observable<any> {
     let url = this.buildGetUrl(resourceType, formData.id);
     let headers = this.apiConfig.authHeaders();
     let options = new RequestOptions({ headers: headers });
@@ -161,8 +161,10 @@ export class AdminService {
       this.cmpRef = this.vcRef.createComponent(factory);
       this.cmpRef.instance.resource = resource;
       this.cmpRef.instance.formItems = editFormItems;
-      this.cmpRef.instance.resourceType = resourceType;
       this.cmpRef.instance.cmpRef = this.cmpRef;
+      this.cmpRef.instance.updatedResource.subscribe((data: any) => {
+        this.putResource(resourceType, data).subscribe();
+      });
     });
   }
 
@@ -170,8 +172,10 @@ export class AdminService {
     this.resolver.resolveComponent(NewComponent).then((factory: any) => {
       this.cmpRef = this.vcRef.createComponent(factory);
       this.cmpRef.instance.formItems = newFormItems;
-      this.cmpRef.instance.resourceType = resourceType;
       this.cmpRef.instance.cmpRef = this.cmpRef;
+      this.cmpRef.instance.newResource.subscribe((data: any) => {
+        this.postResource(resourceType, data).subscribe();
+      });
     });
   }
 
