@@ -17,7 +17,6 @@ import { UiConfig } from '../../shared/services/ui.config';
   moduleId: module.id,
   selector: 'admin-ui-config',
   templateUrl: 'ui-config.html',
-  providers: [ConfigService],
   directives: [WzListComponent],
   pipes: [ValuesPipe]
 })
@@ -53,7 +52,6 @@ export class UiConfigComponent implements OnInit, OnDestroy {
       if (this.portal !== 'core' && !(this.portal === this.siteName)) {
         this.router.navigate(['admin/ui-config/', this.portal]);
       } else {
-        // this.configType = this.routeSegment.urlSegments[0].segment.split('-')[0];
         this.getConfig();
         this.configService.getUi().subscribe(data => {
           data.items.reduce((previous: Array<string>, current: IuiConfig) => {

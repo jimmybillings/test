@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
+import { Component, OnInit } from '@angular/core';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Authentication } from '../services/authentication.data.service';
 
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { ToastService } from '../../shared/components/toast/toast.service';
   moduleId: module.id,
   selector: 'login',
   templateUrl: 'login.html',
-  providers: [Authentication, ToastService],
+  providers: [Authentication],
   directives: [
     ROUTER_DIRECTIVES,
     WzFormComponent
@@ -28,16 +28,15 @@ import { ToastService } from '../../shared/components/toast/toast.service';
 export class LoginComponent implements OnInit {
   public config: any;
   public fields: IFormFields[];
-  @ViewChild('target', { read: ViewContainerRef }) target: any;
 
   constructor(
-    public toastService: ToastService,
     public _authentication: Authentication,
     public _user: User,
     public router: Router,
     public _ApiConfig: ApiConfig,
     public _currentUser: CurrentUser,
-    public uiConfig: UiConfig) {
+    public uiConfig: UiConfig,
+    private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -56,7 +55,7 @@ export class LoginComponent implements OnInit {
       this._currentUser.set(res.user);
       this.router.navigate(['/']);
     }, (err) => {
-      this.toastService.createToast('LOGIN.ERROR_TOAST', 'warn', 5000, this.target);
+      this.toastService.createToast('LOGIN.ERROR_TOAST', 'warn', 5000);
     });
   }
 }

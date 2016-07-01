@@ -2,14 +2,20 @@
 <section class="admin-index" *ngIf="config">
   <div layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
     <div flex="10" flex-gt-lg="10" flex-xl="10" flex-gt-md="10">
-      <a md-raised-button="" [routerLink]="['/new']">{{ 'ADMIN.NEW_RESOURCE_TITLE' | translate }} {{currentComponent}}</a>
+      <a md-raised-button="" (click)="showNewForm()">{{ 'ADMIN.' + currentComponent.toUpperCase() + '.NEW_TITLE'  | translate }}</a>
     </div>
   </div>
   <div layout="row" layout-align="space-around stretch">
     <div flex-xl="75" flex-gt-lg="75" flex-gt-md="75" flex="75">
-      <wz-list [items]="currentUserResources.items" [headers]="config.tableHeaders.items" [toggleFlag]="toggleFlag" (sort)="navigateToSortUrl($event)"></wz-list>
+      <wz-list
+        [items]="currentResources.items"
+        [headers]="config.tableHeaders.items"
+        [toggleFlag]="toggleFlag"
+        (sort)="navigateToSortUrl($event)"
+        (editForm)="showEditForm($event)">
+      </wz-list>
       <div layout="row" layout-align="end center">
-        <pagination (getPage)="navigateToPageUrl($event)" [pagination]="currentUserResources.pagination"></pagination>
+        <pagination (getPage)="navigateToPageUrl($event)" [pagination]="currentResources.pagination"></pagination>
       </div>
     </div>
     <div style="margin-bottom: 3rem;" flex-xl="20" flex-gt-lg="20" flex-gt-md="20" flex="20" hide-md hide-sm hide-xs>
