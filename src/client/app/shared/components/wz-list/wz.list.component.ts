@@ -18,18 +18,26 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
  * passed in
  */
 export class WzListComponent {
+  public map: any;
   @Input() items: any;
   @Input() headers: any;
   @Input() toggleFlag: any;
   @Output() sort = new EventEmitter();
-  @Output() clickRow = new EventEmitter();
+  @Output() editForm = new EventEmitter();
 
-  public sortBy(attribute: string): void {
-    this.sort.emit({ 's': attribute, 'd': !this.toggleFlag });
+  constructor() {
+    this.map = {
+      'false': 'true',
+      'true': 'false'
+    };
   }
 
-  public showRecord(record: any): void {
-    this.clickRow.emit(record);
+  public sortBy(attribute: string): void {
+    this.sort.emit({ 's': attribute, 'd': this.map[this.toggleFlag] });
+  }
+
+  public showEditForm(record: any): void {
+    this.editForm.emit(record);
   }
 
   public date(date: any): Date {

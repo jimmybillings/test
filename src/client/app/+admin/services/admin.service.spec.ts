@@ -5,11 +5,12 @@ import {
   it,
   beforeEachProviders
 } from '@angular/core/testing';
-import { provide } from '@angular/core';
+import { provide, ViewContainerRef, ComponentResolver, Renderer } from '@angular/core';
 import { AdminService } from './admin.service';
 import { ApiConfig } from '../../shared/services/api.config';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http, RequestOptions, URLSearchParams } from '@angular/http';
+import { ViewContainerService } from '../../shared/services/view-container.service';
 import { CurrentUser, currentUser } from '../../shared/services/current-user.model';
 import { provideStore } from '@ngrx/store';
 import {Router, ActivatedRoute} from '@angular/router';
@@ -22,6 +23,10 @@ export function main() {
       { provide: Router, useClass: MockRouter },
       { provide: ActivatedRoute, useClass: MockActivatedRoute },
       MockBackend,
+      Renderer,
+      ComponentResolver,
+      ViewContainerRef,
+      ViewContainerService,
       BaseRequestOptions,
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),

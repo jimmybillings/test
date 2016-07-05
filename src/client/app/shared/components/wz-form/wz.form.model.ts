@@ -21,7 +21,7 @@ export class FormModel {
     for (let controlName in form.controls) {
       if (values.hasOwnProperty(controlName))
         (<Control>form.controls[controlName]).updateValue(values[controlName]);
-      (<Control>form.controls[controlName]).updateValue(null);
+      (<Control>form.controls[controlName]).updateValue('');
     }
   }
 

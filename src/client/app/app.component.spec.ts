@@ -23,6 +23,7 @@ import { Authentication} from './+user-management/services/authentication.data.s
 import { MultilingualService, multilingualReducer} from './shared/services/multilingual.service';
 import { SearchContext} from './shared/services/search-context.service';
 import { CollectionsService} from './+collections/services/collections.service';
+import { ViewContainerService } from './shared/services/view-container.service';
 
 export function main() {
   describe('App Component', () => {
@@ -39,6 +40,7 @@ export function main() {
       { provide: Router, useClass: MockRouter },
       { provide: ActivatedRoute, useClass: MockActivatedRoute },
       MockBackend,
+      ViewContainerService,
       BaseRequestOptions,
       Renderer,
       provide(Http, {

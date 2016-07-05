@@ -9,15 +9,15 @@
     <tr *ngFor="let record of items; let e = even" [ngClass]="{highlight: e}">
       <td *ngFor="let header of headers">
         <span [ngSwitch]="header.name">
-          <span *ngSwitchWhen="'lastUpdated'" class="md-text-cell md-body-1">{{ date(record[header.name]) }}</span>
-          <span *ngSwitchWhen="'createdOn'" class="md-text-cell md-body-1">{{ date(record[header.name]) }}</span>
-          <span *ngSwitchWhen="'firstName'" class="md-text-cell md-body-1"><a [routerLink]="['/admin/resource/user/', record.id]">{{record[header.name]}}</a></span>
-          <span *ngSwitchWhen="'name'" class="md-text-cell md-body-1"><a [routerLink]="['/admin/resource/account/', record.id]">{{record[header.name]}}</a></span>
+          <span *ngSwitchCase="'lastUpdated'" class="md-text-cell md-body-1">{{ date(record[header.name]) }}</span>
+          <span *ngSwitchCase="'createdOn'" class="md-text-cell md-body-1">{{ date(record[header.name]) }}</span>
+          <span (click)="showEditForm(record)" *ngSwitchCase="'firstName'" class="md-text-cell md-body-1 link">{{ record[header.name] }}</span>
+          <span (click)="showEditForm(record)" *ngSwitchCase="'name'" class="md-text-cell md-body-1 link">{{ record[header.name] }}</span>
           <span *ngIf="record.type === 'ui'">
-            <span *ngSwitchWhen="'siteName'"><a [routerLink]="['/admin/ui-config', record[header.name]]">{{record[header.name]}}</a></span>
+            <span *ngSwitchCase="'siteName'"><a [routerLink]="['/admin/ui-config', record[header.name]]">{{record[header.name]}}</a></span>
           </span>
           <span *ngIf="record.type === 'site'">
-            <span *ngSwitchWhen="'siteName'"><a [routerLink]="['/admin/site-config', record[header.name]]">{{record[header.name]}}</a></span>
+            <span *ngSwitchCase="'siteName'"><a [routerLink]="['/admin/site-config', record[header.name]]">{{record[header.name]}}</a></span>
           </span>
           <span *ngSwitchDefault class="md-text-cell md-body-1">{{ record[header.name] }}</span>
         </span>

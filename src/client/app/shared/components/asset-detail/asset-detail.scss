@@ -15,6 +15,7 @@ section.preview-bk {
   // margin: 0 auto;
   padding-top: rem(6.5);
   padding-bottom: rem(9);
+
   &.theater {
     height: rem(62.7);
     // min-height: 627px;
@@ -102,12 +103,13 @@ section.preview-bk {
       }
     }
   }
-  .primary-info {
+  md-card.primary-info {
     box-shadow: none;
     position: relative;
     @include calc(height, "100% - 56px");
     @include calc(min-height, "100% - 56px");
     // margin: 0 0 0 20px;
+    @include text-contrast(md-color($md-grey, 900));
     background-color: rgba(md-color($md-grey, 900),.2);
     // background-color: transparent;
     z-index: 2;

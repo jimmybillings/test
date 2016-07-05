@@ -113,7 +113,6 @@
   "ADMIN": {
     "SEARCH_SUBMIT_LABEL": "FIND",
     "CREATE_SUBMIT_LABEL": "CREATE",
-    "NEW_RESOURCE_TITLE": "New",
     "DASHBOARD_TITLE": "Admin Dashboard",
     "SUBHEADER": {
       "DASHBOARD": "Dashboard",

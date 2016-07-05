@@ -18,6 +18,10 @@ wz-list {
       }
       td {
         padding: .8rem 1rem;
+        .link {
+          text-decoration: underline;
+          cursor: pointer;
+        }
       }
     }
   }

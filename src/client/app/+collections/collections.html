@@ -49,8 +49,9 @@
           <div flex="100" layout="row" class="actions">
             <div flex="80">
               <button md-icon-button title="{{ 'COLLECTION.INDEX.FOCUS_BTN_TITLE' | translate }}" (click)="selectFocusedCollection(collection)"><md-icon>star</md-icon></button>
-              <!--<a md-button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showCollection(collection)"><md-icon>details</md-icon></a>-->
-              <a md-button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" [routerLink]="['/collection/',collection.id]" ><md-icon>details</md-icon></a>
+              <!--anchor md-icon-button alignment is messed up once it's fixed we can use the anchor but until then keep it a button-->
+              <!--<a md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" [routerLink]="['/collection/',collection.id]" ><md-icon>details</md-icon></a>-->
+              <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showCollection(collection)" ><md-icon>details</md-icon></button>
               <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showEdit(collection)"><md-icon>edit</md-icon></button>
               <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showShare(collection)"><md-icon>share</md-icon></button>
               <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showComments($event)"><md-icon>mode_comment</md-icon></button>

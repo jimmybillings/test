@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import {AssetListComponent} from './asset-list.component';
 import { ToastService } from '../toast/toast.service';
 import { Renderer } from '@angular/core';
-
+import { ViewContainerService } from '../../../shared/services/view-container.service';
 
 export function main() {
   describe('Asset List Component', () => {
@@ -20,6 +20,7 @@ export function main() {
       AssetListComponent,
       { provide: Router, useClass: MockRouter },
       ToastService,
+      ViewContainerService,
       Renderer
     ]);
 

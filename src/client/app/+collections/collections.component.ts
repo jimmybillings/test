@@ -76,6 +76,10 @@ export class CollectionsComponent implements OnInit {
     return false;
   }
 
+  public showCollection(collection: Collection): void {
+    this.router.navigate(['/collection', collection.id]);
+  }
+
   public deleteCollection(collection: Collection): void {
     this.collectionsService.deleteCollection(collection.id).subscribe(payload => {
       this.collectionsService.deleteCollectionFromStore(collection);

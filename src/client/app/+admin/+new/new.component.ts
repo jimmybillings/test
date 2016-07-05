@@ -1,57 +1,26 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { TranslatePipe } from 'ng2-translate/ng2-translate';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
-import { UiConfig } from '../../shared/services/ui.config';
-import { IuiConfig } from '../../shared/interfaces/config.interface';
-import { ApiConfig } from '../../shared/services/api.config';
-import { AdminService } from '../services/admin.service';
 
 @Component({
   moduleId: module.id,
   selector: 'admin-new',
   templateUrl: 'new.html',
-  providers: [AdminService],
-  directives: [WzFormComponent],
-  pipes: [TranslatePipe]
+  directives: [WzFormComponent]
 })
 
-export class NewComponent implements OnInit, OnDestroy {
-  public resource: string;
-  public siteName: string;
-  public config: IuiConfig;
-  public showForm: boolean;
-  public currentComponent: string;
-  public sub: any;
-
-  constructor(public router: Router,
-    public apiConfig: ApiConfig,
-    public adminService: AdminService,
-    public route: ActivatedRoute,
-    public uiConfig: UiConfig) {
-      this.showForm = false;
-    }
-
-  ngOnInit(): void {
-    this.siteName = this.apiConfig.getPortal();
-    this.sub = this.route.params.subscribe(params => {
-      this.resource = params['resource'];
-      this.currentComponent = this.resource.charAt(0).toUpperCase() + this.resource.slice(1);
-      this.uiConfig.get('admin' + this.currentComponent).subscribe(config => this.config = config.config);
-    });
-    setTimeout(() => { this.showForm = true; }, 250);
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
+export class NewComponent {
+  @Input() formItems: any;
+  @Input() resourceType: string;
+  @Input() cmpRef: any;
+  @Output() newResource = new EventEmitter();
 
   public onSubmit(formData: any): void {
-    Object.assign(formData, { siteName: this.siteName });
-    this.adminService.postResource(formData, this.resource).subscribe(data => {
-      this.router.navigate(['/admin/resource/' + this.resource]);
-    }, (error) => {
-      console.log(error, 'this will pop up a notification showing what validations failed');
-    });
+    this.newResource.emit(formData);
+    this.cmpRef.destroy();
+  }
+
+  public destroyComponent(): void {
+   this.cmpRef.destroy();
   }
 }
+

@@ -2,8 +2,8 @@
 <div flex>
   <md-toolbar>
     <a md-button [routerLink]="['/admin/dashboard']" title="Dashboard">{{ 'ADMIN.SUBHEADER.DASHBOARD' | translate }}</a>
-    <a md-button [routerLink]="['/admin/resource/account']" title="Accounts">{{ 'ADMIN.SUBHEADER.ACCOUNTS' | translate }}</a>
-    <a md-button [routerLink]="['/admin/resource/user']" title="Users">{{ 'ADMIN.SUBHEADER.USERS' | translate }}</a>
+    <a md-button [routerLink]="['/admin/resource/account', {i: 1, n: 10, s: 'id', d: false, fields: '', values: ''}]" title="Accounts">{{ 'ADMIN.SUBHEADER.ACCOUNTS' | translate }}</a>
+    <a md-button [routerLink]="['/admin/resource/user', {i: 1, n: 10, s: 'id', d: false, fields: '', values: ''}]" title="Users">{{ 'ADMIN.SUBHEADER.USERS' | translate }}</a>
     <a md-button [routerLink]="['/admin/config']" title="Config">{{ 'ADMIN.SUBHEADER.CONFIG' | translate }}</a>
   </md-toolbar>
   <router-outlet></router-outlet>

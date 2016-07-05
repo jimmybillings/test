@@ -24,13 +24,18 @@ bin-tray {
       background-color:  md-color($md-primary, 800, .15);
       white-space: nowrap;
       .focused {
+        @include transition($swift-ease-in-out);
         margin-left: rem(1);
         width: auto;
         white-space: nowrap;
+      
         button.is-dd[md-button] {
           color: rgba(md-color($md-foreground, secondary-text), .6);
           &:hover {
-            background-color: rgba(md-color($md-foreground, base), .075);
+            background-color: rgba(md-color($md-foreground, base), .1);
+          }
+          &:hover::after {
+            background-color: transparent;
           }
         }
         .asset-count {
@@ -48,6 +53,9 @@ bin-tray {
             background-color: rgba(md-color($md-foreground, secondary-text), .4);
             cursor: default;
           }
+          &:hover::after {
+            background-color: transparent;
+          }
         }
       }
       button[md-icon-button] {
@@ -57,7 +65,10 @@ bin-tray {
         min-width: rem(4.0);
         color: rgba(md-color($md-foreground, secondary-text), .6);
         &:hover {
-          background-color: rgba(md-color($md-foreground, base), .075);
+          background-color: rgba(md-color($md-foreground, base), .1);
+        }
+        &:hover::after {
+          background-color: transparent;
         }
       } 
     }

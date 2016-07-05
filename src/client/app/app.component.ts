@@ -16,7 +16,9 @@ import {
   CollectionStore,
   UiState,
   NotificationService,
-  CollectionsService
+  CollectionsService,
+  ToastService,
+  ViewContainerService
 } from './platform/app.component.imports';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 declare var portal: string;
@@ -27,7 +29,7 @@ declare var portal: string;
   templateUrl: 'app.html',
   directives: [ROUTER_DIRECTIVES, APP_COMPONENT_DIRECTIVES],
   pipes: [TranslatePipe],
-  providers: [NotificationService]
+  providers: [NotificationService, ToastService, ViewContainerService]
 })
 
 export class AppComponent implements OnInit {
@@ -49,7 +51,8 @@ export class AppComponent implements OnInit {
     private renderer: Renderer,
     private notification: NotificationService,
     private apiConfig: ApiConfig,
-    private authentication: Authentication) {
+    private authentication: Authentication,
+    private viewContainerService: ViewContainerService) {
     this.apiConfig.setPortal(portal);
   }
 
@@ -59,6 +62,7 @@ export class AppComponent implements OnInit {
     this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe(() => this.routerChanges());
     this.currentUser.set();
     this.focusedCollection = this.store.select('focusedCollection');
+    this.viewContainerService.set(this.target);
   }
 
   public routerChanges() {

@@ -25,16 +25,16 @@ export function main() {
 
     it('should have a sortBy function that emits a sort event with opposite of toggleFlag - false', inject([WzListComponent], (component: WzListComponent) => {
       spyOn(component.sort, 'emit');
-      component.toggleFlag = false;
+      component.toggleFlag = 'false';
       component.sortBy('createdOn');
-      expect(component.sort.emit).toHaveBeenCalledWith({ s: 'createdOn', d: true });
+      expect(component.sort.emit).toHaveBeenCalledWith({ s: 'createdOn', d: 'true' });
     }));
 
     it('should have a sortBy function that emits a sort event with opposite of toggleFlag - true', inject([WzListComponent], (component: WzListComponent) => {
       spyOn(component.sort, 'emit');
-      component.toggleFlag = true;
+      component.toggleFlag = 'true';
       component.sortBy('createdOn');
-      expect(component.sort.emit).toHaveBeenCalledWith({ s: 'createdOn', d: false });
+      expect(component.sort.emit).toHaveBeenCalledWith({ s: 'createdOn', d: 'false' });
     }));
   });
 }
