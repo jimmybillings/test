@@ -20,7 +20,7 @@ export class WzDropdownPortalDirective extends TemplatePortalDirective {
   template: `
   <template wzDropdownPortalDirective>
     <ng-content></ng-content>
-  </template>`,
+  </template>`
 })
 
 export class WzDropdownComponent {
@@ -48,7 +48,8 @@ export class WzDropdownComponent {
       });
   }
 
-  public close(result: any = true, cancel: boolean = false): Promise<any> {
+  public close(): Promise<any> {
+    console.log(this.overlayRef);
     if (!this.overlayRef) {
       return Promise.resolve(this);
     } else {
