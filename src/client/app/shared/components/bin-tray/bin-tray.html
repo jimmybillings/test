@@ -12,7 +12,7 @@
     </ul>
   </div>
   <div layout="row" flex="auto" layout-align="end center" class="focused-collection">
-    <nav class="focused" *ngIf="collection.name" (click)="showCollectionsList()">
+    <nav class="focused" *ngIf="collection.name" (click)="list.show($event)">
       <button md-button class="is-dd">{{collection.name}}</button>
       <button md-button class="asset-count">
         <span class="count" *ngIf="collection.assets">{{collection.assets.pagination.totalCount}}</span>
@@ -23,3 +23,12 @@
   </div>
   <button md-icon-button title="close collections" type="button" (click)="UiState.closeBinTray()" class="close"><md-icon>close</md-icon></button>
 </section>
+
+
+<wz-dropdown #list>
+  <collections-list-dd
+    [UiState]="UiState"
+    [focusedCollection]="collection"
+    layout="row" layout-align="end start" class="revealed">
+  </collections-list-dd>
+</wz-dropdown>

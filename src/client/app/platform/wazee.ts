@@ -32,6 +32,8 @@ import { collections, focusedCollection} from '../+collections/services/collecti
 // TRANSLATIONS
 import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
 import { MultilingualService } from '../shared/services/multilingual.service';
+import {createOverlayContainer} from '@angular2-material/core/overlay/overlay-container';
+import {OVERLAY_CONTAINER_TOKEN} from '@angular2-material/core/overlay/overlay';
 
 // export const MATERIAL_PIPES = [];
 // export const WAZEE_DIRECTIVES = [];
@@ -52,6 +54,7 @@ export const WAZEE_PROVIDERS = [
     useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
     deps: [Http]
   }),
+  provide(OVERLAY_CONTAINER_TOKEN, {useValue: createOverlayContainer()}),
 ];
 
 export const WAZEE_STORES: Provider[][] = [
