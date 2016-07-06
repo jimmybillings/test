@@ -7,9 +7,10 @@
   layout="row" layout-align="center start">
 </collection-form>
 <collections-list-dd
+  *ngIf="(uiState.uiState | async).collectionsListIsOpen"
   [UiState]="uiState"
   [focusedCollection]="focusedCollection | async"
-  [ngClass]="{'revealed': (uiState.uiState | async).collectionsListIsOpen}"
+  class="revealed"
   layout="row" layout-align="end start">
 </collections-list-dd>
 

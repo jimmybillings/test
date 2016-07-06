@@ -108,7 +108,13 @@
       "VIEW_BTN_LABEL": "View all",
       "OPEN_BTN_LABEL": "Open selected",
       "CREATE_BTN_LABEL": "Create new"
-    }
+    },
+    "SHOW": {
+      "EDIT_BTN_TITLE": "Edit collection",
+      "HISTORY_BTN_TITLE": "Show collection history",
+      "SHARE_BTN_TITLE": "Share collection",
+      "COMMENT_BTN_TITLE": "Show collection comments"
+    }      
   },
   "ADMIN": {
     "SEARCH_SUBMIT_LABEL": "FIND",

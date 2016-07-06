@@ -32,7 +32,11 @@ export class CollectionShowComponent implements OnInit {
   public errorMessage: string;
   public config: Object;
   public date(date: any): Date {
-    return new Date(date);
+    if (date) {
+      return new Date(date);
+    } else {
+      return new Date();
+    };
   }
 
   constructor(

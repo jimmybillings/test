@@ -1,7 +1,16 @@
 // collections index pg
 .collections-list {
+  header {
+    .md-headline {
+      margin: .5em 0;
+    }
+    .tools {
+      text-align: right;
+    }
+  }
   ul {
     margin: 0;
+    margin-top: rem(1.5);
     padding: 0;
     list-style: none;
   }
@@ -16,7 +25,10 @@
     @include transition($swift-ease-out);
     h3 {
       margin-top: rem(-.2);
-      margin-bottom: rem(1.2);
+      margin-bottom: rem(.6);
+    }
+    .collection-info {
+      line-height: 1.5em;
     }
     .asset-count {
       display: inline-block;
