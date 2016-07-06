@@ -8,6 +8,7 @@
 @import 'node_modules/@angular2-material/core/style/mixins';
 @import "node_modules/@angular2-material/core/style/core";
 @import "node_modules/@angular2-material/core/style/default-theme";
+@import "node_modules/@angular2-material/core/overlay/overlay.scss";
 
 // these are not part of ng2material just yet, but are needed
 // hopefully these will be part of Ng2 Material, and then removed, and referenced above
@@ -15,3 +16,15 @@
 @import '../styles/vendor/mixins_not_in_ng2';
 @import '../styles/vendor/layout.attributes';
 @import '../styles/vendor/typography';
+
+// Overrides for material overlays.
+// These should go away when there are native md-dialog, and md-menu in alpha 7
+// they are currently needed to fix z-index with fixed header and large dd menu (collection-dd) for mobile.
+
+.md-overlay-pane {
+  z-index: 3;
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    height: 100%;
+    width: 100%;
+  }
+}

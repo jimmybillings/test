@@ -63,11 +63,15 @@ export class WzDropdownComponent {
   }
 
   private positionElement(event: any) {
-    this.config.positionStrategy = this.overlay.position()
-      .global()
-      .fixed()
-      .right(window.outerWidth - event.clientX + 'px')
-      .top(event.clientY + 'px');
+    let offset: number = 25;
+    let layoutBreakpointXs: boolean = event.view.screen.width < 600;
+    if (layoutBreakpointXs) {
+      this.config.positionStrategy =
+        this.overlay.position().global().fixed().right('0').top('0');
+    } else {
+      this.config.positionStrategy =
+        this.overlay.position().global().fixed().right(window.outerWidth - event.clientX - offset + 'px').top(event.clientY - offset + 'px');
+    }
   }
 
   private closeListener() {
