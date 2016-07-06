@@ -14,7 +14,7 @@ export class NotificationService {
     private resolver: ComponentResolver,
     public router: Router,
     public uiConfig: UiConfig) {
-    this.uiConfig.get('notifications').subscribe((config: any) => this.notficationStrategy = config.items);
+    this.uiConfig.get('notifications').subscribe((config: any) => this.notficationStrategy = config.items || []);
   }
 
   public check(state: string, target: any) {

@@ -1,5 +1,6 @@
 import { Component, OnInit, Renderer, ViewChild, ViewContainerRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
@@ -20,7 +21,6 @@ import {
   ToastService,
   ViewContainerService
 } from './platform/app.component.imports';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 declare var portal: string;
 
 @Component({
@@ -52,17 +52,19 @@ export class AppComponent implements OnInit {
     private notification: NotificationService,
     private apiConfig: ApiConfig,
     private authentication: Authentication,
-    private viewContainerService: ViewContainerService) {
+    private viewContainerService: ViewContainerService,
+    private location: Location) {
     this.apiConfig.setPortal(portal);
   }
 
   ngOnInit() {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
     this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
-    this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe(() => this.routerChanges());
+    this.uiConfig.initialize(this.apiConfig.getPortal());
     this.currentUser.set();
     this.focusedCollection = this.store.select('focusedCollection');
     this.viewContainerService.set(this.target);
+    this.routerChanges();
   }
 
   public routerChanges() {
