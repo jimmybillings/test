@@ -22,7 +22,6 @@ export { Authentication} from '../+user-management/services/authentication.data.
 export { CollectionsService } from '../+collections/services/collections.service';
 export { UiState} from '../shared/services/ui.state';
 export { NotificationService } from '../shared/components/notification/notification.service';
-export { ToastService } from '../shared/components/toast/toast.service';
 export { ViewContainerService } from '../shared/services/view-container.service';
 
 // Interfaces
@@ -33,7 +32,6 @@ export { Collection, CollectionStore } from '../shared/interfaces/collection.int
 import {AppNavComponent} from '../shared/components/app-nav/app-nav.component';
 import {FooterComponent} from '../shared/components/footer/footer.component';
 import {NotificationComponent} from '../shared/components/notification/notification.component';
-import {ToastComponent} from '../shared/components/toast/toast.component';
 import {SearchBoxComponent} from '../shared/components/search-box/search-box.component';
 import {BinTrayComponent} from '../shared/components/bin-tray/bin-tray.component';
 import { CollectionFormComponent } from '../+collections/collection-form.component';
@@ -43,7 +41,6 @@ export const APP_COMPONENT_DIRECTIVES = [
   AppNavComponent,
   FooterComponent,
   NotificationComponent,
-  ToastComponent,
   SearchBoxComponent,
   BinTrayComponent,
   CollectionFormComponent,
