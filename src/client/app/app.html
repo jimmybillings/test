@@ -7,46 +7,45 @@
   layout="row" layout-align="center start">
 </collection-form>
 
-
-  <div class="app" #target>
-    <header [ngClass]="{
-      'fixed': (uiState.uiState | async).showFixed,
-      'bin-tray-closed': !(uiState.uiState | async).binTrayIsOpen,
-      'search-closed': !(uiState.uiState | async).searchIsOpen
-      }" class="app-header">
-      <app-nav
-        [UiState]="uiState"
-        [currentUser]="currentUser"
-        [state]="state"
-        [config]="(uiConfig.get('header') | async).config"
-        [collection]="focusedCollection | async"
-        (onLogOut)="logout()">
-      </app-nav>
-      <search-box
-        *ngIf="(uiState.uiState | async).searchBarIsActive"
-        [currentUser]="currentUser"
-        [state]="state"
-        [UiState]="uiState"
-        [apiConfig]="apiConfig"
-        [config]="(uiConfig.get('searchBox') | async).config"
-        (searchContext)="newSearchContext($event)">
-      </search-box>
-      <bin-tray
-        *ngIf="(uiState.uiState | async).searchBarIsActive && currentUser.loggedIn()"
-        [UiState]="uiState"
-        [collection]="focusedCollection | async"
-        >
-      </bin-tray>
-    </header>
-    <div [ngClass]="{
-      'bin-tray-closed': !(uiState.uiState | async).binTrayIsOpen,
-      'search-closed': !(uiState.uiState | async).searchIsOpen
-      }" class="main-content">
-      <router-outlet></router-outlet>
-    </div>
-    <app-footer
+<div class="app" #target>
+  <header [ngClass]="{
+    'fixed': (uiState.uiState | async).showFixed,
+    'bin-tray-closed': !(uiState.uiState | async).binTrayIsOpen,
+    'search-closed': !(uiState.uiState | async).searchIsOpen
+    }" class="app-header">
+    <app-nav
+      [UiState]="uiState"
       [currentUser]="currentUser"
-      [supportedLanguages]="supportedLanguages"
-      (onChangeLang)="changeLang($event)">
-    </app-footer>
+      [state]="state"
+      [config]="(uiConfig.get('header') | async).config"
+      [collection]="focusedCollection | async"
+      (onLogOut)="logout()">
+    </app-nav>
+    <search-box
+      *ngIf="(uiState.uiState | async).searchBarIsActive"
+      [currentUser]="currentUser"
+      [state]="state"
+      [UiState]="uiState"
+      [apiConfig]="apiConfig"
+      [config]="(uiConfig.get('searchBox') | async).config"
+      (searchContext)="newSearchContext($event)">
+    </search-box>
+    <bin-tray
+      *ngIf="(uiState.uiState | async).searchBarIsActive && currentUser.loggedIn()"
+      [UiState]="uiState"
+      [collection]="focusedCollection | async"
+      >
+    </bin-tray>
+  </header>
+  <div [ngClass]="{
+    'bin-tray-closed': !(uiState.uiState | async).binTrayIsOpen,
+    'search-closed': !(uiState.uiState | async).searchIsOpen
+    }" class="main-content">
+    <router-outlet></router-outlet>
   </div>
+  <app-footer
+    [currentUser]="currentUser"
+    [supportedLanguages]="supportedLanguages"
+    (onChangeLang)="changeLang($event)">
+  </app-footer>
+</div>

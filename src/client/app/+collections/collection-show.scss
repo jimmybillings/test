@@ -1,11 +1,42 @@
+collection-show .collection-head {
+  background-color: rgba(md-color($md-background, card), .5);
+  @include md-elevation(2);
+  padding-top: rem(1.1);
+  padding-bottom: rem(1.1);
+}
 collection-show .collections-list {
+  // .bread-crumbs {
+  //   padding: 8px 0 12px 0; 
+  //   a.md-primary[md-button] {
+  //     color: md-color($md-primary);
+  //     padding: 0;
+  //   }
+  // }
+  ul {
+    margin-top: 0;
+  }
   li.collection {
     background-color: transparent;
-    margin-bottom: rem(1.2);
+    margin-bottom: 0;
     padding: 0;
     border-radius: 0;
     border-width: 0;
-    border-bottom: 1px solid md-color($md-foreground, divider);
+    // border-bottom: 1px solid md-color($md-foreground, divider);
     @include transition($swift-ease-out);
+    & > div[layout="row"] > div[layout-padding]:first-child {
+      padding-left: 0;
+      padding-top: rem(.4);
+      padding-right: rem(1.6);
+      padding-bottom: 0;
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        padding-right: 0;
+      }
+    }
+    & > div[layout="row"] > div[layout-padding]:last-child {
+      padding: 0;
+    }
+    .actions {
+      text-align: right;
+    }
   }
 }

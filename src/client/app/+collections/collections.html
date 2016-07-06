@@ -1,10 +1,17 @@
 
 <section class="hero">
   <div layout="row" flex="100" layout-margin layout-align="center start">
-
-
-
     <section class="collections-list" flex="100" flex-gt-md="85" flex-gt-lg="75">
+      <header layout="row" flex="100" layout-align="end center">
+        <div flex="none">
+          <h2 class="md-headline">Your Collections</h2>
+        </div>
+        <div class="tools" flex="grow" layout-align="end center">
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showCollectionSearch($event)"><md-icon>search</md-icon></button>
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showCollectionFilter($event)"><md-icon>filter_list</md-icon></button>
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>
+        </div>
+      </header>
       <div layout="row" layout-align="end center" class="pagination md-body-2"> 
         <div flex="40" layout-align="end center" *ngIf="collections.pagination.totalCount" class="results-count">{{collections.pagination.totalCount}} results</div>
         <pagination [pagination]="collections.pagination" (getPage)="changePage($event)"></pagination>
@@ -44,8 +51,7 @@
               </div>
             </div>
           </div>
-          <div flex="100" layout="row" layout-xs="column" layout-margin class="divider">
-          </div>
+          <div flex="100" layout="row" layout-xs="column" layout-margin class="divider"></div>
           <div flex="100" layout="row" class="actions">
             <div flex="80">
               <button md-icon-button title="{{ 'COLLECTION.INDEX.FOCUS_BTN_TITLE' | translate }}" (click)="selectFocusedCollection(collection)"><md-icon>star</md-icon></button>
