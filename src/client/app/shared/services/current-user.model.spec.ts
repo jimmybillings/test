@@ -23,7 +23,7 @@ export function main() {
 
     it('should set a object for a logged in user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);
-      service._currentUser.subscribe(user => {
+      service.profile.subscribe(user => {
         expect(user).toEqual(loggedInUser);
       });
 
@@ -33,7 +33,7 @@ export function main() {
     it('should set a object for a logged out user', inject([CurrentUser], (service: CurrentUser) => {
       localStorage.clear();
       service.set();
-      service._currentUser.subscribe(user => {
+      service.profile.subscribe(user => {
         expect(user).toEqual(loggedOutUser);
       });
       localStorage.clear();
@@ -49,40 +49,40 @@ export function main() {
 
     it('should return the correct email address of a user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);
-      service.email().subscribe(email => {
-        expect(email).toEqual('test_email@email.com');
+      service.profile.subscribe(profile => {
+        expect(profile.emailAddress).toEqual('test_email@email.com');
       });
       localStorage.clear();
     }));
 
     it('should return the correct first name of a user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);
-      service.firstName().subscribe(first => {
-        expect(first).toEqual('first');
+      service.profile.subscribe(profile => {
+        expect(profile.firstName).toEqual('first');
       });
       localStorage.clear();
     }));
 
     it('should return the correct last name of a user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);
-      service.lastName().subscribe(last => {
-        expect(last).toEqual('last');
+      service.profile.subscribe(profile => {
+        expect(profile.lastName).toEqual('last');
       });
       localStorage.clear();
     }));
 
     it('should return the correct full name of a user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);
-      service.fullName().subscribe(firstLast => {
-        expect(firstLast).toEqual('first last');
+      service.fullName().subscribe(name => {
+        expect(name).toEqual('first last');
       });
       localStorage.clear();
     }));
 
     it('should return the correct accounts of a user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);
-      service.accountIds().subscribe(ids => {
-        expect(ids).toEqual([4]);
+      service.profile.subscribe(profile => {
+        expect(profile.accountIds).toEqual([4]);
       });
       localStorage.clear();
     }));

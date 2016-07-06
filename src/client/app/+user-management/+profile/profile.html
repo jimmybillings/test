@@ -13,30 +13,30 @@
         <md-card-content>
           <md-list>
             <md-list-item>
-              <p><strong>Name: </strong> {{currentUser.fullName() | async}}</p>
+              <p><strong>Name: </strong> {{user.firstName}} {{user.lastName}}</p>
             </md-list-item>
             <md-divider></md-divider>
             <md-list-item>
-              <p><strong>Email: </strong> {{currentUser.email() | async}}</p>
+              <p><strong>Email: </strong> {{user.emailAddress}}</p>
             </md-list-item>
             <md-divider></md-divider>
             <md-list-item>
-              <p><strong>Created On: </strong>{{currentUser.createdOn() | async}}</p>
+              <p><strong>Created On: </strong>{{user.createdOn}}</p>
             </md-list-item>
             <md-divider></md-divider>
             <md-list-item>
-              <p><strong>Last Updated: </strong>{{currentUser.lastUpdated() | async}}</p>
+              <p><strong>Last Updated: </strong>{{user.lastUpdated}}</p>
             </md-list-item>
             <md-divider></md-divider>
             <md-list-item>
-              <p><strong>Site Name: </strong>{{currentUser.siteName() | async}}</p>
+              <p><strong>Site Name: </strong>{{user.siteName}}</p>
             </md-list-item>
             <md-divider></md-divider>
             <md-list-item>
-              <p><strong>Id: </strong>{{currentUser.id() | async}}</p>
+              <p><strong>Id: </strong>{{user.id}}</p>
             </md-list-item>
             <md-divider></md-divider>
-            <div *ngFor="let account of currentUser.accountIds() | async"> 
+            <div *ngFor="let account of user.accountIds"> 
               <md-list-item>
                 <h3>Account: {{account}}</h3>
               </md-list-item>

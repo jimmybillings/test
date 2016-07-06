@@ -29,11 +29,15 @@ export function isLoggedIn() {
 @Injectable()
 export class CurrentUser {
 
-  public _currentUser: Observable<any>;
+  private currentUser: Observable<any>;
 
   constructor(
     private store: Store<any>) {
-      this._currentUser = this.store.select('currentUser');
+    this.currentUser = this.store.select('currentUser');
+  }
+
+  get profile() {
+    return this.currentUser;
   }
 
   public set(user: CurrentUserInterface = null): void {
@@ -48,58 +52,26 @@ export class CurrentUser {
   }
 
   public loggedInState(): Observable<any> {
-    return this._currentUser.map(user => user.emailAddress);
+    return this.currentUser.map(user => user.emailAddress);
   }
 
   public loggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
 
-  public email(): Observable<any> {
-    return this._currentUser.map(user => user.emailAddress);
-  }
-
-  public firstName(): Observable<any> {
-    return this._currentUser.map(user => user.firstName);
-  }
-
-  public lastName(): Observable<any> {
-    return this._currentUser.map(user => user.lastName );
-  }
-
   public fullName(): Observable<any> {
-    return this._currentUser.map(user => `${user.firstName} ${user.lastName}`);
-  }
-
-  public createdOn(): Observable<any> {
-    return this._currentUser.map(user => user.createdOn);
-  }
-
-  public lastUpdated(): Observable<any> {
-    return this._currentUser.map(user => user.lastUpdated);
-  }
-
-  public siteName(): Observable<any> {
-    return this._currentUser.map((user) => user.siteName);
-  }
-
-  public id(): Observable<any> {
-    return this._currentUser.map(user => user.id);
-  }
-
-  public accountIds(): Observable<Array<number>> {
-    return this._currentUser.map(user => user.accountIds);
+    return this.currentUser.map(user => `${user.firstName} ${user.lastName}`);
   }
 
   public hasFocusedCollection(): Observable<any> {
-    return this._currentUser.map((user) => {
+    return this.currentUser.map((user) => {
       return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
     });
   }
 
   public is(permission: string): Observable<any> {
     let permissionToCheck = permissionMap[permission];
-    return this._currentUser.map((user) => {
+    return this.currentUser.map((user) => {
       return user.permissions ? user.permissions.indexOf(permissionToCheck) > -1 : false;
     });
   }

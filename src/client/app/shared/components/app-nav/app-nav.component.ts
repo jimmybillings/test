@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Collection } from '../../../shared/interfaces/collection.interface';
@@ -15,7 +15,7 @@ import { Collection } from '../../../shared/interfaces/collection.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class AppNavComponent implements OnInit {
+export class AppNavComponent {
   @Input() currentUser: any;
   @Input() config: any;
   @Input() supportedLanguages: any;
@@ -25,13 +25,8 @@ export class AppNavComponent implements OnInit {
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
   @Output() onOpenSidenav = new EventEmitter();
-  public loggedInState: boolean;
 
   constructor(private _router: Router) { }
-
-  ngOnInit(): void {
-    this.loggedInState = this.currentUser.loggedInState();
-  }
 
   public logOut(event: Event) {
     this.onLogOut.emit(event);

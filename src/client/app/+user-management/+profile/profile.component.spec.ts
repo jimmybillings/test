@@ -27,7 +27,6 @@ export function main() {
         tcb.createAsync(ProfileComponent).then((fixture: any) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof ProfileComponent).toBeTruthy();
-          expect(instance.currentUser instanceof CurrentUser).toBeTruthy();
         });
       }));
   });
