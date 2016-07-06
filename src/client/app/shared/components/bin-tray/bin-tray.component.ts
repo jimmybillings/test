@@ -3,6 +3,8 @@ import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { CollectionsService} from '../../../+collections/services/collections.service';
+import { WzDropdownComponent } from '../wz-dropdown/wz.dropdown.component';
+import { CollectionListDdComponent } from '../../../+collections/collections-list-dd.component';
 
 /**
  * Home page search component - renders search form passes form values to search component.
@@ -11,7 +13,7 @@ import { CollectionsService} from '../../../+collections/services/collections.se
   moduleId: module.id,
   selector: 'bin-tray',
   templateUrl: 'bin-tray.html',
-  directives: [ROUTER_DIRECTIVES],
+  directives: [ROUTER_DIRECTIVES, WzDropdownComponent, CollectionListDdComponent],
   pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -25,11 +27,6 @@ export class BinTrayComponent {
     public collectionsService: CollectionsService) {
     this.getCollectionsAndFocused();
   }
-
-  public showCollectionsList() {
-    this.UiState.showCollectionsList();
-  }
-
 
   // make this 2 request with errors get collections and then focused
   public getCollectionsAndFocused(): void {

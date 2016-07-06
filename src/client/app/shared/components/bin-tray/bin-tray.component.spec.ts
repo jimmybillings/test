@@ -15,6 +15,10 @@ import { provideStore } from '@ngrx/store';
 import { ApiConfig } from '../../../shared/services/api.config';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
+import {createOverlayContainer} from '@angular2-material/core/overlay/overlay-container';
+import {OVERLAY_CONTAINER_TOKEN} from '@angular2-material/core/overlay/overlay';
+import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
+import { MultilingualService} from '../../services/multilingual.service';
 
 export function main() {
   describe('Bin Tray Component', () => {
@@ -33,7 +37,13 @@ export function main() {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
-
+      provide(TranslateLoader, {
+        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
+        deps: [Http]
+      }),
+      TranslateService,
+      MultilingualService,
+      provide(OVERLAY_CONTAINER_TOKEN, {useValue: createOverlayContainer()})
     ]);
 
     it('Should have a bin tray instance',

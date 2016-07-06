@@ -70,6 +70,10 @@ System.config({
     },
     'rxjs': {
       defaultExtension: 'js'
+    },
+    '@angular2-material/core': {
+      main: 'core.js',
+      defaultExtension: 'js'
     }
   }
 });
