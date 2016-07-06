@@ -181,8 +181,6 @@ export class CollectionsService {
   }
   public updateCollectionInStore(collection: Collection, search: any): void {
     search.items = search.items === undefined ? [] : search.items;
-    // console.log('this collection');
-    // console.log(collection);
     let thumbnail = collection.thumbnail ? collection.thumbnail : search.items[search.totalCount - 1].thumbnail;
     this.store.dispatch({
       type: 'UPDATE_COLLECTION', payload: {

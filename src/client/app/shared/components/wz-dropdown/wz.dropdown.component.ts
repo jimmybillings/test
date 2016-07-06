@@ -49,7 +49,6 @@ export class WzDropdownComponent {
   }
 
   public close(): Promise<any> {
-    console.log(this.overlayRef);
     if (!this.overlayRef) {
       return Promise.resolve(this);
     } else {

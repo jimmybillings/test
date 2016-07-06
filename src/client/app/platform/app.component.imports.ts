@@ -36,7 +36,6 @@ import {NotificationComponent} from '../shared/components/notification/notificat
 import {ToastComponent} from '../shared/components/toast/toast.component';
 import {SearchBoxComponent} from '../shared/components/search-box/search-box.component';
 import {BinTrayComponent} from '../shared/components/bin-tray/bin-tray.component';
-// import { CollectionListComponent } from '../+collections/collection-list.component';
 import { CollectionFormComponent } from '../+collections/collection-form.component';
 import { CollectionListDdComponent } from '../+collections/collections-list-dd.component';
 

@@ -47,7 +47,7 @@ export class RegisterComponent implements OnInit {
     user.siteName = this._ApiConfig.getPortal();
     this.user.create(user)
       .subscribe((res: Response) => {
-        console.log(res);
+        return res;
       });
   }
 }

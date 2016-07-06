@@ -42,7 +42,6 @@ export function main() {
       ApiConfig,
       UiConfig,
       BaseRequestOptions,
-      // provide(RouteSegment, { useValue: new RouteSegment([], { site: 'core' }, null, null, null) }),
       provideStore({ config: config }),
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),

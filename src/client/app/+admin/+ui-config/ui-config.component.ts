@@ -134,7 +134,6 @@ export class UiConfigComponent implements OnInit, OnDestroy {
 
   public update(formValue: IuiConfig): void {
     this.configService.update(formValue).subscribe((res) => {
-      console.log('Success!');
       this.uiConfig.set(res.json());
     });
   }

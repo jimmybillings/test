@@ -25,8 +25,6 @@ export class CollectionFormComponent {
   @Input() newCollectionFormIsOpen: boolean;
   @Input() config: Object;
   @Input() UiState: any;
-  // @Output() create = new EventEmitter();
-  // @Output() cancelled = new EventEmitter();
 
   constructor(public collectionsService: CollectionsService) { }
 
@@ -36,7 +34,6 @@ export class CollectionFormComponent {
     (collection.tags) ? collection.tags = collection.tags.split(/\s*,\s*/) : collection.tags = [];
     this.assetForNewCollection ? asset = this.assetForNewCollection : asset = null;
     this.createAndAddAsset(collection, asset);
-    // done with sessionStorage, so it can be removed.
     if (this.assetForNewCollection) sessionStorage.removeItem('assetForNewCollection');
   }
 
@@ -60,11 +57,8 @@ export class CollectionFormComponent {
 
   public cancelCollectionCreation(event: Event): void {
     this.UiState.closeNewCollection();
-    // TODO we need a way to clear the form access like: 
-    // WzFormComponent.resetForm();
     let cForm = <HTMLFormElement>document.querySelector('wz-form form');
     cForm.reset();
-    // done with sessionStorage, so it can be removed.
     sessionStorage.removeItem('assetForNewCollection');
   }
 }

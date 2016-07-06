@@ -69,24 +69,9 @@ export class CollectionShowComponent implements OnInit {
 
     });
 
-    // this.collections = this.collectionsService.collections;
-
-
   }
 
   public showAsset(asset: any): void {
     this.router.navigate(['/asset', asset.assetId]);
   }
-
-  // public selectFocusedCollection(collection: Collection): void {
-  //   this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
-  //     if (collection.assets) {
-  //       this.collectionsService.getCollectionItems(collection.id, 100).subscribe(search => {
-  //         this.collectionsService.updateFocusedCollectionAssets(collection, search);
-  //       });
-  //     } else {
-  //       this.collectionsService.updateFocusedCollection(collection);
-  //     }
-  //   });
-  // }
 }

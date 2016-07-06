@@ -5,13 +5,6 @@ collection-show .collection-head {
   padding-bottom: rem(1.1);
 }
 collection-show .collections-list {
-  // .bread-crumbs {
-  //   padding: 8px 0 12px 0; 
-  //   a.md-primary[md-button] {
-  //     color: md-color($md-primary);
-  //     padding: 0;
-  //   }
-  // }
   ul {
     margin-top: 0;
   }
@@ -21,7 +14,6 @@ collection-show .collections-list {
     padding: 0;
     border-radius: 0;
     border-width: 0;
-    // border-bottom: 1px solid md-color($md-foreground, divider);
     @include transition($swift-ease-out);
     & > div[layout="row"] > div[layout-padding]:first-child {
       padding-left: 0;

@@ -3,7 +3,6 @@ import { Collection, CollectionStore } from '../shared/interfaces/collection.int
 import { CollectionsService } from './services/collections.service';
 import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import {PaginationComponent} from '../shared/components/pagination/pagination.component';
-// import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { CurrentUser } from '../shared/services/current-user.model';
@@ -23,7 +22,6 @@ import { UiConfig } from '../shared/services/ui.config';
 })
 
 export class CollectionsComponent implements OnInit {
-  // public collections: Observable<Collections>;
   public collections: any;
   public focusedCollection: any;
   public errorMessage: string;
@@ -41,7 +39,6 @@ export class CollectionsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.collections = this.collectionsService.collections;
     this.store.select('collections').subscribe(collections => {
       this.collections = collections;
     });

@@ -25,7 +25,6 @@ export function main() {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
-      // provide(RouteSegment, { useValue: new RouteSegment([], { site: 'core' }, null, null, null) }),
       ApiConfig,
       ConfigService,
     ]);

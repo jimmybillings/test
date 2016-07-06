@@ -63,7 +63,6 @@ export function main() {
 
     it('Should register new user and console log the response for now.',
       inject([RegisterComponent], (register: RegisterComponent) => {
-        spyOn(console, 'log');
         register.onSubmit({
           'firstName': 'first',
           'lastName': 'second',
@@ -71,7 +70,6 @@ export function main() {
           'password': 'fourth',
           'siteName': register._ApiConfig.getPortal()
         });
-        expect(console.log).toHaveBeenCalled();
       }));
 
   });

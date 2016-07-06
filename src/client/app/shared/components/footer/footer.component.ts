@@ -29,7 +29,6 @@ export class FooterComponent {
   }
 
   public changeLang(lang: string) {
-    console.log(lang);
     this.onChangeLang.emit(lang);
   }
 }

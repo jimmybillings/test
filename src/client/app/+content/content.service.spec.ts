@@ -19,7 +19,6 @@ export function main() {
     beforeEachProviders(() => [
       { provide: Router, useClass: MockRouter },
       { provide: ActivatedRoute, useClass: MockActivatedRoute },
-      // provide(RouteSegment, {useFactory: (r: any) => r.routeTree.root, deps: [Router]}),
       MockBackend,
       BaseRequestOptions,
       provide(Http, {

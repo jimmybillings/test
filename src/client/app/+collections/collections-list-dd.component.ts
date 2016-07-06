@@ -56,21 +56,21 @@ export class CollectionListDdComponent {
     this.router.navigate(['/collection/', assetId]);
   }
 
-  public navigateToCollectionsIndex(): void {
+  public navigateToCollectionsIndex() {
     this.UiState.closeCollectionsList();
     this.router.navigate(['/collection']);
   }
 
-  public showCollectionSearch(event: Event): void {
-    console.log(event);
+  public showCollectionSearch(event: Event) {
+    return event;
   }
 
-  public showCollectionFilter(event: Event): void {
-    console.log(event);
+  public showCollectionFilter(event: Event) {
+    return event;
   }
 
-  public showCollectionSort(event: Event): void {
-    console.log(event);
+  public showCollectionSort(event: Event) {
+    return event;
   }
 
 }

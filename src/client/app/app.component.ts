@@ -1,5 +1,4 @@
 import { Component, OnInit, Renderer, ViewChild, ViewContainerRef } from '@angular/core';
-import { Location } from '@angular/common';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Observable } from 'rxjs/Rx';
@@ -52,8 +51,7 @@ export class AppComponent implements OnInit {
     private notification: NotificationService,
     private apiConfig: ApiConfig,
     private authentication: Authentication,
-    private viewContainerService: ViewContainerService,
-    private location: Location) {
+    private viewContainerService: ViewContainerService) {
     this.apiConfig.setPortal(portal);
   }
 

@@ -96,12 +96,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('assetForNewCollection', JSON.stringify(asset));
   }
 
-  public addToCart(asset: any): void {
-    console.log(asset);
+  public addToCart(asset: any) {
+    return asset;
   }
 
-  public downloadComp(asset: any): void {
-    console.log(asset);
+  public downloadComp(asset: any) {
+    return asset;
   }
 
   public changePage(page: any): void {
@@ -151,9 +151,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public doFilter(filter: FilterTree): void {
-    //console.log('do event filter. Is filter checked:' + filter.checked +' filter id: '+filter.filterId);
-    //i do not know why this.filterIds.indexOf(filter.filterId) doesn't work. Anyone?
-    //something with the type that === comparison keeps failing (but == works)
     if (filter.checked === true) {
       if (filter.contains(this.filterIds, filter.filterId) === false) {
         this.filterIds.push(filter.filterId);
