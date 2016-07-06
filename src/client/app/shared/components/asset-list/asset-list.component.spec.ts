@@ -6,12 +6,11 @@ import {
   it,
   beforeEachProviders
 } from '@angular/core/testing';
-
+import { provide} from '@angular/core';
 import { Router } from '@angular/router';
 import {AssetListComponent} from './asset-list.component';
-import { ToastService } from '../toast/toast.service';
-import { Renderer } from '@angular/core';
-import { ViewContainerService } from '../../../shared/services/view-container.service';
+import {createOverlayContainer} from '@angular2-material/core/overlay/overlay-container';
+import {OVERLAY_CONTAINER_TOKEN} from '@angular2-material/core/overlay/overlay';
 
 export function main() {
   describe('Asset List Component', () => {
@@ -19,9 +18,7 @@ export function main() {
     beforeEachProviders(() => [
       AssetListComponent,
       { provide: Router, useClass: MockRouter },
-      ToastService,
-      ViewContainerService,
-      Renderer
+      provide(OVERLAY_CONTAINER_TOKEN, {useValue: createOverlayContainer()})
     ]);
 
     it('Create instance of AssetList',

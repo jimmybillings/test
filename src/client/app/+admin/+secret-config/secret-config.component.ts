@@ -3,7 +3,6 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { FormBuilder, Validators, ControlGroup, Control } from '@angular/common';
 import { ConfigService } from '../services/config.service';
 import { ActivatedRoute } from '@angular/router';
-import { ToastService } from '../../shared/components/toast/toast.service';
 import { IuiConfig } from '../../shared/interfaces/config.interface';
 import { Subscription } from 'rxjs/Rx';
 
@@ -34,8 +33,7 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
   constructor(public uiConfig: UiConfig,
     public fb: FormBuilder,
     public configService: ConfigService,
-    public route: ActivatedRoute,
-    private toastService: ToastService) { }
+    public route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.sub = this.route.params.subscribe(params => {
@@ -58,11 +56,10 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
   public onSubmit(form: any): void {
     this.configService.update(JSON.parse(form.config))
       .subscribe((res) => {
-        this.toastService.createToast('ADMIN.CONFIG.UPDATE_SUCCESS_TOAST', 'success', 5000);
         this.uiConfig.set(res.json());
         (<Control>this.configForm.controls['config']).updateValue(JSON.stringify(res.json(), undefined, 4));
       }, (err) => {
-        this.toastService.createToast(err._body, 'warn', 5000);
+        // do something here
       });
   }
 }
