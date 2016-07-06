@@ -113,7 +113,8 @@
       "EDIT_BTN_TITLE": "Edit collection",
       "HISTORY_BTN_TITLE": "Show collection history",
       "SHARE_BTN_TITLE": "Share collection",
-      "COMMENT_BTN_TITLE": "Show collection comments"
+      "COMMENT_BTN_TITLE": "Show collection comments",
+      "MORE_BTN_TITLE": "More collection options"
     }      
   },
   "ADMIN": {
