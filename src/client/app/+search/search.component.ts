@@ -1,16 +1,16 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
+import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Router, ActivatedRoute} from '@angular/router';
+import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import { AssetData } from './services/asset.data.service';
 import { AssetListComponent }  from '../shared/components/asset-list/asset-list.component';
-import {UiConfig} from '../shared/services/ui.config';
-import {Observable} from 'rxjs/Rx';
-import {CurrentUser} from '../shared/services/current-user.model';
+import { UiConfig} from '../shared/services/ui.config';
+import { Observable} from 'rxjs/Rx';
+import { CurrentUser} from '../shared/services/current-user.model';
 import { Error } from '../shared/services/error.service';
-import {PaginationComponent} from '../shared/components/pagination/pagination.component';
-import {SearchContext} from '../shared/services/search-context.service';
-import {FilterTree} from './filter-tree';
-import {FilterTreeComponent} from './filter-tree.component';
+import { PaginationComponent} from '../shared/components/pagination/pagination.component';
+import { SearchContext} from '../shared/services/search-context.service';
+import { FilterTree} from './filter-tree';
+import { FilterTreeComponent} from './filter-tree.component';
 import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from '../+collections/services/collections.service';
 import { Store } from '@ngrx/store';
@@ -60,8 +60,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-
-    this.sub = this.route.params.subscribe(() => {
+    this.searchContext.set(this.route.snapshot.params);
+    this.sub = this.route.params.subscribe((params) => {
       this.newSearch();
       this.getFilterTree();
     });
