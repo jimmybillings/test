@@ -24,6 +24,7 @@ import { MultilingualService, multilingualReducer} from './shared/services/multi
 import { SearchContext} from './shared/services/search-context.service';
 import { CollectionsService} from './+collections/services/collections.service';
 import { ViewContainerService } from './shared/services/view-container.service';
+import { UserPermission } from './shared/services/permission.service';
 
 export function main() {
   describe('App Component', () => {
@@ -43,6 +44,7 @@ export function main() {
       ViewContainerService,
       BaseRequestOptions,
       Renderer,
+      UserPermission,
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]

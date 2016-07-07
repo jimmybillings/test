@@ -18,7 +18,8 @@ import {
   NotificationService,
   CollectionsService,
   ToastService,
-  ViewContainerService
+  ViewContainerService,
+  UserPermission
 } from './platform/app.component.imports';
 declare var portal: string;
 
@@ -44,6 +45,7 @@ export class AppComponent implements OnInit {
     public multiLingual: MultilingualService,
     public searchContext: SearchContext,
     public currentUser: CurrentUser,
+    public permission: UserPermission,
     public collectionsService: CollectionsService,
     public store: Store<CollectionStore>,
     public uiState: UiState,

@@ -55,6 +55,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public getIndex(): void {
     this.toggleFlag = this.params.d;
+
     this.adminService.getResources(this.params, this.resourceType).subscribe(data => {
       this.adminService.setResources(data);
     });
@@ -86,8 +87,9 @@ export class IndexComponent implements OnInit, OnDestroy {
     d = params['d'];
     i = parseInt(params['i']) || 1;
     n = parseInt(params['n']) || 10;
-    fields = params['fields'] || '';
-    values = params['values'] || '';
+    // Hack because browser makes empty values 'true' in the url
+    fields = (Boolean(params['fields'])) ? '' : params['fields'];
+    values = (Boolean(params['values'])) ? '' : params['values'];
     this.params = { i, n, s, d, fields, values };
   }
 

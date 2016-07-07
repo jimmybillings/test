@@ -22,6 +22,7 @@ export class AppNavComponent {
   @Input() state: any;
   @Input() collection: Collection;
   @Input() UiState: any;
+  @Input() permission: any;
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
   @Output() onOpenSidenav = new EventEmitter();

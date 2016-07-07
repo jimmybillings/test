@@ -13,6 +13,8 @@ import { SearchContext} from '../shared/services/search-context.service';
 import { Authentication} from '../+user-management/services/authentication.data.service';
 import { CollectionsService } from '../+collections/services/collections.service';
 import { UiState } from '../shared/services/ui.state';
+import { AdminAuthGuard } from '../+admin/services/admin.auth.guard';
+import { UserPermission } from '../shared/services/permission.service';
 
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
@@ -50,6 +52,8 @@ export const WAZEE_PROVIDERS = [
   TranslateService,
   MultilingualService,
   UiState,
+  AdminAuthGuard,
+  UserPermission,
   provide(TranslateLoader, {
     useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
     deps: [Http]
