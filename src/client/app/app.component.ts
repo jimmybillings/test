@@ -17,7 +17,6 @@ import {
   UiState,
   NotificationService,
   CollectionsService,
-  ToastService,
   ViewContainerService,
   UserPermission
 } from './platform/app.component.imports';
@@ -29,7 +28,7 @@ declare var portal: string;
   templateUrl: 'app.html',
   directives: [ROUTER_DIRECTIVES, APP_COMPONENT_DIRECTIVES],
   pipes: [TranslatePipe],
-  providers: [NotificationService, ToastService, ViewContainerService]
+  providers: [NotificationService, ViewContainerService]
 })
 
 export class AppComponent implements OnInit {

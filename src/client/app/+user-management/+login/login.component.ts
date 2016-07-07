@@ -9,7 +9,6 @@ import { CurrentUser } from '../../shared/services/current-user.model';
 import { IFormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { UiConfig } from '../../shared/services/ui.config';
-import { ToastService } from '../../shared/components/toast/toast.service';
 /**
  * Login page component - renders login page and handles login form submission
  */
@@ -35,8 +34,7 @@ export class LoginComponent implements OnInit {
     public router: Router,
     public _ApiConfig: ApiConfig,
     public _currentUser: CurrentUser,
-    public uiConfig: UiConfig,
-    private toastService: ToastService) {
+    public uiConfig: UiConfig) {
   }
 
   ngOnInit(): void {
@@ -55,7 +53,7 @@ export class LoginComponent implements OnInit {
       this._currentUser.set(res.user);
       this.router.navigate(['/']);
     }, (err) => {
-      this.toastService.createToast('LOGIN.ERROR_TOAST', 'warn', 5000);
+      console.log(err._body);
     });
   }
 }

@@ -26,7 +26,7 @@ export class CollectionListDdComponent {
   constructor(
     public router: Router,
     public collectionsService: CollectionsService) {
-      this.collections = this.collectionsService.collections;
+    this.collections = this.collectionsService.collections;
   }
 
   public closeCollectionsList(): void {
@@ -39,16 +39,20 @@ export class CollectionListDdComponent {
   }
 
   public selectFocusedCollection(collection: Collection) {
-    this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
-      if (collection.assets) {
-        this.collectionsService.getCollectionItems(collection.id,200).subscribe(search => {
-          this.collectionsService.updateFocusedCollectionAssets(collection, search);
-        });
-      }else {
-        this.collectionsService.updateFocusedCollection(collection);
-      }
-    });
-    this.UiState.closeCollectionsList();
+    if (this.router.url.split('/')[1] === 'collection' && this.router.url.split('/')[2] !== undefined) {
+      this.navigateToCollectionShow(collection.id);
+    } else {
+      this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
+        if (collection.assets) {
+          this.collectionsService.getCollectionItems(collection.id, 200).subscribe(search => {
+            this.collectionsService.updateFocusedCollectionAssets(collection, search);
+          });
+        } else {
+          this.collectionsService.updateFocusedCollection(collection);
+        }
+      });
+      this.UiState.closeCollectionsList();
+    }
   }
 
   public navigateToCollectionShow(assetId: number): void {
