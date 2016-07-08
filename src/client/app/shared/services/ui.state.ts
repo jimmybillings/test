@@ -18,6 +18,8 @@ export const uiState: Reducer<any> = (state = InitUiState, action: Action) => {
       return Object.assign({}, state);
     case 'UI.STATE.UPDATE':
       return Object.assign({}, state, action.payload);
+    case 'UI.STATE.RESET':
+      return Object.assign({}, action.payload);
     default:
       return state;
   }
@@ -29,6 +31,11 @@ export class UiState {
 
   constructor(public store: Store<any>) {
     this.uiState = this.store.select('uiState');
+    console.log(this.store.getState());
+  }
+
+  public reset() {
+    this.store.dispatch({ type: 'UI.STATE.RESET', payload: InitUiState });
   }
 
   public update(payload: Object) {

@@ -22,41 +22,45 @@ export class IndexComponent implements OnInit, OnDestroy {
   public toggleFlag: any;
   public resourceType: string;
   public currentComponent: string;
-  public subscription: Subscription;
   public currentResources: Object;
   public config: any;
   public params: any;
-  private sub: any;
+
+  private routeSubscription: Subscription;
+  private adminStoreSubscription: Subscription;
+  private adminResourcesSubscription: Subscription;
+  private configSubscription: Subscription;
 
   constructor(public currentUser: CurrentUser,
     public adminService: AdminService,
     public route: ActivatedRoute,
     public uiConfig: UiConfig,
     public uiState: UiState,
-    public router: Router) {}
+    public router: Router) { }
 
   ngOnInit(): void {
-    this.sub = this.route.params.subscribe(param => {
+    this.routeSubscription = this.route.params.subscribe(param => {
       this.resourceType = param['resource'];
       this.currentComponent = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1);
       this.buildRouteParams(param);
-      this.uiConfig.get('admin' + this.currentComponent).subscribe((config) => {
+      this.configSubscription = this.uiConfig.get('admin' + this.currentComponent).subscribe((config) => {
         this.config = config.config;
         this.getIndex();
       });
-      this.subscription = this.adminService.adminStore.subscribe(data => this.currentResources = data);
+      this.adminStoreSubscription = this.adminService.adminStore.subscribe(data => this.currentResources = data);
     });
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) this.subscription.unsubscribe();
-    this.sub.unsubscribe();
+    this.adminStoreSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
+    this.configSubscription.unsubscribe();
+    this.adminResourcesSubscription.unsubscribe();
   }
 
   public getIndex(): void {
     this.toggleFlag = this.params.d;
-
-    this.adminService.getResources(this.params, this.resourceType).subscribe(data => {
+    this.adminResourcesSubscription = this.adminService.getResources(this.params, this.resourceType).subscribe(data => {
       this.adminService.setResources(data);
     });
   }
@@ -67,13 +71,13 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   public navigateToSortUrl(sortParams: any): void {
-    let params = Object.assign(this.updateRouteParams(sortParams), {'i': 1});
+    let params = Object.assign(this.updateRouteParams(sortParams), { 'i': 1 });
     this.router.navigate(['/admin/resource/' + this.resourceType, params]);
   }
 
   public navigateToFilterUrl(filterParams: any): void {
     let searchTerms = this.adminService.buildSearchTerm(filterParams);
-    let params = Object.assign(this.updateRouteParams(searchTerms), {'i': 1});
+    let params = Object.assign(this.updateRouteParams(searchTerms), { 'i': 1 });
     this.router.navigate(['/admin/resource/' + this.resourceType, params]);
   }
 

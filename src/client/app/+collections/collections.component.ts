@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Collection, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from './services/collections.service';
 import { TranslatePipe} from 'ng2-translate/ng2-translate';
@@ -8,6 +8,7 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { Error } from '../shared/services/error.service';
 import { UiConfig } from '../shared/services/ui.config';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -21,14 +22,15 @@ import { UiConfig } from '../shared/services/ui.config';
   pipes: [TranslatePipe]
 })
 
-export class CollectionsComponent implements OnInit {
+export class CollectionsComponent implements OnInit, OnDestroy {
+
   public collections: any;
   public focusedCollection: any;
   public errorMessage: string;
   public config: Object;
-  public date(date: any): Date {
-    return new Date(date);
-  }
+  private collectionStoreSubscription: Subscription;
+  private focusedCollectionStoreSubscription: Subscription;
+
   constructor(
     public router: Router,
     public collectionsService: CollectionsService,
@@ -39,30 +41,42 @@ export class CollectionsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select('collections').subscribe(collections => {
+    this.collectionStoreSubscription = this.store.select('collections').subscribe(collections => {
       this.collections = collections;
     });
-    this.store.select('focusedCollection').subscribe(focusedCollection => {
+    this.focusedCollectionStoreSubscription = this.store.select('focusedCollection').subscribe(focusedCollection => {
       this.focusedCollection = focusedCollection;
     });
   }
 
+  ngOnDestroy() {
+    this.collectionStoreSubscription.unsubscribe();
+    this.focusedCollectionStoreSubscription.unsubscribe();
+  }
+
+  public date(date: any): Date {
+    return new Date(date);
+  }
+
   public selectFocusedCollection(collection: Collection): void {
-    this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
+    let parentSub: Subscription = this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
       if (collection.assets) {
-        this.collectionsService.getCollectionItems(collection.id, 100).subscribe(search => {
+        let sub = this.collectionsService.getCollectionItems(collection.id, 100).subscribe(search => {
           this.collectionsService.updateFocusedCollectionAssets(collection, search);
+          sub.unsubscribe();
         });
       } else {
         this.collectionsService.updateFocusedCollection(collection);
       }
+      parentSub.unsubscribe();
     });
   }
 
   public getFocusedCollection(): void {
     setTimeout(() => {
-      this.collectionsService.getFocusedCollection().subscribe(payload => {
+      let sub: Subscription = this.collectionsService.getFocusedCollection().subscribe(payload => {
         this.collectionsService.updateFocusedCollection(payload);
+        sub.unsubscribe();
       });
     }, 1200);
   }
@@ -78,8 +92,9 @@ export class CollectionsComponent implements OnInit {
   }
 
   public deleteCollection(collection: Collection): void {
-    this.collectionsService.deleteCollection(collection.id).subscribe(payload => {
+    let sub: Subscription = this.collectionsService.deleteCollection(collection.id).subscribe(payload => {
       this.collectionsService.deleteCollectionFromStore(collection);
+      sub.unsubscribe();
     });
     // if we are deleting current focused, we need to get the new focused from the server.
     if (collection.id === this.store.getState().focusedCollection.id &&

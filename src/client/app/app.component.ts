@@ -1,7 +1,7 @@
-import { Component, OnInit, Renderer, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { MultilingualService } from './shared/services/multilingual.service';
 import {
@@ -31,12 +31,15 @@ declare var portal: string;
   providers: [NotificationService, ViewContainerService]
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
   public collections: Observable<Array<Collection>>;
   public focusedCollection: Observable<any>;
-  @ViewChild('target', { read: ViewContainerRef }) target: any;
+  private configSubscription: Subscription;
+  private routeSubscription: Subscription;
+  private authSubscription: Subscription;
+  @ViewChild('target', { read: ViewContainerRef }) private target: any;
 
   constructor(
     public uiConfig: UiConfig,
@@ -59,15 +62,21 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
     this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
-    this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
+    this.configSubscription = this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
     this.currentUser.set();
     this.focusedCollection = this.store.select('focusedCollection');
     this.viewContainerService.set(this.target);
     this.routerChanges();
   }
 
+  ngOnDestroy() {
+    this.configSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
+    this.authSubscription.unsubscribe();
+  }
+
   public routerChanges() {
-    this.router.events.subscribe(event => {
+    this.routeSubscription = this.router.events.subscribe(event => {
       var results = (/function (.{1,})\(/).exec((event).constructor.toString());
       if (results[1] === 'NavigationEnd') {
         this.uiState.checkRouteForSearchBar(event.url);
@@ -79,9 +88,10 @@ export class AppComponent implements OnInit {
   }
 
   public logout(): void {
-    this.authentication.destroy().subscribe();
+    this.authSubscription = this.authentication.destroy().subscribe();
     this.currentUser.destroy();
     this.collectionsService.destroyCollections();
+    this.uiState.reset();
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data.lang); }

@@ -60,7 +60,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    this.searchContext.set(this.route.snapshot.params);
+    this.searchContext.update = this.route.snapshot.params;
     this.sub = this.route.params.subscribe((params) => {
       this.newSearch();
       this.getFilterTree();
@@ -105,46 +105,47 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public changePage(page: any): void {
-    this.searchContext.set({ i: page });
+    this.searchContext.update = { i: page };
     this.searchContext.go();
   }
 
   public keywordSearch(): void {
     this.route.params.subscribe(params => {
-      this.searchContext.set(params);
+      this.searchContext.update = params;
       this.newSearch();
     }).unsubscribe();
   }
 
   public newSearch() {
-    this.assetData.searchAssets(this.searchContext.get()).subscribe(
+    console.log(this.searchContext.state);
+    this.assetData.searchAssets(this.searchContext.state).subscribe(
       payload => this.assetData.storeAssets(payload),
       error => this.error.handle(error)
     );
   }
 
   public filterAssets(): void {
-    this.searchContext.set({ i: 1 });
+    this.searchContext.update = { i: 1 };
     if (this.filterIds.length > 0) {
-      this.searchContext.set({ 'filterIds': this.filterIds.join(',') });
+      this.searchContext.update = { 'filterIds': this.filterIds.join(',') };
     } else {
-      this.searchContext.set({ 'filterIds': null });
+      this.searchContext.update = { 'filterIds': null };
     }
     if (this.filterValues.length > 0 && this.filterIds.length > 0) {
-      this.searchContext.set({ 'filterValues': this.filterValues.join(',') });
+      this.searchContext.update = { 'filterValues': this.filterValues.join(',') };
     } else {
-      this.searchContext.set({ 'filterValues': null });
+      this.searchContext.update = { 'filterValues': null };
     }
     this.searchContext.go();
   }
 
   public getFilterTree(): void {
-    let fids = this.searchContext.get()['filterIds'];
+    let fids = this.searchContext.state['filterIds'];
     if (fids && fids !== null) {
       if (typeof fids === 'string') { fids.split(',').forEach(x => this.filterIds.push(x)); }
     }
     let v: Array<string> = this.filterIds;
-    this.assetData.getFilterTree(this.searchContext.get()).subscribe(
+    this.assetData.getFilterTree(this.searchContext.state).subscribe(
       payload => { this.rootFilter = new FilterTree('', '', [], '', -1).load(payload, null, v); },
       error => this.error.handle(error)
     );

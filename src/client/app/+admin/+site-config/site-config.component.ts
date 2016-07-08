@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfigService } from '../services/config.service';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -11,17 +12,17 @@ import { ConfigService } from '../services/config.service';
 export class SiteConfigComponent implements OnInit, OnDestroy {
   public siteName: string;
   public configType: string;
-  public sub: any;
+  public routeSubscription: Subscription;
 
   constructor(public router: Router,
               public route: ActivatedRoute,
               public configService: ConfigService) {}
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => this.siteName = params['site']);
+    this.routeSubscription = this.route.params.subscribe(params => this.siteName = params['site']);
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 }

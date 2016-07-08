@@ -80,11 +80,6 @@ export function main() {
       expect(service.assetService.set).toHaveBeenCalledWith(MockAssetResponse());
     }));
 
-    it('Should reset the asset store when the component is destroyed', inject([AssetComponent], (service: AssetComponent) => {
-      spyOn(service.assetService, 'reset');
-      service.ngOnDestroy();
-      expect(service.assetService.reset).toHaveBeenCalled();
-    }));
   });
 
   function MockAssetResponse() {
