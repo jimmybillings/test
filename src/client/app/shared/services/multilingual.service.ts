@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {Store, Reducer, Action} from '@ngrx/store';
 import {TranslateService} from 'ng2-translate/ng2-translate';
 import {ILang, MultilingualStateI} from '../interfaces/language.interface';
-
+import 'rxjs/add/operator/take';
 
 const initialState: MultilingualStateI = {
   lang: 'en'
@@ -39,11 +39,16 @@ export class MultilingualService {
   constructor(private translate: TranslateService, public store: Store<any>) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
-
     // subscribe to changes
     store.select('i18n').subscribe((state: MultilingualStateI) => {
       // update ng2-translate which will cause translations to occur wherever the TranslatePipe is used in the view
-      this.translate.use(state.lang);
+      if (this.translate.getLangs() && (this.translate.getLangs().indexOf(state.lang) > -1)) {
+        this.translate.use(state.lang);
+      } else {
+        this.translate.reloadLang(state.lang).take(1).subscribe(() => {
+          setTimeout(() => this.translate.use(state.lang), 0);
+        });
+      }
     });
   }
 

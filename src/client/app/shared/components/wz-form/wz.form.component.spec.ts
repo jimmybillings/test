@@ -6,10 +6,10 @@ import {
   it,
   beforeEachProviders,
 } from '@angular/core/testing';
-import {provide} from '@angular/core';
+import {provide, PLATFORM_PIPES} from '@angular/core';
 import {WzFormComponent} from './wz.form.component';
 import {FormModel} from './wz.form.model';
-import { TranslateLoader, TranslateStaticLoader, TranslateService} from 'ng2-translate/ng2-translate';
+import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Http, BaseRequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
@@ -29,6 +29,7 @@ export function main() {
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
         deps: [Http]
       }),
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
     ]);
 
     it('Should create instance of WzForm',

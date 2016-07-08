@@ -37,9 +37,6 @@ import { MultilingualService } from '../shared/services/multilingual.service';
 import {createOverlayContainer} from '@angular2-material/core/overlay/overlay-container';
 import {OVERLAY_CONTAINER_TOKEN} from '@angular2-material/core/overlay/overlay';
 
-// export const MATERIAL_PIPES = [];
-// export const WAZEE_DIRECTIVES = [];
-
 export const WAZEE_PROVIDERS = [
   ApiConfig,
   CurrentUser,
@@ -55,10 +52,10 @@ export const WAZEE_PROVIDERS = [
   AdminAuthGuard,
   UserPermission,
   provide(TranslateLoader, {
-    useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-    deps: [Http]
+    useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'), deps: [Http]
   }),
-  provide(OVERLAY_CONTAINER_TOKEN, {useValue: createOverlayContainer()}),
+  TranslateService,
+  provide(OVERLAY_CONTAINER_TOKEN, { useValue: createOverlayContainer() }),
 ];
 
 export const WAZEE_STORES: Provider[][] = [

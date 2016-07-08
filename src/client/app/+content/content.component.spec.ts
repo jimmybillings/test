@@ -7,17 +7,18 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-import {ContentComponent} from './content.component';
-import {provide} from '@angular/core';
+import { ContentComponent} from './content.component';
+import { provide, PLATFORM_PIPES} from '@angular/core';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../shared/services/api.config';
-import {CurrentUser} from '../shared/services/current-user.model';
-import {UiConfig, config} from '../shared/services/ui.config';
-import {ContentService} from './content.service';
+import { CurrentUser} from '../shared/services/current-user.model';
+import { UiConfig, config} from '../shared/services/ui.config';
+import { ContentService} from './content.service';
 import { provideStore } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute} from '@angular/router';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 
 export function main() {
   describe('Content Component', () => {
@@ -43,6 +44,7 @@ export function main() {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       provideStore({ config: config }),
       provide(ContentService, { useClass: MockContentService }),
       CurrentUser,

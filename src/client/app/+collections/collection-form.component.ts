@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { Collection } from '../shared/interfaces/collection.interface';
-import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
 import { CollectionsService} from './services/collections.service';
 
@@ -13,8 +12,7 @@ import { CollectionsService} from './services/collections.service';
   templateUrl: 'collection-form.html',
   directives: [
     WzFormComponent
-  ],
-  pipes: [TranslatePipe]
+  ]
 })
 
 export class CollectionFormComponent {

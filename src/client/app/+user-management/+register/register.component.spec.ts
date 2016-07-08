@@ -10,7 +10,7 @@ import {
 import { Router } from '@angular/router';
 
 import {Observable} from 'rxjs/Rx';
-import {provide} from '@angular/core';
+import {provide, PLATFORM_PIPES} from '@angular/core';
 import {RegisterComponent} from './register.component';
 import {HTTP_PROVIDERS} from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
@@ -22,6 +22,7 @@ import {User} from '../services/user.data.service';
 import {UiConfig, config} from '../../shared/services/ui.config';
 import {FormModel} from '../../shared/components/wz-form/wz.form.model';
 import { provideStore } from '@ngrx/store';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 
 export function main() {
   describe('Register Component', () => {
@@ -44,6 +45,7 @@ export function main() {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       provide(User, { useClass: MockUser }),
       provideStore({ config: config }),
       ApiConfig,

@@ -1,6 +1,5 @@
 import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { CollectionsService} from '../../../+collections/services/collections.service';
 import { WzDropdownComponent } from '../wz-dropdown/wz.dropdown.component';
@@ -14,7 +13,6 @@ import { CollectionListDdComponent } from '../../../+collections/collections-lis
   selector: 'bin-tray',
   templateUrl: 'bin-tray.html',
   directives: [ROUTER_DIRECTIVES, WzDropdownComponent, CollectionListDdComponent],
-  pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 

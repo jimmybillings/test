@@ -6,7 +6,7 @@ import {
   it,
   beforeEachProviders,
 } from '@angular/core/testing';
-import { provide} from '@angular/core';
+import { provide, PLATFORM_PIPES} from '@angular/core';
 import { BinTrayComponent} from './bin-tray.component';
 import { UiConfig} from '../../services/ui.config';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import {createOverlayContainer} from '@angular2-material/core/overlay/overlay-container';
 import {OVERLAY_CONTAINER_TOKEN} from '@angular2-material/core/overlay/overlay';
-import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
+import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from 'ng2-translate/ng2-translate';
 import { MultilingualService} from '../../services/multilingual.service';
 
 export function main() {
@@ -43,6 +43,7 @@ export function main() {
       }),
       TranslateService,
       MultilingualService,
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       provide(OVERLAY_CONTAINER_TOKEN, {useValue: createOverlayContainer()})
     ]);
 

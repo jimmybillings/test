@@ -1,5 +1,5 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
-import {ControlGroup, Control} from '@angular/common';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit} from '@angular/core';
+// import {ControlGroup, Control} from '@angular/common';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {TranslatePipe} from 'ng2-translate/ng2-translate';
 
@@ -15,20 +15,25 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class FooterComponent {
+export class FooterComponent implements OnInit {
   @Input() currentUser: any;
   @Input() supportedLanguages: any;
   @Output() onChangeLang = new EventEmitter();
-  public langForm: ControlGroup;
+  public lang: any;
+  // public langForm: ControlGroup;
 
 
   constructor() {
-    this.langForm = new ControlGroup({
-      lang: new Control('en')
-    });
+    // this.langForm = new ControlGroup({
+    //   lang: new Control('en')
+    // });
   }
 
-  public changeLang(lang: string) {
-    this.onChangeLang.emit(lang);
+  ngOnInit() {
+    this.lang = this.supportedLanguages[0].code;
+  }
+
+  public changeLang(e: any) {
+    this.onChangeLang.emit(e.target.value);
   }
 }

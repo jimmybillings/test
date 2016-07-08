@@ -2,7 +2,6 @@ import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit,
 import {FormBuilder, Validators, ControlGroup, Control, FORM_DIRECTIVES} from '@angular/common';
 import {Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
 import {Router} from '@angular/router';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {Observable} from 'rxjs/Rx';
 
 @Component({
@@ -10,7 +9,6 @@ import {Observable} from 'rxjs/Rx';
   selector: 'search-box',
   templateUrl: 'search-box.html',
   directives: [FORM_DIRECTIVES],
-  pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

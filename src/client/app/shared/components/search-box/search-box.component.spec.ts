@@ -8,9 +8,9 @@ import {
 } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { MockBackend } from '@angular/http/testing';
-import { provide} from '@angular/core';
+import { provide, PLATFORM_PIPES} from '@angular/core';
 import { BaseRequestOptions, Http } from '@angular/http';
-import { TranslateLoader, TranslateStaticLoader, TranslateService} from 'ng2-translate/ng2-translate';
+import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
 import {SearchBoxComponent} from './search-box.component';
 import {UiConfig} from '../../services/ui.config';
 
@@ -32,6 +32,7 @@ export function main() {
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
         deps: [Http]
       }),
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       UiConfig
     ]);
 

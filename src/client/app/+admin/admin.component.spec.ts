@@ -6,8 +6,8 @@ import {
   it,
   beforeEachProviders
 } from '@angular/core/testing';
-import { provide } from '@angular/core';
-import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
+import { provide, PLATFORM_PIPES } from '@angular/core';
+import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from 'ng2-translate/ng2-translate';
 import {CurrentUser, currentUser} from '../shared/services/current-user.model';
 import {Router, ActivatedRoute, RouterOutletMap} from '@angular/router';
 import {AdminComponent} from './admin.component';
@@ -32,6 +32,7 @@ export function main() {
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
         deps: [Http]
       }),
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]

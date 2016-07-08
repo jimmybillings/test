@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UiConfig } from '../../shared/services/ui.config';
 import { IuiConfig } from '../../shared/interfaces/config.interface';
 import { ValuesPipe } from '../../shared/pipes/values.pipe';
-import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { ConfigService } from '../services/config.service';
 import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
 import { Router } from '@angular/router';
@@ -12,7 +11,7 @@ import { Subscription } from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'admin-config',
   templateUrl: 'config.html',
-  pipes: [ValuesPipe, TranslatePipe],
+  pipes: [ValuesPipe],
   directives: [WzListComponent]
 })
 

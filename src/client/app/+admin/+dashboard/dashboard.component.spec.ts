@@ -6,12 +6,12 @@ import {
   it,
   beforeEachProviders
 } from '@angular/core/testing';
-import { provide } from '@angular/core';
+import { provide, PLATFORM_PIPES} from '@angular/core';
 import { DashboardComponent} from './dashboard.component';
 import { Router } from '@angular/router';
 import { CurrentUser, currentUser} from '../../shared/services/current-user.model';
 import { provideStore } from '@ngrx/store';
-import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
+import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Http, BaseRequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
@@ -32,7 +32,8 @@ export function main() {
       provide(TranslateLoader, {
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
         deps: [Http]
-      })
+      }),
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
     ]);
 
     it('Create instance of dashboard and assign the CurrentUser to an instance variable inside of dashboard',

@@ -61,7 +61,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
-    this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
+    // this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
     this.configSubscription = this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
     this.currentUser.set();
     this.focusedCollection = this.store.select('focusedCollection');
@@ -94,7 +94,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.uiState.reset();
   }
 
-  public changeLang(data: any) { this.multiLingual.setLanguage(data.lang); }
+  public changeLang(data: any) { this.multiLingual.setLanguage(data); }
 
   public newSearchContext(data: any) { this.searchContext.new({ q: data, i: 1 }); }
 }

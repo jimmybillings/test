@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Authentication } from '../services/authentication.data.service';
 
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
@@ -20,8 +19,7 @@ import { UiConfig } from '../../shared/services/ui.config';
   directives: [
     ROUTER_DIRECTIVES,
     WzFormComponent
-  ],
-  pipes: [TranslatePipe]
+  ]
 })
 
 export class LoginComponent implements OnInit {

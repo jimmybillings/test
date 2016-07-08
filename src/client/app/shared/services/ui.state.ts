@@ -31,7 +31,6 @@ export class UiState {
 
   constructor(public store: Store<any>) {
     this.uiState = this.store.select('uiState');
-    console.log(this.store.getState());
   }
 
   public reset() {
