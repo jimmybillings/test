@@ -38,7 +38,11 @@ export class SearchContext {
   }
 
   public set update(params: any) {
-    this.store.dispatch({ type: 'SEARCHCONTEXT.SET', payload: params });
+    let decodedParams:any = {};
+    for(let param in params) {
+      decodedParams[param] = decodeURIComponent(params[param]);
+    }
+    this.store.dispatch({ type: 'SEARCHCONTEXT.SET', payload: decodedParams });
   }
 
   public go(): void {

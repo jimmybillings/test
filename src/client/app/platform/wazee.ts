@@ -1,5 +1,5 @@
 
-import { provide, Provider, PLATFORM_PIPES } from '@angular/core';
+import { provide, Provider } from '@angular/core';
 import { Http } from '@angular/http';
 import { RouterConfig } from '@angular/router';
 
@@ -32,13 +32,10 @@ import { multilingualReducer } from '../shared/services/multilingual.service';
 import { collections, focusedCollection} from '../+collections/services/collections.service';
 
 // TRANSLATIONS
-import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from 'ng2-translate/ng2-translate';
+import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
 import { MultilingualService } from '../shared/services/multilingual.service';
 import {createOverlayContainer} from '@angular2-material/core/overlay/overlay-container';
 import {OVERLAY_CONTAINER_TOKEN} from '@angular2-material/core/overlay/overlay';
-
-// export const MATERIAL_PIPES = [];
-// export const WAZEE_DIRECTIVES = [];
 
 export const WAZEE_PROVIDERS = [
   ApiConfig,
@@ -58,7 +55,6 @@ export const WAZEE_PROVIDERS = [
     useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'), deps: [Http]
   }),
   TranslateService,
-  provide(PLATFORM_PIPES, { useValue: TranslatePipe, multi: true }),
   provide(OVERLAY_CONTAINER_TOKEN, { useValue: createOverlayContainer() }),
 ];
 
@@ -76,10 +72,6 @@ export const WAZEE_STORES: Provider[][] = [
     i18n: multilingualReducer
   })
 ];
-
-// export const WAZEE_PIPES = [
-
-// ]
 
 export const WAZEE_ROUTES: RouterConfig = [
   ...APP_ROUTES
