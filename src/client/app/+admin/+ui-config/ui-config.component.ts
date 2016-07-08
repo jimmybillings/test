@@ -56,7 +56,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
         this.router.navigate(['admin/ui-config/', this.portal]);
       } else {
         this.getConfig();
-        this.uiConfigIndexSubscription = this.configService.getUi().subscribe(data => {
+        this.uiConfigIndexSubscription = this.configService.getUiConfigIndex().subscribe(data => {
           data.items.reduce((previous: Array<string>, current: IuiConfig) => {
             previous.push(current.siteName);
             return previous;
@@ -74,7 +74,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public getConfig(): void {
-    this.uiConfigShowSubscription = this.configService.getUiConfig(this.siteName).subscribe(data => {
+    this.uiConfigShowSubscription = this.configService.showUiConfig(this.siteName).subscribe(data => {
       this.config = data;
       this.components = data.components;
     });
@@ -138,7 +138,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public update(formValue: IuiConfig): void {
-    let configUpdateSubscription: Subscription = this.configService.update(formValue).subscribe((res) => {
+    let configUpdateSubscription: Subscription = this.configService.updateUiConfig(formValue).subscribe((res) => {
       this.uiConfig.set(res.json());
       configUpdateSubscription.unsubscribe();
     });
