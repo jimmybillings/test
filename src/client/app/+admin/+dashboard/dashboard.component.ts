@@ -1,12 +1,10 @@
 import {Component} from '@angular/core';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {CurrentUser} from '../../shared/services/current-user.model';
 
 @Component({
   moduleId: module.id,
   selector: 'admin-dashboard',
-  templateUrl: 'dashboard.html',
-  pipes: [TranslatePipe]
+  templateUrl: 'dashboard.html'
 })
 
 /**

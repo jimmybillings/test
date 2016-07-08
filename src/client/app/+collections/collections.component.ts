@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Collection, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from './services/collections.service';
-import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import {PaginationComponent} from '../shared/components/pagination/pagination.component';
 import { Store } from '@ngrx/store';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
@@ -18,8 +17,7 @@ import { Subscription } from 'rxjs/Rx';
   directives: [
     ROUTER_DIRECTIVES,
     PaginationComponent
-  ],
-  pipes: [TranslatePipe]
+  ]
 })
 
 export class CollectionsComponent implements OnInit, OnDestroy {

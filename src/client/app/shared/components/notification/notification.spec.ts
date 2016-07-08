@@ -7,9 +7,9 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-import {NotificationComponent} from './notification.component';
-import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
-import { provide} from '@angular/core';
+import { NotificationComponent} from './notification.component';
+import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from 'ng2-translate/ng2-translate';
+import { provide, PLATFORM_PIPES} from '@angular/core';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
@@ -27,6 +27,7 @@ export function main() {
         deps: [Http]
       }),
       TranslateService,
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       MockBackend,
       BaseRequestOptions
     ]);

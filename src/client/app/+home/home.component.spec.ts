@@ -9,7 +9,7 @@ import {
 
 import { Router } from '@angular/router';
 import {HomeComponent} from './home.component';
-import {provide} from '@angular/core';
+import {provide, PLATFORM_PIPES} from '@angular/core';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../shared/services/api.config';
@@ -18,6 +18,7 @@ import {UiConfig, config} from '../shared/services/ui.config';
 import { provideStore } from '@ngrx/store';
 import {Observable} from 'rxjs/Rx';
 import {SearchContext} from '../shared/services/search-context.service';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 
 export function main() {
   describe('Home Component', () => {
@@ -37,6 +38,7 @@ export function main() {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       provideStore({ config: config }),
       CurrentUser,
       provide(UiConfig, { useClass: MockUiConfig }),

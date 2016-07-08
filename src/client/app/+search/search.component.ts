@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
-import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import { AssetData } from './services/asset.data.service';
 import { AssetListComponent }  from '../shared/components/asset-list/asset-list.component';
 import { UiConfig} from '../shared/services/ui.config';
@@ -24,8 +23,7 @@ import { Store } from '@ngrx/store';
   selector: 'search',
   templateUrl: 'search.html',
   directives: [AssetListComponent, PaginationComponent, FilterTreeComponent],
-  providers: [AssetData],
-  pipes: [TranslatePipe]
+  providers: [AssetData]
 })
 
 

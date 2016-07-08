@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {CurrentUser} from '../shared/services/current-user.model';
 import {SearchBoxComponent} from '../shared/components/search-box/search-box.component';
 import {UiConfig} from '../shared/services/ui.config';
@@ -11,8 +10,7 @@ import {ApiConfig} from '../shared/services/api.config';
   moduleId: module.id,
   selector: 'home',
   templateUrl: 'home.html',
-  directives: [ROUTER_DIRECTIVES, SearchBoxComponent],
-  pipes: [TranslatePipe]
+  directives: [ROUTER_DIRECTIVES, SearchBoxComponent]
 })
 
 export class HomeComponent implements OnInit {

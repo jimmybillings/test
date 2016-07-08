@@ -6,13 +6,13 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-import { provide, Renderer} from '@angular/core';
+import { provide, Renderer, PLATFORM_PIPES} from '@angular/core';
 import { Router, RouterOutletMap, ActivatedRoute } from '@angular/router';
 import { TestComponentBuilder } from '@angular/compiler/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { provideStore } from '@ngrx/store';
-import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
+import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from 'ng2-translate/ng2-translate';
 import { NotificationService } from './shared/components/notification/notification.service';
 import { AppComponent} from './app.component';
 import { CurrentUser} from './shared/services/current-user.model';
@@ -49,6 +49,7 @@ export function main() {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       provide(TranslateLoader, {
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
         deps: [Http]
@@ -57,7 +58,6 @@ export function main() {
       MultilingualService,
       provideStore({ config: config, i18n: multilingualReducer, uiState }),
       CurrentUser,
-
       ApiConfig,
       Authentication,
       UiConfig,
@@ -116,7 +116,7 @@ export function main() {
     it('Should change the current language', inject([AppComponent], (component: any) => {
       spyOn(component.multiLingual, 'setLanguage');
       component.changeLang({ lang: 'fr' });
-      expect(component.multiLingual.setLanguage).toHaveBeenCalledWith('fr');
+      expect(component.multiLingual.setLanguage).toHaveBeenCalledWith({ lang: 'fr' });
     }));
 
     // it('Should hide the search bar on certain routes', inject([AppComponent], (component: any) => {

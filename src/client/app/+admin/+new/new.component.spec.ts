@@ -9,14 +9,14 @@ import {
 
 import {AdminService} from '../services/admin.service';
 import {BaseRequestOptions, Http} from '@angular/http';
-import {provide} from '@angular/core';
+import {provide, PLATFORM_PIPES} from '@angular/core';
 import {MockBackend} from '@angular/http/testing';
 import {ApiConfig} from '../../shared/services/api.config';
 import {NewComponent} from './new.component';
 import {UiConfig, config} from '../../shared/services/ui.config';
 import {provideStore} from '@ngrx/store';
 import {Router, ActivatedRoute} from '@angular/router';
-import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
+import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from 'ng2-translate/ng2-translate';
 export function main() {
   describe('Admin New component', () => {
 
@@ -37,6 +37,7 @@ export function main() {
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
         deps: [Http]
       }),
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]

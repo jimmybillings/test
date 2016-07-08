@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Response } from '@angular/http';
 import { User } from '../services/user.data.service';
 
@@ -20,8 +19,7 @@ import { WzFormComponent } from '../../shared/components/wz-form/wz.form.compone
   directives: [
     ROUTER_DIRECTIVES,
     WzFormComponent
-  ],
-  pipes: [TranslatePipe]
+  ]
 })
 
 export class RegisterComponent implements OnInit {

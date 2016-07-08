@@ -1,14 +1,12 @@
 import {Component, OnDestroy} from '@angular/core';
 import {CurrentUser} from '../../shared/services/current-user.model';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { CurrentUserInterface} from '../../shared/interfaces/current-user.interface';
 import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
   selector: 'profile',
-  templateUrl: 'profile.html',
-  pipes: [TranslatePipe]
+  templateUrl: 'profile.html'
 })
 
 export class ProfileComponent implements OnDestroy {

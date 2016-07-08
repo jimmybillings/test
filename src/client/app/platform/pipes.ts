@@ -3,12 +3,13 @@
  */
 
 // import { PLATFORM_PIPES } from '@angular/core';
-
+// import { WAZEE_PIPES } from './wazee';
 // application_pipes: pipes that are global through out the application
 
 // export const APPLICATION_PIPES = [
 // ];
 
 // export const PIPES = [
-//   {provide: PLATFORM_PIPES, multi: true, useValue: APPLICATION_PIPES }
+//   ...WAZEE_PIPES
 // ];
+

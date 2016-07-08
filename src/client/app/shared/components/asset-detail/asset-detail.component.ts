@@ -1,5 +1,4 @@
 import {Component, Output, EventEmitter, Input, ChangeDetectionStrategy, OnChanges} from '@angular/core';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {PlayerComponent} from '../../components/player/player.component';
 import { Collection } from '../../interfaces/collection.interface';
@@ -12,7 +11,6 @@ import { Collection } from '../../interfaces/collection.interface';
     ROUTER_DIRECTIVES,
     PlayerComponent
   ],
-  pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

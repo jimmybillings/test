@@ -13,5 +13,6 @@ bootstrap(AppComponent, [
   ...PROVIDERS,
   ...DIRECTIVES,
   ...STORES
+  // ...PIPES
 ]);
 

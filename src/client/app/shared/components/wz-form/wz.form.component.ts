@@ -1,7 +1,6 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit} from '@angular/core';
 import { FORM_DIRECTIVES, ControlGroup, FormBuilder, Control } from '@angular/common';
 import {FormModel} from './wz.form.model';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
 
 /**
  * Home page component - renders the home page
@@ -14,8 +13,7 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
     FORM_DIRECTIVES
   ],
   providers: [FormModel],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  pipes: [TranslatePipe]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class WzFormComponent implements OnInit {

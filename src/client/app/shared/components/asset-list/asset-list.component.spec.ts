@@ -6,11 +6,12 @@ import {
   it,
   beforeEachProviders
 } from '@angular/core/testing';
-import { provide} from '@angular/core';
+import { provide, PLATFORM_PIPES} from '@angular/core';
 import { Router } from '@angular/router';
 import {AssetListComponent} from './asset-list.component';
 import {createOverlayContainer} from '@angular2-material/core/overlay/overlay-container';
 import {OVERLAY_CONTAINER_TOKEN} from '@angular2-material/core/overlay/overlay';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 
 export function main() {
   describe('Asset List Component', () => {
@@ -18,7 +19,8 @@ export function main() {
     beforeEachProviders(() => [
       AssetListComponent,
       { provide: Router, useClass: MockRouter },
-      provide(OVERLAY_CONTAINER_TOKEN, {useValue: createOverlayContainer()})
+      provide(OVERLAY_CONTAINER_TOKEN, {useValue: createOverlayContainer()}),
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true})
     ]);
 
     it('Create instance of AssetList',

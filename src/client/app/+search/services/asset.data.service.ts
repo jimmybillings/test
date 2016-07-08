@@ -70,7 +70,6 @@ export class AssetData {
   public searchAssets(params: any): Observable<any> {
     params['i'] = (parseFloat(params['i']) - 1).toString();
     let options = this.getAssetSearchOptions(params, this.currentUser.loggedIn());
-    console.log(options);
     return this.http.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options)
       .map((res: Response) => (res.json()));
   }

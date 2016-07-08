@@ -1,6 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import { ROUTER_DIRECTIVES, Router} from '@angular/router';
-import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { CollectionsService} from './services/collections.service';
 import { Observable} from 'rxjs/Rx';
@@ -13,7 +12,6 @@ import { Observable} from 'rxjs/Rx';
   selector: 'collections-list-dd',
   templateUrl: 'collections-list-dd.html',
   directives: [ROUTER_DIRECTIVES],
-  pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

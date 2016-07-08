@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Collections, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from './services/collections.service';
-import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Observable } from 'rxjs/Rx';
 import { AssetListComponent }  from '../shared/components/asset-list/asset-list.component';
 import {PaginationComponent} from '../shared/components/pagination/pagination.component';
@@ -20,8 +19,7 @@ import { UiConfig } from '../shared/services/ui.config';
     AssetListComponent,
     PaginationComponent,
     ROUTER_DIRECTIVES
-  ],
-  pipes: [TranslatePipe]
+  ]
 })
 
 export class CollectionShowComponent implements OnInit {
