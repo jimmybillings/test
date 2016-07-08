@@ -23,7 +23,7 @@ export function main() {
   describe('Admin UI Config Component', () => {
     @Injectable()
     class MockConfigService {
-      public getUiConfig(siteName: string) {
+      public showUiConfig(siteName: string) {
         return Observable.of(mockResponse());
       }
     }

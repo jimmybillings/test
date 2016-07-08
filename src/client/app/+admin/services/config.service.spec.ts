@@ -44,7 +44,7 @@ export function main() {
       inject([ConfigService, MockBackend], (service: ConfigService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.getUi().subscribe(response => {
+        service.getUiConfigIndex().subscribe(response => {
           expect(connection.request.url).toEqual(this.uiApiUrl + 'search');
           expect(connection.request.method).toBe(RequestMethod.Get);
           expect(response).toEqual(mockResponse());
@@ -60,7 +60,7 @@ export function main() {
       inject([ConfigService, MockBackend], (service: ConfigService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.getSite().subscribe(response => {
+        service.getSiteConfigIndex().subscribe(response => {
           expect(connection.request.url).toEqual(this.siteApiUrl + 'search');
           expect(connection.request.method).toBe(RequestMethod.Get);
           expect(response).toEqual(mockResponse());
@@ -76,7 +76,7 @@ export function main() {
       inject([ConfigService, MockBackend], (service: ConfigService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.search('core').subscribe(response => {
+        service.searchSiteConfig('core').subscribe(response => {
           expect(connection.request.url).toEqual(this.siteApiUrl + 'search/?q=core');
           expect(connection.request.method).toBe(RequestMethod.Get);
         });
@@ -86,7 +86,7 @@ export function main() {
       inject([ConfigService, MockBackend], (service: ConfigService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.getSiteConfig(1).subscribe(response => {
+        service.showSiteConfig(1).subscribe(response => {
           expect(connection.request.url).toEqual(this.siteApiUrl + '1');
           expect(connection.request.method).toBe(RequestMethod.Get);
         });
@@ -96,7 +96,7 @@ export function main() {
       inject([ConfigService, MockBackend], (service: ConfigService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.getUiConfig('core').subscribe(response => {
+        service.showUiConfig('core').subscribe(response => {
           expect(connection.request.url).toEqual(this.uiApiUrl + '?siteName=core');
           expect(connection.request.method).toBe(RequestMethod.Get);
         });

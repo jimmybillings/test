@@ -40,7 +40,7 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.routeSubscription = this.route.params.subscribe(params => {
       this.site = params['site'];
-      this.configSubscription = this.configService.getUiConfig(this.site).subscribe((data: any) => {
+      this.configSubscription = this.configService.showUiConfig(this.site).subscribe((data: any) => {
         this.config = data;
         this.setForm();
       });
@@ -57,7 +57,7 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(form: any): void {
-    let updateSubscription: Subscription = this.configService.update(JSON.parse(form.config))
+    let updateSubscription: Subscription = this.configService.updateUiConfig(JSON.parse(form.config))
       .subscribe((res) => {
         this.uiConfig.set(res.json());
         (<Control>this.configForm.controls['config']).updateValue(JSON.stringify(res.json(), undefined, 4));
