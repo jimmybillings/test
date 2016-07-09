@@ -1,4 +1,4 @@
 export * from './directives';
-export * from './pipes';
+// export * from './pipes';
 export * from './providers';
 export * from './stores';
