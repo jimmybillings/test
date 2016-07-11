@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UiConfig } from '../../shared/services/ui.config';
-import { FormBuilder, Validators, ControlGroup, Control } from '@angular/common';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { ConfigService } from '../services/config.service';
 import { ActivatedRoute } from '@angular/router';
 import { IuiConfig } from '../../shared/interfaces/config.interface';
@@ -28,7 +28,7 @@ import { Subscription } from 'rxjs/Rx';
 export class SecretConfigComponent implements OnInit, OnDestroy {
   private config: IuiConfig;
   private site: string;
-  private configForm: ControlGroup;
+  private configForm: FormGroup;
   private routeSubscription: Subscription;
   private configSubscription: Subscription;
 
@@ -60,7 +60,7 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
     let updateSubscription: Subscription = this.configService.updateUiConfig(JSON.parse(form.config))
       .subscribe((res) => {
         this.uiConfig.set(res.json());
-        (<Control>this.configForm.controls['config']).updateValue(JSON.stringify(res.json(), undefined, 4));
+        (<FormControl>this.configForm.controls['config']).updateValue(JSON.stringify(res.json(), undefined, 4));
         updateSubscription.unsubscribe();
       }, (err) => {
         // do something here

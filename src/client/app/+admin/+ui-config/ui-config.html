@@ -62,7 +62,7 @@
           <md-list-item>
             <div class="add-item" layout="row" layout-align="center center" flex-gt-lg="100" flex-xl="100" flex="100">
               <form #form="ngForm" (ngSubmit)="addItem(form.value)">
-                <select required ngControl="type">
+                <select required formControlName="type">
                   <option *ngFor="let type of inputTypes" [value]="type">{{type}}</option>
                 </select>
                 <button md-icon-button type="submit"><i md-icon="" class="material-icons">add</i></button>
@@ -76,7 +76,7 @@
       <md-card>
         <form layout="column" (ngSubmit)="onSubmit()" class="md-inline-form">
           <div *ngFor="let control of form | values; of let i = index">
-            <md-input [(ngModel)]="form[control.key]" ngControl="{{control.key}}" placeholder="{{control.key}}"></md-input>
+            <md-input [(ngModel)]="form[control.key]" formControlName="{{control.key}}" placeholder="{{control.key}}"></md-input>
           </div>
           <md-card-actions layout="row" layout-align="center center">
             <button md-raised-button type="submit">update</button>

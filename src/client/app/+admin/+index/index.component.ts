@@ -90,8 +90,8 @@ export class IndexComponent implements OnInit, OnDestroy {
     i = parseInt(params['i']) || 1;
     n = parseInt(params['n']) || 10;
     // Hack because browser makes empty values 'true' in the url
-    fields = (Boolean(params['fields'])) ? '' : params['fields'];
-    values = (Boolean(params['values'])) ? '' : params['values'];
+    fields = (params['fields'] === 'true') ? '' : params['fields'];
+    values = (params['values'] === 'true') ? '' : params['values'];
     this.params = { i, n, s, d, fields, values };
   }
 

@@ -5,7 +5,6 @@ import {
   IuiTableHeaders
 } from '../../shared/interfaces/config.interface';
 import { IFormFields } from '../../shared/interfaces/forms.interface.ts';
-import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfigService } from '../services/config.service';
@@ -18,7 +17,6 @@ import { Subscription } from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'admin-ui-config',
   templateUrl: 'ui-config.html',
-  directives: [WzListComponent],
   pipes: [ValuesPipe]
 })
 
