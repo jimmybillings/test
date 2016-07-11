@@ -1,4 +1,4 @@
-<form layout="column" [ngFormModel]="form" (ngSubmit)="onSubmit(form.value)" class="md-inline-form">
+<form layout="column" [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="md-inline-form">
   <!--<md-content layout-sm="row" layout-padding="">-->
     <div *ngFor="let field of items">
       <md-input
@@ -7,7 +7,7 @@
         placeholder="{{field.label | translate}}"
         autofocus="autofocus"
         type="{{field.type}}"
-        ngControl="{{field.name}}"
+        formControlName="{{field.name}}"
         id="{{field.name}}"
       >
         <!--<div md-messages="{{field.name}}" role="alert">-->
@@ -25,7 +25,7 @@
       </md-input>
       <div *ngIf="field.type == 'select'">
         <md-input-group class="md-group">
-          <select ngControl="{{field.name}}">
+          <select formControlName="{{field.name}}">
             <option *ngFor="let option of parseOptions(field.options)">{{option}}</option>
           </select>
         </md-input-group>
