@@ -4,7 +4,7 @@
 
 // Angular 2
 import { provide } from '@angular/core';
-import { FORM_PROVIDERS, APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF } from '@angular/common';
 import { provideForms, disableDeprecatedForms } from '@angular/forms';
 
 // Angular 2 Http
@@ -28,7 +28,6 @@ export const APP_ROUTER_PROVIDERS: RouterConfig = [
 ];
 
 export const APPLICATION_PROVIDERS = [
-  ...FORM_PROVIDERS,
   ...HTTP_PROVIDERS,
   ...MATERIAL_PROVIDERS,
   ...WAZEE_PROVIDERS,

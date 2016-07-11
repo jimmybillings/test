@@ -10,10 +10,12 @@ import { PaginationComponent } from './pagination.component';
 import {provide} from '@angular/core';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
+import { FormBuilder } from '@angular/forms';
 
 export function main() {
   describe('Pagination component', () => {
     beforeEachProviders(() => [
+      FormBuilder,
       PaginationComponent,
       MockBackend,
       BaseRequestOptions,

@@ -13,12 +13,14 @@ import { BaseRequestOptions, Http } from '@angular/http';
 import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
 import {SearchBoxComponent} from './search-box.component';
 import {UiConfig} from '../../services/ui.config';
+import { FormBuilder } from '@angular/forms';
 
 export function main() {
   describe('Search Box Component', () => {
     class Search { }
     class MockRouter { }
     beforeEachProviders(() => [
+      FormBuilder,
       SearchBoxComponent,
       { provide: Router, useClass: MockRouter },
       BaseRequestOptions,

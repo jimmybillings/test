@@ -12,11 +12,13 @@ import {FormModel} from './wz.form.model';
 import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Http, BaseRequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
+import { FormBuilder } from '@angular/forms';
 
 export function main() {
   describe('Form Component', () => {
     beforeEachProviders(() => [
       WzFormComponent,
+      FormBuilder,
       FormModel,
       TranslateService,
       MockBackend,
@@ -60,7 +62,7 @@ export function main() {
         form.items = items();
         form.ngOnInit();
         spyOn(console, 'log');
-        form.onSubmit(form.form);
+        form.onSubmit();
         expect(console.log).toHaveBeenCalled();
       })
     );
