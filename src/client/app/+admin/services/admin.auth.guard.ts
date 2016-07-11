@@ -7,7 +7,7 @@ export class AdminAuthGuard implements CanActivate {
   constructor(private permission: UserPermission, private router: Router) { }
 
   canActivate() {
-    return (this.permission.has('root')) ? true : this.router.navigate(['/']) && false;
+    return (this.permission.has('Root')) ? true : this.router.navigate(['/']) && false;
   }
 }
 
