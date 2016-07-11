@@ -49,12 +49,20 @@ export class UiState {
     this.update({ binTrayIsOpen: true });
   }
 
+  public toggleBinTray() {
+    this.uiState.take(1).subscribe(s => this.update({ binTrayIsOpen: !s.binTrayIsOpen}));
+  }
+
   public openSearch() {
     this.update({ searchIsOpen: true });
   }
 
   public closeSearch() {
     this.update({ searchIsOpen: false });
+  }
+
+  public toggleSearch() {
+    this.uiState.take(1).subscribe(s => this.update({ searchIsOpen: !s.searchIsOpen}));
   }
 
   public showCollectionsList() {

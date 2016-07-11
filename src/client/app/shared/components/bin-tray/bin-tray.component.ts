@@ -28,13 +28,13 @@ export class BinTrayComponent {
 
   // make this 2 request with errors get collections and then focused
   public getCollectionsAndFocused(): void {
-    this.collectionsService.loadCollections().subscribe(payload => {
+    this.collectionsService.loadCollections().first().subscribe(payload => {
       // for each collection with assets get a thumbnail img
       // this is used to identify collections
       if (payload.totalCount > 0) {
         payload.items.forEach((item: any, index: number) => {
           if (item.assets) {
-            this.collectionsService.getCollectionItems(item.id, 1, item.assets.length - 1).subscribe(search => {
+            this.collectionsService.getCollectionItems(item.id, 1, item.assets.length - 1).first().subscribe(search => {
               // reformat the object this is how all collections will look including focused with assets
               let assets = Object.assign({},
                 { 'items': payload.items[index].assets },
@@ -59,9 +59,9 @@ export class BinTrayComponent {
 
       // get focused collection assets and thumbnails
       if (payload.totalCount > 0) {
-        this.collectionsService.getFocusedCollection().subscribe(collection => {
+        this.collectionsService.getFocusedCollection().first().subscribe(collection => {
           if (collection.assets) {
-            this.collectionsService.getCollectionItems(collection.id, 300).subscribe(search => {
+            this.collectionsService.getCollectionItems(collection.id, 300).first().subscribe(search => {
               this.collectionsService.updateFocusedCollectionAssets(collection, search);
             });
           } else {

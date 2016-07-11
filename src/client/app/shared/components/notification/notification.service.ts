@@ -1,20 +1,26 @@
-import { Injectable, ComponentRef, ComponentResolver, Renderer } from '@angular/core';
+import { Injectable, ComponentRef, ComponentResolver, Renderer, OnDestroy } from '@angular/core';
 import { NotificationComponent } from './notification.component';
 import { Router } from '@angular/router';
 import { UiConfig} from '../../services/ui.config';
+import { Subscription } from 'rxjs/Rx';
 
 @Injectable()
-export class NotificationService {
+export class NotificationService implements OnDestroy {
   public cmpRef: ComponentRef<any>;
   public viewRef: any;
   public setDestroyTimer: any;
   public notficationStrategy: any;
+  private configSubscription: Subscription;
 
   constructor(private renderer: Renderer,
     private resolver: ComponentResolver,
     public router: Router,
     public uiConfig: UiConfig) {
-    this.uiConfig.get('notifications').subscribe((config: any) => this.notficationStrategy = config.items || []);
+    this.configSubscription = this.uiConfig.get('notifications').subscribe((config: any) => this.notficationStrategy = config.items || []);
+  }
+
+  ngOnDestroy() {
+    this.configSubscription.unsubscribe();
   }
 
   public check(state: string, target: any) {

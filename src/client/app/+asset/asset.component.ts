@@ -26,7 +26,6 @@ export class AssetComponent implements OnInit, OnDestroy {
   public assetDetailDisplay: Object;
   private assetDetailSubscription: Subscription;
   private routeSubscription: Subscription;
-  private assetInitializeSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,11 +40,13 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.routeSubscription = this.route.params.subscribe(params => {
-      this.assetInitializeSubscription = this.assetService
+      this.assetService
         .initialize(params['name'])
+        .first()
         .subscribe((payload) => {
           this.assetService.set(payload);
-          this.assetDetailSubscription = this.assetDetail.subscribe(data => this.assetDetailDisplay = data);
+          this.assetDetailSubscription =
+            this.assetDetail.subscribe(data => this.assetDetailDisplay = data);
         },
         error => this.error.handle(error)
         );
@@ -56,14 +57,13 @@ export class AssetComponent implements OnInit, OnDestroy {
   public addToCollection(params: any): void {
     let collection: Collection = params.collection;
     collection.assets ? collection.assets.items.push(params.asset) : collection.assets.items = [params.asset];
-    let collectionAddSubscription: Subscription =
-      this.collectionsService.addAssetsToCollection(collection.id, params.asset).subscribe(payload => {
-        let collectionGetSubscription: Subscription =
-          this.collectionsService.getCollectionItems(collection.id, 300).subscribe(search => {
+
+    this.collectionsService.addAssetsToCollection(collection.id, params.asset)
+      .first().subscribe(payload => {
+        this.collectionsService.getCollectionItems(collection.id, 300)
+          .first().subscribe(search => {
             this.collectionsService.updateFocusedCollectionAssets(payload, search);
             this.collectionsService.updateCollectionInStore(payload, search);
-            collectionAddSubscription.unsubscribe();
-            collectionGetSubscription.unsubscribe();
           });
       });
   }
@@ -76,8 +76,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.assetDetailSubscription.unsubscribe();
-    this.assetInitializeSubscription.unsubscribe();
+    if (this.assetDetailSubscription) this.assetDetailSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     this.assetService.reset();
   }

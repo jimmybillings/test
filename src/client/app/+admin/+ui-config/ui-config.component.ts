@@ -36,8 +36,6 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   public form: any;
   public configOptions: Array<IuiTableHeaders | IFormFields>;
   private routeSubscription: Subscription;
-  private uiConfigIndexSubscription: Subscription;
-  private uiConfigShowSubscription: Subscription;
 
   constructor(public router: Router,
     public apiConfig: ApiConfig,
@@ -50,13 +48,21 @@ export class UiConfigComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.portal = this.apiConfig.getPortal();
-    this.routeSubscription = this.route.params.subscribe(params => {
+    this.routeSubscription = this.routeChanges();
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
+  }
+
+  public routeChanges(): Subscription {
+    return this.route.params.subscribe(params => {
       this.siteName = params['site'];
       if (this.portal !== 'core' && !(this.portal === this.siteName)) {
         this.router.navigate(['admin/ui-config/', this.portal]);
       } else {
         this.getConfig();
-        this.uiConfigIndexSubscription = this.configService.getUiConfigIndex().subscribe(data => {
+        this.configService.getUiConfigIndex().first().subscribe(data => {
           data.items.reduce((previous: Array<string>, current: IuiConfig) => {
             previous.push(current.siteName);
             return previous;
@@ -64,17 +70,10 @@ export class UiConfigComponent implements OnInit, OnDestroy {
         });
       }
     });
-
-  }
-
-  ngOnDestroy() {
-    this.routeSubscription.unsubscribe();
-    this.uiConfigShowSubscription.unsubscribe();
-    this.uiConfigShowSubscription.unsubscribe();
   }
 
   public getConfig(): void {
-    this.uiConfigShowSubscription = this.configService.showUiConfig(this.siteName).subscribe(data => {
+    this.configService.showUiConfig(this.siteName).first().subscribe(data => {
       this.config = data;
       this.components = data.components;
     });
@@ -138,9 +137,8 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public update(formValue: IuiConfig): void {
-    let configUpdateSubscription: Subscription = this.configService.updateUiConfig(formValue).subscribe((res) => {
+    this.configService.updateUiConfig(formValue).first().subscribe((res) => {
       this.uiConfig.set(res.json());
-      configUpdateSubscription.unsubscribe();
     });
   }
 }

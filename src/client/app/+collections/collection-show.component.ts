@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Collections, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from './services/collections.service';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
 import { AssetListComponent }  from '../shared/components/asset-list/asset-list.component';
 import {PaginationComponent} from '../shared/components/pagination/pagination.component';
 import { Store } from '@ngrx/store';
@@ -22,13 +22,15 @@ import { UiConfig } from '../shared/services/ui.config';
   ]
 })
 
-export class CollectionShowComponent implements OnInit {
+export class CollectionShowComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
   public focusedCollection: any;
   public collection: any;
   public assets: any;
   public errorMessage: string;
   public config: Object;
+  private focusedCollectionStoreSubscription: Subscription;
+  private routeSubscription: Subscription;
   public date(date: any): Date {
     if (date) {
       return new Date(date);
@@ -48,10 +50,10 @@ export class CollectionShowComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.collectionsService.setFocusedCollection(params['id']).subscribe(fc => {
+    this.routeSubscription = this.route.params.subscribe(params => {
+      this.collectionsService.setFocusedCollection(params['id']).first().subscribe(fc => {
         if (fc.assets) {
-          this.collectionsService.getCollectionItems(fc.id, 100).subscribe(search => {
+          this.collectionsService.getCollectionItems(fc.id, 100).first().subscribe(search => {
             this.collectionsService.updateFocusedCollectionAssets(fc, search);
           });
         } else {
@@ -59,7 +61,7 @@ export class CollectionShowComponent implements OnInit {
         }
       });
 
-      this.store.select('focusedCollection').subscribe(focusedCollection => {
+      this.focusedCollectionStoreSubscription = this.store.select('focusedCollection').subscribe(focusedCollection => {
         this.focusedCollection = focusedCollection;
         this.collection = this.focusedCollection;
         this.assets = this.collection.assets;
@@ -67,6 +69,11 @@ export class CollectionShowComponent implements OnInit {
 
     });
 
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
+    this.focusedCollectionStoreSubscription.unsubscribe();
   }
 
   public showAsset(asset: any): void {

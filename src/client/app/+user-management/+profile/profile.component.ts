@@ -14,8 +14,7 @@ export class ProfileComponent implements OnDestroy {
   private userSubscription: Subscription;
 
   constructor(currentUser: CurrentUser) {
-    this.userSubscription =
-      currentUser.profile.subscribe((user: CurrentUserInterface) => this.user = user);
+    this.userSubscription = currentUser.profile.subscribe((user: CurrentUserInterface) => this.user = user);
   }
 
   ngOnDestroy() {
