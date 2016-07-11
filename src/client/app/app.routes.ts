@@ -9,9 +9,11 @@ import {
   CollectionShowComponent,
   AdminComponent,
 } from './platform/app.component.imports';
+
 import { USER_ROUTES} from './+user-management/user-management.routes';
 import { ADMIN_ROUTES} from './+admin/admin.routes';
 import { AssetGuard } from './+asset/services/asset.guard';
+import {AdminAuthGuard} from './+admin/services/admin.auth.guard';
 
 export const APP_ROUTES: RouterConfig = [
   { path: '', component: HomeComponent },
@@ -22,5 +24,5 @@ export const APP_ROUTES: RouterConfig = [
   { path: 'collection', component: CollectionsComponent },
   { path: 'collection/:id', component: CollectionShowComponent },
   { path: 'content/:page', component: ContentComponent },
-  { path: 'admin', component: AdminComponent, children: ADMIN_ROUTES }
+  { path: 'admin', component: AdminComponent, children: ADMIN_ROUTES, canActivate: [AdminAuthGuard] }
 ];

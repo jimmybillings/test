@@ -28,7 +28,7 @@ export function main() {
       let error = { status: 401 };
       spyOn(service.router, 'navigate');
       service.handle(error);
-      expect(service.router.navigate).toHaveBeenCalledWith(['user/login']);
+      expect(service.router.navigate).toHaveBeenCalledWith(['/user/login']);
     }));
 
   });
