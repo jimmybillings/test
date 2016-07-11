@@ -33,12 +33,12 @@ export class AppNavComponent {
     this.onLogOut.emit(event);
   }
 
-  public openSearch() {
-    this.UiState.openSearch();
+  public toggleSearch() {
+    this.UiState.toggleSearch();
   }
 
-  public openBinTray() {
-    this.UiState.openBinTray();
+  public toggleBinTray() {
+    this.UiState.toggleBinTray();
   }
 
   public showNewCollection(event: Event) {

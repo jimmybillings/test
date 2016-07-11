@@ -92,10 +92,10 @@ header.app-header.fixed [md-icon-button] {
   }
 }
 
-header.app-header app-nav button.open-bin-tray,
-header.app-header app-nav button.open-search {
-  display: none;
-}
+// header.app-header app-nav button.open-bin-tray,
+// header.app-header app-nav button.open-search {
+//   // display: none;
+// }
 
 header.app-header.bin-tray-closed app-nav button.open-bin-tray,
 header.app-header.search-closed app-nav button.open-search {
