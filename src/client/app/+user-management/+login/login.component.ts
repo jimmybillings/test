@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Rx';
 import { Authentication } from '../services/authentication.data.service';
 
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
@@ -22,9 +23,10 @@ import { UiConfig } from '../../shared/services/ui.config';
   ]
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   public config: any;
   public fields: IFormFields[];
+  private configSubscription: Subscription;
 
   constructor(
     public _authentication: Authentication,
@@ -36,7 +38,11 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.uiConfig.get('login').subscribe((config: any) => this.config = config.config);
+    this.configSubscription = this.uiConfig.get('login').subscribe((config: any) => this.config = config.config);
+  }
+
+  ngOnDestroy() {
+    this.configSubscription.unsubscribe();
   }
 
   /**
@@ -46,7 +52,7 @@ export class LoginComponent implements OnInit {
   */
   public onSubmit(user: any): void {
     user.siteName = this._ApiConfig.getPortal();
-    this._authentication.create(user).subscribe((res) => {
+    this._authentication.create(user).first().subscribe((res) => {
       localStorage.setItem('token', res.token.token);
       this._currentUser.set(res.user);
       this.router.navigate(['/']);

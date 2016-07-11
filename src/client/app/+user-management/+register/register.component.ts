@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Response } from '@angular/http';
 import { User } from '../services/user.data.service';
-
+import { Subscription } from 'rxjs/Rx';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { ApiConfig } from '../../shared/services/api.config';
 import { UiConfig } from '../../shared/services/ui.config';
@@ -22,10 +22,11 @@ import { WzFormComponent } from '../../shared/components/wz-form/wz.form.compone
   ]
 })
 
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   public config: any;
   public components: Object;
   public fields: IFormFields[];
+  private configSubscription: Subscription;
 
   constructor(
     public user: User,
@@ -34,7 +35,11 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.uiConfig.get('register').subscribe(config => this.config = config.config);
+    this.configSubscription = this.uiConfig.get('register').subscribe(config => this.config = config.config);
+  }
+
+  ngOnDestroy() {
+    this.configSubscription.unsubscribe();
   }
 
   /**
@@ -43,7 +48,7 @@ export class RegisterComponent implements OnInit {
   */
   public onSubmit(user: any): void {
     user.siteName = this._ApiConfig.getPortal();
-    this.user.create(user)
+    this.user.create(user).first()
       .subscribe((res: Response) => {
         return res;
       });

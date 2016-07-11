@@ -30,7 +30,6 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
   private site: string;
   private configForm: ControlGroup;
   private routeSubscription: Subscription;
-  private configSubscription: Subscription;
 
   constructor(public uiConfig: UiConfig,
     public fb: FormBuilder,
@@ -40,16 +39,16 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.routeSubscription = this.route.params.subscribe(params => {
       this.site = params['site'];
-      this.configSubscription = this.configService.showUiConfig(this.site).subscribe((data: any) => {
-        this.config = data;
-        this.setForm();
+      this.configService.showUiConfig(this.site)
+        .first().subscribe((data: any) => {
+          this.config = data;
+          this.setForm();
       });
     });
   }
 
   ngOnDestroy() {
     this.routeSubscription.unsubscribe();
-    this.configSubscription.unsubscribe();
   }
 
   public setForm(): void {
@@ -57,11 +56,10 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(form: any): void {
-    let updateSubscription: Subscription = this.configService.updateUiConfig(JSON.parse(form.config))
-      .subscribe((res) => {
+    this.configService.updateUiConfig(JSON.parse(form.config))
+      .first().subscribe((res) => {
         this.uiConfig.set(res.json());
         (<Control>this.configForm.controls['config']).updateValue(JSON.stringify(res.json(), undefined, 4));
-        updateSubscription.unsubscribe();
       }, (err) => {
         // do something here
       });

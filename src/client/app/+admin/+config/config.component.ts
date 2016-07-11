@@ -22,8 +22,6 @@ export class ConfigComponent implements OnInit, OnDestroy {
   public siteConfigs: Array<Object>;
   public headers: Array<Object>;
   private configSubscription: Subscription;
-  private uiConfigSubscription: Subscription;
-  private siteConfigSubscription: Subscription;
 
   constructor(public uiConfig: UiConfig,
               public configService: ConfigService,
@@ -39,18 +37,16 @@ export class ConfigComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.configSubscription.unsubscribe();
-    this.uiConfigSubscription.unsubscribe();
-    this.siteConfigSubscription.unsubscribe();
   }
 
   public getConfigs(): void {
-    this.uiConfigSubscription = this.configService.getUiConfigIndex().subscribe(data => {
+    this.configService.getUiConfigIndex().first().subscribe(data => {
       this.uiConfigs = data.items;
       this.uiConfigs.forEach(item => {
         Object.assign(item, {lastUpdateBy: 'Ross Edfort', type: 'ui'});
       });
     });
-    this.siteConfigSubscription = this.configService.getSiteConfigIndex().subscribe(data => {
+    this.configService.getSiteConfigIndex().first().subscribe(data => {
       this.siteConfigs = data.items;
       this.siteConfigs.forEach(item => {
         Object.assign(item, {lastUpdateBy: 'Ross Edfort', type: 'site'});

@@ -57,24 +57,21 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public selectFocusedCollection(collection: Collection): void {
-    let parentSub: Subscription = this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
+    this.collectionsService.setFocusedCollection(collection.id).first().subscribe(payload => {
       if (collection.assets) {
-        let sub = this.collectionsService.getCollectionItems(collection.id, 100).subscribe(search => {
+        this.collectionsService.getCollectionItems(collection.id, 100).first().subscribe(search => {
           this.collectionsService.updateFocusedCollectionAssets(collection, search);
-          sub.unsubscribe();
         });
       } else {
         this.collectionsService.updateFocusedCollection(collection);
       }
-      parentSub.unsubscribe();
     });
   }
 
   public getFocusedCollection(): void {
     setTimeout(() => {
-      let sub: Subscription = this.collectionsService.getFocusedCollection().subscribe(payload => {
+      this.collectionsService.getFocusedCollection().first().subscribe(payload => {
         this.collectionsService.updateFocusedCollection(payload);
-        sub.unsubscribe();
       });
     }, 1200);
   }
@@ -90,9 +87,8 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public deleteCollection(collection: Collection): void {
-    let sub: Subscription = this.collectionsService.deleteCollection(collection.id).subscribe(payload => {
+    this.collectionsService.deleteCollection(collection.id).first().subscribe(payload => {
       this.collectionsService.deleteCollectionFromStore(collection);
-      sub.unsubscribe();
     });
     // if we are deleting current focused, we need to get the new focused from the server.
     if (collection.id === this.store.getState().focusedCollection.id &&

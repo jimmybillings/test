@@ -8,16 +8,16 @@ import {
 } from '@angular/core/testing';
 
 import { Router } from '@angular/router';
-import {HomeComponent} from './home.component';
-import {provide, PLATFORM_PIPES} from '@angular/core';
+import { HomeComponent} from './home.component';
+import { provide, PLATFORM_PIPES} from '@angular/core';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../shared/services/api.config';
-import {CurrentUser} from '../shared/services/current-user.model';
-import {UiConfig, config} from '../shared/services/ui.config';
+import { CurrentUser} from '../shared/services/current-user.model';
+import { UiConfig, config} from '../shared/services/ui.config';
 import { provideStore } from '@ngrx/store';
-import {Observable} from 'rxjs/Rx';
-import {SearchContext} from '../shared/services/search-context.service';
+import { Observable} from 'rxjs/Rx';
+import { SearchContext} from '../shared/services/search-context.service';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
 
 export function main() {

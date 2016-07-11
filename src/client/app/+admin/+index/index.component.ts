@@ -23,11 +23,8 @@ export class IndexComponent implements OnInit, OnDestroy {
   public currentResources: Object;
   public config: any;
   public params: any;
-
   private routeSubscription: Subscription;
   private adminStoreSubscription: Subscription;
-  private adminResourcesSubscription: Subscription;
-  private configSubscription: Subscription;
 
   constructor(public currentUser: CurrentUser,
     public adminService: AdminService,
@@ -37,28 +34,31 @@ export class IndexComponent implements OnInit, OnDestroy {
     public router: Router) { }
 
   ngOnInit(): void {
-    this.routeSubscription = this.route.params.subscribe(param => {
-      this.resourceType = param['resource'];
-      this.currentComponent = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1);
-      this.buildRouteParams(param);
-      this.configSubscription = this.uiConfig.get('admin' + this.currentComponent).subscribe((config) => {
-        this.config = config.config;
-        this.getIndex();
-      });
-      this.adminStoreSubscription = this.adminService.adminStore.subscribe(data => this.currentResources = data);
-    });
+    this.routeSubscription = this.routeChanges();
+    this.adminStoreSubscription = this.adminService.adminStore.subscribe(data => this.currentResources = data);
   }
 
   ngOnDestroy(): void {
     this.adminStoreSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
-    this.configSubscription.unsubscribe();
-    this.adminResourcesSubscription.unsubscribe();
+  }
+
+  routeChanges(): Subscription {
+    return this.route.params.subscribe(param => {
+      this.resourceType = param['resource'];
+      this.currentComponent = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1);
+      this.buildRouteParams(param);
+      this.uiConfig.get('admin' + this.currentComponent)
+        .first().subscribe((config) => {
+          this.config = config.config;
+          this.getIndex();
+        });
+    });
   }
 
   public getIndex(): void {
     this.toggleFlag = this.params.d;
-    this.adminResourcesSubscription = this.adminService.getResources(this.params, this.resourceType).subscribe(data => {
+    this.adminService.getResources(this.params, this.resourceType).first().subscribe(data => {
       this.adminService.setResources(data);
     });
   }

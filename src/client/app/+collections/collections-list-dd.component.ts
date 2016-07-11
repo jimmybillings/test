@@ -40,9 +40,9 @@ export class CollectionListDdComponent {
     if (this.router.url.split('/')[1] === 'collection' && this.router.url.split('/')[2] !== undefined) {
       this.navigateToCollectionShow(collection.id);
     } else {
-      this.collectionsService.setFocusedCollection(collection.id).subscribe(payload => {
+      this.collectionsService.setFocusedCollection(collection.id).first().subscribe(payload => {
         if (collection.assets) {
-          this.collectionsService.getCollectionItems(collection.id, 200).subscribe(search => {
+          this.collectionsService.getCollectionItems(collection.id, 200).first().subscribe(search => {
             this.collectionsService.updateFocusedCollectionAssets(collection, search);
           });
         } else {
