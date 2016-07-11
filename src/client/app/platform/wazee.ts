@@ -15,6 +15,7 @@ import { CollectionsService } from '../+collections/services/collections.service
 import { UiState } from '../shared/services/ui.state';
 import { AdminAuthGuard } from '../+admin/services/admin.auth.guard';
 import { UserPermission } from '../shared/services/permission.service';
+import { AssetGuard } from '../+asset/services/asset.guard';
 
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
@@ -32,10 +33,10 @@ import { multilingualReducer } from '../shared/services/multilingual.service';
 import { collections, focusedCollection} from '../+collections/services/collections.service';
 
 // TRANSLATIONS
-import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
+import { TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';
 import { MultilingualService } from '../shared/services/multilingual.service';
-import {createOverlayContainer} from '@angular2-material/core/overlay/overlay-container';
-import {OVERLAY_CONTAINER_TOKEN} from '@angular2-material/core/overlay/overlay';
+import { createOverlayContainer } from '@angular2-material/core/overlay/overlay-container';
+import { OVERLAY_CONTAINER_TOKEN } from '@angular2-material/core/overlay/overlay';
 
 export const WAZEE_PROVIDERS = [
   ApiConfig,
@@ -50,6 +51,7 @@ export const WAZEE_PROVIDERS = [
   MultilingualService,
   UiState,
   AdminAuthGuard,
+  AssetGuard,
   UserPermission,
   provide(TranslateLoader, {
     useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'), deps: [Http]

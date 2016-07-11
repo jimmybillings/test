@@ -76,7 +76,7 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.assetDetailSubscription.unsubscribe();
+    if (this.assetDetailSubscription) this.assetDetailSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     this.assetService.reset();
   }

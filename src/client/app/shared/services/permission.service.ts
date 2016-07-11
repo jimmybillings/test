@@ -5,9 +5,7 @@ import { CurrentUser } from './current-user.model';
  * methods for retrieving user attributes.
  */
 
-const permissionMap: any = {
-  'root': 'Root'
-};
+// const availablePermissions: any = ['Root', 'ViewClips'];
 
 @Injectable()
 export class UserPermission {
@@ -23,6 +21,6 @@ export class UserPermission {
   }
 
   public has(permission: any): boolean {
-    return this.permissions.indexOf(permissionMap[permission]) > -1;
+    return this.permissions.indexOf(permission) > -1;
   }
 }
