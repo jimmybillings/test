@@ -10,8 +10,8 @@ export {ContentComponent} from '../+content/content.component';
 export {SearchComponent} from '../+search/search.component';
 export {AssetComponent} from '../+asset/asset.component';
 export {AdminComponent} from '../+admin/admin.component';
-export {CollectionsComponent} from '../+collections/collections.component';
-export {CollectionShowComponent} from '../+collections/collection-show.component';
+export {CollectionsComponent} from '../+collections/+index/collections.component';
+export {CollectionShowComponent} from '../+collections/+show/collection-show.component';
 
 // Services
 export { CurrentUser} from '../shared/services/current-user.model';
@@ -35,8 +35,8 @@ import {FooterComponent} from '../shared/components/footer/footer.component';
 import {NotificationComponent} from '../shared/components/notification/notification.component';
 import {SearchBoxComponent} from '../shared/components/search-box/search-box.component';
 import {BinTrayComponent} from '../shared/components/bin-tray/bin-tray.component';
-import { CollectionFormComponent } from '../+collections/collection-form.component';
-import { CollectionListDdComponent } from '../+collections/collections-list-dd.component';
+import { CollectionFormComponent } from '../+collections/components/collection-form.component';
+import { CollectionListDdComponent } from '../+collections/components/collections-list-dd.component';
 
 export const APP_COMPONENT_DIRECTIVES = [
   AppNavComponent,

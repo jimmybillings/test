@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import { ROUTER_DIRECTIVES, Router} from '@angular/router';
-import { Collection } from '../shared/interfaces/collection.interface';
-import { CollectionsService} from './services/collections.service';
+import { Collection } from '../../shared/interfaces/collection.interface';
+import { CollectionsService} from '../services/collections.service';
 import { Observable} from 'rxjs/Rx';
 
 /**

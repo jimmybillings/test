@@ -3,7 +3,7 @@ import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { CollectionsService} from '../../../+collections/services/collections.service';
 import { WzDropdownComponent } from '../wz-dropdown/wz.dropdown.component';
-import { CollectionListDdComponent } from '../../../+collections/collections-list-dd.component';
+import { CollectionListDdComponent } from '../../../+collections/components/collections-list-dd.component';
 
 /**
  * Home page search component - renders search form passes form values to search component.

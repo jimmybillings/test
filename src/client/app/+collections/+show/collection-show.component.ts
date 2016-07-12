@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Collections, CollectionStore } from '../shared/interfaces/collection.interface';
-import { CollectionsService } from './services/collections.service';
+import { Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
+import { CollectionsService } from '../services/collections.service';
 import { Observable, Subscription } from 'rxjs/Rx';
-import { AssetListComponent }  from '../shared/components/asset-list/asset-list.component';
-import {PaginationComponent} from '../shared/components/pagination/pagination.component';
+import { AssetListComponent }  from '../../shared/components/asset-list/asset-list.component';
+import {PaginationComponent} from '../../shared/components/pagination/pagination.component';
 import { Store } from '@ngrx/store';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
-import { CurrentUser } from '../shared/services/current-user.model';
-import { Error } from '../shared/services/error.service';
-import { UiConfig } from '../shared/services/ui.config';
+import { CurrentUser } from '../../shared/services/current-user.model';
+import { Error } from '../../shared/services/error.service';
+import { UiConfig } from '../../shared/services/ui.config';
 
 @Component({
   moduleId: module.id,

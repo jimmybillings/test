@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Collection } from '../shared/interfaces/collection.interface';
-import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
-import { CollectionsService} from './services/collections.service';
+import { Collection } from '../../shared/interfaces/collection.interface';
+import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
+import { CollectionsService} from '../services/collections.service';
 
 /**
  * Directive that renders a list of collections

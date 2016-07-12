@@ -8,10 +8,10 @@ import {
 } from '@angular/core/testing';
 
 import { CollectionFormComponent } from './collection-form.component';
-import { CollectionsService, collections, focusedCollection } from './services/collections.service';
-import { ApiConfig } from '../shared/services/api.config';
-import { UiConfig } from '../shared/services/ui.config';
-import { UiState, uiState } from '../shared/services/ui.state';
+import { CollectionsService, collections, focusedCollection } from '../services/collections.service';
+import { ApiConfig } from '../../shared/services/api.config';
+import { UiConfig } from '../../shared/services/ui.config';
+import { UiState, uiState } from '../../shared/services/ui.state';
 import { provide, Injectable, PLATFORM_PIPES } from '@angular/core';
 import { Router } from '@angular/router';
 import { MockBackend } from '@angular/http/testing';

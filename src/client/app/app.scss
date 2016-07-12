@@ -29,10 +29,10 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import '+home/home';
 @import '+user-management/+login/login';
 
-@import '+collections/collections';
-@import '+collections/collection-form';
-@import '+collections/collections-list-dd';
-@import '+collections/collection-show';
+@import '+collections/+index/collections';
+@import '+collections/+show/collection-show';
+@import '+collections/components/collection-form';
+@import '+collections/components/collections-list-dd';
 
 @import '+admin/+ui-config/ui-config';
 @import '+admin/components/edit/edit';
