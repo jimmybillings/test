@@ -13,6 +13,7 @@ import { BaseRequestOptions, Http } from '@angular/http';
 import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
 import {WzSearchBoxComponent} from './wz.search-box.component';
 import {UiConfig} from '../../services/ui.config';
+import { FormBuilder } from '@angular/forms';
 
 export function main() {
   describe('Search Box Component', () => {
@@ -20,6 +21,7 @@ export function main() {
     class MockRouter { }
     beforeEachProviders(() => [
       WzSearchBoxComponent,
+      FormBuilder,
       { provide: Router, useClass: MockRouter },
       BaseRequestOptions,
       MockBackend,

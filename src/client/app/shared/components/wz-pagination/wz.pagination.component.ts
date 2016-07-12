@@ -1,15 +1,12 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter, OnInit } from '@angular/core';
-import { FORM_DIRECTIVES, FormBuilder, Validators, ControlGroup} from '@angular/common';
+import { FormBuilder, Validators, FormGroup} from '@angular/forms';
 
 
 @Component({
   moduleId: module.id,
   selector: 'wz-pagination',
   templateUrl: 'wz.pagination.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  directives: [
-    FORM_DIRECTIVES
-  ]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 /**
@@ -20,7 +17,7 @@ export class WzPaginationComponent implements OnInit {
   @Input() pagination: any;
   @Output() getPage = new EventEmitter();
 
-  public form: ControlGroup;
+  public form: FormGroup;
 
   constructor(public fb: FormBuilder) { }
 

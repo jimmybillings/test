@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
-import {FormBuilder, Validators, ControlGroup, Control, FORM_DIRECTIVES} from '@angular/common';
+import {FormBuilder, Validators, FormGroup, FormControl} from '@angular/forms';
 import {Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Rx';
@@ -8,7 +8,6 @@ import {Observable} from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'wz-search-box',
   templateUrl: 'wz.search-box.html',
-  directives: [FORM_DIRECTIVES],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -20,7 +19,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
   @Input() UiState: any;
   @Output() searchContext = new EventEmitter();
   public searchTerms: Observable<any>;
-  public searchForm: ControlGroup;
+  public searchForm: FormGroup;
 
   constructor(public fb: FormBuilder, public router: Router, private http: Http) {
     this.setForm();
@@ -43,7 +42,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
       pair = pair.split('=');
       obj[pair[0]] = decodeURIComponent(pair[1] || '');
     });
-    (<Control>this.searchForm.controls['query']).updateValue(obj['q']);
+    (<FormControl>this.searchForm.controls['query']).updateValue(obj['q']);
     this.searchTerms = this.listenForSearchTerms();
   }
 

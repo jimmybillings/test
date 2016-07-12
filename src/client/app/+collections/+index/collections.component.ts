@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Collection, CollectionStore } from '../shared/interfaces/collection.interface';
-import { CollectionsService } from './services/collections.service';
-import { WzPaginationComponent} from '../shared/components/wz-pagination/wz.pagination.component';
+import { WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
+import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
+import { CollectionsService } from '../services/collections.service';
 import { Store } from '@ngrx/store';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
-import { CurrentUser } from '../shared/services/current-user.model';
-import { Error } from '../shared/services/error.service';
-import { UiConfig } from '../shared/services/ui.config';
+import { CurrentUser } from '../../shared/services/current-user.model';
+import { Error } from '../../shared/services/error.service';
+import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Rx';
 
 @Component({
@@ -101,5 +101,4 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       this.collectionsService.destroyCollections();
     }
   }
-
 }

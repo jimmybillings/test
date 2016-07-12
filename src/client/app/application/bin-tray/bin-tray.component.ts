@@ -1,9 +1,10 @@
 import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { CollectionsService} from '../../+collections/services/collections.service';
 import { WzDropdownComponent } from '../../shared/components/wz-dropdown/wz.dropdown.component';
-import { CollectionListDdComponent } from '../../+collections/collections-list-dd.component';
+import { CollectionListDdComponent } from '../../+collections/components/collections-list-dd.component';
 
 /**
  * Home page search component - renders search form passes form values to search component.
@@ -72,5 +73,4 @@ export class BinTrayComponent {
     });
   }
   // error => this.error.handle(error);
-
 }
