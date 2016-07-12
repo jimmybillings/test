@@ -100,5 +100,4 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       this.collectionsService.destroyCollections();
     }
   }
-
 }

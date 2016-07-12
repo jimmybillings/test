@@ -72,5 +72,4 @@ export class BinTrayComponent {
     });
   }
   // error => this.error.handle(error);
-
 }
