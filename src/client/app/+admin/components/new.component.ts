@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { WzFormComponent } from '../../../shared/components/wz-form/wz.form.component';
+import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 
 @Component({
   moduleId: module.id,

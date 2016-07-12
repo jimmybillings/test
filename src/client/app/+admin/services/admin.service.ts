@@ -4,8 +4,8 @@ import { ApiConfig } from '../../shared/services/api.config';
 import { ViewContainerService } from '../../shared/services/view-container.service';
 import { Store, Reducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
-import { EditComponent } from '../components/edit/edit.component';
-import { NewComponent } from '../components/new/new.component';
+import { EditComponent } from '../components/edit.component';
+import { NewComponent } from '../components/new.component';
 
 const adminState: any = { items: [], pagination: {} };
 export const adminResources: Reducer<any> = (state = adminState, action: Action) => {
