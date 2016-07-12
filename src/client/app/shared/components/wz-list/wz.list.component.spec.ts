@@ -7,11 +7,14 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 import { WzListComponent } from './wz.list.component';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
+import {provide, PLATFORM_PIPES} from '@angular/core';
 
 export function main() {
   describe('WZ List component', () => {
     beforeEachProviders(() => [
       WzListComponent,
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true})
     ]);
 
     it('Should create instance of WzList',

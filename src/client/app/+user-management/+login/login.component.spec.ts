@@ -8,7 +8,7 @@ import {
 } from '@angular/core/testing';
 
 import { Router } from '@angular/router';
-import {provide, Renderer} from '@angular/core';
+import {provide, Renderer, PLATFORM_PIPES} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 import { ApiConfig } from '../../shared/services/api.config';
 import {CurrentUser} from '../../shared/services/current-user.model';
@@ -21,6 +21,7 @@ import {UiConfig, config} from '../../shared/services/ui.config';
 import { provideStore } from '@ngrx/store';
 import { UiState, uiState} from '../../shared/services/ui.state';
 import { ViewContainerService } from '../../shared/services/view-container.service';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 
 export function main() {
 
@@ -53,7 +54,7 @@ export function main() {
       { provide: Router, useClass: MockRouter },
       provide(Authentication, { useClass: MockAuthentication }),
       provideStore({ config: config, uiState: uiState }),
-
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true})
     ]);
 
     it('Should have a Login instance',

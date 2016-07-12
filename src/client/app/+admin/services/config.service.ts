@@ -15,37 +15,37 @@ export class ConfigService {
     this.siteApiUrl = this.apiConfig.baseUrl() + 'api/identities/v1/site/';
   }
 
-  public getUi(): Observable<any> {
+  public getUiConfigIndex(): Observable<any> {
     return this.http.get(this.uiApiUrl + 'search',
       { headers: this.apiConfig.authHeaders() }
     ).map((res: Response) => res.json());
   }
 
-  public getSite(): Observable<any> {
+  public getSiteConfigIndex(): Observable<any> {
     return this.http.get(this.siteApiUrl + 'search',
       { headers: this.apiConfig.authHeaders() }
     ).map((res: Response) => res.json());
   }
 
-  public search(siteName: string): Observable<any> {
+  public searchSiteConfig(siteName: string): Observable<any> {
     return this.http.get(this.siteApiUrl + 'search/?q=' + siteName,
       { headers: this.apiConfig.authHeaders() }
     ).map((res: Response) => res.json());
   }
 
-  public getUiConfig(site: string): Observable<any> {
+  public showUiConfig(site: string): Observable<any> {
     return this.http.get(this.uiApiUrl + '?siteName=' + site,
       { headers: this.apiConfig.authHeaders() }
     ).map((res: Response) => res.json());
   }
 
-  public getSiteConfig(siteId: number): Observable<any> {
+  public showSiteConfig(siteId: number): Observable<any> {
     return this.http.get(this.siteApiUrl + siteId,
       { headers: this.apiConfig.authHeaders() }
     ).map((res: Response) => res.json());
   }
 
-  public update(data: IuiConfig): Observable<any> {
+  public updateUiConfig(data: IuiConfig): Observable<any> {
     return this.http.put(this.uiApiUrl + data.id,
       JSON.stringify(data), { headers: this.apiConfig.authHeaders() });
   }

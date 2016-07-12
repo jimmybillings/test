@@ -5,19 +5,18 @@ import {
   IuiTableHeaders
 } from '../../shared/interfaces/config.interface';
 import { IFormFields } from '../../shared/interfaces/forms.interface.ts';
-import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfigService } from '../services/config.service';
 import { ValuesPipe } from '../../shared/pipes/values.pipe';
 import { ApiConfig } from '../../shared/services/api.config';
 import { UiConfig } from '../../shared/services/ui.config';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
   selector: 'admin-ui-config',
   templateUrl: 'ui-config.html',
-  directives: [WzListComponent],
   pipes: [ValuesPipe]
 })
 
@@ -34,7 +33,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   public subComponents: IuiSubComponents;
   public form: any;
   public configOptions: Array<IuiTableHeaders | IFormFields>;
-  public sub: any;
+  private routeSubscription: Subscription;
 
   constructor(public router: Router,
     public apiConfig: ApiConfig,
@@ -47,13 +46,21 @@ export class UiConfigComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.portal = this.apiConfig.getPortal();
-    this.sub = this.route.params.subscribe(params => {
+    this.routeSubscription = this.routeChanges();
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
+  }
+
+  public routeChanges(): Subscription {
+    return this.route.params.subscribe(params => {
       this.siteName = params['site'];
       if (this.portal !== 'core' && !(this.portal === this.siteName)) {
         this.router.navigate(['admin/ui-config/', this.portal]);
       } else {
         this.getConfig();
-        this.configService.getUi().subscribe(data => {
+        this.configService.getUiConfigIndex().first().subscribe(data => {
           data.items.reduce((previous: Array<string>, current: IuiConfig) => {
             previous.push(current.siteName);
             return previous;
@@ -61,15 +68,10 @@ export class UiConfigComponent implements OnInit, OnDestroy {
         });
       }
     });
-
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
   }
 
   public getConfig(): void {
-    this.configService.getUiConfig(this.siteName).subscribe(data => {
+    this.configService.showUiConfig(this.siteName).first().subscribe(data => {
       this.config = data;
       this.components = data.components;
     });
@@ -133,7 +135,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public update(formValue: IuiConfig): void {
-    this.configService.update(formValue).subscribe((res) => {
+    this.configService.updateUiConfig(formValue).first().subscribe((res) => {
       this.uiConfig.set(res.json());
     });
   }

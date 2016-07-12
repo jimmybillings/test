@@ -1,6 +1,5 @@
 import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { CollectionsService} from '../../../+collections/services/collections.service';
 import { WzDropdownComponent } from '../wz-dropdown/wz.dropdown.component';
@@ -14,7 +13,6 @@ import { CollectionListDdComponent } from '../../../+collections/collections-lis
   selector: 'bin-tray',
   templateUrl: 'bin-tray.html',
   directives: [ROUTER_DIRECTIVES, WzDropdownComponent, CollectionListDdComponent],
-  pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
@@ -30,13 +28,13 @@ export class BinTrayComponent {
 
   // make this 2 request with errors get collections and then focused
   public getCollectionsAndFocused(): void {
-    this.collectionsService.loadCollections().subscribe(payload => {
+    this.collectionsService.loadCollections().first().subscribe(payload => {
       // for each collection with assets get a thumbnail img
       // this is used to identify collections
       if (payload.totalCount > 0) {
         payload.items.forEach((item: any, index: number) => {
           if (item.assets) {
-            this.collectionsService.getCollectionItems(item.id, 1, item.assets.length - 1).subscribe(search => {
+            this.collectionsService.getCollectionItems(item.id, 1, item.assets.length - 1).first().subscribe(search => {
               // reformat the object this is how all collections will look including focused with assets
               let assets = Object.assign({},
                 { 'items': payload.items[index].assets },
@@ -60,15 +58,13 @@ export class BinTrayComponent {
       this.collectionsService.storeCollections(payload);
       // get focused collection assets and thumbnails
       if (payload.totalCount > 0) {
-        this.collectionsService.getFocusedCollection().subscribe(collection => {
+        this.collectionsService.getFocusedCollection().first().subscribe(collection => {
           if (collection.assets) {
             this.collectionsService.getCollectionItems(collection.id, collection.assets.length).subscribe(search => {
-
               this.collectionsService.getCollectionItems(collection.id, 1, collection.assets.length - 1).subscribe(thumbnail => {
                 this.collectionsService.updateFocusedCollectionAssets(collection, search, thumbnail);
                 // this.collectionsService.updateFocusedCollectionAssets(collection, search);
               });
-
             });
           } else {
             this.collectionsService.updateFocusedCollection(collection);

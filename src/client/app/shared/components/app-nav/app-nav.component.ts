@@ -22,6 +22,7 @@ export class AppNavComponent {
   @Input() state: any;
   @Input() collection: Collection;
   @Input() UiState: any;
+  @Input() permission: any;
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
   @Output() onOpenSidenav = new EventEmitter();
@@ -32,12 +33,12 @@ export class AppNavComponent {
     this.onLogOut.emit(event);
   }
 
-  public openSearch() {
-    this.UiState.openSearch();
+  public toggleSearch() {
+    this.UiState.toggleSearch();
   }
 
-  public openBinTray() {
-    this.UiState.openBinTray();
+  public toggleBinTray() {
+    this.UiState.toggleBinTray();
   }
 
   public showNewCollection(event: Event) {

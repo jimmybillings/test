@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { Collection } from '../shared/interfaces/collection.interface';
-import { TranslatePipe } from 'ng2-translate/ng2-translate';
 import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
 import { CollectionsService} from './services/collections.service';
 
@@ -13,8 +12,7 @@ import { CollectionsService} from './services/collections.service';
   templateUrl: 'collection-form.html',
   directives: [
     WzFormComponent
-  ],
-  pipes: [TranslatePipe]
+  ]
 })
 
 export class CollectionFormComponent {
@@ -38,12 +36,12 @@ export class CollectionFormComponent {
   }
 
   public createAndAddAsset(collection: Collection, asset: any): void {
-    this.collectionsService.createCollection(collection).subscribe(created => {
+    this.collectionsService.createCollection(collection).first().subscribe(created => {
       this.collectionsService.createCollectionInStore(created);
-      this.collectionsService.setFocusedCollection(created.id).subscribe(focused => {
+      this.collectionsService.setFocusedCollection(created.id).first().subscribe(focused => {
         if (asset !== null) {
-          this.collectionsService.addAssetsToCollection(created.id, asset).subscribe(payload => {
-            this.collectionsService.getCollectionItems(payload.id, 100).subscribe(search => {
+          this.collectionsService.addAssetsToCollection(created.id, asset).first().subscribe(payload => {
+            this.collectionsService.getCollectionItems(payload.id, 100).first().subscribe(search => {
               this.collectionsService.updateFocusedCollectionAssets(payload, search);
             });
           });

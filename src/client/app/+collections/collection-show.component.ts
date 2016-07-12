@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Collections, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from './services/collections.service';
-import { TranslatePipe} from 'ng2-translate/ng2-translate';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
 import { AssetListComponent }  from '../shared/components/asset-list/asset-list.component';
 import {PaginationComponent} from '../shared/components/pagination/pagination.component';
 import { Store } from '@ngrx/store';
@@ -20,17 +19,18 @@ import { UiConfig } from '../shared/services/ui.config';
     AssetListComponent,
     PaginationComponent,
     ROUTER_DIRECTIVES
-  ],
-  pipes: [TranslatePipe]
+  ]
 })
 
-export class CollectionShowComponent implements OnInit {
+export class CollectionShowComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
   public focusedCollection: any;
   public collection: any;
   public assets: any;
   public errorMessage: string;
   public config: Object;
+  private focusedCollectionStoreSubscription: Subscription;
+  private routeSubscription: Subscription;
   public date(date: any): Date {
     if (date) {
       return new Date(date);
@@ -50,10 +50,10 @@ export class CollectionShowComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.collectionsService.setFocusedCollection(params['id']).subscribe(fc => {
+    this.routeSubscription = this.route.params.subscribe(params => {
+      this.collectionsService.setFocusedCollection(params['id']).first().subscribe(fc => {
         if (fc.assets) {
-          // need to make 200 dynamic - should reflect user pref (items per page)
+          // need to make 20 dynamic - should reflect user pref (items per page)
           this.collectionsService.getCollectionItems(fc.id, 20).subscribe(search => {
             // I want to use this second search to get only the thumbnail, and then pass it to the store (updateFc)
             // Only issue is race condition when loading page for the first time
@@ -69,7 +69,7 @@ export class CollectionShowComponent implements OnInit {
         }
       });
 
-      this.store.select('focusedCollection').subscribe(focusedCollection => {
+      this.focusedCollectionStoreSubscription = this.store.select('focusedCollection').subscribe(focusedCollection => {
         this.focusedCollection = focusedCollection;
         this.collection = this.focusedCollection;
         this.assets = this.collection.assets;
@@ -77,6 +77,11 @@ export class CollectionShowComponent implements OnInit {
 
     });
 
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
+    this.focusedCollectionStoreSubscription.unsubscribe();
   }
 
   public showAsset(asset: any): void {

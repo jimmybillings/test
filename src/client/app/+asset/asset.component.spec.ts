@@ -8,7 +8,7 @@ import {
 } from '@angular/core/testing';
 
 import { AssetComponent} from './asset.component';
-import { provide, Injectable} from '@angular/core';
+import { provide, Injectable, PLATFORM_PIPES} from '@angular/core';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { ApiConfig } from '../shared/services/api.config';
@@ -21,6 +21,7 @@ import { CollectionsService } from '../+collections/services/collections.service
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute}  from '@angular/router';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 
 export function main() {
   describe('Asset Component', () => {
@@ -40,7 +41,7 @@ export function main() {
         return true;
       }
     }
-    class MockRouter {}
+    class MockRouter { }
     class MockActivatedRoute {
       public params: Observable<any>;
       constructor() {
@@ -59,6 +60,7 @@ export function main() {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
+      provide(PLATFORM_PIPES, { useValue: TranslatePipe, multi: true }),
       provideStore({ config, asset }),
       CurrentUser,
       UiConfig,
@@ -80,11 +82,6 @@ export function main() {
       expect(service.assetService.set).toHaveBeenCalledWith(MockAssetResponse());
     }));
 
-    it('Should reset the asset store when the component is destroyed', inject([AssetComponent], (service: AssetComponent) => {
-      spyOn(service.assetService, 'reset');
-      service.ngOnDestroy();
-      expect(service.assetService.reset).toHaveBeenCalled();
-    }));
   });
 
   function MockAssetResponse() {

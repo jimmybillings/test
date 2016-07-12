@@ -10,7 +10,7 @@ import {
 import {IndexComponent} from './index.component';
 import {AdminService} from '../services/admin.service';
 import {BaseRequestOptions, Http} from '@angular/http';
-import {provide, Injectable} from '@angular/core';
+import {provide, Injectable, PLATFORM_PIPES} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CurrentUser, currentUser} from '../../shared/services/current-user.model';
 import {provideStore} from '@ngrx/store';
@@ -20,6 +20,7 @@ import {UiConfig, config} from '../../shared/services/ui.config';
 import {Observable} from 'rxjs/Rx';
 import {Store} from '@ngrx/store';
 import {UiState} from '../../shared/services/ui.state';
+import { TranslatePipe } from 'ng2-translate/ng2-translate';
 
 export function main() {
   describe('Admin Index component', () => {
@@ -71,6 +72,7 @@ export function main() {
       }),
       provide(AdminService, { useClass: MockAdminService }),
       provideStore({ currentUser: currentUser }),
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       CurrentUser,
       ApiConfig,
       provideStore({ config: config }),

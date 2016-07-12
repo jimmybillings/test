@@ -7,10 +7,10 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-import {provide} from '@angular/core';
+import {provide, PLATFORM_PIPES} from '@angular/core';
 import {FooterComponent} from './footer.component';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TranslateLoader, TranslateStaticLoader, TranslateService} from 'ng2-translate/ng2-translate';
+import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
 import { Http, BaseRequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
@@ -32,6 +32,7 @@ export function main() {
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
         deps: [Http]
       }),
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       FooterComponent
     ]);
 
@@ -45,7 +46,7 @@ export function main() {
 
     it('Should fire an event to change the current selected language', inject([FooterComponent], (component: FooterComponent) => {
       spyOn(component.onChangeLang, 'emit');
-      component.changeLang('fr');
+      component.changeLang({target: {value: 'fr'}});
       expect(component.onChangeLang.emit).toHaveBeenCalledWith('fr');
     }));
 

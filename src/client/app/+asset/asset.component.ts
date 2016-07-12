@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AssetDetailComponent } from '../shared/components/asset-detail/asset-detail.component';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { AssetService} from './services/asset.service';
-import { Observable} from 'rxjs/Rx';
+import { Observable, Subscription} from 'rxjs/Rx';
 import { Error } from '../shared/services/error.service';
 import { Collection, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from '../+collections/services/collections.service';
@@ -24,7 +24,8 @@ export class AssetComponent implements OnInit, OnDestroy {
   public focusedCollection: Observable<any>;
   public assetDetail: Observable<any>;
   public assetDetailDisplay: Object;
-  public subscription: any;
+  private assetDetailSubscription: Subscription;
+  private routeSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,12 +39,14 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.routeSubscription = this.route.params.subscribe(params => {
       this.assetService
         .initialize(params['name'])
+        .first()
         .subscribe((payload) => {
           this.assetService.set(payload);
-          this.subscription = this.assetDetail.subscribe(data => this.assetDetailDisplay = data);
+          this.assetDetailSubscription =
+            this.assetDetail.subscribe(data => this.assetDetailDisplay = data);
         },
         error => this.error.handle(error)
         );
@@ -54,12 +57,15 @@ export class AssetComponent implements OnInit, OnDestroy {
   public addToCollection(params: any): void {
     let collection: Collection = params.collection;
     collection.assets ? collection.assets.items.push(params.asset) : collection.assets.items = [params.asset];
-    this.collectionsService.addAssetsToCollection(collection.id, params.asset).subscribe(payload => {
-      this.collectionsService.getCollectionItems(collection.id,300).subscribe(search => {
-        this.collectionsService.updateFocusedCollectionAssets(payload, search);
-        this.collectionsService.updateCollectionInStore(payload, search);
+
+    this.collectionsService.addAssetsToCollection(collection.id, params.asset)
+      .first().subscribe(payload => {
+        this.collectionsService.getCollectionItems(collection.id, 300)
+          .first().subscribe(search => {
+            this.collectionsService.updateFocusedCollectionAssets(payload, search);
+            this.collectionsService.updateCollectionInStore(payload, search);
+          });
       });
-    });
   }
 
   showNewCollection(assetId: any): void {
@@ -70,7 +76,8 @@ export class AssetComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) this.subscription.unsubscribe();
+    if (this.assetDetailSubscription) this.assetDetailSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
     this.assetService.reset();
   }
 }

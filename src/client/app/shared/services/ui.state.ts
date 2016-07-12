@@ -18,6 +18,8 @@ export const uiState: Reducer<any> = (state = InitUiState, action: Action) => {
       return Object.assign({}, state);
     case 'UI.STATE.UPDATE':
       return Object.assign({}, state, action.payload);
+    case 'UI.STATE.RESET':
+      return Object.assign({}, action.payload);
     default:
       return state;
   }
@@ -29,6 +31,10 @@ export class UiState {
 
   constructor(public store: Store<any>) {
     this.uiState = this.store.select('uiState');
+  }
+
+  public reset() {
+    this.store.dispatch({ type: 'UI.STATE.RESET', payload: InitUiState });
   }
 
   public update(payload: Object) {
@@ -43,12 +49,20 @@ export class UiState {
     this.update({ binTrayIsOpen: true });
   }
 
+  public toggleBinTray() {
+    this.uiState.take(1).subscribe(s => this.update({ binTrayIsOpen: !s.binTrayIsOpen}));
+  }
+
   public openSearch() {
     this.update({ searchIsOpen: true });
   }
 
   public closeSearch() {
     this.update({ searchIsOpen: false });
+  }
+
+  public toggleSearch() {
+    this.uiState.take(1).subscribe(s => this.update({ searchIsOpen: !s.searchIsOpen}));
   }
 
   public showCollectionsList() {

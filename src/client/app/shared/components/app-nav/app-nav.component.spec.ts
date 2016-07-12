@@ -6,7 +6,8 @@ import {
   it,
   beforeEachProviders
 } from '@angular/core/testing';
-
+import { provide, PLATFORM_PIPES} from '@angular/core';
+import { TranslatePipe} from 'ng2-translate/ng2-translate';
 import { AppNavComponent} from './app-nav.component';
 import { Router } from '@angular/router';
 import { UiConfig} from '../../services/ui.config';
@@ -22,6 +23,7 @@ export function main() {
       AppNavComponent,
       { provide: Router, useClass: MockRouter },
       UiConfig,
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
     ]);
 
     it('Should have a header instance',

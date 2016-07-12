@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {CurrentUser} from '../services/current-user.model';
+import { CurrentUser} from '../services/current-user.model';
 
 @Injectable()
 export class Error {
 
-  constructor(public router: Router, public _currentUser: CurrentUser) { }
+  constructor(public router: Router, private currentUser: CurrentUser) { }
 
   public handle(error: any): void {
     switch (error.status) {
@@ -22,8 +22,8 @@ export class Error {
   }
 
   private _unAuthorized(): void {
-    let redirect = (this._currentUser.loggedIn()) ? ['user/login', { 'loggedOut': 'true' }] : ['user/login'];
-    this._currentUser.destroy();
+    let redirect = (this.currentUser.loggedIn()) ? ['/user/login', { 'loggedOut': 'true' }] : ['/user/login'];
+    this.currentUser.destroy();
     this.router.navigate(redirect);
   }
 

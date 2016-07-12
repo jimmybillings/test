@@ -1,7 +1,6 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit} from '@angular/core';
-import { FORM_DIRECTIVES, ControlGroup, FormBuilder, Control } from '@angular/common';
+import {FormGroup, FormControl, FormBuilder}    from '@angular/forms';
 import {FormModel} from './wz.form.model';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
 
 /**
  * Home page component - renders the home page
@@ -10,12 +9,8 @@ import {TranslatePipe} from 'ng2-translate/ng2-translate';
   moduleId: module.id,
   selector: 'wz-form',
   templateUrl: 'wz.form.html',
-  directives: [
-    FORM_DIRECTIVES
-  ],
   providers: [FormModel],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  pipes: [TranslatePipe]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class WzFormComponent implements OnInit {
@@ -23,9 +18,9 @@ export class WzFormComponent implements OnInit {
   @Input() submitLabel: string;
   @Output() formSubmit = new EventEmitter();
 
-  public form: ControlGroup;
+  public form: FormGroup;
 
-  constructor(public fb: FormBuilder, private formModel: FormModel) { }
+  constructor(public fb: FormBuilder, private formModel: FormModel) {}
 
   ngOnInit() {
     this.form = this.fb.group(this.formModel.create(this.items));
@@ -37,13 +32,13 @@ export class WzFormComponent implements OnInit {
 
 
   public radioSelect(field: any, option: any) {
-    (<Control>this.form.controls[field]).updateValue(option);
+    (<FormControl>this.form.controls[field]).updateValue(option);
   }
 
-  public onSubmit(data: any) {
+  public onSubmit() {
     if (this.form.valid) {
-      this.formSubmit.emit(data);
-      this.resetForm();
+      this.formSubmit.emit(this.form.value);
+      // this.resetForm();
     } else {
       console.log('error');
     }

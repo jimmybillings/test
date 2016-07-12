@@ -15,6 +15,7 @@ export {CollectionShowComponent} from '../+collections/collection-show.component
 
 // Services
 export { CurrentUser} from '../shared/services/current-user.model';
+export { UserPermission } from '../shared/services/permission.service';
 export { ApiConfig} from '../shared/services/api.config';
 export { UiConfig} from '../shared/services/ui.config';
 export { SearchContext} from '../shared/services/search-context.service';

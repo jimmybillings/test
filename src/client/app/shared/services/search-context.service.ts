@@ -29,20 +29,24 @@ export class SearchContext {
   }
 
   public new(params: Object): void {
-    this.set(params);
+    this.update = params;
     this.go();
   }
 
-  public get(): any {
+  public get state(): any {
     return this.store.getState().searchContext;
   }
 
-  public set(params: Object): void {
-    this.store.dispatch({ type: 'SEARCHCONTEXT.SET', payload: params });
+  public set update(params: any) {
+    let decodedParams:any = {};
+    for(let param in params) {
+      decodedParams[param] = decodeURIComponent(params[param]);
+    }
+    this.store.dispatch({ type: 'SEARCHCONTEXT.SET', payload: decodedParams });
   }
 
   public go(): void {
-    this.router.navigate(['/search', this.get()]);
+    this.router.navigate(['/search', this.state]);
   }
 
   // private toQueryParam(params: any): string {

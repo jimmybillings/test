@@ -1,16 +1,13 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
-import {FormBuilder, Validators, ControlGroup, Control, FORM_DIRECTIVES} from '@angular/common';
+import {FormBuilder, Validators, FormGroup, FormControl} from '@angular/forms';
 import {Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
 import {Router} from '@angular/router';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
 import {Observable} from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
   selector: 'search-box',
   templateUrl: 'search-box.html',
-  directives: [FORM_DIRECTIVES],
-  pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -22,7 +19,7 @@ export class SearchBoxComponent implements OnInit, OnChanges {
   @Input() UiState: any;
   @Output() searchContext = new EventEmitter();
   public searchTerms: Observable<any>;
-  public searchForm: ControlGroup;
+  public searchForm: FormGroup;
 
   constructor(public fb: FormBuilder, public router: Router, private http: Http) {
     this.setForm();
@@ -45,7 +42,7 @@ export class SearchBoxComponent implements OnInit, OnChanges {
       pair = pair.split('=');
       obj[pair[0]] = decodeURIComponent(pair[1] || '');
     });
-    (<Control>this.searchForm.controls['query']).updateValue(obj['q']);
+    (<FormControl>this.searchForm.controls['query']).updateValue(obj['q']);
     this.searchTerms = this.listenForSearchTerms();
   }
 

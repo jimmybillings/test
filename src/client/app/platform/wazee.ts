@@ -13,6 +13,9 @@ import { SearchContext} from '../shared/services/search-context.service';
 import { Authentication} from '../+user-management/services/authentication.data.service';
 import { CollectionsService } from '../+collections/services/collections.service';
 import { UiState } from '../shared/services/ui.state';
+import { AdminAuthGuard } from '../+admin/services/admin.auth.guard';
+import { UserPermission } from '../shared/services/permission.service';
+import { AssetGuard } from '../+asset/services/asset.guard';
 
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
@@ -30,13 +33,10 @@ import { multilingualReducer } from '../shared/services/multilingual.service';
 import { collections, focusedCollection} from '../+collections/services/collections.service';
 
 // TRANSLATIONS
-import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
+import { TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';
 import { MultilingualService } from '../shared/services/multilingual.service';
-import {createOverlayContainer} from '@angular2-material/core/overlay/overlay-container';
-import {OVERLAY_CONTAINER_TOKEN} from '@angular2-material/core/overlay/overlay';
-
-// export const MATERIAL_PIPES = [];
-// export const WAZEE_DIRECTIVES = [];
+import { createOverlayContainer } from '@angular2-material/core/overlay/overlay-container';
+import { OVERLAY_CONTAINER_TOKEN } from '@angular2-material/core/overlay/overlay';
 
 export const WAZEE_PROVIDERS = [
   ApiConfig,
@@ -50,11 +50,14 @@ export const WAZEE_PROVIDERS = [
   TranslateService,
   MultilingualService,
   UiState,
+  AdminAuthGuard,
+  AssetGuard,
+  UserPermission,
   provide(TranslateLoader, {
-    useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-    deps: [Http]
+    useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'), deps: [Http]
   }),
-  provide(OVERLAY_CONTAINER_TOKEN, {useValue: createOverlayContainer()}),
+  TranslateService,
+  provide(OVERLAY_CONTAINER_TOKEN, { useValue: createOverlayContainer() }),
 ];
 
 export const WAZEE_STORES: Provider[][] = [

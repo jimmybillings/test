@@ -30,9 +30,8 @@
         <li><a href="https://www.linkedin.com/company/wazeedigital?trk=top_nav_home" target="_blank" class="linkedin"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li>
         <li><a href="https://www.youtube.com/user/thoughtequity" target="_blank" class="youtube"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-youtube fa-stack-1x fa-inverse"></i></span></a></li>
       </ul>
-      <form [ngFormModel]="langForm" class="language-selector">
-        <label for="lang"><i md-icons="" class="material-icons">language</i></label>
-        <select id="lang" ngControl="lang" (change)="changeLang(langForm.value)">
+      <form>
+        Change Language: <select [(ngModel)]="lang" (change)="changeLang($event)" name="lang">
           <option *ngFor="let l of supportedLanguages" [value]="l.code">{{l.title}}</option>
         </select>
       </form>
