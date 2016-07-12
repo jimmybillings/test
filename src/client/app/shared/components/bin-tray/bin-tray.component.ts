@@ -56,15 +56,13 @@ export class BinTrayComponent {
         });
       }
       this.collectionsService.storeCollections(payload);
+
       // get focused collection assets and thumbnails
       if (payload.totalCount > 0) {
         this.collectionsService.getFocusedCollection().first().subscribe(collection => {
           if (collection.assets) {
-            this.collectionsService.getCollectionItems(collection.id, collection.assets.length).subscribe(search => {
-              this.collectionsService.getCollectionItems(collection.id, 1, collection.assets.length - 1).subscribe(thumbnail => {
-                this.collectionsService.updateFocusedCollectionAssets(collection, search, thumbnail);
-                // this.collectionsService.updateFocusedCollectionAssets(collection, search);
-              });
+            this.collectionsService.getCollectionItems(collection.id, 300).first().subscribe(search => {
+              this.collectionsService.updateFocusedCollectionAssets(collection, search);
             });
           } else {
             this.collectionsService.updateFocusedCollection(collection);
@@ -74,5 +72,4 @@ export class BinTrayComponent {
     });
   }
   // error => this.error.handle(error);
-
 }
