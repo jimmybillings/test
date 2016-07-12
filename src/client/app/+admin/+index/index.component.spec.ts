@@ -33,11 +33,7 @@ export function main() {
         this.adminStore = this.store.select('adminResources');
       }
 
-      getResources(resource: any, i: any) {
-        return Observable.of(mockResponse());
-      }
-
-      getSortedResources(resource: any, attribute: any, toggleOrder: any) {
+      getResourceIndex(resource: any, i: any) {
         return Observable.of(mockResponse());
       }
 
@@ -99,10 +95,10 @@ export function main() {
       inject([IndexComponent], (component: IndexComponent) => {
         component.resourceType = 'account';
         component.params = mockParams();
-        spyOn(component.adminService, 'getResources').and.callThrough();
+        spyOn(component.adminService, 'getResourceIndex').and.callThrough();
         spyOn(component.adminService, 'setResources').and.callThrough();
         component.getIndex();
-        expect(component.adminService.getResources)
+        expect(component.adminService.getResourceIndex)
           .toHaveBeenCalledWith({ i: '1', n: '10', s: 'createdOn', d: 'false', values: '', fields: '' }, 'account');
         expect(component.adminService.setResources)
           .toHaveBeenCalledWith(mockResponse());

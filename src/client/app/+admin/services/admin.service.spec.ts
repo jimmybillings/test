@@ -50,26 +50,26 @@ export function main() {
       expect(actual.search).toBeAnInstanceOf(URLSearchParams);
     }));
 
-    it('should have a getResources function that makes a search request for a resource with given params', inject([AdminService, MockBackend], (service: AdminService, mockBackend: MockBackend) => {
+    it('should have a getResourceIndex function that makes a search request for a resource with given params', inject([AdminService, MockBackend], (service: AdminService, mockBackend: MockBackend) => {
       spyOn(service, 'getIdentitiesSearchOptions');
       let connection: any;
       mockBackend.connections.subscribe((c: any) => connection = c);
-      service.getResources({ i: 1, n: 10, s: 'createdOn', d: 'false' }, 'account').subscribe((res) => {
+      service.getResourceIndex({ i: 1, n: 10, s: 'createdOn', d: 'false' }, 'account').subscribe((res) => {
         expect(service.getIdentitiesSearchOptions).toHaveBeenCalledWith(1, 10, 'createdOn', 'false');
       });
     }));
 
-    it('should have a getResources function that makes a searchFields request for a resource with given params', inject([AdminService, MockBackend], (service: AdminService, mockBackend: MockBackend) => {
-      spyOn(service, 'getIdentitiesSearchPath').and.callThrough();
+    it('should have a getResourceIndex function that makes a searchFields request for a resource with given params', inject([AdminService, MockBackend], (service: AdminService, mockBackend: MockBackend) => {
+      spyOn(service, 'buildUrl').and.callThrough();
       let connection: any;
       mockBackend.connections.subscribe((c: any) => connection = c);
-      service.getResources({ i: 1, n: 10, s: 'createdOn', d: 'false', fields: 'firstName,lastName', values: 'ross,edfort' }, 'account').subscribe((res) => {
-        expect(service.getIdentitiesSearchPath).toHaveBeenCalledWith({ i: 1, n: 10, s: 'createdOn', d: 'false', fields: 'firstName,lastName', values: 'ross,edfort' }, 'account');
+      service.getResourceIndex({ i: 1, n: 10, s: 'createdOn', d: 'false', fields: 'firstName,lastName', values: 'ross,edfort' }, 'account').subscribe((res) => {
+        expect(service.buildUrl).toHaveBeenCalledWith('search', { i: 1, n: 10, s: 'createdOn', d: 'false', fields: 'firstName,lastName', values: 'ross,edfort' }, 'account');
       });
     }));
 
-    it('Should have a getIdentitiesSearchPath function that returns the proper url', inject([AdminService], (service: AdminService) => {
-      let result = service.getIdentitiesSearchPath('account');
+    it('Should have a buildUrl function that returns the proper url', inject([AdminService], (service: AdminService) => {
+      let result = service.buildUrl('search', 'account');
       expect(result).toEqual('https://crxextapi.dev.wzplatform.com/api/identities/v1/account/searchFields/?');
     }));
 
