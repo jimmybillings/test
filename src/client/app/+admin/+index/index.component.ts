@@ -58,7 +58,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public getIndex(): void {
     this.toggleFlag = this.params.d;
-    this.adminService.getResources(this.params, this.resourceType).first().subscribe(data => {
+    this.adminService.getResourceIndex(this.params, this.resourceType).first().subscribe(data => {
       this.adminService.setResources(data);
     });
   }
