@@ -68,6 +68,10 @@ System.config({
       main: 'index.js',
       defaultExtension: 'js'
     },
+    '@angular/forms': {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
     'rxjs': {
       defaultExtension: 'js'
     },
