@@ -61,7 +61,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
-    // this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
     this.configSubscription = this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
     this.currentUser.set();
     this.focusedCollection = this.store.select('focusedCollection');
