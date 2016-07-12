@@ -53,8 +53,16 @@ export class CollectionShowComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.collectionsService.setFocusedCollection(params['id']).subscribe(fc => {
         if (fc.assets) {
-          this.collectionsService.getCollectionItems(fc.id, 100).subscribe(search => {
-            this.collectionsService.updateFocusedCollectionAssets(fc, search);
+          // need to make 200 dynamic - should reflect user pref (items per page)
+          this.collectionsService.getCollectionItems(fc.id, 20).subscribe(search => {
+            // I want to use this second search to get only the thumbnail, and then pass it to the store (updateFc)
+            // Only issue is race condition when loading page for the first time
+            // throws undefined but renders just fine
+            // also if we change this to pass in the thumbnail for focused, we need to change it everywhere updateFc is called
+            this.collectionsService.getCollectionItems(fc.id, 1, search.totalCount - 1).subscribe(thumbnail => {
+              this.collectionsService.updateFocusedCollectionAssets(fc, search, thumbnail);
+              // this.collectionsService.updateFocusedCollectionAssets(fc, search);
+            });
           });
         } else {
           this.collectionsService.updateFocusedCollection(fc);

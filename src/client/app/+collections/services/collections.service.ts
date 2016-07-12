@@ -153,7 +153,7 @@ export class CollectionsService {
     this.store.dispatch({ type: 'CREATE_COLLECTION', payload });
   }
 
-  public updateFocusedCollectionAssets(collection: Collection, search: any): void {
+  public updateFocusedCollectionAssets(collection: Collection, search: any, thumbnail: any): void {
     search.items = search.items === undefined ? [] : search.items;
     this.store.dispatch({
       type: 'FOCUSED_COLLECTION', payload: {
@@ -175,7 +175,8 @@ export class CollectionsService {
           }
         },
         tags: collection.tags,
-        thumbnail: search.items[search.totalCount - 1].thumbnail
+        thumbnail: thumbnail.items[0].thumbnail
+        // thumbnail: search.items[search.totalCount - 1].thumbnail
       }
     });
   }
