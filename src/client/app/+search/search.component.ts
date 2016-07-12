@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { AssetData } from './services/asset.data.service';
-import { AssetListComponent }  from '../shared/components/asset-list/asset-list.component';
+import { WzAssetListComponent }  from '../shared/components/wz-asset-list/wz.asset-list.component';
 import { UiConfig} from '../shared/services/ui.config';
 import { Observable, Subscription} from 'rxjs/Rx';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { Error } from '../shared/services/error.service';
-import { PaginationComponent} from '../shared/components/pagination/pagination.component';
+import { WzPaginationComponent} from '../shared/components/wz-pagination/wz.pagination.component';
 import { SearchContext} from '../shared/services/search-context.service';
 import { FilterTree} from './filter-tree';
 import { FilterTreeComponent} from './filter-tree.component';
@@ -22,7 +22,7 @@ import { Store } from '@ngrx/store';
   moduleId: module.id,
   selector: 'search',
   templateUrl: 'search.html',
-  directives: [AssetListComponent, PaginationComponent, FilterTreeComponent],
+  directives: [WzAssetListComponent, WzPaginationComponent, FilterTreeComponent],
   providers: [AssetData]
 })
 

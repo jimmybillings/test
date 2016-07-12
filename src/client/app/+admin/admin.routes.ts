@@ -15,6 +15,7 @@ export const ADMIN_ROUTES: RouterConfig = [
   { path: 'site-config/:site', component: SiteConfigComponent },
   { path: 'resource/:resource/new', component: NewComponent },
   { path: 'resource/:resource/:id', component: EditComponent },
-  { path: 'resource/:resource', component: IndexComponent },
+  { path: 'resource/account', component: IndexComponent },
+  { path: 'resource/user', component: IndexComponent },
   { path: 'secret-config/:site', component: SecretConfigComponent }
 ];

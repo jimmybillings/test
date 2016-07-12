@@ -69,11 +69,11 @@
 
         <div layout="row" layout-align="end center" class="pagination md-body-2"> 
           <div flex="40" layout-align="end center" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
-          <pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></pagination>
+          <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
         </div>
 
         <div layout="column">       
-          <asset-list 
+          <wz-asset-list 
             [assets]="assets?.items" 
             [currentUser]="currentUser" 
             [collection]="focusedCollection"
@@ -83,14 +83,14 @@
             (onAddToCart)="addToCart($event)" 
             (onDownloadComp)="downloadComp($event)"
             class="grid">
-          </asset-list>
+          </wz-asset-list>
           <h1 *ngIf="!assets.items" class="md-display-1 alert warning">This collection does not have any assets</h1>
         </div>
         
         
         <div layout="row" layout-align="end center" class="pagination md-body-2 pg-bottom"> 
           <div flex="40" layout-align="end center" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
-          <pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></pagination>
+          <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
         </div>
       </div>
     </div>

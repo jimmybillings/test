@@ -1,4 +1,4 @@
-@import 'platform/styles/vendor';
+@import 'imports/styles/vendor';
 
 // change theme colors and any other global variables
 $md-is-dark-theme: false;
@@ -13,27 +13,29 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 
 @import '../assets/styles/config';
 
-@import 'platform/styles/wazee';
+@import 'imports/styles/wazee';
 
-@import 'shared/components/app-nav/app-nav';
-@import 'shared/components/footer/footer';
-@import 'shared/components/search-box/search-box';
-@import 'shared/components/bin-tray/bin-tray';
-@import 'shared/components/asset-list/asset-list';
+// APPLICATION WIDE COMPONENTS
+@import 'application/app-nav/app-nav';
+@import 'application/footer/footer';
+@import 'application/bin-tray/bin-tray';
+
+// SHARED COMPONENTS
+@import 'shared/components/wz-search-box/wz.search-box';
+@import 'shared/components/wz-asset-list/wz.asset-list';
 @import 'shared/components/wz-list/wz.list';
-@import 'shared/components/pagination/pagination';
-@import 'shared/components/asset-detail/asset-detail';
-@import 'shared/components/toast/toast';
-@import 'shared/components/notification/notification';
+@import 'shared/components/wz-pagination/wz.pagination';
+@import 'shared/components/wz-asset-detail/wz.asset-detail';
+@import 'shared/components/wz-toast/wz.toast';
+@import 'shared/components/wz-notification/wz.notification';
 
+// ROUTE COMPONENTS
 @import '+home/home';
 @import '+user-management/+login/login';
-
 @import '+collections/collections';
 @import '+collections/collection-form';
 @import '+collections/collections-list-dd';
 @import '+collections/collection-show';
-
 @import '+admin/+ui-config/ui-config';
 @import '+admin/+edit/edit';
 @import '+admin/+new/new';

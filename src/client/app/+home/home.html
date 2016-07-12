@@ -7,12 +7,12 @@
           <div class="logo-wrapper">
             <div class="logo"></div>
           </div>
-          <search-box
+          <wz-search-box
             [config]="config"
             [currentUser]="currentUser" 
             [apiConfig]="apiConfig"
             (searchContext)="newSearchContext($event)">
-          </search-box>
+          </wz-search-box>
           <h4 class="md-headline">{{ 'HOME.SEARCH_HEADING' | translate }}</h4>
         </div>
       </div>

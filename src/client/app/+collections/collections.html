@@ -14,7 +14,7 @@
       </header>
       <div layout="row" layout-align="end center" class="pagination md-body-2"> 
         <div flex="40" layout-align="end center" *ngIf="collections.pagination.totalCount" class="results-count">{{collections.pagination.totalCount}} results</div>
-        <pagination [pagination]="collections.pagination" (getPage)="changePage($event)"></pagination>
+        <wz-pagination [pagination]="collections.pagination" (getPage)="changePage($event)"></wz-pagination>
       </div>
       <ul>
         <li class="collection" [ngClass]="{'focused': isFocusedCollection(collection), 'md-elevation-z2': !isFocusedCollection(collection) }"  *ngFor="let collection of collections.items">

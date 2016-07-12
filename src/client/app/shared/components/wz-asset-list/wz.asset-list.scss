@@ -1,0 +1,374 @@
+wz-asset-list {
+  width: 100%;
+}
+.grid ul.asset-list {
+  list-style: none;
+  font-size: 0;
+  line-height: 0;
+  margin: 0 0 0 -1%;
+  padding: 0;
+  & > li {
+    font-size: 1em;
+    position: relative;
+    display: inline-block;
+    vertical-align: bottom;
+    margin: 1% 0 1.75% 1%;
+    width: 19%;
+    @include transition($swift-ease-out);
+    .asset {
+      padding: 1px;
+      padding-bottom: calc(18.4% - 2px);
+      background-color: md-color($md-background, app-bar);
+      box-shadow: 0 1px 1px 0 md-color($md-grey, 700, .2);
+    }
+    @media screen and (max-width: $layout-breakpoint-lg) {
+      width: 24%  
+    }
+    @media screen and (max-width: $layout-breakpoint-md) {
+      width: 32.3333%
+    }
+    @media screen and (max-width: $layout-breakpoint-sm) {
+      width: 49%;      
+    }
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      width: 99%;
+      margin-bottom: 7%;          
+    }
+    .asset-name {
+      position: absolute;
+      top: -12px;
+      left: 1px;
+      font-size: rem(1.1);
+      line-height: rem(1.1);
+      @include transition($swift-ease-out);
+      @include text-contrast(md-color($md-background, app-bar));
+      opacity: 0;
+    }
+    .asset a.asset-thb {
+      display: block;
+      height: 0;
+      width: 100%;
+      position: relative;
+      padding: 56.25% 0 0 0;
+      @include background-image(
+        linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.6)),
+        linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1))
+      );
+      &:hover, &:active {
+        cursor: pointer;
+      }
+      &::before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        @include background-image(
+          linear-gradient(-7deg, rgba(md-color($md-grey, 900),0.9), rgba(md-color($md-grey, 900),0) 24%),
+          linear-gradient(7deg, rgba(md-color($md-grey, 900),0) 75%, rgba(md-color($md-grey, 900),.9))
+        );
+        opacity: 0.5;
+        @include transition(opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2));
+        z-index: 1;
+      }
+      img {
+        position: absolute;
+        display: block;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        // width: 100%;
+        // if you want to stretch 4:3 SD thumbs
+      }
+    }
+    .asset a.asset-desc {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left:0;
+      width: calc(100% - 2px);
+      margin: 0 1px;
+      height: 24%;
+      @include transition(all .2s ease-in-out);
+      span.mdata-1 {
+        display: block;
+        position: static;
+        font-size: rem(1.2);
+        line-height: rem(1.55);
+        height: 72%;
+        @include text-contrast(md-color($md-background, background));
+        padding: 2.5% 3% 0 3%;
+        opacity: .65;
+        overflow: hidden;
+      }
+    }
+    .asset:hover a.asset-desc, .asset:active a.asset-desc {
+      height: auto;
+      min-height: 24%;
+      max-height: 86%;
+      background-color: md-color($md-grey, 900, .65);
+      border-color: md-color($md-grey, 900, 0);
+      bottom: 24%;
+      span.mdata-1 {
+        padding-bottom: 2%;
+        opacity: 1;
+        @include text-contrast(md-color($md-foreground, base));
+        overflow-y: hidden;
+      }
+    }
+    .asset section.actions {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left:0;
+      width: calc(100% - 2px);
+      margin: 0 1px 1px;
+      height: calc(24% - 1px);
+      opacity: 0;
+      @include transition($swift-ease-in-out);
+      nav.asset-options {
+        display: flex;
+        height: 100%;
+        min-height: 100%;
+        max-height: 100%;
+        background-color: rgba(md-color($md-foreground, base), .6);
+        padding-left: rem(.6);
+        padding-right: rem(.6);
+        button[md-icon-button] {
+          @include text-contrast(md-color($md-foreground, base));
+          height: rem(3.6);
+          width: rem(3.6);
+          padding: rem(.6);
+          margin-top: auto;
+          margin-bottom: auto;
+          margin-left: rem(.2);
+          margin-right: rem(.2);
+          @include transition($swift-ease-in-out);
+          span.md-button-wrapper {
+            position: static;
+            line-height: 1.9;
+            font-size: inherit;
+          }
+          md-icon.material-icons {
+            font-size: 22px;
+          }
+          &:hover {
+            background-color: rgba(md-color($md-foreground, base), .18);
+          }
+        }
+      }
+    }
+    .asset:hover section.actions, .asset:active section.actions {
+      opacity: 1;
+    } 
+    span {
+      // display: block;
+      position: absolute;
+      font-size: rem(1.2);
+      line-height: rem(1.55);
+      &.mdata-0 {
+        display: none;
+      }
+      &.mdata-2 {
+        position: absolute;
+        height: 30px;
+        width: 40px;
+        top: 3px;
+        right: 3px;
+        z-index: 1;
+        .sd-hd {
+          color: transparent;
+          top: 0;
+          right: 0;
+          &::before {
+            content: "HD";
+            // border-radius: rem(.2);
+            border-width: rem(.144);
+            border-style: solid;
+            border-color: rgba(md-color($md-grey, 100),0.5);
+            color: rgba(md-color($md-grey, 100),0.7);
+            position: absolute;
+            top: rem(.1);
+            right: rem(.1);
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 0 2px 0 3px;
+          }
+        }
+        .sd-hd.sd, .sd-hd.dv {
+          &::before {
+            display: none;
+          }
+        }
+      }
+      &.mdata-3 {
+        bottom: 0;
+        right: 0;
+        padding: 0 1% 1% 0;
+        @include text-contrast(md-color($md-foreground, base));
+        @include transition($swift-ease-out);
+        z-index: 1;
+        span {
+          line-height: 1;
+          position: relative;
+        }
+      }
+    }
+    &:hover .asset-name, &:active .asset-name {
+      opacity: .7;
+    }
+    &:hover .mdata-3, &:active .mdata-3 {
+      opacity: 0;
+    }
+  }
+}
+
+.list ul.asset-list {
+  list-style: none;
+  font-size: 0;
+  line-height: 0;
+  margin: 0 0 30px 0;
+  padding: 0;
+  & > li {
+    font-size: 1em;
+    position: relative;
+    display: inline-block;
+    vertical-align: bottom;
+    margin: 1% 0 .5% 0;
+    width: 100%;
+    @include transition($swift-ease-out);
+    .asset {
+     padding: 3px;
+     background-color: md-color($md-background, app-bar);
+     box-shadow: 0 1px 1px 0 md-color($md-grey, 700, .2);
+    }
+    // @media screen and (max-width: $layout-breakpoint-lg) {
+    //   width: 100%  
+    // }
+    // @media screen and (max-width: $layout-breakpoint-md) {
+    //   width: 32.3333%
+    // }
+    // @media screen and (max-width: $layout-breakpoint-sm) {
+    //   width: 49%;      
+    // }
+    // @media screen and (max-width: 400px) {
+    //   width: 99%;      
+    // }
+    .asset-name {
+      position: absolute;
+      top: -12px;
+      left: 1px;
+      font-size: rem(1.1);
+      line-height: rem(1.1);
+      @include transition($swift-ease-out);
+      @include text-contrast(md-color($md-background, app-bar));
+      opacity: 0;
+    }
+    a {
+      display: block;
+      height: 100%;
+      width: 20%;
+      @media screen and (max-width: $layout-breakpoint-md) {
+        width: 32%
+      }
+      @media screen and (max-width: $layout-breakpoint-sm) {
+        width: 40%;      
+      }
+      @media screen and (max-width: 400px) {
+        width: 50%;      
+      }
+      position: relative;
+      &::before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        @include background-image(linear-gradient(2deg, rgba(md-color($md-grey, 900),0.9), rgba(md-color($md-grey, 900),0) 30%));
+        opacity: 0.6;
+        @include transition(opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2));
+        z-index: 1;
+      }
+    }
+    span {
+      display: block;
+      position: absolute;
+      font-size: rem(1.2);
+      line-height: rem(1.55);
+      &.mdata-1 {
+        top: 0;
+        left: 100%;
+        width: 400%;
+        @media screen and (max-width: $layout-breakpoint-md) {
+          width: 212%
+        }
+        @media screen and (max-width: $layout-breakpoint-sm) {
+          width: 150%;      
+        }
+        @media screen and (max-width: 400px) {
+          width: 100%;      
+        }
+        height: 100%;
+        @include text-contrast(md-color($md-background, background));
+        span {
+          line-height: rem(1.7);
+          opacity: .65;
+          padding: 2.5% 3% 0 3%;
+          overflow: hidden;
+          height: 70%;
+        }
+      }
+      &.mdata-0 {
+        display: none;
+      }
+      &.mdata-2 {
+        position: absolute;
+        height: 25px;
+        width: 25px;
+        top: 3px;
+        right: 3px;
+        z-index: 1;
+        span.hd, span.sd {
+          color: rgba(transparent, 0);
+          position: relative;
+          font-size: rem(1.5);
+          line-height: 1;
+          &::before {
+            @include text-contrast(md-color($md-grey, 100));
+            position: absolute;
+            @include text-contrast(md-color($md-grey, 900));
+            content: "\e039";
+            // content: "\e052";
+            font-family: 'Material Icons';
+            font-size: rem(3);
+            opacity: .4;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+          }
+        }
+      }
+      &.mdata-3 {
+        bottom: 0;
+        right: 0;
+        padding: 0 1% 1% 0;
+        @include text-contrast(md-color($md-grey, 900));
+        z-index: 1;
+        span {
+          line-height: 1;
+          position: relative;
+        }
+      }
+    }
+    &:hover .asset-name, &:active .asset-name {
+      opacity: .7;
+    }
+  }
+}

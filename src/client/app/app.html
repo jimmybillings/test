@@ -22,7 +22,7 @@
       [collection]="focusedCollection | async"
       (onLogOut)="logout()">
     </app-nav>
-    <search-box
+    <wz-search-box
       *ngIf="(uiState.uiState | async).searchBarIsActive"
       [currentUser]="currentUser"
       [state]="state"
@@ -30,7 +30,7 @@
       [apiConfig]="apiConfig"
       [config]="(uiConfig.get('searchBox') | async).config"
       (searchContext)="newSearchContext($event)">
-    </search-box>
+    </wz-search-box>
     <bin-tray
       *ngIf="(uiState.uiState | async).searchBarIsActive && currentUser.loggedIn()"
       [UiState]="uiState"

@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Collections, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from './services/collections.service';
 import { Observable, Subscription } from 'rxjs/Rx';
-import { AssetListComponent }  from '../shared/components/asset-list/asset-list.component';
-import {PaginationComponent} from '../shared/components/pagination/pagination.component';
+import { WzAssetListComponent }  from '../shared/components/wz-asset-list/wz.asset-list.component';
+import {WzPaginationComponent} from '../shared/components/wz-pagination/wz.pagination.component';
 import { Store } from '@ngrx/store';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import { CurrentUser } from '../shared/services/current-user.model';
@@ -16,8 +16,8 @@ import { UiConfig } from '../shared/services/ui.config';
   templateUrl: 'collection-show.html',
   providers: [CollectionsService],
   directives: [
-    AssetListComponent,
-    PaginationComponent,
+    WzAssetListComponent,
+    WzPaginationComponent,
     ROUTER_DIRECTIVES
   ]
 })

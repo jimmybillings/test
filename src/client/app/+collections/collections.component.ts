@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Collection, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from './services/collections.service';
-import {PaginationComponent} from '../shared/components/pagination/pagination.component';
+import { WzPaginationComponent} from '../shared/components/wz-pagination/wz.pagination.component';
 import { Store } from '@ngrx/store';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { CurrentUser } from '../shared/services/current-user.model';
@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs/Rx';
   providers: [CollectionsService],
   directives: [
     ROUTER_DIRECTIVES,
-    PaginationComponent
+    WzPaginationComponent
   ]
 })
 
@@ -71,6 +71,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public getFocusedCollection(): void {
     setTimeout(() => {
       this.collectionsService.getFocusedCollection().first().subscribe(payload => {
+        console.log(payload);
         this.collectionsService.updateFocusedCollection(payload);
       });
     }, 1200);

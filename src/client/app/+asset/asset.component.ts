@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AssetDetailComponent } from '../shared/components/asset-detail/asset-detail.component';
+import { WzAssetDetailComponent } from '../shared/components/wz-asset-detail/wz.asset-detail.component';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { AssetService} from './services/asset.service';
 import { Observable, Subscription} from 'rxjs/Rx';
@@ -17,7 +17,7 @@ import { Store } from '@ngrx/store';
   moduleId: module.id,
   selector: 'asset',
   templateUrl: 'asset.html',
-  directives: [AssetDetailComponent]
+  directives: [WzAssetDetailComponent]
 })
 
 export class AssetComponent implements OnInit, OnDestroy {

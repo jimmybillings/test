@@ -8,7 +8,7 @@ import {
   CollectionsComponent,
   CollectionShowComponent,
   AdminComponent,
-} from './platform/app.component.imports';
+} from './imports/app.component.imports';
 
 import { USER_ROUTES} from './+user-management/user-management.routes';
 import { ADMIN_ROUTES} from './+admin/admin.routes';
