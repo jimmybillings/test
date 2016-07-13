@@ -24,9 +24,12 @@ export class WzAssetDetailComponent implements OnChanges {
   @Output() onShowNewCollection = new EventEmitter();
 
   ngOnChanges(changes: any): void {
+    console.dir(changes);
     if (changes.assetDetail) {
-      if (Object.keys(changes.assetDetail.currentValue.common).length > 0) {
-        this.assetDetail = changes.assetDetail.currentValue;
+      if (Object.keys(changes.assetDetail.currentValue.detailTypeMap.common).length > 0) {
+        this.assetDetail = changes.assetDetail.currentValue.detailTypeMap;
+        this.assetDetail.clipUrl = changes.assetDetail.currentValue.clipUrl;
+        this.assetDetail.clipThumbnailUrl = changes.assetDetail.currentValue.clipThumbnailUrl;
         this.secondaryMdata = this.assetDetail.secondary[0];
         this.secondaryKeys = Object.keys(this.secondaryMdata);
       }

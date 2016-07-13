@@ -1,5 +1,5 @@
 import {Component, ChangeDetectionStrategy, Input, OnChanges} from '@angular/core';
-declare var PlayerApi: any, PlayerEnvironment: any;
+declare var jwplayer:any;
 /**
  * site header component - renders the header information
  */
@@ -7,20 +7,26 @@ declare var PlayerApi: any, PlayerEnvironment: any;
   moduleId: module.id,
   selector: 'wz-player',
   template: `
-    <iframe 
-      allowfullscreen="allowfullscreen" aria-hidden="true" 
-      class="hide" data-player-loaded="false" height="100%" id="player" 
-      itemallowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" width="100%">
-    </iframe>`,
+   <div id="assetVideoPlayer" style='width:100%; height:100%'>Loading player...</div>
+   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class WzPlayerComponent implements OnChanges {
   @Input() clip: string;
-  public player: { load: any };
+  @Input() clipUrl: string;
+  @Input() clipThumbnailUrl: string;
+  public player:{ load: any };
 
   ngOnChanges(changes:any) {
-    this.player = new PlayerApi(document.querySelector('iframe#player'), { environment: PlayerEnvironment.PRODUCTION });
-    this.player.load(changes.clip.currentValue, 'tem-r5tHustu');
+    jwplayer('assetVideoPlayer').setup({
+        image: changes.clipThumbnailUrl.currentValue,
+        file:changes.clipUrl.currentValue,
+        logo: {
+          file: 'assets/img/logo/watermark.png',
+          position:'top-right',
+          link:'http://www.wazeedigital.com'
+        }
+  });
   }
 }
