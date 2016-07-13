@@ -17,7 +17,7 @@ import { UiConfig, config} from '../shared/services/ui.config';
 import { Error } from '../shared/services/error.service';
 import { provideStore } from '@ngrx/store';
 import { AssetService, asset} from './services/asset.service';
-import { CollectionsService } from '../+collections/services/collections.service';
+import { CollectionsService } from '../+collection/services/collections.service';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute}  from '@angular/router';

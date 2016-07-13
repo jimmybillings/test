@@ -21,7 +21,7 @@ import {Observable} from 'rxjs/Rx';
 import { provideStore } from '@ngrx/store';
 import { Error } from '../shared/services/error.service';
 import {SearchContext, searchContext} from '../shared/services/search-context.service';
-import {CollectionsService} from '../+collections/services/collections.service';
+import {CollectionsService} from '../+collection/services/collections.service';
 
 export function main() {
   describe('Search Component', () => {

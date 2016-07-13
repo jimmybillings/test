@@ -33,10 +33,10 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import '+home/home';
 @import '+user-management/+login/login';
 
-@import '+collections/+index/collections';
-@import '+collections/+show/collection-show';
-@import '+collections/components/collection-form';
-@import '+collections/components/collections-list-dd';
+@import '+collection/+index/collections';
+@import '+collection/+show/collection-show';
+@import '+collection/components/collection-form';
+@import '+collection/components/collections-list-dd';
 
 @import '+admin/+ui-config/ui-config';
 @import '+admin/components/edit';

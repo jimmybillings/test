@@ -11,7 +11,7 @@ import { Error } from '../shared/services/error.service';
 import { AssetService} from '../+asset/services/asset.service';
 import { SearchContext} from '../shared/services/search-context.service';
 import { Authentication} from '../+user-management/services/authentication.data.service';
-import { CollectionsService } from '../+collections/services/collections.service';
+import { CollectionsService } from '../+collection/services/collections.service';
 import { UiState } from '../shared/services/ui.state';
 import { AdminAuthGuard } from '../+admin/services/admin.auth.guard';
 import { UserPermission } from '../shared/services/permission.service';
@@ -30,7 +30,7 @@ import { adminResources } from '../+admin/services/admin.service';
 import { searchContext} from '../shared/services/search-context.service';
 import { provideStore } from '@ngrx/store';
 import { multilingualReducer } from '../shared/services/multilingual.service';
-import { collections, focusedCollection} from '../+collections/services/collections.service';
+import { collections, focusedCollection} from '../+collection/services/collections.service';
 
 // TRANSLATIONS
 import { TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';

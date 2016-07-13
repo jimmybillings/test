@@ -11,7 +11,7 @@ import { SearchContext} from '../shared/services/search-context.service';
 import { FilterTree} from './filter-tree';
 import { FilterTreeComponent} from './filter-tree.component';
 import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
-import { CollectionsService } from '../+collections/services/collections.service';
+import { CollectionsService } from '../+collection/services/collections.service';
 import { Store } from '@ngrx/store';
 
 

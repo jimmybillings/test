@@ -32,6 +32,9 @@ export class CollectionFormComponent {
     (collection.tags) ? collection.tags = collection.tags.split(/\s*,\s*/) : collection.tags = [];
     this.assetForNewCollection ? asset = this.assetForNewCollection : asset = null;
     this.createAndAddAsset(collection, asset);
+    // Once we solve form resetting/validation for all forms this reset can be removed.
+    let cForm = <HTMLFormElement>document.querySelector('wz-form form');
+    cForm.reset();
     if (this.assetForNewCollection) sessionStorage.removeItem('assetForNewCollection');
   }
 
