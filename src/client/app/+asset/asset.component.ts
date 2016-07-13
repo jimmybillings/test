@@ -6,7 +6,7 @@ import { AssetService} from './services/asset.service';
 import { Observable, Subscription} from 'rxjs/Rx';
 import { Error } from '../shared/services/error.service';
 import { Collection, CollectionStore } from '../shared/interfaces/collection.interface';
-import { CollectionsService } from '../+collections/services/collections.service';
+import { CollectionsService } from '../+collection/services/collections.service';
 import { Store } from '@ngrx/store';
 
 

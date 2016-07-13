@@ -1,9 +1,9 @@
 import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import { Collection } from '../../shared/interfaces/collection.interface';
-import { CollectionsService} from '../../+collections/services/collections.service';
+import { CollectionsService} from '../../+collection/services/collections.service';
 import { WzDropdownComponent } from '../../shared/components/wz-dropdown/wz.dropdown.component';
-import { CollectionListDdComponent } from '../../+collections/components/collections-list-dd.component';
+import { CollectionListDdComponent } from '../../+collection/components/collections-list-dd.component';
 
 /**
  * Home page search component - renders search form passes form values to search component.
@@ -29,6 +29,7 @@ export class BinTrayComponent {
   // make this 2 request with errors get collections and then focused
   public getCollectionsAndFocused(): void {
     this.collectionsService.loadCollections().first().subscribe(payload => {
+      this.collectionsService.storeCollections(Object.assign({}, payload));
 
 
       // for each collection with assets get a thumbnail img
@@ -41,9 +42,6 @@ export class BinTrayComponent {
               payload.items[index].assets.items = payload.items[index].assets;
               payload.items[index].assets.pagination = {};
               payload.items[index].assets.pagination.totalCount = search.totalCount;
-              if ((payload.items.length - 1) === index) {
-                this.collectionsService.storeCollections(Object.assign({}, payload));
-              }
             });
           }
         });

@@ -10,7 +10,7 @@ import { provide, PLATFORM_PIPES} from '@angular/core';
 import { BinTrayComponent} from './bin-tray.component';
 import { UiConfig} from '../../shared/services/ui.config';
 import { Router } from '@angular/router';
-import { CollectionsService, collections} from '../../+collections/services/collections.service';
+import { CollectionsService, collections} from '../../+collection/services/collections.service';
 import { provideStore } from '@ngrx/store';
 import { ApiConfig } from '../../shared/services/api.config';
 import { MockBackend } from '@angular/http/testing';
