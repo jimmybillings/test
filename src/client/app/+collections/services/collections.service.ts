@@ -23,7 +23,7 @@ const collectionsState: Collections = {
 export const collections: Reducer<any> = (state: Collections = collectionsState, action: Action) => {
   switch (action.type) {
     case 'GET_COLLECTIONS':
-      return action.payload;
+      return Object.assign({}, action.payload);
     case 'CREATE_COLLECTION':
       return Object.assign({}, state, state.items.push(action.payload));
     case 'UPDATE_COLLECTION':
