@@ -1,0 +1,77 @@
+.pagination {
+  margin-top: rem(3.4);
+  min-height: rem(3.4);
+  max-height: rem(3.4);
+  opacity: .75;
+  &.pg-bottom {
+    margin-top: 0;  
+    margin-bottom: rem(3.4);  
+  }
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    &.md-body-2 {
+      font-size: .76em;
+      font-weight: normal;
+    }
+  }  
+}
+wz-pagination {
+  margin-right: - rem(.8);
+  .text-nav > span {
+    &:nth-child(3n) {
+      margin-right: rem(.5);
+    }
+    &:nth-child(4n) {
+      margin-right: rem(.8);
+    }
+  }
+  .divider {
+    display: none;
+    width: rem(.2);
+    height: rem(2.4);
+    margin-right: rem(.2);
+    box-shadow: -1px 0 0 0 rgba(md-color($md-foreground, divider), 1) inset, 1px 0 0 0 rgba(md-color($md-background, background),.7);
+  }
+  form {
+    input {
+      width: rem(2.8);
+      height: rem(2.3);
+      overflow: hidden;
+      text-align: center;
+      background-color: rgba(md-color($md-background, background), .6);
+      border-style: solid;
+      border-width: 1px;
+      border-color: rgba(md-color($md-foreground, secondary-text), .25);
+      margin-right: rem(.8);
+      margin-left: rem(.7);
+      &:focus {
+        background-color: rgba(md-color($md-background, background), .8);
+        border-color: rgba(md-color($md-foreground, secondary-text), .45);
+        outline: none;
+      }
+    }
+  }
+  button[md-icon-button] {
+    margin: 0;
+    line-height: 1;
+    padding: rem(.5);
+    @include transition(all .4s ease-in-out);
+    md-icon.material-icons {
+      font-size: rem(3.1);
+      height: 100%;
+      width: 100%;
+      opacity: .75;
+    }
+    &:hover {
+      opacity: 1;
+      background-color: rgba(md-color($md-foreground, base), .08);
+    }
+    &[disabled]:hover {
+      background-color: transparent;
+    }
+  }
+}
+.results-count {
+  display: flex;
+  min-height: rem(3.4);
+  padding-right: rem(2.4);
+}  

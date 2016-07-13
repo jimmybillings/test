@@ -4,7 +4,7 @@ import {CurrentUser} from '../../shared/services/current-user.model';
 import {AdminService} from '../services/admin.service';
 import {WzListComponent} from '../../shared/components/wz-list/wz.list.component';
 import {WzFormComponent} from '../../shared/components/wz-form/wz.form.component';
-import {PaginationComponent} from '../../shared/components/pagination/pagination.component';
+import {WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
 import {UiConfig} from '../../shared/services/ui.config';
 import {UiState} from '../../shared/services/ui.state';
 import {Subscription} from 'rxjs/Rx';
@@ -13,7 +13,7 @@ import {Subscription} from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'admin-index',
   templateUrl: 'index.html',
-  directives: [WzListComponent, PaginationComponent, ROUTER_DIRECTIVES, WzFormComponent]
+  directives: [WzListComponent, WzPaginationComponent, ROUTER_DIRECTIVES, WzFormComponent]
 })
 
 export class IndexComponent implements OnInit, OnDestroy {
@@ -35,7 +35,6 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.routeSubscription = this.routeChanges();
-    this.adminStoreSubscription = this.adminService.adminStore.subscribe(data => this.currentResources = data);
   }
 
   ngOnDestroy(): void {
@@ -45,7 +44,8 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   routeChanges(): Subscription {
     return this.route.params.subscribe(param => {
-      this.resourceType = param['resource'];
+      this.adminStoreSubscription = this.adminService.adminStore.subscribe(data => this.currentResources = data);
+      this.resourceType = this.route.snapshot.url[1].path;
       this.currentComponent = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1);
       this.buildRouteParams(param);
       this.uiConfig.get('admin' + this.currentComponent)
@@ -58,7 +58,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public getIndex(): void {
     this.toggleFlag = this.params.d;
-    this.adminService.getResources(this.params, this.resourceType).first().subscribe(data => {
+    this.adminService.getResourceIndex(this.params, this.resourceType).first().subscribe(data => {
       this.adminService.setResources(data);
     });
   }
@@ -90,8 +90,8 @@ export class IndexComponent implements OnInit, OnDestroy {
     i = parseInt(params['i']) || 1;
     n = parseInt(params['n']) || 10;
     // Hack because browser makes empty values 'true' in the url
-    fields = (Boolean(params['fields'])) ? '' : params['fields'];
-    values = (Boolean(params['values'])) ? '' : params['values'];
+    fields = (params['fields'] === 'true') ? '' : params['fields'];
+    values = (params['values'] === 'true') ? '' : params['values'];
     this.params = { i, n, s, d, fields, values };
   }
 

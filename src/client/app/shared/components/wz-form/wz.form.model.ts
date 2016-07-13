@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Validators, ControlGroup, Control } from '@angular/common';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IFormFields } from '../../interfaces/forms.interface';
 
 /**
@@ -17,15 +17,15 @@ export class FormModel {
     return newForm;
   }
 
-  public updateForm(form: ControlGroup, values: any): void {
+  public updateForm(form: FormGroup, values: any): void {
     for (let controlName in form.controls) {
       if (values.hasOwnProperty(controlName))
-        (<Control>form.controls[controlName]).updateValue(values[controlName]);
-      (<Control>form.controls[controlName]).updateValue('');
+        (<FormControl>form.controls[controlName]).updateValue(values[controlName]);
+      (<FormControl>form.controls[controlName]).updateValue('');
     }
   }
 
-  public markFormAsUntouched(form: ControlGroup): void {
+  public markFormAsUntouched(form: FormGroup): void {
     form['_touched'] = false;
     form['_pristine'] = true;
     for (var i in form.controls) {

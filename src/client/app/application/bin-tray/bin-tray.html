@@ -1,0 +1,33 @@
+
+<section layout="row" flex="100" layout-align="start" class="header-tray">
+  <div flex="100" class="asset-carousel grid">
+    <ul class="asset-list" *ngIf="collection.assets">
+      <li *ngIf="collection.assets.items" *ngFor="let asset of collection.assets.items">
+        <div class="asset">
+          <a *ngIf="asset?.assetId" flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb">
+            <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div layout="row" flex="auto" layout-align="end center" class="focused-collection">
+    <nav class="focused" *ngIf="collection.name" (click)="list.show($event)">
+      <button md-button class="is-dd">{{collection.name}}</button>
+      <button md-button class="asset-count">
+        <span class="count" *ngIf="collection.assets">{{collection.assets.pagination.totalCount}}</span>
+        <span class="count" *ngIf="!collection.assets">0</span>
+      </button>
+    </nav>
+    <button md-icon-button flex="none" title="more collection options" (click)="UiState.openMoreCollectionOptionsDd()"><md-icon>more_vert</md-icon></button>
+  </div>
+  <!--<button md-icon-button title="close collections" type="button" (click)="UiState.toggleBinTray()" class="close"><md-icon>close</md-icon></button>-->
+</section>
+
+<wz-dropdown #list>
+  <collections-list-dd
+    [UiState]="UiState"
+    [focusedCollection]="collection"
+    layout="row" layout-align="end start" class="revealed">
+  </collections-list-dd>
+</wz-dropdown>

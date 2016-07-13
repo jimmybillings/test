@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {CurrentUser} from '../shared/services/current-user.model';
-import {SearchBoxComponent} from '../shared/components/search-box/search-box.component';
+import {WzSearchBoxComponent} from '../shared/components/wz-search-box/wz.search-box.component';
 import {UiConfig} from '../shared/services/ui.config';
 import {SearchContext} from '../shared/services/search-context.service';
 import {ApiConfig} from '../shared/services/api.config';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'home',
   templateUrl: 'home.html',
-  directives: [ROUTER_DIRECTIVES, SearchBoxComponent]
+  directives: [ROUTER_DIRECTIVES, WzSearchBoxComponent]
 })
 
 export class HomeComponent implements OnInit, OnDestroy {

@@ -15,11 +15,11 @@ import {
   Collection,
   CollectionStore,
   UiState,
-  NotificationService,
+  WzNotificationService,
   CollectionsService,
   ViewContainerService,
   UserPermission
-} from './platform/app.component.imports';
+} from './imports/app.component.imports';
 declare var portal: string;
 
 @Component({
@@ -28,7 +28,7 @@ declare var portal: string;
   templateUrl: 'app.html',
   directives: [ROUTER_DIRECTIVES, APP_COMPONENT_DIRECTIVES],
   pipes: [TranslatePipe],
-  providers: [NotificationService, ViewContainerService]
+  providers: [WzNotificationService, ViewContainerService]
 })
 
 export class AppComponent implements OnInit, OnDestroy {
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public store: Store<CollectionStore>,
     public uiState: UiState,
     private renderer: Renderer,
-    private notification: NotificationService,
+    private notification: WzNotificationService,
     private apiConfig: ApiConfig,
     private authentication: Authentication,
     private viewContainerService: ViewContainerService) {
@@ -61,7 +61,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
-    // this.multiLingual.setLanguage(window.navigator.language.split('-')[0]);
     this.configSubscription = this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
     this.currentUser.set();
     this.focusedCollection = this.store.select('focusedCollection');

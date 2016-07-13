@@ -1,0 +1,97 @@
+
+  <section class="collection-head">
+    <div layout="row" layout-align="center start">
+      <div flex-xl="85" flex-gt-lg="95" flex="100">
+        <section class="collections-list">
+          <!--<header class="bread-crumbs" layout="row" flex="100" layout-align="end center">
+            <div flex="none">
+              <span class="md-button"><a md-button color="primary" [routerLink]="['/collection']">Your Collections</a> : {{collection.name}}</span>
+            </div>
+          </header>-->
+          <ul>
+            <li class="collection" flex="100" layout="row" layout-xs="column">
+               <div flex="100" flex-gt-sm="66">
+                <div flex="100" layout="row" layout-xs="column">
+                  <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding layout-fill>
+                    <div class="asset">
+                      <div class="asset-thb">
+                        <span class="asset-id"><span class="id">{{collection.id}}</span></span>
+                        <img *ngIf="collection.thumbnail" src="{{collection.thumbnail?.urls?.https}}" />
+                        <img *ngIf="!collection.thumbnail" src="/assets/img/tbn_missing.jpg" />
+                      </div>
+                    </div>
+                  </div>
+                  <div flex-gt-sm="60" flex-xl="70" flex="100" (click)="selectFocusedCollection(collection)" layout-padding layout-fill>
+                    <h3 class="md-headline">{{collection.name}}
+                      <span class="asset-count">
+                        <span class="count" *ngIf="collection.assets">{{collection.assets.pagination.totalCount}}</span>
+                      <span class="count" *ngIf="!collection.assets">0</span>
+                      </span>
+                    </h3>
+                    <div class="md-caption collection-info">
+                      <span><strong>Owner: </strong>{{collection.owner}}</span>
+                      <!--<span><strong>Created: </strong>{{ date(collection.createdOn) }}</span>-->
+                      <span><strong>Created: </strong>{{ date(collection.createdOn) | date:'short' }}</span>
+                      <span><strong>Updated: </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
+                    </div>
+                    <div class="md-caption collection-tags">
+                      <strong>Tags: </strong>
+                      <ul class="meta-data-tags">
+                        <li class="tag md-elevation-z0" *ngFor="let tag of collection.tags">{{tag}}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div flex-gt-sm="33" layout-sm="100" flex="100" class="actions" layout-align="end center">
+                <!--<div flex="80">-->
+                  <button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="showEdit(collection)"><md-icon>edit</md-icon></button>
+                  <!--<button md-icon-button title="{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}" (click)="showHistory(collection)"><md-icon>history</md-icon></button>-->
+                  <button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)"><md-icon>share</md-icon></button>
+                  <button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)"><md-icon>mode_comment</md-icon></button>
+                  <button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" (click)="showHistory(collection)"><md-icon>more_vert</md-icon></button>
+                <!--</div>-->
+                <!--<div flex="20" layout-align="end center">
+                  <button md-icon-button title="{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}" (click)="deleteCollection(collection)"><md-icon>cancel</md-icon></button>
+                </div>-->
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </section>
+  <section class="search-results">
+    <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
+      <div flex-xl="85" flex-gt-lg="95" flex="100">
+
+
+        <div layout="row" layout-align="end center" class="pagination md-body-2"> 
+          <div flex="40" layout-align="end center" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
+          <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
+        </div>
+
+        <div layout="column">       
+          <wz-asset-list 
+            [assets]="assets?.items" 
+            [currentUser]="currentUser" 
+            [collection]="focusedCollection"
+            (onShowAsset)="showAsset($event)" 
+            (onAddToCollection)="addToCollection($event)"
+            (onShowNewCollection)="showNewCollection($event)"
+            (onAddToCart)="addToCart($event)" 
+            (onDownloadComp)="downloadComp($event)"
+            class="grid">
+          </wz-asset-list>
+          <h1 *ngIf="!assets.items" class="md-display-1 alert warning">This collection does not have any assets</h1>
+        </div>
+        
+        
+        <div layout="row" layout-align="end center" class="pagination md-body-2 pg-bottom"> 
+          <div flex="40" layout-align="end center" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
+          <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
+        </div>
+      </div>
+    </div>
+  </section>
