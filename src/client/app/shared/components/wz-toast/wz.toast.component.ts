@@ -28,6 +28,8 @@ export class WzToastComponent {
   @ViewChild(WzToastPortalDirective) public portal: WzToastPortalDirective;
   public active: boolean = false;
   public viewRef: any;
+  public closeAction: any;
+
   private overlayRef: OverlayRef = null;
 
   constructor(private overlay: Overlay, private renderer: Renderer) { }
@@ -40,14 +42,14 @@ export class WzToastComponent {
         return ref.attach(this.portal);
       })
       .then(() => {
-        setTimeout(() => this.closeListener(), 200);
-        setTimeout(() => this.close(), 3000);
+        this.closeAction = setTimeout(() => this.close(), 3000);
         this.active = true;
         return this;
       });
   }
 
   public close(): Promise<any> {
+    clearTimeout(this.closeAction);
     if (!this.overlayRef) {
       return Promise.resolve(this);
     } else {
@@ -56,12 +58,8 @@ export class WzToastComponent {
       }).then(() => {
         this.overlayRef.dispose();
         this.overlayRef = null;
-        this.viewRef();
       });
     }
   }
 
-  private closeListener() {
-    this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.close());
-  }
 }
