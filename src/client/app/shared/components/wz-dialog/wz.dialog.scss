@@ -1,0 +1,10 @@
+md-card.admin-card {
+  z-index: 100;
+  width: 33vw;
+  &:hover {
+    @include md-elevation(20);
+  }
+  .md-card {
+    width: 90%;
+  }
+}

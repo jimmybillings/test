@@ -23,7 +23,6 @@ import { Authentication} from './+user-management/services/authentication.data.s
 import { MultilingualService, multilingualReducer} from './shared/services/multilingual.service';
 import { SearchContext} from './shared/services/search-context.service';
 import { CollectionsService} from './+collection/services/collections.service';
-import { ViewContainerService } from './shared/services/view-container.service';
 import { UserPermission } from './shared/services/permission.service';
 
 export function main() {
@@ -41,7 +40,6 @@ export function main() {
       { provide: Router, useClass: MockRouter },
       { provide: ActivatedRoute, useClass: MockActivatedRoute },
       MockBackend,
-      ViewContainerService,
       BaseRequestOptions,
       Renderer,
       UserPermission,
