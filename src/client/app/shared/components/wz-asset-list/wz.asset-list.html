@@ -19,8 +19,8 @@
         <nav class="asset-options" flex layout-align="end center">
           <button md-icon-button title="Add to cart" (click)="addToCart(asset)"><md-icon>shopping_cart</md-icon></button>
           <button md-icon-button title="Download Comp" (click)="downloadComp(asset)"><md-icon>file_download</md-icon></button>
-          <button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(collection, asset); toast.show()"><md-icon>library_add</md-icon></button>
-          <button md-icon-button *ngIf="collection.id === null"  title="Create collection" (click)="showNewCollection(asset)"><md-icon>library_add</md-icon></button>
+          <button md-icon-button *ngIf="collection.id !== null" title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" (click)="addToCollection(collection, asset); toast.show()"><md-icon>library_add</md-icon></button>
+          <button md-icon-button *ngIf="collection.id === null"  title="{{ 'COLLECTION.CREATE_COLLECTION_HOVER_TITLE' | translate }}" (click)="showNewCollection(asset)"><md-icon>library_add</md-icon></button>
           <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
         </nav>
       </section>
@@ -30,7 +30,7 @@
 </ul>
 
 <wz-toast #toast>
-  <div class="toast" layout="row" layout-align="center center">
-    <div flex="100" flex-gt-sm="35" flex-gt-md="25">Asset Added to {{collection.name}}</div>
+  <div class="toast md-elevation-z2" layout="row" layout-align="center center">
+    <div flex-xs="100">{{ 'COLLECTION.ADD_TO_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
   </div>
 </wz-toast>

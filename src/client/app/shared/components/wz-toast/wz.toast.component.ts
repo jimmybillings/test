@@ -42,7 +42,7 @@ export class WzToastComponent {
         return ref.attach(this.portal);
       })
       .then(() => {
-        this.closeAction = setTimeout(() => this.close(), 3000);
+        this.closeAction = setTimeout(() => this.close(), 2750);
         this.active = true;
         return this;
       });

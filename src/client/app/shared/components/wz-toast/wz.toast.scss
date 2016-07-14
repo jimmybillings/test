@@ -1,6 +1,6 @@
 .toast {
   @include animation-name(toasty);
-  @include animation-duration(3000ms);
+  @include animation-duration(2750ms);
   @include animation-timing-function($md-linear-out-slow-in-timing-function);
   @include animation-iteration-count(1);
   @include animation-fill-mode(backwards);  
@@ -11,7 +11,6 @@
   right: 0;
   & > div {
     min-width: rem(28.8);
-    max-width: rem(56.8);
     height: rem(4.8);
     border-radius: $md-button-border-radius;
     display: flex;
@@ -21,16 +20,14 @@
     margin: 0 auto;
     @include text-contrast(md-color($md-grey, 900));
     background-color: scale-color(md-color($md-grey, 900), $lightness: 8%);
-    line-height: 1;
+    line-height: 1.2;
     padding-top: rem(1.4);
     padding-right: rem(2.4);
     padding-bottom: rem(1.4);
     padding-left: rem(2.4);
     font-size: .875em;
+    white-space: nowrap;
   }
-
-
-
   // &.alert {
   //   background: md-color($md-accent);
   // }
