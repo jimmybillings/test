@@ -29,7 +29,6 @@ export class WzToastComponent {
   public active: boolean = false;
   public viewRef: any;
   public closeAction: any;
-
   private overlayRef: OverlayRef = null;
 
   constructor(private overlay: Overlay, private renderer: Renderer) { }
