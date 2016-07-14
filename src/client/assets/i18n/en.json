@@ -94,6 +94,7 @@
   },
   "COLLECTION": {
     "ADD_TO_COLLECTION_HOVER_TITLE": "Add to {{collectionName}}",
+    "REMOVE_FROM_COLLECTION_HOVER_TITLE": "Remove from {{collectionName}}",
     "CREATE_COLLECTION_HOVER_TITLE": "Create a collection",
     "ADD_TO_COLLECTION_TOAST": "Asset added to {{collectionName}}",
     "REMOVE_FROM_COLLECTION_TOAST": "Asset removed from {{collectionName}}",
