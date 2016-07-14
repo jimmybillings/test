@@ -57,14 +57,15 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public selectFocusedCollection(collection: Collection): void {
-    this.collectionsService.setFocusedCollection(collection.id).first().subscribe(payload => {
-      if (collection.assets) {
-        this.collectionsService.getCollectionItems(collection.id, 100).first().subscribe(search => {
+    this.collectionsService.setFocusedCollection(collection.id).first().subscribe(() => {
+      // if (collection.assets) {
+        this.collectionsService.getCollectionItems(collection.id, 200).first().subscribe(search => {
+          console.log(search);
           this.collectionsService.updateFocusedCollectionAssets(collection, search);
         });
-      } else {
-        this.collectionsService.updateFocusedCollection(collection);
-      }
+      // } else {
+        // this.collectionsService.updateFocusedCollection(collection);
+      // }
     });
   }
 

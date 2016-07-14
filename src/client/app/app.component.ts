@@ -66,6 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.focusedCollection = this.store.select('focusedCollection');
     this.viewContainerService.set(this.target);
     this.routerChanges();
+    if (this.permission.has('ViewCollections')) this.loadCollections();
   }
 
   ngOnDestroy() {
@@ -91,6 +92,28 @@ export class AppComponent implements OnInit, OnDestroy {
     this.currentUser.destroy();
     this.collectionsService.destroyCollections();
     this.uiState.reset();
+  }
+
+  public loadCollections() {
+    this.collectionsService.loadCollections().first().subscribe(payload => {
+      this.collectionsService.storeCollections(payload);
+
+      if (payload.totalCount > 0) {
+        payload.items.forEach((item: any, index: number) => {
+          if(item.assets) {
+            this.collectionsService.getCollectionItems(item.id, 1, item.assets.length - 1).first().subscribe(search => {
+              item = this.collectionsService.mergeCollectionData(item, search);
+            });
+          }
+        });
+        
+        this.collectionsService.getFocusedCollection().take(1).subscribe(focusedCollection => {
+          this.collectionsService.getCollectionItems(focusedCollection.id, 300).take(1).subscribe(collection => {
+            this.collectionsService.updateFocusedCollectionAssets(focusedCollection, collection);
+          });
+        });
+      }
+    });
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data); }
