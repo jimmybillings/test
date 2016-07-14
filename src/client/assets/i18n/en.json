@@ -120,6 +120,7 @@
   "ADMIN": {
     "SEARCH_SUBMIT_LABEL": "FIND",
     "CREATE_SUBMIT_LABEL": "CREATE",
+    "EDIT_SUBMIT_LABEL": "UPDATE",
     "DASHBOARD_TITLE": "Admin Dashboard",
     "SUBHEADER": {
       "DASHBOARD": "Dashboard",
