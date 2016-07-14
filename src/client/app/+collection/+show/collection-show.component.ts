@@ -53,7 +53,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.route.params.subscribe(params => {
       this.collectionsService.setFocusedCollection(params['id']).first().subscribe(fc => {
         if (fc.assets) {
-          this.collectionsService.getCollectionItems(fc.id, 100).first().subscribe(search => {
+          this.collectionsService.getCollectionItems(fc.id, 300).first().subscribe(search => {
             this.collectionsService.updateFocusedCollectionAssets(fc, search);
           });
         } else {

@@ -322,7 +322,11 @@ section.preview-bk {
 .responsive-video {
   z-index: 1;
   background-color:  md-color($md-grey, 900);
-  iframe {
+  player {
+    width:100%;
+    height: 100%;
+  }
+  div {
     border: none;
   }
 }

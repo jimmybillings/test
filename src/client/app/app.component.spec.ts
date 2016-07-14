@@ -22,7 +22,7 @@ import { UiConfig, config} from './shared/services/ui.config';
 import { Authentication} from './+user-management/services/authentication.data.service';
 import { MultilingualService, multilingualReducer} from './shared/services/multilingual.service';
 import { SearchContext} from './shared/services/search-context.service';
-import { CollectionsService} from './+collections/services/collections.service';
+import { CollectionsService} from './+collection/services/collections.service';
 import { ViewContainerService } from './shared/services/view-container.service';
 import { UserPermission } from './shared/services/permission.service';
 

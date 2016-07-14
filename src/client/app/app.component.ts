@@ -100,13 +100,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
       if (payload.totalCount > 0) {
         payload.items.forEach((item: any, index: number) => {
-          if(item.assets) {
+          if (item.assets) {
             this.collectionsService.getCollectionItems(item.id, 1, item.assets.length - 1).first().subscribe(search => {
               item = this.collectionsService.mergeCollectionData(item, search);
             });
           }
         });
-        
+
         this.collectionsService.getFocusedCollection().take(1).subscribe(focusedCollection => {
           this.collectionsService.getCollectionItems(focusedCollection.id, 300).take(1).subscribe(collection => {
             this.collectionsService.updateFocusedCollectionAssets(focusedCollection, collection);
