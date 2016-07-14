@@ -40,6 +40,12 @@ export class CurrentUser {
     return this.currentUser;
   }
 
+  public get(profilePiece: string = ''): Observable<any> {
+    return this.currentUser.map((user: any) => {
+      return user[profilePiece];
+    });
+  }
+
   public set(user: CurrentUserInterface = null): void {
     if (user) localStorage.setItem('currentUser', JSON.stringify(user));
     this.store.dispatch({ type: 'SET_USER', payload: this._user() });
@@ -61,12 +67,6 @@ export class CurrentUser {
 
   public fullName(): Observable<any> {
     return this.currentUser.map(user => `${user.firstName} ${user.lastName}`);
-  }
-
-  public hasFocusedCollection(): Observable<any> {
-    return this.currentUser.map((user) => {
-      return (user.hasOwnProperty('focusedCollection') && user.focusedCollection !== null) ? true : false;
-    });
   }
 
   public is(permission: string): Observable<any> {

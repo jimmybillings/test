@@ -175,7 +175,7 @@ export class CollectionsService {
           }
         },
         tags: collection.tags,
-        thumbnail: search.items[search.totalCount - 1].thumbnail
+        thumbnail: collection.thumbnail
       }
     });
   }
@@ -242,5 +242,13 @@ export class CollectionsService {
         }
       }
     });
+  }
+
+  public mergeCollectionData(item: any, search: any) {
+    item.thumbnail = search.items[0].thumbnail;
+    item.assets.items = item.assets;
+    item.assets.pagination = {};
+    item.assets.pagination.totalCount = search.totalCount;
+    return item;
   }
 }
