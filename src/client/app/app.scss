@@ -40,5 +40,3 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import '+collection/components/collections-list-dd';
 
 @import '+admin/+ui-config/ui-config';
-@import '+admin/components/edit';
-@import '+admin/components/new';

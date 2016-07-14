@@ -24,7 +24,6 @@ export { Authentication} from '../+user-management/services/authentication.data.
 export { CollectionsService } from '../+collection/services/collections.service';
 export { UiState} from '../shared/services/ui.state';
 export { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
-export { ViewContainerService } from '../shared/services/view-container.service';
 
 // Interfaces
 export { ILang} from '../shared/interfaces/language.interface';

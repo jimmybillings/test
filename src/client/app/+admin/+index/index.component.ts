@@ -18,12 +18,14 @@ import {Subscription} from 'rxjs/Rx';
 })
 
 export class IndexComponent implements OnInit, OnDestroy {
+  public config: any;
+  public params: any;
+  public resource: any;
+  public formItems: any;
   public toggleFlag: any;
   public resourceType: string;
   public currentComponent: string;
   public currentResources: Object;
-  public config: any;
-  public params: any;
   private routeSubscription: Subscription;
   private adminStoreSubscription: Subscription;
 
@@ -82,6 +84,30 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public updateRouteParams(dynamicParams: any) {
     return Object.assign(this.params, dynamicParams);
+  }
+
+  public mergeFormValues(resource: any): any {
+    this.resource = resource;
+    this.formItems = false;
+    this.formItems = this.config.editForm.items.map((field: any) => {
+      field.value = resource[field.name];
+      return field;
+    });
+  }
+
+  onEditSubmit(data: any): void {
+    Object.assign(this.resource, data);
+    this.adminService.putResource(this.resourceType, this.resource).first().subscribe(data => {
+      this.params.i++;
+      this.getIndex();
+    });
+  }
+
+  onNewSubmit(data: any): void {
+    this.adminService.postResource(this.resourceType, data).first().subscribe(data => {
+      this.params.i++;
+      this.getIndex();
+    });
   }
 
   public buildRouteParams(params: any): any {

@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
 import {FormGroup, FormControl, FormBuilder}    from '@angular/forms';
 import {FormModel} from './wz.form.model';
 
@@ -13,7 +13,7 @@ import {FormModel} from './wz.form.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class WzFormComponent implements OnInit {
+export class WzFormComponent implements OnInit, OnChanges {
   @Input() items: any;
   @Input() submitLabel: string;
   @Output() formSubmit = new EventEmitter();
@@ -21,6 +21,17 @@ export class WzFormComponent implements OnInit {
   public form: FormGroup;
 
   constructor(public fb: FormBuilder, private formModel: FormModel) {}
+
+  ngOnChanges(changes: any) {
+    if (changes.items.currentValue && this.form) {
+      for (let control in this.form.controls) {
+        changes.items.currentValue.forEach((field: any) => {
+          if (control === field.name)
+            (<FormControl>this.form.controls[control]).updateValue(field.value);
+        });
+      }
+    }
+  }
 
   ngOnInit() {
     this.form = this.fb.group(this.formModel.create(this.items));
