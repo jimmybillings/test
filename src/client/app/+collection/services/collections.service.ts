@@ -87,6 +87,7 @@ export class CollectionsService {
     public apiConfig: ApiConfig,
     public http: Http) {
     this.collections = store.select('collections');
+    this.focusedCollection = this.store.select('focusedCollection');
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
       CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collection'
@@ -175,7 +176,7 @@ export class CollectionsService {
           }
         },
         tags: collection.tags,
-        thumbnail: collection.thumbnail
+        thumbnail: search.items[search.totalCount - 1].thumbnail
       }
     });
   }

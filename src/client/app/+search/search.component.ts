@@ -59,8 +59,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    this.searchContext.update = this.route.snapshot.params;
     this.routeSubscription = this.route.params.subscribe((params) => {
+      this.searchContext.update = this.route.snapshot.params;
       this.newSearch();
       this.getFilterTree();
     });
