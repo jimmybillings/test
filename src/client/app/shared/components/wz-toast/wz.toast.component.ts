@@ -41,7 +41,7 @@ export class WzToastComponent {
       })
       .then(() => {
         setTimeout(() => this.closeListener(), 200);
-        setTimeout(() => this.close(), 5000);
+        setTimeout(() => this.close(), 3000);
         this.active = true;
         return this;
       });

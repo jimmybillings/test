@@ -26,7 +26,6 @@ import { Store } from '@ngrx/store';
   providers: [AssetData]
 })
 
-
 export class SearchComponent implements OnInit, OnDestroy {
   public config: Object;
   public errorMessage: string;
