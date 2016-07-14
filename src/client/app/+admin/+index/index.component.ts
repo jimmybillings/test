@@ -5,6 +5,7 @@ import {AdminService} from '../services/admin.service';
 import {WzListComponent} from '../../shared/components/wz-list/wz.list.component';
 import {WzFormComponent} from '../../shared/components/wz-form/wz.form.component';
 import {WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
+import {WzDialogComponent} from '../../shared/components/wz-dialog/wz.dialog.component';
 import {UiConfig} from '../../shared/services/ui.config';
 import {UiState} from '../../shared/services/ui.state';
 import {Subscription} from 'rxjs/Rx';
@@ -13,7 +14,7 @@ import {Subscription} from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'admin-index',
   templateUrl: 'index.html',
-  directives: [WzListComponent, WzPaginationComponent, ROUTER_DIRECTIVES, WzFormComponent]
+  directives: [WzListComponent, WzPaginationComponent, ROUTER_DIRECTIVES, WzFormComponent, WzDialogComponent]
 })
 
 export class IndexComponent implements OnInit, OnDestroy {
@@ -93,13 +94,5 @@ export class IndexComponent implements OnInit, OnDestroy {
     fields = (params['fields'] === 'true') ? '' : params['fields'];
     values = (params['values'] === 'true') ? '' : params['values'];
     this.params = { i, n, s, d, fields, values };
-  }
-
-  public showEditForm(resource: any): void {
-    this.adminService.showEditComponent(this.config.editForm.items, resource, this.resourceType);
-  }
-
-  public showNewForm(): void {
-    this.adminService.showNewComponent(this.config.newForm.items, this.resourceType);
   }
 }

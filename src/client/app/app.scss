@@ -27,6 +27,7 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import 'shared/components/wz-pagination/wz.pagination';
 @import 'shared/components/wz-asset-detail/wz.asset-detail';
 @import 'shared/components/wz-toast/wz.toast';
+@import 'shared/components/wz-dialog/wz.dialog';
 @import 'shared/components/wz-notification/wz.notification';
 
 // ROUTE COMPONENTS

@@ -1,0 +1,37 @@
+.dialog {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  z-index: 100;
+  @include background-image(
+    url("../assets/img/bk/tex/bktx_dgl_lines_light.png"),
+    linear-gradient(md-color($md-grey, 900, .7), md-color($md-grey, 900, .7)));
+  @include transition(opacity, 1200ms, $md-fast-out-slow-in-timing-function);
+  opacity: 1;
+}
+
+.admin-dialog {
+  animation-name: dialog;
+  animation-duration: .25s;
+  animation-timing-function: ease-in-out;
+  position: fixed;
+  top: 100px;
+  z-index: 10000;
+  md-card.wz-form-card {
+    .md-card {
+      width: 90%;
+    }
+  }
+}
+
+@keyframes dialog {
+  0% {
+    margin-top: -600px;
+  }
+  100% {
+    margin-top: 0px;
+  }
+}
