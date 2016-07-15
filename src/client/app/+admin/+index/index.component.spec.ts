@@ -171,6 +171,12 @@ export function main() {
         expect(component.adminService.postResource).toHaveBeenCalledWith('user', mockUser());
         expect(component.getIndex).toHaveBeenCalled();
       }));
+
+    it('Should have a buildRouteParams() function that builds an object of route params',
+      inject([IndexComponent], (component: IndexComponent) => {
+        component.buildRouteParams(mockParams());
+        expect(component.params).toEqual({i: 1, n: 10, s: 'createdOn', d: 'false', fields: '', values: ''});
+      }));
   });
 
   function mockUser() {
@@ -268,6 +274,6 @@ export function main() {
   }
 
   function mockParams() {
-    return Object.assign({ i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' });
+    return { i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' };
   }
 }
