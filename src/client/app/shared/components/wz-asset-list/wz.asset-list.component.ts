@@ -19,10 +19,15 @@ export class WzAssetListComponent implements OnChanges {
   @Input() collection: Collection;
   @Output() onShowAsset = new EventEmitter();
   @Output() onAddToCollection = new EventEmitter();
+  @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onAddToCart = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
   @Output() onShowNewCollection = new EventEmitter();
   private assetsArr: Array<number>;
+
+  constructor() {
+    this.assetsArr = [];
+  }
 
   ngOnChanges(changes: any) {
     if (changes.collection && this.collection.assets.items.length > 0) {
@@ -37,6 +42,10 @@ export class WzAssetListComponent implements OnChanges {
 
   public addToCollection(collection: Collection, asset: any): void {
     this.onAddToCollection.emit({ 'collection': collection, 'asset': asset });
+  }
+
+  public removeFromCollection(collection: Collection, asset: any): void {
+    this.onRemoveFromCollection.emit({'collection':collection, 'asset':asset});
   }
 
   public showNewCollection(asset: any): void {

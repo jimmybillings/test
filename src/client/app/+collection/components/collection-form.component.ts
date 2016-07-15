@@ -41,15 +41,14 @@ export class CollectionFormComponent {
   public createAndAddAsset(collection: Collection, asset: any): void {
     this.collectionsService.createCollection(collection).first().subscribe(created => {
       this.collectionsService.createCollectionInStore(created);
+      this.collectionsService.updateFocusedCollection(created);
       this.collectionsService.setFocusedCollection(created.id).first().subscribe(focused => {
         if (asset !== null) {
           this.collectionsService.addAssetsToCollection(created.id, asset).first().subscribe(payload => {
-            this.collectionsService.getCollectionItems(payload.id, 100).first().subscribe(search => {
-              this.collectionsService.updateFocusedCollectionAssets(payload, search);
+            this.collectionsService.getCollectionItems(payload.id, 100).first().subscribe(assets => {
+              this.collectionsService.updateFocusedCollectionAssets(assets);
             });
           });
-        } else {
-          this.collectionsService.updateFocusedCollection(created);
         }
       });
     });

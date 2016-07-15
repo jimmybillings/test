@@ -54,8 +54,9 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public selectFocusedCollection(collection: Collection): void {
-    this.collectionsService.setFocusedCollection(collection.id).first().subscribe(() => {
-      this.updateFocusedCollectionAssets(collection);
+    this.collectionsService.setFocusedCollection(collection.id).first().subscribe((collection) => {
+      this.collectionsService.updateFocusedCollection(collection);
+      if (collection.assets) this.updateFocusedCollectionAssets(collection);
     });
   }
 
@@ -70,20 +71,24 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       let collectionLength: number;
       this.collectionsService.deleteCollectionFromStore(collection);
       this.collectionsService.collections.take(1).subscribe(collection => collectionLength = collection.items.length);
-      if (this.isFocusedCollection(collection) && collectionLength > 1) this.getFocusedCollection();
-      if (collectionLength === 1) this.collectionsService.destroyCollections();
+
+      // if we are deleting current focused, we need to get the new focused from the server.
+      if (this.isFocusedCollection(collection) && collectionLength > 0) this.getFocusedCollection();
+      // if we delete the last collection, reset the store to initial values (no focused collection)
+      if (collectionLength === 0) this.collectionsService.destroyCollections();
     });
   }
 
   private getFocusedCollection(): void {
     this.collectionsService.getFocusedCollection().first().subscribe(collection => {
+      this.collectionsService.updateFocusedCollection(collection);
       this.updateFocusedCollectionAssets(collection);
     });
   }
 
   private updateFocusedCollectionAssets(collection: any) {
     this.collectionsService.getCollectionItems(collection.id, 200).first().subscribe(assets => {
-      this.collectionsService.updateFocusedCollectionAssets(collection, assets);
+      this.collectionsService.updateFocusedCollectionAssets(assets);
     });
   }
 }

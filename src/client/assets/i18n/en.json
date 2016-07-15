@@ -93,7 +93,11 @@
     "RIGHTS_SOUNDEFFECTS":"Sound Effect Rights"
   },
   "COLLECTION": {
-    "ADD_TO_COLLECTION_TOAST": "Asset added to collection",
+    "ADD_TO_COLLECTION_HOVER_TITLE": "Add to {{collectionName}}",
+    "REMOVE_FROM_COLLECTION_HOVER_TITLE": "Remove from {{collectionName}}",
+    "CREATE_COLLECTION_HOVER_TITLE": "Create a collection",
+    "ADD_TO_COLLECTION_TOAST": "Asset added to {{collectionName}}",
+    "REMOVE_FROM_COLLECTION_TOAST": "Asset removed from {{collectionName}}",
     "NEW_TITLE": "Create a New Collection",
     "FORM": {
       "COLLECTION_NAME_LABEL": "Collection Name",
@@ -120,6 +124,7 @@
   "ADMIN": {
     "SEARCH_SUBMIT_LABEL": "FIND",
     "CREATE_SUBMIT_LABEL": "CREATE",
+    "EDIT_SUBMIT_LABEL": "UPDATE",
     "DASHBOARD_TITLE": "Admin Dashboard",
     "SUBHEADER": {
       "DASHBOARD": "Dashboard",

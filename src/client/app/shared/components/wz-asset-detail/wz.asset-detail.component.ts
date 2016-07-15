@@ -21,6 +21,7 @@ export class WzAssetDetailComponent implements OnChanges {
   @Input() currentUser: any;
   @Input() collection: Collection;
   @Output() onAddToCollection = new EventEmitter();
+  @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onShowNewCollection = new EventEmitter();
 
   ngOnChanges(changes: any): void {
@@ -48,6 +49,11 @@ export class WzAssetDetailComponent implements OnChanges {
   public addToCollection(collection: Collection, asset: any): void {
     asset.assetId = asset.value;
     this.onAddToCollection.emit({'collection':collection, 'asset':asset});
+  }
+
+  public removeFromCollection(collection: Collection, asset: any): void {
+    asset.assetId = asset.value;
+    this.onRemoveFromCollection.emit({'collection':collection, 'asset':asset});
   }
 
   public showNewCollection(assetId: any): void {

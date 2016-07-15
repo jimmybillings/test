@@ -20,7 +20,6 @@ import {HTTP_PROVIDERS} from '@angular/http';
 import {UiConfig, config} from '../../shared/services/ui.config';
 import { provideStore } from '@ngrx/store';
 import { UiState, uiState} from '../../shared/services/ui.state';
-import { ViewContainerService } from '../../shared/services/view-container.service';
 import { TranslatePipe } from 'ng2-translate/ng2-translate';
 
 export function main() {
@@ -42,7 +41,6 @@ export function main() {
 
     beforeEachProviders(() => [
       LoginComponent,
-      ViewContainerService,
       Renderer,
       ApiConfig,
       CurrentUser,
