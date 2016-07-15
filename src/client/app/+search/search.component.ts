@@ -89,6 +89,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
+  public removeFromCollection(params: any): void {
+    let collection: Collection = params.collection;
+    console.log(params.asset.assetId);
+    console.log(collection);
+    // this.collectionsService.removeAssetsFromCollection(collection.id, params.asset).first().subscribe(payload => {
+    //   this.collectionsService.getCollectionItems(collection.id, 300).first().subscribe(search => {
+    //     this.collectionsService.updateFocusedCollectionAssets(payload, search);
+    //     this.collectionsService.updateCollectionInStore(payload, search);
+    //   });
+    // });
+  }
+
   public showNewCollection(asset: any): void {
     let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-bin-tray');
     !this.currentUser.loggedIn() ?

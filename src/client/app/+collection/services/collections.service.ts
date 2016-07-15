@@ -136,6 +136,13 @@ export class CollectionsService {
       .map(res => res.json());
   }
 
+  public removeAssetsFromCollection(collectionId: any, asset: any): Observable<any> {
+    return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/addAssets`,
+      `{"list": [{"assetId":${asset.assetId}}]}`,
+      { headers: this.apiConfig.authHeaders() })
+      .map(res => res.json());
+  }
+
   public deleteCollection(collectionId: number): Observable<any> {
     return this.http.delete(`${this.apiUrls.CollectionBaseUrl}/${collectionId}`,
       { headers: this.apiConfig.authHeaders() });

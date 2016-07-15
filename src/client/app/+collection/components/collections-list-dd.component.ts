@@ -16,7 +16,6 @@ import { Observable} from 'rxjs/Rx';
 })
 
 export class CollectionListDdComponent {
-
   @Input() focusedCollection: Collection;
   @Input() UiState: any;
   public collections: Observable<Collection[]>;
