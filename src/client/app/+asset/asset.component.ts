@@ -62,7 +62,7 @@ export class AssetComponent implements OnInit, OnDestroy {
       .first().subscribe(payload => {
         this.collectionsService.getCollectionItems(collection.id, 300)
           .first().subscribe(search => {
-            this.collectionsService.updateFocusedCollectionAssets(payload, search);
+            this.collectionsService.updateFocusedCollectionAssets(search);
             this.collectionsService.updateCollectionInStore(payload, search);
           });
       });

@@ -67,7 +67,7 @@ const focusedState: Collection = {
 export const focusedCollection: Reducer<any> = (state = focusedState, action: Action) => {
   switch (action.type) {
     case 'FOCUSED_COLLECTION':
-      return action.payload;
+      return Object.assign({}, state, action.payload);
     default:
       return state;
   }
@@ -154,32 +154,6 @@ export class CollectionsService {
     this.store.dispatch({ type: 'CREATE_COLLECTION', payload });
   }
 
-  public updateFocusedCollectionAssets(collection: Collection, search: any): void {
-    search.items = search.items === undefined ? [] : search.items;
-    this.store.dispatch({
-      type: 'FOCUSED_COLLECTION', payload: {
-        createdOn: collection.createdOn,
-        lastUpdated: collection.lastUpdated,
-        id: collection.id,
-        siteName: collection.siteName,
-        name: collection.name,
-        owner: collection.owner,
-        assets: {
-          'items': search.items,
-          'pagination': {
-            'totalCount': search.totalCount,
-            'currentPage': search.currentPage + 1,
-            'pageSize': search.pageSize,
-            'hasNextPage': search.hasNextPage,
-            'hasPreviousPage': search.hasPreviousPage,
-            'numberOfPages': search.numberOfPages
-          }
-        },
-        tags: collection.tags,
-        thumbnail: search.items[search.totalCount - 1].thumbnail
-      }
-    });
-  }
   public updateCollectionInStore(collection: Collection, search: any): void {
     search.items = search.items === undefined ? [] : search.items;
     let thumbnail = collection.thumbnail ? collection.thumbnail : search.items[search.totalCount - 1].thumbnail;
@@ -224,6 +198,26 @@ export class CollectionsService {
           }
         },
         tags: collection.tags
+      }
+    });
+  }
+
+  public updateFocusedCollectionAssets(assets: any): void {
+    assets.items = assets.items === undefined ? [] : assets.items;
+    this.store.dispatch({
+      type: 'FOCUSED_COLLECTION', payload: {
+        assets: {
+          'items': assets.items,
+          'pagination': {
+            'totalCount': assets.totalCount,
+            'currentPage': assets.currentPage + 1,
+            'pageSize': assets.pageSize,
+            'hasNextPage': assets.hasNextPage,
+            'hasPreviousPage': assets.hasPreviousPage,
+            'numberOfPages': assets.numberOfPages
+          }
+        },
+        thumbnail: assets.items[assets.totalCount - 1].thumbnail
       }
     });
   }

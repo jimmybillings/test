@@ -105,9 +105,12 @@ export class AppComponent implements OnInit, OnDestroy {
         });
 
         this.collectionsService.getFocusedCollection().take(1).subscribe(focusedCollection => {
-          this.collectionsService.getCollectionItems(focusedCollection.id, 300).take(1).subscribe(collection => {
-            this.collectionsService.updateFocusedCollectionAssets(focusedCollection, collection);
-          });
+          this.collectionsService.updateFocusedCollection(focusedCollection);
+          if (focusedCollection.assets) {
+            this.collectionsService.getCollectionItems(focusedCollection.id, 300).take(1).subscribe(assets => {
+              this.collectionsService.updateFocusedCollectionAssets(assets);
+            });
+          }
         });
       }
     });

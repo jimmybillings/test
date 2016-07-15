@@ -82,9 +82,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     let collection: Collection = params.collection;
     collection.assets ? collection.assets.items.push(params.asset) : collection.assets.items = [params.asset];
     this.collectionsService.addAssetsToCollection(collection.id, params.asset).first().subscribe(payload => {
-      this.collectionsService.getCollectionItems(collection.id, 300).first().subscribe(search => {
-        this.collectionsService.updateFocusedCollectionAssets(payload, search);
-        this.collectionsService.updateCollectionInStore(payload, search);
+      this.collectionsService.getCollectionItems(collection.id, 300).first().subscribe(assets => {
+        this.collectionsService.updateFocusedCollectionAssets(assets);
+        this.collectionsService.updateCollectionInStore(payload, assets);
       });
     });
   }

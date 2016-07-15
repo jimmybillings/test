@@ -24,6 +24,10 @@ export class WzAssetListComponent implements OnChanges {
   @Output() onShowNewCollection = new EventEmitter();
   private assetsArr: Array<number>;
 
+  constructor() {
+    this.assetsArr = [];
+  }
+
   ngOnChanges(changes: any) {
     if (changes.collection && this.collection.assets.items.length > 0) {
       this.assetsArr = this.collection.assets.items.map(function (x) { return x.assetId; });
