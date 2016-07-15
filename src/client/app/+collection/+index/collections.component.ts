@@ -32,7 +32,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   constructor(
     public router: Router,
     public collectionsService: CollectionsService,
-    public store: Store<CollectionStore>,
     public currentUser: CurrentUser,
     public error: Error,
     public uiConfig: UiConfig) {
@@ -40,13 +39,9 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.collectionStoreSubscription =
-      this.collectionsService.collections.subscribe(collections => {
-        this.collections = collections;
-      });
+      this.collectionsService.collections.subscribe(collections => this.collections = collections);
     this.focusedCollectionStoreSubscription =
-      this.collectionsService.focusedCollection.subscribe(focusedCollection => {
-        this.focusedCollection = focusedCollection;
-      });
+      this.collectionsService.focusedCollection.subscribe(focusedCollection => this.focusedCollection = focusedCollection);
   }
 
   ngOnDestroy() {
@@ -72,14 +67,10 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   public deleteCollection(collection: Collection): void {
     this.collectionsService.deleteCollection(collection.id).first().subscribe(payload => {
-
       let collectionLength: number;
       this.collectionsService.deleteCollectionFromStore(collection);
       this.collectionsService.collections.take(1).subscribe(collection => collectionLength = collection.items.length);
-
-      // if we are deleting current focused, we need to get the new focused from the server.
       if (this.isFocusedCollection(collection) && collectionLength > 1) this.getFocusedCollection();
-      // if we delete the last collection, reset the store to initial values (no focused collection)
       if (collectionLength === 1) this.collectionsService.destroyCollections();
     });
   }
