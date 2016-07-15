@@ -16,7 +16,6 @@ import { Observable} from 'rxjs/Rx';
 })
 
 export class CollectionListDdComponent {
-
   @Input() focusedCollection: Collection;
   @Input() UiState: any;
   public collections: Observable<Collection[]>;
@@ -41,12 +40,11 @@ export class CollectionListDdComponent {
       this.navigateToCollectionShow(collection.id);
     } else {
       this.collectionsService.setFocusedCollection(collection.id).first().subscribe(payload => {
+        this.collectionsService.updateFocusedCollection(payload);
         if (collection.assets) {
-          this.collectionsService.getCollectionItems(collection.id, 200).first().subscribe(search => {
-            this.collectionsService.updateFocusedCollectionAssets(collection, search);
+          this.collectionsService.getCollectionItems(collection.id, 200).first().subscribe(assets => {
+            this.collectionsService.updateFocusedCollectionAssets(assets);
           });
-        } else {
-          this.collectionsService.updateFocusedCollection(collection);
         }
       });
       this.UiState.closeCollectionsList();

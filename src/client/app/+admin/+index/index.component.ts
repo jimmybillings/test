@@ -5,6 +5,7 @@ import {AdminService} from '../services/admin.service';
 import {WzListComponent} from '../../shared/components/wz-list/wz.list.component';
 import {WzFormComponent} from '../../shared/components/wz-form/wz.form.component';
 import {WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
+import {WzDialogComponent} from '../../shared/components/wz-dialog/wz.dialog.component';
 import {UiConfig} from '../../shared/services/ui.config';
 import {UiState} from '../../shared/services/ui.state';
 import {Subscription} from 'rxjs/Rx';
@@ -13,16 +14,18 @@ import {Subscription} from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'admin-index',
   templateUrl: 'index.html',
-  directives: [WzListComponent, WzPaginationComponent, ROUTER_DIRECTIVES, WzFormComponent]
+  directives: [WzListComponent, WzPaginationComponent, ROUTER_DIRECTIVES, WzFormComponent, WzDialogComponent]
 })
 
 export class IndexComponent implements OnInit, OnDestroy {
+  public config: any;
+  public params: any;
+  public resource: any;
+  public formItems: any;
   public toggleFlag: any;
   public resourceType: string;
   public currentComponent: string;
   public currentResources: Object;
-  public config: any;
-  public params: any;
   private routeSubscription: Subscription;
   private adminStoreSubscription: Subscription;
 
@@ -83,6 +86,30 @@ export class IndexComponent implements OnInit, OnDestroy {
     return Object.assign(this.params, dynamicParams);
   }
 
+  public mergeFormValues(resource: any): any {
+    this.resource = resource;
+    this.formItems = false;
+    this.formItems = this.config.editForm.items.map((field: any) => {
+      field.value = resource[field.name];
+      return field;
+    });
+  }
+
+  onEditSubmit(data: any): void {
+    Object.assign(this.resource, data);
+    this.adminService.putResource(this.resourceType, this.resource).first().subscribe(data => {
+      this.params.i++;
+      this.getIndex();
+    });
+  }
+
+  onNewSubmit(data: any): void {
+    this.adminService.postResource(this.resourceType, data).first().subscribe(data => {
+      this.params.i++;
+      this.getIndex();
+    });
+  }
+
   public buildRouteParams(params: any): any {
     let s: string, d: boolean, i: number, n: number, fields: string, values: string;
     s = params['s'] || 'createdOn';
@@ -93,13 +120,5 @@ export class IndexComponent implements OnInit, OnDestroy {
     fields = (params['fields'] === 'true') ? '' : params['fields'];
     values = (params['values'] === 'true') ? '' : params['values'];
     this.params = { i, n, s, d, fields, values };
-  }
-
-  public showEditForm(resource: any): void {
-    this.adminService.showEditComponent(this.config.editForm.items, resource, this.resourceType);
-  }
-
-  public showNewForm(): void {
-    this.adminService.showNewComponent(this.config.newForm.items, this.resourceType);
   }
 }

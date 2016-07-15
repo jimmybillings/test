@@ -21,6 +21,6 @@ export class UserPermission {
   }
 
   public has(permission: any): boolean {
-    return this.permissions.indexOf(permission) > -1;
+    return this.permissions.indexOf(permission) > -1 || this.permissions.indexOf('Root') > -1;
   }
 }

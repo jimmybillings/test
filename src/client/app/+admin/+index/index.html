@@ -2,7 +2,7 @@
 <section class="admin-index" *ngIf="config">
   <div layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
     <div flex="10" flex-gt-lg="10" flex-xl="10" flex-gt-md="10">
-      <a md-raised-button="" (click)="showNewForm()">{{ 'ADMIN.' + currentComponent.toUpperCase() + '.NEW_TITLE'  | translate }}</a>
+      <a md-raised-button="" (click)="new.show()">{{ 'ADMIN.' + currentComponent.toUpperCase() + '.NEW_TITLE'  | translate }}</a>
     </div>
   </div>
   <div layout="row" layout-align="space-around stretch">
@@ -12,7 +12,7 @@
         [headers]="config.tableHeaders.items"
         [toggleFlag]="toggleFlag"
         (sort)="navigateToSortUrl($event)"
-        (editForm)="showEditForm($event)">
+        (editForm)="mergeFormValues($event); edit.show()">
       </wz-list>
       <div layout="row" layout-align="end center">
         <wz-pagination (getPage)="navigateToPageUrl($event)" [pagination]="currentResources.pagination"></wz-pagination>
@@ -30,3 +30,27 @@
     </div>
   </div>
 </section>
+
+<wz-dialog class="admin-dialog" #edit layout="row" layout-align="center center">
+  <md-card class="admin-card wz-form-card md-elevation-z20" flex="100">
+    <button (click)="edit.close()" md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
+    <md-card-title>
+      {{ 'ADMIN.' + currentComponent.toUpperCase() + '.EDIT_TITLE'  | translate }}
+    </md-card-title>
+    <md-card-content>
+      <wz-form *ngIf="formItems" [items]="formItems" submitLabel="ADMIN.EDIT_SUBMIT_LABEL" (formSubmit)="onEditSubmit($event); edit.close()"></wz-form>
+    </md-card-content>
+  </md-card>
+</wz-dialog>
+
+<wz-dialog class="admin-dialog" #new>
+  <md-card class="admin-card wz-form-card md-elevation-z20" layout="row" layout-align="center center">
+    <button (click)="new.close()" md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
+    <md-card-title>
+      {{ 'ADMIN.' + currentComponent.toUpperCase() + '.NEW_TITLE'  | translate }}
+    </md-card-title>
+    <md-card-content>
+      <wz-form [items]="config.newForm.items" submitLabel="ADMIN.CREATE_SUBMIT_LABEL" (formSubmit)="onNewSubmit($event); new.close()"></wz-form>
+    </md-card-content>
+  </md-card>
+</wz-dialog>

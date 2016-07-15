@@ -4,6 +4,7 @@
     [assetDetail]="assetDetail | async"
     [collection]="focusedCollection | async"
     (onAddToCollection)="addToCollection($event)"
+    (onRemoveFromCollection)="removeFromCollection($event)"
     (onShowNewCollection)="showNewCollection($event)"
   >
   </wz-asset-detail>

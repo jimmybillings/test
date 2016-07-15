@@ -63,7 +63,7 @@ export class WzDropdownComponent {
   }
 
   private positionElement(event: any) {
-    let offset: number = 25;
+    let offset: number = 30;
     let layoutBreakpointXs: boolean = event.view.screen.width < 600;
     if (layoutBreakpointXs) {
       this.config.positionStrategy =

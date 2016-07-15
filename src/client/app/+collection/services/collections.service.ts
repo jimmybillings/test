@@ -67,7 +67,7 @@ const focusedState: Collection = {
 export const focusedCollection: Reducer<any> = (state = focusedState, action: Action) => {
   switch (action.type) {
     case 'FOCUSED_COLLECTION':
-      return action.payload;
+      return Object.assign({}, state, action.payload);
     default:
       return state;
   }
@@ -87,6 +87,7 @@ export class CollectionsService {
     public apiConfig: ApiConfig,
     public http: Http) {
     this.collections = store.select('collections');
+    this.focusedCollection = this.store.select('focusedCollection');
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
       CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collection'
@@ -135,6 +136,13 @@ export class CollectionsService {
       .map(res => res.json());
   }
 
+  public removeAssetsFromCollection(collectionId: any, asset: any): Observable<any> {
+    return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/addAssets`,
+      `{"list": [{"assetId":${asset.assetId}}]}`,
+      { headers: this.apiConfig.authHeaders() })
+      .map(res => res.json());
+  }
+
   public deleteCollection(collectionId: number): Observable<any> {
     return this.http.delete(`${this.apiUrls.CollectionBaseUrl}/${collectionId}`,
       { headers: this.apiConfig.authHeaders() });
@@ -153,32 +161,6 @@ export class CollectionsService {
     this.store.dispatch({ type: 'CREATE_COLLECTION', payload });
   }
 
-  public updateFocusedCollectionAssets(collection: Collection, search: any): void {
-    search.items = search.items === undefined ? [] : search.items;
-    this.store.dispatch({
-      type: 'FOCUSED_COLLECTION', payload: {
-        createdOn: collection.createdOn,
-        lastUpdated: collection.lastUpdated,
-        id: collection.id,
-        siteName: collection.siteName,
-        name: collection.name,
-        owner: collection.owner,
-        assets: {
-          'items': search.items,
-          'pagination': {
-            'totalCount': search.totalCount,
-            'currentPage': search.currentPage + 1,
-            'pageSize': search.pageSize,
-            'hasNextPage': search.hasNextPage,
-            'hasPreviousPage': search.hasPreviousPage,
-            'numberOfPages': search.numberOfPages
-          }
-        },
-        tags: collection.tags,
-        thumbnail: search.items[search.totalCount - 1].thumbnail
-      }
-    });
-  }
   public updateCollectionInStore(collection: Collection, search: any): void {
     search.items = search.items === undefined ? [] : search.items;
     let thumbnail = collection.thumbnail ? collection.thumbnail : search.items[search.totalCount - 1].thumbnail;
@@ -227,6 +209,26 @@ export class CollectionsService {
     });
   }
 
+  public updateFocusedCollectionAssets(assets: any): void {
+    assets.items = assets.items === undefined ? [] : assets.items;
+    this.store.dispatch({
+      type: 'FOCUSED_COLLECTION', payload: {
+        assets: {
+          'items': assets.items,
+          'pagination': {
+            'totalCount': assets.totalCount,
+            'currentPage': assets.currentPage + 1,
+            'pageSize': assets.pageSize,
+            'hasNextPage': assets.hasNextPage,
+            'hasPreviousPage': assets.hasPreviousPage,
+            'numberOfPages': assets.numberOfPages
+          }
+        },
+        thumbnail: assets.items[assets.totalCount - 1].thumbnail
+      }
+    });
+  }
+
   public storeCollections(payload: any): void {
     payload.items = payload.items === undefined ? [] : payload.items;
     this.store.dispatch({
@@ -242,5 +244,13 @@ export class CollectionsService {
         }
       }
     });
+  }
+
+  public mergeCollectionData(item: any, search: any) {
+    item.thumbnail = search.items[0].thumbnail;
+    item.assets.items = item.assets;
+    item.assets.pagination = {};
+    item.assets.pagination.totalCount = search.totalCount;
+    return item;
   }
 }

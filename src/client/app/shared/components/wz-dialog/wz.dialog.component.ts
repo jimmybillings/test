@@ -1,39 +1,48 @@
-import { Component, Input, Directive, ViewContainerRef, TemplateRef, ViewChild, ViewEncapsulation, Renderer } from '@angular/core';
+import {Component, Input, ViewChild, ViewEncapsulation, OnDestroy} from '@angular/core';
 import {Overlay, OVERLAY_PROVIDERS} from '@angular2-material/core/overlay/overlay';
 import {OverlayState} from '@angular2-material/core/overlay/overlay-state';
 import {OverlayRef} from '@angular2-material/core/overlay/overlay-ref';
+import {Directive, ViewContainerRef, TemplateRef} from '@angular/core';
 import {TemplatePortalDirective} from '@angular2-material/core';
 
-@Directive({ selector: '[wzToastPortalDirective]' })
-export class WzToastPortalDirective extends TemplatePortalDirective {
+@Directive({selector: '[wzDialogPortal]'})
+export class WzDialogPortalDirective extends TemplatePortalDirective {
   constructor(templateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef) {
     super(templateRef, viewContainerRef);
   }
 }
 
 @Component({
-  moduleId: module.id,
-  selector: 'wz-toast',
-  directives: [WzToastPortalDirective],
+  selector: 'wz-dialog',
+  directives: [WzDialogPortalDirective],
   providers: [Overlay, OVERLAY_PROVIDERS],
   encapsulation: ViewEncapsulation.None,
   template: `
-  <template  wzToastPortalDirective>
-    <ng-content></ng-content>
-  </template>`
+    <template wzDialogPortal>
+      <div style="width: 100%">
+        <ng-content></ng-content>
+      </div>
+    </template>
+    `
 })
 
-export class WzToastComponent {
+export class WzDialogComponent implements OnDestroy {
   @Input() config = new OverlayState();
-  @ViewChild(WzToastPortalDirective) public portal: WzToastPortalDirective;
-  public active: boolean = false;
-  public viewRef: any;
-  public closeAction: any;
+  @ViewChild(WzDialogPortalDirective) private portal: WzDialogPortalDirective;
   private overlayRef: OverlayRef = null;
 
-  constructor(private overlay: Overlay, private renderer: Renderer) { }
+  constructor(private overlay: Overlay) {
+    this.config.positionStrategy = this.overlay.position()
+      .global()
+      .centerHorizontally()
+      .centerVertically();
+  }
 
-  public show(event: any): Promise<WzToastComponent> {
+  ngOnDestroy(): any {
+    return this.close();
+  }
+
+  public show(): Promise<WzDialogComponent> {
     return this.close()
       .then(() => this.overlay.create(this.config))
       .then((ref: OverlayRef) => {
@@ -41,14 +50,11 @@ export class WzToastComponent {
         return ref.attach(this.portal);
       })
       .then(() => {
-        this.closeAction = setTimeout(() => this.close(), 2750);
-        this.active = true;
         return this;
       });
   }
 
   public close(): Promise<any> {
-    clearTimeout(this.closeAction);
     if (!this.overlayRef) {
       return Promise.resolve(this);
     } else {
@@ -60,5 +66,4 @@ export class WzToastComponent {
       });
     }
   }
-
 }
