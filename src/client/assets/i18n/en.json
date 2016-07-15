@@ -119,7 +119,16 @@
       "SHARE_BTN_TITLE": "Share collection",
       "COMMENT_BTN_TITLE": "Show collection comments",
       "MORE_BTN_TITLE": "More collection options"
-    }      
+    },
+    "INDEX": {
+      "FOCUS_BTN_TITLE": "Focus on this collection",
+      "DETAIL_BTN_TITLE": "Show collection details",
+      "EDIT_BTN_TITLE": "Edit collection",
+      "SHARE_BTN_TITLE": "Share collection",
+      "COMMENT_BTN_TITLE": "Show collection comments",
+      "MORE_BTN_TITLE": "More collection options",
+      "DELETE_BTN_TITLE": "Delete collection"
+    }
   },
   "ADMIN": {
     "SEARCH_SUBMIT_LABEL": "FIND",
