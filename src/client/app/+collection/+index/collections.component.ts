@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
-import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
+import { Collection } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
-import { Store } from '@ngrx/store';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { Error } from '../../shared/services/error.service';
