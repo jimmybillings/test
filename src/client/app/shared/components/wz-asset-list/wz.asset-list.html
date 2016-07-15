@@ -43,13 +43,13 @@
 </ul>
 
 <wz-toast #addToast>
-  <div class="toast md-elevation-z2" layout="row" layout-align="center center">
-    <div flex-xs="100">{{ 'COLLECTION.ADD_TO_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
+  <div class="toast" layout="row" layout-align="center center">
+    <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.ADD_TO_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
   </div>
 </wz-toast>
 
 <wz-toast #removeToast>
-  <div class="toast md-elevation-z2" layout="row" layout-align="center center">
-    <div flex-xs="100">{{ 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
+  <div class="toast" layout="row" layout-align="center center">
+    <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
   </div>
 </wz-toast>
