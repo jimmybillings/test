@@ -21,7 +21,7 @@
           <button md-icon-button title="Download Comp" (click)="downloadComp(asset)"><md-icon>file_download</md-icon></button>
           <button md-icon-button *ngIf="collection.id !== null && alreadyInCollection(asset)" 
             title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
-            (click)="RemoveFromCollection(collection, asset); toast.show()">
+            (click)="removeFromCollection(collection, asset); removeToast.show()">
             <md-icon>remove_circle</md-icon>
           </button>
           <button md-icon-button *ngIf="collection.id !== null && !alreadyInCollection(asset)" 
