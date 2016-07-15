@@ -40,10 +40,14 @@ export class AdminService {
   }
 
   public getResourceIndex(queryObject: any, resource: string): Observable<any> {
-    queryObject['i'] = (parseFloat(queryObject['i']) - 1).toString();
+    let params = Object.create(JSON.parse(JSON.stringify(queryObject)));
+    params['i'] = (parseFloat(params['i']) - 1).toString();
     let url = this.buildUrl('search', resource);
-    let options = this.getIdentitiesSearchOptions(queryObject);
-    return this.http.get(url, options).map((res: Response) => res.json());
+    let options = this.getIdentitiesSearchOptions(params);
+    return this.http.get(url, options).map((res: Response) => {
+      this.setResources(res.json());
+      return res.json();
+    });
   }
 
   public postResource(resourceType: string, formData: any): Observable<any> {
