@@ -8,8 +8,8 @@
           <button md-icon-button title="Sharing Options"><md-icon>share</md-icon></button>
           <button md-icon-button title="add to cart"><md-icon>shopping_cart</md-icon></button>
           <button md-icon-button title="Download Comp"><md-icon>file_download</md-icon></button>
-          <button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(collection, assetDetail.common[0])"><md-icon>library_add</md-icon></button>
-          <button md-icon-button *ngIf="collection.id === null"  title="Create collection" (click)="showNewCollection(assetDetail.common[0].value)"><md-icon>library_add</md-icon></button>
+          <button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(collection, assetDetail.common[0]); addToast.show()"><md-icon>library_add</md-icon></button>
+          <button md-icon-button *ngIf="collection.id === null"  title="Create collection" (click)="showNewCollection(assetDetail.common[0].value); addToast.show()"><md-icon>library_add</md-icon></button>
           <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
         </nav>
       </header>
@@ -104,3 +104,19 @@
     </div>
   </div>
 </section>-->
+
+
+
+
+
+<wz-toast #addToast>
+  <div class="toast" layout="row" layout-align="center center">
+    <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.ADD_TO_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
+  </div>
+</wz-toast>
+
+<wz-toast #removeToast>
+  <div class="toast" layout="row" layout-align="center center">
+    <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
+  </div>
+</wz-toast>

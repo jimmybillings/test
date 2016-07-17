@@ -61,9 +61,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public getIndex(): void {
     this.toggleFlag = this.params.d;
-    this.adminService.getResourceIndex(this.params, this.resourceType).take(1).subscribe(data => {
-      this.adminService.setResources(data);
-    });
+    this.adminService.getResourceIndex(this.params, this.resourceType).take(1).subscribe();
   }
 
   public navigateToPageUrl(i: number): void {
@@ -88,24 +86,21 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public mergeFormValues(resource: any): any {
     this.resource = resource;
-    this.formItems = false;
     this.formItems = this.config.editForm.items.map((field: any) => {
       field.value = resource[field.name];
       return field;
     });
   }
 
-  onEditSubmit(data: any): void {
+  public onEditSubmit(data: any): void {
     Object.assign(this.resource, data);
     this.adminService.putResource(this.resourceType, this.resource).take(1).subscribe(data => {
-      this.params.i++;
       this.getIndex();
     });
   }
 
-  onNewSubmit(data: any): void {
+  public onNewSubmit(data: any): void {
     this.adminService.postResource(this.resourceType, data).take(1).subscribe(data => {
-      this.params.i++;
       this.getIndex();
     });
   }

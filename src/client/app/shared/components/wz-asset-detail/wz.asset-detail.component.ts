@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy, OnChan
 import { ROUTER_DIRECTIVES} from '@angular/router';
 import { WzPlayerComponent} from '../../components/wz-player/wz.player.component';
 import { Collection } from '../../interfaces/collection.interface';
+import { WzToastComponent } from '../../../shared/components/wz-toast/wz.toast.component';
 
 @Component({
   moduleId: module.id,
@@ -9,7 +10,8 @@ import { Collection } from '../../interfaces/collection.interface';
   templateUrl: 'wz.asset-detail.html',
   directives: [
     ROUTER_DIRECTIVES,
-    WzPlayerComponent
+    WzPlayerComponent,
+    WzToastComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
