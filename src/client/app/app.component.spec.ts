@@ -23,6 +23,7 @@ import { Authentication} from './+user-management/services/authentication.data.s
 import { MultilingualService, multilingualReducer} from './shared/services/multilingual.service';
 import { SearchContext} from './shared/services/search-context.service';
 import { CollectionsService} from './+collection/services/collections.service';
+import { ActiveCollectionService } from './+collection/services/active-collection.service';
 import { UserPermission } from './shared/services/permission.service';
 
 export function main() {
@@ -61,6 +62,7 @@ export function main() {
       UiConfig,
       SearchContext,
       CollectionsService,
+      ActiveCollectionService,
       UiState,
       WzNotificationService
     ]);

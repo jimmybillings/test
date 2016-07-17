@@ -9,7 +9,7 @@ import { Store, Reducer, Action} from '@ngrx/store';
  * Focused Collection store -
  */
 
-function focusedState(collection:any = {}) : Collection {
+function activeState(collection:any = {}) : Collection {
     return {
         createdOn: collection.createdOn || '',
         lastUpdated: collection.lastUpdated || '',
@@ -32,18 +32,20 @@ function focusedState(collection:any = {}) : Collection {
     };
 }
 
-export const focusedCollection: Reducer<any> = (state = focusedState(), action: Action) => {
+export const activeCollection: Reducer<any> = (state = activeState(), action: Action) => {
   switch (action.type) {
-    case 'FOCUSED_COLLECTION':
+    case 'UPDATE_ACTIVE_COLLECTION':
       return Object.assign({}, state, action.payload);
+    case 'RESET_ACTIVE_COLLECTION':
+      return Object.assign({}, activeState());
     default:
       return state;
   }
 };
 
 @Injectable()
-export class FocusedCollectionService {
-  public focusedCollection: Observable<any>;
+export class ActiveCollectionService {
+  public data: Observable<any>;
   public apiUrls: {
     CollectionBaseUrl: string,
     CollectionItemsBaseUrl: string
@@ -53,39 +55,66 @@ export class FocusedCollectionService {
     public store: Store<CollectionStore>,
     public apiConfig: ApiConfig,
     public http: Http) {
-    this.focusedCollection = this.store.select('focusedCollection');
+    this.data = this.store.select('activeCollection');
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
       CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collection'
     };
   }
 
-  public getFocusedCollection(): Observable<any> {
+  public get(): Observable<any> {
     return this.http.get(`${this.apiUrls.CollectionBaseUrl}/focused`,
       { headers: this.apiConfig.authHeaders() })
       .map((res) => {
-          this.updateFocusedCollection(res.json());
+          this.updateStore(res.json());
           return res.json();
       });
   }
 
-  public setFocusedCollection(collectionId: number): Observable<any> {
+  public set(collectionId: number): Observable<any> {
     return this.http.put(`${this.apiUrls.CollectionBaseUrl}/focused/${collectionId}`,
       '', { headers: this.apiConfig.authHeaders() })
       .map((res) => {
-          this.updateFocusedCollection(res.json());
+          this.updateStore(res.json());
           return res.json();
       });
   }
 
-  public updateFocusedCollection(collection: Collection): void {
-    this.store.dispatch({type: 'FOCUSED_COLLECTION', payload: focusedState(collection)});
+  public addAsset(collectionId: any, asset: any): Observable<any> {
+    return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/addAssets`,
+      `{"list": [{"assetId":${asset.assetId}}]}`,
+      { headers: this.apiConfig.authHeaders() })
+      .map(res => res.json());
   }
 
-  public updateFocusedCollectionAssets(assets: any): void {
+  public removeAsset(collectionId: any, asset: any): Observable<any> {
+    return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/addAssets`,
+      `{"list": [{"assetId":${asset.assetId}}]}`,
+      { headers: this.apiConfig.authHeaders() })
+      .map(res => res.json());
+  }
+
+  public getItems(collectionId: number, numberPerPg: number, pgIndex: number = 0): Observable<any> {
+    return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=${pgIndex}&n=${numberPerPg}`,
+      { headers: this.apiConfig.authHeaders() })
+      .map((res) => {
+        this.updateActiveCollectionAssets(res.json());
+        return res.json();
+      });
+  }
+
+  public updateStore(collection: Collection): void {
+    this.store.dispatch({type: 'UPDATE_ACTIVE_COLLECTION', payload: activeState(collection)});
+  }
+
+  public resetStore() {
+    this.store.dispatch({type: 'RESET_ACTIVE_COLLECTION'});
+  }
+
+  public updateActiveCollectionAssets(assets: any): void {
     assets.items = assets.items === undefined ? [] : assets.items;
     this.store.dispatch({
-      type: 'FOCUSED_COLLECTION', payload: {
+      type: 'UPDATE_ACTIVE_COLLECTION', payload: {
         assets: {
           'items': assets.items,
           'pagination': {

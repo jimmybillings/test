@@ -6,7 +6,7 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-import { CollectionsService, focusedCollection, collections } from './collections.service';
+import { CollectionsService, collections } from './collections.service';
 import { Router } from '@angular/router';
 import { provide } from '@angular/core';
 import { ApiConfig } from '../../shared/services/api.config';
@@ -15,6 +15,7 @@ import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http, ResponseOptions, Response, RequestMethod } from '@angular/http';
 import { provideStore } from '@ngrx/store';
 import { Error } from '../../shared/services/error.service';
+import { ActiveCollectionService, activeCollection } from './active-collection.service';
 
 export function main() {
   describe('Collection service', () => {
@@ -27,8 +28,9 @@ export function main() {
         deps: [MockBackend, BaseRequestOptions]
       }),
       { provide: Router, useClass: MockRouter },
-      provideStore({ focusedCollection: focusedCollection, collections: collections }),
+      provideStore({ activeCollection: activeCollection, collections: collections }),
       CollectionsService,
+      ActiveCollectionService,
       ApiConfig,
       CurrentUser,
       Error
@@ -171,27 +173,27 @@ export function main() {
         expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'CREATE_COLLECTION', payload: mockCollection() });
       }));
 
-    function mockCollectionResponse() {
-      return {
-        'items': [
-          {
-            'createdOn': '2016-06-16T17:53:17Z',
-            'lastUpdated': '2016-06-16T17:53:17Z',
-            'id': 155, 'siteName': 'core',
-            'name': 'Cat',
-            'owner': 'ross.edfort@wazeedigital.com',
-            'assets': [28296444],
-            'tags': ['meow']
-          }
-        ],
-        'totalCount': 2,
-        'currentPage': 0,
-        'pageSize': 2,
-        'hasNextPage': false,
-        'hasPreviousPage': false,
-        'numberOfPages': 1
-      };
-    }
+    // function mockCollectionResponse() {
+    //   return {
+    //     'items': [
+    //       {
+    //         'createdOn': '2016-06-16T17:53:17Z',
+    //         'lastUpdated': '2016-06-16T17:53:17Z',
+    //         'id': 155, 'siteName': 'core',
+    //         'name': 'Cat',
+    //         'owner': 'ross.edfort@wazeedigital.com',
+    //         'assets': [28296444],
+    //         'tags': ['meow']
+    //       }
+    //     ],
+    //     'totalCount': 2,
+    //     'currentPage': 0,
+    //     'pageSize': 2,
+    //     'hasNextPage': false,
+    //     'hasPreviousPage': false,
+    //     'numberOfPages': 1
+    //   };
+    // }
 
     // function mockcollectionAsset2() {
     //   return {
@@ -264,62 +266,62 @@ export function main() {
         'numberOfPages': 1
       };
     }
-    function mockcollectionWithAssets() {
-      return {
-        'createdOn': '2016-06-03T17:09:16Z',
-        'lastUpdated': '2016-06-24T03:14:14Z',
-        'id': 16,
-        'siteName': 'core',
-        'name': 'Masters Opening Cerimony',
-        'owner': 'admin@wazeedigital.com',
-        'assets': {
-          'items': [{
-            'assetId': 37432110,
-            'metaData': [
-              {
-                'name': 'Title',
-                'value': ''
-              },
-              {
-                'name': 'Description',
-                'value': 'A man paddles a kayak in the Arctic or Antarctic with an elephant seal on a nearby iceberg.'
-              },
-              {
-                'name': 'TE.DigitalFormat',
-                'value': 'High Definition'
-              },
-              {
-                'name': 'Format.Duration',
-                'value': '00:00:12'
-              }
-            ],
-            'name': '943301_0040',
-            'thumbnail': {
-              'name': 'thumbnail',
-              'urls': {
-                'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/943/301/943301_0040_lt.jpg'
-              }
-            },
-            'uuid': '8cb5197a-c9ba-4f98-a62a-ee4e40793ad9'
-          }],
-          'pagination': {
-            'totalCount': 1,
-            'currentPage': 1,
-            'pageSize': 100,
-            'hasNextPage': false,
-            'hasPreviousPage': false,
-            'numberOfPages': 1
-          },
-        },
-        'tags': ['golf', 'masters', 'Augusta'],
-        'thumbnail': {
-          'name': 'thumbnail',
-          'urls': {
-            'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/943/301/943301_0040_lt.jpg'
-          }
-        }
-      };
-    }
+    // function mockcollectionWithAssets() {
+    //   return {
+    //     'createdOn': '2016-06-03T17:09:16Z',
+    //     'lastUpdated': '2016-06-24T03:14:14Z',
+    //     'id': 16,
+    //     'siteName': 'core',
+    //     'name': 'Masters Opening Cerimony',
+    //     'owner': 'admin@wazeedigital.com',
+    //     'assets': {
+    //       'items': [{
+    //         'assetId': 37432110,
+    //         'metaData': [
+    //           {
+    //             'name': 'Title',
+    //             'value': ''
+    //           },
+    //           {
+    //             'name': 'Description',
+    //             'value': 'A man paddles a kayak in the Arctic or Antarctic with an elephant seal on a nearby iceberg.'
+    //           },
+    //           {
+    //             'name': 'TE.DigitalFormat',
+    //             'value': 'High Definition'
+    //           },
+    //           {
+    //             'name': 'Format.Duration',
+    //             'value': '00:00:12'
+    //           }
+    //         ],
+    //         'name': '943301_0040',
+    //         'thumbnail': {
+    //           'name': 'thumbnail',
+    //           'urls': {
+    //             'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/943/301/943301_0040_lt.jpg'
+    //           }
+    //         },
+    //         'uuid': '8cb5197a-c9ba-4f98-a62a-ee4e40793ad9'
+    //       }],
+    //       'pagination': {
+    //         'totalCount': 1,
+    //         'currentPage': 1,
+    //         'pageSize': 100,
+    //         'hasNextPage': false,
+    //         'hasPreviousPage': false,
+    //         'numberOfPages': 1
+    //       },
+    //     },
+    //     'tags': ['golf', 'masters', 'Augusta'],
+    //     'thumbnail': {
+    //       'name': 'thumbnail',
+    //       'urls': {
+    //         'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/943/301/943301_0040_lt.jpg'
+    //       }
+    //     }
+    //   };
+    // }
 
     function mockCollection() {
       return {

@@ -8,7 +8,7 @@ import {
 } from '@angular/core/testing';
 
 import { CollectionFormComponent } from './collection-form.component';
-import { CollectionsService, collections, focusedCollection } from '../services/collections.service';
+import { CollectionsService, collections } from '../services/collections.service';
 import { ApiConfig } from '../../shared/services/api.config';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState, uiState } from '../../shared/services/ui.state';
@@ -44,7 +44,7 @@ export function main() {
       { provide: Router, useClass: MockRouter },
       MockBackend,
       BaseRequestOptions,
-      provideStore({ collections: collections, focusedCollection: focusedCollection, uiState: uiState }),
+      provideStore({ collections: collections, uiState: uiState }),
       provide(Http, {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]

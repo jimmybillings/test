@@ -18,6 +18,8 @@ import { Error } from '../shared/services/error.service';
 import { provideStore } from '@ngrx/store';
 import { AssetService, asset} from './services/asset.service';
 import { CollectionsService } from '../+collection/services/collections.service';
+import { ActiveCollectionService } from '../+collection/services/active-collection.service';
+
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute}  from '@angular/router';
@@ -54,6 +56,7 @@ export function main() {
       { provide: ActivatedRoute, useClass: MockActivatedRoute },
       provide(AssetService, { useClass: MockAssetService }),
       CollectionsService,
+      ActiveCollectionService,
       MockBackend,
       BaseRequestOptions,
       provide(Http, {

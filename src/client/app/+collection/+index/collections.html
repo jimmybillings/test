@@ -17,12 +17,12 @@
         <wz-pagination [pagination]="collections.pagination" (getPage)="changePage($event)"></wz-pagination>
       </div>
       <ul>
-        <li class="collection" [ngClass]="{'focused': isFocusedCollection(collection), 'md-elevation-z2': !isFocusedCollection(collection) }"  *ngFor="let collection of collections.items">
+        <li class="collection" [ngClass]="{'focused': isActiveCollection(collection), 'md-elevation-z2': !isActiveCollection(collection) }"  *ngFor="let collection of collections.items">
           <div flex="100" layout="row" layout-xs="column">
             <div flex-gt-sm="40" flex-gt-lg="20" flex-gt-md="30" flex="100" layout-padding layout-fill>
               <div class="asset">
                 <div class="asset-thb">
-                  <div class="selected" *ngIf="focusedCollection.id === collection.id">
+                  <div class="selected" *ngIf="activeCollectionStore.id === collection.id">
                     <md-icon>star</md-icon>
                   </div>
                   <span class="asset-id"><span class="id">{{collection.id}}</span></span>
@@ -31,7 +31,7 @@
                 </div>
               </div>
             </div>
-            <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" (click)="selectFocusedCollection(collection)" layout-padding layout-fill>
+            <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" (click)="selectActiveCollection(collection)" layout-padding layout-fill>
               <h3 class="md-headline">{{collection.name}}
                 <span class="asset-count">
                   <span class="count" *ngIf="collection.assets">{{collection.assets?.pagination?.totalCount}}</span>
@@ -54,7 +54,7 @@
           <div flex="100" layout="row" layout-xs="column" layout-margin class="divider"></div>
           <div flex="100" layout="row" class="actions">
             <div flex="80">
-              <button md-icon-button title="{{ 'COLLECTION.INDEX.FOCUS_BTN_TITLE' | translate }}" (click)="selectFocusedCollection(collection)"><md-icon>star</md-icon></button>
+              <button md-icon-button title="{{ 'COLLECTION.INDEX.FOCUS_BTN_TITLE' | translate }}" (click)="selectActiveCollection(collection)"><md-icon>star</md-icon></button>
               <!--anchor md-icon-button alignment is messed up once it's fixed we can use the anchor but until then keep it a button-->
               <a md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" [routerLink]="['/collection/',collection.id]" ><md-icon>details</md-icon></a>
               <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showEdit(collection)"><md-icon>edit</md-icon></button>

@@ -7,6 +7,7 @@ import { Observable, Subscription} from 'rxjs/Rx';
 import { Error } from '../shared/services/error.service';
 import { Collection, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from '../+collection/services/collections.service';
+import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { Store } from '@ngrx/store';
 
 
@@ -21,7 +22,6 @@ import { Store } from '@ngrx/store';
 })
 
 export class AssetComponent implements OnInit, OnDestroy {
-  public focusedCollection: Observable<any>;
   public assetDetail: Observable<any>;
   public assetDetailDisplay: Object;
   private assetDetailSubscription: Subscription;
@@ -34,6 +34,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     public error: Error,
     public router: Router,
     public collectionsService: CollectionsService,
+    public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>) {
     this.assetDetail = assetService.asset;
   }
@@ -42,7 +43,7 @@ export class AssetComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.route.params.subscribe(params => {
       this.assetService
         .initialize(params['name'])
-        .first()
+        .take(1)
         .subscribe((payload) => {
           this.assetService.set(payload);
           this.assetDetailSubscription =
@@ -51,28 +52,24 @@ export class AssetComponent implements OnInit, OnDestroy {
         error => this.error.handle(error)
         );
     });
-    this.focusedCollection = this.store.select('focusedCollection');
   }
 
   public addToCollection(params: any): void {
     let collection: Collection = params.collection;
     collection.assets ? collection.assets.items.push(params.asset) : collection.assets.items = [params.asset];
-    this.collectionsService.addAssetsToCollection(collection.id, params.asset)
-      .first().subscribe(payload => {
-	      this.collectionsService.getCollectionItems(collection.id, 300)
-          .first().subscribe(search => {
-            this.collectionsService.updateFocusedCollectionAssets(search);
-            this.collectionsService.updateCollectionInStore(payload, search);
-          });
+    this.activeCollection.addAsset(collection.id, params.asset).take(1).subscribe(payload => {
+      this.activeCollection.getItems(collection.id, 300).take(1).subscribe(assets => {
+        this.collectionsService.updateCollectionInStore(payload, assets);
       });
+    });
   }
 
   public removeFromCollection(params: any): void {
     let collection: Collection = params.collection;
     console.log(params.asset.assetId);
     console.log(collection);
-    // this.collectionsService.removeAssetsFromCollection(collection.id, params.asset).first().subscribe(payload => {
-    //   this.collectionsService.getCollectionItems(collection.id, 300).first().subscribe(search => {
+    // this.collectionsService.removeAssetsFromCollection(collection.id, params.asset).take(1).subscribe(payload => {
+    //   this.collectionsService.getCollectionItems(collection.id, 300).take(1).subscribe(search => {
     //     this.collectionsService.updateFocusedCollectionAssets(payload, search);
     //     this.collectionsService.updateCollectionInStore(payload, search);
     //   });
@@ -81,9 +78,7 @@ export class AssetComponent implements OnInit, OnDestroy {
 
   showNewCollection(assetId: any): void {
     let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-bin-tray');
-    !this.currentUser.loggedIn() ?
-      this.router.navigate(['/user/login']) :
-      newCollectionButton.click();
+    (!this.currentUser.loggedIn()) ? this.router.navigate(['/user/login']) : newCollectionButton.click();
   }
 
   ngOnDestroy(): void {

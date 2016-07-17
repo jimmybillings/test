@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   */
   public onSubmit(user: any): void {
     user.siteName = this._ApiConfig.getPortal();
-    this._authentication.create(user).first().subscribe((res) => {
+    this._authentication.create(user).take(1).subscribe((res) => {
       localStorage.setItem('token', res.token.token);
       this._currentUser.set(res.user);
       this.router.navigate(['/']);

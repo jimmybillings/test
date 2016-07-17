@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
+import { ActiveCollectionService } from '../services/active-collection.service';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { WzAssetListComponent }  from '../../shared/components/wz-asset-list/wz.asset-list.component';
 import { WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
@@ -43,6 +44,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public router: Router,
     public collectionsService: CollectionsService,
+    public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>,
     public currentUser: CurrentUser,
     public error: Error,
@@ -51,23 +53,15 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.routeSubscription = this.route.params.subscribe(params => {
-      this.collectionsService.setFocusedCollection(params['id']).first().subscribe(collection => {
-        this.collectionsService.updateFocusedCollection(collection);
-        if (collection.assets) {
-          this.collectionsService.getCollectionItems(collection.id, 300).first().subscribe(assets => {
-            this.collectionsService.updateFocusedCollectionAssets(assets);
-          });
-        }
+      this.activeCollection.set(params['id']).take(1).subscribe(collection => {
+        if (collection.assets) this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
       });
 
-      this.focusedCollectionStoreSubscription = this.store.select('focusedCollection').subscribe(focusedCollection => {
-        this.focusedCollection = focusedCollection;
-        this.collection = this.focusedCollection;
+      this.focusedCollectionStoreSubscription = this.activeCollection.data.subscribe(activeCollection => {
+        this.collection = activeCollection;
         this.assets = this.collection.assets;
       });
-
     });
-
   }
 
   ngOnDestroy() {

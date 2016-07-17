@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
-import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
+import { Collection } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
-import { Store } from '@ngrx/store';
+import { ActiveCollectionService } from '../services/active-collection.service';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { Error } from '../../shared/services/error.service';
@@ -23,15 +23,16 @@ import { Subscription } from 'rxjs/Rx';
 export class CollectionsComponent implements OnInit, OnDestroy {
 
   public collections: any;
-  public focusedCollection: any;
+  public activeCollectionStore: any;
   public errorMessage: string;
   public config: Object;
   private collectionStoreSubscription: Subscription;
-  private focusedCollectionStoreSubscription: Subscription;
+  private activeCollectionStoreSubscription: Subscription;
 
   constructor(
     public router: Router,
     public collectionsService: CollectionsService,
+    public activeCollection: ActiveCollectionService,
     public currentUser: CurrentUser,
     public error: Error,
     public uiConfig: UiConfig) {
@@ -40,55 +41,47 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.collectionStoreSubscription =
       this.collectionsService.collections.subscribe(collections => this.collections = collections);
-    this.focusedCollectionStoreSubscription =
-      this.collectionsService.focusedCollection.subscribe(focusedCollection => this.focusedCollection = focusedCollection);
+    this.activeCollectionStoreSubscription =
+      this.activeCollection.data.subscribe(activeCollection => this.activeCollectionStore = activeCollection);
   }
 
   ngOnDestroy() {
     this.collectionStoreSubscription.unsubscribe();
-    this.focusedCollectionStoreSubscription.unsubscribe();
+    this.activeCollectionStoreSubscription.unsubscribe();
   }
 
   public date(date: any): Date {
     return new Date(date);
   }
 
-  public selectFocusedCollection(collection: Collection): void {
-    this.collectionsService.setFocusedCollection(collection.id).first().subscribe((collection) => {
-      this.collectionsService.updateFocusedCollection(collection);
-      if (collection.assets) this.updateFocusedCollectionAssets(collection);
+  public selectActiveCollection(collection: Collection): void {
+    this.activeCollection.set(collection.id).take(1).subscribe((collection) => {
+      if (collection.assets) this.updateActiveCollectionAssets(collection);
     });
   }
 
-  public isFocusedCollection(collection: Collection): boolean {
-    let isFocused: boolean;
-    this.collectionsService.focusedCollection.take(1).subscribe(f => isFocused = collection.id === f.id);
-    return isFocused;
+  public isActiveCollection(collection: Collection): boolean {
+    return this.activeCollectionStore.id === collection.id;
   }
 
   public deleteCollection(collection: Collection): void {
-    this.collectionsService.deleteCollection(collection.id).first().subscribe(payload => {
+    this.collectionsService.deleteCollection(collection.id).take(1).subscribe(payload => {
       let collectionLength: number;
       this.collectionsService.deleteCollectionFromStore(collection);
       this.collectionsService.collections.take(1).subscribe(collection => collectionLength = collection.items.length);
 
-      // if we are deleting current focused, we need to get the new focused from the server.
-      if (this.isFocusedCollection(collection) && collectionLength > 0) this.getFocusedCollection();
-      // if we delete the last collection, reset the store to initial values (no focused collection)
+      // if we are deleting current active, we need to get the new active from the server.
+      if (this.isActiveCollection(collection) && collectionLength > 0) this.getActiveCollection();
+      // if we delete the last collection, reset the store to initial values (no active collection)
       if (collectionLength === 0) this.collectionsService.destroyCollections();
     });
   }
 
-  private getFocusedCollection(): void {
-    this.collectionsService.getFocusedCollection().first().subscribe(collection => {
-      this.collectionsService.updateFocusedCollection(collection);
-      this.updateFocusedCollectionAssets(collection);
-    });
+  private getActiveCollection(): void {
+    this.activeCollection.get().take(1).subscribe(collection => this.updateActiveCollectionAssets(collection));
   }
 
-  private updateFocusedCollectionAssets(collection: any) {
-    this.collectionsService.getCollectionItems(collection.id, 200).first().subscribe(assets => {
-      this.collectionsService.updateFocusedCollectionAssets(assets);
-    });
+  private updateActiveCollectionAssets(collection: any) {
+    this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
   }
 }

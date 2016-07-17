@@ -17,7 +17,8 @@ import {
   UiState,
   WzNotificationService,
   CollectionsService,
-  UserPermission
+  UserPermission,
+  ActiveCollectionService
 } from './imports/app.component.imports';
 declare var portal: string;
 
@@ -34,7 +35,6 @@ export class AppComponent implements OnInit, OnDestroy {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
   public collections: Observable<Array<Collection>>;
-  public focusedCollection: Observable<any>;
   private configSubscription: Subscription;
   private routeSubscription: Subscription;
   private authSubscription: Subscription;
@@ -48,6 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public currentUser: CurrentUser,
     public permission: UserPermission,
     public collectionsService: CollectionsService,
+    public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>,
     public uiState: UiState,
     private renderer: Renderer,
@@ -61,9 +62,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
     this.configSubscription = this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
     this.currentUser.set();
-    this.focusedCollection = this.store.select('focusedCollection');
     this.routerChanges();
-    if (this.permission.has('ViewCollections')) this.loadCollections();
+    if (this.permission.has('ViewCollections')) this.initializeCollections();
   }
 
   ngOnDestroy() {
@@ -91,28 +91,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.uiState.reset();
   }
 
-  public loadCollections() {
-    this.collectionsService.loadCollections().first().subscribe(payload => {
-      this.collectionsService.storeCollections(payload);
-
-      if (payload.totalCount > 0) {
-        payload.items.forEach((item: any, index: number) => {
-          if (item.assets) {
-            this.collectionsService.getCollectionItems(item.id, 1, item.assets.length - 1).first().subscribe(search => {
-              item = this.collectionsService.mergeCollectionData(item, search);
-            });
-          }
-        });
-
-        this.collectionsService.getFocusedCollection().take(1).subscribe(focusedCollection => {
-          this.collectionsService.updateFocusedCollection(focusedCollection);
-          if (focusedCollection.assets) {
-            this.collectionsService.getCollectionItems(focusedCollection.id, 300).take(1).subscribe(assets => {
-              this.collectionsService.updateFocusedCollectionAssets(assets);
-            });
-          }
-        });
-      }
+  public initializeCollections() {
+    this.collectionsService.loadCollections().take(1).subscribe(payload => this.collectionsService.storeCollections(payload));
+    this.activeCollection.get().take(1).subscribe(focusedCollection => {
+      if (focusedCollection.assets) this.activeCollection.getItems(focusedCollection.id, 300).take(1).subscribe();
     });
   }
 
