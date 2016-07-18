@@ -74,33 +74,6 @@ export function main() {
         });
       }));
 
-
-    // it('Should initialize the header position to be absolulte positioned by setting \'showFixed\' to be false',
-    //   inject([TestComponentBuilder], (tcb: any) => {
-    //     tcb.createAsync(AppComponent).then((fixture: any) => {
-    //       let instance = fixture.debugElement.componentInstance;
-    //       expect(instance.showFixed).toEqual(false);
-    //     });
-    //   }));
-
-    // it('Should set the header to absolute by setting \'showFixed\' to be false if the page scrolls less than 111px\'s',
-    //   inject([TestComponentBuilder], (tcb: any) => {
-    //     tcb.createAsync(AppComponent).then((fixture: any) => {
-    //       let instance = fixture.debugElement.componentInstance;
-    //       instance.showFixedHeader(114);
-    //       expect(instance.showFixed).toEqual(true);
-    //     });
-    //   }));
-
-    // it('Should set the header to fixed by setting \'showFixed\' to be true if the page scrolls down more than 111px\'s',
-    //   inject([TestComponentBuilder], (tcb: any) => {
-    //     tcb.createAsync(AppComponent).then((fixture: any) => {
-    //       let instance = fixture.debugElement.componentInstance;
-    //       instance.showFixedHeader(108);
-    //       expect(instance.showFixed).toEqual(false);
-    //     });
-    //   }));
-
     it('Should log out a user', inject([AppComponent], (component: any) => {
       spyOn(component.authentication, 'destroy').and.callThrough();
       spyOn(component.currentUser, 'destroy');
@@ -116,21 +89,5 @@ export function main() {
       component.changeLang({ lang: 'fr' });
       expect(component.multiLingual.setLanguage).toHaveBeenCalledWith({ lang: 'fr' });
     }));
-
-    // it('Should hide the search bar on certain routes', inject([AppComponent], (component: any) => {
-    //   ['user', '', 'admin'].forEach((item) => {
-    //     expect(component.checkRouteForSearchBar(item)).toEqual(false);
-    //   });
-    // }));
-
-    // it('Should show the search bar on other routes', inject([AppComponent], (component: any) => {
-    //   ['asdf', 'fdsadsf', 'fdsf', 'wefwer', 'aasfasdf'].forEach((item) => {
-    //     expect(component.checkRouteForSearchBar(item)).toEqual(true);
-    //   });
-    // }));
-
-
-
-
   });
 }
