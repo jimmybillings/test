@@ -10,7 +10,6 @@ const initSearchContext: any = {
 };
 
 export const searchContext: Reducer<any> = (state: any = initSearchContext, action: Action) => {
-
   switch (action.type) {
     case 'SEARCHCONTEXT.SET':
       return Object.assign({}, state, action.payload);
@@ -48,21 +47,4 @@ export class SearchContext {
   public go(): void {
     this.router.navigate(['/search', this.state]);
   }
-
-  // private toQueryParam(params: any): string {
-  //   let buffer = new Array();
-  //   for (var name in params) {
-  //     if (!params.hasOwnProperty(name)) {
-  //       continue;
-  //     }
-  //     var value = params[name];
-  //     if (value !== null) {
-  //       buffer.push(name + '=' + value);
-  //     } else {
-  //       buffer.push(name + '=');
-  //     }
-  //   }
-  //   var source = buffer.join(';');
-  //   return (source);
-  // }
 }
