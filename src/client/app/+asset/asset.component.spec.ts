@@ -79,12 +79,6 @@ export function main() {
         });
       }));
 
-    it('Should call the server to get clip data information', inject([AssetComponent], (service: AssetComponent) => {
-      spyOn(service.assetService, 'set');
-      service.ngOnInit();
-      expect(service.assetService.set).toHaveBeenCalledWith(MockAssetResponse());
-    }));
-
   });
 
   function MockAssetResponse() {

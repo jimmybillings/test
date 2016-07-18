@@ -43,7 +43,7 @@ export class CollectionFormComponent {
   public createAndAddAsset(collection: Collection, asset: any): void {
     this.collectionsService.createCollection(collection).take(1).subscribe(created => {
       this.collectionsService.createCollectionInStore(created);
-      this.activeCollection.updateStore(created);
+      this.activeCollection.updateActiveCollectionStore(created);
       this.activeCollection.set(created.id).take(1).subscribe(focused => {
         if (asset !== null) {
           this.activeCollection.addAsset(created.id, asset).take(1).subscribe(payload => {

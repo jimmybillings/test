@@ -9,27 +9,27 @@ import { Store, Reducer, Action} from '@ngrx/store';
  * Focused Collection store -
  */
 
-function activeState(collection:any = {}) : Collection {
-    return {
-        createdOn: collection.createdOn || '',
-        lastUpdated: collection.lastUpdated || '',
-        id: collection.id || null,
-        siteName: collection.siteName || '',
-        name: collection.name || '',
-        owner: collection.owner || '',
-        assets: {
-            items: [],
-            pagination: {
-            totalCount: 0,
-            currentPage: 1,
-            pageSize: 100,
-            hasNextPage: false,
-            hasPreviousPage: false,
-            numberOfPages: 0
-            },
-        },
-        tags: collection.tags || []
-    };
+function activeState(collection: any = {}): Collection {
+  return {
+    createdOn: collection.createdOn || '',
+    lastUpdated: collection.lastUpdated || '',
+    id: collection.id || null,
+    siteName: collection.siteName || '',
+    name: collection.name || '',
+    owner: collection.owner || '',
+    assets: {
+      items: [],
+      pagination: {
+        totalCount: 0,
+        currentPage: 1,
+        pageSize: 100,
+        hasNextPage: false,
+        hasPreviousPage: false,
+        numberOfPages: 0
+      },
+    },
+    tags: collection.tags || []
+  };
 }
 
 export const activeCollection: Reducer<any> = (state = activeState(), action: Action) => {
@@ -38,6 +38,8 @@ export const activeCollection: Reducer<any> = (state = activeState(), action: Ac
       return Object.assign({}, state, action.payload);
     case 'RESET_ACTIVE_COLLECTION':
       return Object.assign({}, activeState());
+    case 'ADD_ASSET_TO_COLLECTION':
+      return Object.assign({}, state, state.assets.items.unshift(action.payload));
     default:
       return state;
   }
@@ -66,8 +68,9 @@ export class ActiveCollectionService {
     return this.http.get(`${this.apiUrls.CollectionBaseUrl}/focused`,
       { headers: this.apiConfig.authHeaders() })
       .map((res) => {
-          this.updateStore(res.json());
-          return res.json();
+        this.updateActiveCollectionStore(res.json());
+        this.getItems(res.json().id, 300).take(1).subscribe();
+        return res.json();
       });
   }
 
@@ -75,8 +78,8 @@ export class ActiveCollectionService {
     return this.http.put(`${this.apiUrls.CollectionBaseUrl}/focused/${collectionId}`,
       '', { headers: this.apiConfig.authHeaders() })
       .map((res) => {
-          this.updateStore(res.json());
-          return res.json();
+        this.updateActiveCollectionStore(res.json());
+        return res.json();
       });
   }
 
@@ -84,7 +87,9 @@ export class ActiveCollectionService {
     return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/addAssets`,
       `{"list": [{"assetId":${asset.assetId}}]}`,
       { headers: this.apiConfig.authHeaders() })
-      .map(res => res.json());
+      .map((res) => {
+        return res.json();
+      });
   }
 
   public removeAsset(collectionId: any, asset: any): Observable<any> {
@@ -103,12 +108,16 @@ export class ActiveCollectionService {
       });
   }
 
-  public updateStore(collection: Collection): void {
-    this.store.dispatch({type: 'UPDATE_ACTIVE_COLLECTION', payload: activeState(collection)});
+  public addAssetToStore(asset: any) {
+    this.store.dispatch({ type: 'ADD_ASSET_TO_COLLECTION', payload: asset });
+  }
+
+  public updateActiveCollectionStore(collection: Collection): void {
+    this.store.dispatch({ type: 'UPDATE_ACTIVE_COLLECTION', payload: activeState(collection) });
   }
 
   public resetStore() {
-    this.store.dispatch({type: 'RESET_ACTIVE_COLLECTION'});
+    this.store.dispatch({ type: 'RESET_ACTIVE_COLLECTION' });
   }
 
   public updateActiveCollectionAssets(assets: any): void {

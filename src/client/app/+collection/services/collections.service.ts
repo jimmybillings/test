@@ -65,7 +65,7 @@ export class CollectionsService {
 
   public loadCollections(): Observable<any> {
     return this.http.get(`${this.apiUrls.CollectionBaseUrl}/fetchBy?access-level=owner`,
-      { headers: this.apiConfig.authHeaders() }).map(res => res.json());
+      { headers: this.apiConfig.authHeaders() }).map(res => this.storeCollections(res.json()));
   }
 
   public createCollection(collection: Collection): Observable<any> {
@@ -92,26 +92,11 @@ export class CollectionsService {
     this.store.dispatch({ type: 'CREATE_COLLECTION', payload });
   }
 
-  public updateCollectionInStore(collection: Collection, search: any): void {
-    search.items = search.items === undefined ? [] : search.items;
-    let thumbnail = collection.thumbnail ? collection.thumbnail : search.items[search.totalCount - 1].thumbnail;
+  public updateCollectionInStore(collection: Collection): void {
+    // search.items = search.items === undefined ? [] : search.items;
+    // let thumbnail = collection.thumbnail ? collection.thumbnail : search.items[search.totalCount - 1].thumbnail;
     this.store.dispatch({
-      type: 'UPDATE_COLLECTION', payload: {
-        createdOn: collection.createdOn,
-        lastUpdated: collection.lastUpdated,
-        id: collection.id,
-        siteName: collection.siteName,
-        name: collection.name,
-        owner: collection.owner,
-        assets: {
-          'items': search.items,
-          'pagination': {
-            'totalCount': search.totalCount,
-          }
-        },
-        thumbnail: thumbnail,
-        tags: collection.tags
-      }
+      type: 'UPDATE_COLLECTION', payload: collection
     });
   }
 

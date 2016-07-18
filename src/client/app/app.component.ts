@@ -63,7 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.configSubscription = this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
     this.currentUser.set();
     this.routerChanges();
-    if (this.permission.has('ViewCollections')) this.initializeCollections();
+    this.initializeCollections();
   }
 
   ngOnDestroy() {
@@ -92,9 +92,11 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public initializeCollections() {
-    this.collectionsService.loadCollections().take(1).subscribe(payload => this.collectionsService.storeCollections(payload));
-    this.activeCollection.get().take(1).subscribe(focusedCollection => {
-      if (focusedCollection.assets) this.activeCollection.getItems(focusedCollection.id, 300).take(1).subscribe();
+    this.currentUser.loggedInState().subscribe((loggedIn: any) => {
+      if (loggedIn && this.permission.has('ViewCollections')) {
+        this.collectionsService.loadCollections().take(1).subscribe();
+        this.activeCollection.get().take(1).subscribe();
+      }
     });
   }
 

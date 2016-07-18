@@ -1,5 +1,5 @@
 import {Component, ChangeDetectionStrategy, Input, OnChanges} from '@angular/core';
-declare var jwplayer:any;
+declare var jwplayer: any;
 /**
  * site header component - renders the header information
  */
@@ -16,17 +16,20 @@ export class WzPlayerComponent implements OnChanges {
   @Input() clip: string;
   @Input() clipUrl: string;
   @Input() clipThumbnailUrl: string;
-  public player:{ load: any };
+  public player: { load: any };
 
-  ngOnChanges(changes:any) {
-    jwplayer('assetVideoPlayer').setup({
+  ngOnChanges(changes: any) {
+    if (changes.clipThumbnailUrl && changes.clipUrl) {
+      jwplayer('assetVideoPlayer').setup({
         image: changes.clipThumbnailUrl.currentValue,
-        file:changes.clipUrl.currentValue,
+        file: changes.clipUrl.currentValue,
         logo: {
           file: 'assets/img/logo/watermark.png',
-          position:'top-right',
-          link:'http://www.wazeedigital.com'
+          position: 'top-right',
+          link: 'http://www.wazeedigital.com'
         }
-  });
+      });
+    }
+
   }
 }
