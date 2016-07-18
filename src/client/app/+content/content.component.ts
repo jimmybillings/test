@@ -26,7 +26,7 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.routeSubscription = this.route.params.subscribe(params => {
-      this.contentService.get(params['page']).first().subscribe(data => {
+      this.contentService.get(params['page']).take(1).subscribe(data => {
         this.content = data[0].content.rendered;
         this.title = data[0].title.rendered;
       });

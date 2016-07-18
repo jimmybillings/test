@@ -1,7 +1,7 @@
 
 <collection-form
   [UiState]="uiState"
-  [collection]="focusedCollection | async"
+  [collection]="activeCollection.data | async"
   [config]="(uiConfig.get('collection') | async).config"
   [ngClass]="{'revealed': (uiState.uiState | async).newCollectionFormIsOpen}"
   layout="row" layout-align="center start">
@@ -19,7 +19,7 @@
       [permission]="permission"
       [state]="state"
       [config]="(uiConfig.get('header') | async).config"
-      [collection]="focusedCollection | async"
+      [collection]="activeCollection.data | async"
       (onLogOut)="logout()">
     </app-nav>
     <wz-search-box
@@ -34,7 +34,7 @@
     <bin-tray
       *ngIf="(uiState.uiState | async).searchBarIsActive && currentUser.loggedIn()"
       [UiState]="uiState"
-      [collection]="focusedCollection | async"
+      [collection]="activeCollection.data | async"
       >
     </bin-tray>
   </header>

@@ -48,7 +48,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   */
   public onSubmit(user: any): void {
     user.siteName = this._ApiConfig.getPortal();
-    this.user.create(user).first()
+    this.user.create(user).take(1)
       .subscribe((res: Response) => {
         return res;
       });

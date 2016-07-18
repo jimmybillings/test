@@ -37,7 +37,7 @@ export class AssetService {
       .get(this._apiConfig.baseUrl() + 'api/assets/v1/clip/' + id + '/clipDetail',
       { headers: this._apiConfig.authHeaders() }
       )
-      .map((res: Response) => ({ type: 'SET_ASSET', payload: res.json() }));
+      .map((res: Response) => this.set({ type: 'SET_ASSET', payload: res.json() }));
   }
 
   public set(payload: any): void {

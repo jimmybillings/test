@@ -15,6 +15,7 @@ import { provideRouter, RouterConfig } from '@angular/router';
 // Angular 2 Material
 // TODO(gdi2290): replace with @angular2-material/all
 import { MATERIAL_PROVIDERS } from './material';
+import { AssetResolver } from '../+asset/services/asset.resolver';
 
 // Wazee 
 import { WAZEE_PROVIDERS, WAZEE_ROUTES } from './wazee';
@@ -24,7 +25,8 @@ import { WAZEE_PROVIDERS, WAZEE_ROUTES } from './wazee';
 */
 
 export const APP_ROUTER_PROVIDERS: RouterConfig = [
-  provideRouter(WAZEE_ROUTES)
+  AssetResolver,
+  provideRouter(WAZEE_ROUTES),
 ];
 
 export const APPLICATION_PROVIDERS = [

@@ -116,15 +116,15 @@
     "merge2": "^1.0.1"
   },
   "dependencies": {
-    "@angular/common": "2.0.0-rc.3",
-    "@angular/compiler": "2.0.0-rc.3",
-    "@angular/core": "2.0.0-rc.3",
-    "@angular/forms": "0.1.1",
-    "@angular/http": "2.0.0-rc.3",
-    "@angular/platform-browser": "2.0.0-rc.3",
-    "@angular/platform-browser-dynamic": "2.0.0-rc.3",
-    "@angular/router": "3.0.0-alpha.7",
-    "@angular/router-deprecated": "^2.0.0-rc.1",
+    "@angular/common": "2.0.0-rc.4",
+    "@angular/compiler": "2.0.0-rc.4",
+    "@angular/core": "2.0.0-rc.4",
+    "@angular/http": "2.0.0-rc.4",
+    "@angular/platform-browser": "2.0.0-rc.4",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.4",
+    "@angular/router": "v3.0.0-beta.1",
+    "@angular/forms": "^0.1.0",
+    "hammerjs": "^2.0.8",
     "@angular2-material/button": "2.0.0-alpha.6",
     "@angular2-material/card": "2.0.0-alpha.6",
     "@angular2-material/checkbox": "2.0.0-alpha.6",
@@ -146,7 +146,10 @@
     "es6-promise": "^3.1.2",
     "ng2-translate": "^2.1.0",
     "rxjs": "5.0.0-beta.6",
-    "systemjs": "0.19.26",
+    "systemjs": "0.19.31",
     "zone.js": "^0.6.12"
   }
 }
+
+
+    

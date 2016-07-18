@@ -33,55 +33,55 @@ export class UiState {
     this.uiState = this.store.select('uiState');
   }
 
-  public reset() {
+  public reset(): void {
     this.store.dispatch({ type: 'UI.STATE.RESET', payload: InitUiState });
   }
 
-  public update(payload: Object) {
+  public update(payload: Object): void {
     this.store.dispatch({ type: 'UI.STATE.UPDATE', payload: payload });
   }
 
-  public closeBinTray() {
-    this.update({ binTrayIsOpen: false });
-  }
-
-  public openBinTray() {
+  public openBinTray(): void {
     this.update({ binTrayIsOpen: true });
   }
 
-  public toggleBinTray() {
+  public closeBinTray(): void {
+    this.update({ binTrayIsOpen: false });
+  }
+
+  public toggleBinTray(): void {
     this.uiState.take(1).subscribe(s => this.update({ binTrayIsOpen: !s.binTrayIsOpen}));
   }
 
-  public openSearch() {
+  public openSearch(): void {
     this.update({ searchIsOpen: true });
   }
 
-  public closeSearch() {
+  public closeSearch(): void {
     this.update({ searchIsOpen: false });
   }
 
-  public toggleSearch() {
+  public toggleSearch(): void {
     this.uiState.take(1).subscribe(s => this.update({ searchIsOpen: !s.searchIsOpen}));
   }
 
-  public showCollectionsList() {
+  public showCollectionsList(): void {
     this.update({ collectionsListIsOpen: true });
   }
 
-  public closeCollectionsList() {
+  public closeCollectionsList(): void {
     this.update({ collectionsListIsOpen: false });
-  }
-
-  public closeNewCollection(): void {
-    this.update({ newCollectionFormIsOpen: false });
   }
 
   public showNewCollection(): void {
     this.update({ newCollectionFormIsOpen: true });
   }
 
-  public checkRouteForSearchBar(currentState: string) {
+  public closeNewCollection(): void {
+    this.update({ newCollectionFormIsOpen: false });
+  }
+
+  public checkRouteForSearchBar(currentState: string): void {
     if (currentState === '/') {
       this.update({ searchBarIsActive: false });
       return;
@@ -91,7 +91,7 @@ export class UiState {
     this.update({ searchBarIsActive: showSearchBar });
   }
 
-  public showFixedHeader(offset: any) {
+  public showFixedHeader(offset: any): void {
     let isfixed: boolean = this.store.getState().uiState.showFixed;
     let setFixed: boolean = (offset > 111) ? true : false;
     if (setFixed !== isfixed) this.update({ showFixed: !isfixed });

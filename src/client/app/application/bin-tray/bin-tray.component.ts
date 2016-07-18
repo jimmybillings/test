@@ -22,4 +22,5 @@ export class BinTrayComponent {
   constructor(
     public router: Router) {
   }
+
 }

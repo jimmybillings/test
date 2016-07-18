@@ -12,6 +12,7 @@ import { FilterTree} from './filter-tree';
 import { FilterTreeComponent} from './filter-tree.component';
 import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from '../+collection/services/collections.service';
+import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { Store } from '@ngrx/store';
 
 
@@ -33,8 +34,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public filterIds: Array<string> = new Array();
   public filterValues: Array<string> = new Array();
   public collections: Observable<Collections>;
-  public focusedCollection: Observable<any>;
-  public sub: any;
   public assets: Observable<any>;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
@@ -48,6 +47,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     public uiConfig: UiConfig,
     public currentUser: CurrentUser,
     public collectionsService: CollectionsService,
+    public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>,
     public error: Error,
     public searchContext: SearchContext) {
@@ -64,7 +64,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.newSearch();
       this.getFilterTree();
     });
-    this.focusedCollection = this.store.select('focusedCollection');
   }
 
   ngOnDestroy(): void {
@@ -79,13 +78,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public addToCollection(params: any): void {
-    let collection: Collection = params.collection;
-    collection.assets ? collection.assets.items.push(params.asset) : collection.assets.items = [params.asset];
-    this.collectionsService.addAssetsToCollection(collection.id, params.asset).first().subscribe(payload => {
-      this.collectionsService.getCollectionItems(collection.id, 300).first().subscribe(assets => {
-        this.collectionsService.updateFocusedCollectionAssets(assets);
-        this.collectionsService.updateCollectionInStore(payload, assets);
-      });
+    this.activeCollection.addAsset(params.collection.id, params.asset).take(1).subscribe((asset) => {
+      this.activeCollection.addAssetToStore(params.asset);
     });
   }
 
@@ -93,8 +87,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     let collection: Collection = params.collection;
     console.log(params.asset.assetId);
     console.log(collection);
-    // this.collectionsService.removeAssetsFromCollection(collection.id, params.asset).first().subscribe(payload => {
-    //   this.collectionsService.getCollectionItems(collection.id, 300).first().subscribe(search => {
+    // this.collectionsService.removeAssetsFromCollection(collection.id, params.asset).take(1).subscribe(payload => {
+    //   this.collectionsService.getCollectionItems(collection.id, 300).take(1).subscribe(search => {
     //     this.collectionsService.updateFocusedCollectionAssets(payload, search);
     //     this.collectionsService.updateCollectionInStore(payload, search);
     //   });
@@ -123,14 +117,14 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public keywordSearch(): void {
-    this.route.params.first().subscribe(params => {
+    this.route.params.take(1).subscribe(params => {
       this.searchContext.update = params;
       this.newSearch();
     });
   }
 
   public newSearch() {
-    this.assetData.searchAssets(this.searchContext.state).first().subscribe(
+    this.assetData.searchAssets(this.searchContext.state).take(1).subscribe(
       payload => this.assetData.storeAssets(payload),
       error => this.error.handle(error)
     );
@@ -157,7 +151,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       if (typeof fids === 'string') { fids.split(',').forEach(x => this.filterIds.push(x)); }
     }
     let v: Array<string> = this.filterIds;
-    this.assetData.getFilterTree(this.searchContext.state).first().subscribe(
+    this.assetData.getFilterTree(this.searchContext.state).take(1).subscribe(
       payload => { this.rootFilter = new FilterTree('', '', [], '', -1).load(payload, null, v); },
       error => this.error.handle(error)
     );

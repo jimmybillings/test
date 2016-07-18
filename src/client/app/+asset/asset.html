@@ -1,8 +1,8 @@
-<div flex="100" *ngIf="assetDetailDisplay">
+<div flex="100">
   <wz-asset-detail
     [currentUser]="currentUser"
     [assetDetail]="assetDetail | async"
-    [collection]="focusedCollection | async"
+    [collection]="activeCollection.data | async"
     (onAddToCollection)="addToCollection($event)"
     (onRemoveFromCollection)="removeFromCollection($event)"
     (onShowNewCollection)="showNewCollection($event)"

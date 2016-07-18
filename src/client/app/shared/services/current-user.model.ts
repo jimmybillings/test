@@ -32,7 +32,7 @@ export class CurrentUser {
   private currentUser: Observable<any>;
 
   constructor(
-    private store: Store<any>) {
+    private store: Store<CurrentUserInterface>) {
     this.currentUser = this.store.select('currentUser');
   }
 
@@ -58,7 +58,7 @@ export class CurrentUser {
   }
 
   public loggedInState(): Observable<any> {
-    return this.currentUser.map(user => user.emailAddress);
+    return this.currentUser.map(user => (user.id > 0));
   }
 
   public loggedIn(): boolean {

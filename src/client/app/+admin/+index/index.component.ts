@@ -52,7 +52,7 @@ export class IndexComponent implements OnInit, OnDestroy {
       this.currentComponent = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1);
       this.buildRouteParams(param);
       this.uiConfig.get('admin' + this.currentComponent)
-        .first().subscribe((config) => {
+        .take(1).subscribe((config) => {
           this.config = config.config;
           this.getIndex();
         });
@@ -61,7 +61,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public getIndex(): void {
     this.toggleFlag = this.params.d;
-    this.adminService.getResourceIndex(this.params, this.resourceType).first().subscribe();
+    this.adminService.getResourceIndex(this.params, this.resourceType).take(1).subscribe();
   }
 
   public navigateToPageUrl(i: number): void {
@@ -94,13 +94,13 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public onEditSubmit(data: any): void {
     Object.assign(this.resource, data);
-    this.adminService.putResource(this.resourceType, this.resource).first().subscribe(data => {
+    this.adminService.putResource(this.resourceType, this.resource).take(1).subscribe(data => {
       this.getIndex();
     });
   }
 
   public onNewSubmit(data: any): void {
-    this.adminService.postResource(this.resourceType, data).first().subscribe(data => {
+    this.adminService.postResource(this.resourceType, data).take(1).subscribe(data => {
       this.getIndex();
     });
   }
