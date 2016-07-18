@@ -5,27 +5,18 @@ import {
   it,
   beforeEachProviders
 } from '@angular/core/testing';
-import { provide } from '@angular/core';
 import { UiState, uiState } from './ui.state';
-import { BaseRequestOptions, Http } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { provideStore } from '@ngrx/store';
 
 export function main() {
   describe('UI State', () => {
 
     beforeEachProviders(() => [
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
       provideStore({ uiState: uiState }),
       UiState,
     ]);
 
-    it('Should initialize booleans in the store to define default positioning',
+    it('Should initialize booleans in the store to define default positioning and state',
       inject([UiState], (service: UiState) => {
         service.uiState.first().subscribe(data => {
           expect(data.showFixed).toEqual(false);
