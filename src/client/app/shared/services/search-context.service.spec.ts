@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 export function main() {
   class MockRouter { }
-  
+
   describe('Search Context', () => {
     beforeEachProviders(() => [
       provideStore({ searchContext: searchContext }),
