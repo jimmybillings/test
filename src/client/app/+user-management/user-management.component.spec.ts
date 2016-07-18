@@ -8,7 +8,7 @@ import {
 } from '@angular/core/testing';
 
 import { Router, RouterOutletMap, ActivatedRoute } from '@angular/router';
-import {UserManagementComponent} from './user-management.component';
+import { UserManagementComponent } from './user-management.component';
 
 export function main() {
   describe('User Management Component', () => {
