@@ -13,7 +13,7 @@ export function main() {
 
     beforeEachProviders(() => [
       provideStore({ uiState: uiState }),
-      UiState,
+      UiState
     ]);
 
     it('Should initialize booleans in the store to define default positioning and state',
