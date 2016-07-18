@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy, OnChanges} from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges} from '@angular/core';
 import { ROUTER_DIRECTIVES} from '@angular/router';
 import { WzPlayerComponent} from '../../components/wz-player/wz.player.component';
 import { Collection } from '../../interfaces/collection.interface';
@@ -13,7 +13,7 @@ import { WzToastComponent } from '../../../shared/components/wz-toast/wz.toast.c
     WzPlayerComponent,
     WzToastComponent
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class WzAssetDetailComponent implements OnChanges {
@@ -50,12 +50,12 @@ export class WzAssetDetailComponent implements OnChanges {
 
   public addToCollection(collection: Collection, asset: any): void {
     asset.assetId = asset.value;
-    this.onAddToCollection.emit({'collection':collection, 'asset':asset});
+    this.onAddToCollection.emit({ 'collection': collection, 'asset': asset });
   }
 
   public removeFromCollection(collection: Collection, asset: any): void {
     asset.assetId = asset.value;
-    this.onRemoveFromCollection.emit({'collection':collection, 'asset':asset});
+    this.onRemoveFromCollection.emit({ 'collection': collection, 'asset': asset });
   }
 
   public showNewCollection(assetId: any): void {
