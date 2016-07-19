@@ -48,7 +48,8 @@ export class CollectionsService {
   public collections: Observable<any>;
   public apiUrls: {
     CollectionBaseUrl: string,
-    CollectionItemsBaseUrl: string
+    CollectionItemsBaseUrl: string,
+    CollectionSummaryBaseUrl: string
   };
 
   constructor(
@@ -59,12 +60,13 @@ export class CollectionsService {
     this.collections = store.select('collections');
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
+      CollectionSummaryBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collectionSummary',
       CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collection'
     };
   }
 
   public loadCollections(): Observable<any> {
-    return this.http.get(`${this.apiUrls.CollectionBaseUrl}/fetchBy?access-level=owner`,
+    return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/fetchBy?access-level=all`,
       { headers: this.apiConfig.authHeaders() }).map(res => this.storeCollections(res.json()));
   }
 

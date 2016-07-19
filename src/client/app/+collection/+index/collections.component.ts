@@ -40,7 +40,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.collectionStoreSubscription =
-      this.collectionsService.collections.subscribe(collections => this.collections = collections);
+      this.collectionsService.collections.subscribe(collections => {console.log(collections);this.collections = collections;});
     this.activeCollectionStoreSubscription =
       this.activeCollection.data.subscribe(activeCollection => this.activeCollectionStore = activeCollection);
   }
@@ -55,13 +55,15 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public selectActiveCollection(collection: Collection): void {
-    this.activeCollection.set(collection.id).take(1).subscribe((collection) => {
-      if (collection.assets) this.updateActiveCollectionAssets(collection);
-    });
+    this.activeCollection.set(collection.id).take(1).subscribe();
   }
 
   public isActiveCollection(collection: Collection): boolean {
     return this.activeCollectionStore.id === collection.id;
+  }
+
+  public thumbnail(collection: Collection): string {
+    return (collection.collectionThumbnail) ? collection.collectionThumbnail.urls.https : '/assets/img/tbn_missing.jpg';
   }
 
   public deleteCollection(collection: Collection): void {

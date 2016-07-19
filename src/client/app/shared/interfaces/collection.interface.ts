@@ -11,7 +11,7 @@ export interface Collection {
   assetCount?: number;
   editorsCount?: number;
   tagCount?: number;
-  thumbnail?: { name: string, urls: {} };
+  collectionThumbnail?: { name: string, urls: { https: string }};
 }
 
 export interface Collections {
