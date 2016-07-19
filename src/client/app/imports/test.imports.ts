@@ -10,7 +10,12 @@ import { provideForms, disableDeprecatedForms } from '@angular/forms';
 // STORES & PROVIDERS
 import { WAZEE_STORES, WAZEE_PROVIDERS } from './wazee';
 
-// Pure Components
+// SERVICES NOT IN WAZEE_PROVIDERS
+import { ConfigService } from '../+admin/services/config.service';
+import { AdminService } from '../+admin/services/admin.service';
+import { User } from '../+user-management/services/user.data.service';
+
+// PURE_COMPONENTS
 import { APP_COMPONENT_DIRECTIVES } from './app.component.imports';
 
 // MODELS
@@ -34,6 +39,9 @@ export const beforeEachProvidersArray: Array<any> = [
   ...WAZEE_STORES,
   ...WAZEE_PROVIDERS,
   ...APP_COMPONENT_DIRECTIVES,
+  ConfigService,
+  AdminService,
+  User,
   disableDeprecatedForms(),
   provideForms(),
   Renderer,

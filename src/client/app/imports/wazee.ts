@@ -18,10 +18,6 @@ import { AdminAuthGuard } from '../+admin/services/admin.auth.guard';
 import { UserPermission } from '../shared/services/permission.service';
 import { AssetGuard } from '../+asset/services/asset.guard';
 import { AssetData } from '../+search/services/asset.data.service';
-// import { ConfigService } from '../+admin/services/config.service';
-// import { AdminService } from '../+admin/services/admin.service';
-// import { User } from '../+user-management/services/user.data.service';
-
 
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
