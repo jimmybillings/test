@@ -64,13 +64,13 @@
       </div>-->
 
       <md-tab-group>
-        <md-tab *ngFor='let key of secondaryKeys' label="translationReady(secondaryMdata[key].name) | translate | uppercase">
-          <template md-tab-label>{{translationReady(secondaryMdata[key].name) | translate | uppercase }}</template>
+        <md-tab *ngFor='let key of secondaryKeys' label="translationReady(secondaryMdata[key].name) | uppercase | translate ">
+          <template md-tab-label>{{translationReady(secondaryMdata[key].name) | uppercase | translate }}</template>
           <template md-tab-content>
             <div class="m-data" *ngFor='let sData of secondaryMdata[key].data; let i=index'>
               <div class="row" *ngFor='let m of sData.section'>
                 <div class="cell">
-                  <h5 class="md-subhead">{{translationReady(m.name) | translate | uppercase }}</h5>
+                  <h5 class="md-subhead">{{translationReady(m.name) | uppercase | translate }}</h5>
                 </div>
                 <div class="cell">
                   <p class="md-body-1">{{m.value}}</p>
