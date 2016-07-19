@@ -17,6 +17,8 @@ import { UiState } from '../shared/services/ui.state';
 import { AdminAuthGuard } from '../+admin/services/admin.auth.guard';
 import { UserPermission } from '../shared/services/permission.service';
 import { AssetGuard } from '../+asset/services/asset.guard';
+import { ConfigService } from '../+admin/services/config.service';
+import { AdminService } from '../+admin/services/admin.service';
 
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
@@ -41,6 +43,8 @@ import { createOverlayContainer } from '@angular2-material/core/overlay/overlay-
 import { OVERLAY_CONTAINER_TOKEN } from '@angular2-material/core/overlay/overlay';
 
 export const WAZEE_PROVIDERS = [
+  AdminService,
+  ConfigService,
   ApiConfig,
   CurrentUser,
   UiConfig,

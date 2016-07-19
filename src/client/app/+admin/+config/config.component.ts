@@ -40,6 +40,7 @@ export class ConfigComponent implements OnInit, OnDestroy {
   }
 
   public getConfigs(): void {
+    console.log(this.configService);
     this.configService.getUiConfigIndex().take(1).subscribe(data => {
       this.uiConfigs = data.items;
       this.uiConfigs.forEach(item => {

@@ -1,51 +1,26 @@
 import {
+  beforeEachProvidersArray,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
-import { provide } from '@angular/core';
+} from '../../imports/test.imports';
+
 import { AdminService } from './admin.service';
-import { ApiConfig } from '../../shared/services/api.config';
 import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http} from '@angular/http';
-import { CurrentUser, currentUser } from '../../shared/services/current-user.model';
-import { provideStore } from '@ngrx/store';
-import {Router, ActivatedRoute} from '@angular/router';
 
 export function main() {
   describe('Admin Service', () => {
-    class MockRouter { }
-    class MockActivatedRoute { }
+
     beforeEachProviders(() => [
-      { provide: Router, useClass: MockRouter },
-      { provide: ActivatedRoute, useClass: MockActivatedRoute },
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provideStore({ currentUser: currentUser }),
-      ApiConfig,
-      AdminService,
-      CurrentUser
+      ...beforeEachProvidersArray
     ]);
 
     it('Should create instance variables for http, and apiConfig', inject([AdminService, MockBackend], (service: AdminService, mockBackend: MockBackend) => {
       expect(service.http).toBeDefined();
       expect(service.apiConfig).toBeDefined();
     }));
-
-    // it('Should have a getIdentitiesSearchOptions function that builds the appropriate RequestOptions given search parameters', inject([AdminService], (service: AdminService) => {
-    //   let params = { i: 2, n: 10, s: 'createdOn', d: 'false', q: '' };
-    //   let actual = service.getIdentitiesSearchOptions(params);
-    //   RequestOptions;
-    //   URLSearchParams;
-    //   expect(actual).toBeAnInstanceOf(RequestOptions);
-    //   expect(actual.search).toBeAnInstanceOf(URLSearchParams);
-    // }));
 
     it('should have a getResourceIndex function that makes a search request for a resource with given params', inject([AdminService, MockBackend], (service: AdminService, mockBackend: MockBackend) => {
       spyOn(service, 'getIdentitiesSearchOptions');

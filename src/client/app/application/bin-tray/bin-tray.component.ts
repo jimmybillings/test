@@ -19,8 +19,5 @@ export class BinTrayComponent {
   @Input() collection: Collection;
   @Input() UiState: any;
 
-  constructor(
-    public router: Router) {
-  }
-
+  constructor(public router: Router) {}
 }
