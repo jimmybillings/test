@@ -53,7 +53,7 @@ export function main() {
         useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
         deps: [Http]
       }),
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),,
+      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       TranslateService
     ]);
 
