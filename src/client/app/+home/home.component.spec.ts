@@ -18,7 +18,7 @@ import { UiConfig, config} from '../shared/services/ui.config';
 import { provideStore } from '@ngrx/store';
 import { Observable} from 'rxjs/Rx';
 import { SearchContext} from '../shared/services/search-context.service';
-import { TranslatePipe } from 'ng2-translate/ng2-translate';
+import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe } from 'ng2-translate/ng2-translate';
 
 export function main() {
   describe('Home Component', () => {
@@ -38,6 +38,11 @@ export function main() {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
+      provide(TranslateLoader, {
+        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
+        deps: [Http]
+      }),
+      TranslateService,
       provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       provideStore({ config: config }),
       CurrentUser,

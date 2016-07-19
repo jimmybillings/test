@@ -6,11 +6,11 @@ import {
   it,
   beforeEachProviders
 } from '@angular/core/testing';
-
-import {provide, PLATFORM_PIPES} from '@angular/core';
-import {FooterComponent} from './footer.component';
+import { LocationStrategy } from '@angular/common';
+import { provide, PLATFORM_PIPES } from '@angular/core';
+import { FooterComponent } from './footer.component';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
+import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Http, BaseRequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
@@ -22,6 +22,7 @@ export function main() {
       { provide: Router, useClass: MockRouter },
       { provide: ActivatedRoute, useClass: MockActivatedRoute },
       TranslateService,
+      LocationStrategy,
       MockBackend,
       BaseRequestOptions,
       provide(Http, {
