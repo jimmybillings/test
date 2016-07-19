@@ -1,6 +1,7 @@
 import {
   beforeEachProvidersArray,
   beforeEachProviders,
+  MockBackend,
   describe,
   inject,
   expect,
@@ -8,7 +9,6 @@ import {
 } from '../../imports/test.imports';
 
 import { AdminService } from './admin.service';
-import { MockBackend } from '@angular/http/testing';
 
 export function main() {
   describe('Admin Service', () => {

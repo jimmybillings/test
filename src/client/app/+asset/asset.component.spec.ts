@@ -1,32 +1,22 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
+  Observable,
+  Injectable,
   describe,
-  expect,
   inject,
+  expect,
+  Store,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
+} from '../imports/test.imports';
 
-import { AssetComponent} from './asset.component';
-import { provide, Injectable, PLATFORM_PIPES} from '@angular/core';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http } from '@angular/http';
-import { ApiConfig } from '../shared/services/api.config';
-import { CurrentUser} from '../shared/services/current-user.model';
-import { UiConfig, config} from '../shared/services/ui.config';
-import { Error } from '../shared/services/error.service';
-import { provideStore } from '@ngrx/store';
-import { AssetService, asset} from './services/asset.service';
-import { CollectionsService } from '../+collection/services/collections.service';
-import { ActiveCollectionService } from '../+collection/services/active-collection.service';
-
-import { Observable } from 'rxjs/Rx';
-import { Store } from '@ngrx/store';
-import { Router, ActivatedRoute}  from '@angular/router';
-import { TranslatePipe } from 'ng2-translate/ng2-translate';
+import { AssetComponent } from './asset.component';
+import { AssetService } from './services/asset.service';
 
 export function main() {
   describe('Asset Component', () => {
+
     @Injectable()
     class MockAssetService {
       public asset: Observable<any>;
@@ -43,32 +33,11 @@ export function main() {
         return true;
       }
     }
-    class MockRouter { }
-    class MockActivatedRoute {
-      public params: Observable<any>;
-      constructor() {
-        this.params = Observable.of({});
-      }
-    }
+
     beforeEachProviders(() => [
+      ...beforeEachProvidersArray,
       AssetComponent,
-      { provide: Router, useClass: MockRouter },
-      { provide: ActivatedRoute, useClass: MockActivatedRoute },
-      provide(AssetService, { useClass: MockAssetService }),
-      CollectionsService,
-      ActiveCollectionService,
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provide(PLATFORM_PIPES, { useValue: TranslatePipe, multi: true }),
-      provideStore({ config, asset }),
-      CurrentUser,
-      UiConfig,
-      ApiConfig,
-      Error
+      {provide: AssetService, useClass: MockAssetService}
     ]);
 
     it('Create instance of asset component',

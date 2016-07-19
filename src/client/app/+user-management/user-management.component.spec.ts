@@ -1,23 +1,20 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
+} from '../imports/test.imports';
 
-import { Router, RouterOutletMap, ActivatedRoute } from '@angular/router';
 import { UserManagementComponent } from './user-management.component';
 
 export function main() {
   describe('User Management Component', () => {
-    class MockRouter { }
-    class MockActivatedRoute { }
+
     beforeEachProviders(() => [
-      { provide: Router, useClass: MockRouter },
-      { provide: ActivatedRoute, useClass: MockActivatedRoute },
-      RouterOutletMap
+      ...beforeEachProvidersArray
     ]);
 
     it('Should have a user-management instance',

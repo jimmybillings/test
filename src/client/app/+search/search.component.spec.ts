@@ -1,31 +1,20 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
+  Observable,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
+} from '../imports/test.imports';
 
-import {Router, ActivatedRoute} from '@angular/router';
-import {SearchComponent} from './search.component';
-import {provide} from '@angular/core';
-import { MockBackend } from '@angular/http/testing';
-import {HTTP_PROVIDERS, BaseRequestOptions, Http} from '@angular/http';
-import { ApiConfig } from '../shared/services/api.config';
-import {CurrentUser} from '../shared/services/current-user.model';
-import {UiConfig, config} from '../shared/services/ui.config';
-import {AssetData} from './services/asset.data.service';
-import { AssetService } from '../+asset/services/asset.service';
-import {Observable} from 'rxjs/Rx';
-import { provideStore } from '@ngrx/store';
-import { Error } from '../shared/services/error.service';
-import {SearchContext, searchContext} from '../shared/services/search-context.service';
-import {CollectionsService} from '../+collection/services/collections.service';
+import { SearchComponent } from './search.component';
+import { UiConfig } from '../shared/services/ui.config';
+import { AssetData } from './services/asset.data.service';
 
 export function main() {
   describe('Search Component', () => {
-
 
     class MockUiConfig {
       public get(component: any) {
@@ -42,29 +31,13 @@ export function main() {
         return payload;
       }
     }
-    class MockRouter { }
-    class MockActivatedRoute { }
+
     beforeEachProviders(() => [
+      ...beforeEachProvidersArray,
       SearchComponent,
       // provide(RouteSegment, { useValue: new RouteSegment([], { q: 'blue' }, null, null, null) }),
-      { provide: Router, useClass: MockRouter },
-      { provide: ActivatedRoute, useClass: MockActivatedRoute },
-      HTTP_PROVIDERS,
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provideStore({ config: config, searchContext }),
-      CurrentUser,
-      ApiConfig,
-      AssetService,
-      provide(AssetData, { useClass: MockAssetData }),
-      provide(UiConfig, { useClass: MockUiConfig }),
-      Error,
-      SearchContext,
-      CollectionsService
+      { provide: AssetData, useClass: MockAssetData },
+      { provide: UiConfig, useClass: MockUiConfig }
     ]);
 
     it('Should have a search instance',

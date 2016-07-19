@@ -1,38 +1,25 @@
 import {
+  beforeEachProvidersArray,
+  beforeEachProviders,
+  ResponseOptions,
+  RequestOptions,
+  MockBackend,
+  Response,
   describe,
-  expect,
+  Headers,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
+} from '../../imports/test.imports';
 
-import { Router } from '@angular/router';
-import { provide } from '@angular/core';
-import { AssetData, assets } from './asset.data.service';
-import { ApiConfig } from '../../shared/services/api.config';
-import { CurrentUser } from '../../shared/services/current-user.model';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http, RequestOptions, Headers, Response, ResponseOptions } from '@angular/http';
-import { provideStore } from '@ngrx/store';
-import { Error } from '../../shared/services/error.service';
+import { AssetData } from './asset.data.service';
 
 export function main() {
   describe('Asset data service', () => {
 
     class MockRouter { }
     beforeEachProviders(() => [
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      { provide: Router, useClass: MockRouter },
-      provideStore({ assets: assets }),
-      AssetData,
-      ApiConfig,
-      CurrentUser,
-      Error
+      ...beforeEachProvidersArray
     ]);
 
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls',

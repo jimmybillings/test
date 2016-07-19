@@ -1,58 +1,21 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
+} from '../../imports/test.imports';
 
-import { Router } from '@angular/router';
-
-import {Observable} from 'rxjs/Rx';
-import {provide, PLATFORM_PIPES} from '@angular/core';
-import {RegisterComponent} from './register.component';
-import {HTTP_PROVIDERS} from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http } from '@angular/http';
-import { ApiConfig } from '../../shared/services/api.config';
-import {CurrentUser} from '../../shared/services/current-user.model';
-import {Authentication} from '../services/authentication.data.service';
-import {User} from '../services/user.data.service';
-import {UiConfig, config} from '../../shared/services/ui.config';
-import {FormModel} from '../../shared/components/wz-form/wz.form.model';
-import { provideStore } from '@ngrx/store';
-import { TranslatePipe } from 'ng2-translate/ng2-translate';
+import { RegisterComponent } from './register.component';
 
 export function main() {
   describe('Register Component', () => {
 
-    const res = { 'user': { 'test': 'one' }, token: { token: 'newToken' } };
-
-    class MockUser {
-      create() {
-        return Observable.of(res);
-      }
-    }
-    class MockRouter { }
     beforeEachProviders(() => [
-      RegisterComponent,
-      { provide: Router, useClass: MockRouter },
-      MockBackend,
-      HTTP_PROVIDERS,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
-      provide(User, { useClass: MockUser }),
-      provideStore({ config: config }),
-      ApiConfig,
-      CurrentUser,
-      UiConfig,
-      Authentication,
-      FormModel
+      ...beforeEachProvidersArray,
+      RegisterComponent
     ]);
 
     it('Should have a Register instance',

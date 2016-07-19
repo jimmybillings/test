@@ -1,24 +1,17 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
+  CurrentUser,
+  Observable,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
+} from '../imports/test.imports';
 
-import { Router } from '@angular/router';
 import { HomeComponent} from './home.component';
-import { provide, PLATFORM_PIPES} from '@angular/core';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http } from '@angular/http';
-import { ApiConfig } from '../shared/services/api.config';
-import { CurrentUser} from '../shared/services/current-user.model';
-import { UiConfig, config} from '../shared/services/ui.config';
-import { provideStore } from '@ngrx/store';
-import { Observable} from 'rxjs/Rx';
-import { SearchContext} from '../shared/services/search-context.service';
-import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe } from 'ng2-translate/ng2-translate';
+import { UiConfig } from '../shared/services/ui.config';
 
 export function main() {
   describe('Home Component', () => {
@@ -28,27 +21,11 @@ export function main() {
         return Observable.of({'config': {'pageSize': {'value': 100}}});
       }
     }
-    class MockRouter {}
+
     beforeEachProviders(() => [
+      ...beforeEachProvidersArray,
       HomeComponent,
-      { provide: Router, useClass: MockRouter },
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provide(TranslateLoader, {
-        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-        deps: [Http]
-      }),
-      TranslateService,
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
-      provideStore({ config: config }),
-      CurrentUser,
-      provide(UiConfig, { useClass: MockUiConfig }),
-      ApiConfig,
-      SearchContext
+      { provide: UiConfig, useClass: MockUiConfig }
     ]);
 
     it('Should have router, apiConfig, currentUser, searchContext and uiConfig defined',

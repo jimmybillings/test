@@ -1,33 +1,21 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
+  Observable,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
+} from '../../imports/test.imports';
 
-import { Router } from '@angular/router';
-import {provide, Renderer, PLATFORM_PIPES} from '@angular/core';
-import {Observable} from 'rxjs/Rx';
-import { ApiConfig } from '../../shared/services/api.config';
-import {CurrentUser} from '../../shared/services/current-user.model';
-import {Authentication} from '../services/authentication.data.service';
-import { User } from '../services/user.data.service';
-import {FormModel} from '../../shared/components/wz-form/wz.form.model';
-import {LoginComponent} from './login.component';
-import {HTTP_PROVIDERS} from '@angular/http';
-import {UiConfig, config} from '../../shared/services/ui.config';
-import { provideStore } from '@ngrx/store';
-import { UiState, uiState} from '../../shared/services/ui.state';
-import { TranslatePipe } from 'ng2-translate/ng2-translate';
-
+import { LoginComponent } from './login.component';
+import { Authentication } from '../services/authentication.data.service';
 export function main() {
 
   const res = { 'user': { 'test': 'one' }, token: { token: 'newToken' } };
 
   describe('Login Component', () => {
-    class Home { }
     class MockAuthentication {
       create() {
         return Observable.of(res);
@@ -40,19 +28,9 @@ export function main() {
     }
 
     beforeEachProviders(() => [
+      ...beforeEachProvidersArray,
+      { provide: Authentication, useClass: MockAuthentication },
       LoginComponent,
-      Renderer,
-      ApiConfig,
-      CurrentUser,
-      UiConfig,
-      UiState,
-      User,
-      FormModel,
-      HTTP_PROVIDERS,
-      { provide: Router, useClass: MockRouter },
-      provide(Authentication, { useClass: MockAuthentication }),
-      provideStore({ config: config, uiState: uiState }),
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true})
     ]);
 
     it('Should have a Login instance',
