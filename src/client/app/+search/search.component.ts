@@ -24,7 +24,6 @@ import { Store } from '@ngrx/store';
   selector: 'search',
   templateUrl: 'search.html',
   directives: [WzAssetListComponent, WzPaginationComponent, FilterTreeComponent],
-  providers: [AssetData]
 })
 
 export class SearchComponent implements OnInit, OnDestroy {
@@ -59,11 +58,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    this.routeSubscription = this.route.params.subscribe((params) => {
-      this.searchContext.update = params;
-      this.newSearch();
-      this.getFilterTree();
-    });
+    this.routeSubscription = this.route.params.subscribe((params) => this.getFilterTree());
   }
 
   ngOnDestroy(): void {
@@ -114,20 +109,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public changePage(page: any): void {
     this.searchContext.update = { i: page };
     this.searchContext.go();
-  }
-
-  public keywordSearch(): void {
-    this.route.params.take(1).subscribe(params => {
-      this.searchContext.update = params;
-      this.newSearch();
-    });
-  }
-
-  public newSearch() {
-    this.assetData.searchAssets(this.searchContext.state).take(1).subscribe(
-      payload => this.assetData.storeAssets(payload),
-      error => this.error.handle(error)
-    );
   }
 
   public filterAssets(): void {

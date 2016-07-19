@@ -17,6 +17,7 @@ import { UiState } from '../shared/services/ui.state';
 import { AdminAuthGuard } from '../+admin/services/admin.auth.guard';
 import { UserPermission } from '../shared/services/permission.service';
 import { AssetGuard } from '../+asset/services/asset.guard';
+import { AssetData } from '../+search/services/asset.data.service';
 
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
@@ -49,6 +50,7 @@ export const WAZEE_PROVIDERS = [
   CollectionsService,
   ActiveCollectionService,
   SearchContext,
+  AssetData,
   Authentication,
   TranslateService,
   MultilingualService,

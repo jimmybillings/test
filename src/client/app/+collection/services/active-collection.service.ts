@@ -79,6 +79,7 @@ export class ActiveCollectionService {
       '', { headers: this.apiConfig.authHeaders() })
       .map((res) => {
         this.updateActiveCollectionStore(res.json());
+        this.getItems(collectionId, 300).take(1).subscribe();
         return res.json();
       });
   }
@@ -135,7 +136,7 @@ export class ActiveCollectionService {
             'numberOfPages': assets.numberOfPages
           }
         },
-        thumbnail: assets.items[assets.totalCount - 1].thumbnail
+        thumbnail: assets.items[assets.totalCount - 1].thumbnail || ''
       }
     });
   }

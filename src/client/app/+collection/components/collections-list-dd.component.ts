@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy} from '@angular/core';
-import { ROUTER_DIRECTIVES, Router} from '@angular/router';
+import { ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { CollectionsService} from '../services/collections.service';
 import { ActiveCollectionService} from '../services/active-collection.service';
@@ -25,7 +25,8 @@ export class CollectionListDdComponent {
   constructor(
     public router: Router,
     public collectionsService: CollectionsService,
-    public activeCollection: ActiveCollectionService) {
+    public activeCollection: ActiveCollectionService,
+    public route: ActivatedRoute) {
     this.collections = this.collectionsService.collections;
   }
 
@@ -42,9 +43,7 @@ export class CollectionListDdComponent {
     if (this.router.url.split('/')[1] === 'collection' && this.router.url.split('/')[2] !== undefined) {
       this.navigateToCollectionShow(collection.id);
     } else {
-      this.activeCollection.set(collection.id).take(1).subscribe(payload => {
-        if (collection.assets) this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
-      });
+      this.activeCollection.set(collection.id).take(1).subscribe();
       this.UiState.closeCollectionsList();
     }
   }
