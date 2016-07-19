@@ -58,7 +58,10 @@ export class AssetData {
     params['i'] = (parseFloat(params['i']) - 1).toString();
     let options = this.getAssetSearchOptions(params, this.currentUser.loggedIn());
     return this.http.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options)
-      .map((res: Response) => (this.storeAssets(res.json())));
+      .map((res: Response) => {
+        this.storeAssets(res.json());
+        return res.json();
+      });
   }
 
   public getFilterTree(params: any): Observable<any> {
