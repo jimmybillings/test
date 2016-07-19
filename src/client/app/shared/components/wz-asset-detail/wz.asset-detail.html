@@ -5,11 +5,14 @@
     <div flex-gt-sm="33" flex="100" layout="column" layout-fill="">
       <header class="toolbar-actions">
         <nav class="asset-options" flex layout-align="end stretch">
-          <button md-icon-button title="Sharing Options"><md-icon>share</md-icon></button>
-          <button md-icon-button title="add to cart"><md-icon>shopping_cart</md-icon></button>
           <button md-icon-button title="Download Comp"><md-icon>file_download</md-icon></button>
-          <button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(collection, assetDetail.common[0]); addToast.show()"><md-icon>library_add</md-icon></button>
+          <button md-icon-button title="Sharing Options"><md-icon>share</md-icon></button>
+          <!--<button md-icon-button title="add to cart"><md-icon>shopping_cart</md-icon></button>-->
+          <!--<button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(collection, assetDetail.common[0]); addToast.show()"><md-icon>library_add</md-icon></button>-->
+          <button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(collection, assetDetail.common[0]); addToast.show()"><md-icon>remove_circle</md-icon></button>
+          <!--<button md-icon-button title="Download Comp"><md-icon>file_download</md-icon></button>-->
           <button md-icon-button *ngIf="collection.id === null"  title="Create collection" (click)="showNewCollection(assetDetail.common[0].value); addToast.show()"><md-icon>library_add</md-icon></button>
+          <button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)"><md-icon>mode_comment</md-icon></button>
           <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
         </nav>
       </header>
@@ -40,7 +43,7 @@
 <section class="data-bk">
   <div layout="row" md-scroll-y="" layout-align="center start">
     <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center start">
-      <div md-will-be-tabs md-dynamic-height="" md-border-bottom="">
+      <!--<div md-will-be-tabs md-dynamic-height="" md-border-bottom="">
         <div *ngFor='let key of secondaryKeys' label="translationReady(secondaryMdata[key].name) | uppercase | translate">
           <header class="meta-data-header">
             {{translationReady(secondaryMdata[key].name) | uppercase | translate}}
@@ -58,16 +61,16 @@
             </div>
           </md-content>
         </div>
-      </div>
+      </div>-->
 
-      <!--<md-tab-group>
-        <md-tab *ngFor='let key of secondaryKeys' label="translationReady(secondaryMdata[key].name) | uppercase | translate">
-          <template md-tab-label>{{translationReady(secondaryMdata[key].name) | uppercase | translate}}</template>
+      <md-tab-group>
+        <md-tab *ngFor='let key of secondaryKeys' label="translationReady(secondaryMdata[key].name) | uppercase | translate ">
+          <template md-tab-label>{{translationReady(secondaryMdata[key].name) | uppercase | translate }}</template>
           <template md-tab-content>
             <div class="m-data" *ngFor='let sData of secondaryMdata[key].data; let i=index'>
               <div class="row" *ngFor='let m of sData.section'>
                 <div class="cell">
-                  <h5 class="md-subhead">{{translationReady(m.name) | uppercase | translate}}</h5>
+                  <h5 class="md-subhead">{{translationReady(m.name) | uppercase | translate }}</h5>
                 </div>
                 <div class="cell">
                   <p class="md-body-1">{{m.value}}</p>
@@ -76,7 +79,8 @@
             </div>
           </template>
         </md-tab>
-      </md-tab-group>-->
+      </md-tab-group>
+      
     </div>
   </div>
 </section>

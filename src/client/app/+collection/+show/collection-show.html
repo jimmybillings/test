@@ -29,8 +29,9 @@
                       </span>
                     </h3>
                     <div class="md-caption collection-info">
-                      <span><strong>Owner: </strong>{{collection.owner}}</span>
-                      <!--<span><strong>Created: </strong>{{ date(collection.createdOn) }}</span>-->
+                      <span><strong>Owner: </strong>{{collection.ownerEmailAddress}}</span>
+                      <!--<span><strong>Owner: </strong>{{collection.owner}}</span>-->
+                      <!--<span><strong>Your Role: </strong>{{collection}}</span>-->
                       <span><strong>Created: </strong>{{ date(collection.createdOn) | date:'short' }}</span>
                       <span><strong>Updated: </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
                     </div>
