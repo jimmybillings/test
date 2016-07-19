@@ -1,11 +1,16 @@
-<div flex="100">
-  <wz-asset-detail
+  <asset-detail
     [currentUser]="currentUser"
-    [assetDetail]="assetDetail | async"
+    [asset]="asset | async"
+    [inActiveCollection]="inActiveCollection | async"
     [collection]="activeCollection.data | async"
     (onAddToCollection)="addToCollection($event)"
     (onRemoveFromCollection)="removeFromCollection($event)"
     (onShowNewCollection)="showNewCollection($event)"
   >
-  </wz-asset-detail>
-</div>
+  </asset-detail>
+  <asset-data
+    [currentUser]="currentUser"
+    [asset]="asset | async"
+  >
+  </asset-data>
+
