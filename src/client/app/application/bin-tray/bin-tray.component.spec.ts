@@ -56,21 +56,5 @@ export function main() {
           expect(instance instanceof BinTrayComponent).toBeTruthy();
         });
       }));
-
-    // it('Should create the form object for the search bar', inject([SearchBox], (component) => {
-    //   component.setForm();
-    //   expect(component.searchForm.value).toEqual({ query: '' });
-    // }));
-
-    // it('Should fire an event to logout a user', inject([SearchBox], (component) => {
-    //   component.config = {};
-    //   component.config.pageSize = {};
-    //   component.config.pageSize.value = 25;
-    //   component.router.config([ { path: '/Search', name: 'Search', component: Search }]);
-    //   spyOn(component.router, 'navigate');
-    //   component.onSubmit('Dogs');
-    //   expect(component.router.navigate).toHaveBeenCalledWith(['/Search', { q: 'Dogs', n: 25 }]);
-    // }));
-
   });
 }
