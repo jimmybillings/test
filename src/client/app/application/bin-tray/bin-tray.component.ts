@@ -1,5 +1,5 @@
-import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { WzDropdownComponent } from '../../shared/components/wz-dropdown/wz.dropdown.component';
 import { CollectionListDdComponent } from '../../+collection/components/collections-list-dd.component';
