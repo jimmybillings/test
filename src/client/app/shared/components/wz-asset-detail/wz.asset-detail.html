@@ -1,22 +1,24 @@
 <!-- there probably should be some kind of toggle for theater mode (dark background where preview is VS light)-->
-<section layout="row" flex="" layout-align="center stretch" class="preview-bk theater">
-  <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center stretch" layout-fill="">
-    <wz-player [clipUrl]="assetDetail.clipUrl" [clipThumbnailUrl]="assetDetail.clipThumbnailUrl" flex-gt-sm="66" flex="100" layout="column" layout-fill="" class="responsive-video"></wz-player>
-    <div flex-gt-sm="33" flex="100" layout="column" layout-fill="">
+<section layout="row" flex="" layout-align="center" class="preview-bk theater">
+  <div flex-xl="75" flex-gt-lg="85" flex-gt-md="95" flex="100" layout="row" layout-xs="column">
+    <wz-player [clipUrl]="assetDetail.clipUrl" [clipThumbnailUrl]="assetDetail.clipThumbnailUrl" flex-gt-sm="66" flex="100" layout="column" class="responsive-video"></wz-player>
+    <div flex-gt-sm="33" flex="100" layout="column">
+      
       <header class="toolbar-actions">
         <nav class="asset-options" flex layout-align="end stretch">
           <button md-icon-button title="Download Comp"><md-icon>file_download</md-icon></button>
           <button md-icon-button title="Sharing Options"><md-icon>share</md-icon></button>
           <!--<button md-icon-button title="add to cart"><md-icon>shopping_cart</md-icon></button>-->
-          <!--<button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(collection, assetDetail.common[0]); addToast.show()"><md-icon>library_add</md-icon></button>-->
-          <button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(collection, assetDetail.common[0]); addToast.show()"><md-icon>remove_circle</md-icon></button>
+          <button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(collection, assetDetail.common[0]); addToast.show()"><md-icon>library_add</md-icon></button>
+          <!--<button md-icon-button *ngIf="collection.id !== null" title="Add to {{collection.name}}" (click)="addToCollection(collection, assetDetail.common[0]); addToast.show()"><md-icon>remove_circle</md-icon></button>-->
           <!--<button md-icon-button title="Download Comp"><md-icon>file_download</md-icon></button>-->
           <button md-icon-button *ngIf="collection.id === null"  title="Create collection" (click)="showNewCollection(assetDetail.common[0].value); addToast.show()"><md-icon>library_add</md-icon></button>
           <button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)"><md-icon>mode_comment</md-icon></button>
           <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
         </nav>
       </header>
-      <md-card flex="" layout="column" layout-fill="" class="primary-info">
+
+      <md-card flex="" layout="column" class="primary-info">
         <md-card-content>
           <div flex="" layout="column" class="asset-name md-caption">{{assetDetail.common[5].value}}</div>
           <div layout="row" layout-wrap="">
@@ -36,13 +38,17 @@
           </md-card-actions>
         </md-card-content>
       </md-card>
+
     </div>
   </div>
 </section>
 
+
+
+<!--separate into asset-meta-data-->
 <section class="data-bk">
   <div layout="row" md-scroll-y="" layout-align="center start">
-    <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center start">
+    <div flex-xl="75" flex-gt-lg="85" flex-gt-md="95" flex="100" layout="row" layout-wrap="" layout-align="center start">
       <!--<div md-will-be-tabs md-dynamic-height="" md-border-bottom="">
         <div *ngFor='let key of secondaryKeys' label="translationReady(secondaryMdata[key].name) | uppercase | translate">
           <header class="meta-data-header">
@@ -80,36 +86,9 @@
           </template>
         </md-tab>
       </md-tab-group>
-      
     </div>
   </div>
 </section>
-
-<!--this is the actual section that was working-->
-<!--<section class="data-bk">
-  <div layout="row" md-scroll-y="" layout-align="center start">
-    <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="" layout-align="center start">
-      <md-tabs md-dynamic-height="" md-border-bottom="">
-        <template md-tab *ngFor='let key of secondaryKeys' label="translationReady(secondaryMdata[key].name) | uppercase | translate">
-          <md-content class="md-padding">
-            <div class="m-data" *ngFor='let sData of secondaryMdata[key].data; let i=index'>
-              <div class="row" *ngFor='let m of sData.section'>
-                <div class="cell">
-                  <h5 class="md-subhead">{{translationReady(m.name) | uppercase | translate}}</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{m.value}}</p>
-                </div>
-              </div>
-          </div>
-        </md-content>
-      </template>
-      </md-tabs>
-    </div>
-  </div>
-</section>-->
-
-
 
 
 
