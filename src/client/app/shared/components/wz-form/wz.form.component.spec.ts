@@ -6,10 +6,10 @@ import {
   it,
   beforeEachProviders,
 } from '@angular/core/testing';
-import {provide, PLATFORM_PIPES} from '@angular/core';
-import {WzFormComponent} from './wz.form.component';
-import {FormModel} from './wz.form.model';
-import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
+import { provide, PLATFORM_PIPES } from '@angular/core';
+import { WzFormComponent } from './wz.form.component';
+import { FormModel } from './wz.form.model';
+import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe } from 'ng2-translate/ng2-translate';
 import { Http, BaseRequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { FormBuilder } from '@angular/forms';

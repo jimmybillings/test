@@ -12,8 +12,8 @@ import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { WzAssetDetailComponent} from './wz.asset-detail.component';
 import { TranslatePipe, TranslateLoader, TranslateStaticLoader, TranslateService } from 'ng2-translate/ng2-translate';
-import {createOverlayContainer} from '@angular2-material/core/overlay/overlay-container';
-import {OVERLAY_CONTAINER_TOKEN} from '@angular2-material/core/overlay/overlay';
+import { createOverlayContainer } from '@angular2-material/core/overlay/overlay-container';
+import { OVERLAY_CONTAINER_TOKEN } from '@angular2-material/core/overlay/overlay';
 
 export function main() {
   describe('Asset Detail Component', () => {

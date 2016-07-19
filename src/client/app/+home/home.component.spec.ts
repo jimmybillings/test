@@ -18,14 +18,14 @@ import { UiConfig, config} from '../shared/services/ui.config';
 import { provideStore } from '@ngrx/store';
 import { Observable} from 'rxjs/Rx';
 import { SearchContext} from '../shared/services/search-context.service';
-import { TranslatePipe } from 'ng2-translate/ng2-translate';
+import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe } from 'ng2-translate/ng2-translate';
 
 export function main() {
   describe('Home Component', () => {
 
     class MockUiConfig {
       get(comp: any) {
-        return Observable.of({ 'components': { 'component': 'true' }, 'config': { 'config': 'true' } });
+        return Observable.of({'config': {'pageSize': {'value': 100}}});
       }
     }
     class MockRouter {}
@@ -38,6 +38,11 @@ export function main() {
         useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
         deps: [MockBackend, BaseRequestOptions]
       }),
+      provide(TranslateLoader, {
+        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
+        deps: [Http]
+      }),
+      TranslateService,
       provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
       provideStore({ config: config }),
       CurrentUser,
@@ -45,6 +50,15 @@ export function main() {
       ApiConfig,
       SearchContext
     ]);
+
+    it('Should have router, apiConfig, currentUser, searchContext and uiConfig defined',
+      inject([HomeComponent], (component: HomeComponent) => {
+        expect(component.currentUser).toBeDefined();
+        expect(component.router).toBeDefined();
+        expect(component.apiConfig).toBeDefined();
+        expect(component.currentUser).toBeDefined();
+        expect(component.searchContext).toBeDefined();
+      }));
 
     it('Create instance of home and assign the CurrentUser to an instance variable inside of home',
       inject([TestComponentBuilder], (tcb: any) => {
@@ -59,8 +73,16 @@ export function main() {
       spyOn(component.uiConfig, 'get').and.callThrough();
       component.ngOnInit();
       expect(component.uiConfig.get).toHaveBeenCalledWith('home');
-      expect(component.config).toEqual({ 'config': 'true' });
+      expect(component.config).toEqual({'pageSize': { 'value': 100 }});
     }));
+
+    it('Should have a newSearchContext() method that creates a new search context',
+      inject([HomeComponent], (component: HomeComponent) => {
+        component.ngOnInit();
+        spyOn(component.searchContext, 'new');
+        component.newSearchContext('cat');
+        expect(component.searchContext.new).toHaveBeenCalledWith({ q: 'cat', i: 1, n: 100 });
+      }));
 
   });
 }
