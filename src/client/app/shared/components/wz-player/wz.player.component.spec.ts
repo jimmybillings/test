@@ -1,14 +1,13 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  TestComponentBuilder,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
+} from '../../../imports/test.imports';
 
 import {WzPlayerComponent} from './wz.player.component';
-
 
 export function main() {
   describe('Player Component', () => {

@@ -1,39 +1,21 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
-import { provide, PLATFORM_PIPES} from '@angular/core';
-import { Router } from '@angular/router';
+} from '../../../imports/test.imports';
+
 import { WzAssetListComponent} from './wz.asset-list.component';
-import { createOverlayContainer } from '@angular2-material/core/overlay/overlay-container';
-import { OVERLAY_CONTAINER_TOKEN } from '@angular2-material/core/overlay/overlay';
-import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe } from 'ng2-translate/ng2-translate';
-import { Http, BaseRequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 
 export function main() {
   describe('Asset List Component', () => {
-    class MockRouter { }
+
     beforeEachProviders(() => [
-      WzAssetListComponent,
-      TranslateService,
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provide(TranslateLoader, {
-        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-        deps: [Http]
-      }),
-      { provide: Router, useClass: MockRouter },
-      provide(OVERLAY_CONTAINER_TOKEN, {useValue: createOverlayContainer()}),
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true})
+      ...beforeEachProvidersArray,
+      WzAssetListComponent
     ]);
 
     it('Create instance of AssetList',

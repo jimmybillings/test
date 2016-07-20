@@ -5,7 +5,7 @@ import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { provide, PLATFORM_PIPES, Renderer } from '@angular/core';
 import { TranslatePipe}  from 'ng2-translate/ng2-translate';
-import { provideForms, disableDeprecatedForms } from '@angular/forms';
+import { FormBuilder, provideForms, disableDeprecatedForms } from '@angular/forms';
 
 // STORES & PROVIDERS
 import { WAZEE_STORES, WAZEE_PROVIDERS } from './wazee';
@@ -42,6 +42,7 @@ export const beforeEachProvidersArray: Array<any> = [
   ConfigService,
   AdminService,
   User,
+  FormBuilder,
   disableDeprecatedForms(),
   provideForms(),
   Renderer,

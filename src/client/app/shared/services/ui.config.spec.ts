@@ -1,30 +1,23 @@
 import {
+  beforeEachProvidersArray,
+  beforeEachProviders,
+  ResponseOptions,
+  MockBackend,
+  Response,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
-import { provide } from '@angular/core';
-import { UiConfig, config } from './ui.config';
-import { ApiConfig } from './api.config';
-import { BaseRequestOptions, Http, Response, ResponseOptions} from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
-import { provideStore } from '@ngrx/store';
+} from '../../imports/test.imports';
+
+import { UiConfig } from './ui.config';
 
 export function main() {
   describe('UI config', () => {
 
     beforeEachProviders(() => [
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provideStore({ config: config }),
-      UiConfig,
-      ApiConfig
+      ...beforeEachProvidersArray,
+      UiConfig
     ]);
 
     it('Should set the api endpoint to get a UI configuration object',

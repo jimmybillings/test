@@ -1,29 +1,22 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
-import { provide, PLATFORM_PIPES} from '@angular/core';
-import { TranslatePipe} from 'ng2-translate/ng2-translate';
-import { AppNavComponent} from './app-nav.component';
-import { Router } from '@angular/router';
-import { UiConfig} from '../../shared/services/ui.config';
+} from '../../imports/test.imports';
+
+import { AppNavComponent } from './app-nav.component';
+
 
 export function main() {
   describe('App Nav Component', () => {
-    class MockRouter {
-      navigate(params: any) {
-        return params;
-      }
-    }
+
     beforeEachProviders(() => [
-      AppNavComponent,
-      { provide: Router, useClass: MockRouter },
-      UiConfig,
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
+      ...beforeEachProvidersArray,
+      AppNavComponent
     ]);
 
     it('Should have a header instance',

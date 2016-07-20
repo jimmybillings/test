@@ -1,27 +1,19 @@
 import {
+  beforeEachProvidersArray,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
-import { provideStore } from '@ngrx/store';
+} from '../../imports/test.imports';
+
 import { Error } from './error.service';
-import { CurrentUser, currentUser} from '../services/current-user.model';
-import {Router} from '@angular/router';
 
 export function main() {
   describe('Error Service', () => {
-    class MockRouter {
-      navigate(params: any) {
-        return params;
-      }
-    }
+
     beforeEachProviders(() => [
-      Error,
-      { provide: Router, useClass: MockRouter },
-      CurrentUser,
-      provideStore({ currentUser }),
+      ...beforeEachProvidersArray
     ]);
 
     it('Should rediect to the login page on a 401 response', inject([Error], (service: Error) => {
@@ -32,6 +24,4 @@ export function main() {
     }));
 
   });
-
-
 }

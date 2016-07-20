@@ -1,12 +1,13 @@
 import {
+  beforeEachProviders,
   describe,
-  expect,
+  Headers,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
+} from '../../imports/test.imports';
+
 import { ApiConfig } from './api.config';
-import { Headers} from '@angular/http';
 
 export function main() {
   describe('Api config', () => {

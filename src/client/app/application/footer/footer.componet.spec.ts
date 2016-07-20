@@ -1,39 +1,20 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
-import { LocationStrategy } from '@angular/common';
-import { provide, PLATFORM_PIPES } from '@angular/core';
+} from '../../imports/test.imports';
+
 import { FooterComponent } from './footer.component';
-import { Router, ActivatedRoute } from '@angular/router';
-import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe } from 'ng2-translate/ng2-translate';
-import { Http, BaseRequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 
 export function main() {
   describe('Footer Component', () => {
-    class MockRouter { }
-    class MockActivatedRoute { }
+
     beforeEachProviders(() => [
-      { provide: Router, useClass: MockRouter },
-      { provide: ActivatedRoute, useClass: MockActivatedRoute },
-      TranslateService,
-      LocationStrategy,
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provide(TranslateLoader, {
-        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-        deps: [Http]
-      }),
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
+      ...beforeEachProvidersArray,
       FooterComponent
     ]);
 

@@ -1,35 +1,21 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
+} from '../../../imports/test.imports';
 
 import { WzNotificationComponent } from './wz.notification.component';
-import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from 'ng2-translate/ng2-translate';
-import { provide, PLATFORM_PIPES} from '@angular/core';
-import { BaseRequestOptions, Http } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 
 export function main() {
   describe('Notification Component', () => {
 
     beforeEachProviders(() => [
-      WzNotificationComponent,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provide(TranslateLoader, {
-        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-        deps: [Http]
-      }),
-      TranslateService,
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
-      MockBackend,
-      BaseRequestOptions
+      ...beforeEachProvidersArray,
+      WzNotificationComponent
     ]);
 
     it('Should have a Notification instance',

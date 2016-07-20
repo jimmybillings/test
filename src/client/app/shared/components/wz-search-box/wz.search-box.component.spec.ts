@@ -1,41 +1,21 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { MockBackend } from '@angular/http/testing';
-import { provide, PLATFORM_PIPES} from '@angular/core';
-import { BaseRequestOptions, Http } from '@angular/http';
-import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
+} from '../../../imports/test.imports';
+
 import {WzSearchBoxComponent} from './wz.search-box.component';
-import {UiConfig} from '../../services/ui.config';
-import { FormBuilder } from '@angular/forms';
 
 export function main() {
   describe('Search Box Component', () => {
-    class Search { }
-    class MockRouter { }
+
     beforeEachProviders(() => [
-      WzSearchBoxComponent,
-      FormBuilder,
-      { provide: Router, useClass: MockRouter },
-      BaseRequestOptions,
-      MockBackend,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      TranslateService,
-      provide(TranslateLoader, {
-        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-        deps: [Http]
-      }),
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
-      UiConfig
+      ...beforeEachProvidersArray,
+      WzSearchBoxComponent
     ]);
 
     it('Should have a search box instance',
