@@ -5,7 +5,7 @@ import {
   describe,
   inject,
   expect,
-  it,
+  it
 } from '../../../imports/test.imports';
 
 import { WzListComponent } from './wz.list.component';

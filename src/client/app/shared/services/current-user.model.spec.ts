@@ -3,7 +3,7 @@ import {
   describe,
   inject,
   expect,
-  it,
+  it
 } from '../../imports/test.imports';
 
 import { provideStore } from '@ngrx/store';

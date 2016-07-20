@@ -4,7 +4,7 @@ import {
   describe,
   inject,
   expect,
-  it,
+  it
 } from '../../imports/test.imports';
 
 import { Error } from './error.service';

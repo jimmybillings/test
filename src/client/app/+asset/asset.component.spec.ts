@@ -8,7 +8,7 @@ import {
   inject,
   expect,
   Store,
-  it,
+  it
 } from '../imports/test.imports';
 
 import { AssetComponent } from './asset.component';

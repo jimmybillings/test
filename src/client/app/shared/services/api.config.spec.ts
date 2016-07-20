@@ -4,7 +4,7 @@ import {
   Headers,
   inject,
   expect,
-  it,
+  it
 } from '../../imports/test.imports';
 
 import { ApiConfig } from './api.config';

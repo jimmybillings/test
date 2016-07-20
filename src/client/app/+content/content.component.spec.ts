@@ -7,7 +7,7 @@ import {
   describe,
   inject,
   expect,
-  it,
+  it
 } from '../imports/test.imports';
 
 import { ContentComponent} from './content.component';

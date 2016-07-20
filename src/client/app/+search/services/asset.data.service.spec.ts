@@ -10,7 +10,7 @@ import {
   Headers,
   inject,
   expect,
-  it,
+  it
 } from '../../imports/test.imports';
 
 import { AssetData } from './asset.data.service';

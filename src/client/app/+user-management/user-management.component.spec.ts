@@ -5,7 +5,7 @@ import {
   describe,
   inject,
   expect,
-  it,
+  it
 } from '../imports/test.imports';
 
 import { UserManagementComponent } from './user-management.component';

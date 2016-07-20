@@ -7,7 +7,7 @@ import {
   describe,
   inject,
   expect,
-  it,
+  it
 } from '../../imports/test.imports';
 
 import { AssetService } from './asset.service';

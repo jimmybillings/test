@@ -6,7 +6,7 @@ import {
   describe,
   inject,
   expect,
-  it,
+  it
 } from '../../imports/test.imports';
 
 import { ConfigComponent } from './config.component';
