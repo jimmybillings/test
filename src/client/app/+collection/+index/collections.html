@@ -33,7 +33,7 @@
             <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" (click)="selectActiveCollection(collection)" layout-padding layout-fill>
               <h3 class="md-headline">{{collection.name}}
                 <span class="asset-count">
-                  <span class="count">{{collection.assetsCount}}</span>
+                  <span class="count">{{collection.assetsCount || 0}}</span>
                 </span>
               </h3>
               <div class="md-caption collection-info">

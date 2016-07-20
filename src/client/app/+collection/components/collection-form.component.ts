@@ -31,25 +31,23 @@ export class CollectionFormComponent {
   public createCollection(collection: Collection): void {
     let asset = {};
     this.assetForNewCollection = JSON.parse(sessionStorage.getItem('assetForNewCollection'));
-    (collection.tags) ? collection.tags = collection.tags.split(/\s*,\s*/) : collection.tags = [];
-    this.assetForNewCollection ? asset = this.assetForNewCollection : asset = null;
+    collection.tags = (collection.tags) ? collection.tags.split(/\s*,\s*/) : [];
+    asset = (this.assetForNewCollection) ? this.assetForNewCollection : sessionStorage.removeItem('assetForNewCollection');
     this.createAndAddAsset(collection, asset);
     // Once we solve form resetting/validation for all forms this reset can be removed.
     let cForm = <HTMLFormElement>document.querySelector('wz-form form');
     cForm.reset();
-    if (this.assetForNewCollection) sessionStorage.removeItem('assetForNewCollection');
   }
 
   public createAndAddAsset(collection: Collection, asset: any): void {
-    this.collectionsService.createCollection(collection).take(1).subscribe(created => {
-      this.collectionsService.createCollectionInStore(created);
-      this.activeCollection.updateActiveCollectionStore(created);
-      this.activeCollection.set(created.id).take(1).subscribe(focused => {
-        if (asset !== null) {
-          this.activeCollection.addAsset(created.id, asset).take(1).subscribe(collection => {
-            this.activeCollection.getItems(collection.id, 100).take(1).subscribe();
-          });
-        }
+    this.collectionsService.createCollection(collection).take(1).subscribe(collection => {
+      this.activeCollection.updateActiveCollectionStore(collection);
+      this.activeCollection.set(collection.id).take(1).subscribe(focused => {
+        // if (asset !== null) {
+          // this.activeCollection.addAsset(collection.id, asset).take(1).subscribe(collection => {
+        this.activeCollection.getItems(collection.id, 100).take(1).subscribe();
+          // });
+        // }
       });
     });
     this.UiState.closeNewCollection();

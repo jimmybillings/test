@@ -6,7 +6,7 @@ import { PLATFORM_DIRECTIVES, provide, Provider } from '@angular/core';
 // Angular 2 Router
 // import { ROUTER_DIRECTIVES } from '@angular/router';
 
-import { REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { REACTIVE_FORM_DIRECTIVES, FORM_DIRECTIVES } from '@angular/forms';
 // Angular 2 Material 2
 // TODO(gdi2290): replace with @angular2-material/all
 import { MATERIAL_DIRECTIVES } from './material';
@@ -15,7 +15,7 @@ import { MATERIAL_DIRECTIVES } from './material';
 export const APPLICATION_DIRECTIVES = [
   // ...ROUTER_DIRECTIVES,
   ...MATERIAL_DIRECTIVES,
-  ...REACTIVE_FORM_DIRECTIVES
+  ...REACTIVE_FORM_DIRECTIVES, FORM_DIRECTIVES
 ];
 
 export const DIRECTIVES:Provider[] = [

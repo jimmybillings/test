@@ -57,12 +57,10 @@ export function main() {
           instance.items = validItems();
           instance.ngOnInit();
           instance.formSubmit.subscribe((x: any) => {
-            expect(x.value).toEqual({ firstName: 'test', lastName: 'test', emailAddress: 'email@email.com', password: 'Test1233' });
+            expect(x).toEqual({ firstName: 'test', lastName: 'test', emailAddress: 'email@email.com', password: 'Test1233' });
           });
           expect(instance.form.valid).toBeTruthy();
-          spyOn(instance, 'resetForm');
           instance.onSubmit(instance.form);
-          expect(instance.resetForm).toHaveBeenCalled();
         });
       })
     );

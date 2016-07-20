@@ -30,8 +30,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public assets: any;
   public errorMessage: string;
   public config: Object;
-  private focusedCollectionStoreSubscription: Subscription;
-  private routeSubscription: Subscription;
+  private activeCollectionSubscription: Subscription;
   public date(date: any): Date {
     if (date) {
       return new Date(date);
@@ -52,21 +51,11 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.routeSubscription = this.route.params.subscribe(params => {
-      this.activeCollection.set(params['id']).take(1).subscribe(collection => {
-        this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
-      });
-
-      this.focusedCollectionStoreSubscription = this.activeCollection.data.subscribe(activeCollection => {
-        this.collection = activeCollection;
-        this.assets = this.collection.assets;
-      });
-    });
+    this.activeCollectionSubscription = this.activeCollection.data.subscribe(collection => this.collection = collection);
   }
 
   ngOnDestroy() {
-    this.routeSubscription.unsubscribe();
-    this.focusedCollectionStoreSubscription.unsubscribe();
+    this.activeCollectionSubscription.unsubscribe();
   }
 
   public showAsset(asset: any): void {
@@ -76,8 +65,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public removeFromCollection(params: any): void {
     let collection: any = params.collection;
     let uuid: any = params.collection.assets.items.find((item: any) => parseInt(item.assetId) === parseInt(params.asset.assetId)).uuid;
-    if(uuid && params.asset.assetId) {
-      this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
-    }
+    if(uuid && params.asset.assetId) this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
   }
 }

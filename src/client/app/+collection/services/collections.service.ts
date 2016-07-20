@@ -32,9 +32,9 @@ export const collections: Reducer<any> = (state: Collections = collectionsState,
       });
       return Object.assign({}, state);
     case 'DELETE_COLLECTION':
-      return Object.assign({}, state, state.items = state.items.filter((collection: Collection) => {
-        return collection.id !== action.payload.id;
-      }));
+      let index = state.items.map((collection: Collection) => collection.id).indexOf(action.payload);
+      if (index > -1) state.items.splice(index, 1);
+      return Object.assign({}, state);
     case 'RESET_COLLECTIONS':
       return Object.assign({}, collectionsState);
     default:
@@ -67,18 +67,27 @@ export class CollectionsService {
 
   public loadCollections(): Observable<any> {
     return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/fetchBy?access-level=all`,
-      { headers: this.apiConfig.authHeaders() }).map(res => this.storeCollections(res.json()));
+      { headers: this.apiConfig.authHeaders() }).map(res => {
+        this.storeCollections(res.json());
+        return res.json();
+      });
   }
 
   public createCollection(collection: Collection): Observable<any> {
     return this.http.post(this.apiUrls.CollectionBaseUrl,
       JSON.stringify(collection), { headers: this.apiConfig.authHeaders() })
-      .map(res => res.json());
+      .map(res => {
+        this.createCollectionInStore(res.json());
+        return res.json();
+      });
   }
 
   public deleteCollection(collectionId: number): Observable<any> {
     return this.http.delete(`${this.apiUrls.CollectionBaseUrl}/${collectionId}`,
-      { headers: this.apiConfig.authHeaders() });
+      { headers: this.apiConfig.authHeaders() })
+      .map(() => {
+        this.deleteCollectionFromStore(collectionId);
+      });
   }
 
   public destroyCollections(): void {
@@ -86,8 +95,8 @@ export class CollectionsService {
     this.activeCollection.resetStore();
   }
 
-  public deleteCollectionFromStore(payload: Collection): void {
-    this.store.dispatch({ type: 'DELETE_COLLECTION', payload });
+  public deleteCollectionFromStore(collectionId: number): void {
+    this.store.dispatch({ type: 'DELETE_COLLECTION', payload: collectionId });
   }
 
   public createCollectionInStore(payload: Collection): void {
@@ -95,11 +104,7 @@ export class CollectionsService {
   }
 
   public updateCollectionInStore(collection: Collection): void {
-    // search.items = search.items === undefined ? [] : search.items;
-    // let thumbnail = collection.thumbnail ? collection.thumbnail : search.items[search.totalCount - 1].thumbnail;
-    this.store.dispatch({
-      type: 'UPDATE_COLLECTION', payload: collection
-    });
+    this.store.dispatch({ type: 'UPDATE_COLLECTION', payload: collection });
   }
 
   public storeCollections(payload: any): void {

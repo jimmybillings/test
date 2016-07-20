@@ -14,6 +14,7 @@ import { ADMIN_ROUTES} from './+admin/admin.routes';
 import { AssetGuard } from './+asset/services/asset.guard';
 import { AdminAuthGuard} from './+admin/services/admin.auth.guard';
 import { AssetResolver } from './+asset/services/asset.resolver';
+import { CollectionShowResolver } from './+collection/services/collection-show.resolver';
 import { SearchResolver } from './+search/services/search.resolver';
 import { RouterConfig} from '@angular/router';
 
@@ -25,7 +26,7 @@ export const APP_ROUTES: RouterConfig = [
   { path: 'search', component: SearchComponent, resolve: {search: SearchResolver} },
   { path: 'asset/:name', component: AssetComponent, resolve: {asset: AssetResolver}, canActivate: [AssetGuard] },
   { path: 'collection', component: CollectionsComponent },
-  { path: 'collection/:id', component: CollectionShowComponent },
+  { path: 'collection/:id', component: CollectionShowComponent, resolve: {collection: CollectionShowResolver} },
   { path: 'content/:page', component: ContentComponent },
   { path: 'admin', component: AdminComponent, children: ADMIN_ROUTES, canActivate: [AdminAuthGuard] }
 ];

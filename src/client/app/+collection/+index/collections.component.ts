@@ -72,23 +72,23 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public deleteCollection(collection: Collection): void {
     this.collectionsService.deleteCollection(collection.id).take(1).subscribe(payload => {
       let collectionLength: number;
-      this.collectionsService.deleteCollectionFromStore(collection);
       this.collectionsService.collections.take(1).subscribe(collection => collectionLength = collection.items.length);
 
       // if we are deleting current active, we need to get the new active from the server.
-      if (this.isActiveCollection(collection) && collectionLength > 0) this.getActiveCollection();
+      if (this.isActiveCollection(collection) && collectionLength > 0) {
+        this.activeCollection.get().take(1).subscribe((collection) => {
+          this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
+        });
+      }
       // if we delete the last collection, reset the store to initial values (no active collection)
-      if (collectionLength === 0) this.collectionsService.destroyCollections();
+      if (collectionLength === 0) {
+        this.collectionsService.destroyCollections();
+        this.activeCollection.get().take(1).subscribe((collection) => {
+          this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
+          this.collectionsService.loadCollections().take(1).subscribe();
+        });
+      }
     });
   }
 
-  private getActiveCollection(): void {
-    this.activeCollection.get().take(1).subscribe((collection) => {
-      this.updateActiveCollectionAssets(collection);
-    });
-  }
-
-  private updateActiveCollectionAssets(collection: any) {
-    this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
-  }
 }

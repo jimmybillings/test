@@ -17,6 +17,7 @@ import { provideRouter, RouterConfig } from '@angular/router';
 import { MATERIAL_PROVIDERS } from './material';
 import { AssetResolver } from '../+asset/services/asset.resolver';
 import { SearchResolver } from '../+search/services/search.resolver';
+import { CollectionShowResolver } from '../+collection/services/collection-show.resolver';
 
 // Wazee 
 import { WAZEE_PROVIDERS, WAZEE_ROUTES } from './wazee';
@@ -28,6 +29,7 @@ import { WAZEE_PROVIDERS, WAZEE_ROUTES } from './wazee';
 export const APP_ROUTER_PROVIDERS: RouterConfig = [
   AssetResolver,
   SearchResolver,
+  CollectionShowResolver,
   provideRouter(WAZEE_ROUTES),
 ];
 

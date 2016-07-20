@@ -1,12 +1,12 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
   CurrentUser,
   describe,
   inject,
   expect,
-  it
+  it,
+  addProviders
 } from './imports/test.imports';
 
 import { AppComponent} from './app.component';
@@ -14,10 +14,12 @@ import { AppComponent} from './app.component';
 export function main() {
   describe('App Component', () => {
     (<any>window).portal = 'core';
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      AppComponent,
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        AppComponent
+      ]);
+    });
 
     it('Create instance of app and assign the CurrentUser to an instance variable inside of app',
       inject([TestComponentBuilder], (tcb: any) => {
