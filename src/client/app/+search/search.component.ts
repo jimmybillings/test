@@ -33,6 +33,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public filterIds: Array<string> = new Array();
   public filterValues: Array<string> = new Array();
   public collections: Observable<Collections>;
+  public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
@@ -74,20 +75,18 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public addToCollection(params: any): void {
     this.activeCollection.addAsset(params.collection.id, params.asset).take(1).subscribe((asset) => {
-      this.activeCollection.addAssetToStore(params.asset);
+      console.log(asset);
+      console.log(params.asset);
+      this.activeCollection.addAssetToStore(Object.assign(params.asset, asset.list[0]));
     });
   }
 
   public removeFromCollection(params: any): void {
     let collection: Collection = params.collection;
-    console.log(params.asset.assetId);
-    console.log(collection);
-    // this.collectionsService.removeAssetsFromCollection(collection.id, params.asset).take(1).subscribe(payload => {
-    //   this.collectionsService.getCollectionItems(collection.id, 300).take(1).subscribe(search => {
-    //     this.collectionsService.updateFocusedCollectionAssets(payload, search);
-    //     this.collectionsService.updateCollectionInStore(payload, search);
-    //   });
-    // });
+    let uuid: any = params.collection.assets.items.find((item: any) => item.assetId === params.asset.assetId).uuid;
+    if(uuid && params.asset.assetId) {
+      this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
+    }
   }
 
   public showNewCollection(asset: any): void {

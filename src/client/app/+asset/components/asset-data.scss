@@ -1,0 +1,102 @@
+
+.data-bk {
+  background-color: transparent !important;
+  & > div > div {
+    background: rgba(md-color($md-background, background),.7);
+  }
+  md-tab-group {
+    min-width: 100%;
+    & > div {
+      margin-bottom: 0;
+      margin-top: rem(3.6);
+      margin-left: rem(3.6);
+      margin-right: rem(3.6);
+      &:last-child {
+        margin-bottom: rem(4.6);
+      }
+    }
+    .md-tab-header{
+      background-color: md-color($md-background, card);
+      margin-top: 0;
+      margin-left: 0;
+      margin-right: 0;
+      text-transform: uppercase;
+      border-width: 0 0 1px 0;
+      border-style: solid; 
+      border-color: rgba(md-color($md-grey, 400),.5);
+      .md-tab-label {
+        line-height: rem(5.6);
+        height: rem(5.2);
+        &:focus {
+          background-color: rgba(md-color($md-primary, 300), .07);
+        }
+        &.md-active {
+          opacity: 1;
+          color: md-color($md-primary, 500);
+        }
+      }
+      md-ink-bar {
+        background-color: md-color($md-primary, 500);
+      }
+    }
+    md-content {
+      min-width: 100%;
+      m-data {
+        min-width: 100%;
+      }
+    }
+  }
+  h1:first-child {
+    margin-top: 0;
+  }
+}
+.m-data {
+  text-align: left;
+  overflow: hidden;
+  padding: 0;
+  background-color: rgba(md-color($md-grey, 100), 1);
+  border-top: 1px solid rgba(md-color($md-grey, 400),.5);
+  display: table;
+  min-width: 100%;
+  margin-top: rem(3.7);
+  &:first-child {
+    margin-top: 0;
+  }
+  & > .row {
+    display: table-row;
+    .cell {
+      border-right: 1px solid rgba(md-color($md-grey, 400),.5);
+      border-bottom: 1px solid rgba(md-color($md-grey, 400),.5);
+      display: table-cell;
+      padding: 10px 20px 10px 12px;
+      vertical-align: top;
+      p {
+        margin: 0;
+        line-height: 24px;
+        opacity: .9;
+      }
+    }
+    .cell:first-child {
+      border-left: 1px solid rgba(md-color($md-grey, 400),.5);
+      background: rgba(md-color($md-grey, 300),.6);
+      text-align: right;
+      white-space: nowrap;
+      padding: 10px 12px 10px 40px;
+      width: 33%;
+      h5 {
+        margin: 0;
+      }
+    }
+  }
+  & > .row.divider {
+    background-color: md-color($md-grey, 100);
+    .cell {
+      padding: 18px 0;
+      border-right-width: 0;
+      &:first-child {
+        border-left-width: 0;
+        background: transparent;
+      }
+    }
+  }
+}

@@ -5,23 +5,23 @@ import {
   describe,
   inject,
   expect,
-  it,
-} from '../../../imports/test.imports';
+  it
+} from '../../imports/test.imports';
 
-import { WzAssetDetailComponent} from './wz.asset-detail.component';
+import { AssetDetailComponent} from './asset-detail.component';
 
 export function main() {
   describe('Asset Detail Component', () => {
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
-      WzAssetDetailComponent
+      AssetDetailComponent
     ]);
 
     it('Create instance of AssetDetail',
       inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(WzAssetDetailComponent).then((fixture: any) => {
+        tcb.createAsync(AssetDetailComponent).then((fixture: any) => {
           let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof WzAssetDetailComponent).toBeTruthy();
+          expect(instance instanceof AssetDetailComponent).toBeTruthy();
         });
       }));
   });
