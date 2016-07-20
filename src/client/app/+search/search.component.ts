@@ -75,8 +75,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public addToCollection(params: any): void {
     this.activeCollection.addAsset(params.collection.id, params.asset).take(1).subscribe((asset) => {
-      console.log(asset);
-      console.log(params.asset);
       this.activeCollection.addAssetToStore(Object.assign(params.asset, asset.list[0]));
     });
   }

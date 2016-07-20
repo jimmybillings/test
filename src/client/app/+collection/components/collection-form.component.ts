@@ -46,8 +46,8 @@ export class CollectionFormComponent {
       this.activeCollection.updateActiveCollectionStore(created);
       this.activeCollection.set(created.id).take(1).subscribe(focused => {
         if (asset !== null) {
-          this.activeCollection.addAsset(created.id, asset).take(1).subscribe(payload => {
-            this.activeCollection.getItems(payload.id, 100).take(1).subscribe();
+          this.activeCollection.addAsset(created.id, asset).take(1).subscribe(collection => {
+            this.activeCollection.getItems(collection.id, 100).take(1).subscribe();
           });
         }
       });

@@ -43,7 +43,9 @@ export class CollectionListDdComponent {
     if (this.router.url.split('/')[1] === 'collection' && this.router.url.split('/')[2] !== undefined) {
       this.navigateToCollectionShow(collection.id);
     } else {
-      this.activeCollection.set(collection.id).take(1).subscribe();
+      this.activeCollection.set(collection.id).take(1).subscribe(() => {
+        this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
+      });
       this.UiState.closeCollectionsList();
     }
   }

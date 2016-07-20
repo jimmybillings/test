@@ -39,8 +39,9 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.collectionsService.loadCollections().take(1).subscribe();
     this.collectionStoreSubscription =
-      this.collectionsService.collections.subscribe(collections => {console.log(collections);this.collections = collections;});
+      this.collectionsService.collections.subscribe(collections => this.collections = collections);
     this.activeCollectionStoreSubscription =
       this.activeCollection.data.subscribe(activeCollection => this.activeCollectionStore = activeCollection);
   }
@@ -55,7 +56,9 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public selectActiveCollection(collection: Collection): void {
-    this.activeCollection.set(collection.id).take(1).subscribe();
+    this.activeCollection.set(collection.id).take(1).subscribe(() => {
+      this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
+    });
   }
 
   public isActiveCollection(collection: Collection): boolean {
@@ -80,7 +83,9 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   private getActiveCollection(): void {
-    this.activeCollection.get().take(1).subscribe(collection => this.updateActiveCollectionAssets(collection));
+    this.activeCollection.get().take(1).subscribe((collection) => {
+      this.updateActiveCollectionAssets(collection);
+    });
   }
 
   private updateActiveCollectionAssets(collection: any) {
