@@ -1,70 +1,22 @@
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
+  CurrentUser,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
+} from './imports/test.imports';
 
-import { provide, Renderer, PLATFORM_PIPES} from '@angular/core';
-import { Router, RouterOutletMap, ActivatedRoute } from '@angular/router';
-import { TestComponentBuilder } from '@angular/compiler/testing';
-import { BaseRequestOptions, Http } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
-import { provideStore } from '@ngrx/store';
-import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from 'ng2-translate/ng2-translate';
-import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
 import { AppComponent} from './app.component';
-import { CurrentUser} from './shared/services/current-user.model';
-import { ApiConfig} from './shared/services/api.config';
-import { UiState, uiState } from './shared/services/ui.state';
-import { UiConfig, config} from './shared/services/ui.config';
-import { Authentication} from './+user-management/services/authentication.data.service';
-import { MultilingualService, multilingualReducer} from './shared/services/multilingual.service';
-import { SearchContext} from './shared/services/search-context.service';
-import { CollectionsService} from './+collection/services/collections.service';
-import { ActiveCollectionService } from './+collection/services/active-collection.service';
-import { UserPermission } from './shared/services/permission.service';
 
 export function main() {
   describe('App Component', () => {
     (<any>window).portal = 'core';
-    class MockRouter {
-      navigate(params: any) {
-        return params;
-      }
-    }
-    class MockActivatedRoute { }
     beforeEachProviders(() => [
+      ...beforeEachProvidersArray,
       AppComponent,
-      RouterOutletMap,
-      { provide: Router, useClass: MockRouter },
-      { provide: ActivatedRoute, useClass: MockActivatedRoute },
-      MockBackend,
-      BaseRequestOptions,
-      Renderer,
-      UserPermission,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
-      provide(TranslateLoader, {
-        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-        deps: [Http]
-      }),
-      TranslateService,
-      MultilingualService,
-      provideStore({ config: config, i18n: multilingualReducer, uiState }),
-      CurrentUser,
-      ApiConfig,
-      Authentication,
-      UiConfig,
-      SearchContext,
-      CollectionsService,
-      ActiveCollectionService,
-      UiState,
-      WzNotificationService
     ]);
 
     it('Create instance of app and assign the CurrentUser to an instance variable inside of app',

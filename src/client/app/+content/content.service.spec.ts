@@ -1,32 +1,23 @@
 import {
+  beforeEachProvidersArray,
+  beforeEachProviders,
+  ResponseOptions,
+  MockBackend,
+  Response,
   describe,
-  expect,
   inject,
+  expect,
   it,
-  beforeEachProviders
-} from '@angular/core/testing';
-import { provide } from '@angular/core';
+} from '../imports/test.imports';
+
 import { ContentService } from './content.service';
-import { ApiConfig } from '../shared/services/api.config';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http, ResponseOptions, Response } from '@angular/http';
-import {ActivatedRoute, Router} from '@angular/router';
 
 export function main() {
   describe('Content service', () => {
-    class MockRouter { }
-    class MockActivatedRoute { }
+
     beforeEachProviders(() => [
-      { provide: Router, useClass: MockRouter },
-      { provide: ActivatedRoute, useClass: MockActivatedRoute },
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      ContentService,
-      ApiConfig
+      ...beforeEachProvidersArray,
+      ContentService
     ]);
 
     it('Should formulate a correct query url for a CMS page and map the response body.',

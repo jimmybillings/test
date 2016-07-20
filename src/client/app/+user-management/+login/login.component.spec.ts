@@ -21,11 +21,6 @@ export function main() {
         return Observable.of(res);
       }
     }
-    class MockRouter {
-      navigate() {
-        return true;
-      }
-    }
 
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,

@@ -12,8 +12,7 @@ import { AdminComponent } from './admin.component';
 
 export function main() {
   describe('Admin Component', () => {
-    class MockRouter { }
-    class MockActivatedRoute { }
+
     beforeEachProviders(() => [
       ...beforeEachProvidersArray
     ]);
