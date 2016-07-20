@@ -39,7 +39,13 @@ export const activeCollection: Reducer<any> = (state = activeState(), action: Ac
     case 'RESET_ACTIVE_COLLECTION':
       return Object.assign({}, activeState());
     case 'ADD_ASSET_TO_COLLECTION':
+      state.assets.pagination.totalCount++;
       return Object.assign({}, state, state.assets.items.unshift(action.payload));
+    case 'REMOVE_ASSET_FROM_COLLECTION':
+      let index = state.assets.items.map((item: any) => item.assetId).indexOf(action.payload.assetId);
+      if (index > -1) state.assets.items.splice(index, 1);
+      state.assets.pagination.totalCount--;
+      return Object.assign({}, state);
     default:
       return state;
   }
@@ -93,11 +99,14 @@ export class ActiveCollectionService {
       });
   }
 
-  public removeAsset(collectionId: any, asset: any): Observable<any> {
-    return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/addAssets`,
-      `{"list": [{"assetId":${asset.assetId}}]}`,
+  public removeAsset(collectionId: any, assetId: any, uuid: any): Observable<any> {
+    return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/removeAssets`,
+      {"list": [{"assetId":assetId, "uuid":uuid}]},
       { headers: this.apiConfig.authHeaders() })
-      .map(res => res.json());
+      .map(res => {
+        this.removeAssetFromStore(res.json().list[0])
+        return res.json()
+      });
   }
 
   public getItems(collectionId: number, numberPerPg: number, pgIndex: number = 0): Observable<any> {
@@ -111,6 +120,10 @@ export class ActiveCollectionService {
 
   public addAssetToStore(asset: any) {
     this.store.dispatch({ type: 'ADD_ASSET_TO_COLLECTION', payload: asset });
+  }
+
+  public removeAssetFromStore(asset: any) {
+    this.store.dispatch({ type: 'REMOVE_ASSET_FROM_COLLECTION', payload: asset });
   }
 
   public updateActiveCollectionStore(collection: Collection): void {
@@ -136,7 +149,7 @@ export class ActiveCollectionService {
             'numberOfPages': assets.numberOfPages
           }
         },
-        thumbnail: assets.items[assets.totalCount - 1].thumbnail || ''
+        thumbnail: (assets.items.length > 0) ? assets.items[assets.totalCount - 1].thumbnail : ''
       }
     });
   }
