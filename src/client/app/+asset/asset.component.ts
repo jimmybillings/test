@@ -49,13 +49,12 @@ export class AssetComponent {
   }
 
   public removeFromCollection(params: any): void {
-    // let collection: Collection = params.collection;
-    // this.collectionsService.removeAssetsFromCollection(collection.id, params.asset).take(1).subscribe(payload => {
-    //   this.collectionsService.getCollectionItems(collection.id, 300).take(1).subscribe(search => {
-    //     this.collectionsService.updateFocusedCollectionAssets(payload, search);
-    //     this.collectionsService.updateCollectionInStore(payload, search);
-    //   });
-    // });
+    console.log(params);
+    let collection: any = params.collection;
+    let uuid: any = params.collection.assets.items.find((item: any) => parseInt(item.assetId) === parseInt(params.asset.assetId)).uuid;
+    if(uuid && params.asset.assetId) {
+      this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
+    }
   }
 
   showNewCollection(assetId: any): void {
