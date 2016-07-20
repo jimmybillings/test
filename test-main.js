@@ -20,11 +20,40 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 __karma__.loaded = function() {};
 
 // Load our SystemJS configuration.
-System.config({
-  baseURL: '/base/'
-});
 
-System.config({
+var packageNames = [
+  '@angular/common',
+  '@angular/compiler',
+  '@angular/core',
+  '@angular/http',
+  '@angular/platform-browser',
+  '@angular/platform-browser-dynamic',
+  '@angular/router',
+  '@angular/forms',
+  '@angular/testing',
+  '@angular/upgrade',
+  
+];
+
+var materialPackages = [
+  'core',
+  'button',
+  'card',
+  'checkbox',
+  'input',
+  'list',
+  'progress-bar',
+  'progress-circle',
+  'radio',
+  'sidenav',
+  'slide-toggle',
+  'tabs',
+  'toolbar',
+  'icon',
+];
+
+var config = {
+  baseURL: '/base/',
   defaultJSExtensions: true,
   paths: {
     'ng2-translate/*': 'node_modules/ng2-translate/*.js'
@@ -36,51 +65,22 @@ System.config({
     '@angular2-material': 'node_modules/@angular2-material'
   },
   packages: {
-    '@angular/core': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/compiler': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/common': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/http': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/platform-browser': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/platform-browser-dynamic': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/router-deprecated': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/router': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/forms': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
     'rxjs': {
-      defaultExtension: 'js'
-    },
-    '@angular2-material/core': {
-      main: 'core.js',
       defaultExtension: 'js'
     }
   }
+};
+
+packageNames.forEach(function (pkgName) {
+  config.packages[pkgName] = {main: 'index.js', defaultExtension: 'js'};
 });
+
+materialPackages.forEach(function (pkgName) {
+  config.packages['@angular2-material/' + pkgName] = {main: pkgName + '.js', defaultExtension: 'js', format: 'cjs'}
+});
+
+System.config(config);
+
 
 Promise.all([
   System.import('@angular/core/testing'),
