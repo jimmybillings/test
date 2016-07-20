@@ -11,10 +11,9 @@ import {
 
 import { LoginComponent } from './login.component';
 import { Authentication } from '../services/authentication.data.service';
+
 export function main() {
-
   const res = { 'user': { 'test': 'one' }, token: { token: 'newToken' } };
-
   describe('Login Component', () => {
     class MockAuthentication {
       create() {
@@ -48,7 +47,5 @@ export function main() {
         expect(login._currentUser.set).toHaveBeenCalledWith({ 'test': 'one' });
         expect(login.router.navigate).toHaveBeenCalledWith(['/']);
       }));
-
   });
-
 }

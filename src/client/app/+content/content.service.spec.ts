@@ -14,7 +14,6 @@ import { ContentService } from './content.service';
 
 export function main() {
   describe('Content service', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
       ContentService

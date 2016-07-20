@@ -11,16 +11,9 @@ import { ApiConfig } from './api.config';
 
 export function main() {
   describe('Api config', () => {
-
     beforeEachProviders(() => [
       ApiConfig
     ]);
-
-    // it('Should return the api root path',
-    //   inject([ApiConfig], (service) => {
-    //     window['baseUrl'] = 'https://crxextapi.dev.wzplatform.com/';
-    //     expect(service.baseUrl()).toEqual('https://crxextapi.dev.wzplatform.com/');
-    //   }));
 
     it('Should create an instance of authorization headers, with correct header info',
       inject([ApiConfig], (service: ApiConfig) => {
@@ -58,6 +51,5 @@ export function main() {
       expect(service.cms('path')).toEqual('/wp-json/wp/v2/pages');
       expect(service.cms('query')).toEqual('?filter[name]=');
     }));
-
   });
 }

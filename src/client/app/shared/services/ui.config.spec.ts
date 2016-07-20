@@ -14,7 +14,6 @@ import { UiConfig } from './ui.config';
 
 export function main() {
   describe('UI config', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
       UiConfig
@@ -67,14 +66,11 @@ export function main() {
         })
       ));
     }));
-
-
   });
 
   function configObj() {
     return {
       'components': {
-
         'search': {},
         'header': {},
         'footer': {},

@@ -12,7 +12,6 @@ import {ProfileComponent} from './profile.component';
 
 export function main() {
   describe('Profile Component', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray
     ]);

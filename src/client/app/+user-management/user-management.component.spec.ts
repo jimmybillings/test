@@ -12,7 +12,6 @@ import { UserManagementComponent } from './user-management.component';
 
 export function main() {
   describe('User Management Component', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray
     ]);
@@ -24,6 +23,5 @@ export function main() {
           expect(instance instanceof UserManagementComponent).toBeTruthy();
         });
       }));
-
   });
 }

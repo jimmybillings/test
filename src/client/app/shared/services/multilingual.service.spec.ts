@@ -11,12 +11,10 @@ import { MultilingualService } from './multilingual.service';
 
 export function main() {
   describe('Multilingual Service', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
       MultilingualService
     ]);
-
 
     it('should at a minimum support english', () => {
       expect(MultilingualService.SUPPORTED_LANGUAGES.length).toBeGreaterThan(0);
@@ -37,8 +35,5 @@ export function main() {
         expect(i18n.lang).toBe('fr');
       });
     }));
-
   });
-
-
 }

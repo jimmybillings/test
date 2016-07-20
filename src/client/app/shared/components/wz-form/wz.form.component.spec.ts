@@ -66,8 +66,6 @@ export function main() {
         });
       })
     );
-
-
   });
 
   function items() {

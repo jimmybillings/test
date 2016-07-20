@@ -14,7 +14,6 @@ import { Authentication } from './authentication.data.service';
 
 export function main() {
   describe('Authentication data service', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray
     ]);
@@ -53,13 +52,7 @@ export function main() {
         })
       ));
     }));
-
-
   });
-
-  // function checkAuthInHeader(headers: any) {
-  //   return headers.filter((header: any) => (header === 'Authorization'));
-  // }
 
   function setUser() {
     return {
@@ -67,5 +60,4 @@ export function main() {
       'password': 'password'
     };
   }
-
 }

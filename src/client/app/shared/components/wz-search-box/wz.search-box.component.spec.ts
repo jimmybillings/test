@@ -12,7 +12,6 @@ import {WzSearchBoxComponent} from './wz.search-box.component';
 
 export function main() {
   describe('Search Box Component', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
       WzSearchBoxComponent
@@ -39,6 +38,5 @@ export function main() {
       component.onSubmit('Dogs');
       expect(component.searchContext.emit).toHaveBeenCalledWith('Dogs');
     }));
-
   });
 }

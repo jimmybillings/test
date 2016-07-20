@@ -15,7 +15,6 @@ import { AssetData } from './services/asset.data.service';
 
 export function main() {
   describe('Search Component', () => {
-
     class MockUiConfig {
       public get(component: any) {
         return Observable.of(MockConfigResponse());
@@ -35,7 +34,6 @@ export function main() {
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
       SearchComponent,
-      // provide(RouteSegment, { useValue: new RouteSegment([], { q: 'blue' }, null, null, null) }),
       { provide: AssetData, useClass: MockAssetData },
       { provide: UiConfig, useClass: MockUiConfig }
     ]);
@@ -48,21 +46,6 @@ export function main() {
         });
       })
     );
-
-    // it('Should make a search request on instantiation', inject([Search], (search) => {
-    //   spyOn(search, 'searchAssets');
-    //   search.ngOnInit();
-    //   expect(search.searchAssets).toHaveBeenCalled();
-    // }));
-
-    // it('Should complete a search and assign response to search.results',
-    //   inject([Search], (search) => {
-    //     search.routeParams.params = {q: 'Obama', n: '25'};
-    //     spyOn(search.assetData, 'storeAssets');
-    //     search.searchAssets();
-    //     expect(search.assetData.storeAssets).toHaveBeenCalledWith(MockSearchResultsResponse());
-    // }));
-
   });
 
   function MockSearchResultsResponse() {

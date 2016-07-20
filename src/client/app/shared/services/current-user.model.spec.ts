@@ -11,12 +11,10 @@ import { CurrentUser, currentUser } from './current-user.model';
 import { CurrentUserInterface} from '../interfaces/current-user.interface';
 
 export function main() {
-
   describe('CurrentUser Model', () => {
     let loggedInUser = setLoggedInUser();
     let loggedOutUser = setLoggedOutUser();
     let loggedInUserWithoutPermissions = setLoggedInUserWithoutPermissions();
-
     beforeEachProviders(() => [
       CurrentUser,
       provideStore({ currentUser: currentUser }),

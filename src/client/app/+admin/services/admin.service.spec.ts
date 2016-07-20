@@ -12,7 +12,6 @@ import { AdminService } from './admin.service';
 
 export function main() {
   describe('Admin Service', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray
     ]);

@@ -11,7 +11,6 @@ import {WzPlayerComponent} from './wz.player.component';
 
 export function main() {
   describe('Player Component', () => {
-
     beforeEachProviders(() => [
       WzPlayerComponent
     ]);

@@ -12,7 +12,6 @@ import { RegisterComponent } from './register.component';
 
 export function main() {
   describe('Register Component', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
       RegisterComponent
@@ -36,6 +35,5 @@ export function main() {
           'siteName': register._ApiConfig.getPortal()
         });
       }));
-
   });
 }

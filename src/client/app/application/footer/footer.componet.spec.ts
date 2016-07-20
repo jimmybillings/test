@@ -12,7 +12,6 @@ import { FooterComponent } from './footer.component';
 
 export function main() {
   describe('Footer Component', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
       FooterComponent
@@ -31,6 +30,5 @@ export function main() {
       component.changeLang({target: {value: 'fr'}});
       expect(component.onChangeLang.emit).toHaveBeenCalledWith('fr');
     }));
-
   });
 }

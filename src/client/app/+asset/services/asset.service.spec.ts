@@ -14,7 +14,6 @@ import { AssetService } from './asset.service';
 
 export function main() {
   describe('Asset service', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray
     ]);
@@ -53,7 +52,6 @@ export function main() {
       service.reset();
       expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'RESET' });
     }));
-
   });
 
   function MockAssetResponse() {

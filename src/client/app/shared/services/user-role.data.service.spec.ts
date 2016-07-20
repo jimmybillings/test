@@ -75,13 +75,7 @@ export function main() {
       });
       connection.mockRespond(200);
     }));
-
-
   });
-
-  // function checkAuthInHeader(headers: any) {
-  //   return headers.filter((header: any) => (header === 'Authorization'));
-  // }
 
   function setUser() {
     return {

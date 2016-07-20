@@ -16,7 +16,6 @@ import { AssetService } from './services/asset.service';
 
 export function main() {
   describe('Asset Component', () => {
-
     @Injectable()
     class MockAssetService {
       public asset: Observable<any>;
@@ -47,7 +46,6 @@ export function main() {
           expect(instance instanceof AssetComponent).toBeTruthy();
         });
       }));
-
   });
 
   function MockAssetResponse() {

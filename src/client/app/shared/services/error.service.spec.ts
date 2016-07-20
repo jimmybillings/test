@@ -11,7 +11,6 @@ import { Error } from './error.service';
 
 export function main() {
   describe('Error Service', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray
     ]);
@@ -22,6 +21,5 @@ export function main() {
       service.handle(error);
       expect(service.router.navigate).toHaveBeenCalledWith(['/user/login']);
     }));
-
   });
 }

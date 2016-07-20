@@ -12,7 +12,6 @@ import { AdminComponent } from './admin.component';
 
 export function main() {
   describe('Admin Component', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray
     ]);

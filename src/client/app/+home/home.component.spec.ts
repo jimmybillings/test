@@ -15,7 +15,6 @@ import { UiConfig } from '../shared/services/ui.config';
 
 export function main() {
   describe('Home Component', () => {
-
     class MockUiConfig {
       get(comp: any) {
         return Observable.of({'config': {'pageSize': {'value': 100}}});
@@ -60,6 +59,5 @@ export function main() {
         component.newSearchContext('cat');
         expect(component.searchContext.new).toHaveBeenCalledWith({ q: 'cat', i: 1, n: 100 });
       }));
-
   });
 }

@@ -13,10 +13,8 @@ import {
 
 import { ConfigService } from './config.service';
 
-
 export function main() {
   describe('Config Service', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray
     ]);

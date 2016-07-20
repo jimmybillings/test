@@ -12,7 +12,6 @@ import { WzAssetDetailComponent} from './wz.asset-detail.component';
 
 export function main() {
   describe('Asset Detail Component', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
       WzAssetDetailComponent

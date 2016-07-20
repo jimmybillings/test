@@ -15,7 +15,6 @@ import { CollectionsService } from '../services/collections.service';
 
 export function main() {
   describe('Collection Form component', () => {
-
     @Injectable()
     class MockCollectionsService {
       public createCollection(collection: any): Observable<any> {

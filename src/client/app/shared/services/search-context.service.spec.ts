@@ -10,7 +10,6 @@ import {
 import { SearchContext } from './search-context.service';
 
 export function main() {
-
   describe('Search Context', () => {
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,

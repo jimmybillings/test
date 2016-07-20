@@ -13,7 +13,6 @@ import { AppNavComponent } from './app-nav.component';
 
 export function main() {
   describe('App Nav Component', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
       AppNavComponent

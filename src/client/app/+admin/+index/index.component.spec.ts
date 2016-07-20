@@ -16,7 +16,6 @@ import {AdminService} from '../services/admin.service';
 
 export function main() {
   describe('Admin Index component', () => {
-
     class MockAdminService {
       getResourceIndex(resource: any, i: any) {
         return Observable.of(mockResponse());

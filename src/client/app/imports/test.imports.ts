@@ -1,5 +1,4 @@
 // BOILER PLATE
-import { Injectable } from '@angular/core';
 import { LocationStrategy } from '@angular/common';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';

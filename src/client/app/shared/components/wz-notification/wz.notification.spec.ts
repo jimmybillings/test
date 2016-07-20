@@ -12,7 +12,6 @@ import { WzNotificationComponent } from './wz.notification.component';
 
 export function main() {
   describe('Notification Component', () => {
-
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
       WzNotificationComponent

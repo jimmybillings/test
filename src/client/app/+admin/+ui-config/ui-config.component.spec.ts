@@ -14,7 +14,6 @@ import { ConfigService } from '../services/config.service';
 
 export function main() {
   describe('Admin UI Config Component', () => {
-
     class MockConfigService {
       public showUiConfig(siteName: string) {
         return Observable.of(mockResponse());
@@ -112,7 +111,6 @@ export function main() {
         expect(component.configOptions).toEqual(null);
         expect(component.form).toEqual(null);
       }));
-
   });
 
   function mockResponse() {

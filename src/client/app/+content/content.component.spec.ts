@@ -49,7 +49,6 @@ export function main() {
         expect(service.title).toEqual('CMS PAGE');
         expect(service.content).toEqual('<p>PAGE CONTENT</p>');
       }));
-
   });
 
   function mockContent() {
