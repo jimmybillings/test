@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { WzAssetDetailComponent } from '../shared/components/wz-asset-detail/wz.asset-detail.component';
+// import { WzAssetDetailComponent } from '../shared/components/wz-asset-detail/wz.asset-detail.component';
+import { AssetDetailComponent } from './components/asset-detail.component';
+import { AssetDataComponent } from './components/asset-data.component';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { AssetService} from './services/asset.service';
 import { Observable} from 'rxjs/Rx';
@@ -18,11 +20,15 @@ import { Store } from '@ngrx/store';
   moduleId: module.id,
   selector: 'asset',
   templateUrl: 'asset.html',
-  directives: [WzAssetDetailComponent]
+  directives: [
+    // WzAssetDetailComponent
+    AssetDetailComponent,
+    AssetDataComponent
+  ]
 })
 
 export class AssetComponent {
-  public assetDetail: Observable<any>;
+  public asset: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,7 +39,7 @@ export class AssetComponent {
     public collectionsService: CollectionsService,
     public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>) {
-    this.assetDetail = assetService.asset;
+    this.asset = assetService.asset;
   }
 
   public addToCollection(params: any): void {

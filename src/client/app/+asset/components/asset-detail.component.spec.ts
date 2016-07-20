@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { provide, PLATFORM_PIPES} from '@angular/core';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
-import { WzAssetDetailComponent} from './wz.asset-detail.component';
+import { AssetDetailComponent} from './asset-detail.component';
 import { TranslatePipe, TranslateLoader, TranslateStaticLoader, TranslateService } from 'ng2-translate/ng2-translate';
 import { createOverlayContainer } from '@angular2-material/core/overlay/overlay-container';
 import { OVERLAY_CONTAINER_TOKEN } from '@angular2-material/core/overlay/overlay';
@@ -19,7 +19,7 @@ export function main() {
   describe('Asset Detail Component', () => {
     class MockRouter { }
     beforeEachProviders(() => [
-      WzAssetDetailComponent,
+      AssetDetailComponent,
       TranslateService,
       MockBackend,
       BaseRequestOptions,
@@ -38,9 +38,9 @@ export function main() {
 
     it('Create instance of AssetDetail',
       inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(WzAssetDetailComponent).then((fixture: any) => {
+        tcb.createAsync(AssetDetailComponent).then((fixture: any) => {
           let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof WzAssetDetailComponent).toBeTruthy();
+          expect(instance instanceof AssetDetailComponent).toBeTruthy();
         });
       }));
   });

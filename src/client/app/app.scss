@@ -25,7 +25,6 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import 'shared/components/wz-asset-list/wz.asset-list';
 @import 'shared/components/wz-list/wz.list';
 @import 'shared/components/wz-pagination/wz.pagination';
-@import 'shared/components/wz-asset-detail/wz.asset-detail';
 @import 'shared/components/wz-toast/wz.toast';
 @import 'shared/components/wz-dialog/wz.dialog';
 @import 'shared/components/wz-notification/wz.notification';
@@ -38,5 +37,8 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import '+collection/+show/collection-show';
 @import '+collection/components/collection-form';
 @import '+collection/components/collections-list-dd';
+
+@import '+asset/components/asset-detail';
+@import '+asset/components/asset-data';
 
 @import '+admin/+ui-config/ui-config';
