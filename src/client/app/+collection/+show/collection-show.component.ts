@@ -54,7 +54,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.routeSubscription = this.route.params.subscribe(params => {
       this.activeCollection.set(params['id']).take(1).subscribe(collection => {
-        if (collection.assets) this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
+        this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
       });
 
       this.focusedCollectionStoreSubscription = this.activeCollection.data.subscribe(activeCollection => {

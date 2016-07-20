@@ -75,7 +75,6 @@ export class ActiveCollectionService {
       { headers: this.apiConfig.authHeaders() })
       .map((res) => {
         this.updateActiveCollectionStore(res.json());
-        this.getItems(res.json().id, 300).take(1).subscribe();
         return res.json();
       });
   }
@@ -85,7 +84,6 @@ export class ActiveCollectionService {
       '', { headers: this.apiConfig.authHeaders() })
       .map((res) => {
         this.updateActiveCollectionStore(res.json());
-        this.getItems(collectionId, 300).take(1).subscribe();
         return res.json();
       });
   }

@@ -61,7 +61,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
 
   public listenForSearchTerms(): Observable<any> {
     return this.searchForm.valueChanges
-      .debounceTime(1000)
+      .debounceTime(500)
       .switchMap((changes: { query: string }) => this.query(changes.query))
       .map((res: Response) => res.json().termsList);
   }
