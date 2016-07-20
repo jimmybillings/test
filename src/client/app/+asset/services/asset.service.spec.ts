@@ -1,33 +1,21 @@
 import {
+  beforeEachProvidersArray,
+  beforeEachProviders,
+  ResponseOptions,
+  MockBackend,
+  Response,
   describe,
-  expect,
   inject,
-  it,
-  beforeEachProviders
-} from '@angular/core/testing'; import { provide } from '@angular/core';
-import { AssetService, asset } from './asset.service';
-import { ApiConfig } from '../../shared/services/api.config';
-import { CurrentUser } from '../../shared/services/current-user.model';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http, ResponseOptions, Response } from '@angular/http';
-import { provideStore } from '@ngrx/store';
-import { Error } from '../../shared/services/error.service';
+  expect,
+  it
+} from '../../imports/test.imports';
+
+import { AssetService } from './asset.service';
 
 export function main() {
   describe('Asset service', () => {
-
     beforeEachProviders(() => [
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provideStore({ asset }),
-      AssetService,
-      ApiConfig,
-      CurrentUser,
-      Error
+      ...beforeEachProvidersArray
     ]);
 
     it('Should setup instance variables for the api endpoint and the asset store',
@@ -64,7 +52,6 @@ export function main() {
       service.reset();
       expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'RESET' });
     }));
-
   });
 
   function MockAssetResponse() {

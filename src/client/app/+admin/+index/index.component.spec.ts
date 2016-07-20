@@ -1,38 +1,22 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
+  CurrentUser,
+  Observable,
   describe,
-  expect,
   inject,
-  it,
-  beforeEachProviders
-} from '@angular/core/testing';
+  expect,
+  it
+} from '../../imports/test.imports';
 
 import {IndexComponent} from './index.component';
 import {AdminService} from '../services/admin.service';
-import {BaseRequestOptions, Http} from '@angular/http';
-import {provide, Injectable, PLATFORM_PIPES} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {CurrentUser, currentUser} from '../../shared/services/current-user.model';
-import {provideStore} from '@ngrx/store';
-import {MockBackend} from '@angular/http/testing';
-import {ApiConfig} from '../../shared/services/api.config';
-import {UiConfig, config} from '../../shared/services/ui.config';
-import {Observable} from 'rxjs/Rx';
-import {Store} from '@ngrx/store';
-import {UiState} from '../../shared/services/ui.state';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
+
 
 export function main() {
   describe('Admin Index component', () => {
-    @Injectable()
-
     class MockAdminService {
-      public adminStore: Observable<any>;
-      public params: any;
-      constructor(public store: Store<any>) {
-        this.adminStore = this.store.select('adminResources');
-      }
-
       getResourceIndex(resource: any, i: any) {
         return Observable.of(mockResponse());
       }
@@ -54,35 +38,14 @@ export function main() {
       }
 
       updateRouteParams(args: any) {
-        return Object.assign(this.params, args);
+        return Object.assign({}, args);
       }
     }
-    class MockRouter {
-      navigate(params: any) {
-        return params;
-      }
-    }
-    class MockActivatedRoute {
 
-    }
     beforeEachProviders(() => [
-      MockBackend,
-      { provide: Router, useClass: MockRouter },
-      { provide: ActivatedRoute, useClass: MockActivatedRoute },
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provide(AdminService, { useClass: MockAdminService }),
-      provideStore({ currentUser: currentUser }),
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
-      CurrentUser,
-      ApiConfig,
-      provideStore({ config: config }),
-      UiConfig,
+      ...beforeEachProvidersArray,
       IndexComponent,
-      UiState
+      { provide: AdminService, useClass: MockAdminService }
     ]);
 
     it('Create instance of index and assign the CurrentUser to an instance variable inside of account',

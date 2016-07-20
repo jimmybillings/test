@@ -1,28 +1,21 @@
 import {
+  beforeEachProvidersArray,
+  beforeEachProviders,
+  MockBackend,
   describe,
-  expect,
   inject,
-  it,
-  beforeEachProviders
-} from '@angular/core/testing';
-import { provide } from '@angular/core';
+  expect,
+  it
+} from '../../imports/test.imports';
+
 import { UserRole } from './user-role.data.service';
-import { ApiConfig } from '../services/api.config';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http } from '@angular/http';
 
 export function main() {
   describe('User Role data service', () => {
     localStorage.setItem('token', 'thisisamocktoken');
     beforeEachProviders(() => [
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      UserRole,
-      ApiConfig,
+      ...beforeEachProvidersArray,
+      UserRole
     ]);
     let connection: any;
     it('Should create instance variables for http, apiconfig, apiUrls', inject([UserRole, MockBackend], (service: UserRole, mockBackend: MockBackend) => {
@@ -82,13 +75,7 @@ export function main() {
       });
       connection.mockRespond(200);
     }));
-
-
   });
-
-  // function checkAuthInHeader(headers: any) {
-  //   return headers.filter((header: any) => (header === 'Authorization'));
-  // }
 
   function setUser() {
     return {

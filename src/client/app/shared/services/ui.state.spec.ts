@@ -10,7 +10,6 @@ import { provideStore } from '@ngrx/store';
 
 export function main() {
   describe('UI State', () => {
-
     beforeEachProviders(() => [
       provideStore({ uiState: uiState }),
       UiState

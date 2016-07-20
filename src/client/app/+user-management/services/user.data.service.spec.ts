@@ -1,32 +1,21 @@
 import {
+  beforeEachProvidersArray,
+  beforeEachProviders,
+  ResponseOptions,
+  MockBackend,
+  Response,
   describe,
-  expect,
   inject,
-  it,
-  beforeEachProviders
-} from '@angular/core/testing';
-import { provide } from '@angular/core';
+  expect,
+  it
+} from '../../imports/test.imports';
+
 import { User } from './user.data.service';
-import { ApiConfig } from '../../shared/services/api.config';
-import { CurrentUser, currentUser } from '../../shared/services/current-user.model';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http, Response, ResponseOptions } from '@angular/http';
-import { provideStore } from '@ngrx/store';
 
 export function main() {
   describe('User data service', () => {
-
     beforeEachProviders(() => [
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provideStore({ currentUser: currentUser }),
-      User,
-      ApiConfig,
-      CurrentUser
+      ...beforeEachProvidersArray
     ]);
 
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls', inject([User, MockBackend], (service: User, mockBackend: MockBackend) => {
@@ -60,12 +49,7 @@ export function main() {
       });
       connection.mockRespond(200);
     }));
-
   });
-
-  // function checkAuthInHeader(headers: any) {
-  //   return headers.filter((header: any) => (header === 'Authorization'));
-  // }
 
   function setUser() {
     return {

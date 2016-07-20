@@ -1,22 +1,19 @@
 import {
+  beforeEachProvidersArray,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
-  it,
-  beforeEachProviders
-} from '@angular/core/testing';
-import { SearchContext, searchContext } from './search-context.service';
-import { provideStore } from '@ngrx/store';
-import { Router } from '@angular/router';
+  expect,
+  it
+} from '../../imports/test.imports';
+
+import { SearchContext } from './search-context.service';
 
 export function main() {
-  class MockRouter { }
-
   describe('Search Context', () => {
     beforeEachProviders(() => [
-      provideStore({ searchContext: searchContext }),
+      ...beforeEachProvidersArray,
       SearchContext,
-      {provide: Router, useClass: MockRouter}
     ]);
 
     it('Should initialize with router, context, and store',
