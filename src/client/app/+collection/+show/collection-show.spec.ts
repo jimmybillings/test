@@ -11,7 +11,6 @@ import {
 
 import { CollectionShowComponent} from './collection-show.component';
 import { ActiveCollectionService} from '../services/active-collection.service';
-import { Collection } from '../../shared/interfaces/collection.interface';
 
 export function main() {
   describe('Collection Show Component', () => {
@@ -72,5 +71,5 @@ function params() : any {
     asset: {
       assetId: 1
     }
-  }
+  };
 }
