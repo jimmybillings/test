@@ -1,52 +1,29 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
+  Observable,
   describe,
-  expect,
   inject,
-  it,
-  beforeEachProviders
-} from '@angular/core/testing';
+  expect,
+  it
+} from '../../imports/test.imports';
 
 import { UiConfigComponent } from './ui-config.component';
 import { ConfigService } from '../services/config.service';
-import { provide, Injectable } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http } from '@angular/http';
-import { ApiConfig } from '../../shared/services/api.config';
-import { UiConfig , config } from '../../shared/services/ui.config';
-import { IuiConfig } from '../../shared/interfaces/config.interface';
-import { provideStore } from '@ngrx/store';
-import { Observable } from 'rxjs/Rx';
 
 export function main() {
   describe('Admin UI Config Component', () => {
-    @Injectable()
     class MockConfigService {
       public showUiConfig(siteName: string) {
         return Observable.of(mockResponse());
       }
     }
-    class MockRouter {
-      navigate(params: any) {
-        return params;
-      }
-    }
-    class MockActivatedRoute { }
+
     beforeEachProviders(() => [
+      ...beforeEachProvidersArray,
       UiConfigComponent,
       { provide: ConfigService, useClass: MockConfigService },
-      { provide: Router, useClass: MockRouter },
-      { provide: ActivatedRoute, useClass: MockActivatedRoute },
-      MockBackend,
-      ApiConfig,
-      UiConfig,
-      BaseRequestOptions,
-      provideStore({ config: config }),
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      })
     ]);
 
     it('Create an instance of Ui Config',
@@ -134,11 +111,10 @@ export function main() {
         expect(component.configOptions).toEqual(null);
         expect(component.form).toEqual(null);
       }));
-
   });
 
   function mockResponse() {
-    let config: IuiConfig = {
+    let config: any = {
       'lastUpdated': '2016-06-06T16:44:59Z',
       'createdOn': '2016-03-02T17:01:14Z',
       'id': 1,

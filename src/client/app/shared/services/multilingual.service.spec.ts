@@ -1,36 +1,20 @@
 import {
+  beforeEachProvidersArray,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
-  it,
-  beforeEachProviders
-} from '@angular/core/testing';
-import { provide } from '@angular/core';
-import { MultilingualService, multilingualReducer } from './multilingual.service';
-import { TranslateService, TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
-import { provideStore } from '@ngrx/store';
-import { Http, BaseRequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
+  expect,
+  it
+} from '../../imports/test.imports';
+
+import { MultilingualService } from './multilingual.service';
 
 export function main() {
   describe('Multilingual Service', () => {
-
     beforeEachProviders(() => [
-      MultilingualService,
-      TranslateService,
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provide(TranslateLoader, {
-        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-        deps: [Http]
-      }),
-      provideStore({ i18n: multilingualReducer })
+      ...beforeEachProvidersArray,
+      MultilingualService
     ]);
-
 
     it('should at a minimum support english', () => {
       expect(MultilingualService.SUPPORTED_LANGUAGES.length).toBeGreaterThan(0);
@@ -51,8 +35,5 @@ export function main() {
         expect(i18n.lang).toBe('fr');
       });
     }));
-
   });
-
-
 }

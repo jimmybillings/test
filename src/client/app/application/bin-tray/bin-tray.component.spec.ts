@@ -1,52 +1,19 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
-  describe,
-  expect,
-  inject,
-  it,
+  beforeEachProvidersArray,
+  TestComponentBuilder,
   beforeEachProviders,
-} from '@angular/core/testing';
-import { provide, PLATFORM_PIPES } from '@angular/core';
+  describe,
+  inject,
+  expect,
+  it
+} from '../../imports/test.imports';
+
 import { BinTrayComponent } from './bin-tray.component';
-import { UiConfig } from '../../shared/services/ui.config';
-import { Router } from '@angular/router';
-import { CollectionsService, collections } from '../../+collection/services/collections.service';
-import { provideStore } from '@ngrx/store';
-import { ApiConfig } from '../../shared/services/api.config';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http } from '@angular/http';
-import { createOverlayContainer } from '@angular2-material/core/overlay/overlay-container';
-import { OVERLAY_CONTAINER_TOKEN } from '@angular2-material/core/overlay/overlay';
-import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe}  from 'ng2-translate/ng2-translate';
-import { MultilingualService } from '../../shared/services/multilingual.service';
-import { ActiveCollectionService } from '../../+collection/services/active-collection.service';
 
 export function main() {
   describe('Bin Tray Component', () => {
-    class MockRouter { }
-    class Search { }
     beforeEachProviders(() => [
-      BinTrayComponent,
-      ActiveCollectionService,
-      { provide: Router, useClass: MockRouter },
-      UiConfig,
-      CollectionsService,
-      ApiConfig,
-      MockBackend,
-      BaseRequestOptions,
-      provideStore(collections),
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provide(TranslateLoader, {
-        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-        deps: [Http]
-      }),
-      TranslateService,
-      MultilingualService,
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
-      provide(OVERLAY_CONTAINER_TOKEN, {useValue: createOverlayContainer()})
+      ...beforeEachProvidersArray
     ]);
 
     it('Should have a bin tray instance',

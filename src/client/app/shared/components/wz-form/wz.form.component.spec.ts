@@ -1,37 +1,20 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
-  describe,
-  expect,
-  inject,
-  it,
+  beforeEachProvidersArray,
+  TestComponentBuilder,
   beforeEachProviders,
-} from '@angular/core/testing';
-import { provide, PLATFORM_PIPES } from '@angular/core';
+  describe,
+  inject,
+  expect,
+  it
+} from '../../../imports/test.imports';
+
 import { WzFormComponent } from './wz.form.component';
-import { FormModel } from './wz.form.model';
-import { TranslateLoader, TranslateStaticLoader, TranslateService, TranslatePipe } from 'ng2-translate/ng2-translate';
-import { Http, BaseRequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
-import { FormBuilder } from '@angular/forms';
 
 export function main() {
   describe('Form Component', () => {
     beforeEachProviders(() => [
-      WzFormComponent,
-      FormBuilder,
-      FormModel,
-      TranslateService,
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provide(TranslateLoader, {
-        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-        deps: [Http]
-      }),
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
+      ...beforeEachProvidersArray,
+      WzFormComponent
     ]);
 
     it('Should create instance of WzForm',
@@ -74,17 +57,13 @@ export function main() {
           instance.items = validItems();
           instance.ngOnInit();
           instance.formSubmit.subscribe((x: any) => {
-            expect(x.value).toEqual({ firstName: 'test', lastName: 'test', emailAddress: 'email@email.com', password: 'Test1233' });
+            expect(x).toEqual({ firstName: 'test', lastName: 'test', emailAddress: 'email@email.com', password: 'Test1233' });
           });
           expect(instance.form.valid).toBeTruthy();
-          spyOn(instance, 'resetForm');
           instance.onSubmit(instance.form);
-          expect(instance.resetForm).toHaveBeenCalled();
         });
       })
     );
-
-
   });
 
   function items() {

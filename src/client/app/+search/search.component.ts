@@ -51,13 +51,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     public store: Store<CollectionStore>,
     public error: Error,
     public searchContext: SearchContext) {
-    this.assetsStoreSubscription = this.assetData.assets.subscribe(data => {
-      this.assets = data;
-    });
-    this.rootFilter = new FilterTree('', '', [], 'None', -1);
+      this.rootFilter = new FilterTree('', '', [], 'None', -1);
   }
 
   ngOnInit(): void {
+    this.assetsStoreSubscription = this.assetData.assets.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe((params) => this.getFilterTree());
   }

@@ -1,25 +1,19 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
-  it,
-  beforeEachProviders
-} from '@angular/core/testing';
-
-import { Router } from '@angular/router';
+  expect,
+  it
+} from '../../imports/test.imports';
 
 import {ProfileComponent} from './profile.component';
-import {CurrentUser, currentUser} from '../../shared/services/current-user.model';
-import { provideStore } from '@ngrx/store';
 
 export function main() {
   describe('Profile Component', () => {
-    class MockRouter { }
     beforeEachProviders(() => [
-      { provide: Router, useClass: MockRouter },
-      provideStore({ currentUser: currentUser }),
-      CurrentUser
+      ...beforeEachProvidersArray
     ]);
 
     it('Create instance of profile and assign the CurrentUser to an instance variable inside of profile',

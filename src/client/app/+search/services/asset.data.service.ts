@@ -84,7 +84,6 @@ export class AssetData {
   }
 
   public storeAssets(payload: any): void {
-    console.log(payload);
     this.store.dispatch({
       type: 'SEARCH', payload: {
         'items': payload.items,

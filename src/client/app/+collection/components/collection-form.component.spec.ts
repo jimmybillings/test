@@ -1,24 +1,17 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
+  Observable,
+  Injectable,
   describe,
-  expect,
   inject,
-  it,
-  beforeEachProviders
-} from '@angular/core/testing';
+  expect,
+  it
+} from '../../imports/test.imports';
 
 import { CollectionFormComponent } from './collection-form.component';
-import { CollectionsService, collections } from '../services/collections.service';
-import { ApiConfig } from '../../shared/services/api.config';
-import { UiConfig } from '../../shared/services/ui.config';
-import { UiState, uiState } from '../../shared/services/ui.state';
-import { provide, Injectable, PLATFORM_PIPES } from '@angular/core';
-import { Router } from '@angular/router';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http } from '@angular/http';
-import { provideStore } from '@ngrx/store';
-import { Observable } from 'rxjs/Rx';
-import { TranslateService, TranslateLoader, TranslateStaticLoader, TranslatePipe} from 'ng2-translate/ng2-translate';
+import { CollectionsService } from '../services/collections.service';
 
 export function main() {
   describe('Collection Form component', () => {
@@ -34,27 +27,11 @@ export function main() {
         return true;
       }
     }
-    class MockRouter { }
+
     beforeEachProviders(() => [
+      ...beforeEachProvidersArray,
       CollectionFormComponent,
-      provide(CollectionsService, { useClass: MockCollectionsService }),
-      UiState,
-      ApiConfig,
-      UiConfig,
-      { provide: Router, useClass: MockRouter },
-      MockBackend,
-      BaseRequestOptions,
-      provideStore({ collections: collections, uiState: uiState }),
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
-      provide(TranslateLoader, {
-        useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-        deps: [Http]
-      }),
-      provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
-      TranslateService
+      { provide: CollectionsService, useClass: MockCollectionsService }
     ]);
 
     it('Create instance of collection form',

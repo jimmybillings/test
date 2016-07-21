@@ -40,7 +40,7 @@ export class CollectionListDdComponent {
   }
 
   public selectFocusedCollection(collection: Collection) {
-    if (this.router.url.split('/')[1] === 'collection' && this.router.url.split('/')[2] !== undefined) {
+    if (this.onCollectionShowPage()) {
       this.navigateToCollectionShow(collection.id);
     } else {
       this.activeCollection.set(collection.id).take(1).subscribe(() => {
@@ -70,6 +70,10 @@ export class CollectionListDdComponent {
 
   public showCollectionSort(event: Event) {
     return event;
+  }
+
+  private onCollectionShowPage(): boolean {
+    return (this.router.url.split('/')[1] === 'collection' && this.router.url.split('/')[2] !== undefined);
   }
 
 }

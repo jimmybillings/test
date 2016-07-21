@@ -1,28 +1,20 @@
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import {
+  beforeEachProvidersArray,
+  TestComponentBuilder,
+  beforeEachProviders,
   describe,
-  expect,
   inject,
-  it,
-  beforeEachProviders
-} from '@angular/core/testing';
+  expect,
+  it
+} from '../../../imports/test.imports';
+
 import { WzPaginationComponent } from './wz.pagination.component';
-import {provide} from '@angular/core';
-import { MockBackend } from '@angular/http/testing';
-import { BaseRequestOptions, Http } from '@angular/http';
-import { FormBuilder } from '@angular/forms';
 
 export function main() {
   describe('Pagination component', () => {
     beforeEachProviders(() => [
-      WzPaginationComponent,
-      FormBuilder,
-      MockBackend,
-      BaseRequestOptions,
-      provide(Http, {
-        useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
-        deps: [MockBackend, BaseRequestOptions]
-      }),
+      ...beforeEachProvidersArray,
+      WzPaginationComponent
     ]);
 
     it('Should create instance of Pagination',

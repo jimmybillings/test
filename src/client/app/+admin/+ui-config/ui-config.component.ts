@@ -27,7 +27,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   public sites: Array<string>;
   public currentOption: string;
   public currentComponent: string;
-  public inputTypes: Array<string>;
+  public typeSelect: Array<string>;
   public config: IuiConfig;
   public components: IuiComponents;
   public subComponents: IuiSubComponents;
@@ -41,7 +41,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public configService: ConfigService) {
     this.sites = [];
-    this.inputTypes = ['text', 'date', 'checkbox', 'email', 'password', 'select', 'radio', 'table header'];
+    this.typeSelect = ['text', 'date', 'checkbox', 'email', 'password', 'select', 'radio', 'table header'];
   }
 
   ngOnInit() {
@@ -108,6 +108,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public addItem(form: any): void {
+    debugger;
     let blankForm: any = { name: '', label: '', type: '', value: '', validation: '' };
     if (['text', 'email', 'password', 'date'].indexOf(form.type) > -1) {
       blankForm.type = form.type;
