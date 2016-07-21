@@ -15,7 +15,8 @@ import { Collection, Collections, CollectionStore } from '../shared/interfaces/c
 import { CollectionsService } from '../+collection/services/collections.service';
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { Store } from '@ngrx/store';
-
+import { FilterComponent } from './filter.component';
+import { FilterService } from './services/filter.service';
 /**
  * Asset search page component - renders search page results
  */
@@ -23,7 +24,8 @@ import { Store } from '@ngrx/store';
   moduleId: module.id,
   selector: 'search',
   templateUrl: 'search.html',
-  directives: [WzAssetListComponent, WzPaginationComponent, FilterTreeComponent]
+  directives: [WzAssetListComponent, WzPaginationComponent, FilterTreeComponent, FilterComponent],
+  providers: [FilterService]
 })
 
 export class SearchComponent implements OnInit, OnDestroy {
@@ -35,6 +37,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
+  public filtersStoreSubscription: Subscription;
+  public filters: any;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
   private configSubscription: Subscription;
@@ -51,11 +55,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     public store: Store<CollectionStore>,
     public error: Error,
     public searchContext: SearchContext,
+    public filterService: FilterService,
     public uiState: UiState) {
       this.rootFilter = new FilterTree('', '', [], 'None', -1);
   }
 
   ngOnInit(): void {
+    this.filtersStoreSubscription = this.filterService.filters.subscribe(data => this.filters = data);
+    this.filterService.getFilters({q: 'cat', counted: true}).first().subscribe();
     this.assetsStoreSubscription = this.assetData.assets.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe((params) => this.getFilterTree());

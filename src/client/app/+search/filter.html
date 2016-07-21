@@ -1,1 +1,5 @@
-<div></div>
+<div class="filter">
+  <ul *ngFor="let filter of filters.subFilters">
+    <p>{{filter.name}}</p>
+  </ul>
+</div>
