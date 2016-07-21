@@ -12,7 +12,6 @@ import {
 import { CollectionsComponent} from './collections.component';
 import { ActiveCollectionService} from '../services/active-collection.service';
 import { CollectionsService} from '../services/collections.service';
-import { Collection } from '../../shared/interfaces/collection.interface';
 
 export function main() {
   describe('Collection Component', () => {
