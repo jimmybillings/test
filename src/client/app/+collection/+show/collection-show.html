@@ -29,14 +29,13 @@
                       </span>
                     </h3>
                     <div class="md-caption collection-info">
-                      <span><strong>Owner: </strong>{{collection.ownerEmailAddress}}</span>
-                      <!--<span><strong>Owner: </strong>{{collection.owner}}</span>-->
-                      <!--<span><strong>Your Role: </strong>{{collection}}</span>-->
-                      <span><strong>Created: </strong>{{ date(collection.createdOn) | date:'short' }}</span>
-                      <span><strong>Updated: </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
+                      <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{collection.email}}</span>
+                      <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{collection.editors | json}}</span>
+                      <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ date(collection.createdOn) | date:'short' }}</span>
+                      <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
                     </div>
                     <div class="md-caption collection-tags">
-                      <strong>Tags: </strong>
+                      <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
                       <ul class="meta-data-tags">
                         <li class="tag md-elevation-z0" *ngFor="let tag of collection.tags">{{tag}}</li>
                       </ul>

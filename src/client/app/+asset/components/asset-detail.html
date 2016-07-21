@@ -10,6 +10,12 @@
           <button md-icon-button title="Sharing Options"><md-icon>share</md-icon></button>
           <!--<button md-icon-button title="add to cart"><md-icon>shopping_cart</md-icon></button>-->
           <button md-icon-button 
+            *ngIf="collection.id !== null && inActiveCollection" 
+            title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" 
+            (click)="showComments($event)">
+            <md-icon>mode_comment</md-icon>
+          </button>
+          <button md-icon-button 
             *ngIf="collection.id !== null && !inActiveCollection"
             title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
             (click)="addToCollection(collection, asset.common[0]); addToast.show()">
@@ -26,12 +32,6 @@
             title="{{ 'COLLECTION.CREATE_COLLECTION_HOVER_TITLE' | translate}}" 
             (click)="showNewCollection(asset.common[0].value); addToast.show()">
             <md-icon>library_add</md-icon>
-          </button>
-          <button md-icon-button 
-            *ngIf="collection.id !== null && inActiveCollection" 
-            title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" 
-            (click)="showComments($event)">
-            <md-icon>mode_comment</md-icon>
           </button>
           <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
         </nav>
