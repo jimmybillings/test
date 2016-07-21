@@ -88,14 +88,7 @@ header.app-header.bin-tray-closed bin-tray section {
   }
 }
 
-
-
-
 .asset-carousel.grid ul.asset-list {
-  // list-style: none;
-  // font-size: 0;
-  // line-height: 0;
-  // @include transition($swift-ease-out);
   margin: 0 0 0 0;
   white-space: nowrap;
   overflow-y: hidden;
@@ -104,10 +97,6 @@ header.app-header.bin-tray-closed bin-tray section {
   max-height: rem(5.6);
   // padding: 0;
   & > li {
-    // font-size: 1em;
-    // position: relative;
-    // display: inline-block;
-    // vertical-align: bottom;
     margin: 0 0 0 0;
     width: rem(9.957);
     opacity: .9;
@@ -116,10 +105,10 @@ header.app-header.bin-tray-closed bin-tray section {
       padding: 0;
       padding-bottom: 0;
       a.asset-thb::before {
+        background-color: md-color($md-foreground, base, .2);
         background-image: none;
         box-shadow: 
-          inset 2px 2px 0 0 md-color($md-foreground, base, 1),
-          inset -2px -2px 0 0 md-color($md-foreground, base, 1);        
+        inset 0 -3px 0 0 md-color($md-background, card, 1);        
         @include transition($swift-ease-out);
         z-index: 1;
         opacity:0

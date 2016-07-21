@@ -17,6 +17,8 @@ function activeState(collection: any = {}): Collection {
     siteName: collection.siteName || '',
     name: collection.name || '',
     owner: collection.owner || '',
+    email: collection.email || '',
+    editors: collection.editors || [],
     assets: {
       items: [],
       pagination: {
@@ -56,7 +58,8 @@ export class ActiveCollectionService {
   public data: Observable<any>;
   public apiUrls: {
     CollectionBaseUrl: string,
-    CollectionItemsBaseUrl: string
+    CollectionItemsBaseUrl: string,
+    CollectionActive: string
   };
 
   constructor(
@@ -66,14 +69,16 @@ export class ActiveCollectionService {
     this.data = this.store.select('activeCollection');
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
-      CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collection'
+      CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collection',
+      CollectionActive: this.apiConfig.baseUrl() + 'api/assets/v1/search/collectionSummary',
     };
   }
 
   public get(): Observable<any> {
-    return this.http.get(`${this.apiUrls.CollectionBaseUrl}/focused`,
+    return this.http.get(`${this.apiUrls.CollectionActive}/focused`,
       { headers: this.apiConfig.authHeaders() })
       .map((res) => {
+        // console.log(res.json());
         this.updateActiveCollectionStore(res.json());
         return res.json();
       });
@@ -125,6 +130,7 @@ export class ActiveCollectionService {
   }
 
   public updateActiveCollectionStore(collection: Collection): void {
+    console.log(collection);
     this.store.dispatch({ type: 'UPDATE_ACTIVE_COLLECTION', payload: activeState(collection) });
   }
 

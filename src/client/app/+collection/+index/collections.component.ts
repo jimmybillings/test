@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
-import { Collection } from '../../shared/interfaces/collection.interface';
+import { Collection, Collections } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
@@ -22,8 +22,8 @@ import { Subscription } from 'rxjs/Rx';
 
 export class CollectionsComponent implements OnInit, OnDestroy {
 
-  public collections: any;
-  public activeCollectionStore: any;
+  public collections: Collections;
+  public activeCollectionStore: Collection;
   public errorMessage: string;
   public config: Object;
   private collectionStoreSubscription: Subscription;
@@ -97,19 +97,11 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       if (id === collection.owner) {
         role = 'Owner';
       } else {
-        role = 'Editor';
+        if (collection.editors && collection.editors.indexOf(id) > -1) {
+          role = 'Editor';
+        }
       };
     });
     return role;
   }
-
-  // private getActiveCollection(): void {
-  //   this.activeCollection.get().take(1).subscribe((collection) => {
-  //     this.updateActiveCollectionAssets(collection);
-  //   });
-  // }
-
-  // private updateActiveCollectionAssets(collection: Collection) {
-  //   this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
-  // }
 }

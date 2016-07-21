@@ -5,6 +5,7 @@ export interface Collection {
   siteName: string;
   name: string;
   owner: string;
+  email: string;
   editors?: number[];
   assets?: Items;
   tags?: any;

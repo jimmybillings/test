@@ -74,7 +74,9 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       if (id === collection.owner) {
         role = 'Owner';
       } else {
-        role = 'Editor';
+        if (collection.editors && collection.editors.indexOf(id) > -1) {
+          role = 'Editor';
+        }
       };
     });
     return role;
