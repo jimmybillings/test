@@ -15,7 +15,8 @@ import { Collection, Collections, CollectionStore } from '../shared/interfaces/c
 import { CollectionsService } from '../+collection/services/collections.service';
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { Store } from '@ngrx/store';
-
+// new stuff
+import { FilterService } from './services/filter.service';
 
 /**
  * Asset search page component - renders search page results
@@ -25,6 +26,7 @@ import { Store } from '@ngrx/store';
   selector: 'search',
   templateUrl: 'search.html',
   directives: [WzAssetListComponent, WzPaginationComponent, FilterTreeComponent],
+  providers: [FilterService]
 })
 
 export class SearchComponent implements OnInit, OnDestroy {
@@ -52,8 +54,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     public store: Store<CollectionStore>,
     public error: Error,
     public searchContext: SearchContext,
-    public uiState: UiState) {
+    public uiState: UiState,
+    public filterService: FilterService) {
       this.rootFilter = new FilterTree('', '', [], 'None', -1);
+      this.filterService.ngOnInit();
   }
 
   ngOnInit(): void {
