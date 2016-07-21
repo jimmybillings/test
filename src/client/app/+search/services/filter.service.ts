@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs/Rx';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Store, Reducer, Action } from '@ngrx/store';
 import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { Http, RequestOptions, URLSearchParams, Response } from '@angular/http';
-import { Store, Reducer, Action } from '@ngrx/store';
 
 const initFilters: Array<any> = [];
 export const filters: Reducer<any> = (state: Array<any> = initFilters, action: Action) => {
@@ -16,32 +16,28 @@ export const filters: Reducer<any> = (state: Array<any> = initFilters, action: A
 };
 
 @Injectable()
-export class FilterService implements OnInit {
+export class FilterService {
   public filters: Observable<any>;
 
   constructor(
-    public apiConfig: ApiConfig,
     public http: Http,
-    public currentUser: CurrentUser,
-    public store: Store<any>) {
+    public store: Store<any>,
+    public apiConfig: ApiConfig,
+    public currentUser: CurrentUser) {
       this.filters = this.store.select('filters');
     }
 
-  ngOnInit() {
-    this.getFilters();
-  }
-
-  public setFilters(filters: any): void {
-    this.store.dispatch({type: 'FILTERS.SET_FILTERS', payload: filters});
-  }
-
-  public getFilters(): Observable<any> {
+  public getFilters(params: any): Observable<any> {
     let url = this.getFilterTreeUrl();
-    let options = this.getFilterTreeOptions({q: 'cat', counted: true});
+    let options = this.getFilterTreeOptions(params);
     return this.http.get(url, options).map((res: Response) => {
       this.setFilters(this.mapFilters(res.json()));
       return res.json();
     });
+  }
+
+  public setFilters(filters: any): void {
+    this.store.dispatch({type: 'FILTERS.SET_FILTERS', payload: filters});
   }
 
   public getFilterTreeUrl(): string {

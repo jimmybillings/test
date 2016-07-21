@@ -2,6 +2,7 @@ import {
   beforeEachProvidersArray,
   beforeEachProviders,
   ResponseOptions,
+  RequestOptions,
   MockBackend,
   Response,
   describe,
@@ -19,22 +20,55 @@ export function main() {
       FilterService
     ]);
 
-    it('Should exist with instances of http and apiConfig',
+    it('Should exist with instances of http, store, currentUser, and apiConfig',
       inject([FilterService], (service: FilterService) => {
         expect(service).toBeDefined();
+        expect(service.store).toBeDefined();
         expect(service.http).toBeDefined();
         expect(service.apiConfig).toBeDefined();
+        expect(service.currentUser).toBeDefined();
       }));
 
-    it('Should make a get request to the filterTree api cache the response in the store',
+    it('Should have a setFilters method that updates the store',
+      inject([FilterService], (service: FilterService) => {
+        spyOn(service.store, 'dispatch');
+        service.setFilters(mockFilters());
+        expect(service.store.dispatch).toHaveBeenCalledWith({type: 'FILTERS.SET_FILTERS', payload: mockFilters()});
+      }));
+
+    it('Should have a getFilterTreeUrl() method that returns the proper url based on the user',
+      inject([FilterService], (service: FilterService) => {
+        localStorage.setItem('token', '07yadbf1o78e2gfblalbfu4');
+        expect(service.getFilterTreeUrl()).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/filterTree');
+        localStorage.clear();
+        expect(service.getFilterTreeUrl()).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree');
+      }));
+
+    it('Should have a getFilterTreeOptions() method that builds search options based off of params and the current user',
+      inject([FilterService], (service: FilterService) => {
+        localStorage.setItem('token', 'aslkdbasldu298e39p8dakljn');
+        let result = service.getFilterTreeOptions({q: 'cat', counted: true});
+        expect(result instanceof RequestOptions).toBeTruthy();
+      }));
+
+    it('Should have a getFilters() method that makes a get request to the filterTree api and caches the response in the store',
       inject([FilterService, MockBackend], (service: FilterService, mockBackend: MockBackend) => {
+        localStorage.clear();
         let connection: any;
+        spyOn(service, 'setFilters');
+        spyOn(service, 'mapFilters');
+        spyOn(service, 'getFilterTreeUrl').and.callThrough();
+        spyOn(service, 'getFilterTreeOptions').and.callThrough();
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.getFilters().subscribe((payload) => {
+        service.getFilters({q: 'cat', counted: true}).subscribe((payload) => {
           expect(connection.request.method).toEqual(0);
           expect(connection.request.url).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true&siteName=core');
           expect(payload).toEqual(mockFilters());
+          expect(service.setFilters).toHaveBeenCalled();
+          expect(service.mapFilters).toHaveBeenCalledWith(mockFilters());
         });
+        expect(service.getFilterTreeUrl).toHaveBeenCalled();
+        expect(service.getFilterTreeOptions).toHaveBeenCalledWith({q: 'cat', counted: true});
         connection.mockRespond(new Response(
           new ResponseOptions({
             body: mockFilters()
