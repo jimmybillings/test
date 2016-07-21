@@ -103,13 +103,13 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     return role;
   }
 
-  private getActiveCollection(): void {
-    this.activeCollection.get().take(1).subscribe((collection) => {
-      this.updateActiveCollectionAssets(collection);
-    });
-  }
+  // private getActiveCollection(): void {
+  //   this.activeCollection.get().take(1).subscribe((collection) => {
+  //     this.updateActiveCollectionAssets(collection);
+  //   });
+  // }
 
-  private updateActiveCollectionAssets(collection: Collection) {
-    this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
-  }
+  // private updateActiveCollectionAssets(collection: Collection) {
+  //   this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
+  // }
 }
