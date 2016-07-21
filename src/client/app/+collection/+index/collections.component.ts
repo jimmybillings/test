@@ -82,13 +82,25 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     });
   }
 
+  public getUserRole(collection: Collection): string {
+    let role: string = 'Viewer';
+    this.currentUser.get('id').take(1).subscribe((id) => {
+      if (id === collection.owner) {
+        role = 'Owner';
+      } else {
+        role = 'Editor';
+      };
+    });
+    return role;
+  }
+
   private getActiveCollection(): void {
     this.activeCollection.get().take(1).subscribe((collection) => {
       this.updateActiveCollectionAssets(collection);
     });
   }
 
-  private updateActiveCollectionAssets(collection: any) {
+  private updateActiveCollectionAssets(collection: Collection) {
     this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
   }
 }

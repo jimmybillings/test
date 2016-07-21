@@ -21,10 +21,10 @@
     
     <a md-button *ngIf="currentUser.loggedInState() | async" [routerLink]="['/user/profile']" [ngClass]="{'md-primary': !(UiState.uiState | async).showFixed}" hide="" show-xs="" class="md-icon-button is-dd"> <i md-icon="" class="material-icons">person</i></a>
     
-    <button *ngIf="(UiState.uiState | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id !== null" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleBinTray()" class="open-bin-tray"><md-icon>folder_open</md-icon></button>
-    
-    <button *ngIf="(UiState.uiState | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id === null" md-icon-button title="{{'HEADER.NEW_COLLECTION_LABEL' | translate}}" (click)="showNewCollection()" class="open-bin-tray"><md-icon>folder_open</md-icon></button>
-    
     <button *ngIf="(UiState.uiState | async).searchBarIsActive" md-icon-button title="Search" (click)="toggleSearch()" class="open-search"><md-icon>search</md-icon></button>
+    
+    <button *ngIf="(UiState.uiState | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id !== null" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleBinTray()" class="open-bin-tray"><md-icon>folder_open</md-icon></button>
+
+    <button *ngIf="(UiState.uiState | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id === null" md-icon-button title="{{'HEADER.NEW_COLLECTION_LABEL' | translate}}" (click)="showNewCollection()" class="open-bin-tray"><md-icon>folder_open</md-icon></button>
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
 </md-toolbar>

@@ -114,11 +114,17 @@
       "CREATE_BTN_LABEL": "Create new"
     },
     "SHOW": {
+      "PAGE_TITLE": "Your collections",
       "EDIT_BTN_TITLE": "Edit collection",
       "HISTORY_BTN_TITLE": "Show collection history",
       "SHARE_BTN_TITLE": "Share collection",
       "COMMENT_BTN_TITLE": "Show collection comments",
-      "MORE_BTN_TITLE": "More collection options"
+      "MORE_BTN_TITLE": "More collection options",
+      "CREATED_LABEL": "Created:",
+      "UPDATED_LABEL": "Updated:",
+      "ROLE_LABEL": "Your role:",
+      "OWNER_LABEL": "Owner:",
+      "TAGS_LABEL": "Tags:"
     },
     "INDEX": {
       "FOCUS_BTN_TITLE": "Focus on this collection",
