@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
-import { Collection } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
@@ -8,7 +7,7 @@ import { CurrentUser } from '../../shared/services/current-user.model';
 import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Rx';
-
+import { Collection } from '../../shared/interfaces/collection.interface';
 @Component({
   moduleId: module.id,
   selector: 'collections',
@@ -23,11 +22,9 @@ import { Subscription } from 'rxjs/Rx';
 export class CollectionsComponent implements OnInit, OnDestroy {
 
   public collections: any;
-  public activeCollectionStore: any;
   public errorMessage: string;
   public config: Object;
   private collectionStoreSubscription: Subscription;
-  private activeCollectionStoreSubscription: Subscription;
 
   constructor(
     public router: Router,
@@ -42,40 +39,41 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.collectionsService.loadCollections().take(1).subscribe();
     this.collectionStoreSubscription =
       this.collectionsService.collections.subscribe(collections => this.collections = collections);
-    this.activeCollectionStoreSubscription =
-      this.activeCollection.data.subscribe(activeCollection => this.activeCollectionStore = activeCollection);
   }
 
   ngOnDestroy() {
     this.collectionStoreSubscription.unsubscribe();
-    this.activeCollectionStoreSubscription.unsubscribe();
   }
 
   public date(date: any): Date {
     return new Date(date);
   }
 
-  public selectActiveCollection(collection: Collection): void {
-    this.activeCollection.set(collection.id).take(1).subscribe(() => {
-      this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
+  public selectActiveCollection(id: number): void {
+    this.activeCollection.set(id).take(1).subscribe(() => {
+      this.activeCollection.getItems(id, 300).take(1).subscribe();
     });
   }
 
-  public isActiveCollection(collection: Collection): boolean {
-    return this.activeCollectionStore.id === collection.id;
+  public isActiveCollection(collectionId: number): boolean {
+    let isMatch: boolean;
+    this.activeCollection.data.take(1)
+      .map(activeCollection => activeCollection.id)
+      .subscribe(id => isMatch = id === collectionId);
+    return isMatch;
   }
 
-  public thumbnail(collection: Collection): string {
-    return (collection.collectionThumbnail) ? collection.collectionThumbnail.urls.https : '/assets/img/tbn_missing.jpg';
+  public thumbnail(thumbnail: {urls: {https: string}}): string {
+    return (thumbnail) ? thumbnail.urls.https : '/assets/img/tbn_missing.jpg';
   }
 
-  public deleteCollection(collection: Collection): void {
-    this.collectionsService.deleteCollection(collection.id).take(1).subscribe(payload => {
+  public deleteCollection(id: number): void {
+    this.collectionsService.deleteCollection(id).take(1).subscribe(payload => {
       let collectionLength: number;
       this.collectionsService.collections.take(1).subscribe(collection => collectionLength = collection.items.length);
 
       // if we are deleting current active, we need to get the new active from the server.
-      if (this.isActiveCollection(collection) && collectionLength > 0) {
+      if (this.isActiveCollection(id) && collectionLength > 0) {
         this.activeCollection.get().take(1).subscribe((collection) => {
           this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
         });

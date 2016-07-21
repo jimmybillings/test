@@ -32,13 +32,15 @@ export function main() {
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.apiUrls.CollectionBaseUrl = 'https://crxextapi.dev.wzplatform.com/api/assets/v1/search';
         let expectedUrl = service.apiUrls.CollectionBaseUrl + '/collectionSummary/fetchBy?access-level=all';
+        spyOn(service, 'storeCollections');
         service.loadCollections().subscribe(response => {
           expect(connection.request.url).toBe(expectedUrl);
-          expect(response).toEqual(mockCollectionResponse());
+          expect(response).toEqual(mockCollection());
+          expect(service.storeCollections).toHaveBeenCalledWith(mockCollection());
         });
         connection.mockRespond(new Response(
           new ResponseOptions({
-            body: mockCollectionResponse()
+            body: mockCollection()
           })
         ));
       }));
@@ -48,74 +50,11 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
+        spyOn(service, 'createCollectionInStore');
         service.createCollection(mockCollection()).subscribe(response => {
           expect(connection.request.url).toBe('api/identites/v1/collection');
-          expect(response).toEqual(mockCollectionResponse());
-        });
-        connection.mockRespond(new Response(
-          new ResponseOptions({
-            body: mockCollectionResponse()
-          })
-        ));
-      }));
-
-    // it('Should have a getFocusedCollection method that gets a users focused collection',
-    //   inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
-    //     let connection: any;
-    //     connection = mockBackend.connections.subscribe((c: any) => connection = c);
-    //     service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
-    //     service.getFocusedCollection().subscribe(response => {
-    //       expect(connection.request.url).toBe('api/identites/v1/collection/focused');
-    //       expect(response).toEqual(mockCollectionResponse());
-    //     });
-    //     connection.mockRespond(new Response(
-    //       new ResponseOptions({
-    //         body: mockCollectionResponse()
-    //       })
-    //     ));
-    //   }));
-
-    // it('Should have a setFocusedCollection method that sets a users focused collection given an id',
-    //   inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
-    //     let connection: any;
-    //     connection = mockBackend.connections.subscribe((c: any) => connection = c);
-    //     service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
-    //     service.setFocusedCollection(158).subscribe(response => {
-    //       expect(connection.request.url).toBe('api/identites/v1/collection/focused/158');
-    //       expect(connection.request.method).toBe(RequestMethod.Put);
-    //       expect(response).toEqual(mockCollection());
-    //       expect(response.id).toEqual(158);
-    //     });
-    //     connection.mockRespond(new Response(
-    //       new ResponseOptions({
-    //         body: mockCollection()
-    //       })
-    //     ));
-    //   }));
-
-    // it('Should have a addAssetsToCollection method that adds assets to a collection',
-    //   inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
-    //     let connection: any;
-    //     connection = mockBackend.connections.subscribe((c: any) => connection = c);
-    //     service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
-    //     service.addAssetsToCollection(158, { 'list': [{ 'assetId': 567890 }] }).subscribe(response => {
-    //       expect(connection.request.method).toBe(RequestMethod.Post);
-    //       expect(connection.request.url).toBe('api/identites/v1/collection/158/addAssets');
-    //     });
-    //     connection.mockRespond(new Response(
-    //       new ResponseOptions({
-    //         body: mockCollection()
-    //       })
-    //     ));
-    //   }));
-
-    it('Should have a deleteCollection method that deletes a collection',
-      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
-        let connection: any;
-        connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
-        service.deleteCollection(158).subscribe(response => {
-          expect(connection.request.url).toBe('api/identites/v1/collection/158');
+          expect(response).toEqual(mockCollection());
+          expect(service.createCollectionInStore).toHaveBeenCalledWith(mockCollection());
         });
         connection.mockRespond(new Response(
           new ResponseOptions({
@@ -124,183 +63,50 @@ export function main() {
         ));
       }));
 
-    it('Should have a clearCollections method that sets the store back to its initial state',
+    it('Should have a deleteCollection method that deletes a collection',
+      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
+        let connection: any;
+        connection = mockBackend.connections.subscribe((c: any) => connection = c);
+        service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
+        spyOn(service, 'deleteCollectionFromStore');
+        service.deleteCollection(158).subscribe(response => {
+          expect(connection.request.url).toBe('api/identites/v1/collection/158');
+          expect(service.deleteCollectionFromStore).toHaveBeenCalledWith(158);
+        });
+        connection.mockRespond(new Response(
+          new ResponseOptions({
+            body: mockCollection()
+          })
+        ));
+      }));
+
+    it('Should have a destroyCollections method that sets the store back to its initial state',
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         spyOn(service.store, 'dispatch');
         service.destroyCollections();
-        expect(service.store.dispatch).toHaveBeenCalled();
+        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'RESET_COLLECTIONS' });
       }));
 
-    it('Should have a deleteCollectionFromStore method that removes a collection',
+    it('Should delete a collection from the store by the given collection id',
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         spyOn(service.store, 'dispatch');
-        service.deleteCollectionFromStore(mockCollection().id);
-        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'DELETE_COLLECTION', payload: mockCollection().id });
+        service.deleteCollectionFromStore(2);
+        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'DELETE_COLLECTION', payload: 2 });
       }));
 
-    // it('Should have an updateFocusedCollection method that updates the focused collection in the store',
-    //   inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
-    //     // spyOn(service.store, 'dispatch');
-    //     service.updateFocusedCollectionAssets(mockcollectionAssetSearch());
-    //     // expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'FOCUSED_COLLECTION', payload: mockcollectionWithAssets() });
-    //   }));
-
-    it('Should have a createCollectionInStore method that creates a new collection in the store',
+    it('Should create a collection in the store by passing in the given collection object',
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         spyOn(service.store, 'dispatch');
         service.createCollectionInStore(mockCollection());
         expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'CREATE_COLLECTION', payload: mockCollection() });
       }));
 
-    function mockCollectionResponse() {
-      return {
-        'items': [
-          {
-            'createdOn': '2016-06-16T17:53:17Z',
-            'lastUpdated': '2016-06-16T17:53:17Z',
-            'id': 155, 'siteName': 'core',
-            'name': 'Cat',
-            'owner': 'ross.edfort@wazeedigital.com',
-            'assets': [28296444],
-            'tags': ['meow']
-          }
-        ],
-        'totalCount': 2,
-        'currentPage': 0,
-        'pageSize': 2,
-        'hasNextPage': false,
-        'hasPreviousPage': false,
-        'numberOfPages': 1
-      };
-    }
-
-    // function mockcollectionAsset2() {
-    //   return {
-    //     'createdOn': '2016-06-03T17:09:16Z',
-    //     'lastUpdated': '2016-06-24T03:14:14Z',
-    //     'id': 16,
-    //     'siteName': 'core',
-    //     'name': 'Masters Opening Cerimony',
-    //     'owner': 'admin@wazeedigital.com',
-    //     'assets': {
-    //       'items': [
-    //         {
-    //           'assetId': 37432110,
-    //           'createdOn': '2016-06-24T03:14:14Z',
-    //           'lastUpdated': '2016-06-24T03:14:14Z',
-    //           'uuid': '8cb5197a-c9ba-4f98-a62a-ee4e40793ad9'
-    //         }
-    //       ],
-    //       'pagination': {
-    //         'totalCount': 1
-    //       }
-    //     },
-    //     'tags': ['golf', 'masters', 'Augusta'],
-    //     'thumbnail': {
-    //       'name': 'thumbnail',
-    //       'urls': {
-    //         'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/943/301/943301_0040_lt.jpg'
-    //       }
-    //     },
-    //   };
-    // }
-    // function mockcollectionAssetSearch() {
-    //   return {
-    //     'items': [
-    //       {
-    //         'assetId': 37432110,
-    //         'metaData': [
-    //           {
-    //             'name': 'Title',
-    //             'value': ''
-    //           },
-    //           {
-    //             'name': 'Description',
-    //             'value': 'A man paddles a kayak in the Arctic or Antarctic with an elephant seal on a nearby iceberg.'
-    //           },
-    //           {
-    //             'name': 'TE.DigitalFormat',
-    //             'value': 'High Definition'
-    //           },
-    //           {
-    //             'name': 'Format.Duration',
-    //             'value': '00:00:12'
-    //           }
-    //         ],
-    //         'name': '943301_0040',
-    //         'thumbnail': {
-    //           'name': 'thumbnail',
-    //           'urls': {
-    //             'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/943/301/943301_0040_lt.jpg'
-    //           }
-    //         },
-    //         'uuid': '8cb5197a-c9ba-4f98-a62a-ee4e40793ad9'
-    //       },
-    //     ],
-    //     'totalCount': 1,
-    //     'currentPage': 0,
-    //     'pageSize': 100,
-    //     'hasNextPage': false,
-    //     'hasPreviousPage': false,
-    //     'numberOfPages': 1
-    //   };
-    // }
-    // function mockcollectionWithAssets() {
-    //   return {
-    //     'createdOn': '2016-06-03T17:09:16Z',
-    //     'lastUpdated': '2016-06-24T03:14:14Z',
-    //     'id': 16,
-    //     'siteName': 'core',
-    //     'name': 'Masters Opening Cerimony',
-    //     'owner': 'admin@wazeedigital.com',
-    //     'assets': {
-    //       'items': [{
-    //         'assetId': 37432110,
-    //         'metaData': [
-    //           {
-    //             'name': 'Title',
-    //             'value': ''
-    //           },
-    //           {
-    //             'name': 'Description',
-    //             'value': 'A man paddles a kayak in the Arctic or Antarctic with an elephant seal on a nearby iceberg.'
-    //           },
-    //           {
-    //             'name': 'TE.DigitalFormat',
-    //             'value': 'High Definition'
-    //           },
-    //           {
-    //             'name': 'Format.Duration',
-    //             'value': '00:00:12'
-    //           }
-    //         ],
-    //         'name': '943301_0040',
-    //         'thumbnail': {
-    //           'name': 'thumbnail',
-    //           'urls': {
-    //             'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/943/301/943301_0040_lt.jpg'
-    //           }
-    //         },
-    //         'uuid': '8cb5197a-c9ba-4f98-a62a-ee4e40793ad9'
-    //       }],
-    //       'pagination': {
-    //         'totalCount': 1,
-    //         'currentPage': 1,
-    //         'pageSize': 100,
-    //         'hasNextPage': false,
-    //         'hasPreviousPage': false,
-    //         'numberOfPages': 1
-    //       },
-    //     },
-    //     'tags': ['golf', 'masters', 'Augusta'],
-    //     'thumbnail': {
-    //       'name': 'thumbnail',
-    //       'urls': {
-    //         'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/943/301/943301_0040_lt.jpg'
-    //       }
-    //     }
-    //   };
-    // }
+    it('Should update a collection in the store by passing in the given collection object',
+      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
+        spyOn(service.store, 'dispatch');
+        service.updateCollectionInStore(mockCollection());
+        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'UPDATE_COLLECTION', payload: mockCollection() });
+      }));
 
     function mockCollection() {
       return {
@@ -356,3 +162,4 @@ export function main() {
     }
   });
 }
+
