@@ -118,15 +118,15 @@ header.app-header.bin-tray-closed bin-tray section {
       a.asset-thb::before {
         background-image: none;
         box-shadow: 
-          inset 2px 2px 0 0 md-color($md-background, card, 1),
-          inset -2px -2px 0 0 md-color($md-background, card, 1);        
+          inset 2px 2px 0 0 md-color($md-foreground, base, 1),
+          inset -2px -2px 0 0 md-color($md-foreground, base, 1);        
         @include transition($swift-ease-out);
         z-index: 1;
         opacity:0
       }
       a.asset-thb:hover {
         &::before {
-          opacity: .85;
+          opacity: 1;
         }
       }
     }
