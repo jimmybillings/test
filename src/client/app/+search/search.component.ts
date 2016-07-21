@@ -8,6 +8,7 @@ import { CurrentUser} from '../shared/services/current-user.model';
 import { Error } from '../shared/services/error.service';
 import { WzPaginationComponent} from '../shared/components/wz-pagination/wz.pagination.component';
 import { SearchContext} from '../shared/services/search-context.service';
+import { UiState } from '../shared/services/ui.state';
 import { FilterTree} from './filter-tree';
 import { FilterTreeComponent} from './filter-tree.component';
 import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
@@ -50,7 +51,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>,
     public error: Error,
-    public searchContext: SearchContext) {
+    public searchContext: SearchContext,
+    public uiState: UiState) {
       this.rootFilter = new FilterTree('', '', [], 'None', -1);
   }
 
@@ -72,6 +74,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public addToCollection(params: any): void {
+    this.uiState.openBinTray();
     this.activeCollection.addAsset(params.collection.id, params.asset).take(1).subscribe((asset) => {
       this.activeCollection.addAssetToStore(Object.assign(params.asset, asset.list[0]));
     });
