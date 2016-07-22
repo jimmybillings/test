@@ -30,7 +30,7 @@ export class WzAssetListComponent implements OnChanges {
   }
 
   ngOnChanges(changes: any) {
-    if (changes.collection && changes.collection.currentValue && this.collection.assets.items.length > 0) {
+    if (changes.collection && changes.collection.currentValue) {
       this.assetsArr = this.collection.assets.items.map(function (x) { return x.assetId; });
     }
   }

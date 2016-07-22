@@ -67,18 +67,4 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     let uuid: any = params.collection.assets.items.find((item: any) => parseInt(item.assetId) === parseInt(params.asset.assetId)).uuid;
     if(uuid && params.asset.assetId) this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
   }
-
-  // public getUserRole(collection: Collection): string {
-  //   let role: string = 'Viewer';
-  //   this.currentUser.get('id').take(1).subscribe((id) => {
-  //     if (id === collection.owner) {
-  //       role = 'Owner';
-  //     } else {
-  //       if (collection.editors && collection.editors.indexOf(id) > -1) {
-  //         role = 'Editor';
-  //       }
-  //     };
-  //   });
-  //   return role;
-  // }
 }

@@ -88,18 +88,4 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  // public getUserRole(collection: Collection): string {
-  //   let role: string = 'Viewer';
-  //   this.currentUser.get('id').take(1).subscribe((id) => {
-  //     if (id === collection.owner) {
-  //       role = 'Owner';
-  //     } else {
-  //       if (collection.editors && collection.editors.indexOf(id) > -1) {
-  //         role = 'Editor';
-  //       }
-  //     };
-  //   });
-  //   return role;
-  // }
 }
