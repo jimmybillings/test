@@ -4,8 +4,9 @@ export interface Collection {
   id: number;
   siteName: string;
   name: string;
-  owner: string;
-  email: string;
+  owner: number;
+  email?: string;
+  userRole?: string;
   editors?: number[];
   assets?: Items;
   tags?: any;

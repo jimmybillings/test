@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Collection, Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
+import { Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
 import { Observable, Subscription } from 'rxjs/Rx';
@@ -68,17 +68,17 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     if(uuid && params.asset.assetId) this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
   }
 
-  public getUserRole(collection: Collection): string {
-    let role: string = 'Viewer';
-    this.currentUser.get('id').take(1).subscribe((id) => {
-      if (id === collection.owner) {
-        role = 'Owner';
-      } else {
-        if (collection.editors && collection.editors.indexOf(id) > -1) {
-          role = 'Editor';
-        }
-      };
-    });
-    return role;
-  }
+  // public getUserRole(collection: Collection): string {
+  //   let role: string = 'Viewer';
+  //   this.currentUser.get('id').take(1).subscribe((id) => {
+  //     if (id === collection.owner) {
+  //       role = 'Owner';
+  //     } else {
+  //       if (collection.editors && collection.editors.indexOf(id) > -1) {
+  //         role = 'Editor';
+  //       }
+  //     };
+  //   });
+  //   return role;
+  // }
 }

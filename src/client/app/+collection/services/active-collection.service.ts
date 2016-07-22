@@ -9,15 +9,16 @@ import { Store, Reducer, Action} from '@ngrx/store';
  * Focused Collection store -
  */
 
-function activeState(collection: any = {}): Collection {
+export function activeState(collection: any = {}): Collection {
   return {
     createdOn: collection.createdOn || '',
     lastUpdated: collection.lastUpdated || '',
     id: collection.id || null,
     siteName: collection.siteName || '',
     name: collection.name || '',
-    owner: collection.owner || '',
+    owner: collection.owner || 0,
     email: collection.email || '',
+    userRole: collection.userRole || '',
     editors: collection.editors || [],
     assets: {
       items: [],
@@ -59,7 +60,8 @@ export class ActiveCollectionService {
   public apiUrls: {
     CollectionBaseUrl: string,
     CollectionItemsBaseUrl: string,
-    CollectionActive: string
+    CollectionActive: string,
+    CollectionSetActive: string
   };
 
   constructor(
@@ -71,6 +73,7 @@ export class ActiveCollectionService {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
       CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collection',
       CollectionActive: this.apiConfig.baseUrl() + 'api/assets/v1/search/collectionSummary',
+      CollectionSetActive: this.apiConfig.baseUrl() + 'api/assets/v1/search/setFocusedCollection'
     };
   }
 
@@ -78,14 +81,13 @@ export class ActiveCollectionService {
     return this.http.get(`${this.apiUrls.CollectionActive}/focused`,
       { headers: this.apiConfig.authHeaders() })
       .map((res) => {
-        // console.log(res.json());
         this.updateActiveCollectionStore(res.json());
         return res.json();
       });
   }
 
   public set(collectionId: number): Observable<any> {
-    return this.http.put(`${this.apiUrls.CollectionBaseUrl}/focused/${collectionId}`,
+    return this.http.put(`${this.apiUrls.CollectionSetActive}/${collectionId}`,
       '', { headers: this.apiConfig.authHeaders() })
       .map((res) => {
         this.updateActiveCollectionStore(res.json());
@@ -130,7 +132,6 @@ export class ActiveCollectionService {
   }
 
   public updateActiveCollectionStore(collection: Collection): void {
-    console.log(collection);
     this.store.dispatch({ type: 'UPDATE_ACTIVE_COLLECTION', payload: activeState(collection) });
   }
 

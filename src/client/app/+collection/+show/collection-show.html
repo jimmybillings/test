@@ -25,12 +25,12 @@
                     <h3 class="md-headline">{{collection.name}}
                       <span class="asset-count">
                         <span class="count" *ngIf="collection.assets">{{collection.assets.pagination.totalCount}}</span>
-                      <span class="count" *ngIf="!collection.assets">0</span>
+                      <!--<span class="count" *ngIf="!collection.assets">0</span>-->
                       </span>
                     </h3>
                     <div class="md-caption collection-info">
-                      <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{collection.email}}</span>
-                      <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{getUserRole(collection)}}</span>
+                      <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{ collection.email }}</span>
+                      <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{ collection.userRole }}</span>
                       <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ date(collection.createdOn) | date:'short' }}</span>
                       <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
                     </div>

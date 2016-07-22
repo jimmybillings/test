@@ -10,7 +10,7 @@ import {
   it
 } from '../../imports/test.imports';
 
-import { ActiveCollectionService } from './active-collection.service';
+import { ActiveCollectionService, activeState } from './active-collection.service';
 
 export function main() {
   describe('Active Collections service', () => {
@@ -22,10 +22,10 @@ export function main() {
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
+        service.apiUrls.CollectionActive = 'api/assets/v1/search/collectionSummary';
         spyOn(service, 'updateActiveCollectionStore');
         service.get().subscribe(response => {
-          expect(connection.request.url).toBe('api/identites/v1/collection/focused');
+          expect(connection.request.url).toBe('api/assets/v1/search/collectionSummary/focused');
           expect(service.updateActiveCollectionStore).toHaveBeenCalledWith(mockCollectionResponse());
           expect(response).toEqual(mockCollectionResponse());
         });
@@ -40,10 +40,10 @@ export function main() {
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
+        service.apiUrls.CollectionSetActive = 'api/assets/v1/search/setFocusedCollection';
         spyOn(service, 'updateActiveCollectionStore');
         service.set(158).subscribe(response => {
-          expect(connection.request.url).toBe('api/identites/v1/collection/focused/158');
+          expect(connection.request.url).toBe('api/assets/v1/search/setFocusedCollection/158');
           expect(service.updateActiveCollectionStore).toHaveBeenCalledWith(mockCollectionResponse());
           expect(response.id).toEqual(158);
         });
@@ -175,52 +175,23 @@ export function main() {
 
     function mockCollectionResponse() {
       return {
-        'createdOn': '2016-06-03T17:09:16Z',
-        'lastUpdated': '2016-06-24T03:14:14Z',
+        'lastUpdated': '2016-07-21T18:06:18Z',
+        'createdOn': '2016-06-14T00:59:33Z',
         'id': 158,
         'siteName': 'core',
-        'name': 'Masters Opening Cerimony',
-        'owner': 'admin@wazeedigital.com',
-        'items': [
+        'name': 'Alternative Energy',
+        'owner': 5,
+        'email': 'jeff@jeffhyde.com',
+        'editors': [50,62],
+        'assets': [
           {
-            'createdOn': '2016-06-16T17:53:17Z',
-            'lastUpdated': '2016-06-16T17:53:17Z',
-            'id': 155, 'siteName': 'core',
-            'name': 'Cat',
-            'owner': 'ross.edfort@wazeedigital.com',
-            'assets': [28296444],
-            'tags': ['meow']
-          }
-        ],
-        'totalCount': 2,
-        'currentPage': 0,
-        'pageSize': 2,
-        'hasNextPage': false,
-        'hasPreviousPage': false,
-        'numberOfPages': 1
-      };
-    }
-
-    function activeState(collection: any = {}): any {
-      return {
-        createdOn: collection.createdOn || '',
-        lastUpdated: collection.lastUpdated || '',
-        id: collection.id || null,
-        siteName: collection.siteName || '',
-        name: collection.name || '',
-        owner: collection.owner || '',
-        assets: {
-          items: [],
-          pagination: {
-            totalCount: 0,
-            currentPage: 1,
-            pageSize: 100,
-            hasNextPage: false,
-            hasPreviousPage: false,
-            numberOfPages: 0
+            'uuid': '147819dc-d5ef-4b50-8156-ef1add7c609c',
+            'assetId': 37533069,
+            'createdOn': '2016-06-28T20:36:31Z',
+            'lastUpdated': '2016-07-21T18:06:18Z'
           },
-        },
-        tags: collection.tags || []
+        ],
+        'tags': ['solar','wind','DC']
       };
     }
   });

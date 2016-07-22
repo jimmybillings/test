@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
-import { Collection, Collections } from '../../shared/interfaces/collection.interface';
+import { Collections } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
@@ -89,17 +89,17 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     });
   }
 
-  public getUserRole(collection: Collection): string {
-    let role: string = 'Viewer';
-    this.currentUser.get('id').take(1).subscribe((id) => {
-      if (id === collection.owner) {
-        role = 'Owner';
-      } else {
-        if (collection.editors && collection.editors.indexOf(id) > -1) {
-          role = 'Editor';
-        }
-      };
-    });
-    return role;
-  }
+  // public getUserRole(collection: Collection): string {
+  //   let role: string = 'Viewer';
+  //   this.currentUser.get('id').take(1).subscribe((id) => {
+  //     if (id === collection.owner) {
+  //       role = 'Owner';
+  //     } else {
+  //       if (collection.editors && collection.editors.indexOf(id) > -1) {
+  //         role = 'Editor';
+  //       }
+  //     };
+  //   });
+  //   return role;
+  // }
 }

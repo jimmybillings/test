@@ -99,6 +99,5 @@ export function main() {
         expect(component.activeCollection.get).toHaveBeenCalled();
         expect(component.activeCollection.getItems).toHaveBeenCalledWith(2, 200);
       }));
-
   });
 }
