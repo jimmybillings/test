@@ -56,7 +56,6 @@ export function main() {
         localStorage.clear();
         let connection: any;
         spyOn(service, 'setFilters');
-        spyOn(service, 'mapFilters');
         spyOn(service, 'getFilterTreeUrl').and.callThrough();
         spyOn(service, 'getFilterTreeOptions').and.callThrough();
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
@@ -65,7 +64,6 @@ export function main() {
           expect(connection.request.url).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true&siteName=core');
           expect(payload).toEqual(mockFilters());
           expect(service.setFilters).toHaveBeenCalled();
-          expect(service.mapFilters).toHaveBeenCalledWith(mockFilters());
         });
         expect(service.getFilterTreeUrl).toHaveBeenCalled();
         expect(service.getFilterTreeOptions).toHaveBeenCalledWith({q: 'cat', counted: true});
@@ -85,6 +83,7 @@ export function main() {
         {
           'filterId': 1240,
           'name': 'Format',
+          'expanded': true,
           'subFilters': [
             {
               'filterId': 1241,
@@ -127,6 +126,7 @@ export function main() {
         {
           'filterId': 1248,
           'name': 'Specialty',
+          'expanded': true,
           'subFilters': [
             {
               'filterId': 1249,
@@ -156,6 +156,7 @@ export function main() {
             {
               'filterId': 1254,
               'name': 'Camera Angle',
+              'expanded': false,
               'subFilters': [
                 {
                   'filterId': 1255,
@@ -231,6 +232,7 @@ export function main() {
         {
           'filterId': 1268,
           'name': 'Content',
+          'expanded': true,
           'subFilters': [
             {
               'filterId': 1269,

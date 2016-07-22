@@ -31,7 +31,7 @@ export class FilterService {
     let url = this.getFilterTreeUrl();
     let options = this.getFilterTreeOptions(params);
     return this.http.get(url, options).map((res: Response) => {
-      this.setFilters(res.json());
+      this.setFilters(this.mapFilters(res.json()));
       return res.json();
     });
   }
@@ -60,9 +60,23 @@ export class FilterService {
     }
   }
 
-  public mapFilters(filters: any): Array<string> {
-    return filters.subFilters.map((filter: any) => {
-      return filter.subFilters ? this.mapFilters(filter) : filter;
-    });
+  public mapFilters(filters: any): any {
+    if (filters.subFilters) {
+      return filters.subFilters.map((filter: any) => {
+        filter.expanded = true;
+        this.mapFilters(filter.subFilters);
+        return filter;
+      });
+    } else {
+      filters.map((filter: any) => {
+        if (filter.subFilters) {
+          filter.expanded = false;
+          this.mapFilters(filter.subFilters);
+          return filters;
+        } else {
+          return filters;
+        }
+      });
+    }
   }
 }

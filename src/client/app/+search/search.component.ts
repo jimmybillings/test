@@ -62,10 +62,11 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.filtersStoreSubscription = this.filterService.filters.subscribe(data => this.filters = data);
-    this.filterService.getFilters({q: 'cat', counted: true}).first().subscribe();
     this.assetsStoreSubscription = this.assetData.assets.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    this.routeSubscription = this.route.params.subscribe((params) => this.getFilterTree());
+    this.routeSubscription = this.route.params.subscribe(params => {
+      this.filterService.getFilters(params).first().subscribe();
+    });
   }
 
   ngOnDestroy(): void {
