@@ -90,10 +90,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public showNewCollection(asset: any): void {
     let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-bin-tray');
-    !this.currentUser.loggedIn() ?
-      this.router.navigate(['/user/login']) :
-      newCollectionButton.click();
-    sessionStorage.setItem('assetForNewCollection', JSON.stringify(asset));
+    (!this.currentUser.loggedIn()) ? this.router.navigate(['/user/login']) : newCollectionButton.click();
   }
 
   public addToCart(asset: any) {

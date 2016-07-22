@@ -8,6 +8,7 @@ import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Rx';
 import { Collection } from '../../shared/interfaces/collection.interface';
+
 @Component({
   moduleId: module.id,
   selector: 'collections',

@@ -29,34 +29,19 @@ export class CollectionFormComponent {
     public activeCollection: ActiveCollectionService) { }
 
   public createCollection(collection: Collection): void {
-    let asset = {};
-    this.assetForNewCollection = JSON.parse(sessionStorage.getItem('assetForNewCollection'));
     collection.tags = (collection.tags) ? collection.tags.split(/\s*,\s*/) : [];
-    asset = (this.assetForNewCollection) ? this.assetForNewCollection : sessionStorage.removeItem('assetForNewCollection');
-    this.createAndAddAsset(collection, asset);
-    // Once we solve form resetting/validation for all forms this reset can be removed.
-    let cForm = <HTMLFormElement>document.querySelector('wz-form form');
-    cForm.reset();
-  }
-
-  public createAndAddAsset(collection: Collection, asset: any): void {
     this.collectionsService.createCollection(collection).take(1).subscribe(collection => {
-      this.activeCollection.updateActiveCollectionStore(collection);
-      this.activeCollection.set(collection.id).take(1).subscribe(focused => {
-        // if (asset !== null) {
-          // this.activeCollection.addAsset(collection.id, asset).take(1).subscribe(collection => {
+      this.activeCollection.set(collection.id).take(1).subscribe(() => {
         this.activeCollection.getItems(collection.id, 100).take(1).subscribe();
-          // });
-        // }
       });
     });
-    this.UiState.closeNewCollection();
+
+    this.cancelCollectionCreation();
   }
 
-  public cancelCollectionCreation(event: Event): void {
+  public cancelCollectionCreation(): void {
     this.UiState.closeNewCollection();
     let cForm = <HTMLFormElement>document.querySelector('wz-form form');
     cForm.reset();
-    sessionStorage.removeItem('assetForNewCollection');
   }
 }

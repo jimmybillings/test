@@ -46,7 +46,7 @@ export class CollectionListDdComponent {
       this.activeCollection.set(collection.id).take(1).subscribe(() => {
         this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
       });
-      this.UiState.closeCollectionsList();
+      this.closeCollectionsList();
     }
   }
 
@@ -72,7 +72,7 @@ export class CollectionListDdComponent {
     return event;
   }
 
-  private onCollectionShowPage(): boolean {
+  public onCollectionShowPage(): boolean {
     return (this.router.url.split('/')[1] === 'collection' && this.router.url.split('/')[2] !== undefined);
   }
 
