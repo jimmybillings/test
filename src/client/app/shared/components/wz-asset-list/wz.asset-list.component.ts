@@ -37,7 +37,6 @@ export class WzAssetListComponent implements OnChanges {
 
   public showAsset(asset: any): void {
     this.onShowAsset.emit(asset);
-    sessionStorage.setItem('assetForNewCollection', JSON.stringify(asset));
   }
 
   public addToCollection(collection: Collection, asset: any): void {

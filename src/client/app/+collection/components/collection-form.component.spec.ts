@@ -12,13 +12,14 @@ import {
 
 import { CollectionFormComponent } from './collection-form.component';
 import { CollectionsService } from '../services/collections.service';
+import { ActiveCollectionService } from '../services/active-collection.service';
 
 export function main() {
   describe('Collection Form component', () => {
     @Injectable()
     class MockCollectionsService {
       public createCollection(collection: any): Observable<any> {
-        return Observable.of(collection);
+        return Observable.of(mockCollection());
       }
       public createCollectionInStore(collection: any): any {
         return true;
@@ -28,10 +29,28 @@ export function main() {
       }
     }
 
+    class MockActiveCollectionService {
+      public data: Observable<any>;
+      constructor() {
+        this.data = Observable.of({ id: 1 });
+      }
+      get() {
+        return Observable.of({id: 2});
+      }
+      set() {
+        return Observable.of({});
+      }
+
+      getItems() {
+        return Observable.of({});
+      }
+    }
+
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
       CollectionFormComponent,
-      { provide: CollectionsService, useClass: MockCollectionsService }
+      { provide: CollectionsService, useClass: MockCollectionsService },
+      { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
     ]);
 
     it('Create instance of collection form',
@@ -41,5 +60,33 @@ export function main() {
           expect(instance instanceof CollectionFormComponent).toBeTruthy();
         });
       }));
+
+    it('Should create a new collection',
+      inject([CollectionFormComponent], (component: CollectionFormComponent) => {
+        spyOn(component, 'cancelCollectionCreation');
+        spyOn(component.collectionsService, 'createCollection').and.callThrough();
+        spyOn(component.activeCollection, 'set').and.callThrough();
+        spyOn(component.activeCollection, 'getItems').and.callThrough();
+        component.createCollection(mockCollection());
+        let collectionWithParsedTags = mockCollection();
+        collectionWithParsedTags.tags = ['cat', 'dog', 'cow'];
+        expect(component.collectionsService.createCollection).toHaveBeenCalledWith(collectionWithParsedTags);
+        expect(component.activeCollection.set).toHaveBeenCalledWith(mockCollection().id);
+        expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, 100);
+        expect(component.cancelCollectionCreation).toHaveBeenCalled();
+      }));
+
   });
+}
+
+function mockCollection(): any {
+  return {
+    createdOn: 'today',
+    lastUpdated: 'today',
+    id: 1,
+    siteName: 'core',
+    name: 'james billings',
+    owner: 'james.billings@wazeedigital.com',
+    tags: 'cat, dog, cow'
+  };
 }
