@@ -109,7 +109,7 @@
       "HEADING": "Select collection",
       "SEARCH_BTN_TITLE": "Search collections",
       "FILTER_BTN_TITLE": "Filter collections",
-      "SORT_BTN_TITLE": "Sort collections",
+      "SHARED_TITLE": "Your role: {{role}}",
       "VIEW_BTN_LABEL": "View all",
       "OPEN_BTN_LABEL": "Open selected",
       "CREATE_BTN_LABEL": "Create new"

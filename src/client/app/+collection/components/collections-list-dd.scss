@@ -99,6 +99,11 @@ collections-list-dd {
           @include transition($swift-ease-out);
           opacity: .7;
           margin-right: rem(1.0);
+          &.right-align.material-icons {
+            margin-left: auto;
+            margin-right: rem(-.3);
+            opacity: .3;
+          }
         }
       }
       md-list-item.focused .md-list-item button {
