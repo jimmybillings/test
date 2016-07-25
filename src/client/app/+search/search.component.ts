@@ -150,7 +150,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public get hasValues(): boolean {
-    return this.filterIds.length > 0;
+    return this.filterValues.length > 0;
   }
 
   public get hasFilterIds(): boolean {
