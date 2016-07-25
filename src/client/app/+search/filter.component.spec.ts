@@ -10,13 +10,15 @@ import {
 
 import { FilterComponent } from './filter.component';
 import { FilterService } from './services/filter.service';
+import { SearchComponent } from './search.component';
 
 export function main() {
   describe('FilterComponent', () => {
     beforeEachProviders(() => [
       ...beforeEachProvidersArray,
       FilterComponent,
-      FilterService
+      FilterService,
+      SearchComponent
     ]);
 
     it('Should create instance of filter',
