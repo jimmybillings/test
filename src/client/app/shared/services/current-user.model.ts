@@ -29,19 +29,19 @@ export function isLoggedIn() {
 @Injectable()
 export class CurrentUser {
 
-  private currentUser: Observable<any>;
+  private data: Observable<any>;
 
   constructor(
     private store: Store<CurrentUserInterface>) {
-    this.currentUser = this.store.select('currentUser');
+    this.data = this.store.select('currentUser');
   }
 
   get profile() {
-    return this.currentUser;
+    return this.data;
   }
 
   public get(profilePiece: string = ''): Observable<any> {
-    return this.currentUser.map((user: any) => {
+    return this.data.map((user: any) => {
       return user[profilePiece];
     });
   }
@@ -58,7 +58,7 @@ export class CurrentUser {
   }
 
   public loggedInState(): Observable<any> {
-    return this.currentUser.map(user => (user.id > 0));
+    return this.data.map(user => (user.id > 0));
   }
 
   public loggedIn(): boolean {
@@ -66,12 +66,12 @@ export class CurrentUser {
   }
 
   public fullName(): Observable<any> {
-    return this.currentUser.map(user => `${user.firstName} ${user.lastName}`);
+    return this.data.map(user => `${user.firstName} ${user.lastName}`);
   }
 
   public is(permission: string): Observable<any> {
     let permissionToCheck = permissionMap[permission];
-    return this.currentUser.map((user) => {
+    return this.data.map((user) => {
       return user.permissions ? user.permissions.indexOf(permissionToCheck) > -1 : false;
     });
   }

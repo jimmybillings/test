@@ -45,7 +45,7 @@ export const collections: Reducer<any> = (state: Collections = collectionsState,
 
 @Injectable()
 export class CollectionsService {
-  public collections: Observable<any>;
+  public data: Observable<any>;
   public apiUrls: {
     CollectionBaseUrl: string,
     CollectionItemsBaseUrl: string,
@@ -57,7 +57,7 @@ export class CollectionsService {
     public apiConfig: ApiConfig,
     public http: Http,
     private activeCollection: ActiveCollectionService) {
-    this.collections = store.select('collections');
+    this.data = store.select('collections');
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
       CollectionSummaryBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collectionSummary',

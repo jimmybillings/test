@@ -3,15 +3,15 @@
   [UiState]="uiState"
   [collection]="activeCollection.data | async"
   [config]="(uiConfig.get('collection') | async).config"
-  [ngClass]="{'revealed': (uiState.uiState | async).newCollectionFormIsOpen}"
+  [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}"
   layout="row" layout-align="center start">
 </collection-form>
 
 <div class="app" #target>
   <header [ngClass]="{
-    'fixed': (uiState.uiState | async).showFixed,
-    'bin-tray-closed': !(uiState.uiState | async).binTrayIsOpen,
-    'search-closed': !(uiState.uiState | async).searchIsOpen
+    'fixed': (uiState.data | async).showFixed,
+    'bin-tray-closed': !(uiState.data | async).binTrayIsOpen,
+    'search-closed': !(uiState.data | async).searchIsOpen
     }" class="app-header">
     <app-nav
       [UiState]="uiState"
@@ -23,13 +23,13 @@
       (onLogOut)="logout()">
     </app-nav>
     <bin-tray
-      *ngIf="(uiState.uiState | async).searchBarIsActive && currentUser.loggedIn()"
+      *ngIf="(uiState.data | async).searchBarIsActive && currentUser.loggedIn()"
       [UiState]="uiState"
       [collection]="activeCollection.data | async"
       >
     </bin-tray>
     <wz-search-box
-      *ngIf="(uiState.uiState | async).searchBarIsActive"
+      *ngIf="(uiState.data | async).searchBarIsActive"
       [currentUser]="currentUser"
       [state]="state"
       [UiState]="uiState"
@@ -39,8 +39,8 @@
     </wz-search-box>
   </header>
   <div [ngClass]="{
-    'bin-tray-closed': !(uiState.uiState | async).binTrayIsOpen,
-    'search-closed': !(uiState.uiState | async).searchIsOpen
+    'bin-tray-closed': !(uiState.data | async).binTrayIsOpen,
+    'search-closed': !(uiState.data | async).searchIsOpen
     }" class="main-content">
     <router-outlet></router-outlet>
   </div>

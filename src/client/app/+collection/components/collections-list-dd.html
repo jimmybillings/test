@@ -39,4 +39,4 @@
     </footer>
   </div>
 </div>
-<div [ngClass]="{'fade-out': !(UiState.uiState | async).newCollectionFormIsOpen, 'fade-in': (UiState.uiState | async).newCollectionFormIsOpen}" class="bk-for-dd" (click)="closeCollectionsList()"></div>
+<div [ngClass]="{'fade-out': !(UiState.data | async).newCollectionFormIsOpen, 'fade-in': (UiState.data | async).newCollectionFormIsOpen}" class="bk-for-dd" (click)="closeCollectionsList()"></div>

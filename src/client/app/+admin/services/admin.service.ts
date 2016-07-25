@@ -16,11 +16,11 @@ export const adminResources: Reducer<any> = (state = adminState, action: Action)
 
 @Injectable()
 export class AdminService {
-  public adminStore: Observable<any>;
+  public data: Observable<any>;
   constructor(public http: Http,
               public apiConfig: ApiConfig,
               private store: Store<any>) {
-    this.adminStore = this.store.select('adminResources');
+    this.data = this.store.select('adminResources');
   }
 
     public setResources(data: any): void {

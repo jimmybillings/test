@@ -17,14 +17,14 @@ export const filters: Reducer<any> = (state: Array<any> = initFilters, action: A
 
 @Injectable()
 export class FilterService {
-  public filters: Observable<any>;
+  public data: Observable<any>;
 
   constructor(
     public http: Http,
     public store: Store<any>,
     public apiConfig: ApiConfig,
     public currentUser: CurrentUser) {
-      this.filters = this.store.select('filters');
+      this.data = this.store.select('filters');
     }
 
   public getFilters(params: any): Observable<any> {

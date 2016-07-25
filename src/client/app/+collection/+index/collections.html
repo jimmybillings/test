@@ -61,7 +61,7 @@
               <button md-icon-button title="{{ 'COLLECTION.INDEX.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)"><md-icon>mode_comment</md-icon></button>
             </div>
             <div flex="20" layout-align="end center">
-              <button md-icon-button title="{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}" (click)="deleteCollection(collection.id)"><md-icon>cancel</md-icon></button>
+              <button class="delete" md-icon-button title="{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}" (click)="deleteCollection(collection.id)"><md-icon>cancel</md-icon></button>
             </div>
           </div>
         </li>

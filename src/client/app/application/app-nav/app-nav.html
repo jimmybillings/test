@@ -7,24 +7,24 @@
       </div>
     </a>
     
-    <a md-button="" *ngIf="currentUser.loggedInState() | async" [routerLink]="['/user/profile']" [ngClass]="{'md-primary': !(UiState.uiState | async).showFixed}" hide="" show-gt-sm="" class="is-dd">
+    <a md-button="" *ngIf="currentUser.loggedInState() | async" [routerLink]="['/user/profile']" [ngClass]="{'md-primary': !(UiState.data | async).showFixed}" hide="" show-gt-sm="" class="is-dd">
       {{currentUser.fullName() | async}}
     </a>
     
     <a md-button *ngIf="!(currentUser.loggedInState() | async)" [routerLink]="['/user/login']">{{ 'HEADER.LOGIN_LABEL' | translate}}</a>
     
-    <a md-button [ngClass]="{'md-accent': !(UiState.uiState | async).showFixed}" *ngIf="!(currentUser.loggedInState() | async)" md-button="" [routerLink]="['/user/register']" class="is-outlined">{{ 'HEADER.SIGN_UP_LABEL' | translate}}</a>
+    <a md-button [ngClass]="{'md-accent': !(UiState.data | async).showFixed}" *ngIf="!(currentUser.loggedInState() | async)" md-button="" [routerLink]="['/user/register']" class="is-outlined">{{ 'HEADER.SIGN_UP_LABEL' | translate}}</a>
     
     <a md-button *ngIf="currentUser.loggedInState() | async" (click)="logOut()" [routerLink]="['/']" hide="" show-gt-sm="" class="md-caption md-primary md-hue-2">{{ 'HEADER.LOGOUT_LABEL' | translate}}</a>
     
     <a md-button *ngIf="permission.has('Root')" [routerLink]="['/admin/dashboard']" hide="" show-gt-sm="" class="md-caption md-primary md-hue-2">{{ 'HEADER.ADMIN_LABEL' | translate }}</a>
     
-    <a md-button *ngIf="currentUser.loggedInState() | async" [routerLink]="['/user/profile']" [ngClass]="{'md-primary': !(UiState.uiState | async).showFixed}" hide="" show-xs="" class="md-icon-button is-dd"> <i md-icon="" class="material-icons">person</i></a>
+    <a md-button *ngIf="currentUser.loggedInState() | async" [routerLink]="['/user/profile']" [ngClass]="{'md-primary': !(UiState.data | async).showFixed}" hide="" show-xs="" class="md-icon-button is-dd"> <i md-icon="" class="material-icons">person</i></a>
     
-    <button *ngIf="(UiState.uiState | async).searchBarIsActive" md-icon-button title="Search" (click)="toggleSearch()" class="open-search"><md-icon>search</md-icon></button>
+    <button *ngIf="(UiState.data | async).searchBarIsActive" md-icon-button title="Search" (click)="toggleSearch()" class="open-search"><md-icon>search</md-icon></button>
     
-    <button *ngIf="(UiState.uiState | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id !== null" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleBinTray()" class="open-bin-tray"><md-icon>folder_open</md-icon></button>
+    <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id !== null" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleBinTray()" class="open-bin-tray"><md-icon>folder_open</md-icon></button>
 
-    <button *ngIf="(UiState.uiState | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id === null" md-icon-button title="{{'HEADER.NEW_COLLECTION_LABEL' | translate}}" (click)="showNewCollection()" class="open-bin-tray"><md-icon>folder_open</md-icon></button>
+    <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id === null" md-icon-button title="{{'HEADER.NEW_COLLECTION_LABEL' | translate}}" (click)="showNewCollection()" class="open-bin-tray"><md-icon>folder_open</md-icon></button>
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
 </md-toolbar>
