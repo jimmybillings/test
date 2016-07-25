@@ -16,6 +16,7 @@
           <md-icon *ngIf="focusedCollection.id === collection.id">check_box</md-icon>
           <md-icon *ngIf="focusedCollection.id !== collection.id">check_box_outline_blank</md-icon>
           {{collection.name}}
+          <md-icon class="right-align" title="{{ 'COLLECTION.DD_MENU.SHARED_TITLE' | translate:{role:collection.userRole} }}" *ngIf="collection.userRole !== 'owner'">folder_shared</md-icon>
         </button>
       </md-list-item>
     </md-list>
