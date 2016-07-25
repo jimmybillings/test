@@ -38,13 +38,13 @@ export const assets: Reducer<any> = (state: any = initAssets, action: Action) =>
  */
 @Injectable()
 export class AssetData {
-  public assets: Observable<any>;
+  public data: Observable<any>;
   constructor(
     public currentUser: CurrentUser,
     public http: Http,
     public apiConfig: ApiConfig,
     public store: Store<any>) {
-    this.assets = this.store.select('assets');
+    this.data = this.store.select('assets');
   }
 
   /**

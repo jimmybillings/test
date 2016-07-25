@@ -39,7 +39,7 @@ export class AssetComponent {
     public collectionsService: CollectionsService,
     public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>) {
-    this.asset = assetService.asset;
+    this.asset = assetService.data;
   }
 
   public addToCollection(params: any): void {

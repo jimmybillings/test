@@ -33,9 +33,9 @@ export function main() {
     }
 
     class MockCollectionsService {
-      public collections: Observable<any>;
+      public data: Observable<any>;
       constructor() {
-        this.collections = Observable.of({items: [1, 2, 3, 4, 5]});
+        this.data = Observable.of({items: [1, 2, 3, 4, 5]});
       }
       deleteCollection() {
         return Observable.of({});

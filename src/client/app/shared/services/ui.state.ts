@@ -27,10 +27,10 @@ export const uiState: Reducer<any> = (state = InitUiState, action: Action) => {
 
 @Injectable()
 export class UiState {
-  public uiState: Observable<any>;
+  public data: Observable<any>;
 
   constructor(public store: Store<any>) {
-    this.uiState = this.store.select('uiState');
+    this.data = this.store.select('uiState');
   }
 
   public reset(): void {
@@ -50,7 +50,7 @@ export class UiState {
   }
 
   public toggleBinTray(): void {
-    this.uiState.take(1).subscribe(s => this.update({ binTrayIsOpen: !s.binTrayIsOpen}));
+    this.data.take(1).subscribe(s => this.update({ binTrayIsOpen: !s.binTrayIsOpen}));
   }
 
   public openSearch(): void {
@@ -62,7 +62,7 @@ export class UiState {
   }
 
   public toggleSearch(): void {
-    this.uiState.take(1).subscribe(s => this.update({ searchIsOpen: !s.searchIsOpen}));
+    this.data.take(1).subscribe(s => this.update({ searchIsOpen: !s.searchIsOpen}));
   }
 
   public showCollectionsList(): void {
@@ -92,7 +92,8 @@ export class UiState {
   }
 
   public showFixedHeader(offset: any): void {
-    let isfixed: boolean = this.store.getState().uiState.showFixed;
+    let isfixed: boolean;
+    this.data.take(1).subscribe(state => isfixed = state.showFixed);
     let setFixed: boolean = (offset > 111) ? true : false;
     if (setFixed !== isfixed) this.update({ showFixed: !isfixed });
   }

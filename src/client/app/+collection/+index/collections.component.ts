@@ -38,7 +38,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.collectionsService.loadCollections().take(1).subscribe();
     this.collectionStoreSubscription =
-      this.collectionsService.collections.subscribe(collections => this.collections = collections);
+      this.collectionsService.data.subscribe(collections => this.collections = collections);
   }
 
   ngOnDestroy() {
@@ -70,7 +70,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public deleteCollection(id: number): void {
     this.collectionsService.deleteCollection(id).take(1).subscribe(payload => {
       let collectionLength: number;
-      this.collectionsService.collections.take(1).subscribe(collection => collectionLength = collection.items.length);
+      this.collectionsService.data.take(1).subscribe(collection => collectionLength = collection.items.length);
 
       // if we are deleting current active, we need to get the new active from the server.
       if (this.isActiveCollection(id) && collectionLength > 0) {

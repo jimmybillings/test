@@ -20,12 +20,12 @@ export function main() {
       inject([SearchContext], (service: SearchContext) => {
         expect(service.router).toBeDefined();
         expect(service.store).toBeDefined();
-        expect(service.context).toBeDefined();
+        expect(service.data).toBeDefined();
       }));
 
     it('Should initialize the store with a default state',
       inject([SearchContext], (service: SearchContext) => {
-        service.context.subscribe(data => {
+        service.data.subscribe(data => {
           expect(data).toEqual({q: null,i: 1,n: 100});
         });
       }));
@@ -34,7 +34,7 @@ export function main() {
       inject([SearchContext], (service: SearchContext) => {
         spyOn(service, 'go');
         service.new({q: 'cat',i: 1,n: 100});
-        service.context.subscribe(data => {
+        service.data.subscribe(data => {
           expect(data).toEqual({q: 'cat',i: '1',n: '100'});
         });
         expect(service.go).toHaveBeenCalled();
@@ -50,7 +50,7 @@ export function main() {
     it('Should have an update setter method that updates the store with params',
       inject([SearchContext], (service: SearchContext) => {
         service.update = {q: 'cat',i: 1,n: 100};
-        service.context.subscribe(data => {
+        service.data.subscribe(data => {
           expect(data).toEqual({q: 'cat',i: '1',n: '100'});
         });
       }));
@@ -58,7 +58,7 @@ export function main() {
     it('Should have an update setter method that updates the store with decoded params',
       inject([SearchContext], (service: SearchContext) => {
         service.update = {q: 'cats%20and%20dogs',i: 1,n: 100};
-        service.context.subscribe(data => {
+        service.data.subscribe(data => {
           expect(data).toEqual({q: 'cats and dogs',i: '1',n: '100'});
         });
       }));

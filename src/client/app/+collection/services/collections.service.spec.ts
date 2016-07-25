@@ -23,7 +23,7 @@ export function main() {
         expect(service.http).toBeDefined();
         expect(service.apiConfig).toBeDefined();
         expect(service.apiUrls).toBeDefined();
-        expect(service.collections).toBeDefined();
+        expect(service.data).toBeDefined();
       }));
 
     it('Should have a loadCollections method that gets the users collections',

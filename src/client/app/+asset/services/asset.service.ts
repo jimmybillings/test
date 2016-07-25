@@ -21,7 +21,7 @@ export const asset: Reducer<any> = (state = initAsset, action: Action) => {
 
 export class AssetService {
 
-  public asset: Observable<any>;
+  public data: Observable<any>;
   public errorMessage: any;
 
 
@@ -29,7 +29,7 @@ export class AssetService {
     public store: Store<any>,
     public _apiConfig: ApiConfig,
     public _http: Http) {
-    this.asset = this.store.select('asset');
+    this.data = this.store.select('asset');
   }
 
   public initialize(id: any): Observable<any> {

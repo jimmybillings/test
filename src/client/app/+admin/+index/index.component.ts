@@ -47,7 +47,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   routeChanges(): Subscription {
     return this.route.params.subscribe(param => {
-      this.adminStoreSubscription = this.adminService.adminStore.subscribe(data => this.currentResources = data);
+      this.adminStoreSubscription = this.adminService.data.subscribe(data => this.currentResources = data);
       this.resourceType = this.route.snapshot.url[1].path;
       this.currentComponent = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1);
       this.buildRouteParams(param);
