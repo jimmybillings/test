@@ -6,12 +6,21 @@
         <div class="logo"></div>
       </div>
     </md-card-header>
-    <md-card-title>        
+    <md-card-title>
       {{ 'COLLECTION.NEW_TITLE' | translate }}
     </md-card-title>
     <md-card-content *ngIf="config">
       <wz-form [items]="config.form.items" submitLabel="COLLECTION.FORM.SUBMIT_LABEL" (formSubmit)="createCollection($event)"></wz-form>
+
+
+      <ul tabindex="1" class="auto-complete">
+        <li *ngFor="let collection of (collections | async).items">
+          <button type="button" (click)="onSubmit()">{{collection.name}} <span></span></button>
+        </li>
+      </ul>
+
     </md-card-content>
   </md-card>
 </div>
-<div [ngClass]="{'fade-out': !(UiState.uiState | async).newCollectionFormIsOpen, 'fade-in': (UiState.uiState | async).newCollectionFormIsOpen}" class="bk-for-dialog" (click)="cancelCollectionCreation()"></div>
+<div [ngClass]="{'fade-out': !(UiState.uiState | async).newCollectionFormIsOpen, 'fade-in': (UiState.uiState | async).newCollectionFormIsOpen}"
+  class="bk-for-dialog" (click)="cancelCollectionCreation()"></div>

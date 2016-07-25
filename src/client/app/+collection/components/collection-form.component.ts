@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { Collection } from '../../shared/interfaces/collection.interface';
+import { Collection, Collections } from '../../shared/interfaces/collection.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { CollectionsService} from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
+import { Observable} from 'rxjs/Rx';
 
 /**
  * Directive that renders a list of collections
@@ -19,6 +20,7 @@ import { ActiveCollectionService } from '../services/active-collection.service';
 export class CollectionFormComponent {
   public originalName: string;
   public assetForNewCollection: any;
+  public collections: Observable<Collections>;
   @Input() collection: Collection;
   @Input() newCollectionFormIsOpen: boolean;
   @Input() config: Object;
@@ -26,7 +28,9 @@ export class CollectionFormComponent {
 
   constructor(
     public collectionsService: CollectionsService,
-    public activeCollection: ActiveCollectionService) { }
+    public activeCollection: ActiveCollectionService) {
+      this.collections = this.collectionsService.collections;
+  }
 
   public createCollection(collection: Collection): void {
     collection.tags = (collection.tags) ? collection.tags.split(/\s*,\s*/) : [];
