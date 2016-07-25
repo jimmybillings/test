@@ -19,6 +19,6 @@ export class FilterTreeComponent {
     filterCheck (filter:FilterTree) {
         filter.check();
         this.onFilterChange.emit(filter);
-        this.searchComp.doFilter(filter);
+        this.searchComp.applyFilter(filter);
     }
 }

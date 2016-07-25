@@ -9,8 +9,6 @@ import { Error } from '../shared/services/error.service';
 import { WzPaginationComponent} from '../shared/components/wz-pagination/wz.pagination.component';
 import { SearchContext} from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
-import { FilterTree} from './filter-tree';
-import { FilterTreeComponent} from './filter-tree.component';
 import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from '../+collection/services/collections.service';
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
@@ -24,14 +22,13 @@ import { FilterService } from './services/filter.service';
   moduleId: module.id,
   selector: 'search',
   templateUrl: 'search.html',
-  directives: [WzAssetListComponent, WzPaginationComponent, FilterTreeComponent, FilterComponent],
+  directives: [WzAssetListComponent, WzPaginationComponent, FilterComponent],
   providers: [FilterService]
 })
 
 export class SearchComponent implements OnInit, OnDestroy {
   public config: Object;
   public errorMessage: string;
-  public rootFilter: FilterTree;
   public filterIds: Array<string> = new Array();
   public filterValues: Array<string> = new Array();
   public collections: Observable<Collections>;
@@ -56,15 +53,16 @@ export class SearchComponent implements OnInit, OnDestroy {
     public error: Error,
     public searchContext: SearchContext,
     public filterService: FilterService,
-    public uiState: UiState) {
-      this.rootFilter = new FilterTree('', '', [], 'None', -1);
-  }
+    public uiState: UiState) {}
 
   ngOnInit(): void {
     this.filtersStoreSubscription = this.filterService.filters.subscribe(data => this.filters = data);
     this.assetsStoreSubscription = this.assetData.assets.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    this.routeSubscription = this.route.params.subscribe(params => this.filterService.getFilters(params).first().subscribe());
+    this.routeSubscription = this.route.params.subscribe(params => {
+      this.filterService.getFilters(params).first().subscribe();
+      this.getCurrentFilters(params);
+    });
   }
 
   ngOnDestroy(): void {
@@ -111,49 +109,51 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.go();
   }
 
-  public doSomething(event: any): void {
-    console.log(event);
+  public getCurrentFilters(params: any): void {
+    return params.filterIds ? this.filterIds = params.filterIds.split(',') : [];
+  }
+
+  public applyFilter(filter: any): void {
+    if (this.filterIds.indexOf(filter.filterId.toString()) > -1) {
+      this.removeFilter(filter);
+    } else {
+      this.filterIds.push(filter.filterId.toString());
+    }
+    this.filterAssets();
+  }
+
+  public removeFilter(filter: any): void {
+    for (let i = 0; i < this.filterIds.length; i++) {
+      if (this.filterIds[i].toString() === filter.filterId.toString()) {
+        this.filterIds.splice(i, 1);
+      }
+    }
   }
 
   public filterAssets(): void {
     this.searchContext.update = { i: 1 };
-    if (this.filterIds.length > 0) {
-      this.searchContext.update = { 'filterIds': this.filterIds.join(',') };
+    if (this.hasFilterIds) {
+      this.updateSearchContext({ 'filterIds': this.filterIds.join(',') });
     } else {
-      this.searchContext.update = { 'filterIds': null };
+      this.updateSearchContext({ 'filterIds': '' });
     }
-    if (this.filterValues.length > 0 && this.filterIds.length > 0) {
-      this.searchContext.update = { 'filterValues': this.filterValues.join(',') };
+    if (this.hasFilterIds && this.hasValues) {
+      this.updateSearchContext({ 'filterValues': this.filterValues.join(',') });
     } else {
-      this.searchContext.update = { 'filterValues': null };
+      this.updateSearchContext({ 'filterValues': '' });
     }
     this.searchContext.go();
   }
 
-  public getFilterTree(): void {
-    let fids = this.searchContext.state['filterIds'];
-    if (fids && fids !== null) {
-      if (typeof fids === 'string') { fids.split(',').forEach(x => this.filterIds.push(x)); }
-    }
-    let v: Array<string> = this.filterIds;
-    this.assetData.getFilterTree(this.searchContext.state).take(1).subscribe(
-      payload => { this.rootFilter = new FilterTree('', '', [], '', -1).load(payload, null, v); },
-      error => this.error.handle(error)
-    );
+  public updateSearchContext(params: any): void {
+    this.searchContext.update = params;
   }
 
-  public doFilter(filter: FilterTree): void {
-    if (filter.checked === true) {
-      if (filter.contains(this.filterIds, filter.filterId) === false) {
-        this.filterIds.push(filter.filterId);
-      }
-    } else {
-      for (let i = 0; i < this.filterIds.length; i++) {
-        if (this.filterIds[i].toString() === filter.filterId.toString()) {
-          this.filterIds.splice(i, 1);
-        }
-      }
-    }
-    this.filterAssets();
+  public get hasValues(): boolean {
+    return this.filterIds.length > 0;
+  }
+
+  public get hasFilterIds(): boolean {
+    return this.filterIds.length > 0;
   }
 }
