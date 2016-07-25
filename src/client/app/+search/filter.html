@@ -1,9 +1,9 @@
-<div class="filter">
+<div class="filter" style="margin-left:-20px;">
   <ul *ngFor="let filter of filters">
-    <div *ngIf="filter.expanded && (filter.count === -1 || filter.count > 0)">
-      <p style="cursor:pointer;" *ngIf="filter.subFilters" (click)=toggleFilters(filter)>{{ filter.name }}</p>
-      <p style="cursor:pointer;" *ngIf="!filter.subFilters" (click)="applyFilter(filter)">{{ filter.name }}  - {{ filter.filterId }}</p>
+    <div *ngIf="filter.expanded">
+      <p class="md-caption" style="cursor:pointer;" *ngIf="filter.subFilters" (click)=toggleFilters(filter)>{{ filter.name }}</p>
+      <p class="md-caption" style="cursor:pointer;" *ngIf="!filter.subFilters" (click)="applyFilter(filter)">{{ filter.name }}  - {{ filter.filterId }}</p>
     </div>
-    <filter *ngIf="filter.subFilters" [filters]="filter.subFilters"></filter>
+    <filter *ngIf="filter.subFilters && filter.expanded" [filters]="filter.subFilters"></filter>
   </ul>
 </div>
