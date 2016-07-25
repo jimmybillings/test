@@ -63,8 +63,10 @@ export class FilterService {
   public mapFilters(filters: any): any {
     if (filters.subFilters) {
       return filters.subFilters.map((filter: any) => {
-        filter.expanded = true;
-        this.mapFilters(filter.subFilters);
+        if (filter.subFilters) {
+          filter.expanded = true;
+          this.mapFilters(filter.subFilters);
+        }
         return filter;
       });
     } else {
@@ -72,10 +74,8 @@ export class FilterService {
         if (filter.subFilters) {
           filter.expanded = false;
           this.mapFilters(filter.subFilters);
-          return filters;
-        } else {
-          return filters;
         }
+        return filter;
       });
     }
   }
