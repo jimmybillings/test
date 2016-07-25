@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FilterService } from './services/filter.service';
 
 @Component({
@@ -11,6 +11,7 @@ import { FilterService } from './services/filter.service';
 
 export class FilterComponent {
   @Input() filters: any;
+  @Output() filterAssets = new EventEmitter();
   constructor(public filterService: FilterService) {}
 
   public toggleFilters(filter: any): void {
@@ -18,5 +19,13 @@ export class FilterComponent {
       filter.expanded = !filter.expanded;
       return filter;
     });
+  }
+
+  public applyFilter(filter: any): void {
+    this.filterAssets.emit(filter);
+  }
+
+  public doSomething(filter: any): void {
+    this.filterAssets.emit(filter);
   }
 }
