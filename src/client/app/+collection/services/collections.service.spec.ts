@@ -115,7 +115,8 @@ export function main() {
         'id': 158,
         'siteName': 'core',
         'name': 'golf',
-        'owner': 'ross.edfort@wazeedigital.com',
+        'owner': 33,
+        'email': 'joe@doe.com',
         'assets': {
           'items': [
             {

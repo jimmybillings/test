@@ -40,7 +40,7 @@ export class AssetDetailComponent implements OnChanges {
         this.inActiveCollection = this.alreadyInCollection(+this.asset.common[0].value);
       }
     }
-    if (changes.collection && changes.collection.currentValue && this.collection.assets.items.length > 0) {
+    if (changes.collection && changes.collection.currentValue) {
       this.assetsArr = this.collection.assets.items.map(function (x) { return x.assetId; });
       // the "+" in +this.asset.common[0].vaue changes it from a string to a number
       this.inActiveCollection = this.alreadyInCollection(+this.asset.common[0].value);

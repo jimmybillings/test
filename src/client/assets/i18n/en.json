@@ -74,6 +74,7 @@
     "FORMAT_AUDIOCHANNELCONFIGURATION":"Audio channels",
     "FORMAT_AUDIODATARATE":"Audio data rate",
     "FORMAT_AUDIOSAMPLINGRATE":"Audio sampling rate",
+    "RESOURCE_CLASS": "Resource class",
 
     "KEYWORDS":"Keywords",
     "RIGHTS_REPRODUCTION":"Rights",

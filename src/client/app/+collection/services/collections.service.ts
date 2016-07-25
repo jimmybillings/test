@@ -78,6 +78,7 @@ export class CollectionsService {
       JSON.stringify(collection), { headers: this.apiConfig.authHeaders() })
       .map(res => {
         this.createCollectionInStore(res.json());
+        this.activeCollection.updateActiveCollectionStore(res.json());
         return res.json();
       });
   }
@@ -131,4 +132,5 @@ export class CollectionsService {
     item.assets.pagination.totalCount = search.totalCount;
     return item;
   }
+
 }

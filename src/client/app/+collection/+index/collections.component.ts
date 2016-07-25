@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
+import { Collections } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
@@ -7,7 +8,7 @@ import { CurrentUser } from '../../shared/services/current-user.model';
 import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Rx';
-import { Collection } from '../../shared/interfaces/collection.interface';
+
 @Component({
   moduleId: module.id,
   selector: 'collections',
@@ -20,8 +21,7 @@ import { Collection } from '../../shared/interfaces/collection.interface';
 })
 
 export class CollectionsComponent implements OnInit, OnDestroy {
-
-  public collections: any;
+  public collections: Collections;
   public errorMessage: string;
   public config: Object;
   private collectionStoreSubscription: Subscription;
@@ -88,26 +88,4 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  public getUserRole(collection: Collection): string {
-    let role: string = 'Viewer';
-    this.currentUser.get('id').take(1).subscribe((id) => {
-      if (id === collection.owner) {
-        role = 'Owner';
-      } else {
-        role = 'Editor';
-      };
-    });
-    return role;
-  }
-
-  // private getActiveCollection(): void {
-  //   this.activeCollection.get().take(1).subscribe((collection) => {
-  //     this.updateActiveCollectionAssets(collection);
-  //   });
-  // }
-
-  // private updateActiveCollectionAssets(collection: Collection) {
-  //   this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
-  // }
 }
