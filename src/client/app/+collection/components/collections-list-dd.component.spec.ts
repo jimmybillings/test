@@ -91,7 +91,7 @@ function mockCollectionResponse() {
     'id': 158,
     'siteName': 'core',
     'name': 'Masters Opening Cerimony',
-    'owner': 'admin@wazeedigital.com',
+    'owner': 1,
     'items': [
       {
         'createdOn': '2016-06-16T17:53:17Z',
