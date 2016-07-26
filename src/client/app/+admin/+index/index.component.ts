@@ -1,14 +1,18 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
-import {CurrentUser} from '../../shared/services/current-user.model';
-import {AdminService} from '../services/admin.service';
-import {WzListComponent} from '../../shared/components/wz-list/wz.list.component';
-import {WzFormComponent} from '../../shared/components/wz-form/wz.form.component';
-import {WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
-import {WzDialogComponent} from '../../shared/components/wz-dialog/wz.dialog.component';
-import {UiConfig} from '../../shared/services/ui.config';
-import {UiState} from '../../shared/services/ui.state';
-import {Subscription} from 'rxjs/Rx';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
+import { CurrentUser } from '../../shared/services/current-user.model';
+import { AdminService } from '../services/admin.service';
+import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
+import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
+import { WzPaginationComponent } from '../../shared/components/wz-pagination/wz.pagination.component';
+import { WzDialogComponent } from '../../shared/components/wz-dialog/wz.dialog.component';
+import { UiSubComponents, UiComponents, AdminParams } from '../../shared/interfaces/admin.interface';
+import { FormFields } from '../../shared/interfaces/forms.interface';
+import { User } from '../../shared/interfaces/user.interface';
+import { Account } from '../../shared/interfaces/admin.interface';
+import { UiConfig } from '../../shared/services/ui.config';
+import { UiState } from '../../shared/services/ui.state';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -18,13 +22,13 @@ import {Subscription} from 'rxjs/Rx';
 })
 
 export class IndexComponent implements OnInit, OnDestroy {
-  public config: any;
-  public params: any;
-  public resource: any;
-  public formItems: any;
-  public toggleFlag: any;
+  public params: AdminParams;
+  public toggleFlag: string;
   public resourceType: string;
   public currentComponent: string;
+  public formItems: Array<FormFields>;
+  public config: UiSubComponents;
+  public resource: User | Account;
   public currentResources: Object;
   private routeSubscription: Subscription;
   private adminStoreSubscription: Subscription;
@@ -45,14 +49,15 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.routeSubscription.unsubscribe();
   }
 
-  routeChanges(): Subscription {
+  public routeChanges(): Subscription {
     return this.route.params.subscribe(param => {
       this.adminStoreSubscription = this.adminService.data.subscribe(data => this.currentResources = data);
+      console.log(this.currentResources);
       this.resourceType = this.route.snapshot.url[1].path;
       this.currentComponent = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1);
       this.buildRouteParams(param);
       this.uiConfig.get('admin' + this.currentComponent)
-        .take(1).subscribe((config) => {
+        .take(1).subscribe((config: UiComponents) => {
           this.config = config.config;
           this.getIndex();
         });
@@ -64,53 +69,53 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.adminService.getResourceIndex(this.params, this.resourceType).take(1).subscribe();
   }
 
-  public navigateToPageUrl(i: number): void {
+  public navigateToPageUrl(i: string): void {
     this.updateRouteParams({ i });
     this.router.navigate(['/admin/resource/' + this.resourceType, this.params]);
   }
 
-  public navigateToSortUrl(sortParams: any): void {
+  public navigateToSortUrl(sortParams: AdminParams): void {
     let params = Object.assign(this.updateRouteParams(sortParams), { 'i': 1 });
     this.router.navigate(['/admin/resource/' + this.resourceType, params]);
   }
 
-  public navigateToFilterUrl(filterParams: any): void {
+  public navigateToFilterUrl(filterParams: AdminParams): void {
     let searchTerms = this.adminService.buildSearchTerm(filterParams);
     let params = Object.assign(this.updateRouteParams(searchTerms), { 'i': 1 });
     this.router.navigate(['/admin/resource/' + this.resourceType, params]);
   }
 
-  public updateRouteParams(dynamicParams: any) {
+  public updateRouteParams(dynamicParams: AdminParams) {
     return Object.assign(this.params, dynamicParams);
   }
 
-  public mergeFormValues(resource: any): any {
+  public mergeFormValues(resource: User | Account): void {
     this.resource = resource;
-    this.formItems = this.config.editForm.items.map((field: any) => {
+    this.formItems = this.config['editForm'].items.map(field => {
       field.value = resource[field.name];
       return field;
     });
   }
 
-  public onEditSubmit(data: any): void {
+  public onEditSubmit(data: User | Account): void {
     Object.assign(this.resource, data);
     this.adminService.putResource(this.resourceType, this.resource).take(1).subscribe(data => {
       this.getIndex();
     });
   }
 
-  public onNewSubmit(data: any): void {
+  public onNewSubmit(data: User | Account): void {
     this.adminService.postResource(this.resourceType, data).take(1).subscribe(data => {
       this.getIndex();
     });
   }
 
-  public buildRouteParams(params: any): any {
-    let s: string, d: boolean, i: number, n: number, fields: string, values: string;
+  public buildRouteParams(params: AdminParams): void {
+    let s: string, d: string, i: string, n: string, fields: string, values: string;
     s = params['s'] || 'createdOn';
     d = params['d'];
-    i = parseInt(params['i']) || 1;
-    n = parseInt(params['n']) || 10;
+    i = params['i'] || '1';
+    n = params['n'] || '10';
     // Hack because browser makes empty values 'true' in the url
     fields = (params['fields'] === 'true') ? '' : params['fields'];
     values = (params['values'] === 'true') ? '' : params['values'];

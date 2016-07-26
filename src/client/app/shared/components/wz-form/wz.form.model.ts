@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { IFormFields } from '../../interfaces/forms.interface';
+import { FormFields } from '../../interfaces/forms.interface';
 
 /**
  * Service that creates a dynamic model to drive a form.
@@ -8,7 +8,7 @@ import { IFormFields } from '../../interfaces/forms.interface';
 @Injectable()
 export class FormModel {
 
-  create(form: IFormFields[]): Object {
+  create(form: FormFields[]): Object {
     let newForm: any = {};
     form.forEach((field: any) => {
       newForm[field.name] = [field.value];

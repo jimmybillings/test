@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
-import { IuiConfig } from '../../shared/interfaces/config.interface';
+import { UiConfigInterface } from '../../shared/interfaces/admin.interface';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
@@ -45,7 +45,7 @@ export class ConfigService {
     ).map((res: Response) => res.json());
   }
 
-  public updateUiConfig(data: IuiConfig): Observable<any> {
+  public updateUiConfig(data: UiConfigInterface): Observable<any> {
     return this.http.put(this.uiApiUrl + data.id,
       JSON.stringify(data), { headers: this.apiConfig.authHeaders() });
   }

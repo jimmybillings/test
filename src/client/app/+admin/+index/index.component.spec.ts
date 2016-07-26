@@ -79,7 +79,7 @@ export function main() {
         component.resourceType = 'account';
         component.params = mockParams();
         spyOn(component.router, 'navigate');
-        component.navigateToPageUrl(2);
+        component.navigateToPageUrl('2');
         expect(component.router.navigate)
           .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: 2, n: '10', s: 'createdOn', d: 'false', fields: '', values: '' })]);
       }));
@@ -89,9 +89,9 @@ export function main() {
         component.resourceType = 'account';
         component.params = mockParams();
         spyOn(component.router, 'navigate');
-        component.navigateToSortUrl({ s: 'emailAddress', d: true });
+        component.navigateToSortUrl({ s: 'emailAddress', d: 'true' });
         expect(component.router.navigate)
-          .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: 1, n: '10', s: 'emailAddress', d: true, fields: '', values: '' })]);
+          .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: '1', n: '10', s: 'emailAddress', d: true, fields: '', values: '' })]);
       }));
 
     it('Should have a navigateToFilterUrl function that navigates to a URL with correct params',
@@ -138,7 +138,7 @@ export function main() {
     it('Should have a buildRouteParams() function that builds an object of route params',
       inject([IndexComponent], (component: IndexComponent) => {
         component.buildRouteParams(mockParams());
-        expect(component.params).toEqual({i: 1, n: 10, s: 'createdOn', d: 'false', fields: '', values: ''});
+        expect(component.params).toEqual({i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: ''});
       }));
   });
 

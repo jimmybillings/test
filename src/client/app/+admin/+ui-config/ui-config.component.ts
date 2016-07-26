@@ -1,10 +1,8 @@
 import {
-  IuiConfig,
-  IuiComponents,
-  IuiSubComponents,
-  IuiTableHeaders
-} from '../../shared/interfaces/config.interface';
-import { IFormFields } from '../../shared/interfaces/forms.interface.ts';
+  UiConfigInterface,
+  TableHeaders,
+} from '../../shared/interfaces/admin.interface';
+import { FormFields } from '../../shared/interfaces/forms.interface.ts';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfigService } from '../services/config.service';
@@ -28,11 +26,11 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   public currentOption: string;
   public currentComponent: string;
   public typeSelect: Array<string>;
-  public config: IuiConfig;
-  public components: IuiComponents;
-  public subComponents: IuiSubComponents;
-  public form: any;
-  public configOptions: Array<IuiTableHeaders | IFormFields>;
+  public config: UiConfigInterface;
+  public components: any;
+  public subComponents: any;
+  public form: TableHeaders | FormFields;
+  public configOptions: Array<TableHeaders> | Array<FormFields>;
   private routeSubscription: Subscription;
 
   constructor(public router: Router,
@@ -61,7 +59,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
       } else {
         this.getConfig();
         this.configService.getUiConfigIndex().take(1).subscribe(data => {
-          data.items.reduce((previous: Array<string>, current: IuiConfig) => {
+          data.items.reduce((previous: Array<string>, current: UiConfigInterface) => {
             previous.push(current.siteName);
             return previous;
           }, this.sites);
@@ -98,6 +96,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public buildSubItemForm(configOptionIndex: number): void {
+    debugger;
     this.form = this.configOptions[configOptionIndex];
   }
 
@@ -135,7 +134,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
     this.form = null;
   }
 
-  public update(formValue: IuiConfig): void {
+  public update(formValue: UiConfigInterface): void {
     this.configService.updateUiConfig(formValue).take(1).subscribe((res) => {
       this.uiConfig.set(res.json());
     });

@@ -6,7 +6,7 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { ApiConfig } from '../../shared/services/api.config';
 import { User } from '../services/user.data.service';
 import { CurrentUser } from '../../shared/services/current-user.model';
-import { IFormFields } from '../../shared/interfaces/forms.interface';
+import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { UiConfig } from '../../shared/services/ui.config';
 /**
@@ -25,7 +25,7 @@ import { UiConfig } from '../../shared/services/ui.config';
 
 export class LoginComponent implements OnInit, OnDestroy {
   public config: any;
-  public fields: IFormFields[];
+  public fields: FormFields[];
   private configSubscription: Subscription;
 
   constructor(

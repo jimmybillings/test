@@ -3,7 +3,8 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { ConfigService } from '../services/config.service';
 import { ActivatedRoute } from '@angular/router';
-import { IuiConfig } from '../../shared/interfaces/config.interface';
+import { User } from '../../shared/interfaces/user.interface';
+import { UiSubComponents, Account } from '../../shared/interfaces/admin.interface';
 import { Subscription } from 'rxjs/Rx';
 
 @Component({
@@ -26,7 +27,7 @@ import { Subscription } from 'rxjs/Rx';
 })
 
 export class SecretConfigComponent implements OnInit, OnDestroy {
-  private config: IuiConfig;
+  private config: UiSubComponents;
   private site: string;
   private configForm: FormGroup;
   private routeSubscription: Subscription;
@@ -40,7 +41,7 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.route.params.subscribe(params => {
       this.site = params['site'];
       this.configService.showUiConfig(this.site)
-        .take(1).subscribe((data: any) => {
+        .take(1).subscribe((data: UiSubComponents) => {
           this.config = data;
           this.setForm();
       });
@@ -55,8 +56,9 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
     this.configForm = this.fb.group({ config: [JSON.stringify(this.config, undefined, 4), Validators.required] });
   }
 
-  public onSubmit(form: any): void {
-    this.configService.updateUiConfig(JSON.parse(form.config))
+  public onSubmit(form: string): void {
+    debugger;
+    this.configService.updateUiConfig(JSON.parse(form))
       .take(1).subscribe((res) => {
         this.uiConfig.set(res.json());
         (<FormControl>this.configForm.controls['config']).updateValue(JSON.stringify(res.json(), undefined, 4));
