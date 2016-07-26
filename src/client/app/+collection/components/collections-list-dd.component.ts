@@ -27,7 +27,7 @@ export class CollectionListDdComponent {
     public collectionsService: CollectionsService,
     public activeCollection: ActiveCollectionService,
     public route: ActivatedRoute) {
-    this.collections = this.collectionsService.collections;
+    this.collections = this.collectionsService.data;
   }
 
   public closeCollectionsList(): void {

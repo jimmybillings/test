@@ -22,9 +22,9 @@ export const searchContext: Reducer<any> = (state: any = initSearchContext, acti
 
 @Injectable()
 export class SearchContext {
-  public context: Observable<any>;
+  public data: Observable<any>;
   constructor(public router: Router, public store: Store<any>) {
-    this.context = this.store.select('searchContext');
+    this.data = this.store.select('searchContext');
   }
 
   public new(params: Object): void {
@@ -33,7 +33,9 @@ export class SearchContext {
   }
 
   public get state(): any {
-    return this.store.getState().searchContext;
+    let s: any;
+    this.data.take(1).subscribe(state => s = state);
+    return s;
   }
 
   public set update(params: any) {

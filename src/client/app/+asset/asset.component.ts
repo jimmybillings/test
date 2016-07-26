@@ -39,7 +39,7 @@ export class AssetComponent {
     public collectionsService: CollectionsService,
     public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>) {
-    this.asset = assetService.asset;
+    this.asset = assetService.data;
   }
 
   public addToCollection(params: any): void {
@@ -49,7 +49,6 @@ export class AssetComponent {
   }
 
   public removeFromCollection(params: any): void {
-    console.log(params);
     let collection: any = params.collection;
     let uuid: any = params.collection.assets.items.find((item: any) => parseInt(item.assetId) === parseInt(params.asset.assetId)).uuid;
     if(uuid && params.asset.assetId) {

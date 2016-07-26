@@ -1,12 +1,8 @@
 <md-sidenav-layout>
-  <md-sidenav #searchFilter style="padding-right:50px;">
-    <filter-tree 
-      [rootFilter]="rootFilter" 
-       (onFilterChange)="doFilter($filter)"
-      > 
-    </filter-tree> 
+  <md-sidenav #searchFilter align="start" mode="push" style="padding-right: 100px;">
+    <filter [filters]="filters"></filter>
   </md-sidenav>
-  <button md-icon-button (click)="searchFilter.toggle()" style="position:absolute;"><md-icon>menu</md-icon></button>
+    <button md-icon-button (click)="searchFilter.toggle()" style="position:absolute;"><md-icon>menu</md-icon></button>
 
 
   <section class="search-results" *ngIf="config">
@@ -17,9 +13,9 @@
           <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
         </div>
         <div>
-          <span *ngFor="let filter of rootFilter.selectedFilters()" style="padding-right: 10px; font-size: 0.8em">
-            <img src="/assets/img/delete.png" style="align:middle;cursor:pointer;padding-right:5px; height:12px" (click)="filter.check();doFilter(filter);"/>{{filter.name}}
-          </span>
+          <!--<span *ngFor="let filter of rootFilter.selectedFilters()" style="padding-right: 10px; font-size: 0.8em">
+            <img src="/assets/img/delete.png" style="align:middle;cursor:pointer;padding-right:5px; height:12px" (click)="filter.check();applyFilter(filter);"/>{{filter.name}}
+          </span>-->
         </div>
       
         <div layout="column">       

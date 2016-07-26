@@ -34,6 +34,7 @@ import { provideStore } from '@ngrx/store';
 import { multilingualReducer } from '../shared/services/multilingual.service';
 import { collections} from '../+collection/services/collections.service';
 import { activeCollection} from '../+collection/services/active-collection.service';
+import { filters } from '../+search/services/filter.service';
 
 // TRANSLATIONS
 import { TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';
@@ -76,6 +77,7 @@ export const WAZEE_STORES: Provider[][] = [
     collections,
     activeCollection,
     uiState,
+    filters,
     i18n: multilingualReducer
   })
 ];
