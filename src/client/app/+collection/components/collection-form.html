@@ -14,12 +14,7 @@
     </md-card-content>
   </md-card>
 </div>
-<<<<<<< HEAD
-<div [ngClass]="{'fade-out': !(UiState.uiState | async).newCollectionFormIsOpen, 'fade-in': (UiState.uiState | async).newCollectionFormIsOpen}"
-  class="bk-for-dialog" (click)="cancelCollectionCreation()"></div>
-=======
 <div 
   [ngClass]="{'fade-out': !(UiState.data | async).newCollectionFormIsOpen, 'fade-in': (UiState.data | async).newCollectionFormIsOpen}" 
   class="bk-for-dialog" 
   (click)="cancelCollectionCreation()"></div>
->>>>>>> 0e31f7e190a8f92e1067cded444ed5994692eb2d
