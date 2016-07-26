@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
+import { Collection, Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
 import { Observable, Subscription } from 'rxjs/Rx';
@@ -25,8 +25,8 @@ import { UiConfig } from '../../shared/services/ui.config';
 
 export class CollectionShowComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
-  public focusedCollection: any;
-  public collection: any;
+  public focusedCollection: Collection;
+  public collection: Collection;
   public assets: any;
   public errorMessage: string;
   public config: Object;
