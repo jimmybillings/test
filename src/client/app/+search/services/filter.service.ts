@@ -31,6 +31,7 @@ export class FilterService {
     let url = this.getFilterTreeUrl();
     let options = this.getFilterTreeOptions(params);
     return this.http.get(url, options).map((res: Response) => {
+      console.log(this.mapFilters(res.json()));
       this.setFilters(this.mapFilters(res.json()));
       return res.json();
     });
@@ -60,23 +61,47 @@ export class FilterService {
     }
   }
 
-  public mapFilters(filters: any): any {
-    if (filters.subFilters) {
-      return filters.subFilters.map((filter: any) => {
-        if (filter.subFilters) {
-          filter.expanded = true;
-          this.mapFilters(filter.subFilters);
+  public mapFilters(filter:any) {
+    if (filter.subFilters) {
+        filter.expanded = true;
+        for(var l of filter.subFilters) {
+            this.mapFilters(l);
         }
-        return filter;
-      });
     } else {
-      filters.map((filter: any) => {
-        if (filter.subFilters) {
-          filter.expanded = false;
-          this.mapFilters(filter.subFilters);
-        }
         return filter;
-      });
     }
-  }
+    return filter;
+}
+
+// function filters(filter) {
+//     if (filter.subFilters) {
+//         filter.expanded = true;
+//         for(var f of filter.subFilters) {
+//             filters(f);
+//             return filter;
+//         }
+//     } else {
+//         return filter;
+//     }
+// }
+
+  // public mapFilters(filters: any): any {
+  //   if (filters.subFilters) {
+  //     return filters.subFilters.map((filter: any) => {
+  //       if (filter.subFilters) {
+  //         filter.expanded = true;
+  //         this.mapFilters(filter.subFilters);
+  //       }
+  //       return filter;
+  //     });
+  //   } else {
+  //     filters.map((filter: any) => {
+  //       if (filter.subFilters) {
+  //         filter.expanded = false;
+  //         this.mapFilters(filter.subFilters);
+  //       }
+  //       return filter;
+  //     });
+  //   }
+  // }
 }

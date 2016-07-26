@@ -21,10 +21,10 @@ export class FilterComponent {
     }
 
   public toggleFilters(filter: any): void {
-    filter.subFilters.map((filter: any) => {
-      filter.expanded = !filter.expanded;
-      return filter;
-    });
+    // filter.subFilters.map((filter: any) => {
+      // filter.expanded = !filter.expanded;
+    //   return filter;
+    // });
   }
 
   public applyFilter(filter: any): void {
