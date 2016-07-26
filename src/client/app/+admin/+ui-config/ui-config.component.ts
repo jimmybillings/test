@@ -102,7 +102,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public removeItem(itemIndex: number): void {
-    this.configOptions.splice(itemIndex, 1);
+    this.configOptions.slice(itemIndex, 1);
     this.update(this.config);
     this.form = null;
   }

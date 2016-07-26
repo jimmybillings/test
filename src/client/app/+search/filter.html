@@ -1,7 +1,11 @@
   <ul>
     <li *ngFor="let filter of filters.subFilters">
-      <p class="md-caption" style="cursor:pointer;" *ngIf="filter.expanded" (click)=toggleFilters(filter)>{{ filter.name }}</p>
-      <p class="md-caption" style="cursor:pointer;" *ngIf="!filter.expanded" (click)="applyFilter(filter)">{{ filter.name }}  - {{ filter.filterId }}</p>
-      <filter *ngIf="filter.subFilters && filter.expanded" [filters]="filter"></filter>
+      <p class="md-caption" style="cursor:pointer;" (click)="filterAction(filter)" *ngIf="hasCounts(filter)">
+        {{ filter.name }} 
+        <span *ngIf="filter.count > -1"> 
+          - {{filter.count}}
+        </span>
+      </p>
+      <filter *ngIf="selected(filter.name) && hasCounts(filter)" [filters]="filter"></filter>
     </li> 
   </ul>

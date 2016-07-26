@@ -53,7 +53,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     public error: Error,
     public searchContext: SearchContext,
     public filterService: FilterService,
-    public uiState: UiState) {}
+    public uiState: UiState) { }
 
   ngOnInit(): void {
     this.filtersStoreSubscription = this.filterService.data.subscribe(data => this.filters = data);
@@ -86,7 +86,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public removeFromCollection(params: any): void {
     let collection: Collection = params.collection;
     let uuid: any = params.collection.assets.items.find((item: any) => item.assetId === params.asset.assetId).uuid;
-    if(uuid && params.asset.assetId) {
+    if (uuid && params.asset.assetId) {
       this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
     }
   }
@@ -133,20 +133,16 @@ export class SearchComponent implements OnInit, OnDestroy {
   public filterAssets(): void {
     this.searchContext.update = { i: 1 };
     if (this.hasFilterIds) {
-      this.updateSearchContext({ 'filterIds': this.filterIds.join(',') });
+      this.searchContext.update = { 'filterIds': this.filterIds.join(',') };
     } else {
-      this.updateSearchContext({ 'filterIds': '' });
+      this.searchContext.remove = 'filterIds';
     }
     if (this.hasFilterIds && this.hasValues) {
-      this.updateSearchContext({ 'filterValues': this.filterValues.join(',') });
+      this.searchContext.update = { 'filterValues': this.filterValues.join(',') };
     } else {
-      this.updateSearchContext({ 'filterValues': '' });
+      this.searchContext.remove = 'filterValues';
     }
     this.searchContext.go();
-  }
-
-  public updateSearchContext(params: any): void {
-    this.searchContext.update = params;
   }
 
   public get hasValues(): boolean {
