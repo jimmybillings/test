@@ -83,7 +83,6 @@ export function main() {
         component.configOptions = mockResponse().components['adminAccount'].config['tableHeaders'].items;
         component.removeItem(0);
         expect(component.configOptions).toEqual([
-          {'name': 'name','label': 'ADMIN.ACCOUNT.NAME_LABEL'},
           {'name': 'status','label': 'ADMIN.ACCOUNT.STATUS_LABEL'},
           {'name': 'contact','label': 'ADMIN.ACCOUNT.CONTACT_LABEL'},
           {'name': 'createdOn','label': 'ADMIN.ACCOUNT.CREATED_ON_LABEL'}]);
