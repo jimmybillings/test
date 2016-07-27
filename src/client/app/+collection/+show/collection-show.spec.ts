@@ -39,14 +39,6 @@ export function main() {
         });
       }));
 
-    it('Should navigate to a new collection with the given collection id',
-      inject([CollectionShowComponent], (component: CollectionShowComponent) => {
-       spyOn(component.router, 'navigate');
-       component.showAsset({assetId: 2});
-       expect(component.router.navigate).toHaveBeenCalledWith(['/asset', 2]);
-      }));
-
-
     it('Should remove a given asset from a collection',
       inject([CollectionShowComponent], (component: CollectionShowComponent) => {
        spyOn(component.activeCollection, 'removeAsset').and.callThrough();

@@ -32,10 +32,5 @@ export function main() {
       expect(service.formatType('lksjdflkjsdklfj')).toEqual('hd');
     }));
 
-    it('Should fire an event to show an asset when clicked', inject([WzAssetListComponent], (service: WzAssetListComponent) => {
-      spyOn(service.onShowAsset, 'emit');
-      service.showAsset('12345');
-      expect(service.onShowAsset.emit).toHaveBeenCalledWith('12345');
-    }));
   });
 }

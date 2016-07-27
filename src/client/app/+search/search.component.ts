@@ -61,7 +61,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
       this.filterService.getFilters(params).first().subscribe();
-      this.getCurrentFilters(params);
+      this.filterIds = params['filterIds'] ? params['filterIds'].split(',') : [];
     });
   }
 
@@ -96,21 +96,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     (!this.currentUser.loggedIn()) ? this.router.navigate(['/user/login']) : newCollectionButton.click();
   }
 
-  public addToCart(asset: any) {
-    return asset;
-  }
-
-  public downloadComp(asset: any) {
-    return asset;
-  }
-
   public changePage(page: any): void {
     this.searchContext.update = { i: page };
     this.searchContext.go();
-  }
-
-  public getCurrentFilters(params: any): void {
-    return params.filterIds ? this.filterIds = params.filterIds.split(',') : [];
   }
 
   public applyFilter(filter: any): void {

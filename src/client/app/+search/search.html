@@ -23,7 +23,6 @@
             [assets]="assets.items" 
             [currentUser]="currentUser" 
             [collection]="activeCollection.data | async"
-            (onShowAsset)="showAsset($event)" 
             (onAddToCollection)="addToCollection($event)"
             (onRemoveFromCollection)="removeFromCollection($event)"
             (onShowNewCollection)="showNewCollection($event)"
