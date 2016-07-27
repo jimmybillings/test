@@ -1,4 +1,5 @@
-import {FormFields} from './forms.interface.ts';
+import { FormFields } from './forms.interface';
+import { User } from './user.interface';
 
 export interface Account {
   createdOn: string;
@@ -32,6 +33,7 @@ export interface Account {
   logoURL?: string;
   admin?: boolean;
   default?: boolean;
+  [index: string]: any;
 }
 
 export interface UiConfigInterface {
@@ -39,16 +41,28 @@ export interface UiConfigInterface {
   siteName: string;
   createdOn: string;
   lastUpdated: string;
-  components: UiComponents;
+  components: UiComponentsA | UiComponentsB;
   config: Object;
 }
 
-export interface UiSubComponents {
+export interface UiSubComponentsA {
   [ index: string ]: { items: Array<FormFields> | Array<TableHeaders> };
 }
 
+export interface UiSubComponentsB {
+  [ index: string ]: { value: string };
+}
+
+export interface UiComponentsA {
+  config: UiSubComponentsA;
+}
+
+export interface UiComponentsB {
+  config: UiSubComponentsB;
+}
+
 export interface UiComponents {
-  config: { [ index: string ]: { items: Array<FormFields> | Array<TableHeaders> } };
+  [ index: string ]: { config: UiSubComponentsA | UiSubComponentsB };
 }
 
 export interface TableHeaders {
@@ -90,11 +104,59 @@ export interface SiteConfig {
   core: boolean;
 }
 
-export interface AdminParams {
+export interface AdminUrlParams {
   s?: string;
   d?: string;
   i?: string;
   n?: string;
   fields?: string;
   values?: string;
+}
+
+export interface AdminFormParams {
+  [index: string]: string;
+}
+
+export interface AdminState {
+  items?: User[] | Account[];
+  pagination?: Pagination;
+}
+
+export interface Pagination {
+  totalCount?: number;
+  currentPage?: number;
+  pageSize?: number;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
+  numberOfPages?: number;
+}
+
+export interface AdminResponse {
+  items?: User[] | Account[];
+  totalCount?: number;
+  currentPage?: number;
+  pageSize?: number;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
+  numberOfPages?: number;
+}
+
+export interface AdminUiResponse {
+  items?: UiConfigInterface[];
+  totalCount?: number;
+  currentPage?: number;
+  pageSize?: number;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
+  numberOfPages?: number;
+}
+
+export interface AdminSiteResponse {
+  items?: SiteConfig[];
+  totalCount?: number;
+  currentPage?: number;
+  pageSize?: number;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
+  numberOfPages?: number;
 }

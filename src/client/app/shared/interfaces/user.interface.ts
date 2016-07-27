@@ -35,4 +35,5 @@ export interface User {
   accessibleCollections?: number[];
   focusedCollection?: number;
   root?: boolean;
+  [index: string]: any;
 }

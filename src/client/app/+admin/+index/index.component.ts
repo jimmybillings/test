@@ -1,3 +1,8 @@
+import { UiSubComponentsA,
+  UiComponentsA,
+  AdminUrlParams,
+  AdminFormParams
+} from '../../shared/interfaces/admin.interface';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
@@ -6,7 +11,6 @@ import { WzListComponent } from '../../shared/components/wz-list/wz.list.compone
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { WzPaginationComponent } from '../../shared/components/wz-pagination/wz.pagination.component';
 import { WzDialogComponent } from '../../shared/components/wz-dialog/wz.dialog.component';
-import { UiSubComponents, UiComponents, AdminParams } from '../../shared/interfaces/admin.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { Account } from '../../shared/interfaces/admin.interface';
@@ -22,12 +26,12 @@ import { Subscription } from 'rxjs/Rx';
 })
 
 export class IndexComponent implements OnInit, OnDestroy {
-  public params: AdminParams;
+  public params: AdminUrlParams;
   public toggleFlag: string;
   public resourceType: string;
   public currentComponent: string;
   public formItems: Array<FormFields>;
-  public config: UiSubComponents;
+  public config: UiSubComponentsA;
   public resource: User | Account;
   public currentResources: Object;
   private routeSubscription: Subscription;
@@ -52,12 +56,11 @@ export class IndexComponent implements OnInit, OnDestroy {
   public routeChanges(): Subscription {
     return this.route.params.subscribe(param => {
       this.adminStoreSubscription = this.adminService.data.subscribe(data => this.currentResources = data);
-      console.log(this.currentResources);
       this.resourceType = this.route.snapshot.url[1].path;
       this.currentComponent = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1);
       this.buildRouteParams(param);
       this.uiConfig.get('admin' + this.currentComponent)
-        .take(1).subscribe((config: UiComponents) => {
+        .take(1).subscribe((config: UiComponentsA) => {
           this.config = config.config;
           this.getIndex();
         });
@@ -74,24 +77,24 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.router.navigate(['/admin/resource/' + this.resourceType, this.params]);
   }
 
-  public navigateToSortUrl(sortParams: AdminParams): void {
+  public navigateToSortUrl(sortParams: AdminUrlParams): void {
     let params = Object.assign(this.updateRouteParams(sortParams), { 'i': 1 });
     this.router.navigate(['/admin/resource/' + this.resourceType, params]);
   }
 
-  public navigateToFilterUrl(filterParams: AdminParams): void {
+  public navigateToFilterUrl(filterParams: AdminFormParams): void {
     let searchTerms = this.adminService.buildSearchTerm(filterParams);
     let params = Object.assign(this.updateRouteParams(searchTerms), { 'i': 1 });
     this.router.navigate(['/admin/resource/' + this.resourceType, params]);
   }
 
-  public updateRouteParams(dynamicParams: AdminParams) {
+  public updateRouteParams(dynamicParams: AdminUrlParams) {
     return Object.assign(this.params, dynamicParams);
   }
 
   public mergeFormValues(resource: User | Account): void {
     this.resource = resource;
-    this.formItems = this.config['editForm'].items.map(field => {
+    this.formItems = this.config['editForm'].items.map((field: FormFields) => {
       field.value = resource[field.name];
       return field;
     });
@@ -110,7 +113,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     });
   }
 
-  public buildRouteParams(params: AdminParams): void {
+  public buildRouteParams(params: AdminUrlParams): void {
     let s: string, d: string, i: string, n: string, fields: string, values: string;
     s = params['s'] || 'createdOn';
     d = params['d'];

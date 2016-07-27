@@ -27,7 +27,7 @@ export function main() {
     ]);
 
     it('Create an instance of Ui Config',
-      inject([TestComponentBuilder], (tcb: any) => {
+      inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
         tcb.createAsync(UiConfigComponent).then((fixture: any) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof UiConfigComponent).toBeTruthy();

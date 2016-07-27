@@ -1,6 +1,7 @@
 import {
   UiConfigInterface,
   TableHeaders,
+  UiComponents
 } from '../../shared/interfaces/admin.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface.ts';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -27,7 +28,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   public currentComponent: string;
   public typeSelect: Array<string>;
   public config: UiConfigInterface;
-  public components: any;
+  public components: UiComponents;
   public subComponents: any;
   public form: TableHeaders | FormFields;
   public configOptions: Array<TableHeaders> | Array<FormFields>;
@@ -83,6 +84,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
     this.reset();
     this.currentComponent = component;
     this.subComponents = this.components[component].config;
+    console.log(this.subComponents);
   }
 
   public buildForm(configOption: string): void {
@@ -96,7 +98,6 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public buildSubItemForm(configOptionIndex: number): void {
-    debugger;
     this.form = this.configOptions[configOptionIndex];
   }
 
@@ -107,7 +108,6 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public addItem(form: any): void {
-    debugger;
     let blankForm: any = { name: '', label: '', type: '', value: '', validation: '' };
     if (['text', 'email', 'password', 'date'].indexOf(form.type) > -1) {
       blankForm.type = form.type;

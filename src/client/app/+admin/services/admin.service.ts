@@ -1,11 +1,19 @@
+import {
+  AdminState,
+  AdminResponse,
+  AdminUrlParams,
+  AdminFormParams,
+  Account
+} from '../../shared/interfaces/admin.interface';
+import { User } from '../../shared/interfaces/user.interface';
 import { Injectable } from '@angular/core';
 import { Http, Response, URLSearchParams, RequestOptions } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Store, Reducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 
-const adminState: any = { items: [], pagination: {} };
-export const adminResources: Reducer<any> = (state = adminState, action: Action) => {
+const adminState: AdminState = { items: [], pagination: {} };
+export const adminResources: Reducer<AdminState> = (state = adminState, action: Action) => {
   switch (action.type) {
     case 'ADMIN_SERVICE.SET_RESOURCES':
       return Object.assign({}, state, action.payload);
@@ -16,14 +24,14 @@ export const adminResources: Reducer<any> = (state = adminState, action: Action)
 
 @Injectable()
 export class AdminService {
-  public data: Observable<any>;
+  public data: Observable<AdminState>;
   constructor(public http: Http,
               public apiConfig: ApiConfig,
-              private store: Store<any>) {
+              private store: Store<AdminState>) {
     this.data = this.store.select('adminResources');
   }
 
-    public setResources(data: any): void {
+    public setResources(data: AdminResponse): void {
     this.store.dispatch({
       type: 'ADMIN_SERVICE.SET_RESOURCES', payload: {
         'items': data.items,
@@ -39,7 +47,7 @@ export class AdminService {
     });
   }
 
-  public getResourceIndex(queryObject: any, resource: string): Observable<any> {
+  public getResourceIndex(queryObject: AdminUrlParams, resource: string): Observable<AdminResponse> {
     let params = Object.create(JSON.parse(JSON.stringify(queryObject)));
     params['i'] = (parseFloat(params['i']) - 1).toString();
     let url = this.buildUrl('search', resource);
@@ -50,21 +58,21 @@ export class AdminService {
     });
   }
 
-  public postResource(resourceType: string, formData: any): Observable<any> {
+  public postResource(resourceType: string, formData: User | Account): Observable<AdminResponse> {
     let url = this.buildUrl('post', resourceType);
     let options = this.buildRequestOptions();
     let body = JSON.stringify(formData);
     return this.http.post(url, body, options).map((res: Response) => res.json());
   }
 
-  public putResource(resourceType: string, formData: any): Observable<any> {
+  public putResource(resourceType: string, formData: User | Account): Observable<AdminResponse> {
     let url = this.buildUrl('put', resourceType, formData.id);
     let options = this.buildRequestOptions();
     let body = JSON.stringify(formData);
     return this.http.put(url, body, options).map((res: Response) => res.json());
   }
 
-  public getIdentitiesSearchOptions(queryObject: any): RequestOptions {
+  public getIdentitiesSearchOptions(queryObject: AdminFormParams): RequestOptions {
     const search: URLSearchParams = new URLSearchParams();
     for (var param in queryObject) search.set(param, queryObject[param]);
     let options = this.buildRequestOptions(search);
@@ -76,7 +84,7 @@ export class AdminService {
     return search ? new RequestOptions({ headers, search }) : new RequestOptions({ headers });
   }
 
-  public buildUrl(type: string, resourceType: string, resourceId?: string): string {
+  public buildUrl(type: string, resourceType: string, resourceId?: number): string {
     let base = this.apiConfig.baseUrl();
     switch (type) {
       case 'put':
@@ -90,7 +98,7 @@ export class AdminService {
     }
   }
 
-  public buildSearchTerm(filterParams: any): any {
+  public buildSearchTerm(filterParams: AdminFormParams): AdminFormParams {
     let params = this.sanitizeFormInput(filterParams);
     let rawFields = this.buildFields(params);
     let rawValues = this.buildValues(params);
@@ -99,7 +107,7 @@ export class AdminService {
     return { fields, values };
   }
 
-  public sanitizeFormInput(fields: any): any {
+  public sanitizeFormInput(fields: any): AdminFormParams {
     for (var field in fields) {
       if (this.dateFieldIsEmpty(fields, field)) {
         let date = new Date();
@@ -111,7 +119,7 @@ export class AdminService {
     return fields;
   }
 
-  public dateFieldIsEmpty(fields: any, field: any): boolean {
+  public dateFieldIsEmpty(fields: any, field: string): boolean {
     return (field === 'createdOn' || field === 'lastUpdated') && fields[field] === '';
   }
 
@@ -140,7 +148,7 @@ export class AdminService {
     }, []);
   }
 
-  public valueIsADate(currentField: any): any {
+  public valueIsADate(currentField: string): boolean {
     return ['createdOn', 'lastUpdated'].indexOf(currentField) > -1;
   }
 

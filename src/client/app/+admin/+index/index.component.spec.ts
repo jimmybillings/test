@@ -10,9 +10,11 @@ import {
   it
 } from '../../imports/test.imports';
 
-import {IndexComponent} from './index.component';
-import {AdminService} from '../services/admin.service';
-
+import { IndexComponent } from './index.component';
+import { AdminService } from '../services/admin.service';
+import { UiSubComponentsA } from '../../shared/interfaces/admin.interface';
+import { User } from '../../shared/interfaces/user.interface';
+import { FormFields } from '../../shared/interfaces/forms.interface';
 
 export function main() {
   describe('Admin Index component', () => {
@@ -49,7 +51,7 @@ export function main() {
     ]);
 
     it('Create instance of index and assign the CurrentUser to an instance variable inside of account',
-      inject([TestComponentBuilder], (tcb: any) => {
+      inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
         tcb.createAsync(IndexComponent).then((fixture: any) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof IndexComponent).toBeTruthy();
@@ -81,7 +83,7 @@ export function main() {
         spyOn(component.router, 'navigate');
         component.navigateToPageUrl('2');
         expect(component.router.navigate)
-          .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: 2, n: '10', s: 'createdOn', d: 'false', fields: '', values: '' })]);
+          .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: '2', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' })]);
       }));
 
     it('Should have a navigateToSortUrl function that navigates to a URL with correct params',
@@ -91,7 +93,7 @@ export function main() {
         spyOn(component.router, 'navigate');
         component.navigateToSortUrl({ s: 'emailAddress', d: 'true' });
         expect(component.router.navigate)
-          .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: '1', n: '10', s: 'emailAddress', d: true, fields: '', values: '' })]);
+          .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: 1, n: '10', s: 'emailAddress', d: 'true', fields: '', values: '' })]);
       }));
 
     it('Should have a navigateToFilterUrl function that navigates to a URL with correct params',
@@ -108,8 +110,8 @@ export function main() {
       inject([IndexComponent], (component: IndexComponent) => {
         component.config = mockConfig();
         component.mergeFormValues(mockUser());
-        component.config.editForm.items.forEach((element:any)=> {
-          expect(element.value).toBe(component.resource[element.name]);
+        component.config['editForm'].items.forEach((field: FormFields)=> {
+          expect(field.value).toBe(component.resource[field.name]);
         });
       }));
 
@@ -119,7 +121,7 @@ export function main() {
         component.resourceType = 'user';
         spyOn(component.adminService, 'putResource').and.callThrough();
         spyOn(component, 'getIndex');
-        let newUser = Object.assign(mockUser(), {'firstName': 'Bob'});
+        let newUser : User = Object.assign(mockUser(), {'firstName': 'Bob'});
         component.onEditSubmit(newUser);
         expect(component.adminService.putResource).toHaveBeenCalledWith('user', newUser);
         expect(component.getIndex).toHaveBeenCalled();
@@ -143,7 +145,7 @@ export function main() {
   });
 
   function mockUser() {
-    return {
+    let mockUser : User = {
       'lastUpdated': '2016-07-14T23:43:43Z',
       'createdOn': '2016-07-07T22:57:49Z',
       'id': 71,
@@ -167,6 +169,7 @@ export function main() {
         9
       ]
     };
+    return mockUser;
   }
 
   function mockResponse() {
@@ -193,7 +196,7 @@ export function main() {
   }
 
   function mockConfig() {
-    return {
+    let config: UiSubComponentsA = {
       'editForm': {
         'items': [
           {
@@ -232,8 +235,27 @@ export function main() {
             'validation': 'OPTIONAL'
           }
         ]
+      },
+      'newForm': {
+        'items': [
+          {
+            'name': 'firstName',
+            'label': 'ADMIN.USER.FIRST_NAME_LABEL',
+            'type': 'text',
+            'value': '',
+            'validation': 'REQUIRED'
+          },
+          {
+            'name': 'lastName',
+            'label': 'ADMIN.USER.LAST_NAME_LABEL',
+            'type': 'text',
+            'value': '',
+            'validation': 'REQUIRED'
+          }
+        ]
       }
     };
+    return config;
   }
 
   function mockParams() {
