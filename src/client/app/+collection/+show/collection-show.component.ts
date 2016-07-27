@@ -58,10 +58,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.activeCollectionSubscription.unsubscribe();
   }
 
-  public showAsset(asset: any): void {
-    this.router.navigate(['/asset', asset.assetId]);
-  }
-
   public removeFromCollection(params: any): void {
     let collection: any = params.collection;
     let uuid: any = params.collection.assets.items.find((item: any) => parseInt(item.assetId) === parseInt(params.asset.assetId)).uuid;

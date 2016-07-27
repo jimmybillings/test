@@ -1,8 +1,8 @@
 <md-sidenav-layout>
   <md-sidenav #searchFilter align="start" mode="push" style="padding-right: 100px;">
-    <filter [filters]="filters"></filter>
+    <filter class="filter" [filters]="filters"></filter>
   </md-sidenav>
-    <button md-icon-button (click)="searchFilter.toggle()" style="position:absolute;"><md-icon>menu</md-icon></button>
+  <button md-icon-button (click)="searchFilter.toggle()" style="position:absolute;"><md-icon>menu</md-icon></button>
 
 
   <section class="search-results" *ngIf="config">
@@ -23,7 +23,6 @@
             [assets]="assets.items" 
             [currentUser]="currentUser" 
             [collection]="activeCollection.data | async"
-            (onShowAsset)="showAsset($event)" 
             (onAddToCollection)="addToCollection($event)"
             (onRemoveFromCollection)="removeFromCollection($event)"
             (onShowNewCollection)="showNewCollection($event)"
@@ -55,6 +54,4 @@
       </div>
     </div>
   </section>
-
-
 </md-sidenav-layout>

@@ -27,7 +27,7 @@ baseDir=$( dirname "$0" )
 # This is used as the apache host directory for the site. It should match the 
 # first part of the hostname for the site.
 # Ex: cnn.dev.t3mediasource.xyz. => has a sitename of 'cnn'
-siteName=dev
+siteName=crux
 
 if [ -n "$JENKINS_HOME" ]; then
   # add jenkins tools to the path

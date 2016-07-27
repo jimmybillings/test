@@ -29,6 +29,7 @@ export class FilterService {
 
   public getFilters(params: any): Observable<any> {
     let url = this.getFilterTreeUrl();
+    params['counted'] = true;
     let options = this.getFilterTreeOptions(params);
     return this.http.get(url, options).map((res: Response) => {
       this.setFilters(this.mapFilters(res.json()));
@@ -60,23 +61,15 @@ export class FilterService {
     }
   }
 
-  public mapFilters(filters: any): any {
-    if (filters.subFilters) {
-      return filters.subFilters.map((filter: any) => {
-        if (filter.subFilters) {
-          filter.expanded = true;
-          this.mapFilters(filter.subFilters);
+  public mapFilters(filter:any) {
+    if (filter.subFilters) {
+        filter.expanded = true;
+        for(var l of filter.subFilters) {
+            this.mapFilters(l);
         }
-        return filter;
-      });
     } else {
-      filters.map((filter: any) => {
-        if (filter.subFilters) {
-          filter.expanded = false;
-          this.mapFilters(filter.subFilters);
-        }
         return filter;
-      });
     }
+    return filter;
   }
 }

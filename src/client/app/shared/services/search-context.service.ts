@@ -11,10 +11,17 @@ const initSearchContext: any = {
 
 export const searchContext: Reducer<any> = (state: any = initSearchContext, action: Action) => {
   switch (action.type) {
-    case 'SEARCHCONTEXT.SET':
+    case 'SEARCHCONTEXT.NEW':
+      return Object.assign({}, action.payload);
+    case 'SEARCHCONTEXT.UDPATE':
       return Object.assign({}, state, action.payload);
     case 'SEARCHCONTEXT.RESET':
       return Object.assign({}, initSearchContext);
+    case 'SEARCHCONTEXT.REMOVE':
+      return Object.assign({}, Object.keys(state).reduce((result: any, key: any) => {
+        if (key !== action.payload) result[key] = state[key];
+        return result;
+      }, {}));
     default:
       return state;
   }
@@ -28,7 +35,7 @@ export class SearchContext {
   }
 
   public new(params: Object): void {
-    this.update = params;
+    this.store.dispatch({ type: 'SEARCHCONTEXT.NEW', payload: this.decodeParams(params) });
     this.go();
   }
 
@@ -38,15 +45,23 @@ export class SearchContext {
     return s;
   }
 
+  public set remove(param: any) {
+    this.store.dispatch({ type: 'SEARCHCONTEXT.REMOVE', payload: param });
+  }
+
   public set update(params: any) {
-    let decodedParams:any = {};
-    for(let param in params) {
-      decodedParams[param] = decodeURIComponent(params[param]);
-    }
-    this.store.dispatch({ type: 'SEARCHCONTEXT.SET', payload: decodedParams });
+    this.store.dispatch({ type: 'SEARCHCONTEXT.UDPATE', payload: this.decodeParams(params) });
   }
 
   public go(): void {
     this.router.navigate(['/search', this.state]);
+  }
+
+  public decodeParams(params: any) {
+    let decodedParams: any = {};
+    for (let param in params) {
+      decodedParams[param] = decodeURIComponent(params[param]);
+    }
+    return decodedParams;
   }
 }
