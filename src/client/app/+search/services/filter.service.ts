@@ -24,8 +24,8 @@ export class FilterService {
     public store: Store<any>,
     public apiConfig: ApiConfig,
     public currentUser: CurrentUser) {
-      this.data = this.store.select('filters');
-    }
+    this.data = this.store.select('filters');
+  }
 
   public getFilters(params: any): Observable<any> {
     let url = this.getFilterTreeUrl();
@@ -38,7 +38,7 @@ export class FilterService {
   }
 
   public setFilters(filters: any): void {
-    this.store.dispatch({type: 'FILTERS.SET_FILTERS', payload: filters});
+    this.store.dispatch({ type: 'FILTERS.SET_FILTERS', payload: filters });
   }
 
   public getFilterTreeUrl(): string {
@@ -51,25 +51,21 @@ export class FilterService {
 
   public getFilterTreeOptions(params: any): RequestOptions {
     let search: URLSearchParams = new URLSearchParams();
-    for (let param in params) {search.set(param, params[param]);};
+    for (let param in params) { search.set(param, params[param]); };
     if (this.currentUser.loggedIn()) {
       let headers = this.apiConfig.authHeaders();
-      return new RequestOptions({headers, search});
+      return new RequestOptions({ headers, search });
     } else {
       search.set('siteName', this.apiConfig.getPortal());
-      return new RequestOptions({search});
+      return new RequestOptions({ search });
     }
   }
 
-  public mapFilters(filter:any) {
+  public mapFilters(filter: any) {
     if (filter.subFilters) {
-        filter.expanded = true;
-        for(var l of filter.subFilters) {
-            this.mapFilters(l);
-        }
-    } else {
-        return filter;
-    }
-    return filter;
+      filter.expanded = true;
+      for (var l of filter.subFilters) this.mapFilters(l);
+      return filter;
+    } else return filter;
   }
 }

@@ -28,11 +28,7 @@ export class FilterComponent {
   }
 
   public filterAction(filter: any) {
-    if (filter.expanded) {
-      this.toggleFilters(filter);
-    } else {
-      this.applyFilter(filter);
-    }
+    (filter.expanded) ? this.toggleFilters(filter) : this.applyFilter(filter);
   }
 
   public toggleFilters(filter: any): void {
@@ -53,5 +49,9 @@ export class FilterComponent {
       hasCounts = filter.count !== 0;
     }
     return hasCounts;
+  }
+
+  public isHeadingFilter(count:number): boolean {
+    return count === -1;
   }
 }

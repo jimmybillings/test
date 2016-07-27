@@ -1,11 +1,11 @@
   <ul>
-    <li *ngFor="let filter of filters.subFilters">
+    <li *ngFor="let filter of filters.subFilters" [ngClass]="{'heading': isHeadingFilter(filter.count), 'filter': filter.count > -1}">
       <p class="md-caption" style="cursor:pointer;" (click)="filterAction(filter)" *ngIf="hasCounts(filter)">
         {{ filter.name }} 
         <span *ngIf="filter.count > -1"> 
           - {{filter.count}}
         </span>
       </p>
-      <filter *ngIf="selected(filter.name) && hasCounts(filter)" [filters]="filter"></filter>
+      <filter *ngIf="hasCounts(filter)" [filters]="filter"></filter>
     </li> 
   </ul>

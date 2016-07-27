@@ -1,0 +1,28 @@
+
+
+button.filter {
+    position: absolute;
+    padding: 0px 0px 0px 0px;
+    text-align: center;
+    margin-top: 1px;
+    width: 140px;
+    height: 70px;
+    background: #bbb;
+    z-index: 15;
+    border-radius: 0px 0px 0px 20px;
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    transform-origin: bottom;
+    position: fixed;
+    left: 0px;
+    border: cornsilk;
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+
+    &:focus {
+      outline:none;
+    }
+}

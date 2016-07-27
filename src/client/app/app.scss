@@ -40,6 +40,7 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 
 @import '+asset/components/asset-detail';
 @import '+asset/components/asset-data';
+@import '+search/search';
 @import '+search/filter';
 
 @import '+admin/+ui-config/ui-config';

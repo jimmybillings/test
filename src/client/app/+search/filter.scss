@@ -1,9 +1,20 @@
-search md-sidenav {
-  background: #000;
+.md-sidenav-backdrop.md-sidenav-shown {
+  display: none !important;
 }
 .filter {
-  ul, li {
-    list-style-type: none;
-    padding-left: 10px;
+  ul {
+    padding-left:0;
   }
+  li {
+    list-style-type: none;
+    padding-left: 5px;
+    &.heading p {
+      font-size: 15px;
+    }
+    &.filter p {
+      font-size: 13px;
+      text-decoration: underline;
+    }
+  }
+
 }

@@ -2,7 +2,8 @@
   <md-sidenav #searchFilter align="start" mode="push" style="padding-right: 100px;">
     <filter class="filter" [filters]="filters"></filter>
   </md-sidenav>
-  <button md-icon-button (click)="searchFilter.toggle()" style="position:absolute;"><md-icon>menu</md-icon></button>
+  
+  <button class="filter" (click)="searchFilter.toggle()">FILTERS</button>
 
 
   <section class="search-results" *ngIf="config">
