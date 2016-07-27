@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UiConfig } from '../../shared/services/ui.config';
-import { IuiConfig } from '../../shared/interfaces/config.interface';
+import { UiConfigInterface, TableHeaders, SiteConfig } from '../../shared/interfaces/admin.interface';
 import { ValuesPipe } from '../../shared/pipes/values.pipe';
 import { ConfigService } from '../services/config.service';
 import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
@@ -17,10 +17,10 @@ import { Subscription } from 'rxjs/Rx';
 
 export class ConfigComponent implements OnInit, OnDestroy {
 
-  public config: IuiConfig;
-  public uiConfigs: Array<IuiConfig>;
-  public siteConfigs: Array<Object>;
-  public headers: Array<Object>;
+  public config: UiConfigInterface;
+  public uiConfigs: Array<UiConfigInterface>;
+  public siteConfigs: Array<SiteConfig>;
+  public headers: Array<TableHeaders>;
   private configSubscription: Subscription;
 
   constructor(public uiConfig: UiConfig,

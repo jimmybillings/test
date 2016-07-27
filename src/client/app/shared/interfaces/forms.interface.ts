@@ -1,5 +1,4 @@
-
-export interface IFormFields {
+export interface FormFields {
   name: string;
   type: string;
   value: string;

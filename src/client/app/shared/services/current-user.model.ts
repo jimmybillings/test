@@ -1,6 +1,6 @@
-import { CurrentUserInterface} from '../interfaces/current-user.interface';
-import { Observable} from 'rxjs/Rx';
-import { Store, Reducer, Action} from '@ngrx/store';
+import { User } from '../interfaces/user.interface';
+import { Observable } from 'rxjs/Rx';
+import { Store, Reducer, Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 
 const permissionMap: any = {
@@ -32,7 +32,7 @@ export class CurrentUser {
   private data: Observable<any>;
 
   constructor(
-    private store: Store<CurrentUserInterface>) {
+    private store: Store<User>) {
     this.data = this.store.select('currentUser');
   }
 
@@ -46,7 +46,7 @@ export class CurrentUser {
     });
   }
 
-  public set(user: CurrentUserInterface = null): void {
+  public set(user: User = null): void {
     if (user) localStorage.setItem('currentUser', JSON.stringify(user));
     this.store.dispatch({ type: 'SET_USER', payload: this._user() });
   }
@@ -76,11 +76,11 @@ export class CurrentUser {
     });
   }
 
-  private _user(): CurrentUserInterface {
+  private _user(): User {
     return JSON.parse(localStorage.getItem('currentUser')) || this.mayflyUser();
   }
 
-  private mayflyUser(): CurrentUserInterface {
+  private mayflyUser(): User {
     return {
       'lastUpdated': '',
       'createdOn': '',

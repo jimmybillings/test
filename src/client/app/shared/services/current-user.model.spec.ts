@@ -8,7 +8,7 @@ import {
 
 import { provideStore } from '@ngrx/store';
 import { CurrentUser, currentUser } from './current-user.model';
-import { CurrentUserInterface} from '../interfaces/current-user.interface';
+import { User} from '../interfaces/user.interface';
 
 export function main() {
   describe('CurrentUser Model', () => {
@@ -146,7 +146,7 @@ export function main() {
     };
   }
 
-  function setLoggedOutUser(): CurrentUserInterface {
+  function setLoggedOutUser(): User {
     return {
       'lastUpdated': '',
       'createdOn': '',
