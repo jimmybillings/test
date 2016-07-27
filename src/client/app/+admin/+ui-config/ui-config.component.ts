@@ -84,7 +84,6 @@ export class UiConfigComponent implements OnInit, OnDestroy {
     this.reset();
     this.currentComponent = component;
     this.subComponents = this.components[component].config;
-    console.log(this.subComponents);
   }
 
   public buildForm(configOption: string): void {
