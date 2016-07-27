@@ -59,10 +59,10 @@ export function main() {
         spyOn(service, 'getFilterTreeUrl').and.callThrough();
         spyOn(service, 'getFilterTreeOptions').and.callThrough();
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.getFilters({q: 'cat', counted: true}).subscribe((payload) => {
+        service.getFilters({q: 'cat'}).subscribe((payload) => {
           expect(connection.request.method).toEqual(0);
           expect(connection.request.url).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true&siteName=core');
-          expect(payload).toEqual(mockFilters());
+          expect(payload).toEqual(service.mapFilters(mockFilters()));
           expect(service.setFilters).toHaveBeenCalled();
         });
         expect(service.getFilterTreeUrl).toHaveBeenCalled();
