@@ -33,7 +33,7 @@ export const collections: Reducer<any> = (state: Collections = collectionsState,
       return Object.assign({}, state);
     case 'DELETE_COLLECTION':
       let index = state.items.map((collection: Collection) => collection.id).indexOf(action.payload);
-      if (index > -1) state.items.slice(index, 1);
+      if (index > -1) state.items.splice(index, 1);
       return Object.assign({}, state);
     case 'RESET_COLLECTIONS':
       return Object.assign({}, collectionsState);

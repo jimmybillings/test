@@ -11,7 +11,7 @@ const initSearchContext: any = {
 
 export const searchContext: Reducer<any> = (state: any = initSearchContext, action: Action) => {
   switch (action.type) {
-    case 'SEARCHCONTEXT.NEW':
+    case 'SEARCHCONTEXT.CREATE':
       return Object.assign({}, action.payload);
     case 'SEARCHCONTEXT.UDPATE':
       return Object.assign({}, state, action.payload);
@@ -35,7 +35,7 @@ export class SearchContext {
   }
 
   public new(params: Object): void {
-    this.store.dispatch({ type: 'SEARCHCONTEXT.NEW', payload: this.decodeParams(params) });
+    this.create = params;
     this.go();
   }
 
@@ -51,6 +51,10 @@ export class SearchContext {
 
   public set update(params: any) {
     this.store.dispatch({ type: 'SEARCHCONTEXT.UDPATE', payload: this.decodeParams(params) });
+  }
+
+  public set create(params: Object) {
+    this.store.dispatch({ type: 'SEARCHCONTEXT.CREATE', payload: this.decodeParams(params) });
   }
 
   public go(): void {

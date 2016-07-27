@@ -46,7 +46,7 @@ export const activeCollection: Reducer<any> = (state = activeState(), action: Ac
       return Object.assign({}, state, state.assets.items.unshift(action.payload));
     case 'REMOVE_ASSET_FROM_COLLECTION':
       let index = state.assets.items.map((item: any) => item.assetId).indexOf(action.payload.assetId);
-      if (index > -1) state.assets.items.slice(index, 1);
+      if (index > -1) state.assets.items.splice(index, 1);
       state.assets.pagination.totalCount--;
       return Object.assign({}, state);
     default:

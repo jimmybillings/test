@@ -9,7 +9,7 @@ export class SearchResolver {
   constructor(private assets: AssetData, private searchContext: SearchContext) {
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Observable<any> {
-    this.searchContext.update = route.params;
+    this.searchContext.create = route.params;
     return this.assets.searchAssets(this.searchContext.state);
   }
 }
