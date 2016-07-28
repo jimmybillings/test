@@ -9,14 +9,17 @@
   <section class="search-results" *ngIf="config">
     <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
       <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
-        <div layout="row" layout-align="end center" class="pagination md-body-2"> 
+          <div class="breadcrumbs">
+            <span *ngFor="let id of filterIds">
+              <div class="breadcrumb">
+                {{id}}
+                <button (click)="applyFilter(id)" md-icon-button><md-icon>cancel</md-icon></button>
+              </div>
+            </span>
+          </div> 
+        <div layout="row" layout-align="end center" class="pagination md-body-2">
           <div flex="40" layout-align="end center" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
           <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-        </div>
-        <div>
-          <!--<span *ngFor="let filter of rootFilter.selectedFilters()" style="padding-right: 10px; font-size: 0.8em">
-            <img src="/assets/img/delete.png" style="align:middle;cursor:pointer;padding-right:5px; height:12px" (click)="filter.check();applyFilter(filter);"/>{{filter.name}}
-          </span>-->
         </div>
       
         <div layout="column">       

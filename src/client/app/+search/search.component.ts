@@ -101,18 +101,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.go();
   }
 
-  public applyFilter(filter: any): void {
-    if (this.filterIds.indexOf(filter.filterId.toString()) > -1) {
-      this.removeFilter(filter);
+  public applyFilter(filterId: number): void {
+    if (this.filterIds.indexOf(filterId.toString()) > -1) {
+      this.removeFilter(filterId);
     } else {
-      this.filterIds.push(filter.filterId.toString());
+      this.filterIds.push(filterId.toString());
     }
     this.filterAssets();
   }
 
-  public removeFilter(filter: any): void {
+  public removeFilter(filterId: number): void {
     for (let i = 0; i < this.filterIds.length; i++) {
-      if (this.filterIds[i].toString() === filter.filterId.toString()) {
+      if (this.filterIds[i].toString() === filterId.toString()) {
         this.filterIds.splice(i, 1);
       }
     }
