@@ -59,22 +59,7 @@ collection-form {
     @include animation-iteration-count(1);
     @include animation-fill-mode(backwards);
   }
-  // &.revealed .collections-dd-menu {
-  // }
-  // &.revealed .dd-menu-wrapper {
-  //   @include animation-name(fadeIn);
-  //   @include animation-duration(250ms);
-  //   @include animation-timing-function($swift-ease-in-timing-function);
-  //   @include animation-iteration-count(1);
-  //   @include animation-delay(300ms);
-  //   @include animation-fill-mode(backwards);
-  // }
-  // .dd-menu-wrapper {
-  //   padding: rem(2.0);
-  // }
-  // .collections-dd-menu {
   @include transition($swift-ease-out);
-  // min-width: rem(40.0);
   background-color: md-color($md-background, card);
   color: rgba(md-color($md-foreground, text), .7);
     // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
@@ -104,7 +89,7 @@ collection-form {
         line-height: inherit;
         @include transition($swift-ease-out);
         padding: 0 10px;
-        box-shadow: inset 0 1px 0 0 md-color($md-foreground, divider);
+        // box-shadow: inset 0 1px 0 0 md-color($md-foreground, divider);
         &:hover, &:focus, &.active {
           cursor: pointer;
           color: md-color($md-primary);
@@ -112,16 +97,6 @@ collection-form {
           outline: none;
         }
       }
-      // md-icon {
-      //   @include transition($swift-ease-out);
-      //   opacity: .7;
-      //   margin-right: rem(1.0);
-      //   &.right-align.material-icons {
-      //     margin-left: auto;
-      //     margin-right: rem(-.3);
-      //     opacity: .3;
-      //   }
-      // }
     }
     md-list-item.focused .md-list-item button {
       color: md-color($md-primary);

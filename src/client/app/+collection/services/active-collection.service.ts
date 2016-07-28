@@ -140,6 +140,9 @@ export class ActiveCollectionService {
   }
 
   public updateActiveCollectionAssets(assets: any): void {
+    // console.log(assets);
+    // console.log(assets.items.length);
+    // console.log(assets.items);
     assets.items = assets.items === undefined ? [] : assets.items;
     this.store.dispatch({
       type: 'UPDATE_ACTIVE_COLLECTION', payload: {
@@ -154,7 +157,7 @@ export class ActiveCollectionService {
             'numberOfPages': assets.numberOfPages
           }
         },
-        thumbnail: (assets.items.length > 0) ? assets.items[assets.totalCount - 1].thumbnail : ''
+        thumbnail: (assets.items.length > 0) ? assets.items[assets.items.length - 1].thumbnail : ''
       }
     });
   }

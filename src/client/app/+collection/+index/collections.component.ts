@@ -23,7 +23,6 @@ import { Subscription } from 'rxjs/Rx';
 export class CollectionsComponent implements OnInit, OnDestroy {
   public collections: Collections;
   public errorMessage: string;
-  public config: Object;
   private collectionStoreSubscription: Subscription;
 
   constructor(

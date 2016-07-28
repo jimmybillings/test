@@ -25,8 +25,6 @@ export class WzFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: any) {
     if (changes.items.currentValue && this.form) {
-      console.log(changes.items);
-      console.log(this.form.controls);
       for (let control in this.form.controls) {
         changes.items.currentValue.forEach((field: any) => {
           if (control === field.name)

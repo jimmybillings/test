@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Collection, Collections } from '../../shared/interfaces/collection.interface';
-// import { FormFields } from '../../shared/interfaces/forms.interface';
+import { FormFields } from '../../shared/interfaces/forms.interface';
+import { Asset } from '../../shared/interfaces/asset.interface';
+// import { UiSubComponentsA } from '../../shared/interfaces/admin.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { CollectionsService} from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
@@ -20,19 +22,20 @@ import { Observable, Subscription } from 'rxjs/Rx';
 export class CollectionFormComponent implements OnInit {
   @Input() collection: Collection;
   @Input() newCollectionFormIsOpen: boolean;
+  // @Input() config: UiSubComponentsA;
   @Input() config: any;
   @Input() UiState: any;
 
-  public originalName: string;
-  public assetForNewCollection: any;
+  // public originalName: string;
+  public assetForNewCollection: Asset;
   public collections: Observable<Collections>;
   public collectionsList: Subscription;
   public suggestions: Array<string> = [];
-  public formItems: any;
+  public formItems: Array<FormFields> = [];
 
   private areSuggestionsVisible: boolean = false;
-  private selectedSuggestion: any;
-  private activeSuggestion: any;
+  private selectedSuggestion: String;
+  private activeSuggestion: string;
 
   constructor(
     public collectionsService: CollectionsService,
@@ -56,7 +59,9 @@ export class CollectionFormComponent implements OnInit {
 
   public cancelCollectionCreation(): void {
     this.UiState.closeNewCollection();
-    this.formItems = this.formItems.map((field: any) => { field.value = ''; return field;});
+    this.formItems = this.formItems.map((field: FormFields) => { field.value = ''; return field; });
+    this.suggestions = [];
+    this.activeSuggestion = null;
     this.areSuggestionsVisible = false;
   }
 
@@ -89,29 +94,28 @@ export class CollectionFormComponent implements OnInit {
       this.areSuggestionsVisible = this.suggestions.length > 0;
     });
   }
-
+  /**
+   * When you click or hit enter take the active suggestion and make it the input field value.
+   */
   public selectSuggestion(suggestion: string) {
-    // console.log('selectSuggestion called');
     this.selectedSuggestion = suggestion;
-    this.formItems = this.formItems.map((field: any) => {
+    this.formItems = this.formItems.map((field: FormFields) => {
       if (field.name === 'name') field.value = suggestion;
       return field;
     });
-    // let cFormInput = <HTMLInputElement>document.getElementById('name-input');
-    // cFormInput.focus();
+    let cFormInput = <HTMLInputElement>document.getElementById('name-input');
+    cFormInput.focus();
     this.suggestions = [];
     this.activeSuggestion = null;
     this.areSuggestionsVisible = false;
   }
 
-
-
   /**
    * Sets the active (highlighted) suggestion.
    */
-  public setActiveSuggestion(suggestion: any) {
+  public setActiveSuggestion(suggestion: string) {
     this.activeSuggestion = suggestion;
-    this.formItems = this.formItems.map((field: any) => {
+    this.formItems = this.formItems.map((field: FormFields) => {
       if (field.name === 'name') field.value = suggestion;
       return field;
     });
