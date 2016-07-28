@@ -59,11 +59,6 @@ button.filter {
       }
     }
     &.clear {
-      display: inline;
-      cursor: pointer;
-      .breadcrumb-text {
-        margin-right: 6px;
-      }
       color: md-color($md-warn, 500);
     }
   }

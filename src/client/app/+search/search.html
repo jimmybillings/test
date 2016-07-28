@@ -17,7 +17,8 @@
               </div>
             </span>
             <div *ngIf="hasFilterIds" class="breadcrumb clear" (click)="clearFilters()">
-              <span class="breadcrumb-text">clear all</span>
+              clear all
+              <button (click)="applyFilter(id)" md-icon-button><md-icon>remove_circle</md-icon></button>
             </div>
           </div> 
         <div layout="row" layout-align="end center" class="pagination md-body-2">
