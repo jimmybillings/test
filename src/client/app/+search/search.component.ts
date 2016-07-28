@@ -133,6 +133,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.go();
   }
 
+  public clearFilters(): void {
+    this.filterIds = [];
+    this.filterAssets();
+  }
+
   public get hasValues(): boolean {
     return this.filterValues.length > 0;
   }

@@ -16,6 +16,9 @@
                 <button (click)="applyFilter(id)" md-icon-button><md-icon>cancel</md-icon></button>
               </div>
             </span>
+            <div *ngIf="hasFilterIds" class="breadcrumb clear" (click)="clearFilters()">
+              <span class="breadcrumb-text">clear all</span>
+            </div>
           </div> 
         <div layout="row" layout-align="end center" class="pagination md-body-2">
           <div flex="40" layout-align="end center" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
