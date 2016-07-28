@@ -19,7 +19,7 @@ export function main() {
     ]);
 
     it('Create an instance of Site Config',
-      inject([TestComponentBuilder], (tcb: any) => {
+      inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
         tcb.createAsync(SiteConfigComponent).then((fixture: any) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof SiteConfigComponent).toBeTruthy();

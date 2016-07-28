@@ -3,7 +3,7 @@
   <li *ngFor="let asset of assets">
     <div class="asset">
       <div class="asset-name">{{asset.name}}</div>
-      <a flex="" (click)="showAsset(asset)" class="asset-thb">
+      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb">
         <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
         <span *ngIf="asset.metaData[0]" class="mdata-0">
           <span>{{asset.metaData[0].value}}</span>
@@ -37,7 +37,11 @@
           <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
         </nav>
       </section>
-      <a (click)="showAsset(asset)" class="asset-desc">  <span *ngIf="asset.metaData[1]" class="mdata-1">{{asset.metaData[1].value}}</span></a>
+      <a [routerLink]="['/asset/', asset.assetId]" class="asset-desc">  
+        <span *ngIf="asset.metaData[1]" class="mdata-1">
+          {{asset.metaData[1].value}}
+        </span>
+      </a>
     </div>
   </li>
 </ul>

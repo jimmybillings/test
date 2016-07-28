@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {CurrentUser} from '../../shared/services/current-user.model';
-import { CurrentUserInterface} from '../../shared/interfaces/current-user.interface';
+import { User} from '../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs/Rx';
 
 @Component({
@@ -10,11 +10,11 @@ import { Subscription } from 'rxjs/Rx';
 })
 
 export class ProfileComponent implements OnDestroy {
-  public user: CurrentUserInterface;
+  public user: User;
   private userSubscription: Subscription;
 
   constructor(currentUser: CurrentUser) {
-    this.userSubscription = currentUser.profile.subscribe((user: CurrentUserInterface) => this.user = user);
+    this.userSubscription = currentUser.profile.subscribe((user: User) => this.user = user);
   }
 
   ngOnDestroy() {

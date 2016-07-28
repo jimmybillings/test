@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges } from '@angular/core';
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { WzToastComponent } from '../../../shared/components/wz-toast/wz.toast.component';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 
 /**
  * Directive that renders a list of assets
@@ -9,7 +10,7 @@ import { WzToastComponent } from '../../../shared/components/wz-toast/wz.toast.c
   moduleId: module.id,
   selector: 'wz-asset-list',
   templateUrl: 'wz.asset-list.html',
-  directives: [WzToastComponent],
+  directives: [WzToastComponent, ROUTER_DIRECTIVES],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -17,7 +18,6 @@ export class WzAssetListComponent implements OnChanges {
   @Input() public assets: Array<any>;
   @Input() public currentUser: any;
   @Input() collection: Collection;
-  @Output() onShowAsset = new EventEmitter();
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onAddToCart = new EventEmitter();
@@ -33,10 +33,6 @@ export class WzAssetListComponent implements OnChanges {
     if (changes.collection && changes.collection.currentValue) {
       this.assetsArr = this.collection.assets.items.map(function (x) { return x.assetId; });
     }
-  }
-
-  public showAsset(asset: any): void {
-    this.onShowAsset.emit(asset);
   }
 
   public addToCollection(collection: Collection, asset: any): void {

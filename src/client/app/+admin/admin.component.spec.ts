@@ -17,7 +17,7 @@ export function main() {
     ]);
 
     it('Should have an admin instance',
-      inject([TestComponentBuilder], (tcb: any) => {
+      inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
         tcb.createAsync(AdminComponent).then((fixture: any) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof AdminComponent).toBeTruthy();

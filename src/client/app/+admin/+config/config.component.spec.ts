@@ -30,7 +30,7 @@ export function main() {
     ]);
 
     it('Create instance of config',
-      inject([TestComponentBuilder], (tcb: any) => {
+      inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
         tcb.createAsync(ConfigComponent).then((fixture: any) => {
           let instance = fixture.debugElement.componentInstance;
           expect(instance instanceof ConfigComponent).toBeTruthy();

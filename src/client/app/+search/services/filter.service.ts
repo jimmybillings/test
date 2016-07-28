@@ -24,11 +24,12 @@ export class FilterService {
     public store: Store<any>,
     public apiConfig: ApiConfig,
     public currentUser: CurrentUser) {
-      this.data = this.store.select('filters');
-    }
+    this.data = this.store.select('filters');
+  }
 
   public getFilters(params: any): Observable<any> {
     let url = this.getFilterTreeUrl();
+    params['counted'] = true;
     let options = this.getFilterTreeOptions(params);
     return this.http.get(url, options).map((res: Response) => {
       this.setFilters(this.mapFilters(res.json()));
@@ -37,7 +38,7 @@ export class FilterService {
   }
 
   public setFilters(filters: any): void {
-    this.store.dispatch({type: 'FILTERS.SET_FILTERS', payload: filters});
+    this.store.dispatch({ type: 'FILTERS.SET_FILTERS', payload: filters });
   }
 
   public getFilterTreeUrl(): string {
@@ -50,33 +51,21 @@ export class FilterService {
 
   public getFilterTreeOptions(params: any): RequestOptions {
     let search: URLSearchParams = new URLSearchParams();
-    for (let param in params) {search.set(param, params[param]);};
+    for (let param in params) { search.set(param, params[param]); };
     if (this.currentUser.loggedIn()) {
       let headers = this.apiConfig.authHeaders();
-      return new RequestOptions({headers, search});
+      return new RequestOptions({ headers, search });
     } else {
       search.set('siteName', this.apiConfig.getPortal());
-      return new RequestOptions({search});
+      return new RequestOptions({ search });
     }
   }
 
-  public mapFilters(filters: any): any {
-    if (filters.subFilters) {
-      return filters.subFilters.map((filter: any) => {
-        if (filter.subFilters) {
-          filter.expanded = true;
-          this.mapFilters(filter.subFilters);
-        }
-        return filter;
-      });
-    } else {
-      filters.map((filter: any) => {
-        if (filter.subFilters) {
-          filter.expanded = false;
-          this.mapFilters(filter.subFilters);
-        }
-        return filter;
-      });
-    }
+  public mapFilters(filter: any) {
+    if (filter.subFilters) {
+      filter.expanded = true;
+      for (var l of filter.subFilters) this.mapFilters(l);
+      return filter;
+    } else return filter;
   }
 }

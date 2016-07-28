@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Rx';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { ApiConfig } from '../../shared/services/api.config';
 import { UiConfig } from '../../shared/services/ui.config';
-import { IFormFields } from '../../shared/interfaces/forms.interface';
+import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 
 /**
@@ -25,7 +25,7 @@ import { WzFormComponent } from '../../shared/components/wz-form/wz.form.compone
 export class RegisterComponent implements OnInit, OnDestroy {
   public config: any;
   public components: Object;
-  public fields: IFormFields[];
+  public fields: FormFields[];
   private configSubscription: Subscription;
 
   constructor(

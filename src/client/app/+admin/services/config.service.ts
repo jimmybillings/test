@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
-import { IuiConfig } from '../../shared/interfaces/config.interface';
+import { UiConfigInterface, SiteConfig, AdminUiResponse, AdminSiteResponse } from '../../shared/interfaces/admin.interface';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
@@ -15,19 +15,19 @@ export class ConfigService {
     this.siteApiUrl = this.apiConfig.baseUrl() + 'api/identities/v1/site/';
   }
 
-  public getUiConfigIndex(): Observable<any> {
+  public getUiConfigIndex(): Observable<AdminUiResponse> {
     return this.http.get(this.uiApiUrl + 'search',
       { headers: this.apiConfig.authHeaders() }
     ).map((res: Response) => res.json());
   }
 
-  public getSiteConfigIndex(): Observable<any> {
+  public getSiteConfigIndex(): Observable<AdminSiteResponse> {
     return this.http.get(this.siteApiUrl + 'search',
       { headers: this.apiConfig.authHeaders() }
     ).map((res: Response) => res.json());
   }
 
-  public searchSiteConfig(siteName: string): Observable<any> {
+  public searchSiteConfig(siteName: string): Observable<SiteConfig> {
     return this.http.get(this.siteApiUrl + 'search/?q=' + siteName,
       { headers: this.apiConfig.authHeaders() }
     ).map((res: Response) => res.json());
@@ -39,13 +39,13 @@ export class ConfigService {
     ).map((res: Response) => res.json());
   }
 
-  public showSiteConfig(siteId: number): Observable<any> {
+  public showSiteConfig(siteId: number): Observable<AdminSiteResponse> {
     return this.http.get(this.siteApiUrl + siteId,
       { headers: this.apiConfig.authHeaders() }
     ).map((res: Response) => res.json());
   }
 
-  public updateUiConfig(data: IuiConfig): Observable<any> {
+  public updateUiConfig(data: UiConfigInterface): Observable<any> {
     return this.http.put(this.uiApiUrl + data.id,
       JSON.stringify(data), { headers: this.apiConfig.authHeaders() });
   }

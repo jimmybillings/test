@@ -25,7 +25,7 @@ export function main() {
       spyOn(service, 'getIdentitiesSearchOptions');
       let connection: any;
       mockBackend.connections.subscribe((c: any) => connection = c);
-      service.getResourceIndex({ i: 1, n: 10, s: 'createdOn', d: 'false' }, 'account').subscribe((res) => {
+      service.getResourceIndex({ i: '1', n: '10', s: 'createdOn', d: 'false' }, 'account').subscribe((res) => {
         expect(service.getIdentitiesSearchOptions).toHaveBeenCalledWith(1, 10, 'createdOn', 'false');
       });
     }));
@@ -34,7 +34,7 @@ export function main() {
       spyOn(service, 'buildUrl').and.callThrough();
       let connection: any;
       mockBackend.connections.subscribe((c: any) => connection = c);
-      service.getResourceIndex({ i: 1, n: 10, s: 'createdOn', d: 'false', fields: 'firstName,lastName', values: 'ross,edfort' }, 'account').subscribe((res) => {
+      service.getResourceIndex({ i: '1', n: '10', s: 'createdOn', d: 'false', fields: 'firstName,lastName', values: 'ross,edfort' }, 'account').subscribe((res) => {
         expect(service.buildUrl).toHaveBeenCalledWith('search', { i: 1, n: 10, s: 'createdOn', d: 'false', fields: 'firstName,lastName', values: 'ross,edfort' }, 'account');
       });
     }));

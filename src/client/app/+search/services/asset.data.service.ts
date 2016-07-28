@@ -57,9 +57,6 @@ export class AssetData {
   public searchAssetsUrl(loggedIn: boolean): string {
     return this.apiConfig.baseUrl() + this.getAssetSearchPath(loggedIn);
   }
-  public filterTreeUrl(loggedIn: boolean): string {
-    return this.apiConfig.baseUrl() + this.getFilterTreePath(loggedIn);
-  }
 
   /**
    * Ajax get request to search api to return matching assets and pagination information.
@@ -75,12 +72,6 @@ export class AssetData {
         this.storeAssets(res.json());
         return res.json();
       });
-  }
-
-  public getFilterTree(params: any): Observable<any> {
-    params['counted'] = 'true';
-    let options = this.getAssetSearchOptions(params, this.currentUser.loggedIn());
-    return this.http.get(this.filterTreeUrl(this.currentUser.loggedIn()), options).map((res: Response) => (res.json()));
   }
 
   public storeAssets(payload: any): void {
@@ -134,9 +125,5 @@ export class AssetData {
     let headers = (isUserLoggedIn) ? this.apiConfig.authHeaders() : void null;
     let options = (isUserLoggedIn) ? { headers: headers, search: search } : { search: search };
     return new RequestOptions(options);
-  }
-
-  public getFilterTreePath(isUserLoggedIn: boolean): string {
-    return (isUserLoggedIn) ? 'api/assets/v1/filter/filterTree' : 'api/assets/v1/filter/anonymous/filterTree';
   }
 }
