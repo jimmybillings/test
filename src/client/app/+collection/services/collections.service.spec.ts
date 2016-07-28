@@ -31,7 +31,7 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.apiUrls.CollectionBaseUrl = 'https://crxextapi.dev.wzplatform.com/api/assets/v1/search';
-        let expectedUrl = service.apiUrls.CollectionBaseUrl + '/collectionSummary/fetchBy?access-level=all';
+        let expectedUrl = service.apiUrls.CollectionBaseUrl + '/collectionSummary/fetchBy?access-level=all&i=0&n=200';
         spyOn(service, 'storeCollections');
         service.loadCollections().subscribe(response => {
           expect(connection.request.url).toBe(expectedUrl);
