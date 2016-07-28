@@ -96,6 +96,7 @@ wz-asset-list {
       margin: 0 1px;
       height: 24%;
       @include transition(all .2s ease-in-out);
+      text-decoration: none;
       span.mdata-1 {
         display: block;
         position: static;
