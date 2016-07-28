@@ -1,4 +1,8 @@
-
+md-sidenav-layout {
+  // temporary fix for when the search result set is small
+  min-height: 60vh;
+  overflow-y: scroll;
+}
 
 button.filter {
     position: absolute;
@@ -25,4 +29,37 @@ button.filter {
     &:focus {
       outline:none;
     }
+}
+
+.breadcrumbs {
+  .breadcrumb {
+    background-color: #eee;
+    box-shadow: 2px 2px 7px #aaa;
+    font-size: 0.8em;
+    border-radius: 5px;
+    padding: 2px 5px 2px 10px;
+    display: inline-block;
+    p {
+      padding: 0px;
+    }
+    button[md-icon-button] {
+      margin-left: 6px;
+      color: #bbb;
+      height: 24px;
+      width: 24px;
+      @include transition(all .4s ease-in-out);
+      span.md-button-wrapper {
+        position: static;
+        line-height: 1.8;
+        font-size: inherit;
+      }
+      md-icon.material-icons {
+        padding-left: .5px;
+        font-size: 22px;
+      }
+    }
+    &.clear {
+      color: md-color($md-warn, 500);
+    }
+  }
 }

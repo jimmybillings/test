@@ -28,15 +28,15 @@ export class FilterComponent {
   }
 
   public filterAction(filter: any) {
-    (filter.expanded) ? this.toggleFilters(filter) : this.applyFilter(filter);
+    (filter.expanded) ? this.toggleFilters(filter) : this.applyFilter(filter.filterId);
   }
 
   public toggleFilters(filter: any): void {
     this.currentFilter[filter.name] = (this.currentFilter[filter.name] === filter.name) ? false : filter.name;
   }
 
-  public applyFilter(filter: any): void {
-    this.searchComponent.applyFilter(filter);
+  public applyFilter(filterId: number): void {
+    this.searchComponent.applyFilter(filterId);
   }
 
   public hasCounts(filter:any) {
