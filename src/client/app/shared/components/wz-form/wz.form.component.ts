@@ -16,6 +16,7 @@ import {FormModel} from './wz.form.model';
 export class WzFormComponent implements OnInit, OnChanges {
   @Input() items: any;
   @Input() submitLabel: string;
+  @Input() autocomplete: string = 'on';
   @Output() formSubmit = new EventEmitter();
 
   public form: FormGroup;
@@ -24,6 +25,8 @@ export class WzFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: any) {
     if (changes.items.currentValue && this.form) {
+      console.log(changes.items);
+      console.log(this.form.controls);
       for (let control in this.form.controls) {
         changes.items.currentValue.forEach((field: any) => {
           if (control === field.name)

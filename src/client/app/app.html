@@ -37,12 +37,6 @@
       [config]="(uiConfig.get('searchBox') | async).config"
       (searchContext)="newSearchContext($event)">
     </wz-search-box>
-    <bin-tray
-      *ngIf="(uiState.uiState | async).searchBarIsActive && currentUser.loggedIn()"
-      [UiState]="uiState"
-      [collection]="activeCollection.data | async"
-      >
-    </bin-tray>
   </header>
   <div [ngClass]="{
     'bin-tray-closed': !(uiState.data | async).binTrayIsOpen,

@@ -32,6 +32,128 @@ collection-form {
     position: fixed;
     md-card.wz-form-card {
       margin-top: 9%;
+      & > .md-card md-card-content {
+        position: relative;
+      }
     }
+  }
+}
+
+
+.suggestions-menu {
+  width: 100%;
+  height: auto;
+  max-height: rem(30);
+  overflow-y: auto;
+  position: absolute;
+  z-index: 20;
+  top: rem(5.1);
+  display: none;
+
+  &.revealed {
+    display: block;
+    @include md-elevation(1);
+    @include animation-name(open-menu);
+    @include animation-duration(300ms);
+    @include animation-timing-function($swift-ease-in-timing-function);
+    @include animation-iteration-count(1);
+    @include animation-fill-mode(backwards);
+  }
+  // &.revealed .collections-dd-menu {
+  // }
+  // &.revealed .dd-menu-wrapper {
+  //   @include animation-name(fadeIn);
+  //   @include animation-duration(250ms);
+  //   @include animation-timing-function($swift-ease-in-timing-function);
+  //   @include animation-iteration-count(1);
+  //   @include animation-delay(300ms);
+  //   @include animation-fill-mode(backwards);
+  // }
+  // .dd-menu-wrapper {
+  //   padding: rem(2.0);
+  // }
+  // .collections-dd-menu {
+  @include transition($swift-ease-out);
+  // min-width: rem(40.0);
+  background-color: md-color($md-background, card);
+  color: rgba(md-color($md-foreground, text), .7);
+    // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    //   position: static;
+    //   min-width: 100%;
+    //   max-width: 100%;
+    // }
+  md-list[dense] {
+    padding-top: 0;
+    border: 1px solid md-color($md-foreground, divider);
+    overflow-x: hidden;
+    md-list-item .md-list-item {
+      padding: 0;
+      button {
+        height: rem(4.0);
+        color: rgba(md-color($md-foreground, text), .7);
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        border: none;
+        text-align: left;
+        background: none;
+        background-color: transparent;
+        font-size: 1.1em;
+        line-height: inherit;
+        @include transition($swift-ease-out);
+        padding: 0 10px;
+        box-shadow: inset 0 1px 0 0 md-color($md-foreground, divider);
+        &:hover, &:focus, &.active {
+          cursor: pointer;
+          color: md-color($md-primary);
+          background-color: rgba(md-color($md-foreground, base), .1);
+          outline: none;
+        }
+      }
+      // md-icon {
+      //   @include transition($swift-ease-out);
+      //   opacity: .7;
+      //   margin-right: rem(1.0);
+      //   &.right-align.material-icons {
+      //     margin-left: auto;
+      //     margin-right: rem(-.3);
+      //     opacity: .3;
+      //   }
+      // }
+    }
+    md-list-item.focused .md-list-item button {
+      color: md-color($md-primary);
+      background-color: rgba(md-color($md-foreground, base), .07);
+      box-shadow: inset 0 1px 0 0 md-color($md-foreground, base), .05;
+      md-icon {
+        opacity: 1;
+      }
+      &:hover {
+        cursor: default;
+      }
+    }
+    md-list-item:first-child .md-list-item button {
+      box-shadow: none;
+    }
+
+
+
+  }
+
+}
+
+
+
+@include keyframes(open-menu) {
+  0% {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+  }
+  100% {
+    max-height: 100%;
+    opacity: 1;
   }
 }
