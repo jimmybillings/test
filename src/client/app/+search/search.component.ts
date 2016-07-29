@@ -13,6 +13,7 @@ import { Collection, Collections, CollectionStore } from '../shared/interfaces/c
 import { CollectionsService } from '../+collection/services/collections.service';
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { Store } from '@ngrx/store';
+import { WzBreadcrumbComponent } from '../shared/components/wz-breadcrumb/wz.breadcrumb.component';
 import { FilterComponent } from './filter.component';
 import { FilterService } from './services/filter.service';
 /**
@@ -22,7 +23,7 @@ import { FilterService } from './services/filter.service';
   moduleId: module.id,
   selector: 'search',
   templateUrl: 'search.html',
-  directives: [WzAssetListComponent, WzPaginationComponent, FilterComponent],
+  directives: [WzAssetListComponent, WzPaginationComponent, FilterComponent, WzBreadcrumbComponent],
   providers: [FilterService]
 })
 

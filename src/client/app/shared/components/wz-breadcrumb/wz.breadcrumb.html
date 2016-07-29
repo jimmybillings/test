@@ -1,0 +1,12 @@
+<div class="breadcrumbs">
+  <span *ngFor="let id of filterIds">
+    <div class="breadcrumb" (click)="applyFilter(id)">
+      {{id}}
+      <button md-icon-button><md-icon>cancel</md-icon></button>
+    </div>
+  </span>
+  <div *ngIf="filterIds.length > 0" class="breadcrumb clear" (click)="clearFilters()">
+    clear all
+    <button md-icon-button><md-icon>remove_circle</md-icon></button>
+  </div>
+</div> 

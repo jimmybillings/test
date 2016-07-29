@@ -9,18 +9,7 @@
   <section class="search-results" *ngIf="config">
     <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
       <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
-          <div class="breadcrumbs">
-            <span *ngFor="let id of filterIds">
-              <div class="breadcrumb">
-                {{id}}
-                <button (click)="applyFilter(id)" md-icon-button><md-icon>cancel</md-icon></button>
-              </div>
-            </span>
-            <div *ngIf="hasFilterIds" class="breadcrumb clear" (click)="clearFilters()">
-              clear all
-              <button (click)="applyFilter(id)" md-icon-button><md-icon>remove_circle</md-icon></button>
-            </div>
-          </div> 
+        <breadcrumb [filterIds]="filterIds" (clear)="clearFilters()" (apply)="applyFilter($event)"></breadcrumb>
         <div layout="row" layout-align="end center" class="pagination md-body-2">
           <div flex="40" layout-align="end center" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
           <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
