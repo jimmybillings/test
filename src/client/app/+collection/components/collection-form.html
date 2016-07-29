@@ -1,5 +1,5 @@
 <div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
-  <md-card class="wz-form-card md-elevation-z20">
+  <md-card class="wz-form-card md-elevation-z20" (click)="closeSuggestionMenu($event)">
     <button md-icon-button title="close collection" type="button" (click)="cancelCollectionCreation($event)" class="close"><md-icon>close</md-icon></button>
     <md-card-header>
       <div class="logo-wrapper">
@@ -28,20 +28,11 @@
           </md-list-item>
         </md-list>
       </div>
-      <!--<wz-dropdown #suggestionList>
-        <div class="collections-dd-menu md-elevation-z6">
-          <md-list dense>
-            <md-list-item *ngFor="let collection of (collections | async).items">
-              <button (click)="makeValue(collection)">
-                {{collection.name}}
-              </button>
-            </md-list-item>
-          </md-list>
-        </div>
-      </wz-dropdown>-->
+      
     </md-card-content>
   </md-card>
 </div>
+
 <div [ngClass]="{'fade-out': !(UiState.data | async).newCollectionFormIsOpen, 'fade-in': (UiState.data | async).newCollectionFormIsOpen}"
   class="bk-for-dialog" (click)="cancelCollectionCreation()">
 </div>

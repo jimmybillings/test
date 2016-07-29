@@ -65,6 +65,13 @@ export class CollectionFormComponent implements OnInit {
     this.areSuggestionsVisible = false;
   }
 
+  public closeSuggestionMenu(): void {
+    if (this.areSuggestionsVisible) {
+      this.areSuggestionsVisible = false;
+      this.activeSuggestion = null;
+    }
+  }
+
   public inputKeyUp(event: any): void {
     // Ignore TAB, UP, DOWN and ENTER since they are processed by the keydown handler
     if (event.which === 9 || event.keyCode === 9 ||
