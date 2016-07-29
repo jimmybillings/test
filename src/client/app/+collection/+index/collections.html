@@ -12,10 +12,8 @@
           <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>
         </div>
       </header>
-      <div layout="row" layout-align="end center" class="pagination md-body-2"> 
-        <div flex="40" layout-align="end center" *ngIf="collections.pagination.totalCount" class="results-count">{{collections.pagination.totalCount}} results</div>
-        <wz-pagination [pagination]="collections.pagination" (getPage)="changePage($event)"></wz-pagination>
-      </div>
+
+      <wz-pagination [pagination]="collections.pagination" (getPage)="changePage($event)"></wz-pagination>
       <ul>
         <li *ngFor="let collection of collections.items" class="collection" [ngClass]="{'focused': isActiveCollection(collection.id), 'md-elevation-z2': !isActiveCollection(collection.id) }">
           <div flex="100" layout="row" layout-xs="column">

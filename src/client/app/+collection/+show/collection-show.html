@@ -3,11 +3,6 @@
     <div layout="row" layout-align="center start">
       <div flex-xl="85" flex-gt-lg="95" flex="100">
         <section class="collections-list">
-          <!--<header class="bread-crumbs" layout="row" flex="100" layout-align="end center">
-            <div flex="none">
-              <span class="md-button"><a md-button color="primary" [routerLink]="['/collection']">Your Collections</a> : {{collection.name}}</span>
-            </div>
-          </header>-->
           <ul>
             <li class="collection" flex="100" layout="row" layout-xs="column">
                <div flex="100" flex-gt-sm="66">
@@ -66,11 +61,7 @@
     <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
       <div flex-xl="85" flex-gt-lg="95" flex="100">
 
-
-        <div layout="row" layout-align="end center" class="pagination md-body-2"> 
-          <div flex="40" layout-align="end center" *ngIf="collection.assets.pagination.totalCount" class="results-count">{{collection.assets.pagination.totalCount}} results</div>
-          <wz-pagination [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-        </div>
+        <wz-pagination [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
 
         <div layout="column">       
           <wz-asset-list 
@@ -86,12 +77,8 @@
           </wz-asset-list>
           <h1 *ngIf="!collection.assets.items" class="md-display-1 alert warning">This collection does not have any assets</h1>
         </div>
-        
-        
-        <div layout="row" layout-align="end center" class="pagination md-body-2 pg-bottom"> 
-          <div flex="40" layout-align="end center" *ngIf="collection.assets.pagination.totalCount" class="results-count">{{collection.assets.pagination.totalCount}} results</div>
-          <wz-pagination [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-        </div>
+
+        <wz-pagination [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
       </div>
     </div>
   </section>
