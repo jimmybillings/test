@@ -1,9 +1,9 @@
 
-<div layout="row" layout-align="end center" class="pagination md-body-2">
-  <div flex="40" layout-align="end center" *ngIf="pagination.totalCount" class="results-count">{{pagination.totalCount}} results</div>
-  <nav flex="100" layout="row" layout-align="end center">
-    <form flex="" [formGroup]="form" (ngSubmit)="getPageNumber(form.value.page)">
-      <div flex="" class="text-nav"><span>page</span>
+<div class="pagination md-body-2" layout-align="end center">
+  <div *ngIf="pagination.totalCount" class="results-count">{{pagination.totalCount}} results</div>
+  <nav layout="row" layout-align="end center">
+    <form [formGroup]="form" (ngSubmit)="getPageNumber(form.value.page)">
+      <div class="text-nav"><span>page</span>
         <input type="text" formControlName="page" value="{{pagination.currentPage}}"/><span>of </span><span>{{ pagination.numberOfPages }}</span>
       </div>
     </form>
