@@ -5,26 +5,23 @@
   
   <button class="filter" (click)="searchFilter.toggle()">FILTERS</button>
 
-
   <section class="search-results" *ngIf="config">
     <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
       <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
-          <div class="breadcrumbs">
-            <span *ngFor="let id of filterIds">
-              <div class="breadcrumb">
-                {{id}}
-                <button (click)="applyFilter(id)" md-icon-button><md-icon>cancel</md-icon></button>
-              </div>
-            </span>
-            <div *ngIf="hasFilterIds" class="breadcrumb clear" (click)="clearFilters()">
-              clear all
-              <button (click)="applyFilter(id)" md-icon-button><md-icon>remove_circle</md-icon></button>
+        <div class="breadcrumbs">
+          <span *ngFor="let id of filterIds">
+            <div class="breadcrumb">
+              {{id}}
+              <button (click)="applyFilter(id)" md-icon-button><md-icon>cancel</md-icon></button>
             </div>
-          </div> 
-        <div layout="row" layout-align="end center" class="pagination md-body-2">
-          <div flex="40" layout-align="end center" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
-          <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-        </div>
+          </span>
+          <div *ngIf="hasFilterIds" class="breadcrumb clear" (click)="clearFilters()">
+            clear all
+            <button md-icon-button><md-icon>remove_circle</md-icon></button>
+          </div>
+        </div> 
+        
+        <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
       
         <div layout="column">       
           <wz-asset-list 
@@ -38,27 +35,9 @@
             (onDownloadComp)="downloadComp($event)" 
             class="{{config.viewType.value}}">
           </wz-asset-list>
-          <h1 *ngIf="!assets.items" class="md-display-1 alert warning">No items can be found for that search</h1>
         </div>
-        
-        
-        <div layout="row" layout-align="end center" class="pagination md-body-2 pg-bottom"> 
-          <div flex="40" layout-align="end center" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
-          <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-        </div>
-      </div>
-      <div flex-xl="70" flex-gt-lg="80" flex="100" *ngIf="config.viewType.value == 'list'">
-        <div layout="row" layout-align="end center" class="pagination md-body-2"> 
-          <div flex="40" layout-align="end center" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
-          <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-        </div>
-        <div layout="row">
-          <asset-list [assets]="assets.items" class="{{config.viewType.value}}"></asset-list>
-        </div>
-        <div layout="row" layout-align="end center" class="pagination md-body-2 pg-bottom"> 
-          <div flex="40" layout-align="end center" *ngIf="assets.pagination.totalCount" class="results-count">{{assets.pagination.totalCount}} results</div>
-          <div *ngIf="!assets.items" class="alert warning">No items can be found for that search</div>
-        </div>
+          
+        <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
       </div>
     </div>
   </section>

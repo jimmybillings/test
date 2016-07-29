@@ -1,5 +1,5 @@
-
-<ul class="asset-list" #target>
+<h1 *ngIf="!assets" class="md-display-1 alert warning">No items can be found</h1>
+<ul class="asset-list" #target *ngIf="assets">
   <li *ngFor="let asset of assets">
     <div class="asset">
       <div class="asset-name">{{asset.name}}</div>
