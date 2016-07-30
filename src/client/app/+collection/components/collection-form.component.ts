@@ -82,24 +82,31 @@ export class CollectionFormComponent implements OnInit {
       return;
     }
     this.areSuggestionsVisible = false;
+
     if (event.target.id === 'name-input') {
       if (event.target.value.length > 1) {
-        this.getSuggestions(event.target.value);
+        this.collections.take(1).subscribe(data => {
+          this.suggestions = this.getSuggestions(event.target.value, data);
+        });
+        this.areSuggestionsVisible = this.isVisible();
       } else {
         this.suggestions = [];
       }
     }
   }
-
-  public getSuggestions(term: string) {
-    this.collections.take(1).subscribe((data) => {
-      this.suggestions = data.items.map(c => {
-        return c.name;
-      }).filter((item) => {
-        return item.toLowerCase().indexOf(term.toLowerCase()) === 0;
-      });
-      this.areSuggestionsVisible = this.suggestions.length > 0;
+  /**
+   * 
+   */
+  public getSuggestions(term: string, data: Collections): Array<string> {
+    return data.items.map((c: Collection) => {
+      return c.name;
+    }).filter((item: string) => {
+      return item.toLowerCase().indexOf(term.toLowerCase()) === 0;
     });
+  }
+
+  public isVisible(): boolean {
+    return this.suggestions.length > 0;
   }
   /**
    * When you click or hit enter take the active suggestion and make it the input field value.
@@ -108,7 +115,7 @@ export class CollectionFormComponent implements OnInit {
     this.selectedSuggestion = suggestion;
     this.formItems = this.formItems.map((field: FormFields) => {
       if (field.name === 'name') field.value = suggestion;
-      return field;
+        return field;
     });
     let cFormInput = <HTMLInputElement>document.getElementById('name-input');
     cFormInput.focus();
@@ -140,6 +147,7 @@ export class CollectionFormComponent implements OnInit {
   }
 
   public inputKeyDown(event: KeyboardEvent) {
+    console.log(event);
     if (event.which === 9 || event.keyCode === 9) { // TAB
       // Only enter this branch if suggestions are displayed
       if (!this.areSuggestionsVisible) return;

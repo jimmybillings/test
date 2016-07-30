@@ -1,12 +1,12 @@
 .pagination {
-  margin-top: rem(3.4);
+  @include display(flex);
+  @include flex-direction(row);
+  @include justify-content(flex-end);
+  @include align-items(center);
   min-height: rem(3.4);
   max-height: rem(3.4);
   opacity: .75;
-  &.pg-bottom {
-    margin-top: 0;  
-    margin-bottom: rem(3.4);  
-  }
+  width: 100%;
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     &.md-body-2 {
       font-size: .76em;
@@ -15,7 +15,9 @@
   }  
 }
 wz-pagination {
-  margin-right: - rem(.8);
+  display: block;
+  margin-right: rem(-.6);
+  margin-top: rem(.6);
   .text-nav > span {
     &:nth-child(3n) {
       margin-right: rem(.5);
@@ -71,7 +73,15 @@ wz-pagination {
   }
 }
 .results-count {
-  display: flex;
   min-height: rem(3.4);
+  max-height: rem(3.4);
+  line-height: rem(3.4);
   padding-right: rem(2.4);
 }  
+
+app .app {
+  wz-pagination:last-child {
+    margin-top: 0;
+    margin-bottom: rem(.6);
+  }
+}

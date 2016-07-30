@@ -154,7 +154,7 @@ export class ActiveCollectionService {
             'numberOfPages': assets.numberOfPages
           }
         },
-        thumbnail: (assets.items.length > 0) ? assets.items[assets.totalCount - 1].thumbnail : ''
+        thumbnail: (assets.items.length > 0) ? assets.items[assets.items.length - 1].thumbnail : ''
       }
     });
   }
