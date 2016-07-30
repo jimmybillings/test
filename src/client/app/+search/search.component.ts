@@ -30,7 +30,7 @@ import { FilterService } from './services/filter.service';
 export class SearchComponent implements OnInit, OnDestroy {
   public config: Object;
   public errorMessage: string;
-  public filterIds: Array<string> = new Array();
+  public activeFilters: Array<string> = new Array();
   public filterValues: Array<string> = new Array();
   public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
@@ -53,16 +53,17 @@ export class SearchComponent implements OnInit, OnDestroy {
     public store: Store<CollectionStore>,
     public error: Error,
     public searchContext: SearchContext,
-    public filterService: FilterService,
+    public filter: FilterService,
     public uiState: UiState) { }
 
   ngOnInit(): void {
-    this.filtersStoreSubscription = this.filterService.data.subscribe(data => this.filters = data);
+    this.filtersStoreSubscription = this.filter.data.subscribe(data => this.filters = data);
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
-      this.filterService.getFilters(params).first().subscribe();
-      this.filterIds = params['filterIds'] ? params['filterIds'].split(',') : [];
+      this.searchContext.update = params;
+      this.filter.get(this.searchContext.state).first().subscribe();
+      this.activeFilters = this.searchContext.state.filterIds ? this.searchContext.state.filterIds.split(',') : [];
     });
   }
 
@@ -103,18 +104,18 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyFilter(filterId: number): void {
-    if (this.filterIds.indexOf(filterId.toString()) > -1) {
+    if (this.activeFilters.indexOf(filterId.toString()) > -1) {
       this.removeFilter(filterId);
     } else {
-      this.filterIds.push(filterId.toString());
+      this.activeFilters.push(filterId.toString());
     }
     this.filterAssets();
   }
 
   public removeFilter(filterId: number): void {
-    for (let i = 0; i < this.filterIds.length; i++) {
-      if (this.filterIds[i].toString() === filterId.toString()) {
-        this.filterIds.splice(i, 1);
+    for (let i = 0; i < this.activeFilters.length; i++) {
+      if (this.activeFilters[i].toString() === filterId.toString()) {
+        this.activeFilters.splice(i, 1);
       }
     }
   }
@@ -122,7 +123,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public filterAssets(): void {
     this.searchContext.update = { i: 1 };
     if (this.hasFilterIds) {
-      this.searchContext.update = { 'filterIds': this.filterIds.join(',') };
+      this.searchContext.update = { 'filterIds': this.activeFilters.join(',') };
     } else {
       this.searchContext.remove = 'filterIds';
     }
@@ -135,7 +136,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public clearFilters(): void {
-    this.filterIds = [];
+    this.activeFilters = [];
     this.filterAssets();
   }
 
@@ -144,6 +145,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public get hasFilterIds(): boolean {
-    return this.filterIds.length > 0;
+    return this.activeFilters.length > 0;
   }
 }

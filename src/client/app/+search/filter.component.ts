@@ -22,7 +22,6 @@ export class FilterComponent {
       this.currentFilter = [];
     }
 
-
   public selected(filterName: any) {
     return this.currentFilter[filterName] === filterName;
   }

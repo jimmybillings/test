@@ -9,7 +9,7 @@
     <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
       <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
         
-        <breadcrumb [filterIds]="filterIds" (clear)="clearFilters()" (apply)="applyFilter($event)"></breadcrumb>
+        <breadcrumb class="root" [filters]="filters" (clear)="clearFilters()" (apply)="applyFilter($event)"></breadcrumb>
         <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
          
         <wz-asset-list 

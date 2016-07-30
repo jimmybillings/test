@@ -1,0 +1,14 @@
+breadcrumb.root {
+  > ul.breadcrumbs {
+     > li {
+      float: left;;
+    }
+  }
+  ul {
+    padding-left:5px;
+  }
+  li {
+    list-style-type: none;
+    margin-top:5px;
+  }
+}
