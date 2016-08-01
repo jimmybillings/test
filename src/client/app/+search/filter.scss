@@ -1,20 +1,29 @@
 .md-sidenav-backdrop.md-sidenav-shown {
   display: none !important;
 }
+md-sidenav {
+  width: 225px;
+}
 .filter {
   ul {
     padding-left:0;
   }
   li {
     list-style-type: none;
-    padding-left: 5px;
+    p {
+      cursor: pointer;
+      padding-left: 5px;
+      &.active {
+        color: md-color($md-grey, 500);
+      }
+    }
     &.heading p {
       font-size: 15px;
     }
     &.filter p {
       font-size: 13px;
       text-decoration: underline;
+      padding-left: 15px;
     }
   }
-
 }
