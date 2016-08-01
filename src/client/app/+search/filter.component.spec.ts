@@ -38,8 +38,14 @@ export function main() {
     it('Should have an applyFilter() function that calls applyFilter() on the search component',
       inject([FilterComponent], (component: FilterComponent) => {
         spyOn(component.searchComponent, 'applyFilter');
-        component.applyFilter('some filter');
-        expect(component.searchComponent.applyFilter).toHaveBeenCalledWith('some filter');
+        component.applyFilter(123);
+        expect(component.searchComponent.applyFilter).toHaveBeenCalledWith(123);
+      }));
+
+    it('Should have a selected() method that returns a boolean',
+      inject([FilterComponent], (component: FilterComponent) => {
+        component.currentFilters = {};
+        expect(component.selected('Licensability')).toBe(false);
       }));
   });
 }
