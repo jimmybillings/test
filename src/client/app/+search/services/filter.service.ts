@@ -31,12 +31,7 @@ export class FilterService {
     params['counted'] = true;
     let options = this.filterOptions(params);
     return this.http.get(this.filterUrl, options).map((res: Response) => {
-      params.filterIds = (params.filterIds) ? params.filterIds.split(',').map(Number) : [];
-      this.filters = res.json();
-      this.filters.activeFilters = [];
-      console.log(this.mapFilters(this.filters, params.filterIds));
-      this.set(this.mapFilters(this.filters, params.filterIds));
-      this.data.take(1).subscribe(d => console.log(d));
+      this.set(this.mapFilters(res.json()));
       return this.filters;
     });
   }
@@ -65,13 +60,30 @@ export class FilterService {
     }
   }
 
-  public mapFilters(filter: any, activeFilters: any) {
+  public mapFilters(filter: any) {
     if (filter.subFilters) {
       filter.expanded = true;
-      for (var l of filter.subFilters) this.mapFilters(l, activeFilters);
+      for (var l of filter.subFilters) this.mapFilters(l);
       return filter;
     } else {
-      // if (filter.active) this.filters.activeFilters.push(filter);
+      return filter;
+    }
+  }
+
+  public filterAction(filterId: number) {
+    this.data.take(1).subscribe(filters => {
+      this.set(this.toggleFilter(filters, filterId));
+    });
+  }
+
+  public toggleFilter(filter: any, currentFilter: any) {
+    if (filter.subFilters) {
+      for (var l of filter.subFilters) this.toggleFilter(l, currentFilter);
+      return filter;
+    } else {
+      if (filter.filterId === currentFilter) {
+        filter.active = !filter.active;
+      }
       return filter;
     }
   }

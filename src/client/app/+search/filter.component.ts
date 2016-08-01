@@ -1,12 +1,10 @@
 import { Component, Input, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
-import { FilterService } from './services/filter.service';
 import { SearchComponent } from './search.component';
 
 @Component({
   moduleId: module.id,
   selector: 'filter',
   templateUrl: 'filter.html',
-  providers: [FilterService],
   directives: [FilterComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -16,11 +14,10 @@ export class FilterComponent {
   public searchComponent: SearchComponent;
   public currentFilter: any;
   constructor(
-    public filterService: FilterService,
-    @Inject(forwardRef(() => SearchComponent)) searchComponent:SearchComponent) {
-      this.searchComponent = searchComponent;
-      this.currentFilter = [];
-    }
+    @Inject(forwardRef(() => SearchComponent)) searchComponent: SearchComponent) {
+    this.searchComponent = searchComponent;
+    this.currentFilter = [];
+  }
 
   public selected(filterName: any) {
     return this.currentFilter[filterName] === filterName;
@@ -38,8 +35,8 @@ export class FilterComponent {
     this.searchComponent.applyFilter(filterId);
   }
 
-  public hasCounts(filter:any) {
-    var hasCounts:boolean = true;
+  public hasCounts(filter: any) {
+    var hasCounts: boolean = true;
     if (filter.subFilters) {
       hasCounts = filter.subFilters.filter((f: any) => {
         return f.count > 0;
@@ -50,7 +47,7 @@ export class FilterComponent {
     return hasCounts;
   }
 
-  public isHeadingFilter(count:number): boolean {
+  public isHeadingFilter(count: number): boolean {
     return count === -1;
   }
 }

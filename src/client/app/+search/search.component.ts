@@ -62,7 +62,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
       this.searchContext.update = params;
-      this.filter.get(this.searchContext.state).first().subscribe();
+      // this.filter.get(this.searchContext.state).first().subscribe();
       this.activeFilters = this.searchContext.state.filterIds ? this.searchContext.state.filterIds.split(',') : [];
     });
   }
@@ -72,6 +72,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.assetsStoreSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     this.configSubscription.unsubscribe();
+    this.filtersStoreSubscription.unsubscribe();
   }
 
   public showAsset(asset: any): void {
@@ -106,8 +107,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   public applyFilter(filterId: number): void {
     if (this.activeFilters.indexOf(filterId.toString()) > -1) {
       this.removeFilter(filterId);
+      this.filter.filterAction(filterId);
     } else {
       this.activeFilters.push(filterId.toString());
+      this.filter.filterAction(filterId);
     }
     this.filterAssets();
   }

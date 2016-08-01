@@ -5,6 +5,10 @@
         <span *ngIf="filter.count > -1"> 
           - {{filter.count}}
         </span>
+        <span *ngIf="filter.active"> 
+          +
+        </span>
+
       </p>
       <filter *ngIf="selected(filter.name)" [filters]="filter"></filter>
     </li> 
