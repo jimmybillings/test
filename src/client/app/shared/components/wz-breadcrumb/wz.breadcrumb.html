@@ -1,10 +1,10 @@
 <ul class="breadcrumbs">
-  <li *ngFor="let filter of filters.subFilters" (click)="applyFilter(id)">
+  <li *ngFor="let filter of filters.subFilters">
       <span *ngIf="filter.active" class="breadcrumb">
         {{filter.name}}
-        <button md-icon-button><md-icon>cancel</md-icon></button>
+        <button md-icon-button (click)="clearFilter(filter)"><md-icon>cancel</md-icon></button>
       </span>
-    <breadcrumb *ngIf="filter.subFilters" [filters]="filter" (clear)="clearFilters()" (apply)="applyFilter($event)"></breadcrumb>
+    <breadcrumb *ngIf="filter.subFilters" [filters]="filter"></breadcrumb>
   </li>
   <!--<div *ngIf="activeFilters.length > 0" class="breadcrumb clear" (click)="clearFilters()">
     clear all

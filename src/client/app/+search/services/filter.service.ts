@@ -65,9 +65,8 @@ export class FilterService {
       filter.expanded = true;
       for (var l of filter.subFilters) this.mapFilters(l);
       return filter;
-    } else {
-      return filter;
     }
+    return filter;
   }
 
   public filterAction(filterId: number) {

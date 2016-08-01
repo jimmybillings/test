@@ -17,12 +17,7 @@ export class WzBreadcrumbComponent {
     this.searchComponent = searchComponent;
   }
 
-  public applyFilter(filterId: any): void {
-    this.apply.emit(filterId);
-  }
-
-
-  public clearFilters(): void {
-    this.clear.emit(event);
+  public clearFilter(filter: any) {
+    this.searchComponent.applyFilter(filter.filterId);
   }
 }
