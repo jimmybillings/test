@@ -4,7 +4,7 @@
         <span *ngSwitchCase="'ExclusiveList'">
           <p title="{{filter.filterId}}">{{filter.name}}</p>
           <md-divider></md-divider>
-          <p title="{{subFilter.filterId}}" *ngFor="let subFilter of filter.subFilters" (click)="applyExclusiveFilter(subFilter.filterId, filter)" [ngClass]="{'active': subFilter.active}" class="md-primary">
+          <p title="{{subFilter.filterId}}" *ngFor="let subFilter of filter.subFilters" (click)="applyExclusiveFilter(subFilter.filterId, filter.filterId)" [ngClass]="{'active': subFilter.active}" class="md-primary">
             {{subFilter.name}}
             <span *ngIf="subFilter.count > -1"> 
               - {{subFilter.count}}
