@@ -30,7 +30,6 @@ import { FilterService } from './services/filter.service';
 export class SearchComponent implements OnInit, OnDestroy {
   public config: Object;
   public errorMessage: string;
-  public activeFilters: Array<string> = new Array();
   public filterValues: Array<string> = new Array();
   public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
@@ -62,8 +61,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
       this.searchContext.update = params;
-      // this.filter.get(this.searchContext.state).first().subscribe();
-      this.activeFilters = this.searchContext.state.filterIds ? this.searchContext.state.filterIds.split(',') : [];
     });
   }
 
@@ -105,37 +102,23 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyFilter(filterId: number): void {
-    if (this.activeFilters.indexOf(filterId.toString()) > -1) {
-      this.removeFilter(filterId);
-      this.filter.filterAction(filterId);
-    } else {
-      this.activeFilters.push(filterId.toString());
-      this.filter.filterAction(filterId);
-    }
+    this.filter.filterAction(filterId);
     this.filterAssets();
   }
 
   public applyExclusiveFilter(exclusiveFilters: any): void {
-    if (exclusiveFilters.previous) this.removeFilter(exclusiveFilters.previous);
     this.applyFilter(exclusiveFilters.current);
-  }
-
-  public removeFilter(filterId: number): void {
-    for (let i = 0; i < this.activeFilters.length; i++) {
-      if (this.activeFilters[i].toString() === filterId.toString()) {
-        this.activeFilters.splice(i, 1);
-      }
-    }
   }
 
   public filterAssets(): void {
     this.searchContext.update = { i: 1 };
-    if (this.hasFilterIds) {
-      this.searchContext.update = { 'filterIds': this.activeFilters.join(',') };
+    let active: any = this.filter.active();
+    if (active.length > 0) {
+      this.searchContext.update = { 'filterIds': active.join(',') };
     } else {
       this.searchContext.remove = 'filterIds';
     }
-    if (this.hasFilterIds && this.hasValues) {
+    if (active.length > 0 && this.filterValues.length > 0) {
       this.searchContext.update = { 'filterValues': this.filterValues.join(',') };
     } else {
       this.searchContext.remove = 'filterValues';
@@ -144,15 +127,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public clearFilters(): void {
-    this.activeFilters = [];
     this.filterAssets();
-  }
-
-  public get hasValues(): boolean {
-    return this.filterValues.length > 0;
-  }
-
-  public get hasFilterIds(): boolean {
-    return this.activeFilters.length > 0;
   }
 }

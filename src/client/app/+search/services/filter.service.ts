@@ -18,7 +18,7 @@ export const filters: Reducer<any> = (state: Array<any> = initFilters, action: A
 @Injectable()
 export class FilterService {
   public data: Observable<any>;
-  public filters: any;
+
   constructor(
     public http: Http,
     public store: Store<any>,
@@ -32,7 +32,7 @@ export class FilterService {
     let options = this.filterOptions(params);
     return this.http.get(this.filterUrl, options).map((res: Response) => {
       this.set(this.mapFilters(res.json()));
-      return this.filters;
+      return res.json();
     });
   }
 
@@ -84,6 +84,24 @@ export class FilterService {
         filter.active = !filter.active;
       }
       return filter;
+    }
+  }
+
+  public active() {
+    let activeFilters: any = [];
+    this.data.take(1).subscribe(filters => {
+      this.findActive(filters, activeFilters);
+    });
+    return activeFilters;
+  }
+
+  private findActive(filter: any, activeFilters: any) {
+    if (filter.subFilters) {
+      for (var l of filter.subFilters) this.findActive(l, activeFilters);
+      return filters;
+    } else {
+      if (filter.active) activeFilters.push(filter.filterId);
+      return filters;
     }
   }
 }

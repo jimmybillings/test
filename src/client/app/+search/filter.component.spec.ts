@@ -29,12 +29,6 @@ export function main() {
         });
       }));
 
-    it('Should create an instance of filterService',
-      inject([FilterComponent], (component: FilterComponent) => {
-        expect(component.filterService).toBeDefined();
-        expect(component.searchComponent).toBeDefined();
-      }));
-
     it('Should have an applyFilter() function that calls applyFilter() on the search component',
       inject([FilterComponent], (component: FilterComponent) => {
         spyOn(component.searchComponent, 'applyFilter');

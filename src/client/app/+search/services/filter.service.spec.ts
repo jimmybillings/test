@@ -32,22 +32,22 @@ export function main() {
     it('Should have a setFilters method that updates the store',
       inject([FilterService], (service: FilterService) => {
         spyOn(service.store, 'dispatch');
-        service.setFilters(mockFilters());
+        service.set(mockFilters());
         expect(service.store.dispatch).toHaveBeenCalledWith({type: 'FILTERS.SET_FILTERS', payload: mockFilters()});
       }));
 
     it('Should have a getFilterTreeUrl() method that returns the proper url based on the user',
       inject([FilterService], (service: FilterService) => {
         localStorage.setItem('token', '07yadbf1o78e2gfblalbfu4');
-        expect(service.getFilterTreeUrl()).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/filterTree');
+        expect(service.filterUrl).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/filterTree');
         localStorage.clear();
-        expect(service.getFilterTreeUrl()).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree');
+        expect(service.filterUrl).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree');
       }));
 
     it('Should have a getFilterTreeOptions() method that builds search options based off of params and the current user',
       inject([FilterService], (service: FilterService) => {
         localStorage.setItem('token', 'aslkdbasldu298e39p8dakljn');
-        let result = service.getFilterTreeOptions({q: 'cat', counted: true});
+        let result = service.filterOptions({q: 'cat', counted: true});
         expect(result instanceof RequestOptions).toBeTruthy();
       }));
 
@@ -55,18 +55,18 @@ export function main() {
       inject([FilterService, MockBackend], (service: FilterService, mockBackend: MockBackend) => {
         localStorage.clear();
         let connection: any;
-        spyOn(service, 'setFilters');
-        spyOn(service, 'getFilterTreeUrl').and.callThrough();
-        spyOn(service, 'getFilterTreeOptions').and.callThrough();
+        spyOn(service, 'set');
+        // spyOn(service, 'filterUrl').and.callThrough();
+        spyOn(service, 'filterOptions').and.callThrough();
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.getFilters({q: 'cat'}).subscribe((payload) => {
+        service.get({q: 'cat'}).subscribe((payload) => {
           expect(connection.request.method).toEqual(0);
           expect(connection.request.url).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true&siteName=core');
           expect(payload).toEqual(service.mapFilters(mockFilters()));
-          expect(service.setFilters).toHaveBeenCalled();
+          expect(service.set).toHaveBeenCalled();
         });
-        expect(service.getFilterTreeUrl).toHaveBeenCalled();
-        expect(service.getFilterTreeOptions).toHaveBeenCalledWith({q: 'cat', counted: true});
+        // expect(service.filterUrl).toHaveBeenCalled();
+        expect(service.filterOptions).toHaveBeenCalledWith({q: 'cat', counted: true});
         connection.mockRespond(new Response(
           new ResponseOptions({
             body: mockFilters()
