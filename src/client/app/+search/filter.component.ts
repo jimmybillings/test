@@ -12,15 +12,17 @@ import { SearchComponent } from './search.component';
 export class FilterComponent {
   @Input() filters: any;
   public searchComponent: SearchComponent;
-  public currentFilter: any;
+  public currentFilters: any;
+  public exclusiveFilters: any;
   constructor(
-    @Inject(forwardRef(() => SearchComponent)) searchComponent: SearchComponent) {
-    this.searchComponent = searchComponent;
-    this.currentFilter = [];
-  }
+    @Inject(forwardRef(() => SearchComponent)) searchComponent:SearchComponent) {
+      this.searchComponent = searchComponent;
+      this.currentFilters = {};
+      this.exclusiveFilters = {};
+    }
 
   public selected(filterName: any) {
-    return this.currentFilter[filterName] === filterName;
+    return this.currentFilters[filterName] === filterName;
   }
 
   public filterAction(filter: any) {
@@ -28,15 +30,22 @@ export class FilterComponent {
   }
 
   public toggleFilters(filter: any): void {
-    this.currentFilter[filter.name] = (this.currentFilter[filter.name] === filter.name) ? false : filter.name;
+    this.currentFilters[filter.name] = (this.currentFilters[filter.name] === filter.name) ? false : filter.name;
   }
 
   public applyFilter(filterId: number): void {
     this.searchComponent.applyFilter(filterId);
   }
 
-  public hasCounts(filter: any) {
-    var hasCounts: boolean = true;
+  public applyExclusiveFilter(filterId: number, filter: any): void {
+    console.log(filter);
+    if (this.exclusiveFilters.current) this.exclusiveFilters.previous = this.exclusiveFilters.current;
+    this.exclusiveFilters.current = filterId;
+    this.searchComponent.applyExclusiveFilter(this.exclusiveFilters);
+  }
+
+  public hasCounts(filter:any) {
+    var hasCounts:boolean = true;
     if (filter.subFilters) {
       hasCounts = filter.subFilters.filter((f: any) => {
         return f.count > 0;
