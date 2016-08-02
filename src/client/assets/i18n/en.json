@@ -103,7 +103,9 @@
     "FORM": {
       "COLLECTION_NAME_LABEL": "Collection Name",
       "TAGS_LABEL": "Tags(use commas to separate tags)",
-      "SUBMIT_LABEL": "CREATE"
+      "SUBMIT_LABEL": "CREATE",
+      "TYPE_AHEAD_SUGGESTIONS_HEADING": "Your matching collections...",
+      "CLOSE_HOVER_TITLE": "Close collection"
     },
     "DD_MENU": {
       "HEADING": "Select collection",

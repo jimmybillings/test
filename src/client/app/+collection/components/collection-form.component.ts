@@ -138,7 +138,7 @@ export class CollectionFormComponent implements OnInit {
   /**
    * Gets the index of the active suggestion within the suggestions list.
    */
-  public getActiveSuggestionIndex() {
+  public getActiveSuggestionIndex(): number {
     let activeSuggestionIndex = -1;
     if (this.activeSuggestion !== null) {
       activeSuggestionIndex = this.suggestions.indexOf(this.activeSuggestion);
@@ -146,8 +146,7 @@ export class CollectionFormComponent implements OnInit {
     return activeSuggestionIndex;
   }
 
-  public inputKeyDown(event: KeyboardEvent) {
-    console.log(event);
+  public inputKeyDown(event: KeyboardEvent): void {
     if (event.which === 9 || event.keyCode === 9) { // TAB
       // Only enter this branch if suggestions are displayed
       if (!this.areSuggestionsVisible) return;
