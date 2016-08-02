@@ -29,6 +29,10 @@ export class FilterComponent {
     (filter.expanded) ? this.toggleFilters(filter) : this.applyFilter(filter.filterId);
   }
 
+  public textFilterAction(filter: any): void {
+    console.log(filter);
+  }
+
   public toggleFilters(filter: any): void {
     this.currentFilters[filter.name] = (this.currentFilters[filter.name] === filter.name) ? false : filter.name;
   }

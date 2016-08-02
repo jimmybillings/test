@@ -1,22 +1,43 @@
   <ul>
-    <li *ngFor="let filter of filters.subFilters" [ngClass]="{'heading': isHeadingFilter(filter.count), 'filter': filter.count > -1}">
+    <li *ngFor="let filter of filters.subFilters" [ngClass]="{'heading': filter.type === 'None'}">
       <span [ngSwitch]="filter.type">
         <span *ngSwitchCase="'ExclusiveList'">
           <p title="{{filter.filterId}}">{{filter.name}}</p>
           <md-divider></md-divider>
-          <p title="{{subFilter.filterId}}" *ngFor="let subFilter of filter.subFilters" (click)="applyExclusiveFilter(subFilter.filterId, filter.filterId)" [ngClass]="{'active': subFilter.active}" class="md-primary">
-            {{subFilter.name}}
-            <span *ngIf="subFilter.count > -1"> 
-              - {{subFilter.count}}
-            </span>
-          </p>
+          <div class="exclusive">
+            <p title="{{subFilter.filterId}}" *ngFor="let subFilter of filter.subFilters" (click)="applyExclusiveFilter(subFilter.filterId, filter.filterId)" [ngClass]="{'active': subFilter.active}" class="md-primary">
+              {{subFilter.name}}
+              <span *ngIf="subFilter.count > -1"> 
+                - {{subFilter.count}}
+              </span>
+            </p>
+          </div>
           <md-divider></md-divider>
         </span>
-        <span *ngIf="filter.active"> 
-          +
+        <span *ngSwitchCase="'Text'" class="text">
+          <p title="{{filter.filterId}}" class="md-caption" (click)="textFilterAction(filter)" [ngClass]="{'active': filter.active}">
+            {{ filter.name }} +
+          </p>
+        </span>
+        <span *ngSwitchCase="'Link'" class="link">
+          <p title="{{filter.filterId}}" class="md-caption" (click)="filterAction(filter)" [ngClass]="{'active': filter.active}">
+            {{ filter.name }}
+            <span *ngIf="filter.count > -1"> 
+              - {{filter.count}}
+            </span>
+          </p>
+        </span>
+        <span *ngSwitchCase="'List'" class="list">
+          <p title="{{filter.filterId}}" class="md-caption" (click)="filterAction(filter)" [ngClass]="{'active': filter.active}">
+            {{ filter.name }}
+            <span *ngIf="filter.count > -1"> 
+              - {{filter.count}}
+            </span>
+          </p>
+          <filter *ngIf="selected(filter.name)" [filters]="filter"></filter>   
         </span>
         <span *ngSwitchDefault>
-          <p title="{{filter.filterId}}" class="md-caption" (click)="filterAction(filter)">
+          <p title="{{filter.filterId}}" class="md-caption" (click)="filterAction(filter)" [ngClass]="{'active': filter.active}">
             {{ filter.name }} 
             <span *ngIf="filter.count > -1"> 
               - {{filter.count}}

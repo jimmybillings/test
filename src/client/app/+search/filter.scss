@@ -17,13 +17,23 @@ md-sidenav {
         color: md-color($md-grey, 500);
       }
     }
-    &.heading p {
-      font-size: 15px;
+    div.exclusive p {
+      font-size: 14px;
     }
-    &.filter p {
-      font-size: 13px;
-      text-decoration: underline;
+    &.heading p {
+      font-size: 16px;
+    }
+    span.list p {
+      font-size: 14px;
       padding-left: 15px;
+    }
+    span.text p {
+      font-size: 12px;
+      padding-left: 25px;
+    }
+    span.link p {
+      font-size: 12px;
+      padding-left: 25px;
     }
   }
 }
