@@ -40,13 +40,16 @@ export class FilterComponent {
     this.searchComponent.applyFilter(filterId);
   }
 
-  public applyExclusiveFilter(filterId: number): void {
-    if (this.exclusiveFilters.current) this.exclusiveFilters.previous = this.exclusiveFilters.current;
-    this.exclusiveFilters.current = filterId;
-    this.searchComponent.applyExclusiveFilter(this.exclusiveFilters);
+  public applyExclusiveFilter(filter: any): void {
+    if (filter.active) {
+      this.searchComponent.removeFilter(filter.filterId);
+      this.searchComponent.filterAssets();
+    } else {
+      this.searchComponent.applyExclusiveFilter(filter.filterId);
+    }
   }
 
-  public hasCounts(filter:any) {
+  public hasCounts(filter:any): boolean {
     var hasCounts:boolean = true;
     if (filter.subFilters) {
       hasCounts = filter.subFilters.filter((f: any) => {

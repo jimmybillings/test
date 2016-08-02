@@ -111,9 +111,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.filterAssets();
   }
 
-  public applyExclusiveFilter(exclusiveFilters: any): void {
-    if (exclusiveFilters.previous) this.removeFilter(exclusiveFilters.previous);
-    this.applyFilter(exclusiveFilters.current);
+  public applyExclusiveFilter(filterId: any): void {
+    for (let filter of this.filters.subFilters) {
+      if (filter.type === 'ExclusiveList') for (let f of filter.subFilters) {
+        if (f.active) this.removeFilter(f.filterId);
+      };
+    };
+    this.applyFilter(filterId);
   }
 
   public removeFilter(filterId: number): void {
