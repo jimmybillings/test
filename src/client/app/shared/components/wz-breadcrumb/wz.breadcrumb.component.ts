@@ -1,22 +1,23 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Inject, forwardRef } from '@angular/core';
+import { SearchComponent } from '../../../+search/search.component';
 
 @Component({
   moduleId: module.id,
   selector: 'breadcrumb',
   templateUrl: 'wz.breadcrumb.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  directives: [WzBreadcrumbComponent],
 })
 
 export class WzBreadcrumbComponent {
-  @Input() filterIds: Array<any>;
+  @Input() filters: any;
   @Output() apply = new EventEmitter();
   @Output() clear = new EventEmitter();
-
-  public applyFilter(filterId: any): void {
-    this.apply.emit(filterId);
+  public searchComponent: SearchComponent;
+  constructor( @Inject(forwardRef(() => SearchComponent)) searchComponent: SearchComponent) {
+    this.searchComponent = searchComponent;
   }
 
-  public clearFilters(): void {
-    this.clear.emit(event);
+  public clearFilter(filter: any) {
+    this.searchComponent.applyFilter(filter.filterId);
   }
 }
