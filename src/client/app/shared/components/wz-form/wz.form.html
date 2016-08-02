@@ -9,6 +9,7 @@
         type="{{field.type}}"
         formControlName="{{field.name}}"
         id="{{field.name}}"
+        required="{{ field.validation === 'REQUIRED'}}"
       >
         <!--<div md-messages="{{field.name}}" role="alert">-->
           <div *ngIf="field.validation == 'REQUIRED'">
