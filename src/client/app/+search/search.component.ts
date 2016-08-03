@@ -123,7 +123,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.update = { i: 1 };
     let active: any = this.filter.active();
     let activeIds: any = active.map((filter:any) => filter.filterId);
-    let activeValues: any = active.map((filter:any) => filter.value);
+    let activeValues: any = active.map((filter:any) => filter.filterValue);
     if (activeIds.length > 0) {
       this.searchContext.update = { 'filterIds':  activeIds.join(',') };
     } else {
