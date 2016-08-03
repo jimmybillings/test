@@ -104,5 +104,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data); }
 
-  public newSearchContext(data: any) { this.searchContext.new({ q: data, i: 1, n: 100 }); }
+  public newSearchContext(data: any) {
+    this.searchContext.update = { q: data, i: 1, n: 100 };
+    this.searchContext.go();
+  }
 }

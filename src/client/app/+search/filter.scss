@@ -2,12 +2,20 @@
   display: none !important;
 }
 md-sidenav {
-  width: 250px;
+  width: 320px;
+  .md-overlay-container {
+    pointer-events: all;
+    background-color: white;
+    opacity: .5;
+  }
 }
 .filter {
   ul {
     padding-left:0;
     padding: 0 12px;
+  }
+  md-divider {
+    margin-top: 10px;
   }
   li {
     list-style-type: none;

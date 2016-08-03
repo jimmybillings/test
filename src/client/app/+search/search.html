@@ -1,6 +1,8 @@
 <md-sidenav-layout>
   <md-sidenav #searchFilter align="start" mode="push">
-    <md-progress-bar color="primary" *ngIf="(uiState.data | async).pageLoading" mode="indeterminate"></md-progress-bar>
+    <div class="md-overlay-container" *ngIf="(uiState.data | async).pageLoading">
+      <md-progress-bar color="accent" mode="indeterminate"></md-progress-bar>
+    </div>
     <filter class="filter" [filters]="filters"></filter>
   </md-sidenav>
   

@@ -3,23 +3,39 @@
       <span [ngSwitch]="filter.type">
         <span *ngSwitchCase="'ExclusiveList'">
           <p title="{{filter.filterId}}">{{filter.name}}</p>
-          <md-divider></md-divider>
           <p title="{{subFilter.filterId}}" *ngFor="let subFilter of filter.subFilters" (click)="applyExclusiveFilter(subFilter.filterId, filter.filterId)" [ngClass]="{'active': subFilter.active}" class="md-primary">
             {{subFilter.name}}
             <span *ngIf="subFilter.count > -1"> 
-              - {{subFilter.count}}
+              ( {{subFilter.count}} )
             </span>
           </p>
           <md-divider></md-divider>
         </span>
         
-        <span *ngSwitchDefault>
+        <span *ngSwitchCase="'None'">
           <p title="{{filter.filterId}}" class="md-caption" (click)="filterAction(filter)">
             {{ filter.name }} 
-            <span *ngIf="filter.count > -1"> 
-              - {{filter.count}}
-            </span>
           </p>
+          <filter *ngIf="selected(filter.name)" [filters]="filter"></filter>
+          <md-divider></md-divider>
+        </span>
+
+        <span *ngSwitchCase="'List'">
+          <p title="{{filter.filterId}}" class="md-caption" (click)="filterAction(filter)">
+            {{ filter.name }} 
+          </p>
+          <filter *ngIf="selected(filter.name)" [filters]="filter"></filter>
+        </span>
+
+        <span *ngSwitchCase="'Text'">
+          <md-input placeholder="{{filter.name}}" color="primary" align="end">
+          </md-input>
+        </span>
+
+        <span *ngSwitchDefault>
+          <md-checkbox *ngIf="filter.count > 0" [checked]="filter.active" color="primary" (change)="filterAction(filter)">
+            {{filter.name}} ( {{filter.count}} )
+          </md-checkbox>
           <filter *ngIf="selected(filter.name)" [filters]="filter"></filter>
         </span>
       </span>

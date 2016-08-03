@@ -120,13 +120,31 @@ export class FilterService {
     return activeFilters;
   }
 
-  private findActive(filter: any, activeFilters: any) {
+  public findActive(filter: any, activeFilters: any) {
     if (filter.subFilters) {
       for (var l of filter.subFilters) this.findActive(l, activeFilters);
       return filters;
     } else {
       if (filter.active) activeFilters.push(filter);
       return filters;
+    }
+  }
+
+  public clear() {
+    this.data.take(1).subscribe(filters => {
+      this.set(this.clearActive(filters));
+    });
+  }
+
+  public clearActive(filter: any) {
+    if (filter.subFilters) {
+      for (var l of filter.subFilters) this.clearActive(l);
+      return filter;
+    } else {
+      if (filter.active) {
+        filter.active = false;
+      }
+      return filter;
     }
   }
 }

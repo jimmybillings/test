@@ -108,6 +108,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyExclusiveFilter(subFilterId: number, parentFilterId: number): void {
+    this.uiState.toggleLoading(true);
     this.filter.exclusiveFilterAction(subFilterId, parentFilterId);
     this.filterAssets();
   }
@@ -129,6 +130,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public clearFilters(): void {
+    this.uiState.toggleLoading(true);
+    this.filter.clear();
     this.filterAssets();
   }
 }
