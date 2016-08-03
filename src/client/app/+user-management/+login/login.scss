@@ -23,7 +23,7 @@ md-card.wz-form-card {
   color: md-color($md-foreground, secondary-text);
   margin: rem(.8);
   md-card-header {
-    height: rem(9);
+    height: rem(3.4);
     .md-card-header-text {
       height: 0;
       margin: 0;
@@ -80,7 +80,24 @@ wz-form form {
     margin-right: 0;
     margin-top: rem(1.6);
   }
-  
+  .indicate-required {
+    font-size: 84%;
+    margin-top: rem(3.8);
+    margin-bottom: rem(.8);
+    opacity: .8;
+    > span {
+      display: block;
+      position: relative;
+      padding-left: rem(1.1);
+      &::before {
+        content: "*";
+        font-size: 130%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
   .md-primary[md-raised-button], 
   .md-primary[md-fab], 
   .md-primary[md-mini-fab] {

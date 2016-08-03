@@ -72,6 +72,9 @@
         </md-radio-button>
       </md-radio-group>
     </div>
+    <div class="indicate-required" *ngIf="formHasRequiredFields">
+      <span>{{ 'ERRORS.INDICATES_REQUIRED_FIELD' | translate }}</span>
+    </div>
     <md-card-actions layout="row" layout-align="center center">
       <button md-raised-button type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
     </md-card-actions>

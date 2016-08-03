@@ -19,6 +19,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   @Input() autocomplete: string = 'on';
   @Output() formSubmit = new EventEmitter();
   public submitted: boolean = false;
+  public formHasRequiredFields: boolean = false;
   public form: FormGroup;
 
   constructor(private fb: FormBuilder, private formModel: FormModel) { }
@@ -36,13 +37,11 @@ export class WzFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.form = this.fb.group(this.formModel.create(this.items));
-    console.log(this.form);
   }
 
   public parseOptions(options: any) {
     return options.split(',');
   }
-
 
   public radioSelect(field: any, option: any) {
     (<FormControl>this.form.controls[field]).updateValue(option);
@@ -55,7 +54,6 @@ export class WzFormComponent implements OnInit, OnChanges {
       // this.resetForm();
     } else {
       console.log('error');
-      console.log(this.form);
     }
   }
 
@@ -67,6 +65,7 @@ export class WzFormComponent implements OnInit, OnChanges {
 
   public isRequired(fieldValidator: string): boolean {
     if (fieldValidator === 'REQUIRED' || fieldValidator === 'EMAIL' || fieldValidator === 'PASSWORD') {
+      this.formHasRequiredFields = true;
       return true;
     } else {
       return false;
