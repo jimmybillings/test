@@ -57,9 +57,9 @@ export class FilterComponent {
     return count === -1;
   }
 
-  public customValue(event: any, filter:any, form:any) {
+  public customValue(event: any, filter:any, formValue:any) {
     if(event.code === 'Enter') {
-      this.searchComponent.applyCustomValue(filter, form.filterValue);
+      this.searchComponent.applyCustomValue(filter, formValue);
     }
   }
 }
