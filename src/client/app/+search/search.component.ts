@@ -23,8 +23,7 @@ import { FilterService } from './services/filter.service';
   moduleId: module.id,
   selector: 'search',
   templateUrl: 'search.html',
-  directives: [WzAssetListComponent, WzPaginationComponent, FilterComponent, WzBreadcrumbComponent],
-  providers: [FilterService]
+  directives: [WzAssetListComponent, WzPaginationComponent, FilterComponent, WzBreadcrumbComponent]
 })
 
 export class SearchComponent implements OnInit, OnDestroy {
@@ -61,6 +60,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
       this.searchContext.update = params;
+      this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.toggleLoading(false));
     });
   }
 
@@ -102,18 +102,20 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyFilter(filterId: number): void {
+    this.uiState.toggleLoading(true);
     this.filter.filterAction(filterId);
     this.filterAssets();
   }
 
   public applyExclusiveFilter(subFilterId: number, parentFilterId: number): void {
+    this.uiState.toggleLoading(true);
     this.filter.exclusiveFilterAction(subFilterId, parentFilterId);
     this.filterAssets();
   }
 
   public filterAssets(): void {
     this.searchContext.update = { i: 1 };
-    let active: any = this.filter.active();
+    let active: any = this.filter.active().map((filter:any) => filter.filterId);
     if (active.length > 0) {
       this.searchContext.update = { 'filterIds': active.join(',') };
     } else {
@@ -128,6 +130,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public clearFilters(): void {
+    this.uiState.toggleLoading(true);
+    this.filter.clear();
     this.filterAssets();
   }
 }

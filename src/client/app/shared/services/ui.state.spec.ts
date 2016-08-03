@@ -168,7 +168,8 @@ export function main() {
         binTrayIsOpen: false,
         searchIsOpen: true,
         searchBarIsActive: false,
-        showFixed: false
+        showFixed: false,
+        pageLoading: false
       };
     }
   });

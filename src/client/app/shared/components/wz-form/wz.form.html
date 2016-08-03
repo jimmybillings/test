@@ -1,20 +1,34 @@
-<form layout="column" [formGroup]="form" (ngSubmit)="onSubmit()" class="md-inline-form" autocomplete="{{autocomplete}}">
-  <!--<md-content layout-sm="row" layout-padding="">-->
-    <div *ngFor="let field of items">
+<form 
+  layout="column" 
+  [formGroup]="form" 
+  novalidate 
+  class="md-inline-form"
+  autocomplete="{{autocomplete}}"
+  (ngSubmit)="onSubmit()">
+
+    <div *ngFor="let field of items; let i=index">
+      <!--<small [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitted">Check it: {{form.controls[field.name].valid}} and {{form.controls[field.name].pristine}} and {{submitted}} </small>-->
+      <!--<small>vals: {{form.controls[field.name].valid}} and {{form.controls[field.name].pristine}} and {{submitted}} </small>-->
       <md-input
         class="md-block"
+        [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitted) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitted) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitted)}"
         *ngIf="field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date'"
         placeholder="{{field.label | translate}}"
-        autofocus="autofocus"
         type="{{field.type}}"
         formControlName="{{field.name}}"
         id="{{field.name}}"
+        autofocus="{{i === 0}}"
         required="{{ field.validation === 'REQUIRED'}}"
       >
-        <!--<div md-messages="{{field.name}}" role="alert">-->
-          <div *ngIf="field.validation == 'REQUIRED'">
-            <!--<div md-message="required">You must supply a {{field.label | translate}}</div>-->
-          </div>
+
+      <md-hint *ngIf="field.validation == 'REQUIRED'"
+        [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitted" 
+        align="start" 
+        class="error">
+        {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.name} }}
+      </md-hint>
+
+
           <div *ngIf="field.validation == 'EMAIL'">
             <!--<div md-message="">Your email must be between 8 and 50 characters long and look like an e-mail address.</div>-->
           </div>

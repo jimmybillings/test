@@ -70,8 +70,10 @@ wz-form form {
   md-input {
     width: 100%;
     margin-top: rem(1.2);
-    margin-bottom: rem(1.4);
+    margin-bottom: rem(1.2);
     font-size: 1.1em;
+    overflow: initial !important;
+    // overflow here can be removed with material alpha 7
   }
   md-card-actions {
     margin-left: 0;
