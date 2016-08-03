@@ -28,7 +28,7 @@
         </span>
 
         <span *ngSwitchCase="'Text'">
-          <md-input placeholder="{{filter.name}}" color="primary" align="end">
+          <md-input placeholder="{{filter.name}}" color="primary" align="end" [(ngModel)]="filter.value" (keypress)="customValue($event, filter)">
           </md-input>
         </span>
 

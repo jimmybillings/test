@@ -107,6 +107,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.filterAssets();
   }
 
+  public applyCustomValue(filter:any, value: any) {
+    this.uiState.toggleLoading(true);
+    this.filter.customValue(filter, value);
+    this.filterAssets();
+  }
+
   public applyExclusiveFilter(subFilterId: number, parentFilterId: number): void {
     this.uiState.toggleLoading(true);
     this.filter.exclusiveFilterAction(subFilterId, parentFilterId);

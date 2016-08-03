@@ -147,4 +147,8 @@ export class FilterService {
       return filter;
     }
   }
+
+  public customValue(filter:any) {
+
+  }
 }
