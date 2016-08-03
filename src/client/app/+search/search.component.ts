@@ -107,7 +107,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.filterAssets();
   }
 
-  public applyCustomValue(filter:any, value: any) {
+  public applyCustomValue(filter: any, value: any) {
     this.uiState.toggleLoading(true);
     this.filter.customValue(filter, value);
     this.filterAssets();
@@ -121,14 +121,16 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public filterAssets(): void {
     this.searchContext.update = { i: 1 };
-    let active: any = this.filter.active().map((filter:any) => filter.filterId);
-    if (active.length > 0) {
-      this.searchContext.update = { 'filterIds': active.join(',') };
+    let active: any = this.filter.active();
+    let activeIds: any = active.map((filter:any) => filter.filterId);
+    let activeValues: any = active.map((filter:any) => filter.value);
+    if (activeIds.length > 0) {
+      this.searchContext.update = { 'filterIds':  activeIds.join(',') };
     } else {
       this.searchContext.remove = 'filterIds';
     }
-    if (active.length > 0 && this.filterValues.length > 0) {
-      this.searchContext.update = { 'filterValues': this.filterValues.join(',') };
+    if (activeIds.length > 0 && activeValues.length > 0) {
+      this.searchContext.update = { 'filterValues': activeValues.join(',') };
     } else {
       this.searchContext.remove = 'filterValues';
     }

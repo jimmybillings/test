@@ -4,6 +4,9 @@
   <li *ngFor="let filter of activeFilters">
       <span *ngIf="filter.active" class="breadcrumb">
         {{filter.name}}
+        <span *ngIf="filter.value">
+          {{filter.value}}
+        </span>
         <button md-icon-button (click)="clearFilter(filter)"><md-icon>cancel</md-icon></button>
       </span>
   </li>

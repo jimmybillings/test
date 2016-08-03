@@ -29,10 +29,6 @@ export class FilterComponent {
     (filter.expanded) ? this.toggleFilters(filter) : this.applyFilter(filter.filterId);
   }
 
-  public textFilterAction(filter: any): void {
-    console.log(filter);
-  }
-
   public toggleFilters(filter: any): void {
     this.currentFilters[filter.name] = (this.currentFilters[filter.name] === filter.name) ? false : filter.name;
   }
@@ -61,9 +57,9 @@ export class FilterComponent {
     return count === -1;
   }
 
-  public customValue(event: any, filter:any){
+  public customValue(event: any, filter:any, form:any) {
     if(event.code === 'Enter') {
-      this.searchComponent.applyCustomValue(filter);
+      this.searchComponent.applyCustomValue(filter, form.filterValue);
     }
   }
 }

@@ -34,5 +34,14 @@ md-sidenav {
       text-decoration: underline;
       padding-left: 15px;
     }
+    span.text {
+      form {
+        md-input {
+          .md-input-wrapper {
+            margin: 12px 0;
+          } 
+        }
+      }
+    }
   }
 }
