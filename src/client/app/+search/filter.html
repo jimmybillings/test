@@ -28,8 +28,9 @@
         </span>
 
         <span *ngSwitchCase="'Text'">
-          <md-input placeholder="{{filter.name}}" color="primary" align="end" [(ngModel)]="filter.value" (keypress)="customValue($event, filter)">
-          </md-input>
+          <!--<md-input placeholder="{{filter.name}}" color="primary" align="end" [(ngModel)]="filter.value" (keypress)="customValue($event, filter)">-->
+          <!--</md-input>-->
+          <datepicker></datepicker>
         </span>
 
         <span *ngSwitchDefault>
