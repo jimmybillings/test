@@ -1,12 +1,10 @@
 import { Component, Input, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
-import { FilterService } from './services/filter.service';
 import { SearchComponent } from './search.component';
 
 @Component({
   moduleId: module.id,
   selector: 'filter',
   templateUrl: 'filter.html',
-  providers: [FilterService],
   directives: [FilterComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -17,7 +15,6 @@ export class FilterComponent {
   public currentFilters: any;
   public exclusiveFilters: any;
   constructor(
-    public filterService: FilterService,
     @Inject(forwardRef(() => SearchComponent)) searchComponent:SearchComponent) {
       this.searchComponent = searchComponent;
       this.currentFilters = {};
@@ -40,13 +37,11 @@ export class FilterComponent {
     this.searchComponent.applyFilter(filterId);
   }
 
-  public applyExclusiveFilter(filterId: number): void {
-    if (this.exclusiveFilters.current) this.exclusiveFilters.previous = this.exclusiveFilters.current;
-    this.exclusiveFilters.current = filterId;
-    this.searchComponent.applyExclusiveFilter(this.exclusiveFilters);
+  public applyExclusiveFilter(subFilterId: number, parentFilterId: number): void {
+    this.searchComponent.applyExclusiveFilter(subFilterId, parentFilterId);
   }
 
-  public hasCounts(filter:any) {
+  public hasCounts(filter:any): boolean {
     var hasCounts:boolean = true;
     if (filter.subFilters) {
       hasCounts = filter.subFilters.filter((f: any) => {
@@ -58,7 +53,7 @@ export class FilterComponent {
     return hasCounts;
   }
 
-  public isHeadingFilter(count:number): boolean {
+  public isHeadingFilter(count: number): boolean {
     return count === -1;
   }
 }

@@ -30,7 +30,6 @@ import { FilterService } from './services/filter.service';
 export class SearchComponent implements OnInit, OnDestroy {
   public config: Object;
   public errorMessage: string;
-  public filterIds: Array<string> = new Array();
   public filterValues: Array<string> = new Array();
   public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
@@ -53,16 +52,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     public store: Store<CollectionStore>,
     public error: Error,
     public searchContext: SearchContext,
-    public filterService: FilterService,
+    public filter: FilterService,
     public uiState: UiState) { }
 
   ngOnInit(): void {
-    this.filtersStoreSubscription = this.filterService.data.subscribe(data => this.filters = data);
+    this.filtersStoreSubscription = this.filter.data.subscribe(data => this.filters = data);
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
-      this.filterService.getFilters(params).first().subscribe();
-      this.filterIds = params['filterIds'] ? params['filterIds'].split(',') : [];
+      this.searchContext.update = params;
     });
   }
 
@@ -71,6 +69,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.assetsStoreSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     this.configSubscription.unsubscribe();
+    this.filtersStoreSubscription.unsubscribe();
   }
 
   public showAsset(asset: any): void {
@@ -103,35 +102,24 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyFilter(filterId: number): void {
-    if (this.filterIds.indexOf(filterId.toString()) > -1) {
-      this.removeFilter(filterId);
-    } else {
-      this.filterIds.push(filterId.toString());
-    }
+    this.filter.filterAction(filterId);
     this.filterAssets();
   }
 
-  public applyExclusiveFilter(exclusiveFilters: any): void {
-    if (exclusiveFilters.previous) this.removeFilter(exclusiveFilters.previous);
-    this.applyFilter(exclusiveFilters.current);
-  }
-
-  public removeFilter(filterId: number): void {
-    for (let i = 0; i < this.filterIds.length; i++) {
-      if (this.filterIds[i].toString() === filterId.toString()) {
-        this.filterIds.splice(i, 1);
-      }
-    }
+  public applyExclusiveFilter(subFilterId: number, parentFilterId: number): void {
+    this.filter.exclusiveFilterAction(subFilterId, parentFilterId);
+    this.filterAssets();
   }
 
   public filterAssets(): void {
     this.searchContext.update = { i: 1 };
-    if (this.hasFilterIds) {
-      this.searchContext.update = { 'filterIds': this.filterIds.join(',') };
+    let active: any = this.filter.active();
+    if (active.length > 0) {
+      this.searchContext.update = { 'filterIds': active.join(',') };
     } else {
       this.searchContext.remove = 'filterIds';
     }
-    if (this.hasFilterIds && this.hasValues) {
+    if (active.length > 0 && this.filterValues.length > 0) {
       this.searchContext.update = { 'filterValues': this.filterValues.join(',') };
     } else {
       this.searchContext.remove = 'filterValues';
@@ -140,15 +128,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public clearFilters(): void {
-    this.filterIds = [];
     this.filterAssets();
-  }
-
-  public get hasValues(): boolean {
-    return this.filterValues.length > 0;
-  }
-
-  public get hasFilterIds(): boolean {
-    return this.filterIds.length > 0;
   }
 }

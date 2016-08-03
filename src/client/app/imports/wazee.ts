@@ -18,6 +18,7 @@ import { AdminAuthGuard } from '../+admin/services/admin.auth.guard';
 import { UserPermission } from '../shared/services/permission.service';
 import { AssetGuard } from '../+asset/services/asset.guard';
 import { AssetData } from '../+search/services/asset.data.service';
+import { FilterService } from '../+search/services/filter.service';
 
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
@@ -59,6 +60,7 @@ export const WAZEE_PROVIDERS = [
   AdminAuthGuard,
   AssetGuard,
   UserPermission,
+  FilterService,
   provide(TranslateLoader, {
     useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'), deps: [Http]
   }),

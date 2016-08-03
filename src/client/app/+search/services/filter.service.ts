@@ -5,11 +5,11 @@ import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { Http, RequestOptions, URLSearchParams, Response } from '@angular/http';
 
-const initFilters: Array<any> = [];
+const initFilters: any = {};
 export const filters: Reducer<any> = (state: Array<any> = initFilters, action: Action) => {
   switch (action.type) {
     case 'FILTERS.SET_FILTERS':
-      return Object.assign([], action.payload);
+      return Object.assign({}, action.payload);
     default:
       return state;
   }
@@ -27,21 +27,20 @@ export class FilterService {
     this.data = this.store.select('filters');
   }
 
-  public getFilters(params: any): Observable<any> {
-    let url = this.getFilterTreeUrl();
+  public get(params: any): Observable<any> {
     params['counted'] = true;
-    let options = this.getFilterTreeOptions(params);
-    return this.http.get(url, options).map((res: Response) => {
-      this.setFilters(this.mapFilters(res.json()));
+    let options = this.filterOptions(params);
+    return this.http.get(this.filterUrl, options).map((res: Response) => {
+      this.set(this.mapFilters(res.json()));
       return res.json();
     });
   }
 
-  public setFilters(filters: any): void {
+  public set(filters: any): void {
     this.store.dispatch({ type: 'FILTERS.SET_FILTERS', payload: filters });
   }
 
-  public getFilterTreeUrl(): string {
+  public get filterUrl(): string {
     if (this.currentUser.loggedIn()) {
       return `${this.apiConfig.baseUrl()}api/assets/v1/filter/filterTree`;
     } else {
@@ -49,7 +48,7 @@ export class FilterService {
     };
   }
 
-  public getFilterTreeOptions(params: any): RequestOptions {
+  public filterOptions(params: any): RequestOptions {
     let search: URLSearchParams = new URLSearchParams();
     for (let param in params) { search.set(param, params[param]); };
     if (this.currentUser.loggedIn()) {
@@ -66,6 +65,69 @@ export class FilterService {
       filter.expanded = true;
       for (var l of filter.subFilters) this.mapFilters(l);
       return filter;
-    } else return filter;
+    }
+    return filter;
+  }
+
+  public filterAction(filterId: number) {
+    this.data.take(1).subscribe(filters => {
+      this.set(this.toggleFilter(filters, filterId));
+    });
+  }
+
+  public exclusiveFilterAction(subFilterId: number, parentFilterId: number): void {
+    this.data.take(1).subscribe(filters => {
+      this.set(this.toggleExclusiveFilter(filters, subFilterId, parentFilterId));
+    });
+  }
+
+  public toggleFilter(filter: any, currentFilter: any) {
+    if (filter.subFilters) {
+      for (var l of filter.subFilters) this.toggleFilter(l, currentFilter);
+      return filter;
+    } else {
+      if (filter.filterId === currentFilter) {
+        filter.active = !filter.active;
+      }
+      return filter;
+    }
+  }
+
+  public toggleExclusiveFilter(filter: any, subFilterId: any, parentFilterId: any): void {
+    if (filter.subFilters) {
+      if (filter.filterId === parentFilterId) {
+        for (let f of filter.subFilters) {
+          if (f.filterId === subFilterId) {
+            f.active = !f.active;
+          } else {
+            f.active = false;
+          }
+        };
+        return filter;
+      } else {
+        for (let f of filter.subFilters) {
+          this.toggleExclusiveFilter(f, subFilterId, parentFilterId);
+        }
+        return filter;
+      }
+    }
+  }
+
+  public active() {
+    let activeFilters: any = [];
+    this.data.take(1).subscribe(filters => {
+      this.findActive(filters, activeFilters);
+    });
+    return activeFilters;
+  }
+
+  private findActive(filter: any, activeFilters: any) {
+    if (filter.subFilters) {
+      for (var l of filter.subFilters) this.findActive(l, activeFilters);
+      return filters;
+    } else {
+      if (filter.active) activeFilters.push(filter.filterId);
+      return filters;
+    }
   }
 }
