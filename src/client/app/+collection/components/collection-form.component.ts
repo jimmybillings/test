@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit,ViewChild } from '@angular/core';
 import { Collection, Collections } from '../../shared/interfaces/collection.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { Asset } from '../../shared/interfaces/asset.interface';
@@ -36,6 +36,7 @@ export class CollectionFormComponent implements OnInit {
   private areSuggestionsVisible: boolean = false;
   private selectedSuggestion: String;
   private activeSuggestion: string;
+  @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
 
   constructor(
     public collectionsService: CollectionsService,
@@ -60,6 +61,7 @@ export class CollectionFormComponent implements OnInit {
   public cancelCollectionCreation(): void {
     this.UiState.closeNewCollection();
     this.formItems = this.formItems.map((field: FormFields) => { field.value = ''; return field; });
+    this.wzForm.resetForm();
     this.suggestions = [];
     this.activeSuggestion = null;
     this.areSuggestionsVisible = false;

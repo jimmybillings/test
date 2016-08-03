@@ -187,5 +187,8 @@
   "NOTIFICATION": {
     "NEW_USER": "Welcome New User!",
     "EXPIRED_SESSION": "Your session has expired, please login again."
+  },
+  "ERRORS": {
+    "MISSING_REQUIRED_FIELD":"You must supply a {{fieldName}}"
   }
 }

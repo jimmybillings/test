@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
-import {FormGroup, FormControl, FormBuilder}    from '@angular/forms';
+import {FormGroup, FormControl, FormBuilder} from '@angular/forms';
 import {FormModel} from './wz.form.model';
 
 /**
@@ -18,10 +18,10 @@ export class WzFormComponent implements OnInit, OnChanges {
   @Input() submitLabel: string;
   @Input() autocomplete: string = 'on';
   @Output() formSubmit = new EventEmitter();
-
+  public submitted: boolean = false;
   public form: FormGroup;
 
-  constructor(public fb: FormBuilder, private formModel: FormModel) {}
+  constructor(private fb: FormBuilder, private formModel: FormModel) { }
 
   ngOnChanges(changes: any) {
     if (changes.items.currentValue && this.form) {
@@ -47,16 +47,19 @@ export class WzFormComponent implements OnInit, OnChanges {
     (<FormControl>this.form.controls[field]).updateValue(option);
   }
 
-  public onSubmit() {
+  public onSubmit(formData: Object, event: KeyboardEvent) {
+    this.submitted = true;
     if (this.form.valid) {
-      this.formSubmit.emit(this.form.value);
+      this.formSubmit.emit(formData);
       // this.resetForm();
     } else {
       console.log('error');
+      // console.log(this.form);
     }
   }
 
   public resetForm() {
+    this.submitted = false;
     this.formModel.updateForm(this.form, {});
     this.formModel.markFormAsUntouched(this.form);
   }

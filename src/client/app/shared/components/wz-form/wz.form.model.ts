@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
+import { Validators } from '@angular/common';
 import { FormFields } from '../../interfaces/forms.interface';
 
 /**
@@ -8,9 +9,9 @@ import { FormFields } from '../../interfaces/forms.interface';
 @Injectable()
 export class FormModel {
 
-  create(form: FormFields[]): Object {
+  create(form: FormFields[]): FormGroup {
     let newForm: any = {};
-    form.forEach((field: any) => {
+    form.forEach((field: FormFields) => {
       newForm[field.name] = [field.value];
       newForm[field.name].push(this._getValidator(field.validation));
     });
@@ -23,6 +24,7 @@ export class FormModel {
         (<FormControl>form.controls[controlName]).updateValue(values[controlName]);
       (<FormControl>form.controls[controlName]).updateValue('');
     }
+    console.log(form);
   }
 
   public markFormAsUntouched(form: FormGroup): void {
