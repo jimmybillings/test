@@ -5,7 +5,7 @@
       <span *ngIf="filter.active" class="breadcrumb">
         {{filter.name}} 
         <span *ngIf="filter.filterValue">
-           - {{filter.filterValue.split(':')[1]}}
+           - {{filter.filterValue}}
         </span>
         <button md-icon-button (click)="clearFilter(filter)"><md-icon>cancel</md-icon></button>
       </span>
