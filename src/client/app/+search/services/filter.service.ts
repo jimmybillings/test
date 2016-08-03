@@ -74,6 +74,12 @@ export class FilterService {
     });
   }
 
+  public exclusiveFilterAction(subFilterId: number, parentFilterId: number): void {
+    this.data.take(1).subscribe(filters => {
+      this.set(this.toggleExclusiveFilter(filters, subFilterId, parentFilterId));
+    });
+  }
+
   public toggleFilter(filter: any, currentFilter: any) {
     if (filter.subFilters) {
       for (var l of filter.subFilters) this.toggleFilter(l, currentFilter);
@@ -83,6 +89,26 @@ export class FilterService {
         filter.active = !filter.active;
       }
       return filter;
+    }
+  }
+
+  public toggleExclusiveFilter(filter: any, subFilterId: any, parentFilterId: any): void {
+    if (filter.subFilters) {
+      if (filter.filterId === parentFilterId) {
+        for (let f of filter.subFilters) {
+          if (f.filterId === subFilterId) {
+            f.active = !f.active;
+          } else {
+            f.active = false;
+          }
+        };
+        return filter;
+      } else {
+        for (let f of filter.subFilters) {
+          this.toggleExclusiveFilter(f, subFilterId, parentFilterId);
+        }
+        return filter;
+      }
     }
   }
 

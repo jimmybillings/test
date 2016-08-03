@@ -37,14 +37,11 @@ export class FilterComponent {
     this.searchComponent.applyFilter(filterId);
   }
 
-  public applyExclusiveFilter(filterId: number, filter: any): void {
-    console.log(filter);
-    if (this.exclusiveFilters.current) this.exclusiveFilters.previous = this.exclusiveFilters.current;
-    this.exclusiveFilters.current = filterId;
-    this.searchComponent.applyExclusiveFilter(this.exclusiveFilters);
+  public applyExclusiveFilter(subFilterId: number, parentFilterId: number): void {
+    this.searchComponent.applyExclusiveFilter(subFilterId, parentFilterId);
   }
 
-  public hasCounts(filter:any) {
+  public hasCounts(filter:any): boolean {
     var hasCounts:boolean = true;
     if (filter.subFilters) {
       hasCounts = filter.subFilters.filter((f: any) => {
