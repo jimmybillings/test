@@ -16,10 +16,10 @@ export class FormModel {
       newForm[field.name].push(this._getValidator(field.validation));
     });
     return newForm;
+
   }
 
   public updateForm(form: FormGroup, values: any): void {
-    // console.log(form);
     for (let controlName in form.controls) {
       if (values.hasOwnProperty(controlName))
         (<FormControl>form.controls[controlName]).updateValue(values[controlName]);
@@ -45,7 +45,7 @@ export class FormModel {
       case 'PASSWORD':
         return this._getPasswordValidator();
       default:
-        return this._getOptionalValidator();
+        return this._getOptionalValidator;
     }
   }
 
@@ -61,7 +61,7 @@ export class FormModel {
     return Validators.compose([
       Validators.required,
       Validators.minLength(8),
-      Validators.maxLength(50)
+      Validators.pattern('[a-z0-9!#$%&\'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*')
     ]);
   }
 
@@ -71,5 +71,4 @@ export class FormModel {
       Validators.minLength(8)
     ]);
   }
-
 }

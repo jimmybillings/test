@@ -190,6 +190,7 @@
   },
   "ERRORS": {
     "MISSING_REQUIRED_FIELD":"You must supply a {{fieldName}}",
-    "MIN_LENGTH_REQUIRED":"Must have a minimum of {{charLength}} characters"
+    "MIN_LENGTH_REQUIRED":"Must have a minimum of {{charLength}} characters",
+    "VALID_EMAIL_REQUIRED":"Must be a valid email address"
   }
 }

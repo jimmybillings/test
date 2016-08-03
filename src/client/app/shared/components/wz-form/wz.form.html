@@ -8,7 +8,7 @@
 
     <div *ngFor="let field of items; let i=index">
       <md-input
-        *ngIf="field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date'"
+        *ngIf="isRequired(field.validation) && (field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')"
         class="md-block"
         [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitted) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitted) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitted)}"
         placeholder="{{field.label | translate}}"
@@ -16,7 +16,7 @@
         formControlName="{{field.name}}"
         id="{{field.name}}"
         autofocus="{{i === 0}}"
-        required="{{isRequired(field.validation)}}"
+        [required]="isRequired(field.validation)"
       >
         <md-hint *ngIf="field.validation == 'REQUIRED' && form.controls[field.name]._errors"
           [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitted" 
@@ -32,12 +32,28 @@
             <span *ngIf="form.controls[field.name]._errors.required">
               {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
             </span>
-            <span *ngIf="form.controls[field.name]._errors.minlength && (form.controls[field.name]._errors.minlength?.actualLength < form.controls[field.name]._errors.minlength.requiredLength)">
+            <span *ngIf="form.controls[field.name]._errors.minlength">
               {{ 'ERRORS.MIN_LENGTH_REQUIRED' | translate:{charLength:form.controls[field.name]._errors.minlength.requiredLength} }}
             </span>
+            <span *ngIf="form.controls[field.name]._errors.pattern && !form.controls[field.name]._errors.minlength">
+              {{ 'ERRORS.VALID_EMAIL_REQUIRED' | translate }}
+            </span>
         </md-hint>
-
       </md-input>
+
+      <md-input
+        *ngIf="!isRequired(field.validation) && (field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')"
+        class="md-block"
+        [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitted) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitted) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitted)}"
+        placeholder="{{field.label | translate}}"
+        type="{{field.type}}"
+        formControlName="{{field.name}}"
+        id="{{field.name}}"
+        autofocus="{{i === 0}}"
+      >
+      </md-input>
+
+
       <div *ngIf="field.type == 'select'">
         <md-input-group class="md-group">
           <select formControlName="{{field.name}}">
