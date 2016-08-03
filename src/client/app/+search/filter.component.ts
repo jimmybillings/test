@@ -60,4 +60,10 @@ export class FilterComponent {
   public isHeadingFilter(count: number): boolean {
     return count === -1;
   }
+
+  public customValue(event: any, filter:any){
+    if(event.code === 'Enter') {
+      this.searchComponent.applyCustomValue(filter);
+    }
+  }
 }
