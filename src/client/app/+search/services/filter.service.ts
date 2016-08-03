@@ -161,7 +161,7 @@ export class FilterService {
     } else {
       if (filter.filterId === currentFilter.filterId) {
         filter.active = true;
-        filter.filterValue = `${filter.filterId}:${value}`;
+        filter.filterValue = value;
       }
       return filter;
     }

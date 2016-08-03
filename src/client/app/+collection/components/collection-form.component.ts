@@ -75,6 +75,7 @@ export class CollectionFormComponent implements OnInit {
   }
 
   public inputKeyUp(event: any): void {
+    console.log(event);
     // Ignore TAB, UP, DOWN and ENTER since they are processed by the keydown handler
     if (event.which === 9 || event.keyCode === 9 ||
       event.which === 10 || event.keyCode === 10 ||
@@ -149,6 +150,7 @@ export class CollectionFormComponent implements OnInit {
   }
 
   public inputKeyDown(event: KeyboardEvent): void {
+    console.log(event);
     if (event.which === 9 || event.keyCode === 9) { // TAB
       // Only enter this branch if suggestions are displayed
       if (!this.areSuggestionsVisible) return;

@@ -1,11 +1,13 @@
 import { Component, Input, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { SearchComponent } from './search.component';
+// import { DatePicker } from 'ng2-datepicker/ng2-datepicker';
+import { FORM_DIRECTIVES } from '@angular/forms';
 
 @Component({
   moduleId: module.id,
   selector: 'filter',
   templateUrl: 'filter.html',
-  directives: [FilterComponent],
+  directives: [FilterComponent, FORM_DIRECTIVES],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -57,9 +59,9 @@ export class FilterComponent {
     return count === -1;
   }
 
-  public customValue(event: any, filter:any, form:any) {
+  public customValue(event: any, filter:any, formValue:any) {
     if(event.code === 'Enter') {
-      this.searchComponent.applyCustomValue(filter, form.filterValue);
+      this.searchComponent.applyCustomValue(filter, formValue);
     }
   }
 }

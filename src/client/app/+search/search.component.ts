@@ -123,7 +123,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.update = { i: 1 };
     let active: any = this.filter.active();
     let activeIds: any = active.map((filter:any) => filter.filterId);
-    let activeValues: any = active.map((filter:any) => filter.filterValue);
+    let activeValues: any = this.activeValues(active);
+    console.log(activeIds, activeValues);
     if (activeIds.length > 0) {
       this.searchContext.update = { 'filterIds':  activeIds.join(',') };
     } else {
@@ -135,6 +136,16 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchContext.remove = 'filterValues';
     }
     this.searchContext.go();
+  }
+
+  public activeValues(active: any): any {
+    let activeValues: any = [];
+    active.map((filter: any) => {
+      if (filter.filterValue) {
+        activeValues.push(`${filter.filterId}:${filter.filterValue}`);
+      }
+    });
+    return activeValues;
   }
 
   public clearFilters(): void {
