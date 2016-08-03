@@ -7,36 +7,36 @@
   (ngSubmit)="onSubmit()">
 
     <div *ngFor="let field of items; let i=index">
-      <!--<small [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitted">Check it: {{form.controls[field.name].valid}} and {{form.controls[field.name].pristine}} and {{submitted}} </small>-->
-      <!--<small>vals: {{form.controls[field.name].valid}} and {{form.controls[field.name].pristine}} and {{submitted}} </small>-->
       <md-input
+        *ngIf="field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date'"
         class="md-block"
         [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitted) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitted) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitted)}"
-        *ngIf="field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date'"
         placeholder="{{field.label | translate}}"
         type="{{field.type}}"
         formControlName="{{field.name}}"
         id="{{field.name}}"
         autofocus="{{i === 0}}"
-        required="{{ field.validation === 'REQUIRED'}}"
+        required="{{isRequired(field.validation)}}"
       >
+        <md-hint *ngIf="field.validation == 'REQUIRED' && form.controls[field.name]._errors"
+          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitted" 
+          align="start" 
+          class="error">
+            <span>{{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}</span>
+        </md-hint>
 
-      <md-hint *ngIf="field.validation == 'REQUIRED'"
-        [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitted" 
-        align="start" 
-        class="error">
-        {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.name} }}
-      </md-hint>
+        <md-hint *ngIf="(field.validation == 'EMAIL' || field.validation == 'PASSWORD') && form.controls[field.name]._errors"
+          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitted" 
+          align="start" 
+          class="error">
+            <span *ngIf="form.controls[field.name]._errors.required">
+              {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+            </span>
+            <span *ngIf="form.controls[field.name]._errors.minlength && (form.controls[field.name]._errors.minlength?.actualLength < form.controls[field.name]._errors.minlength.requiredLength)">
+              {{ 'ERRORS.MIN_LENGTH_REQUIRED' | translate:{charLength:form.controls[field.name]._errors.minlength.requiredLength} }}
+            </span>
+        </md-hint>
 
-
-          <div *ngIf="field.validation == 'EMAIL'">
-            <!--<div md-message="">Your email must be between 8 and 50 characters long and look like an e-mail address.</div>-->
-          </div>
-          <div *ngIf="field.validation == 'PASSWORD'">
-            <!--<div md-message="required">You must supply a Password</div>-->
-            <!--<div md-message="minlength">Password must be at least 8 characters</div>-->
-          </div>
-        <!--</div>-->
       </md-input>
       <div *ngIf="field.type == 'select'">
         <md-input-group class="md-group">

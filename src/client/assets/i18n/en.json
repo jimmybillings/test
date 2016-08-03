@@ -189,6 +189,7 @@
     "EXPIRED_SESSION": "Your session has expired, please login again."
   },
   "ERRORS": {
-    "MISSING_REQUIRED_FIELD":"You must supply a {{fieldName}}"
+    "MISSING_REQUIRED_FIELD":"You must supply a {{fieldName}}",
+    "MIN_LENGTH_REQUIRED":"Must have a minimum of {{charLength}} characters"
   }
 }

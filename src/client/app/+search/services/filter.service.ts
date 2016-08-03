@@ -148,7 +148,22 @@ export class FilterService {
     }
   }
 
-  public customValue(filter:any) {
+  public customValue(filter: any, value: any) {
+    this.data.take(1).subscribe(filters => {
+      this.set(this.updateCustomValue(filters, filter, value));
+    });
+  }
 
+  public updateCustomValue(filter: any, currentFilter: any, value: any): void {
+    if (filter.subFilters) {
+      for (let f of filter.subFilters) this.updateCustomValue(f, currentFilter, value);
+      return filter;
+    } else {
+      if (filter.filterId === currentFilter.filterId) {
+        filter.active = true;
+        filter.filterValue = `${filter.filterId}:${value}`;
+      }
+      return filter;
+    }
   }
 }

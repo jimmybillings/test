@@ -36,6 +36,7 @@ export class WzFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.form = this.fb.group(this.formModel.create(this.items));
+    console.log(this.form);
   }
 
   public parseOptions(options: any) {
@@ -54,7 +55,7 @@ export class WzFormComponent implements OnInit, OnChanges {
       // this.resetForm();
     } else {
       console.log('error');
-      // console.log(this.form.value);
+      console.log(this.form);
     }
   }
 
@@ -62,5 +63,13 @@ export class WzFormComponent implements OnInit, OnChanges {
     this.submitted = false;
     this.formModel.updateForm(this.form, {});
     this.formModel.markFormAsUntouched(this.form);
+  }
+
+  public isRequired(fieldValidator: string): boolean {
+    if (fieldValidator === 'REQUIRED' || fieldValidator === 'EMAIL' || fieldValidator === 'PASSWORD') {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

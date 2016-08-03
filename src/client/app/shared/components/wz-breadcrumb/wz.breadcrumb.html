@@ -3,7 +3,10 @@
   <!--<li *ngIf="loading"><md-progress-circle mode="indeterminate"></md-progress-circle></li>-->
   <li *ngFor="let filter of activeFilters">
       <span *ngIf="filter.active" class="breadcrumb">
-        {{filter.name}}
+        {{filter.name}} 
+        <span *ngIf="filter.filterValue">
+           - {{filter.filterValue.split(':')[1]}}
+        </span>
         <button md-icon-button (click)="clearFilter(filter)"><md-icon>cancel</md-icon></button>
       </span>
   </li>
