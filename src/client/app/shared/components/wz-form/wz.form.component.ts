@@ -47,14 +47,14 @@ export class WzFormComponent implements OnInit, OnChanges {
     (<FormControl>this.form.controls[field]).updateValue(option);
   }
 
-  public onSubmit(formData: Object, event: KeyboardEvent) {
+  public onSubmit() {
     this.submitted = true;
     if (this.form.valid) {
-      this.formSubmit.emit(formData);
+      this.formSubmit.emit(this.form.value);
       // this.resetForm();
     } else {
       console.log('error');
-      // console.log(this.form);
+      // console.log(this.form.value);
     }
   }
 

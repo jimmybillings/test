@@ -4,7 +4,7 @@
   novalidate 
   class="md-inline-form"
   autocomplete="{{autocomplete}}"
-  (ngSubmit)="onSubmit(form.value)">
+  (ngSubmit)="onSubmit()">
 
     <div *ngFor="let field of items; let i=index">
       <!--<small [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitted">Check it: {{form.controls[field.name].valid}} and {{form.controls[field.name].pristine}} and {{submitted}} </small>-->

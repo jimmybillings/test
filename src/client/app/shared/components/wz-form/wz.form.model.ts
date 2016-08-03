@@ -19,12 +19,12 @@ export class FormModel {
   }
 
   public updateForm(form: FormGroup, values: any): void {
+    // console.log(form);
     for (let controlName in form.controls) {
       if (values.hasOwnProperty(controlName))
         (<FormControl>form.controls[controlName]).updateValue(values[controlName]);
       (<FormControl>form.controls[controlName]).updateValue('');
     }
-    console.log(form);
   }
 
   public markFormAsUntouched(form: FormGroup): void {
