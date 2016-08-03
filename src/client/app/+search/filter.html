@@ -12,9 +12,7 @@
           </p>
           <md-divider></md-divider>
         </span>
-        <span *ngIf="filter.active"> 
-          +
-        </span>
+        
         <span *ngSwitchDefault>
           <p title="{{filter.filterId}}" class="md-caption" (click)="filterAction(filter)">
             {{ filter.name }} 

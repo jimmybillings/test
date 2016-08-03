@@ -18,7 +18,6 @@ export const filters: Reducer<any> = (state: Array<any> = initFilters, action: A
 @Injectable()
 export class FilterService {
   public data: Observable<any>;
-
   constructor(
     public http: Http,
     public store: Store<any>,
@@ -100,7 +99,7 @@ export class FilterService {
       for (var l of filter.subFilters) this.findActive(l, activeFilters);
       return filters;
     } else {
-      if (filter.active) activeFilters.push(filter.filterId);
+      if (filter.active) activeFilters.push(filter);
       return filters;
     }
   }

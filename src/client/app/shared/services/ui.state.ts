@@ -8,7 +8,8 @@ const InitUiState: any = {
   binTrayIsOpen: false,
   searchIsOpen: true,
   searchBarIsActive: false,
-  showFixed: false
+  showFixed: false,
+  pageLoading: false
 };
 
 export const uiState: Reducer<any> = (state = InitUiState, action: Action) => {
@@ -79,6 +80,10 @@ export class UiState {
 
   public closeNewCollection(): void {
     this.update({ newCollectionFormIsOpen: false });
+  }
+
+  public toggleLoading(state: boolean): void {
+    this.data.take(1).subscribe(s => this.update({ pageLoading: state}));
   }
 
   public checkRouteForSearchBar(currentState: string): void {
