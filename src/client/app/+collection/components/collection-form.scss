@@ -126,38 +126,6 @@ collection-form {
   }
 }
 
-// testing error display in form.
-
-// md-hint.error {
-//   color: md-color($md-warn, 600);
-// }
-md-input.show-errors[ng-reflect-required='true'],
-md-input.ng-touched.ng-dirty.ng-invalid[ng-reflect-required='true'] {
-  .md-input-placeholder {
-    color: md-color($md-warn, 600);
-    &.md-float.md-focused .md-placeholder-required {
-      color: md-color($md-warn, 600);
-    }
-  }
-  .md-input-wrapper {
-    .md-input-underline {
-      border-top-color: md-color($md-warn, 600);
-      .md-input-ripple {
-        background-color: md-color($md-warn, 600);
-      }
-    }
-  } 
-  md-hint.error {
-    color: md-color($md-warn, 600);
-  }
-}
-
-
-
-
-
-
-
 @include keyframes(open-menu) {
   0% {
     opacity: 0;

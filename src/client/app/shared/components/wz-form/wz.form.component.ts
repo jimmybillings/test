@@ -1,6 +1,8 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
 import {FormGroup, FormControl, FormBuilder} from '@angular/forms';
 import {FormModel} from './wz.form.model';
+import { FormFields } from '../../../shared/interfaces/forms.interface';
+
 
 /**
  * Home page component - renders the home page
@@ -37,6 +39,8 @@ export class WzFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.form = this.fb.group(this.formModel.create(this.items));
+    this.formHasRequiredFields = this.hasRequiredFields(this.items);
+    console.log(this.formHasRequiredFields);
   }
 
   public parseOptions(options: any) {
@@ -54,6 +58,7 @@ export class WzFormComponent implements OnInit, OnChanges {
       // this.resetForm();
     } else {
       console.log('error');
+      // console.log(this.form);
     }
   }
 
@@ -61,6 +66,22 @@ export class WzFormComponent implements OnInit, OnChanges {
     this.submitted = false;
     this.formModel.updateForm(this.form, {});
     this.formModel.markFormAsUntouched(this.form);
+  }
+  public checkForRequiredFields(field:FormFields): boolean {
+    if ('validation' in field && (field.validation === 'REQUIRED' || field.validation === 'EMAIL' || field.validation === 'PASSWORD')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public hasRequiredFields(field:FormFields): boolean {
+    let req = this.items.filter(this.checkForRequiredFields);
+    if (req.length > 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public isRequired(fieldValidator: string): boolean {
