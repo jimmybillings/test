@@ -40,7 +40,6 @@ export class WzFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.form = this.fb.group(this.formModel.create(this.items));
     this.formHasRequiredFields = this.hasRequiredFields(this.items);
-    console.log(this.formHasRequiredFields);
   }
 
   public parseOptions(options: any) {
