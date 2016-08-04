@@ -61,12 +61,13 @@
           </select>
         </md-input-group>
       </div>
-      <md-radio-group *ngIf="field.type == 'radio'" layout="row">
+      <md-radio-group *ngIf="field.type == 'radio'" layout="row" formControlName="{{field.name}}">
         <md-radio-button
           style="margin-right: 1rem;"
           *ngFor="let option of parseOptions(field.options)"
           [checked]="parseOptions(field.options)[0]==option"
-          [value]="option" class="md-primary"
+          [value]="option"
+          class="md-primary"
           (click)="radioSelect(field.name, option)">
             {{option}}
         </md-radio-button>
