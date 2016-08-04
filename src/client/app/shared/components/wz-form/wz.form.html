@@ -8,25 +8,25 @@
 
     <div *ngFor="let field of items; let i=index">
       <md-input
-        *ngIf="isRequired(field.validation) && (field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')"
+        *ngIf="isRequiredField(field) && (field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')"
         class="md-block"
-        [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitted) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitted) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitted)}"
+        [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
         placeholder="{{field.label | translate}}"
         type="{{field.type}}"
         formControlName="{{field.name}}"
         id="{{field.name}}"
         autofocus="{{i === 0}}"
-        [required]="isRequired(field.validation)"
+        [required]="isRequiredField(field)"
       >
         <md-hint *ngIf="field.validation == 'REQUIRED' && form.controls[field.name]._errors"
-          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitted" 
+          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
           align="start" 
           class="error">
             <span>{{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}</span>
         </md-hint>
 
         <md-hint *ngIf="(field.validation == 'EMAIL' || field.validation == 'PASSWORD') && form.controls[field.name]._errors"
-          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitted" 
+          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
           align="start" 
           class="error">
             <span *ngIf="form.controls[field.name]._errors.required">
@@ -42,9 +42,9 @@
       </md-input>
 
       <md-input
-        *ngIf="!isRequired(field.validation) && (field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')"
+        *ngIf="!isRequiredField(field) && (field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')"
         class="md-block"
-        [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitted) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitted) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitted)}"
+        [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
         placeholder="{{field.label | translate}}"
         type="{{field.type}}"
         formControlName="{{field.name}}"
@@ -72,9 +72,11 @@
         </md-radio-button>
       </md-radio-group>
     </div>
-    <div class="indicate-required" *ngIf="formHasRequiredFields">
+    
+    <div class="indicate-required" *ngIf="showRequiredLegend">
       <span>{{ 'ERRORS.INDICATES_REQUIRED_FIELD' | translate }}</span>
     </div>
+    
     <md-card-actions layout="row" layout-align="center center">
       <button md-raised-button type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
     </md-card-actions>

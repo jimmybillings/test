@@ -20,8 +20,8 @@ export class WzFormComponent implements OnInit, OnChanges {
   @Input() submitLabel: string;
   @Input() autocomplete: string = 'on';
   @Output() formSubmit = new EventEmitter();
-  public submitted: boolean = false;
-  public formHasRequiredFields: boolean = false;
+  public submitAttempt: boolean = false;
+  public showRequiredLegend: boolean = false;
   public form: FormGroup;
 
   constructor(private fb: FormBuilder, private formModel: FormModel) { }
@@ -39,7 +39,7 @@ export class WzFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.form = this.fb.group(this.formModel.create(this.items));
-    this.formHasRequiredFields = this.hasRequiredFields(this.items);
+    this.showRequiredLegend = this.hasRequiredFields(this.items);
   }
 
   public parseOptions(options: any) {
@@ -51,7 +51,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   }
 
   public onSubmit() {
-    this.submitted = true;
+    this.submitAttempt = true;
     if (this.form.valid) {
       this.formSubmit.emit(this.form.value);
       // this.resetForm();
@@ -62,11 +62,16 @@ export class WzFormComponent implements OnInit, OnChanges {
   }
 
   public resetForm() {
-    this.submitted = false;
+    this.submitAttempt = false;
     this.formModel.updateForm(this.form, {});
     this.formModel.markFormAsUntouched(this.form);
   }
-  public checkForRequiredFields(field:FormFields): boolean {
+
+  /**
+   * simple check if a given field has a required validation rule or not
+   * @param field is a form field control.
+   */
+  public isRequiredField(field: FormFields): boolean {
     if ('validation' in field && (field.validation === 'REQUIRED' || field.validation === 'EMAIL' || field.validation === 'PASSWORD')) {
       return true;
     } else {
@@ -74,21 +79,13 @@ export class WzFormComponent implements OnInit, OnChanges {
     }
   }
 
-  public hasRequiredFields(field:FormFields): boolean {
-    let req = this.items.filter(this.checkForRequiredFields);
-    if (req.length > 1) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  public isRequired(fieldValidator: string): boolean {
-    if (fieldValidator === 'REQUIRED' || fieldValidator === 'EMAIL' || fieldValidator === 'PASSWORD') {
-      this.formHasRequiredFields = true;
-      return true;
-    } else {
-      return false;
-    }
+  /**
+   * boolean flag used in the ui to draw '*indicates required field'
+   * we filter through the form fields checking validation. It's true when at least 1 field is required
+   * @param formFields is an array of form fields.
+   */
+  public hasRequiredFields(formFields: FormFields[]): boolean {
+    let req = formFields.filter(this.isRequiredField);
+    return req.length > 0 ? true : false;
   }
 }
