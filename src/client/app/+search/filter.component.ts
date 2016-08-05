@@ -14,25 +14,17 @@ import { FORM_DIRECTIVES } from '@angular/forms';
 export class FilterComponent {
   @Input() filters: any;
   public searchComponent: SearchComponent;
-  public currentFilters: any;
-  public exclusiveFilters: any;
   constructor(
     @Inject(forwardRef(() => SearchComponent)) searchComponent:SearchComponent) {
       this.searchComponent = searchComponent;
-      this.currentFilters = {};
-      this.exclusiveFilters = {};
     }
 
-  public selected(filterName: any) {
-    return this.currentFilters[filterName] === filterName;
-  }
-
   public filterAction(filter: any) {
-    (filter.expanded) ? this.toggleFilters(filter) : this.applyFilter(filter.filterId);
+    this.applyFilter(filter.filterId);
   }
 
-  public toggleFilters(filter: any): void {
-    this.currentFilters[filter.name] = (this.currentFilters[filter.name] === filter.name) ? false : filter.name;
+  public toggle(filter: any): void {
+    this.searchComponent.toggleFilter(filter.filterId);
   }
 
   public applyFilter(filterId: number): void {
@@ -41,6 +33,14 @@ export class FilterComponent {
 
   public applyExclusiveFilter(subFilterId: number, parentFilterId: number): void {
     this.searchComponent.applyExclusiveFilter(subFilterId, parentFilterId);
+  }
+
+  public hasActiveChildren(filter: any): boolean {
+    if (filter.subFilters) {
+      return filter.subFilters.filter((f: any) => f.active).length > 0;
+    } else {
+      return false;
+    }
   }
 
   public hasCounts(filter:any): boolean {

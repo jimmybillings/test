@@ -101,6 +101,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.go();
   }
 
+  public toggleFilter(filterId: any): void {
+    this.filter.filterAction(filterId);
+  }
+
   public applyFilter(filterId: number): void {
     this.uiState.toggleLoading(true);
     this.filter.filterAction(filterId);
@@ -124,7 +128,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     let active: any = this.filter.active();
     let activeIds: any = active.map((filter:any) => filter.filterId);
     let activeValues: any = this.activeValues(active);
-    console.log(activeIds, activeValues);
     if (activeIds.length > 0) {
       this.searchContext.update = { 'filterIds':  activeIds.join(',') };
     } else {
