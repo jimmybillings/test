@@ -18,12 +18,13 @@
         autofocus="{{i === 0}}"
         [required]="isRequiredField(field)"
       >
-        <!--<md-hint *ngIf="field.validation == 'REQUIRED' && form.controls[field.name]._errors"
-          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
-          align="start" 
-          class="error">
-            <span>{{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}</span>
-        </md-hint>-->
+        <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
+        <md-hint *ngIf="field.hintTextStart && !form.controls[field.name]._errors" align="start">
+          {{ field.hintTextEnd | translate }}
+        </md-hint>
+        <md-hint *ngIf="field.hintTextEnd && !form.controls[field.name]._errors" align="end">
+          {{ field.hintTextEnd | translate }}
+        </md-hint>
 
         <md-hint *ngIf="form.controls[field.name]._errors"
           [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
@@ -38,6 +39,9 @@
             <span *ngIf="form.controls[field.name]._errors.pattern && !form.controls[field.name]._errors.minlength">
               {{ 'ERRORS.VALID_EMAIL_REQUIRED' | translate }}
             </span>
+            <!--<span *ngIf="form.controls[field.name]._errors.">
+              {{ 'ERRORS.NAME_ALREADY_TAKEN' | translate:{fieldName:field.label | translate} }}
+            </span>-->
         </md-hint>
       </md-input>
 
@@ -51,8 +55,14 @@
         id="{{field.name}}"
         autofocus="{{i === 0}}"
       >
+        <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
+        <md-hint *ngIf="field.hintTextStart" align="start">
+          {{ field.hintTextStart | translate }}
+        </md-hint>
+        <md-hint *ngIf="field.hintTextEnd" align="end">
+          {{ field.hintTextEnd | translate }}
+        </md-hint>
       </md-input>
-
 
       <div *ngIf="field.type == 'select'">
         <md-input-group class="md-group">
