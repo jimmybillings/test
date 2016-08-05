@@ -30,9 +30,27 @@ export class FilterService {
     params['counted'] = true;
     let options = this.filterOptions(params);
     return this.http.get(this.filterUrl, options).map((res: Response) => {
-      this.set(this.mapFilters(res.json()));
+      this.set(this.mapFilters(res.json(), null));
+      this.data.take(1).subscribe(data => console.log(data));
       return res.json();
     });
+  }
+
+  public mapFilters(filter: any, parent: any) {
+    filter.parent = parent;
+    if (filter.active && filter.parent) this.makeParentActive(filter.parent);
+    if (filter.subFilters) {
+      filter.expanded = false;
+      for (var l of filter.subFilters) this.mapFilters(l, filter);
+      return filter;
+    }
+    return filter;
+  }
+
+  public makeParentActive(filter: any): void {
+      filter.active = true;
+      if (filter.parent) this.makeParentActive(filter.parent);
+      return filter;
   }
 
   public set(filters: any): void {
@@ -59,15 +77,6 @@ export class FilterService {
     }
   }
 
-  public mapFilters(filter: any) {
-    if (filter.subFilters) {
-      filter.expanded = true;
-      for (var l of filter.subFilters) this.mapFilters(l);
-      return filter;
-    }
-    return filter;
-  }
-
   public filterAction(filterId: number) {
     this.data.take(1).subscribe(filters => {
       this.set(this.toggleFilter(filters, filterId));
@@ -80,14 +89,31 @@ export class FilterService {
     });
   }
 
+  public customValue(filter: any, value: any) {
+    this.data.take(1).subscribe(filters => {
+      this.set(this.updateCustomValue(filters, filter, value));
+    });
+  }
+
+  public clear() {
+    this.data.take(1).subscribe(filters => {
+      this.set(this.clearActive(filters));
+    });
+  }
+
+
+  public active() {
+    let activeFilters: any = [];
+    this.data.take(1).subscribe(filters => {
+      this.findActive(filters, activeFilters);
+    });
+    return activeFilters;
+  }
+
   public toggleFilter(filter: any, currentFilter: any) {
+    if (filter.filterId === currentFilter) filter.active = !filter.active;
     if (filter.subFilters) {
       for (var l of filter.subFilters) this.toggleFilter(l, currentFilter);
-      return filter;
-    } else {
-      if (filter.filterId === currentFilter) {
-        filter.active = !filter.active;
-      }
       return filter;
     }
   }
@@ -112,14 +138,6 @@ export class FilterService {
     }
   }
 
-  public active() {
-    let activeFilters: any = [];
-    this.data.take(1).subscribe(filters => {
-      this.findActive(filters, activeFilters);
-    });
-    return activeFilters;
-  }
-
   public findActive(filter: any, activeFilters: any) {
     if (filter.subFilters) {
       for (var l of filter.subFilters) this.findActive(l, activeFilters);
@@ -128,12 +146,6 @@ export class FilterService {
       if (filter.active) activeFilters.push(filter);
       return filters;
     }
-  }
-
-  public clear() {
-    this.data.take(1).subscribe(filters => {
-      this.set(this.clearActive(filters));
-    });
   }
 
   public clearActive(filter: any) {
@@ -146,12 +158,6 @@ export class FilterService {
       }
       return filter;
     }
-  }
-
-  public customValue(filter: any, value: any) {
-    this.data.take(1).subscribe(filters => {
-      this.set(this.updateCustomValue(filters, filter, value));
-    });
   }
 
   public updateCustomValue(filter: any, currentFilter: any, value: any): void {
