@@ -18,11 +18,13 @@ export const filters: Reducer<any> = (state: Array<any> = initFilters, action: A
 @Injectable()
 export class FilterService {
   public data: Observable<any>;
+  public filterState: any;
   constructor(
     public http: Http,
     public store: Store<any>,
     public apiConfig: ApiConfig,
     public currentUser: CurrentUser) {
+    this.filterState = {};
     this.data = this.store.select('filters');
   }
 
@@ -31,9 +33,27 @@ export class FilterService {
     let options = this.filterOptions(params);
     return this.http.get(this.filterUrl, options).map((res: Response) => {
       this.set(this.mapFilters(res.json(), null));
-      this.data.take(1).subscribe(data => console.log(data));
+      this.checkLocalStorage(res.json());
       return res.json();
     });
+  }
+
+  public checkLocalStorage(filterTree: any): void {
+    if (!localStorage.getItem('filterState')) {
+      localStorage.setItem('filterState', JSON.stringify(this.setFilterStateInLocalStorage(filterTree)));
+    }
+  }
+
+  public setFilterStateInLocalStorage(filterTree: any): any {
+    if (filterTree.subFilters) {
+      for (let f of filterTree.subFilters) {
+        if (f.type === 'None' || f.type === 'List') {
+          this.filterState[f.name] = false;
+        }
+        this.setFilterStateInLocalStorage(f);
+      }
+    }
+    return this.filterState;
   }
 
   public mapFilters(filter: any, parent: any) {

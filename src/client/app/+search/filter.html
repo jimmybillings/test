@@ -5,8 +5,12 @@
       <span *ngSwitchCase="'ExclusiveList'">
         <p title="{{filter.filterId}}">{{filter.name}}</p>
         <md-divider></md-divider>
-        <p title="{{subFilter.filterId}}" *ngFor="let subFilter of filter.subFilters" (click)="applyExclusiveFilter(subFilter.filterId, filter.filterId)" [ngClass]="{'active': subFilter.active}" class="md-primary">
-          {{subFilter.name}}
+        <p title="{{subFilter.filterId}}"
+           *ngFor="let subFilter of filter.subFilters"
+           (click)="applyExclusiveFilter(subFilter.filterId, filter.filterId)"
+           [ngClass]="{'active': subFilter.active}"
+           class="md-primary">
+            {{subFilter.name}}
           <span *ngIf="subFilter.count > -1"> 
             ( {{subFilter.count}} )
           </span>
@@ -18,7 +22,7 @@
         <p title="{{filter.filterId}}" (click)="toggle(filter)">
           {{ filter.name }} 
         </p>
-        <filter *ngIf="filter.active" [filters]="filter"></filter>
+        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter"></filter>
         <md-divider></md-divider>
       </span>
 
@@ -26,7 +30,7 @@
         <p title="{{filter.filterId}}" (click)="toggle(filter)">
           {{ filter.name }} 
         </p>
-        <filter *ngIf="filter.active" [filters]="filter"></filter>
+        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter"></filter>
       </span>
 
       <span *ngSwitchCase="'Text'">
@@ -38,14 +42,18 @@
           [value]="filter.filterValue"
           (keypress)="customValue($event, filter, $event.target.value)">
         </md-input>
-        <filter *ngIf="filter.active" [filters]="filter"></filter>
+        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter"></filter>
       </span>
 
       <span *ngSwitchDefault>
-        <md-checkbox [disabled]="filter.count < 1" [checked]="filter.active" color="primary" (change)="filterAction(filter)">
-          {{filter.name}} ( {{filter.count}} )
+        <md-checkbox
+          [disabled]="filter.count < 1"
+          [checked]="filter.active"
+          color="primary"
+          (change)="applyFilter(filter.filterId)">
+            {{filter.name}} ( {{filter.count}} )
         </md-checkbox>
-        <filter *ngIf="filter.active" [filters]="filter"></filter>
+        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter"></filter>
       </span>
 
     </span>

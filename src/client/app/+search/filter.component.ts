@@ -19,12 +19,23 @@ export class FilterComponent {
       this.searchComponent = searchComponent;
     }
 
-  public filterAction(filter: any) {
-    this.applyFilter(filter.filterId);
+  public filterShouldBeShowing(filter: any): boolean {
+    let filterState: any = JSON.parse(localStorage.getItem('filterState'));
+    if (filterState) {
+      return filterState[filter.name];
+    } else {
+      return filter.active;
+    }
   }
 
   public toggle(filter: any): void {
-    this.searchComponent.toggleFilter(filter.filterId);
+    let filterState = JSON.parse(localStorage.getItem('filterState'));
+    if (filterState) {
+      filterState[filter.name] = !filterState[filter.name];
+      localStorage.setItem('filterState', JSON.stringify(filterState));
+    } else {
+      this.searchComponent.toggleFilter(filter.filterId);
+    }
   }
 
   public applyFilter(filterId: number): void {
@@ -33,30 +44,6 @@ export class FilterComponent {
 
   public applyExclusiveFilter(subFilterId: number, parentFilterId: number): void {
     this.searchComponent.applyExclusiveFilter(subFilterId, parentFilterId);
-  }
-
-  public hasActiveChildren(filter: any): boolean {
-    if (filter.subFilters) {
-      return filter.subFilters.filter((f: any) => f.active).length > 0;
-    } else {
-      return false;
-    }
-  }
-
-  public hasCounts(filter:any): boolean {
-    var hasCounts:boolean = true;
-    if (filter.subFilters) {
-      hasCounts = filter.subFilters.filter((f: any) => {
-        return f.count > 0;
-      }).length > 0;
-    } else {
-      hasCounts = filter.count !== 0;
-    }
-    return hasCounts;
-  }
-
-  public isHeadingFilter(count: number): boolean {
-    return count === -1;
   }
 
   public customValue(event: any, filter:any, formValue:any) {
