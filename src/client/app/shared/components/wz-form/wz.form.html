@@ -18,14 +18,14 @@
         autofocus="{{i === 0}}"
         [required]="isRequiredField(field)"
       >
-        <md-hint *ngIf="field.validation == 'REQUIRED' && form.controls[field.name]._errors"
+        <!--<md-hint *ngIf="field.validation == 'REQUIRED' && form.controls[field.name]._errors"
           [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
           align="start" 
           class="error">
             <span>{{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}</span>
-        </md-hint>
+        </md-hint>-->
 
-        <md-hint *ngIf="(field.validation == 'EMAIL' || field.validation == 'PASSWORD') && form.controls[field.name]._errors"
+        <md-hint *ngIf="form.controls[field.name]._errors"
           [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
           align="start" 
           class="error">
