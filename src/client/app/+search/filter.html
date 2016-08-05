@@ -27,6 +27,11 @@
           <filter *ngIf="selected(filter.name)" [filters]="filter"></filter>
         </span>
 
+        <span *ngSwitchCase="'DateRange'">
+          <input name="start" type="date" value="{{defaultDate(filter, 'start')}}" (change)="dateRangeSelect($event, filter)" />
+          <input name="end" type="date" value="{{defaultDate(filter, 'end')}}" (change)="dateRangeSelect($event, filter)" />
+        </span>
+        
         <span *ngSwitchCase="'Text'">
           <md-input
             align="end"
@@ -34,7 +39,7 @@
             color="primary"
             placeholder="{{filter.name}}"
             [value]="filter.filterValue"
-            (keypress)="customValue($event, filter, $event.target.value)">
+            (keypress)="customValue($event, filter)">
           </md-input>
         </span>
 

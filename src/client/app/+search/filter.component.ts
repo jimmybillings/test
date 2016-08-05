@@ -1,13 +1,11 @@
 import { Component, Input, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { SearchComponent } from './search.component';
-// import { DatePicker } from 'ng2-datepicker/ng2-datepicker';
-import { FORM_DIRECTIVES } from '@angular/forms';
 
 @Component({
   moduleId: module.id,
   selector: 'filter',
   templateUrl: 'filter.html',
-  directives: [FilterComponent, FORM_DIRECTIVES],
+  directives: [FilterComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -16,11 +14,14 @@ export class FilterComponent {
   public searchComponent: SearchComponent;
   public currentFilters: any;
   public exclusiveFilters: any;
+  public dateRange: any;
+
   constructor(
     @Inject(forwardRef(() => SearchComponent)) searchComponent:SearchComponent) {
       this.searchComponent = searchComponent;
       this.currentFilters = {};
       this.exclusiveFilters = {};
+      this.dateRange = {};
     }
 
   public selected(filterName: any) {
@@ -59,9 +60,28 @@ export class FilterComponent {
     return count === -1;
   }
 
-  public customValue(event: any, filter:any, formValue:any) {
+  public customValue(event: any, filter:any) {
     if(event.code === 'Enter') {
-      this.searchComponent.applyCustomValue(filter, formValue);
+      this.searchComponent.applyCustomValue(filter, event.target.value);
+    }
+  }
+
+  public dateRangeSelect(event: any, filter: any) {
+    this.dateRange[event.target.name] = event.target.value;
+    if (this.dateRange.start && this.dateRange.end) {
+      this.searchComponent.applyCustomValue(filter, this.dateRange.start+' - '+this.dateRange.end);
+    }
+  }
+
+  public defaultDate(filter: any, state: any) {
+    if (state === 'start' && filter.filterValue) {
+      this.dateRange['start'] = filter.filterValue.split(' - ')[0]
+      return filter.filterValue.split(' - ')[0]
+    } else if (state === 'end' && filter.filterValue) {
+      this.dateRange['end'] = filter.filterValue.split(' - ')[1]
+      return filter.filterValue.split(' - ')[1];
+    } else {
+      return null;
     }
   }
 }

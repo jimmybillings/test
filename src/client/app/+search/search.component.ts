@@ -139,13 +139,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public activeValues(active: any): any {
-    let activeValues: any = [];
-    active.map((filter: any) => {
-      if (filter.filterValue) {
-        activeValues.push(`${filter.filterId}:${filter.filterValue}`);
-      }
-    });
-    return activeValues;
+    return active.filter((filter:any) => filter.filterValue)
+      .map((filter: any) => `${filter.filterId}:${filter.filterValue}`);
   }
 
   public clearFilters(): void {
