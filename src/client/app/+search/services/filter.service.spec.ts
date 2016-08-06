@@ -62,7 +62,7 @@ export function main() {
         service.get({q: 'cat'}).subscribe((payload) => {
           expect(connection.request.method).toEqual(0);
           expect(connection.request.url).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true&siteName=core');
-          expect(payload).toEqual(service.mapFilters(mockFilters()));
+          expect(payload).toEqual(service.mapFilters(mockFilters(), null));
           expect(service.set).toHaveBeenCalled();
         });
         // expect(service.filterUrl).toHaveBeenCalled();

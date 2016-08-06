@@ -19,7 +19,7 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
   encapsulation: ViewEncapsulation.None,
   template: `
     <template wzDialogPortal>
-      <div style="width: 100%">
+      <div class="wz-dialog" style="width: 100%">
         <ng-content></ng-content>
       </div>
     </template>

@@ -28,6 +28,8 @@
   <collections-list-dd
     [UiState]="UiState"
     [focusedCollection]="collection"
+    [config]="(uiConfig.get('collection') | async).config"
     layout="row" layout-align="end start" class="revealed">
   </collections-list-dd>
 </wz-dropdown>
+

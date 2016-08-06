@@ -89,23 +89,6 @@ export function main() {
         });
       }));
 
-    it('Should have a showNewCollection method that sets the newCollectionFormIsOpen to true',
-      inject([UiState], (service: UiState) => {
-        service.showNewCollection();
-        service.data.first().subscribe(data => {
-          expect(data.newCollectionFormIsOpen).toEqual(true);
-        });
-      }));
-
-    it('Should have a closeNewCollection method that sets the newCollectionFormIsOpen to false',
-      inject([UiState], (service: UiState) => {
-        service.showNewCollection();
-        service.closeNewCollection();
-        service.data.first().subscribe(data => {
-          expect(data.newCollectionFormIsOpen).toEqual(false);
-        });
-      }));
-
     it('Should have an update method that updates the store with the payload',
       inject([UiState], (service: UiState) => {
         service.update({ binTrayIsOpen: true });
@@ -164,7 +147,6 @@ export function main() {
     function mockState() {
       return {
         collectionsListIsOpen: false,
-        newCollectionFormIsOpen: false,
         binTrayIsOpen: false,
         searchIsOpen: true,
         searchBarIsActive: false,

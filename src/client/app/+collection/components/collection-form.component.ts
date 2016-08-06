@@ -22,7 +22,7 @@ import { Observable, Subscription } from 'rxjs/Rx';
 export class CollectionFormComponent implements OnInit {
   @Input() collection: Collection;
   @Input() newCollectionFormIsOpen: boolean;
-  // @Input() config: UiSubComponentsA;
+  @Input() dialog: any;
   @Input() config: any;
   @Input() UiState: any;
 
@@ -55,11 +55,11 @@ export class CollectionFormComponent implements OnInit {
         this.activeCollection.getItems(collection.id, 100).take(1).subscribe();
       });
     });
+    this.dialog.close();
     this.cancelCollectionCreation();
   }
 
   public cancelCollectionCreation(): void {
-    this.UiState.closeNewCollection();
     this.formItems = this.formItems.map((field: FormFields) => { field.value = ''; return field; });
     this.wzForm.resetForm();
     this.suggestions = [];

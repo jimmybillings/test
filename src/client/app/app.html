@@ -1,12 +1,3 @@
-
-<collection-form
-  [UiState]="uiState"
-  [collection]="activeCollection.data | async"
-  [config]="(uiConfig.get('collection') | async).config"
-  [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}"
-  layout="row" layout-align="center start">
-</collection-form>
-
 <div class="app" #target>
   <header [ngClass]="{
     'fixed': (uiState.data | async).showFixed,
@@ -26,6 +17,7 @@
       *ngIf="(uiState.data | async).searchBarIsActive && currentUser.loggedIn()"
       [UiState]="uiState"
       [collection]="activeCollection.data | async"
+      [uiConfig]="uiConfig"
       >
     </bin-tray>
     <wz-search-box

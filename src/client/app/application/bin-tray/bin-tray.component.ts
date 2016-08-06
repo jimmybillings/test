@@ -18,6 +18,9 @@ import { CollectionListDdComponent } from '../../+collection/components/collecti
 export class BinTrayComponent {
   @Input() collection: Collection;
   @Input() UiState: any;
+  @Input() uiConfig: any;
 
-  constructor(public router: Router) {}
+  constructor(public router: Router) { }
+
+
 }

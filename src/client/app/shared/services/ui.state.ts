@@ -4,7 +4,6 @@ import { Store, Reducer, Action} from '@ngrx/store';
 
 const InitUiState: any = {
   collectionsListIsOpen: false,
-  newCollectionFormIsOpen: false,
   binTrayIsOpen: false,
   searchIsOpen: true,
   searchBarIsActive: false,
@@ -72,14 +71,6 @@ export class UiState {
 
   public closeCollectionsList(): void {
     this.update({ collectionsListIsOpen: false });
-  }
-
-  public showNewCollection(): void {
-    this.update({ newCollectionFormIsOpen: true });
-  }
-
-  public closeNewCollection(): void {
-    this.update({ newCollectionFormIsOpen: false });
   }
 
   public toggleLoading(state: boolean): void {

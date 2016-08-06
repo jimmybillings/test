@@ -26,14 +26,23 @@ export class FilterService {
     this.data = this.store.select('filters');
   }
 
+  public get filters() {
+    let filters: any = {};
+    this.data.take(1).subscribe(f => filters = f);
+    return filters;
+  }
+
   public get(params: any): Observable<any> {
     params['counted'] = true;
     let options = this.filterOptions(params);
     return this.http.get(this.filterUrl, options).map((res: Response) => {
       this.set(this.mapFilters(res.json(), null));
-      this.data.take(1).subscribe(data => console.log(data));
       return res.json();
     });
+  }
+
+  public set(filters: any): void {
+    this.store.dispatch({ type: 'FILTERS.SET_FILTERS', payload: filters });
   }
 
   public mapFilters(filter: any, parent: any) {
@@ -53,63 +62,6 @@ export class FilterService {
       return filter;
   }
 
-  public set(filters: any): void {
-    this.store.dispatch({ type: 'FILTERS.SET_FILTERS', payload: filters });
-  }
-
-  public get filterUrl(): string {
-    if (this.currentUser.loggedIn()) {
-      return `${this.apiConfig.baseUrl()}api/assets/v1/filter/filterTree`;
-    } else {
-      return `${this.apiConfig.baseUrl()}api/assets/v1/filter/anonymous/filterTree`;
-    };
-  }
-
-  public filterOptions(params: any): RequestOptions {
-    let search: URLSearchParams = new URLSearchParams();
-    for (let param in params) { search.set(param, params[param]); };
-    if (this.currentUser.loggedIn()) {
-      let headers = this.apiConfig.authHeaders();
-      return new RequestOptions({ headers, search });
-    } else {
-      search.set('siteName', this.apiConfig.getPortal());
-      return new RequestOptions({ search });
-    }
-  }
-
-  public filterAction(filterId: number) {
-    this.data.take(1).subscribe(filters => {
-      this.set(this.toggleFilter(filters, filterId));
-    });
-  }
-
-  public exclusiveFilterAction(subFilterId: number, parentFilterId: number): void {
-    this.data.take(1).subscribe(filters => {
-      this.set(this.toggleExclusiveFilter(filters, subFilterId, parentFilterId));
-    });
-  }
-
-  public customValue(filter: any, value: any) {
-    this.data.take(1).subscribe(filters => {
-      this.set(this.updateCustomValue(filters, filter, value));
-    });
-  }
-
-  public clear() {
-    this.data.take(1).subscribe(filters => {
-      this.set(this.clearActive(filters));
-    });
-  }
-
-
-  public active() {
-    let activeFilters: any = [];
-    this.data.take(1).subscribe(filters => {
-      this.findActive(filters, activeFilters);
-    });
-    return activeFilters;
-  }
-
   public toggleFilter(filter: any, currentFilter: any) {
     if (filter.filterId === currentFilter) filter.active = !filter.active;
     if (filter.subFilters) {
@@ -118,33 +70,24 @@ export class FilterService {
     }
   }
 
-  public toggleExclusiveFilter(filter: any, subFilterId: any, parentFilterId: any): void {
+  public toggleExclusiveFilter(filter: any, subFilter: any): void {
     if (filter.subFilters) {
-      if (filter.filterId === parentFilterId) {
-        for (let f of filter.subFilters) {
-          if (f.filterId === subFilterId) {
-            f.active = !f.active;
-          } else {
-            f.active = false;
-          }
-        };
-        return filter;
-      } else {
-        for (let f of filter.subFilters) {
-          this.toggleExclusiveFilter(f, subFilterId, parentFilterId);
-        }
-        return filter;
+      if (filter.filterId === subFilter.parent.filterId) {
+        for (let f of filter.subFilters) f.active = (f.filterId === subFilter.filterId) ? !f.active : false;
       }
+      for (var l of filter.subFilters) this.toggleExclusiveFilter(l, subFilter);
+      return filter;
     }
+    return filter;
   }
 
   public findActive(filter: any, activeFilters: any) {
     if (filter.subFilters) {
       for (var l of filter.subFilters) this.findActive(l, activeFilters);
-      return filters;
+      return filter;
     } else {
       if (filter.active) activeFilters.push(filter);
-      return filters;
+      return filter;
     }
   }
 
@@ -170,6 +113,26 @@ export class FilterService {
         filter.filterValue = value;
       }
       return filter;
+    }
+  }
+
+  public get filterUrl(): string {
+    if (this.currentUser.loggedIn()) {
+      return `${this.apiConfig.baseUrl()}api/assets/v1/filter/filterTree`;
+    } else {
+      return `${this.apiConfig.baseUrl()}api/assets/v1/filter/anonymous/filterTree`;
+    };
+  }
+
+  public filterOptions(params: any): RequestOptions {
+    let search: URLSearchParams = new URLSearchParams();
+    for (let param in params) { search.set(param, params[param]); };
+    if (this.currentUser.loggedIn()) {
+      let headers = this.apiConfig.authHeaders();
+      return new RequestOptions({ headers, search });
+    } else {
+      search.set('siteName', this.apiConfig.getPortal());
+      return new RequestOptions({ search });
     }
   }
 }

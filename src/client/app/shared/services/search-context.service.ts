@@ -64,7 +64,6 @@ export class SearchContext {
   public decodeParams(params: any) {
     let decodedParams: any = {};
     for (let param in params) {
-      console.log(params[param]);
       decodedParams[param] = decodeURIComponent(params[param]);
     }
     return decodedParams;

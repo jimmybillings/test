@@ -1,6 +1,6 @@
-<div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
-  <md-card class="wz-form-card md-elevation-z20" (click)="closeSuggestionMenu($event)">
-    <button md-icon-button title="{{ 'COLLECTION.FORM.CLOSE_HOVER_TITLE' | translate }}" type="button" (click)="cancelCollectionCreation($event)" class="close"><md-icon>close</md-icon></button>
+<div flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
+  <md-card class="wz-form-card md-elevation-z20">
+    <button md-icon-button title="{{ 'COLLECTION.FORM.CLOSE_HOVER_TITLE' | translate }}" type="button" (click)="dialog.close()" class="close"><md-icon>close</md-icon></button>
     <md-card-header>
       <!--<div class="logo-wrapper">
         <div class="logo"></div>
@@ -34,6 +34,6 @@
   </md-card>
 </div>
 
-<div [ngClass]="{'fade-out': !(UiState.data | async).newCollectionFormIsOpen, 'fade-in': (UiState.data | async).newCollectionFormIsOpen}"
+<!--<div [ngClass]="{'fade-out': !(UiState.data | async).newCollectionFormIsOpen, 'fade-in': (UiState.data | async).newCollectionFormIsOpen}"
   class="bk-for-dialog" (click)="cancelCollectionCreation()">
-</div>
+</div>-->

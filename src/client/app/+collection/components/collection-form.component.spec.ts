@@ -67,10 +67,13 @@ export function main() {
 
     it('Should create a new collection',
       inject([CollectionFormComponent], (component: CollectionFormComponent) => {
+        component.dialog = {};
+        component.dialog.close = function() {return true;};
         spyOn(component, 'cancelCollectionCreation');
         spyOn(component.collectionsService, 'createCollection').and.callThrough();
         spyOn(component.activeCollection, 'set').and.callThrough();
         spyOn(component.activeCollection, 'getItems').and.callThrough();
+        spyOn(component.dialog, 'close');
         component.createCollection(mockCollection());
         let collectionWithParsedTags = mockCollection();
         collectionWithParsedTags.tags = ['cat', 'dog', 'cow'];
@@ -78,6 +81,7 @@ export function main() {
         expect(component.activeCollection.set).toHaveBeenCalledWith(mockCollection().id);
         expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, 100);
         expect(component.cancelCollectionCreation).toHaveBeenCalled();
+        expect(component.dialog.close).toHaveBeenCalled();
       }));
 
     it('Should return type ahead suggestions matching input',

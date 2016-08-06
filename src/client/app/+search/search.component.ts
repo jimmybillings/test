@@ -33,8 +33,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
-  public filtersStoreSubscription: Subscription;
-  public filters: any;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
   private configSubscription: Subscription;
@@ -55,7 +53,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     public uiState: UiState) { }
 
   ngOnInit(): void {
-    this.filtersStoreSubscription = this.filter.data.subscribe(data => this.filters = data);
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
@@ -69,7 +66,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.assetsStoreSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     this.configSubscription.unsubscribe();
-    this.filtersStoreSubscription.unsubscribe();
   }
 
   public showAsset(asset: any): void {
@@ -102,30 +98,31 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public toggleFilter(filterId: any): void {
-    this.filter.filterAction(filterId);
+    this.filter.set(this.filter.toggleFilter(this.filter.filters, filterId));
   }
 
   public applyFilter(filterId: number): void {
     this.uiState.toggleLoading(true);
-    this.filter.filterAction(filterId);
+    this.filter.set(this.filter.toggleFilter(this.filter.filters, filterId));
     this.filterAssets();
   }
 
   public applyCustomValue(filter: any, value: any) {
     this.uiState.toggleLoading(true);
-    this.filter.customValue(filter, value);
+    this.filter.set(this.filter.updateCustomValue(this.filter.filters, filter, value));
     this.filterAssets();
   }
 
-  public applyExclusiveFilter(subFilterId: number, parentFilterId: number): void {
+  public applyExclusiveFilter(subFilter: any): void {
     this.uiState.toggleLoading(true);
-    this.filter.exclusiveFilterAction(subFilterId, parentFilterId);
+    this.filter.set(this.filter.toggleExclusiveFilter(this.filter.filters, subFilter));
     this.filterAssets();
   }
 
   public filterAssets(): void {
     this.searchContext.update = { i: 1 };
-    let active: any = this.filter.active();
+    let active: any = [];
+    this.filter.findActive(this.filter.filters, active);
     let activeIds: any = active.map((filter:any) => filter.filterId);
     let activeValues: any = this.activeValues(active);
     if (activeIds.length > 0) {
@@ -148,7 +145,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public clearFilters(): void {
     this.uiState.toggleLoading(true);
-    this.filter.clear();
+    this.filter.set(this.filter.clearActive(this.filter.filters));
     this.filterAssets();
   }
 }

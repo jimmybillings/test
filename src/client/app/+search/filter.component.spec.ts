@@ -36,10 +36,5 @@ export function main() {
         expect(component.searchComponent.applyFilter).toHaveBeenCalledWith(123);
       }));
 
-    it('Should have a selected() method that returns a boolean',
-      inject([FilterComponent], (component: FilterComponent) => {
-        component.currentFilters = {};
-        expect(component.selected('Licensability')).toBe(false);
-      }));
   });
 }

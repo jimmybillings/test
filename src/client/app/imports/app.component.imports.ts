@@ -35,7 +35,6 @@ import { FooterComponent } from '../application/footer/footer.component';
 import { WzNotificationComponent } from '../shared/components/wz-notification/wz.notification.component';
 import { WzSearchBoxComponent } from '../shared/components/wz-search-box/wz.search-box.component';
 import { BinTrayComponent } from '../application/bin-tray/bin-tray.component';
-import { CollectionFormComponent } from '../+collection/components/collection-form.component';
 import { CollectionListDdComponent } from '../+collection/components/collections-list-dd.component';
 
 export const APP_COMPONENT_DIRECTIVES = [
@@ -44,6 +43,5 @@ export const APP_COMPONENT_DIRECTIVES = [
   WzNotificationComponent,
   WzSearchBoxComponent,
   BinTrayComponent,
-  CollectionFormComponent,
   CollectionListDdComponent
 ];

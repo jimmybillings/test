@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Inject, forwardRef, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Inject, forwardRef, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { SearchComponent } from '../../../+search/search.component';
 
 @Component({
@@ -6,6 +6,7 @@ import { SearchComponent } from '../../../+search/search.component';
   selector: 'breadcrumb',
   templateUrl: 'wz.breadcrumb.html',
   directives: [WzBreadcrumbComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class WzBreadcrumbComponent implements OnChanges {
