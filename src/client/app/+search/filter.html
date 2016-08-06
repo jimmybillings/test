@@ -5,8 +5,12 @@
       <span *ngSwitchCase="'ExclusiveList'">
         <p title="{{filter.filterId}}">{{filter.name}}</p>
         <md-divider></md-divider>
-        <p title="{{subFilter.filterId}}" *ngFor="let subFilter of filter.subFilters" (click)="applyExclusiveFilter(subFilter)" [ngClass]="{'active': subFilter.active}" class="md-primary">
-          {{subFilter.name}}
+        <p title="{{subFilter.filterId}}"
+           *ngFor="let subFilter of filter.subFilters"
+           (click)="applyExclusiveFilter(subFilter)"
+           [ngClass]="{'active': subFilter.active}"
+           class="md-primary">
+            {{subFilter.name}}
           <span *ngIf="subFilter.count > -1"> 
             ( {{subFilter.count}} )
           </span>
@@ -18,7 +22,7 @@
         <p title="{{filter.filterId}}" (click)="toggle(filter)">
           {{ filter.name }} 
         </p>
-        <filter *ngIf="filter.active" [filters]="filter"></filter>
+        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter"></filter>
         <md-divider></md-divider>
       </span>
 
@@ -26,30 +30,36 @@
         <p title="{{filter.filterId}}" (click)="toggle(filter)">
           {{ filter.name }} 
         </p>
-        <filter *ngIf="filter.active" [filters]="filter"></filter>
+        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter"></filter>
       </span>
 
-        <span *ngSwitchCase="'DateRange'">
-          <input name="start" type="date" value="{{defaultDate(filter, 'start')}}" (change)="dateRangeSelect($event, filter)" />
-          <input name="end" type="date" value="{{defaultDate(filter, 'end')}}" (change)="dateRangeSelect($event, filter)" />
-        </span>
+      <span *ngSwitchCase="'DateRange'">
+        <input name="start" type="date" value="{{defaultDate(filter, 'start')}}" (change)="dateRangeSelect($event, filter)" />
+        <input name="end" type="date" value="{{defaultDate(filter, 'end')}}" (change)="dateRangeSelect($event, filter)" />
+      </span>
         
-        <span *ngSwitchCase="'Text'">
-          <md-input
-            align="end"
-            name="filterValue"
-            color="primary"
-            placeholder="{{filter.name}}"
-            [value]="filter.filterValue"
-            (keypress)="customValue($event, filter)">
-          </md-input>
-        </span>
+      <span *ngSwitchCase="'Text'">
+        <md-input
+          align="end"
+          name="filterValue"
+          color="primary"
+          placeholder="{{filter.name}}"
+          [value]="filter.filterValue"
+          (keypress)="customValue($event, filter)">
+        </md-input>
+        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter"></filter>
+      </span>
+
 
       <span *ngSwitchDefault>
-        <md-checkbox [disabled]="filter.count < 1" [checked]="filter.active" color="primary" (change)="filterAction(filter)">
-          {{filter.name}} ( {{filter.count}} )
+        <md-checkbox
+          [disabled]="filter.count < 1"
+          [checked]="filter.active"
+          color="primary"
+          (change)="applyFilter(filter.filterId)">
+            {{filter.name}} ( {{filter.count}} )
         </md-checkbox>
-        <filter *ngIf="filter.active" [filters]="filter"></filter>
+        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter"></filter>
       </span>
 
     </span>

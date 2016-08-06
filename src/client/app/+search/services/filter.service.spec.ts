@@ -65,7 +65,6 @@ export function main() {
           expect(payload).toEqual(service.mapFilters(mockFilters(), null));
           expect(service.set).toHaveBeenCalled();
         });
-        // expect(service.filterUrl).toHaveBeenCalled();
         expect(service.filterOptions).toHaveBeenCalledWith({q: 'cat', counted: true});
         connection.mockRespond(new Response(
           new ResponseOptions({

@@ -20,12 +20,23 @@ export class FilterComponent {
       this.dateRange = {};
     }
 
-  public filterAction(filter: any) {
-    this.applyFilter(filter.filterId);
+  public filterShouldBeShowing(filter: any): boolean {
+    let filterState: any = JSON.parse(localStorage.getItem('filterState'));
+    if (filterState) {
+      return filterState[filter.name];
+    } else {
+      return filter.active;
+    }
   }
 
   public toggle(filter: any): void {
-    this.searchComponent.toggleFilter(filter.filterId);
+    let filterState = JSON.parse(localStorage.getItem('filterState'));
+    if (filterState) {
+      filterState[filter.name] = !filterState[filter.name];
+      localStorage.setItem('filterState', JSON.stringify(filterState));
+    } else {
+      this.searchComponent.toggleFilter(filter.filterId);
+    }
   }
 
   public applyFilter(filterId: number): void {
