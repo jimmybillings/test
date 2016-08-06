@@ -102,7 +102,8 @@
     "NEW_TITLE": "Create a New Collection",
     "FORM": {
       "COLLECTION_NAME_LABEL": "Collection Name",
-      "TAGS_LABEL": "Tags(use commas to separate tags)",
+      "TAGS_LABEL": "Tags",
+      "TAGS_HINT_START": "Use commas to separate tags",
       "SUBMIT_LABEL": "CREATE",
       "TYPE_AHEAD_SUGGESTIONS_HEADING": "Your matching collections...",
       "CLOSE_HOVER_TITLE": "Close collection"
@@ -192,6 +193,7 @@
     "INDICATES_REQUIRED_FIELD":"indicates required field",
     "MISSING_REQUIRED_FIELD":"You must supply a {{fieldName}}",
     "MIN_LENGTH_REQUIRED":"Must have a minimum of {{charLength}} characters",
-    "VALID_EMAIL_REQUIRED":"Must be a valid email address"
+    "VALID_EMAIL_REQUIRED":"Must be a valid email address",
+    "NAME_ALREADY_TAKEN":"That {{fieldName}} is already being used"
   }
 }

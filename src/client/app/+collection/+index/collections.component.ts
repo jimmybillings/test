@@ -35,7 +35,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.collectionsService.loadCollections().take(1).subscribe();
+    this.collectionsService.loadCollections('all',400).take(1).subscribe();
     this.collectionStoreSubscription =
       this.collectionsService.data.subscribe(collections => this.collections = collections);
   }
@@ -82,7 +82,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
         this.collectionsService.destroyCollections();
         this.activeCollection.get().take(1).subscribe((collection) => {
           this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
-          this.collectionsService.loadCollections().take(1).subscribe();
+          this.collectionsService.loadCollections('all',400).take(1).subscribe();
         });
       }
     });

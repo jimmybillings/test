@@ -65,8 +65,8 @@ export class CollectionsService {
     };
   }
 
-  public loadCollections(): Observable<any> {
-    return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/fetchBy?access-level=all&i=0&n=200`,
+  public loadCollections(access:string='all',numberPerPg:number=400): Observable<any> {
+    return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/fetchBy?access-level=${access}&i=0&n=${numberPerPg}`,
       { headers: this.apiConfig.authHeaders() }).map(res => {
         this.storeCollections(res.json());
         return res.json();

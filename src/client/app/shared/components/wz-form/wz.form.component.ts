@@ -57,7 +57,7 @@ export class WzFormComponent implements OnInit, OnChanges {
       // this.resetForm();
     } else {
       console.log('error');
-      // console.log(this.form);
+      console.log(this.form);
     }
   }
 
@@ -72,7 +72,11 @@ export class WzFormComponent implements OnInit, OnChanges {
    * @param field is a form field control.
    */
   public isRequiredField(field: FormFields): boolean {
-    if ('validation' in field && (field.validation === 'REQUIRED' || field.validation === 'EMAIL' || field.validation === 'PASSWORD')) {
+    if ('validation' in field && (
+      field.validation === 'REQUIRED' ||
+      field.validation === 'EMAIL' ||
+      field.validation === 'PASSWORD' ||
+      field.validation === 'COLLECTION')) {
       return true;
     } else {
       return false;

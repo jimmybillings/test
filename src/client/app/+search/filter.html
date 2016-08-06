@@ -1,31 +1,33 @@
-  <ul>
-    <li *ngFor="let filter of filters.subFilters" [ngClass]="{'heading': isHeadingFilter(filter.count), 'filter': filter.count > -1}">
-      <span [ngSwitch]="filter.type">
-        <span *ngSwitchCase="'ExclusiveList'">
-          <p title="{{filter.filterId}}">{{filter.name}}</p>
-          <p title="{{subFilter.filterId}}" *ngFor="let subFilter of filter.subFilters" (click)="applyExclusiveFilter(subFilter.filterId, filter.filterId)" [ngClass]="{'active': subFilter.active}" class="md-primary">
-            {{subFilter.name}}
-            <span *ngIf="subFilter.count > -1"> 
-              ( {{subFilter.count}} )
-            </span>
-          </p>
-          <md-divider></md-divider>
-        </span>
-        
-        <span *ngSwitchCase="'None'">
-          <p title="{{filter.filterId}}" class="md-caption" (click)="filterAction(filter)">
-            {{ filter.name }} 
-          </p>
-          <filter *ngIf="selected(filter.name)" [filters]="filter"></filter>
-          <md-divider></md-divider>
-        </span>
+<ul>
+  <li *ngFor="let filter of filters.subFilters">
+    <span [ngSwitch]="filter.type">
 
-        <span *ngSwitchCase="'List'">
-          <p title="{{filter.filterId}}" class="md-caption" (click)="filterAction(filter)">
-            {{ filter.name }} 
-          </p>
-          <filter *ngIf="selected(filter.name)" [filters]="filter"></filter>
-        </span>
+      <span *ngSwitchCase="'ExclusiveList'">
+        <p title="{{filter.filterId}}">{{filter.name}}</p>
+        <md-divider></md-divider>
+        <p title="{{subFilter.filterId}}" *ngFor="let subFilter of filter.subFilters" (click)="applyExclusiveFilter(subFilter)" [ngClass]="{'active': subFilter.active}" class="md-primary">
+          {{subFilter.name}}
+          <span *ngIf="subFilter.count > -1"> 
+            ( {{subFilter.count}} )
+          </span>
+        </p>
+        <md-divider></md-divider>
+      </span>
+      
+      <span *ngSwitchCase="'None'">
+        <p title="{{filter.filterId}}" (click)="toggle(filter)">
+          {{ filter.name }} 
+        </p>
+        <filter *ngIf="filter.active" [filters]="filter"></filter>
+        <md-divider></md-divider>
+      </span>
+
+      <span *ngSwitchCase="'List'">
+        <p title="{{filter.filterId}}" (click)="toggle(filter)">
+          {{ filter.name }} 
+        </p>
+        <filter *ngIf="filter.active" [filters]="filter"></filter>
+      </span>
 
         <span *ngSwitchCase="'DateRange'">
           <input name="start" type="date" value="{{defaultDate(filter, 'start')}}" (change)="dateRangeSelect($event, filter)" />
@@ -43,12 +45,13 @@
           </md-input>
         </span>
 
-        <span *ngSwitchDefault>
-          <md-checkbox *ngIf="filter.count > 0" [checked]="filter.active" color="primary" (change)="filterAction(filter)">
-            {{filter.name}} ( {{filter.count}} )
-          </md-checkbox>
-          <filter *ngIf="selected(filter.name)" [filters]="filter"></filter>
-        </span>
+      <span *ngSwitchDefault>
+        <md-checkbox [disabled]="filter.count < 1" [checked]="filter.active" color="primary" (change)="filterAction(filter)">
+          {{filter.name}} ( {{filter.count}} )
+        </md-checkbox>
+        <filter *ngIf="filter.active" [filters]="filter"></filter>
       </span>
-    </li>
-  </ul>
+
+    </span>
+  </li>
+</ul>

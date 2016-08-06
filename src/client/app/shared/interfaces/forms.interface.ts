@@ -3,6 +3,8 @@ export interface FormFields {
   type: string;
   value: string;
   label: string;
-  validation: string;
+  hintTextStart?: string;
+  hintTextEnd?: string;
+  validation?: string;
   options?: string;
 }

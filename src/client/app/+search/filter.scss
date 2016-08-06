@@ -44,5 +44,10 @@ md-sidenav {
         margin: 20px 0;
       } 
     }
+    .md-checkbox-disabled {
+      .md-checkbox-label {
+        color: #aaa;
+      }
+    }
   }
 }

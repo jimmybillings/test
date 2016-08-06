@@ -12,36 +12,36 @@ import { SearchComponent } from './search.component';
 export class FilterComponent {
   @Input() filters: any;
   public searchComponent: SearchComponent;
-  public currentFilters: any;
-  public exclusiveFilters: any;
   public dateRange: any;
 
   constructor(
     @Inject(forwardRef(() => SearchComponent)) searchComponent:SearchComponent) {
       this.searchComponent = searchComponent;
-      this.currentFilters = {};
-      this.exclusiveFilters = {};
       this.dateRange = {};
     }
 
-  public selected(filterName: any) {
-    return this.currentFilters[filterName] === filterName;
-  }
-
   public filterAction(filter: any) {
-    (filter.expanded) ? this.toggleFilters(filter) : this.applyFilter(filter.filterId);
+    this.applyFilter(filter.filterId);
   }
 
-  public toggleFilters(filter: any): void {
-    this.currentFilters[filter.name] = (this.currentFilters[filter.name] === filter.name) ? false : filter.name;
+  public toggle(filter: any): void {
+    this.searchComponent.toggleFilter(filter.filterId);
   }
 
   public applyFilter(filterId: number): void {
     this.searchComponent.applyFilter(filterId);
   }
 
-  public applyExclusiveFilter(subFilterId: number, parentFilterId: number): void {
-    this.searchComponent.applyExclusiveFilter(subFilterId, parentFilterId);
+  public applyExclusiveFilter(subFilter: any): void {
+    this.searchComponent.applyExclusiveFilter(subFilter);
+  }
+
+  public hasActiveChildren(filter: any): boolean {
+    if (filter.subFilters) {
+      return filter.subFilters.filter((f: any) => f.active).length > 0;
+    } else {
+      return false;
+    }
   }
 
   public hasCounts(filter:any): boolean {
@@ -75,10 +75,10 @@ export class FilterComponent {
 
   public defaultDate(filter: any, state: any) {
     if (state === 'start' && filter.filterValue) {
-      this.dateRange['start'] = filter.filterValue.split(' - ')[0]
-      return filter.filterValue.split(' - ')[0]
+      this.dateRange['start'] = filter.filterValue.split(' - ')[0];
+      return filter.filterValue.split(' - ')[0];
     } else if (state === 'end' && filter.filterValue) {
-      this.dateRange['end'] = filter.filterValue.split(' - ')[1]
+      this.dateRange['end'] = filter.filterValue.split(' - ')[1];
       return filter.filterValue.split(' - ')[1];
     } else {
       return null;

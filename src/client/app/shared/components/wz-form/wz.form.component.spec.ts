@@ -64,6 +64,13 @@ export function main() {
         });
       })
     );
+
+    it('Should show "indicates required field" when at least 1 form control is required',
+      inject([WzFormComponent], (form: WzFormComponent) => {
+        spyOn(form, 'isRequiredField').and.callThrough();
+        form.items = items();
+        expect(form.hasRequiredFields(form.items)).toEqual(true);
+      }));
   });
 
   function items() {
