@@ -1,17 +1,42 @@
+<section class="collection-head">
+  <div layout="row" layout-align="center start">
+    <header flex="100" flex-gt-md="85" flex-gt-lg="75">
+      <div flex="100" layout="row" layout-xs="column">
+        <div flex="100" flex-gt-sm="66">
+          <h2 class="md-headline">Your Collections</h2>
+        </div>
+        <div flex-gt-sm="33" layout-sm="100" flex="100" class="actions" layout-align="end center">
+        </div>
+      </div>
+      <div flex="100" layout="row" layout-xs="column">
+        <div layout-sm="100" flex="100" class="actions" layout-align="end center">
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showCollectionSearch($event)"><md-icon>search</md-icon></button>
+          <button md-button class="is-dd filter-selector" (click)="showCollectionFilter($event)">Filter: <span class="selected">Show all collections</span></button>
+          <button md-button class="is-dd filter-selector" (click)="showCollectionSort($event)">Sort: <span class="selected">Date modified (newest first)</span></button>
+        </div>
+      </div>
+    </header>
+  </div>
+</section>
+
+
+
+
 
 <section class="hero">
   <div layout="row" flex="100" layout-margin layout-align="center start">
     <section class="collections-list" flex="100" flex-gt-md="85" flex-gt-lg="75">
-      <header layout="row" flex="100" layout-align="end center">
+      <!--<header layout="row" flex="100" layout-align="end center">
         <div flex="none">
           <h2 class="md-headline">Your Collections</h2>
         </div>
         <div class="tools" flex="grow" layout-align="end center">
           <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showCollectionSearch($event)"><md-icon>search</md-icon></button>
-          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showCollectionFilter($event)"><md-icon>filter_list</md-icon></button>
-          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>
+
+          <button md-button class="is-dd filter-selector" (click)="showCollectionFilter($event)">Filter: <span class="selected">Show all collections</span></button>
+          <button md-button class="is-dd filter-selector" (click)="showCollectionSort($event)">Sort: <span class="selected">Date modified (newest first)</span></button>
         </div>
-      </header>
+      </header>-->
 
       <wz-pagination [pagination]="collections.pagination" (getPage)="changePage($event)"></wz-pagination>
       <ul>

@@ -1,12 +1,21 @@
-.collections-list {
+collections .collection-head {
+  background-color: rgba(md-color($md-background, card), .3);
+  @include md-elevation(1);
+  padding-left: rem(.8);
+  padding-top: rem(.5);
+  padding-bottom: rem(.5);
+  padding-right: rem(.8);
   header {
     .md-headline {
-      margin: .5em 0;
+      margin: .2em 0;
     }
-    .tools {
+    .actions {
       text-align: right;
     }
   }
+}
+
+.collections-list {
   ul {
     margin: 0;
     margin-top: rem(1.5);
@@ -122,5 +131,14 @@
         opacity: .9;
       }
     }
+  }
+}
+
+.is-dd.filter-selector[md-button] {
+  @include md-button-reset;
+  .selected {
+    text-transform: initial;
+    font-weight: normal;
+    opacity: .8;
   }
 }
