@@ -163,7 +163,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
 collections-filter-dd, collections-sort-dd {
   &.revealed .collections-dd-menu {
     @include animation-name(sort-dd-open);
-    @include animation-duration(280ms);
+    @include animation-duration(250ms);
     @include animation-timing-function($swift-ease-in-timing-function);
     @include animation-iteration-count(1);
     @include animation-fill-mode(backwards);
