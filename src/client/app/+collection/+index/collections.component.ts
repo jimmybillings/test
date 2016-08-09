@@ -7,6 +7,9 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
+import { WzDropdownComponent } from '../../shared/components/wz-dropdown/wz.dropdown.component';
+import { CollectionSortDdComponent } from '../../+collection/components/collections-sort-dd.component';
+import { CollectionFilterDdComponent } from '../../+collection/components/collections-filter-dd.component';
 import { Subscription } from 'rxjs/Rx';
 
 @Component({
@@ -16,7 +19,10 @@ import { Subscription } from 'rxjs/Rx';
   providers: [CollectionsService],
   directives: [
     ROUTER_DIRECTIVES,
-    WzPaginationComponent
+    WzPaginationComponent,
+    WzDropdownComponent,
+    CollectionSortDdComponent,
+    CollectionFilterDdComponent
   ]
 })
 

@@ -117,6 +117,21 @@
       "OPEN_BTN_LABEL": "Open selected",
       "CREATE_BTN_LABEL": "Create new"
     },
+    "SORT_DD_MENU": {
+      "DATE_MOD_NEWEST": "Date modified (newest first)",
+      "DATE_MOD_OLDEST": "Date modified (oldest first)",
+      "DATE_CREATE_NEWEST": "Date created (newest first)",
+      "DATE_CREATE_OLDEST": "Date created (oldest first)",
+      "LIST_COLL_ASC": "List collection A-Z",
+      "LIST_COLL_DESC": "List collection Z-A"
+    },
+    "FILTER_DD_MENU": {
+      "ALL": "Show all collections",
+      "OWN": "Show collections I own",
+      "EDIT": "Show collections I can edit",
+      "VIEW": "Show collections I can view",
+      "RESEARCH": "Show research collections"
+    },
     "SHOW": {
       "PAGE_TITLE": "Your collections",
       "EDIT_BTN_TITLE": "Edit collection",
