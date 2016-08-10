@@ -38,14 +38,14 @@ export class WzBreadcrumbComponent implements OnChanges {
     this.searchComponent.clearFilters();
   }
 
-  private getFilters(filter: any) {
+  public getFilters(filter: any) {
     if (filter.subFilters) {
       for (var l of filter.subFilters) this.getFilters(l);
       return filter;
     } else {
       if (filter.type === 'DateRange' && filter.filterValue) {
         let d = filter.filterValue.split(' - ');
-        filter.filterValue = this.clientDate(d[0])+ ' - '+this.clientDate(d[1])
+        filter.filterValue = this.clientDate(d[0])+ ' - '+this.clientDate(d[1]);
       }
       if (filter.active) this.activeFilters.push(filter);
       return filter;

@@ -16,10 +16,10 @@ export class FilterComponent {
   public dateRange: any;
 
   constructor(
-    @Inject(forwardRef(() => SearchComponent)) searchComponent:SearchComponent) {
-      this.searchComponent = searchComponent;
-      this.dateRange = {};
-    }
+    @Inject(forwardRef(() => SearchComponent)) searchComponent: SearchComponent) {
+    this.searchComponent = searchComponent;
+    this.dateRange = {};
+  }
 
   public filterShouldBeShowing(filter: any): boolean {
     let filterState: any = JSON.parse(localStorage.getItem('filterState'));
@@ -56,8 +56,8 @@ export class FilterComponent {
     }
   }
 
-  public hasCounts(filter:any): boolean {
-    var hasCounts:boolean = true;
+  public hasCounts(filter: any): boolean {
+    var hasCounts: boolean = true;
     if (filter.subFilters) {
       hasCounts = filter.subFilters.filter((f: any) => {
         return f.count > 0;
@@ -72,8 +72,8 @@ export class FilterComponent {
     return count === -1;
   }
 
-  public customValue(event: any, filter:any) {
-    if(event.code === 'Enter') {
+  public customValue(event: any, filter: any) {
+    if (event.code === 'Enter') {
       this.searchComponent.applyCustomValue(filter, event.target.value);
     }
   }
@@ -81,26 +81,26 @@ export class FilterComponent {
   public dateRangeSelect(event: any, filter: any) {
     event.target.event = this.clientDate(event.target.value);
     this.dateRange[event.target.name] = event.target.event;
-    if (Object.keys(this.dateRange).filter((date) => this.dateRange[date]).length === 2 ) {
-      this.searchComponent.applyCustomValue(filter, this.serverDate(this.dateRange.start)+' - '+this.serverDate(this.dateRange.end));
+    if (Object.keys(this.dateRange).filter((date) => this.dateRange[date]).length === 2) {
+      this.searchComponent.applyCustomValue(filter, this.serverDate(this.dateRange.start) + ' - ' + this.serverDate(this.dateRange.end));
     }
   }
 
   public defaultDate(filter: any, state: any) {
-    switch(state) {
+    switch (state) {
       case 'start':
         return this.dateRange[state] = (filter.filterValue) ? this.clientDate(filter.filterValue.split(' - ')[0]) : this.dateRange[state] || null;
-      case 'end': 
+      case 'end':
         return this.dateRange[state] = (filter.filterValue) ? this.clientDate(filter.filterValue.split(' - ')[1]) : this.dateRange[state] || null;
     }
   }
 
-  public serverDate(date:any) {
-    return new Date(date).toJSON().slice(0,10);
+  public serverDate(date: any) {
+    return new Date(date).toJSON().slice(0, 10);
   }
 
-  public clientDate(date:any) {
-    let d:any = new Date(date).toJSON().slice(0,10).split('-');
-    return d[1]+'-'+d[2]+'-'+d[0];
+  public clientDate(date: any) {
+    let d: any = new Date(date).toJSON().slice(0, 10).split('-');
+    return d[1] + '-' + d[2] + '-' + d[0];
   }
 }
