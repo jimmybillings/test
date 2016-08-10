@@ -147,12 +147,11 @@ collections .collection-head {
 
 // silde out collection search form
 collections-search-form {
-  // @include transition($swift-ease-out);
+  @include transition($swift-ease-out);
   flex: 1 1 auto;
   position: relative;
   overflow: hidden;
   margin-right: rem(.8);
-
   form {
     @include transition($swift-ease-out);
     display: flex;
