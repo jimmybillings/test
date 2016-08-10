@@ -11,7 +11,7 @@
       </div>
     </header>
     <md-list dense>
-      <md-list-item *ngFor="let collection of (collections | async).items" [ngClass]="{focused: focusedCollection.id === collection.id}">
+      <md-list-item *ngFor="let collection of (collections | async).items" [ngClass]="{active: focusedCollection.id === collection.id}">
         <button (click)="selectFocusedCollection(collection)">
           <md-icon *ngIf="focusedCollection.id === collection.id">check_box</md-icon>
           <md-icon *ngIf="focusedCollection.id !== collection.id">check_box_outline_blank</md-icon>

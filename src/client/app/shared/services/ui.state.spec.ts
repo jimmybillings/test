@@ -147,6 +147,8 @@ export function main() {
     function mockState() {
       return {
         collectionsListIsOpen: false,
+        collectionsSortIsOpen: false,
+        collectionsFilterIsOpen: false,
         binTrayIsOpen: false,
         searchIsOpen: true,
         searchBarIsActive: false,

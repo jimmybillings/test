@@ -4,6 +4,8 @@ import { Store, Reducer, Action} from '@ngrx/store';
 
 const InitUiState: any = {
   collectionsListIsOpen: false,
+  collectionsSortIsOpen: false,
+  collectionsFilterIsOpen: false,
   binTrayIsOpen: false,
   searchIsOpen: true,
   searchBarIsActive: false,
@@ -71,6 +73,22 @@ export class UiState {
 
   public closeCollectionsList(): void {
     this.update({ collectionsListIsOpen: false });
+  }
+
+  public showCollectionsSort(): void {
+    this.update({ collectionsSortIsOpen: true });
+  }
+
+  public closeCollectionsSort(): void {
+    this.update({ collectionsSortIsOpen: false });
+  }
+
+  public showCollectionsFilter(): void {
+    this.update({ collectionsFilterIsOpen: true });
+  }
+
+  public closeCollectionsFilter(): void {
+    this.update({ collectionsFilterIsOpen: false });
   }
 
   public toggleLoading(state: boolean): void {

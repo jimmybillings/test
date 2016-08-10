@@ -1,0 +1,4 @@
+<form [formGroup]="searchCollections" (ngSubmit)="onSubmit(searchCollections.value.query)" class="md-inline-form">
+  <input md-input="" type="text" placeholder="{{ 'COLLECTION.INDEX.SEARCH_BOX_LABEL' | translate }}" formControlName="query"/>
+  <button type="submit">Search<md-icon>search</md-icon></button>
+</form>

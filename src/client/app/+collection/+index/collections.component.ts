@@ -7,6 +7,10 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
+import { WzDropdownComponent } from '../../shared/components/wz-dropdown/wz.dropdown.component';
+import { CollectionSortDdComponent } from '../../+collection/components/collections-sort-dd.component';
+import { CollectionFilterDdComponent } from '../../+collection/components/collections-filter-dd.component';
+import { CollectionsSearchFormComponent } from '../../+collection/components/collections-search-form.component';
 import { Subscription } from 'rxjs/Rx';
 
 @Component({
@@ -16,13 +20,18 @@ import { Subscription } from 'rxjs/Rx';
   providers: [CollectionsService],
   directives: [
     ROUTER_DIRECTIVES,
-    WzPaginationComponent
+    WzPaginationComponent,
+    WzDropdownComponent,
+    CollectionSortDdComponent,
+    CollectionFilterDdComponent,
+    CollectionsSearchFormComponent
   ]
 })
 
 export class CollectionsComponent implements OnInit, OnDestroy {
   public collections: Collections;
   public errorMessage: string;
+  public isCollectionSearchOpen: boolean = false;
   private collectionStoreSubscription: Subscription;
 
   constructor(
@@ -35,7 +44,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.collectionsService.loadCollections('all',400).take(1).subscribe();
+    this.collectionsService.loadCollections('all', 400).take(1).subscribe();
     this.collectionStoreSubscription =
       this.collectionsService.data.subscribe(collections => this.collections = collections);
   }
@@ -46,6 +55,14 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   public date(date: any): Date {
     return new Date(date);
+  }
+
+  public openCollectionSearch() {
+    this.isCollectionSearchOpen = true;
+  }
+
+  public closeCollectionSearch() {
+    this.isCollectionSearchOpen = false;
   }
 
   public selectActiveCollection(id: number): void {
@@ -62,7 +79,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     return isMatch;
   }
 
-  public thumbnail(thumbnail: {urls: {https: string}}): string {
+  public thumbnail(thumbnail: { urls: { https: string } }): string {
     return (thumbnail) ? thumbnail.urls.https : '/assets/img/tbn_missing.jpg';
   }
 
@@ -82,7 +99,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
         this.collectionsService.destroyCollections();
         this.activeCollection.get().take(1).subscribe((collection) => {
           this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
-          this.collectionsService.loadCollections('all',400).take(1).subscribe();
+          this.collectionsService.loadCollections('all', 400).take(1).subscribe();
         });
       }
     });
