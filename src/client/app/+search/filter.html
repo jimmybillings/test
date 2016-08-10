@@ -34,8 +34,9 @@
       </span>
 
       <span *ngSwitchCase="'DateRange'">
-        <input name="start" type="date" value="{{defaultDate(filter, 'start')}}" (change)="dateRangeSelect($event, filter)" />
-        <input name="end" type="date" value="{{defaultDate(filter, 'end')}}" (change)="dateRangeSelect($event, filter)" />
+        <label for="dateRange">Date Range:</label>
+        <input wzPikaday name="start" type="text" value="{{defaultDate(filter, 'start')}}" (change)="dateRangeSelect($event, filter)" />
+        <input wzPikaday name="end" type="text" value="{{defaultDate(filter, 'end')}}" (change)="dateRangeSelect($event, filter)" />
       </span>
         
       <span *ngSwitchCase="'Text'">

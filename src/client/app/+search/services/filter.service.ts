@@ -5,6 +5,7 @@ import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { Http, RequestOptions, URLSearchParams, Response } from '@angular/http';
 
+
 const initFilters: any = {};
 export const filters: Reducer<any> = (state: Array<any> = initFilters, action: Action) => {
   switch (action.type) {

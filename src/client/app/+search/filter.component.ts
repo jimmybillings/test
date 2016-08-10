@@ -1,11 +1,12 @@
 import { Component, Input, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { SearchComponent } from './search.component';
+import { WzPikaDayDirective } from '../shared/components/wz-pikaday/wz-pikaday.directive';
 
 @Component({
   moduleId: module.id,
   selector: 'filter',
   templateUrl: 'filter.html',
-  directives: [FilterComponent],
+  directives: [FilterComponent, WzPikaDayDirective],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -78,21 +79,28 @@ export class FilterComponent {
   }
 
   public dateRangeSelect(event: any, filter: any) {
-    this.dateRange[event.target.name] = event.target.value;
-    if (this.dateRange.start && this.dateRange.end) {
-      this.searchComponent.applyCustomValue(filter, this.dateRange.start+' - '+this.dateRange.end);
+    event.target.event = this.clientDate(event.target.value);
+    this.dateRange[event.target.name] = event.target.event;
+    if (Object.keys(this.dateRange).filter((date) => this.dateRange[date]).length === 2 ) {
+      this.searchComponent.applyCustomValue(filter, this.serverDate(this.dateRange.start)+' - '+this.serverDate(this.dateRange.end));
     }
   }
 
   public defaultDate(filter: any, state: any) {
-    if (state === 'start' && filter.filterValue) {
-      this.dateRange['start'] = filter.filterValue.split(' - ')[0];
-      return filter.filterValue.split(' - ')[0];
-    } else if (state === 'end' && filter.filterValue) {
-      this.dateRange['end'] = filter.filterValue.split(' - ')[1];
-      return filter.filterValue.split(' - ')[1];
-    } else {
-      return null;
+    switch(state) {
+      case 'start':
+        return this.dateRange[state] = (filter.filterValue) ? this.clientDate(filter.filterValue.split(' - ')[0]) : this.dateRange[state] || null;
+      case 'end': 
+        return this.dateRange[state] = (filter.filterValue) ? this.clientDate(filter.filterValue.split(' - ')[1]) : this.dateRange[state] || null;
     }
+  }
+
+  public serverDate(date:any) {
+    return new Date(date).toJSON().slice(0,10);
+  }
+
+  public clientDate(date:any) {
+    let d:any = new Date(date).toJSON().slice(0,10).split('-');
+    return d[1]+'-'+d[2]+'-'+d[0];
   }
 }

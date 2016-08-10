@@ -43,8 +43,17 @@ export class WzBreadcrumbComponent implements OnChanges {
       for (var l of filter.subFilters) this.getFilters(l);
       return filter;
     } else {
+      if (filter.type === 'DateRange' && filter.filterValue) {
+        let d = filter.filterValue.split(' - ');
+        filter.filterValue = this.clientDate(d[0])+ ' - '+this.clientDate(d[1])
+      }
       if (filter.active) this.activeFilters.push(filter);
       return filter;
     }
+  }
+
+  public clientDate(date:any) {
+    let d:any = new Date(date).toJSON().slice(0,10).split('-');
+    return d[1]+'-'+d[2]+'-'+d[0];
   }
 }
