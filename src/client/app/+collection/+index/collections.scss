@@ -1,17 +1,16 @@
 collections .collection-head {
-  background-color: rgba(md-color($md-background, card), .3);
-  @include md-elevation(1);
+  background-color: rgba(md-color($md-background, card), .4);
+  // @include md-elevation(1);
   padding-left: rem(.8);
   padding-top: rem(.5);
   padding-bottom: rem(.5);
   padding-right: rem(.8);
-  header {
-    .md-headline {
-      margin: .2em 0;
-    }
-    .actions {
-      text-align: right;
-    }
+  header .md-display-1 {
+    margin: .5em 0 .1em 0;
+    opacity: .8;
+  }
+  header div[flex="100"]:last-child button[md-icon-button] {
+    margin-right: rem(1.6);
   }
 }
 
@@ -140,5 +139,87 @@ collections .collection-head {
     text-transform: initial;
     font-weight: normal;
     opacity: .8;
+  }
+}
+
+
+
+
+// silde out collection search form
+collections-search-form {
+  // @include transition($swift-ease-out);
+  flex: 1 1 auto;
+  position: relative;
+  overflow: hidden;
+  margin-right: rem(.8);
+
+  form {
+    @include transition($swift-ease-out);
+    display: flex;
+  }
+  &.revealed form {
+    @include animation-name(slide);
+    @include animation-duration(420ms);
+    @include animation-timing-function($swift-ease-in-timing-function);
+    @include animation-iteration-count(1);
+    @include animation-delay(25ms);
+    @include animation-fill-mode(backwards);
+  }
+  input {
+    font-size: 1.15em;
+    width: calc(100% - 34px);
+    padding: 0 0 0 3%;
+    max-height: rem(3.4);
+    min-height: rem(3.4);
+    border: 1px solid rgba(md-color($md-foreground, base),.2);
+    @include placeholder {
+      color: md-color($md-foreground, hint-text);
+    }
+    color: md-color($md-foreground, secondary-text);
+    background-color:  rgba(md-color($md-background, app-bar), .9);
+    @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
+    border-radius: 0;
+    &:focus {
+      outline: none;
+      background-color: lighten(md-color($md-background, app-bar), 40%);
+    }
+  }
+  button[type="submit"] {
+    cursor: pointer;
+    font-size: 0;
+    border: none;
+    padding:0;
+    height:rem(3.6);
+    width:rem(3.6);
+    background-color: rgba(md-color($md-foreground, hint-text), .3);
+    @include transition($swift-ease-in);
+    md-icon.material-icons {
+      font-size: rem(2.6);
+      width: rem(2.6);
+      height: rem(2.6);
+      color: $white-87-opacity;
+      text-shadow: md-color($md-grey, 900, .2) 0 1px 2px;
+    }
+    &:hover {
+      background-color: md-color($md-accent, 700, 1);
+    }
+    &[disabled] {
+      cursor: default;
+      background-color: md-color($md-accent, 800, .95);
+      md-icon.material-icons {
+        opacity: .6;
+       }
+    }
+  }
+}
+
+
+
+@include keyframes(slide) {
+  0% {
+    margin-left:250%;
+  }
+  100% {
+    margin-left:0%;
   }
 }

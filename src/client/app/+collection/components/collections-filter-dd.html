@@ -3,7 +3,7 @@
     <md-list dense>
       <md-list-item *ngFor="let option of filterOptions" [ngClass]="{active: 0 === option.id}">
         <button (click)="filterCollections(option.value)">
-          {{ 'COLLECTION.FILTER_DD_MENU.'+option.label | translate }}
+          {{ 'COLLECTION.INDEX.FILTER_DD_MENU.'+option.label | translate }}
         </button>
         <md-divider class="divider" *ngIf="option.id == 0 || option.id == 3"></md-divider>
       </md-list-item>
