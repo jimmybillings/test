@@ -62,7 +62,8 @@ var config = {
     'rxjs': 'node_modules/rxjs',
     '@angular': 'node_modules/@angular',
     '@ngrx/store': 'node_modules/@ngrx/store/index.js',
-    '@angular2-material': 'node_modules/@angular2-material'
+    '@angular2-material': 'node_modules/@angular2-material',
+    'pikaday': 'node_modules/pikaday/pikaday'
   },
   packages: {
     'rxjs': {

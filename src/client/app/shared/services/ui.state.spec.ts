@@ -153,7 +153,7 @@ export function main() {
         searchIsOpen: true,
         searchBarIsActive: false,
         showFixed: false,
-        pageLoading: false
+        loading: false
       };
     }
   });

@@ -10,7 +10,7 @@ const InitUiState: any = {
   searchIsOpen: true,
   searchBarIsActive: false,
   showFixed: false,
-  pageLoading: false
+  loading: false
 };
 
 export const uiState: Reducer<any> = (state = InitUiState, action: Action) => {
@@ -91,8 +91,8 @@ export class UiState {
     this.update({ collectionsFilterIsOpen: false });
   }
 
-  public toggleLoading(state: boolean): void {
-    this.data.take(1).subscribe(s => this.update({ pageLoading: state}));
+  public loading(state: boolean): void {
+    this.data.take(1).subscribe(s => this.update({ loading: state}));
   }
 
   public checkRouteForSearchBar(currentState: string): void {

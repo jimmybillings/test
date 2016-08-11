@@ -79,7 +79,7 @@ export class FilterComponent {
   }
 
   public dateRangeSelect(event: any, filter: any) {
-    event.target.event = this.clientDate(event.target.value);
+    event.target.event = this.serverDate(event.target.value);
     this.dateRange[event.target.name] = event.target.event;
     if (Object.keys(this.dateRange).filter((date) => this.dateRange[date]).length === 2) {
       this.searchComponent.applyCustomValue(filter, this.serverDate(this.dateRange.start) + ' - ' + this.serverDate(this.dateRange.end));
@@ -89,9 +89,9 @@ export class FilterComponent {
   public defaultDate(filter: any, state: any) {
     switch (state) {
       case 'start':
-        return this.dateRange[state] = (filter.filterValue) ? this.clientDate(filter.filterValue.split(' - ')[0]) : this.dateRange[state] || null;
+        return this.dateRange[state] = (filter.filterValue) ? this.serverDate(filter.filterValue.split(' - ')[0]) : this.dateRange[state] || null;
       case 'end':
-        return this.dateRange[state] = (filter.filterValue) ? this.clientDate(filter.filterValue.split(' - ')[1]) : this.dateRange[state] || null;
+        return this.dateRange[state] = (filter.filterValue) ? this.serverDate(filter.filterValue.split(' - ')[1]) : this.dateRange[state] || null;
     }
   }
 
