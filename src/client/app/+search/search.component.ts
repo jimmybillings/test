@@ -57,7 +57,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
       this.searchContext.update = params;
-      this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.toggleLoading(false));
+      this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
     });
   }
 
@@ -98,33 +98,34 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public toggleFilter(filterId: any): void {
-    this.filter.set(this.filter.toggleFilter(this.filter.filters, filterId));
+    this.filter.set(this.filter.toggle(filterId));
   }
 
   public applyFilter(filterId: number): void {
-    this.uiState.toggleLoading(true);
-    this.filter.set(this.filter.toggleFilter(this.filter.filters, filterId));
+    this.uiState.loading(true);
+    this.toggleFilter(filterId);
     this.filterAssets();
   }
 
   public applyCustomValue(filter: any, value: any) {
-    this.uiState.toggleLoading(true);
-    this.filter.set(this.filter.updateCustomValue(this.filter.filters, filter, value));
+    this.uiState.loading(true);
+    this.filter.set(this.filter.addCustomValue(filter, value));
     this.filterAssets();
   }
 
   public applyExclusiveFilter(subFilter: any): void {
-    this.uiState.toggleLoading(true);
-    this.filter.set(this.filter.toggleExclusiveFilter(this.filter.filters, subFilter));
+    this.uiState.loading(true);
+    this.filter.set(this.filter.toggleExclusive(subFilter));
     this.filterAssets();
   }
 
   public filterAssets(): void {
     this.searchContext.update = { i: 1 };
     let active: any = [];
-    this.filter.findActive(this.filter.filters, active);
+    this.filter.active(active);
     let activeIds: any = active.map((filter:any) => filter.filterId);
-    let activeValues: any = this.activeValues(active);
+    let activeValues: any = active.filter((filter:any) => filter.filterValue)
+      .map((filter: any) => `${filter.filterId}:${filter.filterValue}`);;
     if (activeIds.length > 0) {
       this.searchContext.update = { 'filterIds':  activeIds.join(',') };
     } else {
@@ -138,14 +139,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.go();
   }
 
-  public activeValues(active: any): any {
-    return active.filter((filter:any) => filter.filterValue)
-      .map((filter: any) => `${filter.filterId}:${filter.filterValue}`);
-  }
-
   public clearFilters(): void {
-    this.uiState.toggleLoading(true);
-    this.filter.set(this.filter.clearActive(this.filter.filters));
+    this.uiState.loading(true);
+    this.filter.set(this.filter.clear());
     this.filterAssets();
   }
 }
