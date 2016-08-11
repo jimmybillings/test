@@ -47,21 +47,22 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
         <ng-content></ng-content>
       </div>
     </template>
+    <div class="wz-dialog-click-catcher" *ngIf="showClickCatcher" (click)="_emitCloseEvent()"></div>
     `
 })
 
 export class WzDialogComponent implements OnDestroy {
   @Input() config = new OverlayState();
-  public viewRef: any;
+  // public viewRef: any;
   public animationState: string = 'out';
   // public active: boolean = false;
+  private showClickCatcher: boolean = false;
   private overlayBk = document.querySelector('div.md-overlay-container');
   @ViewChild(WzDialogPortalDirective) private portal: WzDialogPortalDirective;
   private overlayRef: OverlayRef = null;
   constructor(
     private overlay: Overlay,
     private renderer: Renderer) {
-    console.log(this.overlay);
     this.config.positionStrategy = this.overlay.position()
       .global()
       .centerHorizontally()
@@ -71,6 +72,10 @@ export class WzDialogComponent implements OnDestroy {
 
   ngOnDestroy(): any {
     return this.close();
+  }
+
+  public setClickCatcher(bool: boolean): void {
+    this.showClickCatcher = bool;
   }
 
   public show(): Promise<WzDialogComponent> {
@@ -83,9 +88,10 @@ export class WzDialogComponent implements OnDestroy {
         return ref.attach(this.portal);
       })
       .then(() => {
-        setTimeout(() => this.closeListener(), 200);
+        // setTimeout(() => this.closeListener(), 200);
         this.renderer.setElementClass(this.overlayBk,'active', true);
         // this.active = true;
+        this.setClickCatcher(true);
         return this;
       });
   }
@@ -101,11 +107,12 @@ export class WzDialogComponent implements OnDestroy {
         this.overlayRef.dispose();
         this.overlayRef = null;
         this.renderer.setElementClass(this.overlayBk,'active', false);
-        this.viewRef();
+        this.setClickCatcher(false);
+        // this.viewRef();
       });
     }
   }
-  private closeListener() {
-    this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.close());
-  }
+  // private closeListener() {
+    // this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.close());
+  // }
 }
