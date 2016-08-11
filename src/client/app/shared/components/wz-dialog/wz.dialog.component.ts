@@ -1,11 +1,22 @@
-import {Component, Input, ViewChild, ViewEncapsulation, OnDestroy} from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewChild,
+  ViewEncapsulation,
+  OnDestroy,
+  Renderer,
+  trigger,
+  state,
+  style,
+  transition,
+  animate} from '@angular/core';
 import {Overlay, OVERLAY_PROVIDERS} from '@angular2-material/core/overlay/overlay';
 import {OverlayState} from '@angular2-material/core/overlay/overlay-state';
 import {OverlayRef} from '@angular2-material/core/overlay/overlay-ref';
 import {Directive, ViewContainerRef, TemplateRef} from '@angular/core';
 import {TemplatePortalDirective} from '@angular2-material/core';
 
-@Directive({selector: '[wzDialogPortal]'})
+@Directive({ selector: '[wzDialogPortal]' })
 export class WzDialogPortalDirective extends TemplatePortalDirective {
   constructor(templateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef) {
     super(templateRef, viewContainerRef);
@@ -17,9 +28,22 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
   directives: [WzDialogPortalDirective],
   providers: [Overlay, OVERLAY_PROVIDERS],
   encapsulation: ViewEncapsulation.None,
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({ marginTop: '0' })),
+      state('void, out', style({ marginTop: '-260%' })),
+      transition('void => *, out => in', [
+        // style({ marginTop: '-240%' }),
+        animate('400ms ease-in-out')
+      ]),
+      transition('in => void, * => void, in => out', [
+        animate('600ms ease-in-out', style({ marginTop: '-260%' }))
+      ])
+    ])
+  ],
   template: `
     <template wzDialogPortal>
-      <div class="wz-dialog" style="width: 100%">
+      <div @slideInOut="animationState" class="wz-dialog">
         <ng-content></ng-content>
       </div>
     </template>
@@ -28,14 +52,21 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
 
 export class WzDialogComponent implements OnDestroy {
   @Input() config = new OverlayState();
+  public viewRef: any;
+  public animationState: string = 'out';
+  // public active: boolean = false;
+  private overlayBk = document.querySelector('div.md-overlay-container');
   @ViewChild(WzDialogPortalDirective) private portal: WzDialogPortalDirective;
   private overlayRef: OverlayRef = null;
-
-  constructor(private overlay: Overlay) {
+  constructor(
+    private overlay: Overlay,
+    private renderer: Renderer) {
+    console.log(this.overlay);
     this.config.positionStrategy = this.overlay.position()
       .global()
       .centerHorizontally()
-      .centerVertically();
+      .fixed()
+      .top('9%');
   }
 
   ngOnDestroy(): any {
@@ -43,18 +74,24 @@ export class WzDialogComponent implements OnDestroy {
   }
 
   public show(): Promise<WzDialogComponent> {
+    this.animationState = 'in';
     return this.close()
       .then(() => this.overlay.create(this.config))
       .then((ref: OverlayRef) => {
         this.overlayRef = ref;
+        this.overlayRef = ref;
         return ref.attach(this.portal);
       })
       .then(() => {
+        setTimeout(() => this.closeListener(), 200);
+        this.renderer.setElementClass(this.overlayBk,'active', true);
+        // this.active = true;
         return this;
       });
   }
 
   public close(): Promise<any> {
+    // this.animationState = 'out';
     if (!this.overlayRef) {
       return Promise.resolve(this);
     } else {
@@ -63,7 +100,12 @@ export class WzDialogComponent implements OnDestroy {
       }).then(() => {
         this.overlayRef.dispose();
         this.overlayRef = null;
+        this.renderer.setElementClass(this.overlayBk,'active', false);
+        this.viewRef();
       });
     }
+  }
+  private closeListener() {
+    this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.close());
   }
 }
