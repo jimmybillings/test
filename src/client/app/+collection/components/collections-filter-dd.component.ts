@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 /**
  * Directive that renders a list of collections
  */
@@ -12,19 +12,27 @@ import { Component, Input, ChangeDetectionStrategy} from '@angular/core';
 
 export class CollectionFilterDdComponent {
   @Input() UiState: any;
+  @Output() filter = new EventEmitter();
   public filterOptions: Array<any> = [];
 
   constructor() {
     this.filterOptions = [
-      { 'id': 0, 'label': 'ALL', 'value': 'all' },
-      { 'id': 1, 'label': 'OWN', 'value': 'own' },
-      { 'id': 2, 'label': 'EDIT', 'value': 'edit' },
-      { 'id': 3, 'label': 'VIEW', 'value': 'view' },
-      { 'id': 4, 'label': 'RESEARCH', 'value': 'research' }
+      { 'id': 0, 'label': 'ALL', 'value': 'all', 'active': true },
+      { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'active': false },
+      { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'active': false },
+      { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'active': false },
+      { 'id': 4, 'label': 'RESEARCHER', 'value': 'research', 'active': false }
     ];
   }
 
   public closeCollectionsFiltertDd(): void {
     this.UiState.closeCollectionsFilterDd();
+  }
+
+  public setActiveFilter(filter:any) {
+    this.filterOptions = this.filterOptions.map((filterOption) => {
+      filter.id === filterOption.id ? filterOption.active = true : filterOption.active = false;
+      return filterOption;
+    });
   }
 }
