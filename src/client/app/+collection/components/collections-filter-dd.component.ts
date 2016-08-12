@@ -21,7 +21,7 @@ export class CollectionFilterDdComponent {
       { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'active': false },
       { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'active': false },
       { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'active': false },
-      { 'id': 4, 'label': 'RESEARCHER', 'value': 'research', 'active': false }
+      { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'active': false }
     ];
   }
 
