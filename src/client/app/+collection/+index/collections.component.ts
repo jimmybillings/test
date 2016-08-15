@@ -32,8 +32,10 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public collections: Collections;
   public errorMessage: string;
   public isCollectionSearchOpen: boolean = false;
-  public activeCollectionFilter: string;
-  @ViewChild(CollectionFilterDdComponent) public CollectionFilters: CollectionFilterDdComponent;
+  public activeFilter: string;
+  public activeSort: string;
+  @ViewChild(CollectionFilterDdComponent) public filters: CollectionFilterDdComponent;
+  @ViewChild(CollectionSortDdComponent) public sort: CollectionSortDdComponent;
   private collectionStoreSubscription: Subscription;
 
 
@@ -50,7 +52,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.collectionsService.loadCollections('all', 400).take(1).subscribe();
     this.collectionStoreSubscription =
       this.collectionsService.data.subscribe(collections => this.collections = collections);
-    this.activeCollectionFilter = this.getActive(this.CollectionFilters.filterOptions);
   }
 
   ngOnDestroy() {
@@ -61,12 +62,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     return new Date(date);
   }
 
-  public getActive(filterOptions:Array<any>): string {
-    let activeFilter = filterOptions.filter(obj => {
-      return obj.active === true ? true : false;
-    });
-    return activeFilter[0].value;
-  }
   public openCollectionSearch() {
     this.isCollectionSearchOpen = true;
   }
@@ -79,18 +74,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.activeCollection.set(id).take(1).subscribe(() => {
       this.activeCollection.getItems(id, 300).take(1).subscribe();
     });
-  }
-
-  public isActiveCollection(collectionId: number): boolean {
-    let isMatch: boolean;
-    this.activeCollection.data.take(1)
-      .map(activeCollection => activeCollection.id)
-      .subscribe(id => isMatch = id === collectionId);
-    return isMatch;
-  }
-
-  public thumbnail(thumbnail: { urls: { https: string } }): string {
-    return (thumbnail) ? thumbnail.urls.https : '/assets/img/tbn_missing.jpg';
   }
 
   public deleteCollection(id: number): void {
@@ -116,7 +99,36 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public filter(filter: any, ItemsPerPg: number) {
-    this.activeCollectionFilter = this.getActive(this.CollectionFilters.filterOptions);
     this.collectionsService.loadCollections(filter.value, ItemsPerPg).take(1).subscribe();
+  }
+
+  public search(query: any) {
+    this.collectionsService.loadCollections('all', 400).take(1).subscribe();
+  }
+
+  public sortBy(sort: any) {
+    this.collectionsService.loadCollections('all', 400).take(1).subscribe();
+  }
+
+  public isActiveCollection(collectionId: number): boolean {
+    let isMatch: boolean;
+    this.activeCollection.data.take(1)
+      .map(activeCollection => activeCollection.id)
+      .subscribe(id => isMatch = id === collectionId);
+    return isMatch;
+  }
+
+  public getActiveFilter(): string {
+    let filter = this.filters.filterOptions.filter((obj: any) => obj.active === true);
+    return (filter.length > 0) ? filter[0].value : '';
+  }
+
+  public getActiveSort(): string {
+    let activeSort = this.sort.sortOptions.filter(obj => obj.active === true);
+    return (activeSort.length > 0) ? activeSort[0].label : '';
+  }
+
+  public thumbnail(thumbnail: { urls: { https: string } }): string {
+    return (thumbnail) ? thumbnail.urls.https : '/assets/img/tbn_missing.jpg';
   }
 }
