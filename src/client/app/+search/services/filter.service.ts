@@ -10,7 +10,7 @@ const initFilters: any = {};
 export const filters: Reducer<any> = (state: Array<any> = initFilters, action: Action) => {
   switch (action.type) {
     case 'FILTERS.SET_FILTERS':
-      return Object.assign({}, action.payload);
+      return Object.assign({}, JSON.parse(JSON.stringify(action.payload)));
     default:
       return state;
   }
@@ -44,7 +44,7 @@ export class FilterService {
   }
 
   public sanatize(filter: any, parent: any) {
-    
+    if (parent) filter.parentId = parent.filterId;
     if (filter.subFilters) {
       filter.expanded = false;
       for (var l of filter.subFilters) this.sanatize(l, filter);
@@ -66,7 +66,7 @@ export class FilterService {
 
   public toggleExclusive( subFilter: any, filter=this.filters): void {
     if (filter.subFilters) {
-      if (filter.filterId === subFilter.parent.filterId) {
+      if (filter.filterId === subFilter.parentId) {
         for (let f of filter.subFilters) f.active = (f.filterId === subFilter.filterId) ? !f.active : false;
       }
       for (var l of filter.subFilters) this.toggleExclusive(subFilter, l);

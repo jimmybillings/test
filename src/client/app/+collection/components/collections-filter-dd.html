@@ -2,7 +2,7 @@
   <div class="dd-menu-wrapper">
     <md-list dense>
       <md-list-item *ngFor="let option of filterOptions" [ngClass]="{'active': option.active}">
-        <button (click)="setActiveFilter(option); filter.emit(option,100)" [disabled]="option.value ==='researcher'">
+        <button (click)="setActiveFilter(option);" [disabled]="option.value ==='researcher'">
           {{ 'COLLECTION.INDEX.FILTER_DD_MENU.'+option.label | translate }}
         </button>
         <md-divider class="divider" *ngIf="option.id == 0 || option.id == 3"></md-divider>

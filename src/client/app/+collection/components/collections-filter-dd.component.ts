@@ -34,5 +34,6 @@ export class CollectionFilterDdComponent {
       filter.id === filterOption.id ? filterOption.active = true : filterOption.active = false;
       return filterOption;
     });
+    this.filter.emit(filter);
   }
 }

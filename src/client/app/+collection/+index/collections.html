@@ -8,7 +8,8 @@
         <!--TODO rework search,sort,filter for mobile-->
           <collections-search-form
             [ngClass]="{ 'revealed' : isCollectionSearchOpen }"
-            [hidden]="!isCollectionSearchOpen">
+            [hidden]="!isCollectionSearchOpen"
+            (query)="search($event)">
           </collections-search-form>
           <button *ngIf="isCollectionSearchOpen" md-icon-button title="close search" type="button" (click)="closeCollectionSearch()" class="close" tabindex="-1"><md-icon>close</md-icon></button>
           <button md-icon-button
@@ -16,8 +17,8 @@
             title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" 
             (click)="openCollectionSearch()"><md-icon>search</md-icon>
           </button>
-        <button md-button class="is-dd filter-selector" (click)="filterCollections.show($event)">Filter: <span class="selected">{{'COLLECTION.INDEX.FILTER_DD_MENU.'+activeCollectionFilter | uppercase | translate}}</span></button>
-        <button md-button class="is-dd filter-selector" (click)="sortCollections.show($event)">Sort: <span class="selected">Date modified (newest first)</span></button>
+        <button md-button class="is-dd filter-selector" (click)="filterCollections.show($event)">Filter: <span class="selected">{{'COLLECTION.INDEX.FILTER_DD_MENU.'+getActiveFilter() | uppercase | translate}}</span></button>
+        <button md-button class="is-dd filter-selector" (click)="sortCollections.show($event)">Sort: <span class="selected">{{'COLLECTION.INDEX.SORT_DD_MENU.'+getActiveSort() | uppercase | translate }}</span></button>
       </div>
     </header>
   </div>
@@ -103,6 +104,7 @@
 <wz-dropdown #sortCollections>
   <collections-sort-dd
     [UiState]="UiState"
+    (sort)="sortBy($event)"
     layout="row" layout-align="end start" class="revealed">
   </collections-sort-dd>
 </wz-dropdown>

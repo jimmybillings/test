@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
@@ -11,6 +11,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 export class CollectionsSearchFormComponent {
   public searchCollections: FormGroup;
   public isCollectionSearchOpen: boolean = false;
+  @Output() query = new EventEmitter();
 
   constructor(
     public fb: FormBuilder) {
@@ -30,6 +31,6 @@ export class CollectionsSearchFormComponent {
   }
 
   public onSubmit() {
-    console.log(this.searchCollections.value);
+    this.query.emit(this.searchCollections.value);
   }
 }
