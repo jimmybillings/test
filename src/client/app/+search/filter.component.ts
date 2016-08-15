@@ -1,4 +1,4 @@
-import { Component, Input, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Inject, forwardRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { SearchComponent } from './search.component';
 import { WzPikaDayDirective } from '../shared/components/wz-pikaday/wz-pikaday.directive';
 
@@ -16,10 +16,12 @@ export class FilterComponent {
   public dateRange: any;
 
   constructor(
-    @Inject(forwardRef(() => SearchComponent)) searchComponent: SearchComponent) {
+    @Inject(forwardRef(() => SearchComponent)) searchComponent: SearchComponent, private change: ChangeDetectorRef) {
     this.searchComponent = searchComponent;
     this.dateRange = {};
+    
   }
+
 
   public filterShouldBeShowing(filter: any): boolean {
     let filterState: any = JSON.parse(localStorage.getItem('filterState'));

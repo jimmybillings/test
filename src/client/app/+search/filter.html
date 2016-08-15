@@ -1,5 +1,6 @@
 <ul>
   <li *ngFor="let filter of filters.subFilters">
+
     <span [ngSwitch]="filter.type">
 
       <span *ngSwitchCase="'ExclusiveList'">

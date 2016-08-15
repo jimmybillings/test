@@ -44,8 +44,7 @@ export class FilterService {
   }
 
   public sanatize(filter: any, parent: any) {
-    filter.parent = parent;
-    if (filter.active && filter.parent) this.makeParentActive(filter.parent);
+    
     if (filter.subFilters) {
       filter.expanded = false;
       for (var l of filter.subFilters) this.sanatize(l, filter);
@@ -54,14 +53,11 @@ export class FilterService {
     return filter;
   }
 
-  public makeParentActive(filter: any): void {
-      filter.active = true;
-      if (filter.parent) this.makeParentActive(filter.parent);
-      return filter;
-  }
-
   public toggle(currentFilter: any, filter=this.filters) {
-    if (filter.filterId === currentFilter) filter.active = !filter.active;
+    if (filter.filterId === currentFilter) {
+      filter.active = !filter.active;
+      filter = JSON.parse(JSON.stringify(filter));
+    }
     if (filter.subFilters) {
       for (var l of filter.subFilters) this.toggle(currentFilter, l);
       return filter;

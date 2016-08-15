@@ -55,9 +55,12 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
+    this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
     this.routeSubscription = this.route.params.subscribe(params => {
       this.searchContext.update = params;
-      this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
+      if (!this.searchContext.state.filterIds) {
+        this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
+      }
     });
   }
 
@@ -102,19 +105,20 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyFilter(filterId: number): void {
-    this.uiState.loading(true);
+    // this.uiState.loading(true);
+    console.log(filterId);
     this.toggleFilter(filterId);
     this.filterAssets();
   }
 
   public applyCustomValue(filter: any, value: any) {
-    this.uiState.loading(true);
+    // this.uiState.loading(true);
     this.filter.set(this.filter.addCustomValue(filter, value));
     this.filterAssets();
   }
 
   public applyExclusiveFilter(subFilter: any): void {
-    this.uiState.loading(true);
+    // this.uiState.loading(true);
     this.filter.set(this.filter.toggleExclusive(subFilter));
     this.filterAssets();
   }
@@ -140,7 +144,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public clearFilters(): void {
-    this.uiState.loading(true);
+    // this.uiState.loading(true);
     this.filter.set(this.filter.clear());
     this.filterAssets();
   }
