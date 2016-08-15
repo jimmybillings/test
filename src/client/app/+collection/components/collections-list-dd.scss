@@ -95,6 +95,14 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
             background-color: rgba(md-color($md-foreground, base), .1);
             outline: none;
           }
+          &[disabled] {
+            color: rgba(md-color($md-foreground, text), .3);
+            &:hover {
+              background: none;
+              background-color: transparent;
+              cursor: default;
+            }
+          }
         }
         md-icon {
           @include transition($swift-ease-out);

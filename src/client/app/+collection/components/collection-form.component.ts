@@ -1,4 +1,4 @@
-import { Component, Input, OnInit,ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Collection, Collections } from '../../shared/interfaces/collection.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { Asset } from '../../shared/interfaces/asset.interface';

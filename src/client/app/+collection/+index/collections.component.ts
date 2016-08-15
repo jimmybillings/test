@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
 import { Collections } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
@@ -32,7 +32,10 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public collections: Collections;
   public errorMessage: string;
   public isCollectionSearchOpen: boolean = false;
+  public activeCollectionFilter: string;
+  @ViewChild(CollectionFilterDdComponent) public CollectionFilters: CollectionFilterDdComponent;
   private collectionStoreSubscription: Subscription;
+
 
   constructor(
     public router: Router,
@@ -47,6 +50,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.collectionsService.loadCollections('all', 400).take(1).subscribe();
     this.collectionStoreSubscription =
       this.collectionsService.data.subscribe(collections => this.collections = collections);
+    this.activeCollectionFilter = this.getActive(this.CollectionFilters.filterOptions);
   }
 
   ngOnDestroy() {
@@ -57,6 +61,12 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     return new Date(date);
   }
 
+  public getActive(filterOptions:Array<any>): string {
+    let activeFilter = filterOptions.filter(obj => {
+      return obj.active === true ? true : false;
+    });
+    return activeFilter[0].value;
+  }
   public openCollectionSearch() {
     this.isCollectionSearchOpen = true;
   }
@@ -103,5 +113,10 @@ export class CollectionsComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  public filter(filter: any, ItemsPerPg: number) {
+    this.activeCollectionFilter = this.getActive(this.CollectionFilters.filterOptions);
+    this.collectionsService.loadCollections(filter.value, ItemsPerPg).take(1).subscribe();
   }
 }

@@ -16,7 +16,7 @@
             title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" 
             (click)="openCollectionSearch()"><md-icon>search</md-icon>
           </button>
-        <button md-button class="is-dd filter-selector" (click)="filterCollections.show($event)">Filter: <span class="selected">Show all collections</span></button>
+        <button md-button class="is-dd filter-selector" (click)="filterCollections.show($event)">Filter: <span class="selected">{{'COLLECTION.INDEX.FILTER_DD_MENU.'+activeCollectionFilter | uppercase | translate}}</span></button>
         <button md-button class="is-dd filter-selector" (click)="sortCollections.show($event)">Sort: <span class="selected">Date modified (newest first)</span></button>
       </div>
     </header>
@@ -110,6 +110,7 @@
 <wz-dropdown #filterCollections>
   <collections-filter-dd
     [UiState]="UiState"
+    (filter)="filter($event)"
     layout="row" layout-align="end start" class="revealed">
   </collections-filter-dd>
 </wz-dropdown>

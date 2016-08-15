@@ -112,6 +112,7 @@
       "HEADING": "Select collection",
       "SEARCH_BTN_TITLE": "Search collections",
       "FILTER_BTN_TITLE": "Filter collections",
+      "SORT_BTN_TITLE": "Sort collections",
       "SHARED_TITLE": "Your role: {{role}}",
       "VIEW_BTN_LABEL": "View all",
       "OPEN_BTN_LABEL": "Open selected",
@@ -150,10 +151,10 @@
 
       "FILTER_DD_MENU": {
         "ALL": "Show all collections",
-        "OWN": "Show collections I own",
-        "EDIT": "Show collections I can edit",
-        "VIEW": "Show collections I can view",
-        "RESEARCH": "Show research collections"
+        "OWNER": "Show collections I own",
+        "EDITOR": "Show collections I can edit",
+        "VIEWER": "Show collections I can view",
+        "RESEARCHER": "Show research collections"
       }
     }
   },
