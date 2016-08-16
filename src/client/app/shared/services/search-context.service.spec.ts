@@ -1,20 +1,19 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { SearchContext } from './search-context.service';
 
 export function main() {
   describe('Search Context', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      SearchContext,
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        SearchContext,
+      ]);
+    });
 
     it('Should initialize with router, context, and store',
       inject([SearchContext], (service: SearchContext) => {

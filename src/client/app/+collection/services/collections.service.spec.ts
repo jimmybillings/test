@@ -1,22 +1,21 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   ResponseOptions,
   MockBackend,
   Response,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { CollectionsService } from './collections.service';
 
 export function main() {
   describe('Collections service', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray
+      ]);
+    });
 
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls, and collections',
       inject([CollectionsService], (service: CollectionsService) => {

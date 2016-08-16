@@ -37,13 +37,15 @@ export class UserRole {
 
   show(id: number): Observable<any> {
     return this.http.get(this._apiUrls.show + id, {
-      headers: this.apiConfig.authHeaders()
+      headers: this.apiConfig.authHeaders(),
+      body: ''
     });
   }
 
   search(criteria: string): Observable<any> {
     return this.http.get(this._apiUrls.search + criteria, {
-      headers: this.apiConfig.authHeaders()
+      headers: this.apiConfig.authHeaders(),
+      body: ''
     });
   }
 

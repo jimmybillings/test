@@ -40,8 +40,6 @@ import { filters } from '../+search/services/filter.service';
 // TRANSLATIONS
 import { TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';
 import { MultilingualService } from '../shared/services/multilingual.service';
-import { createOverlayContainer } from '@angular2-material/core/overlay/overlay-container';
-import { OVERLAY_CONTAINER_TOKEN } from '@angular2-material/core/overlay/overlay';
 
 export const WAZEE_PROVIDERS = [
   ApiConfig,
@@ -64,8 +62,7 @@ export const WAZEE_PROVIDERS = [
   provide(TranslateLoader, {
     useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'), deps: [Http]
   }),
-  TranslateService,
-  provide(OVERLAY_CONTAINER_TOKEN, { useValue: createOverlayContainer() }),
+  TranslateService
 ];
 
 export const WAZEE_STORES: Provider[][] = [

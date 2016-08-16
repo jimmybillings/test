@@ -1,21 +1,20 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../../imports/test.imports';
 
 import {WzSearchBoxComponent} from './wz.search-box.component';
 
 export function main() {
   describe('Search Box Component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      WzSearchBoxComponent
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        WzSearchBoxComponent
+      ]);
+    });
 
     it('Should have a search box instance',
       inject([TestComponentBuilder], (tcb: any) => {

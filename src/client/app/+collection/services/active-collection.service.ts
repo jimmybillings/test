@@ -79,7 +79,7 @@ export class ActiveCollectionService {
 
   public get(): Observable<any> {
     return this.http.get(`${this.apiUrls.CollectionActive}/focused`,
-      { headers: this.apiConfig.authHeaders() })
+      { headers: this.apiConfig.authHeaders(), body: '' })
       .map((res) => {
         this.updateActiveCollectionStore(res.json());
         return res.json();
@@ -116,7 +116,7 @@ export class ActiveCollectionService {
 
   public getItems(collectionId: number, numberPerPg: number, pgIndex: number = 0): Observable<any> {
     return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=${pgIndex}&n=${numberPerPg}`,
-      { headers: this.apiConfig.authHeaders() })
+      { headers: this.apiConfig.authHeaders(), body: '' })
       .map((res) => {
         this.updateActiveCollectionAssets(res.json());
         return res.json();

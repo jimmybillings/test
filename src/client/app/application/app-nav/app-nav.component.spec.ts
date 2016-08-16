@@ -1,11 +1,8 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { AppNavComponent } from './app-nav.component';
@@ -13,10 +10,12 @@ import { AppNavComponent } from './app-nav.component';
 
 export function main() {
   describe('App Nav Component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      AppNavComponent
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        AppNavComponent
+      ]);
+    });
 
     it('Should have a header instance',
       inject([TestComponentBuilder], (tcb: any) => {

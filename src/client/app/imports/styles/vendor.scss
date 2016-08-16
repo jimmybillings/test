@@ -8,7 +8,24 @@
 @import 'node_modules/@angular2-material/core/style/mixins';
 @import "node_modules/@angular2-material/core/style/core";
 @import "node_modules/@angular2-material/core/style/default-theme";
-@import "node_modules/@angular2-material/core/overlay/overlay.scss";
+// @import "node_modules/@angular2-material/core/overlay/overlay.scss";
+
+/** The overlay-container is an invisible element which contains all individual overlays. */
+.md-overlay-container {
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%; }
+
+/** A single overlay pane. */
+.md-overlay-pane {
+  position: absolute;
+  pointer-events: auto;
+  box-sizing: border-box;
+  z-index: 1000; }
+
 
 // these are not part of ng2material just yet, but are needed
 // hopefully these will be part of Ng2 Material, and then removed, and referenced above

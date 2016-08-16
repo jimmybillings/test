@@ -1,21 +1,20 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../../imports/test.imports';
 
 import { WzFormComponent } from './wz.form.component';
 
 export function main() {
   describe('Form Component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      WzFormComponent
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        WzFormComponent
+      ]);
+    });
 
     it('Should create instance of WzForm',
       inject([TestComponentBuilder], (tcb: any) => {

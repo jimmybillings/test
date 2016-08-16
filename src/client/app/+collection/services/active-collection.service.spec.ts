@@ -1,22 +1,21 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   ResponseOptions,
   MockBackend,
   Response,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { ActiveCollectionService, activeState } from './active-collection.service';
 
 export function main() {
   describe('Active Collections service', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray
+      ]);
+    });
 
     it('Should get the current active collection and save it in the store',
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {

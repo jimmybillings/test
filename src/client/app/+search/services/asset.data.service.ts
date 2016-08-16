@@ -123,7 +123,7 @@ export class AssetData {
     if (!isUserLoggedIn) search.set('siteName', this.apiConfig.getPortal());
 
     let headers = (isUserLoggedIn) ? this.apiConfig.authHeaders() : void null;
-    let options = (isUserLoggedIn) ? { headers: headers, search: search } : { search: search };
+    let options = (isUserLoggedIn) ? { headers: headers, search: search, body: '' } : { search: search, body: '' };
     return new RequestOptions(options);
   }
 }

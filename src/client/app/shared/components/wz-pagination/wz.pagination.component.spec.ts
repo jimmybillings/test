@@ -1,21 +1,20 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../../imports/test.imports';
 
 import { WzPaginationComponent } from './wz.pagination.component';
 
 export function main() {
   describe('Pagination component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      WzPaginationComponent
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        WzPaginationComponent
+      ]);
+    });
 
     it('Should create instance of Pagination',
       inject([TestComponentBuilder], (tcb: any) => {

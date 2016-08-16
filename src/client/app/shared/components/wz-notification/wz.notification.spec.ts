@@ -1,21 +1,20 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../../imports/test.imports';
 
 import { WzNotificationComponent } from './wz.notification.component';
 
 export function main() {
   describe('Notification Component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      WzNotificationComponent
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        WzNotificationComponent
+      ]);
+    });
 
     it('Should have a Notification instance',
       inject([TestComponentBuilder], (tcb: any) => {

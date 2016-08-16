@@ -81,7 +81,8 @@ export class AdminService {
 
   public buildRequestOptions(search?: URLSearchParams): RequestOptions {
     let headers = this.apiConfig.authHeaders();
-    return search ? new RequestOptions({ headers, search }) : new RequestOptions({ headers });
+
+    return search ? new RequestOptions({ headers, search, body: '' }) : new RequestOptions({ headers, body: '' });
   }
 
   public buildUrl(type: string, resourceType: string, resourceId?: number): string {

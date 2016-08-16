@@ -1,24 +1,23 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   ResponseOptions,
   RequestOptions,
   MockBackend,
   Response,
-  describe,
-  inject,
-  expect,
-  it
+  addProviders,
+  inject
 } from '../../imports/test.imports';
 
 import { FilterService } from './filter.service';
 
 export function main() {
   describe('Filter Service', () => {
-    beforeEachProviders(() => [
+    beforeEach(() => {
+      addProviders([
       ...beforeEachProvidersArray,
       FilterService
     ]);
+    });
 
     it('Should exist with instances of http, store, currentUser, and apiConfig',
       inject([FilterService], (service: FilterService) => {

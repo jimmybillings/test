@@ -1,12 +1,9 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
   Observable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { CollectionShowComponent} from './collection-show.component';
@@ -25,11 +22,13 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      CollectionShowComponent,
-      { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        CollectionShowComponent,
+        { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
+      ]);
+    });
 
     it('Should create instance of Collection Component',
       inject([TestComponentBuilder], (tcb: any) => {

@@ -1,19 +1,18 @@
 import {
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../../imports/test.imports';
 
 import {WzPlayerComponent} from './wz.player.component';
 
 export function main() {
   describe('Player Component', () => {
-    beforeEachProviders(() => [
-      WzPlayerComponent
-    ]);
+    beforeEach(() => {
+        addProviders([
+        WzPlayerComponent
+      ]);
+    });
 
     it('Should have a player instance',
       inject([TestComponentBuilder], (tcb: any) => {

@@ -1,20 +1,19 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../imports/test.imports';
 
 import { UserManagementComponent } from './user-management.component';
 
 export function main() {
   describe('User Management Component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray
+      ]);
+    });
 
     it('Should have a user-management instance',
       inject([TestComponentBuilder], (tcb: any) => {

@@ -38,6 +38,7 @@ export class AppNavComponent {
   }
 
   public toggleBinTray() {
+    console.log('sldkfj');
     this.UiState.toggleBinTray();
   }
 

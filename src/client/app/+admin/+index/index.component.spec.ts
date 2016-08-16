@@ -1,13 +1,10 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
   CurrentUser,
   Observable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { IndexComponent } from './index.component';
@@ -44,11 +41,13 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      IndexComponent,
-      { provide: AdminService, useClass: MockAdminService }
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        IndexComponent,
+        { provide: AdminService, useClass: MockAdminService }
+      ]);
+    });
 
     it('Create instance of index and assign the CurrentUser to an instance variable inside of account',
       inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {

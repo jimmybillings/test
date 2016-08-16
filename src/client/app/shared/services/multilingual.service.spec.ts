@@ -1,20 +1,19 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
-  describe,
-  inject,
-  expect,
-  it
+  addProviders,
+  inject
 } from '../../imports/test.imports';
 
 import { MultilingualService } from './multilingual.service';
 
 export function main() {
   describe('Multilingual Service', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      MultilingualService
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        MultilingualService
+      ]);
+    });
 
     it('should at a minimum support english', () => {
       expect(MultilingualService.SUPPORTED_LANGUAGES.length).toBeGreaterThan(0);

@@ -1,12 +1,9 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
   Observable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../imports/test.imports';
 
 import { SearchComponent } from './search.component';
@@ -31,12 +28,14 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      SearchComponent,
-      { provide: AssetData, useClass: MockAssetData },
-      { provide: UiConfig, useClass: MockUiConfig }
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        SearchComponent,
+        { provide: AssetData, useClass: MockAssetData },
+        { provide: UiConfig, useClass: MockUiConfig }
+      ]);
+    });
 
     it('Should have a search instance',
       inject([TestComponentBuilder], (tcb: any) => {
