@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Collection, Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
-import { Http } from '@angular/http';
+import { Http, URLSearchParams, RequestOptions } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Observable} from 'rxjs/Rx';
 import { Store, Reducer, Action} from '@ngrx/store';
@@ -50,6 +50,7 @@ export class CollectionsService {
     CollectionBaseUrl: string,
     CollectionSummaryBaseUrl: string
   };
+  private params: any;
 
   constructor(
     public store: Store<CollectionStore>,
@@ -61,14 +62,23 @@ export class CollectionsService {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
       CollectionSummaryBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary',
     };
+    this.setSearchParams();
   }
 
-  public loadCollections(access:string='all',numberPerPg:number=400): Observable<any> {
-    return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/fetchBy?access-level=${access}&i=0&n=${numberPerPg}`,
-      { headers: this.apiConfig.authHeaders(), body: '' }).map(res => {
+  public loadCollections(params:any={}): Observable<any> {
+    this.params = Object.assign({}, this.params, params);
+    return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/search`,
+      this.getSearchOptions(this.params)).map(res => {
         this.storeCollections(res.json());
         return res.json();
       });
+  }
+
+  public getSearchOptions(params: any): RequestOptions {
+    const search: URLSearchParams = new URLSearchParams();
+    for (var param in params) search.set(param, params[param]);
+    let options = { headers: this.apiConfig.authHeaders(), search: search, body: '' };
+    return new RequestOptions(options);
   }
 
   public createCollection(collection: Collection): Observable<any> {
@@ -83,7 +93,7 @@ export class CollectionsService {
 
   public deleteCollection(collectionId: number): Observable<any> {
     return this.http.delete(`${this.apiUrls.CollectionBaseUrl}/${collectionId}`,
-      { headers: this.apiConfig.authHeaders(), body:'' })
+      { headers: this.apiConfig.authHeaders(), body: '' })
       .map(() => this.deleteCollectionFromStore(collectionId));
   }
 
@@ -135,6 +145,10 @@ export class CollectionsService {
         this.storeCollections(res.json());
         return res.json();
       });
+  }
+
+  private setSearchParams() {
+    this.params = {'q': '', 'access-level': 'all', 's': '', 'd': '', 'i': 0, 'n': 20};
   }
 
 }

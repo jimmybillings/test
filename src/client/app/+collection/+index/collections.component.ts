@@ -49,7 +49,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.collectionsService.loadCollections('all', 400).take(1).subscribe();
+    this.collectionsService.loadCollections().take(1).subscribe();
     this.collectionStoreSubscription =
       this.collectionsService.data.subscribe(collections => this.collections = collections);
   }
@@ -92,22 +92,22 @@ export class CollectionsComponent implements OnInit, OnDestroy {
         this.collectionsService.destroyCollections();
         this.activeCollection.get().take(1).subscribe((collection) => {
           this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
-          this.collectionsService.loadCollections('all', 400).take(1).subscribe();
+          this.collectionsService.loadCollections().take(1).subscribe();
         });
       }
     });
   }
 
-  public filter(filter: any, ItemsPerPg: number) {
-    this.collectionsService.loadCollections(filter.value, ItemsPerPg).take(1).subscribe();
+  public filter(filter: any) {
+    this.collectionsService.loadCollections(filter.access).take(1).subscribe();
   }
 
   public search(query: any) {
-    this.collectionsService.loadCollections('all', 400).take(1).subscribe();
+    this.collectionsService.loadCollections(query).take(1).subscribe();
   }
 
   public sortBy(sort: any) {
-    this.collectionsService.loadCollections('all', 400).take(1).subscribe();
+    this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
   }
 
   public isActiveCollection(collectionId: number): boolean {
