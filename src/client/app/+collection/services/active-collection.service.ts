@@ -83,7 +83,6 @@ export class ActiveCollectionService {
       { headers: this.apiConfig.authHeaders(), body: '' })
       .map((res) => {
         this.updateActiveCollectionStore(res.json());
-        console.log(res.json());
         return res.json();
       });
   }
@@ -120,7 +119,6 @@ export class ActiveCollectionService {
     return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=${pgIndex}&n=${numberPerPg}`,
       { headers: this.apiConfig.authHeaders(), body: '' })
       .map((res) => {
-        // console.log(res.json());
         this.updateActiveCollectionAssets(res.json());
         return res.json();
       });
