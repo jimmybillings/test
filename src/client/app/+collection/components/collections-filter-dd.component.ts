@@ -17,11 +17,11 @@ export class CollectionFilterDdComponent {
 
   constructor() {
     this.filterOptions = [
-      { 'id': 0, 'label': 'ALL', 'value': 'all', 'active': true },
-      { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'active': false },
-      { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'active': false },
-      { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'active': false },
-      { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'active': false }
+      { 'id': 0, 'label': 'ALL', 'value': 'all', 'active': true, 'access': {'access-level': 'all'} },
+      { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'active': false, 'access': {'access-level': 'owner'} },
+      { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'active': false, 'access': {'access-level': 'editor'} },
+      { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'active': false, 'access': {'access-level': 'viewer'} },
+      { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'active': false, 'access': {'access-level': 'researcher'} }
     ];
   }
 

@@ -65,7 +65,7 @@ export const beforeEachProvidersArray: Array<any> = [
     useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
     deps: [MockBackend, BaseRequestOptions]
   }),
-  provide(PLATFORM_PIPES, {useValue: TranslatePipe, multi: true}),
+  { provide: PLATFORM_PIPES, useValue: TranslatePipe, multi: true},
   { provide: Router, useClass: MockRouter },
   { provide: ActivatedRoute, useClass: MockActivatedRoute },
 ];

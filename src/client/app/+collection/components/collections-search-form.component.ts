@@ -19,7 +19,7 @@ export class CollectionsSearchFormComponent {
   }
 
   public setForm() {
-    this.searchCollections = this.fb.group({ query: ['', Validators.required] });
+    this.searchCollections = this.fb.group({ q: ['', Validators.required] });
   }
 
   public openCollectionSearch() {
