@@ -147,7 +147,7 @@ export class CollectionsService {
       });
   }
 
-  private setSearchParams() {
+  public setSearchParams() {
     this.params = {'q': '', 'access-level': 'all', 's': '', 'd': '', 'i': 0, 'n': 20};
   }
 
