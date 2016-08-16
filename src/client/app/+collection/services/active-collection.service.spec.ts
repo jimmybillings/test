@@ -167,8 +167,7 @@ export function main() {
             hasPreviousPage: false,
             numberOfPages: 1
           }
-        },
-        thumbnail: ''
+        }
       };
     }
 
