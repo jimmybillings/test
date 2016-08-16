@@ -26,22 +26,25 @@
           {{ field.hintTextEnd | translate }}
         </md-hint>
 
-        <md-hint *ngIf="form.controls[field.name]._errors"
+        <md-hint *ngIf="!form.controls[field.name].valid"
           [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
           align="start" 
           class="error">
-            <span *ngIf="form.controls[field.name]._errors.required">
+            <span *ngIf="form.controls[field.name].hasError('required')">
               {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
             </span>
-            <span *ngIf="form.controls[field.name]._errors.minlength">
+            <span *ngIf="form.controls[field.name].hasError('minlength')">
               {{ 'ERRORS.MIN_LENGTH_REQUIRED' | translate:{charLength:form.controls[field.name]._errors.minlength.requiredLength} }}
             </span>
-            <span *ngIf="form.controls[field.name]._errors.pattern && !form.controls[field.name]._errors.minlength">
+            <span *ngIf="form.controls[field.name].hasError('pattern') && !form.controls[field.name].hasError('minlength')">
               {{ 'ERRORS.VALID_EMAIL_REQUIRED' | translate }}
             </span>
-            <!--<span *ngIf="form.controls[field.name]._errors.">
+            <span *ngIf="form.controls[field.name].hasError('startsWithNumber')">
               {{ 'ERRORS.NAME_ALREADY_TAKEN' | translate:{fieldName:field.label | translate} }}
-            </span>-->
+            </span>
+            <span *ngIf="form.controls[field.name].hasError('collectionNameTaken')">
+              Name is already taken
+            </span>
         </md-hint>
       </md-input>
 

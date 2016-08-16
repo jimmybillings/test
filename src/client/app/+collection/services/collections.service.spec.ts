@@ -30,7 +30,7 @@ export function main() {
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionBaseUrl = 'https://crxextapi.dev.wzplatform.com/api/assets/v1/search';
+        service.apiUrls.CollectionBaseUrl = 'https://crxextapi.dev.wzplatform.com/api/assets/v1';
         let expectedUrl = service.apiUrls.CollectionBaseUrl + '/collectionSummary/fetchBy?access-level=all&i=0&n=200';
         spyOn(service, 'storeCollections');
         service.loadCollections('all',200).subscribe(response => {

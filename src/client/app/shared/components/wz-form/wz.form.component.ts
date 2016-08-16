@@ -28,6 +28,7 @@ export class WzFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: any) {
     if (changes.items.currentValue && this.form) {
+      // console.log(this.form.controls);
       for (let control in this.form.controls) {
         changes.items.currentValue.forEach((field: any) => {
           if (control === field.name)
@@ -40,6 +41,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.form = this.fb.group(this.formModel.create(this.items));
     this.showRequiredLegend = this.hasRequiredFields(this.items);
+    // console.log(this.form);
   }
 
   public parseOptions(options: any) {
@@ -72,15 +74,11 @@ export class WzFormComponent implements OnInit, OnChanges {
    * @param field is a form field control.
    */
   public isRequiredField(field: FormFields): boolean {
-    if ('validation' in field && (
+    return 'validation' in field && (
       field.validation === 'REQUIRED' ||
       field.validation === 'EMAIL' ||
       field.validation === 'PASSWORD' ||
-      field.validation === 'COLLECTION')) {
-      return true;
-    } else {
-      return false;
-    }
+      field.validation === 'COLLECTION') ? true : false;
   }
 
   /**

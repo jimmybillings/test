@@ -71,9 +71,9 @@ export class ActiveCollectionService {
     this.data = this.store.select('activeCollection');
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
-      CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collection',
-      CollectionActive: this.apiConfig.baseUrl() + 'api/assets/v1/search/collectionSummary',
-      CollectionSetActive: this.apiConfig.baseUrl() + 'api/assets/v1/search/setFocusedCollection'
+      CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary/assets',
+      CollectionActive: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary',
+      CollectionSetActive: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary/setFocused'
     };
   }
 

@@ -22,10 +22,10 @@ export function main() {
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionActive = 'api/assets/v1/search/collectionSummary';
+        service.apiUrls.CollectionActive = 'api/assets/v1/collectionSummary';
         spyOn(service, 'updateActiveCollectionStore');
         service.get().subscribe(response => {
-          expect(connection.request.url).toBe('api/assets/v1/search/collectionSummary/focused');
+          expect(connection.request.url).toBe('api/assets/v1/collectionSummary/focused');
           expect(service.updateActiveCollectionStore).toHaveBeenCalledWith(mockCollectionResponse());
           expect(response).toEqual(mockCollectionResponse());
         });
@@ -40,10 +40,10 @@ export function main() {
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionSetActive = 'api/assets/v1/search/setFocusedCollection';
+        service.apiUrls.CollectionSetActive = 'api/assets/v1/collectionSummary/setFocused';
         spyOn(service, 'updateActiveCollectionStore');
         service.set(158).subscribe(response => {
-          expect(connection.request.url).toBe('api/assets/v1/search/setFocusedCollection/158');
+          expect(connection.request.url).toBe('api/assets/v1/collectionSummary/setFocused/158');
           expect(service.updateActiveCollectionStore).toHaveBeenCalledWith(mockCollectionResponse());
           expect(response.id).toEqual(158);
         });
@@ -97,7 +97,7 @@ export function main() {
         spyOn(service, 'updateActiveCollectionAssets');
         service.getItems(1, 100).subscribe(response => {
           expect(connection.request.url).toBe(
-            'https://crxextapi.dev.wzplatform.com/api/assets/v1/search/collection/1?i=0&n=100');
+            'https://crxextapi.dev.wzplatform.com/api/assets/v1/collectionSummary/assets/1?i=0&n=100');
           expect(response).toEqual(mockCollectionResponse());
           expect(service.updateActiveCollectionAssets).toHaveBeenCalledWith(mockCollectionResponse());
         });
