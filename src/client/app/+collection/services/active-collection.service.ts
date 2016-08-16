@@ -20,6 +20,7 @@ export function activeState(collection: any = {}): Collection {
     email: collection.email || '',
     userRole: collection.userRole || '',
     editors: collection.editors || [],
+    collectionThumbnail: collection.collectionThumbnail || {},
     assets: {
       items: [],
       pagination: {
@@ -153,8 +154,7 @@ export class ActiveCollectionService {
             'hasPreviousPage': assets.hasPreviousPage,
             'numberOfPages': assets.numberOfPages
           }
-        },
-        thumbnail: (assets.items.length > 0) ? assets.items[assets.items.length - 1].thumbnail : ''
+        }
       }
     });
   }

@@ -56,13 +56,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    // this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
+    this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
     this.routeSubscription = this.route.params.subscribe(params => {
       this.searchContext.update = params;
       this.counted = params['counted'] ? JSON.parse(params['counted']) : false;
-      // if (!this.searchContext.state.filterIds) {
-      this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
-      // }
+      if (this.counted) {
+        this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
+      }
     });
   }
 
@@ -74,8 +74,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public countToggle(event: any): void {
-    this.uiState.loading(true);
     this.counted = event.checked;
+    if (this.counted) this.uiState.loading(true);
     this.searchContext.update = {counted: this.counted};
     this.searchContext.go();
   }
@@ -158,7 +158,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public clearFilters(): void {
-    this.uiState.loading(true);
+    if (this.counted) this.uiState.loading(true);
     this.filter.set(this.filter.clear());
     this.filterAssets();
   }
