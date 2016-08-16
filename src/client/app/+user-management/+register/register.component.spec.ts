@@ -1,21 +1,20 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { RegisterComponent } from './register.component';
 
 export function main() {
   describe('Register Component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      RegisterComponent
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        RegisterComponent
+      ]);
+    });
 
     it('Should have a Register instance',
       inject([TestComponentBuilder], (tcb: any) => {

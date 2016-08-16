@@ -1,21 +1,20 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../../imports/test.imports';
 
 import { WzListComponent } from './wz.list.component';
 
 export function main() {
   describe('WZ List component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      WzListComponent
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        WzListComponent
+      ]);
+    });
 
     it('Should create instance of WzList',
       inject([TestComponentBuilder], (tcb: any) => {

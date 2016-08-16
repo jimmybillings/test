@@ -34,7 +34,7 @@ export class Authentication {
 
   public destroy(): Observable<any> {
     return this.http.post(this._apiUrls.destroy, null, {
-      headers: this.apiConfig.authHeaders()
+      headers: this.apiConfig.authHeaders(), body: ''
     }).map(() => localStorage.removeItem('token'));
   }
 }

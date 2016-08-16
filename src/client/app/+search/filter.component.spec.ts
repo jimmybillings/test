@@ -1,11 +1,8 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../imports/test.imports';
 
 import { FilterComponent } from './filter.component';
@@ -14,12 +11,14 @@ import { SearchComponent } from './search.component';
 
 export function main() {
   describe('FilterComponent', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      FilterComponent,
-      FilterService,
-      SearchComponent
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        FilterComponent,
+        FilterService,
+        SearchComponent
+      ]);
+    });
 
     it('Should create instance of filter',
       inject([TestComponentBuilder], (tcb: any) => {

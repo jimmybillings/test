@@ -1,13 +1,10 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
   Observable,
   Injectable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { CollectionFormComponent } from './collection-form.component';
@@ -50,12 +47,14 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      CollectionFormComponent,
-      { provide: CollectionsService, useClass: MockCollectionsService },
-      { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        CollectionFormComponent,
+        { provide: CollectionsService, useClass: MockCollectionsService },
+        { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
+      ]);
+    });
 
     it('Create instance of collection form',
       inject([TestComponentBuilder], (tcb: any) => {

@@ -17,31 +17,31 @@ export class ConfigService {
 
   public getUiConfigIndex(): Observable<AdminUiResponse> {
     return this.http.get(this.uiApiUrl + 'search',
-      { headers: this.apiConfig.authHeaders() }
+      { headers: this.apiConfig.authHeaders(), body: '' }
     ).map((res: Response) => res.json());
   }
 
   public getSiteConfigIndex(): Observable<AdminSiteResponse> {
     return this.http.get(this.siteApiUrl + 'search',
-      { headers: this.apiConfig.authHeaders() }
+      { headers: this.apiConfig.authHeaders(), body: '' }
     ).map((res: Response) => res.json());
   }
 
   public searchSiteConfig(siteName: string): Observable<SiteConfig> {
     return this.http.get(this.siteApiUrl + 'search/?q=' + siteName,
-      { headers: this.apiConfig.authHeaders() }
+      { headers: this.apiConfig.authHeaders(), body: '' }
     ).map((res: Response) => res.json());
   }
 
   public showUiConfig(site: string): Observable<any> {
     return this.http.get(this.uiApiUrl + '?siteName=' + site,
-      { headers: this.apiConfig.authHeaders() }
+      { headers: this.apiConfig.authHeaders(), body: '' }
     ).map((res: Response) => res.json());
   }
 
   public showSiteConfig(siteId: number): Observable<AdminSiteResponse> {
     return this.http.get(this.siteApiUrl + siteId,
-      { headers: this.apiConfig.authHeaders() }
+      { headers: this.apiConfig.authHeaders(), body: '' }
     ).map((res: Response) => res.json());
   }
 

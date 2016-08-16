@@ -121,10 +121,10 @@ export class FilterService {
     for (let param in params) { search.set(param, params[param]); };
     if (this.currentUser.loggedIn()) {
       let headers = this.apiConfig.authHeaders();
-      return new RequestOptions({ headers, search });
+      return new RequestOptions({ headers, search, body: '' });
     } else {
       search.set('siteName', this.apiConfig.getPortal());
-      return new RequestOptions({ search });
+      return new RequestOptions({ search, body: '' });
     }
   }
 

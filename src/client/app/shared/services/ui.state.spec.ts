@@ -1,19 +1,18 @@
 import {
-  describe,
-  expect,
   inject,
-  it,
-  beforeEachProviders
+  addProviders
 } from '@angular/core/testing';
 import { UiState, uiState } from './ui.state';
 import { provideStore } from '@ngrx/store';
 
 export function main() {
   describe('UI State', () => {
-    beforeEachProviders(() => [
-      provideStore({ uiState: uiState }),
-      UiState
-    ]);
+    beforeEach(() => {
+      addProviders([
+        provideStore({ uiState: uiState }),
+        UiState
+      ]);
+    });
 
     it('Should initialize booleans in the store to define default positioning and state',
       inject([UiState], (service: UiState) => {

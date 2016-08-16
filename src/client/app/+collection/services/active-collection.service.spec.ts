@@ -1,22 +1,21 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   ResponseOptions,
   MockBackend,
   Response,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { ActiveCollectionService, activeState } from './active-collection.service';
 
 export function main() {
   describe('Active Collections service', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray
+      ]);
+    });
 
     it('Should get the current active collection and save it in the store',
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
@@ -97,7 +96,7 @@ export function main() {
         spyOn(service, 'updateActiveCollectionAssets');
         service.getItems(1, 100).subscribe(response => {
           expect(connection.request.url).toBe(
-            'https://crxextapi.dev.wzplatform.com/api/assets/v1/search/collection/1?i=0&n=100');
+            'https://crxextapi.dev.wzplatform.com/api/assets/v1/collectionSummary/assets/1?i=0&n=100');
           expect(response).toEqual(mockCollectionResponse());
           expect(service.updateActiveCollectionAssets).toHaveBeenCalledWith(mockCollectionResponse());
         });

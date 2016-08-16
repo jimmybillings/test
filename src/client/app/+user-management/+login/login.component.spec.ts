@@ -1,12 +1,9 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
+  addProviders,
   Observable,
-  describe,
   inject,
-  expect,
-  it
 } from '../../imports/test.imports';
 
 import { LoginComponent } from './login.component';
@@ -21,11 +18,13 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      { provide: Authentication, useClass: MockAuthentication },
-      LoginComponent,
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        { provide: Authentication, useClass: MockAuthentication },
+        LoginComponent,
+      ]);
+    });
 
     it('Should have a Login instance',
       inject([TestComponentBuilder], (tcb: any) => {

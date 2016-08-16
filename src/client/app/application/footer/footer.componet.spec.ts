@@ -1,21 +1,20 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { FooterComponent } from './footer.component';
 
 export function main() {
   describe('Footer Component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      FooterComponent
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        FooterComponent
+      ]);
+    });
 
     it('Should have a footer instance',
       inject([TestComponentBuilder], (tcb: any) => {

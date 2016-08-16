@@ -50,6 +50,11 @@ var materialPackages = [
   'tabs',
   'toolbar',
   'icon',
+  'button-toggle',
+  'menu',
+  'slider',
+  'tooltip',
+  'grid-list'
 ];
 
 var config = {

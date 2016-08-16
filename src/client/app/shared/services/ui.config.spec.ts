@@ -1,23 +1,22 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   ResponseOptions,
   MockBackend,
   Response,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { UiConfig } from './ui.config';
 
 export function main() {
   describe('UI config', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      UiConfig
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        UiConfig
+      ]);
+    });
 
     it('Should set the api endpoint to get a UI configuration object',
       inject([UiConfig], (service: UiConfig) => {

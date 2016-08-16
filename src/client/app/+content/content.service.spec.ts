@@ -1,23 +1,22 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   ResponseOptions,
   MockBackend,
   Response,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../imports/test.imports';
 
 import { ContentService } from './content.service';
 
 export function main() {
   describe('Content service', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      ContentService
-    ]);
+    beforeEach(() => {
+        addProviders([
+        ...beforeEachProvidersArray,
+        ContentService
+      ]);
+    });
 
     it('Should formulate a correct query url for a CMS page and map the response body.',
       inject([ContentService, MockBackend], (service: ContentService, mockBackend: MockBackend) => {

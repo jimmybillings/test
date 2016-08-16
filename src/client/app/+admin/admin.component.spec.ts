@@ -1,20 +1,19 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
+  addProviders,
   inject,
-  expect,
-  it
 } from '../imports/test.imports';
 
 import { AdminComponent } from './admin.component';
 
 export function main() {
   describe('Admin Component', () => {
-    beforeEachProviders(() => [
+    beforeEach(() => {
+      addProviders([
       ...beforeEachProvidersArray
     ]);
+  });
 
     it('Should have an admin instance',
       inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {

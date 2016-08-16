@@ -25,6 +25,7 @@ import { WAZEE_PROVIDERS, WAZEE_ROUTES } from './wazee';
 * Application Providers/Directives/Pipes
 * providers/directives/pipes that only live in our browser environment
 */
+import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
 
 export const APP_ROUTER_PROVIDERS: RouterConfig = [
   AssetResolver,
@@ -37,6 +38,7 @@ export const APPLICATION_PROVIDERS = [
   ...HTTP_PROVIDERS,
   ...MATERIAL_PROVIDERS,
   ...WAZEE_PROVIDERS,
+  OVERLAY_PROVIDERS,
   FORM_PROVIDERS,
   provide(APP_BASE_HREF, { useValue: '/' }),
   provideForms(),

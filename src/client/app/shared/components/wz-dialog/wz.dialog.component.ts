@@ -10,7 +10,7 @@ import {
   style,
   transition,
   animate} from '@angular/core';
-import {Overlay, OVERLAY_PROVIDERS} from '@angular2-material/core/overlay/overlay';
+import {Overlay} from '@angular2-material/core/overlay/overlay';
 import {OverlayState} from '@angular2-material/core/overlay/overlay-state';
 import {OverlayRef} from '@angular2-material/core/overlay/overlay-ref';
 import {Directive, ViewContainerRef, TemplateRef} from '@angular/core';
@@ -26,7 +26,6 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
 @Component({
   selector: 'wz-dialog',
   directives: [WzDialogPortalDirective],
-  providers: [Overlay, OVERLAY_PROVIDERS],
   encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('slideInOut', [
@@ -43,7 +42,7 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
   ],
   template: `
     <template wzDialogPortal>
-      <div @slideInOut="animationState" class="wz-dialog">
+      <div [@slideInOut]="animationState" class="wz-dialog">
         <ng-content></ng-content>
       </div>
     </template>
@@ -57,9 +56,9 @@ export class WzDialogComponent implements OnDestroy {
   public animationState: string = 'out';
   // public active: boolean = false;
   private showClickCatcher: boolean = false;
-  private overlayBk = document.querySelector('div.md-overlay-container');
   @ViewChild(WzDialogPortalDirective) private portal: WzDialogPortalDirective;
   private overlayRef: OverlayRef = null;
+
   constructor(
     private overlay: Overlay,
     private renderer: Renderer) {
@@ -89,7 +88,7 @@ export class WzDialogComponent implements OnDestroy {
       })
       .then(() => {
         // setTimeout(() => this.closeListener(), 200);
-        this.renderer.setElementClass(this.overlayBk,'active', true);
+        this.renderer.setElementClass(document.querySelector('div.md-overlay-container'), 'active', true);
         // this.active = true;
         this.setClickCatcher(true);
         return this;
@@ -106,13 +105,13 @@ export class WzDialogComponent implements OnDestroy {
       }).then(() => {
         this.overlayRef.dispose();
         this.overlayRef = null;
-        this.renderer.setElementClass(this.overlayBk,'active', false);
+        this.renderer.setElementClass(document.querySelector('div.md-overlay-container'), 'active', false);
         this.setClickCatcher(false);
         // this.viewRef();
       });
     }
   }
   // private closeListener() {
-    // this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.close());
+  // this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.close());
   // }
 }

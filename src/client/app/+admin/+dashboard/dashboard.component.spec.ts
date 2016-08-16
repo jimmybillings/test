@@ -1,22 +1,21 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
+  addProviders,
   CurrentUser,
-  describe,
   inject,
-  expect,
-  it
 } from '../../imports/test.imports';
 
 import { DashboardComponent} from './dashboard.component';
 
 export function main() {
   describe('Admin Dashboard component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      DashboardComponent
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        DashboardComponent
+      ]);
+    });
 
     it('Create instance of dashboard and assign the CurrentUser to an instance variable inside of dashboard',
       inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {

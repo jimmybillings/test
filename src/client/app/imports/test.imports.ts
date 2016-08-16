@@ -35,9 +35,10 @@ export { Observable } from 'rxjs/Rx';
 export { Injectable } from '@angular/core';
 export { ActivatedRoute } from '@angular/router';
 export { MockBackend } from '@angular/http/testing';
-export { TestComponentBuilder } from '@angular/compiler/testing';
+export { TestComponentBuilder } from '@angular/core/testing';
 export { CurrentUser } from '../shared/services/current-user.model';
-export { describe, expect, inject, it, beforeEachProviders, beforeEach, addProviders } from '@angular/core/testing';
+export { inject, addProviders } from '@angular/core/testing';
+
 export { Response, ResponseOptions, RequestMethod, RequestOptions, Headers } from '@angular/http';
 
 

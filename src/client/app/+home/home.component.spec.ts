@@ -1,13 +1,10 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
   CurrentUser,
   Observable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../imports/test.imports';
 
 import { HomeComponent} from './home.component';
@@ -21,11 +18,13 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      HomeComponent,
-      { provide: UiConfig, useClass: MockUiConfig }
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        HomeComponent,
+        { provide: UiConfig, useClass: MockUiConfig }
+      ]);
+    });
 
     it('Should have router, apiConfig, currentUser, searchContext and uiConfig defined',
       inject([HomeComponent], (component: HomeComponent) => {

@@ -1,22 +1,21 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
+  addProviders,
   ResponseOptions,
   MockBackend,
   Response,
-  describe,
   inject,
-  expect,
-  it
 } from '../../imports/test.imports';
 
 import { Authentication } from './authentication.data.service';
 
 export function main() {
   describe('Authentication data service', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray
+      ]);
+    });
 
     it('Should create instance variables for http, apiconfig, apiUrls', inject([Authentication, MockBackend], (service: Authentication, mockBackend: MockBackend) => {
       expect(service.http).toBeDefined();

@@ -1,13 +1,10 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
   ActivatedRoute,
   Observable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../imports/test.imports';
 
 import { ContentComponent} from './content.component';
@@ -26,12 +23,14 @@ export function main() {
         this.params = Observable.of({page: 'terms-conditions'});
       }
     }
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      ContentComponent,
-      { provide: ActivatedRoute, useClass: MockActivatedRoute },
-      { provide: ContentService, useClass: MockContentService }
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        ContentComponent,
+        { provide: ActivatedRoute, useClass: MockActivatedRoute },
+        { provide: ContentService, useClass: MockContentService }
+      ]);
+    });
 
     it('Create instance of Content Component',
       inject([TestComponentBuilder], (tcb: any) => {

@@ -1,9 +1,6 @@
 import {
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { provideStore } from '@ngrx/store';
@@ -15,10 +12,12 @@ export function main() {
     let loggedInUser = setLoggedInUser();
     let loggedOutUser = setLoggedOutUser();
     let loggedInUserWithoutPermissions = setLoggedInUserWithoutPermissions();
-    beforeEachProviders(() => [
-      CurrentUser,
-      provideStore({ currentUser: currentUser }),
-    ]);
+    beforeEach(() => {
+      addProviders([
+        CurrentUser,
+        provideStore({ currentUser: currentUser }),
+      ]);
+    });
 
     it('should set a object for a logged in user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);

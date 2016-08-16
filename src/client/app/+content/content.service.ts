@@ -17,7 +17,7 @@ export class ContentService {
       this.apiConfig.getPortal() +
       this.apiConfig.cms('path') +
       this.apiConfig.cms('query') +
-      page).map((res: Response) => res.json());
+      page, { body: '' }).map((res: Response) => res.json());
   }
 }
 

@@ -1,13 +1,10 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
   Observable,
   Injectable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { CollectionListDdComponent } from './collections-list-dd.component';
@@ -46,12 +43,14 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      CollectionListDdComponent,
-      { provide: CollectionsService, useClass: MockCollectionsService },
-      { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        CollectionListDdComponent,
+        { provide: CollectionsService, useClass: MockCollectionsService },
+        { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
+      ]);
+    });
 
     it('Create instance of collection list',
       inject([TestComponentBuilder], (tcb: any) => {

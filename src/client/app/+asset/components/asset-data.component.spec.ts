@@ -1,21 +1,20 @@
 import {
   beforeEachProvidersArray,
   TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { AssetDataComponent} from './asset-data.component';
 
 export function main() {
   describe('Asset Data Component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      AssetDataComponent,
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        AssetDataComponent,
+      ]);
+    });
 
     it('Create instance of AssetDataComponent',
       inject([TestComponentBuilder], (tcb: any) => {

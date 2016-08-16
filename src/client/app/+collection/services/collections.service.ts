@@ -60,14 +60,14 @@ export class CollectionsService {
     this.data = store.select('collections');
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
-      CollectionSummaryBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collectionSummary',
-      CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collection'
+      CollectionSummaryBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary',
+      CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/collection'
     };
   }
 
   public loadCollections(access:string='all',numberPerPg:number=400): Observable<any> {
     return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/fetchBy?access-level=${access}&i=0&n=${numberPerPg}`,
-      { headers: this.apiConfig.authHeaders() }).map(res => {
+      { headers: this.apiConfig.authHeaders(), body: '' }).map(res => {
         this.storeCollections(res.json());
         return res.json();
       });

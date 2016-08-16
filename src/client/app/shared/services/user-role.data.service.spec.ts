@@ -1,11 +1,8 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   MockBackend,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { UserRole } from './user-role.data.service';
@@ -13,10 +10,12 @@ import { UserRole } from './user-role.data.service';
 export function main() {
   describe('User Role data service', () => {
     localStorage.setItem('token', 'thisisamocktoken');
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      UserRole
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        UserRole
+      ]);
+    });
     let connection: any;
     it('Should create instance variables for http, apiconfig, apiUrls', inject([UserRole, MockBackend], (service: UserRole, mockBackend: MockBackend) => {
       expect(service.http).toBeDefined();

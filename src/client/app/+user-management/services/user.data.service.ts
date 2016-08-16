@@ -37,7 +37,7 @@ export class User {
 
   get(): Observable<any> {
     return this.http.get(this._apiUrls.get, {
-      headers: this.apiConfig.authHeaders()
+      headers: this.apiConfig.authHeaders(), body: ''
     });
   }
 }
