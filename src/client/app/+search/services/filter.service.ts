@@ -30,7 +30,6 @@ export class FilterService {
   }
 
   public get(params: any): Observable<any> {
-    params['counted'] = true;
     let options = this.filterOptions(params);
     return this.http.get(this.filterUrl, options).map((res: Response) => {
       this.set(this.sanatize(res.json(), null));

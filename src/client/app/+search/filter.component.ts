@@ -12,6 +12,7 @@ import { WzPikaDayDirective } from '../shared/components/wz-pikaday/wz-pikaday.d
 
 export class FilterComponent {
   @Input() filters: any;
+  @Input() counted: boolean;
   public searchComponent: SearchComponent;
   public dateRange: any;
 
@@ -20,7 +21,6 @@ export class FilterComponent {
     this.searchComponent = searchComponent;
     this.dateRange = {};
   }
-
 
   public filterShouldBeShowing(filter: any): boolean {
     let filterState: any = JSON.parse(localStorage.getItem('filterState'));

@@ -33,6 +33,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
+  public counted: string;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
   private configSubscription: Subscription;
@@ -58,6 +59,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     // this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
     this.routeSubscription = this.route.params.subscribe(params => {
       this.searchContext.update = params;
+      this.counted = JSON.parse(params['counted']);
       // if (!this.searchContext.state.filterIds) {
       this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
       // }
@@ -69,6 +71,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.assetsStoreSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     this.configSubscription.unsubscribe();
+  }
+
+  public countToggle(event: any): void {
+    this.counted = event.checked;
+    this.searchContext.update = {counted: this.counted};
+    this.searchContext.go();
   }
 
   public showAsset(asset: any): void {

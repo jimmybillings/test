@@ -12,7 +12,7 @@
            [ngClass]="{'active': subFilter.active}"
            class="md-primary">
             {{subFilter.name}}
-          <span *ngIf="subFilter.count > -1"> 
+          <span *ngIf="counted && subFilter.count > 0"> 
             ( {{subFilter.count}} )
           </span>
         </p>
@@ -23,7 +23,7 @@
         <p title="{{filter.filterId}}" (click)="toggle(filter)">
           {{ filter.name }} 
         </p>
-        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter"></filter>
+        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter>
         <md-divider></md-divider>
       </span>
 
@@ -31,7 +31,7 @@
         <p title="{{filter.filterId}}" (click)="toggle(filter)">
           {{ filter.name }} 
         </p>
-        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter"></filter>
+        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter>
       </span>
 
       <span *ngSwitchCase="'DateRange'">
@@ -49,19 +49,22 @@
           [value]="filter.filterValue"
           (keypress)="customValue($event, filter)">
         </md-input>
-        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter"></filter>
+        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter>
       </span>
 
 
       <span *ngSwitchDefault>
         <md-checkbox
-          [disabled]="filter.count < 1"
+          [disabled]="counted && filter.count < 1"
           [checked]="filter.active"
           color="primary"
           (change)="applyFilter(filter.filterId)">
-            {{filter.name}} ( {{filter.count}} )
+            {{filter.name}}
+              <span *ngIf="counted">
+                ( {{filter.count}} )
+              </span>
         </md-checkbox>
-        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter"></filter>
+        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter>
       </span>
 
     </span>
