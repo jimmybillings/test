@@ -83,7 +83,7 @@ export class CollectionsService {
 
   public deleteCollection(collectionId: number): Observable<any> {
     return this.http.delete(`${this.apiUrls.CollectionBaseUrl}/${collectionId}`,
-      { headers: this.apiConfig.authHeaders() })
+      { headers: this.apiConfig.authHeaders(), body:'' })
       .map(() => this.deleteCollectionFromStore(collectionId));
   }
 

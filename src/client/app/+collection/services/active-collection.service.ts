@@ -20,6 +20,7 @@ export function activeState(collection: any = {}): Collection {
     email: collection.email || '',
     userRole: collection.userRole || '',
     editors: collection.editors || [],
+    collectionThumbnail: collection.collectionThumbnail || {},
     assets: {
       items: [],
       pagination: {
@@ -82,6 +83,7 @@ export class ActiveCollectionService {
       { headers: this.apiConfig.authHeaders(), body: '' })
       .map((res) => {
         this.updateActiveCollectionStore(res.json());
+        console.log(res.json());
         return res.json();
       });
   }
@@ -118,6 +120,7 @@ export class ActiveCollectionService {
     return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=${pgIndex}&n=${numberPerPg}`,
       { headers: this.apiConfig.authHeaders(), body: '' })
       .map((res) => {
+        // console.log(res.json());
         this.updateActiveCollectionAssets(res.json());
         return res.json();
       });
@@ -153,8 +156,7 @@ export class ActiveCollectionService {
             'hasPreviousPage': assets.hasPreviousPage,
             'numberOfPages': assets.numberOfPages
           }
-        },
-        thumbnail: (assets.items.length > 0) ? assets.items[assets.items.length - 1].thumbnail : ''
+        }
       }
     });
   }
