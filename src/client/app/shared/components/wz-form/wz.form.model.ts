@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Validators } from '@angular/common';
 import { FormFields } from '../../interfaces/forms.interface';
+import { WzCollectionValidator } from './wz-validators/wz.collection-validator';
+// import { ValidationService } from './wz-validators/wz.collection-async-validator';
+// import { WzTestValidator } from './wz-validators/wz.test-validator';
 
 /**
  * Service that creates a dynamic model to drive a form.
@@ -44,6 +47,8 @@ export class FormModel {
         return this._getEmailValidator();
       case 'PASSWORD':
         return this._getPasswordValidator();
+      case 'COLLECTION':
+        return this._getCollectionValidator();
       default:
         return this._getOptionalValidator;
     }
@@ -70,5 +75,10 @@ export class FormModel {
       Validators.required,
       Validators.minLength(8)
     ]);
+  }
+
+  private _getCollectionValidator(): Validators {
+    // return [Validators.required, WzTestValidator.startsWithNumber];
+    return Validators.required, WzCollectionValidator.checkCollectionName;
   }
 }
