@@ -33,7 +33,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
-  public counted: string;
+  public counted: boolean;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
   private configSubscription: Subscription;
@@ -59,7 +59,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     // this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
     this.routeSubscription = this.route.params.subscribe(params => {
       this.searchContext.update = params;
-      this.counted = JSON.parse(params['counted']);
+      this.counted = params['counted'] ? JSON.parse(params['counted']) : false;
       // if (!this.searchContext.state.filterIds) {
       this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
       // }
