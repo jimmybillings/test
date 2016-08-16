@@ -74,6 +74,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public countToggle(event: any): void {
+    this.uiState.loading(true);
     this.counted = event.checked;
     this.searchContext.update = {counted: this.counted};
     this.searchContext.go();
@@ -113,20 +114,25 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyFilter(filterId: number): void {
-    this.uiState.loading(true);
-    console.log(filterId);
+    if (this.counted) {
+      this.uiState.loading(true);
+    }
     this.toggleFilter(filterId);
     this.filterAssets();
   }
 
   public applyCustomValue(filter: any, value: any) {
-    this.uiState.loading(true);
+    if (this.counted) {
+      this.uiState.loading(true);
+    }
     this.filter.set(this.filter.addCustomValue(filter, value));
     this.filterAssets();
   }
 
   public applyExclusiveFilter(subFilter: any): void {
-    this.uiState.loading(true);
+    if (this.counted) {
+      this.uiState.loading(true);
+    }
     this.filter.set(this.filter.toggleExclusive(subFilter));
     this.filterAssets();
   }
