@@ -21,12 +21,13 @@ import {
   ActiveCollectionService
 } from './imports/app.component.imports';
 declare var portal: string;
+import { APPLICATION_DIRECTIVES } from './imports/index';
 
 @Component({
   moduleId: module.id,
   selector: 'app',
   templateUrl: 'app.html',
-  directives: [ROUTER_DIRECTIVES, APP_COMPONENT_DIRECTIVES],
+  directives: [ROUTER_DIRECTIVES, APP_COMPONENT_DIRECTIVES, ...APPLICATION_DIRECTIVES],
   pipes: [TranslatePipe],
   providers: [WzNotificationService]
 })

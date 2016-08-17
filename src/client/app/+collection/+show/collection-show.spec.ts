@@ -1,6 +1,5 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
   Observable,
   inject,
   addProviders
@@ -29,14 +28,6 @@ export function main() {
         { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
       ]);
     });
-
-    it('Should create instance of Collection Component',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(CollectionShowComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof CollectionShowComponent).toBeTruthy();
-        });
-      }));
 
     it('Should remove a given asset from a collection',
       inject([CollectionShowComponent], (component: CollectionShowComponent) => {

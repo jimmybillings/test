@@ -1,7 +1,6 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  inject,
+  // inject,
   addProviders
 } from '../../../imports/test.imports';
 
@@ -16,12 +15,5 @@ export function main() {
       ]);
     });
 
-    it('Should have a Notification instance',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(WzNotificationComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof WzNotificationComponent).toBeTruthy();
-        });
-      }));
   });
 }

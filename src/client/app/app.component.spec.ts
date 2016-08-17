@@ -1,7 +1,5 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  CurrentUser,
   inject,
   addProviders
 } from './imports/test.imports';
@@ -17,15 +15,6 @@ export function main() {
         AppComponent
       ]);
     });
-
-    it('Create instance of app and assign the CurrentUser to an instance variable inside of app',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(AppComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance.currentUser instanceof CurrentUser).toBeTruthy();
-          expect(instance instanceof AppComponent).toBeTruthy();
-        });
-      }));
 
     it('Should log out a user', inject([AppComponent], (component: any) => {
       spyOn(component.authentication, 'destroy').and.callThrough();

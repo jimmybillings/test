@@ -1,6 +1,5 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
   inject,
   addProviders
 } from '../../../imports/test.imports';
@@ -15,14 +14,6 @@ export function main() {
         WzSearchBoxComponent
       ]);
     });
-
-    it('Should have a search box instance',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(WzSearchBoxComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof WzSearchBoxComponent).toBeTruthy();
-        });
-      }));
 
     it('Should create the form object for the search bar', inject([WzSearchBoxComponent], (component: WzSearchBoxComponent) => {
       component.setForm();

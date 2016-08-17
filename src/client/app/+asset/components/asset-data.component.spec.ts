@@ -1,7 +1,6 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  inject,
+  // inject,
   addProviders
 } from '../../imports/test.imports';
 
@@ -15,13 +14,5 @@ export function main() {
         AssetDataComponent,
       ]);
     });
-
-    it('Create instance of AssetDataComponent',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(AssetDataComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof AssetDataComponent).toBeTruthy();
-        });
-      }));
   });
 }

@@ -10,7 +10,7 @@ import { provideForms, disableDeprecatedForms, FORM_PROVIDERS } from '@angular/f
 // Angular 2 Http
 import { HTTP_PROVIDERS } from '@angular/http';
 // Angular 2 Router
-import { provideRouter, RouterConfig } from '@angular/router';
+import { provideRouter, Routes } from '@angular/router';
 
 // Angular 2 Material
 // TODO(gdi2290): replace with @angular2-material/all
@@ -27,7 +27,7 @@ import { WAZEE_PROVIDERS, WAZEE_ROUTES } from './wazee';
 */
 import { OVERLAY_PROVIDERS } from '@angular2-material/core/overlay/overlay';
 
-export const APP_ROUTER_PROVIDERS: RouterConfig = [
+export const APP_ROUTER_PROVIDERS: Routes = [
   AssetResolver,
   SearchResolver,
   CollectionShowResolver,

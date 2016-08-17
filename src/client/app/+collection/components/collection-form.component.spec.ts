@@ -1,6 +1,5 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
   Observable,
   Injectable,
   inject,
@@ -55,14 +54,6 @@ export function main() {
         { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
       ]);
     });
-
-    it('Create instance of collection form',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(CollectionFormComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof CollectionFormComponent).toBeTruthy();
-        });
-      }));
 
     it('Should create a new collection',
       inject([CollectionFormComponent], (component: CollectionFormComponent) => {

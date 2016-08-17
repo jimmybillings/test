@@ -108,7 +108,7 @@ export class ActiveCollectionService {
   public removeAsset(collectionId: any, assetId: any, uuid: any): Observable<any> {
     return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/removeAssets`,
       {'list': [{'assetId':assetId, 'uuid':uuid}]},
-      { headers: this.apiConfig.authHeaders(), body: '' })
+      { headers: this.apiConfig.authHeaders() })
       .map(res => {
         this.removeAssetFromStore(res.json().list[0]);
         return res.json();

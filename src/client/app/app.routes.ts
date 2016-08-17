@@ -16,10 +16,10 @@ import { AdminAuthGuard} from './+admin/services/admin.auth.guard';
 import { AssetResolver } from './+asset/services/asset.resolver';
 import { CollectionShowResolver } from './+collection/services/collection-show.resolver';
 import { SearchResolver } from './+search/services/search.resolver';
-import { RouterConfig} from '@angular/router';
+import { Routes} from '@angular/router';
 
 
-export const APP_ROUTES: RouterConfig = [
+export const APP_ROUTES: Routes = [
   { path: '', component: HomeComponent },
   { path: 'notification', component: HomeComponent },
   { path: 'user', component: UserManagementComponent, children: USER_ROUTES },
