@@ -26,12 +26,12 @@
           <button md-button type="button" (click)="createCollection.show();UiState.closeCollectionsList();"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
         </div>
         <div flex="33" layout-align="center center">
-          <a md-button (click)="navigateToCollectionsIndex()">
+          <a md-button (click)="navigateToCollectionsIndex()" disableRipple>
             <md-icon>folder_open</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.VIEW_BTN_LABEL' | translate }}</span>
           </a>
         </div>
         <div flex="33" layout-align="center end">
-          <a md-button (click)="navigateToCollectionShow(focusedCollection.id)">
+          <a md-button (click)="navigateToCollectionShow(focusedCollection.id)" disableRipple>
             <md-icon>open_in_browser</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.OPEN_BTN_LABEL' | translate }}</span>
           </a>
         </div>
