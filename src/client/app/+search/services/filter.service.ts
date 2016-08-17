@@ -5,7 +5,6 @@ import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { Http, RequestOptions, URLSearchParams, Response } from '@angular/http';
 
-
 const initFilters: any = {};
 export const filters: Reducer<any> = (state: Array<any> = initFilters, action: Action) => {
   switch (action.type) {
@@ -29,8 +28,8 @@ export class FilterService {
     this.data = this.store.select('filters');
   }
 
-  public get(params: any): Observable<any> {
-    let options = this.filterOptions(params);
+  public get(params: any, counted: boolean): Observable<any> {
+    let options = this.filterOptions(JSON.parse(JSON.stringify(Object.assign({}, params, {counted}))));
     return this.http.get(this.filterUrl, options).map((res: Response) => {
       this.set(this.sanatize(res.json(), null));
       this.checkLocalStorage(res.json());

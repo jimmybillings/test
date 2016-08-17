@@ -16,6 +16,7 @@ import { Store } from '@ngrx/store';
 import { WzBreadcrumbComponent } from '../shared/components/wz-breadcrumb/wz.breadcrumb.component';
 import { FilterComponent } from './filter.component';
 import { FilterService } from './services/filter.service';
+import { UserPreferenceService } from '../shared/services/user-preference.service';
 /**
  * Asset search page component - renders search page results
  */
@@ -37,6 +38,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
   private configSubscription: Subscription;
+  private preferencesSubscription: Subscription;
 
   constructor(
     private _router: Router,
@@ -51,17 +53,19 @@ export class SearchComponent implements OnInit, OnDestroy {
     public error: Error,
     public searchContext: SearchContext,
     public filter: FilterService,
+    public userPreferences: UserPreferenceService,
     public uiState: UiState) { }
 
   ngOnInit(): void {
+    this.preferencesSubscription = this.userPreferences.filterCounts.subscribe(d => {
+      this.counted = d;
+      this.filter.get(this.searchContext.state, this.counted).take(1).subscribe(() => this.uiState.loading(false));
+    });
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
     this.routeSubscription = this.route.params.subscribe(params => {
-      this.searchContext.update = params;
-      this.counted = params['counted'] ? JSON.parse(params['counted']) : false;
       if (this.counted) {
-        this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.loading(false));
+        this.filter.get(this.searchContext.state, this.counted).take(1).subscribe(() => this.uiState.loading(false));
       }
     });
   }
@@ -71,13 +75,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.assetsStoreSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     this.configSubscription.unsubscribe();
+    this.preferencesSubscription.unsubscribe();
   }
 
   public countToggle(event: any): void {
-    this.counted = event.checked;
+    this.userPreferences.update({filterCounts: event.checked});
     if (this.counted) this.uiState.loading(true);
-    this.searchContext.update = {counted: this.counted};
-    this.searchContext.go();
   }
 
   public showAsset(asset: any): void {
@@ -114,26 +117,26 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyFilter(filterId: number): void {
-    if (this.counted) {
-      this.uiState.loading(true);
-    }
+    if (this.counted) this.uiState.loading(true);
     this.toggleFilter(filterId);
     this.filterAssets();
   }
 
   public applyCustomValue(filter: any, value: any) {
-    if (this.counted) {
-      this.uiState.loading(true);
-    }
+    if (this.counted) this.uiState.loading(true);
     this.filter.set(this.filter.addCustomValue(filter, value));
     this.filterAssets();
   }
 
   public applyExclusiveFilter(subFilter: any): void {
-    if (this.counted) {
-      this.uiState.loading(true);
-    }
+    if (this.counted) this.uiState.loading(true);
     this.filter.set(this.filter.toggleExclusive(subFilter));
+    this.filterAssets();
+  }
+
+  public clearFilters(): void {
+    if (this.counted) this.uiState.loading(true);
+    this.filter.set(this.filter.clear());
     this.filterAssets();
   }
 
@@ -155,11 +158,5 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchContext.remove = 'filterValues';
     }
     this.searchContext.go();
-  }
-
-  public clearFilters(): void {
-    if (this.counted) this.uiState.loading(true);
-    this.filter.set(this.filter.clear());
-    this.filterAssets();
   }
 }

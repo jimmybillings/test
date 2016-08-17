@@ -19,6 +19,7 @@ import { UserPermission } from '../shared/services/permission.service';
 import { AssetGuard } from '../+asset/services/asset.guard';
 import { AssetData } from '../+search/services/asset.data.service';
 import { FilterService } from '../+search/services/filter.service';
+import { UserPreferenceService } from '../shared/services/user-preference.service';
 
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
@@ -36,6 +37,7 @@ import { multilingualReducer } from '../shared/services/multilingual.service';
 import { collections} from '../+collection/services/collections.service';
 import { activeCollection} from '../+collection/services/active-collection.service';
 import { filters } from '../+search/services/filter.service';
+import { userPreferences } from '../shared/services/user-preference.service';
 
 // TRANSLATIONS
 import { TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';
@@ -59,6 +61,7 @@ export const WAZEE_PROVIDERS = [
   AssetGuard,
   UserPermission,
   FilterService,
+  UserPreferenceService,
   provide(TranslateLoader, {
     useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'), deps: [Http]
   }),
@@ -77,6 +80,7 @@ export const WAZEE_STORES: Provider[][] = [
     activeCollection,
     uiState,
     filters,
+    userPreferences,
     i18n: multilingualReducer
   })
 ];
