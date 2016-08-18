@@ -10,6 +10,26 @@
         <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>
       </div>
     </header>
+    <div [hidden]="!collectionFilterIsShowing">
+      <p class="md-caption">Sort Collections</p>
+        <collections-filter-dd
+          [UiState]="UiState"
+          (filter)="applyFilter($event)"
+          layout="row" layout-align="end start">
+        </collections-filter-dd>
+      <!--<md-list dense>
+        <md-list-item class="md-caption" *ngFor="let filter of filterOptions" [value]="filter.value">
+          <button (click)="applyFilter(filter)">
+            <md-icon *ngIf="filter.active">check_circle</md-icon>
+            <md-icon *ngIf="!filter.active">radio_button_unchecked</md-icon>
+            {{filter.label}}
+          </button>
+        </md-list-item>
+      </md-list>-->
+    </div>
+    <div>
+      <p class="md-caption">Current Filter: {{currentFilter}}</p>
+    </div>
     <md-list dense>
       <md-list-item *ngFor="let collection of (collections | async).items" [ngClass]="{active: focusedCollection.id === collection.id}">
         <button (click)="selectFocusedCollection(collection)">

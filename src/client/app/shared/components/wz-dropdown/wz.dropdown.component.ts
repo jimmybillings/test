@@ -41,7 +41,7 @@ export class WzDropdownComponent {
         return ref.attach(this.portal);
       })
       .then(() => {
-        setTimeout(() => this.closeListener(), 200);
+        // setTimeout(() => this.closeListener(), 200);
         this.active = true;
         return this;
       });
@@ -62,18 +62,18 @@ export class WzDropdownComponent {
   }
 
   private positionElement(event: any) {
-    let offset: number = 30;
+    let offset: number = 20;
     let layoutBreakpointXs: boolean = event.view.screen.width < 600;
     if (layoutBreakpointXs) {
       this.config.positionStrategy =
         this.overlay.position().global().fixed().right('0').top('0');
     } else {
       this.config.positionStrategy =
-        this.overlay.position().global().fixed().right(window.outerWidth - event.clientX - offset + 'px').top(event.clientY - offset + 'px');
+        this.overlay.position().global().fixed().right(window.outerWidth - event.clientX - offset + 'px').top(event.clientY + offset + 'px');
     }
   }
 
-  private closeListener() {
-    this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.close());
-  }
+  // private closeListener() {
+  //   this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.close());
+  // }
 }

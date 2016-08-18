@@ -62,7 +62,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
         }
       }
     }
-    md-list[dense] {
+    md-list {
       padding-top: 0;
       border: 1px solid md-color($md-foreground, divider);
       max-height: rem(32.2);
@@ -169,13 +169,13 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
 
 
 collections-filter-dd, collections-sort-dd {
-  &.revealed .collections-dd-menu {
-    @include animation-name(sort-dd-open);
-    @include animation-duration(250ms);
-    @include animation-timing-function($swift-ease-in-timing-function);
-    @include animation-iteration-count(1);
-    @include animation-fill-mode(backwards);
-  }
+  // &.revealed .collections-dd-menu {
+  //   @include animation-name(sort-dd-open);
+  //   @include animation-duration(250ms);
+  //   @include animation-timing-function($swift-ease-in-timing-function);
+  //   @include animation-iteration-count(1);
+  //   @include animation-fill-mode(backwards);
+  // }
   .dd-menu-wrapper {
     padding: 0;
   }
@@ -250,3 +250,21 @@ collections-filter-dd, collections-sort-dd {
     min-width: rem(32.0);
   }
 }
+
+  // md-list {
+  //   padding: 0;
+  //   border: 1px solid md-color($md-foreground, divider);
+  //   md-list-item .md-list-item {
+  //     color: rgba(md-color($md-foreground, text), .7);
+  //     cursor: pointer;
+  //     margin-right: rem(1);
+  //     height: rem(3);
+  //     padding: 0;
+  //     font-size: 12px;
+  //     md-icon {
+  //       color: rgba(md-color($md-foreground, text), .4);
+  //       margin-left: rem(1);
+  //       font-size: 20px;
+  //     }
+  //   }
+  // }
