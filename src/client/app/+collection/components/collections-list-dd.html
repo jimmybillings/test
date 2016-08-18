@@ -10,22 +10,18 @@
         <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>
       </div>
     </header>
+    <collections-search-form
+      [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
+      [hidden]="!collectionSearchIsShowing"
+      (query)="search($event)">
+    </collections-search-form>
     <div [hidden]="!collectionFilterIsShowing">
+      <p class="md-caption">Filter Collections by Access Level</p>
+      <collections-filter-dd [UiState]="UiState" (filter)="applyFilter($event)"></collections-filter-dd>
+    </div>
+    <div [hidden]="!collectionSortIsShowing">
       <p class="md-caption">Sort Collections</p>
-        <collections-filter-dd
-          [UiState]="UiState"
-          (filter)="applyFilter($event)"
-          layout="row" layout-align="end start">
-        </collections-filter-dd>
-      <!--<md-list dense>
-        <md-list-item class="md-caption" *ngFor="let filter of filterOptions" [value]="filter.value">
-          <button (click)="applyFilter(filter)">
-            <md-icon *ngIf="filter.active">check_circle</md-icon>
-            <md-icon *ngIf="!filter.active">radio_button_unchecked</md-icon>
-            {{filter.label}}
-          </button>
-        </md-list-item>
-      </md-list>-->
+      <collections-sort-dd [UiState]="UiState" (sort)="applySort($event)"></collections-sort-dd>
     </div>
     <div>
       <p class="md-caption">Current Filter: {{currentFilter}}</p>

@@ -6,6 +6,8 @@ import { ActiveCollectionService} from '../services/active-collection.service';
 import { CollectionFormComponent } from '../../+collection/components/collection-form.component';
 import { WzDialogComponent } from '../../shared/components/wz-dialog/wz.dialog.component';
 import { CollectionFilterDdComponent } from './collections-filter-dd.component';
+import { CollectionSortDdComponent } from './collections-sort-dd.component';
+import { CollectionsSearchFormComponent } from './collections-search-form.component';
 import { WzDropdownComponent } from '../../shared/components/wz-dropdown/wz.dropdown.component';
 import { Observable} from 'rxjs/Rx';
 
@@ -21,7 +23,9 @@ import { Observable} from 'rxjs/Rx';
     CollectionFormComponent,
     WzDialogComponent,
     WzDropdownComponent,
-    CollectionFilterDdComponent
+    CollectionFilterDdComponent,
+    CollectionsSearchFormComponent,
+    CollectionSortDdComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -33,7 +37,8 @@ export class CollectionListDdComponent {
   public collections: Observable<Collections>;
   public currentFilter: string;
   public collectionFilterIsShowing: boolean = false;
-  public filterOptions: any;
+  public collectionSortIsShowing: boolean = false;
+  public collectionSearchIsShowing: boolean = false;
 
   constructor(
     public router: Router,
@@ -42,13 +47,6 @@ export class CollectionListDdComponent {
     public route: ActivatedRoute) {
       this.currentFilter = 'ALL';
       this.collections = this.collectionsService.data;
-      this.filterOptions = [
-        { 'id': 0, 'label': 'ALL', 'value': 'all', 'active': true, 'access': {'access-level': 'all'} },
-        { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'active': false, 'access': {'access-level': 'owner'} },
-        { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'active': false, 'access': {'access-level': 'editor'} },
-        { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'active': false, 'access': {'access-level': 'viewer'} },
-        { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'active': false, 'access': {'access-level': 'researcher'} }
-    ];
   }
 
   public closeCollectionsList(): void {
@@ -83,22 +81,30 @@ export class CollectionListDdComponent {
 
   public applyFilter(filter: any) {
     this.currentFilter = filter.label;
-    this.filterOptions.forEach((f:any) => f.active = false);
-    filter.active = true;
     this.collectionsService.loadCollections(filter.access).take(1).subscribe();
   }
 
+  public applySort(sort: any) {
+    this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
+  }
+
+  public search(query: any) {
+    this.collectionsService.loadCollections(query).take(1).subscribe();
+  }
+
   public showCollectionFilter(event: Event) {
-    console.log(this.collectionFilterIsShowing);
     this.collectionFilterIsShowing = !this.collectionFilterIsShowing;
   }
 
   public showCollectionSort(event: Event) {
-    return event;
+    this.collectionSortIsShowing = !this.collectionSortIsShowing;
+  }
+
+  public showCollectionSearch(event: Event) {
+    this.collectionSearchIsShowing = !this.collectionSearchIsShowing;
   }
 
   public onCollectionShowPage(): boolean {
     return (this.router.url.split('/')[1] === 'collection' && this.router.url.split('/')[2] !== undefined);
   }
-
 }
