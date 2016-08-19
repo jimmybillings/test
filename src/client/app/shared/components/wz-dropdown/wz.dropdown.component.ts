@@ -1,4 +1,4 @@
-import { Component, Input, Directive, ViewContainerRef, TemplateRef, ViewChild, ViewEncapsulation, Renderer } from '@angular/core';
+import { Component, Input, Directive, ViewContainerRef, TemplateRef, ViewChild, ViewEncapsulation, Renderer, ElementRef } from '@angular/core';
 import {Overlay} from '@angular2-material/core/overlay/overlay';
 import {OverlayState} from '@angular2-material/core/overlay/overlay-state';
 import {OverlayRef} from '@angular2-material/core/overlay/overlay-ref';
@@ -30,7 +30,7 @@ export class WzDropdownComponent {
   public viewRef: any;
   private overlayRef: OverlayRef = null;
 
-  constructor(private overlay: Overlay, private renderer: Renderer) { }
+  constructor(private overlay: Overlay, private renderer: Renderer, private elementRef: ElementRef) { }
 
   public show(event: any): Promise<WzDropdownComponent> {
     this.positionElement(event);
@@ -41,7 +41,7 @@ export class WzDropdownComponent {
         return ref.attach(this.portal);
       })
       .then(() => {
-        // setTimeout(() => this.closeListener(), 200);
+        setTimeout(() => this.closeListener(), 200);
         this.active = true;
         return this;
       });
@@ -62,18 +62,18 @@ export class WzDropdownComponent {
   }
 
   private positionElement(event: any) {
-    let offset: number = 20;
+    let offset: number = 30;
     let layoutBreakpointXs: boolean = event.view.screen.width < 600;
     if (layoutBreakpointXs) {
       this.config.positionStrategy =
         this.overlay.position().global().fixed().right('0').top('0');
     } else {
       this.config.positionStrategy =
-        this.overlay.position().global().fixed().right(window.outerWidth - event.clientX - offset + 'px').top(event.clientY + offset + 'px');
+        this.overlay.position().global().fixed().right(window.outerWidth - event.clientX - offset + 'px').top(event.clientY - offset + 'px');
     }
   }
 
-  // private closeListener() {
-  //   this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.close());
-  // }
+  private closeListener() {
+    this.viewRef = this.renderer.listen(this.elementRef.nativeElement.parentElement.parentElement.parentElement, 'click', () => this.close());
+  }
 }

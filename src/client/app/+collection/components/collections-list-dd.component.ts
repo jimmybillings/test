@@ -36,6 +36,7 @@ export class CollectionListDdComponent {
   @Input() config: any;
   public collections: Observable<Collections>;
   public currentFilter: string;
+  public currentSort: string;
   public collectionFilterIsShowing: boolean = false;
   public collectionSortIsShowing: boolean = false;
   public collectionSearchIsShowing: boolean = false;
@@ -46,6 +47,7 @@ export class CollectionListDdComponent {
     public activeCollection: ActiveCollectionService,
     public route: ActivatedRoute) {
       this.currentFilter = 'ALL';
+      this.currentSort = 'DATE_MOD_NEWEST';
       this.collections = this.collectionsService.data;
   }
 
@@ -85,6 +87,7 @@ export class CollectionListDdComponent {
   }
 
   public applySort(sort: any) {
+    this.currentSort = sort.label;
     this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
   }
 

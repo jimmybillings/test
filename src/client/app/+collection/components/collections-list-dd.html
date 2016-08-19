@@ -15,16 +15,18 @@
       [hidden]="!collectionSearchIsShowing"
       (query)="search($event)">
     </collections-search-form>
-    <div [hidden]="!collectionFilterIsShowing">
-      <p class="md-caption">Filter Collections by Access Level</p>
-      <collections-filter-dd [UiState]="UiState" (filter)="applyFilter($event)"></collections-filter-dd>
-    </div>
-    <div [hidden]="!collectionSortIsShowing">
-      <p class="md-caption">Sort Collections</p>
-      <collections-sort-dd [UiState]="UiState" (sort)="applySort($event)"></collections-sort-dd>
-    </div>
+    <collections-filter-dd
+      [hidden]="!collectionFilterIsShowing"
+      [UiState]="UiState"
+      (filter)="applyFilter($event)">
+    </collections-filter-dd>
+    <collections-sort-dd
+      [hidden]="!collectionSortIsShowing"
+      [UiState]="UiState"
+      (sort)="applySort($event)">
+    </collections-sort-dd>
     <div>
-      <p class="md-caption">Current Filter: {{currentFilter}}</p>
+      <p class="md-caption">{{'COLLECTION.INDEX.FILTER_DD_MENU.' + currentFilter | uppercase | translate}}, {{'COLLECTION.INDEX.SORT_DD_MENU.' + currentSort | uppercase | translate }}</p>
     </div>
     <md-list dense>
       <md-list-item *ngFor="let collection of (collections | async).items" [ngClass]="{active: focusedCollection.id === collection.id}">
