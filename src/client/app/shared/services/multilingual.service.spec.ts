@@ -5,12 +5,20 @@ import {
 } from '../../imports/test.imports';
 
 import { MultilingualService } from './multilingual.service';
+import { TranslateLoader, TranslateStaticLoader, TranslateService } from 'ng2-translate/ng2-translate';
+import { Http } from '@angular/http';
+import { provide } from '@angular/core';
 
 export function main() {
   describe('Multilingual Service', () => {
     beforeEach(() => {
       addProviders([
         ...beforeEachProvidersArray,
+        provide(TranslateLoader, {
+          useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
+          deps: [Http]
+        }),
+        TranslateService,
         MultilingualService
       ]);
     });

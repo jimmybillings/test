@@ -1,6 +1,5 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-import {TranslatePipe} from 'ng2-translate/ng2-translate';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
+import { Router} from '@angular/router';
 import { Collection } from '../../shared/interfaces/collection.interface';
 
 /**
@@ -10,8 +9,6 @@ import { Collection } from '../../shared/interfaces/collection.interface';
   moduleId: module.id,
   selector: 'app-nav',
   templateUrl: 'app-nav.html',
-  directives: [ROUTER_DIRECTIVES],
-  pipes: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

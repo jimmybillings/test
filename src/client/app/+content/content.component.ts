@@ -8,8 +8,7 @@ import { Subscription } from 'rxjs/Rx';
 @Component({
   moduleId: module.id,
   selector: 'cms',
-  templateUrl: 'content.html',
-  providers: [ContentService]
+  templateUrl: 'content.html'
 })
 
 export class ContentComponent implements OnInit, OnDestroy {

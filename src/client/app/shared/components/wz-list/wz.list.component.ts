@@ -1,11 +1,9 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-list',
   templateUrl: 'wz.list.html',
-  directives: [ROUTER_DIRECTIVES],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

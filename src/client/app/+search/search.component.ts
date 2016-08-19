@@ -1,20 +1,16 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { AssetData } from './services/asset.data.service';
-import { WzAssetListComponent }  from '../shared/components/wz-asset-list/wz.asset-list.component';
 import { UiConfig} from '../shared/services/ui.config';
 import { Observable, Subscription} from 'rxjs/Rx';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { Error } from '../shared/services/error.service';
-import { WzPaginationComponent} from '../shared/components/wz-pagination/wz.pagination.component';
 import { SearchContext} from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
 import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from '../+collection/services/collections.service';
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { Store } from '@ngrx/store';
-import { WzBreadcrumbComponent } from '../shared/components/wz-breadcrumb/wz.breadcrumb.component';
-import { FilterComponent } from './filter.component';
 import { FilterService } from './services/filter.service';
 /**
  * Asset search page component - renders search page results
@@ -23,7 +19,6 @@ import { FilterService } from './services/filter.service';
   moduleId: module.id,
   selector: 'search',
   templateUrl: 'search.html',
-  directives: [WzAssetListComponent, WzPaginationComponent, FilterComponent, WzBreadcrumbComponent]
 })
 
 export class SearchComponent implements OnInit, OnDestroy {

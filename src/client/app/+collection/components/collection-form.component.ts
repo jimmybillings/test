@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Collection, Collections } from '../../shared/interfaces/collection.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { Asset } from '../../shared/interfaces/asset.interface';
@@ -14,9 +14,7 @@ import { Observable, Subscription } from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'collection-form',
   templateUrl: 'collection-form.html',
-  directives: [
-    WzFormComponent
-  ]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class CollectionFormComponent implements OnInit {

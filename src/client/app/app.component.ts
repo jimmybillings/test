@@ -1,34 +1,31 @@
 import { Component, OnInit, Renderer, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
-import { Router, ROUTER_DIRECTIVES } from '@angular/router';
-import { TranslatePipe } from 'ng2-translate/ng2-translate';
+import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { MultilingualService } from './shared/services/multilingual.service';
-import {
-  APP_COMPONENT_DIRECTIVES,
-  CurrentUser,
-  ApiConfig,
-  UiConfig,
-  SearchContext,
-  Authentication,
-  ILang,
-  Collection,
-  CollectionStore,
-  UiState,
-  WzNotificationService,
-  CollectionsService,
-  UserPermission,
-  ActiveCollectionService
-} from './imports/app.component.imports';
+
+// Services
+import { CurrentUser} from './shared/services/current-user.model';
+import { UserPermission } from './shared/services/permission.service';
+import { ApiConfig} from './shared/services/api.config';
+import { UiConfig} from './shared/services/ui.config';
+import { SearchContext} from './shared/services/search-context.service';
+import { Authentication} from './+user-management/services/authentication.data.service';
+import { CollectionsService } from './+collection/services/collections.service';
+import { UiState} from './shared/services/ui.state';
+import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
+import { ActiveCollectionService} from './+collection/services/active-collection.service';
+
+// /Interfaces
+import { ILang} from './shared/interfaces/language.interface';
+import { Collection, CollectionStore } from './shared/interfaces/collection.interface';
+
 declare var portal: string;
-import { APPLICATION_DIRECTIVES } from './imports/index';
 
 @Component({
   moduleId: module.id,
   selector: 'app',
   templateUrl: 'app.html',
-  directives: [ROUTER_DIRECTIVES, APP_COMPONENT_DIRECTIVES, ...APPLICATION_DIRECTIVES],
-  pipes: [TranslatePipe],
   providers: [WzNotificationService]
 })
 

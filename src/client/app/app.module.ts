@@ -1,33 +1,44 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule  } from '@angular/platform-browser';
-import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { APP_ROUTES } from './app.routes';
 
-import { AssetResolver } from './+asset/services/asset.resolver';
-import { SearchResolver } from './+search/services/search.resolver';
-import { CollectionShowResolver } from './+collection/services/collection-show.resolver';
+import { AppNavComponent } from './application/app-nav/app-nav.component';
+import { FooterComponent } from './application/footer/footer.component';
+import { BinTrayComponent } from './application/bin-tray/bin-tray.component';
 
-import { PROVIDERS, STORES } from './imports/index';
+import { HomeModule } from './+home/home.module';
+import { UserManagementModule } from './+user-management/user-management.module';
+import { ContentModule } from './+content/content.module';
+import { SearchModule } from './+search/search.module';
+import { AssetModule } from './+asset/asset.module';
+import { AdminModule } from './+admin/admin.module';
+import { CollectionModule } from './+collection/collection.module';
+
+import { AppComponent } from './app.component';
+
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-     declarations: [AppComponent],
      imports: [
-         BrowserModule,
-         FormsModule,
-         RouterModule.forRoot(APP_ROUTES),
+          BrowserModule,
+          RouterModule.forRoot(APP_ROUTES),
+          SharedModule.forRoot(),
+          HomeModule,
+          SearchModule,
+          AssetModule,
+          CollectionModule,
+          ContentModule,
+          UserManagementModule,
+          AdminModule
      ],
-     providers: [
-      {provide: APP_BASE_HREF,
-      useValue: '<%= APP_BASE %>'},
-      AssetResolver,
-      SearchResolver,
-      CollectionShowResolver,
-      ...PROVIDERS,
-      ...STORES
+     providers: [{
+        provide: APP_BASE_HREF,
+        useValue: '<%= APP_BASE %>'
+      }
     ],
-     bootstrap: [AppComponent],
+    declarations: [AppComponent, AppNavComponent, FooterComponent, BinTrayComponent],
+    bootstrap: [AppComponent],
  })
  export class AppModule {}

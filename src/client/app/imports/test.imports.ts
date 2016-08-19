@@ -4,8 +4,7 @@ import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
 import { provide, Renderer } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutletMap } from '@angular/router';
-import { FormBuilder, provideForms, disableDeprecatedForms } from '@angular/forms';
-import { MATERIAL_PROVIDERS } from './material';
+import { FormBuilder } from '@angular/forms';
 // DIRECTIVES
 
 // STORES & PROVIDERS
@@ -16,9 +15,6 @@ import { AdminService } from '../+admin/services/admin.service';
 import { ConfigService } from '../+admin/services/config.service';
 import { User } from '../+user-management/services/user.data.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
-
-// PURE_COMPONENTS
-import { APP_COMPONENT_DIRECTIVES } from './app.component.imports';
 
 // MODELS
 import { FormModel } from '../shared/components/wz-form/wz.form.model';
@@ -42,21 +38,17 @@ export { Response, ResponseOptions, RequestMethod, RequestOptions, Headers } fro
 export const beforeEachProvidersArray: Array<any> = [
   ...WAZEE_STORES,
   ...WAZEE_PROVIDERS,
-  ...APP_COMPONENT_DIRECTIVES,
-  ...MATERIAL_PROVIDERS,
   WzNotificationService,
   ConfigService,
   AdminService,
   User,
-  FormBuilder,
-  disableDeprecatedForms(),
-  provideForms(),
   Renderer,
   LocationStrategy,
   MockBackend,
   BaseRequestOptions,
   RouterOutletMap,
   FormModel,
+  FormBuilder,
   provide(Http, {
     useFactory: (backend: any, defaultOptions: any) => new Http(backend, defaultOptions),
     deps: [MockBackend, BaseRequestOptions]

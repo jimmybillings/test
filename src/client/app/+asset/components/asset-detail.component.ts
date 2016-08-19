@@ -1,19 +1,11 @@
 import { Component, Output, EventEmitter, Input, OnChanges, ChangeDetectionStrategy} from '@angular/core';
-import { ROUTER_DIRECTIVES} from '@angular/router';
-import { WzPlayerComponent} from '../../shared/components/wz-player/wz.player.component';
 import { Collection } from '../../shared/interfaces/collection.interface';
-import { WzToastComponent } from '../../shared/components/wz-toast/wz.toast.component';
 import { CurrentUser } from '../../shared/services/current-user.model';
 
 @Component({
   moduleId: module.id,
   selector: 'asset-detail',
   templateUrl: 'asset-detail.html',
-  directives: [
-    ROUTER_DIRECTIVES,
-    WzPlayerComponent,
-    WzToastComponent
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

@@ -1,9 +1,11 @@
 import {
   beforeEachProvidersArray,
   inject,
-  addProviders
+  addProviders,
 } from './imports/test.imports';
-
+import { provide } from '@angular/core';
+import { TranslateLoader, TranslateStaticLoader, TranslateService } from 'ng2-translate/ng2-translate';
+import { Http } from '@angular/http';
 import { AppComponent} from './app.component';
 
 export function main() {
@@ -12,6 +14,11 @@ export function main() {
     beforeEach(() => {
       addProviders([
         ...beforeEachProvidersArray,
+        provide(TranslateLoader, {
+          useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
+          deps: [Http]
+        }),
+        TranslateService,
         AppComponent
       ]);
     });

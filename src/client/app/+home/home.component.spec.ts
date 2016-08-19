@@ -24,10 +24,9 @@ export function main() {
       ]);
     });
 
-    it('Should have router, apiConfig, currentUser, searchContext and uiConfig defined',
+    it('Should have apiConfig, currentUser, searchContext and uiConfig defined',
       inject([HomeComponent], (component: HomeComponent) => {
         expect(component.currentUser).toBeDefined();
-        expect(component.router).toBeDefined();
         expect(component.apiConfig).toBeDefined();
         expect(component.currentUser).toBeDefined();
         expect(component.searchContext).toBeDefined();
