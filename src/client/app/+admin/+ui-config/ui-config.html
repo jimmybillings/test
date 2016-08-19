@@ -61,7 +61,7 @@
           </div>
           <md-list-item>
             <div class="add-item" layout="row" layout-align="center center" flex-gt-lg="100" flex-xl="100" flex="100">
-              <form #f="ngForm" (ngSubmit)="addItem(f.value)">
+              <form (ngSubmit)="addItem(f.value)">
                 <select required [(ngModel)]="type" name="type">
                   <option *ngFor="let type of typeSelect" [selected]="type === text" [value]="type">{{type}}</option>
                 </select>

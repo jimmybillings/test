@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-// import { WzAssetDetailComponent } from '../shared/components/wz-asset-detail/wz.asset-detail.component';
-import { AssetDetailComponent } from './components/asset-detail.component';
-import { AssetDataComponent } from './components/asset-data.component';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { AssetService} from './services/asset.service';
 import { Observable} from 'rxjs/Rx';
@@ -19,12 +16,7 @@ import { Store } from '@ngrx/store';
 @Component({
   moduleId: module.id,
   selector: 'asset',
-  templateUrl: 'asset.html',
-  directives: [
-    // WzAssetDetailComponent
-    AssetDetailComponent,
-    AssetDataComponent
-  ]
+  templateUrl: 'asset.html'
 })
 
 export class AssetComponent {

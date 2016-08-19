@@ -1,6 +1,5 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
   Observable,
   Injectable,
   inject,
@@ -51,14 +50,6 @@ export function main() {
         { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
       ]);
     });
-
-    it('Create instance of collection list',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(CollectionListDdComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof CollectionListDdComponent).toBeTruthy();
-        });
-      }));
 
     it('Should detect the user is not on the collection show page and navigate there',
       inject([CollectionListDdComponent], (component: CollectionListDdComponent) => {

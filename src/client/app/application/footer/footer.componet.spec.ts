@@ -1,6 +1,5 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
   inject,
   addProviders
 } from '../../imports/test.imports';
@@ -15,14 +14,6 @@ export function main() {
         FooterComponent
       ]);
     });
-
-    it('Should have a footer instance',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(FooterComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof FooterComponent).toBeTruthy();
-        });
-      }));
 
     it('Should fire an event to change the current selected language', inject([FooterComponent], (component: FooterComponent) => {
       spyOn(component.onChangeLang, 'emit');

@@ -7,7 +7,6 @@ import { FormFields } from '../../shared/interfaces/forms.interface.ts';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfigService } from '../services/config.service';
-import { ValuesPipe } from '../../shared/pipes/values.pipe';
 import { ApiConfig } from '../../shared/services/api.config';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Rx';
@@ -16,7 +15,6 @@ import { Subscription } from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'admin-ui-config',
   templateUrl: 'ui-config.html',
-  pipes: [ValuesPipe]
 })
 
 export class UiConfigComponent implements OnInit, OnDestroy {

@@ -1,13 +1,9 @@
 import { Component, Input, OnChanges} from '@angular/core';
-import { ROUTER_DIRECTIVES} from '@angular/router';
 
 @Component({
   moduleId: module.id,
   selector: 'asset-data',
   templateUrl: 'asset-data.html',
-  directives: [
-    ROUTER_DIRECTIVES,
-  ],
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 
