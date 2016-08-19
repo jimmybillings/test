@@ -1,11 +1,11 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  CurrentUser,
   inject,
-  addProviders
+  addProviders,
 } from './imports/test.imports';
-
+import { provide } from '@angular/core';
+import { TranslateLoader, TranslateStaticLoader, TranslateService } from 'ng2-translate/ng2-translate';
+import { Http } from '@angular/http';
 import { AppComponent} from './app.component';
 
 export function main() {
@@ -14,18 +14,14 @@ export function main() {
     beforeEach(() => {
       addProviders([
         ...beforeEachProvidersArray,
+        provide(TranslateLoader, {
+          useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
+          deps: [Http]
+        }),
+        TranslateService,
         AppComponent
       ]);
     });
-
-    it('Create instance of app and assign the CurrentUser to an instance variable inside of app',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(AppComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance.currentUser instanceof CurrentUser).toBeTruthy();
-          expect(instance instanceof AppComponent).toBeTruthy();
-        });
-      }));
 
     it('Should log out a user', inject([AppComponent], (component: any) => {
       spyOn(component.authentication, 'destroy').and.callThrough();

@@ -1,6 +1,6 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
-import {FormGroup, FormControl, FormBuilder} from '@angular/forms';
-import {FormModel} from './wz.form.model';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
+import { FormGroup, FormControl, FormBuilder} from '@angular/forms';
+import { FormModel } from './wz.form.model';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 
 

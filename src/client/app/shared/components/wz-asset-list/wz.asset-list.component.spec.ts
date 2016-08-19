@@ -1,6 +1,5 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
   inject,
   addProviders
 } from '../../../imports/test.imports';
@@ -15,14 +14,6 @@ export function main() {
         WzAssetListComponent
       ]);
     });
-
-    it('Create instance of AssetList',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(WzAssetListComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof WzAssetListComponent).toBeTruthy();
-        });
-      }));
 
     it('Should return a shortened version for High Definition, Standard Definition etc...', inject([WzAssetListComponent], (service: WzAssetListComponent) => {
       expect(service.formatType('High Definition')).toEqual('hd');

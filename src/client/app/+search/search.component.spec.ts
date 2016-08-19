@@ -1,8 +1,7 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
   Observable,
-  inject,
+  // inject,
   addProviders
 } from '../imports/test.imports';
 
@@ -37,14 +36,6 @@ export function main() {
       ]);
     });
 
-    it('Should have a search instance',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(SearchComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof SearchComponent).toBeTruthy();
-        });
-      })
-    );
   });
 
   function MockSearchResultsResponse() {

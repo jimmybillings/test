@@ -1,6 +1,5 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
   ActivatedRoute,
   Observable,
   inject,
@@ -31,14 +30,6 @@ export function main() {
         { provide: ContentService, useClass: MockContentService }
       ]);
     });
-
-    it('Create instance of Content Component',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(ContentComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof ContentComponent).toBeTruthy();
-        });
-      }));
 
     it('Should call the Content service and assign the HTML response to title and content variables',
       inject([ContentComponent], (service: ContentComponent) => {
