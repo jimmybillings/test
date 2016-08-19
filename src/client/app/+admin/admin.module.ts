@@ -8,6 +8,7 @@ import { SiteConfigComponent } from './+site-config/site-config.component';
 import { UiConfigComponent } from './+ui-config/ui-config.component';
 import { SharedModule } from '../shared/shared.module';
 import { AdminService} from './services/admin.service';
+import { ConfigService} from './services/config.service';
 import { ADMIN_ROUTES } from './admin.routes';
 import { RouterModule } from '@angular/router';
 
@@ -22,7 +23,7 @@ import { RouterModule } from '@angular/router';
     SiteConfigComponent,
     UiConfigComponent],
   exports: [AdminComponent],
-  providers: [AdminService],
+  providers: [AdminService, ConfigService],
 })
 
 export class AdminModule { }
