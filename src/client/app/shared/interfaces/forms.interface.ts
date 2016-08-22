@@ -8,3 +8,16 @@ export interface FormFields {
   validation?: string;
   options?: string;
 }
+
+export interface ServerErrors {
+  code: string;
+  fieldErrors?: Errors[];
+  message: string;
+}
+
+export interface Errors {
+  code?: string;
+  field: string;
+  message: string;
+  resource?: string;
+}

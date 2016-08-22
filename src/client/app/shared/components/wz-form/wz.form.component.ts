@@ -1,8 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder} from '@angular/forms';
 import { FormModel } from './wz.form.model';
-import { FormFields } from '../../../shared/interfaces/forms.interface';
-
+import { FormFields, ServerErrors } from '../../../shared/interfaces/forms.interface';
 
 /**
  * Home page component - renders the home page
@@ -16,7 +15,8 @@ import { FormFields } from '../../../shared/interfaces/forms.interface';
 })
 
 export class WzFormComponent implements OnInit, OnChanges {
-  @Input() items: any;
+  @Input() items: FormFields[];
+  @Input() serverErrors: ServerErrors;
   @Input() submitLabel: string;
   @Input() autocomplete: string = 'on';
   @Output() formSubmit = new EventEmitter();
@@ -27,8 +27,14 @@ export class WzFormComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private formModel: FormModel) { }
 
   ngOnChanges(changes: any) {
-    if (changes.items.currentValue && this.form) {
-      // console.log(this.form.controls);
+    if (this.serverErrors) {
+      console.log('processing server errors');
+      console.log(this.serverErrors);
+    };
+    if (changes.items && this.form) {
+      console.log('form item changes');
+      console.log(changes.items);
+
       for (let control in this.form.controls) {
         changes.items.currentValue.forEach((field: any) => {
           if (control === field.name)
@@ -41,7 +47,6 @@ export class WzFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.form = this.fb.group(this.formModel.create(this.items));
     this.showRequiredLegend = this.hasRequiredFields(this.items);
-    // console.log(this.form);
   }
 
   public parseOptions(options: any) {
@@ -59,7 +64,6 @@ export class WzFormComponent implements OnInit, OnChanges {
       // this.resetForm();
     } else {
       console.log('error');
-      console.log(this.form);
     }
   }
 
