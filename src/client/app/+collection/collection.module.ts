@@ -5,10 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [SharedModule],
-  declarations: [
-    CollectionsComponent,
-    CollectionShowComponent,
-  ],
+  declarations: [CollectionsComponent, CollectionShowComponent],
   exports: [CollectionsComponent, CollectionShowComponent]
 })
 

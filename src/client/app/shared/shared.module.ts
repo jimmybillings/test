@@ -24,7 +24,6 @@ import { CollectionFormComponent } from '../+collection/components/collection-fo
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
 import { CollectionsSearchFormComponent } from '../+collection/components/collections-search-form.component';
-
 // Shared pipes
 import { ValuesPipe } from '../shared/pipes/values.pipe';
 
