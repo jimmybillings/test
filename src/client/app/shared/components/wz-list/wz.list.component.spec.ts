@@ -1,6 +1,5 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
   inject,
   addProviders
 } from '../../../imports/test.imports';
@@ -15,15 +14,6 @@ export function main() {
         WzListComponent
       ]);
     });
-
-    it('Should create instance of WzList',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(WzListComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof WzListComponent).toBeTruthy();
-        });
-      })
-    );
 
     it('should have a sortBy function that emits a sort event with opposite of toggleFlag - false', inject([WzListComponent], (component: WzListComponent) => {
       spyOn(component.sort, 'emit');

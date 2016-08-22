@@ -25,7 +25,6 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
 
 @Component({
   selector: 'wz-dialog',
-  directives: [WzDialogPortalDirective],
   encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('slideInOut', [

@@ -14,7 +14,6 @@ export class WzDropdownPortalDirective extends TemplatePortalDirective {
 @Component({
   moduleId: module.id,
   selector: 'wz-dropdown',
-  directives: [WzDropdownPortalDirective],
   encapsulation: ViewEncapsulation.None,
   template: `
   <template wzDropdownPortalDirective>

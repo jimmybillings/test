@@ -5,7 +5,6 @@ import { SearchComponent } from '../../../+search/search.component';
   moduleId: module.id,
   selector: 'breadcrumb',
   templateUrl: 'wz.breadcrumb.html',
-  directives: [WzBreadcrumbComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

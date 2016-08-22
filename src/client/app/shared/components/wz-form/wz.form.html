@@ -15,7 +15,6 @@
         type="{{field.type}}"
         formControlName="{{field.name}}"
         id="{{field.name}}"
-        autofocus="{{i === 0}}"
         [required]="isRequiredField(field)"
       >
         <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
@@ -56,7 +55,6 @@
         type="{{field.type}}"
         formControlName="{{field.name}}"
         id="{{field.name}}"
-        autofocus="{{i === 0}}"
       >
         <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
         <md-hint *ngIf="field.hintTextStart" align="start">

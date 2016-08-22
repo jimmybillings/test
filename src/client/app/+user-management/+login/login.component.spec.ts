@@ -1,6 +1,5 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
   addProviders,
   Observable,
   inject,
@@ -25,15 +24,6 @@ export function main() {
         LoginComponent,
       ]);
     });
-
-    it('Should have a Login instance',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(LoginComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof LoginComponent).toBeTruthy();
-        });
-      })
-    );
 
     it('Should set token in localStorage, set the new user, navigate to home page on succesful login',
       inject([LoginComponent], (login: LoginComponent) => {

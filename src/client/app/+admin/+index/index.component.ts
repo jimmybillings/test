@@ -4,13 +4,9 @@ import { UiSubComponentsA,
   AdminFormParams
 } from '../../shared/interfaces/admin.interface';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { AdminService } from '../services/admin.service';
-import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
-import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
-import { WzPaginationComponent } from '../../shared/components/wz-pagination/wz.pagination.component';
-import { WzDialogComponent } from '../../shared/components/wz-dialog/wz.dialog.component';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { Account } from '../../shared/interfaces/admin.interface';
@@ -22,7 +18,6 @@ import { Subscription } from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'admin-index',
   templateUrl: 'index.html',
-  directives: [WzListComponent, WzPaginationComponent, ROUTER_DIRECTIVES, WzFormComponent, WzDialogComponent]
 })
 
 export class IndexComponent implements OnInit, OnDestroy {

@@ -1,5 +1,5 @@
-import {Component, OnDestroy} from '@angular/core';
-import {CurrentUser} from '../../shared/services/current-user.model';
+import { Component, OnDestroy} from '@angular/core';
+import { CurrentUser} from '../../shared/services/current-user.model';
 import { User} from '../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs/Rx';
 
