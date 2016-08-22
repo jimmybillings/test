@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Rx';
 import { ApiConfig } from '../../shared/services/api.config';
 import { UiConfig } from '../../shared/services/ui.config';
 import { FormFields, ServerErrors } from '../../shared/interfaces/forms.interface';
-import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
+// import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 
 /**
  * Registration page component - renders registration page and handles submiting registation form.

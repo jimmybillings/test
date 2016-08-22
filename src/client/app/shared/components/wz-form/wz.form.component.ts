@@ -27,7 +27,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private formModel: FormModel) { }
 
   ngOnChanges(changes: any) {
-    if (changes.serverErrors) {
+    if (this.serverErrors) {
       console.log('processing server errors');
       console.log(this.serverErrors);
     };
