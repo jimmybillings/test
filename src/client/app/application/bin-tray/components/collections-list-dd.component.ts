@@ -1,8 +1,8 @@
 import { Component, Input, ChangeDetectionStrategy} from '@angular/core';
-import { Router, ActivatedRoute} from '@angular/router';
-import { Collection, Collections } from '../../shared/interfaces/collection.interface';
-import { CollectionsService} from '../services/collections.service';
-import { ActiveCollectionService} from '../services/active-collection.service';
+import { Router} from '@angular/router';
+import { Collection, Collections } from '../../../shared/interfaces/collection.interface';
+import { CollectionsService} from '../../../+collection/services/collections.service';
+import { ActiveCollectionService} from '../../../+collection/services/active-collection.service';
 import { Observable} from 'rxjs/Rx';
 
 /**
@@ -24,8 +24,7 @@ export class CollectionListDdComponent {
   constructor(
     public router: Router,
     public collectionsService: CollectionsService,
-    public activeCollection: ActiveCollectionService,
-    public route: ActivatedRoute) {
+    public activeCollection: ActiveCollectionService) {
     this.collections = this.collectionsService.data;
   }
 

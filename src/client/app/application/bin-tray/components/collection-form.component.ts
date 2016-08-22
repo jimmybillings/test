@@ -1,11 +1,11 @@
 import { Component, Input, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import { Collection, Collections } from '../../shared/interfaces/collection.interface';
-import { FormFields } from '../../shared/interfaces/forms.interface';
-import { Asset } from '../../shared/interfaces/asset.interface';
-// import { UiSubComponentsA } from '../../shared/interfaces/admin.interface';
-import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
-import { CollectionsService } from '../services/collections.service';
-import { ActiveCollectionService } from '../services/active-collection.service';
+import { Collection, Collections } from '../../../shared/interfaces/collection.interface';
+import { FormFields } from '../../../shared/interfaces/forms.interface';
+import { Asset } from '../../../shared/interfaces/asset.interface';
+
+import { WzFormComponent } from '../../../shared/components/wz-form/wz.form.component';
+import { CollectionsService } from '../../../+collection/services/collections.service';
+import { ActiveCollectionService } from '../../../+collection/services/active-collection.service';
 import { Observable, Subscription } from 'rxjs/Rx';
 /**
  * Directive that renders a list of collections
