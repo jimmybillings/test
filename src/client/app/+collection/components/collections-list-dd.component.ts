@@ -37,6 +37,7 @@ export class CollectionListDdComponent {
   public collections: Observable<Collections>;
   public currentFilter: string;
   public currentSort: string;
+  public currentSearchQuery: string;
   public collectionFilterIsShowing: boolean = false;
   public collectionSortIsShowing: boolean = false;
   public collectionSearchIsShowing: boolean = false;
@@ -46,9 +47,10 @@ export class CollectionListDdComponent {
     public collectionsService: CollectionsService,
     public activeCollection: ActiveCollectionService,
     public route: ActivatedRoute) {
-      this.currentFilter = 'ALL';
-      this.currentSort = 'DATE_MOD_NEWEST';
-      this.collections = this.collectionsService.data;
+    this.currentFilter = 'ALL';
+    this.currentSort = 'DATE_MOD_NEWEST';
+    this.currentSearchQuery = '';
+    this.collections = this.collectionsService.data;
   }
 
   public closeCollectionsList(): void {
@@ -93,6 +95,7 @@ export class CollectionListDdComponent {
 
   public search(query: any) {
     this.collectionsService.loadCollections(query).take(1).subscribe();
+    this.currentSearchQuery = query.q;
   }
 
   public showCollectionFilter(event: Event) {

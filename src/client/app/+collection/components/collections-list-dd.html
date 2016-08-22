@@ -10,11 +10,13 @@
         <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>
       </div>
     </header>
-    <collections-search-form
-      [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
-      [hidden]="!collectionSearchIsShowing"
-      (query)="search($event)">
-    </collections-search-form>
+    <div flex="100" layout="row" layout-align="end end">
+      <collections-search-form
+        [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
+        [hidden]="!collectionSearchIsShowing"
+        (query)="search($event)">
+      </collections-search-form>
+    </div>
     <collections-filter-dd
       [hidden]="!collectionFilterIsShowing"
       [UiState]="UiState"
@@ -26,7 +28,7 @@
       (sort)="applySort($event)">
     </collections-sort-dd>
     <div>
-      <p class="md-caption">{{'COLLECTION.INDEX.FILTER_DD_MENU.' + currentFilter | uppercase | translate}}, {{'COLLECTION.INDEX.SORT_DD_MENU.' + currentSort | uppercase | translate }}</p>
+      <p class="md-caption"><span *ngIf="currentSearchQuery">{{currentSearchQuery}},</span> {{'COLLECTION.INDEX.FILTER_DD_MENU.' + currentFilter | uppercase | translate}}, {{'COLLECTION.INDEX.SORT_DD_MENU.' + currentSort | uppercase | translate }}</p>
     </div>
     <md-list dense>
       <md-list-item *ngFor="let collection of (collections | async).items" [ngClass]="{active: focusedCollection.id === collection.id}">
