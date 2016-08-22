@@ -21,6 +21,9 @@ import { WzPlayerComponent } from '../shared/components/wz-player/wz.player.comp
 import { WzToastComponent, WzToastPortalDirective } from '../shared/components/wz-toast/wz.toast.component';
 import { CollectionListDdComponent } from '../+collection/components/collections-list-dd.component';
 import { CollectionFormComponent } from '../+collection/components/collection-form.component';
+import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
+import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
+import { CollectionsSearchFormComponent } from '../+collection/components/collections-search-form.component';
 
 // Shared pipes
 import { ValuesPipe } from '../shared/pipes/values.pipe';
@@ -92,6 +95,9 @@ import { MdGridListModule} from '@angular2-material/grid-list';
     WzToastComponent,
     CollectionListDdComponent,
     CollectionFormComponent,
+    CollectionSortDdComponent,
+    CollectionFilterDdComponent,
+    CollectionsSearchFormComponent,
     ValuesPipe,
     WzDialogPortalDirective,
     WzDropdownPortalDirective,
@@ -112,6 +118,9 @@ import { MdGridListModule} from '@angular2-material/grid-list';
     WzToastComponent,
     CollectionListDdComponent,
     CollectionFormComponent,
+    CollectionSortDdComponent,
+    CollectionFilterDdComponent,
+    CollectionsSearchFormComponent,
     CommonModule,
     RouterModule,
     TranslateModule,

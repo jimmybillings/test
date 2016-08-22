@@ -3,12 +3,6 @@ import { Router, ActivatedRoute} from '@angular/router';
 import { Collection, Collections } from '../../shared/interfaces/collection.interface';
 import { CollectionsService} from '../services/collections.service';
 import { ActiveCollectionService} from '../services/active-collection.service';
-// import { CollectionFormComponent } from '../../+collection/components/collection-form.component';
-// import { WzDialogComponent } from '../../shared/components/wz-dialog/wz.dialog.component';
-// import { CollectionFilterDdComponent } from './collections-filter-dd.component';
-// import { CollectionSortDdComponent } from './collections-sort-dd.component';
-// import { CollectionsSearchFormComponent } from './collections-search-form.component';
-// import { WzDropdownComponent } from '../../shared/components/wz-dropdown/wz.dropdown.component';
 import { Observable} from 'rxjs/Rx';
 
 /**
