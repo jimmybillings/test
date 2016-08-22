@@ -14,7 +14,6 @@ export class WzToastPortalDirective extends TemplatePortalDirective {
 @Component({
   moduleId: module.id,
   selector: 'wz-toast',
-  directives: [WzToastPortalDirective],
   encapsulation: ViewEncapsulation.None,
   template: `
   <template  wzToastPortalDirective>

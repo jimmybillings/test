@@ -1,12 +1,10 @@
 import { Component, Input, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { SearchComponent } from './search.component';
-import { WzPikaDayDirective } from '../shared/components/wz-pikaday/wz-pikaday.directive';
 
 @Component({
   moduleId: module.id,
   selector: 'filter',
   templateUrl: 'filter.html',
-  directives: [FilterComponent, WzPikaDayDirective],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

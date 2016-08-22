@@ -1,31 +1,19 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { WzPaginationComponent} from '../../shared/components/wz-pagination/wz.pagination.component';
 import { Collections } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
-import { WzDropdownComponent } from '../../shared/components/wz-dropdown/wz.dropdown.component';
 import { CollectionSortDdComponent } from '../../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../../+collection/components/collections-filter-dd.component';
-import { CollectionsSearchFormComponent } from '../../+collection/components/collections-search-form.component';
 import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
   selector: 'collections',
   templateUrl: 'collections.html',
-  providers: [CollectionsService],
-  directives: [
-    ROUTER_DIRECTIVES,
-    WzPaginationComponent,
-    WzDropdownComponent,
-    CollectionSortDdComponent,
-    CollectionFilterDdComponent,
-    CollectionsSearchFormComponent
-  ]
 })
 
 export class CollectionsComponent implements OnInit, OnDestroy {

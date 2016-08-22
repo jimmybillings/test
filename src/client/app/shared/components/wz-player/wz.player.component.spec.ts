@@ -1,6 +1,5 @@
 import {
-  TestComponentBuilder,
-  inject,
+  // inject,
   addProviders
 } from '../../../imports/test.imports';
 
@@ -13,13 +12,5 @@ export function main() {
         WzPlayerComponent
       ]);
     });
-
-    it('Should have a player instance',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(WzPlayerComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof WzPlayerComponent).toBeTruthy();
-        });
-      }));
   });
 }

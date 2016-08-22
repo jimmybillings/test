@@ -1,6 +1,5 @@
 
-import { provide, Provider } from '@angular/core';
-import { Http } from '@angular/http';
+import { Provider } from '@angular/core';
 import { RouterConfig } from '@angular/router';
 
 // WAZEE PROVIDERS
@@ -20,6 +19,7 @@ import { AssetGuard } from '../+asset/services/asset.guard';
 import { AssetData } from '../+search/services/asset.data.service';
 import { FilterService } from '../+search/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
+// import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
@@ -40,7 +40,6 @@ import { filters } from '../+search/services/filter.service';
 import { userPreferences } from '../shared/services/user-preference.service';
 
 // TRANSLATIONS
-import { TranslateService, TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';
 import { MultilingualService } from '../shared/services/multilingual.service';
 
 export const WAZEE_PROVIDERS = [
@@ -54,7 +53,6 @@ export const WAZEE_PROVIDERS = [
   SearchContext,
   AssetData,
   Authentication,
-  TranslateService,
   MultilingualService,
   UiState,
   AdminAuthGuard,
@@ -62,10 +60,7 @@ export const WAZEE_PROVIDERS = [
   UserPermission,
   FilterService,
   UserPreferenceService,
-  provide(TranslateLoader, {
-    useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'), deps: [Http]
-  }),
-  TranslateService
+  // WzNotificationService
 ];
 
 export const WAZEE_STORES: Provider[][] = [

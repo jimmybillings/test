@@ -1,14 +1,14 @@
 import { Component, Input, ChangeDetectionStrategy} from '@angular/core';
-import { ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute} from '@angular/router';
 import { Collection, Collections } from '../../shared/interfaces/collection.interface';
 import { CollectionsService} from '../services/collections.service';
 import { ActiveCollectionService} from '../services/active-collection.service';
-import { CollectionFormComponent } from '../../+collection/components/collection-form.component';
-import { WzDialogComponent } from '../../shared/components/wz-dialog/wz.dialog.component';
-import { CollectionFilterDdComponent } from './collections-filter-dd.component';
-import { CollectionSortDdComponent } from './collections-sort-dd.component';
-import { CollectionsSearchFormComponent } from './collections-search-form.component';
-import { WzDropdownComponent } from '../../shared/components/wz-dropdown/wz.dropdown.component';
+// import { CollectionFormComponent } from '../../+collection/components/collection-form.component';
+// import { WzDialogComponent } from '../../shared/components/wz-dialog/wz.dialog.component';
+// import { CollectionFilterDdComponent } from './collections-filter-dd.component';
+// import { CollectionSortDdComponent } from './collections-sort-dd.component';
+// import { CollectionsSearchFormComponent } from './collections-search-form.component';
+// import { WzDropdownComponent } from '../../shared/components/wz-dropdown/wz.dropdown.component';
 import { Observable} from 'rxjs/Rx';
 
 /**
@@ -18,15 +18,6 @@ import { Observable} from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'collections-list-dd',
   templateUrl: 'collections-list-dd.html',
-  directives: [
-    ROUTER_DIRECTIVES,
-    CollectionFormComponent,
-    WzDialogComponent,
-    WzDropdownComponent,
-    CollectionFilterDdComponent,
-    CollectionsSearchFormComponent,
-    CollectionSortDdComponent
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

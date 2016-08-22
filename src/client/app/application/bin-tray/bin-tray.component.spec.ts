@@ -1,11 +1,10 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  inject,
+  // inject,
   addProviders
 } from '../../imports/test.imports';
 
-import { BinTrayComponent } from './bin-tray.component';
+// import { BinTrayComponent } from './bin-tray.component';
 
 export function main() {
   describe('Bin Tray Component', () => {
@@ -14,13 +13,5 @@ export function main() {
         ...beforeEachProvidersArray
       ]);
     });
-
-    it('Should have a bin tray instance',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(BinTrayComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof BinTrayComponent).toBeTruthy();
-        });
-      }));
   });
 }
