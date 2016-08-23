@@ -36,10 +36,10 @@ export class WzPlayerComponent implements OnChanges {
              var elem = document.createElement('img');
              elem.src = changes.clipUrl.currentValue;
              elem.style.height='100%';
-             elem.style.width = '100%'; 
+             elem.style.width='100%';
              document.getElementById('assetVideoPlayer').innerHTML='';
              document.getElementById('assetVideoPlayer').appendChild(elem);
-        }      
+        }
 
       }
     }
