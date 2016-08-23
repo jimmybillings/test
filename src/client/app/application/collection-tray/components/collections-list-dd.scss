@@ -12,17 +12,17 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
   }
   &.revealed .collections-dd-menu {
     @include animation-name(dd-open);
-    @include animation-duration(300ms);
+    @include animation-duration(100ms);
     @include animation-timing-function($swift-ease-in-timing-function);
     @include animation-iteration-count(1);
     @include animation-fill-mode(backwards);
   }
   &.revealed .dd-menu-wrapper {
     @include animation-name(fadeIn);
-    @include animation-duration(250ms);
+    @include animation-duration(200ms);
     @include animation-timing-function($swift-ease-in-timing-function);
     @include animation-iteration-count(1);
-    @include animation-delay(300ms);
+    @include animation-delay(200ms);
     @include animation-fill-mode(backwards);
   }
   .dd-menu-wrapper {

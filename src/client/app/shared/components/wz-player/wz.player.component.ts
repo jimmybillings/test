@@ -16,20 +16,31 @@ export class WzPlayerComponent implements OnChanges {
   @Input() clip: string;
   @Input() clipUrl: string;
   @Input() clipThumbnailUrl: string;
+  @Input() resourceClass:string;
   public player: { load: any };
 
   ngOnChanges(changes: any) {
-    if (changes.clipThumbnailUrl && changes.clipUrl) {
-      jwplayer('assetVideoPlayer').setup({
-        image: changes.clipThumbnailUrl.currentValue,
-        file: changes.clipUrl.currentValue,
-        logo: {
-          file: 'assets/img/logo/watermark.png',
-          position: 'top-right',
-          link: 'http://www.wazeedigital.com'
+      console.dir(changes);
+    if (changes.clipUrl) {
+      if(changes.resourceClass && changes.resourceClass.currentValue !== 'Image') {
+          jwplayer('assetVideoPlayer').setup({
+            image: changes.clipThumbnailUrl ? changes.clipThumbnailUrl.currentValue: null,
+            file: changes.clipUrl.currentValue,
+            logo: {
+              file: 'assets/img/logo/watermark.png',
+              position: 'top-right',
+              link: 'http://www.wazeedigital.com'
+            }
+          });
+        }else {
+             var elem = document.createElement('img');
+             elem.src = changes.clipUrl.currentValue;
+             elem.style.height='100%';
+             elem.style.width='100%';
+             document.getElementById('assetVideoPlayer').innerHTML='';
+             document.getElementById('assetVideoPlayer').appendChild(elem);
         }
-      });
-    }
 
+      }
+    }
   }
-}
