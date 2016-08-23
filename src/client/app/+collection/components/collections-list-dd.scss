@@ -1,4 +1,4 @@
-collections-list-dd {
+collections-list-dd, collections-filter-dd, collections-sort-dd {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -12,17 +12,17 @@ collections-list-dd {
   }
   &.revealed .collections-dd-menu {
     @include animation-name(dd-open);
-    @include animation-duration(300ms);
+    @include animation-duration(100ms);
     @include animation-timing-function($swift-ease-in-timing-function);
     @include animation-iteration-count(1);
     @include animation-fill-mode(backwards);
   }
   &.revealed .dd-menu-wrapper {
     @include animation-name(fadeIn);
-    @include animation-duration(250ms);
+    @include animation-duration(200ms);
     @include animation-timing-function($swift-ease-in-timing-function);
     @include animation-iteration-count(1);
-    @include animation-delay(300ms);
+    @include animation-delay(200ms);
     @include animation-fill-mode(backwards);
   }
   .dd-menu-wrapper {
@@ -70,9 +70,10 @@ collections-list-dd {
       overflow-x: hidden;
       margin-bottom: rem(1.1);
       md-list-item .md-list-item {
+        height: rem(3.8);
         padding: 0;
         button {
-          height: rem(4.0);
+          height: rem(3.8);
           color: rgba(md-color($md-foreground, text), .7);
           display: flex;
           align-items: center;
@@ -94,6 +95,14 @@ collections-list-dd {
             background-color: rgba(md-color($md-foreground, base), .1);
             outline: none;
           }
+          &[disabled] {
+            color: rgba(md-color($md-foreground, text), .3);
+            &:hover {
+              background: none;
+              background-color: transparent;
+              cursor: default;
+            }
+          }
         }
         md-icon {
           @include transition($swift-ease-out);
@@ -106,7 +115,7 @@ collections-list-dd {
           }
         }
       }
-      md-list-item.focused .md-list-item button {
+      md-list-item.active .md-list-item button {
         color: md-color($md-primary);
         background-color: rgba(md-color($md-foreground, base), .07);
         box-shadow: inset 0 1px 0 0 md-color($md-foreground, base), .05;
@@ -158,6 +167,75 @@ collections-list-dd {
   }
 }
 
+
+collections-filter-dd, collections-sort-dd {
+  &.revealed .collections-dd-menu {
+    @include animation-name(sort-dd-open);
+    @include animation-duration(250ms);
+    @include animation-timing-function($swift-ease-in-timing-function);
+    @include animation-iteration-count(1);
+    @include animation-fill-mode(backwards);
+  }
+  .dd-menu-wrapper {
+    padding: 0;
+  }
+  .collections-dd-menu {
+    min-width: rem(27.4);
+    md-list[dense] {
+      border: none;
+      max-height: rem(30);
+      min-height: rem(16);
+      margin-top: rem(1.2);
+      margin-bottom: rem(1.2);
+      md-list-item .md-list-item {
+        font-size: .9em;
+        height: rem(3.5);
+        flex-direction: column;
+        justify-content: space-between;
+        button {
+          flex: 1 0 100%;
+          height: rem(3.5);
+          box-shadow: none;
+          padding-left: rem(4.4);
+          position: relative;
+
+        }
+        md-divider {
+          flex: 1 0 auto;
+          width: 100%;
+          // margin-top: rem(.8);
+          // margin-bottom: rem(.8);
+        }
+      }
+      md-list-item.active .md-list-item button {
+        background-color: transparent;
+        &:before {
+          position: absolute;
+          content: "\e5ca";
+          font-family: 'Material Icons';
+          font-size: rem(2.8);
+          position: absolute;
+          top: 0;
+          left: rem(1.1);
+        }
+      }
+    }
+  }
+}
+
+@include keyframes(sort-dd-open) {
+  0% {
+    max-height: 0;
+    max-width: 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+  100% {
+    max-height: rem(29);
+    max-width: rem(28);
+    min-width: rem(27);
+  }
+}
 
 @include keyframes(dd-open) {
   0% {

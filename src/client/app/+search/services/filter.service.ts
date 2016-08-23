@@ -9,7 +9,7 @@ const initFilters: any = {};
 export const filters: Reducer<any> = (state: Array<any> = initFilters, action: Action) => {
   switch (action.type) {
     case 'FILTERS.SET_FILTERS':
-      return Object.assign({}, action.payload);
+      return Object.assign({}, JSON.parse(JSON.stringify(action.payload)));
     default:
       return state;
   }
@@ -28,17 +28,10 @@ export class FilterService {
     this.data = this.store.select('filters');
   }
 
-  public get filters() {
-    let filters: any = {};
-    this.data.take(1).subscribe(f => filters = f);
-    return filters;
-  }
-
-  public get(params: any): Observable<any> {
-    params['counted'] = true;
-    let options = this.filterOptions(params);
+  public get(params: any, counted: boolean): Observable<any> {
+    let options = this.filterOptions(JSON.parse(JSON.stringify(Object.assign({}, params, {counted}))));
     return this.http.get(this.filterUrl, options).map((res: Response) => {
-      this.set(this.mapFilters(res.json(), null));
+      this.set(this.sanatize(res.json(), null));
       this.checkLocalStorage(res.json());
       return res.json();
     });
@@ -48,63 +41,41 @@ export class FilterService {
     this.store.dispatch({ type: 'FILTERS.SET_FILTERS', payload: filters });
   }
 
-  public checkLocalStorage(filterTree: any): void {
-    if (!localStorage.getItem('filterState')) {
-      localStorage.setItem('filterState', JSON.stringify(this.setFilterStateInLocalStorage(filterTree)));
-    }
-  }
-
-  public setFilterStateInLocalStorage(filterTree: any): any {
-    if (filterTree.subFilters) {
-      for (let f of filterTree.subFilters) {
-        if (f.type === 'None' || f.type === 'List') {
-          this.filterState[f.name] = false;
-        }
-        this.setFilterStateInLocalStorage(f);
-      }
-    }
-    return this.filterState;
-  }
-
-  public mapFilters(filter: any, parent: any) {
-    filter.parent = parent;
-    if (filter.active && filter.parent) this.makeParentActive(filter.parent);
+  public sanatize(filter: any, parent: any) {
+    if (parent) filter.parentId = parent.filterId;
     if (filter.subFilters) {
       filter.expanded = false;
-      for (var l of filter.subFilters) this.mapFilters(l, filter);
+      for (var l of filter.subFilters) this.sanatize(l, filter);
       return filter;
     }
     return filter;
   }
 
-  public makeParentActive(filter: any): void {
-      filter.active = true;
-      if (filter.parent) this.makeParentActive(filter.parent);
-      return filter;
-  }
-
-  public toggleFilter(filter: any, currentFilter: any) {
-    if (filter.filterId === currentFilter) filter.active = !filter.active;
+  public toggle(currentFilter: any, filter=this.filters) {
+    if (filter.filterId === currentFilter) {
+      filter.active = !filter.active;
+      filter = JSON.parse(JSON.stringify(filter));
+    }
     if (filter.subFilters) {
-      for (var l of filter.subFilters) this.toggleFilter(l, currentFilter);
+      for (var l of filter.subFilters) this.toggle(currentFilter, l);
       return filter;
     }
   }
 
-  public toggleExclusiveFilter(filter: any, subFilter: any): void {
+  public toggleExclusive( subFilter: any, filter=this.filters): void {
     if (filter.subFilters) {
-      if (filter.filterId === subFilter.parent.filterId) {
+      if (filter.filterId === subFilter.parentId) {
         for (let f of filter.subFilters) f.active = (f.filterId === subFilter.filterId) ? !f.active : false;
       }
-      for (var l of filter.subFilters) this.toggleExclusiveFilter(l, subFilter);
+      for (var l of filter.subFilters) this.toggleExclusive(subFilter, l);
       return filter;
     }
     return filter;
   }
 
-  public findActive(filter: any, activeFilters: any) {
+  public active(activeFilters: any, filter=this.filters) {
     if (filter.subFilters) {
-      for (var l of filter.subFilters) this.findActive(l, activeFilters);
+      for (var l of filter.subFilters) this.active(activeFilters, l);
       return filter;
     } else {
       if (filter.active) activeFilters.push(filter);
@@ -112,9 +83,9 @@ export class FilterService {
     }
   }
 
-  public clearActive(filter: any) {
+  public clear(filter=this.filters) {
     if (filter.subFilters) {
-      for (var l of filter.subFilters) this.clearActive(l);
+      for (var l of filter.subFilters) this.clear(l);
       return filter;
     } else {
       if (filter.active) filter.active = false;
@@ -122,9 +93,9 @@ export class FilterService {
     }
   }
 
-  public updateCustomValue(filter: any, currentFilter: any, value: any): void {
+  public addCustomValue(currentFilter: any, value: any, filter=this.filters): void {
     if (filter.subFilters) {
-      for (let f of filter.subFilters) this.updateCustomValue(f, currentFilter, value);
+      for (let f of filter.subFilters) this.addCustomValue(currentFilter, value, f);
       return filter;
     } else {
       if (filter.filterId === currentFilter.filterId) {
@@ -148,10 +119,34 @@ export class FilterService {
     for (let param in params) { search.set(param, params[param]); };
     if (this.currentUser.loggedIn()) {
       let headers = this.apiConfig.authHeaders();
-      return new RequestOptions({ headers, search });
+      return new RequestOptions({ headers, search, body: '' });
     } else {
       search.set('siteName', this.apiConfig.getPortal());
-      return new RequestOptions({ search });
+      return new RequestOptions({ search, body: '' });
     }
+  }
+
+  public checkLocalStorage(filterTree: any): void {
+    if (!localStorage.getItem('filterState')) {
+      localStorage.setItem('filterState', JSON.stringify(this.setFilterStateInLocalStorage(filterTree)));
+    }
+  }
+
+  public setFilterStateInLocalStorage(filterTree: any): any {
+    if (filterTree.subFilters) {
+      for (let f of filterTree.subFilters) {
+        if (f.type === 'None' || f.type === 'List') {
+          this.filterState[f.name] = false;
+        }
+        this.setFilterStateInLocalStorage(f);
+      }
+    }
+    return this.filterState;
+  }
+
+  private get filters() {
+    let filters: any = {};
+    this.data.take(1).subscribe(f => filters = f);
+    return filters;
   }
 }

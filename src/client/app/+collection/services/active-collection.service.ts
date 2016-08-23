@@ -20,6 +20,7 @@ export function activeState(collection: any = {}): Collection {
     email: collection.email || '',
     userRole: collection.userRole || '',
     editors: collection.editors || [],
+    collectionThumbnail: collection.collectionThumbnail || {},
     assets: {
       items: [],
       pagination: {
@@ -71,15 +72,15 @@ export class ActiveCollectionService {
     this.data = this.store.select('activeCollection');
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
-      CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/search/collection',
-      CollectionActive: this.apiConfig.baseUrl() + 'api/assets/v1/search/collectionSummary',
-      CollectionSetActive: this.apiConfig.baseUrl() + 'api/assets/v1/search/setFocusedCollection'
+      CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary/assets',
+      CollectionActive: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary',
+      CollectionSetActive: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary/setFocused'
     };
   }
 
   public get(): Observable<any> {
     return this.http.get(`${this.apiUrls.CollectionActive}/focused`,
-      { headers: this.apiConfig.authHeaders() })
+      { headers: this.apiConfig.authHeaders(), body: '' })
       .map((res) => {
         this.updateActiveCollectionStore(res.json());
         return res.json();
@@ -116,7 +117,7 @@ export class ActiveCollectionService {
 
   public getItems(collectionId: number, numberPerPg: number, pgIndex: number = 0): Observable<any> {
     return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=${pgIndex}&n=${numberPerPg}`,
-      { headers: this.apiConfig.authHeaders() })
+      { headers: this.apiConfig.authHeaders(), body: '' })
       .map((res) => {
         this.updateActiveCollectionAssets(res.json());
         return res.json();
@@ -153,8 +154,7 @@ export class ActiveCollectionService {
             'hasPreviousPage': assets.hasPreviousPage,
             'numberOfPages': assets.numberOfPages
           }
-        },
-        thumbnail: (assets.items.length > 0) ? assets.items[assets.items.length - 1].thumbnail : ''
+        }
       }
     });
   }

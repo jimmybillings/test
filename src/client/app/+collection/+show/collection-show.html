@@ -11,8 +11,8 @@
                     <div class="asset">
                       <div class="asset-thb">
                         <span class="asset-id"><span class="id">{{collection.id}}</span></span>
-                        <img *ngIf="collection.thumbnail" src="{{collection.thumbnail?.urls?.https}}" />
-                        <img *ngIf="!collection.thumbnail" src="/assets/img/tbn_missing.jpg" />
+                        <img *ngIf="collection.collectionThumbnail" src="{{collection.collectionThumbnail.urls.https}}" />
+                        <img *ngIf="!collection.collectionThumbnail" src="/assets/img/tbn_missing.jpg" />
                       </div>
                     </div>
                   </div>

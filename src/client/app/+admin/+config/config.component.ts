@@ -1,18 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiConfigInterface, TableHeaders, SiteConfig } from '../../shared/interfaces/admin.interface';
-import { ValuesPipe } from '../../shared/pipes/values.pipe';
 import { ConfigService } from '../services/config.service';
-import { WzListComponent } from '../../shared/components/wz-list/wz.list.component';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
   selector: 'admin-config',
-  templateUrl: 'config.html',
-  pipes: [ValuesPipe],
-  directives: [WzListComponent]
+  templateUrl: 'config.html'
 })
 
 export class ConfigComponent implements OnInit, OnDestroy {

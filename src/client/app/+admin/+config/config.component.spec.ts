@@ -1,12 +1,8 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  beforeEachProviders,
   Observable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { ConfigComponent } from './config.component';
@@ -23,19 +19,13 @@ export function main() {
         return Observable.of(mockConfig());
       }
     }
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      ConfigComponent,
-      { provide: ConfigService, useClass: MockConfigService }
-    ]);
-
-    it('Create instance of config',
-      inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
-        tcb.createAsync(ConfigComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof ConfigComponent).toBeTruthy();
-        });
-      }));
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        ConfigComponent,
+        { provide: ConfigService, useClass: MockConfigService }
+      ]);
+  });
 
     it('Should have instances of UiConfig, ConfigService, and Router defined',
       inject([ConfigComponent], (component: ConfigComponent) => {

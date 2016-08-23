@@ -1,14 +1,10 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  beforeEachProviders,
   Observable,
   Injectable,
-  describe,
-  inject,
-  expect,
+  // inject,
   Store,
-  it
+  addProviders
 } from '../imports/test.imports';
 
 import { AssetComponent } from './asset.component';
@@ -33,19 +29,13 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      AssetComponent,
-      {provide: AssetService, useClass: MockAssetService}
-    ]);
-
-    it('Create instance of asset component',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(AssetComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof AssetComponent).toBeTruthy();
-        });
-      }));
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        AssetComponent,
+        {provide: AssetService, useClass: MockAssetService}
+      ]);
+    });
   });
 
   function MockAssetResponse() {

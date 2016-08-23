@@ -4,11 +4,13 @@ import { Store, Reducer, Action} from '@ngrx/store';
 
 const InitUiState: any = {
   collectionsListIsOpen: false,
+  collectionsSortIsOpen: false,
+  collectionsFilterIsOpen: false,
   binTrayIsOpen: false,
   searchIsOpen: true,
   searchBarIsActive: false,
   showFixed: false,
-  pageLoading: false
+  loading: false
 };
 
 export const uiState: Reducer<any> = (state = InitUiState, action: Action) => {
@@ -73,8 +75,24 @@ export class UiState {
     this.update({ collectionsListIsOpen: false });
   }
 
-  public toggleLoading(state: boolean): void {
-    this.data.take(1).subscribe(s => this.update({ pageLoading: state}));
+  public showCollectionsSort(): void {
+    this.update({ collectionsSortIsOpen: true });
+  }
+
+  public closeCollectionsSort(): void {
+    this.update({ collectionsSortIsOpen: false });
+  }
+
+  public showCollectionsFilter(): void {
+    this.update({ collectionsFilterIsOpen: true });
+  }
+
+  public closeCollectionsFilter(): void {
+    this.update({ collectionsFilterIsOpen: false });
+  }
+
+  public loading(state: boolean): void {
+    this.data.take(1).subscribe(s => this.update({ loading: state}));
   }
 
   public checkRouteForSearchBar(currentState: string): void {

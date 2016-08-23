@@ -1,8 +1,7 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
-import {FormGroup, FormControl, FormBuilder} from '@angular/forms';
-import {FormModel} from './wz.form.model';
-import { FormFields } from '../../../shared/interfaces/forms.interface';
-
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
+import { FormGroup, FormControl, FormBuilder} from '@angular/forms';
+import { FormModel } from './wz.form.model';
+import { FormFields, ServerErrors } from '../../../shared/interfaces/forms.interface';
 
 /**
  * Home page component - renders the home page
@@ -16,7 +15,8 @@ import { FormFields } from '../../../shared/interfaces/forms.interface';
 })
 
 export class WzFormComponent implements OnInit, OnChanges {
-  @Input() items: any;
+  @Input() items: FormFields[];
+  @Input() serverErrors: ServerErrors;
   @Input() submitLabel: string;
   @Input() autocomplete: string = 'on';
   @Output() formSubmit = new EventEmitter();
@@ -27,7 +27,14 @@ export class WzFormComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private formModel: FormModel) { }
 
   ngOnChanges(changes: any) {
-    if (changes.items.currentValue && this.form) {
+    if (this.serverErrors) {
+      console.log('processing server errors');
+      console.log(this.serverErrors);
+    };
+    if (changes.items && this.form) {
+      console.log('form item changes');
+      console.log(changes.items);
+
       for (let control in this.form.controls) {
         changes.items.currentValue.forEach((field: any) => {
           if (control === field.name)
@@ -57,7 +64,6 @@ export class WzFormComponent implements OnInit, OnChanges {
       // this.resetForm();
     } else {
       console.log('error');
-      console.log(this.form);
     }
   }
 
@@ -72,15 +78,11 @@ export class WzFormComponent implements OnInit, OnChanges {
    * @param field is a form field control.
    */
   public isRequiredField(field: FormFields): boolean {
-    if ('validation' in field && (
+    return 'validation' in field && (
       field.validation === 'REQUIRED' ||
       field.validation === 'EMAIL' ||
       field.validation === 'PASSWORD' ||
-      field.validation === 'COLLECTION')) {
-      return true;
-    } else {
-      return false;
-    }
+      field.validation === 'COLLECTION') ? true : false;
   }
 
   /**

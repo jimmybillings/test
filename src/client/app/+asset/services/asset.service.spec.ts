@@ -1,22 +1,21 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   ResponseOptions,
   MockBackend,
   Response,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { AssetService } from './asset.service';
 
 export function main() {
   describe('Asset service', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray
+      ]);
+    });
 
     it('Should setup instance variables for the api endpoint and the asset store',
       inject([AssetService], (service: AssetService) => {

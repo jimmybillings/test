@@ -1,4 +1,11 @@
 // button modifiers
+@mixin md-button-reset {
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  border: none;
+}
 
 [md-button] {
 // outlined button

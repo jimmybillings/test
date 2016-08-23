@@ -1,20 +1,19 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   MockBackend,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { AdminService } from './admin.service';
 
 export function main() {
   describe('Admin Service', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray
+      ]);
+    });
 
     it('Should create instance variables for http, and apiConfig', inject([AdminService, MockBackend], (service: AdminService, mockBackend: MockBackend) => {
       expect(service.http).toBeDefined();

@@ -1,7 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges } from '@angular/core';
 import { Collection } from '../../../shared/interfaces/collection.interface';
-import { WzToastComponent } from '../../../shared/components/wz-toast/wz.toast.component';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 
 /**
  * Directive that renders a list of assets
@@ -10,7 +8,6 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
   moduleId: module.id,
   selector: 'wz-asset-list',
   templateUrl: 'wz.asset-list.html',
-  directives: [WzToastComponent, ROUTER_DIRECTIVES],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

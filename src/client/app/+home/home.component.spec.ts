@@ -1,13 +1,8 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  beforeEachProviders,
-  CurrentUser,
   Observable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../imports/test.imports';
 
 import { HomeComponent} from './home.component';
@@ -21,28 +16,20 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      HomeComponent,
-      { provide: UiConfig, useClass: MockUiConfig }
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        HomeComponent,
+        { provide: UiConfig, useClass: MockUiConfig }
+      ]);
+    });
 
-    it('Should have router, apiConfig, currentUser, searchContext and uiConfig defined',
+    it('Should have apiConfig, currentUser, searchContext and uiConfig defined',
       inject([HomeComponent], (component: HomeComponent) => {
         expect(component.currentUser).toBeDefined();
-        expect(component.router).toBeDefined();
         expect(component.apiConfig).toBeDefined();
         expect(component.currentUser).toBeDefined();
         expect(component.searchContext).toBeDefined();
-      }));
-
-    it('Create instance of home and assign the CurrentUser to an instance variable inside of home',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(HomeComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof HomeComponent).toBeTruthy();
-          expect(instance.currentUser instanceof CurrentUser).toBeTruthy();
-        });
       }));
 
     it('Should call the config service for the home component config options', inject([HomeComponent], (component: HomeComponent) => {

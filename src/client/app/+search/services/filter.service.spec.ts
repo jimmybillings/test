@@ -1,24 +1,23 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   ResponseOptions,
   RequestOptions,
   MockBackend,
   Response,
-  describe,
-  inject,
-  expect,
-  it
+  addProviders,
+  inject
 } from '../../imports/test.imports';
 
 import { FilterService } from './filter.service';
 
 export function main() {
   describe('Filter Service', () => {
-    beforeEachProviders(() => [
+    beforeEach(() => {
+      addProviders([
       ...beforeEachProvidersArray,
       FilterService
     ]);
+    });
 
     it('Should exist with instances of http, store, currentUser, and apiConfig',
       inject([FilterService], (service: FilterService) => {
@@ -59,10 +58,10 @@ export function main() {
         // spyOn(service, 'filterUrl').and.callThrough();
         spyOn(service, 'filterOptions').and.callThrough();
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.get({q: 'cat'}).subscribe((payload) => {
+        service.get({q: 'cat'}, true).subscribe((payload) => {
           expect(connection.request.method).toEqual(0);
           expect(connection.request.url).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true&siteName=core');
-          expect(payload).toEqual(service.mapFilters(mockFilters(), null));
+          expect(payload).toEqual(service.sanatize(mockFilters(), null));
           expect(service.set).toHaveBeenCalled();
         });
         expect(service.filterOptions).toHaveBeenCalledWith({q: 'cat', counted: true});

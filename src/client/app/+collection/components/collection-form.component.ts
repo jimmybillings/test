@@ -1,10 +1,10 @@
-import { Component, Input, OnInit,ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Collection, Collections } from '../../shared/interfaces/collection.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { Asset } from '../../shared/interfaces/asset.interface';
 // import { UiSubComponentsA } from '../../shared/interfaces/admin.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
-import { CollectionsService} from '../services/collections.service';
+import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
 import { Observable, Subscription } from 'rxjs/Rx';
 /**
@@ -14,9 +14,7 @@ import { Observable, Subscription } from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'collection-form',
   templateUrl: 'collection-form.html',
-  directives: [
-    WzFormComponent
-  ]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class CollectionFormComponent implements OnInit {

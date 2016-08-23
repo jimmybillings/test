@@ -1,29 +1,19 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../../imports/test.imports';
 
 import { WzAssetListComponent} from './wz.asset-list.component';
 
 export function main() {
   describe('Asset List Component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      WzAssetListComponent
-    ]);
-
-    it('Create instance of AssetList',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(WzAssetListComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof WzAssetListComponent).toBeTruthy();
-        });
-      }));
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        WzAssetListComponent
+      ]);
+    });
 
     it('Should return a shortened version for High Definition, Standard Definition etc...', inject([WzAssetListComponent], (service: WzAssetListComponent) => {
       expect(service.formatType('High Definition')).toEqual('hd');

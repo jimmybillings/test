@@ -1,5 +1,5 @@
 import { Component, Input, Directive, ViewContainerRef, TemplateRef, ViewChild, ViewEncapsulation, Renderer } from '@angular/core';
-import {Overlay, OVERLAY_PROVIDERS} from '@angular2-material/core/overlay/overlay';
+import {Overlay} from '@angular2-material/core/overlay/overlay';
 import {OverlayState} from '@angular2-material/core/overlay/overlay-state';
 import {OverlayRef} from '@angular2-material/core/overlay/overlay-ref';
 import {TemplatePortalDirective} from '@angular2-material/core';
@@ -14,8 +14,6 @@ export class WzDropdownPortalDirective extends TemplatePortalDirective {
 @Component({
   moduleId: module.id,
   selector: 'wz-dropdown',
-  directives: [WzDropdownPortalDirective],
-  providers: [Overlay, OVERLAY_PROVIDERS],
   encapsulation: ViewEncapsulation.None,
   template: `
   <template wzDropdownPortalDirective>

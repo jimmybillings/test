@@ -12,7 +12,6 @@ $md-foreground: if($md-is-dark-theme, $md-dark-theme-foreground, $md-light-theme
 $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme-background);
 
 @import '../assets/styles/config';
-
 @import 'imports/styles/wazee';
 
 // APPLICATION WIDE COMPONENTS
@@ -30,6 +29,7 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import 'shared/components/wz-notification/wz.notification';
 @import 'shared/components/wz-form/wz.form';
 @import 'shared/components/wz-breadcrumb/wz-breadcrumb';
+@import 'shared/components/wz-pikaday/wz.pikaday';
 
 // ROUTE COMPONENTS
 @import '+home/home';

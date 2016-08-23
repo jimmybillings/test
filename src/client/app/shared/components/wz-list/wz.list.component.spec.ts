@@ -1,30 +1,19 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../../imports/test.imports';
 
 import { WzListComponent } from './wz.list.component';
 
 export function main() {
   describe('WZ List component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      WzListComponent
-    ]);
-
-    it('Should create instance of WzList',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(WzListComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof WzListComponent).toBeTruthy();
-        });
-      })
-    );
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        WzListComponent
+      ]);
+    });
 
     it('should have a sortBy function that emits a sort event with opposite of toggleFlag - false', inject([WzListComponent], (component: WzListComponent) => {
       spyOn(component.sort, 'emit');

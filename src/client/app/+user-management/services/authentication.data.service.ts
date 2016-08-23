@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
-import {Observable} from 'rxjs/Rx';
+import { Observable} from 'rxjs/Rx';
 
 /**
  * Service that provides access to the api for logging user in and out.  
@@ -34,7 +34,7 @@ export class Authentication {
 
   public destroy(): Observable<any> {
     return this.http.post(this._apiUrls.destroy, null, {
-      headers: this.apiConfig.authHeaders()
+      headers: this.apiConfig.authHeaders(), body: ''
     }).map(() => localStorage.removeItem('token'));
   }
 }

@@ -1,19 +1,18 @@
 import {
-  describe,
-  expect,
   inject,
-  it,
-  beforeEachProviders
+  addProviders
 } from '@angular/core/testing';
 import { UiState, uiState } from './ui.state';
 import { provideStore } from '@ngrx/store';
 
 export function main() {
   describe('UI State', () => {
-    beforeEachProviders(() => [
-      provideStore({ uiState: uiState }),
-      UiState
-    ]);
+    beforeEach(() => {
+      addProviders([
+        provideStore({ uiState: uiState }),
+        UiState
+      ]);
+    });
 
     it('Should initialize booleans in the store to define default positioning and state',
       inject([UiState], (service: UiState) => {
@@ -147,11 +146,13 @@ export function main() {
     function mockState() {
       return {
         collectionsListIsOpen: false,
+        collectionsSortIsOpen: false,
+        collectionsFilterIsOpen: false,
         binTrayIsOpen: false,
         searchIsOpen: true,
         searchBarIsActive: false,
         showFixed: false,
-        pageLoading: false
+        loading: false
       };
     }
   });

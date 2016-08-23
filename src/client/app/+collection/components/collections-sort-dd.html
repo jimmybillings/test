@@ -1,0 +1,12 @@
+<div class="collections-dd-menu md-elevation-z2">
+  <div class="dd-menu-wrapper">
+    <md-list dense>
+      <md-list-item *ngFor="let option of sortOptions" [ngClass]="{'active': option.active}">
+        <button (click)="setActiveSort(option)">
+          {{ 'COLLECTION.INDEX.SORT_DD_MENU.'+option.label | translate }}
+        </button>
+        <md-divider class="divider" *ngIf="option.id == 1 || option.id == 3"></md-divider>
+      </md-list-item>
+    </md-list>
+  </div>
+</div>

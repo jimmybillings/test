@@ -1,13 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { Authentication } from '../services/authentication.data.service';
-
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ApiConfig } from '../../shared/services/api.config';
 import { User } from '../services/user.data.service';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { FormFields } from '../../shared/interfaces/forms.interface';
-import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { UiConfig } from '../../shared/services/ui.config';
 /**
  * Login page component - renders login page and handles login form submission
@@ -16,11 +14,6 @@ import { UiConfig } from '../../shared/services/ui.config';
   moduleId: module.id,
   selector: 'login',
   templateUrl: 'login.html',
-  providers: [Authentication],
-  directives: [
-    ROUTER_DIRECTIVES,
-    WzFormComponent
-  ]
 })
 
 export class LoginComponent implements OnInit, OnDestroy {

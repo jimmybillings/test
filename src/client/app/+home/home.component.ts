@@ -1,7 +1,5 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
-import { ROUTER_DIRECTIVES, Router} from '@angular/router';
 import { CurrentUser} from '../shared/services/current-user.model';
-import { WzSearchBoxComponent} from '../shared/components/wz-search-box/wz.search-box.component';
 import { UiConfig} from '../shared/services/ui.config';
 import { SearchContext} from '../shared/services/search-context.service';
 import { ApiConfig} from '../shared/services/api.config';
@@ -12,7 +10,6 @@ import { FilterService } from '../+search/services/filter.service';
   moduleId: module.id,
   selector: 'home',
   templateUrl: 'home.html',
-  directives: [ROUTER_DIRECTIVES, WzSearchBoxComponent]
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
@@ -21,7 +18,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     public currentUser: CurrentUser,
-    public router: Router,
     public uiConfig: UiConfig,
     public searchContext: SearchContext,
     public apiConfig: ApiConfig,
@@ -37,8 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public newSearchContext(query: any): void {
-    this.filter.set(this.filter.clearActive(this.filter.filters));
+    this.filter.set(this.filter.clear());
     this.searchContext.new({ q: query, i: 1, n: this.config.pageSize.value });
   }
-
 }

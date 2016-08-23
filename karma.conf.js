@@ -46,6 +46,7 @@ module.exports = function(config) {
       { pattern: 'node_modules/@angular/**/*.js', included: false, watched: true },
       { pattern: 'node_modules/ng2-translate/**/*.js', included: false, watched: false },  
       { pattern: 'node_modules/@ngrx/**/*.js', included: false, watched: false },
+      { pattern: 'node_modules/pikaday/pikaday.js', included: false, watched: false },
       
       { pattern: 'node_modules/@angular2-material/**/*.js', included: false, watched: false },
       { pattern: 'dist/dev/**/*.js', included: false, watched: true },

@@ -1,25 +1,21 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   ResponseOptions,
   RequestMethod,
   MockBackend,
   Response,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { ConfigService } from './config.service';
 
 export function main() {
   describe('Config Service', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray
-    ]);
-
     beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray
+      ]);
       this.uiApiUrl = 'https://crxextapi.dev.wzplatform.com/api/identities/v1/configuration/site/';
       this.siteApiUrl = 'https://crxextapi.dev.wzplatform.com/api/identities/v1/site/';
     });

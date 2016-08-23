@@ -1,30 +1,19 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../../imports/test.imports';
 
 import { WzPaginationComponent } from './wz.pagination.component';
 
 export function main() {
   describe('Pagination component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      WzPaginationComponent
-    ]);
-
-    it('Should create instance of Pagination',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(WzPaginationComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof WzPaginationComponent).toBeTruthy();
-        });
-      })
-    );
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        WzPaginationComponent
+      ]);
+    });
 
     it('Should have a getPageNumber() function that emits a getPage event', inject([WzPaginationComponent], (component: WzPaginationComponent) => {
       component.pagination = { 'numberOfPages': 3 };

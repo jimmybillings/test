@@ -1,17 +1,47 @@
+<section class="collection-head">
+  <div layout="row" layout-align="center start">
+    <header flex="100" flex-gt-md="85" flex-gt-lg="75">
+      <div flex="100" layout="row" layout-xs="column">
+        <h2 class="md-display-1">Your Collections</h2>
+      </div>
+      <div flex="100" layout="row" layout-align="end end">
+        <!--TODO rework search,sort,filter for mobile-->
+          <collections-search-form
+            [ngClass]="{ 'revealed' : isCollectionSearchOpen }"
+            [hidden]="!isCollectionSearchOpen"
+            (query)="search($event)">
+          </collections-search-form>
+          <button *ngIf="isCollectionSearchOpen" md-icon-button title="close search" type="button" (click)="closeCollectionSearch()" class="close" tabindex="-1"><md-icon>close</md-icon></button>
+          <button md-icon-button
+            *ngIf="!isCollectionSearchOpen"
+            title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" 
+            (click)="openCollectionSearch()"><md-icon>search</md-icon>
+          </button>
+        <button md-button class="is-dd filter-selector" (click)="filterCollections.show($event)">Filter: <span class="selected">{{'COLLECTION.INDEX.FILTER_DD_MENU.'+getActiveFilter() | uppercase | translate}}</span></button>
+        <button md-button class="is-dd filter-selector" (click)="sortCollections.show($event)">Sort: <span class="selected">{{'COLLECTION.INDEX.SORT_DD_MENU.'+getActiveSort() | uppercase | translate }}</span></button>
+      </div>
+    </header>
+  </div>
+</section>
+
+
+
+
 
 <section class="hero">
   <div layout="row" flex="100" layout-margin layout-align="center start">
     <section class="collections-list" flex="100" flex-gt-md="85" flex-gt-lg="75">
-      <header layout="row" flex="100" layout-align="end center">
+      <!--<header layout="row" flex="100" layout-align="end center">
         <div flex="none">
           <h2 class="md-headline">Your Collections</h2>
         </div>
         <div class="tools" flex="grow" layout-align="end center">
           <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showCollectionSearch($event)"><md-icon>search</md-icon></button>
-          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showCollectionFilter($event)"><md-icon>filter_list</md-icon></button>
-          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>
+
+          <button md-button class="is-dd filter-selector" (click)="showCollectionFilter($event)">Filter: <span class="selected">Show all collections</span></button>
+          <button md-button class="is-dd filter-selector" (click)="showCollectionSort($event)">Sort: <span class="selected">Date modified (newest first)</span></button>
         </div>
-      </header>
+      </header>-->
 
       <wz-pagination [pagination]="collections.pagination" (getPage)="changePage($event)"></wz-pagination>
       <ul>
@@ -69,3 +99,20 @@
 
   </div>
 </section>
+
+
+<wz-dropdown #sortCollections>
+  <collections-sort-dd
+    [UiState]="UiState"
+    (sort)="sortBy($event)"
+    layout="row" layout-align="end start" class="revealed">
+  </collections-sort-dd>
+</wz-dropdown>
+
+<wz-dropdown #filterCollections>
+  <collections-filter-dd
+    [UiState]="UiState"
+    (filter)="filter($event)"
+    layout="row" layout-align="end start" class="revealed">
+  </collections-filter-dd>
+</wz-dropdown>

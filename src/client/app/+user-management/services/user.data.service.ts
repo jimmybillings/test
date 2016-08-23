@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
-import {Observable} from 'rxjs/Rx';
+import { Observable} from 'rxjs/Rx';
 
 /**
  * Service that provides api access registering new users.  
@@ -37,7 +37,7 @@ export class User {
 
   get(): Observable<any> {
     return this.http.get(this._apiUrls.get, {
-      headers: this.apiConfig.authHeaders()
+      headers: this.apiConfig.authHeaders(), body: ''
     });
   }
 }

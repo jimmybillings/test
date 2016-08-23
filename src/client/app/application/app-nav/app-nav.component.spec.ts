@@ -1,11 +1,7 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  beforeEachProviders,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { AppNavComponent } from './app-nav.component';
@@ -13,18 +9,12 @@ import { AppNavComponent } from './app-nav.component';
 
 export function main() {
   describe('App Nav Component', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      AppNavComponent
-    ]);
-
-    it('Should have a header instance',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(AppNavComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof AppNavComponent).toBeTruthy();
-        });
-      }));
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        AppNavComponent
+      ]);
+    });
 
     it('Should fire an event to logout a user', inject([AppNavComponent], (component: any) => {
       spyOn(component.onLogOut, 'emit');

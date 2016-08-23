@@ -1,16 +1,12 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   ResponseOptions,
   RequestOptions,
   MockBackend,
-  beforeEach,
   Response,
-  describe,
   Headers,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { AssetData } from './asset.data.service';
@@ -21,9 +17,11 @@ export function main() {
       localStorage.clear();
     });
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray
+      ]);
+    });
 
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls',
       inject([AssetData], (service: AssetData) => {

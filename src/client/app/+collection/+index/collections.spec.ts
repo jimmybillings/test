@@ -1,12 +1,8 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  beforeEachProviders,
   Observable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { CollectionsComponent} from './collections.component';
@@ -41,20 +37,14 @@ export function main() {
         return Observable.of({});
       }
     }
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      CollectionsComponent,
-      { provide: ActiveCollectionService, useClass: MockActiveCollectionService },
-      { provide: CollectionsService, useClass: MockCollectionsService },
-    ]);
-
-    it('Should create instance of Collection Component',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(CollectionsComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof CollectionsComponent).toBeTruthy();
-        });
-      }));
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        CollectionsComponent,
+        { provide: ActiveCollectionService, useClass: MockActiveCollectionService },
+        { provide: CollectionsService, useClass: MockCollectionsService },
+      ]);
+    });
 
     it('Should set a new active collection',
       inject([CollectionsComponent], (component: CollectionsComponent) => {

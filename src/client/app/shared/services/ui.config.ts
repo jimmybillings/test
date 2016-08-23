@@ -38,7 +38,8 @@ export class UiConfig {
     let localConfig = localStorage.getItem('uiConfig') || JSON.stringify(InitState);
     this.set(JSON.parse(localConfig));
     return this._http.get(this._apiUrls.get + site, {
-      headers: this._apiConfig.headers()
+      headers: this._apiConfig.headers(),
+      body: '',
     }).map((res: Response) => {
       this.set(res.json());
     });

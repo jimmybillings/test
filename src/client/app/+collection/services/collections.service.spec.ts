@@ -1,22 +1,21 @@
 import {
   beforeEachProvidersArray,
-  beforeEachProviders,
   ResponseOptions,
   MockBackend,
   Response,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { CollectionsService } from './collections.service';
 
 export function main() {
   describe('Collections service', () => {
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray
-    ]);
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray
+      ]);
+    });
 
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls, and collections',
       inject([CollectionsService], (service: CollectionsService) => {
@@ -30,10 +29,10 @@ export function main() {
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionBaseUrl = 'https://crxextapi.dev.wzplatform.com/api/assets/v1/search';
-        let expectedUrl = service.apiUrls.CollectionBaseUrl + '/collectionSummary/fetchBy?access-level=all&i=0&n=200';
+        service.apiUrls.CollectionBaseUrl = 'https://crxextapi.dev.wzplatform.com/api/assets/v1';
+        let expectedUrl = service.apiUrls.CollectionBaseUrl + '/collectionSummary/search?q=&access-level=all&s=&d=&i=0&n=200';
         spyOn(service, 'storeCollections');
-        service.loadCollections('all',200).subscribe(response => {
+        service.loadCollections().subscribe(response => {
           expect(connection.request.url).toBe(expectedUrl);
           expect(response).toEqual(mockCollection());
           expect(service.storeCollections).toHaveBeenCalledWith(mockCollection());

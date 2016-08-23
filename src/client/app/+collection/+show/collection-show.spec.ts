@@ -1,12 +1,8 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  beforeEachProviders,
   Observable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { CollectionShowComponent} from './collection-show.component';
@@ -25,19 +21,13 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      CollectionShowComponent,
-      { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
-    ]);
-
-    it('Should create instance of Collection Component',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(CollectionShowComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof CollectionShowComponent).toBeTruthy();
-        });
-      }));
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        CollectionShowComponent,
+        { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
+      ]);
+    });
 
     it('Should remove a given asset from a collection',
       inject([CollectionShowComponent], (component: CollectionShowComponent) => {

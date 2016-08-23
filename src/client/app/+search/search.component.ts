@@ -1,21 +1,18 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { AssetData } from './services/asset.data.service';
-import { WzAssetListComponent }  from '../shared/components/wz-asset-list/wz.asset-list.component';
 import { UiConfig} from '../shared/services/ui.config';
 import { Observable, Subscription} from 'rxjs/Rx';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { Error } from '../shared/services/error.service';
-import { WzPaginationComponent} from '../shared/components/wz-pagination/wz.pagination.component';
 import { SearchContext} from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
 import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from '../+collection/services/collections.service';
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { Store } from '@ngrx/store';
-import { WzBreadcrumbComponent } from '../shared/components/wz-breadcrumb/wz.breadcrumb.component';
-import { FilterComponent } from './filter.component';
 import { FilterService } from './services/filter.service';
+import { UserPreferenceService } from '../shared/services/user-preference.service';
 /**
  * Asset search page component - renders search page results
  */
@@ -23,7 +20,6 @@ import { FilterService } from './services/filter.service';
   moduleId: module.id,
   selector: 'search',
   templateUrl: 'search.html',
-  directives: [WzAssetListComponent, WzPaginationComponent, FilterComponent, WzBreadcrumbComponent]
 })
 
 export class SearchComponent implements OnInit, OnDestroy {
@@ -33,9 +29,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
+  public counted: boolean;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
   private configSubscription: Subscription;
+  private preferencesSubscription: Subscription;
 
   constructor(
     private _router: Router,
@@ -50,14 +48,20 @@ export class SearchComponent implements OnInit, OnDestroy {
     public error: Error,
     public searchContext: SearchContext,
     public filter: FilterService,
+    public userPreferences: UserPreferenceService,
     public uiState: UiState) { }
 
   ngOnInit(): void {
+    this.preferencesSubscription = this.userPreferences.filterCounts.subscribe(d => {
+      this.counted = d;
+      this.filter.get(this.searchContext.state, this.counted).take(1).subscribe(() => this.uiState.loading(false));
+    });
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
-      this.searchContext.update = params;
-      this.filter.get(this.searchContext.state).take(1).subscribe(() => this.uiState.toggleLoading(false));
+      if (this.counted) {
+        this.filter.get(this.searchContext.state, this.counted).take(1).subscribe(() => this.uiState.loading(false));
+      }
     });
   }
 
@@ -66,6 +70,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.assetsStoreSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     this.configSubscription.unsubscribe();
+    this.preferencesSubscription.unsubscribe();
+  }
+
+  public countToggle(event: any): void {
+    this.userPreferences.update({filterCounts: event.checked});
+    if (this.counted) this.uiState.loading(true);
   }
 
   public showAsset(asset: any): void {
@@ -98,33 +108,40 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public toggleFilter(filterId: any): void {
-    this.filter.set(this.filter.toggleFilter(this.filter.filters, filterId));
+    this.filter.set(this.filter.toggle(filterId));
   }
 
   public applyFilter(filterId: number): void {
-    this.uiState.toggleLoading(true);
-    this.filter.set(this.filter.toggleFilter(this.filter.filters, filterId));
+    if (this.counted) this.uiState.loading(true);
+    this.toggleFilter(filterId);
     this.filterAssets();
   }
 
   public applyCustomValue(filter: any, value: any) {
-    this.uiState.toggleLoading(true);
-    this.filter.set(this.filter.updateCustomValue(this.filter.filters, filter, value));
+    if (this.counted) this.uiState.loading(true);
+    this.filter.set(this.filter.addCustomValue(filter, value));
     this.filterAssets();
   }
 
   public applyExclusiveFilter(subFilter: any): void {
-    this.uiState.toggleLoading(true);
-    this.filter.set(this.filter.toggleExclusiveFilter(this.filter.filters, subFilter));
+    if (this.counted) this.uiState.loading(true);
+    this.filter.set(this.filter.toggleExclusive(subFilter));
+    this.filterAssets();
+  }
+
+  public clearFilters(): void {
+    if (this.counted) this.uiState.loading(true);
+    this.filter.set(this.filter.clear());
     this.filterAssets();
   }
 
   public filterAssets(): void {
     this.searchContext.update = { i: 1 };
     let active: any = [];
-    this.filter.findActive(this.filter.filters, active);
+    this.filter.active(active);
     let activeIds: any = active.map((filter:any) => filter.filterId);
-    let activeValues: any = this.activeValues(active);
+    let activeValues: any = active.filter((filter:any) => filter.filterValue)
+      .map((filter: any) => `${filter.filterId}:${filter.filterValue}`);;
     if (activeIds.length > 0) {
       this.searchContext.update = { 'filterIds':  activeIds.join(',') };
     } else {
@@ -136,16 +153,5 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchContext.remove = 'filterValues';
     }
     this.searchContext.go();
-  }
-
-  public activeValues(active: any): any {
-    return active.filter((filter:any) => filter.filterValue)
-      .map((filter: any) => `${filter.filterId}:${filter.filterValue}`);
-  }
-
-  public clearFilters(): void {
-    this.uiState.toggleLoading(true);
-    this.filter.set(this.filter.clearActive(this.filter.filters));
-    this.filterAssets();
   }
 }

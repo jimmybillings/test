@@ -112,6 +112,7 @@
       "HEADING": "Select collection",
       "SEARCH_BTN_TITLE": "Search collections",
       "FILTER_BTN_TITLE": "Filter collections",
+      "SORT_BTN_TITLE": "Sort collections",
       "SHARED_TITLE": "Your role: {{role}}",
       "VIEW_BTN_LABEL": "View all",
       "OPEN_BTN_LABEL": "Open selected",
@@ -137,7 +138,24 @@
       "SHARE_BTN_TITLE": "Share collection",
       "COMMENT_BTN_TITLE": "Show collection comments",
       "MORE_BTN_TITLE": "More collection options",
-      "DELETE_BTN_TITLE": "Delete collection"
+      "DELETE_BTN_TITLE": "Delete collection",
+      "SEARCH_BOX_LABEL": "Search for collections...",
+      "SORT_DD_MENU": {
+        "DATE_MOD_NEWEST": "Date modified (newest first)",
+        "DATE_MOD_OLDEST": "Date modified (oldest first)",
+        "DATE_CREATE_NEWEST": "Date created (newest first)",
+        "DATE_CREATE_OLDEST": "Date created (oldest first)",
+        "LIST_COLL_ASC": "List collection A-Z",
+        "LIST_COLL_DESC": "List collection Z-A"
+      },
+
+      "FILTER_DD_MENU": {
+        "ALL": "Show all collections",
+        "OWNER": "Show collections I own",
+        "EDITOR": "Show collections I can edit",
+        "VIEWER": "Show collections I can view",
+        "RESEARCHER": "Show research collections"
+      }
     }
   },
   "ADMIN": {

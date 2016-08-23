@@ -1,13 +1,9 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  beforeEachProviders,
   Observable,
   Injectable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { CollectionFormComponent } from './collection-form.component';
@@ -50,20 +46,14 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      CollectionFormComponent,
-      { provide: CollectionsService, useClass: MockCollectionsService },
-      { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
-    ]);
-
-    it('Create instance of collection form',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(CollectionFormComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof CollectionFormComponent).toBeTruthy();
-        });
-      }));
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        CollectionFormComponent,
+        { provide: CollectionsService, useClass: MockCollectionsService },
+        { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
+      ]);
+    });
 
     it('Should create a new collection',
       inject([CollectionFormComponent], (component: CollectionFormComponent) => {

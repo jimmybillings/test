@@ -1,13 +1,8 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  beforeEachProviders,
-  CurrentUser,
   Observable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { IndexComponent } from './index.component';
@@ -44,20 +39,13 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      IndexComponent,
-      { provide: AdminService, useClass: MockAdminService }
-    ]);
-
-    it('Create instance of index and assign the CurrentUser to an instance variable inside of account',
-      inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
-        tcb.createAsync(IndexComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof IndexComponent).toBeTruthy();
-          expect(instance.currentUser instanceof CurrentUser).toBeTruthy();
-        });
-      }));
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        IndexComponent,
+        { provide: AdminService, useClass: MockAdminService }
+      ]);
+    });
 
     it('Should create an instance variable of AdminService, and CurrentUser',
       inject([IndexComponent], (component: IndexComponent) => {

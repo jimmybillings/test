@@ -1,13 +1,9 @@
 import {
   beforeEachProvidersArray,
-  TestComponentBuilder,
-  beforeEachProviders,
   Observable,
   Injectable,
-  describe,
   inject,
-  expect,
-  it
+  addProviders
 } from '../../imports/test.imports';
 
 import { CollectionListDdComponent } from './collections-list-dd.component';
@@ -46,20 +42,14 @@ export function main() {
       }
     }
 
-    beforeEachProviders(() => [
-      ...beforeEachProvidersArray,
-      CollectionListDdComponent,
-      { provide: CollectionsService, useClass: MockCollectionsService },
-      { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
-    ]);
-
-    it('Create instance of collection list',
-      inject([TestComponentBuilder], (tcb: any) => {
-        tcb.createAsync(CollectionListDdComponent).then((fixture: any) => {
-          let instance = fixture.debugElement.componentInstance;
-          expect(instance instanceof CollectionListDdComponent).toBeTruthy();
-        });
-      }));
+    beforeEach(() => {
+      addProviders([
+        ...beforeEachProvidersArray,
+        CollectionListDdComponent,
+        { provide: CollectionsService, useClass: MockCollectionsService },
+        { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
+      ]);
+    });
 
     it('Should detect the user is not on the collection show page and navigate there',
       inject([CollectionListDdComponent], (component: CollectionListDdComponent) => {
