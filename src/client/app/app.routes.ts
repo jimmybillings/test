@@ -5,12 +5,10 @@ import { SearchComponent } from './+search/search.component';
 import { AssetComponent } from './+asset/asset.component';
 import { AdminComponent } from './+admin/admin.component';
 import { CollectionsComponent } from './+collection/+index/collections.component';
-import { CollectionShowComponent } from './+collection/+show/collection-show.component';
 
 import { AssetGuard } from './+asset/services/asset.guard';
 import { AdminAuthGuard} from './+admin/services/admin.auth.guard';
 import { AssetResolver } from './+asset/services/asset.resolver';
-import { CollectionShowResolver } from './+collection/services/collection-show.resolver';
 import { SearchResolver } from './+search/services/search.resolver';
 import { Routes} from '@angular/router';
 
@@ -21,7 +19,6 @@ export const APP_ROUTES: Routes = [
   { path: 'search', component: SearchComponent, resolve: {search: SearchResolver} },
   { path: 'asset/:name', component: AssetComponent, resolve: {asset: AssetResolver}, canActivate: [AssetGuard] },
   { path: 'collection', component: CollectionsComponent },
-  { path: 'collection/:id', component: CollectionShowComponent, resolve: {collection: CollectionShowResolver} },
   { path: 'content/:page', component: ContentComponent },
   { path: 'admin', component: AdminComponent, canActivate: [AdminAuthGuard] }
 ];

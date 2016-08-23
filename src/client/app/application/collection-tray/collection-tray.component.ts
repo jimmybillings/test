@@ -7,12 +7,12 @@ import { Collection } from '../../shared/interfaces/collection.interface';
  */
 @Component({
   moduleId: module.id,
-  selector: 'bin-tray',
-  templateUrl: 'bin-tray.html',
+  selector: 'collection-tray',
+  templateUrl: 'collection-tray.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class BinTrayComponent {
+export class CollectionTrayComponent {
   @Input() collection: Collection;
   @Input() UiState: any;
   @Input() uiConfig: any;

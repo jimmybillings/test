@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { AppNavComponent } from './app-nav/app-nav.component';
-import { BinTrayComponent } from './bin-tray/bin-tray.component';
+import { CollectionTrayComponent } from './collection-tray/collection-tray.component';
 import { FooterComponent } from './footer/footer.component';
-import { CollectionListDdComponent } from './bin-tray/components/collections-list-dd.component';
-import { CollectionFormComponent } from './bin-tray/components/collection-form.component';
+import { CollectionListDdComponent } from './collection-tray/components/collections-list-dd.component';
+import { CollectionFormComponent } from './collection-tray/components/collection-form.component';
 
 @NgModule({
   imports: [SharedModule],
   declarations: [
     AppNavComponent,
-    BinTrayComponent,
+    CollectionTrayComponent,
     FooterComponent,
     CollectionListDdComponent,
     CollectionFormComponent],
-  exports: [AppNavComponent, BinTrayComponent, FooterComponent]
+  exports: [AppNavComponent, CollectionTrayComponent, FooterComponent]
 })
 
 export class ApplicationModule { }

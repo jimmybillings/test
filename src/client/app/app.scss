@@ -17,9 +17,9 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 // APPLICATION WIDE COMPONENTS
 @import 'application/app-nav/app-nav';
 @import 'application/footer/footer';
-@import 'application/bin-tray/bin-tray';
-@import 'application/bin-tray/components/collection-form';
-@import 'application/bin-tray/components/collections-list-dd';
+@import 'application/collection-tray/collection-tray';
+@import 'application/collection-tray/components/collection-form';
+@import 'application/collection-tray/components/collections-list-dd';
 
 // SHARED COMPONENTS
 @import 'shared/components/wz-search-box/wz.search-box';

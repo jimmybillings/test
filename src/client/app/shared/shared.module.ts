@@ -127,7 +127,7 @@ import { MdCoreModule } from '@angular2-material/core';
   providers: [
     {
       provide: TranslateLoader,
-      useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json'),
+      useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json?en=2'),
       deps: [Http]
     },
     TranslateService,

@@ -49,7 +49,7 @@ export class AssetComponent {
   }
 
   showNewCollection(assetId: any): void {
-    let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-bin-tray');
+    let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-collection-tray');
     (!this.currentUser.loggedIn()) ? this.router.navigate(['/user/login']) : newCollectionButton.click();
   }
 
