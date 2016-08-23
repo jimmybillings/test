@@ -38,7 +38,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.collectionsService.setSearchParams();
-    // this.collectionsService.loadCollections().take(1).subscribe();
     this.collectionStoreSubscription =
       this.collectionsService.data.subscribe(collections => this.collections = collections);
   }
