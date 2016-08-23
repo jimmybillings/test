@@ -140,6 +140,12 @@ export class ActiveCollectionService {
       });
   }
 
+  public get state(): any {
+    let s: any;
+    this.data.take(1).subscribe(state => s = state);
+    return s;
+  }
+
   public addAssetToStore(asset: any) {
     this.store.dispatch({ type: 'ADD_ASSET_TO_COLLECTION', payload: asset });
   }
