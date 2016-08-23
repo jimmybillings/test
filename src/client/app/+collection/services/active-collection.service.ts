@@ -39,6 +39,7 @@ export function activeState(collection: any = {}): Collection {
 export const activeCollection: Reducer<any> = (state = activeState(), action: Action) => {
   switch (action.type) {
     case 'UPDATE_ACTIVE_COLLECTION':
+      console.log(Object.assign({}, state, action.payload));
       return Object.assign({}, state, action.payload);
     case 'RESET_ACTIVE_COLLECTION':
       return Object.assign({}, activeState());
@@ -115,8 +116,8 @@ export class ActiveCollectionService {
       });
   }
 
-  public getItems(collectionId: number, numberPerPg: number, pgIndex: number = 0): Observable<any> {
-    return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=${pgIndex}&n=${numberPerPg}`,
+  public getItems(collectionId: number, numberPerPg: number, pgIndex: number = 1): Observable<any> {
+    return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=${pgIndex - 1}&n=${numberPerPg}`,
       { headers: this.apiConfig.authHeaders(), body: '' })
       .map((res) => {
         this.updateActiveCollectionAssets(res.json());

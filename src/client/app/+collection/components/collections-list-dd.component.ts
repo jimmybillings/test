@@ -43,7 +43,7 @@ export class CollectionListDdComponent {
       this.navigateToCollectionShow(collection.id);
     } else {
       this.activeCollection.set(collection.id).take(1).subscribe(() => {
-        this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
+        this.activeCollection.getItems(collection.id, 50).take(1).subscribe();
       });
       this.closeCollectionsList();
     }

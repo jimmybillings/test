@@ -23,6 +23,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public errorMessage: string;
   public config: Object;
   private activeCollectionSubscription: Subscription;
+  // private routeSubscription: Subscription;
   public date(date: any): Date {
     if (date) {
       return new Date(date);
@@ -43,16 +44,23 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activeCollectionSubscription = this.activeCollection.data.subscribe(collection => this.collection = collection);
+    this.activeCollectionSubscription = this.activeCollection.data.subscribe(collection => {
+      this.collection = collection;
+    });
   }
 
   ngOnDestroy() {
     this.activeCollectionSubscription.unsubscribe();
+    // this.routeSubscription.unsubscribe();
   }
 
   public removeFromCollection(params: any): void {
     let collection: any = params.collection;
     let uuid: any = params.collection.assets.items.find((item: any) => parseInt(item.assetId) === parseInt(params.asset.assetId)).uuid;
     if(uuid && params.asset.assetId) this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
+  }
+
+  public changePage(pageNum: any): void {
+    this.router.navigate(['/collection/' + this.collection.id, {i: pageNum, n: 50}]);
   }
 }
