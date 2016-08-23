@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { Collection, Collections } from '../../shared/interfaces/collection.interface';
 import { CollectionsService} from '../services/collections.service';
@@ -19,6 +19,7 @@ export class CollectionListDdComponent {
   @Input() focusedCollection: Collection;
   @Input() UiState: any;
   @Input() config: any;
+  @Output() close = new EventEmitter();
   public collections: Observable<Collections>;
   public currentFilter: string;
   public currentSort: string;
@@ -39,7 +40,7 @@ export class CollectionListDdComponent {
   }
 
   public closeCollectionsList(): void {
-    this.UiState.closeCollectionsList();
+    this.close.emit();
   }
 
   public showNewCollection(): void {
@@ -54,7 +55,6 @@ export class CollectionListDdComponent {
       this.activeCollection.set(collection.id).take(1).subscribe(() => {
         this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
       });
-      this.closeCollectionsList();
     }
   }
 
@@ -71,11 +71,13 @@ export class CollectionListDdComponent {
   public applyFilter(filter: any) {
     this.currentFilter = filter.label;
     this.collectionsService.loadCollections(filter.access).take(1).subscribe();
+    this.showCollectionFilter();
   }
 
   public applySort(sort: any) {
     this.currentSort = sort.label;
     this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
+    this.showCollectionSort();
   }
 
   public search(query: any) {
@@ -83,11 +85,11 @@ export class CollectionListDdComponent {
     this.currentSearchQuery = query.q;
   }
 
-  public showCollectionFilter(event: Event) {
+  public showCollectionFilter() {
     this.collectionFilterIsShowing = !this.collectionFilterIsShowing;
   }
 
-  public showCollectionSort(event: Event) {
+  public showCollectionSort() {
     this.collectionSortIsShowing = !this.collectionSortIsShowing;
   }
 

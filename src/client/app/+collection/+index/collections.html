@@ -104,7 +104,8 @@
 <wz-dropdown #sortCollections>
   <collections-sort-dd
     [UiState]="UiState"
-    (sort)="sortBy($event)"
+    (sort)="sortBy($event); sortCollections.close()"
+    (close)="sortCollections.close()"
     layout="row" layout-align="end start" class="revealed">
   </collections-sort-dd>
 </wz-dropdown>
@@ -112,7 +113,8 @@
 <wz-dropdown #filterCollections>
   <collections-filter-dd
     [UiState]="UiState"
-    (filter)="filter($event)"
+    (filter)="filter($event); filterCollections.close()"
+    (close)="filterCollections.close()"
     layout="row" layout-align="end start" class="revealed">
   </collections-filter-dd>
 </wz-dropdown>

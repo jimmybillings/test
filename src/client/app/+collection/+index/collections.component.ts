@@ -97,6 +97,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   public sortBy(sort: any) {
     this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
+
   }
 
   public isActiveCollection(collectionId: number): boolean {

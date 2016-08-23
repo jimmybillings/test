@@ -3,7 +3,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
   height: 100%;
   position: absolute;
   z-index: 20;
-  margin-top: -200%;
+  // margin-top: -200%;
   &:parent {
     z-index: 100;
   }
@@ -12,23 +12,24 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
   }
   &.revealed .collections-dd-menu {
     @include animation-name(dd-open);
-    @include animation-duration(300ms);
+    @include animation-duration(100ms);
     @include animation-timing-function($swift-ease-in-timing-function);
     @include animation-iteration-count(1);
     @include animation-fill-mode(backwards);
   }
   &.revealed .dd-menu-wrapper {
     @include animation-name(fadeIn);
-    @include animation-duration(250ms);
+    @include animation-duration(200ms);
     @include animation-timing-function($swift-ease-in-timing-function);
     @include animation-iteration-count(1);
-    @include animation-delay(300ms);
+    @include animation-delay(200ms);
     @include animation-fill-mode(backwards);
   }
   .dd-menu-wrapper {
     padding: rem(2.0);
   }
   .collections-dd-menu {
+    @include md-elevation(6);
     @include transition($swift-ease-out);
     min-width: rem(40.0);
     background-color: md-color($md-background, card);
@@ -171,7 +172,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
 collections-filter-dd, collections-sort-dd {
   &.revealed .collections-dd-menu {
     @include animation-name(sort-dd-open);
-    @include animation-duration(250ms);
+    @include animation-duration(150ms);
     @include animation-timing-function($swift-ease-in-timing-function);
     @include animation-iteration-count(1);
     @include animation-fill-mode(backwards);
@@ -222,6 +223,24 @@ collections-filter-dd, collections-sort-dd {
     }
   }
 }
+
+.dd-menu-wrapper collections-filter-dd .collections-dd-menu,
+.dd-menu-wrapper collections-sort-dd .collections-dd-menu {
+  position: absolute;
+  right: rem(-2.0);
+  top: rem(-.14);
+  min-width: rem(40.0);
+
+  @include md-elevation(2);
+}
+
+
+
+
+
+
+
+
 
 @include keyframes(sort-dd-open) {
   0% {

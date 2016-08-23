@@ -13,6 +13,7 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter} from '
 export class CollectionSortDdComponent {
   @Input() UiState: any;
   @Output() sort = new EventEmitter();
+  @Output() close = new EventEmitter();
   public sortOptions: Array<any> = [];
 
   constructor() {

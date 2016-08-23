@@ -1,4 +1,4 @@
-<div class="collections-dd-menu md-elevation-z2">
+<div class="collections-dd-menu">
   <div class="dd-menu-wrapper">
     <md-list dense>
       <md-list-item *ngFor="let option of filterOptions" [ngClass]="{'active': option.active}">
@@ -10,3 +10,4 @@
     </md-list>
   </div>
 </div>
+<div class="wz-dialog-click-catcher" (click)="close.emit()"></div>
