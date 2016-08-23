@@ -23,7 +23,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public errorMessage: string;
   public config: Object;
   private activeCollectionSubscription: Subscription;
-  // private routeSubscription: Subscription;
   public date(date: any): Date {
     if (date) {
       return new Date(date);
@@ -51,7 +50,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.activeCollectionSubscription.unsubscribe();
-    // this.routeSubscription.unsubscribe();
   }
 
   public removeFromCollection(params: any): void {

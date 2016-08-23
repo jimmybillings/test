@@ -93,7 +93,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.currentUser.loggedInState().subscribe((loggedIn: any) => {
       if (loggedIn && this.permission.has('ViewCollections')) {
         this.activeCollection.get().take(1).subscribe((collection) => {
-          // this.activeCollection.getItems(collection.id, 50).take(1).subscribe();
+          this.activeCollection.getItems(collection.id, 50).take(1).subscribe();
           this.collectionsService.loadCollections().take(1).subscribe();
         });
       }
