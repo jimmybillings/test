@@ -36,7 +36,7 @@ export class AssetComponent {
 
   public addToCollection(params: any): void {
     this.activeCollection.addAsset(params.collection.id, params.asset).take(1).subscribe(() => {
-      this.activeCollection.getItems(params.collection.id, 300).take(1).subscribe();
+      this.activeCollection.getItems(params.collection.id, 50).take(1).subscribe();
     });
   }
 

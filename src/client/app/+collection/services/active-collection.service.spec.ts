@@ -7,7 +7,7 @@ import {
   addProviders
 } from '../../imports/test.imports';
 
-import { ActiveCollectionService, activeState } from './active-collection.service';
+import { ActiveCollectionService, collectionSummary } from './active-collection.service';
 
 export function main() {
   describe('Active Collections service', () => {
@@ -125,7 +125,7 @@ export function main() {
       inject([ActiveCollectionService], (service: ActiveCollectionService) => {
         spyOn(service.store, 'dispatch');
         service.updateActiveCollectionStore(mockCollectionResponse());
-        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'UPDATE_ACTIVE_COLLECTION', payload: activeState(mockCollectionResponse()) });
+        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'UPDATE_ACTIVE_COLLECTION', payload: collectionSummary(mockCollectionResponse()) });
       }));
 
     it('Should reset the acitve collection store to a default value',

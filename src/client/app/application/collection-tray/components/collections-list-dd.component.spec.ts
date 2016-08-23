@@ -11,7 +11,7 @@ import { CollectionsService } from '../../../+collection/services/collections.se
 import { ActiveCollectionService } from '../../../+collection/services/active-collection.service';
 
 export function main() {
-  describe('Collection Form component', () => {
+  describe('Collection List component', () => {
     @Injectable()
     class MockCollectionsService {
       public createCollection(collection: any): Observable<any> {
@@ -67,7 +67,7 @@ export function main() {
         spyOn(component, 'closeCollectionsList');
         component.selectFocusedCollection(mockCollectionResponse());
         expect(component.activeCollection.set).toHaveBeenCalledWith(158);
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(158, 300);
+        expect(component.activeCollection.getItems).toHaveBeenCalledWith(158, 50);
         expect(component.closeCollectionsList).toHaveBeenCalled();
       }));
 

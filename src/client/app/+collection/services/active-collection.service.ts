@@ -9,7 +9,7 @@ import { Store, Reducer, Action} from '@ngrx/store';
  * Focused Collection store -
  */
 
-export function activeState(collection: any = {}): Collection {
+export function initState(collection: any = {}): Collection {
   return {
     createdOn: collection.createdOn || '',
     lastUpdated: collection.lastUpdated || '',
@@ -36,12 +36,28 @@ export function activeState(collection: any = {}): Collection {
   };
 }
 
-export const activeCollection: Reducer<any> = (state = activeState(), action: Action) => {
+export function collectionSummary(collection: any = {}): Collection {
+  return {
+    createdOn: collection.createdOn || '',
+    lastUpdated: collection.lastUpdated || '',
+    id: collection.id || null,
+    siteName: collection.siteName || '',
+    name: collection.name || '',
+    owner: collection.owner || 0,
+    email: collection.email || '',
+    userRole: collection.userRole || '',
+    editors: collection.editors || [],
+    collectionThumbnail: collection.collectionThumbnail || {}
+  };
+}
+
+export const activeCollection: Reducer<any> = (state = initState(), action: Action) => {
   switch (action.type) {
     case 'UPDATE_ACTIVE_COLLECTION':
+      console.log(Object.assign({}, state, action.payload));
       return Object.assign({}, state, action.payload);
     case 'RESET_ACTIVE_COLLECTION':
-      return Object.assign({}, activeState());
+      return Object.assign({}, initState());
     case 'ADD_ASSET_TO_COLLECTION':
       state.assets.pagination.totalCount++;
       return Object.assign({}, state, state.assets.items.unshift(action.payload));
@@ -116,14 +132,20 @@ export class ActiveCollectionService {
       });
   }
 
-  public getItems(collectionId: number, numberPerPg: number, pgIndex: number = 0): Observable<any> {
-    return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=${pgIndex}&n=${numberPerPg}`,
+  public getItems(collectionId: number, numberPerPg: number, pgIndex: number = 1): Observable<any> {
+    return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=${pgIndex - 1}&n=${numberPerPg}`,
       { headers: this.apiConfig.authHeaders(), body: '' })
       .map((res) => {
         this.updateActiveCollectionAssets(res.json());
         console.log(res.json());
         return res.json();
       });
+  }
+
+  public get state(): any {
+    let s: any;
+    this.data.take(1).subscribe(state => s = state);
+    return s;
   }
 
   public addAssetToStore(asset: any) {
@@ -135,7 +157,7 @@ export class ActiveCollectionService {
   }
 
   public updateActiveCollectionStore(collection: Collection): void {
-    this.store.dispatch({ type: 'UPDATE_ACTIVE_COLLECTION', payload: activeState(collection) });
+    this.store.dispatch({ type: 'UPDATE_ACTIVE_COLLECTION', payload: collectionSummary(collection) });
   }
 
   public resetStore() {

@@ -5,12 +5,16 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 @Injectable()
 export class CollectionShowResolver {
-  constructor(private activeCollection: ActiveCollectionService) {
-  }
+  constructor(private activeCollection: ActiveCollectionService) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Observable<any> {
-    this.activeCollection.set(route.params['id']).take(1).subscribe();
-    return this.activeCollection.getItems(route.params['id'], 300);
-    // });
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+    if (parseInt(this.activeCollection.state.id) === parseInt(route.params['id'])) {
+      return this.activeCollection.getItems(route.params['id'], 50, route.params['i']);
+    } else {
+      return Observable.forkJoin([
+        this.activeCollection.set(route.params['id']),
+        this.activeCollection.getItems(route.params['id'], 50, route.params['i'])
+      ]);
+    }
   }
 }
