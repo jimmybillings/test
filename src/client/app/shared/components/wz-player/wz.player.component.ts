@@ -24,7 +24,7 @@ export class WzPlayerComponent implements OnChanges {
     if (changes.clipUrl) {
       if(changes.resourceClass && changes.resourceClass.currentValue !== 'Image') {
           jwplayer('assetVideoPlayer').setup({
-            image: changes.clipThumbnail ? changes.clipThumbnailUrl.currentValue: null,
+            image: changes.clipThumbnailUrl ? changes.clipThumbnailUrl.currentValue: null,
             file: changes.clipUrl.currentValue,
             logo: {
               file: 'assets/img/logo/watermark.png',
