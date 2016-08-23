@@ -37,6 +37,7 @@ export class AssetDetailComponent implements OnChanges {
         this.asset = changes.asset.currentValue.detailTypeMap;
         this.asset.clipUrl = changes.asset.currentValue.clipUrl;
         this.asset.clipThumbnailUrl = changes.asset.currentValue.clipThumbnailUrl;
+        this.asset.resourceClass = changes.asset.currentValue.resourceClass;
         // the "+" in +this.asset.common[0].vaue changes it from a string to a number
         this.inActiveCollection = this.alreadyInCollection(+this.asset.common[0].value);
       }
