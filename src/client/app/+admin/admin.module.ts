@@ -11,6 +11,7 @@ import { AdminService} from './services/admin.service';
 import { ConfigService} from './services/config.service';
 import { ADMIN_ROUTES } from './admin.routes';
 import { RouterModule } from '@angular/router';
+import { AdminAuthGuard } from './services/admin.auth.guard';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(ADMIN_ROUTES)],
@@ -23,7 +24,7 @@ import { RouterModule } from '@angular/router';
     SiteConfigComponent,
     UiConfigComponent],
   exports: [AdminComponent],
-  providers: [AdminService, ConfigService],
+  providers: [AdminService, ConfigService, AdminAuthGuard],
 })
 
 export class AdminModule { }

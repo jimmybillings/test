@@ -9,8 +9,8 @@ export class CollectionShowResolver {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Observable<any> {
-    return this.activeCollection.set(route.params['id']).map(collection => {
-      return this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
-    });
+    this.activeCollection.set(route.params['id']).take(1).subscribe();
+    return this.activeCollection.getItems(route.params['id'], 300);
+    // });
   }
 }

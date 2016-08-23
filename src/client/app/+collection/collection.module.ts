@@ -7,6 +7,8 @@ import { CollectionSortDdComponent } from './components/collections-sort-dd.comp
 import { CollectionFilterDdComponent } from './components/collections-filter-dd.component';
 import { CollectionsSearchFormComponent } from './components/collections-search-form.component';
 import { COLLECTION_ROUTES } from './collection.routes';
+import { CollectionShowResolver } from '../+collection/services/collection-show.resolver';
+import { CollectionGuard } from './services/collection-guard';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(COLLECTION_ROUTES)],
@@ -17,6 +19,7 @@ import { COLLECTION_ROUTES } from './collection.routes';
     CollectionFilterDdComponent,
     CollectionsSearchFormComponent],
   exports: [CollectionsComponent, CollectionShowComponent],
+  providers: [CollectionShowResolver, CollectionGuard]
 })
 
 export class CollectionModule { }

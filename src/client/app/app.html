@@ -14,9 +14,8 @@
       (onLogOut)="logout()">
     </app-nav>
     <collection-tray
-      *ngIf="(uiState.data | async).searchBarIsActive && currentUser.loggedIn()"
+      *ngIf="(uiState.data | async).searchBarIsActive && permission.has('ViewCollections')"
       [UiState]="uiState"
-      [collection]="activeCollection.data | async"
       [uiConfig]="uiConfig"
       >
     </collection-tray>

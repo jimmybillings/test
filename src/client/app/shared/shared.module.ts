@@ -26,7 +26,6 @@ import { ValuesPipe } from '../shared/pipes/values.pipe';
 // Shared resolvers
 import { AssetResolver } from '../+asset/services/asset.resolver';
 import { SearchResolver } from '../+search/services/search.resolver';
-import { CollectionShowResolver } from '../+collection/services/collection-show.resolver';
 import { WAZEE_PROVIDERS, WAZEE_STORES } from '../imports/wazee';
 
 // Material Modules
@@ -133,7 +132,6 @@ import { MdCoreModule } from '@angular2-material/core';
     TranslateService,
     AssetResolver,
     SearchResolver,
-    CollectionShowResolver,
     WAZEE_PROVIDERS, WAZEE_STORES
   ]
 })

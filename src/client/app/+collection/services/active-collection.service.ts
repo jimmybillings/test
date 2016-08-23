@@ -91,6 +91,7 @@ export class ActiveCollectionService {
     return this.http.put(`${this.apiUrls.CollectionSetActive}/${collectionId}`,
       '', { headers: this.apiConfig.authHeaders() })
       .map((res) => {
+        console.log(res.json());
         this.updateActiveCollectionStore(res.json());
         return res.json();
       });
@@ -120,6 +121,7 @@ export class ActiveCollectionService {
       { headers: this.apiConfig.authHeaders(), body: '' })
       .map((res) => {
         this.updateActiveCollectionAssets(res.json());
+        console.log(res.json());
         return res.json();
       });
   }

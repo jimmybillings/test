@@ -61,7 +61,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.configSubscription = this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
     this.currentUser.set();
     this.routerChanges();
-    this.initializeCollections();
   }
 
   ngOnDestroy() {
@@ -87,17 +86,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.currentUser.destroy();
     this.collectionsService.destroyCollections();
     this.uiState.reset();
-  }
-
-  public initializeCollections() {
-    this.currentUser.loggedInState().subscribe((loggedIn: any) => {
-      if (loggedIn && this.permission.has('ViewCollections')) {
-        this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
-          this.collectionsService.loadCollections().take(1).subscribe();
-        });
-      }
-    });
   }
 
   public changeLang(data: any) { this.multiLingual.setLanguage(data); }
