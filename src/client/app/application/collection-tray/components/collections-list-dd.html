@@ -1,18 +1,44 @@
-<div class="collections-dd-menu md-elevation-z12">
+<div class="collections-dd-menu">
   <div class="dd-menu-wrapper">
-    <header layout="row">
-      <h4 class="md-headline" flex="100" layout-align="start center">
-        {{ 'COLLECTION.DD_MENU.HEADING' | translate }}
-      </h4>
-      <div class="tools" flex="auto" layout-align="end center">
-        <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showCollectionSearch($event)"><md-icon>search</md-icon></button>
-        <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showCollectionFilter($event)"><md-icon>filter_list</md-icon></button>
-        <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>
+    <header>
+      <!--<div layout="row" layout-align="end end">-->
+        <collections-search-form
+          [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
+          [hidden]="!collectionSearchIsShowing"
+          (query)="search($event)"
+          (closeSearch)="showCollectionSearch()">
+        </collections-search-form>
+        <collections-filter-dd
+          flex="100"
+          [hidden]="!collectionFilterIsShowing"
+          (filter)="applyFilter($event)"
+          (close)="showCollectionFilter()">
+        </collections-filter-dd>
+        <collections-sort-dd
+          flex="100"
+          [hidden]="!collectionSortIsShowing"
+          (sort)="applySort($event)"
+          (close)="showCollectionSort()">
+        </collections-sort-dd>
+      <!--</div>-->
+      <div flex="100" layout="row">
+        <h4 class="md-headline" flex="100" layout-align="start center">
+          {{ 'COLLECTION.DD_MENU.HEADING' | translate }}
+        </h4>
+        <div class="tools" flex="auto" layout-align="end center">
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showCollectionSearch($event)"><md-icon>search</md-icon></button>
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showCollectionFilter($event)"><md-icon>filter_list</md-icon></button>
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>
+        </div>
       </div>
     </header>
+    
+    <h6 class="md-caption query-details">
+      <span *ngIf="currentSearchQuery">{{currentSearchQuery}},</span> {{'COLLECTION.INDEX.FILTER_DD_MENU.' + currentFilter | uppercase | translate}}, {{'COLLECTION.INDEX.SORT_DD_MENU.' + currentSort | uppercase | translate }}
+    </h6>
     <md-list dense>
       <md-list-item *ngFor="let collection of (collections | async).items" [ngClass]="{active: focusedCollection.id === collection.id}">
-        <button (click)="selectFocusedCollection(collection)">
+        <button (click)="selectFocusedCollection(collection);closeCollectionsList()">
           <md-icon *ngIf="focusedCollection.id === collection.id">check_circle</md-icon>
           <md-icon *ngIf="focusedCollection.id !== collection.id">radio_button_unchecked</md-icon>
           {{collection.name}}
@@ -23,15 +49,15 @@
     <footer layout="row" layout-align="center center">
       <div class="actions" flex="90" layout="row" layout-align="center center">
         <div flex="33" layout-align="center start">
-          <button md-button type="button" (click)="createCollection.show();UiState.closeCollectionsList();"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
+          <button md-button type="button" (click)="createCollection.show();closeCollectionsList()"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
         </div>
         <div flex="33" layout-align="center center">
-          <a md-button (click)="navigateToCollectionsIndex()" disableRipple>
+          <a md-button (click)="navigateToCollectionsIndex();closeCollectionsList()" disableRipple>
             <md-icon>folder_open</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.VIEW_BTN_LABEL' | translate }}</span>
           </a>
         </div>
         <div flex="33" layout-align="center end">
-          <a md-button (click)="navigateToCollectionShow(focusedCollection.id)" disableRipple>
+          <a md-button (click)="navigateToCollectionShow(focusedCollection.id);closeCollectionsList();" disableRipple>
             <md-icon>open_in_browser</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.OPEN_BTN_LABEL' | translate }}</span>
           </a>
         </div>
@@ -39,7 +65,7 @@
     </footer>
   </div>
 </div>
-<!--<div [ngClass]="{'fade-out': !(UiState.data | async).newCollectionFormIsOpen, 'fade-in': (UiState.data | async).newCollectionFormIsOpen}" class="bk-for-dd" (click)="closeCollectionsList()"></div>-->
+<div class="wz-dialog-click-catcher" (click)="close.emit()"></div>
 
 <wz-dialog #createCollection>
   <collection-form

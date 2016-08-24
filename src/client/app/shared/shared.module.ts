@@ -19,6 +19,10 @@ import { WzPaginationComponent } from '../shared/components/wz-pagination/wz.pag
 import { WzPikaDayDirective } from '../shared/components/wz-pikaday/wz-pikaday.directive';
 import { WzPlayerComponent } from '../shared/components/wz-player/wz.player.component';
 import { WzToastComponent, WzToastPortalDirective } from '../shared/components/wz-toast/wz.toast.component';
+import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
+import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
+import { CollectionsSearchFormComponent } from '../+collection/components/collections-search-form.component';
+
 
 // Shared pipes
 import { ValuesPipe } from '../shared/pipes/values.pipe';
@@ -80,6 +84,9 @@ import { MdCoreModule } from '@angular2-material/core';
     WzPikaDayDirective,
     WzPlayerComponent,
     WzToastComponent,
+    CollectionSortDdComponent,
+    CollectionFilterDdComponent,
+    CollectionsSearchFormComponent,
     ValuesPipe,
     WzDialogPortalDirective,
     WzDropdownPortalDirective,
@@ -98,6 +105,9 @@ import { MdCoreModule } from '@angular2-material/core';
     WzPikaDayDirective,
     WzPlayerComponent,
     WzToastComponent,
+    CollectionSortDdComponent,
+    CollectionFilterDdComponent,
+    CollectionsSearchFormComponent,
     CommonModule,
     RouterModule,
     TranslateModule,

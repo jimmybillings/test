@@ -152,6 +152,9 @@ collections-search-form {
   position: relative;
   overflow: hidden;
   margin-right: rem(.8);
+  .tools {
+    display: none;
+  }
   form {
     @include transition($swift-ease-out);
     display: flex;
@@ -208,6 +211,9 @@ collections-search-form {
       md-icon.material-icons {
         opacity: .6;
        }
+    }
+    &:focus{
+      outline: none;
     }
   }
 }

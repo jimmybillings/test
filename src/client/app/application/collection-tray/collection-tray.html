@@ -21,6 +21,7 @@
     </nav>
     <button md-icon-button flex="none" title="more collection options" [md-menu-trigger-for]="moreCollectionMenu"><md-icon>more_vert</md-icon></button>
   </div>
+  <!--<button md-icon-button title="close collections" type="button" (click)="UiState.toggleBinTray()" class="close"><md-icon>close</md-icon></button>-->
 </section>
 
 <wz-dropdown #list>
@@ -28,13 +29,14 @@
     [UiState]="UiState"
     [focusedCollection]="collection | async"
     [config]="(uiConfig.get('collection') | async).config"
+    (close)="list.close()"
     layout="row" layout-align="end start" class="revealed">
   </collections-list-dd>
 </wz-dropdown>
 
 <md-menu class="more-collections-menu" x-position="before" #moreCollectionMenu="mdMenu">
   <button md-menu-item>Create a new collection</button>
-  <a *ngIf="(collection | async).id" [routerLink]="['/collection/', (collection | async).id]" md-menu-item>Open selected collection</a>
+  <a *ngIf="(collection | async).id" [routerLink]="['/collection/', (collection | async).id, {n: 50, i: 1}]" md-menu-item>Open selected collection</a>
   <button md-menu-item disabled>copy link for selected collection</button>
   <a [routerLink]="['/collection/']" md-menu-item>View all collections</a>
   <button md-menu-item (click)="list.show($event)">Change focused collection</button>

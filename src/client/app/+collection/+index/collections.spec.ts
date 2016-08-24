@@ -52,7 +52,7 @@ export function main() {
         spyOn(component.activeCollection, 'getItems').and.callThrough();;
         component.selectActiveCollection(1);
         expect(component.activeCollection.set).toHaveBeenCalledWith(1);
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(1, 50);
+        expect(component.activeCollection.getItems).toHaveBeenCalledWith(1, {n: 50});
       }));
 
     it('Should check if a collection id matches the current active collection',
@@ -87,7 +87,7 @@ export function main() {
         component.deleteCollection(1);
         expect(component.collectionsService.deleteCollection).toHaveBeenCalledWith(1);
         expect(component.activeCollection.get).toHaveBeenCalled();
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(2, 50);
+        expect(component.activeCollection.getItems).toHaveBeenCalledWith(2, {n: 50});
       }));
   });
 }

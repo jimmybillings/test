@@ -22,8 +22,15 @@ export class WzPlayerComponent implements OnChanges {
   ngOnChanges(changes: any) {
       console.dir(changes);
     if (changes.clipUrl) {
-      if(changes.resourceClass && changes.resourceClass.currentValue !== 'Image') {
-          jwplayer('assetVideoPlayer').setup({
+      if(changes.resourceClass && changes.resourceClass.currentValue === 'Image') {
+          var elem = document.createElement('img');
+             elem.src = changes.clipUrl.currentValue;
+             elem.style.height='100%';
+             elem.style.width='100%';
+             document.getElementById('assetVideoPlayer').innerHTML='';
+             document.getElementById('assetVideoPlayer').appendChild(elem);
+        }else {
+            jwplayer('assetVideoPlayer').setup({
             image: changes.clipThumbnailUrl ? changes.clipThumbnailUrl.currentValue: null,
             file: changes.clipUrl.currentValue,
             logo: {
@@ -32,13 +39,6 @@ export class WzPlayerComponent implements OnChanges {
               link: 'http://www.wazeedigital.com'
             }
           });
-        }else {
-             var elem = document.createElement('img');
-             elem.src = changes.clipUrl.currentValue;
-             elem.style.height='100%';
-             elem.style.width='100%';
-             document.getElementById('assetVideoPlayer').innerHTML='';
-             document.getElementById('assetVideoPlayer').appendChild(elem);
         }
 
       }
