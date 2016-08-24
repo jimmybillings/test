@@ -11,14 +11,12 @@
         <collections-filter-dd
           flex="100"
           [hidden]="!collectionFilterIsShowing"
-          [UiState]="UiState"
           (filter)="applyFilter($event)"
           (close)="showCollectionFilter()">
         </collections-filter-dd>
         <collections-sort-dd
           flex="100"
           [hidden]="!collectionSortIsShowing"
-          [UiState]="UiState"
           (sort)="applySort($event)"
           (close)="showCollectionSort()">
         </collections-sort-dd>
