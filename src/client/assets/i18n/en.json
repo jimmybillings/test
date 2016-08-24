@@ -118,7 +118,8 @@
       "OPEN_BTN_LABEL": "Open selected",
       "CREATE_BTN_LABEL": "Create new",
       "CLOSE_HOVER_TITLE": "Close",
-      "PREVIOUS_HOVER_TITLE": "Previous"
+      "PREVIOUS_HOVER_TITLE": "Previous",
+      "SUBMIT_HOVER_TITLE": "Submit search"
     },
     "SHOW": {
       "PAGE_TITLE": "Your collections",
