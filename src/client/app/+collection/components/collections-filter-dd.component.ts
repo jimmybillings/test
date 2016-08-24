@@ -13,6 +13,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '
 export class CollectionFilterDdComponent {
   @Input() UiState: any;
   @Output() filter = new EventEmitter();
+  @Output() close = new EventEmitter();
   public filterOptions: Array<any> = [];
 
   constructor() {
@@ -26,7 +27,7 @@ export class CollectionFilterDdComponent {
   }
 
   public closeCollectionsFiltertDd(): void {
-    this.UiState.closeCollectionsFilterDd();
+    this.close.emit();
   }
 
   public setActiveFilter(filter:any) {

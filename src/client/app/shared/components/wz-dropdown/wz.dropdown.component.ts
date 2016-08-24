@@ -1,4 +1,4 @@
-import { Component, Input, Directive, ViewContainerRef, TemplateRef, ViewChild, ViewEncapsulation, Renderer } from '@angular/core';
+import { Component, Input, Directive, ViewContainerRef, TemplateRef, ViewChild, ViewEncapsulation, Renderer, ElementRef } from '@angular/core';
 import {Overlay} from '@angular2-material/core/overlay/overlay';
 import {OverlayState} from '@angular2-material/core/overlay/overlay-state';
 import {OverlayRef} from '@angular2-material/core/overlay/overlay-ref';
@@ -29,7 +29,7 @@ export class WzDropdownComponent {
   public viewRef: any;
   private overlayRef: OverlayRef = null;
 
-  constructor(private overlay: Overlay, private renderer: Renderer) { }
+  constructor(private overlay: Overlay, private renderer: Renderer, private elementRef: ElementRef) { }
 
   public show(event: any): Promise<WzDropdownComponent> {
     this.positionElement(event);
@@ -73,6 +73,6 @@ export class WzDropdownComponent {
   }
 
   private closeListener() {
-    this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.close());
+    this.viewRef = this.renderer.listen(this.elementRef.nativeElement.parentElement.parentElement.parentElement, 'click', () => this.close());
   }
 }

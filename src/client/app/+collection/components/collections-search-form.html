@@ -1,4 +1,12 @@
-<form [formGroup]="searchCollections" (ngSubmit)="onSubmit(searchCollections.value.q)" class="md-inline-form">
-  <input md-input="" type="text" placeholder="{{ 'COLLECTION.INDEX.SEARCH_BOX_LABEL' | translate }}" formControlName="q"/>
-  <button type="submit">Search<md-icon>search</md-icon></button>
-</form>
+<div layout="row" layout-align="end center">
+  <div class="tools" flex="auto">
+    <button md-icon-button title="{{ 'COLLECTION.DD_MENU.PREVIOUS_HOVER_TITLE' | translate }}" (click)="closeSearch.emit()"><md-icon>arrow_back</md-icon></button>
+  </div>
+  <form flex="100" [formGroup]="searchCollections" (ngSubmit)="onSubmit(searchCollections.value.q)" class="md-inline-form">
+    <input md-input="" type="text" placeholder="{{ 'COLLECTION.INDEX.SEARCH_BOX_LABEL' | translate }}" formControlName="q"/>
+    <button type="submit">Search<md-icon>search</md-icon></button>
+  </form>
+  <div class="tools" flex="auto">
+    <button md-icon-button title="{{ 'COLLECTION.DD_MENU.PREVIOUS_HOVER_TITLE' | translate }}" (click)="closeSearch.emit()"><md-icon>close</md-icon></button>
+  </div>
+</div>

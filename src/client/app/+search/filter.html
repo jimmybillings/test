@@ -12,7 +12,7 @@
            [ngClass]="{'active': subFilter.active}"
            class="md-primary">
             {{subFilter.name}}
-          <span *ngIf="counted && subFilter.count > 0"> 
+          <span *ngIf="counted && subFilter.count > -1"> 
             ( {{subFilter.count}} )
           </span>
         </p>
