@@ -39,11 +39,10 @@ export class CollectionListDdComponent {
 
   public selectFocusedCollection(collection: Collection) {
     if (this.onCollectionShowPage()) {
-      console.log('sdlfkj');
       this.navigateToCollectionShow(collection.id);
     } else {
       this.activeCollection.set(collection.id).take(1).subscribe(() => {
-        this.activeCollection.getItems(collection.id, 50).take(1).subscribe();
+        this.activeCollection.getItems(collection.id, {n: 50}).take(1).subscribe();
       });
       this.closeCollectionsList();
     }
@@ -51,7 +50,7 @@ export class CollectionListDdComponent {
 
   public navigateToCollectionShow(assetId: number): void {
     this.UiState.closeCollectionsList();
-    this.router.navigate(['/collection/', assetId]);
+    this.router.navigate(['/collection/', assetId, {n: 50, i: 1}]);
   }
 
   public navigateToCollectionsIndex() {

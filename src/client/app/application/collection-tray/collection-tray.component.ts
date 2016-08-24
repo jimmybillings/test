@@ -26,7 +26,7 @@ export class CollectionTrayComponent implements OnInit {
   ngOnInit() {
     this.activeCollection.get().take(1).subscribe((collection) => {
       this.collectionsService.loadCollections().take(1).subscribe();
-      this.activeCollection.getItems(collection.id, 300).take(1).subscribe();
+      this.activeCollection.getItems(collection.id, {i: 1, n: 50}).take(1).subscribe();
     });
   }
 }

@@ -9,11 +9,11 @@ export class CollectionShowResolver {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     if (parseInt(this.activeCollection.state.id) === parseInt(route.params['id'])) {
-      return this.activeCollection.getItems(route.params['id'], 50, route.params['i']);
+      return this.activeCollection.getItems(route.params['id'], {n: 50, i: route.params['i']});
     } else {
       return Observable.forkJoin([
         this.activeCollection.set(route.params['id']),
-        this.activeCollection.getItems(route.params['id'], 50, route.params['i'])
+        this.activeCollection.getItems(route.params['id'], {n: 50, i: route.params['i']})
       ]);
     }
   }
