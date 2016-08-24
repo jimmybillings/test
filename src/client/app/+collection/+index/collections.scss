@@ -209,6 +209,9 @@ collections-search-form {
         opacity: .6;
        }
     }
+    &:focus{
+      outline: none;
+    }
   }
 }
 

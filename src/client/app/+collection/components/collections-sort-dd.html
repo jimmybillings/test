@@ -1,4 +1,17 @@
 <div class="collections-dd-menu">
+  <header>
+    <div flex="100" layout="row">
+        <div class="tools" flex="auto" layout-align="start center">
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.PREVIOUS_HOVER_TITLE' | translate }}" (click)="close.emit()"><md-icon>arrow_back</md-icon></button>
+        </div>
+        <h4 class="md-headline" flex="100" layout-align="start center">
+          {{ 'COLLECTION.INDEX.SORT_DD_MENU.HEADING' | translate }}
+        </h4>
+        <div class="tools" flex="auto" layout-align="end center">
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.CLOSE_HOVER_TITLE' | translate }}" (click)="close.emit()"><md-icon>close</md-icon></button>
+        </div>
+      </div>
+  </header>
   <div class="dd-menu-wrapper">
     <md-list dense>
       <md-list-item *ngFor="let option of sortOptions" [ngClass]="{'active': option.active}">

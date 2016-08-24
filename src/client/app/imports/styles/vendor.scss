@@ -13,19 +13,22 @@
 /** The overlay-container is an invisible element which contains all individual overlays. */
 .md-overlay-container {
   position: absolute;
+  // Disable events from being captured on the overlay container.
   pointer-events: none;
+  // The container should be the size of the viewport.
   top: 0;
   left: 0;
   height: 100%;
-  width: 100%; }
+  width: 100%;
+}
 
 /** A single overlay pane. */
 .md-overlay-pane {
   position: absolute;
   pointer-events: auto;
   box-sizing: border-box;
-  z-index: 1000; }
-
+  z-index: $z-index-overlay;
+}
 
 // these are not part of ng2material just yet, but are needed
 // hopefully these will be part of Ng2 Material, and then removed, and referenced above
@@ -39,7 +42,7 @@
 // they are currently needed to fix z-index with fixed header and large dd menu (collection-dd) for mobile.
 
 .md-overlay-pane {
-  z-index: 3;
+  // z-index: 3;
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     height: 100%;
     width: 100%;

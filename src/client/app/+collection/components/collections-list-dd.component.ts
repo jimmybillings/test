@@ -83,6 +83,7 @@ export class CollectionListDdComponent {
   public search(query: any) {
     this.collectionsService.loadCollections(query).take(1).subscribe();
     this.currentSearchQuery = query.q;
+    // this.showCollectionSearch();
   }
 
   public showCollectionFilter() {
@@ -93,7 +94,8 @@ export class CollectionListDdComponent {
     this.collectionSortIsShowing = !this.collectionSortIsShowing;
   }
 
-  public showCollectionSearch(event: Event) {
+  public showCollectionSearch() {
+    console.log(`toggle search display to ${this.collectionSearchIsShowing}`);
     this.collectionSearchIsShowing = !this.collectionSearchIsShowing;
   }
 
