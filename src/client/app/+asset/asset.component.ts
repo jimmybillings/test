@@ -36,7 +36,7 @@ export class AssetComponent {
 
   public addToCollection(params: any): void {
     this.activeCollection.addAsset(params.collection.id, params.asset).take(1).subscribe(() => {
-      this.activeCollection.getItems(params.collection.id, 300).take(1).subscribe();
+      this.activeCollection.getItems(params.collection.id, 50).take(1).subscribe();
     });
   }
 
@@ -49,7 +49,7 @@ export class AssetComponent {
   }
 
   showNewCollection(assetId: any): void {
-    let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-bin-tray');
+    let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-collection-tray');
     (!this.currentUser.loggedIn()) ? this.router.navigate(['/user/login']) : newCollectionButton.click();
   }
 

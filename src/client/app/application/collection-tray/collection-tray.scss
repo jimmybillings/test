@@ -1,4 +1,4 @@
-bin-tray {
+collection-tray {
   width: 100%;
   margin: 0;
   & > section {
@@ -76,7 +76,7 @@ bin-tray {
   }
 }
 
-header.app-header.bin-tray-closed bin-tray section {
+header.app-header.collection-tray-closed collection-tray section {
   .focused-collection, .asset-carousel.grid ul.asset-list {
     max-height: 0;
     min-height: 0;

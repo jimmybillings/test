@@ -1,0 +1,41 @@
+
+<section layout="row" flex="100" layout-align="start" class="header-tray">
+  <div flex="100" class="asset-carousel grid">
+    <ul class="asset-list" *ngIf="(collection | async).assets">
+      <li *ngFor="let asset of (collection | async).assets.items">
+        <div class="asset">
+          <a *ngIf="asset?.assetId" flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb">
+            <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div layout="row" flex="auto" layout-align="end center" class="focused-collection">
+    <nav class="focused" *ngIf="(collection | async).name" (click)="list.show($event)">
+      <button md-button class="is-dd">{{(collection | async).name}}</button>
+      <button md-button class="asset-count">
+        <span class="count" *ngIf="(collection | async).assets">{{(collection | async).assets.pagination.totalCount}}</span>
+        <span class="count" *ngIf="!(collection | async).assets">0</span>
+      </button>
+    </nav>
+    <button md-icon-button flex="none" title="more collection options" [md-menu-trigger-for]="moreCollectionMenu"><md-icon>more_vert</md-icon></button>
+  </div>
+</section>
+
+<wz-dropdown #list>
+  <collections-list-dd
+    [UiState]="UiState"
+    [focusedCollection]="collection | async"
+    [config]="(uiConfig.get('collection') | async).config"
+    layout="row" layout-align="end start" class="revealed">
+  </collections-list-dd>
+</wz-dropdown>
+
+<md-menu class="more-collections-menu" x-position="before" #moreCollectionMenu="mdMenu">
+  <button md-menu-item>Create a new collection</button>
+  <a *ngIf="(collection | async).id" [routerLink]="['/collection/', (collection | async).id]" md-menu-item>Open selected collection</a>
+  <button md-menu-item disabled>copy link for selected collection</button>
+  <a [routerLink]="['/collection/']" md-menu-item>View all collections</a>
+  <button md-menu-item (click)="list.show($event)">Change focused collection</button>
+</md-menu>

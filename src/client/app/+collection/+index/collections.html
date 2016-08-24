@@ -24,79 +24,19 @@
   </div>
 </section>
 
-
-
-
-
 <section class="hero">
   <div layout="row" flex="100" layout-margin layout-align="center start">
     <section class="collections-list" flex="100" flex-gt-md="85" flex-gt-lg="75">
-      <!--<header layout="row" flex="100" layout-align="end center">
-        <div flex="none">
-          <h2 class="md-headline">Your Collections</h2>
-        </div>
-        <div class="tools" flex="grow" layout-align="end center">
-          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" (click)="showCollectionSearch($event)"><md-icon>search</md-icon></button>
-
-          <button md-button class="is-dd filter-selector" (click)="showCollectionFilter($event)">Filter: <span class="selected">Show all collections</span></button>
-          <button md-button class="is-dd filter-selector" (click)="showCollectionSort($event)">Sort: <span class="selected">Date modified (newest first)</span></button>
-        </div>
-      </header>-->
-
-      <wz-pagination [pagination]="collections.pagination" (getPage)="changePage($event)"></wz-pagination>
-      <ul>
-        <li *ngFor="let collection of collections.items" class="collection" [ngClass]="{'focused': isActiveCollection(collection.id), 'md-elevation-z2': !isActiveCollection(collection.id) }">
-          <div flex="100" layout="row" layout-xs="column">
-            <div flex-gt-sm="40" flex-gt-lg="20" flex-gt-md="30" flex="100" layout-padding layout-fill>
-              <div class="asset">
-                <div class="asset-thb">
-                  <div class="selected" *ngIf="isActiveCollection(collection.id)">
-                    <md-icon>star</md-icon>
-                  </div>
-                  <span class="asset-id"><span class="id">{{collection.id}}</span></span>
-                  <img src="{{thumbnail(collection.collectionThumbnail)}}" />
-                </div>
-              </div>
-            </div>
-            <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" (click)="selectActiveCollection(collection.id)" layout-padding layout-fill>
-              <h3 class="md-headline">{{collection.name}}
-                <span class="asset-count">
-                  <span class="count">{{collection.assetsCount || 0}}</span>
-                </span>
-              </h3>
-              <div class="md-caption collection-info">
-                <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{collection.email}}</span>
-                <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{collection.userRole}}</span>
-                <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ date(collection.createdOn) | date:'short' }}</span>
-                <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
-              </div>
-              <div *ngIf="collection.tags" class="md-caption collection-tags">
-                <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
-                <ul class="meta-data-tags">
-                  <li class="tag md-elevation-z0" *ngFor="let tag of collection.tags">{{tag}}</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div flex="100" layout="row" layout-xs="column" layout-margin class="divider"></div>
-          <div flex="100" layout="row" class="actions">
-            <div flex="80">
-              <button md-icon-button title="{{ 'COLLECTION.INDEX.FOCUS_BTN_TITLE' | translate }}" (click)="selectActiveCollection(collection.id)"><md-icon>star</md-icon></button>
-              <!--anchor md-icon-button alignment is messed up once it's fixed we can use the anchor but until then keep it a button-->
-              <a md-icon-button title="{{ 'COLLECTION.INDEX.DETAIL_BTN_TITLE' | translate }}" [routerLink]="['/collection/', collection.id]" ><md-icon>details</md-icon></a>
-              <button md-icon-button title="{{ 'COLLECTION.INDEX.EDIT_BTN_TITLE' | translate }}" (click)="showEdit(collection)"><md-icon>edit</md-icon></button>
-              <button md-icon-button title="{{ 'COLLECTION.INDEX.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)"><md-icon>share</md-icon></button>
-              <button md-icon-button title="{{ 'COLLECTION.INDEX.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)"><md-icon>mode_comment</md-icon></button>
-            </div>
-            <div flex="20" layout-align="end center">
-              <button class="delete" md-icon-button title="{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}" (click)="deleteCollection(collection.id)"><md-icon>cancel</md-icon></button>
-            </div>
-          </div>
-        </li>
-      </ul>
+      <wz-pagination 
+        [pagination]="(collectionsService.data | async).pagination" 
+        (getPage)="changePage($event)">
+      </wz-pagination>
+      <wz-collection-item-list 
+        [collections]="(collectionsService.data | async).items" 
+        [activeCollection]="(activeCollection.data | async).id"
+        (setActiveCollection)="selectActiveCollection($event)">
+      </wz-collection-item-list>
     </section>
-
-
   </div>
 </section>
 
@@ -104,7 +44,8 @@
 <wz-dropdown #sortCollections>
   <collections-sort-dd
     [UiState]="UiState"
-    (sort)="sortBy($event)"
+    (sort)="sortBy($event); sortCollections.close()"
+    (close)="sortCollections.close()"
     layout="row" layout-align="end start" class="revealed">
   </collections-sort-dd>
 </wz-dropdown>
@@ -112,7 +53,8 @@
 <wz-dropdown #filterCollections>
   <collections-filter-dd
     [UiState]="UiState"
-    (filter)="filter($event)"
+    (filter)="filter($event); filterCollections.close()"
+    (close)="filterCollections.close()"
     layout="row" layout-align="end start" class="revealed">
   </collections-filter-dd>
 </wz-dropdown>

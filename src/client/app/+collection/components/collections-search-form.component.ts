@@ -12,6 +12,7 @@ export class CollectionsSearchFormComponent {
   public searchCollections: FormGroup;
   public isCollectionSearchOpen: boolean = false;
   @Output() query = new EventEmitter();
+  @Output() closeSearch = new EventEmitter();
 
   constructor(
     public fb: FormBuilder) {

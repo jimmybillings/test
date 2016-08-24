@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Collections } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
@@ -8,7 +8,6 @@ import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { CollectionSortDdComponent } from '../../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../../+collection/components/collections-filter-dd.component';
-import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -16,7 +15,7 @@ import { Subscription } from 'rxjs/Rx';
   templateUrl: 'collections.html',
 })
 
-export class CollectionsComponent implements OnInit, OnDestroy {
+export class CollectionsComponent implements OnInit {
   public collections: Collections;
   public errorMessage: string;
   public isCollectionSearchOpen: boolean = false;
@@ -24,7 +23,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public activeSort: string;
   @ViewChild(CollectionFilterDdComponent) public filters: CollectionFilterDdComponent;
   @ViewChild(CollectionSortDdComponent) public sort: CollectionSortDdComponent;
-  private collectionStoreSubscription: Subscription;
 
 
   constructor(
@@ -38,17 +36,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.collectionsService.setSearchParams();
-    this.collectionsService.loadCollections().take(1).subscribe();
-    this.collectionStoreSubscription =
-      this.collectionsService.data.subscribe(collections => this.collections = collections);
-  }
-
-  ngOnDestroy() {
-    this.collectionStoreSubscription.unsubscribe();
-  }
-
-  public date(date: any): Date {
-    return new Date(date);
   }
 
   public openCollectionSearch() {
@@ -61,7 +48,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   public selectActiveCollection(id: number): void {
     this.activeCollection.set(id).take(1).subscribe(() => {
-      this.activeCollection.getItems(id, 300).take(1).subscribe();
+      this.activeCollection.getItems(id, 50).take(1).subscribe();
     });
   }
 
@@ -73,14 +60,14 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       // if we are deleting current active, we need to get the new active from the server.
       if (this.isActiveCollection(id) && collectionLength > 0) {
         this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
+          this.activeCollection.getItems(collection.id, 50).take(1).subscribe();
         });
       }
       // if we delete the last collection, reset the store to initial values (no active collection)
       if (collectionLength === 0) {
         this.collectionsService.destroyCollections();
         this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, 200).take(1).subscribe();
+          this.activeCollection.getItems(collection.id, 50).take(1).subscribe();
           this.collectionsService.loadCollections().take(1).subscribe();
         });
       }
@@ -97,6 +84,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   public sortBy(sort: any) {
     this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
+
   }
 
   public isActiveCollection(collectionId: number): boolean {
@@ -117,7 +105,4 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     return (activeSort.length > 0) ? activeSort[0].label : '';
   }
 
-  public thumbnail(thumbnail: { urls: { https: string } }): string {
-    return (thumbnail) ? thumbnail.urls.https : '/assets/img/tbn_missing.jpg';
-  }
 }

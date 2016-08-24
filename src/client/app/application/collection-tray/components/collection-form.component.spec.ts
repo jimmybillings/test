@@ -4,11 +4,11 @@ import {
   Injectable,
   inject,
   addProviders
-} from '../../imports/test.imports';
+} from '../../../imports/test.imports';
 
 import { CollectionFormComponent } from './collection-form.component';
-import { CollectionsService } from '../services/collections.service';
-import { ActiveCollectionService } from '../services/active-collection.service';
+import { CollectionsService } from '../../../+collection/services/collections.service';
+import { ActiveCollectionService } from '../../../+collection/services/active-collection.service';
 
 export function main() {
   describe('Collection Form component', () => {
@@ -69,7 +69,7 @@ export function main() {
         collectionWithParsedTags.tags = ['cat', 'dog', 'cow'];
         expect(component.collectionsService.createCollection).toHaveBeenCalledWith(collectionWithParsedTags);
         expect(component.activeCollection.set).toHaveBeenCalledWith(mockCollection().id);
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, 100);
+        expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, 50);
         expect(component.cancelCollectionCreation).toHaveBeenCalled();
         expect(component.dialog.close).toHaveBeenCalled();
       }));

@@ -1,7 +1,7 @@
 <div class="app" #target>
   <header [ngClass]="{
     'fixed': (uiState.data | async).showFixed,
-    'bin-tray-closed': !(uiState.data | async).binTrayIsOpen,
+    'collection-tray-closed': !(uiState.data | async).binTrayIsOpen,
     'search-closed': !(uiState.data | async).searchIsOpen
     }" class="app-header">
     <app-nav
@@ -13,13 +13,12 @@
       [collection]="activeCollection.data | async"
       (onLogOut)="logout()">
     </app-nav>
-    <bin-tray
-      *ngIf="(uiState.data | async).searchBarIsActive && currentUser.loggedIn()"
+    <collection-tray
+      *ngIf="(uiState.data | async).searchBarIsActive && permission.has('ViewCollections')"
       [UiState]="uiState"
-      [collection]="activeCollection.data | async"
       [uiConfig]="uiConfig"
       >
-    </bin-tray>
+    </collection-tray>
     <wz-search-box
       *ngIf="(uiState.data | async).searchBarIsActive"
       [currentUser]="currentUser"
@@ -31,7 +30,7 @@
     </wz-search-box>
   </header>
   <div [ngClass]="{
-    'bin-tray-closed': !(uiState.data | async).binTrayIsOpen,
+    'collection-tray-closed': !(uiState.data | async).binTrayIsOpen,
     'search-closed': !(uiState.data | async).searchIsOpen
     }" class="main-content">
     <router-outlet></router-outlet>

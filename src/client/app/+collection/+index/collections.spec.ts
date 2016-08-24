@@ -52,7 +52,7 @@ export function main() {
         spyOn(component.activeCollection, 'getItems').and.callThrough();;
         component.selectActiveCollection(1);
         expect(component.activeCollection.set).toHaveBeenCalledWith(1);
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(1, 300);
+        expect(component.activeCollection.getItems).toHaveBeenCalledWith(1, 50);
       }));
 
     it('Should check if a collection id matches the current active collection',
@@ -65,19 +65,19 @@ export function main() {
         expect(component.isActiveCollection(3)).toEqual(false);
       }));
 
-    it('Should return the thumbnail in the collection',
-      inject([CollectionsComponent], (component: CollectionsComponent) => {
-        let thumbnail: any = {};
-        thumbnail.urls = {};
-        thumbnail.urls.https = 'http://customimage.com/picture.jpg';
-        expect(component.thumbnail(thumbnail)).toEqual('http://customimage.com/picture.jpg');
-      }));
+    // it('Should return the thumbnail in the collection',
+    //   inject([CollectionsComponent], (component: CollectionsComponent) => {
+    //     let thumbnail: any = {};
+    //     thumbnail.urls = {};
+    //     thumbnail.urls.https = 'http://customimage.com/picture.jpg';
+    //     expect(component.thumbnail(thumbnail)).toEqual('http://customimage.com/picture.jpg');
+    //   }));
 
-    it('Should return the missing thumbnail image if no image was found',
-      inject([CollectionsComponent], (component: CollectionsComponent) => {
-        let thumbnail: any = {};
-        expect(component.thumbnail(thumbnail.url)).toEqual('/assets/img/tbn_missing.jpg');
-      }));
+    // it('Should return the missing thumbnail image if no image was found',
+    //   inject([CollectionsComponent], (component: CollectionsComponent) => {
+    //     let thumbnail: any = {};
+    //     expect(component.thumbnail(thumbnail.url)).toEqual('/assets/img/tbn_missing.jpg');
+    //   }));
 
     it('Should delete a collection, if its the active collection it should default to another',
       inject([CollectionsComponent], (component: CollectionsComponent) => {
@@ -87,7 +87,7 @@ export function main() {
         component.deleteCollection(1);
         expect(component.collectionsService.deleteCollection).toHaveBeenCalledWith(1);
         expect(component.activeCollection.get).toHaveBeenCalled();
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(2, 200);
+        expect(component.activeCollection.getItems).toHaveBeenCalledWith(2, 50);
       }));
   });
 }
