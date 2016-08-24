@@ -65,19 +65,19 @@ export function main() {
         expect(component.isActiveCollection(3)).toEqual(false);
       }));
 
-    it('Should return the thumbnail in the collection',
-      inject([CollectionsComponent], (component: CollectionsComponent) => {
-        let thumbnail: any = {};
-        thumbnail.urls = {};
-        thumbnail.urls.https = 'http://customimage.com/picture.jpg';
-        expect(component.thumbnail(thumbnail)).toEqual('http://customimage.com/picture.jpg');
-      }));
+    // it('Should return the thumbnail in the collection',
+    //   inject([CollectionsComponent], (component: CollectionsComponent) => {
+    //     let thumbnail: any = {};
+    //     thumbnail.urls = {};
+    //     thumbnail.urls.https = 'http://customimage.com/picture.jpg';
+    //     expect(component.thumbnail(thumbnail)).toEqual('http://customimage.com/picture.jpg');
+    //   }));
 
-    it('Should return the missing thumbnail image if no image was found',
-      inject([CollectionsComponent], (component: CollectionsComponent) => {
-        let thumbnail: any = {};
-        expect(component.thumbnail(thumbnail.url)).toEqual('/assets/img/tbn_missing.jpg');
-      }));
+    // it('Should return the missing thumbnail image if no image was found',
+    //   inject([CollectionsComponent], (component: CollectionsComponent) => {
+    //     let thumbnail: any = {};
+    //     expect(component.thumbnail(thumbnail.url)).toEqual('/assets/img/tbn_missing.jpg');
+    //   }));
 
     it('Should delete a collection, if its the active collection it should default to another',
       inject([CollectionsComponent], (component: CollectionsComponent) => {

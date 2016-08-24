@@ -1,0 +1,53 @@
+<ul>
+    <li *ngFor="let collection of collections" class="collection" [ngClass]="{'focused': activeCollection === collection.id, 'md-elevation-z2': activeCollection !== collection.id }">
+        <div flex="100" layout="row" layout-xs="column">
+            <div flex-gt-sm="40" flex-gt-lg="20" flex-gt-md="30" flex="100" layout-padding layout-fill>
+                <div class="asset">
+                    <div class="asset-thb">
+                        <div class="selected" *ngIf="activeCollection === collection.id">
+                            <md-icon>star</md-icon>
+                        </div>
+                        <span class="asset-id"><span class="id">{{collection.id}}</span></span>
+                        <img src="{{thumbnail(collection.collectionThumbnail)}}" />
+                    </div>
+                </div>
+            </div>
+            <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" (click)="selectActiveCollection(collection.id)" layout-padding
+                layout-fill>
+                <h3 class="md-headline">{{collection.name}}
+                    <span class="asset-count">
+                <span class="count">{{collection.assetsCount || 0}}</span>
+                    </span>
+                </h3>
+                <div class="md-caption collection-info">
+                    <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{collection.email}}</span>
+                    <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{collection.userRole}}</span>
+                    <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ date(collection.createdOn) | date:'short' }}</span>
+                    <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
+                </div>
+                <div *ngIf="collection.tags" class="md-caption collection-tags">
+                    <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
+                    <ul class="meta-data-tags">
+                        <li class="tag md-elevation-z0" *ngFor="let tag of collection.tags">{{tag}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div flex="100" layout="row" layout-xs="column" layout-margin class="divider"></div>
+        <div flex="100" layout="row" class="actions">
+            <div flex="80">
+                <button md-icon-button title="{{ 'COLLECTION.INDEX.FOCUS_BTN_TITLE' | translate }}" (click)="selectActiveCollection(collection.id)"><md-icon>star</md-icon></button>
+                <!--anchor md-icon-button alignment is messed up once it's fixed we can use the anchor but until then keep it a button-->
+                <a md-icon-button title="{{ 'COLLECTION.INDEX.DETAIL_BTN_TITLE' | translate }}" [routerLink]="['/collection/', collection.id]">
+                    <md-icon>details</md-icon>
+                </a>
+                <button md-icon-button title="{{ 'COLLECTION.INDEX.EDIT_BTN_TITLE' | translate }}" (click)="showEdit(collection)"><md-icon>edit</md-icon></button>
+                <button md-icon-button title="{{ 'COLLECTION.INDEX.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)"><md-icon>share</md-icon></button>
+                <button md-icon-button title="{{ 'COLLECTION.INDEX.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)"><md-icon>mode_comment</md-icon></button>
+            </div>
+            <div flex="20" layout-align="end center">
+                <button class="delete" md-icon-button title="{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}" (click)="deleteCollection(collection.id)"><md-icon>cancel</md-icon></button>
+            </div>
+        </div>
+    </li>
+</ul>

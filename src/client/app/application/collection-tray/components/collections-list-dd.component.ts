@@ -39,6 +39,7 @@ export class CollectionListDdComponent {
 
   public selectFocusedCollection(collection: Collection) {
     if (this.onCollectionShowPage()) {
+      console.log('sdlfkj');
       this.navigateToCollectionShow(collection.id);
     } else {
       this.activeCollection.set(collection.id).take(1).subscribe(() => {

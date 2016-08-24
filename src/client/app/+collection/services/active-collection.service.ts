@@ -54,7 +54,6 @@ export function collectionSummary(collection: any = {}): Collection {
 export const activeCollection: Reducer<any> = (state = initState(), action: Action) => {
   switch (action.type) {
     case 'UPDATE_ACTIVE_COLLECTION':
-      console.log(Object.assign({}, state, action.payload));
       return Object.assign({}, state, action.payload);
     case 'RESET_ACTIVE_COLLECTION':
       return Object.assign({}, initState());
@@ -137,7 +136,6 @@ export class ActiveCollectionService {
       { headers: this.apiConfig.authHeaders(), body: '' })
       .map((res) => {
         this.updateActiveCollectionAssets(res.json());
-        console.log(res.json());
         return res.json();
       });
   }

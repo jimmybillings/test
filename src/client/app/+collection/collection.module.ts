@@ -9,7 +9,7 @@ import { CollectionsSearchFormComponent } from './components/collections-search-
 import { COLLECTION_ROUTES } from './collection.routes';
 import { CollectionShowResolver } from '../+collection/services/collection-show.resolver';
 import { CollectionGuard } from './services/collection-guard';
-
+import { WzCollectionItemListComponent } from '../shared/components/wz-collection-item-list/wz.collection-item-list.component';
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(COLLECTION_ROUTES)],
   declarations: [
@@ -17,7 +17,8 @@ import { CollectionGuard } from './services/collection-guard';
     CollectionShowComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
-    CollectionsSearchFormComponent],
+    CollectionsSearchFormComponent,
+    WzCollectionItemListComponent],
   exports: [CollectionsComponent, CollectionShowComponent],
   providers: [CollectionShowResolver, CollectionGuard]
 })

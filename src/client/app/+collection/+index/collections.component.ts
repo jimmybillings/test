@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Collections } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
@@ -8,7 +8,6 @@ import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { CollectionSortDdComponent } from '../../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../../+collection/components/collections-filter-dd.component';
-import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -16,7 +15,7 @@ import { Subscription } from 'rxjs/Rx';
   templateUrl: 'collections.html',
 })
 
-export class CollectionsComponent implements OnInit, OnDestroy {
+export class CollectionsComponent implements OnInit {
   public collections: Collections;
   public errorMessage: string;
   public isCollectionSearchOpen: boolean = false;
@@ -24,7 +23,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public activeSort: string;
   @ViewChild(CollectionFilterDdComponent) public filters: CollectionFilterDdComponent;
   @ViewChild(CollectionSortDdComponent) public sort: CollectionSortDdComponent;
-  private collectionStoreSubscription: Subscription;
 
 
   constructor(
@@ -38,16 +36,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.collectionsService.setSearchParams();
-    this.collectionStoreSubscription =
-      this.collectionsService.data.subscribe(collections => this.collections = collections);
-  }
-
-  ngOnDestroy() {
-    this.collectionStoreSubscription.unsubscribe();
-  }
-
-  public date(date: any): Date {
-    return new Date(date);
   }
 
   public openCollectionSearch() {
@@ -116,7 +104,4 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     return (activeSort.length > 0) ? activeSort[0].label : '';
   }
 
-  public thumbnail(thumbnail: { urls: { https: string } }): string {
-    return (thumbnail) ? thumbnail.urls.https : '/assets/img/tbn_missing.jpg';
-  }
 }
