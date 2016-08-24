@@ -152,6 +152,9 @@ collections-search-form {
   position: relative;
   overflow: hidden;
   margin-right: rem(.8);
+  .tools {
+    display: none;
+  }
   form {
     @include transition($swift-ease-out);
     display: flex;

@@ -282,8 +282,6 @@ collections-filter-dd, collections-sort-dd {
 }
 
 
-
-
 collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-form {
   z-index: 3;
   position: absolute;
@@ -297,10 +295,13 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-for
     min-height: rem(5.8);
     box-shadow: inset 0 -1px 0 0 md-color($md-foreground, divider);
   }
-  .tools button {
-    @include text-contrast(md-color($md-background, card), rgba(md-color($md-foreground, base), .75), md-color($md-background, card));
-    &:hover {
-      color: md-color($md-primary);
+  .tools {
+    display: flex;
+    button {
+      @include text-contrast(md-color($md-background, card), rgba(md-color($md-foreground, base), .75), md-color($md-background, card));
+      &:hover {
+        color: md-color($md-primary);
+      }
     }
   }
   form {
