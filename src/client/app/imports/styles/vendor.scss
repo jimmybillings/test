@@ -13,7 +13,9 @@
 /** The overlay-container is an invisible element which contains all individual overlays. */
 .md-overlay-container {
   position: absolute;
+  // Disable events from being captured on the overlay container.
   pointer-events: none;
+  // The container should be the size of the viewport.
   top: 0;
   left: 0;
   height: 100%;
@@ -24,9 +26,9 @@
 .md-overlay-pane {
   position: absolute;
   pointer-events: auto;
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  z-index: $z-index-overlay;
 }
-
 
 // these are not part of ng2material just yet, but are needed
 // hopefully these will be part of Ng2 Material, and then removed, and referenced above

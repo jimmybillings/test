@@ -24,5 +24,3 @@ import { WzCollectionItemListComponent } from '../shared/components/wz-collectio
 })
 
 export class CollectionModule { }
-
-
