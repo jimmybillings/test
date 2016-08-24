@@ -50,7 +50,7 @@ export class CollectionFormComponent implements OnInit {
     collection.tags = (collection.tags) ? collection.tags.split(/\s*,\s*/) : [];
     this.collectionsService.createCollection(collection).take(1).subscribe(collection => {
       this.activeCollection.set(collection.id).take(1).subscribe(() => {
-        this.activeCollection.getItems(collection.id, 50).take(1).subscribe();
+        this.activeCollection.getItems(collection.id, {n: 50}).take(1).subscribe();
       });
     });
     this.dialog.close();
