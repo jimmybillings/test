@@ -12,7 +12,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
   }
   &.revealed .collections-dd-menu {
     @include animation-name(dd-open);
-    @include animation-duration(100ms);
+    @include animation-duration(200ms);
     @include animation-timing-function($swift-ease-in-timing-function);
     @include animation-iteration-count(1);
     @include animation-fill-mode(backwards);
@@ -22,7 +22,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
     @include animation-duration(200ms);
     @include animation-timing-function($swift-ease-in-timing-function);
     @include animation-iteration-count(1);
-    @include animation-delay(200ms);
+    @include animation-delay(250ms);
     @include animation-fill-mode(backwards);
   }
   // .dd-menu-wrapper {
@@ -195,13 +195,6 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
 
 
 collections-filter-dd, collections-sort-dd {
-  &.revealed .collections-dd-menu {
-    @include animation-name(sort-dd-open);
-    @include animation-duration(250ms);
-    @include animation-timing-function($swift-ease-in-timing-function);
-    @include animation-iteration-count(1);
-    @include animation-fill-mode(backwards);
-  }
   .collections-dd-menu {
     min-width: rem(27.4);
     header {
@@ -231,8 +224,6 @@ collections-filter-dd, collections-sort-dd {
         md-divider {
           flex: 1 0 auto;
           width: 100%;
-          // margin-top: rem(.8);
-          // margin-bottom: rem(.8);
         }
       }
       md-list-item.active .md-list-item button {
@@ -275,7 +266,6 @@ collections-filter-dd, collections-sort-dd {
       margin-left: rem(2.2);
     }
     .tools button:hover {
-      // @include text-contrast(md-color($md-primary, 500));
       color: md-color($md-primary);
     }
   }
@@ -290,8 +280,9 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-for
   top: 0;
   right: 0;
   min-width: 100%;
-  background-color: rgba(md-color($md-background, card), 1);
+  background-color: transparent;
   & > div[layout] {
+    background-color: rgba(md-color($md-background, card), 1);
     min-height: rem(5.8);
     box-shadow: inset 0 -1px 0 0 md-color($md-foreground, divider);
   }
@@ -311,33 +302,15 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-for
     padding-left: rem(.3);
     padding-right: rem(1.6);
     button[type="submit"] {
-      cursor: pointer;
-      font-size: 0;
-      border: none;
-      padding:0;
-      height:rem(3.5);
-      width:rem(3.7);
-      background-color: transparent;
+      height:rem(3.9);
+      margin-top: rem(.2);
       border-radius: 50%;
-      margin-top: rem(.5); 
       @include transition($swift-ease-in);
       md-icon.material-icons {
         color: rgba(md-color($md-foreground, base), .7);
-        line-height: 1;
-        font-size: 24px;
-        text-shadow: none;
-        padding: 0;
-        vertical-align: text-bottom;
       }
       &:hover {
-        background-color: md-color($md-primary, 600, .2);
-      }
-      &[disabled] {
-        cursor: default;
-        background-color: md-color($md-primary, 700, .5);
-        md-icon.material-icons {
-          opacity: .6;
-        }
+        background-color: md-color($md-primary, 500, .1);
       }
       &:focus{
         outline: none;
@@ -352,12 +325,6 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-for
     }
   }
 }
-
-
-
-
-
-
 
 
 @include keyframes(sort-dd-open) {
