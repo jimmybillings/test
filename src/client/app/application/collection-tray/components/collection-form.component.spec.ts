@@ -69,7 +69,7 @@ export function main() {
         collectionWithParsedTags.tags = ['cat', 'dog', 'cow'];
         expect(component.collectionsService.createCollection).toHaveBeenCalledWith(collectionWithParsedTags);
         expect(component.activeCollection.set).toHaveBeenCalledWith(mockCollection().id);
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, 50);
+        expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, {n: 50});
         expect(component.cancelCollectionCreation).toHaveBeenCalled();
         expect(component.dialog.close).toHaveBeenCalled();
       }));

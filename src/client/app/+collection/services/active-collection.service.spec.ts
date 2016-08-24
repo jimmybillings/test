@@ -94,7 +94,7 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         spyOn(service, 'updateActiveCollectionAssets');
-        service.getItems(1, 100).subscribe(response => {
+        service.getItems(1, {i: 0, n: 100}).subscribe(response => {
           expect(connection.request.url).toBe(
             'https://crxextapi.dev.wzplatform.com/api/assets/v1/collectionSummary/assets/1?i=0&n=100');
           expect(response).toEqual(mockCollectionResponse());
