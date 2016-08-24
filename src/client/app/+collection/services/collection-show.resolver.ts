@@ -12,9 +12,12 @@ export class CollectionShowResolver {
       return this.activeCollection.getItems(route.params['id'], {n: 50, i: route.params['i']});
     } else {
       return Observable.forkJoin([
-        this.activeCollection.set(route.params['id']),
-        this.activeCollection.getItems(route.params['id'], {n: 50, i: route.params['i']})
-      ]);
+        this.activeCollection.set(route.params['id'], false),
+        this.activeCollection.getItems(route.params['id'], {n: 50, i: route.params['i']}, false)
+      ]).map((data: any) => {
+        this.activeCollection.updateActiveCollectionStore(data[0]);
+        this.activeCollection.updateActiveCollectionAssets(data[1]);
+      });
     }
   }
 }

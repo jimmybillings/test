@@ -107,11 +107,11 @@ export class ActiveCollectionService implements OnInit {
       });
   }
 
-  public set(collectionId: number): Observable<any> {
+  public set(collectionId: number, set: boolean = true): Observable<any> {
     return this.http.put(`${this.apiUrls.CollectionSetActive}/${collectionId}`,
       '', { headers: this.apiConfig.authHeaders() })
       .map((res) => {
-        this.updateActiveCollectionStore(res.json());
+        if (set) this.updateActiveCollectionStore(res.json());
         return res.json();
       });
   }
@@ -135,13 +135,13 @@ export class ActiveCollectionService implements OnInit {
       });
   }
 
-  public getItems(collectionId: number, collectionParams: any): Observable<any> {
+  public getItems(collectionId: number, collectionParams: any, set: boolean = true): Observable<any> {
     if (collectionParams['i']) collectionParams['i'] -= 1;
     this.params = Object.assign({}, this.params, collectionParams);
     return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}`,
       this.getSearchOptions(this.params))
       .map((res) => {
-        this.updateActiveCollectionAssets(res.json());
+        if (set) this.updateActiveCollectionAssets(res.json());
         return res.json();
       });
   }
