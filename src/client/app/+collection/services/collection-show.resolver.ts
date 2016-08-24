@@ -8,7 +8,7 @@ export class CollectionShowResolver {
   constructor(private activeCollection: ActiveCollectionService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    if (parseInt(this.activeCollection.state.id) === parseInt(route.params['id'])) {
+    if (Number(this.activeCollection.state.id) === Number(route.params['id'])) {
       return this.activeCollection.getItems(route.params['id'], {n: 50, i: route.params['i']});
     } else {
       return Observable.forkJoin([
