@@ -17,11 +17,12 @@
         id="{{field.name}}"
         [required]="isRequiredField(field)"
       >
+
         <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
-        <md-hint *ngIf="field.hintTextStart && !form.controls[field.name]._errors" align="start">
+        <md-hint *ngIf="field.hintTextStart && !form.controls[field.name].errors" align="start">
           {{ field.hintTextEnd | translate }}
         </md-hint>
-        <md-hint *ngIf="field.hintTextEnd && !form.controls[field.name]._errors" align="end">
+        <md-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
           {{ field.hintTextEnd | translate }}
         </md-hint>
 
@@ -44,9 +45,13 @@
             <span *ngIf="form.controls[field.name].hasError('collectionNameTaken')">
               Name is already taken
             </span>
+            <span *ngIf="form.controls[field.name].hasError('serverError')">
+              {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
+            </span>
+              
         </md-hint>
       </md-input>
-
+      
       <md-input
         *ngIf="!isRequiredField(field) && (field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')"
         class="md-block"

@@ -18,7 +18,6 @@ export class FormModel {
       newForm[field.name].push(this._getValidator(field.validation));
     });
     return newForm;
-
   }
 
   public updateForm(form: FormGroup, values: any): void {
