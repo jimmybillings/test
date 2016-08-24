@@ -21,6 +21,7 @@
     </nav>
     <button md-icon-button flex="none" title="more collection options" [md-menu-trigger-for]="moreCollectionMenu"><md-icon>more_vert</md-icon></button>
   </div>
+  <!--<button md-icon-button title="close collections" type="button" (click)="UiState.toggleBinTray()" class="close"><md-icon>close</md-icon></button>-->
 </section>
 
 <wz-dropdown #list>
@@ -28,6 +29,7 @@
     [UiState]="UiState"
     [focusedCollection]="collection | async"
     [config]="(uiConfig.get('collection') | async).config"
+    (close)="list.close()"
     layout="row" layout-align="end start" class="revealed">
   </collections-list-dd>
 </wz-dropdown>
