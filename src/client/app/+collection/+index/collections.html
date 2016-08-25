@@ -22,15 +22,14 @@
         </button>
 
         <!-- FILTER COLLECTIONS -->
-        <!--<button md-button class="is-dd filter-selector" (click)="filterCollections.show($event)">-->
-        <button md-button class="is-dd filter-selector" [md-menu-trigger-for]="filterCollections">
+        <button md-button class="is-dd filter-selector" (click)="filterCollections.show($event)">
           {{ 'COLLECTION.INDEX.FILTER_DD_MENU.HEADING' | translate }}
           <!--Filter: -->
           <span class="selected">
             {{'COLLECTION.INDEX.FILTER_DD_MENU.'+getActiveFilter() | uppercase | translate}}
           </span>
         </button>
-        <md-menu #filterCollections>
+        <wz-dropdown #filterCollections>
           <collections-filter-dd 
             [UiState]="UiState" 
             (filter)="filter($event); filterCollections.close()" 
@@ -39,17 +38,7 @@
             layout-align="end start" 
             class="revealed">
           </collections-filter-dd>
-        </md-menu>
-        <!--<wz-dropdown #filterCollections>
-          <collections-filter-dd 
-            [UiState]="UiState" 
-            (filter)="filter($event); filterCollections.close()" 
-            (close)="filterCollections.close()"
-            layout="row" 
-            layout-align="end start" 
-            class="revealed">
-          </collections-filter-dd>
-        </wz-dropdown>-->
+        </wz-dropdown>
         
         <!-- SORT COLLECTIONS -->
         <button md-button class="is-dd filter-selector" (click)="sortCollections.show($event)">
