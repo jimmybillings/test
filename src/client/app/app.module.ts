@@ -28,7 +28,6 @@ import { AppComponent } from './app.component';
     UserManagementModule,
     AdminModule,
     ApplicationModule
-
   ],
   providers: [{
     provide: APP_BASE_HREF,

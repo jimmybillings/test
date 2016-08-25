@@ -24,7 +24,7 @@ declare var portal: string;
 
 @Component({
   moduleId: module.id,
-  selector: 'app',
+  selector: 'wazee-digital-platform',
   templateUrl: 'app.html',
   providers: [WzNotificationService]
 })
