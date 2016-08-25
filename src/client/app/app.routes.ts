@@ -5,7 +5,6 @@ import { SearchComponent } from './+search/search.component';
 import { AssetComponent } from './+asset/asset.component';
 import { AdminComponent } from './+admin/admin.component';
 import { CollectionsComponent } from './+collection/+index/collections.component';
-
 import { AssetGuard } from './+asset/services/asset.guard';
 import { AssetResolver } from './+asset/services/asset.resolver';
 import { SearchResolver } from './+search/services/search.resolver';

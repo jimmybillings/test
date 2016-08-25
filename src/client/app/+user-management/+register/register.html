@@ -2,18 +2,29 @@
 <section class="login hero" *ngIf="config">
   <div layout="row" md-scroll-y="" layout-align="center start">
     <div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
-      <md-card class="wz-form-card">
-        <md-card-header>
-          <!--<div class="logo-wrapper">
-            <div class="logo"></div>
-          </div>-->
-        </md-card-header>
-        
+      <md-card class="wz-form-card" *ngIf="!successfullySubmitted">
         <md-card-title>        
           {{ 'REGISTER.TITLE' | translate }}
         </md-card-title>
+        <div class="md-overlay-container" *ngIf="(uiState.data | async).loading">
+          <md-progress-bar mode="indeterminate"></md-progress-bar>
+        </div>
         <md-card-content>
           <wz-form [items]="config.form.items" [serverErrors]= "serverErrors" submitLabel="REGISTER.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
+        </md-card-content>
+      </md-card>
+
+      <md-card class="wz-form-card success" *ngIf="successfullySubmitted">
+        <md-card-title>        
+          Thanks for registering! 
+        </md-card-title>
+        <md-card-content>
+          <div class="logo-wrapper">
+            <div class="logo"></div>
+          </div>
+          <h3>Confirm Email</h3>
+          <p><strong>Let us know you own this email. <br/>Please click the link sent to: </strong></p>
+          <h4>{{newUser.emailAddress}}</h4>
         </md-card-content>
       </md-card>
       <div md-theme="docs-dark" layout="column" layout-align="center center" layout-wrap=""><span class="md-title">{{'REGISTER.ALREADY_HAVE_ACCOUNT' | translate }} <a md-button="" [routerLink]="['/user/login']" class="md-accent">{{'REGISTER.LOGIN' | translate }}</a></span></div>

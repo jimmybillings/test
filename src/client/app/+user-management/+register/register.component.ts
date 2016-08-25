@@ -4,6 +4,7 @@ import { User } from '../services/user.data.service';
 import { Subscription } from 'rxjs/Rx';
 import { ApiConfig } from '../../shared/services/api.config';
 import { UiConfig } from '../../shared/services/ui.config';
+import { UiState } from '../../shared/services/ui.state';
 import { FormFields, ServerErrors } from '../../shared/interfaces/forms.interface';
 // import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 
@@ -21,12 +22,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
   public serverErrors: ServerErrors = null;
   public components: Object;
   public fields: FormFields[];
+  public newUser: any;
+  public successfullySubmitted: boolean = false;
   private configSubscription: Subscription;
 
   constructor(
     public user: User,
     public _ApiConfig: ApiConfig,
-    public uiConfig: UiConfig) {
+    public uiConfig: UiConfig,
+    public uiState: UiState) {
   }
 
   ngOnInit(): void {
@@ -43,14 +47,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
   */
   public onSubmit(user: any): void {
     user.siteName = this._ApiConfig.getPortal();
+    this.uiState.loading(true);
     this.user.create(user).take(1)
       .subscribe(
         (res: Response) => {
-          return res;
+          this.successfullySubmitted = true;
+          this.newUser = res;
+          this.uiState.loading(false);
         },
         (Error => {
-          console.log(Error.json());
           this.serverErrors = Error.json();
+          this.uiState.loading(false);
         })
       );
   }

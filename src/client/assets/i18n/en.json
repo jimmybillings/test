@@ -118,7 +118,11 @@
       "OPEN_BTN_LABEL": "Open selected",
       "CREATE_BTN_LABEL": "Create new",
       "CLOSE_HOVER_TITLE": "Close",
-      "PREVIOUS_HOVER_TITLE": "Previous"
+      "PREVIOUS_HOVER_TITLE": "Previous",
+      "SUBMIT_HOVER_TITLE": "Submit search",
+      "SEARCH_QUERY_TITLE": "Search for:",
+      "FILTER_BY_TITLE": "Filter on:",
+      "SORTED_ON_TITLE": "Sort by:"
     },
     "SHOW": {
       "PAGE_TITLE": "Your collections",
@@ -154,9 +158,9 @@
       "FILTER_DD_MENU": {
         "HEADING": "Filters",
         "ALL": "Show all collections",
-        "OWNER": "Show collections I own",
-        "EDITOR": "Show collections I can edit",
-        "VIEWER": "Show collections I can view",
+        "OWNER": "Collections I am the owner",
+        "EDITOR": "Collections I am an editor",
+        "VIEWER": "Collections I am a viewer",
         "RESEARCHER": "Show research collections"
       }
     }
@@ -215,6 +219,8 @@
     "MISSING_REQUIRED_FIELD":"You must supply a {{fieldName}}",
     "MIN_LENGTH_REQUIRED":"Must have a minimum of {{charLength}} characters",
     "VALID_EMAIL_REQUIRED":"Must be a valid email address",
-    "NAME_ALREADY_TAKEN":"That {{fieldName}} is already being used"
+    "NAME_ALREADY_TAKEN":"That {{fieldName}} is already being used",
+    "CheckForDuplicate": "This email already exists",
+    "CheckPassword": "Password must contain at least 1 number"
   }
 }

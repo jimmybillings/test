@@ -27,26 +27,33 @@ export class WzFormComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private formModel: FormModel) { }
 
   ngOnChanges(changes: any) {
-    if (this.serverErrors) {
-      console.log('processing server errors');
-      console.log(this.serverErrors);
-    };
-    if (changes.items && this.form) {
-      console.log('form item changes');
-      console.log(changes.items);
-
-      for (let control in this.form.controls) {
-        changes.items.currentValue.forEach((field: any) => {
-          if (control === field.name)
-            (<FormControl>this.form.controls[control]).updateValue(field.value);
-        });
-      }
-    }
+    if (changes.serverErrors && this.form) this.mergeErrors();
+    if (changes.items && this.form) this.mergeNewValues();
   }
 
   ngOnInit() {
     this.form = this.fb.group(this.formModel.create(this.items));
     this.showRequiredLegend = this.hasRequiredFields(this.items);
+  }
+
+  public mergeErrors() {
+    this.serverErrors.fieldErrors.forEach((error) => {
+      for (let control in this.form.controls) {
+        if (control === error.field) {
+          (<FormControl>this.form.controls[control]).setErrors({ serverError: error.code });
+        }
+      }
+    });
+  }
+
+  public mergeNewValues() {
+    this.items.forEach((field: any) => {
+      for (let control in this.form.controls) {
+        if (control === field.name) {
+          (<FormControl>this.form.controls[control]).updateValue(field.value);
+        }
+      }
+    });
   }
 
   public parseOptions(options: any) {
@@ -55,22 +62,6 @@ export class WzFormComponent implements OnInit, OnChanges {
 
   public radioSelect(field: any, option: any) {
     (<FormControl>this.form.controls[field]).updateValue(option);
-  }
-
-  public onSubmit() {
-    this.submitAttempt = true;
-    if (this.form.valid) {
-      this.formSubmit.emit(this.form.value);
-      // this.resetForm();
-    } else {
-      console.log('error');
-    }
-  }
-
-  public resetForm() {
-    this.submitAttempt = false;
-    this.formModel.updateForm(this.form, {});
-    this.formModel.markFormAsUntouched(this.form);
   }
 
   /**
@@ -93,5 +84,20 @@ export class WzFormComponent implements OnInit, OnChanges {
   public hasRequiredFields(formFields: FormFields[]): boolean {
     let req = formFields.filter(this.isRequiredField);
     return req.length > 0 ? true : false;
+  }
+
+  public onSubmit() {
+    this.submitAttempt = true;
+    if (this.form.valid) {
+      this.formSubmit.emit(this.form.value);
+    } else {
+      console.log('error');
+    }
+  }
+
+  public resetForm() {
+    this.submitAttempt = false;
+    this.formModel.updateForm(this.form, {});
+    this.formModel.markFormAsUntouched(this.form);
   }
 }

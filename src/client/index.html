@@ -19,7 +19,6 @@
   <meta name="theme-color" content="#ffffff">
   <script>
     var baseUrl = 'https://crxextapi.dev.wzplatform.com/';
-    //var baseUrl = 'http://localhost:8080/';
     var portal = 'core';
   </script>
 
@@ -29,7 +28,7 @@
 </head>
 <body>
 
-  <app></app>
+  <wazee-digital-platform></wazze-digital-platform>
 
   <script>
   // Fixes undefined module function in SystemJS bundle
@@ -55,7 +54,7 @@
 
   <% if (ENV === 'dev') { %>
   <script>
-  System.import('<%= BOOTSTRAP_MODULE %>');
+    System.import('<%= BOOTSTRAP_MODULE %>');
   </script>
   <% } %>
   <script src="//content.jwplatform.com/libraries/Id8EIlN2.js"></script>

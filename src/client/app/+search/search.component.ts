@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy} from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { AssetData } from './services/asset.data.service';
 import { UiConfig} from '../shared/services/ui.config';
@@ -20,6 +20,7 @@ import { UserPreferenceService } from '../shared/services/user-preference.servic
   moduleId: module.id,
   selector: 'search',
   templateUrl: 'search.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class SearchComponent implements OnInit, OnDestroy {

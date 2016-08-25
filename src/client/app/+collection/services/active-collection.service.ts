@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
-import { Http } from '@angular/http';
+import { Http, URLSearchParams, RequestOptions } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Observable} from 'rxjs/Rx';
 import { Store, Reducer, Action} from '@ngrx/store';
@@ -71,8 +71,9 @@ export const activeCollection: Reducer<any> = (state = initState(), action: Acti
 };
 
 @Injectable()
-export class ActiveCollectionService {
+export class ActiveCollectionService implements OnInit {
   public data: Observable<any>;
+  public params: any;
   public apiUrls: {
     CollectionBaseUrl: string,
     CollectionItemsBaseUrl: string,
@@ -93,6 +94,10 @@ export class ActiveCollectionService {
     };
   }
 
+  ngOnInit(): void {
+    this.setSearchParams();
+  }
+
   public get(): Observable<any> {
     return this.http.get(`${this.apiUrls.CollectionActive}/focused`,
       { headers: this.apiConfig.authHeaders(), body: '' })
@@ -102,12 +107,11 @@ export class ActiveCollectionService {
       });
   }
 
-  public set(collectionId: number): Observable<any> {
+  public set(collectionId: number, set: boolean = true): Observable<any> {
     return this.http.put(`${this.apiUrls.CollectionSetActive}/${collectionId}`,
       '', { headers: this.apiConfig.authHeaders() })
       .map((res) => {
-        console.log(res.json());
-        this.updateActiveCollectionStore(res.json());
+        if (set) this.updateActiveCollectionStore(res.json());
         return res.json();
       });
   }
@@ -131,13 +135,22 @@ export class ActiveCollectionService {
       });
   }
 
-  public getItems(collectionId: number, numberPerPg: number, pgIndex: number = 1): Observable<any> {
-    return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}?i=${pgIndex - 1}&n=${numberPerPg}`,
-      { headers: this.apiConfig.authHeaders(), body: '' })
+  public getItems(collectionId: number, collectionParams: any, set: boolean = true): Observable<any> {
+    if (collectionParams['i']) collectionParams['i'] -= 1;
+    this.params = Object.assign({}, this.params, collectionParams);
+    return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}`,
+      this.getSearchOptions(this.params))
       .map((res) => {
-        this.updateActiveCollectionAssets(res.json());
+        if (set) this.updateActiveCollectionAssets(res.json());
         return res.json();
       });
+  }
+
+  public getSearchOptions(params: any): RequestOptions {
+    const search: URLSearchParams = new URLSearchParams();
+    for (var param in params) search.set(param, params[param]);
+    let options = { headers: this.apiConfig.authHeaders(), search: search, body: '' };
+    return new RequestOptions(options);
   }
 
   public get state(): any {
@@ -179,6 +192,10 @@ export class ActiveCollectionService {
         }
       }
     });
+  }
+
+  public setSearchParams() {
+    this.params = {'s': '', 'd': '', 'i': '0', 'n': '50'};
   }
 
   public mergeCollectionData(item: any, search: any) {

@@ -84,8 +84,8 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
     search.set('text', query);
     search.set('prefix', 'true');
     search.set('maxTerms', '10');
-    let headers = (this.currentUser.loggedIn()) ? this.apiConfig.authHeaders() : void null;
-    let options = (this.currentUser.loggedIn()) ? { headers, search, body: '' } : { search, body: '' };
+    let headers = (this.currentUser.loggedIn()) ? this.apiConfig.authHeaders() : this.apiConfig.headers();
+    let options = { headers, search, body: '' };
     return new RequestOptions(options);
   }
 }

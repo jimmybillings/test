@@ -57,8 +57,8 @@ md-card {
 
 // testing error display in form.
 // currently using md-hint this may change with ng2 material recommendation
-md-input.show-errors[ng-reflect-required='true'],
-md-input.ng-touched.ng-dirty.ng-invalid[ng-reflect-required='true'] {
+md-input.show-errors.ng-invalid,
+md-input.ng-touched.ng-dirty.ng-invalid {
   .md-input-placeholder {
     color: md-color($md-warn, 600);
     &.md-float.md-focused .md-placeholder-required {

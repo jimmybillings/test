@@ -1,6 +1,5 @@
 collections .collection-head {
   background-color: rgba(md-color($md-background, card), .4);
-  // @include md-elevation(1);
   padding-left: rem(.8);
   padding-top: rem(.5);
   padding-bottom: rem(.5);
@@ -9,11 +8,10 @@ collections .collection-head {
     margin: .5em 0 .1em 0;
     opacity: .8;
   }
-  header div[flex="100"]:last-child button[md-icon-button] {
+  header div[flex="100"] > button[md-icon-button] {
     margin-right: rem(1.6);
   }
 }
-
 .collections-list {
   ul {
     margin: 0;
@@ -151,36 +149,37 @@ collections-search-form {
   flex: 1 1 auto;
   position: relative;
   overflow: hidden;
-  margin-right: rem(.8);
   .tools {
     display: none;
   }
   form {
     @include transition($swift-ease-out);
     display: flex;
+    margin-right: rem(.2);
   }
-  &.revealed form {
+  &.revealed > div {
     @include animation-name(slide);
-    @include animation-duration(420ms);
+    @include animation-duration(400ms);
     @include animation-timing-function($swift-ease-in-timing-function);
     @include animation-iteration-count(1);
-    @include animation-delay(25ms);
+    // @include animation-delay(1ms);
     @include animation-fill-mode(backwards);
   }
   input {
     font-size: 1.15em;
-    width: calc(100% - 34px);
+    width: 100%;
     padding: 0 0 0 3%;
-    max-height: rem(3.4);
-    min-height: rem(3.4);
+    max-height: rem(3.8);
+    min-height: rem(3.8);
     border: 1px solid rgba(md-color($md-foreground, base),.2);
+    color: md-color($md-foreground, secondary-text);
+    background-color:  rgba(md-color($md-background, app-bar), .9);
+    border-radius: 0;
+    margin-right:rem(-4.0);
+    @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
     @include placeholder {
       color: md-color($md-foreground, hint-text);
     }
-    color: md-color($md-foreground, secondary-text);
-    background-color:  rgba(md-color($md-background, app-bar), .9);
-    @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
-    border-radius: 0;
     &:focus {
       outline: none;
       background-color: lighten(md-color($md-background, app-bar), 40%);
@@ -188,30 +187,7 @@ collections-search-form {
   }
   button[type="submit"] {
     cursor: pointer;
-    font-size: 0;
-    border: none;
-    padding:0;
-    height:rem(3.6);
-    width:rem(3.6);
-    background-color: rgba(md-color($md-foreground, hint-text), .3);
-    @include transition($swift-ease-in);
-    md-icon.material-icons {
-      font-size: rem(2.6);
-      width: rem(2.6);
-      height: rem(2.6);
-      color: $white-87-opacity;
-      text-shadow: md-color($md-grey, 900, .2) 0 1px 2px;
-    }
-    &:hover {
-      background-color: md-color($md-accent, 700, 1);
-    }
-    &[disabled] {
-      cursor: default;
-      background-color: md-color($md-accent, 800, .95);
-      md-icon.material-icons {
-        opacity: .6;
-       }
-    }
+    border-radius: 0;
     &:focus{
       outline: none;
     }
@@ -222,7 +198,7 @@ collections-search-form {
 
 @include keyframes(slide) {
   0% {
-    margin-left:250%;
+    margin-left:125%;
   }
   100% {
     margin-left:0%;
