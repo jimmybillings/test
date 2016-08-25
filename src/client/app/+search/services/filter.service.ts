@@ -121,8 +121,9 @@ export class FilterService {
       let headers = this.apiConfig.authHeaders();
       return new RequestOptions({ headers, search, body: '' });
     } else {
+      let headers = this.apiConfig.headers();
       search.set('siteName', this.apiConfig.getPortal());
-      return new RequestOptions({ search, body: '' });
+      return new RequestOptions({ search, body: '', headers });
     }
   }
 
