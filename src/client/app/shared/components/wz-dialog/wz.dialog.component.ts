@@ -9,7 +9,8 @@ import {
   state,
   style,
   transition,
-  animate} from '@angular/core';
+  animate,
+  ChangeDetectionStrategy} from '@angular/core';
 import {Overlay} from '@angular2-material/core/overlay/overlay';
 import {OverlayState} from '@angular2-material/core/overlay/overlay-state';
 import {OverlayRef} from '@angular2-material/core/overlay/overlay-ref';
@@ -39,6 +40,8 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
       ])
     ])
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+
   template: `
     <template wzDialogPortal>
       <div [@slideInOut]="animationState" class="wz-dialog">
