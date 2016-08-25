@@ -5,8 +5,7 @@ section.login.hero {
   margin: 0 auto;
   @include text-contrast(md-color($md-grey, 900));
   @include background-image(
-    url("../assets/img/bk/tex/bktx_dgl_lines_light.png"),
-    linear-gradient(md-color($md-grey, 900, .7), md-color($md-grey, 900, .94)),
+    linear-gradient(md-color($md-grey, 900, .75), md-color($md-grey, 900, .5)),
     url($bk-img-user-management)
   );
   background-position: 0 0, 0 0, center center;
@@ -19,6 +18,7 @@ section.login.hero {
   }
 }
 md-card.wz-form-card {
+  @include md-elevation(0);
   padding: 36px 50px 26px 50px;
   color: md-color($md-foreground, secondary-text);
   margin: rem(.8);
