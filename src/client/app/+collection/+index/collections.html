@@ -23,7 +23,8 @@
 
         <!-- FILTER COLLECTIONS -->
         <button md-button class="is-dd filter-selector" (click)="filterCollections.show($event)">
-          Filter: 
+          {{ 'COLLECTION.INDEX.FILTER_DD_MENU.HEADING' | translate }}
+          <!--Filter: -->
           <span class="selected">
             {{'COLLECTION.INDEX.FILTER_DD_MENU.'+getActiveFilter() | uppercase | translate}}
           </span>
