@@ -119,7 +119,10 @@
       "CREATE_BTN_LABEL": "Create new",
       "CLOSE_HOVER_TITLE": "Close",
       "PREVIOUS_HOVER_TITLE": "Previous",
-      "SUBMIT_HOVER_TITLE": "Submit search"
+      "SUBMIT_HOVER_TITLE": "Submit search",
+      "SEARCH_QUERY_TITLE": "Search for:",
+      "FILTER_BY_TITLE": "Filter on:",
+      "SORTED_ON_TITLE": "Sort by:"
     },
     "SHOW": {
       "PAGE_TITLE": "Your collections",
@@ -155,9 +158,9 @@
       "FILTER_DD_MENU": {
         "HEADING": "Filters",
         "ALL": "Show all collections",
-        "OWNER": "Show collections I own",
-        "EDITOR": "Show collections I can edit",
-        "VIEWER": "Show collections I can view",
+        "OWNER": "Collections I am the owner",
+        "EDITOR": "Collections I am an editor",
+        "VIEWER": "Collections I am a viewer",
         "RESEARCHER": "Show research collections"
       }
     }
