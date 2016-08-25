@@ -56,7 +56,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.uiState.loading(false);
         },
         (Error => {
-          console.log(Error.json());
           this.serverErrors = Error.json();
           this.uiState.loading(false);
         })

@@ -7,7 +7,7 @@ import {
 
 import { RegisterComponent } from './register.component';
 import { User } from '../services/user.data.service';
-const user:any = { emailAddress: "jamesbonline@yahoo.com", firstName: "james", lastName: "billigns", password: "3978f324e14ac256b2994b754586e05f"};
+const user:any = { emailAddress: 'jamesbonline@yahoo.com', firstName: 'james', lastName: 'billigns', password: '3978f324e14ac256b2994b754586e05f'};
 export function main() {
   describe('Register Component', () => {
     
