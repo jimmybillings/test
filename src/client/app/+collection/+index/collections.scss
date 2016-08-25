@@ -1,6 +1,5 @@
 collections .collection-head {
   background-color: rgba(md-color($md-background, card), .4);
-  // @include md-elevation(1);
   padding-left: rem(.8);
   padding-top: rem(.5);
   padding-bottom: rem(.5);
@@ -13,7 +12,6 @@ collections .collection-head {
     margin-right: rem(1.6);
   }
 }
-
 .collections-list {
   ul {
     margin: 0;
@@ -190,30 +188,6 @@ collections-search-form {
   button[type="submit"] {
     cursor: pointer;
     border-radius: 0;
-    // font-size: 0;
-    // border: none;
-    // padding:0;
-    // height:rem(3.8);
-    // width:rem(3.8);
-    // background-color: rgba(md-color($md-foreground, hint-text), .3);
-    // @include transition($swift-ease-in);
-    // md-icon.material-icons {
-    //   font-size: rem(2.6);
-    //   width: rem(2.6);
-    //   height: rem(2.6);
-    //   color: $white-87-opacity;
-    //   text-shadow: md-color($md-grey, 900, .2) 0 1px 2px;
-    // }
-    // &:hover {
-    //   background-color: md-color($md-primary, 500, .5);
-    // }
-    // &[disabled] {
-    //   cursor: default;
-    //   background-color: md-color($md-accent, 800, .95);
-    //   md-icon.material-icons {
-    //     opacity: .6;
-    //    }
-    // }
     &:focus{
       outline: none;
     }

@@ -33,9 +33,18 @@
       </div>
     </header>
     
-    <h6 class="md-caption query-details">
-      <span *ngIf="currentSearchQuery">{{currentSearchQuery}},</span> {{'COLLECTION.INDEX.FILTER_DD_MENU.' + currentFilter | uppercase | translate}}, {{'COLLECTION.INDEX.SORT_DD_MENU.' + currentSort | uppercase | translate }}
-    </h6>
+    <div class="md-caption query-details" layout="column">
+      <span *ngIf="currentSearchQuery" flex="100" class="search">
+        <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{currentSearchQuery}}
+      </span>
+      <span *ngIf="currentFilter !== 'ALL'" flex="100" class="filter">
+        <strong>{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.FILTER_DD_MENU.' + currentFilter | uppercase | translate}}
+      </span> 
+      <span flex="100" class="sort">
+        <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.SORT_DD_MENU.' + currentSort | uppercase | translate }}
+      </span> 
+    </div>
+
     <md-list dense>
       <md-list-item *ngFor="let collection of (collections | async).items" [ngClass]="{active: focusedCollection.id === collection.id}">
         <button (click)="selectFocusedCollection(collection);closeCollectionsList()">
