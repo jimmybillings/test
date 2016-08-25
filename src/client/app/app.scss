@@ -36,6 +36,7 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 // ROUTE COMPONENTS
 @import '+home/home';
 @import '+user-management/+login/login';
+@import '+user-management/+register/register';
 @import '+collection/+index/collections';
 @import '+collection/+show/collection-show';
 @import '+asset/components/asset-detail';
