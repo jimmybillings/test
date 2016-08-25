@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy} from '@angular/core';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { UiConfig} from '../shared/services/ui.config';
 import { SearchContext} from '../shared/services/search-context.service';
@@ -10,6 +10,7 @@ import { FilterService } from '../+search/services/filter.service';
   moduleId: module.id,
   selector: 'home',
   templateUrl: 'home.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class HomeComponent implements OnInit, OnDestroy {

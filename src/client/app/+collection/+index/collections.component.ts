@@ -38,12 +38,8 @@ export class CollectionsComponent implements OnInit {
     this.collectionsService.setSearchParams();
   }
 
-  public openCollectionSearch() {
-    this.isCollectionSearchOpen = true;
-  }
-
-  public closeCollectionSearch() {
-    this.isCollectionSearchOpen = false;
+  public toggleCollectionSearch() {
+    this.isCollectionSearchOpen = !this.isCollectionSearchOpen;
   }
 
   public selectActiveCollection(id: number): void {

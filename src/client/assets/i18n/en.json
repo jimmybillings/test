@@ -219,6 +219,8 @@
     "MISSING_REQUIRED_FIELD":"You must supply a {{fieldName}}",
     "MIN_LENGTH_REQUIRED":"Must have a minimum of {{charLength}} characters",
     "VALID_EMAIL_REQUIRED":"Must be a valid email address",
-    "NAME_ALREADY_TAKEN":"That {{fieldName}} is already being used"
+    "NAME_ALREADY_TAKEN":"That {{fieldName}} is already being used",
+    "CheckForDuplicate": "This email already exists",
+    "CheckPassword": "Password must contain at least 1 number"
   }
 }
