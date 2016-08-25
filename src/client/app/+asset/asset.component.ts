@@ -39,6 +39,16 @@ export class AssetComponent {
       this.activeCollection.getItems(params.collection.id, 50).take(1).subscribe();
     });
   }
+  public downloadComp(params:any): void {
+      let v = this.assetService.downloadComp(params.assetId,params.compType);
+      v.subscribe((res) => {
+          if (res.url && res.url !== '') {
+                window.location = res.url;
+          }else {
+            alert('No such comp exists! !!!!!!!!!!!!!!!!!!!!!!This notification is temporary and will be redesigned!!!!!!!!!!!!!!!!!!!');
+          }
+      });
+  }
 
   public removeFromCollection(params: any): void {
     let collection: any = params.collection;
