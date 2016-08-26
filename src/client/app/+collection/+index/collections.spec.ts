@@ -48,11 +48,12 @@ export function main() {
 
     it('Should set a new active collection',
       inject([CollectionsComponent], (component: CollectionsComponent) => {
+        component.pageSize = '50';
         spyOn(component.activeCollection, 'set').and.callThrough();;
         spyOn(component.activeCollection, 'getItems').and.callThrough();;
         component.selectActiveCollection(1);
         expect(component.activeCollection.set).toHaveBeenCalledWith(1);
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(1, {n: 50});
+        expect(component.activeCollection.getItems).toHaveBeenCalledWith(1, {n: '50'});
       }));
 
     it('Should check if a collection id matches the current active collection',
@@ -81,13 +82,14 @@ export function main() {
 
     it('Should delete a collection, if its the active collection it should default to another',
       inject([CollectionsComponent], (component: CollectionsComponent) => {
+        component.pageSize = '50';
         spyOn(component.collectionsService, 'deleteCollection').and.callThrough();
         spyOn(component.activeCollection, 'get').and.callThrough();
         spyOn(component.activeCollection, 'getItems').and.callThrough();
         component.deleteCollection(1);
         expect(component.collectionsService.deleteCollection).toHaveBeenCalledWith(1);
         expect(component.activeCollection.get).toHaveBeenCalled();
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(2, {n: 50});
+        expect(component.activeCollection.getItems).toHaveBeenCalledWith(2, {n: '50'});
       }));
   });
 }

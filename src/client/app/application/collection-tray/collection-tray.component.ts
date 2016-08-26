@@ -18,17 +18,21 @@ export class CollectionTrayComponent implements OnInit {
   @Input() UiState: any;
   @Input() uiConfig: any;
   public collection: Observable<Collection>;
+  public pageSize: string;
 
   constructor(public router: Router, public activeCollection: ActiveCollectionService, public collectionsService: CollectionsService) {
     this.collection = activeCollection.data;
   }
 
   ngOnInit() {
-    if (this.activeCollection.state.id === null) {
-      this.activeCollection.get().take(1).subscribe((collection) => {
-        this.collectionsService.loadCollections().take(1).subscribe();
-        this.activeCollection.getItems(collection.id, {i: 1, n: 50}).take(1).subscribe();
-      });
-    }
+    this.uiConfig.get('home').take(1).subscribe((config: any) => {
+      this.pageSize = config.config.pageSize.value;
+      if (this.activeCollection.state.id === null) {
+        this.activeCollection.get().take(1).subscribe((collection) => {
+          this.collectionsService.loadCollections().take(1).subscribe();
+          this.activeCollection.getItems(collection.id, {i: 1, n: this.pageSize}).take(1).subscribe();
+        });
+      }
+    });
   }
 }

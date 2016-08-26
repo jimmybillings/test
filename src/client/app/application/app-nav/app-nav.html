@@ -27,4 +27,5 @@
 
     <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id === null" md-icon-button title="{{'HEADER.NEW_COLLECTION_LABEL' | translate}}" (click)="showNewCollection()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
+    <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async)" md-icon-button title="Cart" [routerLink]="['/cart']"><md-icon>shopping_cart</md-icon></button>
 </md-toolbar>
