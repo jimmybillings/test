@@ -125,7 +125,6 @@
       "SORTED_ON_TITLE": "Sort by:"
     },
     "SHOW": {
-      "PAGE_TITLE": "Your collections",
       "EDIT_BTN_TITLE": "Edit collection",
       "HISTORY_BTN_TITLE": "Show collection history",
       "SHARE_BTN_TITLE": "Share collection",
@@ -138,6 +137,7 @@
       "TAGS_LABEL": "Tags:"
     },
     "INDEX": {
+      "PAGE_TITLE": "Your collections",
       "FOCUS_BTN_TITLE": "Focus on this collection",
       "DETAIL_BTN_TITLE": "Show collection details",
       "EDIT_BTN_TITLE": "Edit collection",
@@ -160,7 +160,7 @@
         "ALL": "Show all collections",
         "OWNER": "Collections I am the owner",
         "EDITOR": "Collections I am an editor",
-        "VIEWER": "Collections I am a viewer",
+        "VIEWER": "Read only collections",
         "RESEARCHER": "Show research collections"
       }
     }

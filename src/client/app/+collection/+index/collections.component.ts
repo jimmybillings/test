@@ -21,8 +21,11 @@ export class CollectionsComponent implements OnInit {
   public collectionSearchIsShowing: boolean = false;
   public collectionFilterIsShowing: boolean = false;
   public collectionSortIsShowing: boolean = false;
-  public activeFilter: string;
-  public activeSort: string;
+  // public activeFilter: string;
+  // public activeSort: string;
+  public currentFilter: string;
+  public currentSort: string;
+  public currentSearchQuery: string;
   @ViewChild(CollectionFilterDdComponent) public filters: CollectionFilterDdComponent;
   @ViewChild(CollectionSortDdComponent) public sort: CollectionSortDdComponent;
 
@@ -34,6 +37,9 @@ export class CollectionsComponent implements OnInit {
     public currentUser: CurrentUser,
     public error: Error,
     public uiConfig: UiConfig) {
+    this.currentFilter = 'ALL';
+    this.currentSort = 'DATE_MOD_NEWEST';
+    this.currentSearchQuery = '';
   }
 
   ngOnInit() {
@@ -43,11 +49,9 @@ export class CollectionsComponent implements OnInit {
   public toggleCollectionSearch() {
     this.collectionSearchIsShowing = !this.collectionSearchIsShowing;
   }
-
   public showCollectionFilter() {
     this.collectionFilterIsShowing = !this.collectionFilterIsShowing;
   }
-
   public showCollectionSort() {
     this.collectionSortIsShowing = !this.collectionSortIsShowing;
   }
@@ -81,19 +85,20 @@ export class CollectionsComponent implements OnInit {
   }
 
   public filter(filter: any) {
+    this.currentFilter = filter.label;
     this.collectionsService.loadCollections(filter.access).take(1).subscribe();
     this.showCollectionFilter();
-
   }
 
   public search(query: any) {
     this.collectionsService.loadCollections(query).take(1).subscribe();
+    this.currentSearchQuery = query.q;
   }
 
   public sortBy(sort: any) {
+    this.currentSort = sort.label;
     this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
     this.showCollectionSort();
-
   }
 
   public isActiveCollection(collectionId: number): boolean {
