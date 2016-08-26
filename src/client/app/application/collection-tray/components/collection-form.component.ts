@@ -4,6 +4,7 @@ import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { Asset } from '../../../shared/interfaces/asset.interface';
 
 import { WzFormComponent } from '../../../shared/components/wz-form/wz.form.component';
+import { UiConfig } from '../../../shared/services/ui.config';
 import { CollectionsService } from '../../../+collection/services/collections.service';
 import { ActiveCollectionService } from '../../../+collection/services/active-collection.service';
 import { Observable, Subscription } from 'rxjs/Rx';
@@ -34,15 +35,20 @@ export class CollectionFormComponent implements OnInit {
   private areSuggestionsVisible: boolean = false;
   private selectedSuggestion: String;
   private activeSuggestion: string;
+  private pageSize: string;
   @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
 
   constructor(
     public collectionsService: CollectionsService,
-    public activeCollection: ActiveCollectionService) {
+    public activeCollection: ActiveCollectionService,
+    public uiConfig: UiConfig) {
     this.collections = this.collectionsService.data;
   }
 
   ngOnInit() {
+    this.uiConfig.get('home').take(1).subscribe(config => {
+      this.pageSize = config.config.pageSize.value;
+    });
     this.formItems = this.config.form.items;
   }
 
@@ -50,7 +56,7 @@ export class CollectionFormComponent implements OnInit {
     collection.tags = (collection.tags) ? collection.tags.split(/\s*,\s*/) : [];
     this.collectionsService.createCollection(collection).take(1).subscribe(collection => {
       this.activeCollection.set(collection.id).take(1).subscribe(() => {
-        this.activeCollection.getItems(collection.id, {n: 50}).take(1).subscribe();
+        this.activeCollection.getItems(collection.id, {n: this.pageSize}).take(1).subscribe();
       });
     });
     this.dialog.close();

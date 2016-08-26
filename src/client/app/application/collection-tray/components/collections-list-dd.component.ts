@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import { Router } from '@angular/router';
 import { Collection, Collections } from '../../../shared/interfaces/collection.interface';
 import { CollectionsService} from '../../../+collection/services/collections.service';
+import { UiConfig } from '../../../shared/services/ui.config';
 import { ActiveCollectionService} from '../../../+collection/services/active-collection.service';
 import { Observable} from 'rxjs/Rx';
 
@@ -15,7 +16,7 @@ import { Observable} from 'rxjs/Rx';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CollectionListDdComponent {
+export class CollectionListDdComponent implements OnInit {
   @Input() focusedCollection: Collection;
   @Input() UiState: any;
   @Input() config: any;
@@ -23,6 +24,7 @@ export class CollectionListDdComponent {
   public collections: Observable<Collections>;
   public currentFilter: string;
   public currentSort: string;
+  public pageSize: string;
   public currentSearchQuery: string;
   public collectionFilterIsShowing: boolean = false;
   public collectionSortIsShowing: boolean = false;
@@ -31,11 +33,18 @@ export class CollectionListDdComponent {
   constructor(
     public router: Router,
     public collectionsService: CollectionsService,
-    public activeCollection: ActiveCollectionService) {
+    public activeCollection: ActiveCollectionService,
+    public uiConfig: UiConfig) {
     this.currentFilter = 'ALL';
     this.currentSort = 'DATE_MOD_NEWEST';
     this.currentSearchQuery = '';
     this.collections = this.collectionsService.data;
+  }
+
+  ngOnInit(): void {
+    this.uiConfig.get('home').take(1).subscribe(config => {
+      this.pageSize = config.config.pageSize.value;
+    });
   }
 
   public closeCollectionsList(): void {
@@ -52,14 +61,14 @@ export class CollectionListDdComponent {
       this.navigateToCollectionShow(collection.id);
     } else {
       this.activeCollection.set(collection.id).take(1).subscribe(() => {
-        this.activeCollection.getItems(collection.id, {i: 1, n: 50}).take(1).subscribe();
+        this.activeCollection.getItems(collection.id, {i: 1, n: this.pageSize}).take(1).subscribe();
       });
     }
   }
 
   public navigateToCollectionShow(assetId: number): void {
     this.UiState.closeCollectionsList();
-    this.router.navigate(['/collection/', assetId, {i: 1, n: 50}]);
+    this.router.navigate(['/collection/', assetId, {i: 1, n: this.pageSize}]);
   }
 
   public navigateToCollectionsIndex() {
