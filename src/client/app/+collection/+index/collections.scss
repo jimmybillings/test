@@ -1,17 +1,97 @@
 collections .collection-head {
-  background-color: rgba(md-color($md-background, card), .4);
+  // background-color: rgba(md-color($md-background, app-bar), 1);
+  // background-color: rgba(md-color($md-background, card), .3);
+  color: md-color($md-primary, 600);
   padding-left: rem(.8);
-  padding-top: rem(.5);
-  padding-bottom: rem(.5);
   padding-right: rem(.8);
-  header .md-display-1 {
-    margin: .5em 0 .1em 0;
-    opacity: .8;
+  box-shadow: inset 0 -1px 0 0 md-color($md-foreground, divider), 0 1px 0 0 rgba(md-color($md-background, card), .6);
+  header {
+    padding-top: rem(1.4);
+    padding-bottom: rem(1.4);
+    position: relative;
+    .md-display-1 {
+      margin: 0;
+      // opacity: .7;
+      width: calc(100% - 120px);
+      font-size: rem(2.6);
+    }
+  } 
+  .tools {
+    text-align: right;
+    white-space: nowrap;
   }
   header div[flex="100"] > button[md-icon-button] {
     margin-right: rem(1.6);
   }
+  collections-filter-dd.revealed {
+    padding-right: rem(4.0);
+  }
 }
+
+collections .query-details {
+  padding-top: rem(.4);
+  padding-left: rem(.8);
+  padding-left: rem(.8);
+  font-size: .77em;
+  // background-color: rgba(md-color($md-primary, 500), .12); 
+  // color: md-color($md-foreground, secondary-text);
+  color: md-color($md-primary, 700);
+  span {
+    // margin-left: rem(1.3);
+    // margin-right: rem(1.3);
+    // margin-top: rem(.2);
+    display: inline-block;
+    position: relative;
+    padding-left: rem(2.5);
+    padding-right: rem(3.0);
+    line-height: rem(2.2);
+    &:before {
+      content: " ";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: rem(2);
+      width: rem(2);
+      // border-radius: 50%;
+      // background-color: rgba(md-color($md-primary, 500), .4); 
+    }
+    &:after {
+      // @include text-contrast(md-color($md-primary, 500));
+      content: "\e152";
+      font-family: 'Material Icons';
+      font-size: rem(1.8);
+      line-height: rem(2.2);
+      height: rem(2.2);
+      width: rem(2.2);
+      position: absolute;
+      left: 0;
+      top: 48%;
+      @include transform(translateY(-50%));
+      text-align: center;
+    }
+    &.search:after {
+      content: "\e8b6";
+    }
+    &.sort:after {
+      content: "\e164";
+    }
+    // &:first-child {
+    //   margin-top: rem(1.2);
+    // }
+    // &:last-child {
+    //   margin-bottom: rem(1.2);
+    // }
+    strong {
+      display: inline-block;
+      padding-right: rem(.5);
+    }
+  }
+}
+
+
+
+
+
 .collections-list {
   ul {
     margin: 0;
@@ -65,8 +145,8 @@ collections .collection-head {
       box-shadow: inset 0 1px 0 0 md-color($md-grey, 800, .14);
     }
     .collection-tags {
-      margin-top: rem(2.2);
-      margin-bottom: rem(1.8);
+      margin-top: rem(.5);
+      margin-bottom: rem(.5);
     }
     ul.meta-data-tags {
         display: inline-block;
@@ -131,23 +211,23 @@ collections .collection-head {
   }
 }
 
-.is-dd.filter-selector[md-button] {
-  @include md-button-reset;
-  .selected {
-    text-transform: initial;
-    font-weight: normal;
-    opacity: .8;
-  }
-}
+// .is-dd.filter-selector[md-button] {
+//   @include md-button-reset;
+//   .selected {
+//     text-transform: initial;
+//     font-weight: normal;
+//     opacity: .8;
+//   }
+// }
 
-
-
-
-// silde out collection search form
+// slide out collection search form
 collections-search-form {
   @include transition($swift-ease-out);
   flex: 1 1 auto;
-  position: relative;
+  position: absolute;
+  right: rem(13);
+  min-width: 375px;
+  z-index: 2;
   overflow: hidden;
   .tools {
     display: none;
@@ -155,7 +235,6 @@ collections-search-form {
   form {
     @include transition($swift-ease-out);
     display: flex;
-    margin-right: rem(.2);
   }
   &.revealed > div {
     @include animation-name(slide);
@@ -175,7 +254,7 @@ collections-search-form {
     color: md-color($md-foreground, secondary-text);
     background-color:  rgba(md-color($md-background, app-bar), .9);
     border-radius: 0;
-    margin-right:rem(-4.0);
+    margin-right:rem(-3.8);
     @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
     @include placeholder {
       color: md-color($md-foreground, hint-text);

@@ -37,4 +37,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.filter.set(this.filter.clear());
     this.searchContext.new({ q: query, i: 1, n: this.config.pageSize.value });
   }
+
+  public json(string: string): any {
+    return JSON.parse(string);
+  }
 }

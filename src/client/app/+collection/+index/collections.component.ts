@@ -18,9 +18,13 @@ import { CollectionFilterDdComponent } from '../../+collection/components/collec
 export class CollectionsComponent implements OnInit {
   public collections: Collections;
   public errorMessage: string;
-  public isCollectionSearchOpen: boolean = false;
-  public activeFilter: string;
-  public activeSort: string;
+  public collectionSearchIsShowing: boolean = false;
+  public collectionFilterIsShowing: boolean = false;
+  public collectionSortIsShowing: boolean = false;
+  public currentFilter: string;
+  public currentSort: string;
+  public currentSearchQuery: string;
+  public pageSize: string;
   @ViewChild(CollectionFilterDdComponent) public filters: CollectionFilterDdComponent;
   @ViewChild(CollectionSortDdComponent) public sort: CollectionSortDdComponent;
 
@@ -32,19 +36,31 @@ export class CollectionsComponent implements OnInit {
     public currentUser: CurrentUser,
     public error: Error,
     public uiConfig: UiConfig) {
+    this.currentFilter = 'ALL';
+    this.currentSort = 'DATE_MOD_NEWEST';
+    this.currentSearchQuery = '';
   }
 
   ngOnInit() {
+    this.uiConfig.get('home').take(1).subscribe(config => {
+      this.pageSize = config.config.pageSize.value;
+    });
     this.collectionsService.setSearchParams();
   }
 
   public toggleCollectionSearch() {
-    this.isCollectionSearchOpen = !this.isCollectionSearchOpen;
+    this.collectionSearchIsShowing = !this.collectionSearchIsShowing;
+  }
+  public showCollectionFilter() {
+    this.collectionFilterIsShowing = !this.collectionFilterIsShowing;
+  }
+  public showCollectionSort() {
+    this.collectionSortIsShowing = !this.collectionSortIsShowing;
   }
 
   public selectActiveCollection(id: number): void {
     this.activeCollection.set(id).take(1).subscribe(() => {
-      this.activeCollection.getItems(id, {n: 50}).take(1).subscribe();
+      this.activeCollection.getItems(id, {n: this.pageSize}).take(1).subscribe();
     });
   }
 
@@ -56,14 +72,14 @@ export class CollectionsComponent implements OnInit {
       // if we are deleting current active, we need to get the new active from the server.
       if (this.isActiveCollection(id) && collectionLength > 0) {
         this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, {n: 50}).take(1).subscribe();
+          this.activeCollection.getItems(collection.id, {n: this.pageSize}).take(1).subscribe();
         });
       }
       // if we delete the last collection, reset the store to initial values (no active collection)
       if (collectionLength === 0) {
         this.collectionsService.destroyCollections();
         this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, {n: 50}).take(1).subscribe();
+          this.activeCollection.getItems(collection.id, {n: this.pageSize}).take(1).subscribe();
           this.collectionsService.loadCollections().take(1).subscribe();
         });
       }
@@ -71,16 +87,20 @@ export class CollectionsComponent implements OnInit {
   }
 
   public filter(filter: any) {
+    this.currentFilter = filter.label;
     this.collectionsService.loadCollections(filter.access).take(1).subscribe();
+    this.showCollectionFilter();
   }
 
   public search(query: any) {
     this.collectionsService.loadCollections(query).take(1).subscribe();
+    this.currentSearchQuery = query.q;
   }
 
   public sortBy(sort: any) {
+    this.currentSort = sort.label;
     this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
-
+    this.showCollectionSort();
   }
 
   public isActiveCollection(collectionId: number): boolean {

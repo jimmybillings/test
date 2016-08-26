@@ -124,7 +124,7 @@ header.app-header.search-closed app-nav button.open-search {
 // The spacing may change when search or the bin tray is open in the header.
 // there are a few different styles of pages.
 // Also the current mdToolbar does not change height for mobile. This could change, that is what the media queries are for.
-
+header.app-header + div.main-content cart,
 header.app-header + div.main-content collection-show,
 header.app-header + div.main-content collections,
 header.app-header + div.main-content cms,
@@ -137,6 +137,7 @@ header.app-header + div.main-content asset {
     border-top-width: rem(15.2);
   }
 }
+header.app-header.collection-tray-closed + div.main-content cart,
 header.app-header.collection-tray-closed + div.main-content collection-show,
 header.app-header.collection-tray-closed + div.main-content collections,
 header.app-header.collection-tray-closed + div.main-content cms,
@@ -147,6 +148,7 @@ header.app-header.collection-tray-closed + div.main-content asset {
     border-top-width: rem(9.6);
   }
 }
+header.app-header.collection-tray-closed.search-closed + div.main-content cart,
 header.app-header.collection-tray-closed.search-closed + div.main-content collection-show,
 header.app-header.collection-tray-closed.search-closed + div.main-content collections,
 header.app-header.collection-tray-closed.search-closed + div.main-content cms,
@@ -157,6 +159,7 @@ header.app-header.collection-tray-closed.search-closed + div.main-content asset 
   //   border-top-width: rem(5.6);
   // }
 }
+header.app-header.search-closed + div.main-content cart,
 header.app-header.search-closed + div.main-content collection-show,
 header.app-header.search-closed + div.main-content collections,
 header.app-header.search-closed + div.main-content cms,

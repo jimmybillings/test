@@ -38,7 +38,7 @@
             <div flex="80">
                 <button md-icon-button title="{{ 'COLLECTION.INDEX.FOCUS_BTN_TITLE' | translate }}" (click)="selectActiveCollection(collection.id)"><md-icon>star</md-icon></button>
                 <!--anchor md-icon-button alignment is messed up once it's fixed we can use the anchor but until then keep it a button-->
-                <a md-icon-button title="{{ 'COLLECTION.INDEX.DETAIL_BTN_TITLE' | translate }}" [routerLink]="['/collection/', collection.id]">
+                <a md-icon-button title="{{ 'COLLECTION.INDEX.DETAIL_BTN_TITLE' | translate }}" [routerLink]="['/collection/', collection.id, {i:1, n:50}]">
                     <md-icon>details</md-icon>
                 </a>
                 <button md-icon-button title="{{ 'COLLECTION.INDEX.EDIT_BTN_TITLE' | translate }}" (click)="showEdit(collection)"><md-icon>edit</md-icon></button>

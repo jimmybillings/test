@@ -1,13 +1,77 @@
 <section class="collection-head">
   <div layout="row" layout-align="center start">
-    <header flex="100" flex-gt-md="85" flex-gt-lg="75">
+    <header flex="100" flex-gt-md="95" flex-gt-lg="85">
+        <collections-search-form
+          [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
+          [hidden]="!collectionSearchIsShowing"
+          (query)="search($event)"
+          (closeSearch)="showCollectionSearch()">
+        </collections-search-form>
+
+        <collections-filter-dd 
+          *ngIf="collectionFilterIsShowing"
+          flex="100"
+          (filter)="filter($event)"
+          (close)="showCollectionFilter()"
+          layout="row" 
+          layout-align="end start" 
+          class="revealed">
+        </collections-filter-dd>
+
+        <collections-sort-dd
+          *ngIf="collectionSortIsShowing"
+          flex="100"
+          (sort)="sortBy($event)"
+          (close)="showCollectionSort()"
+          layout="row" 
+          layout-align="end start" 
+          class="revealed">
+        </collections-sort-dd>
+      <div flex="100" layout="row" layout-xs="column">
+        <h2 flex="100" layout-align="end center" class="md-display-1">{{ 'COLLECTION.INDEX.PAGE_TITLE' | translate }}</h2>
+        <div class="tools" flex="auto" layout-align="end center">
+          <button md-icon-button 
+            title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" 
+            type="button" 
+            (click)="toggleCollectionSearch()">
+            <md-icon *ngIf="collectionSearchIsShowing">close</md-icon>
+            <md-icon *ngIf="!collectionSearchIsShowing">search</md-icon>
+          </button>
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showCollectionFilter($event)"><md-icon>filter_list</md-icon></button>
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>
+        </div>
+      </div>
+    </header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--<header flex="100" flex-gt-md="85" flex-gt-lg="75">
       <div flex="100" layout="row" layout-xs="column">
         <h2 class="md-display-1">Your Collections</h2>
       </div>
       <div flex="100" layout="row" layout-align="end end">
-        <!--TODO rework search,sort,filter for mobile-->
-        
-        <!-- SEARCH COLLECTIONS -->
+
+
         <collections-search-form
           [ngClass]="{ 'revealed' : isCollectionSearchOpen }" 
           [hidden]="!isCollectionSearchOpen" 
@@ -21,10 +85,9 @@
           <md-icon *ngIf="!isCollectionSearchOpen">search</md-icon>
         </button>
 
-        <!-- FILTER COLLECTIONS -->
         <button md-button class="is-dd filter-selector" (click)="filterCollections.show($event)">
           {{ 'COLLECTION.INDEX.FILTER_DD_MENU.HEADING' | translate }}
-          <!--Filter: -->
+
           <span class="selected">
             {{'COLLECTION.INDEX.FILTER_DD_MENU.'+getActiveFilter() | uppercase | translate}}
           </span>
@@ -40,7 +103,6 @@
           </collections-filter-dd>
         </wz-dropdown>
         
-        <!-- SORT COLLECTIONS -->
         <button md-button class="is-dd filter-selector" (click)="sortCollections.show($event)">
           Sort: 
           <span class="selected">
@@ -56,13 +118,35 @@
           </collections-sort-dd>
         </wz-dropdown>
       </div>
-    </header>
+    </header>-->
+
+
+
+
+
   </div>
 </section>
+    
+
+<div layout="row" layout-align="center start">
+  <div class="md-caption query-details"  flex="100" flex-gt-md="95" flex-gt-lg="85">
+    <span *ngIf="currentSearchQuery" flex="auto" class="search">
+      <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{currentSearchQuery}}
+    </span>
+    <span *ngIf="currentFilter !== 'ALL'" flex="auto" class="filter">
+      <strong>{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.FILTER_DD_MENU.' + currentFilter | uppercase | translate}}
+    </span> 
+    <span flex="100" class="sort">
+      <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.SORT_DD_MENU.' + currentSort | uppercase | translate }}
+    </span> 
+  </div>
+</div>
+
+
 
 <section class="hero">
   <div layout="row" flex="100" layout-margin layout-align="center start">
-    <section class="collections-list" flex="100" flex-gt-md="85" flex-gt-lg="75">
+    <section class="collections-list" flex="100" flex-gt-md="95" flex-gt-lg="85">
       <wz-pagination [pagination]="(collectionsService.data | async).pagination" (getPage)="changePage($event)">
       </wz-pagination>
       <!-- COLLECTION LIST -->
