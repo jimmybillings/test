@@ -82,6 +82,8 @@ export class CollectionsComponent implements OnInit {
 
   public filter(filter: any) {
     this.collectionsService.loadCollections(filter.access).take(1).subscribe();
+    this.showCollectionFilter();
+
   }
 
   public search(query: any) {
@@ -90,6 +92,7 @@ export class CollectionsComponent implements OnInit {
 
   public sortBy(sort: any) {
     this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
+    this.showCollectionSort();
 
   }
 
