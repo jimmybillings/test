@@ -31,11 +31,11 @@ export class CollectionFormComponent implements OnInit {
   public collectionsList: Subscription;
   public suggestions: Array<string> = [];
   public formItems: Array<FormFields> = [];
+  public pageSize: string;
 
   private areSuggestionsVisible: boolean = false;
   private selectedSuggestion: String;
   private activeSuggestion: string;
-  private pageSize: string;
   @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
 
   constructor(
