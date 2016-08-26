@@ -10,6 +10,7 @@ import { ContentModule } from './+content/content.module';
 import { SearchModule } from './+search/search.module';
 import { AssetModule } from './+asset/asset.module';
 import { AdminModule } from './+admin/admin.module';
+import { CartModule } from './+cart/cart.module';
 import { CollectionModule } from './+collection/collection.module';
 import { ApplicationModule } from './application/application.module';
 import { SharedModule } from './shared/shared.module';
@@ -27,6 +28,7 @@ import { AppComponent } from './app.component';
     ContentModule,
     UserManagementModule,
     AdminModule,
+    CartModule,
     ApplicationModule
   ],
   providers: [{
