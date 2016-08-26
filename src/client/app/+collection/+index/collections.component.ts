@@ -18,7 +18,9 @@ import { CollectionFilterDdComponent } from '../../+collection/components/collec
 export class CollectionsComponent implements OnInit {
   public collections: Collections;
   public errorMessage: string;
-  public isCollectionSearchOpen: boolean = false;
+  public collectionSearchIsShowing: boolean = false;
+  public collectionFilterIsShowing: boolean = false;
+  public collectionSortIsShowing: boolean = false;
   public activeFilter: string;
   public activeSort: string;
   @ViewChild(CollectionFilterDdComponent) public filters: CollectionFilterDdComponent;
@@ -39,7 +41,15 @@ export class CollectionsComponent implements OnInit {
   }
 
   public toggleCollectionSearch() {
-    this.isCollectionSearchOpen = !this.isCollectionSearchOpen;
+    this.collectionSearchIsShowing = !this.collectionSearchIsShowing;
+  }
+
+  public showCollectionFilter() {
+    this.collectionFilterIsShowing = !this.collectionFilterIsShowing;
+  }
+
+  public showCollectionSort() {
+    this.collectionSortIsShowing = !this.collectionSortIsShowing;
   }
 
   public selectActiveCollection(id: number): void {

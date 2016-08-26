@@ -4,14 +4,27 @@ collections .collection-head {
   padding-top: rem(.5);
   padding-bottom: rem(.5);
   padding-right: rem(.8);
-  header .md-display-1 {
-    margin: .5em 0 .1em 0;
-    opacity: .8;
+  header {
+    position: relative;
+    margin: .3em 0 .3em 0;
+    .md-display-1 {
+      margin: 0;
+      opacity: .8;
+      width: calc(100% - 120px);
+    }
+  } 
+  .tools {
+    text-align: right;
+    white-space: nowrap;
   }
   header div[flex="100"] > button[md-icon-button] {
     margin-right: rem(1.6);
   }
+  collections-filter-dd.revealed {
+    padding-right: rem(4.0);
+  }
 }
+
 .collections-list {
   ul {
     margin: 0;
@@ -65,8 +78,8 @@ collections .collection-head {
       box-shadow: inset 0 1px 0 0 md-color($md-grey, 800, .14);
     }
     .collection-tags {
-      margin-top: rem(2.2);
-      margin-bottom: rem(1.8);
+      margin-top: rem(.5);
+      margin-bottom: rem(.5);
     }
     ul.meta-data-tags {
         display: inline-block;
@@ -140,14 +153,14 @@ collections .collection-head {
   }
 }
 
-
-
-
-// silde out collection search form
+// slide out collection search form
 collections-search-form {
   @include transition($swift-ease-out);
   flex: 1 1 auto;
-  position: relative;
+  position: absolute;
+  right: rem(13);
+  min-width: 375px;
+  z-index: 2;
   overflow: hidden;
   .tools {
     display: none;
@@ -155,7 +168,6 @@ collections-search-form {
   form {
     @include transition($swift-ease-out);
     display: flex;
-    margin-right: rem(.2);
   }
   &.revealed > div {
     @include animation-name(slide);
@@ -175,7 +187,7 @@ collections-search-form {
     color: md-color($md-foreground, secondary-text);
     background-color:  rgba(md-color($md-background, app-bar), .9);
     border-radius: 0;
-    margin-right:rem(-4.0);
+    margin-right:rem(-3.8);
     @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
     @include placeholder {
       color: md-color($md-foreground, hint-text);

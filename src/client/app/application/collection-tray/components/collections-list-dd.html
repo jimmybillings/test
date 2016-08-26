@@ -1,26 +1,24 @@
 <div class="collections-dd-menu">
   <div class="dd-menu-wrapper">
     <header>
-      <!--<div layout="row" layout-align="end end">-->
-        <collections-search-form
-          [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
-          [hidden]="!collectionSearchIsShowing"
-          (query)="search($event)"
-          (closeSearch)="showCollectionSearch()">
-        </collections-search-form>
-        <collections-filter-dd
-          flex="100"
-          [hidden]="!collectionFilterIsShowing"
-          (filter)="applyFilter($event)"
-          (close)="showCollectionFilter()">
-        </collections-filter-dd>
-        <collections-sort-dd
-          flex="100"
-          [hidden]="!collectionSortIsShowing"
-          (sort)="applySort($event)"
-          (close)="showCollectionSort()">
-        </collections-sort-dd>
-      <!--</div>-->
+      <collections-search-form
+        *ngIf="collectionSearchIsShowing"
+        [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
+        (query)="search($event)"
+        (closeSearch)="showCollectionSearch()">
+      </collections-search-form>
+      <collections-filter-dd 
+        *ngIf="collectionFilterIsShowing"
+        flex="100"
+        (filter)="applyFilter($event)"
+        (close)="showCollectionFilter()">
+      </collections-filter-dd>
+      <collections-sort-dd
+        *ngIf="collectionSortIsShowing"
+        flex="100"
+        (sort)="applySort($event)"
+        (close)="showCollectionSort()">
+      </collections-sort-dd>
       <div flex="100" layout="row">
         <h4 class="md-headline" flex="100" layout-align="start center">
           {{ 'COLLECTION.DD_MENU.HEADING' | translate }}
