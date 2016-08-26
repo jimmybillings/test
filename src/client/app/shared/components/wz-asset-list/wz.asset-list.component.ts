@@ -21,7 +21,7 @@ export class WzAssetListComponent implements OnChanges {
   @Output() onDownloadComp = new EventEmitter();
   @Output() onShowNewCollection = new EventEmitter();
   private assetsArr: Array<number>;
-
+  private assetId:any;
   constructor() {
     this.assetsArr = [];
   }
@@ -47,9 +47,12 @@ export class WzAssetListComponent implements OnChanges {
   public addToCart(asset: any): void {
     this.onAddToCart.emit(asset);
   }
+  public setAssetActiveId(id:any) {
+     this.assetId = id;
+  }
 
-  public downloadComp(asset: any): void {
-    this.onDownloadComp.emit(asset);
+  public downloadComp(compType:any): void {
+    this.onDownloadComp.emit({'assetId':this.assetId,'compType':compType});
   }
 
   public alreadyInCollection(asset: any): boolean {

@@ -26,9 +26,6 @@ export class AssetDetailComponent implements OnChanges {
 
   ngOnChanges(changes: any): void {
     if (changes.asset) {
-        console.log('---------------------------------------------');
-       console.dir(changes.asset.currentValue);
-         console.log('---------------------------------------------');
       if (Object.keys(changes.asset.currentValue.detailTypeMap.common).length > 0) {
         this.asset = changes.asset.currentValue.detailTypeMap;
         this.asset.clipUrl = changes.asset.currentValue.clipUrl;

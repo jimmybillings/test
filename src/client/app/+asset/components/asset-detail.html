@@ -73,7 +73,7 @@
     <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
   </div>
 </wz-toast>
-<md-menu class="more-collections-menu" x-position="before" #downloadCompMenu="mdMenu">
+<md-menu x-position="before" #downloadCompMenu="mdMenu">
   <button md-menu-item  (click)="downloadComp(asset.assetId,'wm');" *ngIf="asset.hasDownloadableComp">Download Watermarked Comp</button>
   <button md-menu-item (click)="downloadComp(asset.assetId,'clean')" *ngIf="asset.hasDownloadableComp">Download Clean Comp</button>
   <button md-menu-item (click)="downloadComp(asset.assetId,'full')" *ngIf="asset.hasDownloadableComp">Download Full Comp</button>
