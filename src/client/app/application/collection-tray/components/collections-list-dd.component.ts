@@ -52,14 +52,14 @@ export class CollectionListDdComponent {
       this.navigateToCollectionShow(collection.id);
     } else {
       this.activeCollection.set(collection.id).take(1).subscribe(() => {
-        this.activeCollection.getItems(collection.id, {n: 50}).take(1).subscribe();
+        this.activeCollection.getItems(collection.id, {i: 1, n: 50}).take(1).subscribe();
       });
     }
   }
 
   public navigateToCollectionShow(assetId: number): void {
     this.UiState.closeCollectionsList();
-    this.router.navigate(['/collection/', assetId, {n: 50, i: 1}]);
+    this.router.navigate(['/collection/', assetId, {i: 1, n: 50}]);
   }
 
   public navigateToCollectionsIndex() {

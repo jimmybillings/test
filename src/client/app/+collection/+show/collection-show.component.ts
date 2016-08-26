@@ -20,9 +20,11 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public focusedCollection: Collection;
   public collection: Collection;
   public assets: any;
+  public routeParams: any;
   public errorMessage: string;
   public config: Object;
   private activeCollectionSubscription: Subscription;
+  private routeSubscription: Subscription;
   public date(date: any): Date {
     if (date) {
       return new Date(date);
@@ -46,10 +48,17 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.activeCollectionSubscription = this.activeCollection.data.subscribe(collection => {
       this.collection = collection;
     });
+    this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
+  }
+
+  public buildRouteParams(params: any): void {
+    this.routeParams = Object.assign({}, this.routeParams, params);
+    delete(this.routeParams['id']);
   }
 
   ngOnDestroy() {
     this.activeCollectionSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
   public removeFromCollection(params: any): void {
@@ -58,7 +67,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     if(uuid && params.asset.assetId) this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
   }
 
-  public changePage(pageNum: any): void {
-    this.router.navigate(['/collection/' + this.collection.id, {i: pageNum, n: 50}]);
+  public changePage(i: any): void {
+    this.buildRouteParams({i});
+    this.router.navigate(['/collection/' + this.collection.id, this.routeParams ]);
   }
 }
