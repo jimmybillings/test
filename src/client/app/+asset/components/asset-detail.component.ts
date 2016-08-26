@@ -17,6 +17,7 @@ export class AssetDetailComponent implements OnChanges {
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onShowNewCollection = new EventEmitter();
+  @Output() onDownloadComp = new EventEmitter();
   private assetsArr: Array<number>;
 
   constructor() {
@@ -25,11 +26,16 @@ export class AssetDetailComponent implements OnChanges {
 
   ngOnChanges(changes: any): void {
     if (changes.asset) {
+        console.log('---------------------------------------------');
+       console.dir(changes.asset.currentValue);
+         console.log('---------------------------------------------');
       if (Object.keys(changes.asset.currentValue.detailTypeMap.common).length > 0) {
         this.asset = changes.asset.currentValue.detailTypeMap;
         this.asset.clipUrl = changes.asset.currentValue.clipUrl;
         this.asset.clipThumbnailUrl = changes.asset.currentValue.clipThumbnailUrl;
         this.asset.resourceClass = changes.asset.currentValue.resourceClass;
+        this.asset.hasDownloadableComp = changes.asset.currentValue.hasDownloadableComp;
+        this.asset.assetId = changes.asset.currentValue.assetId;
         // the "+" in +this.asset.common[0].vaue changes it from a string to a number
         this.inActiveCollection = this.alreadyInCollection(+this.asset.common[0].value);
       }
@@ -57,5 +63,8 @@ export class AssetDetailComponent implements OnChanges {
 
   public showNewCollection(assetId: any): void {
     this.onShowNewCollection.emit(assetId);
+  }
+  public downloadComp(assetId:any,compType:any):void {
+     this.onDownloadComp.emit({'compType':compType,'assetId':assetId});
   }
 }

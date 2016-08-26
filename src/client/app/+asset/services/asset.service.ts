@@ -47,5 +47,9 @@ export class AssetService {
   public reset(): void {
     this.store.dispatch({ type: 'RESET' });
   }
+  public downloadComp(id:any,compType:any): Observable<any> {
+       return this._http.get(this._apiConfig.baseUrl() + 'api/assets/v1/renditionType/downloadUrl/' + id + '?type='+compType,
+      { headers: this._apiConfig.authHeaders(), body: ''}).map((res) => { return res.json();});
+  }
 
 }

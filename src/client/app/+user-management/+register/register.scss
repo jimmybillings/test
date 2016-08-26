@@ -1,0 +1,23 @@
+register {
+  md-card.wz-form-card.success {
+    md-card-content {
+      text-align: center;
+    }
+  }
+  .logo-wrapper {
+    height: 250px;
+    width: 100%;
+    background: #eee;
+    .logo {
+      @include background-image(url($logo-home));
+      background-position: bottom center;
+      background-repeat:no-repeat;
+      background-size: 255px;
+      height: 255px;
+      opacity: .7;
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        background-size: 220px;
+      }
+    }
+  }
+}
