@@ -7,15 +7,17 @@
         (query)="search($event)"
         (closeSearch)="showCollectionSearch()">
       </collections-search-form>
-      <collections-filter-dd 
+      <collections-filter-dd
         *ngIf="collectionFilterIsShowing"
         flex="100"
+        [currentFilter]="options.currentFilter"
         (filter)="applyFilter($event)"
         (close)="showCollectionFilter()">
       </collections-filter-dd>
       <collections-sort-dd
         *ngIf="collectionSortIsShowing"
         flex="100"
+        [currentSort]="options.currentSort"
         (sort)="applySort($event)"
         (close)="showCollectionSort()">
       </collections-sort-dd>
@@ -32,14 +34,14 @@
     </header>
     
     <div class="md-caption query-details" layout="column">
-      <span *ngIf="currentSearchQuery" flex="100" class="search">
-        <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{currentSearchQuery}}
+      <span *ngIf="options.currentSearchQuery.q" flex="100" class="search">
+        <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{ options.currentSearchQuery.q }}
       </span>
-      <span *ngIf="currentFilter !== 'ALL'" flex="100" class="filter">
-        <strong>{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.FILTER_DD_MENU.' + currentFilter | uppercase | translate}}
+      <span *ngIf="options && options.currentFilter.label !== 'ALL'" flex="100" class="filter">
+        <strong>{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.FILTER_DD_MENU.' + options.currentFilter.label | uppercase | translate}}
       </span> 
-      <span flex="100" class="sort">
-        <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.SORT_DD_MENU.' + currentSort | uppercase | translate }}
+      <span flex="100" class="sort" *ngIf="options">
+        <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.SORT_DD_MENU.' + options.currentSort.label | uppercase | translate }}
       </span> 
     </div>
 

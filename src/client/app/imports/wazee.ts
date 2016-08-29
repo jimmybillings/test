@@ -34,10 +34,11 @@ import { adminResources } from '../+admin/services/admin.service';
 import { searchContext} from '../shared/services/search-context.service';
 import { provideStore } from '@ngrx/store';
 import { multilingualReducer } from '../shared/services/multilingual.service';
-import { collections} from '../+collection/services/collections.service';
-import { activeCollection} from '../+collection/services/active-collection.service';
+import { collections } from '../+collection/services/collections.service';
+import { activeCollection } from '../+collection/services/active-collection.service';
 import { filters } from '../+search/services/filter.service';
 import { userPreferences } from '../shared/services/user-preference.service';
+import { CollectionContextService, collectionOptions } from '../shared/services/collection-context.service';
 
 // TRANSLATIONS
 import { MultilingualService } from '../shared/services/multilingual.service';
@@ -60,6 +61,7 @@ export const WAZEE_PROVIDERS = [
   UserPermission,
   FilterService,
   UserPreferenceService,
+  CollectionContextService
   // WzNotificationService
 ];
 
@@ -76,6 +78,7 @@ export const WAZEE_STORES: Provider[][] = [
     uiState,
     filters,
     userPreferences,
+    collectionOptions,
     i18n: multilingualReducer
   })
 ];

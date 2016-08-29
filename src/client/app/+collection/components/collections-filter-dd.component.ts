@@ -11,18 +11,18 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '
 })
 
 export class CollectionFilterDdComponent {
-  @Input() UiState: any;
+  @Input() currentFilter: any;
   @Output() filter = new EventEmitter();
   @Output() close = new EventEmitter();
   public filterOptions: Array<any> = [];
 
   constructor() {
     this.filterOptions = [
-      { 'id': 0, 'label': 'ALL', 'value': 'all', 'active': true, 'access': {'access-level': 'all'} },
-      { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'active': false, 'access': {'access-level': 'owner'} },
-      { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'active': false, 'access': {'access-level': 'editor'} },
-      { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'active': false, 'access': {'access-level': 'viewer'} },
-      { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'active': false, 'access': {'access-level': 'researcher'} }
+      { 'id': 0, 'label': 'ALL', 'value': 'all', 'access': {'access-level': 'all'} },
+      { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'access': {'access-level': 'owner'} },
+      { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'access': {'access-level': 'editor'} },
+      { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'access': {'access-level': 'viewer'} },
+      { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'access': {'access-level': 'researcher'} }
     ];
   }
 
@@ -31,10 +31,6 @@ export class CollectionFilterDdComponent {
   }
 
   public setActiveFilter(filter:any) {
-    this.filterOptions = this.filterOptions.map((filterOption) => {
-      filter.id === filterOption.id ? filterOption.active = true : filterOption.active = false;
-      return filterOption;
-    });
     this.filter.emit(filter);
   }
 }

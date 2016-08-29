@@ -14,7 +14,7 @@
   </header>
   <div class="dd-menu-wrapper">
     <md-list dense>
-      <md-list-item *ngFor="let option of filterOptions" [ngClass]="{'active': option.active}">
+      <md-list-item *ngFor="let option of filterOptions" [ngClass]="{'active': currentFilter.label === option.label}">
         <button (click)="setActiveFilter(option);" [disabled]="option.value ==='researcher'">
           {{ 'COLLECTION.INDEX.FILTER_DD_MENU.'+option.label | translate }}
         </button>

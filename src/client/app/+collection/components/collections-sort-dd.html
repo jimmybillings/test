@@ -14,7 +14,7 @@
   </header>
   <div class="dd-menu-wrapper">
     <md-list dense>
-      <md-list-item *ngFor="let option of sortOptions" [ngClass]="{'active': option.active}">
+      <md-list-item *ngFor="let option of sortOptions" [ngClass]="{'active': currentSort.label === option.label}">
         <button (click)="setActiveSort(option)">
           {{ 'COLLECTION.INDEX.SORT_DD_MENU.'+option.label | translate }}
         </button>
