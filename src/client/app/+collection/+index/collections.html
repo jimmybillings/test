@@ -41,12 +41,13 @@
           </button>
           <button md-icon-button
             *ngIf="collectionSearchIsShowing"
-            title="Collapse search"
-            type="button" 
+            class="collapse-search"
+            title="{{ 'COLLECTION.DD_MENU.COLLAPSE_SEARCH_HOVER_TITLE' | translate }}"
+            type="button"
             (click)="toggleCollectionSearch()">
             <!--<md-icon *ngIf="collectionSearchIsShowing">chevron_right</md-icon>-->
             <!--<md-icon *ngIf="collectionSearchIsShowing">remove_circle_outline</md-icon>-->
-            <md-icon>subdirectory_arrow_right</md-icon>
+            <md-icon>arrow_drop_up</md-icon>
           </button>
           <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showCollectionFilter($event)"><md-icon>filter_list</md-icon></button>
           <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>

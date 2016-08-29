@@ -329,6 +329,7 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-for
   .tools {
     display: flex;
     button {
+      @include transform(rotate(90deg));
       @include text-contrast(md-color($md-background, card), rgba(md-color($md-foreground, base), .75), md-color($md-background, card));
       &:hover {
         color: md-color($md-primary);
@@ -340,7 +341,7 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-for
     padding-top: rem(.8);
     padding-bottom: rem(.8);
     padding-left: rem(.3);
-    padding-right: rem(1.6);
+    padding-right: rem(.1);
     border: none;
     button[type="submit"],button[type="reset"] {
       // height:rem(3.9);
