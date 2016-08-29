@@ -32,12 +32,22 @@
       <div flex="100" layout="row" layout-xs="column">
         <h2 flex="100" layout-align="end center" class="md-display-1">{{ 'COLLECTION.INDEX.PAGE_TITLE' | translate }}</h2>
         <div class="tools" flex="auto" layout-align="end center">
-          <button md-icon-button 
-            title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" 
+          <button md-icon-button
+            *ngIf="!collectionSearchIsShowing"
+            title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}"
             type="button" 
             (click)="toggleCollectionSearch()">
-            <md-icon *ngIf="collectionSearchIsShowing">close</md-icon>
             <md-icon *ngIf="!collectionSearchIsShowing">search</md-icon>
+          </button>
+          <button md-icon-button
+            *ngIf="collectionSearchIsShowing"
+            class="collapse-search"
+            title="{{ 'COLLECTION.DD_MENU.COLLAPSE_SEARCH_HOVER_TITLE' | translate }}"
+            type="button"
+            (click)="toggleCollectionSearch()">
+            <!--<md-icon *ngIf="collectionSearchIsShowing">chevron_right</md-icon>-->
+            <!--<md-icon *ngIf="collectionSearchIsShowing">remove_circle_outline</md-icon>-->
+            <md-icon>arrow_drop_up</md-icon>
           </button>
           <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showCollectionFilter($event)"><md-icon>filter_list</md-icon></button>
           <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>

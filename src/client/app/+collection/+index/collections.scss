@@ -19,6 +19,9 @@ collections .collection-head {
   .tools {
     text-align: right;
     white-space: nowrap;
+    button.collapse-search[md-icon-button] {
+      @include transform(rotate(90deg));
+    }
   }
   header div[flex="100"] > button[md-icon-button] {
     margin-right: rem(1.6);
@@ -45,6 +48,7 @@ collections .query-details {
     padding-left: rem(2.5);
     padding-right: rem(3.0);
     line-height: rem(2.2);
+    opacity: .7;
     &:before {
       content: " ";
       position: absolute;
@@ -225,6 +229,7 @@ collections-search-form {
   @include transition($swift-ease-out);
   flex: 1 1 auto;
   position: absolute;
+  top: rem(1.1);
   right: rem(13);
   min-width: 375px;
   z-index: 2;
@@ -235,6 +240,7 @@ collections-search-form {
   form {
     @include transition($swift-ease-out);
     display: flex;
+    border: 1px solid rgba(md-color($md-foreground, base),.17);
   }
   &.revealed > div {
     @include animation-name(slide);
@@ -245,16 +251,16 @@ collections-search-form {
     @include animation-fill-mode(backwards);
   }
   input {
+    border: none;
     font-size: 1.15em;
     width: 100%;
     padding: 0 0 0 3%;
-    max-height: rem(3.8);
-    min-height: rem(3.8);
-    border: 1px solid rgba(md-color($md-foreground, base),.2);
+    max-height: rem(4.5);
+    min-height: rem(4.5);
     color: md-color($md-foreground, secondary-text);
     background-color:  rgba(md-color($md-background, app-bar), .9);
     border-radius: 0;
-    margin-right:rem(-3.8);
+    margin-right:rem(-8.5);
     @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
     @include placeholder {
       color: md-color($md-foreground, hint-text);
@@ -264,11 +270,38 @@ collections-search-form {
       background-color: lighten(md-color($md-background, app-bar), 40%);
     }
   }
-  button[type="submit"] {
+  button[type="submit"], button[type="reset"] {
     cursor: pointer;
-    border-radius: 0;
+    opacity: .4;
+    margin: auto 0;
     &:focus{
       outline: none;
+    }
+    &:hover {
+      opacity: 1;
+      &::after {
+        background-color: transparent;
+      }
+    }
+
+  }
+  button[type="reset"]:hover {
+    opacity: .4;
+    &::after {
+      background-color: transparent;
+    }
+  }
+  .vertical-divider {
+    position:relative;
+    width: rem(.7);
+    &:after {
+      content:"";
+      position: absolute;
+      height: rem(3.0);
+      width: rem(.1);
+      top: rem(.7);
+      left: rem(.4);
+      box-shadow: inset 1px 0 0 0 md-color($md-grey, 800, .14);
     }
   }
 }

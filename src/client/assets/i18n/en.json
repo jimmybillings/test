@@ -118,8 +118,10 @@
       "OPEN_BTN_LABEL": "Open selected",
       "CREATE_BTN_LABEL": "Create new",
       "CLOSE_HOVER_TITLE": "Close",
+      "COLLAPSE_SEARCH_HOVER_TITLE": "Collapse search",
       "PREVIOUS_HOVER_TITLE": "Previous",
       "SUBMIT_HOVER_TITLE": "Submit search",
+      "RESET_HOVER_TITLE": "Clear search",
       "SEARCH_QUERY_TITLE": "Search for:",
       "FILTER_BY_TITLE": "Filter on:",
       "SORTED_ON_TITLE": "Sort by:"
