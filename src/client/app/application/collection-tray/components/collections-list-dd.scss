@@ -341,20 +341,21 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-for
     padding-bottom: rem(.8);
     padding-left: rem(.3);
     padding-right: rem(1.6);
-    button[type="submit"] {
-      height:rem(3.9);
-      margin-top: rem(.2);
-      border-radius: 50%;
-      @include transition($swift-ease-in);
+    border: none;
+    button[type="submit"],button[type="reset"] {
+      // height:rem(3.9);
+      // margin-top: rem(.2);
+      // border-radius: 50%;
+      // @include transition($swift-ease-in);
       md-icon.material-icons {
-        color: rgba(md-color($md-foreground, base), .7);
+        color: md-color($md-primary);
       }
-      &:hover {
-        background-color: md-color($md-primary, 500, .1);
-      }
-      &:focus{
-        outline: none;
-      }
+      // &:hover {
+      //   background-color: md-color($md-primary, 500, .1);
+      // }
+      // &:focus{
+      //   outline: none;
+      // }
     }
     input {
       border-width: 0;

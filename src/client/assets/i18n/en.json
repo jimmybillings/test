@@ -120,6 +120,7 @@
       "CLOSE_HOVER_TITLE": "Close",
       "PREVIOUS_HOVER_TITLE": "Previous",
       "SUBMIT_HOVER_TITLE": "Submit search",
+      "RESET_HOVER_TITLE": "Clear search",
       "SEARCH_QUERY_TITLE": "Search for:",
       "FILTER_BY_TITLE": "Filter on:",
       "SORTED_ON_TITLE": "Sort by:"
