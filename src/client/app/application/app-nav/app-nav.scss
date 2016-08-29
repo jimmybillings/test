@@ -197,3 +197,23 @@ header.app-header + div.main-content home .hero {
   //   padding-top: rem(5.6);
   // }
 }
+.md-menu {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.navigation-menu {
+  width: rem(20);
+  margin-top: 37px;
+  button[md-menu-item] {
+  //   background-color: md-color($md-primary, 500);
+    color: md-color($md-primary, 500);;
+    md-icon {
+      position: absolute;
+      right: rem(2);
+    }
+  }
+  // [md-menu-item]:hover:not([disabled]) {
+  //   background-color: md-color($md-primary, 300);
+  // }
+}
