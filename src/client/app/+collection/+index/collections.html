@@ -11,6 +11,7 @@
         <collections-filter-dd 
           *ngIf="collectionFilterIsShowing"
           flex="100"
+          [currentFilter]="options.currentFilter"
           (filter)="filter($event)"
           (close)="showCollectionFilter()"
           layout="row" 
@@ -21,6 +22,7 @@
         <collections-sort-dd
           *ngIf="collectionSortIsShowing"
           flex="100"
+          [currentSort]="options.currentSort"
           (sort)="sortBy($event)"
           (close)="showCollectionSort()"
           layout="row" 
@@ -139,14 +141,14 @@
 
 <div layout="row" layout-align="center start">
   <div class="md-caption query-details"  flex="100" flex-gt-md="95" flex-gt-lg="85">
-    <span *ngIf="currentSearchQuery" flex="auto" class="search">
-      <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{currentSearchQuery}}
+    <span *ngIf="options.currentSearchQuery.q" flex="auto" class="search">
+      <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{options.currentSearchQuery.q}}
     </span>
-    <span *ngIf="currentFilter !== 'ALL'" flex="auto" class="filter">
-      <strong>{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.FILTER_DD_MENU.' + currentFilter | uppercase | translate}}
+    <span *ngIf="options && options.currentFilter.label !== 'ALL'" flex="auto" class="filter">
+      <strong>{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.FILTER_DD_MENU.' +  options.currentFilter.label | uppercase | translate}}
     </span> 
-    <span flex="100" class="sort">
-      <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.SORT_DD_MENU.' + currentSort | uppercase | translate }}
+    <span flex="100" class="sort" *ngIf="options">
+      <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.SORT_DD_MENU.' +  options.currentSort.label | uppercase | translate }}
     </span> 
   </div>
 </div>

@@ -1,10 +1,11 @@
-import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Collection, Collections } from '../../../shared/interfaces/collection.interface';
-import { CollectionsService} from '../../../+collection/services/collections.service';
+import { CollectionsService } from '../../../+collection/services/collections.service';
 import { UiConfig } from '../../../shared/services/ui.config';
+import { CollectionContextService } from '../../../shared/services/collection-context.service';
 import { ActiveCollectionService} from '../../../+collection/services/active-collection.service';
-import { Observable} from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
 
 /**
  * Directive that renders a list of collections
@@ -16,16 +17,15 @@ import { Observable} from 'rxjs/Rx';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CollectionListDdComponent implements OnInit {
+export class CollectionListDdComponent implements OnInit, OnDestroy {
   @Input() focusedCollection: Collection;
   @Input() UiState: any;
   @Input() config: any;
   @Output() close = new EventEmitter();
   public collections: Observable<Collections>;
-  public currentFilter: string;
-  public currentSort: string;
+  public options: any;
+  public optionsSubscription: Subscription;
   public pageSize: string;
-  public currentSearchQuery: string;
   public collectionFilterIsShowing: boolean = false;
   public collectionSortIsShowing: boolean = false;
   public collectionSearchIsShowing: boolean = false;
@@ -33,11 +33,9 @@ export class CollectionListDdComponent implements OnInit {
   constructor(
     public router: Router,
     public collectionsService: CollectionsService,
+    public collectionContext: CollectionContextService,
     public activeCollection: ActiveCollectionService,
     public uiConfig: UiConfig) {
-    this.currentFilter = 'ALL';
-    this.currentSort = 'DATE_MOD_NEWEST';
-    this.currentSearchQuery = '';
     this.collections = this.collectionsService.data;
   }
 
@@ -45,6 +43,11 @@ export class CollectionListDdComponent implements OnInit {
     this.uiConfig.get('home').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
+    this.optionsSubscription = this.collectionContext.data.subscribe(data => this.options = data);
+  }
+
+  ngOnDestroy(): void {
+    this.optionsSubscription.unsubscribe();
   }
 
   public closeCollectionsList(): void {
@@ -77,21 +80,20 @@ export class CollectionListDdComponent implements OnInit {
   }
 
   public applyFilter(filter: any) {
-    this.currentFilter = filter.label;
+    this.collectionContext.updateCollectionOptions({currentFilter: filter});
     this.collectionsService.loadCollections(filter.access).take(1).subscribe();
     this.showCollectionFilter();
   }
 
   public applySort(sort: any) {
-    this.currentSort = sort.label;
+    this.collectionContext.updateCollectionOptions({currentSort: sort});
     this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
     this.showCollectionSort();
   }
 
   public search(query: any) {
+    this.collectionContext.updateCollectionOptions({currentSearchQuery: query});
     this.collectionsService.loadCollections(query).take(1).subscribe();
-    this.currentSearchQuery = query.q;
-    // this.showCollectionSearch();
   }
 
   public showCollectionFilter() {
