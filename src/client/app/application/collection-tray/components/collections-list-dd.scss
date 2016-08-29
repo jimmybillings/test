@@ -216,6 +216,9 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
         &:hover::after {
           background-color: transparent;
         }
+        .md-button-ripple {
+          display:none;
+        }
       }
       md-icon {
         font-size: 32px;

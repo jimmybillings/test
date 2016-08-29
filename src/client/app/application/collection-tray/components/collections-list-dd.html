@@ -58,15 +58,15 @@
     <footer layout="row" layout-align="center center">
       <div class="actions" flex="90" layout="row" layout-align="center center">
         <div flex="33" layout-align="center start">
-          <button md-button type="button" (click)="createCollection.show();closeCollectionsList()"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
+          <button md-button type="button" (click)="createCollection.show();closeCollectionsList()" disableRipple="true"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
         </div>
         <div flex="33" layout-align="center center">
-          <a md-button (click)="navigateToCollectionsIndex();closeCollectionsList()" disableRipple>
+          <a md-button (click)="navigateToCollectionsIndex();closeCollectionsList()" disableRipple="true">
             <md-icon>folder_open</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.VIEW_BTN_LABEL' | translate }}</span>
           </a>
         </div>
         <div flex="33" layout-align="center end">
-          <a md-button (click)="navigateToCollectionShow(focusedCollection.id);closeCollectionsList();" disableRipple>
+          <a md-button (click)="navigateToCollectionShow(focusedCollection.id);closeCollectionsList();" disableRipple="true">
             <md-icon>open_in_browser</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.OPEN_BTN_LABEL' | translate }}</span>
           </a>
         </div>
