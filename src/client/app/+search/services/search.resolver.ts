@@ -11,8 +11,19 @@ export class SearchResolver {
   constructor(private assets: AssetData, private searchContext: SearchContext, public userPreference: UserPreferenceService, public uiState: UiState) {
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    this.searchContext.create = route.params;
+    this.searchContext.create = this.sanitize(route.params);
     if (this.userPreference.state.filterCounts) this.uiState.loading(true);
     return this.assets.searchAssets(this.searchContext.state);
+  }
+
+  public sanitize(routeParams: any): any {
+    let newParams: any = JSON.parse(JSON.stringify(routeParams));
+    for (let param in newParams) {
+      if (newParams[param] === '' || newParams[param] === 'true') {
+        delete(newParams[param]);
+        return newParams;
+      }
+      return newParams;
+    }
   }
 }

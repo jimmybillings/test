@@ -53,7 +53,7 @@ export class SearchContext {
     this.store.dispatch({ type: 'SEARCHCONTEXT.UDPATE', payload: this.decodeParams(params) });
   }
 
-  public set create(params: Object) {
+  public set create(params: any) {
     this.store.dispatch({ type: 'SEARCHCONTEXT.CREATE', payload: this.decodeParams(params) });
   }
 
@@ -64,6 +64,10 @@ export class SearchContext {
   public decodeParams(params: any) {
     let decodedParams: any = {};
     for (let param in params) {
+      if (params[param] === '' || params[param] === 'true') {
+        delete(params[param]);
+        return params;
+      }
       decodedParams[param] = decodeURIComponent(params[param]);
     }
     return decodedParams;
