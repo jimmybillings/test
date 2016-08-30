@@ -58,6 +58,7 @@ export function main() {
     it('Should create a new collection',
       inject([CollectionFormComponent], (component: CollectionFormComponent) => {
         component.dialog = {};
+        component.pageSize = '50';
         component.dialog.close = function() {return true;};
         spyOn(component, 'cancelCollectionCreation');
         spyOn(component.collectionsService, 'createCollection').and.callThrough();
@@ -69,7 +70,7 @@ export function main() {
         collectionWithParsedTags.tags = ['cat', 'dog', 'cow'];
         expect(component.collectionsService.createCollection).toHaveBeenCalledWith(collectionWithParsedTags);
         expect(component.activeCollection.set).toHaveBeenCalledWith(mockCollection().id);
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, {n: 50});
+        expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, {n: '50'});
         expect(component.cancelCollectionCreation).toHaveBeenCalled();
         expect(component.dialog.close).toHaveBeenCalled();
       }));

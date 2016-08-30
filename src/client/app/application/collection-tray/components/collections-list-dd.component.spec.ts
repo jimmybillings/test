@@ -61,13 +61,14 @@ export function main() {
 
     it('Should detect the user is on the collection show page and get the new active collection',
       inject([CollectionListDdComponent], (component: CollectionListDdComponent) => {
+        component.pageSize = '50';
         component.router.url = '/search/23894987';
         spyOn(component.activeCollection, 'set').and.callThrough();
         spyOn(component.activeCollection, 'getItems').and.callThrough();
         spyOn(component, 'closeCollectionsList');
         component.selectFocusedCollection(mockCollectionResponse());
         expect(component.activeCollection.set).toHaveBeenCalledWith(158);
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(158, {n: 50});
+        expect(component.activeCollection.getItems).toHaveBeenCalledWith(158, {i: 1, n: '50'});
         // expect(component.closeCollectionsList).toHaveBeenCalled();
       }));
 

@@ -34,4 +34,9 @@ export class CollectionsSearchFormComponent {
   public onSubmit() {
     this.query.emit(this.searchCollections.value);
   }
+
+  public resetSearch(): void {
+    this.searchCollections.controls['q'].reset('');
+    this.onSubmit();
+  }
 }

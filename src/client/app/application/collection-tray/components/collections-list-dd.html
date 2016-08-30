@@ -1,26 +1,26 @@
 <div class="collections-dd-menu">
   <div class="dd-menu-wrapper">
     <header>
-      <!--<div layout="row" layout-align="end end">-->
-        <collections-search-form
-          [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
-          [hidden]="!collectionSearchIsShowing"
-          (query)="search($event)"
-          (closeSearch)="showCollectionSearch()">
-        </collections-search-form>
-        <collections-filter-dd
-          flex="100"
-          [hidden]="!collectionFilterIsShowing"
-          (filter)="applyFilter($event)"
-          (close)="showCollectionFilter()">
-        </collections-filter-dd>
-        <collections-sort-dd
-          flex="100"
-          [hidden]="!collectionSortIsShowing"
-          (sort)="applySort($event)"
-          (close)="showCollectionSort()">
-        </collections-sort-dd>
-      <!--</div>-->
+      <collections-search-form
+        *ngIf="collectionSearchIsShowing"
+        [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
+        (query)="search($event)"
+        (closeSearch)="showCollectionSearch()">
+      </collections-search-form>
+      <collections-filter-dd
+        *ngIf="collectionFilterIsShowing"
+        flex="100"
+        [currentFilter]="options.currentFilter"
+        (filter)="applyFilter($event)"
+        (close)="showCollectionFilter()">
+      </collections-filter-dd>
+      <collections-sort-dd
+        *ngIf="collectionSortIsShowing"
+        flex="100"
+        [currentSort]="options.currentSort"
+        (sort)="applySort($event)"
+        (close)="showCollectionSort()">
+      </collections-sort-dd>
       <div flex="100" layout="row">
         <h4 class="md-headline" flex="100" layout-align="start center">
           {{ 'COLLECTION.DD_MENU.HEADING' | translate }}
@@ -34,22 +34,22 @@
     </header>
     
     <div class="md-caption query-details" layout="column">
-      <span *ngIf="currentSearchQuery" flex="100" class="search">
-        <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{currentSearchQuery}}
+      <span *ngIf="options.currentSearchQuery.q" flex="100" class="search">
+        <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{ options.currentSearchQuery.q }}
       </span>
-      <span *ngIf="currentFilter !== 'ALL'" flex="100" class="filter">
-        <strong>{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.FILTER_DD_MENU.' + currentFilter | uppercase | translate}}
+      <span *ngIf="options && options.currentFilter.label !== 'ALL'" flex="100" class="filter">
+        <strong>{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.FILTER_DD_MENU.' + options.currentFilter.label | uppercase | translate}}
       </span> 
-      <span flex="100" class="sort">
-        <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.SORT_DD_MENU.' + currentSort | uppercase | translate }}
+      <span flex="100" class="sort" *ngIf="options">
+        <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.SORT_DD_MENU.' + options.currentSort.label | uppercase | translate }}
       </span> 
     </div>
 
     <md-list dense>
       <md-list-item *ngFor="let collection of (collections | async).items" [ngClass]="{active: focusedCollection.id === collection.id}">
         <button (click)="selectFocusedCollection(collection);closeCollectionsList()">
-          <md-icon *ngIf="focusedCollection.id === collection.id">check_circle</md-icon>
-          <md-icon *ngIf="focusedCollection.id !== collection.id">radio_button_unchecked</md-icon>
+          <md-icon *ngIf="focusedCollection.id === collection.id">star</md-icon>
+          <md-icon *ngIf="focusedCollection.id !== collection.id">star_border</md-icon>
           {{collection.name}}
           <md-icon class="right-align" title="{{ 'COLLECTION.DD_MENU.SHARED_TITLE' | translate:{role:collection.userRole} }}" *ngIf="collection.userRole !== 'owner'">folder_shared</md-icon>
         </button>
@@ -58,15 +58,15 @@
     <footer layout="row" layout-align="center center">
       <div class="actions" flex="90" layout="row" layout-align="center center">
         <div flex="33" layout-align="center start">
-          <button md-button type="button" (click)="createCollection.show();closeCollectionsList()"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
+          <button md-button type="button" (click)="createCollection.show();closeCollectionsList()" disableRipple="true"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
         </div>
         <div flex="33" layout-align="center center">
-          <a md-button (click)="navigateToCollectionsIndex();closeCollectionsList()" disableRipple>
+          <a md-button (click)="navigateToCollectionsIndex();closeCollectionsList()" disableRipple="true">
             <md-icon>folder_open</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.VIEW_BTN_LABEL' | translate }}</span>
           </a>
         </div>
         <div flex="33" layout-align="center end">
-          <a md-button (click)="navigateToCollectionShow(focusedCollection.id);closeCollectionsList();" disableRipple>
+          <a md-button (click)="navigateToCollectionShow(focusedCollection.id);closeCollectionsList();" disableRipple="true">
             <md-icon>open_in_browser</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.OPEN_BTN_LABEL' | translate }}</span>
           </a>
         </div>

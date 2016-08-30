@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { AssetService} from './services/asset.service';
@@ -8,7 +8,7 @@ import { CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from '../+collection/services/collections.service';
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { Store } from '@ngrx/store';
-
+import { UiConfig } from '../shared/services/ui.config';
 
 /**
  * Asset page component - renders an asset show page
@@ -19,12 +19,14 @@ import { Store } from '@ngrx/store';
   templateUrl: 'asset.html'
 })
 
-export class AssetComponent {
+export class AssetComponent implements OnInit {
   public asset: Observable<any>;
+  public pageSize: string;
 
   constructor(
     private route: ActivatedRoute,
     public currentUser: CurrentUser,
+    public uiConfig: UiConfig,
     public assetService: AssetService,
     public error: Error,
     public router: Router,
@@ -34,10 +36,27 @@ export class AssetComponent {
     this.asset = assetService.data;
   }
 
+  ngOnInit(): void {
+    this.uiConfig.get('home').take(1).subscribe(config => {
+      this.pageSize = config.config.pageSize.value;
+    });
+  }
+
   public addToCollection(params: any): void {
     this.activeCollection.addAsset(params.collection.id, params.asset).take(1).subscribe(() => {
-      this.activeCollection.getItems(params.collection.id, {n: 50}).take(1).subscribe();
+      this.activeCollection.getItems(params.collection.id, {n: this.pageSize}).take(1).subscribe();
     });
+  }
+
+  public downloadComp(params:any): void {
+      let v = this.assetService.downloadComp(params.assetId,params.compType);
+      v.subscribe((res) => {
+          if (res.url && res.url !== '') {
+                window.location = res.url;
+          }else {
+            alert('No such comp exists! !!!!!!!!!!!!!!!!!!!!!!This notification is temporary and will be redesigned!!!!!!!!!!!!!!!!!!!');
+          }
+      });
   }
 
   public removeFromCollection(params: any): void {

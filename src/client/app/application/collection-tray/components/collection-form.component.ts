@@ -40,19 +40,9 @@ export class CollectionFormComponent implements OnInit {
     private detector: ChangeDetectorRef) {
   }
 
+
   ngOnInit() {
-    let i = 0;
     this.formItems = this.config.form.items;
-    this.collectionsService.data.take(2).subscribe((data: any) => {
-      i++;
-      if (i === 2) {
-        this.formItems = this.config.form.items.map((item: any) => {
-          if (item.type === 'suggestions') item.suggestions = data.items.map((item: any) => item.name);
-          return item;
-        });
-        this.detector.markForCheck();
-      }
-    });
   }
 
   public createCollection(collection: Collection): void {

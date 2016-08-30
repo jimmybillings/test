@@ -132,6 +132,16 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.filter.set(this.filter.clear());
     this.filterAssets();
   }
+  public downloadComp(params): void {
+     let v = this.assetData.downloadComp(params.assetId,params.compType);
+      v.subscribe((res) => {
+          if (res.url && res.url !== '') {
+                window.location = res.url;
+          }else {
+            alert('No such comp exists! !!!!!!!!!!!!!!!!!!!!!!This notification is temporary and will be redesigned!!!!!!!!!!!!!!!!!!!');
+          }
+      });
+  }
 
   public filterAssets(): void {
     this.searchContext.update = { i: 1 };

@@ -42,7 +42,6 @@ export const collections: Reducer<any> = (state: Collections = collectionsState,
   }
 };
 
-
 @Injectable()
 export class CollectionsService {
   public data: Observable<any>;
