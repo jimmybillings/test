@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit
 import { FormGroup, FormControl, FormBuilder} from '@angular/forms';
 import { FormModel } from './wz.form.model';
 import { FormFields, ServerErrors } from '../../../shared/interfaces/forms.interface';
+import { ApiConfig } from '../../services/api.config';
 
 /**
  * Home page component - renders the home page
@@ -24,7 +25,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
 
-  constructor(private fb: FormBuilder, private formModel: FormModel) { }
+  constructor(private fb: FormBuilder, private formModel: FormModel, private apiConfig: ApiConfig) { }
 
   ngOnChanges(changes: any) {
     if (changes.serverErrors && this.form) this.mergeErrors();
@@ -33,7 +34,6 @@ export class WzFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.form = this.fb.group(this.formModel.create(this.items));
-    this.showRequiredLegend = this.hasRequiredFields(this.items);
   }
 
   public mergeErrors() {

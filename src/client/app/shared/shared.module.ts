@@ -1,5 +1,5 @@
 // Shared Angular Modules
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -22,7 +22,8 @@ import { WzToastComponent, WzToastPortalDirective } from '../shared/components/w
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
 import { CollectionsSearchFormComponent } from '../+collection/components/collections-search-form.component';
-
+import { WzInputTagsComponent } from '../shared/components/wz-input-tags/wz-input-tags.component';
+import { WzInputSuggestionsComponent } from '../shared/components/wz-input-suggestions/wz-input-suggestions.component';
 
 // Shared pipes
 import { ValuesPipe } from '../shared/pipes/values.pipe';
@@ -46,7 +47,8 @@ import { MdSlideToggleModule } from '@angular2-material/slide-toggle';
 import { MdTabsModule } from '@angular2-material/tabs';
 import { MdToolbarModule } from '@angular2-material/toolbar';
 import { MdIconModule } from '@angular2-material/icon';
-import { MdCoreModule } from '@angular2-material/core';
+// import { MdCoreModule } from '@angular2-material/core';
+import { OverlayModule } from '@angular2-material/core/core';
 
 @NgModule({
   imports: [
@@ -69,7 +71,7 @@ import { MdCoreModule } from '@angular2-material/core';
     MdTabsModule,
     MdToolbarModule,
     MdIconModule,
-    MdCoreModule,
+    OverlayModule
   ],
   declarations: [
     WzNotificationComponent,
@@ -90,7 +92,9 @@ import { MdCoreModule } from '@angular2-material/core';
     ValuesPipe,
     WzDialogPortalDirective,
     WzDropdownPortalDirective,
-    WzToastPortalDirective
+    WzToastPortalDirective,
+    WzInputTagsComponent,
+    WzInputSuggestionsComponent
   ],
   exports: [
     WzNotificationComponent,
@@ -108,6 +112,12 @@ import { MdCoreModule } from '@angular2-material/core';
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
     CollectionsSearchFormComponent,
+    ValuesPipe,
+    WzDialogPortalDirective,
+    WzDropdownPortalDirective,
+    WzToastPortalDirective,
+    WzInputTagsComponent,
+    WzInputSuggestionsComponent,
     CommonModule,
     RouterModule,
     TranslateModule,
@@ -127,23 +137,24 @@ import { MdCoreModule } from '@angular2-material/core';
     MdTabsModule,
     MdToolbarModule,
     MdIconModule,
-    MdCoreModule,
-    ValuesPipe,
-    WzDialogPortalDirective,
-    WzDropdownPortalDirective,
-    WzToastPortalDirective],
-
-  providers: [
-    {
-      provide: TranslateLoader,
-      useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json?en=2'),
-      deps: [Http]
-    },
-    TranslateService,
-    AssetResolver,
-    SearchResolver,
-    WAZEE_PROVIDERS, WAZEE_STORES
-  ]
+    OverlayModule],
 })
 
-export class SharedModule { }
+export class SharedModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SharedModule,
+      providers: [
+        {
+          provide: TranslateLoader,
+          useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json?en=2'),
+          deps: [Http]
+        },
+        TranslateService,
+        AssetResolver,
+        SearchResolver,
+        WAZEE_PROVIDERS,
+        WAZEE_STORES]
+    };
+  }
+}

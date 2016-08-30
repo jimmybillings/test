@@ -7,10 +7,9 @@ import { CurrentUser} from '../shared/services/current-user.model';
 import { Error } from '../shared/services/error.service';
 import { SearchContext} from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
-import { Collection, Collections, CollectionStore } from '../shared/interfaces/collection.interface';
+import { Collection, Collections } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from '../+collection/services/collections.service';
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
-import { Store } from '@ngrx/store';
 import { FilterService } from './services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 /**
@@ -45,7 +44,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     public currentUser: CurrentUser,
     public collectionsService: CollectionsService,
     public activeCollection: ActiveCollectionService,
-    public store: Store<CollectionStore>,
     public error: Error,
     public searchContext: SearchContext,
     public filter: FilterService,
@@ -113,13 +111,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyFilter(filterId: number): void {
-    if (this.counted) this.uiState.loading(true);
     this.toggleFilter(filterId);
     this.filterAssets();
   }
 
   public applyCustomValue(filter: any, value: any) {
-    if (this.counted) this.uiState.loading(true);
     this.filter.set(this.filter.addCustomValue(filter, value));
     this.filterAssets();
   }
@@ -131,11 +127,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public clearFilters(): void {
-    if (this.counted) this.uiState.loading(true);
     this.filter.set(this.filter.clear());
     this.filterAssets();
   }
-  public downloadComp(params): void {
+  public downloadComp(params:any): void {
      let v = this.assetData.downloadComp(params.assetId,params.compType);
       v.subscribe((res) => {
           if (res.url && res.url !== '') {

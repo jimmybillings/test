@@ -30,6 +30,12 @@ export class UserPreferenceService {
     });
   }
 
+  public get state(): any {
+    let s: any;
+    this.data.take(1).subscribe(state => s = state);
+    return s;
+  }
+
   public update(params: any): void {
     this.store.dispatch({ type: 'UPDATE_PREFERENCES', payload: params });
   }

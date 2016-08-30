@@ -7,16 +7,18 @@
   (ngSubmit)="onSubmit()">
 
     <div *ngFor="let field of items; let i=index">
+
+      <!--
+        START: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
+      -->
       <md-input
-        *ngIf="isRequiredField(field) && (field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')"
+        *ngIf="(field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')"
         class="md-block"
         [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
         placeholder="{{field.label | translate}}"
         type="{{field.type}}"
         formControlName="{{field.name}}"
-        id="{{field.name}}"
-        [required]="isRequiredField(field)"
-      >
+        id="{{field.name}}">
 
         <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
         <md-hint *ngIf="field.hintTextStart && !form.controls[field.name].errors" align="start">
@@ -51,25 +53,13 @@
               
         </md-hint>
       </md-input>
-      
-      <md-input
-        *ngIf="!isRequiredField(field) && (field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')"
-        class="md-block"
-        [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
-        placeholder="{{field.label | translate}}"
-        type="{{field.type}}"
-        formControlName="{{field.name}}"
-        id="{{field.name}}"
-      >
-        <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
-        <md-hint *ngIf="field.hintTextStart" align="start">
-          {{ field.hintTextStart | translate }}
-        </md-hint>
-        <md-hint *ngIf="field.hintTextEnd" align="end">
-          {{ field.hintTextEnd | translate }}
-        </md-hint>
-      </md-input>
+      <!--
+        END: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
+      -->
 
+      <!--
+        START: FORM SELECT
+      -->
       <div *ngIf="field.type == 'select'">
         <md-input-group class="md-group">
           <select formControlName="{{field.name}}">
@@ -77,6 +67,13 @@
           </select>
         </md-input-group>
       </div>
+      <!--
+        END: FORM SELECT
+      -->
+
+      <!--
+        START: FORM RADIO BUTTONS
+      -->
       <md-radio-group *ngIf="field.type == 'radio'" layout="row" formControlName="{{field.name}}">
         <md-radio-button
           style="margin-right: 1rem;"
@@ -88,9 +85,53 @@
             {{option}}
         </md-radio-button>
       </md-radio-group>
+      <!--
+        END: FORM RADIO BUTTONS
+      -->
+
+      <!--
+        START: CUSTOM FOR ELEMENT FOR CREATING TAGS
+      -->
+      <wz-input-tags *ngIf="field.type == 'tags'" #tags [fControl]="form.controls[field.name]">
+        <input type="hidden" formControlName="{{field.name}}">
+        <md-input placeholder="{{field.label | translate}}" (keydown)="tags.submit($event)" id="{{field.name}}"></md-input>
+      </wz-input-tags>
+      <!--
+        END: CUSTOM FOR ELEMENT FOR CREATING TAGS
+      -->
+
+      <!--
+        START: CUSTOM FOR ELEMENT FOR SUGGESTIONS BASED ON TEXT INPUT
+      -->
+      <wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [apiConfig]="apiConfig" [fControl]="form.controls[field.name]">
+        <md-input placeholder="{{field.label | translate}}" 
+          (keydown)="suggestions.inputKeyDown($event)"
+          [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
+          formControlName="{{field.name}}"
+          type="text"
+          [required]="isRequiredField(field)">
+          <md-hint *ngIf="!form.controls[field.name].valid"
+            [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
+            align="start" 
+            class="error">
+              <span *ngIf="form.controls[field.name].hasError('required')">
+                {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+              </span>
+              <span *ngIf="form.controls[field.name].hasError('serverError')">
+                {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
+              </span>
+          </md-hint>
+        </md-input>
+      </wz-input-suggestions>
     </div>
-    
-    <div class="indicate-required" *ngIf="showRequiredLegend">
+    <!--
+      END: CUSTOM FOR ELEMENT FOR SUGGESTIONS BASED ON TEXT INPUT
+    -->
+
+    <!--
+      SHOW THE REQUIRED LEGEND IF FORM HAS AT LEAST ONE REQUIRED FIELD.
+    -->
+    <div class="indicate-required" *ngIf="hasRequiredFields(items)">
       <span>{{ 'ERRORS.INDICATES_REQUIRED_FIELD' | translate }}</span>
     </div>
     

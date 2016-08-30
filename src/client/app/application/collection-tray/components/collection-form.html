@@ -12,28 +12,12 @@
     <md-card-content *ngIf="config">
       <wz-form 
         [items]="formItems"
+        [serverErrors]= "serverErrors"
         submitLabel="COLLECTION.FORM.SUBMIT_LABEL" 
-        (keyup)="inputKeyUp($event)"
-        (keydown)="inputKeyDown($event)"
         (formSubmit)="createCollection($event)"
         autocomplete="off">
       </wz-form>
-
-      <div class="suggestions-menu" [ngClass]="{'revealed': areSuggestionsVisible}">
-        <div md-line class="heading">{{ 'COLLECTION.FORM.TYPE_AHEAD_SUGGESTIONS_HEADING' | translate}}</div>
-        <md-list>
-          <md-list-item *ngFor="let suggestion of suggestions">
-            <button (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}">
-              {{suggestion}}
-            </button>
-          </md-list-item>
-        </md-list>
-      </div>
       
     </md-card-content>
   </md-card>
 </div>
-
-<!--<div [ngClass]="{'fade-out': !(UiState.data | async).newCollectionFormIsOpen, 'fade-in': (UiState.data | async).newCollectionFormIsOpen}"
-  class="bk-for-dialog" (click)="cancelCollectionCreation()">
-</div>-->

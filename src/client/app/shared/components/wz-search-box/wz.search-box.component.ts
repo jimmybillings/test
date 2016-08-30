@@ -1,8 +1,9 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
-import {FormBuilder, Validators, FormGroup, FormControl} from '@angular/forms';
-import {Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
-import {Router} from '@angular/router';
-import {Observable} from 'rxjs/Rx';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
+import { FormBuilder, Validators, FormGroup, FormControl} from '@angular/forms';
+import { Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
+import { Router} from '@angular/router';
+import { Observable} from 'rxjs/Rx';
+import { UiState } from '../../services/ui.state';
 
 @Component({
   moduleId: module.id,
@@ -16,7 +17,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
   @Input() currentUser: any;
   @Input() apiConfig: any;
   @Input() state: any;
-  @Input() UiState: any;
+  @Input() UiState: UiState;
   @Output() searchContext = new EventEmitter();
   public searchTerms: Observable<any>;
   public searchForm: FormGroup;
@@ -55,6 +56,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
   }
 
   public onSubmit(query: any, searchTerm = false) {
+    this.searchTerms = Observable.of([]);
     query = (searchTerm) ? '"' + query + '"' : query;
     this.searchContext.emit(query);
   }

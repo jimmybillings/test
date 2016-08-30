@@ -223,6 +223,7 @@
     "VALID_EMAIL_REQUIRED":"Must be a valid email address",
     "NAME_ALREADY_TAKEN":"That {{fieldName}} is already being used",
     "CheckForDuplicate": "This email already exists",
-    "CheckPassword": "Password must contain at least 1 number"
+    "CheckPassword": "Password must contain at least 1 number",
+    "duplicateName": "A collection with this name already exists"
   }
 }

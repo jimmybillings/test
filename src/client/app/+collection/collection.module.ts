@@ -8,7 +8,7 @@ import { CollectionShowResolver } from '../+collection/services/collection-show.
 import { CollectionGuard } from './services/collection-guard';
 import { WzCollectionItemListComponent } from '../shared/components/wz-collection-item-list/wz.collection-item-list.component';
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(COLLECTION_ROUTES)],
+  imports: [SharedModule.forRoot(), RouterModule.forChild(COLLECTION_ROUTES)],
   declarations: [
     CollectionsComponent,
     CollectionShowComponent,

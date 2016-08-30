@@ -5,6 +5,7 @@ import { SearchContext} from '../shared/services/search-context.service';
 import { ApiConfig} from '../shared/services/api.config';
 import { Subscription } from 'rxjs/Rx';
 import { FilterService } from '../+search/services/filter.service';
+import { UiState } from '../shared/services/ui.state';
 
 @Component({
   moduleId: module.id,
@@ -22,7 +23,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     public uiConfig: UiConfig,
     public searchContext: SearchContext,
     public apiConfig: ApiConfig,
-    public filter: FilterService) {
+    public filter: FilterService,
+    public uiState: UiState) {
   }
 
   ngOnInit() {

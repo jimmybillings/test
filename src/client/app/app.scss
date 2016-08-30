@@ -32,6 +32,7 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import 'shared/components/wz-form/wz.form';
 @import 'shared/components/wz-breadcrumb/wz-breadcrumb';
 @import 'shared/components/wz-pikaday/wz.pikaday';
+@import 'shared/components/wz-input-tags/wz-input-tags';
 
 // ROUTE COMPONENTS
 @import '+home/home';

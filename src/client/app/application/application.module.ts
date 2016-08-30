@@ -7,7 +7,7 @@ import { CollectionListDdComponent } from './collection-tray/components/collecti
 import { CollectionFormComponent } from './collection-tray/components/collection-form.component';
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [SharedModule.forRoot()],
   declarations: [
     AppNavComponent,
     CollectionTrayComponent,
