@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, Input, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
@@ -11,6 +11,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 export class CollectionsSearchFormComponent {
   public searchCollections: FormGroup;
   public isCollectionSearchOpen: boolean = false;
+  @Input() currentSearchQuery: any;
   @Output() query = new EventEmitter();
   @Output() closeSearch = new EventEmitter();
 
