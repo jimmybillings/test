@@ -56,14 +56,18 @@
  * Once material has better menu support these possiibly can be removed.
  ************/
 
+.md-overlay-pane .md-menu {
+  max-width: rem(33.6);
+}
 .md-menu [md-menu-item] {
   color: rgba(md-color($md-foreground,text), .75);
 }
 .md-menu a[md-menu-item] md-icon.material-icons,
 .md-menu button[md-menu-item] md-icon.material-icons {
   color: md-color($md-foreground,icon);
-  padding-left: rem(.4);
-  padding-right: rem(1.4);
+  padding-left: rem(.8);
+  padding-right: rem(1.6);
+  margin-top: rem(-.3);
 }
 .md-menu a[md-menu-item][disabled] md-icon.material-icons,
 .md-menu button[md-menu-item][disabled] md-icon.material-icons {

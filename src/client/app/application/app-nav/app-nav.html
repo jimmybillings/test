@@ -25,21 +25,26 @@
   
     <button *ngIf="(UiState.data | async).searchBarIsActive" md-icon-button title="Search" (click)="toggleSearch()" class="open-search"><md-icon>search</md-icon></button>
     
-    <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async)" md-icon-button  title="Cart" [routerLink]="['/cart']"><md-icon>shopping_cart</md-icon></button>
-
     <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id !== null" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleBinTray()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
 
     <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id === null" md-icon-button title="{{'HEADER.NEW_COLLECTION_LABEL' | translate}}" (click)="showNewCollection()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
 
+    <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async)" md-icon-button  title="Cart" [routerLink]="['/cart']"><md-icon>shopping_cart</md-icon></button>
+    
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
 </md-toolbar>
 
-<md-menu #navigation="mdMenu" class="navigation-menu">
-  <button  md-menu-item *ngIf="permission.has('Root')" [routerLink]="['/admin/dashboard']"><span hide show-gt-sm>{{ 'HEADER.ADMIN_LABEL' | translate }} </span><md-icon>settings</md-icon></button>
-  <md-divider></md-divider>
-  <button md-menu-item *ngIf="(currentUser.loggedInState() | async)" title="Profile" [routerLink]="['/user/profile']"><span hide show-gt-sm>Profile </span><md-icon>person</md-icon></button>
-  <md-divider></md-divider>
-  <button md-menu-item *ngIf="(currentUser.loggedInState() | async)" title="Collections" [routerLink]="['/collection']"><span hide show-gt-sm>Collections </span><md-icon>folder_open</md-icon></button>
-  <md-divider></md-divider>
-  <button md-menu-item *ngIf="(currentUser.loggedInState() | async)" title="Cart" [routerLink]="['/cart']"><span hide show-gt-sm>Cart </span><md-icon>shopping_cart</md-icon></button>
+<md-menu x-position="before" #navigation="mdMenu">
+    <a md-menu-item *ngIf="permission.has('Root')" [routerLink]="['/admin/dashboard']">
+        <md-icon>settings</md-icon>{{ 'HEADER.ADMIN_LABEL' | translate }}
+    </a>
+    <a md-menu-item *ngIf="(currentUser.loggedInState() | async)" [routerLink]="['/user/profile']">
+        <md-icon>person</md-icon>Open your Profile
+    </a>
+    <a md-menu-item *ngIf="(currentUser.loggedInState() | async)" [routerLink]="['/collection']">
+        <md-icon>folder_open</md-icon>Open your collections
+    </a>
+    <a md-menu-item disabled *ngIf="(currentUser.loggedInState() | async)" [routerLink]="['/collection']">
+        <md-icon>shopping_cart</md-icon>Open your cart
+    </a>
 </md-menu>

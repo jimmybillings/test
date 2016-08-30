@@ -19,7 +19,24 @@
         <span class="count" *ngIf="!(collection | async).assets">0</span>
       </button>
     </nav>
-    <button md-icon-button flex="none" title="more collection options" [md-menu-trigger-for]="moreCollectionMenu"><md-icon>more_vert</md-icon></button>
+    <button md-icon-button flex="none" title="more collection options" [md-menu-trigger-for]="moreCollectionTrayOptions"><md-icon>more_vert</md-icon></button>
+    <md-menu x-position="before" #moreCollectionTrayOptions="mdMenu">
+      <button md-menu-item>
+        <md-icon>create_new_folder</md-icon>Create a new collection
+      </button>
+      <a md-menu-item *ngIf="(collection | async).id" [routerLink]="['/collection/', (collection | async).id, {i: 1, n: pageSize}]">
+        <md-icon>open_in_browser</md-icon>Open selected collection
+      </a>
+      <button md-menu-item disabled>
+        <md-icon>link</md-icon>copy link for selected collection
+      </button>
+      <a md-menu-item [routerLink]="['/collection/']">
+        <md-icon>folder_open</md-icon>View all collections
+      </a>
+      <button md-menu-item (click)="list.show($event)">
+        <md-icon>folder_special</md-icon>Change focused collection
+      </button>
+    </md-menu>
   </div>
   <!--<button md-icon-button title="close collections" type="button" (click)="UiState.toggleBinTray()" class="close"><md-icon>close</md-icon></button>-->
 </section>
@@ -33,11 +50,3 @@
     layout="row" layout-align="end start" class="revealed">
   </collections-list-dd>
 </wz-dropdown>
-
-<md-menu class="more-collections-menu" x-position="before" #moreCollectionMenu="mdMenu">
-  <button md-menu-item>Create a new collection</button>
-  <a *ngIf="(collection | async).id" [routerLink]="['/collection/', (collection | async).id, {i: 1, n: pageSize}]" md-menu-item>Open selected collection</a>
-  <button md-menu-item disabled>copy link for selected collection</button>
-  <a [routerLink]="['/collection/']" md-menu-item>View all collections</a>
-  <button md-menu-item (click)="list.show($event)">Change focused collection</button>
-</md-menu>
