@@ -14,7 +14,7 @@
     
     <a md-button *ngIf="currentUser.loggedInState() | async" [md-menu-trigger-for]="navigation" [ngClass]="{'md-primary': !(UiState.data | async).showFixed}" hide="" show-xs="" class="md-icon-button is-dd"> <i md-icon="" class="material-icons">person</i></a>
 
-    <a md-button *ngIf="currentUser.loggedInState() | async" (click)="logOut()" [routerLink]="['/']" hide="" show-gt-sm="" class="md-caption md-primary md-hue-2">{{ 'HEADER.LOGOUT_LABEL' | translate}}</a>
+    <!--<a md-button *ngIf="currentUser.loggedInState() | async" (click)="logOut()" [routerLink]="['/']" hide="" show-gt-sm="" class="md-caption md-primary md-hue-2">{{ 'HEADER.LOGOUT_LABEL' | translate}}</a>-->
     
     <!--THESE LINKS SHOW ONLY FOR LOGGED OUT USERS-->
     <a md-button *ngIf="!(currentUser.loggedInState() | async)" [routerLink]="['/user/login']">{{ 'HEADER.LOGIN_LABEL' | translate}}</a>
@@ -46,5 +46,9 @@
     </a>
     <a md-menu-item disabled *ngIf="(currentUser.loggedInState() | async)" [routerLink]="['/collection']">
         <md-icon>shopping_cart</md-icon>Open your cart
+    </a>
+    <div class="divider"></div>
+    <a md-menu-item *ngIf="currentUser.loggedInState() | async" (click)="logOut()" [routerLink]="['/']">
+      <md-icon>power_settings_new</md-icon>{{ 'HEADER.LOGOUT_LABEL' | translate}}
     </a>
 </md-menu>

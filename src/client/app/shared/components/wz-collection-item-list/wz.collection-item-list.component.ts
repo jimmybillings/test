@@ -19,7 +19,6 @@ export class WzCollectionItemListComponent {
   private currentCollectionId: any = 0;
 
   public selectActiveCollection(collectionId: any) {
-    console.log(collectionId);
     this.setActiveCollection.emit(collectionId);
   }
 
