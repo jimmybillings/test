@@ -4,6 +4,7 @@
       <collections-search-form
         *ngIf="collectionSearchIsShowing"
         [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
+        [currentSearchQuery]="options.currentSearchQuery"
         (query)="search($event)"
         (closeSearch)="showCollectionSearch()">
       </collections-search-form>
