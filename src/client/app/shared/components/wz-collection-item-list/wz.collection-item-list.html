@@ -102,7 +102,7 @@
             <!--<button md-icon-button title="{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}" (click)="showHistory(collection)"><md-icon>history</md-icon></button>-->
             <button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)"><md-icon>share</md-icon></button>
             <button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)"><md-icon>mode_comment</md-icon></button>
-            <!--<button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreMenu"><md-icon>more_vert</md-icon></button>-->
+            <button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreCollectionOptions" (click)="setCurrentCollectionId(collection.id)"><md-icon>more_vert</md-icon></button>
             <!--</div>-->
             <!--<div flex="20" layout-align="end center">
             <button md-icon-button title="{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}" (click)="deleteCollection(collection)"><md-icon>cancel</md-icon></button>
@@ -132,20 +132,19 @@
 
     </li>
 </ul>
-<!--<md-menu class="more-collections-menu" x-position="before" #moreMenu="mdMenu">
-    <button md-menu-item>Create a new collection</button>
-
-    <a md-menu-item md-button [routerLink]="['/collection/', collection.id, {i: 1, n: 100}]" disableRipple="true">
-        <md-icon>details</md-icon><span class="label">Open this collection</span>
+<md-menu class="more-collections-menu" x-position="before" #moreCollectionOptions="mdMenu">
+    <button md-menu-item (click)="selectActiveCollection(currentCollectionId)">
+        <md-icon>star_border</md-icon>Select this collection
+    </button>
+    <a md-menu-item [routerLink]="['/collection/', currentCollectionId, {i: 1, n: 100}]" disableRipple="true">
+        <md-icon>open_in_browser</md-icon>Open this collection
     </a>
-    <a md-menu-item md-button [routerLink]="['/collection/', collection.id, {i: 1, n: 100}]" disableRipple="true">
-        <md-icon>folder_open</md-icon>Open this collection
-    </a>
-    <button md-menu-item  class="delete" md-icon-button title="{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}" (click)="deleteCollection(collection.id)"><md-icon>cancel</md-icon>Delete this collection</button>
-    <a title="{{ 'COLLECTION.INDEX.DETAIL_BTN_TITLE' | translate }}" [routerLink]="['/collection/', collection.id, {i: 1, n: 100}]" md-menu-item>Open this collection</a>
-    <button md-menu-item disabled>copy link for selected collection</button>
-    <a [routerLink]="['/collection/']" md-menu-item>View all collections</a>
-    <button md-menu-item (click)="selectActiveCollection(collection.id)">Make this collection active</button>
-    <button md-menu-item (click)="showHistory(collection)">Show collection history</button>
-    <button md-menu-item  class="delete" md-icon-button title="{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}" (click)="deleteCollection(collection.id)"><md-icon>cancel</md-icon></button>
-</md-menu>-->
+    <button md-menu-item disabled><md-icon>link</md-icon>Copy collection link</button>
+    <button md-menu-item  disabled (click)="showHistory(collection)"><md-icon>history</md-icon>View collection history</button>
+    <div class="divider"></div>
+    <button md-menu-item
+        class="delete" 
+        (click)="deleteCollection(currentCollectionId)">
+        <md-icon>delete</md-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
+    </button>
+</md-menu>

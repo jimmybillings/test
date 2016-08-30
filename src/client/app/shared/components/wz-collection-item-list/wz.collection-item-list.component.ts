@@ -16,10 +16,11 @@ export class WzCollectionItemListComponent {
   @Input() collections: any;
   @Input() activeCollection: any;
   @Output() setActiveCollection = new EventEmitter();
+  private currentCollectionId: any = 0;
 
-  public selectActiveCollection(collectionId:any) {
-      console.log(collectionId);
-      this.setActiveCollection.emit(collectionId);
+  public selectActiveCollection(collectionId: any) {
+    console.log(collectionId);
+    this.setActiveCollection.emit(collectionId);
   }
 
   public date(date: any): Date {
@@ -28,5 +29,9 @@ export class WzCollectionItemListComponent {
 
   public thumbnail(thumbnail: { urls: { https: string } }): string {
     return (thumbnail) ? thumbnail.urls.https : '/assets/img/tbn_missing.jpg';
+  }
+
+  public setCurrentCollectionId(id: any) {
+    this.currentCollectionId = id;
   }
 }
