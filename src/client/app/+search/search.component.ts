@@ -113,13 +113,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyFilter(filterId: number): void {
-    if (this.counted) this.uiState.loading(true);
     this.toggleFilter(filterId);
     this.filterAssets();
   }
 
   public applyCustomValue(filter: any, value: any) {
-    if (this.counted) this.uiState.loading(true);
     this.filter.set(this.filter.addCustomValue(filter, value));
     this.filterAssets();
   }
@@ -131,7 +129,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public clearFilters(): void {
-    if (this.counted) this.uiState.loading(true);
     this.filter.set(this.filter.clear());
     this.filterAssets();
   }

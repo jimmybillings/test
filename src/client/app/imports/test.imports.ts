@@ -2,7 +2,7 @@
 import { LocationStrategy } from '@angular/common';
 import { MockBackend } from '@angular/http/testing';
 import { BaseRequestOptions, Http } from '@angular/http';
-import { provide, Renderer } from '@angular/core';
+import { provide, Renderer, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutletMap } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 // DIRECTIVES
@@ -55,4 +55,5 @@ export const beforeEachProvidersArray: Array<any> = [
   }),
   { provide: Router, useClass: MockRouter },
   { provide: ActivatedRoute, useClass: MockActivatedRoute },
+  ChangeDetectorRef
 ];

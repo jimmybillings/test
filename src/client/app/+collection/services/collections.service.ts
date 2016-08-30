@@ -65,6 +65,12 @@ export class CollectionsService {
     this.setSearchParams();
   }
 
+  public get state(): any {
+    let s: any;
+    this.data.take(1).subscribe(state => s = state);
+    return s;
+  }
+
   public loadCollections(params:any={}): Observable<any> {
     this.params = Object.assign({}, this.params, params);
     return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/search`,

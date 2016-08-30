@@ -4,7 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AssetDetailComponent } from './components/asset-detail.component';
 import { AssetDataComponent } from './components/asset-data.component';
 @NgModule({
-    imports: [SharedModule],
+    imports: [SharedModule.forRoot()],
     declarations: [AssetComponent, AssetDetailComponent, AssetDataComponent],
     exports: [AssetComponent],
 })

@@ -74,21 +74,21 @@ export function main() {
         expect(component.dialog.close).toHaveBeenCalled();
       }));
 
-    it('Should return type ahead suggestions matching input',
-      inject([CollectionFormComponent], (component: CollectionFormComponent) => {
-        expect(component.getSuggestions('maui', mockCollections()))
-          .toEqual(['Maui Hawaii', 'Maui Hawaii +25', 'Maui Hawaii five-o', 'Maui Hawaii five-99', 'Maui Hawaii testing']);
-      }));
+    // it('Should return type ahead suggestions matching input',
+    //   inject([CollectionFormComponent], (component: CollectionFormComponent) => {
+    //     expect(component.getSuggestions('maui', mockCollections()))
+    //       .toEqual(['Maui Hawaii', 'Maui Hawaii +25', 'Maui Hawaii five-o', 'Maui Hawaii five-99', 'Maui Hawaii testing']);
+    //   }));
 
-    it('Should be able to use down arrow key to navigate type ahead suggestion list',
-      inject([CollectionFormComponent], (component: CollectionFormComponent) => {
-        spyOn(component, 'inputKeyDown').and.callThrough();
-        spyOn(component, 'setActiveSuggestion');
-        spyOn(component, 'getActiveSuggestionIndex');
-        component.inputKeyDown(mockKeyboardEventDownArrow());
-        expect(component.getActiveSuggestionIndex).toHaveBeenCalled();
-        expect(component.setActiveSuggestion).toHaveBeenCalled();
-      }));
+    // it('Should be able to use down arrow key to navigate type ahead suggestion list',
+    //   inject([CollectionFormComponent], (component: CollectionFormComponent) => {
+    //     spyOn(component, 'inputKeyDown').and.callThrough();
+    //     spyOn(component, 'setActiveSuggestion');
+    //     spyOn(component, 'getActiveSuggestionIndex');
+    //     component.inputKeyDown(mockKeyboardEventDownArrow());
+    //     expect(component.getActiveSuggestionIndex).toHaveBeenCalled();
+    //     expect(component.setActiveSuggestion).toHaveBeenCalled();
+    //   }));
   });
 }
 

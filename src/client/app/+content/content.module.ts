@@ -4,7 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import {ContentService} from './content.service';
 
 @NgModule({
-    imports: [SharedModule],
+    imports: [SharedModule.forRoot()],
     declarations: [ContentComponent],
     exports: [ContentComponent],
     providers: [ContentService],

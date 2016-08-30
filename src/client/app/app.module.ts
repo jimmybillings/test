@@ -19,7 +19,7 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     RouterModule.forRoot(APP_ROUTES),
-    SharedModule,
+    SharedModule.forRoot(),
     HomeModule,
     SearchModule,
     AssetModule,
@@ -31,7 +31,7 @@ import { AppComponent } from './app.component';
   ],
   providers: [{
     provide: APP_BASE_HREF,
-    useValue: '<%= APP_BASE %>'
+    useValue: '<%= APP_BASE %>',
   }],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
