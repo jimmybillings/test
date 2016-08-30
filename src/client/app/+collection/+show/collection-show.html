@@ -40,16 +40,24 @@
               </div>
 
               <div flex-gt-sm="33" layout-sm="100" flex="100" class="actions" layout-align="end center">
-                <!--<div flex="80">-->
                   <button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="showEdit(collection)"><md-icon>edit</md-icon></button>
-                  <!--<button md-icon-button title="{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}" (click)="showHistory(collection)"><md-icon>history</md-icon></button>-->
                   <button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)"><md-icon>share</md-icon></button>
                   <button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)"><md-icon>mode_comment</md-icon></button>
-                  <button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" (click)="showHistory(collection)"><md-icon>more_vert</md-icon></button>
-                <!--</div>-->
-                <!--<div flex="20" layout-align="end center">
-                  <button md-icon-button title="{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}" (click)="deleteCollection(collection)"><md-icon>cancel</md-icon></button>
-                </div>-->
+                  <button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreShowCollectionOptions"><md-icon>more_vert</md-icon></button>
+
+                  <md-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="mdMenu">
+                      <button md-menu-item disabled><md-icon>file_download</md-icon>Download all comps</button>
+                      <button md-menu-item disabled (click)="showHistory(collection)"><md-icon>history</md-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}</button>
+                      <div class="divider"></div>
+                      <button md-menu-item disabled><md-icon>import_export</md-icon>Export collection as XML</button>
+                      <button md-menu-item disabled><md-icon>print</md-icon>Print collection asset list</button>
+                      <button md-menu-item disabled><md-icon>link</md-icon>Copy collection link</button>
+                      <div class="divider"></div>
+                      <button md-menu-item class="delete" (click)="deleteCollection(collection.id)">
+                          <md-icon>delete</md-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
+                      </button>
+                  </md-menu>
+
               </div>
             </li>
           </ul>

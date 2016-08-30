@@ -20,9 +20,10 @@
       </button>
     </nav>
     <button md-icon-button flex="none" title="more collection options" [md-menu-trigger-for]="moreCollectionTrayOptions"><md-icon>more_vert</md-icon></button>
+    
     <md-menu x-position="before" #moreCollectionTrayOptions="mdMenu">
-      <button md-menu-item>
-        <md-icon>create_new_folder</md-icon>Create a new collection
+      <button md-menu-item disabled (click)="createCollection.show()">
+        <md-icon>add_circle_outline</md-icon>Create a new collection
       </button>
       <a md-menu-item *ngIf="(collection | async).id" [routerLink]="['/collection/', (collection | async).id, {i: 1, n: pageSize}]">
         <md-icon>open_in_browser</md-icon>Open selected collection
@@ -33,7 +34,7 @@
       <a md-menu-item [routerLink]="['/collection/']">
         <md-icon>folder_open</md-icon>View all collections
       </a>
-      <button md-menu-item (click)="list.show($event)">
+      <button md-menu-item disabled (click)="list.show($event)">
         <md-icon>folder_special</md-icon>Change focused collection
       </button>
     </md-menu>
