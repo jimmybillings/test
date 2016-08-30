@@ -48,3 +48,30 @@
     width: 100%;
   }
 }
+
+
+
+/************
+ * menus and menus with icons
+ * Once material has better menu support these possiibly can be removed.
+ ************/
+
+.md-menu [md-menu-item] {
+  color: rgba(md-color($md-foreground,text), .75);
+}
+.md-menu a[md-menu-item] md-icon.material-icons,
+.md-menu button[md-menu-item] md-icon.material-icons {
+  color: md-color($md-foreground,icon);
+  padding-left: rem(.4);
+  padding-right: rem(1.4);
+}
+.md-menu a[md-menu-item][disabled] md-icon.material-icons,
+.md-menu button[md-menu-item][disabled] md-icon.material-icons {
+  color: rgba(md-color($md-foreground,text), .25);
+}
+.md-menu .divider {
+  width: 100%;
+  margin-top: rem(.3);
+  padding-bottom: rem(.3);
+  box-shadow: inset 0 1px 0 0 md-color($md-foreground, divider);
+}

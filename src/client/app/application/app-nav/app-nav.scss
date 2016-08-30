@@ -198,25 +198,25 @@ header.app-header + div.main-content home .hero {
   // }
 }
 
-.md-menu {
-  margin-top: 36px;
-}
+// .md-menu {
+//   margin-top: 36px;
+// }
 
-.navigation-menu {
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    width: rem(10);
-    button[md-menu-item] {
-      color: md-color($md-primary, 500);
-    }
-  }
-  @media screen and (min-width: $layout-breakpoint-sm) {
-    width: rem(20);
-    button[md-menu-item] {
-      color: md-color($md-primary, 500);
-      md-icon {
-        position: absolute;
-        right: rem(2);
-      }
-    }
-  }
-}
+// .navigation-menu {
+//   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+//     width: rem(10);
+//     button[md-menu-item] {
+//       color: md-color($md-primary, 500);
+//     }
+//   }
+//   @media screen and (min-width: $layout-breakpoint-sm) {
+//     width: rem(20);
+//     button[md-menu-item] {
+//       color: md-color($md-primary, 500);
+//       md-icon {
+//         position: absolute;
+//         right: rem(2);
+//       }
+//     }
+//   }
+// }

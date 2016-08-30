@@ -7,7 +7,6 @@
           (query)="search($event)"
           (closeSearch)="showCollectionSearch()">
         </collections-search-form>
-
         <collections-filter-dd 
           *ngIf="collectionFilterIsShowing"
           flex="100"
@@ -18,7 +17,6 @@
           layout-align="end start" 
           class="revealed">
         </collections-filter-dd>
-
         <collections-sort-dd
           *ngIf="collectionSortIsShowing"
           flex="100"
@@ -54,91 +52,8 @@
         </div>
       </div>
     </header>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--<header flex="100" flex-gt-md="85" flex-gt-lg="75">
-      <div flex="100" layout="row" layout-xs="column">
-        <h2 class="md-display-1">Your Collections</h2>
-      </div>
-      <div flex="100" layout="row" layout-align="end end">
-
-
-        <collections-search-form
-          [ngClass]="{ 'revealed' : isCollectionSearchOpen }" 
-          [hidden]="!isCollectionSearchOpen" 
-          (query)="search($event)">
-        </collections-search-form>
-        <button md-icon-button 
-          title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}" 
-          type="button" 
-          (click)="toggleCollectionSearch()">
-          <md-icon *ngIf="isCollectionSearchOpen">close</md-icon>
-          <md-icon *ngIf="!isCollectionSearchOpen">search</md-icon>
-        </button>
-
-        <button md-button class="is-dd filter-selector" (click)="filterCollections.show($event)">
-          {{ 'COLLECTION.INDEX.FILTER_DD_MENU.HEADING' | translate }}
-
-          <span class="selected">
-            {{'COLLECTION.INDEX.FILTER_DD_MENU.'+getActiveFilter() | uppercase | translate}}
-          </span>
-        </button>
-        <wz-dropdown #filterCollections>
-          <collections-filter-dd 
-            [UiState]="UiState" 
-            (filter)="filter($event); filterCollections.close()" 
-            (close)="filterCollections.close()"
-            layout="row" 
-            layout-align="end start" 
-            class="revealed">
-          </collections-filter-dd>
-        </wz-dropdown>
-        
-        <button md-button class="is-dd filter-selector" (click)="sortCollections.show($event)">
-          Sort: 
-          <span class="selected">
-            {{'COLLECTION.INDEX.SORT_DD_MENU.'+getActiveSort() | uppercase | translate }}
-          </span>
-        </button>
-        <wz-dropdown #sortCollections>
-          <collections-sort-dd 
-            [UiState]="UiState" 
-            (sort)="sortBy($event); sortCollections.close()" 
-            (close)="sortCollections.close()"
-            layout="row" layout-align="end start" class="revealed">
-          </collections-sort-dd>
-        </wz-dropdown>
-      </div>
-    </header>-->
-
-
-
-
-
   </div>
 </section>
-    
 
 <div layout="row" layout-align="center start">
   <div class="md-caption query-details"  flex="100" flex-gt-md="95" flex-gt-lg="85">
@@ -153,8 +68,6 @@
     </span> 
   </div>
 </div>
-
-
 
 <section class="hero">
   <div layout="row" flex="100" layout-margin layout-align="center start">
