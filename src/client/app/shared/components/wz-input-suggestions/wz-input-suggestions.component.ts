@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, ElementRef, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 import {Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
@@ -16,12 +16,13 @@ import {Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
                   </button>
                 </md-list-item>
               </md-list>
-            </div>`,
+            </div>
+            <div class="wz-dialog-click-catcher" *ngIf="areSuggestionsVisible" (click)="closeSuggestions()"></div>`,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class WzInputSuggestionsComponent implements OnInit {
   @Input() fControl: FormControl;
-  @Input() suggestionsList: Array<string> = [];
   @Input() data: Observable<any>;
   @Input() apiConfig: any;
   public suggestions: Array<string> = [];
@@ -55,6 +56,9 @@ export class WzInputSuggestionsComponent implements OnInit {
       });
   }
 
+  public closeSuggestions() {
+    this.areSuggestionsVisible = false;
+  }
   /**
    * When you click or hit enter take the active suggestion and make it the input field value.
    */
@@ -65,6 +69,7 @@ export class WzInputSuggestionsComponent implements OnInit {
     this.suggestions = [];
     this.activeSuggestion = null;
     this.areSuggestionsVisible = false;
+    this.detector.markForCheck();
   }
 
   /**
@@ -72,7 +77,7 @@ export class WzInputSuggestionsComponent implements OnInit {
    */
   public setActiveSuggestion(suggestion: string) {
     this.activeSuggestion = suggestion;
-    // this.fControl.updateValue(suggestion);
+    this.detector.markForCheck();
   }
 
   /**
@@ -83,6 +88,7 @@ export class WzInputSuggestionsComponent implements OnInit {
     if (this.activeSuggestion !== null) {
       activeSuggestionIndex = this.suggestions.indexOf(this.activeSuggestion);
     }
+    this.detector.markForCheck();
     return activeSuggestionIndex;
   }
 
