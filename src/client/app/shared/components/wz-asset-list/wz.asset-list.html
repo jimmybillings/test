@@ -26,9 +26,18 @@
           <button
             *ngIf="asset.hasDownloadableComp && (currentUser.canDownload('wm') | async)"
             md-icon-button
-            title="Download Comp"
-            [md-menu-trigger-for]="downloadCompMenu"
-            (click)="setAssetActiveId(asset.assetId)">
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
+            (click)="setAssetActiveId(asset.assetId)"
+            [md-menu-trigger-for]="downloadCompMenu">
+              <md-icon>file_download</md-icon>
+          </button>
+          <button
+            *ngIf="!asset.hasDownloadableComp || !(currentUser.canDownload('wm') | async)"
+            disabled
+            md-icon-button
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
+            (click)="setAssetActiveId(asset.assetId)"
+            [md-menu-trigger-for]="downloadCompMenu">
               <md-icon>file_download</md-icon>
           </button>
           <button md-icon-button *ngIf="collection.id !== null && alreadyInCollection(asset)" 

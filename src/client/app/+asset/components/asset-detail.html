@@ -9,7 +9,15 @@
           <button
             *ngIf="asset.hasDownloadableComp && (currentUser.canDownload('wm') | async)"
             md-icon-button
-            title="Download Comp"
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
+            [md-menu-trigger-for]="downloadCompMenu">
+              <md-icon>file_download</md-icon>
+          </button>
+          <button
+            *ngIf="!asset.hasDownloadableComp || !(currentUser.canDownload('wm') | async)"
+            disabled
+            md-icon-button
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
             [md-menu-trigger-for]="downloadCompMenu">
               <md-icon>file_download</md-icon>
           </button>

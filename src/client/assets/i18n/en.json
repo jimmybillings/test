@@ -132,6 +132,8 @@
       "SHARE_BTN_TITLE": "Share collection",
       "COMMENT_BTN_TITLE": "Show collection comments",
       "MORE_BTN_TITLE": "More collection options",
+      "DOWNLOAD_BTN_TITLE_ENABLED": "Download Comp",
+      "DOWNLOAD_BTN_TITLE_DISABLED": "Comp Unavailable",
       "CREATED_LABEL": "Created:",
       "UPDATED_LABEL": "Updated:",
       "ROLE_LABEL": "Your role:",
