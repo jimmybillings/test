@@ -7,6 +7,12 @@ const permissionMap: any = {
   'root': 'Root'
 };
 
+const compMap: any = {
+  'wm': 'Watermark',
+  'clean': 'Clean',
+  'full': 'Full'
+};
+
 export const currentUser: Reducer<any> = (state = {}, action: Action) => {
 
   switch (action.type) {
@@ -71,6 +77,13 @@ export class CurrentUser {
 
   public is(permission: string): Observable<any> {
     let permissionToCheck = permissionMap[permission];
+    return this.data.map((user) => {
+      return user.permissions ? user.permissions.indexOf(permissionToCheck) > -1 : false;
+    });
+  }
+
+  public canDownload(compType: string): Observable<boolean> {
+    let permissionToCheck = `Download${compMap[compType]}Comps`;
     return this.data.map((user) => {
       return user.permissions ? user.permissions.indexOf(permissionToCheck) > -1 : false;
     });

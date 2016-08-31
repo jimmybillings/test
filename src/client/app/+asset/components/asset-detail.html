@@ -6,7 +6,13 @@
     <div flex-gt-sm="33" flex="100" layout="column">
       <header class="toolbar-actions">
         <nav class="asset-options" flex layout-align="end stretch">
-          <button md-icon-button title="Download Comp" [md-menu-trigger-for]="downloadCompMenu" *ngIf="asset.hasDownloadableComp"><md-icon>file_download</md-icon></button>
+          <button
+            *ngIf="asset.hasDownloadableComp && (currentUser.canDownload('wm') | async)"
+            md-icon-button
+            title="Download Comp"
+            [md-menu-trigger-for]="downloadCompMenu">
+              <md-icon>file_download</md-icon>
+          </button>
           <button md-icon-button title="Sharing Options"><md-icon>share</md-icon></button>
           <!--<button md-icon-button title="add to cart"><md-icon>shopping_cart</md-icon></button>-->
           <button md-icon-button 
@@ -61,7 +67,6 @@
   </div>
 </section>
 
-
 <wz-toast #addToast>
   <div class="toast" layout="row" layout-align="center center">
     <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.ADD_TO_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
@@ -73,9 +78,10 @@
     <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
   </div>
 </wz-toast>
+
 <md-menu x-position="before" #downloadCompMenu="mdMenu">
-  <button md-menu-item  (click)="downloadComp(asset.assetId,'wm');" *ngIf="asset.hasDownloadableComp">Download Watermarked Comp</button>
-  <button md-menu-item (click)="downloadComp(asset.assetId,'clean')" *ngIf="asset.hasDownloadableComp">Download Clean Comp</button>
-  <button md-menu-item (click)="downloadComp(asset.assetId,'full')" *ngIf="asset.hasDownloadableComp">Download Full Comp</button>
+  <button [disabled]="!(currentUser.canDownload('wm') | async)" md-menu-item  (click)="downloadComp(asset.assetId, 'wm');">Download Watermarked Comp</button>
+  <button [disabled]="!(currentUser.canDownload('clean') | async)" md-menu-item (click)="downloadComp(asset.assetId, 'clean')">Download Clean Comp</button>
+  <button [disabled]="!(currentUser.canDownload('full') | async)" md-menu-item (click)="downloadComp(asset.assetId, 'full')">Download Full Comp</button>
 </md-menu>
 

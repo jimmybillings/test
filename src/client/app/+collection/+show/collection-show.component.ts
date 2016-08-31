@@ -8,6 +8,7 @@ import { Router, ActivatedRoute} from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
+import { AssetService } from '../../+asset/services/asset.service';
 
 @Component({
   moduleId: module.id,
@@ -37,6 +38,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public router: Router,
     public collectionsService: CollectionsService,
+    public assetService: AssetService,
     public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>,
     public currentUser: CurrentUser,
@@ -70,5 +72,16 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public changePage(i: any): void {
     this.buildRouteParams({i});
     this.router.navigate(['/collection/' + this.collection.id, this.routeParams ]);
+  }
+
+  public downloadComp(params: any): void {
+    this.assetService.downloadComp(params.assetId, params.compType).subscribe((res) => {
+      if (res.url && res.url !== '') {
+        console.log(res);
+        window.location = res.url;
+      } else {
+        alert('no comp exists');
+      }
+    });
   }
 }

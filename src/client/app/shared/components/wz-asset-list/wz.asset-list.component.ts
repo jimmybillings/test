@@ -37,7 +37,7 @@ export class WzAssetListComponent implements OnChanges {
   }
 
   public removeFromCollection(collection: Collection, asset: any): void {
-    this.onRemoveFromCollection.emit({'collection':collection, 'asset':asset});
+    this.onRemoveFromCollection.emit({'collection': collection, 'asset': asset});
   }
 
   public showNewCollection(asset: any): void {
@@ -51,8 +51,8 @@ export class WzAssetListComponent implements OnChanges {
      this.assetId = id;
   }
 
-  public downloadComp(compType:any): void {
-    this.onDownloadComp.emit({'assetId':this.assetId,'compType':compType});
+  public downloadComp(compType: any): void {
+    this.onDownloadComp.emit({'assetId': this.assetId, 'compType': compType});
   }
 
   public alreadyInCollection(asset: any): boolean {

@@ -61,7 +61,7 @@ export class AssetDetailComponent implements OnChanges {
   public showNewCollection(assetId: any): void {
     this.onShowNewCollection.emit(assetId);
   }
-  public downloadComp(assetId:any,compType:any):void {
-     this.onDownloadComp.emit({'compType':compType,'assetId':assetId});
+  public downloadComp(assetId: any,compType: any):void {
+    this.onDownloadComp.emit({'compType': compType, 'assetId': assetId});
   }
 }
