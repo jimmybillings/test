@@ -48,7 +48,8 @@
         <md-icon>shopping_cart</md-icon>Open your cart
     </a>
     <div class="divider"></div>
-    <a md-menu-item *ngIf="currentUser.loggedInState() | async" (click)="logOut()" [routerLink]="['/']">
+    <a md-menu-item *ngIf="currentUser.loggedInState() | async" (click)="logOut();" [routerLink]="['/']">
       <md-icon>power_settings_new</md-icon>{{ 'HEADER.LOGOUT_LABEL' | translate}}
     </a>
+    
 </md-menu>
