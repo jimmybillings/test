@@ -1,5 +1,6 @@
-  <asset-detail
+  <asset-detail #target
     [currentUser]="currentUser"
+    [permission]="permission"
     [asset]="asset | async"
     [inActiveCollection]="inActiveCollection | async"
     [collection]="activeCollection.data | async"

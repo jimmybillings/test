@@ -1,5 +1,5 @@
 
-  <section class="collection-head">
+  <section #target class="collection-head">
     <div layout="row" layout-align="center start">
       <div flex-xl="85" flex-gt-lg="95" flex="100">
         <section class="collections-list">
@@ -73,7 +73,8 @@
 
         <div layout="column">       
           <wz-asset-list 
-            [assets]="collection.assets.items" 
+            [assets]="collection.assets.items"
+            [permission]="permission"
             [currentUser]="currentUser" 
             [collection]="activeCollection.data | async"
             (onAddToCollection)="addToCollection($event)"

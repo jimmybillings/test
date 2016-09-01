@@ -3,16 +3,6 @@ import { Observable } from 'rxjs/Rx';
 import { Store, Reducer, Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 
-const permissionMap: any = {
-  'root': 'Root'
-};
-
-const compMap: any = {
-  'wm': 'Watermark',
-  'clean': 'Clean',
-  'full': 'Full'
-};
-
 export const currentUser: Reducer<any> = (state = {}, action: Action) => {
 
   switch (action.type) {
@@ -34,12 +24,19 @@ export function isLoggedIn() {
  */
 @Injectable()
 export class CurrentUser {
-
+  public perms: Array<string>;
   private data: Observable<any>;
 
   constructor(
     private store: Store<User>) {
     this.data = this.store.select('currentUser');
+    this.setVars();
+  }
+
+  public setVars(): void {
+    this.data.subscribe((user: any) => {
+      this.perms = user.permissions;
+    });
   }
 
   get profile() {
@@ -73,20 +70,6 @@ export class CurrentUser {
 
   public fullName(): Observable<any> {
     return this.data.map(user => `${user.firstName} ${user.lastName}`);
-  }
-
-  public is(permission: string): Observable<any> {
-    let permissionToCheck = permissionMap[permission];
-    return this.data.map((user) => {
-      return user.permissions ? user.permissions.indexOf(permissionToCheck) > -1 : false;
-    });
-  }
-
-  public canDownload(compType: string): Observable<boolean> {
-    let permissionToCheck = `Download${compMap[compType]}Comps`;
-    return this.data.map((user) => {
-      return user.permissions ? user.permissions.indexOf(permissionToCheck) > -1 : false;
-    });
   }
 
   private _user(): User {

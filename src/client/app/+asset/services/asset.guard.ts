@@ -17,7 +17,4 @@ export class AssetGuard implements CanActivate {
   private canView() {
     return this.currentUser.loggedIn() && (this.permission.has('Root') || this.permission.has('ViewClips'));
   }
-
 }
-
-
