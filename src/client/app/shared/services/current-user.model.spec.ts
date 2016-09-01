@@ -94,38 +94,6 @@ export function main() {
       expect(service.loggedIn()).toBe(true);
       localStorage.clear();
     }));
-
-    it('should return true when the current user has the permission that is being checked for', inject([CurrentUser], (service: CurrentUser) => {
-      service.set(loggedInUser);
-      service.is('root').subscribe(result => {
-        expect(result).toBe(true);
-      });
-      localStorage.clear();
-    }));
-
-    it('should return false when the current user does not have the permission that is being checked for', inject([CurrentUser], (service: CurrentUser) => {
-      service.set(loggedInUser);
-      service.is('notAPermission').subscribe(result => {
-        expect(result).toBe(false);
-      });
-      localStorage.clear();
-    }));
-
-    it('should return false when the user is logged out and does not have permissions', inject([CurrentUser], (service: CurrentUser) => {
-      service.set(loggedOutUser);
-      service.is('root').subscribe(result => {
-        expect(result).toBe(false);
-      });
-      localStorage.clear();
-    }));
-
-    it('should return false when the user is logged in and does not have permissions', inject([CurrentUser], (service: CurrentUser) => {
-      service.set(loggedInUserWithoutPermissions);
-      service.is('root').subscribe(result => {
-        expect(result).toBe(false);
-      });
-      localStorage.clear();
-    }));
   });
 
   function setLoggedInUser() {
@@ -161,20 +129,6 @@ export function main() {
       'ownedCollections': null,
       'editableCollections': null,
       'accessibleCollections': null
-    };
-  }
-
-  function setLoggedInUserWithoutPermissions() {
-    return {
-      'lastUpdated': '2016-01-14T16:46:21Z',
-      'createdOn': '2016-01-14T16:46:21Z',
-      'id': 6,
-      'emailAddress': 'test_email@email.com',
-      'password': '5daf7de08c0014ec2baa13a64b35a4e0',
-      'firstName': 'first',
-      'lastName': 'last',
-      'siteName': 'cnn',
-      'accountIds': [4]
     };
   }
 }
