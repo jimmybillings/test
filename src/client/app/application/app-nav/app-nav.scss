@@ -12,30 +12,30 @@ header.app-header {
   a.home-link > .logo-wrapper {
     @include transition(all .4s ease-in-out);
     opacity: .7;
+    top: 0;
+    margin: 0;
+    overflow: hidden;
+    width: rem(9.5);
+    height: rem(6.4);
+    position: absolute;
+    line-height: 0;
     &:hover {
       opacity: 1;
     }
-    overflow: hidden;
-    width: rem(10);
-    height: rem(5);
-    position: absolute;
-    top: rem(.8);
-    margin-left: rem(.7);
     .logo img {
       @include background-image(url($logo-header));
-      background-position: top left;
-      background-repeat:no-repeat;
+      background-position: 0 rem(.9);
+      background-repeat: no-repeat;
       background-size: rem(27.2);
-      width: 95px;
-      height: 50px;
+      width: rem(9.5);
+      height: rem(5.7);
     }
     @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-      width: 72px;
-      height: 37px;
-      top: 10px;
       .logo img {
-        background-size: 200px;
-        height: 37px;
+        background-position: 0 rem(1.5);
+        background-repeat: no-repeat;
+        background-size: rem(20);
+        height: rem(5.0);
       }
     }
   }
