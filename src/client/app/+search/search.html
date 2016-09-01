@@ -1,3 +1,4 @@
+<div #target></div>
 <md-sidenav-layout>
   <md-sidenav #searchFilter align="start" mode="push">
     <div class="md-overlay-container" *ngIf="(uiState.data | async).loading">
@@ -18,7 +19,8 @@
          
         <wz-asset-list 
           [assets]="assets.items" 
-          [currentUser]="currentUser" 
+          [currentUser]="currentUser"
+          [permission]="permission"
           [collection]="activeCollection.data | async"
           (onAddToCollection)="addToCollection($event)"
           (onRemoveFromCollection)="removeFromCollection($event)"

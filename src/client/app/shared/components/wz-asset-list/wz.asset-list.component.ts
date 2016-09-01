@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, ViewChild } from '@angular/core';
 import { Collection } from '../../../shared/interfaces/collection.interface';
-
+import { MdMenuTrigger } from '@angular2-material/menu';
 /**
  * Directive that renders a list of assets
  */
@@ -14,12 +14,14 @@ import { Collection } from '../../../shared/interfaces/collection.interface';
 export class WzAssetListComponent implements OnChanges {
   @Input() public assets: Array<any>;
   @Input() public currentUser: any;
+  @Input() public permission: any;
   @Input() collection: Collection;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onAddToCart = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
   @Output() onShowNewCollection = new EventEmitter();
+  @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   private assetsArr: Array<number>;
   private assetId:any;
   constructor() {
@@ -47,7 +49,8 @@ export class WzAssetListComponent implements OnChanges {
   public addToCart(asset: any): void {
     this.onAddToCart.emit(asset);
   }
-  public setAssetActiveId(id:any) {
+
+  public setAssetActiveId(id: any) {
      this.assetId = id;
   }
 

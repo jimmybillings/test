@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { AssetService} from './services/asset.service';
@@ -9,6 +9,8 @@ import { CollectionsService } from '../+collection/services/collections.service'
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { Store } from '@ngrx/store';
 import { UiConfig } from '../shared/services/ui.config';
+import { UserPermission } from '../shared/services/permission.service';
+import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 
 /**
  * Asset page component - renders an asset show page
@@ -22,6 +24,7 @@ import { UiConfig } from '../shared/services/ui.config';
 export class AssetComponent implements OnInit {
   public asset: Observable<any>;
   public pageSize: string;
+  @ViewChild('target', { read: ViewContainerRef }) private target: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,7 +34,9 @@ export class AssetComponent implements OnInit {
     public error: Error,
     public router: Router,
     public collectionsService: CollectionsService,
+    public permission: UserPermission,
     public activeCollection: ActiveCollectionService,
+    public notification: WzNotificationService,
     public store: Store<CollectionStore>) {
     this.asset = assetService.data;
   }
@@ -53,7 +58,7 @@ export class AssetComponent implements OnInit {
       if (res.url && res.url !== '') {
         window.location = res.url;
       } else {
-        alert('no comp exists');
+        this.notification.createNotfication(this.target, {trString: 'COMPS.NO_COMP', theme: 'alert'});
       }
     });
   }

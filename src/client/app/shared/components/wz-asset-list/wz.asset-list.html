@@ -1,5 +1,5 @@
 <h1 *ngIf="!assets" class="md-display-1 alert warning">No items can be found</h1>
-<ul class="asset-list" #target *ngIf="assets">
+<ul class="asset-list" *ngIf="assets">
   <li *ngFor="let asset of assets">
     <div class="asset">
       <div class="asset-name">{{asset.name}}</div>
@@ -24,7 +24,7 @@
               <md-icon>shopping_cart</md-icon>
           </button>
           <button
-            *ngIf="asset.hasDownloadableComp && (currentUser.canDownload('wm') | async)"
+            *ngIf="asset.hasDownloadableComp && permission.has('DownloadWatermarkComps')"
             md-icon-button
             title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
             (click)="setAssetActiveId(asset.assetId)"
@@ -32,7 +32,7 @@
               <md-icon>file_download</md-icon>
           </button>
           <button
-            *ngIf="!asset.hasDownloadableComp || !(currentUser.canDownload('wm') | async)"
+            *ngIf="!asset.hasDownloadableComp || !permission.has('DownloadWatermarkComps')"
             disabled
             md-icon-button
             title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
@@ -67,10 +67,10 @@
   </li>
 </ul>
 
-<md-menu x-position="before" #downloadCompMenu="mdMenu">
-  <button [disabled]="!(currentUser.canDownload('wm') | async)" md-menu-item  (click)="downloadComp('wm');">Download Watermarked Comp</button>
-  <button [disabled]="!(currentUser.canDownload('clean') | async)" md-menu-item (click)="downloadComp('clean')">Download Clean Comp</button>
-  <button [disabled]="!(currentUser.canDownload('full') | async)" md-menu-item (click)="downloadComp('full')">Download Full Comp</button>
+<md-menu (click)="trigger.closeMenu()" x-position="after" #downloadCompMenu="mdMenu">
+  <button md-menu-item [disabled]="!permission.has('DownloadWatermarkComps')" (click)="downloadComp('wm');"><md-icon>branding_watermark</md-icon>{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!permission.has('DownloadCleanComps')" (click)="downloadComp('clean')"><md-icon>high_quality</md-icon>{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!permission.has('DownloadFullComps')" (click)="downloadComp('full')"><md-icon>high_quality</md-icon>Download Full Comp</button>
 </md-menu>
 
 <wz-toast #addToast>

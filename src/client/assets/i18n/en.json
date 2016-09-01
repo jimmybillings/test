@@ -218,6 +218,12 @@
     "NEW_USER": "Welcome New User!",
     "EXPIRED_SESSION": "Your session has expired, please login again."
   },
+  "COMPS": {
+    "DOWNLOAD_WM_COMP": "Download Watermarked Comp",
+    "DOWNLOAD_CLEAN_COMP": "Download Clean Comp",
+    "DOWNLOAD_FULL_COMP": "Download Full Comp",
+    "NO_COMP": "No Comp Available - please contact your site administrator for more information"
+  },
   "ERRORS": {
     "INDICATES_REQUIRED_FIELD":"indicates required field",
     "MISSING_REQUIRED_FIELD":"You must supply a {{fieldName}}",

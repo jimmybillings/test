@@ -7,14 +7,14 @@
       <header class="toolbar-actions">
         <nav class="asset-options" flex layout-align="end stretch">
           <button
-            *ngIf="asset.hasDownloadableComp && (currentUser.canDownload('wm') | async)"
+            *ngIf="asset.hasDownloadableComp && permission.has('DownloadWatermarkComps')"
             md-icon-button
             title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
             [md-menu-trigger-for]="downloadCompMenu">
               <md-icon>file_download</md-icon>
           </button>
           <button
-            *ngIf="!asset.hasDownloadableComp || !(currentUser.canDownload('wm') | async)"
+            *ngIf="!asset.hasDownloadableComp || !permission.has('DownloadWatermarkComps')"
             disabled
             md-icon-button
             title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
@@ -88,8 +88,8 @@
 </wz-toast>
 
 <md-menu x-position="before" #downloadCompMenu="mdMenu">
-  <button [disabled]="!(currentUser.canDownload('wm') | async)" md-menu-item  (click)="downloadComp(asset.assetId, 'wm');">Download Watermarked Comp</button>
-  <button [disabled]="!(currentUser.canDownload('clean') | async)" md-menu-item (click)="downloadComp(asset.assetId, 'clean')">Download Clean Comp</button>
-  <button [disabled]="!(currentUser.canDownload('full') | async)" md-menu-item (click)="downloadComp(asset.assetId, 'full')">Download Full Comp</button>
+  <button md-menu-item (click)="trigger.closeMenu()"><md-icon>close</md-icon>Close Menu</button>
+  <button md-menu-item [disabled]="!permission.has('DownloadWatermarkComps')" (click)="downloadComp(asset.assetId, 'wm');"><md-icon>branding_watermark</md-icon>{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!permission.has('DownloadCleanComps')" (click)="downloadComp(asset.assetId, 'clean')"><md-icon>high_quality</md-icon>{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!permission.has('DownloadFullComps')" (click)="downloadComp(asset.assetId, 'full')"><md-icon>high_quality</md-icon>Download Full Comp</button>
 </md-menu>
-
