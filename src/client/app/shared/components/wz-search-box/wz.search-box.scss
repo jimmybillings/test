@@ -27,6 +27,7 @@ wz-search-box {
     font-size: 0;
     border: none; 
     background-color: md-color($md-accent, 800, .95);
+    min-width: rem(4.4);
     @include transition($swift-ease-in);
     md-icon.material-icons {
       font-size: rem(3.4);

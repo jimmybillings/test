@@ -136,6 +136,8 @@
       "SHARE_BTN_TITLE": "Share collection",
       "COMMENT_BTN_TITLE": "Show collection comments",
       "MORE_BTN_TITLE": "More collection options",
+      "DOWNLOAD_BTN_TITLE_ENABLED": "Download Comp",
+      "DOWNLOAD_BTN_TITLE_DISABLED": "Comp Unavailable",
       "CREATED_LABEL": "Created:",
       "UPDATED_LABEL": "Updated:",
       "ROLE_LABEL": "Your role:",
@@ -219,6 +221,12 @@
   "NOTIFICATION": {
     "NEW_USER": "Welcome New User!",
     "EXPIRED_SESSION": "Your session has expired, please login again."
+  },
+  "COMPS": {
+    "DOWNLOAD_WM_COMP": "Download Watermarked Comp",
+    "DOWNLOAD_CLEAN_COMP": "Download Clean Comp",
+    "DOWNLOAD_FULL_COMP": "Download Full Comp",
+    "NO_COMP": "No Comp Available - please contact your site administrator for more information"
   },
   "ERRORS": {
     "INDICATES_REQUIRED_FIELD":"indicates required field",

@@ -1,6 +1,7 @@
-import { Component, Output, EventEmitter, Input, OnChanges, ChangeDetectionStrategy} from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { CurrentUser } from '../../shared/services/current-user.model';
+import { MdMenuTrigger } from '@angular2-material/menu';
 
 @Component({
   moduleId: module.id,
@@ -13,11 +14,13 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public asset: any;
   @Input() public inActiveCollection: boolean;
   @Input() currentUser: CurrentUser;
+  @Input() permission: any;
   @Input() collection: Collection;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onShowNewCollection = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
+  @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   private assetsArr: Array<number>;
 
   constructor() {
@@ -61,7 +64,8 @@ export class AssetDetailComponent implements OnChanges {
   public showNewCollection(assetId: any): void {
     this.onShowNewCollection.emit(assetId);
   }
-  public downloadComp(assetId:any,compType:any):void {
-     this.onDownloadComp.emit({'compType':compType,'assetId':assetId});
+
+  public downloadComp(assetId: any,compType: any):void {
+    this.onDownloadComp.emit({'compType': compType, 'assetId': assetId});
   }
 }

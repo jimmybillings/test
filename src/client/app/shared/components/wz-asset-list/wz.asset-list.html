@@ -1,5 +1,5 @@
 <h1 *ngIf="!assets" class="md-display-1 alert warning">No items can be found</h1>
-<ul class="asset-list" #target *ngIf="assets">
+<ul class="asset-list" *ngIf="assets">
   <li *ngFor="let asset of assets">
     <div class="asset">
       <div class="asset-name">{{asset.name}}</div>
@@ -17,8 +17,29 @@
       </a>
       <section class="actions">
         <nav class="asset-options" flex layout-align="end center">
-          <button md-icon-button title="Add to cart" (click)="addToCart(asset)" ><md-icon>shopping_cart</md-icon></button>
-          <button md-icon-button title="Download Comp" [md-menu-trigger-for]="downloadCompMenu" (click)="setAssetActiveId(asset.assetId)" *ngIf="asset.hasDownloadableComp && currentUser.loggedIn()"><md-icon>file_download</md-icon></button>
+          <button
+            md-icon-button
+            title="Add to cart"
+            (click)="addToCart(asset)">
+              <md-icon>shopping_cart</md-icon>
+          </button>
+          <button
+            *ngIf="asset.hasDownloadableComp && permission.has('DownloadWatermarkComps')"
+            md-icon-button
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
+            (click)="setAssetActiveId(asset.assetId)"
+            [md-menu-trigger-for]="downloadCompMenu">
+              <md-icon>file_download</md-icon>
+          </button>
+          <button
+            *ngIf="!asset.hasDownloadableComp || !permission.has('DownloadWatermarkComps')"
+            disabled
+            md-icon-button
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
+            (click)="setAssetActiveId(asset.assetId)"
+            [md-menu-trigger-for]="downloadCompMenu">
+              <md-icon>file_download</md-icon>
+          </button>
           <button md-icon-button *ngIf="collection.id !== null && alreadyInCollection(asset)" 
             title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
             (click)="removeFromCollection(collection, asset); removeToast.show()">
@@ -43,14 +64,15 @@
         </span>
       </a>
     </div>
-  
   </li>
 </ul>
-  <md-menu x-position="before" #downloadCompMenu="mdMenu">
-  	<button md-menu-item  (click)="downloadComp('wm');">Download Watermarked Comp</button>
-  	<button md-menu-item (click)="downloadComp('clean')" >Download Clean Comp</button>
-  	<button md-menu-item (click)="downloadComp('full')" >Download Full Comp</button>
+
+<md-menu (click)="trigger.closeMenu()" x-position="after" #downloadCompMenu="mdMenu">
+  <button md-menu-item [disabled]="!permission.has('DownloadWatermarkComps')" (click)="downloadComp('wm');"><md-icon>branding_watermark</md-icon>{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!permission.has('DownloadCleanComps')" (click)="downloadComp('clean')"><md-icon>high_quality</md-icon>{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!permission.has('DownloadFullComps')" (click)="downloadComp('full')"><md-icon>high_quality</md-icon>Download Full Comp</button>
 </md-menu>
+
 <wz-toast #addToast>
   <div class="toast" layout="row" layout-align="center center">
     <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.ADD_TO_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>

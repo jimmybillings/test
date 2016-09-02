@@ -91,6 +91,11 @@ section.preview-bk {
         &:hover {
           background-color: rgba(md-color($md-background, background),.08);
         }
+        &:disabled {
+          md-icon {
+            color: rgba(md-color($md-background, background),.2);;
+          }
+        }
       }
     }
   }

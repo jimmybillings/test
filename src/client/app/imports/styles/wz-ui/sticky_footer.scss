@@ -21,7 +21,7 @@ body > wazee-digital-platform > div app-footer {
 .main-content {
   @include flex(1 0 auto); /* 2 */
   width: 100%;
-  background-color: md-color($md-grey, 300);
+  background-color: md-color($md-background, status-bar);
 }
 .main-content::after {
   content: '\00a0'; /* &nbsp; */

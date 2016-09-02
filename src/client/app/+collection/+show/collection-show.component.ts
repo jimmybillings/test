@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 import { Collection, Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
@@ -9,6 +9,9 @@ import { CurrentUser } from '../../shared/services/current-user.model';
 import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
+import { AssetService } from '../../+asset/services/asset.service';
+import { UserPermission } from '../../shared/services/permission.service';
+import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
 
 @Component({
   moduleId: module.id,
@@ -24,6 +27,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public routeParams: any;
   public errorMessage: string;
   public config: Object;
+  @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
   public date(date: any): Date {
@@ -36,14 +40,17 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    public permission: UserPermission,
     public router: Router,
     public collectionsService: CollectionsService,
+    public assetService: AssetService,
     public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>,
     public currentUser: CurrentUser,
     public error: Error,
-    public uiConfig: UiConfig,
-    public uiState: UiState) {
+    public uiState: UiState,
+    public notification: WzNotificationService,
+    public uiConfig: UiConfig) {
   }
 
   ngOnInit() {
@@ -72,5 +79,16 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public changePage(i: any): void {
     this.buildRouteParams({i});
     this.router.navigate(['/collection/' + this.collection.id, this.routeParams ]);
+  }
+
+  public downloadComp(params: any): void {
+    this.assetService.downloadComp(params.assetId, params.compType).subscribe((res) => {
+      if (res.url && res.url !== '') {
+        console.log(res);
+        window.location = res.url;
+      } else {
+        this.notification.createNotfication(this.target, {trString: 'COMPS.NO_COMP', theme: 'alert'});
+      }
+    });
   }
 }

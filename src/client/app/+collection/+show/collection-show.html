@@ -68,26 +68,24 @@
 <section class="search-results">
   <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
     <div flex-xl="85" flex-gt-lg="95" flex="100">
-
       <wz-pagination [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-
-      <div layout="column">       
-        <wz-asset-list 
-          [assets]="collection.assets.items" 
-          [currentUser]="currentUser" 
-          [collection]="activeCollection.data | async"
-          (onAddToCollection)="addToCollection($event)"
-          (onShowNewCollection)="showNewCollection($event)"
-          (onAddToCart)="addToCart($event)" 
-          (onDownloadComp)="downloadComp($event)"
-          (onRemoveFromCollection)="removeFromCollection($event)"
-          class="grid">
-        </wz-asset-list>
-        <h1 *ngIf="!collection.assets.items" class="md-display-1 alert warning">This collection does not have any assets</h1>
+        <div layout="column">       
+          <wz-asset-list 
+            [assets]="collection.assets.items"
+            [permission]="permission"
+            [currentUser]="currentUser" 
+            [collection]="activeCollection.data | async"
+            (onAddToCollection)="addToCollection($event)"
+            (onShowNewCollection)="showNewCollection($event)"
+            (onAddToCart)="addToCart($event)" 
+            (onDownloadComp)="downloadComp($event)"
+            (onRemoveFromCollection)="removeFromCollection($event)"
+            class="grid">
+          </wz-asset-list>
+          <h1 *ngIf="!collection.assets.items" class="md-display-1 alert warning">This collection does not have any assets</h1>
+        </div>
+        <wz-pagination [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
       </div>
-
-      <wz-pagination [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-    </div>
   </div>
 </section>
 <wz-dialog #editCollection>

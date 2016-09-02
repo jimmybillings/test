@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, ViewContainerRef} from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { AssetData } from './services/asset.data.service';
 import { UiConfig} from '../shared/services/ui.config';
@@ -12,6 +12,9 @@ import { CollectionsService } from '../+collection/services/collections.service'
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { FilterService } from './services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
+import { UserPermission } from '../shared/services/permission.service';
+import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
+
 /**
  * Asset search page component - renders search page results
  */
@@ -30,6 +33,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
   public counted: boolean;
+  @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
   private configSubscription: Subscription;
@@ -43,11 +47,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     public uiConfig: UiConfig,
     public currentUser: CurrentUser,
     public collectionsService: CollectionsService,
+    public permission: UserPermission,
     public activeCollection: ActiveCollectionService,
     public error: Error,
     public searchContext: SearchContext,
     public filter: FilterService,
     public userPreferences: UserPreferenceService,
+    public notification: WzNotificationService,
     public uiState: UiState) { }
 
   ngOnInit(): void {
@@ -130,15 +136,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.filter.set(this.filter.clear());
     this.filterAssets();
   }
-  public downloadComp(params:any): void {
-     let v = this.assetData.downloadComp(params.assetId,params.compType);
-      v.subscribe((res) => {
-          if (res.url && res.url !== '') {
-                window.location = res.url;
-          }else {
-            alert('No such comp exists! !!!!!!!!!!!!!!!!!!!!!!This notification is temporary and will be redesigned!!!!!!!!!!!!!!!!!!!');
-          }
-      });
+
+  public downloadComp(params: any): void {
+    this.assetData.downloadComp(params.assetId, params.compType).subscribe((res) => {
+      if (res.url && res.url !== '') {
+        window.location = res.url;
+      } else {
+        this.notification.createNotfication(this.target, {trString: 'COMPS.NO_COMP', theme: 'alert'});
+      }
+    });
   }
 
   public filterAssets(): void {
