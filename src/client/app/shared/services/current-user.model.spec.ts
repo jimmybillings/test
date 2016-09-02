@@ -11,7 +11,7 @@ export function main() {
   describe('CurrentUser Model', () => {
     let loggedInUser = setLoggedInUser();
     let loggedOutUser = setLoggedOutUser();
-    let loggedInUserWithoutPermissions = setLoggedInUserWithoutPermissions();
+    // let loggedInUserWithoutPermissions = setLoggedInUserWithoutPermissions();
     beforeEach(() => {
       addProviders([
         CurrentUser,

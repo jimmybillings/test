@@ -67,7 +67,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public setCollectionForEdit(collection: any) {
-    this.collectionForEdit = collection;
+    this.collectionForEdit = Object.assign({}, collection);
     this.dialog.show();
   }
 
