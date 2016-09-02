@@ -94,6 +94,12 @@ export class CollectionsService {
         this.activeCollection.updateActiveCollectionStore(res.json());
         return res.json();
       });
+
+  }
+
+  public updateCollection(collection: Collection): Observable<any> {
+    return this.http.put(`${this.apiUrls.CollectionBaseUrl}/${collection.id}`,
+      JSON.stringify(collection), { headers: this.apiConfig.authHeaders() });
   }
 
   public deleteCollection(collectionId: number): Observable<any> {

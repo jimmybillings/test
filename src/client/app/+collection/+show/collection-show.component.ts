@@ -8,6 +8,7 @@ import { Router, ActivatedRoute} from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
+import { UiState } from '../../shared/services/ui.state';
 
 @Component({
   moduleId: module.id,
@@ -41,7 +42,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public store: Store<CollectionStore>,
     public currentUser: CurrentUser,
     public error: Error,
-    public uiConfig: UiConfig) {
+    public uiConfig: UiConfig,
+    public uiState: UiState) {
   }
 
   ngOnInit() {

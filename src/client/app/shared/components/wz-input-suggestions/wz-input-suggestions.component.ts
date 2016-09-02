@@ -43,11 +43,12 @@ export class WzInputSuggestionsComponent implements OnInit {
         } else {
           this.areSuggestionsVisible = false;
           this.shouldCallServer = true;
+          this.detector.markForCheck();
           return [];
         }
       })
       .map((res: Response) => {
-        return (res.json().items) ? res.json().items.map((item:any) => item.name) : [];
+        return (res.json().items) ? res.json().items.map((item: any) => item.name) : [];
       })
       .subscribe(suggestions => {
         this.suggestions = suggestions;

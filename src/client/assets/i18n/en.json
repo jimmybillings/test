@@ -99,7 +99,7 @@
     "CREATE_COLLECTION_HOVER_TITLE": "Create a collection",
     "ADD_TO_COLLECTION_TOAST": "Asset added to {{collectionName}}",
     "REMOVE_FROM_COLLECTION_TOAST": "Asset removed from {{collectionName}}",
-    "NEW_TITLE": "Create a New Collection",
+    "NEW_TITLE": "Create a New Collection",    
     "FORM": {
       "COLLECTION_NAME_LABEL": "Collection Name",
       "TAGS_LABEL": "Tags",
@@ -107,6 +107,10 @@
       "SUBMIT_LABEL": "CREATE",
       "TYPE_AHEAD_SUGGESTIONS_HEADING": "Your matching collections...",
       "CLOSE_HOVER_TITLE": "Close collection"
+    },
+    "EDIT": {
+      "TITLE": "Edit Collection",
+      "SUBMIT_LABEL": "EDIT"
     },
     "DD_MENU": {
       "HEADING": "Select collection",

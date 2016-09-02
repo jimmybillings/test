@@ -24,6 +24,7 @@ import { CollectionFilterDdComponent } from '../+collection/components/collectio
 import { CollectionsSearchFormComponent } from '../+collection/components/collections-search-form.component';
 import { WzInputTagsComponent } from '../shared/components/wz-input-tags/wz-input-tags.component';
 import { WzInputSuggestionsComponent } from '../shared/components/wz-input-suggestions/wz-input-suggestions.component';
+import { CollectionFormComponent } from '../application/collection-tray/components/collection-form.component';
 
 // Shared pipes
 import { ValuesPipe } from '../shared/pipes/values.pipe';
@@ -94,7 +95,8 @@ import { OverlayModule } from '@angular2-material/core/core';
     WzDropdownPortalDirective,
     WzToastPortalDirective,
     WzInputTagsComponent,
-    WzInputSuggestionsComponent
+    WzInputSuggestionsComponent,
+    CollectionFormComponent
   ],
   exports: [
     WzNotificationComponent,
@@ -118,6 +120,7 @@ import { OverlayModule } from '@angular2-material/core/core';
     WzToastPortalDirective,
     WzInputTagsComponent,
     WzInputSuggestionsComponent,
+    CollectionFormComponent,
     CommonModule,
     RouterModule,
     TranslateModule,

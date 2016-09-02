@@ -19,7 +19,7 @@ import { FormControl } from '@angular/forms';
 
 export class WzInputTagsComponent {
   @Input() fControl: FormControl;
-  private tags: Array<string> = [];
+  @Input() tags: Array<string> = [];
   private finalDelete: boolean = false;
 
   public submit(e: any) {

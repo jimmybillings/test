@@ -92,7 +92,7 @@
       <!--
         START: CUSTOM FOR ELEMENT FOR CREATING TAGS
       -->
-      <wz-input-tags *ngIf="field.type == 'tags'" #tags [fControl]="form.controls[field.name]">
+      <wz-input-tags *ngIf="field.type == 'tags'" #tags [tags]="field.tags" [fControl]="form.controls[field.name]">
         <input type="hidden" formControlName="{{field.name}}">
         <md-input placeholder="{{field.label | translate}}" (keydown)="tags.submit($event)" id="{{field.name}}"></md-input>
       </wz-input-tags>

@@ -76,7 +76,7 @@
       <wz-pagination [pagination]="(collectionsService.data | async).pagination" (getPage)="changePage($event)">
       </wz-pagination>
       <!-- COLLECTION LIST -->
-      <wz-collection-item-list [collections]="(collectionsService.data | async).items" [activeCollection]="(activeCollection.data | async).id"
+      <wz-collection-item-list [collections]="(collectionsService.data | async).items" (editCollection)="setCollectionForEdit($event)" [activeCollection]="(activeCollection.data | async).id"
         (setActiveCollection)="selectActiveCollection($event)">
       </wz-collection-item-list>
       <wz-pagination [pagination]="(collectionsService.data | async).pagination" (getPage)="changePage($event)">
@@ -84,3 +84,14 @@
     </section>
   </div>
 </section>
+
+<wz-dialog #editCollection>
+  <collection-form
+    [collection]="collectionForEdit"
+    [config]="(uiConfig.get('collection') | async).config"
+    [dialog]="editCollection"
+    [isEdit]="true"
+    [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}"
+    layout="row" layout-align="center start">
+  </collection-form>
+</wz-dialog>

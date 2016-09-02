@@ -126,8 +126,9 @@ export class AssetData {
     let options = { headers: headers, search: search, body: '' };
     return new RequestOptions(options);
   }
-  public downloadComp(id:any,compType:any): Observable<any> {
-       return this.http.get(this.apiConfig.baseUrl() + 'api/assets/v1/renditionType/downloadUrl/' + id + '?type='+compType,
-      { headers: this.apiConfig.authHeaders(), body: ''}).map((res) => { return res.json();});
+
+  public downloadComp(id: any, compType: any): Observable<any> {
+    return this.http.get(this.apiConfig.baseUrl() + 'api/assets/v1/renditionType/downloadUrl/' + id + '?type=' + compType,
+      { headers: this.apiConfig.authHeaders(), body: '' }).map((res) => { return res.json(); });
   }
 }

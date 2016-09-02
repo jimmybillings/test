@@ -10,6 +10,8 @@ const collectionOptionsState: any = {
 
 export const collectionOptions: Reducer<any> = (state = collectionOptionsState, action: Action) => {
   switch (action.type) {
+    case 'RESET_OPTIONS':
+      return Object.assign({}, action.payload);
     case 'UPDATE_OPTIONS':
       return Object.assign({}, state, action.payload);
     default:
@@ -27,5 +29,9 @@ export class CollectionContextService {
 
   public updateCollectionOptions(options: any): void {
     this.store.dispatch({ type: 'UPDATE_OPTIONS', payload: options });
+  }
+
+  public resetCollectionOptions(): void {
+    this.store.dispatch({ type: 'RESET_OPTIONS', payload: collectionOptionsState });
   }
 }

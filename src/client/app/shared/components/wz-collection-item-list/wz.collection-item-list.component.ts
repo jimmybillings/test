@@ -15,6 +15,7 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
 export class WzCollectionItemListComponent {
   @Input() collections: any;
   @Input() activeCollection: any;
+  @Output() editCollection = new EventEmitter();
   @Output() setActiveCollection = new EventEmitter();
   private currentCollectionId: any = 0;
 
@@ -32,5 +33,9 @@ export class WzCollectionItemListComponent {
 
   public setCurrentCollectionId(id: any) {
     this.currentCollectionId = id;
+  }
+
+  public edit(collection:any) {
+    this.editCollection.emit(collection);
   }
 }

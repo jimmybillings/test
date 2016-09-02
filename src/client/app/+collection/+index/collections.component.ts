@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Collections } from '../../shared/interfaces/collection.interface';
+import { Collections, Collection } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
 import { Router } from '@angular/router';
@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs/Rx';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
 import { CollectionSortDdComponent } from '../../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../../+collection/components/collections-filter-dd.component';
+import { WzDialogComponent } from '../../shared/components/wz-dialog/wz.dialog.component';
+import { UiState } from '../../shared/services/ui.state';
 
 @Component({
   moduleId: module.id,
@@ -26,8 +28,10 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public collectionFilterIsShowing: boolean = false;
   public collectionSortIsShowing: boolean = false;
   public pageSize: string;
+  public collectionForEdit: Collection;
   @ViewChild(CollectionFilterDdComponent) public filters: CollectionFilterDdComponent;
   @ViewChild(CollectionSortDdComponent) public sort: CollectionSortDdComponent;
+  @ViewChild('editCollection') public dialog: WzDialogComponent;
 
 
   constructor(
@@ -37,7 +41,8 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public activeCollection: ActiveCollectionService,
     public currentUser: CurrentUser,
     public error: Error,
-    public uiConfig: UiConfig) {}
+    public uiConfig: UiConfig,
+    public uiState: UiState) {}
 
   ngOnInit() {
     this.uiConfig.get('home').take(1).subscribe(config => {
@@ -59,6 +64,11 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
   public showCollectionSort() {
     this.collectionSortIsShowing = !this.collectionSortIsShowing;
+  }
+
+  public setCollectionForEdit(collection: any) {
+    this.collectionForEdit = collection;
+    this.dialog.show();
   }
 
   public selectActiveCollection(id: number): void {

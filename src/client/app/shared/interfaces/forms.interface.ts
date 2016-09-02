@@ -7,6 +7,7 @@ export interface FormFields {
   hintTextEnd?: string;
   validation?: string;
   options?: string;
+  tags?: Array<string>;
 }
 
 export interface ServerErrors {

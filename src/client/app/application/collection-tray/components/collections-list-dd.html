@@ -79,8 +79,6 @@
 
 <wz-dialog #createCollection>
   <collection-form
-    [UiState]="uiState"
-    [collection]="activeCollection.data | async"
     [config]="config"
     [dialog]="createCollection"
     [ngClass]="{'revealed': (UiState.data | async).newCollectionFormIsOpen}"

@@ -59,19 +59,19 @@ export function main() {
       inject([CollectionFormComponent], (component: CollectionFormComponent) => {
         component.dialog = {};
         component.dialog.close = function() {return true;};
-        spyOn(component, 'cancelCollectionCreation');
         spyOn(component.collectionsService, 'createCollection').and.callThrough();
         spyOn(component.activeCollection, 'set').and.callThrough();
         spyOn(component.activeCollection, 'getItems').and.callThrough();
-        spyOn(component.dialog, 'close');
+        spyOn(component.uiState, 'loading').and.callThrough();
+        spyOn(component, 'loadCollections');
         component.createCollection(mockCollection());
         let collectionWithParsedTags = mockCollection();
         collectionWithParsedTags.tags = ['cat', 'dog', 'cow'];
+        expect(component.loadCollections).toHaveBeenCalled();
         expect(component.collectionsService.createCollection).toHaveBeenCalledWith(collectionWithParsedTags);
         expect(component.activeCollection.set).toHaveBeenCalledWith(mockCollection().id);
         expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, {n: 50});
-        expect(component.cancelCollectionCreation).toHaveBeenCalled();
-        expect(component.dialog.close).toHaveBeenCalled();
+        expect(component.uiState.loading).toHaveBeenCalled();
       }));
 
     // it('Should return type ahead suggestions matching input',
