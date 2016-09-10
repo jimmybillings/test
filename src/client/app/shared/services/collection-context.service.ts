@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
-import { Observable }  from 'rxjs/observable';
+import { Observable }  from 'rxjs/Rx';
 
 const collectionOptionsState: any = {
   currentFilter: { 'id': 0, 'label': 'ALL', 'value': 'all', 'active': true, 'access': {'access-level': 'all'} },
