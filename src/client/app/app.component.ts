@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RoutesRecognized } from '@angular/router';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { MultilingualService } from './shared/services/multilingual.service';
@@ -60,7 +60,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
     this.configSubscription = this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
-
     this.routerChanges();
   }
 
@@ -71,9 +70,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public routerChanges() {
-    this.routeSubscription = this.router.events.subscribe(event => {
-      var results = (/function (.{1,})\(/).exec((event).constructor.toString());
-      if (results[1] === 'NavigationEnd') {
+    this.routeSubscription = this.router.events.subscribe((event:RoutesRecognized) => {
+      if (event.urlAfterRedirects && !event.state) {
         this.uiState.checkRouteForSearchBar(event.url);
         this.state = event.url;
         window.scrollTo(0, 0);

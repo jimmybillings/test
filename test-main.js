@@ -1,9 +1,9 @@
 if (!Object.hasOwnProperty('name')) {
   Object.defineProperty(Function.prototype, 'name', {
-    get: function() {
+    get: function () {
       var matches = this.toString().match(/^\s*function\s*(\S*)\s*\(/);
       var name = matches && matches.length > 1 ? matches[1] : "";
-      Object.defineProperty(this, 'name', {value: name});
+      Object.defineProperty(this, 'name', { value: name });
       return name;
     }
   });
@@ -16,85 +16,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 
 // Cancel Karma's synchronous start,
 // we will call `__karma__.start()` later, once all the specs are loaded.
-__karma__.loaded = function() {};
-
-// Load our SystemJS configuration.
-
-var packageNames = [
-  '@angular/common',
-  '@angular/common/testing',
-  '@angular/compiler',
-  '@angular/compiler/testing',
-  '@angular/core',
-  '@angular/core/testing',
-  '@angular/forms',
-  '@angular/http',
-  '@angular/http/testing',
-  '@angular/platform-browser',
-  '@angular/platform-browser/testing',
-  '@angular/platform-browser-dynamic/testing',
-  '@angular/platform-browser-dynamic',
-  '@angular/router',
-  '@angular/router/testing'
-  
-];
-
-var materialPackages = [
-  'core',
-  'button',
-  'card',
-  'checkbox',
-  'input',
-  'list',
-  'progress-bar',
-  'progress-circle',
-  'radio',
-  'sidenav',
-  'slide-toggle',
-  'tabs',
-  'toolbar',
-  'icon',
-  'button-toggle',
-  'menu',
-  'slider',
-  'tooltip',
-  'grid-list'
-];
-
-var config = {
-  baseURL: '/base/',
-  defaultJSExtensions: true,
-  paths: {
-    'ng2-translate/*': 'node_modules/ng2-translate/*.js'
-  },
-  map: {
-    'rxjs': 'node_modules/rxjs',
-    '@angular': 'node_modules/@angular',
-    '@ngrx': 'node_modules/@ngrx',
-    '@angular2-material': 'node_modules/@angular2-material',
-    'pikaday': 'node_modules/pikaday/pikaday'
-  },
-  packages: {
-    'rxjs': {
-      defaultExtension: 'js'
-    },
-    '@ngrx/store': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    }
-  }
-};
-
-packageNames.forEach(function (pkgName) {
-  config.packages[pkgName] = {main: 'index.js', defaultExtension: 'js'};
-});
-
-materialPackages.forEach(function (pkgName) {
-  config.packages['@angular2-material/' + pkgName] = {main: pkgName + '.js', defaultExtension: 'js', format: 'cjs'}
-});
-console.log(config);
-System.config(config);
-
+__karma__.loaded = function () { };
 
 Promise.all([
   System.import('@angular/core/testing'),
@@ -107,8 +29,6 @@ Promise.all([
     testingBrowser.BrowserDynamicTestingModule,
     testingBrowser.platformBrowserDynamicTesting()
   );
-
-
 }).then(function () {
   return Promise.all(
     Object.keys(window.__karma__.files) // All files served by Karma.
@@ -145,3 +65,4 @@ function file2moduleName(filePath) {
     .replace(/^\/base\//, '')
     .replace(/\.js$/, '');
 }
+

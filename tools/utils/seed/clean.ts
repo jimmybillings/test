@@ -1,10 +1,9 @@
-import * as chalk from 'chalk';
 import * as util from 'gulp-util';
 import * as rimraf from 'rimraf';
 
 /**
  * Cleans the given path(s) using `rimraf`.
- * @param {string or string[]} paths the path or list of paths to clean
+ * @param {string or string[]} paths - The path or list of paths to clean.
  */
 export function clean(paths: string|string[]): (done: () => void) => void {
   return done => {
@@ -21,7 +20,7 @@ export function clean(paths: string|string[]): (done: () => void) => void {
           if (e) {
             util.log('Clean task failed with', e);
           } else {
-            util.log('Deleted', chalk.yellow(p || '-'));
+            util.log('Deleted', util.colors.yellow(p || '-'));
           }
           resolve();
         });
@@ -30,3 +29,4 @@ export function clean(paths: string|string[]): (done: () => void) => void {
     Promise.all(promises).then(() => done());
   };
 }
+

@@ -1,16 +1,17 @@
-import {
-  beforeEachProvidersArray,
-  Observable,
-  TestBed,
-  inject
-  // inject 
-} from '../../imports/test.imports';
+
+import { Observable } from 'rxjs/Rx';
+import { TestBed, inject, BaseRequestOptions, Http, ConnectionBackend, MockBackend } from '../../imports/testing.imports';
 import { IndexComponent } from './index.component';
 import { AdminService } from '../services/admin.service';
 import { UiSubComponentsA } from '../../shared/interfaces/admin.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
-
+import { UiConfig, config } from '../../shared/services/ui.config';
+import { UiState } from '../../shared/services/ui.state';
+import { CurrentUser } from '../../shared/services/current-user.model';
+import { provideStore } from '@ngrx/store';
+import { ApiConfig } from '../../shared/services/api.config';
+import { ActivatedRoute, Router} from '@angular/router';
 
 
 export function main() {
@@ -40,13 +41,32 @@ export function main() {
         return Object.assign({}, args);
       }
     }
+    class MockActivatedRoute {}
+    class MockRouter {
+      navigate(params: any) { return params; }
+    }
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [
           IndexComponent,
           { provide: AdminService, useClass: MockAdminService },
-          beforeEachProvidersArray
+          UiConfig,
+          UiState,
+          CurrentUser,
+          provideStore({config:config}),
+          ApiConfig,
+          {provide: Http,
+            useFactory: function(backend: ConnectionBackend, defaultOptions: BaseRequestOptions) {
+              return new Http(backend, defaultOptions);
+            },
+            deps: [MockBackend, BaseRequestOptions]
+          },
+          MockBackend,
+          BaseRequestOptions,
+          { provide: ActivatedRoute, useClass: MockActivatedRoute },
+          { provide: Router, useClass: MockRouter },
+
         ]
       });
     });

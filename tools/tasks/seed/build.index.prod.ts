@@ -18,8 +18,8 @@ import { templateLocals } from '../../utils';
 const plugins = <any>gulpLoadPlugins();
 
 /**
- * Executes the build process, injecting the JavaScript and CSS dependencies
- * into the `index.html` for the production environment.
+ * Executes the build process, injecting the JavaScript and CSS dependencies into the `index.html` for the production
+ * environment.
  */
 export = () => {
   return gulp.src(join(APP_SRC, 'index.html'))
@@ -31,7 +31,7 @@ export = () => {
 
 /**
  * Injects the given file array and transforms the path of the files.
- * @param {Array<string>} ...files the files to be injected
+ * @param {Array<string>} files - The files to be injected.
  */
 function inject(...files: Array<string>) {
     return plugins.inject(gulp.src(files, { read: false }), {
@@ -41,8 +41,7 @@ function inject(...files: Array<string>) {
 }
 
 /**
- * Injects the bundled JavaScript shims and application bundles for the
- * production environment.
+ * Injects the bundled JavaScript shims and application bundles for the production environment.
  */
 function injectJs() {
   return inject(join(JS_DEST, JS_PROD_SHIMS_BUNDLE), join(JS_DEST, JS_PROD_APP_BUNDLE));
@@ -56,13 +55,19 @@ function injectCss() {
 }
 
 /**
- * Transform the path of a dependecy to its location within the `dist` directory
- * according to the applications environment.
+ * Transform the path of a dependency to its location within the `dist` directory according to the applications
+ * environment.
  */
 function transformPath() {
   return function(filepath: string) {
     let path: Array<string> = normalize(filepath).split(sep);
-    arguments[0] = APP_BASE + path.slice(3, path.length).join(sep) + `?${Date.now()}`;
+    let slice_after = path.indexOf(APP_DEST);
+    if (slice_after>-1) {
+      slice_after++;
+    } else {
+      slice_after = 3;
+    }
+    arguments[0] = APP_BASE + path.slice(slice_after, path.length).join(sep) + `?${Date.now()}`;
     return slash(plugins.inject.transform.apply(plugins.inject.transform, arguments));
   };
 }

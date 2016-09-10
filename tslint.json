@@ -3,9 +3,9 @@
   "rules": {
     "class-name": true,
     "curly": false,
-    "eofline": true,
+    "eofline": false,
     "indent": ["spaces"],
-    "max-line-length": [false],
+    "max-line-length": [true, 500000],
     "member-ordering": [true,
       "public-before-private",
       "static-before-instance",
@@ -29,7 +29,7 @@
       "check-whitespace"
     ],
     "quotemark": [true, "single"],
-    "semicolon": true,
+    "semicolon": [true, "always"],
     "trailing-comma": true,
     "triple-equals": true,
     "variable-name": false,

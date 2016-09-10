@@ -29,8 +29,7 @@ export class SeedConfig {
 
   /**
    * The port where the application will run.
-   * The default port is `5555`, which can be overriden by the  `--port` flag
-   * when running `npm start`.
+   * The default port is `5555`, which can be overriden by the  `--port` flag when running `npm start`.
    * @type {number}
    */
   PORT = argv['port'] || 5555;
@@ -42,73 +41,82 @@ export class SeedConfig {
 
   /**
    * The current environment.
-   * The default environment is `dev`, which can be overriden by the `--env`
-   * flag when running `npm start`.
+   * The default environment is `dev`, which can be overriden by the `--config-env ENV_NAME` flag when running `npm start`.
    */
   ENV = getEnvironment();
 
   /**
    * The flag for the debug option of the application.
-   * The default value is `false`, which can be overriden by the `--debug` flag
-   * when running `npm start`.
+   * The default value is `false`, which can be overriden by the `--debug` flag when running `npm start`.
    * @type {boolean}
    */
   DEBUG = argv['debug'] || false;
 
   /**
    * The port where the documentation application will run.
-   * The default docs port is `4003`, which can be overriden by the
-   * `--docs-port` flag when running `npm start`.
+   * The default docs port is `4003`, which can be overriden by the `--docs-port` flag when running `npm start`.
    * @type {number}
    */
   DOCS_PORT = argv['docs-port'] || 4003;
 
   /**
    * The port where the unit test coverage report application will run.
-   * The default coverage port is `4004`, which can by overriden by the
-   * `--coverage-port` flag when running `npm start`.
+   * The default coverage port is `4004`, which can by overriden by the `--coverage-port` flag when running `npm start`.
    * @type {number}
    */
   COVERAGE_PORT = argv['coverage-port'] || 4004;
 
   /**
+  * The path to the coverage output
+  * NB: this must match what is configured in ./karma.conf.js
+  */
+  COVERAGE_DIR = 'coverage';
+
+  /**
    * The path for the base of the application at runtime.
-   * The default path is `/`, which can be overriden by the `--base` flag when
-   * running `npm start`.
+   * The default path is based on the environment '/',
+   * which can be overriden by the `--base` flag when running `npm start`.
    * @type {string}
    */
   APP_BASE = argv['base'] || '/';
 
   /**
-  * The flag to include templates into JS app prod file.
-  * Per default the option is `true`, but can it can be set to false using `--inline-template false`
-  * flag when running `npm run build.prod`.
-  * @type {boolean}
-  */
-  INLINE_TEMPLATES = argv['inline-template'] !== 'false';
+   * The base path of node modules.
+   * @type {string}
+   */
+  NPM_BASE = join(this.APP_BASE, 'node_modules/');
 
   /**
    * The flag for the hot-loader option of the application.
-   * Per default the option is not set, but can be set by the `--hot-loader`
-   * flag when running `npm start`.
+   * Per default the option is not set, but can be set by the `--hot-loader` flag when running `npm start`.
    * @type {boolean}
    */
   ENABLE_HOT_LOADING = argv['hot-loader'];
 
   /**
-   * The port where the application will run, if the `hot-loader` option mode
-   * is used.
+   * The port where the application will run, if the `hot-loader` option mode is used.
    * The default hot-loader port is `5578`.
    * @type {number}
    */
   HOT_LOADER_PORT = 5578;
 
   /**
+   * The build interval which will force the TypeScript compiler to perform a typed compile run.
+   * Between the typed runs, a typeless compile is run, which is typically much faster.
+   * For example, if set to 5, the initial compile will be typed, followed by 5 typeless runs,
+   * then another typed run, and so on.
+   * If a compile error is encountered, the build will use typed compilation until the error is resolved.
+   * The default value is `0`, meaning typed compilation will always be performed.
+   * @type {number}
+   */
+  TYPED_COMPILE_INTERVAL = 0;
+
+  /**
    * The directory where the bootstrap file is located.
    * The default directory is `app`.
    * @type {string}
    */
-  BOOTSTRAP_DIR = 'app';
+  BOOTSTRAP_DIR = argv['app'] || 'app';
 
   /**
    * The directory where the client files are located.
@@ -118,20 +126,25 @@ export class SeedConfig {
   APP_CLIENT = argv['client'] || 'client';
 
   /**
-   * The bootstrap file to be used to boot the application.
-   * The file to be used is dependent if the hot-loader option is used or not.
-   * Per default (non hot-loader mode) the `main.ts` file will be used, with the
-   * hot-loader option enabled, the `hot_loader_main.ts` file will be used.
+   * The bootstrap file to be used to boot the application. The file to be used is dependent if the hot-loader option is
+   * used or not.
+   * Per default (non hot-loader mode) the `main.ts` file will be used, with the hot-loader option enabled, the
+   * `hot_loader_main.ts` file will be used.
    * @type {string}
    */
   BOOTSTRAP_MODULE = `${this.BOOTSTRAP_DIR}/` + (this.ENABLE_HOT_LOADING ? 'hot_loader_main' : 'main');
 
+  BOOTSTRAP_PROD_MODULE = `${this.BOOTSTRAP_DIR}/` + 'main';
+
+  NG_FACTORY_FILE = 'main-prod';
+
+  BOOTSTRAP_FACTORY_PROD_MODULE = `${this.BOOTSTRAP_DIR}/${this.NG_FACTORY_FILE}`;
   /**
    * The default title of the application as used in the `<title>` tag of the
    * `index.html`.
    * @type {string}
    */
-  APP_TITLE = 'Wazee UI Platform';
+  APP_TITLE = 'Welcome to angular2-seed!';
 
   /**
    * The base folder of the applications source files.
@@ -185,7 +198,6 @@ export class SeedConfig {
    * @type {string}
    */
   PROD_DEST = `${this.DIST_DIR}/prod`;
-  LIB_DEST = `${this.DIST_DIR}/library`;
 
   /**
    * The folder for temporary files.
@@ -194,10 +206,17 @@ export class SeedConfig {
   TMP_DIR = `${this.DIST_DIR}/tmp`;
 
   /**
+   * The folder for library files.
+   * @type {string}
+   */
+  LIB_DEST = `${this.DIST_DIR}/library`;
+
+  /**
    * The folder for the built files, corresponding to the current environment.
    * @type {string}
    */
   APP_DEST = `${this.DIST_DIR}/${this.ENV}`;
+
   /**
    * The folder for the built CSS files.
    * @type {strings}
@@ -219,7 +238,7 @@ export class SeedConfig {
    * The name of the bundle file to includes all CSS files.
    * @type {string}
    */
-  CSS_PROD_BUNDLE = 'all.css';
+  CSS_PROD_BUNDLE = 'main.css';
 
   /**
    * The name of the bundle file to include all JavaScript shims.
@@ -251,17 +270,21 @@ export class SeedConfig {
   CODELYZER_RULES = customRules();
 
   /**
+   * The flag to enable handling of SCSS files
+   * The default value is false. Override with the '--scss' flag.
+   * @type {boolean}
+   */
+  ENABLE_SCSS = argv['scss'] || false;
+
+  /**
    * The list of NPM dependcies to be injected in the `index.html`.
    * @type {InjectableDependency[]}
    */
   NPM_DEPENDENCIES: InjectableDependency[] = [
-    // { src: 'systemjs/dist/system-polyfills.src.js', inject: 'shims', env: ENVIRONMENTS.DEVELOPMENT },
     { src: 'zone.js/dist/zone.js', inject: 'libs' },
-    // { src: 'reflect-metadata/Reflect.js', inject: 'shims' },
-    { src: 'core-js/client/shim.js', inject: 'shims' },
+    { src: 'core-js/client/shim.min.js', inject: 'shims' },
     { src: 'systemjs/dist/system.src.js', inject: 'shims', env: ENVIRONMENTS.DEVELOPMENT },
-    { src: 'rxjs/bundles/Rx.umd.js', inject: 'libs', env: ENVIRONMENTS.DEVELOPMENT }
-    // { src: 'rxjs/bundles/Rx.js', inject: 'libs', env: ENVIRONMENTS.DEVELOPMENT }
+    { src: 'rxjs/bundles/Rx.umd.min.js', inject: 'libs', env: ENVIRONMENTS.DEVELOPMENT },
   ];
 
   /**
@@ -269,7 +292,7 @@ export class SeedConfig {
    * @type {InjectableDependency[]}
    */
   APP_ASSETS: InjectableDependency[] = [
-    { src: `${this.CSS_SRC}/main.css`, inject: true, vendor: false }
+    { src: `${this.CSS_SRC}/main.${this.getInjectableStyleExtension()}`, inject: true, vendor: false },
   ];
 
   /**
@@ -283,7 +306,7 @@ export class SeedConfig {
 
   /**
    * Returns the array of injectable dependencies (npm dependencies and assets).
-   * @return {InjectableDependency[]} the array of npm dependencies and assets.
+   * @return {InjectableDependency[]} The array of npm dependencies and assets.
    */
   get DEPENDENCIES(): InjectableDependency[] {
     return normalizeDependencies(this.NPM_DEPENDENCIES.filter(filterDependency.bind(null, this.ENV)))
@@ -295,53 +318,65 @@ export class SeedConfig {
    * @type {any}
    */
   protected SYSTEM_CONFIG_DEV: any = {
-    defaultJSExtensions: false,
+    defaultJSExtensions: true,
     packageConfigPaths: [
-      `${this.APP_BASE}node_modules/*/package.json`,
-      `${this.APP_BASE}node_modules/**/package.json`,
-      `${this.APP_BASE}node_modules/@angular/*/package.json`,
-      `${this.APP_BASE}node_modules/@angular2-material/*/package.json`,
-      `${this.APP_BASE}node_modules/@ngrx/*/package.json`
+      `/node_modules/*/package.json`,
+      `/node_modules/**/package.json`,
+      `/node_modules/@angular/*/package.json`,
+      `/node_modules/@angular2-material/*/package.json`,
+      `/node_modules/@ngrx/*/package.json`
     ],
     paths: {
       [this.BOOTSTRAP_MODULE]: `${this.APP_BASE}${this.BOOTSTRAP_MODULE}`,
-      '@angular/common': `node_modules/@angular/common/bundles/common.umd.js`,
-      '@angular/compiler': `node_modules/@angular/compiler/bundles/compiler.umd.js`,
-      '@angular/core': `node_modules/@angular/core/bundles/core.umd.js`,
-      '@angular/forms': `node_modules/@angular/forms/bundles/forms.umd.js`,
-      '@angular/http': `node_modules/@angular/http/bundles/http.umd.js`,
-      '@angular/platform-browser': `node_modules/@angular/platform-browser/bundles/platform-browser.umd.js`,
-      '@angular/platform-browser-dynamic': `node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js`,
-      '@angular/router': `node_modules/@angular/router/bundles/router.umd.js`,
-      // '@angular2-material/core':'node_modules/@angular2-material/core/core.umd.js',
-      // '@angular2-material/button':'node_modules/@angular2-material/button/button.umd.js',
-      // '@angular2-material/card':'node_modules/@angular2-material/card/card.umd.js',
-      // '@angular2-material/checkbox':'node_modules/@angular2-material/checkbox/checkbox.umd.js',
-      // '@angular2-material/grid-list':'node_modules/@angular2-material/grid-list/grid-list.umd.js',
-      // '@angular2-material/icon':'node_modules/@angular2-material/icon/icon.umd.js',
-      // '@angular2-material/input':'node_modules/@angular2-material/input/input.umd.js',
-      // '@angular2-material/list':'node_modules/@angular2-material/list/list.umd.js',
-      // '@angular2-material/menu':'node_modules/@angular2-material/menu/menu.umd.js',
-      // '@angular2-material/progress-bar':'node_modules/@angular2-material/progress-bar/progress-bar.umd.js',
-      // '@angular2-material/progress-circle':'node_modules/@angular2-material/progress-circle/progress-circle.umd.js',
-      // '@angular2-material/radio':'node_modules/@angular2-material/radio/radio.umd.js',
-      // '@angular2-material/sidenav':'node_modules/@angular2-material/sidenav/sidenav.umd.js',
-      // '@angular2-material/slider':'node_modules/@angular2-material/slider/slider.umd.js',
-      // '@angular2-material/slide-toggle':'node_modules/@angular2-material/slide-toggle/slide-toggle.umd.js',
-      // '@angular2-material/button-toggle':'node_modules/@angular2-material/button-toggle/button-toggle.umd.js',
-      // '@angular2-material/tabs':'node_modules/@angular2-material/tabs/tabs.umd.js',
-      // '@angular2-material/toolbar':'node_modules/@angular2-material/toolbar/toolbar.umd.js',
-      // '@angular2-material/tooltip':'node_modules/@angular2-material/tooltip/tooltip.umd.js',
-      'rxjs/*': `node_modules/rxjs/*`,
-      'app/*': `/app/*`,
-      '*': `node_modules/*`
+      '@angular/common': 'node_modules/@angular/common/bundles/common.umd.js',
+      '@angular/compiler': 'node_modules/@angular/compiler/bundles/compiler.umd.js',
+      '@angular/core': 'node_modules/@angular/core/bundles/core.umd.js',
+      '@angular/forms': 'node_modules/@angular/forms/bundles/forms.umd.js',
+      '@angular/http': 'node_modules/@angular/http/bundles/http.umd.js',
+      '@angular/platform-browser': 'node_modules/@angular/platform-browser/bundles/platform-browser.umd.js',
+      '@angular/platform-browser-dynamic': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
+      '@angular/router': 'node_modules/@angular/router/bundles/router.umd.js',
+
+      '@angular/common/testing': 'node_modules/@angular/common/bundles/common-testing.umd.js',
+      '@angular/compiler/testing': 'node_modules/@angular/compiler/bundles/compiler-testing.umd.js',
+      '@angular/core/testing': 'node_modules/@angular/core/bundles/core-testing.umd.js',
+      '@angular/http/testing': 'node_modules/@angular/http/bundles/http-testing.umd.js',
+      '@angular/platform-browser/testing':
+      'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
+      '@angular/platform-browser-dynamic/testing':
+      'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
+      '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
+
+      '@angular2-material/core':'node_modules/@angular2-material/core/core.umd.js',
+      '@angular2-material/button':'node_modules/@angular2-material/button/button.umd.js',
+      '@angular2-material/card':'node_modules/@angular2-material/card/card.umd.js',
+      '@angular2-material/checkbox':'node_modules/@angular2-material/checkbox/checkbox.umd.js',
+      '@angular2-material/grid-list':'node_modules/@angular2-material/grid-list/grid-list.umd.js',
+      '@angular2-material/icon':'node_modules/@angular2-material/icon/icon.umd.js',
+      '@angular2-material/input':'node_modules/@angular2-material/input/input.umd.js',
+      '@angular2-material/list':'node_modules/@angular2-material/list/list.umd.js',
+      '@angular2-material/menu':'node_modules/@angular2-material/menu/menu.umd.js',
+      '@angular2-material/progress-bar':'node_modules/@angular2-material/progress-bar/progress-bar.umd.js',
+      '@angular2-material/progress-circle':'node_modules/@angular2-material/progress-circle/progress-circle.umd.js',
+      '@angular2-material/radio':'node_modules/@angular2-material/radio/radio.umd.js',
+      '@angular2-material/sidenav':'node_modules/@angular2-material/sidenav/sidenav.umd.js',
+      '@angular2-material/slider':'node_modules/@angular2-material/slider/slider.umd.js',
+      '@angular2-material/slide-toggle':'node_modules/@angular2-material/slide-toggle/slide-toggle.umd.js',
+      '@angular2-material/button-toggle':'node_modules/@angular2-material/button-toggle/button-toggle.umd.js',
+      '@angular2-material/tabs':'node_modules/@angular2-material/tabs/tabs.umd.js',
+      '@angular2-material/toolbar':'node_modules/@angular2-material/toolbar/toolbar.umd.js',
+      '@angular2-material/tooltip':'node_modules/@angular2-material/tooltip/tooltip.umd.js',
+      'rxjs/*': 'node_modules/rxjs/*',
+      '@ngrx/store': 'node_modules/@ngrx/store/index.js',
+      'app/*': '/app/*',
+      // For test config
+      'dist/dev/*': '/base/dist/dev/*',
+      '*': 'node_modules/*'
     },
     packages: {
       rxjs: { defaultExtension: 'js' },
       '@angular2-material' : {defaultExtension: 'js'}
-
-    },
-
+    }
   };
 
   /**
@@ -362,7 +397,6 @@ export class SeedConfig {
       join(this.PROJECT_ROOT, 'node_modules', '@angular', '*', 'package.json'),
       join(this.PROJECT_ROOT, 'node_modules', '@angular2-material', '*', 'package.json'),
       join(this.PROJECT_ROOT, 'node_modules', '@ngrx', '*', 'package.json')
-
     ],
     paths: {
       [`${this.TMP_DIR}/*`]: `${this.TMP_DIR}/*`,
@@ -428,33 +462,96 @@ export class SeedConfig {
   ];
 
   /**
-   * The BrowserSync configuration of the application.
-   * The default open behavior is to open the browser, 
-   * To prevent the browser from opening
-   * `--b`  flag when running `npm start` (tested with serve.dev)
-   * example `npm start -- --b`
-   * @type {any}
+   * White list for CSS color guard
+   * @type {[string, string][]}
    */
-  BROWSER_SYNC_CONFIG: any = {
-    middleware: [require('connect-history-api-fallback')({ index: `${this.APP_BASE}index.html` })],
-    port: this.PORT,
-    startPath: this.APP_BASE,
-    open: argv['b'] ? false : true,
-    server: {
-      baseDir: `${this.DIST_DIR}/empty/`,
-      routes: {
-        [`${this.APP_BASE}${this.APP_DEST}`]: this.APP_DEST,
-        [`${this.APP_BASE}node_modules`]: 'node_modules',
-        [`${this.APP_BASE.replace(/\/$/, '')}`]: this.APP_DEST
+  COLOR_GUARD_WHITE_LIST: [string, string][] = [
+  ];
+
+  /**
+   * Configurations for NPM module configurations. Add to or override in project.config.ts.
+   * If you like, use the mergeObject() method to assist with this.
+   */
+  PLUGIN_CONFIGS: any = {
+    /**
+     * The BrowserSync configuration of the application.
+     * The default open behavior is to open the browser. To prevent the browser from opening use the `--b`  flag when
+     * running `npm start` (tested with serve.dev).
+     * Example: `npm start -- --b`
+     * @type {any}
+     */
+    'browser-sync': {
+      middleware: [require('connect-history-api-fallback')({ index: `${this.APP_BASE}index.html` })],
+      port: this.PORT,
+      startPath: this.APP_BASE,
+      open: argv['b'] ? false : true,
+      injectChanges: false,
+      server: {
+        baseDir: `${this.DIST_DIR}/empty/`,
+        routes: {
+          [`${this.APP_BASE}${this.APP_SRC}`]: this.APP_SRC,
+          [`${this.APP_BASE}${this.APP_DEST}`]: this.APP_DEST,
+          [`${this.APP_BASE}node_modules`]: 'node_modules',
+          [`${this.APP_BASE.replace(/\/$/, '')}`]: this.APP_DEST
+        }
+      }
+    },
+
+    // Note: you can customize the location of the file
+    'environment-config': join(this.PROJECT_ROOT, this.TOOLS_DIR, 'env'),
+
+    /**
+     * The options to pass to gulp-sass (and then to node-sass).
+     * Reference: https://github.com/sass/node-sass#options
+     * @type {object}
+     */
+    'gulp-sass': {
+      includePaths: ['./node_modules/']
+    },
+
+    /**
+     * The options to pass to gulp-concat-css
+     * Reference: https://github.com/mariocasciaro/gulp-concat-css
+     * @type {object}
+     */
+    'gulp-concat-css': {
+      targetFile: this.CSS_PROD_BUNDLE,
+      options: {
+        rebaseUrls: false
       }
     }
   };
+
+  /**
+   * Recursively merge source onto target.
+   * @param {any} target The target object (to receive values from source)
+   * @param {any} source The source object (to be merged onto target)
+   */
+  mergeObject(target: any, source: any) {
+    const deepExtend = require('deep-extend');
+    deepExtend(target, source);
+  }
+
+  /**
+   * Locate a plugin configuration object by plugin key.
+   * @param {any} pluginKey The object key to look up in PLUGIN_CONFIGS.
+   */
+  getPluginConfig(pluginKey: string): any {
+    if (this.PLUGIN_CONFIGS[pluginKey]) {
+      return this.PLUGIN_CONFIGS[pluginKey];
+    }
+    return null;
+  }
+
+  getInjectableStyleExtension() {
+    return this.ENV === ENVIRONMENTS.PRODUCTION && this.ENABLE_SCSS ? 'scss' : 'css';
+  }
 
 }
 
 /**
  * Normalizes the given `deps` to skip globs.
- * @param {InjectableDependency[]} deps the dependencies to be normalized.
+ * @param {InjectableDependency[]} deps - The dependencies to be normalized.
  */
 export function normalizeDependencies(deps: InjectableDependency[]) {
   deps
@@ -465,10 +562,9 @@ export function normalizeDependencies(deps: InjectableDependency[]) {
 
 /**
  * Returns if the given dependency is used in the given environment.
- * @param  {string}               env the environment to be filtered for
- * @param  {InjectableDependency} d   the dependency to check
- * @return {boolean}                  `true` if the dependency is used in this
- *                                    environment, `false` otherwise
+ * @param  {string}               env - The environment to be filtered for.
+ * @param  {InjectableDependency} d   - The dependency to check.
+ * @return {boolean}                    `true` if the dependency is used in this environment, `false` otherwise.
  */
 function filterDependency(env: string, d: InjectableDependency): boolean {
   if (!d.env) {
@@ -482,7 +578,7 @@ function filterDependency(env: string, d: InjectableDependency): boolean {
 
 /**
  * Returns the applications version as defined in the `package.json`.
- * @return {number} the applications version
+ * @return {number} The applications version.
  */
 function appVersion(): number | string {
   var pkg = require('../../package.json');
@@ -491,7 +587,7 @@ function appVersion(): number | string {
 
 /**
  * Returns the linting configuration to be used for `codelyzer`.
- * @return {string[]} the list of linting rules
+ * @return {string[]} The list of linting rules.
  */
 function customRules(): string[] {
   var lintConf = require('../../tslint.json');

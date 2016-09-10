@@ -2,7 +2,7 @@ import { join } from 'path';
 import * as Builder from 'systemjs-builder';
 
 import {
-  BOOTSTRAP_MODULE,
+  BOOTSTRAP_PROD_MODULE,
   JS_PROD_APP_BUNDLE,
   JS_DEST,
   SYSTEM_BUILDER_CONFIG,
@@ -16,14 +16,14 @@ const BUNDLER_OPTIONS = {
 };
 
 /**
- * Executes the build process, bundlig the JavaScript files using the SystemJS
- * builder.
+ * Executes the build process, bundling the JavaScript files using the SystemJS builder.
  */
 export = (done: any) => {
   let builder = new Builder(SYSTEM_BUILDER_CONFIG);
   builder
-    .buildStatic(join(TMP_DIR, BOOTSTRAP_MODULE),
+    .buildStatic(join(TMP_DIR, BOOTSTRAP_PROD_MODULE),
                  join(JS_DEST, JS_PROD_APP_BUNDLE),
                  BUNDLER_OPTIONS)
-    .then(() => done());
+    .then(() => done())
+    .catch((err: any) => done(err));
 };
