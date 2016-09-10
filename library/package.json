@@ -44,7 +44,6 @@
     "@ngrx/core": "^1.1.0",
     "@ngrx/store": "^2.1.2",
     "hammerjs": "^2.0.8",
-    "@types/hammerjs": "^2.0.31",
     "ng2-translate": "^2.1.0",
     "pikaday": "^1.4.0"
   }
