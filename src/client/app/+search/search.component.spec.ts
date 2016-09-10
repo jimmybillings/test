@@ -2,7 +2,7 @@ import {
   beforeEachProvidersArray,
   Observable,
   // inject,
-  addProviders
+  TestBed
 } from '../imports/test.imports';
 
 import { SearchComponent } from './search.component';
@@ -27,14 +27,14 @@ export function main() {
       }
     }
 
-    beforeEach(() => {
-      addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         SearchComponent,
         { provide: AssetData, useClass: MockAssetData },
         { provide: UiConfig, useClass: MockUiConfig }
-      ]);
-    });
+      ]
+    }));
 
   });
 

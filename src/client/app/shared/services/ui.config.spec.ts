@@ -4,19 +4,20 @@ import {
   MockBackend,
   Response,
   inject,
-  addProviders
+  TestBed
 } from '../../imports/test.imports';
 
 import { UiConfig } from './ui.config';
 
 export function main() {
   describe('UI config', () => {
-    beforeEach(() => {
-      addProviders([
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         UiConfig
-      ]);
-    });
+      ]
+    }));
 
     it('Should set the api endpoint to get a UI configuration object',
       inject([UiConfig], (service: UiConfig) => {

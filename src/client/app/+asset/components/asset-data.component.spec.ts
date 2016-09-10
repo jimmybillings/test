@@ -1,18 +1,18 @@
 import {
   beforeEachProvidersArray,
   // inject,
-  addProviders
+  TestBed
 } from '../../imports/test.imports';
 
 import { AssetDataComponent} from './asset-data.component';
 
 export function main() {
   describe('Asset Data Component', () => {
-    beforeEach(() => {
-      addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
-        AssetDataComponent,
-      ]);
-    });
+        AssetDataComponent
+      ]
+    }));
   });
 }

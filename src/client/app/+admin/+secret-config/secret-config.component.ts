@@ -59,7 +59,7 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
     this.configService.updateUiConfig(JSON.parse(form))
       .take(1).subscribe((res) => {
         this.uiConfig.set(res.json());
-        (<FormControl>this.configForm.controls['config']).updateValue(JSON.stringify(res.json(), undefined, 4));
+        (<FormControl>this.configForm.controls['config']).setValue(JSON.stringify(res.json(), undefined, 4));
       }, (err) => {
         // do something here
       });

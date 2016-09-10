@@ -5,17 +5,20 @@ import {
   MockBackend,
   Response,
   inject,
-  addProviders
+  TestBed
 } from '../../imports/test.imports';
 
 import { ConfigService } from './config.service';
 
 export function main() {
   describe('Config Service', () => {
+
     beforeEach(() => {
-      addProviders([
-        ...beforeEachProvidersArray
-      ]);
+      TestBed.configureTestingModule({
+        providers: [
+          ...beforeEachProvidersArray,
+        ]
+      });
       this.uiApiUrl = 'https://crxextapi.dev.wzplatform.com/api/identities/v1/configuration/site/';
       this.siteApiUrl = 'https://crxextapi.dev.wzplatform.com/api/identities/v1/site/';
     });

@@ -9,7 +9,7 @@ import { UiState } from '../shared/services/ui.state';
 
 @Component({
   moduleId: module.id,
-  selector: 'home',
+  selector: 'home-component',
   templateUrl: 'home.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

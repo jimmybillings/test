@@ -3,7 +3,7 @@ import {
   Observable,
   Injectable,
   inject,
-  addProviders
+  TestBed
 } from '../../../imports/test.imports';
 
 import { CollectionListDdComponent } from './collections-list-dd.component';
@@ -42,14 +42,14 @@ export function main() {
       }
     }
 
-    beforeEach(() => {
-      addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         CollectionListDdComponent,
         { provide: CollectionsService, useClass: MockCollectionsService },
         { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
-      ]);
-    });
+      ]
+    }));
 
     it('Should detect the user is not on the collection show page and navigate there',
       inject([CollectionListDdComponent], (component: CollectionListDdComponent) => {

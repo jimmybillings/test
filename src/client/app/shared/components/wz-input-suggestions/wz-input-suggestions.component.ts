@@ -66,7 +66,7 @@ export class WzInputSuggestionsComponent implements OnInit {
   public selectSuggestion(suggestion: string) {
     this.shouldCallServer = false;
     this.selectedSuggestion = suggestion;
-    this.fControl.updateValue(suggestion);
+    this.fControl.setValue(suggestion);
     this.suggestions = [];
     this.activeSuggestion = null;
     this.areSuggestionsVisible = false;

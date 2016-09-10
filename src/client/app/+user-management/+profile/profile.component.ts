@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
-  selector: 'profile',
+  selector: 'profile-component',
   templateUrl: 'profile.html'
 })
 

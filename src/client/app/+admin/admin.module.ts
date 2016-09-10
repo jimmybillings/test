@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
 import { AdminAuthGuard } from './services/admin.auth.guard';
 
 @NgModule({
-  imports: [SharedModule.forRoot(), RouterModule.forChild(ADMIN_ROUTES)],
+  imports: [SharedModule, RouterModule.forChild(ADMIN_ROUTES)],
   declarations: [
     AdminComponent,
     ConfigComponent,

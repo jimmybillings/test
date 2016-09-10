@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CurrentUser } from './current-user.model';
-import { Store, Reducer, Action } from '@ngrx/store';
+import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'Rxjs/rx';
 
 const defaultPreferences: any = {
   filterCounts: false
 };
 
-export const userPreferences: Reducer<any> = (state = defaultPreferences, action: Action) => {
+export const userPreferences: ActionReducer<any> = (state = defaultPreferences, action: Action) => {
   switch (action.type) {
     case 'UPDATE_PREFERENCES':
       return Object.assign({}, state, action.payload);

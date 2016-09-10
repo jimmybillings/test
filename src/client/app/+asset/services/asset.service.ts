@@ -1,12 +1,12 @@
 import { Observable} from 'rxjs/Rx';
-import { Store, Reducer, Action} from '@ngrx/store';
+import { Store, ActionReducer, Action} from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Http, Response } from '@angular/http';
 
 const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '' };
 
-export const asset: Reducer<any> = (state = initAsset, action: Action) => {
+export const asset: ActionReducer<any> = (state = initAsset, action: Action) => {
   switch (action.type) {
     case 'SET_ASSET':
       return Object.assign({}, state, action.payload);

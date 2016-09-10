@@ -54,12 +54,13 @@ export class AppComponent implements OnInit, OnDestroy {
     private apiConfig: ApiConfig,
     private authentication: Authentication) {
     this.apiConfig.setPortal(portal);
+    this.currentUser.set();
   }
 
   ngOnInit() {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
     this.configSubscription = this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
-    this.currentUser.set();
+
     this.routerChanges();
   }
 

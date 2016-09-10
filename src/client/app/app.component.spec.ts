@@ -1,9 +1,8 @@
 import {
   beforeEachProvidersArray,
   inject,
-  addProviders,
+  TestBed,
 } from './imports/test.imports';
-import { provide } from '@angular/core';
 import { TranslateLoader, TranslateStaticLoader, TranslateService } from 'ng2-translate/ng2-translate';
 import { Http } from '@angular/http';
 import { AppComponent} from './app.component';
@@ -11,17 +10,20 @@ import { AppComponent} from './app.component';
 export function main() {
   describe('App Component', () => {
     (<any>window).portal = 'core';
-    beforeEach(() => {
-      addProviders([
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
-        provide(TranslateLoader, {
+        {
+          provide: TranslateLoader,
           useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
           deps: [Http]
-        }),
+        },
         TranslateService,
         AppComponent
-      ]);
-    });
+      ]
+    }));
+
 
     it('Should log out a user', inject([AppComponent], (component: any) => {
       spyOn(component.authentication, 'destroy').and.callThrough();

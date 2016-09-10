@@ -49,8 +49,7 @@
             </span>
             <span *ngIf="form.controls[field.name].hasError('serverError')">
               {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
-            </span>
-              
+            </span>     
         </md-hint>
       </md-input>
       <!--
@@ -61,11 +60,11 @@
         START: FORM SELECT
       -->
       <div *ngIf="field.type == 'select'">
-        <md-input-group class="md-group">
+        <div class="md-group">
           <select formControlName="{{field.name}}">
             <option *ngFor="let option of parseOptions(field.options)">{{option}}</option>
           </select>
-        </md-input-group>
+        </div>
       </div>
       <!--
         END: FORM SELECT

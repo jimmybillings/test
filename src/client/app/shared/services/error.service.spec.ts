@@ -1,6 +1,6 @@
 import {
   beforeEachProvidersArray,
-  addProviders,
+  TestBed,
   inject
 } from '../../imports/test.imports';
 
@@ -8,11 +8,12 @@ import { Error } from './error.service';
 
 export function main() {
   describe('Error Service', () => {
-    beforeEach(() => {
-      addProviders([
-        ...beforeEachProvidersArray
-      ]);
-    });
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
+        ...beforeEachProvidersArray,
+      ]
+    }));
 
     it('Should rediect to the login page on a 401 response', inject([Error], (service: Error) => {
       let error = { status: 401 };

@@ -3,7 +3,7 @@ import {
   TableHeaders,
   UiComponents
 } from '../../shared/interfaces/admin.interface';
-import { FormFields } from '../../shared/interfaces/forms.interface.ts';
+import { FormFields } from '../../shared/interfaces/forms.interface';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfigService } from '../services/config.service';
@@ -29,7 +29,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   public components: UiComponents;
   public subComponents: any;
   public form: TableHeaders | FormFields;
-  public configOptions: Array<TableHeaders> | Array<FormFields>;
+  public configOptions: Array<any>;
   private routeSubscription: Subscription;
 
   constructor(public router: Router,

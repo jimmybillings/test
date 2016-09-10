@@ -255,12 +255,13 @@ export class SeedConfig {
    * @type {InjectableDependency[]}
    */
   NPM_DEPENDENCIES: InjectableDependency[] = [
-    { src: 'systemjs/dist/system-polyfills.src.js', inject: 'shims', env: ENVIRONMENTS.DEVELOPMENT },
+    // { src: 'systemjs/dist/system-polyfills.src.js', inject: 'shims', env: ENVIRONMENTS.DEVELOPMENT },
     { src: 'zone.js/dist/zone.js', inject: 'libs' },
     // { src: 'reflect-metadata/Reflect.js', inject: 'shims' },
     { src: 'core-js/client/shim.js', inject: 'shims' },
     { src: 'systemjs/dist/system.src.js', inject: 'shims', env: ENVIRONMENTS.DEVELOPMENT },
-    { src: 'rxjs/bundles/Rx.js', inject: 'libs', env: ENVIRONMENTS.DEVELOPMENT }
+    { src: 'rxjs/bundles/Rx.umd.js', inject: 'libs', env: ENVIRONMENTS.DEVELOPMENT }
+    // { src: 'rxjs/bundles/Rx.js', inject: 'libs', env: ENVIRONMENTS.DEVELOPMENT }
   ];
 
   /**
@@ -294,22 +295,50 @@ export class SeedConfig {
    * @type {any}
    */
   protected SYSTEM_CONFIG_DEV: any = {
-    defaultJSExtensions: true,
+    defaultJSExtensions: false,
     packageConfigPaths: [
       `${this.APP_BASE}node_modules/*/package.json`,
       `${this.APP_BASE}node_modules/**/package.json`,
       `${this.APP_BASE}node_modules/@angular/*/package.json`,
-      `${this.APP_BASE}node_modules/@angular2-material/**/package.json`,
-      `${this.APP_BASE}node_modules/@ngrx/store/package.json`
+      `${this.APP_BASE}node_modules/@angular2-material/*/package.json`,
+      `${this.APP_BASE}node_modules/@ngrx/*/package.json`
     ],
     paths: {
       [this.BOOTSTRAP_MODULE]: `${this.APP_BASE}${this.BOOTSTRAP_MODULE}`,
-      'rxjs/*': `${this.APP_BASE}rxjs/*`,
+      '@angular/common': `node_modules/@angular/common/bundles/common.umd.js`,
+      '@angular/compiler': `node_modules/@angular/compiler/bundles/compiler.umd.js`,
+      '@angular/core': `node_modules/@angular/core/bundles/core.umd.js`,
+      '@angular/forms': `node_modules/@angular/forms/bundles/forms.umd.js`,
+      '@angular/http': `node_modules/@angular/http/bundles/http.umd.js`,
+      '@angular/platform-browser': `node_modules/@angular/platform-browser/bundles/platform-browser.umd.js`,
+      '@angular/platform-browser-dynamic': `node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js`,
+      '@angular/router': `node_modules/@angular/router/bundles/router.umd.js`,
+      // '@angular2-material/core':'node_modules/@angular2-material/core/core.umd.js',
+      // '@angular2-material/button':'node_modules/@angular2-material/button/button.umd.js',
+      // '@angular2-material/card':'node_modules/@angular2-material/card/card.umd.js',
+      // '@angular2-material/checkbox':'node_modules/@angular2-material/checkbox/checkbox.umd.js',
+      // '@angular2-material/grid-list':'node_modules/@angular2-material/grid-list/grid-list.umd.js',
+      // '@angular2-material/icon':'node_modules/@angular2-material/icon/icon.umd.js',
+      // '@angular2-material/input':'node_modules/@angular2-material/input/input.umd.js',
+      // '@angular2-material/list':'node_modules/@angular2-material/list/list.umd.js',
+      // '@angular2-material/menu':'node_modules/@angular2-material/menu/menu.umd.js',
+      // '@angular2-material/progress-bar':'node_modules/@angular2-material/progress-bar/progress-bar.umd.js',
+      // '@angular2-material/progress-circle':'node_modules/@angular2-material/progress-circle/progress-circle.umd.js',
+      // '@angular2-material/radio':'node_modules/@angular2-material/radio/radio.umd.js',
+      // '@angular2-material/sidenav':'node_modules/@angular2-material/sidenav/sidenav.umd.js',
+      // '@angular2-material/slider':'node_modules/@angular2-material/slider/slider.umd.js',
+      // '@angular2-material/slide-toggle':'node_modules/@angular2-material/slide-toggle/slide-toggle.umd.js',
+      // '@angular2-material/button-toggle':'node_modules/@angular2-material/button-toggle/button-toggle.umd.js',
+      // '@angular2-material/tabs':'node_modules/@angular2-material/tabs/tabs.umd.js',
+      // '@angular2-material/toolbar':'node_modules/@angular2-material/toolbar/toolbar.umd.js',
+      // '@angular2-material/tooltip':'node_modules/@angular2-material/tooltip/tooltip.umd.js',
+      'rxjs/*': `node_modules/rxjs/*`,
       'app/*': `/app/*`,
-      '*': `${this.APP_BASE}node_modules/*`
+      '*': `node_modules/*`
     },
     packages: {
-      rxjs: { defaultExtension: false }
+      rxjs: { defaultExtension: 'js' },
+      '@angular2-material' : {defaultExtension: 'js'}
 
     },
 
@@ -332,7 +361,7 @@ export class SeedConfig {
       join(this.PROJECT_ROOT, 'node_modules', '*', 'package.json'),
       join(this.PROJECT_ROOT, 'node_modules', '@angular', '*', 'package.json'),
       join(this.PROJECT_ROOT, 'node_modules', '@angular2-material', '*', 'package.json'),
-      join(this.PROJECT_ROOT, 'node_modules', '@ngrx/store/package.json')
+      join(this.PROJECT_ROOT, 'node_modules', '@ngrx', '*', 'package.json')
 
     ],
     paths: {
@@ -340,7 +369,7 @@ export class SeedConfig {
       '*': 'node_modules/*'
     },
     packages: {
-      '@angular/core': {
+      '@angular/common': {
         main: 'index.js',
         defaultExtension: 'js'
       },
@@ -348,7 +377,15 @@ export class SeedConfig {
         main: 'index.js',
         defaultExtension: 'js'
       },
-      '@angular/common': {
+      '@angular/core/testing': {
+        main: 'index.js',
+        defaultExtension: 'js'
+      },
+      '@angular/core': {
+        main: 'index.js',
+        defaultExtension: 'js'
+      },
+      '@angular/forms': {
         main: 'index.js',
         defaultExtension: 'js'
       },
@@ -361,10 +398,6 @@ export class SeedConfig {
         defaultExtension: 'js'
       },
       '@angular/platform-browser-dynamic': {
-        main: 'index.js',
-        defaultExtension: 'js'
-      },
-      '@angular/router-deprecated': {
         main: 'index.js',
         defaultExtension: 'js'
       },

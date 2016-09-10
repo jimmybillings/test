@@ -9,7 +9,7 @@ import { USER_ROUTES } from './user-management.routes';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-    imports: [SharedModule.forRoot(), RouterModule.forChild(USER_ROUTES)],
+    imports: [SharedModule, RouterModule.forChild(USER_ROUTES)],
     declarations: [UserManagementComponent, LoginComponent, RegisterComponent, ProfileComponent],
     exports: [UserManagementComponent],
     providers: [User],

@@ -15,6 +15,8 @@ import { CollectionModule } from './+collection/collection.module';
 import { ApplicationModule } from './application/application.module';
 import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
+import { StoreModule } from '@ngrx/store';
+import { WAZEE_STORES } from './imports/wazee';
 
 @NgModule({
   imports: [
@@ -29,7 +31,8 @@ import { AppComponent } from './app.component';
     UserManagementModule,
     AdminModule,
     CartModule,
-    ApplicationModule
+    ApplicationModule,
+    StoreModule.provideStore(WAZEE_STORES)
   ],
   providers: [{
     provide: APP_BASE_HREF,

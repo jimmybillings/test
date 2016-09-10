@@ -43,7 +43,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
       pair = pair.split('=');
       obj[pair[0]] = decodeURIComponent(pair[1] || '');
     });
-    (<FormControl>this.searchForm.controls['query']).updateValue(obj['q']);
+    (<FormControl>this.searchForm.controls['query']).setValue(obj['q']);
     this.searchTerms = this.listenForSearchTerms();
   }
 

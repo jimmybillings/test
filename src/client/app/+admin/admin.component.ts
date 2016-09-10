@@ -3,7 +3,7 @@ import {CurrentUser} from '../shared/services/current-user.model';
 
 @Component({
   moduleId: module.id,
-  selector: 'admin',
+  selector: 'admin-component',
   templateUrl: 'admin.html',
 })
 

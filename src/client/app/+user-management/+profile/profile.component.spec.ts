@@ -1,6 +1,6 @@
 import {
   beforeEachProvidersArray,
-  addProviders,
+  TestBed,
   // inject,
 } from '../../imports/test.imports';
 
@@ -8,10 +8,10 @@ import {
 
 export function main() {
   describe('Profile Component', () => {
-    beforeEach(() => {
-      addProviders([
-        ...beforeEachProvidersArray
-      ]);
-    });
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
+        ...beforeEachProvidersArray,
+      ]
+    }));
   });
 }

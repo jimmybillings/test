@@ -3,7 +3,7 @@ import {
   Observable,
   Injectable,
   inject,
-  addProviders
+  TestBed
 } from '../../../imports/test.imports';
 
 import { CollectionFormComponent } from './collection-form.component';
@@ -46,14 +46,14 @@ export function main() {
       }
     }
 
-    beforeEach(() => {
-      addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         CollectionFormComponent,
         { provide: CollectionsService, useClass: MockCollectionsService },
         { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
-      ]);
-    });
+      ]
+    }));
 
     it('Should create a new collection',
       inject([CollectionFormComponent], (component: CollectionFormComponent) => {

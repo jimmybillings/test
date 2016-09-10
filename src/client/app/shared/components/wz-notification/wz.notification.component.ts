@@ -10,6 +10,7 @@ import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
+
 export class WzNotificationComponent {
   @Input() notice: string;
   @Input() theme: string;

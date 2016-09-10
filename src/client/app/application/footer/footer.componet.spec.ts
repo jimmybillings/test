@@ -1,19 +1,19 @@
 import {
   beforeEachProvidersArray,
   inject,
-  addProviders
+  TestBed
 } from '../../imports/test.imports';
 
 import { FooterComponent } from './footer.component';
 
 export function main() {
   describe('Footer Component', () => {
-    beforeEach(() => {
-      addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         FooterComponent
-      ]);
-    });
+      ]
+    }));
 
     it('Should fire an event to change the current selected language', inject([FooterComponent], (component: FooterComponent) => {
       spyOn(component.onChangeLang, 'emit');

@@ -12,7 +12,7 @@ import { UiConfig } from '../../shared/services/ui.config';
  */
 @Component({
   moduleId: module.id,
-  selector: 'login',
+  selector: 'login-component',
   templateUrl: 'login.html',
 })
 

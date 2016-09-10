@@ -2,7 +2,7 @@ import {
   beforeEachProvidersArray,
   Observable,
   inject,
-  addProviders
+  TestBed
 } from '../../imports/test.imports';
 
 import { CollectionsComponent} from './collections.component';
@@ -37,14 +37,15 @@ export function main() {
         return Observable.of({});
       }
     }
-    beforeEach(() => {
-      addProviders([
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         CollectionsComponent,
         { provide: ActiveCollectionService, useClass: MockActiveCollectionService },
         { provide: CollectionsService, useClass: MockCollectionsService },
-      ]);
-    });
+      ]
+    }));
 
     it('Should set a new active collection',
       inject([CollectionsComponent], (component: CollectionsComponent) => {

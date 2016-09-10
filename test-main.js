@@ -1,4 +1,3 @@
-debugger;
 if (!Object.hasOwnProperty('name')) {
   Object.defineProperty(Function.prototype, 'name', {
     get: function() {
@@ -23,15 +22,20 @@ __karma__.loaded = function() {};
 
 var packageNames = [
   '@angular/common',
+  '@angular/common/testing',
   '@angular/compiler',
+  '@angular/compiler/testing',
   '@angular/core',
+  '@angular/core/testing',
+  '@angular/forms',
   '@angular/http',
+  '@angular/http/testing',
   '@angular/platform-browser',
+  '@angular/platform-browser/testing',
+  '@angular/platform-browser-dynamic/testing',
   '@angular/platform-browser-dynamic',
   '@angular/router',
-  '@angular/forms',
-  '@angular/testing',
-  '@angular/upgrade',
+  '@angular/router/testing'
   
 ];
 
@@ -66,12 +70,16 @@ var config = {
   map: {
     'rxjs': 'node_modules/rxjs',
     '@angular': 'node_modules/@angular',
-    '@ngrx/store': 'node_modules/@ngrx/store/index.js',
+    '@ngrx': 'node_modules/@ngrx',
     '@angular2-material': 'node_modules/@angular2-material',
     'pikaday': 'node_modules/pikaday/pikaday'
   },
   packages: {
     'rxjs': {
+      defaultExtension: 'js'
+    },
+    '@ngrx/store': {
+      main: 'index.js',
       defaultExtension: 'js'
     }
   }
@@ -84,7 +92,7 @@ packageNames.forEach(function (pkgName) {
 materialPackages.forEach(function (pkgName) {
   config.packages['@angular2-material/' + pkgName] = {main: pkgName + '.js', defaultExtension: 'js', format: 'cjs'}
 });
-
+console.log(config);
 System.config(config);
 
 
@@ -92,34 +100,36 @@ Promise.all([
   System.import('@angular/core/testing'),
   System.import('@angular/platform-browser-dynamic/testing')
 ]).then(function (providers) {
-  debugger;
   var testing = providers[0];
   var testingBrowser = providers[1];
 
-  testing.setBaseTestProviders(testingBrowser.TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS,
-    testingBrowser.TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS);
+  testing.TestBed.initTestEnvironment(
+    testingBrowser.BrowserDynamicTestingModule,
+    testingBrowser.platformBrowserDynamicTesting()
+  );
 
-}).then(function() {
+
+}).then(function () {
   return Promise.all(
     Object.keys(window.__karma__.files) // All files served by Karma.
-    .filter(onlySpecFiles)
-    .map(file2moduleName)
-    .map(function(path) {
-      return System.import(path).then(function(module) {
-        if (module.hasOwnProperty('main')) {
-          module.main();
-        } else {
-          throw new Error('Module ' + path + ' does not implement main() method.');
-        }
-      });
-    }));
+      .filter(onlySpecFiles)
+      .map(file2moduleName)
+      .map(function (path) {
+        return System.import(path).then(function (module) {
+          if (module.hasOwnProperty('main')) {
+            module.main();
+          } else {
+            throw new Error('Module ' + path + ' does not implement main() method.');
+          }
+        });
+      }));
 })
-.then(function() {
-  __karma__.start();
-}, function(error) {
-  console.error(error.stack || error);
-  __karma__.start();
-});
+  .then(function () {
+    __karma__.start();
+  }, function (error) {
+    console.error(error.stack || error);
+    __karma__.start();
+  });
 
 function onlySpecFiles(path) {
   // check for individual files, if not given, always matches to all

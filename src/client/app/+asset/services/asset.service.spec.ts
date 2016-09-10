@@ -4,18 +4,19 @@ import {
   MockBackend,
   Response,
   inject,
-  addProviders
+  TestBed
 } from '../../imports/test.imports';
 
 import { AssetService } from './asset.service';
 
 export function main() {
   describe('Asset service', () => {
-    beforeEach(() => {
-      addProviders([
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray
-      ]);
-    });
+      ]
+    }));
 
     it('Should setup instance variables for the api endpoint and the asset store',
       inject([AssetService], (service: AssetService) => {

@@ -1,6 +1,6 @@
 import {
   beforeEachProvidersArray,
-  addProviders,
+  TestBed,
   Observable,
   inject,
 } from '../../imports/test.imports';
@@ -17,13 +17,13 @@ export function main() {
       }
     }
 
-    beforeEach(() => {
-      addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         { provide: Authentication, useClass: MockAuthentication },
         LoginComponent,
-      ]);
-    });
+      ]
+    }));
 
     it('Should set token in localStorage, set the new user, navigate to home page on succesful login',
       inject([LoginComponent], (login: LoginComponent) => {

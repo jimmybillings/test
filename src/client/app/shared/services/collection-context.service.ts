@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store, Reducer, Action } from '@ngrx/store';
+import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable }  from 'rxjs/observable';
 
 const collectionOptionsState: any = {
@@ -8,7 +8,7 @@ const collectionOptionsState: any = {
   currentSearchQuery: {'q': ''}
 };
 
-export const collectionOptions: Reducer<any> = (state = collectionOptionsState, action: Action) => {
+export const collectionOptions: ActionReducer<any> = (state = collectionOptionsState, action: Action) => {
   switch (action.type) {
     case 'RESET_OPTIONS':
       return Object.assign({}, action.payload);

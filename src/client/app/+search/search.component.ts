@@ -20,7 +20,7 @@ import { WzNotificationService } from '../shared/components/wz-notification/wz.n
  */
 @Component({
   moduleId: module.id,
-  selector: 'search',
+  selector: 'search-component',
   templateUrl: 'search.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -140,7 +140,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public downloadComp(params: any): void {
     this.assetData.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
-        window.location = res.url;
+        window.location.href = res.url;
       } else {
         this.notification.createNotfication(this.target, {trString: 'COMPS.NO_COMP', theme: 'alert'});
       }

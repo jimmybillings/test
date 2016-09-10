@@ -1,9 +1,9 @@
 import { User } from '../interfaces/user.interface';
 import { Observable } from 'rxjs/Rx';
-import { Store, Reducer, Action } from '@ngrx/store';
+import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 
-export const currentUser: Reducer<any> = (state = {}, action: Action) => {
+export const currentUser: ActionReducer<any> = (state = {}, action: Action) => {
 
   switch (action.type) {
     case 'SET_USER':
@@ -24,19 +24,11 @@ export function isLoggedIn() {
  */
 @Injectable()
 export class CurrentUser {
-  public perms: Array<string>;
   private data: Observable<any>;
 
   constructor(
     private store: Store<User>) {
     this.data = this.store.select('currentUser');
-    this.setVars();
-  }
-
-  public setVars(): void {
-    this.data.subscribe((user: any) => {
-      this.perms = user.permissions;
-    });
   }
 
   get profile() {
@@ -61,7 +53,7 @@ export class CurrentUser {
   }
 
   public loggedInState(): Observable<any> {
-    return this.data.map(user => (user.id > 0));
+    return this.data.map(user => user.id > 0);
   }
 
   public loggedIn(): boolean {

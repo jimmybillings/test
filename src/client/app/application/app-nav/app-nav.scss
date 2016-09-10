@@ -124,12 +124,12 @@ header.app-header.search-closed app-nav button.open-search {
 // The spacing may change when search or the bin tray is open in the header.
 // there are a few different styles of pages.
 // Also the current mdToolbar does not change height for mobile. This could change, that is what the media queries are for.
-header.app-header + div.main-content cart,
+header.app-header + div.main-content cart-component,
 header.app-header + div.main-content collection-show,
-header.app-header + div.main-content collections,
-header.app-header + div.main-content cms,
-header.app-header + div.main-content search,
-header.app-header + div.main-content asset {
+header.app-header + div.main-content collections-component,
+header.app-header + div.main-content cms-component,
+header.app-header + div.main-content search-component,
+header.app-header + div.main-content asset-component {
   display: block;
   @include transition(border-top-width 0.35s, $swift-ease-in-out-timing-function);
   border-top: rem(16.6) solid md-color($md-grey, 900, .7);
@@ -137,34 +137,34 @@ header.app-header + div.main-content asset {
     border-top-width: rem(15.2);
   }
 }
-header.app-header.collection-tray-closed + div.main-content cart,
+header.app-header.collection-tray-closed + div.main-content cart-component,
 header.app-header.collection-tray-closed + div.main-content collection-show,
-header.app-header.collection-tray-closed + div.main-content collections,
-header.app-header.collection-tray-closed + div.main-content cms,
-header.app-header.collection-tray-closed + div.main-content search,
-header.app-header.collection-tray-closed + div.main-content asset {
+header.app-header.collection-tray-closed + div.main-content collections-component,
+header.app-header.collection-tray-closed + div.main-content cms-component,
+header.app-header.collection-tray-closed + div.main-content search-component,
+header.app-header.collection-tray-closed + div.main-content asset-component {
   border-top-width: rem(11.0);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     border-top-width: rem(9.6);
   }
 }
-header.app-header.collection-tray-closed.search-closed + div.main-content cart,
+header.app-header.collection-tray-closed.search-closed + div.main-content cart-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content collection-show,
-header.app-header.collection-tray-closed.search-closed + div.main-content collections,
-header.app-header.collection-tray-closed.search-closed + div.main-content cms,
-header.app-header.collection-tray-closed.search-closed + div.main-content search,
-header.app-header.collection-tray-closed.search-closed + div.main-content asset {
+header.app-header.collection-tray-closed.search-closed + div.main-content collections-component,
+header.app-header.collection-tray-closed.search-closed + div.main-content cms-component,
+header.app-header.collection-tray-closed.search-closed + div.main-content search-component,
+header.app-header.collection-tray-closed.search-closed + div.main-content asset-component {
   border-top-width: rem(6.4);
   // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
   //   border-top-width: rem(5.6);
   // }
 }
-header.app-header.search-closed + div.main-content cart,
+header.app-header.search-closed + div.main-content cart-component,
 header.app-header.search-closed + div.main-content collection-show,
-header.app-header.search-closed + div.main-content collections,
-header.app-header.search-closed + div.main-content cms,
-header.app-header.search-closed + div.main-content search,
-header.app-header.search-closed + div.main-content asset {
+header.app-header.search-closed + div.main-content collections-component,
+header.app-header.search-closed + div.main-content cms-component,
+header.app-header.search-closed + div.main-content search-component,
+header.app-header.search-closed + div.main-content asset-component {
   border-top-width: rem(12.0);
   // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
   //   border-top-width: rem(11.2);
@@ -172,7 +172,7 @@ header.app-header.search-closed + div.main-content asset {
 }
 
 // pages that do not have options to open and close search and bins, but don't have a bk hero image or video (admin)
-header.app-header + div.main-content admin{
+header.app-header + div.main-content admin-component {
   display: flex;
   @include transition(border-top-width 0.35s, $swift-ease-in-out-timing-function);
   border-top: rem(16.6) solid md-color($md-grey, 900, .7);
@@ -181,7 +181,7 @@ header.app-header + div.main-content admin{
   // }
 }
 
-header.app-header + div.main-content admin {
+header.app-header + div.main-content admin-component {
   border-top-width: rem(6.4);
   // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
   //   border-top-width: rem(5.6);
@@ -190,8 +190,8 @@ header.app-header + div.main-content admin {
 
 // pages that do not have options to open and close search and bins with a bk hero image or video (user, home)
 // currently the latest material header toolbar does not change sizes for mobile. If it does, then used the media query
-header.app-header + div.main-content user .hero,
-header.app-header + div.main-content home .hero {
+header.app-header + div.main-content user-component .hero,
+header.app-header + div.main-content home-component .hero {
   padding-top: rem(6.4);
   // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
   //   padding-top: rem(5.6);

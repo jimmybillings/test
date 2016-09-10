@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
-import { Store, Reducer, Action } from '@ngrx/store';
+import { Store, ActionReducer, Action } from '@ngrx/store';
 import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { Http, RequestOptions, URLSearchParams, Response } from '@angular/http';
 
 const initFilters: any = {};
-export const filters: Reducer<any> = (state: Array<any> = initFilters, action: Action) => {
+export const filters: ActionReducer<any> = (state: Array<any> = initFilters, action: Action) => {
   switch (action.type) {
     case 'FILTERS.SET_FILTERS':
       return Object.assign({}, JSON.parse(JSON.stringify(action.payload)));

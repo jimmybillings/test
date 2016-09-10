@@ -3,7 +3,7 @@ import { SearchComponent } from '../../../+search/search.component';
 
 @Component({
   moduleId: module.id,
-  selector: 'breadcrumb',
+  selector: 'breadcrumb-component',
   templateUrl: 'wz.breadcrumb.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

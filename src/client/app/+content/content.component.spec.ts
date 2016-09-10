@@ -3,7 +3,7 @@ import {
   ActivatedRoute,
   Observable,
   inject,
-  addProviders
+  TestBed
 } from '../imports/test.imports';
 
 import { ContentComponent} from './content.component';
@@ -22,14 +22,14 @@ export function main() {
         this.params = Observable.of({page: 'terms-conditions'});
       }
     }
-    beforeEach(() => {
-      addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         ContentComponent,
         { provide: ActivatedRoute, useClass: MockActivatedRoute },
         { provide: ContentService, useClass: MockContentService }
-      ]);
-    });
+      ]
+    }));
 
     it('Should call the Content service and assign the HTML response to title and content variables',
       inject([ContentComponent], (service: ContentComponent) => {

@@ -1,4 +1,4 @@
-import {RouterConfig} from '@angular/router';
+import {Routes} from '@angular/router';
 import {AdminComponent} from './admin.component';
 import {DashboardComponent} from './+dashboard/dashboard.component';
 import {IndexComponent} from './+index/index.component';
@@ -8,7 +8,7 @@ import {SiteConfigComponent} from './+site-config/site-config.component';
 import {SecretConfigComponent} from './+secret-config/secret-config.component';
 import { AdminAuthGuard } from './services/admin.auth.guard';
 
-export const ADMIN_ROUTES: RouterConfig = [
+export const ADMIN_ROUTES: Routes = [
   { path: 'admin', component: AdminComponent, canActivate: [AdminAuthGuard],
     children: [
       { path: 'dashboard', component: DashboardComponent},

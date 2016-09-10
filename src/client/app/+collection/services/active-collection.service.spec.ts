@@ -4,18 +4,19 @@ import {
   MockBackend,
   Response,
   inject,
-  addProviders
+  TestBed
 } from '../../imports/test.imports';
 
 import { ActiveCollectionService, collectionSummary } from './active-collection.service';
 
 export function main() {
   describe('Active Collections service', () => {
-    beforeEach(() => {
-      addProviders([
-        ...beforeEachProvidersArray
-      ]);
-    });
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
+        ...beforeEachProvidersArray,
+      ]
+    }));
 
     it('Should get the current active collection and save it in the store',
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {

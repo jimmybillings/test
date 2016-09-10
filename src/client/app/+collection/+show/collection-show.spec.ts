@@ -2,7 +2,7 @@ import {
   beforeEachProvidersArray,
   Observable,
   inject,
-  addProviders
+  TestBed
 } from '../../imports/test.imports';
 
 import { CollectionShowComponent} from './collection-show.component';
@@ -21,13 +21,13 @@ export function main() {
       }
     }
 
-    beforeEach(() => {
-      addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         CollectionShowComponent,
         { provide: ActiveCollectionService, useClass: MockActiveCollectionService }
-      ]);
-    });
+      ]
+    }));
 
     it('Should remove a given asset from a collection',
       inject([CollectionShowComponent], (component: CollectionShowComponent) => {

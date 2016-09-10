@@ -1,19 +1,20 @@
 import {
   beforeEachProvidersArray,
   inject,
-  addProviders
+  TestBed
 } from '../../../imports/test.imports';
 
 import { WzPaginationComponent } from './wz.pagination.component';
 
 export function main() {
   describe('Pagination component', () => {
-    beforeEach(() => {
-      addProviders([
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         WzPaginationComponent
-      ]);
-    });
+      ]
+    }));
 
     it('Should have a getPageNumber() function that emits a getPage event', inject([WzPaginationComponent], (component: WzPaginationComponent) => {
       component.pagination = { 'numberOfPages': 3 };

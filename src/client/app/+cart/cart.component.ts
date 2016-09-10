@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  selector: 'cart',
+  selector: 'cart-component',
   templateUrl: 'cart.html'
 })
 export class CartComponent implements OnInit {

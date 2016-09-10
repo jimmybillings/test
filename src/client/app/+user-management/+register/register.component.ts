@@ -13,7 +13,7 @@ import { FormFields, ServerErrors } from '../../shared/interfaces/forms.interfac
  */
 @Component({
   moduleId: module.id,
-  selector: 'register',
+  selector: 'register-component',
   templateUrl: 'register.html'
 })
 

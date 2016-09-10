@@ -4,7 +4,7 @@ import {
   Injectable,
   // inject,
   Store,
-  addProviders
+  TestBed
 } from '../imports/test.imports';
 
 import { AssetComponent } from './asset.component';
@@ -29,13 +29,13 @@ export function main() {
       }
     }
 
-    beforeEach(() => {
-      addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         AssetComponent,
         {provide: AssetService, useClass: MockAssetService}
-      ]);
-    });
+      ]
+    }));
   });
 
   function MockAssetResponse() {

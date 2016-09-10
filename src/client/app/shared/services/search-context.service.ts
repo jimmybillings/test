@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router} from '@angular/router';
-import { Store, Reducer, Action} from '@ngrx/store';
+import { Store, ActionReducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 
 const initSearchContext: any = {
@@ -9,7 +9,7 @@ const initSearchContext: any = {
   n: 100
 };
 
-export const searchContext: Reducer<any> = (state: any = initSearchContext, action: Action) => {
+export const searchContext: ActionReducer<any> = (state: any = initSearchContext, action: Action) => {
   switch (action.type) {
     case 'SEARCHCONTEXT.CREATE':
       return Object.assign({}, action.payload);

@@ -4,7 +4,7 @@ import {
   RequestOptions,
   MockBackend,
   Response,
-  addProviders,
+  TestBed,
   inject
 } from '../../imports/test.imports';
 
@@ -12,12 +12,12 @@ import { FilterService } from './filter.service';
 
 export function main() {
   describe('Filter Service', () => {
-    beforeEach(() => {
-      addProviders([
-      ...beforeEachProvidersArray,
-      FilterService
-    ]);
-    });
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
+        ...beforeEachProvidersArray,
+        FilterService
+      ]
+    }));
 
     it('Should exist with instances of http, store, currentUser, and apiConfig',
       inject([FilterService], (service: FilterService) => {

@@ -1,4 +1,4 @@
-collections .collection-head {
+collections-component .collection-head {
   // background-color: rgba(md-color($md-background, app-bar), 1);
   // background-color: rgba(md-color($md-background, card), .3);
   color: md-color($md-primary, 600);
@@ -31,7 +31,7 @@ collections .collection-head {
   }
 }
 
-collections .query-details {
+collections-component .query-details {
   padding-top: rem(.4);
   padding-left: rem(.8);
   padding-left: rem(.8);

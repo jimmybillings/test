@@ -1,6 +1,5 @@
 
-import { Provider } from '@angular/core';
-import { RouterConfig } from '@angular/router';
+import { Routes } from '@angular/router';
 
 // WAZEE PROVIDERS
 import { ApiConfig } from '../shared/services/api.config';
@@ -32,8 +31,8 @@ import { config } from '../shared/services/ui.config';
 import { uiState } from '../shared/services/ui.state';
 import { adminResources } from '../+admin/services/admin.service';
 import { searchContext} from '../shared/services/search-context.service';
-import { provideStore } from '@ngrx/store';
-import { multilingualReducer } from '../shared/services/multilingual.service';
+
+import { multilingualActionReducer } from '../shared/services/multilingual.service';
 import { collections } from '../+collection/services/collections.service';
 import { activeCollection } from '../+collection/services/active-collection.service';
 import { filters } from '../+search/services/filter.service';
@@ -65,24 +64,22 @@ export const WAZEE_PROVIDERS = [
   // WzNotificationService
 ];
 
-export const WAZEE_STORES: Provider[][] = [
-  provideStore({
-    config,
-    assets,
-    asset,
-    currentUser,
-    adminResources,
-    searchContext,
-    collections,
-    activeCollection,
-    uiState,
-    filters,
-    userPreferences,
-    collectionOptions,
-    i18n: multilingualReducer
-  })
-];
+export const WAZEE_STORES: any = {
+    config: config,
+    assets: assets,
+    asset: asset,
+    currentUser: currentUser,
+    adminResources:adminResources,
+    searchContext:searchContext,
+    collections:collections,
+    activeCollection:activeCollection,
+    uiState:uiState,
+    filters:filters,
+    userPreferences:userPreferences,
+    collectionOptions:collectionOptions,
+    i18n: multilingualActionReducer
+};
 
-export const WAZEE_ROUTES: RouterConfig = [
+export const WAZEE_ROUTES: Routes = [
   ...APP_ROUTES
 ];

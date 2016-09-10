@@ -9,11 +9,11 @@ import { User } from '../../shared/interfaces/user.interface';
 import { Injectable } from '@angular/core';
 import { Http, Response, URLSearchParams, RequestOptions } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
-import { Store, Reducer, Action} from '@ngrx/store';
+import { Store, ActionReducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 
 const adminState: AdminState = { items: [], pagination: {} };
-export const adminResources: Reducer<AdminState> = (state = adminState, action: Action) => {
+export const adminResources: ActionReducer<AdminState> = (state = adminState, action: Action) => {
   switch (action.type) {
     case 'ADMIN_SERVICE.SET_RESOURCES':
       return Object.assign({}, state, action.payload);
@@ -95,7 +95,7 @@ export class AdminService {
       case 'search':
         return `${base}api/identities/v1/${resourceType}/searchFields/?`;
       default:
-        return;
+        return `${base}api/identities/v1/${resourceType}/searchFields/?`;
     }
   }
 

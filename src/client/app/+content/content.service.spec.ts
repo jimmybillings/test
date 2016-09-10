@@ -4,19 +4,19 @@ import {
   MockBackend,
   Response,
   inject,
-  addProviders
+  TestBed
 } from '../imports/test.imports';
 
 import { ContentService } from './content.service';
 
 export function main() {
   describe('Content service', () => {
-    beforeEach(() => {
-        addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         ContentService
-      ]);
-    });
+      ]
+    }));
 
     it('Should formulate a correct query url for a CMS page and map the response body.',
       inject([ContentService, MockBackend], (service: ContentService, mockBackend: MockBackend) => {

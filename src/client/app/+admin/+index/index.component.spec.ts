@@ -1,15 +1,17 @@
 import {
   beforeEachProvidersArray,
   Observable,
-  inject,
-  addProviders
+  TestBed,
+  inject
+  // inject 
 } from '../../imports/test.imports';
-
 import { IndexComponent } from './index.component';
 import { AdminService } from '../services/admin.service';
 import { UiSubComponentsA } from '../../shared/interfaces/admin.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
+
+
 
 export function main() {
   describe('Admin Index component', () => {
@@ -40,11 +42,13 @@ export function main() {
     }
 
     beforeEach(() => {
-      addProviders([
-        ...beforeEachProvidersArray,
-        IndexComponent,
-        { provide: AdminService, useClass: MockAdminService }
-      ]);
+      TestBed.configureTestingModule({
+        providers: [
+          IndexComponent,
+          { provide: AdminService, useClass: MockAdminService },
+          beforeEachProvidersArray
+        ]
+      });
     });
 
     it('Should create an instance variable of AdminService, and CurrentUser',

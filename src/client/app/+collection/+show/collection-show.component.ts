@@ -85,7 +85,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.assetService.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
         console.log(res);
-        window.location = res.url;
+        window.location.href = res.url;
       } else {
         this.notification.createNotfication(this.target, {trString: 'COMPS.NO_COMP', theme: 'alert'});
       }

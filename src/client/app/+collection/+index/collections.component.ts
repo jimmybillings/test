@@ -15,7 +15,7 @@ import { UiState } from '../../shared/services/ui.state';
 
 @Component({
   moduleId: module.id,
-  selector: 'collections',
+  selector: 'collections-component',
   templateUrl: 'collections.html',
 })
 

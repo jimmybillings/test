@@ -1,6 +1,6 @@
 // angular
 import {Injectable} from '@angular/core';
-import {Store, Reducer, Action} from '@ngrx/store';
+import {Store, ActionReducer, Action} from '@ngrx/store';
 import {TranslateService} from 'ng2-translate/ng2-translate';
 import {ILang, MultilingualStateI} from '../interfaces/language.interface';
 import 'rxjs/add/operator/take';
@@ -14,8 +14,8 @@ const MULTILINGUAL_ACTIONS: any = {
   LANG_CHANGE: '[Multilingual] LANG_CHANGE'
 };
 
-// reducer
-export const multilingualReducer: Reducer<MultilingualStateI> = (state: MultilingualStateI = initialState, action: Action) => {
+// ActionReducer
+export const multilingualActionReducer: ActionReducer<MultilingualStateI> = (state: MultilingualStateI = initialState, action: Action) => {
   switch (action.type) {
     case MULTILINGUAL_ACTIONS.LANG_CHANGE:
       return Object.assign({}, state, action.payload);

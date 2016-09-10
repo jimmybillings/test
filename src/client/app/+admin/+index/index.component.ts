@@ -1,4 +1,4 @@
-import { UiSubComponentsA,
+import {
   UiComponentsA,
   AdminUrlParams,
   AdminFormParams
@@ -14,6 +14,7 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { Subscription } from 'rxjs/Rx';
 
+
 @Component({
   moduleId: module.id,
   selector: 'admin-index',
@@ -26,7 +27,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   public resourceType: string;
   public currentComponent: string;
   public formItems: Array<FormFields>;
-  public config: UiSubComponentsA;
+  public config: any;
   public resource: User | Account;
   public currentResources: Object;
   private routeSubscription: Subscription;
@@ -89,7 +90,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public mergeFormValues(resource: User | Account): void {
     this.resource = resource;
-    this.formItems = this.config['editForm'].items.map((field: FormFields) => {
+    this.formItems = this.config.editForm.items.map((field: FormFields) => {
       field.value = resource[field.name];
       return field;
     });

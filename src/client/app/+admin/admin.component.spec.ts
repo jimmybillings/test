@@ -1,18 +1,17 @@
 import {
   beforeEachProvidersArray,
-  addProviders,
-  // inject,
+  TestBed,
 } from '../imports/test.imports';
 
 // import { AdminComponent } from './admin.component';
 
 export function main() {
   describe('Admin Component', () => {
-    beforeEach(() => {
-      addProviders([
-      ...beforeEachProvidersArray
-    ]);
-  });
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
+        ...beforeEachProvidersArray
+      ]
+    }));
 
   });
 }

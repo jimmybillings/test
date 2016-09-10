@@ -3,7 +3,7 @@ import { Collection, CollectionStore } from '../../shared/interfaces/collection.
 import { Http, URLSearchParams, RequestOptions } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Observable} from 'rxjs/Rx';
-import { Store, Reducer, Action} from '@ngrx/store';
+import { Store, ActionReducer, Action} from '@ngrx/store';
 
 /**
  * Focused Collection store -
@@ -51,7 +51,7 @@ export function collectionSummary(collection: any = {}): Collection {
   };
 }
 
-export const activeCollection: Reducer<any> = (state = initState(), action: Action) => {
+export const activeCollection: ActionReducer<any> = (state = initState(), action: Action) => {
   switch (action.type) {
     case 'UPDATE_ACTIVE_COLLECTION':
       return Object.assign({}, state, action.payload);

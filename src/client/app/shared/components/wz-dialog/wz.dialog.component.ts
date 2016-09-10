@@ -11,11 +11,13 @@ import {
   transition,
   animate,
   ChangeDetectionStrategy} from '@angular/core';
-import {Overlay} from '@angular2-material/core/overlay/overlay';
-import {OverlayState} from '@angular2-material/core/overlay/overlay-state';
-import {OverlayRef} from '@angular2-material/core/overlay/overlay-ref';
+import {Overlay} from '@angular2-material/core';
+import {OverlayState} from '@angular2-material/core';
+import {OverlayRef} from '@angular2-material/core';
 import {Directive, ViewContainerRef, TemplateRef} from '@angular/core';
 import {TemplatePortalDirective} from '@angular2-material/core';
+
+
 
 @Directive({ selector: '[wzDialogPortal]' })
 export class WzDialogPortalDirective extends TemplatePortalDirective {
@@ -23,6 +25,7 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
     super(templateRef, viewContainerRef);
   }
 }
+
 
 @Component({
   selector: 'wz-dialog',

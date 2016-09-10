@@ -2,7 +2,7 @@ import {
   beforeEachProvidersArray,
   Observable,
   inject,
-  addProviders
+  TestBed
 } from '../imports/test.imports';
 
 import { HomeComponent} from './home.component';
@@ -16,13 +16,13 @@ export function main() {
       }
     }
 
-    beforeEach(() => {
-      addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         HomeComponent,
         { provide: UiConfig, useClass: MockUiConfig }
-      ]);
-    });
+      ]
+    }));
 
     it('Should have apiConfig, currentUser, searchContext and uiConfig defined',
       inject([HomeComponent], (component: HomeComponent) => {

@@ -4,7 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { FilterComponent } from './filter.component';
 
 @NgModule({
-    imports: [SharedModule.forRoot()],
+    imports: [SharedModule],
     declarations: [SearchComponent, FilterComponent],
     exports: [SearchComponent],
 })

@@ -4,7 +4,7 @@ import { RequestOptions, URLSearchParams } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Observable} from 'rxjs/Rx';
 import { CurrentUser} from '../../shared/services/current-user.model';
-import { Store, Reducer, Action} from '@ngrx/store';
+import { Store, ActionReducer, Action} from '@ngrx/store';
 
 const initAssets: any = {
   items: [],
@@ -18,7 +18,7 @@ const initAssets: any = {
   }
 };
 
-export const assets: Reducer<any> = (state: any = initAssets, action: Action) => {
+export const assets: ActionReducer<any> = (state: any = initAssets, action: Action) => {
 
   switch (action.type) {
     case 'SEARCH':

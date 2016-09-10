@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Rx';
  */
 @Component({
   moduleId: module.id,
-  selector: 'cms',
+  selector: 'cms-component',
   templateUrl: 'content.html'
 })
 

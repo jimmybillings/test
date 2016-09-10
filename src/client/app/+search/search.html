@@ -5,7 +5,7 @@
       <md-progress-bar color="accent" mode="indeterminate"></md-progress-bar>
     </div>
     <md-slide-toggle class="count-toggle" [checked]="counted" color="accent" value="toggle" (change)="countToggle($event)">Display Filter Counts</md-slide-toggle>
-    <filter class="filter" [counted]="counted" [filters]="filter.data | async"></filter>
+    <filter-component class="filter" [counted]="counted" [filters]="filter.data | async"></filter-component>
   </md-sidenav>
   
   <button class="filter" (click)="searchFilter.toggle()">FILTERS</button>
@@ -14,7 +14,7 @@
     <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
       <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
         
-        <breadcrumb class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb>
+        <breadcrumb-component class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
         <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
          
         <wz-asset-list 

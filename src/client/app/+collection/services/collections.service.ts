@@ -3,7 +3,7 @@ import { Collection, Collections, CollectionStore } from '../../shared/interface
 import { Http, URLSearchParams, RequestOptions } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Observable} from 'rxjs/Rx';
-import { Store, Reducer, Action} from '@ngrx/store';
+import { Store, ActionReducer, Action} from '@ngrx/store';
 import { ActiveCollectionService } from './active-collection.service';
 /**
  * Collections store -
@@ -20,7 +20,7 @@ const collectionsState: Collections = {
   }
 };
 
-export const collections: Reducer<any> = (state: Collections = collectionsState, action: Action) => {
+export const collections: ActionReducer<any> = (state: Collections = collectionsState, action: Action) => {
   switch (action.type) {
     case 'GET_COLLECTIONS':
       return Object.assign({}, action.payload);

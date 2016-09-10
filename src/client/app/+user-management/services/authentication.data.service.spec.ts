@@ -1,6 +1,6 @@
 import {
   beforeEachProvidersArray,
-  addProviders,
+  TestBed,
   ResponseOptions,
   MockBackend,
   Response,
@@ -11,11 +11,12 @@ import { Authentication } from './authentication.data.service';
 
 export function main() {
   describe('Authentication data service', () => {
-    beforeEach(() => {
-      addProviders([
-        ...beforeEachProvidersArray
-      ]);
-    });
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
+        ...beforeEachProvidersArray,
+      ]
+    }));
 
     it('Should create instance variables for http, apiconfig, apiUrls', inject([Authentication, MockBackend], (service: Authentication, mockBackend: MockBackend) => {
       expect(service.http).toBeDefined();

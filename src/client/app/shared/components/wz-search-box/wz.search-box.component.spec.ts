@@ -1,19 +1,20 @@
 import {
   beforeEachProvidersArray,
   inject,
-  addProviders
+  TestBed
 } from '../../../imports/test.imports';
 
 import {WzSearchBoxComponent} from './wz.search-box.component';
 
 export function main() {
   describe('Search Box Component', () => {
-    beforeEach(() => {
-      addProviders([
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         WzSearchBoxComponent
-      ]);
-    });
+      ]
+    }));
 
     it('Should create the form object for the search bar', inject([WzSearchBoxComponent], (component: WzSearchBoxComponent) => {
       component.setForm();

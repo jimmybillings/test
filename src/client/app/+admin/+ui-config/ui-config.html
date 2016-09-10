@@ -9,12 +9,12 @@
   </div>
   <div class="admin-ui-config" layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
     <div class="menu" flex-gt-lg="15" flex-gt-md="20" flex-gt-sm="30" flex-xs="40">
-      <md-content>
+      <div>
         <md-list>
           <div *ngFor="let item of components | values">
             <md-list-item class="md-1-line" [ngClass]="{focused: item.key === currentComponent}">
               <div flex-gt-lg="90" flex-xl="90" flex="90">
-                <md-list-text class="md-body-1">{{ item.key }}</md-list-text>
+                <p class="md-body-1">{{ item.key }}</p>
               </div>
               <div class="icons" flex-gt-lg="10" flex-xl="10" flex="10">
                 <i *ngIf="item.key !== currentComponent" md-icon="" (click)="show(item.key)" class="material-icons">keyboard_arrow_right</i>
@@ -24,15 +24,15 @@
             <md-divider></md-divider>
           </div>
         </md-list>
-      </md-content>
+      </div>
     </div>
     <div *ngIf="subComponents" class="second-menu" flex-gt-lg="15" flex-gt-md="15" flex-gt-sm="30" flex-xs="40" [ngClass]="{show: subComponents}">
-      <md-content>
+      <div>
         <md-list>
           <div *ngFor="let item of subComponents | values">
             <md-list-item class="md-1-line" [ngClass]="{focused: item.key === currentOption}">
               <div flex-gt-lg="90" flex-xl="90" flex="90">
-                <md-list-text class="md-body-1">{{ item.key }}</md-list-text>
+                <p class="md-body-1">{{ item.key }}</p>
               </div>
               <div class="icons" flex-gt-lg="10" flex-xl="10" flex="10">
                 <i *ngIf="subComponents[item.key].items" md-icon="" (click)="showSubItems(item.key)" class="material-icons">keyboard_arrow_right</i>
@@ -42,15 +42,15 @@
             <md-divider></md-divider>
           </div>
         </md-list>
-      </md-content>
+      </div>
     </div>
     <div *ngIf="configOptions" class="third-menu" flex-gt-lg="20" flex-gt-md="20" flex-gt-sm="30" flex-xs="40" [ngClass]="{show: configOptions}">
-      <md-content>
+      <div>
         <md-list>
           <div *ngFor="let item of configOptions; let i = index">
             <md-list-item class="md-1-line">
               <div flex-gt-lg="80" flex-xl="80" flex="80">
-                <md-list-text class="md-body-1">{{ item.name }}</md-list-text>
+                <p class="md-body-1">{{ item.name }}</p>
               </div>
               <div class="icons" flex-gt-lg="20" flex-xl="20" flex="20" layout="row" layout-align="end center">
                 <i md-icon="" class="icon material-icons">menu</i>
@@ -70,7 +70,7 @@
             </div>
           </md-list-item>
         </md-list>
-      </md-content>
+      </div>
     </div>
     <div *ngIf="form" flex-gt-lg="35" flex-gt-sm="50" flex-gt-xs="60">
       <md-card>

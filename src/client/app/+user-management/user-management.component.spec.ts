@@ -1,17 +1,19 @@
 import {
   beforeEachProvidersArray,
   // inject,
-  addProviders
+  TestBed
 } from '../imports/test.imports';
 
 // import { UserManagementComponent } from './user-management.component';
 
 export function main() {
   describe('User Management Component', () => {
-    beforeEach(() => {
-      addProviders([
-        ...beforeEachProvidersArray
-      ]);
-    });
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
+        ...beforeEachProvidersArray,
+      ]
+    }));
   });
+
+
 }

@@ -3,7 +3,7 @@ import { SearchComponent } from './search.component';
 
 @Component({
   moduleId: module.id,
-  selector: 'filter',
+  selector: 'filter-component',
   templateUrl: 'filter.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

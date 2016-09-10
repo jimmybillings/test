@@ -1,18 +1,21 @@
 import {
   Headers,
   inject,
-  addProviders
+  beforeEachProvidersArray,
+  TestBed
 } from '../../imports/test.imports';
 
 import { ApiConfig } from './api.config';
 
 export function main() {
   describe('Api config', () => {
-    beforeEach(() => {
-      addProviders([
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
+        ...beforeEachProvidersArray,
         ApiConfig
-      ]);
-    });
+      ]
+    }));
 
     it('Should create an instance of authorization headers, with correct header info',
       inject([ApiConfig], (service: ApiConfig) => {

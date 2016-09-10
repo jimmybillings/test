@@ -1,19 +1,20 @@
 import {
   beforeEachProvidersArray,
   inject,
-  addProviders
+  TestBed
 } from '../../../imports/test.imports';
 
 import { WzFormComponent } from './wz.form.component';
 
 export function main() {
   describe('Form Component', () => {
-    beforeEach(() => {
-      addProviders([
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         WzFormComponent
-      ]);
-    });
+      ]
+    }));
 
     it('Should create an angular form object on ngOnInit with the correct register keys.',
       inject([WzFormComponent], (form: WzFormComponent) => {

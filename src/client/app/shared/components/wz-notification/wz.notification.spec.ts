@@ -1,19 +1,20 @@
 import {
   beforeEachProvidersArray,
   // inject,
-  addProviders
+  TestBed
 } from '../../../imports/test.imports';
 
 import { WzNotificationComponent } from './wz.notification.component';
 
 export function main() {
   describe('Notification Component', () => {
-    beforeEach(() => {
-      addProviders([
+
+     beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         WzNotificationComponent
-      ]);
-    });
+      ]
+    }));
 
   });
 }

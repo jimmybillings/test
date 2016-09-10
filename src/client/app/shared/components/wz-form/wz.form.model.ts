@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { Validators } from '@angular/common';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+// import { Validators } from '@angular/common';
 import { FormFields } from '../../interfaces/forms.interface';
 // import { WzCollectionValidator } from './wz-validators/wz.collection-validator';
 // import { WzTestValidator } from './wz-validators/wz.test-validator';
@@ -23,8 +23,8 @@ export class FormModel {
   public updateForm(form: FormGroup, values: any): void {
     for (let controlName in form.controls) {
       if (values.hasOwnProperty(controlName))
-        (<FormControl>form.controls[controlName]).updateValue(values[controlName]);
-      (<FormControl>form.controls[controlName]).updateValue('');
+        (<FormControl>form.controls[controlName]).setValue(values[controlName]);
+      (<FormControl>form.controls[controlName]).setValue('');
     }
   }
 

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { ApiConfig } from '../services/api.config';
-import {Observable} from 'rxjs/Rx';
-import { Store, Reducer, Action} from '@ngrx/store';
+import { Observable} from 'rxjs/Rx';
+import { Store, ActionReducer, Action} from '@ngrx/store';
 
 const InitState: any = { components: {} };
-export const config: Reducer<any> = (state = InitState, action: Action) => {
+export const config: ActionReducer<any> = (state = InitState, action: Action) => {
 
   switch (action.type) {
     case 'INITIALIZE':

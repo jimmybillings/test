@@ -1,7 +1,7 @@
 import {
   beforeEachProvidersArray,
   inject,
-  addProviders,
+  TestBed,
   Observable
 } from '../../imports/test.imports';
 
@@ -17,13 +17,13 @@ export function main() {
       }
     }
 
-    beforeEach(() => {
-      addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         { provide: User, useClass: MockUser }, ,
         RegisterComponent
-      ]);
-    });
+      ]
+    }));
 
     it('Should register new user and console log the response for now.',
       inject([RegisterComponent], (register: RegisterComponent) => {

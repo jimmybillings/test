@@ -50,7 +50,7 @@ export class WzFormComponent implements OnInit, OnChanges {
     this.items.forEach((field: any) => {
       for (let control in this.form.controls) {
         if (control === field.name) {
-          (<FormControl>this.form.controls[control]).updateValue(field.value);
+          (<FormControl>this.form.controls[control]).patchValue(field.value);
         }
       }
     });
@@ -61,7 +61,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   }
 
   public radioSelect(field: any, option: any) {
-    (<FormControl>this.form.controls[field]).updateValue(option);
+    (<FormControl>this.form.controls[field]).setValue(option);
   }
 
   /**

@@ -1,19 +1,21 @@
 import {
   beforeEachProvidersArray,
   inject,
-  addProviders
+  TestBed
 } from '../../../imports/test.imports';
 
 import { WzListComponent } from './wz.list.component';
 
 export function main() {
   describe('WZ List component', () => {
-    beforeEach(() => {
-      addProviders([
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         WzListComponent
-      ]);
-    });
+      ]
+    }));
+
 
     it('should have a sortBy function that emits a sort event with opposite of toggleFlag - false', inject([WzListComponent], (component: WzListComponent) => {
       spyOn(component.sort, 'emit');

@@ -23,7 +23,7 @@
         <p title="{{filter.filterId}}" (click)="toggle(filter)">
           {{ filter.name }} 
         </p>
-        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter>
+        <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
         <md-divider></md-divider>
       </span>
 
@@ -31,7 +31,7 @@
         <p title="{{filter.filterId}}" (click)="toggle(filter)">
           {{ filter.name }} 
         </p>
-        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter>
+        <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
       </span>
 
       <span *ngSwitchCase="'DateRange'">
@@ -49,7 +49,7 @@
           [value]="filter.filterValue"
           (keypress)="customValue($event, filter)">
         </md-input>
-        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter>
+        <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
       </span>
 
 
@@ -64,7 +64,7 @@
                 ( {{filter.count}} )
               </span>
         </md-checkbox>
-        <filter *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter>
+        <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
       </span>
 
     </span>

@@ -32,24 +32,9 @@ import { ValuesPipe } from '../shared/pipes/values.pipe';
 // Shared resolvers
 import { AssetResolver } from '../+asset/services/asset.resolver';
 import { SearchResolver } from '../+search/services/search.resolver';
-import { WAZEE_PROVIDERS, WAZEE_STORES } from '../imports/wazee';
+import { WAZEE_PROVIDERS } from '../imports/wazee';
 
-// Material Modules
-import { MdButtonModule } from '@angular2-material/button';
-import { MdCardModule } from '@angular2-material/card';
-import { MdCheckboxModule } from '@angular2-material/checkbox';
-import { MdInputModule } from '@angular2-material/input';
-import { MdListModule } from '@angular2-material/list';
-import { MdMenuModule } from '@angular2-material/menu';
-import { MdProgressBarModule } from '@angular2-material/progress-bar';
-import { MdRadioModule } from '@angular2-material/radio';
-import { MdSidenavModule } from '@angular2-material/sidenav';
-import { MdSlideToggleModule } from '@angular2-material/slide-toggle';
-import { MdTabsModule } from '@angular2-material/tabs';
-import { MdToolbarModule } from '@angular2-material/toolbar';
-import { MdIconModule } from '@angular2-material/icon';
-// import { MdCoreModule } from '@angular2-material/core';
-import { OverlayModule } from '@angular2-material/core/core';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   imports: [
@@ -59,23 +44,10 @@ import { OverlayModule } from '@angular2-material/core/core';
     TranslateModule,
     HttpModule,
     ReactiveFormsModule,
-    MdButtonModule,
-    MdCardModule,
-    MdCheckboxModule,
-    MdInputModule,
-    MdListModule,
-    MdMenuModule,
-    MdProgressBarModule,
-    MdRadioModule,
-    MdSidenavModule,
-    MdSlideToggleModule,
-    MdTabsModule,
-    MdToolbarModule,
-    MdIconModule,
-    OverlayModule
+    MaterialModule.forRoot(),
   ],
   declarations: [
-    WzNotificationComponent,
+    // WzNotificationComponent,
     WzSearchBoxComponent,
     WzAssetListComponent,
     WzBreadcrumbComponent,
@@ -96,10 +68,11 @@ import { OverlayModule } from '@angular2-material/core/core';
     WzToastPortalDirective,
     WzInputTagsComponent,
     WzInputSuggestionsComponent,
-    CollectionFormComponent
+    CollectionFormComponent,
+    WzNotificationComponent
   ],
   exports: [
-    WzNotificationComponent,
+    // WzNotificationComponent,
     WzSearchBoxComponent,
     WzAssetListComponent,
     WzBreadcrumbComponent,
@@ -127,20 +100,9 @@ import { OverlayModule } from '@angular2-material/core/core';
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
-    MdButtonModule,
-    MdCardModule,
-    MdCheckboxModule,
-    MdInputModule,
-    MdListModule,
-    MdMenuModule,
-    MdProgressBarModule,
-    MdRadioModule,
-    MdSidenavModule,
-    MdSlideToggleModule,
-    MdTabsModule,
-    MdToolbarModule,
-    MdIconModule,
-    OverlayModule],
+    MaterialModule,
+    WzNotificationComponent],
+    entryComponents: [WzNotificationComponent]
 })
 
 export class SharedModule {
@@ -156,8 +118,7 @@ export class SharedModule {
         TranslateService,
         AssetResolver,
         SearchResolver,
-        WAZEE_PROVIDERS,
-        WAZEE_STORES]
+        WAZEE_PROVIDERS]
     };
   }
 }

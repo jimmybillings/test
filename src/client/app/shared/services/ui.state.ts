@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable} from 'rxjs/Rx';
-import { Store, Reducer, Action} from '@ngrx/store';
+import { Store, ActionReducer, Action} from '@ngrx/store';
 
 const InitUiState: any = {
   collectionsListIsOpen: false,
@@ -13,7 +13,7 @@ const InitUiState: any = {
   loading: false
 };
 
-export const uiState: Reducer<any> = (state = InitUiState, action: Action) => {
+export const uiState: ActionReducer<any> = (state = InitUiState, action: Action) => {
 
   switch (action.type) {
     case 'UI.STATE.INITIALIZE':

@@ -2,7 +2,7 @@ import {
   beforeEachProvidersArray,
   Observable,
   inject,
-  addProviders
+  TestBed
 } from '../../imports/test.imports';
 
 import { UiConfigComponent } from './ui-config.component';
@@ -16,13 +16,13 @@ export function main() {
       }
     }
 
-    beforeEach(() => {
-      addProviders([
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
         ...beforeEachProvidersArray,
         UiConfigComponent,
         { provide: ConfigService, useClass: MockConfigService },
-      ]);
-    });
+      ]
+    }));
 
     it('Should have a getConfig method that hits the service and stores data in variables',
       inject([UiConfigComponent], (component:UiConfigComponent) => {

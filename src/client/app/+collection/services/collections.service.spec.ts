@@ -4,18 +4,18 @@ import {
   MockBackend,
   Response,
   inject,
-  addProviders
+  TestBed
 } from '../../imports/test.imports';
 
 import { CollectionsService } from './collections.service';
 
 export function main() {
   describe('Collections service', () => {
-    beforeEach(() => {
-      addProviders([
-        ...beforeEachProvidersArray
-      ]);
-    });
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
+        ...beforeEachProvidersArray,
+      ]
+    }));
 
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls, and collections',
       inject([CollectionsService], (service: CollectionsService) => {

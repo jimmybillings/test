@@ -65,8 +65,8 @@
           <h4 class="title-txt" *ngIf="asset.primary[5].value != null">{{asset.primary[5].value}}</h4>
           <h5 class="description-txt md-subhead">{{asset.primary[6].value}}</h5>
           <md-card-actions layout="column" layout-align="center center" layout-wrap="">
-            <md-button md-raised-button="" (click)="someFunction()" class="md-raised md-primary md-hue-7">Add to Cart</md-button>
-            <md-button md-button="" (click)="someFunction()" class="is-outlined">Calculate Price</md-button>
+            <button md-raised-button (click)="someFunction()" class="md-raised md-primary md-hue-7">Add to Cart</button>
+            <button md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>
           </md-card-actions>
         </md-card-content>
       </md-card>

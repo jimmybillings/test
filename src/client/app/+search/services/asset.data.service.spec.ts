@@ -6,7 +6,7 @@ import {
   Response,
   Headers,
   inject,
-  addProviders
+  TestBed
 } from '../../imports/test.imports';
 
 import { AssetData } from './asset.data.service';
@@ -17,11 +17,11 @@ export function main() {
       localStorage.clear();
     });
 
-    beforeEach(() => {
-      addProviders([
-        ...beforeEachProvidersArray
-      ]);
-    });
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
+        ...beforeEachProvidersArray,
+      ]
+    }));
 
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls',
       inject([AssetData], (service: AssetData) => {

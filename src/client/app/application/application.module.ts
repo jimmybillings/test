@@ -6,7 +6,7 @@ import { FooterComponent } from './footer/footer.component';
 import { CollectionListDdComponent } from './collection-tray/components/collections-list-dd.component';
 
 @NgModule({
-  imports: [SharedModule.forRoot()],
+  imports: [SharedModule],
   declarations: [
     AppNavComponent,
     CollectionTrayComponent,

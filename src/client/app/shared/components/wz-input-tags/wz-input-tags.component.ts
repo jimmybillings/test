@@ -54,13 +54,13 @@ export class WzInputTagsComponent {
 
   private delete($event=false, tagForDelete: string) {
     this.tags = this.tags.filter((tag) => tag !== tagForDelete);
-    this.fControl.updateValue(this.tags.toString());
+    this.fControl.setValue(this.tags.toString());
     this.finalDelete = false;
   }
 
   private create(tag: string) {
     this.tags = this.tags.concat(tag);
-    this.fControl.updateValue(this.tags.toString());
+    this.fControl.setValue(this.tags.toString());
   }
 
   private find(tagCandidate: string): boolean {

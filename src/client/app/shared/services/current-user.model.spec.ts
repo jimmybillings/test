@@ -1,10 +1,10 @@
 import {
   inject,
-  addProviders
+  TestBed,
+  beforeEachProvidersArray
 } from '../../imports/test.imports';
 
-import { provideStore } from '@ngrx/store';
-import { CurrentUser, currentUser } from './current-user.model';
+import { CurrentUser } from './current-user.model';
 import { User} from '../interfaces/user.interface';
 
 export function main() {
@@ -12,12 +12,13 @@ export function main() {
     let loggedInUser = setLoggedInUser();
     let loggedOutUser = setLoggedOutUser();
     // let loggedInUserWithoutPermissions = setLoggedInUserWithoutPermissions();
-    beforeEach(() => {
-      addProviders([
-        CurrentUser,
-        provideStore({ currentUser: currentUser }),
-      ]);
-    });
+
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
+        ...beforeEachProvidersArray,
+        CurrentUser
+      ]
+    }));
 
     it('should set a object for a logged in user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);

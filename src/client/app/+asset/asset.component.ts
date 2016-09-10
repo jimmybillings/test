@@ -17,7 +17,7 @@ import { WzNotificationService } from '../shared/components/wz-notification/wz.n
  */
 @Component({
   moduleId: module.id,
-  selector: 'asset',
+  selector: 'asset-component',
   templateUrl: 'asset.html'
 })
 
@@ -56,7 +56,7 @@ export class AssetComponent implements OnInit {
   public downloadComp(params: any): void {
     this.assetService.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
-        window.location = res.url;
+        window.location.href = res.url;
       } else {
         this.notification.createNotfication(this.target, {trString: 'COMPS.NO_COMP', theme: 'alert'});
       }
