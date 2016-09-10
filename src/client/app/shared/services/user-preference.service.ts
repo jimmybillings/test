@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CurrentUser } from './current-user.model';
 import { Store, ActionReducer, Action } from '@ngrx/store';
-import { Observable } from 'Rxjs/rx';
+import { Observable } from 'rxjs/Rx';
 
 const defaultPreferences: any = {
   filterCounts: false
