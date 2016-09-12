@@ -22,7 +22,9 @@ export function main() {
       set() {
         return Observable.of({});
       }
-
+      isActiveCollection() {
+        return Observable.of({});
+      }
       getItems() {
         return Observable.of({});
       }
@@ -55,16 +57,6 @@ export function main() {
         component.selectActiveCollection(1);
         expect(component.activeCollection.set).toHaveBeenCalledWith(1);
         expect(component.activeCollection.getItems).toHaveBeenCalledWith(1, {n: '50'});
-      }));
-
-    it('Should check if a collection id matches the current active collection',
-      inject([CollectionsComponent], (component: CollectionsComponent) => {
-        expect(component.isActiveCollection(1)).toEqual(true);
-      }));
-
-    it('Should check that a collection id does not match the current active collection',
-      inject([CollectionsComponent], (component: CollectionsComponent) => {
-        expect(component.isActiveCollection(3)).toEqual(false);
       }));
 
     // it('Should return the thumbnail in the collection',

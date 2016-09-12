@@ -11,6 +11,7 @@ import { CollectionContextService } from '../../shared/services/collection-conte
 import { CollectionSortDdComponent } from '../../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../../+collection/components/collections-filter-dd.component';
 import { WzDialogComponent } from '../../shared/components/wz-dialog/wz.dialog.component';
+import { WzConfirmationDialogComponent } from '../../shared/components/wz-confirmation-dialog/wz.confirmation-dialog.component';
 import { UiState } from '../../shared/services/ui.state';
 
 @Component({
@@ -29,9 +30,11 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public collectionSortIsShowing: boolean = false;
   public pageSize: string;
   public collectionForEdit: Collection;
+  public collectionForDelete: Collection;
   @ViewChild(CollectionFilterDdComponent) public filters: CollectionFilterDdComponent;
   @ViewChild(CollectionSortDdComponent) public sort: CollectionSortDdComponent;
   @ViewChild('editCollection') public dialog: WzDialogComponent;
+  @ViewChild('deleteCollectionDialog') public deleteDialog: WzConfirmationDialogComponent;
 
 
   constructor(
@@ -45,7 +48,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public uiState: UiState) {}
 
   ngOnInit() {
-    this.uiConfig.get('home').take(1).subscribe(config => {
+    this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
     this.collectionsService.setSearchParams();
@@ -59,9 +62,11 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public toggleCollectionSearch() {
     this.collectionSearchIsShowing = !this.collectionSearchIsShowing;
   }
+
   public showCollectionFilter() {
     this.collectionFilterIsShowing = !this.collectionFilterIsShowing;
   }
+
   public showCollectionSort() {
     this.collectionSortIsShowing = !this.collectionSortIsShowing;
   }
@@ -73,8 +78,13 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   public selectActiveCollection(id: number): void {
     this.activeCollection.set(id).take(1).subscribe(() => {
-      this.activeCollection.getItems(id, {n: this.pageSize}).take(1).subscribe();
+      this.activeCollection.getItems(id, { n: this.pageSize }).take(1).subscribe();
     });
+  }
+
+  public showConfirmationDialog(collection: any): void {
+    this.collectionForDelete = collection;
+    this.deleteDialog.show();
   }
 
   public deleteCollection(id: number): void {
@@ -83,45 +93,41 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       this.collectionsService.data.take(1).subscribe(collection => collectionLength = collection.items.length);
 
       // if we are deleting current active, we need to get the new active from the server.
-      if (this.isActiveCollection(id) && collectionLength > 0) {
+      if (this.activeCollection.isActiveCollection(id) && collectionLength > 0) {
         this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, {n: this.pageSize}).take(1).subscribe();
+          this.activeCollection.getItems(collection.id, { n: this.pageSize }).take(1).subscribe(d => {
+            this.router.navigate(['/collection/' + collection.id, {i: 1, n: 100} ]);
+          });
         });
       }
       // if we delete the last collection, reset the store to initial values (no active collection)
       if (collectionLength === 0) {
         this.collectionsService.destroyCollections();
         this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, {n: this.pageSize}).take(1).subscribe();
-          this.collectionsService.loadCollections().take(1).subscribe();
+          this.activeCollection.getItems(collection.id, { n: this.pageSize }).take(1).subscribe();
+          this.collectionsService.loadCollections().take(1).subscribe(d => {
+            this.router.navigate(['/collection/' + collection.id, {i: 1, n: 100} ]);
+          });
         });
       }
     });
   }
 
   public filter(filter: any) {
-    this.collectionContext.updateCollectionOptions({currentFilter: filter});
+    this.collectionContext.updateCollectionOptions({ currentFilter: filter });
     this.collectionsService.loadCollections(filter.access).take(1).subscribe();
     this.showCollectionFilter();
   }
 
   public search(query: any) {
-    this.collectionContext.updateCollectionOptions({currentSearchQuery: query});
+    this.collectionContext.updateCollectionOptions({ currentSearchQuery: query });
     this.collectionsService.loadCollections(query).take(1).subscribe();
   }
 
   public sortBy(sort: any) {
-    this.collectionContext.updateCollectionOptions({currentSort: sort});
+    this.collectionContext.updateCollectionOptions({ currentSort: sort });
     this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
     this.showCollectionSort();
-  }
-
-  public isActiveCollection(collectionId: number): boolean {
-    let isMatch: boolean;
-    this.activeCollection.data.take(1)
-      .map(activeCollection => activeCollection.id)
-      .subscribe(id => isMatch = id === collectionId);
-    return isMatch;
   }
 
   public getActiveFilter(): string {

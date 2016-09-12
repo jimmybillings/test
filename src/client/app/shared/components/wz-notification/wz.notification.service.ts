@@ -16,7 +16,9 @@ export class WzNotificationService implements OnDestroy {
     private resolver: ComponentFactoryResolver,
     public router: Router,
     public uiConfig: UiConfig) {
-    this.configSubscription = this.uiConfig.get('notifications').subscribe((config: any) => this.notficationStrategy = config.items || []);
+    this.configSubscription = this.uiConfig.get('global').subscribe((config: any) => {
+      if (config.config) this.notficationStrategy = config.config.notifications.items || [];
+    });
   }
 
   ngOnDestroy() {
