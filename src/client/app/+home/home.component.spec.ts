@@ -5,6 +5,7 @@ import {
   TestBed
 } from '../imports/test.imports';
 
+import { ChangeDetectorRef } from '@angular/core';
 import { HomeComponent} from './home.component';
 import { UiConfig } from '../shared/services/ui.config';
 
@@ -12,15 +13,19 @@ export function main() {
   describe('Home Component', () => {
     class MockUiConfig {
       get(comp: any) {
-        return Observable.of({'config': {'pageSize': {'value': 100}}});
+        return Observable.of({ 'config': { 'pageSize': { 'value': 100 } } });
       }
+    }
+    class MockChangeDetectorRef {
+      markForCheck() { return true; };
     }
 
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
         ...beforeEachProvidersArray,
         HomeComponent,
-        { provide: UiConfig, useClass: MockUiConfig }
+        { provide: UiConfig, useClass: MockUiConfig },
+        { provide: ChangeDetectorRef, useClass: MockChangeDetectorRef }
       ]
     }));
 
@@ -36,13 +41,13 @@ export function main() {
       spyOn(component.uiConfig, 'get').and.callThrough();
       component.ngOnInit();
       expect(component.uiConfig.get).toHaveBeenCalledWith('home');
-      expect(component.config).toEqual({'pageSize': { 'value': 100 }});
+      expect(component.config).toEqual({ 'pageSize': { 'value': 100 } });
     }));
 
     it('Should have a newSearchContext() method that creates a new search context',
       inject([HomeComponent], (component: HomeComponent) => {
-        component.ngOnInit();
         spyOn(component.searchContext, 'new');
+        component.ngOnInit();
         component.newSearchContext('cat');
         expect(component.searchContext.new).toHaveBeenCalledWith({ q: 'cat', i: 1, n: 100 });
       }));
