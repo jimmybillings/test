@@ -36,5 +36,3 @@ To test: - this will create the /dist/test directory and spin up a local server 
 ```bash
 npm test
 ```
-
-Wazee platform and feature library.
