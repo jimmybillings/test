@@ -52,10 +52,12 @@
                     <button md-menu-item disabled><md-icon>import_export</md-icon>Export collection as XML</button>
                     <button md-menu-item disabled><md-icon>print</md-icon>Print collection asset list</button>
                     <button md-menu-item disabled><md-icon>link</md-icon>Copy collection link</button>
-                    <div class="divider"></div>
-                    <button md-menu-item class="delete" (click)="deleteCollection(collection.id)">
+                    <div *ngIf="!!collection.owner">
+                      <div class="divider"></div>
+                      <button md-menu-item class="delete" (click)="deleteCollectionDialog.show()">
                         <md-icon>delete</md-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
-                    </button>
+                      </button>
+                    </div>
                 </md-menu>
 
             </div>
@@ -88,6 +90,7 @@
       </div>
   </div>
 </section>
+
 <wz-dialog #editCollection>
   <collection-form
     [collection]="collection"
@@ -98,3 +101,14 @@
     layout="row" layout-align="center start">
   </collection-form>
 </wz-dialog>
+
+<wz-confirmation-dialog #deleteCollectionDialog>
+    <md-card>
+      <md-card-title>{{ 'COLLECTION.INDEX.CONFIRMATION_TITLE' | translate:{collectionName: collection.name} }}</md-card-title>
+      <md-card-subtitle>{{ 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE' | translate }}</md-card-subtitle>
+      <md-card-actions align="end">
+        <button md-button="" (click)="deleteCollectionDialog.close(); deleteCollection(collection.id)">{{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
+        <button md-button="" (click)="deleteCollectionDialog.close()">{{ 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE' | translate }}</button>
+      </md-card-actions>
+    </md-card>
+</wz-confirmation-dialog>

@@ -17,7 +17,8 @@ export class WzCollectionItemListComponent {
   @Input() activeCollection: any;
   @Output() editCollection = new EventEmitter();
   @Output() setActiveCollection = new EventEmitter();
-  private currentCollectionId: any = 0;
+  @Output() deleteCollection = new EventEmitter();
+  private currentCollection: any;
 
   public selectActiveCollection(collectionId: any) {
     this.setActiveCollection.emit(collectionId);
@@ -31,11 +32,15 @@ export class WzCollectionItemListComponent {
     return (thumbnail) ? thumbnail.urls.https : '/assets/img/tbn_missing.jpg';
   }
 
-  public setCurrentCollectionId(id: any) {
-    this.currentCollectionId = id;
+  public setCurrentCollection(collection: any) {
+    this.currentCollection = collection;
   }
 
   public edit(collection:any) {
     this.editCollection.emit(collection);
+  }
+
+  public delete(collection: any): void {
+    this.deleteCollection.emit(collection);
   }
 }

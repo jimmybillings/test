@@ -205,4 +205,12 @@ export class ActiveCollectionService implements OnInit {
     item.assets.pagination.totalCount = search.totalCount;
     return item;
   }
+
+  public isActiveCollection(collectionId: number): boolean {
+    let isMatch: boolean;
+    this.data.take(1)
+      .map(activeCollection => activeCollection.id)
+      .subscribe(id => isMatch = id === collectionId);
+    return isMatch;
+  }
 }
