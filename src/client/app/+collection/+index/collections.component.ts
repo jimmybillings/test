@@ -45,7 +45,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public uiState: UiState) {}
 
   ngOnInit() {
-    this.uiConfig.get('home').take(1).subscribe(config => {
+    this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
     this.collectionsService.setSearchParams();

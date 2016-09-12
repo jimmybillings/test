@@ -25,7 +25,7 @@ export class CollectionTrayComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.uiConfig.get('home').take(1).subscribe((config: any) => {
+    this.uiConfig.get('global').take(1).subscribe((config: any) => {
       this.pageSize = config.config.pageSize.value;
       if (this.activeCollection.state.id === null) {
         this.activeCollection.get().take(1).subscribe((collection) => {
