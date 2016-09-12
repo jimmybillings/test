@@ -372,6 +372,56 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-for
 }
 
 
+.md-menu.dense.collections-dd-menu  {
+  // border: none;
+  // max-height: rem(30);
+  // min-height: rem(16);
+  // margin-top: rem(1.2);
+  // margin-bottom: rem(1.2);
+  // margin-left: 0;
+  // margin-right: 0;
+  min-width: rem(27.5);
+  .md-list-item.select-dd {
+    height: rem(3.5);
+    flex-direction: column;
+    justify-content: space-between;
+    button[md-menu-item]{
+      font-size: .9em;
+      flex: 1 0 100%;
+      height: rem(3.5);
+      box-shadow: none;
+      // padding-left: rem(6.4);
+      position: relative;
+      md-icon.material-icons {
+        opacity: 0;
+        font-size: 26px;
+        margin-top: rem(-.8);
+      }
+    }
+  }
+  .md-list-item.active button[md-menu-item] {
+    background-color: transparent;
+    color: md-color($md-primary);
+    md-icon.material-icons {
+      color: md-color($md-primary);
+      opacity: 1;
+    }
+    // &:before {
+    //   position: absolute;
+    //   content: "\e5ca";
+    //   font-family: 'Material Icons';
+    //   font-size: rem(3.0);
+    //   position: absolute;
+    //   top: rem(-.2);
+    //   left: rem(1.6);
+    // }
+  }
+}
+
+
+
+
+
 // @include keyframes(sort-dd-open) {
 //   0% {
 //     max-height: 0;

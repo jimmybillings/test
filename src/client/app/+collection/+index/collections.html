@@ -1,33 +1,13 @@
 <section class="collection-head">
   <div layout="row" layout-align="center start">
     <header flex="100" flex-gt-md="95" flex-gt-lg="85">
-        <collections-search-form
-          [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
-          [hidden]="!collectionSearchIsShowing"
-          [currentSearchQuery]="options.currentSearchQuery"
-          (query)="search($event)"
-          (closeSearch)="showCollectionSearch()">
-        </collections-search-form>
-        <collections-filter-dd 
-          *ngIf="collectionFilterIsShowing"
-          flex="100"
-          [currentFilter]="options.currentFilter"
-          (filter)="filter($event)"
-          (close)="showCollectionFilter()"
-          layout="row" 
-          layout-align="end start" 
-          class="revealed">
-        </collections-filter-dd>
-        <collections-sort-dd
-          *ngIf="collectionSortIsShowing"
-          flex="100"
-          [currentSort]="options.currentSort"
-          (sort)="sortBy($event)"
-          (close)="showCollectionSort()"
-          layout="row" 
-          layout-align="end start" 
-          class="revealed">
-        </collections-sort-dd>
+      <collections-search-form
+        [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
+        [hidden]="!collectionSearchIsShowing"
+        [currentSearchQuery]="options.currentSearchQuery"
+        (query)="search($event)"
+        (closeSearch)="showCollectionSearch()">
+      </collections-search-form>
       <div flex="100" layout="row" layout-xs="column">
         <h2 flex="100" layout-align="end center" class="md-display-1">{{ 'COLLECTION.INDEX.PAGE_TITLE' | translate }}</h2>
         <div class="tools" flex="auto" layout-align="end center">
@@ -44,12 +24,10 @@
             title="{{ 'COLLECTION.DD_MENU.COLLAPSE_SEARCH_HOVER_TITLE' | translate }}"
             type="button"
             (click)="toggleCollectionSearch()">
-            <!--<md-icon *ngIf="collectionSearchIsShowing">chevron_right</md-icon>-->
-            <!--<md-icon *ngIf="collectionSearchIsShowing">remove_circle_outline</md-icon>-->
             <md-icon>arrow_drop_up</md-icon>
           </button>
-          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" (click)="showCollectionFilter($event)"><md-icon>filter_list</md-icon></button>
-          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" (click)="showCollectionSort($event)"><md-icon>sort</md-icon></button>
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" [md-menu-trigger-for]="filterCollectionOptions"><md-icon>filter_list</md-icon></button>
+          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" [md-menu-trigger-for]="sortCollectionOptions"><md-icon>sort</md-icon></button>
         </div>
       </div>
     </header>
@@ -95,3 +73,21 @@
     layout="row" layout-align="center start">
   </collection-form>
 </wz-dialog>
+
+<md-menu class="collections-dd-menu dense" x-position="before" #filterCollectionOptions="mdMenu">
+  <div class="md-list-item select-dd" *ngFor="let option of filterOptions" [ngClass]="{'active': options.currentFilter.label === option.label}">
+    <button md-menu-item (click)="filter(option);" [disabled]="option.value ==='researcher'">
+      <md-icon>check</md-icon>{{ 'COLLECTION.INDEX.FILTER_DD_MENU.'+option.label | translate }}
+    </button>
+    <div class="divider" *ngIf="option.id == 0 || option.id == 3"></div>
+  </div>
+</md-menu>
+
+<md-menu class="collections-dd-menu dense" x-position="before" #sortCollectionOptions="mdMenu">
+  <div class="md-list-item select-dd" *ngFor="let option of sortOptions" [ngClass]="{'active': options.currentSort.label === option.label}">
+    <button md-menu-item (click)="sortBy(option);">
+      <md-icon>check</md-icon>{{ 'COLLECTION.INDEX.SORT_DD_MENU.'+option.label | translate }}
+    </button>
+    <div class="divider" *ngIf="option.id == 1 || option.id == 3"></div>
+  </div>
+</md-menu>

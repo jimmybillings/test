@@ -8,10 +8,11 @@ import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Rx';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
-import { CollectionSortDdComponent } from '../../+collection/components/collections-sort-dd.component';
-import { CollectionFilterDdComponent } from '../../+collection/components/collections-filter-dd.component';
+// import { CollectionSortDdComponent } from '../../+collection/components/collections-sort-dd.component';
+// import { CollectionFilterDdComponent } from '../../+collection/components/collections-filter-dd.component';
 import { WzDialogComponent } from '../../shared/components/wz-dialog/wz.dialog.component';
 import { UiState } from '../../shared/services/ui.state';
+// import { MdMenuTrigger } from '@angular2-material/menu';
 
 @Component({
   moduleId: module.id,
@@ -29,9 +30,12 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public collectionSortIsShowing: boolean = false;
   public pageSize: string;
   public collectionForEdit: Collection;
-  @ViewChild(CollectionFilterDdComponent) public filters: CollectionFilterDdComponent;
-  @ViewChild(CollectionSortDdComponent) public sort: CollectionSortDdComponent;
+  public filterOptions: Array<any> = [];
+  public sortOptions: Array<any> = [];
+  // @ViewChild(CollectionFilterDdComponent) public filters: CollectionFilterDdComponent;
+  // @ViewChild(CollectionSortDdComponent) public sort: CollectionSortDdComponent;
   @ViewChild('editCollection') public dialog: WzDialogComponent;
+  // @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
 
 
   constructor(
@@ -42,7 +46,23 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public currentUser: CurrentUser,
     public error: Error,
     public uiConfig: UiConfig,
-    public uiState: UiState) {}
+    public uiState: UiState) {
+      this.filterOptions = [
+        { 'id': 0, 'label': 'ALL', 'value': 'all', 'access': {'access-level': 'all'} },
+        { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'access': {'access-level': 'owner'} },
+        { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'access': {'access-level': 'editor'} },
+        { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'access': {'access-level': 'viewer'} },
+        { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'access': {'access-level': 'researcher'} }
+      ];
+      this.sortOptions = [
+        { 'id': 0, 'label': 'DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true }},
+        { 'id': 1, 'label': 'DATE_MOD_OLDEST', 'value': 'modOldest', 'sort': { 's': 'lastUpdated', 'd': false }},
+        { 'id': 2, 'label': 'DATE_CREATE_NEWEST', 'value': 'createNewest', 'sort': { 's': 'createdOn', 'd': true }},
+        { 'id': 3, 'label': 'DATE_CREATE_OLDEST', 'value': 'createOldest', 'sort': { 's': 'createdOn', 'd': false }},
+        { 'id': 4, 'label': 'LIST_COLL_ASC', 'value': 'alphaAsc', 'sort': { 's': 'name', 'd': false }},
+        { 'id': 5, 'label': 'LIST_COLL_DESC', 'value': 'alphaDesc', 'sort': { 's': 'name', 'd': true }}
+      ];
+    }
 
   ngOnInit() {
     this.uiConfig.get('home').take(1).subscribe(config => {
@@ -58,12 +78,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   public toggleCollectionSearch() {
     this.collectionSearchIsShowing = !this.collectionSearchIsShowing;
-  }
-  public showCollectionFilter() {
-    this.collectionFilterIsShowing = !this.collectionFilterIsShowing;
-  }
-  public showCollectionSort() {
-    this.collectionSortIsShowing = !this.collectionSortIsShowing;
   }
 
   public setCollectionForEdit(collection: any) {
@@ -102,7 +116,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public filter(filter: any) {
     this.collectionContext.updateCollectionOptions({currentFilter: filter});
     this.collectionsService.loadCollections(filter.access).take(1).subscribe();
-    this.showCollectionFilter();
   }
 
   public search(query: any) {
@@ -113,7 +126,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public sortBy(sort: any) {
     this.collectionContext.updateCollectionOptions({currentSort: sort});
     this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
-    this.showCollectionSort();
   }
 
   public isActiveCollection(collectionId: number): boolean {
@@ -123,15 +135,4 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       .subscribe(id => isMatch = id === collectionId);
     return isMatch;
   }
-
-  public getActiveFilter(): string {
-    let filter = this.filters.filterOptions.filter((obj: any) => obj.active === true);
-    return (filter.length > 0) ? filter[0].value : '';
-  }
-
-  public getActiveSort(): string {
-    let activeSort = this.sort.sortOptions.filter(obj => obj.active === true);
-    return (activeSort.length > 0) ? activeSort[0].label : '';
-  }
-
 }

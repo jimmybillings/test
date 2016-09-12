@@ -8,6 +8,7 @@
 @import 'node_modules/@angular2-material/core/style/mixins';
 @import "node_modules/@angular2-material/core/style/core";
 @import "node_modules/@angular2-material/core/style/default-theme";
+
 // @import "node_modules/@angular2-material/core/overlay/overlay.scss";
 
 /** The overlay-container is an invisible element which contains all individual overlays. */
@@ -75,7 +76,23 @@
 }
 .md-menu .divider {
   width: 100%;
-  margin-top: rem(.3);
-  padding-bottom: rem(.3);
+  margin-top: rem(0);
+  padding-bottom: rem(.1);
   box-shadow: inset 0 1px 0 0 md-color($md-foreground, divider);
+}
+
+
+/************
+ * These were added to fix a bug with ng2material 8.1 the styles for md-hint are not being applied
+ * Once material has fixed this, these can be removed.
+ * https://github.com/angular/material2/issues/1172
+ ************/
+.md-hint {
+  position: absolute;
+  font-size: 75%;
+  bottom: -0.5em;
+
+  &.md-right {
+    right: 0;
+  }
 }
