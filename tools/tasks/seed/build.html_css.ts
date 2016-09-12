@@ -63,7 +63,7 @@ function processComponentStylesheets() {
  * Process scss files referenced from Angular component `styleUrls` metadata
  */
 function processComponentScss() {
-  return gulp.src(join(APP_SRC, '**', '*.scss'))
+  return gulp.src(join(APP_SRC, '**', 'app.scss'))
     .pipe(isProd ? plugins.cached('process-component-scss') : plugins.util.noop())
     .pipe(isProd ? plugins.progeny() : plugins.util.noop())
     .pipe(plugins.sourcemaps.init())
