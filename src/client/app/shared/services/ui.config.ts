@@ -40,7 +40,7 @@ export class UiConfig {
     return this._http.get(this._apiUrls.get + site, {
       headers: this._apiConfig.headers(),
       body: '',
-    }).map((res: Response) => {
+    }).do((res: Response) => {
       this.set(res.json());
     });
   }

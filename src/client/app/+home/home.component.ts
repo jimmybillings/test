@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { UiConfig} from '../shared/services/ui.config';
 import { SearchContext} from '../shared/services/search-context.service';
@@ -24,11 +24,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     public searchContext: SearchContext,
     public apiConfig: ApiConfig,
     public filter: FilterService,
-    public uiState: UiState) {
+    public uiState: UiState,
+    private detector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    this.configSubscription = this.uiConfig.get('home').subscribe((config) => this.config = config.config);
+    this.configSubscription = this.uiConfig.get('home').subscribe((config) => {
+      this.config = config.config;
+      this.detector.markForCheck();
+    });
   }
 
   ngOnDestroy() {
@@ -44,10 +48,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     context = JSON.parse(context);
     for (let param in context) {
       if (context[param] === '') {
-        delete(context[param]);
+        delete (context[param]);
         return context;
       }
-    return context;
+      return context;
     }
   }
 }

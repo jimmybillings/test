@@ -153,6 +153,10 @@
       "COMMENT_BTN_TITLE": "Show collection comments",
       "MORE_BTN_TITLE": "More collection options",
       "DELETE_BTN_TITLE": "Delete collection",
+      "CONFIRMATION_DELETE_BTN_TITLE": "DELETE",
+      "CONFIRMATION_CANCEL_BTN_TITLE": "CANCEL",
+      "CONFIRMATION_TITLE": "Are you sure you want to delete {{collectionName}}?",
+      "CONFIRMATION_SUBTITLE": "This will no longer be available to you or any users you've shared it with",
       "SEARCH_BOX_LABEL": "Search for collections...",
       "SORT_DD_MENU": {
         "HEADING": "Sort",

@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
-import { Router, RoutesRecognized } from '@angular/router';
+import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { MultilingualService } from './shared/services/multilingual.service';
@@ -70,13 +70,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public routerChanges() {
-    this.routeSubscription = this.router.events.subscribe((event:RoutesRecognized) => {
-      if (event.urlAfterRedirects && !event.state) {
+    this.routeSubscription = this.router.events
+      .filter((event:RoutesRecognized) => event instanceof NavigationEnd)
+      .subscribe((event:NavigationEnd) => {
         this.uiState.checkRouteForSearchBar(event.url);
         this.state = event.url;
         window.scrollTo(0, 0);
         this.notification.check(this.state, this.target);
-      }
     });
   }
 

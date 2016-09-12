@@ -4,6 +4,7 @@ import {
   MockBackend,
   Response,
   inject,
+  Observable,
   TestBed
 } from '../../imports/test.imports';
 
@@ -134,6 +135,18 @@ export function main() {
         spyOn(service.store, 'dispatch');
         service.resetStore();
         expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'RESET_ACTIVE_COLLECTION' });
+      }));
+
+    it('Should check if a collection id matches the current active collection',
+      inject([ActiveCollectionService], (service: ActiveCollectionService) => {
+        service.data = Observable.of({'id': 1});
+        expect(service.isActiveCollection(1)).toEqual(true);
+      }));
+
+    it('Should check that a collection id does not match the current active collection',
+      inject([ActiveCollectionService], (service: ActiveCollectionService) => {
+        service.data = Observable.of({'id': 1});
+        expect(service.isActiveCollection(3)).toEqual(false);
       }));
 
     it('Should add an asset to the active collection store',
