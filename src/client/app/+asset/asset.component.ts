@@ -42,7 +42,7 @@ export class AssetComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.uiConfig.get('home').take(1).subscribe(config => {
+    this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
   }

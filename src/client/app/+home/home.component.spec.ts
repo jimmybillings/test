@@ -12,7 +12,7 @@ export function main() {
   describe('Home Component', () => {
     class MockUiConfig {
       get(comp: any) {
-        return Observable.of({'config': {'pageSize': {'value': 100}}});
+        return Observable.of({'config': {'pageSize': {'value': '100'},'notifications': {'items': [{'trString': 'NOTIFICATION.NEW_USER','theme': 'success','type': 'confirmed=true'}]}}});
       }
     }
 
@@ -28,7 +28,7 @@ export function main() {
       inject([HomeComponent], (component: HomeComponent) => {
         expect(component.currentUser).toBeDefined();
         expect(component.apiConfig).toBeDefined();
-        expect(component.currentUser).toBeDefined();
+        expect(component.uiConfig).toBeDefined();
         expect(component.searchContext).toBeDefined();
       }));
 
@@ -36,7 +36,7 @@ export function main() {
       spyOn(component.uiConfig, 'get').and.callThrough();
       component.ngOnInit();
       expect(component.uiConfig.get).toHaveBeenCalledWith('home');
-      expect(component.config).toEqual({'pageSize': { 'value': 100 }});
+      expect(component.config).toEqual({'pageSize': {'value': '100'},'notifications': {'items': [{'trString': 'NOTIFICATION.NEW_USER','theme': 'success','type': 'confirmed=true'}]}});
     }));
 
     it('Should have a newSearchContext() method that creates a new search context',
@@ -44,7 +44,7 @@ export function main() {
         component.ngOnInit();
         spyOn(component.searchContext, 'new');
         component.newSearchContext('cat');
-        expect(component.searchContext.new).toHaveBeenCalledWith({ q: 'cat', i: 1, n: 100 });
+        expect(component.searchContext.new).toHaveBeenCalledWith({ q: 'cat', i: 1, n: '100' });
       }));
   });
 }
