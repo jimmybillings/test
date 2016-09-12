@@ -31,7 +31,9 @@ function lintComponentStylesheets() {
     `!${join(APP_SRC, 'assets', '**', '*.scss')}`,
     `!${join(CSS_SRC, '**', '*.css')}`
   ]).pipe(isProd ? plugins.cached('css-lint') : plugins.util.noop())
-    .pipe(ENABLE_SCSS ? plugins.sassLint() : plugins.postcss(processors))
+    .pipe(ENABLE_SCSS ? plugins.sassLint({rules: {
+        'quotes': 'double'
+      }}) : plugins.postcss(processors))
     .pipe(ENABLE_SCSS ? plugins.sassLint.format() : plugins.util.noop())
     .pipe(ENABLE_SCSS ? plugins.sassLint.failOnError() : plugins.util.noop());
 }
