@@ -149,7 +149,8 @@ collections-list-dd, collections-filter-dd, collections-sort-dd {
           font-size: inherit;
           line-height: inherit;
           @include transition($swift-ease-out);
-          padding: 0 10px;
+          padding-left: rem(1.6);
+          padding-right: rem(1.6);
           box-shadow: inset 0 1px 0 0 md-color($md-foreground, divider);
           &:hover, &:focus {
             cursor: pointer;
@@ -260,9 +261,11 @@ collections-filter-dd, collections-sort-dd {
           flex: 1 0 100%;
           height: rem(3.5);
           box-shadow: none;
-          padding-left: rem(6.4);
-          position: relative;
-
+          md-icon.material-icons {
+            opacity: 0;
+            font-size: 26px;
+            margin-top: rem(-.8);
+          }
         }
         md-divider {
           flex: 1 0 auto;
@@ -271,14 +274,10 @@ collections-filter-dd, collections-sort-dd {
       }
       md-list-item.active .md-list-item button {
         background-color: transparent;
-        &:before {
-          position: absolute;
-          content: "\e5ca";
-          font-family: 'Material Icons';
-          font-size: rem(3.0);
-          position: absolute;
-          top: rem(-.2);
-          left: rem(1.6);
+        color: md-color($md-primary);
+        md-icon.material-icons {
+          color: md-color($md-primary);
+          opacity: 1;
         }
       }
     }
@@ -306,7 +305,7 @@ collections-filter-dd, collections-sort-dd {
     background-color: rgba(md-color($md-foreground, base), .05);
     @include text-contrast(md-color($md-background, card), rgba(md-color($md-foreground, base), .75), md-color($md-background, card));
     .md-headline {
-      margin-left: rem(2.2);
+      margin-left: rem(1.1);
     }
     .tools button:hover {
       color: md-color($md-primary);
@@ -373,13 +372,6 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-for
 
 
 .md-menu.dense.collections-dd-menu  {
-  // border: none;
-  // max-height: rem(30);
-  // min-height: rem(16);
-  // margin-top: rem(1.2);
-  // margin-bottom: rem(1.2);
-  // margin-left: 0;
-  // margin-right: 0;
   min-width: rem(27.5);
   .md-list-item.select-dd {
     height: rem(3.5);
@@ -390,7 +382,6 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-for
       flex: 1 0 100%;
       height: rem(3.5);
       box-shadow: none;
-      // padding-left: rem(6.4);
       position: relative;
       md-icon.material-icons {
         opacity: 0;
@@ -406,15 +397,6 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-for
       color: md-color($md-primary);
       opacity: 1;
     }
-    // &:before {
-    //   position: absolute;
-    //   content: "\e5ca";
-    //   font-family: 'Material Icons';
-    //   font-size: rem(3.0);
-    //   position: absolute;
-    //   top: rem(-.2);
-    //   left: rem(1.6);
-    // }
   }
 }
 
