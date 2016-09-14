@@ -33,7 +33,6 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import 'shared/components/wz-breadcrumb/wz-breadcrumb';
 @import 'shared/components/wz-pikaday/wz.pikaday';
 @import 'shared/components/wz-input-tags/wz-input-tags';
-@import 'shared/components/wz-confirmation-dialog/wz.confirmation-dialog';
 
 // ROUTE COMPONENTS
 @import '+home/home';

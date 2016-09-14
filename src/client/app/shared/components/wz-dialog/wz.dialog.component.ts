@@ -47,20 +47,19 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
 
   template: `
     <template wzDialogPortal>
+      <div class="wz-dialog-click-catcher"></div>
       <div [@slideInOut]="animationState" class="wz-dialog">
         <ng-content></ng-content>
       </div>
     </template>
-    <div class="wz-dialog-click-catcher" *ngIf="showClickCatcher" (click)="_emitCloseEvent()"></div>
     `
 })
 
 export class WzDialogComponent implements OnDestroy {
   @Input() config = new OverlayState();
-  // public viewRef: any;
+  @Input() clickCatcher: boolean = true;
+  public viewRef: any;
   public animationState: string = 'out';
-  // public active: boolean = false;
-  private showClickCatcher: boolean = false;
   @ViewChild(WzDialogPortalDirective) private portal: WzDialogPortalDirective;
   private overlayRef: OverlayRef = null;
 
@@ -70,16 +69,11 @@ export class WzDialogComponent implements OnDestroy {
     this.config.positionStrategy = this.overlay.position()
       .global()
       .centerHorizontally()
-      .fixed()
-      .top('9%');
+      .centerVertically();
   }
 
   ngOnDestroy(): any {
     return this.close();
-  }
-
-  public setClickCatcher(bool: boolean): void {
-    this.showClickCatcher = bool;
   }
 
   public show(): Promise<WzDialogComponent> {
@@ -92,31 +86,28 @@ export class WzDialogComponent implements OnDestroy {
         return ref.attach(this.portal);
       })
       .then(() => {
-        // setTimeout(() => this.closeListener(), 200);
+        if (this.clickCatcher) setTimeout(() => this.closeListener(), 500);
         this.renderer.setElementClass(document.querySelector('div.md-overlay-container'), 'active', true);
-        // this.active = true;
-        this.setClickCatcher(true);
         return this;
       });
   }
 
-  public close(): Promise<any> {
-    // this.animationState = 'out';
+   public close(): Promise<any> {
     if (!this.overlayRef) {
-      return Promise.resolve(this);
-    } else {
-      return Promise.resolve(() => {
-        this.overlayRef.detach();
-      }).then(() => {
+      return Promise.resolve<any>(this);
+    }
+    return Promise.resolve()
+      .then(() => this.overlayRef.detach())
+      .then(() => {
         this.overlayRef.dispose();
         this.overlayRef = null;
         this.renderer.setElementClass(document.querySelector('div.md-overlay-container'), 'active', false);
-        this.setClickCatcher(false);
-        // this.viewRef();
+        if (this.clickCatcher) this.viewRef();
+        return this;
       });
-    }
   }
-  // private closeListener() {
-  // this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.close());
-  // }
+
+  private closeListener() {
+    this.viewRef = this.renderer.listen(document.querySelector('div.wz-dialog-click-catcher'), 'click', () => this.close());
+  }
 }

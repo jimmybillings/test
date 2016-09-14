@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Collections, Collection } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
@@ -8,8 +8,6 @@ import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Rx';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
-import { WzDialogComponent } from '../../shared/components/wz-dialog/wz.dialog.component';
-import { WzConfirmationDialogComponent } from '../../shared/components/wz-confirmation-dialog/wz.confirmation-dialog.component';
 import { UiState } from '../../shared/services/ui.state';
 
 @Component({
@@ -31,8 +29,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public filterOptions: Array<any> = [];
   public sortOptions: Array<any> = [];
   public collectionForDelete: Collection;
-  @ViewChild('editCollection') public dialog: WzDialogComponent;
-  @ViewChild('deleteCollectionDialog') public deleteDialog: WzConfirmationDialogComponent;
 
   constructor(
     public router: Router,
@@ -78,7 +74,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   public setCollectionForEdit(collection: any) {
     this.collectionForEdit = Object.assign({}, collection);
-    this.dialog.show();
   }
 
   public selectActiveCollection(id: number): void {
@@ -87,9 +82,8 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     });
   }
 
-  public showConfirmationDialog(collection: any): void {
+  public setCollectionForDelete(collection: any): void {
     this.collectionForDelete = collection;
-    this.deleteDialog.show();
   }
 
   public deleteCollection(id: number): void {

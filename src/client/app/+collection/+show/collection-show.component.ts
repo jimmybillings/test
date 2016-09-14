@@ -12,7 +12,6 @@ import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../+asset/services/asset.service';
 import { UserPermission } from '../../shared/services/permission.service';
 import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
-import { WzConfirmationDialogComponent } from '../../shared/components/wz-confirmation-dialog/wz.confirmation-dialog.component';
 
 @Component({
   moduleId: module.id,
@@ -28,7 +27,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public routeParams: any;
   public errorMessage: string;
   public config: Object;
-  @ViewChild('deleteCollectionDialog') public deleteDialog: WzConfirmationDialogComponent;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
