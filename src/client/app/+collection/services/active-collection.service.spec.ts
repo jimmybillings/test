@@ -79,14 +79,16 @@ export function main() {
         spyOn(service, 'removeAssetFromStore');
         service.removeAsset(158, 1, 13213123).subscribe(response => {
           expect(connection.request.url).toBe('api/identites/v1/collection/158/removeAssets');
-          expect(response).toEqual({list: [{assetId: 1}]});
-          expect(service.removeAssetFromStore).toHaveBeenCalledWith({assetId: 1});
+          expect(response).toEqual({ list: [{ assetId: 1 }] });
+          expect(service.removeAssetFromStore).toHaveBeenCalledWith({ assetId: 1 });
         });
         connection.mockRespond(new Response(
           new ResponseOptions({
-            body: {list: [
-                {assetId: 1}
-              ]}
+            body: {
+              list: [
+                { assetId: 1 }
+              ]
+            }
           })
         ));
       }));
@@ -96,7 +98,7 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         spyOn(service, 'updateActiveCollectionAssets');
-        service.getItems(1, {i: 0, n: 100}).subscribe(response => {
+        service.getItems(1, { i: 0, n: 100 }).subscribe(response => {
           expect(connection.request.url).toBe(
             'https://crxextapi.dev.wzplatform.com/api/assets/v1/collectionSummary/assets/1?i=0&n=100');
           expect(response).toEqual(mockCollectionResponse());
@@ -112,15 +114,21 @@ export function main() {
     it('Should add an asset to the active collection store',
       inject([ActiveCollectionService], (service: ActiveCollectionService) => {
         spyOn(service.store, 'dispatch');
-        service.addAssetToStore({asset: 1});
-        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'ADD_ASSET_TO_COLLECTION', payload: {asset: 1} });
+        service.addAssetToStore({ asset: 1 });
+        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'ADD_ASSET_TO_COLLECTION', payload: { asset: 1 } });
       }));
 
     it('Should remove an asset from the active collection store',
       inject([ActiveCollectionService], (service: ActiveCollectionService) => {
         spyOn(service.store, 'dispatch');
-        service.removeAssetFromStore({asset: 1});
-        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'REMOVE_ASSET_FROM_COLLECTION', payload: {asset: 1} });
+        service.removeAssetFromStore({ asset: 1 });
+        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { asset: 1 } });
+      }));
+
+    it('Should create a correctly formatted collection summary object to put in the store',
+      inject([ActiveCollectionService], (service: ActiveCollectionService) => {
+        var summary = collectionSummary(mockCollectionResponse());
+        expect(Object.keys(summary)).toEqual(collectionSummaryKeys());
       }));
 
     it('Should update the active collection store with a new collection',
@@ -139,13 +147,13 @@ export function main() {
 
     it('Should check if a collection id matches the current active collection',
       inject([ActiveCollectionService], (service: ActiveCollectionService) => {
-        service.data = Observable.of({'id': 1});
+        service.data = Observable.of({ 'id': 1 });
         expect(service.isActiveCollection(1)).toEqual(true);
       }));
 
     it('Should check that a collection id does not match the current active collection',
       inject([ActiveCollectionService], (service: ActiveCollectionService) => {
-        service.data = Observable.of({'id': 1});
+        service.data = Observable.of({ 'id': 1 });
         expect(service.isActiveCollection(3)).toEqual(false);
       }));
 
@@ -159,15 +167,15 @@ export function main() {
 
     function assets(): any {
       return {
-          items: [],
-          totalCount: 0,
-          currentPage: 0,
-          pageSize: 10,
-          hasNextPage: false,
-          hasPreviousPage: false,
-          numberOfPages: 1
-        };
-     }
+        items: [],
+        totalCount: 0,
+        currentPage: 0,
+        pageSize: 10,
+        hasNextPage: false,
+        hasPreviousPage: false,
+        numberOfPages: 1
+      };
+    }
 
     function assetsInStore(): any {
       return {
@@ -194,7 +202,7 @@ export function main() {
         'name': 'Alternative Energy',
         'owner': 5,
         'email': 'jeff@jeffhyde.com',
-        'editors': [50,62],
+        'editors': [50, 62],
         'assets': [
           {
             'uuid': '147819dc-d5ef-4b50-8156-ef1add7c609c',
@@ -203,8 +211,24 @@ export function main() {
             'lastUpdated': '2016-07-21T18:06:18Z'
           },
         ],
-        'tags': ['solar','wind','DC']
+        'tags': ['solar', 'wind', 'DC']
       };
+    }
+
+    function collectionSummaryKeys() {
+      return [
+        'createdOn',
+        'lastUpdated',
+        'id',
+        'siteName',
+        'name',
+        'owner',
+        'email',
+        'userRole',
+        'editors',
+        'collectionThumbnail',
+        'tags'
+      ];
     }
   });
 }

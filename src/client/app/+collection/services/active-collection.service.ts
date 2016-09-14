@@ -47,7 +47,8 @@ export function collectionSummary(collection: any = {}): Collection {
     email: collection.email || '',
     userRole: collection.userRole || '',
     editors: collection.editors || [],
-    collectionThumbnail: collection.collectionThumbnail || {}
+    collectionThumbnail: collection.collectionThumbnail || {},
+    tags: collection.tags || []
   };
 }
 
