@@ -27,7 +27,7 @@
 
 
 .md-overlay-container {
-  z-index: 3;
+  z-index: 5;
   @include transition(background-color, 1400ms, $md-fast-out-slow-in-timing-function);
   &.active {
     position: fixed;

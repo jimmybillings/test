@@ -1,76 +1,95 @@
 <!-- there probably should be some kind of toggle for theater mode (dark background where preview is VS light)-->
-<section layout="row" flex="" layout-align="center" class="preview-bk theater">
-  <div flex-xl="75" flex-gt-lg="85" flex-gt-md="95" flex="100" layout="row" layout-xs="column">
-    <wz-player [resourceClass]="asset.resourceClass" [clipUrl]="asset.clipUrl" [clipThumbnailUrl]="asset.clipThumbnailUrl" flex-gt-sm="66" flex="100" layout="column" class="responsive-video"></wz-player>
-    
-    <div flex-gt-sm="33" flex="100" layout="column">
-      <header class="toolbar-actions">
-        <nav class="asset-options" flex layout-align="end stretch">
-          <button
-            *ngIf="asset.hasDownloadableComp && permission.has('DownloadWatermarkComps')"
-            md-icon-button
-            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
-            [md-menu-trigger-for]="downloadCompMenu">
-              <md-icon>file_download</md-icon>
-          </button>
-          <button
-            *ngIf="!asset.hasDownloadableComp || !permission.has('DownloadWatermarkComps')"
-            disabled
-            md-icon-button
-            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
-            [md-menu-trigger-for]="downloadCompMenu">
-              <md-icon>file_download</md-icon>
-          </button>
-          <button md-icon-button title="Sharing Options"><md-icon>share</md-icon></button>
-          <!--<button md-icon-button title="add to cart"><md-icon>shopping_cart</md-icon></button>-->
-          <button md-icon-button 
-            *ngIf="collection.id !== null && inActiveCollection" 
-            title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" 
-            (click)="showComments($event)">
-            <md-icon>mode_comment</md-icon>
-          </button>
-          <button md-icon-button 
-            *ngIf="collection.id !== null && !inActiveCollection"
-            title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
-            (click)="addToCollection(collection, asset.common[0]); addToast.show()">
-            <md-icon>library_add</md-icon>
-          </button>
-          <button md-icon-button 
-            *ngIf="collection.id !== null && inActiveCollection" 
-            title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
-            (click)="removeFromCollection(collection, asset.common[0]); removeToast.show()">
-            <md-icon>remove_circle</md-icon>
-          </button>
-          <button md-icon-button 
-            *ngIf="collection.id === null"  
-            title="{{ 'COLLECTION.CREATE_COLLECTION_HOVER_TITLE' | translate}}" 
-            (click)="showNewCollection(asset.common[0].value); addToast.show()">
-            <md-icon>library_add</md-icon>
-          </button>
-          <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
-        </nav>
-      </header>
-      <md-card flex="" layout="column" class="primary-info">
-        <md-card-content>
-          <div flex="" layout="column" class="asset-name md-caption">{{asset.common[5].value}}</div>
-          <div layout="row" layout-wrap="">
-            <div [ngClass]="{hd: asset.primary[2].value == 'High Definition', sd: asset.primary[2].value == 'Standard Definition'}"
-              class="sd-hd" *ngIf='asset.primary[2].value != null'>
-            </div>
-            <div flex="" class="rights md-caption">{{asset.primary[3].value}}</div>
-          </div>
-          <div layout="row" layout-wrap="" *ngIf='asset.primary[4].value != null'>
-            <div flex="" class="restriction-banner">{{asset.primary[4].value}}</div>
-          </div>
-          <h4 class="title-txt" *ngIf="asset.primary[5].value != null">{{asset.primary[5].value}}</h4>
-          <h5 class="description-txt md-subhead">{{asset.primary[6].value}}</h5>
-          <md-card-actions layout="column" layout-align="center center" layout-wrap="">
-            <button md-raised-button (click)="someFunction()" class="md-primary md-hue-7">Add to Cart</button>
-            <button md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>
-          </md-card-actions>
-        </md-card-content>
-      </md-card>
 
+<section class="preview-bk theater">
+  <div layout="row" layout-align="center">
+    <div flex-xl="75" flex-gt-lg="85" flex-gt-md="95" flex="100" layout="row" layout-xs="column">
+      <div flex-gt-sm="66" flex="100">
+        <div flex="" layout="column" class="primary-info-t">
+          <div class="primary-content-t">
+            <div class="asset-name md-caption" layout="column">{{asset.common[5].value}}</div>
+            <div layout="row" layout-wrap="">
+              <div [ngClass]="{hd: asset.primary[2].value == 'High Definition', sd: asset.primary[2].value == 'Standard Definition'}"
+                class="sd-hd" *ngIf='asset.primary[2].value != null'>
+              </div>
+              <div flex="" class="rights md-caption">{{asset.primary[3].value}}</div>
+            </div>
+            <div layout="row" layout-wrap="" *ngIf='asset.primary[4].value != null'>
+              <div flex="" class="restriction-banner">{{asset.primary[4].value}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div flex-gt-sm="33" flex="100" layout="column">
+        <header class="toolbar-actions">
+          <nav class="asset-options" flex layout-align="end stretch">
+            <button
+              *ngIf="asset.hasDownloadableComp && permission.has('DownloadWatermarkComps')"
+              md-icon-button
+              title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
+              [md-menu-trigger-for]="downloadCompMenu">
+                <md-icon>file_download</md-icon>
+            </button>
+            <button
+              *ngIf="!asset.hasDownloadableComp || !permission.has('DownloadWatermarkComps')"
+              disabled
+              md-icon-button
+              title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}">
+                <md-icon>file_download</md-icon>
+            </button>
+
+            <md-menu x-position="before" #downloadCompMenu="mdMenu">
+              <button md-menu-item [disabled]="!permission.has('DownloadWatermarkComps')" (click)="downloadComp(asset.assetId, 'wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
+              <button md-menu-item [disabled]="!permission.has('DownloadCleanComps')" (click)="downloadComp(asset.assetId, 'clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
+              <button md-menu-item [disabled]="!permission.has('DownloadFullComps')" (click)="downloadComp(asset.assetId, 'full')">Download Full Comp</button>
+            </md-menu>
+
+            <button md-icon-button title="Sharing Options"><md-icon>share</md-icon></button>
+            <button md-icon-button 
+              *ngIf="collection.id !== null && inActiveCollection" 
+              title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" 
+              (click)="showComments($event)">
+              <md-icon>mode_comment</md-icon>
+            </button>
+            <button md-icon-button 
+              *ngIf="collection.id !== null && !inActiveCollection"
+              title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
+              (click)="addToCollection(collection, asset.common[0]); addToast.show()">
+              <md-icon>library_add</md-icon>
+            </button>
+            <button md-icon-button 
+              *ngIf="collection.id !== null && inActiveCollection" 
+              title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
+              (click)="removeFromCollection(collection, asset.common[0]); removeToast.show()">
+              <md-icon>remove_circle</md-icon>
+            </button>
+            <button md-icon-button 
+              *ngIf="collection.id === null"  
+              title="{{ 'COLLECTION.CREATE_COLLECTION_HOVER_TITLE' | translate}}" 
+              (click)="showNewCollection(asset.common[0].value); addToast.show()">
+              <md-icon>library_add</md-icon>
+            </button>
+            <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
+          </nav>
+        </header>
+      </div>
+    </div>
+  </div>
+
+  <div layout="row" flex="" layout-align="center">
+    <div flex-xl="75" flex-gt-lg="85" flex-gt-md="95" flex="100" layout="row" layout-xs="column">
+      <wz-player [resourceClass]="asset.resourceClass" [clipUrl]="asset.clipUrl" [clipThumbnailUrl]="asset.clipThumbnailUrl" flex-gt-sm="66" flex="100" layout="column" class="responsive-video"></wz-player>
+      <div flex-gt-sm="33" flex="100" layout="column">
+        <div flex="" layout="column" class="primary-info">
+          <div class="primary-content">
+            <h4 class="title-txt" *ngIf="asset.primary[5].value != null">{{asset.primary[5].value}}</h4>
+            <p class="description-txt">{{asset.primary[6].value}}</p>
+            <md-card-actions layout="column" layout-align="center center" layout-wrap="">
+              <button md-raised-button (click)="someFunction()" class="md-primary md-hue-7">Add to Cart</button>
+              <button md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>
+            </md-card-actions>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -87,9 +106,3 @@
   </div>
 </wz-toast>
 
-<md-menu x-position="before" #downloadCompMenu="mdMenu">
-  <button md-menu-item (click)="trigger.closeMenu()"><md-icon>close</md-icon>Close Menu</button>
-  <button md-menu-item [disabled]="!permission.has('DownloadWatermarkComps')" (click)="downloadComp(asset.assetId, 'wm');"><md-icon>branding_watermark</md-icon>{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
-  <button md-menu-item [disabled]="!permission.has('DownloadCleanComps')" (click)="downloadComp(asset.assetId, 'clean')"><md-icon>high_quality</md-icon>{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
-  <button md-menu-item [disabled]="!permission.has('DownloadFullComps')" (click)="downloadComp(asset.assetId, 'full')"><md-icon>high_quality</md-icon>Download Full Comp</button>
-</md-menu>
