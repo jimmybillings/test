@@ -8,7 +8,7 @@ import {Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
   selector: 'wz-input-suggestions',
   template: `<ng-content></ng-content>
             <div class="suggestions-menu" [ngClass]="{'revealed': areSuggestionsVisible}">
-              <div md-line class="heading">{{ 'COLLECTION.FORM.TYPE_AHEAD_SUGGESTIONS_HEADING' | translate}}</div>
+              <div (click)="closeSuggestions()" md-line class="heading">{{ 'COLLECTION.FORM.TYPE_AHEAD_SUGGESTIONS_HEADING' | translate}}</div>
               <md-list>
                 <md-list-item *ngFor="let suggestion of suggestions">
                   <button (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}">
@@ -16,8 +16,7 @@ import {Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
                   </button>
                 </md-list-item>
               </md-list>
-            </div>
-            <div class="wz-dialog-click-catcher" *ngIf="areSuggestionsVisible" (click)="closeSuggestions()"></div>`,
+            </div>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
