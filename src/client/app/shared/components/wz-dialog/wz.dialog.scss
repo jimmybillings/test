@@ -1,5 +1,5 @@
 .wz-dialog md-card {
-  z-index: 20;
+  z-index: 21;
   width: 33vw;
   &:hover {
     @include md-elevation(20);
@@ -7,27 +7,16 @@
   .md-card {
     width: 100%;
   }
+  md-card-title, md-card-subtitle, md-card-actions {
+    padding: 12px 0;
+  }
+  .confirmation-buttons span.md-button-wrapper {
+    color: #2196F3;
+  }
 }
-// .md-overlay-container {
-//   background-color: rgba(md-color($md-foreground, base), .5);
-//   opacity: 0;
-//   @include transition($swift-ease-out);
-//   width: 0;
-//   height: 0;
-//   position: absolute;
-//   left: 0;
-//   top: 0;
-//   z-index: 4;
-//   &.active {
-//     opacity: 1;
-//     width: 100%;
-//     height: 100%;
-//   }
-// }
-
 
 .md-overlay-container {
-  z-index: 3;
+  z-index: 19;
   @include transition(background-color, 1400ms, $md-fast-out-slow-in-timing-function);
   &.active {
     position: fixed;
@@ -38,12 +27,12 @@
 }
 
 .wz-dialog-click-catcher {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: -72px;
+  left: -483px;
+  z-index: 20;
   // for testing
   // background-color: rgba(aquamarine, .3);
   background-color: transparent;

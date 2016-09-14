@@ -12,7 +12,6 @@ import { WzSearchBoxComponent } from '../shared/components/wz-search-box/wz.sear
 import { WzAssetListComponent } from '../shared/components/wz-asset-list/wz.asset-list.component';
 import { WzBreadcrumbComponent } from '../shared/components/wz-breadcrumb/wz.breadcrumb.component';
 import { WzDialogComponent, WzDialogPortalDirective } from '../shared/components/wz-dialog/wz.dialog.component';
-import { WzConfirmationDialogComponent, WzConfirmationDialogPortalDirective } from '../shared/components/wz-confirmation-dialog/wz.confirmation-dialog.component';
 import { WzDropdownComponent, WzDropdownPortalDirective } from '../shared/components/wz-dropdown/wz.dropdown.component';
 import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
 import { WzListComponent } from '../shared/components/wz-list/wz.list.component';
@@ -53,7 +52,6 @@ import { MaterialModule } from './material.module';
     WzAssetListComponent,
     WzBreadcrumbComponent,
     WzDialogComponent,
-    WzConfirmationDialogComponent,
     WzDropdownComponent,
     WzFormComponent,
     WzListComponent,
@@ -66,7 +64,6 @@ import { MaterialModule } from './material.module';
     CollectionsSearchFormComponent,
     ValuesPipe,
     WzDialogPortalDirective,
-    WzConfirmationDialogPortalDirective,
     WzDropdownPortalDirective,
     WzToastPortalDirective,
     WzInputTagsComponent,
@@ -80,7 +77,6 @@ import { MaterialModule } from './material.module';
     WzAssetListComponent,
     WzBreadcrumbComponent,
     WzDialogComponent,
-    WzConfirmationDialogComponent,
     WzDropdownComponent,
     WzFormComponent,
     WzListComponent,
@@ -93,7 +89,6 @@ import { MaterialModule } from './material.module';
     CollectionsSearchFormComponent,
     ValuesPipe,
     WzDialogPortalDirective,
-    WzConfirmationDialogPortalDirective,
     WzDropdownPortalDirective,
     WzToastPortalDirective,
     WzInputTagsComponent,
