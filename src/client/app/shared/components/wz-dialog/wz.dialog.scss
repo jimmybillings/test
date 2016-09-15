@@ -1,23 +1,36 @@
 .wz-dialog md-card {
   z-index: 21;
-  width: 33vw;
+  width: 22vw;
+  @media screen and (max-width: $layout-breakpoint-lg) and (min-width: 0)  {
+    width: 25vw;
+  }
+  @media screen and (max-width: $layout-breakpoint-md) and (min-width: 0)  {
+    width: 36vw;
+  }
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
+    width: 52vw;
+  }
+  @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+    width: 66vw;
+  }
   &:hover {
     @include md-elevation(20);
   }
   .md-card {
     width: 100%;
   }
-  md-card-title, md-card-subtitle, md-card-actions {
-    padding: 12px 0;
-  }
-  .confirmation-buttons span.md-button-wrapper {
-    color: #2196F3;
-  }
+  // md-card-title, md-card-subtitle, md-card-actions {
+  //   padding: 12px 0;
+  // }
+  // .confirmation-buttons span.md-button-wrapper {
+  //   color: #2196F3;
+  // }
 }
 
 .md-overlay-container {
-  z-index: 19;
-  @include transition(background-color, 1400ms, $md-fast-out-slow-in-timing-function);
+  z-index: 5;
+  // z-index: 19;
+  @include transition(background-color, 1000ms, $md-fast-out-slow-in-timing-function);
   &.active {
     position: fixed;
     @include background-image(
@@ -26,14 +39,38 @@
   }
 }
 
+// .wz-dialog-click-catcher {
+//   position: absolute;
+//   width: 100vw;
+//   height: 100vh;
+//   top: -72px;
+//   left: -483px;
+//   z-index: 20;
+//   // for testing
+//   // background-color: rgba(aquamarine, .3);
+//   background-color: transparent;
+// }
 .wz-dialog-click-catcher {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  top: -72px;
-  left: -483px;
-  z-index: 20;
-  // for testing
-  // background-color: rgba(aquamarine, .3);
   background-color: transparent;
+  height: 200vh;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translateX(-35%) translateX(0px) translateY(-24%) translateY(0px);
+  width: 200vw;
+  z-index: -1;
+  // for testing
+  // background-color: rgba(aquamarine, .08);
+}
+
+.wz-dd-click-catcher {
+  background-color: transparent;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  // for testing
+  // background-color: rgba(greenyellow, .08);
+  z-index: -1;
 }
