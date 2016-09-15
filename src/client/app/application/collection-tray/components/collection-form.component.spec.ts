@@ -96,7 +96,7 @@ function mockCollection(): any {
   return {
     createdOn: 'today',
     lastUpdated: 'today',
-    id: 1,
+    id: 2,
     siteName: 'core',
     name: 'james billings',
     owner: 'james.billings@wazeedigital.com',
