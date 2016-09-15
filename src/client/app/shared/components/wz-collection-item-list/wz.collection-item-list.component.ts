@@ -29,7 +29,7 @@ export class WzCollectionItemListComponent {
   }
 
   public thumbnail(thumbnail: { urls: { https: string } }): string {
-    return (thumbnail) ? thumbnail.urls.https : '/assets/img/tbn_missing.jpg';
+    return (thumbnail && thumbnail.urls && thumbnail.urls.https) ? thumbnail.urls.https : '/assets/img/tbn_missing.jpg';
   }
 
   public setCurrentCollection(collection: any) {

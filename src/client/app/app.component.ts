@@ -36,6 +36,8 @@ export class AppComponent implements OnInit, OnDestroy {
   private configSubscription: Subscription;
   private routeSubscription: Subscription;
   private authSubscription: Subscription;
+  private bootStrapUserDataSubscription: Subscription;
+
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
 
   constructor(
@@ -53,31 +55,33 @@ export class AppComponent implements OnInit, OnDestroy {
     private notification: WzNotificationService,
     private apiConfig: ApiConfig,
     private authentication: Authentication) {
-    this.apiConfig.setPortal(portal);
-    this.currentUser.set();
+      this.apiConfig.setPortal(portal);
+      this.currentUser.set();
   }
 
   ngOnInit() {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
     this.configSubscription = this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
     this.routerChanges();
+    this.bootStrapUserData();
   }
 
   ngOnDestroy() {
     this.configSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     this.authSubscription.unsubscribe();
+    this.bootStrapUserDataSubscription.unsubscribe();
   }
 
   public routerChanges() {
     this.routeSubscription = this.router.events
-      .filter((event:RoutesRecognized) => event instanceof NavigationEnd)
-      .subscribe((event:NavigationEnd) => {
+      .filter((event: RoutesRecognized) => event instanceof NavigationEnd)
+      .subscribe((event: NavigationEnd) => {
         this.uiState.checkRouteForSearchBar(event.url);
         this.state = event.url;
         window.scrollTo(0, 0);
         this.notification.check(this.state, this.target);
-    });
+      });
   }
 
   public logout(): void {
@@ -92,5 +96,16 @@ export class AppComponent implements OnInit, OnDestroy {
   public newSearchContext(data: any) {
     this.searchContext.update = { q: data, i: 1, n: 100 };
     this.searchContext.go();
+  }
+
+  public bootStrapUserData() {
+    this.bootStrapUserDataSubscription = this.currentUser.loggedInState()
+      .filter((loggedIn: boolean) => loggedIn)
+      .subscribe(() => {
+        this.activeCollection.get().take(1).subscribe((collection) => {
+          this.activeCollection.getItems(collection.id, { i: 1, n: 100 }).take(1).subscribe();
+          this.collectionsService.loadCollections().take(1).subscribe();
+        });
+      });
   }
 }

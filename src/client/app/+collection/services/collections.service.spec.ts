@@ -48,10 +48,10 @@ export function main() {
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
+        service.apiUrls.CollectionSummaryBaseUrl = 'api/assets/v1/collectionSummary';
         spyOn(service, 'createCollectionInStore');
         service.createCollection(mockCollection()).subscribe(response => {
-          expect(connection.request.url).toBe('api/identites/v1/collection');
+          expect(connection.request.url).toBe('api/assets/v1/collectionSummary');
           expect(response).toEqual(mockCollection());
           expect(service.createCollectionInStore).toHaveBeenCalledWith(mockCollection());
         });

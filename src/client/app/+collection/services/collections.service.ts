@@ -5,6 +5,7 @@ import { ApiConfig } from '../../shared/services/api.config';
 import { Observable} from 'rxjs/Rx';
 import { Store, ActionReducer, Action} from '@ngrx/store';
 import { ActiveCollectionService } from './active-collection.service';
+
 /**
  * Collections store -
  */
@@ -46,8 +47,8 @@ export const collections: ActionReducer<any> = (state: Collections = collections
 export class CollectionsService {
   public data: Observable<any>;
   public apiUrls: {
-    CollectionBaseUrl: string,
-    CollectionSummaryBaseUrl: string
+    CollectionSummaryBaseUrl: string;
+    CollectionBaseUrl: string;
   };
   private params: any;
 
@@ -55,8 +56,11 @@ export class CollectionsService {
     public store: Store<CollectionStore>,
     public apiConfig: ApiConfig,
     public http: Http,
-    private activeCollection: ActiveCollectionService) {
+    private activeCollection: ActiveCollectionService, ) {
     this.data = store.select('collections');
+    this.activeCollection.data.subscribe((collection: Collection) => {
+      if (this.state.items && this.state.items.length > 0) this.updateCollectionInStore(collection);
+    });
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
       CollectionSummaryBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary',
@@ -70,7 +74,7 @@ export class CollectionsService {
     return s;
   }
 
-  public loadCollections(params:any={}): Observable<any> {
+  public loadCollections(params: any = {}): Observable<any> {
     this.params = Object.assign({}, this.params, params);
     return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/search`,
       this.getSearchOptions(this.params)).map(res => {
@@ -87,18 +91,17 @@ export class CollectionsService {
   }
 
   public createCollection(collection: Collection): Observable<any> {
-    return this.http.post(this.apiUrls.CollectionBaseUrl,
+    return this.http.post(this.apiUrls.CollectionSummaryBaseUrl,
       JSON.stringify(collection), { headers: this.apiConfig.authHeaders() })
       .map(res => {
         this.createCollectionInStore(res.json());
         this.activeCollection.updateActiveCollectionStore(res.json());
         return res.json();
       });
-
   }
 
   public updateCollection(collection: Collection): Observable<any> {
-    return this.http.put(`${this.apiUrls.CollectionBaseUrl}/${collection.id}`,
+    return this.http.put(`${this.apiUrls.CollectionSummaryBaseUrl}/${collection.id}`,
       JSON.stringify(collection), { headers: this.apiConfig.authHeaders() });
   }
 
@@ -150,7 +153,7 @@ export class CollectionsService {
     return item;
   }
 
-  public getCollections(access:string='all',numberPerPg:number=400): Observable<any> {
+  public getCollections(access: string = 'all', numberPerPg: number = 400): Observable<any> {
     return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/fetchBy?access-level=${access}&i=0&n=${numberPerPg}`,
       { headers: this.apiConfig.authHeaders() }).map(res => {
         this.storeCollections(res.json());
@@ -159,7 +162,7 @@ export class CollectionsService {
   }
 
   public setSearchParams() {
-    this.params = {'q': '', 'access-level': 'all', 's': '', 'd': '', 'i': 0, 'n': 200};
+    this.params = { 'q': '', 'access-level': 'all', 's': '', 'd': '', 'i': 0, 'n': 200 };
   }
 
 }

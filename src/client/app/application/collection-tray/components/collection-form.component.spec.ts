@@ -60,7 +60,7 @@ export function main() {
         component.dialog = {};
         component.dialog.close = function() {return true;};
         spyOn(component.collectionsService, 'createCollection').and.callThrough();
-        spyOn(component.activeCollection, 'set').and.callThrough();
+        spyOn(component.activeCollection, 'get').and.callThrough();
         spyOn(component.activeCollection, 'getItems').and.callThrough();
         spyOn(component.uiState, 'loading').and.callThrough();
         spyOn(component, 'loadCollections');
@@ -69,7 +69,7 @@ export function main() {
         collectionWithParsedTags.tags = ['cat', 'dog', 'cow'];
         expect(component.loadCollections).toHaveBeenCalled();
         expect(component.collectionsService.createCollection).toHaveBeenCalledWith(collectionWithParsedTags);
-        expect(component.activeCollection.set).toHaveBeenCalledWith(mockCollection().id);
+        expect(component.activeCollection.get).toHaveBeenCalled();
         expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, {n: 50});
         expect(component.uiState.loading).toHaveBeenCalled();
       }));

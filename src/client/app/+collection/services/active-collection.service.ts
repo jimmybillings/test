@@ -8,50 +8,6 @@ import { Store, ActionReducer, Action} from '@ngrx/store';
 /**
  * Focused Collection store -
  */
-
-export function initState(collection: any = {}): Collection {
-  return {
-    createdOn: collection.createdOn || '',
-    lastUpdated: collection.lastUpdated || '',
-    id: collection.id || null,
-    siteName: collection.siteName || '',
-    name: collection.name || '',
-    owner: collection.owner || 0,
-    email: collection.email || '',
-    userRole: collection.userRole || '',
-    editors: collection.editors || [],
-    collectionThumbnail: collection.collectionThumbnail || {},
-    assets: {
-      items: [],
-      pagination: {
-        totalCount: 0,
-        currentPage: 1,
-        pageSize: 100,
-        hasNextPage: false,
-        hasPreviousPage: false,
-        numberOfPages: 0
-      },
-    },
-    tags: collection.tags || []
-  };
-}
-
-export function collectionSummary(collection: any = {}): Collection {
-  return {
-    createdOn: collection.createdOn || '',
-    lastUpdated: collection.lastUpdated || '',
-    id: collection.id || null,
-    siteName: collection.siteName || '',
-    name: collection.name || '',
-    owner: collection.owner || 0,
-    email: collection.email || '',
-    userRole: collection.userRole || '',
-    editors: collection.editors || [],
-    collectionThumbnail: collection.collectionThumbnail || {},
-    tags: collection.tags || []
-  };
-}
-
 export const activeCollection: ActionReducer<any> = (state = initState(), action: Action) => {
   switch (action.type) {
     case 'UPDATE_ACTIVE_COLLECTION':
@@ -59,13 +15,12 @@ export const activeCollection: ActionReducer<any> = (state = initState(), action
     case 'RESET_ACTIVE_COLLECTION':
       return Object.assign({}, initState());
     case 'ADD_ASSET_TO_COLLECTION':
-      state.assets.pagination.totalCount++;
-      return Object.assign({}, state, state.assets.items.unshift(action.payload));
+      return Object.assign({}, state, state.assets.items.unshift(action.payload), { assetsCount: state.assetsCount + 1 });
     case 'REMOVE_ASSET_FROM_COLLECTION':
       let index = state.assets.items.map((item: any) => item.assetId).indexOf(action.payload.assetId);
       if (index > -1) state.assets.items.splice(index, 1);
-      state.assets.pagination.totalCount--;
-      return Object.assign({}, state);
+      return Object.assign({}, state, { assetsCount: state.assetsCount - 1 });
+
     default:
       return state;
   }
@@ -87,12 +42,14 @@ export class ActiveCollectionService implements OnInit {
     public apiConfig: ApiConfig,
     public http: Http) {
     this.data = this.store.select('activeCollection');
+
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
       CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary/assets',
       CollectionActive: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary',
       CollectionSetActive: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary/setFocused'
     };
+
   }
 
   ngOnInit(): void {
@@ -128,7 +85,7 @@ export class ActiveCollectionService implements OnInit {
 
   public removeAsset(collectionId: any, assetId: any, uuid: any): Observable<any> {
     return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/removeAssets`,
-      {'list': [{'assetId':assetId, 'uuid':uuid}]},
+      { 'list': [{ 'assetId': assetId, 'uuid': uuid }] },
       { headers: this.apiConfig.authHeaders() })
       .map(res => {
         this.removeAssetFromStore(res.json().list[0]);
@@ -196,7 +153,7 @@ export class ActiveCollectionService implements OnInit {
   }
 
   public setSearchParams() {
-    this.params = {'s': '', 'd': '', 'i': '0', 'n': '50'};
+    this.params = { 's': '', 'd': '', 'i': '0', 'n': '50' };
   }
 
   public mergeCollectionData(item: any, search: any) {
@@ -214,4 +171,49 @@ export class ActiveCollectionService implements OnInit {
       .subscribe(id => isMatch = id === collectionId);
     return isMatch;
   }
+}
+
+export function initState(collection: any = {}): Collection {
+  return {
+    createdOn: collection.createdOn || '',
+    lastUpdated: collection.lastUpdated || '',
+    id: collection.id || null,
+    siteName: collection.siteName || '',
+    name: collection.name || '',
+    owner: collection.owner || 0,
+    email: collection.email || '',
+    userRole: collection.userRole || '',
+    editors: collection.editors || [],
+    collectionThumbnail: collection.collectionThumbnail || {},
+    assets: {
+      items: [],
+      pagination: {
+        totalCount: 0,
+        currentPage: 1,
+        pageSize: 100,
+        hasNextPage: false,
+        hasPreviousPage: false,
+        numberOfPages: 0
+      },
+    },
+    tags: collection.tags || [],
+    assetsCount: collection.assetCount || 0
+  };
+}
+
+export function collectionSummary(collection: any = {}): Collection {
+  return {
+    createdOn: collection.createdOn || '',
+    lastUpdated: collection.lastUpdated || '',
+    id: collection.id || null,
+    siteName: collection.siteName || '',
+    name: collection.name || '',
+    owner: collection.owner || 0,
+    email: collection.email || '',
+    userRole: collection.userRole || '',
+    editors: collection.editors || [],
+    collectionThumbnail: collection.collectionThumbnail || {},
+    tags: collection.tags || [],
+    assetsCount: collection.assetsCount || 0
+  };
 }

@@ -19,7 +19,7 @@
                 <div flex-gt-sm="60" flex-xl="70" flex="100" (click)="selectFocusedCollection(collection)" layout-padding layout-fill>
                   <h3 class="md-headline">{{collection.name}}
                     <span class="asset-count">
-                      <span class="count" *ngIf="collection.assets">{{collection.assets.pagination.totalCount}}</span>
+                      <span class="count" *ngIf="collection.assets">{{collection.assetsCount}}</span>
                     <!--<span class="count" *ngIf="!collection.assets">0</span>-->
                     </span>
                   </h3>

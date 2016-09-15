@@ -39,22 +39,22 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public error: Error,
     public uiConfig: UiConfig,
     public uiState: UiState) {
-      this.filterOptions = [
-        { 'id': 0, 'label': 'ALL', 'value': 'all', 'access': {'access-level': 'all'} },
-        { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'access': {'access-level': 'owner'} },
-        { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'access': {'access-level': 'editor'} },
-        { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'access': {'access-level': 'viewer'} },
-        { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'access': {'access-level': 'researcher'} }
-      ];
-      this.sortOptions = [
-        { 'id': 0, 'label': 'DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true }},
-        { 'id': 1, 'label': 'DATE_MOD_OLDEST', 'value': 'modOldest', 'sort': { 's': 'lastUpdated', 'd': false }},
-        { 'id': 2, 'label': 'DATE_CREATE_NEWEST', 'value': 'createNewest', 'sort': { 's': 'createdOn', 'd': true }},
-        { 'id': 3, 'label': 'DATE_CREATE_OLDEST', 'value': 'createOldest', 'sort': { 's': 'createdOn', 'd': false }},
-        { 'id': 4, 'label': 'LIST_COLL_ASC', 'value': 'alphaAsc', 'sort': { 's': 'name', 'd': false }},
-        { 'id': 5, 'label': 'LIST_COLL_DESC', 'value': 'alphaDesc', 'sort': { 's': 'name', 'd': true }}
-      ];
-    }
+    this.filterOptions = [
+      { 'id': 0, 'label': 'ALL', 'value': 'all', 'access': { 'access-level': 'all' } },
+      { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'access': { 'access-level': 'owner' } },
+      { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'access': { 'access-level': 'editor' } },
+      { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'access': { 'access-level': 'viewer' } },
+      { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'access': { 'access-level': 'researcher' } }
+    ];
+    this.sortOptions = [
+      { 'id': 0, 'label': 'DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true } },
+      { 'id': 1, 'label': 'DATE_MOD_OLDEST', 'value': 'modOldest', 'sort': { 's': 'lastUpdated', 'd': false } },
+      { 'id': 2, 'label': 'DATE_CREATE_NEWEST', 'value': 'createNewest', 'sort': { 's': 'createdOn', 'd': true } },
+      { 'id': 3, 'label': 'DATE_CREATE_OLDEST', 'value': 'createOldest', 'sort': { 's': 'createdOn', 'd': false } },
+      { 'id': 4, 'label': 'LIST_COLL_ASC', 'value': 'alphaAsc', 'sort': { 's': 'name', 'd': false } },
+      { 'id': 5, 'label': 'LIST_COLL_DESC', 'value': 'alphaDesc', 'sort': { 's': 'name', 'd': true } }
+    ];
+  }
 
   ngOnInit() {
     this.uiConfig.get('global').take(1).subscribe(config => {
@@ -95,7 +95,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       if (this.activeCollection.isActiveCollection(id) && collectionLength > 0) {
         this.activeCollection.get().take(1).subscribe((collection) => {
           this.activeCollection.getItems(collection.id, { n: this.pageSize }).take(1).subscribe(d => {
-            this.router.navigate(['/collection/' + collection.id, {i: 1, n: 100} ]);
+            this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
           });
         });
       }
@@ -105,7 +105,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
         this.activeCollection.get().take(1).subscribe((collection) => {
           this.activeCollection.getItems(collection.id, { n: this.pageSize }).take(1).subscribe();
           this.collectionsService.loadCollections().take(1).subscribe(d => {
-            this.router.navigate(['/collection/' + collection.id, {i: 1, n: 100} ]);
+            this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
           });
         });
       }

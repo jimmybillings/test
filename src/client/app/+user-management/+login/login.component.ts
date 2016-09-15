@@ -38,11 +38,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.configSubscription.unsubscribe();
   }
 
-  /**
-   * Logs in a user - stores returned token value in local storage.
-   * Also sets current user with response values, and navigates to the home page.
-   * @param user  Login form fields sent to the authentication service.
-  */
   public onSubmit(user: any): void {
     user.siteName = this._ApiConfig.getPortal();
     this._authentication.create(user).take(1).subscribe((res) => {

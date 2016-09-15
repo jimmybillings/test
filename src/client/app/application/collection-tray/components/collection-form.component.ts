@@ -70,11 +70,9 @@ export class CollectionFormComponent implements OnInit, OnChanges {
     this.uiState.loading(true);
     collection.tags = (collection.tags) ? collection.tags.split(/\s*,\s*/) : [];
     this.collectionsService.createCollection(collection).take(1).subscribe(collection => {
-      this.loadCollections();
       this.collectionContext.resetCollectionOptions();
-      this.activeCollection.set(collection.id).take(1).subscribe(() => {
-        this.activeCollection.getItems(collection.id, { n: 50 }).take(1).subscribe();
-      });
+      this.getActiveCollection();
+      this.loadCollections();
     }, this.error.bind(this));
   }
 
@@ -83,12 +81,21 @@ export class CollectionFormComponent implements OnInit, OnChanges {
     collection = Object.assign({}, collection,
       { id: this.collection.id, tags: collection.tags.split(/\s*,\s*/), owner: this.collection.owner });
     this.collectionsService.updateCollection(collection).take(1)
-      .subscribe(this.loadCollections.bind(this), this.error.bind(this));
+      .subscribe(() => {
+        this.loadCollections();
+        if (this.activeCollection.state.id === collection.id) this.getActiveCollection();
+      }, this.error.bind(this));
   }
 
   public loadCollections() {
     this.collectionsService.loadCollections(this.defaultCollectionParams)
       .take(1).subscribe(this.success.bind(this));
+  }
+
+  public getActiveCollection() {
+    this.activeCollection.get().take(1).subscribe((collection) => {
+      this.activeCollection.getItems(collection.id, { n: 50 }).take(1).subscribe();
+    });
   }
 
   private success(): void {

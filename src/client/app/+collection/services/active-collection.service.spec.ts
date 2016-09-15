@@ -227,7 +227,8 @@ export function main() {
         'userRole',
         'editors',
         'collectionThumbnail',
-        'tags'
+        'tags',
+        'assetsCount'
       ];
     }
   });

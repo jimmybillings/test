@@ -15,7 +15,7 @@
     <nav class="focused" *ngIf="(collection | async).name" (click)="list.show($event)">
       <button md-button class="is-dd">{{(collection | async).name}}</button>
       <button md-button class="asset-count">
-        <span class="count" *ngIf="(collection | async).assets">{{(collection | async).assets.pagination.totalCount}}</span>
+        <span class="count" *ngIf="(collection | async).assets">{{(collection | async).assetsCount}}</span>
         <span class="count" *ngIf="!(collection | async).assets">0</span>
       </button>
     </nav>
