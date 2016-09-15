@@ -112,7 +112,7 @@ export class SharedModule {
       providers: [
         {
           provide: TranslateLoader,
-          useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json?en=2'),
+          useFactory: (http: Http) => new TranslateStaticLoader(http, 'https://', '.json'),
           deps: [Http]
         },
         TranslateService,
