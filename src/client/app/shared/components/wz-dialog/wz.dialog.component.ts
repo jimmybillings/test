@@ -47,10 +47,10 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
 
   template: `
     <template wzDialogPortal>
-      <div class="wz-dialog-click-catcher"></div>
       <div [@slideInOut]="animationState" class="wz-dialog">
         <ng-content></ng-content>
       </div>
+      <div class="wz-dialog-click-catcher"></div>
     </template>
     `
 })
