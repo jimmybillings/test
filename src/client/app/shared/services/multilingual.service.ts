@@ -6,6 +6,8 @@ import {ILang, MultilingualStateI} from '../interfaces/language.interface';
 import {ApiConfig} from './api.config';
 import 'rxjs/add/operator/take';
 
+declare let portal: string;
+
 const initialState: MultilingualStateI = {
   lang: ''
 };
@@ -43,7 +45,6 @@ export class MultilingualService {
     private translate: TranslateService,
     private apiConfig: ApiConfig,
     public store: Store<any>) {
-    this.portal = this.apiConfig.getPortal();
     this.baseUrl = this.apiConfig.baseUrl();
     this.setLanguage('en');
     this.getTranslationStrings();
@@ -66,7 +67,7 @@ export class MultilingualService {
   }
 
   public setLanguage(lang: string) {
-    lang = `${this.baseUrl.split(':/')[1]}identities-api/v1/translation/${this.portal}/${lang}`;
+    lang = `${this.baseUrl.split(':/')[1]}identities-api/v1/translation/${portal}/${lang}`;
     this.store.dispatch({ type: MULTILINGUAL_ACTIONS.LANG_CHANGE, payload: { lang } });
   }
 }
