@@ -4,11 +4,12 @@ import { Injectable } from '@angular/core';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Http, Response } from '@angular/http';
 
-const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '' };
+const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '', price: 0 };
 
 export const asset: ActionReducer<any> = (state = initAsset, action: Action) => {
   switch (action.type) {
     case 'SET_ASSET':
+      console.log(action.payload);
       return Object.assign({}, state, action.payload);
     case 'RESET':
       return Object.assign({}, initAsset);
@@ -37,7 +38,7 @@ export class AssetService {
       .get(this._apiConfig.baseUrl() + 'api/assets/v1/clip/' + id + '/clipDetail',
       { headers: this._apiConfig.authHeaders(), body: '' }
       )
-      .map((res: Response) => this.set({ type: 'SET_ASSET', payload: res.json() }));
+      .map((res: Response) => { this.set({ type: 'SET_ASSET', payload: res.json() }); });
   }
 
   public set(payload: any): void {
@@ -47,9 +48,35 @@ export class AssetService {
   public reset(): void {
     this.store.dispatch({ type: 'RESET' });
   }
-  public downloadComp(id:any,compType:any): Observable<any> {
-       return this._http.get(this._apiConfig.baseUrl() + 'api/assets/v1/renditionType/downloadUrl/' + id + '?type='+compType,
-      { headers: this._apiConfig.authHeaders(), body: ''}).map((res) => { return res.json();});
+
+  public downloadComp(id: any, compType: any): Observable<any> {
+    return this._http.get(this._apiConfig.baseUrl() + 'api/assets/v1/renditionType/downloadUrl/' + id + '?type=' + compType,
+      { headers: this._apiConfig.authHeaders(), body: '' }).map((res) => { return res.json(); });
   }
 
+  public getPrice(id: any): Observable<any> {
+    return this._http.get(this._apiConfig.baseUrl() + 'api/orders/v1/priceBook/price/' + id + '?region=AAA',
+      { headers: this._apiConfig.authHeaders(), body: '' }).map((res) => { return res.json(); });
+  }
+
+  public getData(id: any): Observable<any> {
+    return this._http.get(this._apiConfig.baseUrl() + 'api/assets/v1/clip/' + id + '/clipDetail',
+      { headers: this._apiConfig.authHeaders(), body: '' }).map((res) => { return res.json(); });
+  }
+
+  public setActiveAsset(asset: any, price: any): void {
+    // payload.items = payload.items === undefined ? [] : payload.items;
+    console.log(price);
+    this.set({
+      type: 'SET_ASSET', payload: {
+        assetId: asset.assetId,
+        clipThumbnailUrl: asset.clipThumbnailUrl,
+        clipUrl: asset.clipUrl,
+        detailTypeMap: asset.detailTypeMap,
+        hasDownloadableComp: asset.hasDownloadableComp,
+        resourceClass: asset.resourceClass,
+        price: price.price
+      }
+    });
+  }
 }
