@@ -94,9 +94,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       // if we are deleting current active, we need to get the new active from the server.
       if (this.activeCollection.isActiveCollection(id) && collectionLength > 0) {
         this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, { n: this.pageSize }).take(1).subscribe(d => {
-            this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
-          });
+          this.activeCollection.getItems(collection.id, { n: this.pageSize }).take(1).subscribe();
         });
       }
       // if we delete the last collection, reset the store to initial values (no active collection)
@@ -104,9 +102,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
         this.collectionsService.destroyCollections();
         this.activeCollection.get().take(1).subscribe((collection) => {
           this.activeCollection.getItems(collection.id, { n: this.pageSize }).take(1).subscribe();
-          this.collectionsService.loadCollections().take(1).subscribe(d => {
-            this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
-          });
+          this.collectionsService.loadCollections().take(1).subscribe();
         });
       }
     });
