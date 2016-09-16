@@ -106,8 +106,8 @@
     <md-card-title>{{ 'COLLECTION.INDEX.CONFIRMATION_TITLE' | translate:{collectionName: collection.name} }}</md-card-title>
     <md-card-subtitle>{{ 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE' | translate }}</md-card-subtitle>
     <md-card-actions align="end" class="confirmation-buttons">
-      <button md-button="" (click)="deleteCollectionDialog.close()">{{ 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE' | translate }}</button>
-      <button md-button="" (click)="deleteCollectionDialog.close(); deleteCollection(collection.id)">{{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
+      <button md-button color="primary" (click)="deleteCollectionDialog.close()">{{ 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE' | translate }}</button>
+      <button md-button color="primary" (click)="deleteCollectionDialog.close(); deleteCollection(collection.id)">{{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
     </md-card-actions>
   </md-card>
 </wz-dialog>
