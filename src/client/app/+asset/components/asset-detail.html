@@ -84,9 +84,10 @@
             <h4 class="title-txt" *ngIf="asset.primary[5].value != null">{{asset.primary[5].value}}</h4>
             <p class="description-txt">{{asset.primary[6].value}}</p>
             <span *ngIf="asset.price != 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
+            <span *ngIf="asset.price == 0" class="contact-us-pricing">{{ 'ASSETDETAIL.CONTACT_US_PRICING' | translate }}</span>
             <md-card-actions layout="column" layout-align="center center" layout-wrap="">
-              <button md-raised-button (click)="someFunction()" class="md-primary md-hue-7">Add to Cart</button>
-              <button *ngIf="asset.price == 0" md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>
+              <button md-raised-button (click)="someFunction()" class="md-primary md-hue-7">{{ 'ASSETDETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+              <!--<button *ngIf="asset.price == 0" md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>-->
             </md-card-actions>
           </div>
         </div>
@@ -94,6 +95,16 @@
     </div>
   </div>
 </section>
+
+<!--<wz-dropdown #sharing>
+  <asset-sharing
+    [UiState]="UiState"
+    [asset]="asset | async"
+    [config]="(uiConfig.get('collection') | async).config"
+    (close)="list.close()"
+    layout="row" layout-align="end start" class="revealed">
+  </asset-sharing>
+</wz-dropdown>-->
 
 <wz-toast #addToast>
   <div class="toast" layout="row" layout-align="center center">
