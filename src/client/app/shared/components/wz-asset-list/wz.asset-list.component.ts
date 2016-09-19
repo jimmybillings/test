@@ -13,7 +13,6 @@ import { MdMenuTrigger } from '@angular2-material/menu';
 
 export class WzAssetListComponent implements OnChanges {
   @Input() public assets: Array<any>;
-  @Input() public currentUser: any;
   @Input() public permission: any;
   @Input() collection: Collection;
   @Output() onAddToCollection = new EventEmitter();

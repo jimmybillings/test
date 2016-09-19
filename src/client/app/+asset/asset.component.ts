@@ -75,5 +75,4 @@ export class AssetComponent implements OnInit {
     let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-collection-tray');
     (!this.currentUser.loggedIn()) ? this.router.navigate(['/user/login']) : newCollectionButton.click();
   }
-
 }

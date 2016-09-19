@@ -13,9 +13,11 @@ section.preview-bk {
   position: relative;
   padding-top: rem(3.3);
   padding-bottom: rem(9);
-  @media screen and (max-width: $layout-breakpoint-sm)  {
+  @media screen and (max-width: $layout-breakpoint-md)  {
     padding-top: rem(2);    
-    padding-bottom: rem(4);    
+    padding-bottom: rem(4);
+    // padding-left: rem(1.6);
+    // padding-right: rem(1.6);
   }
   &.theater {
     height: 100%;
@@ -65,14 +67,10 @@ section.preview-bk {
       left: 0;
       width: 100%;
       background-color: rgba(md-color($md-grey, 50), 1);
-      // @include background-image(linear-gradient(rgba(md-color($md-grey, 100),0.5), rgba(md-color($md-grey, 100),0.3) 80%));
-      // opacity: 0.5;
       @include transition(opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2));
-      // z-index: 1;
     }
   }
   .toolbar-actions {
-    // height: rem(5.6);
     display: flex;
     height: 100%;
     min-height: 100%;
@@ -82,28 +80,9 @@ section.preview-bk {
     }
     nav.asset-options {
       display: flex;
-      // background-color: rgba(md-color($md-grey, 900),.4);
-      // padding-left: rem(.6);
-      // padding-right: rem(.6);
-      // padding-top: rem(1.2);
       button[md-icon-button] {
         @include text-contrast(md-color($md-grey, 900));
-        // height: 36px;
-        // width: 36px;
-        // padding: rem(.6);
         margin-left: rem(.6);
-        // @include transition(all .4s ease-in-out);
-        // span.md-button-wrapper {
-        //   position: static;
-        //   line-height: 1.9;
-        //   font-size: inherit;
-        // }
-        // md-icon.material-icons {
-        //   font-size: 22px;
-        // }
-        // &:hover {
-        //   background-color: rgba(md-color($md-background, background),.08);
-        // }
         &:disabled {
           md-icon {
             color: rgba(md-color($md-background, background),.2);
@@ -113,8 +92,6 @@ section.preview-bk {
     }
   }
   div.primary-info {
-    // @include calc(height, "100% - 56px");
-    // @include calc(min-height, "100% - 56px");
     @include text-contrast(md-color($md-grey, 900));
     box-shadow: none;
     background-color: rgba(md-color($md-grey, 900),.2);
@@ -122,7 +99,6 @@ section.preview-bk {
     position: relative;
     @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
       padding: 0;
-      // margin-top: rem(2.0);
       background-color: transparent;
     }
     div.primary-content {
@@ -142,9 +118,26 @@ section.preview-bk {
         opacity: .9;
         @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
           height: auto;
+          min-height: rem(14.4);
           margin-top: rem(.4);
           margin-bottom: rem(2);
         }
+      }
+      .price {
+        position: absolute;
+        bottom: rem(9.0);
+        right: rem(3.7);
+        font-size: 1.7em;
+        font-weight: 400;
+        line-height: 1;
+        &::first-letter {
+          font-size: .7em;
+          font-weight: 200;
+          vertical-align: top;
+        }
+        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+          right: 0;
+        } 
       }
       md-card-actions {
         @include calc(width, "100% - 42px");
@@ -175,46 +168,6 @@ section.preview-bk {
           }
         }
       }
-      // .asset-name {
-      //   margin-bottom: rem(.7);
-      // }
-      // .sd-hd {
-      //   height: rem(2);
-      //   width: rem(2.8);
-      //   border-radius: rem(.3);
-      //   border-width: 1px;
-      //   border-style: solid;
-      //   border-color: rgba(md-color($md-grey, 100),0.4);
-      //   background-color: rgba(md-color($md-grey, 900),.8);
-      //   position: relative;
-      //   &::before {
-      //     content: "HD";
-      //     position: absolute;
-      //     top: 50%;
-      //     left: 50%;
-      //     @include transform(translate(-50%, -50%));
-      //     opacity: 0.8;
-      //     font-size: .94em;
-      //     font-weight: bold;
-      //   }
-      // }
-      // .sd-hd.sd {
-      //   width: rem(2.7);
-      //   height: rem(1.8);
-      //   border-radius: 50%;
-      //   border-color: rgba(md-color($md-grey, 900), 0);
-      //   background-color: rgba(md-color($md-grey, 100), .75);
-      //   &::before {
-      //     content: "SD";
-      //     color:rgba(md-color($md-grey, 900),1);
-      //     opacity: 0.9;
-      //   }
-      // }
-      // .rights {
-      //   padding-left: rem(1);
-      //   padding-top: rem(.4);
-      //   text-transform: uppercase;
-      // }
     }
   }
 }

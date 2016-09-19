@@ -2,7 +2,7 @@
 
 <section class="preview-bk theater">
   <div layout="row" layout-align="center">
-    <div flex-xl="75" flex-gt-lg="85" flex-gt-md="95" flex="100" layout="row" layout-xs="column">
+    <div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
       <div flex-gt-sm="66" flex="100">
         <div flex="" layout="column" class="primary-info-t">
           <div class="primary-content-t">
@@ -76,16 +76,17 @@
   </div>
 
   <div layout="row" flex="" layout-align="center">
-    <div flex-xl="75" flex-gt-lg="85" flex-gt-md="95" flex="100" layout="row" layout-xs="column">
+    <div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
       <wz-player [resourceClass]="asset.resourceClass" [clipUrl]="asset.clipUrl" [clipThumbnailUrl]="asset.clipThumbnailUrl" flex-gt-sm="66" flex="100" layout="column" class="responsive-video"></wz-player>
       <div flex-gt-sm="33" flex="100" layout="column">
         <div flex="" layout="column" class="primary-info">
           <div class="primary-content">
             <h4 class="title-txt" *ngIf="asset.primary[5].value != null">{{asset.primary[5].value}}</h4>
             <p class="description-txt">{{asset.primary[6].value}}</p>
+            <span *ngIf="asset.price != 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
             <md-card-actions layout="column" layout-align="center center" layout-wrap="">
               <button md-raised-button (click)="someFunction()" class="md-primary md-hue-7">Add to Cart</button>
-              <button md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>
+              <button *ngIf="asset.price == 0" md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>
             </md-card-actions>
           </div>
         </div>

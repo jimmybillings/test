@@ -19,7 +19,6 @@
         <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
         <wz-asset-list 
           [assets]="assets.items" 
-          [currentUser]="currentUser"
           [permission]="permission"
           [collection]="activeCollection.data | async"
           (onAddToCollection)="addToCollection($event)"
