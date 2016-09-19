@@ -14,12 +14,8 @@ export class AssetResolver {
       this.asset.getPrice(route.params['name'])
       // ]);
     ]).map((data: any) => {
-      // console.log(data[0]);
-      // console.log(data[1]);
       this.asset.setActiveAsset(data[0], data[1]);
-      // this.asset.updateActiveCollectionAssets(data[1]);
     });
-
     // return this.asset.initialize(route.params['name']);
   }
 }
