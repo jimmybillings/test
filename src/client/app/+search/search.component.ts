@@ -32,6 +32,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
+  public sortPreferences: any;
   public counted: boolean;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private assetsStoreSubscription: Subscription;
@@ -57,8 +58,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     public uiState: UiState) { }
 
   ngOnInit(): void {
-    this.preferencesSubscription = this.userPreferences.filterCounts.subscribe(d => {
-      this.counted = d;
+    this.getSortPreferences();
+    this.preferencesSubscription = this.userPreferences.prefs.subscribe((data: any) => {
+      this.sortPreferences = data.sort;
+      this.counted = data.filterCounts;
       this.filter.get(this.searchContext.state, this.counted).take(1).subscribe(() => this.uiState.loading(false));
     });
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
@@ -165,5 +168,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchContext.remove = 'filterValues';
     }
     this.searchContext.go();
+  }
+
+  public getSortPreferences(): void {
+    this.userPreferences.getSortOptions().take(1).subscribe((data) => {
+      this.userPreferences.update({sort: data});
+    });
   }
 }

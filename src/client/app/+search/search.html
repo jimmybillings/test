@@ -16,7 +16,7 @@
         
         <breadcrumb-component class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
         <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-         
+        <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
         <wz-asset-list 
           [assets]="assets.items" 
           [currentUser]="currentUser"
@@ -35,3 +35,7 @@
     </div>
   </section>
 </md-sidenav-layout>
+
+<md-menu #assetSortMenu="mdMenu">
+  <wz-sort-component></wz-sort-component>
+</md-menu>
