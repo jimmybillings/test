@@ -32,8 +32,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
-  public sortPreferences: any;
+  public sortDefinitions: any;
   public counted: boolean;
+  public currentSort: any;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
@@ -55,12 +56,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     public filter: FilterService,
     public userPreferences: UserPreferenceService,
     public notification: WzNotificationService,
-    public uiState: UiState) { }
+    public uiState: UiState) {
+      this.sortDefinitions = [];
+    }
 
   ngOnInit(): void {
     this.getSortPreferences();
     this.preferencesSubscription = this.userPreferences.prefs.subscribe((data: any) => {
-      this.sortPreferences = data.sort;
+      this.sortDefinitions = data.sort;
       this.counted = data.filterCounts;
       this.filter.get(this.searchContext.state, this.counted).take(1).subscribe(() => this.uiState.loading(false));
     });
@@ -172,7 +175,34 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public getSortPreferences(): void {
     this.userPreferences.getSortOptions().take(1).subscribe((data) => {
-      this.userPreferences.update({sort: data});
+      for (let group of data.list) {
+        for (let definition in group) {
+          if (group[definition].selected) this.currentSort = group[definition];
+          group[definition].selected = false;
+        }
+        this.sortDefinitions.push(group);
+      };
+      this.userPreferences.update({sort: this.sortDefinitions});
     });
+  }
+
+  public onSortResults(sortDefinitionId: number): void {
+    for (let group of this.sortDefinitions) {
+      for (let definition in group) {
+        group[definition].selected = false;
+        if (group[definition].id === sortDefinitionId) {
+          group[definition].selected = true;
+          this.currentSort = group[definition];
+        }
+      }
+    };
+    this.userPreferences.update({sort: this.sortDefinitions});
+    this.updateSearchContext(sortDefinitionId);
+  }
+
+  public updateSearchContext(sortDefinitionId: number): void {
+    this.searchContext.update = { 'i': 1 };
+    !sortDefinitionId ? this.searchContext.remove = 'sort-id' :  this.searchContext.update = { 'sort-id': sortDefinitionId };
+    this.searchContext.go();
   }
 }

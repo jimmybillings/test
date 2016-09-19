@@ -13,10 +13,14 @@
   <section class="search-results">
     <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
       <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
-        
         <breadcrumb-component class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
+        <div class="asset-sort" layout="row" layout-align="end center">
+          <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
+        </div>
         <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-        <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
+        <div *ngIf="currentSort" class="current-sort">
+          <p>{{ currentSort.name }}</p>
+        </div>
         <wz-asset-list 
           [assets]="assets.items" 
           [permission]="permission"
@@ -35,6 +39,6 @@
   </section>
 </md-sidenav-layout>
 
-<md-menu #assetSortMenu="mdMenu">
-  <wz-sort-component></wz-sort-component>
+<md-menu x-position="before" #assetSortMenu="mdMenu">
+  <wz-sort-component [items]="sortDefinitions" (sort)="onSortResults($event)"></wz-sort-component>
 </md-menu>

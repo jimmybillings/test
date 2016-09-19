@@ -1,5 +1,11 @@
-<md-list class="wz-sort">
-  <md-list-item>List Item 1</md-list-item>
-  <md-list-item>List Item 2</md-list-item>
-  <md-list-item>List Item 3</md-list-item>
-</md-list>
+<div class="wz-sort">
+  <div class="group" *ngFor="let item of items">
+    <button md-menu-item [ngClass]="{active: item.first.selected}" (click)="applySort(item.first.id)">
+      <md-icon>check</md-icon>{{ item.first.name }}
+    </button>
+    <button md-menu-item [ngClass]="{active: item.second.selected}" (click)="applySort(item.second.id)" *ngIf="item.second">
+      <md-icon>check</md-icon>{{ item.second.name }}
+    </button>
+    <md-divider></md-divider>
+  </div>
+</div>

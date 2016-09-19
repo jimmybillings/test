@@ -7,7 +7,8 @@ import { ApiConfig } from './api.config';
 
 const defaultPreferences: any = {
   filterCounts: false,
-  sort: {}
+  // this is a temporary hack to ensure there is always a default filter
+  sort: [{first: {id: 0, name: 'Sort By Relevance', selected: true}}]
 };
 
 export const userPreferences: ActionReducer<any> = (state = defaultPreferences, action: Action) => {

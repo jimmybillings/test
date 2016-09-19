@@ -40,7 +40,7 @@
             <md-menu x-position="before" #downloadCompMenu="mdMenu">
               <button md-menu-item [disabled]="!permission.has('DownloadWatermarkComps')" (click)="downloadComp(asset.assetId, 'wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
               <button md-menu-item [disabled]="!permission.has('DownloadCleanComps')" (click)="downloadComp(asset.assetId, 'clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
-              <button md-menu-item [disabled]="!permission.has('DownloadFullComps')" (click)="downloadComp(asset.assetId, 'full')">Download Full Comp</button>
+              <button md-menu-item [disabled]="!permission.has('DownloadFullComps')" (click)="downloadComp(asset.assetId, 'full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
             </md-menu>
 
             <button md-icon-button title="Sharing Options"><md-icon>share</md-icon></button>

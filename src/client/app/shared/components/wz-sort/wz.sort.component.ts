@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -6,11 +6,11 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   templateUrl: 'wz.sort.html'
 })
 
-export class WzSortComponent implements OnInit {
+export class WzSortComponent {
   @Input() items: Array<any>;
   @Output() sort = new EventEmitter();
 
-  ngOnInit() {
-    console.log('wz sort');
+  public applySort(sortDefinitionId: number): void {
+    this.sort.emit(sortDefinitionId);
   }
 }

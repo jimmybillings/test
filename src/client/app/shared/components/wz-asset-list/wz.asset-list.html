@@ -70,7 +70,7 @@
 <md-menu (click)="trigger.closeMenu()" x-position="after" #downloadCompMenu="mdMenu">
   <button md-menu-item [disabled]="!permission.has('DownloadWatermarkComps')" (click)="downloadComp('wm');"><md-icon>branding_watermark</md-icon>{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
   <button md-menu-item [disabled]="!permission.has('DownloadCleanComps')" (click)="downloadComp('clean')"><md-icon>high_quality</md-icon>{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
-  <button md-menu-item [disabled]="!permission.has('DownloadFullComps')" (click)="downloadComp('full')"><md-icon>high_quality</md-icon>Download Full Comp</button>
+  <button md-menu-item [disabled]="!permission.has('DownloadFullComps')" (click)="downloadComp('full')"><md-icon>high_quality</md-icon>{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
 </md-menu>
 
 <wz-toast #addToast>
