@@ -367,7 +367,8 @@ export class SeedConfig {
       '@angular2-material/toolbar': 'node_modules/@angular2-material/toolbar/toolbar.umd.js',
       '@angular2-material/tooltip': 'node_modules/@angular2-material/tooltip/tooltip.umd.js',
       'rxjs/*': 'node_modules/rxjs/*',
-      // '@ngrx/store': 'node_modules/@ngrx/store/index.js',
+      '@ngrx/core': 'node_modules/@ngrx/core/bundles/core.min.umd.js',
+      '@ngrx/store': 'node_modules/@ngrx/store/bundles/store.min.umd.js',
       'app/*': '/app/*',
       // For test config
       'dist/dev/*': '/base/dist/dev/*',

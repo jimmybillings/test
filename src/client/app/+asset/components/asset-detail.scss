@@ -139,6 +139,23 @@ section.preview-bk {
           right: 0;
         } 
       }
+      .contact-us-pricing {
+        @include calc(width, "100% - 32px");
+        bottom: rem(9.0);
+        color: rgba(md-color($md-accent, 500), .75);
+        display: block;
+        font-size: 1.12em;
+        font-weight: 200;
+        line-height: 1.1;
+        margin-left: rem(1.6);
+        margin-right: rem(1.6);
+        position: absolute;
+        right: 0;
+        text-align: center;
+        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+          right: 0;
+        } 
+      }
       md-card-actions {
         @include calc(width, "100% - 42px");
         margin: 0;
