@@ -56,9 +56,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     public filter: FilterService,
     public userPreferences: UserPreferenceService,
     public notification: WzNotificationService,
-    public uiState: UiState) {
-      this.sortDefinitions = [];
-    }
+    public uiState: UiState) {}
 
   ngOnInit(): void {
     this.getSortPreferences();
@@ -175,14 +173,16 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public getSortPreferences(): void {
     this.userPreferences.getSortOptions().take(1).subscribe((data) => {
+      // this is a temporary hack until API returns a default sort
+      let sorts: Array<any>= [{first: {id: 0, name: 'Sort By Relevance', selected: true}}];
       for (let group of data.list) {
         for (let definition in group) {
           if (group[definition].selected) this.currentSort = group[definition];
           group[definition].selected = false;
         }
-        this.sortDefinitions.push(group);
+        sorts.push(group);
       };
-      this.userPreferences.update({sort: this.sortDefinitions});
+      this.userPreferences.update({sort: sorts});
     });
   }
 

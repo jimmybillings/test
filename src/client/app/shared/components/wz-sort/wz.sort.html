@@ -6,6 +6,6 @@
     <button md-menu-item [ngClass]="{active: item.second.selected}" (click)="applySort(item.second.id)" *ngIf="item.second">
       <md-icon>check</md-icon>{{ item.second.name }}
     </button>
-    <md-divider></md-divider>
+    <md-divider *ngIf="!(items.length - 1 === items.indexOf(item))"></md-divider>
   </div>
 </div>

@@ -13,14 +13,22 @@
   <section class="search-results">
     <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
       <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
-        <breadcrumb-component class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
-        <div class="asset-sort" layout="row" layout-align="end center">
-          <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
+        
+        <div layout="row" layout-align="space-between">
+          <breadcrumb-component class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
         </div>
-        <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-        <div *ngIf="currentSort" class="current-sort">
-          <p>{{ currentSort.name }}</p>
+        <div layout="row" layout-align="space-between">
+          <div layout="row" layout-align="start center">
+            <div class="asset-sort-display" flex="100">
+              <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
+              <span class="md-caption" *ngIf="currentSort">
+                <strong>Sort By: </strong>{{ currentSort.name }}
+              </span> 
+            </div>
+          </div>
+          <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
         </div>
+
         <wz-asset-list 
           [assets]="assets.items" 
           [permission]="permission"
@@ -39,6 +47,6 @@
   </section>
 </md-sidenav-layout>
 
-<md-menu x-position="before" #assetSortMenu="mdMenu">
+<md-menu x-position="after" #assetSortMenu="mdMenu">
   <wz-sort-component [items]="sortDefinitions" (sort)="onSortResults($event)"></wz-sort-component>
 </md-menu>
