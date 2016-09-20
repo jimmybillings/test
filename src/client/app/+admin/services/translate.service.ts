@@ -10,7 +10,7 @@ export class TranslateService {
   public siteApiUrl: string;
 
   constructor(public api: ApiService, public apiConfig: ApiConfig) {
-    this.trUrl = this.apiConfig.baseUrl() + 'identities-api/v1/translation/';
+    this.trUrl = this.apiConfig.baseUrl() + 'api/identities/v1/translation/';
   }
 
   public getTrStrings(site: string, lang: string): Observable<any> {
