@@ -40,11 +40,11 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public uiConfig: UiConfig,
     public uiState: UiState) {
     this.filterOptions = [
-      { 'id': 0, 'label': 'ALL', 'value': 'all', 'access': { 'access-level': 'all' } },
-      { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'access': { 'access-level': 'owner' } },
-      { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'access': { 'access-level': 'editor' } },
-      { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'access': { 'access-level': 'viewer' } },
-      { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'access': { 'access-level': 'researcher' } }
+      { 'id': 0, 'label': 'ALL', 'value': 'all', 'access': { 'accessLevel': 'all' } },
+      { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'access': { 'accessLevel': 'owner' } },
+      { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'access': { 'accessLevel': 'editor' } },
+      { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'access': { 'accessLevel': 'viewer' } },
+      { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'access': { 'accessLevel': 'researcher' } }
     ];
     this.sortOptions = [
       { 'id': 0, 'label': 'DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true } },
