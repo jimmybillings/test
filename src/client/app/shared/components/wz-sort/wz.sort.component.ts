@@ -9,7 +9,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 
 export class WzSortComponent {
   @Input() items: Array<any>;
-  @Input() currentSort: any;
+  @Input() current: any;
   @Output() sort = new EventEmitter();
 
   public applySort(sortDefinition: any): void {

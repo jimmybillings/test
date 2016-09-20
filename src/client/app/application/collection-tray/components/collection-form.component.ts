@@ -33,7 +33,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   public formItems: Array<any> = [];
   public serverErrors: any;
   public tr: any;
-  private defaultCollectionParams: any = { 'q': '', 'access-level': 'all', 's': '', 'd': '', 'i': 0, 'n': 200 };
+  private defaultCollectionParams: any = { 'q': '', 'accessLevel': 'all', 's': '', 'd': '', 'i': 0, 'n': 200 };
 
 
   @ViewChild(WzFormComponent) private wzForm: WzFormComponent;

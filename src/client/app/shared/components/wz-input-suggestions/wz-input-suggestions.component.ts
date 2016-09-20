@@ -159,7 +159,7 @@ export class WzInputSuggestionsComponent implements OnInit {
   private options(query: string): RequestOptions {
     const search: URLSearchParams = new URLSearchParams();
     search.set('q', query);
-    search.set('access-level', 'all');
+    search.set('accessLevel', 'all');
     search.set('i', '0');
     search.set('n', '100');
     let headers = this.apiConfig.authHeaders();

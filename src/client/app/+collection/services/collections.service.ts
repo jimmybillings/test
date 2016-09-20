@@ -154,7 +154,7 @@ export class CollectionsService {
   }
 
   public getCollections(access: string = 'all', numberPerPg: number = 400): Observable<any> {
-    return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/fetchBy?access-level=${access}&i=0&n=${numberPerPg}`,
+    return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/fetchBy?accessLevel=${access}&i=0&n=${numberPerPg}`,
       { headers: this.apiConfig.authHeaders() }).map(res => {
         this.storeCollections(res.json());
         return res.json();
@@ -162,7 +162,7 @@ export class CollectionsService {
   }
 
   public setSearchParams() {
-    this.params = { 'q': '', 'access-level': 'all', 's': '', 'd': '', 'i': 0, 'n': 200 };
+    this.params = { 'q': '', 'accessLevel': 'all', 's': '', 'd': '', 'i': 0, 'n': 200 };
   }
 
 }

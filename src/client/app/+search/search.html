@@ -48,5 +48,5 @@
 </md-sidenav-layout>
 
 <md-menu x-position="after" #assetSortMenu="mdMenu">
-  <wz-sort-component [currentSort]="preferences.currentSort" [items]="preferences.sorts" (sort)="onSortResults($event)"></wz-sort-component>
+  <wz-sort-component [current]="preferences.currentSort" [items]="preferences.sorts" (sort)="onSortResults($event)"></wz-sort-component>
 </md-menu>

@@ -64,7 +64,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
-      this.getSortPreferences(params['sort-id']);
+      this.getSortPreferences(params['sortId']);
       if (this.preferences.counted) {
         this.filter.get(this.searchContext.state, this.preferences.counted).take(1).subscribe(() => this.uiState.loading(false));
       }
@@ -170,11 +170,9 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public getSortPreferences(sortId: any): void {
     this.userPreferences.getSortOptions().take(1).subscribe((data) => {
-      // This is a temporary hack until the API returns a default sort object
-      data.list.push({ first: { id: 0, name: 'Sort By Relevance' } });
       for (let group of data.list) {
         for (let definition in group) {
-          if (group[definition].id === parseInt(sortId)) {
+          if (group[definition].id === parseInt(sortId) || group[definition].isDefault) {
             this.userPreferences.update({ currentSort: group[definition] });
           }
         }
@@ -196,7 +194,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public updateSearchContext(sortDefinitionId: number): void {
-    this.searchContext.update = { 'i': 1, 'sort-id': sortDefinitionId };
+    this.searchContext.update = { 'i': 1, 'sortId': sortDefinitionId };
     this.searchContext.go();
   }
 }

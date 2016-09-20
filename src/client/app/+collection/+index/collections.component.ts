@@ -40,11 +40,17 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public uiConfig: UiConfig,
     public uiState: UiState) {
     this.filterOptions = [
-      { 'id': 0, 'label': 'ALL', 'value': 'all', 'access': { 'access-level': 'all' } },
-      { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'access': { 'access-level': 'owner' } },
-      { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'access': { 'access-level': 'editor' } },
-      { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'access': { 'access-level': 'viewer' } },
-      { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'access': { 'access-level': 'researcher' } }
+      {
+        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.ALL', 'value': 'all', 'access': { 'accessLevel': 'all' } },
+        'second': { 'id': 1, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.OWNER', 'value': 'owner', 'access': { 'accessLevel': 'owner' } }
+      },
+      {
+        'first': { 'id': 2, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.EDITOR', 'value': 'editor', 'access': { 'accessLevel': 'editor' } },
+        'second': { 'id': 3, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.VIEWER', 'value': 'viewer', 'access': { 'accessLevel': 'viewer' } }
+      },
+      {
+        'first': { 'id': 4, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.RESEARCHER', 'value': 'researcher', 'access': { 'accessLevel': 'researcher' } }
+      }
     ];
     this.sortOptions = [
       {
@@ -67,10 +73,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       this.pageSize = config.config.pageSize.value;
     });
     this.collectionsService.setSearchParams();
-    this.optionsSubscription = this.collectionContext.data.subscribe(data => {
-      this.options = data;
-      console.log(this.options);
-    });
+    this.optionsSubscription = this.collectionContext.data.subscribe(data => this.options = data);
   }
 
   ngOnDestroy(): void {
@@ -122,7 +125,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.collectionsService.loadCollections(query).take(1).subscribe();
   }
 
-  public filter(filter: any) {
+  public onFilterCollections(filter: any) {
     this.collectionContext.updateCollectionOptions({ currentFilter: filter });
     this.collectionsService.loadCollections(filter.access).take(1).subscribe();
   }

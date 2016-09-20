@@ -49,7 +49,7 @@ export class UserPreferenceService {
   }
 
   public getSortOptions(): Observable<any> {
-    return this.http.get(this.apiConfig.baseUrl() + 'identities-api/v1/sortDefinition/set',
+    return this.http.get(this.apiConfig.baseUrl() + 'api/identities/v1/sortDefinition/list',
       { headers: this.apiConfig.authHeaders(), body: '' }
     ).map(res => res.json());
   }

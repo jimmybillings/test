@@ -12,6 +12,8 @@
         </div>
       </div>
   </header>
-  <wz-sort-component [currentSort]="currentSort" [items]="sortOptions" (sort)="onSortResults($event)"></wz-sort-component>
+  <div class="dd-menu-wrapper">
+    <wz-sort-component [current]="currentSort" [items]="sortOptions" (sort)="onSortResults($event)"></wz-sort-component>
+  </div>
 </div>
 <div class="wz-dd-click-catcher" (click)="close.emit()"></div>
