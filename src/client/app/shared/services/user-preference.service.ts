@@ -7,7 +7,8 @@ import { ApiConfig } from './api.config';
 
 const defaultPreferences: any = {
   filterCounts: false,
-  sort: []
+  sorts: [],
+  currentSort: {}
 };
 
 export const userPreferences: ActionReducer<any> = (state = defaultPreferences, action: Action) => {

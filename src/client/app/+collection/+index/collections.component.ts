@@ -47,12 +47,18 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'access': { 'access-level': 'researcher' } }
     ];
     this.sortOptions = [
-      { 'id': 0, 'label': 'DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true } },
-      { 'id': 1, 'label': 'DATE_MOD_OLDEST', 'value': 'modOldest', 'sort': { 's': 'lastUpdated', 'd': false } },
-      { 'id': 2, 'label': 'DATE_CREATE_NEWEST', 'value': 'createNewest', 'sort': { 's': 'createdOn', 'd': true } },
-      { 'id': 3, 'label': 'DATE_CREATE_OLDEST', 'value': 'createOldest', 'sort': { 's': 'createdOn', 'd': false } },
-      { 'id': 4, 'label': 'LIST_COLL_ASC', 'value': 'alphaAsc', 'sort': { 's': 'name', 'd': false } },
-      { 'id': 5, 'label': 'LIST_COLL_DESC', 'value': 'alphaDesc', 'sort': { 's': 'name', 'd': true } }
+      {
+        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true }},
+        'second': { 'id': 1, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_OLDEST', 'value': 'modOldest', 'sort': { 's': 'lastUpdated', 'd': false }}
+      },
+      {
+        'first' :{ 'id': 2, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_NEWEST', 'value': 'createNewest', 'sort': { 's': 'createdOn', 'd': true }},
+        'second': { 'id': 3, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_OLDEST', 'value': 'createOldest', 'sort': { 's': 'createdOn', 'd': false }}
+      },
+      {
+        'first': { 'id': 4, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_ASC', 'value': 'alphaAsc', 'sort': { 's': 'name', 'd': false }},
+        'second': { 'id': 5, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_DESC', 'value': 'alphaDesc', 'sort': { 's': 'name', 'd': true }}
+      }
     ];
   }
 
@@ -61,7 +67,10 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       this.pageSize = config.config.pageSize.value;
     });
     this.collectionsService.setSearchParams();
-    this.optionsSubscription = this.collectionContext.data.subscribe(data => this.options = data);
+    this.optionsSubscription = this.collectionContext.data.subscribe(data => {
+      this.options = data;
+      console.log(this.options);
+    });
   }
 
   ngOnDestroy(): void {
@@ -118,7 +127,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.collectionsService.loadCollections(filter.access).take(1).subscribe();
   }
 
-  public sortBy(sort: any) {
+  public onSortCollections(sort: any) {
     this.collectionContext.updateCollectionOptions({ currentSort: sort });
     this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
   }

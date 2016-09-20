@@ -4,8 +4,8 @@
     <div class="md-overlay-container" *ngIf="(uiState.data | async).loading">
       <md-progress-bar color="accent" mode="indeterminate"></md-progress-bar>
     </div>
-    <md-slide-toggle class="count-toggle" [checked]="counted" color="accent" value="toggle" (change)="countToggle($event)">Display Filter Counts</md-slide-toggle>
-    <filter-component class="filter" [counted]="counted" [filters]="filter.data | async"></filter-component>
+    <md-slide-toggle class="count-toggle" [checked]="preferences.counted" color="accent" value="toggle" (change)="countToggle($event)">Display Filter Counts</md-slide-toggle>
+    <filter-component class="filter" [counted]="preferences.counted" [filters]="filter.data | async"></filter-component>
   </md-sidenav>
   
   <button class="filter" (click)="searchFilter.toggle()">FILTERS</button>
@@ -21,8 +21,8 @@
           <div layout="row" layout-align="start center">
             <div class="asset-sort-display" flex="100">
               <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
-              <span class="md-caption" *ngIf="currentSort">
-                <strong>Sort By: </strong>{{ currentSort.name }}
+              <span class="md-caption" *ngIf="preferences">
+                <strong>Sort By: </strong>{{ preferences.currentSort.name }}
               </span> 
             </div>
           </div>
@@ -48,5 +48,5 @@
 </md-sidenav-layout>
 
 <md-menu x-position="after" #assetSortMenu="mdMenu">
-  <wz-sort-component [items]="sortDefinitions" (sort)="onSortResults($event)"></wz-sort-component>
+  <wz-sort-component [currentSort]="preferences.currentSort" [items]="preferences.sorts" (sort)="onSortResults($event)"></wz-sort-component>
 </md-menu>

@@ -42,7 +42,7 @@
         <strong>{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.FILTER_DD_MENU.' + options.currentFilter.label | uppercase | translate}}
       </span> 
       <span flex="100" class="sort" *ngIf="options">
-        <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.SORT_DD_MENU.' + options.currentSort.label | uppercase | translate }}
+        <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{ options.currentSort.name | translate }}
       </span> 
     </div>
 

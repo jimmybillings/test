@@ -1,16 +1,18 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-sort-component',
-  templateUrl: 'wz.sort.html'
+  templateUrl: 'wz.sort.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class WzSortComponent {
   @Input() items: Array<any>;
+  @Input() currentSort: any;
   @Output() sort = new EventEmitter();
 
-  public applySort(sortDefinitionId: number): void {
-    this.sort.emit(sortDefinitionId);
+  public applySort(sortDefinition: any): void {
+    this.sort.emit(sortDefinition);
   }
 }

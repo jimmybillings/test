@@ -32,9 +32,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
-  public sortDefinitions: any;
-  public counted: boolean;
-  public currentSort: any;
+  public preferences: any;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
@@ -56,20 +54,19 @@ export class SearchComponent implements OnInit, OnDestroy {
     public filter: FilterService,
     public userPreferences: UserPreferenceService,
     public notification: WzNotificationService,
-    public uiState: UiState) {}
+    public uiState: UiState) { }
 
   ngOnInit(): void {
-    this.getSortPreferences();
     this.preferencesSubscription = this.userPreferences.prefs.subscribe((data: any) => {
-      this.sortDefinitions = data.sort;
-      this.counted = data.filterCounts;
-      this.filter.get(this.searchContext.state, this.counted).take(1).subscribe(() => this.uiState.loading(false));
+      this.preferences = data;
+      this.filter.get(this.searchContext.state, this.preferences.counted).take(1).subscribe(() => this.uiState.loading(false));
     });
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
-      if (this.counted) {
-        this.filter.get(this.searchContext.state, this.counted).take(1).subscribe(() => this.uiState.loading(false));
+      this.getSortPreferences(params['sort-id']);
+      if (this.preferences.counted) {
+        this.filter.get(this.searchContext.state, this.preferences.counted).take(1).subscribe(() => this.uiState.loading(false));
       }
     });
   }
@@ -83,8 +80,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public countToggle(event: any): void {
-    this.userPreferences.update({filterCounts: event.checked});
-    if (this.counted) this.uiState.loading(true);
+    this.userPreferences.update({ filterCounts: event.checked });
+    if (this.preferences.counted) this.uiState.loading(true);
   }
 
   public showAsset(asset: any): void {
@@ -131,7 +128,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyExclusiveFilter(subFilter: any): void {
-    if (this.counted) this.uiState.loading(true);
+    if (this.preferences.counted) this.uiState.loading(true);
     this.filter.set(this.filter.toggleExclusive(subFilter));
     this.filterAssets();
   }
@@ -146,7 +143,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       if (res.url && res.url !== '') {
         window.location.href = res.url;
       } else {
-        this.notification.createNotfication(this.target, {trString: 'COMPS.NO_COMP', theme: 'alert'});
+        this.notification.createNotfication(this.target, { trString: 'COMPS.NO_COMP', theme: 'alert' });
       }
     });
   }
@@ -155,11 +152,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.update = { i: 1 };
     let active: any = [];
     this.filter.active(active);
-    let activeIds: any = active.map((filter:any) => filter.filterId);
-    let activeValues: any = active.filter((filter:any) => filter.filterValue)
+    let activeIds: any = active.map((filter: any) => filter.filterId);
+    let activeValues: any = active.filter((filter: any) => filter.filterValue)
       .map((filter: any) => `${filter.filterId}:${filter.filterValue}`);;
     if (activeIds.length > 0) {
-      this.searchContext.update = { 'filterIds':  activeIds.join(',') };
+      this.searchContext.update = { 'filterIds': activeIds.join(',') };
     } else {
       this.searchContext.remove = 'filterIds';
     }
@@ -171,38 +168,35 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.go();
   }
 
-  public getSortPreferences(): void {
+  public getSortPreferences(sortId: any): void {
     this.userPreferences.getSortOptions().take(1).subscribe((data) => {
-      // this is a temporary hack until API returns a default sort
-      let sorts: Array<any>= [{first: {id: 0, name: 'Sort By Relevance', selected: true}}];
+      // This is a temporary hack until the API returns a default sort object
+      data.list.push({ first: { id: 0, name: 'Sort By Relevance' } });
       for (let group of data.list) {
         for (let definition in group) {
-          if (group[definition].selected) this.currentSort = group[definition];
-          group[definition].selected = false;
+          if (group[definition].id === parseInt(sortId)) {
+            this.userPreferences.update({ currentSort: group[definition] });
+          }
         }
-        sorts.push(group);
       };
-      this.userPreferences.update({sort: sorts});
+      this.userPreferences.update({ sorts: data.list });
     });
   }
 
-  public onSortResults(sortDefinitionId: number): void {
-    for (let group of this.sortDefinitions) {
+  public onSortResults(sortDefinition: any): void {
+    for (let group of this.preferences.sorts) {
       for (let definition in group) {
-        group[definition].selected = false;
-        if (group[definition].id === sortDefinitionId) {
-          group[definition].selected = true;
-          this.currentSort = group[definition];
+        if (group[definition].id === sortDefinition.id) {
+          this.preferences.currentSort = group[definition];
         }
       }
     };
-    this.userPreferences.update({sort: this.sortDefinitions});
-    this.updateSearchContext(sortDefinitionId);
+    this.userPreferences.update({ currentSort: this.preferences.currentSort });
+    this.updateSearchContext(sortDefinition.id);
   }
 
   public updateSearchContext(sortDefinitionId: number): void {
-    this.searchContext.update = { 'i': 1 };
-    !sortDefinitionId ? this.searchContext.remove = 'sort-id' :  this.searchContext.update = { 'sort-id': sortDefinitionId };
+    this.searchContext.update = { 'i': 1, 'sort-id': sortDefinitionId };
     this.searchContext.go();
   }
 }

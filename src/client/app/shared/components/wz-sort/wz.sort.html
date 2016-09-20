@@ -1,10 +1,10 @@
 <div class="wz-sort">
   <div class="group" *ngFor="let item of items">
-    <button md-menu-item [ngClass]="{active: item.first.selected}" (click)="applySort(item.first.id)">
-      <md-icon>check</md-icon>{{ item.first.name }}
+    <button md-menu-item [ngClass]="{'active': item.first.name === currentSort.name}" (click)="applySort(item.first)">
+      <md-icon>check</md-icon>{{ item.first.name | translate }}
     </button>
-    <button md-menu-item [ngClass]="{active: item.second.selected}" (click)="applySort(item.second.id)" *ngIf="item.second">
-      <md-icon>check</md-icon>{{ item.second.name }}
+    <button md-menu-item [ngClass]="{'active': item.second.name === currentSort.name}" (click)="applySort(item.second)" *ngIf="item.second">
+      <md-icon>check</md-icon>{{ item.second.name | translate }}
     </button>
     <md-divider *ngIf="!(items.length - 1 === items.indexOf(item))"></md-divider>
   </div>
