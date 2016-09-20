@@ -77,10 +77,11 @@ export class CollectionsService {
   public loadCollections(params: any = {}): Observable<any> {
     this.params = Object.assign({}, this.params, params);
     return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/search`,
-      this.getSearchOptions(this.params)).map(res => {
-        this.storeCollections(res.json());
-        return res.json();
-      });
+      this.getSearchOptions(this.params))
+        .map(res => {
+          this.storeCollections(res.json());
+          return res.json();
+        });
   }
 
   public getSearchOptions(params: any): RequestOptions {

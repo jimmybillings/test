@@ -4,7 +4,6 @@ import { CollectionsService } from '../services/collections.service';
 import { ActiveCollectionService } from '../services/active-collection.service';
 import { Router } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
-import { Error } from '../../shared/services/error.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Rx';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
@@ -36,7 +35,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public collectionContext: CollectionContextService,
     public activeCollection: ActiveCollectionService,
     public currentUser: CurrentUser,
-    public error: Error,
     public uiConfig: UiConfig,
     public uiState: UiState) {
     this.filterOptions = [
