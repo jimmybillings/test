@@ -9,7 +9,6 @@ const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], f
 export const asset: ActionReducer<any> = (state = initAsset, action: Action) => {
   switch (action.type) {
     case 'SET_ASSET':
-      console.log(action.payload);
       return Object.assign({}, state, action.payload);
     case 'RESET':
       return Object.assign({}, initAsset);
@@ -65,8 +64,6 @@ export class AssetService {
   }
 
   public setActiveAsset(asset: any, price: any): void {
-    // payload.items = payload.items === undefined ? [] : payload.items;
-    console.log(price);
     this.set({
       type: 'SET_ASSET', payload: {
         assetId: asset.assetId,
