@@ -1,10 +1,10 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
-import { Http, URLSearchParams, RequestOptions } from '@angular/http';
+import { URLSearchParams, RequestOptions } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Observable} from 'rxjs/Rx';
 import { Store, ActionReducer, Action} from '@ngrx/store';
-
+import { ApiService } from '../../shared/services/api.service';
 /**
  * Focused Collection store -
  */
@@ -40,7 +40,7 @@ export class ActiveCollectionService implements OnInit {
   constructor(
     public store: Store<CollectionStore>,
     public apiConfig: ApiConfig,
-    public http: Http) {
+    public api: ApiService) {
     this.data = this.store.select('activeCollection');
 
     this.apiUrls = {
@@ -57,8 +57,7 @@ export class ActiveCollectionService implements OnInit {
   }
 
   public get(): Observable<any> {
-    return this.http.get(`${this.apiUrls.CollectionActive}/focused`,
-      { headers: this.apiConfig.authHeaders(), body: '' })
+    return this.api.get(`${this.apiUrls.CollectionActive}/focused`)
       .map((res) => {
         this.updateActiveCollectionStore(res.json());
         return res.json();
@@ -66,8 +65,7 @@ export class ActiveCollectionService implements OnInit {
   }
 
   public set(collectionId: number, set: boolean = true): Observable<any> {
-    return this.http.put(`${this.apiUrls.CollectionSetActive}/${collectionId}`,
-      '', { headers: this.apiConfig.authHeaders() })
+    return this.api.put(`${this.apiUrls.CollectionSetActive}/${collectionId}`)
       .map((res) => {
         if (set) this.updateActiveCollectionStore(res.json());
         return res.json();
@@ -75,18 +73,14 @@ export class ActiveCollectionService implements OnInit {
   }
 
   public addAsset(collectionId: any, asset: any): Observable<any> {
-    return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/addAssets`,
-      `{"list": [{"assetId":${asset.assetId}}]}`,
-      { headers: this.apiConfig.authHeaders() })
-      .map((res) => {
-        return res.json();
-      });
+    return this.api.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/addAssets`,
+      JSON.stringify({'list': [{'assetId': asset.assetId}]}))
+      .map((res) => res.json());
   }
 
   public removeAsset(collectionId: any, assetId: any, uuid: any): Observable<any> {
-    return this.http.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/removeAssets`,
-      { 'list': [{ 'assetId': assetId, 'uuid': uuid }] },
-      { headers: this.apiConfig.authHeaders() })
+    return this.api.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/removeAssets`,
+      JSON.stringify({ 'list': [{ 'assetId': assetId, 'uuid': uuid }] }))
       .map(res => {
         this.removeAssetFromStore(res.json().list[0]);
         return res.json();
@@ -96,7 +90,7 @@ export class ActiveCollectionService implements OnInit {
   public getItems(collectionId: number, collectionParams: any, set: boolean = true): Observable<any> {
     if (collectionParams['i']) collectionParams['i'] -= 1;
     this.params = Object.assign({}, this.params, collectionParams);
-    return this.http.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}`,
+    return this.api.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}`,
       this.getSearchOptions(this.params))
       .map((res) => {
         if (set) this.updateActiveCollectionAssets(res.json());
@@ -107,7 +101,7 @@ export class ActiveCollectionService implements OnInit {
   public getSearchOptions(params: any): RequestOptions {
     const search: URLSearchParams = new URLSearchParams();
     for (var param in params) search.set(param, params[param]);
-    let options = { headers: this.apiConfig.authHeaders(), search: search, body: '' };
+    let options = { search: search };
     return new RequestOptions(options);
   }
 

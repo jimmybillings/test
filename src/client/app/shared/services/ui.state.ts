@@ -75,22 +75,6 @@ export class UiState {
     this.update({ collectionsListIsOpen: false });
   }
 
-  public showCollectionsSort(): void {
-    this.update({ collectionsSortIsOpen: true });
-  }
-
-  public closeCollectionsSort(): void {
-    this.update({ collectionsSortIsOpen: false });
-  }
-
-  public showCollectionsFilter(): void {
-    this.update({ collectionsFilterIsOpen: true });
-  }
-
-  public closeCollectionsFilter(): void {
-    this.update({ collectionsFilterIsOpen: false });
-  }
-
   public loading(state: boolean): void {
     this.data.take(1).subscribe(s => this.update({ loading: state}));
   }

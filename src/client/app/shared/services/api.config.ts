@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
+import { CurrentUser } from './current-user.model';
 declare var baseUrl: string;
 
 const cmsApi: any = {
@@ -13,7 +14,7 @@ export class ApiConfig {
 
   private _portal: string;
 
-  constructor() {
+  constructor(private currentUser: CurrentUser) {
     this._portal = null;
   }
 
@@ -27,6 +28,10 @@ export class ApiConfig {
       'Accept': 'application/json',
       'Authorization': 'Bearer ' + localStorage.getItem('token')
     });
+  }
+
+  public get userHeaders(): Headers {
+    return (this.currentUser.loggedIn()) ? this.authHeaders() : this.headers();
   }
 
   public headers(): Headers {

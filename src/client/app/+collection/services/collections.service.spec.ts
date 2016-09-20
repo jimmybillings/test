@@ -19,7 +19,7 @@ export function main() {
 
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls, and collections',
       inject([CollectionsService], (service: CollectionsService) => {
-        expect(service.http).toBeDefined();
+        expect(service.api).toBeDefined();
         expect(service.apiConfig).toBeDefined();
         expect(service.apiUrls).toBeDefined();
         expect(service.data).toBeDefined();
@@ -30,7 +30,7 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.apiUrls.CollectionBaseUrl = 'https://crxextapi.dev.wzplatform.com/api/assets/v1';
-        let expectedUrl = service.apiUrls.CollectionBaseUrl + '/collectionSummary/search?q=&access-level=all&s=&d=&i=0&n=200';
+        let expectedUrl = service.apiUrls.CollectionBaseUrl + '/collectionSummary/search?q=&accessLevel=all&s=&d=&i=0&n=200';
         spyOn(service, 'storeCollections');
         service.loadCollections().subscribe(response => {
           expect(connection.request.url).toBe(expectedUrl);

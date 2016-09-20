@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
-import { CurrentUser } from '../../shared/services/current-user.model';
 import { Observable} from 'rxjs/Rx';
+import { ApiService } from '../../shared/services/api.service';
+
 
 /**
  * Service that provides api access registering new users.  
@@ -10,18 +11,14 @@ import { Observable} from 'rxjs/Rx';
 @Injectable()
 export class User {
 
-  public http: Http;
-  public apiConfig: ApiConfig;
-  public _currentUser: CurrentUser;
   public _apiUrls: {
     create: string,
     get: string
   };
 
-  constructor(http: Http, apiConfig: ApiConfig, _currentUser: CurrentUser) {
-    this.http = http;
-    this.apiConfig = apiConfig;
-    this._currentUser = _currentUser;
+  constructor(
+    public api: ApiService,
+    public apiConfig: ApiConfig) {
     this._apiUrls = {
       create: this.apiConfig.baseUrl() + 'api/identities/v1/user/register',
       get: this.apiConfig.baseUrl() + 'api/identities/v1/user/currentUser'
@@ -29,15 +26,11 @@ export class User {
   }
 
   create(user: Object): Observable<any> {
-    return this.http.post(this._apiUrls.create,
-      JSON.stringify(user), {
-        headers: this.apiConfig.headers()
-      }).map((res: Response) => res.json());
+    return this.api.post(this._apiUrls.create, JSON.stringify(user))
+      .map((res: Response) => res.json());
   }
 
   get(): Observable<any> {
-    return this.http.get(this._apiUrls.get, {
-      headers: this.apiConfig.authHeaders(), body: ''
-    });
+    return this.api.get(this._apiUrls.get);
   }
 }

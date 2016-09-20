@@ -7,10 +7,11 @@ import {
 } from '../../shared/interfaces/admin.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { Injectable } from '@angular/core';
-import { Http, Response, URLSearchParams, RequestOptions } from '@angular/http';
+import { Response, URLSearchParams, RequestOptions } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Store, ActionReducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
+import { ApiService } from '../../shared/services/api.service';
 
 const adminState: AdminState = { items: [], pagination: {} };
 export const adminResources: ActionReducer<AdminState> = (state = adminState, action: Action) => {
@@ -25,13 +26,13 @@ export const adminResources: ActionReducer<AdminState> = (state = adminState, ac
 @Injectable()
 export class AdminService {
   public data: Observable<AdminState>;
-  constructor(public http: Http,
-              public apiConfig: ApiConfig,
-              private store: Store<AdminState>) {
+  constructor(public api: ApiService,
+    public apiConfig: ApiConfig,
+    private store: Store<AdminState>) {
     this.data = this.store.select('adminResources');
   }
 
-    public setResources(data: AdminResponse): void {
+  public setResources(data: AdminResponse): void {
     this.store.dispatch({
       type: 'ADMIN_SERVICE.SET_RESOURCES', payload: {
         'items': data.items,
@@ -52,7 +53,7 @@ export class AdminService {
     params['i'] = (parseFloat(params['i']) - 1).toString();
     let url = this.buildUrl('search', resource);
     let options = this.getIdentitiesSearchOptions(params);
-    return this.http.get(url, options).map((res: Response) => {
+    return this.api.get(url, options).map((res: Response) => {
       this.setResources(res.json());
       return res.json();
     });
@@ -62,14 +63,14 @@ export class AdminService {
     let url = this.buildUrl('post', resourceType);
     let options = this.buildRequestOptions();
     let body = JSON.stringify(formData);
-    return this.http.post(url, body, options).map((res: Response) => res.json());
+    return this.api.post(url, body, options).map((res: Response) => res.json());
   }
 
   public putResource(resourceType: string, formData: User | Account): Observable<AdminResponse> {
     let url = this.buildUrl('put', resourceType, formData.id);
     let options = this.buildRequestOptions();
     let body = JSON.stringify(formData);
-    return this.http.put(url, body, options).map((res: Response) => res.json());
+    return this.api.put(url, body, options).map((res: Response) => res.json());
   }
 
   public getIdentitiesSearchOptions(queryObject: AdminFormParams): RequestOptions {
@@ -80,9 +81,7 @@ export class AdminService {
   }
 
   public buildRequestOptions(search?: URLSearchParams): RequestOptions {
-    let headers = this.apiConfig.authHeaders();
-
-    return search ? new RequestOptions({ headers, search, body: '' }) : new RequestOptions({ headers, body: '' });
+    return search ? new RequestOptions({ search }) : new RequestOptions({});
   }
 
   public buildUrl(type: string, resourceType: string, resourceId?: number): string {
@@ -125,7 +124,7 @@ export class AdminService {
   }
 
   public buildFields(filterParams: any): Array<string> {
-    let map: any = {'before': 'LT','after': 'GT'};
+    let map: any = { 'before': 'LT', 'after': 'GT' };
     let fields: Array<string> = Object.keys(filterParams);
     return fields.reduce((prev, current, index) => {
       if (current === 'DATE') {

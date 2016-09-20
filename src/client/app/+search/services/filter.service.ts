@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
-import { Http, RequestOptions, URLSearchParams, Response } from '@angular/http';
+import { RequestOptions, URLSearchParams, Response } from '@angular/http';
+import { ApiService } from '../../shared/services/api.service';
 
 const initFilters: any = {};
 export const filters: ActionReducer<any> = (state: Array<any> = initFilters, action: Action) => {
@@ -20,7 +21,7 @@ export class FilterService {
   public data: Observable<any>;
   public filterState: any;
   constructor(
-    public http: Http,
+    public api: ApiService,
     public store: Store<any>,
     public apiConfig: ApiConfig,
     public currentUser: CurrentUser) {
@@ -30,7 +31,7 @@ export class FilterService {
 
   public get(params: any, counted: boolean): Observable<any> {
     let options = this.filterOptions(JSON.parse(JSON.stringify(Object.assign({}, params, {counted}))));
-    return this.http.get(this.filterUrl, options).map((res: Response) => {
+    return this.api.get(this.filterUrl, options).map((res: Response) => {
       this.set(this.sanatize(res.json(), null));
       this.checkLocalStorage(res.json());
       return res.json();
@@ -117,14 +118,8 @@ export class FilterService {
   public filterOptions(params: any): RequestOptions {
     let search: URLSearchParams = new URLSearchParams();
     for (let param in params) { search.set(param, params[param]); };
-    if (this.currentUser.loggedIn()) {
-      let headers = this.apiConfig.authHeaders();
-      return new RequestOptions({ headers, search, body: '' });
-    } else {
-      let headers = this.apiConfig.headers();
-      search.set('siteName', this.apiConfig.getPortal());
-      return new RequestOptions({ search, body: '', headers });
-    }
+    if (this.currentUser.loggedIn()) search.set('siteName', this.apiConfig.getPortal());
+    return new RequestOptions({ search });
   }
 
   public checkLocalStorage(filterTree: any): void {

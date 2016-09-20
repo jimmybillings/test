@@ -1,18 +1,15 @@
 
 import { Observable } from 'rxjs/Rx';
-import { TestBed, inject, BaseRequestOptions, Http, ConnectionBackend, MockBackend } from '../../imports/testing.imports';
+import {
+  beforeEachProvidersArray,
+  TestBed,
+  inject,
+} from '../../imports/test.imports';
 import { IndexComponent } from './index.component';
-import { AdminService } from '../services/admin.service';
-import { UiSubComponentsA } from '../../shared/interfaces/admin.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { FormFields } from '../../shared/interfaces/forms.interface';
-import { UiConfig, config } from '../../shared/services/ui.config';
-import { UiState } from '../../shared/services/ui.state';
-import { CurrentUser } from '../../shared/services/current-user.model';
-import { provideStore } from '@ngrx/store';
-import { ApiConfig } from '../../shared/services/api.config';
-import { ActivatedRoute, Router} from '@angular/router';
-
+import { AdminService } from '../services/admin.service';
+import { UiSubComponentsA } from '../../shared/interfaces/admin.interface';
 
 export function main() {
   describe('Admin Index component', () => {
@@ -21,11 +18,11 @@ export function main() {
         return Observable.of(mockResponse());
       }
 
-      putResource(resourceType: string, resource :any) {
+      putResource(resourceType: string, resource: any) {
         return Observable.of(mockUser());
       }
 
-      postResource(resourceType: string, resource :any) {
+      postResource(resourceType: string, resource: any) {
         return Observable.of(mockUser());
       }
 
@@ -41,35 +38,18 @@ export function main() {
         return Object.assign({}, args);
       }
     }
-    class MockActivatedRoute {}
+    class MockActivatedRoute { }
     class MockRouter {
       navigate(params: any) { return params; }
     }
+    beforeEach(() => TestBed.configureTestingModule({
+      providers: [
+        ...beforeEachProvidersArray,
+        IndexComponent,
+        { provide: AdminService, useClass: MockAdminService }
+      ]
+    }));
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [
-          IndexComponent,
-          { provide: AdminService, useClass: MockAdminService },
-          UiConfig,
-          UiState,
-          CurrentUser,
-          provideStore({config:config}),
-          ApiConfig,
-          {provide: Http,
-            useFactory: function(backend: ConnectionBackend, defaultOptions: BaseRequestOptions) {
-              return new Http(backend, defaultOptions);
-            },
-            deps: [MockBackend, BaseRequestOptions]
-          },
-          MockBackend,
-          BaseRequestOptions,
-          { provide: ActivatedRoute, useClass: MockActivatedRoute },
-          { provide: Router, useClass: MockRouter },
-
-        ]
-      });
-    });
 
     it('Should create an instance variable of AdminService, and CurrentUser',
       inject([IndexComponent], (component: IndexComponent) => {
@@ -122,7 +102,7 @@ export function main() {
       inject([IndexComponent], (component: IndexComponent) => {
         component.config = mockConfig();
         component.mergeFormValues(mockUser());
-        component.config['editForm'].items.forEach((field: FormFields)=> {
+        component.config['editForm'].items.forEach((field: FormFields) => {
           expect(field.value).toBe(component.resource[field.name]);
         });
       }));
@@ -133,7 +113,7 @@ export function main() {
         component.resourceType = 'user';
         spyOn(component.adminService, 'putResource').and.callThrough();
         spyOn(component, 'getIndex');
-        let newUser : User = Object.assign(mockUser(), {'firstName': 'Bob'});
+        let newUser: User = Object.assign(mockUser(), { 'firstName': 'Bob' });
         component.onEditSubmit(newUser);
         expect(component.adminService.putResource).toHaveBeenCalledWith('user', newUser);
         expect(component.getIndex).toHaveBeenCalled();
@@ -152,12 +132,12 @@ export function main() {
     it('Should have a buildRouteParams() function that builds an object of route params',
       inject([IndexComponent], (component: IndexComponent) => {
         component.buildRouteParams(mockParams());
-        expect(component.params).toEqual({i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: ''});
+        expect(component.params).toEqual({ i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' });
       }));
   });
 
   function mockUser() {
-    let mockUser : User = {
+    let mockUser: User = {
       'lastUpdated': '2016-07-14T23:43:43Z',
       'createdOn': '2016-07-07T22:57:49Z',
       'id': 71,

@@ -4,7 +4,6 @@ import {
   RequestOptions,
   MockBackend,
   Response,
-  Headers,
   inject,
   TestBed
 } from '../../imports/test.imports';
@@ -25,7 +24,7 @@ export function main() {
 
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls',
       inject([AssetData], (service: AssetData) => {
-        expect(service.http).toBeDefined();
+        expect(service.api).toBeDefined();
         expect(service.apiConfig).toBeDefined();
         expect(service.currentUser).toBeDefined();
       }));
@@ -67,7 +66,6 @@ export function main() {
       let loggedIn = true;
       let sOptions = service.getAssetSearchOptions(searchParams(), loggedIn);
       expect(sOptions instanceof RequestOptions).toBeTruthy();
-      expect(sOptions.headers instanceof Headers).toBeTruthy();
       expect(sOptions.search.get('q')).toEqual('green');
       expect(sOptions.search.get('n')).toEqual('25');
       expect(!sOptions.search.has('siteName')).toBeTruthy();
