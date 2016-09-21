@@ -167,15 +167,17 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public getSortPreferences(sortId: any): void {
+    let currentSort: any;
     this.userPreferences.getSortOptions().take(1).subscribe((data) => {
       for (let group of data.list) {
         for (let definition in group) {
-          if (group[definition].id === parseInt(sortId) || group[definition].isDefault) {
-            this.userPreferences.update({ currentSort: group[definition] });
+          if (group[definition].id === parseInt(sortId)) {
+            currentSort = group[definition];
           }
         }
       };
-      this.userPreferences.update({ sorts: data.list });
+      currentSort = currentSort ? currentSort : data.list[0].first;
+      this.userPreferences.update({ sorts: data.list, currentSort: currentSort });
     });
   }
 
