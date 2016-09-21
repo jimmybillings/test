@@ -4,7 +4,6 @@ import { AssetData } from './services/asset.data.service';
 import { UiConfig} from '../shared/services/ui.config';
 import { Observable, Subscription} from 'rxjs/Rx';
 import { CurrentUser} from '../shared/services/current-user.model';
-import { Error } from '../shared/services/error.service';
 import { SearchContext} from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
 import { Collection, Collections } from '../shared/interfaces/collection.interface';
@@ -32,7 +31,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
-  public counted: boolean;
+  public preferences: any;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
@@ -49,7 +48,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     public collectionsService: CollectionsService,
     public permission: UserPermission,
     public activeCollection: ActiveCollectionService,
-    public error: Error,
     public searchContext: SearchContext,
     public filter: FilterService,
     public userPreferences: UserPreferenceService,
@@ -57,15 +55,16 @@ export class SearchComponent implements OnInit, OnDestroy {
     public uiState: UiState) { }
 
   ngOnInit(): void {
-    this.preferencesSubscription = this.userPreferences.filterCounts.subscribe(d => {
-      this.counted = d;
-      this.filter.get(this.searchContext.state, this.counted).take(1).subscribe(() => this.uiState.loading(false));
+    this.preferencesSubscription = this.userPreferences.prefs.subscribe((data: any) => {
+      this.preferences = data;
+      this.filter.get(this.searchContext.state, this.preferences.counted).take(1).subscribe(() => this.uiState.loading(false));
     });
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
-      if (this.counted) {
-        this.filter.get(this.searchContext.state, this.counted).take(1).subscribe(() => this.uiState.loading(false));
+      this.getSortPreferences(params['sortId']);
+      if (this.preferences.counted) {
+        this.filter.get(this.searchContext.state, this.preferences.counted).take(1).subscribe(() => this.uiState.loading(false));
       }
     });
   }
@@ -79,8 +78,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public countToggle(event: any): void {
-    this.userPreferences.update({filterCounts: event.checked});
-    if (this.counted) this.uiState.loading(true);
+    this.userPreferences.update({ filterCounts: event.checked });
+    if (this.preferences.counted) this.uiState.loading(true);
   }
 
   public showAsset(asset: any): void {
@@ -127,7 +126,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyExclusiveFilter(subFilter: any): void {
-    if (this.counted) this.uiState.loading(true);
+    if (this.preferences.counted) this.uiState.loading(true);
     this.filter.set(this.filter.toggleExclusive(subFilter));
     this.filterAssets();
   }
@@ -142,7 +141,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       if (res.url && res.url !== '') {
         window.location.href = res.url;
       } else {
-        this.notification.createNotfication(this.target, {trString: 'COMPS.NO_COMP', theme: 'alert'});
+        this.notification.createNotfication(this.target, { trString: 'COMPS.NO_COMP', theme: 'alert' });
       }
     });
   }
@@ -151,11 +150,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.update = { i: 1 };
     let active: any = [];
     this.filter.active(active);
-    let activeIds: any = active.map((filter:any) => filter.filterId);
-    let activeValues: any = active.filter((filter:any) => filter.filterValue)
+    let activeIds: any = active.map((filter: any) => filter.filterId);
+    let activeValues: any = active.filter((filter: any) => filter.filterValue)
       .map((filter: any) => `${filter.filterId}:${filter.filterValue}`);;
     if (activeIds.length > 0) {
-      this.searchContext.update = { 'filterIds':  activeIds.join(',') };
+      this.searchContext.update = { 'filterIds': activeIds.join(',') };
     } else {
       this.searchContext.remove = 'filterIds';
     }
@@ -164,6 +163,38 @@ export class SearchComponent implements OnInit, OnDestroy {
     } else {
       this.searchContext.remove = 'filterValues';
     }
+    this.searchContext.go();
+  }
+
+  public getSortPreferences(sortId: any): void {
+    let currentSort: any;
+    this.userPreferences.getSortOptions().take(1).subscribe((data) => {
+      for (let group of data.list) {
+        for (let definition in group) {
+          if (group[definition].id === parseInt(sortId)) {
+            currentSort = group[definition];
+          }
+        }
+      };
+      currentSort = currentSort ? currentSort : data.list[0].first;
+      this.userPreferences.update({ sorts: data.list, currentSort: currentSort });
+    });
+  }
+
+  public onSortResults(sortDefinition: any): void {
+    for (let group of this.preferences.sorts) {
+      for (let definition in group) {
+        if (group[definition].id === sortDefinition.id) {
+          this.preferences.currentSort = group[definition];
+        }
+      }
+    };
+    this.userPreferences.update({ currentSort: this.preferences.currentSort });
+    this.updateSearchContext(sortDefinition.id);
+  }
+
+  public updateSearchContext(sortDefinitionId: number): void {
+    this.searchContext.update = { 'i': 1, 'sortId': sortDefinitionId };
     this.searchContext.go();
   }
 }

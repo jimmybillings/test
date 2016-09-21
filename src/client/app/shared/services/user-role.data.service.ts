@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import { ApiConfig } from '../services/api.config';
-import {Observable} from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
+import { ApiService } from './api.service';
 
 @Injectable()
 export class UserRole {
 
-  public http: Http;
-  public apiConfig: ApiConfig;
   public _apiUrls: {
     create: string,
     show: string,
@@ -16,9 +14,7 @@ export class UserRole {
     destroy: string
   };
 
-  constructor(http: Http, apiConfig: ApiConfig) {
-    this.http = http;
-    this.apiConfig = apiConfig;
+  constructor(public api: ApiService, public apiConfig: ApiConfig) {
     this._apiUrls = {
       create: this.apiConfig.baseUrl() + 'api/identities/v1/userRole',
       show: this.apiConfig.baseUrl() + 'api/identities/v1/userRole/',
@@ -29,36 +25,22 @@ export class UserRole {
   }
 
   create(userRole: Object): Observable<any> {
-    return this.http.post(this._apiUrls.create,
-      JSON.stringify(userRole), {
-        headers: this.apiConfig.authHeaders()
-      });
+    return this.api.post(this._apiUrls.create, JSON.stringify(userRole));
   }
 
   show(id: number): Observable<any> {
-    return this.http.get(this._apiUrls.show + id, {
-      headers: this.apiConfig.authHeaders(),
-      body: ''
-    });
+    return this.api.get(this._apiUrls.show + id);
   }
 
   search(criteria: string): Observable<any> {
-    return this.http.get(this._apiUrls.search + criteria, {
-      headers: this.apiConfig.authHeaders(),
-      body: ''
-    });
+    return this.api.get(this._apiUrls.search + criteria);
   }
 
   update(userRole: any): Observable<any> {
-    return this.http.put(this._apiUrls.update + userRole.id,
-      JSON.stringify(userRole), {
-        headers: this.apiConfig.authHeaders()
-      });
+    return this.api.put(this._apiUrls.update + userRole.id, JSON.stringify(userRole));
   }
 
   destroy(id: number): Observable<any> {
-    return this.http.delete(this._apiUrls.show + id, {
-      headers: this.apiConfig.authHeaders()
-    });
+    return this.api.delete(this._apiUrls.show + id);
   }
 }

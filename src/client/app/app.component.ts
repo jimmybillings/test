@@ -3,7 +3,7 @@ import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { MultilingualService } from './shared/services/multilingual.service';
-
+import { ErrorActions } from './shared/services/error.service';
 // Services
 import { CurrentUser} from './shared/services/current-user.model';
 import { UserPermission } from './shared/services/permission.service';
@@ -15,7 +15,6 @@ import { CollectionsService } from './+collection/services/collections.service';
 import { UiState} from './shared/services/ui.state';
 import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
 import { ActiveCollectionService} from './+collection/services/active-collection.service';
-
 // /Interfaces
 import { ILang} from './shared/interfaces/language.interface';
 import { Collection, CollectionStore } from './shared/interfaces/collection.interface';
@@ -54,9 +53,10 @@ export class AppComponent implements OnInit, OnDestroy {
     private renderer: Renderer,
     private notification: WzNotificationService,
     private apiConfig: ApiConfig,
-    private authentication: Authentication) {
-      this.apiConfig.setPortal(portal);
-      this.currentUser.set();
+    private authentication: Authentication,
+    private errorActions: ErrorActions) {
+    this.apiConfig.setPortal(portal);
+    this.currentUser.set();
   }
 
   ngOnInit() {
@@ -91,7 +91,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.uiState.reset();
   }
 
-  public changeLang(data: any) { this.multiLingual.setLanguage(data); }
+  public changeLang(data: any) {
+    this.multiLingual.setLanguage(data);
+  }
 
   public newSearchContext(data: any) {
     this.searchContext.update = { q: data, i: 1, n: 100 };

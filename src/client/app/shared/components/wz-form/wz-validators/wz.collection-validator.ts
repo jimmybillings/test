@@ -207,18 +207,10 @@ export interface ValidationResult {
 
 
 
-// interface IHasMemberFunction {
-//   getOwnedCollections(): void;
-// }
-
 export class WzCollectionValidator {
-  // public ownedCollections: Collections;
 
-  // static checkCollectionName(control: FormControl, ownerCollections:IHasMemberFunction): ValidationResult {
   static checkCollectionName(control: FormControl): ValidationResult {
     let collectionNames = ['Machu Picchu', 'Maui Hawaii', 'Maui Hawaii testing', 'mountain lions', 'mooze'];
-    // let collectionsTest = ownerCollections.getOwnedCollections();
-    // console.log(collectionsTest);
     if (collectionNames.indexOf(control.value) > -1) {
       console.log(control);
       return { 'collectionNameTaken': true };
@@ -226,16 +218,4 @@ export class WzCollectionValidator {
       return null;
     }
   }
-
-  // constructor(
-  //   public collectionsService: CollectionsService) {
-  // }
-
-  // public getOwnedCollections(): Collections {
-  //   this.collectionsService.getCollections('owner', 4000).take(1).subscribe(c => {
-  //     this.ownedCollections =  c;
-  //   });
-  //   console.log(this.ownedCollections);
-  //   return this.ownedCollections;
-  // }
 }

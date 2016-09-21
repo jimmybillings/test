@@ -19,7 +19,7 @@ export function main() {
     }));
     let connection: any;
     it('Should create instance variables for http, apiconfig, apiUrls', inject([UserRole, MockBackend], (service: UserRole, mockBackend: MockBackend) => {
-      expect(service.http).toBeDefined();
+      expect(service.api).toBeDefined();
       expect(service.apiConfig).toBeDefined();
       expect(service._apiUrls).toBeDefined();
     }));

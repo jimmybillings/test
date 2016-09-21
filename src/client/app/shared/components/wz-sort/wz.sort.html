@@ -1,0 +1,17 @@
+<div class="wz-sort">
+  <md-list dense>
+    <div class="group" *ngFor="let item of items">
+      <md-list-item>
+        <button [ngClass]="{'active': item.first.name === current.name}" md-menu-item (click)="applySort(item.first)">
+          <md-icon>check</md-icon>{{ item.first.name | translate }}
+        </button>
+      </md-list-item>
+      <md-list-item *ngIf="item.second">
+        <button [ngClass]="{'active': item.second.name === current.name}" md-menu-item (click)="applySort(item.second)">
+          <md-icon>check</md-icon>{{ item.second.name | translate }}
+        </button>
+      </md-list-item>
+      <md-divider *ngIf="!(items.length - 1 === items.indexOf(item))"></md-divider>
+    </div>
+  </md-list>
+</div>

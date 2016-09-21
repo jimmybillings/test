@@ -66,3 +66,11 @@ button.filter {
     }
   }
 }
+
+.asset-sort-display {
+  button[md-icon-button] {
+    md-icon.material-icons {
+      font-size: 22px;
+    }
+  }
+}

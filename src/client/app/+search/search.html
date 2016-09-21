@@ -4,8 +4,8 @@
     <div class="md-overlay-container" *ngIf="(uiState.data | async).loading">
       <md-progress-bar color="accent" mode="indeterminate"></md-progress-bar>
     </div>
-    <md-slide-toggle class="count-toggle" [checked]="counted" color="accent" value="toggle" (change)="countToggle($event)">Display Filter Counts</md-slide-toggle>
-    <filter-component class="filter" [counted]="counted" [filters]="filter.data | async"></filter-component>
+    <md-slide-toggle class="count-toggle" [checked]="preferences.counted" color="accent" value="toggle" (change)="countToggle($event)">Display Filter Counts</md-slide-toggle>
+    <filter-component class="filter" [counted]="preferences.counted" [filters]="filter.data | async"></filter-component>
   </md-sidenav>
   
   <button class="filter" (click)="searchFilter.toggle()">FILTERS</button>
@@ -14,9 +14,21 @@
     <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
       <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
         
-        <breadcrumb-component class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
-        <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-         
+        <div layout="row" layout-align="space-between">
+          <breadcrumb-component class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
+        </div>
+        <div layout="row" layout-align="space-between">
+          <div layout="row" layout-align="start center">
+            <div class="asset-sort-display" flex="100">
+              <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
+              <span class="md-caption" *ngIf="preferences">
+                <strong>Sort By: </strong>{{ preferences.currentSort.name }}
+              </span> 
+            </div>
+          </div>
+          <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
+        </div>
+
         <wz-asset-list 
           [assets]="assets.items" 
           [permission]="permission"
@@ -34,3 +46,7 @@
     </div>
   </section>
 </md-sidenav-layout>
+
+<md-menu x-position="after" #assetSortMenu="mdMenu">
+  <wz-sort-component [current]="preferences.currentSort" [items]="preferences.sorts" (sort)="onSortResults($event)"></wz-sort-component>
+</md-menu>

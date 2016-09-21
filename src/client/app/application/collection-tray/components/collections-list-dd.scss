@@ -373,34 +373,34 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper collections-search-for
 }
 
 
-.md-menu.dense.collections-dd-menu  {
-  min-width: rem(27.5);
-  .md-list-item.select-dd {
-    height: rem(3.5);
-    flex-direction: column;
-    justify-content: space-between;
-    button[md-menu-item]{
-      font-size: .9em;
-      flex: 1 0 100%;
-      height: rem(3.5);
-      box-shadow: none;
-      position: relative;
-      md-icon.material-icons {
-        opacity: 0;
-        font-size: 26px;
-        margin-top: rem(-.8);
-      }
-    }
-  }
-  .md-list-item.active button[md-menu-item] {
-    background-color: transparent;
-    color: md-color($md-primary);
-    md-icon.material-icons {
-      color: md-color($md-primary);
-      opacity: 1;
-    }
-  }
-}
+// .md-menu.dense.collections-dd-menu  {
+//   min-width: rem(27.5);
+//   .md-list-item.select-dd {
+//     height: rem(3.5);
+//     flex-direction: column;
+//     justify-content: space-between;
+//     button[md-menu-item]{
+//       font-size: .9em;
+//       flex: 1 0 100%;
+//       height: rem(3.5);
+//       box-shadow: none;
+//       position: relative;
+//       md-icon.material-icons {
+//         opacity: 0;
+//         font-size: 26px;
+//         margin-top: rem(-.8);
+//       }
+//     }
+//   }
+//   .md-list-item.active button[md-menu-item] {
+//     background-color: transparent;
+//     color: md-color($md-primary);
+//     md-icon.material-icons {
+//       color: md-color($md-primary);
+//       opacity: 1;
+//     }
+//   }
+// }
 
 
 

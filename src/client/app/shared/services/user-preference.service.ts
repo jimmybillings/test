@@ -2,9 +2,13 @@ import { Injectable } from '@angular/core';
 import { CurrentUser } from './current-user.model';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
+import { Http } from '@angular/http';
+import { ApiConfig } from './api.config';
 
 const defaultPreferences: any = {
-  filterCounts: false
+  filterCounts: false,
+  sorts: [],
+  currentSort: {}
 };
 
 export const userPreferences: ActionReducer<any> = (state = defaultPreferences, action: Action) => {
@@ -20,13 +24,17 @@ export const userPreferences: ActionReducer<any> = (state = defaultPreferences, 
 export class UserPreferenceService {
   public data: Observable<any>;
 
-  constructor(public currentUser: CurrentUser, public store: Store<any>) {
-    this.data = this.store.select('userPreferences');
+  constructor(
+    public currentUser: CurrentUser,
+    public store: Store<any>,
+    public http: Http,
+    public apiConfig: ApiConfig) {
+      this.data = this.store.select('userPreferences');
   }
 
-  public get filterCounts(): Observable<any> {
+  public get prefs(): Observable<any> {
     return this.data.map(d => {
-      return d.filterCounts;
+      return d;
     });
   }
 
@@ -38,5 +46,11 @@ export class UserPreferenceService {
 
   public update(params: any): void {
     this.store.dispatch({ type: 'UPDATE_PREFERENCES', payload: params });
+  }
+
+  public getSortOptions(): Observable<any> {
+    return this.http.get(this.apiConfig.baseUrl() + 'api/identities/v1/sortDefinition/list',
+      { headers: this.apiConfig.authHeaders(), body: '' }
+    ).map(res => res.json());
   }
 }

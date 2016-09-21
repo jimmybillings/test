@@ -25,6 +25,7 @@ import { CollectionsSearchFormComponent } from '../+collection/components/collec
 import { WzInputTagsComponent } from '../shared/components/wz-input-tags/wz-input-tags.component';
 import { WzInputSuggestionsComponent } from '../shared/components/wz-input-suggestions/wz-input-suggestions.component';
 import { CollectionFormComponent } from '../application/collection-tray/components/collection-form.component';
+import { WzSortComponent } from '../shared/components/wz-sort/wz.sort.component';
 
 // Shared pipes
 import { ValuesPipe } from '../shared/pipes/values.pipe';
@@ -47,7 +48,6 @@ import { MaterialModule } from './material.module';
     MaterialModule.forRoot(),
   ],
   declarations: [
-    // WzNotificationComponent,
     WzSearchBoxComponent,
     WzAssetListComponent,
     WzBreadcrumbComponent,
@@ -69,10 +69,10 @@ import { MaterialModule } from './material.module';
     WzInputTagsComponent,
     WzInputSuggestionsComponent,
     CollectionFormComponent,
-    WzNotificationComponent
+    WzNotificationComponent,
+    WzSortComponent
   ],
   exports: [
-    // WzNotificationComponent,
     WzSearchBoxComponent,
     WzAssetListComponent,
     WzBreadcrumbComponent,
@@ -101,7 +101,8 @@ import { MaterialModule } from './material.module';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    WzNotificationComponent],
+    WzNotificationComponent,
+    WzSortComponent],
     entryComponents: [WzNotificationComponent]
 })
 
