@@ -44,7 +44,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
     public uiState: UiState,
     private detector: ChangeDetectorRef,
     private collectionContext: CollectionContextService
-    ) {
+  ) {
   }
 
   ngOnInit() {
@@ -114,7 +114,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
 
   private clearForm() {
     return this.formItems
-      .map((field:FormFields) => {
+      .map((field: FormFields) => {
         field.value = '';
         if (field.type === 'tags') field.tags = [];
         return field;
@@ -126,7 +126,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
       if (item.name === 'name' && this.collection) item.value = this.collection.name;
       if (item.type === 'tags') {
         item.tags = (this.collection && this.collection.tags) ? this.collection.tags : [];
-        item.value = (this.collection  && this.collection.tags) ? this.collection.tags.toString() : '';
+        item.value = (this.collection && this.collection.tags) ? this.collection.tags.toString() : '';
       }
       return item;
     });

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Collection, Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
-import { Http, URLSearchParams, RequestOptions } from '@angular/http';
+import { URLSearchParams, RequestOptions } from '@angular/http';
 import { ApiConfig } from '../../shared/services/api.config';
 import { Observable} from 'rxjs/Rx';
 import { Store, ActionReducer, Action} from '@ngrx/store';
 import { ActiveCollectionService } from './active-collection.service';
+import { ApiService } from '../../shared/services/api.service';
 
 /**
  * Collections store -
@@ -55,17 +56,15 @@ export class CollectionsService {
   constructor(
     public store: Store<CollectionStore>,
     public apiConfig: ApiConfig,
-    public http: Http,
-    private activeCollection: ActiveCollectionService, ) {
+    public api: ApiService,
+    private activeCollection: ActiveCollectionService) {
     this.data = store.select('collections');
-    this.activeCollection.data.subscribe((collection: Collection) => {
-      if (this.state.items && this.state.items.length > 0) this.updateCollectionInStore(collection);
-    });
     this.apiUrls = {
       CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
       CollectionSummaryBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary',
     };
     this.setSearchParams();
+    this.syncActiveCollection();
   }
 
   public get state(): any {
@@ -76,8 +75,9 @@ export class CollectionsService {
 
   public loadCollections(params: any = {}): Observable<any> {
     this.params = Object.assign({}, this.params, params);
-    return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/search`,
-      this.getSearchOptions(this.params)).map(res => {
+    return this.api.get(`${this.apiUrls.CollectionSummaryBaseUrl}/search`,
+      this.getSearchOptions(this.params))
+      .map(res => {
         this.storeCollections(res.json());
         return res.json();
       });
@@ -86,13 +86,13 @@ export class CollectionsService {
   public getSearchOptions(params: any): RequestOptions {
     const search: URLSearchParams = new URLSearchParams();
     for (var param in params) search.set(param, params[param]);
-    let options = { headers: this.apiConfig.authHeaders(), search: search, body: '' };
+    let options = { search: search };
     return new RequestOptions(options);
   }
 
   public createCollection(collection: Collection): Observable<any> {
-    return this.http.post(this.apiUrls.CollectionSummaryBaseUrl,
-      JSON.stringify(collection), { headers: this.apiConfig.authHeaders() })
+    return this.api.post(this.apiUrls.CollectionSummaryBaseUrl,
+      JSON.stringify(collection))
       .map(res => {
         this.createCollectionInStore(res.json());
         this.activeCollection.updateActiveCollectionStore(res.json());
@@ -101,14 +101,19 @@ export class CollectionsService {
   }
 
   public updateCollection(collection: Collection): Observable<any> {
-    return this.http.put(`${this.apiUrls.CollectionSummaryBaseUrl}/${collection.id}`,
-      JSON.stringify(collection), { headers: this.apiConfig.authHeaders() });
+    return this.api.put(`${this.apiUrls.CollectionSummaryBaseUrl}/${collection.id}`,
+      JSON.stringify(collection));
   }
 
   public deleteCollection(collectionId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrls.CollectionBaseUrl}/${collectionId}`,
-      { headers: this.apiConfig.authHeaders(), body: '' })
+    return this.api.delete(`${this.apiUrls.CollectionBaseUrl}/${collectionId}`)
       .map(() => this.deleteCollectionFromStore(collectionId));
+  }
+
+  public syncActiveCollection() {
+    this.activeCollection.data.subscribe((collection: Collection) => {
+      if (this.state.items && this.state.items.length > 0) this.updateCollectionInStore(collection);
+    });
   }
 
   public destroyCollections(): void {
@@ -151,14 +156,6 @@ export class CollectionsService {
     item.assets.pagination = {};
     item.assets.pagination.totalCount = search.totalCount;
     return item;
-  }
-
-  public getCollections(access: string = 'all', numberPerPg: number = 400): Observable<any> {
-    return this.http.get(`${this.apiUrls.CollectionSummaryBaseUrl}/fetchBy?accessLevel=${access}&i=0&n=${numberPerPg}`,
-      { headers: this.apiConfig.authHeaders() }).map(res => {
-        this.storeCollections(res.json());
-        return res.json();
-      });
   }
 
   public setSearchParams() {

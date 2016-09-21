@@ -1,7 +1,7 @@
 import { Component, Input, ElementRef, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
-import {Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
+import { Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
 
 @Component({
   moduleId: module.id,

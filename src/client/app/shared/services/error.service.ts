@@ -1,33 +1,56 @@
 import { Injectable } from '@angular/core';
+import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { CurrentUser} from '../services/current-user.model';
+import { CurrentUser } from './current-user.model';
+
+export const error: ActionReducer<any> = (state = {}, action: Action) => {
+  switch (action.type) {
+    case 'UPDATE_ERROR':
+      return Object.assign({}, state, action.payload);
+    default:
+      return state;
+  }
+};
 
 @Injectable()
 export class Error {
+  public data: any;
+  constructor(private store: Store<any>) {
+    this.data = this.store.select('error');
+  }
 
-  constructor(public router: Router, private currentUser: CurrentUser) { }
+  public dispatch(error: any): void {
+    this.store.dispatch({type: 'UPDATE_ERROR', payload: error});
+  }
+}
+
+@Injectable()
+export class ErrorActions {
+  constructor(private error: Error, private router: Router, private currentUser: CurrentUser) {
+    this.error.data.subscribe((error:any) => this.handle(error));
+  }
 
   public handle(error: any): void {
     switch (error.status) {
       case 401:
-        this._unAuthorized();
+        this.unAuthorized();
         break;
       case 403:
-        this._forbidden();
+        this.forbidden();
         break;
       default:
-        this._forbidden();
+        console.log(error);
         break;
     }
   }
 
-  private _unAuthorized(): void {
+  public unAuthorized(): void {
     let redirect = (this.currentUser.loggedIn()) ? ['/user/login', { 'loggedOut': 'true' }] : ['/user/login'];
     this.currentUser.destroy();
     this.router.navigate(redirect);
   }
 
-  private _forbidden(): boolean {
+  public forbidden(): boolean {
     return true;
   }
 }

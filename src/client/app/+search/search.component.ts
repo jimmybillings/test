@@ -4,7 +4,6 @@ import { AssetData } from './services/asset.data.service';
 import { UiConfig} from '../shared/services/ui.config';
 import { Observable, Subscription} from 'rxjs/Rx';
 import { CurrentUser} from '../shared/services/current-user.model';
-import { Error } from '../shared/services/error.service';
 import { SearchContext} from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
 import { Collection, Collections } from '../shared/interfaces/collection.interface';
@@ -49,7 +48,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     public collectionsService: CollectionsService,
     public permission: UserPermission,
     public activeCollection: ActiveCollectionService,
-    public error: Error,
     public searchContext: SearchContext,
     public filter: FilterService,
     public userPreferences: UserPreferenceService,

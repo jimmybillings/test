@@ -37,10 +37,12 @@ export class AppNavComponent {
   }
 
   public toggleBinTray() {
+    console.log(this.UiState);
     this.UiState.toggleBinTray();
   }
 
   public showNewCollection(event: Event) {
+
     this.UiState.showNewCollection();
   }
 }

@@ -5,7 +5,7 @@ import { Routes } from '@angular/router';
 import { ApiConfig } from '../shared/services/api.config';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { UiConfig } from '../shared/services/ui.config';
-import { Error } from '../shared/services/error.service';
+import { Error, ErrorActions } from '../shared/services/error.service';
 import { AssetService} from '../+asset/services/asset.service';
 import { SearchContext} from '../shared/services/search-context.service';
 import { Authentication} from '../+user-management/services/authentication.data.service';
@@ -18,8 +18,7 @@ import { AssetGuard } from '../+asset/services/asset.guard';
 import { AssetData } from '../+search/services/asset.data.service';
 import { FilterService } from '../+search/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
-// import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
-
+import { ApiService } from '../shared/services/api.service';
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
 
@@ -31,7 +30,7 @@ import { config } from '../shared/services/ui.config';
 import { uiState } from '../shared/services/ui.state';
 import { adminResources } from '../+admin/services/admin.service';
 import { searchContext} from '../shared/services/search-context.service';
-
+import { error } from '../shared/services/error.service';
 import { multilingualActionReducer } from '../shared/services/multilingual.service';
 import { collections } from '../+collection/services/collections.service';
 import { activeCollection } from '../+collection/services/active-collection.service';
@@ -47,6 +46,7 @@ export const WAZEE_PROVIDERS = [
   CurrentUser,
   UiConfig,
   Error,
+  ErrorActions,
   AssetService,
   CollectionsService,
   ActiveCollectionService,
@@ -60,8 +60,8 @@ export const WAZEE_PROVIDERS = [
   UserPermission,
   FilterService,
   UserPreferenceService,
-  CollectionContextService
-  // WzNotificationService
+  CollectionContextService,
+  ApiService
 ];
 
 export const WAZEE_STORES: any = {
@@ -77,7 +77,8 @@ export const WAZEE_STORES: any = {
     filters:filters,
     userPreferences:userPreferences,
     collectionOptions:collectionOptions,
-    i18n: multilingualActionReducer
+    i18n: multilingualActionReducer,
+    error: error
 };
 
 export const WAZEE_ROUTES: Routes = [

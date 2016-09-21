@@ -9,7 +9,7 @@ export class WzNotificationService implements OnDestroy {
   public cmpRef: ComponentRef<any>;
   public viewRef: any;
   public setDestroyTimer: any;
-  public notficationStrategy: any;
+  public notficationStrategy: any = [];
   private configSubscription: Subscription;
 
   constructor(private renderer: Renderer,

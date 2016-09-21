@@ -23,7 +23,7 @@ export function main() {
       inject([FilterService], (service: FilterService) => {
         expect(service).toBeDefined();
         expect(service.store).toBeDefined();
-        expect(service.http).toBeDefined();
+        expect(service.api).toBeDefined();
         expect(service.apiConfig).toBeDefined();
         expect(service.currentUser).toBeDefined();
       }));
@@ -60,7 +60,7 @@ export function main() {
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.get({q: 'cat'}, true).subscribe((payload) => {
           expect(connection.request.method).toEqual(0);
-          expect(connection.request.url).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true&siteName=core');
+          expect(connection.request.url).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true');
           expect(payload).toEqual(service.sanatize(mockFilters(), null));
           expect(service.set).toHaveBeenCalled();
         });

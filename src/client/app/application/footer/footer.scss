@@ -51,6 +51,10 @@ app-footer {
     h3.md-title + .md-body-1 {
       margin: 8px 0 0 0;
     }
+    .help-link {
+      font-size: rem(1.6);
+      color: md-color($md-grey, 500);
+    }
     .sales {
       md-list {
         padding: 0;

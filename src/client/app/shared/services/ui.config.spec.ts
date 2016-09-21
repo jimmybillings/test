@@ -21,7 +21,7 @@ export function main() {
 
     it('Should set the api endpoint to get a UI configuration object',
       inject([UiConfig], (service: UiConfig) => {
-        expect(service._apiUrls.get).toEqual(service._apiConfig.baseUrl() + 'api/identities/v1/configuration/site?siteName=');
+        expect(service._apiUrls.get).toEqual(service.apiConfig.baseUrl() + 'api/identities/v1/configuration/site?siteName=');
       })
     );
 
@@ -34,7 +34,7 @@ export function main() {
 
         service.initialize(site).subscribe((res) => {
           expect(connection.request.url).toBe(
-            service._apiConfig.baseUrl() + 'api/identities/v1/configuration/site?siteName=' + site
+            service.apiConfig.baseUrl() + 'api/identities/v1/configuration/site?siteName=' + site
           );
           expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'INITIALIZE', payload: configObj() });
           let config = service.store.select('config');

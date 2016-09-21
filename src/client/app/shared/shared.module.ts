@@ -48,7 +48,6 @@ import { MaterialModule } from './material.module';
     MaterialModule.forRoot(),
   ],
   declarations: [
-    // WzNotificationComponent,
     WzSearchBoxComponent,
     WzAssetListComponent,
     WzBreadcrumbComponent,
@@ -74,7 +73,6 @@ import { MaterialModule } from './material.module';
     WzSortComponent
   ],
   exports: [
-    // WzNotificationComponent,
     WzSearchBoxComponent,
     WzAssetListComponent,
     WzBreadcrumbComponent,

@@ -25,7 +25,7 @@ export function main() {
 
     it('Should create instance variables for http, and apiConfig',
       inject([ConfigService, MockBackend], (service: ConfigService, mockBackend: MockBackend) => {
-        expect(service.http).toBeDefined();
+        expect(service.api).toBeDefined();
         expect(service.apiConfig).toBeDefined();
       }));
 

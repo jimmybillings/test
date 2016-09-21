@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { AssetService} from './services/asset.service';
 import { Observable} from 'rxjs/Rx';
-import { Error } from '../shared/services/error.service';
 import { CollectionStore } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from '../+collection/services/collections.service';
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
@@ -31,7 +30,6 @@ export class AssetComponent implements OnInit {
     public currentUser: CurrentUser,
     public uiConfig: UiConfig,
     public assetService: AssetService,
-    public error: Error,
     public router: Router,
     public collectionsService: CollectionsService,
     public permission: UserPermission,

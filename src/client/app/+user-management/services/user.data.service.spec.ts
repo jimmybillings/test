@@ -18,9 +18,8 @@ export function main() {
     }));
 
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls', inject([User, MockBackend], (service: User, mockBackend: MockBackend) => {
-      expect(service.http).toBeDefined();
+      expect(service.api).toBeDefined();
       expect(service.apiConfig).toBeDefined();
-      expect(service._currentUser).toBeDefined();
       expect(service._apiUrls).toBeDefined();
     }));
 
