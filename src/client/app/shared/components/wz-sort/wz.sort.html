@@ -1,17 +1,8 @@
-<div class="wz-sort">
-  <md-list dense>
-    <div class="group" *ngFor="let item of items">
-      <md-list-item>
-        <button [ngClass]="{'active': item.first.name === current.name}" md-menu-item (click)="applySort(item.first)">
-          <md-icon>check</md-icon>{{ item.first.name | translate }}
-        </button>
-      </md-list-item>
-      <md-list-item *ngIf="item.second">
-        <button [ngClass]="{'active': item.second.name === current.name}" md-menu-item (click)="applySort(item.second)">
-          <md-icon>check</md-icon>{{ item.second.name | translate }}
-        </button>
-      </md-list-item>
-      <md-divider *ngIf="!(items.length - 1 === items.indexOf(item))"></md-divider>
-    </div>
-  </md-list>
+<div class="dense group" *ngFor="let section of items">
+  <div class="select-dd" *ngFor="let item of section | values" [ngClass]="{'active': section[item.key].name === current.name}">
+    <button md-menu-item (click)="applySort(section[item.key])" [disabled]="section[item.key].value === 'researcher'">
+      <md-icon>check</md-icon>{{ section[item.key].name | translate }}
+    </button>
+  </div>
+  <md-divider *ngIf="!(items.length - 1 === items.indexOf(section))"></md-divider>
 </div>
