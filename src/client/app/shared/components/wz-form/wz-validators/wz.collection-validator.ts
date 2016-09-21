@@ -131,7 +131,7 @@ export interface ValidationResult {
 //     let injector = ReflectiveInjector.resolveAndCreate([HTTP_PROVIDERS]);
 //     let http = injector.get(Http);
 
-//     let apiUrl = 'https://crxextapi.dev.wzplatform.com/api/assets/v1/search/collectionSummary/fetchBy?access-level=owner&i=0&n=2000';
+//     let apiUrl = 'https://crxextapi.dev.wzplatform.com/api/assets/v1/search/collectionSummary/fetchBy?accessLevel=owner&i=0&n=2000';
 //     let headers = new Headers({
 //       'Content-Type': 'application/json',
 //       'Accept': 'application/json',
@@ -173,7 +173,7 @@ export interface ValidationResult {
 //   static checkCollectionName(control: FormControl): Promise<ValidationResult> {
 //     let injector = ReflectiveInjector.resolveAndCreate([HTTP_PROVIDERS]);
 //     let http = injector.get(Http);
-//     let apiUrl = 'https://crxextapi.dev.wzplatform.com/api/assets/v1/search/collectionSummary/fetchBy?access-level=owner&i=0&n=2000';
+//     let apiUrl = 'https://crxextapi.dev.wzplatform.com/api/assets/v1/search/collectionSummary/fetchBy?accessLevel=owner&i=0&n=2000';
 //     let headers = new Headers({
 //       'Content-Type': 'application/json',
 //       'Accept': 'application/json',

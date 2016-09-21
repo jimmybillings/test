@@ -43,10 +43,14 @@
               <button md-menu-item [disabled]="!permission.has('DownloadFullComps')" (click)="downloadComp(asset.assetId, 'full')">Download Full Comp</button>
             </md-menu>
 
-            <button md-icon-button title="Sharing Options"><md-icon>share</md-icon></button>
+            <button md-icon-button 
+              title="{{ 'ASSET.DETAIL.SHARING_BTN_TITLE' | translate }}"
+              (click)="sharing.show($event)">
+              <md-icon>share</md-icon>
+            </button>
             <button md-icon-button 
               *ngIf="collection.id !== null && inActiveCollection" 
-              title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" 
+              title="{{ 'ASSET.DETAIL.COMMENT_BTN_TITLE' | translate }}" 
               (click)="showComments($event)">
               <md-icon>mode_comment</md-icon>
             </button>
@@ -68,7 +72,10 @@
               (click)="showNewCollection(asset.common[0].value); addToast.show()">
               <md-icon>library_add</md-icon>
             </button>
-            <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
+            <button md-icon-button 
+              title="{{ 'ASSET.DETAIL.MORE_BTN_TITLE' | translate }}">
+              <md-icon>more_vert</md-icon>
+            </button>
           </nav>
         </header>
       </div>
@@ -84,9 +91,9 @@
             <h4 class="title-txt" *ngIf="asset.primary[5].value != null">{{asset.primary[5].value}}</h4>
             <p class="description-txt">{{asset.primary[6].value}}</p>
             <span *ngIf="asset.price != 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
-            <span *ngIf="asset.price == 0" class="contact-us-pricing">{{ 'ASSETDETAIL.CONTACT_US_PRICING' | translate }}</span>
+            <span *ngIf="asset.price == 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
             <md-card-actions layout="column" layout-align="center center" layout-wrap="">
-              <button md-raised-button (click)="someFunction()" class="md-primary md-hue-7">{{ 'ASSETDETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+              <button md-raised-button (click)="someFunction()" class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
               <!--<button *ngIf="asset.price == 0" md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>-->
             </md-card-actions>
           </div>
@@ -95,16 +102,16 @@
     </div>
   </div>
 </section>
-
-<!--<wz-dropdown #sharing>
-  <asset-sharing
-    [UiState]="UiState"
-    [asset]="asset | async"
-    [config]="(uiConfig.get('collection') | async).config"
-    (close)="list.close()"
+<wz-dropdown #sharing>
+  <asset-share
+    [assetThumbnailUrl]="asset.clipThumbnailUrl"
+    [assetName]="asset.common[5].value"
+    [uiState]="uiState"
+    [config]="(uiConfig.get('assetSharing') | async).config"
+    (close)="sharing.close()"
     layout="row" layout-align="end start" class="revealed">
-  </asset-sharing>
-</wz-dropdown>-->
+  </asset-share>
+</wz-dropdown>
 
 <wz-toast #addToast>
   <div class="toast" layout="row" layout-align="center center">

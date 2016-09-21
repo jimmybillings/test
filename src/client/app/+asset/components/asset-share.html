@@ -1,0 +1,36 @@
+<div class="collections-dd-menu">
+  <div class="dd-menu-wrapper">
+    <header>
+      <asset-share-link
+        *ngIf="assetLinkIsShowing"
+        flex="100"
+        (close)="showShareLink()">
+      </asset-share-link>
+      <div flex="100" layout="row">
+        <h4 class="md-headline" flex="100" layout-align="start center">
+          {{ 'ASSET.SHARING.DIALOG_HEADER_TITLE' | translate }}
+        </h4>
+        <div class="tools" flex="auto" layout-align="end center">
+          <button md-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK_BTN_TITLE' | translate }}" (click)="showShareLink($event)"><md-icon>link</md-icon></button>
+        </div>
+      </div>
+    </header>
+    
+    <div class="form-panel" layout="column">
+      <div flex="none">
+        <div class="asset-thb">
+          <img *ngIf="assetThumbnailUrl" src="{{assetThumbnailUrl}}" />
+        </div>
+        <span class="asset-name md-caption">{{assetName}}</span>
+      </div>
+      <div class="wz-form-card">
+        <md-card-content>
+          <wz-form [items]="config.form.items" submitLabel="ASSET.SHARING.FORM.SUBMIT_BTN_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
+          <!--<div layout="column" layout-align="center center" class="md-body-2">
+            <a md-button layout="row" flex [routerLink]="['/Register']" color="primary">{{ 'LOGIN.FORGOT_PASSWORD' | translate }}</a>
+          </div>-->
+        </md-card-content>
+      </div>
+    </div>
+  </div>
+</div>
