@@ -185,11 +185,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     for (let group of this.preferences.sorts) {
       for (let definition in group) {
         if (group[definition].id === sortDefinition.id) {
-          this.preferences.currentSort = group[definition];
+          this.userPreferences.update({ currentSort: group[definition] });
         }
       }
     };
-    this.userPreferences.update({ currentSort: this.preferences.currentSort });
     this.updateSearchContext(sortDefinition.id);
   }
 

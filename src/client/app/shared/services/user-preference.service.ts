@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { CurrentUser } from './current-user.model';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
-import { Http } from '@angular/http';
 import { ApiConfig } from './api.config';
+import { ApiService } from './api.service';
 
 const defaultPreferences: any = {
   filterCounts: false,
@@ -27,7 +27,7 @@ export class UserPreferenceService {
   constructor(
     public currentUser: CurrentUser,
     public store: Store<any>,
-    public http: Http,
+    public api: ApiService,
     public apiConfig: ApiConfig) {
       this.data = this.store.select('userPreferences');
   }
@@ -49,8 +49,8 @@ export class UserPreferenceService {
   }
 
   public getSortOptions(): Observable<any> {
-    return this.http.get(this.apiConfig.baseUrl() + 'api/identities/v1/sortDefinition/list',
-      { headers: this.apiConfig.authHeaders(), body: '' }
+    return this.api.get(
+      this.apiConfig.baseUrl() + 'api/identities/v1/sortDefinition/list'
     ).map(res => res.json());
   }
 }
