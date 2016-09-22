@@ -3,8 +3,8 @@ import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable }  from 'rxjs/Rx';
 
 const collectionOptionsState: any = {
-  currentFilter: { 'id': 0, 'label': 'ALL', 'value': 'all', 'active': true, 'access': {'accessLevel': 'all'} },
-  currentSort: { 'id': 0, 'label': 'DATE_MOD_NEWEST', 'value': 'modNewest', 'active': true, 'sort': { 's': 'lastUpdated', 'd': true }},
+  currentFilter: { 'id': 0, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.ALL', 'value': 'all', 'access': { 'accessLevel': 'all' } },
+  currentSort: { 'id': 0, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true }},
   currentSearchQuery: {'q': ''}
 };
 

@@ -18,11 +18,17 @@ export class CollectionFilterDdComponent {
 
   constructor() {
     this.filterOptions = [
-      { 'id': 0, 'label': 'ALL', 'value': 'all', 'access': {'accessLevel': 'all'} },
-      { 'id': 1, 'label': 'OWNER', 'value': 'owner', 'access': {'accessLevel': 'owner'} },
-      { 'id': 2, 'label': 'EDITOR', 'value': 'editor', 'access': {'accessLevel': 'editor'} },
-      { 'id': 3, 'label': 'VIEWER', 'value': 'viewer', 'access': {'accessLevel': 'viewer'} },
-      { 'id': 4, 'label': 'RESEARCHER', 'value': 'researcher', 'access': {'accessLevel': 'researcher'} }
+      {
+        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.ALL', 'value': 'all', 'access': { 'accessLevel': 'all' } }
+      },
+      {
+        'first': { 'id': 1, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.OWNER', 'value': 'owner', 'access': { 'accessLevel': 'owner' } },
+        'second': { 'id': 2, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.EDITOR', 'value': 'editor', 'access': { 'accessLevel': 'editor' } },
+        'third': { 'id': 3, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.VIEWER', 'value': 'viewer', 'access': { 'accessLevel': 'viewer' } }
+      },
+      {
+        'first': { 'id': 4, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.RESEARCHER', 'value': 'researcher', 'access': { 'accessLevel': 'researcher' } }
+      }
     ];
   }
 
@@ -30,7 +36,7 @@ export class CollectionFilterDdComponent {
     this.close.emit();
   }
 
-  public setActiveFilter(filter:any) {
+  public onFilterResults(filter:any) {
     this.filter.emit(filter);
   }
 }

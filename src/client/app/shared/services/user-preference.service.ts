@@ -2,9 +2,13 @@ import { Injectable } from '@angular/core';
 import { CurrentUser } from './current-user.model';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
+import { ApiConfig } from './api.config';
+import { ApiService } from './api.service';
 
 const defaultPreferences: any = {
-  filterCounts: false
+  filterCounts: false,
+  sorts: [],
+  currentSort: {}
 };
 
 export const userPreferences: ActionReducer<any> = (state = defaultPreferences, action: Action) => {
@@ -20,13 +24,17 @@ export const userPreferences: ActionReducer<any> = (state = defaultPreferences, 
 export class UserPreferenceService {
   public data: Observable<any>;
 
-  constructor(public currentUser: CurrentUser, public store: Store<any>) {
-    this.data = this.store.select('userPreferences');
+  constructor(
+    public currentUser: CurrentUser,
+    public store: Store<any>,
+    public api: ApiService,
+    public apiConfig: ApiConfig) {
+      this.data = this.store.select('userPreferences');
   }
 
-  public get filterCounts(): Observable<any> {
+  public get prefs(): Observable<any> {
     return this.data.map(d => {
-      return d.filterCounts;
+      return d;
     });
   }
 
@@ -38,5 +46,11 @@ export class UserPreferenceService {
 
   public update(params: any): void {
     this.store.dispatch({ type: 'UPDATE_PREFERENCES', payload: params });
+  }
+
+  public getSortOptions(): Observable<any> {
+    return this.api.get(
+      this.apiConfig.baseUrl() + 'api/identities/v1/sortDefinition/list'
+    ).map(res => res.json());
   }
 }

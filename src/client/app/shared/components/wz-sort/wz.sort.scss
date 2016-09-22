@@ -1,0 +1,32 @@
+.md-menu wz-sort-component .dense,
+.md-menu.dd-menu-wrapper.dense {
+  min-width: rem(27.5);
+  .select-dd {
+    height: rem(3.2);
+    flex-direction: column;
+    justify-content: space-between;
+    button[md-menu-item]{
+      font-size: .9em;
+      flex: 1 0 100%;
+      height: rem(3.2);
+      box-shadow: none;
+      position: relative;
+      md-icon.material-icons {
+        opacity: 0;
+        margin-top: rem(-.8);
+      }
+    }
+  }
+  .select-dd.active button[md-menu-item] {
+    background-color: transparent;
+    color: md-color($md-primary);
+    md-icon.material-icons {
+      color: md-color($md-primary);
+      opacity: 1;
+    }
+  }
+  md-divider {
+    margin-top: rem(.6);
+    margin-bottom: rem(.6);
+  }
+}

@@ -19,12 +19,18 @@ export class CollectionSortDdComponent {
 
   constructor() {
     this.sortOptions = [
-      { 'id': 0, 'label': 'DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true }},
-      { 'id': 1, 'label': 'DATE_MOD_OLDEST', 'value': 'modOldest', 'sort': { 's': 'lastUpdated', 'd': false }},
-      { 'id': 2, 'label': 'DATE_CREATE_NEWEST', 'value': 'createNewest', 'sort': { 's': 'createdOn', 'd': true }},
-      { 'id': 3, 'label': 'DATE_CREATE_OLDEST', 'value': 'createOldest', 'sort': { 's': 'createdOn', 'd': false }},
-      { 'id': 4, 'label': 'LIST_COLL_ASC', 'value': 'alphaAsc', 'sort': { 's': 'name', 'd': false }},
-      { 'id': 5, 'label': 'LIST_COLL_DESC', 'value': 'alphaDesc', 'sort': { 's': 'name', 'd': true }}
+      {
+        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true }},
+        'second': { 'id': 1, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_OLDEST', 'value': 'modOldest', 'sort': { 's': 'lastUpdated', 'd': false }}
+      },
+      {
+        'first' :{ 'id': 2, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_NEWEST', 'value': 'createNewest', 'sort': { 's': 'createdOn', 'd': true }},
+        'second': { 'id': 3, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_OLDEST', 'value': 'createOldest', 'sort': { 's': 'createdOn', 'd': false }}
+      },
+      {
+        'first': { 'id': 4, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_ASC', 'value': 'alphaAsc', 'sort': { 's': 'name', 'd': false }},
+        'second': { 'id': 5, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_DESC', 'value': 'alphaDesc', 'sort': { 's': 'name', 'd': true }}
+      }
     ];
   }
 
@@ -32,7 +38,7 @@ export class CollectionSortDdComponent {
     this.UiState.closeCollectionsSortDd();
   }
 
-  public setActiveSort(sort:any) {
-    this.sort.emit(sort);
+  public onSortResults(sortId :any) {
+    this.sort.emit(sortId);
   }
 }

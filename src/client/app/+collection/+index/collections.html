@@ -40,10 +40,10 @@
       <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{options.currentSearchQuery.q}}
     </span>
     <span *ngIf="options && options.currentFilter.label !== 'ALL'" flex="auto" class="filter">
-      <strong>{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.FILTER_DD_MENU.' +  options.currentFilter.label | uppercase | translate}}
+      <strong>{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</strong>{{ options.currentFilter.name | translate}}
     </span> 
     <span flex="100" class="sort" *ngIf="options">
-      <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{'COLLECTION.INDEX.SORT_DD_MENU.' +  options.currentSort.label | uppercase | translate }}
+      <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{ options.currentSort.name | translate }}
     </span> 
   </div>
 </div>
@@ -74,22 +74,12 @@
   </collection-form>
 </wz-dialog>
 
-<md-menu class="collections-dd-menu dense" x-position="before" #filterCollectionOptions="mdMenu">
-  <div class="md-list-item select-dd" *ngFor="let option of filterOptions" [ngClass]="{'active': options.currentFilter.label === option.label}">
-    <button md-menu-item (click)="filter(option);" [disabled]="option.value ==='researcher'">
-      <md-icon>check</md-icon>{{ 'COLLECTION.INDEX.FILTER_DD_MENU.'+option.label | translate }}
-    </button>
-    <div class="divider" *ngIf="option.id == 0 || option.id == 3"></div>
-  </div>
+<md-menu x-position="before" #filterCollectionOptions="mdMenu">
+  <wz-sort-component [current]="options.currentFilter" [items]="filterOptions" (sort)="onFilterCollections($event)"></wz-sort-component>
 </md-menu>
 
-<md-menu class="collections-dd-menu dense" x-position="before" #sortCollectionOptions="mdMenu">
-  <div class="md-list-item select-dd" *ngFor="let option of sortOptions" [ngClass]="{'active': options.currentSort.label === option.label}">
-    <button md-menu-item (click)="sortBy(option);">
-      <md-icon>check</md-icon>{{ 'COLLECTION.INDEX.SORT_DD_MENU.'+option.label | translate }}
-    </button>
-    <div class="divider" *ngIf="option.id == 1 || option.id == 3"></div>
-  </div>
+<md-menu x-position="before" #sortCollectionOptions="mdMenu">
+  <wz-sort-component [current]="options.currentSort" [items]="sortOptions" (sort)="onSortCollections($event)"></wz-sort-component>
 </md-menu>
 
 <wz-dialog #deleteCollectionDialog [clickCatcher]="false">

@@ -1,13 +1,15 @@
 import {
   beforeEachProvidersArray,
   Observable,
-  // inject,
+  inject,
   TestBed
 } from '../imports/test.imports';
 
 import { SearchComponent } from './search.component';
 import { UiConfig } from '../shared/services/ui.config';
 import { AssetData } from './services/asset.data.service';
+import { UserPreferenceService } from '../shared/services/user-preference.service';
+import { SearchContext } from '../shared/services/search-context.service';
 
 export function main() {
   describe('Search Component', () => {
@@ -27,14 +29,60 @@ export function main() {
       }
     }
 
+    class MockUserPreference {
+      public getSortOptions() {
+        return Observable.of(mockSortDefinitions());
+      }
+
+      public update(params: any) {
+        return true;
+      }
+    }
+
+    class MockSearchContext {
+      public update() {
+        return true;
+      }
+
+      public go() {
+        return true;
+      }
+    }
+
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
         ...beforeEachProvidersArray,
         SearchComponent,
+        SearchContext,
         { provide: AssetData, useClass: MockAssetData },
-        { provide: UiConfig, useClass: MockUiConfig }
+        { provide: UiConfig, useClass: MockUiConfig },
+        { provide: UserPreferenceService, useClass: MockUserPreference },
+        { provide: SearchContext, useClass: MockSearchContext }
       ]
     }));
+
+    it('Should have a getSortPreferences() method that loops the sortDefinition list and sets a default',
+      inject([SearchComponent], (component: SearchComponent) => {
+        spyOn(component.userPreferences, 'update');
+        component.getSortPreferences(2);
+        expect(component.userPreferences.update).toHaveBeenCalledWith({ sorts: mockSortDefinitions().list, currentSort: mockSortDefinitions().list[0].first });
+      }));
+
+    it('Should have a onSortResults() event handler function that updates the currentSort and searchContext',
+      inject([SearchComponent], (component: SearchComponent) => {
+        component.preferences = {filterCounts: true, sorts: mockSortDefinitions().list};
+        spyOn(component.userPreferences, 'update');
+        spyOn(component, 'updateSearchContext');
+        component.onSortResults(mockSortDefinitions().list[1].first);
+        expect(component.userPreferences.update).toHaveBeenCalledWith({currentSort: mockSortDefinitions().list[1].first});
+      }));
+
+    it('Should have an updateSearchContext() method that updates the search contex, and calls .go()',
+      inject([SearchComponent], (component: SearchComponent) => {
+        spyOn(component.searchContext, 'go');
+        component.updateSearchContext(1);
+        expect(component.searchContext.go).toHaveBeenCalled();
+      }));
 
   });
 
@@ -44,5 +92,19 @@ export function main() {
 
   function MockConfigResponse() {
     return { search: {} };
+  }
+
+  function mockSortDefinitions() {
+    return {
+      'list': [
+        {
+          'first': {'lastUpdated': '2016-09-21T15:06:40Z','createdOn': '2016-08-18T18:01:44Z','id': 2,'siteName': 'core','name': 'Relevance (most relevant first)','isDefault': false,'pairId': 'testPair','association': 'user:1','sorts': [{'field': 'score','descending': true}]}
+        },
+        {
+          'first': {'lastUpdated': '2016-09-21T14:50:51Z','createdOn': '2016-09-16T20:13:22Z','id': 4,'siteName': 'core','name': 'Date Added (oldest first)','isDefault': false,'pairId': 'date','association': 'user:25','sorts': [{'field': 'ingested','descending': false}]},
+          'second': {'lastUpdated': '2016-09-21T14:51:18Z','createdOn': '2016-09-16T20:23:26Z','id': 5,'siteName': 'core','name': 'Date Added (newest first)','isDefault': false,'pairId': 'date','association': 'user:25','sorts': [{'field': 'ingested','descending': true}]}
+        }
+      ]
+    };
   }
 }

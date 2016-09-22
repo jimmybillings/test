@@ -88,6 +88,17 @@
       <!--
         END: FORM RADIO BUTTONS
       -->
+      <!--
+        START: FORM CHECKBOX
+      -->
+      <md-checkbox *ngIf="field.type == 'checkbox'" layout="row" formControlName="{{field.name}}"
+        [checked]="field.defaultChecked"
+        color="primary">
+          {{ field.label | translate }}
+      </md-checkbox>
+      <!--
+        END: FORM CHECKBOX
+      -->
 
       <!--
         START: CUSTOM FOR ELEMENT FOR CREATING TAGS
