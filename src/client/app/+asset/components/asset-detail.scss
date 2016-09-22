@@ -301,7 +301,7 @@ asset-share-link .link {
   padding-top: rem(4);
   padding-right: rem(.4);
   padding-bottom: rem(4.6);
-  padding-left: rem(5.4);
+  padding-left: rem(2.4);
   white-space: nowrap;
   text-align: right;
   max-width: rem(40.0);
@@ -318,5 +318,17 @@ asset-share-link .link {
     padding-left: rem(.5);
     font-size: .9em;
     color: rgba(md-color($md-primary, 500),.75);
-  } 
+  }
+  button {
+    @include transition($swift-ease-out);
+    &:hover {
+      @include text-contrast(md-color($md-primary, 500));
+      color: md-color($md-primary);
+      background-color: md-color($md-foreground, base, .1);
+    }
+    // once they put a transition into the ::after pseudo class this can go away
+    &[md-icon-button]:hover::after {
+      background-color: transparent;
+    }
+  }
 }
