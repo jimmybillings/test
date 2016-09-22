@@ -65,7 +65,7 @@ export class ActiveCollectionService implements OnInit {
   }
 
   public set(collectionId: number, set: boolean = true): Observable<any> {
-    return this.api.put(`${this.apiUrls.CollectionSetActive}/${collectionId}`)
+    return this.api.put(`${this.apiUrls.CollectionSetActive}/${collectionId}`, '', {}, true)
       .map((res) => {
         if (set) this.updateActiveCollectionStore(res.json());
         return res.json();
@@ -91,7 +91,7 @@ export class ActiveCollectionService implements OnInit {
     if (collectionParams['i']) collectionParams['i'] -= 1;
     this.params = Object.assign({}, this.params, collectionParams);
     return this.api.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}`,
-      this.getSearchOptions(this.params))
+      this.getSearchOptions(this.params), true)
       .map((res) => {
         if (set) this.updateActiveCollectionAssets(res.json());
         return res.json();

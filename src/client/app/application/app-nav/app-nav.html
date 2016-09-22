@@ -33,7 +33,6 @@
     
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
 </md-toolbar>
-
 <md-menu x-position="before" #navigation="mdMenu">
     <a md-menu-item *ngIf="permission.has('Root')" [routerLink]="['/admin/dashboard']">
         <md-icon>settings</md-icon>{{ 'HEADER.ADMIN_LABEL' | translate }}
