@@ -48,7 +48,7 @@ export class CurrentUser {
 
   public destroy() {
     localStorage.removeItem('currentUser');
-    localStorage.setItem('currentUser', JSON.stringify(this.mayflyUser()));
+    localStorage.removeItem('token');
     this.set();
   }
 

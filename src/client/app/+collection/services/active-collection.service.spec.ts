@@ -73,15 +73,18 @@ export function main() {
 
     it('Should remove an asset from a collection with the given collectionId, assetId and uuid',
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
+
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
         spyOn(service, 'removeAssetFromStore');
+
         service.removeAsset(158, 1, 13213123).subscribe(response => {
           expect(connection.request.url).toBe('api/identites/v1/collection/158/removeAssets');
           expect(response).toEqual({ list: [{ assetId: 1 }] });
           expect(service.removeAssetFromStore).toHaveBeenCalledWith({ assetId: 1 });
         });
+
         connection.mockRespond(new Response(
           new ResponseOptions({
             body: {
