@@ -168,6 +168,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public getSortPreferences(sortId: any): void {
     let currentSort: any;
+    let sorts: any;
     this.userPreferences.getSortOptions().take(1).subscribe((data) => {
       for (let group of data.list) {
         for (let definition in group) {
@@ -176,8 +177,13 @@ export class SearchComponent implements OnInit, OnDestroy {
           }
         }
       };
-      currentSort = currentSort ? currentSort : data.list[0].first;
-      this.userPreferences.update({ sorts: data.list, currentSort: currentSort });
+      sorts = sorts ? sorts : this.mockSorts.list;
+      currentSort = currentSort ? currentSort : sorts[0].first;
+      this.userPreferences.update({ sorts: sorts, currentSort: currentSort });
+    }, (error) => {
+      sorts = sorts ? sorts : this.mockSorts.list;
+      currentSort = currentSort ? currentSort : sorts[0].first;
+      this.userPreferences.update({ sorts: sorts, currentSort: currentSort });
     });
   }
 
@@ -195,5 +201,19 @@ export class SearchComponent implements OnInit, OnDestroy {
   public updateSearchContext(sortDefinitionId: number): void {
     this.searchContext.update = { 'i': 1, 'sortId': sortDefinitionId };
     this.searchContext.go();
+  }
+
+  public get mockSorts(): any {
+    return {
+      'list': [
+        {
+          'first': {'lastUpdated': '2016-09-21T15:06:40Z','createdOn': '2016-08-18T18:01:44Z','id': 2,'siteName': 'core','name': 'Relevance (most relevant first)','isDefault': false,'pairId': 'testPair','association': 'user:1','sorts': [{'field': 'score','descending': true}]}
+        },
+        {
+          'first': {'lastUpdated': '2016-09-21T14:50:51Z','createdOn': '2016-09-16T20:13:22Z','id': 4,'siteName': 'core','name': 'Date Added (oldest first)','isDefault': false,'pairId': 'date','association': 'user:25','sorts': [{'field': 'ingested','descending': false}]},
+          'second': {'lastUpdated': '2016-09-21T14:51:18Z','createdOn': '2016-09-16T20:23:26Z','id': 5,'siteName': 'core','name': 'Date Added (newest first)','isDefault': false,'pairId': 'date','association': 'user:25','sorts': [{'field': 'ingested','descending': true}]}
+        }
+      ]
+    };
   }
 }
