@@ -39,7 +39,6 @@ export class ErrorActions {
         this.forbidden();
         break;
       default:
-        console.log(error);
         break;
     }
   }
