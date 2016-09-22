@@ -19,12 +19,12 @@ export class CollectionFilterDdComponent {
   constructor() {
     this.filterOptions = [
       {
-        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.ALL', 'value': 'all', 'access': { 'accessLevel': 'all' } },
-        'second': { 'id': 1, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.OWNER', 'value': 'owner', 'access': { 'accessLevel': 'owner' } }
+        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.ALL', 'value': 'all', 'access': { 'accessLevel': 'all' } }
       },
       {
-        'first': { 'id': 2, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.EDITOR', 'value': 'editor', 'access': { 'accessLevel': 'editor' } },
-        'second': { 'id': 3, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.VIEWER', 'value': 'viewer', 'access': { 'accessLevel': 'viewer' } }
+        'first': { 'id': 1, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.OWNER', 'value': 'owner', 'access': { 'accessLevel': 'owner' } },
+        'second': { 'id': 2, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.EDITOR', 'value': 'editor', 'access': { 'accessLevel': 'editor' } },
+        'third': { 'id': 3, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.VIEWER', 'value': 'viewer', 'access': { 'accessLevel': 'viewer' } }
       },
       {
         'first': { 'id': 4, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.RESEARCHER', 'value': 'researcher', 'access': { 'accessLevel': 'researcher' } }

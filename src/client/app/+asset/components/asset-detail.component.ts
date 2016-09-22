@@ -1,6 +1,8 @@
 import { Component, Output, EventEmitter, Input, OnChanges, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { CurrentUser } from '../../shared/services/current-user.model';
+import { UiConfig} from '../../shared/services/ui.config';
+import { UiState } from '../../shared/services/ui.state';
 import { MdMenuTrigger } from '@angular2-material/menu';
 
 @Component({
@@ -23,7 +25,9 @@ export class AssetDetailComponent implements OnChanges {
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   private assetsArr: Array<number>;
 
-  constructor() {
+  constructor(
+    public uiState: UiState,
+    public uiConfig: UiConfig) {
     this.assetsArr = [];
   }
 

@@ -74,11 +74,11 @@
   </collection-form>
 </wz-dialog>
 
-<md-menu class="collections-dd-menu dense" x-position="before" #filterCollectionOptions="mdMenu">
+<md-menu x-position="before" #filterCollectionOptions="mdMenu">
   <wz-sort-component [current]="options.currentFilter" [items]="filterOptions" (sort)="onFilterCollections($event)"></wz-sort-component>
 </md-menu>
 
-<md-menu class="collections-dd-menu dense" x-position="before" #sortCollectionOptions="mdMenu">
+<md-menu x-position="before" #sortCollectionOptions="mdMenu">
   <wz-sort-component [current]="options.currentSort" [items]="sortOptions" (sort)="onSortCollections($event)"></wz-sort-component>
 </md-menu>
 

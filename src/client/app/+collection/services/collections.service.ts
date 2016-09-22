@@ -161,5 +161,4 @@ export class CollectionsService {
   public setSearchParams() {
     this.params = { 'q': '', 'accessLevel': 'all', 's': '', 'd': '', 'i': 0, 'n': 200 };
   }
-
 }

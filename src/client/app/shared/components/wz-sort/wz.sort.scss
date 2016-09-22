@@ -1,25 +1,32 @@
-.wz-sort  {
+.md-menu wz-sort-component .dense,
+.md-menu.dd-menu-wrapper.dense {
   min-width: rem(27.5);
-  .group {
+  .select-dd {
+    height: rem(3.2);
+    flex-direction: column;
     justify-content: space-between;
     button[md-menu-item]{
+      font-size: .9em;
       flex: 1 0 100%;
-      height: rem(3.5);
+      height: rem(3.2);
       box-shadow: none;
       position: relative;
       md-icon.material-icons {
         opacity: 0;
-        font-size: 26px;
         margin-top: rem(-.8);
       }
     }
   }
-  .group button[md-menu-item].active {
+  .select-dd.active button[md-menu-item] {
     background-color: transparent;
     color: md-color($md-primary);
     md-icon.material-icons {
       color: md-color($md-primary);
       opacity: 1;
     }
+  }
+  md-divider {
+    margin-top: rem(.6);
+    margin-bottom: rem(.6);
   }
 }
