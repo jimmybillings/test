@@ -20,14 +20,14 @@ export class Error {
   }
 
   public dispatch(error: any): void {
-    this.store.dispatch({type: 'UPDATE_ERROR', payload: error});
+    this.store.dispatch({ type: 'UPDATE_ERROR', payload: error });
   }
 }
 
 @Injectable()
 export class ErrorActions {
   constructor(private error: Error, private router: Router, private currentUser: CurrentUser) {
-    this.error.data.subscribe((error:any) => this.handle(error));
+    this.error.data.subscribe((error: any) => this.handle(error));
   }
 
   public handle(error: any): void {
@@ -44,7 +44,8 @@ export class ErrorActions {
   }
 
   public unAuthorized(): void {
-    let redirect = (this.currentUser.loggedIn()) ? ['/user/login', { 'loggedOut': 'true' }] : ['/user/login'];
+    let redirect = (this.currentUser.loggedIn()) ? ['/user/login', { 'loggedOut': 'true' }] :
+      (this.router.url.indexOf('/user/login') > -1) ? ['/user/login', { 'credentials': 'invalid' }] : ['/user/login'];
     this.currentUser.destroy();
     this.router.navigate(redirect);
   }
