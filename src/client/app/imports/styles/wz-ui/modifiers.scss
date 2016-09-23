@@ -65,3 +65,19 @@
     }
   }
 }
+
+md-progress-bar {
+    .md-progress-bar-primary.md-progress-bar-fill {
+        &:after {
+            background-color:md-color($md-accent, 0) !important;
+        }
+    }
+    .md-progress-bar-secondary.md-progress-bar-fill {
+        &:after {
+            background-color:md-color($md-accent)!important;
+        }
+    }
+    .md-progress-bar-buffer {
+        background-color:md-color($md-accent, 100) !important;
+    }
+}
