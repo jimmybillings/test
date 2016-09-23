@@ -15,9 +15,15 @@ export class AssetShareLinkComponent {
   @Input() assetLink: string;
   @Output() close = new EventEmitter();
 
-
   public closeAssetShareLink(): void {
     this.UiState.closeAssetShareLink();
   }
 
+  public selectInputForCopy(event:any): void {
+    event.target.select();
+  }
+
+  public copyToClipboard(event:any): void {
+    console.log(event);
+  }
 }

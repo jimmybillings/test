@@ -318,6 +318,13 @@ asset-share-link .link {
     padding-left: rem(.5);
     font-size: .9em;
     color: rgba(md-color($md-primary, 500),.75);
+    &:focus, &:active {
+      outline: none;
+      border-color: rgba(md-color($md-primary, 500),.9);
+    }
+    &::selection {
+      background: rgba(md-color($md-accent, 500),.3);
+    }
   }
   button {
     @include transition($swift-ease-out);
