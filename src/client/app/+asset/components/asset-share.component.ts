@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { AssetService } from '../services/asset.service';
 
 @Component({
@@ -18,7 +18,9 @@ export class AssetShareComponent {
   public assetLinkIsShowing: boolean = false;
   public assetShareLink: any = '';
 
-  constructor(private asset: AssetService) {
+  constructor(
+    private asset: AssetService,
+    private changeDetector: ChangeDetectorRef) {
   }
 
   public closeAssetShare(): void {
@@ -26,21 +28,38 @@ export class AssetShareComponent {
   }
 
   public showShareLink(assetId: any) {
-    let startDate = new Date();
-    startDate.setDate(startDate.getDate());
-    let startDateDb = startDate.toISOString();
+    // we need to pass ISO formatted time stamps for the start and end time the share link is valid.
+    let startDateDb = this.IsoFormatLocalDate(new Date());
     let endDate = new Date();
-    endDate.setDate(endDate.getDate()+10);
-    let endDateDb = endDate.toISOString();
-    console.log(startDateDb);
-    console.log(endDateDb);
-    // let startDate = '2016-09-22T16:32:34Z';
-    // let endDate = '2016-10-02T16:32:34Z';
+    endDate.setDate(endDate.getDate() + 10);
+    let endDateDb = this.IsoFormatLocalDate(endDate);
+    // console.log(startDateDb);
+    // console.log(endDateDb);
 
-    // this.asset.getshareLink(assetId,startDateDb,endDateDb).subscribe((res) => {
-    //   this.assetShareLink = `${window.location.href}?share_key=${res.apiKey}`;
-    //   console.log(this.assetShareLink);
-    // });
+    this.asset.getshareLink(assetId,startDateDb,endDateDb).take(1).subscribe((res) => {
+      this.assetShareLink = `${window.location.href}?share_key=${res.apiKey}`;
+      this.changeDetector.markForCheck();
+      // console.log(this.assetShareLink);
+    });
     this.assetLinkIsShowing = !this.assetLinkIsShowing;
+  }
+
+  // we need to submit date/timestamps in ISO format. This does that.
+  private IsoFormatLocalDate(date:any) {
+    var d = date,
+      tzo = -d.getTimezoneOffset(),
+      dif = tzo >= 0 ? '+' : '-',
+      pad = function (num:any) {
+        var norm = Math.abs(Math.floor(num));
+        return (norm < 10 ? '0' : '') + norm;
+      };
+    return d.getFullYear()
+      + '-' + pad(d.getMonth() + 1)
+      + '-' + pad(d.getDate())
+      + 'T' + pad(d.getHours())
+      + ':' + pad(d.getMinutes())
+      + ':' + pad(d.getSeconds())
+      + dif + pad(tzo / 60)
+      + ':' + pad(tzo % 60);
   }
 }
