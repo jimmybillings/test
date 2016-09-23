@@ -19,6 +19,8 @@ import { AssetData } from '../+search/services/asset.data.service';
 import { FilterService } from '../+search/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { ApiService } from '../shared/services/api.service';
+import { CartService } from '../shared/services/cart.service';
+
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
 
@@ -37,6 +39,7 @@ import { activeCollection } from '../+collection/services/active-collection.serv
 import { filters } from '../+search/services/filter.service';
 import { userPreferences } from '../shared/services/user-preference.service';
 import { CollectionContextService, collectionOptions } from '../shared/services/collection-context.service';
+import { cart } from '../shared/services/cart.service';
 
 // TRANSLATIONS
 import { MultilingualService } from '../shared/services/multilingual.service';
@@ -61,7 +64,8 @@ export const WAZEE_PROVIDERS = [
   FilterService,
   UserPreferenceService,
   CollectionContextService,
-  ApiService
+  ApiService,
+  CartService
 ];
 
 export const WAZEE_STORES: any = {
@@ -78,7 +82,8 @@ export const WAZEE_STORES: any = {
     userPreferences:userPreferences,
     collectionOptions:collectionOptions,
     i18n: multilingualActionReducer,
-    error: error
+    error: error,
+    cart: cart
 };
 
 export const WAZEE_ROUTES: Routes = [
