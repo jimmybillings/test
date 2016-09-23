@@ -177,12 +177,12 @@ export class SearchComponent implements OnInit, OnDestroy {
           }
         }
       };
-      sorts = sorts ? sorts : this.mockSorts.list;
+      sorts = data.list ? data.list : this.mockSorts.list;
       currentSort = currentSort ? currentSort : sorts[0].first;
       this.userPreferences.update({ sorts: sorts, currentSort: currentSort });
     }, (error) => {
-      sorts = sorts ? sorts : this.mockSorts.list;
-      currentSort = currentSort ? currentSort : sorts[0].first;
+      sorts = this.mockSorts.list;
+      currentSort = sorts[0].first;
       this.userPreferences.update({ sorts: sorts, currentSort: currentSort });
     });
   }
