@@ -1,10 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-// import { UiConfig } from '../../shared/services/ui.config';
-// import { Observable } from 'rxjs/Rx';
+import { AssetService } from '../services/asset.service';
 
-/**
- * Directive that renders a list of collections
- */
 @Component({
   moduleId: module.id,
   selector: 'asset-share',
@@ -17,29 +13,34 @@ export class AssetShareComponent {
   @Input() config: any;
   @Input() assetThumbnailUrl: any;
   @Input() assetName: any;
+  @Input() assetId: any;
   @Output() close = new EventEmitter();
   public assetLinkIsShowing: boolean = false;
+  public assetShareLink: any = '';
 
-  // constructor(
-    // public uiConfig: UiConfig) {
-    // this.collections = this.collectionsService.data;
-  // }
-
-  // ngOnInit(): void {
-  //   this.uiConfig.get('global').take(1).subscribe(config => {
-  //     this.pageSize = config.config.pageSize.value;
-  //   });
-  // }
-
-  // ngOnDestroy(): void {
-  //   this.optionsSubscription.unsubscribe();
-  // }
+  constructor(private asset: AssetService) {
+  }
 
   public closeAssetShare(): void {
     this.close.emit();
   }
 
-  public showShareLink() {
+  public showShareLink(assetId: any) {
+    let startDate = new Date();
+    startDate.setDate(startDate.getDate());
+    let startDateDb = startDate.toISOString();
+    let endDate = new Date();
+    endDate.setDate(endDate.getDate()+10);
+    let endDateDb = endDate.toISOString();
+    console.log(startDateDb);
+    console.log(endDateDb);
+    // let startDate = '2016-09-22T16:32:34Z';
+    // let endDate = '2016-10-02T16:32:34Z';
+
+    // this.asset.getshareLink(assetId,startDateDb,endDateDb).subscribe((res) => {
+    //   this.assetShareLink = `${window.location.href}?share_key=${res.apiKey}`;
+    //   console.log(this.assetShareLink);
+    // });
     this.assetLinkIsShowing = !this.assetLinkIsShowing;
   }
 }

@@ -12,6 +12,7 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter} from '
 
 export class AssetShareLinkComponent {
   @Input() UiState: any;
+  @Input() assetLink: string;
   @Output() close = new EventEmitter();
 
 

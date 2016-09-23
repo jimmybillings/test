@@ -56,6 +56,19 @@ export class AssetService {
       .map((res) => { return res.json(); });
   }
 
+  public getshareLink(id: any,accessStartDate: any,accessEndDate:any): Observable<any> {
+    return this.api.post(this.apiConfig.baseUrl() + 'api/identities/v1/accessInfo',
+      JSON.stringify({
+        'type': 'asset',
+        'accessInfo': id,
+        'accessStartDate': accessStartDate,
+        'accessEndDate': accessEndDate
+      }))
+      .map(res => {
+        return res.json();
+      });
+  }
+
   public getData(id: any): Observable<any> {
     return this.api.get(this.apiConfig.baseUrl() + 'api/assets/v1/clip/' + id + '/clipDetail')
       .map((res) => { return res.json(); });
