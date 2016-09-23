@@ -118,7 +118,8 @@ export class FilterService {
   public filterOptions(params: any): RequestOptions {
     let search: URLSearchParams = new URLSearchParams();
     for (let param in params) { search.set(param, params[param]); };
-    if (this.currentUser.loggedIn()) search.set('siteName', this.apiConfig.getPortal());
+    console.log(this.currentUser.loggedIn());
+    if (!this.currentUser.loggedIn()) search.set('siteName', this.apiConfig.getPortal());
     return new RequestOptions({ search });
   }
 

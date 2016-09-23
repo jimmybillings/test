@@ -70,7 +70,7 @@ export class AssetService {
   }
 
   public getData(id: any): Observable<any> {
-    return this.api.get(this.apiConfig.baseUrl() + 'api/assets/v1/clip/' + id + '/clipDetail')
+    return this.api.get(this.apiConfig.baseUrl() + 'api/assets/v1/clip/' + id + '/clipDetail', {}, true)
       .map((res) => { return res.json(); });
   }
 

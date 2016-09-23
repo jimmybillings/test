@@ -28,8 +28,7 @@ export class Authentication {
   }
 
   public destroy(): Observable<any> {
-    return this.api.post(this._apiUrls.destroy, null)
-      .do(() => localStorage.removeItem('token'));
+    return this.api.post(this._apiUrls.destroy, null);
   }
 }
 

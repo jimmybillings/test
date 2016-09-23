@@ -28,6 +28,7 @@
       [config]="(uiConfig.get('searchBox') | async).config"
       (searchContext)="newSearchContext($event)">
     </wz-search-box>
+    <md-progress-bar mode="indeterminate" *ngIf="(uiState.data | async).loading"></md-progress-bar>
   </header>
   <div [ngClass]="{
     'collection-tray-closed': !(uiState.data | async).binTrayIsOpen,

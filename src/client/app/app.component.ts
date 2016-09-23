@@ -105,7 +105,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .filter((loggedIn: boolean) => loggedIn)
       .subscribe(() => {
         this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, { i: 1, n: 100 }).take(1).subscribe();
+          this.activeCollection.getItems(collection.id, { i: 1, n: 100 }, true, false).take(1).subscribe();
           this.collectionsService.loadCollections().take(1).subscribe();
         });
       });

@@ -30,7 +30,7 @@ export class ApiConfig {
     });
   }
 
-  public get userHeaders(): Headers {
+  public userHeaders(): Headers {
     return (this.currentUser.loggedIn()) ? this.authHeaders() : this.headers();
   }
 

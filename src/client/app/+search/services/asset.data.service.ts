@@ -55,7 +55,7 @@ export class AssetData {
   public searchAssets(params: any): Observable<any> {
     params['i'] = (parseFloat(params['i']) - 1).toString();
     let options = this.getAssetSearchOptions(params, this.currentUser.loggedIn());
-    return this.api.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options)
+    return this.api.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options, true)
       .map((res: Response) => {
         this.storeAssets(res.json());
         return res.json();
