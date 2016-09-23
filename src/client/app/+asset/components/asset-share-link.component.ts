@@ -12,11 +12,18 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter} from '
 
 export class AssetShareLinkComponent {
   @Input() UiState: any;
+  @Input() assetLink: string;
   @Output() close = new EventEmitter();
-
 
   public closeAssetShareLink(): void {
     this.UiState.closeAssetShareLink();
   }
 
+  public selectInputForCopy(event:any): void {
+    event.target.select();
+  }
+
+  public copyToClipboard(event:any): void {
+    console.log(event);
+  }
 }
