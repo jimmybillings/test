@@ -19,6 +19,7 @@ export class AppNavComponent {
   @Input() state: any;
   @Input() collection: Collection;
   @Input() UiState: any;
+  @Input() prefs: any;
   @Input() permission: any;
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
@@ -33,16 +34,14 @@ export class AppNavComponent {
   }
 
   public toggleSearch() {
-    this.UiState.toggleSearch();
+    this.prefs.toggleSearch();
   }
 
-  public toggleBinTray() {
-    console.log(this.UiState);
-    this.UiState.toggleBinTray();
+  public toggleCollectionTray() {
+    this.prefs.toggleCollectionTray();
   }
 
   public showNewCollection(event: Event) {
-
     this.UiState.showNewCollection();
   }
 }

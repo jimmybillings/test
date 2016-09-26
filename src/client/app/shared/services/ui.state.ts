@@ -6,8 +6,6 @@ const InitUiState: any = {
   collectionsListIsOpen: false,
   collectionsSortIsOpen: false,
   collectionsFilterIsOpen: false,
-  binTrayIsOpen: false,
-  searchIsOpen: true,
   searchBarIsActive: false,
   showFixed: false,
   loading: false
@@ -41,30 +39,6 @@ export class UiState {
 
   public update(payload: Object): void {
     this.store.dispatch({ type: 'UI.STATE.UPDATE', payload: payload });
-  }
-
-  public openBinTray(): void {
-    this.update({ binTrayIsOpen: true });
-  }
-
-  public closeBinTray(): void {
-    this.update({ binTrayIsOpen: false });
-  }
-
-  public toggleBinTray(): void {
-    this.data.take(1).subscribe(s => this.update({ binTrayIsOpen: !s.binTrayIsOpen}));
-  }
-
-  public openSearch(): void {
-    this.update({ searchIsOpen: true });
-  }
-
-  public closeSearch(): void {
-    this.update({ searchIsOpen: false });
-  }
-
-  public toggleSearch(): void {
-    this.data.take(1).subscribe(s => this.update({ searchIsOpen: !s.searchIsOpen}));
   }
 
   public showCollectionsList(): void {

@@ -4,10 +4,10 @@ import {
   TestBed
 } from '../../imports/test.imports';
 
-// import { BinTrayComponent } from './collection-tray.component';
+// import { CollectionTrayComponent } from './collection-tray.component';
 
 export function main() {
-  describe('Bin Tray Component', () => {
+  describe('Collection Tray Component', () => {
      beforeEach(() => TestBed.configureTestingModule({
       providers: [
         ...beforeEachProvidersArray,

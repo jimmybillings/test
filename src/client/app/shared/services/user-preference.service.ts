@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
-import { CurrentUser } from './current-user.model';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
-import { ApiConfig } from './api.config';
-import { ApiService } from './api.service';
 
 const defaultPreferences: any = {
   filterCounts: false,
-  sorts: [],
-  currentSort: {}
+  collectionTrayIsOpen: false,
+  searchIsOpen: true
 };
 
 export const userPreferences: ActionReducer<any> = (state = defaultPreferences, action: Action) => {
   switch (action.type) {
-    case 'UPDATE_PREFERENCES':
+    case 'USER_PREFS.UPDATE_PREFERENCES':
       return Object.assign({}, state, action.payload);
     default:
       return state;
@@ -24,12 +21,8 @@ export const userPreferences: ActionReducer<any> = (state = defaultPreferences, 
 export class UserPreferenceService {
   public data: Observable<any>;
 
-  constructor(
-    public currentUser: CurrentUser,
-    public store: Store<any>,
-    public api: ApiService,
-    public apiConfig: ApiConfig) {
-      this.data = this.store.select('userPreferences');
+  constructor(public store: Store<any>) {
+    this.data = this.store.select('userPreferences');
   }
 
   public get prefs(): Observable<any> {
@@ -44,13 +37,23 @@ export class UserPreferenceService {
     return s;
   }
 
-  public update(params: any): void {
-    this.store.dispatch({ type: 'UPDATE_PREFERENCES', payload: params });
+  public toggleSearch(): void {
+    this.data.take(1).subscribe(s => this.update({ searchIsOpen: !s.searchIsOpen }));
   }
 
-  public getSortOptions(): Observable<any> {
-    return this.api.get(
-      this.apiConfig.baseUrl() + 'api/identities/v1/sortDefinition/list'
-    ).map(res => res.json());
+  public closeSearch(): void {
+    this.update({ searchIsOpen: false });
+  }
+
+  public toggleCollectionTray(): void {
+    this.data.take(1).subscribe(s => this.update({ collectionTrayIsOpen: !s.collectionTrayIsOpen }));
+  }
+
+  public openCollectionTray(): void {
+    this.update({ collectionTrayIsOpen: true });
+  }
+
+  public update(params: any): void {
+    this.store.dispatch({ type: 'USER_PREFS.UPDATE_PREFERENCES', payload: params });
   }
 }
