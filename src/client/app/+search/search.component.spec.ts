@@ -8,7 +8,7 @@ import {
 import { SearchComponent } from './search.component';
 import { UiConfig } from '../shared/services/ui.config';
 import { AssetData } from './services/asset.data.service';
-import { UserPreferenceService } from '../shared/services/user-preference.service';
+import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { SearchContext } from '../shared/services/search-context.service';
 
 export function main() {
@@ -29,7 +29,7 @@ export function main() {
       }
     }
 
-    class MockUserPreference {
+    class MockSortDefinitionsService {
       public getSortOptions() {
         return Observable.of(mockSortDefinitions());
       }
@@ -56,25 +56,25 @@ export function main() {
         SearchContext,
         { provide: AssetData, useClass: MockAssetData },
         { provide: UiConfig, useClass: MockUiConfig },
-        { provide: UserPreferenceService, useClass: MockUserPreference },
+        { provide: SortDefinitionsService, useClass: MockSortDefinitionsService },
         { provide: SearchContext, useClass: MockSearchContext }
       ]
     }));
 
     it('Should have a getSortPreferences() method that loops the sortDefinition list and sets a default',
       inject([SearchComponent], (component: SearchComponent) => {
-        spyOn(component.userPreferences, 'update');
+        spyOn(component.sortDefinitions, 'update');
         component.getSortPreferences(2);
-        expect(component.userPreferences.update).toHaveBeenCalledWith({ sorts: mockSortDefinitions().list, currentSort: mockSortDefinitions().list[0].first });
+        expect(component.sortDefinitions.update).toHaveBeenCalledWith({ sorts: mockSortDefinitions().list, currentSort: mockSortDefinitions().list[0].first });
       }));
 
     it('Should have a onSortResults() event handler function that updates the currentSort and searchContext',
       inject([SearchComponent], (component: SearchComponent) => {
         component.preferences = {filterCounts: true, sorts: mockSortDefinitions().list};
-        spyOn(component.userPreferences, 'update');
+        spyOn(component.sortDefinitions, 'update');
         spyOn(component, 'updateSearchContext');
         component.onSortResults(mockSortDefinitions().list[1].first);
-        expect(component.userPreferences.update).toHaveBeenCalledWith({currentSort: mockSortDefinitions().list[1].first});
+        expect(component.sortDefinitions.update).toHaveBeenCalledWith({currentSort: mockSortDefinitions().list[1].first});
       }));
 
     it('Should have an updateSearchContext() method that updates the search contex, and calls .go()',
