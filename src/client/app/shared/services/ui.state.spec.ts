@@ -22,55 +22,7 @@ export function main() {
         });
       }));
 
-    it('Should have a openBinTray method that sets the binTrayIsOpen property to true',
-      inject([UiState], (service: UiState) => {
-        service.openBinTray();
-        service.data.first().subscribe(data => {
-          expect(data.binTrayIsOpen).toEqual(true);
-        });
-      }));
 
-    it('Should have a closeBinTray method that sets the binTrayIsOpen property to false',
-      inject([UiState], (service: UiState) => {
-        service.openBinTray();
-        service.closeBinTray();
-        service.data.first().subscribe(data => {
-          expect(data.binTrayIsOpen).toEqual(false);
-        });
-      }));
-
-    it('Should have a toggleBinTray method that toggles the binTrayIsOpen property',
-      inject([UiState], (service: UiState) => {
-        service.toggleBinTray();
-        service.data.first().subscribe(data => {
-          expect(data.binTrayIsOpen).toEqual(true);
-        });
-      }));
-
-    it('Should have a openSearch method that sets the searchIsOpen property to true',
-      inject([UiState], (service: UiState) => {
-        service.openSearch();
-        service.data.first().subscribe(data => {
-          expect(data.searchIsOpen).toEqual(true);
-        });
-      }));
-
-    it('Should have a closeSearch method that sets the searchIsOpen property to false',
-      inject([UiState], (service: UiState) => {
-        service.openSearch();
-        service.closeSearch();
-        service.data.first().subscribe(data => {
-          expect(data.searchIsOpen).toEqual(false);
-        });
-      }));
-
-    it('Should have a toggleSearch method that toggles the searchIsOpen property',
-      inject([UiState], (service: UiState) => {
-        service.toggleSearch();
-        service.data.first().subscribe(data => {
-          expect(data.searchIsOpen).toEqual(false);
-        });
-      }));
 
     it('Should have a showCollectionsList method that sets the collectionsListIsOpen to true',
       inject([UiState], (service: UiState) => {
@@ -91,9 +43,9 @@ export function main() {
 
     it('Should have an update method that updates the store with the payload',
       inject([UiState], (service: UiState) => {
-        service.update({ binTrayIsOpen: true });
+        service.update({ collectionTrayIsOpen: true });
         service.data.first().subscribe(data => {
-          expect(data.binTrayIsOpen).toEqual(true);
+          expect(data.collectionTrayIsOpen).toEqual(true);
         });
       }));
 
@@ -102,8 +54,6 @@ export function main() {
         service.data.first().subscribe(data => {
           expect(data).toEqual(mockState());
         });
-        service.openBinTray();
-        service.closeSearch();
         service.reset();
         service.data.first().subscribe(data => {
           expect(data).toEqual(mockState());
@@ -149,8 +99,6 @@ export function main() {
         collectionsListIsOpen: false,
         collectionsSortIsOpen: false,
         collectionsFilterIsOpen: false,
-        binTrayIsOpen: false,
-        searchIsOpen: true,
         searchBarIsActive: false,
         showFixed: false,
         loading: false
