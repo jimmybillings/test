@@ -7,8 +7,7 @@ import { CartService } from '../shared/services/cart.service';
 export function main() {
   describe('Cart Component', () => {
     const mockCartService = {
-      data: Observable.of({ someData: 'SOME_VALUE' }),
-      loadCart: jasmine.createSpy('loadCart() spy')
+      data: Observable.of({ someData: 'SOME_VALUE' })
     };
 
     beforeEach(() => {
@@ -33,10 +32,6 @@ export function main() {
         componentUnderTest.cart.subscribe((cartData) => {
           expect(cartData.someData).toBe('SOME_VALUE');
         });
-      });
-
-      it('tells CartService to load data', () => {
-        expect(mockCartService.loadCart).toHaveBeenCalled();
       });
     });
   });
