@@ -18,6 +18,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
   @Input() apiConfig: any;
   @Input() state: any;
   @Input() UiState: UiState;
+  @Input() prefs: any;
   @Output() searchContext = new EventEmitter();
   public searchTerms: Observable<any>;
   public searchForm: FormGroup;
@@ -48,7 +49,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
   }
 
   public closeSearch() {
-    this.UiState.closeSearch();
+    this.prefs.closeSearch();
   }
 
   public setForm() {

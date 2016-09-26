@@ -11,6 +11,7 @@ import { CollectionsService } from '../+collection/services/collections.service'
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { FilterService } from './services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
+import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { UserPermission } from '../shared/services/permission.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 
@@ -32,11 +33,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
   public preferences: any;
+  public sortOptions: any;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
   private configSubscription: Subscription;
   private preferencesSubscription: Subscription;
+  private sortSubscription: Subscription;
 
   constructor(
     private _router: Router,
@@ -52,10 +55,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     public filter: FilterService,
     public userPreferences: UserPreferenceService,
     public notification: WzNotificationService,
-    public uiState: UiState) { }
+    public uiState: UiState,
+    public sortDefinitions: SortDefinitionsService) { }
 
   ngOnInit(): void {
-    this.preferencesSubscription = this.userPreferences.prefs.subscribe((data: any) => {
+    this.sortSubscription = this.sortDefinitions.data.subscribe((data: any) => {
+      this.sortOptions = data;
+    });
+    this.preferencesSubscription = this.userPreferences.data.subscribe((data: any) => {
       this.preferences = data;
       this.filter.get(this.searchContext.state, this.preferences.counted).take(1).subscribe(() => this.uiState.loading(false));
     });
@@ -75,6 +82,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.routeSubscription.unsubscribe();
     this.configSubscription.unsubscribe();
     this.preferencesSubscription.unsubscribe();
+    this.sortSubscription.unsubscribe();
   }
 
   public countToggle(event: any): void {
@@ -87,7 +95,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public addToCollection(params: any): void {
-    this.uiState.openBinTray();
+    this.preferences.openBinTray();
     this.activeCollection.addAsset(params.collection.id, params.asset).take(1).subscribe((asset) => {
       this.activeCollection.addAssetToStore(Object.assign({}, params.asset, asset.list[0]));
     });
@@ -169,7 +177,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public getSortPreferences(sortId: any): void {
     let currentSort: any;
     let sorts: any;
-    this.userPreferences.getSortOptions().take(1).subscribe((data) => {
+    this.sortDefinitions.getSortOptions().take(1).subscribe((data) => {
       for (let group of data.list) {
         for (let definition in group) {
           if (group[definition].id === parseInt(sortId)) {
@@ -179,11 +187,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       };
       sorts = data.list ? data.list : this.mockSorts.list;
       currentSort = currentSort ? currentSort : sorts[0].first;
-      this.userPreferences.update({ sorts: sorts, currentSort: currentSort });
+      this.sortDefinitions.update({ sorts: sorts, currentSort: currentSort });
     }, (error) => {
       sorts = this.mockSorts.list;
       currentSort = sorts[0].first;
-      this.userPreferences.update({ sorts: sorts, currentSort: currentSort });
+      this.sortDefinitions.update({ sorts: sorts, currentSort: currentSort });
     });
   }
 
@@ -191,7 +199,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     for (let group of this.preferences.sorts) {
       for (let definition in group) {
         if (group[definition].id === sortDefinition.id) {
-          this.userPreferences.update({ currentSort: group[definition] });
+          this.sortDefinitions.update({ currentSort: group[definition] });
         }
       }
     };

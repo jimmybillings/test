@@ -21,8 +21,8 @@
           <div layout="row" layout-align="start center">
             <div class="asset-sort-display" flex="100">
               <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
-              <span class="md-caption" *ngIf="preferences">
-                <strong>Sort By: </strong>{{ preferences.currentSort.name }}
+              <span class="md-caption" *ngIf="sortOptions">
+                <strong>Sort By: </strong>{{ sortOptions.currentSort.name }}
               </span> 
             </div>
           </div>
@@ -48,5 +48,5 @@
 </md-sidenav-layout>
 
 <md-menu x-position="after" #assetSortMenu="mdMenu">
-  <wz-sort-component [current]="preferences.currentSort" [items]="preferences.sorts" (sort)="onSortResults($event)"></wz-sort-component>
+  <wz-sort-component [current]="sortOptions.currentSort" [items]="sortOptions.sorts" (sort)="onSortResults($event)"></wz-sort-component>
 </md-menu>
