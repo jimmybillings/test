@@ -1,4 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter} from '@angular/core';
+
+var Clipboard = require('clipboard/dist/clipboard');
 /**
  * Directive that renders a list of collections
  */
@@ -15,6 +17,12 @@ export class AssetShareLinkComponent {
   @Input() assetLink: string;
   @Output() close = new EventEmitter();
 
+
+
+  constructor() {
+    new Clipboard('.clipboard-copy');
+  }
+
   public closeAssetShareLink(): void {
     this.UiState.closeAssetShareLink();
   }
@@ -23,7 +31,7 @@ export class AssetShareLinkComponent {
     event.target.select();
   }
 
-  public copyToClipboard(event:any): void {
-    console.log(event);
-  }
+  // public copyToClipboard(event:any): void {
+  //   console.log(event);
+  // }
 }

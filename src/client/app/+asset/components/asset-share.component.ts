@@ -37,7 +37,7 @@ export class AssetShareComponent {
     // console.log(endDateDb);
 
     this.asset.getshareLink(assetId,startDateDb,endDateDb).take(1).subscribe((res) => {
-      this.assetShareLink = `${window.location.href}?share_key=${res.apiKey}`;
+      this.assetShareLink = `${window.location.href};share_key=${res.apiKey}`;
       this.changeDetector.markForCheck();
       // console.log(this.assetShareLink);
     });

@@ -21,7 +21,14 @@
         layout-align="start center"
         value="{{ assetLink }}"
         (click)="selectInputForCopy($event)" />
-      <button flex="auto" layout-align="end center" md-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK.COPY_BTN_TITLE' | translate }}" (click)="copyToClipboard($event)"><md-icon>content_copy</md-icon></button>
+      <button 
+        flex="auto"
+        layout-align="end center"
+        class="clipboard-copy"
+        md-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK.COPY_BTN_TITLE' | translate }}"
+        data-clipboard-target="#shareLink">
+        <md-icon>content_copy</md-icon>
+      </button>
     </div>
   </section>
 </div>
