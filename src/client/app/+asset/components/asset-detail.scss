@@ -323,7 +323,8 @@ asset-share-link .link {
       border-color: rgba(md-color($md-primary, 500),.9);
     }
     &::selection {
-      background: rgba(md-color($md-accent, 500),.3);
+      background: rgba(md-color($md-accent, 600),.25);
+      color: md-color($md-primary, 600);
     }
   }
   button {
