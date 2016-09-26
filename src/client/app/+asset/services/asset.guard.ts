@@ -15,8 +15,8 @@ export class AssetGuard implements CanActivate {
   }
 
   private canView(route: ActivatedRouteSnapshot): boolean {
-    if (route.queryParams['share_key']) {
-      localStorage.setItem('token', route.queryParams['share_key']);
+    if (route.params['share_key']) {
+      localStorage.setItem('token', route.params['share_key']);
       return true;
     } else {
       return this.currentUser.loggedIn() && (this.permission.has('Root') || this.permission.has('ViewClips'));

@@ -1,7 +1,7 @@
 <div class="app" #target>
   <header [ngClass]="{
     'fixed': (uiState.data | async).showFixed,
-    'collection-tray-closed': !(preferences.data | async).binTrayIsOpen,
+    'collection-tray-closed': !(preferences.data | async).collectionTrayIsOpen,
     'search-closed': !(preferences.data | async).searchIsOpen
     }" class="app-header">
     <app-nav
@@ -33,7 +33,7 @@
     <md-progress-bar mode="indeterminate" *ngIf="(uiState.data | async).loading"></md-progress-bar>
   </header>
   <div [ngClass]="{
-    'collection-tray-closed': !(preferences.data | async).binTrayIsOpen,
+    'collection-tray-closed': !(preferences.data | async).collectionTrayIsOpen,
     'search-closed': !(preferences.data | async).searchIsOpen
     }" class="main-content">
     <router-outlet></router-outlet>

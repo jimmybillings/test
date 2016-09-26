@@ -37,8 +37,8 @@ export class AppNavComponent {
     this.prefs.toggleSearch();
   }
 
-  public toggleBinTray() {
-    this.prefs.toggleBinTray();
+  public toggleCollectionTray() {
+    this.prefs.toggleCollectionTray();
   }
 
   public showNewCollection(event: Event) {

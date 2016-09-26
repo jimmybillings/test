@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 const defaultPreferences: any = {
   filterCounts: false,
-  binTrayIsOpen: false,
+  collectionTrayIsOpen: false,
   searchIsOpen: true
 };
 
@@ -45,12 +45,12 @@ export class UserPreferenceService {
     this.update({ searchIsOpen: false });
   }
 
-  public toggleBinTray(): void {
-    this.data.take(1).subscribe(s => this.update({ binTrayIsOpen: !s.binTrayIsOpen }));
+  public toggleCollectionTray(): void {
+    this.data.take(1).subscribe(s => this.update({ collectionTrayIsOpen: !s.collectionTrayIsOpen }));
   }
 
-  public openBinTray(): void {
-    this.update({ binTrayIsOpen: true });
+  public openCollectionTray(): void {
+    this.update({ collectionTrayIsOpen: true });
   }
 
   public update(params: any): void {
