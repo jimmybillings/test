@@ -50,7 +50,7 @@ export class CartService {
   }
 
   public addAssetToProjectInCart(asset: any): Observable<any> {
-    let url: string = `${this.apiConfig.baseUrl()}api/orders/v1/cart/asset/lineItem?region=AAA`;
+    let url: string = `api/orders/v1/cart/asset/lineItem?region=AAA`;
     let body: any = this.formatAsset(asset);
     return this.apiService.put(url, body).map(res => {
       this.replaceStoreWith(res.json());
