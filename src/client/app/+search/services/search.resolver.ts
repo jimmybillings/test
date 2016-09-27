@@ -16,7 +16,7 @@ export class SearchResolver {
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     this.searchContext.create = this.sanitize(route.params);
-    if (this.userPreference.state.filterCounts) this.uiState.loading(true);
+    if (this.userPreference.state.displayFilterCounts) this.uiState.loading(true);
     return this.assets.searchAssets(this.searchContext.state);
   }
 

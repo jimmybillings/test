@@ -10,6 +10,7 @@ import {
   style,
   transition,
   animate,
+  keyframes,
   ChangeDetectionStrategy} from '@angular/core';
 import {Overlay} from '@angular2-material/core';
 import {OverlayState} from '@angular2-material/core';
@@ -32,14 +33,19 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
   encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('slideInOut', [
-      state('in', style({ marginTop: '0' })),
-      state('void, out', style({ marginTop: '-260%' })),
-      transition('void => *, out => in', [
-        // style({ marginTop: '-240%' }),
-        animate('400ms ease-in-out')
+      state('shown', style({ marginTop: '0' })),
+      state('void, hidden', style({ marginTop: '-260%' })),
+      transition('void => *, hidden => shown', [
+        animate('400ms 10ms ease-in-out', keyframes([
+          style({ marginTop: '-260%', offset: 0 }),
+          style({ marginTop: '0' , offset: 1.0})
+        ]))
       ]),
-      transition('in => void, * => void, in => out', [
-        animate('600ms ease-in-out', style({ marginTop: '-260%' }))
+      transition('shown => void, * => void, shown => hidden', [
+        animate('400ms 10ms ease-in-out', keyframes([
+          style({ marginTop: '0', offset: 0 }),
+          style({ marginTop: '-260%', offset: 1.0 })
+        ]))
       ])
     ])
   ],
@@ -59,7 +65,7 @@ export class WzDialogComponent implements OnDestroy {
   @Input() config = new OverlayState();
   @Input() clickCatcher: boolean = true;
   public viewRef: any;
-  public animationState: string = 'out';
+  public animationState: string = 'hidden';
   @ViewChild(WzDialogPortalDirective) private portal: WzDialogPortalDirective;
   private overlayRef: OverlayRef = null;
 

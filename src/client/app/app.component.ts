@@ -15,6 +15,8 @@ import { CollectionsService } from './+collection/services/collections.service';
 import { UiState} from './shared/services/ui.state';
 import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
 import { ActiveCollectionService} from './+collection/services/active-collection.service';
+import { CartService } from './shared/services/cart.service';
+import { UserPreferenceService } from './shared/services/user-preference.service';
 // /Interfaces
 import { ILang} from './shared/interfaces/language.interface';
 import { Collection, CollectionStore } from './shared/interfaces/collection.interface';
@@ -50,6 +52,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>,
     public uiState: UiState,
+    private cartService: CartService,
+    public preferences: UserPreferenceService,
     private renderer: Renderer,
     private notification: WzNotificationService,
     private apiConfig: ApiConfig,
@@ -88,6 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authSubscription = this.authentication.destroy().subscribe();
     this.currentUser.destroy();
     this.collectionsService.destroyCollections();
+    this.cartService.destroyData();
     this.uiState.reset();
   }
 
@@ -108,6 +113,8 @@ export class AppComponent implements OnInit, OnDestroy {
           this.activeCollection.getItems(collection.id, { i: 1, n: 100 }, true, false).take(1).subscribe();
           this.collectionsService.loadCollections().take(1).subscribe();
         });
+
+        this.cartService.initializeData();
       });
   }
 }

@@ -1,5 +1,5 @@
-import { Observable} from 'rxjs/Rx';
-import { Store, ActionReducer, Action} from '@ngrx/store';
+import { Observable } from 'rxjs/Rx';
+import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { ApiService } from '../../shared/services/api.service';
@@ -51,15 +51,42 @@ export class AssetService {
 
   public getPrice(id: any): Observable<any> {
     return this.api.get('api/orders/v1/priceBook/price/' + id + '?region=AAA')
-      .map((res) => { return res.json(); });
+      .map((res) => {
+        this.setPrice(res.json());
+        return res.json();
+      });
+  }
+
+  public getshareLink(id: any, accessStartDate: any, accessEndDate: any): Observable<any> {
+    return this.api.post('api/identities/v1/accessInfo',
+      JSON.stringify({
+        'type': 'asset',
+        'accessInfo': id,
+        'accessStartDate': accessStartDate,
+        'accessEndDate': accessEndDate
+      }))
+      .map(res => {
+        return res.json();
+      });
+  }
+
+  public createShareLink(shareLink:any): Observable<any> {
+    return this.api.post('api/identities/v1/accessInfo',
+      JSON.stringify(shareLink))
+      .map(res => {
+        return res.json();
+      });
   }
 
   public getData(id: any): Observable<any> {
     return this.api.get('api/assets/v1/clip/' + id + '/clipDetail', {}, true)
-      .map((res) => { return res.json(); });
+      .map((res) => {
+        this.setActiveAsset(res.json());
+        return res.json();
+      });
   }
 
-  public setActiveAsset(asset: any, price: any): void {
+  public setActiveAsset(asset: any): void {
     this.set({
       type: 'SET_ASSET', payload: {
         assetId: asset.assetId,
@@ -68,6 +95,13 @@ export class AssetService {
         detailTypeMap: asset.detailTypeMap,
         hasDownloadableComp: asset.hasDownloadableComp,
         resourceClass: asset.resourceClass,
+      }
+    });
+  }
+
+  public setPrice(price: any) {
+    this.set({
+      type: 'SET_ASSET', payload: {
         price: price.price
       }
     });

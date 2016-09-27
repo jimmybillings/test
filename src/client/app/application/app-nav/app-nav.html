@@ -25,7 +25,7 @@
   
     <button *ngIf="(UiState.data | async).searchBarIsActive" md-icon-button title="Search" (click)="toggleSearch()" class="open-search"><md-icon>search</md-icon></button>
     
-    <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id !== null" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleBinTray()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
+    <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id !== null" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleCollectionTray()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
 
     <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id === null" md-icon-button title="{{'HEADER.NEW_COLLECTION_LABEL' | translate}}" (click)="showNewCollection()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
 
@@ -43,7 +43,7 @@
     <a md-menu-item *ngIf="(currentUser.loggedInState() | async)" [routerLink]="['/collection']">
         <md-icon>folder_open</md-icon>Open your collections
     </a>
-    <a md-menu-item disabled *ngIf="(currentUser.loggedInState() | async)" [routerLink]="['/collection']">
+    <a md-menu-item *ngIf="permission.has('ViewCart')" [routerLink]="['/cart']">
         <md-icon>shopping_cart</md-icon>Open your cart
     </a>
     <div class="divider"></div>

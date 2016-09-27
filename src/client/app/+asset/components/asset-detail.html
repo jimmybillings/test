@@ -44,10 +44,18 @@
             </md-menu>
 
             <button md-icon-button 
+              *ngIf="!permission.has('CreateAccessInfo')"
+              disabled
+              title="{{ 'ASSET.DETAIL.SHARING_UNAVAILABLE_BTN_TITLE' | translate }}">
+              <md-icon>share</md-icon>
+            </button>
+            <button md-icon-button 
+              *ngIf="permission.has('CreateAccessInfo')"
               title="{{ 'ASSET.DETAIL.SHARING_BTN_TITLE' | translate }}"
               (click)="sharing.show($event)">
               <md-icon>share</md-icon>
             </button>
+
             <button md-icon-button 
               *ngIf="collection.id !== null && inActiveCollection" 
               title="{{ 'ASSET.DETAIL.COMMENT_BTN_TITLE' | translate }}" 
@@ -106,6 +114,7 @@
   <asset-share
     [assetThumbnailUrl]="asset.clipThumbnailUrl"
     [assetName]="asset.common[5].value"
+    [assetId]="asset.assetId"
     [uiState]="uiState"
     [config]="(uiConfig.get('assetSharing') | async).config"
     (close)="sharing.close()"

@@ -46,7 +46,7 @@ export function main() {
     it('Should have a getFilterTreeOptions() method that builds search options based off of params and the current user',
       inject([FilterService], (service: FilterService) => {
         localStorage.setItem('token', 'aslkdbasldu298e39p8dakljn');
-        let result = service.filterOptions({q: 'cat', counted: true});
+        let result = service.filterOptions({q: 'cat', displayFilterCounts: true});
         expect(result instanceof RequestOptions).toBeTruthy();
       }));
 

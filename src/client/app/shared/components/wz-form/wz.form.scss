@@ -44,7 +44,7 @@ wz-form form {
     background-color: md-color($md-primary, 700, .85);
   }
 }
-md-card {
+md-card, .wz-form-card {
   .md-primary[md-button] {
     color: md-color($md-primary, 600);
   }

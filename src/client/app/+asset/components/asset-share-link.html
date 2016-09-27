@@ -14,11 +14,31 @@
   </header>
   <section class="dd-menu-wrapper">
     <div class="link" flex="100" layout="row">
-      <div flex="100" class="link-input" layout-align="start center">
-        https://commerce.wazeedigital.com/asset/309945339
-      </div>
-      <button flex="auto" layout-align="end center" md-icon-button title="{{ 'ASSET.SHARING.SHARE_LINK.COPY_BTN_TITLE' | translate }}" (click)="copy.emit()"><md-icon>content_copy</md-icon></button>
+      <input 
+        id="shareLink"
+        class="link-input"
+        flex="100"
+        layout-align="start center"
+        value="{{ assetLink }}"
+        (click)="selectInputForCopy($event)" />
+      <button 
+        flex="auto"
+        layout-align="end center"
+        class="clipboard-copy"
+        md-icon-button
+        data-clipboard-target="#shareLink"
+        title="{{ 'ASSET.SHARING.SHARE_LINK.COPY_BTN_TITLE' | translate }}" 
+        (click)="copiedConfirmedToast.show()">
+        <md-icon>content_copy</md-icon>
+      </button>
     </div>
   </section>
 </div>
 <div class="wz-dd-click-catcher" (click)="close.emit()"></div>
+
+
+<wz-toast #copiedConfirmedToast>
+  <div class="toast" layout="row" layout-align="center center">
+    <div flex-xs="100" md-elevation-z2>{{ 'ASSET.SHARING.SHARE_LINK.COPIED_CONFIRMED_MESSAGE' | translate }}</div>
+  </div>
+</wz-toast>

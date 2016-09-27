@@ -32,25 +32,29 @@
 </section>
 
 <wz-dialog class="admin-dialog" #edit layout="row" layout-align="center center">
-  <md-card class="admin-card wz-form-card md-elevation-z20" flex="100">
-    <button (click)="edit.close()" md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
-    <md-card-title>
-      {{ 'ADMIN.' + currentComponent.toUpperCase() + '.EDIT_TITLE'  | translate }}
-    </md-card-title>
-    <md-card-content>
-      <wz-form *ngIf="formItems" [items]="formItems" submitLabel="ADMIN.EDIT_SUBMIT_LABEL" (formSubmit)="onEditSubmit($event); edit.close()"></wz-form>
-    </md-card-content>
-  </md-card>
+  <div flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
+    <md-card class="wz-form-card md-elevation-z20">
+      <button (click)="edit.close()" md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
+      <md-card-title>
+        {{ 'ADMIN.' + currentComponent.toUpperCase() + '.EDIT_TITLE'  | translate }}
+      </md-card-title>
+      <md-card-content>
+        <wz-form *ngIf="formItems" [items]="formItems" submitLabel="ADMIN.EDIT_SUBMIT_LABEL" (formSubmit)="onEditSubmit($event); edit.close()"></wz-form>
+      </md-card-content>
+    </md-card>
+  </div>
 </wz-dialog>
 
-<wz-dialog class="admin-dialog" #new>
-  <md-card class="admin-card wz-form-card md-elevation-z20" layout="row" layout-align="center center">
-    <button (click)="new.close()" md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
-    <md-card-title>
-      {{ 'ADMIN.' + currentComponent.toUpperCase() + '.NEW_TITLE'  | translate }}
-    </md-card-title>
-    <md-card-content>
-      <wz-form [items]="config.newForm.items" submitLabel="ADMIN.CREATE_SUBMIT_LABEL" (formSubmit)="onNewSubmit($event); new.close()"></wz-form>
-    </md-card-content>
-  </md-card>
+<wz-dialog class="admin-dialog" #new layout="row" layout-align="center center">
+  <div flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
+    <md-card class="wz-form-card md-elevation-z20">
+      <button (click)="new.close()" md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
+      <md-card-title>
+        {{ 'ADMIN.' + currentComponent.toUpperCase() + '.NEW_TITLE'  | translate }}
+      </md-card-title>
+      <md-card-content>
+        <wz-form [items]="config.newForm.items" submitLabel="ADMIN.CREATE_SUBMIT_LABEL" (formSubmit)="onNewSubmit($event); new.close()"></wz-form>
+      </md-card-content>
+    </md-card>
+  </div>
 </wz-dialog>
