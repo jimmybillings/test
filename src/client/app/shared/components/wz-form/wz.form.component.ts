@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
-import { FormGroup, FormControl, FormBuilder} from '@angular/forms';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { FormModel } from './wz.form.model';
 import { FormFields, ServerErrors } from '../../../shared/interfaces/forms.interface';
 import { ApiConfig } from '../../services/api.config';
@@ -19,6 +19,8 @@ export class WzFormComponent implements OnInit, OnChanges {
   @Input() items: FormFields[];
   @Input() serverErrors: ServerErrors;
   @Input() submitLabel: string;
+  @Input() includeCancel: boolean = false;
+  @Input() cancelLabel:string = 'Cancel';
   @Input() autocomplete: string = 'on';
   @Output() formSubmit = new EventEmitter();
   public submitAttempt: boolean = false;

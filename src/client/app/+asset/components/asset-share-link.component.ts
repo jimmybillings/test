@@ -15,7 +15,6 @@ export class AssetShareLinkComponent {
   @Input() UiState: any;
   @Input() assetLink: string;
   @Output() close = new EventEmitter();
-  public cliboardCopyTooltipTxt:string = 'ASSET.SHARING.SHARE_LINK.COPY_BTN_TITLE';
 
   constructor() {
     new Clipboard('.clipboard-copy');
@@ -28,8 +27,4 @@ export class AssetShareLinkComponent {
   public selectInputForCopy(event:any): void {
     event.target.select();
   }
-
-  // public copiedToClipboard(): void {
-  //   this.cliboardCopyTooltipTxt = 'ASSET.SHARING.SHARE_LINK.COPIED_BTN_TITLE';
-  // }
 }

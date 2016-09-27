@@ -146,8 +146,12 @@
       <span>{{ 'ERRORS.INDICATES_REQUIRED_FIELD' | translate }}</span>
     </div>
     
-    <md-card-actions layout="row" layout-align="center center">
+    <md-card-actions layout="row" layout-align="end center" *ngIf="includeCancel">
+      <button md-button type="cancel" color="primary">Cancel</button>
+      <button md-button type="submit" color="primary">{{submitLabel | translate}}</button>
+    </md-card-actions>
+
+    <md-card-actions layout="row" layout-align="center center" *ngIf="!includeCancel">
       <button md-raised-button type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
     </md-card-actions>
-  <!--</md-content>-->
 </form>

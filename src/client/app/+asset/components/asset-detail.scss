@@ -276,6 +276,10 @@ asset-share .form-panel {
     margin-top: rem(2.2);
     margin-left: rem(1.2);
     margin-right: rem(1.2);
+    md-card-actions {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    }
   }
   .asset-thb {
     display: block;
