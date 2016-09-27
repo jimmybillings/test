@@ -28,20 +28,19 @@
     <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id !== null" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleCollectionTray()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
 
     <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id === null" md-icon-button title="{{'HEADER.NEW_COLLECTION_LABEL' | translate}}" (click)="showNewCollection()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
-
+    
     <button 
         *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async)" 
         md-icon-button
         class="cart"
-        title="Cart"
+        title="{{ 'HEADER.CART_BTN_TITLE' | translate}}"
         [routerLink]="['/cart']">
         <md-icon>shopping_cart</md-icon>
-        <span class="asset-count">
-            <span class="count">33</span>
+        <span class="asset-count" *ngIf="(cartSize) != ({})">
+            <span class="count">{{ formatBadgeNumber(cartSize) | async }}</span>
         </span>
     </button>
     
-    <span *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async)" class="badge md-caption" layout="row" layout-align="center center">{{ formatBadgeNumber(cartSize) | async }}</span>
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
 </md-toolbar>
 <md-menu x-position="before" #navigation="mdMenu">
