@@ -76,6 +76,26 @@ header.app-header md-toolbar:not(.md-menu-toolbar) [md-button] {
     color: rgba(md-color($md-accent, 500), .8);
   }
 }
+button[md-icon-button].cart {
+  .asset-count {
+    position: absolute;
+    top:0;
+    right: rem(-.2);
+    border-radius: $md-button-border-radius;
+    background-color: rgba(md-color($md-warn, 700), .9);
+    min-width: rem(1.4);
+    font-size: .8em;
+    line-height: 1;
+    margin-right: 0;
+    margin-left: 0;
+    padding: 2px 3px;
+    .count {
+      @include text-contrast(md-color($md-warn, 900));
+    }
+  }
+}
+
+
 
 header.app-header.fixed [md-button],
 header.app-header.fixed [md-icon-button] {
