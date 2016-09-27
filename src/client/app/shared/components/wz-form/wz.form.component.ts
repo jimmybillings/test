@@ -23,6 +23,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   @Input() cancelLabel:string = 'Cancel';
   @Input() autocomplete: string = 'on';
   @Output() formSubmit = new EventEmitter();
+  @Output() formCancel = new EventEmitter();
   public submitAttempt: boolean = false;
   public showRequiredLegend: boolean = false;
   public form: FormGroup;

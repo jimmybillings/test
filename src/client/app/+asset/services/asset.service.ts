@@ -72,6 +72,14 @@ export class AssetService {
       });
   }
 
+  public createShareLink(shareLink:any): Observable<any> {
+    return this.api.post(this.apiConfig.baseUrl() + 'api/identities/v1/accessInfo',
+      JSON.stringify(shareLink))
+      .map(res => {
+        return res.json();
+      });
+  }
+
   public getData(id: any): Observable<any> {
     return this.api.get(this.apiConfig.baseUrl() + 'api/assets/v1/clip/' + id + '/clipDetail', {}, true)
       .map((res) => {

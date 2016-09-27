@@ -32,7 +32,8 @@
             includeCancel="true"
             cancelLabel="ASSET.SHARING.FORM.CANCEL_BTN_LABEL"
             submitLabel="ASSET.SHARING.FORM.SUBMIT_BTN_LABEL"
-            (formSubmit)="onSubmit($event)">
+            (formCancel)="success()"
+            (formSubmit)="createShareLink($event,assetId)">
           </wz-form>
         </md-card-content>
       </div>
