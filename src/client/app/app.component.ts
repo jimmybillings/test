@@ -33,6 +33,7 @@ declare var portal: string;
 export class AppComponent implements OnInit, OnDestroy {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
+  public cartSize: any;
   public collections: Observable<Array<Collection>>;
   private configSubscription: Subscription;
   private routeSubscription: Subscription;
@@ -68,6 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.configSubscription = this.uiConfig.initialize(this.apiConfig.getPortal()).subscribe();
     this.routerChanges();
     this.bootStrapUserData();
+    this.cartSize = this.cartService.size;
   }
 
   ngOnDestroy() {

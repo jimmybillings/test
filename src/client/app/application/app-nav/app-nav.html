@@ -31,6 +31,7 @@
 
     <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async)" md-icon-button  title="Cart" [routerLink]="['/cart']"><md-icon>shopping_cart</md-icon></button>
     
+    <span *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async)" class="badge md-caption" layout="row" layout-align="center center">{{ formatBadgeNumber(cartSize) | async }}</span>
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
 </md-toolbar>
 <md-menu x-position="before" #navigation="mdMenu">
