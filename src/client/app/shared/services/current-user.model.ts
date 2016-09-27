@@ -7,7 +7,7 @@ export const currentUser: ActionReducer<any> = (state = {}, action: Action) => {
 
   switch (action.type) {
     case 'SET_USER':
-      return Object.assign({}, state, action.payload);
+      return Object.assign({}, action.payload);
 
     default:
       return state;

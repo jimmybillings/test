@@ -21,6 +21,7 @@ import { UserPreferenceService } from '../shared/services/user-preference.servic
 import { ApiService } from '../shared/services/api.service';
 import { CartService } from '../shared/services/cart.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
+import { CartGuard } from '../+cart/services/cart.guard';
 
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
@@ -68,7 +69,8 @@ export const WAZEE_PROVIDERS = [
   CollectionContextService,
   ApiService,
   CartService,
-  SortDefinitionsService
+  SortDefinitionsService,
+  CartGuard
 ];
 
 export const WAZEE_STORES: any = {
