@@ -38,9 +38,9 @@ export function main() {
     it('Should have a getFilterTreeUrl() method that returns the proper url based on the user',
       inject([FilterService], (service: FilterService) => {
         localStorage.setItem('token', '07yadbf1o78e2gfblalbfu4');
-        expect(service.filterUrl).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/filterTree');
+        expect(service.filterUrl).toBe('api/assets/v1/filter/filterTree');
         localStorage.clear();
-        expect(service.filterUrl).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree');
+        expect(service.filterUrl).toBe('api/assets/v1/filter/anonymous/filterTree');
       }));
 
     it('Should have a getFilterTreeOptions() method that builds search options based off of params and the current user',
@@ -60,7 +60,7 @@ export function main() {
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.get({q: 'cat'}, true).subscribe((payload) => {
           expect(connection.request.method).toEqual(0);
-          expect(connection.request.url).toBe('https://crxextapi.dev.wzplatform.com/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true&siteName=core');
+          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true&siteName=core');
           expect(payload).toEqual(service.sanatize(mockFilters(), null));
           expect(service.set).toHaveBeenCalled();
         });

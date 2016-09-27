@@ -20,7 +20,6 @@ export function main() {
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls, and collections',
       inject([CollectionsService], (service: CollectionsService) => {
         expect(service.api).toBeDefined();
-        expect(service.apiConfig).toBeDefined();
         expect(service.apiUrls).toBeDefined();
         expect(service.data).toBeDefined();
       }));
@@ -29,11 +28,9 @@ export function main() {
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionBaseUrl = 'https://crxextapi.dev.wzplatform.com/api/assets/v1';
-        let expectedUrl = service.apiUrls.CollectionBaseUrl + '/collectionSummary/search?q=&accessLevel=all&s=&d=&i=0&n=200';
         spyOn(service, 'storeCollections');
         service.loadCollections().subscribe(response => {
-          expect(connection.request.url).toBe(expectedUrl);
+          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/collectionSummary/search?q=&accessLevel=all&s=&d=&i=0&n=200');
           expect(response).toEqual(mockCollection());
           expect(service.storeCollections).toHaveBeenCalledWith(mockCollection());
         });
@@ -48,10 +45,9 @@ export function main() {
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionSummaryBaseUrl = 'api/assets/v1/collectionSummary';
         spyOn(service, 'createCollectionInStore');
         service.createCollection(mockCollection()).subscribe(response => {
-          expect(connection.request.url).toBe('api/assets/v1/collectionSummary');
+          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/collectionSummary');
           expect(response).toEqual(mockCollection());
           expect(service.createCollectionInStore).toHaveBeenCalledWith(mockCollection());
         });
@@ -66,10 +62,9 @@ export function main() {
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
         spyOn(service, 'deleteCollectionFromStore');
         service.deleteCollection(158).subscribe(response => {
-          expect(connection.request.url).toBe('api/identites/v1/collection/158');
+          expect(connection.request.url.split('.com')[1]).toBe('/api/identities/v1/collection/158');
           expect(service.deleteCollectionFromStore).toHaveBeenCalledWith(158);
         });
         connection.mockRespond(new Response(

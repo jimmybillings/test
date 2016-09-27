@@ -27,9 +27,7 @@ export function main() {
 
     it('Should register new user and console log the response for now.',
       inject([RegisterComponent], (register: RegisterComponent) => {
-        spyOn(register.uiState, 'loading');
         register.onSubmit(user);
-        expect(register.uiState.loading).toHaveBeenCalledWith(false);
         expect(register.successfullySubmitted).toEqual(true);
         expect(register.newUser).toEqual(user);
       }));

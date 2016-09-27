@@ -25,22 +25,17 @@ export function main() {
     it('Should create instance variables for http, apiconfig, currentUser, apiUrls',
       inject([AssetData], (service: AssetData) => {
         expect(service.api).toBeDefined();
-        expect(service.apiConfig).toBeDefined();
         expect(service.currentUser).toBeDefined();
       }));
 
     it('Should return correct api URL for a logged out user', inject([AssetData], (service: AssetData) => {
       let loggedIn = false;
-      expect(service.searchAssetsUrl(loggedIn)).toEqual(
-        service.apiConfig.baseUrl() + service.getAssetSearchPath(loggedIn)
-      );
+      expect(service.searchAssetsUrl(loggedIn)).toEqual(service.getAssetSearchPath(loggedIn));
     }));
 
     it('Should return correct api URL for a logged in user', inject([AssetData], (service: AssetData) => {
       let loggedIn = true;
-      expect(service.searchAssetsUrl(loggedIn)).toEqual(
-        service.apiConfig.baseUrl() + service.getAssetSearchPath(loggedIn)
-      );
+      expect(service.searchAssetsUrl(loggedIn)).toEqual(service.getAssetSearchPath(loggedIn));
     }));
 
     it('Should return correct api URL path for a logged out user', inject([AssetData], (service: AssetData) => {
@@ -58,8 +53,9 @@ export function main() {
       let loggedIn = false;
       let sOptions = service.getAssetSearchOptions(searchParams(), loggedIn);
       expect(sOptions instanceof RequestOptions).toBeTruthy();
-      expect(sOptions.search.has('siteName')).toBeTruthy();
-      expect(sOptions.search.get('siteName')).toEqual(service.apiConfig.getPortal());
+      expect(sOptions.search.get('q')).toEqual('green');
+      expect(sOptions.search.get('n')).toEqual('25');
+      expect(sOptions.search.get('i')).toEqual('1');
     }));
 
     it('Should return correct URL params for a search with logged in user', inject([AssetData], (service: AssetData) => {
@@ -68,7 +64,6 @@ export function main() {
       expect(sOptions instanceof RequestOptions).toBeTruthy();
       expect(sOptions.search.get('q')).toEqual('green');
       expect(sOptions.search.get('n')).toEqual('25');
-      expect(!sOptions.search.has('siteName')).toBeTruthy();
     }));
 
     it('Should make a request to the search api with the correct url and params and return the correct payload to cache in the store',
@@ -76,7 +71,7 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.searchAssets(searchParams()).subscribe((payload) => {
-          expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/assets/v1/search/anonymous?q=green&n=25&i=0&siteName=core');
+          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/search/anonymous?q=green&n=25&i=0&siteName=core');
           expect(payload).toEqual(MockSearchResultsResponse());
         });
         connection.mockRespond(new Response(

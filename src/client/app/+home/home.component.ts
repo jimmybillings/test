@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRe
 import { CurrentUser} from '../shared/services/current-user.model';
 import { UiConfig} from '../shared/services/ui.config';
 import { SearchContext} from '../shared/services/search-context.service';
-import { ApiConfig} from '../shared/services/api.config';
 import { Subscription } from 'rxjs/Rx';
 import { FilterService } from '../+search/services/filter.service';
 import { UiState } from '../shared/services/ui.state';
@@ -22,7 +21,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     public currentUser: CurrentUser,
     public uiConfig: UiConfig,
     public searchContext: SearchContext,
-    public apiConfig: ApiConfig,
     public filter: FilterService,
     public uiState: UiState,
     private detector: ChangeDetectorRef) {

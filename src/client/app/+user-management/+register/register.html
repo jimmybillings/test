@@ -6,9 +6,6 @@
         <md-card-title>        
           {{ 'REGISTER.TITLE' | translate }}
         </md-card-title>
-        <div class="md-overlay-container" *ngIf="(uiState.data | async).loading">
-          <md-progress-bar mode="indeterminate"></md-progress-bar>
-        </div>
         <md-card-content>
           <wz-form [items]="config.form.items" [serverErrors]= "serverErrors" submitLabel="REGISTER.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
         </md-card-content>

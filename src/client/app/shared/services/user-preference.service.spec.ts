@@ -1,7 +1,7 @@
 import {
   beforeEachProvidersArray,
   inject,
-  TestBed
+  TestBed,
 } from '../../imports/test.imports';
 import { UserPreferenceService } from './user-preference.service';
 
@@ -17,6 +17,7 @@ export function main() {
     it('Should have an instance of currentUser, store, api and apiConfig',
       inject([UserPreferenceService], (service: UserPreferenceService) => {
         expect(service.store).toBeDefined();
+        expect(service.api).toBeDefined();
       }));
 
     it('Should have an update() method that updates the store',

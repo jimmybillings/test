@@ -22,6 +22,7 @@ export class AssetDetailComponent implements OnChanges {
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onShowNewCollection = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
+  @Output() addToCart = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   private assetsArr: Array<number>;
 
@@ -72,5 +73,9 @@ export class AssetDetailComponent implements OnChanges {
 
   public downloadComp(assetId: any,compType: any):void {
     this.onDownloadComp.emit({'compType': compType, 'assetId': assetId});
+  }
+
+  public addAssetToCart(asset: any): void {
+    this.addToCart.emit(asset);
   }
 }

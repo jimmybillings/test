@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
+import { ApiService } from './api.service';
+import { CurrentUser } from './current-user.model';
 
 const defaultPreferences: any = {
   displayFilterCounts: false,
@@ -21,8 +23,17 @@ export const userPreferences: ActionReducer<any> = (state = defaultPreferences, 
 export class UserPreferenceService {
   public data: Observable<any>;
 
-  constructor(public store: Store<any>) {
-    this.data = this.store.select('userPreferences');
+  constructor(
+    public currentUser: CurrentUser,
+    public store: Store<any>,
+    public api: ApiService) {
+      this.data = this.store.select('userPreferences');
+  }
+
+  public get prefs(): Observable<any> {
+    return this.data.map(d => {
+      return d;
+    });
   }
 
   public get state(): any {

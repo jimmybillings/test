@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Collection, Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
 import { URLSearchParams, RequestOptions } from '@angular/http';
-import { ApiConfig } from '../../shared/services/api.config';
 import { Observable} from 'rxjs/Rx';
 import { Store, ActionReducer, Action} from '@ngrx/store';
 import { ActiveCollectionService } from './active-collection.service';
@@ -55,13 +54,12 @@ export class CollectionsService {
 
   constructor(
     public store: Store<CollectionStore>,
-    public apiConfig: ApiConfig,
     public api: ApiService,
     private activeCollection: ActiveCollectionService) {
     this.data = store.select('collections');
     this.apiUrls = {
-      CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
-      CollectionSummaryBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary',
+      CollectionBaseUrl: 'api/identities/v1/collection',
+      CollectionSummaryBaseUrl: 'api/assets/v1/collectionSummary',
     };
     this.setSearchParams();
     this.syncActiveCollection();
@@ -73,10 +71,10 @@ export class CollectionsService {
     return s;
   }
 
-  public loadCollections(params: any = {}): Observable<any> {
+  public loadCollections(params: any = {}, loading: boolean = false): Observable<any> {
     this.params = Object.assign({}, this.params, params);
     return this.api.get(`${this.apiUrls.CollectionSummaryBaseUrl}/search`,
-      this.getSearchOptions(this.params))
+      this.getSearchOptions(this.params), loading)
       .map(res => {
         this.storeCollections(res.json());
         return res.json();

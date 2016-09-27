@@ -109,16 +109,15 @@ export class FilterService {
 
   public get filterUrl(): string {
     if (this.currentUser.loggedIn()) {
-      return `${this.apiConfig.baseUrl()}api/assets/v1/filter/filterTree`;
+      return `api/assets/v1/filter/filterTree`;
     } else {
-      return `${this.apiConfig.baseUrl()}api/assets/v1/filter/anonymous/filterTree`;
+      return `api/assets/v1/filter/anonymous/filterTree`;
     };
   }
 
   public filterOptions(params: any): RequestOptions {
     let search: URLSearchParams = new URLSearchParams();
     for (let param in params) { search.set(param, params[param]); };
-    if (!this.currentUser.loggedIn()) search.set('siteName', this.apiConfig.getPortal());
     return new RequestOptions({ search });
   }
 

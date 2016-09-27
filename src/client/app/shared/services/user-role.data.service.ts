@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ApiConfig } from '../services/api.config';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from './api.service';
 
@@ -14,13 +13,13 @@ export class UserRole {
     destroy: string
   };
 
-  constructor(public api: ApiService, public apiConfig: ApiConfig) {
+  constructor(public api: ApiService) {
     this._apiUrls = {
-      create: this.apiConfig.baseUrl() + 'api/identities/v1/userRole',
-      show: this.apiConfig.baseUrl() + 'api/identities/v1/userRole/',
-      search: this.apiConfig.baseUrl() + 'api/identities/v1/userRole/search?text=',
-      update: this.apiConfig.baseUrl() + 'api/identities/v1/userRole/',
-      destroy: this.apiConfig.baseUrl() + 'api/identities/v1/userRole/'
+      create: 'api/identities/v1/userRole',
+      show: 'api/identities/v1/userRole/',
+      search: 'api/identities/v1/userRole/search?text=',
+      update: 'api/identities/v1/userRole/',
+      destroy: 'api/identities/v1/userRole/'
     };
   }
 

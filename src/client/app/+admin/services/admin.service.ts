@@ -8,7 +8,6 @@ import {
 import { User } from '../../shared/interfaces/user.interface';
 import { Injectable } from '@angular/core';
 import { Response, URLSearchParams, RequestOptions } from '@angular/http';
-import { ApiConfig } from '../../shared/services/api.config';
 import { Store, ActionReducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
@@ -27,7 +26,6 @@ export const adminResources: ActionReducer<AdminState> = (state = adminState, ac
 export class AdminService {
   public data: Observable<AdminState>;
   constructor(public api: ApiService,
-    public apiConfig: ApiConfig,
     private store: Store<AdminState>) {
     this.data = this.store.select('adminResources');
   }
@@ -85,16 +83,15 @@ export class AdminService {
   }
 
   public buildUrl(type: string, resourceType: string, resourceId?: number): string {
-    let base = this.apiConfig.baseUrl();
     switch (type) {
       case 'put':
-        return `${base}api/identities/v1/${resourceType}/${resourceId}`;
+        return `api/identities/v1/${resourceType}/${resourceId}`;
       case 'post':
-        return `${base}api/identities/v1/${resourceType}`;
+        return `api/identities/v1/${resourceType}`;
       case 'search':
-        return `${base}api/identities/v1/${resourceType}/searchFields/?`;
+        return `api/identities/v1/${resourceType}/searchFields/?`;
       default:
-        return `${base}api/identities/v1/${resourceType}/searchFields/?`;
+        return `api/identities/v1/${resourceType}/searchFields/?`;
     }
   }
 

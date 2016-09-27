@@ -46,18 +46,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
    * @param user  Registration form field values sent to the user data service.
   */
   public onSubmit(user: any): void {
-    user.siteName = this._ApiConfig.getPortal();
-    this.uiState.loading(true);
     this.user.create(user).take(1)
       .subscribe(
         (res: Response) => {
           this.successfullySubmitted = true;
           this.newUser = res;
-          this.uiState.loading(false);
         },
         (Error => {
           this.serverErrors = Error.json();
-          this.uiState.loading(false);
         })
       );
   }

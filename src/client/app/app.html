@@ -12,6 +12,7 @@
       [prefs]="preferences"
       [config]="(uiConfig.get('header') | async).config"
       [collection]="activeCollection.data | async"
+      [cartSize]="cartSize"
       (onLogOut)="logout()">
     </app-nav>
     <collection-tray
@@ -26,7 +27,6 @@
       [state]="state"
       [UiState]="uiState"
       [prefs]="preferences"
-      [apiConfig]="apiConfig"
       [config]="(uiConfig.get('searchBox') | async).config"
       (searchContext)="newSearchContext($event)">
     </wz-search-box>

@@ -51,6 +51,16 @@ header.app-header {
       opacity: .95;
     }
   }
+  .badge {
+    position: absolute;
+    right: .75rem;
+    top: .75rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    background-color: md-color($md-accent, 700);
+    border-radius: .675rem;
+    color: #fff;
+  }
 }
 header.app-header md-toolbar {
   background-color: transparent;

@@ -43,7 +43,7 @@ export function main() {
         serviceUnderTest.initializeData();
 
         expect(mockApiService.get)
-          .toHaveBeenCalledWith('SOME_BASE_URL/api/orders/v1/cart', { headers: 'SOME_AUTH_HEADERS', body: '' });
+          .toHaveBeenCalledWith('/api/orders/v1/cart');
       });
 
       // TODO: The linter chokes on "calls".

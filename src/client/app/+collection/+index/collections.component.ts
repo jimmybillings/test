@@ -112,7 +112,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
         this.collectionsService.destroyCollections();
         this.activeCollection.get().take(1).subscribe((collection) => {
           this.activeCollection.getItems(collection.id, { n: this.pageSize }).take(1).subscribe();
-          this.collectionsService.loadCollections().take(1).subscribe();
+          this.collectionsService.loadCollections({}, true).take(1).subscribe();
         });
       }
     });
@@ -120,17 +120,17 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   public search(query: any) {
     this.collectionContext.updateCollectionOptions({ currentSearchQuery: query });
-    this.collectionsService.loadCollections(query).take(1).subscribe();
+    this.collectionsService.loadCollections(query, true).take(1).subscribe();
   }
 
   public onFilterCollections(filter: any) {
     this.collectionContext.updateCollectionOptions({ currentFilter: filter });
-    this.collectionsService.loadCollections(filter.access).take(1).subscribe();
+    this.collectionsService.loadCollections(filter.access, true).take(1).subscribe();
   }
 
   public onSortCollections(sort: any) {
     this.collectionContext.updateCollectionOptions({ currentSort: sort });
-    this.collectionsService.loadCollections(sort.sort).take(1).subscribe();
+    this.collectionsService.loadCollections(sort.sort, true).take(1).subscribe();
   }
 
   public isActiveCollection(collectionId: number): boolean {
