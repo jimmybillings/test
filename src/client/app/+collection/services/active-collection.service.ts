@@ -1,7 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
 import { URLSearchParams, RequestOptions } from '@angular/http';
-import { ApiConfig } from '../../shared/services/api.config';
 import { Observable} from 'rxjs/Rx';
 import { Store, ActionReducer, Action} from '@ngrx/store';
 import { ApiService } from '../../shared/services/api.service';
@@ -39,15 +38,14 @@ export class ActiveCollectionService implements OnInit {
 
   constructor(
     public store: Store<CollectionStore>,
-    public apiConfig: ApiConfig,
     public api: ApiService) {
     this.data = this.store.select('activeCollection');
 
     this.apiUrls = {
-      CollectionBaseUrl: this.apiConfig.baseUrl() + 'api/identities/v1/collection',
-      CollectionItemsBaseUrl: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary/assets',
-      CollectionActive: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary',
-      CollectionSetActive: this.apiConfig.baseUrl() + 'api/assets/v1/collectionSummary/setFocused'
+      CollectionBaseUrl: 'api/identities/v1/collection',
+      CollectionItemsBaseUrl: 'api/assets/v1/collectionSummary/assets',
+      CollectionActive: 'api/assets/v1/collectionSummary',
+      CollectionSetActive: 'api/assets/v1/collectionSummary/setFocused'
     };
 
   }

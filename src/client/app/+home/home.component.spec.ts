@@ -33,7 +33,6 @@ export function main() {
     it('Should have apiConfig, currentUser, searchContext and uiConfig defined',
       inject([HomeComponent], (component: HomeComponent) => {
         expect(component.currentUser).toBeDefined();
-        expect(component.apiConfig).toBeDefined();
         expect(component.uiConfig).toBeDefined();
         expect(component.searchContext).toBeDefined();
       }));

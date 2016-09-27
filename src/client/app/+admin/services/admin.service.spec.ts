@@ -15,9 +15,8 @@ export function main() {
       ]
     }));
 
-    it('Should create instance variables for http, and apiConfig', inject([AdminService, MockBackend], (service: AdminService, mockBackend: MockBackend) => {
+    it('Should create instance variables for api', inject([AdminService, MockBackend], (service: AdminService, mockBackend: MockBackend) => {
       expect(service.api).toBeDefined();
-      expect(service.apiConfig).toBeDefined();
     }));
 
     it('should have a getResourceIndex function that makes a search request for a resource with given params', inject([AdminService, MockBackend], (service: AdminService, mockBackend: MockBackend) => {
@@ -40,7 +39,7 @@ export function main() {
 
     it('Should have a buildUrl function that returns the proper url', inject([AdminService], (service: AdminService) => {
       let result = service.buildUrl('search', 'account');
-      expect(result).toEqual('https://crxextapi.dev.wzplatform.com/api/identities/v1/account/searchFields/?');
+      expect(result).toEqual('api/identities/v1/account/searchFields/?');
     }));
 
     it('Should have a buildSearchTerm function that calls subsequent functions', inject([AdminService], (service: AdminService) => {

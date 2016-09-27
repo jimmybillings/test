@@ -1,7 +1,6 @@
 import { Observable} from 'rxjs/Rx';
 import { Store, ActionReducer, Action} from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { ApiConfig } from '../../shared/services/api.config';
 import { Response } from '@angular/http';
 import { ApiService } from '../../shared/services/api.service';
 
@@ -28,13 +27,12 @@ export class AssetService {
 
   constructor(
     public store: Store<any>,
-    public apiConfig: ApiConfig,
     public api: ApiService) {
     this.data = this.store.select('asset');
   }
 
   public initialize(id: any): Observable<any> {
-    return this.api.get(this.apiConfig.baseUrl() + 'api/assets/v1/clip/' + id + '/clipDetail')
+    return this.api.get('api/assets/v1/clip/' + id + '/clipDetail')
       .map((res: Response) => { this.set({ type: 'SET_ASSET', payload: res.json() }); });
   }
 
@@ -47,17 +45,17 @@ export class AssetService {
   }
 
   public downloadComp(id: any, compType: any): Observable<any> {
-    return this.api.get(this.apiConfig.baseUrl() + 'api/assets/v1/renditionType/downloadUrl/' + id + '?type=' + compType)
+    return this.api.get('api/assets/v1/renditionType/downloadUrl/' + id + '?type=' + compType)
       .map((res) => { return res.json(); });
   }
 
   public getPrice(id: any): Observable<any> {
-    return this.api.get(this.apiConfig.baseUrl() + 'api/orders/v1/priceBook/price/' + id + '?region=AAA')
+    return this.api.get('api/orders/v1/priceBook/price/' + id + '?region=AAA')
       .map((res) => { return res.json(); });
   }
 
   public getData(id: any): Observable<any> {
-    return this.api.get(this.apiConfig.baseUrl() + 'api/assets/v1/clip/' + id + '/clipDetail', {}, true)
+    return this.api.get('api/assets/v1/clip/' + id + '/clipDetail', {}, true)
       .map((res) => { return res.json(); });
   }
 

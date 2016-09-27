@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Response, RequestOptions, URLSearchParams } from '@angular/http';
-import { ApiConfig } from '../../shared/services/api.config';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
 
@@ -9,8 +8,8 @@ export class TranslateService {
   public trUrl: string;
   public siteApiUrl: string;
 
-  constructor(public api: ApiService, public apiConfig: ApiConfig) {
-    this.trUrl = this.apiConfig.baseUrl() + 'api/identities/v1/translation/';
+  constructor(public api: ApiService) {
+    this.trUrl = 'api/identities/v1/translation/';
   }
 
   public getTrStrings(site: string, lang: string): Observable<any> {

@@ -23,10 +23,9 @@ export function main() {
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionActive = 'api/assets/v1/collectionSummary';
         spyOn(service, 'updateActiveCollectionStore');
         service.get().subscribe(response => {
-          expect(connection.request.url).toBe('api/assets/v1/collectionSummary/focused');
+          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/collectionSummary/focused');
           expect(service.updateActiveCollectionStore).toHaveBeenCalledWith(mockCollectionResponse());
           expect(response).toEqual(mockCollectionResponse());
         });
@@ -41,10 +40,9 @@ export function main() {
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionSetActive = 'api/assets/v1/collectionSummary/setFocused';
         spyOn(service, 'updateActiveCollectionStore');
         service.set(158).subscribe(response => {
-          expect(connection.request.url).toBe('api/assets/v1/collectionSummary/setFocused/158');
+          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/collectionSummary/setFocused/158');
           expect(service.updateActiveCollectionStore).toHaveBeenCalledWith(mockCollectionResponse());
           expect(response.id).toEqual(158);
         });
@@ -59,9 +57,8 @@ export function main() {
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
         service.addAsset(158, { 'assetId': 567890 }).subscribe(response => {
-          expect(connection.request.url).toBe('api/identites/v1/collection/158/addAssets');
+          expect(connection.request.url.split('.com')[1]).toBe('/api/identities/v1/collection/158/addAssets');
           expect(response).toEqual(mockCollectionResponse());
         });
         connection.mockRespond(new Response(
@@ -76,11 +73,9 @@ export function main() {
 
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.apiUrls.CollectionBaseUrl = 'api/identites/v1/collection';
         spyOn(service, 'removeAssetFromStore');
-
         service.removeAsset(158, 1, 13213123).subscribe(response => {
-          expect(connection.request.url).toBe('api/identites/v1/collection/158/removeAssets');
+          expect(connection.request.url.split('.com')[1]).toBe('/api/identities/v1/collection/158/removeAssets');
           expect(response).toEqual({ list: [{ assetId: 1 }] });
           expect(service.removeAssetFromStore).toHaveBeenCalledWith({ assetId: 1 });
         });
@@ -102,8 +97,7 @@ export function main() {
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         spyOn(service, 'updateActiveCollectionAssets');
         service.getItems(1, { i: 0, n: 100 }).subscribe(response => {
-          expect(connection.request.url).toBe(
-            'https://crxextapi.dev.wzplatform.com/api/assets/v1/collectionSummary/assets/1?i=0&n=100');
+          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/collectionSummary/assets/1?i=0&n=100');
           expect(response).toEqual(mockCollectionResponse());
           expect(service.updateActiveCollectionAssets).toHaveBeenCalledWith(mockCollectionResponse());
         });

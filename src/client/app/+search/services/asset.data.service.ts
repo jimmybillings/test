@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { RequestOptions, URLSearchParams } from '@angular/http';
-import { ApiConfig } from '../../shared/services/api.config';
 import { Observable} from 'rxjs/Rx';
 import { CurrentUser} from '../../shared/services/current-user.model';
 import { Store, ActionReducer, Action} from '@ngrx/store';
@@ -43,13 +42,12 @@ export class AssetData {
   constructor(
     public currentUser: CurrentUser,
     public api: ApiService,
-    public apiConfig: ApiConfig,
     public store: Store<any>) {
     this.data = this.store.select('assets');
   }
 
   public searchAssetsUrl(loggedIn: boolean): string {
-    return this.apiConfig.baseUrl() + this.getAssetSearchPath(loggedIn);
+    return this.getAssetSearchPath(loggedIn);
   }
 
   public searchAssets(params: any): Observable<any> {
@@ -93,13 +91,12 @@ export class AssetData {
   public getAssetSearchOptions(params: any, isUserLoggedIn: boolean): RequestOptions {
     const search: URLSearchParams = new URLSearchParams();
     for (var param in params) search.set(param, params[param]);
-    if (!isUserLoggedIn) search.set('siteName', this.apiConfig.getPortal());
     let options = { search: search };
     return new RequestOptions(options);
   }
 
   public downloadComp(id: any, compType: any): Observable<any> {
-    return this.api.get(this.apiConfig.baseUrl() + 'api/assets/v1/renditionType/downloadUrl/' + id + '?type=' + compType)
+    return this.api.get('api/assets/v1/renditionType/downloadUrl/' + id + '?type=' + compType)
       .map((res) => { return res.json(); });
   }
 }

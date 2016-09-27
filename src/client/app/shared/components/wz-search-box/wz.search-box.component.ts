@@ -4,6 +4,7 @@ import { Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
 import { Router} from '@angular/router';
 import { Observable} from 'rxjs/Rx';
 import { UiState } from '../../services/ui.state';
+import { ApiConfig} from '../../services/api.config';
 
 @Component({
   moduleId: module.id,
@@ -15,14 +16,13 @@ import { UiState } from '../../services/ui.state';
 export class WzSearchBoxComponent implements OnInit, OnChanges {
   @Input() config: any;
   @Input() currentUser: any;
-  @Input() apiConfig: any;
   @Input() state: any;
   @Input() UiState: UiState;
   @Output() searchContext = new EventEmitter();
   public searchTerms: Observable<any>;
   public searchForm: FormGroup;
 
-  constructor(public fb: FormBuilder, public router: Router, private http: Http) {
+  constructor(public fb: FormBuilder, public router: Router, private http: Http, public apiConfig: ApiConfig) {
     this.setForm();
   }
 

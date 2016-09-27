@@ -23,10 +23,9 @@ export function main() {
       this.siteApiUrl = 'https://crxextapi.dev.wzplatform.com/api/identities/v1/site/';
     });
 
-    it('Should create instance variables for http, and apiConfig',
+    it('Should create instance variables for api',
       inject([ConfigService, MockBackend], (service: ConfigService, mockBackend: MockBackend) => {
         expect(service.api).toBeDefined();
-        expect(service.apiConfig).toBeDefined();
       }));
 
     it('Should have a getUi method that returns all of the UI config objects',

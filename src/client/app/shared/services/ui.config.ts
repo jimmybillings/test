@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { ApiConfig } from '../services/api.config';
 import { Observable} from 'rxjs/Rx';
 import { Store, ActionReducer, Action} from '@ngrx/store';
 import { ApiService } from './api.service';
@@ -26,19 +25,18 @@ export class UiConfig {
   };
 
   constructor(
-    public apiConfig: ApiConfig,
     public store: Store<any>,
     private api: ApiService) {
 
     this._apiUrls = {
-      get: this.apiConfig.baseUrl() + 'api/identities/v1/configuration/site?siteName='
+      get: 'api/identities/v1/configuration/site'
     };
   }
 
-  public initialize(site: string): Observable<any> {
+  public initialize(): Observable<any> {
     let localConfig = localStorage.getItem('uiConfig') || JSON.stringify(InitState);
     this.set(JSON.parse(localConfig));
-    return this.api.get(this._apiUrls.get + site)
+    return this.api.get(this._apiUrls.get)
       .do((res: Response) => {
         this.set(res.json());
       });

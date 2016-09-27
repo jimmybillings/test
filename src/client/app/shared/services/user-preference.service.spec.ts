@@ -23,14 +23,13 @@ export function main() {
         expect(service.currentUser).toBeDefined();
         expect(service.store).toBeDefined();
         expect(service.api).toBeDefined();
-        expect(service.apiConfig).toBeDefined();
       }));
 
     it('Should have a getSortOptions method to get sortDefinitions',
       inject([UserPreferenceService, MockBackend], (service: UserPreferenceService, mockBackend: MockBackend) => {
         mockBackend.connections.subscribe((c: any) => connection = c);
         service.getSortOptions().subscribe((res) => {
-          expect(connection.request.url).toBe(service.apiConfig.baseUrl() + 'api/identities/v1/sortDefinition/list');
+          expect(connection.request.url.indexOf('/api/identities/v1/sortDefinition/list') !== -1).toBe(true);
           expect(res).toEqual(mockResponse());
         });
         connection.mockRespond(new Response(

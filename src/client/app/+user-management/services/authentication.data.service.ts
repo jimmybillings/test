@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { ApiConfig } from '../../shared/services/api.config';
 import { Observable} from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
 
@@ -15,10 +14,10 @@ export class Authentication {
     destroy: string
   };
 
-  constructor(public api: ApiService, public apiConfig: ApiConfig) {
+  constructor(public api: ApiService) {
     this._apiUrls = {
-      create: this.apiConfig.baseUrl() + 'api/identities/v1/login',
-      destroy: this.apiConfig.baseUrl() + 'api/identities/v1/invalidate'
+      create: 'api/identities/v1/login',
+      destroy: 'api/identities/v1/invalidate'
     };
   }
 
@@ -28,7 +27,7 @@ export class Authentication {
   }
 
   public destroy(): Observable<any> {
-    return this.api.post(this._apiUrls.destroy, null);
+    return this.api.post(this._apiUrls.destroy);
   }
 }
 
