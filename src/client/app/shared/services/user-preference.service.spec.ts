@@ -28,7 +28,7 @@ export function main() {
 
     it('Should have a state() getter method that returns the state of the store',
       inject([UserPreferenceService], (service: UserPreferenceService) => {
-        expect(service.state).toEqual({ filterCounts: false, collectionTrayIsOpen: false, searchIsOpen: true });
+        expect(service.state).toEqual({ displayFilterCounts: false, collectionTrayIsOpen: false, searchIsOpen: true });
       }));
 
     it('Should have a openCollectionTray method that sets the collectionTrayIsOpen property to true',

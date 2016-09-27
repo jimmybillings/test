@@ -64,14 +64,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
     this.preferencesSubscription = this.userPreferences.data.subscribe((data: any) => {
       this.preferences = data;
-      this.filter.get(this.searchContext.state, this.preferences.counted).take(1).subscribe(() => this.uiState.loading(false));
+      this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe(() => this.uiState.loading(false));
     });
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
       this.getSortPreferences(params['sortId']);
-      if (this.preferences.counted) {
-        this.filter.get(this.searchContext.state, this.preferences.counted).take(1).subscribe(() => this.uiState.loading(false));
+      if (this.preferences.displayFilterCounts) {
+        this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe(() => this.uiState.loading(false));
       }
     });
   }
@@ -86,8 +86,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public countToggle(event: any): void {
-    this.userPreferences.update({ filterCounts: event.checked });
-    if (this.preferences.counted) this.uiState.loading(true);
+    this.userPreferences.update({ displayFilterCounts: event.checked });
+    if (this.preferences.displayFilterCounts) this.uiState.loading(true);
   }
 
   public showAsset(asset: any): void {
@@ -134,7 +134,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyExclusiveFilter(subFilter: any): void {
-    if (this.preferences.counted) this.uiState.loading(true);
+    if (this.preferences.displayFilterCounts) this.uiState.loading(true);
     this.filter.set(this.filter.toggleExclusive(subFilter));
     this.filterAssets();
   }

@@ -3,7 +3,7 @@ import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 
 const defaultPreferences: any = {
-  filterCounts: false,
+  displayFilterCounts: false,
   collectionTrayIsOpen: false,
   searchIsOpen: true
 };
@@ -23,12 +23,6 @@ export class UserPreferenceService {
 
   constructor(public store: Store<any>) {
     this.data = this.store.select('userPreferences');
-  }
-
-  public get prefs(): Observable<any> {
-    return this.data.map(d => {
-      return d;
-    });
   }
 
   public get state(): any {

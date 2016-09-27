@@ -4,8 +4,8 @@
     <div class="md-overlay-container" *ngIf="(uiState.data | async).loading">
       <md-progress-bar color="accent" mode="indeterminate"></md-progress-bar>
     </div>
-    <md-slide-toggle class="count-toggle" [checked]="preferences.counted" color="accent" value="toggle" (change)="countToggle($event)">Display Filter Counts</md-slide-toggle>
-    <filter-component class="filter" [counted]="preferences.counted" [filters]="filter.data | async"></filter-component>
+    <md-slide-toggle class="count-toggle" [checked]="preferences.displayFilterCounts" color="accent" value="toggle" (change)="countToggle($event)">Display Filter Counts</md-slide-toggle>
+    <filter-component class="filter" [counted]="preferences.displayFilterCounts" [filters]="filter.data | async"></filter-component>
   </md-sidenav>
   
   <button class="filter" (click)="searchFilter.toggle()">FILTERS</button>
