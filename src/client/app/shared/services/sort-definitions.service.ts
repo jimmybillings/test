@@ -32,8 +32,7 @@ export class SortDefinitionsService {
   }
 
   public getSortOptions(): Observable<any> {
-    return this.api.get(
-      this.apiConfig.baseUrl() + 'api/identities/v1/sortDefinition/list'
-    ).map(res => res.json());
+    return this.api.get('api/identities/v1/sortDefinition/list')
+      .map(res => res.json());
   }
 }
