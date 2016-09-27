@@ -6,6 +6,7 @@ import { AssetComponent } from './+asset/asset.component';
 import { AdminComponent } from './+admin/admin.component';
 import { CollectionsComponent } from './+collection/+index/collections.component';
 import { CartComponent } from './+cart/cart.component';
+import { CartGuard } from './+cart/services/cart.guard';
 import { AssetGuard } from './+asset/services/asset.guard';
 import { AssetResolver } from './+asset/services/asset.resolver';
 import { SearchResolver } from './+search/services/search.resolver';
@@ -20,5 +21,5 @@ export const APP_ROUTES: Routes = [
   { path: 'collection', component: CollectionsComponent },
   { path: 'content/:page', component: ContentComponent },
   { path: 'admin', component: AdminComponent },
-  { path: 'cart', component: CartComponent }
+  { path: 'cart', component: CartComponent, canActivate: [CartGuard] }
 ];

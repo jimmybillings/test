@@ -14,7 +14,13 @@ export class UserPermission {
 
   constructor(private currentUser: CurrentUser) {
     this.currentUser.profile.map(user => {
-      return (user) ? user.permissions || [] : { permissions: [] };
+      if (user.permissions) {
+        return user.permissions || [];
+      } else if (user.roles) {
+        return user.roles[0].permissions || [];
+      } else {
+        return [];
+      }
     }).subscribe(permissions => {
       this.permissions = permissions;
     });
