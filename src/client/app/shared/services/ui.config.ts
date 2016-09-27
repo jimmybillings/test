@@ -29,7 +29,7 @@ export class UiConfig {
     private api: ApiService) {
 
     this._apiUrls = {
-      get: 'api/identities/v1/configuration/site'
+      get: 'api/identities/v1/configuration/site?siteName=core'
     };
   }
 

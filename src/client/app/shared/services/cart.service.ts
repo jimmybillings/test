@@ -63,7 +63,7 @@ export class CartService {
     urlEnding: string,
     body: string = '',
     userState: RequiredUserState = RequiredUserState.LoggedIn): Observable<any> {
-    return this.apiService.get(`${this.apiConfig.baseUrl()}api/${apiSection}/v1/${urlEnding}`,
+    return this.apiService.get(`/api/${apiSection}/v1/${urlEnding}`,
       {
         headers: userState === RequiredUserState.LoggedIn ?
           this.apiConfig.authHeaders() :
