@@ -60,16 +60,8 @@ export class CartService {
   // Idea for ApiService enhancement (along with RequiredUserState enum defined above).
   // If/when the ApiService abstracts away ApiConfig for us, then this method will no longer be needed.
   private apiServiceGet(apiSection: string,
-    urlEnding: string,
-    body: string = '',
-    userState: RequiredUserState = RequiredUserState.LoggedIn): Observable<any> {
-    return this.apiService.get(`/api/${apiSection}/v1/${urlEnding}`,
-      {
-        headers: userState === RequiredUserState.LoggedIn ?
-          this.apiConfig.authHeaders() :
-          this.apiConfig.userHeaders(),
-        body: body
-      })
+    urlEnding: string): Observable<any> {
+    return this.apiService.get(`/api/${apiSection}/v1/${urlEnding}`)
       .map(response => response.json());
   }
 }
