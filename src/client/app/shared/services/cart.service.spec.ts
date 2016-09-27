@@ -32,28 +32,53 @@ export function main() {
       spyOn(mockApiService, 'get').and.callThrough();
     });
 
-    describe('loadCart', () => {
+    describe('initializeData()', () => {
       let serviceUnderTest: CartService;
 
       beforeEach(inject([CartService], (cartService: CartService) => {
         serviceUnderTest = cartService;
       }));
 
-      it('calls the API correctly', () => {
-        serviceUnderTest.loadCart();
+      it('calls the API service correctly', () => {
+        serviceUnderTest.initializeData();
 
         expect(mockApiService.get)
           .toHaveBeenCalledWith('SOME_BASE_URL/api/orders/v1/cart', { headers: 'SOME_AUTH_HEADERS', body: '' });
       });
 
+      // TODO: The linter chokes on "calls".
+      // error TS2339: Property 'calls' does not exist on type '() => Observable<Response>'.
+      it('calls the API service only the first time', () => {
+        mockResponseBody = '{ "userId": "10836" }';
+
+        serviceUnderTest.initializeData();
+        serviceUnderTest.initializeData();
+
+        expect(mockApiService.get.calls.count()).toEqual(1);
+      });
+
       it('sets up the cart store', () => {
         mockResponseBody = '{ "total": "47" }';
-        serviceUnderTest.loadCart();
 
-        serviceUnderTest.data.subscribe((cartData) => {
-          expect(cartData.total).toEqual('47');
-        });
+        serviceUnderTest.initializeData();
+
+        expect(serviceUnderTest.state.total).toEqual('47');
       });
+    });
+
+    describe('destroyData()', () => {
+      it('destroys the cart store', inject([CartService], (serviceUnderTest: CartService) => {
+        mockResponseBody = '{ "userId": "10836" }';
+
+        // Initially...
+        expect(serviceUnderTest.state.userId).toBeNaN();
+
+        serviceUnderTest.initializeData();
+        expect(serviceUnderTest.state.userId).toEqual('10836');
+
+        serviceUnderTest.destroyData();
+        expect(serviceUnderTest.state.userId).toBeNaN();
+      }));
     });
   });
 }

@@ -1,4 +1,5 @@
 export interface Cart {
+  userId: number;
   projects?: Project[];
   total: number;
 }
@@ -6,3 +7,4 @@ export interface Cart {
 export interface Project {
   name: string;
 }
+
