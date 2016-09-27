@@ -11,6 +11,7 @@ import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../+asset/services/asset.service';
 import { UserPermission } from '../../shared/services/permission.service';
 import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
+import { CartService } from '../../shared/services/cart.service';
 
 @Component({
   moduleId: module.id,
@@ -48,7 +49,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public currentUser: CurrentUser,
     public uiState: UiState,
     public notification: WzNotificationService,
-    public uiConfig: UiConfig) {
+    public uiConfig: UiConfig,
+    public cartService: CartService) {
   }
 
   ngOnInit() {
@@ -114,5 +116,9 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  public addAssetToCart(asset: any): void {
+    this.cartService.addAssetToProjectInCart(asset).take(1).subscribe();
   }
 }

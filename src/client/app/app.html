@@ -12,6 +12,7 @@
       [prefs]="preferences"
       [config]="(uiConfig.get('header') | async).config"
       [collection]="activeCollection.data | async"
+      [cartSize]="cartSize"
       (onLogOut)="logout()">
     </app-nav>
     <collection-tray

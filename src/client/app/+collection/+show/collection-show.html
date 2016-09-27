@@ -78,7 +78,7 @@
             [collection]="activeCollection.data | async"
             (onAddToCollection)="addToCollection($event)"
             (onShowNewCollection)="showNewCollection($event)"
-            (onAddToCart)="addToCart($event)" 
+            (addToCart)="addAssetToCart($event)" 
             (onDownloadComp)="downloadComp($event)"
             (onRemoveFromCollection)="removeFromCollection($event)"
             class="grid">

@@ -49,6 +49,24 @@ export class CartService {
     return state;
   }
 
+  public addAssetToProjectInCart(asset: any): Observable<any> {
+    let url: string = `${this.apiConfig.baseUrl()}api/orders/v1/cart/asset/lineItem?region=AAA`;
+    let body: any = this.formatAsset(asset);
+    return this.apiService.put(url, body).map(res => {
+      this.replaceStoreWith(res.json());
+    });
+  }
+
+  public get size(): Observable<number> {
+    return this.data.map(data => {
+      if (data.projects) {
+        return data.projects.reduce((prev: any, curr: any) => {
+          return prev += curr.lineItems.length;
+        }, 0);
+      }
+    });
+  }
+
   private replaceStoreWith(cartData: any): void {
     this.store.dispatch({ type: 'REPLACE_CART', payload: cartData });
   }
@@ -63,5 +81,15 @@ export class CartService {
     urlEnding: string): Observable<any> {
     return this.apiService.get(`/api/${apiSection}/v1/${urlEnding}`)
       .map(response => response.json());
+  }
+
+  private formatAsset(asset: any): any {
+    return {
+      'lineItem': {
+        'asset': {
+          'assetId': asset.assetId
+        }
+      }
+    };
   }
 }

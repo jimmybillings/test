@@ -17,7 +17,7 @@ export class WzAssetListComponent implements OnChanges {
   @Input() collection: Collection;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
-  @Output() onAddToCart = new EventEmitter();
+  @Output() addToCart = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
   @Output() onShowNewCollection = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
@@ -45,8 +45,9 @@ export class WzAssetListComponent implements OnChanges {
     this.onShowNewCollection.emit(asset);
   }
 
-  public addToCart(asset: any): void {
-    this.onAddToCart.emit(asset);
+  public addAssetToCart(asset: any): void {
+    this.setAssetActiveId(asset.assetId);
+    this.addToCart.emit(asset);
   }
 
   public setAssetActiveId(id: any) {

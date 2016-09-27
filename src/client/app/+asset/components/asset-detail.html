@@ -101,7 +101,7 @@
             <span *ngIf="asset.price != 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
             <span *ngIf="asset.price == 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
             <md-card-actions layout="column" layout-align="center center" layout-wrap="">
-              <button md-raised-button (click)="someFunction()" class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+              <button md-raised-button (click)="addAssetToCart(asset); addToCartToast.show()" class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
               <!--<button *ngIf="asset.price == 0" md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>-->
             </md-card-actions>
           </div>
@@ -131,6 +131,12 @@
 <wz-toast #removeToast>
   <div class="toast" layout="row" layout-align="center center">
     <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
+  </div>
+</wz-toast>
+
+<wz-toast #addToCartToast>
+  <div class="toast" layout="row" layout-align="center center">
+    <div flex-xs="100" md-elevation-z2>{{ 'ASSET.ADD_TO_CART_TOAST' | translate:{assetId:asset.assetId} }}</div>
   </div>
 </wz-toast>
 
