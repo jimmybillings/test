@@ -214,7 +214,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cartService.addAssetToProjectInCart(asset).take(1).subscribe();
+    this.cartService.addAssetToProjectInCart(asset);
   }
 
   public get mockSorts(): any {

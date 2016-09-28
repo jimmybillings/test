@@ -49,12 +49,10 @@ export class CartService {
     return state;
   }
 
-  public addAssetToProjectInCart(asset: any): Observable<any> {
-    let url: string = `api/orders/v1/cart/asset/lineItem?region=AAA`;
+  public addAssetToProjectInCart(asset: any): void {
     let body: any = this.formatAsset(asset);
-    return this.apiService.put(url, body).map(res => {
-      this.replaceStoreWith(res.json());
-    });
+    this.apiServicePut('orders', 'cart/asset/lineItem?region=AAA', JSON.stringify(body))
+      .subscribe(res => this.replaceStoreWith(res));
   }
 
   public get size(): Observable<number> {
@@ -77,9 +75,13 @@ export class CartService {
 
   // Idea for ApiService enhancement (along with RequiredUserState enum defined above).
   // If/when the ApiService abstracts away ApiConfig for us, then this method will no longer be needed.
-  private apiServiceGet(apiSection: string,
-    urlEnding: string): Observable<any> {
-    return this.apiService.get(`/api/${apiSection}/v1/${urlEnding}`)
+  private apiServiceGet(apiService: string, urlEnding: string): Observable<any> {
+    return this.apiService.get(`/api/${apiService}/v1/${urlEnding}`)
+      .map(response => response.json());
+  }
+
+  private apiServicePut(apiService: string, urlEnding: string, body: string): Observable<any> {
+    return this.apiService.put(`/api/${apiService}/v1/${urlEnding}`, body)
       .map(response => response.json());
   }
 
