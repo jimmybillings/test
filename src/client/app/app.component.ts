@@ -113,7 +113,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.activeCollection.getItems(collection.id, { i: 1, n: 100 }, true, false).take(1).subscribe();
           this.collectionsService.loadCollections().take(1).subscribe();
         });
-
+        this.permission.retrievePermissions();
         this.cartService.initializeData();
       });
   }

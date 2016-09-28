@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CurrentUser } from './current-user.model';
 /**
- * Model that describes current user, and provides  
+ * Model that describes current user, and provides
  * methods for retrieving user attributes.
  */
 
@@ -12,7 +12,13 @@ export class UserPermission {
 
   public permissions: any;
 
-  constructor(private currentUser: CurrentUser) {
+  constructor(private currentUser: CurrentUser) {}
+
+  public has(permission: any): boolean {
+    return this.permissions.indexOf(permission) > -1 || this.permissions.indexOf('Root') > -1;
+  }
+
+  public retrievePermissions() {
     this.currentUser.profile.map(user => {
       if (user.permissions) {
         return user.permissions || [];
@@ -21,12 +27,8 @@ export class UserPermission {
       } else {
         return [];
       }
-    }).subscribe(permissions => {
+    }).take(1).subscribe(permissions => {
       this.permissions = permissions;
     });
-  }
-
-  public has(permission: any): boolean {
-    return this.permissions.indexOf(permission) > -1 || this.permissions.indexOf('Root') > -1;
   }
 }
