@@ -18,6 +18,7 @@ export class WzCollectionItemListComponent {
   @Output() editCollection = new EventEmitter();
   @Output() setActiveCollection = new EventEmitter();
   @Output() deleteCollection = new EventEmitter();
+  @Output() generateCollectionLink = new EventEmitter();
   private currentCollection: any;
 
   public selectActiveCollection(collectionId: any) {
@@ -42,5 +43,9 @@ export class WzCollectionItemListComponent {
 
   public delete(collection: any): void {
     this.deleteCollection.emit(collection);
+  }
+
+  public generateLegacyLink(): void {
+    this.generateCollectionLink.emit(this.currentCollection.id);
   }
 }

@@ -291,7 +291,56 @@ collections-search-form {
   }
 }
 
-
+.wz-dialog {
+  .link {
+    background-color: #fff;
+    padding-top: rem(2);
+    padding-right: rem(2.4);
+    padding-bottom: rem(4.6);
+    padding-left: rem(2.4);
+    white-space: nowrap;
+    text-align: right;
+    width: rem(60);
+    max-width: rem(60);
+    // max-width: 100%;
+    .link-wrapper {
+      width: 90%;
+      .link-input {
+        overflow: hidden;
+        margin-right: rem(.4);
+        width: calc(100% - 44px);
+        max-width: calc(100% - 44px);
+        border: 1px solid rgba(md-color($md-grey, 800),.4);
+        padding-top: rem(1.3);
+        padding-right: rem(.5);
+        padding-bottom: rem(1.3);
+        padding-left: rem(.5);
+        font-size: .9em;
+        color: rgba(md-color($md-primary, 500),.75);
+        &:focus, &:active {
+          outline: none;
+          border-color: rgba(md-color($md-primary, 500),.9);
+        }
+        &::selection {
+          background: rgba(md-color($md-accent, 600),.25);
+          color: md-color($md-primary, 600);
+        }
+      }
+      button {
+        @include transition($swift-ease-out);
+        &:hover {
+          @include text-contrast(md-color($md-primary, 500));
+          color: md-color($md-primary);
+          background-color: md-color($md-foreground, base, .1);
+        }
+        // once they put a transition into the ::after pseudo class this can go away
+        &[md-icon-button]:hover::after {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}
 
 @include keyframes(slide) {
   0% {
