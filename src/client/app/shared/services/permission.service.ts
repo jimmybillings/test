@@ -10,7 +10,7 @@ import { CurrentUser } from './current-user.model';
 @Injectable()
 export class UserPermission {
 
-  public permissions: any;
+  public permissions: Array<string> = [];
 
   constructor(private currentUser: CurrentUser) {}
 
