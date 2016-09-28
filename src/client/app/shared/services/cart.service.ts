@@ -50,6 +50,7 @@ export class CartService {
   }
 
   public addAssetToProjectInCart(asset: any): void {
+    if (this.storeContains(asset.assetId)) return;
     let body: any = this.formatAsset(asset);
     this.apiServicePut('orders', 'cart/asset/lineItem?region=AAA', JSON.stringify(body))
       .subscribe(res => this.replaceStoreWith(res));
@@ -93,5 +94,13 @@ export class CartService {
         }
       }
     };
+  }
+
+  private storeContains(asset: any):boolean {
+    if (!this.state.projects) return false;
+    let assets:any = [];
+    assets = this.state.projects.map((project:any) =>
+      assets.concat(project.lineItems.map((item:any) => item.asset.assetId)))[0];
+    return (assets) ? assets.indexOf(asset) > -1 : false;
   }
 }
