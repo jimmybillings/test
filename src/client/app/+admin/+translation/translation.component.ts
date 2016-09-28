@@ -37,7 +37,7 @@ export class TranslationComponent implements OnInit, OnDestroy {
     public trService: TranslateService,
     public route: ActivatedRoute,
     public router: Router) {
-      this.sites = ['core', 'cnn', 'augusta', 'bbcws', 'usopen', 'commerce', 'usta-usopen', 'hbo-boxing'];
+      this.sites = ['core', 'cnn', 'augusta', 'bbcws', 'usopen', 'commerce', 'usta-usopen', 'hbo-boxing','wpt'];
       this.langs = ['en', 'fr', 'de'];
     }
 
