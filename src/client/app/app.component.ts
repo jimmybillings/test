@@ -5,20 +5,20 @@ import { Store } from '@ngrx/store';
 import { MultilingualService } from './shared/services/multilingual.service';
 import { ErrorActions } from './shared/services/error.service';
 // Services
-import { CurrentUser} from './shared/services/current-user.model';
+import { CurrentUser } from './shared/services/current-user.model';
 import { UserPermission } from './shared/services/permission.service';
-import { ApiConfig} from './shared/services/api.config';
-import { UiConfig} from './shared/services/ui.config';
-import { SearchContext} from './shared/services/search-context.service';
-import { Authentication} from './+user-management/services/authentication.data.service';
+import { ApiConfig } from './shared/services/api.config';
+import { UiConfig } from './shared/services/ui.config';
+import { SearchContext } from './shared/services/search-context.service';
+import { Authentication } from './+user-management/services/authentication.data.service';
 import { CollectionsService } from './+collection/services/collections.service';
-import { UiState} from './shared/services/ui.state';
+import { UiState } from './shared/services/ui.state';
 import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
-import { ActiveCollectionService} from './+collection/services/active-collection.service';
+import { ActiveCollectionService } from './+collection/services/active-collection.service';
 import { CartService } from './shared/services/cart.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 // /Interfaces
-import { ILang} from './shared/interfaces/language.interface';
+import { ILang } from './shared/interfaces/language.interface';
 import { Collection, CollectionStore } from './shared/interfaces/collection.interface';
 
 declare var portal: string;

@@ -36,7 +36,7 @@
         title="{{ 'HEADER.CART_BTN_TITLE' | translate}}"
         [routerLink]="['/cart']">
         <md-icon>shopping_cart</md-icon>
-        <span class="asset-count" *ngIf="(cartSize) != ({})">
+        <span class="asset-count" *ngIf="(cartSize | async) && (cartSize | async) > 0">
             <span class="count">{{ formatBadgeNumber(cartSize) | async }}</span>
         </span>
     </button>
