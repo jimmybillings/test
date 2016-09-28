@@ -61,7 +61,7 @@ export class SearchContext {
     this.router.navigate(['/search', this.state]);
   }
 
-  public decodeParams(params: any) {
+  private decodeParams(params: any) {
     let decodedParams: any = {};
     for (let param in params) {
       if (params[param] === '' || params[param] === 'true') {
