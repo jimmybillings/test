@@ -32,7 +32,7 @@ export class WzToastComponent {
 
   constructor(private overlay: Overlay, private renderer: Renderer) { }
 
-  public show(event: any): Promise<WzToastComponent> {
+  public show(): Promise<WzToastComponent> {
     return this.close()
       .then(() => this.overlay.create(this.config))
       .then((ref: OverlayRef) => {
