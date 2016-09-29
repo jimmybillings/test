@@ -55,7 +55,7 @@
       </wz-pagination>
       <!-- COLLECTION LIST -->
       <wz-collection-item-list [collections]="(collectionsService.data | async).items" (editCollection)="setCollectionForEdit($event); editCollection.show();" [activeCollection]="(activeCollection.data | async).id"
-        (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event); deleteCollectionDialog.show();" (generateCollectionLink)="buildLegacyLink($event); copyLegacyLinkDialog.show()">
+        (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event); deleteCollectionDialog.show();" (generateCollectionLink)="getAssetsForLink($event); copyLegacyLinkDialog.show()">
       </wz-collection-item-list>
       <wz-pagination [pagination]="(collectionsService.data | async).pagination" (getPage)="changePage($event)">
       </wz-pagination>
@@ -96,34 +96,5 @@
 </wz-dialog>
 
 <wz-dialog #copyLegacyLinkDialog>
-  <div class="link" layout-align="center center" layout="column">
-    <div layout-align="center center" layout="row">
-      <h3 class="md-display-1">Copy Legacy Link</h3>
-    </div>
-    <div layout-align="center center" layout="row" class="link-wrapper">
-      <input 
-        id="legacyLink"
-        class="link-input"
-        flex="100"
-        layout-align="start center"
-        value="{{ legacyLink }}"
-        (click)="selectInputForCopy($event)" />
-      <button 
-        flex="auto"
-        layout-align="end center"
-        class="clipboard-copy"
-        md-icon-button
-        data-clipboard-target="#legacyLink"
-        title="{{ 'ASSET.SHARING.SHARE_LINK.COPY_BTN_TITLE' | translate }}"
-        (click)="copiedConfirmedToast.show()">
-        <md-icon>content_copy</md-icon>
-      </button>
-    </div>
-  </div>
+  <collection-link-component [assets]="assetsForLink"></collection-link-component>
 </wz-dialog>
-
-<wz-toast #copiedConfirmedToast>
-  <div class="toast" layout="row" layout-align="center center">
-    <div flex-xs="100" md-elevation-z2>Link copied to clipboard</div>
-  </div>
-</wz-toast>

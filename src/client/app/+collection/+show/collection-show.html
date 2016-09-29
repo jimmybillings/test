@@ -51,7 +51,7 @@
                     <div class="divider"></div>
                     <button md-menu-item disabled><md-icon>import_export</md-icon>Export collection as XML</button>
                     <button md-menu-item disabled><md-icon>print</md-icon>Print collection asset list</button>
-                    <button md-menu-item disabled><md-icon>link</md-icon>Copy collection link</button>
+                    <button md-menu-item (click)="copyLegacyLinkDialog.show()"><md-icon>link</md-icon>Copy collection link</button>
                     <div *ngIf="!!collection.owner">
                       <div class="divider"></div>
                       <button md-menu-item class="delete" (click)="deleteCollectionDialog.show()">
@@ -110,4 +110,8 @@
       <button md-button color="primary" (click)="deleteCollectionDialog.close(); deleteCollection(collection.id)">{{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
     </md-card-actions>
   </md-card>
+</wz-dialog>
+
+<wz-dialog #copyLegacyLinkDialog>
+  <collection-link-component [assets]="collection.assets.items"></collection-link-component>
 </wz-dialog>

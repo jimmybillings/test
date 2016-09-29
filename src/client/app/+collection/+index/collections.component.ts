@@ -8,7 +8,6 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Rx';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
 import { UiState } from '../../shared/services/ui.state';
-var Clipboard = require('clipboard/dist/clipboard');
 
 @Component({
   moduleId: module.id,
@@ -20,7 +19,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public collections: Collections;
   public optionsSubscription: Subscription;
   public errorMessage: string;
-  public legacyLink: string;
   public options: any;
   public collectionSearchIsShowing: boolean = false;
   public collectionFilterIsShowing: boolean = false;
@@ -28,6 +26,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public pageSize: string;
   public collectionForEdit: Collection;
   public filterOptions: Array<any> = [];
+  public assetsForLink: Array<any> = [];
   public sortOptions: Array<any> = [];
   public collectionForDelete: Collection;
 
@@ -39,7 +38,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public currentUser: CurrentUser,
     public uiConfig: UiConfig,
     public uiState: UiState) {
-    new Clipboard('.clipboard-copy');
+
     this.filterOptions = [
       {
         'first': { 'id': 0, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.ALL', 'value': 'all', 'access': { 'accessLevel': 'all' } },
@@ -55,16 +54,16 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     ];
     this.sortOptions = [
       {
-        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true }},
-        'second': { 'id': 1, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_OLDEST', 'value': 'modOldest', 'sort': { 's': 'lastUpdated', 'd': false }}
+        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true } },
+        'second': { 'id': 1, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_OLDEST', 'value': 'modOldest', 'sort': { 's': 'lastUpdated', 'd': false } }
       },
       {
-        'first' :{ 'id': 2, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_NEWEST', 'value': 'createNewest', 'sort': { 's': 'createdOn', 'd': true }},
-        'second': { 'id': 3, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_OLDEST', 'value': 'createOldest', 'sort': { 's': 'createdOn', 'd': false }}
+        'first': { 'id': 2, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_NEWEST', 'value': 'createNewest', 'sort': { 's': 'createdOn', 'd': true } },
+        'second': { 'id': 3, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_OLDEST', 'value': 'createOldest', 'sort': { 's': 'createdOn', 'd': false } }
       },
       {
-        'first': { 'id': 4, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_ASC', 'value': 'alphaAsc', 'sort': { 's': 'name', 'd': false }},
-        'second': { 'id': 5, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_DESC', 'value': 'alphaDesc', 'sort': { 's': 'name', 'd': true }}
+        'first': { 'id': 4, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_ASC', 'value': 'alphaAsc', 'sort': { 's': 'name', 'd': false } },
+        'second': { 'id': 5, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_DESC', 'value': 'alphaDesc', 'sort': { 's': 'name', 'd': true } }
       }
     ];
   }
@@ -144,18 +143,9 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     return isMatch;
   }
 
-  public buildLegacyLink(collectionId: any): void {
-    let filterSegment: string;
+  public getAssetsForLink(collectionId: number): void {
     this.activeCollection.getItems(collectionId, {n: 100}).take(1).subscribe(data => {
-       filterSegment = data.items.reduce((prev: string, current: any, i: number) => {
-        (i !== data.items.length - 1) ? prev += current.assetId + ' OR ' : prev += current.assetId;
-        return prev;
-      }, '');
-      this.legacyLink = `https://commerce.wazeedigital.com/license/searchResults.do?search.keywords=id:(${filterSegment})`;
+      this.assetsForLink = data.items;
     });
-  }
-
-  public selectInputForCopy(event:any): void {
-    event.target.select();
   }
 }
