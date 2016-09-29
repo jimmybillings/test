@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs/Rx';
               unicode-bidi: embed;
               white-space: pre;
             }`
-          ]
+  ]
 })
 
 export class TranslationComponent implements OnInit, OnDestroy {
@@ -37,9 +37,9 @@ export class TranslationComponent implements OnInit, OnDestroy {
     public trService: TranslateService,
     public route: ActivatedRoute,
     public router: Router) {
-      this.sites = ['core', 'cnn', 'augusta', 'bbcws', 'usopen', 'commerce', 'usta-usopen', 'hbo-boxing','wpt'];
-      this.langs = ['en', 'fr', 'de'];
-    }
+    this.sites = ['core', 'cnn', 'augusta', 'bbcws', 'usopen', 'commerce', 'usta-usopen', 'hbo-boxing', 'wpt'];
+    this.langs = ['en', 'fr', 'de'];
+  }
 
   ngOnInit() {
     this.routeSubscription = this.route.params.subscribe(params => {
@@ -49,7 +49,7 @@ export class TranslationComponent implements OnInit, OnDestroy {
         .take(1).subscribe((data: any) => {
           this.strings = data;
           this.setForm();
-      });
+        });
     });
   }
 

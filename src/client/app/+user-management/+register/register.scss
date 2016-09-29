@@ -1,23 +1,17 @@
 register-component {
-  md-card.wz-form-card.success {
-    md-card-content {
-      text-align: center;
+  md-card.registration-confirm {
+    padding: rem(4.2);
+    margin-top:rem(4.2);
+    .email {
+      display: block;
+      color:  md-color($md-primary, 600);
+      font-weight: 500;
+      margin-top: rem(-.4);
+      margin-bottom: rem(.8);
     }
   }
-  .logo-wrapper {
-    height: 250px;
-    width: 100%;
-    background: #eee;
-    .logo {
-      @include background-image(url($logo-home));
-      background-position: bottom center;
-      background-repeat:no-repeat;
-      background-size: 255px;
-      height: 255px;
-      opacity: .7;
-      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-        background-size: 220px;
-      }
-    }
+  // this can go away once ng2 material supports themes
+  .md-accent[md-button] {
+    color: md-color($md-accent, 400); 
   }
 }
