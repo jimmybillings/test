@@ -54,7 +54,7 @@
   <a *ngIf="currentCollection" md-menu-item [routerLink]="['/collection/', currentCollection.id, {i: 1, n: 100}]" disableRipple="true">
       <md-icon>open_in_browser</md-icon>Open this collection
   </a>
-  <button (click)="generateLegacyLink()" md-menu-item><md-icon>link</md-icon>Copy collection link</button>
+  <button (click)="generateLegacyLink()" md-menu-item><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
   <button md-menu-item disabled (click)="showHistory(collection)"><md-icon>history</md-icon>View collection history</button>
   <div *ngIf="currentCollection && !!currentCollection.owner">
     <div class="divider"></div>

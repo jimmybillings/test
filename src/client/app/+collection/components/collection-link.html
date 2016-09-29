@@ -1,6 +1,6 @@
 <md-card>
-  <md-card-title>Copy Legacy Link</md-card-title>
-  <md-card-subtitle>This link will automatically search our legacy site for the assets in this collection</md-card-subtitle>
+  <md-card-title>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</md-card-title>
+  <md-card-subtitle>{{ 'COLLECTION.COPY_LEGACY_LINK_DESCRIPTION' | translate }}</md-card-subtitle>
   <md-card-actions>
     <div layout-align="center center" layout="row" class="link-wrapper">
       <input 
@@ -16,7 +16,7 @@
         class="clipboard-copy"
         md-icon-button
         data-clipboard-target="#legacyLink"
-        title="Copy Link"
+        title="{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}"
         (click)="copiedConfirmedToast.show()">
         <md-icon>content_copy</md-icon>
       </button>
@@ -26,6 +26,6 @@
 
 <wz-toast #copiedConfirmedToast>
   <div class="toast" layout="row" layout-align="center center">
-    <div flex-xs="100" md-elevation-z2>Link copied to clipboard</div>
+    <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.LINK_COPIED_TOAST' | translate }}</div>
   </div>
 </wz-toast>
