@@ -5,6 +5,8 @@ export interface Cart {
 }
 
 export interface Project {
+  id: string;
   name: string;
+  subtotal: number;
 }
 
