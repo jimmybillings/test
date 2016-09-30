@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { UiConfig } from '../shared/services/ui.config';
 import { UserPermission } from '../shared/services/permission.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
-import { CartService } from '../shared/services/cart.service';
+import { CartSummaryService } from '../shared/services/cart-summary.service';
 /**
  * Asset page component - renders an asset show page
  */
@@ -35,7 +35,7 @@ export class AssetComponent implements OnInit {
     public permission: UserPermission,
     public activeCollection: ActiveCollectionService,
     public notification: WzNotificationService,
-    public cartService: CartService,
+    public cartSummary: CartSummaryService,
     public store: Store<CollectionStore>) {
     this.asset = assetService.data;
   }
@@ -76,6 +76,6 @@ export class AssetComponent implements OnInit {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cartService.addAssetToProjectInCart(asset);
+    this.cartSummary.addAssetToProjectInCart(asset);
   }
 }

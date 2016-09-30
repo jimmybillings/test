@@ -82,29 +82,5 @@ export function main() {
         expect(serviceUnderTest.state.userId).toBeNaN();
       }));
     });
-
-    describe('addAssetToProjectInCart()', () => {
-
-      let serviceUnderTest: CartService;
-
-      beforeEach(inject([CartService], (cartService: CartService) => {
-        serviceUnderTest = cartService;
-      }));
-
-      it('calls the api service correctly',() => {
-        serviceUnderTest.addAssetToProjectInCart({ 'assetId': '10836' });
-        expect(mockApiService.put)
-          .toHaveBeenCalledWith(
-            '/api/orders/v1/cart/asset/lineItem?region=AAA',
-            JSON.stringify({'lineItem': {'asset': {'assetId': '10836' }}}));
-      });
-
-      it('adds the asset to the cart store', () => {
-        mockResponseBody = JSON.stringify({'lineItem': {'asset': {'assetId': '10836' }}});
-        serviceUnderTest.addAssetToProjectInCart({ 'assetId': '10836' });
-        expect(serviceUnderTest.state.lineItem.asset.assetId).toEqual('10836');
-      });
-
-    });
   });
 }

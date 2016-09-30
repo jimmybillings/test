@@ -16,6 +16,7 @@ import { UiState } from './shared/services/ui.state';
 import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
 import { ActiveCollectionService } from './+collection/services/active-collection.service';
 import { CartService } from './shared/services/cart.service';
+import { CartSummaryService } from './shared/services/cart-summary.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
@@ -33,7 +34,6 @@ declare var portal: string;
 export class AppComponent implements OnInit, OnDestroy {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
-  public cartSize: any;
   public collections: Observable<Array<Collection>>;
   private routeSubscription: Subscription;
   private authSubscription: Subscription;
@@ -58,6 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private notification: WzNotificationService,
     private apiConfig: ApiConfig,
     private authentication: Authentication,
+    private cartSummary: CartSummaryService,
     private errorActions: ErrorActions) {
     this.apiConfig.setPortal(portal);
     this.currentUser.set();
@@ -68,7 +69,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.uiConfig.initialize().subscribe();
     this.routerChanges();
     this.bootStrapUserData();
-    this.cartSize = this.cartService.size;
   }
 
   ngOnDestroy() {
@@ -114,7 +114,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.collectionsService.loadCollections().take(1).subscribe();
         });
         this.permission.retrievePermissions();
-        this.cartService.initializeData();
+        this.cartSummary.getCartSummary();
       });
   }
 }

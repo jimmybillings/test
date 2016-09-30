@@ -49,23 +49,6 @@ export class CartService {
     return state;
   }
 
-  public addAssetToProjectInCart(asset: any): void {
-    if (this.storeContains(asset.assetId)) return;
-    let body: any = this.formatAsset(asset);
-    this.apiServicePut('orders', 'cart/asset/lineItem?region=AAA', JSON.stringify(body))
-      .subscribe(res => this.replaceStoreWith(res));
-  }
-
-  public get size(): Observable<number> {
-    return this.data.map(data => {
-      if (data.projects) {
-        return data.projects.reduce((prev: any, curr: any) => {
-          return prev += curr.lineItems.length;
-        }, 0);
-      }
-    });
-  }
-
   private replaceStoreWith(cartData: any): void {
     this.store.dispatch({ type: 'REPLACE_CART', payload: cartData });
   }
@@ -79,28 +62,5 @@ export class CartService {
   private apiServiceGet(apiService: string, urlEnding: string): Observable<any> {
     return this.apiService.get(`/api/${apiService}/v1/${urlEnding}`)
       .map(response => response.json());
-  }
-
-  private apiServicePut(apiService: string, urlEnding: string, body: string): Observable<any> {
-    return this.apiService.put(`/api/${apiService}/v1/${urlEnding}`, body)
-      .map(response => response.json());
-  }
-
-  private formatAsset(asset: any): any {
-    return {
-      'lineItem': {
-        'asset': {
-          'assetId': asset.assetId
-        }
-      }
-    };
-  }
-
-  private storeContains(asset: any):boolean {
-    if (!this.state.projects) return false;
-    let assets:any = [];
-    assets = this.state.projects.map((project:any) =>
-      assets.concat(project.lineItems.map((item:any) => item.asset.assetId)))[0];
-    return (assets) ? assets.indexOf(asset) > -1 : false;
   }
 }
