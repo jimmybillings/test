@@ -4,7 +4,8 @@ import { Store, ActionReducer, Action } from '@ngrx/store';
 
 import { ApiConfig } from './api.config';
 import { ApiService } from './api.service';
-import { Cart } from '../interfaces/cart.interface';
+import { Cart, Project } from '../interfaces/cart.interface';
+import { CartUtilities } from './cart.utilities';
 
 const emptyCart: Cart = {
   userId: NaN,
@@ -14,16 +15,17 @@ const emptyCart: Cart = {
 export const cart: ActionReducer<any> = (state: Cart = emptyCart, action: Action) => {
   switch (action.type) {
     case 'REPLACE_CART':
+      // payload = the whole cart
       return Object.assign({}, action.payload);
+
     case 'DESTROY_CART':
+      // no payload
       return Object.assign({}, emptyCart);
+
     default:
       return state;
   }
 };
-
-// Part of an idea for ApiService updates.  See apiServiceGet() method below.
-enum RequiredUserState { LoggedIn, Anonymous };
 
 @Injectable()
 export class CartService {
@@ -35,12 +37,27 @@ export class CartService {
 
   public initializeData(): void {
     if (isNaN(this.state.userId)) {
-      this.apiServiceGet('orders', 'cart').subscribe(cartData => this.replaceStoreWith(cartData));
+      this.apiServiceGet('orders', 'cart')
+        .subscribe(wholeCartResponse => this.replaceStoreWith(wholeCartResponse));
     }
   }
 
   public destroyData(): void {
     this.destroyStore();
+  }
+
+  public addProject(): void {
+    this.apiServicePost('orders', 'cart/project', this.createAddProjectRequestBody())
+      .subscribe(wholeCartResponse => this.replaceStoreWith(wholeCartResponse));
+  }
+
+  public removeProject(project: Project): void {
+    this.apiServiceDelete('orders', `cart/project/${project.id}`)
+      .subscribe(wholeCartResponse => {
+        this.replaceStoreWith(wholeCartResponse);
+        // TODO: Call the CartSummaryService's update method here.
+        // this.cartSummaryService.updateCartSummary(wholeCartResponse.itemCount, project.id);
+      });
   }
 
   public get state(): any {
@@ -49,58 +66,61 @@ export class CartService {
     return state;
   }
 
+  // TODO: Remove this method when there are no dependencies on it.
   public addAssetToProjectInCart(asset: any): void {
-    if (this.storeContains(asset.assetId)) return;
-    let body: any = this.formatAsset(asset);
-    this.apiServicePut('orders', 'cart/asset/lineItem?region=AAA', JSON.stringify(body))
-      .subscribe(res => this.replaceStoreWith(res));
+    // if (this.storeContains(asset.assetId)) return;
+    // let body: any = this.formatAsset(asset);
+    // this.apiServicePut('orders', 'cart/asset/lineItem?region=AAA', JSON.stringify(body))
+    //   .subscribe(res => this.makeStoreSummaryOnlyWith(res));
   }
 
+  // TODO: Remove this method when there are no dependencies on it.
   public get size(): Observable<number> {
-    return this.data.map(data => {
-      if (data.projects) {
-        return data.projects.reduce((prev: any, curr: any) => {
-          return prev += curr.lineItems.length;
-        }, 0);
-      }
-    });
+    return Observable.of(42);
+    // return this.data.map(data => {
+    //   if (data.itemCount) {
+    //     return data.itemCount;
+    //   }
+    //   if (data.projects) {
+    //     return data.projects.reduce((prev: any, curr: any) => {
+    //       return prev + (curr.lineItems || []).length;
+    //     }, 0);
+    //   }
+    //   return 0;
+    // });
   }
 
-  private replaceStoreWith(cartData: any): void {
-    this.store.dispatch({ type: 'REPLACE_CART', payload: cartData });
+  private replaceStoreWith(cart: any): void {
+    this.store.dispatch({ type: 'REPLACE_CART', payload: cart });
   }
 
   private destroyStore(): void {
     this.store.dispatch({ type: 'DESTROY_CART' });
   }
 
-  // Idea for ApiService enhancement (along with RequiredUserState enum defined above).
-  // If/when the ApiService abstracts away ApiConfig for us, then this method will no longer be needed.
+  // Idea for ApiService enhancement.
+  // If/when the ApiService abstracts away ApiConfig for us, then these methods will no longer be needed.
   private apiServiceGet(apiService: string, urlEnding: string): Observable<any> {
-    return this.apiService.get(`/api/${apiService}/v1/${urlEnding}`)
+    return this.apiService.get(`/api/${apiService}/v1/${urlEnding}`, {}, true)
       .map(response => response.json());
   }
 
-  private apiServicePut(apiService: string, urlEnding: string, body: string): Observable<any> {
-    return this.apiService.put(`/api/${apiService}/v1/${urlEnding}`, body)
+  private apiServicePost(apiService: string, urlEnding: string, body: string): Observable<any> {
+    return this.apiService.post(`/api/${apiService}/v1/${urlEnding}`, body, {}, true)
       .map(response => response.json());
   }
 
-  private formatAsset(asset: any): any {
-    return {
-      'lineItem': {
-        'asset': {
-          'assetId': asset.assetId
-        }
-      }
-    };
+  private apiServiceDelete(apiService: string, urlEnding: string): Observable<any> {
+    return this.apiService.delete(`/api/${apiService}/v1/${urlEnding}`)
+      .map(response => response.json());
   }
+  // END of ApiService abstractions.
 
-  private storeContains(asset: any):boolean {
-    if (!this.state.projects) return false;
-    let assets:any = [];
-    assets = this.state.projects.map((project:any) =>
-      assets.concat(project.lineItems.map((item:any) => item.asset.assetId)))[0];
-    return (assets) ? assets.indexOf(asset) > -1 : false;
+  private createAddProjectRequestBody(): string {
+    let existingNames: Array<string> = (this.state.projects || []).map((project: any) => project.name);
+
+    return JSON.stringify({
+      name: CartUtilities.nextNewProjectNameGiven(existingNames)
+    });
   }
 }
