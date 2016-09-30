@@ -50,8 +50,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public uiState: UiState,
     public notification: WzNotificationService,
     public uiConfig: UiConfig,
-    public cartService: CartService) {
-  }
+    public cartService: CartService) { }
 
   ngOnInit() {
     this.activeCollectionSubscription = this.activeCollection.data.subscribe(collection => {

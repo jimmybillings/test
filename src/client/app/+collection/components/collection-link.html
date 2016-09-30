@@ -1,0 +1,31 @@
+<md-card>
+  <md-card-title>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</md-card-title>
+  <md-card-subtitle>{{ 'COLLECTION.COPY_LEGACY_LINK_DESCRIPTION' | translate }}</md-card-subtitle>
+  <md-card-actions>
+    <div layout-align="center center" layout="row" class="link-wrapper">
+      <input 
+        id="legacyLink"
+        class="link-input"
+        flex="100"
+        layout-align="start center"
+        value="{{ legacyLink }}"
+        (click)="selectInputForCopy($event)" />
+      <button 
+        flex="auto"
+        layout-align="end center"
+        class="clipboard-copy"
+        md-icon-button
+        data-clipboard-target="#legacyLink"
+        title="{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}"
+        (click)="copiedConfirmedToast.show()">
+        <md-icon>content_copy</md-icon>
+      </button>
+    </div>
+  </md-card-actions>
+</md-card>
+
+<wz-toast #copiedConfirmedToast>
+  <div class="toast" layout="row" layout-align="center center">
+    <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.LINK_COPIED_TOAST' | translate }}</div>
+  </div>
+</wz-toast>
