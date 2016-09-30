@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import { ApiConfig } from './api.config';
 import { ApiService } from './api.service';
 import { CartSummaryService } from './cart-summary.service';
+import { URLSearchParams, RequestOptions } from '@angular/http';
 
 export function main() {
   describe('Cart Summary Service', () => {
@@ -44,10 +45,15 @@ export function main() {
 
       it('calls the api service correctly',() => {
         serviceUnderTest.addAssetToProjectInCart({ 'assetId': '10836' });
+        let queryObject: any = {'projectName': 'Project A', 'region': 'AAA'};
+        let search = new URLSearchParams();
+        for (var param in queryObject) search.set(param, queryObject[param]);
+        let options: RequestOptions = new RequestOptions({search});
         expect(mockApiService.put)
           .toHaveBeenCalledWith(
-            '/api/orders/v1/cart/asset/lineItem',
-            JSON.stringify({'lineItem': {'asset': {'assetId': '10836' }}}));
+            'api/orders/v1/cart/asset/lineItem/quick',
+            JSON.stringify({'lineItem': {'asset': {'assetId': '10836' }}}),
+            options);
       });
 
       it('adds the asset to the cart store', () => {

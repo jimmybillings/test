@@ -6,6 +6,7 @@ import { ApiConfig } from './api.config';
 import { ApiService } from './api.service';
 import { Cart, Project } from '../interfaces/cart.interface';
 import { CartUtilities } from './cart.utilities';
+import { CartSummaryService } from './cart-summary.service';
 
 const emptyCart: Cart = {
   userId: NaN,
@@ -31,7 +32,11 @@ export const cart: ActionReducer<any> = (state: Cart = emptyCart, action: Action
 export class CartService {
   public data: Observable<any>;
 
-  constructor(private store: Store<any>, private apiConfig: ApiConfig, private apiService: ApiService) {
+  constructor(
+    private store: Store<any>,
+    private apiConfig: ApiConfig,
+    private apiService: ApiService,
+    private cartSummaryService: CartSummaryService) {
     this.data = this.store.select('cart');
   }
 
@@ -48,15 +53,17 @@ export class CartService {
 
   public addProject(): void {
     this.apiServicePost('orders', 'cart/project', this.createAddProjectRequestBody())
-      .subscribe(wholeCartResponse => this.replaceStoreWith(wholeCartResponse));
+      .subscribe(wholeCartResponse => {
+        this.replaceStoreWith(wholeCartResponse);
+        this.cartSummaryService.loadCartSummary();
+      });
   }
 
   public removeProject(project: Project): void {
     this.apiServiceDelete('orders', `cart/project/${project.id}`)
       .subscribe(wholeCartResponse => {
         this.replaceStoreWith(wholeCartResponse);
-        // TODO: Call the CartSummaryService's update method here.
-        // this.cartSummaryService.updateCartSummary(wholeCartResponse.itemCount, project.id);
+        this.cartSummaryService.loadCartSummary();
       });
   }
 
@@ -64,30 +71,6 @@ export class CartService {
     let state: any;
     this.data.take(1).subscribe(cartData => state = cartData);
     return state;
-  }
-
-  // TODO: Remove this method when there are no dependencies on it.
-  public addAssetToProjectInCart(asset: any): void {
-    // if (this.storeContains(asset.assetId)) return;
-    // let body: any = this.formatAsset(asset);
-    // this.apiServicePut('orders', 'cart/asset/lineItem?region=AAA', JSON.stringify(body))
-    //   .subscribe(res => this.makeStoreSummaryOnlyWith(res));
-  }
-
-  // TODO: Remove this method when there are no dependencies on it.
-  public get size(): Observable<number> {
-    return Observable.of(42);
-    // return this.data.map(data => {
-    //   if (data.itemCount) {
-    //     return data.itemCount;
-    //   }
-    //   if (data.projects) {
-    //     return data.projects.reduce((prev: any, curr: any) => {
-    //       return prev + (curr.lineItems || []).length;
-    //     }, 0);
-    //   }
-    //   return 0;
-    // });
   }
 
   private replaceStoreWith(cart: any): void {

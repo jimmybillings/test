@@ -19,7 +19,6 @@ import { AssetData } from '../+search/services/asset.data.service';
 import { FilterService } from '../+search/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { ApiService } from '../shared/services/api.service';
-import { CartService } from '../shared/services/cart.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { CartGuard } from '../+cart/services/cart.guard';
 import { CartSummaryService } from '../shared/services/cart-summary.service';
@@ -69,7 +68,6 @@ export const WAZEE_PROVIDERS = [
   UserPreferenceService,
   CollectionContextService,
   ApiService,
-  CartService,
   SortDefinitionsService,
   CartGuard,
   CartSummaryService

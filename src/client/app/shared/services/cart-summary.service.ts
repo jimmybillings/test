@@ -40,32 +40,30 @@ export class CartSummaryService {
     return state;
   }
 
-
-  public getCartSummary(): void {
-    this.api.get('api/orders/v1/cart/summary').map(res => {
-      return res.json();
-    }).take(1).subscribe(data => {
-      this.updateCartSummaryStore(data);
-    });
+  public loadCartSummary(): void {
+    this.getCartSummary();
   }
 
   public addAssetToProjectInCart(asset: any): void {
     let projectName: string = this.lastProjectName;
     let body: any = this.formatAsset(asset);
-    let options: RequestOptions = this.buildSearchOptions({ 'projectName': projectName, 'region': 'AAA' });
-    this.api.put('api/orders/v1/cart/asset/lineItem', JSON.stringify(body), options)
-      .map(res => { return res.json(); })
+    let options: any = { 'projectName': projectName, 'region': 'AAA' };
+    this.apiServicePut('asset/lineItem/quick', JSON.stringify(body), options)
       .take(1).subscribe(data => this.updateCartSummaryStore(data));
   }
 
-  public updateCartSummary(itemCount: number, projectId?: string): void {
-    if (projectId) this.removeProjectFromCartSummary(projectId);
-
+  private apiServicePut(urlPath: string, body: string = '', options: any = {}): Observable<any> {
+    options = this.buildSearchOptions(options);
+    return this.api.put(`api/orders/v1/cart/${urlPath}`, body, options).map(res => {
+      return res.json();
+    });
   }
 
-  private removeProjectFromCartSummary(projectId: string): void {
-    this.data.map((cartSummary: any) => {
-      console.log(cartSummary);
+  private getCartSummary(): void {
+    this.api.get('api/orders/v1/cart/summary').map(res => {
+      return res.json();
+    }).take(1).subscribe(data => {
+      this.updateCartSummaryStore(data);
     });
   }
 
