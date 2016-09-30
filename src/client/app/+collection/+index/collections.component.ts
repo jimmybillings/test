@@ -26,6 +26,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public pageSize: string;
   public collectionForEdit: Collection;
   public filterOptions: Array<any> = [];
+  public assetsForLink: Array<any> = [];
   public sortOptions: Array<any> = [];
   public collectionForDelete: Collection;
 
@@ -37,6 +38,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public currentUser: CurrentUser,
     public uiConfig: UiConfig,
     public uiState: UiState) {
+
     this.filterOptions = [
       {
         'first': { 'id': 0, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.ALL', 'value': 'all', 'access': { 'accessLevel': 'all' } },
@@ -52,16 +54,16 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     ];
     this.sortOptions = [
       {
-        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true }},
-        'second': { 'id': 1, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_OLDEST', 'value': 'modOldest', 'sort': { 's': 'lastUpdated', 'd': false }}
+        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true } },
+        'second': { 'id': 1, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_OLDEST', 'value': 'modOldest', 'sort': { 's': 'lastUpdated', 'd': false } }
       },
       {
-        'first' :{ 'id': 2, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_NEWEST', 'value': 'createNewest', 'sort': { 's': 'createdOn', 'd': true }},
-        'second': { 'id': 3, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_OLDEST', 'value': 'createOldest', 'sort': { 's': 'createdOn', 'd': false }}
+        'first': { 'id': 2, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_NEWEST', 'value': 'createNewest', 'sort': { 's': 'createdOn', 'd': true } },
+        'second': { 'id': 3, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_OLDEST', 'value': 'createOldest', 'sort': { 's': 'createdOn', 'd': false } }
       },
       {
-        'first': { 'id': 4, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_ASC', 'value': 'alphaAsc', 'sort': { 's': 'name', 'd': false }},
-        'second': { 'id': 5, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_DESC', 'value': 'alphaDesc', 'sort': { 's': 'name', 'd': true }}
+        'first': { 'id': 4, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_ASC', 'value': 'alphaAsc', 'sort': { 's': 'name', 'd': false } },
+        'second': { 'id': 5, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_DESC', 'value': 'alphaDesc', 'sort': { 's': 'name', 'd': true } }
       }
     ];
   }
@@ -139,5 +141,11 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       .map(activeCollection => activeCollection.id)
       .subscribe(id => isMatch = id === collectionId);
     return isMatch;
+  }
+
+  public getAssetsForLink(collectionId: number): void {
+    this.activeCollection.getItems(collectionId, {n: 100}).take(1).subscribe(data => {
+      this.assetsForLink = data.items;
+    });
   }
 }
