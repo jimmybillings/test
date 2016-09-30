@@ -10,8 +10,11 @@ register-component {
       margin-bottom: rem(.8);
     }
   }
-  // this can go away once ng2 material supports themes
-  .md-accent[md-button] {
-    color: md-color($md-accent, 400); 
-  }
+}
+// this can go away once ng2 material supports themes
+register-component .md-accent[md-button], login-component .md-accent[md-button] {
+  color: md-color($md-accent, 400); 
+}
+register-component [md-button]:hover.md-accent::after, login-component [md-button]:hover.md-accent::after {
+  background-color: md-color($md-accent, 400, .12);
 }
