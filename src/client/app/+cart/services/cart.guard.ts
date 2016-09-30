@@ -15,6 +15,6 @@ export class CartGuard implements CanActivate {
   }
 
   private canView(): boolean {
-    return this.currentUser.loggedIn() && (this.permission.has('Root') || this.permission.has('ViewCart'));
+    return this.currentUser.loggedIn() && (this.permission.has('Root') || this.permission.has('ViewCarts'));
   }
 }
