@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { Observable} from 'rxjs/Rx';
-import { Store, ActionReducer, Action} from '@ngrx/store';
+import { Observable } from 'rxjs/Rx';
+import { Store, ActionReducer, Action } from '@ngrx/store';
 import { ApiService } from './api.service';
 
 const InitState: any = { components: {} };
@@ -29,13 +29,14 @@ export class UiConfig {
     private api: ApiService) {
 
     this._apiUrls = {
-      get: 'api/identities/v1/configuration/site?siteName=core'
+      get: 'api/identities/v1/configuration/site'
     };
   }
 
-  public initialize(): Observable<any> {
+  public initialize(loggedIn: boolean, siteName: string): Observable<any> {
     let localConfig = localStorage.getItem('uiConfig') || JSON.stringify(InitState);
     this.set(JSON.parse(localConfig));
+    if (loggedIn) this._apiUrls.get = this._apiUrls.get + '?siteName=' + siteName;
     return this.api.get(this._apiUrls.get)
       .do((res: Response) => {
         this.set(res.json());

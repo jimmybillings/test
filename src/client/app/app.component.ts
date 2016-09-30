@@ -65,7 +65,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
-    this.uiConfig.initialize().subscribe();
+    this.uiConfig.initialize(this.currentUser.loggedIn(), this.apiConfig.getPortal()).subscribe();
     this.routerChanges();
     this.bootStrapUserData();
     this.cartSize = this.cartService.size;

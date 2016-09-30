@@ -21,7 +21,7 @@ export function main() {
 
     it('Should set the api endpoint to get a UI configuration object',
       inject([UiConfig], (service: UiConfig) => {
-        expect(service._apiUrls.get).toEqual('api/identities/v1/configuration/site?siteName=core');
+        expect(service._apiUrls.get).toEqual('api/identities/v1/configuration/site');
       })
     );
 
@@ -31,9 +31,9 @@ export function main() {
         mockBackend.connections.subscribe((c: any) => connection = c);
         spyOn(service.store, 'dispatch').and.callThrough();
 
-        service.initialize().subscribe((res:any) => {
+        service.initialize(false, 'core').subscribe((res:any) => {
           expect(connection.request.url.split('.com')[1]).toBe(
-            '/api/identities/v1/configuration/site?siteName=core&siteName=core'
+            '/api/identities/v1/configuration/site?siteName=core'
           );
           expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'INITIALIZE', payload: configObj() });
           let config = service.store.select('config');
@@ -52,7 +52,7 @@ export function main() {
       let connection: any;
       mockBackend.connections.subscribe((c: any) => connection = c);
 
-      service.initialize().subscribe((res) => {
+      service.initialize(false,'core').subscribe((res) => {
         service.get('search').subscribe((data) => {
           expect(data).toEqual(configObj().components.search);
         });
