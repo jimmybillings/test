@@ -17,4 +17,17 @@ export class CartComponent implements OnInit {
   public ngOnInit(): void {
     this.cart = this.cartService.data;
   }
+
+  public onNotification(message: any): void {
+    switch(message.type) {
+      case 'ADD_PROJECT': {
+        this.cartService.addProject();
+        break;
+      }
+      case 'REMOVE_PROJECT': {
+        this.cartService.removeProject(message.payload);
+        break;
+      }
+    };
+  }
 }
