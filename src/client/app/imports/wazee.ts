@@ -19,10 +19,9 @@ import { AssetData } from '../+search/services/asset.data.service';
 import { FilterService } from '../+search/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { ApiService } from '../shared/services/api.service';
-import { CartService } from '../shared/services/cart.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { CartGuard } from '../+cart/services/cart.guard';
-
+import { CartSummaryService } from '../shared/services/cart-summary.service';
 // WAZEE ROUTES
 import {APP_ROUTES} from '../app.routes';
 
@@ -43,6 +42,7 @@ import { userPreferences } from '../shared/services/user-preference.service';
 import { CollectionContextService, collectionOptions } from '../shared/services/collection-context.service';
 import { cart } from '../shared/services/cart.service';
 import { sortDefinitions } from '../shared/services/sort-definitions.service';
+import { cartSummary } from '../shared/services/cart-summary.service';
 
 // TRANSLATIONS
 import { MultilingualService } from '../shared/services/multilingual.service';
@@ -68,9 +68,9 @@ export const WAZEE_PROVIDERS = [
   UserPreferenceService,
   CollectionContextService,
   ApiService,
-  CartService,
   SortDefinitionsService,
-  CartGuard
+  CartGuard,
+  CartSummaryService
 ];
 
 export const WAZEE_STORES: any = {
@@ -89,7 +89,8 @@ export const WAZEE_STORES: any = {
     i18n: multilingualActionReducer,
     error: error,
     cart: cart,
-    sortDefinitions: sortDefinitions
+    sortDefinitions: sortDefinitions,
+    cartSummary: cartSummary
 };
 
 export const WAZEE_ROUTES: Routes = [

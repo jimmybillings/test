@@ -11,7 +11,7 @@ import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../+asset/services/asset.service';
 import { UserPermission } from '../../shared/services/permission.service';
 import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
-import { CartService } from '../../shared/services/cart.service';
+import { CartSummaryService } from '../../shared/services/cart-summary.service';
 
 @Component({
   moduleId: module.id,
@@ -50,7 +50,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public uiState: UiState,
     public notification: WzNotificationService,
     public uiConfig: UiConfig,
-    public cartService: CartService) { }
+    public cartSummary: CartSummaryService) { }
 
   ngOnInit() {
     this.activeCollectionSubscription = this.activeCollection.data.subscribe(collection => {
@@ -118,6 +118,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cartService.addAssetToProjectInCart(asset);
+    this.cartSummary.addAssetToProjectInCart(asset);
   }
 }
