@@ -70,7 +70,7 @@ export class CartService {
   }
 
   private apiServiceDelete(apiService: string, urlEnding: string): Observable<any> {
-    return this.apiService.delete(`/api/${apiService}/v1/${urlEnding}`)
+    return this.apiService.delete(`/api/${apiService}/v1/${urlEnding}`, {}, true)
       .map(response => response.json());
   }
   // END of ApiService abstractions.
