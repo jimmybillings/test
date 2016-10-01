@@ -2,7 +2,7 @@ import { inject, TestBed, beforeEachProvidersArray } from '../imports/test.impor
 import { Observable } from 'rxjs/Rx';
 
 import { CartComponent } from './cart.component';
-import { CartService } from '../shared/services/cart.service';
+import { CartService } from './services/cart.service';
 
 export function main() {
   describe('Cart Component', () => {

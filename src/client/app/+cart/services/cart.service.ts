@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 
-import { ApiConfig } from './api.config';
-import { ApiService } from './api.service';
-import { Cart, Project } from '../interfaces/cart.interface';
+import { ApiService } from '../../shared/services/api.service';
+import { Cart, Project } from '../cart.interface';
 import { CartUtilities } from './cart.utilities';
-import { CartSummaryService } from './cart-summary.service';
+import { CartSummaryService } from '../../shared/services/cart-summary.service';
 
 const emptyCart: Cart = {
   userId: NaN,
@@ -19,10 +18,6 @@ export const cart: ActionReducer<any> = (state: Cart = emptyCart, action: Action
       // payload = the whole cart
       return Object.assign({}, action.payload);
 
-    case 'DESTROY_CART':
-      // no payload
-      return Object.assign({}, emptyCart);
-
     default:
       return state;
   }
@@ -34,21 +29,16 @@ export class CartService {
 
   constructor(
     private store: Store<any>,
-    private apiConfig: ApiConfig,
     private apiService: ApiService,
     private cartSummaryService: CartSummaryService) {
     this.data = this.store.select('cart');
   }
 
-  public initializeData(): void {
-    if (isNaN(this.state.userId)) {
-      this.apiServiceGet('orders', 'cart')
-        .subscribe(wholeCartResponse => this.replaceStoreWith(wholeCartResponse));
-    }
-  }
-
-  public destroyData(): void {
-    this.destroyStore();
+  public initializeData(): Observable<any> {
+    return this.apiServiceGet('orders', 'cart')
+      .do(wholeCartResponse => this.replaceStoreWith(wholeCartResponse))
+      .map(() => { return {}; })
+      .share();
   }
 
   public addProject(): void {
@@ -77,12 +67,9 @@ export class CartService {
     this.store.dispatch({ type: 'REPLACE_CART', payload: cart });
   }
 
-  private destroyStore(): void {
-    this.store.dispatch({ type: 'DESTROY_CART' });
-  }
-
   // Idea for ApiService enhancement.
-  // If/when the ApiService abstracts away ApiConfig for us, then these methods will no longer be needed.
+  // If/when the ApiService abstracts away URL construction and JSON responses for us,
+  // these methods will no longer be needed.
   private apiServiceGet(apiService: string, urlEnding: string): Observable<any> {
     return this.apiService.get(`/api/${apiService}/v1/${urlEnding}`, {}, true)
       .map(response => response.json());
