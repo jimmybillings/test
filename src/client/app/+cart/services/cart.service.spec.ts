@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { ApiService } from '../../shared/services/api.service';
 import { CartService } from './cart.service';
+import { CartStore } from './cart.store';
 
 export function main() {
   describe('Cart Service', () => {
@@ -18,6 +19,7 @@ export function main() {
         providers: [
           ...beforeEachProvidersArray,
           CartService,
+          CartStore,
           { provide: ApiService, useValue: mockApiService }
         ]
       });

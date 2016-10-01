@@ -1,42 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { Store, ActionReducer, Action } from '@ngrx/store';
 
 import { ApiService } from '../../shared/services/api.service';
-import { Cart, Project } from '../cart.interface';
-import { CartUtilities } from './cart.utilities';
 import { CartSummaryService } from '../../shared/services/cart-summary.service';
 
-const emptyCart: Cart = {
-  userId: NaN,
-  total: 0
-};
-
-export const cart: ActionReducer<any> = (state: Cart = emptyCart, action: Action) => {
-  switch (action.type) {
-    case 'REPLACE_CART':
-      // payload = the whole cart
-      return Object.assign({}, action.payload);
-
-    default:
-      return state;
-  }
-};
+import { Project } from '../cart.interface';
+import { CartStore } from './cart.store';
+import { CartUtilities } from './cart.utilities';
 
 @Injectable()
 export class CartService {
-  public data: Observable<any>;
-
   constructor(
-    private store: Store<any>,
+    private store: CartStore,
     private apiService: ApiService,
-    private cartSummaryService: CartSummaryService) {
-    this.data = this.store.select('cart');
+    private cartSummaryService: CartSummaryService
+  ) {}
+
+  public get data(): Observable<any> {
+    return this.store.data;
+  }
+
+  public get state(): any {
+    return this.store.state;
   }
 
   public initializeData(): Observable<any> {
     return this.apiServiceGet('orders', 'cart')
-      .do(wholeCartResponse => this.replaceStoreWith(wholeCartResponse))
+      .do(wholeCartResponse => this.store.replaceWith(wholeCartResponse))
       .map(() => { return {}; })
       .share();
   }
@@ -44,7 +34,7 @@ export class CartService {
   public addProject(): void {
     this.apiServicePost('orders', 'cart/project', this.createAddProjectRequestBody())
       .subscribe(wholeCartResponse => {
-        this.replaceStoreWith(wholeCartResponse);
+        this.store.replaceWith(wholeCartResponse);
         this.cartSummaryService.loadCartSummary();
       });
   }
@@ -52,19 +42,18 @@ export class CartService {
   public removeProject(project: Project): void {
     this.apiServiceDelete('orders', `cart/project/${project.id}`)
       .subscribe(wholeCartResponse => {
-        this.replaceStoreWith(wholeCartResponse);
+        this.store.replaceWith(wholeCartResponse);
         this.cartSummaryService.loadCartSummary();
       });
   }
 
-  public get state(): any {
-    let state: any;
-    this.data.take(1).subscribe(cartData => state = cartData);
-    return state;
-  }
+  private createAddProjectRequestBody(): string {
+    let existingNames: Array<string> =
+      (this.state.projects || []).map((project: any) => project.name);
 
-  private replaceStoreWith(cart: any): void {
-    this.store.dispatch({ type: 'REPLACE_CART', payload: cart });
+    return JSON.stringify({
+      name: CartUtilities.nextNewProjectNameGiven(existingNames)
+    });
   }
 
   // Idea for ApiService enhancement.
@@ -85,12 +74,4 @@ export class CartService {
       .map(response => response.json());
   }
   // END of ApiService abstractions.
-
-  private createAddProjectRequestBody(): string {
-    let existingNames: Array<string> = (this.state.projects || []).map((project: any) => project.name);
-
-    return JSON.stringify({
-      name: CartUtilities.nextNewProjectNameGiven(existingNames)
-    });
-  }
 }
