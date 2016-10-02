@@ -83,9 +83,11 @@ export class CartService {
   // END of ApiService abstractions.
 }
 
+// Extra definitions for ApiService abstraction/demo.
 import { RequestOptionsArgs } from '@angular/http';
 
 interface ApiServiceOptions {
   requestOptions?: RequestOptionsArgs;
   loading?: boolean;
 }
+// END of ApiService abstractions.
