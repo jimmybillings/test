@@ -13,7 +13,7 @@ import { MdMenuTrigger } from '@angular2-material/menu';
 
 export class WzAssetListComponent implements OnChanges {
   @Input() public assets: Array<any>;
-  @Input() public permission: any;
+  @Input() public userCan: any;
   @Input() collection: Collection;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
@@ -22,7 +22,9 @@ export class WzAssetListComponent implements OnChanges {
   @Output() onShowNewCollection = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   private assetsArr: Array<number>;
-  private assetId:any;
+  private assetId: any;
+  private hasComp: any;
+
   constructor() {
     this.assetsArr = [];
   }
@@ -38,7 +40,7 @@ export class WzAssetListComponent implements OnChanges {
   }
 
   public removeFromCollection(collection: Collection, asset: any): void {
-    this.onRemoveFromCollection.emit({'collection': collection, 'asset': asset});
+    this.onRemoveFromCollection.emit({ 'collection': collection, 'asset': asset });
   }
 
   public showNewCollection(asset: any): void {
@@ -50,12 +52,13 @@ export class WzAssetListComponent implements OnChanges {
     this.addToCart.emit(asset);
   }
 
-  public setAssetActiveId(id: any) {
-     this.assetId = id;
+  public setAssetActiveId(asset: any) {
+    this.assetId = asset.assetId;
+    this.hasComp = asset.hasDownloadableComp;
   }
 
   public downloadComp(compType: any): void {
-    this.onDownloadComp.emit({'assetId': this.assetId, 'compType': compType});
+    this.onDownloadComp.emit({ 'assetId': this.assetId, 'compType': compType });
   }
 
   public alreadyInCollection(asset: any): boolean {

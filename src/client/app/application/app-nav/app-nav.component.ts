@@ -18,10 +18,10 @@ export class AppNavComponent {
   @Input() supportedLanguages: any;
   @Input() state: any;
   @Input() collection: Collection;
-  @Input() UiState: any;
+  @Input() uiState: any;
   @Input() prefs: any;
-  @Input() permission: any;
   @Input() cartSize: any;
+  @Input() userCan: any;
   @Output() onLogOut = new EventEmitter();
   @Output() onChangeLang = new EventEmitter();
   @Output() onOpenSidenav = new EventEmitter();
@@ -43,7 +43,7 @@ export class AppNavComponent {
   }
 
   public showNewCollection(event: Event) {
-    this.UiState.showNewCollection();
+    this.uiState.showNewCollection();
   }
 
   public formatBadgeNumber(size: any): string {

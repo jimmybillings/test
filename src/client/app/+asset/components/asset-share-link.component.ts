@@ -12,7 +12,7 @@ var Clipboard = require('clipboard/dist/clipboard');
 })
 
 export class AssetShareLinkComponent {
-  @Input() UiState: any;
+  @Input() uiState: any;
   @Input() assetLink: string;
   @Output() close = new EventEmitter();
 
@@ -21,7 +21,7 @@ export class AssetShareLinkComponent {
   }
 
   public closeAssetShareLink(): void {
-    this.UiState.closeAssetShareLink();
+    this.uiState.closeAssetShareLink();
   }
 
   public selectInputForCopy(event:any): void {

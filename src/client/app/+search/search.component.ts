@@ -12,7 +12,7 @@ import { ActiveCollectionService } from '../+collection/services/active-collecti
 import { FilterService } from './services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
-import { UserPermission } from '../shared/services/permission.service';
+import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 import { CartSummaryService } from '../shared/services/cart-summary.service';
 
@@ -50,7 +50,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     public uiConfig: UiConfig,
     public currentUser: CurrentUser,
     public collectionsService: CollectionsService,
-    public permission: UserPermission,
+    public userCan: Capabilities,
     public activeCollection: ActiveCollectionService,
     public searchContext: SearchContext,
     public filter: FilterService,
@@ -198,7 +198,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public onSortResults(sortDefinition: any): void {
-    for (let group of this.preferences.sorts) {
+    for (let group of this.sortOptions) {
       for (let definition in group) {
         if (group[definition].id === sortDefinition.id) {
           this.sortDefinitions.update({ currentSort: group[definition] });

@@ -5,27 +5,26 @@
     'search-closed': !(preferences.data | async).searchIsOpen
     }" class="app-header">
     <app-nav
-      [UiState]="uiState"
+      [uiState]="uiState"
       [currentUser]="currentUser"
-      [permission]="permission"
       [state]="state"
       [prefs]="preferences"
       [config]="(uiConfig.get('header') | async).config"
       [collection]="activeCollection.data | async"
+      [userCan]="userCan"
       [cartSize]="(cartSummary.data | async).itemCount"
       (onLogOut)="logout()">
     </app-nav>
     <collection-tray
-      *ngIf="(uiState.data | async).searchBarIsActive && permission.has('ViewCollections')"
-      [UiState]="uiState"
-      [uiConfig]="uiConfig"
-      >
+      *ngIf="userCan.viewCollectionTray() | async"
+      [uiState]="uiState"
+      [uiConfig]="uiConfig">
     </collection-tray>
     <wz-search-box
-      *ngIf="(uiState.data | async).searchBarIsActive"
+      *ngIf="uiState.searchBarIsActive()| async"
       [currentUser]="currentUser"
       [state]="state"
-      [UiState]="uiState"
+      [uiState]="uiState"
       [prefs]="preferences"
       [config]="(uiConfig.get('searchBox') | async).config"
       (searchContext)="newSearchContext($event)">

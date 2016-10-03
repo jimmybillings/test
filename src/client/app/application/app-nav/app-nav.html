@@ -8,29 +8,27 @@
     </a>
     
     <!--THESE LINKS SHOW ONLY FOR LOGGED IN USERS-->
-    <a md-button="" *ngIf="currentUser.loggedInState() | async" [md-menu-trigger-for]="navigation" [ngClass]="{'md-primary': !(UiState.data | async).showFixed}" hide="" show-gt-sm="" class="is-dd">
+    <a md-button="" *ngIf="currentUser.loggedInState() | async" [md-menu-trigger-for]="navigation" [ngClass]="{'md-primary': !(uiState.data | async).showFixed}" hide="" show-gt-sm="" class="is-dd">
       {{currentUser.fullName() | async}}
     </a>
     
-    <a md-button *ngIf="currentUser.loggedInState() | async" [md-menu-trigger-for]="navigation" [ngClass]="{'md-primary': !(UiState.data | async).showFixed}" hide="" show-xs="" class="md-icon-button is-dd"> <i md-icon="" class="material-icons">person</i></a>
+    <a md-button *ngIf="currentUser.loggedInState() | async" [md-menu-trigger-for]="navigation" [ngClass]="{'md-primary': !(uiState.data | async).showFixed}" hide="" show-xs="" class="md-icon-button is-dd"> <i md-icon="" class="material-icons">person</i></a>
 
     <!--<a md-button *ngIf="currentUser.loggedInState() | async" (click)="logOut()" [routerLink]="['/']" hide="" show-gt-sm="" class="md-caption md-primary md-hue-2">{{ 'HEADER.LOGOUT_LABEL' | translate}}</a>-->
     
     <!--THESE LINKS SHOW ONLY FOR LOGGED OUT USERS-->
     <a md-button *ngIf="!(currentUser.loggedInState() | async)" [routerLink]="['/user/login']">{{ 'HEADER.LOGIN_LABEL' | translate}}</a>
     
-    <a md-button [ngClass]="{'md-accent': !(UiState.data | async).showFixed}" *ngIf="!(currentUser.loggedInState() | async)" md-button="" [routerLink]="['/user/register']" class="is-outlined">{{ 'HEADER.SIGN_UP_LABEL' | translate}}</a>
+    <a md-button [ngClass]="{'md-accent': !(uiState.data | async).showFixed}" *ngIf="!(currentUser.loggedInState() | async)" md-button="" [routerLink]="['/user/register']" class="is-outlined">{{ 'HEADER.SIGN_UP_LABEL' | translate}}</a>
 
     <!--THESE LINKS ONLY SHOW IF THE SEARCH BAR IS ACTIVE-->
   
-    <button *ngIf="(UiState.data | async).searchBarIsActive" md-icon-button title="Search" (click)="toggleSearch()" class="open-search"><md-icon>search</md-icon></button>
+    <button *ngIf="uiState.searchBarIsActive() | async" md-icon-button title="Search" (click)="toggleSearch()" class="open-search"><md-icon>search</md-icon></button>
     
-    <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id !== null" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleCollectionTray()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
-
-    <button *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async) && collection.id === null" md-icon-button title="{{'HEADER.NEW_COLLECTION_LABEL' | translate}}" (click)="showNewCollection()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
+    <button *ngIf="userCan.viewCollectionTray() | async" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleCollectionTray()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
     
     <button 
-        *ngIf="(UiState.data | async).searchBarIsActive && (currentUser.loggedInState() | async)" 
+        *ngIf="userCan.viewCartIcon() | async" 
         md-icon-button
         class="cart"
         title="{{ 'HEADER.CART_BTN_TITLE' | translate}}"
@@ -44,16 +42,16 @@
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
 </md-toolbar>
 <md-menu x-position="before" #navigation="mdMenu">
-    <a md-menu-item *ngIf="permission.has('Root')" [routerLink]="['/admin/dashboard']">
+    <a md-menu-item *ngIf="userCan.viewAdmin()" [routerLink]="['/admin/dashboard']">
         <md-icon>settings</md-icon>{{ 'HEADER.ADMIN_LABEL' | translate }}
     </a>
-    <a md-menu-item *ngIf="(currentUser.loggedInState() | async)" [routerLink]="['/user/profile']">
+    <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/user/profile']">
         <md-icon>person</md-icon>Open your Profile
     </a>
-    <a md-menu-item *ngIf="(currentUser.loggedInState() | async)" [routerLink]="['/collection']">
+    <a md-menu-item *ngIf="userCan.viewCollections()" [routerLink]="['/collection']">
         <md-icon>folder_open</md-icon>Open your collections
     </a>
-    <a md-menu-item *ngIf="permission.has('ViewCarts')" [routerLink]="['/cart']">
+    <a md-menu-item *ngIf="userCan.viewCartIcon() | async" [routerLink]="['/cart']">
         <md-icon>shopping_cart</md-icon>Open your cart
     </a>
     <div class="divider"></div>

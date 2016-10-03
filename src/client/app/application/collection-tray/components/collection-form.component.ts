@@ -67,7 +67,6 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   }
 
   public createCollection(collection: Collection): void {
-    this.uiState.loading(true);
     collection.tags = (collection.tags) ? collection.tags.split(/\s*,\s*/) : [];
     this.collectionsService.createCollection(collection).take(1).subscribe(collection => {
       this.collectionContext.resetCollectionOptions();
@@ -77,7 +76,6 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   }
 
   public editCollection(collection: Collection) {
-    this.uiState.loading(true);
     collection = Object.assign({}, collection,
       { id: this.collection.id, tags: collection.tags.split(/\s*,\s*/), owner: this.collection.owner });
     this.collectionsService.updateCollection(collection).take(1)
@@ -101,7 +99,6 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   private success(): void {
     this.formItems = this.clearForm();
     this.wzForm.resetForm();
-    this.uiState.loading(false);
     this.detector.markForCheck();
     this.dialog.close();
   }
@@ -109,7 +106,6 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   private error(error: any) {
     this.serverErrors = error.json();
     this.detector.markForCheck();
-    this.uiState.loading(false);
   }
 
   private clearForm() {

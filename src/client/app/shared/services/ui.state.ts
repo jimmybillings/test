@@ -53,6 +53,10 @@ export class UiState {
     this.data.take(1).subscribe(s => this.update({ loading: state}));
   }
 
+  public searchBarIsActive(): Observable<boolean> {
+    return this.data.map(data => data.searchBarIsActive);
+  }
+
   public checkRouteForSearchBar(currentState: string): void {
     if (currentState === '/') {
       this.update({ searchBarIsActive: false });

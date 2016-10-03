@@ -13,8 +13,9 @@ import { CollectionsService } from '../+collection/services/collections.service'
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { UiState } from '../shared/services/ui.state';
 import { AdminAuthGuard } from '../+admin/services/admin.auth.guard';
-import { UserPermission } from '../shared/services/permission.service';
 import { AssetGuard } from '../+asset/services/asset.guard';
+import { LoggedInGuard } from '../+user-management/services/logged-in.guard';
+import { LoggedOutGuard } from '../+user-management/services/logged-out.guard';
 import { AssetData } from '../+search/services/asset.data.service';
 import { FilterService } from '../+search/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
@@ -31,6 +32,7 @@ import { asset } from '../+asset/services/asset.service';
 import { currentUser} from '../shared/services/current-user.model';
 import { config } from '../shared/services/ui.config';
 import { uiState } from '../shared/services/ui.state';
+import { Capabilities } from '../shared/services/capabilities.service';
 import { adminResources } from '../+admin/services/admin.service';
 import { searchContext} from '../shared/services/search-context.service';
 import { error } from '../shared/services/error.service';
@@ -63,13 +65,15 @@ export const WAZEE_PROVIDERS = [
   UiState,
   AdminAuthGuard,
   AssetGuard,
-  UserPermission,
   FilterService,
   UserPreferenceService,
   CollectionContextService,
   ApiService,
   SortDefinitionsService,
   CartGuard,
+  Capabilities,
+  LoggedInGuard,
+  LoggedOutGuard,
   CartSummaryService
 ];
 

@@ -17,7 +17,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
   @Input() config: any;
   @Input() currentUser: any;
   @Input() state: any;
-  @Input() UiState: UiState;
+  @Input() uiState: UiState;
   @Input() prefs: any;
   @Output() searchContext = new EventEmitter();
   public searchTerms: Observable<any>;

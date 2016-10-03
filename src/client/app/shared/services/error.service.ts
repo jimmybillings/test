@@ -27,7 +27,7 @@ export class Error {
 @Injectable()
 export class ErrorActions {
   constructor(private error: Error, private router: Router, private currentUser: CurrentUser) {
-    this.error.data.subscribe((error: any) => this.handle(error));
+    this.error.data.subscribe(this.handle.bind(this));
   }
 
   public handle(error: any): void {
@@ -44,13 +44,25 @@ export class ErrorActions {
   }
 
   public unAuthorized(): void {
-    let redirect = (this.currentUser.loggedIn()) ? ['/user/login', { 'loggedOut': 'true' }] :
-      (this.router.url.indexOf('/user/login') > -1) ? ['/user/login', { 'credentials': 'invalid' }] : ['/user/login'];
+    let redirect: any;
+    if (this.currentUser.loggedIn()) {
+      // SESSION HAS EXPIRED
+      redirect = ['/user/login', { 'session' : 'expired' }];
+    } else {
+      // INCORRECT LOGIN ATTEMPT
+      if(this.router.url.indexOf('/user/login') > -1) {
+        redirect = ['/user/login', { 'credentials' : 'invalid' }];
+      } else {
+      // REQUIRED TO BE LOGGED IN
+        redirect = ['/user/login', { 'requireLogin' : 'true' }];
+      }
+    }
     this.currentUser.destroy();
     this.router.navigate(redirect);
   }
 
-  public forbidden(): boolean {
-    return true;
+  public forbidden(): void {
+    var link: any = this.router.url;
+    this.router.navigate([link+';permission=required']);
   }
 }
