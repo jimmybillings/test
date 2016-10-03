@@ -28,8 +28,8 @@
       <a md-menu-item *ngIf="(collection | async).id" [routerLink]="['/collection/', (collection | async).id, {i: 1, n: pageSize}]">
         <md-icon>open_in_browser</md-icon>Open selected collection
       </a>
-      <button md-menu-item disabled>
-        <md-icon>link</md-icon>copy link for selected collection
+      <button md-menu-item (click)="copyLegacyLinkDialog.show()">
+        <md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}
       </button>
       <a md-menu-item [routerLink]="['/collection/']">
         <md-icon>folder_open</md-icon>View all collections
@@ -50,3 +50,7 @@
     layout="row" layout-align="end start" class="revealed">
   </collections-list-dd>
 </wz-dropdown>
+
+<wz-dialog #copyLegacyLinkDialog>
+  <collection-link-component [assets]="(collection | async).assets.items"></collection-link-component>
+</wz-dialog>

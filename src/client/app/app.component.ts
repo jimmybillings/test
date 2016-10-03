@@ -10,16 +10,17 @@ import { ApiConfig} from './shared/services/api.config';
 import { UiConfig} from './shared/services/ui.config';
 import { SearchContext} from './shared/services/search-context.service';
 import { Authentication} from './+user-management/services/authentication.data.service';
+
 import { CollectionsService } from './+collection/services/collections.service';
-import { UiState} from './shared/services/ui.state';
+import { UiState } from './shared/services/ui.state';
 import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
-import { ActiveCollectionService} from './+collection/services/active-collection.service';
-import { CartService } from './shared/services/cart.service';
+import { ActiveCollectionService } from './+collection/services/active-collection.service';
+import { CartSummaryService } from './shared/services/cart-summary.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
 
 // /Interfaces
-import { ILang} from './shared/interfaces/language.interface';
+import { ILang } from './shared/interfaces/language.interface';
 import { Collection, CollectionStore } from './shared/interfaces/collection.interface';
 
 declare var portal: string;
@@ -34,7 +35,6 @@ declare var portal: string;
 export class AppComponent implements OnInit, OnDestroy {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
-  public cartSize: any;
   public collections: Observable<Array<Collection>>;
   private routeSubscription: Subscription;
   private authSubscription: Subscription;
@@ -52,24 +52,24 @@ export class AppComponent implements OnInit, OnDestroy {
     public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>,
     public uiState: UiState,
-    private cartService: CartService,
     public preferences: UserPreferenceService,
     private renderer: Renderer,
     private notification: WzNotificationService,
     private apiConfig: ApiConfig,
     private authentication: Authentication,
     private errorActions: ErrorActions,
-    private userCan: Capabilities) {
+    private userCan: Capabilities,
+    private cartSummary: CartSummaryService,
+    private errorActions: ErrorActions) {
     this.apiConfig.setPortal(portal);
     this.currentUser.set();
   }
 
   ngOnInit() {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
-    this.uiConfig.initialize().subscribe();
+    this.uiConfig.initialize(this.currentUser.loggedIn(), this.apiConfig.getPortal()).subscribe();
     this.routerChanges();
     this.bootStrapUserData();
-    this.cartSize = this.cartService.size;
   }
 
   ngOnDestroy() {
@@ -93,7 +93,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authSubscription = this.authentication.destroy().subscribe();
     this.currentUser.destroy();
     this.collectionsService.destroyCollections();
-    this.cartService.destroyData();
     this.uiState.reset();
   }
 
@@ -117,7 +116,7 @@ export class AppComponent implements OnInit, OnDestroy {
           });
         }
         if(this.userCan.viewCart()) {
-          this.cartService.initializeData();
+          this.cartSummary.loadCartSummary();
         }
       });
   }

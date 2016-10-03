@@ -10,14 +10,15 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../+asset/services/asset.service';
 import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
-import { CartService } from '../../shared/services/cart.service';
 import { Capabilities } from '../../shared/services/capabilities.service';
+import { CartSummaryService } from '../../shared/services/cart-summary.service';
 
 @Component({
   moduleId: module.id,
   selector: 'collection-show',
   templateUrl: 'collection-show.html',
 })
+
 
 export class CollectionShowComponent implements OnInit, OnDestroy {
   public collections: Observable<Collections>;
@@ -50,8 +51,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public uiState: UiState,
     public notification: WzNotificationService,
     public uiConfig: UiConfig,
-    public cartService: CartService) {
-  }
+    public cartSummary: CartSummaryService) { }
 
   ngOnInit() {
     this.activeCollectionSubscription = this.activeCollection.data.subscribe(collection => {
@@ -119,6 +119,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cartService.addAssetToProjectInCart(asset);
+    this.cartSummary.addAssetToProjectInCart(asset);
   }
 }

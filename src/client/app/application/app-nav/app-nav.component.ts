@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewCh
 import { Router} from '@angular/router';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { MdMenuTrigger } from '@angular2-material/menu';
-import { Observable } from 'rxjs/Rx';
 /**
  * site header component - renders the header information
  */
@@ -47,11 +46,7 @@ export class AppNavComponent {
     this.uiState.showNewCollection();
   }
 
-  public formatBadgeNumber(): Observable<string> {
-    return this.cartSize.map((size: any) => {
-      if (size) {
-        return (size > 99) ? '99+' : size.toString();
-      }
-    });
+  public formatBadgeNumber(size: any): string {
+    return (size > 99) ? '99+' : size.toString();
   }
 }

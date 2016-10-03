@@ -2,6 +2,7 @@ import { Component, Input, Output, ViewChild, EventEmitter, ChangeDetectionStrat
 import { AssetService } from '../services/asset.service';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
+import { WzToastComponent } from '../../shared/components/wz-toast/wz.toast.component';
 
 @Component({
   moduleId: module.id,
@@ -24,6 +25,7 @@ export class AssetShareComponent {
   public formItems: Array<any> = [];
 
   @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
+  @ViewChild(WzToastComponent) private wzToast: WzToastComponent;
 
   constructor(
     private asset: AssetService,
@@ -35,7 +37,7 @@ export class AssetShareComponent {
   }
 
   public showShareLink(assetId: any) {
-    // we need to pass ISO formatted time stamps for the start and end time the share link is valid.
+    // we need to pass ISO formatted time stamps for the start and end time.
     let shareLink:any = {};
     let endDate = new Date();
     endDate.setDate(endDate.getDate() + 10);
@@ -60,15 +62,14 @@ export class AssetShareComponent {
     shareLink.type = 'asset';
     shareLink.recipientEmails = (shareLink.recipientEmails) ? shareLink.recipientEmails.split(/\s*,\s*/) : [];
     this.asset.createShareLink(shareLink).take(1).subscribe((res) => {
-      console.log(res);
       this.success();
+      this.wzToast.show();
     }, this.error.bind(this));
   }
 
   private success(): void {
     this.formItems = this.clearForm();
     this.wzForm.resetForm();
-    // this.uiState.loading(false);
     this.changeDetector.markForCheck();
     this.closeAssetShare();
   }

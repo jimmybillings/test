@@ -11,8 +11,8 @@
       [prefs]="preferences"
       [config]="(uiConfig.get('header') | async).config"
       [collection]="activeCollection.data | async"
-      [cartSize]="cartSize"
       [userCan]="userCan"
+      [cartSize]="(cartSummary.data | async).itemCount"
       (onLogOut)="logout()">
     </app-nav>
     <collection-tray

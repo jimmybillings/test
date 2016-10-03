@@ -14,7 +14,7 @@ import { UserPreferenceService } from '../shared/services/user-preference.servic
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
-import { CartService } from '../shared/services/cart.service';
+import { CartSummaryService } from '../shared/services/cart-summary.service';
 
 /**
  * Asset search page component - renders search page results
@@ -58,7 +58,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     public notification: WzNotificationService,
     public uiState: UiState,
     public sortDefinitions: SortDefinitionsService,
-    public cartService: CartService) { }
+    public cartSummary: CartSummaryService) { }
 
   ngOnInit(): void {
     this.sortSubscription = this.sortDefinitions.data.subscribe((data: any) => {
@@ -198,7 +198,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public onSortResults(sortDefinition: any): void {
-    for (let group of this.preferences.sorts) {
+    for (let group of this.sortOptions) {
       for (let definition in group) {
         if (group[definition].id === sortDefinition.id) {
           this.sortDefinitions.update({ currentSort: group[definition] });
@@ -214,7 +214,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cartService.addAssetToProjectInCart(asset);
+    this.cartSummary.addAssetToProjectInCart(asset);
   }
 
   public get mockSorts(): any {

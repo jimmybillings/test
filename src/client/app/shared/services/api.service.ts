@@ -60,8 +60,13 @@ export class ApiService {
     });
   }
 
-  public delete(url: string, options: RequestOptionsArgs = {}): Observable<any> {
-    return this.http.delete(this.buildUrl(url), this.buildOptions(options)).catch((error: any) => {
+  public delete(url: string, options: RequestOptionsArgs = {}, loading: boolean = false): Observable<any> {
+    if (loading) this.uiState.loading(true);
+    return this.http.delete(this.buildUrl(url), this.buildOptions(options)).map((res) => {
+      this.uiState.loading(false);
+      return res;
+    }).catch((error: any) => {
+      this.uiState.loading(false);
       this.error.dispatch(error);
       return Observable.throw(error);
     });
