@@ -1,8 +1,11 @@
-import { Component, Input, Output, ViewChild, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, ViewChild, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { AssetService } from '../services/asset.service';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { WzToastComponent } from '../../shared/components/wz-toast/wz.toast.component';
+import { CurrentUser } from '../../shared/services/current-user.model';
+import { User} from '../../shared/interfaces/user.interface';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -11,7 +14,8 @@ import { WzToastComponent } from '../../shared/components/wz-toast/wz.toast.comp
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class AssetShareComponent {
+export class AssetShareComponent implements OnDestroy {
+  @Input() currentUser: CurrentUser;
   @Input() uiState: any;
   @Input() config: any;
   @Input() assetThumbnailUrl: any;
@@ -23,13 +27,22 @@ export class AssetShareComponent {
   public assetShareLink: any = '';
   public serverErrors: any;
   public formItems: Array<any> = [];
+  public user: User;
+  private userSubscription: Subscription;
+
 
   @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
   @ViewChild(WzToastComponent) private wzToast: WzToastComponent;
 
   constructor(
+    currentUser: CurrentUser,
     private asset: AssetService,
     private changeDetector: ChangeDetectorRef) {
+      this.userSubscription = currentUser.profile.subscribe((user: User) => this.user = user);
+  }
+
+  public ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 
   public closeAssetShare(): void {
@@ -38,7 +51,7 @@ export class AssetShareComponent {
 
   public showShareLink(assetId: any) {
     // we need to pass ISO formatted time stamps for the start and end time.
-    let shareLink:any = {};
+    let shareLink: any = {};
     let endDate = new Date();
     endDate.setDate(endDate.getDate() + 10);
     shareLink.accessEndDate = this.IsoFormatLocalDate(endDate);
@@ -53,7 +66,7 @@ export class AssetShareComponent {
     this.assetLinkIsShowing = !this.assetLinkIsShowing;
   }
 
-  public createShareLink(shareLink:any,assetId: any): void {
+  public createShareLink(shareLink: any, assetId: any): void {
     let endDate = new Date();
     endDate.setDate(endDate.getDate() + 10);
     shareLink.accessEndDate = this.IsoFormatLocalDate(endDate);
@@ -61,6 +74,9 @@ export class AssetShareComponent {
     shareLink.accessInfo = assetId;
     shareLink.type = 'asset';
     shareLink.recipientEmails = (shareLink.recipientEmails) ? shareLink.recipientEmails.split(/\s*,\s*/) : [];
+    if (shareLink.copyMe) {
+      shareLink.recipientEmails.push(this.user.emailAddress);
+    }
     this.asset.createShareLink(shareLink).take(1).subscribe((res) => {
       this.success();
       this.wzToast.show();
@@ -90,11 +106,11 @@ export class AssetShareComponent {
   }
 
   // we need to submit date/timestamps in ISO format. This does that.
-  private IsoFormatLocalDate(date:any) {
+  private IsoFormatLocalDate(date: any) {
     var d = date,
       tzo = -d.getTimezoneOffset(),
       dif = tzo >= 0 ? '+' : '-',
-      pad = function (num:any) {
+      pad = function (num: any) {
         var norm = Math.abs(Math.floor(num));
         return (norm < 10 ? '0' : '') + norm;
       };
