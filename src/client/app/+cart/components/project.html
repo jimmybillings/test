@@ -1,0 +1,32 @@
+<section class="project" layout="row" flex="100">
+  <div class="project-info" flex="70" flex-md="50" flex-sm="40" flex-xs="0">
+    <button md-icon-button type="button"><md-icon>check_box</md-icon></button>
+    <table hide="" show-gt-xs="">
+      <tr>
+        <th>Project Name:</th>
+        <td>{{ project.name }}</td>
+      </tr>
+      <tr hide="" show-gt-md="">
+        <th>Client Name:</th>
+        <td>{{ project.clientName }}</td>
+      </tr>
+      <tr hide="" show-gt-lg="">
+        <th>Delivery Format:</th>
+        <td>Native Format</td>
+      </tr>
+    </table>
+  </div>
+  <div class="project-actions" flex="30" flex-md="50" flex-sm="60" flex-xs="100">
+    <button md-icon-button [md-menu-trigger-for]="projectOptionsMenu"><md-icon>more_vert</md-icon></button>
+    <p><strong>{{ project.name }} Subtotal: </strong>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</p>
+  </div>
+</section>
+
+<md-menu x-position="before" #projectOptionsMenu="mdMenu">
+  <button md-menu-item (click)="removeProject()"><md-icon>close</md-icon>Remove Project</button>
+  <button disabled md-menu-item (click)="removeProject()"><md-icon>add</md-icon>Add Package</button>
+  <button disabled md-menu-item (click)="removeProject()"><md-icon>add</md-icon>Add Fee</button>
+  <button disabled md-menu-item (click)="removeProject()"><md-icon>add</md-icon>Add Clip</button>
+  <button disabled md-menu-item (click)="removeProject()"><md-icon>add</md-icon>Add Clips</button>
+  <button disabled md-menu-item (click)="removeProject()"><md-icon>edit</md-icon>Edit Price</button>
+</md-menu>

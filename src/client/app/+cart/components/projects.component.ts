@@ -12,7 +12,9 @@ import { Project } from '../cart.interface';
   `],
   template: `
     <project-component *ngFor="let project of projects" [project]="project" (projectNotify)="delegate($event)"></project-component>
-    <button (click)="addProject()">Add Project</button>
+    <div flex="95" layout="row" layout-align="end center">
+      <button md-raised-button="" (click)="addProject()">ADD PROJECT</button>
+    </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
