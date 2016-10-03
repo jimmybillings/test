@@ -57,7 +57,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private notification: WzNotificationService,
     private apiConfig: ApiConfig,
     private authentication: Authentication,
-    private errorActions: ErrorActions,
     private userCan: Capabilities,
     private cartSummary: CartSummaryService,
     private errorActions: ErrorActions) {
@@ -85,6 +84,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.uiState.checkRouteForSearchBar(event.url);
         this.state = event.url;
         window.scrollTo(0, 0);
+        console.log(this.state);
         this.notification.check(this.state, this.target);
       });
   }

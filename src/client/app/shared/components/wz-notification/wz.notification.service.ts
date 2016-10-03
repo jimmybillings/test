@@ -10,6 +10,7 @@ export class WzNotificationService implements OnDestroy {
   public viewRef: any;
   public setDestroyTimer: any;
   public notficationStrategy: any = [];
+  public destroyOnClick: any;
   private configSubscription: Subscription;
 
   constructor(private renderer: Renderer,
@@ -32,11 +33,12 @@ export class WzNotificationService implements OnDestroy {
 
   public createNotfication(target: ViewContainerRef, notice: any) {
     let componentFactory = this.resolver.resolveComponentFactory(WzNotificationComponent);
-    if (this.cmpRef) this.destroyNotification();
     this.cmpRef = target.createComponent(componentFactory);
     this.cmpRef.instance.notice = notice.trString;
     this.cmpRef.instance.theme = notice.theme;
-    this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.destroyNotification());
+    this.destroyOnClick = setTimeout(() => {
+      this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.destroyNotification());
+    }, 200);
     this.setDestroyTimer = setTimeout(() => this.destroyNotification(), 4500);
   }
 
@@ -44,5 +46,6 @@ export class WzNotificationService implements OnDestroy {
     this.cmpRef.destroy();
     this.viewRef();
     clearTimeout(this.setDestroyTimer);
+    clearTimeout(this.destroyOnClick);
   }
 }

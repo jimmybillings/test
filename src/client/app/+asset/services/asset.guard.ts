@@ -24,8 +24,7 @@ export class AssetGuard implements CanActivate {
       return true;
     } else {
       // user is logged in but doesn't have permission
-      this.router.navigate(['/user/profile', {'permission': 'required'}]);
-      return false;
+      return this.router.navigate(['/user/profile', {'permission': 'required'}]) && false;
     }
   }
 }

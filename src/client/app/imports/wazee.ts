@@ -73,7 +73,7 @@ export const WAZEE_PROVIDERS = [
   CartGuard,
   Capabilities,
   LoggedInGuard,
-  LoggedOutGuard
+  LoggedOutGuard,
   CartSummaryService
 ];
 
