@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
-import { Project } from '../shared/interfaces/cart.interface';
+import { Project } from '../cart.interface';
 
 @Component({
   moduleId: module.id,

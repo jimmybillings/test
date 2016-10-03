@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
-import { CartService } from '../shared/services/cart.service';
+import { CartService } from './services/cart.service';
 
 @Component({
   moduleId: module.id,

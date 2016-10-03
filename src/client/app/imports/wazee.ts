@@ -40,7 +40,7 @@ import { activeCollection } from '../+collection/services/active-collection.serv
 import { filters } from '../+search/services/filter.service';
 import { userPreferences } from '../shared/services/user-preference.service';
 import { CollectionContextService, collectionOptions } from '../shared/services/collection-context.service';
-import { cart } from '../shared/services/cart.service';
+import { cart } from '../+cart/services/cart.store';
 import { sortDefinitions } from '../shared/services/sort-definitions.service';
 import { cartSummary } from '../shared/services/cart-summary.service';
 
