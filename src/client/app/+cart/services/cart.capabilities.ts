@@ -8,12 +8,12 @@ export class CartCapabilities {
   constructor(public currentUser: CurrentUser, public uiState: UiState) { }
 
   public viewCart(): boolean {
-    return this.currentUser.loggedIn() && this.userHas('ViewCart');
+    return this.currentUser.loggedIn() && this.userHas('ViewCarts');
   }
 
   public viewCartIcon(): Observable<boolean> {
     return this.uiState.searchBarIsActive().map((searchBarIsActive) => {
-      return searchBarIsActive && this.userHas('ViewCart');
+      return searchBarIsActive && this.userHas('ViewCarts');
     });
   }
 

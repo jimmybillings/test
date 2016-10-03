@@ -21,7 +21,7 @@ export function main() {
       'permissions': [
         'ViewClips',
         'ViewCollections',
-        'ViewCart'
+        'ViewCarts'
       ]
     };
 
@@ -48,7 +48,7 @@ export function main() {
 
       it('sets the permissions variable', () => {
         service.retrievePermissions();
-        expect(service.permissions).toEqual(['ViewClips', 'ViewCollections', 'ViewCart']);
+        expect(service.permissions).toEqual(['ViewClips', 'ViewCollections', 'ViewCarts']);
       });
     });
 
@@ -61,7 +61,7 @@ export function main() {
       }));
 
       it('returns true if a user has a certain permission', () => {
-        expect(service.has('ViewCart')).toBe(true);
+        expect(service.has('ViewCarts')).toBe(true);
         expect(service.has('ViewCollections')).toBe(true);
         expect(service.has('ViewClips')).toBe(true);
       });
