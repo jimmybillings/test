@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Rx';
 })
 
 export class CollectionTrayComponent implements OnInit {
-  @Input() UiState: any;
+  @Input() uiState: any;
   @Input() uiConfig: any;
   public collection: Observable<Collection>;
   public pageSize: string;

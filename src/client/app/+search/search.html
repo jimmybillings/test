@@ -31,7 +31,7 @@
 
         <wz-asset-list 
           [assets]="assets.items" 
-          [permission]="permission"
+          [userCan]="userCan"
           [collection]="activeCollection.data | async"
           (onAddToCollection)="addToCollection($event)"
           (onRemoveFromCollection)="removeFromCollection($event)"

@@ -8,7 +8,7 @@ import { CollectionsService } from '../+collection/services/collections.service'
 import { ActiveCollectionService } from '../+collection/services/active-collection.service';
 import { Store } from '@ngrx/store';
 import { UiConfig } from '../shared/services/ui.config';
-import { UserPermission } from '../shared/services/permission.service';
+import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 import { CartService } from '../shared/services/cart.service';
 /**
@@ -32,7 +32,7 @@ export class AssetComponent implements OnInit {
     public assetService: AssetService,
     public router: Router,
     public collectionsService: CollectionsService,
-    public permission: UserPermission,
+    public userCan: Capabilities,
     public activeCollection: ActiveCollectionService,
     public notification: WzNotificationService,
     public cartService: CartService,

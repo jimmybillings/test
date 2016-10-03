@@ -6,7 +6,7 @@ import { UiConfig } from '../../../shared/services/ui.config';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
 import { ActiveCollectionService } from '../../../+collection/services/active-collection.service';
 import { Observable, Subscription } from 'rxjs/Rx';
-
+import { UiState } from '../../../shared/services/ui.state';
 /**
  * Directive that renders a list of collections
  */
@@ -19,7 +19,7 @@ import { Observable, Subscription } from 'rxjs/Rx';
 
 export class CollectionListDdComponent implements OnInit, OnDestroy {
   @Input() focusedCollection: Collection;
-  @Input() UiState: any;
+  @Input() uiState: UiState;
   @Input() config: any;
   @Output() close = new EventEmitter();
   public collections: Observable<Collections>;
@@ -55,8 +55,7 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
   }
 
   public showNewCollection(): void {
-    this.UiState.closeCollectionsList();
-    this.UiState.showNewCollection();
+    this.uiState.closeCollectionsList();
   }
 
   public selectFocusedCollection(collection: Collection) {
@@ -70,12 +69,12 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
   }
 
   public navigateToCollectionShow(assetId: number): void {
-    this.UiState.closeCollectionsList();
+    this.uiState.closeCollectionsList();
     this.router.navigate(['/collection/', assetId, { i: 1, n: this.pageSize }]);
   }
 
   public navigateToCollectionsIndex() {
-    this.UiState.closeCollectionsList();
+    this.uiState.closeCollectionsList();
     this.router.navigate(['/collection']);
   }
 

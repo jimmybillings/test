@@ -24,6 +24,7 @@ export function isLoggedIn() {
  */
 @Injectable()
 export class CurrentUser {
+  public permissions: any;
   private data: Observable<any>;
 
   constructor(
@@ -62,6 +63,22 @@ export class CurrentUser {
 
   public fullName(): Observable<any> {
     return this.data.map(user => `${user.firstName} ${user.lastName}`);
+  }
+
+  public hasPermission(permission: string): boolean {
+    let hasPermission: boolean;
+    this.profile.map(user => {
+      if (user.permissions) {
+        return user.permissions;
+      } else if (user.roles) {
+        return user.roles[0].permissions || [];
+      } else {
+        return [];
+      }
+    }).take(1).subscribe((permissions) => {
+        hasPermission = permissions.indexOf(permission) > -1;
+    });
+    return hasPermission;
   }
 
   private _user(): User {

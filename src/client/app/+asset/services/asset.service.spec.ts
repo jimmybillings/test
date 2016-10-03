@@ -14,7 +14,8 @@ export function main() {
 
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
-        ...beforeEachProvidersArray
+        ...beforeEachProvidersArray,
+        AssetService
       ]
     }));
 

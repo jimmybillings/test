@@ -9,9 +9,9 @@ import { CurrentUser } from '../../shared/services/current-user.model';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../+asset/services/asset.service';
-import { UserPermission } from '../../shared/services/permission.service';
 import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
 import { CartService } from '../../shared/services/cart.service';
+import { Capabilities } from '../../shared/services/capabilities.service';
 
 @Component({
   moduleId: module.id,
@@ -40,7 +40,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    public permission: UserPermission,
+    public userCan: Capabilities,
     public router: Router,
     public collectionsService: CollectionsService,
     public assetService: AssetService,

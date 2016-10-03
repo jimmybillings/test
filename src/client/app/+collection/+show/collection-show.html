@@ -74,7 +74,7 @@
         <div layout="column">       
           <wz-asset-list 
             [assets]="collection.assets.items"
-            [permission]="permission"
+            [userCan]="userCan"
             [collection]="activeCollection.data | async"
             (onAddToCollection)="addToCollection($event)"
             (onShowNewCollection)="showNewCollection($event)"

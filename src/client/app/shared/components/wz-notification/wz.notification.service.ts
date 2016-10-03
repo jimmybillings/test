@@ -32,6 +32,7 @@ export class WzNotificationService implements OnDestroy {
 
   public createNotfication(target: ViewContainerRef, notice: any) {
     let componentFactory = this.resolver.resolveComponentFactory(WzNotificationComponent);
+    if (this.cmpRef) this.destroyNotification();
     this.cmpRef = target.createComponent(componentFactory);
     this.cmpRef.instance.notice = notice.trString;
     this.cmpRef.instance.theme = notice.theme;

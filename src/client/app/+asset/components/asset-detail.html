@@ -23,14 +23,15 @@
         <header class="toolbar-actions">
           <nav class="asset-options" flex layout-align="end stretch">
             <button
-              *ngIf="asset.hasDownloadableComp && permission.has('DownloadWatermarkComps')"
+              *ngIf="userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
               md-icon-button
               title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
               [md-menu-trigger-for]="downloadCompMenu">
                 <md-icon>file_download</md-icon>
             </button>
+            
             <button
-              *ngIf="!asset.hasDownloadableComp || !permission.has('DownloadWatermarkComps')"
+              *ngIf="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
               disabled
               md-icon-button
               title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}">
@@ -38,19 +39,19 @@
             </button>
 
             <md-menu x-position="before" #downloadCompMenu="mdMenu">
-              <button md-menu-item [disabled]="!permission.has('DownloadWatermarkComps')" (click)="downloadComp(asset.assetId, 'wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
-              <button md-menu-item [disabled]="!permission.has('DownloadCleanComps')" (click)="downloadComp(asset.assetId, 'clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
-              <button md-menu-item [disabled]="!permission.has('DownloadFullComps')" (click)="downloadComp(asset.assetId, 'full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
+              <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)" (click)="downloadComp(asset.assetId, 'wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
+              <button md-menu-item [disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)" (click)="downloadComp(asset.assetId, 'clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
+              <button md-menu-item [disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)" (click)="downloadComp(asset.assetId, 'full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
             </md-menu>
 
             <button md-icon-button 
-              *ngIf="!permission.has('CreateAccessInfo')"
+              *ngIf="!userCan.createAccessInfo()"
               disabled
               title="{{ 'ASSET.DETAIL.SHARING_UNAVAILABLE_BTN_TITLE' | translate }}">
               <md-icon>share</md-icon>
             </button>
             <button md-icon-button 
-              *ngIf="permission.has('CreateAccessInfo')"
+              *ngIf="userCan.createAccessInfo()"
               title="{{ 'ASSET.DETAIL.SHARING_BTN_TITLE' | translate }}"
               (click)="sharing.show($event)">
               <md-icon>share</md-icon>

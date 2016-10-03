@@ -16,7 +16,7 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public asset: any;
   @Input() public inActiveCollection: boolean;
   @Input() currentUser: CurrentUser;
-  @Input() permission: any;
+  @Input() userCan: any;
   @Input() collection: Collection;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();

@@ -7,8 +7,8 @@ import { AdminComponent } from './+admin/admin.component';
 import { CollectionsComponent } from './+collection/+index/collections.component';
 import { CartComponent } from './+cart/cart.component';
 import { CartGuard } from './+cart/services/cart.guard';
-import { AssetGuard } from './+asset/services/asset.guard';
 import { AssetResolver } from './+asset/services/asset.resolver';
+import { AssetGuard } from './+asset/services/asset.guard';
 import { SearchResolver } from './+search/services/search.resolver';
 import { Routes} from '@angular/router';
 
@@ -17,7 +17,7 @@ export const APP_ROUTES: Routes = [
   { path: 'notification', component: HomeComponent },
   { path: 'user', component: UserManagementComponent },
   { path: 'search', component: SearchComponent, resolve: {search: SearchResolver} },
-  { path: 'asset/:name', component: AssetComponent, resolve: {asset: AssetResolver}, canActivate: [AssetGuard] },
+  { path: 'asset/:name', component: AssetComponent, canActivate: [AssetGuard], resolve: {asset: AssetResolver} },
   { path: 'collection', component: CollectionsComponent },
   { path: 'content/:page', component: ContentComponent },
   { path: 'admin', component: AdminComponent },

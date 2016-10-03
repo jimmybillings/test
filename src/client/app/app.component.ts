@@ -6,7 +6,6 @@ import { MultilingualService } from './shared/services/multilingual.service';
 import { ErrorActions } from './shared/services/error.service';
 // Services
 import { CurrentUser} from './shared/services/current-user.model';
-import { UserPermission } from './shared/services/permission.service';
 import { ApiConfig} from './shared/services/api.config';
 import { UiConfig} from './shared/services/ui.config';
 import { SearchContext} from './shared/services/search-context.service';
@@ -17,6 +16,8 @@ import { WzNotificationService } from './shared/components/wz-notification/wz.no
 import { ActiveCollectionService} from './+collection/services/active-collection.service';
 import { CartService } from './shared/services/cart.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
+import { Capabilities } from './shared/services/capabilities.service';
+
 // /Interfaces
 import { ILang} from './shared/interfaces/language.interface';
 import { Collection, CollectionStore } from './shared/interfaces/collection.interface';
@@ -47,7 +48,6 @@ export class AppComponent implements OnInit, OnDestroy {
     public multiLingual: MultilingualService,
     public searchContext: SearchContext,
     public currentUser: CurrentUser,
-    public permission: UserPermission,
     public collectionsService: CollectionsService,
     public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>,
@@ -58,7 +58,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private notification: WzNotificationService,
     private apiConfig: ApiConfig,
     private authentication: Authentication,
-    private errorActions: ErrorActions) {
+    private errorActions: ErrorActions,
+    private userCan: Capabilities) {
     this.apiConfig.setPortal(portal);
     this.currentUser.set();
   }
@@ -109,12 +110,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.bootStrapUserDataSubscription = this.currentUser.loggedInState()
       .filter((loggedIn: boolean) => loggedIn)
       .subscribe(() => {
-        this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, { i: 1, n: 100 }, true, false).take(1).subscribe();
-          this.collectionsService.loadCollections().take(1).subscribe();
-        });
-
-        this.cartService.initializeData();
+        if(this.userCan.viewCollections()) {
+          this.activeCollection.get().take(1).subscribe((collection) => {
+            this.activeCollection.getItems(collection.id, { i: 1, n: 100 }, true, false).take(1).subscribe();
+            this.collectionsService.loadCollections().take(1).subscribe();
+          });
+        }
+        if(this.userCan.viewCart()) {
+          this.cartService.initializeData();
+        }
       });
   }
 }
