@@ -154,6 +154,20 @@ export function main() {
 
         expect(mockCartSummaryService.loadCartSummary).toHaveBeenCalled();
       });
+
+      it('creates a new default project if the last one was deleted', () => {
+        serviceUnderTest.removeProject(mockProject);
+
+        expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project A' }), {}, true);
+      });
+
+      it('does not add a project if one still exists after a removal', inject([CartStore], (cartStore: CartStore) => {
+        (cartStore as any).state = { projects: [{ name: 'Project A' }] };
+
+        serviceUnderTest.removeProject(mockProject);
+
+        expect(mockApiService.post).not.toHaveBeenCalled();
+      }));
     });
   });
 }

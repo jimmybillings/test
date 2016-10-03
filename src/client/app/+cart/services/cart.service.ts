@@ -51,6 +51,7 @@ export class CartService {
       .subscribe(wholeCartResponse => {
         this.store.replaceWith(wholeCartResponse);
         this.cartSummaryService.loadCartSummary();
+        this.addProjectIfNoProjectsExist().subscribe();
       });
   }
 
