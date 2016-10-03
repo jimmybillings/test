@@ -1,0 +1,25 @@
+section.project {
+  background-color: md-color($md-primary, 500);
+  @include md-elevation(2);
+  @include text-contrast(md-color($md-primary, 500));
+  padding: rem(1.4);
+  height: rem(7);
+  div.project-info {
+    button[md-icon-button] {
+      float: left;
+    }
+    table tr {
+      float: left;
+      margin: rem(.8) 0 rem(1.6) rem(2);
+    }
+  }
+  div.project-actions {
+    p {
+      margin: rem(1.4) 0 rem(1.6) rem(2);
+      float: right;
+    }
+    button {
+      float: right;
+    }
+  }
+}

@@ -51,7 +51,7 @@
     <a md-menu-item *ngIf="userCan.viewCollections()" [routerLink]="['/collection']">
         <md-icon>folder_open</md-icon>Open your collections
     </a>
-    <a md-menu-item *ngIf="userCan.viewCartIcon() | async" [routerLink]="['/cart']">
+    <a md-menu-item *ngIf="userCan.viewCart()" [routerLink]="['/cart']">
         <md-icon>shopping_cart</md-icon>Open your cart
     </a>
     <div class="divider"></div>
