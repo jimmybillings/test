@@ -17,28 +17,32 @@ export function main() {
     const mockPostResponse: Object = { 'text': 'MOCK POST RESPONSE' };
     const mockDeleteResponse: Object = { 'text': 'MOCK DELETE RESPONSE' };
 
-    const mockApiService = {
-      get: jasmine.createSpy('get').and.returnValue(apiResponseWith(mockGetResponse)),
-      post: jasmine.createSpy('post').and.returnValue(apiResponseWith(mockPostResponse)),
-      delete: jasmine.createSpy('delete').and.returnValue(apiResponseWith(mockDeleteResponse))
-    };
-
-    const mockCartSummaryService = {
-      loadCartSummary: jasmine.createSpy('loadCartSummary')
-    };
-
-    const mockCartStore = {
-      replaceWith: jasmine.createSpy('replaceWith'),
-      state: {}
-    };
-
     const mockProject: Project = {
       id: '123',
       name: 'Fred',
       subtotal: 0
     };
 
+    let mockApiService: any;
+    let mockCartSummaryService: any;
+    let mockCartStore: any;
+
     beforeEach(() => {
+      mockApiService = {
+        get: jasmine.createSpy('get').and.returnValue(apiResponseWith(mockGetResponse)),
+        post: jasmine.createSpy('post').and.returnValue(apiResponseWith(mockPostResponse)),
+        delete: jasmine.createSpy('delete').and.returnValue(apiResponseWith(mockDeleteResponse))
+      };
+
+      mockCartSummaryService = {
+        loadCartSummary: jasmine.createSpy('loadCartSummary')
+      };
+
+      mockCartStore = {
+        replaceWith: jasmine.createSpy('replaceWith'),
+        state: {}
+      };
+
       TestBed.configureTestingModule({
         providers: [
           ...beforeEachProvidersArray,
@@ -75,6 +79,20 @@ export function main() {
           expect(data).toEqual({});
         });
       });
+
+      it('creates a default project if one does not already exist', () => {
+        serviceUnderTest.initializeData().subscribe(() => {
+          expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project A' }), {}, true);
+        });
+      });
+
+      it('does not add a project if one already exists', inject([CartStore], (cartStore: CartStore) => {
+        (cartStore as any).state = { projects: [{ name: 'Project A' }] };
+
+        serviceUnderTest.initializeData().subscribe(() => {
+          expect(mockApiService.post).not.toHaveBeenCalled();
+        });
+      }));
     });
 
     describe('addProject()', () => {

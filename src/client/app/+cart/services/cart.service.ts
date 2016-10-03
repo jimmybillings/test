@@ -14,7 +14,7 @@ export class CartService {
     private store: CartStore,
     private apiService: ApiService,
     private cartSummaryService: CartSummaryService
-  ) {}
+  ) { }
 
   public get data(): Observable<any> {
     return this.store.data;
@@ -24,19 +24,26 @@ export class CartService {
     return this.store.state;
   }
 
+  // Loads the cart and returns just the observable's termination notification,
+  // because our subscribers care about the fact that we are complete, but they
+  // should be getting the data elsewhere.  Also, we take a detour to add a project
+  // if one doesn't exist, which creates a second HTTP call (or just returns
+  // a synchronous observable).  Either way, we flatMap() that second call's observable
+  // to this one, and the termination notification is delayed until both observables
+  // are terminated.  We take the last emitted value only, and map the data out of it.
+  // Finally, we call share() to ensure that the do() call happens exactly once instead
+  // of once per subscriber.
   public initializeData(): Observable<any> {
     return this.apiServiceGet('orders', 'cart', { loading: true })
       .do(wholeCartResponse => this.store.replaceWith(wholeCartResponse))
-      .map(() => { return {}; })
+      .flatMap(_ => this.addProjectIfNoProjectsExist())
+      .takeLast(1)
+      .map(_ => { return {}; })
       .share();
   }
 
   public addProject(): void {
-    this.apiServicePost('orders', 'cart/project', this.createAddProjectRequestBody(), { loading: true })
-      .subscribe(wholeCartResponse => {
-        this.store.replaceWith(wholeCartResponse);
-        this.cartSummaryService.loadCartSummary();
-      });
+    this.addProjectAndReturnObservable().subscribe();
   }
 
   public removeProject(project: Project): void {
@@ -45,6 +52,17 @@ export class CartService {
         this.store.replaceWith(wholeCartResponse);
         this.cartSummaryService.loadCartSummary();
       });
+  }
+
+  private addProjectIfNoProjectsExist(): Observable<any> {
+    return ((this.state.projects || []).length === 0) ? this.addProjectAndReturnObservable() : Observable.of({});
+  }
+
+  private addProjectAndReturnObservable(): Observable<any> {
+    return this.apiServicePost('orders', 'cart/project', this.createAddProjectRequestBody(), { loading: true })
+      .do(wholeCartResponse => this.store.replaceWith(wholeCartResponse))
+      .do(_ => this.cartSummaryService.loadCartSummary())
+      .share();
   }
 
   private createAddProjectRequestBody(): string {
