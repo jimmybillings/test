@@ -1,14 +1,31 @@
-<img src="{{asset.thumbnailUrl}}" width="160" height="90" />
+<section class="cart-asset">
+  <div layout="row" layout-align="start start">
+    <div flex="35">
+      <div class="cart-asset-thb">
+        <img src="{{asset.thumbnailUrl}}"/>
+      </div>
+    </div>
 
-<p class="info">
-  {{ asset.assetName }}
-  <br/>
-  {{ metadata['Description'] | slice:0:120 }}
-  <br/>
-  {{ metadata['Format.FrameSize'] }} | {{ metadata['Format.FrameRate'] }}
-  <br/>
-  [Native Format?], [Delivery Format?]
-</p>
-
-<p>[In/out points?]</p>
+    <div flex="65" class="cart-asset-metadata">
+      <table>
+        <tr>
+          <th>Name</th>
+          <td>{{ asset.assetName }}</td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td>{{ metadata['Description'] | slice:0:120 }}...</td>
+        </tr>
+        <tr>
+          <th>Frame Size</th>
+          <td>{{ metadata['Format.FrameSize'] }}</td>
+        </tr>
+        <tr>
+          <th>Frame Rate</th>
+          <td>{{ metadata['Format.FrameRate'] }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
 

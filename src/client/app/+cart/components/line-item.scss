@@ -1,0 +1,7 @@
+section.line-item {
+  float: right;
+  background-color: #fff;
+  @include md-elevation(2);
+  margin: rem(1) 0;
+  min-width: 100%;
+}

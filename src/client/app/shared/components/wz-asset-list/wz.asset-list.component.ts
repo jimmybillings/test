@@ -50,7 +50,7 @@ export class WzAssetListComponent implements OnChanges {
   }
 
   public addAssetToCart(asset: any): void {
-    this.setAssetActiveId(asset.assetId);
+    this.setAssetActiveId(asset);
     this.addToCart.emit(asset);
   }
 
