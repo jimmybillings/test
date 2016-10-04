@@ -47,6 +47,8 @@ export class FormModel {
         return this._getPasswordValidator();
       case 'COLLECTION':
         return this._getCollectionValidator();
+      case 'MULTIEMAIL':
+        return this._getMultiEmailValidator();
       default:
         return this._getOptionalValidator;
     }
@@ -65,6 +67,13 @@ export class FormModel {
       Validators.required,
       Validators.minLength(8),
       Validators.pattern('[a-z0-9!#$%&`*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*')
+    ]);
+  }
+
+  private _getMultiEmailValidator(): Validators {
+    return Validators.compose([
+      Validators.required,
+      Validators.pattern('\\s*(([a-zA-Z0-9_\\-\\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)(\\s*(;|,)\\s*|\\s*$))*')
     ]);
   }
 
