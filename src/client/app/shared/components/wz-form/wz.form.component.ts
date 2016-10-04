@@ -75,6 +75,7 @@ export class WzFormComponent implements OnInit, OnChanges {
     return 'validation' in field && (
       field.validation === 'REQUIRED' ||
       field.validation === 'EMAIL' ||
+      field.validation === 'MULTIEMAIL' ||
       field.validation === 'PASSWORD' ||
       field.validation === 'COLLECTION') ? true : false;
   }

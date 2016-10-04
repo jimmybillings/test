@@ -8,6 +8,122 @@ import { CurrentUser } from './current-user.model';
 import { User} from '../interfaces/user.interface';
 
 export function main() {
+  describe('Current User model - user with permissions', () => {
+
+    let user: any;
+
+    user = {
+      'lastUpdated': '2016-01-14T16:46:21Z',
+      'createdOn': '2016-01-14T16:46:21Z',
+      'id': 6,
+      'emailAddress': 'test_email@email.com',
+      'password': '5daf7de08c0014ec2baa13a64b35a4e0',
+      'firstName': 'first',
+      'lastName': 'last',
+      'siteName': 'cnn',
+      'accountIds': [4],
+      'permissions': [
+        'ViewClips',
+        'ViewCollections',
+        'ViewCarts'
+      ]
+    };
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [
+          ...beforeEachProvidersArray,
+          CurrentUser
+        ]
+      });
+    });
+
+    describe('hasPermission()', () => {
+      let service: CurrentUser;
+
+      beforeEach(inject([CurrentUser], (currentUser: CurrentUser) => {
+        service = currentUser;
+        service.set(user);
+      }));
+
+      it('returns true if a user has a certain permission', () => {
+        expect(service.hasPermission('ViewCarts')).toBe(true);
+        expect(service.hasPermission('ViewCollections')).toBe(true);
+        expect(service.hasPermission('ViewClips')).toBe(true);
+      });
+
+      it('returns false if a user doesn\'t have a certain permission', () => {
+        expect(service.hasPermission('Root')).toBe(false);
+        expect(service.hasPermission('NotAPermission')).toBe(false);
+      });
+    });
+  });
+
+    describe('Current User model - user with role', () => {
+
+    let user: any;
+
+    user = {
+      'lastUpdated': '2016-01-14T16:46:21Z',
+      'createdOn': '2016-01-14T16:46:21Z',
+      'id': 6,
+      'emailAddress': 'test_email@email.com',
+      'password': '5daf7de08c0014ec2baa13a64b35a4e0',
+      'firstName': 'first',
+      'lastName': 'last',
+      'siteName': 'cnn',
+      'accountIds': [4],
+      'roles': [
+        {
+          'lastUpdated': '2016-09-27T19:02:50Z',
+          'createdOn': '2016-09-19T21:25:57Z',
+          'id': 1,
+          'siteName': 'core',
+          'name': 'DefaultUser',
+          'description': 'Default User Role for a Registered User',
+          'permissions': [
+            'DeleteCollections',
+            'EditCollections',
+            'CreateCollections',
+            'ViewCollections',
+            'ViewClips'
+          ]
+        }
+      ]
+    };
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [
+          ...beforeEachProvidersArray,
+          CurrentUser
+        ]
+      });
+    });
+
+    describe('has()', () => {
+      let service: CurrentUser;
+
+      beforeEach(inject([CurrentUser], (currentUser: CurrentUser) => {
+        service = currentUser;
+        service.set(user);
+      }));
+
+      it('returns true if a user has a certain permission', () => {
+        expect(service.hasPermission('DeleteCollections')).toBe(true);
+        expect(service.hasPermission('EditCollections')).toBe(true);
+        expect(service.hasPermission('CreateCollections')).toBe(true);
+        expect(service.hasPermission('ViewCollections')).toBe(true);
+        expect(service.hasPermission('ViewClips')).toBe(true);
+      });
+
+      it('returns false if a user doesn\'t have a certain permission', () => {
+        expect(service.hasPermission('Root')).toBe(false);
+        expect(service.hasPermission('NotAPermission')).toBe(false);
+      });
+    });
+  });
+
   describe('CurrentUser Model', () => {
     let loggedInUser = setLoggedInUser();
     let loggedOutUser = setLoggedOutUser();
