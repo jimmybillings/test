@@ -1,26 +1,39 @@
-// div.bk-for-dialog, div.bk-for-dd {
-  // width: 100%;
-  // height: 100%;
-  // position: absolute;
-  // top: 0;
-  // left: 0;
-  // display: block;
-  // z-index: -1;
-// }
-// collection-form div.bk-for-dialog.fade-in {
-//   @include background-image(
-//     url("../assets/img/bk/tex/bktx_dgl_lines_light.png"),
-//     linear-gradient(md-color($md-grey, 900, .7), md-color($md-grey, 900, .7)));
-//   @include transition(opacity, 1200ms, $md-fast-out-slow-in-timing-function);
-//   opacity: 1;
-// }  
-// collection-form div.bk-for-dialog.fade-out {
-//   opacity: 0;
-// }
-.wz-dialog {
-  margin-left: rem(2.0);
-  margin-right: rem(2.0);
-}
+
+
+// this is can go away once the temporary legacy find assets in this collection goes away(post beta)
+.wz-dialog collection-link-component md-card {
+  width: 32vw;
+  padding: rem(3.2);
+  padding-bottom: rem(3.8);
+  padding-top: rem(3.8);
+  button[md-icon-button].close {
+    position: absolute;
+    right: rem(.5);
+    top: rem(.5);
+    font-size: 36px;
+    opacity: .5;
+    md-icon {
+      font-size: 1em;
+      height: 1em;
+      width: 1em;
+    }
+  }
+  @media screen and (max-width: $layout-breakpoint-lg) and (min-width: 0)  {
+    width: 32vw;
+  }
+  @media screen and (max-width: $layout-breakpoint-md) and (min-width: 0)  {
+    width: 50vw;
+  }
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
+    width: 72vw;
+  }
+  @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+    width: calc(100% - 80px);
+    margin: rem(.8);
+  }
+} 
+
+
 .wz-dialog collection-form md-card, .suggestions-menu {
   width: 22vw;
   @media screen and (max-width: $layout-breakpoint-lg) and (min-width: 0)  {
@@ -32,36 +45,20 @@
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
     width: 52vw;
   }
+}
+.suggestions-menu.revealed {
   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-    width: calc(95% - 100px);
+    width: calc(100% - 70px);
+    top: rem(16.0);
   }
-
+}
+.wz-dialog collection-form md-card {
+  @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+    width: calc(100% - 85px);
+    padding: 33px 34px 24px 34px;
+  }
 }  
-// collection-form {
-  // width: 100%;
-  // height: 100%;
-  // position: absolute;
-  // z-index: 20;
-  // margin-top: -200%;
-  // md-card.wz-form-card {
-  //   // margin-top:-250%;
-  //   // @include transition(margin-top, 600ms, $md-fast-out-slow-in-timing-function);
-  // }
-  // .revealed {
-    // margin-top: 0;
-    // position: fixed;
-    // md-card.wz-form-card {
-    //   margin-top: 9%;
-    //   & > .md-card md-card-content {
-    //     position: relative;
-    //   }
-    // }
-  // }
-// }
-
-
 .suggestions-menu {
-  // width: 100%;
   height: auto;
   max-height: rem(30);
   overflow-y: auto;
@@ -92,11 +89,6 @@
   @include transition($swift-ease-out);
   background-color: md-color($md-background, card);
   color: rgba(md-color($md-foreground, text), .7);
-    // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    //   position: static;
-    //   min-width: 100%;
-    //   max-width: 100%;
-    // }
   md-list {
     padding-top: 0;
     overflow-x: hidden;

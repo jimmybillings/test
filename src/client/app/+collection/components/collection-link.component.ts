@@ -10,6 +10,7 @@ var Clipboard = require('clipboard/dist/clipboard');
 
 export class CollectionLinkComponent implements OnChanges {
   @Input() assets: any;
+  @Input() dialog: any;
   public legacyLink: string;
 
   constructor() {
