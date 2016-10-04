@@ -73,10 +73,11 @@ export class AssetShareComponent implements OnDestroy {
     shareLink.accessStartDate = this.IsoFormatLocalDate(new Date());
     shareLink.accessInfo = assetId;
     shareLink.type = 'asset';
-    shareLink.recipientEmails = (shareLink.recipientEmails) ? shareLink.recipientEmails.split(/\s*,\s*/) : [];
+    shareLink.recipientEmails = (shareLink.recipientEmails) ? shareLink.recipientEmails.split(/\s*,\s*|\s*;\s*/) : [];
     if (shareLink.copyMe) {
       shareLink.recipientEmails.push(this.user.emailAddress);
     }
+    console.log(shareLink.recipientEmails);
     this.asset.createShareLink(shareLink).take(1).subscribe((res) => {
       this.success();
       this.wzToast.show();
