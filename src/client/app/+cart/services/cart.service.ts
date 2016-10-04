@@ -49,34 +49,29 @@ export class CartService {
   public removeProject(project: Project): void {
     this.apiServiceDelete('orders', `cart/project/${project.id}`, { loading: true })
       .subscribe(wholeCartResponse => {
-        this.store.replaceWith(wholeCartResponse);
-        this.cartSummaryService.loadCartSummary();
+        this.updateCart(wholeCartResponse);
         this.addProjectIfNoProjectsExist().subscribe();
       });
   }
 
   public updateProject(project: Project): void {
     this.apiServicePut('orders', 'cart/project', JSON.stringify(project), { loading: true })
-      .subscribe(wholeCartResponse => {
-        this.store.replaceWith(wholeCartResponse);
-        this.cartSummaryService.loadCartSummary();
-      });
+      .subscribe(this.updateCart);
   }
 
   public moveLineItemTo(project: Project, lineItem: LineItem): void {
-    console.log(`Moving line item ${lineItem.asset.assetName} to ${project.name}`);
+    this.apiServicePut('orders', `cart/move/lineItem?lineItemId=${lineItem.id}&projectId=${project.id}`, '', { loading: true })
+      .subscribe(this.updateCart);
   }
 
   public cloneLineItem(lineItem: LineItem): void {
-    console.log(`Cloning line item ${lineItem.asset.assetName}`);
+    this.apiServicePut('orders', `cart/clone/lineItem?lineItemId=${lineItem.id}`, '', { loading: true })
+      .subscribe(this.updateCart);
   }
 
   public removeLineItem(lineItem: LineItem): void {
     this.apiServiceDelete('orders', `cart/asset/${lineItem.id}`, { loading: true })
-      .subscribe(wholeCartResponse => {
-        this.store.replaceWith(wholeCartResponse);
-        this.cartSummaryService.loadCartSummary();
-      });
+      .subscribe(this.updateCart);
   }
 
   private addProjectIfNoProjectsExist(): Observable<any> {
@@ -85,8 +80,7 @@ export class CartService {
 
   private addProjectAndReturnObservable(): Observable<any> {
     return this.apiServicePost('orders', 'cart/project', this.createAddProjectRequestBody(), { loading: true })
-      .do(wholeCartResponse => this.store.replaceWith(wholeCartResponse))
-      .do(_ => this.cartSummaryService.loadCartSummary())
+      .do(this.updateCart)
       .share();
   }
 
@@ -97,6 +91,13 @@ export class CartService {
     return JSON.stringify({
       name: CartUtilities.nextNewProjectNameGiven(existingNames)
     });
+  }
+
+  // This is an "instance arrow function", which saves us from having to "bind(this)"
+  // every time we use this function as a callback.
+  private updateCart = (wholeCartResponse: any): void => {
+    this.store.replaceWith(wholeCartResponse);
+    this.cartSummaryService.loadCartSummary();
   }
 
   // Idea for ApiService enhancement.
