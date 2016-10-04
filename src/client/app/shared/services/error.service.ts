@@ -47,7 +47,7 @@ export class ErrorActions {
     let redirect: any;
     if (this.currentUser.loggedIn()) {
       // SESSION HAS EXPIRED
-      redirect = ['/user/login', { 'session' : 'expired' }];
+      redirect = ['/user/login', { 'loggedOut' : 'true' }];
     } else {
       // INCORRECT LOGIN ATTEMPT
       if(this.router.url.indexOf('/user/login') > -1) {

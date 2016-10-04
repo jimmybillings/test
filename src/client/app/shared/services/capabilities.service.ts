@@ -11,7 +11,6 @@ import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class Capabilities implements CartCapabilities, CollectionCapabilities, AssetCapabilities, AdminCapabilities, SearchCapabilities {
-  viewCart: () => boolean;
   viewCollections: () => boolean;
   viewAssetDetails: () => boolean;
   viewDownloadCompOptions: (hasComp: boolean) => boolean;

@@ -26,7 +26,7 @@ export function main() {
     };
 
     const mockCurrentUser = {
-      profile: Observable.of(user)
+      data: Observable.of(user)
     };
 
     beforeEach(() => {
@@ -107,7 +107,7 @@ export function main() {
     };
 
     const mockCurrentUser = {
-      profile: Observable.of(user)
+      data: Observable.of(user)
     };
 
     beforeEach(() => {

@@ -68,7 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
     this.uiConfig.initialize(this.currentUser.loggedIn(), this.apiConfig.getPortal()).subscribe();
     this.routerChanges();
-    this.bootStrapUserData();
+    this.processUser();
   }
 
   ngOnDestroy() {
@@ -84,7 +84,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.uiState.checkRouteForSearchBar(event.url);
         this.state = event.url;
         window.scrollTo(0, 0);
-        console.log(this.state);
         this.notification.check(this.state, this.target);
       });
   }
@@ -92,8 +91,6 @@ export class AppComponent implements OnInit, OnDestroy {
   public logout(): void {
     this.authSubscription = this.authentication.destroy().subscribe();
     this.currentUser.destroy();
-    this.collectionsService.destroyCollections();
-    this.uiState.reset();
   }
 
   public changeLang(data: any) {
@@ -105,19 +102,23 @@ export class AppComponent implements OnInit, OnDestroy {
     this.searchContext.go();
   }
 
-  public bootStrapUserData() {
+  private processUser() {
     this.bootStrapUserDataSubscription = this.currentUser.loggedInState()
-      .filter((loggedIn: boolean) => loggedIn)
-      .subscribe(() => {
-        if(this.userCan.viewCollections()) {
-          this.activeCollection.get().take(1).subscribe((collection) => {
-            this.activeCollection.getItems(collection.id, { i: 1, n: 100 }, true, false).take(1).subscribe();
-            this.collectionsService.loadCollections().take(1).subscribe();
-          });
-        }
-        if(this.userCan.viewCart()) {
-          this.cartSummary.loadCartSummary();
-        }
+      .subscribe((loggedIn:boolean) => (loggedIn) ? this.processLoggedInUser() : this.processLoggedOutUser());
+  }
+
+  private processLoggedInUser() {
+    if(this.userCan.viewCollections()) {
+      this.activeCollection.get().take(1).subscribe((collection) => {
+        this.activeCollection.getItems(collection.id, { i: 1, n: 100 }, true, false).take(1).subscribe();
+        this.collectionsService.loadCollections().take(1).subscribe();
       });
+    }
+    this.cartSummary.loadCartSummary();
+  }
+
+  private processLoggedOutUser() {
+    this.collectionsService.destroyCollections();
+    this.uiState.reset();
   }
 }

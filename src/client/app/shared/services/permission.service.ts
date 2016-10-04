@@ -19,7 +19,7 @@ export class UserPermission {
   }
 
   public retrievePermissions() {
-    this.currentUser.profile.map(user => {
+    this.currentUser.data.map(user => {
       if (user.permissions) {
         return user.permissions || [];
       } else if (user.roles) {

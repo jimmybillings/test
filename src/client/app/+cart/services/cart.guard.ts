@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Capabilities } from '../../shared/services/capabilities.service';
+import { CurrentUser } from '../../shared/services/current-user.model';
 
 @Injectable()
 export class CartGuard implements CanActivate {
   constructor(
-    private userCan: Capabilities,
+    private currentUser: CurrentUser,
     private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return (this.userCan.viewCart()) ? true : this.router.navigate(['/user/login']) && false;
+    return (this.currentUser.loggedIn()) ? true : this.router.navigate(['/user/login']) && false;
   }
 }

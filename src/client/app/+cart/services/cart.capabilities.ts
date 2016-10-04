@@ -7,13 +7,9 @@ import { UiState } from '../../shared/services/ui.state';
 export class CartCapabilities {
   constructor(public currentUser: CurrentUser, public uiState: UiState) { }
 
-  public viewCart(): boolean {
-    return this.currentUser.loggedIn() && this.userHas('ViewCarts');
-  }
-
   public viewCartIcon(): Observable<boolean> {
     return this.uiState.searchBarIsActive().map((searchBarIsActive) => {
-      return searchBarIsActive && this.userHas('ViewCarts');
+      return searchBarIsActive && this.currentUser.loggedIn();
     });
   }
 

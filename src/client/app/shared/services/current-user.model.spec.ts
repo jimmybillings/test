@@ -22,7 +22,7 @@ export function main() {
 
     it('should set a object for a logged in user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);
-      service.profile.subscribe(user => {
+      service.data.subscribe(user => {
         expect(user).toEqual(loggedInUser);
       });
 
@@ -32,7 +32,7 @@ export function main() {
     it('should set a object for a logged out user', inject([CurrentUser], (service: CurrentUser) => {
       localStorage.clear();
       service.set();
-      service.profile.subscribe(user => {
+      service.data.subscribe(user => {
         expect(user).toEqual(loggedOutUser);
       });
       localStorage.clear();
@@ -48,7 +48,7 @@ export function main() {
 
     it('should return the correct email address of a user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);
-      service.profile.subscribe(profile => {
+      service.data.subscribe(profile => {
         expect(profile.emailAddress).toEqual('test_email@email.com');
       });
       localStorage.clear();
@@ -56,7 +56,7 @@ export function main() {
 
     it('should return the correct first name of a user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);
-      service.profile.subscribe(profile => {
+      service.data.subscribe(profile => {
         expect(profile.firstName).toEqual('first');
       });
       localStorage.clear();
@@ -64,7 +64,7 @@ export function main() {
 
     it('should return the correct last name of a user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);
-      service.profile.subscribe(profile => {
+      service.data.subscribe(profile => {
         expect(profile.lastName).toEqual('last');
       });
       localStorage.clear();
@@ -80,7 +80,7 @@ export function main() {
 
     it('should return the correct accounts of a user', inject([CurrentUser], (service: CurrentUser) => {
       service.set(loggedInUser);
-      service.profile.subscribe(profile => {
+      service.data.subscribe(profile => {
         expect(profile.accountIds).toEqual([4]);
       });
       localStorage.clear();
