@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
 import { CartSummaryService } from '../../shared/services/cart-summary.service';
 
-import { Project } from '../cart.interface';
+import { Project, LineItem } from '../cart.interface';
 import { CartStore } from './cart.store';
 import { CartUtilities } from './cart.utilities';
 
@@ -49,10 +49,29 @@ export class CartService {
   public removeProject(project: Project): void {
     this.apiServiceDelete('orders', `cart/project/${project.id}`, { loading: true })
       .subscribe(wholeCartResponse => {
-        this.store.replaceWith(wholeCartResponse);
-        this.cartSummaryService.loadCartSummary();
+        this.updateCart(wholeCartResponse);
         this.addProjectIfNoProjectsExist().subscribe();
       });
+  }
+
+  public updateProject(project: Project): void {
+    this.apiServicePut('orders', 'cart/project', JSON.stringify(project), { loading: true })
+      .subscribe(this.updateCart);
+  }
+
+  public moveLineItemTo(project: Project, lineItem: LineItem): void {
+    this.apiServicePut('orders', `cart/move/lineItem?lineItemId=${lineItem.id}&projectId=${project.id}`, '', { loading: true })
+      .subscribe(this.updateCart);
+  }
+
+  public cloneLineItem(lineItem: LineItem): void {
+    this.apiServicePut('orders', `cart/clone/lineItem?lineItemId=${lineItem.id}`, '', { loading: true })
+      .subscribe(this.updateCart);
+  }
+
+  public removeLineItem(lineItem: LineItem): void {
+    this.apiServiceDelete('orders', `cart/asset/${lineItem.id}`, { loading: true })
+      .subscribe(this.updateCart);
   }
 
   private addProjectIfNoProjectsExist(): Observable<any> {
@@ -61,8 +80,7 @@ export class CartService {
 
   private addProjectAndReturnObservable(): Observable<any> {
     return this.apiServicePost('orders', 'cart/project', this.createAddProjectRequestBody(), { loading: true })
-      .do(wholeCartResponse => this.store.replaceWith(wholeCartResponse))
-      .do(_ => this.cartSummaryService.loadCartSummary())
+      .do(this.updateCart)
       .share();
   }
 
@@ -73,6 +91,13 @@ export class CartService {
     return JSON.stringify({
       name: CartUtilities.nextNewProjectNameGiven(existingNames)
     });
+  }
+
+  // This is an "instance arrow function", which saves us from having to "bind(this)"
+  // every time we use this function as a callback.
+  private updateCart = (wholeCartResponse: any): void => {
+    this.store.replaceWith(wholeCartResponse);
+    this.cartSummaryService.loadCartSummary();
   }
 
   // Idea for ApiService enhancement.
@@ -97,6 +122,12 @@ export class CartService {
   private apiServiceDelete(apiService: string, urlEnding: string, options: ApiServiceOptions = {}): Observable<any> {
     options = Object.assign({}, this.defaultApiServiceOptions, options);
     return this.apiService.delete(`/api/${apiService}/v1/${urlEnding}`, options.requestOptions, options.loading)
+      .map(response => response.json());
+  }
+
+  private apiServicePut(apiService: string, urlEnding: string, body: string, options: ApiServiceOptions = {}): Observable<any> {
+    options = Object.assign({}, this.defaultApiServiceOptions, options);
+    return this.apiService.put(`/api/${apiService}/v1/${urlEnding}`, body, options.requestOptions, options.loading)
       .map(response => response.json());
   }
   // END of ApiService abstractions.
