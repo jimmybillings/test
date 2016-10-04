@@ -8,8 +8,8 @@ export class CartCapabilities {
   constructor(public currentUser: CurrentUser, public uiState: UiState) { }
 
   public viewCartIcon(): Observable<boolean> {
-    return this.uiState.searchBarIsActive().map((searchBarIsActive) => {
-      return searchBarIsActive && this.currentUser.loggedIn();
+    return this.uiState.headerIsExpanded().map((headerIsExpanded) => {
+      return headerIsExpanded && this.currentUser.loggedIn();
     });
   }
 

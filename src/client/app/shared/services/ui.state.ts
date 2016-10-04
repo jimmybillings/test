@@ -6,7 +6,7 @@ const InitUiState: any = {
   collectionsListIsOpen: false,
   collectionsSortIsOpen: false,
   collectionsFilterIsOpen: false,
-  searchBarIsActive: false,
+  headerIsExpanded: false,
   showFixed: false,
   loading: false
 };
@@ -53,18 +53,18 @@ export class UiState {
     this.data.take(1).subscribe(s => this.update({ loading: state}));
   }
 
-  public searchBarIsActive(): Observable<boolean> {
-    return this.data.map(data => data.searchBarIsActive);
+  public headerIsExpanded(): Observable<boolean> {
+    return this.data.map(data => data.headerIsExpanded);
   }
 
   public checkRouteForSearchBar(currentState: string): void {
     if (currentState === '/') {
-      this.update({ searchBarIsActive: false });
+      this.update({ headerIsExpanded: false });
       return;
     }
     let showSearchBar = ['user', 'admin', 'notification']
       .filter((state) => currentState.indexOf(state) > -1).length === 0;
-    this.update({ searchBarIsActive: showSearchBar });
+    this.update({ headerIsExpanded: showSearchBar });
   }
 
   public showFixedHeader(offset: any): void {

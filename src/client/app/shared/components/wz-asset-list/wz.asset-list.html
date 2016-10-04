@@ -17,45 +17,40 @@
       </a>
       <section class="actions">
         <nav class="asset-options" flex layout-align="end center">
+          <!-- ADD TO CART -->
           <button
+            [disabled]="!currentUser.loggedIn()"
             md-icon-button
             title="Add to cart"
             (click)="addAssetToCart(asset); addToCartToast.show()">
               <md-icon>shopping_cart</md-icon>
           </button>
+
+          <!-- DOWNLOAD COMPS-->
           <button
-            *ngIf="userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+            [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
             md-icon-button
-            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
+            title="{{ userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 
+              'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 
+              'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
             (click)="setAssetActiveId(asset)"
             [md-menu-trigger-for]="downloadCompMenu">
               <md-icon>file_download</md-icon>
           </button>
-          <button
-            *ngIf="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
-            disabled
-            md-icon-button
-            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
-            (click)="setAssetActiveId(asset)"
-            [md-menu-trigger-for]="downloadCompMenu">
-              <md-icon>file_download</md-icon>
-          </button>
-          <button md-icon-button *ngIf="collection.id !== null && alreadyInCollection(asset)" 
+
+          <!-- ADD / REMOVE FROM COLLECTION -->
+          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="alreadyInCollection(asset)" 
             title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
             (click)="removeFromCollection(collection, asset); removeToast.show()">
             <md-icon>remove_circle</md-icon>
           </button>
-          <button md-icon-button *ngIf="collection.id !== null && !alreadyInCollection(asset)" 
+          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!alreadyInCollection(asset)" 
             title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
             (click)="addToCollection(collection, asset); addToast.show()">
             <md-icon>library_add</md-icon>
           </button>
-          <button md-icon-button *ngIf="collection.id === null"  
-            title="{{ 'COLLECTION.CREATE_COLLECTION_HOVER_TITLE' | translate }}" 
-            (click)="showNewCollection(asset)">
-            <md-icon>library_add</md-icon>
-          </button>
-          <button md-icon-button title="More"><md-icon>more_vert</md-icon></button>
+          
+          <button disabled md-icon-button title="More"><md-icon>more_vert</md-icon></button>
         </nav>
       </section>
       <a [routerLink]="['/asset/', asset.assetId]" class="asset-desc">  

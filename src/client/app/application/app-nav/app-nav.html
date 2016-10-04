@@ -23,7 +23,7 @@
 
     <!--THESE LINKS ONLY SHOW IF THE SEARCH BAR IS ACTIVE-->
   
-    <button *ngIf="uiState.searchBarIsActive() | async" md-icon-button title="Search" (click)="toggleSearch()" class="open-search"><md-icon>search</md-icon></button>
+    <button *ngIf="uiState.headerIsExpanded() | async" md-icon-button title="Search" (click)="toggleSearch()" class="open-search"><md-icon>search</md-icon></button>
     
     <button *ngIf="userCan.viewCollectionTray() | async" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleCollectionTray()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
     

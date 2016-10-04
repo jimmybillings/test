@@ -23,18 +23,11 @@
         <header class="toolbar-actions">
           <nav class="asset-options" flex layout-align="end stretch">
             <button
-              *ngIf="userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+              [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
               md-icon-button
-              title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
-              [md-menu-trigger-for]="downloadCompMenu">
-                <md-icon>file_download</md-icon>
-            </button>
-            
-            <button
-              *ngIf="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
-              disabled
-              md-icon-button
-              title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}">
+              [md-menu-trigger-for]="downloadCompMenu"
+              title="{{ userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 
+                'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}">
                 <md-icon>file_download</md-icon>
             </button>
 
@@ -45,43 +38,38 @@
             </md-menu>
 
             <button md-icon-button 
-              *ngIf="!userCan.createAccessInfo()"
-              disabled
-              title="{{ 'ASSET.DETAIL.SHARING_UNAVAILABLE_BTN_TITLE' | translate }}">
-              <md-icon>share</md-icon>
-            </button>
-            <button md-icon-button 
-              *ngIf="userCan.createAccessInfo()"
-              title="{{ 'ASSET.DETAIL.SHARING_BTN_TITLE' | translate }}"
+              [disabled]="!userCan.createAccessInfo()"
+              title="{{ userCan.createAccessInfo() ? 
+              'ASSET.DETAIL.SHARING_BTN_TITLE' : 'ASSET.DETAIL.SHARING_UNAVAILABLE_BTN_TITLE' | translate }}"
               (click)="sharing.show($event)">
               <md-icon>share</md-icon>
             </button>
 
             <button md-icon-button 
-              *ngIf="collection.id !== null && inActiveCollection" 
+              *ngIf="inActiveCollection" 
+              disabled
               title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}" 
               (click)="showComments($event)">
               <md-icon>mode_comment</md-icon>
             </button>
+            
             <button md-icon-button 
-              *ngIf="collection.id !== null && !inActiveCollection"
+              *ngIf="!inActiveCollection"
+              [disabled]="!userCan.editCollections()"
               title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
               (click)="addToCollection(collection, asset.common[0]); addToast.show()">
               <md-icon>library_add</md-icon>
             </button>
             <button md-icon-button 
-              *ngIf="collection.id !== null && inActiveCollection" 
+              *ngIf="inActiveCollection" 
+              [disabled]="!userCan.editCollections()"
               title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
               (click)="removeFromCollection(collection, asset.common[0]); removeToast.show()">
               <md-icon>remove_circle</md-icon>
             </button>
+            
             <button md-icon-button 
-              *ngIf="collection.id === null"  
-              title="{{ 'COLLECTION.CREATE_COLLECTION_HOVER_TITLE' | translate}}" 
-              (click)="showNewCollection(asset.common[0].value); addToast.show()">
-              <md-icon>library_add</md-icon>
-            </button>
-            <button md-icon-button 
+              disabled
               title="{{ 'ASSET.DETAIL.MORE_BTN_TITLE' | translate }}">
               <md-icon>more_vert</md-icon>
             </button>
@@ -102,7 +90,7 @@
             <span *ngIf="asset.price != 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
             <span *ngIf="asset.price == 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
             <md-card-actions layout="column" layout-align="center center" layout-wrap="">
-              <button md-raised-button (click)="addAssetToCart(asset); addToCartToast.show()" class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+              <button md-raised-button [disabled]="!currentUser.loggedIn()" (click)="addAssetToCart(asset); addToCartToast.show()" class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
               <!--<button *ngIf="asset.price == 0" md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>-->
             </md-card-actions>
           </div>

@@ -8,12 +8,16 @@ export class CollectionCapabilities {
   constructor(public currentUser: CurrentUser, public uiState: UiState) { }
 
   public viewCollections() {
-    return this.currentUser.loggedIn() && this.userHas('ViewCollections');
+    return this.userHas('ViewCollections');
+  }
+
+  public editCollections() {
+    return this.userHas('EditCollections');
   }
 
   public viewCollectionTray(): Observable<boolean> {
-    return this.uiState.searchBarIsActive().map((searchBarIsActive) => {
-      return searchBarIsActive && this.userHas('ViewCollections');
+    return this.uiState.headerIsExpanded().map((headerIsExpanded) => {
+      return headerIsExpanded && this.userHas('ViewCollections');
     });
   }
 
