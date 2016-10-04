@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
 import { CartSummaryService } from '../../shared/services/cart-summary.service';
 
-import { Project } from '../cart.interface';
+import { Project, LineItem } from '../cart.interface';
 import { CartStore } from './cart.store';
 import { CartUtilities } from './cart.utilities';
 
@@ -57,6 +57,22 @@ export class CartService {
 
   public updateProject(project: Project): void {
     this.apiServicePut('orders', 'cart/project', JSON.stringify(project), { loading: true })
+      .subscribe(wholeCartResponse => {
+        this.store.replaceWith(wholeCartResponse);
+        this.cartSummaryService.loadCartSummary();
+      });
+  }
+
+  public moveLineItemTo(project: Project, lineItem: LineItem): void {
+    console.log(`Moving line item ${lineItem.asset.assetName} to ${project.name}`);
+  }
+
+  public cloneLineItem(lineItem: LineItem): void {
+    console.log(`Cloning line item ${lineItem.asset.assetName}`);
+  }
+
+  public removeLineItem(lineItem: LineItem): void {
+    this.apiServiceDelete('orders', `cart/asset/${lineItem.id}`, { loading: true })
       .subscribe(wholeCartResponse => {
         this.store.replaceWith(wholeCartResponse);
         this.cartSummaryService.loadCartSummary();

@@ -44,3 +44,5 @@
   <button disabled md-menu-item (click)="removeProject()"><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_CLIPS' | translate }}</button>
   <button disabled md-menu-item (click)="removeProject()"><md-icon>edit</md-icon>{{ 'CART.PROJECTS.EDIT_PRICE' | translate }}</button>
 </md-menu>
+
+<line-items-component [lineItems]="project.lineItems" [otherProjects]="otherProjects" (lineItemsNotify)="delegate($event)"></line-items-component>      

@@ -35,6 +35,18 @@ export class CartComponent implements OnInit {
         this.cartService.updateProject(message.payload);
         break;
       }
+      case 'MOVE_LINE_ITEM': {
+        this.cartService.moveLineItemTo(message.payload.otherProject, message.payload.lineItem);
+        break;
+      }
+      case 'CLONE_LINE_ITEM': {
+        this.cartService.cloneLineItem(message.payload);
+        break;
+      }
+      case 'REMOVE_LINE_ITEM': {
+        this.cartService.removeLineItem(message.payload);
+        break;
+      }
     };
   }
 }
