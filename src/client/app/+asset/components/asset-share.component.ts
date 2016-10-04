@@ -38,7 +38,7 @@ export class AssetShareComponent implements OnDestroy {
     currentUser: CurrentUser,
     private asset: AssetService,
     private changeDetector: ChangeDetectorRef) {
-      this.userSubscription = currentUser.profile.subscribe((user: User) => this.user = user);
+      this.userSubscription = currentUser.data.subscribe((user: User) => this.user = user);
   }
 
   public ngOnDestroy() {
