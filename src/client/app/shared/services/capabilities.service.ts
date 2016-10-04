@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class Capabilities implements CartCapabilities, CollectionCapabilities, AssetCapabilities, AdminCapabilities, SearchCapabilities {
   viewCollections: () => boolean;
+  editCollections: () => boolean;
   viewAssetDetails: () => boolean;
   viewDownloadCompOptions: (hasComp: boolean) => boolean;
   downloadWatermarkComps: (hasComp: boolean) => boolean;
@@ -38,6 +39,10 @@ export class Capabilities implements CartCapabilities, CollectionCapabilities, A
 
   public viewAll() {
     return this.userHas('Root');
+  }
+
+  public default() {
+    return this.currentUser.loggedIn();
   }
 
   public userHas(permission: string): boolean {

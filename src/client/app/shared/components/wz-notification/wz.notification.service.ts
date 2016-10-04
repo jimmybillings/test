@@ -35,11 +35,10 @@ export class WzNotificationService implements OnDestroy {
     let componentFactory = this.resolver.resolveComponentFactory(WzNotificationComponent);
     this.cmpRef = target.createComponent(componentFactory);
     this.cmpRef.instance.notice = notice.trString;
-    this.cmpRef.instance.theme = notice.theme;
     this.destroyOnClick = setTimeout(() => {
       this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.destroyNotification());
     }, 200);
-    this.setDestroyTimer = setTimeout(() => this.destroyNotification(), 4500);
+    this.setDestroyTimer = setTimeout(() => this.destroyNotification(), 4900);
   }
 
   public destroyNotification() {

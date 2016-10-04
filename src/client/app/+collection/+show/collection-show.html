@@ -75,6 +75,7 @@
           <wz-asset-list 
             [assets]="collection.assets.items"
             [userCan]="userCan"
+            [currentUser]="currentUser"
             [collection]="activeCollection.data | async"
             (onAddToCollection)="addToCollection($event)"
             (onShowNewCollection)="showNewCollection($event)"

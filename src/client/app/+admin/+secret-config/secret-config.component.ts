@@ -41,7 +41,9 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
       this.site = params['site'];
       this.configService.showUiConfig(this.site)
         .take(1).subscribe((data: UiSubComponentsA) => {
+          console.log(data);
           this.config = data;
+          console.log(this.config);
           this.setForm();
       });
     });

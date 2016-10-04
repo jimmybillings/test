@@ -11,6 +11,8 @@ import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 import { CartSummaryService } from '../shared/services/cart-summary.service';
+import { UserPreferenceService } from '../shared/services/user-preference.service';
+
 /**
  * Asset page component - renders an asset show page
  */
@@ -36,6 +38,7 @@ export class AssetComponent implements OnInit {
     public activeCollection: ActiveCollectionService,
     public notification: WzNotificationService,
     public cartSummary: CartSummaryService,
+    public userPreference: UserPreferenceService,
     public store: Store<CollectionStore>) {
     this.asset = assetService.data;
   }
@@ -47,9 +50,19 @@ export class AssetComponent implements OnInit {
   }
 
   public addToCollection(params: any): void {
+    this.userPreference.openCollectionTray();
     this.activeCollection.addAsset(params.collection.id, params.asset).take(1).subscribe(() => {
       this.activeCollection.getItems(params.collection.id, {n: this.pageSize}).take(1).subscribe();
     });
+  }
+
+  public removeFromCollection(params: any): void {
+    let collection: any = params.collection;
+    let uuid: any = params.collection.assets.items.find((item: any) => parseInt(item.assetId) === parseInt(params.asset.assetId)).uuid;
+    if(uuid && params.asset.assetId) {
+      this.userPreference.openCollectionTray();
+      this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
+    }
   }
 
   public downloadComp(params: any): void {
@@ -62,13 +75,6 @@ export class AssetComponent implements OnInit {
     });
   }
 
-  public removeFromCollection(params: any): void {
-    let collection: any = params.collection;
-    let uuid: any = params.collection.assets.items.find((item: any) => parseInt(item.assetId) === parseInt(params.asset.assetId)).uuid;
-    if(uuid && params.asset.assetId) {
-      this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
-    }
-  }
 
   public showNewCollection(assetId: any): void {
     let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-collection-tray');

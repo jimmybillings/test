@@ -21,7 +21,7 @@
       [uiConfig]="uiConfig">
     </collection-tray>
     <wz-search-box
-      *ngIf="uiState.searchBarIsActive()| async"
+      *ngIf="uiState.headerIsExpanded()| async"
       [currentUser]="currentUser"
       [state]="state"
       [uiState]="uiState"
