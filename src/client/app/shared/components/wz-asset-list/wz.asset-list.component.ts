@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, ViewChild } from '@angular/core';
 import { Collection } from '../../../shared/interfaces/collection.interface';
+import { CurrentUser } from '../../../shared/services/current-user.model';
 import { MdMenuTrigger } from '@angular2-material/menu';
 /**
  * Directive that renders a list of assets
@@ -15,6 +16,7 @@ export class WzAssetListComponent implements OnChanges {
   @Input() public assets: Array<any>;
   @Input() public userCan: any;
   @Input() collection: Collection;
+  @Input() currentUser: CurrentUser;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() addToCart = new EventEmitter();

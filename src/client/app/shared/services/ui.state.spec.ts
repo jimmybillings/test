@@ -80,7 +80,7 @@ export function main() {
       ['/', 'admin', 'user', 'notification'].forEach(item => {
         service.checkRouteForSearchBar(item);
         service.data.first().subscribe(data => {
-          expect(data.searchBarIsActive).toEqual(false);
+          expect(data.headerIsExpanded).toEqual(false);
         });
       });
     }));
@@ -89,7 +89,7 @@ export function main() {
       ['asdf', 'fdsadsf', 'fdsf', 'wefwer', 'aasfasdf'].forEach((item) => {
         service.checkRouteForSearchBar(item);
         service.data.first().subscribe(data => {
-          expect(data.searchBarIsActive).toEqual(true);
+          expect(data.headerIsExpanded).toEqual(true);
         });
       });
     }));
@@ -99,7 +99,7 @@ export function main() {
         collectionsListIsOpen: false,
         collectionsSortIsOpen: false,
         collectionsFilterIsOpen: false,
-        searchBarIsActive: false,
+        headerIsExpanded: false,
         showFixed: false,
         loading: false
       };

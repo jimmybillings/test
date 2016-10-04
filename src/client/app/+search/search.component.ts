@@ -107,6 +107,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     let collection: Collection = params.collection;
     let uuid: any = params.collection.assets.items.find((item: any) => item.assetId === params.asset.assetId).uuid;
     if (uuid && params.asset.assetId) {
+      this.userPreferences.openCollectionTray();
       this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
     }
   }

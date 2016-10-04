@@ -4,7 +4,7 @@ import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
   moduleId: module.id,
   selector: 'wz-notification',
   template:
-  `<div class="notification" [ngClass]="theme">
+  `<div class="notification">
       <p>{{notice | translate}}</p>
     </div>`,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -13,5 +13,4 @@ import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
 
 export class WzNotificationComponent {
   @Input() notice: string;
-  @Input() theme: string;
 }
