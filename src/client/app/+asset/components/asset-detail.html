@@ -113,6 +113,7 @@
 </section>
 <wz-dropdown #sharing>
   <asset-share
+    [currentUser]="currentUser"
     [assetThumbnailUrl]="asset.clipThumbnailUrl"
     [assetName]="asset.common[5].value"
     [assetId]="asset.assetId"
