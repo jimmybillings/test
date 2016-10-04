@@ -1,11 +1,11 @@
 <section class="cart">
   <div layout="row" md-scroll-y="" layout-align="center center">
     <div flex>
-      <projects-component [projects]="(cart | async).projects" (projectsNotify)="onNotification($event)"></projects-component>      
+      <projects-component [projects]="(cart | async).projects" [config]="config" (projectsNotify)="onNotification($event)"></projects-component>      
     </div>
   </div>
   <div flex="95" layout="row" layout-align="end center">
-    <p class="md-subhead" style="margin-right: 2rem;">Cart Total: {{ (cart | async).total | currency:'USD':true:'1.2-2' }}</p>
-    <button md-raised-button type="submit" class="md-block">PROCEED TO REVIEW</button>
+    <p class="md-subhead" style="margin-right: 2rem;">{{ 'CART.CART_TOTAL' | translate }} {{ (cart | async).total | currency:'USD':true:'1.2-2' }}</p>
+    <button md-raised-button type="submit" class="md-block">{{ 'CART.PROCEED_BTN_LABEL' | translate }}</button>
   </div>
 </section>

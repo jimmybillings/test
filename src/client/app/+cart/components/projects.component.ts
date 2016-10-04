@@ -11,9 +11,9 @@ import { Project } from '../cart.interface';
     }
   `],
   template: `
-    <project-component *ngFor="let project of projects" [project]="project" (projectNotify)="delegate($event)"></project-component>
+    <project-component *ngFor="let project of projects" [project]="project" [config]="config" (projectNotify)="delegate($event)"></project-component>
     <div flex="95" layout="row" layout-align="end center">
-      <button md-raised-button="" (click)="addProject()">ADD PROJECT</button>
+      <button md-raised-button="" (click)="addProject()">{{ 'CART.PROJECTS.ADD_PROJECT_BTN' | translate }}</button>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -21,6 +21,7 @@ import { Project } from '../cart.interface';
 
 export class ProjectsComponent {
   @Input() projects: Array<Project>;
+  @Input() config: any;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
 
   public addProject(): void {

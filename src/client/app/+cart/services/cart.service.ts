@@ -55,6 +55,14 @@ export class CartService {
       });
   }
 
+  public updateProject(project: Project): void {
+    this.apiServicePut('orders', 'cart/project', JSON.stringify(project), { loading: true })
+      .subscribe(wholeCartResponse => {
+        this.store.replaceWith(wholeCartResponse);
+        this.cartSummaryService.loadCartSummary();
+      });
+  }
+
   private addProjectIfNoProjectsExist(): Observable<any> {
     return ((this.state.projects || []).length === 0) ? this.addProjectAndReturnObservable() : Observable.of({});
   }
@@ -97,6 +105,12 @@ export class CartService {
   private apiServiceDelete(apiService: string, urlEnding: string, options: ApiServiceOptions = {}): Observable<any> {
     options = Object.assign({}, this.defaultApiServiceOptions, options);
     return this.apiService.delete(`/api/${apiService}/v1/${urlEnding}`, options.requestOptions, options.loading)
+      .map(response => response.json());
+  }
+
+  private apiServicePut(apiService: string, urlEnding: string, body: string, options: ApiServiceOptions = {}): Observable<any> {
+    options = Object.assign({}, this.defaultApiServiceOptions, options);
+    return this.apiService.put(`/api/${apiService}/v1/${urlEnding}`, body, options.requestOptions, options.loading)
       .map(response => response.json());
   }
   // END of ApiService abstractions.
