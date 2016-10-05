@@ -59,6 +59,13 @@
         </span>
       </a>
     </div>
+
+    <wz-toast #addToCartToast>
+      <div class="toast" layout="row" layout-align="center center">
+        <div flex-xs="100" md-elevation-z2>{{ 'ASSET.ADD_TO_CART_TOAST' | translate:{assetId:asset.assetId} }}</div>
+      </div>
+    </wz-toast>
+
   </li>
 </ul>
 
@@ -79,10 +86,3 @@
     <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
   </div>
 </wz-toast>
-
-<wz-toast #addToCartToast>
-  <div class="toast" layout="row" layout-align="center center">
-    <div flex-xs="100" md-elevation-z2>{{ 'ASSET.ADD_TO_CART_TOAST' | translate:{assetId:assetId} }}</div>
-  </div>
-</wz-toast>
-
