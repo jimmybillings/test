@@ -30,8 +30,8 @@
           <button
             [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
             md-icon-button
-            title="{{ userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 
-              'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 
+            title="{{ userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ?
+              'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' :
               'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
             (click)="setAssetActiveId(asset)"
             [md-menu-trigger-for]="downloadCompMenu">
@@ -39,33 +39,26 @@
           </button>
 
           <!-- ADD / REMOVE FROM COLLECTION -->
-          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="alreadyInCollection(asset)" 
-            title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
+          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="alreadyInCollection(asset)"
+            title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
             (click)="removeFromCollection(collection, asset); removeToast.show()">
             <md-icon>remove_circle</md-icon>
           </button>
-          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!alreadyInCollection(asset)" 
-            title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
+          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!alreadyInCollection(asset)"
+            title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
             (click)="addToCollection(collection, asset); addToast.show()">
             <md-icon>library_add</md-icon>
           </button>
-          
+
           <button disabled md-icon-button title="More"><md-icon>more_vert</md-icon></button>
         </nav>
       </section>
-      <a [routerLink]="['/asset/', asset.assetId]" class="asset-desc">  
+      <a [routerLink]="['/asset/', asset.assetId]" class="asset-desc">
         <span *ngIf="asset.metaData[1]" class="mdata-1">
           {{asset.metaData[1].value}}
         </span>
       </a>
     </div>
-
-    <wz-toast #addToCartToast>
-      <div class="toast" layout="row" layout-align="center center">
-        <div flex-xs="100" md-elevation-z2>{{ 'ASSET.ADD_TO_CART_TOAST' | translate:{assetId:asset.assetId} }}</div>
-      </div>
-    </wz-toast>
-
   </li>
 </ul>
 
@@ -84,5 +77,11 @@
 <wz-toast #removeToast>
   <div class="toast" layout="row" layout-align="center center">
     <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
+  </div>
+</wz-toast>
+
+<wz-toast #addToCartToast>
+  <div class="toast" layout="row" layout-align="center center">
+    <div flex-xs="100" md-elevation-z2>{{ 'ASSET.ADD_TO_CART_TOAST' | translate:{assetId:assetId} }}</div>
   </div>
 </wz-toast>

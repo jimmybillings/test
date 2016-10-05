@@ -1,11 +1,8 @@
-import { inject, TestBed, beforeEachProvidersArray, Response, ResponseOptions } from '../../imports/test.imports';
+import { Response, ResponseOptions } from '../../imports/test.imports';
 import { Observable } from 'rxjs/Rx';
 
-import { ApiService } from '../../shared/services/api.service';
-import { CartSummaryService } from '../../shared/services/cart-summary.service';
 import { CartService } from './cart.service';
-import { CartStore } from './cart.store';
-import { Project } from '../cart.interface';
+import { Project, LineItem } from '../cart.interface';
 
 export function main() {
   describe('Cart Service', () => {
@@ -21,14 +18,26 @@ export function main() {
     const mockProject: Project = {
       id: '123',
       name: 'Fred',
+      clientName: 'Barney',
       subtotal: 0
     };
 
+    const mockLineItem: LineItem = {
+      id: '456',
+      price: 0
+    };
+
+    let serviceUnderTest: CartService;
+    let mockCartStore: any;
     let mockApiService: any;
     let mockCartSummaryService: any;
-    let mockCartStore: any;
 
     beforeEach(() => {
+      mockCartStore = {
+        replaceWith: jasmine.createSpy('replaceWith'),
+        state: {}
+      };
+
       mockApiService = {
         get: jasmine.createSpy('get').and.returnValue(apiResponseWith(mockGetResponse)),
         post: jasmine.createSpy('post').and.returnValue(apiResponseWith(mockPostResponse)),
@@ -40,29 +49,10 @@ export function main() {
         loadCartSummary: jasmine.createSpy('loadCartSummary')
       };
 
-      mockCartStore = {
-        replaceWith: jasmine.createSpy('replaceWith'),
-        state: {}
-      };
-
-      TestBed.configureTestingModule({
-        providers: [
-          ...beforeEachProvidersArray,
-          CartService,
-          { provide: ApiService, useValue: mockApiService },
-          { provide: CartSummaryService, useValue: mockCartSummaryService },
-          { provide: CartStore, useValue: mockCartStore }
-        ]
-      });
+      serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService);
     });
 
     describe('initializeData()', () => {
-      let serviceUnderTest: CartService;
-
-      beforeEach(inject([CartService], (cartService: CartService) => {
-        serviceUnderTest = cartService;
-      }));
-
       it('calls the API service correctly', () => {
         serviceUnderTest.initializeData();
 
@@ -88,36 +78,31 @@ export function main() {
         });
       });
 
-      it('does not add a project if one already exists', inject([CartStore], (cartStore: CartStore) => {
-        (cartStore as any).state = { projects: [{ name: 'Project A' }] };
+      it('does not add a project if one already exists', () => {
+        mockCartStore.state = { projects: [{ name: 'Project A' }] };
+        serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService);
 
         serviceUnderTest.initializeData().subscribe(() => {
           expect(mockApiService.post).not.toHaveBeenCalled();
         });
-      }));
+      });
     });
 
     describe('addProject()', () => {
-      let serviceUnderTest: CartService;
-
-      beforeEach(inject([CartService], (cartService: CartService) => {
-        serviceUnderTest = cartService;
-      }));
-
       it('calls the API service correctly', () => {
         serviceUnderTest.addProject();
 
         expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project A' }), {}, true);
       });
 
-      it('names new projects based on existing names', inject([CartStore], (cartStore: CartStore) => {
-        (cartStore as any).state = { projects: [{ name: 'Project A' }] };
-        expect(serviceUnderTest.state.projects[0].name).toEqual('Project A');  // test that tests this test ;-)
+      it('names new projects based on existing names', () => {
+        mockCartStore.state = { projects: [{ name: 'Project A' }] };
+        serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService);
 
         serviceUnderTest.addProject();
 
         expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project B' }), {}, true);
-      }));
+      });
 
       it('replaces the cart store with the response', () => {
         serviceUnderTest.addProject();
@@ -133,12 +118,6 @@ export function main() {
     });
 
     describe('removeProject()', () => {
-      let serviceUnderTest: CartService;
-
-      beforeEach(inject([CartService], (cartService: CartService) => {
-        serviceUnderTest = cartService;
-      }));
-
       it('calls the API service correctly', () => {
         serviceUnderTest.removeProject(mockProject);
 
@@ -163,22 +142,17 @@ export function main() {
         expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project A' }), {}, true);
       });
 
-      it('does not add a project if one still exists after a removal', inject([CartStore], (cartStore: CartStore) => {
-        (cartStore as any).state = { projects: [{ name: 'Project A' }] };
+      it('does not add a project if one still exists after a removal', () => {
+        mockCartStore.state = { projects: [{ name: 'Project A' }] };
+        serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService);
 
         serviceUnderTest.removeProject(mockProject);
 
         expect(mockApiService.post).not.toHaveBeenCalled();
-      }));
+      });
     });
 
     describe('updateProject()', () => {
-      let serviceUnderTest: CartService;
-
-      beforeEach(inject([CartService], (cartService: CartService) => {
-        serviceUnderTest = cartService;
-      }));
-
       it('calls the API service correctly', () => {
         serviceUnderTest.updateProject(mockProject);
 
@@ -193,6 +167,27 @@ export function main() {
 
       it('updates the cart summary service', () => {
         serviceUnderTest.updateProject(mockProject);
+
+        expect(mockCartSummaryService.loadCartSummary).toHaveBeenCalled();
+      });
+    });
+
+    describe('moveLineItemTo()', () => {
+      it('calls the API service correctly', () => {
+        serviceUnderTest.moveLineItemTo(mockProject, mockLineItem);
+
+        expect(mockApiService.put)
+          .toHaveBeenCalledWith('/api/orders/v1/cart/move/lineItem?lineItemId=456&projectId=123', '', {}, true);
+      });
+
+      it('replaces the cart store with the response', () => {
+        serviceUnderTest.moveLineItemTo(mockProject, mockLineItem);
+
+        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockUpdateResponse);
+      });
+
+      it('updates the cart summary service', () => {
+        serviceUnderTest.moveLineItemTo(mockProject, mockLineItem);
 
         expect(mockCartSummaryService.loadCartSummary).toHaveBeenCalled();
       });
