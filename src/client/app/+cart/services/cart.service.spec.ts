@@ -16,6 +16,7 @@ export function main() {
     const mockGetResponse: Object = { 'text': 'MOCK GET RESPONSE' };
     const mockPostResponse: Object = { 'text': 'MOCK POST RESPONSE' };
     const mockDeleteResponse: Object = { 'text': 'MOCK DELETE RESPONSE' };
+    const mockUpdateResponse: Object = { 'text': 'MOCK UPDATE RESPONSE' };
 
     const mockProject: Project = {
       id: '123',
@@ -31,7 +32,8 @@ export function main() {
       mockApiService = {
         get: jasmine.createSpy('get').and.returnValue(apiResponseWith(mockGetResponse)),
         post: jasmine.createSpy('post').and.returnValue(apiResponseWith(mockPostResponse)),
-        delete: jasmine.createSpy('delete').and.returnValue(apiResponseWith(mockDeleteResponse))
+        delete: jasmine.createSpy('delete').and.returnValue(apiResponseWith(mockDeleteResponse)),
+        put: jasmine.createSpy('put').and.returnValue(apiResponseWith(mockUpdateResponse))
       };
 
       mockCartSummaryService = {
@@ -168,6 +170,32 @@ export function main() {
 
         expect(mockApiService.post).not.toHaveBeenCalled();
       }));
+    });
+
+    describe('updateProject()', () => {
+      let serviceUnderTest: CartService;
+
+      beforeEach(inject([CartService], (cartService: CartService) => {
+        serviceUnderTest = cartService;
+      }));
+
+      it('calls the API service correctly', () => {
+        serviceUnderTest.updateProject(mockProject);
+
+        expect(mockApiService.put).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify(mockProject), {}, true);
+      });
+
+      it('replaces the cart store with the response', () => {
+        serviceUnderTest.updateProject(mockProject);
+
+        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockUpdateResponse);
+      });
+
+      it('updates the cart summary service', () => {
+        serviceUnderTest.updateProject(mockProject);
+
+        expect(mockCartSummaryService.loadCartSummary).toHaveBeenCalled();
+      });
     });
   });
 }

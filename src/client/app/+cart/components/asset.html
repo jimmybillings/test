@@ -1,0 +1,14 @@
+<img src="{{asset.thumbnailUrl}}" width="160" height="90" />
+
+<p class="info">
+  {{ asset.assetName }}
+  <br/>
+  {{ metadata['Description'] | slice:0:120 }}
+  <br/>
+  {{ metadata['Format.FrameSize'] }} | {{ metadata['Format.FrameRate'] }}
+  <br/>
+  [Native Format?], [Delivery Format?]
+</p>
+
+<p>[In/out points?]</p>
+

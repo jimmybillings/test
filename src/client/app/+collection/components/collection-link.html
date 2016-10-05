@@ -1,13 +1,14 @@
 <md-card>
+  <button md-icon-button title="close" type="button" (click)="dialog.close()" class="close"><md-icon>close</md-icon></button>
   <md-card-title>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</md-card-title>
   <md-card-subtitle>{{ 'COLLECTION.COPY_LEGACY_LINK_DESCRIPTION' | translate }}</md-card-subtitle>
-  <md-card-actions>
-    <div layout-align="center center" layout="row" class="link-wrapper">
+  <section class="dd-menu-wrapper">
+    <div class="link-wrapper" flex="100" layout="row">
       <input 
         id="legacyLink"
         class="link-input"
         flex="100"
-        layout-align="start center"
+        layout-align="end center"
         value="{{ legacyLink }}"
         (click)="selectInputForCopy($event)" />
       <button 
@@ -21,7 +22,7 @@
         <md-icon>content_copy</md-icon>
       </button>
     </div>
-  </md-card-actions>
+  </section>
 </md-card>
 
 <wz-toast #copiedConfirmedToast>

@@ -75,7 +75,9 @@ export class WzDialogComponent implements OnDestroy {
     this.config.positionStrategy = this.overlay.position()
       .global()
       .centerHorizontally()
-      .centerVertically();
+      .fixed()
+      .top('22%');
+      // .centerVertically();
   }
 
   ngOnDestroy(): any {
