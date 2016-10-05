@@ -8,10 +8,10 @@
         <div flex class="line-item-info" layout="column" layout-align="center center">
           <p class="md-body-1">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</p>
         </div>
-        <div class="line-item-actions">
+        <div class="line-item-actions" layout="row" layout-xs="column">
           <button md-icon-button (click)="cloneLineItem()" title="copy line item"><md-icon>content_copy</md-icon></button>
           <button md-icon-button (click)="removeLineItem()" title="delete line item"><md-icon>clear</md-icon></button>
-          <button md-button *ngIf="this.otherProjects.length === 1" (click)="moveLineItemTo(otherProjects[0])">Move To {{ otherProjects[0].name }}</button>
+          <button md-button *ngIf="this.otherProjects.length === 1" (click)="moveLineItemTo(otherProjects[0])">{{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProjects[0].name} }}</button>
           <button *ngIf="this.otherProjects.length > 1" md-icon-button [md-menu-trigger-for]="lineItemOptionsMenu"><md-icon>more_vert</md-icon></button>
         </div>
       </div>
@@ -20,5 +20,5 @@
 </div>
 
 <md-menu x-position="before" #lineItemOptionsMenu="mdMenu">
-  <button md-menu-item *ngFor="let otherProject of otherProjects" (click)="moveLineItemTo(otherProject)"><md-icon>forward</md-icon>Move to {{ otherProject.name }}</button>
+  <button md-menu-item *ngFor="let otherProject of otherProjects" (click)="moveLineItemTo(otherProject)"><md-icon>forward</md-icon>{{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProject.name} }}</button>
 </md-menu>

@@ -1,5 +1,9 @@
 section.cart-asset {
   div.cart-asset-thb {
+    span.asset-id {
+      margin-left: rem(1);
+      @include text-contrast(md-color($md-grey, 900));
+    }
     height: rem(18);
     @include background-image(
       linear-gradient(md-color($md-grey, 900, .8), md-color($md-grey, 900, .7)),
