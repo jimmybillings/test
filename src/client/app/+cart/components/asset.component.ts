@@ -20,6 +20,10 @@ export class AssetComponent implements OnInit {
     this.cacheMetadata();
   }
 
+  public translationReady(field: any) {
+    return 'assetmetadata.' + field.replace(/\./g, '_');
+  }
+
   private cacheMetadata(): void {
     this.asset.metadata.forEach((metadatum: Metadatum) => {
       this.metadata[metadatum.name] = metadatum.value;

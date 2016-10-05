@@ -1,17 +1,18 @@
 <div layout="row" layout-align="center center">
-  <div flex-gt-xl="95" flex-gt-md="85" flex-gt-xs="100">
+  <div flex-gt-xl="95" flex-gt-md="90" flex-gt-xs="100">
     <section class="line-item">
       <div layout="row" layout-align="center start">
         <div flex="60">
           <cart-asset-component [asset]="lineItem.asset" (assetNotify)="delegate($event)"></cart-asset-component>
         </div>
-        <div flex class="line-item-info">
-          <p>{{ lineItem.price | currency:'USD':true:'1.2-2' }}</p>
-        </div>  
+        <div flex class="line-item-info" layout="column" layout-align="center center">
+          <p class="md-body-1">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</p>
+        </div>
         <div class="line-item-actions">
           <button md-icon-button (click)="cloneLineItem()" title="copy line item"><md-icon>content_copy</md-icon></button>
           <button md-icon-button (click)="removeLineItem()" title="delete line item"><md-icon>clear</md-icon></button>
-          <button md-icon-button [md-menu-trigger-for]="lineItemOptionsMenu"><md-icon>more_vert</md-icon></button>
+          <button md-button *ngIf="this.otherProjects.length === 1" (click)="moveLineItemTo(otherProjects[0])">Move To {{ otherProjects[0].name }}</button>
+          <button *ngIf="this.otherProjects.length > 1" md-icon-button [md-menu-trigger-for]="lineItemOptionsMenu"><md-icon>more_vert</md-icon></button>
         </div>
       </div>
     </section>
