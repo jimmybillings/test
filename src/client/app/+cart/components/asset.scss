@@ -1,18 +1,35 @@
 section.cart-asset {
   div.cart-asset-thb {
     span.asset-id {
-      margin-left: rem(1);
-      @include text-contrast(md-color($md-grey, 900));
+      position: absolute;
+      bottom: 3px;
+      right: 3px;
+      z-index: 2;
+      background-color: rgba(md-color($md-foreground, base), .3);
+      .id {
+        padding: rem(.3);
+        @include text-contrast(md-color($md-foreground, base));
+        opacity: .7;
+      }
     }
-    height: rem(18);
-    @include background-image(
-      linear-gradient(md-color($md-grey, 900, .8), md-color($md-grey, 900, .7)),
-      linear-gradient(md-color($md-primary, 900, .1), md-color($md-primary, 600, .1)),
-      linear-gradient(md-color($md-grey, 900, .8), md-color($md-grey, 900, .7))
-    );
     margin: rem(1);
-    a img {
-      width: 100%;
+    display: block;
+    height: 0;
+    position: relative;
+    padding: 56.25% 0 0 0;
+    position: relative;
+    background: #000;
+    img {
+      position: absolute;
+      display: block;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
     }
   }
   div.cart-asset-metadata {
@@ -29,14 +46,14 @@ section.cart-asset {
         border-right: 1px solid md-color($md-grey, 300);
         padding: rem(.4) rem(.6);
         background-color: rgba(md-color($md-grey, 300), .4);
-        @include text-contrast(md-color($md-grey, 100)); 
+        @include text-contrast(md-color($md-grey, 100));
       }
       td {
         width: 70%;
         padding: rem(.4) rem(.6);
         border-bottom: 1px solid md-color($md-grey, 300);
         background-color: rgba(md-color($md-grey, 300), .2);
-        @include text-contrast(md-color($md-grey, 100)); 
+        @include text-contrast(md-color($md-grey, 100));
       }
     }
   }

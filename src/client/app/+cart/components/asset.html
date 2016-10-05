@@ -1,8 +1,10 @@
 <section class="cart-asset">
-  <div layout="row" layout-align="start center">
+  <div layout="row" layout-align="center start">
     <div flex-xs="85" flex-sm="55" flex-md="45" flex-gt-md="35">
       <div class="cart-asset-thb">
-        <span class="md-body-1 asset-id">{{ asset.assetId }}</span>
+        <span class="asset-id">
+          <span class="id">{{ asset.assetId }}</span>
+        </span>
         <a [routerLink]="['/asset', asset.assetId]"><img src="{{asset.thumbnailUrl}}"/></a>
       </div>
     </div>
@@ -17,4 +19,3 @@
     </div>
   </div>
 </section>
-
