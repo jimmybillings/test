@@ -5,11 +5,6 @@ import { Project } from '../cart.interface';
 @Component({
   moduleId: module.id,
   selector: 'projects-component',
-  styles: [`
-    button {
-      margin-top: 10px;
-    }
-  `],
   template: `
     <project-component *ngFor="let project of projects" [config]="config" [project]="project" [otherProjects]="projectsWithout(project)" (projectNotify)="delegate($event)"></project-component>
     <div flex="95" layout="row" layout-align="end center">

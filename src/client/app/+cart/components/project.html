@@ -22,6 +22,10 @@
   </div>
 </section>
 
+<line-items-component [lineItems]="project.lineItems" [otherProjects]="otherProjects" (lineItemsNotify)="delegate($event)"></line-items-component>
+
+<!--MOVE THESE TO THE CART TEMPLATE AND PASS DATA UP-->
+
 <wz-dialog #editProjectDialog layout="row" layout-align="center center">
   <div flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
     <md-card class="wz-form-card md-elevation-z20">
@@ -38,11 +42,9 @@
 
 <md-menu x-position="before" #projectOptionsMenu="mdMenu">
   <button md-menu-item (click)="removeProject()"><md-icon>close</md-icon>{{ 'CART.PROJECTS.REMOVE_PROJECT' | translate }}</button>
-  <button disabled md-menu-item (click)="removeProject()"><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
-  <button disabled md-menu-item (click)="removeProject()"><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}</button>
-  <button disabled md-menu-item (click)="removeProject()"><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_CLIP' | translate }}</button>
-  <button disabled md-menu-item (click)="removeProject()"><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_CLIPS' | translate }}</button>
-  <button disabled md-menu-item (click)="removeProject()"><md-icon>edit</md-icon>{{ 'CART.PROJECTS.EDIT_PRICE' | translate }}</button>
+  <button disabled md-menu-item><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
+  <button disabled md-menu-item><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}</button>
+  <button disabled md-menu-item><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_CLIP' | translate }}</button>
+  <button disabled md-menu-item><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_CLIPS' | translate }}</button>
+  <button disabled md-menu-item><md-icon>edit</md-icon>{{ 'CART.PROJECTS.EDIT_PRICE' | translate }}</button>
 </md-menu>
-
-<line-items-component [lineItems]="project.lineItems" [otherProjects]="otherProjects" (lineItemsNotify)="delegate($event)"></line-items-component>      

@@ -5,26 +5,6 @@ import { Project, LineItem } from '../cart.interface';
 @Component({
   moduleId: module.id,
   selector: 'line-item-component',
-  styles: [`
-    div {
-      border: 1px solid black;
-      margin: 0 20px;
-      min-height: 100px;
-      clear: both;
-    }
-
-    p {
-      float: left;
-      padding: 0 20px;
-      margin: 20px 0 0 0;
-      width: 200px;
-    }
-
-    p.buttons {
-      float: right;
-      width: 200px;
-    }
-  `],
   templateUrl: 'line-item.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

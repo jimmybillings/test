@@ -5,11 +5,6 @@ import { Project, LineItem } from '../cart.interface';
 @Component({
   moduleId: module.id,
   selector: 'line-items-component',
-  styles: [`
-    button {
-      margin-top: 10px;
-    }
-  `],
   template: `
     <line-item-component *ngFor="let lineItem of lineItems" [lineItem]="lineItem" [otherProjects]="otherProjects" (lineItemNotify)="delegate($event)"></line-item-component>
   `,

@@ -15,6 +15,7 @@ export const error: ActionReducer<any> = (state = {}, action: Action) => {
 @Injectable()
 export class Error {
   public data: any;
+
   constructor(private store: Store<any>) {
     this.data = this.store.select('error');
   }
@@ -26,6 +27,7 @@ export class Error {
 
 @Injectable()
 export class ErrorActions {
+  private callInProgress: boolean = false;
   constructor(private error: Error, private router: Router, private currentUser: CurrentUser) {
     this.error.data.subscribe(this.handle.bind(this));
   }
@@ -33,10 +35,20 @@ export class ErrorActions {
   public handle(error: any): void {
     switch (error.status) {
       case 401:
-        this.unAuthorized();
+        console.log('401');
+        if (!this.callInProgress) {
+          this.callInProgress = true;
+          this.unAuthorized();
+          setTimeout(() => this.callInProgress = false, 5000);
+        }
         break;
       case 403:
-        this.forbidden();
+        console.log('403');
+        if (!this.callInProgress) {
+          this.callInProgress = true;
+          this.forbidden();
+          setTimeout(() => this.callInProgress = false, 5000);
+        }
         break;
       default:
         break;
@@ -44,25 +56,26 @@ export class ErrorActions {
   }
 
   public unAuthorized(): void {
+
     let redirect: any;
     if (this.currentUser.loggedIn()) {
       // SESSION HAS EXPIRED
-      redirect = ['/user/login', { 'loggedOut' : 'true' }];
+      this.currentUser.destroy();
+      redirect = ['/user/login', { 'loggedOut': 'true' }];
     } else {
       // INCORRECT LOGIN ATTEMPT
-      if(this.router.url.indexOf('/user/login') > -1) {
-        redirect = ['/user/login', { 'credentials' : 'invalid' }];
+      if (this.router.url.indexOf('/user/login') > -1) {
+        redirect = ['/user/login', { 'credentials': 'invalid' }];
       } else {
-      // REQUIRED TO BE LOGGED IN
-        redirect = ['/user/login', { 'requireLogin' : 'true' }];
+        // REQUIRED TO BE LOGGED IN
+        redirect = ['/user/login', { 'requireLogin': 'true' }];
       }
     }
-    this.currentUser.destroy();
     this.router.navigate(redirect);
   }
 
   public forbidden(): void {
-    var link: any = this.router.url;
-    this.router.navigate([link+';permission=required']);
+    var redirect: any = ['/user/profile', { 'permission': 'required' }];
+    this.router.navigate(redirect);
   }
 }

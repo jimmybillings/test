@@ -1,14 +1,21 @@
-<img src="{{asset.thumbnailUrl}}" width="160" height="90" />
+<section class="cart-asset">
+  <div layout="row" layout-align="center start">
+    <div flex-xs="85" flex-sm="55" flex-md="45" flex-gt-md="35">
+      <div class="cart-asset-thb">
+        <span class="asset-id">
+          <span class="id">{{ asset.assetId }}</span>
+        </span>
+        <a [routerLink]="['/asset', asset.assetId]"><img src="{{asset.thumbnailUrl}}"/></a>
+      </div>
+    </div>
 
-<p class="info">
-  {{ asset.assetName }}
-  <br/>
-  {{ metadata['Description'] | slice:0:120 }}
-  <br/>
-  {{ metadata['Format.FrameSize'] }} | {{ metadata['Format.FrameRate'] }}
-  <br/>
-  [Native Format?], [Delivery Format?]
-</p>
-
-<p>[In/out points?]</p>
-
+    <div flex-gt-md="65" hide="" show-gt-md class="cart-asset-metadata">
+      <table>
+        <tr *ngFor="let meta of asset.metadata">
+          <th class="md-body-1">{{ translationReady(meta.name) | uppercase | translate }}</th>
+          <td class="md-caption">{{ meta.value | slice:0:80 }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>

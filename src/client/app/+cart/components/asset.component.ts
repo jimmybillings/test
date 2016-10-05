@@ -6,24 +6,6 @@ import { Asset, Metadatum } from '../cart.interface';
   moduleId: module.id,
   // Would prefer simply 'asset-component', but for some reason we have global styles for that selector.
   selector: 'cart-asset-component',
-  styles: [`
-    img {
-      float: left;
-      margin: 5px;
-    }
-
-    p {
-      float: left;
-      padding: 0 20px;
-      margin: 20px 0 0 0;
-      width: 200px;
-    }
-
-    p.info {
-      width: 500px;
-      margin: 5px 0 0 0;
-    }
-  `],
   templateUrl: 'asset.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -36,6 +18,10 @@ export class AssetComponent implements OnInit {
 
   public ngOnInit(): void {
     this.cacheMetadata();
+  }
+
+  public translationReady(field: any) {
+    return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
   private cacheMetadata(): void {
