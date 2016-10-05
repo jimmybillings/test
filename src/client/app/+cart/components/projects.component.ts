@@ -1,30 +1,44 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges } from '@angular/core';
 
 import { Project } from '../cart.interface';
 
 @Component({
   moduleId: module.id,
   selector: 'projects-component',
-  template: `
-    <project-component *ngFor="let project of projects" [config]="config" [project]="project" [otherProjects]="projectsWithout(project)" (projectNotify)="delegate($event)"></project-component>
-    <div flex="95" layout="row" layout-align="end center">
-      <button md-raised-button="" (click)="addProject()">{{ 'CART.PROJECTS.ADD_PROJECT_BTN' | translate }}</button>
-    </div>
-  `,
+  templateUrl: 'projects.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class ProjectsComponent {
+export class ProjectsComponent implements OnChanges {
   @Input() config: any;
   @Input() projects: Array<Project>;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
 
-  public projectsWithout(project: Project) {
-    return this.projects.filter(otherProject => otherProject.id !== project.id);
+  // TODO: FIX ME!
+  public ngOnChanges(changes: any): void {
+    if (!changes.config) return;
+
+    changes.config.currentValue.form.items.map((formField: {name: string, value: any}) => {
+      // Need to know which project we are operating on...
+      // formField.value = this.project[formField.name];
+    });
+  }
+
+  public projectsOtherThan(currentProject: Project) {
+    return this.projects.filter(project => project.id !== currentProject.id);
   }
 
   public addProject(): void {
     this.projectsNotify.emit({ type: 'ADD_PROJECT' });
+  }
+
+  public remove(project: Project): void {
+    this.projectsNotify.emit({ type: 'REMOVE_PROJECT', payload: project });
+  }
+
+  public edit(project: Project, formValue: any): void {
+    Object.assign(project, formValue);
+    this.projectsNotify.emit({ type: 'UPDATE_PROJECT', payload: project });
   }
 
   public delegate(message: any): void {

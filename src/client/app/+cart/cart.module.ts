@@ -6,7 +6,6 @@ import { CartService } from './services/cart.service';
 import { CartStore } from './services/cart.store';
 import { CartComponent } from './cart.component';
 import { ProjectsComponent } from './components/projects.component';
-import { ProjectComponent } from './components/project.component';
 import { LineItemsComponent } from './components/line-items.component';
 import { AssetComponent } from './components/asset.component';
 
@@ -15,7 +14,6 @@ import { AssetComponent } from './components/asset.component';
   declarations: [
     CartComponent,
     ProjectsComponent,
-    ProjectComponent,
     LineItemsComponent,
     AssetComponent
   ],

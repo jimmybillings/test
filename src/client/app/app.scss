@@ -46,7 +46,7 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import '+search/search';
 @import '+search/filter';
 @import '+admin/+ui-config/ui-config';
-@import '+cart/components/project';
+@import '+cart/components/projects';
 @import '+cart/components/line-items';
 @import '+cart/components/asset';
 
