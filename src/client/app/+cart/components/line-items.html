@@ -1,4 +1,4 @@
-<div layout="row" layout-align="center center">
+<div *ngFor="let lineItem of lineItems" layout="row" layout-align="center center">
   <div flex-gt-xl="95" flex-gt-md="90" flex-gt-xs="100">
     <section class="line-item">
       <div layout="row" layout-align="center start">
@@ -9,9 +9,9 @@
           <p class="md-body-1">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</p>
         </div>
         <div class="line-item-actions" layout="row" layout-xs="column">
-          <button md-icon-button (click)="cloneLineItem()" title="copy line item"><md-icon>content_copy</md-icon></button>
-          <button md-icon-button (click)="removeLineItem()" title="delete line item"><md-icon>clear</md-icon></button>
-          <button md-button *ngIf="this.otherProjects.length === 1" (click)="moveLineItemTo(otherProjects[0])">{{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProjects[0].name} }}</button>
+          <button md-icon-button (click)="clone(lineItem)" title="copy line item"><md-icon>content_copy</md-icon></button>
+          <button md-icon-button (click)="remove(lineItem)" title="delete line item"><md-icon>clear</md-icon></button>
+          <button md-button *ngIf="this.otherProjects.length === 1" (click)="moveTo(otherProjects[0], lineItem)">{{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProjects[0].name} }}</button>
           <button *ngIf="this.otherProjects.length > 1" md-icon-button [md-menu-trigger-for]="lineItemOptionsMenu"><md-icon>more_vert</md-icon></button>
         </div>
       </div>

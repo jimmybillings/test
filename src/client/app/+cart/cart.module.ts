@@ -8,7 +8,6 @@ import { CartComponent } from './cart.component';
 import { ProjectsComponent } from './components/projects.component';
 import { ProjectComponent } from './components/project.component';
 import { LineItemsComponent } from './components/line-items.component';
-import { LineItemComponent } from './components/line-item.component';
 import { AssetComponent } from './components/asset.component';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { AssetComponent } from './components/asset.component';
     ProjectsComponent,
     ProjectComponent,
     LineItemsComponent,
-    LineItemComponent,
     AssetComponent
   ],
   exports: [CartComponent],
