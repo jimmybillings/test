@@ -63,10 +63,11 @@ export class SearchContext {
 
   private decodeParams(params: any) {
     let decodedParams: any = {};
-    for (let param in params) {
-      if (params[param] === '' || params[param] === 'true') {
-        delete(params[param]);
-        return params;
+    let d: any = JSON.parse(JSON.stringify(params));
+    for (let param in d) {
+      if (d[param] === '' || params[param] === 'true') {
+        delete d[param];
+        return d;
       }
       decodedParams[param] = decodeURIComponent(params[param]);
     }

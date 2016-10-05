@@ -72,13 +72,9 @@ export class CartSummaryService {
   }
 
   private get lastProjectName(): string {
-    let name: string;
-    this.data.map((summary: any) => {
-      summary.projects.forEach((project: any, i: number) => {
-        name = (i === summary.projects.length - 1) ? project.name : null;
-      });
-    }).take(1).subscribe();
-    return name;
+    return this.state.projects.forEach((project: any, i: number) => {
+      return (i === this.state.projects.length - 1) ? project.name : null;
+    });
   }
 
   private formatAsset(asset: any): any {

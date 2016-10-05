@@ -1,15 +1,21 @@
-import { Injectable }             from '@angular/core';
-import { CanActivate, Router }    from '@angular/router';
+import { Injectable } from '@angular/core';
+import { CanActivate } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
+import { ErrorActions } from '../../shared/services/error.service';
 
 @Injectable()
 export class LoggedOutGuard implements CanActivate {
   constructor(
     private currentUser: CurrentUser,
-    private router: Router) { }
+    private error: ErrorActions) { }
 
   canActivate() {
-    return (this.currentUser.loggedIn()) ? true : this.router.navigate(['/user/login', {'requireLogin': 'true'}]);
+    if (this.currentUser.loggedIn()) {
+      return true;
+    } else {
+      this.error.handle({ status: 401 });
+      return false;
+    }
   }
 
 }

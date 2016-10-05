@@ -2,13 +2,16 @@ import { Injectable }             from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot }    from '@angular/router';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CurrentUser } from '../../shared/services/current-user.model';
+import { ErrorActions } from '../../shared/services/error.service';
 
 @Injectable()
 export class AssetGuard implements CanActivate {
   constructor(
     private userCan: Capabilities,
     private currentUser: CurrentUser,
-    private router: Router) { }
+    private router: Router,
+    private error: ErrorActions) { }
+
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (!this.currentUser.loggedIn() && !route.params['share_key']) {
@@ -24,7 +27,8 @@ export class AssetGuard implements CanActivate {
       return true;
     } else {
       // user is logged in but doesn't have permission
-      return this.router.navigate(['/user/profile', {'permission': 'required'}]) && false;
+      this.error.handle({status: 403});
+      return false;
     }
   }
 }
