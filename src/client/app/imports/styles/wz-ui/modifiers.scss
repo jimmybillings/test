@@ -23,7 +23,7 @@
     }
   }
 // drop down indicator on a button
-  &.is-dd[md-button] {
+  &.is-dd {
     position: relative;
     padding-right: rem(2.40);
     padding-left: rem(1.00);
@@ -53,14 +53,17 @@
       color: contrast-color(md-color($md-warn));
     }
     &.md-icon-button {
-      min-width: rem(3.2);
-      line-height: .7;
-      border-radius: rem(.3);
+      min-width: rem(4.0);
+      max-height: rem(4.0);
+      min-height: rem(4.0);
+      border-radius: rem(.2);
       padding-left: rem(.4);
       padding-right: rem(1.4);
+      padding-top: rem(.8);
+      padding-bottom: 0;
       .md-button-wrapper::after {
-        right: 0;
-        top: rem(.6);
+        right: rem(-.3);
+        top: rem(.3);
       }
     }
   }

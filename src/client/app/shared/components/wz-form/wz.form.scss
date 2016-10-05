@@ -46,7 +46,13 @@ wz-form form {
 }
 md-card, .wz-form-card {
   .md-primary[md-button] {
-    color: md-color($md-primary, 600);
+    @include transition($swift-ease-out);
+    color: md-color($md-primary, 500);
+  }
+}
+md-card, .wz-form-card {
+  [md-button]:hover.md-primary::after, [md-icon-button]:hover.md-primary::after {
+    background-color: rgba(md-color($md-primary, 500), .12);
   }
 }
  

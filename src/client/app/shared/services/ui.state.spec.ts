@@ -77,7 +77,7 @@ export function main() {
       }));
 
     it('Should hide the search bar on certain routes', inject([UiState], (service: UiState) => {
-      ['/', 'admin', 'user', 'notification'].forEach(item => {
+      ['/', 'admin', 'user/register', 'user/login', 'notification'].forEach(item => {
         service.checkRouteForSearchBar(item);
         service.data.first().subscribe(data => {
           expect(data.headerIsExpanded).toEqual(false);
