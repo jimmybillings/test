@@ -18,38 +18,39 @@
       </table>
     </div>
     <div class="project-actions" flex="30" flex-md="50" flex-sm="60" flex-xs="100">
-      <button md-icon-button [md-menu-trigger-for]="projectOptionsMenu"><md-icon>more_vert</md-icon></button>
+      <button md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)"><md-icon>more_vert</md-icon></button>
       <p><strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate:{projectName: project.name} }}</strong> {{ project.subtotal | currency:'USD':true:'1.2-2' }}</p>
     </div>
   </section>
 
   <line-items-component [lineItems]="project.lineItems" [otherProjects]="projectsOtherThan(project)" (lineItemsNotify)="delegate($event)"></line-items-component>
-
-  <!--MOVE THESE TO THE CART TEMPLATE AND PASS DATA UP-->
-
-  <wz-dialog #editProjectDialog layout="row" layout-align="center center">
-    <div flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
-      <md-card class="wz-form-card md-elevation-z20">
-        <button (click)="editProjectDialog.close()" md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
-        <md-card-title>
-          {{ 'CART.PROJECTS.FORM.TITLE' | translate }}
-        </md-card-title>
-        <md-card-content>
-          <wz-form [items]="config.form.items" submitLabel="{{ 'CART.PROJECTS.FORM.SUBMIT_LABEL' | translate }}" (formSubmit)="edit(project, $event); editProjectDialog.close()"></wz-form>
-        </md-card-content>
-      </md-card>
-    </div>
-  </wz-dialog>
-
-  <md-menu x-position="before" #projectOptionsMenu="mdMenu">
-    <button md-menu-item (click)="remove(project)"><md-icon>close</md-icon>{{ 'CART.PROJECTS.REMOVE_PROJECT' | translate }}</button>
-    <button disabled md-menu-item><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
-    <button disabled md-menu-item><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}</button>
-    <button disabled md-menu-item><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_CLIP' | translate }}</button>
-    <button disabled md-menu-item><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_CLIPS' | translate }}</button>
-    <button disabled md-menu-item><md-icon>edit</md-icon>{{ 'CART.PROJECTS.EDIT_PRICE' | translate }}</button>
-  </md-menu>
 </div>
+  
+<!--MOVE THESE TO THE CART TEMPLATE AND PASS DATA UP-->
+
+<wz-dialog #editProjectDialog layout="row" layout-align="center center">
+  <div flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
+    <md-card class="wz-form-card md-elevation-z20">
+      <button (click)="editProjectDialog.close()" md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
+      <md-card-title>
+        {{ 'CART.PROJECTS.FORM.TITLE' | translate }}
+      </md-card-title>
+      <md-card-content>
+        <wz-form [items]="config.form.items" submitLabel="{{ 'CART.PROJECTS.FORM.SUBMIT_LABEL' | translate }}" (formSubmit)="edit(project, $event); editProjectDialog.close()"></wz-form>
+      </md-card-content>
+    </md-card>
+  </div>
+</wz-dialog>
+
+<md-menu x-position="before" #projectOptionsMenu="mdMenu">
+  <button md-menu-item (click)="remove(selectedProject)"><md-icon>close</md-icon>{{ 'CART.PROJECTS.REMOVE_PROJECT' | translate }}</button>
+  <button disabled md-menu-item><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
+  <button disabled md-menu-item><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}</button>
+  <button disabled md-menu-item><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_CLIP' | translate }}</button>
+  <button disabled md-menu-item><md-icon>add</md-icon>{{ 'CART.PROJECTS.ADD_CLIPS' | translate }}</button>
+  <button disabled md-menu-item><md-icon>edit</md-icon>{{ 'CART.PROJECTS.EDIT_PRICE' | translate }}</button>
+</md-menu>
+
 
 <div flex="95" layout="row" layout-align="end center">
   <button md-raised-button="" (click)="addProject()">{{ 'CART.PROJECTS.ADD_PROJECT_BTN' | translate }}</button>

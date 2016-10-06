@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-
 import { Project, LineItem } from '../cart.interface';
 
 @Component({
@@ -13,6 +12,7 @@ export class LineItemsComponent {
   @Input() lineItems: LineItem[];
   @Input() otherProjects: Project[];
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
+  private selectedLineItem: LineItem;
 
   public moveTo(otherProject: Project, lineItem: LineItem): void {
     this.lineItemsNotify.emit({ type: 'MOVE_LINE_ITEM', payload: { lineItem: lineItem, otherProject: otherProject } });
@@ -28,5 +28,9 @@ export class LineItemsComponent {
 
   public delegate(message: any): void {
     this.lineItemsNotify.emit(message);
+  }
+
+  public selectLineItem(lineItem: LineItem) {
+    this.selectedLineItem = lineItem;
   }
 }

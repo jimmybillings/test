@@ -13,7 +13,7 @@ export class ProjectsComponent implements OnChanges {
   @Input() config: any;
   @Input() projects: Array<Project>;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
-
+  private selectedProject: Project;
   // TODO: FIX ME!
   public ngOnChanges(changes: any): void {
     if (!changes.config) return;
@@ -43,5 +43,9 @@ export class ProjectsComponent implements OnChanges {
 
   public delegate(message: any): void {
     this.projectsNotify.emit(message);
+  }
+
+  public selectProject(project:Project) {
+    this.selectedProject = project;
   }
 }

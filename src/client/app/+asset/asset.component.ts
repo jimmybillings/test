@@ -40,10 +40,10 @@ export class AssetComponent implements OnInit {
     public cartSummary: CartSummaryService,
     public userPreference: UserPreferenceService,
     public store: Store<CollectionStore>) {
-    this.asset = assetService.data;
   }
 
   ngOnInit(): void {
+    this.asset = this.assetService.data;
     this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
@@ -52,14 +52,14 @@ export class AssetComponent implements OnInit {
   public addToCollection(params: any): void {
     this.userPreference.openCollectionTray();
     this.activeCollection.addAsset(params.collection.id, params.asset).take(1).subscribe(() => {
-      this.activeCollection.getItems(params.collection.id, {n: this.pageSize}).take(1).subscribe();
+      this.activeCollection.getItems(params.collection.id, { n: this.pageSize }).take(1).subscribe();
     });
   }
 
   public removeFromCollection(params: any): void {
     let collection: any = params.collection;
     let uuid: any = params.collection.assets.items.find((item: any) => parseInt(item.assetId) === parseInt(params.asset.assetId)).uuid;
-    if(uuid && params.asset.assetId) {
+    if (uuid && params.asset.assetId) {
       this.userPreference.openCollectionTray();
       this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
     }
@@ -70,7 +70,7 @@ export class AssetComponent implements OnInit {
       if (res.url && res.url !== '') {
         window.location.href = res.url;
       } else {
-        this.notification.createNotfication(this.target, {trString: 'COMPS.NO_COMP', theme: 'alert'});
+        this.notification.createNotfication(this.target, { trString: 'COMPS.NO_COMP', theme: 'alert' });
       }
     });
   }

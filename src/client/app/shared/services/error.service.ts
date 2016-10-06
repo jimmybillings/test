@@ -39,7 +39,7 @@ export class ErrorActions {
         if (!this.callInProgress) {
           this.callInProgress = true;
           this.unAuthorized();
-          setTimeout(() => this.callInProgress = false, 5000);
+          setTimeout(() => this.callInProgress = false, 3000);
         }
         break;
       case 403:
@@ -47,7 +47,7 @@ export class ErrorActions {
         if (!this.callInProgress) {
           this.callInProgress = true;
           this.forbidden();
-          setTimeout(() => this.callInProgress = false, 5000);
+          setTimeout(() => this.callInProgress = false, 3000);
         }
         break;
       default:
@@ -63,6 +63,7 @@ export class ErrorActions {
       this.currentUser.destroy();
       redirect = ['/user/login', { 'loggedOut': 'true' }];
     } else {
+
       // INCORRECT LOGIN ATTEMPT
       if (this.router.url.indexOf('/user/login') > -1) {
         redirect = ['/user/login', { 'credentials': 'invalid' }];
@@ -71,11 +72,11 @@ export class ErrorActions {
         redirect = ['/user/login', { 'requireLogin': 'true' }];
       }
     }
+
     this.router.navigate(redirect);
   }
 
   public forbidden(): void {
-    var redirect: any = ['/user/profile', { 'permission': 'required' }];
-    this.router.navigate(redirect);
+    this.router.navigate(['/user/profile', { 'permission': 'required' }]);
   }
 }
