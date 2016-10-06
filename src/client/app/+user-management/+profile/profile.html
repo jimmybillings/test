@@ -1,49 +1,153 @@
-<section class="login hero">
+<section class="profile-head">
+  <div layout="row" layout-align="center start">
+    <header flex-xl="85" flex-gt-lg="95" flex="100">
+      <div flex="100" layout="row" layout-xs="column" layout-align="start center">
+        <h2 flex="100" class="md-display-1">{{ 'PROFILE.PAGE_TITLE' | translate }}</h2>
+        <div class="tools" flex="auto">
+          <button md-button title="{{ 'PROFILE.SETTING_BTN_HOVER_TITLE' | translate }}" [md-menu-trigger-for]="profileSettings" class="md-icon-button is-dd" color="primary"><md-icon>settings</md-icon></button>
+          <md-menu x-position="before" #profileSettings="mdMenu">
+            <button md-menu-item disabled>
+              <md-icon>settings_applications</md-icon>User preferences
+            </button>
+            <button md-menu-item disabled>
+              <md-icon>business</md-icon>Account settings
+            </button>
+            <div class="divider"></div>
+            <button md-menu-item (click)="comingSoonDialog.show()">
+              <md-icon>lock</md-icon>Change Password
+            </button>
+          </md-menu>
+        </div>
+      </div>
+    </header>
+  </div>
+</section>
+
+<section class="data-bk">
   <div layout="row" md-scroll-y="" layout-align="center start">
-    <div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
-      <md-card class="wz-form-card">
-        <md-card-header>
-          <!--<div class="logo-wrapper">
-            <div class="logo"></div>
-          </div>-->
-        </md-card-header>
-        <md-card-title>    
-          Profile
-        </md-card-title>
-        <md-card-content>
-          <md-list>
-            <md-list-item>
-              <p><strong>Name: </strong> {{user.firstName}} {{user.lastName}}</p>
-            </md-list-item>
-            <md-divider></md-divider>
-            <md-list-item>
-              <p><strong>Email: </strong> {{user.emailAddress}}</p>
-            </md-list-item>
-            <md-divider></md-divider>
-            <md-list-item>
-              <p><strong>Created On: </strong>{{user.createdOn}}</p>
-            </md-list-item>
-            <md-divider></md-divider>
-            <md-list-item>
-              <p><strong>Last Updated: </strong>{{user.lastUpdated}}</p>
-            </md-list-item>
-            <md-divider></md-divider>
-            <md-list-item>
-              <p><strong>Site Name: </strong>{{user.siteName}}</p>
-            </md-list-item>
-            <md-divider></md-divider>
-            <md-list-item>
-              <p><strong>Id: </strong>{{user.id}}</p>
-            </md-list-item>
-            <md-divider></md-divider>
-            <div *ngFor="let account of user.accountIds"> 
-              <md-list-item>
-                <h3>Account: {{account}}</h3>
-              </md-list-item>
+    <div flex-xl="85" flex-gt-lg="95" flex="100" layout="row" layout-wrap="" layout-align="center start">
+      <md-tab-group>
+        <md-tab label="'PROFILE.BASIC_INFO_TAB_LABEL' | uppercase | translate">
+          <template md-tab-label>{{'PROFILE.BASIC_INFO_TAB_LABEL' | translate }}</template>
+          <template md-tab-content>
+            <!--<div layout="row" layout-align="end center">
+              <button md-button md-raised-button [md-menu-trigger-for]="profileSettings" color="primary">Edit basic info</button>
+            </div>-->
+            <div class="m-data">
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.FIRST_NAME_LABEL' | translate }}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{user.firstName}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.LAST_NAME_LABEL' | translate }}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{user.lastName}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.EMAIL_LABEL' | translate }}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{user.emailAddress}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.PASSWORD_LABEL' | translate }}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">
+                    <button md-button class="is-outlined" color="primary" (click)="comingSoonDialog.show()">{{'PROFILE.BASIC_INFO.CHANGE_PASSWORD_BTN_LABEL' | translate }}</button>
+                  </p>
+                </div>
+              </div>
             </div>
-          </md-list>
-        </md-card-content>
-      </md-card>
+            <div layout="row" layout-align="end center">
+              <!--<button md-button md-raised-button [md-menu-trigger-for]="profileSettings" color="primary">Edit basic info</button>-->
+              <button md-mini-fab color="primary" (click)="comingSoonDialog.show()">
+                <md-icon class="md-24">edit</md-icon>
+              </button>
+            </div>
+            <div class="m-data">
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.CREATED_ON_LABEL' | translate }}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{user.createdOn}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.UPDATED_ON_LABEL' | translate }}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{user.lastUpdated}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.USER_ID_LABEL' | translate }}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{user.id}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.USER_STATUS_LABEL' | translate }}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1">{{user.wazeeStatus}}</p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </md-tab>
+
+        <md-tab label="'PROFILE.PERMISSION_TAB_LABEL' | uppercase | translate">
+          <template md-tab-label>{{'PROFILE.PERMISSION_TAB_LABEL' | translate }}</template>
+          <template md-tab-content>
+            <div class="m-data">
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">{{'PROFILE.PERMISSION_TAB_LABEL' | translate }}</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1" *ngFor='let perm of user.permissions; let i=index'>{{perm}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="cell">
+                  <h5 class="md-subhead">Roles</h5>
+                </div>
+                <div class="cell">
+                  <p class="md-body-1"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </md-tab>
+
+
+      </md-tab-group>
     </div>
   </div>
 </section>
+
+<wz-dialog #comingSoonDialog>
+  <md-card>
+    <md-card-title>Coming Soon!</md-card-title>
+    <md-card-subtitle>Apologies!! This feature has not been implemented yet. Please keep checking for it.</md-card-subtitle>
+    <md-card-actions align="end" class="confirmation-buttons">
+      <button md-button color="primary" (click)="comingSoonDialog.close()">Close</button>
+    </md-card-actions>
+  </md-card>
+</wz-dialog>

@@ -39,6 +39,7 @@ $md-background: if($md-is-dark-theme, $md-dark-theme-background, $md-light-theme
 @import '+home/home';
 @import '+user-management/+login/login';
 @import '+user-management/+register/register';
+@import '+user-management/+profile/profile';
 @import '+collection/+index/collections';
 @import '+collection/+show/collection-show';
 @import '+asset/components/asset-detail';
