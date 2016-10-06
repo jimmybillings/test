@@ -5,7 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CartService } from './services/cart.service';
 import { CartStore } from './services/cart.store';
 import { CartComponent } from './cart.component';
-import { MainTabComponent } from './components/tabs/main-tab.component';
+import { CartTabComponent } from './components/tabs/cart-tab.component';
 import { ReviewTabComponent } from './components/tabs/review-tab.component';
 import { BillingTabComponent } from './components/tabs/billing-tab.component';
 import { PaymentTabComponent } from './components/tabs/payment-tab.component';
@@ -18,7 +18,7 @@ import { AssetComponent } from './components/asset.component';
   imports: [SharedModule],
   declarations: [
     CartComponent,
-    MainTabComponent,
+    CartTabComponent,
     ReviewTabComponent,
     BillingTabComponent,
     PaymentTabComponent,
