@@ -40,10 +40,24 @@ export function main() {
           expect(componentUnderTest.tabEnabled).toEqual([true, true, false, false, false]);
         });
 
-        it('selects the next tab', () => {
+        it('selects the next tab', (done) => {
           componentUnderTest.onNotification({ type: 'GO_TO_NEXT_TAB' });
 
-          setTimeout(_ => expect(componentUnderTest.selectedTabIndex).toBe(1), 100);
+          setTimeout(_ => {
+            expect(componentUnderTest.selectedTabIndex).toBe(1);
+            done();
+          }, 100);
+        });
+
+        it('does not advance beyond the last tab', (done) => {
+          componentUnderTest.selectedTabIndex = 4;
+
+          componentUnderTest.onNotification({ type: 'GO_TO_NEXT_TAB' });
+
+          setTimeout(_ => {
+            expect(componentUnderTest.selectedTabIndex).toBe(4);
+            done();
+          }, 100);
         });
       });
     });

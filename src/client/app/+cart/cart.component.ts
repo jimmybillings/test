@@ -33,6 +33,8 @@ export class CartComponent implements OnInit {
 
   private goToNextTab():void {
     let nextSelectedTabIndex: number = this.selectedTabIndex + 1;
+    if (nextSelectedTabIndex >= this.tabLabelKeys.length) return;
+
     this.tabEnabled[nextSelectedTabIndex] = true;
 
     // Ick!  Have to wait for the tab to be enabled before we can select it.
