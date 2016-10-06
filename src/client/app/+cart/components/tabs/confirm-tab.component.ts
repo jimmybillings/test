@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
+
+import { Tab } from './tab';
 
 @Component({
   moduleId: module.id,
@@ -6,4 +8,6 @@ import { Component } from '@angular/core';
   templateUrl: 'confirm-tab.html'
 })
 
-export class ConfirmTabComponent {}
+export class ConfirmTabComponent extends Tab {
+  @Output() tabNotify: EventEmitter<Object> = this.notify;
+}

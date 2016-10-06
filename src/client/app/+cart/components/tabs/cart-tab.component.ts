@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
+import { Tab } from './tab';
 import { CartService } from '../../services/cart.service';
 import { UiConfig } from '../../../shared/services/ui.config';
 
@@ -10,21 +11,19 @@ import { UiConfig } from '../../../shared/services/ui.config';
   templateUrl: 'cart-tab.html'
 })
 
-export class CartTabComponent implements OnInit {
-  @Output() tabNotify: EventEmitter<Object> = new EventEmitter<Object>();
+export class CartTabComponent extends Tab implements OnInit {
+  @Output() tabNotify: EventEmitter<Object> = this.notify;
 
   public cart: Observable<any>;
   public config: any;
 
-  constructor(private cartService: CartService, private uiConfig: UiConfig) {}
+  constructor(private cartService: CartService, private uiConfig: UiConfig) {
+    super();
+  }
 
   public ngOnInit(): void {
     this.cart = this.cartService.data;
     this.uiConfig.get('cart').subscribe((config: any) => this.config = config.config);
-  }
-
-  public goToNextTab(): void {
-    this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
   }
 
   public onNotification(message: any): void {
