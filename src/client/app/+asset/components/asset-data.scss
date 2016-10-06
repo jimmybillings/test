@@ -1,5 +1,5 @@
 
-.data-bk {
+.data-bk, .tabs-section {
   background-color: transparent !important;
   & > div > div {
     background: rgba(md-color($md-background, background),.7);
@@ -28,11 +28,15 @@
         line-height: rem(5.6);
         height: rem(5.2);
         &:focus {
-          background-color: rgba(md-color($md-primary, 300), .07);
+          background-color: rgba(md-color($md-primary, 300), .1);
         }
-        &.md-active {
+        &.md-tab-active {
           opacity: 1;
-          color: md-color($md-primary, 500);
+          background-color: rgba(md-color($md-primary, 300), .07);
+          color: md-color($md-primary, 600);
+        }
+        &.md-tab-disabled {
+          opacity: .25;
         }
       }
       md-ink-bar {
