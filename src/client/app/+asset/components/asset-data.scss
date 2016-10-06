@@ -15,7 +15,7 @@
         margin-bottom: rem(4.6);
       }
     }
-    .md-tab-header{
+    .md-tab-header {
       background-color: md-color($md-background, card);
       margin-top: 0;
       margin-left: 0;
@@ -25,14 +25,15 @@
       border-style: solid; 
       border-color: rgba(md-color($md-grey, 400),.5);
       .md-tab-label {
+        @include transition($swift-ease-out);
         line-height: rem(5.6);
         height: rem(5.2);
         &:focus {
-          background-color: rgba(md-color($md-primary, 300), .1);
+          background-color: rgba(md-color($md-primary, 300), .2);
         }
         &.md-tab-active {
           opacity: 1;
-          background-color: rgba(md-color($md-primary, 300), .07);
+          background-color: rgba(md-color($md-primary, 300), .00);
           color: md-color($md-primary, 600);
         }
         &.md-tab-disabled {

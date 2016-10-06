@@ -1,0 +1,8 @@
+cart-component .tabs-section md-tab-group {
+  & > div {
+    margin: 0;
+  }  
+  .md-tab-header {
+    border-width: 0;
+  }
+}
