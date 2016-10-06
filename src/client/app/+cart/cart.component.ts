@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class CartComponent implements OnInit {
   public tabLabelKeys: string[];
   public tabEnabled: boolean[];
-  public selectedTabIndex: number = 0;
+  public selectedTabIndex: number;
 
   ngOnInit() {
     // We could initialize a subset of these instead, based on some condition.
@@ -18,6 +18,8 @@ export class CartComponent implements OnInit {
 
     // Enable the first tab and disable the rest.
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
+
+    this.selectedTabIndex = 0;
   }
 
   public onNotification(message: any): void {
@@ -31,6 +33,8 @@ export class CartComponent implements OnInit {
 
   private goToNextTab():void {
     let nextSelectedTabIndex: number = this.selectedTabIndex + 1;
+    if (nextSelectedTabIndex >= this.tabLabelKeys.length) return;
+
     this.tabEnabled[nextSelectedTabIndex] = true;
 
     // Ick!  Have to wait for the tab to be enabled before we can select it.

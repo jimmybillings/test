@@ -6,11 +6,11 @@ import { UiConfig } from '../../../shared/services/ui.config';
 
 @Component({
   moduleId: module.id,
-  selector: 'main-tab-component',
-  templateUrl: 'main-tab.html'
+  selector: 'cart-tab-component',
+  templateUrl: 'cart-tab.html'
 })
 
-export class MainTabComponent implements OnInit {
+export class CartTabComponent implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = new EventEmitter<Object>();
 
   public cart: Observable<any>;
