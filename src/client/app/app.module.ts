@@ -17,6 +17,7 @@ import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { WAZEE_STORES } from './imports/wazee';
+import { OrderModule } from './+order/order.module';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { WAZEE_STORES } from './imports/wazee';
     UserManagementModule,
     AdminModule,
     CartModule,
+    OrderModule,
     ApplicationModule,
     StoreModule.provideStore(WAZEE_STORES)
   ],

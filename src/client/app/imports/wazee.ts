@@ -45,6 +45,7 @@ import { CollectionContextService, collectionOptions } from '../shared/services/
 import { cart } from '../+cart/services/cart.store';
 import { sortDefinitions } from '../shared/services/sort-definitions.service';
 import { cartSummary } from '../shared/services/cart-summary.service';
+import { order } from '../+order/services/order.service';
 
 // TRANSLATIONS
 import { MultilingualService } from '../shared/services/multilingual.service';
@@ -94,7 +95,8 @@ export const WAZEE_STORES: any = {
     error: error,
     cart: cart,
     sortDefinitions: sortDefinitions,
-    cartSummary: cartSummary
+    cartSummary: cartSummary,
+    order: order
 };
 
 export const WAZEE_ROUTES: Routes = [
