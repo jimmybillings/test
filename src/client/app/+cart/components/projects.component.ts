@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { Project } from '../cart.interface';
 
@@ -9,20 +9,11 @@ import { Project } from '../cart.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class ProjectsComponent implements OnChanges {
+export class ProjectsComponent {
   @Input() config: any;
   @Input() projects: Array<Project>;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;
-  // TODO: FIX ME!
-  public ngOnChanges(changes: any): void {
-    if (!changes.config) return;
-
-    changes.config.currentValue.form.items.map((formField: {name: string, value: any}) => {
-      // Need to know which project we are operating on...
-      // formField.value = this.project[formField.name];
-    });
-  }
 
   public projectsOtherThan(currentProject: Project) {
     return this.projects.filter(project => project.id !== currentProject.id);
@@ -45,7 +36,11 @@ export class ProjectsComponent implements OnChanges {
     this.projectsNotify.emit(message);
   }
 
-  public selectProject(project:Project) {
+  public selectProject(project: Project) {
     this.selectedProject = project;
+    this.config.form.items = this.config.form.items.map((item:any) => {
+      item.value = this.selectedProject[item.name];
+      return item;
+    });
   }
 }
