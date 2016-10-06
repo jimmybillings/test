@@ -60,6 +60,24 @@ export function main() {
           }, 100);
         });
       });
+
+      describe('GO_TO_PREVIOUS_TAB', () => {
+        it('selects the previous tab', () => {
+          componentUnderTest.selectedTabIndex = 3;
+
+          componentUnderTest.onNotification({ type: 'GO_TO_PREVIOUS_TAB' });
+
+          expect(componentUnderTest.selectedTabIndex).toBe(2);
+        });
+
+        it('does not go back beyond the first tab', () => {
+          componentUnderTest.selectedTabIndex = 0;
+
+          componentUnderTest.onNotification({ type: 'GO_TO_PREVIOUS_TAB' });
+
+          expect(componentUnderTest.selectedTabIndex).toBe(0);
+        });
+      });
     });
   });
 };

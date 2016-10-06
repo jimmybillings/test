@@ -28,6 +28,10 @@ export class CartComponent implements OnInit {
         this.goToNextTab();
         break;
       }
+      case 'GO_TO_PREVIOUS_TAB': {
+        this.goToPreviousTab();
+        break;
+      }
     }
   }
 
@@ -40,5 +44,10 @@ export class CartComponent implements OnInit {
     // Ick!  Have to wait for the tab to be enabled before we can select it.
     // TODO: There must be a better way...
     setTimeout(_ => this.selectedTabIndex = nextSelectedTabIndex, 50);
+  }
+
+  private goToPreviousTab():void {
+    if (this.selectedTabIndex === 0) return;
+    this.selectedTabIndex -= 1;
   }
 }
