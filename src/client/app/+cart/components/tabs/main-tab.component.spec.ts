@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs/Rx';
 
-import { CartComponent } from './cart.component';
+import { MainTabComponent } from './main-tab.component';
 
 export function main() {
-  describe('Cart Component', () => {
-    let componentUnderTest: CartComponent;
+  describe('Cart Main Tab Component', () => {
+    let componentUnderTest: MainTabComponent;
     let mockCartService: any;
     let mockUiConfig: any;
 
@@ -23,7 +23,7 @@ export function main() {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: 'SOME_CONFIG' }))
       };
 
-      componentUnderTest = new CartComponent(mockCartService, mockUiConfig);
+      componentUnderTest = new MainTabComponent(mockCartService, mockUiConfig);
     });
 
     describe('Initialization', () => {
