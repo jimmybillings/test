@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-
-import { CartService } from './services/cart.service';
-import { UiConfig } from '../shared/services/ui.config';
 
 @Component({
   moduleId: module.id,
@@ -11,42 +7,34 @@ import { UiConfig } from '../shared/services/ui.config';
 })
 
 export class CartComponent implements OnInit {
-  public cart: Observable<any>;
-  public config: any;
+  public tabLabelKeys: string[];
+  public tabEnabled: boolean[];
+  public selectedTabIndex: number = 0;
 
-  constructor(private cartService: CartService, private uiConfig: UiConfig) {}
+  ngOnInit() {
+    // We could initialize a subset of these instead, based on some condition.
+    // For example, don't include 'billing' and 'payment' if the cart total is 0.
+    this.tabLabelKeys = ['cart', 'review', 'billing', 'payment', 'confirm'];
 
-  public ngOnInit(): void {
-    this.cart = this.cartService.data;
-    this.uiConfig.get('cart').subscribe((config: any) => this.config = config.config);
+    // Enable the first tab and disable the rest.
+    this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
   }
 
   public onNotification(message: any): void {
     switch(message.type) {
-      case 'ADD_PROJECT': {
-        this.cartService.addProject();
+      case 'GO_TO_NEXT_TAB': {
+        this.goToNextTab();
         break;
       }
-      case 'REMOVE_PROJECT': {
-        this.cartService.removeProject(message.payload);
-        break;
-      }
-      case 'UPDATE_PROJECT': {
-        this.cartService.updateProject(message.payload);
-        break;
-      }
-      case 'MOVE_LINE_ITEM': {
-        this.cartService.moveLineItemTo(message.payload.otherProject, message.payload.lineItem);
-        break;
-      }
-      case 'CLONE_LINE_ITEM': {
-        this.cartService.cloneLineItem(message.payload);
-        break;
-      }
-      case 'REMOVE_LINE_ITEM': {
-        this.cartService.removeLineItem(message.payload);
-        break;
-      }
-    };
+    }
+  }
+
+  private goToNextTab():void {
+    let nextSelectedTabIndex: number = this.selectedTabIndex + 1;
+    this.tabEnabled[nextSelectedTabIndex] = true;
+
+    // Ick!  Have to wait for the tab to be enabled before we can select it.
+    // TODO: There must be a better way...
+    setTimeout(_ => this.selectedTabIndex = nextSelectedTabIndex, 50);
   }
 }
