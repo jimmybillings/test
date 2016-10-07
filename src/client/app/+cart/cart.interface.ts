@@ -9,7 +9,7 @@ export interface Project {
   name: string;
   clientName: string;
   subtotal: number;
-  lineitems?: LineItem[];
+  lineItems?: LineItem[];
   [index: string]: any;
 }
 

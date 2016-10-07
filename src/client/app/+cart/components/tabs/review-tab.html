@@ -1,4 +1,12 @@
-<h2>REVIEW TAB'S INFO GOES HERE</h2>
-
-<button (click)="goToPreviousTab()">Back</button>
-<button (click)="goToNextTab()">Proceed to Billing</button>
+<section class="cart">
+  <div layout="row" md-scroll-y="" layout-align="center center">
+    <div flex>
+      <projects-component [readOnly]="true" [projects]="(cart | async).projects" [config]="config" (projectsNotify)="onNotification($event)"></projects-component>
+    </div>
+  </div>
+  <div flex="95" layout="row" layout-align="end center">
+    <p class="md-subhead" style="margin-right: 2rem;">{{ 'CART.CART_TOTAL' | translate }} {{ (cart | async).total | currency:'USD':true:'1.2-2' }}</p>
+    <button md-raised-button class="md-block" (click)="goToPreviousTab()">BACK</button>
+    <button md-raised-button class="md-block" (click)="goToNextTab()">PROCEED</button>
+  </div>
+</section>
