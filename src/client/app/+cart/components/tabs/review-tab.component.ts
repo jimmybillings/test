@@ -1,4 +1,8 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
+
+import { Tab } from './tab';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   moduleId: module.id,
@@ -6,10 +10,16 @@ import { Component, Output, EventEmitter } from '@angular/core';
   templateUrl: 'review-tab.html'
 })
 
-export class ReviewTabComponent {
-  @Output() tabNotify: EventEmitter<Object> = new EventEmitter<Object>();
+export class ReviewTabComponent extends Tab implements OnInit {
+  @Output() tabNotify: EventEmitter<Object> = this.notify;
 
-  public goToNextTab(): void {
-    this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
+  public cart: Observable<any>;
+
+  constructor(private cartService: CartService) {
+    super();
+  }
+
+  public ngOnInit(): void {
+    this.cart = this.cartService.data;
   }
 }
