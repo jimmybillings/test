@@ -1,9 +1,9 @@
 <section class="order-component">
-  <div layout="row" layou-align="center center">
-    <div flex="100">
-      <pre>
-        {{ order | json }}
-      </pre>
+  <div class="order-summary">
+    <div layout="row" layout-align="space-between center" flex="100">
+      <span><strong>Order Id: </strong>{{ order.id }}</span>
+      <span><strong>Order Price: </strong>{{ order.total | currency:'USD':true:'1.2-2' }}</span>
+      <span><strong>Order Placed: </strong>{{ order.createdOn | date:'short'}}</span>
     </div>
   </div>
 </section>

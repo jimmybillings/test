@@ -12,6 +12,7 @@ import { AssetResolver } from './+asset/services/asset.resolver';
 import { AssetGuard } from './+asset/services/asset.guard';
 import { SearchResolver } from './+search/services/search.resolver';
 import { CartResolver } from './+cart/services/cart.resolver';
+import { OrderResolver } from './+order/services/order.resolver';
 import { Routes} from '@angular/router';
 
 export const APP_ROUTES: Routes = [
@@ -24,5 +25,5 @@ export const APP_ROUTES: Routes = [
   { path: 'content/:page', component: ContentComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'cart', component: CartComponent, canActivate: [CartGuard], resolve: { cart: CartResolver } },
-  { path: 'order/:orderId', component: OrderComponent }
+  { path: 'order/:orderId', component: OrderComponent, resolve: { order: OrderResolver } }
 ];

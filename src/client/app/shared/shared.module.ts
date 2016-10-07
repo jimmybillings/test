@@ -35,6 +35,7 @@ import { ValuesPipe } from '../shared/pipes/values.pipe';
 import { AssetResolver } from '../+asset/services/asset.resolver';
 import { SearchResolver } from '../+search/services/search.resolver';
 import { CartResolver } from '../+cart/services/cart.resolver';
+import { OrderResolver } from '../+order/services/order.resolver';
 import { WAZEE_PROVIDERS } from '../imports/wazee';
 
 import { MaterialModule } from './material.module';
@@ -124,8 +125,8 @@ export class SharedModule {
         AssetResolver,
         SearchResolver,
         CartResolver,
+        OrderResolver,
         WAZEE_PROVIDERS]
     };
   }
 }
-

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from './services/order.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   moduleId: module.id,
@@ -10,15 +9,9 @@ import { ActivatedRoute } from '@angular/router';
 
 export class OrderComponent implements OnInit {
   public order: any;
-  constructor(private orderService: OrderService, private route: ActivatedRoute) {}
+  constructor(private orderService: OrderService) {}
 
   ngOnInit() {
-    this.orderService.data.subscribe((data: any) => {
-      console.log(data);
-      this.order = data;
-    });
-    this.route.params.subscribe((params: any) => {
-      this.orderService.getOrder(params['orderId']);
-    });
+    this.orderService.data.subscribe((data: any) => this.order = data);
   }
 }
