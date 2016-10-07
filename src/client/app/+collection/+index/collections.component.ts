@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Collections, Collection } from '../../shared/interfaces/collection.interface';
-import { CollectionsService } from '../services/collections.service';
-import { ActiveCollectionService } from '../services/active-collection.service';
+import { CollectionsService } from '../../shared/services/collections.service';
+import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 import { Router } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { UiConfig } from '../../shared/services/ui.config';

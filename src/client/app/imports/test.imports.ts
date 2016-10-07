@@ -15,6 +15,7 @@ import { AdminService } from '../+admin/services/admin.service';
 import { ConfigService } from '../+admin/services/config.service';
 import { User } from '../+user-management/services/user.data.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
+import { AssetData } from '../+search/services/asset.data.service';
 
 // MODELS
 import { FormModel } from '../shared/components/wz-form/wz.form.model';
@@ -51,6 +52,7 @@ export const beforeEachProvidersArray: Array<any> = [
   RouterOutletMap,
   FormModel,
   FormBuilder,
+  AssetData,
   {provide: Http,
     useFactory: function(backend: ConnectionBackend, defaultOptions: BaseRequestOptions) {
       return new Http(backend, defaultOptions);

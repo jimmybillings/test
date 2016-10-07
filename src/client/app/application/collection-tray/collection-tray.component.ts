@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Collection } from '../../shared/interfaces/collection.interface';
-import { ActiveCollectionService} from '../../+collection/services/active-collection.service';
+import { ActiveCollectionService} from '../../shared/services/active-collection.service';
 import { Observable } from 'rxjs/Rx';
 /**
  * Home page search component - renders search form passes form values to search component.

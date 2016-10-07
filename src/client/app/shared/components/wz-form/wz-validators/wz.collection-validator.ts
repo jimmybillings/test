@@ -2,7 +2,7 @@
 // import { Http, HTTP_PROVIDERS, Headers } from '@angular/http';
 // import { FormControl, AsyncValidatorFn } from '@angular/forms';
 import { FormControl } from '@angular/forms';
-// import { CollectionsService } from '../../../../+collection/services/collections.service';
+// import { CollectionsService } from '../../../../shared/services/collections.service';
 // import { Collections } from '../../../../shared/interfaces/collection.interface';
 // import { Observable } from 'rxjs/Rx';
 // import 'rxjs/Rx';

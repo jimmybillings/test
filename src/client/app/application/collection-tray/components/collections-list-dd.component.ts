@@ -1,10 +1,10 @@
 import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Collection, Collections } from '../../../shared/interfaces/collection.interface';
-import { CollectionsService } from '../../../+collection/services/collections.service';
+import { CollectionsService } from '../../../shared/services/collections.service';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
-import { ActiveCollectionService } from '../../../+collection/services/active-collection.service';
+import { ActiveCollectionService } from '../../../shared/services/active-collection.service';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { UiState } from '../../../shared/services/ui.state';
 /**

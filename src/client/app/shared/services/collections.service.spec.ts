@@ -30,7 +30,7 @@ export function main() {
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         spyOn(service, 'storeCollections');
         service.loadCollections().subscribe(response => {
-          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/collectionSummary/search?q=&accessLevel=all&s=&d=&i=0&n=200');
+          expect(connection.request.url.indexOf('/api/assets/v1/collectionSummary/search?q=&accessLevel=all&s=&d=&i=0&n=200') !== -1).toBe(true);
           expect(response).toEqual(mockCollection());
           expect(service.storeCollections).toHaveBeenCalledWith(mockCollection());
         });
@@ -47,7 +47,7 @@ export function main() {
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         spyOn(service, 'createCollectionInStore');
         service.createCollection(mockCollection()).subscribe(response => {
-          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/collectionSummary');
+          expect(connection.request.url.indexOf('/api/assets/v1/collectionSummary') !== -1).toBe(true);
           expect(response).toEqual(mockCollection());
           expect(service.createCollectionInStore).toHaveBeenCalledWith(mockCollection());
         });
@@ -64,7 +64,7 @@ export function main() {
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         spyOn(service, 'deleteCollectionFromStore');
         service.deleteCollection(158).subscribe(response => {
-          expect(connection.request.url.split('.com')[1]).toBe('/api/identities/v1/collection/158');
+          expect(connection.request.url.indexOf('/api/identities/v1/collection/158') !== -1).toBe(true);
           expect(service.deleteCollectionFromStore).toHaveBeenCalledWith(158);
         });
         connection.mockRespond(new Response(

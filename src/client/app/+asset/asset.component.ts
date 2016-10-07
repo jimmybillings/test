@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUser } from '../shared/services/current-user.model';
-import { AssetService} from './services/asset.service';
+import { AssetService} from '../shared/services/asset.service';
 import { Observable} from 'rxjs/Rx';
 import { CollectionStore } from '../shared/interfaces/collection.interface';
-import { CollectionsService } from '../+collection/services/collections.service';
-import { ActiveCollectionService } from '../+collection/services/active-collection.service';
+import { CollectionsService } from '../shared/services/collections.service';
+import { ActiveCollectionService } from '../shared/services/active-collection.service';
 import { Store } from '@ngrx/store';
 import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';

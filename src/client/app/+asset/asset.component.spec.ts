@@ -8,7 +8,7 @@ import {
 } from '../imports/test.imports';
 
 import { AssetComponent } from './asset.component';
-import { AssetService } from './services/asset.service';
+import { AssetService } from '../shared/services/asset.service';
 
 export function main() {
   describe('Asset Component', () => {

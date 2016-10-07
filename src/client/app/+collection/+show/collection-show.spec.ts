@@ -6,7 +6,7 @@ import {
 } from '../../imports/test.imports';
 
 import { CollectionShowComponent} from './collection-show.component';
-import { ActiveCollectionService} from '../services/active-collection.service';
+import { ActiveCollectionService} from '../../shared/services/active-collection.service';
 
 export function main() {
   describe('Collection Show Component', () => {
