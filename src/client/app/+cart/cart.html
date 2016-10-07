@@ -1,3 +1,4 @@
+<section class="tabs-section">
 <md-tab-group [(selectedIndex)]="selectedTabIndex">
   <md-tab *ngFor="let tabLabelKey of tabLabelKeys; let i = index" [disabled]="!tabEnabled[i]">
     <template md-tab-label>{{ tabLabelKey | uppercase }}</template>
@@ -11,3 +12,4 @@
     </template>
   </md-tab>
 </md-tab-group>
+</section>

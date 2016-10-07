@@ -16,7 +16,7 @@ export class CartService {
     private cartSummaryService: CartSummaryService
   ) { }
 
-  public get data(): Observable<any> {
+  public get data(): Observable<CartStore> {
     return this.store.data;
   }
 

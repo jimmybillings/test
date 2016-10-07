@@ -6,8 +6,8 @@ import {
 } from '../../imports/test.imports';
 
 import { CollectionsComponent} from './collections.component';
-import { ActiveCollectionService} from '../services/active-collection.service';
-import { CollectionsService} from '../services/collections.service';
+import { ActiveCollectionService} from '../../shared/services/active-collection.service';
+import { CollectionsService} from '../../shared/services/collections.service';
 
 export function main() {
   describe('Collection Component', () => {

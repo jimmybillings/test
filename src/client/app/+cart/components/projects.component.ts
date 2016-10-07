@@ -12,11 +12,16 @@ import { Project } from '../cart.interface';
 export class ProjectsComponent {
   @Input() config: any;
   @Input() projects: Array<Project>;
+  @Input() readOnly: boolean = false;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;
 
   public projectsOtherThan(currentProject: Project) {
     return this.projects.filter(project => project.id !== currentProject.id);
+  }
+
+  public lineItemCountFor(project: any): number {
+    return (project.lineItems || []).length;
   }
 
   public addProject(): void {

@@ -4,8 +4,8 @@ import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { Asset } from '../../../shared/interfaces/asset.interface';
 
 import { WzFormComponent } from '../../../shared/components/wz-form/wz.form.component';
-import { CollectionsService } from '../../../+collection/services/collections.service';
-import { ActiveCollectionService } from '../../../+collection/services/active-collection.service';
+import { CollectionsService } from '../../../shared/services/collections.service';
+import { ActiveCollectionService } from '../../../shared/services/active-collection.service';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
 import { UiState } from '../../../shared/services/ui.state';
 import { Subscription } from 'rxjs/Rx';

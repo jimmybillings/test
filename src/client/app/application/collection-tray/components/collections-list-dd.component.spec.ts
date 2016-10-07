@@ -7,8 +7,8 @@ import {
 } from '../../../imports/test.imports';
 
 import { CollectionListDdComponent } from './collections-list-dd.component';
-import { CollectionsService } from '../../../+collection/services/collections.service';
-import { ActiveCollectionService } from '../../../+collection/services/active-collection.service';
+import { CollectionsService } from '../../../shared/services/collections.service';
+import { ActiveCollectionService } from '../../../shared/services/active-collection.service';
 
 export function main() {
   describe('Collection List component', () => {

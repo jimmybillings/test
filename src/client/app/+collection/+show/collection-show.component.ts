@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 import { Collection, Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
-import { CollectionsService } from '../services/collections.service';
-import { ActiveCollectionService } from '../services/active-collection.service';
+import { CollectionsService } from '../../shared/services/collections.service';
+import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute} from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
-import { AssetService } from '../../+asset/services/asset.service';
+import { AssetService } from '../../shared/services/asset.service';
 import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartSummaryService } from '../../shared/services/cart-summary.service';
@@ -72,8 +72,13 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   public removeFromCollection(params: any): void {
     let collection: any = params.collection;
-    let uuid: any = params.collection.assets.items.find((item: any) => parseInt(item.assetId) === parseInt(params.asset.assetId)).uuid;
-    if(uuid && params.asset.assetId) this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
+    let uuid: any = params.collection.assets.items.find((item: any) => {
+      return parseInt(item.assetId) === parseInt(params.asset.assetId);
+    }).uuid;
+    if(uuid && params.asset.assetId) {
+      this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid)
+        .take(1).subscribe();
+    }
   }
 
   public changePage(i: any): void {
@@ -84,7 +89,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public downloadComp(params: any): void {
     this.assetService.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
-        console.log(res);
         window.location.href = res.url;
       } else {
         this.notification.createNotfication(this.target, {trString: 'COMPS.NO_COMP', theme: 'alert'});
@@ -95,7 +99,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public deleteCollection(id: number): void {
     this.collectionsService.deleteCollection(id).take(1).subscribe(payload => {
       let collectionLength: number;
-      this.collectionsService.data.take(1).subscribe(collection => collectionLength = collection.items.length);
+      this.collectionsService.data
+        .take(1).subscribe(collection => collectionLength = collection.items.length);
 
       // if we are deleting current active, we need to get the new active from the server.
       if (this.activeCollection.isActiveCollection(id) && collectionLength > 0) {

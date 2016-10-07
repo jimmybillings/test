@@ -9,12 +9,12 @@ import { CurrentUser} from './shared/services/current-user.model';
 import { ApiConfig} from './shared/services/api.config';
 import { UiConfig} from './shared/services/ui.config';
 import { SearchContext} from './shared/services/search-context.service';
-import { Authentication} from './+user-management/services/authentication.data.service';
+import { Authentication} from './shared/services/authentication.data.service';
 
-import { CollectionsService } from './+collection/services/collections.service';
+import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
 import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
-import { ActiveCollectionService } from './+collection/services/active-collection.service';
+import { ActiveCollectionService } from './shared/services/active-collection.service';
 import { CartSummaryService } from './shared/services/cart-summary.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';

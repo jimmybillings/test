@@ -6,7 +6,7 @@ import {
 } from '../../imports/test.imports';
 
 import { LoginComponent } from './login.component';
-import { Authentication } from '../services/authentication.data.service';
+import { Authentication } from '../../shared/services/authentication.data.service';
 
 export function main() {
   const res = { 'user': { 'test': 'one' }, token: { token: 'newToken' } };

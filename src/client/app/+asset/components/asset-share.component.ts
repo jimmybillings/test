@@ -1,5 +1,5 @@
 import { Component, Input, Output, ViewChild, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { AssetService } from '../services/asset.service';
+import { AssetService } from '../../shared/services/asset.service';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { WzToastComponent } from '../../shared/components/wz-toast/wz.toast.component';

@@ -3,7 +3,7 @@ import { CurrentUser} from '../shared/services/current-user.model';
 import { UiConfig} from '../shared/services/ui.config';
 import { SearchContext} from '../shared/services/search-context.service';
 import { Subscription } from 'rxjs/Rx';
-import { FilterService } from '../+search/services/filter.service';
+import { FilterService } from '../shared/services/filter.service';
 import { UiState } from '../shared/services/ui.state';
 
 @Component({
