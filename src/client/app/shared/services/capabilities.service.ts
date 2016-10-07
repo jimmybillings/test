@@ -46,7 +46,6 @@ export class Capabilities implements CartCapabilities, CollectionCapabilities, A
   }
 
   public userHas(permission: string): boolean {
-    if (this.currentUser.hasPermission('Root')) return true;
     return this.currentUser.hasPermission(permission);
   }
 
