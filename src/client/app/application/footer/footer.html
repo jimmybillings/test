@@ -1,5 +1,5 @@
 
-<div layout="row" layout-align="start center" class="glb" *ngIf="config.template.value === 'wpt'">
+<div layout="row" layout-align="start center" class="glb" *ngIf="config && (config.template.value === 'wpt')">
   <div flex=""></div>
   <div flex-xl="85" flex-gt-lg="95" flex="100" layout="row" layout-wrap="" layout-padding="">
     <div hide="" show-gt-md="" flex-gt-md="25" flex="100" layout="column" layout-align="start center" layout-align-gt-md="start start"><a [routerLink]="['/']" class="logo-wrapper">
@@ -53,7 +53,7 @@
 </div>
 
 
-<div layout="row" layout-align="start center" class="glb" *ngIf="config.template.value === 'core' || !config">
+<div layout="row" layout-align="start center" class="glb" *ngIf="!config || (config.template.value === 'core')">
   <div flex=""></div>
   <div flex-xl="85" flex-gt-lg="95" flex="100" layout="row" layout-wrap="" layout-padding="">
     <div hide="" show-gt-md="" flex-gt-md="25" flex="100" layout="column" layout-align="start center" layout-align-gt-md="start start"><a [routerLink]="['/']" class="logo-wrapper">
