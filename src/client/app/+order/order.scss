@@ -1,0 +1,57 @@
+section.order-component {
+  div.order-summary {
+    color: md-color($md-primary, 600);
+    box-shadow: inset 0 -1px 0 0 md-color($md-foreground, divider), 0 1px 0 0 rgba(md-color($md-background, card), .6);
+    header {
+      padding: rem(2) rem(1);
+      .md-display-1 {
+        margin: 0;
+        font-size: rem(2);
+      }
+    }
+  }
+  div.order-projects {
+    div.order-project-header {
+      background-color: md-color($md-primary, 500);
+      @include md-elevation(2);
+      @include text-contrast(md-color($md-primary, 500));
+      padding: rem(1.4) rem(1);
+    }
+    div.project-line-items {
+      margin: rem(2) 0;
+      div.project-line-item {
+        background-color: #fff;
+        height: rem(12);
+        span.order-asset-thb {
+          margin: rem(.5) 0 rem(.5) rem(.5);
+          display: block;
+          height: 0;
+          padding: 56.25% 0 0 0;
+          position: relative;
+          background: #000;
+          img {
+            position: absolute;
+            display: block;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+          }
+        }
+        div.order-asset-details {
+          span {
+            padding: 0 rem(2);
+          }
+        }
+        &.highlight {
+          background-color: md-color($md-grey, 200);
+          @include text-contrast(md-color($md-grey, 200));
+        }
+      }
+    }
+  }
+}
