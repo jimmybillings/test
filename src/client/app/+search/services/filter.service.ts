@@ -5,7 +5,7 @@ import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { RequestOptions, URLSearchParams, Response } from '@angular/http';
 import { ApiService } from '../../shared/services/api.service';
-import { AppEventEmitter, AppEvent, AppEventType } from '../../shared/services/event-bus.service';
+import { AppEventEmitter, AppEvent, AppEventType } from '../../shared/services/app-event-emitter.service';
 
 const initFilters: any = {};
 export const filters: ActionReducer<any> = (state: Array<any> = initFilters, action: Action) => {
