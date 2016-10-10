@@ -1,20 +1,21 @@
 <section class="order-component">
   <div class="order-summary">
-    <header layout="row" layout-align="space-between center" flex="100">
-      <span class="md-display-1"><strong>Order Id: </strong>{{ order.id }}</span>
-      <span class="md-display-1"><strong>Order Price: </strong>{{ order.total | currency:'USD':true:'1.2-2' }}</span>
-      <span class="md-display-1"><strong>Order Placed: </strong>{{ order.createdOn | date:'short'}}</span>
+    <header layout="row" layout-align="space-around center" flex="100">
+      <span class="md-display-1"><strong>{{ 'ORDER.ORDER_IDENTIFIER' | translate }} </strong>{{ order.id }}</span>
+      <span class="md-display-1"><strong>{{ 'ORDER.ORDER_TOTAL' | translate }} </strong>{{ order.total | currency:'USD':true:'1.2-2' }}</span>
+      <span class="md-display-1"><strong>{{ 'ORDER.ORDER_PLACED' | translate }} </strong>{{ order.createdOn | date }}</span>
     </header>
   </div>
   <div class="order-projects" *ngFor="let project of order.projects">
     <div class="order-project-header">
       <div layout="row" layout-align="space-between center" flex="100">
-        <span><strong>Project Name: </strong>{{ project.name }}</span>
-        <span><strong>Client Name: </strong>{{ project.clientName }}</span>
-        <span><strong>Project Subtotal: </strong>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
+        <span><strong>{{ 'CART.PROJECTS.PROJECT_NAME' | translate }} </strong>{{ project.name }}</span>
+        <span><strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }} </strong>{{ project.clientName }}</span>
+        <span><strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate:{projectName: project.name} }} </strong>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
       </div>
     </div>
-    <div class="project-line-items">
+    <!-- LINE ITEMS FOR AN ORDER IN A PROJECT WILL BE HERE. LEAVE IN FOR NOW -->
+    <!-- <div class="project-line-items">
       <div *ngFor="let lineItem of project.lineItems; let e = even">
         <div layout="row" layout-align="center center">
           <div flex-gt-lg="90" flex-gt-md="85" flex-gt-xs="80">
@@ -44,6 +45,6 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </section>
