@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 
 // WAZEE PROVIDERS
 import { ApiConfig } from '../shared/services/api.config';
-import { AppEventEmitter } from '../shared/services/event-bus.service';
+import { AppEventEmitter } from '../shared/services/app-event-emitter.service';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { UiConfig } from '../shared/services/ui.config';
 import { Error, ErrorActions } from '../shared/services/error.service';

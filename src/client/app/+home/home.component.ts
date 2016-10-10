@@ -4,7 +4,7 @@ import { UiConfig} from '../shared/services/ui.config';
 import { SearchContext} from '../shared/services/search-context.service';
 import { Subscription } from 'rxjs/Rx';
 import { UiState } from '../shared/services/ui.state';
-import { AppEventEmitter, AppEventType } from '../shared/services/event-bus.service';
+import { AppEventEmitter, AppEventType } from '../shared/services/app-event-emitter.service';
 
 @Component({
   moduleId: module.id,
