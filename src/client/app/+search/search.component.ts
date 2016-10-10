@@ -9,7 +9,7 @@ import { UiState } from '../shared/services/ui.state';
 import { Collection, Collections } from '../shared/interfaces/collection.interface';
 import { CollectionsService } from '../shared/services/collections.service';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
-import { FilterService } from '../shared/services/filter.service';
+import { FilterService } from './services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { Capabilities } from '../shared/services/capabilities.service';

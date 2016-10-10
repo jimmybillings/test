@@ -36,7 +36,6 @@ import { AssetResolver } from '../+asset/services/asset.resolver';
 import { SearchResolver } from '../+search/services/search.resolver';
 import { CartResolver } from '../+cart/services/cart.resolver';
 import { WAZEE_PROVIDERS } from '../imports/wazee';
-
 import { MaterialModule } from './material.module';
 
 @NgModule({

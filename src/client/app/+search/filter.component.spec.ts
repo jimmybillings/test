@@ -5,7 +5,7 @@ import {
 } from '../imports/test.imports';
 
 import { FilterComponent } from './filter.component';
-import { FilterService } from '../shared/services/filter.service';
+import { FilterService } from './services/filter.service';
 import { SearchComponent } from './search.component';
 
 export function main() {

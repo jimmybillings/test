@@ -8,6 +8,7 @@ import {
 import { SearchComponent } from './search.component';
 import { UiConfig } from '../shared/services/ui.config';
 import { AssetData } from './services/asset.data.service';
+import { FilterService } from './services/filter.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { SearchContext } from '../shared/services/search-context.service';
 
@@ -54,6 +55,7 @@ export function main() {
         ...beforeEachProvidersArray,
         SearchComponent,
         SearchContext,
+        FilterService,
         { provide: AssetData, useClass: MockAssetData },
         { provide: UiConfig, useClass: MockUiConfig },
         { provide: SortDefinitionsService, useClass: MockSortDefinitionsService },

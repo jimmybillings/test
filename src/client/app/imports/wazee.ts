@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 
 // WAZEE PROVIDERS
 import { ApiConfig } from '../shared/services/api.config';
+import { AppEventEmitter } from '../shared/services/event-bus.service';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { UiConfig } from '../shared/services/ui.config';
 import { Error, ErrorActions } from '../shared/services/error.service';
@@ -16,14 +17,13 @@ import { AdminAuthGuard } from '../+admin/services/admin.auth.guard';
 import { AssetGuard } from '../+asset/services/asset.guard';
 import { LoggedInGuard } from '../+user-management/services/logged-in.guard';
 import { LoggedOutGuard } from '../+user-management/services/logged-out.guard';
-import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { ApiService } from '../shared/services/api.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { CartGuard } from '../+cart/services/cart.guard';
 import { CartSummaryService } from '../shared/services/cart-summary.service';
 // WAZEE ROUTES
-import {APP_ROUTES} from '../app.routes';
+import { APP_ROUTES } from '../app.routes';
 
 // WAZEE STORES
 import { assets } from '../+search/services/asset.data.service';
@@ -38,7 +38,7 @@ import { error } from '../shared/services/error.service';
 import { multilingualActionReducer } from '../shared/services/multilingual.service';
 import { collections } from '../shared/services/collections.service';
 import { activeCollection } from '../shared/services/active-collection.service';
-import { filters } from '../shared/services/filter.service';
+import { filters } from '../+search/services/filter.service';
 import { userPreferences } from '../shared/services/user-preference.service';
 import { CollectionContextService, collectionOptions } from '../shared/services/collection-context.service';
 import { cart } from '../+cart/services/cart.store';
@@ -63,7 +63,6 @@ export const WAZEE_PROVIDERS = [
   UiState,
   AdminAuthGuard,
   AssetGuard,
-  FilterService,
   UserPreferenceService,
   CollectionContextService,
   ApiService,
@@ -72,7 +71,8 @@ export const WAZEE_PROVIDERS = [
   Capabilities,
   LoggedInGuard,
   LoggedOutGuard,
-  CartSummaryService
+  CartSummaryService,
+  AppEventEmitter
 ];
 
 export const WAZEE_STORES: any = {

@@ -5,6 +5,7 @@ import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { RequestOptions, URLSearchParams, Response } from '@angular/http';
 import { ApiService } from '../../shared/services/api.service';
+import { AppEventEmitter, AppEvent, AppEventType } from '../../shared/services/event-bus.service';
 
 const initFilters: any = {};
 export const filters: ActionReducer<any> = (state: Array<any> = initFilters, action: Action) => {
@@ -24,13 +25,15 @@ export class FilterService {
     public api: ApiService,
     public store: Store<any>,
     public apiConfig: ApiConfig,
-    public currentUser: CurrentUser) {
+    public currentUser: CurrentUser,
+    public appEventEmitter: AppEventEmitter) {
     this.filterState = {};
     this.data = this.store.select('filters');
+    this.appEventEmitter.events.subscribe(this.onAppEvent.bind(this));
   }
 
   public get(params: any, counted: boolean): Observable<any> {
-    let options = this.filterOptions(JSON.parse(JSON.stringify(Object.assign({}, params, {counted}))));
+    let options = this.filterOptions(JSON.parse(JSON.stringify(Object.assign({}, params, { counted }))));
     return this.api.get(this.filterUrl, options).map((res: Response) => {
       this.set(this.sanatize(res.json(), null));
       this.checkLocalStorage(res.json());
@@ -52,7 +55,7 @@ export class FilterService {
     return filter;
   }
 
-  public toggle(currentFilter: any, filter=this.filters) {
+  public toggle(currentFilter: any, filter = this.filters) {
     if (filter.filterId === currentFilter) {
       filter.active = !filter.active;
       filter = JSON.parse(JSON.stringify(filter));
@@ -63,7 +66,7 @@ export class FilterService {
     }
   }
 
-  public toggleExclusive( subFilter: any, filter=this.filters): void {
+  public toggleExclusive(subFilter: any, filter = this.filters): void {
     if (filter.subFilters) {
       if (filter.filterId === subFilter.parentId) {
         for (let f of filter.subFilters) f.active = (f.filterId === subFilter.filterId) ? !f.active : false;
@@ -74,7 +77,7 @@ export class FilterService {
     return filter;
   }
 
-  public active(activeFilters: any, filter=this.filters) {
+  public active(activeFilters: any, filter = this.filters) {
     if (filter.subFilters) {
       for (var l of filter.subFilters) this.active(activeFilters, l);
       return filter;
@@ -84,7 +87,7 @@ export class FilterService {
     }
   }
 
-  public clear(filter=this.filters) {
+  public clear(filter = this.filters) {
     if (filter.subFilters) {
       for (var l of filter.subFilters) this.clear(l);
       return filter;
@@ -94,7 +97,7 @@ export class FilterService {
     }
   }
 
-  public addCustomValue(currentFilter: any, value: any, filter=this.filters): void {
+  public addCustomValue(currentFilter: any, value: any, filter = this.filters): void {
     if (filter.subFilters) {
       for (let f of filter.subFilters) this.addCustomValue(currentFilter, value, f);
       return filter;
@@ -144,4 +147,12 @@ export class FilterService {
     this.data.take(1).subscribe(f => filters = f);
     return filters;
   }
+
+  private onAppEvent(event: AppEvent) {
+    switch (event.type) {
+      case AppEventType.HomePageSearch:
+        this.set(this.clear());
+    }
+  }
 }
+ 
