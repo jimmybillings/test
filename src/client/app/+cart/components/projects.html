@@ -1,32 +1,24 @@
 <div *ngFor="let project of projects">
-  <section class="project" layout="row" flex="100">
-    <div class="project-info" flex="70" flex-md="50" flex-sm="40" flex-xs="0">
-      <button *ngIf="!readOnly" (click)="editProjectDialog.show();selectProject(project);" md-icon-button type="button"><md-icon>edit</md-icon></button>
-      <table hide="" show-gt-xs="">
-        <tr>
-          <th>{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</th>
-          <td>{{ project.name }}</td>
-        </tr>
-        <tr hide="" show-gt-md="">
-          <th>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</th>
-          <td>{{ project.clientName }}</td>
-        </tr>
-        <tr hide="" show-gt-lg="">
-          <th>{{ 'CART.PROJECTS.DELIVERY_FORMAT' | translate }}</th>
-          <td>Native Format</td>
-        </tr>
-        <tr *ngIf="readOnly" hide="" show-gt-lg="">
+  <section class="project" layout="row" layout-align="center center">
+    <div class="project-info" flex-gt-xl="95" flex-gt-md="90" flex-gt-xs="100">
+      
+      <ul layout="row">
+        <li flex-gt-md="25"><strong>{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</strong> {{ project.name }}</li>
+        <li flex-gt-md="25"><strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> {{ project.clientName }}</li>
+        <li flex-gt-md="25"><strong>{{ 'CART.PROJECTS.DELIVERY_FORMAT' | translate }}</strong> Native Format</li>
+        <li flex-gt-md="25" *ngIf="readOnly">
           <!--Does the translate pipe support singular vs. plural?-->
-          <th *ngIf="lineItemCountFor(project) == 0">No Assets</th>
-          <th *ngIf="lineItemCountFor(project) == 1">1 Asset</th>
-          <th *ngIf="lineItemCountFor(project) > 1">{{ lineItemCountFor(project) }} Assets</th>
-          <td></td>
-        </tr>
-      </table>
-    </div>
-    <div class="project-actions" flex="30" flex-md="50" flex-sm="60" flex-xs="100">
-      <button *ngIf="!readOnly" md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)"><md-icon>more_vert</md-icon></button>
-      <p><strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate:{projectName: project.name} }}</strong> {{ project.subtotal | currency:'USD':true:'1.2-2' }}</p>
+          <span *ngIf="lineItemCountFor(project) == 0">No Assets</span>
+          <span *ngIf="lineItemCountFor(project) == 1">1 Asset</span>
+          <span *ngIf="lineItemCountFor(project) > 1">{{ lineItemCountFor(project) }} Assets</span>
+        </li>
+        
+        <li flex-gt-md="25">
+          <span><strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate:{projectName: project.name} }}</strong> {{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
+          <button *ngIf="!readOnly" md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)"><md-icon>more_vert</md-icon></button>
+          <button *ngIf="!readOnly" (click)="editProjectDialog.show();selectProject(project);" md-icon-button type="button"><md-icon>edit</md-icon></button>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -35,7 +27,7 @@
   
 <!--MOVE THESE TO THE CART TEMPLATE AND PASS DATA UP-->
 
-<wz-dialog *ngIf="!readOnly" #editProjectDialog layout="row" layout-align="center center">
+<wz-dialog #editProjectDialog layout="row" layout-align="center center">
   <div flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
     <md-card class="wz-form-card md-elevation-z20">
       <button (click)="editProjectDialog.close()" md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
@@ -43,7 +35,7 @@
         {{ 'CART.PROJECTS.FORM.TITLE' | translate }}
       </md-card-title>
       <md-card-content>
-        <wz-form [items]="config.form.items" submitLabel="{{ 'CART.PROJECTS.FORM.SUBMIT_LABEL' | translate }}" (formSubmit)="edit(selectedProject, $event); editProjectDialog.close()"></wz-form>
+        <wz-form *ngIf="!readOnly" [items]="config.form.items" submitLabel="{{ 'CART.PROJECTS.FORM.SUBMIT_LABEL' | translate }}" (formSubmit)="edit(selectedProject, $event); editProjectDialog.close()"></wz-form>
       </md-card-content>
     </md-card>
   </div>

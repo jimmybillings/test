@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 
 // WAZEE PROVIDERS
 import { ApiConfig } from '../shared/services/api.config';
-import { AppEventEmitter } from '../shared/services/app-event-emitter.service';
+import { AppEventService } from '../shared/services/app-event.service';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { UiConfig } from '../shared/services/ui.config';
 import { Error, ErrorActions } from '../shared/services/error.service';
@@ -72,7 +72,7 @@ export const WAZEE_PROVIDERS = [
   LoggedInGuard,
   LoggedOutGuard,
   CartSummaryService,
-  AppEventEmitter
+  AppEventService
 ];
 
 export const WAZEE_STORES: any = {

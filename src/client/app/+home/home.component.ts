@@ -4,7 +4,7 @@ import { UiConfig} from '../shared/services/ui.config';
 import { SearchContext} from '../shared/services/search-context.service';
 import { Subscription } from 'rxjs/Rx';
 import { UiState } from '../shared/services/ui.state';
-import { AppEventEmitter, AppEventType } from '../shared/services/app-event-emitter.service';
+import { AppEventService, AppEventType } from '../shared/services/app-event.service';
 
 @Component({
   moduleId: module.id,
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     public uiConfig: UiConfig,
     public searchContext: SearchContext,
     public uiState: UiState,
-    public appEventEmitter: AppEventEmitter,
+    public appEvent: AppEventService,
     private detector: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public newSearchContext(query: any): void {
-    this.appEventEmitter.emit({ type: AppEventType.HomePageSearch });
+    this.appEvent.emit({ type: AppEventType.HomePageSearch });
     this.searchContext.new({ q: query, i: 1, n: this.config.pageSize.value });
   }
 
