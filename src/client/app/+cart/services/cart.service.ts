@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { ApiService } from '../../shared/services/api.service';
 import { CartSummaryService } from '../../shared/services/cart-summary.service';
+import { CurrentUser } from '../../shared/services/current-user.model';
 
 import { Project, LineItem } from '../cart.interface';
 import { CartStore } from './cart.store';
@@ -13,7 +14,8 @@ export class CartService {
   constructor(
     private store: CartStore,
     private apiService: ApiService,
-    private cartSummaryService: CartSummaryService
+    private cartSummaryService: CartSummaryService,
+    private currentUser: CurrentUser
   ) { }
 
   public get data(): Observable<CartStore> {
@@ -87,10 +89,16 @@ export class CartService {
   private createAddProjectRequestBody(): string {
     let existingNames: Array<string> =
       (this.state.projects || []).map((project: any) => project.name);
-
     return JSON.stringify({
-      name: CartUtilities.nextNewProjectNameGiven(existingNames)
+      name: CartUtilities.nextNewProjectNameGiven(existingNames),
+      clientName: this.fullName
     });
+  }
+
+  private get fullName(): string {
+    let userName: string;
+    this.currentUser.fullName().take(1).subscribe(fullName => userName = fullName);
+    return userName;
   }
 
   // This is an "instance arrow function", which saves us from having to "bind(this)"
