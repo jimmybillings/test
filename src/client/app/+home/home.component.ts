@@ -4,7 +4,7 @@ import { UiConfig} from '../shared/services/ui.config';
 import { SearchContext} from '../shared/services/search-context.service';
 import { Subscription } from 'rxjs/Rx';
 import { UiState } from '../shared/services/ui.state';
-import { AppEventService, AppEventType } from '../shared/services/app-event.service';
+import { FilterService } from '../shared/services/filter.service';
 
 @Component({
   moduleId: module.id,
@@ -22,8 +22,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     public uiConfig: UiConfig,
     public searchContext: SearchContext,
     public uiState: UiState,
-    public appEvent: AppEventService,
-    private detector: ChangeDetectorRef) { }
+    private detector: ChangeDetectorRef,
+    private filter: FilterService) { }
 
   ngOnInit() {
     this.configSubscription = this.uiConfig.get('home').subscribe((config) => {
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public newSearchContext(query: any): void {
-    this.appEvent.emit({ type: AppEventType.HomePageSearch });
+    this.filter.set(this.filter.clear());
     this.searchContext.new({ q: query, i: 1, n: this.config.pageSize.value });
   }
 

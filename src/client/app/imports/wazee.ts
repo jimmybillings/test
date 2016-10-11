@@ -3,13 +3,12 @@ import { Routes } from '@angular/router';
 
 // WAZEE PROVIDERS
 import { ApiConfig } from '../shared/services/api.config';
-import { AppEventService } from '../shared/services/app-event.service';
+// import { AppEventService } from '../shared/services/app-event.service';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { UiConfig } from '../shared/services/ui.config';
 import { Error, ErrorActions } from '../shared/services/error.service';
 import { AssetService} from '../shared/services/asset.service';
 import { SearchContext} from '../shared/services/search-context.service';
-import { Authentication} from '../shared/services/authentication.data.service';
 import { CollectionsService } from '../shared/services/collections.service';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
 import { UiState } from '../shared/services/ui.state';
@@ -22,6 +21,8 @@ import { ApiService } from '../shared/services/api.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { CartGuard } from '../+cart/services/cart.guard';
 import { CartSummaryService } from '../shared/services/cart-summary.service';
+import { FilterService } from '../shared/services/filter.service';
+import { Authentication } from '../shared/services/authentication.data.service';
 // WAZEE ROUTES
 import { APP_ROUTES } from '../app.routes';
 
@@ -38,7 +39,7 @@ import { error } from '../shared/services/error.service';
 import { multilingualActionReducer } from '../shared/services/multilingual.service';
 import { collections } from '../shared/services/collections.service';
 import { activeCollection } from '../shared/services/active-collection.service';
-import { filters } from '../+search/services/filter.service';
+import { filters } from '../shared/services/filter.service';
 import { userPreferences } from '../shared/services/user-preference.service';
 import { CollectionContextService, collectionOptions } from '../shared/services/collection-context.service';
 import { cart } from '../+cart/services/cart.store';
@@ -59,7 +60,6 @@ export const WAZEE_PROVIDERS = [
   CollectionsService,
   ActiveCollectionService,
   SearchContext,
-  Authentication,
   MultilingualService,
   UiState,
   AdminAuthGuard,
@@ -73,7 +73,8 @@ export const WAZEE_PROVIDERS = [
   LoggedInGuard,
   LoggedOutGuard,
   CartSummaryService,
-  AppEventService
+  FilterService,
+  Authentication
 ];
 
 export const WAZEE_STORES: any = {
