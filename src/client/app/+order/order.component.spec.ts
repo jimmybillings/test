@@ -14,13 +14,5 @@ export function main() {
 
       componentUnderTest = new OrderComponent(mockOrderService);
     });
-
-    describe('Initialization', () => {
-      it('connects to the OrderService data', () => {
-        componentUnderTest.ngOnInit();
-
-        expect(componentUnderTest.order).toEqual({someData: 'SOME_VALUE'});
-      });
-    });
   });
 };

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { OrderService } from './services/order.service';
 
 @Component({
@@ -7,11 +7,6 @@ import { OrderService } from './services/order.service';
   templateUrl: 'order.html'
 })
 
-export class OrderComponent implements OnInit {
-  public order: any;
-  constructor(private orderService: OrderService) {}
-
-  ngOnInit() {
-    this.orderService.data.subscribe((data: any) => this.order = data);
-  }
+export class OrderComponent {
+  constructor(private order: OrderService) {}
 }

@@ -31,6 +31,7 @@ export function main() {
     let mockCartStore: any;
     let mockApiService: any;
     let mockCartSummaryService: any;
+    let mockCurrentUserService: any;
 
     beforeEach(() => {
       mockCartStore = {
@@ -49,7 +50,11 @@ export function main() {
         loadCartSummary: jasmine.createSpy('loadCartSummary')
       };
 
-      serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService);
+      mockCurrentUserService = {
+        fullName: jasmine.createSpy('fullName').and.returnValue(Observable.of('Ross Edfort'))
+      };
+
+      serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService, mockCurrentUserService);
     });
 
     describe('initializeData()', () => {
@@ -74,13 +79,13 @@ export function main() {
 
       it('creates a default project if one does not already exist', () => {
         serviceUnderTest.initializeData().subscribe(() => {
-          expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project A' }), {}, true);
+          expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project A', clientName: 'Ross Edfort' }), {}, true);
         });
       });
 
       it('does not add a project if one already exists', () => {
-        mockCartStore.state = { projects: [{ name: 'Project A' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService);
+        mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
+        serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService, mockCurrentUserService);
 
         serviceUnderTest.initializeData().subscribe(() => {
           expect(mockApiService.post).not.toHaveBeenCalled();
@@ -92,16 +97,16 @@ export function main() {
       it('calls the API service correctly', () => {
         serviceUnderTest.addProject();
 
-        expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project A' }), {}, true);
+        expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project A', clientName: 'Ross Edfort' }), {}, true);
       });
 
       it('names new projects based on existing names', () => {
-        mockCartStore.state = { projects: [{ name: 'Project A' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService);
+        mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
+        serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService, mockCurrentUserService);
 
         serviceUnderTest.addProject();
 
-        expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project B' }), {}, true);
+        expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project B', clientName: 'Ross Edfort' }), {}, true);
       });
 
       it('replaces the cart store with the response', () => {
@@ -139,12 +144,12 @@ export function main() {
       it('creates a new default project if the last one was deleted', () => {
         serviceUnderTest.removeProject(mockProject);
 
-        expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project A' }), {}, true);
+        expect(mockApiService.post).toHaveBeenCalledWith('/api/orders/v1/cart/project', JSON.stringify({ name: 'Project A', clientName: 'Ross Edfort' }), {}, true);
       });
 
       it('does not add a project if one still exists after a removal', () => {
-        mockCartStore.state = { projects: [{ name: 'Project A' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService);
+        mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
+        serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService, mockCurrentUserService);
 
         serviceUnderTest.removeProject(mockProject);
 
