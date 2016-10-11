@@ -69,7 +69,10 @@ export class UiState {
   }
 
   public checkForFilters(currentState: string) {
-    if (this.state.headerIsExpanded === false) this.update({ filtersAreAvailable: false });
+    if (this.state.headerIsExpanded === false) {
+      this.update({ filtersAreAvailable: false });
+      return;
+    }
     let showFilters = currentState.indexOf('search') > -1;
     this.update({ filtersAreAvailable: showFilters });
   }
