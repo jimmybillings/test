@@ -101,7 +101,8 @@ export function main() {
         collectionsFilterIsOpen: false,
         headerIsExpanded: false,
         showFixed: false,
-        loading: false
+        loading: false,
+        filtersAreAvailable: false
       };
     }
   });

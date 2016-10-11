@@ -1,10 +1,10 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges} from '@angular/core';
-import { FormBuilder, Validators, FormGroup, FormControl} from '@angular/forms';
-import { Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
-import { Router} from '@angular/router';
-import { Observable} from 'rxjs/Rx';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { Http, Response, RequestOptions, URLSearchParams } from '@angular/http';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
 import { UiState } from '../../services/ui.state';
-import { ApiConfig} from '../../services/api.config';
+import { ApiConfig } from '../../services/api.config';
 
 @Component({
   moduleId: module.id,
@@ -33,6 +33,10 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: any) {
     if (changes.state) this.updateSearchBoxValue(changes.state.currentValue);
+  }
+
+  public openFilters() {
+    (<HTMLElement>document.querySelector('button.filter')).click();
   }
 
   public updateSearchBoxValue(searchParams: any) {

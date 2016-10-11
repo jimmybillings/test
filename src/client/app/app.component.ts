@@ -4,11 +4,11 @@ import { Subscription } from 'rxjs/Rx';
 import { MultilingualService } from './shared/services/multilingual.service';
 import { ErrorActions } from './shared/services/error.service';
 // Services
-import { CurrentUser} from './shared/services/current-user.model';
-import { ApiConfig} from './shared/services/api.config';
-import { UiConfig} from './shared/services/ui.config';
-import { SearchContext} from './shared/services/search-context.service';
-import { Authentication} from './shared/services/authentication.data.service';
+import { CurrentUser } from './shared/services/current-user.model';
+import { ApiConfig } from './shared/services/api.config';
+import { UiConfig } from './shared/services/ui.config';
+import { SearchContext } from './shared/services/search-context.service';
+import { Authentication } from './shared/services/authentication.data.service';
 
 import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
@@ -78,6 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .filter((event: RoutesRecognized) => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
         this.uiState.checkRouteForSearchBar(event.url);
+        this.uiState.checkForFilters(event.url);
         this.state = event.url;
         window.scrollTo(0, 0);
         this.notification.check(this.state, this.target);
@@ -100,11 +101,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private processUser() {
     this.bootStrapUserDataSubscription = this.currentUser.loggedInState()
-      .subscribe((loggedIn:boolean) => (loggedIn) ? this.processLoggedInUser() : this.processLoggedOutUser());
+      .subscribe((loggedIn: boolean) => (loggedIn) ? this.processLoggedInUser() : this.processLoggedOutUser());
   }
 
   private processLoggedInUser() {
-    if(this.userCan.viewCollections()) {
+    if (this.userCan.viewCollections()) {
       this.activeCollection.get().take(1).subscribe((collection) => {
         this.activeCollection.getItems(collection.id, { i: 1, n: 100 }, true, false).take(1).subscribe();
         this.collections.load().take(1).subscribe();
