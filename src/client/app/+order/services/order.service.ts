@@ -21,8 +21,7 @@ export class OrderService {
   }
 
   public getOrder(orderId: number): Observable<any> {
-    // may not actually use this endpoint to retrieve the order
-    return this.api.get(`/api/orders/v1/order/${orderId}`).map(res => {
+    return this.api.get(`api/orders/v1/order/${orderId}`).map(res => {
       this.store.dispatch({ type: 'ORDER.SET_CURRENT_ORDER', payload: res.json() });
       return res.json();
     });
