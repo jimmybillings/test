@@ -6,8 +6,7 @@ import { Observable, Subscription} from 'rxjs/Rx';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { SearchContext} from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
-import { Collection, Collections } from '../shared/interfaces/collection.interface';
-import { CollectionsService } from '../shared/services/collections.service';
+import { Collection } from '../shared/interfaces/collection.interface';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
 import { FilterService } from './services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
@@ -30,7 +29,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public config: Object;
   public errorMessage: string;
   public filterValues: Array<string> = new Array();
-  public collections: Observable<Collections>;
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
   public preferences: any;
@@ -43,13 +41,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   private sortSubscription: Subscription;
 
   constructor(
-    private _router: Router,
     private route: ActivatedRoute,
     public assetData: AssetData,
     public router: Router,
     public uiConfig: UiConfig,
     public currentUser: CurrentUser,
-    public collectionsService: CollectionsService,
     public userCan: Capabilities,
     public activeCollection: ActiveCollectionService,
     public searchContext: SearchContext,

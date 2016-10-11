@@ -4,7 +4,6 @@ import { CurrentUser } from '../shared/services/current-user.model';
 import { AssetService} from '../shared/services/asset.service';
 import { Observable} from 'rxjs/Rx';
 import { CollectionStore } from '../shared/interfaces/collection.interface';
-import { CollectionsService } from '../shared/services/collections.service';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
 import { Store } from '@ngrx/store';
 import { UiConfig } from '../shared/services/ui.config';
@@ -33,7 +32,6 @@ export class AssetComponent implements OnInit {
     public uiConfig: UiConfig,
     public assetService: AssetService,
     public router: Router,
-    public collectionsService: CollectionsService,
     public userCan: Capabilities,
     public activeCollection: ActiveCollectionService,
     public notification: WzNotificationService,

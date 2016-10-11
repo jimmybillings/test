@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges } from '@angular/core';
-import { Collection, Collections } from '../../../shared/interfaces/collection.interface';
+import { Collection } from '../../../shared/interfaces/collection.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { Asset } from '../../../shared/interfaces/asset.interface';
 
@@ -28,7 +28,6 @@ export class CollectionFormComponent implements OnInit, OnChanges {
 
   // public originalName: string;
   public assetForNewCollection: Asset;
-  public collections: Collections;
   public collectionsList: Subscription;
   public formItems: Array<any> = [];
   public serverErrors: any;
@@ -39,7 +38,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
 
   constructor(
-    public collectionsService: CollectionsService,
+    public collections: CollectionsService,
     public activeCollection: ActiveCollectionService,
     public uiState: UiState,
     private detector: ChangeDetectorRef,
@@ -68,7 +67,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
 
   public createCollection(collection: Collection): void {
     collection.tags = (collection.tags) ? collection.tags.split(/\s*,\s*/) : [];
-    this.collectionsService.createCollection(collection).take(1).subscribe(collection => {
+    this.collections.create(collection).take(1).subscribe(collection => {
       this.collectionContext.resetCollectionOptions();
       this.getActiveCollection();
       this.loadCollections();
@@ -76,9 +75,8 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   }
 
   public editCollection(collection: Collection) {
-    collection = Object.assign({}, collection,
-      { id: this.collection.id, tags: collection.tags.split(/\s*,\s*/), owner: this.collection.owner });
-    this.collectionsService.updateCollection(collection).take(1)
+    collection = Object.assign({}, collection, { id: this.collection.id, tags: collection.tags.split(/\s*,\s*/), owner: this.collection.owner });
+    this.collections.update(collection).take(1)
       .subscribe(() => {
         this.loadCollections();
         if (this.activeCollection.state.id === collection.id) this.getActiveCollection();
@@ -86,7 +84,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   }
 
   public loadCollections() {
-    this.collectionsService.loadCollections(this.defaultCollectionParams)
+    this.collections.load(this.defaultCollectionParams)
       .take(1).subscribe(this.success.bind(this));
   }
 

@@ -1,8 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Collection } from '../../shared/interfaces/collection.interface';
 import { ActiveCollectionService} from '../../shared/services/active-collection.service';
-import { Observable } from 'rxjs/Rx';
 /**
  * Home page search component - renders search form passes form values to search component.
  */
@@ -16,12 +13,9 @@ import { Observable } from 'rxjs/Rx';
 export class CollectionTrayComponent implements OnInit {
   @Input() uiState: any;
   @Input() uiConfig: any;
-  public collection: Observable<Collection>;
   public pageSize: string;
 
-  constructor(public router: Router, public activeCollection: ActiveCollectionService) {
-    this.collection = activeCollection.data;
-  }
+  constructor(public activeCollection: ActiveCollectionService) {}
 
   ngOnInit() {
     this.uiConfig.get('global').take(1).subscribe((config: any) => {

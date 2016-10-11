@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
-import { Collection, Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
+import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute} from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
@@ -21,7 +21,6 @@ import { CartSummaryService } from '../../shared/services/cart-summary.service';
 
 
 export class CollectionShowComponent implements OnInit, OnDestroy {
-  public collections: Observable<Collections>;
   public focusedCollection: Collection;
   public collection: Collection;
   public assets: any;
@@ -32,19 +31,15 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
   public date(date: any): Date {
-    if (date) {
-      return new Date(date);
-    } else {
-      return new Date();
-    };
+    return (date) ? new Date(date) : new Date();
   }
 
   constructor(
     private route: ActivatedRoute,
     public userCan: Capabilities,
     public router: Router,
-    public collectionsService: CollectionsService,
-    public assetService: AssetService,
+    public collections: CollectionsService,
+    public asset: AssetService,
     public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>,
     public currentUser: CurrentUser,
@@ -87,7 +82,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public downloadComp(params: any): void {
-    this.assetService.downloadComp(params.assetId, params.compType).subscribe((res) => {
+    this.asset.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
         window.location.href = res.url;
       } else {
@@ -97,9 +92,9 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public deleteCollection(id: number): void {
-    this.collectionsService.deleteCollection(id).take(1).subscribe(payload => {
+    this.collections.delete(id).take(1).subscribe(payload => {
       let collectionLength: number;
-      this.collectionsService.data
+      this.collections.data
         .take(1).subscribe(collection => collectionLength = collection.items.length);
 
       // if we are deleting current active, we need to get the new active from the server.
@@ -112,10 +107,10 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       }
       // if we delete the last collection, reset the store to initial values (no active collection)
       if (collectionLength === 0) {
-        this.collectionsService.destroyCollections();
+        this.collections.destroyAll();
         this.activeCollection.get().take(1).subscribe((collection) => {
           this.activeCollection.getItems(collection.id, { n: 100 }).take(1).subscribe();
-          this.collectionsService.loadCollections().take(1).subscribe(d => {
+          this.collections.load().take(1).subscribe(d => {
             this.router.navigate(['/collection/' + collection.id, {i: 1, n: 100} ]);
           });
         });

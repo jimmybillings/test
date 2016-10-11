@@ -18,7 +18,7 @@ export function main() {
       constructor() {
         this.data = Observable.of(mockCollections());
       }
-      public createCollection(collection: any): Observable<any> {
+      public create(collection: any): Observable<any> {
         return Observable.of(mockCollection());
       }
       public createCollectionInStore(collection: any): any {
@@ -59,7 +59,7 @@ export function main() {
       inject([CollectionFormComponent], (component: CollectionFormComponent) => {
         component.dialog = {};
         component.dialog.close = function() {return true;};
-        spyOn(component.collectionsService, 'createCollection').and.callThrough();
+        spyOn(component.collections, 'create').and.callThrough();
         spyOn(component.activeCollection, 'get').and.callThrough();
         spyOn(component.activeCollection, 'getItems').and.callThrough();
         spyOn(component, 'loadCollections');
@@ -67,7 +67,7 @@ export function main() {
         let collectionWithParsedTags = mockCollection();
         collectionWithParsedTags.tags = ['cat', 'dog', 'cow'];
         expect(component.loadCollections).toHaveBeenCalled();
-        expect(component.collectionsService.createCollection).toHaveBeenCalledWith(collectionWithParsedTags);
+        expect(component.collections.create).toHaveBeenCalledWith(collectionWithParsedTags);
         expect(component.activeCollection.get).toHaveBeenCalled();
         expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, {n: 50});
       }));

@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Response } from '@angular/http';
 import { User } from '../services/user.data.service';
 import { Subscription } from 'rxjs/Rx';
-import { ApiConfig } from '../../shared/services/api.config';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { FormFields, ServerErrors } from '../../shared/interfaces/forms.interface';
@@ -28,7 +27,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   constructor(
     public user: User,
-    public _ApiConfig: ApiConfig,
     public uiConfig: UiConfig,
     public uiState: UiState) {
   }

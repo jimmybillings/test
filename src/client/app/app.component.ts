@@ -1,7 +1,6 @@
 import { Component, OnInit, Renderer, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
-import { Observable, Subscription } from 'rxjs/Rx';
-import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs/Rx';
 import { MultilingualService } from './shared/services/multilingual.service';
 import { ErrorActions } from './shared/services/error.service';
 // Services
@@ -21,7 +20,6 @@ import { Capabilities } from './shared/services/capabilities.service';
 
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
-import { Collection, CollectionStore } from './shared/interfaces/collection.interface';
 
 declare var portal: string;
 
@@ -35,7 +33,6 @@ declare var portal: string;
 export class AppComponent implements OnInit, OnDestroy {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
-  public collections: Observable<Array<Collection>>;
   private routeSubscription: Subscription;
   private authSubscription: Subscription;
   private bootStrapUserDataSubscription: Subscription;
@@ -48,9 +45,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public multiLingual: MultilingualService,
     public searchContext: SearchContext,
     public currentUser: CurrentUser,
-    public collectionsService: CollectionsService,
+    public collections: CollectionsService,
     public activeCollection: ActiveCollectionService,
-    public store: Store<CollectionStore>,
     public uiState: UiState,
     public preferences: UserPreferenceService,
     private renderer: Renderer,
@@ -111,14 +107,14 @@ export class AppComponent implements OnInit, OnDestroy {
     if(this.userCan.viewCollections()) {
       this.activeCollection.get().take(1).subscribe((collection) => {
         this.activeCollection.getItems(collection.id, { i: 1, n: 100 }, true, false).take(1).subscribe();
-        this.collectionsService.loadCollections().take(1).subscribe();
+        this.collections.load().take(1).subscribe();
       });
     }
     this.cartSummary.loadCartSummary();
   }
 
   private processLoggedOutUser() {
-    this.collectionsService.destroyCollections();
+    this.collections.destroyAll();
     this.uiState.reset();
   }
 }

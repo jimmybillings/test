@@ -13,20 +13,20 @@ import { Subscription } from 'rxjs/Rx';
 
 export class ContentComponent implements OnInit, OnDestroy {
 
-  public content: string;
+  public pageContent: string;
   public title: string;
   private routeSubscription: Subscription;
 
   constructor(
-    public contentService: ContentService,
+    public content: ContentService,
     private _router: Router,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.routeSubscription = this.route.params.subscribe(params => {
-      this.contentService.get(params['page']).take(1).subscribe(data => {
-        this.content = data[0].content.rendered;
+      this.content.get(params['page']).take(1).subscribe(data => {
+        this.pageContent = data[0].content.rendered;
         this.title = data[0].title.rendered;
       });
     });

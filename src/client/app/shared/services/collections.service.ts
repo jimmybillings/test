@@ -71,7 +71,7 @@ export class CollectionsService {
     return s;
   }
 
-  public loadCollections(params: any = {}, loading: boolean = false): Observable<any> {
+  public load(params: any = {}, loading: boolean = false): Observable<any> {
     this.params = Object.assign({}, this.params, params);
     return this.api.get(`${this.apiUrls.CollectionSummaryBaseUrl}/search`,
       this.getSearchOptions(this.params), loading)
@@ -81,14 +81,7 @@ export class CollectionsService {
       });
   }
 
-  public getSearchOptions(params: any): RequestOptions {
-    const search: URLSearchParams = new URLSearchParams();
-    for (var param in params) search.set(param, params[param]);
-    let options = { search: search };
-    return new RequestOptions(options);
-  }
-
-  public createCollection(collection: Collection): Observable<any> {
+  public create(collection: Collection): Observable<any> {
     return this.api.post(this.apiUrls.CollectionSummaryBaseUrl,
       JSON.stringify(collection))
       .map(res => {
@@ -98,25 +91,32 @@ export class CollectionsService {
       });
   }
 
-  public updateCollection(collection: Collection): Observable<any> {
+  public update(collection: Collection): Observable<any> {
     return this.api.put(`${this.apiUrls.CollectionSummaryBaseUrl}/${collection.id}`,
       JSON.stringify(collection));
   }
 
-  public deleteCollection(collectionId: number): Observable<any> {
+  public delete(collectionId: number): Observable<any> {
     return this.api.delete(`${this.apiUrls.CollectionBaseUrl}/${collectionId}`)
       .map(() => this.deleteCollectionFromStore(collectionId));
+  }
+
+  public destroyAll(): void {
+    this.store.dispatch({ type: 'RESET_COLLECTIONS' });
+    this.activeCollection.resetStore();
+  }
+
+  public getSearchOptions(params: any): RequestOptions {
+    const search: URLSearchParams = new URLSearchParams();
+    for (var param in params) search.set(param, params[param]);
+    let options = { search: search };
+    return new RequestOptions(options);
   }
 
   public syncActiveCollection() {
     this.activeCollection.data.subscribe((collection: Collection) => {
       if (this.state.items && this.state.items.length > 0) this.updateCollectionInStore(collection);
     });
-  }
-
-  public destroyCollections(): void {
-    this.store.dispatch({ type: 'RESET_COLLECTIONS' });
-    this.activeCollection.resetStore();
   }
 
   public deleteCollectionFromStore(collectionId: number): void {

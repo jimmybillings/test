@@ -51,13 +51,13 @@
 <section class="hero">
   <div layout="row" flex="100" layout-margin layout-align="center start">
     <section class="collections-list" flex="100" flex-gt-md="95" flex-gt-lg="85">
-      <wz-pagination [pagination]="(collectionsService.data | async).pagination" (getPage)="changePage($event)">
+      <wz-pagination [pagination]="(collections.data | async).pagination" (getPage)="changePage($event)">
       </wz-pagination>
       <!-- COLLECTION LIST -->
-      <wz-collection-item-list [collections]="(collectionsService.data | async).items" (editCollection)="setCollectionForEdit($event); editCollection.show();" [activeCollection]="(activeCollection.data | async).id"
+      <wz-collection-item-list [collections]="(collections.data | async).items" (editCollection)="setCollectionForEdit($event); editCollection.show();" [activeCollection]="(activeCollection.data | async).id"
         (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event); deleteCollectionDialog.show();" (generateCollectionLink)="getAssetsForLink($event); copyLegacyLinkDialog.show()">
       </wz-collection-item-list>
-      <wz-pagination [pagination]="(collectionsService.data | async).pagination" (getPage)="changePage($event)">
+      <wz-pagination [pagination]="(collections.data | async).pagination" (getPage)="changePage($event)">
       </wz-pagination>
     </section>
   </div>

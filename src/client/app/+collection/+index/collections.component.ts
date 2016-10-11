@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Collections, Collection } from '../../shared/interfaces/collection.interface';
+import { Collection } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 import { Router } from '@angular/router';
@@ -16,7 +16,6 @@ import { UiState } from '../../shared/services/ui.state';
 })
 
 export class CollectionsComponent implements OnInit, OnDestroy {
-  public collections: Collections;
   public optionsSubscription: Subscription;
   public errorMessage: string;
   public options: any;
@@ -32,7 +31,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   constructor(
     public router: Router,
-    public collectionsService: CollectionsService,
+    public collections: CollectionsService,
     public collectionContext: CollectionContextService,
     public activeCollection: ActiveCollectionService,
     public currentUser: CurrentUser,
@@ -72,7 +71,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
-    this.collectionsService.setSearchParams();
+    this.collections.setSearchParams();
     this.optionsSubscription = this.collectionContext.data.subscribe(data => this.options = data);
   }
 
@@ -99,9 +98,9 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public deleteCollection(id: number): void {
-    this.collectionsService.deleteCollection(id).take(1).subscribe(payload => {
+    this.collections.delete(id).take(1).subscribe(payload => {
       let collectionLength: number;
-      this.collectionsService.data.take(1).subscribe(collection => collectionLength = collection.items.length);
+      this.collections.data.take(1).subscribe(collection => collectionLength = collection.items.length);
 
       // if we are deleting current active, we need to get the new active from the server.
       if (this.activeCollection.isActiveCollection(id) && collectionLength > 0) {
@@ -111,10 +110,10 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       }
       // if we delete the last collection, reset the store to initial values (no active collection)
       if (collectionLength === 0) {
-        this.collectionsService.destroyCollections();
+        this.collections.destroyAll();
         this.activeCollection.get().take(1).subscribe((collection) => {
           this.activeCollection.getItems(collection.id, { n: this.pageSize }).take(1).subscribe();
-          this.collectionsService.loadCollections({}, true).take(1).subscribe();
+          this.collections.load({}, true).take(1).subscribe();
         });
       }
     });
@@ -122,17 +121,17 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   public search(query: any) {
     this.collectionContext.updateCollectionOptions({ currentSearchQuery: query });
-    this.collectionsService.loadCollections(query, true).take(1).subscribe();
+    this.collections.load(query, true).take(1).subscribe();
   }
 
   public onFilterCollections(filter: any) {
     this.collectionContext.updateCollectionOptions({ currentFilter: filter });
-    this.collectionsService.loadCollections(filter.access, true).take(1).subscribe();
+    this.collections.load(filter.access, true).take(1).subscribe();
   }
 
   public onSortCollections(sort: any) {
     this.collectionContext.updateCollectionOptions({ currentSort: sort });
-    this.collectionsService.loadCollections(sort.sort, true).take(1).subscribe();
+    this.collections.load(sort.sort, true).take(1).subscribe();
   }
 
   public isActiveCollection(collectionId: number): boolean {

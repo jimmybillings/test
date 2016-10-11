@@ -1,8 +1,8 @@
 
 <section layout="row" flex="100" layout-align="start" class="header-tray">
   <div flex="100" class="asset-carousel grid">
-    <ul class="asset-list" *ngIf="(collection | async).assets">
-      <li *ngFor="let asset of (collection | async).assets.items">
+    <ul class="asset-list" *ngIf="(activeCollection.data | async).assets">
+      <li *ngFor="let asset of (activeCollection.data | async).assets.items">
         <div class="asset">
           <a *ngIf="asset?.assetId" flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb">
             <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
@@ -12,11 +12,11 @@
     </ul>
   </div>
   <div layout="row" flex="auto" layout-align="end center" class="focused-collection">
-    <nav class="focused" *ngIf="(collection | async).name" (click)="list.show($event)">
-      <button md-button class="is-dd">{{(collection | async).name}}</button>
+    <nav class="focused" *ngIf="(activeCollection.data | async).name" (click)="list.show($event)">
+      <button md-button class="is-dd">{{(activeCollection.data | async).name}}</button>
       <button md-button class="asset-count">
-        <span class="count" *ngIf="(collection | async).assets">{{(collection | async).assetsCount}}</span>
-        <span class="count" *ngIf="!(collection | async).assets">0</span>
+        <span class="count" *ngIf="(activeCollection.data | async).assets">{{(activeCollection.data | async).assetsCount}}</span>
+        <span class="count" *ngIf="!(activeCollection.data | async).assets">0</span>
       </button>
     </nav>
     <button md-icon-button flex="none" title="more collection options" [md-menu-trigger-for]="moreCollectionTrayOptions"><md-icon>more_vert</md-icon></button>
@@ -25,7 +25,7 @@
       <button md-menu-item disabled (click)="createCollection.show()">
         <md-icon>add_circle_outline</md-icon>Create a new collection
       </button>
-      <a md-menu-item *ngIf="(collection | async).id" [routerLink]="['/collection/', (collection | async).id, {i: 1, n: pageSize}]">
+      <a md-menu-item *ngIf="(activeCollection.data | async).id" [routerLink]="['/collection/', (activeCollection.data | async).id, {i: 1, n: pageSize}]">
         <md-icon>open_in_browser</md-icon>Open selected collection
       </a>
       <button md-menu-item (click)="copyLegacyLinkDialog.show()">
@@ -44,7 +44,7 @@
 <wz-dropdown #list>
   <collections-list-dd
     [uiState]="uiState"
-    [focusedCollection]="collection | async"
+    [focusedCollection]="activeCollection.data | async"
     [config]="(uiConfig.get('collection') | async).config"
     (close)="list.close()"
     layout="row" layout-align="end start" class="revealed">
@@ -53,7 +53,7 @@
 
 <wz-dialog #copyLegacyLinkDialog>
   <collection-link-component
-    [assets]="(collection | async).assets.items"
+    [assets]="(activeCollection.data | async).assets.items"
     [dialog]="copyLegacyLinkDialog">
   </collection-link-component>
 </wz-dialog>
