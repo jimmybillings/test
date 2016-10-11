@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import { CartService } from './services/cart.service';
 import { CartStore } from './services/cart.store';
+import { CartCapabilities } from './services/cart.capabilities';
 import { CartComponent } from './cart.component';
 import { CartTabComponent } from './components/tabs/cart-tab.component';
 import { ReviewTabComponent } from './components/tabs/review-tab.component';
@@ -28,7 +29,7 @@ import { AssetComponent } from './components/asset.component';
     AssetComponent
   ],
   exports: [CartComponent],
-  providers: [CartService, CartStore]
+  providers: [CartService, CartStore, CartCapabilities]
 })
 
 export class CartModule {}

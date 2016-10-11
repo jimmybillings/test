@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { Tab } from './tab';
 import { CartService } from '../../services/cart.service';
+import { CartCapabilities } from '../../services/cart.capabilities';
 
 @Component({
   moduleId: module.id,
@@ -14,12 +15,18 @@ export class ReviewTabComponent extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
 
   public cart: Observable<any>;
+  public canPurchaseOnCredit: boolean;
 
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService, private userCan: CartCapabilities) {
     super();
   }
 
   public ngOnInit(): void {
     this.cart = this.cartService.data;
+    this.canPurchaseOnCredit = this.userCan.purchaseOnCredit();
+  }
+
+  public purchaseOnCredit(): void {
+    this.cartService.purchaseOnCredit();
   }
 }

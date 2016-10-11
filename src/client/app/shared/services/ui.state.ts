@@ -8,7 +8,8 @@ const InitUiState: any = {
   collectionsFilterIsOpen: false,
   headerIsExpanded: false,
   showFixed: false,
-  loading: false
+  loading: false,
+  filtersAreAvailable: false
 };
 
 export const uiState: ActionReducer<any> = (state = InitUiState, action: Action) => {
@@ -67,10 +68,25 @@ export class UiState {
     this.update({ headerIsExpanded: showSearchBar });
   }
 
+  public checkForFilters(currentState: string) {
+    if (this.state.headerIsExpanded === false) {
+      this.update({ filtersAreAvailable: false });
+      return;
+    }
+    let showFilters = currentState.indexOf('search') > -1;
+    this.update({ filtersAreAvailable: showFilters });
+  }
+
   public showFixedHeader(offset: any): void {
     let isfixed: boolean;
     this.data.take(1).subscribe(state => isfixed = state.showFixed);
     let setFixed: boolean = (offset > 111) ? true : false;
     if (setFixed !== isfixed) this.update({ showFixed: !isfixed });
+  }
+
+  private get state(): any {
+    let s: any;
+    this.data.take(1).subscribe(state => s = state);
+    return s;
   }
 }

@@ -77,6 +77,12 @@ export class CurrentUser {
     return hasPermission;
   }
 
+  public hasPurchaseOnCredit(): boolean {
+    let answer: boolean;
+    this.data.take(1).subscribe(user => answer = (user.hasOwnProperty('purchaseOnCredit') ? user.purchaseOnCredit : false));
+    return answer;
+  }
+
   private _user(): User {
     return JSON.parse(localStorage.getItem('currentUser')) || this.mayflyUser();
   }
@@ -93,6 +99,7 @@ export class CurrentUser {
       'siteName': '',
       'accountIds': [0],
       'permissions': [''],
+      'purchaseOnCredit': false,
       'focusedCollection': null,
       'ownedCollections': null,
       'editableCollections': null,

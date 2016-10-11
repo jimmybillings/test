@@ -94,6 +94,33 @@ export function main() {
       });
     }));
 
+    it('Should hide the filter button by default if \'headerIsExpanded\' is false and by pass the url check',
+      inject([UiState], (service: UiState) => {
+        service.update({ headerIsExpanded: false });
+        service.checkForFilters('search');
+        service.data.first().subscribe(data => {
+          expect(data.filtersAreAvailable).toEqual(false);
+        });
+      }));
+
+    it('Should hide the filter button if \'headerIsExpanded\' is true but the url check return false',
+      inject([UiState], (service: UiState) => {
+        service.update({ headerIsExpanded: true });
+        service.checkForFilters('user/login');
+        service.data.first().subscribe(data => {
+          expect(data.filtersAreAvailable).toEqual(false);
+        });
+      }));
+
+    it('Should show the filter button if \'headerIsExpanded\' is true and the url check return true',
+      inject([UiState], (service: UiState) => {
+        service.update({ headerIsExpanded: true });
+        service.checkForFilters('search/234');
+        service.data.first().subscribe(data => {
+          expect(data.filtersAreAvailable).toEqual(true);
+        });
+      }));
+
     function mockState() {
       return {
         collectionsListIsOpen: false,
@@ -101,7 +128,8 @@ export function main() {
         collectionsFilterIsOpen: false,
         headerIsExpanded: false,
         showFixed: false,
-        loading: false
+        loading: false,
+        filtersAreAvailable: false
       };
     }
   });

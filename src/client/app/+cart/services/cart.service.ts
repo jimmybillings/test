@@ -76,6 +76,10 @@ export class CartService {
       .subscribe(this.updateCart);
   }
 
+  public purchaseOnCredit(): void {
+    alert('NOT YET IMPLEMENTED\nWill create an order from the cart and route you to it.');
+  }
+
   private addProjectIfNoProjectsExist(): Observable<any> {
     return ((this.state.projects || []).length === 0) ? this.addProjectAndReturnObservable() : Observable.of({});
   }

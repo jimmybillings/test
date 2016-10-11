@@ -13,6 +13,10 @@ export class CartCapabilities {
     });
   }
 
+  public purchaseOnCredit(): boolean {
+    return this.currentUser.hasPurchaseOnCredit();
+  }
+
   public userHas(permission: string): boolean {
     return this.currentUser.hasPermission(permission);
   }
