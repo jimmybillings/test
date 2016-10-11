@@ -7,6 +7,6 @@
   <div flex="95" layout="row" layout-align="end center">
     <p class="md-subhead" style="margin-right: 2rem;">{{ 'CART.CART_TOTAL' | translate }} {{ (cart | async).total | currency:'USD':true:'1.2-2' }}</p>
     <button md-raised-button class="md-block" (click)="goToPreviousTab()">BACK</button>
-    <button md-raised-button class="md-block" (click)="goToNextTab()">PROCEED</button>
+    <button *ngIf="canPurchaseOnCredit" md-raised-button class="md-block" (click)="purchaseOnCredit()">PURCHASE ON CREDIT</button>
   </div>
 </section>

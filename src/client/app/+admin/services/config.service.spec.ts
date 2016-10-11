@@ -33,7 +33,7 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.getUiConfigIndex().subscribe(response => {
-          expect(connection.request.url).toEqual(this.uiApiUrl + 'search');
+          expect(connection.request.url.indexOf(this.uiApiUrl + 'search') !== -1).toBe(true);
           expect(connection.request.method).toBe(RequestMethod.Get);
           expect(response).toEqual(mockResponse());
         });
@@ -49,7 +49,7 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.getSiteConfigIndex().subscribe(response => {
-          expect(connection.request.url).toEqual(this.siteApiUrl + 'search');
+          expect(connection.request.url.indexOf(this.siteApiUrl + 'search') !== -1).toBe(true);
           expect(connection.request.method).toBe(RequestMethod.Get);
           expect(response).toEqual(mockResponse());
         });

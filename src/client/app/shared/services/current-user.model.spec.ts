@@ -4,8 +4,10 @@ import {
   beforeEachProvidersArray
 } from '../../imports/test.imports';
 
+import { Observable } from 'rxjs/Rx';
+
 import { CurrentUser } from './current-user.model';
-import { User} from '../interfaces/user.interface';
+import { User } from '../interfaces/user.interface';
 
 export function main() {
   describe('Current User model - user with permissions', () => {
@@ -59,7 +61,7 @@ export function main() {
     });
   });
 
-    describe('Current User model - user with role', () => {
+  describe('Current User model - user with role', () => {
 
     let user: any;
 
@@ -242,10 +244,42 @@ export function main() {
       'siteName': '',
       'accountIds': [0],
       'permissions': [''],
+      'purchaseOnCredit': false,
       'focusedCollection': null,
       'ownedCollections': null,
       'editableCollections': null,
       'accessibleCollections': null
     };
   }
+
+  describe('Current User model - hasPurchaseOnCredit()', () => {
+    let mockData: any;
+    let mockStore: any;
+
+    beforeEach(() => {
+      mockData = {};
+      mockStore = {
+        select: (_: string) => Observable.of(mockData)
+      };
+    });
+
+    it('returns true when the store defines purchaseOnCredit=true', () => {
+      mockData = { purchaseOnCredit: true };
+
+      expect(new CurrentUser(mockStore).hasPurchaseOnCredit()).toBe(true);
+    });
+
+    it('returns false when the store defines purchaseOnCredit=false', () => {
+      mockData = { purchaseOnCredit: false };
+
+      expect(new CurrentUser(mockStore).hasPurchaseOnCredit()).toBe(false);
+    });
+
+    it('returns false when the store does not define purchaseOnCredit', () => {
+      mockData = {};
+
+      expect(new CurrentUser(mockStore).hasPurchaseOnCredit()).toBe(false);
+    });
+  });
+
 }
