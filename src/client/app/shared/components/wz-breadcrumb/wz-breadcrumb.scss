@@ -1,17 +1,40 @@
-// breadcrumb.root {
-//   > ul.breadcrumbs {
-//      > li {
-//       float: left;;
-//     }
-//   }
-//   ul {
-//     padding-left:5px;
-//   }
-//   li {
-//     list-style-type: none;
-//     margin-top:5px;
-//   }
-// }
+.breadcrumbs {
+  padding: 0;
+  li {
+    list-style-type: none;
+  }
+  .breadcrumb {
+    background-color: rgba(md-color($md-background, card), .4);
+    font-size: 0.8em;
+    font-weight: 400;
+    line-height: rem(3.2);
+    padding: 0 rem(3.6) 0 rem(1.6);
+    color: rgba(md-color($md-foreground, base), .7);
+    margin-right: rem(.4);
+  }
+  .breadcrumb-clear-all {
+    line-height: rem(3.2);
+    &.md-primary[md-button] {
+      color: md-color($md-primary, 500);
+    }
+    &[md-button]:hover.md-primary::after, [md-icon-button]:hover.md-primary::after {
+      background-color: rgba(md-color($md-primary, 500), .12);
+    }
+  }
+}
+
+
+.breadcrumb[md-button] {
+  text-transform: none;
+  md-icon {
+    position: absolute;
+    top: rem(.4);
+    right: rem(.8);
+    opacity: .3;
+  }
+}
+
+
 
 breadcrumb-component.root {
   md-progress-circle {
@@ -22,17 +45,5 @@ breadcrumb-component.root {
   div.show {
     display: inline-block;
     padding: 0px 10px 0px 20px;
-  }
-  ul {
-    padding:0;
-    float: left;
-    
-  }
-  li {
-    list-style-type: none;
-    float: left;
-    margin-left: 5px;
-    margin-top: 5px;
-    //  margin-top:5px;
   }
 }

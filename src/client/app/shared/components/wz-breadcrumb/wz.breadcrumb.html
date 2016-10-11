@@ -1,17 +1,18 @@
 
-<ul class="breadcrumbs">
+<ul class="breadcrumbs" layout="row" layout-align="start start">
   <!--<li *ngIf="loading"><md-progress-circle mode="indeterminate"></md-progress-circle></li>-->
-  <li *ngFor="let filter of activeFilters">
-      <span *ngIf="filter.active" class="breadcrumb">
+  <li *ngFor="let filter of activeFilters" flex="none">
+      <button *ngIf="filter.active" class="breadcrumb" md-button (click)="clearFilter(filter)">
         {{filter.name}} 
         <span *ngIf="filter.filterValue">
            - {{filter.filterValue}}
         </span>
-        <button md-icon-button (click)="clearFilter(filter)"><md-icon>cancel</md-icon></button>
-      </span>
+        <md-icon>clear</md-icon>
+      </button>
   </li>
-  <li *ngIf="activeFilters.length > 0" class="breadcrumb clear" (click)="clearFilters()">
-    clear all
-    <button md-icon-button><md-icon>remove_circle</md-icon></button>  
+  <li *ngIf="activeFilters.length > 0" flex="none">
+    <button md-button color="primary" class="breadcrumb-clear-all" (click)="clearFilters()">
+      clear filters
+    </button>  
   </li>
 </ul> 
