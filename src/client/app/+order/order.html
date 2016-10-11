@@ -1,0 +1,50 @@
+<section class="order-component">
+  <div class="order-summary">
+    <header layout="row" layout-align="space-around center" flex="100">
+      <span class="md-display-1"><strong>{{ 'ORDER.ORDER_IDENTIFIER' | translate }} </strong>{{ order.id }}</span>
+      <span class="md-display-1"><strong>{{ 'ORDER.ORDER_TOTAL' | translate }} </strong>{{ order.total | currency:'USD':true:'1.2-2' }}</span>
+      <span class="md-display-1"><strong>{{ 'ORDER.ORDER_PLACED' | translate }} </strong>{{ order.createdOn | date }}</span>
+    </header>
+  </div>
+  <div class="order-projects" *ngFor="let project of order.projects">
+    <div class="order-project-header">
+      <div layout="row" layout-align="space-between center" flex="100">
+        <span><strong>{{ 'CART.PROJECTS.PROJECT_NAME' | translate }} </strong>{{ project.name }}</span>
+        <span><strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }} </strong>{{ project.clientName }}</span>
+        <span><strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate:{projectName: project.name} }} </strong>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
+      </div>
+    </div>
+    <!-- LINE ITEMS FOR AN ORDER IN A PROJECT WILL BE HERE. LEAVE IN FOR NOW -->
+    <!-- <div class="project-line-items">
+      <div *ngFor="let lineItem of project.lineItems; let e = even">
+        <div layout="row" layout-align="center center">
+          <div flex-gt-lg="90" flex-gt-md="85" flex-gt-xs="80">
+            <div class="project-line-item" [ngClass]="{highlight: e}">
+              <div layout="row" layout-align="space-between center">
+                <div flex="15">
+                  <span class="order-asset-thb">
+                    <img src="https://cdnt3m-a.akamaihd.net/tem/warehouse/345/236/2/3452362_79573_lt.jpg" />
+                  </span>
+                </div>
+                <div flex="25">
+                  <p>18Y001-095</p>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
+                </div>
+                <div flex="40">
+                  <div layout="row" layout-align="space-between center">
+                    <span>0:00:14;30</span>
+                    <span><strong>$99.00</strong></span>
+                    <span>Pending</span>
+                  </div>
+                </div>
+                <div flex="10">
+                  <button md-icon-button><md-icon>file_download</md-icon></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</section>
