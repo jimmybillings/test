@@ -23,6 +23,7 @@ export class Capabilities implements CartCapabilities, CollectionCapabilities, A
   viewCollectionTray: () => Observable<boolean>;
   viewSearchBar: () => Observable<boolean>;
   viewCartIcon: () => Observable<boolean>;
+  purchaseOnCredit: () => boolean;
 
   constructor(
     public currentUser: CurrentUser,

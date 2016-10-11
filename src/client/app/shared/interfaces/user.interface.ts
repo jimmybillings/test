@@ -27,6 +27,7 @@ export interface User {
     }
   ];
   permissions?: string[];
+  purchaseOnCredit?: boolean;
   phoneNumber?: string;
   zipcode?: string;
   accountIds?: number[];
