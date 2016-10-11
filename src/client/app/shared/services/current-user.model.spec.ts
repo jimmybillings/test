@@ -4,8 +4,7 @@ import {
   beforeEachProvidersArray
 } from '../../imports/test.imports';
 
-// Needed for commented-out tests below.
-// import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 
 import { CurrentUser } from './current-user.model';
 import { User } from '../interfaces/user.interface';
@@ -253,40 +252,34 @@ export function main() {
     };
   }
 
-  // Commenting this out for now...  for some reason, its inclusion
-  // causes two ConfigService tests to fail.
-  //
-  // describe('Current User model - hasPurchaseOnCredit()', () => {
-  //   let mockData: any;
-  //   let mockStore: any;
+  describe('Current User model - hasPurchaseOnCredit()', () => {
+    let mockData: any;
+    let mockStore: any;
 
-  //   beforeEach(() => {
-  //     mockData = {};
-  //     mockStore = {
-  //       select: (_: string) => Observable.of(mockData)
-  //     };
-  //   });
+    beforeEach(() => {
+      mockData = {};
+      mockStore = {
+        select: (_: string) => Observable.of(mockData)
+      };
+    });
 
-  //   it('returns true when the store defines purchaseOnCredit=true', () => {
-  //     mockData = { purchaseOnCredit: true };
-  //     let service = new CurrentUser(mockStore);
+    it('returns true when the store defines purchaseOnCredit=true', () => {
+      mockData = { purchaseOnCredit: true };
 
-  //     expect(service.hasPurchaseOnCredit()).toBe(true);
-  //   });
+      expect(new CurrentUser(mockStore).hasPurchaseOnCredit()).toBe(true);
+    });
 
-  //   it('returns false when the store defines purchaseOnCredit=false', () => {
-  //     mockData = { purchaseOnCredit: false };
-  //     let service = new CurrentUser(mockStore);
+    it('returns false when the store defines purchaseOnCredit=false', () => {
+      mockData = { purchaseOnCredit: false };
 
-  //     expect(service.hasPurchaseOnCredit()).toBe(false);
-  //   });
+      expect(new CurrentUser(mockStore).hasPurchaseOnCredit()).toBe(false);
+    });
 
-  //   it('returns false when the store does not define purchaseOnCredit', () => {
-  //     mockData = {};
-  //     let service = new CurrentUser(mockStore);
+    it('returns false when the store does not define purchaseOnCredit', () => {
+      mockData = {};
 
-  //     expect(service.hasPurchaseOnCredit()).toBe(false);
-  //   });
-  // });
+      expect(new CurrentUser(mockStore).hasPurchaseOnCredit()).toBe(false);
+    });
+  });
 
 }
