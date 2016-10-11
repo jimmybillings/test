@@ -51,10 +51,6 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
     this.close.emit();
   }
 
-  public showNewCollection(): void {
-    this.uiState.closeCollectionsList();
-  }
-
   public selectFocusedCollection(collection: Collection) {
     if (this.onCollectionShowPage()) {
       this.navigateToCollectionShow(collection.id);
@@ -66,12 +62,10 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
   }
 
   public navigateToCollectionShow(assetId: number): void {
-    this.uiState.closeCollectionsList();
     this.router.navigate(['/collection/', assetId, { i: 1, n: this.pageSize }]);
   }
 
   public navigateToCollectionsIndex() {
-    this.uiState.closeCollectionsList();
     this.router.navigate(['/collection']);
   }
 

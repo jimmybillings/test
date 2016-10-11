@@ -8,18 +8,18 @@
     </a>
     
     <!--THESE LINKS SHOW ONLY FOR LOGGED IN USERS-->
-    <a md-button="" *ngIf="currentUser.loggedInState() | async" [md-menu-trigger-for]="navigation" [ngClass]="{'md-primary': !(uiState.data | async).showFixed}" hide="" show-gt-sm="" class="is-dd">
+    <a md-button="" *ngIf="currentUser.loggedInState() | async" [md-menu-trigger-for]="navigation" [ngClass]="{'md-primary': !(uiState.data | async).showFixedHeader}" hide="" show-gt-sm="" class="is-dd">
       {{currentUser.fullName() | async}}
     </a>
     
-    <a md-button *ngIf="currentUser.loggedInState() | async" [md-menu-trigger-for]="navigation" [ngClass]="{'md-primary': !(uiState.data | async).showFixed}" hide="" show-xs="" class="md-icon-button is-dd"> <i md-icon="" class="material-icons">person</i></a>
+    <a md-button *ngIf="currentUser.loggedInState() | async" [md-menu-trigger-for]="navigation" [ngClass]="{'md-primary': !(uiState.data | async).showFixedHeader}" hide="" show-xs="" class="md-icon-button is-dd"> <i md-icon="" class="material-icons">person</i></a>
 
     <!--<a md-button *ngIf="currentUser.loggedInState() | async" (click)="logOut()" [routerLink]="['/']" hide="" show-gt-sm="" class="md-caption md-primary md-hue-2">{{ 'HEADER.LOGOUT_LABEL' | translate}}</a>-->
     
     <!--THESE LINKS SHOW ONLY FOR LOGGED OUT USERS-->
     <a md-button *ngIf="!(currentUser.loggedInState() | async)" [routerLink]="['/user/login']">{{ 'HEADER.LOGIN_LABEL' | translate}}</a>
     
-    <a md-button [ngClass]="{'md-accent': !(uiState.data | async).showFixed}" *ngIf="!(currentUser.loggedInState() | async)" md-button="" [routerLink]="['/user/register']" class="is-outlined">{{ 'HEADER.SIGN_UP_LABEL' | translate}}</a>
+    <a md-button [ngClass]="{'md-accent': !(uiState.data | async).showFixedHeader}" *ngIf="!(currentUser.loggedInState() | async)" md-button="" [routerLink]="['/user/register']" class="is-outlined">{{ 'HEADER.SIGN_UP_LABEL' | translate}}</a>
 
     <!--THESE LINKS ONLY SHOW IF THE SEARCH BAR IS ACTIVE-->
   
