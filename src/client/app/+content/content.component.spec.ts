@@ -33,11 +33,11 @@ export function main() {
 
     it('Should call the Content service and assign the HTML response to title and content variables',
       inject([ContentComponent], (service: ContentComponent) => {
-        spyOn(service.contentService, 'get').and.callThrough();
+        spyOn(service.content, 'get').and.callThrough();
         service.ngOnInit();
-        expect(service.contentService.get).toHaveBeenCalledWith('terms-conditions');
+        expect(service.content.get).toHaveBeenCalledWith('terms-conditions');
         expect(service.title).toEqual('CMS PAGE');
-        expect(service.content).toEqual('<p>PAGE CONTENT</p>');
+        expect(service.pageContent).toEqual('<p>PAGE CONTENT</p>');
       }));
   });
 

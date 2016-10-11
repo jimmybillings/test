@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { Authentication } from '../../shared/services/authentication.data.service';
 import { Router } from '@angular/router';
-import { ApiConfig } from '../../shared/services/api.config';
 import { User } from '../services/user.data.service';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { FormFields } from '../../shared/interfaces/forms.interface';
@@ -25,7 +24,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     public _authentication: Authentication,
     public _user: User,
     public router: Router,
-    public _ApiConfig: ApiConfig,
     public _currentUser: CurrentUser,
     public uiConfig: UiConfig) {
   }

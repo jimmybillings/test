@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild} from '@angular/core';
-import { Router} from '@angular/router';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { MdMenuTrigger } from '@angular2-material/menu';
 /**
@@ -26,8 +25,6 @@ export class AppNavComponent {
   @Output() onChangeLang = new EventEmitter();
   @Output() onOpenSidenav = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
-
-  constructor(private _router: Router) { }
 
   public logOut(event: Event) {
     this.onLogOut.emit(event);

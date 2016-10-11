@@ -29,7 +29,7 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         spyOn(service, 'storeCollections');
-        service.loadCollections().subscribe(response => {
+        service.load().subscribe(response => {
           expect(connection.request.url.indexOf('/api/assets/v1/collectionSummary/search?q=&accessLevel=all&s=&d=&i=0&n=200') !== -1).toBe(true);
           expect(response).toEqual(mockCollection());
           expect(service.storeCollections).toHaveBeenCalledWith(mockCollection());
@@ -46,7 +46,7 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         spyOn(service, 'createCollectionInStore');
-        service.createCollection(mockCollection()).subscribe(response => {
+        service.create(mockCollection()).subscribe(response => {
           expect(connection.request.url.indexOf('/api/assets/v1/collectionSummary') !== -1).toBe(true);
           expect(response).toEqual(mockCollection());
           expect(service.createCollectionInStore).toHaveBeenCalledWith(mockCollection());
@@ -63,7 +63,7 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         spyOn(service, 'deleteCollectionFromStore');
-        service.deleteCollection(158).subscribe(response => {
+        service.delete(158).subscribe(response => {
           expect(connection.request.url.indexOf('/api/identities/v1/collection/158') !== -1).toBe(true);
           expect(service.deleteCollectionFromStore).toHaveBeenCalledWith(158);
         });
@@ -74,10 +74,10 @@ export function main() {
         ));
       }));
 
-    it('Should have a destroyCollections method that sets the store back to its initial state',
+    it('Should have a destroyAll method that sets the store back to its initial state',
       inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
         spyOn(service.store, 'dispatch');
-        service.destroyCollections();
+        service.destroyAll();
         expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'RESET_COLLECTIONS' });
       }));
 

@@ -12,7 +12,6 @@
           <span *ngIf="lineItemCountFor(project) == 1">1 Asset</span>
           <span *ngIf="lineItemCountFor(project) > 1">{{ lineItemCountFor(project) }} Assets</span>
         </li>
-        
         <li flex-gt-md="25">
           <span><strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate:{projectName: project.name} }}</strong> {{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
           <button *ngIf="!readOnly" md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)"><md-icon>more_vert</md-icon></button>
