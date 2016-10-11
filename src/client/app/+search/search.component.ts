@@ -152,7 +152,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       if (res.url && res.url !== '') {
         window.location.href = res.url;
       } else {
-        this.notification.createNotfication(this.target, { trString: 'COMPS.NO_COMP', theme: 'alert' });
+        this.notification.create(this.target, { trString: 'COMPS.NO_COMP', theme: 'alert' });
       }
     });
   }

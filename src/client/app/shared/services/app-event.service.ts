@@ -11,18 +11,14 @@ export const enum AppEventType {
 }
 
 @Injectable()
-export class AppEventEmitter {
-  private eventsSubject: Subject<any>;
-
-  constructor() {
-    this.eventsSubject = new Subject();
-  }
+export class AppEventService {
+  private eventsSubject: Subject<any> = new Subject();
 
   public emit(event: AppEvent) {
     this.events.next(event);
   }
 
-  public get events():Subject<any> {
+  public get events(): Subject<AppEvent> {
     return this.eventsSubject;
   }
 }
