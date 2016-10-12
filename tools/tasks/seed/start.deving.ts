@@ -15,8 +15,8 @@ function watchAppFiles(path: string, fileChangeCallback: (e: any, done: () => vo
     join(Config.APP_SRC, path)
   ].concat(Config.TEMP_FILES.map((p) => { return '!' + p; }));
 
-  let busyWithCall : boolean = false;
-  let changesWaiting : any = null;
+  let busyWithCall: boolean = false;
+  let changesWaiting: any = null;
   let afterCall = () => {
     busyWithCall = false;
     if (changesWaiting) {
@@ -35,9 +35,10 @@ function watchAppFiles(path: string, fileChangeCallback: (e: any, done: () => vo
 
 }
 
+
 gulp.task('watch.while_deving', function () {
   watchAppFiles('**/!(*.ts)', (e: any, done: any) =>
-    runSequence('build.assets.dev', 'build.html_css', 'build.index.dev', () => { notifyLiveReload(e); done(); }));
+    runSequence('build.assets.dev', 'build.html_css', 'build.sass', 'build.index.dev', () => { notifyLiveReload(e); done(); }));
   watchAppFiles('**/(*.ts)', (e: any, done: any) =>
     runSequence('build.js.dev', 'build.index.dev', () => {
       notifyLiveReload(e);
@@ -47,6 +48,7 @@ gulp.task('watch.while_deving', function () {
 
 export = (done: any) =>
   runSequence('build.test',
+    'build.sass',
     'watch.while_deving',
     'server.start',
     'karma.run.with_coverage',
