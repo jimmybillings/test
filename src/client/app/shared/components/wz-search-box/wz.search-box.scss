@@ -203,7 +203,7 @@ header.app-header {
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     wz-search-box {
       input {
-        width: calc(100% - 70px);
+        // width: calc(100% - 70px);
         max-height: rem(4);
         min-height: rem(4);
         font-size: 1em;
