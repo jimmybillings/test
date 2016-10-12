@@ -1,7 +1,25 @@
+import { readdirSync, lstatSync } from 'fs';
 import { join } from 'path';
+import * as slash from 'slash';
 import { argv } from 'yargs';
 
 import { Environments, InjectableDependency } from './seed.config.interfaces';
+
+/************************* DO NOT CHANGE ************************
+ *
+ * DO NOT make any changes in this file because it will
+ * make your migration to newer versions of the seed harder.
+ *
+ * Your application-specific configurations should be
+ * in project.config.ts. If you need to change any tasks
+ * from "./tasks" overwrite them by creating a task with the
+ * same name in "./projects". For further information take a
+ * look at the documentation:
+ *
+ * 1) https://github.com/mgechev/angular2-seed/tree/master/tools
+ * 2) https://github.com/mgechev/angular2-seed/wiki
+ *
+ *****************************************************************/
 
 /**
  * The enumeration of available environments.
@@ -73,6 +91,22 @@ export class SeedConfig {
   COVERAGE_DIR = 'coverage';
 
   /**
+   * Karma reporter configuration
+   */
+  KARMA_REPORTERS: any = {
+    preprocessors: {
+      'dist/**/!(*spec).js': ['coverage']
+    },
+    reporters: ['mocha', 'coverage'],
+    coverageReporter: {
+      dir: this.COVERAGE_DIR + '/',
+      reporters: [
+        {type: 'json', subdir: '.', file: 'coverage-final.json'}
+      ]
+    }
+  };
+
+  /**
    * The path for the base of the application at runtime.
    * The default path is based on the environment '/',
    * which can be overriden by the `--base` flag when running `npm start`.
@@ -84,7 +118,7 @@ export class SeedConfig {
    * The base path of node modules.
    * @type {string}
    */
-  NPM_BASE = join(this.APP_BASE, 'node_modules/');
+  NPM_BASE = slash(join(this.APP_BASE, 'node_modules/'));
 
   /**
    * The flag for the hot-loader option of the application.
@@ -265,11 +299,6 @@ export class SeedConfig {
   VERSION_NODE = '4.0.0';
 
   /**
-   * The ruleset to be used by `codelyzer` for linting the TypeScript files.
-   */
-  CODELYZER_RULES = customRules();
-
-  /**
    * The flag to enable handling of SCSS files
    * The default value is false. Override with the '--scss' flag.
    * @type {boolean}
@@ -284,7 +313,8 @@ export class SeedConfig {
     { src: 'zone.js/dist/zone.js', inject: 'libs' },
     { src: 'core-js/client/shim.min.js', inject: 'shims' },
     { src: 'systemjs/dist/system.src.js', inject: 'shims', env: ENVIRONMENTS.DEVELOPMENT },
-    { src: 'rxjs/bundles/Rx.min.js', inject: 'libs', env: ENVIRONMENTS.DEVELOPMENT },
+    // Temporary fix. See https://github.com/angular/angular/issues/9359
+    { src: '.tmp/Rx.min.js', inject: 'libs', env: ENVIRONMENTS.DEVELOPMENT },
   ];
 
   /**
@@ -317,7 +347,7 @@ export class SeedConfig {
    * The configuration of SystemJS for the `dev` environment.
    * @type {any}
    */
-  protected SYSTEM_CONFIG_DEV: any = {
+  SYSTEM_CONFIG_DEV: any = {
     defaultJSExtensions: true,
     packageConfigPaths: [
       `/node_modules/*/package.json`,
@@ -336,15 +366,16 @@ export class SeedConfig {
       '@angular/platform-browser': 'node_modules/@angular/platform-browser/bundles/platform-browser.umd.js',
       '@angular/platform-browser-dynamic': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
       '@angular/router': 'node_modules/@angular/router/bundles/router.umd.js',
+      '@angular/material': 'node_modules/@angular/material/material.umd.js',
 
       '@angular/common/testing': 'node_modules/@angular/common/bundles/common-testing.umd.js',
       '@angular/compiler/testing': 'node_modules/@angular/compiler/bundles/compiler-testing.umd.js',
       '@angular/core/testing': 'node_modules/@angular/core/bundles/core-testing.umd.js',
       '@angular/http/testing': 'node_modules/@angular/http/bundles/http-testing.umd.js',
       '@angular/platform-browser/testing':
-      'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
+        'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
       '@angular/platform-browser-dynamic/testing':
-      'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
+        'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
       '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
 
       '@angular2-material/core': 'node_modules/@angular2-material/core/core.umd.js',
@@ -366,9 +397,11 @@ export class SeedConfig {
       '@angular2-material/tabs': 'node_modules/@angular2-material/tabs/tabs.umd.js',
       '@angular2-material/toolbar': 'node_modules/@angular2-material/toolbar/toolbar.umd.js',
       '@angular2-material/tooltip': 'node_modules/@angular2-material/tooltip/tooltip.umd.js',
+
       'rxjs/*': 'node_modules/rxjs/*',
       '@ngrx/core': 'node_modules/@ngrx/core/bundles/core.min.umd.js',
       '@ngrx/store': 'node_modules/@ngrx/store/bundles/store.min.umd.js',
+
       'app/*': '/app/*',
       // For test config
       'dist/dev/*': '/base/dist/dev/*',
@@ -391,16 +424,17 @@ export class SeedConfig {
    * The system builder configuration of the application.
    * @type {any}
    */
-  SYSTEM_BUILDER_CONFIG: any = {
+  SYSTEM_BUILDER_CONFIG: any = prepareBuilderConfig({
     defaultJSExtensions: true,
+    base: this.PROJECT_ROOT,
     packageConfigPaths: [
-      join(this.PROJECT_ROOT, 'node_modules', '*', 'package.json'),
-      join(this.PROJECT_ROOT, 'node_modules', '@angular', '*', 'package.json'),
-      join(this.PROJECT_ROOT, 'node_modules', '@angular2-material', '*', 'package.json'),
-      join(this.PROJECT_ROOT, 'node_modules', '@ngrx', '*', 'package.json')
+      join('node_modules', '*', 'package.json'),
+      join('node_modules', '@angular', '*', 'package.json'),
+      join(this.PROJECT_ROOT, 'node_modules', '@ngrx', '*', 'package.json'),
+      join(this.PROJECT_ROOT, 'node_modules', '@angular2-material', '*', 'package.json')
     ],
     paths: {
-      [`${this.TMP_DIR}/*`]: `${this.TMP_DIR}/*`,
+      'node_modules/*': 'node_modules/*',
       '*': 'node_modules/*'
     },
     packages: {
@@ -441,10 +475,11 @@ export class SeedConfig {
         defaultExtension: 'js'
       },
       'rxjs': {
+        main: 'Rx.js',
         defaultExtension: 'js'
       }
     }
-  };
+  }, join(this.PROJECT_ROOT, this.APP_SRC), this.TMP_DIR);
 
   /**
    * The Autoprefixer configuration for the application.
@@ -482,7 +517,9 @@ export class SeedConfig {
      * @type {any}
      */
     'browser-sync': {
-      middleware: [require('connect-history-api-fallback')({ index: `${this.APP_BASE}index.html` })],
+      middleware: [require('connect-history-api-fallback')({
+        index: `${this.APP_BASE}index.html`
+      })],
       port: this.PORT,
       startPath: this.APP_BASE,
       open: argv['b'] ? false : true,
@@ -551,6 +588,18 @@ export class SeedConfig {
 }
 
 /**
+ * Used only when developing multiple applications with shared codebase.
+ * We need to specify the paths for each individual application otherwise
+ * SystemJS Builder cannot bundle the target app on Windows.
+ */
+function prepareBuilderConfig(config: any, srcPath: string, tmpPath: string) {
+  readdirSync(srcPath).filter(f =>
+    lstatSync(join(srcPath, f)).isDirectory()).forEach(f =>
+    config.paths[join(tmpPath, f, '*')] = `${tmpPath}/${f}/*`);
+  return config;
+}
+
+/**
  * Normalizes the given `deps` to skip globs.
  * @param {InjectableDependency[]} deps - The dependencies to be normalized.
  */
@@ -587,26 +636,17 @@ function appVersion(): number | string {
 }
 
 /**
- * Returns the linting configuration to be used for `codelyzer`.
- * @return {string[]} The list of linting rules.
- */
-function customRules(): string[] {
-  var lintConf = require('../../tslint.json');
-  return lintConf.rulesDirectory;
-}
-
-/**
  * Returns the environment of the application.
  */
-function getEnvironment() {
-  let base: string[] = argv['_'];
-  let prodKeyword = !!base.filter(o => o.indexOf(ENVIRONMENTS.PRODUCTION) >= 0).pop();
-  let env = (argv['env'] || '').toLowerCase();
-  if ((base && prodKeyword) || env === ENVIRONMENTS.PRODUCTION) {
-    return ENVIRONMENTS.PRODUCTION;
-  } else if (base[0] === 'build.library.export') {
-    return ENVIRONMENTS.LIBRARY;
-  } else {
-    return ENVIRONMENTS.DEVELOPMENT;
-  }
-}
+ function getEnvironment() {
+   let base: string[] = argv['_'];
+   let prodKeyword = !!base.filter(o => o.indexOf(ENVIRONMENTS.PRODUCTION) >= 0).pop();
+   let env = (argv['env'] || '').toLowerCase();
+   if ((base && prodKeyword) || env === ENVIRONMENTS.PRODUCTION) {
+     return ENVIRONMENTS.PRODUCTION;
+   } else if (base[0] === 'build.library.export') {
+     return ENVIRONMENTS.LIBRARY;
+   } else {
+     return ENVIRONMENTS.DEVELOPMENT;
+   }
+ }

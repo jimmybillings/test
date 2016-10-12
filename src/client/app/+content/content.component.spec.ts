@@ -12,7 +12,7 @@ import { ContentService} from './content.service';
 export function main() {
   describe('Content Component', () => {
     class MockContentService {
-      get(page: Async) {
+      get(page: any) {
         return Observable.of(mockContent());
       }
     }

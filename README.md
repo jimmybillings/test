@@ -14,7 +14,7 @@ npm install
 
 ###Usage
 
-To build prod: - this will create the /dev/prod directory so that you can deploy to a web server. 
+To build prod: - this will create the /dev/prod directory so that you can deploy to a web server.
 ```bash
 
 npm run build.prod

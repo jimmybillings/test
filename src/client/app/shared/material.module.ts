@@ -24,16 +24,12 @@ import {
   OverlayModule
 } from '@angular2-material/core';
 import {MdMenuModule} from '@angular2-material/menu';
-// import {MdDialogModule} from '@angular2-material/dialog';
-
-
 
 const MATERIAL_MODULES = [
   MdButtonModule,
   MdButtonToggleModule,
   MdCardModule,
   MdCheckboxModule,
-  // MdDialogModule,
   MdGridListModule,
   MdIconModule,
   MdInputModule,
@@ -73,7 +69,6 @@ const MATERIAL_MODULES = [
 
     // These modules include providers.
     MdButtonToggleModule.forRoot(),
-    // MdDialogModule.forRoot(),
     MdIconModule.forRoot(),
     MdMenuModule.forRoot(),
     MdRadioModule.forRoot(),

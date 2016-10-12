@@ -20,7 +20,7 @@ export function main() {
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
         ...beforeEachProvidersArray,
-        { provide: User, useClass: MockUser }, ,
+        { provide: User, useClass: MockUser },
         RegisterComponent
       ]
     }));
