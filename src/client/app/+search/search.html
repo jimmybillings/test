@@ -13,8 +13,21 @@
   <section class="search-results">
     <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
       <div flex-xl="85" flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
-        <div layout="row" layout-align="space-between">
-          <breadcrumb-component layout="row" class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
+        <div layout="row" layout-sm="column" layout-wrap layout-align="space-between">
+          <breadcrumb-component layout="row" layout-wrap class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
+          <!--<div layout="row" layout-align="end center">
+            <div class="asset-sort-display" flex="100">
+              <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
+              <span class="md-caption" *ngIf="sortOptions">
+                <strong>Sort By: </strong>{{ sortOptions.currentSort.name }}
+              </span> 
+            </div>
+          </div>-->
+        </div>
+
+
+
+        <div layout="row" layout-align="end start" layout-wrap layout-align="space-between">
           <div layout="row" layout-align="start center">
             <div class="asset-sort-display" flex="100">
               <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
@@ -23,19 +36,6 @@
               </span> 
             </div>
           </div>
-        </div>
-
-
-
-        <div layout="row" layout-align="end start">
-          <!--<div layout="row" layout-align="start center">
-            <div class="asset-sort-display" flex="100">
-              <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
-              <span class="md-caption" *ngIf="sortOptions">
-                <strong>Sort By: </strong>{{ sortOptions.currentSort.name }}
-              </span> 
-            </div>
-          </div>-->
           <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
         </div>
 

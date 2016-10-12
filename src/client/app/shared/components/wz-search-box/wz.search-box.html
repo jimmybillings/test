@@ -1,7 +1,8 @@
 
 <div>
-  <button *ngIf="(uiState.data | async).filtersAreAvailable" (click)="openFilters()">open</button>
+  <!--<button *ngIf="(uiState.data | async).filtersAreAvailable" (click)="openFilters()">Filters</button>-->
   <form layout="row" flex="100" layout-align="start" [formGroup]="searchForm" (ngSubmit)="onSubmit(searchForm.value.query)" class="md-inline-form">
+    <button md-button title="show filters" type="button" *ngIf="(uiState.data | async).filtersAreAvailable" (click)="openFilters()" class="filter-toggle" tabindex="-1">Filters<md-icon>arrow_drop_down</md-icon></button>
     <input md-input="" type="text" placeholder="{{ 'HOME.SEARCH_BOX_LABEL' | translate }}" formControlName="query"/>
     <button type="submit" tabindex="-1">Search<md-icon>search</md-icon></button>
     <!--<button md-icon-button title="close search" type="button" (click)="closeSearch()" class="close" tabindex="-1"><md-icon>close</md-icon></button>-->

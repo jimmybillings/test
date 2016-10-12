@@ -135,8 +135,9 @@ header.app-header {
     }
     margin: 0;
     input {
-      width: calc(100% - 78px);
+      width: calc(100% - 62px);
       font-size: 1.24em;
+      padding: 0 0 0 rem(1.6);
     }
     button[type="submit"] {
       background-color: md-color($md-primary, 700, .45);
@@ -157,6 +158,25 @@ header.app-header {
           right: rem(1.0);
         }
       }
+    }
+  }
+  button.filter-toggle {
+    @include background-image(
+      linear-gradient(md-color($md-primary, 800, .06), md-color($md-primary, 800, .06)),
+      linear-gradient(rgba(md-color($md-foreground, base), .5), rgba(md-color($md-foreground, base), .5))
+    );
+    @include text-contrast(md-color($md-foreground, base));
+
+    height: auto;
+    border-radius: 0;
+    padding: 0 rem(5.4) 0 rem(3.4);
+    md-icon.material-icons {
+      position: absolute;
+      top: rem(1.0);
+      right: rem(1.2);
+    }
+    &:hover {
+      background-color: rgba(md-color($md-foreground, base), .55);
     }
   }
   button.close {
@@ -188,11 +208,11 @@ header.app-header {
         min-height: rem(4);
         font-size: 1em;
       }
-      button[type="submit"] {
-        md-icon.material-icons {
-          font-size: rem(2.8);
-        }
-      }
+      // button[type="submit"] {
+      //   md-icon.material-icons {
+      //     font-size: rem(2.8);
+      //   }
+      // }
     }
   }
 }
@@ -205,7 +225,7 @@ header.app-header.fixed {
     input {
       background-color: transparent;
     }
-    button[type="submit"] md-icon.material-icons {
+    button[type="submit"] md-icon.material-icons, button.filter-toggle {
       @include text-contrast(md-color($md-primary, 700), md-color($md-grey, 700), md-color($md-grey, 100));
     }
   }
@@ -218,7 +238,7 @@ header.app-header.search-closed wz-search-box {
       opacity: 0;
   }
   }
-  button, button.close {
+  button, button.close, button.filter-toggle {
     max-height: 0;
     min-height: 0;
     overflow: hidden;

@@ -1,7 +1,9 @@
 .breadcrumbs {
   padding: 0;
+  margin: rem(.8) 0;
   li {
     list-style-type: none;
+    margin-bottom: rem(.4);
   }
   .breadcrumb {
     background-color: rgba(md-color($md-background, card), .4);
@@ -22,7 +24,6 @@
     }
   }
 }
-
 
 .breadcrumb[md-button] {
   text-transform: none;

@@ -1,5 +1,5 @@
 
-<ul class="breadcrumbs" layout="row" layout-align="start start">
+<ul class="breadcrumbs" layout="row" layout-align="start start" layout-wrap>
   <!--<li *ngIf="loading"><md-progress-circle mode="indeterminate"></md-progress-circle></li>-->
   <li *ngFor="let filter of activeFilters" flex="none">
       <button *ngIf="filter.active" class="breadcrumb" md-button (click)="clearFilter(filter)">
