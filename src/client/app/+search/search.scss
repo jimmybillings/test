@@ -4,6 +4,29 @@ search-component md-sidenav-layout {
   overflow-y: scroll;
 }
 
+.asset-sort-by button {
+  .key {
+    font-weight: 500;
+  }
+  .value {
+    text-transform: none;
+    font-weight: 400;
+    opacity: .75;
+  }
+  .material-icons {
+    position: relative;
+    top: rem(.5);
+    left: rem(-.4);
+  }
+  &.md-primary[md-button], &[md-button].is-dd.md-primary .md-button-wrapper::after {
+    color: md-color($md-primary, 500);
+  }
+  &[md-button]:hover.md-primary::after, [md-icon-button]:hover.md-primary::after {
+    background-color: rgba(md-color($md-primary, 500), .12);
+  }
+}
+
+
 md-slide-toggle.count-toggle {
   background-color: md-color($md-background, background);
   margin: 0;
