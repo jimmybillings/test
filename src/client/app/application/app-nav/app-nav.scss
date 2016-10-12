@@ -47,6 +47,7 @@ header.app-header {
     @include animation(slideDownHeader .75s ease-in-out);
     border-bottom: none;
     @include md-elevation(3);
+    // width: calc(100% - 16px);
     a.home-link > .logo-wrapper {
       opacity: .95;
     }
@@ -137,9 +138,6 @@ header.app-header.search-closed app-nav button.open-search {
 }
 
 
-
-
-
 // These are used for spacing the top of the page to allow for a absolute and fixed header.
 // The spacing may change when search or the bin tray is open in the header.
 // there are a few different styles of pages.
@@ -156,7 +154,7 @@ header.app-header + div.main-content asset-component {
   @include transition(border-top-width 0.35s, $swift-ease-in-out-timing-function);
   border-top: rem(16.6) solid md-color($md-grey, 900, .7);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    border-top-width: rem(15.2);
+    border-top-width: rem(16.0);
   }
 }
 header.app-header.collection-tray-closed + div.main-content order-component,
@@ -169,7 +167,7 @@ header.app-header.collection-tray-closed + div.main-content search-component,
 header.app-header.collection-tray-closed + div.main-content asset-component {
   border-top-width: rem(11.0);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    border-top-width: rem(9.6);
+    border-top-width: rem(10.4);
   }
 }
 header.app-header.collection-tray-closed.search-closed + div.main-content order-component,
