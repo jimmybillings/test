@@ -9,36 +9,25 @@
   </md-sidenav>
   
   <button class="filter" (click)="searchFilter.toggle()" style="display:none;">FILTERS</button>
+ 
+  <section class="search-header" layout="row" layout-align="center center">
+    <header flex-gt-lg="95" flex="100">
+      <div class="asset-sort-by" layout="row" layout-align="end center" layout-padding>
+        <button md-button class="is-dd" color="primary"  *ngIf="sortOptions" [md-menu-trigger-for]="assetSortMenu">
+          <md-icon>sort</md-icon>
+            <span class="key"> Sort By : </span><span class="value">{{ sortOptions.currentSort.name }}</span>
+        </button>
+      </div>
+    </header>
+  </section>
 
   <section class="search-results">
     <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
       <div flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
-        <div layout="row" layout-sm="column" layout-wrap layout-align="space-between">
-          <breadcrumb-component layout="row" layout-wrap class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
-          <div layout="">
-            <div class="asset-sort-by" flex="100" layout-align="end center">
-              <button md-button class="is-dd" color="primary"  *ngIf="sortOptions" [md-menu-trigger-for]="assetSortMenu">
-                <md-icon>sort</md-icon>
-                  <span class="key"> Sort By : </span><span class="value">{{ sortOptions.currentSort.name }}</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-
-
-        <div layout="row" layout-align="end start" layout-wrap layout-align="space-between">
-          <!--<div layout="row" layout-align="start center">
-            <div class="asset-sort-display" flex="100">
-              <button md-icon-button [md-menu-trigger-for]="assetSortMenu"><md-icon>sort</md-icon></button>
-              <span class="md-caption" *ngIf="sortOptions">
-                <strong>Sort By: </strong>{{ sortOptions.currentSort.name }}
-              </span> 
-            </div>
-          </div>-->
+        <breadcrumb-component layout="row" layout-wrap class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
+        <div layout="row" flex layout-align="end center">
           <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)" flex layout-align="end stretch"></wz-pagination>
         </div>
-
         <wz-asset-list 
           [assets]="assets.items" 
           [userCan]="userCan"
@@ -52,12 +41,12 @@
           class="{{config.viewType.value}}">
         </wz-asset-list>
           
-        <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
+        <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)" flex layout-align="end stretch"></wz-pagination>
       </div>
     </div>
   </section>
 </md-sidenav-layout>
 
-<md-menu x-position="after" #assetSortMenu="mdMenu">
+<md-menu x-position="before" #assetSortMenu="mdMenu">
   <wz-sort-component [current]="sortOptions.currentSort" [items]="sortOptions.sorts" (sort)="onSortResults($event)"></wz-sort-component>
 </md-menu>
