@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Observable} from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
-
 /**
  * Service that provides access to the api for logging user in and out.  
  */

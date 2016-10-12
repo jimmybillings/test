@@ -1,6 +1,6 @@
 <div class="app" #target>
   <header [ngClass]="{
-    'fixed': (uiState.data | async).showFixed,
+    'fixed': (uiState.data | async).showFixedHeader,
     'collection-tray-closed': !(preferences.data | async).collectionTrayIsOpen,
     'search-closed': !(preferences.data | async).searchIsOpen
     }" class="app-header">

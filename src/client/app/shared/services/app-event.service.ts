@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Rx';
 
 export interface AppEvent {
@@ -7,19 +6,19 @@ export interface AppEvent {
 }
 
 export const enum AppEventType {
-  HomePageSearch
+  HomePageSearch,
+  UserLogOut
 }
 
-@Injectable()
 export class AppEventService {
-  private eventsSubject: Subject<any> = new Subject();
+  public static eventsSubject: Subject<any> = new Subject();
 
-  public emit(event: AppEvent) {
-    this.events.next(event);
+  public static emit(event: AppEvent) {
+    AppEventService.eventsSubject.next(event);
   }
 
-  public get events(): Subject<AppEvent> {
-    return this.eventsSubject;
+  public static get events(): Subject<AppEvent> {
+    return AppEventService.eventsSubject;
   }
 }
 

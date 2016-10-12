@@ -3,11 +3,8 @@ import { Observable} from 'rxjs/Rx';
 import { Store, ActionReducer, Action} from '@ngrx/store';
 
 const InitUiState: any = {
-  collectionsListIsOpen: false,
-  collectionsSortIsOpen: false,
-  collectionsFilterIsOpen: false,
   headerIsExpanded: false,
-  showFixed: false,
+  showFixedHeader: false,
   loading: false,
   filtersAreAvailable: false
 };
@@ -42,14 +39,6 @@ export class UiState {
     this.store.dispatch({ type: 'UI.STATE.UPDATE', payload: payload });
   }
 
-  public showCollectionsList(): void {
-    this.update({ collectionsListIsOpen: true });
-  }
-
-  public closeCollectionsList(): void {
-    this.update({ collectionsListIsOpen: false });
-  }
-
   public loading(state: boolean): void {
     this.data.take(1).subscribe(s => this.update({ loading: state}));
   }
@@ -79,9 +68,9 @@ export class UiState {
 
   public showFixedHeader(offset: any): void {
     let isfixed: boolean;
-    this.data.take(1).subscribe(state => isfixed = state.showFixed);
+    this.data.take(1).subscribe(state => isfixed = state.showFixedHeader);
     let setFixed: boolean = (offset > 111) ? true : false;
-    if (setFixed !== isfixed) this.update({ showFixed: !isfixed });
+    if (setFixed !== isfixed) this.update({ showFixedHeader: !isfixed });
   }
 
   private get state(): any {

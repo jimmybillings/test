@@ -5,7 +5,6 @@ import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { RequestOptions, URLSearchParams, Response } from '@angular/http';
 import { ApiService } from '../../shared/services/api.service';
-import { AppEventService, AppEvent, AppEventType } from '../../shared/services/app-event.service';
 
 const initFilters: any = {};
 export const filters: ActionReducer<any> = (state: Array<any> = initFilters, action: Action) => {
@@ -25,11 +24,9 @@ export class FilterService {
     public api: ApiService,
     public store: Store<any>,
     public apiConfig: ApiConfig,
-    public currentUser: CurrentUser,
-    public appEvent: AppEventService) {
+    public currentUser: CurrentUser) {
     this.filterState = {};
     this.data = this.store.select('filters');
-    this.appEvent.events.subscribe(this.onAppEvent.bind(this));
   }
 
   public get(params: any, counted: boolean): Observable<any> {
@@ -146,13 +143,6 @@ export class FilterService {
     let filters: any = {};
     this.data.take(1).subscribe(f => filters = f);
     return filters;
-  }
-
-  private onAppEvent(event: AppEvent) {
-    switch (event.type) {
-      case AppEventType.HomePageSearch:
-        this.set(this.clear());
-    }
   }
 }
  

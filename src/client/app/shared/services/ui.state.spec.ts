@@ -22,25 +22,6 @@ export function main() {
         });
       }));
 
-
-
-    it('Should have a showCollectionsList method that sets the collectionsListIsOpen to true',
-      inject([UiState], (service: UiState) => {
-        service.showCollectionsList();
-        service.data.first().subscribe(data => {
-          expect(data.collectionsListIsOpen).toEqual(true);
-        });
-      }));
-
-    it('Should have a closeCollectionsList method that sets the collectionsListIsOpen to false',
-      inject([UiState], (service: UiState) => {
-        service.showCollectionsList();
-        service.closeCollectionsList();
-        service.data.first().subscribe(data => {
-          expect(data.collectionsListIsOpen).toEqual(false);
-        });
-      }));
-
     it('Should have an update method that updates the store with the payload',
       inject([UiState], (service: UiState) => {
         service.update({ collectionTrayIsOpen: true });
@@ -60,19 +41,19 @@ export function main() {
         });
       }));
 
-    it('Should set the header to absolute by setting \'showFixed\' to be false if the page scrolls less than 111px\'s',
+    it('Should set the header to absolute by setting \'showFixedHeader\' to be false if the page scrolls less than 111px\'s',
       inject([UiState], (service: UiState) => {
         service.showFixedHeader(108);
         service.data.first().subscribe(data => {
-          expect(data.showFixed).toEqual(false);
+          expect(data.showFixedHeader).toEqual(false);
         });
       }));
 
-    it('Should set the header to fixed by setting \'showFixed\' to be true if the page scrolls down more than 111px\'s',
+    it('Should set the header to fixed by setting \'showFixedHeader\' to be true if the page scrolls down more than 111px\'s',
       inject([UiState], (service: UiState) => {
         service.showFixedHeader(114);
         service.data.first().subscribe(data => {
-          expect(data.showFixed).toEqual(true);
+          expect(data.showFixedHeader).toEqual(true);
         });
       }));
 
@@ -123,11 +104,8 @@ export function main() {
 
     function mockState() {
       return {
-        collectionsListIsOpen: false,
-        collectionsSortIsOpen: false,
-        collectionsFilterIsOpen: false,
         headerIsExpanded: false,
-        showFixed: false,
+        showFixedHeader: false,
         loading: false,
         filtersAreAvailable: false
       };

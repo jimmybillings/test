@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { MultilingualService } from './shared/services/multilingual.service';
@@ -30,11 +30,9 @@ declare var portal: string;
   providers: [WzNotificationService]
 })
 
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
-  private routeSubscription: Subscription;
-  private authSubscription: Subscription;
   private bootStrapUserDataSubscription: Subscription;
 
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
@@ -67,14 +65,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.processUser();
   }
 
-  ngOnDestroy() {
-    this.routeSubscription.unsubscribe();
-    this.authSubscription.unsubscribe();
-    this.bootStrapUserDataSubscription.unsubscribe();
-  }
-
   public routerChanges() {
-    this.routeSubscription = this.router.events
+    this.router.events
       .filter((event: RoutesRecognized) => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
         this.uiState.checkRouteForSearchBar(event.url);
@@ -86,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public logout(): void {
-    this.authSubscription = this.authentication.destroy().subscribe();
+    this.authentication.destroy().subscribe();
     this.currentUser.destroy();
   }
 
