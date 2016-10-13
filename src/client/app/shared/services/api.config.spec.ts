@@ -65,7 +65,7 @@ export function main() {
       localStorage.setItem('token', 'LOGIN_TOKEN');
       mockCurrentUser = {
         loggedIn: () => loggedIn
-      }
+      };
     });
 
     afterEach(() => {
