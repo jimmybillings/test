@@ -2,9 +2,8 @@ import { inject, TestBed, beforeEachProvidersArray, Response, ResponseOptions } 
 import { Observable } from 'rxjs/Rx';
 
 import { ApiConfig } from './api.config';
-import { ApiService } from './api.service';
+import { ApiService, Api, ApiBody, ApiParameters } from './api.service';
 import { CartSummaryService } from './cart-summary.service';
-import { URLSearchParams, RequestOptions } from '@angular/http';
 
 export function main() {
   describe('Cart Summary Service', () => {
@@ -13,11 +12,13 @@ export function main() {
       authHeaders: () => 'SOME_AUTH_HEADERS'
     };
 
-    let mockResponseBody: string;
+    let mockResponseBody: Object;
 
     const mockApiService = {
       get: () => Observable.of(new Response(new ResponseOptions({ body: mockResponseBody }))),
-      put: () => Observable.of(new Response(new ResponseOptions({ body: mockResponseBody })))
+      get2: () => Observable.of(mockResponseBody),
+      put: () => Observable.of(new Response(new ResponseOptions({ body: mockResponseBody }))),
+      put2: () => Observable.of(mockResponseBody)
     };
 
     beforeEach(() => {
@@ -33,35 +34,57 @@ export function main() {
       mockResponseBody = '{}';
       spyOn(mockApiService, 'get').and.callThrough();
       spyOn(mockApiService, 'put').and.callThrough();
+      spyOn(mockApiService, 'get2').and.callThrough();
+      spyOn(mockApiService, 'put2').and.callThrough();
     });
 
     describe('addAssetToProjectInCart()', () => {
-
       let serviceUnderTest: CartSummaryService;
 
       beforeEach(inject([CartSummaryService], (cartSummary: CartSummaryService) => {
         serviceUnderTest = cartSummary;
       }));
 
-      it('calls the api service correctly',() => {
-        serviceUnderTest.addAssetToProjectInCart({ 'assetId': '10836' });
-        let queryObject: any = {'projectName': 'Project A', 'region': 'AAA'};
-        let search = new URLSearchParams();
-        for (var param in queryObject) search.set(param, queryObject[param]);
-        let options: RequestOptions = new RequestOptions({search});
-        expect(mockApiService.put)
-          .toHaveBeenCalledWith(
-            'api/orders/v1/cart/asset/lineItem/quick',
-            JSON.stringify({'lineItem': {'asset': {'assetId': '10836' }}}),
-            options);
+      it('calls the api service correctly', () => {
+        const body: ApiBody = { lineItem: { asset: { assetId: '10836' } } };
+        const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
+
+        serviceUnderTest.addAssetToProjectInCart({ assetId: '10836' });
+
+        expect(mockApiService.put2)
+          .toHaveBeenCalledWith(Api.Orders, 'cart/asset/lineItem/quick', { body: body, parameters: parameters });
       });
 
       it('adds the asset to the cart store', () => {
-        mockResponseBody = JSON.stringify({'lineItem': {'asset': {'assetId': '10836' }}});
-        serviceUnderTest.addAssetToProjectInCart({ 'assetId': '10836' });
+        mockResponseBody = { lineItem: { asset: { assetId: '10836' } } };
+
+        serviceUnderTest.addAssetToProjectInCart({ assetId: '10836' });
+
         expect(serviceUnderTest.state.lineItem.asset.assetId).toEqual('10836');
       });
 
+    });
+
+    describe('loadCartSummary', () => {
+      let serviceUnderTest: CartSummaryService;
+
+      beforeEach(inject([CartSummaryService], (cartSummary: CartSummaryService) => {
+        serviceUnderTest = cartSummary;
+      }));
+
+      it('calls the api service correctly', () => {
+        serviceUnderTest.loadCartSummary();
+
+        expect(mockApiService.get2).toHaveBeenCalledWith(Api.Orders, 'cart/summary');
+      });
+
+      it('places the response in the cart store', () => {
+        mockResponseBody = { lineItem: { asset: { assetId: '10836' } } };
+
+        serviceUnderTest.loadCartSummary();
+
+        expect(serviceUnderTest.state.lineItem.asset.assetId).toEqual('10836');
+      });
     });
   });
 }
