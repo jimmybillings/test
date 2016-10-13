@@ -30,8 +30,25 @@ export class ApiConfig {
     });
   }
 
-  public userHeaders(): Headers {
-    return (this.currentUser.loggedIn()) ? this.authHeaders() : this.headers();
+  public userHeaders(overridingToken: string = ''): Headers {
+    const headers: { [name: string]: any } = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    let token: string = '';
+
+    if (overridingToken !== '') {
+      token = overridingToken;
+    } else if (this.currentUser.loggedIn()) {
+      token = localStorage.getItem('token');
+    }
+
+    if (token !== '') {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    return new Headers(headers);
   }
 
   public headers(): Headers {

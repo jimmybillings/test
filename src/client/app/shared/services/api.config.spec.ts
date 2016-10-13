@@ -54,4 +54,58 @@ export function main() {
       expect(service.cms('query')).toEqual('?filter[name]=');
     }));
   });
+
+  describe('userHeaders()', () => {
+    let loggedIn: boolean;
+    let mockCurrentUser: any;
+    let returnedHeaders: Headers;
+
+    beforeEach(() => {
+      localStorage.clear();
+      localStorage.setItem('token', 'LOGIN_TOKEN');
+      mockCurrentUser = {
+        loggedIn: () => loggedIn
+      }
+    });
+
+    afterEach(() => {
+      localStorage.clear();
+    });
+
+    it('returns appropriate headers for a logged out user', () => {
+      loggedIn = false;
+      returnedHeaders = new ApiConfig(mockCurrentUser).userHeaders();
+
+      expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
+      expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
+      expect(returnedHeaders.has('Authorization')).toBeFalsy();
+    });
+
+    it('returns appropriate headers for a logged in user', () => {
+      loggedIn = true;
+      returnedHeaders = new ApiConfig(mockCurrentUser).userHeaders();
+
+      expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
+      expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
+      expect(returnedHeaders.getAll('Authorization')).toEqual(['Bearer LOGIN_TOKEN']);
+    });
+
+    it('adds overriding auth header for a logged out user', () => {
+      loggedIn = false;
+      returnedHeaders = new ApiConfig(mockCurrentUser).userHeaders('OVERRIDING_TOKEN');
+
+      expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
+      expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
+      expect(returnedHeaders.getAll('Authorization')).toEqual(['Bearer OVERRIDING_TOKEN']);
+    });
+
+    it('overrides the normal auth header for a logged in user', () => {
+      loggedIn = true;
+      returnedHeaders = new ApiConfig(mockCurrentUser).userHeaders('OVERRIDING_TOKEN');
+
+      expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
+      expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
+      expect(returnedHeaders.getAll('Authorization')).toEqual(['Bearer OVERRIDING_TOKEN']);
+    });
+  });
 }

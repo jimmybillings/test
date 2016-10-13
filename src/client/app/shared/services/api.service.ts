@@ -23,6 +23,7 @@ export interface ApiOptions {
   parameters?: ApiParameters;
   body?: ApiBody;
   loading?: boolean;
+  overridingToken?: string;
 }
 
 @Injectable()
@@ -142,7 +143,7 @@ export class ApiService {
   private combineDefaultOptionsWith(options: ApiOptions): ApiOptions {
     return Object.assign(
       {},
-      { parameters: {}, body: {}, loading: false },
+      { parameters: {}, body: {}, loading: false, overridingToken: '' },
       options
     );
   }
@@ -189,7 +190,7 @@ export class ApiService {
     }
 
     if (search) requestOptionsArgs.search = search;
-    requestOptionsArgs.headers = this.apiConfig.userHeaders();
+    requestOptionsArgs.headers = this.apiConfig.userHeaders(options.overridingToken);
 
     return requestOptionsArgs;
   }
