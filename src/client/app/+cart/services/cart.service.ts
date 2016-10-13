@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
-import { ApiService, Api, ApiOptions, ApiBody } from '../../shared/services/api.service';
+import { ApiService, Api, ApiBody } from '../../shared/services/api.service';
 import { CartSummaryService } from '../../shared/services/cart-summary.service';
 import { CurrentUser } from '../../shared/services/current-user.model';
 
