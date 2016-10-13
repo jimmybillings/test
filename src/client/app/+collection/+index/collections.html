@@ -7,8 +7,8 @@
         (query)="search($event)"
         (closeSearch)="showCollectionSearch()">
       </collections-search-form>
-      <div flex="100" layout="row" layout-xs="column" layout-align="space-between end">
-        <h2 flex="100" class="md-display-1">{{ 'COLLECTION.INDEX.PAGE_TITLE' | translate }}</h2>
+      <div flex="100" layout="row" layout-align="space-between end">
+        <h2 flex="grow" class="md-display-1">{{ 'COLLECTION.INDEX.PAGE_TITLE' | translate }}</h2>
         <div class="tools" flex="auto">
           <button md-icon-button
             *ngIf="!collectionSearchIsShowing"
@@ -33,7 +33,7 @@
 </section>
 
 <div layout="row" layout-align="center start">
-  <div class="md-caption query-details"  flex="100" flex-gt-md="95" flex-gt-lg="85">
+  <div class="md-caption query-details" flex="100" flex-gt-md="95" flex-gt-lg="85">
     <span *ngIf="options.currentSearchQuery.q" flex="auto" class="search">
       <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{options.currentSearchQuery.q}}
     </span>
