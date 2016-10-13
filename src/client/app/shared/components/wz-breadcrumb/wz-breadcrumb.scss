@@ -3,6 +3,7 @@
   margin: 0;
   li {
     list-style-type: none;
+    display: inline-block;
     margin-bottom: rem(.4);
   }
   .breadcrumb {

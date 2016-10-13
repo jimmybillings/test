@@ -1,7 +1,7 @@
 
-<ul class="breadcrumbs" layout="row" layout-align="start start" layout-wrap>
+<ul class="breadcrumbs" flex="100">
   <!--<li *ngIf="loading"><md-progress-circle mode="indeterminate"></md-progress-circle></li>-->
-  <li *ngFor="let filter of activeFilters" flex="none">
+  <li *ngFor="let filter of activeFilters">
       <button *ngIf="filter.active" class="breadcrumb" md-button (click)="clearFilter(filter)">
         {{filter.name}} 
         <span *ngIf="filter.filterValue">
@@ -10,7 +10,7 @@
         <md-icon>clear</md-icon>
       </button>
   </li>
-  <li *ngIf="activeFilters.length > 0" flex="none">
+  <li *ngIf="activeFilters.length > 0">
     <button md-button color="primary" class="breadcrumb-clear-all" (click)="clearFilters()">
       clear filters
     </button>  

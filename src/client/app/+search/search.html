@@ -24,7 +24,7 @@
   <section class="search-results">
     <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
       <div flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
-        <breadcrumb-component layout="row" layout-wrap class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
+        <breadcrumb-component layout="row" layout-wrap layout-align="start start" class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
         <div layout="row" flex layout-align="end center">
           <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)" flex layout-align="end stretch"></wz-pagination>
         </div>
