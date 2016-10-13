@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
-import { ApiService } from '../../shared/services/api.service';
+import { ApiService, Api, ApiBody } from '../../shared/services/api.service';
 import { CartSummaryService } from '../../shared/services/cart-summary.service';
 import { CurrentUser } from '../../shared/services/current-user.model';
 
@@ -36,7 +36,7 @@ export class CartService {
   // Finally, we call share() to ensure that the do() call happens exactly once instead
   // of once per subscriber.
   public initializeData(): Observable<any> {
-    return this.apiServiceGet('orders', 'cart', { loading: true })
+    return this.apiService.get2(Api.Orders, 'cart', { loading: true })
       .do(wholeCartResponse => this.store.replaceWith(wholeCartResponse))
       .flatMap(_ => this.addProjectIfNoProjectsExist())
       .takeLast(1)
@@ -49,7 +49,7 @@ export class CartService {
   }
 
   public removeProject(project: Project): void {
-    this.apiServiceDelete('orders', `cart/project/${project.id}`, { loading: true })
+    this.apiService.delete2(Api.Orders, `cart/project/${project.id}`, { loading: true })
       .subscribe(wholeCartResponse => {
         this.updateCart(wholeCartResponse);
         this.addProjectIfNoProjectsExist().subscribe();
@@ -57,22 +57,22 @@ export class CartService {
   }
 
   public updateProject(project: Project): void {
-    this.apiServicePut('orders', 'cart/project', JSON.stringify(project), { loading: true })
+    this.apiService.put2(Api.Orders, 'cart/project', { body: project, loading: true })
       .subscribe(this.updateCart);
   }
 
   public moveLineItemTo(project: Project, lineItem: LineItem): void {
-    this.apiServicePut('orders', `cart/move/lineItem?lineItemId=${lineItem.id}&projectId=${project.id}`, '', { loading: true })
+    this.apiService.put2(Api.Orders, 'cart/move/lineItem', { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true })
       .subscribe(this.updateCart);
   }
 
   public cloneLineItem(lineItem: LineItem): void {
-    this.apiServicePut('orders', `cart/clone/lineItem?lineItemId=${lineItem.id}`, '', { loading: true })
+    this.apiService.put2(Api.Orders, 'cart/clone/lineItem', { parameters: { lineItemId: lineItem.id }, loading: true })
       .subscribe(this.updateCart);
   }
 
   public removeLineItem(lineItem: LineItem): void {
-    this.apiServiceDelete('orders', `cart/asset/${lineItem.id}`, { loading: true })
+    this.apiService.delete2(Api.Orders, `cart/asset/${lineItem.id}`, { loading: true })
       .subscribe(this.updateCart);
   }
 
@@ -85,18 +85,19 @@ export class CartService {
   }
 
   private addProjectAndReturnObservable(): Observable<any> {
-    return this.apiServicePost('orders', 'cart/project', this.createAddProjectRequestBody(), { loading: true })
+    return this.apiService.post2(Api.Orders, 'cart/project', { body: this.createAddProjectRequestBody(), loading: true })
       .do(this.updateCart)
       .share();
   }
 
-  private createAddProjectRequestBody(): string {
+  private createAddProjectRequestBody(): ApiBody {
     let existingNames: Array<string> =
       (this.state.projects || []).map((project: any) => project.name);
-    return JSON.stringify({
+
+    return {
       name: CartUtilities.nextNewProjectNameGiven(existingNames),
       clientName: this.fullName
-    });
+    };
   }
 
   private get fullName(): string {
@@ -111,45 +112,4 @@ export class CartService {
     this.store.replaceWith(wholeCartResponse);
     this.cartSummaryService.loadCartSummary();
   }
-
-  // Idea for ApiService enhancement.
-  // If/when the ApiService abstracts away URL construction and JSON responses for us,
-  // these methods will no longer be needed.
-  private get defaultApiServiceOptions(): ApiServiceOptions {
-    return { requestOptions: {}, loading: false };
-  }
-
-  private apiServiceGet(apiService: string, urlEnding: string, options: ApiServiceOptions = {}): Observable<any> {
-    options = Object.assign({}, this.defaultApiServiceOptions, options);
-    return this.apiService.get(`/api/${apiService}/v1/${urlEnding}`, options.requestOptions, options.loading)
-      .map(response => response.json());
-  }
-
-  private apiServicePost(apiService: string, urlEnding: string, body: string, options: ApiServiceOptions = {}): Observable<any> {
-    options = Object.assign({}, this.defaultApiServiceOptions, options);
-    return this.apiService.post(`/api/${apiService}/v1/${urlEnding}`, body, options.requestOptions, options.loading)
-      .map(response => response.json());
-  }
-
-  private apiServiceDelete(apiService: string, urlEnding: string, options: ApiServiceOptions = {}): Observable<any> {
-    options = Object.assign({}, this.defaultApiServiceOptions, options);
-    return this.apiService.delete(`/api/${apiService}/v1/${urlEnding}`, options.requestOptions, options.loading)
-      .map(response => response.json());
-  }
-
-  private apiServicePut(apiService: string, urlEnding: string, body: string, options: ApiServiceOptions = {}): Observable<any> {
-    options = Object.assign({}, this.defaultApiServiceOptions, options);
-    return this.apiService.put(`/api/${apiService}/v1/${urlEnding}`, body, options.requestOptions, options.loading)
-      .map(response => response.json());
-  }
-  // END of ApiService abstractions.
 }
-
-// Extra definitions for ApiService abstraction/demo.
-import { RequestOptionsArgs } from '@angular/http';
-
-interface ApiServiceOptions {
-  requestOptions?: RequestOptionsArgs;
-  loading?: boolean;
-}
-// END of ApiService abstractions.
