@@ -129,9 +129,13 @@ collections-component .query-details {
       border: 1px solid rgba(md-color($md-primary, 400), 1);
     }
     .divider {
-      margin-top: rem(.6);
+      margin: rem(.6) rem(.8) 0 rem(.8);
       padding-bottom: rem(.6);
-      box-shadow: inset 0 1px 0 0 md-color($md-grey, 800, .14);
+      box-shadow: inset 0 1px 0 0 md-color($md-grey, 800, .2);
+      display: none;
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        display: flex;
+      }
     }
     .collection-tags {
       margin-top: rem(.5);
