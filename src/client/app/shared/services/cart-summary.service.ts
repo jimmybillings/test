@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
-import { ApiService } from './api.service';
+import { ApiService, Api } from './api.service';
 import { Observable } from 'rxjs/Rx';
-import { URLSearchParams, RequestOptions } from '@angular/http';
 
 const initCartSummary: any = {
   'projects': [
@@ -45,26 +44,16 @@ export class CartSummaryService {
   }
 
   public addAssetToProjectInCart(asset: any): void {
-    let projectName: string = this.lastProjectName;
-    let body: any = this.formatAsset(asset);
-    let options: any = { 'projectName': projectName, 'region': 'AAA' };
-    this.apiServicePut('asset/lineItem/quick', JSON.stringify(body), options)
-      .take(1).subscribe(data => this.updateCartSummaryStore(data));
-  }
-
-  private apiServicePut(urlPath: string, body: string = '', options: any = {}): Observable<any> {
-    options = this.buildSearchOptions(options);
-    return this.api.put(`api/orders/v1/cart/${urlPath}`, body, options).map(res => {
-      return res.json();
-    });
+    this.api.put2(
+      Api.Orders,
+      'cart/asset/lineItem/quick',
+      { body: this.formatAsset(asset), parameters: { projectName: this.lastProjectName, region: 'AAA' } }
+    ).subscribe(data => this.updateCartSummaryStore(data));
   }
 
   private getCartSummary(): void {
-    this.api.get('api/orders/v1/cart/summary').map(res => {
-      return res.json();
-    }).take(1).subscribe(data => {
-      this.updateCartSummaryStore(data);
-    });
+    this.api.get2(Api.Orders, 'cart/summary')
+      .subscribe(data => this.updateCartSummaryStore(data));
   }
 
   private updateCartSummaryStore(cartSummary: any): void {
@@ -77,22 +66,11 @@ export class CartSummaryService {
 
   private formatAsset(asset: any): any {
     return {
-      'lineItem': {
-        'asset': {
-          'assetId': asset.assetId
+      lineItem: {
+        asset: {
+          assetId: asset.assetId
         }
       }
     };
-  }
-
-  private buildSearchOptions(queryObject: any): RequestOptions {
-    const search: URLSearchParams = new URLSearchParams();
-    for (var param in queryObject) search.set(param, queryObject[param]);
-    let options = this.buildRequestOptions(search);
-    return new RequestOptions(options);
-  }
-
-  private buildRequestOptions(search?: URLSearchParams): RequestOptions {
-    return search ? new RequestOptions({ search }) : new RequestOptions({});
   }
 }
