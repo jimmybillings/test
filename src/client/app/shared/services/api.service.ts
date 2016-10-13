@@ -121,7 +121,7 @@ export class ApiService {
 
   private call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<Object> {
     options = this.combineDefaultOptionsWith(options);
-    this.uiState.loading(options.loading);
+    if (options.loading) this.uiState.loading(true);
 
     const request: Request = new Request(
       new RequestOptions(
