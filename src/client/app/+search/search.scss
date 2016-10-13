@@ -3,6 +3,30 @@ search-component md-sidenav-layout {
   min-height: 60vh;
   overflow-y: scroll;
 }
+search-component .search-header {
+  box-shadow: inset 0 -1px 0 0 md-color($md-foreground, divider), 0 1px 0 0 rgba(md-color($md-background, card), .6);
+}
+.asset-sort-by button {
+  .key {
+    font-weight: 500;
+  }
+  .value {
+    text-transform: none;
+    font-weight: 400;
+    opacity: .75;
+  }
+  .material-icons {
+    position: relative;
+    top: rem(.5);
+    left: rem(-.4);
+  }
+  &.md-primary[md-button], &[md-button].is-dd.md-primary .md-button-wrapper::after {
+    color: md-color($md-primary, 500);
+  }
+  &[md-button]:hover.md-primary::after, [md-icon-button]:hover.md-primary::after {
+    background-color: rgba(md-color($md-primary, 500), .12);
+  }
+}
 
 md-slide-toggle.count-toggle {
   background-color: md-color($md-background, background);
