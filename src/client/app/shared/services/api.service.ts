@@ -3,28 +3,9 @@ import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSe
 import { Observable } from 'rxjs/Rx';
 import { Error } from './error.service';
 import { ApiConfig } from './api.config';
+import { Api, ApiOptions, ApiParameters, ApiBody } from '../interfaces/api.interface';
 import { UiState } from './ui.state';
 import { CurrentUser } from './current-user.model';
-
-export enum Api {
-  Identities,
-  Orders
-};
-
-export interface ApiParameters {
-  [key: string]: string;
-}
-
-export interface ApiBody {
-  [key: string]: any;
-};
-
-export interface ApiOptions {
-  parameters?: ApiParameters;
-  body?: ApiBody;
-  loading?: boolean;
-  overridingToken?: string;
-}
 
 @Injectable()
 export class ApiService {

@@ -7,7 +7,8 @@ import {
   ResponseOptions
 } from '../../imports/test.imports';
 
-import { ApiService, Api } from './api.service';
+import { ApiService } from './api.service';
+import { Api } from '../interfaces/api.interface';
 import { ApiConfig } from './api.config';
 import { Error } from './error.service';
 import { CurrentUser } from './current-user.model';

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
-import { ApiService, Api } from './api.service';
+import { ApiService } from './api.service';
+import { Api } from '../interfaces/api.interface';
 import { Observable } from 'rxjs/Rx';
 
 const initCartSummary: any = {

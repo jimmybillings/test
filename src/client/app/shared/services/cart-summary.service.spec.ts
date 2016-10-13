@@ -2,7 +2,8 @@ import { inject, TestBed, beforeEachProvidersArray, Response, ResponseOptions } 
 import { Observable } from 'rxjs/Rx';
 
 import { ApiConfig } from './api.config';
-import { ApiService, Api, ApiBody, ApiParameters } from './api.service';
+import { ApiService } from './api.service';
+import { Api, ApiBody, ApiParameters } from '../interfaces/api.interface';
 import { CartSummaryService } from './cart-summary.service';
 
 export function main() {
