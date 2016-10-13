@@ -1,6 +1,6 @@
 <div #target></div>
 <md-sidenav-layout>
-  <md-sidenav #searchFilter align="start" mode="push">
+  <md-sidenav #searchFilter align="start" mode="side">
     <div class="md-overlay-container" *ngIf="(uiState.data | async).loading">
       <md-progress-bar color="accent" mode="indeterminate"></md-progress-bar>
     </div>
@@ -22,8 +22,8 @@
   </section>
 
   <section class="search-results">
-    <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
-      <div flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'">
+    <div layout="row" md-scroll-y="" layout-align="center start">
+      <div flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'" layout-padding>
         <breadcrumb-component layout="row" layout-wrap layout-align="start start" class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
         <div layout="row" flex layout-align="end center">
           <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)" flex layout-align="end stretch"></wz-pagination>
