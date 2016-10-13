@@ -8,17 +8,10 @@ import { CartSummaryService } from './cart-summary.service';
 
 export function main() {
   describe('Cart Summary Service', () => {
-    const mockApiConfig = {
-      baseUrl: () => 'SOME_BASE_URL/',
-      authHeaders: () => 'SOME_AUTH_HEADERS'
-    };
-
     let mockResponseBody: Object;
 
     const mockApiService = {
-      get: () => Observable.of(new Response(new ResponseOptions({ body: mockResponseBody }))),
       get2: () => Observable.of(mockResponseBody),
-      put: () => Observable.of(new Response(new ResponseOptions({ body: mockResponseBody }))),
       put2: () => Observable.of(mockResponseBody)
     };
 
@@ -27,14 +20,11 @@ export function main() {
         providers: [
           ...beforeEachProvidersArray,
           CartSummaryService,
-          { provide: ApiConfig, useValue: mockApiConfig },
           { provide: ApiService, useValue: mockApiService }
         ]
       });
 
       mockResponseBody = '{}';
-      spyOn(mockApiService, 'get').and.callThrough();
-      spyOn(mockApiService, 'put').and.callThrough();
       spyOn(mockApiService, 'get2').and.callThrough();
       spyOn(mockApiService, 'put2').and.callThrough();
     });
