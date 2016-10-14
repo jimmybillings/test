@@ -63,16 +63,10 @@ export function main() {
       ]
     }));
 
-    it('Should have a getSortPreferences() method that loops the sortDefinition list and sets a default',
-      inject([SearchComponent], (component: SearchComponent) => {
-        spyOn(component.sortDefinitions, 'update');
-        component.getSortPreferences(2);
-        expect(component.sortDefinitions.update).toHaveBeenCalledWith({ sorts: mockSortDefinitions().list, currentSort: mockSortDefinitions().list[0].first });
-      }));
 
     it('Should have a onSortResults() event handler function that updates the currentSort and searchContext',
       inject([SearchComponent], (component: SearchComponent) => {
-        component.sortOptions = mockSortDefinitions().list;
+        component.sortDefinitions = mockSortDefinitions().list;
         spyOn(component.sortDefinitions, 'update');
         component.onSortResults(mockSortDefinitions().list[1].first);
         expect(component.sortDefinitions.update).toHaveBeenCalledWith({currentSort: mockSortDefinitions().list[1].first});

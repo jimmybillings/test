@@ -103,6 +103,7 @@ export class AppComponent implements OnInit {
         this.collections.load().take(1).subscribe();
       });
     }
+    this.preferences.getPrefs();
     this.cartSummary.loadCartSummary();
   }
 

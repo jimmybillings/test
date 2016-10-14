@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
   public preferences: any;
-  public sortOptions: any;
+  public sortDefintions: any;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
@@ -58,7 +58,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sortSubscription = this.sortDefinitions.data.subscribe((data: any) => {
-      this.sortOptions = data;
+      this.sortDefintions = data;
     });
     this.preferencesSubscription = this.userPreferences.data.subscribe((data: any) => {
       this.preferences = data;
@@ -67,7 +67,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.routeSubscription = this.route.params.subscribe(params => {
-      this.getSortPreferences(params['sortId']);
       if (this.preferences.displayFilterCounts) {
         this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe(() => this.uiState.loading(false));
       }
@@ -173,35 +172,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.go();
   }
 
-  public getSortPreferences(sortId: any): void {
-    let currentSort: any;
-    let sorts: any;
-    this.sortDefinitions.getSortOptions().take(1).subscribe((data) => {
-      for (let group of data.list) {
-        for (let definition in group) {
-          if (group[definition].id === parseInt(sortId)) {
-            currentSort = group[definition];
-          }
-        }
-      };
-      sorts = data.list ? data.list : this.mockSorts.list;
-      currentSort = currentSort ? currentSort : sorts[0].first;
-      this.sortDefinitions.update({ sorts: sorts, currentSort: currentSort });
-    }, (error) => {
-      sorts = this.mockSorts.list;
-      currentSort = sorts[0].first;
-      this.sortDefinitions.update({ sorts: sorts, currentSort: currentSort });
-    });
-  }
-
   public onSortResults(sortDefinition: any): void {
-    for (let group of this.sortOptions) {
-      for (let definition in group) {
-        if (group[definition].id === sortDefinition.id) {
-          this.sortDefinitions.update({ currentSort: group[definition] });
-        }
-      }
-    };
+    this.userPreferences.update({ stickySort: sortDefinition.id });
     this.updateSearchContext(sortDefinition.id);
   }
 
@@ -212,19 +184,5 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public addAssetToCart(asset: any): void {
     this.cartSummary.addAssetToProjectInCart(asset);
-  }
-
-  public get mockSorts(): any {
-    return {
-      'list': [
-        {
-          'first': {'lastUpdated': '2016-09-21T15:06:40Z','createdOn': '2016-08-18T18:01:44Z','id': 2,'siteName': 'core','name': 'Relevance (most relevant first)','isDefault': false,'pairId': 'testPair','association': 'user:1','sorts': [{'field': 'score','descending': true}]}
-        },
-        {
-          'first': {'lastUpdated': '2016-09-21T14:50:51Z','createdOn': '2016-09-16T20:13:22Z','id': 4,'siteName': 'core','name': 'Date Added (oldest first)','isDefault': false,'pairId': 'date','association': 'user:25','sorts': [{'field': 'ingested','descending': false}]},
-          'second': {'lastUpdated': '2016-09-21T14:51:18Z','createdOn': '2016-09-16T20:23:26Z','id': 5,'siteName': 'core','name': 'Date Added (newest first)','isDefault': false,'pairId': 'date','association': 'user:25','sorts': [{'field': 'ingested','descending': true}]}
-        }
-      ]
-    };
   }
 }

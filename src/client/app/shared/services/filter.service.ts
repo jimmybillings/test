@@ -31,7 +31,7 @@ export class FilterService {
 
   public get(params: any, counted: boolean): Observable<any> {
     let options = this.filterOptions(JSON.parse(JSON.stringify(Object.assign({}, params, { counted }))));
-    return this.api.get(this.filterUrl, options).map((res: Response) => {
+    return this.api.get(this.filterUrl, options, true).map((res: Response) => {
       this.set(this.sanatize(res.json(), null));
       this.checkLocalStorage(res.json());
       return res.json();
