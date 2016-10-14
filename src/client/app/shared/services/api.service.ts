@@ -130,16 +130,11 @@ export class ApiService {
   }
 
   private urlFor(api: Api, endpoint: string) {
-    return `${this.apiConfig.baseUrl()}${this.pathFor(api)}/${this.versionFor(api)}/${endpoint}`;
+    return `${this.apiConfig.baseUrl()}api/${this.pathSegmentFor(api)}/${this.versionFor(api)}/${endpoint}`;
   }
 
-  private pathFor(api: Api): string {
-    switch (api) {
-      case Api.Identities: return 'api/identities';
-      case Api.Assets: return 'assets-api';
-      case Api.Orders: return 'api/orders';
-      default: return '?';
-    };
+  private pathSegmentFor(api: Api): string {
+    return Api[api].toLowerCase();
   }
 
   private versionFor(api: Api): string {
