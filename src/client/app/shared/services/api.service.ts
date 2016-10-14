@@ -3,7 +3,7 @@ import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSe
 import { Observable } from 'rxjs/Rx';
 import { Error } from './error.service';
 import { ApiConfig } from './api.config';
-import { Api, ApiOptions, ApiParameters, ApiBody } from '../interfaces/api.interface';
+import { Api, ApiOptions, ApiParameters, ApiBody, ApiResponse } from '../interfaces/api.interface';
 import { UiState } from './ui.state';
 import { CurrentUser } from './current-user.model';
 
@@ -35,7 +35,7 @@ export class ApiService {
     });
   }
 
-  public get2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<Object> {
+  public get2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Get, api, endpoint, options);
   }
 
@@ -51,7 +51,7 @@ export class ApiService {
     });
   }
 
-  public post2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<Object> {
+  public post2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Post, api, endpoint, options);
   }
 
@@ -67,7 +67,7 @@ export class ApiService {
     });
   }
 
-  public put2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<Object> {
+  public put2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Put, api, endpoint, options);
   }
 
@@ -83,7 +83,7 @@ export class ApiService {
     });
   }
 
-  public delete2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<Object> {
+  public delete2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Delete, api, endpoint, options);
   }
 
@@ -101,7 +101,7 @@ export class ApiService {
     });
   }
 
-  private call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<Object> {
+  private call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<ApiResponse> {
     options = this.combineDefaultOptionsWith(options);
     if (options.loading) this.uiState.loading(true);
 
@@ -130,16 +130,22 @@ export class ApiService {
   }
 
   private urlFor(api: Api, endpoint: string) {
-    return `${this.apiConfig.baseUrl()}api/${this.pathSegmentFor(api)}/${this.versionFor(api)}/${endpoint}`;
+    return `${this.apiConfig.baseUrl()}${this.pathFor(api)}/${this.versionFor(api)}/${endpoint}`;
   }
 
-  private pathSegmentFor(api: Api): string {
-    return Api[api].toLowerCase();
+  private pathFor(api: Api): string {
+    switch (api) {
+      case Api.Identities: return 'api/identities';
+      case Api.Assets: return 'assets-api';
+      case Api.Orders: return 'api/orders';
+      default: return '?';
+    };
   }
 
   private versionFor(api: Api): string {
     switch (api) {
       case Api.Identities: return 'v1';
+      case Api.Assets: return 'v1';
       case Api.Orders: return 'v1';
       default: return '?';
     };
