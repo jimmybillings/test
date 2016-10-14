@@ -22,15 +22,7 @@ export class ApiConfig {
     return baseUrl;
   }
 
-  public authHeaders(): Headers {
-    return new Headers({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token')
-    });
-  }
-
-  public userHeaders(overridingToken: string = ''): Headers {
+  public headers(overridingToken: string = ''): Headers {
     const headers: { [name: string]: any } = {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
@@ -49,10 +41,6 @@ export class ApiConfig {
     }
 
     return new Headers(headers);
-  }
-
-  public headers(): Headers {
-    return new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' });
   }
 
   public setPortal(portal: string): void {

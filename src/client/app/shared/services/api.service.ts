@@ -177,13 +177,13 @@ export class ApiService {
     }
 
     if (search) requestOptionsArgs.search = search;
-    requestOptionsArgs.headers = this.apiConfig.userHeaders(options.overridingToken);
+    requestOptionsArgs.headers = this.apiConfig.headers(options.overridingToken);
 
     return requestOptionsArgs;
   }
 
   private buildOptions(options: any) {
-    options.headers = this.apiConfig.userHeaders();
+    options.headers = this.apiConfig.headers();
     if (!options.search && !this.currentUser.loggedIn()) options.search = new URLSearchParams();
     if (!this.currentUser.loggedIn()) options.search.set('siteName', this.apiConfig.getPortal());
     return options;

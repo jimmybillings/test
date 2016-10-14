@@ -26,7 +26,7 @@ export function main() {
     beforeEach(() => {
 
       mockBackEnd.connections.subscribe((c: any) => connection = c);
-      MockApiConfig = { userHeaders: function () { return 'hi'; }, baseUrl: function () { return 'BASE/'; }, getPortal: function () { return 'core'; } };
+      MockApiConfig = { headers: function () { return 'hi'; }, baseUrl: function () { return 'BASE/'; }, getPortal: function () { return 'core'; } };
       MockError = { dispatch: function (error: any) { return error; } };
 
       mockCurrentUser = {
@@ -34,7 +34,7 @@ export function main() {
       };
 
       spyOn(MockError, 'dispatch');
-      spyOn(MockApiConfig, 'userHeaders').and.callThrough();
+      spyOn(MockApiConfig, 'headers').and.callThrough();
       spyOn(MockApiConfig, 'baseUrl').and.callThrough();
 
       TestBed.configureTestingModule({
@@ -56,7 +56,7 @@ export function main() {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1');
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
       }));
@@ -68,7 +68,7 @@ export function main() {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
       }));
@@ -78,7 +78,7 @@ export function main() {
         loggedInState = true;
         service.request('api/collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -92,7 +92,7 @@ export function main() {
         loggedInState = false;
         service.request('api/collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -107,7 +107,7 @@ export function main() {
         service.get('api/collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
@@ -119,7 +119,7 @@ export function main() {
         service.get2(Api.Identities, 'collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond(responseWith({ status: 200 }));
@@ -131,7 +131,7 @@ export function main() {
         service.get('api/collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
@@ -143,7 +143,7 @@ export function main() {
         service.get2(Api.Identities, 'collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond(responseWith({ status: 200 }));
@@ -154,7 +154,7 @@ export function main() {
         loggedInState = true;
         service.get('api/collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -168,7 +168,7 @@ export function main() {
         loggedInState = true;
         service.get2(Api.Identities, 'collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -182,7 +182,7 @@ export function main() {
         loggedInState = false;
         service.get('api/collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -196,7 +196,7 @@ export function main() {
         loggedInState = false;
         service.get2(Api.Identities, 'collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -212,7 +212,7 @@ export function main() {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
@@ -225,7 +225,7 @@ export function main() {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond(responseWith({ status: 200 }));
@@ -238,7 +238,7 @@ export function main() {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
@@ -251,7 +251,7 @@ export function main() {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond(responseWith({ status: 200 }));
@@ -263,7 +263,7 @@ export function main() {
         service.post('api/collection/1', JSON.stringify({ userId: 3 })).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -278,7 +278,7 @@ export function main() {
         service.post2(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/identities/v1/api/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -293,7 +293,7 @@ export function main() {
         service.post('api/collection/1', JSON.stringify({ userId: 3 })).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -308,7 +308,7 @@ export function main() {
         service.post2(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -324,7 +324,7 @@ export function main() {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
@@ -337,7 +337,7 @@ export function main() {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond(responseWith({ status: 200 }));
@@ -350,7 +350,7 @@ export function main() {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
@@ -363,7 +363,7 @@ export function main() {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond(responseWith({ status: 200 }));
@@ -375,7 +375,7 @@ export function main() {
         service.put('api/collection/1', JSON.stringify({ userId: 3 })).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -390,7 +390,7 @@ export function main() {
         service.put2(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -405,7 +405,7 @@ export function main() {
         service.put('api/collection/1', JSON.stringify({ userId: 3 })).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -420,7 +420,7 @@ export function main() {
         service.put2(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -435,7 +435,7 @@ export function main() {
         service.delete('api/collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
@@ -447,7 +447,7 @@ export function main() {
         service.delete2(Api.Identities, 'collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond(responseWith({ status: 200 }));
@@ -459,7 +459,7 @@ export function main() {
         service.delete('api/collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
@@ -471,7 +471,7 @@ export function main() {
         service.delete2(Api.Identities, 'collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond(responseWith({ status: 200 }));
@@ -482,7 +482,7 @@ export function main() {
         loggedInState = true;
         service.delete('api/collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -496,7 +496,7 @@ export function main() {
         loggedInState = true;
         service.delete2(Api.Identities, 'collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -510,7 +510,7 @@ export function main() {
         loggedInState = false;
         service.delete('api/collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -524,7 +524,7 @@ export function main() {
         loggedInState = false;
         service.delete2(Api.Identities, 'collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -540,7 +540,7 @@ export function main() {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
@@ -553,7 +553,7 @@ export function main() {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
@@ -565,7 +565,7 @@ export function main() {
         service.patch('api/collection/1', JSON.stringify({ userId: 3 })).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -580,7 +580,7 @@ export function main() {
         service.patch('api/collection/1', JSON.stringify({ userId: 3 })).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -595,7 +595,7 @@ export function main() {
         service.head('api/collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
@@ -607,7 +607,7 @@ export function main() {
         service.head('api/collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         });
         connection.mockRespond({ status: 200 });
@@ -618,7 +618,7 @@ export function main() {
         loggedInState = true;
         service.head('api/collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
@@ -632,7 +632,7 @@ export function main() {
         loggedInState = false;
         service.head('api/collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
-          expect(MockApiConfig.userHeaders).toHaveBeenCalled();
+          expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
         }, (error) => {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
