@@ -103,12 +103,12 @@ export class AppComponent implements OnInit {
         this.collections.load().take(1).subscribe();
       });
     }
-    this.preferences.getPrefs();
     this.cartSummary.loadCartSummary();
   }
 
   private processLoggedOutUser() {
     this.collections.destroyAll();
     this.uiState.reset();
+    this.preferences.reset();
   }
 }

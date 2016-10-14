@@ -15,7 +15,7 @@
       <div class="asset-sort-by" layout="row" layout-align="end center" layout-padding>
         <button md-button class="is-dd" color="primary" [md-menu-trigger-for]="assetSortMenu">
           <md-icon>sort</md-icon>
-            <span class="key">{{'SEARCH.SORT_BTN_LABEL' | translate }}</span><span class="value">{{ sortDefintions.currentSort.name }}</span>
+            <span class="key">{{'SEARCH.SORT_BTN_LABEL' | translate }}</span><span class="value">{{ sortOptions.currentSort.name }}</span>
         </button>
       </div>
     </header>
@@ -48,5 +48,5 @@
 </md-sidenav-layout>
 
 <md-menu x-position="before" #assetSortMenu="mdMenu">
-  <wz-sort-component [current]="sortDefintions.currentSort" [items]="sortDefintions.sorts" (sort)="onSortResults($event)"></wz-sort-component>
+  <wz-sort-component [current]="sortOptions.currentSort" [items]="sortOptions.sorts" (sort)="onSortResults($event)"></wz-sort-component>
 </md-menu>

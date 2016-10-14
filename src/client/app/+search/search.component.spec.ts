@@ -66,10 +66,12 @@ export function main() {
 
     it('Should have a onSortResults() event handler function that updates the currentSort and searchContext',
       inject([SearchComponent], (component: SearchComponent) => {
-        component.sortDefinitions = mockSortDefinitions().list;
-        spyOn(component.sortDefinitions, 'update');
+        component.sortOptions = mockSortDefinitions().list;
+        spyOn(component.userPreferences, 'updateSortPreference');
+        spyOn(component, 'updateSearchContext');
         component.onSortResults(mockSortDefinitions().list[1].first);
-        expect(component.sortDefinitions.update).toHaveBeenCalledWith({currentSort: mockSortDefinitions().list[1].first});
+        expect(component.userPreferences.updateSortPreference).toHaveBeenCalledWith(4);
+        expect(component.updateSearchContext).toHaveBeenCalledWith(4);
       }));
 
     it('Should have an updateSearchContext() method that updates the search contex, and calls .go()',

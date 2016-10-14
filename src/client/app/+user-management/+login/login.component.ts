@@ -6,6 +6,8 @@ import { User } from '../services/user.data.service';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { UiConfig } from '../../shared/services/ui.config';
+import { UserPreferenceService } from '../../shared/services/user-preference.service';
+
 /**
  * Login page component - renders login page and handles login form submission
  */
@@ -25,6 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     public _user: User,
     public router: Router,
     public _currentUser: CurrentUser,
+    public userPreference: UserPreferenceService,
     public uiConfig: UiConfig) {
   }
 
@@ -40,6 +43,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this._authentication.create(user).take(1).subscribe((res) => {
       localStorage.setItem('token', res.token.token);
       this._currentUser.set(res.user);
+      let prefs: any = this.userPreference.formatResponse(res.userPreferences);
+      this.userPreference.set(prefs);
       this.router.navigate(['/']);
     });
   }

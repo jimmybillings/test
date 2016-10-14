@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public activeCollectionStore: Observable<any>;
   public assets: Observable<any>;
   public preferences: any;
-  public sortDefintions: any;
+  public sortOptions: any;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private assetsStoreSubscription: Subscription;
   private routeSubscription: Subscription;
@@ -57,34 +57,29 @@ export class SearchComponent implements OnInit, OnDestroy {
     public cartSummary: CartSummaryService) { }
 
   ngOnInit(): void {
-    this.sortSubscription = this.sortDefinitions.data.subscribe((data: any) => {
-      this.sortDefintions = data;
+    this.sortDefinitions.getSortOptions().take(1).subscribe(data => {
+      let stickySort: any = this.findStickySort(data.list) || data.list[0].first;
+      this.sortDefinitions.update({ sorts: data.list, currentSort: stickySort });
     });
     this.preferencesSubscription = this.userPreferences.data.subscribe((data: any) => {
       this.preferences = data;
-      this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe(() => this.uiState.loading(false));
+      this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe();
     });
+    this.sortSubscription = this.sortDefinitions.data.subscribe((data: any) => this.sortOptions = data);
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    this.routeSubscription = this.route.params.subscribe(params => {
-      if (this.preferences.displayFilterCounts) {
-        this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe(() => this.uiState.loading(false));
-      }
-    });
   }
 
   ngOnDestroy(): void {
     this.assetData.clearAssets();
     this.assetsStoreSubscription.unsubscribe();
-    this.routeSubscription.unsubscribe();
     this.configSubscription.unsubscribe();
     this.preferencesSubscription.unsubscribe();
     this.sortSubscription.unsubscribe();
   }
 
   public countToggle(event: any): void {
-    this.userPreferences.update({ displayFilterCounts: event.checked });
-    if (this.preferences.displayFilterCounts) this.uiState.loading(true);
+    this.userPreferences.toggleFilterCount();
   }
 
   public showAsset(asset: any): void {
@@ -132,7 +127,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyExclusiveFilter(subFilter: any): void {
-    if (this.preferences.displayFilterCounts) this.uiState.loading(true);
     this.filter.set(this.filter.toggleExclusive(subFilter));
     this.filterAssets();
   }
@@ -173,7 +167,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public onSortResults(sortDefinition: any): void {
-    this.userPreferences.update({ stickySort: sortDefinition.id });
+    this.userPreferences.updateSortPreference(sortDefinition.id);
+    this.sortDefinitions.update({ currentSort: sortDefinition });
     this.updateSearchContext(sortDefinition.id);
   }
 
@@ -184,5 +179,19 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public addAssetToCart(asset: any): void {
     this.cartSummary.addAssetToProjectInCart(asset);
+  }
+
+  private filterCountsChanged(prev: boolean, current: boolean): boolean {
+    return prev !== current;
+  }
+
+  private findStickySort(sorts: Array<any>): any {
+    for (let group of sorts) {
+      for (let definition in group) {
+        if (group[definition].id === parseInt(this.userPreferences.state.searchSortOptionId)) {
+          return group[definition];
+        };
+      };
+    };
   }
 }

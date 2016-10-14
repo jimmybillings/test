@@ -19,22 +19,7 @@ export class SearchResolver {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     this.searchContext.create = route.params;
-    return Observable.forkJoin([
-      this.assets.searchAssets(this.searchContext.state),
-      this.sortDefinitions.getSortOptions()
-    ]).map((data: any) => {
-      let stickySort: any = this.findStickySort(data[1].list) || data[1].list[0].first;
-      this.sortDefinitions.update({ sorts: data[1].list, currentSort: stickySort });
-    });
-  }
-
-  private findStickySort(sorts: Array<any>): any {
-    for (let group of sorts) {
-      for (let definition in group) {
-        if (group[definition].id === parseInt(this.userPreference.state.stickySort)) {
-          return group[definition];
-        };
-      };
-    };
+    this.userPreference.updateSortPreference(route.params['sortId']);
+    return this.assets.searchAssets(this.searchContext.state);
   }
 }

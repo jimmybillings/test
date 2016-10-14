@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from './api.service';
+import { Api } from '../interfaces/api.interface';
 import { CurrentUser } from './current-user.model';
 
 const defaultPreferences: any = {
   displayFilterCounts: false,
   collectionTrayIsOpen: false,
   searchIsOpen: true,
-  stickySort: {}
+  searchSortOptionId: 12
 };
 
 export const userPreferences: ActionReducer<any> = (state = defaultPreferences, action: Action) => {
@@ -37,14 +38,8 @@ export class UserPreferenceService {
     return s;
   }
 
-  public getPrefs(): void {
-    this.get().take(1).subscribe(data => {
-      this.store.dispatch({ type: 'USER_PREFS.UPDATE_PREFERENCES', payload: data });
-    });
-  }
-
   public toggleSearch(): void {
-    this.data.take(1).subscribe(s => this.update({ searchIsOpen: !s.searchIsOpen }));
+    this.update({ searchIsOpen: !this.state.searchIsOpen });
   }
 
   public closeSearch(): void {
@@ -52,34 +47,50 @@ export class UserPreferenceService {
   }
 
   public toggleCollectionTray(): void {
-    this.data.take(1).subscribe(s => this.update({ collectionTrayIsOpen: !s.collectionTrayIsOpen }));
+    this.update({ collectionTrayIsOpen: !this.state.collectionTrayIsOpen });
   }
 
   public openCollectionTray(): void {
     this.update({ collectionTrayIsOpen: true });
   }
 
-  public update(params: any): void {
-    this.updatePrefs(params);
+  public updateSortPreference(sortId: number): void {
+    this.update({ searchSortOptionId: sortId });
   }
 
-  private updatePrefs(params: any): void {
-    this.put(params).take(1).subscribe(data => {
-      this.store.dispatch({ type: 'USER_PREFS.UPDATE_PREFERENCES', payload: data });
-    });
+  public toggleFilterCount(): void {
+    this.update({ displayFilterCounts: !this.state.displayFilterCounts })
+  }
+
+  public set(preferences: any): void {
+    this.updateStore(preferences);
+  }
+
+  public reset(): void {
+    this.updateStore();
+  }
+
+  public formatResponse(preferences: any): any {
+    for (let prefKey in preferences) {
+      let newValue: any = this.stringToBool(preferences[prefKey]);
+      preferences[prefKey] = newValue;
+    }
+    return preferences;
+  }
+
+  private update(params: any): void {
+    this.updateStore(params);
+    if (!this.currentUser.loggedIn()) return;
+    this.put(params).take(1).subscribe();
+  }
+
+  private updateStore(data: any = defaultPreferences): void {
+    this.store.dispatch({ type: 'USER_PREFS.UPDATE_PREFERENCES', payload: data });
   }
 
   private put(params: any): Observable<any> {
     let body: any = this.formatBody(params);
-    return this.api.put('api/identities/v1/userPreferences/item', JSON.stringify(body), {}, true).map(res => {
-      return this.formatResponse(res.json());
-    });
-  }
-
-  private get(): Observable<any> {
-    return this.api.get('api/identities/v1/userPreferences', {}, true).map(res => {
-      return this.formatResponse(res.json());
-    }); 
+    return this.api.put2(Api.Identities, 'userPreferences/item', {body: body});
   }
 
   private formatBody(prefs: any): any {
@@ -89,14 +100,6 @@ export class UserPreferenceService {
         value: prefs[pref]
       };
     };
-  }
-
-  private formatResponse(response: any): any {
-    for (let prefKey in response.prefs) {
-      let newValue: any = this.stringToBool(response.prefs[prefKey]);
-      response.prefs[prefKey] = newValue;
-    }
-    return response.prefs;
   }
 
   private stringToBool(value: string): boolean | string {
