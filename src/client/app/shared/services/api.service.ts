@@ -3,7 +3,7 @@ import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSe
 import { Observable } from 'rxjs/Rx';
 import { Error } from './error.service';
 import { ApiConfig } from './api.config';
-import { Api, ApiOptions, ApiParameters, ApiBody } from '../interfaces/api.interface';
+import { Api, ApiOptions, ApiParameters, ApiBody, ApiResponse } from '../interfaces/api.interface';
 import { UiState } from './ui.state';
 import { CurrentUser } from './current-user.model';
 
@@ -35,7 +35,7 @@ export class ApiService {
     });
   }
 
-  public get2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<Object> {
+  public get2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Get, api, endpoint, options);
   }
 
@@ -51,7 +51,7 @@ export class ApiService {
     });
   }
 
-  public post2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<Object> {
+  public post2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Post, api, endpoint, options);
   }
 
@@ -67,7 +67,7 @@ export class ApiService {
     });
   }
 
-  public put2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<Object> {
+  public put2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Put, api, endpoint, options);
   }
 
@@ -83,7 +83,7 @@ export class ApiService {
     });
   }
 
-  public delete2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<Object> {
+  public delete2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Delete, api, endpoint, options);
   }
 
@@ -101,7 +101,7 @@ export class ApiService {
     });
   }
 
-  private call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<Object> {
+  private call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<ApiResponse> {
     options = this.combineDefaultOptionsWith(options);
     if (options.loading) this.uiState.loading(true);
 
@@ -140,6 +140,7 @@ export class ApiService {
   private versionFor(api: Api): string {
     switch (api) {
       case Api.Identities: return 'v1';
+      case Api.Assets: return 'v1';
       case Api.Orders: return 'v1';
       default: return '?';
     };
@@ -171,13 +172,13 @@ export class ApiService {
     }
 
     if (search) requestOptionsArgs.search = search;
-    requestOptionsArgs.headers = this.apiConfig.userHeaders(options.overridingToken);
+    requestOptionsArgs.headers = this.apiConfig.headers(options.overridingToken);
 
     return requestOptionsArgs;
   }
 
   private buildOptions(options: any) {
-    options.headers = this.apiConfig.userHeaders();
+    options.headers = this.apiConfig.headers();
     if (!options.search && !this.currentUser.loggedIn()) options.search = new URLSearchParams();
     if (!this.currentUser.loggedIn()) options.search.set('siteName', this.apiConfig.getPortal());
     return options;

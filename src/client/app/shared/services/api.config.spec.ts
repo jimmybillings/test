@@ -17,27 +17,6 @@ export function main() {
       ]
     }));
 
-    it('Should create an instance of authorization headers, with correct header info',
-      inject([ApiConfig], (service: ApiConfig) => {
-        localStorage.clear();
-        expect(service.authHeaders() instanceof Headers).toBeTruthy();
-        expect(service.authHeaders().has('Content-Type')).toBeTruthy();
-        expect(service.authHeaders().getAll('Content-Type')).toEqual(['application/json']);
-        expect(service.authHeaders().has('Authorization')).toBeTruthy();
-        expect(service.authHeaders().getAll('Authorization')).toEqual(['Bearer null']);
-        expect(service.authHeaders().has('Accept')).toBeTruthy();
-        expect(service.authHeaders().getAll('Accept')).toEqual(['application/json']);
-      }));
-
-    it('Should create an instance of api headers, with correct header info',
-      inject([ApiConfig], (service: ApiConfig) => {
-        expect(service.headers() instanceof Headers).toBeTruthy();
-        expect(service.headers().has('Content-Type')).toBeTruthy();
-        expect(service.headers().getAll('Content-Type')).toEqual(['application/json']);
-        expect(service.authHeaders().has('Accept')).toBeTruthy();
-        expect(service.authHeaders().getAll('Accept')).toEqual(['application/json']);
-      }));
-
     it('should return portal name. If none is set, it should return "core"', inject([ApiConfig], (service: ApiConfig) => {
       expect(service.getPortal()).toEqual('core');
     }));
@@ -55,7 +34,7 @@ export function main() {
     }));
   });
 
-  describe('userHeaders()', () => {
+  describe('headers()', () => {
     let loggedIn: boolean;
     let mockCurrentUser: any;
     let returnedHeaders: Headers;
@@ -74,7 +53,7 @@ export function main() {
 
     it('returns appropriate headers for a logged out user', () => {
       loggedIn = false;
-      returnedHeaders = new ApiConfig(mockCurrentUser).userHeaders();
+      returnedHeaders = new ApiConfig(mockCurrentUser).headers();
 
       expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
       expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
@@ -83,7 +62,7 @@ export function main() {
 
     it('returns appropriate headers for a logged in user', () => {
       loggedIn = true;
-      returnedHeaders = new ApiConfig(mockCurrentUser).userHeaders();
+      returnedHeaders = new ApiConfig(mockCurrentUser).headers();
 
       expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
       expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
@@ -92,7 +71,7 @@ export function main() {
 
     it('adds overriding auth header for a logged out user', () => {
       loggedIn = false;
-      returnedHeaders = new ApiConfig(mockCurrentUser).userHeaders('OVERRIDING_TOKEN');
+      returnedHeaders = new ApiConfig(mockCurrentUser).headers('OVERRIDING_TOKEN');
 
       expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
       expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
@@ -101,7 +80,7 @@ export function main() {
 
     it('overrides the normal auth header for a logged in user', () => {
       loggedIn = true;
-      returnedHeaders = new ApiConfig(mockCurrentUser).userHeaders('OVERRIDING_TOKEN');
+      returnedHeaders = new ApiConfig(mockCurrentUser).headers('OVERRIDING_TOKEN');
 
       expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
       expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);

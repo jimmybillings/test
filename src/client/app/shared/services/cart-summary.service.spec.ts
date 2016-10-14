@@ -1,7 +1,6 @@
-import { inject, TestBed, beforeEachProvidersArray, Response, ResponseOptions } from '../../imports/test.imports';
+import { inject, TestBed, beforeEachProvidersArray } from '../../imports/test.imports';
 import { Observable } from 'rxjs/Rx';
 
-import { ApiConfig } from './api.config';
 import { ApiService } from './api.service';
 import { Api, ApiBody, ApiParameters } from '../interfaces/api.interface';
 import { CartSummaryService } from './cart-summary.service';
