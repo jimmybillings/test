@@ -12,16 +12,16 @@ export function main() {
       loggedIn: () => false
     };
 
-    let data = { displayFilterCounts: false, collectionTrayIsOpen: false, searchIsOpen: true, searchSortOptionId: 12 }
+    let data = { displayFilterCounts: false, collectionTrayIsOpen: false, searchIsOpen: true, searchSortOptionId: 12 };
 
     mockStore = {
       dispatch: (_: any) => Object.assign(data, _.payload),
       select: (_: string) => Observable.of(data)
-    }
+    };
 
     mockApiService = {
       put2: () => Observable.of({})
-    }
+    };
 
     beforeEach(() => {
       serviceUnderTest = new UserPreferenceService(mockCurrentUserService, mockStore, mockApiService);

@@ -29,7 +29,7 @@ export class UserPreferenceService {
     public currentUser: CurrentUser,
     public store: Store<any>,
     public api: ApiService) {
-      this.data = this.store.select('userPreferences');
+    this.data = this.store.select('userPreferences');
   }
 
   public get state(): any {
@@ -59,7 +59,7 @@ export class UserPreferenceService {
   }
 
   public toggleFilterCount(): void {
-    this.update({ displayFilterCounts: !this.state.displayFilterCounts })
+    this.update({ displayFilterCounts: !this.state.displayFilterCounts });
   }
 
   public set(preferences: any): void {
@@ -90,7 +90,7 @@ export class UserPreferenceService {
 
   private put(params: any): Observable<any> {
     let body: any = this.formatBody(params);
-    return this.api.put2(Api.Identities, 'userPreferences/item', {body: body});
+    return this.api.put2(Api.Identities, 'userPreferences/item', { body: body });
   }
 
   private formatBody(prefs: any): any {

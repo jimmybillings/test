@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, ViewContainerRef} from '@angular/core';
-import { Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, ViewContainerRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AssetData } from './services/asset.data.service';
-import { UiConfig} from '../shared/services/ui.config';
-import { Observable, Subscription} from 'rxjs/Rx';
-import { CurrentUser} from '../shared/services/current-user.model';
-import { SearchContext} from '../shared/services/search-context.service';
+import { UiConfig } from '../shared/services/ui.config';
+import { Observable, Subscription } from 'rxjs/Rx';
+import { CurrentUser } from '../shared/services/current-user.model';
+import { SearchContext } from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
@@ -35,7 +35,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public sortOptions: any;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private assetsStoreSubscription: Subscription;
-  private routeSubscription: Subscription;
   private configSubscription: Subscription;
   private preferencesSubscription: Subscription;
   private sortSubscription: Subscription;
@@ -179,10 +178,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public addAssetToCart(asset: any): void {
     this.cartSummary.addAssetToProjectInCart(asset);
-  }
-
-  private filterCountsChanged(prev: boolean, current: boolean): boolean {
-    return prev !== current;
   }
 
   private findStickySort(sorts: Array<any>): any {
