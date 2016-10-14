@@ -1,9 +1,8 @@
-<section class="profile-head">
-  <div layout="row" layout-align="center start">
-    <header flex-xl="85" flex-gt-lg="95" flex="100">
-      <div flex="100" layout="row" layout-xs="column" layout-align="start center">
-        <h2 flex="100" class="md-display-1">{{ 'PROFILE.PAGE_TITLE' | translate }}</h2>
-        <div class="tools" flex="auto">
+<section class="profile-head" layout="row" layout-align="center center">
+  <header flex-xl="85" flex-gt-lg="95" flex="100">
+    <div layout="row"  layout-align="space-between end">
+      <h2 flex="100" class="md-display-1">{{ 'PROFILE.PAGE_TITLE' | translate }}</h2>
+      <div class="tools" flex="auto">
           <button md-button title="{{ 'PROFILE.SETTING_BTN_HOVER_TITLE' | translate }}" [md-menu-trigger-for]="profileSettings" class="md-icon-button is-dd" color="primary"><md-icon>settings</md-icon></button>
           <md-menu x-position="before" #profileSettings="mdMenu">
             <button md-menu-item disabled>
@@ -18,9 +17,8 @@
             </button>
           </md-menu>
         </div>
-      </div>
-    </header>
-  </div>
+    </div>
+  </header>
 </section>
 
 <section class="data-bk">
@@ -70,10 +68,13 @@
               </div>
             </div>
             <div layout="row" layout-align="end center">
-              <!--<button md-button md-raised-button [md-menu-trigger-for]="profileSettings" color="primary">Edit basic info</button>-->
-              <button md-mini-fab color="primary" (click)="comingSoonDialog.show()">
+              <button md-button (click)="comingSoonDialog.show()" color="primary" class="edit-basic">
                 <md-icon class="md-24">edit</md-icon>
+                Edit basic info
               </button>
+              <!--<button md-mini-fab color="primary" (click)="comingSoonDialog.show()">
+                <md-icon class="md-24">edit</md-icon>
+              </button>-->
             </div>
             <div class="m-data">
               <div class="row">

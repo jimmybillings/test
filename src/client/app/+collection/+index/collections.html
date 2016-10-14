@@ -1,5 +1,4 @@
-<section class="collection-head">
-  <div layout="row" layout-align="center start">
+<section class="collection-head" layout="row" layout-align="center center">
     <header flex="100" flex-gt-md="95" flex-gt-lg="85">
       <collections-search-form
         [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
@@ -8,9 +7,9 @@
         (query)="search($event)"
         (closeSearch)="showCollectionSearch()">
       </collections-search-form>
-      <div flex="100" layout="row" layout-xs="column">
-        <h2 flex="100" layout-align="end center" class="md-display-1">{{ 'COLLECTION.INDEX.PAGE_TITLE' | translate }}</h2>
-        <div class="tools" flex="auto" layout-align="end center">
+      <div flex="100" layout="row" layout-align="space-between end">
+        <h2 flex="grow" class="md-display-1">{{ 'COLLECTION.INDEX.PAGE_TITLE' | translate }}</h2>
+        <div class="tools" flex="auto">
           <button md-icon-button
             *ngIf="!collectionSearchIsShowing"
             title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}"
@@ -31,11 +30,10 @@
         </div>
       </div>
     </header>
-  </div>
 </section>
 
 <div layout="row" layout-align="center start">
-  <div class="md-caption query-details"  flex="100" flex-gt-md="95" flex-gt-lg="85">
+  <div class="md-caption query-details" flex="100" flex-gt-md="95" flex-gt-lg="85">
     <span *ngIf="options.currentSearchQuery.q" flex="auto" class="search">
       <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{options.currentSearchQuery.q}}
     </span>

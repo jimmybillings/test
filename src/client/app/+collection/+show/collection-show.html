@@ -7,7 +7,7 @@
           <li class="collection" flex="100" layout="row" layout-xs="column">
               <div flex="100" flex-gt-sm="66">
               <div flex="100" layout="row" layout-xs="column">
-                <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding layout-fill>
+                <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding>
                   <div class="asset">
                     <div class="asset-thb">
                       <span class="asset-id"><span class="id">{{collection.id}}</span></span>
@@ -16,7 +16,7 @@
                     </div>
                   </div>
                 </div>
-                <div flex-gt-sm="60" flex-xl="70" flex="100" (click)="selectFocusedCollection(collection)" layout-padding layout-fill>
+                <div flex-gt-sm="60" flex-xl="70" flex="100" (click)="selectFocusedCollection(collection)" layout-padding>
                   <h3 class="md-headline">{{collection.name}}
                     <span class="asset-count">
                       <span class="count" *ngIf="collection.assets">{{collection.assetsCount}}</span>
