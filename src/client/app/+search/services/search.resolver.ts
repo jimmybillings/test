@@ -5,11 +5,13 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { SearchContext } from '../../shared/services/search-context.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 import { UiState } from '../../shared/services/ui.state';
+import { SortDefinitionsService } from '../../shared/services/sort-definitions.service';
 
 @Injectable()
 export class SearchResolver {
   constructor(
     private assets: AssetData,
+    private sortDefinitions: SortDefinitionsService,
     private searchContext: SearchContext,
     public userPreference: UserPreferenceService,
     public uiState: UiState) {
@@ -17,7 +19,7 @@ export class SearchResolver {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     this.searchContext.create = route.params;
-    if (this.userPreference.state.displayFilterCounts) this.uiState.loading(true);
+    this.userPreference.updateSortPreference(route.params['sortId']);
     return this.assets.searchAssets(this.searchContext.state);
   }
 }

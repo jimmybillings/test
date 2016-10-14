@@ -5,6 +5,7 @@ import { SearchContext} from '../shared/services/search-context.service';
 import { Subscription } from 'rxjs/Rx';
 import { UiState } from '../shared/services/ui.state';
 import { FilterService } from '../shared/services/filter.service';
+import { UserPreferenceService } from '../shared/services/user-preference.service';
 
 @Component({
   moduleId: module.id,
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     public searchContext: SearchContext,
     public uiState: UiState,
     private detector: ChangeDetectorRef,
+    private userPreference: UserPreferenceService,
     private filter: FilterService) { }
 
   ngOnInit() {
@@ -38,7 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public newSearchContext(query: any): void {
     this.filter.set(this.filter.clear());
-    this.searchContext.new({ q: query, i: 1, n: this.config.pageSize.value });
+    this.searchContext.new({ q: query, i: 1, n: this.config.pageSize.value, sortId: this.userPreference.state.searchSortOptionId });
   }
 
   public json(context: any): any {

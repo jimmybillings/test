@@ -109,5 +109,6 @@ export class AppComponent implements OnInit {
   private processLoggedOutUser() {
     this.collections.destroyAll();
     this.uiState.reset();
+    this.preferences.reset();
   }
 }

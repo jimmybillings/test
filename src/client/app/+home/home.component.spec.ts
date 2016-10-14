@@ -49,7 +49,7 @@ export function main() {
         spyOn(component.searchContext, 'new');
         component.ngOnInit();
         component.newSearchContext('cat');
-        expect(component.searchContext.new).toHaveBeenCalledWith({ q: 'cat', i: 1, n: '100' });
+        expect(component.searchContext.new).toHaveBeenCalledWith({ q: 'cat', i: 1, n: '100', sortId: 12 });
       }));
   });
 }
