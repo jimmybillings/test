@@ -1,7 +1,8 @@
 import { Component, Input, ElementRef, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
-import { Http, Response, RequestOptions, URLSearchParams} from '@angular/http';
+import { ApiService } from '../../services/api.service';
+import { Api, ApiResponse } from '../../interfaces/api.interface';
 
 @Component({
   moduleId: module.id,
@@ -29,9 +30,8 @@ export class WzInputSuggestionsComponent implements OnInit {
   private selectedSuggestion: String;
   private activeSuggestion: string;
   private shouldCallServer: boolean = true;
-  constructor(private element: ElementRef, private http: Http, private detector: ChangeDetectorRef) {
 
-  }
+  constructor(private element: ElementRef, private apiService: ApiService, private detector: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.areSuggestionsVisible = false;
@@ -46,9 +46,7 @@ export class WzInputSuggestionsComponent implements OnInit {
           return [];
         }
       })
-      .map((res: Response) => {
-        return (res.json().items) ? res.json().items.map((item: any) => item.name) : [];
-      })
+      .map(response => (response['items'] || []).map((item: any) => item.name))
       .subscribe(suggestions => {
         this.suggestions = suggestions;
         this.areSuggestionsVisible = this.suggestions.length > 0;
@@ -146,24 +144,11 @@ export class WzInputSuggestionsComponent implements OnInit {
     }
   }
 
-  private query(query: string): Observable<any> {
-    return this.http.get(
-      this.apiConfig.baseUrl() + this.url(),
-      this.options(query));
-  }
-
-  private url(): string {
-    return 'api/assets/v1/collectionSummary/search';
-  }
-
-  private options(query: string): RequestOptions {
-    const search: URLSearchParams = new URLSearchParams();
-    search.set('q', query);
-    search.set('accessLevel', 'all');
-    search.set('i', '0');
-    search.set('n', '100');
-    let headers = this.apiConfig.authHeaders();
-    let options = { headers, search, body: '' };
-    return new RequestOptions(options);
+  private query(query: string): Observable<ApiResponse> {
+    return this.apiService.get2(
+      Api.Assets,
+      'collectionSummary/search',
+      { parameters: { q: query, accessLevel: 'all', i: '0', n: '100' } }
+    );
   }
 }

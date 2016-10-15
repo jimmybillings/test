@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, ViewContainerRef} from '@angular/core';
-import { Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, ViewContainerRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AssetData } from './services/asset.data.service';
-import { UiConfig} from '../shared/services/ui.config';
-import { Observable, Subscription} from 'rxjs/Rx';
-import { CurrentUser} from '../shared/services/current-user.model';
-import { SearchContext} from '../shared/services/search-context.service';
+import { UiConfig } from '../shared/services/ui.config';
+import { Observable, Subscription } from 'rxjs/Rx';
+import { CurrentUser } from '../shared/services/current-user.model';
+import { SearchContext } from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
 import { Collection } from '../shared/interfaces/collection.interface';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
@@ -35,7 +35,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public sortOptions: any;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private assetsStoreSubscription: Subscription;
-  private routeSubscription: Subscription;
   private configSubscription: Subscription;
   private preferencesSubscription: Subscription;
   private sortSubscription: Subscription;
@@ -57,35 +56,29 @@ export class SearchComponent implements OnInit, OnDestroy {
     public cartSummary: CartSummaryService) { }
 
   ngOnInit(): void {
-    this.sortSubscription = this.sortDefinitions.data.subscribe((data: any) => {
-      this.sortOptions = data;
+    this.sortDefinitions.getSortOptions().take(1).subscribe(data => {
+      let stickySort: any = this.findStickySort(data.list) || data.list[0].first;
+      this.sortDefinitions.update({ sorts: data.list, currentSort: stickySort });
     });
     this.preferencesSubscription = this.userPreferences.data.subscribe((data: any) => {
       this.preferences = data;
-      this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe(() => this.uiState.loading(false));
+      this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe();
     });
+    this.sortSubscription = this.sortDefinitions.data.subscribe((data: any) => this.sortOptions = data);
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    this.routeSubscription = this.route.params.subscribe(params => {
-      this.getSortPreferences(params['sortId']);
-      if (this.preferences.displayFilterCounts) {
-        this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe(() => this.uiState.loading(false));
-      }
-    });
   }
 
   ngOnDestroy(): void {
     this.assetData.clearAssets();
     this.assetsStoreSubscription.unsubscribe();
-    this.routeSubscription.unsubscribe();
     this.configSubscription.unsubscribe();
     this.preferencesSubscription.unsubscribe();
     this.sortSubscription.unsubscribe();
   }
 
   public countToggle(event: any): void {
-    this.userPreferences.update({ displayFilterCounts: event.checked });
-    if (this.preferences.displayFilterCounts) this.uiState.loading(true);
+    this.userPreferences.toggleFilterCount();
   }
 
   public showAsset(asset: any): void {
@@ -133,7 +126,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public applyExclusiveFilter(subFilter: any): void {
-    if (this.preferences.displayFilterCounts) this.uiState.loading(true);
     this.filter.set(this.filter.toggleExclusive(subFilter));
     this.filterAssets();
   }
@@ -173,35 +165,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchContext.go();
   }
 
-  public getSortPreferences(sortId: any): void {
-    let currentSort: any;
-    let sorts: any;
-    this.sortDefinitions.getSortOptions().take(1).subscribe((data) => {
-      for (let group of data.list) {
-        for (let definition in group) {
-          if (group[definition].id === parseInt(sortId)) {
-            currentSort = group[definition];
-          }
-        }
-      };
-      sorts = data.list ? data.list : this.mockSorts.list;
-      currentSort = currentSort ? currentSort : sorts[0].first;
-      this.sortDefinitions.update({ sorts: sorts, currentSort: currentSort });
-    }, (error) => {
-      sorts = this.mockSorts.list;
-      currentSort = sorts[0].first;
-      this.sortDefinitions.update({ sorts: sorts, currentSort: currentSort });
-    });
-  }
-
   public onSortResults(sortDefinition: any): void {
-    for (let group of this.sortOptions) {
-      for (let definition in group) {
-        if (group[definition].id === sortDefinition.id) {
-          this.sortDefinitions.update({ currentSort: group[definition] });
-        }
-      }
-    };
+    this.userPreferences.updateSortPreference(sortDefinition.id);
+    this.sortDefinitions.update({ currentSort: sortDefinition });
     this.updateSearchContext(sortDefinition.id);
   }
 
@@ -214,17 +180,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.cartSummary.addAssetToProjectInCart(asset);
   }
 
-  public get mockSorts(): any {
-    return {
-      'list': [
-        {
-          'first': {'lastUpdated': '2016-09-21T15:06:40Z','createdOn': '2016-08-18T18:01:44Z','id': 2,'siteName': 'core','name': 'Relevance (most relevant first)','isDefault': false,'pairId': 'testPair','association': 'user:1','sorts': [{'field': 'score','descending': true}]}
-        },
-        {
-          'first': {'lastUpdated': '2016-09-21T14:50:51Z','createdOn': '2016-09-16T20:13:22Z','id': 4,'siteName': 'core','name': 'Date Added (oldest first)','isDefault': false,'pairId': 'date','association': 'user:25','sorts': [{'field': 'ingested','descending': false}]},
-          'second': {'lastUpdated': '2016-09-21T14:51:18Z','createdOn': '2016-09-16T20:23:26Z','id': 5,'siteName': 'core','name': 'Date Added (newest first)','isDefault': false,'pairId': 'date','association': 'user:25','sorts': [{'field': 'ingested','descending': true}]}
-        }
-      ]
+  private findStickySort(sorts: Array<any>): any {
+    for (let group of sorts) {
+      for (let definition in group) {
+        if (group[definition].id === parseInt(this.userPreferences.state.searchSortOptionId)) {
+          return group[definition];
+        };
+      };
     };
   }
 }

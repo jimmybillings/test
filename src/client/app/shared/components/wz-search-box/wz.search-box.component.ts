@@ -1,10 +1,10 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-import { Http, Response, RequestOptions, URLSearchParams } from '@angular/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { UiState } from '../../services/ui.state';
-import { ApiConfig } from '../../services/api.config';
+import { ApiService } from '../../services/api.service';
+import { Api, ApiResponse } from '../../interfaces/api.interface';
 
 @Component({
   moduleId: module.id,
@@ -23,7 +23,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
   public searchTerms: Observable<any>;
   public searchForm: FormGroup;
 
-  constructor(public fb: FormBuilder, public router: Router, private http: Http, public apiConfig: ApiConfig) {
+  constructor(public fb: FormBuilder, public router: Router, private apiService: ApiService) {
     this.setForm();
   }
 
@@ -70,30 +70,15 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
     return this.searchForm.valueChanges
       .debounceTime(500)
       .switchMap((changes: { query: string }) => this.query(changes.query))
-      .map((res: Response) => res.json().termsList);
+      .map(response => response['termsList']);
   }
 
-  private query(query: string): Observable<any> {
-    return this.http.get(
-      this.apiConfig.baseUrl() + this.url(query),
-      this.options(query));
-  }
-
-  private url(query: string): string {
-    return (this.currentUser.loggedIn())
-      ? 'assets-api/v1/search/searchTerms'
-      : 'assets-api/v1/search/anonymous/searchTerms';
-  }
-
-  private options(query: string): RequestOptions {
-    const search: URLSearchParams = new URLSearchParams();
-    search.set('siteName', this.apiConfig.getPortal());
-    search.set('text', query);
-    search.set('prefix', 'true');
-    search.set('maxTerms', '10');
-    let headers = (this.currentUser.loggedIn()) ? this.apiConfig.authHeaders() : this.apiConfig.headers();
-    let options = { headers, search, body: '' };
-    return new RequestOptions(options);
+  private query(query: string): Observable<ApiResponse> {
+    return this.apiService.get2(
+      Api.Assets,
+      this.currentUser.loggedIn() ? 'search/searchTerms' : 'search/anonymous/searchTerms',
+      { parameters: { text: query, prefix: 'true', maxTerms: '10' } }
+    );
   }
 }
 

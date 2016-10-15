@@ -1,7 +1,7 @@
 export enum Api {
   Identities,
-  Orders,
-  Assets
+  Assets,
+  Orders
 };
 
 export interface ApiParameters {
@@ -9,6 +9,10 @@ export interface ApiParameters {
 }
 
 export interface ApiBody {
+  [key: string]: any;
+};
+
+export interface ApiResponse {
   [key: string]: any;
 };
 

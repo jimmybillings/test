@@ -13,7 +13,7 @@
   <section class="search-header" layout="row" layout-align="center center">
     <header flex-gt-lg="95" flex="100">
       <div class="asset-sort-by" layout="row" layout-align="end center" layout-padding>
-        <button md-button class="is-dd" color="primary"  *ngIf="sortOptions" [md-menu-trigger-for]="assetSortMenu">
+        <button md-button class="is-dd" color="primary" [md-menu-trigger-for]="assetSortMenu">
           <md-icon>sort</md-icon>
             <span class="key">{{'SEARCH.SORT_BTN_LABEL' | translate }}</span><span class="value">{{ sortOptions.currentSort.name }}</span>
         </button>
