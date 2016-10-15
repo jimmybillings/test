@@ -1,6 +1,7 @@
 export enum Api {
   Identities,
-  Orders
+  Orders,
+  Assets
 };
 
 export interface ApiParameters {

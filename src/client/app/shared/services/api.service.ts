@@ -114,8 +114,8 @@ export class ApiService {
     return this.http.request(request)
       .do(response => { return; }, error => { return; }, () => this.uiState.loading(false))
       .map(response => response.json())
-      .catch(error => {
-        error = error.json();
+      .catch((error:any) => {
+        // error = error.json();
         this.error.dispatch(error);
         return Observable.throw(error);
       });
@@ -141,6 +141,7 @@ export class ApiService {
     switch (api) {
       case Api.Identities: return 'v1';
       case Api.Orders: return 'v1';
+      case Api.Assets: return 'v1';
       default: return '?';
     };
   }

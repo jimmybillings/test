@@ -35,7 +35,6 @@ export class ErrorActions {
   public handle(error: any): void {
     switch (error.status) {
       case 401:
-        console.log('401');
         if (!this.callInProgress) {
           this.callInProgress = true;
           this.unAuthorized();
@@ -43,7 +42,6 @@ export class ErrorActions {
         }
         break;
       case 403:
-        console.log('403');
         if (!this.callInProgress) {
           this.callInProgress = true;
           this.forbidden();

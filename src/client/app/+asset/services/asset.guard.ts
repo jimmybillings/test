@@ -23,7 +23,6 @@ export class AssetGuard implements CanActivate {
       return true;
     } else if(route.params['share_key']) {
       // A Mayfly user with a share token.
-      localStorage.setItem('token', route.params['share_key']);
       return true;
     } else {
       // user is logged in but doesn't have permission

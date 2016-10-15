@@ -22,6 +22,7 @@ export function main() {
     mockBackEnd = new MockBackend();
     let loggedInState: boolean = true;
     let responseWith: Function = (object: Object) => new Response(new ResponseOptions({ body: JSON.stringify(object) }));
+    let errorResponseWith: Function = (object: Object) => object;
 
     beforeEach(() => {
 
@@ -174,7 +175,7 @@ export function main() {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
           expect(error).toEqual({ status: 401 });
         });
-        connection.mockError(responseWith({ status: 401 }));
+        connection.mockError(errorResponseWith({ status: 401 }));
       }));
 
     it('Should corretly build the get method given a valid request and handle an error based response for a logged OUT user',
@@ -202,7 +203,7 @@ export function main() {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
           expect(error).toEqual({ status: 401 });
         });
-        connection.mockError(responseWith({ status: 401 }));
+        connection.mockError(errorResponseWith({ status: 401 }));
       }));
 
     it('Should corretly build the post method given a valid request for a logged IN user',
@@ -284,7 +285,7 @@ export function main() {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
           expect(error).toEqual({ status: 401 });
         });
-        connection.mockError(responseWith({ status: 401 }));
+        connection.mockError(errorResponseWith({ status: 401 }));
       }));
 
     it('Should corretly build the post method given a valid request and handle an error based response for a logged OUT user',
@@ -314,7 +315,7 @@ export function main() {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
           expect(error).toEqual({ status: 401 });
         });
-        connection.mockError(responseWith({ status: 401 }));
+        connection.mockError(errorResponseWith({ status: 401 }));
       }));
 
     it('Should corretly build the put method given a valid request for a logged IN user',
@@ -396,7 +397,7 @@ export function main() {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
           expect(error).toEqual({ status: 401 });
         });
-        connection.mockError(responseWith({ status: 401 }));
+        connection.mockError(errorResponseWith({ status: 401 }));
       }));
 
     it('Should corretly build the put method given a valid request and handle an error based response for a logged OUT user',
@@ -426,7 +427,7 @@ export function main() {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
           expect(error).toEqual({ status: 401 });
         });
-        connection.mockError(responseWith({ status: 401 }));
+        connection.mockError(errorResponseWith({ status: 401 }));
       }));
 
     it('Should corretly build the delete method given a valid request for a logged IN user',
@@ -502,7 +503,7 @@ export function main() {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
           expect(error).toEqual({ status: 401 });
         });
-        connection.mockError(responseWith({ status: 401 }));
+        connection.mockError(errorResponseWith({ status: 401 }));
       }));
 
     it('Should corretly build the delete method given a valid request and handle an error based response for a logged OUT user',
@@ -530,7 +531,7 @@ export function main() {
           expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
           expect(error).toEqual({ status: 401 });
         });
-        connection.mockError(responseWith({ status: 401 }));
+        connection.mockError(errorResponseWith({ status: 401 }));
       }));
 
     it('Should corretly build the patch method given a valid request for a logged IN user',
