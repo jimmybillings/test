@@ -74,7 +74,7 @@ export class TranslationComponent implements OnInit, OnDestroy {
     this.trService.put(this.trStringForm.value.text, this.site, this.lang)
       .take(1).subscribe(res => {
         res.take(1).subscribe((data: any) => {
-          (<FormControl>this.trStringForm.controls['text']).setValue(data.json().text);
+          (<FormControl>this.trStringForm.controls['text']).setValue(data.text);
         });
       }, (err) => {
         // do something here
