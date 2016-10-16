@@ -23,7 +23,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
   public searchTerms: Observable<any>;
   public searchForm: FormGroup;
 
-  constructor(public fb: FormBuilder, public router: Router, private apiService: ApiService) {
+  constructor(public fb: FormBuilder, public router: Router, private api: ApiService) {
     this.setForm();
   }
 
@@ -74,7 +74,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
   }
 
   private query(query: string): Observable<ApiResponse> {
-    return this.apiService.get2(
+    return this.api.get2(
       Api.Assets,
       this.currentUser.loggedIn() ? 'search/searchTerms' : 'search/anonymous/searchTerms',
       { parameters: { text: query, prefix: 'true', maxTerms: '10' } }
