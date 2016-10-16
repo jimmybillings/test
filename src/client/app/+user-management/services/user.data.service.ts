@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
-import { Observable} from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
+import { Api } from '../../shared/interfaces/api.interface';
 
 
 /**
@@ -9,26 +9,15 @@ import { ApiService } from '../../shared/services/api.service';
  */
 @Injectable()
 export class User {
+  constructor(private api: ApiService) { }
 
-  public _apiUrls: {
-    create: string,
-    get: string
-  };
-
-  constructor(
-    public api: ApiService) {
-    this._apiUrls = {
-      create: 'api/identities/v1/user/register',
-      get: 'api/identities/v1/user/currentUser'
-    };
+  public create(user: Object): Observable<any> {
+    return this.api.post2(Api.Identities, 'user/register', { body: user, loading: true });
   }
 
-  create(user: Object): Observable<any> {
-    return this.api.post(this._apiUrls.create, JSON.stringify(user), {}, true)
-      .map((res: Response) => res.json());
-  }
-
-  get(): Observable<any> {
-    return this.api.get(this._apiUrls.get);
+  // TODO: This appears not to be used anywhere... remove it?
+  // If it is used somewhere -- is the caller doing an unecessary json() call on the result?
+  public get(): Observable<any> {
+    return this.api.get2(Api.Identities, 'user/currentUser');
   }
 }
