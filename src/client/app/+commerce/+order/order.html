@@ -1,0 +1,10 @@
+<section class="order-component">
+	<div class="order-summary">
+		<header layout="row" layout-align="space-around center" flex="100">
+			<span class="md-display-1"><strong>{{ 'ORDER.ORDER_IDENTIFIER' | translate }} </strong>{{ (order.data | async).id }}</span>
+			<span class="md-display-1"><strong>{{ 'ORDER.ORDER_TOTAL' | translate }} </strong>{{ (order.data | async).total | currency:'USD':true:'1.2-2' }}</span>
+			<span class="md-display-1"><strong>{{ 'ORDER.ORDER_PLACED' | translate }} </strong>{{ (order.data | async).createdOn | date }}</span>
+		</header>
+	</div>
+	<projects-component [readOnly]="true" [projects]="(order.data | async).projects" [config]="config"></projects-component>
+</section>

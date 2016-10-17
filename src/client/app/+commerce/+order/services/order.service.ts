@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../../shared/services/api.service';
+import { ApiService } from '../../../shared/services/api.service';
 import { Observable } from 'rxjs/Rx';
 import { ActionReducer, Action, Store } from '@ngrx/store';
 

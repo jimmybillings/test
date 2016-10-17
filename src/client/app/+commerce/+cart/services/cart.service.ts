@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
-import { ApiService } from '../../shared/services/api.service';
-import { Api, ApiBody } from '../../shared/interfaces/api.interface';
-import { CartSummaryService } from '../../shared/services/cart-summary.service';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { ApiService } from '../../../shared/services/api.service';
+import { Api, ApiBody } from '../../../shared/interfaces/api.interface';
+import { CartSummaryService } from '../../../shared/services/cart-summary.service';
+import { CurrentUser } from '../../../shared/services/current-user.model';
 
 import { Project, LineItem } from '../cart.interface';
 import { CartStore } from './cart.store';
@@ -77,8 +77,8 @@ export class CartService {
       .subscribe(this.updateCart);
   }
 
-  public purchaseOnCredit(): void {
-    alert('NOT YET IMPLEMENTED\nWill create an order from the cart and route you to it.');
+  public purchaseOnCredit(): Observable<any> {
+    return this.api.post2(Api.Orders, 'cart/checkout/purchaseOnCredit', { loading: true });
   }
 
   private addProjectIfNoProjectsExist(): Observable<any> {

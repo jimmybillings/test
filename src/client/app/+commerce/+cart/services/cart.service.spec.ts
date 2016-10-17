@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 
-import { Api } from '../../shared/interfaces/api.interface';
+import { Api } from '../../../shared/interfaces/api.interface';
 import { CartService } from './cart.service';
 import { Project, LineItem } from '../cart.interface';
 
