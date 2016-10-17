@@ -12,7 +12,7 @@ export const COMMERCE_ROUTES: Routes = [
     component: CommerceComponent,
     children: [
       { path: 'cart', component: CartComponent, canActivate: [CartGuard], resolve: { cart: CartResolver } },
-      { path: 'order/:id', component: OrderComponent, resolve: { order: OrderResolver } }
+      { path: 'order/:orderId', component: OrderComponent, resolve: { order: OrderResolver } }
     ]
   }
 ];

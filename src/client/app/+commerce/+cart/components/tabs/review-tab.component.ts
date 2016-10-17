@@ -29,7 +29,7 @@ export class ReviewTabComponent extends Tab implements OnInit {
 
   public purchaseOnCredit(): void {
     this.cartService.purchaseOnCredit().subscribe(data => {
-      this.router.navigate(['/order/' + data.id]);
+      this.router.navigate(['/order/' + data.id, { orderPlaced: true }]);
     });
   }
 }
