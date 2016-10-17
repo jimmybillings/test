@@ -17,10 +17,8 @@ export function main() {
       ]
     }));
 
-    it('Should create instance variables for http, apiconfig, currentUser, apiUrls, and collections',
+    it('Should create instance variable for data',
       inject([CollectionsService], (service: CollectionsService) => {
-        expect(service.api).toBeDefined();
-        expect(service.apiUrls).toBeDefined();
         expect(service.data).toBeDefined();
       }));
 
