@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Store, ActionReducer, Action } from '@ngrx/store';
+
 import { ApiService } from './api.service';
+import { Api } from '../interfaces/api.interface';
 
 const InitState: any = { components: {} };
 export const config: ActionReducer<any> = (state = InitState, action: Action) => {
@@ -20,27 +21,17 @@ export const config: ActionReducer<any> = (state = InitState, action: Action) =>
  */
 @Injectable()
 export class UiConfig {
-  public _apiUrls: {
-    get: string
-  };
-
-  constructor(
-    public store: Store<any>,
-    private api: ApiService) {
-
-    this._apiUrls = {
-      get: 'api/identities/v1/configuration/site'
-    };
-  }
+  constructor(public store: Store<any>, private api: ApiService) { }
 
   public initialize(loggedIn: boolean, siteName: string): Observable<any> {
     let localConfig = localStorage.getItem('uiConfig') || JSON.stringify(InitState);
     this.set(JSON.parse(localConfig));
-    if (loggedIn) this._apiUrls.get = this._apiUrls.get + '?siteName=' + siteName;
-    return this.api.get(this._apiUrls.get)
-      .do((res: Response) => {
-        this.set(res.json());
-      });
+
+    return this.api.get2(
+      Api.Identities,
+      'configuration/site',
+      loggedIn ? { parameters: { siteName: siteName } } : {}
+    ).do(response => this.set(response));
   }
 
   public set(config: any) {

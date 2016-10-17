@@ -19,19 +19,13 @@ export function main() {
       ]
     }));
 
-    it('Should set the api endpoint to get a UI configuration object',
-      inject([UiConfig], (service: UiConfig) => {
-        expect(service._apiUrls.get).toEqual('api/identities/v1/configuration/site');
-      })
-    );
-
     it('Should call the server for the configuration object and send the response to the Redux store for storage',
       inject([UiConfig, MockBackend], (service: UiConfig, mockBackend: MockBackend) => {
         let connection: any;
         mockBackend.connections.subscribe((c: any) => connection = c);
         spyOn(service.store, 'dispatch').and.callThrough();
 
-        service.initialize(false, 'core').subscribe((res:any) => {
+        service.initialize(false, 'core').subscribe((res: any) => {
           expect(connection.request.url.split('.com')[1]).toBe(
             '/api/identities/v1/configuration/site?siteName=core'
           );
@@ -52,7 +46,7 @@ export function main() {
       let connection: any;
       mockBackend.connections.subscribe((c: any) => connection = c);
 
-      service.initialize(false,'core').subscribe((res) => {
+      service.initialize(false, 'core').subscribe((res) => {
         service.get('search').subscribe((data) => {
           expect(data).toEqual(configObj().components.search);
         });
