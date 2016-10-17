@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Collection, Collections, CollectionStore } from '../../shared/interfaces/collection.interface';
-import { URLSearchParams, RequestOptions } from '@angular/http';
-import { Observable} from 'rxjs/Rx';
-import { Store, ActionReducer, Action} from '@ngrx/store';
+import { Observable } from 'rxjs/Rx';
+import { Store, ActionReducer, Action } from '@ngrx/store';
 import { ActiveCollectionService } from './active-collection.service';
 import { ApiService } from '../../shared/services/api.service';
+import { Api } from '../../shared/interfaces/api.interface';
 
 /**
  * Collections store -
@@ -46,21 +46,13 @@ export const collections: ActionReducer<any> = (state: Collections = collections
 @Injectable()
 export class CollectionsService {
   public data: Observable<any>;
-  public apiUrls: {
-    CollectionSummaryBaseUrl: string;
-    CollectionBaseUrl: string;
-  };
   private params: any;
 
   constructor(
     public store: Store<CollectionStore>,
-    public api: ApiService,
+    private api: ApiService,
     private activeCollection: ActiveCollectionService) {
     this.data = store.select('collections');
-    this.apiUrls = {
-      CollectionBaseUrl: 'api/identities/v1/collection',
-      CollectionSummaryBaseUrl: 'api/assets/v1/collectionSummary',
-    };
     this.setSearchParams();
     this.syncActiveCollection();
   }
@@ -72,45 +64,34 @@ export class CollectionsService {
   }
 
   public load(params: any = {}, loading: boolean = false): Observable<any> {
+    //TODO:  Do we really want to update this.params every time load() is called?
     this.params = Object.assign({}, this.params, params);
-    return this.api.get(`${this.apiUrls.CollectionSummaryBaseUrl}/search`,
-      this.getSearchOptions(this.params), loading)
-      .map(res => {
-        this.storeCollections(res.json());
-        return res.json();
-      });
+
+    return this.api.get2(Api.Assets, `collectionSummary/search`, { parameters: this.params, loading: loading })
+      .do(response => this.storeCollections(response));
   }
 
   public create(collection: Collection): Observable<any> {
-    return this.api.post(this.apiUrls.CollectionSummaryBaseUrl,
-      JSON.stringify(collection))
-      .map(res => {
-        this.createCollectionInStore(res.json());
-        this.activeCollection.updateActiveCollectionStore(res.json());
-        return res.json();
+    return this.api.post2(Api.Assets, 'collectionSummary', { body: collection })
+      .do(response => {
+        const collection: Collection = response as Collection;
+        this.createCollectionInStore(collection);
+        this.activeCollection.updateActiveCollectionStore(collection);
       });
   }
 
   public update(collection: Collection): Observable<any> {
-    return this.api.put(`${this.apiUrls.CollectionSummaryBaseUrl}/${collection.id}`,
-      JSON.stringify(collection));
+    return this.api.put2(Api.Assets, `collectionSummary/${collection.id}`, { body: collection });
   }
 
   public delete(collectionId: number): Observable<any> {
-    return this.api.delete(`${this.apiUrls.CollectionBaseUrl}/${collectionId}`)
-      .map(() => this.deleteCollectionFromStore(collectionId));
+    return this.api.delete2(Api.Identities, `collection/${collectionId}`)
+      .do(_ => this.deleteCollectionFromStore(collectionId));
   }
 
   public destroyAll(): void {
     this.store.dispatch({ type: 'RESET_COLLECTIONS' });
     this.activeCollection.resetStore();
-  }
-
-  public getSearchOptions(params: any): RequestOptions {
-    const search: URLSearchParams = new URLSearchParams();
-    for (var param in params) search.set(param, params[param]);
-    let options = { search: search };
-    return new RequestOptions(options);
   }
 
   public syncActiveCollection() {
@@ -157,6 +138,6 @@ export class CollectionsService {
   }
 
   public setSearchParams() {
-    this.params = { 'q': '', 'accessLevel': 'all', 's': '', 'd': '', 'i': 0, 'n': 200 };
+    this.params = { q: '', accessLevel: 'all', s: '', d: '', i: 0, n: 200 };
   }
 }

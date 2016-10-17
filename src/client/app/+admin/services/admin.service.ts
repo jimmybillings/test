@@ -7,10 +7,10 @@ import {
 } from '../../shared/interfaces/admin.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { Injectable } from '@angular/core';
-import { Response, URLSearchParams, RequestOptions } from '@angular/http';
-import { Store, ActionReducer, Action} from '@ngrx/store';
+import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
+import { Api } from '../../shared/interfaces/api.interface';
 
 const adminState: AdminState = { items: [], pagination: {} };
 export const adminResources: ActionReducer<AdminState> = (state = adminState, action: Action) => {
@@ -46,53 +46,20 @@ export class AdminService {
     });
   }
 
-  public getResourceIndex(queryObject: AdminUrlParams, resource: string): Observable<AdminResponse> {
+  public getResourceIndex(queryObject: AdminUrlParams, resourceType: string): Observable<AdminResponse> {
     let params = Object.create(JSON.parse(JSON.stringify(queryObject)));
     params['i'] = (parseFloat(params['i']) - 1).toString();
-    let url = this.buildUrl('search', resource);
-    let options = this.getIdentitiesSearchOptions(params);
-    return this.api.get(url, options).map((res: Response) => {
-      this.setResources(res.json());
-      return res.json();
-    });
+
+    return this.api.get2(Api.Identities, `${resourceType}/searchFields`, { parameters: params })
+      .do(response => this.setResources(response));
   }
 
   public postResource(resourceType: string, formData: User | Account): Observable<AdminResponse> {
-    let url = this.buildUrl('post', resourceType);
-    let options = this.buildRequestOptions();
-    let body = JSON.stringify(formData);
-    return this.api.post(url, body, options).map((res: Response) => res.json());
+    return this.api.post2(Api.Identities, resourceType, { body: formData });
   }
 
   public putResource(resourceType: string, formData: User | Account): Observable<AdminResponse> {
-    let url = this.buildUrl('put', resourceType, formData.id);
-    let options = this.buildRequestOptions();
-    let body = JSON.stringify(formData);
-    return this.api.put(url, body, options).map((res: Response) => res.json());
-  }
-
-  public getIdentitiesSearchOptions(queryObject: AdminFormParams): RequestOptions {
-    const search: URLSearchParams = new URLSearchParams();
-    for (var param in queryObject) search.set(param, queryObject[param]);
-    let options = this.buildRequestOptions(search);
-    return new RequestOptions(options);
-  }
-
-  public buildRequestOptions(search?: URLSearchParams): RequestOptions {
-    return search ? new RequestOptions({ search }) : new RequestOptions({});
-  }
-
-  public buildUrl(type: string, resourceType: string, resourceId?: number): string {
-    switch (type) {
-      case 'put':
-        return `api/identities/v1/${resourceType}/${resourceId}`;
-      case 'post':
-        return `api/identities/v1/${resourceType}`;
-      case 'search':
-        return `api/identities/v1/${resourceType}/searchFields/?`;
-      default:
-        return `api/identities/v1/${resourceType}/searchFields/?`;
-    }
+    return this.api.put2(Api.Identities, `${resourceType}/${formData.id}`, { body: formData });
   }
 
   public buildSearchTerm(filterParams: AdminFormParams): AdminFormParams {

@@ -31,7 +31,7 @@ export class WzInputSuggestionsComponent implements OnInit {
   private activeSuggestion: string;
   private shouldCallServer: boolean = true;
 
-  constructor(private element: ElementRef, private apiService: ApiService, private detector: ChangeDetectorRef) { }
+  constructor(private element: ElementRef, private api: ApiService, private detector: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.areSuggestionsVisible = false;
@@ -145,7 +145,7 @@ export class WzInputSuggestionsComponent implements OnInit {
   }
 
   private query(query: string): Observable<ApiResponse> {
-    return this.apiService.get2(
+    return this.api.get2(
       Api.Assets,
       'collectionSummary/search',
       { parameters: { q: query, accessLevel: 'all', i: '0', n: '100' } }

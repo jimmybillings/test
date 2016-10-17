@@ -29,7 +29,7 @@ export function main() {
 
     let serviceUnderTest: CartService;
     let mockCartStore: any;
-    let mockApiService: any;
+    let mockApi: any;
     let mockCartSummaryService: any;
     let mockCurrentUserService: any;
 
@@ -39,7 +39,7 @@ export function main() {
         state: {}
       };
 
-      mockApiService = {
+      mockApi = {
         get2: jasmine.createSpy('get2').and.returnValue(apiResponseWith(mockGetResponse)),
         post2: jasmine.createSpy('post2').and.returnValue(apiResponseWith(mockPostResponse)),
         delete2: jasmine.createSpy('delete2').and.returnValue(apiResponseWith(mockDeleteResponse)),
@@ -54,14 +54,14 @@ export function main() {
         fullName: jasmine.createSpy('fullName').and.returnValue(Observable.of('Ross Edfort'))
       };
 
-      serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService, mockCurrentUserService);
+      serviceUnderTest = new CartService(mockCartStore, mockApi, mockCartSummaryService, mockCurrentUserService);
     });
 
     describe('initializeData()', () => {
       it('calls the API service correctly', () => {
         serviceUnderTest.initializeData();
 
-        expect(mockApiService.get2)
+        expect(mockApi.get2)
           .toHaveBeenCalledWith(Api.Orders, 'cart', { loading: true });
       });
 
@@ -79,16 +79,16 @@ export function main() {
 
       it('creates a default project if one does not already exist', () => {
         serviceUnderTest.initializeData().subscribe(() => {
-          expect(mockApiService.post2).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: { name: 'Project A', clientName: 'Ross Edfort' }, loading: true });
+          expect(mockApi.post2).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: { name: 'Project A', clientName: 'Ross Edfort' }, loading: true });
         });
       });
 
       it('does not add a project if one already exists', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService, mockCurrentUserService);
+        serviceUnderTest = new CartService(mockCartStore, mockApi, mockCartSummaryService, mockCurrentUserService);
 
         serviceUnderTest.initializeData().subscribe(() => {
-          expect(mockApiService.post2).not.toHaveBeenCalled();
+          expect(mockApi.post2).not.toHaveBeenCalled();
         });
       });
     });
@@ -97,16 +97,16 @@ export function main() {
       it('calls the API service correctly', () => {
         serviceUnderTest.addProject();
 
-        expect(mockApiService.post2).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: { name: 'Project A', clientName: 'Ross Edfort' }, loading: true });
+        expect(mockApi.post2).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: { name: 'Project A', clientName: 'Ross Edfort' }, loading: true });
       });
 
       it('names new projects based on existing names', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService, mockCurrentUserService);
+        serviceUnderTest = new CartService(mockCartStore, mockApi, mockCartSummaryService, mockCurrentUserService);
 
         serviceUnderTest.addProject();
 
-        expect(mockApiService.post2).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: { name: 'Project B', clientName: 'Ross Edfort' }, loading: true });
+        expect(mockApi.post2).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: { name: 'Project B', clientName: 'Ross Edfort' }, loading: true });
       });
 
       it('replaces the cart store with the response', () => {
@@ -126,7 +126,7 @@ export function main() {
       it('calls the API service correctly', () => {
         serviceUnderTest.removeProject(mockProject);
 
-        expect(mockApiService.delete2).toHaveBeenCalledWith(Api.Orders, 'cart/project/123', { loading: true });
+        expect(mockApi.delete2).toHaveBeenCalledWith(Api.Orders, 'cart/project/123', { loading: true });
       });
 
       it('replaces the cart store with the response', () => {
@@ -144,16 +144,16 @@ export function main() {
       it('creates a new default project if the last one was deleted', () => {
         serviceUnderTest.removeProject(mockProject);
 
-        expect(mockApiService.post2).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: { name: 'Project A', clientName: 'Ross Edfort' }, loading: true });
+        expect(mockApi.post2).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: { name: 'Project A', clientName: 'Ross Edfort' }, loading: true });
       });
 
       it('does not add a project if one still exists after a removal', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApiService, mockCartSummaryService, mockCurrentUserService);
+        serviceUnderTest = new CartService(mockCartStore, mockApi, mockCartSummaryService, mockCurrentUserService);
 
         serviceUnderTest.removeProject(mockProject);
 
-        expect(mockApiService.post2).not.toHaveBeenCalled();
+        expect(mockApi.post2).not.toHaveBeenCalled();
       });
     });
 
@@ -161,7 +161,7 @@ export function main() {
       it('calls the API service correctly', () => {
         serviceUnderTest.updateProject(mockProject);
 
-        expect(mockApiService.put2).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: mockProject, loading: true });
+        expect(mockApi.put2).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: mockProject, loading: true });
       });
 
       it('replaces the cart store with the response', () => {
@@ -181,7 +181,7 @@ export function main() {
       it('calls the API service correctly', () => {
         serviceUnderTest.moveLineItemTo(mockProject, mockLineItem);
 
-        expect(mockApiService.put2)
+        expect(mockApi.put2)
           .toHaveBeenCalledWith(Api.Orders, 'cart/move/lineItem', { parameters: { lineItemId: '456', projectId: '123' }, loading: true });
       });
 

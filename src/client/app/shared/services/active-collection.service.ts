@@ -1,9 +1,10 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
-import { URLSearchParams, RequestOptions } from '@angular/http';
-import { Observable} from 'rxjs/Rx';
-import { Store, ActionReducer, Action} from '@ngrx/store';
+import { Observable } from 'rxjs/Rx';
+import { Store, ActionReducer, Action } from '@ngrx/store';
 import { ApiService } from '../../shared/services/api.service';
+import { Api } from '../../shared/interfaces/api.interface';
+
 /**
  * Focused Collection store -
  */
@@ -29,25 +30,11 @@ export const activeCollection: ActionReducer<any> = (state = initState(), action
 export class ActiveCollectionService implements OnInit {
   public data: Observable<any>;
   public params: any;
-  public apiUrls: {
-    CollectionBaseUrl: string,
-    CollectionItemsBaseUrl: string,
-    CollectionActive: string,
-    CollectionSetActive: string
-  };
 
   constructor(
     public store: Store<CollectionStore>,
     public api: ApiService) {
     this.data = this.store.select('activeCollection');
-
-    this.apiUrls = {
-      CollectionBaseUrl: 'api/identities/v1/collection',
-      CollectionItemsBaseUrl: 'api/assets/v1/collectionSummary/assets',
-      CollectionActive: 'api/assets/v1/collectionSummary',
-      CollectionSetActive: 'api/assets/v1/collectionSummary/setFocused'
-    };
-
   }
 
   ngOnInit(): void {
@@ -55,52 +42,40 @@ export class ActiveCollectionService implements OnInit {
   }
 
   public get(): Observable<any> {
-    return this.api.get(`${this.apiUrls.CollectionActive}/focused`)
-      .map((res) => {
-        this.updateActiveCollectionStore(res.json());
-        return res.json();
-      });
+    return this.api.get2(Api.Assets, 'collectionSummary/focused')
+      .do(response => this.updateActiveCollectionStore(response as Collection));
   }
 
   public set(collectionId: number, set: boolean = true): Observable<any> {
-    return this.api.put(`${this.apiUrls.CollectionSetActive}/${collectionId}`, '', {}, true)
-      .map((res) => {
-        if (set) this.updateActiveCollectionStore(res.json());
-        return res.json();
-      });
+    return this.api.put2(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loading: true })
+      .do(response => { if (set) this.updateActiveCollectionStore(response as Collection); });
   }
 
   public addAsset(collectionId: any, asset: any): Observable<any> {
-    return this.api.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/addAssets`,
-      JSON.stringify({'list': [{'assetId': asset.assetId}]}))
-      .map((res) => res.json());
+    return this.api.post2(
+      Api.Identities,
+      `collection/${collectionId}/addAssets`,
+      { body: { list: [{ assetId: asset.assetId }] } }
+    );
   }
 
   public removeAsset(collectionId: any, assetId: any, uuid: any): Observable<any> {
-    return this.api.post(`${this.apiUrls.CollectionBaseUrl}/${collectionId}/removeAssets`,
-      JSON.stringify({ 'list': [{ 'assetId': assetId, 'uuid': uuid }] }))
-      .map(res => {
-        this.removeAssetFromStore(res.json().list[0]);
-        return res.json();
-      });
+    return this.api.post2(
+      Api.Identities,
+      `collection/${collectionId}/removeAssets`,
+      { body: { list: [{ assetId: assetId, uuid: uuid }] } }
+    ).do(response => this.removeAssetFromStore(response['list'][0]));
   }
 
   public getItems(collectionId: number, collectionParams: any, set: boolean = true, loading: boolean = true): Observable<any> {
     if (collectionParams['i']) collectionParams['i'] -= 1;
     this.params = Object.assign({}, this.params, collectionParams);
-    return this.api.get(`${this.apiUrls.CollectionItemsBaseUrl}/${collectionId}`,
-      this.getSearchOptions(this.params), loading)
-      .map((res) => {
-        if (set) this.updateActiveCollectionAssets(res.json());
-        return res.json();
-      });
-  }
 
-  public getSearchOptions(params: any): RequestOptions {
-    const search: URLSearchParams = new URLSearchParams();
-    for (var param in params) search.set(param, params[param]);
-    let options = { search: search };
-    return new RequestOptions(options);
+    return this.api.get2(
+      Api.Assets,
+      `collectionSummary/assets/${collectionId}`,
+      { parameters: this.params, loading: loading }
+    ).do(response => { if (set) this.updateActiveCollectionAssets(response); });
   }
 
   public get state(): any {

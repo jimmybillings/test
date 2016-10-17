@@ -14,7 +14,7 @@ export function main() {
     let mockBackend: MockBackend;
     let connection: any;
     mockBackend = new MockBackend();
-    beforeEach(() =>  {
+    beforeEach(() => {
       mockBackend.connections.subscribe((c: any) => connection = c);
       TestBed.configureTestingModule({
         providers: [
@@ -24,24 +24,19 @@ export function main() {
       });
     });
 
-    it('Should create instance variables for http, apiconfig, currentUser, apiUrls', inject([User], (service: User) => {
-      expect(service.api).toBeDefined();
-      expect(service._apiUrls).toBeDefined();
-    }));
-
     it('Should make a request to create a new user', inject([User], (service: User) => {
       service.create(setUser()).subscribe((res) => {
         expect(connection.request.url.indexOf('/api/identities/v1/user/register') !== -1).toBe(true);
         expect(connection.request._body).toEqual(JSON.stringify(setUser()));
       });
-      connection.mockRespond(new Response(new ResponseOptions({body: setUser()})));
+      connection.mockRespond(new Response(new ResponseOptions({ body: setUser() })));
     }));
 
     it('Should make a request to get a current user object', inject([User], (service: User) => {
       service.get().subscribe((res) => {
         expect(connection.request.url.indexOf('/api/identities/v1/user/currentUser') !== -1).toBe(true);
       });
-      connection.mockRespond(200);
+      connection.mockRespond(new Response(new ResponseOptions({ body: { whatever: 'something' } })));
     }));
   });
 
