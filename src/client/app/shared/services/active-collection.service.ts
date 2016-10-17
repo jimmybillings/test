@@ -42,17 +42,17 @@ export class ActiveCollectionService implements OnInit {
   }
 
   public get(): Observable<any> {
-    return this.api.get2(Api.Assets, 'collectionSummary/focused')
+    return this.api.get(Api.Assets, 'collectionSummary/focused')
       .do(response => this.updateActiveCollectionStore(response as Collection));
   }
 
   public set(collectionId: number, set: boolean = true): Observable<any> {
-    return this.api.put2(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loading: true })
+    return this.api.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loading: true })
       .do(response => { if (set) this.updateActiveCollectionStore(response as Collection); });
   }
 
   public addAsset(collectionId: any, asset: any): Observable<any> {
-    return this.api.post2(
+    return this.api.post(
       Api.Identities,
       `collection/${collectionId}/addAssets`,
       { body: { list: [{ assetId: asset.assetId }] } }
@@ -60,7 +60,7 @@ export class ActiveCollectionService implements OnInit {
   }
 
   public removeAsset(collectionId: any, assetId: any, uuid: any): Observable<any> {
-    return this.api.post2(
+    return this.api.post(
       Api.Identities,
       `collection/${collectionId}/removeAssets`,
       { body: { list: [{ assetId: assetId, uuid: uuid }] } }
@@ -71,7 +71,7 @@ export class ActiveCollectionService implements OnInit {
     if (collectionParams['i']) collectionParams['i'] -= 1;
     this.params = Object.assign({}, this.params, collectionParams);
 
-    return this.api.get2(
+    return this.api.get(
       Api.Assets,
       `collectionSummary/assets/${collectionId}`,
       { parameters: this.params, loading: loading }

@@ -145,7 +145,7 @@ export class WzInputSuggestionsComponent implements OnInit {
   }
 
   private query(query: string): Observable<ApiResponse> {
-    return this.api.get2(
+    return this.api.get(
       Api.Assets,
       'collectionSummary/search',
       { parameters: { q: query, accessLevel: 'all', i: '0', n: '100' } }

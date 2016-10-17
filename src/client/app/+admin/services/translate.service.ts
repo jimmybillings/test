@@ -9,11 +9,11 @@ export class TranslateService {
   constructor(private api: ApiService) { }
 
   public getTrStrings(site: string, lang: string): Observable<any> {
-    return this.api.get2(Api.Identities, `translation/${site}/${lang}.json`);
+    return this.api.get(Api.Identities, `translation/${site}/${lang}.json`);
   }
 
   public put(text: any, siteName: string, language: string): Observable<any> {
-    return this.api.get2(
+    return this.api.get(
       Api.Identities,
       'translation/searchFields',
       { parameters: { fields: 'siteName,language', values: `${siteName},${language}` } }
@@ -22,7 +22,7 @@ export class TranslateService {
       const name: string = `${siteName}_${language}`;
       const newText: any = { id, siteName, language, name, text };
 
-      return this.api.put2(Api.Identities, `translation/${id}`, { body: newText });
+      return this.api.put(Api.Identities, `translation/${id}`, { body: newText });
     });
   }
 }

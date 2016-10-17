@@ -31,7 +31,7 @@ export class AssetService {
   }
 
   public initialize(id: any): Observable<any> {
-    return this.api.get2(Api.Assets, `clip/${id}/clipDetail`)
+    return this.api.get(Api.Assets, `clip/${id}/clipDetail`)
       .do(response => this.set({ type: 'SET_ASSET', payload: response }));
   }
 
@@ -44,16 +44,16 @@ export class AssetService {
   }
 
   public downloadComp(id: any, compType: any): Observable<any> {
-    return this.api.get2(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
+    return this.api.get(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
   }
 
   public getPrice(id: any): Observable<any> {
-    return this.api.get2(Api.Orders, `priceBook/price/${id}`, { parameters: { region: 'AAA' } })
+    return this.api.get(Api.Orders, `priceBook/price/${id}`, { parameters: { region: 'AAA' } })
       .do(response => this.setPrice(response));
   }
 
   public getshareLink(id: any, accessStartDate: any, accessEndDate: any): Observable<any> {
-    return this.api.post2(
+    return this.api.post(
       Api.Identities,
       'accessInfo',
       { body: { type: 'asset', accessInfo: id, accessStartDate: accessStartDate, accessEndDate: accessEndDate } }
@@ -61,11 +61,11 @@ export class AssetService {
   }
 
   public createShareLink(shareLink: any): Observable<any> {
-    return this.api.post2(Api.Identities, 'accessInfo', { body: shareLink });
+    return this.api.post(Api.Identities, 'accessInfo', { body: shareLink });
   }
 
   public getData(id: any): Observable<any> {
-    return this.api.get2(Api.Assets, `clip/${id}/clipDetail`, { loading: true })
+    return this.api.get(Api.Assets, `clip/${id}/clipDetail`, { loading: true })
       .do(response => this.setActiveAsset(response));
   }
 

@@ -37,7 +37,7 @@ export class CartService {
   // Finally, we call share() to ensure that the do() call happens exactly once instead
   // of once per subscriber.
   public initializeData(): Observable<any> {
-    return this.api.get2(Api.Orders, 'cart', { loading: true })
+    return this.api.get(Api.Orders, 'cart', { loading: true })
       .do(wholeCartResponse => this.store.replaceWith(wholeCartResponse))
       .flatMap(_ => this.addProjectIfNoProjectsExist())
       .takeLast(1)
@@ -50,7 +50,7 @@ export class CartService {
   }
 
   public removeProject(project: Project): void {
-    this.api.delete2(Api.Orders, `cart/project/${project.id}`, { loading: true })
+    this.api.delete(Api.Orders, `cart/project/${project.id}`, { loading: true })
       .subscribe(wholeCartResponse => {
         this.updateCart(wholeCartResponse);
         this.addProjectIfNoProjectsExist().subscribe();
@@ -58,27 +58,27 @@ export class CartService {
   }
 
   public updateProject(project: Project): void {
-    this.api.put2(Api.Orders, 'cart/project', { body: project, loading: true })
+    this.api.put(Api.Orders, 'cart/project', { body: project, loading: true })
       .subscribe(this.updateCart);
   }
 
   public moveLineItemTo(project: Project, lineItem: LineItem): void {
-    this.api.put2(Api.Orders, 'cart/move/lineItem', { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true })
+    this.api.put(Api.Orders, 'cart/move/lineItem', { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true })
       .subscribe(this.updateCart);
   }
 
   public cloneLineItem(lineItem: LineItem): void {
-    this.api.put2(Api.Orders, 'cart/clone/lineItem', { parameters: { lineItemId: lineItem.id }, loading: true })
+    this.api.put(Api.Orders, 'cart/clone/lineItem', { parameters: { lineItemId: lineItem.id }, loading: true })
       .subscribe(this.updateCart);
   }
 
   public removeLineItem(lineItem: LineItem): void {
-    this.api.delete2(Api.Orders, `cart/asset/${lineItem.id}`, { loading: true })
+    this.api.delete(Api.Orders, `cart/asset/${lineItem.id}`, { loading: true })
       .subscribe(this.updateCart);
   }
 
   public purchaseOnCredit(): Observable<any> {
-    return this.api.post2(Api.Orders, 'cart/checkout/purchaseOnCredit', { loading: true });
+    return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { loading: true });
   }
 
   private addProjectIfNoProjectsExist(): Observable<any> {
@@ -86,7 +86,7 @@ export class CartService {
   }
 
   private addProjectAndReturnObservable(): Observable<any> {
-    return this.api.post2(Api.Orders, 'cart/project', { body: this.createAddProjectRequestBody(), loading: true })
+    return this.api.post(Api.Orders, 'cart/project', { body: this.createAddProjectRequestBody(), loading: true })
       .do(this.updateCart)
       .share();
   }

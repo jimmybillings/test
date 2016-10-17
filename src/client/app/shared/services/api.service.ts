@@ -14,92 +14,26 @@ export class ApiService {
     private error: Error,
     private apiConfig: ApiConfig,
     private uiState: UiState,
-    private currentUser: CurrentUser) { }
+    private currentUser: CurrentUser
+  ) { }
 
-  public request(url: string | Request, options: RequestOptionsArgs = {}): Observable<any> {
-    return this.http.request(this.buildUrl(url), this.buildOptions(options)).catch((error: any) => {
-      this.error.dispatch(error);
-      return Observable.throw(error);
-    });
-  }
-
-  public get(url: string, options: RequestOptionsArgs = {}, loading: boolean = false): Observable<any> {
-    if (loading) this.uiState.loading(true);
-    return this.http.get(this.buildUrl(url), this.buildOptions(options)).map((res) => {
-      this.uiState.loading(false);
-      return res;
-    }).catch((error: any) => {
-      this.uiState.loading(false);
-      this.error.dispatch(error);
-      return Observable.throw(error);
-    });
-  }
-
-  public get2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
+  public get(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Get, api, endpoint, options);
   }
 
-  public post(url: string, body: string = '', options: RequestOptionsArgs = {}, loading: boolean = false): Observable<any> {
-    if (loading) this.uiState.loading(true);
-    return this.http.post(this.buildUrl(url), this.buildBody(body), this.buildOptions(options)).map((res) => {
-      this.uiState.loading(false);
-      return res;
-    }).catch((error: any) => {
-      this.uiState.loading(false);
-      this.error.dispatch(error);
-      return Observable.throw(error);
-    });
-  }
-
-  public post2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
+  public post(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Post, api, endpoint, options);
   }
 
-  public put(url: string, body: string = '', options: RequestOptionsArgs = {}, loading: boolean = false): Observable<any> {
-    if (loading) this.uiState.loading(true);
-    return this.http.put(this.buildUrl(url), this.buildBody(body), this.buildOptions(options)).map((res) => {
-      this.uiState.loading(false);
-      return res;
-    }).catch((error: any) => {
-      this.uiState.loading(false);
-      this.error.dispatch(error);
-      return Observable.throw(error);
-    });
-  }
-
-  public put2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
+  public put(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Put, api, endpoint, options);
   }
 
-  public delete(url: string, options: RequestOptionsArgs = {}, loading: boolean = false): Observable<any> {
-    if (loading) this.uiState.loading(true);
-    return this.http.delete(this.buildUrl(url), this.buildOptions(options)).map((res) => {
-      this.uiState.loading(false);
-      return res;
-    }).catch((error: any) => {
-      this.uiState.loading(false);
-      this.error.dispatch(error);
-      return Observable.throw(error);
-    });
-  }
-
-  public delete2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
+  public delete(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Delete, api, endpoint, options);
   }
 
-  public patch(url: string, body: string = '', options: RequestOptionsArgs = {}): Observable<any> {
-    return this.http.patch(this.buildUrl(url), this.buildBody(body), this.buildOptions(options)).catch((error: any) => {
-      this.error.dispatch(error);
-      return Observable.throw(error);
-    });
-  }
-
-  public head(url: string, options: RequestOptionsArgs = {}): Observable<any> {
-    return this.http.head(this.buildUrl(url), this.buildOptions(options)).catch((error: any) => {
-      this.error.dispatch(error);
-      return Observable.throw(error);
-    });
-  }
+  // //// END OF PUBLIC INTERFACE
 
   private call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<ApiResponse> {
     options = this.combineDefaultOptionsWith(options);
@@ -175,25 +109,5 @@ export class ApiService {
     requestOptionsArgs.headers = this.apiConfig.headers(options.overridingToken);
 
     return requestOptionsArgs;
-  }
-
-  private buildOptions(options: any) {
-    options.headers = this.apiConfig.headers();
-    if (!options.search && !this.currentUser.loggedIn()) options.search = new URLSearchParams();
-    if (!this.currentUser.loggedIn()) options.search.set('siteName', this.apiConfig.getPortal());
-    return options;
-  }
-
-  private buildUrl(url: any): string {
-    return this.apiConfig.baseUrl() + url;
-  }
-
-  private buildBody(body: any): string {
-    if (!this.currentUser.loggedIn() && body !== '') {
-      body = JSON.parse(body);
-      body.siteName = this.apiConfig.getPortal();
-      body = JSON.stringify(body);
-    }
-    return body;
   }
 }

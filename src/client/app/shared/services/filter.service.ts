@@ -32,7 +32,7 @@ export class FilterService {
   public get(params: any, counted: boolean): Observable<any> {
     let options = JSON.parse(JSON.stringify(Object.assign({}, params, { counted })));
 
-    return this.api.get2(
+    return this.api.get(
       Api.Assets,
       this.currentUser.loggedIn() ? 'filter/filterTree' : 'filter/anonymous/filterTree',
       { parameters: options, loading: true }

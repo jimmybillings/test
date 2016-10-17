@@ -90,7 +90,7 @@ export class UserPreferenceService {
 
   private put(params: any): Observable<any> {
     let body: any = this.formatBody(params);
-    return this.api.put2(Api.Identities, 'userPreferences/item', { body: body });
+    return this.api.put(Api.Identities, 'userPreferences/item', { body: body });
   }
 
   private formatBody(prefs: any): any {
