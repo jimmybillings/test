@@ -50,16 +50,16 @@ export class AdminService {
     let params = Object.create(JSON.parse(JSON.stringify(queryObject)));
     params['i'] = (parseFloat(params['i']) - 1).toString();
 
-    return this.api.get2(Api.Identities, `${resourceType}/searchFields`, { parameters: params })
+    return this.api.get(Api.Identities, `${resourceType}/searchFields`, { parameters: params })
       .do(response => this.setResources(response));
   }
 
   public postResource(resourceType: string, formData: User | Account): Observable<AdminResponse> {
-    return this.api.post2(Api.Identities, resourceType, { body: formData });
+    return this.api.post(Api.Identities, resourceType, { body: formData });
   }
 
   public putResource(resourceType: string, formData: User | Account): Observable<AdminResponse> {
-    return this.api.put2(Api.Identities, `${resourceType}/${formData.id}`, { body: formData });
+    return this.api.put(Api.Identities, `${resourceType}/${formData.id}`, { body: formData });
   }
 
   public buildSearchTerm(filterParams: AdminFormParams): AdminFormParams {

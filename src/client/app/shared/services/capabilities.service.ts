@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CartCapabilities } from '../../+cart/services/cart.capabilities';
+import { CartCapabilities } from '../../+commerce/+cart/services/cart.capabilities';
 import { AssetCapabilities } from '../../+asset/services/asset.capabilities';
 import { AdminCapabilities } from '../../+admin/services/admin.capabilities';
 import { CollectionCapabilities } from '../../+collection/services/collection.capabilities';

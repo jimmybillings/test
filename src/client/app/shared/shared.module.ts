@@ -34,8 +34,8 @@ import { ValuesPipe } from '../shared/pipes/values.pipe';
 // Shared resolvers
 import { AssetResolver } from '../+asset/services/asset.resolver';
 import { SearchResolver } from '../+search/services/search.resolver';
-import { CartResolver } from '../+cart/services/cart.resolver';
-import { OrderResolver } from '../+order/services/order.resolver';
+import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
+import { OrderResolver } from '../+commerce/+order/services/order.resolver';
 import { WAZEE_PROVIDERS } from '../imports/wazee';
 import { MaterialModule } from './material.module';
 
@@ -107,7 +107,7 @@ import { MaterialModule } from './material.module';
     WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent],
-    entryComponents: [WzNotificationComponent]
+  entryComponents: [WzNotificationComponent]
 })
 
 export class SharedModule {

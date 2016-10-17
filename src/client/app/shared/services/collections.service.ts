@@ -67,12 +67,12 @@ export class CollectionsService {
     //TODO:  Do we really want to update this.params every time load() is called?
     this.params = Object.assign({}, this.params, params);
 
-    return this.api.get2(Api.Assets, `collectionSummary/search`, { parameters: this.params, loading: loading })
+    return this.api.get(Api.Assets, `collectionSummary/search`, { parameters: this.params, loading: loading })
       .do(response => this.storeCollections(response));
   }
 
   public create(collection: Collection): Observable<any> {
-    return this.api.post2(Api.Assets, 'collectionSummary', { body: collection })
+    return this.api.post(Api.Assets, 'collectionSummary', { body: collection })
       .do(response => {
         const collection: Collection = response as Collection;
         this.createCollectionInStore(collection);
@@ -81,11 +81,11 @@ export class CollectionsService {
   }
 
   public update(collection: Collection): Observable<any> {
-    return this.api.put2(Api.Assets, `collectionSummary/${collection.id}`, { body: collection });
+    return this.api.put(Api.Assets, `collectionSummary/${collection.id}`, { body: collection });
   }
 
   public delete(collectionId: number): Observable<any> {
-    return this.api.delete2(Api.Identities, `collection/${collectionId}`)
+    return this.api.delete(Api.Identities, `collection/${collectionId}`)
       .do(_ => this.deleteCollectionFromStore(collectionId));
   }
 

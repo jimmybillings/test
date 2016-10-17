@@ -1,4 +1,4 @@
-import { inject, TestBed, beforeEachProvidersArray } from '../../imports/test.imports';
+import { inject, TestBed, beforeEachProvidersArray } from '../../../imports/test.imports';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 

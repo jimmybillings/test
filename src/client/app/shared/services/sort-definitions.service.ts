@@ -1,8 +1,9 @@
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { ApiService } from './api.service';
 import { Observable } from 'rxjs/Rx';
-import { ApiConfig } from './api.config';
+
+import { ApiService } from './api.service';
+import { Api } from '../interfaces/api.interface';
 
 const initSortState: any = {
   sorts: [],
@@ -21,18 +22,16 @@ export const sortDefinitions: ActionReducer<any> = (state = initSortState, actio
 @Injectable()
 export class SortDefinitionsService {
   public data: Observable<any>;
-  constructor(public api: ApiService,
-              public apiConfig: ApiConfig,
-              public store: Store<any>) {
-                this.data = this.store.select('sortDefinitions');
-              }
+
+  constructor(private api: ApiService, private store: Store<any>) {
+    this.data = this.store.select('sortDefinitions');
+  }
 
   public update(params: any): void {
     this.store.dispatch({ type: 'SORTS.UPDATE_DEFINITIONS', payload: params });
   }
 
   public getSortOptions(): Observable<any> {
-    return this.api.get('api/identities/v1/sortDefinition/list', {}, true)
-      .map(res => res.json());
+    return this.api.get(Api.Identities, 'sortDefinition/list', { loading: true });
   }
 }

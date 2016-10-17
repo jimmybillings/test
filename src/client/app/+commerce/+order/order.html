@@ -1,0 +1,41 @@
+<section class="order-component">
+	<div class="order-summary">
+		<header layout-gt-xs="row" layout-align-gt-xs="space-between center" flex="100" layout="column" layout-align="center center">
+			<span class="md-display-1"><strong>Order Id: </strong>{{ (order.data | async).id }}</span>
+			<span class="md-display-1"><strong>Order Price: </strong>{{ (order.data | async).total | currency:'USD':true:'1.2-2' }}</span>
+			<span class="md-display-1"><strong>Order Placed: </strong>{{ (order.data | async).createdOn | date }}</span>
+		</header>
+	</div>
+	<div class="order-projects" *ngFor="let project of (order.data | async).projects">
+		<div class="order-project-header" layout-gt-xs="row" layout-align-gt-xs="space-between center" flex="100" layout="column"
+			layout-align="center center">
+			<span><strong>Project Name: </strong>{{ project.name }}</span>
+			<span><strong>Client Name: </strong>{{ project.clientName }}</span>
+			<span><strong>Project Subtotal: </strong>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
+		</div>
+		<div class="project-line-items">
+			<div *ngFor="let lineItem of project.lineItems; let e = even" layout="row" layout-align="center center">
+				<div class="project-line-item" [ngClass]="{highlight: e}" flex-gt-md="95" flex-gt-xs="45" flex="85">
+					<div layout-gt-md="row" layout="column" layout-align-gt-md="space-between center" layout-align="center stretch">
+						<div class="order-asset-thb" flex-gt-md="15">
+							<img src="{{ lineItem.asset.thumbnailUrl }}" />
+						</div>
+						<div class="order-asset-metadata" flex-gt-md="45">
+							<table>
+								<tr *ngFor="let meta of lineItem.asset.metadata">
+									<th class="md-caption">{{ translationReady(meta.name) | uppercase | translate }}</th>
+									<td class="md-caption">{{ meta.value | slice:0:80 }}</td>
+								</tr>
+							</table>
+						</div>
+						<div layout="row" layout-align="space-around center" flex-gt-md="40">
+							<span>Full Clip</span>
+							<span><strong>{{lineItem.price | currency:'USD':true:'1.2-2'}}</strong></span>
+							<button [disabled]="true" md-icon-button><md-icon>file_download</md-icon></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

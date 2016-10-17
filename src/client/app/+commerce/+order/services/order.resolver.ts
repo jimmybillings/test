@@ -6,7 +6,7 @@ import { OrderService } from './order.service';
 
 @Injectable()
 export class OrderResolver implements Resolve<any> {
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     // need to figure out how we are actually retrieving thr order
