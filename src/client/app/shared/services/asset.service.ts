@@ -1,8 +1,9 @@
 import { Observable } from 'rxjs/Rx';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
+
 import { ApiService } from '../../shared/services/api.service';
+import { Api } from '../../shared/interfaces/api.interface';
 
 const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '', price: 0 };
 
@@ -20,10 +21,8 @@ export const asset: ActionReducer<any> = (state = initAsset, action: Action) => 
 @Injectable()
 
 export class AssetService {
-
   public data: Observable<any>;
   public errorMessage: any;
-
 
   constructor(
     public store: Store<any>,
@@ -32,12 +31,12 @@ export class AssetService {
   }
 
   public initialize(id: any): Observable<any> {
-    return this.api.get('api/assets/v1/clip/' + id + '/clipDetail')
-      .map((res: Response) => { this.set({ type: 'SET_ASSET', payload: res.json() }); });
+    return this.api.get2(Api.Assets, `clip/${id}/clipDetail`)
+      .do(response => this.set({ type: 'SET_ASSET', payload: response }));
   }
 
-  public set(payload: any): void {
-    this.store.dispatch(payload);
+  public set(action: Action): void {
+    this.store.dispatch(action);
   }
 
   public reset(): void {
@@ -45,45 +44,29 @@ export class AssetService {
   }
 
   public downloadComp(id: any, compType: any): Observable<any> {
-    return this.api.get('api/assets/v1/renditionType/downloadUrl/' + id + '?type=' + compType)
-      .map((res) => { return res.json(); });
+    return this.api.get2(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
   }
 
   public getPrice(id: any): Observable<any> {
-    return this.api.get('api/orders/v1/priceBook/price/' + id + '?region=AAA')
-      .map((res) => {
-        this.setPrice(res.json());
-        return res.json();
-      });
+    return this.api.get2(Api.Orders, `priceBook/price/${id}`, { parameters: { region: 'AAA' } })
+      .do(response => this.setPrice(response));
   }
 
   public getshareLink(id: any, accessStartDate: any, accessEndDate: any): Observable<any> {
-    return this.api.post('api/identities/v1/accessInfo',
-      JSON.stringify({
-        'type': 'asset',
-        'accessInfo': id,
-        'accessStartDate': accessStartDate,
-        'accessEndDate': accessEndDate
-      }))
-      .map(res => {
-        return res.json();
-      });
+    return this.api.post2(
+      Api.Identities,
+      'accessInfo',
+      { body: { type: 'asset', accessInfo: id, accessStartDate: accessStartDate, accessEndDate: accessEndDate } }
+    );
   }
 
-  public createShareLink(shareLink:any): Observable<any> {
-    return this.api.post('api/identities/v1/accessInfo',
-      JSON.stringify(shareLink))
-      .map(res => {
-        return res.json();
-      });
+  public createShareLink(shareLink: any): Observable<any> {
+    return this.api.post2(Api.Identities, 'accessInfo', { body: shareLink });
   }
 
   public getData(id: any): Observable<any> {
-    return this.api.get('api/assets/v1/clip/' + id + '/clipDetail', {}, true)
-      .map((res) => {
-        this.setActiveAsset(res.json());
-        return res.json();
-      });
+    return this.api.get2(Api.Assets, `clip/${id}/clipDetail`, { loading: true })
+      .do(response => this.setActiveAsset(response));
   }
 
   public setActiveAsset(asset: any): void {
