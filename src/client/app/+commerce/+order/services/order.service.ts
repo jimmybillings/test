@@ -22,7 +22,7 @@ export class OrderService {
   }
 
   public getOrder(orderId: number): Observable<any> {
-    return this.api.get2(Api.Orders, `order/${orderId}`)
+    return this.api.get(Api.Orders, `order/${orderId}`)
       .do(response => this.update(response));
   }
 

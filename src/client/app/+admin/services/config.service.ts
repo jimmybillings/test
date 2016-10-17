@@ -9,27 +9,27 @@ export class ConfigService {
   constructor(private api: ApiService) { }
 
   public getUiConfigIndex(): Observable<AdminUiResponse> {
-    return this.api.get2(Api.Identities, 'configuration/site/search');
+    return this.api.get(Api.Identities, 'configuration/site/search');
   }
 
   public getSiteConfigIndex(): Observable<AdminSiteResponse> {
-    return this.api.get2(Api.Identities, 'site/search');
+    return this.api.get(Api.Identities, 'site/search');
   }
 
   public searchSiteConfig(siteName: string): Observable<SiteConfig> {
     // "as any" is needed here to allow assignment of ApiResponse to SiteConfig.
-    return this.api.get2(Api.Identities, 'site/search', { parameters: { q: siteName } }) as any;
+    return this.api.get(Api.Identities, 'site/search', { parameters: { q: siteName } }) as any;
   }
 
   public showUiConfig(site: string): Observable<any> {
-    return this.api.get2(Api.Identities, 'configuration/site', { parameters: { siteName: site } });
+    return this.api.get(Api.Identities, 'configuration/site', { parameters: { siteName: site } });
   }
 
   public showSiteConfig(siteId: number): Observable<AdminSiteResponse> {
-    return this.api.get2(Api.Identities, `site/${siteId}`);
+    return this.api.get(Api.Identities, `site/${siteId}`);
   }
 
   public updateUiConfig(data: UiConfigInterface): Observable<any> {
-    return this.api.put2(Api.Identities, `configuration/site/${data.id}`, { body: data });
+    return this.api.put(Api.Identities, `configuration/site/${data.id}`, { body: data });
   }
 }

@@ -12,10 +12,10 @@ export class Authentication {
   constructor(private api: ApiService) { }
 
   public create(user: Object): Observable<any> {
-    return this.api.post2(Api.Identities, 'login', { body: user });
+    return this.api.post(Api.Identities, 'login', { body: user });
   }
 
   public destroy(): Observable<any> {
-    return this.api.post2(Api.Identities, 'invalidate');
+    return this.api.post(Api.Identities, 'invalidate');
   }
 }

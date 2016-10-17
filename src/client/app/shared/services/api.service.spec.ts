@@ -49,10 +49,10 @@ export function main() {
       });
     });
 
-    it('Should corretly build the get2 method given a valid request for a logged IN user',
+    it('Should corretly build the get method given a valid request for a logged IN user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = true;
-        service.get2(Api.Identities, 'collection/1').subscribe((res) => {
+        service.get(Api.Identities, 'collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
           expect(MockApiConfig.headers).toHaveBeenCalled();
@@ -61,10 +61,10 @@ export function main() {
         connection.mockRespond(responseWith({ status: 200 }));
       }));
 
-    it('Should corretly build the get2 method given a valid request for a logged OUT user',
+    it('Should corretly build the get method given a valid request for a logged OUT user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = false;
-        service.get2(Api.Identities, 'collection/1').subscribe((res) => {
+        service.get(Api.Identities, 'collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
           expect(MockApiConfig.headers).toHaveBeenCalled();
@@ -73,10 +73,10 @@ export function main() {
         connection.mockRespond(responseWith({ status: 200 }));
       }));
 
-    it('Should corretly build the get2 method given a valid request and handle an error based response for a logged IN user',
+    it('Should corretly build the get method given a valid request and handle an error based response for a logged IN user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = true;
-        service.get2(Api.Identities, 'collection/1').subscribe((res) => {
+        service.get(Api.Identities, 'collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
           expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
@@ -87,10 +87,10 @@ export function main() {
         connection.mockError(responseWith({ status: 401 }));
       }));
 
-    it('Should corretly build the get2 method given a valid request and handle an error based response for a logged OUT user',
+    it('Should corretly build the get method given a valid request and handle an error based response for a logged OUT user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = false;
-        service.get2(Api.Identities, 'collection/1').subscribe((res) => {
+        service.get(Api.Identities, 'collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
           expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
@@ -101,10 +101,10 @@ export function main() {
         connection.mockError(responseWith({ status: 401 }));
       }));
 
-    it('Should corretly build the post2 method given a valid request for a logged IN user',
+    it('Should corretly build the post method given a valid request for a logged IN user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = true;
-        service.post2(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
+        service.post(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
@@ -114,10 +114,10 @@ export function main() {
         connection.mockRespond(responseWith({ status: 200 }));
       }));
 
-    it('Should corretly build the post2 method given a valid request for a logged OUT user',
+    it('Should corretly build the post method given a valid request for a logged OUT user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = false;
-        service.post2(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
+        service.post(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
@@ -127,10 +127,10 @@ export function main() {
         connection.mockRespond(responseWith({ status: 200 }));
       }));
 
-    it('Should corretly build the post2 method given a valid request and handle an error based response for a logged IN user',
+    it('Should corretly build the post method given a valid request and handle an error based response for a logged IN user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = true;
-        service.post2(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
+        service.post(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/identities/v1/api/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
           expect(MockApiConfig.headers).toHaveBeenCalled();
@@ -142,10 +142,10 @@ export function main() {
         connection.mockError(responseWith({ status: 401 }));
       }));
 
-    it('Should corretly build the post2 method given a valid request and handle an error based response for a logged OUT user',
+    it('Should corretly build the post method given a valid request and handle an error based response for a logged OUT user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = false;
-        service.post2(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
+        service.post(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
           expect(MockApiConfig.headers).toHaveBeenCalled();
@@ -157,10 +157,10 @@ export function main() {
         connection.mockError(responseWith({ status: 401 }));
       }));
 
-    it('Should corretly build the put2 method given a valid request for a logged IN user',
+    it('Should corretly build the put method given a valid request for a logged IN user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = true;
-        service.put2(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
+        service.put(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
@@ -170,10 +170,10 @@ export function main() {
         connection.mockRespond(responseWith({ status: 200 }));
       }));
 
-    it('Should corretly build the put2 method given a valid request for a logged OUT user',
+    it('Should corretly build the put method given a valid request for a logged OUT user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = false;
-        service.put2(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
+        service.put(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
@@ -183,10 +183,10 @@ export function main() {
         connection.mockRespond(responseWith({ status: 200 }));
       }));
 
-    it('Should corretly build the put2 method given a valid request and handle an error based response for a logged IN user',
+    it('Should corretly build the put method given a valid request and handle an error based response for a logged IN user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = true;
-        service.put2(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
+        service.put(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
           expect(MockApiConfig.headers).toHaveBeenCalled();
@@ -198,10 +198,10 @@ export function main() {
         connection.mockError(responseWith({ status: 401 }));
       }));
 
-    it('Should corretly build the put2 method given a valid request and handle an error based response for a logged OUT user',
+    it('Should corretly build the put method given a valid request and handle an error based response for a logged OUT user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = false;
-        service.put2(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
+        service.put(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
           expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
           expect(MockApiConfig.headers).toHaveBeenCalled();
@@ -213,10 +213,10 @@ export function main() {
         connection.mockError(responseWith({ status: 401 }));
       }));
 
-    it('Should corretly build the delete2 method given a valid request for a logged IN user',
+    it('Should corretly build the delete method given a valid request for a logged IN user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = true;
-        service.delete2(Api.Identities, 'collection/1').subscribe((res) => {
+        service.delete(Api.Identities, 'collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
           expect(MockApiConfig.headers).toHaveBeenCalled();
@@ -225,10 +225,10 @@ export function main() {
         connection.mockRespond(responseWith({ status: 200 }));
       }));
 
-    it('Should corretly build the delete2 method given a valid request for a logged OUT user',
+    it('Should corretly build the delete method given a valid request for a logged OUT user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = false;
-        service.delete2(Api.Identities, 'collection/1').subscribe((res) => {
+        service.delete(Api.Identities, 'collection/1').subscribe((res) => {
           expect(res).toEqual({ status: 200 });
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
           expect(MockApiConfig.headers).toHaveBeenCalled();
@@ -237,10 +237,10 @@ export function main() {
         connection.mockRespond(responseWith({ status: 200 }));
       }));
 
-    it('Should corretly build the delete2 method given a valid request and handle an error based response for a logged IN user',
+    it('Should corretly build the delete method given a valid request and handle an error based response for a logged IN user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = true;
-        service.delete2(Api.Identities, 'collection/1').subscribe((res) => {
+        service.delete(Api.Identities, 'collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
           expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();
@@ -251,10 +251,10 @@ export function main() {
         connection.mockError(responseWith({ status: 401 }));
       }));
 
-    it('Should corretly build the delete2 method given a valid request and handle an error based response for a logged OUT user',
+    it('Should corretly build the delete method given a valid request and handle an error based response for a logged OUT user',
       inject([ApiService], (service: ApiService) => {
         loggedInState = false;
-        service.delete2(Api.Identities, 'collection/1').subscribe((res) => {
+        service.delete(Api.Identities, 'collection/1').subscribe((res) => {
           expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
           expect(MockApiConfig.headers).toHaveBeenCalled();
           expect(MockApiConfig.baseUrl).toHaveBeenCalled();

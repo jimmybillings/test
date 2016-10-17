@@ -32,6 +32,6 @@ export class SortDefinitionsService {
   }
 
   public getSortOptions(): Observable<any> {
-    return this.api.get2(Api.Identities, 'sortDefinition/list', { loading: true });
+    return this.api.get(Api.Identities, 'sortDefinition/list', { loading: true });
   }
 }

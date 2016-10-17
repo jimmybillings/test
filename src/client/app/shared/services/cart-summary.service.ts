@@ -45,7 +45,7 @@ export class CartSummaryService {
   }
 
   public addAssetToProjectInCart(asset: any): void {
-    this.api.put2(
+    this.api.put(
       Api.Orders,
       'cart/asset/lineItem/quick',
       { body: this.formatAsset(asset), parameters: { projectName: this.lastProjectName, region: 'AAA' } }
@@ -53,7 +53,7 @@ export class CartSummaryService {
   }
 
   private getCartSummary(): void {
-    this.api.get2(Api.Orders, 'cart/summary')
+    this.api.get(Api.Orders, 'cart/summary')
       .subscribe(data => this.updateCartSummaryStore(data));
   }
 

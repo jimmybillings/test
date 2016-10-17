@@ -27,7 +27,7 @@ export class UiConfig {
     let localConfig = localStorage.getItem('uiConfig') || JSON.stringify(InitState);
     this.set(JSON.parse(localConfig));
 
-    return this.api.get2(
+    return this.api.get(
       Api.Identities,
       'configuration/site',
       loggedIn ? { parameters: { siteName: siteName } } : {}

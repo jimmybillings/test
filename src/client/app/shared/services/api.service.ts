@@ -17,19 +17,19 @@ export class ApiService {
     private currentUser: CurrentUser
   ) { }
 
-  public get2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
+  public get(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Get, api, endpoint, options);
   }
 
-  public post2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
+  public post(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Post, api, endpoint, options);
   }
 
-  public put2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
+  public put(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Put, api, endpoint, options);
   }
 
-  public delete2(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
+  public delete(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Delete, api, endpoint, options);
   }
 

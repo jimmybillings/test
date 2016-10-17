@@ -20,7 +20,7 @@ export function main() {
     };
 
     mockApiService = {
-      put2: () => Observable.of({})
+      put: () => Observable.of({})
     };
 
     beforeEach(() => {

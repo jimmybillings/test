@@ -10,8 +10,8 @@ export function main() {
     let mockResponseBody: Object;
 
     const mockApi = {
-      get2: () => Observable.of(mockResponseBody),
-      put2: () => Observable.of(mockResponseBody)
+      get: () => Observable.of(mockResponseBody),
+      put: () => Observable.of(mockResponseBody)
     };
 
     beforeEach(() => {
@@ -24,8 +24,8 @@ export function main() {
       });
 
       mockResponseBody = '{}';
-      spyOn(mockApi, 'get2').and.callThrough();
-      spyOn(mockApi, 'put2').and.callThrough();
+      spyOn(mockApi, 'get').and.callThrough();
+      spyOn(mockApi, 'put').and.callThrough();
     });
 
     describe('addAssetToProjectInCart()', () => {
@@ -41,7 +41,7 @@ export function main() {
 
         serviceUnderTest.addAssetToProjectInCart({ assetId: '10836' });
 
-        expect(mockApi.put2)
+        expect(mockApi.put)
           .toHaveBeenCalledWith(Api.Orders, 'cart/asset/lineItem/quick', { body: body, parameters: parameters });
       });
 
@@ -65,7 +65,7 @@ export function main() {
       it('calls the api service correctly', () => {
         serviceUnderTest.loadCartSummary();
 
-        expect(mockApi.get2).toHaveBeenCalledWith(Api.Orders, 'cart/summary');
+        expect(mockApi.get).toHaveBeenCalledWith(Api.Orders, 'cart/summary');
       });
 
       it('places the response in the cart store', () => {

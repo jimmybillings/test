@@ -74,7 +74,7 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
   }
 
   private query(query: string): Observable<ApiResponse> {
-    return this.api.get2(
+    return this.api.get(
       Api.Assets,
       this.currentUser.loggedIn() ? 'search/searchTerms' : 'search/anonymous/searchTerms',
       { parameters: { text: query, prefix: 'true', maxTerms: '10' } }
