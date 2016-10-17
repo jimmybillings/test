@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
-import { RequestOptions, URLSearchParams } from '@angular/http';
-import { Observable} from 'rxjs/Rx';
-import { CurrentUser} from '../../shared/services/current-user.model';
-import { Store, ActionReducer, Action} from '@ngrx/store';
+import { Observable } from 'rxjs/Rx';
+import { CurrentUser } from '../../shared/services/current-user.model';
+import { Store, ActionReducer, Action } from '@ngrx/store';
 import { ApiService } from '../../shared/services/api.service';
+import { Api } from '../../shared/interfaces/api.interface';
 
 const initAssets: any = {
   items: [],
@@ -41,23 +40,19 @@ export class AssetData {
   public data: Observable<any>;
   constructor(
     public currentUser: CurrentUser,
-    public api: ApiService,
+    private api: ApiService,
     public store: Store<any>) {
     this.data = this.store.select('assets');
   }
 
-  public searchAssetsUrl(loggedIn: boolean): string {
-    return this.getAssetSearchPath(loggedIn);
-  }
-
   public searchAssets(params: any): Observable<any> {
     params['i'] = (parseFloat(params['i']) - 1).toString();
-    let options = this.getAssetSearchOptions(params, this.currentUser.loggedIn());
-    return this.api.get(this.searchAssetsUrl(this.currentUser.loggedIn()), options, true)
-      .map((res: Response) => {
-        this.storeAssets(res.json());
-        return res.json();
-      });
+
+    return this.api.get2(
+      Api.Assets,
+      this.currentUser.loggedIn() ? 'search' : 'search/anonymous',
+      { parameters: params, loading: true }
+    ).do(response => this.storeAssets(response));
   }
 
   public storeAssets(payload: any): void {
@@ -84,19 +79,7 @@ export class AssetData {
     this.store.dispatch({ type: 'SEARCH.CLEAR_ASSETS' });
   }
 
-  public getAssetSearchPath(isUserLoggedIn: boolean): string {
-    return (isUserLoggedIn) ? 'api/assets/v1/search' : 'api/assets/v1/search/anonymous';
-  }
-
-  public getAssetSearchOptions(params: any, isUserLoggedIn: boolean): RequestOptions {
-    const search: URLSearchParams = new URLSearchParams();
-    for (var param in params) search.set(param, params[param]);
-    let options = { search: search };
-    return new RequestOptions(options);
-  }
-
   public downloadComp(id: any, compType: any): Observable<any> {
-    return this.api.get('api/assets/v1/renditionType/downloadUrl/' + id + '?type=' + compType)
-      .map((res) => { return res.json(); });
+    return this.api.get2(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
   }
 }

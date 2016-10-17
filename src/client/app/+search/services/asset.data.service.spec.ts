@@ -1,7 +1,6 @@
 import {
   beforeEachProvidersArray,
   ResponseOptions,
-  RequestOptions,
   MockBackend,
   Response,
   inject,
@@ -16,62 +15,38 @@ export function main() {
       localStorage.clear();
     });
 
+    afterEach(() => {
+      localStorage.clear();
+    });
+
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
         ...beforeEachProvidersArray,
       ]
     }));
 
-    it('Should create instance variables for http, apiconfig, currentUser, apiUrls',
-      inject([AssetData], (service: AssetData) => {
-        expect(service.api).toBeDefined();
-        expect(service.currentUser).toBeDefined();
-      }));
-
-    it('Should return correct api URL for a logged out user', inject([AssetData], (service: AssetData) => {
-      let loggedIn = false;
-      expect(service.searchAssetsUrl(loggedIn)).toEqual(service.getAssetSearchPath(loggedIn));
-    }));
-
-    it('Should return correct api URL for a logged in user', inject([AssetData], (service: AssetData) => {
-      let loggedIn = true;
-      expect(service.searchAssetsUrl(loggedIn)).toEqual(service.getAssetSearchPath(loggedIn));
-    }));
-
-    it('Should return correct api URL path for a logged out user', inject([AssetData], (service: AssetData) => {
-      let loggedIn = false;
-      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/search/anonymous');
-    }));
-
-    it('Should return correct api URL path for a logged in user', inject([AssetData], (service: AssetData) => {
-      let loggedIn = true;
-      expect(service.getAssetSearchPath(loggedIn)).toEqual('api/assets/v1/search');
-    }));
-
-
-    it('Should return correct URL params for a search with logged out user', inject([AssetData], (service: AssetData) => {
-      let loggedIn = false;
-      let sOptions = service.getAssetSearchOptions(searchParams(), loggedIn);
-      expect(sOptions instanceof RequestOptions).toBeTruthy();
-      expect(sOptions.search.get('q')).toEqual('green');
-      expect(sOptions.search.get('n')).toEqual('25');
-      expect(sOptions.search.get('i')).toEqual('1');
-    }));
-
-    it('Should return correct URL params for a search with logged in user', inject([AssetData], (service: AssetData) => {
-      let loggedIn = true;
-      let sOptions = service.getAssetSearchOptions(searchParams(), loggedIn);
-      expect(sOptions instanceof RequestOptions).toBeTruthy();
-      expect(sOptions.search.get('q')).toEqual('green');
-      expect(sOptions.search.get('n')).toEqual('25');
-    }));
-
-    it('Should make a request to the search api with the correct url and params and return the correct payload to cache in the store',
+    it('Should make a request to the search api with the correct url and params and return the correct payload to cache in the store -- LOGGED OUT',
       inject([AssetData, MockBackend], (service: AssetData, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.searchAssets(searchParams()).subscribe((payload) => {
           expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/search/anonymous?q=green&n=25&i=0&siteName=core');
+          expect(payload).toEqual(MockSearchResultsResponse());
+        });
+        connection.mockRespond(new Response(
+          new ResponseOptions({
+            body: MockSearchResultsResponse()
+          })
+        ));
+      }));
+
+    it('Should make a request to the search api with the correct url and params and return the correct payload to cache in the store -- LOGGED IN',
+      inject([AssetData, MockBackend], (service: AssetData, mockBackend: MockBackend) => {
+        let connection: any;
+        connection = mockBackend.connections.subscribe((c: any) => connection = c);
+        localStorage.setItem('token', 'SOME_TOKEN');
+        service.searchAssets(searchParams()).subscribe((payload) => {
+          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/search?q=green&n=25&i=0');
           expect(payload).toEqual(MockSearchResultsResponse());
         });
         connection.mockRespond(new Response(
