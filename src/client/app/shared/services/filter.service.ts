@@ -1,10 +1,9 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
-import { ApiConfig } from '../../shared/services/api.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
-import { RequestOptions, URLSearchParams, Response } from '@angular/http';
 import { ApiService } from '../../shared/services/api.service';
+import { Api } from '../../shared/interfaces/api.interface';
 
 const initFilters: any = {};
 export const filters: ActionReducer<any> = (state: Array<any> = initFilters, action: Action) => {
@@ -20,21 +19,26 @@ export const filters: ActionReducer<any> = (state: Array<any> = initFilters, act
 export class FilterService {
   public data: Observable<any>;
   public filterState: any;
+
   constructor(
-    public api: ApiService,
+    private api: ApiService,
     public store: Store<any>,
-    public apiConfig: ApiConfig,
-    public currentUser: CurrentUser) {
+    public currentUser: CurrentUser
+  ) {
     this.filterState = {};
     this.data = this.store.select('filters');
   }
 
   public get(params: any, counted: boolean): Observable<any> {
-    let options = this.filterOptions(JSON.parse(JSON.stringify(Object.assign({}, params, { counted }))));
-    return this.api.get(this.filterUrl, options, true).map((res: Response) => {
-      this.set(this.sanatize(res.json(), null));
-      this.checkLocalStorage(res.json());
-      return res.json();
+    let options = JSON.parse(JSON.stringify(Object.assign({}, params, { counted })));
+
+    return this.api.get2(
+      Api.Assets,
+      this.currentUser.loggedIn() ? 'filter/filterTree' : 'filter/anonymous/filterTree',
+      { parameters: options, loading: true }
+    ).do(response => {
+      this.set(this.sanitize(response, null));
+      this.checkLocalStorage(response);
     });
   }
 
@@ -42,11 +46,11 @@ export class FilterService {
     this.store.dispatch({ type: 'FILTERS.SET_FILTERS', payload: filters });
   }
 
-  public sanatize(filter: any, parent: any) {
+  public sanitize(filter: any, parent: any) {
     if (parent) filter.parentId = parent.filterId;
     if (filter.subFilters) {
       filter.expanded = false;
-      for (var l of filter.subFilters) this.sanatize(l, filter);
+      for (var l of filter.subFilters) this.sanitize(l, filter);
       return filter;
     }
     return filter;
@@ -107,20 +111,6 @@ export class FilterService {
     }
   }
 
-  public get filterUrl(): string {
-    if (this.currentUser.loggedIn()) {
-      return `api/assets/v1/filter/filterTree`;
-    } else {
-      return `api/assets/v1/filter/anonymous/filterTree`;
-    };
-  }
-
-  public filterOptions(params: any): RequestOptions {
-    let search: URLSearchParams = new URLSearchParams();
-    for (let param in params) { search.set(param, params[param]); };
-    return new RequestOptions({ search });
-  }
-
   public checkLocalStorage(filterTree: any): void {
     if (!localStorage.getItem('filterState')) {
       localStorage.setItem('filterState', JSON.stringify(this.setFilterStateInLocalStorage(filterTree)));
@@ -145,4 +135,3 @@ export class FilterService {
     return filters;
   }
 }
- 

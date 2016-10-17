@@ -1,7 +1,6 @@
 import {
   beforeEachProvidersArray,
   ResponseOptions,
-  RequestOptions,
   MockBackend,
   Response,
   TestBed,
@@ -19,12 +18,14 @@ export function main() {
       ]
     }));
 
-    it('Should exist with instances of http, store, currentUser, and apiConfig',
+    afterEach(() => {
+      localStorage.clear();
+    });
+
+    it('Should exist with instances of store and currentUser',
       inject([FilterService], (service: FilterService) => {
         expect(service).toBeDefined();
         expect(service.store).toBeDefined();
-        expect(service.api).toBeDefined();
-        expect(service.apiConfig).toBeDefined();
         expect(service.currentUser).toBeDefined();
       }));
 
@@ -32,39 +33,41 @@ export function main() {
       inject([FilterService], (service: FilterService) => {
         spyOn(service.store, 'dispatch');
         service.set(mockFilters());
-        expect(service.store.dispatch).toHaveBeenCalledWith({type: 'FILTERS.SET_FILTERS', payload: mockFilters()});
+        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'FILTERS.SET_FILTERS', payload: mockFilters() });
       }));
 
-    it('Should have a getFilterTreeUrl() method that returns the proper url based on the user',
-      inject([FilterService], (service: FilterService) => {
-        localStorage.setItem('token', '07yadbf1o78e2gfblalbfu4');
-        expect(service.filterUrl).toBe('api/assets/v1/filter/filterTree');
-        localStorage.clear();
-        expect(service.filterUrl).toBe('api/assets/v1/filter/anonymous/filterTree');
-      }));
-
-    it('Should have a getFilterTreeOptions() method that builds search options based off of params and the current user',
-      inject([FilterService], (service: FilterService) => {
-        localStorage.setItem('token', 'aslkdbasldu298e39p8dakljn');
-        let result = service.filterOptions({q: 'cat', displayFilterCounts: true});
-        expect(result instanceof RequestOptions).toBeTruthy();
-      }));
-
-    it('Should have a getFilters() method that makes a get request to the filterTree api and caches the response in the store',
+    it('Should have a getFilters() method that makes a get request to the filterTree api and caches the response in the store - LOGGED OUT',
       inject([FilterService, MockBackend], (service: FilterService, mockBackend: MockBackend) => {
         localStorage.clear();
         let connection: any;
         spyOn(service, 'set');
-        // spyOn(service, 'filterUrl').and.callThrough();
-        spyOn(service, 'filterOptions').and.callThrough();
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.get({q: 'cat'}, true).subscribe((payload) => {
+        service.get({ q: 'cat' }, true).subscribe((payload) => {
           expect(connection.request.method).toEqual(0);
           expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true&siteName=core');
-          expect(payload).toEqual(service.sanatize(mockFilters(), null));
+          expect(payload).toEqual(service.sanitize(mockFilters(), null));
           expect(service.set).toHaveBeenCalled();
         });
-        expect(service.filterOptions).toHaveBeenCalledWith({q: 'cat', counted: true});
+        connection.mockRespond(new Response(
+          new ResponseOptions({
+            body: mockFilters()
+          })
+        ));
+      }));
+
+    it('Should have a getFilters() method that makes a get request to the filterTree api and caches the response in the store - LOGGED IN',
+      inject([FilterService, MockBackend], (service: FilterService, mockBackend: MockBackend) => {
+        localStorage.clear();
+        localStorage.setItem('token', '07yadbf1o78e2gfblalbfu4');
+        let connection: any;
+        spyOn(service, 'set');
+        connection = mockBackend.connections.subscribe((c: any) => connection = c);
+        service.get({ q: 'cat' }, true).subscribe((payload) => {
+          expect(connection.request.method).toEqual(0);
+          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/filter/filterTree?q=cat&counted=true');
+          expect(payload).toEqual(service.sanitize(mockFilters(), null));
+          expect(service.set).toHaveBeenCalled();
+        });
         connection.mockRespond(new Response(
           new ResponseOptions({
             body: mockFilters()
