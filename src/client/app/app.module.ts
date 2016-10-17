@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule  } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { APP_ROUTES } from './app.routes';
@@ -10,14 +10,13 @@ import { ContentModule } from './+content/content.module';
 import { SearchModule } from './+search/search.module';
 import { AssetModule } from './+asset/asset.module';
 import { AdminModule } from './+admin/admin.module';
-import { CartModule } from './+cart/cart.module';
 import { CollectionModule } from './+collection/collection.module';
 import { ApplicationModule } from './application/application.module';
 import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { WAZEE_STORES } from './imports/wazee';
-import { OrderModule } from './+order/order.module';
+import { CommerceModule } from './+commerce/commerce.module';
 
 @NgModule({
   imports: [
@@ -31,8 +30,7 @@ import { OrderModule } from './+order/order.module';
     ContentModule,
     UserManagementModule,
     AdminModule,
-    CartModule,
-    OrderModule,
+    CommerceModule,
     ApplicationModule,
     StoreModule.provideStore(WAZEE_STORES)
   ],

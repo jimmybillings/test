@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { Tab } from './tab';
 import { CartService } from '../../services/cart.service';
-import { UiConfig } from '../../../shared/services/ui.config';
+import { UiConfig } from '../../../../shared/services/ui.config';
 
 @Component({
   moduleId: module.id,
@@ -27,7 +27,7 @@ export class CartTabComponent extends Tab implements OnInit {
   }
 
   public onNotification(message: any): void {
-    switch(message.type) {
+    switch (message.type) {
       case 'ADD_PROJECT': {
         this.cartService.addProject();
         break;

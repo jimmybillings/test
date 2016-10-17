@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUser } from '../../../shared/services/current-user.model';
 import { Observable } from 'rxjs/Rx';
-import { UiState } from '../../shared/services/ui.state';
+import { UiState } from '../../../shared/services/ui.state';
 
 @Injectable()
 export class CartCapabilities {

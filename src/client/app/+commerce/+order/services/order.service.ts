@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../../shared/services/api.service';
+import { ApiService } from '../../../shared/services/api.service';
+import { Api } from '../../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Rx';
 import { ActionReducer, Action, Store } from '@ngrx/store';
 
@@ -21,9 +22,12 @@ export class OrderService {
   }
 
   public getOrder(orderId: number): Observable<any> {
-    return this.api.get(`api/orders/v1/order/${orderId}`).map(res => {
-      this.store.dispatch({ type: 'ORDER.SET_CURRENT_ORDER', payload: res.json() });
-      return res.json();
+    return this.api.get2(Api.Orders, `order/${orderId}`).map(data => {
+      this.update(data);
     });
+  }
+
+  private update(data: any): void {
+    this.store.dispatch({ type: 'ORDER.SET_CURRENT_ORDER', payload: data });
   }
 }
