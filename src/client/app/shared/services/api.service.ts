@@ -45,14 +45,13 @@ export class ApiService {
       ).merge(this.requestOptionsArgsFrom(options))
     );
 
-    return this.http.request(request)
-      .do(response => { return; }, error => { return; }, () => this.uiState.loading(false))
-      .map(response => response.json())
-      .catch((error:any) => {
-        // error = error.json();
-        this.error.dispatch(error);
-        return Observable.throw(error);
-      });
+    return this.http.request(request).map(response => {
+      try { return response.json(); } catch (exception) { return response; }
+    }).do(
+      () => { return; },
+      error => this.error.dispatch(error),
+      () => this.uiState.loading(false)
+      );
   }
 
   private combineDefaultOptionsWith(options: ApiOptions): ApiOptions {
@@ -68,7 +67,7 @@ export class ApiService {
   }
 
   private pathSegmentFor(api: Api): string {
-    return Api[api].toLowerCase();
+    return (Api[api] || '?').toLowerCase();
   }
 
   private versionFor(api: Api): string {
@@ -76,8 +75,7 @@ export class ApiService {
       case Api.Identities: return 'v1';
       case Api.Assets: return 'v1';
       case Api.Orders: return 'v1';
-      case Api.Assets: return 'v1';
-      default: return '?';
+      default: return 'v?';
     };
   }
 
@@ -90,25 +88,26 @@ export class ApiService {
   }
 
   private requestOptionsArgsFrom(options: ApiOptions): RequestOptionsArgs {
+    let [search, searchWasSet] = this.searchParametersFrom(options.parameters);
     const requestOptionsArgs: RequestOptionsArgs = {};
-    const parameters: ApiParameters = options.parameters;
-    let search: URLSearchParams;
 
-    if (parameters !== {}) {
-      search = new URLSearchParams();
-      for (const parameter in parameters) {
-        search.set(parameter, parameters[parameter]);
-      }
+    requestOptionsArgs.headers = this.apiConfig.headers(options.overridingToken);
+    if (searchWasSet) requestOptionsArgs.search = search;
+
+    return requestOptionsArgs;
+  }
+
+  private searchParametersFrom(parameters: ApiParameters): Array<any> {
+    const search: URLSearchParams = new URLSearchParams();
+
+    for (const parameter in parameters) {
+      search.set(parameter, parameters[parameter]);
     }
 
     if (!this.currentUser.loggedIn()) {
-      if (!search) search = new URLSearchParams();
       search.set('siteName', this.apiConfig.getPortal());
     }
 
-    if (search) requestOptionsArgs.search = search;
-    requestOptionsArgs.headers = this.apiConfig.headers(options.overridingToken);
-
-    return requestOptionsArgs;
+    return [search, search.toString().length > 0];
   }
 }
