@@ -3,267 +3,251 @@ import {
   beforeEachProvidersArray,
   TestBed,
   MockBackend,
+  Headers,
   Response,
+  RequestMethod,
   ResponseOptions
 } from '../../imports/test.imports';
 
 import { ApiService } from './api.service';
-import { Api } from '../interfaces/api.interface';
+import { Api, ApiResponse } from '../interfaces/api.interface';
 import { ApiConfig } from './api.config';
-import { Error } from './error.service';
+import { UiState } from './ui.state';
+import { Error as ErrorService } from './error.service';
 import { CurrentUser } from './current-user.model';
 
-
 export function main() {
-
-
   describe('Api Service', () => {
-    let connection: any, MockApiConfig: any, MockError: any, mockBackEnd: MockBackend, mockCurrentUser: any;
-    mockBackEnd = new MockBackend();
-    let loggedInState: boolean = true;
-    let responseWith: Function = (object: Object) => new Response(new ResponseOptions({ body: JSON.stringify(object) }));
-    let errorResponseWith: Function = (object: Object) => object;
+    let mockApiConfig: any;
+    let mockUiState: any;
+    let mockErrorService: any;
+    let mockCurrentUser: any;
+    let connection: any;
+    let loggedIn: boolean = true;
+
+    const mockBackEnd: MockBackend = new MockBackend();
+    const successResponse: Response = new Response(new ResponseOptions({ body: '{"status":200}' }));
+    const errorResponse: Object = { status: 401 };
 
     beforeEach(() => {
-
-      mockBackEnd.connections.subscribe((c: any) => connection = c);
-      MockApiConfig = { headers: function () { return 'hi'; }, baseUrl: function () { return 'BASE/'; }, getPortal: function () { return 'core'; } };
-      MockError = { dispatch: function (error: any) { return error; } };
-
-      mockCurrentUser = {
-        loggedIn: function () { return loggedInState; }
+      mockApiConfig = {
+        headers: (token: string = '') => new Headers({ 'Authorization': token === '' ? 'STANDARD TOKEN' : token }),
+        baseUrl: () => 'BASE/',
+        getPortal: () => 'PORTAL'
       };
 
-      spyOn(MockError, 'dispatch');
-      spyOn(MockApiConfig, 'headers').and.callThrough();
-      spyOn(MockApiConfig, 'baseUrl').and.callThrough();
+      mockUiState = jasmine.createSpyObj('mockUiState', ['loading']);
+      mockErrorService = jasmine.createSpyObj('mockErrorService', ['dispatch']);
+      mockCurrentUser = { loggedIn: () => loggedIn };
+
+      mockBackEnd.connections.subscribe((c: any) => connection = c);
 
       TestBed.configureTestingModule({
         providers: [
           ...beforeEachProvidersArray,
           ApiService,
-          { provide: ApiConfig, useValue: MockApiConfig },
-          { provide: Error, useValue: MockError },
+          { provide: ApiConfig, useValue: mockApiConfig },
+          { provide: ErrorService, useValue: mockErrorService },
           { provide: MockBackend, useValue: mockBackEnd },
-          { provide: CurrentUser, useValue: mockCurrentUser }
+          { provide: CurrentUser, useValue: mockCurrentUser },
+          { provide: UiState, useValue: mockUiState }
         ]
       });
     });
 
-    it('Should corretly build the get method given a valid request for a logged IN user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = true;
-        service.get(Api.Identities, 'collection/1').subscribe((res) => {
-          expect(res).toEqual({ status: 200 });
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        });
-        connection.mockRespond(responseWith({ status: 200 }));
-      }));
+    for (const methodName of ['get', 'post', 'put', 'delete']) {
+      describe(`${methodName}()`, () => {
+        let serviceUnderTest: ApiService;
+        let methodUnderTest: Function;
+        let expectedHttpMethod: RequestMethod;
 
-    it('Should corretly build the get method given a valid request for a logged OUT user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = false;
-        service.get(Api.Identities, 'collection/1').subscribe((res) => {
-          expect(res).toEqual({ status: 200 });
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        });
-        connection.mockRespond(responseWith({ status: 200 }));
-      }));
+        const getMethodInfoFrom: Function = (methodName: string) => {
+          switch (methodName) {
+            case 'get': return [serviceUnderTest.get, RequestMethod.Get];
+            case 'post': return [serviceUnderTest.post, RequestMethod.Post];
+            case 'put': return [serviceUnderTest.put, RequestMethod.Put];
+            case 'delete': return [serviceUnderTest.delete, RequestMethod.Delete];
+            default: return [undefined, undefined];
+          }
+        };
 
-    it('Should corretly build the get method given a valid request and handle an error based response for a logged IN user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = true;
-        service.get(Api.Identities, 'collection/1').subscribe((res) => {
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        }, (error) => {
-          expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
-          expect(error).toEqual({ status: 401 });
-        });
-        connection.mockError(errorResponseWith({ status: 401 }));
-      }));
+        beforeEach(inject([ApiService], (apiService: ApiService) => {
+          serviceUnderTest = apiService;
+          [methodUnderTest, expectedHttpMethod] = getMethodInfoFrom(methodName);
+        }));
 
-    it('Should corretly build the get method given a valid request and handle an error based response for a logged OUT user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = false;
-        service.get(Api.Identities, 'collection/1').subscribe((res) => {
-          expect(connection.request.url).toBe('BASE/api/collection/1?siteName=core');
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        }, (error) => {
-          expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
-          expect(error).toEqual({ status: 401 });
+        it('calls the correct HTTP method', () => {
+          methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
+            .subscribe(() => expect(connection.request.method).toEqual(expectedHttpMethod));
         });
-        connection.mockError(errorResponseWith({ status: 401 }));
-      }));
 
-    it('Should corretly build the post method given a valid request for a logged IN user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = true;
-        service.post(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
-          expect(res).toEqual({ status: 200 });
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
-          expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        });
-        connection.mockRespond(responseWith({ status: 200 }));
-      }));
+        describe('URL', () => {
+          afterEach(() => connection.mockRespond(successResponse));
 
-    it('Should corretly build the post method given a valid request for a logged OUT user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = false;
-        service.post(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
-          expect(res).toEqual({ status: 200 });
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
-          expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        });
-        connection.mockRespond(responseWith({ status: 200 }));
-      }));
+          it('is correct for all backend APIs', () => {
+            loggedIn = true;
 
-    it('Should corretly build the post method given a valid request and handle an error based response for a logged IN user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = true;
-        service.post(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
-          expect(connection.request.url).toBe('BASE/identities/v1/api/collection/1');
-          expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        }, (error) => {
-          expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
-          expect(error).toEqual({ status: 401 });
-        });
-        connection.mockError(errorResponseWith({ status: 401 }));
-      }));
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/api/identities/v1/end/point'));
 
-    it('Should corretly build the post method given a valid request and handle an error based response for a logged OUT user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = false;
-        service.post(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
-          expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        }, (error) => {
-          expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
-          expect(error).toEqual({ status: 401 });
-        });
-        connection.mockError(errorResponseWith({ status: 401 }));
-      }));
+            methodUnderTest.call(serviceUnderTest, Api.Assets, 'end/point')
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/api/assets/v1/end/point'));
 
-    it('Should corretly build the put method given a valid request for a logged IN user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = true;
-        service.put(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
-          expect(res).toEqual({ status: 200 });
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
-          expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        });
-        connection.mockRespond(responseWith({ status: 200 }));
-      }));
+            methodUnderTest.call(serviceUnderTest, Api.Orders, 'end/point')
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/api/orders/v1/end/point'));
+          });
 
-    it('Should corretly build the put method given a valid request for a logged OUT user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = false;
-        service.put(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
-          expect(res).toEqual({ status: 200 });
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
-          expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        });
-        connection.mockRespond(responseWith({ status: 200 }));
-      }));
+          it('is unusable when an undefined backend API is specified', () => {
+            loggedIn = true;
 
-    it('Should corretly build the put method given a valid request and handle an error based response for a logged IN user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = true;
-        service.put(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
-          expect(connection.request._body).toEqual(JSON.stringify({ userId: 3 }));
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        }, (error) => {
-          expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
-          expect(error).toEqual({ status: 401 });
-        });
-        connection.mockError(errorResponseWith({ status: 401 }));
-      }));
+            methodUnderTest.call(serviceUnderTest, (10836 as Api), 'end/point')
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/api/?/v?/end/point'));
+          });
 
-    it('Should corretly build the put method given a valid request and handle an error based response for a logged OUT user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = false;
-        service.put(Api.Identities, 'collection/1', { body: { userId: 3 } }).subscribe((res) => {
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
-          expect(connection.request._body).toEqual(JSON.stringify({ userId: 3, siteName: 'core' }));
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        }, (error) => {
-          expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
-          expect(error).toEqual({ status: 401 });
-        });
-        connection.mockError(errorResponseWith({ status: 401 }));
-      }));
+          describe('when logged in', () => {
+            beforeEach(() => loggedIn = true);
 
-    it('Should corretly build the delete method given a valid request for a logged IN user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = true;
-        service.delete(Api.Identities, 'collection/1').subscribe((res) => {
-          expect(res).toEqual({ status: 200 });
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        });
-        connection.mockRespond(responseWith({ status: 200 }));
-      }));
+            it('is correct with no options', () => {
+              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
+                .subscribe(() => expect(connection.request.url).toEqual('BASE/api/identities/v1/end/point'));
+            });
 
-    it('Should corretly build the delete method given a valid request for a logged OUT user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = false;
-        service.delete(Api.Identities, 'collection/1').subscribe((res) => {
-          expect(res).toEqual({ status: 200 });
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        });
-        connection.mockRespond(responseWith({ status: 200 }));
-      }));
+            it('is correct with parameters', () => {
+              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd' } })
+                .subscribe(() => expect(connection.request.url).toEqual('BASE/api/identities/v1/end/point?a=b&c=d'));
+            });
+          });
 
-    it('Should corretly build the delete method given a valid request and handle an error based response for a logged IN user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = true;
-        service.delete(Api.Identities, 'collection/1').subscribe((res) => {
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1');
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        }, (error) => {
-          expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
-          expect(error).toEqual({ status: 401 });
-        });
-        connection.mockError(errorResponseWith({ status: 401 }));
-      }));
+          describe('when logged out', () => {
+            beforeEach(() => loggedIn = false);
 
-    it('Should corretly build the delete method given a valid request and handle an error based response for a logged OUT user',
-      inject([ApiService], (service: ApiService) => {
-        loggedInState = false;
-        service.delete(Api.Identities, 'collection/1').subscribe((res) => {
-          expect(connection.request.url).toBe('BASE/api/identities/v1/collection/1?siteName=core');
-          expect(MockApiConfig.headers).toHaveBeenCalled();
-          expect(MockApiConfig.baseUrl).toHaveBeenCalled();
-        }, (error) => {
-          expect(MockError.dispatch).toHaveBeenCalledWith({ status: 401 });
-          expect(error).toEqual({ status: 401 });
+            it('is correct with no options', () => {
+              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
+                .subscribe(() => expect(connection.request.url).toEqual('BASE/api/identities/v1/end/point?siteName=PORTAL'));
+            });
+
+            it('is correct with parameters', () => {
+              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd' } })
+                .subscribe(() => expect(connection.request.url).toEqual('BASE/api/identities/v1/end/point?a=b&c=d&siteName=PORTAL'));
+            });
+          });
         });
-        connection.mockError(errorResponseWith({ status: 401 }));
-      }));
+
+        describe('headers', () => {
+          afterEach(() => connection.mockRespond(successResponse));
+
+          it('is correct with no options', () => {
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
+              .subscribe(() => expect(connection.request.headers.get('Authorization')).toEqual('STANDARD TOKEN'));
+          });
+
+          it('is correct with override token', () => {
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { overridingToken: 'OVERRIDING TOKEN' })
+              .subscribe(() => expect(connection.request.headers.get('Authorization')).toEqual('OVERRIDING TOKEN'));
+          });
+        });
+
+        describe('body', () => {
+          afterEach(() => connection.mockRespond(successResponse));
+
+          describe('when logged in', () => {
+            beforeEach(() => loggedIn = true);
+
+            it('is empty when no body option is specified', () => {
+              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
+                .subscribe(() => expect(connection.request._body).toEqual('{}'));
+            });
+
+            it('is the specified body option', () => {
+              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { body: { a: 'b' } })
+                .subscribe(() => expect(connection.request._body).toEqual('{"a":"b"}'));
+            });
+          });
+
+          describe('when logged out', () => {
+            beforeEach(() => loggedIn = false);
+
+            it('is just the site name when no body option is specified', () => {
+              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
+                .subscribe(() => expect(connection.request._body).toEqual('{"siteName":"PORTAL"}'));
+            });
+
+            it('is the specified body plus the site name', () => {
+              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { body: { a: 'b' } })
+                .subscribe(() => expect(connection.request._body).toEqual('{"a":"b","siteName":"PORTAL"}'));
+            });
+          });
+        });
+
+        describe('result', () => {
+          let mockHandlers: any;
+          beforeEach(() => mockHandlers = jasmine.createSpyObj('mockHandlers', ['response', 'error']));
+
+          it('is as expected when the request succeeds', () => {
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point').subscribe(
+              (response: ApiResponse) => {
+                expect(response).toEqual({ status: 200 });
+                mockHandlers.response();
+              },
+              mockHandlers.error,
+              () => {
+                expect(mockHandlers.response).toHaveBeenCalled();
+                expect(mockHandlers.error).not.toHaveBeenCalled();
+                expect(mockErrorService.dispatch).not.toHaveBeenCalled();
+              });
+            connection.mockRespond(successResponse);
+          });
+
+          it('is as expected when the request errors', () => {
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point').subscribe(
+              mockHandlers.response,
+              (error: Error) => {
+                expect(error).toEqual({ status: 401 });
+                mockHandlers.error();
+              },
+              () => {
+                expect(mockHandlers.response).not.toHaveBeenCalled();
+                expect(mockHandlers.error).toHaveBeenCalled();
+                expect(mockErrorService.dispatch).toHaveBeenCalledWith({ status: 401 });
+              }
+            );
+            connection.mockError(errorResponse);
+          });
+        });
+
+        describe('loading animation', () => {
+          let noOp: Function = () => { return };
+
+          for (const result of ['succeeds', 'errors']) {
+            describe(`when the request ${result}`, () => {
+              afterEach(() => {
+                if (result === 'succeeds') connection.mockRespond(successResponse); else connection.mockError(errorResponse);
+              });
+
+              describe('when loading option is not specified', () => {
+                it('is not affected at first, but is stopped when the call is complete', () => {
+                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
+                    .subscribe(noOp, noOp, () => expect(mockUiState.loading.calls.allArgs()).toEqual([[false]]));
+                });
+              });
+
+              describe('when loading option is false', () => {
+                it('is not affected at first, but is stopped when the call is complete', () => {
+                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loading: false })
+                    .subscribe(noOp, noOp, () => expect(mockUiState.loading.calls.allArgs()).toEqual([[false]]));
+                });
+              });
+
+              describe('when loading option is true', () => {
+                it('is started at first and stopped when the call is complete', () => {
+                  methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loading: true })
+                    .subscribe(noOp, noOp, () => expect(mockUiState.loading.calls.allArgs()).toEqual([[true], [false]]));
+                });
+              });
+            });
+          }
+        });
+      });
+    }
   });
 }
