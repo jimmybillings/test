@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSearchParams, Response } from '@angular/http';
+import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Error } from './error.service';
 import { ApiConfig } from './api.config';

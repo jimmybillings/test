@@ -216,7 +216,7 @@ export function main() {
         });
 
         describe('loading animation', () => {
-          let noOp: Function = () => { return };
+          let noOp: Function = () => { return; };
 
           for (const result of ['succeeds', 'errors']) {
             describe(`when the request ${result}`, () => {
