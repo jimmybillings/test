@@ -198,6 +198,21 @@ export function main() {
             connection.mockRespond(successResponse);
           });
 
+          it('is as expected when the request succeeds with a non-JSON response', () => {
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point').subscribe(
+              (response: ApiResponse) => {
+                expect(response).toEqual('Non-JSON!  Ick!');
+                mockHandlers.response();
+              },
+              mockHandlers.error,
+              () => {
+                expect(mockHandlers.response).toHaveBeenCalled();
+                expect(mockHandlers.error).not.toHaveBeenCalled();
+                expect(mockErrorService.dispatch).not.toHaveBeenCalled();
+              });
+            connection.mockRespond('Non-JSON!  Ick!');
+          });
+
           it('is as expected when the request errors', () => {
             methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point').subscribe(
               mockHandlers.response,
