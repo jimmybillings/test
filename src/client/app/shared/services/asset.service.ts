@@ -3,7 +3,7 @@ import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 
 import { ApiService } from '../../shared/services/api.service';
-import { Api } from '../../shared/interfaces/api.interface';
+import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 
 const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '', price: 0 };
 
@@ -64,9 +64,11 @@ export class AssetService {
     return this.api.post(Api.Identities, 'accessInfo', { body: shareLink });
   }
 
-  public getData(id: any): Observable<any> {
-    return this.api.get(Api.Assets, `clip/${id}/clipDetail`, { loading: true })
-      .do(response => this.setActiveAsset(response));
+  public getData(id: any, share_token?: string): Observable<any> {
+    let options: ApiOptions = { loading: true };
+    if (share_token) options.overridingToken = share_token;
+    return this.api.get(Api.Assets, 'clip/' + id + '/clipDetail', options)
+      .do((res) => this.setActiveAsset(res));
   }
 
   public setActiveAsset(asset: any): void {
