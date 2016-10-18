@@ -26,6 +26,10 @@ export class OrderService {
       .do(response => this.update(response));
   }
 
+  public downloadMaster(id: any): Observable<any> {
+    return this.api.get(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: 'wm' } });
+  }
+
   private update(data: any): void {
     this.store.dispatch({ type: 'ORDER.SET_CURRENT_ORDER', payload: data });
   }

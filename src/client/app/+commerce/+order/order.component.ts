@@ -14,14 +14,14 @@ export class OrderComponent {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
-  public formatTime(timecode: any): string {
-    switch (timecode) {
-      case -1:
-        return 'End';
-      case -2:
-        return 'Beginning';
-      default:
-        return '';
-    }
+  public downloadMaster(assetId: number): void {
+    console.log(assetId);
+    // this.order.downloadMaster(assetId).take(1).subscribe((res) => {
+    //   if (res.url && res.url !== '') {
+    //     window.location.href = res.url;
+    //   } else {
+    //     console.log('no master');
+    //   }
+    // });
   }
 }
