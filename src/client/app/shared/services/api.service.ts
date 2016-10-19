@@ -45,13 +45,9 @@ export class ApiService {
       ).merge(this.requestOptionsArgsFrom(options))
     );
 
-    return this.http.request(request).map(response => {
-      try { return response.json(); } catch (exception) { return response; }
-    }).do(
-      () => { return; },
-      error => this.error.dispatch(error),
-      () => this.uiState.loading(false)
-      );
+    return this.http.request(request)
+      .map(response => { try { return response.json(); } catch (exception) { return response; } })
+      .do(() => this.uiState.loading(false), error => { this.uiState.loading(false); this.error.dispatch(error); });
   }
 
   private combineDefaultOptionsWith(options: ApiOptions): ApiOptions {
