@@ -76,7 +76,7 @@ export class WzDialogComponent implements OnDestroy {
       .global()
       .centerHorizontally()
       .fixed()
-      .top('22%');
+      .top('12%');
       // .centerVertically();
   }
 
