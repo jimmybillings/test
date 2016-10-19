@@ -7,6 +7,7 @@ import {
 import { RegisterComponent } from './register.component';
 import { User } from '../services/user.data.service';
 import { UiConfig } from '../../shared/services/ui.config';
+import { DocumentService } from '../services/document.service';
 
 const user: any = { emailAddress: 'jamesbonline@yahoo.com', firstName: 'james', lastName: 'billigns', password: '3978f324e14ac256b2994b754586e05f' };
 export function main() {
@@ -14,11 +15,13 @@ export function main() {
 
     const MockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
     const MockUser = { create: () => { return Observable.of(user); } };
+    const MockDocumentService = { downloadActiveDocument: () => { return Observable.of('this is the document'); } };
 
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
         { provide: User, useValue: MockUser },
         { provide: UiConfig, useValue: MockUiConfig },
+        { provide: DocumentService, useValue: MockDocumentService },
         RegisterComponent
       ]
     }));

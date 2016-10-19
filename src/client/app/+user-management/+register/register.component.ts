@@ -4,7 +4,7 @@ import { User } from '../services/user.data.service';
 import { Subscription } from 'rxjs/Rx';
 import { UiConfig } from '../../shared/services/ui.config';
 import { FormFields, ServerErrors } from '../../shared/interfaces/forms.interface';
-// import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
+import { DocumentService } from '../services/document.service';
 
 /**
  * Registration page component - renders registration page and handles submiting registation form.
@@ -26,11 +26,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   constructor(
     public user: User,
-    public uiConfig: UiConfig) {
+    public uiConfig: UiConfig,
+    private document: DocumentService) {
   }
 
   ngOnInit(): void {
     this.configSubscription = this.uiConfig.get('register').subscribe(config => this.config = config.config);
+    // this.document.downloadActiveDocument().take(1).subscribe();
   }
 
   ngOnDestroy() {
