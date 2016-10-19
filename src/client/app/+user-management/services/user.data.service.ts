@@ -20,4 +20,8 @@ export class User {
   public get(): Observable<any> {
     return this.api.get(Api.Identities, 'user/currentUser');
   }
+
+  public forgotPassword(user: Object): Observable<any> {
+    return this.api.post(Api.Identities, 'user/forgotPassword', { body: user, loading: true });
+  }
 }
