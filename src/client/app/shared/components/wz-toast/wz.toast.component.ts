@@ -1,8 +1,8 @@
 import { Component, Input, Directive, ViewContainerRef, TemplateRef, ViewChild, ViewEncapsulation, Renderer, ChangeDetectionStrategy } from '@angular/core';
-import {Overlay} from '@angular/material/core';
-import {OverlayState} from '@angular/material/core';
-import {OverlayRef} from '@angular/material/core';
-import {TemplatePortalDirective} from '@angular/material/core';
+import {Overlay} from '@angular/material';
+import {OverlayState} from '@angular/material';
+import {OverlayRef} from '@angular/material';
+import {TemplatePortalDirective} from '@angular/material';
 
 @Directive({ selector: '[wzToastPortalDirective]' })
 export class WzToastPortalDirective extends TemplatePortalDirective {

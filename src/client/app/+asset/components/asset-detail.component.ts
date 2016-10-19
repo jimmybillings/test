@@ -3,7 +3,7 @@ import { Collection } from '../../shared/interfaces/collection.interface';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { UiConfig} from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
-import { MdMenuTrigger } from '@angular/material/menu/menu';
+import { MdMenuTrigger } from '@angular/material';
 
 @Component({
   moduleId: module.id,

@@ -377,26 +377,6 @@ export class SeedConfig {
       'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
       '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
 
-      // '@angular2-material/core': 'node_modules/@angular2-material/core/core.umd.js',
-      // '@angular2-material/button': 'node_modules/@angular2-material/button/button.umd.js',
-      // '@angular2-material/card': 'node_modules/@angular2-material/card/card.umd.js',
-      // '@angular2-material/checkbox': 'node_modules/@angular2-material/checkbox/checkbox.umd.js',
-      // '@angular2-material/grid-list': 'node_modules/@angular2-material/grid-list/grid-list.umd.js',
-      // '@angular2-material/icon': 'node_modules/@angular2-material/icon/icon.umd.js',
-      // '@angular2-material/input': 'node_modules/@angular2-material/input/input.umd.js',
-      // '@angular2-material/list': 'node_modules/@angular2-material/list/list.umd.js',
-      // '@angular2-material/menu': 'node_modules/@angular2-material/menu/menu.umd.js',
-      // '@angular2-material/progress-bar': 'node_modules/@angular2-material/progress-bar/progress-bar.umd.js',
-      // '@angular2-material/progress-circle': 'node_modules/@angular2-material/progress-circle/progress-circle.umd.js',
-      // '@angular2-material/radio': 'node_modules/@angular2-material/radio/radio.umd.js',
-      // '@angular2-material/sidenav': 'node_modules/@angular2-material/sidenav/sidenav.umd.js',
-      // '@angular2-material/slider': 'node_modules/@angular2-material/slider/slider.umd.js',
-      // '@angular2-material/slide-toggle': 'node_modules/@angular2-material/slide-toggle/slide-toggle.umd.js',
-      // '@angular2-material/button-toggle': 'node_modules/@angular2-material/button-toggle/button-toggle.umd.js',
-      // '@angular2-material/tabs': 'node_modules/@angular2-material/tabs/tabs.umd.js',
-      // '@angular2-material/toolbar': 'node_modules/@angular2-material/toolbar/toolbar.umd.js',
-      // '@angular2-material/tooltip': 'node_modules/@angular2-material/tooltip/tooltip.umd.js',
-
       'rxjs/*': 'node_modules/rxjs/*',
       '@ngrx/core': 'node_modules/@ngrx/core/bundles/core.min.umd.js',
       '@ngrx/store': 'node_modules/@ngrx/store/bundles/store.min.umd.js',
@@ -407,7 +387,6 @@ export class SeedConfig {
       '*': 'node_modules/*'
     },
     packages: {
-      rxjs: { defaultExtension: 'js' }
     }
   };
 
@@ -429,7 +408,6 @@ export class SeedConfig {
       join('node_modules', '*', 'package.json'),
       join('node_modules', '@angular', '*', 'package.json'),
       join(this.PROJECT_ROOT, 'node_modules', '@ngrx', '*', 'package.json'),
-      join(this.PROJECT_ROOT, 'node_modules', '@angular2-material', '*', 'package.json')
     ],
     paths: {
       'node_modules/*': 'node_modules/*',
