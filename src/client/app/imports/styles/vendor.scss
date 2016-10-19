@@ -5,31 +5,71 @@
 
 @import '../styles/vendor/font-awesome/font-awesome';
 
-@import 'node_modules/@angular2-material/core/style/mixins';
-@import "node_modules/@angular2-material/core/style/core";
-@import "node_modules/@angular2-material/core/style/default-theme";
+// @import 'node_modules/@angular/material/core/style/mixins';
+// @import "node_modules/@angular/material/core/style/core";
+// @import "node_modules/@angular/material/core/style/default-theme";
 
-// @import "node_modules/@angular2-material/core/overlay/overlay.scss";
+
+
+
+@import 'node_modules/@angular/material/core/theming/all-theme';
+// Plus imports for other components in your app.
+
+// Include the base styles for Angular Material core. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+@include md-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+$primary: md-palette($md-blue-grey, 600, 300, 800);
+$accent:  md-palette($md-orange, 500, 300, 800);
+
+// The warn palette is optional (defaults to red).
+$warn:    md-palette($md-red, A700, 600, 900);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$theme: md-light-theme($primary, $accent, $warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($theme);
+
+
+// temp variables until we get theming figured out.
+$md-foreground: $md-light-theme-foreground;
+$md-background: $md-light-theme-background;
+$md-primary: $primary;
+$md-accent: $accent;
+$md-warn: $warn;
+
+
+
+
+
+
+// @import "node_modules/@angular/material/core/overlay/overlay.scss";
 
 /** The overlay-container is an invisible element which contains all individual overlays. */
-.md-overlay-container {
-  position: absolute;
+// .md-overlay-container {
+  // position: absolute;
   // Disable events from being captured on the overlay container.
-  pointer-events: none;
+  // pointer-events: none;
   // The container should be the size of the viewport.
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-}
+//   top: 0;
+//   left: 0;
+//   height: 100%;
+//   width: 100%;
+// }
 
 /** A single overlay pane. */
-.md-overlay-pane {
-  position: absolute;
-  pointer-events: auto;
-  box-sizing: border-box;
-  z-index: $z-index-overlay;
-}
+// .md-overlay-pane {
+//   position: absolute;
+//   pointer-events: auto;
+//   box-sizing: border-box;
+//   z-index: $z-index-overlay;
+// }
 
 // these are not part of ng2material just yet, but are needed
 // hopefully these will be part of Ng2 Material, and then removed, and referenced above

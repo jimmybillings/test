@@ -46,7 +46,7 @@
         <md-icon>settings</md-icon>{{ 'HEADER.ADMIN_LABEL' | translate }}
     </a>
     <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/user/profile']">
-        <md-icon>person</md-icon>Open your Profile
+        <md-icon>person</md-icon>Open your profile
     </a>
     <a md-menu-item *ngIf="userCan.viewCollections()" [routerLink]="['/collection']">
         <md-icon>folder_open</md-icon>Open your collections
@@ -54,9 +54,11 @@
     <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/cart']">
         <md-icon>shopping_cart</md-icon>Open your cart
     </a>
+    <a md-menu-item *ngIf="userCan.viewCollections()" [routerLink]="['/orders']">
+        <md-icon>description</md-icon>Open your orders
+    </a>
     <div class="divider"></div>
     <a md-menu-item *ngIf="currentUser.loggedInState() | async" (click)="logOut();" [routerLink]="['/']">
       <md-icon>power_settings_new</md-icon>{{ 'HEADER.LOGOUT_LABEL' | translate}}
     </a>
-    
 </md-menu>
