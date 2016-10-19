@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService } from 'ng2-translate/ng2-translate';
+import { MaterialModule } from '@angular/material';
 
 // Shared Pure Components
 import { WzNotificationComponent } from '../shared/components/wz-notification/wz.notification.component';
@@ -37,7 +38,6 @@ import { SearchResolver } from '../+search/services/search.resolver';
 import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
 import { OrderResolver } from '../+commerce/+order/services/order.resolver';
 import { WAZEE_PROVIDERS } from '../imports/wazee';
-import { MaterialModule } from './material.module';
 
 @NgModule({
   imports: [

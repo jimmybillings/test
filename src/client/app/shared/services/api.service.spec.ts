@@ -240,16 +240,16 @@ export function main() {
               });
 
               describe('when loading option is not specified', () => {
-                it('is not affected at first, but is stopped when the call is complete', () => {
+                it('is not affected', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-                    .subscribe(noOp, noOp, () => expect(mockUiState.loading.calls.allArgs()).toEqual([[false]]));
+                    .subscribe(noOp, noOp, () => expect(mockUiState.loading).not.toHaveBeenCalled());
                 });
               });
 
               describe('when loading option is false', () => {
-                it('is not affected at first, but is stopped when the call is complete', () => {
+                it('is not affected', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { loading: false })
-                    .subscribe(noOp, noOp, () => expect(mockUiState.loading.calls.allArgs()).toEqual([[false]]));
+                    .subscribe(noOp, noOp, () => expect(mockUiState.loading).not.toHaveBeenCalled());
                 });
               });
 
