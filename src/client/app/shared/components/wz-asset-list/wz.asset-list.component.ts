@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, ViewChild } from '@angular/core';
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { CurrentUser } from '../../../shared/services/current-user.model';
-import { MdMenuTrigger } from '@angular2-material/menu';
+import { MdMenuTrigger } from '@angular/material';
 /**
  * Directive that renders a list of assets
  */

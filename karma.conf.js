@@ -49,7 +49,7 @@ module.exports = function (config) {
       { pattern: 'node_modules/@ngrx/**/*.js', included: false, watched: false },
       { pattern: 'node_modules/pikaday/pikaday.js', included: false, watched: false },
       { pattern: 'node_modules/clipboard/dist/clipboard.min.js', included: false, watched: false },
-      { pattern: 'node_modules/@angular2-material/**/*.js', included: false, watched: false },
+      { pattern: 'node_modules/@angular/material/**/*.js', included: false, watched: false },
 
       { pattern: 'dist/dev/**/*.js', included: false, watched: true },
       { pattern: 'dist/dev/**/*.html', included: false, watched: true, served: true },
