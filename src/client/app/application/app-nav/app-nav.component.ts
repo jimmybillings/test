@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild} from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
-import { MdMenuTrigger } from '@angular2-material/menu';
+import { MdMenuTrigger } from '@angular/material';
 /**
  * site header component - renders the header information
  */
