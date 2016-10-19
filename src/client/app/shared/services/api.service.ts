@@ -37,7 +37,8 @@ export class ApiService {
 
   private call(method: RequestMethod, api: Api, endpoint: string, options: ApiOptions): Observable<ApiResponse> {
     options = this.combineDefaultOptionsWith(options);
-    if (options.loading) this.uiState.loading(true);
+
+    this.showLoadingIf(options.loading);
 
     const request: Request = new Request(
       new RequestOptions(
@@ -47,7 +48,7 @@ export class ApiService {
 
     return this.http.request(request)
       .map(response => { try { return response.json(); } catch (exception) { return response; } })
-      .do(() => this.uiState.loading(false), error => { this.uiState.loading(false); this.error.dispatch(error); });
+      .do(() => this.hideLoadingIf(options.loading), error => { this.hideLoadingIf(options.loading); this.error.dispatch(error); });
   }
 
   private combineDefaultOptionsWith(options: ApiOptions): ApiOptions {
@@ -56,6 +57,14 @@ export class ApiService {
       { parameters: {}, body: {}, loading: false, overridingToken: '' },
       options
     );
+  }
+
+  private showLoadingIf(loadingOption: boolean) {
+    if (loadingOption) this.uiState.loading(true);
+  }
+
+  private hideLoadingIf(loadingOption: boolean) {
+    if (loadingOption) this.uiState.loading(false);
   }
 
   private urlFor(api: Api, endpoint: string) {

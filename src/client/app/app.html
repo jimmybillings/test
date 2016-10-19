@@ -1,14 +1,14 @@
 <div class="app" #target>
   <header [ngClass]="{
     'fixed': (uiState.data | async).showFixedHeader,
-    'collection-tray-closed': !(preferences.data | async).collectionTrayIsOpen,
-    'search-closed': !(preferences.data | async).searchIsOpen
+    'collection-tray-closed': !(userPreference.data | async).collectionTrayIsOpen,
+    'search-closed': !(userPreference.data | async).searchIsOpen
     }" class="app-header">
     <app-nav
       [uiState]="uiState"
       [currentUser]="currentUser"
       [state]="state"
-      [prefs]="preferences"
+      [prefs]="userPreference"
       [config]="(uiConfig.get('header') | async).config"
       [collection]="activeCollection.data | async"
       [userCan]="userCan"
@@ -25,15 +25,15 @@
       [currentUser]="currentUser"
       [state]="state"
       [uiState]="uiState"
-      [prefs]="preferences"
+      [prefs]="userPreference"
       [config]="(uiConfig.get('searchBox') | async).config"
       (searchContext)="newSearchContext($event)">
     </wz-search-box>
     <md-progress-bar mode="indeterminate" *ngIf="(uiState.data | async).loading"></md-progress-bar>
   </header>
   <div [ngClass]="{
-    'collection-tray-closed': !(preferences.data | async).collectionTrayIsOpen,
-    'search-closed': !(preferences.data | async).searchIsOpen
+    'collection-tray-closed': !(userPreference.data | async).collectionTrayIsOpen,
+    'search-closed': !(userPreference.data | async).searchIsOpen
     }" class="main-content">
     <router-outlet></router-outlet>
   </div>

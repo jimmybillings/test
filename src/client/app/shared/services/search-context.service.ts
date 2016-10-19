@@ -6,7 +6,8 @@ import { Observable } from 'rxjs/Rx';
 const initSearchContext: any = {
   q: null,
   i: 1,
-  n: 100
+  n: 100,
+  sortId: 12
 };
 
 export const searchContext: ActionReducer<any> = (state: any = initSearchContext, action: Action) => {

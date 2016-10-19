@@ -168,11 +168,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public onSortResults(sortDefinition: any): void {
     this.userPreferences.updateSortPreference(sortDefinition.id);
     this.sortDefinitions.update({ currentSort: sortDefinition });
-    this.updateSearchContext(sortDefinition.id);
-  }
-
-  public updateSearchContext(sortDefinitionId: number): void {
-    this.searchContext.update = { 'i': 1, 'sortId': sortDefinitionId };
+    this.searchContext.update = { 'i': 1, 'sortId': sortDefinition.id };
     this.searchContext.go();
   }
 

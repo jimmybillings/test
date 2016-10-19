@@ -68,16 +68,13 @@ export function main() {
       inject([SearchComponent], (component: SearchComponent) => {
         component.sortOptions = mockSortDefinitions().list;
         spyOn(component.userPreferences, 'updateSortPreference');
-        spyOn(component, 'updateSearchContext');
+        spyOn(component.sortDefinitions, 'update');
+        spyOn(component.searchContext, 'update')
+        spyOn(component.searchContext, 'go');
         component.onSortResults(mockSortDefinitions().list[1].first);
         expect(component.userPreferences.updateSortPreference).toHaveBeenCalledWith(4);
-        expect(component.updateSearchContext).toHaveBeenCalledWith(4);
-      }));
-
-    it('Should have an updateSearchContext() method that updates the search contex, and calls .go()',
-      inject([SearchComponent], (component: SearchComponent) => {
-        spyOn(component.searchContext, 'go');
-        component.updateSearchContext(1);
+        expect(component.sortDefinitions.update).toHaveBeenCalledWith({ currentSort: mockSortDefinitions().list[1].first});
+        expect(component.searchContext.update).toEqual({ 'i': 1, 'sortId': 4 });
         expect(component.searchContext.go).toHaveBeenCalled();
       }));
 

@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public newSearchContext(query: any): void {
     this.filter.set(this.filter.clear());
-    this.searchContext.new({ q: query, i: 1, n: this.config.pageSize.value, sortId: this.userPreference.state.searchSortOptionId });
+    this.searchContext.new({ q: query, i: 1, n: this.config.pageSize.value, sortId: this.userPreference.state.searchSortOptionId || 12 });
   }
 
   public json(context: any): any {
