@@ -3,7 +3,6 @@ import { Response } from '@angular/http';
 import { User } from '../services/user.data.service';
 import { Subscription } from 'rxjs/Rx';
 import { UiConfig } from '../../shared/services/ui.config';
-import { UiState } from '../../shared/services/ui.state';
 import { FormFields, ServerErrors } from '../../shared/interfaces/forms.interface';
 // import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 
@@ -27,8 +26,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   constructor(
     public user: User,
-    public uiConfig: UiConfig,
-    public uiState: UiState) {
+    public uiConfig: UiConfig) {
   }
 
   ngOnInit(): void {
