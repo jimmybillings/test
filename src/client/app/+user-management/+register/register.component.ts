@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Response } from '@angular/http';
 import { User } from '../services/user.data.service';
 import { Subscription } from 'rxjs/Rx';
@@ -46,13 +46,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
   public onSubmit(user: any): void {
     this.user.create(user).take(1)
       .subscribe(
-        (res: Response) => {
-          this.successfullySubmitted = true;
-          this.newUser = res;
-        },
-        (Error => {
-          this.serverErrors = Error.json();
-        })
+      (res: Response) => {
+        this.successfullySubmitted = true;
+        this.newUser = res;
+      },
+      (Error => {
+        this.serverErrors = Error.json();
+      })
       );
+  }
+
+  public agreeToTerms(): void {
+    let agreeCheckbox = <HTMLFormElement>document.querySelector('.md-checkbox-layout');
+    agreeCheckbox.click();
   }
 }

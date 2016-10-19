@@ -1,23 +1,81 @@
-   
 <section class="login hero" *ngIf="config">
-  <div layout="row" md-scroll-y="" layout-align="center start">
-    <div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
-      <md-card class="wz-form-card" *ngIf="!successfullySubmitted">
-        <md-card-title>        
-          {{ 'REGISTER.TITLE' | translate }}
-        </md-card-title>
-        <md-card-content>
-          <wz-form [items]="config.form.items" [serverErrors]= "serverErrors" submitLabel="REGISTER.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
-        </md-card-content>
-      </md-card>
+	<div layout="row" md-scroll-y="" layout-align="center start">
+		<div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
+			<md-card class="wz-form-card" *ngIf="!successfullySubmitted">
+				<md-card-title>
+					{{ 'REGISTER.TITLE' | translate }}
+				</md-card-title>
+				<md-card-content>
+					<wz-form [items]="config.form.items" [serverErrors]="serverErrors" submitLabel="REGISTER.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
+					<button type="button" (click)="termsDialog.show()" title="Show Terms of Service" class="terms-button" md-icon-button><md-icon>assignment</md-icon></button>
+				</md-card-content>
+			</md-card>
 
-      <md-card class="registration-confirm" *ngIf="successfullySubmitted">
-        <md-card-title>{{ 'REGISTER.CONFIRMATION.TITLE' | translate }}</md-card-title>
-        <md-card-subtitle>{{ 'REGISTER.CONFIRMATION.MESSAGE' | translate }}</md-card-subtitle>
-        <span class="email">{{newUser.emailAddress}}</span>
-      </md-card>
-      
-      <div md-theme="docs-dark" layout="column" layout-align="center center" layout-wrap=""><span class="md-title">{{'REGISTER.ALREADY_HAVE_ACCOUNT' | translate }} <a md-button="" [routerLink]="['/user/login']" class="md-accent">{{'REGISTER.LOGIN' | translate }}</a></span></div>
-    </div>
-  </div>
+			<md-card class="registration-confirm" *ngIf="successfullySubmitted">
+				<md-card-title>{{ 'REGISTER.CONFIRMATION.TITLE' | translate }}</md-card-title>
+				<md-card-subtitle>{{ 'REGISTER.CONFIRMATION.MESSAGE' | translate }}</md-card-subtitle>
+				<span class="email">{{newUser.emailAddress}}</span>
+			</md-card>
+
+			<div md-theme="docs-dark" layout="column" layout-align="center center" layout-wrap=""><span class="md-title">{{'REGISTER.ALREADY_HAVE_ACCOUNT' | translate }} <a md-button="" [routerLink]="['/user/login']" class="md-accent">{{'REGISTER.LOGIN' | translate }}</a></span></div>
+		</div>
+	</div>
 </section>
+
+<wz-dialog #termsDialog>
+	<md-card class="terms-dialog">
+		<div layout="row" layout-align="center center">
+			<md-card-title>Terms of Service</md-card-title>
+		</div>
+		<md-card-subtitle>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem ratione iusto dicta illo, assumenda omnis eaque cum sapiente
+			eveniet dignissimos quisquam consequuntur vel repudiandae. Atque, itaque veniam fugit amet nisi! Lorem ipsum dolor sit
+			amet, consectetur adipisicing elit. Sed illum quam, aperiam sequi earum, libero suscipit porro nesciunt. Eaque, harum
+			dolores voluptates est molestias tempore aspernatur aliquam consectetur numquam architecto. Lorem ipsum dolor sit amet,
+			consectetur adipisicing elit. Possimus libero reiciendis blanditiis animi tenetur atque laboriosam iusto velit hic voluptatibus
+			repudiandae porro id, recusandae, totam quisquam quam nesciunt, nisi sint! Lorem ipsum dolor sit amet, consectetur adipisicing
+			elit. Iste numquam, quos repellat dicta atque possimus quaerat repudiandae temporibus obcaecati quam veniam maxime fugiat,
+			error laborum dolore quisquam expedita tenetur corrupti! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem
+			ratione iusto dicta illo, assumenda omnis eaque cum sapiente eveniet dignissimos quisquam consequuntur vel repudiandae.
+			Atque, itaque veniam fugit amet nisi! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed illum quam, aperiam
+			sequi earum, libero suscipit porro nesciunt. Eaque, harum dolores voluptates est molestias tempore aspernatur aliquam
+			consectetur numquam architecto. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus libero reiciendis blanditiis
+			animi tenetur atque laboriosam iusto velit hic voluptatibus repudiandae porro id, recusandae, totam quisquam quam nesciunt,
+			nisi sint! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste numquam, quos repellat dicta atque possimus
+			quaerat repudiandae temporibus obcaecati quam veniam maxime fugiat, error laborum dolore quisquam expedita tenetur corrupti!
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem ratione iusto dicta illo, assumenda omnis eaque cum sapiente
+			eveniet dignissimos quisquam consequuntur vel repudiandae. Atque, itaque veniam fugit amet nisi! Lorem ipsum dolor sit
+			amet, consectetur adipisicing elit. Sed illum quam, aperiam sequi earum, libero suscipit porro nesciunt. Eaque, harum
+			dolores voluptates est molestias tempore aspernatur aliquam consectetur numquam architecto. Lorem ipsum dolor sit amet,
+			consectetur adipisicing elit. Possimus libero reiciendis blanditiis animi tenetur atque laboriosam iusto velit hic voluptatibus
+			repudiandae porro id, recusandae, totam quisquam quam nesciunt, nisi sint! Lorem ipsum dolor sit amet, consectetur adipisicing
+			elit. Iste numquam, quos repellat dicta atque possimus quaerat repudiandae temporibus obcaecati quam veniam maxime fugiat,
+			error laborum dolore quisquam expedita tenetur corrupti! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem
+			ratione iusto dicta illo, assumenda omnis eaque cum sapiente eveniet dignissimos quisquam consequuntur vel repudiandae.
+			Atque, itaque veniam fugit amet nisi! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed illum quam, aperiam
+			sequi earum, libero suscipit porro nesciunt. Eaque, harum dolores voluptates est molestias tempore aspernatur aliquam
+			consectetur numquam architecto. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus libero reiciendis blanditiis
+			animi tenetur atque laboriosam iusto velit hic voluptatibus repudiandae porro id, recusandae, totam quisquam quam nesciunt,
+			nisi sint! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste numquam, quos repellat dicta atque possimus
+			quaerat repudiandae temporibus obcaecati quam veniam maxime fugiat, error laborum dolore quisquam expedita tenetur corrupti!
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem ratione iusto dicta illo, assumenda omnis eaque cum sapiente
+			eveniet dignissimos quisquam consequuntur vel repudiandae. Atque, itaque veniam fugit amet nisi! Lorem ipsum dolor sit
+			amet, consectetur adipisicing elit. Sed illum quam, aperiam sequi earum, libero suscipit porro nesciunt. Eaque, harum
+			dolores voluptates est molestias tempore aspernatur aliquam consectetur numquam architecto. Lorem ipsum dolor sit amet,
+			consectetur adipisicing elit. Possimus libero reiciendis blanditiis animi tenetur atque laboriosam iusto velit hic voluptatibus
+			repudiandae porro id, recusandae, totam quisquam quam nesciunt, nisi sint! Lorem ipsum dolor sit amet, consectetur adipisicing
+			elit. Iste numquam, quos repellat dicta atque possimus quaerat repudiandae temporibus obcaecati quam veniam maxime fugiat,
+			error laborum dolore quisquam expedita tenetur corrupti! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem
+			ratione iusto dicta illo, assumenda omnis eaque cum sapiente eveniet dignissimos quisquam consequuntur vel repudiandae.
+			Atque, itaque veniam fugit amet nisi! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed illum quam, aperiam
+			sequi earum, libero suscipit porro nesciunt. Eaque, harum dolores voluptates est molestias tempore aspernatur aliquam
+			consectetur numquam architecto. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus libero reiciendis blanditiis
+			animi tenetur atque laboriosam iusto velit hic voluptatibus repudiandae porro id, recusandae, totam quisquam quam nesciunt,
+			nisi sint! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste numquam, quos repellat dicta atque possimus
+			quaerat repudiandae temporibus obcaecati quam veniam maxime fugiat, error laborum dolore quisquam expedita tenetur corrupti!
+		</md-card-subtitle>
+		<md-card-actions layout="row" layout-align="center center">
+			<button (click)="termsDialog.close(); agreeToTerms()" md-raised-button type="button" color="primary" class="conversion">AGREE</button>
+		</md-card-actions>
+	</md-card>
+</wz-dialog>

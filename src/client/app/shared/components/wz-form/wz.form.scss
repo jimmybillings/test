@@ -15,6 +15,15 @@ wz-form form {
     overflow: initial !important;
     // overflow here can be removed with material alpha 7
   }
+  .md-checkbox-layout .md-checkbox-label {
+    line-height: rem(4);
+  }
+  .md-checkbox-disabled:not(.md-checkbox-checked) .md-checkbox-label {
+    color: md-color($md-foreground, disabled-text);
+  }
+  .md-checkbox-checked .md-checkbox-background {
+    background-color: md-color($md-primary, 500);
+  }
   md-card-actions {
     margin-left: 0;
     margin-right: 0;

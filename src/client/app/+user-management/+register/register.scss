@@ -1,4 +1,13 @@
 register-component {
+  md-card.wz-form-card {
+    md-card-content {
+      button.terms-button {
+        position: absolute;
+        top: rem(38);
+        right: rem(8);
+      }
+    }
+  }
   md-card.registration-confirm {
     padding: rem(4.2);
     margin-top:rem(4.2);
@@ -17,4 +26,21 @@ register-component .md-accent[md-button], login-component .md-accent[md-button] 
 }
 register-component [md-button]:hover.md-accent::after, login-component [md-button]:hover.md-accent::after {
   background-color: md-color($md-accent, 400, .12);
+}
+
+.wz-dialog md-card.terms-dialog {
+  margin-top: rem(-10);
+  width: 33vw;
+  height: 70vh;
+  md-card-subtitle {
+    padding: rem(.5) rem(2) rem(.5) rem(1);
+    border: 1px solid md-color($md-foreground, divider); 
+    max-height: 80%;
+    overflow-y: scroll;
+  }
+  md-card-actions {
+    button.conversion.md-primary {
+      background-color: md-color($md-primary, 700);
+    }
+  }
 }
