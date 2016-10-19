@@ -353,7 +353,6 @@ export class SeedConfig {
       `/node_modules/*/package.json`,
       `/node_modules/**/package.json`,
       `/node_modules/@angular/*/package.json`,
-      `/node_modules/@angular2-material/*/package.json`,
       `/node_modules/@ngrx/*/package.json`
     ],
     paths: {
@@ -373,30 +372,30 @@ export class SeedConfig {
       '@angular/core/testing': 'node_modules/@angular/core/bundles/core-testing.umd.js',
       '@angular/http/testing': 'node_modules/@angular/http/bundles/http-testing.umd.js',
       '@angular/platform-browser/testing':
-        'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
+      'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
       '@angular/platform-browser-dynamic/testing':
-        'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
+      'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
       '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
 
-      '@angular2-material/core': 'node_modules/@angular2-material/core/core.umd.js',
-      '@angular2-material/button': 'node_modules/@angular2-material/button/button.umd.js',
-      '@angular2-material/card': 'node_modules/@angular2-material/card/card.umd.js',
-      '@angular2-material/checkbox': 'node_modules/@angular2-material/checkbox/checkbox.umd.js',
-      '@angular2-material/grid-list': 'node_modules/@angular2-material/grid-list/grid-list.umd.js',
-      '@angular2-material/icon': 'node_modules/@angular2-material/icon/icon.umd.js',
-      '@angular2-material/input': 'node_modules/@angular2-material/input/input.umd.js',
-      '@angular2-material/list': 'node_modules/@angular2-material/list/list.umd.js',
-      '@angular2-material/menu': 'node_modules/@angular2-material/menu/menu.umd.js',
-      '@angular2-material/progress-bar': 'node_modules/@angular2-material/progress-bar/progress-bar.umd.js',
-      '@angular2-material/progress-circle': 'node_modules/@angular2-material/progress-circle/progress-circle.umd.js',
-      '@angular2-material/radio': 'node_modules/@angular2-material/radio/radio.umd.js',
-      '@angular2-material/sidenav': 'node_modules/@angular2-material/sidenav/sidenav.umd.js',
-      '@angular2-material/slider': 'node_modules/@angular2-material/slider/slider.umd.js',
-      '@angular2-material/slide-toggle': 'node_modules/@angular2-material/slide-toggle/slide-toggle.umd.js',
-      '@angular2-material/button-toggle': 'node_modules/@angular2-material/button-toggle/button-toggle.umd.js',
-      '@angular2-material/tabs': 'node_modules/@angular2-material/tabs/tabs.umd.js',
-      '@angular2-material/toolbar': 'node_modules/@angular2-material/toolbar/toolbar.umd.js',
-      '@angular2-material/tooltip': 'node_modules/@angular2-material/tooltip/tooltip.umd.js',
+      // '@angular2-material/core': 'node_modules/@angular2-material/core/core.umd.js',
+      // '@angular2-material/button': 'node_modules/@angular2-material/button/button.umd.js',
+      // '@angular2-material/card': 'node_modules/@angular2-material/card/card.umd.js',
+      // '@angular2-material/checkbox': 'node_modules/@angular2-material/checkbox/checkbox.umd.js',
+      // '@angular2-material/grid-list': 'node_modules/@angular2-material/grid-list/grid-list.umd.js',
+      // '@angular2-material/icon': 'node_modules/@angular2-material/icon/icon.umd.js',
+      // '@angular2-material/input': 'node_modules/@angular2-material/input/input.umd.js',
+      // '@angular2-material/list': 'node_modules/@angular2-material/list/list.umd.js',
+      // '@angular2-material/menu': 'node_modules/@angular2-material/menu/menu.umd.js',
+      // '@angular2-material/progress-bar': 'node_modules/@angular2-material/progress-bar/progress-bar.umd.js',
+      // '@angular2-material/progress-circle': 'node_modules/@angular2-material/progress-circle/progress-circle.umd.js',
+      // '@angular2-material/radio': 'node_modules/@angular2-material/radio/radio.umd.js',
+      // '@angular2-material/sidenav': 'node_modules/@angular2-material/sidenav/sidenav.umd.js',
+      // '@angular2-material/slider': 'node_modules/@angular2-material/slider/slider.umd.js',
+      // '@angular2-material/slide-toggle': 'node_modules/@angular2-material/slide-toggle/slide-toggle.umd.js',
+      // '@angular2-material/button-toggle': 'node_modules/@angular2-material/button-toggle/button-toggle.umd.js',
+      // '@angular2-material/tabs': 'node_modules/@angular2-material/tabs/tabs.umd.js',
+      // '@angular2-material/toolbar': 'node_modules/@angular2-material/toolbar/toolbar.umd.js',
+      // '@angular2-material/tooltip': 'node_modules/@angular2-material/tooltip/tooltip.umd.js',
 
       'rxjs/*': 'node_modules/rxjs/*',
       '@ngrx/core': 'node_modules/@ngrx/core/bundles/core.min.umd.js',
@@ -408,8 +407,7 @@ export class SeedConfig {
       '*': 'node_modules/*'
     },
     packages: {
-      rxjs: { defaultExtension: 'js' },
-      '@angular2-material': { defaultExtension: 'js' }
+      rxjs: { defaultExtension: 'js' }
     }
   };
 
@@ -474,10 +472,17 @@ export class SeedConfig {
         main: 'index.js',
         defaultExtension: 'js'
       },
+      '@angular/material': {
+        format: 'cjs',
+        main: 'material.umd.js',
+      },
       'rxjs': {
         main: 'Rx.js',
         defaultExtension: 'js'
-      }
+      },
+      // '.': {
+      //   defaultExtension: 'js'
+      // }
     }
   }, join(this.PROJECT_ROOT, this.APP_SRC), this.TMP_DIR);
 

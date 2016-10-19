@@ -12,11 +12,11 @@ import {
   animate,
   keyframes,
   ChangeDetectionStrategy} from '@angular/core';
-import {Overlay} from '@angular2-material/core';
-import {OverlayState} from '@angular2-material/core';
-import {OverlayRef} from '@angular2-material/core';
+import {Overlay} from '@angular/material/core';
+import {OverlayState} from '@angular/material/core';
+import {OverlayRef} from '@angular/material/core';
 import {Directive, ViewContainerRef, TemplateRef} from '@angular/core';
-import {TemplatePortalDirective} from '@angular2-material/core';
+import {TemplatePortalDirective} from '@angular/material/core';
 
 
 
