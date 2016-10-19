@@ -31,7 +31,7 @@
 						<div layout="row" layout-align="space-around center" flex-gt-md="40">
 							<span>Full Clip</span>
 							<span><strong>{{lineItem.price | currency:'USD':true:'1.2-2'}}</strong></span>
-							<button (click)="downloadMaster(lineItem.asset.masterDownloadUrl)" md-icon-button><md-icon>file_download</md-icon></button>
+							<button [disabled]="!lineItem.asset.masterDownloadUrl" (click)="downloadMaster(lineItem.asset.masterDownloadUrl)" md-icon-button><md-icon>file_download</md-icon></button>
 						</div>
 					</div>
 				</div>
