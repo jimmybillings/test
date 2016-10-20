@@ -69,7 +69,7 @@ export function main() {
         component.sortOptions = mockSortDefinitions().list;
         spyOn(component.userPreferences, 'updateSortPreference');
         spyOn(component.sortDefinitions, 'update');
-        spyOn(component.searchContext, 'update')
+        spyOn(component.searchContext, 'update');
         spyOn(component.searchContext, 'go');
         component.onSortResults(mockSortDefinitions().list[1].first);
         expect(component.userPreferences.updateSortPreference).toHaveBeenCalledWith(4);
