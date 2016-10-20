@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
     public collections: CollectionsService,
     public activeCollection: ActiveCollectionService,
     public uiState: UiState,
-    public preferences: UserPreferenceService,
+    public userPreference: UserPreferenceService,
     private renderer: Renderer,
     private notification: WzNotificationService,
     private apiConfig: ApiConfig,
@@ -87,7 +87,7 @@ export class AppComponent implements OnInit {
   }
 
   public newSearchContext(data: any) {
-    this.searchContext.update = { q: data, i: 1, n: 100 };
+    this.searchContext.update = { q: data, i: 1, n: 100, sortId: this.userPreference.state.searchSortOptionId || 12 };
     this.searchContext.go();
   }
 
@@ -109,6 +109,6 @@ export class AppComponent implements OnInit {
   private processLoggedOutUser() {
     this.collections.destroyAll();
     this.uiState.reset();
-    this.preferences.reset();
+    this.userPreference.reset();
   }
 }
