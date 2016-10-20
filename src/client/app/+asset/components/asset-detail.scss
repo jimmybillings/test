@@ -332,15 +332,9 @@ asset-share-link .link {
     }
   }
   button {
-    @include transition($swift-ease-out);
+    // @include transition($swift-ease-out);
     &:hover {
-      @include text-contrast(md-color($md-primary, 500));
       color: md-color($md-primary);
-      background-color: md-color($md-foreground, base, .1);
-    }
-    // once they put a transition into the ::after pseudo class this can go away
-    &[md-icon-button]:hover::after {
-      background-color: transparent;
     }
   }
 }

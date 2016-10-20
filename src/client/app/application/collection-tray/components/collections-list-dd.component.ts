@@ -95,7 +95,6 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
   }
 
   public showCollectionSearch() {
-    console.log(`toggle search display to ${this.collectionSearchIsShowing}`);
     this.collectionSearchIsShowing = !this.collectionSearchIsShowing;
   }
 
