@@ -16,37 +16,14 @@ profile-component .profile-head {
     text-align: right;
     white-space: nowrap;
     button.is-dd.md-icon-button.md-primary {
-      @include transition($swift-ease-out);
-      color: md-color($md-primary, 500);
       .md-button-wrapper::after {
         color: md-color($md-primary, 500);
-      }
-      &:hover {
-        background-color: md-color($md-background, hover);
-      }
-      &[md-button]:hover.md-primary::after, [md-icon-button]:hover.md-primary::after {
-        background-color: rgba(md-color($md-primary, 500), .12)
       }
     }
   }
   header div[flex="100"] > button[md-icon-button] {
     margin-right: rem(1.6);
   }
-}
-
-// stupid theming not yet implemented. When it is this can be removed
-profile-component .md-primary[md-button] {
-  @include transition($swift-ease-out);
-  color: md-color($md-primary, 500);
-  &[md-button]:hover.md-primary::after, [md-icon-button]:hover.md-primary::after {
-    background-color: rgba(md-color($md-primary, 500), .12);
-  }
-}
-profile-component .md-primary[md-raised-button], 
-profile-component .md-primary[md-fab], 
-profile-component .md-primary[md-mini-fab] {
-  background-color: md-color($md-primary, 500);
-  @include text-contrast(md-color($md-primary, 700));
 }
 
 profile-component .md-primary.edit-basic {
@@ -59,9 +36,3 @@ profile-component .md-primary.edit-basic {
     top:rem(.3);
   }
 }
-
-// profile-component .md-primary[md-mini-fab] {
-//   margin-top: rem(-1.4);
-//   margin-right: rem(2.4);
-//   margin-bottom: rem(-2.4);
-// }

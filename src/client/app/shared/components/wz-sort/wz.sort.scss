@@ -28,5 +28,8 @@
   md-divider {
     margin-top: rem(.6);
     margin-bottom: rem(.6);
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: md-color($md-foreground, divider);
   }
 }

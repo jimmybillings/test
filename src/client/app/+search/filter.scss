@@ -5,7 +5,7 @@ md-sidenav {
   width: 320px;
   .md-overlay-container {
     pointer-events: all;
-    background-color: white;
+    // background-color: white;
     opacity: .5;
   }
 }
@@ -52,6 +52,13 @@ md-sidenav {
         position: relative;
         z-index:1;
       }
+    }
+    // this can be removed when they fix
+    // https://github.com/angular/material2/issues/1336
+    md-divider {
+      border-top-style: solid;
+      border-top-width: 1px;
+      border-top-color: md-color($foreground, divider);
     }
     .exclusive-list .filter-subhead:hover {
       cursor: default;
