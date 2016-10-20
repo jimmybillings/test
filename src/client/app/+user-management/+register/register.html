@@ -6,8 +6,8 @@
 					{{ 'REGISTER.TITLE' | translate }}
 				</md-card-title>
 				<md-card-content>
-					<wz-form [items]="config.form.items" [serverErrors]="serverErrors" submitLabel="REGISTER.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
-					<button type="button" (click)="termsDialog.show()" title="Show Terms of Service" class="terms-button" md-icon-button><md-icon>assignment</md-icon></button>
+					<wz-form [items]="config.form.items" [serverErrors]="serverErrors" submitLabel="REGISTER.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"
+						(viewTos)="termsDialog.show()"></wz-form>
 				</md-card-content>
 			</md-card>
 

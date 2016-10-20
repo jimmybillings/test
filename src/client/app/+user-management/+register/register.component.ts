@@ -44,16 +44,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
    * @param user  Registration form field values sent to the user data service.
   */
   public onSubmit(user: any): void {
-    this.user.create(user).take(1)
-      .subscribe(
-      (res: Response) => {
-        this.successfullySubmitted = true;
-        this.newUser = res;
-      },
-      (Error => {
-        this.serverErrors = Error.json();
-      })
-      );
+    this.user.create(user).take(1).subscribe((res: Response) => {
+      this.successfullySubmitted = true;
+      this.newUser = res;
+    }, (Error => {
+      this.serverErrors = Error.json();
+    }));
   }
 
   public agreeToTerms(): void {

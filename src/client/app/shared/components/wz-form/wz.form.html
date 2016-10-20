@@ -81,6 +81,19 @@
       -->
 
 		<!--
+        START: TOS FORM CHECKBOX
+      -->
+		<span *ngIf="field.type == 'tos-checkbox'" layout="row" layout-align="center center">
+			<md-checkbox layout="row" formControlName="{{field.name}}" [checked]="field.defaultChecked" color="primary" [required]="isRequiredField(field)">
+				{{ field.label | translate }}&nbsp;
+			</md-checkbox>
+			<a class="view-tos" (click)="onViewTos()">{{ field.link | translate }}</a>
+		</span>
+		<!--
+        END: TOS FORM CHECKBOX
+      -->
+
+		<!--
         START: CUSTOM FOR ELEMENT FOR CREATING TAGS
       -->
 		<wz-input-tags *ngIf="field.type == 'tags'" #tags [tags]="field.tags" [fControl]="form.controls[field.name]">
