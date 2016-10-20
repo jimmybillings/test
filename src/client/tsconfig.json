@@ -26,7 +26,8 @@
       "node",
       "protractor",
       "systemjs",
-      "hammerjs"
+      "hammerjs",
+      "./jasmine-extend"
     ]
   },
   "exclude": [
