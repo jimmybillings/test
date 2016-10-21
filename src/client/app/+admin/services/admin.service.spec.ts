@@ -6,12 +6,14 @@ import {
 } from '../../imports/test.imports';
 
 import { AdminService } from './admin.service';
+import { AdminStore } from './admin.store';
 
 export function main() {
   describe('Admin Service', () => {
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
         ...beforeEachProvidersArray,
+        AdminStore
       ]
     }));
 

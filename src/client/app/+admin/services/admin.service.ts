@@ -7,51 +7,24 @@ import {
 } from '../../shared/interfaces/admin.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { Injectable } from '@angular/core';
-import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
-
-const adminState: AdminState = { items: [], pagination: {} };
-export const adminResources: ActionReducer<AdminState> = (state = adminState, action: Action) => {
-  switch (action.type) {
-    case 'ADMIN_SERVICE.SET_RESOURCES':
-      return Object.assign({}, state, action.payload);
-    default:
-      return state;
-  }
-};
-
+import { AdminStore } from './admin.store';
 @Injectable()
 export class AdminService {
-  public data: Observable<AdminState>;
-  constructor(public api: ApiService,
-    private store: Store<AdminState>) {
-    this.data = this.store.select('adminResources');
-  }
-
-  public setResources(data: AdminResponse): void {
-    this.store.dispatch({
-      type: 'ADMIN_SERVICE.SET_RESOURCES', payload: {
-        'items': data.items,
-        'pagination': {
-          'totalCount': data.totalCount,
-          'currentPage': data.currentPage + 1,
-          'hasNextPage': data.hasNextPage,
-          'hasPreviousPage': data.hasPreviousPage,
-          'numberOfPages': data.numberOfPages,
-          'pageSize': data.pageSize
-        }
-      }
-    });
+  public data: Observable<any>;
+  constructor(public api: ApiService, private store: AdminStore) {
+    this.data = this.store.data;
   }
 
   public getResourceIndex(queryObject: AdminUrlParams, resourceType: string): Observable<AdminResponse> {
     let params = Object.create(JSON.parse(JSON.stringify(queryObject)));
     params['i'] = (parseFloat(params['i']) - 1).toString();
 
-    return this.api.get(Api.Identities, `${resourceType}/searchFields`, { parameters: params })
-      .do(response => this.setResources(response));
+    return this.api.get(Api.Identities, `${resourceType}/searchFields`, { parameters: params }).do(response => {
+      this.store.set(response);
+    });
   }
 
   public postResource(resourceType: string, formData: User | Account): Observable<AdminResponse> {

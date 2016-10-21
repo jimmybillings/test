@@ -3,6 +3,7 @@ import { ApiService } from '../../../shared/services/api.service';
 import { Api } from '../../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Rx';
 import { ActionReducer, Action, Store } from '@ngrx/store';
+import { OrderStore } from './order.store';
 
 export const order: ActionReducer<any> = (state: any, action: Action) => {
   switch (action.type) {
@@ -17,16 +18,12 @@ export const order: ActionReducer<any> = (state: any, action: Action) => {
 export class OrderService {
   public data: Observable<any>;
 
-  constructor(private api: ApiService, private store: Store<any>) {
-    this.data = this.store.select('order');
+  constructor(private api: ApiService, private store: OrderStore) {
+    this.data = this.store.data;
   }
 
   public getOrder(orderId: number): Observable<any> {
     return this.api.get(Api.Orders, `order/${orderId}`)
-      .do(response => this.update(response));
-  }
-
-  private update(data: any): void {
-    this.store.dispatch({ type: 'ORDER.SET_CURRENT_ORDER', payload: data });
+      .do(response => this.store.update(response));
   }
 }

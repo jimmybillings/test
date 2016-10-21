@@ -26,13 +26,13 @@ import { Authentication } from '../shared/services/authentication.data.service';
 import { APP_ROUTES } from '../app.routes';
 
 // WAZEE STORES
-import { assets } from '../+search/services/asset.data.service';
+import { assets } from '../+search/services/asset.store';
 import { asset } from '../shared/services/asset.service';
 import { currentUser } from '../shared/services/current-user.model';
 import { config } from '../shared/services/ui.config';
 import { uiState } from '../shared/services/ui.state';
 import { Capabilities } from '../shared/services/capabilities.service';
-import { adminResources } from '../+admin/services/admin.service';
+import { adminResources } from '../+admin/services/admin.store';
 import { searchContext } from '../shared/services/search-context.service';
 import { error } from '../shared/services/error.service';
 import { multilingualActionReducer } from '../shared/services/multilingual.service';
