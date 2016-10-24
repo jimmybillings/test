@@ -23,6 +23,7 @@ import { AssetComponent } from './+cart/components/asset.component';
 // Order Stuff 
 import { OrderComponent } from './+order/order.component';
 import { OrderService } from './+order/services/order.service';
+import { OrderStore } from './+order/services/order.store';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
@@ -40,7 +41,7 @@ import { OrderService } from './+order/services/order.service';
     OrderComponent
   ],
   exports: [CommerceComponent, CartComponent, OrderComponent],
-  providers: [CartService, OrderService, CartStore, CartCapabilities]
+  providers: [CartService, OrderService, CartStore, CartCapabilities, OrderStore]
 })
 
 export class CommerceModule { }

@@ -8,6 +8,7 @@ import {
 } from '../../imports/test.imports';
 
 import { AssetData } from './asset.data.service';
+import { AssetStore } from './asset.store';
 
 export function main() {
   describe('Asset data service', () => {
@@ -22,6 +23,7 @@ export function main() {
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
         ...beforeEachProvidersArray,
+        AssetStore
       ]
     }));
 
