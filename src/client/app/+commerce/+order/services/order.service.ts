@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../../../shared/services/api.service';
 import { Api } from '../../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Rx';
-import { ActionReducer, Action, Store } from '@ngrx/store';
+import { ActionReducer, Action } from '@ngrx/store';
 import { OrderStore } from './order.store';
 
 export const order: ActionReducer<any> = (state: any, action: Action) => {

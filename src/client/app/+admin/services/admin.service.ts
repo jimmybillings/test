@@ -1,5 +1,4 @@
 import {
-  AdminState,
   AdminResponse,
   AdminUrlParams,
   AdminFormParams,
