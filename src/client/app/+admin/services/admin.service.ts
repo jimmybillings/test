@@ -17,11 +17,11 @@ export class AdminService {
     this.data = this.store.data;
   }
 
-  public getResourceIndex(queryObject: AdminUrlParams, resourceType: string): Observable<AdminResponse> {
-    let params = Object.create(JSON.parse(JSON.stringify(queryObject)));
-    params['i'] = (parseFloat(params['i']) - 1).toString();
+  public getResourceIndex(queryObject: AdminUrlParams, resourceType: string): void {
+    let params = JSON.parse(JSON.stringify(queryObject));
+    params.i = (parseFloat(params.i) - 1).toString();
 
-    return this.api.get(Api.Identities, `${resourceType}/searchFields`, { parameters: params }).do(response => {
+    this.api.get(Api.Identities, `${resourceType}/searchFields`, { parameters: params }).take(1).subscribe(response => {
       this.store.set(response);
     });
   }
@@ -43,7 +43,9 @@ export class AdminService {
     return { fields, values };
   }
 
-  public sanitizeFormInput(fields: any): AdminFormParams {
+  // END OF PUBLIC INTERFACE
+
+  private sanitizeFormInput(fields: any): AdminFormParams {
     for (var field in fields) {
       if (this.dateFieldIsEmpty(fields, field)) {
         let date = new Date();
@@ -55,11 +57,11 @@ export class AdminService {
     return fields;
   }
 
-  public dateFieldIsEmpty(fields: any, field: string): boolean {
+  private dateFieldIsEmpty(fields: any, field: string): boolean {
     return (field === 'createdOn' || field === 'lastUpdated') && fields[field] === '';
   }
 
-  public buildFields(filterParams: any): Array<string> {
+  private buildFields(filterParams: any): Array<string> {
     let map: any = { 'before': 'LT', 'after': 'GT' };
     let fields: Array<string> = Object.keys(filterParams);
     return fields.reduce((prev, current, index) => {
@@ -72,7 +74,7 @@ export class AdminService {
     }, []);
   }
 
-  public buildValues(filterParams: any): Array<string> {
+  private buildValues(filterParams: any): Array<string> {
     return Object.keys(filterParams).reduce((prev, current) => {
       if (this.valueIsADate(current)) {
         let date = new Date(filterParams[current]);
@@ -84,11 +86,11 @@ export class AdminService {
     }, []);
   }
 
-  public valueIsADate(currentField: string): boolean {
+  private valueIsADate(currentField: string): boolean {
     return ['createdOn', 'lastUpdated'].indexOf(currentField) > -1;
   }
 
-  public removeFields(field: string): boolean {
+  private removeFields(field: string): boolean {
     return ['createdOn', 'lastUpdated', 'before', 'after'].indexOf(field) === -1;
   }
 }

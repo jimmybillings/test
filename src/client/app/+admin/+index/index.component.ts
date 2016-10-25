@@ -61,7 +61,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public getIndex(): void {
     this.toggleFlag = this.params.d;
-    this.adminService.getResourceIndex(this.params, this.resourceType).take(1).subscribe();
+    this.adminService.getResourceIndex(this.params, this.resourceType);
   }
 
   public navigateToPageUrl(i: string): void {
@@ -75,6 +75,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   public navigateToFilterUrl(filterParams: AdminFormParams): void {
+    console.log(filterParams);
     let searchTerms = this.adminService.buildSearchTerm(filterParams);
     let params = Object.assign(this.updateRouteParams(searchTerms), { 'i': 1 });
     this.router.navigate(['/admin/resource/' + this.resourceType, params]);

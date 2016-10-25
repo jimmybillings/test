@@ -5,15 +5,6 @@ import { Observable } from 'rxjs/Rx';
 import { ActionReducer, Action } from '@ngrx/store';
 import { OrderStore } from './order.store';
 
-export const order: ActionReducer<any> = (state: any, action: Action) => {
-  switch (action.type) {
-    case 'ORDER.SET_CURRENT_ORDER':
-      return Object.assign({}, action.payload);
-    default:
-      return state;
-  }
-};
-
 @Injectable()
 export class OrderService {
   public data: Observable<any>;
