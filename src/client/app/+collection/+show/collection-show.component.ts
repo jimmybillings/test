@@ -4,7 +4,7 @@ import { CollectionsService } from '../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 import { Subscription } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import { Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
@@ -55,9 +55,13 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
   }
 
+  public resetCollection() {
+    this.collection = Object.assign({}, this.collection);
+  }
+
   public buildRouteParams(params: any): void {
     this.routeParams = Object.assign({}, this.routeParams, params);
-    delete(this.routeParams['id']);
+    delete (this.routeParams['id']);
   }
 
   ngOnDestroy() {
@@ -70,15 +74,15 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     let uuid: any = params.collection.assets.items.find((item: any) => {
       return parseInt(item.assetId) === parseInt(params.asset.assetId);
     }).uuid;
-    if(uuid && params.asset.assetId) {
+    if (uuid && params.asset.assetId) {
       this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid)
         .take(1).subscribe();
     }
   }
 
   public changePage(i: any): void {
-    this.buildRouteParams({i});
-    this.router.navigate(['/collection/' + this.collection.id, this.routeParams ]);
+    this.buildRouteParams({ i });
+    this.router.navigate(['/collection/' + this.collection.id, this.routeParams]);
   }
 
   public downloadComp(params: any): void {
@@ -86,7 +90,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       if (res.url && res.url !== '') {
         window.location.href = res.url;
       } else {
-        this.notification.create(this.target, {trString: 'COMPS.NO_COMP', theme: 'alert'});
+        this.notification.create(this.target, { trString: 'COMPS.NO_COMP', theme: 'alert' });
       }
     });
   }
@@ -101,7 +105,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       if (this.activeCollection.isActiveCollection(id) && collectionLength > 0) {
         this.activeCollection.get().take(1).subscribe((collection) => {
           this.activeCollection.getItems(collection.id, { n: 100 }).take(1).subscribe(d => {
-            this.router.navigate(['/collection/' + collection.id, {i: 1, n: 100} ]);
+            this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
           });
         });
       }
@@ -111,7 +115,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
         this.activeCollection.get().take(1).subscribe((collection) => {
           this.activeCollection.getItems(collection.id, { n: 100 }).take(1).subscribe();
           this.collections.load().take(1).subscribe(d => {
-            this.router.navigate(['/collection/' + collection.id, {i: 1, n: 100} ]);
+            this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
           });
         });
       }

@@ -1,6 +1,7 @@
 import {
   Component,
   Input,
+  Output,
   ViewChild,
   ViewEncapsulation,
   OnDestroy,
@@ -11,7 +12,8 @@ import {
   transition,
   animate,
   keyframes,
-  ChangeDetectionStrategy} from '@angular/core';
+  ChangeDetectionStrategy,
+  EventEmitter} from '@angular/core';
 import {Overlay} from '@angular/material';
 import {OverlayState} from '@angular/material';
 import {OverlayRef} from '@angular/material';
@@ -64,6 +66,7 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
 export class WzDialogComponent implements OnDestroy {
   @Input() config = new OverlayState();
   @Input() clickCatcher: boolean = true;
+  @Output() onClose = new EventEmitter();
   public viewRef: any;
   public animationState: string = 'hidden';
   @ViewChild(WzDialogPortalDirective) private portal: WzDialogPortalDirective;
@@ -90,7 +93,6 @@ export class WzDialogComponent implements OnDestroy {
       .then(() => this.overlay.create(this.config))
       .then((ref: OverlayRef) => {
         this.overlayRef = ref;
-        this.overlayRef = ref;
         return ref.attach(this.portal);
       })
       .then(() => {
@@ -111,6 +113,7 @@ export class WzDialogComponent implements OnDestroy {
         this.overlayRef = null;
         this.renderer.setElementClass(document.querySelector('div.md-overlay-container'), 'active', false);
         if (this.clickCatcher) this.viewRef();
+        this.onClose.emit();
         return this;
       });
   }
