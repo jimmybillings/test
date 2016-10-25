@@ -29,7 +29,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public errorMessage: string;
   public config: Object;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
-  @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
   public date(date: any): Date {
