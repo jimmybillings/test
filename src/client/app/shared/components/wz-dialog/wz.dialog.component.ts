@@ -90,7 +90,6 @@ export class WzDialogComponent implements OnDestroy {
       .then(() => this.overlay.create(this.config))
       .then((ref: OverlayRef) => {
         this.overlayRef = ref;
-        this.overlayRef = ref;
         return ref.attach(this.portal);
       })
       .then(() => {

@@ -122,7 +122,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
         item.tags = (this.collection && this.collection.tags) ? this.collection.tags : [];
         item.value = (this.collection && this.collection.tags) ? this.collection.tags.toString() : '';
       }
-      return item;
+      return Object.assign({}, item);
     });
   }
 
