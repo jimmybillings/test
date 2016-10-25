@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectionStrategy, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../../shared/services/collections.service';
@@ -7,6 +7,7 @@ import { CollectionContextService } from '../../../shared/services/collection-co
 import { ActiveCollectionService } from '../../../shared/services/active-collection.service';
 import { Subscription } from 'rxjs/Rx';
 import { UiState } from '../../../shared/services/ui.state';
+
 /**
  * Directive that renders a list of collections
  */

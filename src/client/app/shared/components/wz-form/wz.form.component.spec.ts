@@ -3,15 +3,19 @@ import {
   inject,
   TestBed
 } from '../../../imports/test.imports';
-
+import { ElementRef } from '@angular/core';
 import { WzFormComponent } from './wz.form.component';
 
 export function main() {
   describe('Form Component', () => {
+    class MockElementRef implements ElementRef {
+      nativeElement = {};
+    }
 
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
         ...beforeEachProvidersArray,
+        { provide: ElementRef, useValue: new MockElementRef() },
         WzFormComponent
       ]
     }));
