@@ -20,7 +20,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   @Input() serverErrors: ServerErrors;
   @Input() submitLabel: string;
   @Input() includeCancel: boolean = false;
-  @Input() cancelLabel:string = 'Cancel';
+  @Input() cancelLabel: string = 'Cancel';
   @Input() autocomplete: string = 'on';
   @Output() formSubmit = new EventEmitter();
   @Output() formCancel = new EventEmitter();
@@ -29,8 +29,8 @@ export class WzFormComponent implements OnInit, OnChanges {
   public form: FormGroup;
 
   constructor(
-    private fb: FormBuilder, 
-    private formModel: FormModel, 
+    private fb: FormBuilder,
+    private formModel: FormModel,
     private apiConfig: ApiConfig,
     private element: ElementRef) { }
 
