@@ -1,6 +1,6 @@
 import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { Observable } from 'Rxjs/rx';
+import { Observable } from 'rxjs/Rx';
 
 export const order: ActionReducer<any> = (state: any, action: Action) => {
   switch (action.type) {

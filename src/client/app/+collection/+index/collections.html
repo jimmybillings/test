@@ -54,7 +54,7 @@
 </section>
 
 <wz-dialog #editCollection>
-	<collection-form [collection]="collectionForEdit" [config]="(uiConfig.get('collection') | async).config" [dialog]="editCollection"
+	<collection-form [collection]="collectionForEdit" [fields]="(uiConfig.get('collection') | async).config" [dialog]="editCollection"
 		[isEdit]="true" [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}" layout="row" layout-align="center start">
 	</collection-form>
 </wz-dialog>
