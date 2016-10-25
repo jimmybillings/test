@@ -2,77 +2,9 @@
 
 @import 'node_modules/bourbon/app/assets/stylesheets/bourbon';
 @import 'node_modules/normalize.css/normalize';
-
 @import '../styles/vendor/font-awesome/font-awesome';
-
-// @import 'node_modules/@angular/material/core/style/mixins';
-// @import "node_modules/@angular/material/core/style/core";
-// @import "node_modules/@angular/material/core/style/default-theme";
-
-
-
-
 @import 'node_modules/@angular/material/core/theming/all-theme';
-// Plus imports for other components in your app.
 
-// Include the base styles for Angular Material core. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-@include md-core();
-
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue.
-$primary: md-palette($md-blue-grey, 600, 300, 800);
-$accent:  md-palette($md-orange, 500, 300, 800);
-
-// The warn palette is optional (defaults to red).
-$warn:    md-palette($md-red, A700, 600, 900);
-
-// Create the theme object (a Sass map containing all of the palettes).
-$theme: md-light-theme($primary, $accent, $warn);
-
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include angular-material-theme($theme);
-
-
-// temp variables until we get theming figured out.
-$primary: map-get($theme, primary);
-$accent: map-get($theme, accent);
-$warn: map-get($theme, warn);
-$background: map-get($theme, background);
-$foreground: map-get($theme, foreground);
-
-$md-foreground: $foreground;
-$md-background: $background;
-$md-primary: $primary;
-$md-accent: $accent;
-$md-warn: $warn;
-
-
-
-// @import "node_modules/@angular/material/core/overlay/overlay.scss";
-
-/** The overlay-container is an invisible element which contains all individual overlays. */
-// .md-overlay-container {
-  // position: absolute;
-  // Disable events from being captured on the overlay container.
-  // pointer-events: none;
-  // The container should be the size of the viewport.
-//   top: 0;
-//   left: 0;
-//   height: 100%;
-//   width: 100%;
-// }
-
-/** A single overlay pane. */
-// .md-overlay-pane {
-//   position: absolute;
-//   pointer-events: auto;
-//   box-sizing: border-box;
-//   z-index: $z-index-overlay;
-// }
 
 // these are not part of ng2material just yet, but are needed
 // hopefully these will be part of Ng2 Material, and then removed, and referenced above
@@ -81,45 +13,4 @@ $md-warn: $warn;
 @import '../styles/vendor/layout.attributes';
 @import '../styles/vendor/typography';
 
-// Overrides for material overlays.
-// These should go away when there are native md-dialog, and md-menu in alpha 7
-// they are currently needed to fix z-index with fixed header and large dd menu (collection-dd) for mobile.
-
-.md-overlay-pane {
-  z-index: 4;
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    height: 100%;
-    width: 100%;
-  }
-}
-
-
-
-/************
- * menus and menus with icons
- * Once material has better menu support these possiibly can be removed.
- ************/
-
-.md-overlay-pane .md-menu {
-  max-width: rem(33.6);
-}
-.md-menu [md-menu-item] {
-  color: rgba(md-color($md-foreground,text), .75);
-}
-.md-menu a[md-menu-item] md-icon.material-icons,
-.md-menu button[md-menu-item] md-icon.material-icons {
-  color: md-color($md-foreground,icon);
-  padding-left: rem(.8);
-  padding-right: rem(1.6);
-  margin-top: rem(-.3);
-}
-.md-menu a[md-menu-item][disabled] md-icon.material-icons,
-.md-menu button[md-menu-item][disabled] md-icon.material-icons {
-  color: rgba(md-color($md-foreground,text), .25);
-}
-.md-menu .divider {
-  width: 100%;
-  margin-top: rem(0);
-  padding-bottom: rem(.1);
-  box-shadow: inset 0 1px 0 0 md-color($md-foreground, divider);
-}
+// Plus imports for other components in your app.
