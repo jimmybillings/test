@@ -76,9 +76,9 @@
   </div>
 </div>
 
-<wz-dialog #createCollection [clickCatcher]="false">
+<wz-dialog #createCollection [clickCatcher]="false" (onClose)="closeCollectionsList()">
   <collection-form
-    [config]="config"
+    [fields]="config"
     [dialog]="createCollection"
     [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}"
     layout="row" layout-align="center start">
