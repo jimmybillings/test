@@ -117,6 +117,54 @@ export function main() {
       });
     });
 
+    describe('Error', () => {
+      let actualError: any;
+
+      describe('for get()', () => {
+        it('can be set', () => {
+          mockApi.getError = { a: 'b' };
+
+          mockApi.injector.get(whateverApi, whateverEndpoint)
+            .subscribe(response => fail(), error => actualError = error);
+
+          expect(actualError).toEqual({ a: 'b' });
+        });
+      });
+
+      describe('for post()', () => {
+        it('can be set', () => {
+          mockApi.postError = { a: 'b' };
+
+          mockApi.injector.post(whateverApi, whateverEndpoint)
+            .subscribe(response => fail(), error => actualError = error);
+
+          expect(actualError).toEqual({ a: 'b' });
+        });
+      });
+
+      describe('for get()', () => {
+        it('can be set', () => {
+          mockApi.putError = { a: 'b' };
+
+          mockApi.injector.put(whateverApi, whateverEndpoint)
+            .subscribe(response => fail(), error => actualError = error);
+
+          expect(actualError).toEqual({ a: 'b' });
+        });
+      });
+
+      describe('for get()', () => {
+        it('can be set', () => {
+          mockApi.deleteError = { a: 'b' };
+
+          mockApi.injector.delete(whateverApi, whateverEndpoint)
+            .subscribe(response => fail(), error => actualError = error);
+
+          expect(actualError).toEqual({ a: 'b' });
+        });
+      });
+    });
+
     describe('Custom matchers', () => {
       // By definition, matchers work with any spy.
       // So for this section, we'll just call mockApi.instance.get()
