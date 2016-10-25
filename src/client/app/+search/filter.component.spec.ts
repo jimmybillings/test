@@ -7,6 +7,7 @@ import {
 import { FilterComponent } from './filter.component';
 import { FilterService } from '../shared/services/filter.service';
 import { SearchComponent } from './search.component';
+import { AssetStore } from './services/asset.store';
 
 export function main() {
   describe('FilterComponent', () => {
@@ -15,7 +16,8 @@ export function main() {
         ...beforeEachProvidersArray,
         FilterComponent,
         FilterService,
-        SearchComponent
+        SearchComponent,
+        AssetStore
       ]
     }));
 

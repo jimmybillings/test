@@ -1,101 +1,86 @@
 <section class="collection-head" layout="row" layout-align="center center">
-    <header flex="100" flex-gt-md="95" flex-gt-lg="85">
-      <collections-search-form
-        [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
-        [hidden]="!collectionSearchIsShowing"
-        [currentSearchQuery]="options.currentSearchQuery"
-        (query)="search($event)"
-        (closeSearch)="showCollectionSearch()">
-      </collections-search-form>
-      <div flex="100" layout="row" layout-align="space-between end">
-        <h2 flex="grow" class="md-display-1">{{ 'COLLECTION.INDEX.PAGE_TITLE' | translate }}</h2>
-        <div class="tools" flex="auto">
-          <button md-icon-button
-            *ngIf="!collectionSearchIsShowing"
-            title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}"
-            type="button" 
-            (click)="toggleCollectionSearch()">
+	<header flex="100" flex-gt-md="95" flex-gt-lg="85">
+		<collections-search-form [ngClass]="{ 'revealed' : collectionSearchIsShowing }" [hidden]="!collectionSearchIsShowing" [currentSearchQuery]="options.currentSearchQuery"
+			(query)="search($event)" (closeSearch)="showCollectionSearch()">
+		</collections-search-form>
+		<div flex="100" layout="row" layout-align="space-between end">
+			<h2 flex="grow" class="md-display-1">{{ 'COLLECTION.INDEX.PAGE_TITLE' | translate }}</h2>
+			<div class="tools" flex="auto">
+				<button md-icon-button *ngIf="!collectionSearchIsShowing" title="{{ 'COLLECTION.DD_MENU.SEARCH_BTN_TITLE' | translate }}"
+					type="button" (click)="toggleCollectionSearch()">
             <md-icon *ngIf="!collectionSearchIsShowing">search</md-icon>
           </button>
-          <button md-icon-button
-            *ngIf="collectionSearchIsShowing"
-            class="collapse-search"
-            title="{{ 'COLLECTION.DD_MENU.COLLAPSE_SEARCH_HOVER_TITLE' | translate }}"
-            type="button"
-            (click)="toggleCollectionSearch()">
+				<button md-icon-button *ngIf="collectionSearchIsShowing" class="collapse-search" title="{{ 'COLLECTION.DD_MENU.COLLAPSE_SEARCH_HOVER_TITLE' | translate }}"
+					type="button" (click)="toggleCollectionSearch()">
             <md-icon>arrow_drop_up</md-icon>
           </button>
-          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" [md-menu-trigger-for]="filterCollectionOptions"><md-icon>filter_list</md-icon></button>
-          <button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" [md-menu-trigger-for]="sortCollectionOptions"><md-icon>sort</md-icon></button>
-        </div>
-      </div>
-    </header>
+				<button md-icon-button title="{{ 'COLLECTION.DD_MENU.FILTER_BTN_TITLE' | translate }}" [md-menu-trigger-for]="filterCollectionOptions"><md-icon>filter_list</md-icon></button>
+				<button md-icon-button title="{{ 'COLLECTION.DD_MENU.SORT_BTN_TITLE' | translate }}" [md-menu-trigger-for]="sortCollectionOptions"><md-icon>sort</md-icon></button>
+			</div>
+		</div>
+	</header>
 </section>
 
 <div layout="row" layout-align="center start">
-  <div class="md-caption query-details" flex="100" flex-gt-md="95" flex-gt-lg="85">
-    <span *ngIf="options.currentSearchQuery.q" flex="auto" class="search">
+	<div class="md-caption query-details" flex="100" flex-gt-md="95" flex-gt-lg="85">
+		<span *ngIf="options.currentSearchQuery.q" flex="auto" class="search">
       <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{options.currentSearchQuery.q}}
     </span>
-    <span *ngIf="options && options.currentFilter.label !== 'ALL'" flex="auto" class="filter">
+		<span *ngIf="options && options.currentFilter.label !== 'ALL'" flex="auto" class="filter">
       <strong>{{ 'COLLECTION.DD_MENU.FILTER_BY_TITLE' | translate }}</strong>{{ options.currentFilter.name | translate}}
-    </span> 
-    <span flex="100" class="sort" *ngIf="options">
+    </span>
+		<span flex="100" class="sort" *ngIf="options">
       <strong>{{ 'COLLECTION.DD_MENU.SORTED_ON_TITLE' | translate }}</strong>{{ options.currentSort.name | translate }}
-    </span> 
-  </div>
+    </span>
+	</div>
 </div>
 
 <section class="hero">
-  <div layout="row" flex="100" layout-margin layout-align="center start">
-    <section class="collections-list" flex="100" flex-gt-md="95" flex-gt-lg="85">
-      <wz-pagination [pagination]="(collections.data | async).pagination" flex layout-align="end stretch" (getPage)="changePage($event)">
-      </wz-pagination>
-      <!-- COLLECTION LIST -->
-      <wz-collection-item-list [collections]="(collections.data | async).items" (editCollection)="setCollectionForEdit($event); editCollection.show();" [activeCollection]="(activeCollection.data | async).id"
-        (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event); deleteCollectionDialog.show();" (generateCollectionLink)="getAssetsForLink($event); copyLegacyLinkDialog.show()">
-      </wz-collection-item-list>
-      <wz-pagination [pagination]="(collections.data | async).pagination" flex layout-align="end stretch" (getPage)="changePage($event)">
-      </wz-pagination>
-    </section>
-  </div>
+	<div layout="row" flex="100" layout-margin layout-align="center start">
+		<section class="collections-list" flex="100" flex-gt-md="95" flex-gt-lg="85">
+			<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination"
+				flex layout-align="end stretch" (getPage)="changePage($event)">
+			</wz-pagination>
+			<!-- COLLECTION LIST -->
+			<wz-collection-item-list [collections]="(collections.data | async).items" (editCollection)="setCollectionForEdit($event); editCollection.show();"
+				[activeCollection]="(activeCollection.data | async).id" (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event); deleteCollectionDialog.show();"
+				(generateCollectionLink)="getAssetsForLink($event); copyLegacyLinkDialog.show()">
+			</wz-collection-item-list>
+			<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination"
+				flex layout-align="end stretch" (getPage)="changePage($event)">
+			</wz-pagination>
+		</section>
+	</div>
 </section>
 
 <wz-dialog #editCollection>
-  <collection-form
-    [collection]="collectionForEdit"
-    [config]="(uiConfig.get('collection') | async).config"
-    [dialog]="editCollection"
-    [isEdit]="true"
-    [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}"
-    layout="row" layout-align="center start">
-  </collection-form>
+	<collection-form [collection]="collectionForEdit" [config]="(uiConfig.get('collection') | async).config" [dialog]="editCollection"
+		[isEdit]="true" [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}" layout="row" layout-align="center start">
+	</collection-form>
 </wz-dialog>
 
 <md-menu x-position="before" #filterCollectionOptions="mdMenu">
-  <wz-sort-component [current]="options.currentFilter" [items]="filterOptions" (sort)="onFilterCollections($event)"></wz-sort-component>
+	<wz-sort-component [current]="options.currentFilter" [items]="filterOptions" (sort)="onFilterCollections($event)"></wz-sort-component>
 </md-menu>
 
 <md-menu x-position="before" #sortCollectionOptions="mdMenu">
-  <wz-sort-component [current]="options.currentSort" [items]="sortOptions" (sort)="onSortCollections($event)"></wz-sort-component>
+	<wz-sort-component [current]="options.currentSort" [items]="sortOptions" (sort)="onSortCollections($event)"></wz-sort-component>
 </md-menu>
 
 <wz-dialog #deleteCollectionDialog [clickCatcher]="false">
-  <div *ngIf="collectionForDelete">
-    <md-card>
-      <md-card-title>{{ 'COLLECTION.INDEX.CONFIRMATION_TITLE' | translate:{collectionName: collectionForDelete.name} }}</md-card-title>
-      <md-card-subtitle>{{ 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE' | translate }}</md-card-subtitle>
-      <md-card-actions align="end" class="confirmation-buttons">
-        <button md-button color="primary" (click)="deleteCollectionDialog.close()">{{ 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE' | translate }}</button>
-        <button md-button color="primary" (click)="deleteCollectionDialog.close(); deleteCollection(collectionForDelete.id)">{{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
-      </md-card-actions>
-    </md-card>
-  </div>
+	<div *ngIf="collectionForDelete">
+		<md-card>
+			<md-card-title>{{ 'COLLECTION.INDEX.CONFIRMATION_TITLE' | translate:{collectionName: collectionForDelete.name} }}</md-card-title>
+			<md-card-subtitle>{{ 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE' | translate }}</md-card-subtitle>
+			<md-card-actions align="end" class="confirmation-buttons">
+				<button md-button color="primary" (click)="deleteCollectionDialog.close()">{{ 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE' | translate }}</button>
+				<button md-button color="primary" (click)="deleteCollectionDialog.close(); deleteCollection(collectionForDelete.id)">{{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
+			</md-card-actions>
+		</md-card>
+	</div>
 </wz-dialog>
 
 <wz-dialog #copyLegacyLinkDialog>
-  <collection-link-component 
-    [assets]="assetsForLink"
-    [dialog]="copyLegacyLinkDialog">
-  </collection-link-component>
+	<collection-link-component [assets]="assetsForLink" [dialog]="copyLegacyLinkDialog">
+	</collection-link-component>
 </wz-dialog>

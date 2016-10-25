@@ -29,9 +29,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   public formItems: Array<FormFields>;
   public config: any;
   public resource: User | Account;
-  public currentResources: Object;
   private routeSubscription: Subscription;
-  private adminStoreSubscription: Subscription;
 
   constructor(public currentUser: CurrentUser,
     public adminService: AdminService,
@@ -45,16 +43,14 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.adminStoreSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
   }
 
   public routeChanges(): Subscription {
-    return this.route.params.subscribe(param => {
-      this.adminStoreSubscription = this.adminService.data.subscribe(data => this.currentResources = data);
+    return this.route.params.subscribe(params => {
       this.resourceType = this.route.snapshot.url[1].path;
       this.currentComponent = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1);
-      this.buildRouteParams(param);
+      this.buildRouteParams(params);
       this.uiConfig.get('admin' + this.currentComponent)
         .take(1).subscribe((config: UiComponentsA) => {
           this.config = config.config;
