@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
-import { Observable } from 'Rxjs/rx';
+import { Observable } from 'rxjs/Rx';
 
 const initAssets: any = {
   items: [],

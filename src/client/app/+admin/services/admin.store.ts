@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AdminState } from '../../shared/interfaces/admin.interface';
 import { ActionReducer, Action, Store } from '@ngrx/store';
-import { Observable } from 'Rxjs/rx';
+import { Observable } from 'rxjs/Rx';
 
 const adminState: AdminState = { items: [], pagination: {} };
 export const adminResources: ActionReducer<AdminState> = (state = adminState, action: Action) => {
@@ -23,7 +23,7 @@ export class AdminStore {
 
   public get state(): any {
     let state: any;
-    this.data.take(1).subscribe(data => state = data);
+    this.data.take(1).subscribe((data: any) => state = data);
     return state;
   }
 
