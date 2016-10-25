@@ -47,7 +47,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.formItems = this.setForm();
+    if (!this.collection) this.formItems = this.setForm();
     this.tr = {
       title: (this.isEdit) ? 'COLLECTION.EDIT.TITLE' : 'COLLECTION.NEW_TITLE',
       close: 'COLLECTION.FORM.CLOSE_HOVER_TITLE',

@@ -41,6 +41,7 @@ export class UiConfig {
 
   public get(component: string = ''): Observable<any> {
     return this.store.select('config').map((config: any) => {
+      config = JSON.parse(JSON.stringify(config));
       return (component === '') ? config : config.components[component] || {};
     });
   }

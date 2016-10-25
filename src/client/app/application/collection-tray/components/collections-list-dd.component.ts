@@ -48,6 +48,7 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
   }
 
   public closeCollectionsList(): void {
+    this.config = Object.assign({}, this.config);
     this.close.emit();
   }
 

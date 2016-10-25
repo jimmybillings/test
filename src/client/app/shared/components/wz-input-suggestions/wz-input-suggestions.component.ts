@@ -46,10 +46,6 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
       })
       .map(response => (response['items'] || []).map((item: any) => item.name))
       .subscribe(suggestions => {
-        if (suggestions.length === 1) {
-          this.closeSuggestions();
-          return;
-        }
         this.suggestions = suggestions;
         this.areSuggestionsVisible = this.suggestions.length > 0;
         this.detector.markForCheck();
