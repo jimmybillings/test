@@ -22,6 +22,15 @@ export class MockApiService {
   public putResponse: ApiResponse = { responseFor: 'put' };
   public deleteResponse: ApiResponse = { responseFor: 'delete' };
 
+  // Errors:
+  // These are normally dormant, but if you set them to something, then the
+  // spy's returned Observable will throw your specified error value (instead of
+  // emitting the normal response) when the spy is called.
+  public getError: any;
+  public postError: any;
+  public putError: any;
+  public deleteError: any;
+
   private spies: MockApiServiceSpies;
   private apiService: ApiService;
 
@@ -45,10 +54,21 @@ export class MockApiService {
     this.apiService = new ApiService(null, null, null, null, null);
 
     this.spies = {
-      get: spyOn(this.apiService, 'get').and.callFake(() => Observable.of(this.getResponse)),
-      post: spyOn(this.apiService, 'post').and.callFake(() => Observable.of(this.postResponse)),
-      put: spyOn(this.apiService, 'put').and.callFake(() => Observable.of(this.putResponse)),
-      delete: spyOn(this.apiService, 'delete').and.callFake(() => Observable.of(this.deleteResponse))
+      get: spyOn(this.apiService, 'get').and.callFake(() => {
+        return this.getError ? Observable.throw(this.getError) : Observable.of(this.getResponse);
+      }),
+
+      post: spyOn(this.apiService, 'post').and.callFake(() => {
+        return this.postError ? Observable.throw(this.postError) : Observable.of(this.postResponse);
+      }),
+
+      put: spyOn(this.apiService, 'put').and.callFake(() => {
+        return this.putError ? Observable.throw(this.putError) : Observable.of(this.putResponse);
+      }),
+
+      delete: spyOn(this.apiService, 'delete').and.callFake(() => {
+        return this.deleteError ? Observable.throw(this.deleteError) : Observable.of(this.deleteResponse);
+      })
     };
   }
 }
