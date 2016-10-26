@@ -11,10 +11,8 @@
               <div [ngClass]="{hd: asset.primary[2].value == 'High Definition', sd: asset.primary[2].value == 'Standard Definition'}"
                 class="sd-hd" *ngIf='asset.primary[2].value != null'>
               </div>
-              <div flex="" class="rights md-caption">{{asset.primary[3].value}}</div>
-            </div>
-            <div layout="row" layout-wrap="" *ngIf='asset.primary[4].value != null'>
-              <div flex="" class="restriction-banner">{{asset.primary[4].value}}</div>
+              <div flex="none" class="rights md-caption">{{asset.primary[3].value}}</div>
+              <div flex="none" class="restriction-banner" *ngIf="asset.primary[4].value != null && asset.primary[4].value != 'Needs calculation'">{{asset.primary[4].value}}</div>
             </div>
           </div>
         </div>
