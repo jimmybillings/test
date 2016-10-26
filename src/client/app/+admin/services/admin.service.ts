@@ -17,11 +17,11 @@ export class AdminService {
     this.data = this.store.data;
   }
 
-  public getResourceIndex(queryObject: AdminUrlParams, resourceType: string): void {
+  public getResourceIndex(queryObject: AdminUrlParams, resourceType: string): Observable<AdminResponse> {
     let params = JSON.parse(JSON.stringify(queryObject));
     params.i = (parseFloat(params.i) - 1).toString();
 
-    this.api.get(Api.Identities, `${resourceType}/searchFields`, { parameters: params }).take(1).subscribe(response => {
+    return this.api.get(Api.Identities, `${resourceType}/searchFields`, { parameters: params }).do(response => {
       this.store.set(response);
     });
   }
@@ -34,7 +34,7 @@ export class AdminService {
     return this.api.put(Api.Identities, `${resourceType}/${formData.id}`, { body: formData });
   }
 
-  public buildSearchTerm(filterParams: AdminFormParams): AdminFormParams {
+  public buildSearchParameters(filterParams: AdminFormParams): AdminFormParams {
     let params = this.sanitizeFormInput(filterParams);
     let rawFields = this.buildFields(params);
     let rawValues = this.buildValues(params);
@@ -43,13 +43,12 @@ export class AdminService {
     return { fields, values };
   }
 
-  // END OF PUBLIC INTERFACE
+  // END OF PUBLIC INTERFACE - Everything below is to format the search request
 
   private sanitizeFormInput(fields: any): AdminFormParams {
     for (var field in fields) {
       if (this.dateFieldIsEmpty(fields, field)) {
-        let date = new Date();
-        fields[field] = date.setDate(date.getDate()) * 1000;
+        fields[field] = Date.now();
       } else if (fields[field] === '') {
         delete fields[field];
       }
@@ -62,11 +61,11 @@ export class AdminService {
   }
 
   private buildFields(filterParams: any): Array<string> {
-    let map: any = { 'before': 'LT', 'after': 'GT' };
+    let map: any = { 'before': ':LT:', 'after': ':GT:' };
     let fields: Array<string> = Object.keys(filterParams);
     return fields.reduce((prev, current, index) => {
       if (current === 'DATE') {
-        prev.push(current + ':' + map[filterParams[current]] + ':' + fields[index + 1]);
+        prev.push(current + map[filterParams[current]] + fields[index + 1]);
       } else {
         prev.push(current);
       }
@@ -76,9 +75,9 @@ export class AdminService {
 
   private buildValues(filterParams: any): Array<string> {
     return Object.keys(filterParams).reduce((prev, current) => {
-      if (this.valueIsADate(current)) {
+      if (this.valueIsADateString(filterParams, current)) {
         let date = new Date(filterParams[current]);
-        prev.push(encodeURI((date.getTime() / 1000).toString()));
+        prev.push(encodeURI((date.getTime()).toString()));
       } else {
         prev.push(encodeURI(filterParams[current]));
       }
@@ -86,8 +85,8 @@ export class AdminService {
     }, []);
   }
 
-  private valueIsADate(currentField: string): boolean {
-    return ['createdOn', 'lastUpdated'].indexOf(currentField) > -1;
+  private valueIsADateString(fields: any, field: any): boolean {
+    return ['createdOn', 'lastUpdated'].indexOf(field) > -1 && typeof(fields[field]) === 'string';
   }
 
   private removeFields(field: string): boolean {

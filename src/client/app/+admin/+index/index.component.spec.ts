@@ -30,7 +30,7 @@ export function main() {
         return true;
       }
 
-      buildSearchTerm() {
+      buildSearchParameters() {
         return { fields: 'firstName', values: 'john' };
       }
 

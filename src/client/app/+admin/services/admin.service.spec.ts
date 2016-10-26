@@ -51,7 +51,7 @@ export function main() {
         });
 
         it('should update the store with the response', () => {
-          serviceUnderTest.getResourceIndex(params, 'user');
+          serviceUnderTest.getResourceIndex(params, 'user').take(1).subscribe();
 
           expect(mockAdminStore.set).toHaveBeenCalledWith(mockApi.getResponse);
         });
@@ -114,41 +114,54 @@ export function main() {
       });
     });
 
-    describe('buildSearchTerm()', () => {
-      let filterParams: AdminFormParams;
-      let formatedParams: any;
-      let date: any;
+    describe('buildSearchParameters()', () => {
+      describe('without date input', () => {
+        let filterParams: AdminFormParams;
+        let formatedParams: any;
 
-      beforeEach(() => {
-        date = (new Date('2016-10-01').getTime() / 1000).toString();
+        beforeEach(() => {
+          spyOn(Date, 'now').and.callThrough();
+        });
+
+        it('should format them correctly - before', () => {
+          filterParams = {firstName: 'ross', lastName: '', emailAddress: '', DATE: 'before', createdOn: ''};
+          formatedParams = serviceUnderTest.buildSearchParameters(filterParams);
+          expect(formatedParams['fields']).toEqual('firstName,DATE:LT:createdOn');
+          expect(formatedParams['values']).toContain(`ross,${Date.now().toString().slice(0, -2)}`);
+          expect(Date.now).toHaveBeenCalled();
+        });
+
+        it('should format them correctly - after', () => {
+          filterParams = {firstName: 'ross', lastName: 'edfort', emailAddress: '', DATE: 'after', createdOn: ''};
+          formatedParams= serviceUnderTest.buildSearchParameters(filterParams);
+          expect(formatedParams['fields']).toEqual('firstName,lastName,DATE:GT:createdOn');
+          expect(formatedParams['values']).toContain(`ross,edfort,${Date.now().toString().slice(0, -2)}`);
+          expect(Date.now).toHaveBeenCalled();
+        });
       });
 
-      it('should format them correctly with date left out - before', () => {
-        filterParams = {firstName: 'ross', lastName: '', emailAddress: '', DATE: 'before', createdOn: ''};
-        formatedParams = serviceUnderTest.buildSearchTerm(filterParams);
-        expect(formatedParams['fields']).toEqual('firstName,DATE:LT:createdOn');
-        expect(formatedParams['values'].indexOf('ross,') > -1).toEqual(true);
-      });
+      describe('with date input', () => {
+        let filterParams: AdminFormParams;
+        let formatedParams: any;
+        let date: any;
 
-      it('should format them correctly with date left out - after', () => {
-        filterParams = {firstName: 'ross', lastName: '', emailAddress: '', DATE: 'after', createdOn: ''};
-        formatedParams= serviceUnderTest.buildSearchTerm(filterParams);
-        expect(formatedParams['fields']).toEqual('firstName,DATE:GT:createdOn');
-        expect(formatedParams['values'].indexOf('ross,') > -1).toEqual(true);
-      });
+        beforeEach(() => {
+          date = new Date('2016-10-01').getTime();
+        });
 
-      it('should format them correctly with a date - before', () => {
-        filterParams = {firstName: 'Ross', lastName: 'Edfort', emailAddress: 'gmail', DATE: 'before', createdOn: '2016-10-01'};
-        formatedParams = serviceUnderTest.buildSearchTerm(filterParams);
-        expect(formatedParams['fields']).toEqual('firstName,lastName,emailAddress,DATE:LT:createdOn');
-        expect(formatedParams['values']).toEqual(`Ross,Edfort,gmail,${date}`);
-      });
+        it('should format them correctly - before', () => {
+          filterParams = {firstName: 'Ross', lastName: 'Edfort', emailAddress: 'gmail', DATE: 'before', createdOn: '2016-10-01'};
+          formatedParams = serviceUnderTest.buildSearchParameters(filterParams);
+          expect(formatedParams['fields']).toEqual('firstName,lastName,emailAddress,DATE:LT:createdOn');
+          expect(formatedParams['values']).toEqual(`Ross,Edfort,gmail,${date}`);
+        });
 
-      it('should format them correctly with a date - after', () => {
-        filterParams = {firstName: 'Ross', lastName: 'Edfort', emailAddress: 'gmail', DATE: 'before', createdOn: '2016-10-01'};
-        formatedParams = serviceUnderTest.buildSearchTerm(filterParams);
-        expect(formatedParams['fields']).toEqual('firstName,lastName,emailAddress,DATE:LT:createdOn');
-        expect(formatedParams['values']).toEqual(`Ross,Edfort,gmail,${date}`);
+        it('should format them correctly - after', () => {
+          filterParams = {firstName: 'Ross', lastName: 'Edfort', emailAddress: 'gmail', DATE: 'after', createdOn: '2016-10-01'};
+          formatedParams = serviceUnderTest.buildSearchParameters(filterParams);
+          expect(formatedParams['fields']).toEqual('firstName,lastName,emailAddress,DATE:GT:createdOn');
+          expect(formatedParams['values']).toEqual(`Ross,Edfort,gmail,${date}`);
+        });
       });
     });
   });

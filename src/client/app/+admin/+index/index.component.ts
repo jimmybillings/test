@@ -48,19 +48,18 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public routeChanges(): Subscription {
     return this.route.params.subscribe(params => {
+      this.toggleFlag = params['d'];
+      this.buildRouteParams(params);
       this.resourceType = this.route.snapshot.url[1].path;
       this.currentComponent = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1);
-      this.buildRouteParams(params);
       this.uiConfig.get('admin' + this.currentComponent)
         .take(1).subscribe((config: UiComponentsA) => {
           this.config = config.config;
-          this.getIndex();
         });
     });
   }
 
   public getIndex(): void {
-    this.toggleFlag = this.params.d;
     this.adminService.getResourceIndex(this.params, this.resourceType);
   }
 
@@ -75,14 +74,9 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   public navigateToFilterUrl(filterParams: AdminFormParams): void {
-    console.log(filterParams);
-    let searchTerms = this.adminService.buildSearchTerm(filterParams);
+    let searchTerms = this.adminService.buildSearchParameters(filterParams);
     let params = Object.assign(this.updateRouteParams(searchTerms), { 'i': 1 });
     this.router.navigate(['/admin/resource/' + this.resourceType, params]);
-  }
-
-  public updateRouteParams(dynamicParams: AdminUrlParams) {
-    return Object.assign(this.params, dynamicParams);
   }
 
   public mergeFormValues(resource: User | Account): void {
@@ -116,5 +110,9 @@ export class IndexComponent implements OnInit, OnDestroy {
     fields = (params['fields'] === 'true') ? '' : params['fields'];
     values = (params['values'] === 'true') ? '' : params['values'];
     this.params = { i, n, s, d, fields, values };
+  }
+  
+  private updateRouteParams(dynamicParams: AdminUrlParams) {
+    return Object.assign(this.params, dynamicParams);
   }
 }

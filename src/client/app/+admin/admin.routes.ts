@@ -8,6 +8,7 @@ import {SiteConfigComponent} from './+site-config/site-config.component';
 import {SecretConfigComponent} from './+secret-config/secret-config.component';
 import {TranslationComponent} from './+translation/translation.component';
 import { AdminAuthGuard } from './services/admin.auth.guard';
+import { AdminIndexResolver } from './services/admin-index.resolver';
 
 export const ADMIN_ROUTES: Routes = [
   { path: 'admin', component: AdminComponent, canActivate: [AdminAuthGuard],
@@ -16,8 +17,8 @@ export const ADMIN_ROUTES: Routes = [
       { path: 'config', component: ConfigComponent},
       { path: 'ui-config/:site', component: UiConfigComponent },
       { path: 'site-config/:site', component: SiteConfigComponent },
-      { path: 'resource/account', component: IndexComponent },
-      { path: 'resource/user', component: IndexComponent },
+      { path: 'resource/account', component: IndexComponent, resolve: {index: AdminIndexResolver} },
+      { path: 'resource/user', component: IndexComponent, resolve: {index: AdminIndexResolver} },
       { path: 'secret-config/:site', component: SecretConfigComponent },
       { path: 'translations/:site/:lang', component: TranslationComponent }
     ]}
