@@ -107,17 +107,23 @@
 		<!--
         START: CUSTOM FOR ELEMENT FOR SUGGESTIONS BASED ON TEXT INPUT
       -->
-		<wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [apiConfig]="apiConfig" [fControl]="form.controls[field.name]">
-			<md-input placeholder="{{field.label | translate}}" (keydown)="suggestions.inputKeyDown($event)" [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
-				formControlName="{{field.name}}" type="text" [required]="isRequiredField(field)">
-				<md-hint *ngIf="!form.controls[field.name].valid" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
-					align="start" class="error">
-					<span *ngIf="form.controls[field.name].hasError('required')">
-                {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
-              </span>
-					<span *ngIf="form.controls[field.name].hasError('serverError')">
-                {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
-              </span>
+		<wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]">
+			<md-input placeholder="{{field.label | translate}}" 
+				(keydown)="suggestions.inputKeyDown($event)"
+				[ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
+				formControlName="{{field.name}}"
+				type="text"
+				[required]="isRequiredField(field)">
+				<md-hint *ngIf="!form.controls[field.name].valid"
+					[hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
+					align="start" 
+					class="error">
+						<span *ngIf="form.controls[field.name].hasError('required')">
+							{{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+						</span>
+						<span *ngIf="form.controls[field.name].hasError('serverError')">
+							{{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
+						</span>
 				</md-hint>
 			</md-input>
 		</wz-input-suggestions>
