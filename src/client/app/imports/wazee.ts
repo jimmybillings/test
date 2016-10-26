@@ -44,7 +44,7 @@ import { CollectionContextService, collectionOptions } from '../shared/services/
 import { cart } from '../+commerce/+cart/services/cart.store';
 import { sortDefinitions } from '../shared/services/sort-definitions.service';
 import { cartSummary } from '../shared/services/cart-summary.service';
-import { order } from '../+commerce/+order/services/order.service';
+import { order } from '../+commerce/+order/services/order.store';
 
 // TRANSLATIONS
 import { MultilingualService } from '../shared/services/multilingual.service';
