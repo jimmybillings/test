@@ -14,14 +14,7 @@ export class OrderComponent {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
-  public downloadMaster(assetId: number): void {
-    console.log(assetId);
-    // this.order.downloadMaster(assetId).take(1).subscribe((res) => {
-    //   if (res.url && res.url !== '') {
-    //     window.location.href = res.url;
-    //   } else {
-    //     console.log('no master');
-    //   }
-    // });
+  public downloadMaster(masterUrl: string): void {
+    window.location.href = masterUrl;
   }
 }

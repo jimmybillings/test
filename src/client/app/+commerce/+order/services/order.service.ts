@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../../../shared/services/api.service';
 import { Api } from '../../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Rx';
-import { ActionReducer, Action } from '@ngrx/store';
 import { OrderStore } from './order.store';
 
 @Injectable()
