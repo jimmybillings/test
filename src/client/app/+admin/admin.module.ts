@@ -8,12 +8,13 @@ import { TranslationComponent } from './+translation/translation.component';
 import { SiteConfigComponent } from './+site-config/site-config.component';
 import { UiConfigComponent } from './+ui-config/ui-config.component';
 import { SharedModule } from '../shared/shared.module';
-import { AdminService} from './services/admin.service';
-import { ConfigService} from './services/config.service';
-import { TranslateService} from './services/translate.service';
+import { AdminService } from './services/admin.service';
+import { ConfigService } from './services/config.service';
+import { TranslateService } from './services/translate.service';
 import { ADMIN_ROUTES } from './admin.routes';
 import { RouterModule } from '@angular/router';
 import { AdminAuthGuard } from './services/admin.auth.guard';
+import { AdminStore } from './services/admin.store';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(ADMIN_ROUTES)],
@@ -27,7 +28,7 @@ import { AdminAuthGuard } from './services/admin.auth.guard';
     SiteConfigComponent,
     UiConfigComponent],
   exports: [AdminComponent],
-  providers: [AdminService, ConfigService, TranslateService, AdminAuthGuard],
+  providers: [AdminService, ConfigService, TranslateService, AdminAuthGuard, AdminStore],
 })
 
 export class AdminModule { }

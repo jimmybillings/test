@@ -18,14 +18,6 @@ wz-pagination {
   display: block;
   margin-right: rem(-.6);
   margin-top: rem(.6);
-  .text-nav > span {
-    &:nth-child(3n) {
-      margin-right: rem(.5);
-    }
-    &:nth-child(4n) {
-      margin-right: rem(.8);
-    }
-  }
   .divider {
     display: none;
     width: rem(.2);
@@ -33,24 +25,8 @@ wz-pagination {
     margin-right: rem(.2);
     box-shadow: -1px 0 0 0 rgba(md-color($md-foreground, divider), 1) inset, 1px 0 0 0 rgba(md-color($md-background, background),.7);
   }
-  form {
-    input {
-      width: rem(2.8);
-      height: rem(2.3);
-      overflow: hidden;
-      text-align: center;
-      background-color: rgba(md-color($md-background, background), .6);
-      border-style: solid;
-      border-width: 1px;
-      border-color: rgba(md-color($md-foreground, secondary-text), .25);
-      margin-right: rem(.8);
-      margin-left: rem(.7);
-      &:focus {
-        background-color: rgba(md-color($md-background, background), .8);
-        border-color: rgba(md-color($md-foreground, secondary-text), .45);
-        outline: none;
-      }
-    }
+  span.current-page {
+    margin-right: rem(2);
   }
   button[md-icon-button] {
     margin: 0;

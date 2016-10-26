@@ -6,3 +6,9 @@ cart-component .tabs-section md-tab-group {
     border-width: 0;
   }
 }
+
+section.cart {
+  button.purchase-button {
+    margin-left: rem(2);
+  }
+}

@@ -1,20 +1,12 @@
 import { Observable } from 'rxjs/Rx';
 
+import { MockApiService, mockApiMatchers } from '../../../shared/mocks/mock-api.service';
 import { Api } from '../../../shared/interfaces/api.interface';
 import { CartService } from './cart.service';
 import { Project, LineItem } from '../cart.interface';
 
 export function main() {
   describe('Cart Service', () => {
-    const apiResponseWith = (object: Object) => {
-      return Observable.of(object);
-    };
-
-    const mockGetResponse: Object = { 'text': 'MOCK GET RESPONSE' };
-    const mockPostResponse: Object = { 'text': 'MOCK POST RESPONSE' };
-    const mockDeleteResponse: Object = { 'text': 'MOCK DELETE RESPONSE' };
-    const mockUpdateResponse: Object = { 'text': 'MOCK UPDATE RESPONSE' };
-
     const mockProject: Project = {
       id: '123',
       name: 'Fred',
@@ -29,22 +21,19 @@ export function main() {
 
     let serviceUnderTest: CartService;
     let mockCartStore: any;
-    let mockApi: any;
+    let mockApi: MockApiService;
     let mockCartSummaryService: any;
     let mockCurrentUserService: any;
 
     beforeEach(() => {
+      jasmine.addMatchers(mockApiMatchers);
+
       mockCartStore = {
         replaceWith: jasmine.createSpy('replaceWith'),
         state: {}
       };
 
-      mockApi = {
-        get: jasmine.createSpy('get').and.returnValue(apiResponseWith(mockGetResponse)),
-        post: jasmine.createSpy('post').and.returnValue(apiResponseWith(mockPostResponse)),
-        delete: jasmine.createSpy('delete').and.returnValue(apiResponseWith(mockDeleteResponse)),
-        put: jasmine.createSpy('put').and.returnValue(apiResponseWith(mockUpdateResponse))
-      };
+      mockApi = new MockApiService();
 
       mockCartSummaryService = {
         loadCartSummary: jasmine.createSpy('loadCartSummary')
@@ -54,20 +43,21 @@ export function main() {
         fullName: jasmine.createSpy('fullName').and.returnValue(Observable.of('Ross Edfort'))
       };
 
-      serviceUnderTest = new CartService(mockCartStore, mockApi, mockCartSummaryService, mockCurrentUserService);
+      serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCartSummaryService, mockCurrentUserService);
     });
 
     describe('initializeData()', () => {
       it('calls the API service correctly', () => {
         serviceUnderTest.initializeData();
 
-        expect(mockApi.get)
-          .toHaveBeenCalledWith(Api.Orders, 'cart', { loading: true });
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('cart');
+        expect(mockApi.get).toHaveBeenCalledWithLoading(true);
       });
 
       it('replaces the cart store with the response', () => {
         serviceUnderTest.initializeData().subscribe(() => {
-          expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockGetResponse);
+          expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.getResponse);
         });
       });
 
@@ -79,13 +69,16 @@ export function main() {
 
       it('creates a default project if one does not already exist', () => {
         serviceUnderTest.initializeData().subscribe(() => {
-          expect(mockApi.post).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: { name: 'Project A', clientName: 'Ross Edfort' }, loading: true });
+          expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/project');
+          expect(mockApi.post).toHaveBeenCalledWithBody({ name: 'Project A', clientName: 'Ross Edfort' });
+          expect(mockApi.post).toHaveBeenCalledWithLoading(true);
         });
       });
 
       it('does not add a project if one already exists', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi, mockCartSummaryService, mockCurrentUserService);
+        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCartSummaryService, mockCurrentUserService);
 
         serviceUnderTest.initializeData().subscribe(() => {
           expect(mockApi.post).not.toHaveBeenCalled();
@@ -97,22 +90,25 @@ export function main() {
       it('calls the API service correctly', () => {
         serviceUnderTest.addProject();
 
-        expect(mockApi.post).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: { name: 'Project A', clientName: 'Ross Edfort' }, loading: true });
+        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/project');
+        expect(mockApi.post).toHaveBeenCalledWithBody({ name: 'Project A', clientName: 'Ross Edfort' });
+        expect(mockApi.post).toHaveBeenCalledWithLoading(true);
       });
 
       it('names new projects based on existing names', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi, mockCartSummaryService, mockCurrentUserService);
+        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCartSummaryService, mockCurrentUserService);
 
         serviceUnderTest.addProject();
 
-        expect(mockApi.post).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: { name: 'Project B', clientName: 'Ross Edfort' }, loading: true });
+        expect(mockApi.post).toHaveBeenCalledWithBody({ name: 'Project B', clientName: 'Ross Edfort' });
       });
 
       it('replaces the cart store with the response', () => {
         serviceUnderTest.addProject();
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockPostResponse);
+        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.postResponse);
       });
 
       it('updates the cart summary service', () => {
@@ -126,13 +122,15 @@ export function main() {
       it('calls the API service correctly', () => {
         serviceUnderTest.removeProject(mockProject);
 
-        expect(mockApi.delete).toHaveBeenCalledWith(Api.Orders, 'cart/project/123', { loading: true });
+        expect(mockApi.delete).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.delete).toHaveBeenCalledWithEndpoint('cart/project/123');
+        expect(mockApi.delete).toHaveBeenCalledWithLoading(true);
       });
 
       it('replaces the cart store with the response', () => {
         serviceUnderTest.removeProject(mockProject);
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockDeleteResponse);
+        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.deleteResponse);
       });
 
       it('updates the cart summary service', () => {
@@ -144,12 +142,15 @@ export function main() {
       it('creates a new default project if the last one was deleted', () => {
         serviceUnderTest.removeProject(mockProject);
 
-        expect(mockApi.post).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: { name: 'Project A', clientName: 'Ross Edfort' }, loading: true });
+        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/project');
+        expect(mockApi.post).toHaveBeenCalledWithBody({ name: 'Project A', clientName: 'Ross Edfort' });
+        expect(mockApi.post).toHaveBeenCalledWithLoading(true);
       });
 
       it('does not add a project if one still exists after a removal', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi, mockCartSummaryService, mockCurrentUserService);
+        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCartSummaryService, mockCurrentUserService);
 
         serviceUnderTest.removeProject(mockProject);
 
@@ -161,13 +162,16 @@ export function main() {
       it('calls the API service correctly', () => {
         serviceUnderTest.updateProject(mockProject);
 
-        expect(mockApi.put).toHaveBeenCalledWith(Api.Orders, 'cart/project', { body: mockProject, loading: true });
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('cart/project');
+        expect(mockApi.put).toHaveBeenCalledWithBody(mockProject);
+        expect(mockApi.put).toHaveBeenCalledWithLoading(true);
       });
 
       it('replaces the cart store with the response', () => {
         serviceUnderTest.updateProject(mockProject);
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockUpdateResponse);
+        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.putResponse);
       });
 
       it('updates the cart summary service', () => {
@@ -181,14 +185,16 @@ export function main() {
       it('calls the API service correctly', () => {
         serviceUnderTest.moveLineItemTo(mockProject, mockLineItem);
 
-        expect(mockApi.put)
-          .toHaveBeenCalledWith(Api.Orders, 'cart/move/lineItem', { parameters: { lineItemId: '456', projectId: '123' }, loading: true });
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('cart/move/lineItem');
+        expect(mockApi.put).toHaveBeenCalledWithParameters({ lineItemId: '456', projectId: '123' });
+        expect(mockApi.put).toHaveBeenCalledWithLoading(true);
       });
 
       it('replaces the cart store with the response', () => {
         serviceUnderTest.moveLineItemTo(mockProject, mockLineItem);
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockUpdateResponse);
+        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.putResponse);
       });
 
       it('updates the cart summary service', () => {

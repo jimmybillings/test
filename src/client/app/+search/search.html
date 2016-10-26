@@ -1,52 +1,46 @@
 <div #target></div>
 <md-sidenav-layout>
-  <md-sidenav #searchFilter align="start" mode="side">
-    <div class="md-overlay-container" *ngIf="(uiState.data | async).loading">
-      <md-progress-bar color="accent" mode="indeterminate"></md-progress-bar>
-    </div>
-    <md-slide-toggle class="count-toggle" [checked]="preferences.displayFilterCounts" color="primary" value="toggle" (change)="countToggle($event)">{{ 'SEARCH.FILTERS.FILTER_COUNT_TOOGLE_LABEL' | translate }}</md-slide-toggle>
-    <filter-component class="filter" [counted]="preferences.displayFilterCounts" [filters]="filter.data | async"></filter-component>
-  </md-sidenav>
-  <!--this button has no display but is used to open the filter tray from the search component-->
-  <button class="filter" (click)="searchFilter.toggle()" style="display:none;">{{'SEARCH.FILTERS.FILTERS_BTN_LABEL' | translate }}</button>
- 
-  <section class="search-header" layout="row" layout-align="center center">
-    <header flex-gt-lg="95" flex="100">
-      <div class="asset-sort-by" layout="row" layout-align="end center" layout-padding>
-        <button md-button class="is-dd" color="primary" [md-menu-trigger-for]="assetSortMenu">
+	<md-sidenav #searchFilter align="start" mode="side">
+		<div class="md-overlay-container" *ngIf="(uiState.data | async).loading">
+			<md-progress-bar color="accent" mode="indeterminate"></md-progress-bar>
+		</div>
+		<md-slide-toggle class="count-toggle" [checked]="preferences.displayFilterCounts" color="primary" value="toggle" (change)="countToggle($event)">{{ 'SEARCH.FILTERS.FILTER_COUNT_TOOGLE_LABEL' | translate }}</md-slide-toggle>
+		<filter-component class="filter" [counted]="preferences.displayFilterCounts" [filters]="filter.data | async"></filter-component>
+	</md-sidenav>
+	<!--this button has no display but is used to open the filter tray from the search component-->
+	<button class="filter" (click)="searchFilter.toggle()" style="display:none;">{{'SEARCH.FILTERS.FILTERS_BTN_LABEL' | translate }}</button>
+
+	<section class="search-header" layout="row" layout-align="center center">
+		<header flex-gt-lg="95" flex="100">
+			<div class="asset-sort-by" layout="row" layout-align="end center" layout-padding>
+				<button md-button class="is-dd" color="primary" [md-menu-trigger-for]="assetSortMenu">
           <md-icon>sort</md-icon>
             <span class="key">{{'SEARCH.SORT_BTN_LABEL' | translate }}</span><span class="value">{{ sortOptions.currentSort.name }}</span>
         </button>
-      </div>
-    </header>
-  </section>
+			</div>
+		</header>
+	</section>
 
-  <section class="search-results">
-    <div layout="row" md-scroll-y="" layout-align="center start">
-      <div flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'" layout-padding>
-        <breadcrumb-component layout="row" layout-wrap layout-align="start start" class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
-        <div layout="row" flex layout-align="end center">
-          <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)" flex layout-align="end stretch"></wz-pagination>
-        </div>
-        <wz-asset-list 
-          [assets]="assets.items" 
-          [userCan]="userCan"
-          [currentUser]="currentUser"
-          [collection]="activeCollection.data | async"
-          (onAddToCollection)="addToCollection($event)"
-          (onRemoveFromCollection)="removeFromCollection($event)"
-          (onShowNewCollection)="showNewCollection($event)"
-          (addToCart)="addAssetToCart($event)" 
-          (onDownloadComp)="downloadComp($event)" 
-          class="{{config.viewType.value}}">
-        </wz-asset-list>
-          
-        <wz-pagination [pagination]="assets.pagination" (getPage)="changePage($event)" flex layout-align="end stretch"></wz-pagination>
-      </div>
-    </div>
-  </section>
+	<section class="search-results">
+		<div layout="row" md-scroll-y="" layout-align="center start">
+			<div flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'" layout-padding>
+				<breadcrumb-component layout="row" layout-wrap layout-align="start start" class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
+				<div layout="row" flex layout-align="end center">
+					<wz-pagination *ngIf="assets.pagination.totalCount > 0" [pagination]="assets.pagination" (getPage)="changePage($event)" flex
+						layout-align="end stretch"></wz-pagination>
+				</div>
+				<wz-asset-list [assets]="assets.items" [userCan]="userCan" [currentUser]="currentUser" [collection]="activeCollection.data | async"
+					(onAddToCollection)="addToCollection($event)" (onRemoveFromCollection)="removeFromCollection($event)" (onShowNewCollection)="showNewCollection($event)"
+					(addToCart)="addAssetToCart($event)" (onDownloadComp)="downloadComp($event)" class="{{config.viewType.value}}">
+				</wz-asset-list>
+
+				<wz-pagination *ngIf="assets.pagination.totalCount > 0" [pagination]="assets.pagination" (getPage)="changePage($event)" flex
+					layout-align="end stretch"></wz-pagination>
+			</div>
+		</div>
+	</section>
 </md-sidenav-layout>
 
 <md-menu x-position="before" #assetSortMenu="mdMenu">
-  <wz-sort-component [current]="sortOptions.currentSort" [items]="sortOptions.sorts" (sort)="onSortResults($event)"></wz-sort-component>
+	<wz-sort-component [current]="sortOptions.currentSort" [items]="sortOptions.sorts" (sort)="onSortResults($event)"></wz-sort-component>
 </md-menu>

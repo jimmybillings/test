@@ -1,121 +1,105 @@
-
 <section class="collection-head">
-  <div layout="row" layout-align="center start">
-    <div flex-xl="85" flex-gt-lg="95" flex="100">
-      <section class="collections-list">
-        <ul>
-          <li class="collection" flex="100" layout="row" layout-xs="column">
-              <div flex="100" flex-gt-sm="66">
-              <div flex="100" layout="row" layout-xs="column">
-                <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding>
-                  <div class="asset">
-                    <div class="asset-thb">
-                      <span class="asset-id"><span class="id">{{collection.id}}</span></span>
-                      <img *ngIf="collection.collectionThumbnail" src="{{collection?.collectionThumbnail?.urls?.https}}" />
-                      <img *ngIf="!collection.collectionThumbnail" src="/assets/img/tbn_missing.jpg" />
-                    </div>
-                  </div>
-                </div>
-                <div flex-gt-sm="60" flex-xl="70" flex="100" (click)="selectFocusedCollection(collection)" layout-padding>
-                  <h3 class="md-headline">{{collection.name}}
-                    <span class="asset-count">
+	<div layout="row" layout-align="center start">
+		<div flex-xl="85" flex-gt-lg="95" flex="100">
+			<section class="collections-list">
+				<ul>
+					<li class="collection" flex="100" layout="row" layout-xs="column">
+						<div flex="100" flex-gt-sm="66">
+							<div flex="100" layout="row" layout-xs="column">
+								<div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding>
+									<div class="asset">
+										<div class="asset-thb">
+											<span class="asset-id"><span class="id">{{collection.id}}</span></span>
+											<img *ngIf="collection.collectionThumbnail" src="{{collection?.collectionThumbnail?.urls?.https}}" />
+											<img *ngIf="!collection.collectionThumbnail" src="/assets/img/tbn_missing.jpg" />
+										</div>
+									</div>
+								</div>
+								<div flex-gt-sm="60" flex-xl="70" flex="100" layout-padding>
+									<h3 class="md-headline">{{collection.name}}
+										<span class="asset-count">
                       <span class="count" *ngIf="collection.assets">{{collection.assetsCount}}</span>
-                    <!--<span class="count" *ngIf="!collection.assets">0</span>-->
-                    </span>
-                  </h3>
-                  <div class="md-caption collection-info">
-                    <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{ collection.email }}</span>
-                    <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{ collection.userRole }}</span>
-                    <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ date(collection.createdOn) | date:'short' }}</span>
-                    <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
-                  </div>
-                  <div class="md-caption collection-tags">
-                    <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
-                    <ul class="meta-data-tags">
-                      <li class="tag md-elevation-z0" *ngFor="let tag of collection.tags">{{tag}}</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
+										<!--<span class="count" *ngIf="!collection.assets">0</span>-->
+										</span>
+									</h3>
+									<div class="md-caption collection-info">
+										<span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{ collection.email }}</span>
+										<span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{ collection.userRole }}</span>
+										<span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ date(collection.createdOn) | date:'short' }}</span>
+										<span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
+									</div>
+									<div class="md-caption collection-tags">
+										<strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
+										<ul class="meta-data-tags">
+											<li class="tag md-elevation-z0" *ngFor="let tag of collection.tags">{{tag}}</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
 
-            <div flex-gt-sm="33" layout-sm="100" flex="100" class="actions" layout-align="end center">
-                <button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="editCollection.show()"><md-icon>edit</md-icon></button>
-                <button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><md-icon>share</md-icon></button>
-                <button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)" [disabled]="true"><md-icon>mode_comment</md-icon></button>
-                <button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreShowCollectionOptions"><md-icon>more_vert</md-icon></button>
+						<div flex-gt-sm="33" layout-sm="100" flex="100" class="actions" layout-align="end center">
+							<button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="editCollection.show();resetCollection()"><md-icon>edit</md-icon></button>
+							<button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><md-icon>share</md-icon></button>
+							<button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)" [disabled]="true"><md-icon>mode_comment</md-icon></button>
+							<button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreShowCollectionOptions"><md-icon>more_vert</md-icon></button>
 
-                <md-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="mdMenu">
-                    <button md-menu-item disabled><md-icon>file_download</md-icon>Download all comps</button>
-                    <button md-menu-item disabled (click)="showHistory(collection)"><md-icon>history</md-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}</button>
-                    <div class="divider"></div>
-                    <button md-menu-item disabled><md-icon>import_export</md-icon>Export collection as XML</button>
-                    <button md-menu-item disabled><md-icon>print</md-icon>Print collection asset list</button>
-                    <button md-menu-item (click)="copyLegacyLinkDialog.show()"><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
-                    <div *ngIf="!!collection.owner">
-                      <div class="divider"></div>
-                      <button md-menu-item class="delete" (click)="deleteCollectionDialog.show()">
+							<md-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="mdMenu">
+								<button md-menu-item disabled><md-icon>file_download</md-icon>Download all comps</button>
+								<button md-menu-item disabled (click)="showHistory(collection)"><md-icon>history</md-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}</button>
+								<div class="divider"></div>
+								<button md-menu-item disabled><md-icon>import_export</md-icon>Export collection as XML</button>
+								<button md-menu-item disabled><md-icon>print</md-icon>Print collection asset list</button>
+								<button md-menu-item (click)="copyLegacyLinkDialog.show()"><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
+								<div *ngIf="!!collection.owner">
+									<div class="divider"></div>
+									<button md-menu-item class="delete" (click)="deleteCollectionDialog.show()">
                         <md-icon>delete</md-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
                       </button>
-                    </div>
-                </md-menu>
+								</div>
+							</md-menu>
 
-            </div>
-          </li>
-        </ul>
-      </section>
-    </div>
-  </div>
+						</div>
+					</li>
+				</ul>
+			</section>
+		</div>
+	</div>
 </section>
 <section class="search-results">
-  <div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
-    <div flex-xl="85" flex-gt-lg="95" flex="100">
-      <wz-pagination [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-        <div layout="column">       
-          <wz-asset-list 
-            [assets]="collection.assets.items"
-            [userCan]="userCan"
-            [currentUser]="currentUser"
-            [collection]="activeCollection.data | async"
-            (onAddToCollection)="addToCollection($event)"
-            (onShowNewCollection)="showNewCollection($event)"
-            (addToCart)="addAssetToCart($event)" 
-            (onDownloadComp)="downloadComp($event)"
-            (onRemoveFromCollection)="removeFromCollection($event)"
-            class="grid">
-          </wz-asset-list>
-          <h1 *ngIf="!collection.assets.items" class="md-display-1 alert warning">This collection does not have any assets</h1>
-        </div>
-        <wz-pagination [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
-      </div>
-  </div>
+	<div layout="row" md-scroll-y="" layout-align="center start" layout-padding="">
+		<div flex-xl="85" flex-gt-lg="95" flex="100">
+			<wz-pagination *ngIf="collection.assets.pagination.totalCount > 0" [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
+			<div layout="column">
+				<wz-asset-list [assets]="collection.assets.items" [userCan]="userCan" [currentUser]="currentUser" [collection]="activeCollection.data | async"
+					(onAddToCollection)="addToCollection($event)" (onShowNewCollection)="showNewCollection($event)" (addToCart)="addAssetToCart($event)"
+					(onDownloadComp)="downloadComp($event)" (onRemoveFromCollection)="removeFromCollection($event)" class="grid">
+				</wz-asset-list>
+				<h1 *ngIf="!collection.assets.items" class="md-display-1 alert warning">This collection does not have any assets</h1>
+			</div>
+			<wz-pagination *ngIf="collection.assets.pagination.totalCount > 0" [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
+		</div>
+	</div>
 </section>
 
-<wz-dialog #editCollection>
-  <collection-form
-    [collection]="collection"
-    [config]="(uiConfig.get('collection') | async).config"
-    [dialog]="editCollection"
-    [isEdit]="true"
-    [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}"
-    layout="row" layout-align="center start">
-  </collection-form>
+<wz-dialog #editCollection [clickCatcher]="false">
+	<collection-form [collection]="collection" [fields]="(uiConfig.get('collection') | async).config" [dialog]="editCollection"
+		[isEdit]="true" [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}" layout="row" layout-align="center start">
+	</collection-form>
 </wz-dialog>
 
 <wz-dialog #deleteCollectionDialog [clickCatcher]="false">
-  <md-card>
-    <md-card-title>{{ 'COLLECTION.INDEX.CONFIRMATION_TITLE' | translate:{collectionName: collection.name} }}</md-card-title>
-    <md-card-subtitle>{{ 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE' | translate }}</md-card-subtitle>
-    <md-card-actions align="end" class="confirmation-buttons">
-      <button md-button color="primary" (click)="deleteCollectionDialog.close()">{{ 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE' | translate }}</button>
-      <button md-button color="primary" (click)="deleteCollectionDialog.close(); deleteCollection(collection.id)">{{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
-    </md-card-actions>
-  </md-card>
+	<md-card>
+		<md-card-title>{{ 'COLLECTION.INDEX.CONFIRMATION_TITLE' | translate:{collectionName: collection.name} }}</md-card-title>
+		<md-card-subtitle>{{ 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE' | translate }}</md-card-subtitle>
+		<md-card-actions align="end" class="confirmation-buttons">
+			<button md-button color="primary" (click)="deleteCollectionDialog.close()">{{ 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE' | translate }}</button>
+			<button md-button color="primary" (click)="deleteCollectionDialog.close(); deleteCollection(collection.id)">{{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
+		</md-card-actions>
+	</md-card>
 </wz-dialog>
 
 <wz-dialog #copyLegacyLinkDialog>
-  <collection-link-component 
-    [assets]="collection.assets.items"
-    [dialog]="copyLegacyLinkDialog">
-  </collection-link-component>
+	<collection-link-component [assets]="collection.assets.items" [dialog]="copyLegacyLinkDialog">
+	</collection-link-component>
 </wz-dialog>

@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup} from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -37,11 +37,11 @@ export class WzPaginationComponent implements OnInit {
       this.getPage.emit(pageNumber);
     }
   }
-  public getCurrentPage() : Number {
-    if(this.pagination.numberOfPages > 0) {
+
+  public getCurrentPage(): Number {
+    if (this.pagination.numberOfPages > 0) {
       return this.pagination.currentPage;
     }
     return 0;
   }
-
 }

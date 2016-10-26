@@ -23,7 +23,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   @Input() collection: any = false;
   @Input() newCollectionFormIsOpen: boolean;
   @Input() dialog: any;
-  @Input() config: any;
+  @Input() fields: any;
   @Input() isEdit: boolean = false;
 
   // public originalName: string;
@@ -47,7 +47,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.formItems = this.setForm();
+    if (!this.collection) this.formItems = this.setForm();
     this.tr = {
       title: (this.isEdit) ? 'COLLECTION.EDIT.TITLE' : 'COLLECTION.NEW_TITLE',
       close: 'COLLECTION.FORM.CLOSE_HOVER_TITLE',
@@ -116,13 +116,13 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   }
 
   private setForm() {
-    return this.config.form.items.map((item: any) => {
+    return this.fields.form.items.map((item: any) => {
       if (item.name === 'name' && this.collection) item.value = this.collection.name;
       if (item.type === 'tags') {
         item.tags = (this.collection && this.collection.tags) ? this.collection.tags : [];
         item.value = (this.collection && this.collection.tags) ? this.collection.tags.toString() : '';
       }
-      return item;
+      return Object.assign({}, item);
     });
   }
 

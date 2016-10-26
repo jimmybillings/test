@@ -27,7 +27,9 @@ export class WzInputTagsComponent {
 
       case 'Enter':
         let tag: string = e.target.value;
-        if (!this.find(tag)) this.create(tag);
+        if (!this.find(tag) && tag !== '' && this.tags.length <= 10) {
+          this.create(tag);
+        }
         e.target.value = '';
         e.preventDefault();
         return;
