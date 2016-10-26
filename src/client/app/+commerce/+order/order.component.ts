@@ -14,14 +14,7 @@ export class OrderComponent {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
-  public formatTime(timecode: any): string {
-    switch (timecode) {
-      case -1:
-        return 'End';
-      case -2:
-        return 'Beginning';
-      default:
-        return '';
-    }
+  public downloadMaster(masterUrl: string): void {
+    window.location.href = masterUrl;
   }
 }
