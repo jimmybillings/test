@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ElementRef, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, Renderer, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../../services/api.service';
@@ -8,7 +8,7 @@ import { Api, ApiResponse } from '../../interfaces/api.interface';
   moduleId: module.id,
   selector: 'wz-input-suggestions',
   template: `<ng-content></ng-content>
-            <div class="suggestions-menu" [ngClass]="{'revealed': areSuggestionsVisible}">
+            <div class="suggestions-menu" *ngIf="areSuggestionsVisible" [ngClass]="{'revealed': areSuggestionsVisible}">
               <div (click)="closeSuggestions()" md-line class="heading">{{ 'COLLECTION.FORM.TYPE_AHEAD_SUGGESTIONS_HEADING' | translate}}</div>
               <md-list>
                 <md-list-item *ngFor="let suggestion of suggestions">
@@ -21,28 +21,26 @@ import { Api, ApiResponse } from '../../interfaces/api.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class WzInputSuggestionsComponent implements OnInit {
+export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
   @Input() fControl: FormControl;
-  @Input() data: Observable<any>;
-  @Input() apiConfig: any;
   public suggestions: Array<string> = [];
   private areSuggestionsVisible: boolean = false;
   private selectedSuggestion: String;
   private activeSuggestion: string;
   private shouldCallServer: boolean = true;
-
-  constructor(private element: ElementRef, private api: ApiService, private detector: ChangeDetectorRef) { }
+  private clickCatcher: any;
+  constructor(private element: ElementRef, private renderer: Renderer, private api: ApiService, private detector: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.clickCatcher = this.renderer.listenGlobal('body', 'click', this.closeSuggestions.bind(this));
     this.areSuggestionsVisible = false;
     this.fControl.valueChanges
       .switchMap((query: string) => {
-        if (query.length > 1 && this.shouldCallServer) {
+        if (query && query.length > 1 && this.shouldCallServer) {
           return this.query(query);
         } else {
-          this.areSuggestionsVisible = false;
+          this.closeSuggestions();
           this.shouldCallServer = true;
-          this.detector.markForCheck();
           return [];
         }
       })
@@ -54,8 +52,15 @@ export class WzInputSuggestionsComponent implements OnInit {
       });
   }
 
+  ngOnDestroy() {
+    this.clickCatcher();
+  }
+
   public closeSuggestions() {
+    this.activeSuggestion = null;
+    this.suggestions = [];
     this.areSuggestionsVisible = false;
+    this.detector.markForCheck();
   }
   /**
    * When you click or hit enter take the active suggestion and make it the input field value.
@@ -64,10 +69,7 @@ export class WzInputSuggestionsComponent implements OnInit {
     this.shouldCallServer = false;
     this.selectedSuggestion = suggestion;
     this.fControl.setValue(suggestion);
-    this.suggestions = [];
-    this.activeSuggestion = null;
-    this.areSuggestionsVisible = false;
-    this.detector.markForCheck();
+    this.closeSuggestions();
   }
 
   /**
@@ -138,7 +140,7 @@ export class WzInputSuggestionsComponent implements OnInit {
         this.selectSuggestion(this.activeSuggestion);
         this.suggestions.splice(0);
       } else {
-        this.areSuggestionsVisible = false;
+        this.closeSuggestions();
       }
       event.preventDefault();
     }

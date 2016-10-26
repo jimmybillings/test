@@ -10,7 +10,7 @@
 				(editForm)="mergeFormValues($event); edit.show()">
 			</wz-list>
 			<div layout="row" layout-align="end center">
-				<wz-pagination (getPage)="navigateToPageUrl($event)" [pagination]="(adminService.data | async).pagination"></wz-pagination>
+				<wz-pagination *ngIf="(adminService.data | async).pagination.totalCount > 0" (getPage)="navigateToPageUrl($event)" [pagination]="(adminService.data | async).pagination"></wz-pagination>
 			</div>
 		</div>
 		<div style="margin-bottom: 3rem;" flex-xl="20" flex-gt-lg="20" flex-gt-md="20" flex="20" hide-md hide-sm hide-xs>

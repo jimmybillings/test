@@ -1,0 +1,39 @@
+
+// Overrides for material overlays.
+// These should go away when there are native md-dialog, and md-menu in alpha 7
+// they are currently needed to fix z-index with fixed header and large dd menu (collection-dd) for mobile.
+.md-overlay-pane {
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    width: 100%;
+  }
+}
+/************
+ * menus and menus with icons
+ * Once material has better menu support these possiibly can be removed.
+ ************/
+.md-overlay-pane .md-menu {
+  max-width: rem(33.6);
+}
+.md-menu [md-menu-item] {
+  color: rgba(md-color($foreground,text), .75);
+  &[disabled] {
+    color: md-color($foreground,disabled);
+  }
+}
+.md-menu a[md-menu-item] md-icon.material-icons,
+.md-menu button[md-menu-item] md-icon.material-icons {
+  color: md-color($foreground,icon);
+  padding-left: rem(.8);
+  padding-right: rem(1.6);
+  margin-top: rem(-.3);
+}
+.md-menu a[md-menu-item][disabled] md-icon.material-icons,
+.md-menu button[md-menu-item][disabled] md-icon.material-icons {
+  color: rgba(md-color($foreground,text), .25);
+}
+.md-menu .divider {
+  width: 100%;
+  margin-top: rem(0);
+  padding-bottom: rem(.1);
+  box-shadow: inset 0 1px 0 0 md-color($foreground, divider);
+}

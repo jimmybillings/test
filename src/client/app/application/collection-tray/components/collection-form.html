@@ -9,7 +9,7 @@
     <md-card-title>
       {{ tr.title | translate }}
     </md-card-title>
-    <md-card-content *ngIf="config">
+    <md-card-content *ngIf="fields">
       <wz-form 
         [items]="formItems"
         [serverErrors]= "serverErrors"

@@ -1,13 +1,15 @@
 home-component {
   .hero {
     text-align: center;
-    @include text-contrast(md-color($md-primary, 900));
+    // @include text-contrast(md-color($md-primary, 900));
+    // color: md-color($primary, 900, contrast);
+    color: $white-87-opacity;
     overflow: hidden;
     width: 100%;
     position: relative;
     margin: 0 auto;
     @include background-image(
-      linear-gradient( rgba(md-color($md-foreground, text), .55), rgba(md-color($md-foreground, text), .45)),
+      linear-gradient( rgba(md-color($foreground, text), .55), rgba(md-color($foreground, text), .45)),
       url($bk-img-home)
     );
     background-position: 0 0, center center;
@@ -129,7 +131,7 @@ home-component {
     }
   }
   .mrkt-collections {
-    min-height: 504px;
+    min-height: rem(50.4);
     background-color:  md-color($md-grey, 100);
     [layout] {
       max-height: rem(24.8);
@@ -214,8 +216,8 @@ home-component {
   
   .mrkt-call-to-action {
     min-height: 440px;
-    background:  md-color($md-primary, 700)  url('../assets/img/bk/tex/bktx_dgl_lines_light.png');
-    @include text-contrast(md-color($md-primary, 700));
+    background:  md-color($primary, 700)  url('../assets/img/bk/tex/bktx_dgl_lines_light.png');
+    @include text-contrast(md-color($primary, 700));
     text-align: center;
   }
 }
@@ -227,13 +229,13 @@ home-component {
     min-width: 300px;
     padding: 4px 40px;
     // opacity: .8;
-    background-color: md-color($md-accent, 700, .8);
+    background-color: md-color($accent, 700, .8);
     border: 1px solid transparent;
     @include transition($swift-ease-in);
     &:hover {
       border: 1px solid $white-87-opacity;
-      background-color: md-color($md-accent, 700, .9);
-      @include md-elevation(3);
+      background-color: md-color($accent, 700, .8);
+      @include md-elevation(2);
     }
   }
 }

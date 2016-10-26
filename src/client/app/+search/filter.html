@@ -80,7 +80,7 @@
           color="primary"
           (change)="applyFilter(filter.filterId)">
             {{filter.name}}
-              <span class="filter-count" *ngIf="counted">
+              <span class="filter-count" *ngIf="counted && filter.count > -1">
                 ( {{filter.count}} )
               </span>
         </md-checkbox>
