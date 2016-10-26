@@ -13,8 +13,8 @@ export class DocumentService {
   }
 
   public downloadActiveDocument(): Observable<any> {
-    return this.api.get(Api.Identities, 'document/6/activeVersion/downloadFile').do((data: any) => {
+    return this.api.get(Api.Identities, 'document/public/name/TOS').do((data: any) => {
       console.log(data);
-    })
+    });
   }
 }

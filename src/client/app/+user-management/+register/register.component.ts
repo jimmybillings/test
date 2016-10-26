@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.configSubscription = this.uiConfig.get('register').subscribe(config => this.config = config.config);
-    // this.document.downloadActiveDocument().take(1).subscribe();
+    this.document.downloadActiveDocument().take(1).subscribe();
   }
 
   ngOnDestroy() {
