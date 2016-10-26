@@ -16,6 +16,9 @@
 }
 .md-menu [md-menu-item] {
   color: rgba(md-color($foreground,text), .75);
+  &[disabled] {
+    color: md-color($foreground,disabled);
+  }
 }
 .md-menu a[md-menu-item] md-icon.material-icons,
 .md-menu button[md-menu-item] md-icon.material-icons {

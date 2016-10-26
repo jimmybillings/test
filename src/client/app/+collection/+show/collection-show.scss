@@ -1,5 +1,5 @@
 collection-show .collection-head {
-  background-color: rgba(md-color($md-background, card), .5);
+  background-color: rgba(md-color($background, card), .5);
   @include md-elevation(2);
   padding-left: rem(.8);
   padding-top: rem(1.1);

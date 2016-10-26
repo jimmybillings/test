@@ -12,7 +12,6 @@ import { AssetService } from '../../shared/services/asset.service';
 import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartSummaryService } from '../../shared/services/cart-summary.service';
-import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 
 @Component({
   moduleId: module.id,
