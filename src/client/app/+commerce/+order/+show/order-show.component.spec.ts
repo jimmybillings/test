@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs/Rx';
 
-import { OrderComponent } from './order.component';
+import { OrderShowComponent } from './order-show.component';
 
 export function main() {
-  describe('Order Component', () => {
-    let componentUnderTest: OrderComponent;
+  describe('Order Show Component', () => {
+    let componentUnderTest: OrderShowComponent;
     let mockOrderService: any;
 
     beforeEach(() => {
@@ -12,7 +12,7 @@ export function main() {
         data: Observable.of({ someData: 'SOME_VALUE' })
       };
 
-      componentUnderTest = new OrderComponent(mockOrderService);
+      componentUnderTest = new OrderShowComponent(mockOrderService);
     });
   });
 };

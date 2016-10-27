@@ -33,9 +33,6 @@ if [ -n "$JENKINS_HOME" ]; then
   # add jenkins tools to the path
   export PATH=/home/video/bin/tools/jenkins:$PATH:/home/video/bin
 
-  # Special PhantomJS build that works with Centos
-  export PHANTOMJS_BIN=/home/video/bin/phantomjs.2.0.1.patch_12506
-
   # Setup a tmpdir on a volume with more space
   export TMPDIR=/home/video/tmp/$artifactName
 fi

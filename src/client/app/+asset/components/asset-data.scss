@@ -2,7 +2,7 @@
 .data-bk, .tabs-section {
   background-color: transparent !important;
   & > div > div {
-    background: rgba(md-color($md-background, background),.7);
+    background: rgba(md-color($background, background),.7);
   }
   md-tab-group {
     min-width: 100%;
@@ -16,7 +16,7 @@
       }
     }
     .md-tab-header {
-      background-color: md-color($md-background, card);
+      background-color: md-color($background, card);
       margin-top: 0;
       margin-left: 0;
       margin-right: 0;
@@ -30,16 +30,13 @@
         height: rem(5.2);
         &.md-tab-active {
           opacity: 1;
-          background-color: rgba(md-color($md-primary, 300), .00);
-          color: md-color($md-primary, 600);
+          background-color: rgba(md-color($primary, 300), .00);
+          color: md-color($primary, 600);
         }
         &.md-tab-disabled {
           opacity: .25;
         }
       }
-      // md-ink-bar {
-      //   background-color: md-color($md-primary, 500);
-      // }
     }
     md-content {
       min-width: 100%;
