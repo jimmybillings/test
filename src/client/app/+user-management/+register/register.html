@@ -27,9 +27,7 @@
 		<div layout="row" layout-align="center center">
 			<md-card-title>Terms of Service</md-card-title>
 		</div>
-		<md-card-subtitle>
-			Placeholder
-		</md-card-subtitle>
+		<md-card-subtitle [innerHtml]="activeTos | async"></md-card-subtitle>
 		<md-card-actions layout="row" layout-align="center center">
 			<button (click)="termsDialog.close(); agreeToTerms()" md-raised-button type="button" color="primary" class="conversion">AGREE</button>
 		</md-card-actions>

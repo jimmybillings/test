@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Rx';
 import { UiConfig } from '../../shared/services/ui.config';
 import { FormFields, ServerErrors } from '../../shared/interfaces/forms.interface';
 import { DocumentService } from '../services/document.service';
-
+import { Observable } from 'rxjs/Rx';
 /**
  * Registration page component - renders registration page and handles submiting registation form.
  */
@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   public fields: FormFields[];
   public newUser: any;
   public successfullySubmitted: boolean = false;
+  public activeTos: Observable<any>;
   private configSubscription: Subscription;
 
   constructor(
@@ -32,7 +33,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.configSubscription = this.uiConfig.get('register').subscribe(config => this.config = config.config);
-    this.document.downloadActiveDocument().take(1).subscribe();
+    this.activeTos = this.document.downloadActiveTosDocument();
   }
 
   ngOnDestroy() {

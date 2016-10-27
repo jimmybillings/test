@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../shared/services/api.service';
-import { Api } from '../../shared/interfaces/api.interface';
-import { ApiConfig } from '../../shared/services/api.config';
+import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
 import { Observable } from 'Rxjs/rx';
 
 @Injectable()
 export class DocumentService {
-  private portal: string;
+  public activeVersionId: string;
+  constructor(private api: ApiService) { }
 
-  constructor(private api: ApiService, private apiConfig: ApiConfig) {
-    this.portal = this.apiConfig.getPortal();
-  }
-
-  public downloadActiveDocument(): Observable<any> {
-    return this.api.get(Api.Identities, 'document/public/name/TOS').do((data: any) => {
-      console.log(data);
+  public downloadActiveTosDocument(): Observable<any> {
+    return this.api.get(Api.Identities, 'document/public/name/TOS').flatMap((response: ApiResponse) => {
+      this.activeVersionId = response[0].activeVersionId;
+      return this.api.get(Api.Identities, `document/public/downloadFile/${response[0].activeVersionId}`, { download: true });
+    }).map((response: any) => {
+      return response._body;
     });
   }
 }

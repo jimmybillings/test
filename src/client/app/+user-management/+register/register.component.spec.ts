@@ -15,7 +15,7 @@ export function main() {
 
     const MockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
     const MockUser = { create: () => { return Observable.of(user); } };
-    const MockDocumentService = { downloadActiveDocument: () => { return Observable.of('this is the document'); } };
+    const MockDocumentService = { downloadActiveTosDocument: () => { return Observable.of('this is the document'); } };
 
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
