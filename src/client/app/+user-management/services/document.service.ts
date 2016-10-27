@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
 import { Observable } from 'Rxjs/rx';
+import { Response } from '@angular/http';
 
 @Injectable()
 export class DocumentService {
@@ -12,8 +13,8 @@ export class DocumentService {
     return this.api.get(Api.Identities, 'document/public/name/TOS').flatMap((response: ApiResponse) => {
       this.activeVersionId = response[0].activeVersionId;
       return this.api.get(Api.Identities, `document/public/downloadFile/${response[0].activeVersionId}`, { download: true });
-    }).map((response: any) => {
-      return response._body;
+    }).map((response: Response) => {
+      return response.text();
     });
   }
 }
