@@ -1,6 +1,6 @@
 import { CommerceComponent } from './commerce.component';
 import { Routes } from '@angular/router';
-import { OrderComponent } from './+order/order.component';
+import { OrderShowComponent } from './+order/+show/order-show.component';
 import { CartComponent } from './+cart/cart.component';
 import { CartGuard } from './+cart/services/cart.guard';
 import { CartResolver } from './+cart/services/cart.resolver';
@@ -12,7 +12,7 @@ export const COMMERCE_ROUTES: Routes = [
     component: CommerceComponent,
     children: [
       { path: 'cart', component: CartComponent, canActivate: [CartGuard], resolve: { cart: CartResolver } },
-      { path: 'order/:orderId', component: OrderComponent, resolve: { order: OrderResolver } }
+      { path: 'order/:orderId', component: OrderShowComponent, resolve: { order: OrderResolver } }
     ]
   }
 ];
