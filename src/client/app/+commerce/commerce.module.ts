@@ -21,7 +21,7 @@ import { LineItemsComponent } from './+cart/components/line-items.component';
 import { AssetComponent } from './+cart/components/asset.component';
 
 // Order Stuff 
-import { OrderComponent } from './+order/order.component';
+import { OrderShowComponent } from './+order/+show/order-show.component';
 import { OrderService } from './+order/services/order.service';
 import { OrderStore } from './+order/services/order.store';
 
@@ -38,9 +38,9 @@ import { OrderStore } from './+order/services/order.store';
     ProjectsComponent,
     LineItemsComponent,
     AssetComponent,
-    OrderComponent
+    OrderShowComponent
   ],
-  exports: [CommerceComponent, CartComponent, OrderComponent],
+  exports: [CommerceComponent, CartComponent, OrderShowComponent],
   providers: [CartService, OrderService, CartStore, CartCapabilities, OrderStore]
 })
 

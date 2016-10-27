@@ -10,31 +10,29 @@ import { UiConfig } from '../../shared/services/ui.config';
 
 export function main() {
   describe('Forgot Password Component', () => {
+    let mockUiConfig:any, mockUser:any;
+    let componentUnderTest: ForgotPasswordComponent;
+    
+    beforeEach(() => {
+      mockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
+      mockUser = { forgotPassword: jasmine.createSpy('forgotPassword').and.returnValue(Observable.of({})) };
+      componentUnderTest = new ForgotPasswordComponent(mockUser, mockUiConfig);
+    });
 
-    const MockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
-    const MockUser = { forgotPassword: (user: Object) => { return Observable.of({}); } };
-
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        { provide: User, useValue: MockUser },
-        { provide: UiConfig, useValue: MockUiConfig },
-        ForgotPasswordComponent,
-      ]
-    }));
-
-    it('Should get component config and assign to new instance variable',
-      inject([ForgotPasswordComponent], (component: ForgotPasswordComponent) => {
-        component.ngOnInit();
-        expect(component.config).toEqual({ someConfig: 'test' });
-      }));
-
-    it('Should submit a request for a password reset and show the confirmation message',
-      inject([ForgotPasswordComponent], (component: ForgotPasswordComponent) => {
-        spyOn(component.user, 'forgotPassword').and.callThrough();
-        component.onSubmit({ 'emailAddress': 'test@test.com' });
-        expect(component.user.forgotPassword).toHaveBeenCalledWith({ 'emailAddress': 'test@test.com' });
-        expect(component.successfullySubmitted).toEqual(true);
-      }));
-
+    describe('ngOnInit()', () => {
+      it('Grabs the component config and assigns to an instance variable',() => {
+        componentUnderTest.ngOnInit();
+        expect(componentUnderTest.config).toEqual({ someConfig: 'test' });
+      });
+    });
+        
+    describe('onSubmit()', () => {
+      it('Submits a request for a reset password email',() => {
+          componentUnderTest.onSubmit({ 'emailAddress': 'test@test.com' });
+          expect(componentUnderTest.user.forgotPassword).toHaveBeenCalledWith({ 'emailAddress': 'test@test.com' });
+          expect(componentUnderTest.successfullySubmitted).toEqual(true);
+      });
+    });
+      
   });
 }

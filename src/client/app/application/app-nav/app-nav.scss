@@ -2,8 +2,8 @@ header.app-header {
   position: relative;
   width: 100%;
   z-index: 3;
-  background-color:rgba(md-color($md-primary, 900), .3);
-  // border-bottom: solid 1px rgba(contrast-color(md-color($md-primary, 900)), .25);
+  background-color:rgba(md-color($primary, 900), .3);
+  // border-bottom: solid 1px rgba(contrast-color(md-color($primary, 900)), .25);
   @include md-elevation(1);
   position: absolute;
   top: 0;
@@ -40,8 +40,8 @@ header.app-header {
     }
   }
   &.fixed {
-    background-color:rgba(md-color($md-background, app-bar), .95);
-    @include text-contrast(md-color($md-background, app-bar), md-color($md-foreground, secondary-text), md-color($md-background, app-bar));
+    background-color:rgba(md-color($background, app-bar), .95);
+    @include text-contrast(md-color($background, app-bar), md-color($foreground, secondary-text), md-color($background, app-bar));
     position: fixed;
     top: 0;
     @include animation(slideDownHeader .75s ease-in-out);
@@ -58,23 +58,16 @@ header.app-header md-toolbar {
 }
 header.app-header [md-button],
 header.app-header [md-icon-button] {
-  @include text-contrast(md-color($md-grey, 900), md-color($md-foreground, secondary-text), md-color($md-background, app-bar));
-  text-transform: uppercase;
+  @include text-contrast(md-color($md-grey, 900), md-color($foreground, secondary-text), md-color($background, app-bar));
   margin-left: rem(.6);
   @include transition($swift-ease-out);
-  &:hover {
-    background-color: rgba(md-color($md-background, background), .075);
-  }
-  &:hover::after {
-    background-color: transparent;
-  }
   &:first-child{
     margin-left: 0;
   }
 }
 header.app-header md-toolbar:not(.md-menu-toolbar) [md-button] {
   &.md-accent {
-    color: rgba(md-color($md-accent, 500), .8);
+    color: rgba(md-color($accent, 500), .8);
   }
 }
 button[md-icon-button].cart {
@@ -83,7 +76,7 @@ button[md-icon-button].cart {
     top:0;
     right: rem(-.2);
     border-radius: $md-button-border-radius;
-    background-color: rgba(md-color($md-warn, 700), .9);
+    background-color: rgba(md-color($warn, 700), .9);
     min-width: rem(1.4);
     font-size: .8em;
     line-height: 1;
@@ -91,19 +84,17 @@ button[md-icon-button].cart {
     margin-left: 0;
     padding: 2px 3px;
     .count {
-      @include text-contrast(md-color($md-warn, 900));
+      @include text-contrast(md-color($warn, 900));
     }
   }
 }
 
-
-
 header.app-header.fixed [md-button],
 header.app-header.fixed [md-icon-button] {
-  @include text-contrast(md-color($md-background, app-bar), md-color($md-foreground, secondary-text), md-color($md-background, app-bar));
+  @include text-contrast(md-color($background, app-bar), md-color($foreground, secondary-text), md-color($background, app-bar));
   @include transition($swift-ease-out);
   &:hover {
-    background-color: rgba(md-color($md-background, hover), .08);
+    background-color: rgba(md-color($background, hover), .08);
   }
   &:hover::after {
     background-color: transparent;
@@ -113,17 +104,10 @@ header.app-header.fixed [md-icon-button] {
   }
 }
 
-// header.app-header app-nav button.open-collection-tray,
-// header.app-header app-nav button.open-search {
-//   // display: none;
-// }
-
 header.app-header.collection-tray-closed app-nav button.open-collection-tray,
 header.app-header.search-closed app-nav button.open-search {
   display: initial;
 }
-
-
 
 @include keyframes(slideDownHeader) {
   0% {
@@ -142,7 +126,8 @@ header.app-header.search-closed app-nav button.open-search {
 // The spacing may change when search or the bin tray is open in the header.
 // there are a few different styles of pages.
 // Also the current mdToolbar does not change height for mobile. This could change, that is what the media queries are for.
-header.app-header + div.main-content order-component,
+// header.app-header + div.main-content order-show-component,
+header.app-header + div.main-content commerce-component,
 header.app-header + div.main-content profile-component,
 header.app-header + div.main-content cart-component,
 header.app-header + div.main-content collection-show,
@@ -157,7 +142,8 @@ header.app-header + div.main-content asset-component {
     border-top-width: rem(16.0);
   }
 }
-header.app-header.collection-tray-closed + div.main-content order-component,
+// header.app-header.collection-tray-closed + div.main-content order-show-component,
+header.app-header.collection-tray-closed + div.main-content commerce-component,
 header.app-header.collection-tray-closed + div.main-content profile-component,
 header.app-header.collection-tray-closed + div.main-content cart-component,
 header.app-header.collection-tray-closed + div.main-content collection-show,
@@ -170,7 +156,8 @@ header.app-header.collection-tray-closed + div.main-content asset-component {
     border-top-width: rem(10.4);
   }
 }
-header.app-header.collection-tray-closed.search-closed + div.main-content order-component,
+// header.app-header.collection-tray-closed.search-closed + div.main-content order-show-component,
+header.app-header.collection-tray-closed.search-closed + div.main-content commerce-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content profile-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content cart-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content collection-show,
@@ -183,7 +170,8 @@ header.app-header.collection-tray-closed.search-closed + div.main-content asset-
   //   border-top-width: rem(5.6);
   // }
 }
-header.app-header.search-closed + div.main-content order-component,
+// header.app-header.search-closed + div.main-content order-show-component,
+header.app-header.search-closed + div.main-content commerce-component,
 header.app-header.search-closed + div.main-content profile-component,
 header.app-header.search-closed + div.main-content cart-component,
 header.app-header.search-closed + div.main-content collection-show,
@@ -223,26 +211,3 @@ header.app-header + div.main-content home-component .hero {
   //   padding-top: rem(5.6);
   // }
 }
-
-// .md-menu {
-//   margin-top: 36px;
-// }
-
-// .navigation-menu {
-//   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-//     width: rem(10);
-//     button[md-menu-item] {
-//       color: md-color($md-primary, 500);
-//     }
-//   }
-//   @media screen and (min-width: $layout-breakpoint-sm) {
-//     width: rem(20);
-//     button[md-menu-item] {
-//       color: md-color($md-primary, 500);
-//       md-icon {
-//         position: absolute;
-//         right: rem(2);
-//       }
-//     }
-//   }
-// }
