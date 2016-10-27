@@ -62,11 +62,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
     this.preferencesSubscription = this.userPreferences.data.subscribe((data: any) => {
       this.preferences = data;
-      this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe();
     });
     this.sortSubscription = this.sortDefinitions.data.subscribe((data: any) => this.sortOptions = data);
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
+    this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe();
   }
 
   ngOnDestroy(): void {
@@ -78,6 +78,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public countToggle(event: any): void {
+    this.filter.get(this.searchContext.state, !this.preferences.displayFilterCounts).take(1).subscribe();
     this.userPreferences.toggleFilterCount();
   }
 

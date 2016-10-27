@@ -1,15 +1,14 @@
 collections-component .collection-head {
-  color: md-color($md-primary, 600);
+  color: md-color($primary, 600);
   padding-left: rem(.8);
   padding-right: rem(.8);
-  box-shadow: inset 0 -1px 0 0 md-color($md-foreground, divider), 0 1px 0 0 rgba(md-color($md-background, card), .6);
+  box-shadow: inset 0 -1px 0 0 md-color($foreground, divider), 0 1px 0 0 rgba(md-color($background, card), .6);
   header {
     padding-top: rem(1.6);
     padding-bottom: rem(.6);
     position: relative;
     .md-display-1 {
       margin: 0;
-      // opacity: .7;
       width: calc(100% - 120px);
       font-size: rem(2.6);
     }
@@ -32,7 +31,7 @@ collections-component .query-details {
   padding-top: rem(.4);
   padding-left: rem(.8);
   font-size: .77em;
-  color: md-color($md-primary, 700);
+  color: md-color($primary, 700);
   span {
     display: inline-block;
     position: relative;
@@ -85,12 +84,12 @@ collections-component .query-details {
   }
   li.collection {
     position: relative;
-    background-color: rgba(md-color($md-background, card), .65);
-    color: rgba(md-color($md-foreground, text), .7);
+    background-color: rgba(md-color($background, card), .65);
+    color: rgba(md-color($foreground, text), .7);
     margin-bottom: rem(1.2);
     padding: rem(.2);
     border-radius: $md-button-border-radius;
-    border: 1px solid rgba(md-color($md-background, card), .01);
+    border: 1px solid rgba(md-color($background, card), .01);
     @include transition($swift-ease-out);
     .actions {
       text-align: right;
@@ -105,7 +104,7 @@ collections-component .query-details {
     .asset-count {
       display: inline-block;
       border-radius: $md-button-border-radius - 1;
-      background-color: rgba(md-color($md-foreground, secondary-text), .4);
+      background-color: rgba(md-color($foreground, secondary-text), .4);
       min-width: rem(2.1);
       font-size: .7em;
       line-height: 1em;
@@ -113,25 +112,21 @@ collections-component .query-details {
       display: inline-block;
       text-align: center;
       .count {
-        @include text-contrast(md-color($md-foreground, secondary-text));
+        @include text-contrast(md-color($foreground, secondary-text));
       }
     }
     .md-caption span {
       display: block;
     }
     &.focused {
-      background-color: rgba(md-color($md-background, card), 1);
+      background-color: rgba(md-color($background, card), 1);
       @include md-elevation(2);
-      // @include background-image(
-      //   linear-gradient(rgba(md-color($md-grey, 900),0.06), rgba(md-color($md-primary, 900),0.06)),
-      //   linear-gradient(rgba(md-color($md-primary, 900),0.06), rgba(md-color($md-grey, 900),0.06))
-      // );
-      border: 1px solid rgba(md-color($md-primary, 400), 1);
+      border: 1px solid rgba(md-color($primary, 400), 1);
     }
     .divider {
       margin: rem(.6) rem(.8) 0 rem(.8);
       padding-bottom: rem(.6);
-      box-shadow: inset 0 1px 0 0 md-color($md-grey, 800, .2);
+      box-shadow: inset 0 1px 0 0 md-color($foreground, divider);
       display: none;
       @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
         display: flex;
@@ -149,8 +144,8 @@ collections-component .query-details {
         padding-right: rem(.9);
         padding-left: rem(.9);
         margin-left: rem(.7);
-        background-color: rgba(md-color($md-foreground, secondary-text), .12);
-        color: md-color($md-foreground, secondary-text);
+        background-color: md-color($foreground, divider);
+        color: md-color($foreground, secondary-text);
       }
     }
     .actions div:last-child {
@@ -177,15 +172,16 @@ collections-component .query-details {
       bottom: 0;
       margin: auto;
     }
+    // the asset id display is more for troubleshooting and can probably go away when we are ready for public consumption
     .asset-id {
       position: absolute;
       bottom: 3px;
       right: 3px;
       z-index: 2;
-      background-color: rgba(md-color($md-foreground, base), .1);
+      background-color: rgba(md-color($foreground, base), .1);
       .id {
         padding: rem(.3);
-        @include text-contrast(md-color($md-foreground, base));
+        @include text-contrast(md-color($foreground, base));
         opacity: .7;
       }
     }
@@ -197,7 +193,7 @@ collections-component .query-details {
       line-height: 0;
       md-icon {
         font-size: rem(3.2);
-        @include text-contrast(md-color($md-foreground, base));
+        @include text-contrast(md-color($foreground, base));
         opacity: .9;
       }
     }
@@ -220,7 +216,7 @@ collections-search-form {
   form {
     @include transition($swift-ease-out);
     display: flex;
-    border: 1px solid rgba(md-color($md-foreground, base),.17);
+    border: 1px solid md-color($foreground, divider);
   }
   &.revealed > div {
     @include animation-name(slide);
@@ -237,17 +233,17 @@ collections-search-form {
     padding: 0 0 0 3%;
     max-height: rem(4.5);
     min-height: rem(4.5);
-    color: md-color($md-foreground, secondary-text);
-    background-color:  rgba(md-color($md-background, app-bar), .9);
+    color: md-color($foreground, secondary-text);
+    background-color:  rgba(md-color($background, app-bar), .9);
     border-radius: 0;
     margin-right:rem(-8.4);
     @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
     @include placeholder {
-      color: md-color($md-foreground, hint-text);
+      color: md-color($foreground, hint-text);
     }
     &:focus {
       outline: none;
-      background-color: lighten(md-color($md-background, app-bar), 40%);
+      background-color: lighten(md-color($background, app-bar), 40%);
     }
   }
   button[type="submit"], button[type="reset"] {
@@ -281,11 +277,11 @@ collections-search-form {
       width: rem(.1);
       top: rem(.7);
       left: rem(.4);
-      box-shadow: inset 1px 0 0 0 md-color($md-grey, 800, .14);
+      box-shadow: inset 1px 0 0 0 md-color($foreground, divider);
     }
   }
 }
-
+// Copy legacy link.This may change into copy share link
 .wz-dialog md-card {
   .link-wrapper {
     padding: rem(.2);
@@ -296,29 +292,29 @@ collections-search-form {
       margin-right: rem(.4);
       width: calc(100% - 44px);
       max-width: calc(100% - 44px);
-      border: 1px solid rgba(md-color($md-grey, 800),.4);
+      border: 1px solid md-color($foreground, divider);
       padding-top: rem(1.2);
       padding-right: rem(.5);
       padding-bottom: rem(1.3);
       padding-left: rem(.5);
       font-size: .9em;
-      color: rgba(md-color($md-primary, 500),.75);
+      color: rgba(md-color($primary, 500),.75);
       &:focus, &:active {
         outline: none;
-        border-color: rgba(md-color($md-primary, 500),.9);
+        border-color: rgba(md-color($primary, 500),.9);
       }
       &::selection {
-        background: rgba(md-color($md-accent, 600),.25);
-        color: md-color($md-primary, 600);
+        background: rgba(md-color($accent, 600),.25);
+        color: md-color($primary, 600);
       }
     }
     button {
-      color: md-color($md-foreground, base, .7);
+      color: md-color($foreground, base, .7);
       @include transition($swift-ease-out);
       &:hover {
-        @include text-contrast(md-color($md-primary, 500));
-        color: md-color($md-primary);
-        background-color: md-color($md-foreground, base, .1);
+        @include text-contrast(md-color($primary, 500));
+        color: md-color($primary);
+        background-color: md-color($foreground, base, .1);
       }
       // once they put a transition into the ::after pseudo class this can go away
       &[md-icon-button]:hover::after {
@@ -327,10 +323,6 @@ collections-search-form {
     }
   }
 }
-// .wz-dialog collection-link-component md-card {
-//   min-width: rem(5.0);
-// }
-
 
 @include keyframes(slide) {
   0% {

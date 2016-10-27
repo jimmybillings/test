@@ -2,10 +2,9 @@
   display: none !important;
 }
 md-sidenav {
-  width: 320px;
+  width: rem(32.0);
   .md-overlay-container {
     pointer-events: all;
-    // background-color: white;
     opacity: .5;
   }
 }
@@ -17,15 +16,15 @@ md-sidenav {
     &.md-primary .md-list-item {
       height: rem(3.0);
       padding: 0 rem(1.6) 0 rem(3.6);
-      color: rgba(md-color($md-primary, 500), 1);
+      color: rgba(md-color($primary, 500), 1);
       &:hover {
-        background-color: rgba(md-color($md-foreground, base), .02);
+        background-color: rgba(md-color($foreground, base), .02);
         cursor: pointer;
       }
     }
     &.md-primary.active .md-list-item {
-      background-color: rgba(md-color($md-primary, 500), 1);
-      @include text-contrast(md-color($md-primary, 700));
+      background-color: rgba(md-color($primary, 500), 1);
+      @include text-contrast(md-color($primary, 700));
     }
   } 
   li {
@@ -38,10 +37,10 @@ md-sidenav {
       font-weight: 500;
       letter-spacing: .01em;
       line-height: 1.2em;
-      color: rgba(md-color($md-foreground, base), .54);
+      color: rgba(md-color($foreground, base), .54);
       &:hover {
         cursor: pointer;
-        background-color: rgba(md-color($md-foreground, base), .02);
+        background-color: rgba(md-color($foreground, base), .02);
       }
       .filter-subhead-inner {
         display: block;
@@ -90,13 +89,13 @@ md-sidenav {
       margin: rem(.6) 0 rem(1.6) rem(3.2);
       border-width: 0 0 1px 0;
       border-style: solid;
-      border-color: rgba(md-color($md-foreground, base), .38);
+      border-color: rgba(md-color($foreground, base), .38);
       border-image: none;
       padding: rem(.4) 0 rem(.4) 0;
       position: relative;
       &:focus, &:active {
         outline: none;
-        border-color: rgba(md-color($md-primary, 500),.9);
+        border-color: rgba(md-color($primary, 500),.9);
         border-width: 0 0 2px 0;
       }
     }
@@ -122,11 +121,11 @@ md-sidenav {
 
 
 .filter .md-checkbox-disabled:not(.md-checkbox-checked) .md-checkbox-label {
-  color: md-color($md-foreground, disabled-text);
+  color: md-color($foreground, disabled-text);
 }
 
 
-
-.filter .md-checkbox-checked .md-checkbox-background {
-  background-color: md-color($md-primary, 500);
+// this 
+.filter [color="primary"].md-checkbox-checked .md-checkbox-background {
+  background-color: md-color($primary, 500);
 }

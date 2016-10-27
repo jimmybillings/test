@@ -1,11 +1,3 @@
-// asset-detail {
-//   display: block;
-//   background-color:  md-color($md-grey, 300);
-//   border-top: rem(6.4) solid md-color($md-primary, 900, .9);
-//   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-//     border-top-width: rem(5.6);    
-//   }
-// }
 
 section.preview-bk {
   overflow: hidden;
@@ -16,17 +8,15 @@ section.preview-bk {
   @media screen and (max-width: $layout-breakpoint-md)  {
     padding-top: rem(2);    
     padding-bottom: rem(4);
-    // padding-left: rem(1.6);
-    // padding-right: rem(1.6);
   }
   &.theater {
     height: 100%;
     @include md-elevation(2);
-    @include text-contrast(md-color($md-grey, 900));
+    @include text-contrast(md-color($foreground, base));
     @include background-image(
-      linear-gradient(md-color($md-grey, 900, .8), md-color($md-grey, 900, .7)),
-      linear-gradient(md-color($md-primary, 900, .1), md-color($md-primary, 600, .1)),
-      linear-gradient(md-color($md-grey, 900, .8), md-color($md-grey, 900, .7))
+      linear-gradient(md-color($foreground, base, .57), md-color($foreground, base, .56)),
+      linear-gradient(md-color($primary, 900, .07), md-color($primary, 700, .07)),
+      linear-gradient(md-color($foreground, base, .57), md-color($foreground, base, .56))
     );
     position: relative;
     &::after {
@@ -81,20 +71,20 @@ section.preview-bk {
     nav.asset-options {
       display: flex;
       button[md-icon-button] {
-        @include text-contrast(md-color($md-grey, 900));
+        @include text-contrast(md-color($foreground, base));
         margin-left: rem(.6);
         &:disabled {
           md-icon {
-            color: rgba(md-color($md-background, background),.2);
+            color: rgba(md-color($background, background),.2);
           }
         }
       }
     }
   }
   div.primary-info {
-    @include text-contrast(md-color($md-grey, 900));
+    @include text-contrast(md-color($foreground, base));
     box-shadow: none;
-    background-color: rgba(md-color($md-grey, 900),.2);
+    background-color: rgba(md-color($foreground, base), .05);
     padding:rem(1.6);
     position: relative;
     @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
@@ -142,7 +132,7 @@ section.preview-bk {
       .contact-us-pricing {
         @include calc(width, "100% - 32px");
         bottom: rem(9.0);
-        color: rgba(md-color($md-accent, 500), .75);
+        color: rgba(md-color($accent, 500), .75);
         display: block;
         font-size: 1.12em;
         font-weight: 200;
@@ -174,9 +164,9 @@ section.preview-bk {
           margin-bottom: rem(1.0);
           text-transform: uppercase;
           &.md-primary.md-hue-7 {
-            background-color: scale-color(md-color($md-primary, 500), $lightness: -15%, $alpha: -50%);
+            background-color: scale-color(md-color($primary, 500), $lightness: -15%, $alpha: -50%);
             &:hover {
-              background-color: scale-color(md-color($md-primary, 500), $lightness: 0%, $alpha: -40%);
+              background-color: scale-color(md-color($primary, 500), $lightness: 0%, $alpha: -40%);
             }
           }
           &.is-outlined {
@@ -197,21 +187,9 @@ section.preview-bk {
 }
 
 
-
-
-
-
-
-
 div.primary-info-t {
   height: rem(4.8);
-  // @include calc(height, "100% - 56px");
-  // @include calc(min-height, "100% - 56px");
-  @include text-contrast(md-color($md-grey, 900));
-  // box-shadow: none;
-  // background-color: rgba(md-color($md-grey, 900),.2);
-  // padding:rem(2.0);
-  // position: relative;
+  @include text-contrast(md-color($foreground, base));
   div.primary-content-t {
     .asset-name {
       margin-bottom: rem(.5);
@@ -223,8 +201,8 @@ div.primary-info-t {
       border-radius: rem(.3);
       border-width: 1px;
       border-style: solid;
-      border-color: rgba(md-color($md-grey, 100),0.4);
-      background-color: rgba(md-color($md-grey, 900),.8);
+      border-color: rgba(md-color($background, app-bar), .4);
+      background-color: rgba(md-color($foreground, base), .3);
       position: relative;
       &::before {
         content: "HD";
@@ -241,11 +219,11 @@ div.primary-info-t {
       width: rem(2.7);
       height: rem(1.8);
       border-radius: 50%;
-      border-color: rgba(md-color($md-grey, 900), 0);
-      background-color: rgba(md-color($md-grey, 100), .75);
+      border-color: rgba(md-color($foreground, base), 0);
+      background-color: rgba(md-color($background, card), .5);
       &::before {
         content: "SD";
-        color:rgba(md-color($md-grey, 900),1);
+        color: md-color($foreground, text);
         opacity: 0.9;
       }
     }
@@ -256,14 +234,6 @@ div.primary-info-t {
     }
   }
 }
-
-
-
-
-
-
-
-
 
 
 asset-share .form-panel {
@@ -315,26 +285,26 @@ asset-share-link .link {
     margin-right: rem(.4);
     width: calc(100% - 44px);
     max-width: calc(100% - 44px);
-    border: 1px solid rgba(md-color($md-grey, 800),.4);
+    border: 1px solid rgba(md-color($foreground, base), 2);
     padding-top: rem(1.3);
     padding-right: rem(.5);
     padding-bottom: rem(1.3);
     padding-left: rem(.5);
     font-size: .9em;
-    color: rgba(md-color($md-primary, 500),.75);
+    color: rgba(md-color($primary, 500),.75);
     &:focus, &:active {
       outline: none;
-      border-color: rgba(md-color($md-primary, 500),.9);
+      border-color: rgba(md-color($primary, 500),.9);
     }
     &::selection {
-      background: rgba(md-color($md-accent, 600),.25);
-      color: md-color($md-primary, 600);
+      background: rgba(md-color($accent, 600),.25);
+      color: md-color($primary, 600);
     }
   }
   button {
     // @include transition($swift-ease-out);
     &:hover {
-      color: md-color($md-primary);
+      color: md-color($primary);
     }
   }
 }

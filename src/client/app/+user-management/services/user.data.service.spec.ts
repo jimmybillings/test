@@ -41,7 +41,7 @@ export function main() {
 
     it('Should make a post request to reset a user password', inject([User], (service: User) => {
       service.forgotPassword({emailAddress: 'test@test.com'}).subscribe((res) => {
-        expect(connection.request.url.indexOf('/api/identities/v1/user/forgotPassword') !== -1).toBe(true);
+        expect(connection.request.url.indexOf('/api/identities/v1/user/requestPasswordReset') !== -1).toBe(true);
       });
       connection.mockRespond(new Response(new ResponseOptions({ body: { whatever: 'something' } })));
     }));

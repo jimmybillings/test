@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     public _authentication: Authentication,
     public _user: User,
     public router: Router,
-    public _currentUser: CurrentUser,
+    public currentUser: CurrentUser,
     public userPreference: UserPreferenceService,
     public uiConfig: UiConfig) {
   }
@@ -41,10 +41,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public onSubmit(user: any): void {
     this._authentication.create(user).take(1).subscribe((res) => {
-      localStorage.setItem('token', res.token.token);
-      this._currentUser.set(res.user);
-      let prefs: any = this.userPreference.formatResponse(res.userPreferences);
-      this.userPreference.set(prefs);
+      this.currentUser.set(res.user, res.token.token);
+      this.userPreference.set(res.userPreferences);
       this.router.navigate(['/']);
     });
   }

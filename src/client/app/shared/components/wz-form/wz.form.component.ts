@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit, OnChanges, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { FormModel } from './wz.form.model';
 import { FormFields, ServerErrors } from '../../../shared/interfaces/forms.interface';
@@ -20,7 +20,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   @Input() serverErrors: ServerErrors;
   @Input() submitLabel: string;
   @Input() includeCancel: boolean = false;
-  @Input() cancelLabel:string = 'Cancel';
+  @Input() cancelLabel: string = 'Cancel';
   @Input() autocomplete: string = 'on';
   @Output() formSubmit = new EventEmitter();
   @Output() formCancel = new EventEmitter();
@@ -28,9 +28,14 @@ export class WzFormComponent implements OnInit, OnChanges {
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
 
-  constructor(private fb: FormBuilder, private formModel: FormModel, private apiConfig: ApiConfig) { }
+  constructor(
+    private fb: FormBuilder,
+    private formModel: FormModel,
+    private apiConfig: ApiConfig,
+    private element: ElementRef) { }
 
   ngOnChanges(changes: any) {
+    console.log(changes);
     if (changes.serverErrors && this.form) this.mergeErrors();
     if (changes.items && this.form) this.mergeNewValues();
   }
@@ -57,6 +62,12 @@ export class WzFormComponent implements OnInit, OnChanges {
         }
       }
     });
+  }
+
+  public markFieldsAsDirty() {
+      for (let control in this.form.controls) {
+          (<FormControl>this.form.controls[control]).markAsDirty();
+      }
   }
 
   public parseOptions(options: any) {
@@ -92,6 +103,7 @@ export class WzFormComponent implements OnInit, OnChanges {
 
   public onSubmit() {
     this.submitAttempt = true;
+    this.markFieldsAsDirty();
     if (this.form.valid) {
       this.formSubmit.emit(this.form.value);
     } else {
@@ -100,6 +112,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   }
 
   public resetForm() {
+    this.element.nativeElement.children[0].reset();
     this.submitAttempt = false;
     this.formModel.updateForm(this.form, {});
     this.formModel.markFormAsUntouched(this.form);

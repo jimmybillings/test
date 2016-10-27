@@ -19,12 +19,6 @@
   .md-card {
     width: 100%;
   }
-  // md-card-title, md-card-subtitle, md-card-actions {
-  //   padding: 12px 0;
-  // }
-  // .confirmation-buttons span.md-button-wrapper {
-  //   color: #2196F3;
-  // }
 }
 
 .md-overlay-container {
@@ -35,21 +29,10 @@
     position: fixed;
     @include background-image(
       url("../assets/img/bk/tex/bktx_dgl_lines_light.png"));
-    background-color: rgba(md-color($md-foreground, base), .6);
+    background-color: rgba(md-color($foreground, base), .6);
   }
 }
 
-// .wz-dialog-click-catcher {
-//   position: absolute;
-//   width: 100vw;
-//   height: 100vh;
-//   top: -72px;
-//   left: -483px;
-//   z-index: 20;
-//   // for testing
-//   // background-color: rgba(aquamarine, .3);
-//   background-color: transparent;
-// }
 .wz-dialog-click-catcher {
   background-color: transparent;
   height: 200vh;

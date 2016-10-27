@@ -116,6 +116,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   }
 
   private setForm() {
+    this.fields = JSON.parse(JSON.stringify(this.fields));
     return this.fields.form.items.map((item: any) => {
       if (item.name === 'name' && this.collection) item.value = this.collection.name;
       if (item.type === 'tags') {

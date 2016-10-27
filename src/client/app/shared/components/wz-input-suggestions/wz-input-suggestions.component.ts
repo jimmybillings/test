@@ -36,7 +36,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
     this.areSuggestionsVisible = false;
     this.fControl.valueChanges
       .switchMap((query: string) => {
-        if (query.length > 1 && this.shouldCallServer) {
+        if (query && query.length > 1 && this.shouldCallServer) {
           return this.query(query);
         } else {
           this.closeSuggestions();
