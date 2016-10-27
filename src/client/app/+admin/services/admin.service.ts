@@ -1,15 +1,11 @@
-import {
-  AdminResponse,
-  AdminUrlParams,
-  AdminFormParams,
-  Account
-} from '../../shared/interfaces/admin.interface';
+import { AdminResponse, AdminUrlParams, AdminFormParams, Account } from '../../shared/interfaces/admin.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { AdminStore } from './admin.store';
+
 @Injectable()
 export class AdminService {
   public data: Observable<any>;
