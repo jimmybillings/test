@@ -48,6 +48,20 @@ export function main() {
       });
     });
 
+    describe('Destruction', () => {
+      it('unsubscribes from the UI config to prevent memory leakage', () => {
+        let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
+        let mockObservable = { subscribe: () => mockSubscription };
+        mockUiConfig = { get: () => mockObservable };
+
+        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig);
+        componentUnderTest.ngOnInit();
+        componentUnderTest.ngOnDestroy();
+
+        expect(mockSubscription.unsubscribe).toHaveBeenCalled();
+      });
+    });
+
     describe('onNotification()', () => {
       it('adds a project when notified with ADD_PROJECT', () => {
         componentUnderTest.onNotification({ type: 'ADD_PROJECT' });
