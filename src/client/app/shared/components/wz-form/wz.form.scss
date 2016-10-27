@@ -87,3 +87,18 @@ md-input.ng-touched.ng-dirty.ng-invalid {
     color: md-color($md-warn, 600);
   }
 }
+
+md-checkbox.ng-dirty.ng-touched.ng-invalid {
+  .md-checkbox-inner-container {
+    .md-checkbox-frame {
+     color: md-color($md-warn, 600); 
+    }
+  }
+  md-hint.error {
+    span {
+      color: md-color($md-warn, 600);
+      position: relative;
+      top: rem(-16);
+    }
+  }
+}

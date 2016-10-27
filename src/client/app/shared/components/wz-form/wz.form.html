@@ -86,6 +86,13 @@
 		<span *ngIf="field.type == 'tos-checkbox'" layout="row" layout-align="center center">
 			<md-checkbox layout="row" formControlName="{{field.name}}" [checked]="field.defaultChecked" color="primary" [required]="isRequiredField(field)">
 				{{ field.label | translate }}&nbsp;
+
+				<md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
+					align="start" class="error">
+					<span *ngIf="form.controls[field.name].hasError('mustBeCheckedError')">
+						{{ 'ERRORS.AGREE_TO_TOS' | translate}}
+					</span>
+				</md-hint>
 			</md-checkbox>
 			<a class="view-tos" (click)="onViewTos()">{{ field.link | translate }}</a>
 		</span>

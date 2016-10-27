@@ -25,11 +25,11 @@
 <wz-dialog #termsDialog>
 	<md-card class="terms-dialog">
 		<div layout="row" layout-align="center center">
-			<md-card-title>Terms of Service</md-card-title>
+			<md-card-title>{{ 'REGISTER.TOS_TITLE' | translate }}</md-card-title>
 		</div>
 		<md-card-subtitle [innerHtml]="activeTos | async"></md-card-subtitle>
 		<md-card-actions layout="row" layout-align="center center">
-			<button (click)="termsDialog.close(); agreeToTerms()" md-raised-button type="button" color="primary" class="conversion">AGREE</button>
+			<button (click)="termsDialog.close(); agreeToTerms()" md-raised-button type="button" color="primary" class="conversion">{{ 'REGISTER.AGREE_TO_TOS_BTN' | translate }}</button>
 		</md-card-actions>
 	</md-card>
 </wz-dialog>
