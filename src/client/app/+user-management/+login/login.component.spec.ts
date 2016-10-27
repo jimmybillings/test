@@ -28,13 +28,11 @@ export function main() {
     it('Should set token in localStorage, set the new user, navigate to home page on succesful login',
       inject([LoginComponent], (login: LoginComponent) => {
         localStorage.clear();
-        spyOn(localStorage, 'setItem');
-        spyOn(login._currentUser, 'set');
+        spyOn(login.currentUser, 'set');
         spyOn(login.router, 'navigate');
         spyOn(login.userPreference, 'set');
         login.onSubmit({ userId: 'some@email.com', password: 'password', siteName: 'sample' });
-        expect(localStorage.setItem).toHaveBeenCalledWith('token', 'newToken');
-        expect(login._currentUser.set).toHaveBeenCalledWith({ 'test': 'one' });
+        expect(login.currentUser.set).toHaveBeenCalledWith({ 'test': 'one' }, 'newToken');
         expect(login.router.navigate).toHaveBeenCalledWith(['/']);
         expect(login.userPreference.set).toHaveBeenCalledWith({pref1: 'pref1'});
       }));

@@ -63,7 +63,7 @@ export class UserPreferenceService {
   }
 
   public set(preferences: any): void {
-    this.updateStore(preferences);
+    this.updateStore(this.formatResponse(preferences));
   }
 
   public reset(): void {
