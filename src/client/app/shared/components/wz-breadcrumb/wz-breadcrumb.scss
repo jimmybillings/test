@@ -10,7 +10,7 @@
     background-color: rgba(md-color($background, card), .4);
     font-size: 0.8em;
     font-weight: 400;
-    line-height: rem(3.2);
+    line-height: rem(3.1);
     padding: 0 rem(3.6) 0 rem(1.6);
     color: rgba(md-color($foreground, base), .7);
     margin-right: rem(.4);
@@ -29,17 +29,3 @@
     opacity: .3;
   }
 }
-
-// currently not used
-
-// breadcrumb-component.root {
-//   md-progress-circle {
-//     height: 20px;
-//     width: 20px;
-//     float: left;
-//   }
-//   div.show {
-//     display: inline-block;
-//     padding: 0px 10px 0px 20px;
-//   }
-// }
