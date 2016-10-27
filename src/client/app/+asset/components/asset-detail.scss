@@ -14,9 +14,9 @@ section.preview-bk {
     @include md-elevation(2);
     @include text-contrast(md-color($foreground, base));
     @include background-image(
-      linear-gradient(md-color($foreground, base, .57), md-color($foreground, base, .53)),
+      linear-gradient(md-color($foreground, base, .57), md-color($foreground, base, .56)),
       linear-gradient(md-color($primary, 900, .07), md-color($primary, 700, .07)),
-      linear-gradient(md-color($foreground, base, .57), md-color($foreground, base, .53))
+      linear-gradient(md-color($foreground, base, .57), md-color($foreground, base, .56))
     );
     position: relative;
     &::after {

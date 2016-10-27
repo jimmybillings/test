@@ -19,9 +19,9 @@
   }
   .select-dd.active button[md-menu-item] {
     background-color: transparent;
-    color: md-color($md-primary);
+    color: md-color($primary);
     md-icon.material-icons {
-      color: md-color($md-primary);
+      color: md-color($primary);
       opacity: 1;
     }
   }
@@ -30,6 +30,6 @@
     margin-bottom: rem(.6);
     border-top-width: 1px;
     border-top-style: solid;
-    border-top-color: md-color($md-foreground, divider);
+    border-top-color: md-color($foreground, divider);
   }
 }
