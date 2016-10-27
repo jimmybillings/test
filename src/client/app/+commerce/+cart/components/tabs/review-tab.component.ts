@@ -32,12 +32,4 @@ export class ReviewTabComponent extends Tab implements OnInit {
       this.router.navigate(['/order/' + data.id, { orderPlaced: true }]);
     });
   }
-
-  public get assetsInCart(): Observable<boolean> {
-    return this.cart.map((cart: any) => {
-      return cart.projects.filter((project: any) => {
-        return project.lineItems ? project.lineItems.length > 0 : false;
-      }).length > 0;
-    });
-  }
 }

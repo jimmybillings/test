@@ -30,7 +30,8 @@ export function main() {
 
       mockCartStore = {
         replaceWith: jasmine.createSpy('replaceWith'),
-        state: {}
+        data: Observable.of({ some: 'data' }),
+        state: { some: 'state' }
       };
 
       mockApi = new MockApiService();
@@ -44,6 +45,20 @@ export function main() {
       };
 
       serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCartSummaryService, mockCurrentUserService);
+    });
+
+    describe('data getter', () => {
+      it('returns the data from the cart store', () => {
+        serviceUnderTest.data.subscribe(data => {
+          expect(data).toEqual({ some: 'data' });
+        });
+      });
+    });
+
+    describe('state getter', () => {
+      it('returns the state from the cart store', () => {
+        expect(serviceUnderTest.state).toEqual({ some: 'state' });
+      });
     });
 
     describe('initializeData()', () => {
@@ -201,6 +216,76 @@ export function main() {
         serviceUnderTest.moveLineItemTo(mockProject, mockLineItem);
 
         expect(mockCartSummaryService.loadCartSummary).toHaveBeenCalled();
+      });
+    });
+
+    describe('cloneLineItem()', () => {
+      it('calls the API service correctly', () => {
+        serviceUnderTest.cloneLineItem(mockLineItem);
+
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('cart/clone/lineItem');
+        expect(mockApi.put).toHaveBeenCalledWithParameters({ lineItemId: '456' });
+        expect(mockApi.put).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('replaces the cart store with the response', () => {
+        serviceUnderTest.cloneLineItem(mockLineItem);
+
+        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.putResponse);
+      });
+
+      it('updates the cart summary service', () => {
+        serviceUnderTest.cloneLineItem(mockLineItem);
+
+        expect(mockCartSummaryService.loadCartSummary).toHaveBeenCalled();
+      });
+    });
+
+    describe('removeLineItem()', () => {
+      it('calls the API service correctly', () => {
+        serviceUnderTest.removeLineItem(mockLineItem);
+
+        expect(mockApi.delete).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.delete).toHaveBeenCalledWithEndpoint('cart/asset/456');
+        expect(mockApi.delete).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('replaces the cart store with the response', () => {
+        serviceUnderTest.removeLineItem(mockLineItem);
+
+        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.deleteResponse);
+      });
+
+      it('updates the cart summary service', () => {
+        serviceUnderTest.removeLineItem(mockLineItem);
+
+        expect(mockCartSummaryService.loadCartSummary).toHaveBeenCalled();
+      });
+    });
+
+    describe('purchaseOnCredit()', () => {
+      it('calls the API service correctly', () => {
+        serviceUnderTest.purchaseOnCredit();
+
+        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/checkout/purchaseOnCredit');
+        expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('returns an observable of the back-end response', () => {
+        serviceUnderTest.purchaseOnCredit()
+          .subscribe(response => expect(response).toEqual(mockApi.postResponse));
+      });
+
+      it('does NOT replace the cart store with the response', () => {
+        serviceUnderTest.purchaseOnCredit()
+          .subscribe(_ => expect(mockCartStore.replaceWith).not.toHaveBeenCalled());
+      });
+
+      it('updates the cart summary service', () => {
+        serviceUnderTest.purchaseOnCredit()
+          .subscribe(_ => expect(mockCartSummaryService.loadCartSummary).toHaveBeenCalled());
       });
     });
   });

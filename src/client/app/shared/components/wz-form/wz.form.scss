@@ -12,8 +12,6 @@ wz-form form {
     margin-top: rem(1.2);
     margin-bottom: rem(1.2);
     font-size: 1.1em;
-    overflow: initial !important;
-    // overflow here can be removed with material alpha 7
   }
   a.view-tos {
     text-decoration: underline;
@@ -42,49 +40,48 @@ wz-form form {
       }
     }
   }
-  .md-primary[md-raised-button], 
-  .md-primary[md-fab], 
-  .md-primary[md-mini-fab] {
-    background-color: md-color($md-primary, 700, .85);
-  }
+  // .md-primary[md-raised-button], 
+  // .md-primary[md-fab], 
+  // .md-primary[md-mini-fab] {
+  //   background-color: md-color($md-primary, 700, .85);
+  // }
 }
-md-card, .wz-form-card {
-  .md-primary[md-button] {
-    @include transition($swift-ease-out);
-    color: md-color($md-primary, 500);
-  }
-}
-md-card, .wz-form-card {
-  [md-button]:hover.md-primary::after, [md-icon-button]:hover.md-primary::after {
-    background-color: rgba(md-color($md-primary, 500), .12);
-  }
-}
+// md-card, .wz-form-card {
+//   .md-primary[md-button] {
+//     @include transition($swift-ease-out);
+//     // color: md-color($md-primary, 500);
+//   }
+// }
+// md-card, .wz-form-card {
+//   [md-button]:hover.md-primary::after, [md-icon-button]:hover.md-primary::after {
+//     background-color: rgba(md-color($md-primary, 500), .12);
+//   }
+// }
  
 *[md-button] {
   text-transform: uppercase;
 }
-
 
 // testing error display in form.
 // currently using md-hint this may change with ng2 material recommendation
 md-input.show-errors.ng-invalid,
 md-input.ng-touched.ng-dirty.ng-invalid {
   .md-input-placeholder {
-    color: md-color($md-warn, 600);
+    color: md-color($warn, 600);
     &.md-float.md-focused .md-placeholder-required {
-      color: md-color($md-warn, 600);
+      color: md-color($warn, 600);
     }
   }
   .md-input-wrapper {
     .md-input-underline {
-      border-top-color: md-color($md-warn, 600);
+      border-top-color: md-color($warn, 600);
       .md-input-ripple {
-        background-color: md-color($md-warn, 600);
+        background-color: md-color($warn, 600);
       }
     }
   } 
   md-hint.error {
-    color: md-color($md-warn, 600);
+    color: md-color($warn, 600);
   }
 }
 

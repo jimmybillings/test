@@ -38,8 +38,9 @@ export class CurrentUser {
     });
   }
 
-  public set(user: User = null): void {
+  public set(user: User = null, token?:string): void {
     if (user) localStorage.setItem('currentUser', JSON.stringify(user));
+    if (token) localStorage.setItem('token', token);
     this.store.dispatch({ type: 'SET_USER', payload: this._user() });
   }
 

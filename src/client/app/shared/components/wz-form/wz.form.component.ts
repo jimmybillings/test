@@ -36,6 +36,7 @@ export class WzFormComponent implements OnInit, OnChanges {
     private element: ElementRef) { }
 
   ngOnChanges(changes: any) {
+    console.log(changes);
     if (changes.serverErrors && this.form) this.mergeErrors();
     if (changes.items && this.form) this.mergeNewValues();
   }
@@ -62,6 +63,12 @@ export class WzFormComponent implements OnInit, OnChanges {
         }
       }
     });
+  }
+
+  public markFieldsAsDirty() {
+      for (let control in this.form.controls) {
+          (<FormControl>this.form.controls[control]).markAsDirty();
+      }
   }
 
   public parseOptions(options: any) {
@@ -98,6 +105,7 @@ export class WzFormComponent implements OnInit, OnChanges {
 
   public onSubmit() {
     this.submitAttempt = true;
+    this.markFieldsAsDirty();
     if (this.form.valid) {
       this.formSubmit.emit(this.form.value);
     } else {

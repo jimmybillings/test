@@ -31,6 +31,14 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     this.configSubscription.unsubscribe();
   }
 
+  public get assetsInCart(): Observable<boolean> {
+    return this.cart.map((cart: any) => {
+      return cart.projects.filter((project: any) => {
+        return project.lineItems ? project.lineItems.length > 0 : false;
+      }).length > 0;
+    });
+  }
+
   public onNotification(message: any): void {
     switch (message.type) {
       case 'ADD_PROJECT': {

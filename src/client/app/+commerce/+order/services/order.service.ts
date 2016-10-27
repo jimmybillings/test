@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
+
 import { ApiService } from '../../../shared/services/api.service';
 import { Api } from '../../../shared/interfaces/api.interface';
-import { Observable } from 'rxjs/Rx';
 import { OrderStore } from './order.store';
 
 @Injectable()
 export class OrderService {
-  public data: Observable<any>;
+  constructor(private api: ApiService, private store: OrderStore) { }
 
-  constructor(private api: ApiService, private store: OrderStore) {
-    this.data = this.store.data;
+  public get data(): Observable<any> {
+    return this.store.data;
   }
 
   public getOrder(orderId: number): Observable<any> {
     return this.api.get(Api.Orders, `order/${orderId}`)
       .do(response => this.store.update(response));
-  };
+  }
 }
