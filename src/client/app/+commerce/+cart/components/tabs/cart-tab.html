@@ -6,6 +6,6 @@
   </div>
   <div flex="95" layout="row" layout-align="end center">
     <p class="md-subhead" style="margin-right: 2rem;">{{ 'CART.CART_TOTAL' | translate }} {{ (cart | async).total | currency:'USD':true:'1.2-2' }}</p>
-    <button md-raised-button class="md-block" (click)="goToNextTab()">{{ 'CART.PROCEED_BTN_LABEL' | translate }}</button>
+    <button *ngIf="(assetsInCart | async)" md-raised-button class="md-block" (click)="goToNextTab()">{{ 'CART.PROCEED_BTN_LABEL' | translate }}</button>
   </div>
 </section>
