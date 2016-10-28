@@ -23,10 +23,10 @@ export function main() {
   describe('Admin Store', () => {
     let mockStore: any;
     let storeUnderTest: AdminStore;
-    let mockData: any
+    let mockData: any;
     beforeEach(() => {
       mockData = {
-        items: ['one', 'two', 'three'], 
+        items: ['one', 'two', 'three'],
         totalCount: 10,
         currentPage: 0,
         hasNextPage: true,
@@ -60,7 +60,7 @@ export function main() {
 
         expect(mockStore.dispatch)
           .toHaveBeenCalledWith({
-            type: 'ADMIN_SERVICE.SET_RESOURCES', 
+            type: 'ADMIN_SERVICE.SET_RESOURCES',
             payload: { items: mockData.items, pagination: { totalCount: 10, currentPage: 1, hasNextPage: true, hasPreviousPage: false, numberOfPages: 1, pageSize: 20 } }
           });
       });

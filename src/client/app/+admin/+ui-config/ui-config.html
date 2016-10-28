@@ -1,88 +1,88 @@
 <section *ngIf="config">
-  <div layout="row" layout-align="start start" layout-padding="">
-    <div class="config-title" flex-gt-md="30" flex-gt-xs="50">
-      <h1><strong>{{siteName.toUpperCase()}}</strong> {{configType}} config</h1>
-      <select *ngIf="portal === 'core'" (change)="goToSite($event.target.value)">
+	<div layout="row" layout-align="start start" layout-padding="">
+		<div class="config-title" flex-gt-md="30" flex-gt-xs="50">
+			<h1><strong>{{siteName.toUpperCase()}}</strong> {{configType}} config</h1>
+			<select *ngIf="portal === 'core'" (change)="goToSite($event.target.value)">
         <option *ngFor="let site of sites" [selected]="siteName === site" [value]="site">{{site}}</option>
       </select>
-    </div>
-  </div>
-  <div class="admin-ui-config" layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
-    <div class="menu" flex-gt-lg="15" flex-gt-md="20" flex-gt-sm="30" flex-xs="40">
-      <div>
-        <md-list>
-          <div *ngFor="let item of components | values">
-            <md-list-item class="md-1-line" [ngClass]="{focused: item.key === currentComponent}">
-              <div flex-gt-lg="90" flex-xl="90" flex="90">
-                <p class="md-body-1">{{ item.key }}</p>
-              </div>
-              <div class="icons" flex-gt-lg="10" flex-xl="10" flex="10">
-                <i *ngIf="item.key !== currentComponent" md-icon="" (click)="show(item.key)" class="material-icons">keyboard_arrow_right</i>
-                <i *ngIf="item.key === currentComponent" md-icon="" (click)="reset()" class="material-icons">keyboard_arrow_left</i>
-              </div>
-            </md-list-item>
-            <md-divider></md-divider>
-          </div>
-        </md-list>
-      </div>
-    </div>
-    <div *ngIf="subComponents" class="second-menu" flex-gt-lg="15" flex-gt-md="15" flex-gt-sm="30" flex-xs="40" [ngClass]="{show: subComponents}">
-      <div>
-        <md-list>
-          <div *ngFor="let item of subComponents | values">
-            <md-list-item class="md-1-line" [ngClass]="{focused: item.key === currentOption}">
-              <div flex-gt-lg="90" flex-xl="90" flex="90">
-                <p class="md-body-1">{{ item.key }}</p>
-              </div>
-              <div class="icons" flex-gt-lg="10" flex-xl="10" flex="10">
-                <i *ngIf="subComponents[item.key].items" md-icon="" (click)="showSubItems(item.key)" class="material-icons">keyboard_arrow_right</i>
-                <i *ngIf="!subComponents[item.key].items" md-icon="" (click)="buildForm(item.key)" class="material-icons">edit</i>
-              </div>
-            </md-list-item>
-            <md-divider></md-divider>
-          </div>
-        </md-list>
-      </div>
-    </div>
-    <div *ngIf="configOptions" class="third-menu" flex-gt-lg="20" flex-gt-md="20" flex-gt-sm="30" flex-xs="40" [ngClass]="{show: configOptions}">
-      <div>
-        <md-list>
-          <div *ngFor="let item of configOptions; let i = index">
-            <md-list-item class="md-1-line">
-              <div flex-gt-lg="80" flex-xl="80" flex="80">
-                <p class="md-body-1">{{ item.name }}</p>
-              </div>
-              <div class="icons" flex-gt-lg="20" flex-xl="20" flex="20" layout="row" layout-align="end center">
-                <i md-icon="" class="icon material-icons">menu</i>
-                <i md-icon="" class="icon material-icons" (click)="buildSubItemForm(i)">edit</i>
-                <i md-icon="" class="icon material-icons" (click)="removeItem(i)">delete</i>
-              </div>
-            </md-list-item>
-          </div>
-          <md-list-item>
-            <div class="add-item" layout="row" layout-align="center center" flex-gt-lg="100" flex-xl="100" flex="100">
-              <form (ngSubmit)="addItem(f.value)">
-                <select required [(ngModel)]="type" name="type">
+		</div>
+	</div>
+	<div class="admin-ui-config" layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
+		<div class="menu" flex-gt-lg="15" flex-gt-md="20" flex-gt-sm="30" flex-xs="40">
+			<div>
+				<md-list>
+					<div *ngFor="let item of components | values">
+						<md-list-item class="md-1-line" [ngClass]="{focused: item.key === currentComponent}">
+							<div flex-gt-lg="90" flex-xl="90" flex="90">
+								<p class="md-body-1">{{ item.key }}</p>
+							</div>
+							<div class="icons" flex-gt-lg="10" flex-xl="10" flex="10">
+								<i *ngIf="item.key !== currentComponent" md-icon="" (click)="show(item.key)" class="material-icons">keyboard_arrow_right</i>
+								<i *ngIf="item.key === currentComponent" md-icon="" (click)="reset()" class="material-icons">keyboard_arrow_left</i>
+							</div>
+						</md-list-item>
+						<md-divider></md-divider>
+					</div>
+				</md-list>
+			</div>
+		</div>
+		<div *ngIf="subComponents" class="second-menu" flex-gt-lg="15" flex-gt-md="15" flex-gt-sm="30" flex-xs="40" [ngClass]="{show: subComponents}">
+			<div>
+				<md-list>
+					<div *ngFor="let item of subComponents | values">
+						<md-list-item class="md-1-line" [ngClass]="{focused: item.key === currentOption}">
+							<div flex-gt-lg="90" flex-xl="90" flex="90">
+								<p class="md-body-1">{{ item.key }}</p>
+							</div>
+							<div class="icons" flex-gt-lg="10" flex-xl="10" flex="10">
+								<i *ngIf="subComponents[item.key].items" md-icon="" (click)="showSubItems(item.key)" class="material-icons">keyboard_arrow_right</i>
+								<i *ngIf="!subComponents[item.key].items" md-icon="" (click)="buildForm(item.key)" class="material-icons">edit</i>
+							</div>
+						</md-list-item>
+						<md-divider></md-divider>
+					</div>
+				</md-list>
+			</div>
+		</div>
+		<div *ngIf="configOptions" class="third-menu" flex-gt-lg="20" flex-gt-md="20" flex-gt-sm="30" flex-xs="40" [ngClass]="{show: configOptions}">
+			<div>
+				<md-list>
+					<div *ngFor="let item of configOptions; let i = index">
+						<md-list-item class="md-1-line">
+							<div flex-gt-lg="80" flex-xl="80" flex="80">
+								<p class="md-body-1">{{ item.name }}</p>
+							</div>
+							<div class="icons" flex-gt-lg="20" flex-xl="20" flex="20" layout="row" layout-align="end center">
+								<i md-icon="" class="icon material-icons">menu</i>
+								<i md-icon="" class="icon material-icons" (click)="buildSubItemForm(i)">edit</i>
+								<i md-icon="" class="icon material-icons" (click)="removeItem(i)">delete</i>
+							</div>
+						</md-list-item>
+					</div>
+					<md-list-item>
+						<div class="add-item" layout="row" layout-align="center center" flex-gt-lg="100" flex-xl="100" flex="100">
+							<form (ngSubmit)="addItem(f.value)">
+								<select required [(ngModel)]="type" name="type">
                   <option *ngFor="let type of typeSelect" [selected]="type === text" [value]="type">{{type}}</option>
                 </select>
-                <button md-icon-button type="submit"><i md-icon="" class="material-icons">add</i></button>
-              </form>
-            </div>
-          </md-list-item>
-        </md-list>
-      </div>
-    </div>
-    <div *ngIf="form" flex-gt-lg="35" flex-gt-sm="50" flex-gt-xs="60">
-      <md-card>
-        <form layout="column" (ngSubmit)="onSubmit()" class="md-inline-form">
-          <div *ngFor="let control of form | values; of let i = index">
-            <md-input [(ngModel)]="form[control.key]" placeholder="{{control.key}}" name="{{control.key}}"></md-input>
-          </div>
-          <md-card-actions layout="row" layout-align="center center">
-            <button md-raised-button type="submit">update</button>
-          </md-card-actions>
-        </form>
-      </md-card>
-    </div>
-  </div>
+								<button md-icon-button type="submit"><i md-icon="" class="material-icons">add</i></button>
+							</form>
+						</div>
+					</md-list-item>
+				</md-list>
+			</div>
+		</div>
+		<div *ngIf="form" flex-gt-lg="35" flex-gt-sm="50" flex-gt-xs="60">
+			<md-card>
+				<form layout="column" (ngSubmit)="onSubmit()" class="md-inline-form">
+					<div *ngFor="let control of form | values; of let i = index">
+						<md-input [(ngModel)]="form[control.key]" placeholder="{{control.key}}" name="{{control.key}}"></md-input>
+					</div>
+					<md-card-actions layout="row" layout-align="center center">
+						<button md-raised-button type="submit">update</button>
+					</md-card-actions>
+				</form>
+			</md-card>
+		</div>
+	</div>
 </section>

@@ -9,11 +9,21 @@ export class ConfigService {
   constructor(private api: ApiService) { }
 
   public getUiConfigIndex(): Observable<AdminUiResponse> {
-    return this.api.get(Api.Identities, 'configuration/site/search');
+    return this.api.get(Api.Identities, 'configuration/site/search').map((response: any) => {
+      response.items.forEach((item: any) => {
+        Object.assign(item, { lastUpdateBy: 'Ross Edfort', type: 'ui' });
+      });
+      return response.items;
+    });
   }
 
   public getSiteConfigIndex(): Observable<AdminSiteResponse> {
-    return this.api.get(Api.Identities, 'site/search');
+    return this.api.get(Api.Identities, 'site/search').map((response: any) => {
+      response.items.forEach((item: any) => {
+        Object.assign(item, { lastUpdateBy: 'Ross Edfort', type: 'site' });
+      });
+      return response.items;
+    });
   }
 
   public searchSiteConfig(siteName: string): Observable<SiteConfig> {

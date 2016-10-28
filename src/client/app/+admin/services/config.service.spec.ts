@@ -1,7 +1,6 @@
 import { MockApiService, mockApiMatchers } from '../../shared/mocks/mock-api.service';
-import { AdminSiteResponse, AdminUiResponse, SiteConfig, UiConfigInterface } from '../../shared/interfaces/admin.interface';
+import { UiConfigInterface } from '../../shared/interfaces/admin.interface';
 import { Api } from '../../shared/interfaces/api.interface';
-import { Observable } from 'rxjs/Rx';
 import { ConfigService } from './config.service';
 
 export function main() {
@@ -9,8 +8,10 @@ export function main() {
     let serviceUnderTest: ConfigService;
     let mockApi: MockApiService;
     let mockConfig: UiConfigInterface;
+    let mockUiResponse: any = { items: [{ uiOne: 'one' }, { uiTwo: 'two' }, { uiThree: 'three' }] };
+    let mockSiteResponse: any = { items: [{ siteOne: 'one' }, { siteTwo: 'two' }, { siteThree: 'three' }] };
 
-    mockConfig = {id: 1, createdOn: '', lastUpdated: '', siteName: 'core', components: {config: {}}, config: {}}
+    mockConfig = { id: 1, createdOn: '', lastUpdated: '', siteName: 'core', components: { config: {} }, config: {} };
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApi = new MockApiService();
@@ -18,8 +19,12 @@ export function main() {
     });
 
     describe('getUiConfigIndex()', () => {
+      beforeEach(() => {
+        mockApi.getResponse = mockUiResponse;
+      });
+
       it('hits the api properly', () => {
-        serviceUnderTest.getUiConfigIndex();
+        serviceUnderTest.getUiConfigIndex().take(1).subscribe();
 
         expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('configuration/site/search');
@@ -27,8 +32,12 @@ export function main() {
     });
 
     describe('getSiteConfigIndex()', () => {
+      beforeEach(() => {
+        mockApi.getResponse = mockSiteResponse;
+      });
+
       it('hits the api properly', () => {
-        serviceUnderTest.getSiteConfigIndex();
+        serviceUnderTest.getSiteConfigIndex().take(1).subscribe();
 
         expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('site/search');

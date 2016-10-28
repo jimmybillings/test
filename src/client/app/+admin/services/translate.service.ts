@@ -17,7 +17,7 @@ export class TranslateService {
       Api.Identities,
       'translation/searchFields',
       { parameters: { fields: 'siteName,language', values: `${siteName},${language}` } }
-    ).map(response => {
+    ).flatMap(response => {
       const id: number = response['items'][0].id;
       const name: string = `${siteName}_${language}`;
       const newText: any = { id, siteName, language, name, text };

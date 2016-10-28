@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs/Rx';
-
 import { AdminCapabilities } from './admin.capabilities';
 
 export function main() {

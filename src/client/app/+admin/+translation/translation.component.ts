@@ -73,9 +73,7 @@ export class TranslationComponent implements OnInit, OnDestroy {
     event.preventDefault();
     this.trService.put(this.trStringForm.value.text, this.site, this.lang)
       .take(1).subscribe(res => {
-        res.take(1).subscribe((data: any) => {
-          (<FormControl>this.trStringForm.controls['text']).setValue(data.text);
-        });
+        (<FormControl>this.trStringForm.controls['text']).setValue(res.text);
       }, (err) => {
         // do something here
       });

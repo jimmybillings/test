@@ -111,7 +111,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     values = (params['values'] === 'true') ? '' : params['values'];
     this.params = { i, n, s, d, fields, values };
   }
-  
+
   private updateRouteParams(dynamicParams: AdminUrlParams) {
     return Object.assign(this.params, dynamicParams);
   }

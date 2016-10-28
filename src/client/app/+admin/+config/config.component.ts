@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UiConfig } from '../../shared/services/ui.config';
-import { UiConfigInterface, TableHeaders, SiteConfig } from '../../shared/interfaces/admin.interface';
+import { TableHeaders, AdminSiteResponse, AdminUiResponse } from '../../shared/interfaces/admin.interface';
 import { ConfigService } from '../services/config.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -11,42 +11,20 @@ import { Subscription } from 'rxjs/Rx';
   templateUrl: 'config.html'
 })
 
-export class ConfigComponent implements OnInit, OnDestroy {
-
-  public config: UiConfigInterface;
-  public uiConfigs: Array<UiConfigInterface>;
-  public siteConfigs: Array<SiteConfig>;
+export class ConfigComponent implements OnInit {
+  public uiConfigs: Observable<AdminUiResponse>;
+  public siteConfigs: Observable<AdminSiteResponse>;
   public headers: Array<TableHeaders>;
-  private configSubscription: Subscription;
 
   constructor(public uiConfig: UiConfig,
-              public configService: ConfigService,
-              public router: Router) { }
+    public configService: ConfigService,
+    public router: Router) { }
 
   ngOnInit(): void {
-    this.configSubscription = this.uiConfig.get().subscribe(config => {
-      this.config = config;
-      this.headers = config.components.configuration.config.tableHeaders.items;
+    this.uiConfig.get('configuration').take(1).subscribe(config => {
+      this.headers = config.config.tableHeaders.items;
     });
-    this.getConfigs();
-  }
-
-  ngOnDestroy() {
-    this.configSubscription.unsubscribe();
-  }
-
-  public getConfigs(): void {
-    this.configService.getUiConfigIndex().take(1).subscribe(data => {
-      this.uiConfigs = data.items;
-      this.uiConfigs.forEach(item => {
-        Object.assign(item, {lastUpdateBy: 'Ross Edfort', type: 'ui'});
-      });
-    });
-    this.configService.getSiteConfigIndex().take(1).subscribe(data => {
-      this.siteConfigs = data.items;
-      this.siteConfigs.forEach(item => {
-        Object.assign(item, {lastUpdateBy: 'Ross Edfort', type: 'site'});
-      });
-    });
+    this.uiConfigs = this.configService.getUiConfigIndex();
+    this.siteConfigs = this.configService.getSiteConfigIndex();
   }
 }
