@@ -8,29 +8,29 @@ import { TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateServi
 import { MaterialModule } from '@angular/material';
 
 // Shared Pure Components
-import { WzNotificationComponent } from '../shared/components/wz-notification/wz.notification.component';
-import { WzSearchBoxComponent } from '../shared/components/wz-search-box/wz.search-box.component';
-import { WzAssetListComponent } from '../shared/components/wz-asset-list/wz.asset-list.component';
-import { WzBreadcrumbComponent } from '../shared/components/wz-breadcrumb/wz.breadcrumb.component';
-import { WzDialogComponent, WzDialogPortalDirective } from '../shared/components/wz-dialog/wz.dialog.component';
-import { WzDropdownComponent, WzDropdownPortalDirective } from '../shared/components/wz-dropdown/wz.dropdown.component';
-import { WzFormComponent } from '../shared/components/wz-form/wz.form.component';
-import { WzListComponent } from '../shared/components/wz-list/wz.list.component';
-import { WzPaginationComponent } from '../shared/components/wz-pagination/wz.pagination.component';
-import { WzPikaDayDirective } from '../shared/components/wz-pikaday/wz-pikaday.directive';
-import { WzPlayerComponent } from '../shared/components/wz-player/wz.player.component';
-import { WzToastComponent, WzToastPortalDirective } from '../shared/components/wz-toast/wz.toast.component';
+import { WzNotificationComponent } from './components/wz-notification/wz.notification.component';
+import { WzSearchBoxComponent } from './components/wz-search-box/wz.search-box.component';
+import { WzAssetListComponent } from './components/wz-asset-list/wz.asset-list.component';
+import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
+import { WzDialogComponent, WzDialogPortalDirective } from './components/wz-dialog/wz.dialog.component';
+import { WzDropdownComponent, WzDropdownPortalDirective } from './components/wz-dropdown/wz.dropdown.component';
+import { WzFormComponent } from './components/wz-form/wz.form.component';
+import { WzListComponent } from './components/wz-list/wz.list.component';
+import { WzPaginationComponent } from './components/wz-pagination/wz.pagination.component';
+import { WzPikaDayDirective } from './components/wz-pikaday/wz-pikaday.directive';
+import { WzPlayerComponent } from './components/wz-player/wz.player.component';
+import { WzToastComponent, WzToastPortalDirective } from './components/wz-toast/wz.toast.component';
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
 import { CollectionsSearchFormComponent } from '../+collection/components/collections-search-form.component';
-import { WzInputTagsComponent } from '../shared/components/wz-input-tags/wz-input-tags.component';
-import { WzInputSuggestionsComponent } from '../shared/components/wz-input-suggestions/wz-input-suggestions.component';
+import { WzInputTagsComponent } from './components/wz-input-tags/wz-input-tags.component';
+import { WzInputSuggestionsComponent } from './components/wz-input-suggestions/wz-input-suggestions.component';
 import { CollectionFormComponent } from '../application/collection-tray/components/collection-form.component';
-import { WzSortComponent } from '../shared/components/wz-sort/wz.sort.component';
+import { WzSortComponent } from './components/wz-sort/wz.sort.component';
 import { CollectionLinkComponent } from '../+collection/components/collection-link.component';
-
+import { EqualValidator } from './components/wz-equal-validator/wz-equal-validator.directive';
 // Shared pipes
-import { ValuesPipe } from '../shared/pipes/values.pipe';
+import { ValuesPipe } from './pipes/values.pipe';
 
 // Shared resolvers
 import { AssetResolver } from '../+asset/services/asset.resolver';
@@ -74,7 +74,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     CollectionFormComponent,
     WzNotificationComponent,
     WzSortComponent,
-    CollectionLinkComponent
+    CollectionLinkComponent,
+    EqualValidator
   ],
   exports: [
     WzSearchBoxComponent,
@@ -107,7 +108,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     MaterialModule,
     WzNotificationComponent,
     WzSortComponent,
-    CollectionLinkComponent],
+    CollectionLinkComponent,
+    EqualValidator],
   entryComponents: [WzNotificationComponent]
 })
 
