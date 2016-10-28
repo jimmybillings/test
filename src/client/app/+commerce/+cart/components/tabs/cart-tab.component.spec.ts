@@ -48,6 +48,49 @@ export function main() {
       });
     });
 
+    describe('Destruction', () => {
+      it('unsubscribes from the UI config to prevent memory leakage', () => {
+        let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
+        let mockObservable = { subscribe: () => mockSubscription };
+        mockUiConfig = { get: () => mockObservable };
+
+        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig);
+        componentUnderTest.ngOnInit();
+        componentUnderTest.ngOnDestroy();
+
+        expect(mockSubscription.unsubscribe).toHaveBeenCalled();
+      });
+    });
+
+    describe('assetsInCart()', () => {
+      it('returns an observable of false when the cart has no items', () => {
+        mockCartService.data = Observable.of({ itemCount: 0 });
+
+        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig);
+        componentUnderTest.ngOnInit();
+
+        componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
+      });
+
+      it('returns an observable of false when the cart has no itemCount member', () => {
+        mockCartService.data = Observable.of({});
+
+        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig);
+        componentUnderTest.ngOnInit();
+
+        componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
+      });
+
+      it('returns an observable of true when the cart has at least one line item', () => {
+        mockCartService.data = Observable.of({ itemCount: 1 });
+
+        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig);
+        componentUnderTest.ngOnInit();
+
+        componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(true));
+      });
+    });
+
     describe('onNotification()', () => {
       it('adds a project when notified with ADD_PROJECT', () => {
         componentUnderTest.onNotification({ type: 'ADD_PROJECT' });

@@ -32,11 +32,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public get assetsInCart(): Observable<boolean> {
-    return this.cart.map((cart: any) => {
-      return cart.projects.filter((project: any) => {
-        return project.lineItems ? project.lineItems.length > 0 : false;
-      }).length > 0;
-    });
+    return this.cart.map(cart => (cart.itemCount || 0) > 0);
   }
 
   public onNotification(message: any): void {

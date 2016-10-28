@@ -36,7 +36,6 @@ export class WzFormComponent implements OnInit, OnChanges {
     private element: ElementRef) { }
 
   ngOnChanges(changes: any) {
-    console.log(changes);
     if (changes.serverErrors && this.form) this.mergeErrors();
     if (changes.items && this.form) this.mergeNewValues();
   }

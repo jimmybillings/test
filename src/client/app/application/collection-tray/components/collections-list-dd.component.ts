@@ -67,7 +67,7 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
   }
 
   public navigateToCollectionsIndex() {
-    this.router.navigate(['/collection']);
+    this.router.navigate(['/collections']);
   }
 
   public applyFilter(filter: any) {
