@@ -9,7 +9,7 @@ import { OrderService } from '../services/order.service';
 
 export class OrderShowComponent {
   constructor(private order: OrderService) { }
-
+  
   public translationReady(field: any) {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
