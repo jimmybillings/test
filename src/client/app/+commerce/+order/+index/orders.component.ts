@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OrdersService } from '../services/orders.service';
 import { UiConfig } from '../../../shared/services/ui.config';
 
@@ -7,7 +7,7 @@ import { UiConfig } from '../../../shared/services/ui.config';
   selector: 'orders-component',
   templateUrl: 'orders.html'
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnInit {
   public pageSize: string;
 
   constructor(
