@@ -36,7 +36,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(user: any): void {
-    this.user.resetPassword(user, this.route.snapshot.queryParams['shareKey'])
+    this.user.resetPassword({newPassword: user.newPassword}, this.route.snapshot.queryParams['shareKey'])
       .subscribe((res: any) => {
         this.currentUser.set(res.user, res.token.token);
         this.userPreference.set(res.userPreferences);
