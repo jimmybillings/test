@@ -12,13 +12,13 @@ import { CommerceComponent } from './+commerce/commerce.component';
 import { Routes } from '@angular/router';
 
 export const APP_ROUTES: Routes = [
-  { path: '', component: HomeComponent },
   { path: 'notification', component: HomeComponent },
   { path: 'user', component: UserManagementComponent },
   { path: 'search', component: SearchComponent, resolve: { search: SearchResolver } },
   { path: 'asset/:name', component: AssetComponent, canActivate: [AssetGuard], resolve: { asset: AssetResolver } },
-  { path: 'collection', component: CollectionsComponent },
+  { path: 'collections', component: CollectionsComponent },
   { path: 'content/:page', component: ContentComponent },
   { path: 'admin', component: AdminComponent },
+  { path: '', component: HomeComponent },
   { path: '', component: CommerceComponent }
 ];

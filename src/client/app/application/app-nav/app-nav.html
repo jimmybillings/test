@@ -48,7 +48,7 @@
     <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/user/profile']">
         <md-icon>person</md-icon>Open your profile
     </a>
-    <a md-menu-item *ngIf="userCan.viewCollections()" [routerLink]="['/collection']">
+    <a md-menu-item *ngIf="userCan.viewCollections()" [routerLink]="['/collections']">
         <md-icon>folder_open</md-icon>Open your collections
     </a>
     <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/cart']">
