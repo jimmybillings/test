@@ -32,3 +32,31 @@ export interface Metadatum {
   name: string;
   value: string;
 }
+
+export interface Order {
+  createdOn: string;
+  lastUpdated: string;
+  id: number;
+  siteName: string;
+  orderStatus: string;
+  orderType: string;
+  createdUserId: number;
+  ownerUserId: number;
+  total: number;
+  projects: [Project];
+  lastModifiedBy?: any;
+}
+
+export interface Orders {
+  items?: Order[];
+  pagination: Pagination;
+}
+
+export interface Pagination {
+  totalCount: number;
+  currentPage?: number;
+  pageSize?: number;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
+  numberOfPages?: number;
+}
