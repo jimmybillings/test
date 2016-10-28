@@ -1,8 +1,8 @@
 import { Component, Input, ElementRef, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, Renderer, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
-import { ApiService } from '../../services/api.service';
-import { Api, ApiResponse } from '../../interfaces/api.interface';
+import { ApiService } from '../../../../services/api.service';
+import { Api, ApiResponse } from '../../../../interfaces/api.interface';
 
 @Component({
   moduleId: module.id,
