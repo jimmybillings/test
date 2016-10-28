@@ -37,6 +37,7 @@ import { AssetResolver } from '../+asset/services/asset.resolver';
 import { SearchResolver } from '../+search/services/search.resolver';
 import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
 import { OrderResolver } from '../+commerce/+order/services/order.resolver';
+import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
 import { WAZEE_PROVIDERS } from '../imports/wazee';
 
 @NgModule({
@@ -125,6 +126,7 @@ export class SharedModule {
         SearchResolver,
         CartResolver,
         OrderResolver,
+        OrdersResolver,
         WAZEE_PROVIDERS]
     };
   }
