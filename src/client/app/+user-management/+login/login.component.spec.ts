@@ -9,7 +9,7 @@ import { LoginComponent } from './login.component';
 import { Authentication } from '../../shared/services/authentication.data.service';
 
 export function main() {
-  const res = { 'user': { 'test': 'one' }, token: { token: 'newToken' }, userPreferences: {pref1: 'pref1'} };
+  const res = { 'user': { 'test': 'one' }, token: { token: 'newToken' }, userPreferences: { pref1: 'pref1' } };
   describe('Login Component', () => {
     class MockAuthentication {
       create() {
@@ -34,7 +34,6 @@ export function main() {
         login.onSubmit({ userId: 'some@email.com', password: 'password', siteName: 'sample' });
         expect(login.currentUser.set).toHaveBeenCalledWith({ 'test': 'one' }, 'newToken');
         expect(login.router.navigate).toHaveBeenCalledWith(['/']);
-        expect(login.userPreference.set).toHaveBeenCalledWith({pref1: 'pref1'});
       }));
   });
 }

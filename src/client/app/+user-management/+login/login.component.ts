@@ -42,7 +42,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   public onSubmit(user: any): void {
     this._authentication.create(user).take(1).subscribe((res) => {
       this.currentUser.set(res.user, res.token.token);
-      this.userPreference.set(res.userPreferences);
       this.router.navigate(['/']);
     });
   }
