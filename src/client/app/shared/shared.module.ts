@@ -23,12 +23,12 @@ import { WzToastComponent, WzToastPortalDirective } from './components/wz-toast/
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
 import { CollectionsSearchFormComponent } from '../+collection/components/collections-search-form.component';
-import { WzInputTagsComponent } from './components/wz-input-tags/wz-input-tags.component';
-import { WzInputSuggestionsComponent } from './components/wz-input-suggestions/wz-input-suggestions.component';
+import { WzInputTagsComponent } from './components/wz-form/components/wz-input-tags/wz-input-tags.component';
+import { WzInputSuggestionsComponent } from './components/wz-form/components/wz-input-suggestions/wz-input-suggestions.component';
 import { CollectionFormComponent } from '../application/collection-tray/components/collection-form.component';
 import { WzSortComponent } from './components/wz-sort/wz.sort.component';
 import { CollectionLinkComponent } from '../+collection/components/collection-link.component';
-import { EqualValidator } from './components/wz-equal-validator/wz-equal-validator.directive';
+import { EqualValidatorDirective } from './components/wz-form/wz-validators/wz-equal-validator.directive';
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
 
@@ -75,7 +75,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
-    EqualValidator
+    EqualValidatorDirective
   ],
   exports: [
     WzSearchBoxComponent,
@@ -109,7 +109,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
-    EqualValidator],
+    EqualValidatorDirective],
   entryComponents: [WzNotificationComponent]
 })
 
