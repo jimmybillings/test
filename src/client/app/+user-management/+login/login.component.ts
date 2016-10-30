@@ -2,9 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { Authentication } from '../../shared/services/authentication.data.service';
 import { Router } from '@angular/router';
-import { User } from '../services/user.data.service';
 import { CurrentUser } from '../../shared/services/current-user.model';
-import { FormFields } from '../../shared/interfaces/forms.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 
@@ -19,12 +17,10 @@ import { UserPreferenceService } from '../../shared/services/user-preference.ser
 
 export class LoginComponent implements OnInit, OnDestroy {
   public config: any;
-  public fields: FormFields[];
   private configSubscription: Subscription;
 
   constructor(
-    public _authentication: Authentication,
-    public _user: User,
+    public authentication: Authentication,
     public router: Router,
     public currentUser: CurrentUser,
     public userPreference: UserPreferenceService,
@@ -32,7 +28,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.configSubscription = this.uiConfig.get('login').subscribe((config: any) => this.config = config.config);
+    this.configSubscription =
+      this.uiConfig.get('login').subscribe((config: any) =>
+        this.config = config.config);
   }
 
   ngOnDestroy() {
@@ -40,7 +38,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(user: any): void {
-    this._authentication.create(user).take(1).subscribe((res) => {
+    this.authentication.create(user).take(1).subscribe((res) => {
       this.currentUser.set(res.user, res.token.token);
       this.userPreference.set(res.userPreferences);
       this.router.navigate(['/']);
