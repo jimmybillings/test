@@ -1,0 +1,48 @@
+<ul>
+    <li *ngFor="let order of orders" class="order" flex="100" layout="row" layout-xs="column">
+        <div flex="100" flex-gt-sm="66">
+            <div flex="100" layout="row" layout-xs="column">
+                <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding>
+                    <div class="details">
+                        <div class="order-number">
+                          <span class="md-caption order-info heading">{{ 'ORDER.ORDER_NUMBER_LABEL' | translate }}</span>
+                          <span class="number">{{order.id}}</span>
+                        </div>
+                        <div class="md-caption order-info">
+                        <span><strong>{{ 'ORDER.CREATED_ON_LABEL' | translate }} </strong>{{ date(order.createdOn) | date:'short' }}</span>
+                        <span><strong>{{ 'ORDER.ORDER_TYPE_LABEL' | translate }} </strong>{{order.orderType}}</span>
+                    </div>
+                    </div>
+                </div>
+                <!--<div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" 
+                    (click)="selectActiveCollection(collection.id)" layout-padding>
+                    <h3 class="md-headline">{{collection.name}}
+                        <span class="asset-count">
+                            <span class="count">{{collection.assetsCount || 0}}</span>
+                        </span>
+                    </h3>
+                    <div class="md-caption collection-info">
+                        <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{collection.email}}</span>
+                        <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{collection.userRole}}</span>
+                        <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ date(collection.createdOn) | date:'short' }}</span>
+                        <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
+                    </div>
+                    <div *ngIf="collection.tags" class="md-caption collection-tags">
+                        <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
+                        <ul class="meta-data-tags">
+                            <li class="tag md-elevation-z0" *ngFor="let tag of collection.tags">{{tag}}</li>
+                        </ul>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+        <div flex="100" layout="row" layout-xs="column" class="divider"></div>
+        <!--<div flex-gt-sm="33" layout-sm="100" flex="auto" class="actions tools">
+            <button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="edit(collection)"><md-icon>edit</md-icon></button>
+            <button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><md-icon>share</md-icon></button>
+            <button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)" [disabled]="true"><md-icon>mode_comment</md-icon></button>
+            <button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreCollectionOptions"
+                (click)="setCurrentCollection(collection)"><md-icon>more_vert</md-icon></button>
+        </div>-->
+    </li>
+</ul>

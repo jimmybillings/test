@@ -4,7 +4,7 @@
 			(query)="search($event)" (closeSearch)="showorderSearch()">
 		</orders-search-form>-->
 		<div flex="100" layout="row" layout-align="space-between end">
-			<h2 flex="grow" class="md-display-1">Your orders</h2>
+			<h2 flex="grow" class="md-display-1">{{ 'ORDER.INDEX.PAGE_TITLE' | translate }}</h2>
 			<div class="tools" flex="auto">
 				<!--{{ (orders.data | async).id }}-->
 				<!--<button md-icon-button *ngIf="!orderSearchIsShowing" title="{{ 'order.DD_MENU.SEARCH_BTN_TITLE' | translate }}"
@@ -19,15 +19,14 @@
 		</div>
 	</header>
 </section>
-<section class="hero">
+<section>
 	<div layout="row" flex="100" layout-margin layout-align="center start">
 		<section class="orders-list" flex="100" flex-gt-md="95" flex-gt-lg="85">
 			<wz-pagination *ngIf="(orders.data | async).pagination.totalCount > 0" [pagination]="(orders.data | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">
 			</wz-pagination>
 			<!-- ORDER LIST -->
-			<!--<order-item-list [orders]="(orders.data | async).items">-->
-			<!--</order-item-list>-->
+			<order-item-list [orders]="(orders.data | async).items"></order-item-list>
 			<wz-pagination *ngIf="(orders.data | async).pagination.totalCount > 0" [pagination]="(orders.data | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">
 			</wz-pagination>

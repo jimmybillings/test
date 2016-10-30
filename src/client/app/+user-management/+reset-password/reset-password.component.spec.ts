@@ -36,10 +36,6 @@ export function main() {
         expect(mockCurrentUser.set).toHaveBeenCalledWith('james', 'loginToken');
       });
 
-      it('Sets the user preferences', () => {
-        componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
-        expect(mockUserPreference.set).toHaveBeenCalledWith({ pref: 1 });
-      });
 
       it('Navigates to the home page', () => {
         componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });

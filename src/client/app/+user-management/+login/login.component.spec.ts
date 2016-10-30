@@ -2,6 +2,7 @@ import { Observable } from '../../imports/test.imports';
 import { LoginComponent } from './login.component';
 
 export function main() {
+
   describe('Login Component', () => {
 
     let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any, mockUserPreference: any;
@@ -58,5 +59,6 @@ export function main() {
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();
       });
     });
+
   });
 }
