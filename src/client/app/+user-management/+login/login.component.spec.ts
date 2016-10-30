@@ -37,11 +37,6 @@ export function main() {
         expect(mockCurrentUser.set).toHaveBeenCalledWith('james', 'loginToken');
       });
 
-      it('Sets the user preferences', () => {
-        componentUnderTest.onSubmit({ 'user': 'james' });
-        expect(mockUserPreference.set).toHaveBeenCalledWith({ pref: 1 });
-      });
-
       it('Navigates to the home page', () => {
         componentUnderTest.onSubmit({ 'user': 'james' });
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
