@@ -1,0 +1,108 @@
+#!/bin/sh
+scriptDir=`dirname $0`
+inputSourceFileName=$1
+
+# Make sure the source file exists.
+if [ ! -e "$inputSourceFileName" ]
+then
+  echo "ERROR: Source file not found: '$inputSourceFileName'."
+  exit 1
+fi
+
+# Make sure the source file's name ends in '.ts'.
+case $inputSourceFileName in
+  *.ts)
+    # Good!
+    ;;
+  *)
+    echo "ERROR: Non-TypeScript source file '$inputSourceFileName' cannot be processed.  Filename must end in '.ts'." 
+    exit 1
+    ;;
+esac
+
+# Make sure the source file exports a class.
+allExportClassLines=`grep 'export class' $inputSourceFileName`
+if [ $? -ne 0 ]
+then
+  echo "ERROR: No exported class found in '$inputSourceFileName'."
+  exit 1
+fi
+
+# Make sure the spec file doesn't already exist.
+outputSpecFileName=`echo $inputSourceFileName | sed -e 's/\.ts$/.spec.ts/'`
+if [ -e "$outputSpecFileName" ]
+then
+  echo "ERROR: Output spec file '$outputSpecFileName' already exists."
+  exit 1
+fi
+
+generateNullConstructorArguments() {
+  constructorGrepResult=`grep -n 'constructor.*(' $inputSourceFileName`
+
+  if [ $? -eq 0 ]
+  then
+    # Line number where the first constructor starts.
+    firstLineNumber=`echo "$constructorGrepResult" | head -1 | cut -f1 -d:`
+
+    # Strip out stuff above the constructor.
+    fromConstructorDown=`tail -$firstLineNumber $inputSourceFileName`
+
+    # Line number where the first constructor ends.  (Searches for first right paren after constructor starts.)
+    lastLineNumber=`echo "$fromConstructorDown" | grep -n ')' | head -1 | cut -f1 -d:`
+
+    # Strip out everything but commas inside the constructor's parentheses.
+    # Deliberately lose the newlines in grep's output to get a result like ', ,'.
+    commas=`echo "$fromConstructorDown" | head -$lastLineNumber | grep -o ','`
+
+    # Convert ', ,' (for example) to 'null, null, null'
+    echo "`echo $commas | sed 's/,/null,/g'` null"
+  else
+    # No constructor, so no arguments.
+    echo ''
+  fi
+}
+
+# Given a source file name like path/to/some.component.ts
+# that contains 'export class SomeComponent'...
+
+# ...generates: SomeComponent (from first exported class only)
+className=`echo "$allExportClassLines" | head -1 | cut -d' ' -f3`
+
+# ...generates: some.component
+sourceFileImportName=`basename $inputSourceFileName .ts`
+
+# ...generates: Some Component
+classNameWithSpaces=`echo $className | sed -e 's/[A-Z]/\ &/g' -e 's/^ //'`
+
+# ...generates: componentUnderTest
+underTestVariableName=`echo $sourceFileImportName | sed -e 's/^.*\.//'`UnderTest
+
+# ...generates: null, null (etc.) (One null for each constructor argument)
+nullConstructorArguments=`generateNullConstructorArguments`
+
+# ...generates: path/to/some.component.spec.ts
+outputSpecFileName=`echo $inputSourceFileName | sed -e 's/\.ts$/.spec.ts/'`
+
+(
+cat <<EndOfSpec
+import { $className } from './$sourceFileImportName';
+
+export function main() {
+  describe('$classNameWithSpaces', () => {
+    let $underTestVariableName: $className;
+
+    beforeEach(() => {
+      $underTestVariableName = new $className($nullConstructorArguments);
+    });
+
+    it('has no tests!', () => {
+      expect(true).toBe(true);
+    });
+  });
+};
+
+EndOfSpec
+) > $outputSpecFileName
+
+echo "Created $outputSpecFileName"
+exit 0

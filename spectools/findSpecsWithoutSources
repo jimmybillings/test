@@ -1,0 +1,47 @@
+#!/bin/sh
+baseDir=src/client/app
+quietMode=false
+
+case $1 in
+  '')
+    ;;
+  -q)
+    quietMode=true
+    ;;
+  *)
+    echo "USAGE: $0 [option]"
+    echo "  option:"
+    echo "    -q suppresses output"
+    exit 1
+    ;;
+esac
+
+output() {
+  if [ "$quietMode" == false ]
+  then
+    echo $1
+  fi
+}
+
+specFiles=`eval "find $baseDir -name \"*.spec.ts\" -print"`
+missingSourceCount=0
+
+for file in $specFiles
+do
+  if [ ! -e "`echo $file | sed -e 's/\.spec.ts$/.ts/'`" ]
+  then
+    output "No source for `echo $file | sed -e \"s+$baseDir/++\"`"
+    missingSourceCount=`expr $missingSourceCount + 1`
+  fi
+done
+
+output
+output "Total number of spec files: `echo \"$specFiles\" | wc -l`"
+output "Number of spec files without a matching source file: $missingSourceCount"
+
+if [ $missingSourceCount -gt 0 ]
+then
+  exit 1
+fi
+
+exit 0
