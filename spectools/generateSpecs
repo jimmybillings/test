@@ -42,8 +42,6 @@ do
     echo "Error creating spec.  Exiting."
     exit 1
   fi
-
-  exit 0
 done
 
 exit 0
