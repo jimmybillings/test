@@ -20,14 +20,6 @@ case $inputSourceFileName in
     ;;
 esac
 
-# Make sure the source file exports a class.
-allExportClassLines=`grep 'export class' $inputSourceFileName`
-if [ $? -ne 0 ]
-then
-  echo "ERROR: No exported class found in '$inputSourceFileName'."
-  exit 1
-fi
-
 # Make sure the spec file doesn't already exist.
 outputSpecFileName=`echo $inputSourceFileName | sed -e 's/\.ts$/.spec.ts/'`
 if [ -e "$outputSpecFileName" ]
@@ -36,26 +28,52 @@ then
   exit 1
 fi
 
+# Get the file contents without comments.
+inputSourceFileWithoutComments=`grep -v '^\s*//' $inputSourceFileName`
+
+# Make sure the source file exports a class.
+allExportClassLines=`echo "$inputSourceFileWithoutComments" | grep 'export class'`
+if [ $? -ne 0 ]
+then
+  echo "ERROR: No exported class found in '$inputSourceFileName'."
+  exit 1
+fi
+
 generateNullConstructorArguments() {
-  constructorGrepResult=`grep -n 'constructor.*(' $inputSourceFileName`
+  # First, just test to see if there is at least one constructor.
+  garbage=`echo "$inputSourceFileWithoutComments" | grep 'constructor\s*('`
 
   if [ $? -eq 0 ]
   then
-    # Line number where the first constructor starts.
-    firstLineNumber=`echo "$constructorGrepResult" | head -1 | cut -f1 -d:`
+    # Test for a constructor with no arguments.
+    garbage=`echo "$inputSourceFileWithoutComments" | grep 'constructor\s*(\s*)'`
 
-    # Strip out stuff above the constructor.
-    fromConstructorDown=`tail -$firstLineNumber $inputSourceFileName`
+    if [ $? -eq 0 ]
+    then
+      # Constructor with no arguments.
+      echo ''
+    else
+      # Constructor with arguments, so we'll have to parse it and count them.
 
-    # Line number where the first constructor ends.  (Searches for first right paren after constructor starts.)
-    lastLineNumber=`echo "$fromConstructorDown" | grep -n ')' | head -1 | cut -f1 -d:`
+      # Line number where the first constructor starts.
+      firstLineNumber=`echo "$inputSourceFileWithoutComments" | grep -n 'constructor.*(' | head -1 | cut -f1 -d:`
 
-    # Strip out everything but commas inside the constructor's parentheses.
-    # Deliberately lose the newlines in grep's output to get a result like ', ,'.
-    commas=`echo "$fromConstructorDown" | head -$lastLineNumber | grep -o ','`
+      # Strip out stuff above the constructor.
+      fromConstructorDown="`echo \"$inputSourceFileWithoutComments\" | tail -n +$firstLineNumber`"
 
-    # Convert ', ,' (for example) to 'null, null, null'
-    echo "`echo $commas | sed 's/,/null,/g'` null"
+      # Line number where the first constructor ends, relative to the first line number.
+      # (Searches for first left brace after constructor starts, as that is presumably on or
+      # just after the line on which the constructor ends.)
+      relativeLastLineNumber=`echo "$fromConstructorDown" | grep -n '{' | head -1 | cut -f1 -d:`
+
+      # Strip out everything but commas inside the constructor's parentheses.
+      # commas=`echo "$fromConstructorDown" | head -$relativeLastLineNumber | grep -o ','`
+      commas=`echo "$fromConstructorDown" | head -$relativeLastLineNumber | sed -e 's/[^,]//g'`
+
+      # Convert ', ,' (for example) to 'null, null, null'
+      # Deliberately lose the newlines in 'commas' to get a result like ', ,'.
+      echo "`echo $commas | sed -e 's/\s*//g' -e 's/,/null, /g'`null"
+    fi
   else
     # No constructor, so no arguments.
     echo ''
@@ -74,8 +92,8 @@ sourceFileImportName=`basename $inputSourceFileName .ts`
 # ...generates: Some Component
 classNameWithSpaces=`echo $className | sed -e 's/[A-Z]/\ &/g' -e 's/^ //'`
 
-# ...generates: componentUnderTest
-underTestVariableName=`echo $sourceFileImportName | sed -e 's/^.*\.//'`UnderTest
+# ...generates: componentUnderTest (understands '.' and '-' as word separators)
+underTestVariableName=`echo $sourceFileImportName | sed -e 's/^.*\.//' -e 's/^.*\-//'`UnderTest
 
 # ...generates: null, null (etc.) (One null for each constructor argument)
 nullConstructorArguments=`generateNullConstructorArguments`
