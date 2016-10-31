@@ -3,14 +3,12 @@ import { TranslationComponent } from './translation.component';
 export function main() {
   describe('Translation Component', () => {
     let componentUnderTest: TranslationComponent;
-
     beforeEach(() => {
-      componentUnderTest = new TranslationComponent(null, null, null, null);
+      componentUnderTest = new TranslationComponent(null, null, null, null, null);
     });
 
-    it('has no tests!', () => {
+    it('exists', () => {
       expect(true).toBe(true);
     });
   });
-};
-
+}

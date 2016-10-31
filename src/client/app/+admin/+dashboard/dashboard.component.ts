@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {CurrentUser} from '../../shared/services/current-user.model';
+import { Component } from '@angular/core';
+import { CurrentUser } from '../../shared/services/current-user.model';
 
 @Component({
   moduleId: module.id,
@@ -11,9 +11,5 @@ import {CurrentUser} from '../../shared/services/current-user.model';
  * Dashboard Component - Creates an admin dashboard. It is instantiated with the current user
  */
 export class DashboardComponent {
-  public currentUser: CurrentUser;
-
-  constructor(currentUser: CurrentUser) {
-    this.currentUser = currentUser;
-  }
+  constructor(public currentUser: CurrentUser) { }
 }

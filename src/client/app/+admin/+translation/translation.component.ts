@@ -3,11 +3,12 @@ import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
 import { TranslateService } from '../services/translate.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   moduleId: module.id,
   selector: 'translation-component',
-  templateUrl: 'translation-component.html',
+  templateUrl: 'translation.html',
   styles: [`.translation {
               display: block;
               padding-top:40px;
@@ -36,12 +37,14 @@ export class TranslationComponent implements OnInit, OnDestroy {
     public fb: FormBuilder,
     public trService: TranslateService,
     public route: ActivatedRoute,
-    public router: Router) {
-    this.sites = ['core', 'cnn', 'augusta', 'bbcws', 'usopen', 'commerce', 'usta-usopen', 'hbo-boxing', 'wpt'];
+    public router: Router,
+    public config: ConfigService) {
+    this.sites = [];
     this.langs = ['en', 'fr', 'de'];
   }
 
   ngOnInit() {
+    this.getSites();
     this.routeSubscription = this.route.params.subscribe(params => {
       this.site = params['site'];
       this.lang = params['lang'];
@@ -73,11 +76,18 @@ export class TranslationComponent implements OnInit, OnDestroy {
     event.preventDefault();
     this.trService.put(this.trStringForm.value.text, this.site, this.lang)
       .take(1).subscribe(res => {
-        res.take(1).subscribe((data: any) => {
-          (<FormControl>this.trStringForm.controls['text']).setValue(data.text);
-        });
+        (<FormControl>this.trStringForm.controls['text']).setValue(res.text);
       }, (err) => {
         // do something here
       });
+  }
+
+  private getSites(): void {
+    this.config.getUiConfigIndex().take(1).subscribe((data: any) => {
+      return data.reduce((previous: Array<string>, current: any) => {
+        previous.push(current.siteName);
+        return previous;
+      }, this.sites);
+    });
   }
 }

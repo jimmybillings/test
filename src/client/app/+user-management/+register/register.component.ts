@@ -3,9 +3,7 @@ import { Response } from '@angular/http';
 import { User } from '../services/user.data.service';
 import { Subscription } from 'rxjs/Rx';
 import { UiConfig } from '../../shared/services/ui.config';
-import { FormFields, ServerErrors } from '../../shared/interfaces/forms.interface';
-// import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
-
+import { ServerErrors } from '../../shared/interfaces/forms.interface';
 /**
  * Registration page component - renders registration page and handles submiting registation form.
  */
@@ -18,8 +16,6 @@ import { FormFields, ServerErrors } from '../../shared/interfaces/forms.interfac
 export class RegisterComponent implements OnInit, OnDestroy {
   public config: any;
   public serverErrors: ServerErrors = null;
-  public components: Object;
-  public fields: FormFields[];
   public newUser: any;
   public successfullySubmitted: boolean = false;
   private configSubscription: Subscription;
@@ -30,17 +26,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.configSubscription = this.uiConfig.get('register').subscribe(config => this.config = config.config);
+    this.configSubscription =
+      this.uiConfig.get('register').subscribe((config: any) =>
+        this.config = config.config);
   }
 
   ngOnDestroy() {
     this.configSubscription.unsubscribe();
   }
 
-  /**
-   * Register a new user by subscribing to the user data services create method
-   * @param user  Registration form field values sent to the user data service.
-  */
   public onSubmit(user: any): void {
     this.user.create(user).take(1)
       .subscribe(

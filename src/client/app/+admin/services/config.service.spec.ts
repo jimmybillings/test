@@ -1,107 +1,86 @@
-import {
-  beforeEachProvidersArray,
-  ResponseOptions,
-  RequestMethod,
-  MockBackend,
-  Response,
-  inject,
-  TestBed
-} from '../../imports/test.imports';
-
+import { MockApiService, mockApiMatchers } from '../../shared/mocks/mock-api.service';
+import { UiConfigInterface } from '../../shared/interfaces/admin.interface';
+import { Api } from '../../shared/interfaces/api.interface';
 import { ConfigService } from './config.service';
 
 export function main() {
   describe('Config Service', () => {
+    let serviceUnderTest: ConfigService;
+    let mockApi: MockApiService;
+    let mockConfig: UiConfigInterface;
+    let mockUiResponse: any = { items: [{ uiOne: 'one' }, { uiTwo: 'two' }, { uiThree: 'three' }] };
+    let mockSiteResponse: any = { items: [{ siteOne: 'one' }, { siteTwo: 'two' }, { siteThree: 'three' }] };
 
+    mockConfig = { id: 1, createdOn: '', lastUpdated: '', siteName: 'core', components: { config: {} }, config: {} };
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [
-          ...beforeEachProvidersArray,
-        ]
-      });
-      this.uiApiUrl = 'https://crxextapi.dev.wzplatform.com/api/identities/v1/configuration/site/';
-      this.siteApiUrl = 'https://crxextapi.dev.wzplatform.com/api/identities/v1/site/';
+      jasmine.addMatchers(mockApiMatchers);
+      mockApi = new MockApiService();
+      serviceUnderTest = new ConfigService(mockApi.injector);
     });
 
-    it('Should have a getUi method that returns all of the UI config objects',
-      inject([ConfigService, MockBackend], (service: ConfigService, mockBackend: MockBackend) => {
-        let connection: any;
-        connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.getUiConfigIndex().subscribe(response => {
-          expect(connection.request.url.indexOf(this.uiApiUrl + 'search') !== -1).toBe(true);
-          expect(connection.request.method).toBe(RequestMethod.Get);
-          expect(response).toEqual(mockResponse());
-        });
-        connection.mockRespond(new Response(
-          new ResponseOptions({
-            body: mockResponse()
-          })
-        ));
-      }));
+    describe('getUiConfigIndex()', () => {
+      beforeEach(() => {
+        mockApi.getResponse = mockUiResponse;
+      });
 
-    it('Should have a getSite method that returns all of the Site config objects',
-      inject([ConfigService, MockBackend], (service: ConfigService, mockBackend: MockBackend) => {
-        let connection: any;
-        connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.getSiteConfigIndex().subscribe(response => {
-          expect(connection.request.url.indexOf(this.siteApiUrl + 'search') !== -1).toBe(true);
-          expect(connection.request.method).toBe(RequestMethod.Get);
-          expect(response).toEqual(mockResponse());
-        });
-        connection.mockRespond(new Response(
-          new ResponseOptions({
-            body: mockResponse()
-          })
-        ));
-      }));
+      it('hits the api properly', () => {
+        serviceUnderTest.getUiConfigIndex().take(1).subscribe();
 
-    it('Should have a search method that searches for Site config objects',
-      inject([ConfigService, MockBackend], (service: ConfigService, mockBackend: MockBackend) => {
-        let connection: any;
-        connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.searchSiteConfig('core').subscribe(response => {
-          expect(connection.request.url).toEqual(this.siteApiUrl + 'search/?q=core');
-          expect(connection.request.method).toBe(RequestMethod.Get);
-        });
-      }));
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('configuration/site/search');
+      });
+    });
 
-    it('Should have a getSiteConfig method that gets a Site config object by id',
-      inject([ConfigService, MockBackend], (service: ConfigService, mockBackend: MockBackend) => {
-        let connection: any;
-        connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.showSiteConfig(1).subscribe(response => {
-          expect(connection.request.url).toEqual(this.siteApiUrl + '1');
-          expect(connection.request.method).toBe(RequestMethod.Get);
-        });
-      }));
+    describe('getSiteConfigIndex()', () => {
+      beforeEach(() => {
+        mockApi.getResponse = mockSiteResponse;
+      });
 
-    it('Should have a getUiConfig method that gets a UI config object by siteName',
-      inject([ConfigService, MockBackend], (service: ConfigService, mockBackend: MockBackend) => {
-        let connection: any;
-        connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.showUiConfig('core').subscribe(response => {
-          expect(connection.request.url).toEqual(this.uiApiUrl + '?siteName=core');
-          expect(connection.request.method).toBe(RequestMethod.Get);
-        });
-      }));
+      it('hits the api properly', () => {
+        serviceUnderTest.getSiteConfigIndex().take(1).subscribe();
 
-    function mockResponse() {
-      return {
-        'items': [{
-          'lastUpdated': '2016-06-20T15:14:12Z',
-          'createdOn': '2016-03-02T17:01:14Z',
-          'id': 2,
-          'siteName': 'cnn',
-          'components': {
-            'header': { 'config': { 'title': { 'value': 'CNN Image Source' } } },
-            'searchBox': { 'config': { 'pageSize': { 'value': '56' } } },
-            'search': { 'config': { 'viewType': { 'value': 'grid' } } },
-            'home': { 'config': { 'pageSize': { 'value': '56' } } }
-          },
-          'config': {}
-        }],
-        'totalCount': 1, 'currentPage': 0, 'pageSize': 20, 'hasNextPage': false, 'hasPreviousPage': false, 'numberOfPages': 1
-      };
-    }
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('site/search');
+      });
+    });
+
+    describe('searchSiteConfig()', () => {
+      it('hits the api properly', () => {
+        serviceUnderTest.searchSiteConfig('core');
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('site/search');
+        expect(mockApi.get).toHaveBeenCalledWithParameters({ q: 'core' });
+      });
+    });
+
+    describe('showUiConfig()', () => {
+      it('hits the api properly', () => {
+        serviceUnderTest.showUiConfig('core');
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('configuration/site');
+        expect(mockApi.get).toHaveBeenCalledWithParameters({ siteName: 'core' });
+      });
+    });
+
+    describe('showSiteConfig()', () => {
+      it('hits the api properly', () => {
+        serviceUnderTest.showSiteConfig(1);
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('site/1');
+      });
+    });
+
+    describe('updateUiConfig()', () => {
+      it('hits the api properly', () => {
+        serviceUnderTest.updateUiConfig(mockConfig);
+
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('configuration/site/1');
+        expect(mockApi.put).toHaveBeenCalledWithBody(mockConfig);
+      });
+    });
   });
 }
