@@ -1,0 +1,35 @@
+#!/bin/sh
+scriptDir=`dirname $0`
+argument=
+
+case $1 in
+  '')
+    ;;
+  -q)
+    argument='-q'
+    ;;
+  *)
+    echo "USAGE: $0 [option]"
+    echo "  option:"
+    echo "    -q suppresses output"
+    exit 1
+    ;;
+esac
+
+${scriptDir}/findSourcesWithoutSpecs $argument
+sourcesWithoutSpecsResult=$?
+
+if [ "$argument" != "-q" ]
+then
+  echo
+fi
+
+${scriptDir}/findSpecsWithoutSources $argument
+specsWithoutSourcesResult=$?
+
+if [ $sourcesWithoutSpecsResult -ne 0 -o $specsWithoutSourcesResult -ne 0 ]
+then
+  exit 1
+fi
+
+exit 0

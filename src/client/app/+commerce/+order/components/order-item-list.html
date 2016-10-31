@@ -1,5 +1,5 @@
 <ul>
-    <li *ngFor="let order of orders" class="order" flex="100" layout="row" layout-xs="column">
+    <li *ngFor="let order of orders" class="order" flex="100" layout="row" layout-xs="column" [routerLink]="['/order', order.id]">
         <div flex="100" flex-gt-sm="66">
             <div flex="100" layout="row" layout-xs="column">
                 <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding class="details">
@@ -38,14 +38,11 @@
             <span class="total-label">
                 {{ 'ORDER.INDEX.ORDER_TOTAL_LABEL' | translate }}
             </span>
-            {{ order.total | currency:'USD':true:'1.2-2' }}
+            <span class="total-amount">
+                {{ order.total | currency:'USD':true:'1.2-2' }}
+            </span>
+            <button md-button class="is-outlined" color="primary" [routerLink]="['/order', order.id]">{{'ORDER.INDEX.DETAIL_BTN_TITLE' | translate }}</button>
         </div>
-        <!--<div flex-gt-sm="33" layout-sm="100" flex="auto" class="actions tools">
-            <button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="edit(collection)"><md-icon>edit</md-icon></button>
-            <button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><md-icon>share</md-icon></button>
-            <button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)" [disabled]="true"><md-icon>mode_comment</md-icon></button>
-            <button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreCollectionOptions"
-                (click)="setCurrentCollection(collection)"><md-icon>more_vert</md-icon></button>
-        </div>-->
+
     </li>
 </ul>

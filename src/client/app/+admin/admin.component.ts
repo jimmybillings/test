@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
-import {CurrentUser} from '../shared/services/current-user.model';
+import { Component } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -7,6 +6,4 @@ import {CurrentUser} from '../shared/services/current-user.model';
   templateUrl: 'admin.html',
 })
 
-export class AdminComponent {
-  constructor(public currentUser: CurrentUser) {}
-}
+export class AdminComponent { }
