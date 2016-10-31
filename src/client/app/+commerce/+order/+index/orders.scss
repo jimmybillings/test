@@ -48,6 +48,10 @@ orders-component .orders-head {
       padding: rem(.7) rem(1.0);
       background-color: rgba(md-color($primary, 500), .8);
       color: md-contrast($primary, 500);
+      margin: rem(.7) rem(.2) rem(.7) rem(.7);
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        margin-right: rem(.7);
+      }
       .order-number {
         position: relative;
         padding: 0 0 rem(.6) rem(4.0);
@@ -73,12 +77,28 @@ orders-component .orders-head {
         }
       }
     }
-    .actions {
+    .total {
       text-align: right;
+      letter-spacing: -.07em;
+      padding-right: rem(.8);
+      padding-top: rem(.2);
+      .total-label {
+        font-weight: 100;
+        letter-spacing: 0;
+      }
+    }
+    .projects {
+      margin-top: rem(1.8);
+      &:first-child {
+        margin-top: 0;
+      }
     }
     h3 {
       margin-top: rem(-.6);
       margin-bottom: rem(.6);
+      .project-label {
+        font-weight: 100;
+      }
     }
     .order-info {
       line-height: 1.5em;
