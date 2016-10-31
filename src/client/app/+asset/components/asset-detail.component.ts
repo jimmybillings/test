@@ -42,6 +42,7 @@ export class AssetDetailComponent implements OnChanges {
         this.asset.hasDownloadableComp = changes.asset.currentValue.hasDownloadableComp;
         this.asset.assetId = changes.asset.currentValue.assetId;
         this.asset.price = changes.asset.currentValue.price;
+        this.asset.transcodeTargetMap = changes.asset.currentValue.transcodeTargetMap;
         // the "+" in +this.asset.common[0].vaue changes it from a string to a number
         this.inActiveCollection = this.alreadyInCollection(+this.asset.common[0].value);
       }
