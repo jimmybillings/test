@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UiConfigInterface, SiteConfig, AdminUiResponse, AdminSiteResponse } from '../../shared/interfaces/admin.interface';
+import { UiConfigInterface, SiteConfig, AdminSiteResponse } from '../../shared/interfaces/admin.interface';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
@@ -8,12 +8,22 @@ import { Api } from '../../shared/interfaces/api.interface';
 export class ConfigService {
   constructor(private api: ApiService) { }
 
-  public getUiConfigIndex(): Observable<AdminUiResponse> {
-    return this.api.get(Api.Identities, 'configuration/site/search');
+  public getUiConfigIndex(): Observable<Array<UiConfigInterface>> {
+    return this.api.get(Api.Identities, 'configuration/site/search').map((response: any) => {
+      response.items.forEach((item: any) => {
+        Object.assign(item, { lastUpdateBy: 'Ross Edfort', type: 'ui' });
+      });
+      return response.items;
+    });
   }
 
-  public getSiteConfigIndex(): Observable<AdminSiteResponse> {
-    return this.api.get(Api.Identities, 'site/search');
+  public getSiteConfigIndex(): Observable<Array<SiteConfig>> {
+    return this.api.get(Api.Identities, 'site/search').map((response: any) => {
+      response.items.forEach((item: any) => {
+        Object.assign(item, { lastUpdateBy: 'Ross Edfort', type: 'site' });
+      });
+      return response.items;
+    });
   }
 
   public searchSiteConfig(siteName: string): Observable<SiteConfig> {

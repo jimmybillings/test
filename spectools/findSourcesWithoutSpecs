@@ -1,0 +1,77 @@
+#!/bin/sh
+baseDir=src/client/app
+ignoreFilePatterns='*.spec *.interface *.module *.routes main system-config env.config'
+ignoreDirectories='imports'
+fileNamesOnly=false
+quietMode=false
+
+case $1 in
+  '')
+    ;;
+  -f)
+    fileNamesOnly=true
+    ;;
+  -q)
+    quietMode=true
+    ;;
+  *)
+    echo "USAGE: $0 [option]"
+    echo "  option can be one of:"
+    echo "    -f outputs filenames only (instead of full messages)"
+    echo "    -q suppresses output (ignores -f)"
+    exit 1
+    ;;
+esac
+
+output() {
+  if [ "$quietMode" == false ]
+  then
+    echo $1
+  fi
+}
+
+outputMissingSpecFor() {
+  if [ "$fileNamesOnly" == true ]
+  then
+    output $1
+  else
+    output "No spec for `echo $1 | sed -e \"s+$baseDir/++\"`"
+  fi
+}
+
+ignoreArguments=
+for pattern in $ignoreFilePatterns
+do
+  ignoreArguments="$ignoreArguments -not -name \"$pattern.ts\""
+done
+
+for directory in $ignoreDirectories
+do
+  ignoreArguments="$ignoreArguments -not -path \"$baseDir/$directory/*\""
+done
+
+sourceFiles=`eval "find $baseDir -name \"*.ts\" $ignoreArguments -print"`
+missingSpecCount=0
+
+for file in $sourceFiles
+do
+  if [ ! -e "`echo $file | sed -e 's/\.ts$/.spec.ts/'`" ]
+  then
+    outputMissingSpecFor $file
+    missingSpecCount=`expr $missingSpecCount + 1`
+  fi
+done
+
+if [ "$fileNamesOnly" == false ]
+then
+  output
+  output "Total number of testable source files: `echo \"$sourceFiles\" | wc -l`"
+  output "Number of testable source files without a matching spec file: $missingSpecCount"
+fi
+
+if [ $missingSpecCount -gt 0 ]
+then
+  exit 1
+fi
+
+exit 0
