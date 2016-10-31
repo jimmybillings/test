@@ -97,6 +97,7 @@ export class AppComponent implements OnInit {
   }
 
   private processLoggedInUser() {
+    this.userPreference.getPrefs();
     if (this.userCan.viewCollections()) {
       this.activeCollection.get().take(1).subscribe((collection) => {
         this.activeCollection.getItems(collection.id, { i: 1, n: 100 }, true, false).take(1).subscribe();

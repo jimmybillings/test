@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Rx';
 export const order: ActionReducer<any> = (state: any, action: Action) => {
   switch (action.type) {
     case 'ORDER.SET_CURRENT_ORDER':
+      console.log(action.payload);
       return Object.assign({}, action.payload);
     default:
       return state;

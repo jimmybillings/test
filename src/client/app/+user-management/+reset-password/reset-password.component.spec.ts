@@ -4,7 +4,7 @@ import { ResetPasswordComponent } from './reset-password.component';
 export function main() {
   describe('Reset Password Component', () => {
     let mockUiConfig: any, mockUser: any, mockActivatedRoute: any, mockRouter: any, mockCurrentUser: any, mockUserPreference: any;
-    let serviceUnderTest: ResetPasswordComponent;
+    let componentUnderTest: ResetPasswordComponent;
 
     beforeEach(() => {
       mockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
@@ -15,35 +15,43 @@ export function main() {
       mockRouter = { navigate: jasmine.createSpy('navigate') };
       mockCurrentUser = { set: jasmine.createSpy('set') };
       mockUserPreference = { set: jasmine.createSpy('set') };
-      serviceUnderTest = new ResetPasswordComponent(mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUser, mockUserPreference);
+      componentUnderTest = new ResetPasswordComponent(mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUser, mockUserPreference);
     });
 
     describe('ngOnInit()', () => {
       it('Grabs the component config and assigns to an instance variable', () => {
-        serviceUnderTest.ngOnInit();
-        expect(serviceUnderTest.config).toEqual({ someConfig: 'test' });
+        componentUnderTest.ngOnInit();
+        expect(componentUnderTest.config).toEqual({ someConfig: 'test' });
       });
     });
 
     describe('onSubmit()', () => {
       it('Submits a set new password request', () => {
-        serviceUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
+        componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
         expect(mockUser.resetPassword).toHaveBeenCalledWith({ 'newPassword': 'myNewTestPassword' }, 'sldkjf2938sdlkjf289734');
       });
 
       it('Sets a new user and auth token on response', () => {
-        serviceUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
+        componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
         expect(mockCurrentUser.set).toHaveBeenCalledWith('james', 'loginToken');
       });
 
-      it('Sets the user preferences', () => {
-        serviceUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
-        expect(mockUserPreference.set).toHaveBeenCalledWith({ pref: 1 });
-      });
 
       it('Navigates to the home page', () => {
-        serviceUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
+        componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
+      });
+    });
+
+    describe('ngOnDestroy()', () => {
+      it('unsubscribes from the UI config to prevent memory leakage', () => {
+        let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
+        let mockObservable = { subscribe: () => mockSubscription };
+        mockUiConfig = { get: () => mockObservable };
+        componentUnderTest = new ResetPasswordComponent(mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUser, mockUserPreference);
+        componentUnderTest.ngOnInit();
+        componentUnderTest.ngOnDestroy();
+        expect(mockSubscription.unsubscribe).toHaveBeenCalled();
       });
     });
 

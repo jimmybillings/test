@@ -45,6 +45,7 @@ import { cart } from '../+commerce/+cart/services/cart.store';
 import { sortDefinitions } from '../shared/services/sort-definitions.service';
 import { cartSummary } from '../shared/services/cart-summary.service';
 import { order } from '../+commerce/+order/services/order.store';
+import { orders } from '../+commerce/+order/services/orders.store';
 
 // TRANSLATIONS
 import { MultilingualService } from '../shared/services/multilingual.service';
@@ -94,7 +95,8 @@ export const WAZEE_STORES: any = {
   cart: cart,
   sortDefinitions: sortDefinitions,
   cartSummary: cartSummary,
-  order: order
+  order: order,
+  orders: orders
 };
 
 export const WAZEE_ROUTES: Routes = [

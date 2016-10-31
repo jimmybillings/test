@@ -18,8 +18,7 @@
         placeholder="{{field.label | translate}}"
         type="{{field.type}}"
         formControlName="{{field.name}}"
-        id="{{field.name}}"
-        [required]="isRequiredField(field)">
+        id="{{field.name}}">
 
         <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
         <md-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
@@ -55,6 +54,84 @@
       </md-input>
       <!--
         END: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
+      -->
+
+      <!--
+        START: FORM CONFIRM PASSWORD DOUBLE FIELD
+      -->
+      <md-input
+        *ngIf="field.name == 'confirmPassword'"
+        class="md-block"
+        [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
+        placeholder="{{field.label | translate}}"
+        type="password"
+        formControlName="{{field.name}}"
+        id="{{field.name}}"
+        validateEqual="newPassword">
+
+        <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
+        <md-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
+          {{ field.hintTextStart | translate }}
+        </md-hint>
+        <md-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
+          {{ field.hintTextEnd | translate }}
+        </md-hint>
+
+        <md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
+          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
+          align="start" 
+          class="error">
+            <span *ngIf="form.controls[field.name].hasError('required')">
+              {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+            </span>
+            <span *ngIf="form.controls[field.name].hasError('minlength')">
+              {{ 'ERRORS.MIN_LENGTH_REQUIRED' | translate:{charLength:form.controls[field.name]._errors.minlength.requiredLength} }}
+            </span>
+            <span *ngIf="form.controls[field.name].hasError('validateEqual') && !form.controls[field.name].hasError('minlength')">
+              {{ 'ERRORS.PASSWORDS_NO_MATCH' | translate }}
+            </span>    
+            <span *ngIf="form.controls[field.name].hasError('serverError')">
+              {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
+            </span>  
+        </md-hint>
+      </md-input>
+
+      <md-input
+        *ngIf="field.name == 'newPassword'"
+        class="md-block"
+        [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
+        placeholder="{{field.label | translate}}"
+        type="password"
+        formControlName="{{field.name}}"
+        id="{{field.name}}"
+        validateEqual="confirmPassword"
+        reverse="true">
+
+        <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
+        <md-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
+          {{ field.hintTextStart | translate }}
+        </md-hint>
+        <md-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
+          {{ field.hintTextEnd | translate }}
+        </md-hint>
+
+        <md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
+          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
+          align="start" 
+          class="error">
+            <span *ngIf="form.controls[field.name].hasError('required')">
+              {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+            </span>
+            <span *ngIf="form.controls[field.name].hasError('minlength')">
+              {{ 'ERRORS.MIN_LENGTH_REQUIRED' | translate:{charLength:form.controls[field.name]._errors.minlength.requiredLength} }}
+            </span>
+            <span *ngIf="form.controls[field.name].hasError('serverError')">
+              {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
+            </span>   
+        </md-hint>
+      </md-input>
+      <!--
+        END: FORM CONFIRM PASSWORD DOUBLE FIELD
       -->
 
       <!--
@@ -98,6 +175,16 @@
       </md-checkbox>
       <!--
         END: FORM CHECKBOX
+      -->
+
+      <!--
+        START: CUSTOM ELEMENT FOR DOUBLE PASSWORD INPUTS
+      -->
+      <!--<wz-password-confirm *ngIf="field.type == 'passwords'" [fControl]="form.controls[field.name]">
+        {{field | json}}
+      </wz-password-confirm>-->
+      <!--
+        END: CUSTOM ELEMENT FOR DOUBLE PASSWORD INPUTS
       -->
 
       <!--

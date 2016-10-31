@@ -1,40 +1,59 @@
-import {
-  beforeEachProvidersArray,
-  TestBed,
-  Observable,
-  inject,
-} from '../../imports/test.imports';
-
+import { Observable } from '../../imports/test.imports';
 import { LoginComponent } from './login.component';
-import { Authentication } from '../../shared/services/authentication.data.service';
 
 export function main() {
-  const res = { 'user': { 'test': 'one' }, token: { token: 'newToken' }, userPreferences: {pref1: 'pref1'} };
+
   describe('Login Component', () => {
-    class MockAuthentication {
-      create() {
-        return Observable.of(res);
-      }
-    }
 
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        ...beforeEachProvidersArray,
-        { provide: Authentication, useClass: MockAuthentication },
-        LoginComponent,
-      ]
-    }));
+    let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any, mockUserPreference: any;
+    let componentUnderTest: LoginComponent;
 
-    it('Should set token in localStorage, set the new user, navigate to home page on succesful login',
-      inject([LoginComponent], (login: LoginComponent) => {
-        localStorage.clear();
-        spyOn(login.currentUser, 'set');
-        spyOn(login.router, 'navigate');
-        spyOn(login.userPreference, 'set');
-        login.onSubmit({ userId: 'some@email.com', password: 'password', siteName: 'sample' });
-        expect(login.currentUser.set).toHaveBeenCalledWith({ 'test': 'one' }, 'newToken');
-        expect(login.router.navigate).toHaveBeenCalledWith(['/']);
-        expect(login.userPreference.set).toHaveBeenCalledWith({pref1: 'pref1'});
-      }));
+    beforeEach(() => {
+      mockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
+      mockAuthentication = {
+        create: jasmine.createSpy('create').and.returnValue(Observable.of({ user: 'james', token: { token: 'loginToken' }, userPreferences: { pref: 1 } }))
+      };
+      mockRouter = { navigate: jasmine.createSpy('navigate') };
+      mockCurrentUser = { set: jasmine.createSpy('set') };
+      mockUserPreference = { set: jasmine.createSpy('set') };
+      componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockUserPreference, mockUiConfig);
+    });
+
+    describe('ngOnInit()', () => {
+      it('Grabs the component config and assigns to an instance variable', () => {
+        componentUnderTest.ngOnInit();
+        expect(componentUnderTest.config).toEqual({ someConfig: 'test' });
+      });
+    });
+
+    describe('onSubmit()', () => {
+      it('Submits a set new password request', () => {
+        componentUnderTest.onSubmit({ 'user': 'james' });
+        expect(mockAuthentication.create).toHaveBeenCalledWith({ 'user': 'james' });
+      });
+
+      it('Sets a new user and auth token on response', () => {
+        componentUnderTest.onSubmit({ 'user': 'james' });
+        expect(mockCurrentUser.set).toHaveBeenCalledWith('james', 'loginToken');
+      });
+
+      it('Navigates to the home page', () => {
+        componentUnderTest.onSubmit({ 'user': 'james' });
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
+      });
+    });
+
+    describe('ngOnDestroy()', () => {
+      it('unsubscribes from the UI config to prevent memory leakage', () => {
+        let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
+        let mockObservable = { subscribe: () => mockSubscription };
+        mockUiConfig = { get: () => mockObservable };
+        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockUserPreference, mockUiConfig);
+        componentUnderTest.ngOnInit();
+        componentUnderTest.ngOnDestroy();
+        expect(mockSubscription.unsubscribe).toHaveBeenCalled();
+      });
+    });
+
   });
 }

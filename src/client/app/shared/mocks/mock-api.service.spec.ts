@@ -142,7 +142,7 @@ export function main() {
         });
       });
 
-      describe('for get()', () => {
+      describe('for put()', () => {
         it('can be set', () => {
           mockApi.putError = { a: 'b' };
 
@@ -153,7 +153,7 @@ export function main() {
         });
       });
 
-      describe('for get()', () => {
+      describe('for delete()', () => {
         it('can be set', () => {
           mockApi.deleteError = { a: 'b' };
 

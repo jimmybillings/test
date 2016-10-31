@@ -27,5 +27,17 @@ export function main() {
       });
     });
 
+    describe('ngOnDestroy()', () => {
+      it('unsubscribes from the UI config to prevent memory leakage', () => {
+        let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
+        let mockObservable = { subscribe: () => mockSubscription };
+        mockUiConfig = { get: () => mockObservable };
+        componentUnderTest = new ForgotPasswordComponent(mockUser, mockUiConfig);
+        componentUnderTest.ngOnInit();
+        componentUnderTest.ngOnDestroy();
+        expect(mockSubscription.unsubscribe).toHaveBeenCalled();
+      });
+    });
+
   });
 }

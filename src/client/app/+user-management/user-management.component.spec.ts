@@ -1,19 +1,14 @@
-import {
-  beforeEachProvidersArray,
-  // inject,
-  TestBed
-} from '../imports/test.imports';
-
-// import { UserManagementComponent } from './user-management.component';
+import { UserManagementComponent } from './user-management.component';
 
 export function main() {
   describe('User Management Component', () => {
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        ...beforeEachProvidersArray,
-      ]
-    }));
+    let componentUnderTest: UserManagementComponent;
+    beforeEach(() => {
+      componentUnderTest = new UserManagementComponent();
+    });
+
+    it('creates instance of UserManagementComponent', () => {
+      expect(componentUnderTest instanceof UserManagementComponent).toBeTruthy();
+    });
   });
-
-
 }

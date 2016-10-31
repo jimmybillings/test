@@ -38,6 +38,12 @@ export class UserPreferenceService {
     return s;
   }
 
+  public getPrefs(): void {
+    this.get().take(1).subscribe(response => {
+      this.set(response['prefs']);
+    });
+  }
+
   public toggleSearch(): void {
     this.update({ searchIsOpen: !this.state.searchIsOpen });
   }
@@ -88,11 +94,6 @@ export class UserPreferenceService {
     this.store.dispatch({ type: 'USER_PREFS.UPDATE_PREFERENCES', payload: data });
   }
 
-  private put(params: any): Observable<any> {
-    let body: any = this.formatBody(params);
-    return this.api.put(Api.Identities, 'userPreferences/item', { body: body });
-  }
-
   private formatBody(prefs: any): any {
     for (let pref in prefs) {
       return {
@@ -111,5 +112,14 @@ export class UserPreferenceService {
       default:
         return value;
     };
+  }
+
+  private get(): Observable<any> {
+    return this.api.get(Api.Identities, 'userPreferences', { loading: true });
+  }
+
+  private put(params: any): Observable<any> {
+    let body: any = this.formatBody(params);
+    return this.api.put(Api.Identities, 'userPreferences/item', { body: body });
   }
 }
