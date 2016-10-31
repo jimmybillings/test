@@ -1,5 +1,5 @@
 import { SiteConfigComponent } from './site-config.component';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 
 export function main() {
   describe('Site Config Component', () => {

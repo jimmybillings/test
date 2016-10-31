@@ -1,10 +1,10 @@
-import { IndexComponent } from './index.component'
+import { IndexComponent } from './index.component';
 import { Observable } from 'rxjs/Rx';
 
 export function main() {
   describe('Admin Index Component', () => {
     let componentUnderTest: IndexComponent;
-    
+
     const mockCurrentUser: any = null;
     const mockAdminService: any = {
       getResourceIndex: jasmine.createSpy('getResourceIndex').and.callFake(fakeGetResourceIndex)
@@ -36,7 +36,7 @@ export function main() {
         spyOn(componentUnderTest, 'routeChanges');
         componentUnderTest.ngOnInit();
         expect(componentUnderTest.routeChanges).toHaveBeenCalled();
-      })
+      });
     });
 
     describe('routeChanges()', () => {
@@ -72,7 +72,7 @@ export function main() {
         componentUnderTest.resourceType = 'user';
         componentUnderTest.navigateToPageUrl('5');
 
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/resource/user', { i: '5', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' }])
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/resource/user', { i: '5', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' }]);
       });
     });
   });
