@@ -1,0 +1,47 @@
+#!/bin/sh
+scriptDir=`dirname $0`
+
+echo "Checking for specs without sources..."
+${scriptDir}/findSpecsWithoutSources
+
+if [ $? -ne 0 ]
+then
+  echo
+  echo "Before you can generate specs, you'll need to clean up"
+  echo "the spec file(s) above.  Those files are probably specs"
+  echo "that were meant to belong to source files, but have been"
+  echo "named incorrectly.  (We don't want to generate a spec unless"
+  echo "we are sure that it doesn't already exist.)"
+  echo
+  echo "Spec filenames should exactly match the names of the sources"
+  echo "they test.  For example, the spec file for 'file.ts' would be"
+  echo "'file.spec.ts'."
+  exit 1
+fi
+
+echo
+echo "Finding sources without specs..."
+sourcesWithoutSpecs="`${scriptDir}/findSourcesWithoutSpecs -f`"
+
+if [ $? -eq 0 ]
+then
+  echo
+  echo "All sources have corresponding specs.  Nothing to generate."
+  exit 0
+fi
+
+echo
+echo "Creating spec files..."
+
+for sourceFile in $sourcesWithoutSpecs
+do
+  ${scriptDir}/createSpec $sourceFile
+
+  if [ $? -ne 0 ]
+  then
+    echo "Error creating spec.  Exiting."
+    exit 1
+  fi
+done
+
+exit 0
