@@ -51,6 +51,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public routeChanges(): Subscription {
+    this.sites = [];
     return this.route.params.subscribe(params => {
       this.siteName = params['site'];
       if (this.portal !== 'core' && !(this.portal === this.siteName)) {
@@ -58,7 +59,7 @@ export class UiConfigComponent implements OnInit, OnDestroy {
       } else {
         this.getConfig();
         this.configService.getUiConfigIndex().take(1).subscribe(data => {
-          data.items.reduce((previous: Array<string>, current: UiConfigInterface) => {
+          data.reduce((previous: Array<string>, current: UiConfigInterface) => {
             previous.push(current.siteName);
             return previous;
           }, this.sites);

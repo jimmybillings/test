@@ -8,7 +8,7 @@ import { Api } from '../../shared/interfaces/api.interface';
 export class ConfigService {
   constructor(private api: ApiService) { }
 
-  public getUiConfigIndex(): Observable<AdminUiResponse> {
+  public getUiConfigIndex(): Observable<Array<UiConfigInterface>> {
     return this.api.get(Api.Identities, 'configuration/site/search').map((response: any) => {
       response.items.forEach((item: any) => {
         Object.assign(item, { lastUpdateBy: 'Ross Edfort', type: 'ui' });
@@ -17,7 +17,7 @@ export class ConfigService {
     });
   }
 
-  public getSiteConfigIndex(): Observable<AdminSiteResponse> {
+  public getSiteConfigIndex(): Observable<Array<SiteConfig>> {
     return this.api.get(Api.Identities, 'site/search').map((response: any) => {
       response.items.forEach((item: any) => {
         Object.assign(item, { lastUpdateBy: 'Ross Edfort', type: 'site' });
