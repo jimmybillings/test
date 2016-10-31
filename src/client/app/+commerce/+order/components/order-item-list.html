@@ -1,0 +1,51 @@
+<ul>
+    <li *ngFor="let order of orders" class="order" flex="100" layout="row" layout-xs="column">
+        <div flex="100" flex-gt-sm="66">
+            <div flex="100" layout="row" layout-xs="column">
+                <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding class="details">
+                    <div>
+                        <div class="order-number">
+                          <span class="md-caption order-info heading">{{ 'ORDER.ORDER_NUMBER_LABEL' | translate }}</span>
+                          <span class="number">{{order.id}}</span>
+                        </div>
+                        <div class="md-caption order-info">
+                        <span><strong>{{ 'ORDER.CREATED_ON_LABEL' | translate }} </strong>{{ date(order.createdOn) | date:'short' }}</span>
+                        <span><strong>{{ 'ORDER.ORDER_TYPE_LABEL' | translate }} </strong>{{order.orderType}}</span>
+                    </div>
+                    </div>
+                </div>
+                <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" layout-padding>
+                    <section class="projects" *ngFor="let project of order.projects">
+                        <h3 class="md-headline">
+                            <span class="project-label">
+                                {{ 'ORDER.INDEX.PROJECTS.PROJECT_LABEL' | translate }}
+                            </span>
+                            {{project.name}}
+                            <span class="asset-count">
+                                <span class="count">{{project.lineItems.length || 0}}</span>
+                            </span>
+                        </h3>
+                        <div class="md-caption order-info">
+                            <span><strong>{{ 'ORDER.INDEX.PROJECTS.CLIENT_NAME' | translate }} </strong>{{ project.clientName }}</span>
+                            <span><strong>{{ 'ORDER.INDEX.PROJECTS.SUBTOTAL_LABEL' | translate }} </strong>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div flex="100" layout="row" layout-xs="column" class="divider"></div>
+        <div flex-gt-sm="33" layout-sm="100" flex="auto" class="total md-headline">
+            <span class="total-label">
+                {{ 'ORDER.INDEX.ORDER_TOTAL_LABEL' | translate }}
+            </span>
+            {{ order.total | currency:'USD':true:'1.2-2' }}
+        </div>
+        <!--<div flex-gt-sm="33" layout-sm="100" flex="auto" class="actions tools">
+            <button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="edit(collection)"><md-icon>edit</md-icon></button>
+            <button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><md-icon>share</md-icon></button>
+            <button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)" [disabled]="true"><md-icon>mode_comment</md-icon></button>
+            <button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreCollectionOptions"
+                (click)="setCurrentCollection(collection)"><md-icon>more_vert</md-icon></button>
+        </div>-->
+    </li>
+</ul>

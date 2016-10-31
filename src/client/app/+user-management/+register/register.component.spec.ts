@@ -1,44 +1,62 @@
-import {
-  inject,
-  TestBed,
-  Observable
-} from '../../imports/test.imports';
-
+import { Observable } from '../../imports/test.imports';
 import { RegisterComponent } from './register.component';
-import { User } from '../services/user.data.service';
-import { UiConfig } from '../../shared/services/ui.config';
-import { DocumentService } from '../services/document.service';
+import { Response, ResponseOptions } from '../../imports/test.imports';
 
 const user: any = { emailAddress: 'jamesbonline@yahoo.com', firstName: 'james', lastName: 'billigns', password: '3978f324e14ac256b2994b754586e05f' };
 export function main() {
   describe('Register Component', () => {
+    let mockUiConfig: any, mockUser: any, mockDocumentService: any;
+    let componentUnderTest: RegisterComponent;
 
-    const MockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
-    const MockUser = { create: () => { return Observable.of(user); } };
-    const MockDocumentService = { downloadActiveTosDocument: () => { return Observable.of('this is the document'); } };
+    beforeEach(() => {
+      mockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
+      mockUser = { create: jasmine.createSpy('create').and.returnValue(Observable.of(user)) };
+      mockDocumentService = { downloadActiveTosDocument: jasmine.createSpy('downloadActiveTosDocument') };
+      componentUnderTest = new RegisterComponent(mockUser, mockUiConfig, mockDocumentService);
+    });
 
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        { provide: User, useValue: MockUser },
-        { provide: UiConfig, useValue: MockUiConfig },
-        { provide: DocumentService, useValue: MockDocumentService },
-        RegisterComponent
-      ]
-    }));
+    describe('ngOnInit()', () => {
+      it('Grabs the component config and assigns to an instance variable', () => {
+        componentUnderTest.ngOnInit();
+        expect(componentUnderTest.config).toEqual({ someConfig: 'test' });
+      });
+    });
 
-    it('Should get component config and assign to new instance variable',
-      inject([RegisterComponent], (component: RegisterComponent) => {
-        component.ngOnInit();
-        expect(component.config).toEqual({ someConfig: 'test' });
-      }));
+    describe('onSubmit()', () => {
+      it('Calls the server with user body to create user', () => {
+        componentUnderTest.onSubmit(user);
+        expect(componentUnderTest.user.create).toHaveBeenCalledWith(user);
+      });
 
-    it('Should register new user and console log the response for now.',
-      inject([RegisterComponent], (component: RegisterComponent) => {
-        spyOn(component.user, 'create').and.callThrough();
-        component.onSubmit(user);
-        expect(component.user.create).toHaveBeenCalledWith(user);
-        expect(component.successfullySubmitted).toEqual(true);
-        expect(component.newUser).toEqual(user);
-      }));
+      it('Sets a component variable flag to show a success dialog to user', () => {
+        componentUnderTest.onSubmit(user);
+        expect(componentUnderTest.successfullySubmitted).toEqual(true);
+      });
+
+      it('Assigns success user response to instance variable for screen display', () => {
+        componentUnderTest.onSubmit(user);
+        expect(componentUnderTest.newUser).toEqual(user);
+      });
+
+      it('Sets a errors variable to display errors if the server doesnt pass', () => {
+        const errorResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify({email: 'Not Unique'}) }));
+        mockUser = { create: jasmine.createSpy('create').and.returnValue(Observable.throw(errorResponse)) };
+        componentUnderTest = new RegisterComponent(mockUser, mockUiConfig, mockDocumentService);
+        componentUnderTest.onSubmit(user);
+        expect(componentUnderTest.serverErrors).toEqual({email: 'Not Unique'});
+      });
+    });
+
+    describe('ngOnDestroy()', () => {
+      it('unsubscribes from the UI config to prevent memory leakage', () => {
+        let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
+        let mockObservable = { subscribe: () => mockSubscription };
+        mockUiConfig = { get: () => mockObservable };
+        componentUnderTest = new RegisterComponent(mockUser, mockUiConfig, mockDocumentService);
+        componentUnderTest.ngOnInit();
+        componentUnderTest.ngOnDestroy();
+        expect(mockSubscription.unsubscribe).toHaveBeenCalled();
+      });
+    });
   });
 }

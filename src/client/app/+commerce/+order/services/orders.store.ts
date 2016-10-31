@@ -22,6 +22,7 @@ const ordersState: Orders = {
 export const orders: ActionReducer<any> = (state: Orders = ordersState, action: Action) => {
   switch (action.type) {
     case 'ORDERS.GET_ORDERS':
+      console.log(action.payload);
       return Object.assign({}, action.payload);
     default:
       return state;

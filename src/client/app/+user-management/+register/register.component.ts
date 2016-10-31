@@ -3,7 +3,7 @@ import { Response } from '@angular/http';
 import { User } from '../services/user.data.service';
 import { Subscription } from 'rxjs/Rx';
 import { UiConfig } from '../../shared/services/ui.config';
-import { FormFields, ServerErrors } from '../../shared/interfaces/forms.interface';
+import { ServerErrors } from '../../shared/interfaces/forms.interface';
 import { DocumentService } from '../services/document.service';
 import { Observable } from 'rxjs/Rx';
 /**
@@ -18,8 +18,6 @@ import { Observable } from 'rxjs/Rx';
 export class RegisterComponent implements OnInit, OnDestroy {
   public config: any;
   public serverErrors: ServerErrors = null;
-  public components: Object;
-  public fields: FormFields[];
   public newUser: any;
   public successfullySubmitted: boolean = false;
   public activeTos: Observable<any>;
@@ -32,18 +30,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.configSubscription = this.uiConfig.get('register').subscribe(config => this.config = config.config);
     this.activeTos = this.document.downloadActiveTosDocument();
+    this.configSubscription =
+      this.uiConfig.get('register').subscribe((config: any) =>
+        this.config = config.config);
   }
 
   ngOnDestroy() {
     this.configSubscription.unsubscribe();
   }
 
-  /**
-   * Register a new user by subscribing to the user data services create method
-   * @param user  Registration form field values sent to the user data service.
-  */
   public onSubmit(user: any): void {
     // TODO: When the API is ready, merge the activeVersionId with the form data and send to the server
     // Object.assign(user, this.document.activeVersionId);

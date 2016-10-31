@@ -27,6 +27,7 @@ import { OrderService } from './+order/services/order.service';
 import { OrdersService } from './+order/services/orders.service';
 import { OrderStore } from './+order/services/order.store';
 import { OrdersStore } from './+order/services/orders.store';
+import { OrderItemListComponent } from './+order/components/order-item-list.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
@@ -42,7 +43,8 @@ import { OrdersStore } from './+order/services/orders.store';
     LineItemsComponent,
     AssetComponent,
     OrderShowComponent,
-    OrdersComponent
+    OrdersComponent,
+    OrderItemListComponent
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
   providers: [CartService, OrderService, OrdersService, CartStore, CartCapabilities, OrderStore, OrdersStore]

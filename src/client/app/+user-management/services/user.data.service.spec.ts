@@ -1,63 +1,72 @@
-import {
-  beforeEachProvidersArray,
-  TestBed,
-  ResponseOptions,
-  MockBackend,
-  Response,
-  inject,
-} from '../../imports/test.imports';
-
+import { MockApiService, mockApiMatchers } from '../../shared/mocks/mock-api.service';
+import { Api } from '../../shared/interfaces/api.interface';
 import { User } from './user.data.service';
 
 export function main() {
   describe('User data service', () => {
-    let mockBackend: MockBackend;
-    let connection: any;
-    mockBackend = new MockBackend();
+    let serviceUnderTest: User;
+    let mockApi: MockApiService;
+
     beforeEach(() => {
-      mockBackend.connections.subscribe((c: any) => connection = c);
-      TestBed.configureTestingModule({
-        providers: [
-          ...beforeEachProvidersArray,
-          { provide: MockBackend, useValue: mockBackend }
-        ]
+      jasmine.addMatchers(mockApiMatchers);
+      mockApi = new MockApiService();
+      serviceUnderTest = new User(mockApi.injector);
+    });
+
+    describe('create()', () => {
+      it('Should make a request to create a new user', () => {
+        serviceUnderTest.create(setUser()).subscribe((res) => {
+          expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApi.post).toHaveBeenCalledWithEndpoint('user/register');
+          expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+          expect(mockApi.post).toHaveBeenCalledWithBody(setUser());
+        });
       });
     });
 
-    it('Should make a request to create a new user', inject([User], (service: User) => {
-      service.create(setUser()).subscribe((res) => {
-        expect(connection.request.url.indexOf('/api/identities/v1/user/register') !== -1).toBe(true);
-        expect(connection.request._body).toEqual(JSON.stringify(setUser()));
+    describe('get()', () => {
+      it('Should make a request to get a user', () => {
+        serviceUnderTest.get().subscribe((res) => {
+          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApi.get).toHaveBeenCalledWithEndpoint('user/currentUser');
+        });
       });
-      connection.mockRespond(new Response(new ResponseOptions({ body: setUser() })));
-    }));
+    });
 
-    it('Should make a request to get a current user object', inject([User], (service: User) => {
-      service.get().subscribe((res) => {
-        expect(connection.request.url.indexOf('/api/identities/v1/user/currentUser') !== -1).toBe(true);
+    describe('forgotPassword()', () => {
+      it('Should make a request to get a password reset email', () => {
+        serviceUnderTest.forgotPassword(setUser()).subscribe((res) => {
+          expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApi.post).toHaveBeenCalledWithEndpoint('user/requestPasswordReset');
+          expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+          expect(mockApi.post).toHaveBeenCalledWithParameters(setUser());
+        });
       });
-      connection.mockRespond(new Response(new ResponseOptions({ body: { whatever: 'something' } })));
-    }));
+    });
 
-    it('Should make a post request to reset a user password', inject([User], (service: User) => {
-      service.forgotPassword({emailAddress: 'test@test.com'}).subscribe((res) => {
-        expect(connection.request.url.indexOf('/api/identities/v1/user/requestPasswordReset') !== -1).toBe(true);
+    describe('resetPassword()', () => {
+      it('Should make a request to change a users password with api token', () => {
+        serviceUnderTest.resetPassword(setUser(), '3234234234234').subscribe((res) => {
+          expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApi.post).toHaveBeenCalledWithEndpoint('user/passwordReset');
+          expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+          expect(mockApi.post).toHaveBeenCalledWithBody(setUser(), { loading: true, overridingToken: '3234234234234' });
+        });
       });
-      connection.mockRespond(new Response(new ResponseOptions({ body: { whatever: 'something' } })));
-    }));
+    });
+
+    function setUser() {
+      return {
+        'lastUpdated': '2016-01-14T16:46:21Z',
+        'createdOn': '2016-01-14T16:46:21Z',
+        'id': 6,
+        'emailAddress': 'test_email@email.com',
+        'password': '5daf7de08c0014ec2baa13a64b35a4e0',
+        'firstName': 'first',
+        'lastName': 'last',
+        'siteName': 'core',
+        'accountIds': [4]
+      };
+    }
   });
-
-  function setUser() {
-    return {
-      'lastUpdated': '2016-01-14T16:46:21Z',
-      'createdOn': '2016-01-14T16:46:21Z',
-      'id': 6,
-      'emailAddress': 'test_email@email.com',
-      'password': '5daf7de08c0014ec2baa13a64b35a4e0',
-      'firstName': 'first',
-      'lastName': 'last',
-      'siteName': 'core',
-      'accountIds': [4]
-    };
-  }
 }
