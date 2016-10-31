@@ -41,8 +41,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(user: any): void {
-    // TODO: When the API is ready, merge the activeVersionId with the form data and send to the server
-    // Object.assign(user, this.document.activeVersionId);
+    Object.assign(user, { termsAgreedTo: this.document.activeVersionId });
     this.user.create(user).take(1).subscribe((res: Response) => {
       this.successfullySubmitted = true;
       this.newUser = res;
