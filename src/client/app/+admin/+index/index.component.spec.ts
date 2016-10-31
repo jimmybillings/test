@@ -1,256 +1,79 @@
-
-import { Observable } from 'rxjs/Rx';
-import {
-  beforeEachProvidersArray,
-  TestBed,
-  inject,
-} from '../../imports/test.imports';
 import { IndexComponent } from './index.component';
-import { User } from '../../shared/interfaces/user.interface';
-import { FormFields } from '../../shared/interfaces/forms.interface';
-import { AdminService } from '../services/admin.service';
-import { UiSubComponentsA } from '../../shared/interfaces/admin.interface';
+import { Observable } from 'rxjs/Rx';
 
 export function main() {
-  describe('Admin Index component', () => {
-    class MockAdminService {
-      getResourceIndex(resource: any, i: any) {
-        return Observable.of(mockResponse());
-      }
+  describe('Admin Index Component', () => {
+    let componentUnderTest: IndexComponent;
 
-      putResource(resourceType: string, resource: any) {
-        return Observable.of(mockUser());
-      }
+    const mockCurrentUser: any = null;
+    const mockAdminService: any = {
+      getResourceIndex: jasmine.createSpy('getResourceIndex').and.callFake(fakeGetResourceIndex)
+    };
+    const mockRoute: any = {
+      params: Observable.of({ i: '1', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' }),
+      snapshot: { url: [{}, { path: 'user' }] }
+    };
+    const mockUiConfig: any = {
+      get: jasmine.createSpy('set').and.callFake(fakeUiGet)
+    };
+    const mockUiState: any = null;
+    const mockRouter: any = {
+      navigate: jasmine.createSpy('navigate').and.callFake(fakeNavigate)
+    };
 
-      postResource(resourceType: string, resource: any) {
-        return Observable.of(mockUser());
-      }
+    function fakeUiGet(configPiece: string) { return Observable.of({ config: `${configPiece} Config` }); }
 
-      setResources(data: any) {
-        return true;
-      }
+    function fakeGetResourceIndex(params: any, resourceType: string) { return; }
 
-      buildSearchTerm() {
-        return { fields: 'firstName', values: 'john' };
-      }
+    function fakeNavigate(params: any) { return; }
 
-      updateRouteParams(args: any) {
-        return Object.assign({}, args);
-      }
-    }
-    class MockActivatedRoute { }
-    class MockRouter {
-      navigate(params: any) { return params; }
-    }
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        ...beforeEachProvidersArray,
-        IndexComponent,
-        { provide: AdminService, useClass: MockAdminService }
-      ]
-    }));
+    beforeEach(() => {
+      componentUnderTest = new IndexComponent(mockCurrentUser, mockAdminService, mockRoute, mockUiConfig, mockUiState, mockRouter);
+    });
 
+    describe('Initialization', () => {
+      it('creates a subscription', () => {
+        spyOn(componentUnderTest, 'routeChanges');
+        componentUnderTest.ngOnInit();
+        expect(componentUnderTest.routeChanges).toHaveBeenCalled();
+      });
+    });
 
-    it('Should create an instance variable of AdminService, and CurrentUser',
-      inject([IndexComponent], (component: IndexComponent) => {
-        expect(component.currentUser).toBeDefined();
-        expect(component.adminService).toBeDefined();
-      }));
+    describe('routeChanges()', () => {
+      it('sets vars', () => {
+        componentUnderTest.routeChanges();
 
-    it('Should have a getIndex() function that calls the getResource and setResources functions on the service',
-      inject([IndexComponent], (component: IndexComponent) => {
-        component.resourceType = 'account';
-        component.params = mockParams();
-        spyOn(component.adminService, 'getResourceIndex').and.callThrough();
-        spyOn(component.adminService, 'setResources').and.callThrough();
-        component.getIndex();
-        expect(component.adminService.getResourceIndex)
-          .toHaveBeenCalledWith({ i: '1', n: '10', s: 'createdOn', d: 'false', values: '', fields: '' }, 'account');
-      }));
+        expect(componentUnderTest.toggleFlag).toBe('false');
+        expect(componentUnderTest.resourceType).toBe('user');
+        expect(componentUnderTest.currentComponent).toBe('User');
+        expect(componentUnderTest.config).toBe('adminUser Config');
+      });
 
-    it('Should have a navigateToPageUrl function that navigates to a URL',
-      inject([IndexComponent], (component: IndexComponent) => {
-        component.resourceType = 'account';
-        component.params = mockParams();
-        spyOn(component.router, 'navigate');
-        component.navigateToPageUrl('2');
-        expect(component.router.navigate)
-          .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: '2', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' })]);
-      }));
+      it('calls buildRouteParams()', () => {
+        spyOn(componentUnderTest, 'buildRouteParams');
+        componentUnderTest.routeChanges();
 
-    it('Should have a navigateToSortUrl function that navigates to a URL with correct params',
-      inject([IndexComponent], (component: IndexComponent) => {
-        component.resourceType = 'account';
-        component.params = mockParams();
-        spyOn(component.router, 'navigate');
-        component.navigateToSortUrl({ s: 'emailAddress', d: 'true' });
-        expect(component.router.navigate)
-          .toHaveBeenCalledWith(['/admin/resource/account', Object({ i: 1, n: '10', s: 'emailAddress', d: 'true', fields: '', values: '' })]);
-      }));
+        expect(componentUnderTest.buildRouteParams).toHaveBeenCalledWith({ i: '1', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' });
+      });
+    });
 
-    it('Should have a navigateToFilterUrl function that navigates to a URL with correct params',
-      inject([IndexComponent], (component: IndexComponent) => {
-        component.resourceType = 'user';
-        component.params = mockParams();
-        spyOn(component.router, 'navigate');
-        component.navigateToFilterUrl({ firstName: 'john' });
-        expect(component.router.navigate)
-          .toHaveBeenCalledWith(['/admin/resource/user', Object({ i: 1, n: '10', s: 'createdOn', d: 'false', fields: 'firstName', values: 'john' })]);
-      }));
+    describe('getIndex', () => {
+      it('calls the adminService', () => {
+        componentUnderTest.routeChanges();
+        componentUnderTest.getIndex();
 
-    it('Should have a mergeFormValues() function that merges config and form fields',
-      inject([IndexComponent], (component: IndexComponent) => {
-        component.config = mockConfig();
-        component.mergeFormValues(mockUser());
-        component.config['editForm'].items.forEach((field: FormFields) => {
-          expect(field.value).toBe(component.resource[field.name]);
-        });
-      }));
+        expect(mockAdminService.getResourceIndex).toHaveBeenCalledWith({ i: '1', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' }, 'user');
+      });
+    });
 
-    it('Should have a onEditSubmit() function that calls the service to update an account or user',
-      inject([IndexComponent], (component: IndexComponent) => {
-        component.resource = mockUser();
-        component.resourceType = 'user';
-        spyOn(component.adminService, 'putResource').and.callThrough();
-        spyOn(component, 'getIndex');
-        let newUser: User = Object.assign(mockUser(), { 'firstName': 'Bob' });
-        component.onEditSubmit(newUser);
-        expect(component.adminService.putResource).toHaveBeenCalledWith('user', newUser);
-        expect(component.getIndex).toHaveBeenCalled();
-      }));
+    describe('navigateToPageUrl', () => {
+      it('should navigate to a url with a new page number', () => {
+        componentUnderTest.params = { i: '1', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' };
+        componentUnderTest.resourceType = 'user';
+        componentUnderTest.navigateToPageUrl('5');
 
-    it('Should have a onNewSubmit() function that calls the service to create an account or user',
-      inject([IndexComponent], (component: IndexComponent) => {
-        component.resourceType = 'user';
-        spyOn(component.adminService, 'postResource').and.callThrough();
-        spyOn(component, 'getIndex');
-        component.onNewSubmit(mockUser());
-        expect(component.adminService.postResource).toHaveBeenCalledWith('user', mockUser());
-        expect(component.getIndex).toHaveBeenCalled();
-      }));
-
-    it('Should have a buildRouteParams() function that builds an object of route params',
-      inject([IndexComponent], (component: IndexComponent) => {
-        component.buildRouteParams(mockParams());
-        expect(component.params).toEqual({ i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' });
-      }));
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/resource/user', { i: '5', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' }]);
+      });
+    });
   });
-
-  function mockUser() {
-    let mockUser: User = {
-      'lastUpdated': '2016-07-14T23:43:43Z',
-      'createdOn': '2016-07-07T22:57:49Z',
-      'id': 71,
-      'siteName': 'commerce',
-      'emailAddress': 'ross.edfort@wazeedigital.com',
-      'userName': 'rossedfort',
-      'password': '1d411073589938703696d15de48e38f4',
-      'firstName': 'Ross',
-      'lastName': 'Edfort',
-      'permissions': [
-        'DeleteCollections',
-        'Root',
-        'ShareCollections',
-        'EditCollections',
-        'CreateCollections',
-        'ViewCollections',
-        'ViewClips'
-      ],
-      'phoneNumber': '908-698-9024',
-      'accountIds': [
-        9
-      ]
-    };
-    return mockUser;
-  }
-
-  function mockResponse() {
-    return {
-      'items': [{
-        'lastUpdated': '2016-03-02T17:01:14Z', 'createdOn': '2016-03-02T17:01:14Z', 'id': 1, 'siteName': 'core', 'accountIdentifier': 'default',
-        'name': 'Default', 'isAdmin': false, 'status': 'A', 'isDefault': true
-      },
-        {
-          'lastUpdated': '2016-03-08T18:53:52Z', 'createdOn': '2016-03-08T18:53:52Z', 'id': 3, 'siteName': 'cnn', 'accountIdentifier': 'default', 'name': 'Default',
-          'isAdmin': false, 'status': 'A', 'isDefault': true
-        },
-        {
-          'lastUpdated': '2016-03-08T20:23:25Z', 'createdOn': '2016-03-08T20:23:25Z', 'id': 4, 'siteName': 'corbis', 'accountIdentifier': 'default', 'name': 'Default',
-          'isAdmin': false, 'status': 'A', 'isDefault': true
-        }],
-      'totalCount': 6,
-      'currentPage': 0,
-      'pageSize': 20,
-      'hasNextPage': false,
-      'hasPreviousPage': false,
-      'numberOfPages': 1
-    };
-  }
-
-  function mockConfig() {
-    let config: UiSubComponentsA = {
-      'editForm': {
-        'items': [
-          {
-            'name': 'firstName',
-            'label': 'ADMIN.USER.FIRST_NAME_LABEL',
-            'type': 'text',
-            'value': '',
-            'validation': 'REQUIRED'
-          },
-          {
-            'name': 'lastName',
-            'label': 'ADMIN.USER.LAST_NAME_LABEL',
-            'type': 'text',
-            'value': '',
-            'validation': 'REQUIRED'
-          },
-          {
-            'name': 'emailAddress',
-            'label': 'ADMIN.USER.EMAIL_LABEL',
-            'type': 'email',
-            'value': '',
-            'validation': 'OPTIONAL'
-          },
-          {
-            'name': 'userName',
-            'label': 'ADMIN.USER.USERNAME_LABEL',
-            'type': 'text',
-            'value': '',
-            'validation': 'OPTIONAL'
-          },
-          {
-            'name': 'phoneNumber',
-            'label': 'ADMIN.USER.PHONE_NUMBER_LABEL',
-            'type': 'text',
-            'value': '',
-            'validation': 'OPTIONAL'
-          }
-        ]
-      },
-      'newForm': {
-        'items': [
-          {
-            'name': 'firstName',
-            'label': 'ADMIN.USER.FIRST_NAME_LABEL',
-            'type': 'text',
-            'value': '',
-            'validation': 'REQUIRED'
-          },
-          {
-            'name': 'lastName',
-            'label': 'ADMIN.USER.LAST_NAME_LABEL',
-            'type': 'text',
-            'value': '',
-            'validation': 'REQUIRED'
-          }
-        ]
-      }
-    };
-    return config;
-  }
-
-  function mockParams() {
-    return { i: '1', n: '10', s: 'createdOn', d: 'false', fields: '', values: '' };
-  }
 }

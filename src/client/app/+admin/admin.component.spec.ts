@@ -1,17 +1,14 @@
-import {
-  beforeEachProvidersArray,
-  TestBed,
-} from '../imports/test.imports';
-
-// import { AdminComponent } from './admin.component';
+import { AdminComponent } from './admin.component';
 
 export function main() {
   describe('Admin Component', () => {
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        ...beforeEachProvidersArray
-      ]
-    }));
+    let componentUnderTest: AdminComponent;
+    beforeEach(() => {
+      componentUnderTest = new AdminComponent();
+    });
 
+    it('exists', () => {
+      expect(true).toBe(true);
+    });
   });
 }

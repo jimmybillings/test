@@ -1,15 +1,11 @@
-import {
-  AdminResponse,
-  AdminUrlParams,
-  AdminFormParams,
-  Account
-} from '../../shared/interfaces/admin.interface';
+import { AdminResponse, AdminUrlParams, AdminFormParams, Account } from '../../shared/interfaces/admin.interface';
 import { User } from '../../shared/interfaces/user.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { AdminStore } from './admin.store';
+
 @Injectable()
 export class AdminService {
   public data: Observable<any>;
@@ -18,8 +14,8 @@ export class AdminService {
   }
 
   public getResourceIndex(queryObject: AdminUrlParams, resourceType: string): Observable<AdminResponse> {
-    let params = Object.create(JSON.parse(JSON.stringify(queryObject)));
-    params['i'] = (parseFloat(params['i']) - 1).toString();
+    let params = JSON.parse(JSON.stringify(queryObject));
+    params.i = (parseFloat(params.i) - 1).toString();
 
     return this.api.get(Api.Identities, `${resourceType}/searchFields`, { parameters: params }).do(response => {
       this.store.set(response);
@@ -34,7 +30,7 @@ export class AdminService {
     return this.api.put(Api.Identities, `${resourceType}/${formData.id}`, { body: formData });
   }
 
-  public buildSearchTerm(filterParams: AdminFormParams): AdminFormParams {
+  public buildSearchParameters(filterParams: AdminFormParams): AdminFormParams {
     let params = this.sanitizeFormInput(filterParams);
     let rawFields = this.buildFields(params);
     let rawValues = this.buildValues(params);
@@ -43,11 +39,12 @@ export class AdminService {
     return { fields, values };
   }
 
-  public sanitizeFormInput(fields: any): AdminFormParams {
+  // END OF PUBLIC INTERFACE - Everything below is to format the search request
+
+  private sanitizeFormInput(fields: any): AdminFormParams {
     for (var field in fields) {
       if (this.dateFieldIsEmpty(fields, field)) {
-        let date = new Date();
-        fields[field] = date.setDate(date.getDate()) * 1000;
+        fields[field] = Date.now();
       } else if (fields[field] === '') {
         delete fields[field];
       }
@@ -55,16 +52,16 @@ export class AdminService {
     return fields;
   }
 
-  public dateFieldIsEmpty(fields: any, field: string): boolean {
+  private dateFieldIsEmpty(fields: any, field: string): boolean {
     return (field === 'createdOn' || field === 'lastUpdated') && fields[field] === '';
   }
 
-  public buildFields(filterParams: any): Array<string> {
-    let map: any = { 'before': 'LT', 'after': 'GT' };
+  private buildFields(filterParams: any): Array<string> {
+    let map: any = { 'before': ':LT:', 'after': ':GT:' };
     let fields: Array<string> = Object.keys(filterParams);
     return fields.reduce((prev, current, index) => {
       if (current === 'DATE') {
-        prev.push(current + ':' + map[filterParams[current]] + ':' + fields[index + 1]);
+        prev.push(current + map[filterParams[current]] + fields[index + 1]);
       } else {
         prev.push(current);
       }
@@ -72,11 +69,11 @@ export class AdminService {
     }, []);
   }
 
-  public buildValues(filterParams: any): Array<string> {
+  private buildValues(filterParams: any): Array<string> {
     return Object.keys(filterParams).reduce((prev, current) => {
-      if (this.valueIsADate(current)) {
+      if (this.valueIsADateString(filterParams, current)) {
         let date = new Date(filterParams[current]);
-        prev.push(encodeURI((date.getTime() / 1000).toString()));
+        prev.push(encodeURI((date.getTime()).toString()));
       } else {
         prev.push(encodeURI(filterParams[current]));
       }
@@ -84,11 +81,11 @@ export class AdminService {
     }, []);
   }
 
-  public valueIsADate(currentField: string): boolean {
-    return ['createdOn', 'lastUpdated'].indexOf(currentField) > -1;
+  private valueIsADateString(fields: any, field: any): boolean {
+    return ['createdOn', 'lastUpdated'].indexOf(field) > -1 && typeof(fields[field]) === 'string';
   }
 
-  public removeFields(field: string): boolean {
+  private removeFields(field: string): boolean {
     return ['createdOn', 'lastUpdated', 'before', 'after'].indexOf(field) === -1;
   }
 }
