@@ -37,7 +37,6 @@ export class UiConfigComponent implements OnInit, OnDestroy {
     public uiConfig: UiConfig,
     public route: ActivatedRoute,
     public configService: ConfigService) {
-    this.sites = [];
     this.typeSelect = ['text', 'date', 'checkbox', 'email', 'password', 'select', 'radio', 'table header'];
   }
 
@@ -51,8 +50,8 @@ export class UiConfigComponent implements OnInit, OnDestroy {
   }
 
   public routeChanges(): Subscription {
-    this.sites = [];
     return this.route.params.subscribe(params => {
+      this.sites = [];
       this.siteName = params['site'];
       if (this.portal !== 'core' && !(this.portal === this.siteName)) {
         this.router.navigate(['admin/ui-config/', this.portal]);
