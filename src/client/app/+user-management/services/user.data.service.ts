@@ -22,8 +22,6 @@ export class User {
   }
 
   public forgotPassword(user: any): Observable<any> {
-    user.email = user.emailAddress;
-    delete user.emailAddress;
     return this.api.post(Api.Identities, 'user/requestPasswordReset', { parameters: user, loading: true });
   }
 

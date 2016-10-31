@@ -9,9 +9,11 @@ export class LoggedInGuard implements CanActivate {
     private router: Router) { }
 
   canActivate() {
-    return (!this.currentUser.loggedIn()) ? true : this.router.navigate(['/']) && false;
+    if (!this.currentUser.loggedIn())  {
+      return true;
+    } else {
+      this.router.navigate(['/']);
+      return false;
+    }
   }
-
 }
-
-
