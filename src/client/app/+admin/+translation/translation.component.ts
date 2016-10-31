@@ -7,7 +7,7 @@ import { ConfigService } from '../services/config.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'translation',
+  selector: 'translation-component',
   templateUrl: 'translation.html',
   styles: [`.translation {
               display: block;
@@ -88,6 +88,6 @@ export class TranslationComponent implements OnInit, OnDestroy {
         previous.push(current.siteName);
         return previous;
       }, this.sites);
-    })
+    });
   }
 }
