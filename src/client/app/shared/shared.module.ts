@@ -29,6 +29,8 @@ import { CollectionFormComponent } from '../application/collection-tray/componen
 import { WzSortComponent } from './components/wz-sort/wz.sort.component';
 import { CollectionLinkComponent } from '../+collection/components/collection-link.component';
 import { EqualValidatorDirective } from './components/wz-form/wz-validators/wz-equal-validator.directive';
+import { WzTranscodeSelectComponent } from './components/wz-transcode-select/wz.transcode-select.component';
+
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
 
@@ -75,7 +77,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
-    EqualValidatorDirective
+    EqualValidatorDirective,
+    WzTranscodeSelectComponent
   ],
   exports: [
     WzSearchBoxComponent,
@@ -109,7 +112,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
-    EqualValidatorDirective],
+    EqualValidatorDirective,
+    WzTranscodeSelectComponent],
   entryComponents: [WzNotificationComponent]
 })
 

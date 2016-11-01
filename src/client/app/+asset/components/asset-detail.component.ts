@@ -4,6 +4,7 @@ import { CurrentUser } from '../../shared/services/current-user.model';
 import { UiConfig} from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { MdMenuTrigger } from '@angular/material';
+import { TranscodeTarget } from '../../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -24,6 +25,7 @@ export class AssetDetailComponent implements OnChanges {
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
+  public selectedTarget: TranscodeTarget;
   private assetsArr: Array<number>;
 
   constructor(
@@ -42,7 +44,7 @@ export class AssetDetailComponent implements OnChanges {
         this.asset.hasDownloadableComp = changes.asset.currentValue.hasDownloadableComp;
         this.asset.assetId = changes.asset.currentValue.assetId;
         this.asset.price = changes.asset.currentValue.price;
-        this.asset.transcodeTargetMap = changes.asset.currentValue.transcodeTargetMap;
+        this.asset.transcodeTargetMap = this.format(changes.asset.currentValue.transcodeTargetMap);
         // the "+" in +this.asset.common[0].vaue changes it from a string to a number
         this.inActiveCollection = this.alreadyInCollection(+this.asset.common[0].value);
       }
@@ -78,5 +80,21 @@ export class AssetDetailComponent implements OnChanges {
 
   public addAssetToCart(asset: any): void {
     this.addToCart.emit(asset);
+  }
+
+  public selectTarget(selectedTarget: TranscodeTarget): void {
+    this.asset.transcodeTargetMap.map((target: TranscodeTarget) => {
+      target.selected = false;
+    });
+    selectedTarget.selected = true;
+    this.selectedTarget = selectedTarget;
+  }
+
+  private format(transcodeMap: any): Array<TranscodeTarget> {
+    return transcodeMap[this.asset.assetId].map((target: string, i: number) => {
+      let name: string = target;
+      let selected: boolean = i === 0 ? true : false;
+      return { name: name, selected: selected };
+    });
   }
 }
