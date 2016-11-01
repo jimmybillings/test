@@ -1,5 +1,4 @@
 import { Component, OnChanges, Input, ChangeDetectionStrategy } from '@angular/core';
-var Clipboard = require('clipboard/dist/clipboard');
 
 @Component({
   moduleId: module.id,
@@ -12,10 +11,6 @@ export class CollectionLinkComponent implements OnChanges {
   @Input() assets: any;
   @Input() dialog: any;
   public legacyLink: string;
-
-  constructor() {
-    new Clipboard('.clipboard-copy');
-  }
 
   ngOnChanges(changes: any) {
     if (changes.assets.currentValue[0]) this.buildLegacyLink(changes.assets.currentValue);

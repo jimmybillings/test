@@ -18,6 +18,7 @@ import { WzFormComponent } from './components/wz-form/wz.form.component';
 import { WzListComponent } from './components/wz-list/wz.list.component';
 import { WzPaginationComponent } from './components/wz-pagination/wz.pagination.component';
 import { WzPikaDayDirective } from './components/wz-pikaday/wz-pikaday.directive';
+import { WzClipBoardDirective } from './components/wz-clipboard/wz-clipboard.directive';
 import { WzPlayerComponent } from './components/wz-player/wz.player.component';
 import { WzToastComponent, WzToastPortalDirective } from './components/wz-toast/wz.toast.component';
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
@@ -75,7 +76,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
-    EqualValidatorDirective
+    EqualValidatorDirective,
+    WzClipBoardDirective
   ],
   exports: [
     WzSearchBoxComponent,
@@ -109,7 +111,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
-    EqualValidatorDirective],
+    EqualValidatorDirective,
+    WzClipBoardDirective],
   entryComponents: [WzNotificationComponent]
 })
 

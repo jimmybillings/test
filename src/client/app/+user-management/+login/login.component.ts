@@ -4,7 +4,6 @@ import { Authentication } from '../../shared/services/authentication.data.servic
 import { Router } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { UiConfig } from '../../shared/services/ui.config';
-import { UserPreferenceService } from '../../shared/services/user-preference.service';
 
 /**
  * Login page component - renders login page and handles login form submission
@@ -20,11 +19,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   private configSubscription: Subscription;
 
   constructor(
-    public authentication: Authentication,
-    public router: Router,
-    public currentUser: CurrentUser,
-    public userPreference: UserPreferenceService,
-    public uiConfig: UiConfig) {
+    private authentication: Authentication,
+    private router: Router,
+    private currentUser: CurrentUser,
+    private uiConfig: UiConfig) {
   }
 
   ngOnInit(): void {
