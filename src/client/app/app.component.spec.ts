@@ -9,7 +9,7 @@ export function main() {
       mockCollections: any, mockActiveCollection: any, mockUiState: any, mockUserPreference: any, mockRenderer: any, mockNotification: any,
       mockApiConfig: any, mockAuthentication: any, mockUserCan: any, mockCartSummary: any, mockWindow: any;
     let loggedInState = false, canViewCollections = true;
-    let nextNavigation:NavigationEnd = new NavigationEnd(1, '/', '/');
+    let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
     let componentUnderTest: AppComponent;
 
     beforeEach(() => {
@@ -47,13 +47,13 @@ export function main() {
         reset: jasmine.createSpy('reset'),
         getPrefs: jasmine.createSpy('getPrefs')
       };
-      mockRenderer = { listenGlobal: jasmine.createSpy('listenGlobal').and.callFake((a:any,b:any,c:Function)=> {c();}) };
+      mockRenderer = { listenGlobal: jasmine.createSpy('listenGlobal').and.callFake((a: any, b: any, c: Function) => { c(); }) };
       mockNotification = { check: jasmine.createSpy('check') };
       mockApiConfig = { getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal') };
       mockAuthentication = { destroy: jasmine.createSpy('destroy').and.returnValue(Observable.of({})) };
       mockUserCan = { viewCollections: () => canViewCollections };
       mockCartSummary = { loadCartSummary: jasmine.createSpy('loadCartSummary') };
-      mockWindow = { pageYOffset: 133 }
+      mockWindow = { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') };
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUser,
         mockCollections, mockActiveCollection, mockUiState, mockUserPreference, mockRenderer,
@@ -62,15 +62,15 @@ export function main() {
 
 
     describe('ngOnInit()', () => {
-      
+
       describe('apiConfig.setPortal()', () => {
         it('Should set the portal name', () => {
           componentUnderTest.ngOnInit();
           expect(mockApiConfig.setPortal).toHaveBeenCalledWith('core');
         });
       });
-      
-      describe('currentUser.set()',() => {
+
+      describe('currentUser.set()', () => {
         it('Should set the current user', () => {
           componentUnderTest.ngOnInit();
           expect(mockCurrentUser.set).toHaveBeenCalled();
@@ -89,13 +89,13 @@ export function main() {
         });
       });
 
-      describe('uiConfig.initialize()',() => {
+      describe('uiConfig.initialize()', () => {
         it('Should initailize the UI config with the correct parameters', () => {
           componentUnderTest.ngOnInit();
           expect(mockUiConfig.initialize).toHaveBeenCalledWith(true, 'core');
         });
       });
-      
+
       describe('processUser()', () => {
         it('Should process the actions for a logged out user', () => {
           loggedInState = false;
@@ -127,9 +127,21 @@ export function main() {
       });
 
       describe('routerChanges()', () => {
-        it('Should make the according updates on NavigationEnd of a route change', () => {
+        it('Pass the current state url to see if we should display the search bar', () => {
           componentUnderTest.ngOnInit();
           expect(mockUiState.checkRouteForSearchBar).toHaveBeenCalledWith('/');
+        });
+        it('Pass the current state url to see if we should display the filters', () => {
+          componentUnderTest.ngOnInit();
+          expect(mockUiState.checkForFilters).toHaveBeenCalledWith('/');
+        });
+        it('Assign the current url state to an instance variable', () => {
+          componentUnderTest.ngOnInit();
+          expect(componentUnderTest.state).toEqual('/');
+        });
+        it('Should make sure the page is scrolled to the top on each successful state change', () => {
+          componentUnderTest.ngOnInit();
+          expect(mockWindow.scrollTo).toHaveBeenCalledWith(0, 0);
         });
       });
     });

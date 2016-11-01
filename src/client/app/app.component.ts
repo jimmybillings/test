@@ -84,7 +84,7 @@ export class AppComponent implements OnInit {
         this.uiState.checkRouteForSearchBar(event.url);
         this.uiState.checkForFilters(event.url);
         this.state = event.url;
-        window.scrollTo(0, 0);
+        this.window.scrollTo(0, 0);
         this.notification.check(this.state, this.target);
       });
   }
