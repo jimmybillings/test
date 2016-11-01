@@ -16,7 +16,7 @@ export class OrdersService {
   }
 
   public getOrders(): Observable<any> {
-    return this.api.get(Api.Orders, 'order/myOrders')
+    return this.api.get(Api.Orders, 'order/myOrders', { loading: true })
       .do(response => this.store.storeOrders(response));
   }
 }
