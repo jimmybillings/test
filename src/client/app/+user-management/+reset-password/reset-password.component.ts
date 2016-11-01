@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/Rx';
 import { User } from '../services/user.data.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
-import { UserPreferenceService } from '../../shared/services/user-preference.service';
 
 @Component({
   moduleId: module.id,
@@ -21,8 +20,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     private uiConfig: UiConfig,
     private route: ActivatedRoute,
     private router: Router,
-    private currentUser: CurrentUser,
-    private userPreference: UserPreferenceService) {
+    private currentUser: CurrentUser) {
   }
 
   ngOnInit(): void {

@@ -46,7 +46,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   public mergeErrors() {
     this.serverErrors.fieldErrors.forEach((error) => {
       for (let control in this.form.controls) {
-        if (control === error.field) {
+        if (control.toLowerCase() === error.field.toLowerCase()) {
           (<FormControl>this.form.controls[control]).setErrors({ serverError: error.code });
         }
       }
@@ -106,7 +106,7 @@ export class WzFormComponent implements OnInit, OnChanges {
     if (this.form.valid) {
       this.formSubmit.emit(this.form.value);
     } else {
-      console.log('error');
+      console.log(this.form);
     }
   }
 

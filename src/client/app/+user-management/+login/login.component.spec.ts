@@ -5,7 +5,7 @@ export function main() {
 
   describe('Login Component', () => {
 
-    let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any, mockUserPreference: any;
+    let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any;
     let componentUnderTest: LoginComponent;
 
     beforeEach(() => {
@@ -15,8 +15,7 @@ export function main() {
       };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
       mockCurrentUser = { set: jasmine.createSpy('set') };
-      mockUserPreference = { set: jasmine.createSpy('set') };
-      componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockUserPreference, mockUiConfig);
+      componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockUiConfig);
     });
 
     describe('ngOnInit()', () => {
@@ -48,7 +47,7 @@ export function main() {
         let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
-        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockUserPreference, mockUiConfig);
+        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockUiConfig);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();

@@ -3,7 +3,7 @@ import { ResetPasswordComponent } from './reset-password.component';
 
 export function main() {
   describe('Reset Password Component', () => {
-    let mockUiConfig: any, mockUser: any, mockActivatedRoute: any, mockRouter: any, mockCurrentUser: any, mockUserPreference: any;
+    let mockUiConfig: any, mockUser: any, mockActivatedRoute: any, mockRouter: any, mockCurrentUser: any;
     let componentUnderTest: ResetPasswordComponent;
 
     beforeEach(() => {
@@ -14,8 +14,7 @@ export function main() {
       mockActivatedRoute = { snapshot: { queryParams: { shareKey: 'sldkjf2938sdlkjf289734' } } };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
       mockCurrentUser = { set: jasmine.createSpy('set') };
-      mockUserPreference = { set: jasmine.createSpy('set') };
-      componentUnderTest = new ResetPasswordComponent(mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUser, mockUserPreference);
+      componentUnderTest = new ResetPasswordComponent(mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUser);
     });
 
     describe('ngOnInit()', () => {
@@ -48,7 +47,7 @@ export function main() {
         let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
-        componentUnderTest = new ResetPasswordComponent(mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUser, mockUserPreference);
+        componentUnderTest = new ResetPasswordComponent(mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUser);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();

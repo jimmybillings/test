@@ -13,6 +13,15 @@ export function main() {
       serviceUnderTest = new User(mockApi.injector);
     });
 
+    describe('get()', () => {
+      it('Should make a request to get a user', () => {
+        serviceUnderTest.get().subscribe((res) => {
+          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApi.get).toHaveBeenCalledWithEndpoint('user/currentUser');
+        });
+      });
+    });
+
     describe('create()', () => {
       it('Should make a request to create a new user', () => {
         serviceUnderTest.create(setUser()).subscribe((res) => {
@@ -20,15 +29,6 @@ export function main() {
           expect(mockApi.post).toHaveBeenCalledWithEndpoint('user/register');
           expect(mockApi.post).toHaveBeenCalledWithLoading(true);
           expect(mockApi.post).toHaveBeenCalledWithBody(setUser());
-        });
-      });
-    });
-
-    describe('get()', () => {
-      it('Should make a request to get a user', () => {
-        serviceUnderTest.get().subscribe((res) => {
-          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
-          expect(mockApi.get).toHaveBeenCalledWithEndpoint('user/currentUser');
         });
       });
     });
@@ -50,7 +50,8 @@ export function main() {
           expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
           expect(mockApi.post).toHaveBeenCalledWithEndpoint('user/passwordReset');
           expect(mockApi.post).toHaveBeenCalledWithLoading(true);
-          expect(mockApi.post).toHaveBeenCalledWithBody(setUser(), { loading: true, overridingToken: '3234234234234' });
+          expect(mockApi.post).toHaveBeenCalledWithOverridingToken('3234234234234');
+          expect(mockApi.post).toHaveBeenCalledWithBody(setUser());
         });
       });
     });
