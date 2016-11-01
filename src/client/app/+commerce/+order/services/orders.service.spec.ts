@@ -4,8 +4,6 @@ import { MockApiService, mockApiMatchers } from '../../../shared/mocks/mock-api.
 import { Api } from '../../../shared/interfaces/api.interface';
 import { OrdersService } from './orders.service';
 
-
-
 export function main() {
   describe('Orders Service', () => {
     let serviceUnderTest: OrdersService;
