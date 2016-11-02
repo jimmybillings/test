@@ -22,10 +22,9 @@ export class ApiConfig {
     return baseUrl;
   }
 
-  public headers(overridingToken: string = ''): Headers {
+  public headers(overridingToken: string = '', download: boolean = false): Headers {
     const headers: { [name: string]: any } = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
     };
 
     let token: string = '';
@@ -38,6 +37,12 @@ export class ApiConfig {
 
     if (token !== '') {
       headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    if (download) {
+      headers['Accept'] = 'application/octet-stream';
+    } else {
+      headers['Accept'] = 'application/json';
     }
 
     return new Headers(headers);

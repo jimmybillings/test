@@ -1,23 +1,27 @@
-   
 <section class="login hero" *ngIf="config">
-  <div layout="row" md-scroll-y="" layout-align="center start">
-    <div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
-      <md-card class="wz-form-card" *ngIf="!successfullySubmitted">
-        <md-card-title>        
-          {{ 'REGISTER.TITLE' | translate }}
-        </md-card-title>
-        <md-card-content>
-          <wz-form [items]="config.form.items" [serverErrors]= "serverErrors" submitLabel="REGISTER.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"></wz-form>
-        </md-card-content>
-      </md-card>
+	<div layout="row" md-scroll-y="" layout-align="center start">
+		<div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
+			<md-card class="wz-form-card" *ngIf="!successfullySubmitted">
+				<md-card-title>
+					{{ 'REGISTER.TITLE' | translate }}
+				</md-card-title>
+				<md-card-content>
+					<wz-form [items]="config.form.items" [serverErrors]="serverErrors" submitLabel="REGISTER.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"
+						(viewTos)="termsDialog.show()"></wz-form>
+				</md-card-content>
+			</md-card>
 
-      <md-card class="registration-confirm" *ngIf="successfullySubmitted">
-        <md-card-title>{{ 'REGISTER.CONFIRMATION.TITLE' | translate }}</md-card-title>
-        <md-card-subtitle>{{ 'REGISTER.CONFIRMATION.MESSAGE' | translate }}</md-card-subtitle>
-        <span class="email">{{newUser.emailAddress}}</span>
-      </md-card>
-      
-      <div md-theme="docs-dark" layout="column" layout-align="center center" layout-wrap=""><span class="md-title">{{'REGISTER.ALREADY_HAVE_ACCOUNT' | translate }} <a md-button="" [routerLink]="['/user/login']" class="md-accent">{{'REGISTER.LOGIN' | translate }}</a></span></div>
-    </div>
-  </div>
+			<md-card class="registration-confirm" *ngIf="successfullySubmitted">
+				<md-card-title>{{ 'REGISTER.CONFIRMATION.TITLE' | translate }}</md-card-title>
+				<md-card-subtitle>{{ 'REGISTER.CONFIRMATION.MESSAGE' | translate }}</md-card-subtitle>
+				<span class="email">{{newUser.emailAddress}}</span>
+			</md-card>
+
+			<div md-theme="docs-dark" layout="column" layout-align="center center" layout-wrap=""><span class="md-title">{{'REGISTER.ALREADY_HAVE_ACCOUNT' | translate }} <a md-button="" [routerLink]="['/user/login']" class="md-accent">{{'REGISTER.LOGIN' | translate }}</a></span></div>
+		</div>
+	</div>
 </section>
+
+<wz-dialog #termsDialog>
+	<wz-terms [terms]="activeTos" (close)="termsDialog.close()"></wz-terms>
+</wz-dialog>
