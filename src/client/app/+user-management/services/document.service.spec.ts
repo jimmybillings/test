@@ -21,5 +21,15 @@ export function main() {
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/public/name/TOS');
       });
     });
+
+    describe('agreeUserToTerms', () => {
+      it('hits the API correctly', () => {
+        serviceUnderTest.activeVersionId = 'abcd1234';
+        serviceUnderTest.agreeUserToTerms();
+
+        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('document/version/abcd1234/agree');
+      });
+    });
   });
 }

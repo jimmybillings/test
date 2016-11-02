@@ -5,7 +5,7 @@ export function main() {
 
   describe('Login Component', () => {
 
-    let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any, mockDocumentService: any, user: any;
+    let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any, mockDocumentService: any;
     let componentUnderTest: LoginComponent;
 
     beforeEach(() => {
