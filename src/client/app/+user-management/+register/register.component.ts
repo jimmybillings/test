@@ -49,9 +49,4 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.serverErrors = Error.json();
     }));
   }
-
-  public agreeToTerms(): void {
-    let agreeCheckbox = <HTMLFormElement>document.querySelector('.md-checkbox-layout');
-    agreeCheckbox.click();
-  }
 }

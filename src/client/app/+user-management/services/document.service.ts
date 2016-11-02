@@ -17,4 +17,8 @@ export class DocumentService {
       return response.text();
     });
   }
+
+  public agreeUserToTerms(): void {
+    this.api.post(Api.Identities, `document/version/${this.activeVersionId}/agree`).take(1).subscribe();
+  }
 }
