@@ -1,0 +1,19 @@
+div.transcode-target-menu-trigger {
+  margin: rem(1) 0;
+  cursor: pointer;
+  padding: rem(.5);
+}
+
+div.md-menu.transcode-target-menu {
+  width: rem(38);
+  div.dense.group {
+    button {
+      span.icon {
+        width: 20%;
+        md-icon {
+          margin: rem(.2) 0;
+        }
+      }
+    }
+  }
+}

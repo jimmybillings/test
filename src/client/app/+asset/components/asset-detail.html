@@ -1,130 +1,110 @@
 <!-- there probably should be some kind of toggle for theater mode (dark background where preview is VS light)-->
 
 <section class="preview-bk theater">
-  <div layout="row" layout-align="center">
-    <div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
-      <div flex-gt-sm="66" flex="100">
-        <div flex="" layout="column" class="primary-info-t">
-          <div class="primary-content-t">
-            <div class="asset-name md-caption" layout="column">{{asset.common[5].value}}</div>
-            <div layout="row" layout-wrap="">
-              <div [ngClass]="{hd: asset.primary[2].value == 'High Definition', sd: asset.primary[2].value == 'Standard Definition'}"
-                class="sd-hd" *ngIf='asset.primary[2].value != null'>
-              </div>
-              <div flex="none" class="rights md-caption">{{asset.primary[3].value}}</div>
-              <div flex="none" class="restriction-banner" *ngIf="asset.primary[4].value != null && asset.primary[4].value != 'Needs calculation'">{{asset.primary[4].value}}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div flex-gt-sm="33" flex="100" layout="column">
-        <header class="toolbar-actions">
-          <nav class="asset-options" flex layout-align="end stretch">
-            <button
-              [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
-              md-icon-button
-              [md-menu-trigger-for]="downloadCompMenu"
-              title="{{ (userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 
+	<div layout="row" layout-align="center">
+		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
+			<div flex-gt-sm="66" flex="100">
+				<div flex="" layout="column" class="primary-info-t">
+					<div class="primary-content-t">
+						<div class="asset-name md-caption" layout="column">{{asset.common[5].value}}</div>
+						<div layout="row" layout-wrap="">
+							<div [ngClass]="{hd: asset.primary[2].value == 'High Definition', sd: asset.primary[2].value == 'Standard Definition'}" class="sd-hd"
+								*ngIf='asset.primary[2].value != null'>
+							</div>
+							<div flex="none" class="rights md-caption">{{asset.primary[3].value}}</div>
+							<div flex="none" class="restriction-banner" *ngIf="asset.primary[4].value != null && asset.primary[4].value != 'Needs calculation'">{{asset.primary[4].value}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div flex-gt-sm="33" flex="100" layout="column">
+				<header class="toolbar-actions">
+					<nav class="asset-options" flex layout-align="end stretch">
+						<button [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)" md-icon-button [md-menu-trigger-for]="downloadCompMenu"
+							title="{{ (userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 
                 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED') | translate }}">
                 <md-icon>file_download</md-icon>
             </button>
 
-            <md-menu x-position="before" #downloadCompMenu="mdMenu">
-              <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)" (click)="downloadComp(asset.assetId, 'wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
-              <button md-menu-item [disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)" (click)="downloadComp(asset.assetId, 'clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
-              <button md-menu-item [disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)" (click)="downloadComp(asset.assetId, 'full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
-            </md-menu>
+						<md-menu x-position="before" #downloadCompMenu="mdMenu">
+							<button md-menu-item [disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)" (click)="downloadComp(asset.assetId, 'wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
+							<button md-menu-item [disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)" (click)="downloadComp(asset.assetId, 'clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
+							<button md-menu-item [disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)" (click)="downloadComp(asset.assetId, 'full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
+						</md-menu>
 
-            <button md-icon-button 
-              [disabled]="!userCan.createAccessInfo()"
-              title="{{ (userCan.createAccessInfo() ? 
-              'ASSET.DETAIL.SHARING_BTN_TITLE' : 'ASSET.DETAIL.SHARING_UNAVAILABLE_BTN_TITLE') | translate }}"
-              (click)="sharing.show($event)">
+						<button md-icon-button [disabled]="!userCan.createAccessInfo()" title="{{ (userCan.createAccessInfo() ? 
+              'ASSET.DETAIL.SHARING_BTN_TITLE' : 'ASSET.DETAIL.SHARING_UNAVAILABLE_BTN_TITLE') | translate }}" (click)="sharing.show($event)">
               <md-icon>share</md-icon>
             </button>
 
-            <button md-icon-button 
-              *ngIf="inActiveCollection" 
-              disabled
-              title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}" 
-              (click)="showComments($event)">
+						<button md-icon-button *ngIf="inActiveCollection" disabled title="{{ 'ASSET.DETAIL.COMMENTS_BTN_TITLE' | translate }}" (click)="showComments($event)">
               <md-icon>mode_comment</md-icon>
             </button>
-            
-            <button md-icon-button 
-              *ngIf="!inActiveCollection"
-              [disabled]="!userCan.editCollections()"
-              title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
-              (click)="addToCollection(collection, asset.common[0]); addToast.show()">
+
+						<button md-icon-button *ngIf="!inActiveCollection" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
+							(click)="addToCollection(collection, asset.common[0]); addToast.show()">
               <md-icon>library_add</md-icon>
             </button>
-            <button md-icon-button 
-              *ngIf="inActiveCollection" 
-              [disabled]="!userCan.editCollections()"
-              title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}" 
-              (click)="removeFromCollection(collection, asset.common[0]); removeToast.show()">
+						<button md-icon-button *ngIf="inActiveCollection" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
+							(click)="removeFromCollection(collection, asset.common[0]); removeToast.show()">
               <md-icon>remove_circle</md-icon>
             </button>
-            
-            <button md-icon-button 
-              disabled
-              title="{{ 'ASSET.DETAIL.MORE_BTN_TITLE' | translate }}">
+
+						<button md-icon-button disabled title="{{ 'ASSET.DETAIL.MORE_BTN_TITLE' | translate }}">
               <md-icon>more_vert</md-icon>
             </button>
-          </nav>
-        </header>
-      </div>
-    </div>
-  </div>
+					</nav>
+				</header>
+			</div>
+		</div>
+	</div>
 
-  <div layout="row" flex="" layout-align="center">
-    <div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
-      <wz-player [resourceClass]="asset.resourceClass" [clipUrl]="asset.clipUrl" [clipThumbnailUrl]="asset.clipThumbnailUrl" flex-gt-sm="66" flex="100" layout="column" class="responsive-video"></wz-player>
-      <div flex-gt-sm="33" flex="100" layout="column">
-        <div flex="" layout="column" class="primary-info">
-          <div class="primary-content">
-            <h4 class="title-txt" *ngIf="asset.primary[5].value != null">{{asset.primary[5].value}}</h4>
-            <p class="description-txt">{{asset.primary[6].value}}</p>
-            <span *ngIf="asset.price != 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
-            <span *ngIf="asset.price == 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
-            <md-card-actions layout="column" layout-align="center center" layout-wrap="">
-              <button md-raised-button [disabled]="!currentUser.loggedIn()" (click)="addAssetToCart(asset); addToCartToast.show()" class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
-              <!--<button *ngIf="asset.price == 0" md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>-->
-            </md-card-actions>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div layout="row" flex="" layout-align="center">
+		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
+			<wz-player [resourceClass]="asset.resourceClass" [clipUrl]="asset.clipUrl" [clipThumbnailUrl]="asset.clipThumbnailUrl" flex-gt-sm="66"
+				flex="100" layout="column" class="responsive-video"></wz-player>
+			<div flex-gt-sm="33" flex="100" layout="column">
+				<div flex="" layout="column" class="primary-info">
+					<div class="primary-content">
+						<h4 class="title-txt" *ngIf="asset.primary[5].value != null">{{asset.primary[5].value}}</h4>
+						<p class="description-txt">{{asset.primary[6].value}}</p>
+						<span *ngIf="asset.price != 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
+						<span *ngIf="asset.price == 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
+						<md-card-actions layout="column" layout-align="center center" layout-wrap="">
+							<wz-transcode-select *ngIf="asset.transcodeTargets.length > 0" [transcodeTargets]="asset.transcodeTargets" [selectedTarget]="selectedTarget"
+								(selectTarget)="selectTarget($event)"></wz-transcode-select>
+							<button md-raised-button [disabled]="!currentUser.loggedIn() && selectedTarget" (click)="addAssetToCart(asset); addToCartToast.show()"
+								class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+							<!--<button *ngIf="asset.price == 0" md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>-->
+						</md-card-actions>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
+
 <wz-dropdown #sharing>
-  <asset-share
-    [currentUser]="currentUser"
-    [assetThumbnailUrl]="asset.clipThumbnailUrl"
-    [assetName]="asset.common[5].value"
-    [assetId]="asset.assetId"
-    [uiState]="uiState"
-    [config]="(uiConfig.get('assetSharing') | async).config"
-    (close)="sharing.close()"
-    layout="row" layout-align="end start" class="revealed">
-  </asset-share>
+	<asset-share [currentUser]="currentUser" [assetThumbnailUrl]="asset.clipThumbnailUrl" [assetName]="asset.common[5].value"
+		[assetId]="asset.assetId" [uiState]="uiState" [config]="(uiConfig.get('assetSharing') | async).config" (close)="sharing.close()"
+		layout="row" layout-align="end start" class="revealed">
+	</asset-share>
 </wz-dropdown>
 
 <wz-toast #addToast>
-  <div class="toast" layout="row" layout-align="center center">
-    <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.ADD_TO_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
-  </div>
+	<div class="toast" layout="row" layout-align="center center">
+		<div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.ADD_TO_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
+	</div>
 </wz-toast>
 
 <wz-toast #removeToast>
-  <div class="toast" layout="row" layout-align="center center">
-    <div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
-  </div>
+	<div class="toast" layout="row" layout-align="center center">
+		<div flex-xs="100" md-elevation-z2>{{ 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST' | translate:{collectionName:collection.name} }}</div>
+	</div>
 </wz-toast>
 
 <wz-toast #addToCartToast>
-  <div class="toast" layout="row" layout-align="center center">
-    <div flex-xs="100" md-elevation-z2>{{ 'ASSET.ADD_TO_CART_TOAST' | translate:{assetId:asset.assetId} }}</div>
-  </div>
+	<div class="toast" layout="row" layout-align="center center">
+		<div flex-xs="100" md-elevation-z2>{{ 'ASSET.ADD_TO_CART_TOAST' | translate:{assetId:asset.assetId} }}</div>
+	</div>
 </wz-toast>
-

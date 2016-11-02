@@ -17,3 +17,8 @@ export interface Asset {
   thumbnail?: { name: string, urls: {} };
   smallPreview?: { name: string, urls: {} };
 }
+
+export interface TranscodeTarget {
+  name: string;
+  selected: boolean;
+}
