@@ -36,6 +36,7 @@ export class AssetDetailComponent implements OnChanges {
 
   ngOnChanges(changes: any): void {
     if (changes.asset) {
+      this.selectedTarget = null;
       if (Object.keys(changes.asset.currentValue.detailTypeMap.common).length > 0) {
         this.asset = changes.asset.currentValue.detailTypeMap;
         this.asset.clipUrl = changes.asset.currentValue.clipUrl;
@@ -44,7 +45,7 @@ export class AssetDetailComponent implements OnChanges {
         this.asset.hasDownloadableComp = changes.asset.currentValue.hasDownloadableComp;
         this.asset.assetId = changes.asset.currentValue.assetId;
         this.asset.price = changes.asset.currentValue.price;
-        this.asset.transcodeTargets = changes.asset.currentValue.transcodeTargets;
+        this.asset.transcodeTargets = this.format(changes.asset.currentValue.transcodeTargets);
         // the "+" in +this.asset.common[0].vaue changes it from a string to a number
         this.inActiveCollection = this.alreadyInCollection(+this.asset.common[0].value);
       }
@@ -79,11 +80,17 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public addAssetToCart(asset: any): void {
-    Object.assign(asset, { selectedTranscodeTarget: this.selectedTarget.name });
-    this.addToCart.emit(asset);
+    let target = this.selectedTarget ? this.selectedTarget.name : 'native_format';
+    this.addToCart.emit({ assetId: asset.assetId, selectedTranscodeTarget: target });
   }
 
   public selectTarget(selectedTarget: TranscodeTarget): void {
     this.selectedTarget = selectedTarget;
+  }
+
+  private format(targets: Array<string>): Array<TranscodeTarget> {
+    return targets.map((target: string) => {
+      return { name: target, selected: false };
+    });
   }
 }

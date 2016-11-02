@@ -13,6 +13,7 @@ export class LineItemsComponent {
   @Input() lineItems: LineItem[];
   @Input() otherProjects: Project[];
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
+  public selectedTranscodeTarget: TranscodeTarget;
   private selectedLineItem: LineItem;
 
   public moveTo(otherProject: Project, lineItem: LineItem): void {
@@ -35,7 +36,16 @@ export class LineItemsComponent {
     this.selectedLineItem = lineItem;
   }
 
-  public selectTarget(selectedTarget: TranscodeTarget, lineItem: LineItem): void {
-    console.log(selectedTarget, lineItem);
+  public selectTarget(selectedTarget: any, lineItem: LineItem): void {
+    this.lineItemsNotify.emit({ type: 'EDIT_LINE_ITEM', payload: { lineItem, fieldToEdit: { selectedTranscodeTarget: selectedTarget.name } } });
+  }
+
+  public format(lineItem: LineItem): Array<TranscodeTarget> {
+    this.selectedTranscodeTarget = { name: lineItem.selectedTranscodeTarget, selected: true };
+    return lineItem.transcodeTargets.map((target: string) => {
+      let name: string = target;
+      let selected: boolean = target === lineItem.selectedTranscodeTarget ? true : false;
+      return { name, selected };
+    });
   }
 }
