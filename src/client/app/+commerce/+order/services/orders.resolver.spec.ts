@@ -1,15 +1,21 @@
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { OrdersResolver } from './orders.resolver';
 
 export function main() {
   describe('Orders Resolver', () => {
+    // let mockUiConfig: any;
     const mockObservable = Observable.of({});
     const mockOrdersService: any = {
-      getOrders: jasmine.createSpy('getOrders() spy').and.returnValue(mockObservable)
+      getOrders: jasmine.createSpy('getOrders({d:true,n:20}) spy').and.returnValue(mockObservable)
     };
-    const mockRoute: ActivatedRouteSnapshot = undefined;
+
+    const mockRoute: any = {
+      params: Observable.of({ d: true, i: 0, n: 1, s: 'createdOn' }),
+      snapshot: { url: [{}] }
+    };
+
     const mockState: RouterStateSnapshot = undefined;
 
     let resolverUnderTest: OrdersResolver;

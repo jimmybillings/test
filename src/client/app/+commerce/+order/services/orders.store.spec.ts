@@ -58,27 +58,29 @@ export function main() {
     describe('storeOrders()', () => {
       it('dispatches ORDERS.GET_ORDERS with the passed-in orders', () => {
         storeUnderTest.storeOrders({
-          items:[],
-          currentPage: 0, 
+          items: [],
+          currentPage: 0,
           hasNextPage: false,
           hasPreviousPage: false,
           numberOfPages: 1,
           pageSize: 20,
           totalCount: 4
-         });
+        });
 
         expect(mockStore.dispatch)
-          .toHaveBeenCalledWith({ type: 'ORDERS.GET_ORDERS', payload: { 
-            items:[],
-            pagination: {
-              currentPage: 1,
-              hasNextPage: false,
-              hasPreviousPage: false,
-              numberOfPages: 1,
-              pageSize: 20,
-              totalCount: 4
+          .toHaveBeenCalledWith({
+            type: 'ORDERS.GET_ORDERS', payload: {
+              items: [],
+              pagination: {
+                currentPage: 1,
+                hasNextPage: false,
+                hasPreviousPage: false,
+                numberOfPages: 1,
+                pageSize: 20,
+                totalCount: 4
+              }
             }
-          }});
+          });
       });
     });
   });

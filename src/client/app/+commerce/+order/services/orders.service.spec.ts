@@ -33,8 +33,17 @@ export function main() {
     });
 
     describe('getOrders()', () => {
+      let params: any;
+      let paramsMinusOne: any;
+
+      beforeEach(() => {
+        params = { i: '1', n: '20' };
+        paramsMinusOne = { i: '0', n: '20' };
+      });
+
+
       it('calls the API service correctly', () => {
-        serviceUnderTest.getOrders();
+        serviceUnderTest.getOrders(params);
         expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('order/myOrders');
         expect(mockApi.get).toHaveBeenCalledWithLoading(true);
