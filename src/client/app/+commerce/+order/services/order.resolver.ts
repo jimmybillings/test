@@ -3,14 +3,17 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs/Rx';
 
 import { OrderService } from './order.service';
+import { OrderStore } from './order.store';
 
 @Injectable()
 export class OrderResolver implements Resolve<any> {
-  constructor(private orderService: OrderService) { }
+  constructor(private orderService: OrderService, private orderStore: OrderStore) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    // need to figure out how we are actually retrieving thr order
-    // it seems wrong to be using the id. maybe a unique identifier?
-    return this.orderService.getOrder(route.params['orderId']);
+    if (this.orderStore.state && Number(this.orderStore.state.id) === Number(route.params['orderId'])) {
+      return this.orderStore.data;
+    } else {
+      return this.orderService.getOrder(route.params['orderId']);
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
+import { OrderStore } from '../../../+order/services/order.store';
 
 import { Tab } from './tab';
 import { CartService } from '../../services/cart.service';
@@ -18,7 +19,10 @@ export class ReviewTabComponent extends Tab implements OnInit {
   public cart: Observable<any>;
   public canPurchaseOnCredit: boolean;
 
-  constructor(private cartService: CartService, private userCan: CartCapabilities, private router: Router) {
+  constructor(private cartService: CartService,
+    private userCan: CartCapabilities,
+    private router: Router,
+    private order: OrderStore) {
     super();
   }
 
@@ -29,7 +33,8 @@ export class ReviewTabComponent extends Tab implements OnInit {
 
   public purchaseOnCredit(): void {
     this.cartService.purchaseOnCredit().subscribe(data => {
-      this.router.navigate(['/order/' + data.id, { orderPlaced: true }]);
+      this.order.update(data);
+      this.router.navigate(['/order/' + data.id]);
     });
   }
 }

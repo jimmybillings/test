@@ -5,7 +5,7 @@ import { ReviewTabComponent } from './review-tab.component';
 export function main() {
   describe('Review Tab Component', () => {
     let componentUnderTest: ReviewTabComponent;
-    let mockRouter: any;
+    let mockRouter: any, mockOrderStore: any;
 
     beforeEach(() => {
       let mockCartService: any = {
@@ -21,8 +21,12 @@ export function main() {
         navigate: jasmine.createSpy('navigate')
       };
 
+      mockOrderStore = {
+        update: jasmine.createSpy('update')
+      }
+
       componentUnderTest =
-        new ReviewTabComponent(mockCartService, mockCartCapabilities, mockRouter);
+        new ReviewTabComponent(mockCartService, mockCartCapabilities, mockRouter, mockOrderStore);
     });
 
     describe('Initialization', () => {
@@ -46,7 +50,14 @@ export function main() {
         componentUnderTest.purchaseOnCredit();
 
         expect(mockRouter.navigate)
-          .toHaveBeenCalledWith(['/order/10836', { orderPlaced: true }]);
+          .toHaveBeenCalledWith(['/order/10836']);
+      });
+
+      it('updates the order store', () => {
+        componentUnderTest.purchaseOnCredit();
+
+        expect(mockOrderStore.update)
+          .toHaveBeenCalledWith({ id: 10836 });
       });
     });
   });
