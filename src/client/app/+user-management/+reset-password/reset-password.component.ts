@@ -17,7 +17,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   public config: any;
   public serverErrors: ServerErrors = null;
   private configSubscription: Subscription;
-  
+
   constructor(
     private user: User,
     private uiConfig: UiConfig,
@@ -25,7 +25,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     private router: Router,
     private currentUser: CurrentUser,
     private notification: WzNotificationService) {
-      
+
   }
 
   ngOnInit(): void {
@@ -41,12 +41,12 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   public onSubmit(user: any): void {
     this.user.resetPassword({ newPassword: user.newPassword }, this.route.snapshot.queryParams['shareKey'])
       .subscribe(
-        (res: any) => {
-          this.currentUser.set(res.user, res.token.token);
-          this.router.navigate(['/']);
-          this.notification.create('RESETPASSWORD.PASSWORD_CHANGED');
-        }, (error) => {
-          this.serverErrors = error.json();
-        });
+      (res: any) => {
+        this.currentUser.set(res.user, res.token.token);
+        this.router.navigate(['/']);
+        this.notification.create('RESETPASSWORD.PASSWORD_CHANGED');
+      }, (error) => {
+        this.serverErrors = error.json();
+      });
   }
 }

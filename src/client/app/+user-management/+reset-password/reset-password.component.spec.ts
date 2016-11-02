@@ -1,5 +1,6 @@
 import { Observable } from '../../imports/test.imports';
 import { ResetPasswordComponent } from './reset-password.component';
+import { Response, ResponseOptions } from '@angular/http';
 
 export function main() {
   describe('Reset Password Component', () => {
@@ -25,7 +26,7 @@ export function main() {
       });
     });
 
-    describe('onSubmit()', () => {
+    describe('onSubmit() success', () => {
       it('Submits a set new password request', () => {
         componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
         expect(mockUser.resetPassword).toHaveBeenCalledWith({ 'newPassword': 'myNewTestPassword' }, 'sldkjf2938sdlkjf289734');
@@ -45,6 +46,16 @@ export function main() {
       it('Displays a notification that the password was sucessfully changed', () => {
         componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
         expect(mockNotification.create).toHaveBeenCalledWith('RESETPASSWORD.PASSWORD_CHANGED');
+      });
+    });
+
+    describe('onSubmit() error', () => {
+      it('Sets a errors variable to display errors if the server doesnt pass', () => {
+        const errorResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify({newPassword: 'Needs a number and letter'}) }));
+        mockUser = { resetPassword: jasmine.createSpy('resetPassword').and.returnValue(Observable.throw(errorResponse)) };
+        componentUnderTest = componentUnderTest = new ResetPasswordComponent(mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUser, mockNotification);
+        componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
+        expect(componentUnderTest.serverErrors).toEqual({newPassword: 'Needs a number and letter'});
       });
     });
 
