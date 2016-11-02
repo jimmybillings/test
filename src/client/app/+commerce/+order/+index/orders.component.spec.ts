@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: OrdersComponent;
 
     beforeEach(() => {
-      componentUnderTest = new OrdersComponent(null, null);
+      componentUnderTest = new OrdersComponent(null,null,null);
     });
 
     it('has no tests!', () => {

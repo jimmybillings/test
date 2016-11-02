@@ -60,3 +60,11 @@ export interface Pagination {
   hasPreviousPage?: boolean;
   numberOfPages?: number;
 }
+
+export interface OrdersUrlParams {
+  s?: string;
+  d?: string;
+  i?: string;
+  n?: string;
+  loading?: string;
+}
