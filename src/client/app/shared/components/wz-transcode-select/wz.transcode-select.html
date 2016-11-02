@@ -1,19 +1,24 @@
 <div class="transcode-target-menu-trigger" [md-menu-trigger-for]="transcodeTargetMenu">
-  <div layout="row" layout-align="space-between center">
-    <span class="transcode-text">
+	<div layout="row" layout-align="space-between center">
+		<span class="transcode-text">
       <span *ngIf="selectedTarget">{{ 'ASSET.TRANSCODE_TARGETS.' + selectedTarget.name | translate }}</span>
-      <span *ngIf="!selectedTarget">Please select a target</span>
-    </span>
-    <span class="select-icon">
+		<span *ngIf="!selectedTarget">Please select a target</span>
+		</span>
+		<span class="select-icon">
       <md-icon>arrow_drop_down</md-icon>
     </span>
-  </div>
+	</div>
 </div>
 
 <md-menu class="transcode-target-menu" #transcodeTargetMenu>
-  <div class="dense group" *ngFor="let target of transcodeTargetMap">
-    <button md-menu-item (click)="onSelectTarget(target)">
-      <md-icon *ngIf="target.selected">check</md-icon>{{ 'ASSET.TRANSCODE_TARGETS.' + target.name | translate }}
+	<div class="dense group" *ngFor="let target of transcodeTargets">
+		<button md-menu-item (click)="onSelectTarget(target)">
+      <span class="icon">
+        <md-icon *ngIf="target.selected">check</md-icon>
+      </span>
+      <span class="text">
+        {{ 'ASSET.TRANSCODE_TARGETS.' + target.name | translate }}
+      </span>
     </button>
-  </div>
+	</div>
 </md-menu>

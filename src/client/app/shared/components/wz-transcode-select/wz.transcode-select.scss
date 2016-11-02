@@ -1,15 +1,19 @@
 div.transcode-target-menu-trigger {
-  margin: 0 rem(1);
-  box-shadow: inset -2px -2px 0px 0px md-color($md-grey, 900);
+  margin: rem(1) 0;
   cursor: pointer;
   padding: rem(.5);
-  background-color: rgba(md-color($md-grey, 700), .5);
-  @include text-contrast(md-color($md-grey, 700));
-  span.select-icon {
-    @include text-contrast(md-color($md-grey, 700));
-  }
 }
 
 div.md-menu.transcode-target-menu {
   width: rem(38);
+  div.dense.group {
+    button {
+      span.icon {
+        width: 20%;
+        md-icon {
+          margin: rem(.2) 0;
+        }
+      }
+    }
+  }
 }

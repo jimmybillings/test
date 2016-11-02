@@ -8,15 +8,15 @@ import { TranscodeTarget } from '../../interfaces/asset.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WzTranscodeSelectComponent implements OnChanges {
-  @Input() transcodeTargetMap: Array<TranscodeTarget>;
+  @Input() transcodeTargets: Array<TranscodeTarget>;
   @Output() selectTarget: any = new EventEmitter();
 
   ngOnChanges(changes: any): void {
-    console.log(changes.transcodeTargetMap.currentValue);
+    console.log(changes.transcodeTargets.currentValue);
   }
 
   public get selectedTarget(): TranscodeTarget {
-    return this.transcodeTargetMap.filter((target: TranscodeTarget) => {
+    return this.transcodeTargets.filter((target: TranscodeTarget) => {
       return target.selected;
     })[0];
   }
