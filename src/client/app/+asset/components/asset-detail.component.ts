@@ -44,7 +44,7 @@ export class AssetDetailComponent implements OnChanges {
         this.asset.hasDownloadableComp = changes.asset.currentValue.hasDownloadableComp;
         this.asset.assetId = changes.asset.currentValue.assetId;
         this.asset.price = changes.asset.currentValue.price;
-        this.asset.transcodeTargets = this.format(changes.asset.currentValue.transcodeTargets);
+        this.asset.transcodeTargets = changes.asset.currentValue.transcodeTargets;
         // the "+" in +this.asset.common[0].vaue changes it from a string to a number
         this.inActiveCollection = this.alreadyInCollection(+this.asset.common[0].value);
       }
@@ -79,23 +79,11 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public addAssetToCart(asset: any): void {
-    // NEED TO INCLUDE THE TRANSCODE TARGET HERE
+    Object.assign(asset, { selectedTranscodeTarget: this.selectedTarget.name });
     this.addToCart.emit(asset);
   }
 
   public selectTarget(selectedTarget: TranscodeTarget): void {
-    this.asset.transcodeTargets.map((target: TranscodeTarget) => {
-      target.selected = false;
-    });
-    selectedTarget.selected = true;
     this.selectedTarget = selectedTarget;
-  }
-
-  private format(transcodeTargets: any): Array<TranscodeTarget> {
-    return transcodeTargets.map((target: string, i: number) => {
-      let name: string = target;
-      let selected: boolean = i === 0 ? true : false;
-      return { name: name, selected: selected };
-    });
   }
 }

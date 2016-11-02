@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Project, LineItem } from '../cart.interface';
+import { TranscodeTarget } from '../../../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -32,5 +33,9 @@ export class LineItemsComponent {
 
   public selectLineItem(lineItem: LineItem) {
     this.selectedLineItem = lineItem;
+  }
+
+  public selectTarget(selectedTarget: TranscodeTarget, lineItem: LineItem): void {
+    console.log(selectedTarget, lineItem);
   }
 }

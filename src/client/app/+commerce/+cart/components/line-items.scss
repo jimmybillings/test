@@ -27,4 +27,10 @@ section.line-item {
       }
     }
   }
+  wz-transcode-select {
+    div.transcode-target-menu-trigger {
+      margin: 0 rem(.5);
+      border-bottom: 1px solid md-color($md-grey, 500);
+    }
+  }
 }
