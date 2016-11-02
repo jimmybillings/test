@@ -1,14 +1,8 @@
-<form 
-  layout="column" 
-  [formGroup]="form" 
-  novalidate 
-  class="md-inline-form"
-  autocomplete="{{autocomplete}}"
-  (ngSubmit)="onSubmit()">
+<form layout="column" [formGroup]="form" novalidate class="md-inline-form" autocomplete="{{autocomplete}}" (ngSubmit)="onSubmit()">
 
-    <div *ngFor="let field of items; let i=index">
+	<div *ngFor="let field of items; let i=index">
 
-      <!--
+		<!--
         START: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
       <md-input
@@ -20,39 +14,37 @@
         formControlName="{{field.name}}"
         id="{{field.name}}">
 
-        <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
-        <md-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
-          {{ field.hintTextStart | translate }}
-        </md-hint>
-        <md-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
-          {{ field.hintTextEnd | translate }}
-        </md-hint>
+			<!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
+			<md-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
+				{{ field.hintTextStart | translate }}
+			</md-hint>
+			<md-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
+				{{ field.hintTextEnd | translate }}
+			</md-hint>
 
-        <md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
-          [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
-          align="start" 
-          class="error">
-            <span *ngIf="form.controls[field.name].hasError('required')">
+			<md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
+				align="start" class="error">
+				<span *ngIf="form.controls[field.name].hasError('required')">
               {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
             </span>
-            <span *ngIf="form.controls[field.name].hasError('minlength')">
+				<span *ngIf="form.controls[field.name].hasError('minlength')">
               {{ 'ERRORS.MIN_LENGTH_REQUIRED' | translate:{charLength:form.controls[field.name]._errors.minlength.requiredLength} }}
             </span>
-            <span *ngIf="form.controls[field.name].hasError('pattern') && !form.controls[field.name].hasError('minlength')">
+				<span *ngIf="form.controls[field.name].hasError('pattern') && !form.controls[field.name].hasError('minlength')">
               {{ 'ERRORS.VALID_EMAIL_REQUIRED' | translate }}
             </span>
-            <span *ngIf="form.controls[field.name].hasError('startsWithNumber')">
+				<span *ngIf="form.controls[field.name].hasError('startsWithNumber')">
               {{ 'ERRORS.NAME_ALREADY_TAKEN' | translate:{fieldName:field.label | translate} }}
             </span>
-            <span *ngIf="form.controls[field.name].hasError('collectionNameTaken')">
+				<span *ngIf="form.controls[field.name].hasError('collectionNameTaken')">
               Name is already taken
             </span>
-            <span *ngIf="form.controls[field.name].hasError('serverError')">
+				<span *ngIf="form.controls[field.name].hasError('serverError')">
               {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
-            </span>     
-        </md-hint>
-      </md-input>
-      <!--
+            </span>
+			</md-hint>
+		</md-input>
+		<!--
         END: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
 
@@ -137,46 +129,61 @@
       <!--
         START: FORM SELECT
       -->
-      <div *ngIf="field.type == 'select'">
-        <div class="md-group">
-          <select formControlName="{{field.name}}">
+		<div *ngIf="field.type == 'select'">
+			<div class="md-group">
+				<select formControlName="{{field.name}}">
             <option *ngFor="let option of parseOptions(field.options)">{{option}}</option>
           </select>
-        </div>
-      </div>
-      <!--
+			</div>
+		</div>
+		<!--
         END: FORM SELECT
       -->
 
-      <!--
+		<!--
         START: FORM RADIO BUTTONS
       -->
-      <md-radio-group *ngIf="field.type == 'radio'" layout="row" formControlName="{{field.name}}">
-        <md-radio-button
-          style="margin-right: 1rem;"
-          *ngFor="let option of parseOptions(field.options)"
-          [checked]="parseOptions(field.options)[0]==option"
-          [value]="option"
-          class="md-primary"
-          (click)="radioSelect(field.name, option)">
-            {{option}}
-        </md-radio-button>
-      </md-radio-group>
-      <!--
+		<md-radio-group *ngIf="field.type == 'radio'" layout="row" formControlName="{{field.name}}">
+			<md-radio-button style="margin-right: 1rem;" *ngFor="let option of parseOptions(field.options)" [checked]="parseOptions(field.options)[0]==option"
+				[value]="option" class="md-primary" (click)="radioSelect(field.name, option)">
+				{{option}}
+			</md-radio-button>
+		</md-radio-group>
+		<!--
         END: FORM RADIO BUTTONS
       -->
-      <!--
+		<!--
         START: FORM CHECKBOX
       -->
-      <md-checkbox *ngIf="field.type == 'checkbox'" layout="row" formControlName="{{field.name}}"
-        [checked]="field.defaultChecked"
-        color="primary">
-          {{ field.label | translate }}
-      </md-checkbox>
-      <!--
+		<md-checkbox *ngIf="field.type == 'checkbox'" layout="row" formControlName="{{field.name}}" [checked]="field.defaultChecked"
+			[required]="isRequiredField(field)" color="primary">
+			{{ field.label | translate }}
+		</md-checkbox>
+		<!--
         END: FORM CHECKBOX
       -->
 
+		<!--
+        START: TOS FORM CHECKBOX
+      -->
+		<span *ngIf="field.type == 'tos-checkbox'" layout="row" layout-align="center center">
+			<md-checkbox layout="row" formControlName="{{field.name}}" [checked]="field.defaultChecked" color="primary" [required]="isRequiredField(field)">
+				{{ field.label | translate }}&nbsp;
+
+				<md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
+					align="start" class="error">
+					<span *ngIf="form.controls[field.name].hasError('mustBeCheckedError')">
+						{{ 'ERRORS.AGREE_TO_TOS' | translate}}
+					</span>
+				</md-hint>
+			</md-checkbox>
+			<a class="view-tos" (click)="onViewTos()">{{ field.link | translate }}</a>
+		</span>
+		<!--
+        END: TOS FORM CHECKBOX
+      -->
+
+		<!--
       <!--
         START: CUSTOM ELEMENT FOR DOUBLE PASSWORD INPUTS
       -->
@@ -190,55 +197,55 @@
       <!--
         START: CUSTOM FOR ELEMENT FOR CREATING TAGS
       -->
-      <wz-input-tags *ngIf="field.type == 'tags'" #tags [tags]="field.tags" [fControl]="form.controls[field.name]">
-        <input type="hidden" formControlName="{{field.name}}">
-        <md-input placeholder="{{field.label | translate}}" (keydown)="tags.submit($event)" id="{{field.name}}"></md-input>
-      </wz-input-tags>
-      <!--
+		<wz-input-tags *ngIf="field.type == 'tags'" #tags [tags]="field.tags" [fControl]="form.controls[field.name]">
+			<input type="hidden" formControlName="{{field.name}}">
+			<md-input placeholder="{{field.label | translate}}" (keydown)="tags.submit($event)" id="{{field.name}}"></md-input>
+		</wz-input-tags>
+		<!--
         END: CUSTOM FOR ELEMENT FOR CREATING TAGS
       -->
 
-      <!--
+		<!--
         START: CUSTOM FOR ELEMENT FOR SUGGESTIONS BASED ON TEXT INPUT
       -->
-      <wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]">
-        <md-input placeholder="{{field.label | translate}}" 
-          (keydown)="suggestions.inputKeyDown($event)"
-          [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
-          formControlName="{{field.name}}"
-          type="text"
-          [required]="isRequiredField(field)">
-          <md-hint *ngIf="!form.controls[field.name].valid"
-            [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
-            align="start" 
-            class="error">
-              <span *ngIf="form.controls[field.name].hasError('required')">
-                {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
-              </span>
-              <span *ngIf="form.controls[field.name].hasError('serverError')">
-                {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
-              </span>
-          </md-hint>
-        </md-input>
-      </wz-input-suggestions>
-    </div>
-    <!--
+		<wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]">
+			<md-input placeholder="{{field.label | translate}}" 
+				(keydown)="suggestions.inputKeyDown($event)"
+				[ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
+				formControlName="{{field.name}}"
+				type="text"
+				[required]="isRequiredField(field)">
+				<md-hint *ngIf="!form.controls[field.name].valid"
+					[hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
+					align="start" 
+					class="error">
+						<span *ngIf="form.controls[field.name].hasError('required')">
+							{{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+						</span>
+						<span *ngIf="form.controls[field.name].hasError('serverError')">
+							{{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
+						</span>
+				</md-hint>
+			</md-input>
+		</wz-input-suggestions>
+	</div>
+	<!--
       END: CUSTOM FOR ELEMENT FOR SUGGESTIONS BASED ON TEXT INPUT
     -->
 
-    <!--
+	<!--
       SHOW THE REQUIRED LEGEND IF FORM HAS AT LEAST ONE REQUIRED FIELD.
     -->
-    <div class="indicate-required" *ngIf="hasRequiredFields(items)">
-      <span>{{ 'ERRORS.INDICATES_REQUIRED_FIELD' | translate }}</span>
-    </div>
-    
-    <md-card-actions layout="row" layout-align="end center" *ngIf="includeCancel">
-      <button md-button type="reset" color="primary" (click)="formCancel.emit()">{{cancelLabel | translate}}</button>
-      <button md-button type="submit" color="primary">{{submitLabel | translate}}</button>
-    </md-card-actions>
+	<div class="indicate-required" *ngIf="hasRequiredFields(items)">
+		<span>{{ 'ERRORS.INDICATES_REQUIRED_FIELD' | translate }}</span>
+	</div>
 
-    <md-card-actions layout="row" layout-align="center center" *ngIf="!includeCancel">
-      <button md-raised-button type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
-    </md-card-actions>
+	<md-card-actions layout="row" layout-align="end center" *ngIf="includeCancel">
+		<button md-button type="reset" color="primary" (click)="formCancel.emit()">{{cancelLabel | translate}}</button>
+		<button md-button type="submit" color="primary">{{submitLabel | translate}}</button>
+	</md-card-actions>
+
+	<md-card-actions layout="row" layout-align="center center" *ngIf="!includeCancel">
+		<button md-raised-button type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
+	</md-card-actions>
 </form>

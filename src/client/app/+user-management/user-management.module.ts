@@ -9,12 +9,13 @@ import { SharedModule } from '../shared/shared.module';
 import { User } from './services/user.data.service';
 import { USER_ROUTES } from './user-management.routes';
 import { RouterModule } from '@angular/router';
+import { DocumentService } from './services/document.service';
 
 @NgModule({
     imports: [SharedModule, RouterModule.forChild(USER_ROUTES)],
     declarations: [UserManagementComponent, LoginComponent, RegisterComponent, ProfileComponent, ForgotPasswordComponent, ResetPasswordComponent],
     exports: [UserManagementComponent],
-    providers: [User],
+    providers: [User, DocumentService],
 })
 
 export class UserManagementModule { }
