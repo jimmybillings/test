@@ -37,6 +37,10 @@ import { CommerceModule } from './+commerce/commerce.module';
   providers: [{
     provide: APP_BASE_HREF,
     useValue: '<%= APP_BASE %>',
+  },
+  {
+    provide: Window,
+    useValue: window
   }],
   declarations: [AppComponent],
   bootstrap: [AppComponent],

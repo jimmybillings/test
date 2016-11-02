@@ -49,6 +49,8 @@ export class FormModel {
         return this._getCollectionValidator();
       case 'MULTIEMAIL':
         return this._getMultiEmailValidator();
+      case 'TERMS':
+        return this._getTermsValidator();
       default:
         return this._getOptionalValidator;
     }
@@ -88,5 +90,17 @@ export class FormModel {
     // return [Validators.required, WzTestValidator.startsWithNumber];
     // return Validators.required, WzCollectionValidator.checkCollectionName;
     return Validators.required;
+  }
+
+  private _getTermsValidator(): Validators {
+    return this.checkboxRequired;
+  }
+
+  private checkboxRequired(control: FormGroup) {
+    if (!control.value) {
+      return { mustBeCheckedError: 'Must be checked' };
+    } else {
+      return null;
+    }
   }
 }

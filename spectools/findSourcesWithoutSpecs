@@ -1,6 +1,6 @@
 #!/bin/sh
 baseDir=src/client/app
-ignoreFilePatterns='*.spec *.interface *.module *.routes main system-config env.config'
+ignoreFilePatterns='*.spec *.interface *.module *.routes main system-config env.config wz-clipboard.directive wz-pikaday.directive'
 ignoreDirectories='imports'
 fileNamesOnly=false
 quietMode=false

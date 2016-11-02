@@ -96,7 +96,7 @@ export class ApiService {
     let [search, searchWasSet] = this.searchParametersFrom(options.parameters);
     const requestOptionsArgs: RequestOptionsArgs = {};
 
-    requestOptionsArgs.headers = this.apiConfig.headers(options.overridingToken);
+    requestOptionsArgs.headers = this.apiConfig.headers(options.overridingToken, options.download);
     if (searchWasSet) requestOptionsArgs.search = search;
 
     return requestOptionsArgs;

@@ -18,6 +18,7 @@ import { WzFormComponent } from './components/wz-form/wz.form.component';
 import { WzListComponent } from './components/wz-list/wz.list.component';
 import { WzPaginationComponent } from './components/wz-pagination/wz.pagination.component';
 import { WzPikaDayDirective } from './components/wz-pikaday/wz-pikaday.directive';
+import { WzClipBoardDirective } from './components/wz-clipboard/wz-clipboard.directive';
 import { WzPlayerComponent } from './components/wz-player/wz.player.component';
 import { WzToastComponent, WzToastPortalDirective } from './components/wz-toast/wz.toast.component';
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
@@ -30,6 +31,7 @@ import { WzSortComponent } from './components/wz-sort/wz.sort.component';
 import { CollectionLinkComponent } from '../+collection/components/collection-link.component';
 import { EqualValidatorDirective } from './components/wz-form/wz-validators/wz-equal-validator.directive';
 import { WzTranscodeSelectComponent } from './components/wz-transcode-select/wz.transcode-select.component';
+import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
@@ -78,7 +80,9 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSortComponent,
     CollectionLinkComponent,
     EqualValidatorDirective,
-    WzTranscodeSelectComponent
+    WzTranscodeSelectComponent,
+    WzClipBoardDirective,
+    WzTermsComponent
   ],
   exports: [
     WzSearchBoxComponent,
@@ -113,7 +117,9 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSortComponent,
     CollectionLinkComponent,
     EqualValidatorDirective,
-    WzTranscodeSelectComponent],
+    WzTranscodeSelectComponent,
+    WzClipBoardDirective,
+    WzTermsComponent],
   entryComponents: [WzNotificationComponent]
 })
 
