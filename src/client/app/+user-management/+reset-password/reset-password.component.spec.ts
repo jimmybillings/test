@@ -3,7 +3,7 @@ import { ResetPasswordComponent } from './reset-password.component';
 
 export function main() {
   describe('Reset Password Component', () => {
-    let mockUiConfig: any, mockUser: any, mockActivatedRoute: any, mockRouter: any, mockCurrentUser: any;
+    let mockUiConfig: any, mockUser: any, mockActivatedRoute: any, mockRouter: any, mockCurrentUser: any, mockNotification:any;
     let componentUnderTest: ResetPasswordComponent;
 
     beforeEach(() => {
@@ -14,7 +14,8 @@ export function main() {
       mockActivatedRoute = { snapshot: { queryParams: { shareKey: 'sldkjf2938sdlkjf289734' } } };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
       mockCurrentUser = { set: jasmine.createSpy('set') };
-      componentUnderTest = new ResetPasswordComponent(mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUser);
+      mockNotification = { create: jasmine.createSpy('create') };
+      componentUnderTest = new ResetPasswordComponent(mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUser, mockNotification);
     });
 
     describe('ngOnInit()', () => {
@@ -40,6 +41,11 @@ export function main() {
         componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
       });
+
+      it('Displays a notification that the password was sucessfully changed', () => {
+        componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
+        expect(mockNotification.create).toHaveBeenCalledWith('RESETPASSWORD.PASSWORD_CHANGED');
+      });
     });
 
     describe('ngOnDestroy()', () => {
@@ -47,7 +53,7 @@ export function main() {
         let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
-        componentUnderTest = new ResetPasswordComponent(mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUser);
+        componentUnderTest = new ResetPasswordComponent(mockUser, mockUiConfig, mockActivatedRoute, mockRouter, mockCurrentUser, mockNotification);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();
