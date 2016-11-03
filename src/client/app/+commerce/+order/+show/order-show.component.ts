@@ -8,13 +8,13 @@ import { OrderService } from '../services/order.service';
 })
 
 export class OrderShowComponent {
-  constructor(private order: OrderService) { }
+  constructor(public window: Window, private order: OrderService) { }
 
   public translationReady(field: any) {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
   public downloadMaster(masterUrl: string): void {
-    window.location.href = masterUrl;
+    this.window.location.href = masterUrl;
   }
 }
