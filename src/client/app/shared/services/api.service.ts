@@ -15,7 +15,7 @@ export class ApiService {
     private apiConfig: ApiConfig,
     private uiState: UiState,
     private currentUser: CurrentUser
-  ) { 
+  ) {
   }
 
   public get(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
