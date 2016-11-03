@@ -69,6 +69,7 @@
           {{ field.hintTextEnd | translate }}
         </md-hint>
 
+
         <md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
           [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
           align="start" 
