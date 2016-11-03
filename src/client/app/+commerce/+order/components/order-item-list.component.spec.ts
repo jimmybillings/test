@@ -8,9 +8,12 @@ export function main() {
       componentUnderTest = new OrderItemListComponent();
     });
 
-    it('has no tests!', () => {
-      expect(true).toBe(true);
+    describe('Instance of component', () => {
+      it('Should be true', () => {
+        expect(componentUnderTest instanceof OrderItemListComponent).toBeTruthy();
+      });
     });
+    
   });
 };
 

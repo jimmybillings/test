@@ -9,7 +9,7 @@
                           <span class="number">{{order.id}}</span>
                         </div>
                         <div class="md-caption order-info">
-                        <span><strong>{{ 'ORDER.CREATED_ON_LABEL' | translate }} </strong>{{ date(order.createdOn) | date:'short' }}</span>
+                        <span><strong>{{ 'ORDER.CREATED_ON_LABEL' | translate }} </strong>{{ order.createdOn | date:'short' }}</span>
                         <span><strong>{{ 'ORDER.ORDER_TYPE_LABEL' | translate }} </strong>{{order.orderType}}</span>
                     </div>
                     </div>

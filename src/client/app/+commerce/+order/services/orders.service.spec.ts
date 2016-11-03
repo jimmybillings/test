@@ -16,11 +16,11 @@ export function main() {
       mockOrdersStore = {
         replaceWith: jasmine.createSpy('replaceWith'),
         data: Observable.of({ some: 'data' }),
-        state: { some: 'state' }
+        state: { some: 'state' },
+        storeOrders: jasmine.createSpy('storeOrders')
       };
 
       mockApi = new MockApiService();
-
       serviceUnderTest = new OrdersService(mockApi.injector, mockOrdersStore);
     });
 
@@ -43,10 +43,12 @@ export function main() {
 
 
       it('calls the API service correctly', () => {
-        serviceUnderTest.getOrders(params);
-        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.get).toHaveBeenCalledWithEndpoint('order/myOrders');
-        expect(mockApi.get).toHaveBeenCalledWithLoading(true);
+        serviceUnderTest.getOrders(params).subscribe((res) => {
+          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApi.get).toHaveBeenCalledWithEndpoint('order/myOrders');
+          expect(mockApi.get).toHaveBeenCalledWithLoading(true);
+          expect(mockOrdersStore.storeOrders).toHaveBeenCalledWith(res);
+        });
       });
     });
 

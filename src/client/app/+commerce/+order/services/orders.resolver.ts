@@ -10,6 +10,6 @@ export class OrdersResolver implements Resolve<any> {
     private ordersService: OrdersService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    return this.ordersService.getOrders(route.params);
+    return this.ordersService.getOrders(JSON.parse(JSON.stringify(route.params)));
   }
 }
