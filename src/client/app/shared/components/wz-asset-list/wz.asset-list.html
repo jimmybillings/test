@@ -22,7 +22,7 @@
             [disabled]="!currentUser.loggedIn()"
             md-icon-button
             title="Add to cart"
-            (click)="addAssetToCart(asset); addToCartToast.show()">
+            (click)="addAssetToCart(asset.assetId); addToCartToast.show()">
               <md-icon>shopping_cart</md-icon>
           </button>
 

@@ -80,6 +80,6 @@ export class AssetComponent implements OnInit {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cartSummary.addAssetToProjectInCart(asset);
+    this.cartSummary.addAssetToProjectInCart(asset.assetId, asset.selectedTranscodeTarget);
   }
 }
