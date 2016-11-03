@@ -6,6 +6,8 @@ import { OrdersStore } from './orders.store';
 
 @Injectable()
 export class OrdersService {
+  private params: any;
+
   constructor(
     private api: ApiService,
     private store: OrdersStore) { }
@@ -15,9 +17,13 @@ export class OrdersService {
   }
 
   public getOrders(params:any): Observable<any> {
-    console.log((parseFloat(params['i']) - 1).toString());
+    // console.log((parseFloat(params['i']) - 1).toString());
     // if (params['i']) params['i'] = (parseFloat(params['i']) - 1).toString();
     return this.api.get(Api.Orders, 'order/myOrders', { parameters: params, loading: true })
       .do(response => this.store.storeOrders(response));
+  }
+
+  public setSearchParams() {
+    this.params = { q: '', s: '', d: '', i: 0, n: 20 };
   }
 }

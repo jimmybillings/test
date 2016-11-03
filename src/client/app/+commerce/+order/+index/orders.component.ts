@@ -11,7 +11,10 @@ import { Subscription } from 'rxjs/Rx';
 })
 export class OrdersComponent implements OnInit, OnDestroy {
   public params: OrdersUrlParams;
+  public options: any;
+  public itemSearchIsShowing: boolean = false;
   private routeSubscription: Subscription;
+
   constructor(
     public router: Router,
     public route: ActivatedRoute,
@@ -25,29 +28,44 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.routeSubscription.unsubscribe();
   }
 
+  // public search(query: any) {
+  //   this.collectionContext.updateCollectionOptions({ currentSearchQuery: query });
+  //   this.orders.load(query, true).take(1).subscribe();
+  // }
+
+  public toggleShowOrderSearch() {
+    this.itemSearchIsShowing = !this.itemSearchIsShowing;
+  }
+
+
+
+
+
+
   public buildRouteParams(params: OrdersUrlParams): void {
     let i: string, n: string;
     i = params['i'] || '1';
     n = params['n'] || '20';
     this.params = { i, n };
-    console.log(this.params);
+    // console.log(this.params);
   }
 
   public routeChanges(): Subscription {
     return this.route.params.subscribe(params => {
       this.buildRouteParams(params);
-
     });
   }
 
   public changePage(i: string): void {
-    console.log(i);
+    // console.log(i);
     this.updateRouteParams({ i });
+    // console.log(this.params);
     this.router.navigate(['/orders', this.params ]);
   }
 
   private updateRouteParams(dynamicParams: OrdersUrlParams) {
-    console.log(dynamicParams);
+    // console.log(dynamicParams);
+    // console.log(this.params);
     return Object.assign(this.params, dynamicParams);
   }
 }
