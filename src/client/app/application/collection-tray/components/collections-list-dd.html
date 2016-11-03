@@ -1,13 +1,14 @@
 <div class="collections-dd-menu">
   <div class="dd-menu-wrapper">
     <header>
-      <collections-search-form
+      <wz-item-search-form
         *ngIf="collectionSearchIsShowing"
         [ngClass]="{ 'revealed' : collectionSearchIsShowing }"
         [currentSearchQuery]="options.currentSearchQuery"
         (query)="search($event)"
+        placeholderTxt="{{ 'COLLECTION.INDEX.SEARCH_BOX_LABEL' | translate }}"
         (closeSearch)="showCollectionSearch()">
-      </collections-search-form>
+      </wz-item-search-form>
       <collections-filter-dd
         *ngIf="collectionFilterIsShowing"
         flex="100"
