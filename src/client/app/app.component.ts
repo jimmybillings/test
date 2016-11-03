@@ -33,7 +33,6 @@ export class AppComponent implements OnInit {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
   private bootStrapUserDataSubscription: Subscription;
-
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
 
   constructor(
@@ -61,6 +60,7 @@ export class AppComponent implements OnInit {
     this.uiConfig.initialize(this.currentUser.loggedIn(), this.apiConfig.getPortal()).subscribe();
     this.routerChanges();
     this.processUser();
+    this.notification.initialize(this.target);
   }
 
   public logout(): void {
@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
         this.uiState.checkForFilters(event.url);
         this.state = event.url;
         this.window.scrollTo(0, 0);
-        this.notification.check(this.state, this.target);
+        this.notification.check(this.state);
       });
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
@@ -27,7 +27,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public routeParams: any;
   public errorMessage: string;
   public config: Object;
-  @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
   public date(date: any): Date {
@@ -90,7 +89,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       if (res.url && res.url !== '') {
         window.location.href = res.url;
       } else {
-        this.notification.create(this.target, { trString: 'COMPS.NO_COMP', theme: 'alert' });
+        this.notification.create('COMPS.NO_COMP');
       }
     });
   }

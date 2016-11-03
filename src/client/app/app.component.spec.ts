@@ -48,7 +48,7 @@ export function main() {
         getPrefs: jasmine.createSpy('getPrefs')
       };
       mockRenderer = { listenGlobal: jasmine.createSpy('listenGlobal').and.callFake((a: any, b: any, c: Function) => { c(); }) };
-      mockNotification = { check: jasmine.createSpy('check') };
+      mockNotification = { check: jasmine.createSpy('check'), initialize: jasmine.createSpy('initialize') };
       mockApiConfig = { getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal') };
       mockAuthentication = { destroy: jasmine.createSpy('destroy').and.returnValue(Observable.of({})) };
       mockUserCan = { viewCollections: () => canViewCollections };
@@ -67,6 +67,13 @@ export function main() {
         it('Should set the portal name', () => {
           componentUnderTest.ngOnInit();
           expect(mockApiConfig.setPortal).toHaveBeenCalledWith('core');
+        });
+      });
+
+      describe('notification.initialize()', () => {
+        it('Should initialize the notification service with the global element target', () => {
+          componentUnderTest.ngOnInit();
+          expect(mockNotification.initialize).toHaveBeenCalled();
         });
       });
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { AssetService} from '../shared/services/asset.service';
@@ -24,7 +24,6 @@ import { UserPreferenceService } from '../shared/services/user-preference.servic
 export class AssetComponent implements OnInit {
   public asset: Observable<any>;
   public pageSize: string;
-  @ViewChild('target', { read: ViewContainerRef }) private target: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,6 +41,7 @@ export class AssetComponent implements OnInit {
 
   ngOnInit(): void {
     this.asset = this.assetService.data;
+    this.asset.take(1).subscribe(data => console.log(data));
     this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
@@ -68,7 +68,7 @@ export class AssetComponent implements OnInit {
       if (res.url && res.url !== '') {
         window.location.href = res.url;
       } else {
-        this.notification.create(this.target, { trString: 'COMPS.NO_COMP', theme: 'alert' });
+        this.notification.create('COMPS.NO_COMP');
       }
     });
   }
