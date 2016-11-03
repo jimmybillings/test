@@ -6,7 +6,6 @@ export function main() {
   describe('Order Show', () => {
     let componentUnderTest: OrderShowComponent;
     let mockOrderService: any, mockWindow: any;
-    const window: any = { location: { href: '' } };
 
     beforeEach(() => {
       mockOrderService = {
@@ -14,7 +13,7 @@ export function main() {
       };
       mockWindow = {
         location: { href: '' }
-      }
+      };
       componentUnderTest = new OrderShowComponent(mockWindow, mockOrderService);
     });
 
