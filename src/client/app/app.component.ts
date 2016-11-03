@@ -16,6 +16,7 @@ import { ActiveCollectionService } from './shared/services/active-collection.ser
 import { CartSummaryService } from './shared/services/cart-summary.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
+import { ErrorActions } from './shared/services/error.service';
 
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
@@ -51,6 +52,7 @@ export class AppComponent implements OnInit {
     private authentication: Authentication,
     private userCan: Capabilities,
     private cartSummary: CartSummaryService,
+    private error: ErrorActions,
     private window: Window) {}
 
   ngOnInit() {

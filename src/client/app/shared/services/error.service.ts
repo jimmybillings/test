@@ -13,7 +13,7 @@ export const error: ActionReducer<any> = (state = {}, action: Action) => {
 };
 
 @Injectable()
-export class Error {
+export class ErrorService {
   public data: any;
 
   constructor(private store: Store<any>) {
@@ -28,7 +28,7 @@ export class Error {
 @Injectable()
 export class ErrorActions {
   private callInProgress: boolean = false;
-  constructor(private error: Error, private router: Router, private currentUser: CurrentUser) {
+  constructor(private error: ErrorService, private router: Router, private currentUser: CurrentUser) {
     this.error.data.subscribe(this.handle.bind(this));
   }
 

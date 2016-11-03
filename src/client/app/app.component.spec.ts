@@ -57,7 +57,7 @@ export function main() {
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUser,
         mockCollections, mockActiveCollection, mockUiState, mockUserPreference, mockRenderer,
-        mockNotification, mockApiConfig, mockAuthentication, mockUserCan, mockCartSummary, mockWindow);
+        mockNotification, mockApiConfig, mockAuthentication, mockUserCan, mockCartSummary, null, mockWindow);
     });
 
 
