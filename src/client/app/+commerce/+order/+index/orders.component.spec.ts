@@ -32,7 +32,7 @@ export function main() {
       });
 
       it('Should change to true when the method is first called', () => {
-        componentUnderTest.toggleShowOrderSearch()
+        componentUnderTest.toggleShowOrderSearch();
         expect(componentUnderTest.itemSearchIsShowing).toEqual(true);
       });
     });
