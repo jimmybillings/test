@@ -13,6 +13,11 @@ export function main() {
       expect(order({ current: 'State' }, { type: 'BLAH', payload: { someKey: 'someValue' } }))
         .toEqual({ current: 'State' });
     });
+
+    it('returns the default state for no current state and an unexpected action type', () => {
+      expect(order(undefined, { type: 'BLAH', payload: { someKey: 'someValue' } }))
+        .toEqual({ id: 1, projects: [], orderStatus: '', orderType: '' });
+    });
   });
 
   describe('Order Store', () => {
@@ -46,6 +51,12 @@ export function main() {
 
         expect(mockStore.dispatch)
           .toHaveBeenCalledWith({ type: 'ORDER.SET_CURRENT_ORDER', payload: { something: 'else' } });
+      });
+    });
+
+    describe('state()', () => {
+      it('returns the current store state', () => {
+        expect(storeUnderTest.state).toEqual({ someKey: 'someValue' });
       });
     });
   });
