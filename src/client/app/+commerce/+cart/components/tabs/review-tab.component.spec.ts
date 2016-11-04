@@ -23,7 +23,7 @@ export function main() {
 
       mockOrderStore = {
         update: jasmine.createSpy('update')
-      }
+      };
 
       componentUnderTest =
         new ReviewTabComponent(mockCartService, mockCartCapabilities, mockRouter, mockOrderStore);
