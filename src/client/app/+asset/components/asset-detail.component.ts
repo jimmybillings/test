@@ -19,6 +19,7 @@ export class AssetDetailComponent implements OnChanges {
   @Input() currentUser: CurrentUser;
   @Input() userCan: any;
   @Input() collection: Collection;
+  @Input() searchContext: any;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onShowNewCollection = new EventEmitter();

@@ -26,7 +26,7 @@ export function main() {
     it('Should initialize the store with a default state',
       inject([SearchContext], (service: SearchContext) => {
         service.data.subscribe(data => {
-          expect(data).toEqual({ q: '', i: 1, n: 100, sortId: 12 });
+          expect(data).toEqual({ q: null, i: 1, n: 100, sortId: 12 });
         });
       }));
 
@@ -42,7 +42,7 @@ export function main() {
 
     it('Should have a state getter method that returns the searchContext',
       inject([SearchContext], (service: SearchContext) => {
-        expect(service.state).toEqual({ q: '', i: 1, n: 100, sortId: 12 });
+        expect(service.state).toEqual({ q: null, i: 1, n: 100, sortId: 12 });
         service.update = { q: 'cat', i: 1, n: 100 };
         expect(service.state).toEqual({ q: 'cat', i: '1', n: '100', sortId: 12 });
       }));

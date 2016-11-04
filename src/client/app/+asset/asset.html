@@ -3,6 +3,7 @@
     [userCan]="userCan"
     [asset]="asset | async"
     [inActiveCollection]="inActiveCollection | async"
+    [searchContext]="searchContext"
     [collection]="activeCollection.data | async"
     (onAddToCollection)="addToCollection($event)"
     (onRemoveFromCollection)="removeFromCollection($event)"
