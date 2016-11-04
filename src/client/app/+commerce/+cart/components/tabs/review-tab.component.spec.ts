@@ -18,7 +18,7 @@ export function main() {
       };
 
       mockRouter = {
-        navigate: jasmine.createSpy('navigate').and.returnValue(new Promise(resolve => {return true;}))
+        navigate: jasmine.createSpy('navigate').and.returnValue(Promise.resolve())
       };
 
       mockOrderStore = {

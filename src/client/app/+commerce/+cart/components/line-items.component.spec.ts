@@ -81,7 +81,7 @@ export function main() {
             expect(event).toEqual({ type: 'EDIT_LINE_ITEM', payload: { lineItem: lineItem, fieldToEdit: { selectedTranscodeTarget: '1080i' } } });
           });
 
-        componentUnderTest.selectTarget({ name: '1080i', selected: false }, lineItem );
+        componentUnderTest.selectTarget({ name: '1080i', selected: false }, lineItem);
       });
     });
 
@@ -93,12 +93,21 @@ export function main() {
         };
         let actualResult: Array<any> = componentUnderTest.format(lineItem);
         let expectedResult: Array<any> = [
-          {name: '1080i', selected: false},
-          {name: '1080p', selected: false},
-          {name: 'master_copy', selected: true}
+          { name: '1080i', selected: false },
+          { name: '1080p', selected: false },
+          { name: 'master_copy', selected: true }
         ];
 
         expect(actualResult).toEqual(expectedResult);
+      });
+
+      it('sets the selectedTranscodeTarget', () => {
+        let lineItem: any = {
+          transcodeTargets: ['1080i', '1080p', 'master_copy'],
+          selectedTranscodeTarget: 'master_copy'
+        };
+        componentUnderTest.format(lineItem);
+        expect(componentUnderTest.selectedTranscodeTarget).toEqual({ name: 'master_copy', selected: true });
       });
     });
   });

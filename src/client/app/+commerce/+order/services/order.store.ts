@@ -21,7 +21,7 @@ export class OrderStore {
     return this.store.select('order');
   }
 
-  public get state(): any {
+  public get state(): Order {
     let state: any;
     this.data.take(1).subscribe(order => state = order);
     return state;

@@ -41,6 +41,7 @@ export class LineItemsComponent {
   }
 
   public format(lineItem: LineItem): Array<TranscodeTarget> {
+    this.selectedTranscodeTarget = { name: lineItem.selectedTranscodeTarget, selected: true };
     return lineItem.transcodeTargets.map((target: string) => {
       let name: string = target;
       let selected: boolean = target === lineItem.selectedTranscodeTarget ? true : false;
