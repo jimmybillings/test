@@ -4,7 +4,7 @@ import { Store, ActionReducer, Action} from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 
 const initSearchContext: any = {
-  q: null,
+  q: '',
   i: 1,
   n: 100,
   sortId: 12
