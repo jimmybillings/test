@@ -128,7 +128,10 @@ orders-component .orders-head {
       margin-top: rem(-.6);
       margin-bottom: rem(.6);
       .project-label {
-        font-weight: 100;
+        font-weight: 300;
+      }
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        padding-right: rem(3.4);
       }
     }
     .order-info {

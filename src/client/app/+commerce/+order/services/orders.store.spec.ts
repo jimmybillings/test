@@ -82,6 +82,32 @@ export function main() {
             }
           });
       });
+
+      it('dispatches ORDERS.GET_ORDERS with the passed-in orders, sets items to [] if items is undefined', () => {
+        storeUnderTest.storeOrders({
+          currentPage: 0,
+          hasNextPage: false,
+          hasPreviousPage: false,
+          numberOfPages: 1,
+          pageSize: 20,
+          totalCount: 4
+        });
+
+        expect(mockStore.dispatch)
+          .toHaveBeenCalledWith({
+            type: 'ORDERS.GET_ORDERS', payload: {
+              items: [],
+              pagination: {
+                currentPage: 1,
+                hasNextPage: false,
+                hasPreviousPage: false,
+                numberOfPages: 1,
+                pageSize: 20,
+                totalCount: 4
+              }
+            }
+          });
+      });
     });
   });
 }

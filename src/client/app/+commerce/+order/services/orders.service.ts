@@ -10,9 +10,7 @@ export class OrdersService {
 
   constructor(
     private api: ApiService,
-    private store: OrdersStore) { 
-      this.setSearchParams();
-    }
+    private store: OrdersStore) {}
 
   public get data(): Observable<OrdersStore> {
     return this.store.data;
@@ -20,12 +18,12 @@ export class OrdersService {
 
   public getOrders(params:any): Observable<any> {
     if (params['i']) params['i'] -= 1;
-    this.params = Object.assign({}, this.params, params);
+    this.params = Object.assign({}, this.getSearchParams(), params);
     return this.api.get(Api.Orders, 'order/myOrders', { parameters: this.params, loading: true })
       .do(response => this.store.storeOrders(response));
   }
 
-  public setSearchParams() {
-    this.params = { q: '', s: '', d: '', i: 0, n: 20 };
+  private getSearchParams() {
+    return { q: '', s: '', d: '', i: 0, n: 20 };
   }
 }

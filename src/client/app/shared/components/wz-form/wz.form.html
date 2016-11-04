@@ -168,7 +168,7 @@
 		<!--
         START: TOS FORM CHECKBOX
       -->
-		<span *ngIf="field.type == 'tos-checkbox'" layout="row" layout-align="center center">
+		<span *ngIf="field.type == 'tos-checkbox'" layout="row" layout-align="start center">
 			<md-checkbox layout="row" formControlName="{{field.name}}" [checked]="field.defaultChecked" color="primary" [required]="isRequiredField(field)">
 				{{ field.label | translate }}&nbsp;
 
