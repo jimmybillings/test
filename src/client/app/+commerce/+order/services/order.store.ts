@@ -2,7 +2,7 @@ import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
-export const order: ActionReducer<any> = (state: any, action: Action) => {
+export const order: ActionReducer<any> = (state: any = {}, action: Action) => {
   switch (action.type) {
     case 'ORDER.SET_CURRENT_ORDER':
       return Object.assign({}, action.payload);

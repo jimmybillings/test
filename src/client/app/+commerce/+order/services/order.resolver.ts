@@ -10,8 +10,8 @@ export class OrderResolver implements Resolve<any> {
   constructor(private orderService: OrderService, private orderStore: OrderStore) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    if (this.orderStore.state && Number(this.orderStore.state.id) === Number(route.params['orderId'])) {
-      return this.orderStore.data;
+    if (Number(this.orderStore.state.id) === Number(route.params['orderId'])) {
+      return Observable.of(true);
     } else {
       return this.orderService.getOrder(route.params['orderId']);
     }

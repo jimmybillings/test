@@ -19,7 +19,7 @@ export function main() {
         let result: Observable<any> = resolverUnderTest.resolve(mockRoute, mockState);
 
         result.subscribe((data: any) => {
-          expect(data).toEqual({ id: 1234 });
+          expect(data).toEqual(true);
         });
       });
 
