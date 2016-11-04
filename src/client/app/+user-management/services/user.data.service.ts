@@ -23,7 +23,7 @@ export class User {
 
   public forgotPassword(user: any): Observable<any> {
     return this.api.post(Api.Identities, 'user/requestPasswordReset',
-      { parameters: user, loading: true }
+      { body: user, loading: true }
     );
   }
 

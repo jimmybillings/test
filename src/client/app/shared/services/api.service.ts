@@ -113,7 +113,7 @@ export class ApiService {
     if (!this.currentUser.loggedIn()) {
       search.set('siteName', this.apiConfig.getPortal());
     }
-
+    
     return [search, search.toString().length > 0];
   }
 }

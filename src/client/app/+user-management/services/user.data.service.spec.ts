@@ -39,7 +39,7 @@ export function main() {
           expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
           expect(mockApi.post).toHaveBeenCalledWithEndpoint('user/requestPasswordReset');
           expect(mockApi.post).toHaveBeenCalledWithLoading(true);
-          expect(mockApi.post).toHaveBeenCalledWithParameters(setUser());
+          expect(mockApi.post).toHaveBeenCalledWithBody(setUser());
         });
       });
     });
