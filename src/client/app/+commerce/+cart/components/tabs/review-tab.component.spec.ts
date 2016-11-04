@@ -5,7 +5,7 @@ import { ReviewTabComponent } from './review-tab.component';
 export function main() {
   describe('Review Tab Component', () => {
     let componentUnderTest: ReviewTabComponent;
-    let mockRouter: any, mockOrderStore: any;
+    let mockRouter: any, mockOrderStore: any, mockNotification: any;
 
     beforeEach(() => {
       let mockCartService: any = {
@@ -18,15 +18,19 @@ export function main() {
       };
 
       mockRouter = {
-        navigate: jasmine.createSpy('navigate')
+        navigate: jasmine.createSpy('navigate').and.returnValue(new Promise(resolve => {return true;}))
       };
 
       mockOrderStore = {
         update: jasmine.createSpy('update')
       };
 
+      mockNotification = {
+        create: jasmine.createSpy('create')
+      };
+
       componentUnderTest =
-        new ReviewTabComponent(mockCartService, mockCartCapabilities, mockRouter, mockOrderStore);
+        new ReviewTabComponent(mockCartService, mockCartCapabilities, mockRouter, mockOrderStore, mockNotification);
     });
 
     describe('Initialization', () => {
