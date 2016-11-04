@@ -15,7 +15,7 @@ export function main() {
       });
 
       it('Should change to true when the method is first called', () => {
-        componentUnderTest.toggleShowOrderSearch()
+        componentUnderTest.toggleShowOrderSearch();
         expect(componentUnderTest.itemSearchIsShowing).toEqual(true);
       });
     });
@@ -23,10 +23,10 @@ export function main() {
     describe('changePage()', () => {
       it('Should accept a page number and navigate to the correct page url', () => {
         componentUnderTest.changePage('99');
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/orders', { i: '99', n: '20'} ]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/orders', { i: '99', n: '20' }]);
       });
-    })
-    
+    });
+
   });
 };
 

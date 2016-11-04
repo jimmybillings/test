@@ -47,18 +47,18 @@ export function main() {
           expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
           expect(mockApi.get).toHaveBeenCalledWithEndpoint('order/myOrders');
           expect(mockApi.get).toHaveBeenCalledWithLoading(true);
-          expect(mockApi.get).toHaveBeenCalledWithParameters({ q: '', s: '', d: '', i: 4, n: 20 })
+          expect(mockApi.get).toHaveBeenCalledWithParameters({ q: '', s: '', d: '', i: 4, n: 20 });
           expect(mockOrdersStore.storeOrders).toHaveBeenCalledWith(res);
         });
       });
 
       it('calls the API service correctly without page number', () => {
-        params = { n: 20 }
+        params = { n: 20 };
         serviceUnderTest.getOrders(params).subscribe((res) => {
           expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
           expect(mockApi.get).toHaveBeenCalledWithEndpoint('order/myOrders');
           expect(mockApi.get).toHaveBeenCalledWithLoading(true);
-          expect(mockApi.get).toHaveBeenCalledWithParameters({ q: '', s: '', d: '', i: 0, n: 20 })
+          expect(mockApi.get).toHaveBeenCalledWithParameters({ q: '', s: '', d: '', i: 0, n: 20 });
           expect(mockOrdersStore.storeOrders).toHaveBeenCalledWith(res);
         });
       });
