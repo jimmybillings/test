@@ -36,10 +36,10 @@ export function main() {
       }));
 
       it('calls the api service correctly', () => {
-        const body: ApiBody = { lineItem: { asset: { assetId: '10836' } } };
+        const body: ApiBody = { lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: '1080p' } };
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
 
-        serviceUnderTest.addAssetToProjectInCart({ assetId: '10836' });
+        serviceUnderTest.addAssetToProjectInCart({ assetId: '10836', selectedTranscodeTarget: '1080p' });
 
         expect(mockApi.put)
           .toHaveBeenCalledWith(Api.Orders, 'cart/asset/lineItem/quick', { body: body, parameters: parameters });

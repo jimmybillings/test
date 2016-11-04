@@ -36,6 +36,7 @@ export class AssetDetailComponent implements OnChanges {
 
   ngOnChanges(changes: any): void {
     if (changes.asset) {
+      this.selectedTarget = null;
       if (Object.keys(changes.asset.currentValue.detailTypeMap.common).length > 0) {
         this.asset = changes.asset.currentValue.detailTypeMap;
         this.asset.clipUrl = changes.asset.currentValue.clipUrl;
@@ -79,23 +80,17 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public addAssetToCart(asset: any): void {
-    // NEED TO INCLUDE THE TRANSCODE TARGET HERE
-    this.addToCart.emit(asset);
+    let target = this.selectedTarget ? this.selectedTarget.name : 'native_format';
+    this.addToCart.emit({ assetId: asset.assetId, selectedTranscodeTarget: target });
   }
 
   public selectTarget(selectedTarget: TranscodeTarget): void {
-    this.asset.transcodeTargets.map((target: TranscodeTarget) => {
-      target.selected = false;
-    });
-    selectedTarget.selected = true;
     this.selectedTarget = selectedTarget;
   }
 
-  private format(transcodeTargets: any): Array<TranscodeTarget> {
-    return transcodeTargets.map((target: string, i: number) => {
-      let name: string = target;
-      let selected: boolean = i === 0 ? true : false;
-      return { name: name, selected: selected };
+  private format(targets: Array<string>): Array<TranscodeTarget> {
+    return targets.map((target: string) => {
+      return { name: target, selected: false };
     });
   }
 }

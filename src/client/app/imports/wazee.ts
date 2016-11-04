@@ -5,7 +5,7 @@ import { ApiConfig } from '../shared/services/api.config';
 // import { AppEventService } from '../shared/services/app-event.service';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { UiConfig } from '../shared/services/ui.config';
-import { Error, ErrorActions } from '../shared/services/error.service';
+import { ErrorService, ErrorActions } from '../shared/services/error.service';
 import { AssetService } from '../shared/services/asset.service';
 import { SearchContext } from '../shared/services/search-context.service';
 import { CollectionsService } from '../shared/services/collections.service';
@@ -54,7 +54,7 @@ export const WAZEE_PROVIDERS = [
   ApiConfig,
   CurrentUser,
   UiConfig,
-  Error,
+  ErrorService,
   ErrorActions,
   AssetService,
   CollectionsService,

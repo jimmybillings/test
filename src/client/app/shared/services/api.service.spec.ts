@@ -13,7 +13,7 @@ import { ApiService } from './api.service';
 import { Api, ApiResponse } from '../interfaces/api.interface';
 import { ApiConfig } from './api.config';
 import { UiState } from './ui.state';
-import { Error as ErrorService } from './error.service';
+import { ErrorService } from './error.service';
 import { CurrentUser } from './current-user.model';
 
 export function main() {

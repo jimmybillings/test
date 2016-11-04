@@ -23,7 +23,7 @@ import { WzPlayerComponent } from './components/wz-player/wz.player.component';
 import { WzToastComponent, WzToastPortalDirective } from './components/wz-toast/wz.toast.component';
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
-import { CollectionsSearchFormComponent } from '../+collection/components/collections-search-form.component';
+import { WzItemSearchFormComponent } from './components/wz-item-search-form/wz.item-search-form.component';
 import { WzInputTagsComponent } from './components/wz-form/components/wz-input-tags/wz-input-tags.component';
 import { WzInputSuggestionsComponent } from './components/wz-form/components/wz-input-suggestions/wz-input-suggestions.component';
 import { CollectionFormComponent } from '../application/collection-tray/components/collection-form.component';
@@ -68,7 +68,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzToastComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
-    CollectionsSearchFormComponent,
+    WzItemSearchFormComponent,
     ValuesPipe,
     WzDialogPortalDirective,
     WzDropdownPortalDirective,
@@ -98,7 +98,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzToastComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
-    CollectionsSearchFormComponent,
+    WzItemSearchFormComponent,
     ValuesPipe,
     WzDialogPortalDirective,
     WzDropdownPortalDirective,

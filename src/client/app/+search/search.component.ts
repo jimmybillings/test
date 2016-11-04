@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AssetData } from './services/asset.data.service';
 import { UiConfig } from '../shared/services/ui.config';
@@ -33,7 +33,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public assets: Observable<any>;
   public preferences: any;
   public sortOptions: any;
-  @ViewChild('target', { read: ViewContainerRef }) private target: any;
   private assetsStoreSubscription: Subscription;
   private configSubscription: Subscription;
   private preferencesSubscription: Subscription;
@@ -141,7 +140,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       if (res.url && res.url !== '') {
         window.location.href = res.url;
       } else {
-        this.notification.create(this.target, { trString: 'COMPS.NO_COMP', theme: 'alert' });
+        this.notification.create('COMPS.NO_COMP');
       }
     });
   }

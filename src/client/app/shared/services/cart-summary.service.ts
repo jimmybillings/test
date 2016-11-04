@@ -70,7 +70,8 @@ export class CartSummaryService {
       lineItem: {
         asset: {
           assetId: asset.assetId
-        }
+        },
+        selectedTranscodeTarget: asset.selectedTranscodeTarget
       }
     };
   }

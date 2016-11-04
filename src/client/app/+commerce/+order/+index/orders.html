@@ -1,32 +1,50 @@
 <section class="orders-head" layout="row" layout-align="center center">
 	<header flex="100" flex-gt-md="95" flex-gt-lg="85">
-		<!--<orders-search-form [ngClass]="{ 'revealed' : orderSearchIsShowing }" [hidden]="!orderSearchIsShowing" [currentSearchQuery]="options.currentSearchQuery"
-			(query)="search($event)" (closeSearch)="showorderSearch()">
-		</orders-search-form>-->
+		<wz-item-search-form 
+			[ngClass]="{ 'revealed' : itemSearchIsShowing }" 
+			[hidden]="!itemSearchIsShowing" 
+			[currentSearchQuery]="{'q': ''}"
+			placeholderTxt="{{ 'ORDER.INDEX.SEARCH_BOX_LABEL' | translate }}"
+			(query)="search($event)"
+			(closeSearch)="toggleShowOrderSearch()"
+			>
+		</wz-item-search-form>
 		<div flex="100" layout="row" layout-align="space-between end">
 			<h2 flex="grow" class="md-display-1">{{ 'ORDER.INDEX.PAGE_TITLE' | translate }}</h2>
 			<div class="tools" flex="auto">
-				<!--{{ (orders.data | async).id }}-->
-				<!--<button md-icon-button *ngIf="!orderSearchIsShowing" title="{{ 'order.DD_MENU.SEARCH_BTN_TITLE' | translate }}"
-					type="button" (click)="toggleorderSearch()">
-            <md-icon *ngIf="!orderSearchIsShowing">search</md-icon>
+				<button md-icon-button *ngIf="!itemSearchIsShowing" title="{{ 'ORDER.INDEX.SEARCH_BTN_TITLE' | translate }}"
+					type="button" (click)="toggleShowOrderSearch()">
+            <md-icon *ngIf="!itemSearchIsShowing">search</md-icon>
           </button>
-				<button md-icon-button *ngIf="orderSearchIsShowing" class="collapse-search" title="{{ 'order.DD_MENU.COLLAPSE_SEARCH_HOVER_TITLE' | translate }}"
-					type="button" (click)="toggleorderSearch()">
+				<button md-icon-button *ngIf="itemSearchIsShowing" class="collapse-search" title="{{ 'ORDER.INDEX.COLLAPSE_SEARCH_BTN_TITLE' | translate }}"
+					type="button" (click)="toggleShowOrderSearch()">
           <md-icon>arrow_drop_up</md-icon>
-        </button>-->
+        </button>
 			</div>
 		</div>
 	</header>
 </section>
+
+<!--<div layout="row" layout-align="center start">
+	<div class="md-caption query-details" flex="100" flex-gt-md="95" flex-gt-lg="85">
+		<span *ngIf="options.currentSearchQuery.q" flex="auto" class="search">
+      <strong>{{ 'COLLECTION.DD_MENU.SEARCH_QUERY_TITLE' | translate }}</strong>{{options.currentSearchQuery.q}}
+    </span>
+	</div>
+</div>-->
+
 <section>
 	<div layout="row" flex="100" layout-margin layout-align="center start">
 		<section class="orders-list" flex="100" flex-gt-md="95" flex-gt-lg="85">
 			<wz-pagination *ngIf="(orders.data | async).pagination.totalCount > 0" [pagination]="(orders.data | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">
 			</wz-pagination>
+			<!-- Current user has no orders-->
+			<md-card *ngIf="(orders.data | async).items.length == 0">
+				<md-card-title>You currently do not have any orders</md-card-title>
+			</md-card>
 			<!-- ORDER LIST -->
-			<order-item-list [orders]="(orders.data | async).items"></order-item-list>
+			<order-item-list *ngIf="(orders.data | async).items.length > 0" [orders]="(orders.data | async).items"></order-item-list>
 			<wz-pagination *ngIf="(orders.data | async).pagination.totalCount > 0" [pagination]="(orders.data | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">
 			</wz-pagination>

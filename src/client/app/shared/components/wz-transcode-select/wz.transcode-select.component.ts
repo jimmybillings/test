@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { TranscodeTarget } from '../../interfaces/asset.interface';
 
 @Component({
@@ -7,21 +7,21 @@ import { TranscodeTarget } from '../../interfaces/asset.interface';
   templateUrl: 'wz.transcode-select.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class WzTranscodeSelectComponent implements OnChanges {
+export class WzTranscodeSelectComponent {
   @Input() transcodeTargets: Array<TranscodeTarget>;
+  @Input() selectedTarget: any;
   @Output() selectTarget: any = new EventEmitter();
 
-  ngOnChanges(changes: any): void {
-    console.log(changes.transcodeTargets.currentValue);
-  }
-
-  public get selectedTarget(): TranscodeTarget {
-    return this.transcodeTargets.filter((target: TranscodeTarget) => {
-      return target.selected;
-    })[0];
-  }
-
   public onSelectTarget(target: TranscodeTarget): void {
+    this.toggleTargets(target);
     this.selectTarget.emit(target);
+  }
+
+  private toggleTargets(selectedTarget: TranscodeTarget): Array<TranscodeTarget> {
+    return this.transcodeTargets.map((target: TranscodeTarget) => {
+      target.selected = false;
+      if (target === selectedTarget) target.selected = true;
+      return target;
+    });
   }
 }

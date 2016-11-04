@@ -17,6 +17,8 @@ export interface LineItem {
   id: string;
   asset?: Asset;
   price: number;
+  transcodeTargets?: Array<any>;
+  selectedTranscodeTarget?: string;
 }
 
 export interface Asset {
@@ -59,4 +61,12 @@ export interface Pagination {
   hasNextPage?: boolean;
   hasPreviousPage?: boolean;
   numberOfPages?: number;
+}
+
+export interface OrdersUrlParams {
+  s?: string;
+  d?: string;
+  i?: string;
+  n?: string;
+  loading?: string;
 }

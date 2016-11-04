@@ -71,8 +71,10 @@
 						<span *ngIf="asset.price != 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
 						<span *ngIf="asset.price == 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
 						<md-card-actions layout="column" layout-align="center center" layout-wrap="">
-							<wz-transcode-select [transcodeTargets]="asset.transcodeTargets" (selectTarget)="selectTarget($event)"></wz-transcode-select>
-							<button md-raised-button [disabled]="!currentUser.loggedIn()" (click)="addAssetToCart(asset); addToCartToast.show()" class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+							<wz-transcode-select *ngIf="asset.transcodeTargets.length > 0" [transcodeTargets]="asset.transcodeTargets" [selectedTarget]="selectedTarget"
+								(selectTarget)="selectTarget($event)"></wz-transcode-select>
+							<button md-raised-button [disabled]="!currentUser.loggedIn() && selectedTarget" (click)="addAssetToCart(asset); addToCartToast.show()"
+								class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
 							<!--<button *ngIf="asset.price == 0" md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>-->
 						</md-card-actions>
 					</div>

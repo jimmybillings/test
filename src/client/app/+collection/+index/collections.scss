@@ -201,7 +201,7 @@ collections-component .query-details {
 }
 
 // slide out collection search form
-collections-search-form {
+wz-item-search-form {
   @include transition($swift-ease-out);
   flex: 1 1 auto;
   position: absolute;
