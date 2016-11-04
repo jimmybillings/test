@@ -2,10 +2,9 @@ import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
-export const order: ActionReducer<any> = (state: any, action: Action) => {
+export const order: ActionReducer<any> = (state: any = {}, action: Action) => {
   switch (action.type) {
     case 'ORDER.SET_CURRENT_ORDER':
-      console.log(action.payload);
       return Object.assign({}, action.payload);
     default:
       return state;
@@ -18,6 +17,12 @@ export class OrderStore {
 
   public get data(): Observable<any> {
     return this.store.select('order');
+  }
+
+  public get state(): any {
+    let state: any;
+    this.data.take(1).subscribe(order => state = order);
+    return state;
   }
 
   public update(data: any): void {
