@@ -42,6 +42,6 @@ export function main() {
         componentUnderTest.changePage('99');
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/orders', { i: '99', n: '20' }]);
       });
-    })
+    });
   });
 }
