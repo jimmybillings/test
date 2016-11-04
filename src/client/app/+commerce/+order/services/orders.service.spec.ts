@@ -37,16 +37,28 @@ export function main() {
       let paramsMinusOne: any;
 
       beforeEach(() => {
-        params = { i: '1', n: '20' };
+        params = { i: 5, n: 20 };
         paramsMinusOne = { i: '0', n: '20' };
       });
 
 
-      it('calls the API service correctly', () => {
+      it('calls the API service correctly with page number', () => {
         serviceUnderTest.getOrders(params).subscribe((res) => {
           expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
           expect(mockApi.get).toHaveBeenCalledWithEndpoint('order/myOrders');
           expect(mockApi.get).toHaveBeenCalledWithLoading(true);
+          expect(mockApi.get).toHaveBeenCalledWithParameters({ q: '', s: '', d: '', i: 4, n: 20 })
+          expect(mockOrdersStore.storeOrders).toHaveBeenCalledWith(res);
+        });
+      });
+
+      it('calls the API service correctly without page number', () => {
+        params = { n: 20 }
+        serviceUnderTest.getOrders(params).subscribe((res) => {
+          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApi.get).toHaveBeenCalledWithEndpoint('order/myOrders');
+          expect(mockApi.get).toHaveBeenCalledWithLoading(true);
+          expect(mockApi.get).toHaveBeenCalledWithParameters({ q: '', s: '', d: '', i: 0, n: 20 })
           expect(mockOrdersStore.storeOrders).toHaveBeenCalledWith(res);
         });
       });
