@@ -1,11 +1,12 @@
 import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
+import { Order } from '../../+cart/cart.interface';
 
-export const order: ActionReducer<any> = (state: any, action: Action) => {
+const initState: any = { id: 1, projects: [], orderStatus: '', orderType: '' };
+export const order: ActionReducer<any> = (state: any = initState, action: Action) => {
   switch (action.type) {
     case 'ORDER.SET_CURRENT_ORDER':
-      console.log(action.payload);
       return Object.assign({}, action.payload);
     default:
       return state;
@@ -18,6 +19,12 @@ export class OrderStore {
 
   public get data(): Observable<any> {
     return this.store.select('order');
+  }
+
+  public get state(): Order {
+    let state: any;
+    this.data.take(1).subscribe(order => state = order);
+    return state;
   }
 
   public update(data: any): void {

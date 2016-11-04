@@ -6,10 +6,30 @@ export function main() {
 
     beforeEach(() => {
       componentUnderTest = new WzTranscodeSelectComponent();
+      componentUnderTest.transcodeTargets = [
+        { name: 'master_copy', selected: true },
+        { name: '1080i', selected: false },
+        { name: '1080p', selected: false }
+      ];
     });
 
-    it('Has no tests!', () => {
-      expect(true).toBe(true);
+    describe('onSelectTarget', () => {
+      it('toggles the selected property on the targets', () => {
+        componentUnderTest.onSelectTarget( {name: '1080i', selected: false });
+
+        expect(componentUnderTest.transcodeTargets).toEqual([
+          { name: 'master_copy', selected: false },
+          { name: '1080i', selected: true },
+          { name: '1080p', selected: false }
+        ]);
+      });
+
+      it('emits an event', () => {
+        spyOn(componentUnderTest.selectTarget, 'emit');
+        componentUnderTest.onSelectTarget({ name: '1080i', selected: false });
+
+        expect(componentUnderTest.selectTarget.emit).toHaveBeenCalledWith({ name: '1080i', selected: false });
+      });
     });
   });
 }

@@ -39,7 +39,17 @@ export function main() {
         const body: ApiBody = { lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: '1080p' } };
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
 
-        serviceUnderTest.addAssetToProjectInCart({ assetId: '10836', selectedTranscodeTarget: '1080p' });
+        serviceUnderTest.addAssetToProjectInCart('10836', '1080p');
+
+        expect(mockApi.put)
+          .toHaveBeenCalledWith(Api.Orders, 'cart/asset/lineItem/quick', { body: body, parameters: parameters });
+      });
+
+      it('calls the api service correctly - no transcode target', () => {
+        const body: ApiBody = { lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: 'master_copy' } };
+        const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
+
+        serviceUnderTest.addAssetToProjectInCart('10836');
 
         expect(mockApi.put)
           .toHaveBeenCalledWith(Api.Orders, 'cart/asset/lineItem/quick', { body: body, parameters: parameters });
@@ -48,7 +58,7 @@ export function main() {
       it('adds the asset to the cart store', () => {
         mockResponseBody = { lineItem: { asset: { assetId: '10836' } } };
 
-        serviceUnderTest.addAssetToProjectInCart({ assetId: '10836' });
+        serviceUnderTest.addAssetToProjectInCart('10836');
 
         expect(serviceUnderTest.state.lineItem.asset.assetId).toEqual('10836');
       });

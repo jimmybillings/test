@@ -1,7 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-
+import { OrderStore } from '../../../+order/services/order.store';
+import { WzNotificationService } from '../../../../shared/components/wz-notification/wz.notification.service';
 import { Tab } from './tab';
 import { CartService } from '../../services/cart.service';
 import { CartCapabilities } from '../../services/cart.capabilities';
@@ -18,7 +19,11 @@ export class ReviewTabComponent extends Tab implements OnInit {
   public cart: Observable<any>;
   public canPurchaseOnCredit: boolean;
 
-  constructor(private cartService: CartService, private userCan: CartCapabilities, private router: Router) {
+  constructor(private cartService: CartService,
+    private userCan: CartCapabilities,
+    private router: Router,
+    private order: OrderStore,
+    private notification: WzNotificationService) {
     super();
   }
 
@@ -29,7 +34,10 @@ export class ReviewTabComponent extends Tab implements OnInit {
 
   public purchaseOnCredit(): void {
     this.cartService.purchaseOnCredit().subscribe(data => {
-      this.router.navigate(['/order/' + data.id, { orderPlaced: true }]);
+      this.order.update(data);
+      this.router.navigate(['/order/' + data.id]).then(() => {
+        this.notification.create('NOTIFICATION.ORDER_PLACED');
+      });
     });
   }
 }

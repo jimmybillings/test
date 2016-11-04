@@ -7,6 +7,7 @@ import { TranscodeTarget } from '../../interfaces/asset.interface';
   templateUrl: 'wz.transcode-select.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class WzTranscodeSelectComponent {
   @Input() transcodeTargets: Array<TranscodeTarget>;
   @Input() selectedTarget: any;
@@ -20,7 +21,7 @@ export class WzTranscodeSelectComponent {
   private toggleTargets(selectedTarget: TranscodeTarget): Array<TranscodeTarget> {
     return this.transcodeTargets.map((target: TranscodeTarget) => {
       target.selected = false;
-      if (target === selectedTarget) target.selected = true;
+      if (target.name === selectedTarget.name) target.selected = true;
       return target;
     });
   }

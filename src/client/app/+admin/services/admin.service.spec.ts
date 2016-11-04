@@ -125,7 +125,7 @@ export function main() {
           filterParams = {firstName: 'ross', lastName: '', emailAddress: '', DATE: 'before', createdOn: ''};
           formatedParams = serviceUnderTest.buildSearchParameters(filterParams);
           expect(formatedParams['fields']).toEqual('firstName,DATE:LT:createdOn');
-          expect(formatedParams['values']).toContain(`ross,${Date.now().toString().slice(0, -2)}`);
+          expect(formatedParams['values']).toContain(`ross,${Date.now().toString().slice(0, -3)}`);
           expect(Date.now).toHaveBeenCalled();
         });
 
@@ -133,7 +133,7 @@ export function main() {
           filterParams = {firstName: 'ross', lastName: 'edfort', emailAddress: '', DATE: 'after', createdOn: ''};
           formatedParams= serviceUnderTest.buildSearchParameters(filterParams);
           expect(formatedParams['fields']).toEqual('firstName,lastName,DATE:GT:createdOn');
-          expect(formatedParams['values']).toContain(`ross,edfort,${Date.now().toString().slice(0, -2)}`);
+          expect(formatedParams['values']).toContain(`ross,edfort,${Date.now().toString().slice(0, -3)}`);
           expect(Date.now).toHaveBeenCalled();
         });
       });
