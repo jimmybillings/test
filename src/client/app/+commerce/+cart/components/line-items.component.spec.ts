@@ -71,5 +71,35 @@ export function main() {
         expect(true).toBe(true);
       });
     });
+
+    describe('selectTarget', () => {
+      it('emits the proper event', () => {
+        let lineItem: any = { some: 'lineItem' };
+
+        componentUnderTest.lineItemsNotify
+          .subscribe((event: Object) => {
+            expect(event).toEqual({ type: 'EDIT_LINE_ITEM', payload: { lineItem: lineItem, fieldToEdit: { selectedTranscodeTarget: '1080i' } } });
+          });
+
+        componentUnderTest.selectTarget({ name: '1080i', selected: false }, lineItem );
+      });
+    });
+
+    describe('format', () => {
+      it('formats the transcode targets properly - with selected', () => {
+        let lineItem: any = {
+          transcodeTargets: ['1080i', '1080p', 'master_copy'],
+          selectedTranscodeTarget: 'master_copy'
+        };
+        let actualResult: Array<any> = componentUnderTest.format(lineItem);
+        let expectedResult: Array<any> = [
+          {name: '1080i', selected: false},
+          {name: '1080p', selected: false},
+          {name: 'master_copy', selected: true}
+        ];
+
+        expect(actualResult).toEqual(expectedResult);
+      });
+    });
   });
 };

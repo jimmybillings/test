@@ -44,11 +44,11 @@ export class CartSummaryService {
     this.getCartSummary();
   }
 
-  public addAssetToProjectInCart(asset: any): void {
+  public addAssetToProjectInCart(assetId: string, transcodeTarget?: string): void {
     this.api.put(
       Api.Orders,
       'cart/asset/lineItem/quick',
-      { body: this.formatAsset(asset), parameters: { projectName: this.lastProjectName, region: 'AAA' } }
+      { body: this.formatAsset(assetId, transcodeTarget), parameters: { projectName: this.lastProjectName, region: 'AAA' } }
     ).subscribe(data => this.updateCartSummaryStore(data));
   }
 
@@ -65,13 +65,13 @@ export class CartSummaryService {
     return this.state.projects[this.state.projects.length - 1].name;
   }
 
-  private formatAsset(asset: any): any {
+  private formatAsset(assetId: string, transcodeTarget: string = 'master_copy'): any {
     return {
       lineItem: {
         asset: {
-          assetId: asset.assetId
+          assetId: assetId
         },
-        selectedTranscodeTarget: asset.selectedTranscodeTarget
+        selectedTranscodeTarget: transcodeTarget
       }
     };
   }

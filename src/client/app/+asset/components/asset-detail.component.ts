@@ -46,6 +46,7 @@ export class AssetDetailComponent implements OnChanges {
         this.asset.assetId = changes.asset.currentValue.assetId;
         this.asset.price = changes.asset.currentValue.price;
         this.asset.transcodeTargets = this.format(changes.asset.currentValue.transcodeTargets);
+        this.selectedTarget = this.asset.transcodeTargets[0];
         // the "+" in +this.asset.common[0].vaue changes it from a string to a number
         this.inActiveCollection = this.alreadyInCollection(+this.asset.common[0].value);
       }
@@ -79,9 +80,8 @@ export class AssetDetailComponent implements OnChanges {
     this.onDownloadComp.emit({ 'compType': compType, 'assetId': assetId });
   }
 
-  public addAssetToCart(asset: any): void {
-    let target = this.selectedTarget ? this.selectedTarget.name : 'native_format';
-    this.addToCart.emit({ assetId: asset.assetId, selectedTranscodeTarget: target });
+  public addAssetToCart(assetId: any): void {
+    this.addToCart.emit({ assetId: assetId, selectedTranscodeTarget: this.selectedTarget.name });
   }
 
   public selectTarget(selectedTarget: TranscodeTarget): void {

@@ -14,7 +14,7 @@
 	<div class="dense group" *ngFor="let target of transcodeTargets">
 		<button md-menu-item (click)="onSelectTarget(target)">
       <span class="icon">
-        <md-icon *ngIf="target.selected">check</md-icon>
+        <md-icon *ngIf="target.name === selectedTarget.name">check</md-icon>
       </span>
       <span class="text">
         {{ 'ASSET.TRANSCODE_TARGETS.' + target.name | translate }}

@@ -17,7 +17,7 @@ export interface LineItem {
   id: string;
   asset?: Asset;
   price: number;
-  transcodeTargets?: Array<any>;
+  transcodeTargets?: Array<string>;
   selectedTranscodeTarget?: string;
 }
 
