@@ -13,7 +13,7 @@ export function main() {
         expect(componentUnderTest instanceof OrderItemListComponent).toBeTruthy();
       });
     });
-    
+
   });
 };
 

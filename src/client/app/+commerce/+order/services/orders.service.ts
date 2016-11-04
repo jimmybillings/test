@@ -10,13 +10,13 @@ export class OrdersService {
 
   constructor(
     private api: ApiService,
-    private store: OrdersStore) {}
+    private store: OrdersStore) { }
 
   public get data(): Observable<OrdersStore> {
     return this.store.data;
   }
 
-  public getOrders(params:any): Observable<any> {
+  public getOrders(params: any): Observable<any> {
     if (params['i']) params['i'] -= 1;
     this.params = Object.assign({}, this.getSearchParams(), params);
     return this.api.get(Api.Orders, 'order/myOrders', { parameters: this.params, loading: true })
