@@ -32,7 +32,7 @@ export class OrdersComponent implements OnInit {
     this.router.navigate( ['/orders', this.buildRouteParams({ i }) ]);
   }
 
-  public search(query: string) {
+  public search(query: {q: string}) {
     this.router.navigate( ['/orders', this.buildRouteParams(query) ]);
   }
 
