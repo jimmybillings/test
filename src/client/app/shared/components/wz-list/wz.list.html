@@ -9,8 +9,8 @@
     <tr *ngFor="let record of items; let e = even" [ngClass]="{highlight: e}">
       <td *ngFor="let header of headers">
         <span [ngSwitch]="header.name">
-          <span *ngSwitchCase="'lastUpdated'" class="md-text-cell md-body-1">{{ date(record[header.name]) }}</span>
-          <span *ngSwitchCase="'createdOn'" class="md-text-cell md-body-1">{{ date(record[header.name]) }}</span>
+          <span *ngSwitchCase="'lastUpdated'" class="md-text-cell md-body-1">{{ record[header.name] | date:'short' }}</span>
+          <span *ngSwitchCase="'createdOn'" class="md-text-cell md-body-1">{{ record[header.name] | date:'short' }}</span>
           <span (click)="showEditForm(record)" *ngSwitchCase="'firstName'" class="md-text-cell md-body-1 link">{{ record[header.name] }}</span>
           <span (click)="showEditForm(record)" *ngSwitchCase="'name'" class="md-text-cell md-body-1 link">{{ record[header.name] }}</span>
           <span *ngIf="record.type === 'ui'">

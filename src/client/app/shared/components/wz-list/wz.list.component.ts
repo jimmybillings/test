@@ -35,8 +35,4 @@ export class WzListComponent {
   public showEditForm(record: any): void {
     this.editForm.emit(record);
   }
-
-  public date(date: any): Date {
-    return new Date(date);
-  }
 }
