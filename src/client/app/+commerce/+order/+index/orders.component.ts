@@ -29,11 +29,11 @@ export class OrdersComponent implements OnInit {
   }
 
   public changePage(i: string): void {
-    this.router.navigate(['/orders', this.buildRouteParams({ i })]);
+    this.router.navigate( ['/orders', this.buildRouteParams({ i }) ]);
   }
 
   public search(query: string) {
-    this.router.navigate(['/orders', this.buildRouteParams(query)]);
+    this.router.navigate( ['/orders', this.buildRouteParams(query) ]);
   }
 
   private buildRouteParams(params: OrdersUrlParams): OrdersUrlParams {
