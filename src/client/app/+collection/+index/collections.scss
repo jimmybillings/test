@@ -92,7 +92,26 @@ collections-component .query-details {
     border: 1px solid rgba(md-color($background, card), .01);
     @include transition($swift-ease-out);
     .actions {
+      min-height: rem(4.5);
+      position: relative;
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        padding-top: rem(.4);
+      }
+    }
+    .tools {
       text-align: right;
+    }
+    .premiere-actions {
+      position: absolute;
+      bottom: rem(.7);
+      right: rem(.7);
+    }
+    a.collection-name {
+      color: inherit;
+      text-decoration: none;
+      &:hover {
+        color: md-color($primary);
+      }
     }
     h3 {
       margin-top: rem(-.6);
@@ -137,15 +156,20 @@ collections-component .query-details {
       margin-bottom: rem(.5);
     }
     ul.meta-data-tags {
+        margin-top: 0;
         display: inline-block;
       li.tag {
-        display: inline;
-        padding: rem(.5);
+        display: inline-block;
         padding-right: rem(.9);
         padding-left: rem(.9);
-        margin-left: rem(.7);
+        margin-top: rem(.6);
+        margin-left: rem(.6);
         background-color: md-color($foreground, divider);
         color: md-color($foreground, secondary-text);
+        line-height: rem(2.3);
+        &:first-child {
+          margin-left: rem(0.2);
+        }
       }
     }
     .actions div:last-child {
