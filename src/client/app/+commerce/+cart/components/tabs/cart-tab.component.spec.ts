@@ -16,7 +16,8 @@ export function main() {
         updateProject: jasmine.createSpy('updateProject'),
         moveLineItemTo: jasmine.createSpy('moveLineItemTo'),
         cloneLineItem: jasmine.createSpy('cloneLineItem'),
-        removeLineItem: jasmine.createSpy('removeLineItem')
+        removeLineItem: jasmine.createSpy('removeLineItem'),
+        editLineItem: jasmine.createSpy('editLineItem')
       };
 
       mockUiConfig = {
@@ -132,6 +133,13 @@ export function main() {
         componentUnderTest.onNotification({ type: 'REMOVE_LINE_ITEM', payload: mockLineItem });
 
         expect(mockCartService.removeLineItem).toHaveBeenCalledWith(mockLineItem);
+      });
+
+      it('edits a line item when notified with EDIT_LINE_ITEM', () => {
+        let mockLineItem = {};
+        componentUnderTest.onNotification({ type: 'EDIT_LINE_ITEM', payload: { lineItem: mockLineItem, fieldToEdit: { selectedTranscodeTarget: '1080i' } } });
+
+        expect(mockCartService.editLineItem).toHaveBeenCalledWith(mockLineItem, { selectedTranscodeTarget: '1080i' });
       });
     });
   });

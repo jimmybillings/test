@@ -2,7 +2,6 @@ import { Component, OnInit, Renderer, ViewChild, ViewContainerRef } from '@angul
 import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { MultilingualService } from './shared/services/multilingual.service';
-import { ErrorActions } from './shared/services/error.service';
 // Services
 import { CurrentUser } from './shared/services/current-user.model';
 import { ApiConfig } from './shared/services/api.config';
@@ -17,6 +16,7 @@ import { ActiveCollectionService } from './shared/services/active-collection.ser
 import { CartSummaryService } from './shared/services/cart-summary.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
+import { ErrorActions } from './shared/services/error.service';
 
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
@@ -34,7 +34,6 @@ export class AppComponent implements OnInit {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
   private bootStrapUserDataSubscription: Subscription;
-
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
 
   constructor(
@@ -53,28 +52,17 @@ export class AppComponent implements OnInit {
     private authentication: Authentication,
     private userCan: Capabilities,
     private cartSummary: CartSummaryService,
-    private errorActions: ErrorActions) {
-    this.apiConfig.setPortal(portal);
-    this.currentUser.set();
-  }
+    private error: ErrorActions,
+    private window: Window) {}
 
   ngOnInit() {
-    this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(window.pageYOffset));
+    this.apiConfig.setPortal(portal);
+    this.currentUser.set();
+    this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(this.window.pageYOffset));
     this.uiConfig.initialize(this.currentUser.loggedIn(), this.apiConfig.getPortal()).subscribe();
     this.routerChanges();
     this.processUser();
-  }
-
-  public routerChanges() {
-    this.router.events
-      .filter((event: RoutesRecognized) => event instanceof NavigationEnd)
-      .subscribe((event: NavigationEnd) => {
-        this.uiState.checkRouteForSearchBar(event.url);
-        this.uiState.checkForFilters(event.url);
-        this.state = event.url;
-        window.scrollTo(0, 0);
-        this.notification.check(this.state, this.target);
-      });
+    this.notification.initialize(this.target);
   }
 
   public logout(): void {
@@ -87,8 +75,20 @@ export class AppComponent implements OnInit {
   }
 
   public newSearchContext(data: any) {
-    this.searchContext.update = { q: data, i: 1, n: 100, sortId: this.userPreference.state.searchSortOptionId || 12 };
+    this.searchContext.update = { q: data, i: 1, n: 100, sortId: this.userPreference.state.searchSortOptionId };
     this.searchContext.go();
+  }
+
+  private routerChanges() {
+    this.router.events
+      .filter((event: RoutesRecognized) => event instanceof NavigationEnd)
+      .subscribe((event: NavigationEnd) => {
+        this.uiState.checkRouteForSearchBar(event.url);
+        this.uiState.checkForFilters(event.url);
+        this.state = event.url;
+        this.window.scrollTo(0, 0);
+        this.notification.check(this.state);
+      });
   }
 
   private processUser() {

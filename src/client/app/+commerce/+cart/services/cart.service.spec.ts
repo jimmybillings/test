@@ -288,5 +288,21 @@ export function main() {
           .subscribe(_ => expect(mockCartSummaryService.loadCartSummary).toHaveBeenCalled());
       });
     });
+
+    describe('editLineItem()', () => {
+      it('calls the API service correctly', () => {
+        serviceUnderTest.editLineItem(mockLineItem, { selectedTranscodeTarget: '1080i' });
+
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('cart/update/lineItem/456');
+        expect(mockApi.put).toHaveBeenCalledWithBody({id: '456',price: 0,selectedTranscodeTarget:'1080i'});
+      });
+
+      it('replaces the cart store with the response', () => {
+        serviceUnderTest.editLineItem(mockLineItem, { selectedTranscodeTarget: '1080i' });
+
+        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.putResponse);
+      });
+    });
   });
 }

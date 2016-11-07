@@ -5,7 +5,7 @@ export function main() {
 
   describe('Login Component', () => {
 
-    let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any, mockUserPreference: any;
+    let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any, mockDocumentService: any;
     let componentUnderTest: LoginComponent;
 
     beforeEach(() => {
@@ -15,8 +15,8 @@ export function main() {
       };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
       mockCurrentUser = { set: jasmine.createSpy('set') };
-      mockUserPreference = { set: jasmine.createSpy('set') };
-      componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockUserPreference, mockUiConfig);
+      mockDocumentService = { downloadActiveTosDocument: jasmine.createSpy('downloadActiveTosDocument'), agreeUserToTerms: jasmine.createSpy('agreeUserToTerms') };
+      componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockDocumentService, mockUiConfig);
     });
 
     describe('ngOnInit()', () => {
@@ -41,6 +41,13 @@ export function main() {
         componentUnderTest.onSubmit({ 'user': 'james' });
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
       });
+
+      /// HOW THE HECK TO I TEST THIS
+      // it('Shows the dialog if the user needs to agree to TOS', () => {
+      //   spyOn(componentUnderTest.termsDialog, 'show');
+      //   componentUnderTest.onSubmit({ 'user': 'ross' });
+      //   expect(componentUnderTest.termsDialog.show).toHaveBeenCalled();
+      // });
     });
 
     describe('ngOnDestroy()', () => {
@@ -48,10 +55,19 @@ export function main() {
         let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
-        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockUserPreference, mockUiConfig);
+        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockDocumentService, mockUiConfig);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();
+      });
+    });
+
+    describe('agreeToTerms()', () => {
+      it('calls the service and navigates', () => {
+        componentUnderTest.agreeToTermsAndClose();
+
+        expect(mockDocumentService.agreeUserToTerms).toHaveBeenCalled();
+        expect(mockRouter.navigate).toHaveBeenCalled();
       });
     });
 

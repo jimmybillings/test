@@ -9,8 +9,4 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 export class OrderItemListComponent {
   @Input() orders: any;
-
-  public date(date: any): Date {
-    return new Date(date);
-  }
 }

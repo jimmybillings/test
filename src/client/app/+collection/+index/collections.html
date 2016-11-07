@@ -1,8 +1,13 @@
 <section class="collection-head" layout="row" layout-align="center center">
 	<header flex="100" flex-gt-md="95" flex-gt-lg="85">
-		<collections-search-form [ngClass]="{ 'revealed' : collectionSearchIsShowing }" [hidden]="!collectionSearchIsShowing" [currentSearchQuery]="options.currentSearchQuery"
-			(query)="search($event)" (closeSearch)="showCollectionSearch()">
-		</collections-search-form>
+		<wz-item-search-form 
+			[ngClass]="{ 'revealed' : collectionSearchIsShowing }" 
+			[hidden]="!collectionSearchIsShowing" 
+			[currentSearchQuery]="options.currentSearchQuery"
+			placeholderTxt="{{ 'COLLECTION.INDEX.SEARCH_BOX_LABEL' | translate }}"
+			(query)="search($event)" 
+			(closeSearch)="toggleCollectionSearch()">
+		</wz-item-search-form>
 		<div flex="100" layout="row" layout-align="space-between end">
 			<h2 flex="grow" class="md-display-1">{{ 'COLLECTION.INDEX.PAGE_TITLE' | translate }}</h2>
 			<div class="tools" flex="auto">

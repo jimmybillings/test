@@ -115,7 +115,7 @@ section.preview-bk {
       }
       .price {
         position: absolute;
-        bottom: rem(9.0);
+        bottom: rem(13.5);
         right: rem(3.7);
         font-size: 1.7em;
         font-weight: 400;
@@ -131,7 +131,7 @@ section.preview-bk {
       }
       .contact-us-pricing {
         @include calc(width, "100% - 32px");
-        bottom: rem(9.0);
+        bottom: rem(13.5);
         color: rgba(md-color($accent, 500), .75);
         display: block;
         font-size: 1.12em;
@@ -147,6 +147,17 @@ section.preview-bk {
         } 
       }
       md-card-actions {
+        wz-transcode-select {
+          width: 100%;
+          div.transcode-target-menu-trigger {
+            box-shadow: inset -2px -2px 0px 0px md-color($md-grey, 900);
+            background-color: rgba(md-color($md-grey, 700), .5);
+            @include text-contrast(md-color($md-grey, 700));
+            span.select-icon {
+              @include text-contrast(md-color($md-grey, 700));
+            }
+          }
+        }
         @include calc(width, "100% - 42px");
         margin: 0;
         padding-left: rem(1.6); 

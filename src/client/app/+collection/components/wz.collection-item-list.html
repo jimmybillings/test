@@ -1,10 +1,15 @@
 <ul>
-    <li *ngFor="let collection of collections; let i = index" class="collection" [ngClass]="{'focused': activeCollection === collection.id}"
-        flex="100" layout="row" layout-xs="column">
+    <li 
+        *ngFor="let collection of collections; let i = index" 
+        class="collection" 
+        [ngClass]="{'focused': activeCollection === collection.id}"
+        flex="100" 
+        layout="row" 
+        layout-xs="column">
         <div flex="100" flex-gt-sm="66">
             <div flex="100" layout="row" layout-xs="column">
                 <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding>
-                    <div class="asset">
+                    <a class="asset" [routerLink]="['/collection/', collection.id, {i: 1, n: 100}]">
                         <div class="asset-thb">
                             <div class="selected" *ngIf="activeCollection === collection.id" title="Selected collection">
                                 <md-icon>star</md-icon>
@@ -12,20 +17,21 @@
                             <span class="asset-id"><span class="id">{{collection.id}}</span></span>
                             <img src="{{thumbnail(collection.collectionThumbnail)}}" />
                         </div>
-                    </div>
+                    </a>
                 </div>
-                <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" 
-                    (click)="selectActiveCollection(collection.id)" layout-padding>
-                    <h3 class="md-headline">{{collection.name}}
-                        <span class="asset-count">
-                            <span class="count">{{collection.assetsCount || 0}}</span>
-                        </span>
-                    </h3>
+                <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" layout-padding>
+                    <a class="collection-name" [routerLink]="['/collection/', collection.id, {i: 1, n: 100}]">
+                        <h3 class="md-headline">{{collection.name}}
+                            <span class="asset-count">
+                                <span class="count">{{collection.assetsCount || 0}}</span>
+                            </span>
+                        </h3>
+                    </a>
                     <div class="md-caption collection-info">
                         <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{collection.email}}</span>
                         <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{collection.userRole}}</span>
-                        <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ date(collection.createdOn) | date:'short' }}</span>
-                        <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
+                        <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ collection.createdOn | date:'short' }}</span>
+                        <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ collection.lastUpdated | date:'short' }}</span>
                     </div>
                     <div *ngIf="collection.tags" class="md-caption collection-tags">
                         <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
@@ -37,12 +43,18 @@
             </div>
         </div>
         <div flex="100" layout="row" layout-xs="column" class="divider"></div>
-        <div flex-gt-sm="33" layout-sm="100" flex="auto" class="actions tools">
-            <button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="edit(collection)"><md-icon>edit</md-icon></button>
-            <button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><md-icon>share</md-icon></button>
-            <button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)" [disabled]="true"><md-icon>mode_comment</md-icon></button>
-            <button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreCollectionOptions"
+        <div flex-gt-sm="33" layout-sm="100" flex="auto" class="actions">
+            <div class="tools" hide-xs>
+                <button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="edit(collection)"><md-icon>edit</md-icon></button>
+                <button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><md-icon>share</md-icon></button>
+                <button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)" [disabled]="true"><md-icon>mode_comment</md-icon></button>
+                <button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreCollectionOptions"
                 (click)="setCurrentCollection(collection)"><md-icon>more_vert</md-icon></button>
+            </div>
+            <div class="premiere-actions">
+                <button md-button class="is-outlined" color="primary" [routerLink]="['/collection/', collection.id, {i: 1, n: 100}]">View</button>
+                <button md-button class="is-outlined" (click)="selectActiveCollection(collection.id)">Select</button>
+            </div>
         </div>
     </li>
 </ul>

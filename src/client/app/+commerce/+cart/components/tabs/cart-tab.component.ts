@@ -61,6 +61,9 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
         this.cartService.removeLineItem(message.payload);
         break;
       }
+      case 'EDIT_LINE_ITEM': {
+        this.cartService.editLineItem(message.payload.lineItem, message.payload.fieldToEdit);
+      }
     };
   }
 }

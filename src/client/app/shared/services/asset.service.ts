@@ -80,6 +80,7 @@ export class AssetService {
         detailTypeMap: asset.detailTypeMap,
         hasDownloadableComp: asset.hasDownloadableComp,
         resourceClass: asset.resourceClass,
+        transcodeTargets: asset.transcodeTargets || []
       }
     });
   }

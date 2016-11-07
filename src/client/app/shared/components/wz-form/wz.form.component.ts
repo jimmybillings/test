@@ -24,6 +24,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   @Input() autocomplete: string = 'on';
   @Output() formSubmit = new EventEmitter();
   @Output() formCancel = new EventEmitter();
+  @Output() viewTos = new EventEmitter();
   public submitAttempt: boolean = false;
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
@@ -46,7 +47,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   public mergeErrors() {
     this.serverErrors.fieldErrors.forEach((error) => {
       for (let control in this.form.controls) {
-        if (control === error.field) {
+        if (control.toLowerCase() === error.field.toLowerCase()) {
           (<FormControl>this.form.controls[control]).setErrors({ serverError: error.code });
         }
       }
@@ -87,6 +88,7 @@ export class WzFormComponent implements OnInit, OnChanges {
       field.validation === 'EMAIL' ||
       field.validation === 'MULTIEMAIL' ||
       field.validation === 'PASSWORD' ||
+      field.validation === 'TERMS' ||
       field.validation === 'COLLECTION') ? true : false;
   }
 
@@ -106,7 +108,7 @@ export class WzFormComponent implements OnInit, OnChanges {
     if (this.form.valid) {
       this.formSubmit.emit(this.form.value);
     } else {
-      console.log('error');
+      console.log(this.form);
     }
   }
 
@@ -115,5 +117,9 @@ export class WzFormComponent implements OnInit, OnChanges {
     this.submitAttempt = false;
     this.formModel.updateForm(this.form, {});
     this.formModel.markFormAsUntouched(this.form);
+  }
+
+  public onViewTos(): void {
+    this.viewTos.emit();
   }
 }

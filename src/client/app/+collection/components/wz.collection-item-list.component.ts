@@ -25,10 +25,6 @@ export class WzCollectionItemListComponent {
     this.setActiveCollection.emit(collectionId);
   }
 
-  public date(date: any): Date {
-    return new Date(date);
-  }
-
   public thumbnail(thumbnail: { urls: { https: string } }): string {
     return (thumbnail && thumbnail.urls && thumbnail.urls.https) ? thumbnail.urls.https : '/assets/img/tbn_missing.jpg';
   }

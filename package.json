@@ -9,7 +9,7 @@
     "build.dev": "gulp build.dev --color --config-env dev",
     "build.dev.watch": "gulp build.dev.watch --color",
     "build.e2e": "gulp build.e2e --color",
-    "build.prod": "gulp build.prod --color --config-env prod",
+    "build.prod": "npm test && gulp build.prod --color --config-env prod",
     "build.prod.exp": "gulp build.prod.exp --color --config-env prod",
     "build.library": "gulp build.library.export --env library",
     "build.test": "gulp build.test --color",

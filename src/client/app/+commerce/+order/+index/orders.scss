@@ -12,7 +12,10 @@ orders-component .orders-head {
       width: calc(100% - 120px);
       font-size: rem(2.6);
     }
-  } 
+    wz-item-search-form {
+      right: rem(4.5);
+    }
+  }
   .tools {
     text-align: right;
     white-space: nowrap;
@@ -125,7 +128,10 @@ orders-component .orders-head {
       margin-top: rem(-.6);
       margin-bottom: rem(.6);
       .project-label {
-        font-weight: 100;
+        font-weight: 300;
+      }
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        padding-right: rem(3.4);
       }
     }
     .order-info {

@@ -49,6 +49,8 @@ export class FormModel {
         return this._getCollectionValidator();
       case 'MULTIEMAIL':
         return this._getMultiEmailValidator();
+      case 'TERMS':
+        return this._getTermsValidator();
       default:
         return this._getOptionalValidator;
     }
@@ -73,7 +75,7 @@ export class FormModel {
   private _getMultiEmailValidator(): Validators {
     return Validators.compose([
       Validators.required,
-      Validators.pattern('\\s*(([a-zA-Z0-9_\\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)(\\s*(;|,)\\s*|\\s*$))*')
+      Validators.pattern('\\s*(([a-z0-9!#$%&`*+\/=?^_`{|}~.-]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)(\\s*(;|,)\\s*|\\s*$))*')
     ]);
   }
 
@@ -88,5 +90,17 @@ export class FormModel {
     // return [Validators.required, WzTestValidator.startsWithNumber];
     // return Validators.required, WzCollectionValidator.checkCollectionName;
     return Validators.required;
+  }
+
+  private _getTermsValidator(): Validators {
+    return this.checkboxRequired;
+  }
+
+  private checkboxRequired(control: FormGroup) {
+    if (!control.value) {
+      return { mustBeCheckedError: 'Must be checked' };
+    } else {
+      return null;
+    }
   }
 }

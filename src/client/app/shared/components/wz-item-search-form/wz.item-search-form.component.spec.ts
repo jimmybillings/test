@@ -1,8 +1,8 @@
-import { CollectionsSearchFormComponent } from './collections-search-form.component';
+import { WzItemSearchFormComponent } from './wz.item-search-form.component';
 
 export function main() {
   describe('Collections Search Form Component', () => {
-    let componentUnderTest: CollectionsSearchFormComponent;
+    let componentUnderTest: WzItemSearchFormComponent;
     let mockFormBuilder: any;
 
     beforeEach(() => {
@@ -10,7 +10,7 @@ export function main() {
       // the constructor from failing.  Enhance as needed.
       mockFormBuilder = { group: () => { return; } };
 
-      componentUnderTest = new CollectionsSearchFormComponent(mockFormBuilder);
+      componentUnderTest = new WzItemSearchFormComponent(mockFormBuilder);
     });
 
     it('has no tests!', () => {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import { Error } from './error.service';
+import { ErrorService } from './error.service';
 import { ApiConfig } from './api.config';
 import { Api, ApiOptions, ApiParameters, ApiBody, ApiResponse } from '../interfaces/api.interface';
 import { UiState } from './ui.state';
@@ -11,11 +11,12 @@ import { CurrentUser } from './current-user.model';
 export class ApiService {
   constructor(
     private http: Http,
-    private error: Error,
+    private error: ErrorService,
     private apiConfig: ApiConfig,
     private uiState: UiState,
     private currentUser: CurrentUser
-  ) { }
+  ) {
+  }
 
   public get(api: Api, endpoint: string, options: ApiOptions = {}): Observable<ApiResponse> {
     return this.call(RequestMethod.Get, api, endpoint, options);
@@ -96,7 +97,7 @@ export class ApiService {
     let [search, searchWasSet] = this.searchParametersFrom(options.parameters);
     const requestOptionsArgs: RequestOptionsArgs = {};
 
-    requestOptionsArgs.headers = this.apiConfig.headers(options.overridingToken);
+    requestOptionsArgs.headers = this.apiConfig.headers(options.overridingToken, options.download);
     if (searchWasSet) requestOptionsArgs.search = search;
 
     return requestOptionsArgs;
