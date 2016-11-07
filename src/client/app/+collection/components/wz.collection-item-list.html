@@ -30,8 +30,8 @@
                     <div class="md-caption collection-info">
                         <span><strong>{{ 'COLLECTION.SHOW.OWNER_LABEL' | translate }} </strong>{{collection.email}}</span>
                         <span><strong>{{ 'COLLECTION.SHOW.ROLE_LABEL' | translate }} </strong>{{collection.userRole}}</span>
-                        <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ date(collection.createdOn) | date:'short' }}</span>
-                        <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ date(collection.lastUpdated) | date:'short' }}</span>
+                        <span><strong>{{ 'COLLECTION.SHOW.CREATED_LABEL' | translate }} </strong>{{ collection.createdOn | date:'short' }}</span>
+                        <span><strong>{{ 'COLLECTION.SHOW.UPDATED_LABEL' | translate }} </strong>{{ collection.lastUpdated | date:'short' }}</span>
                     </div>
                     <div *ngIf="collection.tags" class="md-caption collection-tags">
                         <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>

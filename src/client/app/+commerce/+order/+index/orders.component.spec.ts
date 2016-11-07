@@ -43,5 +43,12 @@ export function main() {
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/orders', { i: '99', n: '20' }]);
       });
     });
+
+    describe('search()', () => {
+      it('Should accept a search query and navigate to a url that include the search query', () => {
+        componentUnderTest.search({q: 'dogs'});
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/orders', { q: 'dogs', n: '20' }]);
+      });
+    });
   });
 }

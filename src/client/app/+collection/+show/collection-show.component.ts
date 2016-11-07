@@ -29,9 +29,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public config: Object;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
-  public date(date: any): Date {
-    return (date) ? new Date(date) : new Date();
-  }
 
   constructor(
     private route: ActivatedRoute,
