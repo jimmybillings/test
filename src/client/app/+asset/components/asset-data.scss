@@ -23,15 +23,15 @@
       text-transform: uppercase;
       border-width: 0 0 1px 0;
       border-style: solid; 
-      border-color: rgba(md-color($md-grey, 400),.5);
+      border-color: rgba(md-color($md-grey, default),.6);
       .md-tab-label {
         @include transition($swift-ease-out);
         line-height: rem(5.6);
         height: rem(5.2);
         &.md-tab-active {
           opacity: 1;
-          background-color: rgba(md-color($primary, 300), .00);
-          color: md-color($primary, 600);
+          background-color: rgba(md-color($primary, lighter), .00);
+          color: md-color($primary, default);
         }
         &.md-tab-disabled {
           opacity: .25;
@@ -53,8 +53,8 @@
   text-align: left;
   overflow: hidden;
   padding: 0;
-  background-color: rgba(md-color($md-grey, 100), 1);
-  border-top: 1px solid rgba(md-color($md-grey, 400),.5);
+  background-color: rgba(md-color($md-grey, lighter), .7);
+  border-top: 1px solid rgba(md-color($md-grey, default),.45);
   display: table;
   min-width: 100%;
   margin-top: rem(3.7);

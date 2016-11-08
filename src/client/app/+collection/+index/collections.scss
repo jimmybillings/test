@@ -1,5 +1,5 @@
 collections-component .collection-head {
-  color: md-color($primary, 600);
+  color: md-color($primary, default);
   padding-left: rem(.8);
   padding-right: rem(.8);
   box-shadow: inset 0 -1px 0 0 md-color($foreground, divider), 0 1px 0 0 rgba(md-color($background, card), .6);
@@ -31,7 +31,7 @@ collections-component .query-details {
   padding-top: rem(.4);
   padding-left: rem(.8);
   font-size: .77em;
-  color: md-color($primary, 700);
+  color: md-color($primary, darker);
   span {
     display: inline-block;
     position: relative;
@@ -140,7 +140,7 @@ collections-component .query-details {
     &.focused {
       background-color: rgba(md-color($background, card), 1);
       @include md-elevation(2);
-      border: 1px solid rgba(md-color($primary, 400), 1);
+      border: 1px solid rgba(md-color($primary, default), .9);
     }
     .divider {
       margin: rem(.6) rem(.8) 0 rem(.8);
@@ -322,21 +322,20 @@ wz-item-search-form {
       padding-bottom: rem(1.3);
       padding-left: rem(.5);
       font-size: .9em;
-      color: rgba(md-color($primary, 500),.75);
+      color: rgba(md-color($primary, default),.75);
       &:focus, &:active {
         outline: none;
-        border-color: rgba(md-color($primary, 500),.9);
+        border-color: rgba(md-color($primary, default),.9);
       }
       &::selection {
-        background: rgba(md-color($accent, 600),.25);
-        color: md-color($primary, 600);
+        background: rgba(md-color($accent, default),.25);
+        color: md-color($primary, default);
       }
     }
     button {
       color: md-color($foreground, base, .7);
       @include transition($swift-ease-out);
       &:hover {
-        @include text-contrast(md-color($primary, 500));
         color: md-color($primary);
         background-color: md-color($foreground, base, .1);
       }

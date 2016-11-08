@@ -23,10 +23,10 @@ search-component .search-header {
     left: rem(-.4);
   }
   &.md-primary[md-button], &[md-button].is-dd.md-primary .md-button-wrapper::after {
-    color: md-color($md-primary, 500);
+    color: md-color($md-primary, default);
   }
   &[md-button]:hover.md-primary::after, [md-icon-button]:hover.md-primary::after {
-    background-color: rgba(md-color($md-primary, 500), .12);
+    background-color: rgba(md-color($md-primary, default), .12);
   }
 }
 
