@@ -1,6 +1,16 @@
 <!-- there probably should be some kind of toggle for theater mode (dark background where preview is VS light)-->
 
 <section class="preview-bk theater">
+	<div layout="row" layout-align="center start">
+		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100">
+			<button [disabled]="!searchContext.state.q" md-button class="back-button" (click)="backToResults()">
+				<div layout="row" layout-align="space-between center">
+					<md-icon>arrow_left</md-icon>
+					<span>BACK TO SEARCH RESULTS</span>
+				</div>
+			</button>
+		</div>
+	</div>
 	<div layout="row" layout-align="center">
 		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
 			<div flex-gt-sm="66" flex="100">
@@ -73,7 +83,7 @@
 						<md-card-actions layout="column" layout-align="center center" layout-wrap="">
 							<wz-transcode-select *ngIf="asset.transcodeTargets.length > 0" [transcodeTargets]="asset.transcodeTargets" [selectedTarget]="selectedTarget"
 								(selectTarget)="selectTarget($event)"></wz-transcode-select>
-							<button md-raised-button [disabled]="!currentUser.loggedIn() && selectedTarget" (click)="addAssetToCart(asset.assetId); addToCartToast.show()"
+							<button md-raised-button [disabled]="!currentUser.loggedIn()" (click)="addAssetToCart(asset.assetId); addToCartToast.show()"
 								class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
 							<!--<button *ngIf="asset.price == 0" md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>-->
 						</md-card-actions>

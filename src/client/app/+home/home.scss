@@ -216,8 +216,8 @@ home-component {
   
   .mrkt-call-to-action {
     min-height: 440px;
-    background:  md-color($primary, 700)  url('../assets/img/bk/tex/bktx_dgl_lines_light.png');
-    @include text-contrast(md-color($primary, 700));
+    background:  md-color($primary, darker)  url('../assets/img/bk/tex/bktx_dgl_lines_light.png');
+    color: md-color($primary, darker-contrast);
     text-align: center;
   }
 }
@@ -229,12 +229,12 @@ home-component {
     min-width: 300px;
     padding: 4px 40px;
     // opacity: .8;
-    background-color: md-color($accent, 700, .8);
+    background-color: md-color($accent, darker, .8);
     border: 1px solid transparent;
     @include transition($swift-ease-in);
     &:hover {
       border: 1px solid $white-87-opacity;
-      background-color: md-color($accent, 700, .8);
+      background-color: md-color($accent, darker, .8);
       @include md-elevation(2);
     }
   }

@@ -1,5 +1,5 @@
 orders-component .orders-head {
-  color: md-color($primary, 600);
+  color: md-color($primary, default);
   padding-left: rem(.8);
   padding-right: rem(.8);
   box-shadow: inset 0 -1px 0 0 md-color($foreground, divider), 0 1px 0 0 rgba(md-color($background, card), .6);
@@ -48,15 +48,15 @@ orders-component .orders-head {
     border: 1px solid rgba(md-color($background, card), .01);
     @include transition($swift-ease-out);
     &:hover {
-      border-color: md-color($primary, 400);
+      border-color: rgba(md-color($primary, default), .75);
       background-color: md-color($background, card);
-      @include md-elevation(2);
+      @include md-elevation(1);
       cursor: pointer;
     }
     .details {
       padding: rem(.7) rem(1.0);
-      background-color: rgba(md-color($primary, 500), .8);
-      color: md-contrast($primary, 500);
+      background-color: rgba(md-color($primary, default), .9);
+      color: md-color($primary, default-contrast);
       margin: rem(.7) rem(.2) rem(.7) rem(.7);
       @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
         margin-right: rem(.7);
@@ -163,7 +163,7 @@ orders-component .orders-head {
     &.focused {
       background-color: rgba(md-color($background, card), 1);
       @include md-elevation(2);
-      border: 1px solid rgba(md-color($primary, 400), 1);
+      border: 1px solid rgba(md-color($primary, default), .75);
     }
     .divider {
       margin: rem(.6) rem(.8) 0 rem(.8);

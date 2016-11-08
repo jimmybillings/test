@@ -29,7 +29,7 @@ app-footer {
           opacity: .25;
           @include transition($swift-ease-in);
           &:hover {
-            color: md-color($md-primary, 500, .9);
+            color: md-color($md-primary, default, .9);
             opacity: 1;
           } 
         }

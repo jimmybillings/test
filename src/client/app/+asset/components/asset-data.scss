@@ -30,8 +30,8 @@
         height: rem(5.2);
         &.md-tab-active {
           opacity: 1;
-          background-color: rgba(md-color($primary, 300), .00);
-          color: md-color($primary, 600);
+          background-color: rgba(md-color($primary, lighter), .00);
+          color: md-color($primary, default);
         }
         &.md-tab-disabled {
           opacity: .25;

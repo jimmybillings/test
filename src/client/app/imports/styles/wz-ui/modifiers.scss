@@ -13,7 +13,7 @@
     border: 1px solid md-color($md-foreground, divider);
     line-height: rem(3.300);
     &.md-primary {
-      border: 1px solid md-color($md-primary, 500, .4);
+      border: 1px solid md-color($md-primary, default, .4);
     }
     &.md-accent {
       border: 1px solid md-color($md-accent, 500, .4);

@@ -11,6 +11,7 @@ import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 import { CartSummaryService } from '../shared/services/cart-summary.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
+import { SearchContext } from '../shared/services/search-context.service';
 
 /**
  * Asset page component - renders an asset show page
@@ -36,6 +37,7 @@ export class AssetComponent implements OnInit {
     public notification: WzNotificationService,
     public cartSummary: CartSummaryService,
     public userPreference: UserPreferenceService,
+    public searchContext: SearchContext,
     public store: Store<CollectionStore>) {
   }
 
@@ -73,7 +75,6 @@ export class AssetComponent implements OnInit {
     });
   }
 
-
   public showNewCollection(assetId: any): void {
     let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-collection-tray');
     (!this.currentUser.loggedIn()) ? this.router.navigate(['/user/login']) : newCollectionButton.click();
@@ -81,5 +82,9 @@ export class AssetComponent implements OnInit {
 
   public addAssetToCart(asset: any): void {
     this.cartSummary.addAssetToProjectInCart(asset.assetId, asset.selectedTranscodeTarget);
+  }
+
+  public backToResults(): void {
+    this.router.navigate(['search/', this.searchContext.state]);
   }
 }

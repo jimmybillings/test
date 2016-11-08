@@ -16,15 +16,15 @@ md-sidenav {
     &.md-primary .md-list-item {
       height: rem(3.0);
       padding: 0 rem(1.6) 0 rem(3.6);
-      color: rgba(md-color($primary, 500), 1);
+      color: rgba(md-color($primary, default), 1);
       &:hover {
         background-color: rgba(md-color($foreground, base), .02);
         cursor: pointer;
       }
     }
     &.md-primary.active .md-list-item {
-      background-color: rgba(md-color($primary, 500), 1);
-      @include text-contrast(md-color($primary, 700));
+      background-color: rgba(md-color($primary, default), 1);
+      color: md-color($primary, default-contrast);
     }
   } 
   li {
@@ -95,7 +95,7 @@ md-sidenav {
       position: relative;
       &:focus, &:active {
         outline: none;
-        border-color: rgba(md-color($primary, 500),.9);
+        border-color: rgba(md-color($primary, default),.9);
         border-width: 0 0 2px 0;
       }
     }
@@ -127,5 +127,5 @@ md-sidenav {
 
 // this 
 .filter [color="primary"].md-checkbox-checked .md-checkbox-background {
-  background-color: md-color($primary, 500);
+  background-color: md-color($primary, default);
 }

@@ -41,8 +41,8 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
       padding-bottom: rem(.9);
       padding-left: rem(1.4);
       box-shadow: inset 0 -1px 0 0 md-color($md-foreground, divider), 0 1px 0 0 md-color($md-background, card);
-      background-color: md-color($md-primary, 500);
-      @include text-contrast(md-color($md-primary, 500));
+      background-color: md-color($md-primary, default);
+      @include text-contrast(md-color($md-primary, default));
       .md-headline {
         font-size: rem(2.0);
         margin: 0;
@@ -55,7 +55,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
         button {
           @include transition($swift-ease-out);
           &:hover {
-            @include text-contrast(md-color($md-primary, 500));
+            @include text-contrast(md-color($md-primary, default));
             // color: md-color($md-primary);
             background-color: md-color($md-foreground, base, .1);
           }
@@ -67,7 +67,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
       }
     }
     .query-details {
-      background-color: rgba(md-color($md-primary, 500), .12); 
+      background-color: rgba(md-color($md-primary, default), .12); 
       color: md-color($md-foreground, secondary-text);
       span {
         margin-left: rem(1.3);
