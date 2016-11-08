@@ -23,7 +23,7 @@
       text-transform: uppercase;
       border-width: 0 0 1px 0;
       border-style: solid; 
-      border-color: rgba(md-color($md-grey, default),.6);
+      border-color: rgba(md-color($md-grey, 400),.5);
       .md-tab-label {
         @include transition($swift-ease-out);
         line-height: rem(5.6);
