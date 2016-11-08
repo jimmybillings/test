@@ -1,55 +1,53 @@
-import {
-  beforeEachProvidersArray,
-  Observable,
-  inject,
-  TestBed
-} from '../imports/test.imports';
 
-import { ChangeDetectorRef } from '@angular/core';
-import { HomeComponent} from './home.component';
-import { UiConfig } from '../shared/services/ui.config';
+import { Observable } from 'rxjs/Rx';
+import { HomeComponent } from './home.component';
 
 export function main() {
   describe('Home Component', () => {
-    class MockUiConfig {
-      get(comp: any) {
+    let componentUnderTest: HomeComponent;
+    let mockUiConfig: any, mockSearchContext: any, mockUserPreference: any, mockFilter: any;
+    mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ 'config': { 'pageSize': { 'value': '100' }, 'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }] } } })) };
+    mockSearchContext = { new: jasmine.createSpy('new') };
+    mockUserPreference = { state: { searchSortOptionId: 10 } };
+    mockFilter = { set: jasmine.createSpy('set'), clear: jasmine.createSpy('clear') };
 
-        return Observable.of({ 'config': { 'pageSize': { 'value': '100' }, 'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER', 'theme': 'success', 'type': 'confirmed=true' }] } } });
-      }
-    }
-    class MockChangeDetectorRef {
-      markForCheck() { return true; };
-    }
+    beforeEach(() => {
+      componentUnderTest = new HomeComponent(null, null, mockUiConfig, mockSearchContext, mockUserPreference, mockFilter);
+    });
 
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        ...beforeEachProvidersArray,
-        HomeComponent,
-        { provide: UiConfig, useClass: MockUiConfig },
-        { provide: ChangeDetectorRef, useClass: MockChangeDetectorRef }
-      ]
-    }));
+    describe('ngOnInit()', () => {
+      it('Should call the config service for the home component config options', () => {
+        componentUnderTest.ngOnInit();
+        expect(mockUiConfig.get).toHaveBeenCalledWith('home');
+        expect(componentUnderTest.config).toEqual({ 'pageSize': { 'value': '100' }, 'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }] } });
+      });
+    });
 
-    it('Should have apiConfig, currentUser, searchContext and uiConfig defined',
-      inject([HomeComponent], (component: HomeComponent) => {
-        expect(component.currentUser).toBeDefined();
-        expect(component.uiConfig).toBeDefined();
-        expect(component.searchContext).toBeDefined();
-      }));
+    describe('ngOnInit()', () => {
+      it('Should create a new search context', () => {
+        componentUnderTest.ngOnInit();
+        componentUnderTest.newSearchContext('cat');
+        expect(mockSearchContext.new).toHaveBeenCalledWith({ q: 'cat', i: 1, n: '100', sortId: 10 });
+        expect(mockFilter.set).toHaveBeenCalledWith(mockFilter.clear());
+      });
+    });
 
-    it('Should call the config service for the home component config options', inject([HomeComponent], (component: HomeComponent) => {
-      spyOn(component.uiConfig, 'get').and.callThrough();
-      component.ngOnInit();
-      expect(component.uiConfig.get).toHaveBeenCalledWith('home');
-      expect(component.config).toEqual({ 'pageSize': { 'value': '100' }, 'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER', 'theme': 'success', 'type': 'confirmed=true' }] } });
-    }));
+    describe('buildSearchContext()', () => {
+      it('Should remove any empty properties in the configurable search params incase HUMANS forgot to put them in there', () => {
+        expect(componentUnderTest.buildSearchContext(JSON.stringify({ q: '', i: 0, n: 100 }))).toEqual({ i: 0, n: 100 });
+      });
+    });
 
-    it('Should have a newSearchContext() method that creates a new search context',
-      inject([HomeComponent], (component: HomeComponent) => {
-        spyOn(component.searchContext, 'new');
-        component.ngOnInit();
-        component.newSearchContext('cat');
-        expect(component.searchContext.new).toHaveBeenCalledWith({ q: 'cat', i: 1, n: '100', sortId: 12 });
-      }));
+    describe('ngOnDestroy()', () => {
+      it('unsubscribes from the UI config to prevent memory leakage', () => {
+        let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
+        let mockObservable = { subscribe: () => mockSubscription };
+        mockUiConfig = { get: () => mockObservable };
+        componentUnderTest = new HomeComponent(null, null, mockUiConfig, mockSearchContext, mockUserPreference, mockFilter);
+        componentUnderTest.ngOnInit();
+        componentUnderTest.ngOnDestroy();
+        expect(mockSubscription.unsubscribe).toHaveBeenCalled();
+      });
+    });
   });
 }
