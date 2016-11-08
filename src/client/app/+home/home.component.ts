@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CurrentUser} from '../shared/services/current-user.model';
 import { UiConfig} from '../shared/services/ui.config';
 import { SearchContext} from '../shared/services/search-context.service';

@@ -1,19 +1,18 @@
 
 import { Observable } from 'rxjs/Rx';
-import { ChangeDetectorRef } from '@angular/core';
 import { HomeComponent } from './home.component';
 
 export function main() {
   describe('Home Component', () => {
     let componentUnderTest: HomeComponent;
     let mockUiConfig: any, mockSearchContext: any, mockUserPreference: any, mockFilter: any;
-    mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ 'config': { 'pageSize': { 'value': '100' }, 'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }] } } }))  };
-    mockSearchContext = { new: jasmine.createSpy('new')};
-    mockUserPreference = { state: { searchSortOptionId: 10 }}
-    mockFilter = { set: jasmine.createSpy('set'), clear: jasmine.createSpy('clear')}
+    mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ 'config': { 'pageSize': { 'value': '100' }, 'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }] } } })) };
+    mockSearchContext = { new: jasmine.createSpy('new') };
+    mockUserPreference = { state: { searchSortOptionId: 10 } };
+    mockFilter = { set: jasmine.createSpy('set'), clear: jasmine.createSpy('clear') };
 
     beforeEach(() => {
-      componentUnderTest = new HomeComponent(null, null, mockUiConfig, mockSearchContext, mockUserPreference, mockFilter)
+      componentUnderTest = new HomeComponent(null, null, mockUiConfig, mockSearchContext, mockUserPreference, mockFilter);
     });
 
     describe('ngOnInit()', () => {
@@ -23,7 +22,7 @@ export function main() {
         expect(componentUnderTest.config).toEqual({ 'pageSize': { 'value': '100' }, 'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }] } });
       });
     });
-    
+
     describe('ngOnInit()', () => {
       it('Should create a new search context', () => {
         componentUnderTest.ngOnInit();
@@ -35,7 +34,7 @@ export function main() {
 
     describe('buildSearchContext()', () => {
       it('Should remove any empty properties in the configurable search params incase HUMANS forgot to put them in there', () => {
-        expect(componentUnderTest.buildSearchContext(JSON.stringify({q: '', i: 0, n: 100}))).toEqual({i: 0, n: 100});
+        expect(componentUnderTest.buildSearchContext(JSON.stringify({ q: '', i: 0, n: 100 }))).toEqual({ i: 0, n: 100 });
       });
     });
 

@@ -48,8 +48,7 @@ export function main() {
             Observable.of({ user: 'james', token: { token: 'loginToken' }, userPreferences: { pref: 1 }, documentsRequiringAgreement: ['TOS'] }))
         };
         componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockDocumentService, mockUiConfig);
-        componentUnderTest.termsDialog = { show: function() {return true;}}
-        spyOn(componentUnderTest.termsDialog, 'show');
+        componentUnderTest.termsDialog = { show: jasmine.createSpy('show')};
         componentUnderTest.onSubmit({ 'user': 'ross' });
         expect(componentUnderTest.termsDialog.show).toHaveBeenCalled();
       });
