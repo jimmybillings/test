@@ -1,23 +1,19 @@
 const glob = require('glob');
 
+import { rootDir } from '../config/rootdir';
 import { ignoredFilePatterns, ignoredDirectoryNames } from '../config/ignore';
 
 export class SpecAnalyzer {
-  private _rootDir: string = 'src/client/app/';
   private _allTypeScriptFilenames: string[] = null;
   private _allSourceFilenames: string[] = null;
   private _allSpecFilenames: string[] = null;
   private _sourcesWithoutSpecs: string[] = null;
   private _specsWithoutSources: string[] = null;
 
-  public get rootDir(): string {
-    return this._rootDir;
-  }
-
   public get allTypeScriptFilenames(): string[] {
     if (this._allTypeScriptFilenames === null) {
       this._allTypeScriptFilenames =
-        glob.sync(`${this.rootDir}**/*.ts`, { nodir: true, ignore: this.patternsToIgnore() });
+        glob.sync(`${rootDir}**/*.ts`, { nodir: true, ignore: this.patternsToIgnore() });
     }
 
     return this._allTypeScriptFilenames;
@@ -61,21 +57,21 @@ export class SpecAnalyzer {
     return this._specsWithoutSources;
   }
 
+  public specFilenameFrom(sourceFilename: string): string {
+    return sourceFilename.replace(/\.ts$/, '.spec.ts');
+  }
+
+  public sourceFilenameFrom(specFilename: string): string {
+    return specFilename.replace(/\.spec\.ts$/, '.ts');
+  }
+
   private patternsToIgnore(): string[] {
     return []
-      .concat(ignoredFilePatterns.map(pattern => `${this.rootDir}**/${pattern}.ts`))
-      .concat(ignoredDirectoryNames.map(name => `${this.rootDir}**/${name}/**/*.ts`));
+      .concat(ignoredFilePatterns.map(pattern => `${rootDir}**/${pattern}.ts`))
+      .concat(ignoredDirectoryNames.map(name => `${rootDir}**/${name}/**/*.ts`));
   }
 
   private isSpecFile(filename: string): boolean {
     return /\.spec\.ts$/.test(filename);
-  }
-
-  private specFilenameFrom(sourceFilename: string): string {
-    return sourceFilename.replace(/\.ts$/, '.spec.ts');
-  }
-
-  private sourceFilenameFrom(specFilename: string): string {
-    return specFilename.replace(/\.spec\.ts$/, '.ts');
   }
 }

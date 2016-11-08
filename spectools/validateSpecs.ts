@@ -1,17 +1,10 @@
+import { log, abbreviate } from './src/output';
 import { SpecAnalyzer } from './src/specAnalyzer';
 
 const analyzer: SpecAnalyzer = new SpecAnalyzer();
 
-const abbreviate: Function = (filenames: string[]): string[] => {
-  return filenames.map(filename => filename.replace(analyzer.rootDir, ''));
-}
-
-const log: Function = (message: string = ''): void => {
-  console.log(`  ${message}`);
-}
-
 abbreviate(analyzer.sourcesWithoutSpecs)
-  .forEach((sourceFilename: string) => log(`ERROR: No spec for ${sourceFilename}`));
+  .forEach((source: string) => log(`ERROR: No spec for ${source}`));
 
 if (analyzer.sourcesWithoutSpecs.length > 0) log();
 log(`* Total number of testable source files: ${analyzer.allSourceFilenames.length}`);
@@ -19,7 +12,7 @@ log(`* Number of testable source files without a matching spec file: ${analyzer.
 log();
 
 abbreviate(analyzer.specsWithoutSources)
-  .forEach((specFilename: string) => log(`ERROR: No source for ${specFilename}`));
+  .forEach((spec: string) => log(`ERROR: No source for ${spec}`));
 
 if (analyzer.specsWithoutSources.length > 0) log();
 log(`* Total number of spec files: ${analyzer.allSpecFilenames.length}`);

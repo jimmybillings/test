@@ -5,7 +5,9 @@ export const ignoredFilePatterns: string[] = [
   '*.routes',
   'main',
   'system-config',
-  'env.config'
+  'env.config',
+  'wz-clipboard.directive',
+  'wz-pikaday.directive'
 ];
 
 export const ignoredDirectoryNames: string[] = [
