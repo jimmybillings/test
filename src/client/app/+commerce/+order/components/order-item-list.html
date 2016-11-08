@@ -18,9 +18,8 @@
                     <section class="projects" *ngFor="let project of order.projects">
                         <h3 class="md-headline">
                             <span class="project-label">
-                                {{ 'ORDER.INDEX.PROJECTS.PROJECT_LABEL' | translate }}
+                                {{project.name}}
                             </span>
-                            {{project.name}}
                             <span class="asset-count">
                                 <span class="count">{{project.lineItems.length || 0}}</span>
                             </span>
