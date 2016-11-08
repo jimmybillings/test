@@ -10,7 +10,7 @@ export function main() {
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApi = new MockApiService();
-      mockApi.getResponse = [{ id: 1, activeVersionId: 'abcd1234', name: 'TOS' }];
+      mockApi.getResponse = [[{ id: 1, activeVersionId: 'abcd1234', name: 'TOS' }], { text: () => { return 'text'; } }];
       serviceUnderTest = new DocumentService(mockApi.injector);
     });
 
@@ -24,12 +24,14 @@ export function main() {
 
       it('Should flatmap the response to make another request', () => {
         serviceUnderTest.downloadActiveTosDocument().take(1).subscribe(data => {
-          expect(serviceUnderTest.activeVersionId).toBe('abcd1234');
-          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
-          expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/public/downloadFile/abcd1234');
-          expect(mockApi.get).toHaveBeenCalledWithParameters({ download: true });
+          expect(data).toBe('text');
         });
-      })
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/public/name/TOS');
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/public/downloadFile/abcd1234');
+        expect(mockApi.get).toHaveBeenCalledWithDownload(true);
+      });
     });
 
     describe('agreeUserToTerms', () => {
