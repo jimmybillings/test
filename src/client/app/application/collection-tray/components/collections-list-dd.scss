@@ -262,6 +262,9 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
     .md-headline {
       margin-left: rem(2.1);
     }
+    .tools button.back {
+      @include transform(rotate(90deg));
+    }
     .tools button:hover {
       color: md-color($md-primary);
     }

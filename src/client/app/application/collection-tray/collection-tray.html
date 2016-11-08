@@ -23,19 +23,19 @@
     
     <md-menu x-position="before" #moreCollectionTrayOptions="mdMenu">
       <button md-menu-item (click)="createCollection.show()">
-        <md-icon>add_circle_outline</md-icon>Create a new collection
+        <md-icon>add_circle_outline</md-icon>{{ 'COLLECTION.MORE_DD_MENU.CREATE_NEW' | translate }}
       </button>
       <button md-menu-item (click)="list.show($event)">
-        <md-icon>folder_special</md-icon>Change focused collection
+        <md-icon>folder_special</md-icon>{{ 'COLLECTION.MORE_DD_MENU.CHANGE_SELECTED' | translate }}
       </button>
       <a md-menu-item *ngIf="(activeCollection.data | async).id" [routerLink]="['/collection/', (activeCollection.data | async).id, {i: 1, n: pageSize}]">
-        <md-icon>open_in_browser</md-icon>Open selected collection
+        <md-icon>open_in_browser</md-icon>{{ 'COLLECTION.MORE_DD_MENU.OPEN_SELECTED' | translate }}
       </a>
       <button md-menu-item (click)="copyLegacyLinkDialog.show()">
-        <md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}
+        <md-icon>link</md-icon>{{ 'COLLECTION.MORE_DD_MENU.COPY_LEGACY_LINK' | translate }}
       </button>
       <a md-menu-item [routerLink]="['/collections/']">
-        <md-icon>folder_open</md-icon>View all collections
+        <md-icon>folder_open</md-icon>{{ 'COLLECTION.MORE_DD_MENU.VIEW_ALL' | translate }}
       </a>
     </md-menu>
   </div>
