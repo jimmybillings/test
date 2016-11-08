@@ -12,5 +12,5 @@ export function main() {
       expect(true).toBe(true);
     });
   });
-};
-
+}
+    
