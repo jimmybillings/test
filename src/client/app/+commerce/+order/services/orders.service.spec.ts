@@ -82,7 +82,7 @@ export function main() {
           expect(mockOrdersStore.storeOrders).toHaveBeenCalledWith(res);
         });
       });
-    }); 
+    });
 
   });
 }
