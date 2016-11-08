@@ -20,8 +20,11 @@
                             <span class="project-label">
                                 {{project.name}}
                             </span>
-                            <span class="asset-count">
-                                <span class="count">{{project.lineItems.length || 0}}</span>
+                            <span class="asset-count" *ngIf="project.lineItems">
+                                <span class="count">{{project.lineItems.length}}</span>
+                            </span>
+                            <span class="asset-count" *ngIf="!project.lineItems">
+                                <span class="count">0</span>
                             </span>
                         </h3>
                         <div class="md-caption order-info">
