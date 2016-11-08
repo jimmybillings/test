@@ -1,5 +1,16 @@
 
 section.preview-bk {
+  button.back-button {
+    &[disabled] {
+      color: md-color($md-grey, 700);
+    }
+    span.md-button-wrapper {
+      md-icon {
+        margin-right: rem(1);
+      }
+    }
+    margin-bottom: rem(1);
+  }
   overflow: hidden;
   width: 100%;
   position: relative;
