@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { ActiveCollectionService} from '../../shared/services/active-collection.service';
+import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 /**
  * Home page search component - renders search form passes form values to search component.
  */
@@ -15,7 +15,7 @@ export class CollectionTrayComponent implements OnInit {
   @Input() uiConfig: any;
   public pageSize: string;
 
-  constructor(public activeCollection: ActiveCollectionService) {}
+  constructor(public activeCollection: ActiveCollectionService) { }
 
   ngOnInit() {
     this.uiConfig.get('global').take(1).subscribe((config: any) => {

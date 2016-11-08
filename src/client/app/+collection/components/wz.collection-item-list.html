@@ -52,8 +52,8 @@
                 (click)="setCurrentCollection(collection)"><md-icon>more_vert</md-icon></button>
             </div>
             <div class="premiere-actions">
-                <button md-button class="is-outlined" color="primary" [routerLink]="['/collection/', collection.id, {i: 1, n: 100}]">View</button>
-                <button md-button class="is-outlined" (click)="selectActiveCollection(collection.id)">Select</button>
+                <button md-button class="is-outlined" color="primary" [routerLink]="['/collection/', collection.id]">{{'COLLECTION.INDEX.VIEW_BTN_LABEL' | translate }}</button>
+                <button md-button class="is-outlined" (click)="selectActiveCollection(collection.id)">{{'COLLECTION.INDEX.SELECT_BTN_LABEL' | translate }}</button>
             </div>
         </div>
     </li>
@@ -61,13 +61,13 @@
 
 <md-menu class="more-collections-menu" x-position="before" #moreCollectionOptions="mdMenu">
   <button *ngIf="currentCollection" md-menu-item (click)="selectActiveCollection(currentCollection.id)">
-      <md-icon>star_border</md-icon>Select this collection
+      <md-icon>star_border</md-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.SELECT' | translate }}
   </button>
   <a *ngIf="currentCollection" md-menu-item [routerLink]="['/collection/', currentCollection.id, {i: 1, n: 100}]" disableRipple="true">
-      <md-icon>open_in_browser</md-icon>Open this collection
+      <md-icon>open_in_browser</md-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.VIEW' | translate }}
   </a>
   <button (click)="generateLegacyLink()" md-menu-item><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
-  <button md-menu-item disabled (click)="showHistory(collection)"><md-icon>history</md-icon>View collection history</button>
+  <button md-menu-item disabled (click)="showHistory(collection)"><md-icon>history</md-icon>{{'COLLECTION.INDEX.MORE_DD_MENU.HISTORY' | translate }}</button>
   <div *ngIf="currentCollection && !!currentCollection.owner">
     <div class="divider"></div>
     <button md-menu-item class="delete" (click)="delete(currentCollection)">
