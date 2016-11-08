@@ -53,8 +53,8 @@
   text-align: left;
   overflow: hidden;
   padding: 0;
-  background-color: rgba(md-color($md-grey, lighter), .7);
-  border-top: 1px solid rgba(md-color($md-grey, default),.45);
+  background-color: rgba(md-color($md-grey, 100), 1);
+  border-top: 1px solid rgba(md-color($md-grey, 400),.5);
   display: table;
   min-width: 100%;
   margin-top: rem(3.7);
