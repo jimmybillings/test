@@ -16,21 +16,19 @@ import { UserPreferenceService } from '../shared/services/user-preference.servic
 
 export class HomeComponent implements OnInit, OnDestroy {
   public config: any;
-  public configSubscription: Subscription;
+  private configSubscription: Subscription;
 
   constructor(
     public currentUser: CurrentUser,
-    public uiConfig: UiConfig,
-    public searchContext: SearchContext,
     public uiState: UiState,
-    private detector: ChangeDetectorRef,
+    private uiConfig: UiConfig,
+    private searchContext: SearchContext,
     private userPreference: UserPreferenceService,
     private filter: FilterService) { }
 
   ngOnInit() {
     this.configSubscription = this.uiConfig.get('home').subscribe((config) => {
       this.config = config.config;
-      this.detector.markForCheck();
     });
   }
 
@@ -40,17 +38,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public newSearchContext(query: any): void {
     this.filter.set(this.filter.clear());
-    this.searchContext.new({ q: query, i: 1, n: this.config.pageSize.value, sortId: this.userPreference.state.searchSortOptionId || 12 });
+    this.searchContext.new({ q: query, i: 1, n: this.config.pageSize.value, sortId: this.userPreference.state.searchSortOptionId});
   }
 
-  public json(context: any): any {
+  public buildSearchContext(context: any): any {
     context = JSON.parse(context);
     for (let param in context) {
-      if (context[param] === '') {
-        delete (context[param]);
-        return context;
-      }
-      return context;
+      if (context[param] === '') delete (context[param]);
     }
+    return context;
   }
 }

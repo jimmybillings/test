@@ -42,12 +42,17 @@ export function main() {
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
       });
 
-      /// HOW THE HECK TO I TEST THIS
-      // it('Shows the dialog if the user needs to agree to TOS', () => {
-      //   spyOn(componentUnderTest.termsDialog, 'show');
-      //   componentUnderTest.onSubmit({ 'user': 'ross' });
-      //   expect(componentUnderTest.termsDialog.show).toHaveBeenCalled();
-      // });
+      it('Shows the dialog if the user needs to agree to TOS', () => {
+        mockAuthentication = {
+          create: jasmine.createSpy('create').and.returnValue(
+            Observable.of({ user: 'james', token: { token: 'loginToken' }, userPreferences: { pref: 1 }, documentsRequiringAgreement: ['TOS'] }))
+        };
+        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockDocumentService, mockUiConfig);
+        componentUnderTest.termsDialog = { show: function() {return true;}}
+        spyOn(componentUnderTest.termsDialog, 'show');
+        componentUnderTest.onSubmit({ 'user': 'ross' });
+        expect(componentUnderTest.termsDialog.show).toHaveBeenCalled();
+      });
     });
 
     describe('ngOnDestroy()', () => {
