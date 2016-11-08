@@ -14,6 +14,7 @@ export class DocumentService {
       this.activeVersionId = response[0].activeVersionId;
       return this.api.get(Api.Identities, `document/public/downloadFile/${response[0].activeVersionId}`, { download: true });
     }).map((response: Response) => {
+      console.log(response);
       return response.text();
     });
   }
