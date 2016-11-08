@@ -12,6 +12,7 @@
         placeholder="{{field.label | translate}}"
         type="{{field.type}}"
         formControlName="{{field.name}}"
+        [required]="isRequiredField(field)"
         id="{{field.name}}">
 
 			<!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
