@@ -17,13 +17,13 @@ export class OrdersService {
   }
 
   public getOrders(params: any): Observable<any> {
-    if (params['i']) params['i'] -= 1;
-    this.params = Object.assign({}, this.getSearchParams(), params);
-    return this.api.get(Api.Orders, 'order/myOrders', { parameters: this.params, loading: true })
-      .do(response => this.store.storeOrders(response));
+    return this.api.get(Api.Orders, 'order/myOrders',
+      { parameters: this.buildSearchParams(params), loading: true }
+    ).do(response => this.store.storeOrders(response));
   }
 
-  private getSearchParams() {
-    return { q: '', s: '', d: '', i: 0, n: 20 };
+  private buildSearchParams(params: any) {
+    params['i'] = (params['i'] && params['i'] > 0) ? params['i'] - 1 : 0;
+    return Object.assign({}, { q: '', s: '', d: '', i: 0, n: 20 }, params);
   }
 }

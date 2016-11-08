@@ -62,7 +62,27 @@ export function main() {
           expect(mockOrdersStore.storeOrders).toHaveBeenCalledWith(res);
         });
       });
-    });
+
+      it('calls the API service correctly with an invalid page number', () => {
+        serviceUnderTest.getOrders({ i: -2, n: 20 }).subscribe((res) => {
+          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApi.get).toHaveBeenCalledWithEndpoint('order/myOrders');
+          expect(mockApi.get).toHaveBeenCalledWithLoading(true);
+          expect(mockApi.get).toHaveBeenCalledWithParameters({ q: '', s: '', d: '', i: 0, n: 20 });
+          expect(mockOrdersStore.storeOrders).toHaveBeenCalledWith(res);
+        });
+      });
+
+      it('calls the API service correctly with an alternative invalid page number', () => {
+        serviceUnderTest.getOrders({ i: 0, n: 20 }).subscribe((res) => {
+          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApi.get).toHaveBeenCalledWithEndpoint('order/myOrders');
+          expect(mockApi.get).toHaveBeenCalledWithLoading(true);
+          expect(mockApi.get).toHaveBeenCalledWithParameters({ q: '', s: '', d: '', i: 0, n: 20 });
+          expect(mockOrdersStore.storeOrders).toHaveBeenCalledWith(res);
+        });
+      });
+    }); 
 
   });
 }
