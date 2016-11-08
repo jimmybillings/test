@@ -6,7 +6,7 @@ import { OrdersStore } from './orders.store';
 
 @Injectable()
 export class OrdersService {
-  
+
   constructor(
     private api: ApiService,
     private store: OrdersStore) { }
