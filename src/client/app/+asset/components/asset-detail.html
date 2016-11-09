@@ -3,27 +3,41 @@
 <section class="preview-bk theater">
 	<div layout="row" layout-align="center start">
 		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100">
-			<a *ngIf="searchContext.state.q" md-button class="back-button" [routerLink]="['/search/', searchContext.state]">
+			<!--<a *ngIf="searchContext.state.q" md-button class="back-button" [routerLink]="['/search/', searchContext.state]">
 				<div layout="row" layout-align="space-between center">
 					<md-icon>arrow_left</md-icon>
 					<span>BACK TO SEARCH RESULTS</span>
 				</div>
-			</a>
+			</a>-->
 		</div>
 	</div>
 	<div layout="row" layout-align="center">
 		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
 			<div flex-gt-sm="66" flex="100">
 				<div flex="" layout="column" class="primary-info-t">
-					<div class="primary-content-t">
-						<div class="asset-name md-caption" layout="column">{{asset.common[5].value}}</div>
-						<div layout="row" layout-wrap="">
-							<div [ngClass]="{hd: asset.primary[2].value == 'High Definition', sd: asset.primary[2].value == 'Standard Definition'}" class="sd-hd"
-								*ngIf='asset.primary[2].value != null'>
+					<div class="primary-content-t" layout="row">
+						<button
+							class="back-to-search"
+							*ngIf="searchContext.state.q" 
+							[disabled]="!searchContext.state.q" 
+							title="Back to search results"
+							md-icon-button 
+							[routerLink]="['/search/', searchContext.state]">
+								<md-icon>arrow_back</md-icon>
+						</button>
+						<div flex="auto">
+							<div class="asset-name md-caption" layout="column">{{asset.common[5].value}}</div>
+							<div layout="row" layout-wrap="">
+								<div [ngClass]="{hd: asset.primary[2].value == 'High Definition', sd: asset.primary[2].value == 'Standard Definition'}" class="sd-hd"
+									*ngIf='asset.primary[2].value != null'>
+								</div>
+								<div flex="none" class="rights md-caption">{{asset.primary[3].value}}</div>
+								<div flex="none" class="restriction-banner" *ngIf="asset.primary[4].value != null && asset.primary[4].value != 'Needs calculation'">{{asset.primary[4].value}}</div>
 							</div>
-							<div flex="none" class="rights md-caption">{{asset.primary[3].value}}</div>
-							<div flex="none" class="restriction-banner" *ngIf="asset.primary[4].value != null && asset.primary[4].value != 'Needs calculation'">{{asset.primary[4].value}}</div>
 						</div>
+
+
+
 					</div>
 				</div>
 			</div>

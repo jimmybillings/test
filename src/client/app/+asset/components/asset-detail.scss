@@ -1,16 +1,5 @@
 
 section.preview-bk {
-  button.back-button {
-    &[disabled] {
-      color: md-color($md-grey, 700);
-    }
-    span.md-button-wrapper {
-      md-icon {
-        margin-right: rem(1);
-      }
-    }
-    margin-bottom: rem(1);
-  }
   overflow: hidden;
   width: 100%;
   position: relative;
@@ -213,6 +202,10 @@ div.primary-info-t {
   height: rem(4.8);
   @include text-contrast(md-color($foreground, base));
   div.primary-content-t {
+    .back-to-search {
+      margin-right: rem(.5);
+      margin-left: rem(-.5);
+    }
     .asset-name {
       margin-bottom: rem(.5);
       opacity: .5;
