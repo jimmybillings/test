@@ -6,7 +6,7 @@ import { ApiResponse } from '../interfaces/api.interface';
 // Add these to a beforeEach() method with addMatchers(mockApiMatchers).
 export { mockApiMatchers } from './mock-api.matchers';
 
-interface CallCounter { get: number, put: number, post: number, delete: number };
+interface CallCounter { get: number; put: number; post: number; delete: number; };
 
 export class MockApiService {
   // Errors:
@@ -111,7 +111,7 @@ export class MockApiService {
 
       put: spyOn(this.apiService, 'put').and.callFake((): any => {
         if (this.putError) {
-          return Observable.throw(this.putError)
+          return Observable.throw(this.putError);
         } else {
           const counter = this.callCounter.put;
           if (this.callCounter.put !== this._putResponse.length - 1) this.callCounter.put++;
@@ -121,7 +121,7 @@ export class MockApiService {
 
       delete: spyOn(this.apiService, 'delete').and.callFake((): any => {
         if (this.deleteError) {
-          return Observable.throw(this.deleteError)
+          return Observable.throw(this.deleteError);
         } else {
           const counter = this.callCounter.delete;
           if (this.callCounter.delete !== this._deleteResponse.length - 1) this.callCounter.delete++;

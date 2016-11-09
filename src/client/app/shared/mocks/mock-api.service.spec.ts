@@ -52,12 +52,31 @@ export function main() {
           expect(actualResponse).toBe(mockApi.getResponse);
         });
 
-        it('can be customized', () => {
+        it('can be customized - as an object', () => {
           mockApi.getResponse = { a: 'b' };
 
           mockApi.injector.get(whateverApi, whateverEndpoint)
             .subscribe(response => actualResponse = response);
 
+          expect(actualResponse).toEqual({ a: 'b' });
+        });
+
+        it('can be customized - as an array - single index', () => {
+          mockApi.getResponse = [{ a: 'b' }];
+
+          mockApi.injector.get(whateverApi, whateverEndpoint)
+            .subscribe(response => actualResponse = response);
+
+          expect(actualResponse).toEqual({ a: 'b' });
+        });
+
+        it('can be customized - as an array - multi index', () => {
+          mockApi.getResponse = [{ a: 'b' }, { c: 'd' }];
+
+          mockApi.injector.get(whateverApi, whateverEndpoint)
+            .subscribe(response => actualResponse = response);
+
+          expect(mockApi.getResponse).toEqual([{ a: 'b' }, { c: 'd' }]);
           expect(actualResponse).toEqual({ a: 'b' });
         });
       });
@@ -78,6 +97,25 @@ export function main() {
 
           expect(actualResponse).toEqual({ a: 'b' });
         });
+
+        it('can be customized - as an array - single index', () => {
+          mockApi.postResponse = [{ a: 'b' }];
+
+          mockApi.injector.post(whateverApi, whateverEndpoint)
+            .subscribe(response => actualResponse = response);
+
+          expect(actualResponse).toEqual({ a: 'b' });
+        });
+
+        it('can be customized - as an array - multi index', () => {
+          mockApi.postResponse = [{ a: 'b' }, { c: 'd' }];
+
+          mockApi.injector.post(whateverApi, whateverEndpoint)
+            .subscribe(response => actualResponse = response);
+
+          expect(mockApi.postResponse).toEqual([{ a: 'b' }, { c: 'd' }]);
+          expect(actualResponse).toEqual({ a: 'b' });
+        });
       });
 
       describe('for put()', () => {
@@ -96,6 +134,26 @@ export function main() {
 
           expect(actualResponse).toEqual({ a: 'b' });
         });
+
+
+        it('can be customized - as an array - single index', () => {
+          mockApi.putResponse = [{ a: 'b' }];
+
+          mockApi.injector.put(whateverApi, whateverEndpoint)
+            .subscribe(response => actualResponse = response);
+
+          expect(actualResponse).toEqual({ a: 'b' });
+        });
+
+        it('can be customized - as an array - multi index', () => {
+          mockApi.putResponse = [{ a: 'b' }, { c: 'd' }];
+
+          mockApi.injector.put(whateverApi, whateverEndpoint)
+            .subscribe(response => actualResponse = response);
+
+          expect(actualResponse).toEqual({ a: 'b' });
+          expect(mockApi.putResponse).toEqual([{ a: 'b' }, { c: 'd' }]);
+        });
       });
 
       describe('for delete()', () => {
@@ -112,6 +170,25 @@ export function main() {
           mockApi.injector.delete(whateverApi, whateverEndpoint)
             .subscribe(response => actualResponse = response);
 
+          expect(actualResponse).toEqual({ a: 'b' });
+        });
+
+        it('can be customized - as an array - single index', () => {
+          mockApi.deleteResponse = [{ a: 'b' }];
+
+          mockApi.injector.delete(whateverApi, whateverEndpoint)
+            .subscribe(response => actualResponse = response);
+
+          expect(actualResponse).toEqual({ a: 'b' });
+        });
+
+        it('can be customized - as an array - multi index', () => {
+          mockApi.deleteResponse = [{ a: 'b' }, { c: 'd' }];
+
+          mockApi.injector.delete(whateverApi, whateverEndpoint)
+            .subscribe(response => actualResponse = response);
+
+          expect(mockApi.deleteResponse).toEqual([{ a: 'b' }, { c: 'd' }]);
           expect(actualResponse).toEqual({ a: 'b' });
         });
       });
