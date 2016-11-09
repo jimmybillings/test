@@ -3,12 +3,12 @@
 <section class="preview-bk theater">
 	<div layout="row" layout-align="center start">
 		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100">
-			<button [disabled]="!searchContext.state.q" md-button class="back-button" (click)="backToResults()">
+			<a *ngIf="searchContext.state.q" md-button class="back-button" [routerLink]="['/search/', searchContext.state]">
 				<div layout="row" layout-align="space-between center">
 					<md-icon>arrow_left</md-icon>
 					<span>BACK TO SEARCH RESULTS</span>
 				</div>
-			</button>
+			</a>
 		</div>
 	</div>
 	<div layout="row" layout-align="center">

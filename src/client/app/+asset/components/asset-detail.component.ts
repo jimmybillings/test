@@ -22,10 +22,8 @@ export class AssetDetailComponent implements OnChanges {
   @Input() searchContext: any;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
-  @Output() onShowNewCollection = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
-  @Output() backToPreviousResults = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   public selectedTarget: TranscodeTarget;
   private assetsArr: Array<number>;
@@ -74,10 +72,6 @@ export class AssetDetailComponent implements OnChanges {
     this.onRemoveFromCollection.emit({ 'collection': collection, 'asset': asset });
   }
 
-  public showNewCollection(assetId: any): void {
-    this.onShowNewCollection.emit(assetId);
-  }
-
   public downloadComp(assetId: any, compType: any): void {
     this.onDownloadComp.emit({ 'compType': compType, 'assetId': assetId });
   }
@@ -88,10 +82,6 @@ export class AssetDetailComponent implements OnChanges {
 
   public selectTarget(selectedTarget: TranscodeTarget): void {
     this.selectedTarget = selectedTarget;
-  }
-
-  public backToResults(): void {
-    this.backToPreviousResults.emit();
   }
 
   private format(targets: Array<string>): Array<TranscodeTarget> {

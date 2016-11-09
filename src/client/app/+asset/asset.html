@@ -1,20 +1,18 @@
   <asset-detail #target
     [currentUser]="currentUser"
     [userCan]="userCan"
-    [asset]="asset | async"
+    [asset]="assetService.data | async"
     [inActiveCollection]="inActiveCollection | async"
     [searchContext]="searchContext"
     [collection]="activeCollection.data | async"
     (onAddToCollection)="addToCollection($event)"
     (onRemoveFromCollection)="removeFromCollection($event)"
-    (onShowNewCollection)="showNewCollection($event)"
     (onDownloadComp)="downloadComp($event)"
     (addToCart)="addAssetToCart($event)"
-    (backToPreviousResults)="backToResults($event)"
   >
   </asset-detail>
   <asset-data
     [currentUser]="currentUser"
-    [asset]="asset | async">
+    [asset]="assetService.data | async">
   </asset-data>
 
