@@ -162,6 +162,10 @@ export const mockApiMatchers: jasmine.CustomMatcherFactories = {
     return optionMatcherFor('loading', booleanExpectationFormatterFor('loading'), booleanArgumentMapperFor('loading'));
   },
 
+  toHaveBeenCalledWithDownload: (): jasmine.CustomMatcher => {
+    return optionMatcherFor('download', booleanExpectationFormatterFor('download'), booleanArgumentMapperFor('download'));
+  },
+
   toHaveBeenCalledWithOverridingToken: (): jasmine.CustomMatcher => {
     return optionMatcherFor('overridingToken', stringExpectationFormatterFor('overridingToken'), stringArgumentMapperFor('overridingToken'));
   }
