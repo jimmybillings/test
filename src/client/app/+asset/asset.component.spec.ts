@@ -22,7 +22,7 @@ export function main() {
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
       mockNotification = { create: jasmine.createSpy('create') };
       mockCartSummary = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
-      mockWindow = { location: { href: {}}};
+      mockWindow = { location: { href: {} } };
       componentUnderTest = new AssetComponent(
         mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUserPreference,
         mockAssetService, mockUiConfig, mockNotification, mockCartSummary, mockWindow);
@@ -89,10 +89,10 @@ export function main() {
       });
 
       it('Should set the window.href.url to the location of the comp url if the server responsds with a downloadable comp url', () => {
-        mockAssetService = { downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({url: 'http://downloadcomp.url'})) };
+        mockAssetService = { downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({ url: 'http://downloadcomp.url' })) };
         componentUnderTest = new AssetComponent(
-        mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUserPreference,
-        mockAssetService, mockUiConfig, mockNotification, mockCartSummary, mockWindow);
+          mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUserPreference,
+          mockAssetService, mockUiConfig, mockNotification, mockCartSummary, mockWindow);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.location.href).toEqual('http://downloadcomp.url');
       });
@@ -101,10 +101,10 @@ export function main() {
 
     describe('addAssetToCart()', () => {
       it('Should call the cart summary service with correct params to add an asset to the cart', () => {
-        componentUnderTest.addAssetToCart({assetId: 123123, selectedTranscodeTarget: 'Target'});
+        componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
         expect(mockCartSummary.addAssetToProjectInCart).toHaveBeenCalledWith(123123, 'Target');
-      })
-    }); 
+      });
+    });
   });
 
   function mockActiveCollectionAndAsset(id?: number) {
