@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: NotFoundComponent;
 
     beforeEach(() => {
-      componentUnderTest = new NotFoundComponent();
+      componentUnderTest = new NotFoundComponent(null);
     });
 
     it('has no tests!', () => {

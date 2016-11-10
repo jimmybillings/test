@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CurrentUser } from './shared/services/current-user.model';
 
 @Component({
   moduleId: module.id,
@@ -9,19 +10,22 @@ import { Component } from '@angular/core';
                   <div class="warn-message" layout="column" layout-align="center center">
                     <h3 class="md-display">The page you're looking for doesn't exist</h3>
                   </div>
-                  <div layout="row" layout-align="space-between center">
+                  <div layout="row" layout-align="center center">
                     <button class="link" md-button [routerLink]="['/']">HOME</button>
-                    <button class="link" md-button [routerLink]="['/commerce']">CART</button>
-                    <button class="link" md-button [routerLink]="['/collections']">COLLECTIONS</button>
+                    <button *ngIf="currentUser.loggedIn()" class="link" md-button [routerLink]="['/commerce']">CART</button>
+                    <button *ngIf="currentUser.loggedIn()" class="link" md-button [routerLink]="['/collections']">COLLECTIONS</button>
                   </div>
                 </div>
               </div>
             </div>`,
   styles: [`
             button.link {
+              margin-right: 10px;
               border: 1px solid #ccc; 
             }
           `]
 })
 
-export class NotFoundComponent { }
+export class NotFoundComponent {
+  constructor(public currentUser: CurrentUser) { }
+}
