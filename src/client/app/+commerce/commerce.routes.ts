@@ -10,10 +10,10 @@ import { OrdersResolver } from './+order/services/orders.resolver';
 
 export const COMMERCE_ROUTES: Routes = [
   {
-    path: '',
+    path: 'commerce',
     component: CommerceComponent,
     children: [
-      { path: 'cart', component: CartComponent, canActivate: [CartGuard], resolve: { cart: CartResolver } },
+      { path: '', component: CartComponent, canActivate: [CartGuard], resolve: { cart: CartResolver } },
       { path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver } },
       { path: 'order/:orderId', component: OrderShowComponent, resolve: { order: OrderResolver } }
     ]

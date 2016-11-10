@@ -9,9 +9,12 @@ import { AssetResolver } from './+asset/services/asset.resolver';
 import { AssetGuard } from './+asset/services/asset.guard';
 import { SearchResolver } from './+search/services/search.resolver';
 import { CommerceComponent } from './+commerce/commerce.component';
+import { NotFoundComponent } from './app.not-found.component';
+
 import { Routes } from '@angular/router';
 
 export const APP_ROUTES: Routes = [
+  { path: '', component: HomeComponent },
   { path: 'notification', component: HomeComponent },
   { path: 'user', component: UserManagementComponent },
   { path: 'search', component: SearchComponent, resolve: { search: SearchResolver } },
@@ -19,6 +22,6 @@ export const APP_ROUTES: Routes = [
   { path: 'collections', component: CollectionsComponent },
   { path: 'content/:page', component: ContentComponent },
   { path: 'admin', component: AdminComponent },
-  { path: '', component: HomeComponent },
-  { path: '', component: CommerceComponent }
+  { path: 'commerce', component: CommerceComponent },
+  { path: '**', component: NotFoundComponent }
 ];

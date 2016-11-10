@@ -13,7 +13,7 @@ import { AdminIndexResolver } from './services/admin-index.resolver';
 export const ADMIN_ROUTES: Routes = [
   { path: 'admin', component: AdminComponent, canActivate: [AdminAuthGuard],
     children: [
-      { path: 'dashboard', component: DashboardComponent},
+      { path: '', component: DashboardComponent},
       { path: 'config', component: ConfigComponent},
       { path: 'ui-config/:site', component: UiConfigComponent },
       { path: 'site-config/:site', component: SiteConfigComponent },

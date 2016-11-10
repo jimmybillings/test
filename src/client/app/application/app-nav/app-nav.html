@@ -32,7 +32,7 @@
         md-icon-button
         class="cart"
         title="{{ 'HEADER.CART_BTN_TITLE' | translate}}"
-        [routerLink]="['/cart']">
+        [routerLink]="['/commerce']">
         <md-icon>shopping_cart</md-icon>
         <span class="asset-count" *ngIf="cartSize && cartSize > 0">
             <span class="count">{{ formatBadgeNumber(cartSize) }}</span>
@@ -42,16 +42,16 @@
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
 </md-toolbar>
 <md-menu x-position="before" #navigation="mdMenu">
-    <a md-menu-item *ngIf="userCan.viewAdmin()" [routerLink]="['/admin/dashboard']">
+    <a md-menu-item *ngIf="userCan.viewAdmin()" [routerLink]="['/admin']">
         <md-icon>settings</md-icon>{{ 'HEADER.ADMIN_LABEL' | translate }}
     </a>
-    <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/user/profile']">
+    <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/user']">
         <md-icon>person</md-icon>Open your profile
     </a>
     <a md-menu-item *ngIf="userCan.viewCollections()" [routerLink]="['/collections']">
         <md-icon>folder_open</md-icon>Open your collections
     </a>
-    <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/cart']">
+    <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/commerce']">
         <md-icon>shopping_cart</md-icon>Open your cart
     </a>
     <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/orders']">
