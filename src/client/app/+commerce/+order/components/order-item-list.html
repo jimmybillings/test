@@ -1,5 +1,5 @@
 <ul>
-    <li *ngFor="let order of orders" class="order" flex="100" layout="row" layout-xs="column" [routerLink]="['/order', order.id]">
+    <li *ngFor="let order of orders" class="order" flex="100" layout="row" layout-xs="column" [routerLink]="['/commerce/order', order.id]">
         <div flex="100" flex-gt-sm="66">
             <div flex="100" layout="row" layout-xs="column">
                 <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding class="details">
@@ -43,7 +43,7 @@
             <span class="total-amount">
                 {{ order.total | currency:'USD':true:'1.2-2' }}
             </span>
-            <button md-button class="is-outlined" color="primary" [routerLink]="['/order', order.id]">{{'ORDER.INDEX.DETAIL_BTN_TITLE' | translate }}</button>
+            <button md-button class="is-outlined" color="primary" [routerLink]="['/commerce/order', order.id]">{{'ORDER.INDEX.DETAIL_BTN_TITLE' | translate }}</button>
         </div>
 
     </li>
