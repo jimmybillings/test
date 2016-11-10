@@ -1,4 +1,9 @@
 <section class="login hero" #target *ngIf="config">
+  <div *ngIf="firstTimeUser" layout="row" md-scroll-y="" layout-align="center center">
+    <div flex-gt-lg="50" flex-gt-md="60" flex-gt-sm="75" flex="95" class="first-time-user">
+      <p>{{ 'LOGIN.NEW_USER' | translate }}</p>
+    </div> 
+  </div>
   <div layout="row" md-scroll-y="" layout-align="center start">
     <div flex-gt-lg="30" flex-gt-md="40" flex-gt-sm="55" flex="100">
       <md-card class="wz-form-card">
@@ -22,6 +27,6 @@
   </div>
 </section>
 
-<wz-dialog #termsDialog>
+<wz-dialog #termsDialog [clickCatcher]="false">
   <wz-terms [terms]="activeTos" (close)="agreeToTermsAndClose()"></wz-terms>
 </wz-dialog>
