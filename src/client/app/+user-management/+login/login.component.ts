@@ -9,6 +9,9 @@ import { Observable } from 'rxjs/Rx';
 /**
  * Login page component - renders login page and handles login form submission
  */
+
+declare var pendo: any;
+
 @Component({
   moduleId: module.id,
   selector: 'login-component',
@@ -56,6 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       } else {
         this.router.navigate(['/']);
       }
+      this.initializePendo(res.user);
       this.currentUser.set(res.user, res.token.token);
     });
   }
@@ -63,5 +67,16 @@ export class LoginComponent implements OnInit, OnDestroy {
   public agreeToTermsAndClose(): void {
     this.document.agreeUserToTerms();
     this.router.navigate(['/']);
+  }
+
+  private initializePendo(user: any): void {
+    let userUniqueIdentifier: string = `${user.siteName}-${user.id}-${user.firstName.toLowerCase()}-${user.lastName.toLowerCase()}`;
+    let accountUniqueIdentifier: string = `${user.siteName}-${user.accountId}`;
+    pendo.initialize({
+      // Need a way to remove the api key from the source code
+      apiKey: '',
+      visitor: { id: userUniqueIdentifier, email: user.emailAddress },
+      account: { id: accountUniqueIdentifier }
+    });
   }
 }

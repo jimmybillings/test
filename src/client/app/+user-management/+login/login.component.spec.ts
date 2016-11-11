@@ -4,7 +4,7 @@ import { LoginComponent } from './login.component';
 export function main() {
 
   describe('Login Component', () => {
-
+    (<any>window).pendo = { initialize: jasmine.createSpy('initialize') };
     let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any,
         mockDocumentService: any, mockActivatedRoute: any;
     let componentUnderTest: LoginComponent;
@@ -12,7 +12,11 @@ export function main() {
     beforeEach(() => {
       mockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
       mockAuthentication = {
-        create: jasmine.createSpy('create').and.returnValue(Observable.of({ user: 'james', token: { token: 'loginToken' }, userPreferences: { pref: 1 } }))
+        create: jasmine.createSpy('create').and.returnValue(Observable.of({
+          user: { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 },
+          token: { token: 'loginToken' },
+          userPreferences: { pref: 1 }
+        }))
       };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
       mockCurrentUser = { set: jasmine.createSpy('set') };
@@ -43,7 +47,7 @@ export function main() {
 
       it('Sets a new user and auth token on response', () => {
         componentUnderTest.onSubmit({ 'user': 'james' });
-        expect(mockCurrentUser.set).toHaveBeenCalledWith('james', 'loginToken');
+        expect(mockCurrentUser.set).toHaveBeenCalledWith({ firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 }, 'loginToken');
       });
 
       it('Navigates to the home page', () => {
@@ -54,7 +58,12 @@ export function main() {
       it('Shows the dialog if the user needs to agree to TOS', () => {
         mockAuthentication = {
           create: jasmine.createSpy('create').and.returnValue(
-            Observable.of({ user: 'james', token: { token: 'loginToken' }, userPreferences: { pref: 1 }, documentsRequiringAgreement: ['TOS'] }))
+            Observable.of({
+              user: { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 },
+              token: { token: 'loginToken' },
+              userPreferences: { pref: 1 },
+              documentsRequiringAgreement: ['TOS']
+            }))
         };
         componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute);
         componentUnderTest.termsDialog = { show: jasmine.createSpy('show')};
