@@ -1,3 +1,7 @@
 #!/bin/bash
 
-npm run lint
+# In order to get the linter to exit with the proper status code, we have to run it directly
+# Npm and Gulp both exit with status code of 0 even if the lint fails. Running the tslint command
+# directly will maintain the correct exit code to stop the commit if there are lint errors
+# See https://github.com/palantir/tslint/issues/1057 for more info
+./node_modules/.bin/tslint "src/**/*.ts"
