@@ -5,7 +5,8 @@ export function main() {
 
   describe('Login Component', () => {
 
-    let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any, mockDocumentService: any;
+    let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any,
+        mockDocumentService: any, mockActivatedRoute: any;
     let componentUnderTest: LoginComponent;
 
     beforeEach(() => {
@@ -16,13 +17,21 @@ export function main() {
       mockRouter = { navigate: jasmine.createSpy('navigate') };
       mockCurrentUser = { set: jasmine.createSpy('set') };
       mockDocumentService = { downloadActiveTosDocument: jasmine.createSpy('downloadActiveTosDocument'), agreeUserToTerms: jasmine.createSpy('agreeUserToTerms') };
-      componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockDocumentService, mockUiConfig);
+      mockActivatedRoute = { params: Observable.of({}) };
+      componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute);
     });
 
     describe('ngOnInit()', () => {
       it('Grabs the component config and assigns to an instance variable', () => {
         componentUnderTest.ngOnInit();
         expect(componentUnderTest.config).toEqual({ someConfig: 'test' });
+      });
+
+      it('Should display a message for a new user', () => {
+        mockActivatedRoute = { params: Observable.of({newUser: 'true'}) };
+        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute);
+        componentUnderTest.ngOnInit();
+        expect(componentUnderTest.firstTimeUser).toBe(true);
       });
     });
 
@@ -47,7 +56,7 @@ export function main() {
           create: jasmine.createSpy('create').and.returnValue(
             Observable.of({ user: 'james', token: { token: 'loginToken' }, userPreferences: { pref: 1 }, documentsRequiringAgreement: ['TOS'] }))
         };
-        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockDocumentService, mockUiConfig);
+        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute);
         componentUnderTest.termsDialog = { show: jasmine.createSpy('show')};
         componentUnderTest.onSubmit({ 'user': 'ross' });
         expect(componentUnderTest.termsDialog.show).toHaveBeenCalled();
@@ -59,7 +68,7 @@ export function main() {
         let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
-        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockDocumentService, mockUiConfig);
+        componentUnderTest = new LoginComponent(mockAuthentication, mockRouter, mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();

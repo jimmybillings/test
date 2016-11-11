@@ -13,9 +13,9 @@ export const USER_ROUTES: Routes = [
     path: 'user',
     component: UserManagementComponent,
     children: [
+      { path: '', component: ProfileComponent, canActivate: [LoggedOutGuard] },
       { path: 'register', component: RegisterComponent, canActivate: [LoggedInGuard] },
       { path: 'login', component: LoginComponent, canActivate: [LoggedInGuard] },
-      { path: 'profile', component: ProfileComponent, canActivate: [LoggedOutGuard] },
       { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [LoggedInGuard] },
       { path: 'reset-password', component: ResetPasswordComponent, canActivate: [LoggedInGuard] }
     ]

@@ -75,6 +75,6 @@ export class ErrorActions {
   }
 
   public forbidden(): void {
-    this.router.navigate(['/user/profile', { 'permission': 'required' }]);
+    this.router.navigate(['/user', { 'permission': 'required' }]);
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { Authentication } from '../../shared/services/authentication.data.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { UiConfig } from '../../shared/services/ui.config';
 import { DocumentService } from '../services/document.service';
@@ -18,18 +18,26 @@ import { Observable } from 'rxjs/Rx';
 export class LoginComponent implements OnInit, OnDestroy {
   public config: any;
   public activeTos: Observable<any>;
+  public firstTimeUser: boolean;
   @ViewChild('termsDialog') public termsDialog: any;
   private configSubscription: Subscription;
+  private routeSubscription: Subscription;
 
   constructor(
     private authentication: Authentication,
     private router: Router,
     private currentUser: CurrentUser,
     private document: DocumentService,
-    private uiConfig: UiConfig) {
+    private uiConfig: UiConfig,
+    private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
+    this.routeSubscription = this.route.params.subscribe((params: any) => {
+      if (params.newUser === 'true') {
+        this.firstTimeUser = true;
+      }
+    });
     this.activeTos = this.document.downloadActiveTosDocument();
     this.configSubscription =
       this.uiConfig.get('login').subscribe((config: any) =>
@@ -38,6 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.configSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
   public onSubmit(user: any): void {

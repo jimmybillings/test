@@ -1,4 +1,15 @@
 section.login.hero {
+  div.first-time-user {
+    text-align: center;
+    p {
+      font-size: $headline-font-size-base;
+      font-weight: 400;
+      line-height: rem(3.2);
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) {
+        @include md-body-1();
+      }
+    }
+  }
   overflow: hidden;
   width: 100%;
   position: relative;
