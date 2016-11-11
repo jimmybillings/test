@@ -10,18 +10,21 @@ import { TranscodeTarget } from '../../interfaces/asset.interface';
 
 export class WzTranscodeSelectComponent {
   @Input() transcodeTargets: Array<TranscodeTarget>;
-  @Input() selectedTarget: any;
   @Output() selectTarget: any = new EventEmitter();
 
   public onSelectTarget(target: TranscodeTarget): void {
-    this.toggleTargets(target);
-    this.selectTarget.emit(target);
+    this.transcodeTargets = this.toggleTargets(target);
+    this.selectTarget.emit(this.selectedTarget());
+  }
+
+  public selectedTarget() {
+    let target = this.transcodeTargets.filter((target: TranscodeTarget) => target.selected === true);
+    return (target.length > 0) ? target[0] : this.transcodeTargets[0];
   }
 
   private toggleTargets(selectedTarget: TranscodeTarget): Array<TranscodeTarget> {
     return this.transcodeTargets.map((target: TranscodeTarget) => {
-      target.selected = false;
-      if (target.name === selectedTarget.name) target.selected = true;
+      target.selected = (target.name === selectedTarget.name) ? true : false;
       return target;
     });
   }

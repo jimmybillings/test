@@ -8,10 +8,8 @@ import { WzNotificationService } from '../shared/components/wz-notification/wz.n
 import { CartSummaryService } from '../shared/services/cart-summary.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { SearchContext } from '../shared/services/search-context.service';
+import { UiState } from '../shared/services/ui.state';
 
-/**
- * Asset page component - renders an asset show page
- */
 @Component({
   moduleId: module.id,
   selector: 'asset-component',
@@ -26,6 +24,7 @@ export class AssetComponent implements OnInit {
     public userCan: Capabilities,
     public activeCollection: ActiveCollectionService,
     public searchContext: SearchContext,
+    public uiState: UiState,
     private userPreference: UserPreferenceService,
     private assetService: AssetService,
     private uiConfig: UiConfig,

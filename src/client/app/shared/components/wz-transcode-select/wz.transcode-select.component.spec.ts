@@ -28,7 +28,7 @@ export function main() {
         spyOn(componentUnderTest.selectTarget, 'emit');
         componentUnderTest.onSelectTarget({ name: '1080i', selected: false });
 
-        expect(componentUnderTest.selectTarget.emit).toHaveBeenCalledWith({ name: '1080i', selected: false });
+        expect(componentUnderTest.selectTarget.emit).toHaveBeenCalledWith({ name: '1080i', selected: true });
       });
     });
   });

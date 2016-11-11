@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 export function main() {
   describe('Asset Component', () => {
 
-    let mockCurrentUser: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any;
+    let mockCurrentUser: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockNotification: any, mockCartSummary: any, mockWindow: any;
     let componentUnderTest: AssetComponent;
 
@@ -17,6 +17,7 @@ export function main() {
         getItems: jasmine.createSpy('getItems').and.returnValue(Observable.of({}))
       };
       mockSearchContext = {};
+      mockUiState = {};
       mockUserPreference = { openCollectionTray: jasmine.createSpy('openCollectionTray') };
       mockAssetService = { downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})) };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
@@ -24,7 +25,7 @@ export function main() {
       mockCartSummary = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { location: { href: {} } };
       componentUnderTest = new AssetComponent(
-        mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUserPreference,
+        mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState, mockUserPreference,
         mockAssetService, mockUiConfig, mockNotification, mockCartSummary, mockWindow);
     });
 
@@ -91,7 +92,7 @@ export function main() {
       it('Should set the window.href.url to the location of the comp url if the server responsds with a downloadable comp url', () => {
         mockAssetService = { downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({ url: 'http://downloadcomp.url' })) };
         componentUnderTest = new AssetComponent(
-          mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUserPreference,
+          mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState, mockUserPreference,
           mockAssetService, mockUiConfig, mockNotification, mockCartSummary, mockWindow);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.location.href).toEqual('http://downloadcomp.url');

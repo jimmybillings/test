@@ -102,7 +102,6 @@ export class AssetShareComponent implements OnDestroy {
   private error(error: any) {
     this.serverErrors = error.json();
     this.changeDetector.markForCheck();
-    // this.uiState.loading(false);
   }
 
   // we need to submit date/timestamps in ISO format. This does that.
