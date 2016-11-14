@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       } else {
         this.router.navigate(['/']);
       }
-      this.initializePendo(res.user);
+      if (pendo) this.initializePendo(res.user);
       this.currentUser.set(res.user, res.token.token);
     });
   }
