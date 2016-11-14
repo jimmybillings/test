@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     let accountUniqueIdentifier: string = `${user.siteName}-${user.accountId}`;
     pendo.initialize({
       // Need a way to remove the api key from the source code
-      apiKey: '',
+      apiKey: '7e5da402-5d29-41b0-5579-6e149b0a28f2',
       visitor: { id: userUniqueIdentifier, email: user.emailAddress },
       account: { id: accountUniqueIdentifier }
     });
