@@ -4,10 +4,8 @@ import {
   MockBackend,
   Response,
   inject,
-  Observable,
   TestBed
 } from '../../imports/test.imports';
-
 
 import { ActiveCollectionService } from './active-collection.service';
 import { ActiveCollectionStore } from '../stores/active-collection.store';
