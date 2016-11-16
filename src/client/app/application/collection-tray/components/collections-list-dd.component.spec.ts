@@ -30,7 +30,7 @@ export function main() {
       constructor() {
         this.data = Observable.of({ id: 1 });
       }
-      get() {
+      load() {
         return Observable.of({ id: 2 });
       }
       set() {
@@ -63,10 +63,10 @@ export function main() {
       inject([CollectionListDdComponent], (component: CollectionListDdComponent) => {
         component.pageSize = '50';
         component.router.url = '/search/23894987';
-        spyOn(component.activeCollection, 'set').and.callThrough();
+        spyOn(component.activeCollection, 'load').and.callThrough();
         spyOn(component, 'closeCollectionsList');
         component.selectFocusedCollection(mockCollectionResponse());
-        expect(component.activeCollection.set).toHaveBeenCalledWith(158);
+        expect(component.activeCollection.load).toHaveBeenCalledWith(158);
         // expect(component.closeCollectionsList).toHaveBeenCalled();
       }));
 

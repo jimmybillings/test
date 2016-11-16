@@ -29,7 +29,7 @@ export class OrdersComponent implements OnInit {
   }
 
   public changePage(i: string): void {
-    this.buildRouteParams({ i })
+    this.buildRouteParams({ i });
     this.router.navigate( ['/commerce/orders', this.params ]);
   }
 

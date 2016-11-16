@@ -24,15 +24,19 @@ export class ActiveCollectionService implements OnInit {
     this.setSearchParams();
   }
 
-  public get(): Observable<any> {
-    return this.api.get(Api.Assets, 'collectionSummary/focused', { loading: true })
+  public load(collectionId?:number, params: any = { i: 0, n: 100 }): Observable<any> {
+    if (collectionId) {
+      return this.api.get(Api.Assets, 'collectionSummary/focused', { loading: true })
       .flatMap((response: any) => {
         this.store.updateTo(response as Collection);
         return this.getItems(response.id, { i: 1, n: 100 }, true, true);
       });
+    } else {
+      return this.set(collectionId, params);
+    }
   }
 
-  public set(collectionId: number,params: any = { i: 0, n: 100 }): Observable<any> {
+  public set(collectionId: number, params?: any): Observable<any> {
     return Observable.forkJoin([
       this.api.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loading: true }),
       this.getItems(collectionId, params, false)
@@ -75,11 +79,6 @@ export class ActiveCollectionService implements OnInit {
       `collectionSummary/assets/${collectionId}`,
       { parameters: this.params, loading: loading }
     ).do(response => { if (set) this.store.updateAssetsTo(response); });
-  }
-
-  // TODO: Outside world shouldn't need to call this.
-  public addAssetToStore(asset: any): void {
-    this.store.add(asset);
   }
 
   // TODO: Outside world shouldn't need to call this.

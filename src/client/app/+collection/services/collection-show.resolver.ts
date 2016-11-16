@@ -11,7 +11,7 @@ export class CollectionShowResolver {
     if (Number(this.activeCollection.state.id) === Number(route.params['id'])) {
       return this.activeCollection.getItems(route.params['id'], {i: route.params['i'], n: route.params['n']});
     } else {
-      return this.activeCollection.set(route.params['id'], {i: route.params['i'], n: route.params['n']});
+      return this.activeCollection.load(route.params['id'], {i: route.params['i'], n: route.params['n']});
     }
   }
 }

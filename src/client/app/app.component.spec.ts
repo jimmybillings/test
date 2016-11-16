@@ -31,7 +31,7 @@ export function main() {
         destroyAll: jasmine.createSpy('destroyAll')
       };
       mockActiveCollection = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of({ id: 1 })),
+        load: jasmine.createSpy('load').and.returnValue(Observable.of({ id: 1 })),
         getItems: jasmine.createSpy('getItems').and.returnValue(Observable.of({}))
       };
       mockUiState = {
@@ -118,7 +118,7 @@ export function main() {
           componentUnderTest.ngOnInit();
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
           expect(mockCartSummary.loadCartSummary).toHaveBeenCalled();
-          expect(mockActiveCollection.get).not.toHaveBeenCalled();
+          expect(mockActiveCollection.load).not.toHaveBeenCalled();
         });
 
         it('Should process the actions for a logged in user with view collections permissions', () => {
@@ -126,7 +126,7 @@ export function main() {
           canViewCollections = true;
           componentUnderTest.ngOnInit();
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
-          expect(mockActiveCollection.get).toHaveBeenCalled();
+          expect(mockActiveCollection.load).toHaveBeenCalled();
           expect(mockCollections.load).toHaveBeenCalled();
           expect(mockCartSummary.loadCartSummary).toHaveBeenCalled();
         });

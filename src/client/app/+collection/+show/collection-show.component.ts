@@ -95,14 +95,14 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
       // if we are deleting current active, we need to get the new active from the server.
       if (this.activeCollection.isActiveCollection(id) && collectionLength > 0) {
-        this.activeCollection.get().subscribe((collection) => {
+        this.activeCollection.load().subscribe((collection) => {
           this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
         });
       }
       // if we delete the last collection, reset the store to initial values (no active collection)
       if (collectionLength === 0) {
         // this.collections.destroyAll();
-        this.activeCollection.get().subscribe((collection) => {
+        this.activeCollection.load().subscribe((collection) => {
           this.collections.load().subscribe(d => {
             this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
           });
