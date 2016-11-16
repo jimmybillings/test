@@ -84,3 +84,6 @@ md-progress-bar {
         background-color:md-color($md-accent, 100) !important;
     }
 }
+
+/* TODO - Should look at removing this in the future. The overlay index clashes with our header.*/
+.md-menu-click-catcher { z-index: 5; }
