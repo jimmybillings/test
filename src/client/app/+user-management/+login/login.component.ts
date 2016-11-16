@@ -5,12 +5,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { UiConfig } from '../../shared/services/ui.config';
 import { DocumentService } from '../services/document.service';
+import { PendoService } from '../../shared/services/pendo.service';
 import { Observable } from 'rxjs/Rx';
 /**
  * Login page component - renders login page and handles login form submission
  */
 
-declare var pendo: any;
+declare var portal: string;
 
 @Component({
   moduleId: module.id,
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private currentUser: CurrentUser,
     private document: DocumentService,
     private uiConfig: UiConfig,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private pendo: PendoService) {
   }
 
   ngOnInit(): void {
@@ -59,24 +61,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       } else {
         this.router.navigate(['/']);
       }
-      if (pendo) this.initializePendo(res.user);
       this.currentUser.set(res.user, res.token.token);
+      if (portal === 'commerce') this.pendo.initialize(res.user);
     });
   }
 
   public agreeToTermsAndClose(): void {
     this.document.agreeUserToTerms();
     this.router.navigate(['/']);
-  }
-
-  private initializePendo(user: any): void {
-    let userUniqueIdentifier: string = `${user.siteName}-${user.id}-${user.firstName.toLowerCase()}-${user.lastName.toLowerCase()}`;
-    let accountUniqueIdentifier: string = `${user.siteName}-${user.accountId}`;
-    pendo.initialize({
-      // Need a way to remove the api key from the source code
-      apiKey: '7e5da402-5d29-41b0-5579-6e149b0a28f2',
-      visitor: { id: userUniqueIdentifier, email: user.emailAddress },
-      account: { id: accountUniqueIdentifier }
-    });
   }
 }
