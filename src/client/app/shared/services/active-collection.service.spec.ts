@@ -8,25 +8,39 @@ import {
   TestBed
 } from '../../imports/test.imports';
 
-import { ActiveCollectionService, collectionSummary } from './active-collection.service';
+import { ActiveCollectionService } from './active-collection.service';
+import { ActiveCollectionStore } from '../stores/active-collection.store';
+import { Collection } from '../interfaces/collection.interface';
 
 export function main() {
   describe('Active Collections service', () => {
+    let mockStore: any;
 
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        ...beforeEachProvidersArray,
-      ]
-    }));
+    beforeEach(() => {
+      mockStore = {
+        add: jasmine.createSpy('add'),
+        remove: jasmine.createSpy('remove'),
+        updateTo: jasmine.createSpy('updateTo'),
+        reset: jasmine.createSpy('reset'),
+        updateAssetsTo: jasmine.createSpy('updateAssetsTo'),
+        state: { id: 1 }
+      };
+
+      TestBed.configureTestingModule({
+        providers: [
+          ...beforeEachProvidersArray,
+          { provide: ActiveCollectionStore, useValue: mockStore }
+        ]
+      });
+    });
 
     it('Should get the current active collection and save it in the store',
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        spyOn(service, 'updateActiveCollectionStore');
         service.get().subscribe(response => {
           expect(connection.request.url.indexOf('/api/assets/v1/collectionSummary/focused') !== -1).toBe(true);
-          expect(service.updateActiveCollectionStore).toHaveBeenCalledWith(mockCollectionResponse());
+          expect(mockStore.updateTo).toHaveBeenCalledWith(mockCollectionResponse());
           expect(response).toEqual(mockCollectionResponse());
         });
         connection.mockRespond(new Response(
@@ -40,10 +54,9 @@ export function main() {
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        spyOn(service, 'updateActiveCollectionStore');
         service.set(158).subscribe(response => {
           expect(connection.request.url.indexOf('/api/assets/v1/collectionSummary/setFocused/158') !== -1).toBe(true);
-          expect(service.updateActiveCollectionStore).toHaveBeenCalledWith(mockCollectionResponse());
+          expect(mockStore.updateTo).toHaveBeenCalledWith(mockCollectionResponse());
           expect(response.id).toEqual(158);
         });
         connection.mockRespond(new Response(
@@ -72,11 +85,10 @@ export function main() {
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        spyOn(service, 'removeAssetFromStore');
         service.removeAsset(158, 1, 13213123).subscribe(response => {
           expect(connection.request.url.indexOf('/api/identities/v1/collection/158/removeAssets') !== -1).toBe(true);
           expect(response).toEqual({ list: [{ assetId: 1 }] });
-          expect(service.removeAssetFromStore).toHaveBeenCalledWith({ assetId: 1 });
+          expect(mockStore.remove).toHaveBeenCalledWith({ assetId: 1 });
         });
 
         connection.mockRespond(new Response(
@@ -94,11 +106,10 @@ export function main() {
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        spyOn(service, 'updateActiveCollectionAssets');
         service.getItems(1, { i: 0, n: 100 }).subscribe(response => {
           expect(connection.request.url.indexOf('/api/assets/v1/collectionSummary/assets/1?i=0&n=100') !== -1).toBe(true);
           expect(response).toEqual(mockCollectionResponse());
-          expect(service.updateActiveCollectionAssets).toHaveBeenCalledWith(mockCollectionResponse());
+          expect(mockStore.updateAssetsTo).toHaveBeenCalledWith(mockCollectionResponse());
         });
         connection.mockRespond(new Response(
           new ResponseOptions({
@@ -107,87 +118,21 @@ export function main() {
         ));
       }));
 
-    it('Should add an asset to the active collection store',
-      inject([ActiveCollectionService], (service: ActiveCollectionService) => {
-        spyOn(service.store, 'dispatch');
-        service.addAssetToStore({ asset: 1 });
-        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'ADD_ASSET_TO_COLLECTION', payload: { asset: 1 } });
-      }));
-
-    it('Should remove an asset from the active collection store',
-      inject([ActiveCollectionService], (service: ActiveCollectionService) => {
-        spyOn(service.store, 'dispatch');
-        service.removeAssetFromStore({ asset: 1 });
-        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { asset: 1 } });
-      }));
-
     it('Should create a correctly formatted collection summary object to put in the store',
       inject([ActiveCollectionService], (service: ActiveCollectionService) => {
         var summary = collectionSummary(mockCollectionResponse());
         expect(Object.keys(summary)).toEqual(collectionSummaryKeys());
       }));
 
-    it('Should update the active collection store with a new collection',
-      inject([ActiveCollectionService], (service: ActiveCollectionService) => {
-        spyOn(service.store, 'dispatch');
-        service.updateActiveCollectionStore(mockCollectionResponse());
-        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'UPDATE_ACTIVE_COLLECTION', payload: collectionSummary(mockCollectionResponse()) });
-      }));
-
-    it('Should reset the acitve collection store to a default value',
-      inject([ActiveCollectionService], (service: ActiveCollectionService) => {
-        spyOn(service.store, 'dispatch');
-        service.resetStore();
-        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'RESET_ACTIVE_COLLECTION' });
-      }));
-
     it('Should check if a collection id matches the current active collection',
       inject([ActiveCollectionService], (service: ActiveCollectionService) => {
-        service.data = Observable.of({ 'id': 1 });
         expect(service.isActiveCollection(1)).toEqual(true);
       }));
 
     it('Should check that a collection id does not match the current active collection',
       inject([ActiveCollectionService], (service: ActiveCollectionService) => {
-        service.data = Observable.of({ 'id': 1 });
         expect(service.isActiveCollection(3)).toEqual(false);
       }));
-
-    it('Should add an asset to the active collection store',
-      inject([ActiveCollectionService], (service: ActiveCollectionService) => {
-        spyOn(service.store, 'dispatch');
-
-        service.updateActiveCollectionAssets(assets());
-        expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'UPDATE_ACTIVE_COLLECTION', payload: assetsInStore() });
-      }));
-
-    function assets(): any {
-      return {
-        items: [],
-        totalCount: 0,
-        currentPage: 0,
-        pageSize: 10,
-        hasNextPage: false,
-        hasPreviousPage: false,
-        numberOfPages: 1
-      };
-    }
-
-    function assetsInStore(): any {
-      return {
-        assets: {
-          items: [],
-          pagination: {
-            totalCount: 0,
-            currentPage: 1,
-            pageSize: 10,
-            hasNextPage: false,
-            hasPreviousPage: false,
-            numberOfPages: 1
-          }
-        }
-      };
-    }
 
     function mockCollectionResponse() {
       return {
@@ -226,6 +171,23 @@ export function main() {
         'tags',
         'assetsCount'
       ];
+    }
+
+    function collectionSummary(collection: any = {}): Collection {
+      return {
+        createdOn: collection.createdOn || '',
+        lastUpdated: collection.lastUpdated || '',
+        id: collection.id || null,
+        siteName: collection.siteName || '',
+        name: collection.name || '',
+        owner: collection.owner || 0,
+        email: collection.email || '',
+        userRole: collection.userRole || '',
+        editors: collection.editors || [],
+        collectionThumbnail: collection.collectionThumbnail || {},
+        tags: collection.tags || [],
+        assetsCount: collection.assetsCount || 0
+      };
     }
   });
 }
