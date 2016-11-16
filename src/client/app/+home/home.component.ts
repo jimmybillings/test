@@ -46,6 +46,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     for (let param in context) {
       if (context[param] === '') delete (context[param]);
     }
-    return context
+    return context;
   }
 }
