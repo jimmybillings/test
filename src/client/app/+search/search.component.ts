@@ -6,7 +6,6 @@ import { Observable, Subscription } from 'rxjs/Rx';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { SearchContext } from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
-import { Collection } from '../shared/interfaces/collection.interface';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
 import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
@@ -87,18 +86,13 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public addToCollection(params: any): void {
     this.userPreferences.openCollectionTray();
-    this.activeCollection.addAsset(params.collection.id, params.asset).take(1).subscribe((asset) => {
-      this.activeCollection.addAssetToStore(Object.assign({}, params.asset, asset.list[0]));
-    });
+    this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
   }
 
   public removeFromCollection(params: any): void {
-    let collection: Collection = params.collection;
-    let uuid: any = params.collection.assets.items.find((item: any) => item.assetId === params.asset.assetId).uuid;
-    if (uuid && params.asset.assetId) {
-      this.userPreferences.openCollectionTray();
-      this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid).take(1).subscribe();
-    }
+    this.userPreferences.openCollectionTray();
+    this.activeCollection.removeAsset(params).subscribe();
+
   }
 
   public showNewCollection(asset: any): void {

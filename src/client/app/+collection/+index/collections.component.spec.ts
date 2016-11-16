@@ -53,10 +53,8 @@ export function main() {
       inject([CollectionsComponent], (component: CollectionsComponent) => {
         component.pageSize = '50';
         spyOn(component.activeCollection, 'set').and.callThrough();;
-        spyOn(component.activeCollection, 'getItems').and.callThrough();;
         component.selectActiveCollection(1);
         expect(component.activeCollection.set).toHaveBeenCalledWith(1);
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(1, {n: '50'});
       }));
 
     // it('Should return the thumbnail in the collection',
@@ -78,11 +76,9 @@ export function main() {
         component.pageSize = '50';
         spyOn(component.collections, 'delete').and.callThrough();
         spyOn(component.activeCollection, 'get').and.callThrough();
-        spyOn(component.activeCollection, 'getItems').and.callThrough();
         component.deleteCollection(1);
         expect(component.collections.delete).toHaveBeenCalledWith(1);
         expect(component.activeCollection.get).toHaveBeenCalled();
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(2, {n: '50'});
       }));
   });
 }

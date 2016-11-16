@@ -127,7 +127,6 @@ export function main() {
           componentUnderTest.ngOnInit();
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
           expect(mockActiveCollection.get).toHaveBeenCalled();
-          expect(mockActiveCollection.getItems).toHaveBeenCalledWith(1, { i: 1, n: 100 }, true, false);
           expect(mockCollections.load).toHaveBeenCalled();
           expect(mockCartSummary.loadCartSummary).toHaveBeenCalled();
         });

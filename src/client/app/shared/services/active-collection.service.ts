@@ -25,13 +25,21 @@ export class ActiveCollectionService implements OnInit {
   }
 
   public get(): Observable<any> {
-    return this.api.get(Api.Assets, 'collectionSummary/focused')
-      .do(response => this.store.updateTo(response as Collection));
+    return this.api.get(Api.Assets, 'collectionSummary/focused', { loading: true })
+      .flatMap((response: any) => {
+        this.store.updateTo(response as Collection);
+        return this.getItems(response.id, { i: 1, n: 100 }, true, true);
+      });
   }
 
-  public set(collectionId: number, set: boolean = true): Observable<any> {
-    return this.api.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loading: true })
-      .do(response => { if (set) this.store.updateTo(response as Collection); });
+  public set(collectionId: number,params: any = { i: 0, n: 100 }): Observable<any> {
+    return Observable.forkJoin([
+      this.api.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loading: true }),
+      this.getItems(collectionId, params, false)
+    ]).do((data: any) => {
+      this.store.updateTo(data[0]);
+      this.store.updateAssetsTo(data[1]);
+    });
   }
 
   public addAsset(collectionId: any, asset: any): Observable<any> {
@@ -39,15 +47,23 @@ export class ActiveCollectionService implements OnInit {
       Api.Identities,
       `collection/${collectionId}/addAssets`,
       { body: { list: [{ assetId: asset.assetId }] } }
-    );
+    ).flatMap((response: any) => {
+      return this.getItems(collectionId, { i: 1, n: 100 }, true);
+    });
   }
 
-  public removeAsset(collectionId: any, assetId: any, uuid: any): Observable<any> {
-    return this.api.post(
-      Api.Identities,
-      `collection/${collectionId}/removeAssets`,
-      { body: { list: [{ assetId: assetId, uuid: uuid }] } }
-    ).do(response => this.store.remove(response['list'][0]));
+  public removeAsset(params: any): Observable<any> {
+    let collection: Collection = params.collection;
+    let uuid: any = params.collection.assets.items.find((item: any) => item.assetId === params.asset.assetId).uuid;
+    if (uuid && params.asset.assetId) {
+      return this.api.post(
+        Api.Identities,
+        `collection/${collection.id}/removeAssets`,
+        { body: { list: [{ assetId: params.asset.assetId, uuid: uuid }] } }
+      ).do(response => this.store.remove(response['list'][0]));
+    } else {
+      return Observable.of({});
+    }
   }
 
   public getItems(collectionId: number, collectionParams: any, set: boolean = true, loading: boolean = true): Observable<any> {
@@ -62,11 +78,6 @@ export class ActiveCollectionService implements OnInit {
   }
 
   // TODO: Outside world shouldn't need to call this.
-  public updateActiveCollectionStore(collection: Collection): void {
-    this.store.updateTo(collection);
-  }
-
-  // TODO: Outside world shouldn't need to call this.
   public addAssetToStore(asset: any): void {
     this.store.add(asset);
   }
@@ -76,21 +87,8 @@ export class ActiveCollectionService implements OnInit {
     this.store.reset();
   }
 
-  // TODO: Outside world shouldn't need to call this.
-  public updateActiveCollectionAssets(assets: any): void {
-    this.store.updateAssetsTo(assets);
-  }
-
   public setSearchParams() {
     this.params = { 's': '', 'd': '', 'i': '0', 'n': '50' };
-  }
-
-  public mergeCollectionData(item: any, search: any) {
-    item.thumbnail = search.items[0].thumbnail;
-    item.assets.items = item.assets;
-    item.assets.pagination = {};
-    item.assets.pagination.totalCount = search.totalCount;
-    return item;
   }
 
   public isActiveCollection(collectionId: number): boolean {

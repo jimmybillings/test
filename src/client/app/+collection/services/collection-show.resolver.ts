@@ -11,13 +11,7 @@ export class CollectionShowResolver {
     if (Number(this.activeCollection.state.id) === Number(route.params['id'])) {
       return this.activeCollection.getItems(route.params['id'], {i: route.params['i'], n: route.params['n']});
     } else {
-      return Observable.forkJoin([
-        this.activeCollection.set(route.params['id'], false),
-        this.activeCollection.getItems(route.params['id'], {i: route.params['i'], n: route.params['n']}, false)
-      ]).map((data: any) => {
-        this.activeCollection.updateActiveCollectionStore(data[0]);
-        this.activeCollection.updateActiveCollectionAssets(data[1]);
-      });
+      return this.activeCollection.set(route.params['id'], {i: route.params['i'], n: route.params['n']});
     }
   }
 }

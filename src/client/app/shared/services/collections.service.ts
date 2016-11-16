@@ -76,7 +76,6 @@ export class CollectionsService {
       .do(response => {
         const collection: Collection = response as Collection;
         this.createCollectionInStore(collection);
-        this.activeCollection.updateActiveCollectionStore(collection);
       });
   }
 

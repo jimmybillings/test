@@ -52,7 +52,6 @@ export function main() {
       it('Should call the service to get active collection items after an asset has succesfully been added', () => {
         componentUnderTest.ngOnInit();
         componentUnderTest.addToCollection({ collection: { id: 1 }, asset: { name: 123123 } });
-        expect(mockActiveCollection.getItems).toHaveBeenCalledWith(1, { n: 20 });
       });
     });
 
@@ -64,18 +63,9 @@ export function main() {
 
       it('Should find the uuid of the correct asset in the collection to remove and call the service with it for removal', () => {
         componentUnderTest.removeFromCollection(mockActiveCollectionAndAsset());
-        expect(mockActiveCollection.removeAsset).toHaveBeenCalledWith(123, 8854642, 'adf3a8d2-8738-4c70-834d-0d7785d7e226');
+        expect(mockActiveCollection.removeAsset).toHaveBeenCalledWith(mockActiveCollectionAndAsset());
       });
 
-      it('Should not open the collection tray if an asset is not found in the collection', () => {
-        componentUnderTest.removeFromCollection(mockActiveCollectionAndAsset(29349802));
-        expect(mockUserPreference.openCollectionTray).not.toHaveBeenCalled();
-      });
-
-      it('Should not call the service if it does not find an asset in the collection with a matching id', () => {
-        componentUnderTest.removeFromCollection(mockActiveCollectionAndAsset(29349802));
-        expect(mockActiveCollection.removeAsset).not.toHaveBeenCalled();
-      });
     });
 
     describe('downloadComp()', () => {

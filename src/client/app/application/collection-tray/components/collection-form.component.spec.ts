@@ -61,7 +61,6 @@ export function main() {
         component.dialog.close = function() {return true;};
         spyOn(component.collections, 'create').and.callThrough();
         spyOn(component.activeCollection, 'get').and.callThrough();
-        spyOn(component.activeCollection, 'getItems').and.callThrough();
         spyOn(component, 'loadCollections');
         component.createCollection(mockCollection());
         let collectionWithParsedTags = mockCollection();
@@ -69,7 +68,6 @@ export function main() {
         expect(component.loadCollections).toHaveBeenCalled();
         expect(component.collections.create).toHaveBeenCalledWith(collectionWithParsedTags);
         expect(component.activeCollection.get).toHaveBeenCalled();
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, {n: 50});
       }));
 
     // it('Should return type ahead suggestions matching input',
