@@ -22,6 +22,8 @@ import { CartGuard } from '../+commerce/+cart/services/cart.guard';
 import { CartSummaryService } from '../shared/services/cart-summary.service';
 import { FilterService } from '../shared/services/filter.service';
 import { Authentication } from '../shared/services/authentication.data.service';
+import { PendoService } from '../shared/services/pendo.service';
+
 // WAZEE ROUTES
 import { APP_ROUTES } from '../app.routes';
 
@@ -74,7 +76,8 @@ export const WAZEE_PROVIDERS = [
   LoggedOutGuard,
   CartSummaryService,
   FilterService,
-  Authentication
+  Authentication,
+  PendoService
 ];
 
 export const WAZEE_STORES: any = {
