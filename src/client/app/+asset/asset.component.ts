@@ -41,18 +41,12 @@ export class AssetComponent implements OnInit {
 
   public addToCollection(params: any): void {
     this.userPreference.openCollectionTray();
-    this.activeCollection.addAsset(params.collection.id, params.asset).take(1).subscribe(() => {
-      this.activeCollection.getItems(params.collection.id, { n: this.pageSize }).take(1).subscribe();
-    });
+    this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
   }
 
   public removeFromCollection(params: any): void {
-    let collection: any = params.collection;
-    let asset: any = params.collection.assets.items.find((item: any) => parseInt(item.assetId) === parseInt(params.asset.assetId));
-    if (asset && asset.uuid && params.asset.assetId) {
-      this.userPreference.openCollectionTray();
-      this.activeCollection.removeAsset(collection.id, params.asset.assetId, asset.uuid).take(1).subscribe();
-    }
+    this.userPreference.openCollectionTray();
+    this.activeCollection.removeAsset(params).subscribe();
   }
 
   public downloadComp(params: any): void {

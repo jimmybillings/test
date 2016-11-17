@@ -56,9 +56,7 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
     if (this.onCollectionShowPage()) {
       this.navigateToCollectionShow(collection.id);
     } else {
-      this.activeCollection.set(collection.id).take(1).subscribe(() => {
-        this.activeCollection.getItems(collection.id, { i: 1, n: this.pageSize }).take(1).subscribe();
-      });
+      this.activeCollection.load(collection.id).subscribe();
     }
   }
 

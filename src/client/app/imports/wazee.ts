@@ -39,7 +39,7 @@ import { searchContext } from '../shared/services/search-context.service';
 import { error } from '../shared/services/error.service';
 import { multilingualActionReducer } from '../shared/services/multilingual.service';
 import { collections } from '../shared/services/collections.service';
-import { activeCollection } from '../shared/services/active-collection.service';
+import { ActiveCollectionStore, activeCollection } from '../shared/stores/active-collection.store';
 import { filters } from '../shared/services/filter.service';
 import { userPreferences } from '../shared/services/user-preference.service';
 import { CollectionContextService, collectionOptions } from '../shared/services/collection-context.service';
@@ -60,6 +60,7 @@ export const WAZEE_PROVIDERS = [
   ErrorActions,
   AssetService,
   CollectionsService,
+  ActiveCollectionStore,
   ActiveCollectionService,
   SearchContext,
   MultilingualService,

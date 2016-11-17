@@ -34,7 +34,7 @@ export function main() {
       constructor() {
         this.data = Observable.of({ id: 1 });
       }
-      get() {
+      load() {
         return Observable.of({ id: 2 });
       }
       set() {
@@ -60,16 +60,14 @@ export function main() {
         component.dialog = {};
         component.dialog.close = function() {return true;};
         spyOn(component.collections, 'create').and.callThrough();
-        spyOn(component.activeCollection, 'get').and.callThrough();
-        spyOn(component.activeCollection, 'getItems').and.callThrough();
+        spyOn(component.activeCollection, 'load').and.callThrough();
         spyOn(component, 'loadCollections');
         component.createCollection(mockCollection());
         let collectionWithParsedTags = mockCollection();
         collectionWithParsedTags.tags = ['cat', 'dog', 'cow'];
         expect(component.loadCollections).toHaveBeenCalled();
         expect(component.collections.create).toHaveBeenCalledWith(collectionWithParsedTags);
-        expect(component.activeCollection.get).toHaveBeenCalled();
-        expect(component.activeCollection.getItems).toHaveBeenCalledWith(mockCollection().id, {n: 50});
+        expect(component.activeCollection.load).toHaveBeenCalled();
       }));
 
     // it('Should return type ahead suggestions matching input',

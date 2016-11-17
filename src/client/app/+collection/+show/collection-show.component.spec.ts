@@ -33,7 +33,7 @@ export function main() {
       inject([CollectionShowComponent], (component: CollectionShowComponent) => {
        spyOn(component.activeCollection, 'removeAsset').and.callThrough();
        component.removeFromCollection(params());
-       expect(component.activeCollection.removeAsset).toHaveBeenCalledWith(1, 1, 'asdfhjkl');
+       expect(component.activeCollection.removeAsset).toHaveBeenCalledWith(params());
       }));
   });
 }

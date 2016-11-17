@@ -12,7 +12,7 @@ import { OrdersUrlParams } from '../../+cart/cart.interface';
 export class OrdersComponent implements OnInit {
   public itemSearchIsShowing: boolean = false;
   public ordersPerPage: string = '20';
-
+  private params: any;
   constructor(
     public orders: OrdersService,
     private route: ActivatedRoute,
@@ -29,15 +29,17 @@ export class OrdersComponent implements OnInit {
   }
 
   public changePage(i: string): void {
-    this.router.navigate( ['/commerce/orders', this.buildRouteParams({ i }) ]);
+    this.buildRouteParams({ i });
+    this.router.navigate( ['/commerce/orders', this.params ]);
   }
 
   public search(query: {q: string}) {
-    this.router.navigate( ['/commerce/orders', this.buildRouteParams(query) ]);
+    this.buildRouteParams(Object.assign(query, {i: 1}));
+    this.router.navigate( ['/commerce/orders', this.params ]);
   }
 
-  private buildRouteParams(params: OrdersUrlParams): OrdersUrlParams {
-    return Object.assign({}, {n : this.ordersPerPage}, params);
+  private buildRouteParams(params: OrdersUrlParams) {
+    this.params = Object.assign({}, this.params, {n : this.ordersPerPage}, params);
   }
 
 }

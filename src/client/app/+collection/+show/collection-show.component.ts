@@ -12,6 +12,7 @@ import { AssetService } from '../../shared/services/asset.service';
 import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartSummaryService } from '../../shared/services/cart-summary.service';
+import { UserPreferenceService } from '../../shared/services/user-preference.service';
 
 @Component({
   moduleId: module.id,
@@ -42,7 +43,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public uiState: UiState,
     public notification: WzNotificationService,
     public uiConfig: UiConfig,
-    public cartSummary: CartSummaryService) { }
+    public cartSummary: CartSummaryService,
+    public userPreference: UserPreferenceService) { }
 
   ngOnInit() {
     this.activeCollectionSubscription = this.activeCollection.data.subscribe(collection => {
@@ -66,14 +68,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public removeFromCollection(params: any): void {
-    let collection: any = params.collection;
-    let uuid: any = params.collection.assets.items.find((item: any) => {
-      return parseInt(item.assetId) === parseInt(params.asset.assetId);
-    }).uuid;
-    if (uuid && params.asset.assetId) {
-      this.activeCollection.removeAsset(collection.id, params.asset.assetId, uuid)
-        .take(1).subscribe();
-    }
+    this.userPreference.openCollectionTray();
+    this.activeCollection.removeAsset(params).subscribe();
   }
 
   public changePage(i: any): void {
@@ -92,25 +88,22 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public deleteCollection(id: number): void {
-    this.collections.delete(id).take(1).subscribe(payload => {
+    this.collections.delete(id).subscribe(payload => {
       let collectionLength: number;
       this.collections.data
         .take(1).subscribe(collection => collectionLength = collection.items.length);
 
       // if we are deleting current active, we need to get the new active from the server.
       if (this.activeCollection.isActiveCollection(id) && collectionLength > 0) {
-        this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, { n: 100 }).take(1).subscribe(d => {
-            this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
-          });
+        this.activeCollection.load().subscribe((collection) => {
+          this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
         });
       }
       // if we delete the last collection, reset the store to initial values (no active collection)
       if (collectionLength === 0) {
-        this.collections.destroyAll();
-        this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, { n: 100 }).take(1).subscribe();
-          this.collections.load().take(1).subscribe(d => {
+        // this.collections.destroyAll();
+        this.activeCollection.load().subscribe((collection) => {
+          this.collections.load().subscribe(d => {
             this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
           });
         });

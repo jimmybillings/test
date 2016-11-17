@@ -1,46 +1,53 @@
-import {Component, ChangeDetectionStrategy, Input, OnChanges} from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnChanges, ElementRef } from '@angular/core';
 declare var jwplayer: any;
-/**
- * site header component - renders the header information
- */
+
 @Component({
   moduleId: module.id,
   selector: 'wz-player',
-  template: `
-   <div id="assetVideoPlayer" style='width:100%; height:100%'>Loading player...</div>
-   `,
+  template: ``,
+  styles: ['img { width:100%; height:100%; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class WzPlayerComponent implements OnChanges {
-  @Input() clip: string;
-  @Input() clipUrl: string;
-  @Input() clipThumbnailUrl: string;
-  @Input() resourceClass:string;
-  public player: { load: any };
+  @Input() asset: any;
+  private player: any;
+
+  constructor(private element: ElementRef) { }
 
   ngOnChanges(changes: any) {
-      console.dir(changes);
-    if (changes.clipUrl) {
-      if(changes.resourceClass && changes.resourceClass.currentValue === 'Image') {
-          var elem = document.createElement('img');
-             elem.src = changes.clipUrl.currentValue;
-             elem.style.height='100%';
-             elem.style.width='100%';
-             document.getElementById('assetVideoPlayer').innerHTML='';
-             document.getElementById('assetVideoPlayer').appendChild(elem);
-        }else {
-            jwplayer('assetVideoPlayer').setup({
-            image: changes.clipThumbnailUrl ? changes.clipThumbnailUrl.currentValue: null,
-            file: changes.clipUrl.currentValue,
-            logo: {
-              file: 'assets/img/logo/watermark.png',
-              position: 'top-right',
-              link: 'http://www.wazeedigital.com'
-            }
-          });
-        }
-
-      }
+    if (changes.asset) {
+      this.reset();
+      (this.asset.resourceClass === 'Image') ? this.setupImage() : this.setupVideo();
     }
   }
+
+  private setupVideo() {
+    this.playerInstance.setup({
+      image: this.asset.clipThumbnailUrl ? this.asset.clipThumbnailUrl : null,
+      file: this.asset.clipUrl,
+      logo: {
+        file: 'assets/img/logo/watermark.png',
+        position: 'top-right',
+        link: 'http://www.wazeedigital.com'
+      }
+    });
+  }
+
+  private setupImage() {
+    var elem = document.createElement('img');
+    elem.src = this.asset.clipUrl;
+    this.element.nativeElement.appendChild(elem);
+  }
+
+  private get playerInstance(): any {
+    this.player = this.player || jwplayer(this.element.nativeElement);
+    return this.player;
+  }
+
+  private reset() {
+    this.playerInstance.remove();
+    this.element.nativeElement.innerHTML = '';
+  }
+
+}

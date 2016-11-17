@@ -88,9 +88,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public selectActiveCollection(id: number): void {
-    this.activeCollection.set(id).take(1).subscribe(() => {
-      this.activeCollection.getItems(id, { n: this.pageSize }).take(1).subscribe();
-    });
+    this.activeCollection.load(id).subscribe();
   }
 
   public setCollectionForDelete(collection: any): void {
@@ -104,17 +102,12 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
       // if we are deleting current active, we need to get the new active from the server.
       if (this.activeCollection.isActiveCollection(id) && collectionLength > 0) {
-        this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, { n: this.pageSize }).take(1).subscribe();
-        });
+        this.activeCollection.load().subscribe();
       }
       // if we delete the last collection, reset the store to initial values (no active collection)
       if (collectionLength === 0) {
         this.collections.destroyAll();
-        this.activeCollection.get().take(1).subscribe((collection) => {
-          this.activeCollection.getItems(collection.id, { n: this.pageSize }).take(1).subscribe();
-          this.collections.load({}, true).take(1).subscribe();
-        });
+        this.activeCollection.load().subscribe(() => this.collections.load({}, true).take(1).subscribe());
       }
     });
   }

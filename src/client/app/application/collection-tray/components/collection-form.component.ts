@@ -71,6 +71,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
       this.collectionContext.resetCollectionOptions();
       this.getActiveCollection();
       this.loadCollections();
+      this.activeCollection.load().subscribe();
     }, this.error.bind(this));
   }
 
@@ -89,9 +90,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   }
 
   public getActiveCollection() {
-    this.activeCollection.get().take(1).subscribe((collection) => {
-      this.activeCollection.getItems(collection.id, { n: 50 }).take(1).subscribe();
-    });
+    this.activeCollection.load().take(1).subscribe();
   }
 
   private success(): void {

@@ -47,7 +47,7 @@ export function main() {
     describe('search()', () => {
       it('Should accept a search query and navigate to a url that include the search query', () => {
         componentUnderTest.search({q: 'dogs'});
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/orders', { q: 'dogs', n: '20' }]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/orders', { n: '20', q: 'dogs', i: 1 }]);
       });
     });
   });
