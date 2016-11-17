@@ -25,7 +25,7 @@ export class ActiveCollectionService implements OnInit {
   }
 
   public load(collectionId?:number, params: any = { i: 0, n: 100 }): Observable<any> {
-    if (collectionId) {
+    if (!collectionId) {
       return this.api.get(Api.Assets, 'collectionSummary/focused', { loading: true })
       .flatMap((response: any) => {
         this.store.updateTo(response as Collection);
