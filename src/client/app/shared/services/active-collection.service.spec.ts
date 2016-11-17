@@ -53,7 +53,7 @@ export function main() {
       inject([ActiveCollectionService, MockBackend], (service: ActiveCollectionService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.set(158, { i: 0, n: 100 }).subscribe(response => {
+        service.load(158, { i: 0, n: 100 }).subscribe(response => {
           expect(connection.request.url.indexOf('/api/assets/v1/collectionSummary/setFocused/158') !== -1).toBe(true);
           expect(mockStore.updateTo).toHaveBeenCalledWith(mockCollectionResponse());
           expect(response.id).toEqual(158);
