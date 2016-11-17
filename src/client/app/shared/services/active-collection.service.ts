@@ -12,6 +12,10 @@ export class ActiveCollectionService implements OnInit {
 
   constructor(private store: ActiveCollectionStore, public api: ApiService) { }
 
+  ngOnInit(): void {
+    this.setSearchParams();
+  }
+
   public get data(): Observable<Collection> {
     return this.store.data;
   }
@@ -29,16 +33,12 @@ export class ActiveCollectionService implements OnInit {
     return this.state.id === collectionId;
   }
 
-  ngOnInit(): void {
-    this.setSearchParams();
-  }
-
   public load(collectionId?: number, params: any = { i: 0, n: 100 }): Observable<any> {
     if (!collectionId) {
       return this.api.get(Api.Assets, 'collectionSummary/focused', { loading: true })
         .flatMap((response: any) => {
           this.store.updateTo(response as Collection);
-          return this.getItems(response.id, { i: 1, n: 100 }, true, true);
+          return this.getItems(response.id, { i: 1, n: 100 });
         });
     } else {
       return this.set(collectionId, params);
@@ -51,7 +51,7 @@ export class ActiveCollectionService implements OnInit {
       `collection/${collectionId}/addAssets`,
       { body: { list: [{ assetId: asset.assetId }] } }
     ).flatMap((response: any) => {
-      return this.getItems(collectionId, { i: 1, n: 100 }, true);
+      return this.getItems(collectionId, { i: 1, n: 100 });
     });
   }
 
