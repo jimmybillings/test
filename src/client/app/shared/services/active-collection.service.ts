@@ -20,30 +20,29 @@ export class ActiveCollectionService implements OnInit {
     return this.store.state;
   }
 
+  // TODO: Outside world shouldn't need to call this.
+  public resetStore(): void {
+    this.store.reset();
+  }
+
+  public isActiveCollection(collectionId: number): boolean {
+    return this.state.id === collectionId;
+  }
+
   ngOnInit(): void {
     this.setSearchParams();
   }
 
-  public load(collectionId?:number, params: any = { i: 0, n: 100 }): Observable<any> {
+  public load(collectionId?: number, params: any = { i: 0, n: 100 }): Observable<any> {
     if (!collectionId) {
       return this.api.get(Api.Assets, 'collectionSummary/focused', { loading: true })
-      .flatMap((response: any) => {
-        this.store.updateTo(response as Collection);
-        return this.getItems(response.id, { i: 1, n: 100 }, true, true);
-      });
+        .flatMap((response: any) => {
+          this.store.updateTo(response as Collection);
+          return this.getItems(response.id, { i: 1, n: 100 }, true, true);
+        });
     } else {
       return this.set(collectionId, params);
     }
-  }
-
-  public set(collectionId: number, params?: any): Observable<any> {
-    return Observable.forkJoin([
-      this.api.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loading: true }),
-      this.getItems(collectionId, params, false)
-    ]).do((data: any) => {
-      this.store.updateTo(data[0]);
-      this.store.updateAssetsTo(data[1]);
-    });
   }
 
   public addAsset(collectionId: any, asset: any): Observable<any> {
@@ -81,16 +80,17 @@ export class ActiveCollectionService implements OnInit {
     ).do(response => { if (set) this.store.updateAssetsTo(response); });
   }
 
-  // TODO: Outside world shouldn't need to call this.
-  public resetStore(): void {
-    this.store.reset();
+  private set(collectionId: number, params?: any): Observable<any> {
+    return Observable.forkJoin([
+      this.api.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loading: true }),
+      this.getItems(collectionId, params, false)
+    ]).do((data: any) => {
+      this.store.updateTo(data[0]);
+      this.store.updateAssetsTo(data[1]);
+    });
   }
 
-  public setSearchParams() {
+  private setSearchParams() {
     this.params = { 's': '', 'd': '', 'i': '0', 'n': '50' };
-  }
-
-  public isActiveCollection(collectionId: number): boolean {
-    return this.state.id === collectionId;
   }
 }

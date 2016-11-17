@@ -136,7 +136,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public getAssetsForLink(collectionId: number): void {
-    this.activeCollection.getItems(collectionId, {n: 100}).take(1).subscribe(data => {
+    this.activeCollection.getItems(collectionId, {n: 100}, false).take(1).subscribe(data => {
       this.assetsForLink = data.items;
     });
   }
