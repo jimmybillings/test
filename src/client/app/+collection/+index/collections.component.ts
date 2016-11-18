@@ -119,12 +119,12 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
   public onFilterCollections(filter: any) {
     this.collectionContext.updateCollectionOptions({ currentFilter: filter });
-    this.collections.load(filter.access, true).take(1).subscribe();
+    this.collections.load(filter.access, true).subscribe();
   }
 
   public onSortCollections(sort: any) {
     this.collectionContext.updateCollectionOptions({ currentSort: sort });
-    this.collections.load(sort.sort, true).take(1).subscribe();
+    this.collections.load(sort.sort, true).subscribe();
   }
 
   public isActiveCollection(collectionId: number): boolean {
@@ -136,7 +136,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public getAssetsForLink(collectionId: number): void {
-    this.activeCollection.getItems(collectionId, {n: 100}).take(1).subscribe(data => {
+    this.activeCollection.getItems(collectionId, {n: 100}, false).take(1).subscribe(data => {
       this.assetsForLink = data.items;
     });
   }
