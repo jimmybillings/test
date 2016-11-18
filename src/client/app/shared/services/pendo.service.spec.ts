@@ -3,7 +3,7 @@ import { PendoService } from './pendo.service';
 declare var pendo: any;
 
 export function main() {
-  describe('Some Class', () => {
+  describe('Pendo Service', () => {
     let serviceUnderTest: PendoService;
     let mockUser: any;
 
@@ -30,4 +30,3 @@ export function main() {
     });
   });
 }
-    

@@ -12,6 +12,10 @@ export class ActiveCollectionService implements OnInit {
 
   constructor(private store: ActiveCollectionStore, public api: ApiService) { }
 
+  ngOnInit(): void {
+    this.setSearchParams();
+  }
+
   public get data(): Observable<Collection> {
     return this.store.data;
   }
@@ -29,16 +33,12 @@ export class ActiveCollectionService implements OnInit {
     return this.state.id === collectionId;
   }
 
-  ngOnInit(): void {
-    this.setSearchParams();
-  }
-
   public load(collectionId?: number, params: any = { i: 0, n: 100 }): Observable<any> {
     if (!collectionId) {
       return this.api.get(Api.Assets, 'collectionSummary/focused', { loading: true })
         .flatMap((response: any) => {
           this.store.updateTo(response as Collection);
-          return this.getItems(response.id, { i: 1, n: 100 }, true, true);
+          return this.getItems(response.id, { i: 1, n: 100 });
         });
     } else {
       return this.set(collectionId, params);
@@ -51,19 +51,25 @@ export class ActiveCollectionService implements OnInit {
       `collection/${collectionId}/addAssets`,
       { body: { list: [{ assetId: asset.assetId }] } }
     ).flatMap((response: any) => {
-      return this.getItems(collectionId, { i: 1, n: 100 }, true);
+      return this.getItems(collectionId, { i: 1, n: 100 });
     });
   }
 
   public removeAsset(params: any): Observable<any> {
     let collection: Collection = params.collection;
-    let uuid: any = params.collection.assets.items.find((item: any) => item.assetId === params.asset.assetId).uuid;
-    if (uuid && params.asset.assetId) {
+    let uuid: any, assetToBeRemoved: any;
+    assetToBeRemoved = params.collection.assets.items.find((item: any) => item.assetId === params.asset.assetId);
+    if (params.asset.uuid && assetToBeRemoved) {
+      uuid = params.asset.uuid;
+    } else {
+      uuid = assetToBeRemoved ? assetToBeRemoved.uuid : false;
+    }
+    if (assetToBeRemoved && uuid) {
       return this.api.post(
         Api.Identities,
         `collection/${collection.id}/removeAssets`,
-        { body: { list: [{ assetId: params.asset.assetId, uuid: uuid }] } }
-      ).do(response => this.store.remove(response['list'][0]));
+        { body: { list: [{ assetId: params.asset.assetId, uuid: uuid }] } })
+      .do(response => this.store.remove(response['list'][0]));
     } else {
       return Observable.of({});
     }
