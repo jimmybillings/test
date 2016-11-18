@@ -1,4 +1,3 @@
-import { ActionReducer } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 
 import { activeCollection, ActiveCollectionStore } from './active-collection.store';
