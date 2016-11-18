@@ -11,5 +11,6 @@ export const ignoredFilePatterns: string[] = [
 ];
 
 export const ignoredDirectoryNames: string[] = [
-  'imports'
+  'imports',
+  'tests'
 ];
