@@ -35,7 +35,7 @@ export class ReviewTabComponent extends Tab implements OnInit {
   public purchaseOnCredit(): void {
     this.cartService.purchaseOnCredit().subscribe(data => {
       this.order.update(data);
-      this.router.navigate(['/order/' + data.id]).then(() => {
+      this.router.navigate(['/commerce/order/' + data.id]).then(() => {
         this.notification.create('NOTIFICATION.ORDER_PLACED');
       });
     });
