@@ -5,7 +5,7 @@ import { Api } from '../interfaces/api.interface';
 import { Collection } from '../interfaces/collection.interface';
 
 export function main() {
-  fdescribe('Active Collection Service', () => {
+  describe('Active Collection Service', () => {
     let serviceUnderTest: ActiveCollectionService, mockApi: MockApiService, mockStore: any, collection: Collection;
 
     beforeEach(() => {
@@ -38,7 +38,7 @@ export function main() {
       serviceUnderTest = new ActiveCollectionService(mockStore, mockApi.injector);
     });
 
-    describe('OnInit', () => {
+    describe('OnInit()', () => {
       it('should set the searchParams', () => {
         serviceUnderTest.ngOnInit();
 
@@ -56,7 +56,7 @@ export function main() {
       });
     });
 
-    describe('resetStore', () => {
+    describe('resetStore()', () => {
       it('should call .reset() on the store', () => {
         serviceUnderTest.resetStore();
 
@@ -64,7 +64,7 @@ export function main() {
       });
     });
 
-    describe('isActiveCollection', () => {
+    describe('isActiveCollection()', () => {
       it('should return true when the collectionId passed in matches the one in the store', () => {
         expect(serviceUnderTest.isActiveCollection(1)).toBe(true);
       });
@@ -74,7 +74,7 @@ export function main() {
       });
     });
 
-    describe('load', () => {
+    describe('load()', () => {
       describe('with no parameters', () => {
         it('should get the focusedCollection summary if a collectionId is not passed in', () => {
           serviceUnderTest.load();
@@ -90,31 +90,45 @@ export function main() {
           });
         });
 
-        // it('should call getItems with the response id', () => {
-        //   mockApi.getResponse = [collection, [{ assetId: 1 }, { assetId: 2 }, { assetId: 3 }]];
-        //   spyOn(serviceUnderTest, 'getItems');
+        it('should call getItems with the collectionId and params', () => {
+          mockApi.getResponse = { id: 908 };
+          serviceUnderTest.load().take(1).subscribe();
 
-        //   serviceUnderTest.load().take(1).subscribe((response: Collection) => {
-        //     expect(serviceUnderTest.getItems).toHaveBeenCalledWith(1, {i: 1, n: 100 });
-        //   });
-        // });
+          // Testing that the api call from ActiveCollectionService::getItems is correct
+          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Assets);
+          expect(mockApi.get).toHaveBeenCalledWithEndpoint('collectionSummary/assets/908');
+          expect(mockApi.get).toHaveBeenCalledWithParameters({ i: 0, n: 100 });
+        });
       });
 
-      // This block is essentialy a spec for ActiveCollectionService::set
+      // This block is essentialy a spec for ActiveCollectionService::Set
       describe('a collectionId is passed in should call set()', () => {
-        beforeEach(() => {
-          spyOn(serviceUnderTest, 'getItems');
-          serviceUnderTest.load(321);
-        });
-
+        // NOTE all of these `it` blocks are scoped to ActiveCollectionService::Set
         it('should call the api service correctly', () => {
+          serviceUnderTest.load(321);
           expect(mockApi.put).toHaveBeenCalledWithApi(Api.Assets);
           expect(mockApi.put).toHaveBeenCalledWithEndpoint('collectionSummary/setFocused/321');
           expect(mockApi.put).toHaveBeenCalledWithLoading();
         });
 
-        it('should call getItems', () => {
+        it('should call getItems from .set', () => {
+          spyOn(serviceUnderTest, 'getItems');
+          serviceUnderTest.load(321);
           expect(serviceUnderTest.getItems).toHaveBeenCalledWith(321, { i: 0, n: 100 }, false);
+        });
+
+        it('should call store.updateTo with putResponse when subscribed to', () => {
+          serviceUnderTest.load(321).take(1).subscribe();
+
+          // See forkJoin in ActiveCollectionService::set first request is a put, so data[0] will be putResponse
+          expect(mockStore.updateTo).toHaveBeenCalledWith(mockApi.putResponse);
+        });
+
+        it('should call store.updateAssetsTo with getResponse when subscribed to', () => {
+          serviceUnderTest.load(321).take(1).subscribe();
+
+          // See forkJoin in ActiveCollectionService::set second request is a get (getItems), so data[1] will be getResponse
+          expect(mockStore.updateAssetsTo).toHaveBeenCalledWith(mockApi.getResponse);
         });
       });
 
@@ -128,33 +142,35 @@ export function main() {
       });
     });
 
-    describe('AddAsset', () => {
+    describe('addAsset()', () => {
       beforeEach(() => {
         mockApi.postResponse = collection;
       });
 
       it('should call the apiService correctly', () => {
-        serviceUnderTest.addAsset(1, { assetId: 12 });
+        serviceUnderTest.addAsset(732, { assetId: 12 });
 
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
-        expect(mockApi.post).toHaveBeenCalledWithEndpoint('collection/1/addAssets');
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('collection/732/addAssets');
         expect(mockApi.post).toHaveBeenCalledWithBody({ list: [{ assetId: 12 }] });
       });
 
-      // it('should call getItems in the flatMap', () => {
-      //   spyOn(serviceUnderTest, 'getItems');
-      //   serviceUnderTest.addAsset(1, { assetId: 12 }).take(1).subscribe();
+      it('should call getItems in the flatMap', () => {
+        serviceUnderTest.addAsset(303, { assetId: 12 }).take(1).subscribe();
 
-      //   expect(serviceUnderTest.getItems).toHaveBeenCalledWith(1, { i: 1, n: 100 });
-      // });
+        // Testing that the api call from ActiveCollectionService::getItems is correct
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('collectionSummary/assets/303');
+        expect(mockApi.get).toHaveBeenCalledWithParameters({ i: 0, n: 100 });
+      });
     });
 
-    describe('RemoveAsset', () => {
+    describe('removeAsset()', () => {
       // There are 4 potential cases here -
-        // 1. Asset has a UUID -and- it's in the collection
-        // 2. Asset has a UUID -and- it's not in the collection
-        // 2. Asset does not have a UUID -and- it's in the collection
-        // 3. Asset does not have a UUID -and- it's not in the collection
+      // 1. Asset has a UUID -and- it's in the collection
+      // 2. Asset has a UUID -and- it's not in the collection
+      // 2. Asset does not have a UUID -and- it's in the collection
+      // 3. Asset does not have a UUID -and- it's not in the collection
       beforeEach(() => {
         mockApi.postResponse = { list: [{ assetId: 1 }, { assetId: 2 }, { assetId: 3 }] };
       });
@@ -210,6 +226,47 @@ export function main() {
           result.take(1).subscribe((data: any) => {
             expect(data).toEqual({});
           });
+        });
+      });
+    });
+
+    describe('getItems()', () => {
+      describe('with only required arguments passed in', () => {
+        it('should call the apiService correctly', () => {
+          serviceUnderTest.getItems(1, { i: 1, n: 100 });
+
+          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Assets);
+          expect(mockApi.get).toHaveBeenCalledWithEndpoint('collectionSummary/assets/1');
+          expect(mockApi.get).toHaveBeenCalledWithParameters({ i: 0, n: 100 });
+          expect(mockApi.get).toHaveBeenCalledWithLoading();
+        });
+
+        it('should default the set to true and call store.updateAssetsTo', () => {
+          serviceUnderTest.getItems(1, { i: 1, n: 100 }).take(1).subscribe();
+
+          expect(mockStore.updateAssetsTo).toHaveBeenCalledWith(mockApi.getResponse);
+        });
+
+        it('should not decrement without collectionParams[\'i\']', () => {
+          serviceUnderTest.getItems(1, { n: 100 });
+
+          expect(mockApi.get).toHaveBeenCalledWithParameters({ n: 100 });
+        });
+      });
+
+      describe('with optional set flag passed in', () => {
+        it('should be false, and not call store.updateAssetsTo', () => {
+          serviceUnderTest.getItems(1, { i: 1, n: 100 }, false).take(1).subscribe();
+
+          expect(mockStore.updateAssetsTo).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('with optional loading flag passed in', () => {
+        it('should not make the api call with loading', () => {
+          serviceUnderTest.getItems(1, { i: 1, n: 100 }, true, false);
+
+          expect(mockApi.get).toHaveBeenCalledWithLoading(false);
         });
       });
     });
