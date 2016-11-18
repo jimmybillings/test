@@ -57,13 +57,19 @@ export class ActiveCollectionService implements OnInit {
 
   public removeAsset(params: any): Observable<any> {
     let collection: Collection = params.collection;
-    let uuid: any = params.collection.assets.items.find((item: any) => item.assetId === params.asset.assetId).uuid;
-    if (uuid && params.asset.assetId) {
+    let uuid: any, assetToBeRemoved: any;
+    assetToBeRemoved = params.collection.assets.items.find((item: any) => item.assetId === params.asset.assetId);
+    if (params.asset.uuid && assetToBeRemoved) {
+      uuid = params.asset.uuid;
+    } else {
+      uuid = assetToBeRemoved ? assetToBeRemoved.uuid : false;
+    }
+    if (assetToBeRemoved && uuid) {
       return this.api.post(
         Api.Identities,
         `collection/${collection.id}/removeAssets`,
-        { body: { list: [{ assetId: params.asset.assetId, uuid: uuid }] } }
-      ).do(response => this.store.remove(response['list'][0]));
+        { body: { list: [{ assetId: params.asset.assetId, uuid: uuid }] } })
+      .do(response => this.store.remove(response['list'][0]));
     } else {
       return Observable.of({});
     }
