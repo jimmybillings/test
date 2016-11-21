@@ -38,7 +38,7 @@ import { adminResources } from '../+admin/services/admin.store';
 import { searchContext } from '../shared/services/search-context.service';
 import { error } from '../shared/services/error.service';
 import { multilingualActionReducer } from '../shared/services/multilingual.service';
-import { collections } from '../shared/services/collections.service';
+import { CollectionsStore, collections } from '../shared/stores/collections.store';
 import { ActiveCollectionStore, activeCollection } from '../shared/stores/active-collection.store';
 import { filters } from '../shared/services/filter.service';
 import { userPreferences } from '../shared/services/user-preference.service';
@@ -59,6 +59,7 @@ export const WAZEE_PROVIDERS = [
   ErrorService,
   ErrorActions,
   AssetService,
+  CollectionsStore,
   CollectionsService,
   ActiveCollectionStore,
   ActiveCollectionService,
