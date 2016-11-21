@@ -33,7 +33,7 @@ export function main() {
     };
 
     describe('UPDATE_ACTIVE_COLLECTION', () => {
-      addStandardReducerTestsFor(activeCollection, 'UPDATE_ACTIVE_COLLECTION');
+      addStandardReducerTestsFor(activeCollection, 'UPDATE_ACTIVE_COLLECTION', initialState);
 
       it('returns current state merged with payload when current state is passed in', () => {
         expect(activeCollection(
@@ -53,7 +53,7 @@ export function main() {
     });
 
     describe('RESET_ACTIVE_COLLECTION', () => {
-      addStandardReducerTestsFor(activeCollection, 'RESET_ACTIVE_COLLECTION');
+      addStandardReducerTestsFor(activeCollection, 'RESET_ACTIVE_COLLECTION', initialState);
 
       it('ignores payload and returns initial state when current state is passed in', () => {
         expect(activeCollection(
@@ -73,7 +73,7 @@ export function main() {
     });
 
     describe('ADD_ASSET_TO_COLLECTION', () => {
-      addStandardReducerTestsFor(activeCollection, 'ADD_ASSET_TO_COLLECTION', { initialState: initialState });
+      addStandardReducerTestsFor(activeCollection, 'ADD_ASSET_TO_COLLECTION', initialState);
 
       it('returns current state plus the new asset payload when current state is passed in', () => {
         expect(activeCollection(
@@ -108,11 +108,7 @@ export function main() {
       tempInitialState.assets = { items: [{ assetId: 10836 }] };
       const tempPayload = { assetId: 10836 };
 
-      addStandardReducerTestsFor(
-        activeCollection,
-        'REMOVE_ASSET_FROM_COLLECTION',
-        { initialState: tempInitialState, payload: tempPayload }
-      );
+      addStandardReducerTestsFor(activeCollection, 'REMOVE_ASSET_FROM_COLLECTION', tempInitialState, tempPayload);
 
       it('returns current state minus the specified asset payload when current state is passed in', () => {
         expect(activeCollection(

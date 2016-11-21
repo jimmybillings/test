@@ -1,10 +1,12 @@
 import { ActionReducer } from '@ngrx/store';
 
-export function addStandardReducerTestsFor(reducer: ActionReducer<any>, actionType: string, options: any = {}) {
-  const initialState: any = options.initialState || { some: 'state' };
-  const payload: any = options.payload || { some: 'payload' };
-
-  describe('Standard reducer tests', () => {
+export function addStandardReducerTestsFor(
+  reducer: ActionReducer<any>,
+  actionType: string,
+  initialState: any,
+  payload: any = { some: 'payload' }
+) {
+  describe('Reducer (standard tests)', () => {
     it('does not fail with a null current state', () => {
       expect(reducer.bind(this, null, { type: actionType, payload: payload })).not.toThrow();
     });
