@@ -1,142 +1,145 @@
-import {
-  beforeEachProvidersArray,
-  ResponseOptions,
-  MockBackend,
-  Response,
-  inject,
-  TestBed
-} from '../../imports/test.imports';
-
 import { CollectionsService } from './collections.service';
-import { CollectionsStore } from '../stores/collections.store';
+import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
+import { Api } from '../interfaces/api.interface';
+import { Collection } from '../interfaces/collection.interface';
+import { Observable } from 'rxjs/Rx';
 
 export function main() {
   describe('Collections service', () => {
-    let mockStore: any;
+    let serviceUnderTest: CollectionsService, mockStore: any, mockActiveCollection: any, mockApi: MockApiService, mockCollection: Collection;
+
+    mockCollection = {
+      'lastUpdated': '2016-06-17T21:44:12Z',
+      'createdOn': '2016-06-17T21:44:12Z',
+      'id': 158,
+      'siteName': 'core',
+      'name': 'golf',
+      'owner': 33,
+      'tags': ['golf', 'green', 'sport']
+    };
 
     beforeEach(() => {
+      jasmine.addMatchers(mockApiMatchers);
+      mockApi = new MockApiService();
+      mockActiveCollection = {
+        data: Observable.of({ id: 1 }),
+        resetStore: jasmine.createSpy('resetStore')
+      };
       mockStore = {
         deleteAllCollections: jasmine.createSpy('deleteAllCollections'),
         deleteCollectionWith: jasmine.createSpy('deleteCollectionWith'),
         add: jasmine.createSpy('add'),
         update: jasmine.createSpy('update'),
         replaceAllCollectionsWith: jasmine.createSpy('replaceAllCollectionsWith'),
-        state: { id: 1 }
+        state: { items: [{ id: 1 }, { id: 2 }], pagination: {} },
+        data: Observable.of({ items: [{ id: 1 }, { id: 2 }], pagination: {} })
       };
+      serviceUnderTest = new CollectionsService(mockStore, mockApi.injector, mockActiveCollection);
+    });
 
-      TestBed.configureTestingModule({
-        providers: [
-          ...beforeEachProvidersArray,
-          { provide: CollectionsStore, useValue: mockStore }
-        ]
+    it('should not sync if there are no collections', () => {
+      mockStore = {
+        deleteAllCollections: jasmine.createSpy('deleteAllCollections'),
+        deleteCollectionWith: jasmine.createSpy('deleteCollectionWith'),
+        add: jasmine.createSpy('add'),
+        update: jasmine.createSpy('update'),
+        replaceAllCollectionsWith: jasmine.createSpy('replaceAllCollectionsWith'),
+        state: { items: [], pagination: {} },
+        data: Observable.of({ items: [], pagination: {} })
+      };
+      serviceUnderTest = new CollectionsService(mockStore, mockApi.injector, mockActiveCollection);
+      expect(mockStore.update).not.toHaveBeenCalled();
+    });
+
+    it('should have a data getter that returns an observable of the store\'s state', () => {
+      serviceUnderTest.data.subscribe((data: any) => {
+        expect(data).toEqual({ items: [{ id: 1 }, { id: 2 }], pagination: {} });
       });
     });
 
-    // it('Should create instance variable for data',
-    //   inject([CollectionsService], (service: CollectionsService) => {
-    //     expect(service.data).toBeDefined();
-    //   }));
+    it('should have a state getter that returns the store\'s state', () => {
+      expect(serviceUnderTest.state).toEqual(mockStore.state);
+    });
 
-    it('Should have a loadCollections method that gets the users collections',
-      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
-        let connection: any;
-        connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.load().subscribe(response => {
-          expect(connection.request.url.indexOf('/api/assets/v1/collectionSummary/search?q=&accessLevel=all&s=&d=&i=0&n=200') !== -1).toBe(true);
-          expect(response).toEqual(mockCollection());
-          expect(mockStore.replaceAllCollectionsWith).toHaveBeenCalledWith(mockCollection());
+    describe('load()', () => {
+      it('call the apiService correctly without arguments', () => {
+        serviceUnderTest.load();
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('collectionSummary/search');
+        expect(mockApi.get).toHaveBeenCalledWithParameters({ q: '', accessLevel: 'all', s: '', d: '', i: 0, n: 200 });
+        expect(mockApi.get).toHaveBeenCalledWithLoading(false);
+      });
+
+      it('call the apiService correctly with arguments', () => {
+        serviceUnderTest.load({ q: 'ross', n: 20 }, true);
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('collectionSummary/search');
+        expect(mockApi.get).toHaveBeenCalledWithParameters({ q: 'ross', accessLevel: 'all', s: '', d: '', i: 0, n: 20 });
+        expect(mockApi.get).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('should replace collections in the store with the response', () => {
+        serviceUnderTest.load().take(1).subscribe();
+
+        expect(mockStore.replaceAllCollectionsWith).toHaveBeenCalledWith(mockApi.getResponse);
+      });
+
+      describe('create()', () => {
+        it('should call the apiService correctly', () => {
+          serviceUnderTest.create(mockCollection);
+
+          expect(mockApi.post).toHaveBeenCalledWithApi(Api.Assets);
+          expect(mockApi.post).toHaveBeenCalledWithEndpoint('collectionSummary');
+          expect(mockApi.post).toHaveBeenCalledWithBody(mockCollection);
         });
-        connection.mockRespond(new Response(
-          new ResponseOptions({
-            body: mockCollection()
-          })
-        ));
-      }));
 
-    it('Should have a createCollection method that creates a collection',
-      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
-        let connection: any;
-        connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.create(mockCollection()).subscribe(response => {
-          expect(connection.request.url.indexOf('/api/assets/v1/collectionSummary') !== -1).toBe(true);
-          expect(response).toEqual(mockCollection());
-          expect(mockStore.add).toHaveBeenCalledWith(mockCollection());
+        it('should add the response to the store', () => {
+          serviceUnderTest.create(mockCollection).take(1).subscribe();
+
+          expect(mockStore.add).toHaveBeenCalledWith(mockApi.postResponse);
         });
-        connection.mockRespond(new Response(
-          new ResponseOptions({
-            body: mockCollection()
-          })
-        ));
-      }));
+      });
 
-    it('Should have a deleteCollection method that deletes a collection',
-      inject([CollectionsService, MockBackend], (service: CollectionsService, mockBackend: MockBackend) => {
-        let connection: any;
-        connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.delete(158).subscribe(response => {
-          expect(connection.request.url.indexOf('/api/identities/v1/collection/158') !== -1).toBe(true);
-          expect(mockStore.deleteCollectionWith).toHaveBeenCalledWith(158);
+      describe('update()', () => {
+        it('should call the apiService correctly', () => {
+          serviceUnderTest.update(mockCollection);
+
+          expect(mockApi.put).toHaveBeenCalledWithApi(Api.Assets);
+          expect(mockApi.put).toHaveBeenCalledWithEndpoint('collectionSummary/158');
+          expect(mockApi.put).toHaveBeenCalledWithBody(mockCollection);
         });
-        connection.mockRespond(new Response(
-          new ResponseOptions({
-            body: mockCollection()
-          })
-        ));
-      }));
+      });
 
-    function mockCollection() {
-      return {
-        'lastUpdated': '2016-06-17T21:44:12Z',
-        'createdOn': '2016-06-17T21:44:12Z',
-        'id': 158,
-        'siteName': 'core',
-        'name': 'golf',
-        'owner': 33,
-        'email': 'joe@doe.com',
-        'assets': {
-          'items': [
-            {
-              'assetId': 31997574,
-              'metaData': [
-                {
-                  'name': 'Title',
-                  'value': ''
-                },
-                {
-                  'name': 'Description',
-                  'value': 'POV of woman driving down tree lined road, Tuscany, Italy'
-                },
-                {
-                  'name': 'TE.DigitalFormat',
-                  'value': 'High Definition'
-                },
-                {
-                  'name': 'Format.Duration',
-                  'value': '00:00:59'
-                }
-              ],
-              'name': '962C823_816',
-              'thumbnail': {
-                'name': 'thumbnail',
-                'urls': {
-                  'https': 'http://cdnt3m-a.akamaihd.net/tem/warehouse/962/C82/3/962C823_816_lt.jpg'
-                }
-              },
-              'uuid': '99e4280d-c323-43c2-9e50-98514c7d74ca'
-            }
-          ],
-          'pagination': {
-            'totalCount': 1,
-            'currentPage': 1,
-            'pageSize': 100,
-            'hasNextPage': false,
-            'hasPreviousPage': false,
-            'numberOfPages': 1
-          }
-        },
-        'tags': ['golf', 'green', 'sport']
-      };
-    }
+      describe('delete()', () => {
+        it('should call the apiService correctly', () => {
+          serviceUnderTest.delete(123);
+
+          expect(mockApi.delete).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApi.delete).toHaveBeenCalledWithEndpoint('collection/123');
+        });
+
+        it('should delete the corresponding collection from the store', () => {
+          serviceUnderTest.delete(123).take(1).subscribe();
+
+          expect(mockStore.deleteCollectionWith).toHaveBeenCalledWith(123);
+        });
+      });
+
+      describe('destroyAll()', () => {
+        beforeEach(() => {
+          serviceUnderTest.destroyAll();
+        });
+
+        it('should call deleteAllCollections() on the collections store', () => {
+          expect(mockStore.deleteAllCollections).toHaveBeenCalled();
+        });
+
+        it('should call resetStore on the active collection store', () => {
+          expect(mockActiveCollection.resetStore).toHaveBeenCalled();
+        });
+      });
+    });
   });
 }
-

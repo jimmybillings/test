@@ -52,7 +52,7 @@
                 (click)="setCurrentCollection(collection)"><md-icon>more_vert</md-icon></button>
             </div>
             <div class="premiere-actions">
-                <button md-button class="is-outlined" color="primary" [routerLink]="['/collection/', collection.id]">{{'COLLECTION.INDEX.VIEW_BTN_LABEL' | translate }}</button>
+                <button md-button class="is-outlined" color="primary" [routerLink]="['/collection/', collection.id, {i: 1, n: 100}]">{{'COLLECTION.INDEX.VIEW_BTN_LABEL' | translate }}</button>
                 <button md-button class="is-outlined" (click)="selectActiveCollection(collection.id)">{{'COLLECTION.INDEX.SELECT_BTN_LABEL' | translate }}</button>
             </div>
         </div>

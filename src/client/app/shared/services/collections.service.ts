@@ -54,31 +54,13 @@ export class CollectionsService {
     this.activeCollection.resetStore();
   }
 
-  // TODO: Does this need to be called from the outside?
-  public storeCollections(payload: any): void {
-    this.store.replaceAllCollectionsWith(payload);
-  }
-
-  // TODO: Does this need to be called from the outside?
-  public createCollectionInStore(payload: Collection): void {
-    this.store.add(payload);
-  }
-
-  public syncActiveCollection() {
+  private syncActiveCollection() {
     this.activeCollection.data.subscribe((collection: Collection) => {
       if (this.state.items && this.state.items.length > 0) this.store.update(collection);
     });
   }
 
-  public mergeCollectionData(item: any, search: any) {
-    item.thumbnail = search.items[0].thumbnail;
-    item.assets.items = item.assets;
-    item.assets.pagination = {};
-    item.assets.pagination.totalCount = search.totalCount;
-    return item;
-  }
-
-  public setSearchParams() {
+  private setSearchParams() {
     this.params = { q: '', accessLevel: 'all', s: '', d: '', i: 0, n: 200 };
   }
 }

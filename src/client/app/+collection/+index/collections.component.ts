@@ -71,7 +71,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
-    this.collections.setSearchParams();
     this.optionsSubscription = this.collectionContext.data.subscribe(data => this.options = data);
   }
 
