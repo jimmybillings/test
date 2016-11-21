@@ -54,7 +54,7 @@ export function main() {
         componentUnderTest.purchaseOnCredit();
 
         expect(mockRouter.navigate)
-          .toHaveBeenCalledWith(['/order/10836']);
+          .toHaveBeenCalledWith(['/commerce/order/10836']);
       });
 
       it('updates the order store', () => {
