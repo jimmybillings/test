@@ -27,9 +27,8 @@ export class CollectionsService {
     return this.store.state;
   }
 
-  public load(params: any = {}, loading: boolean = false): Observable<any> {
-    //TODO:  Do we really want to update this.params every time load() is called?
-    this.params = Object.assign({}, this.params, params);
+  public load(params?: any, loading: boolean = false): Observable<any> {
+    if (params) this.params = Object.assign({}, this.params, params);
 
     return this.api.get(Api.Assets, `collectionSummary/search`, { parameters: this.params, loading: loading })
       .do(response => this.store.replaceAllCollectionsWith(response));
@@ -44,15 +43,6 @@ export class CollectionsService {
     return this.api.put(Api.Assets, `collectionSummary/${collection.id}`, { body: collection });
   }
 
-  // We only need to account for whether or not the active collection is being deleted. (if we're deleting the last collection, it is active by default)
-    // 1. delete the collection from the store
-  // If active:
-    // 2. load the new active collection
-    // 3. load the new list of collections
-  // else:
-    // 2. load the new list of collections
-  // Note: each of the load() functions update their respective stores.
-  // We always return this.load() because we always end on the collection index page after deleting a collection
   public delete(collectionId: number): Observable<any> {
     this.store.deleteCollectionWith(collectionId);
     return this.api.delete(Api.Identities, `collection/${collectionId}`)
