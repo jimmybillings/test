@@ -22,6 +22,7 @@ export function main() {
       jasmine.addMatchers(mockApiMatchers);
       mockApi = new MockApiService();
       mockActiveCollection = {
+        load: jasmine.createSpy('load').and.returnValue(Observable.of({})),
         data: Observable.of({ id: 1 }),
         resetStore: jasmine.createSpy('resetStore')
       };

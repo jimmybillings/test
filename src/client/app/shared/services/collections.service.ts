@@ -44,9 +44,20 @@ export class CollectionsService {
     return this.api.put(Api.Assets, `collectionSummary/${collection.id}`, { body: collection });
   }
 
+  // We can execute the same steps regardless of where we are deleting from, or which collection we are deleting (focused, last, etc)
+    // 1. delete the collection from the store
+    // 2. load the new active collection
+    // 3. load the new list of collections
+  // Each of the load() functions update their respective stores.
+  // Using flatMap, we return this.load() because we always end on the collection index page after deleting a collection
   public delete(collectionId: number): Observable<any> {
+    this.store.deleteCollectionWith(collectionId);
     return this.api.delete(Api.Identities, `collection/${collectionId}`)
-      .do(_ => this.store.deleteCollectionWith(collectionId));
+      .flatMap(_ => {
+        return this.activeCollection.load().flatMap(_ => {
+          return this.load();
+        });
+      });
   }
 
   public destroyAll(): void {

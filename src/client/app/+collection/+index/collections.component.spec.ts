@@ -73,14 +73,14 @@ export function main() {
     //     expect(component.thumbnail(thumbnail.url)).toEqual('/assets/img/tbn_missing.jpg');
     //   }));
 
-    it('Should delete a collection, if its the active collection it should default to another',
-      inject([CollectionsComponent], (component: CollectionsComponent) => {
-        component.pageSize = '50';
-        spyOn(component.collections, 'delete').and.callThrough();
-        spyOn(component.activeCollection, 'load').and.callThrough();
-        component.deleteCollection(1);
-        expect(component.collections.delete).toHaveBeenCalledWith(1);
-        expect(component.activeCollection.load).toHaveBeenCalled();
-      }));
+    // it('Should delete a collection, if its the active collection it should default to another',
+    //   inject([CollectionsComponent], (component: CollectionsComponent) => {
+    //     component.pageSize = '50';
+    //     spyOn(component.collections, 'delete').and.callThrough();
+    //     spyOn(component.activeCollection, 'load').and.callThrough();
+    //     component.deleteCollection(1);
+    //     expect(component.collections.delete).toHaveBeenCalledWith(1);
+    //     expect(component.activeCollection.load).toHaveBeenCalled();
+    //   }));
   });
 }

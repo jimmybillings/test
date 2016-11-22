@@ -1,6 +1,6 @@
 import { Component, Input, ElementRef, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, Renderer, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
 import { ApiService } from '../../../../services/api.service';
 import { Api, ApiResponse } from '../../../../interfaces/api.interface';
 
@@ -29,12 +29,13 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
   private activeSuggestion: string;
   private shouldCallServer: boolean = true;
   private clickCatcher: any;
+  private inputSubscription: Subscription;
   constructor(private element: ElementRef, private renderer: Renderer, private api: ApiService, private detector: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.clickCatcher = this.renderer.listenGlobal('body', 'click', this.closeSuggestions.bind(this));
     this.areSuggestionsVisible = false;
-    this.fControl.valueChanges
+    this.inputSubscription = this.fControl.valueChanges
       .switchMap((query: string) => {
         if (query && query.length > 1 && this.shouldCallServer) {
           return this.query(query);
@@ -54,6 +55,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.clickCatcher();
+    this.inputSubscription.unsubscribe();
   }
 
   public closeSuggestions() {

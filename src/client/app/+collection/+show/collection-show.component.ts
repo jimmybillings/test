@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
@@ -10,6 +10,7 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../shared/services/asset.service';
 import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
+import { WzToastComponent } from '../../shared/components/wz-toast/wz.toast.component';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartSummaryService } from '../../shared/services/cart-summary.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
@@ -30,6 +31,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public config: Object;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
+  @ViewChild(WzToastComponent) private wzToast: WzToastComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,6 +55,11 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.route.params.subscribe(params => this.buildRouteParams(params));
   }
 
+  ngOnDestroy() {
+    this.activeCollectionSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
+  }
+
   public resetCollection() {
     this.collection = Object.assign({}, this.collection);
   }
@@ -60,11 +67,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public buildRouteParams(params: any): void {
     this.routeParams = Object.assign({}, this.routeParams, params);
     delete (this.routeParams['id']);
-  }
-
-  ngOnDestroy() {
-    this.activeCollectionSubscription.unsubscribe();
-    this.routeSubscription.unsubscribe();
   }
 
   public removeFromCollection(params: any): void {
@@ -88,24 +90,10 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public deleteCollection(id: number): void {
-    this.collections.delete(id).subscribe(payload => {
-      let collectionLength: number = this.collections.state.items.length;
-
-      // if we are deleting current active, we need to get the new active from the server.
-      if (this.activeCollection.isActiveCollection(id) && collectionLength > 0) {
-        this.activeCollection.load().subscribe((collection) => {
-          this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
-        });
-      }
-      // if we delete the last collection, reset the store to initial values (no active collection)
-      if (collectionLength === 0) {
-        // this.collections.destroyAll();
-        this.activeCollection.load().subscribe((collection) => {
-          this.collections.load().subscribe(d => {
-            this.router.navigate(['/collection/' + collection.id, { i: 1, n: 100 }]);
-          });
-        });
-      }
+    this.collections.delete(id).subscribe(response => {
+      this.router.navigate(['/collections']).then(() => {
+        this.wzToast.show();
+      });
     });
   }
 
