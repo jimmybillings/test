@@ -18,11 +18,14 @@ export function main() {
       'tags': ['golf', 'green', 'sport']
     };
 
+    function isActiveCollection(id: number): boolean { return id === 123; }
+
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApi = new MockApiService();
       mockActiveCollection = {
         load: jasmine.createSpy('load').and.returnValue(Observable.of({})),
+        isActiveCollection: jasmine.createSpy('isActiveCollection').and.callFake(isActiveCollection),
         data: Observable.of({ id: 1 }),
         resetStore: jasmine.createSpy('resetStore')
       };
@@ -86,60 +89,78 @@ export function main() {
 
         expect(mockStore.replaceAllCollectionsWith).toHaveBeenCalledWith(mockApi.getResponse);
       });
+    });
 
-      describe('create()', () => {
-        it('should call the apiService correctly', () => {
-          serviceUnderTest.create(mockCollection);
+    describe('create()', () => {
+      it('should call the apiService correctly', () => {
+        serviceUnderTest.create(mockCollection);
 
-          expect(mockApi.post).toHaveBeenCalledWithApi(Api.Assets);
-          expect(mockApi.post).toHaveBeenCalledWithEndpoint('collectionSummary');
-          expect(mockApi.post).toHaveBeenCalledWithBody(mockCollection);
-        });
-
-        it('should add the response to the store', () => {
-          serviceUnderTest.create(mockCollection).take(1).subscribe();
-
-          expect(mockStore.add).toHaveBeenCalledWith(mockApi.postResponse);
-        });
+        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('collectionSummary');
+        expect(mockApi.post).toHaveBeenCalledWithBody(mockCollection);
       });
 
-      describe('update()', () => {
-        it('should call the apiService correctly', () => {
-          serviceUnderTest.update(mockCollection);
+      it('should add the response to the store', () => {
+        serviceUnderTest.create(mockCollection).take(1).subscribe();
 
-          expect(mockApi.put).toHaveBeenCalledWithApi(Api.Assets);
-          expect(mockApi.put).toHaveBeenCalledWithEndpoint('collectionSummary/158');
-          expect(mockApi.put).toHaveBeenCalledWithBody(mockCollection);
-        });
+        expect(mockStore.add).toHaveBeenCalledWith(mockApi.postResponse);
+      });
+    });
+
+    describe('update()', () => {
+      it('should call the apiService correctly', () => {
+        serviceUnderTest.update(mockCollection);
+
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Assets);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('collectionSummary/158');
+        expect(mockApi.put).toHaveBeenCalledWithBody(mockCollection);
+      });
+    });
+
+    describe('delete()', () => {
+      it('should delete the corresponding collection from the store', () => {
+        serviceUnderTest.delete(123);
+
+        expect(mockStore.deleteCollectionWith).toHaveBeenCalledWith(123);
       });
 
-      describe('delete()', () => {
-        it('should call the apiService correctly', () => {
-          serviceUnderTest.delete(123);
+      it('should call the apiService correctly', () => {
+        serviceUnderTest.delete(123);
 
-          expect(mockApi.delete).toHaveBeenCalledWithApi(Api.Identities);
-          expect(mockApi.delete).toHaveBeenCalledWithEndpoint('collection/123');
-        });
-
-        it('should delete the corresponding collection from the store', () => {
-          serviceUnderTest.delete(123).take(1).subscribe();
-
-          expect(mockStore.deleteCollectionWith).toHaveBeenCalledWith(123);
-        });
+        expect(mockApi.delete).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.delete).toHaveBeenCalledWithEndpoint('collection/123');
       });
 
-      describe('destroyAll()', () => {
-        beforeEach(() => {
-          serviceUnderTest.destroyAll();
-        });
+      it('should check if the collection being deleted is active', () => {
+        serviceUnderTest.delete(123).take(1).subscribe();
 
-        it('should call deleteAllCollections() on the collections store', () => {
-          expect(mockStore.deleteAllCollections).toHaveBeenCalled();
-        });
+        expect(mockActiveCollection.isActiveCollection).toHaveBeenCalledWith(123);
+      });
 
-        it('should call resetStore on the active collection store', () => {
-          expect(mockActiveCollection.resetStore).toHaveBeenCalled();
-        });
+      it('should call activeCollectionService.load() if the collection being deleted is active', () => {
+        serviceUnderTest.delete(123).take(1).subscribe();
+
+        expect(mockActiveCollection.load).toHaveBeenCalled();
+      });
+
+      it('should NOT call collectionsService.load() if the collection being deleted is NOT active', () => {
+        serviceUnderTest.delete(1).take(1).subscribe();
+
+        expect(mockActiveCollection.load).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('destroyAll()', () => {
+      beforeEach(() => {
+        serviceUnderTest.destroyAll();
+      });
+
+      it('should call deleteAllCollections() on the collections store', () => {
+        expect(mockStore.deleteAllCollections).toHaveBeenCalled();
+      });
+
+      it('should call resetStore on the active collection store', () => {
+        expect(mockActiveCollection.resetStore).toHaveBeenCalled();
       });
     });
   });
