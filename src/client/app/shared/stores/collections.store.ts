@@ -50,6 +50,12 @@ export class CollectionsStore {
     return this.store.select('collections');
   }
 
+  public get state(): any {
+    let s: any;
+    this.data.take(1).subscribe(state => s = state);
+    return s;
+  }
+
   public deleteAllCollections(): void {
     this.store.dispatch({ type: 'DELETE_ALL_COLLECTIONS' });
   }
@@ -81,12 +87,6 @@ export class CollectionsStore {
         }
       }
     });
-  }
-
-  public get state(): any {
-    let s: any;
-    this.data.take(1).subscribe(state => s = state);
-    return s;
   }
 }
 

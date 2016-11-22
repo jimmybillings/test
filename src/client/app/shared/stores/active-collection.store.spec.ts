@@ -265,6 +265,14 @@ export function main() {
       });
     });
 
+    describe('reset()', () => {
+      it('should dispatch RESET_ACTIVE_COLLECTION', () => {
+        storeUnderTest.reset();
+
+        expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'RESET_ACTIVE_COLLECTION' });
+      });
+    });
+
     describe('updateAssetsTo()', () => {
       it('dispatches UPDATE_ACTIVE_COLLECTION with the passed-in assets', () => {
         storeUnderTest.updateAssetsTo({

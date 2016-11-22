@@ -1,6 +1,7 @@
 import { collections, CollectionsStore } from './collections.store';
-import { Collections } from '../interfaces/collection.interface';
+import { Collections, Collection } from '../interfaces/collection.interface';
 import { addStandardReducerTestsFor } from '../tests/reducer';
+import { Observable } from 'rxjs/Rx';
 
 export function main() {
   const initialState: Collections = {
@@ -155,13 +156,95 @@ export function main() {
 };
 
 describe('Collections Store', () => {
-  let storeUnderTest: CollectionsStore;
+  let storeUnderTest: CollectionsStore, mockStore: any;
 
   beforeEach(() => {
-    storeUnderTest = new CollectionsStore(null);
+    mockStore = {
+      select: jasmine.createSpy('select').and.returnValue(Observable.of({ someKey: 'someValue' })),
+      dispatch: jasmine.createSpy('dispatch')
+    };
+    storeUnderTest = new CollectionsStore(mockStore);
   });
 
-  it('has no tests!', () => {
-    expect(true).toBe(true);
+  describe('data getter', () => {
+    it('accesses the right part of the global store', () => {
+      storeUnderTest.data.subscribe();
+      expect(mockStore.select).toHaveBeenCalledWith('collections');
+    });
+
+    it('returns the expected data', () => {
+      storeUnderTest.data.subscribe(data => {
+        expect(data).toEqual({ someKey: 'someValue' });
+      });
+    });
+  });
+
+  describe('state getter', () => {
+    it('should return the state', () => {
+      expect(storeUnderTest.state).toEqual({ someKey: 'someValue' });
+    });
+  });
+
+  describe('deleteAllCollections()', () => {
+    it('should dispatch DELETE_ALL_COLLECTIONS', () => {
+      storeUnderTest.deleteAllCollections();
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'DELETE_ALL_COLLECTIONS' });
+    });
+  });
+
+  describe('deleteCollectionWith()', () => {
+    it('should dispatch DELETE_COLLECTION with the collectionId', () => {
+      storeUnderTest.deleteCollectionWith(123);
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'DELETE_COLLECTION', payload: 123 });
+    });
+  });
+
+  describe('add()', () => {
+    it('should dispatch ADD_COLLECTION with the new collection', () => {
+      let newCollection: Collection = { id: 1, name: 'Cats', owner: 12, lastUpdated: '123871', createdOn: '1232424', siteName: 'core' };
+      storeUnderTest.add(newCollection);
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'ADD_COLLECTION', payload: newCollection });
+    });
+  });
+
+  describe('update()', () => {
+    it('should dispatch UPDATE_COLLECTION with the updated collection', () => {
+      let updatedCollection: Collection = { id: 1, name: 'Dogs', owner: 12, lastUpdated: '123871', createdOn: '1232424', siteName: 'core' };
+      storeUnderTest.update(updatedCollection);
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UPDATE_COLLECTION', payload: updatedCollection });
+    });
+  });
+
+  describe('replaceAllCollectionsWith()', () => {
+    it('should replace with the items passed in', () => {
+      let collection: Collection = { id: 1, name: 'Dogs', owner: 12, lastUpdated: '123871', createdOn: '1232424', siteName: 'core' };
+      let replacements: any = { items: [collection], totalCount: 1, currentPage: 0, hasNextPage: false, hasPreviousPage: false, numberOfPages: 1, pageSize: 1 };
+      storeUnderTest.replaceAllCollectionsWith(replacements);
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith({
+        type: 'REPLACE_COLLECTIONS',
+        payload: {
+          items: [collection],
+          pagination: { totalCount: 1, currentPage: 1, hasNextPage: false, hasPreviousPage: false, numberOfPages: 1, pageSize: 1 }
+        }
+      });
+    });
+
+    it('should replace with an empty array if there are no items', () => {
+      let replacements: any = { totalCount: 0, currentPage: 0, hasNextPage: false, hasPreviousPage: false, numberOfPages: 1, pageSize: 0 };
+      storeUnderTest.replaceAllCollectionsWith(replacements);
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith({
+        type: 'REPLACE_COLLECTIONS',
+        payload: {
+          items: [],
+          pagination: { totalCount: 0, currentPage: 1, hasNextPage: false, hasPreviousPage: false, numberOfPages: 1, pageSize: 0 }
+        }
+      });
+    });
   });
 });
