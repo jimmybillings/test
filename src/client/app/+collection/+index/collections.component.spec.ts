@@ -32,7 +32,9 @@ export function main() {
 
     class MockCollectionsService {
       public data: Observable<any>;
+      public state: any;
       constructor() {
+        this.state = { items: [{ id: 1 }] };
         this.data = Observable.of({items: [1, 2, 3, 4, 5]});
       }
       delete() {

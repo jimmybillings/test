@@ -89,9 +89,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   public deleteCollection(id: number): void {
     this.collections.delete(id).subscribe(payload => {
-      let collectionLength: number;
-      this.collections.data
-        .take(1).subscribe(collection => collectionLength = collection.items.length);
+      let collectionLength: number = this.collections.state.items.length;
 
       // if we are deleting current active, we need to get the new active from the server.
       if (this.activeCollection.isActiveCollection(id) && collectionLength > 0) {

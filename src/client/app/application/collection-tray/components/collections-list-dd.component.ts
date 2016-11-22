@@ -70,19 +70,19 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
 
   public applyFilter(filter: any) {
     this.collectionContext.updateCollectionOptions({ currentFilter: filter });
-    this.collections.load(filter.access).take(1).subscribe();
+    this.collections.load(filter.access).subscribe();
     this.showCollectionFilter();
   }
 
   public applySort(sort: any) {
     this.collectionContext.updateCollectionOptions({ currentSort: sort });
-    this.collections.load(sort.sort).take(1).subscribe();
+    this.collections.load(sort.sort).subscribe();
     this.showCollectionSort();
   }
 
   public search(query: any) {
     this.collectionContext.updateCollectionOptions({ currentSearchQuery: query });
-    this.collections.load(query).take(1).subscribe();
+    this.collections.load(query).subscribe();
   }
 
   public showCollectionFilter() {

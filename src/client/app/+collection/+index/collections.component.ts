@@ -95,9 +95,8 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public deleteCollection(id: number): void {
-    this.collections.delete(id).take(1).subscribe(payload => {
-      let collectionLength: number;
-      this.collections.data.take(1).subscribe(collection => collectionLength = collection.items.length);
+    this.collections.delete(id).subscribe(payload => {
+      let collectionLength: number = this.collections.state.items.length;
 
       // if we are deleting current active, we need to get the new active from the server.
       if (this.activeCollection.isActiveCollection(id) && collectionLength > 0) {
@@ -106,14 +105,14 @@ export class CollectionsComponent implements OnInit, OnDestroy {
       // if we delete the last collection, reset the store to initial values (no active collection)
       if (collectionLength === 0) {
         this.collections.destroyAll();
-        this.activeCollection.load().subscribe(() => this.collections.load({}, true).take(1).subscribe());
+        this.activeCollection.load().subscribe(() => this.collections.load({}, true).subscribe());
       }
     });
   }
 
   public search(query: any) {
     this.collectionContext.updateCollectionOptions({ currentSearchQuery: query });
-    this.collections.load(query, true).take(1).subscribe();
+    this.collections.load(query, true).subscribe();
   }
 
   public onFilterCollections(filter: any) {
@@ -135,7 +134,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public getAssetsForLink(collectionId: number): void {
-    this.activeCollection.getItems(collectionId, {n: 100}, false).take(1).subscribe(data => {
+    this.activeCollection.getItems(collectionId, {n: 100}, false).subscribe(data => {
       this.assetsForLink = data.items;
     });
   }

@@ -67,7 +67,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
 
   public createCollection(collection: Collection): void {
     collection.tags = (collection.tags) ? collection.tags.split(/\s*,\s*/) : [];
-    this.collections.create(collection).take(1).subscribe(collection => {
+    this.collections.create(collection).subscribe(collection => {
       this.collectionContext.resetCollectionOptions();
       this.getActiveCollection();
       this.loadCollections();
@@ -77,7 +77,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
 
   public editCollection(collection: Collection) {
     collection = Object.assign({}, collection, { id: this.collection.id, tags: collection.tags.split(/\s*,\s*/), owner: this.collection.owner });
-    this.collections.update(collection).take(1)
+    this.collections.update(collection)
       .subscribe(() => {
         this.loadCollections();
         if (this.activeCollection.state.id === collection.id) this.getActiveCollection();
@@ -86,11 +86,11 @@ export class CollectionFormComponent implements OnInit, OnChanges {
 
   public loadCollections() {
     this.collections.load(this.defaultCollectionParams)
-      .take(1).subscribe(this.success.bind(this));
+      .subscribe(this.success.bind(this));
   }
 
   public getActiveCollection() {
-    this.activeCollection.load().take(1).subscribe();
+    this.activeCollection.load().subscribe();
   }
 
   private success(): void {
