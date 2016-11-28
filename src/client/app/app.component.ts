@@ -8,6 +8,7 @@ import { ApiConfig } from './shared/services/api.config';
 import { UiConfig } from './shared/services/ui.config';
 import { SearchContext } from './shared/services/search-context.service';
 import { Authentication } from './shared/services/authentication.data.service';
+import { FilterService } from './shared/services/filter.service';
 
 import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
@@ -53,7 +54,8 @@ export class AppComponent implements OnInit {
     private userCan: Capabilities,
     private cartSummary: CartSummaryService,
     private error: ErrorActions,
-    private window: Window) {}
+    private window: Window,
+    private filter: FilterService) { }
 
   ngOnInit() {
     this.apiConfig.setPortal(portal);
@@ -74,9 +76,10 @@ export class AppComponent implements OnInit {
     this.multiLingual.setLanguage(data);
   }
 
-  public newSearchContext(data: any) {
-    this.searchContext.update = { q: data, i: 1, n: 100, sortId: this.userPreference.state.searchSortOptionId };
-    this.searchContext.go();
+  public newSearchContext(query: any) {
+    let fullQuery: any = { q: query, i: 1, n: 100, sortId: this.userPreference.state.searchSortOptionId };
+    this.filter.get(fullQuery, this.userPreference.state.displayFilterCounts).subscribe();
+    this.searchContext.new(fullQuery);
   }
 
   private routerChanges() {

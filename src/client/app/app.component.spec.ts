@@ -7,7 +7,7 @@ export function main() {
     (<any>window).portal = 'core';
     let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUser: any,
       mockCollections: any, mockActiveCollection: any, mockUiState: any, mockUserPreference: any, mockRenderer: any, mockNotification: any,
-      mockApiConfig: any, mockAuthentication: any, mockUserCan: any, mockCartSummary: any, mockWindow: any;
+      mockApiConfig: any, mockAuthentication: any, mockUserCan: any, mockCartSummary: any, mockWindow: any, mockFilter: any;
     let loggedInState = false, canViewCollections = true;
     let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
     let componentUnderTest: AppComponent;
@@ -18,7 +18,8 @@ export function main() {
       mockMultiLingual = { setLanguage: jasmine.createSpy('setLanguage') };
       mockSearchContext = {
         update: null,
-        go: jasmine.createSpy('go')
+        go: jasmine.createSpy('go'),
+        new: jasmine.createSpy('new')
       };
       mockCurrentUser = {
         set: jasmine.createSpy('set'),
@@ -42,7 +43,8 @@ export function main() {
       };
       mockUserPreference = {
         state: {
-          searchSortOptionId: 23
+          searchSortOptionId: 23,
+          displayFilterCounts: true
         },
         reset: jasmine.createSpy('reset'),
         getPrefs: jasmine.createSpy('getPrefs')
@@ -54,10 +56,11 @@ export function main() {
       mockUserCan = { viewCollections: () => canViewCollections };
       mockCartSummary = { loadCartSummary: jasmine.createSpy('loadCartSummary') };
       mockWindow = { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') };
+      mockFilter = { get: jasmine.createSpy('get').and.returnValue(Observable.of({})) };
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUser,
         mockCollections, mockActiveCollection, mockUiState, mockUserPreference, mockRenderer,
-        mockNotification, mockApiConfig, mockAuthentication, mockUserCan, mockCartSummary, null, mockWindow);
+        mockNotification, mockApiConfig, mockAuthentication, mockUserCan, mockCartSummary, null, mockWindow, mockFilter);
     });
 
 
@@ -172,10 +175,10 @@ export function main() {
     });
 
     describe('newSearchContext()', () => {
-      it('Should update the searchContext with a new query and naviagate go()', () => {
+      it('Should update the searchContext with a new query and get a new filter tree', () => {
         componentUnderTest.newSearchContext('dogs');
-        expect(mockSearchContext.update).toEqual({ q: 'dogs', i: 1, n: 100, sortId: 23 });
-        expect(mockSearchContext.go).toHaveBeenCalled();
+        expect(mockSearchContext.new).toHaveBeenCalledWith({ q: 'dogs', i: 1, n: 100, sortId: 23 });
+        expect(mockFilter.get).toHaveBeenCalledWith({ q: 'dogs', i: 1, n: 100, sortId: 23 }, true);
       });
     });
 
