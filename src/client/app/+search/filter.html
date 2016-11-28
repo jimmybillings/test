@@ -10,59 +10,58 @@
             </div>
           </div>
         </div>
-        <md-list-item title="{{subFilter.filterId}}"
-           *ngFor="let subFilter of filter.subFilters"
-           (click)="applyExclusiveFilter(subFilter)"
-           [ngClass]="{'active': subFilter.active}"
-           class="md-primary">
-            {{subFilter.name}}
+        <md-list-item title="{{subFilter.filterId}}" *ngFor="let subFilter of filter.subFilters" (click)="applyExclusiveFilter(subFilter)"
+          [ngClass]="{'active': subFilter.active}" class="md-primary">
+          {{subFilter.name}}
           <span class="filter-count" *ngIf="counted && subFilter.count > -1">
-            ( {{subFilter.count}} )
+            ( {{subFilter.count | number}} )
           </span>
         </md-list-item>
         <md-divider></md-divider>
       </div>
-      
+
       <span *ngSwitchCase="'None'" class="none">
         <div class="filter-subhead" (click)="toggle(filter)">
           <div class="filter-subhead-inner">
             <div class="filter-subhead-content">
               <span>{{filter.name}}</span>
-            </div>
-          </div>
-        </div>
-        <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
-        <md-divider></md-divider>
-      </span>
+    </div>
+    </div>
+    </div>
+    <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
+    <md-divider></md-divider>
+    </span>
 
-      <span *ngSwitchCase="'List'" class="list">
+    <span *ngSwitchCase="'List'" class="list">
         <div title="{{filter.filterId}}" class="filter-subhead" (click)="toggle(filter)">
           <div class="filter-subhead-inner">
             <div class="filter-subhead-content">
               <span>{{filter.name}}</span>
-            </div>
-          </div>
-        </div>
-        <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
-      </span>
+    </div>
+    </div>
+    </div>
+    <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
+    </span>
 
-      <span *ngSwitchCase="'DateRange'" class="date-range">
+    <span *ngSwitchCase="'DateRange'" class="date-range">
         <div class="filter-subhead">
           <div class="filter-subhead-inner">
             <div class="filter-subhead-content">
               <span>{{'SEARCH.FILTERS.DATE_RANGE_HEADING' | translate }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="input-container">
-          <input wzPikaday name="start" type="text" placeholder="Start" value="{{defaultDate(filter, 'start')}}" (change)="dateRangeSelect($event, filter)" />
-        </div>
-        <div class="input-container">
-          <input wzPikaday name="end" type="text"  placeholder="End" value="{{defaultDate(filter, 'end')}}" (change)="dateRangeSelect($event, filter)" />
-        </div>
-      </span>
-        
-      <span *ngSwitchCase="'Text'" class="text">
+    </div>
+    </div>
+    </div>
+    <div class="input-container">
+      <input wzPikaday name="start" type="text" placeholder="Start" value="{{defaultDate(filter, 'start')}}" (change)="dateRangeSelect($event, filter)"
+      />
+    </div>
+    <div class="input-container">
+      <input wzPikaday name="end" type="text" placeholder="End" value="{{defaultDate(filter, 'end')}}" (change)="dateRangeSelect($event, filter)"
+      />
+    </div>
+    </span>
+
+    <span *ngSwitchCase="'Text'" class="text">
         <md-input
           name="filterValue"
           color="primary"
@@ -73,7 +72,7 @@
         <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
       </span>
 
-      <span *ngSwitchDefault>
+    <span *ngSwitchDefault>
         <md-checkbox
           [disabled]="counted && filter.count < 1"
           [checked]="filter.active"
@@ -81,11 +80,11 @@
           (change)="applyFilter(filter.filterId)">
             {{filter.name}}
               <span class="filter-count" *ngIf="counted && filter.count > -1">
-                ( {{filter.count}} )
+                ( {{filter.count | number}} )
               </span>
-        </md-checkbox>
-        <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
-      </span>
+    </md-checkbox>
+    <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
+    </span>
 
     </div>
   </li>
