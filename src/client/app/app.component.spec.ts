@@ -47,7 +47,8 @@ export function main() {
           displayFilterCounts: true
         },
         reset: jasmine.createSpy('reset'),
-        getPrefs: jasmine.createSpy('getPrefs')
+        getPrefs: jasmine.createSpy('getPrefs'),
+        toggleFilterTree: jasmine.createSpy('toggleFilterTree')
       };
       mockRenderer = { listenGlobal: jasmine.createSpy('listenGlobal').and.callFake((a: any, b: any, c: Function) => { c(); }) };
       mockNotification = { check: jasmine.createSpy('check'), initialize: jasmine.createSpy('initialize') };
@@ -132,6 +133,14 @@ export function main() {
           expect(mockActiveCollection.load).toHaveBeenCalled();
           expect(mockCollections.load).toHaveBeenCalled();
           expect(mockCartSummary.loadCartSummary).toHaveBeenCalled();
+        });
+      });
+
+      describe('toggleFilterTreePreference()', () => {
+        it('should call toggleFilterTree() on the user preference service', () => {
+          componentUnderTest.toggleFilterTreePreference();
+
+          expect(mockUserPreference.toggleFilterTree).toHaveBeenCalled();
         });
       });
 

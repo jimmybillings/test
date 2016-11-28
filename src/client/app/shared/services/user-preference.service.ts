@@ -9,7 +9,8 @@ const defaultPreferences: any = {
   displayFilterCounts: false,
   collectionTrayIsOpen: false,
   searchIsOpen: true,
-  searchSortOptionId: 12
+  searchSortOptionId: 12,
+  displayFilterTree: false
 };
 
 export const userPreferences: ActionReducer<any> = (state = defaultPreferences, action: Action) => {
@@ -68,6 +69,10 @@ export class UserPreferenceService {
     this.update({ displayFilterCounts: !this.state.displayFilterCounts });
   }
 
+  public toggleFilterTree(): void {
+    this.update({ displayFilterTree: !this.state.displayFilterTree });
+  }
+
   public set(preferences: any): void {
     this.updateStore(this.formatResponse(preferences));
   }
@@ -84,10 +89,19 @@ export class UserPreferenceService {
     return preferences;
   }
 
+  private get(): Observable<any> {
+    return this.api.get(Api.Identities, 'userPreferences');
+  }
+
   private update(params: any): void {
     this.updateStore(params);
     if (!this.currentUser.loggedIn()) return;
     this.put(params).take(1).subscribe();
+  }
+
+  private put(params: any): Observable<any> {
+    let body: any = this.formatBody(params);
+    return this.api.put(Api.Identities, 'userPreferences/item', { body: body });
   }
 
   private updateStore(data: any = defaultPreferences): void {
@@ -112,14 +126,5 @@ export class UserPreferenceService {
       default:
         return value;
     };
-  }
-
-  private get(): Observable<any> {
-    return this.api.get(Api.Identities, 'userPreferences', { loading: true });
-  }
-
-  private put(params: any): Observable<any> {
-    let body: any = this.formatBody(params);
-    return this.api.put(Api.Identities, 'userPreferences/item', { body: body });
   }
 }

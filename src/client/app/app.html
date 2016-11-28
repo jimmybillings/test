@@ -25,9 +25,9 @@
       [currentUser]="currentUser"
       [state]="state"
       [uiState]="uiState"
-      [prefs]="userPreference"
       [config]="(uiConfig.get('searchBox') | async).config"
-      (searchContext)="newSearchContext($event)">
+      (searchContext)="newSearchContext($event)"
+      (toggleFilterTree)="toggleFilterTreePreference()">
     </wz-search-box>
     <md-progress-bar mode="indeterminate" *ngIf="(uiState.data | async).loading"></md-progress-bar>
   </header>

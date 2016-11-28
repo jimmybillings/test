@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AssetData } from './services/asset.data.service';
 import { UiConfig } from '../shared/services/ui.config';
@@ -36,6 +36,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   private configSubscription: Subscription;
   private preferencesSubscription: Subscription;
   private sortSubscription: Subscription;
+  @ViewChild('searchFilter') private sidenav: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -65,6 +66,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe();
+    if (this.preferences.displayFilterTree) this.sidenav.open();
   }
 
   ngOnDestroy(): void {

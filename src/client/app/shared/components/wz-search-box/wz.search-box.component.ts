@@ -18,8 +18,8 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
   @Input() currentUser: any;
   @Input() state: any;
   @Input() uiState: UiState;
-  @Input() prefs: any;
   @Output() searchContext = new EventEmitter();
+  @Output() toggleFilterTree = new EventEmitter();
   public searchTerms: Observable<any>;
   public searchForm: FormGroup;
 
@@ -35,7 +35,8 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
     if (changes.state) this.updateSearchBoxValue(changes.state.currentValue);
   }
 
-  public openFilters() {
+  public toggleFilters() {
+    this.toggleFilterTree.emit();
     (<HTMLElement>document.querySelector('button.filter')).click();
   }
 
@@ -50,10 +51,6 @@ export class WzSearchBoxComponent implements OnInit, OnChanges {
     });
     (<FormControl>this.searchForm.controls['query']).setValue(obj['q']);
     this.searchTerms = this.listenForSearchTerms();
-  }
-
-  public closeSearch() {
-    this.prefs.closeSearch();
   }
 
   public setForm() {

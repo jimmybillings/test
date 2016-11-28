@@ -82,6 +82,10 @@ export class AppComponent implements OnInit {
     this.searchContext.new(fullQuery);
   }
 
+  public toggleFilterTreePreference(): void {
+    this.userPreference.toggleFilterTree();
+  }
+
   private routerChanges() {
     this.router.events
       .filter((event: RoutesRecognized) => event instanceof NavigationEnd)
