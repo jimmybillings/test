@@ -46,7 +46,7 @@
             (click)="removeFromCollection(collection, asset); removeToast.show()">
             <md-icon>remove_circle</md-icon>
           </button>
-          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!alreadyInCollection(asset)"
+          <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!alreadyInCollection(asset)"
             title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
             (click)="addToCollection(collection, asset); addToast.show()">
             <md-icon>library_add</md-icon>
