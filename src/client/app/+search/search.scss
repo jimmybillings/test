@@ -38,3 +38,34 @@ md-slide-toggle.count-toggle {
     opacity: .75
   }
 }
+
+no-results > div {
+  h1.md-headline.alert {
+    margin-top: 0;
+    margin-bottom: rem(.7);
+    color: md-color($warn, darker);
+  }
+  h2.md-display-1 {
+    // margin-top: 0;
+    margin-bottom: rem(0.8);
+  }
+  h3.md-headline {
+    margin-top: rem(0.7);
+    margin-bottom: rem(2.4);
+    a {
+      color: md-color($primary);
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  margin: 0 rem(3.4) rem(5.5);
+  ul {
+    font-size: rem(1.7);
+    line-height: 1.5;
+    li {
+      margin: rem(1.0) 0;
+    }
+  }
+}
