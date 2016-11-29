@@ -14,7 +14,7 @@
           [ngClass]="{'active': subFilter.active}" class="md-primary">
           {{subFilter.name}}
           <span class="filter-count" *ngIf="counted && subFilter.count > -1">
-            ( {{subFilter.count | number}} )
+            &nbsp;({{subFilter.count | number}})
           </span>
         </md-list-item>
         <md-divider></md-divider>
@@ -73,17 +73,17 @@
       </span>
 
     <span *ngSwitchDefault>
-        <md-checkbox
-          [disabled]="counted && filter.count < 1"
-          [checked]="filter.active"
-          color="primary"
-          (change)="applyFilter(filter.filterId)">
-            {{filter.name}}
-              <span class="filter-count" *ngIf="counted && filter.count > -1">
-                ( {{filter.count | number}} )
-              </span>
-    </md-checkbox>
-    <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
+      <md-checkbox
+        [disabled]="counted && filter.count < 1"
+        [checked]="filter.active"
+        color="primary"
+        (change)="applyFilter(filter.filterId)">
+          {{filter.name}}
+          <span class="filter-count" *ngIf="counted && filter.count > -1">
+            ({{filter.count | number}})
+          </span>
+      </md-checkbox>
+      <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
     </span>
 
     </div>
