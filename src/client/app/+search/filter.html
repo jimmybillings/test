@@ -52,11 +52,11 @@
     </div>
     </div>
     <div class="input-container">
-      <input wzPikaday name="start" type="text" placeholder="Start" value="{{defaultDate(filter, 'start')}}" (change)="dateRangeSelect($event, filter)"
+      <input wzPikaday name="start" type="text" readonly="true" placeholder="Start" value="{{defaultDate(filter, 'start')}}" (change)="dateRangeSelect($event, filter)"
       />
     </div>
     <div class="input-container">
-      <input wzPikaday name="end" type="text" placeholder="End" value="{{defaultDate(filter, 'end')}}" (change)="dateRangeSelect($event, filter)"
+      <input wzPikaday name="end" type="text" readonly="true" placeholder="End" value="{{defaultDate(filter, 'end')}}" (change)="dateRangeSelect($event, filter)"
       />
     </div>
     </span>
