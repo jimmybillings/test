@@ -7,7 +7,7 @@ export function main() {
     (<any>window).portal = 'core';
     let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUser: any,
       mockCollections: any, mockActiveCollection: any, mockUiState: any, mockUserPreference: any, mockRenderer: any, mockNotification: any,
-      mockApiConfig: any, mockAuthentication: any, mockUserCan: any, mockCartSummary: any, mockWindow: any, mockFilter: any;
+      mockApiConfig: any, mockAuthentication: any, mockUserCan: any, mockCartSummary: any, mockWindow: any, mockFilter: any, mockSortDefinition: any;
     let loggedInState = false, canViewCollections = true;
     let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
     let componentUnderTest: AppComponent;
@@ -48,7 +48,8 @@ export function main() {
         },
         reset: jasmine.createSpy('reset'),
         getPrefs: jasmine.createSpy('getPrefs'),
-        toggleFilterTree: jasmine.createSpy('toggleFilterTree')
+        toggleFilterTree: jasmine.createSpy('toggleFilterTree'),
+        updateSortPreference: jasmine.createSpy('updateSortPreference')
       };
       mockRenderer = { listenGlobal: jasmine.createSpy('listenGlobal').and.callFake((a: any, b: any, c: Function) => { c(); }) };
       mockNotification = { check: jasmine.createSpy('check'), initialize: jasmine.createSpy('initialize') };
@@ -58,10 +59,11 @@ export function main() {
       mockCartSummary = { loadCartSummary: jasmine.createSpy('loadCartSummary') };
       mockWindow = { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') };
       mockFilter = { get: jasmine.createSpy('get').and.returnValue(Observable.of({})) };
+      mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUser,
         mockCollections, mockActiveCollection, mockUiState, mockUserPreference, mockRenderer,
-        mockNotification, mockApiConfig, mockAuthentication, mockUserCan, mockCartSummary, null, mockWindow, mockFilter);
+        mockNotification, mockApiConfig, mockAuthentication, mockUserCan, mockCartSummary, null, mockWindow, mockFilter, mockSortDefinition);
     });
 
 

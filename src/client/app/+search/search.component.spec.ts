@@ -31,7 +31,7 @@ export function main() {
     }
 
     class MockSortDefinitionsService {
-      public getSortOptions() {
+      public getSortDefinitions() {
         return Observable.of(mockSortDefinitions());
       }
 
@@ -68,12 +68,12 @@ export function main() {
       inject([SearchComponent], (component: SearchComponent) => {
         component.sortOptions = mockSortDefinitions().list;
         spyOn(component.userPreferences, 'updateSortPreference');
-        spyOn(component.sortDefinitions, 'update');
+        spyOn(component.sortDefinition, 'update');
         spyOn(component.searchContext, 'update');
         spyOn(component.searchContext, 'go');
         component.onSortResults(mockSortDefinitions().list[1].first);
         expect(component.userPreferences.updateSortPreference).toHaveBeenCalledWith(4);
-        expect(component.sortDefinitions.update).toHaveBeenCalledWith({ currentSort: mockSortDefinitions().list[1].first});
+        expect(component.sortDefinition.update).toHaveBeenCalledWith({ currentSort: mockSortDefinitions().list[1].first});
         expect(component.searchContext.update).toEqual({ 'i': 1, 'sortId': 4 });
         expect(component.searchContext.go).toHaveBeenCalled();
       }));

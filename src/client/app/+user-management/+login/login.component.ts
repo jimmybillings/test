@@ -6,8 +6,6 @@ import { CurrentUser } from '../../shared/services/current-user.model';
 import { UiConfig } from '../../shared/services/ui.config';
 import { DocumentService } from '../services/document.service';
 import { PendoService } from '../../shared/services/pendo.service';
-import { SearchContext } from '../../shared/services/search-context.service';
-import { UserPreferenceService } from '../../shared/services/user-preference.service';
 import { Observable } from 'rxjs/Rx';
 /**
  * Login page component - renders login page and handles login form submission
@@ -36,9 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private document: DocumentService,
     private uiConfig: UiConfig,
     private route: ActivatedRoute,
-    private pendo: PendoService,
-    private searchContext: SearchContext,
-    private userPreference: UserPreferenceService) {
+    private pendo: PendoService) {
   }
 
   ngOnInit(): void {
@@ -60,7 +56,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public onSubmit(user: any): void {
     this.authentication.create(user).take(1).subscribe((res) => {
-      this.setDefaultSort(res.user.defaultSort);
       if (res.documentsRequiringAgreement && res.documentsRequiringAgreement.indexOf('TOS') > -1) {
         this.termsDialog.show();
       } else {
@@ -74,10 +69,5 @@ export class LoginComponent implements OnInit, OnDestroy {
   public agreeToTermsAndClose(): void {
     this.document.agreeUserToTerms();
     this.router.navigate(['/']);
-  }
-
-  private setDefaultSort(defaultSortId: number): void {
-    this.searchContext.update = { sortId: defaultSortId };
-    this.userPreference.updateSortPreference(defaultSortId);
   }
 }

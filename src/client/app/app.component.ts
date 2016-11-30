@@ -9,7 +9,7 @@ import { UiConfig } from './shared/services/ui.config';
 import { SearchContext } from './shared/services/search-context.service';
 import { Authentication } from './shared/services/authentication.data.service';
 import { FilterService } from './shared/services/filter.service';
-
+import { SortDefinitionsService } from './shared/services/sort-definitions.service';
 import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
 import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
@@ -55,7 +55,8 @@ export class AppComponent implements OnInit {
     private cartSummary: CartSummaryService,
     private error: ErrorActions,
     private window: Window,
-    private filter: FilterService) { }
+    private filter: FilterService,
+    private sortDefinition: SortDefinitionsService) { }
 
   ngOnInit() {
     this.apiConfig.setPortal(portal);
@@ -104,6 +105,9 @@ export class AppComponent implements OnInit {
   }
 
   private processLoggedInUser() {
+    this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
+      this.userPreference.updateSortPreference(data.currentSort.id);
+    });
     this.userPreference.getPrefs();
     if (this.userCan.viewCollections()) {
       this.activeCollection.load().subscribe();
@@ -113,6 +117,9 @@ export class AppComponent implements OnInit {
   }
 
   private processLoggedOutUser() {
+    this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
+      this.userPreference.updateSortPreference(data.currentSort.id);
+    });
     this.collections.destroyAll();
     this.uiState.reset();
     this.userPreference.reset();
