@@ -97,9 +97,4 @@ export class FilterComponent {
   public serverDate(date: any) {
     return new Date(date).toJSON().slice(0, 10);
   }
-
-  public clientDate(date: any) {
-    let d: any = new Date(date).toJSON().slice(0, 10).split('-');
-    return d[1] + '-' + d[2] + '-' + d[0];
-  }
 }
