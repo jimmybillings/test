@@ -49,9 +49,21 @@ search-component .search-header {
     background-color: rgba(md-color($md-primary, default), .12);
   }
 }
-
+search-component .search-breadcrumbs {
+  padding-left: rem(.8);
+  padding-right: rem(.8);
+  // background-color: rgba(md-color($md-background, background), .2);
+  header {
+    padding-top: rem(0.6);
+    padding-bottom: rem(0.2);
+  }
+}
+search-component .search-results > div > div {
+  padding-left: rem(.8);
+  padding-right: rem(.8);
+}
 md-slide-toggle.count-toggle {
-  background-color: md-color($md-background, background);
+  background-color: md-color($background, background);
   margin: 0;
   padding: rem(.7) rem(1.6);
   .md-slide-toggle-content {
