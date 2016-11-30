@@ -9,7 +9,7 @@ const defaultPreferences: any = {
   displayFilterCounts: false,
   collectionTrayIsOpen: false,
   searchIsOpen: true,
-  searchSortOptionId: 12,
+  searchSortOptionId: 0,
   displayFilterTree: false
 };
 

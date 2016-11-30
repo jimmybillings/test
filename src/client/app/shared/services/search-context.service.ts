@@ -7,7 +7,7 @@ const initSearchContext: any = {
   q: null,
   i: 1,
   n: 100,
-  sortId: 12
+  sortId: 0
 };
 
 export const searchContext: ActionReducer<any> = (state: any = initSearchContext, action: Action) => {

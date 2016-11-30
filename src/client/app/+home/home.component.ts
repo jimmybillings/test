@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { CurrentUser} from '../shared/services/current-user.model';
-import { UiConfig} from '../shared/services/ui.config';
-import { SearchContext} from '../shared/services/search-context.service';
+import { CurrentUser } from '../shared/services/current-user.model';
+import { UiConfig } from '../shared/services/ui.config';
+import { SearchContext } from '../shared/services/search-context.service';
 import { Subscription } from 'rxjs/Rx';
 import { UiState } from '../shared/services/ui.state';
 import { FilterService } from '../shared/services/filter.service';
@@ -37,8 +37,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public newSearchContext(query: any): void {
+    let searchContext: any = { q: query, i: 1, n: this.config.pageSize.value, sortId: this.userPreference.state.searchSortOptionId };
     this.filter.set(this.filter.clear());
-    this.searchContext.new({ q: query, i: 1, n: this.config.pageSize.value, sortId: this.userPreference.state.searchSortOptionId});
+    this.searchContext.new(searchContext);
   }
 
   public buildSearchContext(context: any): any {

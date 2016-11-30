@@ -8,7 +8,7 @@ export function main() {
     let mockUiConfig: any, mockSearchContext: any, mockUserPreference: any, mockFilter: any;
     mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ 'config': { 'pageSize': { 'value': '100' }, 'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }] } } })) };
     mockSearchContext = { new: jasmine.createSpy('new') };
-    mockUserPreference = { state: { searchSortOptionId: 10 } };
+    mockUserPreference = { state: { searchSortOptionId: 0 } };
     mockFilter = { set: jasmine.createSpy('set'), clear: jasmine.createSpy('clear') };
 
     beforeEach(() => {
@@ -23,16 +23,14 @@ export function main() {
       });
     });
 
-    describe('ngOnInit()', () => {
-      it('Should create a new search context', () => {
+    describe('buildSearchContext()', () => {
+      it('Should create a new search context - anon user', () => {
         componentUnderTest.ngOnInit();
         componentUnderTest.newSearchContext('cat');
-        expect(mockSearchContext.new).toHaveBeenCalledWith({ q: 'cat', i: 1, n: '100', sortId: 10 });
+        expect(mockSearchContext.new).toHaveBeenCalledWith({ q: 'cat', i: 1, n: '100', sortId: 0 });
         expect(mockFilter.set).toHaveBeenCalledWith(mockFilter.clear());
       });
-    });
 
-    describe('buildSearchContext()', () => {
       it('Should remove any empty properties in the configurable search params incase HUMANS forgot to put them in there', () => {
         expect(componentUnderTest.buildSearchContext(JSON.stringify({ q: '', i: 0, n: 100 }))).toEqual({ i: 0, n: 100 });
       });
