@@ -95,7 +95,6 @@ export class FilterComponent {
   }
 
   public serverDate(date: any) {
-    let d: Array<string> = new Date(date).toISOString().slice(0, 10).split('-');
-    return `${d[1]}/${d[2]}/${d[0]}`;
+    return new Date(date).toJSON().slice(0, 10);
   }
 }
