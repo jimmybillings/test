@@ -1,27 +1,20 @@
 <div layout="row" layout-align="center start">
   <div flex="100" flex-gt-md="85" flex-gt-lg="75">
-    <h1 class="md-headline alert">No results can be found</h1>
-    <h3 class="md-headline">Not finding what you want? <a color="primary" [routerLink]="['/research-request']">Let our top-notch researchers find it for you</a>.</h3>
-    <!--<a md-raised-button md-raised-button color="primary" [routerLink]="['/asset', 4]">Request research</a>-->
-    <h2 class="md-display-1">Search Tips</h2>
+    <h1 class="md-headline alert"> {{ 'SEARCH.NO_RESULTS.PG_HEADING' | translate }}</h1>
+    <h3 class="md-headline">{{ 'SEARCH.NO_RESULTS.PG_SUBHEADING' | translate }} <a color="primary" [routerLink]="['/research-request']">{{ 'SEARCH.NO_RESULTS.PG_SUBHEADING_LINK_TXT' | translate }}</a></h3>
+    <h2 class="md-display-1">{{ 'SEARCH.NO_RESULTS.SEARCH_TIPS.HEADING' | translate }}</h2>
     <md-card>
-      <md-card-title>Keep these tips in mind when running your next search:</md-card-title>
+      <md-card-title>{{ 'SEARCH.NO_RESULTS.SEARCH_TIPS.SUBHEADING' | translate }}</md-card-title>
       <md-card-content>
         <ul>
-          <li>Check Spelling</li>
-          <li>Choose Words Carefully</li>
-          <li>Broader terms will return more results... more needed here</li>
+          <li>{{ 'SEARCH.NO_RESULTS.SEARCH_TIPS.TIP_ONE' | translate }}</li>
+          <li>{{ 'SEARCH.NO_RESULTS.SEARCH_TIPS.TIP_TWO' | translate }}</li>
+          <li>{{ 'SEARCH.NO_RESULTS.SEARCH_TIPS.TIP_THREE' | translate }}</li>
           <li>
-            OR NOT<br/> To exclude words, precede them with NOT. No results containing those words show up in your results.
-            For example, if you want to see video about dogs with no mention of poodles, search for dogs NOT poodles. By
-            default, search will return results that match all of the words you type in. For example: the search new zealand
-            kayaking biking, finds results that contain all of these terms, not those that contain just some of the terms.
-            If you are equally interested in two or more alternatives, use OR in capital letters. For example, search for
-            new zealand kayaking OR biking. Search will interpret this as: new AND zealand AND kayaking OR biking.
+            {{ 'SEARCH.NO_RESULTS.SEARCH_TIPS.TIP_FOUR_LABEL' | translate }}<br/> {{ 'SEARCH.NO_RESULTS.SEARCH_TIPS.TIP_FOUR_DESCRIPTION' | translate }}
           </li>
           <li>
-            Word Order<br/> To search for an exact phrase, just put quotation marks around two or more words. For example,
-            search on "Boston College".
+            {{ 'SEARCH.NO_RESULTS.SEARCH_TIPS.TIP_FIVE_LABEL' | translate }}<br/> {{ 'SEARCH.NO_RESULTS.SEARCH_TIPS.TIP_FIVE_DESCRIPTION' | translate }}
           </li>
         </ul>
       </md-card-content>
