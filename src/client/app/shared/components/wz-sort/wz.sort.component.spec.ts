@@ -9,7 +9,9 @@ export function main() {
     });
 
     it('has no tests!', () => {
-      expect(true).toBe(true);
+      spyOn(componentUnderTest.sort, 'emit');
+      componentUnderTest.applySort('newSortDef');
+      expect(componentUnderTest.sort.emit).toHaveBeenCalledWith('newSortDef');
     });
   });
 };

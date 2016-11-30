@@ -71,6 +71,13 @@ export function main() {
         componentUnderTest.onSubmit({ 'user': 'ross' });
         expect(componentUnderTest.termsDialog.show).toHaveBeenCalled();
       });
+
+      it('initialize pendo if the site is commerce', () => {
+        (<any>window).portal = 'commerce';
+        componentUnderTest.onSubmit({ 'user': 'james' });
+        expect(mockPendo.initialize).toHaveBeenCalledWith({ firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 });
+        (<any>window).portal = 'core';
+      });
     });
 
     describe('ngOnDestroy()', () => {
