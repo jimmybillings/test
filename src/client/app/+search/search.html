@@ -14,6 +14,7 @@
 		<header flex-gt-lg="95" flex="100">
 			<div layout="row"  layout-align="space-between end">
 				<h2  *ngIf="!assets.items" flex="100" class="md-display-1 alert"> {{ 'SEARCH.NO_RESULTS.PG_HEADING' | translate }}</h2>
+				<h2  *ngIf="assets.items" flex="100" class="md-display-1">Results</h2>
 				<div *ngIf="assets.items" class="asset-sort-by tools" flex="auto">
 					<button md-button class="is-dd" color="primary" [md-menu-trigger-for]="assetSortMenu">
 						<md-icon>sort</md-icon>
