@@ -12,11 +12,14 @@
 
 	<section class="search-header" layout="row" layout-align="center center">
 		<header flex-gt-lg="95" flex="100">
-			<div class="asset-sort-by" layout="row" layout-align="end center" layout-padding>
-				<button md-button class="is-dd" color="primary" [md-menu-trigger-for]="assetSortMenu">
-          <md-icon>sort</md-icon>
-            <span class="key">{{'SEARCH.SORT_BTN_LABEL' | translate }}</span><span class="value">{{ sortOptions.currentSort.name }}</span>
-        </button>
+			<div layout="row"  layout-align="space-between end">
+				<h2  *ngIf="!assets.items" flex="100" class="md-display-1 alert"> {{ 'SEARCH.NO_RESULTS.PG_HEADING' | translate }}</h2>
+				<div *ngIf="assets.items" class="asset-sort-by tools" flex="auto">
+					<button md-button class="is-dd" color="primary" [md-menu-trigger-for]="assetSortMenu">
+						<md-icon>sort</md-icon>
+							<span class="key">{{'SEARCH.SORT_BTN_LABEL' | translate }}</span><span class="value">{{ sortOptions.currentSort.name }}</span>
+					</button>
+				</div>
 			</div>
 		</header>
 	</section>
@@ -25,18 +28,13 @@
 		<div layout="row" md-scroll-y="" layout-align="center start">
 			<div flex-gt-lg="95" flex="100" *ngIf="config.viewType.value == 'grid'" layout-padding>
 				<breadcrumb-component layout="row" layout-wrap layout-align="start start" class="root" [filters]="filter.data | async" [loading]="(uiState.data | async).loading"></breadcrumb-component>
-				<div layout="row" flex layout-align="end center">
-					<wz-pagination *ngIf="assets.pagination.totalCount > 0" [pagination]="assets.pagination" (getPage)="changePage($event)" flex
-						layout-align="end stretch"></wz-pagination>
-				</div>
+				<wz-pagination *ngIf="assets.pagination.totalCount > 0" [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
 				<no-results *ngIf="!assets.items"></no-results>
 				<wz-asset-list [assets]="assets.items" [userCan]="userCan" [currentUser]="currentUser" [collection]="activeCollection.data | async"
 					(onAddToCollection)="addToCollection($event)" (onRemoveFromCollection)="removeFromCollection($event)" (onShowNewCollection)="showNewCollection($event)"
 					(addToCart)="addAssetToCart($event)" (onDownloadComp)="downloadComp($event)" class="{{config.viewType.value}}">
 				</wz-asset-list>
-
-				<wz-pagination *ngIf="assets.pagination.totalCount > 0" [pagination]="assets.pagination" (getPage)="changePage($event)" flex
-					layout-align="end stretch"></wz-pagination>
+				<wz-pagination *ngIf="assets.pagination.totalCount > 0" [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
 			</div>
 		</div>
 	</section>
