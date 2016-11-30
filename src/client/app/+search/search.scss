@@ -6,7 +6,27 @@ search-component md-sidenav-layout {
   background-color: transparent;
 }
 search-component .search-header {
+  color: md-color($primary, default);
+  padding-left: rem(.8);
+  padding-right: rem(.8);
   box-shadow: inset 0 -1px 0 0 md-color($md-foreground, divider), 0 1px 0 0 rgba(md-color($md-background, card), .6);
+  header {
+    padding-top: rem(1.6);
+    padding-bottom: rem(.6);
+    position: relative;
+    .md-display-1 {
+      margin: 0;
+      width: calc(100% - 120px);
+      font-size: rem(2.6);
+      &.alert {
+        color: md-color($warn, darker);
+      }
+    }
+  } 
+  .tools {
+    text-align: right;
+    white-space: nowrap;
+  }
 }
 .asset-sort-by button {
   .key {
@@ -40,11 +60,6 @@ md-slide-toggle.count-toggle {
 }
 
 no-results > div {
-  h1.md-headline.alert {
-    margin-top: 0;
-    margin-bottom: rem(.7);
-    color: md-color($warn, darker);
-  }
   h2.md-display-1 {
     // margin-top: 0;
     margin-bottom: rem(0.8);
