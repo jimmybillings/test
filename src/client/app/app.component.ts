@@ -117,11 +117,11 @@ export class AppComponent implements OnInit {
   }
 
   private processLoggedOutUser() {
+    this.userPreference.reset();
     this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });
     this.collections.destroyAll();
     this.uiState.reset();
-    this.userPreference.reset();
   }
 }
