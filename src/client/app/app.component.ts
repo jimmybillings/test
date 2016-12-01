@@ -105,19 +105,19 @@ export class AppComponent implements OnInit {
   }
 
   private processLoggedInUser() {
-    this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
+    this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });
-    this.userPreference.getPrefs();
     if (this.userCan.viewCollections()) {
       this.activeCollection.load().subscribe();
       this.collections.load().subscribe();
     }
     this.cartSummary.loadCartSummary();
+    this.userPreference.getPrefs();
   }
 
   private processLoggedOutUser() {
-    this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
+    this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });
     this.collections.destroyAll();

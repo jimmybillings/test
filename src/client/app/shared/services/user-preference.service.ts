@@ -81,7 +81,7 @@ export class UserPreferenceService {
     this.updateStore();
   }
 
-  public formatResponse(preferences: any): any {
+  private formatResponse(preferences: any): any {
     for (let prefKey in preferences) {
       let newValue: any = this.stringToBool(preferences[prefKey]);
       preferences[prefKey] = newValue;
@@ -108,11 +108,11 @@ export class UserPreferenceService {
     this.store.dispatch({ type: 'USER_PREFS.UPDATE_PREFERENCES', payload: data });
   }
 
-  private formatBody(prefs: any): any {
-    for (let pref in prefs) {
+  private formatBody(preferences: any): any {
+    for (let preference in preferences) {
       return {
-        key: pref,
-        value: prefs[pref]
+        key: preference,
+        value: preferences[preference]
       };
     };
   }
