@@ -9,7 +9,7 @@ const defaultPreferences: any = {
   displayFilterCounts: false,
   collectionTrayIsOpen: false,
   searchIsOpen: true,
-  searchSortOptionId: 0,
+  sortId: 0,
   displayFilterTree: false
 };
 
@@ -41,6 +41,7 @@ export class UserPreferenceService {
 
   public getPrefs(): void {
     this.get().take(1).subscribe(response => {
+      if (!response['prefs']) this.updateStore();
       this.set(response['prefs']);
     });
   }
@@ -62,7 +63,7 @@ export class UserPreferenceService {
   }
 
   public updateSortPreference(sortId: number): void {
-    this.update({ searchSortOptionId: sortId });
+    this.update({ sortId: sortId });
   }
 
   public toggleFilterCount(): void {

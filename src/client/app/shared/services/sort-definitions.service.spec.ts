@@ -9,7 +9,7 @@ export function main() {
       // TODO: This is a minimal mock that exists solely to stop
       // the constructor from failing.  Enhance as needed.
       mockStore = { select: () => { return {}; } };
-      mockUserPreference = { state: { searchSortOptionId: 1 } };
+      mockUserPreference = { state: { sortId: 1 } };
 
       serviceUnderTest = new SortDefinitionsService(null, mockStore, mockUserPreference);
     });

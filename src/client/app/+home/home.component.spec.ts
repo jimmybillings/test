@@ -8,7 +8,7 @@ export function main() {
     let mockUiConfig: any, mockSearchContext: any, mockUserPreference: any, mockFilter: any;
     mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ 'config': { 'pageSize': { 'value': '100' }, 'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }] } } })) };
     mockSearchContext = { new: jasmine.createSpy('new') };
-    mockUserPreference = { state: { searchSortOptionId: 0 } };
+    mockUserPreference = { state: { sortId: 0 } };
     mockFilter = { set: jasmine.createSpy('set'), clear: jasmine.createSpy('clear') };
 
     beforeEach(() => {

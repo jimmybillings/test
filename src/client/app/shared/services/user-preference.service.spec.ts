@@ -14,7 +14,7 @@ export function main() {
       loggedIn: () => false
     };
 
-    let data: any = { displayFilterCounts: false, collectionTrayIsOpen: false, searchIsOpen: true, searchSortOptionId: 0 };
+    let data: any = { displayFilterCounts: false, collectionTrayIsOpen: false, searchIsOpen: true, sortId: 0 };
 
     mockStore = {
       dispatch: (_: any) => Object.assign(data, _.payload),
@@ -30,7 +30,7 @@ export function main() {
     });
 
     it('Should have a state() getter method that returns the state of the store', () => {
-      expect(serviceUnderTest.state).toEqual({ displayFilterCounts: false, collectionTrayIsOpen: false, searchIsOpen: true, searchSortOptionId: 0, displayFilterTree: false });
+      expect(serviceUnderTest.state).toEqual({ displayFilterCounts: false, collectionTrayIsOpen: false, searchIsOpen: true, sortId: 0, displayFilterTree: false });
     });
 
     it('should have a getPrefs() method that calls the api', () => {
@@ -69,9 +69,9 @@ export function main() {
     });
 
     it('Should have an updateSortPreference() method that takes a sortId and sets it in the store', () => {
-      expect(serviceUnderTest.state.searchSortOptionId).toEqual(0);
+      expect(serviceUnderTest.state.sortId).toEqual(0);
       serviceUnderTest.updateSortPreference(16);
-      expect(serviceUnderTest.state.searchSortOptionId).toEqual(16);
+      expect(serviceUnderTest.state.sortId).toEqual(16);
     });
 
     it('should have a toggleFilterCount() method that updates the displayFilterCounts property in the store', () => {
@@ -97,13 +97,13 @@ export function main() {
     });
 
     it('Should have an reset method that reset the store to default values', () => {
-      expect(serviceUnderTest.state).toEqual({ displayFilterCounts: false, collectionTrayIsOpen: false, searchIsOpen: true, searchSortOptionId: 0, displayFilterTree: false });
+      expect(serviceUnderTest.state).toEqual({ displayFilterCounts: false, collectionTrayIsOpen: false, searchIsOpen: true, sortId: 0, displayFilterTree: false });
       serviceUnderTest.toggleCollectionTray();
       serviceUnderTest.toggleSearch();
       serviceUnderTest.updateSortPreference(100);
-      expect(serviceUnderTest.state).toEqual({ displayFilterCounts: false, collectionTrayIsOpen: true, searchIsOpen: false, searchSortOptionId: 100, displayFilterTree: false });
+      expect(serviceUnderTest.state).toEqual({ displayFilterCounts: false, collectionTrayIsOpen: true, searchIsOpen: false, sortId: 100, displayFilterTree: false });
       serviceUnderTest.reset();
-      expect(serviceUnderTest.state).toEqual({ displayFilterCounts: false, collectionTrayIsOpen: false, searchIsOpen: true, searchSortOptionId: 0, displayFilterTree: false });
+      expect(serviceUnderTest.state).toEqual({ displayFilterCounts: false, collectionTrayIsOpen: false, searchIsOpen: true, sortId: 0, displayFilterTree: false });
     });
   });
 }

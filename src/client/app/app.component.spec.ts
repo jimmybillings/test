@@ -43,7 +43,7 @@ export function main() {
       };
       mockUserPreference = {
         state: {
-          searchSortOptionId: 23,
+          sortId: 23,
           displayFilterCounts: true
         },
         reset: jasmine.createSpy('reset'),

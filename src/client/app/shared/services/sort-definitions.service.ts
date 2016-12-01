@@ -42,7 +42,7 @@ export class SortDefinitionsService {
   private findStickySort(sorts: Array<any>): any {
     for (let group of sorts) {
       for (let definition in group) {
-        if (group[definition].id === parseInt(this.userPreference.state.searchSortOptionId)) {
+        if (group[definition].id === parseInt(this.userPreference.state.sortId)) {
           return group[definition];
         };
       };

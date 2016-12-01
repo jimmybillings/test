@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public newSearchContext(query: any): void {
-    let searchContext: any = { q: query, i: 1, n: this.config.pageSize.value, sortId: this.userPreference.state.searchSortOptionId };
+    let searchContext: any = { q: query, i: 1, n: this.config.pageSize.value, sortId: this.userPreference.state.sortId };
     this.filter.set(this.filter.clear());
     this.searchContext.new(searchContext);
   }

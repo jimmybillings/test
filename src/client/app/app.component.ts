@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
   }
 
   public newSearchContext(query: any) {
-    let searchConext: any = { q: query, i: 1, n: 100, sortId: this.userPreference.state.searchSortOptionId };
+    let searchConext: any = { q: query, i: 1, n: 100, sortId: this.userPreference.state.sortId };
     this.filter.get(searchConext, this.userPreference.state.displayFilterCounts).subscribe();
     this.searchContext.new(searchConext);
   }
@@ -105,23 +105,23 @@ export class AppComponent implements OnInit {
   }
 
   private processLoggedInUser() {
-    this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
-      this.userPreference.updateSortPreference(data.currentSort.id);
-    });
+    this.userPreference.getPrefs();
     if (this.userCan.viewCollections()) {
       this.activeCollection.load().subscribe();
       this.collections.load().subscribe();
     }
     this.cartSummary.loadCartSummary();
-    this.userPreference.getPrefs();
+    this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
+      this.userPreference.updateSortPreference(data.currentSort.id);
+    });
   }
 
   private processLoggedOutUser() {
     this.userPreference.reset();
+    this.collections.destroyAll();
+    this.uiState.reset();
     this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });
-    this.collections.destroyAll();
-    this.uiState.reset();
   }
 }
