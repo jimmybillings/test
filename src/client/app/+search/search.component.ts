@@ -51,18 +51,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     public userPreferences: UserPreferenceService,
     public notification: WzNotificationService,
     public uiState: UiState,
-    public sortDefinitions: SortDefinitionsService,
+    public sortDefinition: SortDefinitionsService,
     public cartSummary: CartSummaryService) { }
 
   ngOnInit(): void {
-    this.sortDefinitions.getSortOptions().take(1).subscribe(data => {
-      let stickySort: any = this.findStickySort(data.list) || data.list[0].first;
-      this.sortDefinitions.update({ sorts: data.list, currentSort: stickySort });
-    });
     this.preferencesSubscription = this.userPreferences.data.subscribe((data: any) => {
       this.preferences = data;
     });
-    this.sortSubscription = this.sortDefinitions.data.subscribe((data: any) => this.sortOptions = data);
+    this.sortSubscription = this.sortDefinition.data.subscribe((data: any) => this.sortOptions = data);
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
     this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe();
@@ -163,22 +159,12 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public onSortResults(sortDefinition: any): void {
     this.userPreferences.updateSortPreference(sortDefinition.id);
-    this.sortDefinitions.update({ currentSort: sortDefinition });
+    this.sortDefinition.update({ currentSort: sortDefinition });
     this.searchContext.update = { 'i': 1, 'sortId': sortDefinition.id };
     this.searchContext.go();
   }
 
   public addAssetToCart(asset: any): void {
     this.cartSummary.addAssetToProjectInCart(asset);
-  }
-
-  private findStickySort(sorts: Array<any>): any {
-    for (let group of sorts) {
-      for (let definition in group) {
-        if (group[definition].id === parseInt(this.userPreferences.state.searchSortOptionId)) {
-          return group[definition];
-        };
-      };
-    };
   }
 }

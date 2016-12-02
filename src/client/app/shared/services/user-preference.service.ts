@@ -9,7 +9,7 @@ const defaultPreferences: any = {
   displayFilterCounts: false,
   collectionTrayIsOpen: false,
   searchIsOpen: true,
-  searchSortOptionId: 12,
+  sortId: 0,
   displayFilterTree: false
 };
 
@@ -41,6 +41,7 @@ export class UserPreferenceService {
 
   public getPrefs(): void {
     this.get().take(1).subscribe(response => {
+      if (!response['prefs']) this.updateStore();
       this.set(response['prefs']);
     });
   }
@@ -62,7 +63,7 @@ export class UserPreferenceService {
   }
 
   public updateSortPreference(sortId: number): void {
-    this.update({ searchSortOptionId: sortId });
+    this.update({ sortId: sortId });
   }
 
   public toggleFilterCount(): void {
@@ -81,7 +82,7 @@ export class UserPreferenceService {
     this.updateStore();
   }
 
-  public formatResponse(preferences: any): any {
+  private formatResponse(preferences: any): any {
     for (let prefKey in preferences) {
       let newValue: any = this.stringToBool(preferences[prefKey]);
       preferences[prefKey] = newValue;
@@ -108,11 +109,11 @@ export class UserPreferenceService {
     this.store.dispatch({ type: 'USER_PREFS.UPDATE_PREFERENCES', payload: data });
   }
 
-  private formatBody(prefs: any): any {
-    for (let pref in prefs) {
+  private formatBody(preferences: any): any {
+    for (let preference in preferences) {
       return {
-        key: pref,
-        value: prefs[pref]
+        key: preference,
+        value: preferences[preference]
       };
     };
   }

@@ -4,7 +4,7 @@
     <input md-input="" type="text" placeholder="{{ 'HOME.SEARCH_BOX_LABEL' | translate }}" formControlName="query"/>
     <button type="submit" tabindex="-1">Search<md-icon>search</md-icon></button>
   </form>
-  <ul tabindex="1" class="auto-complete">
+  <ul tabindex="1" class="auto-complete" [ngClass]="{'empty': !(searchTerms | async)}">
     <li *ngFor="let term of searchTerms | async">
       <button type="button" (click)="onSubmit(term.term, true)">{{term.term}} <span>{{term.count}}</span></button>
     </li>

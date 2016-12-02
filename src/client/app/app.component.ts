@@ -9,7 +9,7 @@ import { UiConfig } from './shared/services/ui.config';
 import { SearchContext } from './shared/services/search-context.service';
 import { Authentication } from './shared/services/authentication.data.service';
 import { FilterService } from './shared/services/filter.service';
-
+import { SortDefinitionsService } from './shared/services/sort-definitions.service';
 import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
 import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
@@ -55,7 +55,8 @@ export class AppComponent implements OnInit {
     private cartSummary: CartSummaryService,
     private error: ErrorActions,
     private window: Window,
-    private filter: FilterService) { }
+    private filter: FilterService,
+    private sortDefinition: SortDefinitionsService) { }
 
   ngOnInit() {
     this.apiConfig.setPortal(portal);
@@ -77,9 +78,9 @@ export class AppComponent implements OnInit {
   }
 
   public newSearchContext(query: any) {
-    let fullQuery: any = { q: query, i: 1, n: 100, sortId: this.userPreference.state.searchSortOptionId };
-    this.filter.get(fullQuery, this.userPreference.state.displayFilterCounts).subscribe();
-    this.searchContext.new(fullQuery);
+    let searchConext: any = { q: query, i: 1, n: 100, sortId: this.userPreference.state.sortId };
+    this.filter.get(searchConext, this.userPreference.state.displayFilterCounts).subscribe();
+    this.searchContext.new(searchConext);
   }
 
   public toggleFilterTreePreference(): void {
@@ -110,11 +111,17 @@ export class AppComponent implements OnInit {
       this.collections.load().subscribe();
     }
     this.cartSummary.loadCartSummary();
+    this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
+      this.userPreference.updateSortPreference(data.currentSort.id);
+    });
   }
 
   private processLoggedOutUser() {
+    this.userPreference.reset();
     this.collections.destroyAll();
     this.uiState.reset();
-    this.userPreference.reset();
+    this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
+      this.userPreference.updateSortPreference(data.currentSort.id);
+    });
   }
 }
