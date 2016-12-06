@@ -1,5 +1,13 @@
-import { Component, Input, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+
 import { SearchComponent } from './search.component';
+import { DateRangeKey, DateRange } from '../shared/utilities/dateRange';
+
+interface DateRangeElement {
+  name: DateRangeKey;
+  value: string;
+  event: string;
+};
 
 @Component({
   moduleId: module.id,
@@ -11,13 +19,10 @@ import { SearchComponent } from './search.component';
 export class FilterComponent {
   @Input() filters: any;
   @Input() counted: boolean;
-  public searchComponent: SearchComponent;
-  public dateRange: any;
+  public dateRange: DateRange;
 
-  constructor(
-    @Inject(forwardRef(() => SearchComponent)) searchComponent: SearchComponent) {
-    this.searchComponent = searchComponent;
-    this.dateRange = {};
+  constructor(private searchComponent: SearchComponent) {
+    this.dateRange = new DateRange();
   }
 
   public filterShouldBeShowing(filter: any): boolean {
@@ -77,24 +82,20 @@ export class FilterComponent {
     }
   }
 
-  public dateRangeSelect(event: any, filter: any) {
-    event.target.event = this.serverDate(event.target.value);
-    this.dateRange[event.target.name] = event.target.event;
-    if (Object.keys(this.dateRange).filter((date) => this.dateRange[date]).length === 2) {
-      this.searchComponent.applyCustomValue(filter, this.serverDate(this.dateRange.start) + ' - ' + this.serverDate(this.dateRange.end));
-    }
+  public dateRangeSelect(event: any, filter: any): void {
+    const element: DateRangeElement = event.target;
+
+    this.dateRange.set(element.name, element.value);
+    element.event = this.dateRange.get(element.name);
+
+    this.searchComponent.applyCustomValue(filter, this.dateRange.toString());
   }
 
-  public defaultDate(filter: any, state: any) {
-    switch (state) {
-      case 'start':
-        return this.dateRange[state] = (filter.filterValue) ? this.serverDate(filter.filterValue.split(' - ')[0]) : this.dateRange[state] || null;
-      case 'end':
-        return this.dateRange[state] = (filter.filterValue) ? this.serverDate(filter.filterValue.split(' - ')[1]) : this.dateRange[state] || null;
+  public defaultDate(filter: any, key: DateRangeKey): string {
+    if (filter && filter.filterValue) {
+      this.dateRange.set(key, filter.filterValue);
     }
-  }
 
-  public serverDate(date: any) {
-    return new Date(date).toJSON().slice(0, 10);
+    return this.dateRange.get(key);
   }
 }
