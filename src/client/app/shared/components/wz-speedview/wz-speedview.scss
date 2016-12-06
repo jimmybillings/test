@@ -1,0 +1,31 @@
+div.wz-speedview {
+  position: fixed;
+  z-index: 1000;
+  width: rem(56);
+  height: rem(38);
+  padding: rem(1);
+  @include md-elevation(2);
+  background-color: md-color($background, card);
+  div.info {
+    color: rgba(0, 0, 0, 0.7);
+    max-height: rem(6);
+    width: 100%;
+    div.metadata {
+      ul {
+        list-style: none;
+        padding-left: 0;
+        li {
+          margin: rem(.5) 0;
+        }
+      }
+      font-size: 0.85rem;
+    }
+    div.price {
+      text-align: right;
+      font-size: 1.25rem;
+      p {
+        margin: rem(1) 0;
+      }
+    }
+  }
+}

@@ -32,6 +32,10 @@ import { CollectionLinkComponent } from '../+collection/components/collection-li
 import { EqualValidatorDirective } from './components/wz-form/wz-validators/wz-equal-validator.directive';
 import { WzTranscodeSelectComponent } from './components/wz-transcode-select/wz.transcode-select.component';
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
+import { WzSpeedviewComponent, WzSpeedviewPortalDirective } from './components/wz-speedview/wz-speedview.component';
+
+// Shared Directives
+import { WzHoverIntentDirective } from './directives/wz-hover-intent.directive';
 
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
@@ -82,7 +86,10 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     EqualValidatorDirective,
     WzTranscodeSelectComponent,
     WzClipBoardDirective,
-    WzTermsComponent
+    WzTermsComponent,
+    WzSpeedviewComponent,
+    WzHoverIntentDirective,
+    WzSpeedviewPortalDirective
   ],
   exports: [
     WzSearchBoxComponent,
@@ -119,7 +126,11 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     EqualValidatorDirective,
     WzTranscodeSelectComponent,
     WzClipBoardDirective,
-    WzTermsComponent],
+    WzTermsComponent,
+    WzSpeedviewComponent,
+    WzHoverIntentDirective,
+    WzSpeedviewPortalDirective
+  ],
   entryComponents: [WzNotificationComponent]
 })
 

@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChan
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { CurrentUser } from '../../../shared/services/current-user.model';
 import { MdMenuTrigger } from '@angular/material';
+import { WzSpeedviewComponent } from '../../../shared/components/wz-speedview/wz-speedview.component';
 /**
  * Directive that renders a list of assets
  */
@@ -23,6 +24,7 @@ export class WzAssetListComponent implements OnChanges {
   @Output() onDownloadComp = new EventEmitter();
   @Output() onShowNewCollection = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
+  @ViewChild(WzSpeedviewComponent) wzSpeedview: WzSpeedviewComponent;
   private assetsArr: Array<number>;
   private assetId: any;
   private hasComp: any;
@@ -65,6 +67,14 @@ export class WzAssetListComponent implements OnChanges {
 
   public alreadyInCollection(asset: any): boolean {
     return this.assetsArr.indexOf(asset.assetId) > -1;
+  }
+
+  public showPreview(position: any): void {
+    this.wzSpeedview.show(position);
+  }
+
+  public hidePreview(): void {
+    this.wzSpeedview.destroy();
   }
 
   public formatType(format: any): string {

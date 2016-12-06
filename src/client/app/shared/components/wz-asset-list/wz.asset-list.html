@@ -2,8 +2,8 @@
 
 
 <ul class="asset-list" *ngIf="assets">
-  <li *ngFor="let asset of assets">
-    <div class="asset">
+  <li *ngFor="let asset of assets" (hover)="activeAsset = asset">
+    <div class="asset" hoverIntent (showPreview)="showPreview($event)" (hidePreview)="hidePreview()">
       <div class="asset-name">{{asset.name}}</div>
       <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb">
         <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
@@ -87,3 +87,24 @@
     <div flex-xs="100" md-elevation-z2>{{ 'ASSET.ADD_TO_CART_TOAST' | translate:{assetId:assetId} }}</div>
   </div>
 </wz-toast>
+
+<wz-speedview #wzSpeedview>
+  <div layout="column" layout-align="center center" class="wz-speedview">
+    <wz-player flex="95" class="responsive-video"></wz-player>
+    <div flex="95" class="info">
+      <div layout="row">
+        <div flex="70" class="metadata">
+          <ul>
+            <li><strong>Event Date:</strong>2014-11-12</li>
+            <li><strong>Broadcast Standard:</strong>1080i</li>
+            <li><strong>Frame Size:</strong>1920 x 1080</li>
+          </ul>
+        </div>
+        <div flex="30" class="price">
+          <p>Royalty Free</p>
+          <p>$59.00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</wz-speedview>
