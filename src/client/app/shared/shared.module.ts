@@ -33,6 +33,9 @@ import { EqualValidatorDirective } from './components/wz-form/wz-validators/wz-e
 import { WzTranscodeSelectComponent } from './components/wz-transcode-select/wz.transcode-select.component';
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 
+// Shared pipes
+  import { ValuesPipe } from './pipes/values.pipe';
+
 // Shared resolvers
 import { AssetResolver } from '../+asset/services/asset.resolver';
 import { SearchResolver } from '../+search/services/search.resolver';
@@ -66,6 +69,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
     WzItemSearchFormComponent,
+    ValuesPipe,
     WzDialogPortalDirective,
     WzDropdownPortalDirective,
     WzToastPortalDirective,
@@ -95,6 +99,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
     WzItemSearchFormComponent,
+    ValuesPipe,
     WzDialogPortalDirective,
     WzDropdownPortalDirective,
     WzToastPortalDirective,
