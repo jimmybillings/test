@@ -175,9 +175,9 @@ section.preview-bk {
           margin-bottom: rem(1.0);
           text-transform: uppercase;
           &.md-primary.md-hue-7 {
-            background-color: scale-color(md-color($primary, default), $lightness: -15%, $alpha: -50%);
+            background-color: scale-color(md-color($primary, default), $lightness: -10%, $alpha: -35%);
             &:hover {
-              background-color: scale-color(md-color($primary, default), $lightness: 0%, $alpha: -40%);
+              background-color: scale-color(md-color($primary, default), $lightness: 0%, $alpha: -25%);
             }
           }
           &.is-outlined {
