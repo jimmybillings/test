@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, Inject, forwardRef, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { SearchComponent } from '../../../+search/search.component';
+import { DateRange } from '../../utilities/dateRange';
 
 @Component({
   moduleId: module.id,
@@ -35,6 +36,17 @@ export class WzBreadcrumbComponent implements OnChanges {
 
   public clearFilters() {
     this.searchComponent.clearFilters();
+  }
+
+  public formattedValueFor(filter: any): string {
+    if (filter.type === 'DateRange') {
+      const dateRange: DateRange = new DateRange();
+      dateRange.set('start', filter.filterValue);
+      dateRange.set('end', filter.filterValue);
+      return dateRange.toHumanString();
+    }
+
+    return filter.filterValue;
   }
 
   private getFilters(filter: any) {

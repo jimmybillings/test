@@ -52,6 +52,22 @@ export class DateRange {
     return `${start}${this.delimiter}${end}`;
   }
 
+  public toHumanString(): string {
+    if (this.start && this.end) {
+      return this.toString();
+    }
+
+    if (!this.start && !this.end) {
+      return 'Any date';
+    }
+
+    if (!this.start) {
+      return `On or before ${this.format(this.end)}`;
+    }
+
+    return `On or after ${this.format(this.start)}`;
+  }
+
   private format(date: any): string {
     return new Date(date).toJSON().slice(0, 10);
   }

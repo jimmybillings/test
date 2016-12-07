@@ -112,5 +112,30 @@ export function main() {
         expect(rangeUnderTest.toString()).toEqual('1000-01-01 - 3000-01-01');
       });
     });
+
+    describe('toHumanString()', () => {
+      it('returns the right string when start and end are set', () => {
+        rangeUnderTest.start = '2007-05-22';
+        rangeUnderTest.end = '2007-05-22';
+
+        expect(rangeUnderTest.toHumanString()).toEqual('2007-05-22 - 2007-05-22');
+      });
+
+      it('returns the right string when only start is set', () => {
+        rangeUnderTest.start = '2009-04-23';
+
+        expect(rangeUnderTest.toHumanString()).toEqual('On or after 2009-04-23');
+      });
+
+      it('returns the right string when only end is set', () => {
+        rangeUnderTest.end = '1998-09-27';
+
+        expect(rangeUnderTest.toHumanString()).toEqual('On or before 1998-09-27');
+      });
+
+      it('returns the right string when neither start nor end is set', () => {
+        expect(rangeUnderTest.toHumanString()).toEqual('Any date');
+      });
+    });
   });
 }
