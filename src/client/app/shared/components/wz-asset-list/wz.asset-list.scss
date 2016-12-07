@@ -225,6 +225,28 @@ wz-asset-list {
           position: relative;
         }
       }
+      &.mdata-4 {
+        position: absolute;
+        height: 30px;
+        width: 40px;
+        top: 3px;
+        right: 3px;
+        z-index: 1;
+        .image {
+          color: transparent;
+          top: 0;
+          right: 0;
+          &::before {
+            content: "\e412";
+            font-family: 'Material Icons';
+            color: rgba(md-color($md-grey, 100),0.4);
+            position: absolute;
+            top: rem(.3);
+            right: rem(-.2);
+            font-size: 1.86em;
+          }
+        }
+      }
     }
     &:hover .asset-name, &:active .asset-name {
       opacity: .7;

@@ -52,12 +52,13 @@
     </div>
     </div>
     <div class="input-container">
-      <input wzPikaday name="start" type="text" placeholder="Start" value="{{defaultDate(filter, 'start')}}" (change)="dateRangeSelect($event, filter)"
-      />
+      <input wzPikaday name="start" type="text" readonly="true" placeholder="Beginning of time" value="{{defaultDate(filter, 'start')}}"
+        (change)="dateRangeSelect($event, filter)" />
     </div>
+    <span class="connector">through</span>
     <div class="input-container">
-      <input wzPikaday name="end" type="text" placeholder="End" value="{{defaultDate(filter, 'end')}}" (change)="dateRangeSelect($event, filter)"
-      />
+      <input wzPikaday name="end" type="text" readonly="true" placeholder="End of time" value="{{defaultDate(filter, 'end')}}"
+        (change)="dateRangeSelect($event, filter)" />
     </div>
     </span>
 
@@ -82,8 +83,8 @@
           <span class="filter-count" *ngIf="counted && filter.count > -1">
             ({{filter.count | number}})
           </span>
-      </md-checkbox>
-      <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
+    </md-checkbox>
+    <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
     </span>
 
     </div>

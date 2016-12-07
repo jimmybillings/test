@@ -26,9 +26,15 @@ search-component .search-header {
   .tools {
     text-align: right;
     white-space: nowrap;
+    button.is-dd.md-icon-button.md-primary {
+      .md-button-wrapper::after {
+        color: md-color($md-primary, default);
+      }
+    }
   }
 }
 .asset-sort-by button {
+  text-transform: inherit;
   .key {
     font-weight: 500;
   }
@@ -48,11 +54,23 @@ search-component .search-header {
   &[md-button]:hover.md-primary::after, [md-icon-button]:hover.md-primary::after {
     background-color: rgba(md-color($md-primary, default), .12);
   }
+  &.md-primary[md-button].settings {
+    padding: 0 rem(1.2) 0 rem(1.0);
+    min-height: rem(3.8);
+    max-height: rem(3.8);
+    &.is-dd.md-icon-button .md-button-wrapper::after {
+      top: 0;
+      right: rem(-.2);
+    }
+ } 
 }
+
 search-component .search-breadcrumbs {
-  padding-left: rem(.8);
+  // padding-left: rem(.8);
   padding-right: rem(.8);
-  // background-color: rgba(md-color($md-background, background), .2);
+  // testing
+  padding-top: rem(1.0);
+  margin-bottom: rem(-.3);
   header {
     padding-top: rem(0.6);
     padding-bottom: rem(0.2);
