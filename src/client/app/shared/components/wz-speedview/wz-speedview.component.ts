@@ -6,8 +6,6 @@ import {
   TemplateRef,
   ViewEncapsulation,
   Input,
-  Output,
-  EventEmitter,
   ViewChild,
   Renderer
 } from '@angular/core';
@@ -30,10 +28,8 @@ export class WzSpeedviewPortalDirective extends TemplatePortalDirective {
 export class WzSpeedviewComponent implements OnDestroy {
   public offsetX: number;
   public offsetY: number;
-  public styles: any;
   public viewRef: any;
   @Input() config = new OverlayState();
-  @Output() onClose = new EventEmitter();
   @ViewChild(WzSpeedviewPortalDirective) private portal: WzSpeedviewPortalDirective;
   private overlayRef: OverlayRef = null;
 
@@ -69,7 +65,6 @@ export class WzSpeedviewComponent implements OnDestroy {
       .then(() => {
         this.overlayRef.dispose();
         this.overlayRef = null;
-        this.onClose.emit();
         return this;
       });
   }

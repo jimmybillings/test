@@ -1,77 +1,73 @@
-import { Directive, ElementRef, Renderer, HostListener, Output, EventEmitter } from '@angular/core';
+import { Directive, HostListener, Output, EventEmitter } from '@angular/core';
+import { Viewport, Coordinates } from '../interfaces/event.interface';
 
-const previewHeight: number = 380; // How tall the speed preview dialog is
-const previewWidth: number = 560; // How wide the speed preivew dialog is
-const padding: number = 10; // how much room we want on each side of the speed preview
+const previewHeight: number = 380;    // How tall the speed preview dialog is
+const previewWidth: number = 560;     // How wide the speed preivew dialog is
+const horizontalPadding: number = 10; // How much room we want on each side of the speed preview
+const verticalPadding: number = 20;   // How much room we want above and below the preview
+const delay: number = 333;            // How long we want to wait before showing the preview
 
 @Directive({ selector: '[hoverIntent]' })
 export class WzHoverIntentDirective {
-  // private cX: number;
-  // private cY: number;
-  // private pX: number;
-  // private pY: number;
   @Output() public showPreview: EventEmitter<any> = new EventEmitter();
   @Output() public hidePreview: EventEmitter<any> = new EventEmitter();
+  private timeout: any;
+  private viewport: Viewport;
 
-  constructor(private el: ElementRef, private renderer: Renderer) { }
-
-  @HostListener('mouseenter', ['$event']) onMouseEnter($event: any) {
-    this.determinePreviewPosition($event);
+  @HostListener('mouseenter', ['$event']) public onMouseEnter($event: any): void {
+    if (window.innerWidth <= previewWidth) return;
+    this.viewport = $event.currentTarget.getBoundingClientRect();
+    this.timeout = setTimeout(() => {
+      this.showPreview.emit(this.previewPosition);
+    }, delay);
   }
 
-  @HostListener('mouseleave', ['$event']) onMouseLeave() {
+  @HostListener('mouseleave', ['$event']) public onMouseLeave(): void {
+    clearTimeout(this.timeout);
     this.hidePreview.emit();
   }
 
-  private determinePreviewPosition(event: any): void {
-    let viewport: any = event.currentTarget.getBoundingClientRect();
-    let x: number = this.determineHorizontalPreviewPlacement(viewport);
-    let y: number = this.determineVerticalPreviewPlacement(viewport);
-    this.showPreview.emit({ x, y });
+  // Determines the x and y coordinate that the preview's top left corner should start at 
+  private get previewPosition(): Coordinates {
+    let x: number = this.determineHorizontalPreviewPlacement;
+    let y: number = this.determineVerticalPreviewPlacement;
+    return { x, y };
   }
 
   // Returns an x coordinate based on the position of the element that was hovered upon
   // if there is no room to the right, it shifts the preview back by its width, and the width of the hovered element
-  private determineHorizontalPreviewPlacement(viewport: any): number {
-    if (this.roomToTheRight(viewport.right)) {
-      return viewport.right - previewWidth - viewport.width;
+  private get determineHorizontalPreviewPlacement(): number {
+    if (this.roomToTheRight) {
+      return this.viewport.right + horizontalPadding;
     } else {
-      return viewport.right;
+      return this.viewport.right - previewWidth - this.viewport.width - horizontalPadding;
     }
   }
 
   // Returns a y coordinate based on the position of the element that was hovered upon
   // if there is not room on the bottom, it shifts the preview up by its height, and half the height of the hovered element
-  private determineVerticalPreviewPlacement(viewport: any): number {
-    if (this.roomBelow(viewport)) {
-      return (viewport.bottom - (viewport.height / 2));
+  private get determineVerticalPreviewPlacement(): number {
+    if (this.roomBelow && this.roomAbove) {
+      return this.viewport.top - (previewHeight / 3);
+    } else if (!this.roomBelow) {
+      return window.innerHeight - previewHeight - verticalPadding;
     } else {
-      return viewport.bottom - (viewport.height / 2) - previewHeight;
+      return 0 + verticalPadding;
     }
   }
 
-  // Returns true if there is room to the right of the hovered element
-  private roomToTheRight(viewportRight: number): boolean {
-    return (window.innerWidth - viewportRight) <= (previewWidth + padding);
+  // Returns true if there is at least 20px to the right of the hovered element
+  private get roomToTheRight(): boolean {
+    return window.innerWidth - this.viewport.right - previewWidth >= horizontalPadding;
   }
 
-  // Returns true if there is room below the hovered element
-  private roomBelow(viewport: any): boolean {
-    return window.innerHeight - (viewport.bottom - (viewport.height / 2)) >= (previewHeight + padding);
+  // Returns true if there is at least 20px above the hovered element 
+  private get roomAbove(): boolean {
+    return 0 + this.viewport.top - (previewHeight / 3) >= verticalPadding;
   }
 
-  // Skip for now to meet AC of CRUX-1252
-  // @HostListener('mousemove', ['$event']) OnMouseMove($event: any) {
-  //   this.determineIntent($event);
-  // }
-
-  // private determineIntent(event: any): void {
-  //   this.cX = event.clientX;
-  //   this.cY = event.clientY;
-  //   if (Math.abs(this.pX - this.cX) + Math.abs(this.pY - this.cY) === 0) {
-  //     console.log('they want a speedview');
-  //   }
-  //   this.pX = this.cX;
-  //   this.pY = this.cY;
-  // }
+  // Returns true if there is at least 20px below the hovered element
+  private get roomBelow(): boolean {
+    return window.innerHeight - (this.viewport.top - (previewHeight / 3) + previewHeight) >= verticalPadding;
+  }
 }
