@@ -68,7 +68,7 @@
 
 
 				<no-results *ngIf="!assets.items"></no-results>
-				<wz-asset-list [assets]="assets.items" [userCan]="userCan" [currentUser]="currentUser" [collection]="activeCollection.data | async"
+				<wz-asset-list [assets]="assets.items" [userCan]="userCan" [currentUser]="currentUser" [collection]="activeCollection.data | async" [assetService]="assetService"
 					(onAddToCollection)="addToCollection($event)" (onRemoveFromCollection)="removeFromCollection($event)" (onShowNewCollection)="showNewCollection($event)"
 					(addToCart)="addAssetToCart($event)" (onDownloadComp)="downloadComp($event)" class="{{config.viewType.value}}">
 				</wz-asset-list>

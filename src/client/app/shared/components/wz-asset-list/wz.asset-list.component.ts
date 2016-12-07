@@ -1,8 +1,9 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, ViewChild } from '@angular/core';
-import { Collection } from '../../../shared/interfaces/collection.interface';
-import { CurrentUser } from '../../../shared/services/current-user.model';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, ViewChild, Renderer } from '@angular/core';
+import { Collection } from '../../interfaces/collection.interface';
+import { CurrentUser } from '../../services/current-user.model';
 import { MdMenuTrigger } from '@angular/material';
-import { WzSpeedviewComponent } from '../../../shared/components/wz-speedview/wz-speedview.component';
+import { WzSpeedviewComponent } from '../wz-speedview/wz-speedview.component';
+import { AssetService } from '../../services/asset.service';
 /**
  * Directive that renders a list of assets
  */
@@ -19,6 +20,7 @@ export class WzAssetListComponent implements OnChanges {
   @Input() public userCan: any;
   @Input() collection: Collection;
   @Input() currentUser: CurrentUser;
+  @Input() assetService: AssetService;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() addToCart = new EventEmitter();
@@ -30,7 +32,7 @@ export class WzAssetListComponent implements OnChanges {
   private assetId: any;
   private hasComp: any;
 
-  constructor() {
+  constructor(private renderer: Renderer) {
     this.assetsArr = [];
   }
 
@@ -72,6 +74,7 @@ export class WzAssetListComponent implements OnChanges {
 
   public showPreview(position: any): void {
     this.wzSpeedview.show(position);
+    this.renderer.listenGlobal('document', 'scroll', () => this.wzSpeedview.destroy());
   }
 
   public hidePreview(): void {
@@ -80,6 +83,14 @@ export class WzAssetListComponent implements OnChanges {
 
   public setActiveAsset(asset: any): void {
     this.activeAsset = asset;
+    this.assetService.getPrice(asset.assetId).take(1).subscribe((data: any) => {
+      this.activeAsset.price = data.price;
+      this.activeAsset.priceBookName = data.priceBookName;
+    });
+  }
+
+  public translationReady(field: any) {
+    return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
   public formatType(format: any): string {

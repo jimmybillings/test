@@ -13,6 +13,7 @@ import { SortDefinitionsService } from '../shared/services/sort-definitions.serv
 import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 import { CartSummaryService } from '../shared/services/cart-summary.service';
+import { AssetService } from '../shared/services/asset.service';
 
 /**
  * Asset search page component - renders search page results
@@ -52,7 +53,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     public notification: WzNotificationService,
     public uiState: UiState,
     public sortDefinition: SortDefinitionsService,
-    public cartSummary: CartSummaryService) { }
+    public cartSummary: CartSummaryService,
+    public assetService: AssetService) { }
 
   ngOnInit(): void {
     this.preferencesSubscription = this.userPreferences.data.subscribe((data: any) => {

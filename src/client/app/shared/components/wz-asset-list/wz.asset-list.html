@@ -2,10 +2,10 @@
 
 
 <ul class="asset-list" *ngIf="assets">
-  <li *ngFor="let asset of assets" (mouseover)="setActiveAsset(asset)">
+  <li *ngFor="let asset of assets">
     <div class="asset">
       <div class="asset-name">{{asset.name}}</div>
-      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb" hoverIntent (showPreview)="showPreview($event)" (hidePreview)="hidePreview()">
+      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb" (mouseover)="setActiveAsset(asset)" hoverIntent (showPreview)="showPreview($event)" (hidePreview)="hidePreview($event)">
         <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
         <span *ngIf="asset.metaData[0]" class="mdata-0">
           <span>{{asset.metaData[0].value}}</span>
@@ -94,9 +94,9 @@
 <wz-speedview #wzSpeedview>
   <div *ngIf="activeAsset" layout="column" layout-align="center center" class="wz-speedview">
     <span *ngIf="activeAsset.smallPreview">
-      <span [ngSwitch]="activeAsset.smallPreview.urls.https.slice(-3)">
-        <video *ngSwitchCase="'fv4'" [src]="activeAsset.smallPreview.urls.https" width="400" height="220" autoplay preload="auto"></video>
-        <div *ngSwitchCase="'jpg'" class="image-bg">
+      <span [ngSwitch]="activeAsset.smallPreview.urls.https.slice(-4)">
+        <video *ngSwitchCase="'.fv4'" [src]="activeAsset.smallPreview.urls.https" width="400" height="220" autoplay preload="auto"></video>
+        <div *ngSwitchCase="'.jpg'" class="image-bg">
           <img class="image-speedview" [src]="activeAsset.thumbnail.urls.https">
         </div>
         <img *ngSwitchDefault class="tbn_missing" [src]="activeAsset.thumbnail.urls.https">
@@ -110,13 +110,13 @@
         <div flex="65" class="metadata">
           <ul>
             <span *ngFor="let meta of activeAsset.metaData">
-              <li *ngIf="meta.name === 'Resource.Class' || meta.name === 'TE.DigitalFormat' || meta.name === 'Format.Duration'"><strong>{{ meta.name }}: </strong>{{ meta.value | slice:0:36 }}</li>
+              <li *ngIf="meta.name === 'Resource.Class' || meta.name === 'TE.DigitalFormat' || meta.name === 'Format.Duration'"><strong>{{ translationReady(meta.name) | uppercase | translate }}: </strong>{{ meta.value | slice:0:36 }}</li>
             </span>
           </ul>
         </div>
         <div flex="35" class="price-info">
-          <p class="clip-rights"><strong>ROYALTY FREE</strong></p>
-          <span>$</span><p class="price">59.00</p>
+          <p class="clip-rights"><strong>{{ activeAsset.priceBookName | uppercase }}</strong></p>
+          <p class="price">{{ activeAsset.price | currency:'USD':true:'1.2-2' }} </p>
         </div>
       </div>
     </div>

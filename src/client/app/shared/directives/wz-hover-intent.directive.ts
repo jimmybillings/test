@@ -56,7 +56,7 @@ export class WzHoverIntentDirective {
     }
   }
 
-  // Returns true if there is at least 20px to the right of the hovered element
+  // Returns true if there is at least 10px to the right of the hovered element
   private get roomToTheRight(): boolean {
     return window.innerWidth - this.viewport.right - previewWidth >= horizontalPadding;
   }
