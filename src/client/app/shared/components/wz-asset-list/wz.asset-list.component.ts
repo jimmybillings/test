@@ -14,6 +14,7 @@ import { WzSpeedviewComponent } from '../../../shared/components/wz-speedview/wz
 })
 
 export class WzAssetListComponent implements OnChanges {
+  public activeAsset: any;
   @Input() public assets: Array<any>;
   @Input() public userCan: any;
   @Input() collection: Collection;
@@ -75,6 +76,10 @@ export class WzAssetListComponent implements OnChanges {
 
   public hidePreview(): void {
     this.wzSpeedview.destroy();
+  }
+
+  public setActiveAsset(asset: any): void {
+    this.activeAsset = asset;
   }
 
   public formatType(format: any): string {

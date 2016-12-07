@@ -2,10 +2,10 @@
 
 
 <ul class="asset-list" *ngIf="assets">
-  <li *ngFor="let asset of assets" (hover)="activeAsset = asset">
-    <div class="asset" hoverIntent (showPreview)="showPreview($event)" (hidePreview)="hidePreview()">
+  <li *ngFor="let asset of assets" (mouseover)="setActiveAsset(asset)">
+    <div class="asset">
       <div class="asset-name">{{asset.name}}</div>
-      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb">
+      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb" hoverIntent (showPreview)="showPreview($event)" (hidePreview)="hidePreview()">
         <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
         <span *ngIf="asset.metaData[0]" class="mdata-0">
           <span>{{asset.metaData[0].value}}</span>
@@ -92,20 +92,31 @@
 </wz-toast>
 
 <wz-speedview #wzSpeedview>
-  <div layout="column" layout-align="center center" class="wz-speedview">
-    <wz-player flex="95" class="responsive-video"></wz-player>
+  <div *ngIf="activeAsset" layout="column" layout-align="center center" class="wz-speedview">
+    <span *ngIf="activeAsset.smallPreview">
+      <span [ngSwitch]="activeAsset.smallPreview.urls.https.slice(-3)">
+        <video *ngSwitchCase="'fv4'" [src]="activeAsset.smallPreview.urls.https" width="400" height="220" autoplay preload="auto"></video>
+        <div *ngSwitchCase="'jpg'" class="image-bg">
+          <img class="image-speedview" [src]="activeAsset.thumbnail.urls.https">
+        </div>
+        <img *ngSwitchDefault class="tbn_missing" [src]="activeAsset.thumbnail.urls.https">
+      </span>
+    </span>
+    <span *ngIf="!activeAsset.smallPreview">
+      <img class="tbn_missing" [src]="activeAsset.thumbnail.urls.https">
+    </span>
     <div flex="95" class="info">
       <div layout="row">
-        <div flex="70" class="metadata">
+        <div flex="65" class="metadata">
           <ul>
-            <li><strong>Event Date:</strong>2014-11-12</li>
-            <li><strong>Broadcast Standard:</strong>1080i</li>
-            <li><strong>Frame Size:</strong>1920 x 1080</li>
+            <span *ngFor="let meta of activeAsset.metaData">
+              <li *ngIf="meta.name === 'Resource.Class' || meta.name === 'TE.DigitalFormat' || meta.name === 'Format.Duration'"><strong>{{ meta.name }}: </strong>{{ meta.value | slice:0:36 }}</li>
+            </span>
           </ul>
         </div>
-        <div flex="30" class="price">
-          <p>Royalty Free</p>
-          <p>$59.00</p>
+        <div flex="35" class="price-info">
+          <p class="clip-rights"><strong>ROYALTY FREE</strong></p>
+          <span>$</span><p class="price">59.00</p>
         </div>
       </div>
     </div>

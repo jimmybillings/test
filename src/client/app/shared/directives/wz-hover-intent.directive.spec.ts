@@ -48,7 +48,7 @@ export function main() {
 
         jasmine.clock().tick(340);
 
-        let y: number = viewport.top - (380 / 3);
+        let y: number = viewport.top - (300 / 3);
         expect(directiveUnderTest.showPreview.emit).toHaveBeenCalledWith({ x: 350, y: y });
       });
 
@@ -59,8 +59,8 @@ export function main() {
 
         jasmine.clock().tick(340);
 
-        let y: number = viewport.top - (380 / 3);
-        expect(directiveUnderTest.showPreview.emit).toHaveBeenCalledWith({ x: 430, y: y });
+        let y: number = viewport.top - (300 / 3);
+        expect(directiveUnderTest.showPreview.emit).toHaveBeenCalledWith({ x: 570, y: y });
       });
 
       it('for an asset with no room below, but room to the right', () => {
@@ -70,7 +70,7 @@ export function main() {
 
         jasmine.clock().tick(340);
 
-        expect(directiveUnderTest.showPreview.emit).toHaveBeenCalledWith({ x: 350, y: 400 });
+        expect(directiveUnderTest.showPreview.emit).toHaveBeenCalledWith({ x: 350, y: 480 });
       });
 
       it('for an asset with no room above, but room to the right', () => {

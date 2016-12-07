@@ -1,8 +1,8 @@
 import { Directive, HostListener, Output, EventEmitter } from '@angular/core';
 import { Viewport, Coordinates } from '../interfaces/event.interface';
 
-const previewHeight: number = 380;    // How tall the speed preview dialog is
-const previewWidth: number = 560;     // How wide the speed preivew dialog is
+const previewWidth: number = 420;     // How wide the speed preview dialog is
+const previewHeight: number = 300;    // How tall the speed preview dialog is
 const horizontalPadding: number = 10; // How much room we want on each side of the speed preview
 const verticalPadding: number = 20;   // How much room we want above and below the preview
 const delay: number = 333;            // How long we want to wait before showing the preview
