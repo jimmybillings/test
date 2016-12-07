@@ -194,8 +194,11 @@ section.preview-bk {
   background-color:  transparent;
   position: relative;
 	height: auto;
+  img {
+    height: 100%;
+    width: 100%;
+  }
 }
-
 div.primary-info-t {
   height: rem(4.8);
   @include text-contrast(md-color($foreground, base));

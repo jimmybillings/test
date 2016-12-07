@@ -5,7 +5,7 @@ declare var jwplayer: any;
   moduleId: module.id,
   selector: 'wz-player',
   template: ``,
-  styles: ['img { width:100%; height:100%; }'],
+  // styles: ['img { width:100%; height:100%; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
