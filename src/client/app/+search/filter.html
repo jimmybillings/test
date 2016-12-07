@@ -3,6 +3,7 @@
     <div [ngSwitch]="filter.type">
       <div *ngSwitchCase="'ExclusiveList'" class="exclusive-list">
         <md-divider></md-divider>
+
         <div class="filter-subhead">
           <div class="filter-subhead-inner">
             <div class="filter-subhead-content">
@@ -10,6 +11,7 @@
             </div>
           </div>
         </div>
+
         <md-list-item title="{{subFilter.filterId}}" *ngFor="let subFilter of filter.subFilters" (click)="applyExclusiveFilter(subFilter)"
           [ngClass]="{'active': subFilter.active}" class="md-primary">
           {{subFilter.name}}
@@ -17,6 +19,7 @@
             &nbsp;({{subFilter.count | number}})
           </span>
         </md-list-item>
+
         <md-divider></md-divider>
       </div>
 
@@ -25,44 +28,50 @@
           <div class="filter-subhead-inner">
             <div class="filter-subhead-content">
               <span>{{filter.name}}</span>
-    </div>
-    </div>
-    </div>
-    <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
-    <md-divider></md-divider>
-    </span>
+            </div>
+          </div>
+        </div>
 
-    <span *ngSwitchCase="'List'" class="list">
+        <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
+
+        <md-divider></md-divider>
+      </span>
+
+      <span *ngSwitchCase="'List'" class="list">
         <div title="{{filter.filterId}}" class="filter-subhead" (click)="toggle(filter)">
           <div class="filter-subhead-inner">
             <div class="filter-subhead-content">
               <span>{{filter.name}}</span>
-    </div>
-    </div>
-    </div>
-    <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
-    </span>
+            </div>
+          </div>
+        </div>
 
-    <span *ngSwitchCase="'DateRange'" class="date-range">
+        <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
+      </span>
+
+      <span *ngSwitchCase="'DateRange'" class="date-range">
         <div class="filter-subhead">
           <div class="filter-subhead-inner">
             <div class="filter-subhead-content">
               <span>{{'SEARCH.FILTERS.DATE_RANGE_HEADING' | translate }}</span>
-    </div>
-    </div>
-    </div>
-    <div class="input-container">
-      <input wzPikaday name="start" type="text" readonly="true" placeholder="Beginning of time" value="{{defaultDate(filter, 'start')}}"
-        (change)="dateRangeSelect($event, filter)" [maxDate]="defaultDate(filter, 'end')" />
-    </div>
-    <span class="connector">through</span>
-    <div class="input-container">
-      <input wzPikaday name="end" type="text" readonly="true" placeholder="End of time" value="{{defaultDate(filter, 'end')}}"
-        (change)="dateRangeSelect($event, filter)" [minDate]="defaultDate(filter, 'start')" />
-    </div>
-    </span>
+            </div>
+          </div>
+        </div>
 
-    <span *ngSwitchCase="'Text'" class="text">
+        <div class="input-container">
+          <input wzPikaday name="start" type="text" readonly="true" placeholder="Beginning of time" value="{{defaultDate(filter, 'start')}}"
+            (change)="dateRangeSelect($event, filter)" [maxDate]="defaultDate(filter, 'end')" />
+        </div>
+
+        <span class="connector">through</span>
+
+        <div class="input-container">
+          <input wzPikaday name="end" type="text" readonly="true" placeholder="End of time" value="{{defaultDate(filter, 'end')}}"
+            (change)="dateRangeSelect($event, filter)" [minDate]="defaultDate(filter, 'start')" />
+        </div>
+      </span>
+
+      <span *ngSwitchCase="'Text'" class="text">
         <md-input
           name="filterValue"
           color="primary"
@@ -70,23 +79,24 @@
           [value]=  "filter.filterValue"
           (keypress)="customValue($event, filter)">
         </md-input>
+
         <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
       </span>
 
-    <span *ngSwitchDefault>
-      <md-checkbox
-        [disabled]="counted && filter.count < 1"
-        [checked]="filter.active"
-        color="primary"
-        (change)="applyFilter(filter.filterId)">
-          {{filter.name}}
-          <span class="filter-count" *ngIf="counted && filter.count > -1">
-            ({{filter.count | number}})
-          </span>
-    </md-checkbox>
-    <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
-    </span>
+      <span *ngSwitchDefault>
+        <md-checkbox
+          [disabled]="counted && filter.count < 1"
+          [checked]="filter.active"
+          color="primary"
+          (change)="applyFilter(filter.filterId)">
+           {{filter.name}}
+           <span class="filter-count" *ngIf="counted && filter.count > -1">
+             ({{filter.count | number}})
+           </span>
+        </md-checkbox>
 
+        <filter-component *ngIf="filterShouldBeShowing(filter)" [filters]="filter" [counted]="counted"></filter-component>
+      </span>
     </div>
   </li>
 </md-list>
