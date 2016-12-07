@@ -58,6 +58,7 @@ export class FilterService {
 
   public toggle(currentFilter: any, filter = this.filters) {
     if (filter.filterId === currentFilter) {
+      if (filter.active) filter.filterValue = null;
       filter.active = !filter.active;
       filter = JSON.parse(JSON.stringify(filter));
     }
@@ -94,6 +95,7 @@ export class FilterService {
       return filter;
     } else {
       if (filter.active) filter.active = false;
+      filter.filterValue = null;
       return filter;
     }
   }
