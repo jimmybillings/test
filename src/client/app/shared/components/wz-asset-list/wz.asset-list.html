@@ -93,13 +93,21 @@
 
 <wz-speedview #wzSpeedview>
   <div *ngIf="activeAsset" layout="column" layout-align="center center" class="wz-speedview">
-    <span *ngIf="activeAsset.smallPreview">
-      <span [ngSwitch]="activeAsset.smallPreview.urls.https.slice(-4)">
-        <video *ngSwitchCase="'.fv4'" [src]="activeAsset.smallPreview.urls.https" width="400" height="220" autoplay preload="auto"></video>
-        <div *ngSwitchCase="'.jpg'" class="image-bg">
-          <img class="image-speedview" [src]="activeAsset.thumbnail.urls.https">
+    <span *ngIf="activeAsset.metaData[4].name === 'Resource.Class' && activeAsset.smallPreview">
+      <span [ngSwitch]="activeAsset.metaData[4].value">
+        <video *ngSwitchCase="'Footage'" [src]="activeAsset.smallPreview.urls.https" width="400" height="220" poster="{{ activeAsset.thumbnail.urls.https }}" autoplay name="media" type="video/mp4"></video>
+        <div *ngSwitchCase="'Image'" class="image-bg">
+          <img class="image-speedview" [src]="activeAsset.smallPreview.urls.https">
         </div>
-        <img *ngSwitchDefault class="tbn_missing" [src]="activeAsset.thumbnail.urls.https">
+        <div *ngSwitchCase="'Editorial'" class="image-bg">
+          <img class="image-speedview" [src]="activeAsset.smallPreview.urls.https">
+        </div>
+        <div *ngSwitchCase="'Commercial'" class="image-bg">
+          <img class="image-speedview" [src]="activeAsset.smallPreview.urls.https">
+        </div>
+        <div *ngSwitchDefault>
+          <img class="tbn_missing">
+        </div>
       </span>
     </span>
     <span *ngIf="!activeAsset.smallPreview">
@@ -116,7 +124,7 @@
         </div>
         <div flex="35" class="price-info">
           <p class="clip-rights"><strong>{{ activeAsset.priceBookName | uppercase }}</strong></p>
-          <p class="price">{{ activeAsset.price | currency:'USD':true:'1.2-2' }} </p>
+          <p *ngIf="activeAsset.price && activeAsset.price > 0" class="price">{{ activeAsset.price | currency:'USD':true:'1.2-2' }} </p>
         </div>
       </div>
     </div>
