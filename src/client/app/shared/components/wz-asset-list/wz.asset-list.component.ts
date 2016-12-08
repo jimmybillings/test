@@ -82,10 +82,12 @@ export class WzAssetListComponent implements OnChanges {
   }
 
   public setActiveAsset(asset: any): void {
+    if (asset === this.activeAsset) return;
     this.activeAsset = asset;
+    if (asset.price && asset.priceBookName) return;
     this.assetService.getPrice(asset.assetId).take(1).subscribe((data: any) => {
-      this.activeAsset.price = data.price;
-      this.activeAsset.priceBookName = data.priceBookName;
+      asset.price = data.price;
+      asset.priceBookName = data.priceBookName;
     });
   }
 
