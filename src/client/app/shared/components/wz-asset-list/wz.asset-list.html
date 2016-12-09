@@ -106,12 +106,16 @@
           <img class="image-speedview" [src]="activeAsset.smallPreview.urls.https">
         </div>
         <div *ngSwitchDefault>
-          <img class="tbn_missing">
+          <div class="image-bg">
+            <img class="image-speedview" [src]="activeAsset.thumbnail.urls.https">
+          </div>
         </div>
       </span>
     </span>
     <span *ngIf="!activeAsset.smallPreview">
-      <img class="tbn_missing" [src]="activeAsset.thumbnail.urls.https">
+      <div class="image-bg">
+        <img class="image-speedview" [src]="activeAsset.thumbnail.urls.https">
+      </div>
     </span>
     <div flex="95" class="info">
       <div layout="row">
