@@ -401,17 +401,18 @@ wz-asset-list {
   }
 }
 
-div.wz-speedview {
-  width: 420px;
-  height: 300px;
-  padding: rem(1);
+.wz-speedview {
+  padding: rem(1.2) rem(1.2) rem(1) rem(1.2);
   @include md-elevation(2);
   background-color: md-color($background, card);
   div.image-bg {
     width: 400px;
-    height: 220px;
+    height: 225px;
     position: relative;
-    background-color: rgb(50, 50, 50);
+    @include background-image(
+      linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.6)),
+      linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1))
+    );
     img.image-speedview {
       position: absolute;
       display: block;
@@ -428,33 +429,43 @@ div.wz-speedview {
   img.tbn_missing {
     width: 100%;
   }
-  div.info {
-    color: rgba(0, 0, 0, 0.7);
-    height: 60px;
-    width: 100%;
-    div.metadata {
+  .info {
+    min-width: 100%;
+    padding: rem(.7) rem(.1) 0;
+    position: relative;
+    .metadata {
       ul {
         list-style: none;
         padding-left: 0;
         margin: 0;
         li {
-          margin: rem(.5) 0;
+          font-size: .75em;
+          line-height: 1.48;
+          opacity: .75;
         }
       }
-      font-size: 0.85rem;
     }
-    div.price-info {
+    .price-info {
+      opacity: .75;
       text-align: right;
       p {
-        margin: rem(1) 0 0 0;
+        margin: 0;
       }
       .clip-rights {
-        font-size: 0.75rem;
+        font-size: 0.875em;
       }
       .price {
-        display: inline-block;
-        margin-top: rem(.5);
-        font-size: 1.75rem;        
+        position: absolute;
+        bottom: rem(-.1);
+        right: rem(.1);
+        font-size: 1.87em;
+        font-weight: 400;
+        line-height: 1;
+        &::first-letter {
+          font-size: .6em;
+          font-weight: 200;
+          vertical-align: top;
+        }
       }
     }
   }

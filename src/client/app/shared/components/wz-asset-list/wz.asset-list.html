@@ -92,33 +92,37 @@
 </wz-toast>
 
 <wz-speedview #wzSpeedview>
-  <div *ngIf="activeAsset" layout="column" layout-align="center center" class="wz-speedview">
-    <span *ngIf="activeAsset.metaData[4].name === 'Resource.Class' && activeAsset.smallPreview">
-      <span [ngSwitch]="activeAsset.metaData[4].value">
+  <div *ngIf="activeAsset" layout="column" class="wz-speedview">
+    <div flex="none" *ngIf="activeAsset.metaData[4].name === 'Resource.Class' && activeAsset.smallPreview">
+      <div [ngSwitch]="activeAsset.metaData[4].value">
         <video *ngSwitchCase="'Footage'" [src]="activeAsset.smallPreview.urls.https" width="400" height="220" poster="{{ activeAsset.thumbnail.urls.https }}" autoplay name="media" type="video/mp4"></video>
         <div *ngSwitchCase="'Image'" class="image-bg">
           <img class="image-speedview" [src]="activeAsset.smallPreview.urls.https">
         </div>
+        
         <div *ngSwitchCase="'Editorial'" class="image-bg">
           <img class="image-speedview" [src]="activeAsset.smallPreview.urls.https">
         </div>
+        
         <div *ngSwitchCase="'Commercial'" class="image-bg">
           <img class="image-speedview" [src]="activeAsset.smallPreview.urls.https">
         </div>
-        <div *ngSwitchDefault>
-          <div class="image-bg">
-            <img class="image-speedview" [src]="activeAsset.thumbnail.urls.https">
-          </div>
+        
+        <div *ngSwitchDefault class="image-bg">
+          <img class="image-speedview" [src]="activeAsset.thumbnail.urls.https">
         </div>
-      </span>
-    </span>
-    <span *ngIf="!activeAsset.smallPreview">
+
+      </div>
+    </div>
+
+    <div flex="none" *ngIf="!activeAsset.smallPreview">
       <div class="image-bg">
         <img class="image-speedview" [src]="activeAsset.thumbnail.urls.https">
       </div>
-    </span>
-    <div flex="95" class="info">
-      <div layout="row">
+    </div>
+    
+    <div flex="none" class="info">
+      <div layout="row" layout-align="space-between none">
         <div flex="65" class="metadata">
           <ul>
             <span *ngFor="let meta of activeAsset.metaData">
@@ -127,10 +131,11 @@
           </ul>
         </div>
         <div flex="35" class="price-info">
-          <p class="clip-rights"><strong>{{ activeAsset.priceBookName | uppercase }}</strong></p>
+          <p class="clip-rights">{{ activeAsset.priceBookName | uppercase }}</p>
           <p *ngIf="activeAsset.price && activeAsset.price > 0" class="price">{{ activeAsset.price | currency:'USD':true:'1.2-2' }} </p>
         </div>
       </div>
     </div>
+
   </div>
 </wz-speedview>
