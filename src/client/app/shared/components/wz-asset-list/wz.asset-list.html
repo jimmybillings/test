@@ -130,9 +130,9 @@
             </span>
           </ul>
         </div>
-        <div flex="35" class="price-info">
+        <div *ngIf="activeAsset.price && activeAsset.price > 0" flex="35" class="price-info">
           <p class="clip-rights">{{ activeAsset.priceBookName | uppercase }}</p>
-          <p *ngIf="activeAsset.price && activeAsset.price > 0" class="price">{{ activeAsset.price | currency:'USD':true:'1.2-2' }} </p>
+          <p class="price">{{ activeAsset.price | currency:'USD':true:'1.2-2' }} </p>
         </div>
       </div>
     </div>
