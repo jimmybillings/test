@@ -35,9 +35,12 @@ export class WzPlayerComponent implements OnChanges {
   }
 
   private setupImage() {
+    var imgWrapper = document.createElement('div');
+    imgWrapper.className = 'photo-container';
     var elem = document.createElement('img');
     elem.src = this.asset.clipUrl;
-    this.element.nativeElement.appendChild(elem);
+    imgWrapper.appendChild(elem);
+    this.element.nativeElement.appendChild(imgWrapper);
   }
 
   private get playerInstance(): any {

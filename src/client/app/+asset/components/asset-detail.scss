@@ -194,9 +194,17 @@ section.preview-bk {
   background-color:  transparent;
   position: relative;
 	height: auto;
-  img {
-    height: 100%;
-    width: 100%;
+  .photo-container {
+    @include background-image(
+      linear-gradient(md-color($foreground, base, .17), md-color($foreground, base, .16))
+    );
+    text-align: center;
+    img {
+      max-height: rem(66.5);
+      min-height: rem(38.0);
+      max-width: 100%;
+      vertical-align: middle;
+    }
   }
 }
 div.primary-info-t {
@@ -243,10 +251,20 @@ div.primary-info-t {
         opacity: 0.9;
       }
     }
-    .rights {
-      padding-left: rem(1);
-      padding-top: rem(.4);
-      text-transform: uppercase;
+    .image.photo {
+      position: relative;
+      height: rem(1.6);
+      width: rem(3.0);
+      color: transparent;
+      &::before {
+        content: "\e412";
+        font-family: 'Material Icons';
+        color: rgba(md-color($md-grey, 100),0.3);
+        position: absolute;
+        top: rem(-.9);
+        left: rem(.1);
+        font-size: 1.58em;
+      }
     }
   }
 }

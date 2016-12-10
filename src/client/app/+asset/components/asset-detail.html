@@ -1,16 +1,6 @@
 <!-- there probably should be some kind of toggle for theater mode (dark background where preview is VS light)-->
 
 <section class="preview-bk theater">
-	<div layout="row" layout-align="center start">
-		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100">
-			<!--<a *ngIf="searchContext.state.q" md-button class="back-button" [routerLink]="['/search/', searchContext.state]">
-				<div layout="row" layout-align="space-between center">
-					<md-icon>arrow_left</md-icon>
-					<span>BACK TO SEARCH RESULTS</span>
-				</div>
-			</a>-->
-		</div>
-	</div>
 	<div layout="row" layout-align="center">
 		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
 			<div flex-gt-sm="66" flex="100">
@@ -31,13 +21,13 @@
 								<div [ngClass]="{hd: asset.primary[2].value == 'High Definition', sd: asset.primary[2].value == 'Standard Definition'}" class="sd-hd"
 									*ngIf='asset.primary[2].value != null'>
 								</div>
+								<div [ngClass]="{image: asset.primary[0].value == 'Image'}" class="photo"
+									*ngIf="asset.primary[0].value != null && asset.primary[0].value == 'Image'">
+								</div>
 								<div flex="none" class="rights md-caption">{{asset.primary[3].value}}</div>
 								<div flex="none" class="restriction-banner" *ngIf="asset.primary[4].value != null && asset.primary[4].value != 'Needs calculation'">{{asset.primary[4].value}}</div>
 							</div>
 						</div>
-
-
-
 					</div>
 				</div>
 			</div>
