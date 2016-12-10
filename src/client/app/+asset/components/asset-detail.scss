@@ -90,6 +90,7 @@ section.preview-bk {
     @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
       padding: 0;
       background-color: transparent;
+      min-height: rem(33.5);
     }
     div.primary-content {
       .title-txt {
@@ -200,10 +201,17 @@ section.preview-bk {
     );
     text-align: center;
     img {
-      max-height: rem(66.5);
+      max-height: rem(63.5);
       min-height: rem(38.0);
       max-width: 100%;
       vertical-align: middle;
+      @media screen and (max-width: $layout-breakpoint-md)  {
+        max-height: rem(50.5);
+        min-height: rem(23.0);
+      }
+      @media screen and (max-width: $layout-breakpoint-sm)  {
+        max-height: rem(47.5);
+      }
     }
   }
 }
