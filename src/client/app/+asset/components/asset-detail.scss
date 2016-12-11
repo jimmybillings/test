@@ -220,11 +220,11 @@ div.primary-info-t {
   @include text-contrast(md-color($foreground, base));
   div.primary-content-t {
     .back-to-search {
-      margin-right: rem(.5);
+      margin-right: rem(.2);
       margin-left: rem(-.5);
     }
     .asset-name {
-      margin-bottom: rem(.5);
+      margin-bottom: rem(.4);
       opacity: .5;
     }
     .sd-hd {
@@ -259,19 +259,24 @@ div.primary-info-t {
         opacity: 0.9;
       }
     }
+    .rights {
+      padding-left: rem(.8);
+      padding-top: rem(.4);
+      text-transform: uppercase;
+    }
     .image.photo {
       position: relative;
-      height: rem(1.6);
+      height: rem(2.0);
       width: rem(3.0);
       color: transparent;
       &::before {
         content: "\e412";
         font-family: 'Material Icons';
-        color: rgba(md-color($md-grey, 100),0.3);
+        color: rgba(md-color($md-grey, 100),0.4);
         position: absolute;
-        top: rem(-.9);
+        top: rem(-.8);
         left: rem(.1);
-        font-size: 1.58em;
+        font-size: 1.85em;
       }
     }
   }
