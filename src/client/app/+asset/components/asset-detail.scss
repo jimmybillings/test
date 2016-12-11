@@ -211,6 +211,7 @@ section.preview-bk {
       }
       @media screen and (max-width: $layout-breakpoint-sm)  {
         max-height: rem(47.5);
+        min-height: rem(23.0);
       }
     }
   }

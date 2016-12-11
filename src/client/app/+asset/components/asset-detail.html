@@ -75,7 +75,9 @@
 
 	<div layout="row" flex="" layout-align="center">
 		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
-			<wz-player [asset]="asset" flex-gt-sm="66" flex="100" layout="column" class="responsive-video"></wz-player>
+			<div flex-gt-sm="66" flex="100" layout="column" class="responsive-video">
+				<wz-player [asset]="asset"></wz-player>
+			</div>
 			<div flex-gt-sm="33" flex="100" layout="column">
 				<div flex="" layout="column" class="primary-info">
 					<div class="primary-content">
