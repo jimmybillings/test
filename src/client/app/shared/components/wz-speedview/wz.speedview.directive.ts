@@ -1,5 +1,5 @@
 import { Directive, HostListener, Output, EventEmitter } from '@angular/core';
-import { Viewport, Coordinates } from '../interfaces/event.interface';
+import { Viewport, Coordinates } from '../../interfaces/event.interface';
 
 const previewWidth: number = 420;     // How wide the speed preview dialog is
 const previewHeight: number = 300;    // How tall the speed preview dialog is
@@ -7,8 +7,8 @@ const horizontalPadding: number = 10; // How much room we want on each side of t
 const verticalPadding: number = 20;   // How much room we want above and below the preview
 const delay: number = 333;            // How long we want to wait before showing the preview
 
-@Directive({ selector: '[hoverIntent]' })
-export class WzHoverIntentDirective {
+@Directive({ selector: '[wzSpeedview]' })
+export class WzSpeedviewDirective {
   @Output() public showPreview: EventEmitter<any> = new EventEmitter();
   @Output() public hidePreview: EventEmitter<any> = new EventEmitter();
   private timeout: any;

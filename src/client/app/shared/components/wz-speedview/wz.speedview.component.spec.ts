@@ -1,4 +1,4 @@
-import { WzSpeedviewComponent } from './wz-speedview.component';
+import { WzSpeedviewComponent } from './wz.speedview.component';
 
 export function main() {
   describe('Wz Speedview Component', () => {

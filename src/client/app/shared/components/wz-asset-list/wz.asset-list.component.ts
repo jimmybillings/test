@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChan
 import { Collection } from '../../interfaces/collection.interface';
 import { CurrentUser } from '../../services/current-user.model';
 import { MdMenuTrigger } from '@angular/material';
-import { WzSpeedviewComponent } from '../wz-speedview/wz-speedview.component';
+import { WzSpeedviewComponent } from '../wz-speedview/wz.speedview.component';
 import { AssetService } from '../../services/asset.service';
 /**
  * Directive that renders a list of assets
