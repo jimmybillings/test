@@ -51,27 +51,27 @@ export class ReviewTabComponent extends Tab implements OnInit {
             desc +='s';
         }
        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-       console.log('current user is:');
-       console.dir(currentUser);
-       let postUrl = baseUrl+'api/orders/v1/cart/stripe/payment?redirect=true&api_key='+localStorage.getItem('token');
-       let f = document.createElement('form');
-       f.setAttribute('action',postUrl);
-       f.setAttribute('method','POST');
-       f.setAttribute('id','stripeForm');
-       f.setAttribute('style','padding-left: 20px');
-       let s = document.createElement('script');
-       s.src = 'https://checkout.stripe.com/checkout.js';
-       s.setAttribute('class','stripe-button');
-       s.setAttribute('data-key',currentCart.stripePublicKey);
-       s.setAttribute('data-amount',''+(currentCart.total * 100));
-       s.setAttribute('data-name','Pay With Credit Card');
-       s.setAttribute('data-description',desc);
-       s.setAttribute('data-image','https://core.wazeedigital.com/video/images/wazee/logo-rev.png');
-       s.setAttribute('data-allow-remember-me','false');
-       s.setAttribute('data-email',currentUser.emailAddress);
-       s.setAttribute('data-zip-code','true');
-       s.setAttribute('data-locale','auto');
-       f.appendChild(s);
-       document.getElementById('paymentArea_').appendChild(f);
+       if (currentUser) {
+           let postUrl = baseUrl+'api/orders/v1/cart/stripe/payment?redirect=true&api_key='+localStorage.getItem('token');
+           let f = document.createElement('form');
+           f.setAttribute('action',postUrl);
+           f.setAttribute('method','POST');
+           f.setAttribute('id','stripeForm');
+           f.setAttribute('style','padding-left: 20px');
+           let s = document.createElement('script');
+           s.src = 'https://checkout.stripe.com/checkout.js';
+           s.setAttribute('class','stripe-button');
+           s.setAttribute('data-key',currentCart.stripePublicKey);
+           s.setAttribute('data-amount',''+(currentCart.total * 100));
+           s.setAttribute('data-name','Pay With Credit Card');
+           s.setAttribute('data-description',desc);
+           s.setAttribute('data-image','assets/img/logo/logo-c-alt.png');
+           s.setAttribute('data-allow-remember-me','false');
+           s.setAttribute('data-email',currentUser.emailAddress);
+           s.setAttribute('data-zip-code','true');
+           s.setAttribute('data-locale','auto');
+           f.appendChild(s);
+           document.getElementById('paymentArea_').appendChild(f);
+        }
     }
 }
