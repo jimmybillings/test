@@ -5,7 +5,7 @@
   <li *ngFor="let asset of assets">
     <div class="asset">
       <div class="asset-name">{{asset.name}}</div>
-      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb" (mouseover)="setActiveAsset(asset)" hoverIntent (showPreview)="showPreview($event)" (hidePreview)="hidePreview($event)">
+      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb" (mouseover)="setActiveAsset(asset)" wzSpeedview (showPreview)="showPreview($event)" (hidePreview)="hidePreview($event)">
         <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
         <span *ngIf="asset.metaData[0]" class="mdata-0">
           <span>{{asset.metaData[0].value}}</span>
@@ -91,7 +91,7 @@
   </div>
 </wz-toast>
 
-<wz-speedview #wzSpeedview>
+<wz-speedview>
   <div *ngIf="activeAsset" layout="column" class="wz-speedview">
     <div flex="none" *ngIf="activeAsset.metaData[4].name === 'Resource.Class' && activeAsset.smallPreview">
       <div [ngSwitch]="activeAsset.metaData[4].value">

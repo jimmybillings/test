@@ -1,17 +1,17 @@
-import { WzHoverIntentDirective } from './wz-hover-intent.directive';
-import { Viewport } from '../interfaces/event.interface';
+import { WzSpeedviewDirective } from './wz.speedview.directive';
+import { Viewport } from '../../interfaces/event.interface';
 
 export function main() {
   const mockViewportWidth: number = 240;
   const mockViewportHeight: number = 180;
 
   describe('Hover Intent directive', () => {
-    let directiveUnderTest: WzHoverIntentDirective;
+    let directiveUnderTest: WzSpeedviewDirective;
 
     beforeEach(() => {
       jasmine.clock().uninstall();
       jasmine.clock().install();
-      directiveUnderTest = new WzHoverIntentDirective();
+      directiveUnderTest = new WzSpeedviewDirective();
     });
 
     afterEach(() => {
