@@ -74,6 +74,6 @@ export class WzDropdownComponent {
   }
 
   private closeListener() {
-    this.viewRef = this.renderer.listen(this.elementRef.nativeElement.parentElement.parentElement.parentElement, 'click', () => this.close());
+    this.viewRef = this.renderer.listen(this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement, 'click', () => this.close());
   }
 }
