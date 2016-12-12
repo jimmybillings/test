@@ -4,9 +4,9 @@
 			<projects-component [readOnly]="true" [projects]="(cart | async).projects" [config]="config" (projectsNotify)="onNotification($event)"></projects-component>
 		</div>
 	</div>
-	<div flex="95" layout="row" layout-align="end center">
-		<p class="md-subhead" style="margin-right: 2rem;">{{ 'CART.CART_TOTAL' | translate }} {{ (cart | async).total | currency:'USD':true:'1.2-2' }}</p>
-		<button md-raised-button class="md-block" (click)="goToPreviousTab()">BACK</button>
-		<button *ngIf="canPurchaseOnCredit" md-raised-button class="md-block purchase-button" (click)="purchaseOnCredit()">PURCHASE ON CREDIT</button>
+	<div flex="95" layout="row" layout-align="end center" id = 'paymentArea_'>
+			<p class="md-subhead" style="margin-right: 2rem;">{{ 'CART.CART_TOTAL' | translate }} {{ (cart | async).total | currency:'USD':true:'1.2-2' }}</p>
+			<button md-raised-button class="md-block" (click)="goToPreviousTab()">BACK</button>
+			<button *ngIf="canPurchaseOnCredit" md-raised-button class="md-block purchase-button" (click)="purchaseOnCredit()">PURCHASE ON CREDIT</button>
 	</div>
 </section>

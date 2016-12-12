@@ -114,7 +114,6 @@ export class CartService {
     this.currentUser.fullName().take(1).subscribe(fullName => userName = fullName);
     return userName;
   }
-
   // This is an "instance arrow function", which saves us from having to "bind(this)"
   // every time we use this function as a callback.
   private updateCart = (wholeCartResponse: any): void => {
