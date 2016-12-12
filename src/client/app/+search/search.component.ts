@@ -157,6 +157,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchContext.remove = 'filterValues';
     }
     this.searchContext.go();
+    this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).subscribe();
   }
 
   public onSortResults(sortDefinition: any): void {
