@@ -87,6 +87,7 @@ section.preview-bk {
     background-color: rgba(md-color($foreground, base), .05);
     padding:rem(1.6);
     position: relative;
+    height: 100%;
     @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
       padding: 0;
       background-color: transparent;
@@ -98,6 +99,11 @@ section.preview-bk {
         margin-bottom: rem(1.2);
         font-size: 1.2em;
         opacity: .5;
+        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+          margin-top: rem(1.2);
+          font-size: 1.1em;
+          opacity: .65;
+        }
       }
       .description-txt {
         height: rem(12.1);
@@ -109,14 +115,14 @@ section.preview-bk {
         opacity: .9;
         @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
           height: auto;
-          min-height: rem(14.4);
+          font-size: .9em;
           margin-top: rem(.4);
-          margin-bottom: rem(2);
+          margin-bottom: rem(15.2);
         }
       }
       .price {
         position: absolute;
-        bottom: rem(13.5);
+        bottom: rem(12.2);
         right: rem(3.7);
         font-size: 1.7em;
         font-weight: 400;
@@ -127,6 +133,7 @@ section.preview-bk {
           vertical-align: top;
         }
         @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+          bottom: rem(9.0);
           right: 0;
         } 
       }
@@ -167,8 +174,9 @@ section.preview-bk {
         bottom: rem(1.6);
         @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
           padding-left: 0; 
-          padding-right: 0; 
-          position: static;
+          padding-right: 0;
+          bottom: rem(-2.0);
+          // position: static;
           width: 100%;
         }
         button {

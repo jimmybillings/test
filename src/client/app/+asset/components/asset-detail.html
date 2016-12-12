@@ -75,10 +75,10 @@
 
 	<div layout="row" flex="" layout-align="center">
 		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
-			<div flex-gt-sm="66" flex="100" layout="column" class="responsive-video">
+			<div flex-gt-sm="66" flex="100" class="responsive-video">
 				<wz-player [asset]="asset"></wz-player>
 			</div>
-			<div flex-gt-sm="33" flex="100" layout="column">
+			<div flex-gt-sm="33" flex="100">
 				<div flex="" layout="column" class="primary-info">
 					<div class="primary-content">
 						<h4 class="title-txt" *ngIf="asset.primary[5].value != null">{{asset.primary[5].value}}</h4>
