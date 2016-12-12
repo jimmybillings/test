@@ -19,7 +19,8 @@ export function main() {
       mockSearchContext = {
         update: null,
         go: jasmine.createSpy('go'),
-        new: jasmine.createSpy('new')
+        new: jasmine.createSpy('new'),
+        state: { q: 'cat', i: 7, n: 100, sortId: 23, filterIds: '1517', filterValues: '1517:2015-12-10 - 2016-12-12' }
       };
       mockCurrentUser = {
         set: jasmine.createSpy('set'),
@@ -186,10 +187,10 @@ export function main() {
     });
 
     describe('newSearchContext()', () => {
-      it('Should update the searchContext with a new query and get a new filter tree', () => {
+      it('Should merge the searchContext with a new query and get a new filter tree', () => {
         componentUnderTest.newSearchContext('dogs');
-        expect(mockSearchContext.new).toHaveBeenCalledWith({ q: 'dogs', i: 1, n: 100, sortId: 23 });
-        expect(mockFilter.get).toHaveBeenCalledWith({ q: 'dogs', i: 1, n: 100, sortId: 23 }, true);
+        expect(mockSearchContext.new).toHaveBeenCalledWith({ q: 'dogs', i: 1, n: 100, sortId: 23, filterIds: '1517', filterValues: '1517:2015-12-10 - 2016-12-12' });
+        expect(mockFilter.get).toHaveBeenCalledWith({ q: 'dogs', i: 1, n: 100, sortId: 23, filterIds: '1517', filterValues: '1517:2015-12-10 - 2016-12-12' }, true);
       });
     });
 
