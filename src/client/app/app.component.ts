@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
   }
 
   public newSearchContext(query: any) {
-    let searchConext: any = { q: query, i: 1, n: 100, sortId: this.userPreference.state.sortId };
+    let searchConext: any = Object.assign({}, this.searchContext.state, { q: query, i: 1, n: 100 });
     this.filter.get(searchConext, this.userPreference.state.displayFilterCounts).subscribe();
     this.searchContext.new(searchConext);
   }
