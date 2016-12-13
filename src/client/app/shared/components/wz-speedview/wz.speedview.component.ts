@@ -19,17 +19,17 @@ export class WzSpeedviewPortalDirective extends TemplatePortalDirective {
 }
 
 @Component({
+  moduleId: module.id,
   encapsulation: ViewEncapsulation.None,
   selector: 'wz-speedview',
-  template: `<template wzSpeedviewPortal>
-              <ng-content></ng-content>
-             </template>`
+  templateUrl: 'wz.speedview.html'
 })
 export class WzSpeedviewComponent implements OnDestroy {
   public offsetX: number;
   public offsetY: number;
   public viewRef: any;
-  @Input() config = new OverlayState();
+  @Input() config:OverlayState = new OverlayState();
+  @Input() activeAsset: any;
   @ViewChild(WzSpeedviewPortalDirective) private portal: WzSpeedviewPortalDirective;
   private overlayRef: OverlayRef = null;
 
@@ -39,12 +39,9 @@ export class WzSpeedviewComponent implements OnDestroy {
     return this.destroy();
   }
 
-  public show(coordinates: any): Promise<WzSpeedviewComponent> {
-    this.config.positionStrategy = this.overlay.position()
-      .global()
-      .fixed()
-      .top(`${coordinates.y}px`)
-      .left(`${coordinates.x}px`);
+
+  public show(coordinates: MouseEvent): Promise<WzSpeedviewComponent> {  
+    this.positionStrategy = coordinates;
     return this.destroy()
       .then(() => this.overlay.create(this.config))
       .then((ref: OverlayRef) => {
@@ -67,5 +64,17 @@ export class WzSpeedviewComponent implements OnDestroy {
         this.overlayRef = null;
         return this;
       });
+  }
+
+  public translationReady(field: any) {
+    return 'assetmetadata.' + field.replace(/\./g, '_');
+  }
+
+  private set positionStrategy(coordinates: MouseEvent) {
+    this.config.positionStrategy = this.overlay.position()
+      .global()
+      .fixed()
+      .top(`${coordinates.y}px`)
+      .left(`${coordinates.x}px`);
   }
 } 
