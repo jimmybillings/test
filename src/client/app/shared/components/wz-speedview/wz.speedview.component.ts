@@ -28,7 +28,7 @@ export class WzSpeedviewComponent implements OnDestroy {
   public offsetX: number;
   public offsetY: number;
   public viewRef: any;
-  @Input() config:OverlayState = new OverlayState();
+  @Input() config: OverlayState = new OverlayState();
   @Input() activeAsset: any;
   @ViewChild(WzSpeedviewPortalDirective) private portal: WzSpeedviewPortalDirective;
   private overlayRef: OverlayRef = null;
@@ -40,7 +40,7 @@ export class WzSpeedviewComponent implements OnDestroy {
   }
 
 
-  public show(coordinates: MouseEvent): Promise<WzSpeedviewComponent> {  
+  public show(coordinates: MouseEvent): Promise<WzSpeedviewComponent> {
     this.positionStrategy = coordinates;
     return this.destroy()
       .then(() => this.overlay.create(this.config))
