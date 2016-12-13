@@ -9,7 +9,6 @@ import { MaterialModule } from '@angular/material';
 
 // Shared Pure Components
 import { WzNotificationComponent } from './components/wz-notification/wz.notification.component';
-import { WzSearchBoxComponent } from './components/wz-search-box/wz.search-box.component';
 import { WzAssetListComponent } from './components/wz-asset-list/wz.asset-list.component';
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
 import { WzDialogComponent, WzDialogPortalDirective } from './components/wz-dialog/wz.dialog.component';
@@ -32,7 +31,7 @@ import { CollectionLinkComponent } from '../+collection/components/collection-li
 import { EqualValidatorDirective } from './components/wz-form/wz-validators/wz-equal-validator.directive';
 import { WzTranscodeSelectComponent } from './components/wz-transcode-select/wz.transcode-select.component';
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
-
+import { WzAutocompleteSearchComponent } from './components/wz-autocomplete-search/wz-autocomplete-search.component';
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
 
@@ -55,7 +54,6 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     MaterialModule.forRoot(),
   ],
   declarations: [
-    WzSearchBoxComponent,
     WzAssetListComponent,
     WzBreadcrumbComponent,
     WzDialogComponent,
@@ -82,10 +80,10 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     EqualValidatorDirective,
     WzTranscodeSelectComponent,
     WzClipBoardDirective,
-    WzTermsComponent
+    WzTermsComponent,
+    WzAutocompleteSearchComponent
   ],
   exports: [
-    WzSearchBoxComponent,
     WzAssetListComponent,
     WzBreadcrumbComponent,
     WzDialogComponent,
@@ -119,7 +117,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     EqualValidatorDirective,
     WzTranscodeSelectComponent,
     WzClipBoardDirective,
-    WzTermsComponent],
+    WzTermsComponent,
+    WzAutocompleteSearchComponent],
   entryComponents: [WzNotificationComponent]
 })
 

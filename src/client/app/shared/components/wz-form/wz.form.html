@@ -211,7 +211,7 @@
 		<!--
         START: CUSTOM FOR ELEMENT FOR SUGGESTIONS BASED ON TEXT INPUT
       -->
-		<wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]">
+		<wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]" [queryParams]="field.queryParams" [endPoint]="field.endPoint" [suggestionHeading]="field.suggestionHeading">
 			<md-input placeholder="{{field.label | translate}}" 
 				(keydown)="suggestions.inputKeyDown($event)"
 				[ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"

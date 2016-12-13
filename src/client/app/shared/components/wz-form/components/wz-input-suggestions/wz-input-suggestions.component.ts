@@ -9,7 +9,7 @@ import { Api, ApiResponse } from '../../../../interfaces/api.interface';
   selector: 'wz-input-suggestions',
   template: `<ng-content></ng-content>
             <div class="suggestions-menu" *ngIf="areSuggestionsVisible" [ngClass]="{'revealed': areSuggestionsVisible}">
-              <div (click)="closeSuggestions()" md-line class="heading">{{ 'COLLECTION.FORM.TYPE_AHEAD_SUGGESTIONS_HEADING' | translate}}</div>
+              <div (click)="closeSuggestions()" md-line class="heading">{{ suggestionHeading | translate}}</div>
               <md-list>
                 <md-list-item *ngFor="let suggestion of suggestions">
                   <button (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}">
@@ -22,15 +22,35 @@ import { Api, ApiResponse } from '../../../../interfaces/api.interface';
 })
 
 export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
-  @Input() fControl: FormControl;
   public suggestions: Array<string> = [];
-  private areSuggestionsVisible: boolean = false;
+  public areSuggestionsVisible: boolean = false;
+  public activeSuggestion: string;
+  @Input() public suggestionHeading: string = 'COLLECTION.FORM.TYPE_AHEAD_SUGGESTIONS_HEADING';
+
+  @Input() private fControl: FormControl;
+  @Input() private endPoint: string;
+  @Input('queryParams')
+  private set queryParams(value: string) {
+    let queryParamsArray: Array<string> = value.split(',').map((item: string) => item.trim());
+    let queryParams: any = {};
+    for (let i = 0; i < (queryParamsArray.length / 2); i++) {
+      queryParams[queryParamsArray[0]] = queryParamsArray[1];
+      queryParamsArray.splice(0, 1);
+    }
+    this.params = queryParams;
+  }
   private selectedSuggestion: String;
-  private activeSuggestion: string;
   private shouldCallServer: boolean = true;
   private clickCatcher: any;
   private inputSubscription: Subscription;
-  constructor(private element: ElementRef, private renderer: Renderer, private api: ApiService, private detector: ChangeDetectorRef) { }
+  private params: any = {};
+
+
+  constructor(
+    private element: ElementRef,
+    private renderer: Renderer,
+    private api: ApiService,
+    private detector: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.clickCatcher = this.renderer.listenGlobal('body', 'click', this.closeSuggestions.bind(this));
@@ -151,8 +171,8 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
   private query(query: string): Observable<ApiResponse> {
     return this.api.get(
       Api.Assets,
-      'collectionSummary/search',
-      { parameters: { q: query, accessLevel: 'all', i: '0', n: '100' } }
+      this.endPoint,
+      { parameters: Object.assign({}, this.params, { q: query }) }
     );
   }
 }
