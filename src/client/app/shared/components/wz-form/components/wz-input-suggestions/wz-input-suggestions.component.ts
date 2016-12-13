@@ -65,9 +65,10 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
           return [];
         }
       })
-      .map(response => (response['items'] || []).map((item: any) => item.name))
+      .map(response => (response['items'] || response['list'] || []).map((item: any) => item.name || item))
       .subscribe(suggestions => {
         this.suggestions = suggestions;
+        console.log(this.suggestions);
         this.areSuggestionsVisible = this.suggestions.length > 0;
         this.detector.markForCheck();
       });
@@ -172,7 +173,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
     return this.api.get(
       Api.Assets,
       this.endPoint,
-      { parameters: Object.assign({}, this.params, { q: query }) }
+      { parameters: Object.assign({}, this.params, { text: query }, { q: query }) }
     );
   }
 }

@@ -16,8 +16,8 @@ export class WzAutocompleteSearchComponent {
   @Output() toggleFilterTree = new EventEmitter();
   public searchForm: FormGroup;
   public formOptions = {
-    'endPoint': 'collectionSummary/search',
-    'queryParams': 'accessLevel, all, i, 0, n, 100',
+    'endPoint': 'search/thesaurusTerms',
+    'queryParams': 'maxTerms, 10',
     'suggestionHeading': 'COLLECTION.FORM.TYPE_AHEAD_SUGGESTIONS_HEADING',
     'name': 'name',
     'label': 'COLLECTION.FORM.COLLECTION_NAME_LABEL',
