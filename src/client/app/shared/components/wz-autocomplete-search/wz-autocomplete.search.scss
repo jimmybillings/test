@@ -1,13 +1,13 @@
 wz-autocomplete-search {
   width: 100%;
-  margin: 20px 0 0 0;
+  margin: 2rem(2.0) 0 0 0;
   position: relative;
   wz-input-suggestions {
     width:100%;
     display: block;
     .suggestions-menu.revealed {
-      top: 46px;
-      left: 15px;
+      top: rem(4.6);
+      left: 0;
     }
   }
   input {
@@ -60,80 +60,7 @@ wz-autocomplete-search {
   select:empty {
     display: none;
   }
-  ul.auto-complete {
-    opacity: 1;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    width: calc(100% - 46px);
-    background-color: rgba(md-color($md-background, card), .95);
-    color: md-color($md-foreground, text);
-    max-height: rem(30);
-    overflow-y: scroll;
-    overflow-x: hidden;
-    @include transition(all .6s $swift-ease-in-out-timing-function);
-    @include md-elevation(2);
-    &.empty {
-      max-height: 0;
-      opacity: 0;
-      display: none;
-      overflow-y: hidden;
-    }
-    li {
-      background-color: transparent;
-      margin: 0; 
-      padding: 0; 
-      display: flex;
-      position: relative;
-      button {
-        background-color: md-color($md-background, app-bar);
-        @include text-contrast(md-color($md-background, app-bar), md-color($md-foreground, secondary-text), md-color($md-background, app-bar));
-        text-align: left;
-        width: 100%;
-        padding: rem(.8);
-        padding-left: rem(1.2);
-        padding-right: rem(4.5);
-        border-width: 0;
-        span {
-          background-color: rgba(md-color($md-foreground, base), .2);
-          @include text-contrast(md-color($md-foreground, base));
-          padding: 3px 6px;
-          font-size: .83em;
-          line-height: 1;
-          display: inline-block;
-          margin-left: 0;
-          position: absolute;
-          right: rem(1.5);
-          bottom: 25%;
-        }
-        &:focus {
-          color: md-color($md-foreground, text);
-          outline: none;
-          background-color: md-color($md-background, hover);
-          &::after {
-            @include text-contrast(md-color($md-background, app-bar));
-            position: absolute;
-            content: "\e037";
-            font-family: 'Material Icons';
-            font-size: rem(2.4);
-            opacity: 0    ;
-            position: absolute;
-            right: rem(.2);
-            bottom: 16%;
-          }
-        }
-      }
-    }
-  }
 }
-
-// search-box ul.auto-complete:empty, search-box ul.auto-complete:blank, search-box ul.auto-complete.empty {
-//   max-height: 0;
-//   opacity: 0;
-//   display: none;
-//   overflow-y: hidden;
-// }
-
 // search box in the header
 header.app-header {
   wz-autocomplete-search {
@@ -153,18 +80,9 @@ header.app-header {
         text-shadow: none;
       }
     }
-    ul.auto-complete {
-      width: 100%;
-      li button {
-        padding-right: rem(10.0);
-        padding-left: rem(4.4);
-        span {
-          right: rem(3.4);
-        }
-        &:focus::after {
-          right: rem(1.0);
-        }
-      }
+    wz-input-suggestions button.filter-toggle + input + button[type="submit"] + .suggestions-menu.revealed {
+      // top: rem(4.6);
+      left: rem(13.5);
     }
   }
   button.filter-toggle {
@@ -215,11 +133,6 @@ header.app-header {
         min-height: rem(4);
         font-size: 1em;
       }
-      // button[type="submit"] {
-      //   md-icon.material-icons {
-      //     font-size: rem(2.8);
-      //   }
-      // }
     }
   }
 }

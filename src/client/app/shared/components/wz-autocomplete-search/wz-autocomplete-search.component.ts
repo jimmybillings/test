@@ -18,7 +18,6 @@ export class WzAutocompleteSearchComponent {
   public formOptions = {
     'endPoint': 'search/thesaurusTerms',
     'queryParams': 'maxTerms, 10',
-    'suggestionHeading': 'COLLECTION.FORM.TYPE_AHEAD_SUGGESTIONS_HEADING',
     'name': 'name',
     'label': 'COLLECTION.FORM.COLLECTION_NAME_LABEL',
     'type': 'suggestions',

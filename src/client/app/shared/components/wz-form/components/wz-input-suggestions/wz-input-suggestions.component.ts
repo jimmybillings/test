@@ -9,7 +9,7 @@ import { Api, ApiResponse } from '../../../../interfaces/api.interface';
   selector: 'wz-input-suggestions',
   template: `<ng-content></ng-content>
             <div class="suggestions-menu" *ngIf="areSuggestionsVisible" [ngClass]="{'revealed': areSuggestionsVisible}">
-              <div (click)="closeSuggestions()" md-line class="heading">{{ suggestionHeading | translate}}</div>
+              <div *ngIf="suggestionHeading" (click)="closeSuggestions()" md-line class="heading">{{ suggestionHeading | translate}}</div>
               <md-list>
                 <md-list-item *ngFor="let suggestion of suggestions">
                   <button (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}">
@@ -25,8 +25,8 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
   public suggestions: Array<string> = [];
   public areSuggestionsVisible: boolean = false;
   public activeSuggestion: string;
-  @Input() public suggestionHeading: string = 'COLLECTION.FORM.TYPE_AHEAD_SUGGESTIONS_HEADING';
-
+  @Input() public suggestionHeading: string;
+  @Input() public showSuggestionHeader: boolean = true;
   @Input() private fControl: FormControl;
   @Input() private endPoint: string;
   @Input('queryParams')
