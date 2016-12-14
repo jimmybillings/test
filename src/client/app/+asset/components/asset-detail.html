@@ -83,9 +83,9 @@
 					<div class="primary-content">
 						<h4 class="title-txt" *ngIf="asset.primary[5].value != null">{{asset.primary[5].value}}</h4>
 						<p class="description-txt">{{asset.primary[6].value}}</p>
-						<span *ngIf="asset.price != 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
-						<span *ngIf="asset.price == 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
 						<md-card-actions *ngIf="asset.primary[3].value !== 'Rights Managed'" layout="column" layout-align="center center" layout-wrap="">
+							<span *ngIf="asset.price != 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
+							<span *ngIf="asset.price == 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
 							<wz-select *ngIf="asset.transcodeTargets.length > 0" [options]="asset.transcodeTargets" [trPrefix]="'ASSET.TRANSCODE_TARGETS.'"
 								(selectTarget)="selectTarget($event)"></wz-select>
 							<button md-raised-button [disabled]="!currentUser.loggedIn()" (click)="addAssetToCart(asset.assetId); addToCartToast.show()"
@@ -127,14 +127,5 @@
 </wz-toast>
 
 <wz-dialog class="price-attributes" #calculatePricing>
-	<md-card>
-		<md-card-title>Calculate Pricing</md-card-title>
-		<span *ngFor="let option of formatMockOptions">
-			<label class="md-caption">{{option.name}}</label>
-			<wz-select [options]="option.validChoices"></wz-select>
-		</span>
-		<md-card-actions align="end" class="confirmation-buttons">
-			<button md-button color="primary" (click)="calculatePricing.close()">CANCEL</button>
-		</md-card-actions>
-	</md-card>
+	<wz-pricing [options]="mockOptions.list" (commitPricing)="calculatePricing.close(); addAssetToCart(asset.assetId); addToCartToast.show()"></wz-pricing>
 </wz-dialog>

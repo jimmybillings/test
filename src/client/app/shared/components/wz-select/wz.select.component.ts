@@ -8,7 +8,6 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 })
 
 export class WzSelectComponent {
-  public testOptions: any = [{name: 'a', selected: true}, {name: 'b', selected: false}];
   @Input() options: any;
   @Input() trPrefix: string = '';
   @Output() selectOption: any = new EventEmitter();
@@ -26,7 +25,7 @@ export class WzSelectComponent {
   }
 
   private get selectedOption(): any {
-    let option = this.options.filter((option: any) => option.selected);
-    return (option.length > 0) ? option[0] : { name: 'Please select an option', selected: true };
+    let options: any = this.options.filter((option: any) => option.selected);
+    return (options.length > 0) ? options[0] : this.options[0];
   }
 }

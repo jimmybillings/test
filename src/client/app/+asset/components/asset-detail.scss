@@ -371,10 +371,14 @@ div.wz-dialog md-card {
   }
   wz-select {
     div.wz-select-menu-trigger {
+      height: rem(2);
       margin-top: 0;
-      margin-bottom: rem(2);
+      margin-bottom: rem(1.5);
       border-bottom: 1px solid rgba(md-color($primary, default), .9);
       color: rgba(md-color($primary, default), .9);
+      span.option-text {
+        font-size: rem(1.2);
+      }
     }
   }
 }

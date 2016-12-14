@@ -5,14 +5,21 @@ div.wz-select-menu-trigger {
 }
 
 div.md-menu.wz-select-menu {
+  max-height: rem(52);
+  overflow-y: scroll;
   width: rem(38);
+  z-index: 100;
   div.dense.group {
+    height: rem(4);
     button {
       span.icon {
         width: 20%;
         md-icon {
           margin: rem(.2) 0;
         }
+      }
+      span.text {
+        font-size: rem(1.4);
       }
     }
   }

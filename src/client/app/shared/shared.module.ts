@@ -34,6 +34,7 @@ import { WzSelectComponent } from './components/wz-select/wz.select.component';
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 import { WzSpeedviewComponent, WzSpeedviewPortalDirective } from './components/wz-speedview/wz.speedview.component';
 import { WzSpeedviewDirective } from './components/wz-speedview/wz.speedview.directive';
+import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
 
 // Shared pipes
   import { ValuesPipe } from './pipes/values.pipe';
@@ -87,7 +88,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzTermsComponent,
     WzSpeedviewComponent,
     WzSpeedviewDirective,
-    WzSpeedviewPortalDirective
+    WzSpeedviewPortalDirective,
+    WzPricingComponent
   ],
   exports: [
     WzSearchBoxComponent,
@@ -127,7 +129,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzTermsComponent,
     WzSpeedviewComponent,
     WzSpeedviewDirective,
-    WzSpeedviewPortalDirective
+    WzSpeedviewPortalDirective,
+    WzPricingComponent
   ],
   entryComponents: [WzNotificationComponent]
 })

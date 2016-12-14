@@ -1,0 +1,16 @@
+<md-card>
+  <md-card-title>Calculate Pricing</md-card-title>
+  <md-card-actions>
+    <form #f="ngForm" (ngSubmit)="onSubmit()">
+      <span *ngFor="let option of options">
+        <label>{{option.name}}</label>
+        <br>
+        <select [(ngModel)]="form[option.name]" name="{{option.name}}">
+          <option *ngFor="let o of option.attributeList" [value]="o.name" [selected]="o.name">{{o.name}}</option>
+        </select>
+        <br>
+      </span>
+      <button md-raised-button color="primary" type="submit">ADD TO CART</button>
+    </form>
+  </md-card-actions>
+</md-card>
