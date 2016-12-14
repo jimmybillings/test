@@ -9,7 +9,6 @@ import { MaterialModule } from '@angular/material';
 
 // Shared Pure Components
 import { WzNotificationComponent } from './components/wz-notification/wz.notification.component';
-import { WzSearchBoxComponent } from './components/wz-search-box/wz.search-box.component';
 import { WzAssetListComponent } from './components/wz-asset-list/wz.asset-list.component';
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
 import { WzDialogComponent, WzDialogPortalDirective } from './components/wz-dialog/wz.dialog.component';
@@ -35,9 +34,10 @@ import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 import { WzSpeedviewComponent, WzSpeedviewPortalDirective } from './components/wz-speedview/wz.speedview.component';
 import { WzSpeedviewDirective } from './components/wz-speedview/wz.speedview.directive';
 import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
+import { WzAutocompleteSearchComponent } from './components/wz-autocomplete-search/wz-autocomplete-search.component';
 
 // Shared pipes
-  import { ValuesPipe } from './pipes/values.pipe';
+import { ValuesPipe } from './pipes/values.pipe';
 
 // Shared resolvers
 import { AssetResolver } from '../+asset/services/asset.resolver';
@@ -58,7 +58,6 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     MaterialModule.forRoot(),
   ],
   declarations: [
-    WzSearchBoxComponent,
     WzAssetListComponent,
     WzBreadcrumbComponent,
     WzDialogComponent,
@@ -89,10 +88,10 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSpeedviewComponent,
     WzSpeedviewDirective,
     WzSpeedviewPortalDirective,
-    WzPricingComponent
+    WzPricingComponent,
+    WzAutocompleteSearchComponent
   ],
   exports: [
-    WzSearchBoxComponent,
     WzAssetListComponent,
     WzBreadcrumbComponent,
     WzDialogComponent,
@@ -130,7 +129,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSpeedviewComponent,
     WzSpeedviewDirective,
     WzSpeedviewPortalDirective,
-    WzPricingComponent
+    WzPricingComponent,
+    WzAutocompleteSearchComponent
   ],
   entryComponents: [WzNotificationComponent]
 })

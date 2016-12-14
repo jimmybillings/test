@@ -1,0 +1,30 @@
+<template wzSpeedviewPortal>
+  <div *ngIf="activeAsset" layout="column" class="wz-speedview">
+    <div flex="none" *ngIf="activeAsset.smallPreview">
+      <div>
+        <video [src]="activeAsset.smallPreview.urls.https" width="400" height="220" poster="{{ activeAsset.thumbnail.urls.https }}"
+          autoplay name="media" type="video/mp4"></video>
+      </div>
+    </div>
+    <div flex="none" *ngIf="!activeAsset.smallPreview">
+      <div class="image-bg">
+        <img class="image-speedview" [src]="activeAsset.thumbnail.urls.https">
+      </div>
+    </div>
+    <div flex="none" class="info">
+      <div layout="row" layout-align="space-between none">
+        <div flex="65" class="metadata">
+          <ul>
+            <span *ngFor="let meta of activeAsset.metaData">
+              <li *ngIf="meta.name === 'Resource.Class' || meta.name === 'TE.DigitalFormat' || meta.name === 'Format.Duration'"><strong>{{ translationReady(meta.name) | uppercase | translate }}: </strong>{{ meta.value | slice:0:36 }}</li>
+            </span>
+          </ul>
+        </div>
+        <div *ngIf="activeAsset.price && activeAsset.price > 0" flex="35" class="price-info">
+          <p class="clip-rights">{{ activeAsset.priceBookName | uppercase }}</p>
+          <p class="price">{{ activeAsset.price | currency:'USD':true:'1.2-2' }} </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
