@@ -30,7 +30,7 @@ import { CollectionFormComponent } from '../application/collection-tray/componen
 import { WzSortComponent } from './components/wz-sort/wz.sort.component';
 import { CollectionLinkComponent } from '../+collection/components/collection-link.component';
 import { EqualValidatorDirective } from './components/wz-form/wz-validators/wz-equal-validator.directive';
-import { WzTranscodeSelectComponent } from './components/wz-transcode-select/wz.transcode-select.component';
+import { WzSelectComponent } from './components/wz-select/wz.select.component';
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 import { WzSpeedviewComponent, WzSpeedviewPortalDirective } from './components/wz-speedview/wz.speedview.component';
 import { WzSpeedviewDirective } from './components/wz-speedview/wz.speedview.directive';
@@ -82,7 +82,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSortComponent,
     CollectionLinkComponent,
     EqualValidatorDirective,
-    WzTranscodeSelectComponent,
+    WzSelectComponent,
     WzClipBoardDirective,
     WzTermsComponent,
     WzSpeedviewComponent,
@@ -122,7 +122,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSortComponent,
     CollectionLinkComponent,
     EqualValidatorDirective,
-    WzTranscodeSelectComponent,
+    WzSelectComponent,
     WzClipBoardDirective,
     WzTermsComponent,
     WzSpeedviewComponent,

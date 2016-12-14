@@ -155,9 +155,9 @@ section.preview-bk {
         } 
       }
       md-card-actions {
-        wz-transcode-select {
+        wz-select {
           width: 100%;
-          div.transcode-target-menu-trigger {
+          div.wz-select-menu-trigger {
             box-shadow: inset -2px -2px 0px 0px md-color($md-grey, 900);
             background-color: rgba(md-color($md-grey, 700), .5);
             @include text-contrast(md-color($md-grey, 700));
