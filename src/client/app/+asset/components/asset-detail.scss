@@ -364,3 +364,17 @@ asset-share-link .link {
     }
   }
 }
+
+div.wz-dialog md-card {
+  label {
+    color: md-color($md-grey, 700);
+  }
+  wz-select {
+    div.wz-select-menu-trigger {
+      margin-top: 0;
+      margin-bottom: rem(2);
+      border-bottom: 1px solid rgba(md-color($primary, default), .9);
+      color: rgba(md-color($primary, default), .9);
+    }
+  }
+}

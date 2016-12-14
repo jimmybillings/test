@@ -1,7 +1,8 @@
 <div class="wz-select-menu-trigger" [md-menu-trigger-for]="wzSelectMenu">
 	<div layout="row" layout-align="space-between center">
-		<span class="transcode-text">
+		<span class="option-text">
       <span>{{ trPrefix + selectedOption.name | translate }}</span>
+      <span *ngIf="!selectedOption">---</span>
 		</span>
 		<span class="select-icon">
       <md-icon>arrow_drop_down</md-icon>

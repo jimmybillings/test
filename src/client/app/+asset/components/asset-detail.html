@@ -125,3 +125,16 @@
 		<div flex-xs="100" md-elevation-z2>{{ 'ASSET.ADD_TO_CART_TOAST' | translate:{assetId:asset.assetId} }}</div>
 	</div>
 </wz-toast>
+
+<wz-dialog class="price-attributes" #calculatePricing>
+	<md-card>
+		<md-card-title>Calculate Pricing</md-card-title>
+		<span *ngFor="let option of formatMockOptions">
+			<label class="md-caption">{{option.name}}</label>
+			<wz-select [options]="option.validChoices"></wz-select>
+		</span>
+		<md-card-actions align="end" class="confirmation-buttons">
+			<button md-button color="primary" (click)="calculatePricing.close()">CANCEL</button>
+		</md-card-actions>
+	</md-card>
+</wz-dialog>
