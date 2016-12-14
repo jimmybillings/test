@@ -20,15 +20,14 @@
       [uiState]="uiState"
       [uiConfig]="uiConfig">
     </collection-tray>
-    <wz-search-box
+     <wz-autocomplete-search
       *ngIf="uiState.headerIsExpanded()| async"
       [currentUser]="currentUser"
-      [state]="state"
       [uiState]="uiState"
       [config]="(uiConfig.get('searchBox') | async).config"
       (searchContext)="newSearchContext($event)"
       (toggleFilterTree)="toggleFilterTreePreference()">
-    </wz-search-box>
+    </wz-autocomplete-search>
     <md-progress-bar mode="indeterminate" *ngIf="(uiState.data | async).loading"></md-progress-bar>
   </header>
   <div [ngClass]="{

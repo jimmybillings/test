@@ -13,7 +13,8 @@ export class WzNotificationService implements OnDestroy {
   public destroyOnClick: any;
   private configSubscription: Subscription;
   private target: ViewContainerRef;
-  constructor(private renderer: Renderer,
+  constructor(
+    private renderer: Renderer,
     private resolver: ComponentFactoryResolver,
     public router: Router,
     public uiConfig: UiConfig) {

@@ -9,7 +9,6 @@ import { MaterialModule } from '@angular/material';
 
 // Shared Pure Components
 import { WzNotificationComponent } from './components/wz-notification/wz.notification.component';
-import { WzSearchBoxComponent } from './components/wz-search-box/wz.search-box.component';
 import { WzAssetListComponent } from './components/wz-asset-list/wz.asset-list.component';
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
 import { WzDialogComponent, WzDialogPortalDirective } from './components/wz-dialog/wz.dialog.component';
@@ -34,7 +33,7 @@ import { WzTranscodeSelectComponent } from './components/wz-transcode-select/wz.
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 import { WzSpeedviewComponent, WzSpeedviewPortalDirective } from './components/wz-speedview/wz.speedview.component';
 import { WzSpeedviewDirective } from './components/wz-speedview/wz.speedview.directive';
-
+import { WzAutocompleteSearchComponent } from './components/wz-autocomplete-search/wz-autocomplete-search.component';
 // Shared pipes
   import { ValuesPipe } from './pipes/values.pipe';
 
@@ -57,7 +56,6 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     MaterialModule.forRoot(),
   ],
   declarations: [
-    WzSearchBoxComponent,
     WzAssetListComponent,
     WzBreadcrumbComponent,
     WzDialogComponent,
@@ -87,10 +85,10 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzTermsComponent,
     WzSpeedviewComponent,
     WzSpeedviewDirective,
-    WzSpeedviewPortalDirective
+    WzSpeedviewPortalDirective,
+    WzAutocompleteSearchComponent
   ],
   exports: [
-    WzSearchBoxComponent,
     WzAssetListComponent,
     WzBreadcrumbComponent,
     WzDialogComponent,
@@ -127,7 +125,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzTermsComponent,
     WzSpeedviewComponent,
     WzSpeedviewDirective,
-    WzSpeedviewPortalDirective
+    WzSpeedviewPortalDirective,
+    WzAutocompleteSearchComponent
   ],
   entryComponents: [WzNotificationComponent]
 })

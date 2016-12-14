@@ -7,12 +7,12 @@
           <div class="logo-wrapper">
             <div class="logo"></div>
           </div>
-          <wz-search-box
+          <wz-autocomplete-search
             [config]="config"
             [currentUser]="currentUser" 
             [uiState]="uiState"
             (searchContext)="newSearchContext($event)">
-          </wz-search-box>
+          </wz-autocomplete-search>
           <h4 class="md-headline">{{ 'HOME.SEARCH_HEADING' | translate }}</h4>
         </div>
       </div>
