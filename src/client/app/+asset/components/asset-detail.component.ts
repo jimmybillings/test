@@ -56,7 +56,7 @@ export class AssetDetailComponent implements OnChanges {
 		this.onDownloadComp.emit({ 'compType': compType, 'assetId': assetId });
 	}
 
-	public addAssetToCart(assetId: any): void {
+	public addAssetToCart(assetId: any, pricingAttributes?: any): void {
 		this.addToCart.emit({ assetId: assetId, selectedTranscodeTarget: this.selectedTarget() });
 	}
 

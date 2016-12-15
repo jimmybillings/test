@@ -365,20 +365,26 @@ asset-share-link .link {
   }
 }
 
-div.wz-dialog md-card {
-  label {
-    color: md-color($md-grey, 700);
-  }
-  wz-select {
-    div.wz-select-menu-trigger {
-      height: rem(2);
-      margin-top: 0;
-      margin-bottom: rem(1.5);
-      border-bottom: 1px solid rgba(md-color($primary, default), .9);
-      color: rgba(md-color($primary, default), .9);
-      span.option-text {
-        font-size: rem(1.2);
+div.wz-dialog {
+  wz-pricing md-card {
+    width: 28vw;
+    md-card-actions form {
+      span.input {
+        margin: 0 rem(1);
+        label {
+          color: md-color($md-grey, 700);
+        }
+        select {
+          margin: rem(.25) 0;
+          width: 95%;
+        }
+      }
+      div.submit-btn {
+        button.submit {
+          width: 70%;
+          margin: rem(2) 0;
+        }
       }
     }
-  }
+  } 
 }

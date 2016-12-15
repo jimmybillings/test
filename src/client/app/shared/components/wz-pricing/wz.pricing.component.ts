@@ -19,6 +19,11 @@ export class WzPricingComponent {
   @Output() commitPricing: EventEmitter<any> = new EventEmitter();
 
   public onSubmit(): void {
-    console.log(this.form);
+    this.commitPricing.emit(this.form);
+  }
+
+  public parentIsEmpty(option: any): boolean {
+    // find the parent of the current option and 
+    return false;
   }
 }
