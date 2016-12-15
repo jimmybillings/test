@@ -32,7 +32,7 @@ export class AssetCapabilities {
 
   public createSubclips(): boolean {
     // TODO: Unit test this if/when it has more functionality than just a simple boolean!
-    return true;
+    return false;
   }
 
   public userHas(permission: string): boolean {
