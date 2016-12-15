@@ -88,7 +88,7 @@
 			<div *ngIf="userCan.createSubclips()" flex-gt-sm="66" flex="100" class="responsive-video">
         <wz-subclip-player
           [asset]="asset"
-          [subclipMarkers]="{}"
+          [subclipMarkers]="subclipMarkers"
           (subclipMarkersChanged)="onSubclipMarkersChanged($event)"
           (subclipMarkersCleared)="onSubclipMarkersCleared()">
         </wz-subclip-player>

@@ -29,9 +29,13 @@ export class AssetDetailComponent implements OnChanges {
   @Output() addToCart = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   private assetsArr: Array<number> = [];
+  public subclipMarkers: SubclipMarkers = {};
 
   ngOnChanges(changes: any): void {
-    if (changes.asset) this.parseNewAsset(changes.asset);
+    if (changes.asset) {
+      this.parseNewAsset(changes.asset);
+      this.subclipMarkers = {};
+    }
     if (changes.collection) {
       this.assetsArr = changes.collection.currentValue.assets.items.map((x: any) => x.assetId);
     }
