@@ -81,8 +81,13 @@ header.app-header {
       }
     }
     wz-input-suggestions button.filter-toggle + input + button[type="submit"] + .suggestions-menu.revealed {
-      // top: rem(4.6);
       left: rem(14.0);
+      width: 50vw;
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        left: 0;
+        width: 100vw;
+        top: rem(4.0);
+      }
     }
   }
   button.filter-toggle {
@@ -91,7 +96,6 @@ header.app-header {
       linear-gradient(rgba(md-color($md-foreground, base), .5), rgba(md-color($md-foreground, base), .5))
     );
     @include text-contrast(md-color($md-foreground, base));
-
     height: auto;
     border-radius: 0;
     padding: 0 rem(4.0) 0 rem(3.0);

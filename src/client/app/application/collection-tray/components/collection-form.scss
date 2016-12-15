@@ -1,5 +1,3 @@
-
-
 // this is can go away once the temporary legacy find assets in this collection goes away(post beta)
 .wz-dialog collection-link-component md-card {
   width: 32vw;
@@ -32,9 +30,7 @@
     margin: rem(.8);
   }
 } 
-
-
-.wz-dialog collection-form md-card, .suggestions-menu {
+.wz-dialog collection-form md-card {
   width: 22vw;
   @media screen and (max-width: $layout-breakpoint-lg) and (min-width: 0)  {
     width: 25vw;
@@ -45,11 +41,27 @@
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
     width: 52vw;
   }
+  .suggestions-menu {
+      width: calc(100% - 102px);
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+        width: calc(100% - 70px);
+        top: rem(16.0);
+      }
+  }
 }
-.suggestions-menu.revealed {
+.suggestions-menu {
+  width: 30vw;
+  @media screen and (max-width: $layout-breakpoint-lg) and (min-width: 0)  {
+    width: 40vw;
+  }
+  @media screen and (max-width: $layout-breakpoint-md) and (min-width: 0)  {
+    width: 55vw;
+  }
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
+    width: 78vw;
+  }
   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
     width: calc(100% - 70px);
-    top: rem(16.0);
   }
 }
 .wz-dialog collection-form md-card {
@@ -69,7 +81,6 @@
   top: rem(18);
   display: none;
   border: 1px solid md-color($md-foreground, divider);
-  // max-height: 0;
   .heading {
     margin: 0;
     padding-top: rem(1.1); 
@@ -81,13 +92,11 @@
     font-size: 1.1em;
   }
   &.revealed {
-    // max-height: rem(30);
     display: block;
     @include md-elevation(1);
     @include animation-name(open-menu);
     @include animation-duration(120ms);
-    @include animation-timing-function(linear);
-    // @include animation-timing-function($swift-ease-in-timing-function);
+    @include animation-timing-function($swift-ease-in-timing-function);
     @include animation-iteration-count(1);
     @include animation-fill-mode(backwards);
   }
