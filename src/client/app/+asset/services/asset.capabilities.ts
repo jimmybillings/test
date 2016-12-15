@@ -30,8 +30,12 @@ export class AssetCapabilities {
     return this.userHas('CreateAccessInfo');
   }
 
+  public createSubclips(): boolean {
+    // TODO: Unit test this if/when it has more functionality than just a simple boolean!
+    return true;
+  }
+
   public userHas(permission: string): boolean {
     return this.currentUser.hasPermission(permission);
   }
-
 }
