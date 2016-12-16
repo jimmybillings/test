@@ -23,7 +23,11 @@ export class WzPricingComponent {
   }
 
   public parentIsEmpty(option: any): boolean {
-    // find the parent of the current option and 
-    return false;
+    if (option.parent) {
+      return false;
+    } else {
+      let parent: any = this.options.filter((o: any) => o.childId === option.id)[0];
+      return this.form[parent.name] === '';
+    }
   }
 }
