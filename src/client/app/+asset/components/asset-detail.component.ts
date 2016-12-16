@@ -5,7 +5,7 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
-import { TranscodeTarget } from '../../shared/interfaces/asset.interface';
+import { TranscodeTarget, SubclipMarkers } from '../../shared/interfaces/asset.interface';
 import { SearchContext } from '../../shared/services/search-context.service';
 
 @Component({
@@ -28,12 +28,13 @@ export class AssetDetailComponent implements OnChanges {
 	@Output() onDownloadComp = new EventEmitter();
 	@Output() addToCart = new EventEmitter();
 	@ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
+	public subclipMarkers: SubclipMarkers = {};
 	private assetsArr: Array<number> = [];
 
 	ngOnChanges(changes: any): void {
 		if (changes.asset) this.parseNewAsset(changes.asset);
 		if (changes.collection) {
-			this.assetsArr = changes.collection.currentValue.assets.items.map((x:any) => x.assetId);
+			this.assetsArr = changes.collection.currentValue.assets.items.map((x: any) => x.assetId);
 		}
 	}
 
@@ -67,6 +68,14 @@ export class AssetDetailComponent implements OnChanges {
 		});
 	}
 
+	public onSubclipMarkersChanged(markers: SubclipMarkers) {
+		console.log(`New subclip markers: ${markers.in} - ${markers.out}`);
+	}
+
+	public onSubclipMarkersCleared() {
+		console.log('Subclip markers cleared.');
+	}
+
 	private selectedTarget() {
 		return this.asset.transcodeTargets.filter((target: TranscodeTarget) => target.selected)[0].name;
 	}
@@ -98,9 +107,9 @@ export class AssetDetailComponent implements OnChanges {
 						{ name: 'T' }
 					],
 					'validChildChoicesMap': {
-						'X': [ 'J', 'K', 'L' ],
-						'Y': [ 'K', 'L', 'M' ],
-						'Z': [ 'L', 'M', 'N' ]
+						'X': ['J', 'K', 'L'],
+						'Y': ['K', 'L', 'M'],
+						'Z': ['L', 'M', 'N']
 					},
 					'childId': 1
 				},
@@ -113,9 +122,9 @@ export class AssetDetailComponent implements OnChanges {
 						{ name: 'W' }
 					],
 					'validChildChoicesMap': {
-						'U': [ 'G', 'H', 'I' ],
-						'V': [ 'H', 'I', 'J' ],
-						'W': [ 'I', 'J', 'K' ]
+						'U': ['G', 'H', 'I'],
+						'V': ['H', 'I', 'J'],
+						'W': ['I', 'J', 'K']
 					},
 					'childId': 2
 				},
@@ -128,9 +137,9 @@ export class AssetDetailComponent implements OnChanges {
 						{ name: 'Z' }
 					],
 					'validChildChoicesMap': {
-						'X': [ 'D', 'E', 'F' ],
-						'Y': [ 'E', 'F', 'G' ],
-						'Z': [ 'F', 'G', 'H' ]
+						'X': ['D', 'E', 'F'],
+						'Y': ['E', 'F', 'G'],
+						'Z': ['F', 'G', 'H']
 					}
 				}
 			]

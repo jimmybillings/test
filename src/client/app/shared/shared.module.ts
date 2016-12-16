@@ -19,6 +19,8 @@ import { WzPaginationComponent } from './components/wz-pagination/wz.pagination.
 import { WzPikaDayDirective } from './components/wz-pikaday/wz-pikaday.directive';
 import { WzClipBoardDirective } from './components/wz-clipboard/wz-clipboard.directive';
 import { WzPlayerComponent } from './components/wz-player/wz.player.component';
+import { WzSubclipPlayerComponent } from './components/wz-subclip-player/wz.subclip-player.component';
+import { WzSubclipControlsComponent } from './components/wz-subclip-controls/wz.subclip-controls.component';
 import { WzToastComponent, WzToastPortalDirective } from './components/wz-toast/wz.toast.component';
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
@@ -67,6 +69,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzPaginationComponent,
     WzPikaDayDirective,
     WzPlayerComponent,
+    WzSubclipPlayerComponent,
+    WzSubclipControlsComponent,
     WzToastComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
@@ -101,6 +105,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzPaginationComponent,
     WzPikaDayDirective,
     WzPlayerComponent,
+    WzSubclipPlayerComponent,
+    WzSubclipControlsComponent,
     WzToastComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,

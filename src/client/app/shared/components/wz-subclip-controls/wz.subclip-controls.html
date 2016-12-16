@@ -1,0 +1,14 @@
+<div>
+  Duration (seconds): <span>{{duration}}</span>
+  <br/>
+  In Marker (seconds): <span>{{markers.in}}</span>
+  <button (click)="setInMarker()">Set</button>
+  <button (click)="gotoInMarker()">Go</button>
+  <br/>
+  Out Marker (seconds): <span>{{markers.out}}</span>
+  <button (click)="setOutMarker()">Set</button>
+  <button (click)="gotoOutMarker()">Go</button>
+  <br/>
+  <button (click)="playInToOut()">Play In to Out</button>
+  <button (click)="clear()">Clear</button>
+</div>
