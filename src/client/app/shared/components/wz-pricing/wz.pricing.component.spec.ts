@@ -14,7 +14,16 @@ export function main() {
       componentUnderTest.options = mockOptions();
     });
 
-    describe('parentIsEmpty', () => {
+    describe('onSubmit()', () => {
+      it('should emit the commitPricing event with the form', () => {
+        spyOn(componentUnderTest.commitPricing, 'emit');
+        componentUnderTest.onSubmit();
+
+        expect(componentUnderTest.commitPricing.emit).toHaveBeenCalledWith(componentUnderTest.form);
+      });
+    });
+
+    describe('parentIsEmpty()', () => {
       it('should return false if the option is the parent of all other options', () => {
         let result = componentUnderTest.parentIsEmpty(componentUnderTest.options[0]);
 
@@ -43,12 +52,34 @@ export function main() {
         expect(result).toBe(true);
       });
     });
+
+    describe('validOptionsFor()', () => {
+      it('should return if the optoin\'s parent is empty', () => {
+        componentUnderTest.form = { 'A': '', 'B': '', 'C': '' };
+        let result = componentUnderTest.validOptionsFor(componentUnderTest.options[1]);
+
+        expect(result).toBeUndefined();
+      });
+
+      it('should return valid options for the primary attribute', () => {
+        let result = componentUnderTest.validOptionsFor(componentUnderTest.options[0]);
+
+        expect(result).toEqual(mockOptions()[0].attributeList);
+      });
+
+      it('should return valid options for a non-primary attribute', () => {
+        componentUnderTest.form = { 'A': 'R', 'B': '', 'C': '' };
+        let result = componentUnderTest.validOptionsFor(componentUnderTest.options[1]);
+
+        expect(result).toEqual([{ name: 'J' }, { name: 'K' }, { name: 'L' }]);
+      });
+    });
   });
 
   function mockOptions() {
 		return [
       {
-        'parent': true,
+        'primary': true,
         'id': 0,
         'name': 'A',
         'attributeList': [
@@ -57,9 +88,9 @@ export function main() {
           { name: 'T' }
         ],
         'validChildChoicesMap': {
-          'X': [ 'J', 'K', 'L' ],
-          'Y': [ 'K', 'L', 'M' ],
-          'Z': [ 'L', 'M', 'N' ]
+          'R': ['J', 'K', 'L'],
+          'S': ['K', 'L', 'M'],
+          'T': ['L', 'M', 'N']
         },
         'childId': 1
       },
@@ -67,14 +98,18 @@ export function main() {
         'id': 1,
         'name': 'B',
         'attributeList': [
-          { name: 'U' },
-          { name: 'V' },
-          { name: 'W' }
+          { name: 'J' },
+          { name: 'K' },
+          { name: 'L' },
+          { name: 'M' },
+          { name: 'N' }
         ],
         'validChildChoicesMap': {
-          'U': [ 'G', 'H', 'I' ],
-          'V': [ 'H', 'I', 'J' ],
-          'W': [ 'I', 'J', 'K' ]
+          'J': ['U', 'V'],
+          'K': ['V', 'W'],
+          'L': ['W', 'X'],
+          'M': ['X', 'Y'],
+          'N': ['Y', 'Z']
         },
         'childId': 2
       },
@@ -82,15 +117,12 @@ export function main() {
         'id': 2,
         'name': 'C',
         'attributeList': [
+          { name: 'V' },
+          { name: 'W' },
           { name: 'X' },
           { name: 'Y' },
           { name: 'Z' }
-        ],
-        'validChildChoicesMap': {
-          'X': [ 'D', 'E', 'F' ],
-          'Y': [ 'E', 'F', 'G' ],
-          'Z': [ 'F', 'G', 'H' ]
-        }
+        ]
       }
     ];
 	}

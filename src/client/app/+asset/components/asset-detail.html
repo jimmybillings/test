@@ -145,5 +145,5 @@
 </wz-toast>
 
 <wz-dialog class="price-attributes" #calculatePricing>
-	<wz-pricing [options]="mockOptions.list" (commitPricing)="calculatePricing.close(); addAssetToCart(asset.assetId, $event); addToCartToast.show()"></wz-pricing>
+	<wz-pricing [options]="asset.pricing" (commitPricing)="calculatePricing.close(); addAssetToCart(asset.assetId, $event); addToCartToast.show()"></wz-pricing>
 </wz-dialog>

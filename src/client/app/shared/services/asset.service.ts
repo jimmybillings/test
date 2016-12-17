@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 
-const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '', price: 0 };
+const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '', price: 0, pricing: {} };
 
 export const asset: ActionReducer<any> = (state = initAsset, action: Action) => {
   switch (action.type) {
@@ -89,6 +89,33 @@ export class AssetService {
     this.set({
       type: 'SET_ASSET', payload: {
         price: price.price
+      }
+    });
+  }
+
+  public getPricingInformation(): void {
+    this.api.get(
+      Api.Orders,
+      'priceBook/priceAttributes',
+      { parameters: { region: 'AAA', priceModel: 'RightsManaged' } }
+    ).take(1).subscribe((data: any) => {
+      // Note, take this out when API and Config are stable
+      data.list.filter((o: any) => o.id === 2)[0].primary = true;
+      // This is for the purpose of showing there is a mis-match in the config.
+      // Distribution attribute has more attributes than validChildChoices
+      data.list.forEach((o: any) => {
+        let validChildChoicesCount: number = o.validChildChoicesMap ? Object.keys(o.validChildChoicesMap).length : 0;
+        let attributeListCount: number = o.attributeList.length;
+        console.log({ attributeListCount, validChildChoicesCount });
+      });
+      this.setPricing(data.list);
+    });
+  }
+
+  private setPricing(pricing: any): void {
+    this.set({
+      type: 'SET_ASSET', payload: {
+        pricing: pricing
       }
     });
   }
