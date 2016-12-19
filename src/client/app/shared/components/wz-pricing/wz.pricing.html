@@ -1,21 +1,21 @@
-<md-card *ngIf="options.length > 0">
+<md-card *ngIf="_options.length > 0">
   <div layout="row" layout-align="center center">
     <md-card-title>Calculate Pricing</md-card-title>
   </div>
   <md-card-actions>
     <form #f="ngForm" (ngSubmit)="onSubmit()">
-      <span *ngFor="let option of options; let i = index" class="input">
+      <span *ngFor="let option of _options; let i = index" class="input">
         <label>{{option.name}}</label>
         <br>
         <div layout="row" layout-align="center center">
           <select [disabled]="parentIsEmpty(option)" [(ngModel)]="form[option.name]" name="{{option.name}}">
-            <option *ngFor="let o of validOptionsFor(option)" [value]="o.name">{{o.name}}</option>
+            <option *ngFor="let o of validOptionsFor(option)" [value]="o.value">{{o.name}}</option>
           </select>
         </div>
         <br>
       </span>
       <div class="submit-btn" layout="row" layout-align="center center">
-        <button class="submit" md-raised-button color="primary" type="submit">ADD TO CART</button>
+        <button [disabled]="formIsInvalid" class="submit" md-raised-button color="primary" type="submit">CALCULATE</button>
       </div>
     </form>
   </md-card-actions>

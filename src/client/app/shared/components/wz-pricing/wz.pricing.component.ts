@@ -7,18 +7,19 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WzPricingComponent {
-  public form: any = {
-    'Project Type': '',
-    'Distribution': '',
-    'Term': '',
-    'Territory': '',
-    'Use': ''
-  };
-  @Input() options: any;
-  @Output() commitPricing: EventEmitter<any> = new EventEmitter();
+  public _options: any;
+  public form: any;
+  @Input()
+  set options(options: any) {
+    this.buildForm(options);
+    this._options = options;
+  }
+  @Output() calculatePricing: EventEmitter<any> = new EventEmitter();
+  @Output() error: EventEmitter<any> = new EventEmitter();
 
   public onSubmit(): void {
-    this.commitPricing.emit(this.form);
+    this.calculatePricing.emit(this.form);
+    this.clearForm();
   }
 
   public parentIsEmpty(currentOption: any): boolean {
@@ -27,7 +28,7 @@ export class WzPricingComponent {
       return false;
     } else {
       // Find the parent option of the currentOption, and check if it's value is empty
-      let parent: any = this.options.filter((o: any) => o.childId === currentOption.id)[0];
+      let parent: any = this._options.filter((o: any) => o.childId === currentOption.id)[0];
       return this.form[parent.name] === '';
     }
   }
@@ -40,11 +41,17 @@ export class WzPricingComponent {
       return currentOption.attributeList;
     } else {
       // Find the parent option of the current option
-      let parent: any = this.options.filter((o: any) => o.childId === currentOption.id)[0];
+      let parent: any = this.findParent(currentOption);
       // Use the parent option's name to find it's current form value
-      let parentValue: any = this.form[parent.name];
+      let parentFormValue: any = this.form[parent.name];
       // Find the valid choices array that corresponds to the previous option the user selected
-      let rawOptions: any = parent.validChildChoicesMap[parentValue];
+      let rawOptions: any = parent.validChildChoicesMap[parentFormValue];
+      // There should always be options, however if there aren't we need to alert the user the calculation went wrong
+      if (!rawOptions) {
+        this.clearForm();
+        this.error.emit();
+        return;
+      }
       // The raw options is just an array of strings, we need to map them back to the attributeList of the option to get the name, value, multiplier, etc;
       let options: any = rawOptions.map((o: any) => { return this.findOption(o, currentOption.attributeList); });
       // If there is only 1 option, update the form value for that option
@@ -56,9 +63,34 @@ export class WzPricingComponent {
     }
   }
 
+  public get formIsInvalid(): boolean {
+    let values: any = [];
+    for (let field in this.form) {
+      values.push(this.form[field]);
+    }
+    return values.indexOf('') !== -1;
+  }
+
+  private findParent(currentOption: any): any {
+    return this._options.filter((o: any) => o.childId === currentOption.id)[0];
+  }
+
   private findOption(optionName: string, options: any): any {
     return options.filter((o: any) => {
       return o.name === optionName;
     })[0];
+  }
+
+  private buildForm(options: any): void {
+    this.form = {};
+    options.forEach((option: any) => {
+      this.form[option.displayName] = '';
+    });
+  }
+
+  private clearForm(): void {
+    for (let field in this.form) {
+      this.form[field]= '';
+    }
   }
 }

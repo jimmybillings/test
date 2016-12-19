@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 
-const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '', price: 0, pricing: {} };
+const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '', price: 0, pricing: [] };
 
 export const asset: ActionReducer<any> = (state = initAsset, action: Action) => {
   switch (action.type) {
@@ -47,8 +47,10 @@ export class AssetService {
     return this.api.get(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
   }
 
-  public getPrice(id: any): Observable<any> {
-    return this.api.get(Api.Orders, `priceBook/price/${id}`, { parameters: { region: 'AAA' } })
+  public getPrice(id: any, attributes?: any): Observable<any> {
+    let formatedAttributes = attributes ? this.formatAttributes(attributes) : null;
+    let parameters = formatedAttributes ? { region: 'AAA', attributes: formatedAttributes }  : { region: 'AAA' };
+    return this.api.get(Api.Orders, `priceBook/price/${id}`, { parameters })
       .do(response => this.setPrice(response));
   }
 
@@ -114,5 +116,15 @@ export class AssetService {
         pricing: pricing
       }
     });
+  }
+
+  private formatAttributes(attrs: any): any {
+    let formatted: Array<string> = [];
+    for (let attr in attrs) {
+      let name: string = attr.toLowerCase().split(' ').join('_');
+      let value: string = attrs[attr].toLowerCase().split(' ').join('_');
+      formatted.push(`${name}:${value}`);
+    }
+    return formatted.join(',');
   }
 }

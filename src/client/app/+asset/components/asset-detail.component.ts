@@ -27,6 +27,8 @@ export class AssetDetailComponent implements OnChanges {
 	@Output() onRemoveFromCollection = new EventEmitter();
 	@Output() onDownloadComp = new EventEmitter();
 	@Output() addToCart = new EventEmitter();
+	@Output() calculatePrice = new EventEmitter();
+	@Output() calculatePriceError = new EventEmitter();
 	@ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
 	public subclipMarkers: SubclipMarkers = {};
 	private assetsArr: Array<number> = [];
@@ -74,6 +76,14 @@ export class AssetDetailComponent implements OnChanges {
 
 	public onSubclipMarkersCleared() {
 		console.log('Subclip markers cleared.');
+	}
+
+	public onCalculatePrice(attributes: any): void {
+		this.calculatePrice.emit({ attributes: attributes, assetId: this.asset.assetId });
+	}
+
+	public onCalculatePriceError(): void {
+		this.calculatePriceError.emit();
 	}
 
 	private selectedTarget() {

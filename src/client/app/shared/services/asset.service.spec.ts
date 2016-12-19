@@ -23,7 +23,7 @@ export function main() {
       inject([AssetService], (service: AssetService) => {
         // expect(service._apiUrl).toEqual('https://crxextapi.dev.wzplatform.com/api/assets/v1/clip/');
         service.data.subscribe((asset) => {
-          expect(asset).toEqual({ clipData: [  ], common: [  ], primary: [  ], secondary: [  ], filter: '', name: '', price: 0, pricing: {} });
+          expect(asset).toEqual({ clipData: [  ], common: [  ], primary: [  ], secondary: [  ], filter: '', name: '', price: 0, pricing: [] });
         });
       }));
 
