@@ -103,8 +103,9 @@ export class AssetService {
       'priceBook/priceAttributes',
       { parameters: { region: 'AAA', priceModel: priceModel } }
     ).take(1).subscribe((data: any) => {
-      // Note, take this out when API and Config are stable
+      // ------------ take this out when API and Config are stable -------------
       data.list.filter((o: any) => o.name === 'Project Type')[0].primary = true;
+      // -----------------------------------------------------------------------
       this.setPricing(data.list);
     });
   }
