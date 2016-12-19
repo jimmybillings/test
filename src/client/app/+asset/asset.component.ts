@@ -68,6 +68,6 @@ export class AssetComponent implements OnInit {
   }
 
   public onCalculatePriceError(): void {
-    this.notification.create('Something went wrong with your calculations, pleas try again');
+    this.notification.create('PRICING.ERROR');
   }
 }
