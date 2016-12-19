@@ -96,18 +96,17 @@ export class AssetService {
     });
   }
 
-  public getPricingInformation(priceModel: string): void {
-    if (priceModel !== 'Royalty Free') {
-      this.api.get(
-        Api.Orders,
-        'priceBook/priceAttributes',
-        { parameters: { region: 'AAA', priceModel: priceModel.split(' ').join('') } }
-      ).take(1).subscribe((data: any) => {
-        // Note, take this out when API and Config are stable
-        data.list.filter((o: any) => o.id === 2)[0].primary = true;
-        this.setPricing(data.list);
-      });
-    }
+  public getPriceAttributes(priceModel: string): void {
+    priceModel = priceModel ? priceModel.split(' ').join('') : 'RightsManaged';
+    this.api.get(
+      Api.Orders,
+      'priceBook/priceAttributes',
+      { parameters: { region: 'AAA', priceModel: priceModel } }
+    ).take(1).subscribe((data: any) => {
+      // Note, take this out when API and Config are stable
+      data.list.filter((o: any) => o.name === 'Project Type')[0].primary = true;
+      this.setPricing(data.list);
+    });
   }
 
   private setPricing(pricing: any): void {
