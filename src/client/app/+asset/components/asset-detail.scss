@@ -375,8 +375,14 @@ div.wz-dialog {
           color: md-color($md-grey, 700);
         }
         select {
+          border: none;
+          height: rem(4);
           margin: rem(.25) 0;
           width: 95%;
+          background-color: rgba(md-color($md-grey, 300), .5);
+          &:disabled {
+            background-color: rgba(md-color($md-grey, 100), .3);
+          }
         }
       }
       div.submit-btn {
