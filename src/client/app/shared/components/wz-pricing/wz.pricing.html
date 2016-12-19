@@ -9,7 +9,7 @@
         <br>
         <div layout="row" layout-align="center center">
           <select [disabled]="parentIsEmpty(option)" [(ngModel)]="form[option.name]" name="{{option.name}}">
-            <option *ngFor="let o of validOptionsFor(option)" [value]="o.name" [selected]="o.name">{{o.name}}</option>
+            <option *ngFor="let o of validOptionsFor(option)" [value]="o.name">{{o.name}}</option>
           </select>
         </div>
         <br>

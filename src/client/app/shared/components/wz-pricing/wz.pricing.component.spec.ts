@@ -73,6 +73,14 @@ export function main() {
 
         expect(result).toEqual([{ name: 'J' }, { name: 'K' }, { name: 'L' }]);
       });
+
+      it('should set the form value if there is only 1 valid child option', () => {
+        componentUnderTest.form = { 'A': 'T', 'B': '', 'C': '' };
+        let result = componentUnderTest.validOptionsFor(componentUnderTest.options[1]);
+
+        expect(result).toEqual([{name: 'L'}]);
+        expect(componentUnderTest.form).toEqual({ 'A': 'T', 'B': 'L', 'C': '' });
+      });
     });
   });
 
@@ -90,7 +98,7 @@ export function main() {
         'validChildChoicesMap': {
           'R': ['J', 'K', 'L'],
           'S': ['K', 'L', 'M'],
-          'T': ['L', 'M', 'N']
+          'T': ['L']
         },
         'childId': 1
       },

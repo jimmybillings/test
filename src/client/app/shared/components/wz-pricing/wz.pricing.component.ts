@@ -35,7 +35,7 @@ export class WzPricingComponent {
   public validOptionsFor(currentOption: any): any {
     // If the parent option has not been selected, return;
     if (this.parentIsEmpty(currentOption)) return;
-    // If the currentOption is the parent, the valid choices are its attributeList
+    // If the currentOption is the primary option, the valid choices are its attributeList
     if (currentOption.primary) {
       return currentOption.attributeList;
     } else {
@@ -43,10 +43,16 @@ export class WzPricingComponent {
       let parent: any = this.options.filter((o: any) => o.childId === currentOption.id)[0];
       // Use the parent option's name to find it's current form value
       let parentValue: any = this.form[parent.name];
-      // Find the valid choices array that corresponds to the option the user selected
+      // Find the valid choices array that corresponds to the previous option the user selected
       let rawOptions: any = parent.validChildChoicesMap[parentValue];
       // The raw options is just an array of strings, we need to map them back to the attributeList of the option to get the name, value, multiplier, etc;
-      return rawOptions.map((o: any) => { return this.findOption(o, currentOption.attributeList); });
+      let options: any = rawOptions.map((o: any) => { return this.findOption(o, currentOption.attributeList); });
+      // If there is only 1 option, update the form value for that option
+      if (options.length === 1) {
+        this.form[currentOption.name] = options[0].name;
+      }
+      // Finally, return the valid options
+      return options;
     }
   }
 
