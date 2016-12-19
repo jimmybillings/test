@@ -10,12 +10,12 @@ export class AssetResolver {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    if (this.currentUser.loggedIn()) this.asset.getPrice(route.params['name']).subscribe();
     if (route.params['share_key']) {
       return this.asset.getData(route.params['name'], route.params['share_key']);
     } else {
-      this.asset.getPricingInformation();
-      return this.asset.getData(route.params['name']);
+      return this.asset.getData(route.params['name']).do((asset: any) => {
+        this.asset.getPricingInformation(asset.detailTypeMap.primary[3].value);
+      });
     }
   }
 }

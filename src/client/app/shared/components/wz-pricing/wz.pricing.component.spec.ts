@@ -78,8 +78,8 @@ export function main() {
         componentUnderTest.form = { 'A': 'T', 'B': '', 'C': '' };
         let result = componentUnderTest.validOptionsFor(componentUnderTest.options[1]);
 
-        expect(result).toEqual([{name: 'L'}]);
-        expect(componentUnderTest.form).toEqual({ 'A': 'T', 'B': 'L', 'C': '' });
+        expect(result).toEqual([{name: 'N'}]);
+        expect(componentUnderTest.form).toEqual({ 'A': 'T', 'B': 'N', 'C': '' });
       });
     });
   });
@@ -98,7 +98,7 @@ export function main() {
         'validChildChoicesMap': {
           'R': ['J', 'K', 'L'],
           'S': ['K', 'L', 'M'],
-          'T': ['L']
+          'T': ['N']
         },
         'childId': 1
       },

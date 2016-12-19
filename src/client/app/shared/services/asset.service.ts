@@ -80,7 +80,8 @@ export class AssetService {
         detailTypeMap: asset.detailTypeMap,
         hasDownloadableComp: asset.hasDownloadableComp,
         resourceClass: asset.resourceClass,
-        transcodeTargets: asset.transcodeTargets || []
+        transcodeTargets: asset.transcodeTargets || [],
+        price: asset.price
       }
     });
   }
@@ -93,23 +94,18 @@ export class AssetService {
     });
   }
 
-  public getPricingInformation(): void {
-    this.api.get(
-      Api.Orders,
-      'priceBook/priceAttributes',
-      { parameters: { region: 'AAA', priceModel: 'RightsManaged' } }
-    ).take(1).subscribe((data: any) => {
-      // Note, take this out when API and Config are stable
-      data.list.filter((o: any) => o.id === 2)[0].primary = true;
-      // This is for the purpose of showing there is a mis-match in the config.
-      // Distribution attribute has more attributes than validChildChoices
-      data.list.forEach((o: any) => {
-        let validChildChoicesCount: number = o.validChildChoicesMap ? Object.keys(o.validChildChoicesMap).length : 0;
-        let attributeListCount: number = o.attributeList.length;
-        console.log({ attributeListCount, validChildChoicesCount });
+  public getPricingInformation(priceModel: string): void {
+    if (priceModel !== 'Royalty Free') {
+      this.api.get(
+        Api.Orders,
+        'priceBook/priceAttributes',
+        { parameters: { region: 'AAA', priceModel: priceModel.split(' ').join('') } }
+      ).take(1).subscribe((data: any) => {
+        // Note, take this out when API and Config are stable
+        data.list.filter((o: any) => o.id === 2)[0].primary = true;
+        this.setPricing(data.list);
       });
-      this.setPricing(data.list);
-    });
+    }
   }
 
   private setPricing(pricing: any): void {
