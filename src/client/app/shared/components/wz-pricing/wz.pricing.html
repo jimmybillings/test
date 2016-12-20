@@ -1,4 +1,5 @@
 <md-card *ngIf="_options.length > 0">
+  <button (click)="close.emit()" md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
   <div layout="row" layout-align="center center">
     <md-card-title>{{ 'PRICING.CALCULATE_HEADING' | translate }}</md-card-title>
   </div>

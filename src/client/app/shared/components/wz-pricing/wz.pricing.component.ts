@@ -14,12 +14,12 @@ export class WzPricingComponent {
     this.buildForm(options);
     this._options = options;
   }
+  @Output() close: EventEmitter<any> = new EventEmitter();
   @Output() calculatePricing: EventEmitter<any> = new EventEmitter();
   @Output() error: EventEmitter<any> = new EventEmitter();
 
   public onSubmit(): void {
     this.calculatePricing.emit(this.form);
-    this.clearForm();
   }
 
   public parentIsEmpty(currentOption: any): boolean {

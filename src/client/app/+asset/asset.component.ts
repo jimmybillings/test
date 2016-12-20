@@ -70,4 +70,8 @@ export class AssetComponent implements OnInit {
   public onCalculatePriceError(): void {
     this.notification.create('PRICING.ERROR');
   }
+
+  public getPricingAttributes(rightsReproduction: string): void {
+    this.assetService.getPriceAttributes(rightsReproduction);
+  }
 }
