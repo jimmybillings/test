@@ -12,7 +12,10 @@ import { Api, ApiResponse } from '../../../../interfaces/api.interface';
               <div *ngIf="rawField.suggestionHeading" (click)="closeSuggestions()" md-line class="heading">{{ rawField.suggestionHeading | translate}}</div>
               <md-list>
                 <md-list-item *ngFor="let suggestion of suggestions">
-                  <button (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}" [innerHTML]="parseSuggestion(suggestion)">
+                  <button *ngIf="!isCollection()" (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}" [innerHTML]="parseSuggestion(suggestion)">
+                  </button>
+                  <button *ngIf="isCollection()" (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}">
+                    {{suggestion}}
                   </button>
                 </md-list-item>
               </md-list>
@@ -89,9 +92,8 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
 
     public parseSuggestion(suggestion: string) {
         return suggestion
-            .replace(/[{()}]/g, '')
-            .split(this.fControl.value)
-            .join(' <strong>' + this.fControl.value + '</strong> ');
+            .split(this.userInput)
+            .join('<strong>' + this.userInput + '</strong>');
     }
 
     public inputKeyDown(event: KeyboardEvent): void {
@@ -172,13 +174,17 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
     }
 
     private normalizeSuggestions(suggestions: Array<string>) {
-        if (this.rawField.endPoint.indexOf('collection') === -1) {
+        if (!this.isCollection()) {
             var index = suggestions.indexOf(this.fControl.value);
             if (index > -1) suggestions.splice(index, 1);
         }
 
         suggestions.unshift(this.fControl.value);
         return suggestions;
+    }
+
+    private isCollection() {
+        return (this.rawField.endPoint.indexOf('collection') > -1)
     }
 
     private buildParams() {

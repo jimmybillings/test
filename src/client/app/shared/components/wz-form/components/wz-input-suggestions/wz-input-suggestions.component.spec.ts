@@ -145,8 +145,12 @@ export function main() {
 
     describe('parseSuggestion', () => {
       it('removes any parentheses and wraps any words that match the user input with <strong> tags', () => {
+        mockApi.getResponse = {list: ['test', 'testing', 'testing 123']};
+        componentUnderTest.rawField.endPoint = 'collection/search'
+        componentUnderTest.suggestionChangeListener();
+        componentUnderTest.activeSuggestion = 'cat';
         componentUnderTest.fControl.setValue('dog');
-        expect(componentUnderTest.parseSuggestion('dog-(hugging)')).toEqual(' <strong>dog</strong> -hugging');
+        expect(componentUnderTest.parseSuggestion('dog-(hugging)')).toEqual('<strong>dog</strong>-(hugging)');
       });
     });
 
