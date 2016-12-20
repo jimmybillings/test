@@ -24,6 +24,7 @@
       *ngIf="uiState.headerIsExpanded()| async"
       [currentUser]="currentUser"
       [uiState]="uiState"
+      [state]="state"
       [config]="(uiConfig.get('searchBox') | async).config"
       (searchContext)="newSearchContext($event)"
       (toggleFilterTree)="toggleFilterTreePreference()">
