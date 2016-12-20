@@ -1,0 +1,14 @@
+<wz-player
+  [asset]="asset"
+  [mode]="'edit'"
+  (timeUpdate)="onTimeUpdate($event)"
+  (durationUpdate)="onDurationUpdate($event);">
+</wz-player>
+<br/>
+<wz-subclip-controls
+  [markers]="subclipMarkers"
+  (seekRequested)="requestSeekTo($event)"
+  (playSubclipRequested)="requestPlaySubclip($event)"
+  (markersChanged)="onSubclipMarkersChanged($event)"
+  (markersCleared)="onSubclipMarkersCleared($event)">
+</wz-subclip-controls>

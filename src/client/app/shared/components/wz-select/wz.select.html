@@ -1,0 +1,23 @@
+<div class="wz-select-menu-trigger" [md-menu-trigger-for]="wzSelectMenu">
+	<div layout="row" layout-align="space-between center">
+		<span class="option-text">
+      <span>{{ trPrefix + selectedOption.name | translate }}</span>
+		</span>
+		<span class="select-icon">
+      <md-icon>arrow_drop_down</md-icon>
+    </span>
+	</div>
+</div>
+
+<md-menu class="wz-select-menu" #wzSelectMenu>
+	<div class="dense group" *ngFor="let option of options">
+		<button md-menu-item (click)="onSelectOption(option)">
+      <span class="icon">
+        <md-icon *ngIf="option.name === selectedOption.name">check</md-icon>
+      </span>
+      <span class="text">
+        {{ trPrefix + option.name | translate }}
+      </span>
+    </button>
+	</div>
+</md-menu>

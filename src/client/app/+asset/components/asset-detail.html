@@ -85,22 +85,36 @@
 
 	<div layout="row" flex="" layout-align="center">
 		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
-			<div flex-gt-sm="66" flex="100" class="responsive-video">
+			<div *ngIf="userCan.createSubclips()" flex-gt-sm="66" flex="100" class="responsive-video">
+        <wz-subclip-player
+          [asset]="asset"
+          [subclipMarkers]="subclipMarkers"
+          (subclipMarkersChanged)="onSubclipMarkersChanged($event)"
+          (subclipMarkersCleared)="onSubclipMarkersCleared()">
+        </wz-subclip-player>
+      </div>
+			<div *ngIf="!userCan.createSubclips()" flex-gt-sm="66" flex="100" class="responsive-video">
 				<wz-player [asset]="asset"></wz-player>
-			</div>
+      </div>
 			<div flex-gt-sm="33" flex="100">
 				<div flex="" layout="column" class="primary-info">
 					<div class="primary-content">
-						<h4 class="title-txt" *ngIf="asset.primary[5].value != null">{{asset.primary[5].value}}</h4>
+						<h4 class="title-txt" *ngIf="asset.primary[5].value !== null">{{asset.primary[5].value}}</h4>
 						<p class="description-txt">{{asset.primary[6].value}}</p>
-						<span *ngIf="asset.price != 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
-						<span *ngIf="asset.price == 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
-						<md-card-actions layout="column" layout-align="center center" layout-wrap="">
-							<wz-transcode-select *ngIf="asset.transcodeTargets.length > 0" [transcodeTargets]="asset.transcodeTargets"
-								(selectTarget)="selectTarget($event)"></wz-transcode-select>
+						<md-card-actions *ngIf="asset.primary[3].value === 'Royalty Free'" layout="column" layout-align="center center" layout-wrap="">
+							<span *ngIf="asset.price !== 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
+							<span *ngIf="asset.price === 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
+							<wz-select *ngIf="asset.transcodeTargets.length > 0" [options]="asset.transcodeTargets" [trPrefix]="'ASSET.TRANSCODE_TARGETS.'"
+								(selectTarget)="selectTarget($event)"></wz-select>
 							<button md-raised-button [disabled]="!currentUser.loggedIn()" (click)="addAssetToCart(asset.assetId); addToCartToast.show()"
 								class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
-							<!--<button *ngIf="asset.price == 0" md-button (click)="someFunction()" class="is-outlined">Calculate Price</button>-->
+						</md-card-actions>
+						<md-card-actions *ngIf="asset.primary[3].value !== 'Royalty Free'" layout="column" layout-align="center center" layout-wrap="">
+							<span *ngIf="asset.price !== 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
+							<span *ngIf="asset.price === 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
+							<button md-button (click)="calculatePricing.show()" class="is-outlined">{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
+							<button md-raised-button [disabled]="!currentUser.loggedIn()" (click)="addAssetToCart(asset.assetId); addToCartToast.show()"
+								class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
 						</md-card-actions>
 					</div>
 				</div>
@@ -133,3 +147,7 @@
 		<div flex-xs="100" md-elevation-z2>{{ 'ASSET.ADD_TO_CART_TOAST' | translate:{assetId:asset.assetId} }}</div>
 	</div>
 </wz-toast>
+
+<wz-dialog class="price-attributes" #calculatePricing>
+	<wz-pricing [options]="asset.pricing" (calculatePricing)="calculatePricing.close(); onCalculatePrice($event)" (error)="calculatePricing.close(); onCalculatePriceError()"></wz-pricing>
+</wz-dialog>

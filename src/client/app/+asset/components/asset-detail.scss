@@ -155,9 +155,9 @@ section.preview-bk {
         } 
       }
       md-card-actions {
-        wz-transcode-select {
+        wz-select {
           width: 100%;
-          div.transcode-target-menu-trigger {
+          div.wz-select-menu-trigger {
             box-shadow: inset -2px -2px 0px 0px md-color($md-grey, 900);
             background-color: rgba(md-color($md-grey, 700), .5);
             @include text-contrast(md-color($md-grey, 700));
@@ -363,4 +363,34 @@ asset-share-link .link {
       color: md-color($primary);
     }
   }
+}
+
+div.wz-dialog {
+  wz-pricing md-card {
+    width: 28vw;
+    md-card-actions form {
+      span.input {
+        margin: 0 rem(1);
+        label {
+          color: md-color($md-grey, 700);
+        }
+        select {
+          border: none;
+          height: rem(4);
+          margin: rem(.25) 0;
+          width: 95%;
+          background-color: rgba(md-color($md-grey, 300), .5);
+          &:disabled {
+            background-color: rgba(md-color($md-grey, 100), .3);
+          }
+        }
+      }
+      div.submit-btn {
+        button.submit {
+          width: 70%;
+          margin: rem(2) 0;
+        }
+      }
+    }
+  } 
 }

@@ -19,6 +19,8 @@ import { WzPaginationComponent } from './components/wz-pagination/wz.pagination.
 import { WzPikaDayDirective } from './components/wz-pikaday/wz-pikaday.directive';
 import { WzClipBoardDirective } from './components/wz-clipboard/wz-clipboard.directive';
 import { WzPlayerComponent } from './components/wz-player/wz.player.component';
+import { WzSubclipPlayerComponent } from './components/wz-subclip-player/wz.subclip-player.component';
+import { WzSubclipControlsComponent } from './components/wz-subclip-controls/wz.subclip-controls.component';
 import { WzToastComponent, WzToastPortalDirective } from './components/wz-toast/wz.toast.component';
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
@@ -29,13 +31,15 @@ import { CollectionFormComponent } from '../application/collection-tray/componen
 import { WzSortComponent } from './components/wz-sort/wz.sort.component';
 import { CollectionLinkComponent } from '../+collection/components/collection-link.component';
 import { EqualValidatorDirective } from './components/wz-form/wz-validators/wz-equal-validator.directive';
-import { WzTranscodeSelectComponent } from './components/wz-transcode-select/wz.transcode-select.component';
+import { WzSelectComponent } from './components/wz-select/wz.select.component';
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 import { WzSpeedviewComponent, WzSpeedviewPortalDirective } from './components/wz-speedview/wz.speedview.component';
 import { WzSpeedviewDirective } from './components/wz-speedview/wz.speedview.directive';
+import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
 import { WzAutocompleteSearchComponent } from './components/wz-autocomplete-search/wz-autocomplete-search.component';
+
 // Shared pipes
-  import { ValuesPipe } from './pipes/values.pipe';
+import { ValuesPipe } from './pipes/values.pipe';
 
 // Shared resolvers
 import { AssetResolver } from '../+asset/services/asset.resolver';
@@ -65,6 +69,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzPaginationComponent,
     WzPikaDayDirective,
     WzPlayerComponent,
+    WzSubclipPlayerComponent,
+    WzSubclipControlsComponent,
     WzToastComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
@@ -80,12 +86,13 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSortComponent,
     CollectionLinkComponent,
     EqualValidatorDirective,
-    WzTranscodeSelectComponent,
+    WzSelectComponent,
     WzClipBoardDirective,
     WzTermsComponent,
     WzSpeedviewComponent,
     WzSpeedviewDirective,
     WzSpeedviewPortalDirective,
+    WzPricingComponent,
     WzAutocompleteSearchComponent
   ],
   exports: [
@@ -98,6 +105,8 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzPaginationComponent,
     WzPikaDayDirective,
     WzPlayerComponent,
+    WzSubclipPlayerComponent,
+    WzSubclipControlsComponent,
     WzToastComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
@@ -120,12 +129,13 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSortComponent,
     CollectionLinkComponent,
     EqualValidatorDirective,
-    WzTranscodeSelectComponent,
+    WzSelectComponent,
     WzClipBoardDirective,
     WzTermsComponent,
     WzSpeedviewComponent,
     WzSpeedviewDirective,
     WzSpeedviewPortalDirective,
+    WzPricingComponent,
     WzAutocompleteSearchComponent
   ],
   entryComponents: [WzNotificationComponent]

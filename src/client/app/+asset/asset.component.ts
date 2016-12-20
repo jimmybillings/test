@@ -63,4 +63,11 @@ export class AssetComponent implements OnInit {
     this.cartSummary.addAssetToProjectInCart(asset.assetId, asset.selectedTranscodeTarget);
   }
 
+  public onCalculatePrice(event: any): void {
+    this.assetService.getPrice(event.assetId, event.attributes).take(1).subscribe();
+  }
+
+  public onCalculatePriceError(): void {
+    this.notification.create('PRICING.ERROR');
+  }
 }
