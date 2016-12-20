@@ -25,16 +25,16 @@ import { Api, ApiResponse } from '../../../../interfaces/api.interface';
 })
 
 export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
-    
+
     @Input() fControl: FormControl;
     @Input() rawField: any;
     @Output() newSuggestion = new EventEmitter();
-    
+
     public suggestions: Array<string> = [];
     public activeSuggestion: string;
-    
+
     private clickCatcher: any;
-    public inputSubscription: Subscription;
+    private inputSubscription: Subscription;
     private userInput: string = '';
 
     constructor(
@@ -184,7 +184,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
     }
 
     private isCollection() {
-        return (this.rawField.endPoint.indexOf('collection') > -1)
+        return (this.rawField.endPoint.indexOf('collection') > -1);
     }
 
     private buildParams() {

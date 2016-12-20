@@ -1,6 +1,5 @@
 import { WzAutocompleteSearchComponent } from './wz-autocomplete-search.component';
-import { FormBuilder, FormControl } from '@angular/forms';
-import { EventEmitter } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 export function main() {
   describe('Wz autocomplete component', () => {
@@ -14,10 +13,10 @@ export function main() {
     });
     let componentUnderTest: WzAutocompleteSearchComponent;
     let fb: FormBuilder = new FormBuilder();
-    let wzInputSuggestions:any = {
+    let wzInputSuggestions: any = {
       destroySubscription: jasmine.createSpy('destroySubscription'),
       suggestionChangeListener: jasmine.createSpy('suggestionChangeListener')
-    }
+    };
     beforeEach(() => {
       componentUnderTest = new WzAutocompleteSearchComponent(fb);
       componentUnderTest.wzInputSuggestions = wzInputSuggestions;
@@ -74,7 +73,7 @@ export function main() {
         componentUnderTest.state = '/search;q=;i=1;n=100;sortId=3';
         expect(componentUnderTest.searchForm.controls['query'].value).toEqual('');
       });
-      
+
 
       it('Does nothing if there are no search params', () => {
         componentUnderTest.searchForm.controls['query'].setValue('cat');

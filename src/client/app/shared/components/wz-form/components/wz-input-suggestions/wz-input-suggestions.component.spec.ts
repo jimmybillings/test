@@ -7,7 +7,7 @@ import { Api } from '../../../../interfaces/api.interface';
 export function main() {
   describe('Wz Input Suggestions Component', () => {
     let componentUnderTest: WzInputSuggestionsComponent, mockApi: MockApiService, mockRenderer: any, mockDetector: any;
-    mockRenderer = { listenGlobal: jasmine.createSpy('listenGlobal').and.callFake((a: any, b: any, c: Function) => { c(); return () => {} }) };
+    mockRenderer = { listenGlobal: jasmine.createSpy('listenGlobal').and.callFake((a: any, b: any, c: Function) => { c(); return () => { return true; }; }) };
     mockDetector = { markForCheck: jasmine.createSpy('markForCheck') };
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
@@ -79,12 +79,12 @@ export function main() {
         componentUnderTest.activeSuggestion = 'cat';
         componentUnderTest.fControl.setValue('dog');
         expect(componentUnderTest.activeSuggestion).toEqual(null);
-        expect(mockApi.get).toHaveBeenCalledWith(Api.Assets, componentUnderTest.rawField.endPoint, 
-        { parameters: Object.assign({}, {'maxTerms': '10'}, { text: 'dog' }, { q: 'dog' })});
+        expect(mockApi.get).toHaveBeenCalledWith(Api.Assets, componentUnderTest.rawField.endPoint,
+          { parameters: Object.assign({}, { 'maxTerms': '10' }, { text: 'dog' }, { q: 'dog' }) });
       });
 
       it('handles flat arrays', () => {
-        mockApi.getResponse = {list: ['test', 'testing', 'testing 123']};
+        mockApi.getResponse = { list: ['test', 'testing', 'testing 123'] };
         componentUnderTest.suggestionChangeListener();
         componentUnderTest.activeSuggestion = 'cat';
         componentUnderTest.fControl.setValue('dog');
@@ -92,7 +92,7 @@ export function main() {
       });
 
       it('handles collections', () => {
-        mockApi.getResponse = {items: [{name: 'test'}, {name: 'testing'}, {name:'testing 123'}]};
+        mockApi.getResponse = { items: [{ name: 'test' }, { name: 'testing' }, { name: 'testing 123' }] };
         componentUnderTest.suggestionChangeListener();
         componentUnderTest.activeSuggestion = 'cat';
         componentUnderTest.fControl.setValue('dog');
@@ -100,7 +100,7 @@ export function main() {
       });
 
       it('removes a suggestion if it\'s a direct match with what the user typed in', () => {
-        mockApi.getResponse = {list: ['dog', 'test', 'testing', 'testing 123']};
+        mockApi.getResponse = { list: ['dog', 'test', 'testing', 'testing 123'] };
         componentUnderTest.suggestionChangeListener();
         componentUnderTest.activeSuggestion = 'cat';
         componentUnderTest.fControl.setValue('dog');
@@ -108,8 +108,8 @@ export function main() {
       });
 
       it('Do not hide suggestions that match the user search if it\s being used for collections', () => {
-        mockApi.getResponse = {list: ['test', 'testing', 'testing 123']};
-        componentUnderTest.rawField.endPoint = 'collection/search'
+        mockApi.getResponse = { list: ['test', 'testing', 'testing 123'] };
+        componentUnderTest.rawField.endPoint = 'collection/search';
         componentUnderTest.suggestionChangeListener();
         componentUnderTest.activeSuggestion = 'cat';
         componentUnderTest.fControl.setValue('dog');
@@ -145,8 +145,8 @@ export function main() {
 
     describe('parseSuggestion', () => {
       it('removes any parentheses and wraps any words that match the user input with <strong> tags', () => {
-        mockApi.getResponse = {list: ['test', 'testing', 'testing 123']};
-        componentUnderTest.rawField.endPoint = 'collection/search'
+        mockApi.getResponse = { list: ['test', 'testing', 'testing 123'] };
+        componentUnderTest.rawField.endPoint = 'collection/search';
         componentUnderTest.suggestionChangeListener();
         componentUnderTest.activeSuggestion = 'cat';
         componentUnderTest.fControl.setValue('dog');
@@ -158,18 +158,18 @@ export function main() {
       describe('responds to users hitting the tab button', () => {
         it('using event.which', () => {
           spyOn(componentUnderTest, 'closeSuggestions');
-          let eve:any = {which: 9};
+          let eve: any = { which: 9 };
           componentUnderTest.inputKeyDown(eve);
           expect(componentUnderTest.closeSuggestions).toHaveBeenCalled();
         });
 
         it('using event.keyCode', () => {
           spyOn(componentUnderTest, 'closeSuggestions');
-          let eve:any = {keyCode: 9};
+          let eve: any = { keyCode: 9 };
           componentUnderTest.inputKeyDown(eve);
           expect(componentUnderTest.closeSuggestions).toHaveBeenCalled();
         });
-        
+
       });
 
       describe('responds to user hitting the up arrow', () => {
@@ -177,7 +177,7 @@ export function main() {
           it('Sets active suggestion to the first suggestion in the array if one has\'nt already been selected', () => {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'tes';
-            let eve:any = {which: 38, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { which: 38, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.activeSuggestion).toEqual('test');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -186,7 +186,7 @@ export function main() {
           it('There are more suggestions above the current suggestion so select the next', () => {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'testing';
-            let eve:any = {which: 38, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { which: 38, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.activeSuggestion).toEqual('test');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -195,7 +195,7 @@ export function main() {
           it('There are no more suggestions above the current suggestion so loop back around and select the last', () => {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'test';
-            let eve:any = {which: 38, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { which: 38, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.activeSuggestion).toEqual('test 123');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -206,7 +206,7 @@ export function main() {
           it('Sets active suggestion to the first suggestion in the array if one has\'nt already been selected', () => {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'tes';
-            let eve:any = {keyCode: 38, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { keyCode: 38, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.activeSuggestion).toEqual('test');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -215,7 +215,7 @@ export function main() {
           it('There are more suggestions above the current suggestion so select the next', () => {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'testing';
-            let eve:any = {keyCode: 38, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { keyCode: 38, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.activeSuggestion).toEqual('test');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -224,13 +224,13 @@ export function main() {
           it('There are no more suggestions above the current suggestion so loop back around and select the last', () => {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'test';
-            let eve:any = {keyCode: 38, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { keyCode: 38, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.activeSuggestion).toEqual('test 123');
             expect(eve.preventDefault).toHaveBeenCalled();
           });
         });
-        
+
       });
 
       describe('responds to user hitting the down arrow', () => {
@@ -238,7 +238,7 @@ export function main() {
           it('Sets active suggestion to the second suggestion in the array if one has\'nt already been selected', () => {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'tes';
-            let eve:any = {which: 40, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { which: 40, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.activeSuggestion).toEqual('testing');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -247,7 +247,7 @@ export function main() {
           it('There are more suggestions below the current suggestion so select the next', () => {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'testing';
-            let eve:any = {which: 40, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { which: 40, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.activeSuggestion).toEqual('test 123');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -256,7 +256,7 @@ export function main() {
           it('There are no more suggestions below the current suggestion so loop back around and select the first', () => {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'test 123';
-            let eve:any = {which: 40, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { which: 40, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.activeSuggestion).toEqual('test');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -267,7 +267,7 @@ export function main() {
           it('Sets active suggestion to the second suggestion in the array if one has\'nt already been selected', () => {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'tes';
-            let eve:any = {keyCode: 40, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { keyCode: 40, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.activeSuggestion).toEqual('testing');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -276,7 +276,7 @@ export function main() {
           it('There are more suggestions below the current suggestion so select the next', () => {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'testing';
-            let eve:any = {keyCode: 40, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { keyCode: 40, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.activeSuggestion).toEqual('test 123');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -285,13 +285,13 @@ export function main() {
           it('There are no more suggestions below the current suggestion so loop back around and select the first', () => {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'test 123';
-            let eve:any = {keyCode: 40, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { keyCode: 40, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.activeSuggestion).toEqual('test');
             expect(eve.preventDefault).toHaveBeenCalled();
           });
         });
-        
+
       });
 
       describe('responds to user hitting the enter key', () => {
@@ -300,7 +300,7 @@ export function main() {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'testing';
             spyOn(componentUnderTest, 'selectSuggestion');
-            let eve:any = {which: 10, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { which: 10, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.selectSuggestion).toHaveBeenCalledWith('testing');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -310,7 +310,7 @@ export function main() {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'testing';
             spyOn(componentUnderTest, 'selectSuggestion');
-            let eve:any = {which: 13, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { which: 13, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.selectSuggestion).toHaveBeenCalledWith('testing');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -321,7 +321,7 @@ export function main() {
             componentUnderTest.activeSuggestion = null;
             spyOn(componentUnderTest.newSuggestion, 'emit');
             spyOn(componentUnderTest, 'closeSuggestions');
-            let eve:any = {which: 13, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { which: 13, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.newSuggestion.emit).toHaveBeenCalled();
             expect(componentUnderTest.closeSuggestions).toHaveBeenCalled();
@@ -333,13 +333,13 @@ export function main() {
             componentUnderTest.activeSuggestion = null;
             spyOn(componentUnderTest.newSuggestion, 'emit');
             spyOn(componentUnderTest, 'closeSuggestions');
-            let eve:any = {which: 10, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { which: 10, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.newSuggestion.emit).toHaveBeenCalled();
             expect(componentUnderTest.closeSuggestions).toHaveBeenCalled();
             expect(eve.preventDefault).toHaveBeenCalled();
           });
-          
+
         });
 
         describe('using event.keyCode', () => {
@@ -347,7 +347,7 @@ export function main() {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'testing';
             spyOn(componentUnderTest, 'selectSuggestion');
-            let eve:any = {keyCode: 10, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { keyCode: 10, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.selectSuggestion).toHaveBeenCalledWith('testing');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -357,7 +357,7 @@ export function main() {
             componentUnderTest.suggestions = ['test', 'testing', 'test 123'];
             componentUnderTest.activeSuggestion = 'testing';
             spyOn(componentUnderTest, 'selectSuggestion');
-            let eve:any = {keyCode: 13, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { keyCode: 13, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.selectSuggestion).toHaveBeenCalledWith('testing');
             expect(eve.preventDefault).toHaveBeenCalled();
@@ -368,7 +368,7 @@ export function main() {
             componentUnderTest.activeSuggestion = null;
             spyOn(componentUnderTest.newSuggestion, 'emit');
             spyOn(componentUnderTest, 'closeSuggestions');
-            let eve:any = {keyCode: 13, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { keyCode: 13, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.newSuggestion.emit).toHaveBeenCalled();
             expect(componentUnderTest.closeSuggestions).toHaveBeenCalled();
@@ -380,7 +380,7 @@ export function main() {
             componentUnderTest.activeSuggestion = null;
             spyOn(componentUnderTest.newSuggestion, 'emit');
             spyOn(componentUnderTest, 'closeSuggestions');
-            let eve:any = {keyCode: 10, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { keyCode: 10, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.newSuggestion.emit).toHaveBeenCalled();
             expect(componentUnderTest.closeSuggestions).toHaveBeenCalled();
@@ -393,7 +393,7 @@ export function main() {
             spyOn(componentUnderTest.newSuggestion, 'emit');
             spyOn(componentUnderTest, 'closeSuggestions');
             spyOn(componentUnderTest, 'selectSuggestion');
-            let eve:any = {keyCode: 10, preventDefault: jasmine.createSpy('preventDefault')};
+            let eve: any = { keyCode: 10, preventDefault: jasmine.createSpy('preventDefault') };
             componentUnderTest.inputKeyDown(eve);
             expect(componentUnderTest.newSuggestion.emit).not.toHaveBeenCalled();
             expect(componentUnderTest.closeSuggestions).not.toHaveBeenCalled();

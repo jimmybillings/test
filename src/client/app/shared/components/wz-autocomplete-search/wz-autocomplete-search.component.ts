@@ -13,10 +13,10 @@ export class WzAutocompleteSearchComponent {
   @Input() public currentUser: any;
   @Input() public uiState: UiState;
   @Input()
-  set state (value:string) {
+  set state(value: string) {
     this.updateSearchBoxValue(value);
   }
-  @Output() public  searchContext = new EventEmitter();
+  @Output() public searchContext = new EventEmitter();
   @Output() public toggleFilterTree = new EventEmitter();
 
   public searchForm: FormGroup;
@@ -31,7 +31,7 @@ export class WzAutocompleteSearchComponent {
   };
 
   @ViewChild(WzInputSuggestionsComponent) public wzInputSuggestions: WzInputSuggestionsComponent;
-  
+
   constructor(public fb: FormBuilder) {
     this.searchForm = this.fb.group({ query: ['', Validators.required] });
   }
@@ -42,7 +42,7 @@ export class WzAutocompleteSearchComponent {
   }
 
   public onSubmit(query?: any, searchTerm = false) {
-   if (query) {
+    if (query) {
       query = (searchTerm) ? '"' + query + '"' : query;
       this.searchContext.emit(query);
     } else {
@@ -62,7 +62,7 @@ export class WzAutocompleteSearchComponent {
       (<FormControl>this.searchForm.controls['query']).patchValue(obj['q']);
       this.wzInputSuggestions.destroySubscription();
       this.wzInputSuggestions.suggestionChangeListener();
-    }    
+    }
   }
 
 }
