@@ -367,8 +367,10 @@ asset-share-link .link {
 
 div.wz-dialog {
   wz-pricing md-card {
-    width: 28vw;
+    padding: 0;
+    width: 32vw;
     md-card-actions form {
+      margin: 0 rem(2.8);
       span.input {
         margin: 0 rem(1);
         label {
@@ -381,7 +383,7 @@ div.wz-dialog {
           width: 95%;
           background-color: rgba(md-color($md-grey, 300), .5);
           &:disabled {
-            background-color: rgba(md-color($md-grey, 100), .3);
+            background-color: rgba(md-color($md-grey, 100), .5);
           }
         }
       }

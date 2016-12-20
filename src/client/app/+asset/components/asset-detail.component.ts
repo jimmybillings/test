@@ -27,6 +27,7 @@ export class AssetDetailComponent implements OnChanges {
 	@Output() onRemoveFromCollection = new EventEmitter();
 	@Output() onDownloadComp = new EventEmitter();
 	@Output() addToCart = new EventEmitter();
+	@Output() getPriceAttributes = new EventEmitter();
 	@Output() calculatePrice = new EventEmitter();
 	@Output() calculatePriceError = new EventEmitter();
 	@ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
@@ -84,6 +85,11 @@ export class AssetDetailComponent implements OnChanges {
 
 	public onCalculatePriceError(): void {
 		this.calculatePriceError.emit();
+	}
+
+	public getPricingAttributes(): void {
+		if (this.asset.pricing.length > 0) return;
+		this.getPriceAttributes.emit(this.asset.primary[3].value);
 	}
 
 	private selectedTarget() {

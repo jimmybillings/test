@@ -13,9 +13,7 @@ export class AssetResolver {
     if (route.params['share_key']) {
       return this.asset.getData(route.params['name'], route.params['share_key']);
     } else {
-      return this.asset.getData(route.params['name']).do((asset: any) => {
-        this.asset.getPriceAttributes(asset.detailTypeMap.primary[3].value);
-      });
+      return this.asset.getData(route.params['name']);
     }
   }
 }
