@@ -6,7 +6,7 @@ import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 import { CurrentUser } from '../../shared/services/current-user.model';
 
-const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '', price: 0, pricing: [] };
+const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '', price: 0 };
 
 export const asset: ActionReducer<any> = (state = initAsset, action: Action) => {
   switch (action.type) {
@@ -52,8 +52,7 @@ export class AssetService {
   public getPrice(id: any, attributes?: any): Observable<any> {
     let formatedAttributes = attributes ? this.formatAttributes(attributes) : null;
     let parameters = formatedAttributes ? { region: 'AAA', attributes: formatedAttributes }  : { region: 'AAA' };
-    return this.api.get(Api.Orders, `priceBook/price/${id}`, { parameters })
-      .do(response => this.setPrice(response));
+    return this.api.get(Api.Orders, `priceBook/price/${id}`, { parameters });
   }
 
   public getshareLink(id: any, accessStartDate: any, accessEndDate: any): Observable<any> {
@@ -90,39 +89,21 @@ export class AssetService {
     });
   }
 
-  public setPrice(price: any) {
-    this.set({
-      type: 'SET_ASSET', payload: {
-        price: price.price
-      }
-    });
-  }
-
-  public getPriceAttributes(priceModel: string): void {
+  public getPriceAttributes(priceModel: string): Observable<any> {
     priceModel = priceModel ? priceModel.split(' ').join('') : 'RightsManaged';
-    this.api.get(
+    return this.api.get(
       Api.Orders,
       'priceBook/priceAttributes',
       { parameters: { region: 'AAA', priceModel: priceModel } }
-    ).take(1).subscribe((data: any) => {
-      // ------------ take this out when API and Config are stable -------------
-      data.list.filter((o: any) => o.name === 'Project Type')[0].primary = true;
-      // -----------------------------------------------------------------------
-      this.setPricing(data.list);
+    ).map((data: any) => {
+      data.list[0].primary = true;
+      return data.list;
     });
   }
 
   public getSpeedviewData(assetId: number): Observable<any> {
     let path: string = this.currentUser.loggedIn() ? `assetInfo/view/SpeedView` : `assetInfo/anonymous/view/SpeedView`;
     return this.api.get(Api.Assets, `${path}/${assetId}`);
-  }
-
-  private setPricing(pricing: any): void {
-    this.set({
-      type: 'SET_ASSET', payload: {
-        pricing: pricing
-      }
-    });
   }
 
   private formatAttributes(attrs: any): any {

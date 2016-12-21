@@ -23,6 +23,8 @@ export class AssetDetailComponent implements OnChanges {
 	@Input() public collection: Collection;
 	@Input() public searchContext: SearchContext;
 	@Input() public uiState: UiState;
+	@Input() public calculatedPrice: any;
+	@Input() public pricingAttributes: any;
 	@Output() onAddToCollection = new EventEmitter();
 	@Output() onRemoveFromCollection = new EventEmitter();
 	@Output() onDownloadComp = new EventEmitter();
@@ -88,7 +90,7 @@ export class AssetDetailComponent implements OnChanges {
 	}
 
 	public getPricingAttributes(): void {
-		if (this.asset.pricing.length > 0) return;
+		if (this.pricingAttributes) return;
 		this.getPriceAttributes.emit(this.asset.primary[3].value);
 	}
 

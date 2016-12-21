@@ -120,6 +120,14 @@ section.preview-bk {
           margin-bottom: rem(16.0);
         }
       }
+      .pricing {
+        position: absolute;
+        bottom: rem(12.2);
+        right: rem(12.2);
+        font-size: 1.7em;
+        font-weight: 400;
+        line-height: 1;
+      }
       .price {
         position: absolute;
         bottom: rem(12.2);

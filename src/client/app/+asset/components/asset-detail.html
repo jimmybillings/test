@@ -110,7 +110,10 @@
 								class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
 						</md-card-actions>
 						<md-card-actions *ngIf="asset.primary[3].value !== 'Royalty Free'" layout="column" layout-align="center center" layout-wrap="">
-							<span *ngIf="asset.price !== 0" class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
+							<span *ngIf="asset.price !== 0 && !calculatedPrice">
+								<span class="pricing">Starting at </span><span class="price"> {{asset.price | currency:'USD':true:'1.2-2'}}</span>
+							</span>
+							<span *ngIf="calculatedPrice" class="price">{{calculatedPrice.price | currency:'USD':true:'1.2-2'}}</span>
 							<span *ngIf="asset.price === 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
 							<button [disabled]="!currentUser.loggedIn()" md-button (click)="getPricingAttributes(); calculatePricing.show()" class="is-outlined">{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
 							<button md-raised-button [disabled]="!currentUser.loggedIn()" (click)="addAssetToCart(asset.assetId); addToCartToast.show()"
@@ -149,7 +152,7 @@
 </wz-toast>
 
 <wz-dialog class="price-attributes" #calculatePricing>
-	<wz-pricing [options]="asset.pricing" (calculatePricing)="calculatePricing.close(); onCalculatePrice($event)"
+	<wz-pricing *ngIf="pricingAttributes" [options]="pricingAttributes" (calculatePricing)="calculatePricing.close(); onCalculatePrice($event)"
 		(error)="calculatePricing.close(); onCalculatePriceError()" (close)="calculatePricing.close()">
 	</wz-pricing>
 </wz-dialog>

@@ -9,6 +9,7 @@ import { CartSummaryService } from '../shared/services/cart-summary.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { SearchContext } from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -17,6 +18,8 @@ import { UiState } from '../shared/services/ui.state';
 })
 
 export class AssetComponent implements OnInit {
+  public pricingAttributes: Observable<any>;
+  public calculatedPrice: Observable<number>;
   private pageSize: number = 50;
 
   constructor(
@@ -64,7 +67,9 @@ export class AssetComponent implements OnInit {
   }
 
   public onCalculatePrice(event: any): void {
-    this.assetService.getPrice(event.assetId, event.attributes).take(1).subscribe();
+    this.assetService.getPrice(event.assetId, event.attributes).take(1).subscribe((data: any) => {
+      this.calculatedPrice = data;
+    });
   }
 
   public onCalculatePriceError(): void {
@@ -72,6 +77,6 @@ export class AssetComponent implements OnInit {
   }
 
   public getPricingAttributes(rightsReproduction: string): void {
-    this.assetService.getPriceAttributes(rightsReproduction);
+    this.pricingAttributes = this.assetService.getPriceAttributes(rightsReproduction);
   }
 }

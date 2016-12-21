@@ -6,6 +6,8 @@
     [collection]="activeCollection.data | async"
     [uiConfig]="uiConfig"
     [uiState]="uiState"
+    [calculatedPrice]="calculatedPrice"
+    [pricingAttributes]="pricingAttributes | async"
     (onAddToCollection)="addToCollection($event)"
     (onRemoveFromCollection)="removeFromCollection($event)"
     (onDownloadComp)="downloadComp($event)"
