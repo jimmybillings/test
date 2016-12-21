@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 
 import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
+import { CurrentUser } from '../../shared/services/current-user.model';
 
 const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '', price: 0, pricing: [] };
 
@@ -26,7 +27,8 @@ export class AssetService {
 
   constructor(
     public store: Store<any>,
-    public api: ApiService) {
+    public api: ApiService,
+    private currentUser: CurrentUser) {
     this.data = this.store.select('asset');
   }
 
@@ -108,6 +110,11 @@ export class AssetService {
       // -----------------------------------------------------------------------
       this.setPricing(data.list);
     });
+  }
+
+  public getSpeedviewData(assetId: number): Observable<any> {
+    let path: string = this.currentUser.loggedIn() ? `assetInfo/view/SpeedView` : `assetInfo/anonymous/view/SpeedView`;
+    return this.api.get(Api.Assets, `${path}/${assetId}`);
   }
 
   private setPricing(pricing: any): void {

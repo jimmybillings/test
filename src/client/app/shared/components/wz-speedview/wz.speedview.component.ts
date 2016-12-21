@@ -29,7 +29,7 @@ export class WzSpeedviewComponent implements OnDestroy {
   public offsetY: number;
   public viewRef: any;
   @Input() config: OverlayState = new OverlayState();
-  @Input() activeAsset: any;
+  @Input() speedviewData: any;
   @ViewChild(WzSpeedviewPortalDirective) private portal: WzSpeedviewPortalDirective;
   private overlayRef: OverlayRef = null;
 

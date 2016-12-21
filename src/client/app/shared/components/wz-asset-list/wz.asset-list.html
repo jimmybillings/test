@@ -5,7 +5,7 @@
   <li *ngFor="let asset of assets">
     <div class="asset">
       <div class="asset-name">{{asset.name}}</div>
-      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb" (mouseover)="setActiveAsset(asset)" wzSpeedview (showPreview)="showPreview($event)" (hidePreview)="hidePreview($event)">
+      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb" wzSpeedview (showPreview)="showSpeedview.emit({position: $event, asset: asset})" (hidePreview)="hideSpeedview.emit()">
         <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
         <span *ngIf="asset.metaData[0]" class="mdata-0">
           <span>{{asset.metaData[0].value}}</span>
@@ -90,5 +90,3 @@
     <div flex-xs="100" md-elevation-z2>{{ 'ASSET.ADD_TO_CART_TOAST' | translate:{assetId:assetId} }}</div>
   </div>
 </wz-toast>
-
-<wz-speedview [activeAsset]="activeAsset"></wz-speedview>

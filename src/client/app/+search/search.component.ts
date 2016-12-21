@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, Renderer } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AssetData } from './services/asset.data.service';
 import { UiConfig } from '../shared/services/ui.config';
@@ -14,7 +14,7 @@ import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 import { CartSummaryService } from '../shared/services/cart-summary.service';
 import { AssetService } from '../shared/services/asset.service';
-
+import { WzSpeedviewComponent } from '../shared/components/wz-speedview/wz.speedview.component';
 /**
  * Asset search page component - renders search page results
  */
@@ -33,11 +33,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   public assets: Observable<any>;
   public preferences: any;
   public sortOptions: any;
+  public speedviewData: any;
   private assetsStoreSubscription: Subscription;
   private configSubscription: Subscription;
   private preferencesSubscription: Subscription;
   private sortSubscription: Subscription;
   @ViewChild('searchFilter') private sidenav: any;
+  @ViewChild(WzSpeedviewComponent) private wzSpeedview: WzSpeedviewComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,7 +56,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     public uiState: UiState,
     public sortDefinition: SortDefinitionsService,
     public cartSummary: CartSummaryService,
-    public assetService: AssetService) { }
+    public assetService: AssetService,
+    private renderer: Renderer) { }
 
   ngOnInit(): void {
     this.preferencesSubscription = this.userPreferences.data.subscribe((data: any) => {
@@ -169,5 +172,23 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public addAssetToCart(asset: any): void {
     this.cartSummary.addAssetToProjectInCart(asset);
+  }
+
+  public showSpeedview(event: { asset: any, position: any }): void {
+    if (event.asset.speedviewData) {
+      this.speedviewData = Observable.of(event.asset.speedviewData);
+      this.wzSpeedview.show(event.position);
+    } else {
+      this.speedviewData = this.assetService.getSpeedviewData(event.asset.assetId).do((data: any) => {
+        event.asset.speedviewData = data;
+        this.wzSpeedview.show(event.position);
+      });
+    }
+    this.renderer.listenGlobal('document', 'scroll', () => this.wzSpeedview.destroy());
+  }
+
+  public hideSpeedview(): void {
+    this.speedviewData = null;
+    this.wzSpeedview.destroy();
   }
 }

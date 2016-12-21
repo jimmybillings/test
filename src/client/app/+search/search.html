@@ -53,9 +53,9 @@
 
 
 				<no-results *ngIf="!assets.items"></no-results>
-				<wz-asset-list [assets]="assets.items" [userCan]="userCan" [currentUser]="currentUser" [collection]="activeCollection.data | async" [assetService]="assetService"
+				<wz-asset-list [assets]="assets.items" [userCan]="userCan" [currentUser]="currentUser" [collection]="activeCollection.data | async"
 					(onAddToCollection)="addToCollection($event)" (onRemoveFromCollection)="removeFromCollection($event)" (onShowNewCollection)="showNewCollection($event)"
-					(addToCart)="addAssetToCart($event)" (onDownloadComp)="downloadComp($event)" class="{{config.viewType.value}}">
+					(addToCart)="addAssetToCart($event)" (onDownloadComp)="downloadComp($event)" (showSpeedview)="showSpeedview($event)" (hideSpeedview)="hideSpeedview()" class="{{config.viewType.value}}">
 				</wz-asset-list>
 				<wz-pagination *ngIf="assets.pagination.totalCount > 0" [pagination]="assets.pagination" (getPage)="changePage($event)"></wz-pagination>
 			</div>
@@ -66,3 +66,5 @@
 <md-menu x-position="before" #assetSortMenu="mdMenu">
 	<wz-sort-component [current]="sortOptions.currentSort" [items]="sortOptions.sorts" (sort)="onSortResults($event)"></wz-sort-component>
 </md-menu>
+
+<wz-speedview [speedviewData]="speedviewData | async"></wz-speedview>

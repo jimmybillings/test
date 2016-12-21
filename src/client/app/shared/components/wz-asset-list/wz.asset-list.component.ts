@@ -2,8 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChan
 import { Collection } from '../../interfaces/collection.interface';
 import { CurrentUser } from '../../services/current-user.model';
 import { MdMenuTrigger } from '@angular/material';
-import { WzSpeedviewComponent } from '../wz-speedview/wz.speedview.component';
-import { AssetService } from '../../services/asset.service';
+
 /**
  * Directive that renders a list of assets
  */
@@ -20,14 +19,15 @@ export class WzAssetListComponent implements OnChanges {
   @Input() public userCan: any;
   @Input() collection: Collection;
   @Input() currentUser: CurrentUser;
-  @Input() assetService: AssetService;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
   @Output() onShowNewCollection = new EventEmitter();
+  @Output() showSpeedview = new EventEmitter();
+  @Output() hideSpeedview = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
-  @ViewChild(WzSpeedviewComponent) wzSpeedview: WzSpeedviewComponent;
+
   private assetsArr: Array<number>;
   private assetId: any;
   private hasComp: any;
@@ -70,29 +70,6 @@ export class WzAssetListComponent implements OnChanges {
 
   public alreadyInCollection(asset: any): boolean {
     return this.assetsArr.indexOf(asset.assetId) > -1;
-  }
-
-  public showPreview(position: any): void {
-    this.wzSpeedview.show(position);
-    this.renderer.listenGlobal('document', 'scroll', () => this.wzSpeedview.destroy());
-  }
-
-  public hidePreview(): void {
-    this.wzSpeedview.destroy();
-  }
-
-  public setActiveAsset(asset: any): void {
-    if (asset === this.activeAsset) return;
-    this.activeAsset = asset;
-    if (asset.price && asset.priceBookName) return;
-    this.assetService.getPrice(asset.assetId).take(1).subscribe((data: any) => {
-      asset.price = data.price;
-      asset.priceBookName = data.priceBookName;
-    });
-  }
-
-  public translationReady(field: any) {
-    return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
   public formatType(format: any): string {
