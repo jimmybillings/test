@@ -19,7 +19,11 @@ export function main() {
       mockSearchContext = {};
       mockUiState = {};
       mockUserPreference = { openCollectionTray: jasmine.createSpy('openCollectionTray') };
-      mockAssetService = { downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})) };
+      mockAssetService = {
+        downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})),
+        getPrice: jasmine.createSpy('getPrice').and.returnValue(Observable.of({})),
+        getPriceAttributes: jasmine.createSpy('getPriceAttributes')
+      };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
       mockNotification = { create: jasmine.createSpy('create') };
       mockCartSummary = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
@@ -94,6 +98,30 @@ export function main() {
       it('Should call the cart summary service with correct params to add an asset to the cart', () => {
         componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
         expect(mockCartSummary.addAssetToProjectInCart).toHaveBeenCalledWith(123123, 'Target');
+      });
+    });
+
+    describe('onCalculatePrice', () => {
+      it('should call the getPrice method on the assetService', () => {
+        componentUnderTest.onCalculatePrice({ assetId: 1, attributes: {'a': 'b', 'c': 'd'} });
+
+        expect(mockAssetService.getPrice).toHaveBeenCalledWith(1, {'a': 'b', 'c': 'd'});
+      });
+    });
+
+    describe('onCalculatePriceError', () => {
+      it('should create a notification', () => {
+        componentUnderTest.onCalculatePriceError();
+
+        expect(mockNotification.create).toHaveBeenCalledWith('PRICING.ERROR');
+      });
+    });
+
+    describe('getPricingAttributes', () => {
+      it('should call the getPriceAttributes on the assetService', () => {
+        componentUnderTest.getPricingAttributes('Rights Managed');
+
+        expect(mockAssetService.getPriceAttributes).toHaveBeenCalledWith('Rights Managed');
       });
     });
   });
