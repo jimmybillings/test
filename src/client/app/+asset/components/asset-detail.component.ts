@@ -99,6 +99,7 @@ export class AssetDetailComponent implements OnChanges {
 	}
 
 	private parseNewAsset(asset: any) {
+		this.calculatedPrice = null;
 		if (Object.keys(asset.currentValue.detailTypeMap.common).length > 0) {
 			let targets = this.prepareNewTargets(asset.currentValue.transcodeTargets);
 			this.asset = Object.assign({}, this.asset, asset.currentValue.detailTypeMap, { transcodeTargets: targets });
