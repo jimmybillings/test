@@ -128,9 +128,7 @@ export class AssetService {
   private formatAttributes(attrs: any): any {
     let formatted: Array<string> = [];
     for (let attr in attrs) {
-      let name: string = attr.toLowerCase().split(' ').join('_');
-      let value: string = attrs[attr].toLowerCase().split(' ').join('_');
-      formatted.push(`${name}:${value}`);
+      formatted.push(`${attr}:${attrs[attr]}`);
     }
     return formatted.join(',');
   }
