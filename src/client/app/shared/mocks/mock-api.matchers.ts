@@ -167,6 +167,7 @@ export const mockApiMatchers: jasmine.CustomMatcherFactories = {
   },
 
   toHaveBeenCalledWithOverridingToken: (): jasmine.CustomMatcher => {
-    return optionMatcherFor('overridingToken', stringExpectationFormatterFor('overridingToken'), stringArgumentMapperFor('overridingToken'));
+    return optionMatcherFor('overridingToken', stringExpectationFormatterFor('overridingToken'),
+      stringArgumentMapperFor('overridingToken'));
   }
 };

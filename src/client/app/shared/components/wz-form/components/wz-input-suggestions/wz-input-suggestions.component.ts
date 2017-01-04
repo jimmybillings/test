@@ -1,4 +1,7 @@
-import { Component, Input, Output, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, Renderer, OnDestroy, EventEmitter } from '@angular/core';
+import {
+    Component, Input, Output, OnInit, ChangeDetectorRef,
+    ChangeDetectionStrategy, Renderer, OnDestroy, EventEmitter
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { ApiService } from '../../../../services/api.service';
@@ -7,19 +10,7 @@ import { Api, ApiResponse } from '../../../../interfaces/api.interface';
 @Component({
     moduleId: module.id,
     selector: 'wz-input-suggestions',
-    template: `<ng-content></ng-content>
-            <div class="suggestions-menu" *ngIf="suggestions.length > 1" [ngClass]="{'revealed': suggestions.length > 1}">
-              <div *ngIf="rawField.suggestionHeading" (click)="closeSuggestions()" md-line class="heading">{{ rawField.suggestionHeading | translate}}</div>
-              <md-list>
-                <md-list-item *ngFor="let suggestion of suggestions">
-                  <button *ngIf="!isCollection()" (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}" [innerHTML]="parseSuggestion(suggestion)">
-                  </button>
-                  <button *ngIf="isCollection()" (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}">
-                    {{suggestion}}
-                  </button>
-                </md-list-item>
-              </md-list>
-            </div>`,
+    templateUrl: 'wz-input-suggestions.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styles: ['md-list-item:first-child{ display: none;}']
 })

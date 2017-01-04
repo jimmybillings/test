@@ -38,7 +38,8 @@ export function main() {
     it('Should change the current language', inject([MultilingualService], (service: MultilingualService) => {
       spyOn(service.store, 'dispatch').and.callThrough();
       service.setLanguage('fr');
-      expect(service.store.dispatch).toHaveBeenCalledWith({ type: '[Multilingual] LANG_CHANGE', payload: { lang: '/crxextapi.dev.wzplatform.com/api/identities/v1/translation/core/fr' } });
+      expect(service.store.dispatch).toHaveBeenCalledWith(
+        { type: '[Multilingual] LANG_CHANGE', payload: { lang: '/crxextapi.dev.wzplatform.com/api/identities/v1/translation/core/fr' } });
       service.store.select('i18n').subscribe((i18n: any) => {
         expect(i18n.lang).toBe('/crxextapi.dev.wzplatform.com/api/identities/v1/translation/core/fr');
       });

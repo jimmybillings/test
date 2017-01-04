@@ -137,7 +137,13 @@ export function main() {
 
       it('edits a line item when notified with EDIT_LINE_ITEM', () => {
         let mockLineItem = {};
-        componentUnderTest.onNotification({ type: 'EDIT_LINE_ITEM', payload: { lineItem: mockLineItem, fieldToEdit: { selectedTranscodeTarget: '1080i' } } });
+        componentUnderTest.onNotification(
+          {
+            type: 'EDIT_LINE_ITEM',
+            payload: {
+              lineItem: mockLineItem, fieldToEdit: { selectedTranscodeTarget: '1080i' }
+            }
+          });
 
         expect(mockCartService.editLineItem).toHaveBeenCalledWith(mockLineItem, { selectedTranscodeTarget: '1080i' });
       });

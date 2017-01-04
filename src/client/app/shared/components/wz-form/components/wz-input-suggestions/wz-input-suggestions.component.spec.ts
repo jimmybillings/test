@@ -7,7 +7,12 @@ import { Api } from '../../../../interfaces/api.interface';
 export function main() {
   describe('Wz Input Suggestions Component', () => {
     let componentUnderTest: WzInputSuggestionsComponent, mockApi: MockApiService, mockRenderer: any, mockDetector: any;
-    mockRenderer = { listenGlobal: jasmine.createSpy('listenGlobal').and.callFake((a: any, b: any, c: Function) => { c(); return () => { return true; }; }) };
+    mockRenderer = {
+      listenGlobal:
+      jasmine.createSpy('listenGlobal').and.callFake((a: any, b: any, c: Function) => {
+        c(); return () => { return true; };
+      })
+    };
     mockDetector = { markForCheck: jasmine.createSpy('markForCheck') };
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);

@@ -6,7 +6,10 @@ export function main() {
 
     let mockCurrentUser: any;
     let componentUnderTest: ProfileComponent;
-    const user: any = { emailAddress: 'jamesbonline@yahoo.com', firstName: 'james', lastName: 'billigns', password: '3978f324e14ac256b2994b754586e05f' };
+    const user: any = {
+      emailAddress: 'jamesbonline@yahoo.com',
+      firstName: 'james', lastName: 'billigns', password: '3978f324e14ac256b2994b754586e05f'
+    };
 
     beforeEach(() => {
       mockCurrentUser = { data: Observable.of(user) };

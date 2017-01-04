@@ -18,7 +18,8 @@ export function main() {
 
       finalAsset = {
         assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl', common: ['field'], filter: true,
-        id: 13, name: 'Core Packages', primary: [], secondary: [], siteName: 'core', transcodeTargets: [{ name: 'master_copy', selected: true },
+        id: 13, name: 'Core Packages', primary: [], secondary: [], siteName: 'core',
+        transcodeTargets: [{ name: 'master_copy', selected: true },
         { name: '1080i', selected: false }, { name: '1080p', selected: false }]
       };
       asset = { assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl' };

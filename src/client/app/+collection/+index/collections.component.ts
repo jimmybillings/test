@@ -40,29 +40,84 @@ export class CollectionsComponent implements OnInit, OnDestroy {
 
     this.filterOptions = [
       {
-        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.ALL', 'value': 'all', 'access': { 'accessLevel': 'all' } },
-        'second': { 'id': 1, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.OWNER', 'value': 'owner', 'access': { 'accessLevel': 'owner' } }
+        'first': {
+          'id': 0, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.ALL', 'value': 'all',
+          'access': { 'accessLevel': 'all' }
+        },
+        'second': {
+          'id': 1, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.OWNER',
+          'value': 'owner',
+          'access': { 'accessLevel': 'owner' }
+        }
       },
       {
-        'first': { 'id': 2, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.EDITOR', 'value': 'editor', 'access': { 'accessLevel': 'editor' } },
-        'second': { 'id': 3, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.VIEWER', 'value': 'viewer', 'access': { 'accessLevel': 'viewer' } }
+        'first': {
+          'id': 2, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.EDITOR',
+          'value': 'editor',
+          'access': { 'accessLevel': 'editor' }
+        },
+        'second': {
+          'id': 3, 'name':
+          'COLLECTION.INDEX.FILTER_DD_MENU.VIEWER',
+          'value': 'viewer',
+          'access': { 'accessLevel': 'viewer' }
+        }
       },
       {
-        'first': { 'id': 4, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.RESEARCHER', 'value': 'researcher', 'access': { 'accessLevel': 'researcher' } }
+        'first': {
+          'id': 4,
+          'name': 'COLLECTION.INDEX.FILTER_DD_MENU.RESEARCHER',
+          'value': 'researcher',
+          'access': { 'accessLevel': 'researcher' }
+        }
       }
     ];
     this.sortOptions = [
       {
-        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_NEWEST', 'value': 'modNewest', 'sort': { 's': 'lastUpdated', 'd': true } },
-        'second': { 'id': 1, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_OLDEST', 'value': 'modOldest', 'sort': { 's': 'lastUpdated', 'd': false } }
+        'first': {
+          'id': 0,
+          'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_NEWEST',
+          'value': 'modNewest',
+          'sort': { 's': 'lastUpdated', 'd': true }
+        },
+        'second': {
+          'id': 1,
+          'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_MOD_OLDEST',
+          'value': 'modOldest',
+          'sort': {
+            's': 'lastUpdated', 'd': false
+          }
+        }
       },
       {
-        'first': { 'id': 2, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_NEWEST', 'value': 'createNewest', 'sort': { 's': 'createdOn', 'd': true } },
-        'second': { 'id': 3, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_OLDEST', 'value': 'createOldest', 'sort': { 's': 'createdOn', 'd': false } }
+        'first': {
+          'id': 2,
+          'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_NEWEST',
+          'value': 'createNewest',
+          'sort': {
+            's': 'createdOn', 'd': true
+          }
+        },
+        'second': {
+          'id': 3,
+          'name': 'COLLECTION.INDEX.SORT_DD_MENU.DATE_CREATE_OLDEST',
+          'value': 'createOldest',
+          'sort': { 's': 'createdOn', 'd': false }
+        }
       },
       {
-        'first': { 'id': 4, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_ASC', 'value': 'alphaAsc', 'sort': { 's': 'name', 'd': false } },
-        'second': { 'id': 5, 'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_DESC', 'value': 'alphaDesc', 'sort': { 's': 'name', 'd': true } }
+        'first': {
+          'id': 4,
+          'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_ASC',
+          'value': 'alphaAsc',
+          'sort': { 's': 'name', 'd': false }
+        },
+        'second': {
+          'id': 5,
+          'name': 'COLLECTION.INDEX.SORT_DD_MENU.LIST_COLL_DESC',
+          'value': 'alphaDesc',
+          'sort': { 's': 'name', 'd': true }
+        }
       }
     ];
   }
@@ -122,7 +177,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public getAssetsForLink(collectionId: number): void {
-    this.activeCollection.getItems(collectionId, {n: 100}, false).subscribe(data => {
+    this.activeCollection.getItems(collectionId, { n: 100 }, false).subscribe(data => {
       this.assetsForLink = data.items;
     });
   }

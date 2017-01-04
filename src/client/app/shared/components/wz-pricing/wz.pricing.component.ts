@@ -52,8 +52,11 @@ export class WzPricingComponent {
         this.error.emit();
         return;
       }
-      // The raw options is just an array of strings, we need to map them back to the attributeList of the option to get the name, value, multiplier, etc;
-      let options: any = rawOptions.map((o: any) => { return this.findOption(o, currentOption.attributeList); });
+      // The raw options is just an array of strings, we need to map them back to the attributeList 
+      // of the option to get the name, value, multiplier, etc;
+      let options: any = rawOptions.map((o: any) => {
+        return this.findOption(o, currentOption.attributeList);
+      });
       // If there is only 1 option, update the form value for that option
       if (options.length === 1) {
         this.form[currentOption.name] = options[0].name;
@@ -90,7 +93,7 @@ export class WzPricingComponent {
 
   private clearForm(): void {
     for (let field in this.form) {
-      this.form[field]= '';
+      this.form[field] = '';
     }
   }
 }

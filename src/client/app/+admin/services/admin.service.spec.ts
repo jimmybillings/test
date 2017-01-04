@@ -61,8 +61,15 @@ export function main() {
       let account: Account;
 
       beforeEach(() => {
-        user = {id: 1, siteName: 'core', password: 'password1', firstName: 'Ross', lastName: 'Edfort', emailAddress: 'email@emailAddress.com', createdOn: '', lastUpdated: ''};
-        account = {id: 1, siteName: 'core', name: 'Edfort', accountIdentifier: 'RE', createdOn: '', lastUpdated: ''};
+        user = {
+          id: 1, siteName: 'core', password: 'password1',
+          firstName: 'Ross', lastName: 'Edfort', emailAddress: 'email@emailAddress.com',
+          createdOn: '', lastUpdated: ''
+        };
+        account = {
+          id: 1, siteName: 'core', name: 'Edfort',
+          accountIdentifier: 'RE', createdOn: '', lastUpdated: ''
+        };
       });
 
       describe('should call the apiService correctly', () => {
@@ -89,8 +96,11 @@ export function main() {
       let account: Account;
 
       beforeEach(() => {
-        user = {id: 1, siteName: 'core', password: 'password1', firstName: 'Ross', lastName: 'Edfort', emailAddress: 'email@emailAddress.com', createdOn: '', lastUpdated: ''};
-        account = {id: 1, siteName: 'core', name: 'Edfort', accountIdentifier: 'RE', createdOn: '', lastUpdated: ''};
+        user = {
+          id: 1, siteName: 'core', password: 'password1', firstName: 'Ross', lastName: 'Edfort',
+          emailAddress: 'email@emailAddress.com', createdOn: '', lastUpdated: ''
+        };
+        account = { id: 1, siteName: 'core', name: 'Edfort', accountIdentifier: 'RE', createdOn: '', lastUpdated: '' };
       });
 
       describe('should call the apiService correctly', () => {
@@ -122,7 +132,7 @@ export function main() {
         });
 
         it('should format them correctly - before', () => {
-          filterParams = {firstName: 'ross', lastName: '', emailAddress: '', DATE: 'before', createdOn: ''};
+          filterParams = { firstName: 'ross', lastName: '', emailAddress: '', DATE: 'before', createdOn: '' };
           formatedParams = serviceUnderTest.buildSearchParameters(filterParams);
           expect(formatedParams['fields']).toEqual('firstName,DATE:LT:createdOn');
           expect(formatedParams['values']).toContain(`ross,${Date.now().toString().slice(0, -3)}`);
@@ -130,8 +140,8 @@ export function main() {
         });
 
         it('should format them correctly - after', () => {
-          filterParams = {firstName: 'ross', lastName: 'edfort', emailAddress: '', DATE: 'after', createdOn: ''};
-          formatedParams= serviceUnderTest.buildSearchParameters(filterParams);
+          filterParams = { firstName: 'ross', lastName: 'edfort', emailAddress: '', DATE: 'after', createdOn: '' };
+          formatedParams = serviceUnderTest.buildSearchParameters(filterParams);
           expect(formatedParams['fields']).toEqual('firstName,lastName,DATE:GT:createdOn');
           expect(formatedParams['values']).toContain(`ross,edfort,${Date.now().toString().slice(0, -3)}`);
           expect(Date.now).toHaveBeenCalled();
@@ -148,14 +158,14 @@ export function main() {
         });
 
         it('should format them correctly - before', () => {
-          filterParams = {firstName: 'Ross', lastName: 'Edfort', emailAddress: 'gmail', DATE: 'before', createdOn: '2016-10-01'};
+          filterParams = { firstName: 'Ross', lastName: 'Edfort', emailAddress: 'gmail', DATE: 'before', createdOn: '2016-10-01' };
           formatedParams = serviceUnderTest.buildSearchParameters(filterParams);
           expect(formatedParams['fields']).toEqual('firstName,lastName,emailAddress,DATE:LT:createdOn');
           expect(formatedParams['values']).toEqual(`Ross,Edfort,gmail,${date}`);
         });
 
         it('should format them correctly - after', () => {
-          filterParams = {firstName: 'Ross', lastName: 'Edfort', emailAddress: 'gmail', DATE: 'after', createdOn: '2016-10-01'};
+          filterParams = { firstName: 'Ross', lastName: 'Edfort', emailAddress: 'gmail', DATE: 'after', createdOn: '2016-10-01' };
           formatedParams = serviceUnderTest.buildSearchParameters(filterParams);
           expect(formatedParams['fields']).toEqual('firstName,lastName,emailAddress,DATE:GT:createdOn');
           expect(formatedParams['values']).toEqual(`Ross,Edfort,gmail,${date}`);

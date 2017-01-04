@@ -222,7 +222,10 @@ describe('Collections Store', () => {
   describe('replaceAllCollectionsWith()', () => {
     it('should replace with the items passed in', () => {
       let collection: Collection = { id: 1, name: 'Dogs', owner: 12, lastUpdated: '123871', createdOn: '1232424', siteName: 'core' };
-      let replacements: any = { items: [collection], totalCount: 1, currentPage: 0, hasNextPage: false, hasPreviousPage: false, numberOfPages: 1, pageSize: 1 };
+      let replacements: any = {
+        items: [collection], totalCount: 1, currentPage: 0,
+        hasNextPage: false, hasPreviousPage: false, numberOfPages: 1, pageSize: 1
+      };
       storeUnderTest.replaceAllCollectionsWith(replacements);
 
       expect(mockStore.dispatch).toHaveBeenCalledWith({

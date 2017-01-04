@@ -5,7 +5,8 @@ import { adminResources, AdminStore } from './admin.store';
 export function main() {
   describe('adminResources reducer', () => {
     it('returns the payload for ADMIN_SERVICE.SET_RESOURCES', () => {
-      expect(adminResources({ items: [], pagination: {} }, { type: 'ADMIN_SERVICE.SET_RESOURCES', payload: { items: ['one'], pagination: {} } }))
+      expect(adminResources({ items: [], pagination: {} },
+        { type: 'ADMIN_SERVICE.SET_RESOURCES', payload: { items: ['one'], pagination: {} } }))
         .toEqual({ items: ['one'], pagination: {} });
     });
 
@@ -61,7 +62,17 @@ export function main() {
         expect(mockStore.dispatch)
           .toHaveBeenCalledWith({
             type: 'ADMIN_SERVICE.SET_RESOURCES',
-            payload: { items: mockData.items, pagination: { totalCount: 10, currentPage: 1, hasNextPage: true, hasPreviousPage: false, numberOfPages: 1, pageSize: 20 } }
+            payload: {
+              items: mockData.items,
+              pagination: {
+                totalCount: 10,
+                currentPage: 1,
+                hasNextPage: true,
+                hasPreviousPage: false,
+                numberOfPages: 1,
+                pageSize: 20
+              }
+            }
           });
       });
     });
