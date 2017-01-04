@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Router} from '@angular/router';
-import { Store, ActionReducer, Action} from '@ngrx/store';
+import { Router } from '@angular/router';
+import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 
 const initSearchContext: any = {

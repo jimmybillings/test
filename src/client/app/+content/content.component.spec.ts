@@ -6,8 +6,8 @@ import {
   TestBed
 } from '../imports/test.imports';
 
-import { ContentComponent} from './content.component';
-import { ContentService} from './content.service';
+import { ContentComponent } from './content.component';
+import { ContentService } from './content.service';
 
 export function main() {
   describe('Content Component', () => {
@@ -19,7 +19,7 @@ export function main() {
     class MockActivatedRoute {
       public params: Observable<any>;
       constructor() {
-        this.params = Observable.of({page: 'terms-conditions'});
+        this.params = Observable.of({ page: 'terms-conditions' });
       }
     }
     beforeEach(() => TestBed.configureTestingModule({

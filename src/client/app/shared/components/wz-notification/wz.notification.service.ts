@@ -1,7 +1,7 @@
 import { Injectable, ComponentRef, ComponentFactoryResolver, Renderer, OnDestroy, ViewContainerRef } from '@angular/core';
 import { WzNotificationComponent } from './wz.notification.component';
 import { Router } from '@angular/router';
-import { UiConfig} from '../../services/ui.config';
+import { UiConfig } from '../../services/ui.config';
 import { Subscription } from 'rxjs/Rx';
 
 @Injectable()

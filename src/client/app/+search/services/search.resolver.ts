@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { AssetData} from './asset.data.service';
+import { AssetData } from './asset.data.service';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { SearchContext } from '../../shared/services/search-context.service';
 

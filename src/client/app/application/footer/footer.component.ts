@@ -1,7 +1,6 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit} from '@angular/core';
-import { UiConfig} from '../../shared/services/ui.config';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Rx';
-
 /**
  * site footer component - renders the footer information
  */
@@ -21,7 +20,7 @@ export class FooterComponent implements OnInit {
   public configSubscription: Subscription;
 
   constructor(
-    public uiConfig: UiConfig) {}
+    public uiConfig: UiConfig) { }
 
   ngOnInit() {
     this.lang = this.supportedLanguages[0].code;

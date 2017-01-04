@@ -13,12 +13,13 @@ import {
   animate,
   keyframes,
   ChangeDetectionStrategy,
-  EventEmitter} from '@angular/core';
-import {Overlay} from '@angular/material';
-import {OverlayState} from '@angular/material';
-import {OverlayRef} from '@angular/material';
-import {Directive, ViewContainerRef, TemplateRef} from '@angular/core';
-import {TemplatePortalDirective} from '@angular/material';
+  EventEmitter
+} from '@angular/core';
+import { Overlay } from '@angular/material';
+import { OverlayState } from '@angular/material';
+import { OverlayRef } from '@angular/material';
+import { Directive, ViewContainerRef, TemplateRef } from '@angular/core';
+import { TemplatePortalDirective } from '@angular/material';
 
 
 
@@ -40,7 +41,7 @@ export class WzDialogPortalDirective extends TemplatePortalDirective {
       transition('void => *, hidden => shown', [
         animate('400ms 10ms ease-in-out', keyframes([
           style({ marginTop: '-260%', offset: 0 }),
-          style({ marginTop: '0' , offset: 1.0})
+          style({ marginTop: '0', offset: 1.0 })
         ]))
       ]),
       transition('shown => void, * => void, shown => hidden', [
@@ -100,7 +101,7 @@ export class WzDialogComponent implements OnDestroy {
       });
   }
 
-   public close(): Promise<any> {
+  public close(): Promise<any> {
     if (!this.overlayRef) {
       return Promise.resolve<any>(this);
     }

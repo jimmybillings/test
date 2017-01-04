@@ -5,9 +5,10 @@ import {
   TestBed
 } from '../../imports/test.imports';
 
-import { CollectionsComponent} from './collections.component';
-import { ActiveCollectionService} from '../../shared/services/active-collection.service';
-import { CollectionsService} from '../../shared/services/collections.service';
+import { CollectionsComponent } from './collections.component';
+import { ActiveCollectionService } from '../../shared/services/active-collection.service';
+import { CollectionsService } from '../../shared/services/collections.service';
+
 
 export function main() {
   describe('Collection Component', () => {
@@ -17,7 +18,7 @@ export function main() {
         this.data = Observable.of({ id: 1 });
       }
       load() {
-        return Observable.of({id: 2});
+        return Observable.of({ id: 2 });
       }
       set() {
         return Observable.of({});
@@ -35,7 +36,7 @@ export function main() {
       public state: any;
       constructor() {
         this.state = { items: [{ id: 1 }] };
-        this.data = Observable.of({items: [1, 2, 3, 4, 5]});
+        this.data = Observable.of({ items: [1, 2, 3, 4, 5] });
       }
       delete() {
         return Observable.of({});

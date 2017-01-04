@@ -1,10 +1,9 @@
 import {
   beforeEachProvidersArray,
-  // inject,
   TestBed
 } from '../../imports/test.imports';
 
-import { AssetDataComponent} from './asset-data.component';
+import { AssetDataComponent } from './asset-data.component';
 
 export function main() {
   describe('Asset Data Component', () => {

@@ -1,10 +1,13 @@
-import { Component, Input, Output, ViewChild, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import {
+  Component, Input, Output, ViewChild,
+  EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy
+} from '@angular/core';
 import { AssetService } from '../../shared/services/asset.service';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
 import { WzToastComponent } from '../../shared/components/wz-toast/wz.toast.component';
 import { CurrentUser } from '../../shared/services/current-user.model';
-import { User} from '../../shared/interfaces/user.interface';
+import { User } from '../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs/Rx';
 
 @Component({
@@ -38,7 +41,7 @@ export class AssetShareComponent implements OnDestroy {
     currentUser: CurrentUser,
     private asset: AssetService,
     private changeDetector: ChangeDetectorRef) {
-      this.userSubscription = currentUser.data.subscribe((user: User) => this.user = user);
+    this.userSubscription = currentUser.data.subscribe((user: User) => this.user = user);
   }
 
   public ngOnDestroy() {

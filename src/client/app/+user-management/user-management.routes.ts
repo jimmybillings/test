@@ -1,7 +1,7 @@
-import { LoginComponent} from './+login/login.component';
-import { RegisterComponent} from './+register/register.component';
-import { ProfileComponent} from './+profile/profile.component';
-import { ForgotPasswordComponent} from './+forgot-password/forgot-password.component';
+import { LoginComponent } from './+login/login.component';
+import { RegisterComponent } from './+register/register.component';
+import { ProfileComponent } from './+profile/profile.component';
+import { ForgotPasswordComponent } from './+forgot-password/forgot-password.component';
 import { Routes } from '@angular/router';
 import { UserManagementComponent } from './user-management.component';
 import { LoggedInGuard } from './services/logged-in.guard';

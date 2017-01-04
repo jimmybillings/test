@@ -1,6 +1,6 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {ContentService} from './content.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ContentService } from './content.service';
 import { Subscription } from 'rxjs/Rx';
 /**
  * Asset page component - renders an asset show page
