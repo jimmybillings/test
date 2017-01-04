@@ -1,8 +1,4 @@
-search-component md-sidenav-layout {
-  // temporary fix for when the search result set is small
-  min-height: 60vh;
-  overflow-y: scroll;
-  // material bug workaround
+search-component .md-sidenav-container {
   background-color: transparent;
 }
 search-component .search-header {
