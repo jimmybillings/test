@@ -5,9 +5,9 @@
   </div>
   <md-list>
     <md-list-item *ngFor="let suggestion of suggestions">
-      <button *ngIf="!isCollection()" (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion"
+      <button *ngIf="!isCollection()" (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}"
         [innerHTML]="parseSuggestion(suggestion)"></button>
-      <button *ngIf="isCollection()" (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion">
+      <button *ngIf="isCollection()" (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}">
         {{suggestion}}
       </button>
     </md-list-item>
