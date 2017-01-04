@@ -283,6 +283,7 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper wz-item-search-form {
   }
   .tools {
     display: flex;
+    padding-right: rem(0.3);
     button {
       @include transform(rotate(90deg));
       @include text-contrast(md-color($md-background, card), rgba(md-color($md-foreground, base), .75), md-color($md-background, card));
