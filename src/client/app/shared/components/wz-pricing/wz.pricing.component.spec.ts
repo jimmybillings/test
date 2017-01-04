@@ -51,7 +51,6 @@ export function main() {
     describe('validOptionsFor()', () => {
       it('should return if the options parent is empty', () => {
         let result = componentUnderTest.validOptionsFor(componentUnderTest._options[1]);
-
         expect(result).toBeUndefined();
       });
 
@@ -72,7 +71,7 @@ export function main() {
         componentUnderTest.form = { 'A': 'T', 'B': '', 'C': '', 'D': '' };
         let result = componentUnderTest.validOptionsFor(componentUnderTest._options[1]);
 
-        expect(result).toEqual([{name: 'N'}]);
+        expect(result).toEqual([{ name: 'N' }]);
         expect(componentUnderTest.form).toEqual({ 'A': 'T', 'B': 'N', 'C': '', 'D': '' });
       });
 
@@ -99,7 +98,7 @@ export function main() {
   });
 
   function mockOptions() {
-		return [
+    return [
       {
         'primary': true,
         'id': 0,
@@ -168,6 +167,5 @@ export function main() {
         ]
       }
     ];
-	}
+  }
 }
-    

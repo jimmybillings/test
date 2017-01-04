@@ -91,7 +91,9 @@ export function main() {
 
           expect(result.pass).toBe(false);
           expect(result.message)
-            .toEqual(`Expected spy to have been called with endpoint = 'end/point', but it was called with 'another/end/point', 'different/end/point'.`);
+            .toEqual(
+            `Expected spy to have been called with endpoint = 'end/point', ` +
+            `but it was called with 'another/end/point', 'different/end/point'.`);
         });
       });
 
@@ -133,7 +135,8 @@ export function main() {
 
           expect(result.pass).toBe(false);
           expect(result.message)
-            .toEqual(`Expected spy to have been called with body =\n${JSON.stringify({ a: 'b' }, null, 2)}\n, but it was never called with any body option.`);
+            .toEqual(`Expected spy to have been called with body =\n${JSON.stringify({ a: 'b' }, null, 2)}\n,` +
+            ` but it was never called with any body option.`);
         });
 
         it('fails when spy was called, but not with the expected body option', () => {
@@ -145,7 +148,8 @@ export function main() {
 
           expect(result.pass).toBe(false);
           expect(result.message)
-            .toEqual(`Expected spy to have been called with body =\n${JSON.stringify({ a: 'b' }, null, 2)}\n, but it was called with \n${JSON.stringify({ c: 'd' }, null, 2)}\n- and -\n${JSON.stringify({ e: 'f' }, null, 2)}.`);
+            .toEqual(`Expected spy to have been called with body =\n${JSON.stringify({ a: 'b' }, null, 2)}\n,`
+            + ` but it was called with \n${JSON.stringify({ c: 'd' }, null, 2)}\n- and -\n${JSON.stringify({ e: 'f' }, null, 2)}.`);
         });
       });
 
@@ -192,7 +196,8 @@ export function main() {
           const result = matcher.compare(apiSpy, undefined);
 
           expect(result.message)
-            .toEqual(`Expected spy not to have been called with a body option, but it was called with \n${JSON.stringify({ c: 'd' }, null, 2)}.`);
+            .toEqual(`Expected spy not to have been called with a body option, ` +
+            `but it was called with \n${JSON.stringify({ c: 'd' }, null, 2)}.`);
         });
       });
     });
@@ -214,7 +219,8 @@ export function main() {
 
           expect(result.pass).toBe(false);
           expect(result.message)
-            .toEqual(`Expected spy to have been called with parameters =\n${JSON.stringify({ a: 'b' }, null, 2)}\n, but it was never called.`);
+            .toEqual(`Expected spy to have been called with `
+            + `parameters =\n${JSON.stringify({ a: 'b' }, null, 2)}\n, but it was never called.`);
         });
 
         it('fails when spy was called, but without a parameters option', () => {
@@ -223,7 +229,9 @@ export function main() {
 
           expect(result.pass).toBe(false);
           expect(result.message)
-            .toEqual(`Expected spy to have been called with parameters =\n${JSON.stringify({ a: 'b' }, null, 2)}\n, but it was never called with any parameters option.`);
+            .toEqual(`Expected spy to have been called with`
+            + ` parameters =\n${JSON.stringify({ a: 'b' }, null, 2)}\n, `
+            + `but it was never called with any parameters option.`);
         });
 
         it('fails when spy was called, but not with the expected parameters option', () => {
@@ -235,7 +243,10 @@ export function main() {
 
           expect(result.pass).toBe(false);
           expect(result.message)
-            .toEqual(`Expected spy to have been called with parameters =\n${JSON.stringify({ a: 'b' }, null, 2)}\n, but it was called with \n${JSON.stringify({ c: 'd' }, null, 2)}\n- and -\n${JSON.stringify({ e: 'f' }, null, 2)}.`);
+            .toEqual(`Expected spy to have been called with` +
+            ` parameters =\n${JSON.stringify({ a: 'b' }, null, 2)}\n, ` +
+            `but it was called with \n${JSON.stringify({ c: 'd' }, null, 2)}\n- ` +
+            `and -\n${JSON.stringify({ e: 'f' }, null, 2)}.`);
         });
       });
 
@@ -282,7 +293,8 @@ export function main() {
           const result = matcher.compare(apiSpy, undefined);
 
           expect(result.message)
-            .toEqual(`Expected spy not to have been called with a parameters option, but it was called with \n${JSON.stringify({ c: 'd' }, null, 2)}.`);
+            .toEqual(`Expected spy not to have been called with a parameters option, `
+            + `but it was called with \n${JSON.stringify({ c: 'd' }, null, 2)}.`);
         });
       });
     });
@@ -402,7 +414,8 @@ export function main() {
 
           expect(result.pass).toBe(false);
           expect(result.message)
-            .toEqual(`Expected spy to have been called with overridingToken = 'some token', but it was never called with any overridingToken option.`);
+            .toEqual(`Expected spy to have been called with overridingToken = 'some token', ` +
+            `but it was never called with any overridingToken option.`);
         });
 
         it('fails when spy was called, but not with the expected overridingToken option', () => {

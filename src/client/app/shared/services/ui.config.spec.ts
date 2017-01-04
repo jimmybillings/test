@@ -42,22 +42,23 @@ export function main() {
       }));
 
 
-    it('Should return the configuration for a specific component as an argument', inject([UiConfig, MockBackend], (service: UiConfig, mockBackend: MockBackend) => {
-      let connection: any;
-      mockBackend.connections.subscribe((c: any) => connection = c);
+    it('Should return the configuration for a specific component as an argument',
+      inject([UiConfig, MockBackend], (service: UiConfig, mockBackend: MockBackend) => {
+        let connection: any;
+        mockBackend.connections.subscribe((c: any) => connection = c);
 
-      service.initialize(false, 'core').subscribe((res) => {
-        service.get('search').subscribe((data) => {
-          expect(data).toEqual(configObj().components.search);
+        service.initialize(false, 'core').subscribe((res) => {
+          service.get('search').subscribe((data) => {
+            expect(data).toEqual(configObj().components.search);
+          });
         });
-      });
 
-      connection.mockRespond(new Response(
-        new ResponseOptions({
-          body: configObj()
-        })
-      ));
-    }));
+        connection.mockRespond(new Response(
+          new ResponseOptions({
+            body: configObj()
+          })
+        ));
+      }));
   });
 
   function configObj() {

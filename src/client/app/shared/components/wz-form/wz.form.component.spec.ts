@@ -68,10 +68,35 @@ export function main() {
   });
 
   function items() {
-    return [{ 'name': 'firstName', 'label': 'First Name', 'type': 'text', 'value': '', 'validation': 'REQUIRED' }, { 'name': 'lastName', 'label': 'Last Name', 'type': 'text', 'value': 'null', 'validation': 'REQUIRED' }, { 'name': 'emailAddress', 'label': 'Email', 'type': 'email', 'value': 'null', 'validation': 'EMAIL' }, { 'name': 'password', 'label': 'Password', 'type': 'password', 'value': 'null', 'validation': 'PASSWORD' }];
+    return [
+      {
+        'name': 'firstName',
+        'label': 'First Name',
+        'type': 'text',
+        'value': '',
+        'validation': 'REQUIRED'
+      },
+      {
+        'name': 'lastName',
+        'label': 'Last Name',
+        'type': 'text',
+        'value': 'null',
+        'validation': 'REQUIRED'
+      },
+      {
+        'name': 'emailAddress',
+        'label': 'Email',
+        'type': 'email',
+        'value': 'null',
+        'validation': 'EMAIL'
+      },
+      {
+        'name': 'password',
+        'label': 'Password',
+        'type': 'password',
+        'value': 'null',
+        'validation': 'PASSWORD'
+      }];
   }
 
-  // function validItems() {
-  //   return [{ 'name': 'firstName', 'label': 'First Name', 'type': 'text', 'value': 'test', 'validation': 'REQUIRED' }, { 'name': 'lastName', 'label': 'Last Name', 'type': 'text', 'value': 'test', 'validation': 'REQUIRED' }, { 'name': 'emailAddress', 'label': 'Email', 'type': 'email', 'value': 'email@email.com', 'validation': 'EMAIL' }, { 'name': 'password', 'label': 'Password', 'type': 'password', 'value': 'Test1233', 'validation': 'PASSWORD' }];
-  // }
 }

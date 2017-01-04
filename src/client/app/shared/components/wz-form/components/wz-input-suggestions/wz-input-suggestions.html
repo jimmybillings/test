@@ -1,0 +1,15 @@
+<ng-content></ng-content>
+<div class="suggestions-menu" *ngIf="suggestions.length > 1" [ngClass]="{'revealed': suggestions.length > 1}">
+  <div *ngIf="rawField.suggestionHeading" (click)="closeSuggestions()" md-line class="heading">
+    {{ rawField.suggestionHeading | translate}}
+  </div>
+  <md-list>
+    <md-list-item *ngFor="let suggestion of suggestions">
+      <button *ngIf="!isCollection()" (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}"
+        [innerHTML]="parseSuggestion(suggestion)"></button>
+      <button *ngIf="isCollection()" (click)="selectSuggestion(suggestion)" [ngClass]="{'active': activeSuggestion == suggestion}">
+        {{suggestion}}
+      </button>
+    </md-list-item>
+  </md-list>
+</div>

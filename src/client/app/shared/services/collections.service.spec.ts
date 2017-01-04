@@ -6,7 +6,8 @@ import { Observable } from 'rxjs/Rx';
 
 export function main() {
   describe('Collections service', () => {
-    let serviceUnderTest: CollectionsService, mockStore: any, mockActiveCollection: any, mockApi: MockApiService, mockCollection: Collection;
+    let serviceUnderTest: CollectionsService, mockStore: any,
+      mockActiveCollection: any, mockApi: MockApiService, mockCollection: Collection;
 
     mockCollection = {
       'lastUpdated': '2016-06-17T21:44:12Z',

@@ -7,7 +7,8 @@ export function main() {
     (<any>window).portal = 'core';
     let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUser: any,
       mockCollections: any, mockActiveCollection: any, mockUiState: any, mockUserPreference: any, mockRenderer: any, mockNotification: any,
-      mockApiConfig: any, mockAuthentication: any, mockUserCan: any, mockCartSummary: any, mockWindow: any, mockFilter: any, mockSortDefinition: any;
+      mockApiConfig: any, mockAuthentication: any, mockUserCan: any, mockCartSummary: any, mockWindow: any,
+      mockFilter: any, mockSortDefinition: any;
     let loggedInState = false, canViewCollections = true;
     let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
     let componentUnderTest: AppComponent;
@@ -63,8 +64,9 @@ export function main() {
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUser,
-        mockCollections, mockActiveCollection, mockUiState, mockUserPreference, mockRenderer,
-        mockNotification, mockApiConfig, mockAuthentication, mockUserCan, mockCartSummary, null, mockWindow, mockFilter, mockSortDefinition);
+        mockCollections, mockActiveCollection, mockUiState, mockUserPreference,
+        mockRenderer, mockNotification, mockApiConfig, mockAuthentication, mockUserCan,
+        mockCartSummary, null, mockWindow, mockFilter, mockSortDefinition);
     });
 
 
@@ -189,8 +191,16 @@ export function main() {
     describe('newSearchContext()', () => {
       it('Should merge the searchContext with a new query and get a new filter tree', () => {
         componentUnderTest.newSearchContext('dogs');
-        expect(mockSearchContext.new).toHaveBeenCalledWith({ q: 'dogs', i: 1, n: 100, sortId: 23, filterIds: '1517', filterValues: '1517:2015-12-10 - 2016-12-12' });
-        expect(mockFilter.get).toHaveBeenCalledWith({ q: 'dogs', i: 1, n: 100, sortId: 23, filterIds: '1517', filterValues: '1517:2015-12-10 - 2016-12-12' }, true);
+        expect(mockSearchContext.new).toHaveBeenCalledWith(
+          {
+            q: 'dogs', i: 1, n: 100, sortId: 23, filterIds: '1517',
+            filterValues: '1517:2015-12-10 - 2016-12-12'
+          });
+        expect(mockFilter.get).toHaveBeenCalledWith(
+          {
+            q: 'dogs', i: 1, n: 100, sortId: 23, filterIds: '1517',
+            filterValues: '1517:2015-12-10 - 2016-12-12'
+          }, true);
       });
     });
 

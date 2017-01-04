@@ -6,20 +6,36 @@ export function main() {
   describe('Home Component', () => {
     let componentUnderTest: HomeComponent;
     let mockUiConfig: any, mockSearchContext: any, mockUserPreference: any, mockFilter: any;
-    mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ 'config': { 'pageSize': { 'value': '100' }, 'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }] } } })) };
+    mockUiConfig = {
+      get: jasmine.createSpy('get').and.returnValue(
+        Observable.of(
+          {
+            'config': {
+              'pageSize': { 'value': '100' },
+              'notifications': {
+                'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }]
+              }
+            }
+          }))
+    };
     mockSearchContext = { new: jasmine.createSpy('new') };
     mockUserPreference = { state: { sortId: 0 } };
     mockFilter = { set: jasmine.createSpy('set'), clear: jasmine.createSpy('clear') };
 
     beforeEach(() => {
-      componentUnderTest = new HomeComponent(null, null, mockUiConfig, mockSearchContext, mockUserPreference, mockFilter);
+      componentUnderTest = new HomeComponent(null, null, mockUiConfig, mockSearchContext,
+        mockUserPreference, mockFilter);
     });
 
     describe('ngOnInit()', () => {
       it('Should call the config service for the home component config options', () => {
         componentUnderTest.ngOnInit();
         expect(mockUiConfig.get).toHaveBeenCalledWith('home');
-        expect(componentUnderTest.config).toEqual({ 'pageSize': { 'value': '100' }, 'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }] } });
+        expect(componentUnderTest.config).toEqual(
+          {
+            'pageSize': { 'value': '100' },
+            'notifications': { 'items': [{ 'trString': 'NOTIFICATION.NEW_USER' }] }
+          });
       });
     });
 

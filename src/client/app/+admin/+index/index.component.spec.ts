@@ -53,7 +53,8 @@ export function main() {
         spyOn(componentUnderTest, 'buildRouteParams');
         componentUnderTest.routeChanges();
 
-        expect(componentUnderTest.buildRouteParams).toHaveBeenCalledWith({ i: '1', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' });
+        expect(componentUnderTest.buildRouteParams).toHaveBeenCalledWith(
+          { i: '1', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' });
       });
     });
 
@@ -62,7 +63,8 @@ export function main() {
         componentUnderTest.routeChanges();
         componentUnderTest.getIndex();
 
-        expect(mockAdminService.getResourceIndex).toHaveBeenCalledWith({ i: '1', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' }, 'user');
+        expect(mockAdminService.getResourceIndex).toHaveBeenCalledWith(
+          { i: '1', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' }, 'user');
       });
     });
 
@@ -72,7 +74,8 @@ export function main() {
         componentUnderTest.resourceType = 'user';
         componentUnderTest.navigateToPageUrl('5');
 
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/resource/user', { i: '5', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' }]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(
+          ['/admin/resource/user', { i: '5', n: '10', s: 'id', d: 'false', fields: 'firstName', values: 'ross' }]);
       });
     });
   });

@@ -84,7 +84,10 @@ export function main() {
       });
 
       it('Should set the window.href.url to the location of the comp url if the server responsds with a downloadable comp url', () => {
-        mockAssetService = { downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({ url: 'http://downloadcomp.url' })) };
+        mockAssetService = {
+          downloadComp: jasmine.createSpy('downloadComp').and.returnValue(
+            Observable.of({ url: 'http://downloadcomp.url' }))
+        };
         componentUnderTest = new AssetComponent(
           mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
           mockAssetService, mockUiConfig, mockUserPreference, mockNotification, mockCartSummary, mockWindow);
@@ -103,9 +106,9 @@ export function main() {
 
     describe('onCalculatePrice', () => {
       it('should call the getPrice method on the assetService', () => {
-        componentUnderTest.onCalculatePrice({ assetId: 1, attributes: {'a': 'b', 'c': 'd'} });
+        componentUnderTest.onCalculatePrice({ assetId: 1, attributes: { 'a': 'b', 'c': 'd' } });
 
-        expect(mockAssetService.getPrice).toHaveBeenCalledWith(1, {'a': 'b', 'c': 'd'});
+        expect(mockAssetService.getPrice).toHaveBeenCalledWith(1, { 'a': 'b', 'c': 'd' });
       });
     });
 

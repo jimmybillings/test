@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 /**
  * Directive that renders a list of collections
  */
@@ -19,15 +19,40 @@ export class CollectionFilterDdComponent {
   constructor() {
     this.filterOptions = [
       {
-        'first': { 'id': 0, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.ALL', 'value': 'all', 'access': { 'accessLevel': 'all' } }
+        'first': {
+          'id': 0,
+          'name': 'COLLECTION.INDEX.FILTER_DD_MENU.ALL',
+          'value': 'all',
+          'access': { 'accessLevel': 'all' }
+        }
       },
       {
-        'first': { 'id': 1, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.OWNER', 'value': 'owner', 'access': { 'accessLevel': 'owner' } },
-        'second': { 'id': 2, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.EDITOR', 'value': 'editor', 'access': { 'accessLevel': 'editor' } },
-        'third': { 'id': 3, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.VIEWER', 'value': 'viewer', 'access': { 'accessLevel': 'viewer' } }
+        'first': {
+          'id': 1,
+          'name': 'COLLECTION.INDEX.FILTER_DD_MENU.OWNER',
+          'value': 'owner',
+          'access': { 'accessLevel': 'owner' }
+        },
+        'second': {
+          'id': 2,
+          'name': 'COLLECTION.INDEX.FILTER_DD_MENU.EDITOR',
+          'value': 'editor',
+          'access': { 'accessLevel': 'editor' }
+        },
+        'third': {
+          'id': 3,
+          'name': 'COLLECTION.INDEX.FILTER_DD_MENU.VIEWER',
+          'value': 'viewer',
+          'access': { 'accessLevel': 'viewer' }
+        }
       },
       {
-        'first': { 'id': 4, 'name': 'COLLECTION.INDEX.FILTER_DD_MENU.RESEARCHER', 'value': 'researcher', 'access': { 'accessLevel': 'researcher' } }
+        'first': {
+          'id': 4,
+          'name': 'COLLECTION.INDEX.FILTER_DD_MENU.RESEARCHER',
+          'value': 'researcher',
+          'access': { 'accessLevel': 'researcher' }
+        }
       }
     ];
   }
@@ -36,7 +61,7 @@ export class CollectionFilterDdComponent {
     this.close.emit();
   }
 
-  public onFilterResults(filter:any) {
+  public onFilterResults(filter: any) {
     this.filter.emit(filter);
   }
 }

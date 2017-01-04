@@ -44,7 +44,8 @@ export function main() {
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.get({ q: 'cat' }, true).subscribe((payload) => {
           expect(connection.request.method).toEqual(0);
-          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true&siteName=core');
+          expect(connection.request.url.split('.com')[1]).toBe(
+            '/api/assets/v1/filter/anonymous/filterTree?q=cat&counted=true&siteName=core');
           expect(payload).toEqual(service.sanitize(mockFilters(), null));
           expect(service.set).toHaveBeenCalled();
         });

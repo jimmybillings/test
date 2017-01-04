@@ -1,5 +1,12 @@
-import { Component, Input, Directive, ViewContainerRef, TemplateRef, ViewChild, ViewEncapsulation, Renderer, ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import { Overlay, OverlayRef, OriginConnectionPosition, OverlayConnectionPosition, OverlayState, TemplatePortalDirective } from '@angular/material';
+import {
+  Component, Input, Directive, ViewContainerRef,
+  TemplateRef, ViewChild, ViewEncapsulation,
+  Renderer, ElementRef, ChangeDetectionStrategy
+} from '@angular/core';
+import {
+  Overlay, OverlayRef, OriginConnectionPosition,
+  OverlayConnectionPosition, OverlayState, TemplatePortalDirective
+} from '@angular/material';
 
 @Directive({ selector: '[wzDropdownPortalDirective]' })
 export class WzDropdownPortalDirective extends TemplatePortalDirective {
@@ -74,6 +81,8 @@ export class WzDropdownComponent {
   }
 
   private closeListener() {
-    this.viewRef = this.renderer.listen(this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement, 'click', () => this.close());
+    this.viewRef = this.renderer.listen(
+      this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement,
+      'click', () => this.close());
   }
 }

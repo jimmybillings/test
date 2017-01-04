@@ -78,7 +78,12 @@ export function main() {
 
         componentUnderTest.lineItemsNotify
           .subscribe((event: Object) => {
-            expect(event).toEqual({ type: 'EDIT_LINE_ITEM', payload: { lineItem: lineItem, fieldToEdit: { selectedTranscodeTarget: '1080i' } } });
+            expect(event).toEqual(
+              {
+                type: 'EDIT_LINE_ITEM', payload: {
+                  lineItem: lineItem, fieldToEdit: { selectedTranscodeTarget: '1080i' }
+                }
+              });
           });
 
         componentUnderTest.selectTarget({ name: '1080i', selected: false }, lineItem);

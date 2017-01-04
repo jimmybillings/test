@@ -11,7 +11,7 @@
     ],
     "max-line-length": [
       true,
-      100000000
+      140
     ],
     "member-ordering": [
       true,
