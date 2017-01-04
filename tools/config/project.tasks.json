@@ -1,0 +1,15 @@
+{
+  "test": [
+    "tslint",
+    "build.test",
+    "karma.run"
+  ],
+
+  "build.library.export": [
+    "tslint",
+    "build.assets.prod",
+    "build.html_css",
+    "build.js.lib.export"
+  ]
+}
+

@@ -1,6 +1,7 @@
 import { join } from 'path';
 
 import { SeedConfig } from './seed.config';
+// import { ExtendPackages } from './seed.config.interfaces';
 
 /**
  * This class extends the basic seed configuration, allowing for project specific overrides. A few examples can be found
@@ -13,7 +14,7 @@ export class ProjectConfig extends SeedConfig {
   constructor() {
     super();
     // this.APP_TITLE = 'Put name of your app here';
-
+    this.APP_TITLE = 'Wazee UI Platform';
     /* Enable typeless compiler runs (faster) between typed compiler runs. */
     // this.TYPED_COMPILE_INTERVAL = 5;
 
@@ -31,6 +32,22 @@ export class ProjectConfig extends SeedConfig {
       // {src: `${this.CSS_SRC}/path-to-lib/test-lib.css`, inject: true, vendor: false},
     ];
 
+    // Add packages (e.g. ng2-translate)
+    // let additionalPackages: ExtendPackages[] = [{
+    //   name: 'ng2-translate',
+    //   // Path to the package's bundle
+    //   path: 'node_modules/ng2-translate/bundles/ng2-translate.umd.js'
+    // }];
+    //
+    // this.addPackagesBundles(additionalPackages);
+    this.addPackageBundles({
+      name:'@angular/material',
+      path:'node_modules/@angular/material/bundles/material.umd.js',
+      packageMeta:{
+        main: 'index.js',
+        defaultExtension: 'js'
+      }
+    });
     /* Add to or override NPM module configurations: */
     // this.mergeObject(this.PLUGIN_CONFIGS['browser-sync'], { ghostMode: false });
   }

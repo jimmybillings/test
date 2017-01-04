@@ -27,10 +27,10 @@ import { ConfigService } from '../services/config.service';
 export class TranslationComponent implements OnInit, OnDestroy {
   public sites: Array<string>;
   public langs: Array<string>;
+  public site: string;
+  public lang: string;
+  public trStringForm: FormGroup;
   private strings: any;
-  private site: string;
-  private lang: string;
-  private trStringForm: FormGroup;
   private routeSubscription: Subscription;
 
   constructor(

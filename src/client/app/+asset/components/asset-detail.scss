@@ -378,21 +378,10 @@ div.wz-dialog {
     padding: 0;
     width: 32vw;
     md-card-actions form {
-      margin: 0 rem(2.8);
       span.input {
-        margin: 0 rem(1);
-        label {
-          color: md-color($md-grey, 700);
-        }
-        select {
-          border: none;
-          height: rem(4);
-          margin: rem(.25) 0;
-          width: 95%;
-          background-color: rgba(md-color($md-grey, 300), .5);
-          &:disabled {
-            background-color: rgba(md-color($md-grey, 100), .5);
-          }
+        md-select {
+          padding: rem(1);
+          width: 90%;
         }
       }
       div.submit-btn {

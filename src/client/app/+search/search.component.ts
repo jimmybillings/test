@@ -15,6 +15,7 @@ import { WzNotificationService } from '../shared/components/wz-notification/wz.n
 import { CartSummaryService } from '../shared/services/cart-summary.service';
 import { AssetService } from '../shared/services/asset.service';
 import { WzSpeedviewComponent } from '../shared/components/wz-speedview/wz.speedview.component';
+
 /**
  * Asset search page component - renders search page results
  */
@@ -66,7 +67,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.sortSubscription = this.sortDefinition.data.subscribe((data: any) => this.sortOptions = data);
     this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
     this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe();
+    this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe(() => { });
     if (this.preferences.displayFilterTree) this.sidenav.open();
   }
 
@@ -79,7 +80,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public countToggle(event: any): void {
-    this.filter.get(this.searchContext.state, !this.preferences.displayFilterCounts).take(1).subscribe();
+    this.filter.get(this.searchContext.state, !this.preferences.displayFilterCounts).take(1).subscribe(() => { });
     this.userPreferences.toggleFilterCount();
   }
 
@@ -160,7 +161,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchContext.remove = 'filterValues';
     }
     this.searchContext.go();
-    this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).subscribe();
+    this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).subscribe(() => { });
   }
 
   public onSortResults(sortDefinition: any): void {

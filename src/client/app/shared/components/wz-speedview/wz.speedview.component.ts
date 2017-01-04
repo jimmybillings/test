@@ -73,7 +73,6 @@ export class WzSpeedviewComponent implements OnDestroy {
   private set positionStrategy(coordinates: MouseEvent) {
     this.config.positionStrategy = this.overlay.position()
       .global()
-      .fixed()
       .top(`${coordinates.y}px`)
       .left(`${coordinates.x}px`);
   }

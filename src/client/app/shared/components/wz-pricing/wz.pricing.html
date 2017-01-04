@@ -6,12 +6,10 @@
   <md-card-actions>
     <form #f="ngForm" (ngSubmit)="onSubmit()">
       <span *ngFor="let option of _options; let i = index" class="input">
-        <label>{{option.name}}</label>
-        <br>
         <div layout="row" layout-align="center center">
-          <select [disabled]="parentIsEmpty(option)" [(ngModel)]="form[option.name]" name="{{option.name}}">
-            <option *ngFor="let o of validOptionsFor(option)" [value]="o.value">{{o.name}}</option>
-          </select>
+          <md-select placeholder="{{option.name}}" [disabled]="parentIsEmpty(option)" [(ngModel)]="form[option.name]" name="{{option.name}}">
+            <md-option *ngFor="let o of validOptionsFor(option)" [value]="o.value">{{o.name}}</md-option>
+          </md-select>
         </div>
         <br>
       </span>

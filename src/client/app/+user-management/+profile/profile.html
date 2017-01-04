@@ -27,122 +27,118 @@
       <md-tab-group>
         <md-tab label="'PROFILE.BASIC_INFO_TAB_LABEL' | uppercase | translate">
           <template md-tab-label>{{'PROFILE.BASIC_INFO_TAB_LABEL' | translate }}</template>
-          <template md-tab-content>
-            <!--<div layout="row" layout-align="end center">
-              <button md-button md-raised-button [md-menu-trigger-for]="profileSettings" color="primary">Edit basic info</button>
-            </div>-->
-            <div class="m-data">
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.FIRST_NAME_LABEL' | translate }}</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{user.firstName}}</p>
-                </div>
+          <!--<div layout="row" layout-align="end center">
+            <button md-button md-raised-button [md-menu-trigger-for]="profileSettings" color="primary">Edit basic info</button>
+          </div>-->
+          <div class="m-data">
+            <div class="row">
+              <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.FIRST_NAME_LABEL' | translate }}</h5>
               </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.LAST_NAME_LABEL' | translate }}</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{user.lastName}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.EMAIL_LABEL' | translate }}</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{user.emailAddress}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.PASSWORD_LABEL' | translate }}</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">
-                    <button md-button class="is-outlined" color="primary" (click)="comingSoonDialog.show()">{{'PROFILE.BASIC_INFO.CHANGE_PASSWORD_BTN_LABEL' | translate }}</button>
-                  </p>
-                </div>
+              <div class="cell">
+                <p class="md-body-1">{{user.firstName}}</p>
               </div>
             </div>
-            <div layout="row" layout-align="end center">
-              <button md-button (click)="comingSoonDialog.show()" color="primary" class="edit-basic">
-                <md-icon class="md-24">edit</md-icon>
-                Edit basic info
-              </button>
-              <!--<button md-mini-fab color="primary" (click)="comingSoonDialog.show()">
-                <md-icon class="md-24">edit</md-icon>
-              </button>-->
-            </div>
-            <div class="m-data">
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.CREATED_ON_LABEL' | translate }}</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{user.createdOn}}</p>
-                </div>
+            <div class="row">
+              <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.LAST_NAME_LABEL' | translate }}</h5>
               </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.UPDATED_ON_LABEL' | translate }}</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{user.lastUpdated}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.USER_ID_LABEL' | translate }}</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{user.id}}</p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="cell">
-                  <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.USER_STATUS_LABEL' | translate }}</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{user.wazeeStatus}}</p>
-                </div>
+              <div class="cell">
+                <p class="md-body-1">{{user.lastName}}</p>
               </div>
             </div>
-          </template>
+            <div class="row">
+              <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.EMAIL_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="md-body-1">{{user.emailAddress}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.PASSWORD_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="md-body-1">
+                  <button md-button class="is-outlined" color="primary" (click)="comingSoonDialog.show()">{{'PROFILE.BASIC_INFO.CHANGE_PASSWORD_BTN_LABEL' | translate }}</button>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div layout="row" layout-align="end center">
+            <button md-button (click)="comingSoonDialog.show()" color="primary" class="edit-basic">
+              <md-icon class="md-24">edit</md-icon>
+              Edit basic info
+            </button>
+            <!--<button md-mini-fab color="primary" (click)="comingSoonDialog.show()">
+              <md-icon class="md-24">edit</md-icon>
+            </button>-->
+          </div>
+          <div class="m-data">
+            <div class="row">
+              <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.CREATED_ON_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="md-body-1">{{user.createdOn}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.UPDATED_ON_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="md-body-1">{{user.lastUpdated}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.USER_ID_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="md-body-1">{{user.id}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.USER_STATUS_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="md-body-1">{{user.wazeeStatus}}</p>
+              </div>
+            </div>
+          </div>
         </md-tab>
 
         <md-tab label="'PROFILE.PERMISSION_TAB_LABEL' | uppercase | translate">
           <template md-tab-label>{{'PROFILE.PERMISSION_TAB_LABEL' | translate }}</template>
-          <template md-tab-content>
-            <div class="m-data">
-              <div class="row" *ngIf="user.permissions">
-                <div class="cell">
-                  <h5 class="md-subhead">{{'PROFILE.PERMISSION_TAB_LABEL' | translate }}</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1" *ngFor='let perm of user.permissions; let i=index'>{{perm}}</p>
-                </div>
+          <div class="m-data">
+            <div class="row" *ngIf="user.permissions">
+              <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.PERMISSION_TAB_LABEL' | translate }}</h5>
               </div>
-              <div class="row" *ngIf="user.roles">
-                <div class="cell">
-                  <h5 class="md-subhead">{{'PROFILE.PERMISSION_TAB_LABEL' | translate }}</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1" *ngFor='let perm of user.roles[0].permissions; let i=index'>{{perm}}</p>
-                </div>
-              </div>
-              <div class="row" *ngIf="user.roles">
-                <div class="cell">
-                  <h5 class="md-subhead">Role</h5>
-                </div>
-                <div class="cell">
-                  <p class="md-body-1">{{user.roles[0].description}}</p>
-                </div>
+              <div class="cell">
+                <p class="md-body-1" *ngFor='let perm of user.permissions; let i=index'>{{perm}}</p>
               </div>
             </div>
-          </template>
+            <div class="row" *ngIf="user.roles">
+              <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.PERMISSION_TAB_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="md-body-1" *ngFor='let perm of user.roles[0].permissions; let i=index'>{{perm}}</p>
+              </div>
+            </div>
+            <div class="row" *ngIf="user.roles">
+              <div class="cell">
+                <h5 class="md-subhead">Role</h5>
+              </div>
+              <div class="cell">
+                <p class="md-body-1">{{user.roles[0].description}}</p>
+              </div>
+            </div>
+          </div>
         </md-tab>
 
 

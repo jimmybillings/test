@@ -84,7 +84,7 @@ export class WzPricingComponent {
   private buildForm(options: any): void {
     this.form = {};
     options.forEach((option: any) => {
-      this.form[option.displayName] = '';
+      this.form[option.name] = '';
     });
   }
 

@@ -1,10 +1,11 @@
 import * as gulp from 'gulp';
 import * as gulpLoadPlugins from 'gulp-load-plugins';
 import { join } from 'path';
-const merge2 = require('merge2');
 import Config from '../../config';
-import { makeTsProject, templateLocals } from '../../utils';
+import { makeTsProject, TemplateLocalsBuilder } from '../../utils';
 
+const merge2 = require('merge2');
+const instance = new TemplateLocalsBuilder();
 const plugins = <any>gulpLoadPlugins();
 
 const INLINE_OPTIONS = {
@@ -12,8 +13,6 @@ const INLINE_OPTIONS = {
   useRelativePaths: true,
   removeLineBreaks: true
 };
-
-
 
 /**
  * Executes the build process, transpiling the TypeScript files for the production environment.
@@ -38,10 +37,9 @@ function buildTS() {
 
   return merge2([
     result.dts.pipe(gulp.dest(Config.APP_DEST)),
-    result.js.pipe(plugins.template(templateLocals()))
+    result.js.pipe(plugins.template(instance.build()))
       .pipe(gulp.dest(Config.APP_DEST))
   ]);
 }
-
 
 export = () => buildTS();

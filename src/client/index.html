@@ -15,15 +15,16 @@
   <link rel="shortcut icon" href="/assets/favicon/favicon.ico?v=yyxLGp2EBG">
   <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml?v=yyxLGp2EBG">
   <meta name="theme-color" content="#ffffff">
-  <!-- inject:css -->
-  <!-- endinject -->
   <script>
     var baseUrl = 'https://crxextapi.dev.wzplatform.com/';
     var portal = 'core';
   </script>
-   <link rel="stylesheet" href="app/app.css">
+  <link rel="stylesheet" href="app/app.css">
+  <!-- inject:css -->
+  <!-- endinject -->
 </head>
 <body>
+
   <wazee-digital-platform>Loading.... </wazee-digital-platform>
 
   <script>
@@ -34,7 +35,7 @@
   <!-- shims:js -->
   <!-- endinject -->
 
-  <% if (ENV === 'dev') { %>
+  <% if (BUILD_TYPE === 'dev') { %>
   <script src="<%= APP_BASE %>app/system-config.js"></script>
   <% } %>
 
@@ -44,11 +45,12 @@
   <!-- inject:js -->
   <!-- endinject -->
 
-  <% if (ENV === 'dev') { %>
+  <% if (BUILD_TYPE === 'dev') { %>
   <script>
   System.import('<%= BOOTSTRAP_MODULE %>')
     .catch(function (e) {
-      console.error(e);
+      console.error(e.stack || e,
+        'Not expecting this error? Report it at https://github.com/mgechev/angular-seed/issues');
     });
   </script>
   <% } %>

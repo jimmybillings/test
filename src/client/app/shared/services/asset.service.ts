@@ -20,7 +20,6 @@ export const asset: ActionReducer<any> = (state = initAsset, action: Action) => 
 };
 
 @Injectable()
-
 export class AssetService {
   public data: Observable<any>;
   public errorMessage: any;

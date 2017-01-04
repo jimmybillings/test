@@ -49,7 +49,7 @@ export function main() {
     });
 
     describe('validOptionsFor()', () => {
-      it('should return if the optoin\'s parent is empty', () => {
+      it('should return if the options parent is empty', () => {
         let result = componentUnderTest.validOptionsFor(componentUnderTest._options[1]);
 
         expect(result).toBeUndefined();

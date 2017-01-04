@@ -78,9 +78,7 @@ export class WzDialogComponent implements OnDestroy {
     this.config.positionStrategy = this.overlay.position()
       .global()
       .centerHorizontally()
-      .fixed()
-      .top('12%');
-      // .centerVertically();
+      .top('10%');
   }
 
   ngOnDestroy(): any {
@@ -97,7 +95,7 @@ export class WzDialogComponent implements OnDestroy {
       })
       .then(() => {
         if (this.clickCatcher) setTimeout(() => this.closeListener(), 500);
-        this.renderer.setElementClass(document.querySelector('div.md-overlay-container'), 'active', true);
+        this.renderer.setElementClass(document.querySelector('div.cdk-overlay-container'), 'active', true);
         return this;
       });
   }
@@ -111,7 +109,7 @@ export class WzDialogComponent implements OnDestroy {
       .then(() => {
         this.overlayRef.dispose();
         this.overlayRef = null;
-        this.renderer.setElementClass(document.querySelector('div.md-overlay-container'), 'active', false);
+        this.renderer.setElementClass(document.querySelector('div.cdk-overlay-container'), 'active', false);
         if (this.clickCatcher) this.viewRef();
         this.onClose.emit();
         return this;

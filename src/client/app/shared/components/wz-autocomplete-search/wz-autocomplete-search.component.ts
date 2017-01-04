@@ -24,10 +24,7 @@ export class WzAutocompleteSearchComponent {
     'endPoint': 'search/thesaurusTerms',
     'queryParams': 'maxTerms, 10',
     'name': 'name',
-    'label': 'COLLECTION.FORM.COLLECTION_NAME_LABEL',
-    'type': 'suggestions',
-    'value': '',
-    'validation': 'REQUIRED'
+    'type': 'suggestions'
   };
 
   @ViewChild(WzInputSuggestionsComponent) public wzInputSuggestions: WzInputSuggestionsComponent;

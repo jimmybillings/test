@@ -54,7 +54,7 @@ export class WzInputTagsComponent {
     return (this.finalDelete && this.tags[this.tags.length - 1] === tag);
   }
 
-  private delete($event=false, tagForDelete: string) {
+  public delete($event=false, tagForDelete: string) {
     this.tags = this.tags.filter((tag) => tag !== tagForDelete);
     this.fControl.setValue(this.tags.toString());
     this.finalDelete = false;

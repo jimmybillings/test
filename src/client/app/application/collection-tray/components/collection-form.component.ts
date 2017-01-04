@@ -93,7 +93,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
     this.activeCollection.load().subscribe();
   }
 
-  private success(): void {
+  public success(): void {
     this.formItems = this.clearForm();
     this.wzForm.resetForm();
     this.detector.markForCheck();

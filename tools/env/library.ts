@@ -5,4 +5,3 @@ const LibraryConfig: EnvConfig = {
 };
 
 export = LibraryConfig;
-

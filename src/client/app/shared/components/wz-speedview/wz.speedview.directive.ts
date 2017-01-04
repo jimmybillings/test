@@ -35,12 +35,12 @@ export class WzSpeedviewDirective {
   }
 
   // Returns an x coordinate based on the position of the element that was hovered upon
-  // if there is no room to the right, it shifts the preview back by its width, and the width of the hovered element
+  // if there is no room to the right, it shifts the preview left by its width, and the width of the horizontal padding
   private get determineHorizontalPreviewPlacement(): number {
     if (this.roomToTheRight) {
       return this.viewport.right + horizontalPadding;
     } else {
-      return this.viewport.right - previewWidth - this.viewport.width - horizontalPadding;
+      return this.viewport.left - previewWidth - horizontalPadding;
     }
   }
 

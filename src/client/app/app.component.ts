@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
 
   public newSearchContext(query: any) {
     let searchConext: any = Object.assign({}, this.searchContext.state, { q: query, i: 1, n: 100 });
-    this.filter.get(searchConext, this.userPreference.state.displayFilterCounts).subscribe();
+    this.filter.get(searchConext, this.userPreference.state.displayFilterCounts).subscribe(() => { });
     this.searchContext.new(searchConext);
   }
 
@@ -107,8 +107,8 @@ export class AppComponent implements OnInit {
   private processLoggedInUser() {
     this.userPreference.getPrefs();
     if (this.userCan.viewCollections()) {
-      this.activeCollection.load().subscribe();
-      this.collections.load().subscribe();
+      this.collections.load().subscribe(() => { });
+      this.activeCollection.load().subscribe(() => { });
     }
     this.cartSummary.loadCartSummary();
     this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {

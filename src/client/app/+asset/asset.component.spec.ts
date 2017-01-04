@@ -29,8 +29,8 @@ export function main() {
       mockCartSummary = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { location: { href: {} } };
       componentUnderTest = new AssetComponent(
-        mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState, mockUserPreference,
-        mockAssetService, mockUiConfig, mockNotification, mockCartSummary, mockWindow);
+        mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
+        mockAssetService, mockUiConfig, mockUserPreference, mockNotification, mockCartSummary, mockWindow);
     });
 
     describe('ngOnInit()', () => {
@@ -86,8 +86,8 @@ export function main() {
       it('Should set the window.href.url to the location of the comp url if the server responsds with a downloadable comp url', () => {
         mockAssetService = { downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({ url: 'http://downloadcomp.url' })) };
         componentUnderTest = new AssetComponent(
-          mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState, mockUserPreference,
-          mockAssetService, mockUiConfig, mockNotification, mockCartSummary, mockWindow);
+          mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
+          mockAssetService, mockUiConfig, mockUserPreference, mockNotification, mockCartSummary, mockWindow);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.location.href).toEqual('http://downloadcomp.url');
       });

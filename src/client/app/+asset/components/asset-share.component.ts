@@ -83,7 +83,7 @@ export class AssetShareComponent implements OnDestroy {
     }, this.error.bind(this));
   }
 
-  private success(): void {
+  public success(): void {
     this.formItems = this.clearForm();
     this.wzForm.resetForm();
     this.changeDetector.markForCheck();

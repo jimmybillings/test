@@ -3,21 +3,17 @@ import { Tab } from './tab';
 export function main() {
   describe('Cart Tab Base Class', () => {
     let classUnderTest: Tab;
-    let mockEmitter: any;
 
     beforeEach(() => {
-      mockEmitter = {
-        emit: jasmine.createSpy('emit')
-      };
-
-      classUnderTest = new Tab(mockEmitter);
+      classUnderTest = new Tab();
+      classUnderTest.notify.emit = jasmine.createSpy('notify emitter');
     });
 
     describe('goToPreviousTab()', () => {
       it('emits the expected event', () => {
         classUnderTest.goToPreviousTab();
 
-        expect(mockEmitter.emit).toHaveBeenCalledWith({ type: 'GO_TO_PREVIOUS_TAB' });
+        expect(classUnderTest.notify.emit).toHaveBeenCalledWith({ type: 'GO_TO_PREVIOUS_TAB' });
       });
     });
 
@@ -25,7 +21,7 @@ export function main() {
       it('emits the expected event', () => {
         classUnderTest.goToNextTab();
 
-        expect(mockEmitter.emit).toHaveBeenCalledWith({ type: 'GO_TO_NEXT_TAB' });
+        expect(classUnderTest.notify.emit).toHaveBeenCalledWith({ type: 'GO_TO_NEXT_TAB' });
       });
     });
   });

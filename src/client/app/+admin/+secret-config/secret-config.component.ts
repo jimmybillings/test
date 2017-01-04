@@ -26,9 +26,9 @@ import { Subscription } from 'rxjs/Rx';
 })
 
 export class SecretConfigComponent implements OnInit, OnDestroy {
+  public configForm: FormGroup;
   private config: UiSubComponentsA;
   private site: string;
-  private configForm: FormGroup;
   private routeSubscription: Subscription;
 
   constructor(public uiConfig: UiConfig,

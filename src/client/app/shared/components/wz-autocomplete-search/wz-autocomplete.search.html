@@ -1,11 +1,12 @@
 <div>
-  <form [formGroup]="searchForm" (ngSubmit)="onSubmit(searchForm.value.query)" class="md-inline-form">
+  <form [formGroup]="searchForm" (ngSubmit)="onSubmit(searchForm.value.query)" class="md-inline-form" autocomplete="off">
     <wz-input-suggestions layout="row" flex="100" layout-align="start" #suggestions 
     [fControl]="searchForm.controls['query']" 
     [rawField]="formOptions"
     (newSuggestion)="onSubmit($event)"> 
-        <button md-button title="show filters" type="button" *ngIf="(uiState.data | async).filtersAreAvailable" (click)="toggleFilters()" class="filter-toggle" tabindex="-1">{{ 'SEARCH.FILTERS.FILTERS_BTN_LABEL' | translate }}<md-icon>arrow_drop_down</md-icon></button>
-        <input (keydown)="suggestions.inputKeyDown($event)" md-input="" type="text" placeholder="{{ 'HOME.SEARCH_BOX_LABEL' | translate }}" formControlName="query"/>
+        <button md-button title="show filters" type="button" *ngIf="(uiState.data | async).filtersAreAvailable" (click)="toggleFilters()" class="filter-toggle" tabindex="-1">
+          {{ 'SEARCH.FILTERS.FILTERS_BTN_LABEL' | translate }}<md-icon>arrow_drop_down</md-icon></button>
+        <input (keydown)="suggestions.inputKeyDown($event)" type="text" placeholder="{{ 'HOME.SEARCH_BOX_LABEL' | translate }}" formControlName="query"/>
         <button type="submit" tabindex="-1">Search<md-icon>search</md-icon></button>
     </wz-input-suggestions>
   </form>

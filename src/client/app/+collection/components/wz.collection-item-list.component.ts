@@ -19,7 +19,7 @@ export class WzCollectionItemListComponent {
   @Output() setActiveCollection = new EventEmitter();
   @Output() deleteCollection = new EventEmitter();
   @Output() generateCollectionLink = new EventEmitter();
-  private currentCollection: any;
+  public currentCollection: any;
 
   public selectActiveCollection(collectionId: any) {
     this.setActiveCollection.emit(collectionId);

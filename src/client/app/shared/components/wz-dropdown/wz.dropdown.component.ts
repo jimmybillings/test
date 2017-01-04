@@ -1,8 +1,5 @@
 import { Component, Input, Directive, ViewContainerRef, TemplateRef, ViewChild, ViewEncapsulation, Renderer, ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import { Overlay} from '@angular/material';
-import { OverlayState} from '@angular/material';
-import { OverlayRef} from '@angular/material';
-import { TemplatePortalDirective} from '@angular/material';
+import { Overlay, OverlayRef, OriginConnectionPosition, OverlayConnectionPosition, OverlayState, TemplatePortalDirective } from '@angular/material';
 
 @Directive({ selector: '[wzDropdownPortalDirective]' })
 export class WzDropdownPortalDirective extends TemplatePortalDirective {
@@ -63,13 +60,16 @@ export class WzDropdownComponent {
 
   private positionElement(event: any) {
     let offset: number = 30;
-    let layoutBreakpointXs: boolean = event.view.screen.width < 600;
+    let layoutBreakpointXs: boolean = event.view.innerWidth < 600;
     if (layoutBreakpointXs) {
       this.config.positionStrategy =
-        this.overlay.position().global().fixed().right('0').top('0');
+        this.overlay.position().global().left('0px').top('0px');
     } else {
+      let ref: ElementRef = new ElementRef(event.target);
+      let originPosition: OriginConnectionPosition = { originX: 'end', originY: 'top' };
+      let overlayPosition: OverlayConnectionPosition = { overlayX: 'start', overlayY: 'top' };
       this.config.positionStrategy =
-        this.overlay.position().global().fixed().right(window.outerWidth - event.clientX - offset + 'px').top(event.clientY - offset + 'px');
+        this.overlay.position().connectedTo(ref, originPosition, overlayPosition);
     }
   }
 
