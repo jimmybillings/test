@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable} from 'rxjs/Rx';
-import { Store, ActionReducer, Action} from '@ngrx/store';
+import { Observable } from 'rxjs/Rx';
+import { Store, ActionReducer, Action } from '@ngrx/store';
 
 const InitUiState: any = {
   headerIsExpanded: false,
@@ -40,7 +40,7 @@ export class UiState {
   }
 
   public loading(state: boolean): void {
-    this.data.take(1).subscribe(s => this.update({ loading: state}));
+    this.data.take(1).subscribe(s => this.update({ loading: state }));
   }
 
   public headerIsExpanded(): Observable<boolean> {

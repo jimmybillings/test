@@ -76,4 +76,4 @@ export class WzSpeedviewComponent implements OnDestroy {
       .top(`${coordinates.y}px`)
       .left(`${coordinates.x}px`);
   }
-} 
+}

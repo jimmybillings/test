@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, ElementRef, EventEmitter } from '@angular/core';
 declare var jwplayer: any;
 
-import { SubclipMarkers } from '../../interfaces/asset.interface';
+import { SubclipMarkers } from '../../../interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,

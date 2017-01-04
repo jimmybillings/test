@@ -5,8 +5,8 @@ import {
   TestBed
 } from '../../imports/test.imports';
 
-import { CollectionShowComponent} from './collection-show.component';
-import { ActiveCollectionService} from '../../shared/services/active-collection.service';
+import { CollectionShowComponent } from './collection-show.component';
+import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 
 export function main() {
   describe('Collection Show Component', () => {
@@ -31,22 +31,23 @@ export function main() {
 
     it('Should remove a given asset from a collection',
       inject([CollectionShowComponent], (component: CollectionShowComponent) => {
-       spyOn(component.activeCollection, 'removeAsset').and.callThrough();
-       component.removeFromCollection(params());
-       expect(component.activeCollection.removeAsset).toHaveBeenCalledWith(params());
+        spyOn(component.activeCollection, 'removeAsset').and.callThrough();
+        component.removeFromCollection(params());
+        expect(component.activeCollection.removeAsset).toHaveBeenCalledWith(params());
       }));
   });
 }
 
-function params() : any {
+
+function params(): any {
   return {
     collection: {
       id: 1,
       assets: {
         items: [
-          {assetId: 1, uuid: 'asdfhjkl'},
-          {assetId: 2, uuid: 'ajkl'},
-          {assetId: 3, uuid: 'asdfhj'}
+          { assetId: 1, uuid: 'asdfhjkl' },
+          { assetId: 2, uuid: 'ajkl' },
+          { assetId: 3, uuid: 'asdfhj' }
         ]
       }
     },

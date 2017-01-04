@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core
 
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
 import { WzSubclipControlsComponent } from '../wz-subclip-controls/wz.subclip-controls.component';
-import { SubclipMarkers } from '../../interfaces/asset.interface';
+import { SubclipMarkers } from '../../../interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,

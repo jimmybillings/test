@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -9,7 +9,6 @@ import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
     </div>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 
 export class WzNotificationComponent {
   @Input() notice: string;

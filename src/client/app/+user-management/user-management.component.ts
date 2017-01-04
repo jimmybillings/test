@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -6,4 +6,4 @@ import {Component} from '@angular/core';
   template: '<router-outlet></router-outlet>'
 })
 
-export class UserManagementComponent {}
+export class UserManagementComponent { }
