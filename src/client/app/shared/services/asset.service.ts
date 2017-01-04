@@ -50,7 +50,7 @@ export class AssetService {
 
   public getPrice(id: any, attributes?: any): Observable<any> {
     let formatedAttributes = attributes ? this.formatAttributes(attributes) : null;
-    let parameters = formatedAttributes ? { region: 'AAA', attributes: formatedAttributes }  : { region: 'AAA' };
+    let parameters = formatedAttributes ? { region: 'AAA', attributes: formatedAttributes } : { region: 'AAA' };
     return this.api.get(Api.Orders, `priceBook/price/${id}`, { parameters });
   }
 

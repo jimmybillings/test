@@ -5,7 +5,7 @@
   "rules": {
     "class-name": true,
     "curly": false,
-    "eofline": false,
+    "eofline": true,
     "indent": [
       true
     ],

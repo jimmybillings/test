@@ -42,7 +42,7 @@ export function main() {
       });
 
       it('for an asset with room above, below, and to the right', () => {
-        let viewport: Viewport = calculateViewport(100,300);
+        let viewport: Viewport = calculateViewport(100, 300);
         mockEvent = { currentTarget: { getBoundingClientRect: () => { return viewport; } } };
         directiveUnderTest.onMouseEnter(mockEvent);
 
@@ -53,7 +53,7 @@ export function main() {
       });
 
       it('for an asset with room above, below, but not to the right', () => {
-        let viewport: Viewport = calculateViewport(1000,300);
+        let viewport: Viewport = calculateViewport(1000, 300);
         mockEvent = { currentTarget: { getBoundingClientRect: () => { return viewport; } } };
         directiveUnderTest.onMouseEnter(mockEvent);
 
@@ -64,7 +64,7 @@ export function main() {
       });
 
       it('for an asset with no room below, but room to the right', () => {
-        let viewport: Viewport = calculateViewport(100,700);
+        let viewport: Viewport = calculateViewport(100, 700);
         mockEvent = { currentTarget: { getBoundingClientRect: () => { return viewport; } } };
         directiveUnderTest.onMouseEnter(mockEvent);
 
@@ -74,7 +74,7 @@ export function main() {
       });
 
       it('for an asset with no room above, but room to the right', () => {
-        let viewport: Viewport = calculateViewport(100,0);
+        let viewport: Viewport = calculateViewport(100, 0);
         mockEvent = { currentTarget: { getBoundingClientRect: () => { return viewport; } } };
         directiveUnderTest.onMouseEnter(mockEvent);
 

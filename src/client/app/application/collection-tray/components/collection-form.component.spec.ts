@@ -116,6 +116,3 @@ function mockCollections(): any {
   };
 }
 
-// function mockKeyboardEventDownArrow(): any {
-//   return { 'keyCode': 40 };
-// }

@@ -61,5 +61,4 @@ export class WzAutocompleteSearchComponent {
       this.wzInputSuggestions.suggestionChangeListener();
     }
   }
-
 }
