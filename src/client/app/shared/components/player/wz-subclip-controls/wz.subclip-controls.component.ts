@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { SubclipMarkers } from '../../interfaces/asset.interface';
+import { SubclipMarkers } from '../../../interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,

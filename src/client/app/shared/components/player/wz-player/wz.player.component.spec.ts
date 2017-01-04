@@ -2,7 +2,7 @@ import {
   // inject,
   TestBed,
   beforeEachProvidersArray
-} from '../../../imports/test.imports';
+} from '../../../../imports/test.imports';
 
 import { WzPlayerComponent } from './wz.player.component';
 
