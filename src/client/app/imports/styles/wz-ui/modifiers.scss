@@ -41,7 +41,7 @@
       font-size: rem(2.1);
       position: absolute;
       right: rem(.2);
-      top: rem(-.1);
+      top: 0;
     }
     &.md-primary .md-button-wrapper::after {
       color: contrast-color(md-color($md-primary));
