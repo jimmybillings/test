@@ -22,7 +22,8 @@ import { WzPlayerComponent } from './components/player/wz-player/wz.player.compo
 import { WzSubclipPlayerComponent } from './components/player/wz-subclip-player/wz.subclip-player.component';
 import { WzSubclipControlsComponent } from './components/player/wz-subclip-controls/wz.subclip-controls.component';
 import { WzPlayerControlbarComponent } from './components/player/wz-player-controlbar/wz.player-controlbar.component';
-import { WzPlaybackToggleButtonComponent } from './components/player/controls/wz-playback-toggle-button/wz.playback-toggle-button.component';
+import { WzPlaybackToggleButtonComponent }
+  from './components/player/controls/wz-playback-toggle-button/wz.playback-toggle-button.component';
 import { WzToastComponent, WzToastPortalDirective } from './components/wz-toast/wz.toast.component';
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
