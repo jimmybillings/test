@@ -70,16 +70,16 @@
 md-progress-bar {
     .md-progress-bar-primary.md-progress-bar-fill {
         &:after {
-            background-color:md-color($md-accent, 0) !important;
+            background-color:md-color($md-accent, 0);
         }
     }
     .md-progress-bar-secondary.md-progress-bar-fill {
         &:after {
-            background-color:md-color($md-accent)!important;
+            background-color:md-color($md-accent);
         }
     }
     .md-progress-bar-buffer {
-        background-color:md-color($md-accent, 100) !important;
+        background-color:md-color($md-accent, 100);
     }
 }
 

@@ -279,16 +279,6 @@ wz-item-search-form {
     }
     &:hover {
       opacity: 1;
-      &::after {
-        background-color: transparent;
-      }
-    }
-
-  }
-  button[type="reset"]:hover {
-    opacity: .4;
-    &::after {
-      background-color: transparent;
     }
   }
   .vertical-divider {
