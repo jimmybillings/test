@@ -137,7 +137,7 @@ header.app-header + div.main-content asset-component {
   @include transition(border-top-width 0.35s, $swift-ease-in-out-timing-function);
   border-top: rem(16.6) solid md-color($md-grey, 900, .7);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    border-top-width: rem(16.0);
+    border-top-width: rem(15.2);
   }
 }
 
@@ -151,7 +151,7 @@ header.app-header.collection-tray-closed + div.main-content search-component,
 header.app-header.collection-tray-closed + div.main-content asset-component {
   border-top-width: rem(11.0);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    border-top-width: rem(10.4);
+    border-top-width: rem(9.6);
   }
 }
 
@@ -164,9 +164,9 @@ header.app-header.collection-tray-closed.search-closed + div.main-content cms-co
 header.app-header.collection-tray-closed.search-closed + div.main-content search-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content asset-component {
   border-top-width: rem(6.4);
-  // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-  //   border-top-width: rem(5.6);
-  // }
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    border-top-width: rem(5.6);
+  }
 }
 
 header.app-header.search-closed + div.main-content not-found-component,
@@ -178,9 +178,9 @@ header.app-header.search-closed + div.main-content cms-component,
 header.app-header.search-closed + div.main-content search-component,
 header.app-header.search-closed + div.main-content asset-component {
   border-top-width: rem(12.0);
-  // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-  //   border-top-width: rem(11.2);
-  // }
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    border-top-width: rem(11.2);
+  }
 }
 
 // pages that do not have options to open and close search and bins, but don't have a bk hero image or video (admin)
@@ -188,16 +188,16 @@ header.app-header + div.main-content admin-component {
   display: flex;
   @include transition(border-top-width 0.35s, $swift-ease-in-out-timing-function);
   border-top: rem(16.6) solid md-color($md-grey, 900, .7);
-  // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-  //   border-top-width: rem(15.2);
-  // }
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    border-top-width: rem(15.2);
+  }
 }
 
 header.app-header + div.main-content admin-component {
   border-top-width: rem(6.4);
-  // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-  //   border-top-width: rem(5.6);
-  // }
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    border-top-width: rem(5.6);
+  }
 }
 
 // pages that do not have options to open and close search and bins with a bk hero image or video (user, home)
@@ -205,7 +205,7 @@ header.app-header + div.main-content admin-component {
 header.app-header + div.main-content user-component .hero,
 header.app-header + div.main-content home-component .hero {
   padding-top: rem(6.4);
-  // @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-  //   padding-top: rem(5.6);
-  // }
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    padding-top: rem(5.6);
+  }
 }

@@ -31,12 +31,9 @@ wz-pagination {
   }
   button[md-icon-button] {
     margin: 0;
-    line-height: 1;
-    padding: rem(.5);
     @include transition(all .4s ease-in-out);
     md-icon.material-icons {
-      font-size: rem(3.1);
-      height: 100%;
+      font-size: rem(3.0);
       width: 100%;
       opacity: .75;
     }

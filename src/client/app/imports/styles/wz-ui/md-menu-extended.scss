@@ -14,19 +14,6 @@
 .cdk-overlay-pane .md-menu {
   max-width: rem(33.6);
 }
-.md-menu-content [md-menu-item] {
-  color: rgba(md-color($foreground,text), .75);
-  &[disabled] {
-    color: md-color($foreground,disabled);
-  }
-}
-.md-content a[md-menu-item] md-icon.material-icons,
-.md-content button[md-menu-item] md-icon.material-icons {
-  color: md-color($foreground,icon);
-  padding-left: rem(.8);
-  padding-right: rem(1.6);
-  margin-top: rem(-.3);
-}
 .md-menu-content a[md-menu-item][disabled] md-icon.material-icons,
 .md-menu-content button[md-menu-item][disabled] md-icon.material-icons {
   color: rgba(md-color($foreground,text), .25);

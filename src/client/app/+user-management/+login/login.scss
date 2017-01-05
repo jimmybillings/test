@@ -47,12 +47,13 @@ md-card.wz-form-card {
     position: absolute;
     right: rem(.5);
     top: rem(.5);
-    font-size: 36px;
+    font-size: rem(3.6);
     opacity: .5;
     md-icon {
-      font-size: 1em;
-      height: 1em;
-      width: 1em;
+      font-size: rem(3.6);
+      height: rem(3.6);
+      width: rem(3.6);
+      line-height: .835
     }
   }
 }

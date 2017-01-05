@@ -260,7 +260,7 @@ wz-item-search-form {
     color: md-color($foreground, secondary-text);
     background-color:  rgba(md-color($background, app-bar), .9);
     border-radius: 0;
-    margin-right:rem(-8.4);
+    margin-right:rem(-8.7);
     @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
     @include placeholder {
       color: md-color($foreground, hint-text);
@@ -279,16 +279,6 @@ wz-item-search-form {
     }
     &:hover {
       opacity: 1;
-      &::after {
-        background-color: transparent;
-      }
-    }
-
-  }
-  button[type="reset"]:hover {
-    opacity: .4;
-    &::after {
-      background-color: transparent;
     }
   }
   .vertical-divider {

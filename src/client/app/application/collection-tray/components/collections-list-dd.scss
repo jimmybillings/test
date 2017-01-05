@@ -207,17 +207,9 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
         margin-right: rem(.4);
         &:hover {
           color: md-color($md-primary);
-          background-color: rgba(md-color($md-foreground, base), .07);
           md-icon {
             opacity: 1;
           }
-        }
-        // once they put a transition into the ::after pseudo class this can go away
-        &:hover::after {
-          background-color: transparent;
-        }
-        .md-button-ripple {
-          display:none;
         }
       }
       md-icon {
@@ -291,6 +283,7 @@ collections-list-dd .collections-dd-menu .dd-menu-wrapper wz-item-search-form {
   }
   .tools {
     display: flex;
+    padding-right: rem(0.3);
     button {
       @include transform(rotate(90deg));
       @include text-contrast(md-color($md-background, card), rgba(md-color($md-foreground, base), .75), md-color($md-background, card));

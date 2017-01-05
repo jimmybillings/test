@@ -41,7 +41,7 @@
       font-size: rem(2.1);
       position: absolute;
       right: rem(.2);
-      top: rem(-.1);
+      top: 0;
     }
     &.md-primary .md-button-wrapper::after {
       color: contrast-color(md-color($md-primary));
@@ -58,9 +58,7 @@
       min-height: rem(4.0);
       border-radius: rem(.2);
       padding-left: rem(.4);
-      padding-right: rem(1.4);
-      padding-top: rem(.8);
-      padding-bottom: 0;
+      padding-right: rem(1.2);
       .md-button-wrapper::after {
         right: rem(-.3);
         top: rem(.3);
@@ -72,16 +70,16 @@
 md-progress-bar {
     .md-progress-bar-primary.md-progress-bar-fill {
         &:after {
-            background-color:md-color($md-accent, 0) !important;
+            background-color:md-color($md-accent, 0);
         }
     }
     .md-progress-bar-secondary.md-progress-bar-fill {
         &:after {
-            background-color:md-color($md-accent)!important;
+            background-color:md-color($md-accent);
         }
     }
     .md-progress-bar-buffer {
-        background-color:md-color($md-accent, 100) !important;
+        background-color:md-color($md-accent, 100);
     }
 }
 
