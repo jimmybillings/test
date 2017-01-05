@@ -2,9 +2,17 @@
   [asset]="asset"
   [mode]="'edit'"
   (timeUpdate)="onTimeUpdate($event)"
-  (durationUpdate)="onDurationUpdate($event);">
+  (durationUpdate)="onDurationUpdate($event)"
+  (playbackUpdate)="onPlaybackUpdate($event)">
 </wz-player>
 <br/>
+
+<wz-player-controlbar
+  [playing]="playing"
+  (playbackToggleRequested)="requestPlaybackToggle()">
+</wz-player-controlbar>
+<br/>
+
 <wz-subclip-controls
   [markers]="subclipMarkers"
   (seekRequested)="requestSeekTo($event)"

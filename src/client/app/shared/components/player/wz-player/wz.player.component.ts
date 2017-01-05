@@ -28,12 +28,18 @@ export class WzPlayerComponent {
   // These events are emitted only for this.mode === 'edit'.
   @Output() timeUpdate: EventEmitter<number> = new EventEmitter<number>();
   @Output() durationUpdate: EventEmitter<number> = new EventEmitter<number>();
+  @Output() playbackUpdate: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   private currentAsset: any;
   private jwPlayer: any; // Don't access this directly.  Use this.player getter instead.
   private currentlyPlaying: boolean = false;
 
   constructor(private element: ElementRef) { }
+
+  public togglePlayback(): void {
+    // Omitting the state argument to JWPlayer's play() method will toggle playback.
+    this.player.play();
+  }
 
   public seekTo(timeInSeconds: number): void {
     this.player.seek(timeInSeconds);
@@ -90,8 +96,20 @@ export class WzPlayerComponent {
   }
 
   private handleStateEvents(): void {
-    this.player.on('play', () => this.currentlyPlaying = true);
-    this.player.on('pause', () => this.currentlyPlaying = false);
+    this.player.on('play', () => {
+      this.currentlyPlaying = true;
+      this.playbackUpdate.emit(true);
+    });
+
+    this.player.on('pause', () => {
+      this.currentlyPlaying = false;
+      this.playbackUpdate.emit(false);
+    });
+
+    this.player.on('complete', () => {
+      this.currentlyPlaying = false;
+      this.playbackUpdate.emit(false);
+    });
   }
 
   private preventAutoplayAfterSeek(): void {

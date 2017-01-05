@@ -14,11 +14,17 @@ export class WzSubclipPlayerComponent {
   @Input() asset: any;
   @Input() subclipMarkers: SubclipMarkers;
 
+  public playing: boolean = true;
+
   @Output() subclipMarkersChanged: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
   @Output() subclipMarkersCleared: EventEmitter<null> = new EventEmitter<null>();
 
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
   @ViewChild(WzSubclipControlsComponent) subclipControls: WzSubclipControlsComponent;
+
+  public onPlaybackUpdate(playing: boolean): void {
+    this.playing = playing;
+  }
 
   public onTimeUpdate(newTime: number): void {
     this.subclipControls.currentTime = newTime;
@@ -34,6 +40,10 @@ export class WzSubclipPlayerComponent {
 
   public requestPlaySubclip(markers: SubclipMarkers): void {
     this.player.playSubclip(markers);
+  }
+
+  public requestPlaybackToggle(): void {
+    this.player.togglePlayback();
   }
 
   public onSubclipMarkersChanged(newMarkers: SubclipMarkers): void {
