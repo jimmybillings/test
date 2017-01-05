@@ -19,23 +19,24 @@ export const createSpec: Function = (sourceFilename: string, specFilename: strin
   const nullConstructorArguments: string =
     Array(parser.constructorParameterCount).fill('null').join(', ');
 
-  const output: string =
-    `import { ${className} } from './${importFilename}';
+  // BEGIN Important yucky indentation!
+  const output: string = `import { ${className} } from './${importFilename}';
 
-      export function main() {
-        describe('${classNameWithSpaces}', () => {
-          let ${underTestVariableName}: ${className};
+export function main() {
+  describe('${classNameWithSpaces}', () => {
+    let ${underTestVariableName}: ${className};
 
-          beforeEach(() => {
-            ${underTestVariableName} = new ${className}(${nullConstructorArguments});
-          });
+    beforeEach(() => {
+      ${underTestVariableName} = new ${className}(${nullConstructorArguments});
+    });
 
-          it('has no tests!', () => {
-            expect(true).toBe(true);
-          });
-        });
-      }
-    `.replace(/^      /gm, '');  // Undo the output's 6-space indents.
+    it('has no tests!', () => {
+      expect(true).toBe(true);
+    });
+  });
+}
+`;
+  // END Important yucky indentation!
 
   fs.writeFileSync(specFilename, output);
 }
