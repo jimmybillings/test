@@ -1,11 +1,9 @@
 <div *ngFor="let project of projects">
 	<section class="project" layout="row" layout-align="center center">
 		<div class="project-info" flex-gt-xl="95" flex-gt-md="90" flex-gt-xs="100">
-
-			<ul layout="row">
+			<ul layout="row" layout-align="space-between center">
 				<li flex-gt-md="25"><strong>{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</strong> {{ project.name }}</li>
 				<li flex-gt-md="25"><strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> {{ project.clientName }}</li>
-				<li flex-gt-md="25"><strong>{{ 'CART.PROJECTS.DELIVERY_FORMAT' | translate }}</strong> Native Format</li>
 				<li flex-gt-md="25" *ngIf="readOnly">
 					<!--Does the translate pipe support singular vs. plural?-->
 					<span *ngIf="lineItemCountFor(project) == 0">No Assets</span>
