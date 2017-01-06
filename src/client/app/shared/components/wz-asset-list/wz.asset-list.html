@@ -33,11 +33,18 @@
 
           <!-- DOWNLOAD COMPS-->
           <button
-            [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+            *ngIf="userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
             md-icon-button
-            title="{{ userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ?
-              'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' :
-              'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
+            (click)="setAssetActiveId(asset)"
+            [md-menu-trigger-for]="downloadCompMenu">
+              <md-icon>file_download</md-icon>
+          </button>
+          <button
+            *ngIf="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+            disabled
+            md-icon-button
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
             (click)="setAssetActiveId(asset)"
             [md-menu-trigger-for]="downloadCompMenu">
               <md-icon>file_download</md-icon>
