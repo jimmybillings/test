@@ -2,7 +2,7 @@
 	<section class="project" layout="row" layout-align="center center">
 		<div class="project-info" flex-gt-xl="95" flex-gt-md="90" flex-gt-xs="100">
 			<ul layout="row" layout-align="space-between center">
-				<li flex-gt-md="30"><strong>{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</strong> {{ project.name | slice:0:26 }}</li>
+				<li flex-gt-md="30"><strong>{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</strong> {{ project.name | slice:0:40 }}</li>
 				<li><strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> {{ project.clientName }}</li>
 				<li *ngIf="readOnly">
 					<!--Does the translate pipe support singular vs. plural?-->
