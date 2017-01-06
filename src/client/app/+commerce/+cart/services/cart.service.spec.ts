@@ -278,9 +278,14 @@ export function main() {
           .subscribe(response => expect(response).toEqual(mockApi.postResponse));
       });
 
-      it('does NOT replace the cart store with the response', () => {
+      it('replaces the cart store with a new cart', () => {
         serviceUnderTest.purchaseOnCredit()
-          .subscribe(_ => expect(mockCartStore.replaceWith).not.toHaveBeenCalled());
+          .subscribe(_ => {
+            expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
+            expect(mockApi.get).toHaveBeenCalledWithEndpoint('cart');
+            expect(mockApi.get).toHaveBeenCalledWithLoading(true);
+            expect(mockCartStore.replaceWith).toHaveBeenCalled();
+          });
       });
 
       it('updates the cart summary service', () => {
@@ -295,7 +300,7 @@ export function main() {
 
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('cart/update/lineItem/456');
-        expect(mockApi.put).toHaveBeenCalledWithBody({id: '456',price: 0,selectedTranscodeTarget:'1080i'});
+        expect(mockApi.put).toHaveBeenCalledWithBody({ id: '456', price: 0, selectedTranscodeTarget: '1080i' });
       });
 
       it('replaces the cart store with the response', () => {

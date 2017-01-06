@@ -79,7 +79,7 @@ export class CartService {
 
   public purchaseOnCredit(): Observable<any> {
     return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { loading: true }).do(() => {
-      this.cartSummaryService.loadCartSummary();
+      this.initializeData().subscribe();
     });
   }
 
