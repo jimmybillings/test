@@ -1,3 +1,9 @@
 {
-  "typescript.check.workspaceVersion": false
+  "typescript.check.workspaceVersion": false,
+  "editor.tabSize": 2,
+  "editor.wrappingColumn": 130,
+  "editor.wordWrap": true,
+  "editor.formatOnSave": true,
+  "html.format.enable": false,
+  "files.insertFinalNewline": true
 }
