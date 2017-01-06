@@ -115,9 +115,11 @@
 							</span>
 							<span *ngIf="calculatedPrice" class="price">{{calculatedPrice.price | currency:'USD':true:'1.2-2'}}</span>
 							<span *ngIf="asset.price === 0" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
-							<button [disabled]="!currentUser.loggedIn()" md-button (click)="getPricingAttributes(); calculatePricing.show()" class="is-outlined">{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
-							<button md-raised-button [disabled]="!currentUser.loggedIn()" (click)="addAssetToCart(asset.assetId); addToCartToast.show()"
-								class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+							<span *ngIf="asset.price !== 0">
+								<button [disabled]="!currentUser.loggedIn()" md-button (click)="getPricingAttributes(); calculatePricing.show()" class="is-outlined">{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
+								<button [disabled]="!currentUser.loggedIn()" md-raised-button (click)="addAssetToCart(asset.assetId); addToCartToast.show()"
+									class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+							</span>
 						</md-card-actions>
 					</div>
 				</div>

@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
+import { CurrentUser } from './current-user.model';
 import { Observable } from 'rxjs/Rx';
 
 const initCartSummary: any = {
   'projects': [
     {
       'name': 'Project A',
+      'clientName': this.fullUserName,
       'projectId': '',
       'itemCount': 0,
       'subtotal': 0
@@ -30,7 +32,7 @@ export const cartSummary: ActionReducer<any> = (state: any = initCartSummary, ac
 export class CartSummaryService {
   public data: Observable<any>;
 
-  constructor(private api: ApiService, private store: Store<any>) {
+  constructor(private api: ApiService, private store: Store<any>, private currentUser: CurrentUser) {
     this.data = this.store.select('cartSummary');
   }
 
@@ -50,6 +52,12 @@ export class CartSummaryService {
       'cart/asset/lineItem/quick',
       { body: this.formatAsset(assetId, transcodeTarget), parameters: { projectName: this.lastProjectName, region: 'AAA' } }
     ).subscribe(data => this.updateCartSummaryStore(data));
+  }
+
+  private get fullUserName(): string {
+    let userName: string;
+    this.currentUser.fullName().take(1).subscribe(fullName => userName = fullName);
+    return userName;
   }
 
   private getCartSummary(): void {
