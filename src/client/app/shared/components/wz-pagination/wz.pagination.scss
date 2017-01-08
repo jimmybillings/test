@@ -4,7 +4,11 @@
   @include justify-content(flex-end);
   @include align-items(center);
   min-height: rem(3.4);
-  max-height: rem(3.4);
+  // @jimmybillings 01/08/17
+  // This causes double scroll bars to appear on the search page when you add 
+  // the pagination component to the bottom of the search page results. Adding to the top 
+  // is fine.
+    // max-height: rem(3.4);
   opacity: .75;
   width: 100%;
   white-space: nowrap;
