@@ -20,12 +20,13 @@ export class AssetData {
   }
 
   public searchAssets(params: any): Observable<any> {
-    params['i'] = (parseFloat(params['i']) - 1).toString();
+    let cloneParams = JSON.parse(JSON.stringify(params));
+    cloneParams['i'] = (parseFloat(cloneParams['i']) - 1).toString();
 
     return this.api.get(
       Api.Assets,
       this.currentUser.loggedIn() ? 'search' : 'search/anonymous',
-      { parameters: params, loading: true }
+      { parameters: cloneParams, loading: true }
     ).do(response => this.store.storeAssets(response));
   }
 
