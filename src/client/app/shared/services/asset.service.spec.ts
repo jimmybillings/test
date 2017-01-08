@@ -49,11 +49,6 @@ export function main() {
       expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'SET_ASSET', payload: MockAssetResponse() });
     }));
 
-    it('Should expect a correctly formatted payload it add it to the Asset Store', inject([AssetService], (service: AssetService) => {
-      spyOn(service.store, 'dispatch');
-      service.reset();
-      expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'RESET' });
-    }));
   });
 
   function MockAssetResponse() {
