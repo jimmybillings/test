@@ -49,12 +49,12 @@ export class AssetDetailComponent implements OnChanges {
 	}
 
 	public addToCollection(collection: Collection, asset: any): void {
-		asset.assetId = asset.value;
+		asset.assetId = parseInt(asset.value);
 		this.onAddToCollection.emit({ 'collection': collection, 'asset': asset });
 	}
 
 	public removeFromCollection(collection: Collection, asset: any): void {
-		asset.assetId = asset.value;
+		asset.assetId = parseInt(asset.value);
 		this.onRemoveFromCollection.emit({ 'collection': collection, 'asset': asset });
 	}
 

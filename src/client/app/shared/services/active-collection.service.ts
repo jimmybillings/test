@@ -58,7 +58,7 @@ export class ActiveCollectionService implements OnInit {
   public removeAsset(params: any): Observable<any> {
     let collection: Collection = params.collection;
     let uuid: any, assetToBeRemoved: any;
-    assetToBeRemoved = params.collection.assets.items.find((item: any) => parseInt(item.assetId) === parseInt(params.asset.assetId));
+    assetToBeRemoved = params.collection.assets.items.find((item: any) => item.assetId === params.asset.assetId);
     if (params.asset.uuid && assetToBeRemoved) {
       uuid = params.asset.uuid;
     } else {
