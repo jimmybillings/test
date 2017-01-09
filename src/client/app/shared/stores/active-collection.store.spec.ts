@@ -40,7 +40,7 @@ export function main() {
           { property1: 'existing1', property2: 'existing2' },
           { type: 'UPDATE_ACTIVE_COLLECTION', payload: { property1: 'new', other: 'stuff' } }
         ))
-          .toEqual({ property1: 'new', property2: 'existing2', other: 'stuff' });
+          .toEqual({ property1: 'new', property2: 'existing2', other: 'stuff', assetsCount: 0 });
       });
 
       it('returns initial state merged with payload when current state is not passed in', () => {
