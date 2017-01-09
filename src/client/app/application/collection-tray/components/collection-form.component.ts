@@ -78,7 +78,7 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   public editCollection(collection: Collection) {
     collection = Object.assign(
       {}, collection, {
-        id: this.collection.id, tags: collection.tags.split(/\s*,\s*/), owner: this.collection.owner
+        id: this.collection.id, tags: (collection.tags !== '') ? collection.tags.split(/\s*,\s*/) : [], owner: this.collection.owner
       });
     this.collections.update(collection)
       .subscribe(() => {
