@@ -107,8 +107,12 @@ export class AppComponent implements OnInit {
   private processLoggedInUser() {
     this.userPreference.getPrefs();
     if (this.userCan.viewCollections()) {
-      this.collections.load().subscribe(() => { });
-      this.activeCollection.load().subscribe(() => { });
+      this.activeCollection.load().subscribe(() => {
+        // This needs to be inside here. activeCollection.load will create a 
+        // new collection for first time users if they don't already have one
+        // so we need to collection load all collection after this happens.
+        this.collections.load().subscribe(() => { });
+      });
     }
     this.cartSummary.loadCartSummary();
     this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
