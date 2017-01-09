@@ -8,7 +8,7 @@
       <md-input
         *ngIf="(field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')"
         class="md-block"
-        [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
+        [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         placeholder="{{field.label | translate}}"
         type="{{field.type}}"
         formControlName="{{field.name}}"
@@ -55,7 +55,7 @@
       <md-input
         *ngIf="field.name == 'confirmPassword'"
         class="md-block"
-        [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
+        [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         placeholder="{{field.label | translate}}"
         type="password"
         formControlName="{{field.name}}"
@@ -93,7 +93,7 @@
       <md-input
         *ngIf="field.name == 'newPassword'"
         class="md-block"
-        [ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
+        [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         placeholder="{{field.label | translate}}"
         type="password"
         formControlName="{{field.name}}"
@@ -214,15 +214,15 @@
 		<wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]" [rawField]="field">
 			<md-input placeholder="{{field.label | translate}}" 
 				(keydown)="suggestions.inputKeyDown($event)"
-				[ngClass]="{'show-errors': (!form.controls[field.name].valid && form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && submitAttempt) || (!form.controls[field.name].valid && !form.controls[field.name].pristine && !submitAttempt)}"
+				[ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
 				formControlName="{{field.name}}"
 				type="text"
 				[required]="isRequiredField(field)">
-				<md-hint *ngIf="!form.controls[field.name].valid"
-					[hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt" 
+				<md-hint *ngIf="hasErrorType(form.controls[field.name])" 
 					align="start" 
 					class="error">
 						<span *ngIf="form.controls[field.name].hasError('required')">
+              {{form.controls[field.name].hasError('required')}}
 							{{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
 						</span>
 						<span *ngIf="form.controls[field.name].hasError('serverError')">
