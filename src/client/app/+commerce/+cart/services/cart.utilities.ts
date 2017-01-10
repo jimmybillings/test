@@ -2,11 +2,13 @@ export class CartUtilities {
   public static nextNewProjectNameGiven(existingNames: Array<string>) {
     const prefix: string = 'Project ';
     const existingLetterCodes: Array<string> = existingNames
-                                              .filter(name => name.indexOf(prefix) === 0)
-                                              .map(name => name.replace(prefix, ''));
-    const latestLetterCode: string = this.latestLetterCodeFrom(existingLetterCodes);
+      .filter(name => name.indexOf(prefix) === 0)
+      .map(name => name.replace(prefix, ''));
+    let latestLetterCode: string = this.latestLetterCodeFrom(existingLetterCodes);
     let newLetterCode: string;
     let nextNumber: number = existingNames.length;
+
+    latestLetterCode = latestLetterCode === '' ? '' : latestLetterCode.match(/[A-Za-z]/)[0];
 
     do {
       newLetterCode = this.letterCodeFor(nextNumber);
@@ -42,8 +44,8 @@ export class CartUtilities {
     let result: string = '';
 
     while (n >= 0) {
-        result = `${alphabet[n % 26]}${result}`;
-        n = Math.floor(n / 26) - 1;
+      result = `${alphabet[n % 26]}${result}`;
+      n = Math.floor(n / 26) - 1;
     }
 
     return result;

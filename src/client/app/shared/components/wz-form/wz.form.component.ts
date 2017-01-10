@@ -65,9 +65,9 @@ export class WzFormComponent implements OnInit, OnChanges {
   }
 
   public markFieldsAsDirty() {
-      for (let control in this.form.controls) {
-          (<FormControl>this.form.controls[control]).markAsDirty();
-      }
+    for (let control in this.form.controls) {
+      (<FormControl>this.form.controls[control]).markAsDirty();
+    }
   }
 
   public parseOptions(options: any) {
@@ -90,6 +90,12 @@ export class WzFormComponent implements OnInit, OnChanges {
       field.validation === 'PASSWORD' ||
       field.validation === 'TERMS' ||
       field.validation === 'COLLECTION') ? true : false;
+  }
+
+  public hasErrorType(field: FormControl): boolean {
+    return (!field.valid && field.pristine && this.submitAttempt) ||
+      (!field.valid && !field.pristine && this.submitAttempt) ||
+      (!field.valid && !field.pristine && !this.submitAttempt);
   }
 
   /**

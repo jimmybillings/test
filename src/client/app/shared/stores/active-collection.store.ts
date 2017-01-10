@@ -11,7 +11,9 @@ export const activeCollection: ActionReducer<any> = (state: Collection = initial
 
   switch (action.type) {
     case 'UPDATE_ACTIVE_COLLECTION':
-      return Object.assign({}, state, action.payload);
+      return Object.assign({}, state, action.payload, {
+        assetsCount: (action.payload.assets && action.payload.assets.items) ? action.payload.assets.items.length : 0
+      });
 
     case 'RESET_ACTIVE_COLLECTION':
       return Object.assign({}, initialState());

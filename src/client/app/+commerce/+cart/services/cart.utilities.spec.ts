@@ -16,7 +16,9 @@ export function main() {
           [['Project A', 'My Project'], 'Project C'],
           [['My Project', 'Project B'], 'Project C'],
           [['My Project', 'Project B', 'My Other Project'], 'Project D'],
-          [['Project B', 'Project A'], 'Project C']
+          [['Project B', 'Project A'], 'Project C'],
+          [['Project - A'], 'Project B'],
+          [['ProjectA'], 'Project B']
         ];
 
         tests.forEach(params => {

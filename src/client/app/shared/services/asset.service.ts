@@ -6,14 +6,11 @@ import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 import { CurrentUser } from '../../shared/services/current-user.model';
 
-const initAsset: any = { clipData: [], common: [], primary: [], secondary: [], filter: '', name: '', price: 0 };
 
-export const asset: ActionReducer<any> = (state = initAsset, action: Action) => {
+export const asset: ActionReducer<any> = (state = {}, action: Action) => {
   switch (action.type) {
     case 'SET_ASSET':
-      return Object.assign({}, state, action.payload);
-    case 'RESET':
-      return Object.assign({}, initAsset);
+      return Object.assign({}, action.payload);
     default:
       return state;
   }
@@ -38,10 +35,6 @@ export class AssetService {
 
   public set(action: Action): void {
     this.store.dispatch(action);
-  }
-
-  public reset(): void {
-    this.store.dispatch({ type: 'RESET' });
   }
 
   public downloadComp(id: any, compType: any): Observable<any> {
