@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { WzPlayerState } from '../wz.player.interface';
+import { WzPlayerState, WzPlayerRequest } from '../wz.player.interface';
 
 @Component({
   moduleId: module.id,
@@ -11,9 +11,9 @@ import { WzPlayerState } from '../wz.player.interface';
 
 export class WzPlayerControlbarComponent {
   @Input() playerState: WzPlayerState;
-  @Output() playbackToggleRequested: EventEmitter<null> = new EventEmitter<null>();
+  @Output() request: EventEmitter<WzPlayerRequest> = new EventEmitter<WzPlayerRequest>();
 
-  public onPlaybackToggleRequested(): void {
-    this.playbackToggleRequested.emit();
+  public forward(request: WzPlayerRequest): void {
+    this.request.emit(request);
   }
 }

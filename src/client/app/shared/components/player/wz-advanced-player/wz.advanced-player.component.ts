@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 
 import { WzPlayerStateService } from '../wz.player-state.service';
-import { WzPlayerState, WzPlayerStateChanges } from '../wz.player.interface';
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
+import { WzPlayerState, WzPlayerStateChanges, WzPlayerRequest, WzPlayerRequestType } from '../wz.player.interface';
 
 @Component({
   moduleId: module.id,
@@ -14,7 +14,6 @@ import { WzPlayerComponent } from '../wz-player/wz.player.component';
 
 export class WzAdvancedPlayerComponent {
   @Input() asset: any;
-
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
   constructor(public playerStateService: WzPlayerStateService) { }
@@ -23,32 +22,31 @@ export class WzAdvancedPlayerComponent {
     this.playerStateService.updateWith(changes);
   }
 
-  public requestSetInMarker(): void {
-    this.playerStateService.updateWith({ inMarker: 'currentTime' });
-  }
-
-  public requestSetOutMarker(): void {
-    this.playerStateService.updateWith({ outMarker: 'currentTime' });
-  }
-
-  public requestClearMarkers(): void {
-    this.playerStateService.updateWith({ inMarker: 'clear', outMarker: 'clear' });
-  }
-
-  public requestSeekToInMarker(): void {
-    this.player.seekTo(this.playerStateService.snapshot.inMarker);
-  }
-
-  public requestSeekToOutMarker(): void {
-    this.player.seekTo(this.playerStateService.snapshot.outMarker);
-  }
-
-  public requestPlayWithinMarkers(): void {
+  public handle(request: WzPlayerRequest): void {
     const state: WzPlayerState = this.playerStateService.snapshot;
-    this.player.playRange(state.inMarker, state.outMarker);
-  }
 
-  public requestPlaybackToggle(): void {
-    this.player.togglePlayback();
+    switch (request.type) {
+      case WzPlayerRequestType.ClearMarkers:
+        this.playerStateService.updateWith({ inMarker: 'clear', outMarker: 'clear' });
+        break;
+      case WzPlayerRequestType.PlayWithinMarkers:
+        this.player.playRange(state.inMarker, state.outMarker);
+        break;
+      case WzPlayerRequestType.SeekToInMarker:
+        this.player.seekTo(state.inMarker);
+        break;
+      case WzPlayerRequestType.SeekToOutMarker:
+        this.player.seekTo(state.outMarker);
+        break;
+      case WzPlayerRequestType.SetInMarker:
+        this.playerStateService.updateWith({ inMarker: 'currentTime' });
+        break;
+      case WzPlayerRequestType.SetOutMarker:
+        this.playerStateService.updateWith({ outMarker: 'currentTime' });
+        break;
+      case WzPlayerRequestType.TogglePlayback:
+        this.player.togglePlayback();
+        break;
+    }
   }
 }

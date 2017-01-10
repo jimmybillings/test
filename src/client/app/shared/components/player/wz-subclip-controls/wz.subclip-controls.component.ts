@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { WzPlayerState } from '../wz.player.interface';
+import { WzPlayerState, WzPlayerRequest, WzPlayerRequestType } from '../wz.player.interface';
 
 @Component({
   moduleId: module.id,
@@ -11,36 +11,30 @@ import { WzPlayerState } from '../wz.player.interface';
 
 export class WzSubclipControlsComponent {
   @Input() playerState: WzPlayerState;
-
-  @Output() setInMarkerRequested: EventEmitter<null> = new EventEmitter<null>();
-  @Output() setOutMarkerRequested: EventEmitter<null> = new EventEmitter<null>();
-  @Output() seekToInMarkerRequested: EventEmitter<null> = new EventEmitter<null>();
-  @Output() seekToOutMarkerRequested: EventEmitter<null> = new EventEmitter<null>();
-  @Output() playWithinMarkersRequested: EventEmitter<null> = new EventEmitter<null>();
-  @Output() clearMarkersRequested: EventEmitter<null> = new EventEmitter<null>();
+  @Output() request: EventEmitter<WzPlayerRequest> = new EventEmitter<WzPlayerRequest>();
 
   public setInMarker(): void {
-    this.setInMarkerRequested.emit();
+    this.request.emit({ type: WzPlayerRequestType.SetInMarker });
   }
 
   public setOutMarker(): void {
-    this.setOutMarkerRequested.emit();
+    this.request.emit({ type: WzPlayerRequestType.SetOutMarker });
   }
 
   public seekToInMarker(): void {
-    this.seekToInMarkerRequested.emit();
+    this.request.emit({ type: WzPlayerRequestType.SeekToInMarker });
   }
 
   public seekToOutMarker(): void {
-    this.seekToOutMarkerRequested.emit();
+    this.request.emit({ type: WzPlayerRequestType.SeekToOutMarker });
   }
 
   public playInToOut(): void {
-    this.playWithinMarkersRequested.emit();
+    this.request.emit({ type: WzPlayerRequestType.PlayWithinMarkers });
   }
 
   public clear(): void {
-    this.clearMarkersRequested.emit();
+    this.request.emit({ type: WzPlayerRequestType.ClearMarkers });
   }
 
   // TODO: Move this into state class.

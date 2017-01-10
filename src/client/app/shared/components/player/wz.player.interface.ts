@@ -15,3 +15,18 @@ export interface WzPlayerStateChanges {
   inMarker?: number | 'currentTime' | 'clear';
   outMarker?: number | 'currentTime' | 'clear';
 }
+
+export enum WzPlayerRequestType {
+  ClearMarkers,
+  PlayWithinMarkers,
+  SeekToInMarker,
+  SeekToOutMarker,
+  SetInMarker,
+  SetOutMarker,
+  TogglePlayback
+}
+
+export interface WzPlayerRequest {
+  type: WzPlayerRequestType;
+  payload?: Object;
+}

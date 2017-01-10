@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { WzPlayerState } from '../../wz.player.interface';
+import { WzPlayerState, WzPlayerRequest, WzPlayerRequestType } from '../../wz.player.interface';
 
 @Component({
   moduleId: module.id,
@@ -10,10 +10,15 @@ import { WzPlayerState } from '../../wz.player.interface';
     button { width: 70px; }
   `],
   template: `
-    <button>{{ playerState.playing ? 'PAUSE' : 'PLAY' }}</button>
+    <button (click)="onClick()">{{ playerState.playing ? 'PAUSE' : 'PLAY' }}</button>
   `
 })
 
 export class WzPlaybackToggleButtonComponent {
   @Input() playerState: WzPlayerState;
+  @Output() request: EventEmitter<WzPlayerRequest> = new EventEmitter<WzPlayerRequest>();
+
+  public onClick(): void {
+    this.request.emit({ type: WzPlayerRequestType.TogglePlayback });
+  }
 }
