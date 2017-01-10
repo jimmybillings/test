@@ -6,13 +6,13 @@ import { WzPlayerComponent } from '../wz-player/wz.player.component';
 
 @Component({
   moduleId: module.id,
-  selector: 'wz-subclip-player',
+  selector: 'wz-advanced-player',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [WzPlayerStateService],
-  templateUrl: './wz.subclip-player.html'
+  templateUrl: './wz.advanced-player.html'
 })
 
-export class WzSubclipPlayerComponent {
+export class WzAdvancedPlayerComponent {
   @Input() asset: any;
 
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;

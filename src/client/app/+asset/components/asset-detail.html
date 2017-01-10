@@ -86,7 +86,7 @@
 	<div layout="row" flex="" layout-align="center">
 		<div flex-xl="75" flex-gt-lg="85" flex-gt-sm="95" flex="100" layout="row" layout-xs="column">
 			<div *ngIf="userCan.createSubclips()" flex-gt-sm="66" flex="100" class="responsive-video">
-        <wz-subclip-player [asset]="asset"></wz-subclip-player>
+        <wz-advanced-player [asset]="asset"></wz-advanced-player>
       </div>
 			<div *ngIf="!userCan.createSubclips()" flex-gt-sm="66" flex="100" class="responsive-video">
 				<wz-player [asset]="asset"></wz-player>

@@ -1,7 +1,7 @@
-import { WzSubclipPlayerComponent } from './wz.subclip-player.component';
+import { WzAdvancedPlayerComponent } from './wz.advanced-player.component';
 
 export function main() {
-  describe('Wazee Subclip Player Component', () => {
+  describe('Wazee Advanced Player Component', () => {
     it('currently has all tests commented out pending rewrite', () => {
       expect(true).toBe(true);
     });
