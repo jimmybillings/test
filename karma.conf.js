@@ -38,6 +38,8 @@ module.exports = function (config) {
       'node_modules/zone.js/dist/proxy.js',
       'node_modules/zone.js/dist/jasmine-patch.js',
 
+      { pattern: 'node_modules/wazee-frame-formatter/**/*.js', included: false, watched: false },
+
       // RxJs.
       { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
       { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
@@ -123,7 +125,7 @@ module.exports = function (config) {
 
     // Passing command line arguments to tests
     client: {
-      files:  argv.files ? minimatch.makeRe(argv.files).source : null
+      files: argv.files ? minimatch.makeRe(argv.files).source : null
     }
   });
 
