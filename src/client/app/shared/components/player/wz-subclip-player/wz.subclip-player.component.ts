@@ -1,56 +1,54 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 
+import { WzPlayerStateService } from '../wz.player-state.service';
+import { WzPlayerState, WzPlayerStateChanges } from '../wz.player.interface';
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
-import { WzSubclipControlsComponent } from '../wz-subclip-controls/wz.subclip-controls.component';
-import { SubclipMarkers } from '../../../interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-subclip-player',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [WzPlayerStateService],
   templateUrl: './wz.subclip-player.html'
 })
 
 export class WzSubclipPlayerComponent {
   @Input() asset: any;
-  @Input() subclipMarkers: SubclipMarkers;
-
-  public playing: boolean = true;
-
-  @Output() subclipMarkersChanged: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
-  @Output() subclipMarkersCleared: EventEmitter<null> = new EventEmitter<null>();
 
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
-  @ViewChild(WzSubclipControlsComponent) subclipControls: WzSubclipControlsComponent;
 
-  public onPlaybackUpdate(playing: boolean): void {
-    this.playing = playing;
+  constructor(public playerStateService: WzPlayerStateService) { }
+
+  public onStateUpdate(changes: WzPlayerStateChanges): void {
+    this.playerStateService.updateWith(changes);
   }
 
-  public onTimeUpdate(newTime: number): void {
-    this.subclipControls.currentTime = newTime;
+  public requestSetInMarker(): void {
+    this.playerStateService.updateWith({ inMarker: 'currentTime' });
   }
 
-  public onDurationUpdate(duration: number): void {
-    this.subclipControls.duration = duration;
+  public requestSetOutMarker(): void {
+    this.playerStateService.updateWith({ outMarker: 'currentTime' });
   }
 
-  public requestSeekTo(seekTarget: number): void {
-    this.player.seekTo(seekTarget);
+  public requestClearMarkers(): void {
+    this.playerStateService.updateWith({ inMarker: 'clear', outMarker: 'clear' });
   }
 
-  public requestPlaySubclip(markers: SubclipMarkers): void {
-    this.player.playSubclip(markers);
+  public requestSeekToInMarker(): void {
+    this.player.seekTo(this.playerStateService.snapshot.inMarker);
+  }
+
+  public requestSeekToOutMarker(): void {
+    this.player.seekTo(this.playerStateService.snapshot.outMarker);
+  }
+
+  public requestPlayWithinMarkers(): void {
+    const state: WzPlayerState = this.playerStateService.snapshot;
+    this.player.playRange(state.inMarker, state.outMarker);
   }
 
   public requestPlaybackToggle(): void {
     this.player.togglePlayback();
-  }
-
-  public onSubclipMarkersChanged(newMarkers: SubclipMarkers): void {
-    this.subclipMarkersChanged.emit(newMarkers);
-  }
-
-  public onSubclipMarkersCleared(): void {
-    this.subclipMarkersCleared.emit();
   }
 }

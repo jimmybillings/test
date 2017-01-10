@@ -1,22 +1,23 @@
 <wz-player
   [asset]="asset"
-  [mode]="'edit'"
-  (timeUpdate)="onTimeUpdate($event)"
-  (durationUpdate)="onDurationUpdate($event)"
-  (playbackUpdate)="onPlaybackUpdate($event)">
+  [mode]="'advanced'"
+  (stateUpdate)="onStateUpdate($event)">
 </wz-player>
 <br/>
 
 <wz-player-controlbar
-  [playing]="playing"
+  [playerState] = "playerStateService.state | async"
   (playbackToggleRequested)="requestPlaybackToggle()">
 </wz-player-controlbar>
 <br/>
 
 <wz-subclip-controls
-  [markers]="subclipMarkers"
+  [playerState] = "playerStateService.state | async"
   (seekRequested)="requestSeekTo($event)"
-  (playSubclipRequested)="requestPlaySubclip($event)"
-  (markersChanged)="onSubclipMarkersChanged($event)"
-  (markersCleared)="onSubclipMarkersCleared($event)">
+  (setInMarkerRequested)="requestSetInMarker($event)"
+  (setOutMarkerRequested)="requestSetOutMarker($event)"
+  (seekToInMarkerRequested)="requestSeekToInMarker($event)"
+  (seekToOutMarkerRequested)="requestSeekToOutMarker($event)"
+  (clearMarkersRequested)="requestClearMarkers($event)"
+  (playWithinMarkersRequested)="requestPlayWithinMarkers($event)">
 </wz-subclip-controls>

@@ -24,6 +24,7 @@ import { WzSubclipControlsComponent } from './components/player/wz-subclip-contr
 import { WzPlayerControlbarComponent } from './components/player/wz-player-controlbar/wz.player-controlbar.component';
 import { WzPlaybackToggleButtonComponent }
   from './components/player/controls/wz-playback-toggle-button/wz.playback-toggle-button.component';
+import { WzTimeDisplayComponent } from './components/player/controls/wz-time-display/wz.time-display.component';
 import { WzToastComponent, WzToastPortalDirective } from './components/wz-toast/wz.toast.component';
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
@@ -76,6 +77,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSubclipControlsComponent,
     WzPlayerControlbarComponent,
     WzPlaybackToggleButtonComponent,
+    WzTimeDisplayComponent,
     WzToastComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
@@ -114,6 +116,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSubclipControlsComponent,
     WzPlayerControlbarComponent,
     WzPlaybackToggleButtonComponent,
+    WzTimeDisplayComponent,
     WzToastComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,

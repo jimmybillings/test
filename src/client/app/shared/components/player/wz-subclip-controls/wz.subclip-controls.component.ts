@@ -1,73 +1,50 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { SubclipMarkers } from '../../../interfaces/asset.interface';
+import { WzPlayerState } from '../wz.player.interface';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-subclip-controls',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './wz.subclip-controls.html'
 })
 
 export class WzSubclipControlsComponent {
-  @Input() currentTime: number;
-  @Input() markers: SubclipMarkers = {};
+  @Input() playerState: WzPlayerState;
 
-  @Input()
-  public set duration(duration: number) {
-    this.clipDuration = duration;
-    if (!this.markers.in) this.markers.in = 0;
-    if (!this.markers.out) this.markers.out = duration;
-  }
-
-  @Output() seekRequested: EventEmitter<number> = new EventEmitter<number>();
-  @Output() playSubclipRequested: EventEmitter<Object> = new EventEmitter<Object>();
-  @Output() markersChanged: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
-  @Output() markersCleared: EventEmitter<null> = new EventEmitter<null>();
-
-  private clipDuration: number;
-
-  public get duration(): number {
-    return this.clipDuration;
-  }
+  @Output() setInMarkerRequested: EventEmitter<null> = new EventEmitter<null>();
+  @Output() setOutMarkerRequested: EventEmitter<null> = new EventEmitter<null>();
+  @Output() seekToInMarkerRequested: EventEmitter<null> = new EventEmitter<null>();
+  @Output() seekToOutMarkerRequested: EventEmitter<null> = new EventEmitter<null>();
+  @Output() playWithinMarkersRequested: EventEmitter<null> = new EventEmitter<null>();
+  @Output() clearMarkersRequested: EventEmitter<null> = new EventEmitter<null>();
 
   public setInMarker(): void {
-    this.markers.in = this.constrainedCurrentTime;
-    if (this.markers.in > this.markers.out) this.markers.out = this.markers.in;
-    this.emitMarkersEvent();
+    this.setInMarkerRequested.emit();
   }
 
   public setOutMarker(): void {
-    this.markers.out = this.constrainedCurrentTime;
-    if (this.markers.out < this.markers.in) this.markers.in = this.markers.out;
-    this.emitMarkersEvent();
+    this.setOutMarkerRequested.emit();
   }
 
-  public gotoInMarker(): void {
-    this.seekRequested.emit(this.markers.in);
+  public seekToInMarker(): void {
+    this.seekToInMarkerRequested.emit();
   }
 
-  public gotoOutMarker(): void {
-    this.seekRequested.emit(this.markers.out);
+  public seekToOutMarker(): void {
+    this.seekToOutMarkerRequested.emit();
   }
 
   public playInToOut(): void {
-    this.playSubclipRequested.emit(this.markers);
+    this.playWithinMarkersRequested.emit();
   }
 
   public clear(): void {
-    this.markers = { in: 0, out: this.clipDuration };
-    this.markersCleared.emit();
+    this.clearMarkersRequested.emit();
   }
 
+  // TODO: Move this into state class.
   private get constrainedCurrentTime() {
-    return Math.min(Math.max(0, this.currentTime), this.clipDuration);
-  }
-
-  private emitMarkersEvent(): void {
-    if (this.markers.in > 0 || this.markers.out < this.clipDuration) {
-      this.markersChanged.emit(this.markers);
-    } else {
-      this.markersCleared.emit();
-    }
+    return Math.min(Math.max(0, this.playerState.currentTime), this.playerState.duration);
   }
 }

@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, Input, Output, ElementRef, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, ElementRef, EventEmitter, NgZone } from '@angular/core';
 declare var jwplayer: any;
 
-import { SubclipMarkers } from '../../../interfaces/asset.interface';
+import { WzPlayerStateService } from '../wz.player-state.service';
+import { WzPlayerMode, WzPlayerStateChanges } from '../wz.player.interface';
 
 @Component({
   moduleId: module.id,
@@ -12,7 +13,7 @@ import { SubclipMarkers } from '../../../interfaces/asset.interface';
 })
 
 export class WzPlayerComponent {
-  @Input() mode: 'playback' | 'edit' = 'playback';
+  @Input() mode: WzPlayerMode = 'basic';
 
   @Input()
   public set asset(newAsset: any) {
@@ -25,49 +26,54 @@ export class WzPlayerComponent {
     return this.currentAsset;
   }
 
-  // These events are emitted only for this.mode === 'edit'.
-  @Output() timeUpdate: EventEmitter<number> = new EventEmitter<number>();
-  @Output() durationUpdate: EventEmitter<number> = new EventEmitter<number>();
-  @Output() playbackUpdate: EventEmitter<boolean> = new EventEmitter<boolean>();
+  // This event is emitted only for this.mode === 'advanced'.
+  @Output() stateUpdate: EventEmitter<WzPlayerStateChanges> = new EventEmitter<WzPlayerStateChanges>();
 
   private currentAsset: any;
-  private jwPlayer: any; // Don't access this directly.  Use this.player getter instead.
-  private currentlyPlaying: boolean = false;
+  private jwPlayer: any;
 
-  constructor(private element: ElementRef) { }
+  constructor(private element: ElementRef, private zone: NgZone) { }
 
   public togglePlayback(): void {
-    // Omitting the state argument to JWPlayer's play() method will toggle playback.
-    this.player.play();
+    // Omitting the state argument means toggle playback.
+    this.jwPlayer.play();
   }
 
   public seekTo(timeInSeconds: number): void {
-    this.player.seek(timeInSeconds);
+    this.jwPlayer.seek(timeInSeconds);
   }
 
-  public playSubclip(markers: SubclipMarkers): void {
-    if (this.mode !== 'edit') throw new TypeError('Must be in edit mode to play subclip.');
+  public playRange(startPoint: number, endPoint: number): void {
+    if (this.mode !== 'advanced') throw new TypeError('Must be in advanced mode to play subclip.');
 
-    this.player
-      .pause()
-      .seek(markers.in)
+    // TODO: What if we are playing here, and the user pauses in the middle?
+    // We need to reset our state as if we had reached the out marker.
+
+    // TODO: Prevent this call from being called again while we're in progress?
+
+    this.jwPlayer
       .once('seeked', () => {
-        // temporarily replace 'time' event handler
-        this.player
+        // Temporarily replace standard 'time' event handler.
+        this.jwPlayer
           .off('time')
           .on('time', (event: any) => {
-            this.timeUpdate.emit(event.position);
+            this.emitStateUpdateWith({ currentTime: event.position });
 
-            if (event.position >= markers.out) {
-              this.player.pause().off('time');
+            if (event.position >= endPoint) {
+              // Restore standard 'time' event handler.
+              this.jwPlayer.pause().off('time');
               this.handleTimeEvents();
             }
           }).play();
-      });
+      })
+      .pause()
+      .seek(startPoint);
   }
 
   private setupVideo() {
-    this.player.setup({
+    this.jwPlayer = jwplayer(this.element.nativeElement);
+
+    this.jwPlayer.setup({
       image: this.currentAsset.clipThumbnailUrl ? this.currentAsset.clipThumbnailUrl : null,
       file: this.currentAsset.clipUrl,
       logo: {
@@ -77,47 +83,44 @@ export class WzPlayerComponent {
       }
     });
 
-    if (this.mode === 'edit') {
-      this.currentlyPlaying = true; // Because we are autoplaying on load.
-
+    if (this.mode === 'advanced') {
       this.handleDurationEvent();
       this.handleTimeEvents();
-      this.handleStateEvents();
+      this.handlePlaybackStateEvents();
       this.preventAutoplayAfterSeek();
     }
   }
 
   private handleDurationEvent(): void {
-    this.player.once('time', (event: any) => this.durationUpdate.emit(event.duration));
+    this.jwPlayer.once('time', (event: any) => this.emitStateUpdateWith({ duration: event.duration }));
   }
 
   private handleTimeEvents(): void {
-    this.player.on('time', (event: any) => this.timeUpdate.emit(event.position));
+    this.jwPlayer.on('time', (event: any) => this.emitStateUpdateWith({ currentTime: event.position }));
   }
 
-  private handleStateEvents(): void {
-    this.player.on('play', () => {
-      this.currentlyPlaying = true;
-      this.playbackUpdate.emit(true);
-    });
+  private handlePlaybackStateEvents(): void {
+    this.jwPlayer.on('play', () => this.emitStateUpdateWith({ playing: true }));
+    this.jwPlayer.on('pause', () => this.emitStateUpdateWith({ playing: false }));
+    this.jwPlayer.on('complete', () => this.emitStateUpdateWith({ playing: false }));
+  }
 
-    this.player.on('pause', () => {
-      this.currentlyPlaying = false;
-      this.playbackUpdate.emit(false);
-    });
-
-    this.player.on('complete', () => {
-      this.currentlyPlaying = false;
-      this.playbackUpdate.emit(false);
-    });
+  private emitStateUpdateWith(changes: WzPlayerStateChanges): void {
+    // Run these in "the Angular zone" so that the change detector sees changes now, not on the next cycle.
+    this.zone.run(() => this.stateUpdate.emit(changes));
   }
 
   private preventAutoplayAfterSeek(): void {
-    this.player.on('seek', () => {
-      const wasPlaying: boolean = this.currentlyPlaying;
+    // TODO: Temporarily suspend 'playing' state emissions during seek, so that the play button doesn't
+    // flicker during the seek.
 
-      this.player.once('seeked', () => {
-        if (!wasPlaying) this.player.pause();
+    // TODO: This doesn't seem to work when we're stopped at the end of video.
+
+    this.jwPlayer.on('seek', () => {
+      const wasPaused: boolean = this.jwPlayer.getState() === 'paused';
+
+      this.jwPlayer.once('seeked', () => {
+        if (wasPaused) this.jwPlayer.pause();
       });
     });
   }
@@ -131,21 +134,18 @@ export class WzPlayerComponent {
     this.element.nativeElement.appendChild(imgWrapper);
   }
 
-  private get player(): any {
-    this.jwPlayer = this.jwPlayer || jwplayer(this.element.nativeElement);
-    return this.jwPlayer;
-  }
-
   private reset() {
-    this.player.pause();
+    if (this.jwPlayer) {
+      this.jwPlayer.pause();
 
-    if (this.mode === 'edit') {
-      this.durationUpdate.emit(undefined);
-      this.timeUpdate.emit(0);
+      if (this.mode === 'advanced') {
+        this.emitStateUpdateWith({ duration: undefined, currentTime: 0 });
+      }
+
+      this.jwPlayer.remove();
+      this.jwPlayer = null;
     }
 
-    this.player.remove();
-    this.jwPlayer = null;
     this.element.nativeElement.innerHTML = '';
   }
 }

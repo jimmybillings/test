@@ -22,8 +22,3 @@ export interface TranscodeTarget {
   name: string;
   selected: boolean;
 }
-
-export interface SubclipMarkers {
-  in?: number;
-  out?: number;
-}
