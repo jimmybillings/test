@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { SubclipMarkers } from '../../../interfaces/asset.interface';
 
+import { Frame } from 'wazee-frame-formatter';
+
 @Component({
   moduleId: module.id,
   selector: 'wz-subclip-controls',
@@ -34,12 +36,18 @@ export class WzSubclipControlsComponent {
     this.markers.in = this.constrainedCurrentTime;
     if (this.markers.in > this.markers.out) this.markers.out = this.markers.in;
     this.emitMarkersEvent();
+    // Ed: Here as an example of how I am able to use the wazee-frame-formatter library
+    let frame: Frame = new Frame(23.97);
+    console.log(frame.setFromSeconds(this.markers.in).frameNumber);
   }
 
   public setOutMarker(): void {
     this.markers.out = this.constrainedCurrentTime;
     if (this.markers.out < this.markers.in) this.markers.in = this.markers.out;
     this.emitMarkersEvent();
+    // Ed: Here as an example of how I am able to use the wazee-frame-formatter library
+    let frame: Frame = new Frame(23.97);
+    console.log(frame.setFromSeconds(this.markers.out).frameNumber);
   }
 
   public gotoInMarker(): void {
