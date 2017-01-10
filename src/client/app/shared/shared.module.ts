@@ -20,7 +20,7 @@ import { WzPikaDayDirective } from './components/wz-pikaday/wz-pikaday.directive
 import { WzClipBoardDirective } from './components/wz-clipboard/wz-clipboard.directive';
 import { WzPlayerComponent } from './components/player/wz-player/wz.player.component';
 import { WzAdvancedPlayerComponent } from './components/player/wz-advanced-player/wz.advanced-player.component';
-import { WzSubclipControlsComponent } from './components/player/wz-subclip-controls/wz.subclip-controls.component';
+import { WzSubclipControlbarComponent } from './components/player/wz-subclip-controlbar/wz.subclip-controlbar.component';
 import { WzPlayerControlbarComponent } from './components/player/wz-player-controlbar/wz.player-controlbar.component';
 import { WzPlaybackToggleButtonComponent }
   from './components/player/controls/wz-playback-toggle-button/wz.playback-toggle-button.component';
@@ -74,7 +74,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzPikaDayDirective,
     WzPlayerComponent,
     WzAdvancedPlayerComponent,
-    WzSubclipControlsComponent,
+    WzSubclipControlbarComponent,
     WzPlayerControlbarComponent,
     WzPlaybackToggleButtonComponent,
     WzTimeDisplayComponent,
@@ -113,7 +113,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzPikaDayDirective,
     WzPlayerComponent,
     WzAdvancedPlayerComponent,
-    WzSubclipControlsComponent,
+    WzSubclipControlbarComponent,
     WzPlayerControlbarComponent,
     WzPlaybackToggleButtonComponent,
     WzTimeDisplayComponent,
