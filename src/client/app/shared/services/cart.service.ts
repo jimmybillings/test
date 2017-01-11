@@ -43,8 +43,11 @@ export class CartService {
       .share();
   }
 
+  // Temporary until first time user's cart is created with a project - fix for CRUX-1027
   public getCartSummary(): void {
-    this.api.get(Api.Orders, 'cart/summary').subscribe(this.updateCart);
+    this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe((cartSummary: any) => {
+      this.addProjectIfNoProjectsExist().subscribe();
+    });
   }
 
   public addProject(): void {
