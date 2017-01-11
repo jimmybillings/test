@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Project, LineItem } from '../cart.interface';
+import { Project, LineItem } from '../../../shared/interfaces/cart.interface';
 import { TranscodeTarget } from '../../../shared/interfaces/asset.interface';
 
 @Component({

@@ -5,7 +5,7 @@ export function main() {
   describe('Asset Component', () => {
 
     let mockCurrentUser: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
-    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockNotification: any, mockCartSummary: any, mockWindow: any;
+    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockNotification: any, mockCart: any, mockWindow: any;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
@@ -26,11 +26,11 @@ export function main() {
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
       mockNotification = { create: jasmine.createSpy('create') };
-      mockCartSummary = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
+      mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { location: { href: {} } };
       componentUnderTest = new AssetComponent(
         mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
-        mockAssetService, mockUiConfig, mockUserPreference, mockNotification, mockCartSummary, mockWindow);
+        mockAssetService, mockUiConfig, mockUserPreference, mockNotification, mockCart, mockWindow);
     });
 
     describe('ngOnInit()', () => {
@@ -90,7 +90,7 @@ export function main() {
         };
         componentUnderTest = new AssetComponent(
           mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
-          mockAssetService, mockUiConfig, mockUserPreference, mockNotification, mockCartSummary, mockWindow);
+          mockAssetService, mockUiConfig, mockUserPreference, mockNotification, mockCart, mockWindow);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.location.href).toEqual('http://downloadcomp.url');
       });
@@ -100,7 +100,7 @@ export function main() {
     describe('addAssetToCart()', () => {
       it('Should call the cart summary service with correct params to add an asset to the cart', () => {
         componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
-        expect(mockCartSummary.addAssetToProjectInCart).toHaveBeenCalledWith(123123, 'Target');
+        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith(123123, 'Target');
       });
     });
 

@@ -7,8 +7,6 @@ import { CommerceComponent } from './commerce.component';
 import { COMMERCE_ROUTES } from './commerce.routes';
 
 // Cart Stuff
-import { CartService } from './+cart/services/cart.service';
-import { CartStore } from './+cart/services/cart.store';
 import { CartCapabilities } from './+cart/services/cart.capabilities';
 import { CartComponent } from './+cart/cart.component';
 import { CartTabComponent } from './+cart/components/tabs/cart-tab.component';
@@ -47,7 +45,7 @@ import { OrderItemListComponent } from './+order/components/order-item-list.comp
     OrderItemListComponent
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
-  providers: [CartService, OrderService, OrdersService, CartStore, CartCapabilities, OrderStore, OrdersStore]
+  providers: [OrderService, OrdersService, CartCapabilities, OrderStore, OrdersStore]
 })
 
 export class CommerceModule { }
