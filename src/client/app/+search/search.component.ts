@@ -12,7 +12,7 @@ import { UserPreferenceService } from '../shared/services/user-preference.servic
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
-import { CartSummaryService } from '../shared/services/cart-summary.service';
+import { CartService } from '../shared/services/cart.service';
 import { AssetService } from '../shared/services/asset.service';
 import { WzSpeedviewComponent } from '../shared/components/wz-speedview/wz.speedview.component';
 
@@ -56,7 +56,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     public notification: WzNotificationService,
     public uiState: UiState,
     public sortDefinition: SortDefinitionsService,
-    public cartSummary: CartSummaryService,
+    public cart: CartService,
     public assetService: AssetService,
     private renderer: Renderer) { }
 
@@ -172,7 +172,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cartSummary.addAssetToProjectInCart(asset);
+    this.cart.addAssetToProjectInCart(asset);
   }
 
   public showSpeedview(event: { asset: any, position: any }): void {

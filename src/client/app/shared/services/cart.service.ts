@@ -1,21 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
-import { ApiService } from '../../../shared/services/api.service';
-import { Api, ApiBody } from '../../../shared/interfaces/api.interface';
-import { CartSummaryService } from '../../../shared/services/cart-summary.service';
-import { CurrentUser } from '../../../shared/services/current-user.model';
+import { ApiService } from '../services/api.service';
+import { Api, ApiBody } from '../interfaces/api.interface';
+import { CurrentUser } from '../services/current-user.model';
 
-import { Project, LineItem } from '../cart.interface';
-import { CartStore } from './cart.store';
-import { CartUtilities } from './cart.utilities';
+import { Project, LineItem } from '../interfaces/cart.interface';
+import { CartStore } from '../stores/cart.store';
+import { CartUtilities } from '../utilities/cart.utilities';
 
 @Injectable()
 export class CartService {
   constructor(
     private store: CartStore,
     private api: ApiService,
-    private cartSummaryService: CartSummaryService,
     private currentUser: CurrentUser
   ) { }
 
@@ -38,11 +36,15 @@ export class CartService {
   // of once per subscriber.
   public initializeData(): Observable<any> {
     return this.api.get(Api.Orders, 'cart', { loading: true })
-      .do(wholeCartResponse => this.store.replaceWith(wholeCartResponse))
+      .do(this.updateCart)
       .flatMap(_ => this.addProjectIfNoProjectsExist())
       .takeLast(1)
       .map(_ => { return {}; })
       .share();
+  }
+
+  public getCartSummary(): void {
+    this.api.get(Api.Orders, 'cart/summary').subscribe(this.updateCart);
   }
 
   public addProject(): void {
@@ -55,6 +57,18 @@ export class CartService {
         this.updateCart(wholeCartResponse);
         this.addProjectIfNoProjectsExist().subscribe();
       });
+  }
+
+  public addAssetToProjectInCart(assetId: string, transcodeTarget?: string): void {
+    let existingProjectNames: Array<string> = this.existingProjectNames;
+    this.api.put(
+      Api.Orders,
+      'cart/asset/lineItem/quick',
+      {
+        body: this.formatAsset(assetId, transcodeTarget),
+        parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
+      }
+    ).subscribe(this.updateCart);
   }
 
   public updateProject(project: Project): void {
@@ -89,6 +103,17 @@ export class CartService {
       .subscribe(this.updateCart);
   }
 
+  private formatAsset(assetId: string, transcodeTarget: string = 'master_copy'): any {
+    return {
+      lineItem: {
+        asset: {
+          assetId: assetId
+        },
+        selectedTranscodeTarget: transcodeTarget
+      }
+    };
+  }
+
   private addProjectIfNoProjectsExist(): Observable<any> {
     return ((this.state.projects || []).length === 0) ? this.addProjectAndReturnObservable() : Observable.of({});
   }
@@ -100,11 +125,8 @@ export class CartService {
   }
 
   private createAddProjectRequestBody(): ApiBody {
-    let existingNames: Array<string> =
-      (this.state.projects || []).map((project: any) => project.name);
-
     return {
-      name: CartUtilities.nextNewProjectNameGiven(existingNames),
+      name: CartUtilities.nextNewProjectNameGiven(this.existingProjectNames),
       clientName: this.fullName
     };
   }
@@ -114,10 +136,14 @@ export class CartService {
     this.currentUser.fullName().take(1).subscribe(fullName => userName = fullName);
     return userName;
   }
+
+  private get existingProjectNames(): Array<string> {
+    return (this.state.projects || []).map((project: any) => project.name);
+  }
+
   // This is an "instance arrow function", which saves us from having to "bind(this)"
   // every time we use this function as a callback.
   private updateCart = (wholeCartResponse: any): void => {
     this.store.replaceWith(wholeCartResponse);
-    this.cartSummaryService.loadCartSummary();
   }
 }
