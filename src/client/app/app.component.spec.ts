@@ -7,7 +7,7 @@ export function main() {
     (<any>window).portal = 'core';
     let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUser: any,
       mockCollections: any, mockActiveCollection: any, mockUiState: any, mockUserPreference: any, mockRenderer: any, mockNotification: any,
-      mockApiConfig: any, mockAuthentication: any, mockUserCan: any, mockCartSummary: any, mockWindow: any,
+      mockApiConfig: any, mockAuthentication: any, mockUserCan: any, mockCart: any, mockWindow: any,
       mockFilter: any, mockSortDefinition: any;
     let loggedInState = false, canViewCollections = true;
     let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
@@ -58,15 +58,15 @@ export function main() {
       mockApiConfig = { getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal') };
       mockAuthentication = { destroy: jasmine.createSpy('destroy').and.returnValue(Observable.of({})) };
       mockUserCan = { viewCollections: () => canViewCollections };
-      mockCartSummary = { loadCartSummary: jasmine.createSpy('loadCartSummary') };
+      mockCart = { getCartSummary: jasmine.createSpy('getCartSummary') };
       mockWindow = { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') };
-      mockFilter = { get: jasmine.createSpy('get').and.returnValue(Observable.of({})) };
+      mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUser,
         mockCollections, mockActiveCollection, mockUiState, mockUserPreference,
         mockRenderer, mockNotification, mockApiConfig, mockAuthentication, mockUserCan,
-        mockCartSummary, null, mockWindow, mockFilter, mockSortDefinition);
+        mockCart, null, mockWindow, mockFilter, mockSortDefinition);
     });
 
 
@@ -126,7 +126,7 @@ export function main() {
           canViewCollections = false;
           componentUnderTest.ngOnInit();
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
-          expect(mockCartSummary.loadCartSummary).toHaveBeenCalled();
+          expect(mockCart.getCartSummary).toHaveBeenCalled();
           expect(mockActiveCollection.load).not.toHaveBeenCalled();
         });
 
@@ -137,7 +137,7 @@ export function main() {
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
           expect(mockActiveCollection.load).toHaveBeenCalled();
           expect(mockCollections.load).toHaveBeenCalled();
-          expect(mockCartSummary.loadCartSummary).toHaveBeenCalled();
+          expect(mockCart.getCartSummary).toHaveBeenCalled();
         });
       });
 
@@ -196,7 +196,7 @@ export function main() {
             q: 'dogs', i: 1, n: 100, sortId: 23, filterIds: '1517',
             filterValues: '1517:2015-12-10 - 2016-12-12'
           });
-        expect(mockFilter.get).toHaveBeenCalledWith(
+        expect(mockFilter.load).toHaveBeenCalledWith(
           {
             q: 'dogs', i: 1, n: 100, sortId: 23, filterIds: '1517',
             filterValues: '1517:2015-12-10 - 2016-12-12'

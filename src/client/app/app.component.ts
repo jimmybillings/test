@@ -14,7 +14,7 @@ import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
 import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
 import { ActiveCollectionService } from './shared/services/active-collection.service';
-import { CartSummaryService } from './shared/services/cart-summary.service';
+import { CartService } from './shared/services/cart.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
 import { ErrorActions } from './shared/services/error.service';
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
     private apiConfig: ApiConfig,
     private authentication: Authentication,
     private userCan: Capabilities,
-    private cartSummary: CartSummaryService,
+    private cart: CartService,
     private error: ErrorActions,
     private window: Window,
     private filter: FilterService,
@@ -78,9 +78,9 @@ export class AppComponent implements OnInit {
   }
 
   public newSearchContext(query: any) {
-    let searchConext: any = Object.assign({}, this.searchContext.state, { q: query, i: 1, n: 100 });
-    this.filter.get(searchConext, this.userPreference.state.displayFilterCounts).subscribe(() => { });
-    this.searchContext.new(searchConext);
+    let searchContext: any = Object.assign({}, this.searchContext.state, { q: query, i: 1, n: 100 });
+    this.filter.load(searchContext, this.userPreference.state.displayFilterCounts).subscribe(() => { });
+    this.searchContext.new(searchContext);
   }
 
   public toggleFilterTreePreference(): void {
@@ -107,10 +107,14 @@ export class AppComponent implements OnInit {
   private processLoggedInUser() {
     this.userPreference.getPrefs();
     if (this.userCan.viewCollections()) {
-      this.collections.load().subscribe(() => { });
-      this.activeCollection.load().subscribe(() => { });
+      this.activeCollection.load().subscribe(() => {
+        // This needs to be inside here. activeCollection.load will create a 
+        // new collection for first time users if they don't already have one
+        // so we need to collection load all collection after this happens.
+        this.collections.load().subscribe(() => { });
+      });
     }
-    this.cartSummary.loadCartSummary();
+    this.cart.getCartSummary();
     this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });

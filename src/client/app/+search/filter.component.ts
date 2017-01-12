@@ -1,5 +1,4 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-
 import { SearchComponent } from './search.component';
 import { DateRangeKey, DateRange } from '../shared/utilities/dateRange';
 

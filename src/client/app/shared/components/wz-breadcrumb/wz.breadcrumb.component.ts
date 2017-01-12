@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, Inject, forwardRef, OnChanges, ChangeDetectionStrategy } from '@angular/core';
-import { SearchComponent } from '../../../+search/search.component';
 import { DateRange } from '../../utilities/dateRange';
 
 @Component({
@@ -11,20 +10,12 @@ import { DateRange } from '../../utilities/dateRange';
 
 export class WzBreadcrumbComponent implements OnChanges {
   @Input() filters: any;
-  @Input() loading: boolean;
   @Output() apply = new EventEmitter();
   @Output() clear = new EventEmitter();
-  public searchComponent: SearchComponent;
-  public activeFilters: any;
-
-
-  constructor( @Inject(forwardRef(() => SearchComponent)) searchComponent: SearchComponent) {
-    this.searchComponent = searchComponent;
-    this.activeFilters = [];
-  }
+  public activeFilters: any = [];
 
   public clearFilter(filter: any) {
-    this.searchComponent.applyFilter(filter.filterId);
+    this.apply.emit(filter.filterId);
   }
 
   ngOnChanges(changes: any) {
@@ -35,7 +26,7 @@ export class WzBreadcrumbComponent implements OnChanges {
   }
 
   public clearFilters() {
-    this.searchComponent.clearFilters();
+    this.clear.emit();
   }
 
   public formattedValueFor(filter: any): string {

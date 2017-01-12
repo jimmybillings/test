@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: WzBreadcrumbComponent;
 
     beforeEach(() => {
-      componentUnderTest = new WzBreadcrumbComponent(null);
+      componentUnderTest = new WzBreadcrumbComponent();
     });
 
     it('has no tests!', () => {

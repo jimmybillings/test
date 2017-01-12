@@ -5,7 +5,7 @@ export function main() {
     let resolverUnderTest: SearchResolver;
 
     beforeEach(() => {
-      resolverUnderTest = new SearchResolver(null, null);
+      resolverUnderTest = new SearchResolver(null, null, null, null);
     });
 
     it('has no tests!', () => {
