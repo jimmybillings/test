@@ -8,7 +8,7 @@ export function main() {
       componentUnderTest = new WzTimeDisplayComponent();
     });
 
-    it('has no tests!', () => {
+    it('has no testable functionality', () => {
       expect(true).toBe(true);
     });
   });
