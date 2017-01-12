@@ -27,6 +27,10 @@ export class WzPlayerComponent {
     return this.currentAsset;
   }
 
+  public get player(): any {
+    return this.jwPlayer;
+  }
+
   // This event is emitted only for this.mode === 'advanced'.
   @Output() stateUpdate: EventEmitter<WzPlayerStateChanges> = new EventEmitter<WzPlayerStateChanges>();
 

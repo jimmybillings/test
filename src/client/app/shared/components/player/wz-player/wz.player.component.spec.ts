@@ -7,6 +7,18 @@ export function main() {
     mockElementRef = { nativeElement: { innerHtml: '', appendChild: jasmine.createSpy('appendChild') } };
     mockZone = new NgZone({});
 
+    function JwPlayer(nativeElement: any) {
+      return {
+        setup: jasmine.createSpy('setup'),
+        play: jasmine.createSpy('play'),
+        pause: jasmine.createSpy('pause'),
+        off: jasmine.createSpy('off'),
+        on: jasmine.createSpy('on'),
+        once: jasmine.createSpy('once'),
+        seek: jasmine.createSpy('seek')
+      };
+    }
+
     beforeEach(() => {
       componentUnderTest = new WzPlayerComponent(mockElementRef, mockZone);
       componentUnderTest.window = {
@@ -25,60 +37,96 @@ export function main() {
         expect(componentUnderTest.mode).toEqual('basic');
       });
 
-      xit('should not setup the player', () => {
-        expect(componentUnderTest.window.jwplayer.setup).not.toHaveBeenCalled();
-      });
-
       it('should have an asset getter', () => {
         expect(componentUnderTest.asset).toEqual({ resourceClass: 'Image' });
       });
     });
 
     describe('For a Video', () => {
-      beforeEach(() => {
-        componentUnderTest.asset = {
-          resourceClass: 'NotImage'
-        };
-      });
+      // Test where this.mode === 'basic'
+      describe('in basic mode', () => {
+        beforeEach(() => {
+          componentUnderTest.mode = 'basic';
+          componentUnderTest.asset = {
+            resourceClass: 'NotImage',
+            clipThumbnailUrl: 'clipThumbnailUrl',
+            clipUrl: 'clipUrl'
+          };
+        });
 
-      xit('should set up the player', () => {
-        expect(componentUnderTest.window.jwplayer.setup).toHaveBeenCalled();
-      });
+        describe('seting the asset', () => {
+          it('should set up the player', () => {
+            expect(componentUnderTest.player.setup).toHaveBeenCalledWith({
+              image: 'clipThumbnailUrl',
+              file: 'clipUrl',
+              logo: {
+                file: 'assets/img/logo/watermark.png',
+                position: 'top-right',
+                link: 'http://www.wazeedigital.com'
+              }
+            });
+          });
 
-      xdescribe('togglePlayback()', () => {
-        it('should call .play() on the player', () => {
-          componentUnderTest.togglePlayback();
+          xit('should handleDurationEvent()', () => {
+            expect(componentUnderTest.player.once).toHaveBeenCalled();
+          });
+        });
 
-          expect(componentUnderTest.window.jwplayer.play).toHaveBeenCalled();
+        describe('togglePlayback()', () => {
+          it('should call .play() on the player', () => {
+            componentUnderTest.togglePlayback();
+
+            expect(componentUnderTest.player.play).toHaveBeenCalled();
+          });
+        });
+
+        describe('seekTo()', () => {
+          it('should call .seek() on the player with the timeInSeconds', () => {
+            componentUnderTest.seekTo(6.867);
+
+            expect(componentUnderTest.player.seek).toHaveBeenCalledWith(6.867);
+          });
+        });
+
+        xdescribe('playRange()', () => {
+          it('should throw a new TypeError', () => {
+            componentUnderTest.playRange(1.234, 5.678);
+            expect(componentUnderTest.playRange).toThrowError('Must be in advanced mode to play subclip.');
+          });
         });
       });
 
-      xdescribe('seekTo()', () => {
-        it('should call .seek() on the player with the timeInSeconds', () => {
-          componentUnderTest.seekTo(6.867);
-
-          expect(componentUnderTest.window.jwplayer.seek).toHaveBeenCalledWith(6.876);
+      // Tests where this.mode === 'advanced'
+      describe('in advanced mode', () => {
+        beforeEach(() => {
+          componentUnderTest.mode = 'advanced';
+          componentUnderTest.asset = {
+            resourceClass: 'NotImage',
+            clipThumbnailUrl: undefined,
+            clipUrl: 'clipUrl'
+          };
         });
-      });
 
-      xdescribe('playRange()', () => {
-        it('should call .off() on the player', () => {
-          componentUnderTest.playRange(1.234, 5.678);
+        it('should set up the player', () => {
+          expect(componentUnderTest.player.setup).toHaveBeenCalledWith({
+            image: null,
+            file: 'clipUrl',
+            logo: {
+              file: 'assets/img/logo/watermark.png',
+              position: 'top-right',
+              link: 'http://www.wazeedigital.com'
+            }
+          });
+        });
 
-          expect(componentUnderTest.window.jwplayer.once).toHaveBeenCalledWith('seeked');
+        xdescribe('playRange()', () => {
+          it('should call .off() on the player', () => {
+            componentUnderTest.playRange(1.234, 5.678);
+
+            expect(componentUnderTest.player.once).toHaveBeenCalledWith('seeked');
+          });
         });
       });
     });
   });
-}
-
-class JwPlayer {
-  constructor(nativeElement: any) { }
-  setup() { jasmine.createSpy('setup'); }
-  pause() { jasmine.createSpy('pause'); }
-  play() { jasmine.createSpy('play'); }
-  seek() { jasmine.createSpy('seek'); }
-  once() { jasmine.createSpy('once'); }
-  off() { jasmine.createSpy('off'); }
-  on() { jasmine.createSpy('on'); }
 }
