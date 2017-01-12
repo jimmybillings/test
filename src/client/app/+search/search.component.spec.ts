@@ -6,7 +6,7 @@ export function main() {
     let componentUnderTest: SearchComponent;
     let mockAssetData: any, mockUiConfig: any, mockUserCan: any, mockActiveCollection: any,
       mockSearchContext: any, mockFilter: any, mockUserPreferences: any, mockNotification: any,
-      mockSortDefinition: any, mockCartSummary: any, mockAssetService: any, mockRenderer: any,
+      mockSortDefinition: any, mockCart: any, mockAssetService: any, mockRenderer: any,
       mockWindow: any;
 
     beforeEach(() => {
@@ -58,7 +58,7 @@ export function main() {
         update: jasmine.createSpy('update'),
         data: Observable.of({ currentSort: 'mockSort' })
       };
-      mockCartSummary = {
+      mockCart = {
         addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart')
       };
       mockAssetService = {
@@ -69,8 +69,8 @@ export function main() {
           .and.callFake((a: any, b: any, c: Function) => { c(); })
       };
       mockWindow = { location: { href: null } };
-      componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockAssetService,
-        mockCartSummary, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
+      componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart,
+        mockAssetService, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
         mockUserPreferences, mockRenderer, mockWindow);
       componentUnderTest.sidenav = { open: jasmine.createSpy('open') };
     });
@@ -90,7 +90,7 @@ export function main() {
           state: { displayFilterCounts: false, displayFilterTree: false }
         };
         componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter,
-          mockAssetService, mockCartSummary, mockSortDefinition, mockNotification, mockSearchContext,
+          mockCart, mockAssetService, mockSortDefinition, mockNotification, mockSearchContext,
           mockUiConfig, mockAssetData, mockUserPreferences, mockRenderer, mockWindow);
         componentUnderTest.sidenav = { open: jasmine.createSpy('open') };
         componentUnderTest.ngOnInit();
@@ -241,7 +241,7 @@ export function main() {
           downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({}))
         };
         componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter,
-          mockAssetService, mockCartSummary, mockSortDefinition, mockNotification, mockSearchContext,
+          mockCart, mockAssetService, mockSortDefinition, mockNotification, mockSearchContext,
           mockUiConfig, mockAssetData, mockUserPreferences, mockRenderer, mockWindow);
         componentUnderTest.downloadComp({ assetId: 3, compType: 'small' });
         expect(mockNotification.create).toHaveBeenCalledWith('COMPS.NO_COMP');
@@ -273,7 +273,7 @@ export function main() {
     describe('addAssetToCart()', () => {
       it('Should call the cart summary service to add an asset to the cart', () => {
         componentUnderTest.addAssetToCart({ asset: 'mockAsset' });
-        expect(mockCartSummary.addAssetToProjectInCart).toHaveBeenCalledWith({ asset: 'mockAsset' });
+        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({ asset: 'mockAsset' });
       });
     });
 
@@ -329,8 +329,8 @@ export function main() {
     describe('filterAssets()', () => {
       it('Should reset the page number to page 1', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockAssetService,
-          mockCartSummary, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
+        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
+          mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow);
         componentUnderTest.clearFilters();
         expect(mockSearchContext.update).toEqual({ i: 1 });
@@ -338,8 +338,8 @@ export function main() {
 
       it('Should update the search context with the filter ids', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [1, 2, 3], values: [] });
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockAssetService,
-          mockCartSummary, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
+        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
+          mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow);
         componentUnderTest.clearFilters();
         expect(mockSearchContext.update).toEqual({ 'filterIds': '1,2,3' });
@@ -347,8 +347,8 @@ export function main() {
 
       it('Should remove the filterIds from the search context', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockAssetService,
-          mockCartSummary, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
+        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
+          mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow);
         componentUnderTest.clearFilters();
         expect(mockSearchContext.remove).toEqual('filterIds');
@@ -356,8 +356,8 @@ export function main() {
 
       it('Should update the search context with the filter values', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockAssetService,
-          mockCartSummary, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
+        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart,
+          mockAssetService, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow);
         componentUnderTest.clearFilters();
         expect(mockSearchContext.update).toEqual({ 'filterValues': 'cat,dog' });
@@ -365,8 +365,8 @@ export function main() {
 
       it('Should remove the filterValues from the search context', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockAssetService,
-          mockCartSummary, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
+        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
+          mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow);
         componentUnderTest.clearFilters();
         expect(mockSearchContext.remove).toEqual('filterValues');
@@ -374,8 +374,8 @@ export function main() {
 
       it('Should call go on search context when it has filtered the assets', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockAssetService,
-          mockCartSummary, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
+        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart,
+          mockAssetService, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow);
         componentUnderTest.clearFilters();
         expect(mockSearchContext.go).toHaveBeenCalled();
