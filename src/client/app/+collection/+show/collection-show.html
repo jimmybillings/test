@@ -71,8 +71,8 @@
 		<div flex-xl="85" flex-gt-lg="95" flex="100">
 			<wz-pagination *ngIf="collection.assets.pagination.totalCount > 0" [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
 			<div layout="column">
-				<wz-asset-list [assets]="collection.assets.items" [userCan]="userCan" [currentUser]="currentUser" [collection]="activeCollection.data | async"
-					(onAddToCollection)="addToCollection($event)" (onShowNewCollection)="showNewCollection($event)" (addToCart)="addAssetToCart($event)"
+				<wz-asset-list [assets]="collection.assets.items" [userCan]="userCan" [collection]="activeCollection.data | async"
+					(onAddToCollection)="addToCollection($event)" (addToCart)="addAssetToCart($event)"
 					(onDownloadComp)="downloadComp($event)" (onRemoveFromCollection)="removeFromCollection($event)" class="grid">
 				</wz-asset-list>
 				<h1 *ngIf="!collection.assets.items" class="md-display-1 alert warning">This collection does not have any assets</h1>

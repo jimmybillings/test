@@ -13,6 +13,10 @@ export class CartCapabilities {
     });
   }
 
+  public addToCart(): boolean {
+    return this.currentUser.loggedIn();
+  }
+
   public purchaseOnCredit(): boolean {
     return this.currentUser.hasPurchaseOnCredit();
   }

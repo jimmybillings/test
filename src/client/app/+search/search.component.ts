@@ -1,11 +1,8 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, Renderer } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy, ViewChild, Renderer, ChangeDetectionStrategy } from '@angular/core';
 import { AssetData } from './services/asset.data.service';
 import { UiConfig } from '../shared/services/ui.config';
 import { Observable, Subscription } from 'rxjs/Rx';
-import { CurrentUser } from '../shared/services/current-user.model';
 import { SearchContext } from '../shared/services/search-context.service';
-import { UiState } from '../shared/services/ui.state';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
 import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
@@ -27,65 +24,37 @@ import { WzSpeedviewComponent } from '../shared/components/wz-speedview/wz.speed
 })
 
 export class SearchComponent implements OnInit, OnDestroy {
-  public config: Object;
-  public errorMessage: string;
-  public filterValues: Array<string> = new Array();
-  public activeCollectionStore: Observable<any>;
-  public assets: Observable<any>;
-  public preferences: any;
-  public sortOptions: any;
   public speedviewData: any;
-  private assetsStoreSubscription: Subscription;
-  private configSubscription: Subscription;
-  private preferencesSubscription: Subscription;
-  private sortSubscription: Subscription;
-  @ViewChild('searchFilter') private sidenav: any;
-  @ViewChild(WzSpeedviewComponent) private wzSpeedview: WzSpeedviewComponent;
+  @ViewChild('searchFilter') public sidenav: any;
+  @ViewChild(WzSpeedviewComponent) public wzSpeedview: any;
 
   constructor(
-    private route: ActivatedRoute,
-    public assetData: AssetData,
-    public router: Router,
-    public uiConfig: UiConfig,
-    public currentUser: CurrentUser,
     public userCan: Capabilities,
     public activeCollection: ActiveCollectionService,
-    public searchContext: SearchContext,
     public filter: FilterService,
-    public userPreferences: UserPreferenceService,
-    public notification: WzNotificationService,
-    public uiState: UiState,
-    public sortDefinition: SortDefinitionsService,
-    public cartSummary: CartSummaryService,
-    public assetService: AssetService,
-    private renderer: Renderer) { }
+    private assetService: AssetService,
+    private cartSummary: CartSummaryService,
+    private sortDefinition: SortDefinitionsService,
+    private notification: WzNotificationService,
+    private searchContext: SearchContext,
+    private uiConfig: UiConfig,
+    private assetData: AssetData,
+    private userPreferences: UserPreferenceService,
+    private renderer: Renderer,
+    private window: Window) { }
 
   ngOnInit(): void {
-    this.preferencesSubscription = this.userPreferences.data.subscribe((data: any) => {
-      this.preferences = data;
-    });
-    this.sortSubscription = this.sortDefinition.data.subscribe((data: any) => this.sortOptions = data);
-    this.assetsStoreSubscription = this.assetData.data.subscribe(data => this.assets = data);
-    this.configSubscription = this.uiConfig.get('search').subscribe((config) => this.config = config.config);
-    this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).take(1).subscribe(() => { });
-    if (this.preferences.displayFilterTree) this.sidenav.open();
+    if (this.userPreferences.state.displayFilterTree) this.sidenav.open();
   }
 
   ngOnDestroy(): void {
     this.assetData.clearAssets();
-    this.assetsStoreSubscription.unsubscribe();
-    this.configSubscription.unsubscribe();
-    this.preferencesSubscription.unsubscribe();
-    this.sortSubscription.unsubscribe();
   }
 
-  public countToggle(event: any): void {
-    this.filter.get(this.searchContext.state, !this.preferences.displayFilterCounts).take(1).subscribe(() => { });
+  public countToggle(): void {
+    this.filter.load(this.searchContext.state, !this.userPreferences.state.displayFilterCounts)
+      .subscribe();
     this.userPreferences.toggleFilterCount();
-  }
-
-  public showAsset(asset: any): void {
-    this.router.navigate(['/asset', asset.assetId]);
   }
 
   public addToCollection(params: any): void {
@@ -96,12 +65,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public removeFromCollection(params: any): void {
     this.userPreferences.openCollectionTray();
     this.activeCollection.removeAsset(params).subscribe();
-
-  }
-
-  public showNewCollection(asset: any): void {
-    let newCollectionButton = <HTMLFormElement>document.querySelector('button.open-collection-tray');
-    (!this.currentUser.loggedIn()) ? this.router.navigate(['/user/login']) : newCollectionButton.click();
   }
 
   public changePage(page: any): void {
@@ -110,58 +73,37 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public toggleFilter(filterId: any): void {
-    this.filter.set(this.filter.toggle(filterId));
+    this.filter.toggle(filterId);
   }
 
   public applyFilter(filterId: number): void {
-    this.toggleFilter(filterId);
+    this.filter.toggle(filterId);
     this.filterAssets();
   }
 
   public applyCustomValue(filter: any, value: any) {
-    this.filter.set(this.filter.addCustomValue(filter, value));
+    this.filter.addCustom(filter, value);
     this.filterAssets();
   }
 
   public applyExclusiveFilter(subFilter: any): void {
-    this.filter.set(this.filter.toggleExclusive(subFilter));
+    this.filter.toggleExclusive(subFilter);
     this.filterAssets();
   }
 
   public clearFilters(): void {
-    this.filter.set(this.filter.clear());
+    this.filter.clear();
     this.filterAssets();
   }
 
   public downloadComp(params: any): void {
     this.assetData.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
-        window.location.href = res.url;
+        this.window.location.href = res.url;
       } else {
         this.notification.create('COMPS.NO_COMP');
       }
     });
-  }
-
-  public filterAssets(): void {
-    this.searchContext.update = { i: 1 };
-    let active: any = [];
-    this.filter.active(active);
-    let activeIds: any = active.map((filter: any) => filter.filterId);
-    let activeValues: any = active.filter((filter: any) => filter.filterValue)
-      .map((filter: any) => `${filter.filterId}:${filter.filterValue}`);;
-    if (activeIds.length > 0) {
-      this.searchContext.update = { 'filterIds': activeIds.join(',') };
-    } else {
-      this.searchContext.remove = 'filterIds';
-    }
-    if (activeIds.length > 0 && activeValues.length > 0) {
-      this.searchContext.update = { 'filterValues': activeValues.join(',') };
-    } else {
-      this.searchContext.remove = 'filterValues';
-    }
-    this.searchContext.go();
-    this.filter.get(this.searchContext.state, this.preferences.displayFilterCounts).subscribe(() => { });
   }
 
   public onSortResults(sortDefinition: any): void {
@@ -180,10 +122,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.speedviewData = Observable.of(event.asset.speedviewData);
       this.wzSpeedview.show(event.position);
     } else {
-      this.speedviewData = this.assetService.getSpeedviewData(event.asset.assetId).do((data: any) => {
-        event.asset.speedviewData = data;
-        this.wzSpeedview.show(event.position);
-      });
+      this.speedviewData = this.assetService.getSpeedviewData(event.asset.assetId)
+        .do((data: any) => {
+          event.asset.speedviewData = data;
+          this.wzSpeedview.show(event.position);
+        });
     }
     this.renderer.listenGlobal('document', 'scroll', () => this.wzSpeedview.destroy());
   }
@@ -191,5 +134,24 @@ export class SearchComponent implements OnInit, OnDestroy {
   public hideSpeedview(): void {
     this.speedviewData = null;
     this.wzSpeedview.destroy();
+  }
+
+  private filterAssets(): void {
+    this.searchContext.update = { i: 1 };
+    let activeFilters: any = this.filter.getActive();
+
+    if (activeFilters.ids.length > 0) {
+      this.searchContext.update = { 'filterIds': activeFilters.ids.join(',') };
+    } else {
+      this.searchContext.remove = 'filterIds';
+    }
+
+    if (activeFilters.values.length > 0) {
+      this.searchContext.update = { 'filterValues': activeFilters.values.join(',') };
+    } else {
+      this.searchContext.remove = 'filterValues';
+    }
+
+    this.searchContext.go();
   }
 }
