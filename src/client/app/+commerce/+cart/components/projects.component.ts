@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
-import { Project } from '../cart.interface';
+import { Project } from '../../../shared/interfaces/cart.interface';
 
 @Component({
   moduleId: module.id,
@@ -43,7 +43,7 @@ export class ProjectsComponent {
 
   public selectProject(project: Project) {
     this.selectedProject = project;
-    this.config.form.items = this.config.form.items.map((item:any) => {
+    this.config.form.items = this.config.form.items.map((item: any) => {
       item.value = this.selectedProject[item.name];
       return item;
     });

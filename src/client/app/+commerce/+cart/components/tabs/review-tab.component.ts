@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { OrderStore } from '../../../+order/services/order.store';
 import { WzNotificationService } from '../../../../shared/components/wz-notification/wz.notification.service';
 import { Tab } from './tab';
-import { CartService } from '../../services/cart.service';
+import { CartService } from '../../../../shared/services/cart.service';
 import { CartCapabilities } from '../../services/cart.capabilities';
 declare var baseUrl: any;
 
@@ -45,11 +45,13 @@ export class ReviewTabComponent extends Tab implements OnInit {
       });
     });
   }
+
   public addPayByCardForm(): void {
     this.cart.subscribe(currentCart => {
       this.createForm(currentCart);
     });
   }
+
   public createForm(currentCart: any): void {
     let desc = currentCart.itemCount + ' item';
     if (currentCart.itemCount > 1) {

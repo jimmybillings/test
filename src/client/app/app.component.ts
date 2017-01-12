@@ -14,7 +14,7 @@ import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
 import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
 import { ActiveCollectionService } from './shared/services/active-collection.service';
-import { CartSummaryService } from './shared/services/cart-summary.service';
+import { CartService } from './shared/services/cart.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
 import { ErrorActions } from './shared/services/error.service';
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
     private apiConfig: ApiConfig,
     private authentication: Authentication,
     private userCan: Capabilities,
-    private cartSummary: CartSummaryService,
+    private cart: CartService,
     private error: ErrorActions,
     private window: Window,
     private filter: FilterService,
@@ -114,7 +114,7 @@ export class AppComponent implements OnInit {
         this.collections.load().subscribe(() => { });
       });
     }
-    this.cartSummary.loadCartSummary();
+    this.cart.getCartSummary();
     this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });

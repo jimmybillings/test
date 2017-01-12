@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 
-import { Cart } from '../cart.interface';
+import { Cart } from '../interfaces/cart.interface';
 
 const emptyCart: Cart = {
   userId: NaN,
@@ -22,7 +22,7 @@ export const cart: ActionReducer<any> = (state: Cart = emptyCart, action: Action
 
 @Injectable()
 export class CartStore {
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<any>) { }
 
   public get data(): Observable<any> {
     return this.store.select('cart');

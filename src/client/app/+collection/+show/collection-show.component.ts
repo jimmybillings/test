@@ -12,7 +12,7 @@ import { AssetService } from '../../shared/services/asset.service';
 import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
 import { WzToastComponent } from '../../shared/components/wz-toast/wz.toast.component';
 import { Capabilities } from '../../shared/services/capabilities.service';
-import { CartSummaryService } from '../../shared/services/cart-summary.service';
+import { CartService } from '../../shared/services/cart.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 
 @Component({
@@ -45,7 +45,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public uiState: UiState,
     public notification: WzNotificationService,
     public uiConfig: UiConfig,
-    public cartSummary: CartSummaryService,
+    public cart: CartService,
     public userPreference: UserPreferenceService) { }
 
   ngOnInit() {
@@ -98,6 +98,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cartSummary.addAssetToProjectInCart(asset);
+    this.cart.addAssetToProjectInCart(asset);
   }
 }

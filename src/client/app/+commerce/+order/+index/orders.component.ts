@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrdersService } from '../services/orders.service';
-import { OrdersUrlParams } from '../../+cart/cart.interface';
+import { OrdersUrlParams } from '../../../shared/interfaces/cart.interface';
 
 @Component({
   moduleId: module.id,
@@ -30,16 +30,16 @@ export class OrdersComponent implements OnInit {
 
   public changePage(i: string): void {
     this.buildRouteParams({ i });
-    this.router.navigate( ['/commerce/orders', this.params ]);
+    this.router.navigate(['/commerce/orders', this.params]);
   }
 
-  public search(query: {q: string}) {
-    this.buildRouteParams(Object.assign(query, {i: 1}));
-    this.router.navigate( ['/commerce/orders', this.params ]);
+  public search(query: { q: string }) {
+    this.buildRouteParams(Object.assign(query, { i: 1 }));
+    this.router.navigate(['/commerce/orders', this.params]);
   }
 
   private buildRouteParams(params: OrdersUrlParams) {
-    this.params = Object.assign({}, this.params, {n : this.ordersPerPage}, params);
+    this.params = Object.assign({}, this.params, { n: this.ordersPerPage }, params);
   }
 
 }

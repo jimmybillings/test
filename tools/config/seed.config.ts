@@ -373,14 +373,15 @@ export class SeedConfig {
       '@angular/core/testing': 'node_modules/@angular/core/bundles/core-testing.umd.js',
       '@angular/http/testing': 'node_modules/@angular/http/bundles/http-testing.umd.js',
       '@angular/platform-browser/testing':
-        'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
+      'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
       '@angular/platform-browser-dynamic/testing':
-        'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
+      'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
       '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
 
       'rxjs/*': 'node_modules/rxjs/*',
       '@ngrx/core': 'node_modules/@ngrx/core/bundles/core.min.umd.js',
       '@ngrx/store': 'node_modules/@ngrx/store/bundles/store.min.umd.js',
+      'wazee-frame-formatter': 'node_modules/wazee-frame-formatter/dist/index.js',
 
       'app/*': '/app/*',
       // For test config
@@ -688,8 +689,8 @@ function getBuildType() {
   if ((base && prodKeyword) || type === BUILD_TYPES.PRODUCTION) {
     return BUILD_TYPES.PRODUCTION;
   } else if (type === BUILD_TYPES.LIBRARY) {
-     return BUILD_TYPES.LIBRARY;
-   }else {
+    return BUILD_TYPES.LIBRARY;
+  } else {
     return BUILD_TYPES.DEVELOPMENT;
   }
 }

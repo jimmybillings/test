@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/cor
 import { Observable, Subscription } from 'rxjs/Rx';
 
 import { Tab } from './tab';
-import { CartService } from '../../services/cart.service';
+import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
 
 @Component({

@@ -19,11 +19,11 @@ import { UserPreferenceService } from '../shared/services/user-preference.servic
 import { ApiService } from '../shared/services/api.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { CartGuard } from '../+commerce/+cart/services/cart.guard';
-import { CartSummaryService } from '../shared/services/cart-summary.service';
 import { FilterService } from '../shared/services/filter.service';
 import { Authentication } from '../shared/services/authentication.data.service';
 import { PendoService } from '../shared/services/pendo.service';
-
+import { CartService } from '../shared/services/cart.service';
+import { CartStore } from '../shared/stores/cart.store';
 // WAZEE ROUTES
 import { APP_ROUTES } from '../app.routes';
 
@@ -43,9 +43,8 @@ import { ActiveCollectionStore, activeCollection } from '../shared/stores/active
 import { filters } from '../shared/services/filter.service';
 import { userPreferences } from '../shared/services/user-preference.service';
 import { CollectionContextService, collectionOptions } from '../shared/services/collection-context.service';
-import { cart } from '../+commerce/+cart/services/cart.store';
+import { cart } from '../shared/stores/cart.store';
 import { sortDefinitions } from '../shared/services/sort-definitions.service';
-import { cartSummary } from '../shared/services/cart-summary.service';
 import { order } from '../+commerce/+order/services/order.store';
 import { orders } from '../+commerce/+order/services/orders.store';
 
@@ -76,10 +75,11 @@ export const WAZEE_PROVIDERS = [
   Capabilities,
   LoggedInGuard,
   LoggedOutGuard,
-  CartSummaryService,
   FilterService,
   Authentication,
-  PendoService
+  PendoService,
+  CartService,
+  CartStore
 ];
 
 export const WAZEE_STORES: any = {
@@ -99,7 +99,6 @@ export const WAZEE_STORES: any = {
   error: error,
   cart: cart,
   sortDefinitions: sortDefinitions,
-  cartSummary: cartSummary,
   order: order,
   orders: orders
 };

@@ -5,7 +5,7 @@ import { ActiveCollectionService } from '../shared/services/active-collection.se
 import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
-import { CartSummaryService } from '../shared/services/cart-summary.service';
+import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { SearchContext } from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
@@ -32,7 +32,7 @@ export class AssetComponent implements OnInit {
     public uiConfig: UiConfig,
     private userPreference: UserPreferenceService,
     private notification: WzNotificationService,
-    private cartSummary: CartSummaryService,
+    private cart: CartService,
     private window: Window) {
   }
 
@@ -63,7 +63,7 @@ export class AssetComponent implements OnInit {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cartSummary.addAssetToProjectInCart(asset.assetId, asset.selectedTranscodeTarget);
+    this.cart.addAssetToProjectInCart(asset.assetId, asset.selectedTranscodeTarget);
   }
 
   public onCalculatePrice(event: any): void {
