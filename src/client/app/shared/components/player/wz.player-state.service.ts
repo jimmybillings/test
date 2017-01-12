@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/Rx';
 
 import { Frame } from 'wazee-frame-formatter';
 import { WzPlayerState, WzPlayerStateChanges } from './wz.player.interface';
