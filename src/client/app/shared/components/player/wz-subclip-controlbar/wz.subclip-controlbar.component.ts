@@ -38,7 +38,7 @@ export class WzSubclipControlbarComponent {
   }
 
   // TODO: Move this into state class.
-  private get constrainedCurrentTime() {
-    return Math.min(Math.max(0, this.playerState.currentTime), this.playerState.duration);
-  }
+  // private get constrainedCurrentTime() {
+  //   return Math.min(Math.max(0, this.playerState.currentFrame), this.playerState.duration);
+  // }
 }

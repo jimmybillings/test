@@ -1,9 +1,9 @@
 <div>
-  In Marker (seconds): <span>{{playerState.inMarker}}</span>
+  In: <span>{{ playerState.inMarkerFrame | timecode }}</span>
   <button (click)="setInMarker()">Set</button>
   <button (click)="seekToInMarker()">Go</button>
   <br/>
-  Out Marker (seconds): <span>{{playerState.outMarker}}</span>
+  Out: <span>{{ playerState.outMarkerFrame | timecode }}</span>
   <button (click)="setOutMarker()">Set</button>
   <button (click)="seekToOutMarker()">Go</button>
   <br/>

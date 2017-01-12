@@ -7,7 +7,7 @@ import { WzPlayerState } from '../../wz.player.interface';
   selector: 'wz-time-display',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span>{{ playerState.currentTime }} / {{ playerState.duration }}</span>
+    <span>{{ playerState.currentFrame | timecode }} / {{ playerState.durationFrame | timecode }}</span>
   `
 })
 

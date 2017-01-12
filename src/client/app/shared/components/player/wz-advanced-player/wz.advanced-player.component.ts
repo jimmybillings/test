@@ -30,19 +30,19 @@ export class WzAdvancedPlayerComponent {
         this.playerStateService.updateWith({ inMarker: 'clear', outMarker: 'clear' });
         break;
       case WzPlayerRequestType.PlayWithinMarkers:
-        this.player.playRange(state.inMarker, state.outMarker);
+        this.player.playRange(state.inMarkerFrame.asSeconds(), state.outMarkerFrame.asSeconds());
         break;
       case WzPlayerRequestType.SeekToInMarker:
-        this.player.seekTo(state.inMarker);
+        this.player.seekTo(state.inMarkerFrame.asSeconds());
         break;
       case WzPlayerRequestType.SeekToOutMarker:
-        this.player.seekTo(state.outMarker);
+        this.player.seekTo(state.outMarkerFrame.asSeconds());
         break;
       case WzPlayerRequestType.SetInMarker:
-        this.playerStateService.updateWith({ inMarker: 'currentTime' });
+        this.playerStateService.updateWith({ inMarker: 'currentFrame' });
         break;
       case WzPlayerRequestType.SetOutMarker:
-        this.playerStateService.updateWith({ outMarker: 'currentTime' });
+        this.playerStateService.updateWith({ outMarker: 'currentFrame' });
         break;
       case WzPlayerRequestType.TogglePlayback:
         this.player.togglePlayback();

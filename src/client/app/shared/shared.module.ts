@@ -44,6 +44,7 @@ import { WzAutocompleteSearchComponent } from './components/wz-autocomplete-sear
 
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
+import { TimecodePipe } from './pipes/timecode.pipe';
 
 // Shared resolvers
 import { AssetResolver } from '../+asset/services/asset.resolver';
@@ -83,6 +84,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     CollectionFilterDdComponent,
     WzItemSearchFormComponent,
     ValuesPipe,
+    TimecodePipe,
     WzDialogPortalDirective,
     WzDropdownPortalDirective,
     WzToastPortalDirective,
@@ -122,6 +124,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     CollectionFilterDdComponent,
     WzItemSearchFormComponent,
     ValuesPipe,
+    TimecodePipe,
     WzDialogPortalDirective,
     WzDropdownPortalDirective,
     WzToastPortalDirective,
