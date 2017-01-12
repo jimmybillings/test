@@ -139,6 +139,12 @@ header.app-header + div.main-content asset-component {
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     border-top-width: rem(15.2);
   }
+  wz-asset-list {
+    min-height: calc(100vh - 518px);
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
+      min-height: calc(100vh - 799px);
+    }
+  }
 }
 
 header.app-header.collection-tray-closed + div.main-content not-found-component,
@@ -152,6 +158,12 @@ header.app-header.collection-tray-closed + div.main-content asset-component {
   border-top-width: rem(11.0);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     border-top-width: rem(9.6);
+  }
+  wz-asset-list {
+    min-height: calc(100vh - 462px);
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
+      min-height: calc(100vh - 791px);
+    }
   }
 }
 
@@ -167,6 +179,12 @@ header.app-header.collection-tray-closed.search-closed + div.main-content asset-
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     border-top-width: rem(5.6);
   }
+  wz-asset-list {
+    min-height: calc(100vh - 416px);
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
+      min-height: calc(100vh - 751px);
+    }
+  }
 }
 
 header.app-header.search-closed + div.main-content not-found-component,
@@ -180,6 +198,12 @@ header.app-header.search-closed + div.main-content asset-component {
   border-top-width: rem(12.0);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     border-top-width: rem(11.2);
+  }
+  wz-asset-list {
+    min-height: calc(100vh - 472px);
+    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
+      min-height: calc(100vh - 807px);
+    }
   }
 }
 
