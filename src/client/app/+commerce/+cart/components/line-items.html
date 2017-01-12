@@ -7,7 +7,7 @@
 				</div>
 				<div flex="20">
 					<wz-select *ngIf="lineItem.transcodeTargets && lineItem.transcodeTargets.length > 0" [options]="format(lineItem)" [trPrefix]="'ASSET.TRANSCODE_TARGETS.'"
-					(selectTarget)="selectTarget($event, lineItem)"></wz-select>
+					(selectOption)="selectTarget($event, lineItem)"></wz-select>
 				</div>
 				<div flex="10" class="line-item-info" layout="column" layout-align="center center">
 					<p class="md-body-1">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</p>
