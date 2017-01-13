@@ -3,6 +3,7 @@
 // These should go away when there are native md-dialog, and md-menu in alpha 7
 // they are currently needed to fix z-index with fixed header and large dd menu (collection-dd) for mobile.
 .cdk-overlay-pane {
+  z-index: 1001;
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     width: 100%;
   }
