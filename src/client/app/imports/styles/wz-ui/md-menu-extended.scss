@@ -25,3 +25,6 @@
   padding-bottom: rem(.1);
   box-shadow: inset 0 1px 0 0 md-color($foreground, divider);
 }
+.md-select-content {
+  color: rgba(md-color($foreground,text), .75);
+}

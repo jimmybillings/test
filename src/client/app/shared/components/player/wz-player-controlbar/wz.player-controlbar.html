@@ -1,3 +1,4 @@
-<wz-playback-toggle-button [playerState]="playerState" (request)="forward($event)"></wz-playback-toggle-button>
-<wz-time-display [playerState]="playerState"></wz-time-display>
-<br/>
+<section flex="90">
+  <wz-time-display [playerState]="playerState"></wz-time-display>
+  <wz-playback-toggle-button [playerState]="playerState" (request)="forward($event)"></wz-playback-toggle-button>
+</section>
