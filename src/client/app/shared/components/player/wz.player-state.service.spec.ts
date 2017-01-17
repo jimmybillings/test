@@ -3,6 +3,10 @@ import { Frame } from 'wazee-frame-formatter';
 import { WzPlayerState, WzPlayerStateChanges } from './wz.player.interface';
 
 export function main() {
+  const frameNumberFor = (seconds: number, framesPerSecond: number = 29.97): number => {
+    return new Frame(framesPerSecond).setFromSeconds(seconds).asFrameNumber();
+  };
+
   describe('Wz Player State Service', () => {
     let serviceUnderTest: WzPlayerStateService;
 
@@ -194,7 +198,7 @@ export function main() {
 
               expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(frameNumberFor(136.137));
               expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(136.137));
-            })
+            });
           });
 
           describe('as \'clear\'', () => {
@@ -230,7 +234,7 @@ export function main() {
 
               expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(frameNumberFor(217.218));
               expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(217.218));
-            })
+            });
           });
 
           describe('as \'clear\'', () => {
@@ -302,7 +306,7 @@ export function main() {
 
               expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(frameNumberFor(20.21));
               expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(20.21));
-            })
+            });
           });
 
           describe('as \'clear\'', () => {
@@ -380,7 +384,7 @@ export function main() {
 
               expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(frameNumberFor(31.32));
               expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(31.32));
-            })
+            });
           });
 
           describe('as \'clear\'', () => {
@@ -461,7 +465,7 @@ export function main() {
 
               expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(frameNumberFor(63.64));
               expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(63.64));
-            })
+            });
           });
 
           describe('as \'clear\'', () => {
@@ -539,7 +543,7 @@ export function main() {
 
               expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(frameNumberFor(51.52));
               expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(51.52));
-            })
+            });
           });
 
           describe('as \'clear\'', () => {
@@ -575,8 +579,4 @@ export function main() {
       });
     });
   });
-
-  const frameNumberFor = (seconds: number, framesPerSecond: number = 29.97): number => {
-    return new Frame(framesPerSecond).setFromSeconds(seconds).asFrameNumber();
-  }
 }
