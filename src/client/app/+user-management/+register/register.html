@@ -7,7 +7,7 @@
 				</md-card-title>
 				<md-card-content>
 					<wz-form [items]="config.form.items" [serverErrors]="serverErrors" submitLabel="REGISTER.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"
-						(viewTos)="termsDialog.show()"></wz-form>
+						(onAction)="termsDialog.show()"></wz-form>
 				</md-card-content>
 			</md-card>
 
