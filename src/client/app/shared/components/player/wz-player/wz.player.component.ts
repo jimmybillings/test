@@ -27,10 +27,6 @@ export class WzPlayerComponent {
     return this.currentAsset;
   }
 
-  public get player(): any {
-    return this.jwPlayer;
-  }
-
   // This event is emitted only for this.mode === 'advanced'.
   @Output() stateUpdate: EventEmitter<WzPlayerStateChanges> = new EventEmitter<WzPlayerStateChanges>();
 
@@ -131,9 +127,9 @@ export class WzPlayerComponent {
   }
 
   private setupImage() {
-    var imgWrapper = document.createElement('div');
+    let imgWrapper: HTMLElement = document.createElement('div');
     imgWrapper.className = 'photo-container';
-    var elem = document.createElement('img');
+    let elem: HTMLImageElement = document.createElement('img');
     elem.src = this.currentAsset.clipUrl;
     imgWrapper.appendChild(elem);
     this.element.nativeElement.appendChild(imgWrapper);
