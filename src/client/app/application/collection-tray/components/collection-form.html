@@ -1,15 +1,12 @@
-<div flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
-  <md-card class="wz-form-card">
-    <button md-icon-button title="{{ tr.close | translate }}" type="button" (click)="success();" class="close"><md-icon>close</md-icon></button>
-    <md-card-header>
-      <!--<div class="logo-wrapper">
-        <div class="logo"></div>
-      </div>-->
-    </md-card-header>
-    <md-card-title>
+<div class="wz-dialog" flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
+  <div class="wz-form-card">
+    <button md-icon-button md-dialog-close title="{{ tr.close | translate }}" type="button" class="close dialog-close">
+      <md-icon>close</md-icon>
+    </button>
+    <h3>
       {{ tr.title | translate }}
-    </md-card-title>
-    <md-card-content *ngIf="fields">
+    </h3>
+    <md-dialog-content *ngIf="fields">
       <wz-form 
         [items]="formItems"
         [serverErrors]= "serverErrors"
@@ -17,6 +14,7 @@
         (formSubmit)="collectionAction($event)"
         autocomplete="off">
       </wz-form>
-    </md-card-content>
-  </md-card>
+    </md-dialog-content>
+  </div>
 </div>
+

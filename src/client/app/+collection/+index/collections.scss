@@ -297,6 +297,11 @@ wz-item-search-form {
 }
 // Copy legacy link.This may change into copy share link
 .wz-legacy-link {
+  .dialog-title {
+    font-size: 24px;
+    font-weight: 400;
+    margin-top: 0;
+  }
   .link-wrapper {
     padding: rem(.2);
     white-space: nowrap;
@@ -345,3 +350,5 @@ wz-item-search-form {
     margin-left:0%;
   }
 }
+
+

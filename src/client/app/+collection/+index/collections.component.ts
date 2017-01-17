@@ -12,6 +12,7 @@ import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
+import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 
 @Component({
   moduleId: module.id,
@@ -151,10 +152,6 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.collectionSearchIsShowing = !this.collectionSearchIsShowing;
   }
 
-  public setCollectionForEdit(collection: any) {
-    this.collectionForEdit = Object.assign({}, collection);
-  }
-
   public selectActiveCollection(id: number): void {
     this.activeCollection.load(id).subscribe();
   }
@@ -198,8 +195,13 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     });
   }
 
-  public editCollection() {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionLinkComponent);
-    dialogRef.componentInstance.assets = this.assetsForLink;
+  public editCollection(collection: Collection) {
+    this.uiConfig.get('collection').take(1).subscribe((config: any) => {
+      let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionFormComponent);
+      dialogRef.componentInstance.collection = JSON.parse(JSON.stringify(collection));
+      dialogRef.componentInstance.fields = config.config;
+      dialogRef.componentInstance.dialog = dialogRef;
+      dialogRef.componentInstance.isEdit = true;
+    });
   }
 }

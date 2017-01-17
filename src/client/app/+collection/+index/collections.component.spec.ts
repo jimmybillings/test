@@ -10,6 +10,7 @@ import { ActiveCollectionService } from '../../shared/services/active-collection
 import { CollectionsService } from '../../shared/services/collections.service';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
+import { MdDialog } from '@angular/material';
 
 export function main() {
   describe('Collection Component', () => {
@@ -56,6 +57,12 @@ export function main() {
       }
     }
 
+    class MockMdDialog {
+      open() {
+        return true;
+      }
+    }
+
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
         ...beforeEachProvidersArray,
@@ -64,6 +71,7 @@ export function main() {
         { provide: CollectionsService, useClass: MockCollectionsService },
         { provide: MdSnackBar, useClass: MockMdSnackBar },
         { provide: TranslateService, useClass: MockTranslateService },
+        { provide: MdDialog, useClass: MockMdDialog }
 
       ]
     }));

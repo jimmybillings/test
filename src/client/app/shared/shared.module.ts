@@ -147,7 +147,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzPricingComponent,
     WzAutocompleteSearchComponent
   ],
-  entryComponents: [WzNotificationComponent, CollectionLinkComponent]
+  entryComponents: [WzNotificationComponent, CollectionLinkComponent, CollectionFormComponent]
 })
 
 export class SharedModule {

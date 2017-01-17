@@ -22,7 +22,7 @@
     <button md-icon-button flex="none" title="more collection options" [md-menu-trigger-for]="moreCollectionTrayOptions"><md-icon>more_vert</md-icon></button>
     
     <md-menu x-position="before" #moreCollectionTrayOptions="mdMenu">
-      <button md-menu-item (click)="createCollection.show()">
+      <button md-menu-item (click)="createCollection()">
         <md-icon>add_circle_outline</md-icon>{{ 'COLLECTION.MORE_DD_MENU.CREATE_NEW' | translate }}
       </button>
       <button md-menu-item (click)="list.show($event)">
@@ -47,15 +47,8 @@
     [focusedCollection]="collection"
     [config]="(uiConfig.get('collection') | async).config"
     (close)="list.close()"
+    (onCreateCollection)="createCollection()"
     layout="row" layout-align="end start" class="revealed">
   </collections-list-dd>
 </wz-dropdown>
 
-<wz-dialog #createCollection [clickCatcher]="false">
-  <collection-form
-    [fields]="(uiConfig.get('collection') | async).config"
-    [dialog]="createCollection"
-    [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}"
-    layout="row" layout-align="center start">
-  </collection-form>
-</wz-dialog>
