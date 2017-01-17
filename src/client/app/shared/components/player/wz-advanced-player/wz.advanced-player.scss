@@ -45,6 +45,7 @@ wz-advanced-player {
     height: rem(2.5);
     vertical-align: middle;
   }
+
   [md-icon-button] {
     line-height: rem(3.4);
     height: rem(3.4);
@@ -65,5 +66,52 @@ wz-advanced-player {
   }
   button[disabled] {
     opacity: .2;
+  }
+  .step-playback {
+    margin-left: rem(.8);
+    [md-icon-button] {
+      line-height: rem(3.1);
+      height: rem(3.1);
+      width: rem(3.1);
+      margin: 0 rem(.1);
+      md-icon {
+        color: rgba(md-color($background, background), 0.87);
+        line-height: rem(1.4);
+        height: rem(1.6);
+        width: rem(3.6);
+        margin-left: rem(.6);
+        position: relative;
+        &.material-icons {
+          font-size: rem(1.6);
+        }
+        &::before {
+          content: "5s";
+          font-family: $md-font-family;
+          font-size: rem(1.1);
+          line-height: rem(1.5);
+          font-weight: 100;
+          position: absolute;
+          margin-left: rem(-0.9);
+        }
+        &.one-frame::before {
+          content: "1f";
+        }
+        &.one-second::before {
+          content: "1s";
+        }
+      }
+      &.reverse md-icon {
+        @include transform(rotate(180deg));
+        margin-left: rem(-1.4);
+        line-height: rem(1.8);
+        &::before {
+          @include transform(rotate(180deg));
+          line-height: rem(1.6);
+        }
+        &.one-frame::before {
+          margin-left: rem(-0.8);
+        }
+      } 
+    } 
   }
 }

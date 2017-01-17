@@ -1,4 +1,37 @@
-<section flex="90">
-  <wz-time-display [playerState]="playerState"></wz-time-display>
-  <wz-playback-toggle-button [playerState]="playerState" (request)="forward($event)"></wz-playback-toggle-button>
+<section flex="90" layout="row">
+  <nav class="time-play" layout="row" layout-align="center center">
+    <wz-time-display [playerState]="playerState"></wz-time-display>
+    <button md-icon-button title="reverse">
+      <md-icon>fast_rewind</md-icon>
+    </button>
+    <wz-playback-toggle-button [playerState]="playerState" (request)="forward($event)"></wz-playback-toggle-button>
+    <button md-icon-button title="reverse">
+      <md-icon>fast_forward</md-icon>
+    </button>
+  </nav>
+  <nav class="step-playback" flex layout="row" layout-align="start center">
+    <button md-icon-button class="reverse" title="reverse 5 seconds">
+      <md-icon class="five-second">play_arrow</md-icon>
+    </button>
+    <button md-icon-button class="reverse" title="reverse 1 second">
+      <md-icon class="one-second">play_arrow</md-icon>
+    </button>
+    <button md-icon-button class="reverse" title="reverse 1 frame">
+      <md-icon class="one-frame">play_arrow</md-icon>
+    </button>
+    <button md-icon-button class="forward" title="forward 1 frame">
+      <md-icon class="one-frame">play_arrow</md-icon>
+    </button>
+    <button md-icon-button class="forward" title="forward 1 second">
+      <md-icon class="one-second">play_arrow</md-icon>
+    </button>
+    <button md-icon-button class="forward" title="forward 5 seconds">
+      <md-icon class="five-second">play_arrow</md-icon>
+    </button>
+  </nav>
 </section>
+<nav flex="10" layout-align="end stretch">
+  <button md-icon-button title="volume control">
+    <md-icon>volume_up</md-icon>
+  </button>
+</nav>
