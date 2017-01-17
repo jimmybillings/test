@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpModule, Http } from '@angular/http';
-import { TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService } from 'ng2-translate/ng2-translate';
+import { TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService, TranslateParser } from 'ng2-translate';
 import { MaterialModule } from '@angular/material';
 
 // Shared Pure Components
@@ -25,7 +25,6 @@ import { WzPlayerControlbarComponent } from './components/player/wz-player-contr
 import { WzPlaybackToggleButtonComponent }
   from './components/player/controls/wz-playback-toggle-button/wz.playback-toggle-button.component';
 import { WzTimeDisplayComponent } from './components/player/controls/wz-time-display/wz.time-display.component';
-import { WzToastComponent, WzToastPortalDirective } from './components/wz-toast/wz.toast.component';
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
 import { WzItemSearchFormComponent } from './components/wz-item-search-form/wz.item-search-form.component';
@@ -58,7 +57,11 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     CommonModule,
     RouterModule,
     FormsModule,
-    TranslateModule,
+    TranslateModule.forRoot({
+      provide: TranslateLoader,
+      useFactory: (http: Http) => new TranslateStaticLoader(http, 'https://', '.json'),
+      deps: [Http]
+    }),
     HttpModule,
     ReactiveFormsModule,
     MaterialModule.forRoot(),
@@ -78,14 +81,12 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzPlayerControlbarComponent,
     WzPlaybackToggleButtonComponent,
     WzTimeDisplayComponent,
-    WzToastComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
     WzItemSearchFormComponent,
     ValuesPipe,
     WzDialogPortalDirective,
     WzDropdownPortalDirective,
-    WzToastPortalDirective,
     WzInputTagsComponent,
     WzInputSuggestionsComponent,
     CollectionFormComponent,
@@ -117,14 +118,12 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzPlayerControlbarComponent,
     WzPlaybackToggleButtonComponent,
     WzTimeDisplayComponent,
-    WzToastComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
     WzItemSearchFormComponent,
     ValuesPipe,
     WzDialogPortalDirective,
     WzDropdownPortalDirective,
-    WzToastPortalDirective,
     WzInputTagsComponent,
     WzInputSuggestionsComponent,
     CollectionFormComponent,
@@ -148,7 +147,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzPricingComponent,
     WzAutocompleteSearchComponent
   ],
-  entryComponents: [WzNotificationComponent]
+  entryComponents: [WzNotificationComponent, CollectionLinkComponent]
 })
 
 export class SharedModule {
@@ -156,11 +155,6 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        {
-          provide: TranslateLoader,
-          useFactory: (http: Http) => new TranslateStaticLoader(http, 'https://', '.json'),
-          deps: [Http]
-        },
         TranslateService,
         AssetResolver,
         SearchResolver,

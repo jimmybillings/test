@@ -56,7 +56,9 @@ export class WzAutocompleteSearchComponent {
         pair = pair.split('=');
         obj[pair[0]] = decodeURIComponent(pair[1] || '');
       });
-      (<FormControl>this.searchForm.controls['query']).patchValue(obj['q']);
+      if (this.searchForm.controls['query'].value !== obj['q']) {
+        (<FormControl>this.searchForm.controls['query']).patchValue(obj['q']);
+      }
       this.wzInputSuggestions.destroySubscription();
       this.wzInputSuggestions.suggestionChangeListener();
     }

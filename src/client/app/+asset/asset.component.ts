@@ -10,6 +10,8 @@ import { UserPreferenceService } from '../shared/services/user-preference.servic
 import { SearchContext } from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
 import { Observable } from 'rxjs/Rx';
+import { MdSnackBar } from '@angular/material';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   moduleId: module.id,
@@ -33,13 +35,22 @@ export class AssetComponent implements OnInit {
     private userPreference: UserPreferenceService,
     private notification: WzNotificationService,
     private cart: CartService,
-    private window: Window) {
+    private window: Window,
+    private snackBar: MdSnackBar,
+    private translate: TranslateService) {
   }
 
   ngOnInit(): void {
     this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
+  }
+
+  public showSnackBar(message: any) {
+    this.translate.get(message.key, message.value)
+      .subscribe((res: string) => {
+        this.snackBar.open(res, '', { duration: 2000 });
+      });
   }
 
   public addToCollection(params: any): void {

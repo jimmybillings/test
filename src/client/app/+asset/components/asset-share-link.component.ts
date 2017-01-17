@@ -13,6 +13,7 @@ export class AssetShareLinkComponent {
   @Input() uiState: any;
   @Input() assetLink: string;
   @Output() close = new EventEmitter();
+  @Output() onOpenSnackbar = new EventEmitter();
 
   public closeAssetShareLink(): void {
     this.uiState.closeAssetShareLink();

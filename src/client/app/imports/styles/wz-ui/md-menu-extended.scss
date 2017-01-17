@@ -24,3 +24,9 @@
   padding-bottom: rem(.1);
   box-shadow: inset 0 1px 0 0 md-color($foreground, divider);
 }
+
+.dialog-close {
+  float: right;
+  margin-top: -10px;
+  opacity: .5;
+}

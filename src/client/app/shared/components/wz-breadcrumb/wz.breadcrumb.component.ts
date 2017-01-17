@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Inject, forwardRef, OnChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { DateRange } from '../../utilities/dateRange';
 
 @Component({
@@ -8,25 +8,20 @@ import { DateRange } from '../../utilities/dateRange';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class WzBreadcrumbComponent implements OnChanges {
-  @Input() filters: any;
-  @Output() apply = new EventEmitter();
-  @Output() clear = new EventEmitter();
-  public activeFilters: any = [];
-
-  public clearFilter(filter: any) {
-    this.apply.emit(filter.filterId);
+export class WzBreadcrumbComponent {
+  @Input()
+  set filters(value: any) {
+    this.activeFilters = [];
+    this.getFilters(value);
   }
-
-  ngOnChanges(changes: any) {
-    if (changes.filters && changes.filters.currentValue) {
-      this.activeFilters = [];
-      this.getFilters(this.filters);
-    }
+  @Output() onFilterEvent = new EventEmitter();
+  public activeFilters: any = [];
+  public toggleFilter(filter: any) {
+    this.onFilterEvent.emit({ event: 'toggleFilter', filter: filter });
   }
 
   public clearFilters() {
-    this.clear.emit();
+    this.onFilterEvent.emit({ event: 'clearFilters' });
   }
 
   public formattedValueFor(filter: any): string {

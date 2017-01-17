@@ -18,6 +18,8 @@ import { CartService } from './shared/services/cart.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
 import { ErrorActions } from './shared/services/error.service';
+import { MdSnackBar } from '@angular/material';
+import { TranslateService } from 'ng2-translate';
 
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
@@ -56,7 +58,9 @@ export class AppComponent implements OnInit {
     private error: ErrorActions,
     private window: Window,
     private filter: FilterService,
-    private sortDefinition: SortDefinitionsService) { }
+    private sortDefinition: SortDefinitionsService,
+    private snackBar: MdSnackBar,
+    private translate: TranslateService) { }
 
   ngOnInit() {
     this.apiConfig.setPortal(portal);
@@ -85,6 +89,13 @@ export class AppComponent implements OnInit {
 
   public toggleFilterTreePreference(): void {
     this.userPreference.toggleFilterTree();
+  }
+
+  public showSnackBar(message: any) {
+    this.translate.get(message.key, message.value)
+      .subscribe((res: string) => {
+        this.snackBar.open(res, '', { duration: 2000 });
+      });
   }
 
   private routerChanges() {

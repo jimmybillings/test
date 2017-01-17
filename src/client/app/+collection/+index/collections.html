@@ -49,7 +49,7 @@
 			<!-- COLLECTION LIST -->
 			<wz-collection-item-list [collections]="(collections.data | async).items" (editCollection)="setCollectionForEdit($event); editCollection.show();"
 				[activeCollection]="(activeCollection.data | async).id" (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event); deleteCollectionDialog.show();"
-				(generateCollectionLink)="getAssetsForLink($event); copyLegacyLinkDialog.show()">
+				(generateCollectionLink)="getAssetsForLink($event);">
 			</wz-collection-item-list>
 			<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">
@@ -85,7 +85,3 @@
 	</div>
 </wz-dialog>
 
-<wz-dialog #copyLegacyLinkDialog>
-	<collection-link-component [assets]="assetsForLink" [dialog]="copyLegacyLinkDialog">
-	</collection-link-component>
-</wz-dialog>

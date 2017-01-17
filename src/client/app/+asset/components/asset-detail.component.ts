@@ -32,6 +32,7 @@ export class AssetDetailComponent implements OnChanges {
   @Output() getPriceAttributes = new EventEmitter();
   @Output() calculatePrice = new EventEmitter();
   @Output() calculatePriceError = new EventEmitter();
+  @Output() onShowSnackBar = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   private assetsArr: Array<number> = [];
 

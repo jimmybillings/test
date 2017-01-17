@@ -80,6 +80,12 @@ export function main() {
         componentUnderTest.state = '/search';
         expect(componentUnderTest.searchForm.controls['query'].value).toEqual('cat');
       });
+
+      it('Does nothing if the query param is already the same as the search box value', () => {
+        componentUnderTest.searchForm.controls['query'].setValue('cat');
+        componentUnderTest.state = '/search;q=cat;i=1;n=100;sortId=3';
+        expect(componentUnderTest.searchForm.controls['query'].value).toEqual('cat');
+      });
     });
 
   });

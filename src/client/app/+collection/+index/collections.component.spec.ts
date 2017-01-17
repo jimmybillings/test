@@ -8,7 +8,8 @@ import {
 import { CollectionsComponent } from './collections.component';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 import { CollectionsService } from '../../shared/services/collections.service';
-
+import { MdSnackBar } from '@angular/material';
+import { TranslateService } from 'ng2-translate';
 
 export function main() {
   describe('Collection Component', () => {
@@ -43,12 +44,27 @@ export function main() {
       }
     }
 
+    class MockMdSnackBar {
+      open() {
+        return true;
+      }
+    }
+
+    class MockTranslateService {
+      get() {
+        return Observable.of({});
+      }
+    }
+
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
         ...beforeEachProvidersArray,
         CollectionsComponent,
         { provide: ActiveCollectionService, useClass: MockActiveCollectionService },
         { provide: CollectionsService, useClass: MockCollectionsService },
+        { provide: MdSnackBar, useClass: MockMdSnackBar },
+        { provide: TranslateService, useClass: MockTranslateService },
+
       ]
     }));
 
