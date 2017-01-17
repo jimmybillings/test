@@ -8,6 +8,7 @@ import { WzPlayerState, WzPlayerStateChanges } from './wz.player.interface';
 @Injectable()
 export class WzPlayerStateService {
   private stateSubject: BehaviorSubject<WzPlayerState> = new BehaviorSubject(this.initialValue);
+  private changesToApply: WzPlayerStateChanges = {};
 
   public get state(): Observable<WzPlayerState> {
     return this.stateSubject.asObservable();
@@ -29,86 +30,130 @@ export class WzPlayerStateService {
       durationFrame: undefined,
       inMarkerFrame: undefined,
       outMarkerFrame: undefined,
-      changeDetectionEnabler: new Date().valueOf()
+      changeDetectionEnabler: 0
     };
   }
 
-  private createNewStateWith(changes: WzPlayerStateChanges): WzPlayerState {
-    const currentState: WzPlayerState = this.snapshot;
-    const allChanges: WzPlayerStateChanges = this.handleInterdependenciesIn(changes, currentState);
-    const framesPerSecond: number =
-      allChanges.hasOwnProperty('framesPerSecond') ? allChanges.framesPerSecond : currentState.framesPerSecond;
+  private createNewStateWith(requestedChanges: WzPlayerStateChanges): WzPlayerState {
+    this.changesToApply = JSON.parse(JSON.stringify(requestedChanges));
+    this.handleChangeInterdependencies();
 
     return {
-      playing: allChanges.hasOwnProperty('playing') ? allChanges.playing : currentState.playing,
-      framesPerSecond: framesPerSecond,
-      currentFrame: this.newFrameFrom(allChanges.currentFrame || currentState.currentFrame, framesPerSecond),
-      durationFrame: this.newFrameFrom(allChanges.durationFrame || currentState.durationFrame, framesPerSecond),
-      inMarkerFrame: this.newFrameFrom((allChanges.inMarkerFrame as Frame) || currentState.inMarkerFrame, framesPerSecond),
-      outMarkerFrame: this.newFrameFrom((allChanges.outMarkerFrame as Frame) || currentState.outMarkerFrame, framesPerSecond),
-      changeDetectionEnabler: new Date().valueOf()
+      playing: this.latestPlaying,
+      framesPerSecond: this.latestFramesPerSecond,
+      currentFrame: this.newFrameFrom(this.latestCurrentFrame),
+      durationFrame: this.newFrameFrom(this.latestDurationFrame),
+      inMarkerFrame: this.newFrameFrom(this.latestInMarkerFrame),
+      outMarkerFrame: this.newFrameFrom(this.latestOutMarkerFrame),
+      changeDetectionEnabler: this.snapshot.changeDetectionEnabler + 1
     };
   }
 
-  private handleInterdependenciesIn(changes: WzPlayerStateChanges, currentState: WzPlayerState): WzPlayerStateChanges {
-    const allChanges: WzPlayerStateChanges = JSON.parse(JSON.stringify(changes));
-    const framesPerSecond: number =
-      allChanges.hasOwnProperty('framesPerSecond') ? allChanges.framesPerSecond : currentState.framesPerSecond;
-
-    if (allChanges.hasOwnProperty('currentTime')) {
-      allChanges.currentFrame = new Frame(framesPerSecond).setFromSeconds(allChanges.currentTime);
-      delete allChanges.currentTime;
-    }
-
-    if (allChanges.hasOwnProperty('duration')) {
-      allChanges.durationFrame = new Frame(framesPerSecond).setFromSeconds(allChanges.duration);
-      delete allChanges.duration;
-
-      if (!currentState.inMarkerFrame) {
-        allChanges.inMarkerFrame = new Frame(framesPerSecond).setFromFrameNumber(0);
-      }
-
-      if (!currentState.outMarkerFrame) {
-        allChanges.outMarkerFrame = this.newFrameFrom(allChanges.durationFrame, framesPerSecond);
-      }
-    }
-
-    if (allChanges.inMarker === 'currentFrame') {
-      allChanges.inMarkerFrame = this.newFrameFrom(currentState.currentFrame, framesPerSecond);
-    } else if (allChanges.inMarker === 'clear') {
-      allChanges.inMarkerFrame = new Frame(framesPerSecond).setFromFrameNumber(0);
-    }
-    delete allChanges.inMarker;
-
-    if (allChanges.outMarker === 'currentFrame') {
-      allChanges.outMarkerFrame = this.newFrameFrom(currentState.currentFrame, framesPerSecond);
-    } else if (allChanges.outMarker === 'clear') {
-      allChanges.outMarkerFrame = this.newFrameFrom(allChanges.durationFrame || currentState.durationFrame, framesPerSecond);
-    }
-    delete allChanges.outMarker;
-
-    if (allChanges.hasOwnProperty('inMarkerFrame') || allChanges.hasOwnProperty('outMarkerFrame')) {
-      if (allChanges.hasOwnProperty('inMarkerFrame') && allChanges.hasOwnProperty('outMarkerFrame')) {
-        if (allChanges.inMarkerFrame.frameNumber > allChanges.outMarkerFrame.frameNumber) {
-          allChanges.outMarkerFrame.frameNumber = allChanges.inMarkerFrame.frameNumber;
-        }
-      } else if (allChanges.hasOwnProperty('inMarkerFrame')) {
-        if (allChanges.inMarkerFrame.frameNumber > currentState.outMarkerFrame.frameNumber) {
-          allChanges.outMarkerFrame = this.newFrameFrom(allChanges.inMarkerFrame, framesPerSecond);
-        }
-      } else {
-        if (allChanges.outMarkerFrame.frameNumber < currentState.inMarkerFrame.frameNumber) {
-          allChanges.inMarkerFrame = this.newFrameFrom(allChanges.outMarkerFrame, framesPerSecond);
-        }
-      }
-    }
-
-    return allChanges;
+  private handleChangeInterdependencies(): void {
+    this.handleCurrentTimeUpdate();
+    this.handleDurationUpdate();
+    this.handleInMarkerUpdate();
+    this.handleOutMarkerUpdate();
+    this.handleMarkerOrderingIssues();
   }
 
-  private newFrameFrom(otherFrame: Frame, framesPerSecond: number) {
-    if (!otherFrame) return undefined;
+  private handleCurrentTimeUpdate(): void {
+    if (!this.changesToApply.hasOwnProperty('currentTime')) return;
 
-    return new Frame(framesPerSecond).setFromFrameNumber(otherFrame.frameNumber);
+    this.changesToApply.currentFrame = this.newFrameFrom(this.changesToApply.currentTime);
+    delete this.changesToApply.currentTime;
+  }
+
+  private handleDurationUpdate(): void {
+    if (!this.changesToApply.hasOwnProperty('duration')) return;
+
+    this.changesToApply.durationFrame = this.newFrameFrom(this.changesToApply.duration);
+    delete this.changesToApply.duration;
+
+    if (!this.latestInMarkerFrame) {
+      this.changesToApply.inMarkerFrame = this.newFrameFrom(0);
+    }
+
+    if (!this.latestOutMarkerFrame) {
+      this.changesToApply.outMarkerFrame = this.newFrameFrom(this.changesToApply.durationFrame);
+    }
+  }
+
+  private handleInMarkerUpdate(): void {
+    if (!this.changesToApply.hasOwnProperty('inMarker')) return;
+
+    if (this.changesToApply.inMarker === 'currentFrame') {
+      this.changesToApply.inMarkerFrame = this.newFrameFrom(this.latestCurrentFrame);
+    } else if (this.changesToApply.inMarker === 'clear') {
+      this.changesToApply.inMarkerFrame = this.newFrameFrom(0);
+    } else {
+      throw new Error(`Unexpected value for inMarker: '${this.changesToApply.inMarker}'`);
+    }
+
+    delete this.changesToApply.inMarker;
+  }
+
+  private handleOutMarkerUpdate(): void {
+    if (!this.changesToApply.hasOwnProperty('outMarker')) return;
+
+    if (this.changesToApply.outMarker === 'currentFrame') {
+      this.changesToApply.outMarkerFrame = this.newFrameFrom(this.latestCurrentFrame);
+    } else if (this.changesToApply.outMarker === 'clear') {
+      this.changesToApply.outMarkerFrame = this.newFrameFrom(this.latestDurationFrame);
+    } else {
+      throw new Error(`Unexpected value for outMarker: '${this.changesToApply.outMarker}'`);
+    }
+
+    delete this.changesToApply.outMarker;
+  }
+
+  private handleMarkerOrderingIssues(): void {
+    if (this.changesToApply.inMarkerFrame) {
+      if (this.latestOutMarkerFrame && this.changesToApply.inMarkerFrame.frameNumber > this.latestOutMarkerFrame.frameNumber) {
+        this.changesToApply.outMarkerFrame = this.newFrameFrom(this.changesToApply.inMarkerFrame);
+      }
+    } else if (this.changesToApply.outMarkerFrame) {
+      if (this.latestInMarkerFrame && this.changesToApply.outMarkerFrame.frameNumber < this.latestInMarkerFrame.frameNumber) {
+        this.changesToApply.inMarkerFrame = this.newFrameFrom(this.changesToApply.outMarkerFrame);
+      }
+    }
+  }
+
+  private get latestPlaying(): boolean {
+    return this.changesToApply.hasOwnProperty('playing') ? this.changesToApply.playing : this.snapshot.playing;
+  }
+
+  private get latestFramesPerSecond(): number {
+    return this.changesToApply.hasOwnProperty('framesPerSecond') ? this.changesToApply.framesPerSecond : this.snapshot.framesPerSecond;
+  }
+
+  private get latestCurrentFrame(): Frame {
+    return this.changesToApply.hasOwnProperty('currentFrame') ? this.changesToApply.currentFrame : this.snapshot.currentFrame;
+  }
+
+  private get latestDurationFrame(): Frame {
+    return this.changesToApply.hasOwnProperty('durationFrame') ? this.changesToApply.durationFrame : this.snapshot.durationFrame;
+  }
+
+  private get latestInMarkerFrame(): Frame {
+    return this.changesToApply.hasOwnProperty('inMarkerFrame') ? this.changesToApply.inMarkerFrame : this.snapshot.inMarkerFrame;
+  }
+
+  private get latestOutMarkerFrame(): Frame {
+    return this.changesToApply.hasOwnProperty('outMarkerFrame') ? this.changesToApply.outMarkerFrame : this.snapshot.outMarkerFrame;
+  }
+
+  private newFrameFrom(input: number | Frame): Frame {
+    if (typeof input === 'number') {
+      return this.newFrame.setFromSeconds(input);
+    } else if (!input) {
+      return undefined;
+    } else {
+      return this.newFrame.setFromFrameNumber(input.frameNumber);
+    }
+  }
+
+  private get newFrame(): Frame {
+    return new Frame(this.latestFramesPerSecond);
   }
 }
