@@ -14,6 +14,7 @@ import { WzPlayerState, WzPlayerStateChanges, WzPlayerRequest, WzPlayerRequestTy
 
 export class WzAdvancedPlayerComponent {
   @Input() asset: any;
+  @Input() window: any;
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
   constructor(public playerStateService: WzPlayerStateService) { }

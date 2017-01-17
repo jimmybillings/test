@@ -25,6 +25,7 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public uiState: UiState;
   @Input() public calculatedPrice: any;
   @Input() public pricingAttributes: any;
+  @Input() public window: Window;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
