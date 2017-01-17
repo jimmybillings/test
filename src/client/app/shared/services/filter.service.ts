@@ -4,6 +4,7 @@ import { Store, ActionReducer, Action } from '@ngrx/store';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
+import { ActiveFilters } from '../interfaces/filters.interface';
 
 const initFilters: any = {};
 export const filters: ActionReducer<any> = (state: Array<any> = initFilters, action: Action) => {
@@ -18,35 +19,59 @@ export const filters: ActionReducer<any> = (state: Array<any> = initFilters, act
 @Injectable()
 export class FilterService {
   public data: Observable<any>;
-  public filterState: any;
+  private filterState: any;
 
-  constructor(
-    private api: ApiService,
-    public store: Store<any>,
-    public currentUser: CurrentUser
-  ) {
+  constructor(private api: ApiService, private store: Store<any>, private currentUser: CurrentUser) {
     this.filterState = {};
     this.data = this.store.select('filters');
   }
 
-  public get(params: any, counted: boolean): Observable<any> {
+  public load(params: any, counted: boolean): Observable<any> {
     let options = JSON.parse(JSON.stringify(Object.assign({}, params, { counted })));
 
     return this.api.get(
       Api.Assets,
       this.currentUser.loggedIn() ? 'filter/filterTree' : 'filter/anonymous/filterTree',
-      { parameters: options, loading: true }
+      { parameters: options, loading: false }
     ).do(response => {
       this.set(this.sanitize(response, null));
       this.checkLocalStorage(response);
     });
   }
 
-  public set(filters: any): void {
+  public clear() {
+    this.set(this.clearValues());
+  }
+
+  public toggle(filterId: number) {
+    this.set(this.toggleValue(filterId));
+  }
+
+  public addCustom(filter: any, value: any) {
+    this.set(this.addCustomValue(filter, value));
+  }
+
+  public toggleExclusive(subFilter: any) {
+    this.set(this.toggleExclusiveValue(subFilter));
+  }
+
+  public getActive() {
+    let active: ActiveFilters = { filters: [], ids: [], values: [] };
+    this.activeFilters(active.filters);
+    active.ids = active.filters.map((filter: any) => filter.filterId);
+    active.values = active.filters.filter((filter: any) => filter.filterValue)
+      .map((filter: any) => `${filter.filterId}:${filter.filterValue}`);
+    return active;
+  }
+
+  //
+  // ----------- END OF PUBLIC INTERFACE ----------- //
+  //
+  private set(filters: any): void {
     this.store.dispatch({ type: 'FILTERS.SET_FILTERS', payload: filters });
   }
 
-  public sanitize(filter: any, parent: any) {
+  private sanitize(filter: any, parent: any) {
     if (parent) filter.parentId = parent.filterId;
     if (filter.subFilters) {
       filter.expanded = false;
@@ -56,32 +81,9 @@ export class FilterService {
     return filter;
   }
 
-  public toggle(currentFilter: any, filter = this.filters) {
-    if (filter.filterId === currentFilter) {
-      if (filter.active) filter.filterValue = null;
-      filter.active = !filter.active;
-      filter = JSON.parse(JSON.stringify(filter));
-    }
+  private activeFilters(activeFilters: any, filter = this.filters) {
     if (filter.subFilters) {
-      for (var l of filter.subFilters) this.toggle(currentFilter, l);
-      return filter;
-    }
-  }
-
-  public toggleExclusive(subFilter: any, filter = this.filters): void {
-    if (filter.subFilters) {
-      if (filter.filterId === subFilter.parentId) {
-        for (let f of filter.subFilters) f.active = (f.filterId === subFilter.filterId) ? !f.active : false;
-      }
-      for (var l of filter.subFilters) this.toggleExclusive(subFilter, l);
-      return filter;
-    }
-    return filter;
-  }
-
-  public active(activeFilters: any, filter = this.filters) {
-    if (filter.subFilters) {
-      for (var l of filter.subFilters) this.active(activeFilters, l);
+      for (var l of filter.subFilters) this.activeFilters(activeFilters, l);
       return filter;
     } else {
       if (filter.active) activeFilters.push(filter);
@@ -89,9 +91,27 @@ export class FilterService {
     }
   }
 
-  public clear(filter = this.filters) {
+  private checkLocalStorage(filterTree: any): void {
+    if (!localStorage.getItem('filterState')) {
+      localStorage.setItem('filterState', JSON.stringify(this.setFilterStateInLocalStorage(filterTree)));
+    }
+  }
+
+  private setFilterStateInLocalStorage(filterTree: any): any {
+    if (filterTree.subFilters) {
+      for (let f of filterTree.subFilters) {
+        if (f.type === 'None' || f.type === 'List') {
+          this.filterState[f.name] = false;
+        }
+        this.setFilterStateInLocalStorage(f);
+      }
+    }
+    return this.filterState;
+  }
+
+  private clearValues(filter = this.filters) {
     if (filter.subFilters) {
-      for (var l of filter.subFilters) this.clear(l);
+      for (var l of filter.subFilters) this.clearValues(l);
       return filter;
     } else {
       if (filter.active) filter.active = false;
@@ -100,7 +120,18 @@ export class FilterService {
     }
   }
 
-  public addCustomValue(currentFilter: any, value: any, filter = this.filters): void {
+  private toggleExclusiveValue(subFilter: any, filter = this.filters): void {
+    if (filter.subFilters) {
+      if (filter.filterId === subFilter.parentId) {
+        for (let f of filter.subFilters) f.active = (f.filterId === subFilter.filterId) ? !f.active : false;
+      }
+      for (var l of filter.subFilters) this.toggleExclusiveValue(subFilter, l);
+      return filter;
+    }
+    return filter;
+  }
+
+  private addCustomValue(currentFilter: any, value: any, filter = this.filters): void {
     if (filter.subFilters) {
       for (let f of filter.subFilters) this.addCustomValue(currentFilter, value, f);
       return filter;
@@ -113,22 +144,16 @@ export class FilterService {
     }
   }
 
-  public checkLocalStorage(filterTree: any): void {
-    if (!localStorage.getItem('filterState')) {
-      localStorage.setItem('filterState', JSON.stringify(this.setFilterStateInLocalStorage(filterTree)));
+  private toggleValue(currentFilter: any, filter = this.filters) {
+    if (filter.filterId === currentFilter) {
+      if (filter.active) filter.filterValue = null;
+      filter.active = !filter.active;
+      filter = JSON.parse(JSON.stringify(filter));
     }
-  }
-
-  public setFilterStateInLocalStorage(filterTree: any): any {
-    if (filterTree.subFilters) {
-      for (let f of filterTree.subFilters) {
-        if (f.type === 'None' || f.type === 'List') {
-          this.filterState[f.name] = false;
-        }
-        this.setFilterStateInLocalStorage(f);
-      }
+    if (filter.subFilters) {
+      for (var l of filter.subFilters) this.toggleValue(currentFilter, l);
+      return filter;
     }
-    return this.filterState;
   }
 
   private get filters() {

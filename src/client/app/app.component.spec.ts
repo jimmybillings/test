@@ -60,7 +60,7 @@ export function main() {
       mockUserCan = { viewCollections: () => canViewCollections };
       mockCart = { getCartSummary: jasmine.createSpy('getCartSummary') };
       mockWindow = { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') };
-      mockFilter = { get: jasmine.createSpy('get').and.returnValue(Observable.of({})) };
+      mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUser,
@@ -196,7 +196,7 @@ export function main() {
             q: 'dogs', i: 1, n: 100, sortId: 23, filterIds: '1517',
             filterValues: '1517:2015-12-10 - 2016-12-12'
           });
-        expect(mockFilter.get).toHaveBeenCalledWith(
+        expect(mockFilter.load).toHaveBeenCalledWith(
           {
             q: 'dogs', i: 1, n: 100, sortId: 23, filterIds: '1517',
             filterValues: '1517:2015-12-10 - 2016-12-12'

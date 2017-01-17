@@ -78,9 +78,9 @@ export class AppComponent implements OnInit {
   }
 
   public newSearchContext(query: any) {
-    let searchConext: any = Object.assign({}, this.searchContext.state, { q: query, i: 1, n: 100 });
-    this.filter.get(searchConext, this.userPreference.state.displayFilterCounts).subscribe(() => { });
-    this.searchContext.new(searchConext);
+    let searchContext: any = Object.assign({}, this.searchContext.state, { q: query, i: 1, n: 100 });
+    this.filter.load(searchContext, this.userPreference.state.displayFilterCounts).subscribe(() => { });
+    this.searchContext.new(searchContext);
   }
 
   public toggleFilterTreePreference(): void {
@@ -107,8 +107,12 @@ export class AppComponent implements OnInit {
   private processLoggedInUser() {
     this.userPreference.getPrefs();
     if (this.userCan.viewCollections()) {
-      this.collections.load().subscribe(() => { });
-      this.activeCollection.load().subscribe(() => { });
+      this.activeCollection.load().subscribe(() => {
+        // This needs to be inside here. activeCollection.load will create a 
+        // new collection for first time users if they don't already have one
+        // so we need to collection load all collection after this happens.
+        this.collections.load().subscribe(() => { });
+      });
     }
     this.cart.getCartSummary();
     this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {

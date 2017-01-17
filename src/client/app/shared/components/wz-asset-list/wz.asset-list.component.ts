@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, ViewChild, Renderer } from '@angular/core';
 import { Collection } from '../../interfaces/collection.interface';
-import { CurrentUser } from '../../services/current-user.model';
 import { MdMenuTrigger } from '@angular/material';
 
 /**
@@ -17,13 +16,11 @@ export class WzAssetListComponent implements OnChanges {
   public activeAsset: any;
   @Input() public assets: Array<any>;
   @Input() public userCan: any;
-  @Input() collection: Collection;
-  @Input() currentUser: CurrentUser;
+  @Input() public collection: Collection;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
-  @Output() onShowNewCollection = new EventEmitter();
   @Output() showSpeedview = new EventEmitter();
   @Output() hideSpeedview = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
@@ -48,10 +45,6 @@ export class WzAssetListComponent implements OnChanges {
 
   public removeFromCollection(collection: Collection, asset: any): void {
     this.onRemoveFromCollection.emit({ 'collection': collection, 'asset': asset });
-  }
-
-  public showNewCollection(asset: any): void {
-    this.onShowNewCollection.emit(asset);
   }
 
   public addAssetToCart(asset: any): void {

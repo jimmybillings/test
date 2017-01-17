@@ -1,5 +1,3 @@
 <wz-player [asset]="asset" [mode]="'advanced'" (stateUpdate)="onStateUpdate($event)"></wz-player>
-<br/>
-<wz-player-controlbar [playerState]="playerStateService.state | async" (request)="handle($event)"></wz-player-controlbar>
-<br/>
-<wz-subclip-controls [playerState]="playerStateService.state | async" (request)="handle($event)"></wz-subclip-controls>
+<wz-player-controlbar class="tool-bar" [playerState]="playerStateService.state | async" (request)="handle($event)" layout="row"></wz-player-controlbar>
+<wz-subclip-controlbar class="tool-bar" [playerState]="playerStateService.state | async" (request)="handle($event)" layout="row"></wz-subclip-controlbar>
