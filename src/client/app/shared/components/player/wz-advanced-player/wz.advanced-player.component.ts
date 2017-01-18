@@ -16,6 +16,8 @@ export class WzAdvancedPlayerComponent {
   @Input() window: any;
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
+  private currentAsset: any = null;
+
   @Input()
   public set asset(newAsset: any) {
     this.playerStateService.reset();
@@ -29,8 +31,6 @@ export class WzAdvancedPlayerComponent {
   public assetIsVideo(): boolean {
     return this.currentAsset.resourceClass !== 'Image';
   }
-
-  private currentAsset: any = null;
 
   constructor(public playerStateService: WzPlayerStateService) { }
 
