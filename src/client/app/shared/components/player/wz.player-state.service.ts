@@ -22,6 +22,10 @@ export class WzPlayerStateService {
     this.stateSubject.next(this.createNewStateWith(changes));
   }
 
+  public reset(): void {
+    this.stateSubject.next(this.initialValue);
+  }
+
   private get initialValue(): WzPlayerState {
     return {
       playing: false,

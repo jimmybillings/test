@@ -13,9 +13,20 @@ import { WzPlayerState, WzPlayerStateChanges, WzPlayerRequest, WzPlayerRequestTy
 })
 
 export class WzAdvancedPlayerComponent {
-  @Input() asset: any;
   @Input() window: any;
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
+
+  @Input()
+  public set asset(newAsset: any) {
+    this.playerStateService.reset();
+    this.currentAsset = newAsset;
+  }
+
+  public get asset(): any {
+    return this.currentAsset;
+  }
+
+  private currentAsset: any = null;
 
   constructor(public playerStateService: WzPlayerStateService) { }
 
