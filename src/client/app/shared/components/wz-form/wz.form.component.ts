@@ -24,7 +24,7 @@ export class WzFormComponent implements OnInit, OnChanges {
   @Input() autocomplete: string = 'on';
   @Output() formSubmit = new EventEmitter();
   @Output() formCancel = new EventEmitter();
-  @Output() viewTos = new EventEmitter();
+  @Output() onAction = new EventEmitter();
   public submitAttempt: boolean = false;
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
@@ -123,9 +123,5 @@ export class WzFormComponent implements OnInit, OnChanges {
     this.submitAttempt = false;
     this.formModel.updateForm(this.form, {});
     this.formModel.markFormAsUntouched(this.form);
-  }
-
-  public onViewTos(): void {
-    this.viewTos.emit();
   }
 }
