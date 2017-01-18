@@ -75,9 +75,9 @@
 </ul>
 
 <md-menu (click)="trigger.closeMenu()" x-position="after" #downloadCompMenu="mdMenu">
-  <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(hasComp)" (click)="downloadComp('wm');"><md-icon>branding_watermark</md-icon>{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
-  <button md-menu-item [disabled]="!userCan.downloadCleanComps(hasComp)" (click)="downloadComp('clean')"><md-icon>high_quality</md-icon>{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
-  <button md-menu-item [disabled]="!userCan.downloadFullComps(hasComp)" (click)="downloadComp('full')"><md-icon>high_quality</md-icon>{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(hasComp)" (click)="downloadComp('wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!userCan.downloadCleanComps(hasComp)" (click)="downloadComp('clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!userCan.downloadFullComps(hasComp)" (click)="downloadComp('full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
 </md-menu>
 
 <wz-toast #addToast>
