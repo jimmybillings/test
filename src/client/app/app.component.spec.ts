@@ -66,7 +66,7 @@ export function main() {
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUser,
         mockCollections, mockActiveCollection, mockUiState, mockUserPreference,
         mockRenderer, mockNotification, mockApiConfig, mockAuthentication, mockUserCan,
-        mockCart, null, mockWindow, mockFilter, mockSortDefinition);
+        mockCart, null, mockWindow, mockFilter, mockSortDefinition, null, null);
     });
 
 

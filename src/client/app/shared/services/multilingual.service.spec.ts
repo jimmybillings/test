@@ -5,21 +5,22 @@ import {
 } from '../../imports/test.imports';
 
 import { MultilingualService } from './multilingual.service';
-import { TranslateLoader, TranslateStaticLoader, TranslateService } from 'ng2-translate/ng2-translate';
+import { TranslateLoader, TranslateStaticLoader, TranslateModule } from 'ng2-translate';
 import { Http } from '@angular/http';
 
 export function main() {
   describe('Multilingual Service', () => {
 
     beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        ...beforeEachProvidersArray,
-        {
+      imports: [
+        TranslateModule.forRoot({
           provide: TranslateLoader,
           useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
           deps: [Http]
-        },
-        TranslateService,
+        }),
+      ],
+      providers: [
+        ...beforeEachProvidersArray,
         MultilingualService
       ]
     }));

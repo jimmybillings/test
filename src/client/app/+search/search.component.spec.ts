@@ -43,7 +43,8 @@ export function main() {
           { filters: [{ filterId: 1 }, { filterId: 2 }, { filterId: 3, filterValue: 'Cat' }], ids: [1, 2, 3], values: ['Cat'] }),
         addCustom: jasmine.createSpy('addCustom'),
         toggleExclusive: jasmine.createSpy('toggleExclusive'),
-        clear: jasmine.createSpy('clear')
+        clear: jasmine.createSpy('clear'),
+        toggleFilterGroup: jasmine.createSpy('toggleFilterGroup')
       };
       mockUserPreferences = {
         data: Observable.of({ displayFilterCounts: false, displayFilterTree: true }),
@@ -71,31 +72,7 @@ export function main() {
       mockWindow = { location: { href: null } };
       componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart,
         mockAssetService, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
-        mockUserPreferences, mockRenderer, mockWindow);
-      componentUnderTest.sidenav = { open: jasmine.createSpy('open') };
-    });
-
-    describe('ngOnInit()', () => {
-      it('Should open the side nav if displayFilterTree is set to true in the user preferences', () => {
-        componentUnderTest.ngOnInit();
-        expect(componentUnderTest.sidenav.open).toHaveBeenCalled();
-      });
-
-      it('Should keep the side nav closed if displayFilterTree is set to false in the user preferences', () => {
-        mockUserPreferences = {
-          data: Observable.of({ displayFilterCounts: '20', displayFilterTree: false }),
-          toggleFilterCount: jasmine.createSpy('toggleFilterCount'),
-          openCollectionTray: jasmine.createSpy('openCollectionTray'),
-          updateSortPreference: jasmine.createSpy('updateSortPreference'),
-          state: { displayFilterCounts: false, displayFilterTree: false }
-        };
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter,
-          mockCart, mockAssetService, mockSortDefinition, mockNotification, mockSearchContext,
-          mockUiConfig, mockAssetData, mockUserPreferences, mockRenderer, mockWindow);
-        componentUnderTest.sidenav = { open: jasmine.createSpy('open') };
-        componentUnderTest.ngOnInit();
-        expect(componentUnderTest.sidenav.open).not.toHaveBeenCalled();
-      });
+        mockUserPreferences, mockRenderer, mockWindow, null, null);
     });
 
     describe('ngOnDestroy()', () => {
@@ -108,7 +85,6 @@ export function main() {
     describe('countToggle()', () => {
       it('Should call the filter service get with the search context state and the opposite boolean value' +
         +' of the current displayFilterCounts boolean', () => {
-          componentUnderTest.ngOnInit();
           componentUnderTest.countToggle();
           expect(componentUnderTest.filter.load).toHaveBeenCalledWith(
             { q: 'cat', i: 7, n: 100, sortId: 23, filterIds: '1517', filterValues: '1517:2015-12-10 - 2016-12-12' },
@@ -117,7 +93,6 @@ export function main() {
         });
 
       it('Should call the user preference service to toggle the filter count boolean', () => {
-        componentUnderTest.ngOnInit();
         componentUnderTest.countToggle();
         expect(mockUserPreferences.toggleFilterCount).toHaveBeenCalled();
       });
@@ -160,65 +135,35 @@ export function main() {
       });
     });
 
-    describe('toggleFilter()', () => {
+    describe('filterEvent()', () => {
       it('Should call the filter service with a filter id to toggle its boolean on/off value', () => {
-        componentUnderTest.toggleFilter(1);
+        componentUnderTest.filterEvent({ event: 'toggleFilter', filter: { filterId: 1 } });
         expect(componentUnderTest.filter.toggle).toHaveBeenCalledWith(1);
-      });
-    });
-
-    describe('applyFilter()', () => {
-      it('Should call the filter service with a filter id to apply the filter passed in', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.applyFilter(1);
-        expect(componentUnderTest.filter.toggle).toHaveBeenCalledWith(1);
-      });
-
-      it('Should filter the assets', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.applyFilter(1);
         expect(mockSearchContext.go).toHaveBeenCalled();
       });
-    });
 
-    describe('applyCustomValue()', () => {
-      it('Should call the filter service to apply a custom value on a filter', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.applyCustomValue({ filter: 2 }, 'HD');
-        expect(componentUnderTest.filter.addCustom).toHaveBeenCalledWith({ filter: 2 }, 'HD');
+      it('Should call the filter service to toggle a filter group to show/hide', () => {
+        componentUnderTest.filterEvent({ event: 'toggleFilterGroup', filter: { filterId: 1 } });
+        expect(componentUnderTest.filter.toggleFilterGroup).toHaveBeenCalledWith({ filterId: 1 });
       });
 
-      it('Should filter the assets', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.applyCustomValue({ filter: 2 }, 'HD');
-        expect(mockSearchContext.go).toHaveBeenCalled();
-      });
-    });
-
-    describe('applyExclusiveFilter()', () => {
       it('Should call the filter service to apply an exculsive filter', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.applyExclusiveFilter({ filter: 2 });
-        expect(componentUnderTest.filter.toggleExclusive).toHaveBeenCalledWith({ filter: 2 });
-      });
-
-      it('Should filter the assets', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.applyCustomValue({ filter: 2 }, 'HD');
+        componentUnderTest.filterEvent({ event: 'applyExclusiveFilter', filter: { filterId: 1 } });
+        expect(componentUnderTest.filter.toggleExclusive).toHaveBeenCalledWith({ filterId: 1 });
         expect(mockSearchContext.go).toHaveBeenCalled();
       });
-    });
 
-    describe('clearFilters()', () => {
-      it('Should call the filter service to clear all filters / reset', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.clearFilters();
-        expect(componentUnderTest.filter.clear).toHaveBeenCalled();
+      it('Should call the filter service to apply a custom value on a filter', () => {
+        componentUnderTest.filterEvent(
+          { event: 'applyCustomValue', filter: { filterId: 1 }, customValue: 'mockCustomValue' }
+        );
+        expect(componentUnderTest.filter.addCustom).toHaveBeenCalledWith({ filterId: 1 }, 'mockCustomValue');
+        expect(mockSearchContext.go).toHaveBeenCalled();
       });
 
-      it('Should filter the assets', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.clearFilters();
+      it('Should call the filter service to clear all filters / reset', () => {
+        componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
+        expect(componentUnderTest.filter.clear).toHaveBeenCalled();
         expect(mockSearchContext.go).toHaveBeenCalled();
       });
     });
@@ -242,7 +187,7 @@ export function main() {
         };
         componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter,
           mockCart, mockAssetService, mockSortDefinition, mockNotification, mockSearchContext,
-          mockUiConfig, mockAssetData, mockUserPreferences, mockRenderer, mockWindow);
+          mockUiConfig, mockAssetData, mockUserPreferences, mockRenderer, mockWindow, null, null);
         componentUnderTest.downloadComp({ assetId: 3, compType: 'small' });
         expect(mockNotification.create).toHaveBeenCalledWith('COMPS.NO_COMP');
       });
@@ -331,8 +276,8 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
           mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow);
-        componentUnderTest.clearFilters();
+          mockUserPreferences, mockRenderer, mockWindow, null, null);
+        componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ i: 1 });
       });
 
@@ -340,8 +285,8 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [1, 2, 3], values: [] });
         componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
           mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow);
-        componentUnderTest.clearFilters();
+          mockUserPreferences, mockRenderer, mockWindow, null, null);
+        componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ 'filterIds': '1,2,3' });
       });
 
@@ -349,8 +294,8 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
           mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow);
-        componentUnderTest.clearFilters();
+          mockUserPreferences, mockRenderer, mockWindow, null, null);
+        componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.remove).toEqual('filterIds');
       });
 
@@ -358,8 +303,8 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart,
           mockAssetService, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow);
-        componentUnderTest.clearFilters();
+          mockUserPreferences, mockRenderer, mockWindow, null, null);
+        componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ 'filterValues': 'cat,dog' });
       });
 
@@ -367,8 +312,8 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
           mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow);
-        componentUnderTest.clearFilters();
+          mockUserPreferences, mockRenderer, mockWindow, null, null);
+        componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.remove).toEqual('filterValues');
       });
 
@@ -376,8 +321,8 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart,
           mockAssetService, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow);
-        componentUnderTest.clearFilters();
+          mockUserPreferences, mockRenderer, mockWindow, null, null);
+        componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.go).toHaveBeenCalled();
       });
     });

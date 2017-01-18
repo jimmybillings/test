@@ -6,7 +6,7 @@ export function main() {
   describe('Login Component', () => {
     (<any>window).pendo = { initialize: jasmine.createSpy('initialize') };
     let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any,
-      mockDocumentService: any, mockActivatedRoute: any, mockPendo: any;
+      mockDocumentService: any, mockActivatedRoute: any, mockPendo: any, mockDialog: any;
     let componentUnderTest: LoginComponent;
 
     beforeEach(() => {
@@ -26,8 +26,11 @@ export function main() {
       };
       mockActivatedRoute = { params: Observable.of({}) };
       mockPendo = { initialize: jasmine.createSpy('initialize') };
+      mockDialog = {
+        close: jasmine.createSpy('close')
+      };
       componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-        mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo);
+        mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog);
     });
 
     describe('ngOnInit()', () => {
@@ -39,7 +42,7 @@ export function main() {
       it('Should display a message for a new user', () => {
         mockActivatedRoute = { params: Observable.of({ newUser: 'true' }) };
         componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-          mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo);
+          mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog);
         componentUnderTest.ngOnInit();
         expect(componentUnderTest.firstTimeUser).toBe(true);
       });
@@ -73,10 +76,10 @@ export function main() {
             }))
         };
         componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-          mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo);
-        componentUnderTest.termsDialog = { show: jasmine.createSpy('show') };
+          mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog);
+        spyOn(componentUnderTest, 'showTerms');
         componentUnderTest.onSubmit({ 'user': 'ross' });
-        expect(componentUnderTest.termsDialog.show).toHaveBeenCalled();
+        expect(componentUnderTest.showTerms).toHaveBeenCalled();
       });
 
       it('initialize pendo if the site is commerce', () => {
@@ -94,7 +97,7 @@ export function main() {
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
         componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-          mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo);
+          mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();

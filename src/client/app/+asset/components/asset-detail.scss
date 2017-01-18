@@ -372,20 +372,3 @@ asset-share-link .link {
     }
   }
 }
-
-div.wz-dialog wz-pricing md-card {
-  md-card-header {
-    margin: 0;
-    height: rem(.6);
-  }
-  form {
-    .input md-select {
-      padding: rem(1.7) 0;
-      width: 100%;
-    }
-    div.submit-btn button.submit {
-      width: 85%;
-      margin: rem(3.0) 0 rem(1.7) 0;
-    }
-  }
-} 

@@ -5,7 +5,8 @@ export function main() {
   describe('Asset Component', () => {
 
     let mockCurrentUser: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
-    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockNotification: any, mockCart: any, mockWindow: any;
+    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockNotification: any, mockCart: any,
+      mockWindow: any, mockMdDialog: any;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
@@ -22,15 +23,25 @@ export function main() {
       mockAssetService = {
         downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})),
         getPrice: jasmine.createSpy('getPrice').and.returnValue(Observable.of({})),
-        getPriceAttributes: jasmine.createSpy('getPriceAttributes')
+        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({}))
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
       mockNotification = { create: jasmine.createSpy('create') };
       mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { location: { href: {} } };
+      mockMdDialog = {
+        open: function () {
+          return {
+            componentInstance: {},
+            afterClosed: jasmine.createSpy('afterClosed').and.returnValue(Observable.of({}))
+          };
+        }
+      };
+
       componentUnderTest = new AssetComponent(
         mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
-        mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification, mockCart);
+        mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification, mockCart, null, null, mockMdDialog);
+
     });
 
     describe('ngOnInit()', () => {
@@ -90,7 +101,7 @@ export function main() {
         };
         componentUnderTest = new AssetComponent(
           mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
-          mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification, mockCart);
+          mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification, mockCart, null, null, mockMdDialog);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.location.href).toEqual('http://downloadcomp.url');
       });
@@ -106,17 +117,9 @@ export function main() {
 
     describe('onCalculatePrice', () => {
       it('should call the getPrice method on the assetService', () => {
-        componentUnderTest.onCalculatePrice({ assetId: 1, attributes: { 'a': 'b', 'c': 'd' } });
+        componentUnderTest.calculatePrice({ assetId: 1, attributes: { 'a': 'b', 'c': 'd' } });
 
         expect(mockAssetService.getPrice).toHaveBeenCalledWith(1, { 'a': 'b', 'c': 'd' });
-      });
-    });
-
-    describe('onCalculatePriceError', () => {
-      it('should create a notification', () => {
-        componentUnderTest.onCalculatePriceError();
-
-        expect(mockNotification.create).toHaveBeenCalledWith('PRICING.ERROR');
       });
     });
 
