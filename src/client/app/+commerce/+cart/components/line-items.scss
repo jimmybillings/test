@@ -1,36 +1,42 @@
-section.line-item {
-  float: right;
-  background-color: #fff;
-  @include md-elevation(2);
-  margin: rem(1) 0;
-  min-width: 100%;
-  div.line-item-info {
-    color: md-color($md-grey, 900);
-  }
-  div.line-item-actions {
-    margin: rem(.5) rem(.5) 0 0;
-    button {
-      color: md-color($md-grey, 700);
-      @include transition($swift-ease-out);
-      &:hover {
-        color: md-color($md-primary);
-        background-color: rgba(md-color($md-foreground, base), .07);
-        md-icon {
-          opacity: 1;
+div.line-items {
+  div.line-item {
+    background-color: #fff;
+    @include md-elevation(2);
+    margin: rem(1);
+    min-width: 100%;
+    div.transcode-select {
+      margin: rem(1) rem(3);
+    }
+    div.line-item-actions {
+      padding: rem(1);      
+      button {
+        color: md-color($md-grey, 700);
+        @include transition($swift-ease-out);
+        &:hover {
+          color: md-color($md-primary);
+          background-color: rgba(md-color($md-foreground, base), .07);
+          md-icon {
+            opacity: 1;
+          }
+        }
+        &:hover::after {
+          background-color: transparent;
+        }
+        .md-button-ripple {
+          display:none;
         }
       }
-      &:hover::after {
-        background-color: transparent;
-      }
-      .md-button-ripple {
-        display:none;
+      p.price {
+        margin: 0 rem(1);
+        color: md-color($md-primary);
+        font-size: rem(2);
       }
     }
-  }
-  wz-select {
-    div.wz-select-menu-trigger {
-      margin: 0 rem(.5);
-      border-bottom: 1px solid md-color($md-grey, 500);
+    wz-select {
+      div.wz-select-menu-trigger {
+        margin: 0 rem(.5);
+        border-bottom: 1px solid md-color($md-grey, 500);
+      }
     }
   }
 }

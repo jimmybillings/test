@@ -1,31 +1,31 @@
-<div *ngFor="let lineItem of lineItems" layout="row" layout-align="center center">
-	<div flex-gt-xl="95" flex-gt-md="90" flex-gt-xs="100">
-		<section class="line-item">
-			<div layout="row" layout-align="center center">
-				<div flex="60">
+<div class="line-items">
+	<div *ngFor="let lineItem of lineItems" layout="row" layout-align="center center">
+		<div class="line-item" flex-gt-sm="95">
+			<div layout-gt-sm="row" layout="column" layout-align-gt-sm="space-between center" layout-align="space-around stretch">
+				<div flex-gt-sm="65">
 					<cart-asset-component [asset]="lineItem.asset" (assetNotify)="delegate($event)"></cart-asset-component>
 				</div>
-				<div flex="20">
+				<div class="transcode-select" flex-gt-sm="20">
 					<wz-select *ngIf="lineItem.transcodeTargets && lineItem.transcodeTargets.length > 0" [options]="format(lineItem)" [trPrefix]="'ASSET.TRANSCODE_TARGETS.'"
 					(selectOption)="selectTarget($event, lineItem)"></wz-select>
 				</div>
-				<div flex="10" class="line-item-info" layout="column" layout-align="center center">
-					<p class="md-body-1">{{ lineItem.price | currency:'USD':true:'1.2-2' }}</p>
-				</div>
-				<div class="line-item-actions" layout="row" layout-xs="column">
-					<button md-icon-button (click)="clone(lineItem);" title="copy line item"><md-icon>content_copy</md-icon></button>
-					<button md-icon-button (click)="remove(lineItem)" title="delete line item"><md-icon>clear</md-icon></button>
-					<button md-button *ngIf="this.otherProjects.length === 1" (click)="moveTo(otherProjects[0], lineItem)">{{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProjects[0].name} | slice:0:20 }}</button>
-					<button *ngIf="this.otherProjects.length > 1" md-icon-button [md-menu-trigger-for]="lineItemOptionsMenu" (click)="selectLineItem(lineItem)"><md-icon>more_vert</md-icon></button>
+				<div class="line-item-actions" flex-gt-sm="15">
+					<div layout="row" layout-align="center center">
+						<button md-icon-button (click)="clone(lineItem);" title="copy line item"><md-icon>content_copy</md-icon></button>
+						<button md-icon-button (click)="remove(lineItem)" title="delete line item"><md-icon>clear</md-icon></button>
+						<button md-button *ngIf="this.otherProjects.length === 1" (click)="moveTo(otherProjects[0], lineItem)">{{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProjects[0].name} | slice:0:26 }}</button>
+						<button *ngIf="this.otherProjects.length > 1" md-icon-button [md-menu-trigger-for]="lineItemOptionsMenu" (click)="selectLineItem(lineItem)"><md-icon>more_vert</md-icon></button>
+						<p class="price"><strong>{{ lineItem.price | currency:'USD':true:'1.2-2' }}</strong></p>
+					</div>
 				</div>
 			</div>
-		</section>
+		</div>
 	</div>
 </div>
 
 <md-menu x-position="before" #lineItemOptionsMenu="mdMenu">
 	<button md-menu-item *ngFor="let otherProject of otherProjects" (click)="moveTo(otherProject, selectedLineItem)">
     <md-icon>forward</md-icon>
-    {{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProject.name} | slice:0:20 }}
+    {{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProject.name} | slice:0:26 }}
   </button>
 </md-menu>
