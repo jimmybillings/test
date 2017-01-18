@@ -11,7 +11,7 @@ export function main() {
   // ---- In advanced mode
   // ------ Asset Setter
 
-  fdescribe('Player Component', () => {
+  describe('Player Component', () => {
     let componentUnderTest: WzPlayerComponent, mockElementRef: ElementRef, mockZone: NgZone, mockPlayer: any;
 
     function JwPlayer(nativeElement: any) {
