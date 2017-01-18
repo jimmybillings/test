@@ -1,26 +1,28 @@
-<div *ngFor="let project of projects">
-	<section class="project" layout="row" layout-align="center center">
-		<div class="project-info" flex-gt-xl="95" flex-gt-md="90" flex-gt-xs="100">
-			<ul layout="row" layout-align="space-between center">
-				<li flex-gt-md="30"><strong>{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</strong> {{ project.name | slice:0:40 }}</li>
-				<li><strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> {{ project.clientName }}</li>
-				<li *ngIf="readOnly">
-					<!--Does the translate pipe support singular vs. plural?-->
-					<span *ngIf="lineItemCountFor(project) == 0">No Assets</span>
-					<span *ngIf="lineItemCountFor(project) == 1">1 Asset</span>
-					<span *ngIf="lineItemCountFor(project) > 1">{{ lineItemCountFor(project) }} Assets</span>
-				</li>
-				<li>
-					<span><strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> {{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
-					<button *ngIf="!readOnly" md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)"><md-icon>more_vert</md-icon></button>
-					<button *ngIf="!readOnly" (click)="editProjectDialog.show();selectProject(project);" md-icon-button type="button"><md-icon>edit</md-icon></button>
-				</li>
-			</ul>
-		</div>
-	</section>
+<span *ngFor="let project of projects">
+	<div class="project">
+		<header class="project-info" layout-gt-xs="row" layout-align-gt-xs="space-between center" flex="95" layout="column" layout-align="center center">
+			<span><strong>{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</strong> {{ project.name | slice:0:26 }}</span>
+			<span><strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> {{ project.clientName | slice:0:26 }}</span>
+			<span *ngIf="readOnly">
+				<!--Does the translate pipe support singular vs. plural?-->
+				<span *ngIf="lineItemCountFor(project) == 0">No Assets</span>
+				<span *ngIf="lineItemCountFor(project) == 1">1 Asset</span>
+				<span *ngIf="lineItemCountFor(project) > 1">{{ lineItemCountFor(project) }} Assets</span>
+			</span>
+			<span>
+				<span><strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> {{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
+				<button *ngIf="!readOnly" md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)"><md-icon>more_vert</md-icon></button>
+				<button *ngIf="!readOnly" (click)="editProjectDialog.show();selectProject(project);" md-icon-button type="button"><md-icon>edit</md-icon></button>
+			</span>
+		</header>
+	</div>
 
-	<line-items-component *ngIf="!readOnly" [lineItems]="project.lineItems" [otherProjects]="projectsOtherThan(project)" (lineItemsNotify)="delegate($event)"></line-items-component>
-</div>
+	<div layout="row" layout-align="center center">
+		<div flex="95">
+			<line-items-component *ngIf="!readOnly" [lineItems]="project.lineItems" [otherProjects]="projectsOtherThan(project)" (lineItemsNotify)="delegate($event)"></line-items-component>
+		</div>
+	</div>
+</span>
 
 <!--MOVE THESE TO THE CART TEMPLATE AND PASS DATA UP-->
 
