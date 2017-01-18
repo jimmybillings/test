@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, ElementRef, EventEmitter, NgZone } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, ElementRef, EventEmitter, NgZone, OnDestroy } from '@angular/core';
 declare var jwplayer: any;
 
 import { WzPlayerStateService } from '../wz.player-state.service';
@@ -12,7 +12,7 @@ import { WzPlayerMode, WzPlayerStateChanges } from '../wz.player.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class WzPlayerComponent {
+export class WzPlayerComponent implements OnDestroy {
   @Input() mode: WzPlayerMode = 'basic';
   @Input() window: any;
 
@@ -34,6 +34,10 @@ export class WzPlayerComponent {
   private jwPlayer: any;
 
   constructor(private element: ElementRef, private zone: NgZone) { }
+
+  public ngOnDestroy(): void {
+    this.reset();
+  }
 
   public togglePlayback(): void {
     // Omitting the state argument means toggle playback.

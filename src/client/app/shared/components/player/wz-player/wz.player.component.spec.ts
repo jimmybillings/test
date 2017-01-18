@@ -122,6 +122,17 @@ export function main() {
           });
         });
 
+        it('ngOnDestroy() should reset the player', () => {
+          spyOn(componentUnderTest.stateUpdate, 'emit');
+
+          componentUnderTest.ngOnDestroy();
+
+          expect(mockPlayer.pause).toHaveBeenCalled();
+          expect(mockPlayer.remove).toHaveBeenCalled();
+          expect(componentUnderTest.stateUpdate.emit).not.toHaveBeenCalled();
+          expect(mockElementRef.nativeElement.innerHtml).toEqual('');
+        });
+
         it('togglePlayback() should call .play() on the player', () => {
           componentUnderTest.togglePlayback();
 
@@ -159,6 +170,19 @@ export function main() {
             clipThumbnailUrl: undefined,
             clipUrl: 'clipUrl'
           };
+        });
+
+        describe('ngOnDestroy()', () => {
+          it('should reset the player', () => {
+            spyOn(componentUnderTest.stateUpdate, 'emit');
+
+            componentUnderTest.ngOnDestroy();
+
+            expect(mockPlayer.pause).toHaveBeenCalled();
+            expect(mockPlayer.remove).toHaveBeenCalled();
+            expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ duration: undefined, currentTime: 0 });
+            expect(mockElementRef.nativeElement.innerHtml).toEqual('');
+          });
         });
 
         describe('Asset Setter', () => {
