@@ -155,13 +155,15 @@
 		<!--
         END: FORM RADIO BUTTONS
       -->
-		<!--
+		
+    <!--
         START: FORM CHECKBOX
       -->
 		<md-checkbox *ngIf="field.type == 'checkbox'" layout="row" formControlName="{{field.name}}" [checked]="field.defaultChecked"
 			[required]="isRequiredField(field)" color="primary">
 			{{ field.label | translate }}
 		</md-checkbox>
+    <a  *ngIf="field.type == 'checkbox'" class="view-tos" (click)="onAction.emit(field)">{{ field.link | translate }}</a>
 		<!--
         END: FORM CHECKBOX
       -->
@@ -170,6 +172,7 @@
         START: TOS FORM CHECKBOX
       -->
 		<span *ngIf="field.type == 'tos-checkbox'" layout="row" layout-align="start center">
+      {{field | json}}
 			<md-checkbox layout="row" formControlName="{{field.name}}" [checked]="field.defaultChecked" color="primary" [required]="isRequiredField(field)">
 				{{ field.label | translate }}&nbsp;
 
@@ -180,7 +183,7 @@
 					</span>
 				</md-hint>
 			</md-checkbox>
-			<a class="view-tos" (click)="onViewTos()">{{ field.link | translate }}</a>
+			<a class="view-tos" (click)="onAction.emit(field)">{{ field.link | translate }}</a>
 		</span>
 		<!--
         END: TOS FORM CHECKBOX

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -6,20 +6,20 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
   templateUrl: 'wz.pricing.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class WzPricingComponent {
-  public _options: any;
+export class WzPricingComponent implements OnInit {
   public form: any;
-  @Input()
-  set options(options: any) {
-    this.buildForm(options);
-    this._options = options;
-  }
+  @Input() options: any
+  @Input() dialog: any;
   @Output() close: EventEmitter<any> = new EventEmitter();
   @Output() calculatePricing: EventEmitter<any> = new EventEmitter();
   @Output() error: EventEmitter<any> = new EventEmitter();
 
+  ngOnInit() {
+    this.buildForm(this.options);
+  }
+
   public onSubmit(): void {
-    this.calculatePricing.emit(this.form);
+    this.dialog.close({ attributes: this.form });
   }
 
   public parentIsEmpty(currentOption: any): boolean {
@@ -28,7 +28,7 @@ export class WzPricingComponent {
       return false;
     } else {
       // Find the parent option of the currentOption, and check if it's value is empty
-      let parent: any = this._options.filter((o: any) => o.childId === currentOption.id)[0];
+      let parent: any = this.options.filter((o: any) => o.childId === currentOption.id)[0];
       return this.form[parent.name] === '';
     }
   }
@@ -49,7 +49,7 @@ export class WzPricingComponent {
       // There should always be options, however if there aren't we need to alert the user the calculation went wrong
       if (!rawOptions) {
         this.clearForm();
-        this.error.emit();
+        this.dialog.close({ error: null });
         return;
       }
       // The raw options is just an array of strings, we need to map them back to the attributeList 
@@ -75,7 +75,7 @@ export class WzPricingComponent {
   }
 
   private findParent(currentOption: any): any {
-    return this._options.filter((o: any) => o.childId === currentOption.id)[0];
+    return this.options.filter((o: any) => o.childId === currentOption.id)[0];
   }
 
   private findOption(optionName: string, options: any): any {

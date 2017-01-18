@@ -73,10 +73,6 @@ export class AssetDetailComponent implements OnChanges {
     });
   }
 
-  public onCalculatePrice(attributes: any): void {
-    this.calculatePrice.emit({ attributes: attributes, assetId: this.asset.assetId });
-  }
-
   public onCalculatePriceError(): void {
     this.calculatePriceError.emit();
   }

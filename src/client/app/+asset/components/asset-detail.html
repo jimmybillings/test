@@ -111,7 +111,7 @@
 							<span *ngIf="calculatedPrice" class="price">{{calculatedPrice.price | currency:'USD':true:'1.2-2'}}</span>
 							<span *ngIf="(!asset.price || asset.price === 0)" class="contact-us-pricing">{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}</span>
 							<span *ngIf="(asset.price && asset.price !== 0)">
-								<button [disabled]="!currentUser.loggedIn()" md-button (click)="getPricingAttributes(); calculatePricing.show()" class="is-outlined">{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
+								<button [disabled]="!currentUser.loggedIn()" md-button (click)="getPricingAttributes();" class="is-outlined">{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
 								<button [disabled]="!currentUser.loggedIn()" md-raised-button (click)="addAssetToCart(asset.assetId); onShowSnackBar.emit({key: 'ASSET.ADD_TO_CART_TOAST', value: {assetId:asset.assetId}})"
 									class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
 							</span>
@@ -130,8 +130,3 @@
 	</asset-share>
 </wz-dropdown>
 
-<wz-dialog class="price-attributes" #calculatePricing>
-	<wz-pricing *ngIf="pricingAttributes" [options]="pricingAttributes" (calculatePricing)="calculatePricing.close(); onCalculatePrice($event)"
-		(error)="calculatePricing.close(); onCalculatePriceError()" (close)="calculatePricing.close()">
-	</wz-pricing>
-</wz-dialog>

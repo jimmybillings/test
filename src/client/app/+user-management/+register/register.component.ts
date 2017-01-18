@@ -6,6 +6,8 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { ServerErrors } from '../../shared/interfaces/forms.interface';
 import { DocumentService } from '../services/document.service';
 import { Observable } from 'rxjs/Rx';
+import { MdDialog, MdDialogRef } from '@angular/material';
+import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.component';
 /**
  * Registration page component - renders registration page and handles submiting registation form.
  */
@@ -20,17 +22,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
   public serverErrors: ServerErrors = null;
   public newUser: any;
   public successfullySubmitted: boolean = false;
-  public activeTos: Observable<any>;
   private configSubscription: Subscription;
 
   constructor(
     public user: User,
     public uiConfig: UiConfig,
-    private document: DocumentService) {
+    private document: DocumentService,
+    private dialog: MdDialog) {
   }
 
   ngOnInit(): void {
-    this.activeTos = this.document.downloadActiveTosDocument();
     this.configSubscription =
       this.uiConfig.get('register').subscribe((config: any) =>
         this.config = config.config);
@@ -48,5 +49,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }, (Error => {
       this.serverErrors = Error.json();
     }));
+  }
+
+  public openTermsDialog() {
+    this.document.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
+      let dialogRef: MdDialogRef<any> = this.dialog.open(WzTermsComponent, { width: '50%', height: '600px' });
+      dialogRef.componentInstance.terms = terms;
+      dialogRef.componentInstance.dialog = dialogRef;
+    });
   }
 }
