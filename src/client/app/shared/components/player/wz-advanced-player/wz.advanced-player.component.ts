@@ -26,6 +26,10 @@ export class WzAdvancedPlayerComponent {
     return this.currentAsset;
   }
 
+  public assetIsVideo(): boolean {
+    return this.currentAsset.resourceClass !== 'Image';
+  }
+
   private currentAsset: any = null;
 
   constructor(public playerStateService: WzPlayerStateService) { }

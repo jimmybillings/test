@@ -1,3 +1,5 @@
 <wz-player [window]="window" [asset]="asset" [mode]="'advanced'" (stateUpdate)="onStateUpdate($event)"></wz-player>
-<wz-player-controlbar class="tool-bar" [playerState]="playerStateService.state | async" (request)="handle($event)" layout="row"></wz-player-controlbar>
-<wz-subclip-controlbar class="tool-bar" [playerState]="playerStateService.state | async" (request)="handle($event)" layout="row"></wz-subclip-controlbar>
+<ng-container *ngIf="assetIsVideo()">
+  <wz-player-controlbar class="tool-bar" [playerState]="playerStateService.state | async" (request)="handle($event)" layout="row"></wz-player-controlbar>
+  <wz-subclip-controlbar class="tool-bar" [playerState]="playerStateService.state | async" (request)="handle($event)" layout="row"></wz-subclip-controlbar>
+</ng-container>
