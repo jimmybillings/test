@@ -464,6 +464,10 @@ export class SeedConfig {
       'rxjs': {
         main: 'Rx.js',
         defaultExtension: 'js'
+      },
+      'wazee-frame-formatter': {
+        main: 'dist/index.js',
+        defaultExtension: 'js'
       }
     }
   };
