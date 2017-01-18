@@ -40,7 +40,8 @@ export function main() {
 
       componentUnderTest = new AssetComponent(
         mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
-        mockAssetService, mockUiConfig, mockUserPreference, mockNotification, mockCart, mockWindow, null, null, mockMdDialog);
+        mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification, mockCart, null, null, mockMdDialog);
+
     });
 
     describe('ngOnInit()', () => {
@@ -100,7 +101,7 @@ export function main() {
         };
         componentUnderTest = new AssetComponent(
           mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
-          mockAssetService, mockUiConfig, mockUserPreference, mockNotification, mockCart, mockWindow, null, null, mockMdDialog);
+          mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification, mockCart, null, null, mockMdDialog);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.location.href).toEqual('http://downloadcomp.url');
       });

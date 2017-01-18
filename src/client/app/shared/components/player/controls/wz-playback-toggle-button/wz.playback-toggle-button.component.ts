@@ -6,11 +6,13 @@ import { WzPlayerState, WzPlayerRequest, WzPlayerRequestType } from '../../wz.pl
   moduleId: module.id,
   selector: 'wz-playback-toggle-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [`
-    button { width: 70px; }
-  `],
   template: `
-    <button (click)="onClick()">{{ playerState.playing ? 'PAUSE' : 'PLAY' }}</button>
+    <button md-icon-button 
+      title="{{ (playerState.playing ? 
+        'ASSET.ADV_PLAYER.PAUSE_BTN_TITLE' : 'ASSET.ADV_PLAYER.PLAY_BTN_TITLE') | translate }}" 
+      (click)="onClick()">
+      <md-icon>{{ playerState.playing ? 'pause' : 'play_arrow' }}</md-icon>
+    </button>
   `
 })
 

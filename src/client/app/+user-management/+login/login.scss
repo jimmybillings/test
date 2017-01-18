@@ -28,7 +28,7 @@ section.login.hero {
     margin-top: rem(1.1);
   }
 }
-md-card.wz-form-card, .wz-form-card {
+md-card.wz-form-card {
   @include md-elevation(0);
   padding: 36px 50px 26px 50px;
   color: md-color($md-foreground, secondary-text);
@@ -40,7 +40,7 @@ md-card.wz-form-card, .wz-form-card {
       margin: 0;
     }
   }
-  md-card-title, h3 {
+  md-card-title {
     text-align: center;
   }
   button[md-icon-button].close {

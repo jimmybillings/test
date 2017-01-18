@@ -1,0 +1,40 @@
+<section flex="80"  layout-align="start stretch">
+  <button md-icon-button [disabled]="!playerState.inMarkerFrame"  title="{{ 'ASSET.ADV_PLAYER.SEEK_IN_BTN_TITLE' | translate }}" (click)="seekToInMarker()">
+    <md-icon>keyboard_tab</md-icon>
+  </button>
+  <span class="timecode">{{ playerState.inMarkerFrame | timecode }}</span>
+  <button class="is-outlined set-marker" md-button title="{{ 'ASSET.ADV_PLAYER.SET_IN_BTN_TITLE' | translate }}" (click)="setInMarker()">
+    In
+  </button>
+  <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.PLAY_IN_OUT_BTN_TITLE' | translate }}" (click)="playInToOut()">
+    <md-icon>play_circle_filled</md-icon>
+  </button>
+  <button class="is-outlined set-marker" md-button title="{{ 'ASSET.ADV_PLAYER.SET_OUT_BTN_TITLE' | translate }}" (click)="setOutMarker()">
+    Out
+  </button>
+  <span class="timecode">{{ playerState.outMarkerFrame | timecode }}</span>
+  <button class="seek-out" md-icon-button [disabled]="!playerState.outMarkerFrame" title="{{ 'ASSET.ADV_PLAYER.SEEK_OUT_BTN_TITLE' | translate }}" (click)="seekToOutMarker()">
+    <md-icon>keyboard_tab</md-icon>
+  </button>
+  <button md-icon-button [disabled]="!playerState.outMarkerFrame && !playerState.outMarkerFrame" title="{{ 'ASSET.ADV_PLAYER.CLEAR_IN_OUT_BTN_TITLE' | translate }}" (click)="clear()">
+    <md-icon>cancel</md-icon>
+  </button>
+</section>
+<nav class="subclip-options" flex="20" layout-align="end stretch">
+  <button [disabled]="true" md-icon-button title="{{ 'ASSET.ADV_PLAYER.SAVE_BTN_TITLE' | translate }}">
+    <md-icon>library_add</md-icon>
+  </button>
+  <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.SIMPLE_BTN_TITLE' | translate }}">
+    <md-icon>ondemand_video</md-icon>
+  </button>
+  <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.MORE_BTN_TITLE' | translate }}" 
+    [md-menu-trigger-for]="morePlayerOptions">
+    <md-icon>more_vert</md-icon>
+  </button>
+</nav>
+
+<md-menu class="more-options-menu" x-position="before" #morePlayerOptions="mdMenu">
+  <button md-menu-item><md-icon>fullscreen</md-icon>Show full screen</button>
+  <button md-menu-item><md-icon>av_timer</md-icon>Show timecode formats</button>
+  <button md-menu-item><md-icon>keyboard</md-icon>Show keyboard shortcuts</button>
+</md-menu>

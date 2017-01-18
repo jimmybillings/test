@@ -120,31 +120,31 @@ section.preview-bk {
           margin-bottom: rem(16.0);
         }
       }
-      .pricing {
+      .list-price, .calculated-price {
         position: absolute;
-        bottom: rem(12.2);
-        right: rem(12.2);
-        font-size: 1.7em;
-        font-weight: 400;
-        line-height: 1;
-      }
-      .price {
-        position: absolute;
-        bottom: rem(12.2);
+        bottom: rem(13.0);
         right: rem(3.7);
-        font-size: 1.7em;
-        font-weight: 400;
-        line-height: 1;
-        &::first-letter {
-          font-size: .7em;
-          font-weight: 200;
-          vertical-align: top;
-        }
         @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
           bottom: rem(9.0);
           right: 0;
-        } 
+        }
+        span {
+          display: inline-block;
+          font-size: 1.7em;
+          font-weight: 400;
+          line-height: 1;
+          &.starting {
+            font-size: 1.1em;
+            margin-right: rem(.5);
+          }
+          &.price::first-letter {
+            font-size: .7em;
+            font-weight: 200;
+            vertical-align: top;
+          }
+        }
       }
+
       .contact-us-pricing {
         @include calc(width, "100% - 32px");
         bottom: rem(13.5);

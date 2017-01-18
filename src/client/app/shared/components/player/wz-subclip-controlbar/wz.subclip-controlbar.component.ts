@@ -4,12 +4,12 @@ import { WzPlayerState, WzPlayerRequest, WzPlayerRequestType } from '../wz.playe
 
 @Component({
   moduleId: module.id,
-  selector: 'wz-subclip-controls',
+  selector: 'wz-subclip-controlbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './wz.subclip-controls.html'
+  templateUrl: './wz.subclip-controlbar.html'
 })
 
-export class WzSubclipControlsComponent {
+export class WzSubclipControlbarComponent {
   @Input() playerState: WzPlayerState;
   @Output() request: EventEmitter<WzPlayerRequest> = new EventEmitter<WzPlayerRequest>();
 
@@ -38,7 +38,7 @@ export class WzSubclipControlsComponent {
   }
 
   // TODO: Move this into state class.
-  private get constrainedCurrentTime() {
-    return Math.min(Math.max(0, this.playerState.currentTime), this.playerState.duration);
-  }
+  // private get constrainedCurrentTime() {
+  //   return Math.min(Math.max(0, this.playerState.currentFrame), this.playerState.duration);
+  // }
 }

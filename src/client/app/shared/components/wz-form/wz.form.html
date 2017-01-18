@@ -155,41 +155,27 @@
 		<!--
         END: FORM RADIO BUTTONS
       -->
-		
-    <!--
-        START: FORM CHECKBOX
-      -->
-		<md-checkbox *ngIf="field.type == 'checkbox'" layout="row" formControlName="{{field.name}}" [checked]="field.defaultChecked"
-			[required]="isRequiredField(field)" color="primary">
-			{{ field.label | translate }}
-		</md-checkbox>
-    <a  *ngIf="field.type == 'checkbox'" class="view-tos" (click)="onAction.emit(field)">{{ field.link | translate }}</a>
-		<!--
-        END: FORM CHECKBOX
-      -->
 
 		<!--
-        START: TOS FORM CHECKBOX
+        START: FORM CHECKBOX
       -->
-		<span *ngIf="field.type == 'tos-checkbox'" layout="row" layout-align="start center">
-      {{field | json}}
+		<span *ngIf="field.type == 'checkbox'" layout="row" layout-align="start center">
 			<md-checkbox layout="row" formControlName="{{field.name}}" [checked]="field.defaultChecked" color="primary" [required]="isRequiredField(field)">
 				{{ field.label | translate }}&nbsp;
 
 				<md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
 					align="start" class="error">
 					<span *ngIf="form.controls[field.name].hasError('mustBeCheckedError')">
-						{{ 'ERRORS.AGREE_TO_TOS' | translate}}
+						{{ 'ERRORS.AGREE_TO_TOS' | translate }}
 					</span>
 				</md-hint>
 			</md-checkbox>
-			<a class="view-tos" (click)="onAction.emit(field)">{{ field.link | translate }}</a>
+			<a *ngIf="field.name == 'tos'" class="view-tos" (click)="onAction.emit(field)">{{ field.link | translate }}</a>
 		</span>
 		<!--
-        END: TOS FORM CHECKBOX
+        END: FORM CHECKBOX
       -->
 
-		<!--
       <!--
         START: CUSTOM ELEMENT FOR DOUBLE PASSWORD INPUTS
       -->

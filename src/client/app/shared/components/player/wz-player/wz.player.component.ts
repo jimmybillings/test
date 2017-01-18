@@ -14,6 +14,7 @@ import { WzPlayerMode, WzPlayerStateChanges } from '../wz.player.interface';
 
 export class WzPlayerComponent {
   @Input() mode: WzPlayerMode = 'basic';
+  @Input() window: any;
 
   @Input()
   public set asset(newAsset: any) {
@@ -71,7 +72,7 @@ export class WzPlayerComponent {
   }
 
   private setupVideo() {
-    this.jwPlayer = jwplayer(this.element.nativeElement);
+    this.jwPlayer = this.window.jwplayer(this.element.nativeElement);
 
     this.jwPlayer.setup({
       image: this.currentAsset.clipThumbnailUrl ? this.currentAsset.clipThumbnailUrl : null,
@@ -126,9 +127,9 @@ export class WzPlayerComponent {
   }
 
   private setupImage() {
-    var imgWrapper = document.createElement('div');
+    let imgWrapper: HTMLElement = document.createElement('div');
     imgWrapper.className = 'photo-container';
-    var elem = document.createElement('img');
+    let elem: HTMLImageElement = document.createElement('img');
     elem.src = this.currentAsset.clipUrl;
     imgWrapper.appendChild(elem);
     this.element.nativeElement.appendChild(imgWrapper);

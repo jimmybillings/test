@@ -34,10 +34,10 @@ export class AssetComponent implements OnInit {
     public uiState: UiState,
     public assetService: AssetService,
     public uiConfig: UiConfig,
+    public window: Window,
     private userPreference: UserPreferenceService,
     private notification: WzNotificationService,
     private cart: CartService,
-    private window: Window,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
     private dialog: MdDialog) {

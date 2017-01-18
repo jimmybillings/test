@@ -6,8 +6,8 @@
 					{{ 'REGISTER.TITLE' | translate }}
 				</md-card-title>
 				<md-card-content>
-					<wz-form [items]="config.form.items" [serverErrors]="serverErrors" submitLabel="REGISTER.FORM.SUBMIT_LABEL" (formSubmit)="onSubmit($event)"
-						(onAction)="openTermsDialog()"></wz-form>
+					<wz-form [items]="config.form.items" [serverErrors]="serverErrors" submitLabel="REGISTER.FORM.SUBMIT_LABEL" 
+					(formSubmit)="onSubmit($event)" (onAction)="openTermsDialog()"></wz-form>
 				</md-card-content>
 			</md-card>
 
@@ -21,3 +21,4 @@
 		</div>
 	</div>
 </section>
+
