@@ -8,7 +8,7 @@ export function main() {
       componentUnderTest = new WzTermsComponent();
       componentUnderTest.dialog = {
         close: jasmine.createSpy('close')
-      }
+      };
     });
 
     describe('agreeToTerms()', () => {

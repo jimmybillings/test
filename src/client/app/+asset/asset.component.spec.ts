@@ -5,7 +5,8 @@ export function main() {
   describe('Asset Component', () => {
 
     let mockCurrentUser: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
-    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockNotification: any, mockCart: any, mockWindow: any, mockMdDialog: any;
+    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockNotification: any, mockCart: any,
+      mockWindow: any, mockMdDialog: any;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
@@ -33,7 +34,7 @@ export function main() {
           return {
             componentInstance: {},
             afterClosed: jasmine.createSpy('afterClosed').and.returnValue(Observable.of({}))
-          }
+          };
         }
       };
 

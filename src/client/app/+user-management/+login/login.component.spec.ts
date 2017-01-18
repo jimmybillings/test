@@ -28,7 +28,7 @@ export function main() {
       mockPendo = { initialize: jasmine.createSpy('initialize') };
       mockDialog = {
         close: jasmine.createSpy('close')
-      }
+      };
       componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
         mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog);
     });

@@ -8,7 +8,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit
 })
 export class WzPricingComponent implements OnInit {
   public form: any;
-  @Input() options: any
+  @Input() options: any;
   @Input() dialog: any;
   @Output() close: EventEmitter<any> = new EventEmitter();
   @Output() calculatePricing: EventEmitter<any> = new EventEmitter();

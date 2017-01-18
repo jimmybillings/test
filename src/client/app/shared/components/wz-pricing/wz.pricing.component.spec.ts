@@ -9,7 +9,7 @@ export function main() {
       componentUnderTest.options = mockOptions();
       componentUnderTest.dialog = {
         close: jasmine.createSpy('close')
-      }
+      };
     });
 
     describe('onSubmit()', () => {
