@@ -17,6 +17,7 @@ import { ConfirmTabComponent } from './+cart/components/tabs/confirm-tab.compone
 import { ProjectsComponent } from './+cart/components/projects.component';
 import { LineItemsComponent } from './+cart/components/line-items.component';
 import { AssetComponent } from './+cart/components/asset.component';
+import { EditProjectComponent } from './+cart/components/edit-project.component';
 
 // Order Stuff 
 import { OrdersComponent } from './+order/+index/orders.component';
@@ -42,10 +43,12 @@ import { OrderItemListComponent } from './+order/components/order-item-list.comp
     AssetComponent,
     OrderShowComponent,
     OrdersComponent,
-    OrderItemListComponent
+    OrderItemListComponent,
+    EditProjectComponent
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
-  providers: [OrderService, OrdersService, CartCapabilities, OrderStore, OrdersStore]
+  providers: [OrderService, OrdersService, CartCapabilities, OrderStore, OrdersStore],
+  entryComponents: [EditProjectComponent]
 })
 
 export class CommerceModule { }

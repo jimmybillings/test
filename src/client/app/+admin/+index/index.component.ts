@@ -13,6 +13,8 @@ import { Account } from '../../shared/interfaces/admin.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { Subscription } from 'rxjs/Rx';
+import { EditLineItemComponent } from './edit-line-item.component';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 
 @Component({
@@ -36,7 +38,8 @@ export class IndexComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public uiConfig: UiConfig,
     public uiState: UiState,
-    public router: Router) { }
+    public router: Router,
+    private dialog: MdDialog) { }
 
   ngOnInit(): void {
     this.routeSubscription = this.routeChanges();
@@ -79,14 +82,6 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.router.navigate(['/admin/resource/' + this.resourceType, params]);
   }
 
-  public mergeFormValues(resource: User | Account): void {
-    this.resource = resource;
-    this.formItems = this.config.editForm.items.map((field: FormFields) => {
-      field.value = resource[field.name];
-      return field;
-    });
-  }
-
   public onEditSubmit(data: User | Account): void {
     Object.assign(this.resource, data);
     this.adminService.putResource(this.resourceType, this.resource).take(1).subscribe(data => {
@@ -110,6 +105,48 @@ export class IndexComponent implements OnInit, OnDestroy {
     fields = (params['fields'] === 'true') ? '' : params['fields'];
     values = (params['values'] === 'true') ? '' : params['values'];
     this.params = { i, n, s, d, fields, values };
+  }
+
+  public editLineItem(resource: User | Account) {
+    this.resource = resource;
+    this.formItems = this.config.editForm.items.map((field: FormFields) => {
+      field.value = resource[field.name];
+      return field;
+    });
+    this.openLineItemDialog({
+      items: this.formItems,
+      translationStrings: { submitLabel: 'ADMIN.EDIT_SUBMIT_LABEL', title: 'EDIT_TITLE' },
+      callback: (data: any) => {
+        return this.onEditSubmit(data);
+      }
+    });
+  }
+
+  public newLineItem() {
+    this.openLineItemDialog({
+      items: this.config.newForm.items,
+      translationStrings: { submitLabel: 'ADMIN.CREATE_SUBMIT_LABEL', title: 'NEW_TITLE' },
+      callback: (data: any) => {
+        return this.onNewSubmit(data);
+      }
+    });
+  }
+
+  private openLineItemDialog(inputs: any) {
+    let dialogRef: MdDialogRef<any> = this.dialog.open(EditLineItemComponent, { width: '500px' });
+    dialogRef.componentInstance = Object.assign(
+      dialogRef.componentInstance,
+      {
+        items: inputs.items, dialog: dialogRef,
+        currentComponent: this.currentComponent,
+        translationStrings: inputs.translationStrings
+      }
+    );
+    dialogRef.afterClosed()
+      .filter(data => data)
+      .subscribe((data) => {
+        inputs.callback(data);
+      });
   }
 
   private updateRouteParams(dynamicParams: AdminUrlParams) {

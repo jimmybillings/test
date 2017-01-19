@@ -7,6 +7,7 @@ export function main() {
     let componentUnderTest: CartTabComponent;
     let mockCartService: any;
     let mockUiConfig: any;
+    let mockDialog: any;
 
     beforeEach(() => {
       mockCartService = {
@@ -24,7 +25,16 @@ export function main() {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: 'SOME_CONFIG' }))
       };
 
-      componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig);
+      mockDialog = {
+        open: jasmine.createSpy('open').and.returnValue({
+          componentInstance: {},
+          afterClosed: function () {
+            return Observable.of({ data: 'hi' });
+          }
+        })
+      };
+
+      componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig, mockDialog);
     });
 
     describe('Initialization', () => {
@@ -55,7 +65,7 @@ export function main() {
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
 
-        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig);
+        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig, mockDialog);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
 
@@ -67,7 +77,7 @@ export function main() {
       it('returns an observable of false when the cart has no items', () => {
         mockCartService.data = Observable.of({ itemCount: 0 });
 
-        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig);
+        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig, mockDialog);
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
@@ -76,7 +86,7 @@ export function main() {
       it('returns an observable of false when the cart has no itemCount member', () => {
         mockCartService.data = Observable.of({});
 
-        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig);
+        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig, mockDialog);
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
@@ -85,7 +95,7 @@ export function main() {
       it('returns an observable of true when the cart has at least one line item', () => {
         mockCartService.data = Observable.of({ itemCount: 1 });
 
-        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig);
+        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig, mockDialog);
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(true));
@@ -110,7 +120,7 @@ export function main() {
         let mockProject = {};
         componentUnderTest.onNotification({ type: 'UPDATE_PROJECT', payload: mockProject });
 
-        expect(mockCartService.updateProject).toHaveBeenCalledWith(mockProject);
+        expect(mockDialog.open).toHaveBeenCalled();
       });
 
       it('moves a line item when notified with MOVE_LINE_ITEM', () => {

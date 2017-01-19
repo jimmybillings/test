@@ -11,7 +11,6 @@ import { MaterialModule } from '@angular/material';
 import { WzNotificationComponent } from './components/wz-notification/wz.notification.component';
 import { WzAssetListComponent } from './components/wz-asset-list/wz.asset-list.component';
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
-import { WzDialogComponent, WzDialogPortalDirective } from './components/wz-dialog/wz.dialog.component';
 import { WzDropdownComponent, WzDropdownPortalDirective } from './components/wz-dropdown/wz.dropdown.component';
 import { WzFormComponent } from './components/wz-form/wz.form.component';
 import { WzListComponent } from './components/wz-list/wz.list.component';
@@ -40,6 +39,7 @@ import { WzSpeedviewComponent, WzSpeedviewPortalDirective } from './components/w
 import { WzSpeedviewDirective } from './components/wz-speedview/wz.speedview.directive';
 import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
 import { WzAutocompleteSearchComponent } from './components/wz-autocomplete-search/wz-autocomplete-search.component';
+import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soon.component';
 
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
@@ -70,7 +70,6 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
   declarations: [
     WzAssetListComponent,
     WzBreadcrumbComponent,
-    WzDialogComponent,
     WzDropdownComponent,
     WzFormComponent,
     WzListComponent,
@@ -87,7 +86,6 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzItemSearchFormComponent,
     ValuesPipe,
     TimecodePipe,
-    WzDialogPortalDirective,
     WzDropdownPortalDirective,
     WzInputTagsComponent,
     WzInputSuggestionsComponent,
@@ -103,12 +101,12 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSpeedviewDirective,
     WzSpeedviewPortalDirective,
     WzPricingComponent,
-    WzAutocompleteSearchComponent
+    WzAutocompleteSearchComponent,
+    WzComingSoonComponent
   ],
   exports: [
     WzAssetListComponent,
     WzBreadcrumbComponent,
-    WzDialogComponent,
     WzDropdownComponent,
     WzFormComponent,
     WzListComponent,
@@ -125,7 +123,6 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzItemSearchFormComponent,
     ValuesPipe,
     TimecodePipe,
-    WzDialogPortalDirective,
     WzDropdownPortalDirective,
     WzInputTagsComponent,
     WzInputSuggestionsComponent,
@@ -148,14 +145,16 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSpeedviewDirective,
     WzSpeedviewPortalDirective,
     WzPricingComponent,
-    WzAutocompleteSearchComponent
+    WzAutocompleteSearchComponent,
+    WzComingSoonComponent
   ],
   entryComponents: [
     WzNotificationComponent,
     CollectionLinkComponent,
     CollectionFormComponent,
     WzTermsComponent,
-    WzPricingComponent]
+    WzPricingComponent,
+    WzComingSoonComponent]
 })
 
 export class SharedModule {

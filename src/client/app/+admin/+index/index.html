@@ -1,13 +1,13 @@
 <section class="admin-index" *ngIf="config">
 	<div layout="row" md-scroll-y="" layout-align="start start" layout-padding="">
 		<div flex="10" flex-gt-lg="10" flex-xl="10" flex-gt-md="10">
-			<a md-raised-button="" (click)="new.show()">{{ 'ADMIN.' + currentComponent.toUpperCase() + '.NEW_TITLE'  | translate }}</a>
+			<a md-raised-button="" (click)="newLineItem()">{{ 'ADMIN.' + currentComponent.toUpperCase() + '.NEW_TITLE'  | translate }}</a>
 		</div>
 	</div>
 	<div layout="row" layout-align="space-around stretch">
 		<div flex-xl="75" flex-gt-lg="75" flex-gt-md="75" flex="75">
 			<wz-list [items]="(adminService.data | async).items" [headers]="config.tableHeaders.items" [toggleFlag]="toggleFlag" (sort)="navigateToSortUrl($event)"
-				(editForm)="mergeFormValues($event); edit.show()">
+				(editForm)="editLineItem($event);">
 			</wz-list>
 			<div layout="row" layout-align="end center">
 				<wz-pagination *ngIf="(adminService.data | async).pagination.totalCount > 0" (getPage)="navigateToPageUrl($event)" [pagination]="(adminService.data | async).pagination"></wz-pagination>
@@ -25,31 +25,3 @@
 		</div>
 	</div>
 </section>
-
-<wz-dialog class="admin-dialog" #edit layout="row" layout-align="center center">
-	<div flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
-		<md-card class="wz-form-card md-elevation-z20">
-			<button (click)="edit.close()" md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
-			<md-card-title>
-				{{ 'ADMIN.' + currentComponent.toUpperCase() + '.EDIT_TITLE' | translate }}
-			</md-card-title>
-			<md-card-content>
-				<wz-form *ngIf="formItems" [items]="formItems" submitLabel="ADMIN.EDIT_SUBMIT_LABEL" (formSubmit)="onEditSubmit($event); edit.close()"></wz-form>
-			</md-card-content>
-		</md-card>
-	</div>
-</wz-dialog>
-
-<wz-dialog class="admin-dialog" #new layout="row" layout-align="center center">
-	<div flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
-		<md-card class="wz-form-card md-elevation-z20">
-			<button (click)="new.close()" md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
-			<md-card-title>
-				{{ 'ADMIN.' + currentComponent.toUpperCase() + '.NEW_TITLE' | translate }}
-			</md-card-title>
-			<md-card-content>
-				<wz-form [items]="config.newForm.items" submitLabel="ADMIN.CREATE_SUBMIT_LABEL" (formSubmit)="onNewSubmit($event); new.close()"></wz-form>
-			</md-card-content>
-		</md-card>
-	</div>
-</wz-dialog>

@@ -4,6 +4,8 @@ import { Observable, Subscription } from 'rxjs/Rx';
 import { Tab } from './tab';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
+import { EditProjectComponent } from '../edit-project.component';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 @Component({
   moduleId: module.id,
@@ -18,7 +20,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   public config: any;
   private configSubscription: Subscription;
 
-  constructor(private cartService: CartService, private uiConfig: UiConfig) {
+  constructor(private cartService: CartService, private uiConfig: UiConfig, private dialog: MdDialog) {
     super();
   }
 
@@ -46,7 +48,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
         break;
       }
       case 'UPDATE_PROJECT': {
-        this.cartService.updateProject(message.payload);
+        this.updateProject(message.payload);
         break;
       }
       case 'MOVE_LINE_ITEM': {
@@ -65,5 +67,17 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
         this.cartService.editLineItem(message.payload.lineItem, message.payload.fieldToEdit);
       }
     };
+  }
+
+  private updateProject(project: any) {
+    let dialogRef: MdDialogRef<any> = this.dialog.open(EditProjectComponent, { width: '600px' });
+    dialogRef.componentInstance = Object.assign(
+      dialogRef.componentInstance, { items: project.items, dialog: dialogRef });
+    dialogRef.afterClosed()
+      .filter(data => data)
+      .map(data => Object.assign({}, project.project, data))
+      .subscribe((data: any) => {
+        this.cartService.updateProject(data);
+      });
   }
 }

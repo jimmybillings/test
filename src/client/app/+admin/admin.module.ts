@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
 import { AdminAuthGuard } from './services/admin.auth.guard';
 import { AdminStore } from './services/admin.store';
 import { AdminIndexResolver } from './services/admin-index.resolver';
+import { EditLineItemComponent } from './+index/edit-line-item.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(ADMIN_ROUTES)],
@@ -27,9 +28,11 @@ import { AdminIndexResolver } from './services/admin-index.resolver';
     SecretConfigComponent,
     TranslationComponent,
     SiteConfigComponent,
-    UiConfigComponent],
+    UiConfigComponent,
+    EditLineItemComponent],
   exports: [AdminComponent],
   providers: [AdminService, ConfigService, TranslateService, AdminAuthGuard, AdminStore, AdminIndexResolver],
+  entryComponents: [EditLineItemComponent]
 })
 
 export class AdminModule { }
