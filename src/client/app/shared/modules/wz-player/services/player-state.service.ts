@@ -73,14 +73,6 @@ export class PlayerStateService {
 
     this.changesToApply.durationFrame = this.newFrameFrom(this.changesToApply.duration);
     delete this.changesToApply.duration;
-
-    if (!this.latestInMarkerFrame) {
-      this.changesToApply.inMarkerFrame = this.newFrameFrom(0);
-    }
-
-    if (!this.latestOutMarkerFrame) {
-      this.changesToApply.outMarkerFrame = this.newFrameFrom(this.changesToApply.durationFrame);
-    }
   }
 
   private handleInMarkerUpdate(): void {
@@ -89,7 +81,7 @@ export class PlayerStateService {
     if (this.changesToApply.inMarker === 'currentFrame') {
       this.changesToApply.inMarkerFrame = this.newFrameFrom(this.latestCurrentFrame);
     } else if (this.changesToApply.inMarker === 'clear') {
-      this.changesToApply.inMarkerFrame = this.newFrameFrom(0);
+      this.changesToApply.inMarkerFrame = undefined;
     } else {
       throw new Error(`Unexpected value for inMarker: '${this.changesToApply.inMarker}'`);
     }
@@ -103,7 +95,7 @@ export class PlayerStateService {
     if (this.changesToApply.outMarker === 'currentFrame') {
       this.changesToApply.outMarkerFrame = this.newFrameFrom(this.latestCurrentFrame);
     } else if (this.changesToApply.outMarker === 'clear') {
-      this.changesToApply.outMarkerFrame = this.newFrameFrom(this.latestDurationFrame);
+      this.changesToApply.outMarkerFrame = undefined;
     } else {
       throw new Error(`Unexpected value for outMarker: '${this.changesToApply.outMarker}'`);
     }
