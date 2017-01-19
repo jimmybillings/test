@@ -5,8 +5,8 @@
     <form #f="ngForm" (ngSubmit)="onSubmit()">
       <span *ngFor="let option of options; let i = index" class="input">
         <div layout="row" layout-align="center center">
-          <md-select placeholder="{{option.name}}" [disabled]="parentIsEmpty(option)" [(ngModel)]="form[option.name]" name="{{option.name}}">
-            <md-option *ngFor="let o of validOptionsFor(option)" [value]="o.value">{{o.name}}</md-option>
+          <md-select required placeholder="{{option.name}}" [disabled]="parentIsEmpty(option)" [(ngModel)]="form[i].value" name="{{option.name}}">
+            <md-option (onSelect)="clearChildren(option)" *ngFor="let o of validOptionsFor(option)" [value]="o.value">{{o.name}}</md-option>
           </md-select>
         </div>
         <br>

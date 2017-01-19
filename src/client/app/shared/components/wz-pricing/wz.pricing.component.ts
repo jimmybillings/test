@@ -8,7 +8,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit
 })
 export class WzPricingComponent implements OnInit {
   public form: any;
-  @Input() options: any;
+  @Input() options: Array<any>;
   @Input() dialog: any;
   @Output() close: EventEmitter<any> = new EventEmitter();
   @Output() calculatePricing: EventEmitter<any> = new EventEmitter();
@@ -27,9 +27,11 @@ export class WzPricingComponent implements OnInit {
     if (currentOption.primary) {
       return false;
     } else {
-      // Find the parent option of the currentOption, and check if it's value is empty
-      let parent: any = this.options.filter((o: any) => o.childId === currentOption.id)[0];
-      return this.form[parent.name] === '';
+      // Find the parent option of the currentOption
+      let parent: any = this.findParentOf(currentOption);
+      // Find the parent's index in the options list, and check if its form value is empty
+      let parentIndex: number = this.options.indexOf(parent);
+      return this.form[parentIndex].value === '';
     }
   }
 
@@ -41,9 +43,11 @@ export class WzPricingComponent implements OnInit {
       return currentOption.attributeList;
     } else {
       // Find the parent option of the current option
-      let parent: any = this.findParent(currentOption);
+      let parent: any = this.findParentOf(currentOption);
+      // Find the parent's index in the options list
+      let parentIndex: number = this.options.indexOf(parent);
       // Use the parent option's name to find it's current form value
-      let parentFormValue: any = this.form[parent.name];
+      let parentFormValue: any = this.form[parentIndex].value;
       // Find the valid choices array that corresponds to the previous option the user selected
       let rawOptions: any = parent.validChildChoicesMap[parentFormValue];
       // There should always be options, however if there aren't we need to alert the user the calculation went wrong
@@ -59,22 +63,28 @@ export class WzPricingComponent implements OnInit {
       });
       // If there is only 1 option, update the form value for that option
       if (options.length === 1) {
-        this.form[currentOption.name] = options[0].name;
+        let currentOptionIndex: number = this.options.indexOf(currentOption);
+        this.form[currentOptionIndex].value = options[0].name;
       }
       // Finally, return the valid options
       return options;
     }
   }
 
+  // Checks if any of the values in the form are an empty string
   public get formIsInvalid(): boolean {
-    let values: any = [];
-    for (let field in this.form) {
-      values.push(this.form[field]);
-    }
-    return values.indexOf('') !== -1;
+    return this.form.reduce((prev: Array<any>, current: any) => {
+      prev.push(current.value);
+      return prev;
+    }, []).indexOf('') !== -1;
   }
 
-  private findParent(currentOption: any): any {
+  public clearChildren(option: any): void {
+    let index: number = this.options.indexOf(option);
+    this.clearForm(index);
+  }
+
+  private findParentOf(currentOption: any): any {
     return this.options.filter((o: any) => o.childId === currentOption.id)[0];
   }
 
@@ -85,15 +95,18 @@ export class WzPricingComponent implements OnInit {
   }
 
   private buildForm(options: any): void {
-    this.form = {};
-    options.forEach((option: any) => {
-      this.form[option.name] = '';
+    this.form = [];
+    options.forEach((option: any, index: number) => {
+      this.form.push({ name: option.name, value: '' });
     });
   }
 
-  private clearForm(): void {
-    for (let field in this.form) {
-      this.form[field] = '';
-    }
+  private clearForm(index?: number): void {
+    index = index ? index + 1 : -1;
+    console.log(this.form);
+    this.form.map((field: any, i: number) => {
+      if (i > index) field.value = '';
+      return field;
+    });
   }
 }

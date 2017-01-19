@@ -12,6 +12,16 @@ export function main() {
       };
     });
 
+    describe('ngOnInit()', () => {
+      it('should build the form properly', () => {
+        componentUnderTest.ngOnInit();
+
+        expect(componentUnderTest.form).toEqual([
+          { name: 'A', value: '' }, { name: 'B', value: '' }, { name: 'C', value: '' }, { name: 'D', value: '' }
+        ]);
+      });
+    });
+
     describe('onSubmit()', () => {
       it('should emit the calculatePricing event with the form', () => {
         componentUnderTest.onSubmit();
@@ -21,31 +31,41 @@ export function main() {
     });
 
     describe('parentIsEmpty()', () => {
-      it('should return false if the option is the parent of all other options', () => {
+      beforeEach(() => {
         componentUnderTest.ngOnInit();
+      });
+
+      it('should return false if the option is the parent of all other options', () => {
         let result = componentUnderTest.parentIsEmpty(componentUnderTest.options[0]);
 
         expect(result).toBe(false);
       });
 
       it('should return true if the form value of the option\'s parent is empty', () => {
-        componentUnderTest.ngOnInit();
         let result = componentUnderTest.parentIsEmpty(componentUnderTest.options[1]);
 
         expect(result).toBe(true);
       });
 
       it('should still work if fields are filled in', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.form = { 'A': 'something', 'B': 'something else', 'C': '', 'D': '' };
+        componentUnderTest.form = [
+          { name: 'A', value: 'something' },
+          { name: 'B', value: 'something else' },
+          { name: 'C', value: '' },
+          { name: 'D', value: '' }
+        ];
         let result = componentUnderTest.parentIsEmpty(componentUnderTest.options[2]);
 
         expect(result).toBe(false);
       });
 
       it('should still work if fields are filled in', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.form = { 'A': 'something', 'B': '', 'C': '', 'D': '' };
+        componentUnderTest.form = [
+          { name: 'A', value: 'something' },
+          { name: 'B', value: '' },
+          { name: 'C', value: '' },
+          { name: 'D', value: '' }
+        ];
 
         let result = componentUnderTest.parentIsEmpty(componentUnderTest.options[2]);
 
@@ -69,7 +89,12 @@ export function main() {
 
       it('should return valid options for a non-primary attribute', () => {
         componentUnderTest.ngOnInit();
-        componentUnderTest.form = { 'A': 'R', 'B': '', 'C': '', 'D': '' };
+        componentUnderTest.form = [
+          { name: 'A', value: 'R' },
+          { name: 'B', value: '' },
+          { name: 'C', value: '' },
+          { name: 'D', value: '' }
+        ];
 
         let result = componentUnderTest.validOptionsFor(componentUnderTest.options[1]);
 
@@ -78,33 +103,81 @@ export function main() {
 
       it('should set the form value if there is only 1 valid child option', () => {
         componentUnderTest.ngOnInit();
-        componentUnderTest.form = { 'A': 'T', 'B': '', 'C': '', 'D': '' };
+        componentUnderTest.form = [
+          { name: 'A', value: 'T' },
+          { name: 'B', value: '' },
+          { name: 'C', value: '' },
+          { name: 'D', value: '' }
+        ];
 
         let result = componentUnderTest.validOptionsFor(componentUnderTest.options[1]);
 
         expect(result).toEqual([{ name: 'N' }]);
-        expect(componentUnderTest.form).toEqual({ 'A': 'T', 'B': 'N', 'C': '', 'D': '' });
+        expect(componentUnderTest.form).toEqual([
+          { name: 'A', value: 'T' },
+          { name: 'B', value: 'N' },
+          { name: 'C', value: '' },
+          { name: 'D', value: '' }
+        ]);
       });
 
       it('should should emit an error and clear the form if there are no valid options', () => {
-        componentUnderTest.form = { 'A': 'T', 'B': 'N', 'C': 'Z', 'D': '' };
+        componentUnderTest.form = [
+          { name: 'A', value: 'T' },
+          { name: 'B', value: 'N' },
+          { name: 'C', value: 'Z' },
+          { name: 'D', value: '' }
+        ];
         componentUnderTest.validOptionsFor(componentUnderTest.options[3]);
 
         expect(componentUnderTest.dialog.close).toHaveBeenCalledWith({ error: null });
-        expect(componentUnderTest.form).toEqual({ 'A': '', 'B': '', 'C': '', 'D': '' });
+        expect(componentUnderTest.form).toEqual([
+          { name: 'A', value: '' },
+          { name: 'B', value: '' },
+          { name: 'C', value: '' },
+          { name: 'D', value: '' }
+        ]);
       });
     });
 
     describe('formIsInvalid', () => {
-      it('should return true if the the form is incomplete', () => {
+      beforeEach(() => {
         componentUnderTest.ngOnInit();
+      });
+
+      it('should return true if the the form is incomplete', () => {
         expect(componentUnderTest.formIsInvalid).toBe(true);
       });
 
       it('should return false if the the form is complete', () => {
-        componentUnderTest.ngOnInit();
-        componentUnderTest.form = { 'A': 'asd', 'B': 'fsgsdf', 'C': 'gsfdg', 'D': 'hads' };
+        componentUnderTest.form = [
+          { name: 'A', value: 'FDAAF' },
+          { name: 'B', value: 'ADS' },
+          { name: 'C', value: 'ADSFSDf' },
+          { name: 'D', value: 'ADFDF' }
+        ];
         expect(componentUnderTest.formIsInvalid).toBe(false);
+      });
+    });
+
+    describe('clearChildren()', () => {
+      it('should clear all the children of a given field', () => {
+        componentUnderTest.ngOnInit();
+        componentUnderTest.form = [
+          { name: 'A', value: 'FDAAF' },
+          { name: 'B', value: 'ADS' },
+          { name: 'C', value: 'ADSFSDf' },
+          { name: 'D', value: 'ADFDF' }
+        ];
+
+        componentUnderTest.clearChildren(0);
+
+        expect(componentUnderTest.form).toEqual([
+          { name: 'A', value: 'FDAAF' },
+          { name: 'B', value: '' },
+          { name: 'C', value: '' },
+          { name: 'D', value: '' }
+        ]);
       });
     });
   });

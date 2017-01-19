@@ -113,7 +113,7 @@
 
 						<div layout="row" *ngIf="asset.primary[3].value !== 'Royalty Free'">
 							<div *ngIf="asset.price && asset.price !== 0 && !calculatedPrice" class="list-price">
-								<span class="starting">Starting at </span>
+								<span class="starting">{{ 'ASSET.DETAIL.BASE_PRICE' | translate }}</span>
 								<span class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
 							</div>
 							<div *ngIf="calculatedPrice" class="calculated-price">
