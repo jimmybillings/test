@@ -53,7 +53,7 @@
 								<button md-menu-item (click)="getAssetsForLink()"><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
 								<div *ngIf="!!collection.owner">
 									<div class="divider"></div>
-									<button md-menu-item class="delete" (click)="deleteCollectionDialog.show()">
+									<button md-menu-item class="delete" (click)="setCollectionForDelete()">
                         <md-icon>delete</md-icon>{{ 'COLLECTION.INDEX.DELETE_BTN_TITLE' | translate }}
                       </button>
 								</div>
@@ -83,14 +83,4 @@
 	</div>
 </section>
 
-<wz-dialog #deleteCollectionDialog [clickCatcher]="false">
-	<md-card>
-		<md-card-title>{{ 'COLLECTION.INDEX.CONFIRMATION_TITLE' | translate:{collectionName: collection.name} }}</md-card-title>
-		<md-card-subtitle>{{ 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE' | translate }}</md-card-subtitle>
-		<md-card-actions align="end" class="confirmation-buttons">
-			<button md-button color="primary" (click)="deleteCollectionDialog.close()">{{ 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE' | translate }}</button>
-			<button md-button color="primary" (click)="deleteCollectionDialog.close(); deleteCollection(collection.id)">{{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
-		</md-card-actions>
-	</md-card>
-</wz-dialog>
 

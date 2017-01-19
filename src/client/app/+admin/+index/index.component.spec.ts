@@ -28,7 +28,7 @@ export function main() {
     function fakeNavigate(params: any) { return; }
 
     beforeEach(() => {
-      componentUnderTest = new IndexComponent(mockCurrentUser, mockAdminService, mockRoute, mockUiConfig, mockUiState, mockRouter);
+      componentUnderTest = new IndexComponent(mockCurrentUser, mockAdminService, mockRoute, mockUiConfig, mockUiState, mockRouter, null);
     });
 
     describe('Initialization', () => {

@@ -48,7 +48,7 @@
 			</wz-pagination>
 			<!-- COLLECTION LIST -->
 			<wz-collection-item-list [collections]="(collections.data | async).items" (editCollection)="editCollection($event)"
-				[activeCollection]="(activeCollection.data | async).id" (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event); deleteCollectionDialog.show();"
+				[activeCollection]="(activeCollection.data | async).id" (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event);"
 				(generateCollectionLink)="getAssetsForLink($event);">
 			</wz-collection-item-list>
 			<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination"
@@ -66,16 +66,5 @@
 	<wz-sort-component [current]="options.currentSort" [items]="sortOptions" (sort)="onSortCollections($event)"></wz-sort-component>
 </md-menu>
 
-<wz-dialog #deleteCollectionDialog [clickCatcher]="false">
-	<div *ngIf="collectionForDelete">
-		<md-card>
-			<md-card-title>{{ 'COLLECTION.INDEX.CONFIRMATION_TITLE' | translate:{collectionName: collectionForDelete.name} }}</md-card-title>
-			<md-card-subtitle>{{ 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE' | translate }}</md-card-subtitle>
-			<md-card-actions align="end" class="confirmation-buttons">
-				<button md-button color="primary" (click)="deleteCollectionDialog.close()">{{ 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE' | translate }}</button>
-				<button md-button color="primary" (click)="deleteCollectionDialog.close(); deleteCollection(collectionForDelete.id)">{{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
-			</md-card-actions>
-		</md-card>
-	</div>
-</wz-dialog>
+
 

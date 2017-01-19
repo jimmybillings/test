@@ -32,9 +32,9 @@ export class ProjectsComponent {
     this.projectsNotify.emit({ type: 'REMOVE_PROJECT', payload: project });
   }
 
-  public edit(project: Project, formValue: any): void {
-    Object.assign(project, formValue);
-    this.projectsNotify.emit({ type: 'UPDATE_PROJECT', payload: project });
+  public edit(project: Project): void {
+    this.selectProject(project);
+    this.projectsNotify.emit({ type: 'UPDATE_PROJECT', payload: Object.assign({ project: project, items: this.config.form.items }) });
   }
 
   public delegate(message: any): void {

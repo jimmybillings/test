@@ -1,7 +1,7 @@
-import { WzSubclipControlbarComponent } from './wz.subclip-controlbar.component';
+import { SubclipControlbarComponent } from './subclip-controlbar.component';
 
 export function main() {
-  describe('Wazee Subclip Controlbar Component', () => {
+  describe('Subclip Controlbar Component', () => {
     it('currently has all tests commented out pending rewrite', () => {
       expect(true).toBe(true);
     });
