@@ -1,6 +1,6 @@
 <section class="cart-asset">
-  <div layout="row" layout-align="center start">
-    <div flex-xs="85" flex-sm="55" flex-md="45" flex-gt-md="35">
+  <div layout="column" layout-align="center stretch" layout-gt-sm="row" layout-align-gt-sm="center center">
+    <div flex-gt-sm="50" flex="35">
       <div class="cart-asset-thb">
         <span class="asset-id">
           <span class="id">{{ asset.assetId }}</span>
@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div flex-gt-md="65" hide="" show-gt-md class="cart-asset-metadata">
+    <div flex-gt-md="65" class="cart-asset-metadata">
       <table>
         <tr *ngFor="let meta of asset.metadata">
           <th class="md-body-1">{{ translationReady(meta.name) | uppercase | translate }}</th>

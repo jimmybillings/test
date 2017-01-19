@@ -1,8 +1,8 @@
 import { Frame } from 'wazee-frame-formatter';
 
-export type WzPlayerMode = 'basic' | 'advanced';
+export type PlayerMode = 'basic' | 'advanced';
 
-export interface WzPlayerState {
+export interface PlayerState {
   readonly playing: boolean;
   readonly framesPerSecond: number;
   readonly currentFrame: Frame;
@@ -16,7 +16,7 @@ export interface WzPlayerState {
   readonly changeDetectionEnabler: number;
 }
 
-export interface WzPlayerStateChanges {
+export interface PlayerStateChanges {
   playing?: boolean;
   framesPerSecond?: number;
   currentFrame?: Frame;
@@ -32,7 +32,7 @@ export interface WzPlayerStateChanges {
   outMarker?: 'currentFrame' | 'clear';
 }
 
-export enum WzPlayerRequestType {
+export enum PlayerRequestType {
   ClearMarkers,
   PlayWithinMarkers,
   SeekToInMarker,
@@ -42,7 +42,7 @@ export enum WzPlayerRequestType {
   TogglePlayback
 }
 
-export interface WzPlayerRequest {
-  type: WzPlayerRequestType;
+export interface PlayerRequest {
+  type: PlayerRequestType;
   payload?: Object;
 }

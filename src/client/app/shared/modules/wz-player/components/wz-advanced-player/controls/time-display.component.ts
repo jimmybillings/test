@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
-import { WzPlayerState } from '../../wz.player.interface';
+import { PlayerState } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
-  selector: 'wz-time-display',
+  selector: 'time-display',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <span class="timecode">{{ playerState.currentFrame | timecode }}</span>
@@ -13,6 +13,6 @@ import { WzPlayerState } from '../../wz.player.interface';
   `
 })
 
-export class WzTimeDisplayComponent {
-  @Input() playerState: WzPlayerState;
+export class TimeDisplayComponent {
+  @Input() playerState: PlayerState;
 }

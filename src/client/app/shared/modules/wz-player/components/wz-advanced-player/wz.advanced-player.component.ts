@@ -1,51 +1,66 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 
-import { WzPlayerStateService } from '../wz.player-state.service';
+import { PlayerStateService } from '../../services/player-state.service';
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
-import { WzPlayerState, WzPlayerStateChanges, WzPlayerRequest, WzPlayerRequestType } from '../wz.player.interface';
+import { PlayerState, PlayerStateChanges, PlayerRequest, PlayerRequestType } from '../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-advanced-player',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [WzPlayerStateService],
+  providers: [PlayerStateService],
   templateUrl: './wz.advanced-player.html'
 })
 
 export class WzAdvancedPlayerComponent {
-  @Input() asset: any;
   @Input() window: any;
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
-  constructor(public playerStateService: WzPlayerStateService) { }
+  private currentAsset: any = null;
 
-  public onStateUpdate(changes: WzPlayerStateChanges): void {
+  @Input()
+  public set asset(newAsset: any) {
+    this.playerStateService.reset();
+    this.currentAsset = newAsset;
+  }
+
+  public get asset(): any {
+    return this.currentAsset;
+  }
+
+  public assetIsVideo(): boolean {
+    return this.currentAsset.resourceClass !== 'Image';
+  }
+
+  constructor(public playerStateService: PlayerStateService) { }
+
+  public onStateUpdate(changes: PlayerStateChanges): void {
     this.playerStateService.updateWith(changes);
   }
 
-  public handle(request: WzPlayerRequest): void {
-    const state: WzPlayerState = this.playerStateService.snapshot;
+  public handle(request: PlayerRequest): void {
+    const state: PlayerState = this.playerStateService.snapshot;
 
     switch (request.type) {
-      case WzPlayerRequestType.ClearMarkers:
+      case PlayerRequestType.ClearMarkers:
         this.playerStateService.updateWith({ inMarker: 'clear', outMarker: 'clear' });
         break;
-      case WzPlayerRequestType.PlayWithinMarkers:
+      case PlayerRequestType.PlayWithinMarkers:
         this.player.playRange(state.inMarkerFrame.asSeconds(), state.outMarkerFrame.asSeconds());
         break;
-      case WzPlayerRequestType.SeekToInMarker:
+      case PlayerRequestType.SeekToInMarker:
         this.player.seekTo(state.inMarkerFrame.asSeconds());
         break;
-      case WzPlayerRequestType.SeekToOutMarker:
+      case PlayerRequestType.SeekToOutMarker:
         this.player.seekTo(state.outMarkerFrame.asSeconds());
         break;
-      case WzPlayerRequestType.SetInMarker:
+      case PlayerRequestType.SetInMarker:
         this.playerStateService.updateWith({ inMarker: 'currentFrame' });
         break;
-      case WzPlayerRequestType.SetOutMarker:
+      case PlayerRequestType.SetOutMarker:
         this.playerStateService.updateWith({ outMarker: 'currentFrame' });
         break;
-      case WzPlayerRequestType.TogglePlayback:
+      case PlayerRequestType.TogglePlayback:
         this.player.togglePlayback();
         break;
     }
