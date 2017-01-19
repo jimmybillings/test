@@ -1,10 +1,10 @@
 <section flex="90" layout="row">
   <nav class="time-play" layout="row" layout-align="center center">
-    <wz-time-display [playerState]="playerState"></wz-time-display>
+    <time-display [playerState]="playerState"></time-display>
     <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.FAST_REWIND_BTN_TITLE' | translate }}">
       <md-icon>fast_rewind</md-icon>
     </button>
-    <wz-playback-toggle-button [playerState]="playerState" (request)="forward($event)"></wz-playback-toggle-button>
+    <playback-toggle-button [playerState]="playerState" (request)="forward($event)"></playback-toggle-button>
     <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.FAST_FORWARD_BTN_TITLE' | translate }}">
       <md-icon>fast_forward</md-icon>
     </button>

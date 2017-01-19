@@ -18,6 +18,7 @@ import { TranslateService } from 'ng2-translate';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
+import { CollectionDeleteComponent } from '../components/collection-delete.component';
 
 @Component({
   moduleId: module.id,
@@ -102,7 +103,16 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     });
   }
 
-  public deleteCollection(id: number): void {
+  public setCollectionForDelete(): void {
+    let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionDeleteComponent);
+    dialogRef.componentInstance.collection = JSON.parse(JSON.stringify(this.collection));
+    dialogRef.componentInstance.dialog = dialogRef;
+    dialogRef.afterClosed()
+      .filter((collectionId) => collectionId)
+      .subscribe((collectionId) => this.deleteCollection(collectionId));
+  }
+
+  public deleteCollection(id: number) {
     this.router.navigate(['/collections']).then(() => {
       this.collections.delete(id).subscribe(response => {
         this.showSnackBar({ key: 'Your collection has been deleted' });

@@ -1,8 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, ElementRef, EventEmitter, NgZone, OnDestroy } from '@angular/core';
 declare var jwplayer: any;
 
-import { WzPlayerStateService } from '../wz.player-state.service';
-import { WzPlayerMode, WzPlayerStateChanges } from '../wz.player.interface';
+import { PlayerMode, PlayerStateChanges } from '../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -13,7 +12,7 @@ import { WzPlayerMode, WzPlayerStateChanges } from '../wz.player.interface';
 })
 
 export class WzPlayerComponent implements OnDestroy {
-  @Input() mode: WzPlayerMode = 'basic';
+  @Input() mode: PlayerMode = 'basic';
   @Input() window: any;
 
   @Input()
@@ -28,7 +27,7 @@ export class WzPlayerComponent implements OnDestroy {
   }
 
   // This event is emitted only for this.mode === 'advanced'.
-  @Output() stateUpdate: EventEmitter<WzPlayerStateChanges> = new EventEmitter<WzPlayerStateChanges>();
+  @Output() stateUpdate: EventEmitter<PlayerStateChanges> = new EventEmitter<PlayerStateChanges>();
 
   private currentAsset: any;
   private jwPlayer: any;
@@ -110,7 +109,7 @@ export class WzPlayerComponent implements OnDestroy {
     this.jwPlayer.on('complete', () => this.emitStateUpdateWith({ playing: false }));
   }
 
-  private emitStateUpdateWith(changes: WzPlayerStateChanges): void {
+  private emitStateUpdateWith(changes: PlayerStateChanges): void {
     // Run these in "the Angular zone" so that the change detector sees changes now, not on the next cycle.
     this.zone.run(() => this.stateUpdate.emit(changes));
   }

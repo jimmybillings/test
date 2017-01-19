@@ -1,22 +1,22 @@
-import { WzPlayerStateService } from './wz.player-state.service';
+import { PlayerStateService } from './player-state.service';
 import { Frame } from 'wazee-frame-formatter';
-import { WzPlayerState, WzPlayerStateChanges } from './wz.player.interface';
+import { PlayerState, PlayerStateChanges } from '../interfaces/player.interface';
 
 export function main() {
   const frameNumberFor = (seconds: number, framesPerSecond: number = 29.97): number => {
     return new Frame(framesPerSecond).setFromSeconds(seconds).asFrameNumber();
   };
 
-  describe('Wz Player State Service', () => {
-    let serviceUnderTest: WzPlayerStateService;
+  describe(' Player State Service', () => {
+    let serviceUnderTest: PlayerStateService;
 
     beforeEach(() => {
-      serviceUnderTest = new WzPlayerStateService();
+      serviceUnderTest = new PlayerStateService();
     });
 
     describe('state getter', () => {
       it('returns an Observable of the current state', () => {
-        serviceUnderTest.state.subscribe((state: WzPlayerState) => {
+        serviceUnderTest.state.subscribe((state: PlayerState) => {
           expect(state).toEqual(jasmine.objectContaining({
             playing: false,
             framesPerSecond: 29.97,
@@ -46,7 +46,7 @@ export function main() {
       it('updates the current state Observable', () => {
         serviceUnderTest.updateWith({ playing: true });
 
-        serviceUnderTest.state.subscribe((state: WzPlayerState) => {
+        serviceUnderTest.state.subscribe((state: PlayerState) => {
           expect(state).toEqual(jasmine.objectContaining({
             playing: true,
             framesPerSecond: 29.97,

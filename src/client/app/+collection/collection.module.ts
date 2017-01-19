@@ -7,14 +7,18 @@ import { COLLECTION_ROUTES } from './collection.routes';
 import { CollectionShowResolver } from '../+collection/services/collection-show.resolver';
 import { CollectionGuard } from './services/collection-guard';
 import { WzCollectionItemListComponent } from './components/wz.collection-item-list.component';
+import { CollectionDeleteComponent } from './components/collection-delete.component';
+
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(COLLECTION_ROUTES)],
   declarations: [
     CollectionsComponent,
     CollectionShowComponent,
-    WzCollectionItemListComponent],
+    WzCollectionItemListComponent,
+    CollectionDeleteComponent],
   exports: [CollectionsComponent, CollectionShowComponent],
-  providers: [CollectionShowResolver, CollectionGuard]
+  providers: [CollectionShowResolver, CollectionGuard],
+  entryComponents: [CollectionDeleteComponent]
 })
 
 export class CollectionModule { }

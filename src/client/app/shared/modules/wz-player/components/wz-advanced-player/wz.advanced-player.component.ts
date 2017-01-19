@@ -1,15 +1,15 @@
 import { Component, ChangeDetectionStrategy, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 
-import { WzPlayerStateService } from '../wz.player-state.service';
+import { PlayerStateService } from '../../services/player-state.service';
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
-import { SubclipMarkers } from '../../../interfaces/asset.interface';
-import { WzPlayerState, WzPlayerStateChanges, WzPlayerRequest, WzPlayerRequestType } from '../wz.player.interface';
+import { SubclipMarkers } from '../../../../interfaces/asset.interface';
+import { PlayerState, PlayerStateChanges, PlayerRequest, PlayerRequestType } from '../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-advanced-player',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [WzPlayerStateService],
+  providers: [PlayerStateService],
   templateUrl: './wz.advanced-player.html'
 })
 
@@ -34,9 +34,9 @@ export class WzAdvancedPlayerComponent {
     return this.currentAsset.resourceClass !== 'Image';
   }
 
-  constructor(public playerStateService: WzPlayerStateService) { }
+  constructor(public playerStateService: PlayerStateService) { }
 
-  public onStateUpdate(changes: WzPlayerStateChanges): void {
+  public onStateUpdate(changes: PlayerStateChanges): void {
     this.playerStateService.updateWith(changes);
   }
 
@@ -45,29 +45,29 @@ export class WzAdvancedPlayerComponent {
     this.onSubclip.emit(params);
   }
 
-  public handle(request: WzPlayerRequest): void {
-    const state: WzPlayerState = this.playerStateService.snapshot;
+  public handle(request: PlayerRequest): void {
+    const state: PlayerState = this.playerStateService.snapshot;
 
     switch (request.type) {
-      case WzPlayerRequestType.ClearMarkers:
+      case PlayerRequestType.ClearMarkers:
         this.playerStateService.updateWith({ inMarker: 'clear', outMarker: 'clear' });
         break;
-      case WzPlayerRequestType.PlayWithinMarkers:
+      case PlayerRequestType.PlayWithinMarkers:
         this.player.playRange(state.inMarkerFrame.asSeconds(), state.outMarkerFrame.asSeconds());
         break;
-      case WzPlayerRequestType.SeekToInMarker:
+      case PlayerRequestType.SeekToInMarker:
         this.player.seekTo(state.inMarkerFrame.asSeconds());
         break;
-      case WzPlayerRequestType.SeekToOutMarker:
+      case PlayerRequestType.SeekToOutMarker:
         this.player.seekTo(state.outMarkerFrame.asSeconds());
         break;
-      case WzPlayerRequestType.SetInMarker:
+      case PlayerRequestType.SetInMarker:
         this.playerStateService.updateWith({ inMarker: 'currentFrame' });
         break;
-      case WzPlayerRequestType.SetOutMarker:
+      case PlayerRequestType.SetOutMarker:
         this.playerStateService.updateWith({ outMarker: 'currentFrame' });
         break;
-      case WzPlayerRequestType.TogglePlayback:
+      case PlayerRequestType.TogglePlayback:
         this.player.togglePlayback();
         break;
     }

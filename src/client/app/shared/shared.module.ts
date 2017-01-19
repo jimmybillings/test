@@ -7,24 +7,19 @@ import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService, TranslateParser } from 'ng2-translate';
 import { MaterialModule } from '@angular/material';
 
+// Shared Wazee Modules
+import { WzPlayerModule } from './modules/wz-player/wz.player.module';
+
 // Shared Pure Components
 import { WzNotificationComponent } from './components/wz-notification/wz.notification.component';
 import { WzAssetListComponent } from './components/wz-asset-list/wz.asset-list.component';
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
-import { WzDialogComponent, WzDialogPortalDirective } from './components/wz-dialog/wz.dialog.component';
 import { WzDropdownComponent, WzDropdownPortalDirective } from './components/wz-dropdown/wz.dropdown.component';
 import { WzFormComponent } from './components/wz-form/wz.form.component';
 import { WzListComponent } from './components/wz-list/wz.list.component';
 import { WzPaginationComponent } from './components/wz-pagination/wz.pagination.component';
 import { WzPikaDayDirective } from './components/wz-pikaday/wz-pikaday.directive';
 import { WzClipBoardDirective } from './components/wz-clipboard/wz-clipboard.directive';
-import { WzPlayerComponent } from './components/player/wz-player/wz.player.component';
-import { WzAdvancedPlayerComponent } from './components/player/wz-advanced-player/wz.advanced-player.component';
-import { WzSubclipControlbarComponent } from './components/player/wz-subclip-controlbar/wz.subclip-controlbar.component';
-import { WzPlayerControlbarComponent } from './components/player/wz-player-controlbar/wz.player-controlbar.component';
-import { WzPlaybackToggleButtonComponent }
-  from './components/player/controls/wz-playback-toggle-button/wz.playback-toggle-button.component';
-import { WzTimeDisplayComponent } from './components/player/controls/wz-time-display/wz.time-display.component';
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
 import { WzItemSearchFormComponent } from './components/wz-item-search-form/wz.item-search-form.component';
@@ -40,10 +35,10 @@ import { WzSpeedviewComponent, WzSpeedviewPortalDirective } from './components/w
 import { WzSpeedviewDirective } from './components/wz-speedview/wz.speedview.directive';
 import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
 import { WzAutocompleteSearchComponent } from './components/wz-autocomplete-search/wz-autocomplete-search.component';
+import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soon.component';
 
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
-import { TimecodePipe } from './pipes/timecode.pipe';
 
 // Shared resolvers
 import { AssetResolver } from '../+asset/services/asset.resolver';
@@ -66,28 +61,20 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     HttpModule,
     ReactiveFormsModule,
     MaterialModule.forRoot(),
+    WzPlayerModule
   ],
   declarations: [
     WzAssetListComponent,
     WzBreadcrumbComponent,
-    WzDialogComponent,
     WzDropdownComponent,
     WzFormComponent,
     WzListComponent,
     WzPaginationComponent,
     WzPikaDayDirective,
-    WzPlayerComponent,
-    WzAdvancedPlayerComponent,
-    WzSubclipControlbarComponent,
-    WzPlayerControlbarComponent,
-    WzPlaybackToggleButtonComponent,
-    WzTimeDisplayComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
     WzItemSearchFormComponent,
     ValuesPipe,
-    TimecodePipe,
-    WzDialogPortalDirective,
     WzDropdownPortalDirective,
     WzInputTagsComponent,
     WzInputSuggestionsComponent,
@@ -103,29 +90,21 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSpeedviewDirective,
     WzSpeedviewPortalDirective,
     WzPricingComponent,
-    WzAutocompleteSearchComponent
+    WzAutocompleteSearchComponent,
+    WzComingSoonComponent
   ],
   exports: [
     WzAssetListComponent,
     WzBreadcrumbComponent,
-    WzDialogComponent,
     WzDropdownComponent,
     WzFormComponent,
     WzListComponent,
     WzPaginationComponent,
     WzPikaDayDirective,
-    WzPlayerComponent,
-    WzAdvancedPlayerComponent,
-    WzSubclipControlbarComponent,
-    WzPlayerControlbarComponent,
-    WzPlaybackToggleButtonComponent,
-    WzTimeDisplayComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
     WzItemSearchFormComponent,
     ValuesPipe,
-    TimecodePipe,
-    WzDialogPortalDirective,
     WzDropdownPortalDirective,
     WzInputTagsComponent,
     WzInputSuggestionsComponent,
@@ -137,6 +116,7 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+    WzPlayerModule,
     WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
@@ -148,14 +128,16 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzSpeedviewDirective,
     WzSpeedviewPortalDirective,
     WzPricingComponent,
-    WzAutocompleteSearchComponent
+    WzAutocompleteSearchComponent,
+    WzComingSoonComponent
   ],
   entryComponents: [
     WzNotificationComponent,
     CollectionLinkComponent,
     CollectionFormComponent,
     WzTermsComponent,
-    WzPricingComponent]
+    WzPricingComponent,
+    WzComingSoonComponent]
 })
 
 export class SharedModule {

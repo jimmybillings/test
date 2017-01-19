@@ -61,17 +61,28 @@ export function main() {
     describe('edit()', () => {
       it('emits the proper request event', () => {
         let project: any = { a: 'b', c: 'd', e: 'f' };
-        let formValue: any = { a: '42', e: 'hello' };
+
+        componentUnderTest.config = {
+          form: {
+            items: [
+              { name: 'a', value: 'x' },
+              { name: 'c', value: 'x' },
+              { name: 'e', value: 'x' }
+            ]
+          }
+        };
 
         componentUnderTest.projectsNotify
           .subscribe((event: Object) => {
             expect(event).toEqual({
-              type: 'UPDATE_PROJECT',
-              payload: { a: '42', c: 'd', e: 'hello' }
+              type: 'UPDATE_PROJECT', payload: {
+                project: { a: 'b', c: 'd', e: 'f' },
+                items: [{ name: 'a', value: 'b' }, { name: 'c', value: 'd' }, { name: 'e', value: 'f' }]
+              }
             });
           });
 
-        componentUnderTest.edit(project, formValue);
+        componentUnderTest.edit(project);
       });
     });
 
