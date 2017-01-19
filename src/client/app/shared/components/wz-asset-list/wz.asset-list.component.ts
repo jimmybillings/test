@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, ViewChild, Renderer } from '@angular/core';
 import { Collection } from '../../interfaces/collection.interface';
 import { MdMenuTrigger } from '@angular/material';
-
 /**
  * Directive that renders a list of assets
  */
@@ -23,6 +22,7 @@ export class WzAssetListComponent implements OnChanges {
   @Output() onDownloadComp = new EventEmitter();
   @Output() showSpeedview = new EventEmitter();
   @Output() hideSpeedview = new EventEmitter();
+  @Output() onShowSnackBar = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
 
   private assetsArr: Array<number>;

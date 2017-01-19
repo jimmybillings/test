@@ -47,9 +47,9 @@
 				flex layout-align="end stretch" (getPage)="changePage($event)">
 			</wz-pagination>
 			<!-- COLLECTION LIST -->
-			<wz-collection-item-list [collections]="(collections.data | async).items" (editCollection)="setCollectionForEdit($event); editCollection.show();"
+			<wz-collection-item-list [collections]="(collections.data | async).items" (editCollection)="editCollection($event)"
 				[activeCollection]="(activeCollection.data | async).id" (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event); deleteCollectionDialog.show();"
-				(generateCollectionLink)="getAssetsForLink($event); copyLegacyLinkDialog.show()">
+				(generateCollectionLink)="getAssetsForLink($event);">
 			</wz-collection-item-list>
 			<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">
@@ -57,12 +57,6 @@
 		</section>
 	</div>
 </section>
-
-<wz-dialog #editCollection>
-	<collection-form [collection]="collectionForEdit" [fields]="(uiConfig.get('collection') | async).config" [dialog]="editCollection"
-		[isEdit]="true" [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}" layout="row" layout-align="center start">
-	</collection-form>
-</wz-dialog>
 
 <md-menu x-position="before" #filterCollectionOptions="mdMenu">
 	<wz-sort-component [current]="options.currentFilter" [items]="filterOptions" (sort)="onFilterCollections($event)"></wz-sort-component>
@@ -85,7 +79,3 @@
 	</div>
 </wz-dialog>
 
-<wz-dialog #copyLegacyLinkDialog>
-	<collection-link-component [assets]="assetsForLink" [dialog]="copyLegacyLinkDialog">
-	</collection-link-component>
-</wz-dialog>

@@ -1,6 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 
-
 @Component({
   moduleId: module.id,
   selector: 'wz-collection-item-list',
@@ -33,7 +32,7 @@ export class WzCollectionItemListComponent {
     this.currentCollection = collection;
   }
 
-  public edit(collection:any) {
+  public edit(collection: any) {
     this.editCollection.emit(collection);
   }
 
@@ -44,4 +43,6 @@ export class WzCollectionItemListComponent {
   public generateLegacyLink(): void {
     this.generateCollectionLink.emit(this.currentCollection.id);
   }
+
+
 }

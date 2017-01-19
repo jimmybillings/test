@@ -28,17 +28,17 @@ register-component [md-button]:hover.md-accent::after, login-component [md-butto
   background-color: md-color($md-accent, default, .12);
 }
 
-.wz-dialog md-card.terms-dialog {
-  width: 33vw;
+.terms-dialog {
   height: 70vh;
-  md-card-subtitle {
+  .content {
     padding: rem(.5) rem(2) rem(.5) rem(1);
     border: 1px solid md-color($md-foreground, divider); 
-    max-height: 80%;
     overflow-y: scroll;
+    height: 80%;
   }
-  md-card-actions {
+  .terms-actions {
     button.conversion.md-primary {
+      margin:10px 0;
       background-color: md-color($md-primary, 700);
     }
   }

@@ -29,7 +29,7 @@
         md-icon-button
         data-clipboard-target="#shareLink"
         title="{{ 'ASSET.SHARING.SHARE_LINK.COPY_BTN_TITLE' | translate }}" 
-        (click)="copiedConfirmedToast.show()">
+        (click)="onOpenSnackbar.emit({key: 'ASSET.SHARING.SHARE_LINK.COPIED_CONFIRMED_MESSAGE'})">
         <md-icon>content_copy</md-icon>
       </button>
     </div>
@@ -37,9 +37,3 @@
 </div>
 <div class="wz-dd-click-catcher" (click)="close.emit()"></div>
 
-
-<wz-toast #copiedConfirmedToast>
-  <div class="toast" layout="row" layout-align="center center">
-    <div flex-xs="100" md-elevation-z2>{{ 'ASSET.SHARING.SHARE_LINK.COPIED_CONFIRMED_MESSAGE' | translate }}</div>
-  </div>
-</wz-toast>

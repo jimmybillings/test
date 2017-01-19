@@ -39,7 +39,7 @@
 						</div>
 
 						<div flex-gt-sm="33" layout-sm="100" flex="100" class="actions" layout-align="end center">
-							<button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="editCollection.show();resetCollection()"><md-icon>edit</md-icon></button>
+							<button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="editCollection();resetCollection()"><md-icon>edit</md-icon></button>
 							<button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><md-icon>share</md-icon></button>
 							<button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)" [disabled]="true"><md-icon>mode_comment</md-icon></button>
 							<button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreShowCollectionOptions"><md-icon>more_vert</md-icon></button>
@@ -50,7 +50,7 @@
 								<div class="divider"></div>
 								<button md-menu-item disabled><md-icon>import_export</md-icon>Export collection as XML</button>
 								<button md-menu-item disabled><md-icon>print</md-icon>Print collection asset list</button>
-								<button md-menu-item (click)="copyLegacyLinkDialog.show()"><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
+								<button md-menu-item (click)="getAssetsForLink()"><md-icon>link</md-icon>{{ 'COLLECTION.COPY_LEGACY_LINK' | translate }}</button>
 								<div *ngIf="!!collection.owner">
 									<div class="divider"></div>
 									<button md-menu-item class="delete" (click)="deleteCollectionDialog.show()">
@@ -73,7 +73,8 @@
 			<div layout="column">
 				<wz-asset-list [assets]="collection.assets.items" [userCan]="userCan" [collection]="activeCollection.data | async"
 					(onAddToCollection)="addToCollection($event)" (addToCart)="addAssetToCart($event)"
-					(onDownloadComp)="downloadComp($event)" (onRemoveFromCollection)="removeFromCollection($event)" class="grid">
+					(onDownloadComp)="downloadComp($event)" (onRemoveFromCollection)="removeFromCollection($event)"
+					(onShowSnackBar)="showSnackBar($event)" class="grid">
 				</wz-asset-list>
 				<h1 *ngIf="!collection.assets.items" class="md-display-1 alert warning">This collection does not have any assets</h1>
 			</div>
@@ -81,12 +82,6 @@
 		</div>
 	</div>
 </section>
-
-<wz-dialog #editCollection [clickCatcher]="false">
-	<collection-form [collection]="collection" [fields]="(uiConfig.get('collection') | async).config" [dialog]="editCollection"
-		[isEdit]="true" [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}" layout="row" layout-align="center start">
-	</collection-form>
-</wz-dialog>
 
 <wz-dialog #deleteCollectionDialog [clickCatcher]="false">
 	<md-card>
@@ -99,13 +94,3 @@
 	</md-card>
 </wz-dialog>
 
-<wz-dialog #copyLegacyLinkDialog>
-	<collection-link-component [assets]="collection.assets.items" [dialog]="copyLegacyLinkDialog">
-	</collection-link-component>
-</wz-dialog>
-
-<wz-toast #collectionDeletedToast>
-  <div class="toast" layout="row" layout-align="center center">
-    <div flex-xs="100" md-elevation-z2>Your collection has been deleted</div>
-  </div>
-</wz-toast>

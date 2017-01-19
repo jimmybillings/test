@@ -98,6 +98,12 @@ export class AssetService {
     return this.api.get(Api.Assets, `${path}/${assetId}`);
   }
 
+  public get state() {
+    let state: any = {};
+    this.data.take(1).subscribe(f => state = f);
+    return state;
+  }
+
   private formatAttributes(attrs: any): any {
     let formatted: Array<string> = [];
     for (let attr in attrs) {

@@ -6,14 +6,16 @@ export function main() {
 
     beforeEach(() => {
       componentUnderTest = new WzTermsComponent();
+      componentUnderTest.dialog = {
+        close: jasmine.createSpy('close')
+      };
     });
 
     describe('agreeToTerms()', () => {
       it('should emit an event', () => {
-        spyOn(componentUnderTest.close, 'emit');
         componentUnderTest.agreeToTerms();
 
-        expect(componentUnderTest.close.emit).toHaveBeenCalled();
+        expect(componentUnderTest.dialog.close).toHaveBeenCalled();
       });
     });
   });

@@ -5,7 +5,6 @@ import {
 import { AssetService } from '../../shared/services/asset.service';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
-import { WzToastComponent } from '../../shared/components/wz-toast/wz.toast.component';
 import { CurrentUser } from '../../shared/services/current-user.model';
 import { User } from '../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs/Rx';
@@ -25,6 +24,7 @@ export class AssetShareComponent implements OnDestroy {
   @Input() assetName: any;
   @Input() assetId: any;
   @Output() close = new EventEmitter();
+  @Output() onOpenSnackBar = new EventEmitter();
 
   public assetLinkIsShowing: boolean = false;
   public assetShareLink: any = '';
@@ -33,9 +33,7 @@ export class AssetShareComponent implements OnDestroy {
   public user: User;
   private userSubscription: Subscription;
 
-
   @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
-  @ViewChild(WzToastComponent) private wzToast: WzToastComponent;
 
   constructor(
     currentUser: CurrentUser,
@@ -82,7 +80,7 @@ export class AssetShareComponent implements OnDestroy {
     }
     this.asset.createShareLink(shareLink).take(1).subscribe((res) => {
       this.success();
-      this.wzToast.show();
+      this.onOpenSnackBar.emit({ key: 'ASSET.SHARING.SHARED_CONFIRMED_MESSAGE' });
     }, this.error.bind(this));
   }
 

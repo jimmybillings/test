@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { Asset } from '../../../shared/interfaces/asset.interface';
@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs/Rx';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CollectionFormComponent implements OnInit, OnChanges {
+export class CollectionFormComponent implements OnInit {
   @Input() collection: any = false;
   @Input() newCollectionFormIsOpen: boolean;
   @Input() dialog: any;
@@ -47,18 +47,12 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    if (!this.collection) this.formItems = this.setForm();
+    this.formItems = this.setForm();
     this.tr = {
       title: (this.isEdit) ? 'COLLECTION.EDIT.TITLE' : 'COLLECTION.NEW_TITLE',
       close: 'COLLECTION.FORM.CLOSE_HOVER_TITLE',
       submitLabel: (this.isEdit) ? 'COLLECTION.EDIT.SUBMIT_LABEL' : 'COLLECTION.FORM.SUBMIT_LABEL'
     };
-  }
-
-  ngOnChanges(changes: any) {
-    if (changes.collection && changes.collection.currentValue) {
-      this.formItems = this.setForm();
-    }
   }
 
   public collectionAction(collection: Collection) {

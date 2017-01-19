@@ -18,7 +18,9 @@
     <collection-tray
       *ngIf="userCan.viewCollectionTray() | async"
       [uiState]="uiState"
-      [uiConfig]="uiConfig">
+      [uiConfig]="uiConfig"
+      [collection]="activeCollection.data | async"
+      (onOpenSnackbar)="showSnackBar($event)">
     </collection-tray>
      <wz-autocomplete-search
       *ngIf="uiState.headerIsExpanded()| async"

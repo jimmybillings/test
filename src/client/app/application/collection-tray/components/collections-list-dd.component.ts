@@ -23,6 +23,7 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
   @Input() uiState: UiState;
   @Input() config: any;
   @Output() close = new EventEmitter();
+  @Output() onCreateCollection = new EventEmitter();
   public options: any;
   public optionsSubscription: Subscription;
   public pageSize: string;
@@ -35,7 +36,7 @@ export class CollectionListDdComponent implements OnInit, OnDestroy {
     public collections: CollectionsService,
     public collectionContext: CollectionContextService,
     public activeCollection: ActiveCollectionService,
-    public uiConfig: UiConfig) {}
+    public uiConfig: UiConfig) { }
 
   ngOnInit(): void {
     this.uiConfig.get('global').take(1).subscribe(config => {

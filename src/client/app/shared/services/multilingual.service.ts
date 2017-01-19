@@ -1,7 +1,7 @@
 // angular
 import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
-import { TranslateService } from 'ng2-translate/ng2-translate';
+import { TranslateService } from 'ng2-translate';
 import { ILang, MultilingualStateI } from '../interfaces/language.interface';
 import { ApiConfig } from './api.config';
 import 'rxjs/add/operator/take';
@@ -47,23 +47,12 @@ export class MultilingualService {
     public store: Store<any>) {
     this.baseUrl = this.apiConfig.baseUrl();
     this.setLanguage('en');
-    this.getTranslationStrings();
-  }
 
-  public getTranslationStrings(): void {
-    // this language will be used as a fallback when a translation isn't found in the current language
-    this.translate.setDefaultLang('en');
     // subscribe to changes
-    this.store.select('i18n').subscribe((state: MultilingualStateI) => {
-      // update ng2-translate which will cause translations to occur wherever the TranslatePipe is used in the view
-      if (this.translate.getLangs() && (this.translate.getLangs().indexOf(state.lang) > -1)) {
-        this.translate.use(state.lang);
-      } else {
-        this.translate.reloadLang(state.lang).take(1).subscribe(() => {
-          setTimeout(() => this.translate.use(state.lang), 0);
-        });
-      }
+    store.select('i18n').subscribe((state: MultilingualStateI) => {
+      this.translate.use(state.lang);
     });
+
   }
 
   public setLanguage(lang: string) {

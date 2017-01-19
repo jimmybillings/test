@@ -8,6 +8,11 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Rx';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
 import { UiState } from '../../shared/services/ui.state';
+import { MdSnackBar } from '@angular/material';
+import { TranslateService } from 'ng2-translate';
+import { CollectionLinkComponent } from '../components/collection-link.component';
+import { MdDialog, MdDialogRef } from '@angular/material';
+import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 
 @Component({
   moduleId: module.id,
@@ -36,7 +41,10 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public activeCollection: ActiveCollectionService,
     public currentUser: CurrentUser,
     public uiConfig: UiConfig,
-    public uiState: UiState) {
+    public uiState: UiState,
+    private snackBar: MdSnackBar,
+    private translate: TranslateService,
+    private dialog: MdDialog) {
 
     this.filterOptions = [
       {
@@ -133,12 +141,15 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     this.optionsSubscription.unsubscribe();
   }
 
-  public toggleCollectionSearch() {
-    this.collectionSearchIsShowing = !this.collectionSearchIsShowing;
+  public showSnackBar(message: any) {
+    this.translate.get(message.key, message.value)
+      .subscribe((res: string) => {
+        this.snackBar.open(res, '', { duration: 2000 });
+      });
   }
 
-  public setCollectionForEdit(collection: any) {
-    this.collectionForEdit = Object.assign({}, collection);
+  public toggleCollectionSearch() {
+    this.collectionSearchIsShowing = !this.collectionSearchIsShowing;
   }
 
   public selectActiveCollection(id: number): void {
@@ -179,6 +190,18 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public getAssetsForLink(collectionId: number): void {
     this.activeCollection.getItems(collectionId, { n: 100 }, false).subscribe(data => {
       this.assetsForLink = data.items;
+      let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionLinkComponent);
+      dialogRef.componentInstance.assets = this.assetsForLink;
+    });
+  }
+
+  public editCollection(collection: Collection) {
+    this.uiConfig.get('collection').take(1).subscribe((config: any) => {
+      let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionFormComponent);
+      dialogRef.componentInstance.collection = JSON.parse(JSON.stringify(collection));
+      dialogRef.componentInstance.fields = config.config;
+      dialogRef.componentInstance.dialog = dialogRef;
+      dialogRef.componentInstance.isEdit = true;
     });
   }
 }

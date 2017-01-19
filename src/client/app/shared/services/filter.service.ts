@@ -19,10 +19,8 @@ export const filters: ActionReducer<any> = (state: Array<any> = initFilters, act
 @Injectable()
 export class FilterService {
   public data: Observable<any>;
-  private filterState: any;
-
+  public found: boolean = false;
   constructor(private api: ApiService, private store: Store<any>, private currentUser: CurrentUser) {
-    this.filterState = {};
     this.data = this.store.select('filters');
   }
 
@@ -34,8 +32,8 @@ export class FilterService {
       this.currentUser.loggedIn() ? 'filter/filterTree' : 'filter/anonymous/filterTree',
       { parameters: options, loading: false }
     ).do(response => {
-      this.set(this.sanitize(response, null));
-      this.checkLocalStorage(response);
+      let activeFilterGroups: string[] = JSON.parse(localStorage.getItem('activeFilterGroups')) || [];
+      this.set(this.sanitize(response, null, activeFilterGroups));
     });
   }
 
@@ -55,6 +53,13 @@ export class FilterService {
     this.set(this.toggleExclusiveValue(subFilter));
   }
 
+  public toggleFilterGroup(filter: any) {
+    this.set(this.toggleValue(filter.filterId));
+    let activeFilterGroups: any = [];
+    this.activeFilterGroup(activeFilterGroups);
+    localStorage.setItem('activeFilterGroups', JSON.stringify(activeFilterGroups));
+  }
+
   public getActive() {
     let active: ActiveFilters = { filters: [], ids: [], values: [] };
     this.activeFilters(active.filters);
@@ -71,14 +76,13 @@ export class FilterService {
     this.store.dispatch({ type: 'FILTERS.SET_FILTERS', payload: filters });
   }
 
-  private sanitize(filter: any, parent: any) {
-    if (parent) filter.parentId = parent.filterId;
-    if (filter.subFilters) {
-      filter.expanded = false;
-      for (var l of filter.subFilters) this.sanitize(l, filter);
-      return filter;
+  private sanitize(child: any, parent: any, activeFilterGroups: string[]) {
+    if (activeFilterGroups.indexOf(child.filterId) > -1) child.active = true;
+    if (parent) child.parentId = parent.filterId;
+    if (child.subFilters) {
+      for (let baby of child.subFilters) this.sanitize(baby, child, activeFilterGroups);
     }
-    return filter;
+    return child;
   }
 
   private activeFilters(activeFilters: any, filter = this.filters) {
@@ -91,22 +95,14 @@ export class FilterService {
     }
   }
 
-  private checkLocalStorage(filterTree: any): void {
-    if (!localStorage.getItem('filterState')) {
-      localStorage.setItem('filterState', JSON.stringify(this.setFilterStateInLocalStorage(filterTree)));
-    }
-  }
-
-  private setFilterStateInLocalStorage(filterTree: any): any {
-    if (filterTree.subFilters) {
-      for (let f of filterTree.subFilters) {
-        if (f.type === 'None' || f.type === 'List') {
-          this.filterState[f.name] = false;
-        }
-        this.setFilterStateInLocalStorage(f);
+  private activeFilterGroup(activeParentFilters: any, filter = this.filters) {
+    if (filter.subFilters) {
+      if (filter.active) activeParentFilters.push(filter.filterId);
+      for (var l of filter.subFilters) {
+        this.activeFilterGroup(activeParentFilters, l);
       }
+      return filter;
     }
-    return this.filterState;
   }
 
   private clearValues(filter = this.filters) {
@@ -124,8 +120,15 @@ export class FilterService {
     if (filter.subFilters) {
       if (filter.filterId === subFilter.parentId) {
         for (let f of filter.subFilters) f.active = (f.filterId === subFilter.filterId) ? !f.active : false;
+        this.found = true;
       }
-      for (var l of filter.subFilters) this.toggleExclusiveValue(subFilter, l);
+      for (var l of filter.subFilters) {
+        if (this.found) {
+          this.found = false;
+          break;
+        }
+        this.toggleExclusiveValue(subFilter, l);
+      }
       return filter;
     }
     return filter;
@@ -133,12 +136,19 @@ export class FilterService {
 
   private addCustomValue(currentFilter: any, value: any, filter = this.filters): void {
     if (filter.subFilters) {
-      for (let f of filter.subFilters) this.addCustomValue(currentFilter, value, f);
+      for (let f of filter.subFilters) {
+        if (this.found) {
+          this.found = false;
+          break;
+        }
+        this.addCustomValue(currentFilter, value, f);
+      }
       return filter;
     } else {
       if (filter.filterId === currentFilter.filterId) {
         filter.active = true;
         filter.filterValue = value;
+        this.found = true;
       }
       return filter;
     }
@@ -148,10 +158,16 @@ export class FilterService {
     if (filter.filterId === currentFilter) {
       if (filter.active) filter.filterValue = null;
       filter.active = !filter.active;
-      filter = JSON.parse(JSON.stringify(filter));
+      this.found = true;
     }
     if (filter.subFilters) {
-      for (var l of filter.subFilters) this.toggleValue(currentFilter, l);
+      for (var l of filter.subFilters) {
+        if (this.found) {
+          this.found = false;
+          break;
+        }
+        this.toggleValue(currentFilter, l);
+      }
       return filter;
     }
   }

@@ -60,7 +60,7 @@
     <footer layout="row" layout-align="center center">
       <div class="actions" flex="90" layout="row" layout-align="center center">
         <div flex="33" layout-align="center start">
-          <button md-button type="button" (click)="createCollection.show();closeCollectionsList()" disableRipple="true"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
+          <button md-button type="button" (click)="onCreateCollection.emit();closeCollectionsList()" disableRipple="true"><md-icon>add_circle_outline</md-icon><span class="label">{{ 'COLLECTION.DD_MENU.CREATE_BTN_LABEL' | translate }}</span></button>
         </div>
         <div flex="33" layout-align="center center">
           <a md-button (click)="navigateToCollectionsIndex();closeCollectionsList()" disableRipple="true">
@@ -76,12 +76,3 @@
     </footer>
   </div>
 </div>
-
-<wz-dialog #createCollection [clickCatcher]="false">
-  <collection-form
-    [fields]="config"
-    [dialog]="createCollection"
-    [ngClass]="{'revealed': (uiState.data | async).newCollectionFormIsOpen}"
-    layout="row" layout-align="center start">
-  </collection-form>
-</wz-dialog>

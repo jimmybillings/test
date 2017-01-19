@@ -1,8 +1,8 @@
 <md-sidenav-layout>
-	<md-sidenav #searchFilter align="start" mode="side">
+	<md-sidenav #searchFilter [opened]="(userPreferences.data | async).displayFilterTree" align="start" mode="side">
 
 		<md-slide-toggle class="count-toggle" [checked]="(userPreferences.data | async).displayFilterCounts" color="primary" value="toggle" (change)="countToggle($event)">{{ 'SEARCH.FILTERS.FILTER_COUNT_TOOGLE_LABEL' | translate }}</md-slide-toggle>
-		<filter-component class="filter" [counted]="(userPreferences.data | async).displayFilterCounts" [filters]="filter.data | async"></filter-component>
+		<filter-component (onFilterEvent)="filterEvent($event)" class="filter" [counted]="(userPreferences.data | async).displayFilterCounts" [filters]="filter.data | async"></filter-component>
 	</md-sidenav>
 	<!--this button has no display but is used to open the filter tray from the search component-->
 	<button class="filter" (click)="searchFilter.toggle()" style="display:none;">{{'SEARCH.FILTERS.FILTERS_BTN_LABEL' | translate }}</button>
@@ -26,8 +26,7 @@
 				<div layout-gt-md="row" layout="column" layout-align="space-between" layout-align-gt-md="space-between end">
 					<breadcrumb-component layout="row" layout-wrap layout-align="start start" class="search-breadcrumbs root" 
 					[filters]="filter.data | async" 
-					(clear)="clearFilters()" 
-					(apply)="applyFilter($event)"></breadcrumb-component>
+					(onFilterEvent)="filterEvent($event)"></breadcrumb-component>
 					<wz-pagination flex="noshrink" *ngIf="(assetData.data | async).pagination.totalCount > 0" [pagination]="(assetData.data | async).pagination" (getPage)="changePage($event)"></wz-pagination>
 				</div>
 
@@ -35,7 +34,7 @@
 				<no-results *ngIf="!(assetData.data | async).items"></no-results>
 				<wz-asset-list [assets]="(assetData.data | async).items" [userCan]="userCan" [collection]="activeCollection.data | async"
 					(onAddToCollection)="addToCollection($event)" (onRemoveFromCollection)="removeFromCollection($event)"
-					(addToCart)="addAssetToCart($event)" (onDownloadComp)="downloadComp($event)" (showSpeedview)="showSpeedview($event)" (hideSpeedview)="hideSpeedview()"
+					(addToCart)="addAssetToCart($event)" (onDownloadComp)="downloadComp($event)" (showSpeedview)="showSpeedview($event)" (hideSpeedview)="hideSpeedview()" (onShowSnackBar)="showSnackBar($event)"
 					class="{{(uiConfig.get('search') | async).config.viewType.value}}">
 				</wz-asset-list>
 				<wz-pagination flex="noshrink" *ngIf="(assetData.data | async).pagination.totalCount > 0" [pagination]="(assetData.data | async).pagination" (getPage)="changePage($event)"></wz-pagination>

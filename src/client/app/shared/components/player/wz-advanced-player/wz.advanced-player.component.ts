@@ -14,10 +14,25 @@ import { WzPlayerState, WzPlayerStateChanges, WzPlayerRequest, WzPlayerRequestTy
 })
 
 export class WzAdvancedPlayerComponent {
-  @Input() asset: any;
   @Input() window: any;
   @Output() onSubclip = new EventEmitter();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
+
+  private currentAsset: any = null;
+
+  @Input()
+  public set asset(newAsset: any) {
+    this.playerStateService.reset();
+    this.currentAsset = newAsset;
+  }
+
+  public get asset(): any {
+    return this.currentAsset;
+  }
+
+  public assetIsVideo(): boolean {
+    return this.currentAsset.resourceClass !== 'Image';
+  }
 
   constructor(public playerStateService: WzPlayerStateService) { }
 

@@ -6,23 +6,23 @@ export function main() {
     let componentUnderTest: FilterComponent;
 
     beforeEach(() => {
-      mockSearchComponent = {
-        applyFilter: jasmine.createSpy('applyFilter'),
-        applyCustomValue: jasmine.createSpy('applyCustomValue')
+      componentUnderTest = new FilterComponent();
+      componentUnderTest.onFilterEvent = {
+        emit: jasmine.createSpy('emit')
       };
-
-      componentUnderTest = new FilterComponent(mockSearchComponent);
     });
 
-    describe('applyFilter()', () => {
+    describe('toggleFilter()', () => {
       it('delegates to SearchComponent', () => {
-        componentUnderTest.applyFilter(123);
+        componentUnderTest.toggleFilter({ mockFilter: 'mockFilter' });
 
-        expect(mockSearchComponent.applyFilter).toHaveBeenCalledWith(123);
+        expect(componentUnderTest.onFilterEvent.emit).toHaveBeenCalledWith(
+          { event: 'toggleFilter', filter: { mockFilter: 'mockFilter' } });
       });
+
     });
 
-    describe('dateRangeSelect()', () => {
+    describe('applyDateRange()', () => {
       let mockEvent: any;
       let mockFilter: any;
 
@@ -34,7 +34,7 @@ export function main() {
       it('sets event target\'s "event" property to a formatted version of "value" property', () => {
         mockEvent.target = { value: 'Thu Dec 1 2016', name: 'start' };
 
-        componentUnderTest.dateRangeSelect(mockEvent, mockFilter);
+        componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
         expect(mockEvent.target.event).toEqual('2016-12-01');
       });
@@ -42,7 +42,7 @@ export function main() {
       it('sets dateRange start value to a formatted version of "value" property', () => {
         mockEvent.target = { value: 'Thu Dec 1 2016', name: 'start' };
 
-        componentUnderTest.dateRangeSelect(mockEvent, mockFilter);
+        componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
         expect(componentUnderTest.dateRange.start).toEqual('2016-12-01');
       });
@@ -50,7 +50,7 @@ export function main() {
       it('sets dateRange end value to a formatted version of "value" property', () => {
         mockEvent.target = { value: 'Thu Dec 15 2016', name: 'end' };
 
-        componentUnderTest.dateRangeSelect(mockEvent, mockFilter);
+        componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
         expect(componentUnderTest.dateRange.end).toEqual('2016-12-15');
       });
@@ -58,45 +58,61 @@ export function main() {
       it('throws an exception for an unknown "name" property', () => {
         mockEvent.target = { name: 'whatever' };
 
-        expect(() => componentUnderTest.dateRangeSelect(mockEvent, mockFilter)).toThrowError(TypeError);
+        expect(() => componentUnderTest.applyDateRange(mockEvent, mockFilter)).toThrowError(TypeError);
       });
 
       it('throws an exception when event target\'s "value" property is not a date', () => {
         mockEvent.target = { value: 'blah' };
 
-        expect(() => componentUnderTest.dateRangeSelect(mockEvent, mockFilter)).toThrowError(TypeError);
+        expect(() => componentUnderTest.applyDateRange(mockEvent, mockFilter)).toThrowError(TypeError);
       });
 
       it('throws an exception when event target\'s "value" property is not present', () => {
-        expect(() => componentUnderTest.dateRangeSelect(mockEvent, mockFilter)).toThrowError(TypeError);
+        expect(() => componentUnderTest.applyDateRange(mockEvent, mockFilter)).toThrowError(TypeError);
       });
 
       it('applies the search filter with the end of time when only the start date is present', () => {
         mockEvent.target = { value: 'Sat Dec 3 2016', name: 'start' };
 
-        componentUnderTest.dateRangeSelect(mockEvent, mockFilter);
+        componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
-        expect(mockSearchComponent.applyCustomValue).toHaveBeenCalledWith(mockFilter, '2016-12-03 - 3000-01-01');
+        expect(componentUnderTest.onFilterEvent.emit).toHaveBeenCalledWith({
+          event: 'applyCustomValue',
+          filter: mockFilter,
+          customValue: '2016-12-03 - 3000-01-01'
+        });
       });
 
       it('applies the search filter with the beginning of time when only the end date is present', () => {
         mockEvent.target = { value: 'Sun Dec 4 2016', name: 'end' };
 
-        componentUnderTest.dateRangeSelect(mockEvent, mockFilter);
+        componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
-        expect(mockSearchComponent.applyCustomValue).toHaveBeenCalledWith(mockFilter, '1000-01-01 - 2016-12-04');
+        expect(componentUnderTest.onFilterEvent.emit).toHaveBeenCalledWith({
+          event: 'applyCustomValue',
+          filter: mockFilter,
+          customValue: '1000-01-01 - 2016-12-04'
+        });
       });
 
       it('applies proper search filters twice as both dates are selected', () => {
         mockEvent.target = { value: 'Mon Dec 5 2016', name: 'start' };
-        componentUnderTest.dateRangeSelect(mockEvent, mockFilter);
+        componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
-        expect(mockSearchComponent.applyCustomValue).toHaveBeenCalledWith(mockFilter, '2016-12-05 - 3000-01-01');
+        expect(componentUnderTest.onFilterEvent.emit).toHaveBeenCalledWith({
+          event: 'applyCustomValue',
+          filter: mockFilter,
+          customValue: '2016-12-05 - 3000-01-01'
+        });
 
         mockEvent.target = { value: 'Fri Dec 23 2016', name: 'end' };
-        componentUnderTest.dateRangeSelect(mockEvent, mockFilter);
+        componentUnderTest.applyDateRange(mockEvent, mockFilter);
 
-        expect(mockSearchComponent.applyCustomValue).toHaveBeenCalledWith(mockFilter, '2016-12-05 - 2016-12-23');
+        expect(componentUnderTest.onFilterEvent.emit).toHaveBeenCalledWith({
+          event: 'applyCustomValue',
+          filter: mockFilter,
+          customValue: '2016-12-05 - 2016-12-23'
+        });
       });
     });
 

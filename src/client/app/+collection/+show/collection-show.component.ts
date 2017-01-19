@@ -10,10 +10,14 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../shared/services/asset.service';
 import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
-import { WzToastComponent } from '../../shared/components/wz-toast/wz.toast.component';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartService } from '../../shared/services/cart.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
+import { MdSnackBar } from '@angular/material';
+import { TranslateService } from 'ng2-translate';
+import { MdDialog, MdDialogRef } from '@angular/material';
+import { CollectionLinkComponent } from '../components/collection-link.component';
+import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 
 @Component({
   moduleId: module.id,
@@ -31,10 +35,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public config: Object;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
-  @ViewChild(WzToastComponent) private wzToast: WzToastComponent;
 
   constructor(
-    private route: ActivatedRoute,
     public userCan: Capabilities,
     public router: Router,
     public collections: CollectionsService,
@@ -46,7 +48,11 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public notification: WzNotificationService,
     public uiConfig: UiConfig,
     public cart: CartService,
-    public userPreference: UserPreferenceService) { }
+    public userPreference: UserPreferenceService,
+    private route: ActivatedRoute,
+    private snackBar: MdSnackBar,
+    private translate: TranslateService,
+    private dialog: MdDialog) { }
 
   ngOnInit() {
     this.activeCollectionSubscription = this.activeCollection.data.subscribe(collection => {
@@ -58,6 +64,13 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.activeCollectionSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
+  }
+
+  public showSnackBar(message: any) {
+    this.translate.get(message.key, message.value)
+      .subscribe((res: string) => {
+        this.snackBar.open(res, '', { duration: 2000 });
+      });
   }
 
   public resetCollection() {
@@ -90,14 +103,29 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public deleteCollection(id: number): void {
-    this.collections.delete(id).subscribe(response => {
-      this.router.navigate(['/collections']).then(() => {
-        this.wzToast.show();
+    this.router.navigate(['/collections']).then(() => {
+      this.collections.delete(id).subscribe(response => {
+        this.showSnackBar({ key: 'Your collection has been deleted' });
       });
     });
   }
 
   public addAssetToCart(asset: any): void {
     this.cart.addAssetToProjectInCart(asset);
+  }
+
+  public getAssetsForLink(): void {
+    let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionLinkComponent);
+    dialogRef.componentInstance.assets = this.collection.assets.items;
+  }
+
+  public editCollection() {
+    this.uiConfig.get('collection').take(1).subscribe((config: any) => {
+      let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionFormComponent);
+      dialogRef.componentInstance.collection = JSON.parse(JSON.stringify(this.collection));
+      dialogRef.componentInstance.fields = config.config;
+      dialogRef.componentInstance.dialog = dialogRef;
+      dialogRef.componentInstance.isEdit = true;
+    });
   }
 }

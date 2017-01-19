@@ -1,21 +1,19 @@
-<div flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
-  <md-card *ngIf="_options.length > 0" class="wz-form-card">
-    <button md-icon-button title="{{ 'PRICING.CLOSE_HOVER_TITLE' | translate }}" type="button" (click)="close.emit()" class="close"><md-icon>close</md-icon></button>
-    <md-card-header></md-card-header>
-    <md-card-title>{{ 'PRICING.CALCULATE_HEADING' | translate }}</md-card-title>
-    <md-card-content>
-      <form #f="ngForm" (ngSubmit)="onSubmit()">
-        <div *ngFor="let option of _options; let i = index" class="input">
-          <div layout="row" layout-align="center center">
-            <md-select placeholder="{{option.name}}" [disabled]="parentIsEmpty(option)" [(ngModel)]="form[option.name]" name="{{option.name}}">
-              <md-option *ngFor="let o of validOptionsFor(option)" [value]="o.value">{{o.name}}</md-option>
-            </md-select>
-          </div>
+<div class="wz-dialog pricing">
+  <button md-dialog-close md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
+  <h3>{{ 'PRICING.CALCULATE_HEADING' | translate }}</h3>
+  <md-dialog-content> 
+    <form #f="ngForm" (ngSubmit)="onSubmit()">
+      <span *ngFor="let option of options; let i = index" class="input">
+        <div layout="row" layout-align="center center">
+          <md-select placeholder="{{option.name}}" [disabled]="parentIsEmpty(option)" [(ngModel)]="form[option.name]" name="{{option.name}}">
+            <md-option *ngFor="let o of validOptionsFor(option)" [value]="o.value">{{o.name}}</md-option>
+          </md-select>
         </div>
-        <div class="submit-btn" layout="row" layout-align="center center">
-          <button [disabled]="formIsInvalid" class="submit" md-raised-button color="primary" type="submit">{{ 'PRICING.CALCULATE_BTN_LABEL' | translate }}</button>
-        </div>
-      </form>
-    </md-card-content>
-  </md-card>
+        <br>
+      </span>
+      <div class="submit-btn" layout="row" layout-align="center center">
+        <button [disabled]="formIsInvalid" class="submit" md-raised-button color="primary" type="submit">{{ 'PRICING.CALCULATE_BTN_LABEL' | translate }}</button>
+      </div>
+    </form>
+  </md-dialog-content>
 </div>

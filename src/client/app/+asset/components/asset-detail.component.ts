@@ -33,6 +33,7 @@ export class AssetDetailComponent implements OnChanges {
   @Output() getPriceAttributes = new EventEmitter();
   @Output() calculatePrice = new EventEmitter();
   @Output() calculatePriceError = new EventEmitter();
+  @Output() onShowSnackBar = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   private assetsArr: Array<number> = [];
 
@@ -76,10 +77,6 @@ export class AssetDetailComponent implements OnChanges {
       target.selected = (selectedTarget.name === target.name) ? true : false;
       return target;
     });
-  }
-
-  public onCalculatePrice(attributes: any): void {
-    this.calculatePrice.emit({ attributes: attributes, assetId: this.asset.assetId });
   }
 
   public onCalculatePriceError(): void {

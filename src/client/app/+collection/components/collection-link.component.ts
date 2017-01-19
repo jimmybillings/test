@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -7,14 +7,15 @@ import { Component, OnChanges, Input, ChangeDetectionStrategy } from '@angular/c
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CollectionLinkComponent implements OnChanges {
-  @Input() assets: any;
-  @Input() dialog: any;
-  public legacyLink: string;
-
-  ngOnChanges(changes: any) {
-    if (changes.assets.currentValue[0]) this.buildLegacyLink(changes.assets.currentValue);
+export class CollectionLinkComponent {
+  @Input()
+  set assets(value: any) {
+    this.buildLegacyLink(value);
   }
+  @Input() dialog: any;
+  @Output() onOpenSnackbar = new EventEmitter();
+
+  public legacyLink: string;
 
   public buildLegacyLink(assets: any): void {
     let filterSegment: string;

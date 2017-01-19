@@ -6,7 +6,8 @@
         flex="100"
         [uiState]="Uistate"
         [assetLink]="assetShareLink"
-        (close)="showShareLink()">
+        (close)="showShareLink()"
+        (onOpenSnackbar)="onOpenSnackBar.emit($event)">
       </asset-share-link>
       <div flex="100" layout="row">
         <h4 class="md-headline" flex="100" layout-align="start center">
@@ -41,8 +42,3 @@
   </div>
 </div>
 
-<wz-toast #shareEmailConfirmedToast>
-  <div class="toast" layout="row" layout-align="center center">
-    <div flex-xs="100" md-elevation-z2>{{ 'ASSET.SHARING.SHARED_CONFIRMED_MESSAGE' | translate }}</div>
-  </div>
-</wz-toast>

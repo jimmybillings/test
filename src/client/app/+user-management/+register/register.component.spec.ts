@@ -15,7 +15,7 @@ export function main() {
       mockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
       mockUser = { create: jasmine.createSpy('create').and.returnValue(Observable.of(user)) };
       mockDocumentService = { downloadActiveTosDocument: jasmine.createSpy('downloadActiveTosDocument') };
-      componentUnderTest = new RegisterComponent(mockUser, mockUiConfig, mockDocumentService);
+      componentUnderTest = new RegisterComponent(mockUser, mockUiConfig, mockDocumentService, null);
     });
 
     describe('ngOnInit()', () => {
@@ -44,7 +44,7 @@ export function main() {
       it('Sets a errors variable to display errors if the server doesnt pass', () => {
         const errorResponse: Response = new Response(new ResponseOptions({ body: JSON.stringify({ email: 'Not Unique' }) }));
         mockUser = { create: jasmine.createSpy('create').and.returnValue(Observable.throw(errorResponse)) };
-        componentUnderTest = new RegisterComponent(mockUser, mockUiConfig, mockDocumentService);
+        componentUnderTest = new RegisterComponent(mockUser, mockUiConfig, mockDocumentService, null);
         componentUnderTest.onSubmit(user);
         expect(componentUnderTest.serverErrors).toEqual({ email: 'Not Unique' });
       });
@@ -55,7 +55,7 @@ export function main() {
         let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
-        componentUnderTest = new RegisterComponent(mockUser, mockUiConfig, mockDocumentService);
+        componentUnderTest = new RegisterComponent(mockUser, mockUiConfig, mockDocumentService, null);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();

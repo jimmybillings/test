@@ -377,7 +377,7 @@ export class SeedConfig {
       '@angular/platform-browser-dynamic/testing':
       'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
       '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
-
+      'ng2-translate': 'node_modules/ng2-translate/bundles/index.js',
       'rxjs/*': 'node_modules/rxjs/*',
       '@ngrx/core': 'node_modules/@ngrx/core/bundles/core.min.umd.js',
       '@ngrx/store': 'node_modules/@ngrx/store/bundles/store.min.umd.js',
@@ -389,6 +389,7 @@ export class SeedConfig {
       '*': 'node_modules/*'
     },
     packages: {
+      'ng2-translate': { defaultExtension: 'js' }
     }
   };
 
@@ -463,6 +464,10 @@ export class SeedConfig {
       },
       'rxjs': {
         main: 'Rx.js',
+        defaultExtension: 'js'
+      },
+      'wazee-frame-formatter': {
+        main: 'dist/index.js',
         defaultExtension: 'js'
       }
     }

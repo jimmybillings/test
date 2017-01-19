@@ -80,6 +80,23 @@ export function main() {
       });
     });
 
+    describe('reset()', () => {
+      it('reverts to the initial state', () => {
+        serviceUnderTest.updateWith({ playing: true, duration: 1234.123, currentTime: 173.174 });
+
+        serviceUnderTest.reset();
+
+        expect(serviceUnderTest.snapshot).toEqual(jasmine.objectContaining({
+          playing: false,
+          framesPerSecond: 29.97,
+          currentFrame: undefined,
+          durationFrame: undefined,
+          inMarkerFrame: undefined,
+          outMarkerFrame: undefined
+        }));
+      });
+    });
+
     describe('Interdependencies', () => {
       describe('Updating with currentTime', () => {
         it('causes currentFrame to be updated', () => {

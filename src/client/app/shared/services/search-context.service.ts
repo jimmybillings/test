@@ -20,7 +20,7 @@ export const searchContext: ActionReducer<any> = (state: any = initSearchContext
       return Object.assign({}, initSearchContext);
     case 'SEARCHCONTEXT.REMOVE':
       return Object.assign({}, Object.keys(state).reduce((result: any, key: any) => {
-        if (key !== action.payload) result[key] = state[key];
+        if (action.payload.indexOf(key) === -1) result[key] = state[key];
         return result;
       }, {}));
     default:
@@ -46,7 +46,8 @@ export class SearchContext {
     return s;
   }
 
-  public set remove(param: any) {
+  public set remove(param: string[] | string) {
+    if (!Array.isArray(param)) param = [param];
     this.store.dispatch({ type: 'SEARCHCONTEXT.REMOVE', payload: param });
   }
 
