@@ -62,8 +62,9 @@ export class AssetComponent implements OnInit {
     if (params.markers) {
       console.log(`asset component subclip markers: ${params.markers.in} - ${params.markers.out}`);
       this.activeCollection.addAsset(params.collection.id, params.asset, params.markers).subscribe();
+    } else {
+      this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
     };
-    this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
   }
 
   public removeFromCollection(params: any): void {
