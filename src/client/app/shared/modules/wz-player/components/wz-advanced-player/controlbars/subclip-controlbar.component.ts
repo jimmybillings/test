@@ -30,12 +30,12 @@ export class SubclipControlbarComponent {
     this.request.emit({ type: PlayerRequestType.SeekToOutMarker });
   }
 
-  public playInToOut(): void {
-    this.request.emit({ type: PlayerRequestType.PlayWithinMarkers });
-  }
-
   public clear(): void {
     this.request.emit({ type: PlayerRequestType.ClearMarkers });
+  }
+
+  public forward(request: PlayerRequest): void {
+    this.request.emit(request);
   }
 
   // TODO: Move this into state class.

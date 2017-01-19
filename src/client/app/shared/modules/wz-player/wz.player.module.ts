@@ -8,6 +8,7 @@ import { WzPlayerComponent } from './components/wz-player/wz.player.component';
 import { WzAdvancedPlayerComponent } from './components/wz-advanced-player/wz.advanced-player.component';
 import { PlayerControlbarComponent } from './components/wz-advanced-player/controlbars/player-controlbar.component';
 import { SubclipControlbarComponent } from './components/wz-advanced-player/controlbars/subclip-controlbar.component';
+import { MarkersPlaybackButtonComponent } from './components/wz-advanced-player/controls/markers-playback-button.component';
 import { PlaybackToggleButtonComponent } from './components/wz-advanced-player/controls/playback-toggle-button.component';
 import { TimeDisplayComponent } from './components/wz-advanced-player/controls/time-display.component';
 
@@ -23,6 +24,7 @@ import { TimeDisplayComponent } from './components/wz-advanced-player/controls/t
     WzAdvancedPlayerComponent,
     PlayerControlbarComponent,
     SubclipControlbarComponent,
+    MarkersPlaybackButtonComponent,
     PlaybackToggleButtonComponent,
     TimeDisplayComponent
   ],

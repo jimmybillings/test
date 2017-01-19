@@ -6,9 +6,9 @@
   <button class="is-outlined set-marker" md-button title="{{ 'ASSET.ADV_PLAYER.SET_IN_BTN_TITLE' | translate }}" (click)="setInMarker()">
     In
   </button>
-  <button md-icon-button [disabled]="!playerState.inMarkerFrame || !playerState.outMarkerFrame" title="{{ 'ASSET.ADV_PLAYER.PLAY_IN_OUT_BTN_TITLE' | translate }}" (click)="playInToOut()">
-    <md-icon>play_circle_filled</md-icon>
-  </button>
+
+  <markers-playback-button [playerState]="playerState" (request)="forward($event)"></markers-playback-button>
+
   <button class="is-outlined set-marker" md-button title="{{ 'ASSET.ADV_PLAYER.SET_OUT_BTN_TITLE' | translate }}" (click)="setOutMarker()">
     Out
   </button>
