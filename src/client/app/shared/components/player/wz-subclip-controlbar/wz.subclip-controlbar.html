@@ -21,7 +21,8 @@
   </button>
 </section>
 <nav class="subclip-options" flex="20" layout-align="end stretch">
-  <button [disabled]="true" md-icon-button title="{{ 'ASSET.ADV_PLAYER.SAVE_BTN_TITLE' | translate }}">
+  <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.SAVE_BTN_TITLE' | translate }}"
+   (click)="onSubclip.emit({'in': playerState.inMarkerFrame.frameNumber,'out': playerState.outMarkerFrame.frameNumber})">
     <md-icon>library_add</md-icon>
   </button>
   <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.SIMPLE_BTN_TITLE' | translate }}">

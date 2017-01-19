@@ -5,6 +5,7 @@ import { ActiveCollectionStore } from '../stores/active-collection.store';
 import { Collection } from '../interfaces/collection.interface';
 import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
+import { SubclipMarkers } from '../interfaces/asset.interface';
 
 @Injectable()
 export class ActiveCollectionService implements OnInit {
@@ -45,11 +46,13 @@ export class ActiveCollectionService implements OnInit {
     }
   }
 
-  public addAsset(collectionId: any, asset: any): Observable<any> {
+  public addAsset(collectionId: any, asset: any, markers: SubclipMarkers = null): Observable<any> {
+    let list: any = (markers) ?
+      { assetId: asset.assetId, timeStart: markers.in, timeEnd: markers.out } : { assetId: asset.assetId };
     return this.api.post(
       Api.Identities,
       `collection/${collectionId}/addAssets`,
-      { body: { list: [{ assetId: asset.assetId }] } }
+      { body: { list: [list] } }
     ).flatMap((response: any) => {
       return this.getItems(collectionId, { i: 1, n: 100 });
     });

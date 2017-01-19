@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-
 import { WzPlayerState, WzPlayerRequest, WzPlayerRequestType } from '../wz.player.interface';
 
 @Component({
@@ -12,7 +11,7 @@ import { WzPlayerState, WzPlayerRequest, WzPlayerRequestType } from '../wz.playe
 export class WzSubclipControlbarComponent {
   @Input() playerState: WzPlayerState;
   @Output() request: EventEmitter<WzPlayerRequest> = new EventEmitter<WzPlayerRequest>();
-
+  @Output() onSubclip = new EventEmitter();
   public setInMarker(): void {
     this.request.emit({ type: WzPlayerRequestType.SetInMarker });
   }

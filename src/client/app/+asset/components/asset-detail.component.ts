@@ -5,7 +5,7 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
-import { TranscodeTarget } from '../../shared/interfaces/asset.interface';
+import { TranscodeTarget, SubclipMarkers } from '../../shared/interfaces/asset.interface';
 import { SearchContext } from '../../shared/services/search-context.service';
 
 @Component({
@@ -48,9 +48,14 @@ export class AssetDetailComponent implements OnChanges {
     return this.assetsArr.indexOf(assetId) > -1;
   }
 
-  public addToCollection(collection: Collection, asset: any): void {
+  public subclip(params: SubclipMarkers): void {
+    console.log(`Asset details subclip markers: ${params.in} - ${params.out}`);
+    this.onAddToCollection.emit({ 'collection': this.collection, 'asset': this.asset, 'markers': params });
+  }
+
+  public addToCollection(collection: Collection, asset: any, markers: SubclipMarkers = null): void {
     asset.assetId = asset.value;
-    this.onAddToCollection.emit({ 'collection': collection, 'asset': asset });
+    this.onAddToCollection.emit({ 'collection': collection, 'asset': asset, 'markers': markers });
   }
 
   public removeFromCollection(collection: Collection, asset: any): void {

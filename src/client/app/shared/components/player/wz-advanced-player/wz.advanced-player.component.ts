@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 
 import { WzPlayerStateService } from '../wz.player-state.service';
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
+import { SubclipMarkers } from '../../../interfaces/asset.interface';
 import { WzPlayerState, WzPlayerStateChanges, WzPlayerRequest, WzPlayerRequestType } from '../wz.player.interface';
 
 @Component({
@@ -15,12 +16,18 @@ import { WzPlayerState, WzPlayerStateChanges, WzPlayerRequest, WzPlayerRequestTy
 export class WzAdvancedPlayerComponent {
   @Input() asset: any;
   @Input() window: any;
+  @Output() onSubclip = new EventEmitter();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
   constructor(public playerStateService: WzPlayerStateService) { }
 
   public onStateUpdate(changes: WzPlayerStateChanges): void {
     this.playerStateService.updateWith(changes);
+  }
+
+  public subclip(params: SubclipMarkers): void {
+    console.log(`APC subclip markers: ${params.in} - ${params.out}`);
+    this.onSubclip.emit(params);
   }
 
   public handle(request: WzPlayerRequest): void {
