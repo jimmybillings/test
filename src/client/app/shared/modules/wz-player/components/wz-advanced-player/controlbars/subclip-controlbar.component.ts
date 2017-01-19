@@ -12,6 +12,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 export class SubclipControlbarComponent {
   @Input() playerState: PlayerState;
   @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() onSubclip = new EventEmitter();
 
   public setInMarker(): void {
     this.request.emit({ type: PlayerRequestType.SetInMarker });
