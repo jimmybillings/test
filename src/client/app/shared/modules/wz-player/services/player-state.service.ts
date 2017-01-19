@@ -3,22 +3,22 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/Rx';
 
 import { Frame } from 'wazee-frame-formatter';
-import { WzPlayerState, WzPlayerStateChanges } from './wz.player.interface';
+import { PlayerState, PlayerStateChanges } from '../interfaces/player.interface';
 
 @Injectable()
-export class WzPlayerStateService {
-  private stateSubject: BehaviorSubject<WzPlayerState> = new BehaviorSubject(this.initialValue);
-  private changesToApply: WzPlayerStateChanges = {};
+export class PlayerStateService {
+  private stateSubject: BehaviorSubject<PlayerState> = new BehaviorSubject(this.initialValue);
+  private changesToApply: PlayerStateChanges = {};
 
-  public get state(): Observable<WzPlayerState> {
+  public get state(): Observable<PlayerState> {
     return this.stateSubject.asObservable();
   }
 
-  public get snapshot(): WzPlayerState {
+  public get snapshot(): PlayerState {
     return this.stateSubject.getValue();
   }
 
-  public updateWith(changes: WzPlayerStateChanges): void {
+  public updateWith(changes: PlayerStateChanges): void {
     this.stateSubject.next(this.createNewStateWith(changes));
   }
 
@@ -26,7 +26,7 @@ export class WzPlayerStateService {
     this.stateSubject.next(this.initialValue);
   }
 
-  private get initialValue(): WzPlayerState {
+  private get initialValue(): PlayerState {
     return {
       playing: false,
       framesPerSecond: 29.97,
@@ -38,7 +38,7 @@ export class WzPlayerStateService {
     };
   }
 
-  private createNewStateWith(requestedChanges: WzPlayerStateChanges): WzPlayerState {
+  private createNewStateWith(requestedChanges: PlayerStateChanges): PlayerState {
     this.changesToApply = JSON.parse(JSON.stringify(requestedChanges));
     this.handleChangeInterdependencies();
 
