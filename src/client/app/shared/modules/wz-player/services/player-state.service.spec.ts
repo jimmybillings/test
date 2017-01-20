@@ -7,7 +7,7 @@ export function main() {
     return new Frame(framesPerSecond).setFromSeconds(seconds).asFrameNumber();
   };
 
-  describe(' Player State Service', () => {
+  describe('Player State Service', () => {
     let serviceUnderTest: PlayerStateService;
 
     beforeEach(() => {
@@ -113,10 +113,10 @@ export function main() {
           expect(serviceUnderTest.snapshot.durationFrame.frameNumber).toBe(frameNumberFor(24.25));
         });
 
-        it('causes inMarkerFrame to be set if it wasn\'t already', () => {
+        it('doesn\'t cause inMarkerFrame to be set even if it wasn\'t already', () => {
           serviceUnderTest.updateWith({ duration: 24.25 });
 
-          expect(serviceUnderTest.snapshot.inMarkerFrame.asSeconds()).toEqual(0);
+          expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
         });
 
         it('doesn\'t cause inMarkerFrame to be updated if it was already set', () => {
@@ -127,10 +127,10 @@ export function main() {
           expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(frameNumberFor(17.18));
         });
 
-        it('causes outMarkerFrame to be set if it wasn\'t already', () => {
+        it('doesn\'t cause outMarkerFrame to be set even if it wasn\'t already', () => {
           serviceUnderTest.updateWith({ duration: 24.25 });
 
-          expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(24.25));
+          expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
         });
 
         it('doesn\'t cause outMarkerFrame to be updated if it was already set', () => {
@@ -162,10 +162,10 @@ export function main() {
           });
 
           describe('as \'clear\'', () => {
-            it('sets the in marker to zero', () => {
+            it('undefines the in marker', () => {
               serviceUnderTest.updateWith({ inMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
               expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
           });
@@ -186,10 +186,10 @@ export function main() {
           });
 
           describe('as \'clear\'', () => {
-            it('sets the in marker to zero', () => {
+            it('undefines the in marker', () => {
               serviceUnderTest.updateWith({ inMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
               expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
           });
@@ -219,10 +219,10 @@ export function main() {
           });
 
           describe('as \'clear\'', () => {
-            it('sets the in marker to zero', () => {
+            it('undefines the in marker', () => {
               serviceUnderTest.updateWith({ inMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
               expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(108.109));
             });
           });
@@ -255,10 +255,10 @@ export function main() {
           });
 
           describe('as \'clear\'', () => {
-            it('sets the in marker to zero', () => {
+            it('undefines the in marker', () => {
               serviceUnderTest.updateWith({ inMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
               expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(204.205));
             });
           });
@@ -292,13 +292,13 @@ export function main() {
               expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
 
-            it('sets the out marker to the duration', () => {
+            it('undefines the out marker even when duration is set', () => {
               serviceUnderTest.updateWith({ duration: 554.555 });
 
               serviceUnderTest.updateWith({ outMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
-              expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(554.555));
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
+              expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
           });
         });
@@ -334,13 +334,13 @@ export function main() {
               expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
 
-            it('sets the out marker to the duration', () => {
+            it('undefines the out marker even when duration is set', () => {
               serviceUnderTest.updateWith({ duration: 298.299 });
 
               serviceUnderTest.updateWith({ outMarker: 'clear' });
 
               expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(frameNumberFor(26.27));
-              expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(298.299));
+              expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
           });
         });
@@ -367,13 +367,13 @@ export function main() {
               expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
 
-            it('sets the out marker to the duration', () => {
+            it('undefines the out marker even when duration is set', () => {
               serviceUnderTest.updateWith({ duration: 712.713 });
 
               serviceUnderTest.updateWith({ outMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
-              expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(712.713));
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
+              expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
           });
         });
@@ -412,13 +412,13 @@ export function main() {
               expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
 
-            it('sets the out marker to the duration', () => {
+            it('undefines the out marker even when duration is set', () => {
               serviceUnderTest.updateWith({ duration: 147.148 });
 
               serviceUnderTest.updateWith({ outMarker: 'clear' });
 
               expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(frameNumberFor(42.43));
-              expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(147.148));
+              expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
           });
         });
@@ -444,20 +444,20 @@ export function main() {
           });
 
           describe('as \'clear\'', () => {
-            it('sets the markers to 0 and undefined when duration isn\'t set', () => {
+            it('undefines the markers when duration isn\'t set', () => {
               serviceUnderTest.updateWith({ inMarker: 'clear', outMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
               expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
 
-            it('sets the markers to the edges when duration is set', () => {
+            it('undefines the markers even when duration is set', () => {
               serviceUnderTest.updateWith({ duration: 301.302 });
 
               serviceUnderTest.updateWith({ inMarker: 'clear', outMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
-              expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(301.302));
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
+              expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
           });
         });
@@ -486,20 +486,20 @@ export function main() {
           });
 
           describe('as \'clear\'', () => {
-            it('sets the markers to 0 and undefined when duration isn\'t set', () => {
+            it('undefines the markers when duration isn\'t set', () => {
               serviceUnderTest.updateWith({ inMarker: 'clear', outMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
               expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
 
-            it('sets the markers to the edges when the duration is set', () => {
-              serviceUnderTest.updateWith({ duration: 402.403 });
+            it('undefines the markers even when duration is set', () => {
+              serviceUnderTest.updateWith({ duration: 301.302 });
 
               serviceUnderTest.updateWith({ inMarker: 'clear', outMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
-              expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(402.403));
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
+              expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
           });
         });
@@ -519,20 +519,20 @@ export function main() {
           });
 
           describe('as \'clear\'', () => {
-            it('sets the markers to 0 and undefined when duration isn\'t set', () => {
+            it('undefines the markers when duration isn\'t set', () => {
               serviceUnderTest.updateWith({ inMarker: 'clear', outMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
               expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
 
-            it('sets the markers to the edges when the duration is set', () => {
-              serviceUnderTest.updateWith({ duration: 298.299 });
+            it('undefines the markers even when duration is set', () => {
+              serviceUnderTest.updateWith({ duration: 301.302 });
 
               serviceUnderTest.updateWith({ inMarker: 'clear', outMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
-              expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(298.299));
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
+              expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
           });
         });
@@ -564,20 +564,20 @@ export function main() {
           });
 
           describe('as \'clear\'', () => {
-            it('sets the markers to 0 and undefined when duration isn\'t set', () => {
+            it('undefines the markers when duration isn\'t set', () => {
               serviceUnderTest.updateWith({ inMarker: 'clear', outMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
               expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
 
-            it('sets the markers to the edges when the duration is set', () => {
-              serviceUnderTest.updateWith({ duration: 623.624 });
+            it('undefines the markers even when duration is set', () => {
+              serviceUnderTest.updateWith({ duration: 301.302 });
 
               serviceUnderTest.updateWith({ inMarker: 'clear', outMarker: 'clear' });
 
-              expect(serviceUnderTest.snapshot.inMarkerFrame.frameNumber).toBe(0);
-              expect(serviceUnderTest.snapshot.outMarkerFrame.frameNumber).toBe(frameNumberFor(623.624));
+              expect(serviceUnderTest.snapshot.inMarkerFrame).toBeUndefined();
+              expect(serviceUnderTest.snapshot.outMarkerFrame).toBeUndefined();
             });
           });
         });

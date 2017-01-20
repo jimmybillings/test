@@ -40,11 +40,6 @@ export class WzAdvancedPlayerComponent {
     this.playerStateService.updateWith(changes);
   }
 
-  public subclip(params: SubclipMarkers): void {
-    console.log(`APC subclip markers: ${params.in} - ${params.out}`);
-    this.onSubclip.emit(params);
-  }
-
   public handle(request: PlayerRequest): void {
     const state: PlayerState = this.playerStateService.snapshot;
 
@@ -54,6 +49,9 @@ export class WzAdvancedPlayerComponent {
         break;
       case PlayerRequestType.PlayWithinMarkers:
         this.player.playRange(state.inMarkerFrame.asSeconds(), state.outMarkerFrame.asSeconds());
+        break;
+      case PlayerRequestType.SaveMarkers:
+        this.onSubclip.emit({ in: state.inMarkerFrame.frameNumber, out: state.outMarkerFrame.frameNumber });
         break;
       case PlayerRequestType.SeekToInMarker:
         this.player.seekTo(state.inMarkerFrame.asSeconds());
