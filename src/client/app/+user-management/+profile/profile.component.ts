@@ -28,7 +28,7 @@ export class ProfileComponent implements OnDestroy, OnInit {
   }
 
   public comingSoonDialog() {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(WzComingSoonComponent, { width: '400px', height: '160px' });
+    let dialogRef: MdDialogRef<any> = this.dialog.open(WzComingSoonComponent, { width: '333px' });
     dialogRef.componentInstance.dialog = dialogRef;
   }
 }

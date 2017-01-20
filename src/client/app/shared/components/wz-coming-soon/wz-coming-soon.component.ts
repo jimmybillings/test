@@ -11,7 +11,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
     </md-card-actions>
   </md-card>`,
   styles: [
-    'md-card{ box-shadow: none; padding: 0; height: 50px;}'
+    'md-card{ box-shadow: none; padding: 6px 10px 13px;}'
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
