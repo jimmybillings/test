@@ -1,13 +1,13 @@
-import { MarkerSeekButton } from './marker-seek-button.component';
+import { MarkerSeekButtonComponent } from './marker-seek-button.component';
 import { PlayerState, PlayerRequestType } from '../../../interfaces/player.interface';
 import { Frame } from 'wazee-frame-formatter';
 
 export function main() {
   describe('Marker Seek Button', () => {
-    let componentUnderTest: MarkerSeekButton;
+    let componentUnderTest: MarkerSeekButtonComponent;
 
     beforeEach(() => {
-      componentUnderTest = new MarkerSeekButton();
+      componentUnderTest = new MarkerSeekButtonComponent();
       componentUnderTest.request.emit = jasmine.createSpy('request emitter');
 
       componentUnderTest.playerState = {

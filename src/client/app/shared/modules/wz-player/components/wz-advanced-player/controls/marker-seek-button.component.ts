@@ -14,7 +14,7 @@ import { MarkerType, PlayerState, PlayerRequest, PlayerRequestType } from '../..
   `
 })
 
-export class MarkerSeekButton {
+export class MarkerSeekButtonComponent {
   @Input() type: MarkerType;
   @Input() playerState: PlayerState;
   @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
