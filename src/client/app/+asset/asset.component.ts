@@ -94,7 +94,7 @@ export class AssetComponent implements OnInit {
 
   public getPricingAttributes(rightsReproduction: string): void {
     this.assetService.getPriceAttributes(rightsReproduction).subscribe((options: any) => {
-      let dialogRef: MdDialogRef<any> = this.dialog.open(WzPricingComponent, { width: '500px' });
+      let dialogRef: MdDialogRef<any> = this.dialog.open(WzPricingComponent);
       dialogRef.componentInstance.dialog = dialogRef;
       dialogRef.componentInstance.options = options;
       dialogRef.afterClosed().subscribe(data => {

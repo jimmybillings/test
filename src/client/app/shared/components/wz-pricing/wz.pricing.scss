@@ -1,17 +1,4 @@
 div.wz-dialog.pricing {
-  button.close {
-    float: right;
-    margin-top: -30px;
-  }
-  h3 {
-    color: md-color($md-foreground, secondary-text);
-    font-size: 24px;
-    font-weight: 400;
-    text-align: center;
-  }
-  md-dialog-content {
-    clear:both;
-  }
   form {
     padding-top:rem(2);
     span.input {
@@ -22,8 +9,8 @@ div.wz-dialog.pricing {
     }
     div.submit-btn {
       button.submit {
-        width: 70%;
-        margin: rem(2) 0;
+        width: 77%;
+        margin: rem(2) 0 0;
       }
     }
   } 
