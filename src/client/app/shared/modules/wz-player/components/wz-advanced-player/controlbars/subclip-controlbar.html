@@ -3,15 +3,11 @@
 
   <marker-time-display [type]="'in'" [playerState]="playerState"></marker-time-display>
 
-  <button class="is-outlined set-marker" md-button title="{{ 'ASSET.ADV_PLAYER.SET_IN_BTN_TITLE' | translate }}" (click)="setInMarker()">
-    In
-  </button>
+  <marker-set-button [type]="'in'" (request)="forward($event)"></marker-set-button>
 
   <markers-playback-button [playerState]="playerState" (request)="forward($event)"></markers-playback-button>
 
-  <button class="is-outlined set-marker" md-button title="{{ 'ASSET.ADV_PLAYER.SET_OUT_BTN_TITLE' | translate }}" (click)="setOutMarker()">
-    Out
-  </button>
+  <marker-set-button [type]="'out'" (request)="forward($event)"></marker-set-button>
 
   <marker-time-display [type]="'out'" [playerState]="playerState"></marker-time-display>
 
