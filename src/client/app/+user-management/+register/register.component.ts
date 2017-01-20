@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   public openTermsDialog() {
     this.document.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
-      let dialogRef: MdDialogRef<any> = this.dialog.open(WzTermsComponent, { width: '50%', height: '600px' });
+      let dialogRef: MdDialogRef<any> = this.dialog.open(WzTermsComponent);
       dialogRef.componentInstance.terms = terms;
       dialogRef.componentInstance.dialog = dialogRef;
     });

@@ -1,33 +1,10 @@
-div.wz-dialog.pricing {
-  button.close {
-    float: right;
-    margin-top: -30px;
+.wz-dialog.pricing form {
+  .input md-select {
+    padding: rem(1);
+    width: 100%;
   }
-  h3 {
-    color: md-color($md-foreground, secondary-text);
-    font-size: 24px;
-    font-weight: 400;
-    text-align: center;
-    &.disabled {
-      color: rgba(md-color($md-grey, 500), 0.7);
-    }
+  .submit-btn button.submit {
+    width: 88%;
+    margin: rem(1.2) 0 0;
   }
-  md-dialog-content {
-    clear:both;
-  }
-  form {
-    padding-top:rem(2);
-    div.input {
-      md-select {
-        padding: rem(1);
-        width: 100%;
-      }
-    }
-    div.submit-btn {
-      button.submit {
-        width: 70%;
-        margin: rem(2) 0;
-      }
-    }
-  } 
-} 
+}

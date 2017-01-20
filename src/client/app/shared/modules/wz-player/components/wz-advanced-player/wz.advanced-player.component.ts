@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 
 import { PlayerStateService } from '../../services/player-state.service';
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
+import { SubclipMarkers } from '../../../../interfaces/asset.interface';
 import { PlayerState, PlayerStateChanges, PlayerRequest, PlayerRequestType } from '../../interfaces/player.interface';
 
 @Component({
@@ -14,6 +15,7 @@ import { PlayerState, PlayerStateChanges, PlayerRequest, PlayerRequestType } fro
 
 export class WzAdvancedPlayerComponent {
   @Input() window: any;
+  @Output() onSubclip = new EventEmitter();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
   private currentAsset: any = null;
@@ -22,6 +24,8 @@ export class WzAdvancedPlayerComponent {
   public set asset(newAsset: any) {
     this.playerStateService.reset();
     this.currentAsset = newAsset;
+
+    if (this.assetIsVideo()) this.updateStateFrameRate();
   }
 
   public get asset(): any {
@@ -48,6 +52,9 @@ export class WzAdvancedPlayerComponent {
       case PlayerRequestType.PlayWithinMarkers:
         this.player.playRange(state.inMarkerFrame.asSeconds(), state.outMarkerFrame.asSeconds());
         break;
+      case PlayerRequestType.SaveMarkers:
+        this.onSubclip.emit({ in: state.inMarkerFrame.frameNumber, out: state.outMarkerFrame.frameNumber });
+        break;
       case PlayerRequestType.SeekToInMarker:
         this.player.seekTo(state.inMarkerFrame.asSeconds());
         break;
@@ -64,5 +71,37 @@ export class WzAdvancedPlayerComponent {
         this.player.togglePlayback();
         break;
     }
+  }
+
+  private updateStateFrameRate(): void {
+    let frameRateMetadata: string = this.findMetadataValueFor('Format.FrameRate', this.currentAsset);
+
+    if (frameRateMetadata === null) {
+      const assetName: string = this.findMetadataValueFor('name', this.currentAsset) || 'asset';
+
+      console.error(`Could not find 'Format.FrameRate' metadata for ${assetName} (id=${this.currentAsset.assetId}).` +
+        ' Using arbitrary frameRate of 29.97fps, which could be completely wrong.');
+
+      frameRateMetadata = '29.97';
+    }
+
+    this.playerStateService.updateWith({ framesPerSecond: parseFloat(frameRateMetadata) });
+  }
+
+  private findMetadataValueFor(metadataName: string, object: any): string {
+    if (object !== Object(object)) return null;
+
+    const keys = Object.keys(object);
+
+    if (keys.length === 2 && keys.sort().join('|') === 'name|value' && object.name === metadataName) {
+      return object.value;
+    }
+
+    for (var key of keys) {
+      const value = this.findMetadataValueFor(metadataName, object[key]);
+      if (value) return value;
+    }
+
+    return null;
   }
 }

@@ -1,29 +1,15 @@
 <section flex="80"  layout-align="start stretch">
-  <button md-icon-button [disabled]="!playerState.inMarkerFrame"  title="{{ 'ASSET.ADV_PLAYER.SEEK_IN_BTN_TITLE' | translate }}" (click)="seekToInMarker()">
-    <md-icon>keyboard_tab</md-icon>
-  </button>
-  <span class="timecode">{{ playerState.inMarkerFrame | timecode }}</span>
-  <button class="is-outlined set-marker" md-button title="{{ 'ASSET.ADV_PLAYER.SET_IN_BTN_TITLE' | translate }}" (click)="setInMarker()">
-    In
-  </button>
-  <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.PLAY_IN_OUT_BTN_TITLE' | translate }}" (click)="playInToOut()">
-    <md-icon>play_circle_filled</md-icon>
-  </button>
-  <button class="is-outlined set-marker" md-button title="{{ 'ASSET.ADV_PLAYER.SET_OUT_BTN_TITLE' | translate }}" (click)="setOutMarker()">
-    Out
-  </button>
-  <span class="timecode">{{ playerState.outMarkerFrame | timecode }}</span>
-  <button class="seek-out" md-icon-button [disabled]="!playerState.outMarkerFrame" title="{{ 'ASSET.ADV_PLAYER.SEEK_OUT_BTN_TITLE' | translate }}" (click)="seekToOutMarker()">
-    <md-icon>keyboard_tab</md-icon>
-  </button>
-  <button md-icon-button [disabled]="!playerState.outMarkerFrame && !playerState.outMarkerFrame" title="{{ 'ASSET.ADV_PLAYER.CLEAR_IN_OUT_BTN_TITLE' | translate }}" (click)="clear()">
-    <md-icon>cancel</md-icon>
-  </button>
+  <marker-seek-button [type]="'in'" [playerState]="playerState" (request)="forward($event)"></marker-seek-button>
+  <marker-time-display [type]="'in'" [playerState]="playerState"></marker-time-display>
+  <marker-set-button [type]="'in'" (request)="forward($event)"></marker-set-button>
+  <markers-playback-button [playerState]="playerState" (request)="forward($event)"></markers-playback-button>
+  <marker-set-button [type]="'out'" (request)="forward($event)"></marker-set-button>
+  <marker-time-display [type]="'out'" [playerState]="playerState"></marker-time-display>
+  <marker-seek-button [type]="'out'" [playerState]="playerState" (request)="forward($event)"></marker-seek-button>
+  <markers-clear-button [playerState]="playerState" (request)="forward($event)"></markers-clear-button>
 </section>
 <nav class="subclip-options" flex="20" layout-align="end stretch">
-  <button [disabled]="true" md-icon-button title="{{ 'ASSET.ADV_PLAYER.SAVE_BTN_TITLE' | translate }}">
-    <md-icon>library_add</md-icon>
-  </button>
+  <markers-save-button [playerState]="playerState" (request)="forward($event)"></markers-save-button>
   <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.SIMPLE_BTN_TITLE' | translate }}">
     <md-icon>ondemand_video</md-icon>
   </button>

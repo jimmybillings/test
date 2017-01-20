@@ -64,20 +64,7 @@ collection-form .wz-dialog {
     width: calc(100% - 70px);
   }
 }
-.wz-dialog collection-form {
-  @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-    width: calc(100% - 85px);
-    padding: 33px 34px 24px 34px;
-  }
-}  
 
-.wz-dialog .wz-form-card {
-  padding: 20px;
-  h3 {
-    font-size: 24px;
-    font-weight: 400;
-  }
-}
 .suggestions-menu {
   @include transition($swift-ease-out);
   background-color: md-color($md-background, card);

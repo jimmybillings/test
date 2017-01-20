@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { AssetService } from '../shared/services/asset.service';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
+// import { SubclipMarkers } from '../shared/interfaces/asset.interface';
 import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
@@ -59,7 +60,12 @@ export class AssetComponent implements OnInit {
 
   public addToCollection(params: any): void {
     this.userPreference.openCollectionTray();
-    this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
+    if (params.markers) {
+      console.log(`asset component subclip markers: ${params.markers.in} - ${params.markers.out}`);
+      this.activeCollection.addAsset(params.collection.id, params.asset, params.markers).subscribe();
+    } else {
+      this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
+    };
   }
 
   public removeFromCollection(params: any): void {
@@ -95,7 +101,6 @@ export class AssetComponent implements OnInit {
     this.assetService.getPriceAttributes(rightsReproduction).subscribe((attributes: any) => {
       let dialogRef: MdDialogRef<any> = this.dialog.open(WzPricingComponent, { width: '500px' });
       dialogRef.componentInstance.calculatedPrice = this.calculatedPrice ? this.calculatedPrice : 'PRICING.PENDING_SELECTION';
-      console.log(this.calculatedPrice);
       dialogRef.componentInstance.pricingPreferences = this.userPreference.state.pricingPreferences;
       dialogRef.componentInstance.dialog = dialogRef;
       dialogRef.componentInstance.attributes = attributes;

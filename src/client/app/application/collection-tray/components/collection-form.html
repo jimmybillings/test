@@ -1,20 +1,19 @@
-<div class="wz-dialog" flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
-  <div class="wz-form-card">
-    <button md-icon-button md-dialog-close title="{{ tr.close | translate }}" type="button" class="close dialog-close">
-      <md-icon>close</md-icon>
-    </button>
-    <h3>
-      {{ tr.title | translate }}
-    </h3>
-    <md-dialog-content *ngIf="fields">
-      <wz-form 
-        [items]="formItems"
-        [serverErrors]= "serverErrors"
-        [submitLabel]="tr.submitLabel" 
-        (formSubmit)="collectionAction($event)"
-        autocomplete="off">
-      </wz-form>
-    </md-dialog-content>
-  </div>
+<div class="wz-dialog">
+  <button md-icon-button md-dialog-close title="{{ tr.close | translate }}" type="button" class="close">
+    <md-icon>close</md-icon>
+  </button>
+  <h1 md-dialog-title>
+    {{ tr.title | translate }}
+  </h1>
+  <md-dialog-content *ngIf="fields">
+    <wz-form 
+      [items]="formItems"
+      [serverErrors]= "serverErrors"
+      [submitLabel]="tr.submitLabel" 
+      (formSubmit)="collectionAction($event)"
+      autocomplete="off">
+    </wz-form>
+  </md-dialog-content>
 </div>
+
 
