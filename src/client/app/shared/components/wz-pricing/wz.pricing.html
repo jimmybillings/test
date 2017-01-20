@@ -3,14 +3,18 @@
   <h3>{{ 'PRICING.CALCULATE_HEADING' | translate }}</h3>
   <md-dialog-content> 
     <form #f="ngForm" (ngSubmit)="onSubmit()">
-      <span *ngFor="let option of options; let i = index" class="input">
+      <div *ngFor="let attribute of attributes; let i = index" class="input">
         <div layout="row" layout-align="center center">
-          <md-select required placeholder="{{option.name}}" [disabled]="parentIsEmpty(option)" [(ngModel)]="form[i].value" name="{{option.name}}">
-            <md-option (onSelect)="clearChildren(option)" *ngFor="let o of validOptionsFor(option)" [value]="o.value">{{o.name}}</md-option>
+          <md-select placeholder="{{attribute.name}}" [disabled]="parentIsEmpty(attribute)" [(ngModel)]="form[i].value" [ngModelOptions]="{standalone: true}">
+            <md-option *ngFor="let option of validOptionsFor(attribute)" (onSelect)="handleSelect(attribute, option)" [value]="option.value">{{option.name}}</md-option>
           </md-select>
         </div>
         <br>
-      </span>
+      </div>
+      <div layout="row" layout-align="center center">
+        <h3 *ngIf="typeof(calculatedPrice) === 'number'" class="md-display-1">{{ calculatedPrice | currency:'USD':true:'1.2-2' }}</h3>
+        <h3 *ngIf="typeof(calculatedPrice) !== 'number'" class="md-display-1 disabled">$({{ calculatedPrice | translate }})</h3>
+      </div>
       <div class="submit-btn" layout="row" layout-align="center center">
         <button [disabled]="formIsInvalid" class="submit" md-raised-button color="primary" type="submit">{{ 'PRICING.CALCULATE_BTN_LABEL' | translate }}</button>
       </div>

@@ -6,27 +6,49 @@ export function main() {
 
     beforeEach(() => {
       componentUnderTest = new WzPricingComponent();
-      componentUnderTest.options = mockOptions();
+      componentUnderTest.attributes = mockOptions();
       componentUnderTest.dialog = {
-        close: jasmine.createSpy('close')
+        close: jasmine.createSpy('close'),
+        componentInstance: {
+          calculatePrice: jasmine.createSpy('calculatePrice')
+        }
       };
     });
 
     describe('ngOnInit()', () => {
-      it('should build the form properly', () => {
+      it('should build the form properly with no preferences', () => {
         componentUnderTest.ngOnInit();
 
         expect(componentUnderTest.form).toEqual([
           { name: 'A', value: '' }, { name: 'B', value: '' }, { name: 'C', value: '' }, { name: 'D', value: '' }
         ]);
       });
+
+      it('should build the form properly with preferences', () => {
+        componentUnderTest.pricingPreferences = {
+          A: 'S',
+          B: 'M',
+          C: 'X',
+          D: 'S'
+        };
+        componentUnderTest.ngOnInit();
+
+        expect(componentUnderTest.form).toEqual([
+          { name: 'A', value: 'S' }, { name: 'B', value: 'M' }, { name: 'C', value: 'X' }, { name: 'D', value: 'S' }
+        ]);
+      });
     });
 
     describe('onSubmit()', () => {
       it('should emit the calculatePricing event with the form', () => {
+        componentUnderTest.ngOnInit();
+        componentUnderTest.calculatedPrice = 10;
         componentUnderTest.onSubmit();
 
-        expect(componentUnderTest.dialog.close).toHaveBeenCalledWith({ attributes: componentUnderTest.form });
+        expect(componentUnderTest.dialog.close).toHaveBeenCalledWith({
+          price: 10, attributes:
+          { A: '', B: '', C: '', D: '' }
+        });
       });
     });
 
@@ -35,14 +57,14 @@ export function main() {
         componentUnderTest.ngOnInit();
       });
 
-      it('should return false if the option is the parent of all other options', () => {
-        let result = componentUnderTest.parentIsEmpty(componentUnderTest.options[0]);
+      it('should return false if the attribute is the parent of all other attribute', () => {
+        let result = componentUnderTest.parentIsEmpty(componentUnderTest.attributes[0]);
 
         expect(result).toBe(false);
       });
 
-      it('should return true if the form value of the option\'s parent is empty', () => {
-        let result = componentUnderTest.parentIsEmpty(componentUnderTest.options[1]);
+      it('should return true if the form value of the attributes parent is empty', () => {
+        let result = componentUnderTest.parentIsEmpty(componentUnderTest.attributes[1]);
 
         expect(result).toBe(true);
       });
@@ -54,7 +76,7 @@ export function main() {
           { name: 'C', value: '' },
           { name: 'D', value: '' }
         ];
-        let result = componentUnderTest.parentIsEmpty(componentUnderTest.options[2]);
+        let result = componentUnderTest.parentIsEmpty(componentUnderTest.attributes[2]);
 
         expect(result).toBe(false);
       });
@@ -67,22 +89,22 @@ export function main() {
           { name: 'D', value: '' }
         ];
 
-        let result = componentUnderTest.parentIsEmpty(componentUnderTest.options[2]);
+        let result = componentUnderTest.parentIsEmpty(componentUnderTest.attributes[2]);
 
         expect(result).toBe(true);
       });
     });
 
     describe('validOptionsFor()', () => {
-      it('should return if the options parent is empty', () => {
+      it('should return if the attributes parent is empty', () => {
         componentUnderTest.ngOnInit();
-        let result = componentUnderTest.validOptionsFor(componentUnderTest.options[1]);
+        let result = componentUnderTest.validOptionsFor(componentUnderTest.attributes[1]);
         expect(result).toBeUndefined();
       });
 
       it('should return valid options for the primary attribute', () => {
         componentUnderTest.ngOnInit();
-        let result = componentUnderTest.validOptionsFor(componentUnderTest.options[0]);
+        let result = componentUnderTest.validOptionsFor(componentUnderTest.attributes[0]);
 
         expect(result).toEqual(mockOptions()[0].attributeList);
       });
@@ -96,9 +118,9 @@ export function main() {
           { name: 'D', value: '' }
         ];
 
-        let result = componentUnderTest.validOptionsFor(componentUnderTest.options[1]);
+        let result = componentUnderTest.validOptionsFor(componentUnderTest.attributes[1]);
 
-        expect(result).toEqual([{ name: 'J' }, { name: 'K' }, { name: 'L' }]);
+        expect(result).toEqual([{ name: 'J', value: 'J' }, { name: 'K', value: 'K' }, { name: 'L', value: 'L' }]);
       });
 
       it('should set the form value if there is only 1 valid child option', () => {
@@ -110,9 +132,9 @@ export function main() {
           { name: 'D', value: '' }
         ];
 
-        let result = componentUnderTest.validOptionsFor(componentUnderTest.options[1]);
+        let result = componentUnderTest.validOptionsFor(componentUnderTest.attributes[1]);
 
-        expect(result).toEqual([{ name: 'N' }]);
+        expect(result).toEqual([{ name: 'N', value: 'N' }]);
         expect(componentUnderTest.form).toEqual([
           { name: 'A', value: 'T' },
           { name: 'B', value: 'N' },
@@ -128,7 +150,7 @@ export function main() {
           { name: 'C', value: 'Z' },
           { name: 'D', value: '' }
         ];
-        componentUnderTest.validOptionsFor(componentUnderTest.options[3]);
+        componentUnderTest.validOptionsFor(componentUnderTest.attributes[3]);
 
         expect(componentUnderTest.dialog.close).toHaveBeenCalledWith({ error: null });
         expect(componentUnderTest.form).toEqual([
@@ -137,6 +159,13 @@ export function main() {
           { name: 'C', value: '' },
           { name: 'D', value: '' }
         ]);
+      });
+    });
+
+    describe('typeOf()', () => {
+      it('should return the type of the data given', () => {
+        expect(componentUnderTest.typeof(1)).toBe('number');
+        expect(componentUnderTest.typeof(1)).toBe(typeof (1));
       });
     });
 
@@ -151,33 +180,49 @@ export function main() {
 
       it('should return false if the the form is complete', () => {
         componentUnderTest.form = [
-          { name: 'A', value: 'FDAAF' },
-          { name: 'B', value: 'ADS' },
-          { name: 'C', value: 'ADSFSDf' },
-          { name: 'D', value: 'ADFDF' }
+          { name: 'A', value: 'R' },
+          { name: 'B', value: 'J' },
+          { name: 'C', value: 'V' },
+          { name: 'D', value: 'Q' }
         ];
         expect(componentUnderTest.formIsInvalid).toBe(false);
       });
     });
 
-    describe('clearChildren()', () => {
-      it('should clear all the children of a given field', () => {
+    describe('handleSelect()', () => {
+      beforeEach(() => {
         componentUnderTest.ngOnInit();
         componentUnderTest.form = [
-          { name: 'A', value: 'FDAAF' },
-          { name: 'B', value: 'ADS' },
-          { name: 'C', value: 'ADSFSDf' },
-          { name: 'D', value: 'ADFDF' }
+          { name: 'A', value: 'R' },
+          { name: 'B', value: 'J' },
+          { name: 'C', value: 'V' },
+          { name: 'D', value: 'Q' }
         ];
+      });
 
-        componentUnderTest.clearChildren(0);
+      it('should clear all the children of a given field', () => {
+        let attribute: any = componentUnderTest.attributes[0];
+        let option: any = attribute.attributeList[0];
+
+        componentUnderTest.handleSelect(attribute, option);
 
         expect(componentUnderTest.form).toEqual([
-          { name: 'A', value: 'FDAAF' },
+          { name: 'A', value: 'R' },
           { name: 'B', value: '' },
           { name: 'C', value: '' },
           { name: 'D', value: '' }
         ]);
+      });
+
+      it('should calculate the price if the last field is filled in', () => {
+        let attribute: any = componentUnderTest.attributes[3];
+        let option: any = attribute.attributeList[0];
+
+        componentUnderTest.handleSelect(attribute, option);
+
+        expect(componentUnderTest.dialog.componentInstance.calculatePrice).toHaveBeenCalledWith({
+          A: 'R', B: 'J', C: 'V', D: 'Q'
+        });
       });
     });
   });
@@ -190,9 +235,9 @@ export function main() {
         'name': 'A',
         'displayName': 'A',
         'attributeList': [
-          { name: 'R' },
-          { name: 'S' },
-          { name: 'T' }
+          { name: 'R', value: 'R' },
+          { name: 'S', value: 'S' },
+          { name: 'T', value: 'T' }
         ],
         'validChildChoicesMap': {
           'R': ['J', 'K', 'L'],
@@ -206,11 +251,11 @@ export function main() {
         'name': 'B',
         'displayName': 'B',
         'attributeList': [
-          { name: 'J' },
-          { name: 'K' },
-          { name: 'L' },
-          { name: 'M' },
-          { name: 'N' }
+          { name: 'J', value: 'J' },
+          { name: 'K', value: 'K' },
+          { name: 'L', value: 'L' },
+          { name: 'M', value: 'M' },
+          { name: 'N', value: 'N' }
         ],
         'validChildChoicesMap': {
           'J': ['U', 'V'],
@@ -226,11 +271,11 @@ export function main() {
         'name': 'C',
         'displayName': 'C',
         'attributeList': [
-          { name: 'V' },
-          { name: 'W' },
-          { name: 'X' },
-          { name: 'Y' },
-          { name: 'Z' }
+          { name: 'V', value: 'V' },
+          { name: 'W', value: 'W' },
+          { name: 'X', value: 'X' },
+          { name: 'Y', value: 'Y' },
+          { name: 'Z', value: 'Z' }
         ],
         'validChildChoicesMap': {
           'V': ['Q'],
@@ -245,10 +290,10 @@ export function main() {
         'name': 'D',
         'displayName': 'D',
         'attributeList': [
-          { name: 'Q' },
-          { name: 'R' },
-          { name: 'S' },
-          { name: 'T' }
+          { name: 'Q', value: 'Q' },
+          { name: 'R', value: 'R' },
+          { name: 'S', value: 'S' },
+          { name: 'T', value: 'T' }
         ]
       }
     ];

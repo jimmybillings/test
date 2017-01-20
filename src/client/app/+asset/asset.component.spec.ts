@@ -19,11 +19,15 @@ export function main() {
       };
       mockSearchContext = {};
       mockUiState = {};
-      mockUserPreference = { openCollectionTray: jasmine.createSpy('openCollectionTray') };
+      mockUserPreference = {
+        openCollectionTray: jasmine.createSpy('openCollectionTray'),
+        state: { pricingPreferences: 'thePricingPreferences' }
+      };
       mockAssetService = {
         downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})),
         getPrice: jasmine.createSpy('getPrice').and.returnValue(Observable.of({})),
-        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({}))
+        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({})),
+        state: { assetId: 123456 }
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
       mockNotification = { create: jasmine.createSpy('create') };
@@ -111,15 +115,15 @@ export function main() {
     describe('addAssetToCart()', () => {
       it('Should call the cart summary service with correct params to add an asset to the cart', () => {
         componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
-        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith(123123, 'Target');
+        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith(123123, 'Target', undefined, undefined);
       });
     });
 
     describe('onCalculatePrice', () => {
       it('should call the getPrice method on the assetService', () => {
-        componentUnderTest.calculatePrice({ assetId: 1, attributes: { 'a': 'b', 'c': 'd' } });
+        componentUnderTest.calculatePrice({ 'a': 'b', 'c': 'd' });
 
-        expect(mockAssetService.getPrice).toHaveBeenCalledWith(1, { 'a': 'b', 'c': 'd' });
+        expect(mockAssetService.getPrice).toHaveBeenCalledWith(123456, { 'a': 'b', 'c': 'd' });
       });
     });
 

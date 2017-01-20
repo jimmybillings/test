@@ -117,7 +117,7 @@
 								<span class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
 							</div>
 							<div *ngIf="calculatedPrice" class="calculated-price">
-								<span class="price">{{calculatedPrice.price | currency:'USD':true:'1.2-2'}}</span>
+								<span class="price">{{calculatedPrice | currency:'USD':true:'1.2-2'}}</span>
 							</div>
 							<div *ngIf="(!asset.price || asset.price === 0)" class="contact-us-pricing">
 								{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}

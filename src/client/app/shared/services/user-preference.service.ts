@@ -10,7 +10,8 @@ const defaultPreferences: any = {
   collectionTrayIsOpen: false,
   searchIsOpen: true,
   sortId: 0,
-  displayFilterTree: false
+  displayFilterTree: false,
+  pricingPreferences: ''
 };
 
 export const userPreferences: ActionReducer<any> = (state = defaultPreferences, action: Action) => {
@@ -74,6 +75,10 @@ export class UserPreferenceService {
     this.update({ displayFilterTree: !this.state.displayFilterTree });
   }
 
+  public updatePricingPreferences(attributes: any) {
+    this.update({ pricingPreferences: attributes });
+  }
+
   public set(preferences: any): void {
     this.updateStore(this.formatResponse(preferences));
   }
@@ -85,7 +90,7 @@ export class UserPreferenceService {
   private formatResponse(preferences: any): any {
     for (let prefKey in preferences) {
       let newValue: any = this.stringToBool(preferences[prefKey]);
-      preferences[prefKey] = newValue;
+      preferences[prefKey] = JSON.parse(newValue);
     }
     return preferences;
   }
@@ -113,7 +118,7 @@ export class UserPreferenceService {
     for (let preference in preferences) {
       return {
         key: preference,
-        value: preferences[preference]
+        value: JSON.stringify(preferences[preference])
       };
     };
   }

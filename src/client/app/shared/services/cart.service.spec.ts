@@ -136,7 +136,7 @@ export function main() {
       });
 
       it('calls the api service correctly - no transcode target', () => {
-        const body: ApiBody = { lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: 'master_copy' } };
+        const body: ApiBody = { lineItem: { asset: { assetId: '10836' } } };
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
 
         serviceUnderTest.addAssetToProjectInCart('10836');
