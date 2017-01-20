@@ -3,7 +3,7 @@ import { PlayerState, PlayerRequestType } from '../../../interfaces/player.inter
 import { Frame } from 'wazee-frame-formatter';
 
 export function main() {
-  describe('Marker Seek Button', () => {
+  describe('Marker Seek Button Component', () => {
     let componentUnderTest: MarkerSeekButtonComponent;
 
     beforeEach(() => {

@@ -2,7 +2,7 @@ import { MarkersClearButtonComponent } from './markers-clear-button.component';
 import { PlayerRequestType } from '../../../interfaces/player.interface';
 
 export function main() {
-  describe('Markers Playback Button Component', () => {
+  describe('Markers Clear Button Component', () => {
     let componentUnderTest: MarkersClearButtonComponent;
 
     beforeEach(() => {

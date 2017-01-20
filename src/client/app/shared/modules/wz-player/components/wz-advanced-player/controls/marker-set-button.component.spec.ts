@@ -2,7 +2,7 @@ import { MarkerSetButtonComponent } from './marker-set-button.component';
 import { PlayerRequestType } from '../../../interfaces/player.interface';
 
 export function main() {
-  describe('Marker Set Button', () => {
+  describe('Marker Set Button Component', () => {
     let componentUnderTest: MarkerSetButtonComponent;
 
     beforeEach(() => {
