@@ -46,3 +46,5 @@ export interface PlayerRequest {
   type: PlayerRequestType;
   payload?: Object;
 }
+
+export type MarkerType = 'in' | 'out';

@@ -2,7 +2,9 @@
   <button md-icon-button [disabled]="!playerState.inMarkerFrame"  title="{{ 'ASSET.ADV_PLAYER.SEEK_IN_BTN_TITLE' | translate }}" (click)="seekToInMarker()">
     <md-icon>keyboard_tab</md-icon>
   </button>
-  <span class="timecode">{{ playerState.inMarkerFrame | timecode }}</span>
+
+  <marker-time-display [type]="'in'" [playerState]="playerState"></marker-time-display>
+
   <button class="is-outlined set-marker" md-button title="{{ 'ASSET.ADV_PLAYER.SET_IN_BTN_TITLE' | translate }}" (click)="setInMarker()">
     In
   </button>
@@ -12,7 +14,9 @@
   <button class="is-outlined set-marker" md-button title="{{ 'ASSET.ADV_PLAYER.SET_OUT_BTN_TITLE' | translate }}" (click)="setOutMarker()">
     Out
   </button>
-  <span class="timecode">{{ playerState.outMarkerFrame | timecode }}</span>
+
+  <marker-time-display [type]="'out'" [playerState]="playerState"></marker-time-display>
+
   <button class="seek-out" md-icon-button [disabled]="!playerState.outMarkerFrame" title="{{ 'ASSET.ADV_PLAYER.SEEK_OUT_BTN_TITLE' | translate }}" (click)="seekToOutMarker()">
     <md-icon>keyboard_tab</md-icon>
   </button>
