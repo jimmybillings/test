@@ -10,6 +10,7 @@ import { PlayerControlbarComponent } from './components/wz-advanced-player/contr
 import { SubclipControlbarComponent } from './components/wz-advanced-player/controlbars/subclip-controlbar.component';
 import { MarkersClearButtonComponent } from './components/wz-advanced-player/controls/markers-clear-button.component';
 import { MarkersPlaybackButtonComponent } from './components/wz-advanced-player/controls/markers-playback-button.component';
+import { MarkersSaveButtonComponent } from './components/wz-advanced-player/controls/markers-save-button.component';
 import { MarkerSeekButtonComponent } from './components/wz-advanced-player/controls/marker-seek-button.component';
 import { MarkerSetButtonComponent } from './components/wz-advanced-player/controls/marker-set-button.component';
 import { MarkerTimeDisplayComponent } from './components/wz-advanced-player/controls/marker-time-display.component';
@@ -30,6 +31,7 @@ import { TimeDisplayComponent } from './components/wz-advanced-player/controls/t
     SubclipControlbarComponent,
     MarkersClearButtonComponent,
     MarkersPlaybackButtonComponent,
+    MarkersSaveButtonComponent,
     MarkerSeekButtonComponent,
     MarkerSetButtonComponent,
     MarkerTimeDisplayComponent,

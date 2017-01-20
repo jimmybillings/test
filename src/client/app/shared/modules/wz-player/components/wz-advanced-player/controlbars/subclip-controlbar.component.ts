@@ -12,7 +12,6 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 export class SubclipControlbarComponent {
   @Input() playerState: PlayerState;
   @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
-  @Output() onSubclip = new EventEmitter();
 
   public forward(request: PlayerRequest): void {
     this.request.emit(request);
