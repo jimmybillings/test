@@ -22,14 +22,6 @@ export class SubclipControlbarComponent {
     this.request.emit({ type: PlayerRequestType.SetOutMarker });
   }
 
-  public seekToInMarker(): void {
-    this.request.emit({ type: PlayerRequestType.SeekToInMarker });
-  }
-
-  public seekToOutMarker(): void {
-    this.request.emit({ type: PlayerRequestType.SeekToOutMarker });
-  }
-
   public clear(): void {
     this.request.emit({ type: PlayerRequestType.ClearMarkers });
   }

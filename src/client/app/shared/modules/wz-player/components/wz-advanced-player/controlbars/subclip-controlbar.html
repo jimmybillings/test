@@ -1,7 +1,5 @@
 <section flex="80"  layout-align="start stretch">
-  <button md-icon-button [disabled]="!playerState.inMarkerFrame"  title="{{ 'ASSET.ADV_PLAYER.SEEK_IN_BTN_TITLE' | translate }}" (click)="seekToInMarker()">
-    <md-icon>keyboard_tab</md-icon>
-  </button>
+  <marker-seek-button [type]="'in'" [playerState]="playerState" (request)="forward($event)"></marker-seek-button>
 
   <marker-time-display [type]="'in'" [playerState]="playerState"></marker-time-display>
 
@@ -17,9 +15,8 @@
 
   <marker-time-display [type]="'out'" [playerState]="playerState"></marker-time-display>
 
-  <button class="seek-out" md-icon-button [disabled]="!playerState.outMarkerFrame" title="{{ 'ASSET.ADV_PLAYER.SEEK_OUT_BTN_TITLE' | translate }}" (click)="seekToOutMarker()">
-    <md-icon>keyboard_tab</md-icon>
-  </button>
+  <marker-seek-button [type]="'out'" [playerState]="playerState" (request)="forward($event)"></marker-seek-button>
+
   <button md-icon-button [disabled]="!playerState.inMarkerFrame && !playerState.outMarkerFrame" title="{{ 'ASSET.ADV_PLAYER.CLEAR_IN_OUT_BTN_TITLE' | translate }}" (click)="clear()">
     <md-icon>cancel</md-icon>
   </button>
