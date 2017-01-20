@@ -296,12 +296,23 @@ wz-item-search-form {
   }
 }
 // Copy legacy link.This may change into copy share link
-.wz-legacy-link {
-  .dialog-title {
-    font-size: 24px;
-    font-weight: 400;
-    margin-top: 0;
+.md-dialog-container .wz-dialog.wz-legacy-link {
+  padding: rem(.2) rem(.2) rem(.6);
+  width: rem(42.0);
+  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
+    width: 100%;
   }
+  [md-dialog-title] {
+    text-align: left;
+    color: md-color($md-foreground, text);
+    margin-bottom: rem(1.0);
+  }
+  p.dialog-summary {
+    margin: 0 0 rem(1.2);
+    font-size: rem(1.4);
+  }
+}
+.wz-legacy-link {
   .link-wrapper {
     padding: rem(.2);
     white-space: nowrap;

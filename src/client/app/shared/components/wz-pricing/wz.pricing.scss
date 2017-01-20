@@ -1,17 +1,10 @@
-.wz-dialog.pricing {
-  form {
-    padding-top:rem(2);
-    .input {
-      md-select {
-        padding: rem(1);
-        width: 100%;
-      }
-    }
-    .submit-btn {
-      button.submit {
-        width: 77%;
-        margin: rem(2) 0 0;
-      }
-    }
-  } 
+.wz-dialog.pricing form {
+  .input md-select {
+    padding: rem(1);
+    width: 100%;
+  }
+  .submit-btn button.submit {
+    width: 88%;
+    margin: rem(1.2) 0 0;
+  }
 } 

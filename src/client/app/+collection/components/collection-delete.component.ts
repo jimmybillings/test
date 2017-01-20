@@ -3,7 +3,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 @Component({
   moduleId: module.id,
   selector: 'collection-delete-component',
-  template: `<div>
+  template: `<div class="wz-dialog">
 		<md-card>
 			<md-card-title>{{ 'COLLECTION.INDEX.CONFIRMATION_TITLE' | translate:{collectionName: collection.name} }}</md-card-title>
 			<md-card-subtitle>{{ 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE' | translate }}</md-card-subtitle>
@@ -17,7 +17,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 		</md-card>
 	</div>`,
   styles: [
-    'md-card{ box-shadow: none; padding: 0;}'
+    '.wz-dialog{padding:6px 7px 13px} md-card{ box-shadow: none; padding: 0;}'
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

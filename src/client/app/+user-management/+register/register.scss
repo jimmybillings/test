@@ -20,26 +20,25 @@ register-component {
     }
   }
 }
-// this can go away once ng2 material supports themes
-register-component .md-accent[md-button], login-component .md-accent[md-button], forgot-password-component .md-accent[md-button] {
-  color: md-color($md-accent, default); 
-}
-register-component [md-button]:hover.md-accent::after, login-component [md-button]:hover.md-accent::after, forgot-password-component [md-button]:hover.md-accent::after {
-  background-color: md-color($md-accent, default, .12);
-}
 
-.terms-dialog {
+// terms agreement
+.md-dialog-container .wz-dialog.terms-dialog {
+  padding: rem(.4) rem(.8) rem(.6);
+  width: rem(50.0);
   height: 70vh;
+  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
+    width: 100%;
+  }
   .content {
-    padding: rem(.5) rem(2) rem(.5) rem(1);
+    font-size: .84em;
+    padding: 0 rem(1.4);
     border: 1px solid md-color($md-foreground, divider); 
     overflow-y: scroll;
-    height: 80%;
+    height: calc(100% - 114px);
+    margin-bottom: rem(2.2);
+    color: rgba(md-color($md-foreground, text),.7);
   }
-  .terms-actions {
-    button.conversion.md-primary {
-      margin:10px 0;
-      background-color: md-color($md-primary, 700);
-    }
+  .terms-actions button.md-primary {
+    width: 66%;
   }
 }
