@@ -4,10 +4,19 @@
 // they are currently needed to fix z-index with fixed header and large dd menu (collection-dd) for mobile.
 .cdk-overlay-pane {
   z-index: 1001;
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    width: 100%;
+}
+/************
+ * md-dialog-container overrides
+ * make dialogs wider for mobile
+ ************/
+md-dialog-container.md-dialog-container {
+  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
+    width: 94vw;
+    min-width: rem(33.0);
+    max-width: 94vw;
   }
 }
+
 /************
  * menus and menus with icons
  * Once material has better menu support these possiibly can be removed.
@@ -24,13 +33,4 @@
   margin-top: rem(0);
   padding-bottom: rem(.1);
   box-shadow: inset 0 1px 0 0 md-color($foreground, divider);
-}
-
-.dialog-close {
-    float: right;
-    margin-top: -10px;
-    opacity: .5;
-  .md-select-content {
-    color: rgba(md-color($foreground,text), .75);
-  }
 }

@@ -1,7 +1,5 @@
-<div class="terms-dialog">
-  <div layout="row" layout-align="center center">
-    <h3 class="dialog-title">{{ 'REGISTER.TOS_TITLE' | translate }}</h3>
-  </div>
+<div class="wz-dialog terms-dialog">
+  <h1 md-dialog-title>{{ 'REGISTER.TOS_TITLE' | translate }}</h1>
   <div class="content" [innerHtml]="terms"></div>
   <div class="terms-actions" layout="row" layout-align="center center">
     <button (click)="agreeToTerms()" md-raised-button type="button" color="primary" class="conversion">{{ 'REGISTER.AGREE_TO_TOS_BTN' | translate }}</button>
