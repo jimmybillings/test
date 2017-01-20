@@ -1,33 +1,21 @@
 
 // Overrides for material overlays.
-// These should go away when there are native md-dialog, and md-menu in alpha 7
-// they are currently needed to fix z-index with fixed header and large dd menu (collection-dd) for mobile.
+// These should go away when Ng material fixes them 
+// Needed to fix z-index with fixed header and large dd menu (collection-dd) for mobile.
 .cdk-overlay-pane {
   z-index: 1001;
 }
 /************
- * md-dialog-container overrides
- * make dialogs wider for mobile
- ************/
-md-dialog-container.md-dialog-container {
-  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
-    width: 94vw;
-    min-width: rem(33.0);
-    max-width: 94vw;
-  }
-}
-
-/************
  * menus and menus with icons
- * Once material has better menu support these possiibly can be removed.
+ * Once material has better menu support these possibly can be removed.
  ************/
-.cdk-overlay-pane .md-menu {
-  max-width: rem(33.6);
-}
-.md-menu-content a[md-menu-item][disabled] md-icon.material-icons,
-.md-menu-content button[md-menu-item][disabled] md-icon.material-icons {
-  color: rgba(md-color($foreground,text), .25);
-}
+// .cdk-overlay-pane .md-menu {
+//   max-width: rem(33.6);
+// }
+// .md-menu-content a[md-menu-item][disabled] md-icon.material-icons,
+// .md-menu-content button[md-menu-item][disabled] md-icon.material-icons {
+//   color: rgba(md-color($foreground,text), .25);
+// }
 .md-menu-content .divider {
   width: 100%;
   margin-top: rem(0);
