@@ -116,7 +116,15 @@ export class CartService {
     };
     if (selectedTranscodeTarget) Object.assign(formatted.lineItem, { selectedTranscodeTarget });
     if (price) Object.assign(formatted.lineItem, { price });
-    if (attributes) Object.assign(formatted, { attributes });
+    if (attributes) Object.assign(formatted, { attributes: this.formatAttributes(attributes) });
+    return formatted;
+  }
+
+  private formatAttributes(attributes: any): Array<any> {
+    let formatted: Array<any> = [];
+    for (let attr in attributes) {
+      formatted.push({ priceAttirbuteName: attr, selectedAttributeValue: attributes[attr] });
+    }
     return formatted;
   }
 

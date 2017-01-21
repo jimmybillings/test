@@ -99,7 +99,7 @@ export class AssetComponent implements OnInit {
 
   public getPricingAttributes(rightsReproduction: string): void {
     this.assetService.getPriceAttributes(rightsReproduction).subscribe((attributes: any) => {
-      let dialogRef: MdDialogRef<any> = this.dialog.open(WzPricingComponent, { width: '500px' });
+      let dialogRef: MdDialogRef<any> = this.dialog.open(WzPricingComponent);
       dialogRef.componentInstance.calculatedPrice = this.calculatedPrice ? this.calculatedPrice : 'PRICING.PENDING_SELECTION';
       dialogRef.componentInstance.pricingPreferences = this.userPreference.state.pricingPreferences;
       dialogRef.componentInstance.dialog = dialogRef;
