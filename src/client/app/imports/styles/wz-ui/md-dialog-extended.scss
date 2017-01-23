@@ -27,7 +27,7 @@ md-dialog-content wz-form {
 // like: md-dialog-content collection-form .wz-dialog {}
 .md-dialog-container .wz-dialog {
   box-sizing: border-box;
-  padding: rem(2.4) rem(1.5) rem(1.6);
+  padding: rem(1.6) rem(1.5) rem(1.6);
   position: relative;
   width: rem(37.8);
   color: md-color($md-foreground, secondary-text);
@@ -60,7 +60,7 @@ md-dialog-content wz-form {
   }
   [md-dialog-title] {
     text-align: center;
-    margin: 0 0 rem(1.4) 0;
+    margin: 0 0 rem(.6) 0;
     font-size: rem(2.4);
     font-weight: 400;
   }

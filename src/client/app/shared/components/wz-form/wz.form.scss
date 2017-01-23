@@ -3,11 +3,13 @@ form button {
     min-width: 94%;
   }
 }
+form {
+  padding-top:rem(2.0);
+}
 wz-form {
-    display: block;
-    position: relative;
+  display: block;
+  position: relative;
   form {
-    margin-top: rem(2.6);
     md-input {
       width: 100%;
       margin-top: rem(1.2);
