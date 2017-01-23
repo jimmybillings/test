@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -10,7 +11,7 @@ export class WzPricingComponent implements OnInit {
   public form: any;
   @Input() attributes: Array<any>;
   @Input() dialog: any;
-  @Input() calculatedPrice: any;
+  @Input() usagePrice: Observable<any>;
   @Input() pricingPreferences: any;
 
   ngOnInit() {
@@ -18,7 +19,7 @@ export class WzPricingComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    this.dialog.close({ price: this.calculatedPrice, attributes: this.formattedForm });
+    this.dialog.close({ price: this.usagePrice, attributes: this.formattedForm });
   }
 
   public parentIsEmpty(currentAttribute: any): boolean {
@@ -87,10 +88,6 @@ export class WzPricingComponent implements OnInit {
     }
   }
 
-  public typeof(data: any): string {
-    return typeof (data);
-  }
-
   private findParentOf(currentAttribute: any): any {
     return this.attributes.filter((o: any) => o.childId === currentAttribute.id)[0];
   }
@@ -120,7 +117,7 @@ export class WzPricingComponent implements OnInit {
       if (i > index) field.value = '';
       return field;
     });
-    this.calculatedPrice = 'PRICING.PENDING_SELECTION';
+    this.usagePrice = null;
   }
 
   private get formattedForm(): any {

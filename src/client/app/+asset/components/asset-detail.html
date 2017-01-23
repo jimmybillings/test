@@ -112,12 +112,12 @@
 						</div>
 
 						<div layout="row" *ngIf="asset.primary[3].value !== 'Royalty Free'">
-							<div *ngIf="asset.price && asset.price !== 0 && !calculatedPrice" class="list-price">
+							<div *ngIf="asset.price && asset.price !== 0 && !usagePrice" class="list-price">
 								<span class="starting">{{ 'ASSET.DETAIL.BASE_PRICE' | translate }}</span>
-								<span class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
+								<span class="price">{{ asset.price | currency:'USD':true:'1.2-2' }}</span>
 							</div>
-							<div *ngIf="calculatedPrice" class="calculated-price">
-								<span class="price">{{calculatedPrice | currency:'USD':true:'1.2-2'}}</span>
+							<div *ngIf="usagePrice" class="calculated-price">
+								<span class="price">{{ usagePrice | async | currency:'USD':true:'1.2-2' }}</span>
 							</div>
 							<div *ngIf="(!asset.price || asset.price === 0)" class="contact-us-pricing">
 								{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}

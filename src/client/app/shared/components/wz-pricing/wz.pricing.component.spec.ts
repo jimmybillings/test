@@ -1,4 +1,5 @@
 import { WzPricingComponent } from './wz.pricing.component';
+import { Observable } from 'rxjs/Rx';
 
 export function main() {
   describe('Wz Pricing Component', () => {
@@ -42,11 +43,11 @@ export function main() {
     describe('onSubmit()', () => {
       it('should emit the calculatePricing event with the form', () => {
         componentUnderTest.ngOnInit();
-        componentUnderTest.calculatedPrice = 10;
+        componentUnderTest.usagePrice = Observable.of(10);
         componentUnderTest.onSubmit();
 
         expect(componentUnderTest.dialog.close).toHaveBeenCalledWith({
-          price: 10, attributes:
+          price: Observable.of(10), attributes:
           { A: '', B: '', C: '', D: '' }
         });
       });
@@ -159,13 +160,6 @@ export function main() {
           { name: 'C', value: '' },
           { name: 'D', value: '' }
         ]);
-      });
-    });
-
-    describe('typeOf()', () => {
-      it('should return the type of the data given', () => {
-        expect(componentUnderTest.typeof(1)).toBe('number');
-        expect(componentUnderTest.typeof(1)).toBe(typeof (1));
       });
     });
 

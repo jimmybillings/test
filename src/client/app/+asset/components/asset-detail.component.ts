@@ -7,6 +7,7 @@ import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
 import { TranscodeTarget, SubclipMarkers } from '../../shared/interfaces/asset.interface';
 import { SearchContext } from '../../shared/services/search-context.service';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -23,7 +24,7 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public collection: Collection;
   @Input() public searchContext: SearchContext;
   @Input() public uiState: UiState;
-  @Input() public calculatedPrice: any;
+  @Input() public usagePrice: Observable<any>;
   @Input() public pricingAttributes: any;
   @Input() public window: Window;
   @Output() onAddToCollection = new EventEmitter();
@@ -87,7 +88,7 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   private parseNewAsset(asset: any) {
-    this.calculatedPrice = null;
+    this.usagePrice = null;
     if (Object.keys(asset.currentValue.detailTypeMap.common).length > 0) {
       let targets = this.prepareNewTargets(asset.currentValue.transcodeTargets);
       this.asset = Object.assign({}, this.asset, asset.currentValue.detailTypeMap, { transcodeTargets: targets });

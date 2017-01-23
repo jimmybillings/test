@@ -114,8 +114,9 @@ export function main() {
 
     describe('addAssetToCart()', () => {
       it('Should call the cart summary service with correct params to add an asset to the cart', () => {
+        componentUnderTest.usagePrice = Observable.of({ price: 100 });
         componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
-        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith(123123, 'Target', undefined, undefined);
+        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith(123123, 'Target', 100, undefined);
       });
     });
 

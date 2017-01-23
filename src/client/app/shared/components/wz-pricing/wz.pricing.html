@@ -16,8 +16,8 @@
       </div>
     </form>
     <div layout="row" layout-align="center center">
-      <p *ngIf="typeof(calculatedPrice) === 'number'" class="md-body-2">{{ calculatedPrice | currency:'USD':true:'1.2-2' }}</p>
-      <p *ngIf="typeof(calculatedPrice) !== 'number'" class="md-body-2 disabled">$({{ calculatedPrice | translate }})</p>
+      <p *ngIf="usagePrice" class="md-body-2">{{ usagePrice | async | currency:'USD':true:'1.2-2' }}</p>
+      <p *ngIf="!usagePrice" class="md-body-2 disabled">$({{ 'PRICING.PENDING_SELECTION' | translate }})</p>
     </div>
   </md-dialog-content>
 </div>
