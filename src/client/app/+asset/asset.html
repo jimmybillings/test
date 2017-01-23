@@ -6,7 +6,7 @@
     [collection]="activeCollection.data | async"
     [uiConfig]="uiConfig"
     [uiState]="uiState"
-    [calculatedPrice]="calculatedPrice"
+    [usagePrice]="usagePrice"
     [pricingAttributes]="pricingAttributes | async"
     [window]="window"
     (onAddToCollection)="addToCollection($event)"
@@ -14,8 +14,6 @@
     (onDownloadComp)="downloadComp($event)"
     (addToCart)="addAssetToCart($event)"
     (getPriceAttributes)="getPricingAttributes($event)"
-    (calculatePrice)="onCalculatePrice($event)"
-    (calculatePriceError)="onCalculatePriceError()"
     (onShowSnackBar)="showSnackBar($event)"
   >
   </asset-detail>
