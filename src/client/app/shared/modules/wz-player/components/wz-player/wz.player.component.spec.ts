@@ -23,6 +23,7 @@ export function main() {
       mockZone = new NgZone({});
 
       componentUnderTest = new WzPlayerComponent(mockElementRef, mockZone);
+      spyOn(componentUnderTest.stateUpdate, 'emit');
 
       mockPlayer = {};
       // Mock Player public interface
@@ -31,10 +32,7 @@ export function main() {
       mockPlayer.getState = jasmine.createSpy('getState').and.returnValue('paused');
       mockPlayer.play = jasmine.createSpy('play').and.returnValue(mockPlayer);
       mockPlayer.pause = jasmine.createSpy('pause').and.returnValue(mockPlayer);
-      mockPlayer.seek = jasmine.createSpy('seek').and.callFake(() => {
-        mockPlayer.emit('seeked');
-        return mockPlayer;
-      });
+      mockPlayer.seek = jasmine.createSpy('seek').and.returnValue(mockPlayer);
 
       mockPlayer.off = jasmine.createSpy('off').and.callFake((eventName: string) => {
         mockPlayer.onCallbacks[eventName] = [];
@@ -123,8 +121,6 @@ export function main() {
         });
 
         it('ngOnDestroy() should reset the player', () => {
-          spyOn(componentUnderTest.stateUpdate, 'emit');
-
           componentUnderTest.ngOnDestroy();
 
           expect(mockPlayer.pause).toHaveBeenCalled();
@@ -174,8 +170,6 @@ export function main() {
 
         describe('ngOnDestroy()', () => {
           it('should reset the player', () => {
-            spyOn(componentUnderTest.stateUpdate, 'emit');
-
             componentUnderTest.ngOnDestroy();
 
             expect(mockPlayer.pause).toHaveBeenCalled();
@@ -199,8 +193,6 @@ export function main() {
           });
 
           it('should reset the player if it already exists when a new asset is set', () => {
-            spyOn(componentUnderTest.stateUpdate, 'emit');
-
             componentUnderTest.asset = {
               resourceClass: 'AnotherNotImage',
               clipThumbnailUrl: 'anotherClipThumbnailUrl',
@@ -213,8 +205,6 @@ export function main() {
           });
 
           it('should call handleDurationEvent which emits the stateUpdate event with the duration', () => {
-            spyOn(componentUnderTest.stateUpdate, 'emit');
-
             mockPlayer.emit('time', { duration: 123 });
 
             expect(mockPlayer.once).toHaveBeenCalledWith('time', jasmine.any(Function));
@@ -222,8 +212,6 @@ export function main() {
           });
 
           it('should call handleTimeEvents which emits the stateUpdate event with the currentTime', () => {
-            spyOn(componentUnderTest.stateUpdate, 'emit');
-
             mockPlayer.emit('time', { position: 456 });
 
             expect(mockPlayer.on).toHaveBeenCalledWith('time', jasmine.any(Function));
@@ -231,11 +219,6 @@ export function main() {
           });
 
           describe('handlePlaybackStateEvents()', () => {
-            beforeEach(() => {
-              spyOn(componentUnderTest.stateUpdate, 'emit');
-            });
-
-
             it('should call .on() with \'play\'', () => {
               expect(mockPlayer.on).toHaveBeenCalledWith('play', jasmine.any(Function));
               mockPlayer.emit('play');
@@ -284,36 +267,77 @@ export function main() {
         });
 
         describe('playRange()', () => {
-          it('should call .off() on the player with \'time\'', () => {
+          beforeEach(() => {
             componentUnderTest.playRange(1.234, 5.678);
-
-            expect(mockPlayer.off).toHaveBeenCalledWith('time');
           });
 
-          it('should call .on() on the player with \'time\'', () => {
-            componentUnderTest.playRange(1.234, 5.678);
-
-            expect(mockPlayer.on).toHaveBeenCalledWith('time', jasmine.any(Function));
+          it('pauses playback', () => {
+            expect(mockPlayer.pause).toHaveBeenCalledTimes(1);
           });
 
-          it('should pause the player and remove .off handler if the position is === the endpoint', () => {
-            spyOn(componentUnderTest.stateUpdate, 'emit');
-            componentUnderTest.playRange(1.234, 5.678);
-
-            mockPlayer.emit('time', { position: 5.678 });
-
-            expect(mockPlayer.pause).toHaveBeenCalled();
-            expect(mockPlayer.off).toHaveBeenCalledWith('time');
+          it('seeks to the start point', () => {
+            expect(mockPlayer.seek).toHaveBeenCalledWith(1.234);
           });
 
-          it('should not pause the player and remove .off handler if the position is > the endpoint', () => {
-            spyOn(componentUnderTest.stateUpdate, 'emit');
-            componentUnderTest.playRange(1.234, 5.678);
+          it('doesn\'t start playback right away', () => {
+            expect(mockPlayer.play).not.toHaveBeenCalled();
+          });
 
-            mockPlayer.emit('time', { position: 1 });
+          describe('after seeking to the start point', () => {
+            beforeEach(() => {
+              mockPlayer.emit('seeked');
+            });
 
-            expect(mockPlayer.pause).toHaveBeenCalled();
-            expect(mockPlayer.off).toHaveBeenCalledWith('time');
+            it('starts playback', () => {
+              expect(mockPlayer.play).toHaveBeenCalled();
+            });
+
+            describe('when a time less than the end point is reported', () => {
+              beforeEach(() => {
+                mockPlayer.emit('time', { position: 5.677 });
+              });
+
+              it('emits a state update event', () => {
+                expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ currentTime: 5.677 });
+              });
+
+              it('continues playback', () => {
+                // It paused only when this method was first called.
+                expect(mockPlayer.pause).toHaveBeenCalledTimes(1);
+              });
+            });
+
+            [{ condition: 'equal to', value: 5.678 }, { condition: 'greater than', value: 5.679 }].forEach(test => {
+              describe(`when a time ${test.condition} the end point is reported`, () => {
+                beforeEach(() => {
+                  mockPlayer.emit('time', { position: test.value });
+                });
+
+                it('emits a state update event', () => {
+                  expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ currentTime: test.value });
+                });
+
+                it('pauses playback', () => {
+                  // It paused when this method was first called, and when the end point was reached.
+                  expect(mockPlayer.pause).toHaveBeenCalledTimes(2);
+                });
+
+                describe('when a later time event is reported', () => {
+                  beforeEach(() => {
+                    mockPlayer.emit('time', { position: 6 });
+                  });
+
+                  it('emits a state update event', () => {
+                    expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ currentTime: 6 });
+                  });
+
+                  it('doesn\'t pause again', () => {
+                    // It paused when this method was first called, and when the end point was reached.
+                    expect(mockPlayer.pause).toHaveBeenCalledTimes(2);
+                  });
+                });
+              })
+            });
           });
         });
       });
