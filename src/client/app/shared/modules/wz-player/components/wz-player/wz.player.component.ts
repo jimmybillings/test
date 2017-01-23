@@ -67,6 +67,14 @@ export class WzPlayerComponent implements OnDestroy {
               // Restore standard 'time' event handler.
               this.jwPlayer.pause().off('time');
               this.handleTimeEvents();
+
+              if (event.position > endPoint) {
+                // We overshot.  Unfortunately, jwPlayer doesn't trigger 'time'
+                // events very often, so this is likely to happen.  All we can
+                // do is seek back to the endPoint and hope it's quick enough
+                // to be somewhat unnoticeable.
+                this.jwPlayer.seek(endPoint);
+              }
             }
           }).play();
       })

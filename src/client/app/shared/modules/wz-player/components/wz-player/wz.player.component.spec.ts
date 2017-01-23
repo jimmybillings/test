@@ -322,6 +322,16 @@ export function main() {
                   expect(mockPlayer.pause).toHaveBeenCalledTimes(2);
                 });
 
+                if (test.condition === 'greater than') {
+                  it('seeks back to the end point', () => {
+                    expect(mockPlayer.seek).toHaveBeenCalledWith(5.678);
+                  });
+
+                  it('doesn\'t restart playback after seeking (as it does on the initial seek)', () => {
+                    expect(mockPlayer.play).toHaveBeenCalledTimes(1);
+                  });
+                }
+
                 describe('when a later time event is reported', () => {
                   beforeEach(() => {
                     mockPlayer.emit('time', { position: 6 });
