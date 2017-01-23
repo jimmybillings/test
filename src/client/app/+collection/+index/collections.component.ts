@@ -160,7 +160,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public setCollectionForDelete(collection: any): void {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionDeleteComponent);
+    let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionDeleteComponent, { position: { top: '14%' } });
     dialogRef.componentInstance.collection = JSON.parse(JSON.stringify(collection));
     dialogRef.componentInstance.dialog = dialogRef;
     dialogRef.afterClosed()

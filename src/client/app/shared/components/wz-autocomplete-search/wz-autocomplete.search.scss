@@ -65,6 +65,7 @@ wz-autocomplete-search {
 header.app-header {
   wz-autocomplete-search {
     form {
+      padding-top: 0;
       background-color: md-color($md-background, app-bar);
     }
     margin: 0;

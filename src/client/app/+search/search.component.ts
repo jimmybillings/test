@@ -26,6 +26,7 @@ import { TranslateService } from 'ng2-translate';
 
 export class SearchComponent implements OnDestroy {
   public speedviewData: any;
+  public screenWidth: number;
   @ViewChild(WzSpeedviewComponent) public wzSpeedview: any;
 
   constructor(
@@ -43,7 +44,11 @@ export class SearchComponent implements OnDestroy {
     private renderer: Renderer,
     private window: Window,
     private snackBar: MdSnackBar,
-    private translate: TranslateService) { }
+
+    private translate: TranslateService) {
+    this.screenWidth = this.window.innerWidth;
+    this.window.onresize = () => this.screenWidth = this.window.innerWidth;
+  }
 
   ngOnDestroy(): void {
     this.assetData.clearAssets();
