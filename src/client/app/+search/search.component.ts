@@ -118,6 +118,13 @@ export class SearchComponent implements OnDestroy {
     this.searchContext.go();
   }
 
+  public onChangeAssetView(): void {
+    let assetView: string = this.userPreferences.state.assetView;
+    assetView === 'grid' ? assetView = 'list' : assetView = 'grid';
+    // console.log(`set new pref view to - ${assetView}`);
+    this.userPreferences.updateAssetViewPreference(assetView);
+  }
+
   public addAssetToCart(asset: any): void {
     this.cart.addAssetToProjectInCart(asset);
   }

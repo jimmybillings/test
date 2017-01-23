@@ -10,7 +10,8 @@ const defaultPreferences: any = {
   collectionTrayIsOpen: false,
   searchIsOpen: true,
   sortId: 0,
-  displayFilterTree: false
+  displayFilterTree: false,
+  assetView: 'grid'
 };
 
 export const userPreferences: ActionReducer<any> = (state = defaultPreferences, action: Action) => {
@@ -66,6 +67,10 @@ export class UserPreferenceService {
     this.update({ sortId: sortId });
   }
 
+  public updateAssetViewPreference(view: string): void {
+    this.update({ assetView: view });
+  }
+
   public toggleFilterCount(): void {
     this.update({ displayFilterCounts: !this.state.displayFilterCounts });
   }
@@ -102,6 +107,7 @@ export class UserPreferenceService {
 
   private put(params: any): Observable<any> {
     let body: any = this.formatBody(params);
+    // console.log(params);
     return this.api.put(Api.Identities, 'userPreferences/item', { body: body });
   }
 
