@@ -33,12 +33,8 @@ export function main() {
       expect(serviceUnderTest.state).toEqual(
         {
           displayFilterCounts: false, collectionTrayIsOpen: false,
-<<<<<<< HEAD
-          searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid'
-=======
-          searchIsOpen: true, sortId: 0, displayFilterTree: false,
+          searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid',
           pricingPreferences: ''
->>>>>>> CRUX-1395_pricing-select-updates
         });
     });
 
