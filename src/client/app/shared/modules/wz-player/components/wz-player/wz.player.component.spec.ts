@@ -336,7 +336,7 @@ export function main() {
                     expect(mockPlayer.pause).toHaveBeenCalledTimes(2);
                   });
                 });
-              })
+              });
             });
           });
         });
