@@ -33,17 +33,30 @@
 				</div>
 				<no-results *ngIf="!(assetData.data | async).items"></no-results>
 
-				<wz-asset-grid *ngIf="(userPreferences.data | async).assetView =='grid'" [assets]="(assetData.data | async).items" [userCan]="userCan" [collection]="activeCollection.data | async"
-					(onAddToCollection)="addToCollection($event)" (onRemoveFromCollection)="removeFromCollection($event)"
-					(addToCart)="addAssetToCart($event)" (onDownloadComp)="downloadComp($event)" (showSpeedview)="showSpeedview($event)" (hideSpeedview)="hideSpeedview()" (onShowSnackBar)="showSnackBar($event)"
-					class="grid">
+				<wz-asset-grid *ngIf="(userPreferences.data | async).assetView =='grid'" class="grid" 
+					[assets]="(assetData.data | async).items" 
+					[userCan]="userCan" 
+					[collection]="activeCollection.data | async"
+					(onAddToCollection)="addToCollection($event)" 
+					(onRemoveFromCollection)="removeFromCollection($event)"
+					(onAddToCart)="addAssetToCart($event)" 
+					(onDownloadComp)="downloadComp($event)" 
+					(onShowSpeedview)="showSpeedview($event)" 
+					(onHideSpeedview)="hideSpeedview()">
 				</wz-asset-grid>
 
-				<wz-asset-list *ngIf="(userPreferences.data | async).assetView =='list'" [assets]="(assetData.data | async).items" [userCan]="userCan" [collection]="activeCollection.data | async"
-					(onAddToCollection)="addToCollection($event)" (onRemoveFromCollection)="removeFromCollection($event)"
-					(addToCart)="addAssetToCart($event)" (onDownloadComp)="downloadComp($event)" (showSpeedview)="showSpeedview($event)" (hideSpeedview)="hideSpeedview()" (onShowSnackBar)="showSnackBar($event)"
-					class="list">
+				<wz-asset-list *ngIf="(userPreferences.data | async).assetView =='list'" class="list" 
+					[assets]="(assetData.data | async).items" 
+					[userCan]="userCan" 
+					[collection]="activeCollection.data | async"
+					(onAddToCollection)="addToCollection($event)" 
+					(onRemoveFromCollection)="removeFromCollection($event)"
+					(onAddToCart)="addAssetToCart($event)" 
+					(onDownloadComp)="downloadComp($event)" 
+					(onShowSpeedview)="showSpeedview($event)" 
+					(onHideSpeedview)="hideSpeedview()">
 				</wz-asset-list>
+				
 				<wz-pagination flex="noshrink" *ngIf="(assetData.data | async).pagination.totalCount > 0" [pagination]="(assetData.data | async).pagination" (getPage)="changePage($event)"></wz-pagination>
 			</div>
 		</div>
