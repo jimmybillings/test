@@ -23,7 +23,8 @@ import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.c
 })
 
 export class AssetComponent implements OnInit {
-  public pricingAttributes: Observable<any>;
+  public pricingAttributes: any;
+  public rightsReproduction: string = '';
   public usagePrice: Observable<any>;
   private selectedAttrbutes: any;
   private pageSize: number = 50;
@@ -95,21 +96,31 @@ export class AssetComponent implements OnInit {
   }
 
   public getPricingAttributes(rightsReproduction: string): void {
-    this.assetService.getPriceAttributes(rightsReproduction).subscribe((attributes: any) => {
-      let dialogRef: MdDialogRef<any> = this.dialog.open(WzPricingComponent);
-      dialogRef.componentInstance.pricingPreferences = this.userPreference.state.pricingPreferences;
-      dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.attributes = attributes;
-      dialogRef.componentInstance.calculatePrice = (attributes: any) => {
-        this.usagePrice = this.calculatePrice(attributes);
-        dialogRef.componentInstance.usagePrice = this.usagePrice;
-      };
-      dialogRef.afterClosed().subscribe(data => {
-        if (!data) return;
-        if (data.price) this.usagePrice = data.price;
-        if (data.attributes) this.userPreference.updatePricingPreferences(data.attributes);
-        if (data.error) this.notification.create('PRICING.ERROR');
+    if (this.rightsReproduction === rightsReproduction) {
+      this.buildPricingDialog();
+    } else {
+      this.assetService.getPriceAttributes(rightsReproduction).subscribe((attributes: any) => {
+        this.pricingAttributes = attributes;
+        this.buildPricingDialog();
       });
+    }
+    this.rightsReproduction = rightsReproduction;
+  }
+
+  private buildPricingDialog(): void {
+    let dialogRef: MdDialogRef<any> = this.dialog.open(WzPricingComponent);
+    dialogRef.componentInstance.dialog = dialogRef;
+    dialogRef.componentInstance.pricingPreferences = this.userPreference.state.pricingPreferences;
+    dialogRef.componentInstance.attributes = this.pricingAttributes;
+    dialogRef.componentInstance.calculatePrice = (attributes: any) => {
+      this.usagePrice = this.calculatePrice(attributes);
+      dialogRef.componentInstance.usagePrice = this.usagePrice;
+    };
+    dialogRef.afterClosed().subscribe(data => {
+      if (!data) return;
+      if (data.price) this.usagePrice = data.price;
+      if (data.attributes) this.userPreference.updatePricingPreferences(data.attributes);
+      if (data.error) this.notification.create('PRICING.ERROR');
     });
   }
 }
