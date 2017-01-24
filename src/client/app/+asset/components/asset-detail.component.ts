@@ -12,7 +12,7 @@ import { SearchContext } from '../../shared/services/search-context.service';
   moduleId: module.id,
   selector: 'asset-detail',
   templateUrl: 'asset-detail.html',
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class AssetDetailComponent implements OnChanges {
