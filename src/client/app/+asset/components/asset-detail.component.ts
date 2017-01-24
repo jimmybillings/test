@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Rx';
   moduleId: module.id,
   selector: 'asset-detail',
   templateUrl: 'asset-detail.html',
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class AssetDetailComponent implements OnChanges {
@@ -25,7 +25,6 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public searchContext: SearchContext;
   @Input() public uiState: UiState;
   @Input() public usagePrice: Observable<any>;
-  @Input() public pricingAttributes: any;
   @Input() public window: Window;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
@@ -79,7 +78,6 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public getPricingAttributes(): void {
-    if (this.pricingAttributes) return;
     this.getPriceAttributes.emit(this.asset.primary[3].value);
   }
 
