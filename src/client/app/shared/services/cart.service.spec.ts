@@ -126,10 +126,13 @@ export function main() {
       });
 
       it('calls the api service correctly', () => {
-        const body: ApiBody = { lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: '1080p' } };
+        const body: ApiBody = {
+          lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: '1080p', price: 100.5 },
+          attributes: [{ priceAttributeName: 'key', selectedAttributeValue: 'value' }]
+        };
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
 
-        serviceUnderTest.addAssetToProjectInCart('10836', '1080p');
+        serviceUnderTest.addAssetToProjectInCart('10836', '1080p', 100.5, { key: 'value' });
 
         expect(mockApi.put)
           .toHaveBeenCalledWith(Api.Orders, 'cart/asset/lineItem/quick', { body: body, parameters: parameters });

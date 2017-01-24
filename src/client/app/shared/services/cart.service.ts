@@ -68,7 +68,7 @@ export class CartService {
       Api.Orders,
       'cart/asset/lineItem/quick',
       {
-        body: this.formatAsset(assetId, transcodeTarget, price, attributes),
+        body: this.formateBody(assetId, transcodeTarget, price, attributes),
         parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
       }
     ).subscribe(this.updateCart);
@@ -106,7 +106,7 @@ export class CartService {
       .subscribe(this.updateCart);
   }
 
-  private formatAsset(assetId: string, selectedTranscodeTarget?: string, price?: number, attributes?: any): any {
+  private formateBody(assetId: string, selectedTranscodeTarget?: string, price?: number, attributes?: any): any {
     let formatted: any = {
       lineItem: {
         asset: {
@@ -123,7 +123,7 @@ export class CartService {
   private formatAttributes(attributes: any): Array<any> {
     let formatted: Array<any> = [];
     for (let attr in attributes) {
-      formatted.push({ priceAttirbuteName: attr, selectedAttributeValue: attributes[attr] });
+      formatted.push({ priceAttributeName: attr, selectedAttributeValue: attributes[attr] });
     }
     return formatted;
   }
