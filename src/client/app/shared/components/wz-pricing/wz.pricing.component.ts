@@ -1,21 +1,21 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-pricing',
-  templateUrl: 'wz.pricing.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: 'wz.pricing.html'
 })
 export class WzPricingComponent implements OnInit {
-  public form: any;
+  public form: Array<any>;
   @Input() attributes: Array<any>;
   @Input() dialog: any;
   @Input() usagePrice: Observable<any>;
   @Input() pricingPreferences: any;
+  @Input() calculatePrice: Function;
 
   ngOnInit() {
-    this.buildForm(this.attributes);
+    this.buildForm();
   }
 
   public onSubmit(): void {
@@ -84,7 +84,7 @@ export class WzPricingComponent implements OnInit {
     this.clearForm(index);
     this.form[index].value = option.value;
     if (index === this.attributes.length - 1) {
-      this.dialog.componentInstance.calculatePrice(this.formattedForm);
+      this.calculatePrice(this.formattedForm);
     }
   }
 
@@ -98,14 +98,14 @@ export class WzPricingComponent implements OnInit {
     })[0];
   }
 
-  private buildForm(attributes: any): void {
+  private buildForm(): void {
     this.form = [];
     if (this.pricingPreferences) {
       for (let pref in this.pricingPreferences) {
         this.form.push({ name: pref, value: this.pricingPreferences[pref] });
       }
     } else {
-      attributes.forEach((attribute: any, index: number) => {
+      this.attributes.forEach((attribute: any, index: number) => {
         this.form.push({ name: attribute.name, value: '' });
       });
     }

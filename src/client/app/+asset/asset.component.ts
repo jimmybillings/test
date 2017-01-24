@@ -84,8 +84,8 @@ export class AssetComponent implements OnInit {
   }
 
   public addAssetToCart(asset: any): void {
-    this.usagePrice.take(1).subscribe((data: any) => {
-      this.cart.addAssetToProjectInCart(asset.assetId, asset.selectedTranscodeTarget, data.price, this.selectedAttrbutes);
+    this.usagePrice.take(1).subscribe((price: any) => {
+      this.cart.addAssetToProjectInCart(asset.assetId, asset.selectedTranscodeTarget, price, this.selectedAttrbutes);
     });
   }
 

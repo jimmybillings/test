@@ -8,11 +8,9 @@ export function main() {
     beforeEach(() => {
       componentUnderTest = new WzPricingComponent();
       componentUnderTest.attributes = mockOptions();
+      componentUnderTest.calculatePrice = jasmine.createSpy('calculatePrice');
       componentUnderTest.dialog = {
-        close: jasmine.createSpy('close'),
-        componentInstance: {
-          calculatePrice: jasmine.createSpy('calculatePrice')
-        }
+        close: jasmine.createSpy('close')
       };
     });
 
@@ -214,7 +212,7 @@ export function main() {
 
         componentUnderTest.handleSelect(attribute, option);
 
-        expect(componentUnderTest.dialog.componentInstance.calculatePrice).toHaveBeenCalledWith({
+        expect(componentUnderTest.calculatePrice).toHaveBeenCalledWith({
           A: 'R', B: 'J', C: 'V', D: 'Q'
         });
       });
