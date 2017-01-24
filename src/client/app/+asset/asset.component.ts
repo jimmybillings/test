@@ -24,7 +24,8 @@ import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.c
 
 export class AssetComponent implements OnInit {
   public pricingAttributes: Observable<any>;
-  public calculatedPrice: Observable<number>;
+  public usagePrice: Observable<any>;
+  private selectedAttrbutes: any;
   private pageSize: number = 50;
 
   constructor(
@@ -83,24 +84,30 @@ export class AssetComponent implements OnInit {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cart.addAssetToProjectInCart(asset.assetId, asset.selectedTranscodeTarget);
-  }
-
-  public calculatePrice(event: any): void {
-    this.assetService.getPrice(event.assetId, event.attributes).take(1).subscribe((data: any) => {
-      this.calculatedPrice = data;
+    this.usagePrice.take(1).subscribe((price: any) => {
+      this.cart.addAssetToProjectInCart(asset.assetId, asset.selectedTranscodeTarget, price, this.selectedAttrbutes);
     });
   }
 
+  public calculatePrice(attributes: any): Observable<number> {
+    this.selectedAttrbutes = attributes;
+    return this.assetService.getPrice(this.assetService.state.assetId, attributes).map((data: any) => { return data.price; });
+  }
+
   public getPricingAttributes(rightsReproduction: string): void {
-    this.assetService.getPriceAttributes(rightsReproduction).subscribe((options: any) => {
+    this.assetService.getPriceAttributes(rightsReproduction).subscribe((attributes: any) => {
       let dialogRef: MdDialogRef<any> = this.dialog.open(WzPricingComponent);
+      dialogRef.componentInstance.pricingPreferences = this.userPreference.state.pricingPreferences;
       dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.options = options;
+      dialogRef.componentInstance.attributes = attributes;
+      dialogRef.componentInstance.calculatePrice = (attributes: any) => {
+        this.usagePrice = this.calculatePrice(attributes);
+        dialogRef.componentInstance.usagePrice = this.usagePrice;
+      };
       dialogRef.afterClosed().subscribe(data => {
-        if (data.attributes) {
-          this.calculatePrice({ attributes: data.attributes, assetId: this.assetService.state.assetId });
-        }
+        if (!data) return;
+        if (data.price) this.usagePrice = data.price;
+        if (data.attributes) this.userPreference.updatePricingPreferences(data.attributes);
         if (data.error) this.notification.create('PRICING.ERROR');
       });
     });

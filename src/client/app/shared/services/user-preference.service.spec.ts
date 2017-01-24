@@ -33,7 +33,8 @@ export function main() {
       expect(serviceUnderTest.state).toEqual(
         {
           displayFilterCounts: false, collectionTrayIsOpen: false,
-          searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid'
+          searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid',
+          pricingPreferences: ''
         });
     });
 
@@ -111,7 +112,8 @@ export function main() {
       expect(serviceUnderTest.state).toEqual(
         {
           displayFilterCounts: false, collectionTrayIsOpen: false,
-          searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid'
+          searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid',
+          pricingPreferences: ''
         });
       serviceUnderTest.toggleCollectionTray();
       serviceUnderTest.toggleSearch();
@@ -120,13 +122,15 @@ export function main() {
       expect(serviceUnderTest.state).toEqual(
         {
           displayFilterCounts: false, collectionTrayIsOpen: true,
-          searchIsOpen: false, sortId: 100, displayFilterTree: false, assetView: 'list'
+          searchIsOpen: false, sortId: 100, displayFilterTree: false, assetView: 'list',
+          pricingPreferences: ''
         });
       serviceUnderTest.reset();
       expect(serviceUnderTest.state).toEqual(
         {
           displayFilterCounts: false, collectionTrayIsOpen: false,
-          searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid'
+          searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid',
+          pricingPreferences: ''
         });
     });
   });

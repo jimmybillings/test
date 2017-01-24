@@ -1,75 +1,92 @@
-<!--<h1 *ngIf="!assets" class="md-display-1 alert warning">No items can be found</h1>-->
+<ul class="asset-list-view" *ngIf="assets">
+  <li *ngFor="let asset of assets"
+    class="asset"
+    flex="100" 
+    layout="row" 
+    layout-xs="column">
+    <div flex="100" flex-gt-sm="66">
+      <div flex="100" layout="row" layout-xs="column">
+        <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding>
+          <a [routerLink]="['/asset/', asset.assetId]" wzSpeedview (showPreview)="showSpeedview.emit({position: $event, asset: asset})" (hidePreview)="hideSpeedview.emit()">
+            <div class="asset-thb">
+              <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
+              <span *ngIf="asset.metaData[0]" class="mdata-0">
+                <span>{{asset.metaData[0].value}}</span>
+              </span>
+              <span *ngIf="asset.metaData[2] && asset.metaData[2].value != ''" class="mdata-2">
+                <span [ngClass]="formatType(asset.metaData[2].value)" class="sd-hd">{{asset.metaData[2].value}}</span>
+              </span>
+              <span *ngIf="asset.metaData[3]" class="mdata-3">
+                <span>{{asset.metaData[3].value}}</span>
+              </span>
+              <span *ngIf="asset.metaData[4] && asset.metaData[4].name == 'Resource.Class' && asset.metaData[4].value == 'Image'" class="mdata-4">
+                <span class="{{asset.metaData[4].value | lowercase}}"></span>
+              </span>
+            </div>
+          </a>
+        </div>
+        <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" layout-padding>
+          <div class="md-caption asset-name">{{asset.name}}</div>
+          <a class="asset-title" [routerLink]="['/asset/', asset.assetId]" class="asset-desc">
+            <h3 class="md-headline" *ngIf="asset.metaData[1]" class="mdata-1">
+              {{asset.metaData[1].value}}
+            </h3>
+          </a>
+          <!--<div *ngIf="collection.tags" class="md-caption collection-tags">
+              <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
+              <ul class="meta-data-tags">
+                  <li class="tag md-elevation-z0" *ngFor="let tag of collection.tags">{{tag}}</li>
+              </ul>
+          </div>-->
+        </div>
+      </div>
+    </div>
+        
+    <!--<div flex="100" layout="row" layout-xs="column" class="divider"></div>-->
+    <div flex-gt-sm="33" layout-sm="100" flex="auto" class="actions" layout-align="end center">
+      <div class="tools" hide-xs>
+        <!-- ADD TO CART -->
+        <button
+          [disabled]="!userCan.addToCart()"
+          md-icon-button
+          title="Add to cart"
+          (click)="addAssetToCart(asset); onShowSnackBar.emit({key: 'ASSET.ADD_TO_CART_TOAST', value: {assetId:assetId}})">
+            <md-icon>shopping_cart</md-icon>
+        </button>
 
+        <!-- DOWNLOAD COMPS-->
+        <button
+          *ngIf="userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+          md-icon-button
+          title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
+          (click)="setAssetActiveId(asset)"
+          [md-menu-trigger-for]="downloadCompMenu">
+            <md-icon>file_download</md-icon>
+        </button>
+        <button
+          *ngIf="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+          disabled
+          md-icon-button
+          title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
+          (click)="setAssetActiveId(asset)"
+          [md-menu-trigger-for]="downloadCompMenu">
+            <md-icon>file_download</md-icon>
+        </button>
 
-<ul class="asset-list" *ngIf="assets">
-  <li *ngFor="let asset of assets">
-    <div class="asset">
-      <div class="asset-name">{{asset.name}}</div>
-      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb" wzSpeedview (showPreview)="showSpeedview.emit({position: $event, asset: asset})" (hidePreview)="hideSpeedview.emit()">
-        <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
-        <span *ngIf="asset.metaData[0]" class="mdata-0">
-          <span>{{asset.metaData[0].value}}</span>
-        </span>
-        <span *ngIf="asset.metaData[2] && asset.metaData[2].value != ''" class="mdata-2">
-          <span [ngClass]="formatType(asset.metaData[2].value)" class="sd-hd">{{asset.metaData[2].value}}</span>
-        </span>
-        <span *ngIf="asset.metaData[3]" class="mdata-3">
-          <span>{{asset.metaData[3].value}}</span>
-        </span>
-        <span *ngIf="asset.metaData[4] && asset.metaData[4].name == 'Resource.Class' && asset.metaData[4].value == 'Image'" class="mdata-4">
-          <span class="{{asset.metaData[4].value | lowercase}}"></span>
-        </span>
-      </a>
-      <section class="actions">
-        <nav class="asset-options" flex layout-align="end center">
-          <!-- ADD TO CART -->
-          <button
-            [disabled]="!userCan.addToCart()"
-            md-icon-button
-            title="Add to cart"
-            (click)="addAssetToCart(asset); onShowSnackBar.emit({key: 'ASSET.ADD_TO_CART_TOAST', value: {assetId:assetId}})">
-              <md-icon>shopping_cart</md-icon>
-          </button>
+        <!-- ADD / REMOVE FROM COLLECTION -->
+        <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="alreadyInCollection(asset)"
+          title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
+          (click)="removeFromCollection(collection, asset); onShowSnackBar.emit({key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST', value: {collectionName:collection.name}})">
+          <md-icon>remove_circle</md-icon>
+        </button>
+        <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!alreadyInCollection(asset)"
+          title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
+          (click)="addToCollection(collection, asset); onShowSnackBar.emit({key: 'COLLECTION.ADD_TO_COLLECTION_TOAST', value: {collectionName:collection.name}})">
+          <md-icon>library_add</md-icon>
+        </button>
 
-          <!-- DOWNLOAD COMPS-->
-          <button
-            *ngIf="userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
-            md-icon-button
-            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
-            (click)="setAssetActiveId(asset)"
-            [md-menu-trigger-for]="downloadCompMenu">
-              <md-icon>file_download</md-icon>
-          </button>
-          <button
-            *ngIf="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
-            disabled
-            md-icon-button
-            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
-            (click)="setAssetActiveId(asset)"
-            [md-menu-trigger-for]="downloadCompMenu">
-              <md-icon>file_download</md-icon>
-          </button>
-
-          <!-- ADD / REMOVE FROM COLLECTION -->
-          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="alreadyInCollection(asset)"
-            title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
-            (click)="removeFromCollection(collection, asset); onShowSnackBar.emit({key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST', value: {collectionName:collection.name}})">
-            <md-icon>remove_circle</md-icon>
-          </button>
-          <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!alreadyInCollection(asset)"
-            title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
-            (click)="addToCollection(collection, asset); onShowSnackBar.emit({key: 'COLLECTION.ADD_TO_COLLECTION_TOAST', value: {collectionName:collection.name}})">
-            <md-icon>library_add</md-icon>
-          </button>
-
-          <button disabled md-icon-button title="More"><md-icon>more_vert</md-icon></button>
-        </nav>
-      </section>
-      <a [routerLink]="['/asset/', asset.assetId]" class="asset-desc">
-        <span *ngIf="asset.metaData[1]" class="mdata-1">
-          {{asset.metaData[1].value}}
-        </span>
-      </a>
+        <button disabled md-icon-button title="More"><md-icon>more_vert</md-icon></button>
+      </div>
     </div>
   </li>
 </ul>

@@ -85,6 +85,10 @@ header.app-header.collection-tray-closed collection-tray section {
 }
 
 .asset-carousel.grid ul.asset-list {
+  list-style: none;
+  font-size: 0;
+  line-height: 0;
+  padding: 0;
   margin: 0 0 0 0;
   white-space: nowrap;
   overflow-y: hidden;
@@ -93,6 +97,10 @@ header.app-header.collection-tray-closed collection-tray section {
   max-height: rem(5.6);
   // padding: 0;
   & > li {
+    font-size: 1em;
+    position: relative;
+    display: inline-block;
+    vertical-align: bottom;
     margin: 0 0 0 0;
     width: rem(9.957);
     opacity: .9;
@@ -100,7 +108,43 @@ header.app-header.collection-tray-closed collection-tray section {
     .asset {
       padding: 0;
       padding-bottom: 0;
+      background-color: md-color($md-background, app-bar);
+
+      a.asset-thb {
+        display: block;
+        height: 0;
+        width: 100%;
+        position: relative;
+        padding: 56.25% 0 0 0;
+        @include background-image(
+          linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.6)),
+          linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1))
+        );
+        &:hover, &:active {
+          cursor: pointer;
+        }
+        img {
+          position: absolute;
+          display: block;
+          height: 100%;
+          max-width: 100%;
+          max-height: 100%;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          margin: auto;
+          // width: 100%;
+          // if you want to stretch 4:3 SD thumbs
+        }
+      }
       a.asset-thb::before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
         background-color: md-color($md-foreground, base, .2);
         background-image: none;
         box-shadow: 
