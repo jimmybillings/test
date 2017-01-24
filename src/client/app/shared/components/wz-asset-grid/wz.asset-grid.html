@@ -1,0 +1,78 @@
+<ul class="asset-grid-view" *ngIf="assets">
+  <li *ngFor="let asset of assets">
+    <div class="asset">
+      <div class="asset-name">{{asset.name}}</div>
+      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb" wzSpeedview (showPreview)="showSpeedview.emit({position: $event, asset: asset})" (hidePreview)="hideSpeedview.emit()">
+        <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
+        <span *ngIf="asset.metaData[0]" class="mdata-0">
+          <span>{{asset.metaData[0].value}}</span>
+        </span>
+        <span *ngIf="asset.metaData[2] && asset.metaData[2].value != ''" class="mdata-2">
+          <span [ngClass]="formatType(asset.metaData[2].value)" class="sd-hd">{{asset.metaData[2].value}}</span>
+        </span>
+        <span *ngIf="asset.metaData[3]" class="mdata-3">
+          <span>{{asset.metaData[3].value}}</span>
+        </span>
+        <span *ngIf="asset.metaData[4] && asset.metaData[4].name == 'Resource.Class' && asset.metaData[4].value == 'Image'" class="mdata-4">
+          <span class="{{asset.metaData[4].value | lowercase}}"></span>
+        </span>
+      </a>
+      <section class="actions">
+        <nav class="asset-options" flex layout-align="end center">
+          <!-- ADD TO CART -->
+          <button
+            [disabled]="!userCan.addToCart()"
+            md-icon-button
+            title="Add to cart"
+            (click)="addAssetToCart(asset); onShowSnackBar.emit({key: 'ASSET.ADD_TO_CART_TOAST', value: {assetId:assetId}})">
+              <md-icon>shopping_cart</md-icon>
+          </button>
+
+          <!-- DOWNLOAD COMPS-->
+          <button
+            *ngIf="userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+            md-icon-button
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
+            (click)="setAssetActiveId(asset)"
+            [md-menu-trigger-for]="downloadCompMenu">
+              <md-icon>file_download</md-icon>
+          </button>
+          <button
+            *ngIf="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+            disabled
+            md-icon-button
+            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
+            (click)="setAssetActiveId(asset)"
+            [md-menu-trigger-for]="downloadCompMenu">
+              <md-icon>file_download</md-icon>
+          </button>
+
+          <!-- ADD / REMOVE FROM COLLECTION -->
+          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="alreadyInCollection(asset)"
+            title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
+            (click)="removeFromCollection(collection, asset); onShowSnackBar.emit({key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST', value: {collectionName:collection.name}})">
+            <md-icon>remove_circle</md-icon>
+          </button>
+          <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!alreadyInCollection(asset)"
+            title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
+            (click)="addToCollection(collection, asset); onShowSnackBar.emit({key: 'COLLECTION.ADD_TO_COLLECTION_TOAST', value: {collectionName:collection.name}})">
+            <md-icon>library_add</md-icon>
+          </button>
+
+          <button disabled md-icon-button title="More"><md-icon>more_vert</md-icon></button>
+        </nav>
+      </section>
+      <a [routerLink]="['/asset/', asset.assetId]" class="asset-desc">
+        <span *ngIf="asset.metaData[1]" class="mdata-1">
+          {{asset.metaData[1].value}}
+        </span>
+      </a>
+    </div>
+  </li>
+</ul>
+
+<md-menu (click)="trigger.closeMenu()" x-position="after" #downloadCompMenu="mdMenu">
+  <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(hasComp)" (click)="downloadComp('wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!userCan.downloadCleanComps(hasComp)" (click)="downloadComp('clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!userCan.downloadFullComps(hasComp)" (click)="downloadComp('full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
+</md-menu>
