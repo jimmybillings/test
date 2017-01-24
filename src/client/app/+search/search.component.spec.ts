@@ -7,7 +7,7 @@ export function main() {
     let mockAssetData: any, mockUiConfig: any, mockUserCan: any, mockActiveCollection: any,
       mockSearchContext: any, mockFilter: any, mockUserPreferences: any, mockNotification: any,
       mockSortDefinition: any, mockCart: any, mockAssetService: any, mockRenderer: any,
-      mockWindow: any;
+      mockWindow: any, mockTranslate: any, mockSnackBar: any;
 
     beforeEach(() => {
       mockAssetData = {
@@ -23,7 +23,8 @@ export function main() {
       mockUserCan = null;
       mockActiveCollection = {
         addAsset: jasmine.createSpy('addAsset').and.returnValue(Observable.of([])),
-        removeAsset: jasmine.createSpy('removeAsset').and.returnValue(Observable.of([]))
+        removeAsset: jasmine.createSpy('removeAsset').and.returnValue(Observable.of([])),
+        state: { name: 'testCollection' }
       };
       mockSearchContext = {
         update: null,
@@ -70,9 +71,15 @@ export function main() {
           .and.callFake((a: any, b: any, c: Function) => { c(); })
       };
       mockWindow = { location: { href: null } };
+      mockTranslate = {
+        get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
+      };
+      mockSnackBar = {
+        open: () => { }
+      };
       componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart,
         mockAssetService, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
-        mockUserPreferences, mockRenderer, mockWindow, null, null);
+        mockUserPreferences, mockRenderer, mockWindow, mockSnackBar, mockTranslate);
     });
 
     describe('ngOnDestroy()', () => {

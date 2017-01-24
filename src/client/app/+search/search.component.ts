@@ -44,7 +44,6 @@ export class SearchComponent implements OnDestroy {
     private renderer: Renderer,
     private window: Window,
     private snackBar: MdSnackBar,
-
     private translate: TranslateService) {
     this.screenWidth = this.window.innerWidth;
     this.window.onresize = () => this.screenWidth = this.window.innerWidth;
@@ -70,11 +69,19 @@ export class SearchComponent implements OnDestroy {
   public addToCollection(params: any): void {
     this.userPreferences.openCollectionTray();
     this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
+    this.showSnackBar({
+      key: 'COLLECTION.ADD_TO_COLLECTION_TOAST',
+      value: { collectionName: this.activeCollection.state.name }
+    });
   }
 
   public removeFromCollection(params: any): void {
     this.userPreferences.openCollectionTray();
     this.activeCollection.removeAsset(params).subscribe();
+    this.showSnackBar({
+      key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
+      value: { collectionName: this.activeCollection.state.name }
+    });
   }
 
   public downloadComp(params: any): void {
@@ -126,7 +133,12 @@ export class SearchComponent implements OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
+    console.log(asset);
     this.cart.addAssetToProjectInCart(asset);
+    this.showSnackBar({
+      key: 'ASSET.ADD_TO_CART_TOAST',
+      value: { assetId: asset.assetId }
+    });
   }
 
   public filterEvent(event: any) {

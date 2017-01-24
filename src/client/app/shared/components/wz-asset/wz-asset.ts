@@ -1,21 +1,19 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, ViewChild, Renderer } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+  OnChanges,
+  ViewChild,
+  Renderer
+} from '@angular/core';
 import { Collection } from '../../interfaces/collection.interface';
 import { MdMenuTrigger } from '@angular/material';
-/**
- * Directive that renders a list of assets in a grid view
- */
-@Component({
-  moduleId: module.id,
-  selector: 'wz-asset-grid',
-  templateUrl: 'wz.asset-grid.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
 
-export class WzAssetGridComponent implements OnChanges {
-  public activeAsset: any;
-  @Input() public assets: Array<any>;
-  @Input() public userCan: any;
-  @Input() public collection: Collection;
+
+export class WzAsset {
+  public currentCollection: Collection;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() addToCart = new EventEmitter();
@@ -23,21 +21,18 @@ export class WzAssetGridComponent implements OnChanges {
   @Output() showSpeedview = new EventEmitter();
   @Output() hideSpeedview = new EventEmitter();
   @Output() onShowSnackBar = new EventEmitter();
+  @Input() public assets: Array<any>;
+  @Input() public userCan: any;
+  @Input()
+  set collection(value: Collection) {
+    this.currentCollection = value;
+    this.assetsArr = this.currentCollection.assets.items.map(function (x) { return x.assetId; });
+  };
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
 
-  private assetsArr: Array<number>;
+  private assetsArr: Array<number> = [];
   private assetId: any;
   private hasComp: any;
-
-  constructor(private renderer: Renderer) {
-    this.assetsArr = [];
-  }
-
-  ngOnChanges(changes: any) {
-    if (changes.collection && changes.collection.currentValue) {
-      this.assetsArr = this.collection.assets.items.map(function (x) { return x.assetId; });
-    }
-  }
 
   public addToCollection(collection: Collection, asset: any): void {
     this.onAddToCollection.emit({ 'collection': collection, 'asset': asset });
@@ -45,6 +40,12 @@ export class WzAssetGridComponent implements OnChanges {
 
   public removeFromCollection(collection: Collection, asset: any): void {
     this.onRemoveFromCollection.emit({ 'collection': collection, 'asset': asset });
+    this.onShowSnackBar.emit(
+      {
+        key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
+        value: { collectionName: this.currentCollection.name }
+      }
+    );
   }
 
   public addAssetToCart(asset: any): void {
