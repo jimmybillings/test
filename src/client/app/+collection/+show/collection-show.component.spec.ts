@@ -19,6 +19,10 @@ export function main() {
         this.data = Observable.of({ id: 1 });
       }
 
+      public get state() {
+        return { name: 'test' };
+      }
+
       removeAsset(one: any, two: any, three: any) {
         return Observable.of({});
       }

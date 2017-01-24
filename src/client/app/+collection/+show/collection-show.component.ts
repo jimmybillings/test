@@ -86,6 +86,10 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public removeFromCollection(params: any): void {
     this.userPreference.openCollectionTray();
     this.activeCollection.removeAsset(params).subscribe();
+    this.showSnackBar({
+      key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
+      value: { collectionName: this.activeCollection.state.name }
+    });
   }
 
   public changePage(i: any): void {
@@ -121,7 +125,11 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cart.addAssetToProjectInCart(asset);
+    this.cart.addAssetToProjectInCart(asset.assetId);
+    this.showSnackBar({
+      key: 'ASSET.ADD_TO_CART_TOAST',
+      value: { assetId: asset.assetId }
+    });
   }
 
   public getAssetsForLink(): void {
