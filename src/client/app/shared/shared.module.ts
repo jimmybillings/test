@@ -12,8 +12,8 @@ import { WzPlayerModule } from './modules/wz-player/wz.player.module';
 
 // Shared Pure Components
 import { WzNotificationComponent } from './components/wz-notification/wz.notification.component';
-import { WzAssetGridComponent } from './components/wz-asset-grid/wz.asset-grid.component';
-import { WzAssetListComponent } from './components/wz-asset-list/wz.asset-list.component';
+import { WzAssetGridComponent } from './components/wz-asset/wz-asset-grid/wz.asset-grid.component';
+import { WzAssetListComponent } from './components/wz-asset/wz-asset-list/wz.asset-list.component';
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
 import { WzDropdownComponent, WzDropdownPortalDirective } from './components/wz-dropdown/wz.dropdown.component';
 import { WzFormComponent } from './components/wz-form/wz.form.component';

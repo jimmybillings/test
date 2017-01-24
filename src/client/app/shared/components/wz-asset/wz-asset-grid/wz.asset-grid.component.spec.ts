@@ -2,7 +2,7 @@ import {
   beforeEachProvidersArray,
   inject,
   TestBed
-} from '../../../imports/test.imports';
+} from '../../../../imports/test.imports';
 
 import { WzAssetGridComponent } from './wz.asset-grid.component';
 

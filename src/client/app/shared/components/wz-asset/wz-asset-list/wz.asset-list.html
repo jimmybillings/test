@@ -50,7 +50,7 @@
           [disabled]="!userCan.addToCart()"
           md-icon-button
           title="Add to cart"
-          (click)="addAssetToCart(asset); onShowSnackBar.emit({key: 'ASSET.ADD_TO_CART_TOAST', value: {assetId:assetId}})">
+          (click)="addAssetToCart(asset);">
             <md-icon>shopping_cart</md-icon>
         </button>
 
@@ -75,13 +75,13 @@
 
         <!-- ADD / REMOVE FROM COLLECTION -->
         <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="alreadyInCollection(asset)"
-          title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
-          (click)="removeFromCollection(collection, asset); onShowSnackBar.emit({key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST', value: {collectionName:collection.name}})">
+          title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
+          (click)="removeFromCollection(currentCollection, asset);">
           <md-icon>remove_circle</md-icon>
         </button>
         <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!alreadyInCollection(asset)"
-          title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
-          (click)="addToCollection(collection, asset); onShowSnackBar.emit({key: 'COLLECTION.ADD_TO_COLLECTION_TOAST', value: {collectionName:collection.name}})">
+          title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
+          (click)="addToCollection(currentCollection, asset);">
           <md-icon>library_add</md-icon>
         </button>
 
