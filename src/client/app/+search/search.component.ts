@@ -76,11 +76,20 @@ export class SearchComponent implements OnDestroy {
   }
 
   public removeFromCollection(params: any): void {
+    console.log(params);
     this.userPreferences.openCollectionTray();
     this.activeCollection.removeAsset(params).subscribe();
     this.showSnackBar({
       key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
       value: { collectionName: this.activeCollection.state.name }
+    });
+  }
+
+  public addAssetToCart(asset: any): void {
+    this.cart.addAssetToProjectInCart(asset.assetId);
+    this.showSnackBar({
+      key: 'ASSET.ADD_TO_CART_TOAST',
+      value: { assetId: asset.assetId }
     });
   }
 
@@ -130,15 +139,6 @@ export class SearchComponent implements OnDestroy {
     assetView === 'grid' ? assetView = 'list' : assetView = 'grid';
     // console.log(`set new pref view to - ${assetView}`);
     this.userPreferences.updateAssetViewPreference(assetView);
-  }
-
-  public addAssetToCart(asset: any): void {
-    console.log(asset);
-    this.cart.addAssetToProjectInCart(asset);
-    this.showSnackBar({
-      key: 'ASSET.ADD_TO_CART_TOAST',
-      value: { assetId: asset.assetId }
-    });
   }
 
   public filterEvent(event: any) {

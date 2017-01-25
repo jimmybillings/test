@@ -72,17 +72,26 @@
 			<wz-pagination *ngIf="collection.assets.pagination.totalCount > 0" [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
 			<div layout="column">
 				<h1 *ngIf="!collection.assets.items" class="md-display-1 alert warning">This collection does not have any assets</h1>
-				<!-- need access to (userPreferences.data | async).assetView =='list'" -->
-				<!--<wz-asset-list [assets]="collection.assets.items" [userCan]="userCan" [collection]="activeCollection.data | async"
-					(onAddToCollection)="addToCollection($event)" (addToCart)="addAssetToCart($event)"
-					(onDownloadComp)="downloadComp($event)" (onRemoveFromCollection)="removeFromCollection($event)"
-					(onShowSnackBar)="showSnackBar($event)">
-				</wz-asset-list>-->
-				<wz-asset-grid [assets]="collection.assets.items" [userCan]="userCan" [collection]="activeCollection.data | async"
-					(onAddToCollection)="addToCollection($event)" (addToCart)="addAssetToCart($event)"
-					(onDownloadComp)="downloadComp($event)" (onRemoveFromCollection)="removeFromCollection($event)"
-					(onShowSnackBar)="showSnackBar($event)">
+
+				<wz-asset-grid *ngIf="(userPreference.data | async).assetView =='grid'" class="grid" 
+					[assets]="collection.assets.items" 
+					[userCan]="userCan" 
+					[collection]="activeCollection.data | async"
+					(onAddToCollection)="addToCollection($event)" 
+					(onRemoveFromCollection)="removeFromCollection($event)"
+					(onAddToCart)="addAssetToCart($event)" 
+					(onDownloadComp)="downloadComp($event)">
 				</wz-asset-grid>
+
+				<wz-asset-list *ngIf="(userPreference.data | async).assetView =='list'" class="list" 
+					[assets]="collection.assets.items" 
+					[userCan]="userCan" 
+					[collection]="activeCollection.data | async"
+					(onAddToCollection)="addToCollection($event)" 
+					(onRemoveFromCollection)="removeFromCollection($event)"
+					(onAddToCart)="addAssetToCart($event)" 
+					(onDownloadComp)="downloadComp($event)">
+				</wz-asset-list>
 
 			</div>
 			<wz-pagination *ngIf="collection.assets.pagination.totalCount > 0" [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>

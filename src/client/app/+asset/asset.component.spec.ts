@@ -6,7 +6,7 @@ export function main() {
 
     let mockCurrentUser: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockNotification: any, mockCart: any,
-      mockWindow: any, mockMdDialog: any;
+      mockWindow: any, mockMdDialog: any, mockTranslate: any, mockSnackBar: any;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
@@ -33,6 +33,12 @@ export function main() {
       mockNotification = { create: jasmine.createSpy('create') };
       mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { location: { href: {} } };
+      mockTranslate = {
+        get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
+      };
+      mockSnackBar = {
+        open: () => { }
+      };
       mockMdDialog = {
         open: function () {
           return {
@@ -44,7 +50,8 @@ export function main() {
 
       componentUnderTest = new AssetComponent(
         mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
-        mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification, mockCart, null, null, mockMdDialog);
+        mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification, mockCart,
+        mockSnackBar, mockTranslate, mockMdDialog);
 
     });
 
@@ -105,7 +112,8 @@ export function main() {
         };
         componentUnderTest = new AssetComponent(
           mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
-          mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification, mockCart, null, null, mockMdDialog);
+          mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification,
+          mockCart, mockSnackBar, mockTranslate, mockMdDialog);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.location.href).toEqual('http://downloadcomp.url');
       });
