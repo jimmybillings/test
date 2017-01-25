@@ -106,7 +106,7 @@
 								{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}
 							</div>
 							<md-card-actions *ngIf="asset.primary[3].value === 'Royalty Free'" layout="column" layout-align="center center" layout-wrap="">
-								<ng-container *ngIf="userCan.haveCart">
+								<ng-container *ngIf="userCan.haveCart()">
 									<wz-select *ngIf="asset.transcodeTargets.length > 0 && userCan.addToCart()" [options]="asset.transcodeTargets" [trPrefix]="'ASSET.TRANSCODE_TARGETS.'"
 										(selectTarget)="selectTarget($event)"></wz-select>
 									<button md-raised-button [disabled]="!userCan.addToCart()" (click)="addAssetToCart(asset.assetId)"
@@ -127,7 +127,7 @@
 								{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}
 							</div>
 
-							<ng-container *ngIf="userCan.haveCarts">
+							<ng-container *ngIf="userCan.haveCart()">
 								<md-card-actions *ngIf="(asset.price && asset.price !== 0)" layout="column" layout-align="center center" layout-wrap="">
 									<button [disabled]="!userCan.addToCart()" md-button (click)="getPricingAttributes()" class="is-outlined">{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
 									<button [disabled]="!userCan.addToCart()" md-raised-button (click)="addAssetToCart(asset.assetId)"
