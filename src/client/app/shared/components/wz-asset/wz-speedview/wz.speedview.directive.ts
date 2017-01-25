@@ -1,5 +1,5 @@
 import { Directive, HostListener, Output, EventEmitter } from '@angular/core';
-import { Viewport, Coordinates } from '../../interfaces/event.interface';
+import { Viewport, Coordinates } from '../../../interfaces/event.interface';
 
 const previewWidth: number = 420;     // How wide the speed preview dialog is
 const previewHeight: number = 300;    // How tall the speed preview dialog is
