@@ -7,7 +7,7 @@
     <div flex="100" flex-gt-sm="66">
       <div flex="100" layout="row" layout-xs="column">
         <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding>
-          <a [routerLink]="['/asset/', asset.assetId]" wzSpeedview (showPreview)="showSpeedview.emit({position: $event, asset: asset})" (hidePreview)="hideSpeedview.emit()">
+          <a [routerLink]="['/asset/', asset.assetId]" wzSpeedview (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})" (hidePreview)="onHideSpeedview.emit()">
             <div class="asset-thb">
               <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
               <span *ngIf="asset.metaData[0]" class="mdata-0">
@@ -74,12 +74,12 @@
         </button>
 
         <!-- ADD / REMOVE FROM COLLECTION -->
-        <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="alreadyInCollection(asset)"
+        <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="inCollection(asset)"
           title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
           (click)="removeFromCollection(currentCollection, asset);">
           <md-icon>remove_circle</md-icon>
         </button>
-        <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!alreadyInCollection(asset)"
+        <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!inCollection(asset)"
           title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
           (click)="addToCollection(currentCollection, asset);">
           <md-icon>library_add</md-icon>
@@ -91,7 +91,7 @@
   </li>
 </ul>
 
-<md-menu (click)="trigger.closeMenu()" x-position="after" #downloadCompMenu="mdMenu">
+<md-menu x-position="after" #downloadCompMenu="mdMenu">
   <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(hasComp)" (click)="downloadComp('wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
   <button md-menu-item [disabled]="!userCan.downloadCleanComps(hasComp)" (click)="downloadComp('clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
   <button md-menu-item [disabled]="!userCan.downloadFullComps(hasComp)" (click)="downloadComp('full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>

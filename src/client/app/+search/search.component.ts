@@ -84,6 +84,14 @@ export class SearchComponent implements OnDestroy {
     });
   }
 
+  public addAssetToCart(asset: any): void {
+    this.cart.addAssetToProjectInCart(asset.assetId);
+    this.showSnackBar({
+      key: 'ASSET.ADD_TO_CART_TOAST',
+      value: { assetId: asset.assetId }
+    });
+  }
+
   public downloadComp(params: any): void {
     this.assetData.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
@@ -130,15 +138,6 @@ export class SearchComponent implements OnDestroy {
     assetView === 'grid' ? assetView = 'list' : assetView = 'grid';
     // console.log(`set new pref view to - ${assetView}`);
     this.userPreferences.updateAssetViewPreference(assetView);
-  }
-
-  public addAssetToCart(asset: any): void {
-    console.log(asset);
-    this.cart.addAssetToProjectInCart(asset);
-    this.showSnackBar({
-      key: 'ASSET.ADD_TO_CART_TOAST',
-      value: { assetId: asset.assetId }
-    });
   }
 
   public filterEvent(event: any) {

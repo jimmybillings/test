@@ -2,7 +2,7 @@
   <li *ngFor="let asset of assets">
     <div class="asset">
       <div class="asset-name">{{asset.name}}</div>
-      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb" wzSpeedview (showPreview)="showSpeedview.emit({position: $event, asset: asset})" (hidePreview)="hideSpeedview.emit()">
+      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb" wzSpeedview (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})" (hidePreview)="onHideSpeedview.emit()">
         <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
         <span *ngIf="asset.metaData[0]" class="mdata-0">
           <span>{{asset.metaData[0].value}}</span>
@@ -24,7 +24,7 @@
             *ngIf="userCan.addToCart()"
             md-icon-button
             title="Add to cart"
-            (click)="addAssetToCart(asset); onShowSnackBar.emit({key: 'ASSET.ADD_TO_CART_TOAST', value: {assetId:assetId}})">
+            (click)="addAssetToCart(asset);">
               <md-icon>shopping_cart</md-icon>
           </button>
 
@@ -48,14 +48,14 @@
           </button>
 
           <!-- ADD / REMOVE FROM COLLECTION -->
-          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="alreadyInCollection(asset)"
+          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="inCollection(asset)"
             title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
-            (click)="removeFromCollection(currentCollection, asset); onShowSnackBar.emit({key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST', value: {collectionName:currentCollection.name}})">
+            (click)="removeFromCollection(currentCollection, asset)">
             <md-icon>remove_circle</md-icon>
           </button>
-          <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!alreadyInCollection(asset)"
+          <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!inCollection(asset)"
             title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
-            (click)="addToCollection(currentCollection, asset); onShowSnackBar.emit({key: 'COLLECTION.ADD_TO_COLLECTION_TOAST', value: {collectionName:currentCollection.name}})">
+            (click)="addToCollection(currentCollection, asset)">
             <md-icon>library_add</md-icon>
           </button>
 
@@ -71,7 +71,7 @@
   </li>
 </ul>
 
-<md-menu (click)="trigger.closeMenu()" x-position="after" #downloadCompMenu="mdMenu">
+<md-menu x-position="after" #downloadCompMenu="mdMenu">
   <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(hasComp)" (click)="downloadComp('wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
   <button md-menu-item [disabled]="!userCan.downloadCleanComps(hasComp)" (click)="downloadComp('clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
   <button md-menu-item [disabled]="!userCan.downloadFullComps(hasComp)" (click)="downloadComp('full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>

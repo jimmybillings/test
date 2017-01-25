@@ -16,6 +16,7 @@ export interface Asset {
   metaData?: { name: string, value: string }[];
   thumbnail?: { name: string, urls: {} };
   smallPreview?: { name: string, urls: {} };
+  hasDownloadableComp?: boolean;
 }
 
 export interface TranscodeTarget {
