@@ -51,10 +51,10 @@
     <a md-menu-item *ngIf="userCan.viewCollections()" [routerLink]="['/collections']">
         <md-icon>folder_open</md-icon>Open your collections
     </a>
-    <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/commerce']">
+    <a md-menu-item *ngIf="userCan.addToCart()" [routerLink]="['/commerce']">
         <md-icon>shopping_cart</md-icon>Open your cart
     </a>
-    <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/commerce/orders']">
+    <a md-menu-item *ngIf="userCan.addToCart()" [routerLink]="['/commerce/orders']">
         <md-icon>description</md-icon>Open your orders
     </a>
     <div class="divider"></div>

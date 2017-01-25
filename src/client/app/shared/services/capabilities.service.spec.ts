@@ -5,7 +5,7 @@ export function main() {
     let serviceUnderTest: Capabilities;
 
     beforeEach(() => {
-      serviceUnderTest = new Capabilities(null, null, null);
+      serviceUnderTest = new Capabilities(null, null, null, null);
     });
 
     it('has no tests!', () => {

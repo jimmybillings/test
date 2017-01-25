@@ -55,14 +55,16 @@
               <md-icon>mode_comment</md-icon>
             </button>
 
-						<button md-icon-button *ngIf="!alreadyInCollection(asset.common[0].value)" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
-							(click)="addToCollection(collection, asset.common[0])">
-              <md-icon>library_add</md-icon>
-            </button>
-						<button md-icon-button *ngIf="alreadyInCollection(asset.common[0].value)" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
-							(click)="removeFromCollection(collection, asset.common[0])">
-              <md-icon>remove_circle</md-icon>
-            </button>
+						<ng-container *ngIf="userCan.haveCollections()">
+							<button md-icon-button *ngIf="!alreadyInCollection(asset.common[0].value)" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
+								(click)="addToCollection(collection, asset.common[0]); onShowSnackBar.emit({key: 'COLLECTION.ADD_TO_COLLECTION_TOAST', value: {collectionName:collection.name}})">
+								<md-icon>library_add</md-icon>
+							</button>
+							<button md-icon-button *ngIf="alreadyInCollection(asset.common[0].value)" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
+								(click)="removeFromCollection(collection, asset.common[0]); onShowSnackBar.emit({key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST', value: {collectionName:collection.name}})">
+								<md-icon>remove_circle</md-icon>
+							</button>
+						</ng-container>
 
 						<button md-icon-button disabled title="{{ 'ASSET.DETAIL.MORE_BTN_TITLE' | translate }}">
               <md-icon>more_vert</md-icon>
