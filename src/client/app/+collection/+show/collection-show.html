@@ -80,7 +80,9 @@
 					(onAddToCollection)="addToCollection($event)" 
 					(onRemoveFromCollection)="removeFromCollection($event)"
 					(onAddToCart)="addAssetToCart($event)" 
-					(onDownloadComp)="downloadComp($event)">
+					(onDownloadComp)="downloadComp($event)" 
+					(onShowSpeedview)="showSpeedview($event)" 
+					(onHideSpeedview)="hideSpeedview()">
 				</wz-asset-grid>
 
 				<wz-asset-list *ngIf="(userPreference.data | async).assetView =='list'" class="list" 
@@ -90,7 +92,9 @@
 					(onAddToCollection)="addToCollection($event)" 
 					(onRemoveFromCollection)="removeFromCollection($event)"
 					(onAddToCart)="addAssetToCart($event)" 
-					(onDownloadComp)="downloadComp($event)">
+					(onDownloadComp)="downloadComp($event)" 
+					(onShowSpeedview)="showSpeedview($event)" 
+					(onHideSpeedview)="hideSpeedview()">
 				</wz-asset-list>
 
 			</div>
@@ -99,4 +103,5 @@
 	</div>
 </section>
 
+<wz-speedview [speedviewData]="speedviewData | async"></wz-speedview>
 
