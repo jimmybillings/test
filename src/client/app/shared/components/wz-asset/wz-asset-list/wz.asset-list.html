@@ -4,15 +4,12 @@
     flex="100" 
     layout="row" 
     layout-xs="column">
-    <div flex="100" flex-gt-sm="66">
+    <div flex="100" flex-gt-sm="75">
       <div flex="100" layout="row" layout-xs="column">
-        <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding>
+        <div flex-gt-sm="40" flex-xl="45" flex="100" layout-padding>
           <a [routerLink]="['/asset/', asset.assetId]" wzSpeedview (showPreview)="showSpeedview.emit({position: $event, asset: asset})" (hidePreview)="hideSpeedview.emit()">
             <div class="asset-thb">
               <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
-              <span *ngIf="asset.metaData[0]" class="mdata-0">
-                <span>{{asset.metaData[0].value}}</span>
-              </span>
               <span *ngIf="asset.metaData[2] && asset.metaData[2].value != ''" class="mdata-2">
                 <span [ngClass]="formatType(asset.metaData[2].value)" class="sd-hd">{{asset.metaData[2].value}}</span>
               </span>
@@ -25,12 +22,15 @@
             </div>
           </a>
         </div>
-        <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" layout-padding>
+        <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="65" flex="100" layout-padding>
           <div class="md-caption asset-name">{{asset.name}}</div>
-          <a class="asset-title" [routerLink]="['/asset/', asset.assetId]" class="asset-desc">
-            <h3 class="md-headline" *ngIf="asset.metaData[1]" class="mdata-1">
+          <a class="asset-title-desc" [routerLink]="['/asset/', asset.assetId]">
+            <h4 class="asset-title mdata-0" *ngIf="asset.metaData[0]">
+              {{asset.metaData[0].value}}
+            </h4>
+            <p class="asset-description mdata-1" *ngIf="asset.metaData[1]">
               {{asset.metaData[1].value}}
-            </h3>
+            </p>
           </a>
           <!--<div *ngIf="collection.tags" class="md-caption collection-tags">
               <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
@@ -42,9 +42,9 @@
       </div>
     </div>
         
-    <!--<div flex="100" layout="row" layout-xs="column" class="divider"></div>-->
-    <div flex-gt-sm="33" layout-sm="100" flex="auto" class="actions" layout-align="end center">
-      <div class="tools" hide-xs>
+    <div flex="100" layout="row" layout-xs="column" class="divider"></div>
+    <div flex-gt-sm="25" layout-sm="100" flex="auto" class="actions" layout-align="end center">
+      <div class="tools">
         <!-- ADD TO CART -->
         <button
           [disabled]="!userCan.addToCart()"
@@ -85,7 +85,7 @@
           <md-icon>library_add</md-icon>
         </button>
 
-        <button disabled md-icon-button title="More"><md-icon>more_vert</md-icon></button>
+        <!--<button disabled md-icon-button title="More"><md-icon>more_vert</md-icon></button>-->
       </div>
     </div>
   </li>

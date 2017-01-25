@@ -1,28 +1,24 @@
 <template wzSpeedviewPortal>
-  <div layout="column" class="wz-speedview">
-    <div flex="none" *ngIf="speedviewData.imageQuickView">
+  <div class="wz-speedview">
+    <div layout="column" flex="none" *ngIf="speedviewData.imageQuickView">
       <div class="image-bg">
         <img class="image-speedview" [src]="speedviewData.url">
       </div>
     </div>
-    <div flex="none" *ngIf="!speedviewData.imageQuickView">
-      <video [src]="speedviewData.url" width="400" height="220" poster=""
+    <div layout="column" flex="none" *ngIf="!speedviewData.imageQuickView">
+      <video [src]="speedviewData.url" width="400" height="100%" poster=""
         autoplay name="media" type="video/mp4"></video>
     </div>
-    <div flex="none" class="info">
-      <div layout="row" layout-align="space-between none">
-        <div flex="65" class="metadata">
-          <ul>
-            <span *ngFor="let meta of speedviewData.values">
-              <li *ngIf="meta.value"><strong>{{ translationReady(meta.name) | uppercase | translate }}: </strong>{{ meta.value | slice:0:36 }}</li>
-            </span>
-          </ul>
-        </div>
-        <div *ngIf="speedviewData.price && speedviewData.price > 0" flex="35" class="price-info">
-          <p class="clip-rights" *ngIf="speedviewData.pricingType">{{ speedviewData.pricingType | uppercase }}</p>
-          <p class="price">{{ speedviewData.price | currency:'USD':true:'1.2-2' }} </p>
-        </div>
+    <section div class="info" layout="row" layout-align="space-between none">
+      <ul flex="65" class="metadata">
+        <li *ngFor="let meta of speedviewData.values">
+          <span *ngIf="meta.value"><strong>{{ translationReady(meta.name) | uppercase | translate }}: </strong>{{ meta.value | slice:0:36 }}</span>
+        </li>
+      </ul>
+      <div *ngIf="speedviewData.price && speedviewData.price > 0" flex="35" class="price-info">
+        <span class="clip-rights" *ngIf="speedviewData.pricingType">{{ speedviewData.pricingType | uppercase }}</span>
+        <span class="price">{{ speedviewData.price | currency:'USD':true:'1.2-2' }} </span>
       </div>
-    </div>
+    </section>
   </div>
 </template>
