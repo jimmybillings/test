@@ -9,22 +9,22 @@ import { Feature } from '../../../shared/interfaces/feature.interface';
 export class CartCapabilities {
   constructor(public currentUser: CurrentUser, public uiState: UiState, public feature: FeatureStore) { }
 
-  public accessCart(): boolean {
-    return this.feature.access(Feature.cart);
+  public haveCart(): boolean {
+    return this.feature.isAvailable(Feature.disableCartAccess);
   }
 
   public viewCartIcon(): Observable<boolean> {
     return this.uiState.headerIsExpanded().map((headerIsExpanded) => {
-      return this.accessCart() && headerIsExpanded && this.addToCart();
+      return this.haveCart() && headerIsExpanded && this.addToCart();
     });
   }
 
   public addToCart(): boolean {
-    return this.accessCart() && this.userHas('ViewCarts');
+    return this.haveCart() && this.userHas('ViewCarts');
   }
 
   public purchaseOnCredit(): boolean {
-    return this.currentUser.hasPurchaseOnCredit();
+    return this.haveCart() && this.currentUser.hasPurchaseOnCredit();
   }
 
   public userHas(permission: string): boolean {

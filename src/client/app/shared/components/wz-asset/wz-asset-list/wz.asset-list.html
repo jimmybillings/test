@@ -74,16 +74,18 @@
         </button>
 
         <!-- ADD / REMOVE FROM COLLECTION -->
-        <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="inCollection(asset)"
-          title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
-          (click)="removeFromCollection(currentCollection, asset);">
-          <md-icon>remove_circle</md-icon>
-        </button>
-        <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!inCollection(asset)"
-          title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
-          (click)="addToCollection(currentCollection, asset);">
-          <md-icon>library_add</md-icon>
-        </button>
+        <ng-container *ngIf="userCan.haveCollections()">
+          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="inCollection(asset)"
+            title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
+            (click)="removeFromCollection(currentCollection, asset);">
+            <md-icon>remove_circle</md-icon>
+          </button>
+          <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!inCollection(asset)"
+            title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
+            (click)="addToCollection(currentCollection, asset);">
+            <md-icon>library_add</md-icon>
+          </button>
+        </ng-container>
 
         <button disabled md-icon-button title="More"><md-icon>more_vert</md-icon></button>
       </div>

@@ -1,6 +1,6 @@
 export enum Feature {
-  collection,
-  cart
+  disableCollectionAccess,
+  disableCartAccess
 };
 
 export interface Features {

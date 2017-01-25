@@ -4,14 +4,14 @@ import { Observable } from 'rxjs/Rx';
 import { Feature, Features } from '../interfaces/feature.interface';
 
 const initState: Features = {
-  collection: true,
-  cart: false
+  disableCartAccess: false,
+  disableCollectionAccess: false
 };
 
 export const features: ActionReducer<any> = (state: Features = initState, action: Action) => {
   switch (action.type) {
     case 'FEATURE.SET_STATE':
-      return Object.assign({}, action.payload);
+      return Object.assign({}, state, action.payload);
     default:
       return state;
   }
@@ -21,13 +21,12 @@ export const features: ActionReducer<any> = (state: Features = initState, action
 export class FeatureStore {
   constructor(private store: Store<any>) { }
 
-  public access(feature: Feature): boolean {
-    // is there a better way to do this? Should the state be index(number) based?
-    return this.state[Feature[feature]];
+  public isAvailable(feature: Feature): boolean {
+    return !this.state[Feature[feature]];
   }
 
-  public setData(data: any): void {
-    this.store.dispatch({ type: 'FEATURE.SET_STATE', payload: data });
+  public set(data: any): void {
+    this.store.dispatch({ type: 'FEATURE.SET_STATE', payload: this.format(data) });
   }
 
   public get data(): Observable<Features> {
@@ -35,8 +34,15 @@ export class FeatureStore {
   }
 
   public get state(): Features {
-    let s: any;
-    this.data.take(1).subscribe((data: any) => s = data);
+    let s: Features;
+    this.data.take(1).subscribe((state: Features) => s = state);
     return s;
+  }
+
+  private format(data: any): Features {
+    for (let key in data) {
+      data[key] = JSON.parse(data[key]);
+    }
+    return data;
   }
 }

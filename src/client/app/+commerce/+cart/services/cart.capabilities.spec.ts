@@ -24,7 +24,7 @@ export function main() {
       beforeEach(() => {
         mockCurrentUser = { loggedIn: () => loggedIn, hasPermission: () => permission };
         mockUiState = { headerIsExpanded: () => Observable.of(headerIsExpanded) };
-        mockFeature = { access: () => true };
+        mockFeature = { isAvailable: () => true };
       });
 
       it('returns observable of false when header not expanded and no permission', () => {
@@ -61,6 +61,7 @@ export function main() {
 
       beforeEach(() => {
         mockCurrentUser = { hasPurchaseOnCredit: () => hasPurchaseOnCredit };
+        mockFeature = { isAvailable: () => true };
       });
 
       it('returns false when user does not have purchaseOnCredit', () => {

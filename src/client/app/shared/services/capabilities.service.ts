@@ -13,6 +13,7 @@ import { FeatureStore } from '../stores/feature.store';
 
 @Injectable()
 export class Capabilities implements CartCapabilities, CollectionCapabilities, AssetCapabilities, AdminCapabilities, SearchCapabilities {
+  haveCollections: () => boolean;
   viewCollections: () => boolean;
   editCollections: () => boolean;
   viewAssetDetails: () => boolean;
@@ -29,6 +30,7 @@ export class Capabilities implements CartCapabilities, CollectionCapabilities, A
   purchaseOnCredit: () => boolean;
   addToCart: () => boolean;
   accessCart: () => boolean;
+  haveCart: () => boolean;
 
   constructor(
     public currentUser: CurrentUser,
