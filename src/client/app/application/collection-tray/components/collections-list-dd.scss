@@ -264,6 +264,22 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
   .md-menu {
     min-width: 100%;
     box-shadow: none;
+    &.dd-menu-wrapper wz-sort-component div.dense {
+      .select-dd md-icon.material-icons {
+        opacity: 0;
+      }
+      .select-dd md-icon.material-icons {
+        opacity: 0;
+      }
+      .select-dd.active button[md-menu-item] {
+        background-color: transparent;
+        color: md-color($primary);
+        md-icon.material-icons {
+          color: md-color($primary);
+          opacity: 1;
+        }
+      }
+    }
   }
 }
 
