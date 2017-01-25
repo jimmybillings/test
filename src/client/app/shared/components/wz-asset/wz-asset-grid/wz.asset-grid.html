@@ -21,7 +21,7 @@
         <nav class="asset-options" flex layout-align="end center">
           <!-- ADD TO CART -->
           <button
-            [disabled]="!userCan.addToCart()"
+            *ngIf="userCan.addToCart()"
             md-icon-button
             title="Add to cart"
             (click)="addAssetToCart(asset); onShowSnackBar.emit({key: 'ASSET.ADD_TO_CART_TOAST', value: {assetId:assetId}})">

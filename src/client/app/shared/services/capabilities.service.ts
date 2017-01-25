@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
+import { Router } from '@angular/router';
+
 import { CartCapabilities } from '../../+commerce/+cart/services/cart.capabilities';
 import { AssetCapabilities } from '../../+asset/services/asset.capabilities';
 import { AdminCapabilities } from '../../+admin/services/admin.capabilities';
 import { CollectionCapabilities } from '../../+collection/services/collection.capabilities';
 import { SearchCapabilities } from '../../+search/services/search.capabilities';
 import { CurrentUser } from './current-user.model';
-import { Router } from '@angular/router';
-import { UiState } from '../../shared/services/ui.state';
-import { Observable } from 'rxjs/Rx';
+import { UiState } from '../services/ui.state';
+import { FeatureStore } from '../stores/feature.store';
 
 @Injectable()
 export class Capabilities implements CartCapabilities, CollectionCapabilities, AssetCapabilities, AdminCapabilities, SearchCapabilities {
@@ -26,11 +28,13 @@ export class Capabilities implements CartCapabilities, CollectionCapabilities, A
   viewCartIcon: () => Observable<boolean>;
   purchaseOnCredit: () => boolean;
   addToCart: () => boolean;
+  accessCart: () => boolean;
 
   constructor(
     public currentUser: CurrentUser,
     public route: Router,
-    public uiState: UiState) {
+    public uiState: UiState,
+    public feature: FeatureStore) {
     this.applyMixins(Capabilities, [
       CartCapabilities,
       CollectionCapabilities,

@@ -47,7 +47,7 @@
       <div class="tools" hide-xs>
         <!-- ADD TO CART -->
         <button
-          [disabled]="!userCan.addToCart()"
+          *ngIf="userCan.addToCart()"
           md-icon-button
           title="Add to cart"
           (click)="addAssetToCart(asset);">

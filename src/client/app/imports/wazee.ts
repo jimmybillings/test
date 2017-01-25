@@ -24,6 +24,7 @@ import { Authentication } from '../shared/services/authentication.data.service';
 import { PendoService } from '../shared/services/pendo.service';
 import { CartService } from '../shared/services/cart.service';
 import { CartStore } from '../shared/stores/cart.store';
+import { FeatureStore } from '../shared/stores/feature.store';
 // WAZEE ROUTES
 import { APP_ROUTES } from '../app.routes';
 
@@ -47,6 +48,7 @@ import { cart } from '../shared/stores/cart.store';
 import { sortDefinitions } from '../shared/services/sort-definitions.service';
 import { order } from '../+commerce/+order/services/order.store';
 import { orders } from '../+commerce/+order/services/orders.store';
+import { features } from '../shared/stores/feature.store';
 
 // TRANSLATIONS
 import { MultilingualService } from '../shared/services/multilingual.service';
@@ -79,7 +81,8 @@ export const WAZEE_PROVIDERS = [
   Authentication,
   PendoService,
   CartService,
-  CartStore
+  CartStore,
+  FeatureStore
 ];
 
 export const WAZEE_STORES: any = {
@@ -100,7 +103,8 @@ export const WAZEE_STORES: any = {
   cart: cart,
   sortDefinitions: sortDefinitions,
   order: order,
-  orders: orders
+  orders: orders,
+  features: features
 };
 
 export const WAZEE_ROUTES: Routes = [
