@@ -29,7 +29,7 @@ export function main() {
       mockDialog = {
         close: jasmine.createSpy('close')
       };
-      mockFeatureStore = { set: jasmine.createSpy('set') };
+      mockFeatureStore = { set: jasmine.createSpy('set'), setInLocalStorage: jasmine.createSpy('setInLocalStorage') };
       componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
         mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog, mockFeatureStore);
     });
