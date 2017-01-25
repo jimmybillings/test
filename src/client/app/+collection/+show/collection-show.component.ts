@@ -177,4 +177,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       dialogRef.componentInstance.isEdit = true;
     });
   }
+
+  public onChangeAssetView(assetView: any): void {
+    this.userPreference.updateAssetViewPreference(assetView);
+  }
 }
