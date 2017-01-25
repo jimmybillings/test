@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { AssetService } from '../../shared/services/asset.service';
 import { FormFields } from '../../shared/interfaces/forms.interface';
-import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
+import { WzFormComponent } from '../../shared/modules/wz-form/wz.form.component';
 import { User } from '../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs/Rx';
 

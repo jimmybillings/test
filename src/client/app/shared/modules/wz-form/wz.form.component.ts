@@ -11,7 +11,6 @@ import { ApiConfig } from '../../services/api.config';
   moduleId: module.id,
   selector: 'wz-form',
   templateUrl: 'wz.form.html',
-  providers: [FormModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

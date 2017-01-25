@@ -14,19 +14,18 @@
 @import 'application/collection-tray/components/collections-list-dd';
 
 // SHARED COMPONENTS
-
 @import 'shared/components/wz-asset/wz-asset';
 @import 'shared/components/wz-list/wz.list';
 @import 'shared/components/wz-pagination/wz.pagination';
 @import 'shared/components/wz-notification/wz.notification';
-@import 'shared/components/wz-form/wz.form';
 @import 'shared/components/wz-breadcrumb/wz-breadcrumb';
 @import 'shared/components/wz-pikaday/wz.pikaday';
-@import 'shared/components/wz-form/components/wz-input-tags/wz-input-tags';
 @import 'shared/components/wz-sort/wz.sort';
 @import 'shared/components/wz-select/wz.select';
-@import 'shared/components/wz-autocomplete-search/wz-autocomplete.search';
 @import 'shared/components/wz-pricing/wz.pricing';
+
+// SHARED MODULES
+@import 'shared/modules/wz-form/wz.form';
 @import 'shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player';
 
 // ROUTE COMPONENTS
