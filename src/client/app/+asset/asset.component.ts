@@ -67,11 +67,19 @@ export class AssetComponent implements OnInit {
     } else {
       this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
     };
+    this.showSnackBar({
+      key: 'COLLECTION.ADD_TO_COLLECTION_TOAST',
+      value: { collectionName: params.collection.name }
+    });
   }
 
   public removeFromCollection(params: any): void {
     this.userPreference.openCollectionTray();
     this.activeCollection.removeAsset(params).subscribe();
+    this.showSnackBar({
+      key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
+      value: { collectionName: params.collection.name }
+    });
   }
 
   public downloadComp(params: any): void {
@@ -86,7 +94,12 @@ export class AssetComponent implements OnInit {
 
   public addAssetToCart(asset: any): void {
     this.usagePrice.take(1).subscribe((price: any) => {
-      this.cart.addAssetToProjectInCart(asset.assetId, asset.selectedTranscodeTarget, price, this.selectedAttrbutes);
+      this.cart.addAssetToProjectInCart(
+        asset.assetId, asset.selectedTranscodeTarget, price, this.selectedAttrbutes);
+    });
+    this.showSnackBar({
+      key: 'ASSET.ADD_TO_CART_TOAST',
+      value: { assetId: asset.assetId }
     });
   }
 

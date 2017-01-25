@@ -32,8 +32,8 @@ import { CollectionLinkComponent } from '../+collection/components/collection-li
 import { EqualValidatorDirective } from './components/wz-form/wz-validators/wz-equal-validator.directive';
 import { WzSelectComponent } from './components/wz-select/wz.select.component';
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
-import { WzSpeedviewComponent, WzSpeedviewPortalDirective } from './components/wz-speedview/wz.speedview.component';
-import { WzSpeedviewDirective } from './components/wz-speedview/wz.speedview.directive';
+import { WzSpeedviewComponent, WzSpeedviewPortalDirective } from './components/wz-asset/wz-speedview/wz.speedview.component';
+import { WzSpeedviewDirective } from './components/wz-asset/wz-speedview/wz.speedview.directive';
 import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
 import { WzAutocompleteSearchComponent } from './components/wz-autocomplete-search/wz-autocomplete-search.component';
 import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soon.component';

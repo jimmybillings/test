@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Renderer, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUser } from '../../shared/services/current-user.model';
@@ -19,11 +19,13 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
+import { WzSpeedviewComponent } from '../../shared/components/wz-asset/wz-speedview/wz.speedview.component';
 
 @Component({
   moduleId: module.id,
   selector: 'collection-show',
   templateUrl: 'collection-show.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 
@@ -34,8 +36,12 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public routeParams: any;
   public errorMessage: string;
   public config: Object;
+  public speedviewData: any;
+  public screenWidth: number;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
+  @ViewChild(WzSpeedviewComponent) private wzSpeedview: WzSpeedviewComponent;
+
 
   constructor(
     public userCan: Capabilities,
@@ -53,7 +59,12 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
-    private dialog: MdDialog) { }
+    private renderer: Renderer,
+    private window: Window,
+    private dialog: MdDialog) {
+    this.screenWidth = this.window.innerWidth;
+    this.window.onresize = () => this.screenWidth = this.window.innerWidth;
+  }
 
   ngOnInit() {
     this.activeCollectionSubscription = this.activeCollection.data.subscribe(collection => {
@@ -72,6 +83,26 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       .subscribe((res: string) => {
         this.snackBar.open(res, '', { duration: 2000 });
       });
+  }
+
+  public showSpeedview(event: { asset: any, position: any }): void {
+    if (event.asset.speedviewData) {
+      this.speedviewData = Observable.of(event.asset.speedviewData);
+      this.wzSpeedview.show(event.position);
+    } else {
+      console.log(event.asset);
+      this.speedviewData = this.asset.getSpeedviewData(event.asset.assetId)
+        .do((data: any) => {
+          event.asset.speedviewData = data;
+          this.wzSpeedview.show(event.position);
+        });
+    }
+    this.renderer.listenGlobal('document', 'scroll', () => this.wzSpeedview.destroy());
+  }
+
+  public hideSpeedview(): void {
+    this.speedviewData = null;
+    this.wzSpeedview.destroy();
   }
 
   public resetCollection() {

@@ -24,7 +24,8 @@ export function main() {
       it('Should emit an event to add an asset to a collection', () => {
         spyOn(componentUnderTest.onAddToCollection, 'emit');
         componentUnderTest.addToCollection(mockCollection, mockAsset);
-        expect(componentUnderTest.onAddToCollection.emit).toHaveBeenCalledWith({ collection: mockCollection, asset: mockAsset });
+        expect(componentUnderTest.onAddToCollection.emit).toHaveBeenCalledWith(
+          { collection: mockCollection, asset: mockAsset });
       });
     });
 

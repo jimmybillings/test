@@ -11,7 +11,7 @@ import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 import { CartService } from '../shared/services/cart.service';
 import { AssetService } from '../shared/services/asset.service';
-import { WzSpeedviewComponent } from '../shared/components/wz-speedview/wz.speedview.component';
+import { WzSpeedviewComponent } from '../shared/components/wz-asset/wz-speedview/wz.speedview.component';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 /**
@@ -76,6 +76,7 @@ export class SearchComponent implements OnDestroy {
   }
 
   public removeFromCollection(params: any): void {
+    console.log(params);
     this.userPreferences.openCollectionTray();
     this.activeCollection.removeAsset(params).subscribe();
     this.showSnackBar({
@@ -107,6 +108,7 @@ export class SearchComponent implements OnDestroy {
       this.speedviewData = Observable.of(event.asset.speedviewData);
       this.wzSpeedview.show(event.position);
     } else {
+      console.log(event.asset);
       this.speedviewData = this.assetService.getSpeedviewData(event.asset.assetId)
         .do((data: any) => {
           event.asset.speedviewData = data;
