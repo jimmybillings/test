@@ -20,7 +20,7 @@ export class CartCapabilities {
   }
 
   public addToCart(): boolean {
-    return this.haveCart() && this.userHas('ViewCarts');
+    return this.haveCart() && this.currentUser.loggedIn();
   }
 
   public purchaseOnCredit(): boolean {

@@ -28,29 +28,29 @@ export function main() {
       });
 
       it('returns observable of false when header not expanded and no permission', () => {
+        loggedIn = true;
         headerIsExpanded = false;
-        permission = false;
         new CartCapabilities(mockCurrentUser, mockUiState, mockFeature).viewCartIcon()
           .subscribe(answer => expect(answer).toBe(false));
       });
 
       it('returns observable of false when header is expanded but no permission', () => {
+        loggedIn = false;
         headerIsExpanded = true;
-        permission = false;
         new CartCapabilities(mockCurrentUser, mockUiState, mockFeature).viewCartIcon()
           .subscribe(answer => expect(answer).toBe(false));
       });
 
       it('returns observable of false when header not expanded but has permission', () => {
+        loggedIn = false;
         headerIsExpanded = false;
-        permission = true;
         new CartCapabilities(mockCurrentUser, mockUiState, mockFeature).viewCartIcon()
           .subscribe(answer => expect(answer).toBe(false));
       });
 
       it('returns observable of true when header is expanded and has permission', () => {
+        loggedIn = true;
         headerIsExpanded = true;
-        permission = true;
         new CartCapabilities(mockCurrentUser, mockUiState, mockFeature).viewCartIcon()
           .subscribe(answer => expect(answer).toBe(true));
       });

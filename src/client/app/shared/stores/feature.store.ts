@@ -19,10 +19,18 @@ export const features: ActionReducer<any> = (state: Features = initState, action
 
 @Injectable()
 export class FeatureStore {
-  constructor(private store: Store<any>) { }
+  constructor(private store: Store<any>) {
+    if (localStorage.getItem('siteFeatures')) {
+      this.set(JSON.parse(localStorage.getItem('siteFeatures')));
+    }
+  }
 
   public isAvailable(feature: Feature): boolean {
     return !this.state[Feature[feature]];
+  }
+
+  public setInLocalStorage(data: any): void {
+    localStorage.setItem('siteFeatures', JSON.stringify(this.format(data)));
   }
 
   public set(data: any): void {
