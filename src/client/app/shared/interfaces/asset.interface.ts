@@ -17,6 +17,9 @@ export interface Asset {
   thumbnail?: { name: string, urls: {} };
   smallPreview?: { name: string, urls: {} };
   hasDownloadableComp?: boolean;
+  transcodeTargets?: TranscodeTarget[];
+  primary?: Array<{ value: string }>;
+  detailTypeMap?: any;
 }
 
 export interface TranscodeTarget {

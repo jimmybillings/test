@@ -10,14 +10,9 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
 })
 
 export class AssetShareLinkComponent {
-  @Input() uiState: any;
   @Input() assetLink: string;
   @Output() close = new EventEmitter();
   @Output() onOpenSnackbar = new EventEmitter();
-
-  public closeAssetShareLink(): void {
-    this.uiState.closeAssetShareLink();
-  }
 
   public selectInputForCopy(event: any): void {
     event.target.select();

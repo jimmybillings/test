@@ -4,7 +4,6 @@
       <asset-share-link
         *ngIf="assetLinkIsShowing"
         flex="100"
-        [uiState]="Uistate"
         [assetLink]="assetShareLink"
         (close)="showShareLink()"
         (onOpenSnackbar)="onOpenSnackBar.emit($event)">

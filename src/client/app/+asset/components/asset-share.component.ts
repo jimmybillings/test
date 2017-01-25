@@ -1,11 +1,10 @@
 import {
   Component, Input, Output, ViewChild,
-  EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy
+  EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef
 } from '@angular/core';
 import { AssetService } from '../../shared/services/asset.service';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/components/wz-form/wz.form.component';
-import { CurrentUser } from '../../shared/services/current-user.model';
 import { User } from '../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs/Rx';
 
@@ -16,8 +15,8 @@ import { Subscription } from 'rxjs/Rx';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class AssetShareComponent implements OnDestroy {
-  @Input() currentUser: CurrentUser;
+export class AssetShareComponent {
+  @Input() userEmail: string;
   @Input() uiState: any;
   @Input() config: any;
   @Input() assetThumbnailUrl: any;
@@ -31,19 +30,12 @@ export class AssetShareComponent implements OnDestroy {
   public serverErrors: any;
   public formItems: Array<any> = [];
   public user: User;
-  private userSubscription: Subscription;
 
   @ViewChild(WzFormComponent) private wzForm: WzFormComponent;
 
   constructor(
-    currentUser: CurrentUser,
     private asset: AssetService,
     private changeDetector: ChangeDetectorRef) {
-    this.userSubscription = currentUser.data.subscribe((user: User) => this.user = user);
-  }
-
-  public ngOnDestroy() {
-    this.userSubscription.unsubscribe();
   }
 
   public closeAssetShare(): void {
@@ -76,7 +68,7 @@ export class AssetShareComponent implements OnDestroy {
     shareLink.type = 'asset';
     shareLink.recipientEmails = (shareLink.recipientEmails) ? shareLink.recipientEmails.split(/\s*,\s*|\s*;\s*/) : [];
     if (shareLink.copyMe) {
-      shareLink.recipientEmails.push(this.user.emailAddress);
+      shareLink.recipientEmails.push(this.userEmail);
     }
     this.asset.createShareLink(shareLink).take(1).subscribe((res) => {
       this.success();

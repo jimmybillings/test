@@ -76,6 +76,7 @@ export class SearchComponent implements OnDestroy {
   }
 
   public removeFromCollection(params: any): void {
+    console.log(params);
     this.userPreferences.openCollectionTray();
     this.activeCollection.removeAsset(params).subscribe();
     this.showSnackBar({
