@@ -105,25 +105,25 @@ export function main() {
 
     describe('REMOVE_ASSET_FROM_COLLECTION', () => {
       const tempInitialState = JSON.parse(JSON.stringify(initialState));
-      tempInitialState.assets = { items: [{ assetId: 10836 }] };
-      const tempPayload = { assetId: 10836 };
+      tempInitialState.assets = { items: [{ assetId: 10836, uuid: '123' }] };
+      const tempPayload = { assetId: 10836, uuid: '123' };
 
       addStandardReducerTestsFor(activeCollection, 'REMOVE_ASSET_FROM_COLLECTION', tempInitialState, tempPayload);
 
       it('returns current state minus the specified asset payload when current state is passed in', () => {
         expect(activeCollection(
-          { assets: { items: [{ assetId: 42 }, { assetId: 47 }] }, assetsCount: 2 },
-          { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { assetId: 42 } }
+          { assets: { items: [{ assetId: 42, uuid: 't123' }, { assetId: 47, uuid: 't456' }] }, assetsCount: 2 },
+          { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { assetId: 42, uuid: 't123' } }
         ))
-          .toEqual({ assets: { items: [{ assetId: 47 }] }, assetsCount: 1 });
+          .toEqual({ assets: { items: [{ assetId: 47, uuid: 't456' }] }, assetsCount: 1 });
       });
 
       it('returns current state when current state is passed in and specified asset payload is not present', () => {
         expect(activeCollection(
-          { assets: { items: [{ assetId: 42 }, { assetId: 47 }] }, assetsCount: 2 },
-          { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { assetId: 86 } }
+          { assets: { items: [{ assetId: 42, uuid: 't123' }, { assetId: 47, uuid: 't456' }] }, assetsCount: 2 },
+          { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { assetId: 86, uuid: 't789' } }
         ))
-          .toEqual({ assets: { items: [{ assetId: 42 }, { assetId: 47 }] }, assetsCount: 2 });
+          .toEqual({ assets: { items: [{ assetId: 42, uuid: 't123' }, { assetId: 47, uuid: 't456' }] }, assetsCount: 2 });
       });
 
       it('returns current state when current state is passed in with assets undefined', () => {
