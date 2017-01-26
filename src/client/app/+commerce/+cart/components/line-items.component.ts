@@ -10,11 +10,13 @@ import { Project, LineItem } from '../../../shared/interfaces/cart.interface';
 export class LineItemsComponent {
   public targets: any = {};
   public items: LineItem[];
-  @Input() set lineItems(stuff: LineItem[]) {
-    stuff.forEach((item: LineItem, index: number) => {
-      this.targets[index] = item.selectedTranscodeTarget;
-    });
-    this.items = stuff;
+  @Input() set lineItems(items: LineItem[]) {
+    if (items) {
+      items.forEach((item: LineItem, index: number) => {
+        this.targets[index] = item.selectedTranscodeTarget;
+      });
+      this.items = items;
+    }
   };
   @Input() otherProjects: Project[];
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
