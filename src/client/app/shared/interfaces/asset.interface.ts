@@ -17,14 +17,9 @@ export interface Asset {
   thumbnail?: { name: string, urls: {} };
   smallPreview?: { name: string, urls: {} };
   hasDownloadableComp?: boolean;
-  transcodeTargets?: TranscodeTarget[];
+  transcodeTargets?: string[];
   primary?: Array<{ value: string }>;
   detailTypeMap?: any;
-}
-
-export interface TranscodeTarget {
-  name: string;
-  selected: boolean;
 }
 
 export interface SubclipMarkers {

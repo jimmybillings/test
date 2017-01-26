@@ -4,8 +4,8 @@ div.line-items {
     @include md-elevation(2);
     margin: rem(1);
     min-width: 100%;
-    div.transcode-select {
-      margin: rem(1) rem(3);
+    md-select {
+      width: 90%;
     }
     div.line-item-actions {
       padding: rem(1);      
@@ -30,12 +30,6 @@ div.line-items {
         margin: 0 rem(1);
         color: md-color($md-primary);
         font-size: rem(2);
-      }
-    }
-    wz-select {
-      div.wz-select-menu-trigger {
-        margin: 0 rem(.5);
-        border-bottom: 1px solid md-color($md-grey, 500);
       }
     }
   }
