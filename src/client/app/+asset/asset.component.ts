@@ -62,7 +62,7 @@ export class AssetComponent implements OnInit {
   public addToCollection(params: any): void {
     this.userPreference.openCollectionTray();
     if (params.markers) {
-      console.log(`asset component subclip markers: ${params.markers.in} - ${params.markers.out}`);
+      // console.log(`asset component subclip markers: ${params.markers.in} - ${params.markers.out}`);
       this.activeCollection.addAsset(params.collection.id, params.asset, params.markers).subscribe();
     } else {
       this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();

@@ -47,7 +47,7 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public subclip(params: SubclipMarkers): void {
-    console.log(`Asset details subclip markers: ${params.in} - ${params.out}`);
+    // console.log(`Asset details subclip markers: ${params.in} - ${params.out}`);
     this.onAddToCollection.emit({ 'collection': this.collection, 'asset': this.asset, 'markers': params });
   }
 
