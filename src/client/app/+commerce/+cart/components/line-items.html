@@ -6,7 +6,7 @@
 					<cart-asset-component [asset]="lineItem.asset" (assetNotify)="delegate($event)"></cart-asset-component>
 				</div>
 				<div flex-gt-sm="30" layout="row" layout-align="center center">
-					<md-select *ngIf="lineItem.transcodeTargets.length > 0" [(ngModel)]="targets[i]">
+					<md-select *ngIf="lineItem.transcodeTargets && lineItem.transcodeTargets.length > 0" [(ngModel)]="targets[i]">
 						<md-option *ngFor="let target of lineItem.transcodeTargets" [value]="target" (onSelect)="selectTarget(targets[i], target, lineItem)">{{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}</md-option>
 					</md-select>
 				</div>
