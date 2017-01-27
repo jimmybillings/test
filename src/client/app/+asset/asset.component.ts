@@ -25,7 +25,7 @@ import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.c
 export class AssetComponent implements OnInit {
   public pricingAttributes: any;
   public rightsReproduction: string = '';
-  public usagePrice: Observable<any>;
+  public usagePrice: Observable<any> = Observable.of(null);
   private selectedAttrbutes: any;
   private pageSize: number = 50;
 
@@ -62,7 +62,7 @@ export class AssetComponent implements OnInit {
   public addToCollection(params: any): void {
     this.userPreference.openCollectionTray();
     if (params.markers) {
-      console.log(`asset component subclip markers: ${params.markers.in} - ${params.markers.out}`);
+      // console.log(`asset component subclip markers: ${params.markers.in} - ${params.markers.out}`);
       this.activeCollection.addAsset(params.collection.id, params.asset, params.markers).subscribe();
     } else {
       this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();

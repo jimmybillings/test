@@ -73,7 +73,16 @@ export class ActiveCollectionService implements OnInit {
       return this.api.post(
         Api.Identities,
         `collection/${collection.id}/removeAssets`,
-        { body: { list: [{ assetId: params.asset.assetId, uuid: uuid }] } })
+        {
+          body: {
+            list: [{
+              assetId: params.asset.assetId,
+              uuid: uuid,
+              timeStart: params.asset.timeStart,
+              timeEnd: params.asset.timeEnd
+            }]
+          }
+        })
         .do(response => this.store.remove(response['list'][0]));
     } else {
       return Observable.of({});

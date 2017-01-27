@@ -33,7 +33,7 @@ export const activeCollection: ActionReducer<any> = (state: Collection = initial
       if (!state.assets || !state.assets.items) return state;
 
       updatedAssets = JSON.parse(JSON.stringify(state.assets));
-      updatedAssets.items = updatedAssets.items.filter((item: Assets) => item.assetId !== action.payload.assetId);
+      updatedAssets.items = updatedAssets.items.filter((item: Assets) => item.uuid !== action.payload.uuid);
 
       return Object.assign({}, state, { assets: updatedAssets, assetsCount: updatedAssets.items.length });
 

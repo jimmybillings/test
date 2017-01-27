@@ -9,6 +9,7 @@ import { PendoService } from '../../shared/services/pendo.service';
 import { Observable } from 'rxjs/Rx';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.component';
+import { FeatureStore } from '../../shared/stores/feature.store';
 /**
  * Login page component - renders login page and handles login form submission
  */
@@ -36,7 +37,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private uiConfig: UiConfig,
     private route: ActivatedRoute,
     private pendo: PendoService,
-    private dialog: MdDialog) {
+    private dialog: MdDialog,
+    private feature: FeatureStore) {
   }
 
   ngOnInit(): void {
@@ -64,6 +66,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.router.navigate(['/']);
       }
       this.currentUser.set(res.user, res.token.token);
+      this.feature.setInLocalStorage(res.siteFeatures);
+      this.feature.set(res.siteFeatures);
       if (portal === 'commerce') this.pendo.initialize(res.user);
     });
   }

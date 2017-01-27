@@ -163,15 +163,16 @@ section.preview-bk {
         } 
       }
       md-card-actions {
-        wz-select {
+        md-select {
+          div.md-select-trigger {
+            border-bottom: 1px solid #fff;
+          }
           width: 100%;
-          div.wz-select-menu-trigger {
-            box-shadow: inset -2px -2px 0px 0px md-color($md-grey, 900);
-            background-color: rgba(md-color($md-grey, 700), .5);
-            @include text-contrast(md-color($md-grey, 700));
-            span.select-icon {
-              @include text-contrast(md-color($md-grey, 700));
-            }
+          margin-bottom: rem(2);
+          span.md-select-placeholder.md-floating-placeholder,
+          span.md-select-value,
+          span.md-select-arrow {
+            color: #fff;
           }
         }
         @include calc(width, "100% - 42px");
