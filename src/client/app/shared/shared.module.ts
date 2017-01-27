@@ -25,11 +25,6 @@ import { WzItemSearchFormComponent } from './components/wz-item-search-form/wz.i
 import { CollectionFormComponent } from '../application/collection-tray/components/collection-form.component';
 import { WzSortComponent } from './components/wz-sort/wz.sort.component';
 import { CollectionLinkComponent } from '../+collection/components/collection-link.component';
-<<<<<<< HEAD
-import { WzSelectComponent } from './components/wz-select/wz.select.component';
-=======
-import { EqualValidatorDirective } from './components/wz-form/wz-validators/wz-equal-validator.directive';
->>>>>>> 07cc123c6eb6c3676e8e58b3363f018c6ce1ba9b
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
 import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soon.component';
@@ -77,11 +72,6 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
-<<<<<<< HEAD
-    WzSelectComponent,
-=======
-    EqualValidatorDirective,
->>>>>>> 07cc123c6eb6c3676e8e58b3363f018c6ce1ba9b
     WzClipBoardDirective,
     WzTermsComponent,
     WzPricingComponent,
@@ -110,11 +100,6 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
-<<<<<<< HEAD
-    WzSelectComponent,
-=======
-    EqualValidatorDirective,
->>>>>>> 07cc123c6eb6c3676e8e58b3363f018c6ce1ba9b
     WzClipBoardDirective,
     WzTermsComponent,
     WzAssetModule,
