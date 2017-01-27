@@ -19,7 +19,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
-import { WzSpeedviewComponent } from '../../shared/components/wz-asset/wz-speedview/wz.speedview.component';
+import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 
 @Component({
   moduleId: module.id,

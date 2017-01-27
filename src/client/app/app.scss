@@ -14,7 +14,6 @@
 @import 'application/collection-tray/components/collections-list-dd';
 
 // SHARED COMPONENTS
-@import 'shared/components/wz-asset/wz-asset';
 @import 'shared/components/wz-list/wz.list';
 @import 'shared/components/wz-pagination/wz.pagination';
 @import 'shared/components/wz-notification/wz.notification';
@@ -27,6 +26,7 @@
 // SHARED MODULES
 @import 'shared/modules/wz-form/wz.form';
 @import 'shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player';
+@import 'shared/modules/wz-asset/wz-asset';
 
 // ROUTE COMPONENTS
 @import '+home/home';

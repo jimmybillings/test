@@ -29,7 +29,6 @@ import { FormModel } from './wz.form.model';
   ],
   exports: [
     WzFormComponent,
-    WzInputSuggestionsComponent,
     WzAutocompleteSearchComponent
   ],
   providers: [FormModel]

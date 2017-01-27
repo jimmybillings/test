@@ -13,8 +13,13 @@
 					<button md-button class="is-dd" color="primary" [md-menu-trigger-for]="assetSortMenu">
 						<span class="key">{{'SEARCH.SORT_BTN_LABEL' | translate }}</span><span class="value md-caption">{{ (sortDefinition.data | async).currentSort.name }}</span>
 					</button>
+					<md-menu x-position="before" #assetSortMenu="mdMenu">
+						<wz-sort-component [current]="(sortDefinition.data | async).currentSort" [items]="(sortDefinition.data | async).sorts" (sort)="onSortResults($event)"></wz-sort-component>
+					</md-menu>
+
 					<button md-icon-button color="primary" title="{{ ((userPreferences.data | async).assetView == 'grid' ? 
-						'SEARCH.ASSET_VIEW_LIST_BTN_TITLE' : 'SEARCH.ASSET_VIEW_GRID_BTN_TITLE') | translate }}" (click)="onChangeAssetView()">
+						'SEARCH.ASSET_VIEW_LIST_BTN_TITLE' : 'SEARCH.ASSET_VIEW_GRID_BTN_TITLE') | translate }}" 
+						(click)="onChangeAssetView((userPreferences.state.assetView == 'grid') ? 'list' : 'grid')">
 						<md-icon>{{ (userPreferences.data | async).assetView == 'grid' ? 'view_list' : 'view_comfy' }}</md-icon>
 					</button>
 
@@ -56,15 +61,11 @@
 					(onShowSpeedview)="showSpeedview($event)" 
 					(onHideSpeedview)="hideSpeedview()">
 				</wz-asset-list>
-				
+
 				<wz-pagination flex="noshrink" *ngIf="(assetData.data | async).pagination.totalCount > 0" [pagination]="(assetData.data | async).pagination" (getPage)="changePage($event)"></wz-pagination>
 			</div>
 		</div>
 	</section>
 </md-sidenav-layout>
-
-<md-menu x-position="before" #assetSortMenu="mdMenu">
-	<wz-sort-component [current]="(sortDefinition.data | async).currentSort" [items]="(sortDefinition.data | async).sorts" (sort)="onSortResults($event)"></wz-sort-component>
-</md-menu>
 
 <wz-speedview [speedviewData]="speedviewData | async"></wz-speedview>
