@@ -49,9 +49,6 @@ export class WzAdvancedPlayerComponent {
       case PlayerRequestType.ClearMarkers:
         this.playerStateService.updateWith({ inMarker: 'clear', outMarker: 'clear' });
         break;
-      case PlayerRequestType.PlayWithinMarkers:
-        this.player.playRange(state.inMarkerFrame.asSeconds(), state.outMarkerFrame.asSeconds());
-        break;
       case PlayerRequestType.SaveMarkers:
         this.onSubclip.emit({ in: state.inMarkerFrame.frameNumber, out: state.outMarkerFrame.frameNumber });
         break;
@@ -69,6 +66,9 @@ export class WzAdvancedPlayerComponent {
         break;
       case PlayerRequestType.TogglePlayback:
         this.player.togglePlayback();
+        break;
+      case PlayerRequestType.ToggleMarkersPlayback:
+        this.player.toggleMarkersPlayback(state.inMarkerFrame.asSeconds(), state.outMarkerFrame.asSeconds());
         break;
     }
   }

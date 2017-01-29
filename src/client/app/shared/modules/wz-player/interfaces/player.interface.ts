@@ -4,6 +4,7 @@ export type PlayerMode = 'basic' | 'advanced';
 
 export interface PlayerState {
   readonly playing: boolean;
+  readonly playingMarkers: boolean;
   readonly framesPerSecond: number;
   readonly currentFrame: Frame;
   readonly durationFrame: Frame;
@@ -18,6 +19,7 @@ export interface PlayerState {
 
 export interface PlayerStateChanges {
   playing?: boolean;
+  playingMarkers?: boolean;
   framesPerSecond?: number;
   currentFrame?: Frame;
   durationFrame?: Frame;
@@ -34,12 +36,12 @@ export interface PlayerStateChanges {
 
 export enum PlayerRequestType {
   ClearMarkers,
-  PlayWithinMarkers,
   SaveMarkers,
   SeekToInMarker,
   SeekToOutMarker,
   SetInMarker,
   SetOutMarker,
+  ToggleMarkersPlayback,
   TogglePlayback
 }
 

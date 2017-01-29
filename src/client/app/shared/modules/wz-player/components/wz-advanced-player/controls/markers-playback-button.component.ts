@@ -11,7 +11,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
       [disabled]="!playerState.inMarkerFrame || !playerState.outMarkerFrame"
       title="{{ 'ASSET.ADV_PLAYER.PLAY_IN_OUT_BTN_TITLE' | translate }}"
       (click)="onClick()">
-      <md-icon>play_circle_filled</md-icon>
+      <md-icon>{{ playerState.playingMarkers && playerState.playing ? 'pause_circle_filled' : 'play_circle_filled' }}</md-icon>
     </button>
   `
 })
@@ -21,6 +21,6 @@ export class MarkersPlaybackButtonComponent {
   @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
 
   public onClick(): void {
-    this.request.emit({ type: PlayerRequestType.PlayWithinMarkers });
+    this.request.emit({ type: PlayerRequestType.ToggleMarkersPlayback });
   }
 }

@@ -14,7 +14,7 @@ export function main() {
       it('emits the expected request event', () => {
         componentUnderTest.onClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.PlayWithinMarkers });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.ToggleMarkersPlayback });
       });
     });
   });

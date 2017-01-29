@@ -29,6 +29,7 @@ export class PlayerStateService {
   private get initialValue(): PlayerState {
     return {
       playing: false,
+      playingMarkers: false,
       framesPerSecond: 29.97,
       currentFrame: undefined,
       durationFrame: undefined,
@@ -44,6 +45,7 @@ export class PlayerStateService {
 
     return {
       playing: this.latestPlaying,
+      playingMarkers: this.latestPlayingMarkers,
       framesPerSecond: this.latestFramesPerSecond,
       currentFrame: this.newFrameFrom(this.latestCurrentFrame),
       durationFrame: this.newFrameFrom(this.latestDurationFrame),
@@ -117,6 +119,10 @@ export class PlayerStateService {
 
   private get latestPlaying(): boolean {
     return this.changesToApply.hasOwnProperty('playing') ? this.changesToApply.playing : this.snapshot.playing;
+  }
+
+  private get latestPlayingMarkers(): boolean {
+    return this.changesToApply.hasOwnProperty('playingMarkers') ? this.changesToApply.playingMarkers : this.snapshot.playingMarkers;
   }
 
   private get latestFramesPerSecond(): number {
