@@ -11,7 +11,7 @@ import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 import { CartService } from '../shared/services/cart.service';
 import { AssetService } from '../shared/services/asset.service';
-import { WzSpeedviewComponent } from '../shared/components/wz-speedview/wz.speedview.component';
+import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 /**
@@ -26,6 +26,7 @@ import { TranslateService } from 'ng2-translate';
 
 export class SearchComponent implements OnDestroy {
   public speedviewData: any;
+  public screenWidth: number;
   @ViewChild(WzSpeedviewComponent) public wzSpeedview: any;
 
   constructor(
@@ -43,7 +44,10 @@ export class SearchComponent implements OnDestroy {
     private renderer: Renderer,
     private window: Window,
     private snackBar: MdSnackBar,
-    private translate: TranslateService) { }
+    private translate: TranslateService) {
+    this.screenWidth = this.window.innerWidth;
+    this.window.onresize = () => this.screenWidth = this.window.innerWidth;
+  }
 
   ngOnDestroy(): void {
     this.assetData.clearAssets();
@@ -65,11 +69,28 @@ export class SearchComponent implements OnDestroy {
   public addToCollection(params: any): void {
     this.userPreferences.openCollectionTray();
     this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
+    this.showSnackBar({
+      key: 'COLLECTION.ADD_TO_COLLECTION_TOAST',
+      value: { collectionName: this.activeCollection.state.name }
+    });
   }
 
   public removeFromCollection(params: any): void {
+    console.log(params);
     this.userPreferences.openCollectionTray();
     this.activeCollection.removeAsset(params).subscribe();
+    this.showSnackBar({
+      key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
+      value: { collectionName: this.activeCollection.state.name }
+    });
+  }
+
+  public addAssetToCart(asset: any): void {
+    this.cart.addAssetToProjectInCart(asset.assetId);
+    this.showSnackBar({
+      key: 'ASSET.ADD_TO_CART_TOAST',
+      value: { assetId: asset.assetId }
+    });
   }
 
   public downloadComp(params: any): void {
@@ -87,6 +108,7 @@ export class SearchComponent implements OnDestroy {
       this.speedviewData = Observable.of(event.asset.speedviewData);
       this.wzSpeedview.show(event.position);
     } else {
+      console.log(event.asset);
       this.speedviewData = this.assetService.getSpeedviewData(event.asset.assetId)
         .do((data: any) => {
           event.asset.speedviewData = data;
@@ -113,8 +135,8 @@ export class SearchComponent implements OnDestroy {
     this.searchContext.go();
   }
 
-  public addAssetToCart(asset: any): void {
-    this.cart.addAssetToProjectInCart(asset);
+  public onChangeAssetView(viewType: string): void {
+    this.userPreferences.updateAssetViewPreference(viewType);
   }
 
   public filterEvent(event: any) {

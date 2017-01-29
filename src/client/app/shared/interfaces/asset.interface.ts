@@ -16,11 +16,10 @@ export interface Asset {
   metaData?: { name: string, value: string }[];
   thumbnail?: { name: string, urls: {} };
   smallPreview?: { name: string, urls: {} };
-}
-
-export interface TranscodeTarget {
-  name: string;
-  selected: boolean;
+  hasDownloadableComp?: boolean;
+  transcodeTargets?: string[];
+  primary?: Array<{ value: string }>;
+  detailTypeMap?: any;
 }
 
 export interface SubclipMarkers {

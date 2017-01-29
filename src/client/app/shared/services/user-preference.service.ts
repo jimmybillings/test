@@ -10,7 +10,9 @@ const defaultPreferences: any = {
   collectionTrayIsOpen: false,
   searchIsOpen: true,
   sortId: 0,
-  displayFilterTree: false
+  displayFilterTree: false,
+  assetView: 'grid',
+  pricingPreferences: ''
 };
 
 export const userPreferences: ActionReducer<any> = (state = defaultPreferences, action: Action) => {
@@ -66,12 +68,20 @@ export class UserPreferenceService {
     this.update({ sortId: sortId });
   }
 
+  public updateAssetViewPreference(view: string): void {
+    this.update({ assetView: view });
+  }
+
   public toggleFilterCount(): void {
     this.update({ displayFilterCounts: !this.state.displayFilterCounts });
   }
 
   public toggleFilterTree(): void {
     this.update({ displayFilterTree: !this.state.displayFilterTree });
+  }
+
+  public updatePricingPreferences(attributes: any) {
+    this.update({ pricingPreferences: attributes });
   }
 
   public set(preferences: any): void {
@@ -85,7 +95,7 @@ export class UserPreferenceService {
   private formatResponse(preferences: any): any {
     for (let prefKey in preferences) {
       let newValue: any = this.stringToBool(preferences[prefKey]);
-      preferences[prefKey] = newValue;
+      preferences[prefKey] = JSON.parse(newValue);
     }
     return preferences;
   }
@@ -102,6 +112,7 @@ export class UserPreferenceService {
 
   private put(params: any): Observable<any> {
     let body: any = this.formatBody(params);
+    // console.log(params);
     return this.api.put(Api.Identities, 'userPreferences/item', { body: body });
   }
 
@@ -113,7 +124,7 @@ export class UserPreferenceService {
     for (let preference in preferences) {
       return {
         key: preference,
-        value: preferences[preference]
+        value: JSON.stringify(preferences[preference])
       };
     };
   }

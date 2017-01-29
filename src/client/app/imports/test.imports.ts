@@ -18,13 +18,13 @@ import { WzNotificationService } from '../shared/components/wz-notification/wz.n
 import { AssetData } from '../+search/services/asset.data.service';
 
 // MODELS
-import { FormModel } from '../shared/components/wz-form/wz.form.model';
+import { FormModel } from '../shared/modules/wz-form/wz.form.model';
 
 // EXPORTS
 class MockRouter {
   navigate(params: any) { return params; }
 }
-class MockActivatedRoute {}
+class MockActivatedRoute { }
 export { Store } from '@ngrx/store';
 export { Observable } from 'rxjs/Rx';
 export { Injectable } from '@angular/core';
@@ -53,8 +53,9 @@ export const beforeEachProvidersArray: Array<any> = [
   FormModel,
   FormBuilder,
   AssetData,
-  {provide: Http,
-    useFactory: function(backend: ConnectionBackend, defaultOptions: BaseRequestOptions) {
+  {
+    provide: Http,
+    useFactory: function (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) {
       return new Http(backend, defaultOptions);
     },
     deps: [MockBackend, BaseRequestOptions]

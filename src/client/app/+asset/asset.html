@@ -5,17 +5,13 @@
     [searchContext]="searchContext"
     [collection]="activeCollection.data | async"
     [uiConfig]="uiConfig"
-    [uiState]="uiState"
-    [calculatedPrice]="calculatedPrice"
-    [pricingAttributes]="pricingAttributes | async"
+    [usagePrice]="usagePrice"
     [window]="window"
     (onAddToCollection)="addToCollection($event)"
     (onRemoveFromCollection)="removeFromCollection($event)"
     (onDownloadComp)="downloadComp($event)"
     (addToCart)="addAssetToCart($event)"
     (getPriceAttributes)="getPricingAttributes($event)"
-    (calculatePrice)="onCalculatePrice($event)"
-    (calculatePriceError)="onCalculatePriceError()"
     (onShowSnackBar)="showSnackBar($event)"
   >
   </asset-detail>

@@ -3,17 +3,21 @@
   <h1 md-dialog-title>{{ 'PRICING.CALCULATE_HEADING' | translate }}</h1>
   <md-dialog-content> 
     <form #f="ngForm" (ngSubmit)="onSubmit()">
-      <span *ngFor="let option of options; let i = index" class="input">
+      <div *ngFor="let attribute of attributes; let i = index" class="input">
         <div layout="row" layout-align="center center">
-          <md-select placeholder="{{option.name}}" [disabled]="parentIsEmpty(option)" [(ngModel)]="form[option.name]" name="{{option.name}}">
-            <md-option *ngFor="let o of validOptionsFor(option)" [value]="o.value">{{o.name}}</md-option>
+          <md-select placeholder="{{attribute.name}}" [disabled]="parentIsEmpty(attribute)" [(ngModel)]="form[i].value" [ngModelOptions]="{standalone: true}">
+            <md-option *ngFor="let option of validOptionsFor(attribute)" (onSelect)="handleSelect(attribute, option)" [value]="option.value">{{option.name}}</md-option>
           </md-select>
         </div>
         <br>
-      </span>
+      </div>
       <div class="submit-btn" layout="row" layout-align="center center">
         <button [disabled]="formIsInvalid" class="submit" md-button md-raised-button color="primary" type="submit">{{ 'PRICING.CALCULATE_BTN_LABEL' | translate }}</button>
       </div>
     </form>
+    <div class="price-info" layout="row" layout-align="center center">
+      <p *ngIf="usagePrice" class="md-body-3">{{ usagePrice | async | currency:'USD':true:'1.2-2' }}</p>
+      <p *ngIf="!usagePrice" class="md-body-2 disabled">{{ 'PRICING.PENDING_SELECTION' | translate }}</p>
+    </div>
   </md-dialog-content>
 </div>

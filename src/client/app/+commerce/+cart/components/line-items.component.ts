@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Project, LineItem } from '../../../shared/interfaces/cart.interface';
-import { TranscodeTarget } from '../../../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -8,12 +7,19 @@ import { TranscodeTarget } from '../../../shared/interfaces/asset.interface';
   templateUrl: './line-items.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class LineItemsComponent {
-  @Input() lineItems: LineItem[];
+  public targets: any = {};
+  public items: LineItem[];
+  @Input() set lineItems(items: LineItem[]) {
+    if (items) {
+      items.forEach((item: LineItem, index: number) => {
+        this.targets[index] = item.selectedTranscodeTarget;
+      });
+      this.items = items;
+    }
+  };
   @Input() otherProjects: Project[];
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
-  public selectedTranscodeTarget: TranscodeTarget;
   private selectedLineItem: LineItem;
 
   public moveTo(otherProject: Project, lineItem: LineItem): void {
@@ -39,20 +45,13 @@ export class LineItemsComponent {
     this.selectedLineItem = lineItem;
   }
 
-  public selectTarget(selectedTarget: any, lineItem: LineItem): void {
-    this.lineItemsNotify.emit(
-      {
-        type: 'EDIT_LINE_ITEM', payload:
-        { lineItem, fieldToEdit: { selectedTranscodeTarget: selectedTarget.name } }
-      });
-  }
-
-  public format(lineItem: LineItem): Array<TranscodeTarget> {
-    this.selectedTranscodeTarget = { name: lineItem.selectedTranscodeTarget, selected: true };
-    return lineItem.transcodeTargets.map((target: string) => {
-      let name: string = target;
-      let selected: boolean = target === lineItem.selectedTranscodeTarget ? true : false;
-      return { name, selected };
-    });
+  public selectTarget(currentlySelected: string, newTarget: string, lineItem: LineItem): void {
+    if (currentlySelected !== newTarget) {
+      this.lineItemsNotify.emit(
+        {
+          type: 'EDIT_LINE_ITEM', payload:
+          { lineItem, fieldToEdit: { selectedTranscodeTarget: newTarget } }
+        });
+    }
   }
 }

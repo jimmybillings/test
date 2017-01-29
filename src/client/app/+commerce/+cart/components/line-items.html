@@ -1,15 +1,16 @@
 <div class="line-items">
-	<div *ngFor="let lineItem of lineItems" layout="row" layout-align="center center">
+	<div *ngFor="let lineItem of items; let i = index" layout="row" layout-align="center center">
 		<div class="line-item" flex-gt-sm="95">
 			<div layout-gt-sm="row" layout="column" layout-align-gt-sm="space-between center" layout-align="space-around stretch">
 				<div flex-gt-sm="65">
 					<cart-asset-component [asset]="lineItem.asset" (assetNotify)="delegate($event)"></cart-asset-component>
 				</div>
-				<div class="transcode-select" flex-gt-sm="20">
-					<wz-select *ngIf="lineItem.transcodeTargets && lineItem.transcodeTargets.length > 0" [options]="format(lineItem)" [trPrefix]="'ASSET.TRANSCODE_TARGETS.'"
-					(selectOption)="selectTarget($event, lineItem)"></wz-select>
+				<div flex-gt-sm="30" layout="row" layout-align="center center">
+					<md-select *ngIf="lineItem.transcodeTargets && lineItem.transcodeTargets.length > 0" [(ngModel)]="targets[i]">
+						<md-option *ngFor="let target of lineItem.transcodeTargets" [value]="target" (onSelect)="selectTarget(targets[i], target, lineItem)">{{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}</md-option>
+					</md-select>
 				</div>
-				<div class="line-item-actions" flex-gt-sm="15">
+				<div class="line-item-actions" flex-gt-sm="10">
 					<div layout="row" layout-align="center center">
 						<button md-icon-button (click)="clone(lineItem);" title="copy line item"><md-icon>content_copy</md-icon></button>
 						<button md-icon-button (click)="remove(lineItem)" title="delete line item"><md-icon>clear</md-icon></button>

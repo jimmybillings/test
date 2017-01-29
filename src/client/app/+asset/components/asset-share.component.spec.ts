@@ -12,7 +12,7 @@ export function main() {
       // the constructor from failing.  Enhance as needed.
       mockCurrentUser = { data: Observable.of({}) };
 
-      componentUnderTest = new AssetShareComponent(mockCurrentUser, null, null);
+      componentUnderTest = new AssetShareComponent(null, null);
     });
 
     it('has no tests!', () => {

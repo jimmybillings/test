@@ -55,14 +55,16 @@
               <md-icon>mode_comment</md-icon>
             </button>
 
-						<button md-icon-button *ngIf="!alreadyInCollection(asset.common[0].value)" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
-							(click)="addToCollection(collection, asset.common[0]); onShowSnackBar.emit({key: 'COLLECTION.ADD_TO_COLLECTION_TOAST', value: {collectionName:collection.name}})">
-              <md-icon>library_add</md-icon>
-            </button>
-						<button md-icon-button *ngIf="alreadyInCollection(asset.common[0].value)" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
-							(click)="removeFromCollection(collection, asset.common[0]); onShowSnackBar.emit({key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST', value: {collectionName:collection.name}})">
-              <md-icon>remove_circle</md-icon>
-            </button>
+						<ng-container *ngIf="userCan.haveCollections()">
+							<button md-icon-button *ngIf="!alreadyInCollection(asset.common[0].value)" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
+								(click)="addToCollection(collection, asset.common[0]); onShowSnackBar.emit({key: 'COLLECTION.ADD_TO_COLLECTION_TOAST', value: {collectionName:collection.name}})">
+								<md-icon>library_add</md-icon>
+							</button>
+							<button md-icon-button *ngIf="alreadyInCollection(asset.common[0].value)" [disabled]="!userCan.editCollections()" title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:collection.name} }}"
+								(click)="removeFromCollection(collection, asset.common[0]); onShowSnackBar.emit({key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST', value: {collectionName:collection.name}})">
+								<md-icon>remove_circle</md-icon>
+							</button>
+						</ng-container>
 
 						<button md-icon-button disabled title="{{ 'ASSET.DETAIL.MORE_BTN_TITLE' | translate }}">
               <md-icon>more_vert</md-icon>
@@ -104,30 +106,35 @@
 								{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}
 							</div>
 							<md-card-actions *ngIf="asset.primary[3].value === 'Royalty Free'" layout="column" layout-align="center center" layout-wrap="">
-								<wz-select *ngIf="asset.transcodeTargets.length > 0" [options]="asset.transcodeTargets" [trPrefix]="'ASSET.TRANSCODE_TARGETS.'"
-									(selectTarget)="selectTarget($event)"></wz-select>
-								<button md-raised-button [disabled]="!currentUser.loggedIn()" (click)="addAssetToCart(asset.assetId); onShowSnackBar.emit({key: 'ASSET.ADD_TO_CART_TOAST', value: {assetId:asset.assetId}})"
-									class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+								<ng-container *ngIf="userCan.haveCart()">
+									<md-select *ngIf="userCan.addToCart() && asset.transcodeTargets" [(ngModel)]="selectedTarget">
+										<md-option *ngFor="let target of asset.transcodeTargets" [value]="target" (onSelect)="onSelectTarget(target)">{{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}</md-option>
+									</md-select>
+									<button md-raised-button [disabled]="!userCan.addToCart()" (click)="addAssetToCart(asset.assetId)"
+										class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+								</ng-container>
 							</md-card-actions>
 						</div>
 
 						<div layout="row" *ngIf="asset.primary[3].value !== 'Royalty Free'">
-							<div *ngIf="asset.price && asset.price !== 0 && !calculatedPrice" class="list-price">
-								<span class="starting">Starting at </span>
-								<span class="price">{{asset.price | currency:'USD':true:'1.2-2'}}</span>
+							<div *ngIf="asset.price && asset.price !== 0 && !usagePrice" class="list-price">
+								<span class="starting">{{ 'ASSET.DETAIL.BASE_PRICE' | translate }}</span>
+								<span class="price">{{ asset.price | currency:'USD':true:'1.2-2' }}</span>
 							</div>
-							<div *ngIf="calculatedPrice" class="calculated-price">
-								<span class="price">{{calculatedPrice.price | currency:'USD':true:'1.2-2'}}</span>
+							<div *ngIf="usagePrice" class="calculated-price">
+								<span class="price">{{ usagePrice | async | currency:'USD':true:'1.2-2' }}</span>
 							</div>
 							<div *ngIf="(!asset.price || asset.price === 0)" class="contact-us-pricing">
 								{{ 'ASSET.DETAIL.CONTACT_US_PRICING' | translate }}
 							</div>
 
-							<md-card-actions *ngIf="(asset.price && asset.price !== 0)" layout="column" layout-align="center center" layout-wrap="">
-								<button [disabled]="!currentUser.loggedIn()" md-button (click)="getPricingAttributes()" class="is-outlined">{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
-								<button [disabled]="!currentUser.loggedIn()" md-raised-button (click)="addAssetToCart(asset.assetId); onShowSnackBar.emit({key: 'ASSET.ADD_TO_CART_TOAST', value: {assetId:asset.assetId}})"
-									class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
-							</md-card-actions>
+							<ng-container *ngIf="userCan.haveCart()">
+								<md-card-actions *ngIf="(asset.price && asset.price !== 0)" layout="column" layout-align="center center" layout-wrap="">
+									<button [disabled]="!userCan.addToCart()" md-button (click)="getPricingAttributes()" class="is-outlined">{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
+									<button [disabled]="!userCan.addToCart()" md-raised-button (click)="addAssetToCart(asset.assetId)"
+										class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+								</md-card-actions>
+							</ng-container>
 
 						</div>
 					</div>
@@ -138,8 +145,14 @@
 </section>
 
 <wz-dropdown #sharing>
-	<asset-share [currentUser]="currentUser" [assetThumbnailUrl]="asset.clipThumbnailUrl" [assetName]="asset.common[5].value"
-		[assetId]="asset.assetId" [uiState]="uiState" [config]="(uiConfig.get('assetSharing') | async).config" (close)="sharing.close()" (onOpenSnackBar)="onShowSnackBar.emit($event)"
-		layout="row" layout-align="end start" class="revealed">
+	<asset-share layout="row" layout-align="end start" class="revealed"
+		[userEmail]="(currentUser.data | async).emailAddress" 
+		[assetThumbnailUrl]="asset.clipThumbnailUrl" 
+		[assetName]="asset.common[5].value"
+		[assetId]="asset.assetId" 
+		[uiState]="uiState" 
+		[config]="(uiConfig.get('assetSharing') | async).config" 
+		(close)="sharing.close()" 
+		(onOpenSnackBar)="onShowSnackBar.emit($event)">
 	</asset-share>
 </wz-dropdown>

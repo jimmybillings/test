@@ -1,0 +1,100 @@
+<ul class="asset-list-view" *ngIf="assets">
+  <li *ngFor="let asset of assets"
+    class="asset"
+    flex="100" 
+    layout="row" 
+    layout-xs="column">
+    <div flex="100" flex-gt-sm="75">
+      <div flex="100" layout="row" layout-xs="column">
+        <div flex-gt-sm="40" flex-xl="45" flex="100" layout-padding>
+          <a [routerLink]="['/asset/', asset.assetId]" wzSpeedview (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})" (hidePreview)="onHideSpeedview.emit()">
+            <div class="asset-thb">
+              <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
+              <span *ngIf="asset.metaData[2] && asset.metaData[2].value != ''" class="mdata-2">
+                <span [ngClass]="formatType(asset.metaData[2].value)" class="sd-hd">{{asset.metaData[2].value}}</span>
+              </span>
+              <span *ngIf="asset.metaData[3]" class="mdata-3">
+                <span>{{asset.metaData[3].value}}</span>
+              </span>
+              <span *ngIf="asset.metaData[4] && asset.metaData[4].name == 'Resource.Class' && asset.metaData[4].value == 'Image'" class="mdata-4">
+                <span class="{{asset.metaData[4].value | lowercase}}"></span>
+              </span>
+            </div>
+          </a>
+        </div>
+        <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="65" flex="100" layout-padding>
+          <div class="md-caption asset-name">{{asset.name}}</div>
+          <a class="asset-title-desc" [routerLink]="['/asset/', asset.assetId]">
+            <h4 class="asset-title mdata-0" *ngIf="asset.metaData[0]">
+              {{asset.metaData[0].value}}
+            </h4>
+            <p class="asset-description mdata-1" *ngIf="asset.metaData[1]">
+              {{asset.metaData[1].value}}
+            </p>
+          </a>
+          <!--<div *ngIf="asset.metaData[5]" class="md-caption collection-tags">
+              <strong>{{ 'COLLECTION.SHOW.TAGS_LABEL' | translate }} </strong>
+              <ul class="meta-data-tags">
+                  <li class="tag md-elevation-z0" *ngFor="let tag of asset.metaData[5]">{{tag}}</li>
+              </ul>
+          </div>-->
+        </div>
+      </div>
+    </div>
+        
+    <div flex="100" layout="row" layout-xs="column" class="divider"></div>
+    <div flex-gt-sm="25" layout-sm="100" flex="auto" class="actions" layout-align="end center">
+      <div class="tools">
+        <!-- ADD TO CART -->
+        <button
+          *ngIf="userCan.addToCart()"
+          md-icon-button
+          title="Add to cart"
+          (click)="addAssetToCart(asset);">
+            <md-icon>shopping_cart</md-icon>
+        </button>
+
+        <!-- DOWNLOAD COMPS-->
+        <button
+          *ngIf="userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+          md-icon-button
+          title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
+          (click)="setAssetActiveId(asset)"
+          [md-menu-trigger-for]="downloadCompMenu">
+            <md-icon>file_download</md-icon>
+        </button>
+        <button
+          *ngIf="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+          disabled
+          md-icon-button
+          title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
+          (click)="setAssetActiveId(asset)"
+          [md-menu-trigger-for]="downloadCompMenu">
+            <md-icon>file_download</md-icon>
+        </button>
+
+        <!-- ADD / REMOVE FROM COLLECTION -->
+        <ng-container *ngIf="userCan.haveCollections()">
+          <button [disabled]="!userCan.editCollections()" md-icon-button *ngIf="inCollection(asset)"
+            title="{{ 'COLLECTION.REMOVE_FROM_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
+            (click)="removeFromCollection(currentCollection, asset);">
+            <md-icon>remove_circle</md-icon>
+          </button>
+          <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!inCollection(asset)"
+            title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
+            (click)="addToCollection(currentCollection, asset);">
+            <md-icon>library_add</md-icon>
+          </button>
+        </ng-container>
+
+        <!--<button disabled md-icon-button title="More"><md-icon>more_vert</md-icon></button>-->
+      </div>
+    </div>
+  </li>
+</ul>
+
+<md-menu x-position="after" #downloadCompMenu="mdMenu">
+  <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(hasComp)" (click)="downloadComp('wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!userCan.downloadCleanComps(hasComp)" (click)="downloadComp('clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
+  <button md-menu-item [disabled]="!userCan.downloadFullComps(hasComp)" (click)="downloadComp('full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
+</md-menu>

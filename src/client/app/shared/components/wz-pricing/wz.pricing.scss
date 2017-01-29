@@ -1,10 +1,19 @@
-.wz-dialog.pricing form {
-  .input md-select {
-    padding: rem(1);
-    width: 100%;
+.wz-dialog.pricing {
+  form {
+    .input md-select {
+      padding: rem(1);
+      width: 100%;
+    }
+    .submit-btn button.submit {
+      width: 88%;
+      margin: rem(1.2) 0 0;
+    }
   }
-  .submit-btn button.submit {
-    width: 88%;
-    margin: rem(1.2) 0 0;
+  div.price-info {
+    min-height: rem(7.2);
+    padding-top: rem(1.6);
+    p.md-body-2.disabled {
+      color: md-color($md-grey, 400);
+    }
   }
-} 
+}

@@ -62,13 +62,13 @@ export class CartService {
       });
   }
 
-  public addAssetToProjectInCart(assetId: string, transcodeTarget?: string): void {
+  public addAssetToProjectInCart(assetId: string, transcodeTarget?: string, price?: number, attributes?: any): void {
     let existingProjectNames: Array<string> = this.existingProjectNames;
     this.api.put(
       Api.Orders,
       'cart/asset/lineItem/quick',
       {
-        body: this.formatAsset(assetId, transcodeTarget),
+        body: this.formateBody(assetId, transcodeTarget, price, attributes),
         parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
       }
     ).subscribe(this.updateCart);
@@ -106,15 +106,26 @@ export class CartService {
       .subscribe(this.updateCart);
   }
 
-  private formatAsset(assetId: string, transcodeTarget: string = 'master_copy'): any {
-    return {
+  private formateBody(assetId: string, selectedTranscodeTarget?: string, price?: number, attributes?: any): any {
+    let formatted: any = {
       lineItem: {
         asset: {
           assetId: assetId
         },
-        selectedTranscodeTarget: transcodeTarget
       }
     };
+    if (selectedTranscodeTarget) Object.assign(formatted.lineItem, { selectedTranscodeTarget });
+    if (price) Object.assign(formatted.lineItem, { price });
+    if (attributes) Object.assign(formatted, { attributes: this.formatAttributes(attributes) });
+    return formatted;
+  }
+
+  private formatAttributes(attributes: any): Array<any> {
+    let formatted: Array<any> = [];
+    for (let attr in attributes) {
+      formatted.push({ priceAttributeName: attr, selectedAttributeValue: attributes[attr] });
+    }
+    return formatted;
   }
 
   private addProjectIfNoProjectsExist(): Observable<any> {

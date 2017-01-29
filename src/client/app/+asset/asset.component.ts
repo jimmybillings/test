@@ -23,8 +23,10 @@ import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.c
 })
 
 export class AssetComponent implements OnInit {
-  public pricingAttributes: Observable<any>;
-  public calculatedPrice: Observable<number>;
+  public pricingAttributes: any;
+  public rightsReproduction: string = '';
+  public usagePrice: Observable<any> = Observable.of(null);
+  private selectedAttrbutes: any;
   private pageSize: number = 50;
 
   constructor(
@@ -60,16 +62,24 @@ export class AssetComponent implements OnInit {
   public addToCollection(params: any): void {
     this.userPreference.openCollectionTray();
     if (params.markers) {
-      console.log(`asset component subclip markers: ${params.markers.in} - ${params.markers.out}`);
+      // console.log(`asset component subclip markers: ${params.markers.in} - ${params.markers.out}`);
       this.activeCollection.addAsset(params.collection.id, params.asset, params.markers).subscribe();
     } else {
       this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
     };
+    this.showSnackBar({
+      key: 'COLLECTION.ADD_TO_COLLECTION_TOAST',
+      value: { collectionName: params.collection.name }
+    });
   }
 
   public removeFromCollection(params: any): void {
     this.userPreference.openCollectionTray();
     this.activeCollection.removeAsset(params).subscribe();
+    this.showSnackBar({
+      key: 'COLLECTION.REMOVE_FROM_COLLECTION_TOAST',
+      value: { collectionName: params.collection.name }
+    });
   }
 
   public downloadComp(params: any): void {
@@ -83,26 +93,47 @@ export class AssetComponent implements OnInit {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cart.addAssetToProjectInCart(asset.assetId, asset.selectedTranscodeTarget);
-  }
-
-  public calculatePrice(event: any): void {
-    this.assetService.getPrice(event.assetId, event.attributes).take(1).subscribe((data: any) => {
-      this.calculatedPrice = data;
+    this.usagePrice.take(1).subscribe((price: any) => {
+      this.cart.addAssetToProjectInCart(
+        asset.assetId, asset.selectedTranscodeTarget, price, this.selectedAttrbutes);
+    });
+    this.showSnackBar({
+      key: 'ASSET.ADD_TO_CART_TOAST',
+      value: { assetId: asset.assetId }
     });
   }
 
+  public calculatePrice(attributes: any): Observable<number> {
+    this.selectedAttrbutes = attributes;
+    return this.assetService.getPrice(this.assetService.state.assetId, attributes).map((data: any) => { return data.price; });
+  }
+
   public getPricingAttributes(rightsReproduction: string): void {
-    this.assetService.getPriceAttributes(rightsReproduction).subscribe((options: any) => {
-      let dialogRef: MdDialogRef<any> = this.dialog.open(WzPricingComponent);
-      dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.options = options;
-      dialogRef.afterClosed().subscribe(data => {
-        if (data.attributes) {
-          this.calculatePrice({ attributes: data.attributes, assetId: this.assetService.state.assetId });
-        }
-        if (data.error) this.notification.create('PRICING.ERROR');
+    if (this.rightsReproduction === rightsReproduction) {
+      this.buildPricingDialog();
+    } else {
+      this.assetService.getPriceAttributes(rightsReproduction).subscribe((attributes: any) => {
+        this.pricingAttributes = attributes;
+        this.buildPricingDialog();
       });
+    }
+    this.rightsReproduction = rightsReproduction;
+  }
+
+  private buildPricingDialog(): void {
+    let dialogRef: MdDialogRef<any> = this.dialog.open(WzPricingComponent);
+    dialogRef.componentInstance.dialog = dialogRef;
+    dialogRef.componentInstance.pricingPreferences = this.userPreference.state.pricingPreferences;
+    dialogRef.componentInstance.attributes = this.pricingAttributes;
+    dialogRef.componentInstance.calculatePrice = (attributes: any) => {
+      this.usagePrice = this.calculatePrice(attributes);
+      dialogRef.componentInstance.usagePrice = this.usagePrice;
+    };
+    dialogRef.afterClosed().subscribe(data => {
+      if (!data) return;
+      if (data.price) this.usagePrice = data.price;
+      if (data.attributes) this.userPreference.updatePricingPreferences(data.attributes);
+      if (data.error) this.notification.create('PRICING.ERROR');
     });
   }
 }

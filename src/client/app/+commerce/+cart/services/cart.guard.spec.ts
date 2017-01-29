@@ -2,31 +2,31 @@ import { CartGuard } from './cart.guard';
 
 export function main() {
   describe('Cart Guard', () => {
-    let mockCurrentUser: any;
+    let mockCartCapabilities: any;
     let mockError: any;
 
     describe('canActivate()', () => {
-      let loggedIn: boolean;
+      let viewCarts: boolean;
 
       beforeEach(() => {
-        mockCurrentUser = { loggedIn: () => loggedIn };
+        mockCartCapabilities = { addToCart: () => viewCarts };
         mockError = { handle: jasmine.createSpy('handle') };
       });
 
       it('returns true when logged in', () => {
-        loggedIn = true;
+        viewCarts = true;
 
-        expect(new CartGuard(mockCurrentUser, mockError).canActivate(null, null))
+        expect(new CartGuard(mockCartCapabilities, mockError).canActivate(null, null))
           .toBe(true);
         expect(mockError.handle).not.toHaveBeenCalled();
       });
 
       it('returns false when not logged in', () => {
-        loggedIn = false;
+        viewCarts = false;
 
-        expect(new CartGuard(mockCurrentUser, mockError).canActivate(null, null))
+        expect(new CartGuard(mockCartCapabilities, mockError).canActivate(null, null))
           .toBe(false);
-        expect(mockError.handle).toHaveBeenCalledWith({ status: 401 });
+        expect(mockError.handle).toHaveBeenCalledWith({ status: 403 });
       });
     });
   });

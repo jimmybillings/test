@@ -40,11 +40,6 @@ search-component .search-header {
     font-weight: 400;
     opacity: .75;
   }
-  .material-icons {
-    position: relative;
-    top: rem(.5);
-    left: rem(-.4);
-  }
   &.md-primary[md-button], &[md-button].is-dd.md-primary .md-button-wrapper::after {
     color: md-color($md-primary, default);
   }

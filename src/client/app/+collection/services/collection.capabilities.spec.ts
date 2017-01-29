@@ -5,7 +5,7 @@ export function main() {
     let capabilitiesUnderTest: CollectionCapabilities;
 
     beforeEach(() => {
-      capabilitiesUnderTest = new CollectionCapabilities(null, null);
+      capabilitiesUnderTest = new CollectionCapabilities(null, null, null);
     });
 
     it('has no tests!', () => {

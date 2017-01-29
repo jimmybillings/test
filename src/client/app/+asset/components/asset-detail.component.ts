@@ -5,14 +5,15 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
-import { TranscodeTarget, SubclipMarkers } from '../../shared/interfaces/asset.interface';
+import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
 import { SearchContext } from '../../shared/services/search-context.service';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
   selector: 'asset-detail',
   templateUrl: 'asset-detail.html',
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class AssetDetailComponent implements OnChanges {
@@ -22,19 +23,16 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public uiConfig: UiConfig;
   @Input() public collection: Collection;
   @Input() public searchContext: SearchContext;
-  @Input() public uiState: UiState;
-  @Input() public calculatedPrice: any;
-  @Input() public pricingAttributes: any;
+  @Input() public usagePrice: Observable<any>;
   @Input() public window: Window;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
-  @Output() calculatePrice = new EventEmitter();
-  @Output() calculatePriceError = new EventEmitter();
   @Output() onShowSnackBar = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
+  public selectedTarget: string;
   private assetsArr: Array<number> = [];
 
   ngOnChanges(changes: any): void {
@@ -50,7 +48,7 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public subclip(params: SubclipMarkers): void {
-    console.log(`Asset details subclip markers: ${params.in} - ${params.out}`);
+    // console.log(`Asset details subclip markers: ${params.in} - ${params.out}`);
     this.onAddToCollection.emit({ 'collection': this.collection, 'asset': this.asset, 'markers': params });
   }
 
@@ -69,41 +67,23 @@ export class AssetDetailComponent implements OnChanges {
   }
 
   public addAssetToCart(assetId: any, pricingAttributes?: any): void {
-    this.addToCart.emit({ assetId: assetId, selectedTranscodeTarget: this.selectedTarget() });
-  }
-
-  public selectTarget(selectedTarget: TranscodeTarget) {
-    this.asset.transcodeTargets = this.asset.transcodeTargets.map((target: TranscodeTarget) => {
-      target.selected = (selectedTarget.name === target.name) ? true : false;
-      return target;
-    });
-  }
-
-  public onCalculatePriceError(): void {
-    this.calculatePriceError.emit();
+    this.addToCart.emit({ assetId: assetId, selectedTranscodeTarget: this.selectedTarget });
   }
 
   public getPricingAttributes(): void {
-    if (this.pricingAttributes) return;
     this.getPriceAttributes.emit(this.asset.primary[3].value);
   }
 
-  private selectedTarget() {
-    return this.asset.transcodeTargets.filter((target: TranscodeTarget) => target.selected)[0].name;
+  public onSelectTarget(target: string): void {
+    this.selectedTarget = target;
   }
 
   private parseNewAsset(asset: any) {
-    this.calculatedPrice = null;
+    this.usagePrice = null;
     if (Object.keys(asset.currentValue.detailTypeMap.common).length > 0) {
-      let targets = this.prepareNewTargets(asset.currentValue.transcodeTargets);
-      this.asset = Object.assign({}, this.asset, asset.currentValue.detailTypeMap, { transcodeTargets: targets });
+      this.asset = Object.assign({}, this.asset, asset.currentValue.detailTypeMap);
       delete this.asset.detailTypeMap;
     }
-  }
-
-  private prepareNewTargets(targets: TranscodeTarget[]) {
-    return targets.map((target: any, index: any) => {
-      return (index === 0) ? { name: target, selected: true } : { name: target, selected: false };
-    });
+    this.selectedTarget = this.asset.transcodeTargets[0];
   }
 }

@@ -3,7 +3,7 @@ import { Collection } from '../../../shared/interfaces/collection.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { Asset } from '../../../shared/interfaces/asset.interface';
 
-import { WzFormComponent } from '../../../shared/components/wz-form/wz.form.component';
+import { WzFormComponent } from '../../../shared/modules/wz-form/wz.form.component';
 import { CollectionsService } from '../../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../../shared/services/active-collection.service';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';

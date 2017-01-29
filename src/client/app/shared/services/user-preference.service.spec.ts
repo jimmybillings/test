@@ -33,7 +33,8 @@ export function main() {
       expect(serviceUnderTest.state).toEqual(
         {
           displayFilterCounts: false, collectionTrayIsOpen: false,
-          searchIsOpen: true, sortId: 0, displayFilterTree: false
+          searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid',
+          pricingPreferences: ''
         });
     });
 
@@ -78,6 +79,12 @@ export function main() {
       expect(serviceUnderTest.state.sortId).toEqual(16);
     });
 
+    it('Should have an updateAssetViewPreference() method that takes an asset view type and sets it in the store', () => {
+      expect(serviceUnderTest.state.assetView).toEqual('grid');
+      serviceUnderTest.updateAssetViewPreference('list');
+      expect(serviceUnderTest.state.assetView).toEqual('list');
+    });
+
     it('should have a toggleFilterCount() method that updates the displayFilterCounts property in the store', () => {
       expect(serviceUnderTest.state.displayFilterCounts).toBe(false);
       serviceUnderTest.toggleFilterCount();
@@ -105,21 +112,25 @@ export function main() {
       expect(serviceUnderTest.state).toEqual(
         {
           displayFilterCounts: false, collectionTrayIsOpen: false,
-          searchIsOpen: true, sortId: 0, displayFilterTree: false
+          searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid',
+          pricingPreferences: ''
         });
       serviceUnderTest.toggleCollectionTray();
       serviceUnderTest.toggleSearch();
       serviceUnderTest.updateSortPreference(100);
+      serviceUnderTest.updateAssetViewPreference('list');
       expect(serviceUnderTest.state).toEqual(
         {
           displayFilterCounts: false, collectionTrayIsOpen: true,
-          searchIsOpen: false, sortId: 100, displayFilterTree: false
+          searchIsOpen: false, sortId: 100, displayFilterTree: false, assetView: 'list',
+          pricingPreferences: ''
         });
       serviceUnderTest.reset();
       expect(serviceUnderTest.state).toEqual(
         {
           displayFilterCounts: false, collectionTrayIsOpen: false,
-          searchIsOpen: true, sortId: 0, displayFilterTree: false
+          searchIsOpen: true, sortId: 0, displayFilterTree: false, assetView: 'grid',
+          pricingPreferences: ''
         });
     });
   });

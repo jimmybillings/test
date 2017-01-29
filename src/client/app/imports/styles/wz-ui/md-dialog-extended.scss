@@ -1,0 +1,67 @@
+
+/************
+ * md-dialog-container overrides
+ * make dialogs wider for mobile
+ ************/
+
+//  make the dark backdrop a little darker and add in the diagonal line bkg texture.
+.cdk-overlay-dark-backdrop.cdk-overlay-backdrop-showing {
+  opacity: 0.78;
+  @include background-image(
+    url("../assets/img/bk/tex/bktx_dgl_lines_light.png")
+  );
+}
+// make max-width on very small screens a little bigger than their default 
+md-dialog-container.md-dialog-container {
+  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
+    width: 94vw;
+    min-width: rem(33.0);
+    max-width: 94vw;
+  }
+}
+// font-size override (this is the same as md-card-content from material)
+md-dialog-content wz-form {
+  font-size: rem(1.4);
+}
+// This sets the defaults for dialogs. Override widths can be set on specific components.
+// like: md-dialog-content collection-form .wz-dialog {}
+.md-dialog-container .wz-dialog {
+  box-sizing: border-box;
+  padding: rem(1.6) rem(1.5) rem(1.6);
+  position: relative;
+  width: rem(37.8);
+  color: md-color($md-foreground, secondary-text);
+  @media screen and (max-width: $layout-breakpoint-lg) and (min-width: 0)  {
+    width: rem(36.5);
+  }
+  @media screen and (max-width: $layout-breakpoint-md) and (min-width: 0)  {
+    width: rem(34);
+  }
+  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
+    padding: rem(.6) rem(.8) rem(.8);
+    width: 100%;
+  }
+  button[md-icon-button].close {
+    position: absolute;
+    right: rem(-2.0);
+    top: rem(-2.0);
+    font-size: rem(3.6);
+    line-height: rem(4.6);
+    opacity: .5;
+    md-icon {
+      font-size: 1em;
+      height: 1em;
+      width: 1em;
+    }
+    &:hover .md-button-focus-overlay,
+    .md-button-focus-overlay {
+        opacity: 0;
+    }
+  }
+  [md-dialog-title] {
+    text-align: center;
+    margin: 0 0 rem(.6) 0;
+    font-size: rem(2.4);
+    font-weight: 400;
+  }
+}

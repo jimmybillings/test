@@ -1,0 +1,69 @@
+.wz-speedview {
+  padding: rem(1.2) rem(1.2) rem(1) rem(1.2);
+  @include md-elevation(6);
+  background-color: md-color($background, card);
+  div.image-bg {
+    width: rem(40.0);
+    height: rem(22.5);
+    position: relative;
+    @include background-image(
+      linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.6)),
+      linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1))
+    );
+    img.image-speedview {
+      position: absolute;
+      display: block;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+  }
+  img.tbn_missing {
+    width: 100%;
+  }
+  .info {
+    min-height: rem(5.5);
+    min-width: 100%;
+    padding: rem(.5) rem(.1) 0;
+    position: relative;
+    ul.metadata {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      li {
+        font-size: .75em;
+        line-height: 1.48;
+        opacity: .75;
+      }
+    }
+    .price-info {
+      opacity: .75;
+      text-align: right;
+      .clip-rights {
+        font-size: 0.875em;
+        margin-right: rem(-.1);
+        text-transform: uppercase;
+      }
+      .price {
+        display: block;
+        position: absolute;
+        bottom: rem(-.3);
+        right: 0;
+        font-size: 1.78em;
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: -.044em;
+        &::first-letter {
+          font-size: .6em;
+          font-weight: 200;
+          vertical-align: top;
+        }
+      }
+    }
+  }
+}

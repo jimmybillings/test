@@ -7,7 +7,7 @@ export function main() {
     let mockAssetData: any, mockUiConfig: any, mockUserCan: any, mockActiveCollection: any,
       mockSearchContext: any, mockFilter: any, mockUserPreferences: any, mockNotification: any,
       mockSortDefinition: any, mockCart: any, mockAssetService: any, mockRenderer: any,
-      mockWindow: any;
+      mockWindow: any, mockTranslate: any, mockSnackBar: any;
 
     beforeEach(() => {
       mockAssetData = {
@@ -23,7 +23,8 @@ export function main() {
       mockUserCan = null;
       mockActiveCollection = {
         addAsset: jasmine.createSpy('addAsset').and.returnValue(Observable.of([])),
-        removeAsset: jasmine.createSpy('removeAsset').and.returnValue(Observable.of([]))
+        removeAsset: jasmine.createSpy('removeAsset').and.returnValue(Observable.of([])),
+        state: { name: 'testCollection' }
       };
       mockSearchContext = {
         update: null,
@@ -51,7 +52,8 @@ export function main() {
         toggleFilterCount: jasmine.createSpy('toggleFilterCount'),
         openCollectionTray: jasmine.createSpy('openCollectionTray'),
         updateSortPreference: jasmine.createSpy('updateSortPreference'),
-        state: { displayFilterCounts: false, displayFilterTree: true }
+        state: { displayFilterCounts: false, displayFilterTree: true },
+        updateAssetViewPreference: jasmine.createSpy('updateAssetViewPreference')
       };
       mockNotification = { create: jasmine.createSpy('create') };
       mockSortDefinition = {
@@ -69,10 +71,26 @@ export function main() {
         listenGlobal: jasmine.createSpy('listenGlobal')
           .and.callFake((a: any, b: any, c: Function) => { c(); })
       };
-      mockWindow = { location: { href: null } };
+      mockWindow = {
+        location: { href: null },
+        innerWidth: 500
+      };
+      mockTranslate = {
+        get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
+      };
+      mockSnackBar = {
+        open: () => { }
+      };
       componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart,
         mockAssetService, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
-        mockUserPreferences, mockRenderer, mockWindow, null, null);
+        mockUserPreferences, mockRenderer, mockWindow, mockSnackBar, mockTranslate);
+    });
+
+    describe('onresize()', () => {
+      it('Should set the screen size variable when screen size change', () => {
+        mockWindow.onresize();
+        expect(componentUnderTest.screenWidth).toBe(500);
+      });
     });
 
     describe('ngOnDestroy()', () => {
@@ -215,10 +233,17 @@ export function main() {
       });
     });
 
+    describe('onChangeAssetView()', () => {
+      it('Should update user preference when new view type is selected', () => {
+        componentUnderTest.onChangeAssetView('list');
+        expect(mockUserPreferences.updateAssetViewPreference).toHaveBeenCalledWith('list');
+      });
+    });
+
     describe('addAssetToCart()', () => {
       it('Should call the cart summary service to add an asset to the cart', () => {
-        componentUnderTest.addAssetToCart({ asset: 'mockAsset' });
-        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({ asset: 'mockAsset' });
+        componentUnderTest.addAssetToCart({ asset: 'mockAsset', assetId: 'mockId' });
+        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith('mockId');
       });
     });
 
