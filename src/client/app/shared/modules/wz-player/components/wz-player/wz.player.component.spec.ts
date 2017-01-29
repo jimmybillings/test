@@ -486,4 +486,5 @@ export function main() {
         });
       });
     });
-  }
+  });
+}
