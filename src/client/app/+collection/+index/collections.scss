@@ -238,6 +238,7 @@ wz-item-search-form {
     display: none;
   }
   form {
+    padding-top: 0;
     @include transition($swift-ease-out);
     display: flex;
     border: 1px solid md-color($foreground, divider);
