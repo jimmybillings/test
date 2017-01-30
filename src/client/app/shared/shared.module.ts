@@ -9,14 +9,12 @@ import { MaterialModule } from '@angular/material';
 
 // Shared Wazee Modules
 import { WzPlayerModule } from './modules/wz-player/wz.player.module';
-
+import { WzFormModule } from './modules/wz-form/wz-form.module';
+import { WzAssetModule } from './modules/wz-asset/wz-asset.module';
 // Shared Pure Components
 import { WzNotificationComponent } from './components/wz-notification/wz.notification.component';
-import { WzAssetGridComponent } from './components/wz-asset/wz-asset-grid/wz.asset-grid.component';
-import { WzAssetListComponent } from './components/wz-asset/wz-asset-list/wz.asset-list.component';
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
 import { WzDropdownComponent, WzDropdownPortalDirective } from './components/wz-dropdown/wz.dropdown.component';
-import { WzFormComponent } from './components/wz-form/wz.form.component';
 import { WzListComponent } from './components/wz-list/wz.list.component';
 import { WzPaginationComponent } from './components/wz-pagination/wz.pagination.component';
 import { WzPikaDayDirective } from './components/wz-pikaday/wz-pikaday.directive';
@@ -24,18 +22,11 @@ import { WzClipBoardDirective } from './components/wz-clipboard/wz-clipboard.dir
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
 import { WzItemSearchFormComponent } from './components/wz-item-search-form/wz.item-search-form.component';
-import { WzInputTagsComponent } from './components/wz-form/components/wz-input-tags/wz-input-tags.component';
-import { WzInputSuggestionsComponent } from './components/wz-form/components/wz-input-suggestions/wz-input-suggestions.component';
 import { CollectionFormComponent } from '../application/collection-tray/components/collection-form.component';
 import { WzSortComponent } from './components/wz-sort/wz.sort.component';
 import { CollectionLinkComponent } from '../+collection/components/collection-link.component';
-import { EqualValidatorDirective } from './components/wz-form/wz-validators/wz-equal-validator.directive';
-import { WzSelectComponent } from './components/wz-select/wz.select.component';
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
-import { WzSpeedviewComponent, WzSpeedviewPortalDirective } from './components/wz-asset/wz-speedview/wz.speedview.component';
-import { WzSpeedviewDirective } from './components/wz-asset/wz-speedview/wz.speedview.directive';
 import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
-import { WzAutocompleteSearchComponent } from './components/wz-autocomplete-search/wz-autocomplete-search.component';
 import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soon.component';
 
 // Shared pipes
@@ -62,14 +53,13 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     HttpModule,
     ReactiveFormsModule,
     MaterialModule.forRoot(),
-    WzPlayerModule
+    WzPlayerModule,
+    WzFormModule,
+    WzAssetModule
   ],
   declarations: [
-    WzAssetGridComponent,
-    WzAssetListComponent,
     WzBreadcrumbComponent,
     WzDropdownComponent,
-    WzFormComponent,
     WzListComponent,
     WzPaginationComponent,
     WzPikaDayDirective,
@@ -78,29 +68,18 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzItemSearchFormComponent,
     ValuesPipe,
     WzDropdownPortalDirective,
-    WzInputTagsComponent,
-    WzInputSuggestionsComponent,
     CollectionFormComponent,
     WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
-    EqualValidatorDirective,
-    WzSelectComponent,
     WzClipBoardDirective,
     WzTermsComponent,
-    WzSpeedviewComponent,
-    WzSpeedviewDirective,
-    WzSpeedviewPortalDirective,
     WzPricingComponent,
-    WzAutocompleteSearchComponent,
     WzComingSoonComponent
   ],
   exports: [
-    WzAssetGridComponent,
-    WzAssetListComponent,
     WzBreadcrumbComponent,
     WzDropdownComponent,
-    WzFormComponent,
     WzListComponent,
     WzPaginationComponent,
     WzPikaDayDirective,
@@ -109,8 +88,6 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzItemSearchFormComponent,
     ValuesPipe,
     WzDropdownPortalDirective,
-    WzInputTagsComponent,
-    WzInputSuggestionsComponent,
     CollectionFormComponent,
     CommonModule,
     RouterModule,
@@ -123,16 +100,12 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
-    EqualValidatorDirective,
-    WzSelectComponent,
     WzClipBoardDirective,
     WzTermsComponent,
-    WzSpeedviewComponent,
-    WzSpeedviewDirective,
-    WzSpeedviewPortalDirective,
+    WzAssetModule,
     WzPricingComponent,
-    WzAutocompleteSearchComponent,
-    WzComingSoonComponent
+    WzComingSoonComponent,
+    WzFormModule
   ],
   entryComponents: [
     WzNotificationComponent,

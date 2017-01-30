@@ -52,7 +52,8 @@ export function main() {
         toggleFilterCount: jasmine.createSpy('toggleFilterCount'),
         openCollectionTray: jasmine.createSpy('openCollectionTray'),
         updateSortPreference: jasmine.createSpy('updateSortPreference'),
-        state: { displayFilterCounts: false, displayFilterTree: true }
+        state: { displayFilterCounts: false, displayFilterTree: true },
+        updateAssetViewPreference: jasmine.createSpy('updateAssetViewPreference')
       };
       mockNotification = { create: jasmine.createSpy('create') };
       mockSortDefinition = {
@@ -70,7 +71,10 @@ export function main() {
         listenGlobal: jasmine.createSpy('listenGlobal')
           .and.callFake((a: any, b: any, c: Function) => { c(); })
       };
-      mockWindow = { location: { href: null } };
+      mockWindow = {
+        location: { href: null },
+        innerWidth: 500
+      };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
       };
@@ -80,6 +84,13 @@ export function main() {
       componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart,
         mockAssetService, mockSortDefinition, mockNotification, mockSearchContext, mockUiConfig, mockAssetData,
         mockUserPreferences, mockRenderer, mockWindow, mockSnackBar, mockTranslate);
+    });
+
+    describe('onresize()', () => {
+      it('Should set the screen size variable when screen size change', () => {
+        mockWindow.onresize();
+        expect(componentUnderTest.screenWidth).toBe(500);
+      });
     });
 
     describe('ngOnDestroy()', () => {
@@ -219,6 +230,13 @@ export function main() {
       it('Should call the search context service to exectue and new browser url', () => {
         componentUnderTest.onSortResults({ id: 'sortByDate' });
         expect(mockSearchContext.go).toHaveBeenCalled();
+      });
+    });
+
+    describe('onChangeAssetView()', () => {
+      it('Should update user preference when new view type is selected', () => {
+        componentUnderTest.onChangeAssetView('list');
+        expect(mockUserPreferences.updateAssetViewPreference).toHaveBeenCalledWith('list');
       });
     });
 

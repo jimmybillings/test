@@ -31,6 +31,8 @@ export class WzPlayerComponent implements OnDestroy {
 
   private currentAsset: any;
   private jwPlayer: any;
+  private markersPlaybackMode: 'off' | 'initializing' | 'on' = 'off';
+  private outMarker: number = 0;
 
   constructor(private element: ElementRef, private zone: NgZone) { }
 
@@ -47,39 +49,20 @@ export class WzPlayerComponent implements OnDestroy {
     this.jwPlayer.seek(timeInSeconds);
   }
 
-  public playRange(startPoint: number, endPoint: number): void {
+  public toggleMarkersPlayback(inMarker: number, outMarker: number): void {
     if (this.mode !== 'advanced') throw new TypeError('Must be in advanced mode to play subclip.');
 
-    // TODO: What if we are playing here, and the user pauses in the middle?
-    // We need to reset our state as if we had reached the out marker.
+    if (this.markersPlaybackMode === 'on') {
+      this.togglePlayback();
+    } else if (this.markersPlaybackMode === 'off') {
+      this.markersPlaybackMode = 'initializing';
+      this.outMarker = outMarker;
 
-    // TODO: Prevent this call from being called again while we're in progress?
-
-    this.jwPlayer
-      .once('seeked', () => {
-        // Temporarily replace standard 'time' event handler.
-        this.jwPlayer
-          .off('time')
-          .on('time', (event: any) => {
-            this.emitStateUpdateWith({ currentTime: event.position });
-
-            if (event.position >= endPoint) {
-              // Restore standard 'time' event handler.
-              this.jwPlayer.pause().off('time');
-              this.handleTimeEvents();
-
-              if (event.position > endPoint) {
-                // We overshot.  Unfortunately, jwPlayer doesn't trigger 'time'
-                // events very often, so this is likely to happen.  All we can
-                // do is seek back to the endPoint and hope it's quick enough
-                // to be somewhat unnoticeable.
-                this.jwPlayer.seek(endPoint);
-              }
-            }
-          }).play();
-      })
-      .pause()
-      .seek(startPoint);
+      this.jwPlayer.seek(inMarker);
+      // ... execution continues in the 'seek' handler in handleSeekEvents(),
+      // and from there, execution stops based on conditions in the 'time' handler
+      // in handleTimeEvents().
+    }
   }
 
   private setupVideo() {
@@ -99,7 +82,7 @@ export class WzPlayerComponent implements OnDestroy {
       this.handleDurationEvent();
       this.handleTimeEvents();
       this.handlePlaybackStateEvents();
-      this.preventAutoplayAfterSeek();
+      this.handleSeekEvents();
     }
   }
 
@@ -108,33 +91,94 @@ export class WzPlayerComponent implements OnDestroy {
   }
 
   private handleTimeEvents(): void {
-    this.jwPlayer.on('time', (event: any) => this.emitStateUpdateWith({ currentTime: event.position }));
+    this.jwPlayer.on('time', (event: any) => {
+      this.emitStateUpdateWith({ currentTime: event.position });
+
+      if (this.markersPlaybackMode === 'on' && event.position >= this.outMarker) {
+        this.jwPlayer.pause(true);
+        this.markersPlaybackMode = 'off';
+        this.emitStateUpdateWith({ playingMarkers: false });
+
+        if (event.position > this.outMarker) {
+          // We overshot.  Unfortunately, jwPlayer doesn't trigger 'time'
+          // events very often, so this is likely to happen.  All we can
+          // do is seek back to the endPoint and hope it's quick enough
+          // to be somewhat unnoticeable.
+          this.jwPlayer.seek(this.outMarker);
+        }
+      }
+    });
   }
 
   private handlePlaybackStateEvents(): void {
-    this.jwPlayer.on('play', () => this.emitStateUpdateWith({ playing: true }));
-    this.jwPlayer.on('pause', () => this.emitStateUpdateWith({ playing: false }));
-    this.jwPlayer.on('complete', () => this.emitStateUpdateWith({ playing: false }));
+    this.jwPlayer
+      .on('play', () => this.emitStateUpdateWith({ playing: true }))
+      .on('pause', () => this.emitStateUpdateWith({ playing: false }))
+      .on('complete', () => this.emitStateUpdateWith({ playing: false }));
+  }
+
+  private ignorePlaybackStateEvents(): void {
+    this.jwPlayer.off('play').off('pause').off('complete');
+  }
+
+  private handleSeekEvents(): void {
+    // TODO: This doesn't seem to work when we're stopped at the end of video.
+
+    this.jwPlayer.on('seek', () => {
+      if (this.markersPlaybackMode === 'initializing') {
+        // We want to play anyway, so just let autoplay after seek happen.
+        this.jwPlayer.once('seeked', () => {
+          this.markersPlaybackMode = 'on';
+          this.emitStateUpdateWith({ playingMarkers: true });
+        });
+
+        return;
+      }
+
+      if (this.markersPlaybackMode === 'on') {
+        // Any seek immediately kills range playback mode.
+        this.markersPlaybackMode = 'off';
+        this.emitStateUpdateWith({ playingMarkers: false });
+      }
+
+      // JW Player ALWAYS starts playing after a seek! They have no setting
+      // to prevent this, so if we were paused, we must manually re-pause as
+      // soon as the 'seeked' event is triggered.
+      //
+      if (this.jwPlayer.getState() === 'paused') {
+        // Note that this workaround is less than ideal because the 'seeked' event
+        // seems to be triggered AFTER playback begins (why??), so this sometimes
+        // causes a 'play' event and a 'pause' event to be triggered in rapid
+        // succession, which in turn causes a brief flicker of the play/pause
+        // toggle button in the UI.
+        //
+        // This would seem to be a better workaround:
+        //   this.jwPlayer.once('play', () => this.jwPlayer.pause(true));
+        //
+        // If that worked, we wouldn't need to ignore playback state events because
+        // we would be able to stop playback before the 'play' event is triggered.
+        // (Because it seems that they call the 'once' callbacks before the 'on'
+        // callbacks?) But somehow this means that we never get a 'time' event with
+        // the result of the seek.  So this workaround is not viable.
+        //
+        // I can only assume that they are relying on the continued
+        // playback to trigger the 'time' event.  (In general, it appears that
+        // JW Player has several code paths that are too tightly intertwined.)
+        //
+        this.ignorePlaybackStateEvents();
+
+        this.jwPlayer.once('seeked', () => {
+          this.jwPlayer
+            .once('pause', () => this.handlePlaybackStateEvents())
+            .pause(true);
+        });
+      }
+    });
   }
 
   private emitStateUpdateWith(changes: PlayerStateChanges): void {
     // Run these in "the Angular zone" so that the change detector sees changes now, not on the next cycle.
     this.zone.run(() => this.stateUpdate.emit(changes));
-  }
-
-  private preventAutoplayAfterSeek(): void {
-    // TODO: Temporarily suspend 'playing' state emissions during seek, so that the play button doesn't
-    // flicker during the seek.
-
-    // TODO: This doesn't seem to work when we're stopped at the end of video.
-
-    this.jwPlayer.on('seek', () => {
-      const wasPaused: boolean = this.jwPlayer.getState() === 'paused';
-
-      this.jwPlayer.once('seeked', () => {
-        if (wasPaused) this.jwPlayer.pause();
-      });
-    });
   }
 
   private setupImage() {
@@ -148,7 +192,7 @@ export class WzPlayerComponent implements OnDestroy {
 
   private reset() {
     if (this.jwPlayer) {
-      this.jwPlayer.pause();
+      this.jwPlayer.pause(true);
 
       if (this.mode === 'advanced') {
         this.emitStateUpdateWith({ duration: undefined, currentTime: 0 });
@@ -158,6 +202,7 @@ export class WzPlayerComponent implements OnDestroy {
       this.jwPlayer = null;
     }
 
+    this.markersPlaybackMode = 'off';
     this.element.nativeElement.innerHTML = '';
   }
 }

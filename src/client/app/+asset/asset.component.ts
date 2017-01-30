@@ -25,7 +25,7 @@ import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.c
 export class AssetComponent implements OnInit {
   public pricingAttributes: any;
   public rightsReproduction: string = '';
-  public usagePrice: Observable<any>;
+  public usagePrice: Observable<any> = Observable.of(null);
   private selectedAttrbutes: any;
   private pageSize: number = 50;
 

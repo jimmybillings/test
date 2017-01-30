@@ -1,7 +1,8 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, ViewChild } from '@angular/core';
-import { UiState } from '../../services/ui.state';
+import { UiState } from '../../../../services/ui.state';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { WzInputSuggestionsComponent } from '../wz-form/components/wz-input-suggestions/wz-input-suggestions.component';
+import { WzInputSuggestionsComponent } from '../wz-input-suggestions/wz-input-suggestions.component';
+
 @Component({
   moduleId: module.id,
   selector: 'wz-autocomplete-search',

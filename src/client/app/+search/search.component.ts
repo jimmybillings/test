@@ -11,7 +11,7 @@ import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 import { CartService } from '../shared/services/cart.service';
 import { AssetService } from '../shared/services/asset.service';
-import { WzSpeedviewComponent } from '../shared/components/wz-asset/wz-speedview/wz.speedview.component';
+import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 /**
@@ -135,11 +135,8 @@ export class SearchComponent implements OnDestroy {
     this.searchContext.go();
   }
 
-  public onChangeAssetView(): void {
-    let assetView: string = this.userPreferences.state.assetView;
-    assetView === 'grid' ? assetView = 'list' : assetView = 'grid';
-    // console.log(`set new pref view to - ${assetView}`);
-    this.userPreferences.updateAssetViewPreference(assetView);
+  public onChangeAssetView(viewType: string): void {
+    this.userPreferences.updateAssetViewPreference(viewType);
   }
 
   public filterEvent(event: any) {
