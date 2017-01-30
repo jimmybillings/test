@@ -175,5 +175,41 @@ wz-asset-list ul.asset-list-view {
         z-index: 1;
       }
     }
+    .asset-mdata-keywords {
+      margin: rem(1.0) 0;
+      button.is-outlined.keyword {
+        font-size: rem(1.3);
+        text-transform: initial;
+        font-weight: normal;
+        line-height: rem(1.8);
+        padding: 0 rem(.7);
+        min-width: rem(4.0);
+        border-radius: 0;
+      }
+    }
+    .asset-sub-clip {
+      margin: rem(1.6) 0 0;
+      .subclip-timeline {
+        margin: rem(.8) 0 rem(.2);
+        position: relative;
+        height: rem(.4);
+        width: 100%;
+        min-width: rem(30.0);
+        max-width: rem(40.0);
+        background-color: darken(md-color($background, status-bar), 10%);
+      }
+      ul {
+        color: md-color($foreground, secondary-text);
+        list-style: none;
+        padding: 0;
+        li {
+          margin:0 rem(.5) 0 rem(.3);
+          display: inline-block;
+          &:nth-child(3n) {
+            margin:0 0 0 rem(3.0);
+          }
+        }
+      }
+    }
   }
 }
