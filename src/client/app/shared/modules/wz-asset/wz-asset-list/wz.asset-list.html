@@ -19,6 +19,7 @@
               <span *ngIf="asset.metaData[4] && asset.metaData[4].name == 'Resource.Class' && asset.metaData[4].value == 'Image'" class="mdata-4">
                 <span class="{{asset.metaData[4].value | lowercase}}"></span>
               </span>
+              <span *ngIf="asset.timeStart && asset.timeEnd" class="sub-clip-indicator"></span>
             </div>
           </a>
         </div>
@@ -39,16 +40,18 @@
             <button class="is-outlined keyword" md-button color="primary">cityscape</button>
             <button class="is-outlined keyword" md-button color="primary">peru</button>
             <button class="is-outlined keyword" md-button color="primary">lima</button>
-          </div>
+          </div>-->
           <div *ngIf="asset.timeStart" class="asset-sub-clip md-caption">
             <strong>{{ 'COLLECTION.SHOW.SUB_CLIPPING_LABEL' | translate }} </strong>
-            <div class="subclip-timeline"></div>
-            <ul class="subclip-data">
-              <li><strong>Start: </strong>{{asset.timeStart}}</li>
-              <li><strong>End: </strong>{{asset.timeEnd}}</li>
-              <li><strong>Length: </strong>{{asset.timeEnd - asset.timeStart}}</li>
+            <div class="subclip-timeline">
+              <span class="subclip-segment" style="width:13px;margin-left:255px;"></span>
+            </div>
+            <ul class="subclip-data" layout="row">
+              <li flex="none"><strong>Start: </strong>{{asset.timeStart}}</li>
+              <li flex="none"><strong>End: </strong>{{asset.timeEnd}}</li>
+              <li flex="" layout-align="end center"><strong>Length: </strong>{{asset.timeEnd - asset.timeStart}}</li>
             </ul>
-          </div>-->
+          </div>
         </div>
       </div>
     </div>

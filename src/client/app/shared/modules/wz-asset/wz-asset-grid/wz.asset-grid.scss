@@ -250,6 +250,26 @@ wz-asset-grid ul.asset-grid-view {
           }
         }
       }
+      &.sub-clip-indicator {
+        font-size: rem(1.2);
+        line-height: rem(1.55);
+        position: absolute;
+        height: rem(2.0);
+        width: rem(2.0);
+        top: rem(.3);
+        right: rem(3.3);
+        z-index: 1;
+        color: transparent;
+        &::before {
+          content: "\e54d";
+          font-family: 'Material Icons';
+          color: rgba(md-color($md-grey, 100),0.55);
+          position: absolute;
+          top: rem(.3);
+          right: rem(-.2);
+          font-size: 1.86em;
+        }
+      }
     }
     &:hover .asset-name, &:active .asset-name {
       opacity: .7;

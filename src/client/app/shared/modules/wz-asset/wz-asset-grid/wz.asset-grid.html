@@ -16,6 +16,7 @@
         <span *ngIf="asset.metaData[4] && asset.metaData[4].name == 'Resource.Class' && asset.metaData[4].value == 'Image'" class="mdata-4">
           <span class="{{asset.metaData[4].value | lowercase}}"></span>
         </span>
+        <span *ngIf="asset.timeStart && asset.timeEnd" class="sub-clip-indicator"></span>
       </a>
       <section class="actions">
         <nav class="asset-options" flex layout-align="end center">
