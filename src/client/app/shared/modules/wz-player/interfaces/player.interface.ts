@@ -37,6 +37,7 @@ export interface PlayerStateChanges {
 export enum PlayerRequestType {
   ClearMarkers,
   SaveMarkers,
+  SeekToFrame,
   SeekToInMarker,
   SeekToOutMarker,
   SetInMarker,
@@ -47,7 +48,7 @@ export enum PlayerRequestType {
 
 export interface PlayerRequest {
   type: PlayerRequestType;
-  payload?: Object;
+  payload?: any;
 }
 
 export type MarkerType = 'in' | 'out';
