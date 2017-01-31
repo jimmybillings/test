@@ -135,26 +135,41 @@ wz-asset-list ul.asset-list-view {
           }
         }
       }
-      &.sub-clip-indicator {
-        font-size: rem(1.2);
-        line-height: rem(1.55);
+      // &.sub-clip-indicator {
+      //   font-size: rem(1.2);
+      //   line-height: rem(1.55);
+      //   position: absolute;
+      //   height: rem(2.0);
+      //   width: rem(2.0);
+      //   top: rem(.3);
+      //   right: rem(3.3);
+      //   z-index: 1;
+      //   color: transparent;
+      //   &::before {
+      //     content: "\e54d";
+      //     font-family: 'Material Icons';
+      //     color: rgba(md-color($md-grey, 100),0.55);
+      //     position: absolute;
+      //     top: rem(.3);
+      //     right: rem(-.2);
+      //     font-size: 1.86em;
+      //   }
+      // }
+      &.subclip-timeline.sub-clip-indicator-2 {
         position: absolute;
-        height: rem(2.0);
-        width: rem(2.0);
-        top: rem(.3);
-        right: rem(3.3);
+        height: rem(.6);
+        width: 100%;
+        bottom: rem(2.6);
+        left: rem(0.0);
         z-index: 1;
-        color: transparent;
-        &::before {
-          content: "\e54d";
-          font-family: 'Material Icons';
-          color: rgba(md-color($md-grey, 100),0.55);
+        background-color: darken(md-color($background, status-bar), 1%);
+        opacity: .75;
+        .subclip-segment {
+          background-color: darken(md-color($primary), 35%);
+          height: 100%;
           position: absolute;
-          top: rem(.3);
-          right: rem(-.2);
-          font-size: 1.86em;
         }
-      }
+      }  
     }
     .asset-thb {
       display: block;
@@ -209,13 +224,14 @@ wz-asset-list ul.asset-list-view {
     }
     .asset-sub-clip {
       margin: rem(1.6) 0 0;
+      width: 90%;
+      min-width: rem(30.0);
+      // max-width: rem(40.0);
       .subclip-timeline {
         margin: rem(.5) 0 0;
         position: relative;
         height: rem(.6);
         width: 100%;
-        min-width: rem(30.0);
-        max-width: rem(40.0);
         background-color: darken(md-color($background, status-bar), 10%);
         .subclip-segment {
           background-color: darken(md-color($background, status-bar), 30%);
@@ -231,7 +247,7 @@ wz-asset-list ul.asset-list-view {
         line-height: rem(2.0);
         width: 100%;
         min-width: rem(30.0);
-        max-width: rem(40.0);
+        // max-width: rem(40.0);
         background-color: rgba(md-color($primary), .1);
         li {
           // margin:0 rem(.5) 0 rem(.3);
