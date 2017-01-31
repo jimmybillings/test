@@ -52,6 +52,9 @@ export class WzAdvancedPlayerComponent {
       case PlayerRequestType.SaveMarkers:
         this.onSubclip.emit({ in: state.inMarkerFrame.frameNumber, out: state.outMarkerFrame.frameNumber });
         break;
+      case PlayerRequestType.SeekToFrame:
+        this.player.seekTo(request.payload.frame.asSeconds());
+        break;
       case PlayerRequestType.SeekToInMarker:
         this.player.seekTo(state.inMarkerFrame.asSeconds());
         break;
