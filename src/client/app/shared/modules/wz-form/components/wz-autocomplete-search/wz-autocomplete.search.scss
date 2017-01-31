@@ -6,8 +6,11 @@ wz-autocomplete-search {
     width:100%;
     display: block;
     .suggestions-menu.revealed {
-      top: rem(4.6);
+      top: rem(6.5);
       left: 0;
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        width: calc(100% - 2px);
+      }
     }
   }
   input {
@@ -82,8 +85,10 @@ header.app-header {
       }
     }
     wz-input-suggestions button.filter-toggle + input + button[type="submit"] + .suggestions-menu.revealed {
+      top: rem(4.6);
       left: rem(14.0);
       width: 50vw;
+      max-width: rem(55.0);
       @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
         left: 0;
         width: 100vw;
