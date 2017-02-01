@@ -270,11 +270,12 @@ wz-asset-grid ul.asset-grid-view {
       //     font-size: 1.86em;
       //   }
       // }
-      &.subclip-timeline.sub-clip-indicator-2 {
+      &.subclip-timeline {
+        @include transition($swift-ease-out);
         position: absolute;
         height: rem(.6);
         width: 100%;
-        bottom: rem(2.6);
+        bottom: rem(2.2);
         left: rem(0.0);
         z-index: 1;
         background-color: darken(md-color($background, status-bar), 1%);
@@ -289,7 +290,7 @@ wz-asset-grid ul.asset-grid-view {
     &:hover .asset-name, &:active .asset-name {
       opacity: .7;
     }
-    &:hover .mdata-3, &:active .mdata-3 {
+    &:hover .mdata-3, &:active .mdata-3, &:hover .subclip-timeline, &:active .subclip-timeline {
       opacity: 0;
     }
   }
