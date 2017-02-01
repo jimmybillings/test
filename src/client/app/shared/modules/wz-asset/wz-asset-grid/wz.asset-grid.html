@@ -10,13 +10,18 @@
         <span *ngIf="asset.metaData[2] && asset.metaData[2].value != ''" class="mdata-2">
           <span [ngClass]="formatType(asset.metaData[2].value)" class="sd-hd">{{asset.metaData[2].value}}</span>
         </span>
-        <span *ngIf="asset.metaData[3]" class="mdata-3">
+        <span *ngIf="!asset.timeStart && asset.metaData[3]" class="mdata-3">
           <span>{{asset.metaData[3].value}}</span>
+        </span>
+        <span  *ngIf="asset.timeStart" class="mdata-3">
+          <span>{{ asset.timeEnd - asset.timeStart }}</span>
         </span>
         <span *ngIf="asset.metaData[4] && asset.metaData[4].name == 'Resource.Class' && asset.metaData[4].value == 'Image'" class="mdata-4">
           <span class="{{asset.metaData[4].value | lowercase}}"></span>
         </span>
-        <span *ngIf="asset.timeStart && asset.timeEnd" class="sub-clip-indicator"></span>
+        <span *ngIf="asset.timeStart" class="subclip-timeline sub-clip-indicator-2">
+          <span class="subclip-segment" style="width:2.4333%;margin-left:75.654%;"></span>
+        </span>
       </a>
       <section class="actions">
         <nav class="asset-options" flex layout-align="end center">
