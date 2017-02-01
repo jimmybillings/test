@@ -5,12 +5,14 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 import { CurrentUser } from '../../shared/services/current-user.model';
-
+import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 
 export const asset: ActionReducer<any> = (state = {}, action: Action) => {
   switch (action.type) {
     case 'SET_ASSET':
       return Object.assign({}, action.payload);
+    case 'SET_VIRTUAL_PROPERTIES':
+      return Object.assign({}, state, action.payload);
     default:
       return state;
   }
@@ -24,7 +26,8 @@ export class AssetService {
   constructor(
     public store: Store<any>,
     public api: ApiService,
-    private currentUser: CurrentUser) {
+    private currentUser: CurrentUser,
+    private activeCollection: ActiveCollectionService) {
     this.data = this.store.select('asset');
   }
 
@@ -59,11 +62,13 @@ export class AssetService {
     return this.api.post(Api.Identities, 'accessInfo', { body: shareLink });
   }
 
-  public getData(id: any, share_token?: string): Observable<any> {
+  public getData(assetParams: any): Observable<any> {
     let options: ApiOptions = { loading: true };
-    if (share_token) options.overridingToken = share_token;
-    return this.api.get(Api.Assets, 'clip/' + id + '/clipDetail', options)
-      .do((res) => this.setActiveAsset(res));
+    if (assetParams.share_token) options.overridingToken = assetParams.share_token;
+
+    return this.api.get(Api.Assets, 'clip/' + assetParams.assetId + '/clipDetail', options)
+      .do((res) => this.setActiveAsset(Object.assign(res, assetParams)));
+
   }
 
   public setActiveAsset(asset: any): void {
@@ -76,7 +81,10 @@ export class AssetService {
         hasDownloadableComp: asset.hasDownloadableComp,
         resourceClass: asset.resourceClass,
         transcodeTargets: asset.transcodeTargets || [],
-        price: asset.price
+        price: asset.price,
+        uuid: asset.uuid || null,
+        timeStart: asset.timeStart || null,
+        timeEnd: asset.timeEnd || null,
       }
     });
   }

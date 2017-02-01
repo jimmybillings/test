@@ -113,7 +113,7 @@ export function main() {
       it('returns current state minus the specified asset payload when current state is passed in', () => {
         expect(activeCollection(
           { assets: { items: [{ assetId: 42, uuid: 't123' }, { assetId: 47, uuid: 't456' }] }, assetsCount: 2 },
-          { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { assetId: 42, uuid: 't123' } }
+          { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: 't123' }
         ))
           .toEqual({ assets: { items: [{ assetId: 47, uuid: 't456' }] }, assetsCount: 1 });
       });
@@ -197,10 +197,10 @@ export function main() {
 
     describe('remove()', () => {
       it('dispatches REMOVE_ASSET_FROM_COLLECTION with the passed-in asset', () => {
-        storeUnderTest.remove({ some: 'asset' });
+        storeUnderTest.remove('asset');
 
         expect(mockStore.dispatch)
-          .toHaveBeenCalledWith({ type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { some: 'asset' } });
+          .toHaveBeenCalledWith({ type: 'REMOVE_ASSET_FROM_COLLECTION', payload: 'asset' });
       });
     });
 

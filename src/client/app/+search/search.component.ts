@@ -14,6 +14,7 @@ import { AssetService } from '../shared/services/asset.service';
 import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
+
 /**
  * Asset search page component - renders search page results
  */

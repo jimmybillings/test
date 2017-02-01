@@ -17,14 +17,19 @@ export class WzAdvancedPlayerComponent {
   @Input() window: any;
   @Output() onSubclip = new EventEmitter();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
-
   private currentAsset: any = null;
 
   @Input()
   public set asset(newAsset: any) {
     this.playerStateService.reset();
     this.currentAsset = newAsset;
-
+    if (this.currentAsset.timeStart || this.currentAsset.timeEnd) {
+      const playerStateParams: PlayerStateChanges = Object.assign({},
+        this.currentAsset.timeStart ? { inMarkerFrameNumber: Number(this.currentAsset.timeStart) } : null,
+        this.currentAsset.timeEnd ? { outMarkerFrameNumber: Number(this.currentAsset.timeEnd) } : null,
+      );
+      this.playerStateService.updateWith(playerStateParams);
+    }
     if (this.assetIsVideo()) this.updateStateFrameRate();
   }
 

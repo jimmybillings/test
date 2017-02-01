@@ -7,7 +7,7 @@
     <div flex="100" flex-gt-sm="75">
       <div flex="100" layout="row" layout-xs="column">
         <div flex-gt-sm="40" flex-xl="45" flex="100" layout-padding>
-          <a [routerLink]="['/asset/', asset.assetId]" wzSpeedview (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})" (hidePreview)="onHideSpeedview.emit()">
+          <a [routerLink]="['/asset/', asset.assetId, assetParams(asset)]" wzSpeedview (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})" (hidePreview)="onHideSpeedview.emit()">
             <div class="asset-thb">
               <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
               <span *ngIf="asset.metaData[2] && asset.metaData[2].value != ''" class="mdata-2">

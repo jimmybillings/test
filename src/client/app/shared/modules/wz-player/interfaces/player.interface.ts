@@ -26,12 +26,15 @@ export interface PlayerStateChanges {
   inMarkerFrame?: Frame;
   outMarkerFrame?: Frame;
 
+
   // These properties are used to introduce Frame changes
   // based on information represented as other types.
   currentTime?: number;
   duration?: number;
   inMarker?: 'currentFrame' | 'clear';
   outMarker?: 'currentFrame' | 'clear';
+  inMarkerFrameNumber?: number;
+  outMarkerFrameNumber?: number;
 }
 
 export enum PlayerRequestType {

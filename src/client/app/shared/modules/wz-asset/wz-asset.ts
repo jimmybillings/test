@@ -59,6 +59,14 @@ export class WzAsset {
     return this.assetsArr.indexOf(asset.assetId) > -1;
   }
 
+  public assetParams(asset: any) {
+    return Object.assign({},
+      asset.uuid ? { uuid: asset.uuid } : null,
+      asset.timeStart ? { timeStart: asset.timeStart } : null,
+      asset.timeEnd ? { timeEnd: asset.timeEnd } : null
+    );
+  }
+
   public formatType(format: string): string {
     switch (format) {
       case 'High Definition':

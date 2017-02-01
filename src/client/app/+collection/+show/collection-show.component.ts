@@ -20,6 +20,7 @@ import { CollectionLinkComponent } from '../components/collection-link.component
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
 import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
+import { Asset } from '../../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,

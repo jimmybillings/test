@@ -2,7 +2,7 @@
   <li *ngFor="let asset of assets">
     <div class="asset">
       <div class="asset-name">{{asset.name}}</div>
-      <a flex="" [routerLink]="['/asset/', asset.assetId]" class="asset-thb" wzSpeedview (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})" (hidePreview)="onHideSpeedview.emit()">
+      <a flex="" [routerLink]="['/asset/', asset.assetId, assetParams(asset)]" class="asset-thb" wzSpeedview (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})" (hidePreview)="onHideSpeedview.emit()">
         <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
         <span *ngIf="asset.metaData[0]" class="mdata-0">
           <span>{{asset.metaData[0].value}}</span>

@@ -33,7 +33,7 @@ export const activeCollection: ActionReducer<any> = (state: Collection = initial
       if (!state.assets || !state.assets.items) return state;
 
       updatedAssets = JSON.parse(JSON.stringify(state.assets));
-      updatedAssets.items = updatedAssets.items.filter((item: Assets) => item.uuid !== action.payload.uuid);
+      updatedAssets.items = updatedAssets.items.filter((item: Assets) => item.uuid !== action.payload);
 
       return Object.assign({}, state, { assets: updatedAssets, assetsCount: updatedAssets.items.length });
 
@@ -54,8 +54,8 @@ export class ActiveCollectionStore {
     this.store.dispatch({ type: 'ADD_ASSET_TO_COLLECTION', payload: asset });
   }
 
-  public remove(asset: any): void {
-    this.store.dispatch({ type: 'REMOVE_ASSET_FROM_COLLECTION', payload: asset });
+  public remove(uuid: string): void {
+    this.store.dispatch({ type: 'REMOVE_ASSET_FROM_COLLECTION', payload: uuid });
   }
 
   public updateTo(collection: Collection): void {
