@@ -4,6 +4,7 @@ import { CurrentUser } from '../../shared/services/current-user.model';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { AssetStore } from './asset.store';
+import { UserPreferenceService } from '../../shared/services/user-preference.service';
 
 /**
  * Service that provides access to the search api  
@@ -14,6 +15,7 @@ export class AssetData {
   public data: Observable<any>;
   constructor(
     public currentUser: CurrentUser,
+    public userPreference: UserPreferenceService,
     private api: ApiService,
     public store: AssetStore) {
     this.data = this.store.data;
@@ -22,7 +24,7 @@ export class AssetData {
   public searchAssets(params: any): Observable<any> {
     let cloneParams = JSON.parse(JSON.stringify(params));
     cloneParams['i'] = (parseFloat(cloneParams['i']) - 1).toString();
-
+    cloneParams['viewType'] = this.userPreference.state.assetView;
     return this.api.get(
       Api.Assets,
       this.currentUser.loggedIn() ? 'search' : 'search/anonymous',

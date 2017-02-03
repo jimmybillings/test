@@ -1,0 +1,32 @@
+<div flex="" layout="column" class="md-dialog-container">
+  <div class="form-panel wz-dialog" layout="column">
+    <button md-icon-button title="close" type="button" class="close" (click)="clearAndClose()">
+      <md-icon>close</md-icon>
+    </button>
+    <header>
+      <h1 class="wz-dialog-title">
+        {{ 'ASSET.SAVE_SUBCLIP.DIALOG_HEADER_TITLE' | translate }}
+      </h1>
+      <p class="collection-name md-caption">{{ collectionName }}</p>
+      <p class="in-out-markers md-caption">
+        <strong>In:</strong><span>{{ subclipData.in | timecode }}</span>
+        <strong>Out:</strong><span>{{ subclipData.out | timecode }}</span>
+      </p>
+    </header>
+    <div class="wz-form-card">
+      <md-card-content>
+        <wz-form 
+          [items]="config.form.items"
+          includeCancel="true"
+          cancelLabel="ASSET.SAVE_SUBCLIP.FORM.CANCEL_BTN_LABEL"
+          submitLabel="ASSET.SAVE_SUBCLIP.FORM.SUBMIT_BTN_LABEL"
+          (formCancel)="clearAndClose()"
+          (formSubmit)="addSubclipToCollection($event)">
+        </wz-form>
+      </md-card-content>
+    </div>
+  </div>
+  <footer flex="100" layout="row" layout-align="center center" *ngIf="userCan.haveCart()">
+    <button [disabled]="!userCan.addToCart()" md-button class="is-outlined" color="primary" (click)="addSubclipToCart()">{{'ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE' | translate }}</button>
+  </footer>
+</div>

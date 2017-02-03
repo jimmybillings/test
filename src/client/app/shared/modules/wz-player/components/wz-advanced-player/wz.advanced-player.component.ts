@@ -4,6 +4,7 @@ import { PlayerStateService } from '../../services/player-state.service';
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
 import { SubclipMarkers } from '../../../../interfaces/asset.interface';
 import { PlayerState, PlayerStateChanges, PlayerRequest, PlayerRequestType } from '../../interfaces/player.interface';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -16,7 +17,10 @@ import { PlayerState, PlayerStateChanges, PlayerRequest, PlayerRequestType } fro
 export class WzAdvancedPlayerComponent {
   @Input() window: any;
   @Output() onSubclip = new EventEmitter();
+  @Output() onUpdateSubclipData = new EventEmitter();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
+
+  public playerStateSubscription: Subscription;
   private currentAsset: any = null;
 
   @Input()
@@ -41,7 +45,14 @@ export class WzAdvancedPlayerComponent {
     return this.currentAsset.resourceClass !== 'Image';
   }
 
-  constructor(public playerStateService: PlayerStateService) { }
+  constructor(public playerStateService: PlayerStateService) {
+    this.playerStateSubscription = playerStateService.state.subscribe((data) => {
+      if (data.inMarkerFrame && data.outMarkerFrame) {
+        this.onUpdateSubclipData.emit({ in: data.inMarkerFrame, out: data.outMarkerFrame });
+        // this.playerStateSubscription.unsubscribe();
+      }
+    });
+  }
 
   public onStateUpdate(changes: PlayerStateChanges): void {
     this.playerStateService.updateWith(changes);

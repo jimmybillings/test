@@ -112,7 +112,6 @@ export class UserPreferenceService {
 
   private put(params: any): Observable<any> {
     let body: any = this.formatBody(params);
-    // console.log(params);
     return this.api.put(Api.Identities, 'userPreferences/item', { body: body });
   }
 

@@ -5,11 +5,19 @@ import { AssetDetailComponent } from './components/asset-detail.component';
 import { AssetDataComponent } from './components/asset-data.component';
 import { AssetShareComponent } from './components/asset-share.component';
 import { AssetShareLinkComponent } from './components/asset-share-link.component';
+import { AssetSaveSubclipComponent } from './components/asset-save-subclip.component';
 
 
 @NgModule({
     imports: [SharedModule],
-    declarations: [AssetComponent, AssetDetailComponent, AssetDataComponent, AssetShareComponent, AssetShareLinkComponent],
+    declarations: [
+        AssetComponent,
+        AssetDetailComponent,
+        AssetDataComponent,
+        AssetShareComponent,
+        AssetShareLinkComponent,
+        AssetSaveSubclipComponent
+    ],
     exports: [AssetComponent],
 })
 
