@@ -25,6 +25,13 @@
       </a>
       <section class="actions">
         <nav class="asset-options" flex layout-align="end center">
+          <button
+            *ngIf="assetType === 'collection' && userCan.createSubclips(asset)"
+            md-icon-button
+            title="Edit asset"
+            (click)="editAsset(asset);">
+              <md-icon>mode_edit</md-icon>
+          </button>
           <!-- ADD TO CART -->
           <button
             *ngIf="userCan.addToCart()"

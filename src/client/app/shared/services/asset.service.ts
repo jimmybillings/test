@@ -106,6 +106,11 @@ export class AssetService {
     return this.api.get(Api.Assets, `${path}/${assetId}`);
   }
 
+  public getClipPreviewData(assetId: number): Observable<any> {
+    const viewType: ApiOptions = { parameters: { 'useType': 'clipPreview' } };
+    return this.api.get(Api.Assets, `renditionType/${assetId}`, viewType);
+  }
+
   public get state() {
     let state: any = {};
     this.data.take(1).subscribe(f => state = f);

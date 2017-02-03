@@ -16,8 +16,10 @@ export class WzAsset {
   @Output() onDownloadComp = new EventEmitter();
   @Output() onShowSpeedview = new EventEmitter();
   @Output() onHideSpeedview = new EventEmitter();
+  @Output() onEditAsset = new EventEmitter();
   @Input() public assets: Array<Asset>;
   @Input() public userCan: Capabilities;
+  @Input() public assetType: string = 'search';
   @Input() set collection(value: Collection) {
     this.currentCollection = value;
     this.assetsArr = value.assets.items.map((x) => x.assetId);
@@ -53,6 +55,11 @@ export class WzAsset {
     this.onDownloadComp.emit({
       'assetId': this.assetId, 'compType': compType
     });
+  }
+
+  public editAsset(asset: Asset) {
+    console.log(asset);
+    this.onEditAsset.emit(asset);
   }
 
   public inCollection(asset: any): boolean {

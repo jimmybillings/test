@@ -19,7 +19,7 @@
 	</div>
 	<div layout="row" layout-align="center center">
 		<div flex="95">
-			<line-items-component *ngIf="!readOnly" [lineItems]="project.lineItems" [otherProjects]="projectsOtherThan(project)" (lineItemsNotify)="delegate($event)"></line-items-component>
+			<line-items-component *ngIf="!readOnly" [lineItems]="project.lineItems" [otherProjects]="projectsOtherThan(project)" [userCan]="userCan" (lineItemsNotify)="delegate($event)"></line-items-component>
 		</div>
 	</div>
 </span>

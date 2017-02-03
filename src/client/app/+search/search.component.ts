@@ -108,7 +108,6 @@ export class SearchComponent implements OnDestroy {
       this.speedviewData = Observable.of(event.asset.speedviewData);
       this.wzSpeedview.show(event.position);
     } else {
-      console.log(event.asset);
       this.speedviewData = this.assetService.getSpeedviewData(event.asset.assetId)
         .do((data: any) => {
           event.asset.speedviewData = data;

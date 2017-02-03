@@ -43,7 +43,8 @@ import { TimeDisplayComponent } from './components/wz-advanced-player/controls/t
   exports: [
     TimecodePipe,
     WzAdvancedPlayerComponent,
-    WzPlayerComponent
-  ]
+    WzPlayerComponent,
+  ],
+  entryComponents: [WzAdvancedPlayerComponent]
 })
 export class WzPlayerModule { }

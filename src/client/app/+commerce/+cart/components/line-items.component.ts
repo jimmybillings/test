@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Project, LineItem } from '../../../shared/interfaces/cart.interface';
+import { Capabilities } from '../../../shared/services/capabilities.service';
 
 @Component({
   moduleId: module.id,
@@ -19,6 +20,7 @@ export class LineItemsComponent {
     }
   };
   @Input() otherProjects: Project[];
+  @Input() userCan: Capabilities;
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedLineItem: LineItem;
 
@@ -35,6 +37,10 @@ export class LineItemsComponent {
 
   public remove(lineItem: LineItem): void {
     this.lineItemsNotify.emit({ type: 'REMOVE_LINE_ITEM', payload: lineItem });
+  }
+
+  public editMarkers(lineItem: LineItem): void {
+    this.lineItemsNotify.emit({ type: 'EDIT_LINE_ITEM_MARKERS', payload: lineItem });
   }
 
   public delegate(message: any): void {
