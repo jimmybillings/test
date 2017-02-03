@@ -102,6 +102,7 @@
 				<wz-player [window]="window" [asset]="asset"></wz-player>
       </div>
 			<asset-save-subclip *ngIf="userCan.createSubclips() && showAssetSaveSubclip" flex=""
+				[userCan]="userCan"
 				[collectionName]="collection.name"
 				[subclipData]="subclipData"
 				[config]="(uiConfig.get('assetSaveSubclip') | async).config"

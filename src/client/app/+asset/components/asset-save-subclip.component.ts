@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/modules/wz-form/wz.form.component';
+import { Capabilities } from '../../shared/services/capabilities.service';
 
 @Component({
   moduleId: module.id,
@@ -14,6 +15,7 @@ import { WzFormComponent } from '../../shared/modules/wz-form/wz.form.component'
 
 export class AssetSaveSubclipComponent {
   @Input() config: any;
+  @Input() public userCan: Capabilities;
   @Input() collectionName: string;
   @Input() subclipData: any;
   @Output() onAddSubclipToCollection = new EventEmitter();
