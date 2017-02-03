@@ -33,6 +33,8 @@ export class AssetDetailComponent implements OnChanges {
   @Output() onShowSnackBar = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   public selectedTarget: string;
+  public showAssetSaveSubclip: boolean = false;
+  public subclipData: any;
   private assetsArr: Array<number> = [];
 
   ngOnChanges(changes: any): void {
@@ -46,10 +48,18 @@ export class AssetDetailComponent implements OnChanges {
     assetId = parseInt(assetId);
     return this.assetsArr.indexOf(assetId) > -1;
   }
-
+  // rename this method to something more meaningful
   public subclip(params: SubclipMarkers): void {
     // console.log(`Asset details subclip markers: ${params.in} - ${params.out}`);
     this.onAddToCollection.emit({ 'collection': this.collection, 'asset': this.asset, 'markers': params });
+  }
+
+  public updateSubclipData(data: any): void {
+    if (data) this.showAssetSaveSubclip = true;
+    this.subclipData = data;
+  }
+  public toggleAssetSaveSubclip(): void {
+    this.showAssetSaveSubclip = !this.showAssetSaveSubclip;
   }
 
   public addToCollection(collection: Collection, asset: any, markers: SubclipMarkers = null): void {
@@ -66,8 +76,8 @@ export class AssetDetailComponent implements OnChanges {
     this.onDownloadComp.emit({ 'compType': compType, 'assetId': assetId });
   }
 
-  public addAssetToCart(assetId: any, pricingAttributes?: any): void {
-    this.addToCart.emit({ assetId: assetId, selectedTranscodeTarget: this.selectedTarget });
+  public addAssetToCart(assetId: any, markers: SubclipMarkers = null, pricingAttributes?: any): void {
+    this.addToCart.emit({ assetId: assetId, markers: markers, selectedTranscodeTarget: this.selectedTarget });
   }
 
   public getPricingAttributes(): void {

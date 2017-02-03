@@ -111,7 +111,7 @@ export function main() {
         spyOn(componentUnderTest.addToCart, 'emit');
         componentUnderTest.addAssetToCart(1234);
         expect(componentUnderTest.addToCart.emit)
-          .toHaveBeenCalledWith({ assetId: 1234, selectedTranscodeTarget: 'master_copy' });
+          .toHaveBeenCalledWith({ assetId: 1234, markers: null, selectedTranscodeTarget: 'master_copy' });
       });
     });
   });

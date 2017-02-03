@@ -62,13 +62,20 @@ export class CartService {
       });
   }
 
-  public addAssetToProjectInCart(assetId: string, transcodeTarget?: string, price?: number, attributes?: any): void {
+  public addAssetToProjectInCart(
+    assetId: string,
+    transcodeTarget?: string,
+    price?: number,
+    attributes?: any,
+    startTime?: string,
+    endTime?: string
+  ): void {
     let existingProjectNames: Array<string> = this.existingProjectNames;
     this.api.put(
       Api.Orders,
       'cart/asset/lineItem/quick',
       {
-        body: this.formateBody(assetId, transcodeTarget, price, attributes),
+        body: this.formateBody(assetId, transcodeTarget, price, attributes, startTime, endTime),
         parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
       }
     ).subscribe(this.updateCart);
@@ -106,7 +113,14 @@ export class CartService {
       .subscribe(this.updateCart);
   }
 
-  private formateBody(assetId: string, selectedTranscodeTarget?: string, price?: number, attributes?: any): any {
+  private formateBody(
+    assetId: string,
+    selectedTranscodeTarget?: string,
+    price?: number,
+    attributes?: any,
+    startTime?: string,
+    endTime?: string
+  ): any {
     let formatted: any = {
       lineItem: {
         asset: {
@@ -117,6 +131,8 @@ export class CartService {
     if (selectedTranscodeTarget) Object.assign(formatted.lineItem, { selectedTranscodeTarget });
     if (price) Object.assign(formatted.lineItem, { price });
     if (attributes) Object.assign(formatted, { attributes: this.formatAttributes(attributes) });
+    if (startTime) Object.assign(formatted.lineItem.asset, { startTime: startTime });
+    if (endTime) Object.assign(formatted.lineItem.asset, { endTime: endTime });
     return formatted;
   }
 
