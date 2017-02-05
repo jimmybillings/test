@@ -1,7 +1,20 @@
-import { Component, ChangeDetectionStrategy, Input, Output, ElementRef, EventEmitter, NgZone, OnDestroy } from '@angular/core';
-declare var jwplayer: any;
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  ElementRef,
+  Renderer,
+  EventEmitter,
+  NgZone,
+  OnDestroy
+} from '@angular/core';
 
 import { PlayerMode, PlayerStateChanges } from '../../interfaces/player.interface';
+declare var jwplayer: any;
+
+type AssetType = 'unknown' | 'image' | 'video' | 'html5Video';
+type MarkersPlaybackMode = 'off' | 'initializing' | 'on';
 
 @Component({
   moduleId: module.id,
@@ -26,31 +39,36 @@ export class WzPlayerComponent implements OnDestroy {
     return this.currentAsset;
   }
 
-  // This event is emitted only for this.mode === 'advanced'.
   @Output() stateUpdate: EventEmitter<PlayerStateChanges> = new EventEmitter<PlayerStateChanges>();
 
   private currentAsset: any;
   private jwPlayer: any;
-  private markersPlaybackMode: 'off' | 'initializing' | 'on' = 'off';
+  private videoElement: any;
+  private currentAssetType: AssetType = 'unknown';
+  private markersPlaybackMode: MarkersPlaybackMode = 'off';
   private outMarker: number = 0;
+  private videoElementListenerRemovers: any;
 
-  constructor(private element: ElementRef, private zone: NgZone) { }
+  constructor(private element: ElementRef, private renderer: Renderer, private zone: NgZone) { }
 
   public ngOnDestroy(): void {
     this.reset();
   }
 
   public togglePlayback(): void {
-    // Omitting the state argument means toggle playback.
-    this.jwPlayer.play();
+    this.verifyCustomControlsSupport();
+
+    this.videoElement.paused ? this.videoElement.play() : this.videoElement.pause();
   }
 
   public seekTo(timeInSeconds: number): void {
-    this.jwPlayer.seek(timeInSeconds);
+    this.verifyCustomControlsSupport();
+
+    this.videoElement.currentTime = timeInSeconds;
   }
 
   public toggleMarkersPlayback(inMarker: number, outMarker: number): void {
-    if (this.mode !== 'advanced') throw new TypeError('Must be in advanced mode to play subclip.');
+    this.verifyCustomControlsSupport();
 
     if (this.markersPlaybackMode === 'on') {
       this.togglePlayback();
@@ -58,14 +76,19 @@ export class WzPlayerComponent implements OnDestroy {
       this.markersPlaybackMode = 'initializing';
       this.outMarker = outMarker;
 
-      this.jwPlayer.seek(inMarker);
-      // ... execution continues in the 'seek' handler in handleSeekEvents(),
-      // and from there, execution stops based on conditions in the 'time' handler
-      // in handleTimeEvents().
+      this.seekTo(inMarker);
+      // ... execution continues in onSeeked().
+      // From there, markers playback stops in onSeeking() or onTimeUpdate().
     }
   }
 
-  private setupVideo() {
+  private verifyCustomControlsSupport(): void {
+    if (this.mode === 'basic') throw new Error('Basic mode does not support custom controls.');
+    if (this.currentAssetType != 'html5Video') throw new Error('Current asset does not support custom controls.');
+  }
+
+  private setupVideo(): void {
+    this.currentAssetType = 'video';
     this.jwPlayer = this.window.jwplayer(this.element.nativeElement);
 
     this.jwPlayer.setup({
@@ -79,101 +102,91 @@ export class WzPlayerComponent implements OnDestroy {
     });
 
     if (this.mode === 'advanced') {
-      this.handleDurationEvent();
-      this.handleTimeEvents();
-      this.handlePlaybackStateEvents();
-      this.handleSeekEvents();
+      this.jwPlayer.on('ready', () => {
+        const jwPlayerProvider = this.jwPlayer.getProvider();
+
+        if (jwPlayerProvider && jwPlayerProvider.name === 'html5') {
+          // Seems like the "correct" Angular-y way to do this would be to
+          // find the <video> tag inside 'this.element.nativeElement'.  But
+          // that doesn't seem to work, so we'll resort to this for now.
+          // ASSUMPTION:  There is one <video> element in the document!
+          this.videoElement = this.window.document.querySelector('video');
+
+          this.startVideoEventListeners();
+
+          this.currentAssetType = 'html5Video';
+          this.emitStateUpdateWith({ canSupportCustomControls: true });
+        } else {
+          this.emitStateUpdateWith({ canSupportCustomControls: false });
+        }
+      });
     }
   }
 
-  private handleDurationEvent(): void {
-    this.jwPlayer.once('time', (event: any) => this.emitStateUpdateWith({ duration: event.duration }));
+  private startVideoEventListeners(): void {
+    this.startVideoEventListenerFor('durationchange', this.onDurationChange);
+    this.startVideoEventListenerFor('pause', this.onPause);
+    this.startVideoEventListenerFor('playing', this.onPlaying);
+    this.startVideoEventListenerFor('timeupdate', this.onTimeUpdate);
+    this.startVideoEventListenerFor('seeked', this.onSeeked);
+    this.startVideoEventListenerFor('seeking', this.onSeeking);
   }
 
-  private handleTimeEvents(): void {
-    this.jwPlayer.on('time', (event: any) => {
-      this.emitStateUpdateWith({ currentTime: event.position });
+  private startVideoEventListenerFor(eventName: string, callback: Function): void {
+    if (!this.videoElementListenerRemovers) this.videoElementListenerRemovers = {};
 
-      if (this.markersPlaybackMode === 'on' && event.position >= this.outMarker) {
-        this.jwPlayer.pause(true);
-        this.markersPlaybackMode = 'off';
-        this.emitStateUpdateWith({ playingMarkers: false });
-
-        if (event.position > this.outMarker) {
-          // We overshot.  Unfortunately, jwPlayer doesn't trigger 'time'
-          // events very often, so this is likely to happen.  All we can
-          // do is seek back to the endPoint and hope it's quick enough
-          // to be somewhat unnoticeable.
-          this.jwPlayer.seek(this.outMarker);
-        }
-      }
-    });
+    // See http://stackoverflow.com/questions/35080387/dynamically-add-event-listener-in-angular-2
+    this.videoElementListenerRemovers[eventName] = this.renderer.listen(this.videoElement, eventName, callback.bind(this));
   }
 
-  private handlePlaybackStateEvents(): void {
-    this.jwPlayer
-      .on('play', () => this.emitStateUpdateWith({ playing: true }))
-      .on('pause', () => this.emitStateUpdateWith({ playing: false }))
-      .on('complete', () => this.emitStateUpdateWith({ playing: false }));
+  private stopVideoEventListeners(): void {
+    for (const eventName in this.videoElementListenerRemovers) {
+      this.videoElementListenerRemovers[eventName]();
+    }
+
+    this.videoElementListenerRemovers = {};
   }
 
-  private ignorePlaybackStateEvents(): void {
-    this.jwPlayer.off('play').off('pause').off('complete');
+  private onDurationChange(): void {
+    this.emitStateUpdateWith({ duration: this.videoElement.duration });
   }
 
-  private handleSeekEvents(): void {
-    // TODO: This doesn't seem to work when we're stopped at the end of video.
+  private onPause(): void {
+    this.emitStateUpdateWith({ playing: false });
+  }
 
-    this.jwPlayer.on('seek', () => {
-      if (this.markersPlaybackMode === 'initializing') {
-        // We want to play anyway, so just let autoplay after seek happen.
-        this.jwPlayer.once('seeked', () => {
-          this.markersPlaybackMode = 'on';
-          this.emitStateUpdateWith({ playingMarkers: true });
-        });
+  private onPlaying(): void {
+    this.emitStateUpdateWith({ playing: true });
+  }
 
-        return;
-      }
+  private onSeeked(): void {
+    if (this.markersPlaybackMode === 'initializing') {
+      this.markersPlaybackMode = 'on';
+      this.emitStateUpdateWith({ playingMarkers: true });
+      if (this.videoElement.paused) this.videoElement.play();
+    }
+  }
 
-      if (this.markersPlaybackMode === 'on') {
-        // Any seek immediately kills range playback mode.
-        this.markersPlaybackMode = 'off';
-        this.emitStateUpdateWith({ playingMarkers: false });
-      }
+  private onSeeking(): void {
+    if (this.markersPlaybackMode === 'on') {
+      // Any seek immediately kills range playback mode.
+      this.markersPlaybackMode = 'off';
+      this.emitStateUpdateWith({ playingMarkers: false });
+    }
+  }
 
-      // JW Player ALWAYS starts playing after a seek! They have no setting
-      // to prevent this, so if we were paused, we must manually re-pause as
-      // soon as the 'seeked' event is triggered.
-      //
-      if (this.jwPlayer.getState() === 'paused') {
-        // Note that this workaround is less than ideal because the 'seeked' event
-        // seems to be triggered AFTER playback begins (why??), so this sometimes
-        // causes a 'play' event and a 'pause' event to be triggered in rapid
-        // succession, which in turn causes a brief flicker of the play/pause
-        // toggle button in the UI.
-        //
-        // This would seem to be a better workaround:
-        //   this.jwPlayer.once('play', () => this.jwPlayer.pause(true));
-        //
-        // If that worked, we wouldn't need to ignore playback state events because
-        // we would be able to stop playback before the 'play' event is triggered.
-        // (Because it seems that they call the 'once' callbacks before the 'on'
-        // callbacks?) But somehow this means that we never get a 'time' event with
-        // the result of the seek.  So this workaround is not viable.
-        //
-        // I can only assume that they are relying on the continued
-        // playback to trigger the 'time' event.  (In general, it appears that
-        // JW Player has several code paths that are too tightly intertwined.)
-        //
-        this.ignorePlaybackStateEvents();
+  private onTimeUpdate(): void {
+    const currentTime = this.videoElement.currentTime;
 
-        this.jwPlayer.once('seeked', () => {
-          this.jwPlayer
-            .once('pause', () => this.handlePlaybackStateEvents())
-            .pause(true);
-        });
-      }
-    });
+    this.emitStateUpdateWith({ currentTime: currentTime });
+
+    if (this.markersPlaybackMode === 'on' && currentTime >= this.outMarker) {
+      this.videoElement.pause();
+      this.markersPlaybackMode = 'off';
+      this.emitStateUpdateWith({ playingMarkers: false });
+
+      if (currentTime > this.outMarker) this.seekTo(this.outMarker);
+    }
   }
 
   private emitStateUpdateWith(changes: PlayerStateChanges): void {
@@ -181,7 +194,8 @@ export class WzPlayerComponent implements OnDestroy {
     this.zone.run(() => this.stateUpdate.emit(changes));
   }
 
-  private setupImage() {
+  private setupImage(): void {
+    this.currentAssetType = 'image';
     let imgWrapper: HTMLElement = document.createElement('div');
     imgWrapper.className = 'photo-container';
     let elem: HTMLImageElement = document.createElement('img');
@@ -190,18 +204,22 @@ export class WzPlayerComponent implements OnDestroy {
     this.element.nativeElement.appendChild(imgWrapper);
   }
 
-  private reset() {
-    if (this.jwPlayer) {
-      this.jwPlayer.pause(true);
+  private reset(): void {
+    if (this.currentAssetType.match(/^video|html5Video$/)) {
+      if (this.currentAssetType === 'html5Video') {
+        this.stopVideoEventListeners();
+      }
 
       if (this.mode === 'advanced') {
         this.emitStateUpdateWith({ duration: undefined, currentTime: 0 });
       }
 
+      this.videoElement = null;
       this.jwPlayer.remove();
       this.jwPlayer = null;
     }
 
+    this.currentAssetType = 'unknown';
     this.markersPlaybackMode = 'off';
     this.element.nativeElement.innerHTML = '';
   }

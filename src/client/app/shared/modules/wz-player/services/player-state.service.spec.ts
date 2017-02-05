@@ -18,6 +18,7 @@ export function main() {
       it('returns an Observable of the current state', () => {
         serviceUnderTest.state.subscribe((state: PlayerState) => {
           expect(state).toEqual(jasmine.objectContaining({
+            canSupportCustomControls: true,
             playing: false,
             framesPerSecond: 29.97,
             currentFrame: undefined,
@@ -32,6 +33,7 @@ export function main() {
     describe('snapshot getter', () => {
       it('returns a one-time copy of the current state', () => {
         expect(serviceUnderTest.snapshot).toEqual(jasmine.objectContaining({
+          canSupportCustomControls: true,
           playing: false,
           framesPerSecond: 29.97,
           currentFrame: undefined,
@@ -48,6 +50,7 @@ export function main() {
 
         serviceUnderTest.state.subscribe((state: PlayerState) => {
           expect(state).toEqual(jasmine.objectContaining({
+            canSupportCustomControls: true,
             playing: true,
             framesPerSecond: 29.97,
             currentFrame: undefined,
@@ -62,6 +65,7 @@ export function main() {
         serviceUnderTest.updateWith({ framesPerSecond: 23.976 });
 
         expect(serviceUnderTest.snapshot).toEqual(jasmine.objectContaining({
+          canSupportCustomControls: true,
           playing: false,
           framesPerSecond: 23.976,
           currentFrame: undefined,
@@ -87,6 +91,7 @@ export function main() {
         serviceUnderTest.reset();
 
         expect(serviceUnderTest.snapshot).toEqual(jasmine.objectContaining({
+          canSupportCustomControls: true,
           playing: false,
           framesPerSecond: 29.97,
           currentFrame: undefined,

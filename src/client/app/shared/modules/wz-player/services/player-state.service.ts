@@ -28,6 +28,7 @@ export class PlayerStateService {
 
   private get initialValue(): PlayerState {
     return {
+      canSupportCustomControls: true,
       playing: false,
       playingMarkers: false,
       framesPerSecond: 29.97,
@@ -44,6 +45,7 @@ export class PlayerStateService {
     this.handleChangeInterdependencies();
 
     return {
+      canSupportCustomControls: this.latestCanSupportCustomControls,
       playing: this.latestPlaying,
       playingMarkers: this.latestPlayingMarkers,
       framesPerSecond: this.latestFramesPerSecond,
@@ -115,6 +117,12 @@ export class PlayerStateService {
         this.changesToApply.inMarkerFrame = this.newFrameFrom(this.changesToApply.outMarkerFrame);
       }
     }
+  }
+
+  private get latestCanSupportCustomControls(): boolean {
+    return this.changesToApply.hasOwnProperty('canSupportCustomControls')
+      ? this.changesToApply.canSupportCustomControls
+      : this.snapshot.canSupportCustomControls;
   }
 
   private get latestPlaying(): boolean {
