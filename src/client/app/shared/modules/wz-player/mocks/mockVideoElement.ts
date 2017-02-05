@@ -10,6 +10,14 @@ export class MockVideoElement {
   private _currentTime: number = 0;
   private _duration: number = 0;
   private seekingTo: number = null;
+  private eventCallbacks: MockVideoCallbacks = {
+    durationchange: new Array<Function>(),
+    pause: new Array<Function>(),
+    playing: new Array<Function>(),
+    timeupdate: new Array<Function>(),
+    seeked: new Array<Function>(),
+    seeking: new Array<Function>()
+  };
 
   public play(): void {
     if (!this.paused) return;
@@ -62,15 +70,6 @@ export class MockVideoElement {
       .map(eventName => this.eventCallbacks[eventName].length)
       .reduce((a, b) => a + b, 0);
   }
-
-  private eventCallbacks: MockVideoCallbacks = {
-    durationchange: new Array<Function>(),
-    pause: new Array<Function>(),
-    playing: new Array<Function>(),
-    timeupdate: new Array<Function>(),
-    seeked: new Array<Function>(),
-    seeking: new Array<Function>()
-  };
 
   public on(eventName: MockVideoEventName, callback: Function): MockVideoElement {
     this.eventCallbacks[eventName].push(callback);

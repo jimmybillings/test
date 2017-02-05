@@ -84,7 +84,7 @@ export class WzPlayerComponent implements OnDestroy {
 
   private verifyCustomControlsSupport(): void {
     if (this.mode === 'basic') throw new Error('Basic mode does not support custom controls.');
-    if (this.currentAssetType != 'html5Video') throw new Error('Current asset does not support custom controls.');
+    if (this.currentAssetType !== 'html5Video') throw new Error('Current asset does not support custom controls.');
   }
 
   private setupVideo(): void {

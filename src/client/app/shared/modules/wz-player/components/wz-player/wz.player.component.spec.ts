@@ -60,7 +60,7 @@ export function main() {
             return selector === 'video' ? (mockVideoElement = new MockVideoElement()) : null;
           }
         }
-      }
+      };
 
       componentUnderTest.stateUpdate.emit = jasmine.createSpy('stateUpdate emitter');
 
@@ -348,7 +348,7 @@ export function main() {
 
                   expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
                   expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1234.567 }]);
-                })
+                });
               });
 
               describe('toggleMarkersPlayback()', () => {
