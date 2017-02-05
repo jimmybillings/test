@@ -62,7 +62,6 @@ export class AssetComponent implements OnInit {
   public addToCollection(params: any): void {
     this.userPreference.openCollectionTray();
     if (params.markers) {
-      // console.log(`asset component subclip markers: ${params.markers.in} - ${params.markers.out}`);
       this.activeCollection.addAsset(params.collection.id, params.asset, params.markers).subscribe();
     } else {
       this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
@@ -94,8 +93,16 @@ export class AssetComponent implements OnInit {
 
   public addAssetToCart(asset: any): void {
     this.usagePrice.take(1).subscribe((price: any) => {
-      this.cart.addAssetToProjectInCart(
-        asset.assetId, asset.selectedTranscodeTarget, price, this.selectedAttrbutes);
+      if (asset.markers) {
+        console.log(asset.markers);
+        // console.log(asset.markers.markers.in);
+        // console.log(asset.markers.markers.out);
+        this.cart.addAssetToProjectInCart(
+          asset.assetId, asset.selectedTranscodeTarget, price, this.selectedAttrbutes, asset.markers.markers.in, asset.markers.markers.out);
+      } else {
+        this.cart.addAssetToProjectInCart(
+          asset.assetId, asset.selectedTranscodeTarget, price, this.selectedAttrbutes);
+      }
     });
     this.showSnackBar({
       key: 'ASSET.ADD_TO_CART_TOAST',

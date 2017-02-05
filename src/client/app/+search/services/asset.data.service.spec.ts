@@ -33,7 +33,8 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.searchAssets(searchParams()).subscribe((payload) => {
-          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/search/anonymous?q=green&n=25&i=0&siteName=core');
+          expect(connection.request.url.split('.com')[1]).toBe(
+            '/api/assets/v1/search/anonymous?q=green&n=25&i=0&viewType=grid&siteName=core');
           expect(payload).toEqual(MockSearchResultsResponse());
         });
         connection.mockRespond(new Response(
@@ -50,7 +51,8 @@ export function main() {
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         localStorage.setItem('token', 'SOME_TOKEN');
         service.searchAssets(searchParams()).subscribe((payload) => {
-          expect(connection.request.url.split('.com')[1]).toBe('/api/assets/v1/search?q=green&n=25&i=0');
+          expect(connection.request.url.split('.com')[1]).toBe(
+            '/api/assets/v1/search?q=green&n=25&i=0&viewType=grid');
           expect(payload).toEqual(MockSearchResultsResponse());
         });
         connection.mockRespond(new Response(
