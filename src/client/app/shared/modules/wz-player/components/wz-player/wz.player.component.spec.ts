@@ -136,12 +136,7 @@ export function main() {
         it('sets up the player', () => {
           expect(mockJwPlayer.setup).toHaveBeenCalledWith({
             image: 'clipThumbnailUrl',
-            file: 'clipUrl',
-            logo: {
-              file: 'assets/img/logo/watermark.png',
-              position: 'top-right',
-              link: 'http://www.wazeedigital.com'
-            }
+            file: 'clipUrl'
           });
         });
 
@@ -197,12 +192,7 @@ export function main() {
           it('sets up the player', () => {
             expect(mockJwPlayer.setup).toHaveBeenCalledWith({
               image: null,
-              file: 'clipUrl',
-              logo: {
-                file: 'assets/img/logo/watermark.png',
-                position: 'top-right',
-                link: 'http://www.wazeedigital.com'
-              }
+              file: 'clipUrl'
             });
           });
 

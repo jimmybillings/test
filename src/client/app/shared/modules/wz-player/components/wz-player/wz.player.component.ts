@@ -93,12 +93,7 @@ export class WzPlayerComponent implements OnDestroy {
 
     this.jwPlayer.setup({
       image: this.currentAsset.clipThumbnailUrl ? this.currentAsset.clipThumbnailUrl : null,
-      file: this.currentAsset.clipUrl,
-      logo: {
-        file: 'assets/img/logo/watermark.png',
-        position: 'top-right',
-        link: 'http://www.wazeedigital.com'
-      }
+      file: this.currentAsset.clipUrl
     });
 
     if (this.mode === 'advanced') {
