@@ -46,7 +46,8 @@ export class WzPlayerComponent implements OnDestroy {
   private videoElement: any;
   private currentAssetType: AssetType = 'unknown';
   private markersPlaybackMode: MarkersPlaybackMode = 'off';
-  private outMarker: number = 0;
+  private inMarker: number = undefined;
+  private outMarker: number = undefined;
   private videoElementListenerRemovers: any;
 
   constructor(private element: ElementRef, private renderer: Renderer, private zone: NgZone) { }
@@ -67,16 +68,79 @@ export class WzPlayerComponent implements OnDestroy {
     this.videoElement.currentTime = timeInSeconds;
   }
 
-  public toggleMarkersPlayback(inMarker: number, outMarker: number): void {
+  public seekToInMarker(): void {
+    this.verifyCustomControlsSupport();
+    if (!this.inMarker) throw new Error('Cannot seek to in marker because it is not set.');
+
+    this.seekTo(this.inMarker);
+  }
+
+  public seekToOutMarker(): void {
+    this.verifyCustomControlsSupport();
+    if (!this.outMarker) throw new Error('Cannot seek to out marker because it is not set.');
+
+    this.seekTo(this.outMarker);
+  }
+
+  public setInMarkerToCurrentTime(): void {
+    this.verifyCustomControlsSupport();
+
+    this.inMarker = this.videoElement.currentTime;
+
+    if (this.outMarker && this.outMarker < this.inMarker) {
+      this.outMarker = this.inMarker;
+      this.emitStateUpdateWith({ inMarker: this.inMarker, outMarker: this.outMarker });
+    } else {
+      this.emitStateUpdateWith({ inMarker: this.inMarker });
+    }
+  }
+
+  public setOutMarkerToCurrentTime(): void {
+    this.verifyCustomControlsSupport();
+
+    if (this.markersPlaybackMode === 'on') {
+      // We have automatically just reached the out marker because we just moved it to currentTime.
+      this.videoElement.pause();
+      this.markersPlaybackMode = 'off';
+      this.emitStateUpdateWith({ playingMarkers: false });
+    }
+
+    this.outMarker = this.videoElement.currentTime;
+
+    if (this.inMarker && this.inMarker > this.outMarker) {
+      this.inMarker = this.outMarker;
+      this.emitStateUpdateWith({ inMarker: this.inMarker, outMarker: this.outMarker });
+    } else {
+      this.emitStateUpdateWith({ outMarker: this.outMarker });
+    }
+  }
+
+  public clearMarkers(): void {
+    this.verifyCustomControlsSupport();
+
+    if (this.markersPlaybackMode === 'on') {
+      // Clearing the markers immediately kills markers playback mode.
+      this.markersPlaybackMode = 'off';
+      this.emitStateUpdateWith({ playingMarkers: false });
+    }
+
+    this.inMarker = undefined;
+    this.outMarker = undefined;
+
+    this.emitStateUpdateWith({ inMarker: undefined, outMarker: undefined });
+  }
+
+  public toggleMarkersPlayback(): void {
     this.verifyCustomControlsSupport();
 
     if (this.markersPlaybackMode === 'on') {
       this.togglePlayback();
     } else if (this.markersPlaybackMode === 'off') {
-      this.markersPlaybackMode = 'initializing';
-      this.outMarker = outMarker;
+      if (!this.inMarker || !this.outMarker) throw new Error('Cannot play between markers unless they are both set.');
 
-      this.seekTo(inMarker);
+      this.markersPlaybackMode = 'initializing';
+
+      this.seekTo(this.inMarker);
       // ... execution continues in onSeeked().
       // From there, markers playback stops in onSeeking() or onTimeUpdate().
     }

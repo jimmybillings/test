@@ -56,7 +56,7 @@ export class WzAdvancedPlayerComponent {
 
     switch (request.type) {
       case PlayerRequestType.ClearMarkers:
-        this.playerStateService.updateWith({ inMarker: 'clear', outMarker: 'clear' });
+        this.player.clearMarkers();
         break;
       case PlayerRequestType.SaveMarkers:
         this.onSubclip.emit({ in: state.inMarkerFrame.frameNumber, out: state.outMarkerFrame.frameNumber });
@@ -65,22 +65,22 @@ export class WzAdvancedPlayerComponent {
         this.player.seekTo(request.payload.frame.asSeconds());
         break;
       case PlayerRequestType.SeekToInMarker:
-        this.player.seekTo(state.inMarkerFrame.asSeconds());
+        this.player.seekToInMarker();
         break;
       case PlayerRequestType.SeekToOutMarker:
-        this.player.seekTo(state.outMarkerFrame.asSeconds());
+        this.player.seekToOutMarker();
         break;
       case PlayerRequestType.SetInMarker:
-        this.playerStateService.updateWith({ inMarker: 'currentFrame' });
+        this.player.setInMarkerToCurrentTime();
         break;
       case PlayerRequestType.SetOutMarker:
-        this.playerStateService.updateWith({ outMarker: 'currentFrame' });
+        this.player.setOutMarkerToCurrentTime();
         break;
       case PlayerRequestType.TogglePlayback:
         this.player.togglePlayback();
         break;
       case PlayerRequestType.ToggleMarkersPlayback:
-        this.player.toggleMarkersPlayback(state.inMarkerFrame.asSeconds(), state.outMarkerFrame.asSeconds());
+        this.player.toggleMarkersPlayback();
         break;
     }
   }

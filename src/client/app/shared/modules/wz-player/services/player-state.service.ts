@@ -41,7 +41,8 @@ export class PlayerStateService {
   }
 
   private createNewStateWith(requestedChanges: PlayerStateChanges): PlayerState {
-    this.changesToApply = JSON.parse(JSON.stringify(requestedChanges));
+    this.changesToApply = {};
+    Object.keys(requestedChanges).forEach((key: string) => (<any>this.changesToApply)[key] = (<any>requestedChanges)[key]);
     this.handleChangeInterdependencies();
 
     return {
@@ -82,28 +83,14 @@ export class PlayerStateService {
   private handleInMarkerUpdate(): void {
     if (!this.changesToApply.hasOwnProperty('inMarker')) return;
 
-    if (this.changesToApply.inMarker === 'currentFrame') {
-      this.changesToApply.inMarkerFrame = this.newFrameFrom(this.latestCurrentFrame);
-    } else if (this.changesToApply.inMarker === 'clear') {
-      this.changesToApply.inMarkerFrame = undefined;
-    } else {
-      throw new Error(`Unexpected value for inMarker: '${this.changesToApply.inMarker}'`);
-    }
-
+    this.changesToApply.inMarkerFrame = this.newFrameFrom(this.changesToApply.inMarker);
     delete this.changesToApply.inMarker;
   }
 
   private handleOutMarkerUpdate(): void {
     if (!this.changesToApply.hasOwnProperty('outMarker')) return;
 
-    if (this.changesToApply.outMarker === 'currentFrame') {
-      this.changesToApply.outMarkerFrame = this.newFrameFrom(this.latestCurrentFrame);
-    } else if (this.changesToApply.outMarker === 'clear') {
-      this.changesToApply.outMarkerFrame = undefined;
-    } else {
-      throw new Error(`Unexpected value for outMarker: '${this.changesToApply.outMarker}'`);
-    }
-
+    this.changesToApply.outMarkerFrame = this.newFrameFrom(this.changesToApply.outMarker);
     delete this.changesToApply.outMarker;
   }
 

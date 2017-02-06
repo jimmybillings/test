@@ -32,8 +32,8 @@ export interface PlayerStateChanges {
   // based on information represented as other types.
   currentTime?: number;
   duration?: number;
-  inMarker?: 'currentFrame' | 'clear';
-  outMarker?: 'currentFrame' | 'clear';
+  inMarker?: number;
+  outMarker?: number;
 }
 
 export enum PlayerRequestType {

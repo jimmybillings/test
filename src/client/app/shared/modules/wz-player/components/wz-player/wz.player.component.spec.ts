@@ -114,9 +114,39 @@ export function main() {
         });
       });
 
+      describe('seekToInMarker()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.seekToInMarker()).toThrowError();
+        });
+      });
+
+      describe('seekToOutMarker()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.seekToOutMarker()).toThrowError();
+        });
+      });
+
+      describe('setInMarkerToCurrentTime()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.setInMarkerToCurrentTime()).toThrowError();
+        });
+      });
+
+      describe('setOutMarkerToCurrentTime()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.setOutMarkerToCurrentTime()).toThrowError();
+        });
+      });
+
+      describe('clearMarkers()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.clearMarkers()).toThrowError();
+        });
+      });
+
       describe('toggleMarkersPlayback()', () => {
         it('is not supported', () => {
-          expect(() => componentUnderTest.toggleMarkersPlayback(1.234, 5.678)).toThrowError();
+          expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
         });
       });
     });
@@ -170,10 +200,39 @@ export function main() {
           });
         });
 
+        describe('seekToInMarker()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.seekToInMarker()).toThrowError();
+          });
+        });
+
+        describe('seekToOutMarker()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.seekToOutMarker()).toThrowError();
+          });
+        });
+
+        describe('setInMarkerToCurrentTime()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.setInMarkerToCurrentTime()).toThrowError();
+          });
+        });
+
+        describe('setOutMarkerToCurrentTime()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.setOutMarkerToCurrentTime()).toThrowError();
+          });
+        });
+
+        describe('clearMarkers()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.clearMarkers()).toThrowError();
+          });
+        });
 
         describe('toggleMarkersPlayback()', () => {
           it('is not supported', () => {
-            expect(() => componentUnderTest.toggleMarkersPlayback(1.234, 5.678)).toThrowError();
+            expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
           });
         });
       });
@@ -243,9 +302,39 @@ export function main() {
               });
             });
 
+            describe('seekToInMarker()', () => {
+              it('is not supported', () => {
+                expect(() => componentUnderTest.seekToInMarker()).toThrowError();
+              });
+            });
+
+            describe('seekToOutMarker()', () => {
+              it('is not supported', () => {
+                expect(() => componentUnderTest.seekToOutMarker()).toThrowError();
+              });
+            });
+
+            describe('setInMarkerToCurrentTime()', () => {
+              it('is not supported', () => {
+                expect(() => componentUnderTest.setInMarkerToCurrentTime()).toThrowError();
+              });
+            });
+
+            describe('setOutMarkerToCurrentTime()', () => {
+              it('is not supported', () => {
+                expect(() => componentUnderTest.setOutMarkerToCurrentTime()).toThrowError();
+              });
+            });
+
+            describe('clearMarkers()', () => {
+              it('is not supported', () => {
+                expect(() => componentUnderTest.clearMarkers()).toThrowError();
+              });
+            });
+
             describe('toggleMarkersPlayback()', () => {
               it('is not supported', () => {
-                expect(() => componentUnderTest.toggleMarkersPlayback(1.234, 5.678)).toThrowError();
+                expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
               });
             });
           });
@@ -341,268 +430,587 @@ export function main() {
                 });
               });
 
-              describe('toggleMarkersPlayback()', () => {
-                [{ initialState: 'paused' }, { initialState: 'playing' }].forEach(test => {
-                  describe(`when playback was initially ${test.initialState}`, () => {
-                    let seekingEventTriggerCount: number;
+              describe('with no markers set', () => {
+                describe('seekToInMarker()', () => {
+                  it('throws an error', () => {
+                    expect(() => componentUnderTest.seekToInMarker()).toThrowError();
+                  });
+                });
 
-                    beforeEach(() => {
-                      seekingEventTriggerCount = 0;
-                      mockVideoElement.on('seeking', () => seekingEventTriggerCount += 1);
+                describe('seekToOutMarker()', () => {
+                  it('throws an error', () => {
+                    expect(() => componentUnderTest.seekToOutMarker()).toThrowError();
+                  });
+                });
 
-                      if (test.initialState === 'paused') {
-                        componentUnderTest.togglePlayback();
+                describe('setInMarkerToCurrentTime()', () => {
+                  it('reports inMarker update', () => {
+                    mockVideoElement.simulateTimeChangeTo(1.234);
+                    componentUnderTest.setInMarkerToCurrentTime();
 
-                        // Don't want initialization calls to affect future verifications.
-                        (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
-                      }
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ inMarker: 1.234 }]);
+                  });
+                });
 
-                      componentUnderTest.toggleMarkersPlayback(1.234, 5.678);
+                describe('setOutMarkerToCurrentTime()', () => {
+                  it('reports outMarker update', () => {
+                    mockVideoElement.simulateTimeChangeTo(5.678);
+                    componentUnderTest.setOutMarkerToCurrentTime();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ outMarker: 5.678 }]);
+                  });
+                });
+
+                describe('clearMarkers()', () => {
+                  it('reports inMarker: undefined, outMarker: undefined', () => {
+                    componentUnderTest.clearMarkers();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                    expect(stateUpdateEmitter.calls.mostRecent().args)
+                      .toEqual([{ inMarker: undefined, outMarker: undefined }]);
+                  });
+                });
+
+                describe('toggleMarkersPlayback()', () => {
+                  it('throws an error', () => {
+                    expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
+                  });
+                });
+              });
+
+              describe('with just the in marker set', () => {
+                beforeEach(() => {
+                  mockVideoElement.simulateTimeChangeTo(1.234);
+                  componentUnderTest.setInMarkerToCurrentTime();
+                  mockVideoElement.simulateTimeChangeTo(47);
+
+                  // Don't want initialization calls to affect future verifications.
+                  (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                });
+
+                describe('seekToInMarker()', () => {
+                  it('reports currentTime updated to in marker', () => {
+                    componentUnderTest.seekToInMarker();
+                    mockVideoElement.simulateSeekCompletion();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1.234 }]);
+                  });
+                });
+
+                describe('seekToOutMarker()', () => {
+                  it('throws an error', () => {
+                    expect(() => componentUnderTest.seekToOutMarker()).toThrowError();
+                  });
+                });
+
+                describe('setInMarkerToCurrentTime()', () => {
+                  it('reports inMarker update', () => {
+                    mockVideoElement.simulateTimeChangeTo(2.345);
+                    componentUnderTest.setInMarkerToCurrentTime();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ inMarker: 2.345 }]);
+                  });
+                });
+
+                describe('setOutMarkerToCurrentTime()', () => {
+                  it('reports outMarker update', () => {
+                    mockVideoElement.simulateTimeChangeTo(5.678);
+                    componentUnderTest.setOutMarkerToCurrentTime();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ outMarker: 5.678 }]);
+                  });
+
+                  describe('if current time is less than in marker', () => {
+                    it('moves in marker, and reports inMarker and outMarker updates', () => {
+                      mockVideoElement.simulateTimeChangeTo(0.999);
+                      componentUnderTest.setOutMarkerToCurrentTime();
+
+                      expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                      expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ inMarker: 0.999, outMarker: 0.999 }]);
                     });
+                  });
+                });
 
-                    describe('before \'seeked\' event is triggered', () => {
-                      it('seeks', () => {
-                        expect(seekingEventTriggerCount).toBe(1);
-                      });
+                describe('clearMarkers()', () => {
+                  it('reports inMarker: undefined, outMarker: undefined', () => {
+                    componentUnderTest.clearMarkers();
 
-                      it('emits no stateUpdates yet', () => {
-                        expect(stateUpdateEmitter).not.toHaveBeenCalled();
-                      });
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                    expect(stateUpdateEmitter.calls.mostRecent().args)
+                      .toEqual([{ inMarker: undefined, outMarker: undefined }]);
+                  });
+                });
+              });
 
-                      describe('and toggleMarkersPlayback() is somehow immediately called again', () => {
-                        beforeEach(() => componentUnderTest.toggleMarkersPlayback(undefined, undefined));
+              describe('with just the out marker set', () => {
+                beforeEach(() => {
+                  mockVideoElement.simulateTimeChangeTo(5.678);
+                  componentUnderTest.setOutMarkerToCurrentTime();
+                  mockVideoElement.simulateTimeChangeTo(74);
+
+                  // Don't want initialization calls to affect future verifications.
+                  (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                });
+
+                describe('seekToInMarker()', () => {
+                  it('throws an error', () => {
+                    expect(() => componentUnderTest.seekToInMarker()).toThrowError();
+                  });
+                });
+
+                describe('seekToOutMarker()', () => {
+                  it('reports currentTime updated to out marker', () => {
+                    componentUnderTest.seekToOutMarker();
+                    mockVideoElement.simulateSeekCompletion();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 5.678 }]);
+                  });
+                });
+
+                describe('setInMarkerToCurrentTime()', () => {
+                  it('reports inMarker update', () => {
+                    mockVideoElement.simulateTimeChangeTo(2.345);
+                    componentUnderTest.setInMarkerToCurrentTime();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ inMarker: 2.345 }]);
+                  });
+
+                  describe('if current time is greater than out marker', () => {
+                    it('moves out marker, and reports inMarker and outMarker updates', () => {
+                      mockVideoElement.simulateTimeChangeTo(9.876);
+                      componentUnderTest.setInMarkerToCurrentTime();
+
+                      expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                      expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ inMarker: 9.876, outMarker: 9.876 }]);
+                    });
+                  });
+                });
+
+                describe('setOutMarkerToCurrentTime()', () => {
+                  it('reports outMarker update', () => {
+                    mockVideoElement.simulateTimeChangeTo(6.789);
+                    componentUnderTest.setOutMarkerToCurrentTime();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ outMarker: 6.789 }]);
+                  });
+                });
+
+                describe('clearMarkers()', () => {
+                  it('reports inMarker: undefined, outMarker: undefined', () => {
+                    componentUnderTest.clearMarkers();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                    expect(stateUpdateEmitter.calls.mostRecent().args)
+                      .toEqual([{ inMarker: undefined, outMarker: undefined }]);
+                  });
+                });
+
+                describe('toggleMarkersPlayback()', () => {
+                  it('throws an error', () => {
+                    expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
+                  });
+                });
+              });
+
+              describe('with both markers set', () => {
+                beforeEach(() => {
+                  mockVideoElement.simulateTimeChangeTo(1.234);
+                  componentUnderTest.setInMarkerToCurrentTime();
+                  mockVideoElement.simulateTimeChangeTo(5.678);
+                  componentUnderTest.setOutMarkerToCurrentTime();
+                  mockVideoElement.simulateTimeChangeTo(98.6);
+
+                  // Don't want initialization calls to affect future verifications.
+                  (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                });
+
+                describe('seekToInMarker()', () => {
+                  it('reports currentTime updated to in marker', () => {
+                    componentUnderTest.seekToInMarker();
+                    mockVideoElement.simulateSeekCompletion();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1.234 }]);
+                  });
+                });
+
+                describe('seekToOutMarker()', () => {
+                  it('reports currentTime updated to out marker', () => {
+                    componentUnderTest.seekToOutMarker();
+                    mockVideoElement.simulateSeekCompletion();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 5.678 }]);
+                  });
+                });
+
+                describe('setInMarkerToCurrentTime()', () => {
+                  it('reports inMarker update', () => {
+                    mockVideoElement.simulateTimeChangeTo(2.345);
+                    componentUnderTest.setInMarkerToCurrentTime();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ inMarker: 2.345 }]);
+                  });
+                });
+
+                describe('setOutMarkerToCurrentTime()', () => {
+                  it('reports outMarker update', () => {
+                    mockVideoElement.simulateTimeChangeTo(6.789);
+                    componentUnderTest.setOutMarkerToCurrentTime();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ outMarker: 6.789 }]);
+                  });
+                });
+
+                describe('clearMarkers()', () => {
+                  it('reports inMarker: undefined, outMarker: undefined', () => {
+                    componentUnderTest.clearMarkers();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                    expect(stateUpdateEmitter.calls.mostRecent().args)
+                      .toEqual([{ inMarker: undefined, outMarker: undefined }]);
+                  });
+                });
+
+                describe('toggleMarkersPlayback()', () => {
+                  [{ initialState: 'paused' }, { initialState: 'playing' }].forEach(test => {
+                    describe(`when playback was initially ${test.initialState}`, () => {
+                      let seekingEventTriggerCount: number;
+
+                      beforeEach(() => {
+                        seekingEventTriggerCount = 0;
+                        mockVideoElement.on('seeking', () => seekingEventTriggerCount += 1);
 
                         if (test.initialState === 'paused') {
-                          it('is still paused', () => {
-                            expect(mockVideoElement.paused).toBe(true);
-                          });
-                        } else {
-                          it('is still playing', () => {
-                            expect(mockVideoElement.paused).toBe(false);
-                          });
+                          componentUnderTest.togglePlayback();
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
                         }
 
-                        it('still emits no stateUpdates', () => {
+                        componentUnderTest.toggleMarkersPlayback();
+                      });
+
+                      describe('before \'seeked\' event is triggered', () => {
+                        it('seeks', () => {
+                          expect(seekingEventTriggerCount).toBe(1);
+                        });
+
+                        it('emits no stateUpdates yet', () => {
                           expect(stateUpdateEmitter).not.toHaveBeenCalled();
                         });
 
-                        it('doesn\'t seek again', () => {
-                          expect(seekingEventTriggerCount).toBe(1);
-                        });
-                      });
-                    });
+                        describe('and toggleMarkersPlayback() is somehow immediately called again', () => {
+                          beforeEach(() => componentUnderTest.toggleMarkersPlayback());
 
-                    describe('after \'seeked\' event is triggered', () => {
-                      beforeEach(() => mockVideoElement.simulateSeekCompletion());
+                          if (test.initialState === 'paused') {
+                            it('is still paused', () => {
+                              expect(mockVideoElement.paused).toBe(true);
+                            });
+                          } else {
+                            it('is still playing', () => {
+                              expect(mockVideoElement.paused).toBe(false);
+                            });
+                          }
 
-                      if (test.initialState === 'paused') {
-                        it('reports current time, playingMarkers: true, playing: true', () => {
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(3);
-                          expect(stateUpdateEmitter.calls.argsFor(0)).toEqual([{ playingMarkers: true }]);
-                          expect(stateUpdateEmitter.calls.argsFor(1)).toEqual([{ playing: true }]);
-                          expect(stateUpdateEmitter.calls.argsFor(2)).toEqual([{ currentTime: 1.234 }]);
-                        });
-                      } else {
-                        it('reports current time, playingMarkers: true', () => {
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
-                          expect(stateUpdateEmitter.calls.argsFor(0)).toEqual([{ playingMarkers: true }]);
-                          expect(stateUpdateEmitter.calls.argsFor(1)).toEqual([{ currentTime: 1.234 }]);
-                        });
-                      }
-
-                      it('is playing', () => {
-                        expect(mockVideoElement.paused).toBe(false);
-                      });
-
-                      describe('when a time less than the out marker is reported', () => {
-                        beforeEach(() => mockVideoElement.simulateTimeChangeTo(5.677));
-
-                        it('reports current time', () => {
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 4 : 3);
-                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 5.677 }]);
-                        });
-
-                        it('is still playing', () => {
-                          expect(mockVideoElement.paused).toBe(false);
-                        });
-                      });
-
-                      describe('when toggleMarkersPlayback() is called before the out marker is reached', () => {
-                        beforeEach(() => componentUnderTest.toggleMarkersPlayback(undefined, undefined));
-
-                        it('doesn\'t seek again', () => {
-                          expect(seekingEventTriggerCount).toBe(1);
-                        });
-
-                        it('reports playing: false', () => {
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 4 : 3);
-                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
-                        });
-
-                        it('is paused', () => {
-                          expect(mockVideoElement.paused).toBe(true);
-                        });
-
-                        describe('and toggleMarkersPlayback() is called again', () => {
-                          beforeEach(() => componentUnderTest.toggleMarkersPlayback(undefined, undefined));
+                          it('still emits no stateUpdates', () => {
+                            expect(stateUpdateEmitter).not.toHaveBeenCalled();
+                          });
 
                           it('doesn\'t seek again', () => {
                             expect(seekingEventTriggerCount).toBe(1);
                           });
-
-                          it('reports playing: true', () => {
-                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
-                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
-                          });
-
-                          it('is playing', () => {
-                            expect(mockVideoElement.paused).toBe(false);
-                          });
-                        });
-
-                        describe('and togglePlayback() is called', () => {
-                          beforeEach(() => componentUnderTest.togglePlayback());
-
-                          it('doesn\'t seek again', () => {
-                            expect(seekingEventTriggerCount).toBe(1);
-                          });
-
-                          it('reports playing: true', () => {
-                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
-                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
-                          });
-
-                          it('is playing', () => {
-                            expect(mockVideoElement.paused).toBe(false);
-                          });
                         });
                       });
 
-                      describe('when togglePlayback() is called before the out marker is reached', () => {
-                        beforeEach(() => componentUnderTest.togglePlayback());
+                      describe('after \'seeked\' event is triggered', () => {
+                        beforeEach(() => mockVideoElement.simulateSeekCompletion());
 
-                        it('doesn\'t seek again', () => {
-                          expect(seekingEventTriggerCount).toBe(1);
-                        });
-
-                        it('reports playing: false', () => {
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 4 : 3);
-                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
-                        });
-
-                        it('is paused', () => {
-                          expect(mockVideoElement.paused).toBe(true);
-                        });
-
-                        describe('and togglePlayback() is called again', () => {
-                          beforeEach(() => componentUnderTest.togglePlayback());
-
-                          it('doesn\'t seek again', () => {
-                            expect(seekingEventTriggerCount).toBe(1);
+                        if (test.initialState === 'paused') {
+                          it('reports playingMarkers: true, playing: true, current time', () => {
+                            expect(stateUpdateEmitter.calls.allArgs())
+                              .toEqual([
+                                [{ playingMarkers: true }],
+                                [{ playing: true }],
+                                [{ currentTime: 1.234 }]
+                              ]);
                           });
-
-                          it('reports playing: true', () => {
-                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
-                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                        } else {
+                          it('reports playingMarkers: true, current time', () => {
+                            expect(stateUpdateEmitter.calls.allArgs())
+                              .toEqual([
+                                [{ playingMarkers: true }],
+                                [{ currentTime: 1.234 }]
+                              ]);
                           });
+                        }
 
-                          it('is playing', () => {
-                            expect(mockVideoElement.paused).toBe(false);
-                          });
-                        });
-
-                        describe('and toggleMarkersPlayback() is called', () => {
-                          beforeEach(() => componentUnderTest.toggleMarkersPlayback(undefined, undefined));
-
-                          it('doesn\'t seek again', () => {
-                            expect(seekingEventTriggerCount).toBe(1);
-                          });
-
-                          it('reports playing: true', () => {
-                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
-                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
-                          });
-
-                          it('is playing', () => {
-                            expect(mockVideoElement.paused).toBe(false);
-                          });
-                        });
-                      });
-
-                      describe('when a seek is requested before the out marker is reached', () => {
-                        beforeEach(() => componentUnderTest.seekTo(123));
-
-                        it('reports playingMarkers: false', () => {
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 4 : 3);
-                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playingMarkers: false }]);
-                        });
-
-                        it('is still playing', () => {
+                        it('is playing', () => {
                           expect(mockVideoElement.paused).toBe(false);
                         });
 
-                        describe('and a later time event is somehow reported', () => {
-                          beforeEach(() => mockVideoElement.simulateTimeChangeTo(6));
+                        describe('when a time less than the out marker is reported', () => {
+                          beforeEach(() => mockVideoElement.simulateTimeChangeTo(5.677));
 
-                          it('reports the current time', () => {
-                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
-                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 6 }]);
+                          it('reports current time', () => {
+                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 4 : 3);
+                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 5.677 }]);
                           });
 
                           it('is still playing', () => {
                             expect(mockVideoElement.paused).toBe(false);
                           });
                         });
-                      });
 
-                      [{ condition: 'equal to', time: 5.678 }, { condition: 'greater than', time: 5.679 }].forEach(innerTest => {
-                        describe(`as soon as a time ${innerTest.condition} the out marker is reported`, () => {
-                          beforeEach(() => mockVideoElement.simulateTimeChangeTo(innerTest.time));
+                        describe('when toggleMarkersPlayback() is called before the out marker is reached', () => {
+                          beforeEach(() => componentUnderTest.toggleMarkersPlayback());
 
-                          it('reports current time, playing: false, playingMarkers: false', () => {
-                            if (test.initialState === 'paused') {
-                              expect(stateUpdateEmitter).toHaveBeenCalledTimes(6);
-                              expect(stateUpdateEmitter.calls.argsFor(3)).toEqual([{ currentTime: innerTest.time }]);
-                              expect(stateUpdateEmitter.calls.argsFor(4)).toEqual([{ playing: false }]);
-                              expect(stateUpdateEmitter.calls.argsFor(5)).toEqual([{ playingMarkers: false }]);
-                            } else {
-                              expect(stateUpdateEmitter).toHaveBeenCalledTimes(5);
-                              expect(stateUpdateEmitter.calls.argsFor(2)).toEqual([{ currentTime: innerTest.time }]);
-                              expect(stateUpdateEmitter.calls.argsFor(3)).toEqual([{ playing: false }]);
-                              expect(stateUpdateEmitter.calls.argsFor(4)).toEqual([{ playingMarkers: false }]);
-                            }
+                          it('doesn\'t seek again', () => {
+                            expect(seekingEventTriggerCount).toBe(1);
+                          });
+
+                          it('reports playing: false', () => {
+                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 4 : 3);
+                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
                           });
 
                           it('is paused', () => {
                             expect(mockVideoElement.paused).toBe(true);
                           });
 
-                          if (innerTest.condition === 'greater than') {
-                            it('seeks back to the out marker', () => {
-                              expect(seekingEventTriggerCount).toBe(2);
+                          describe('and toggleMarkersPlayback() is called again', () => {
+                            beforeEach(() => componentUnderTest.toggleMarkersPlayback());
+
+                            it('doesn\'t seek again', () => {
+                              expect(seekingEventTriggerCount).toBe(1);
                             });
 
-                            it('emits no additional stateUpdates', () => {
+                            it('reports playing: true', () => {
+                              expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
+                              expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                            });
+
+                            it('is playing', () => {
+                              expect(mockVideoElement.paused).toBe(false);
+                            });
+                          });
+
+                          describe('and togglePlayback() is called', () => {
+                            beforeEach(() => componentUnderTest.togglePlayback());
+
+                            it('doesn\'t seek again', () => {
+                              expect(seekingEventTriggerCount).toBe(1);
+                            });
+
+                            it('reports playing: true', () => {
+                              expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
+                              expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                            });
+
+                            it('is playing', () => {
+                              expect(mockVideoElement.paused).toBe(false);
+                            });
+                          });
+                        });
+
+                        describe('when togglePlayback() is called before the out marker is reached', () => {
+                          beforeEach(() => componentUnderTest.togglePlayback());
+
+                          it('doesn\'t seek again', () => {
+                            expect(seekingEventTriggerCount).toBe(1);
+                          });
+
+                          it('reports playing: false', () => {
+                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 4 : 3);
+                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
+                          });
+
+                          it('is paused', () => {
+                            expect(mockVideoElement.paused).toBe(true);
+                          });
+
+                          describe('and togglePlayback() is called again', () => {
+                            beforeEach(() => componentUnderTest.togglePlayback());
+
+                            it('doesn\'t seek again', () => {
+                              expect(seekingEventTriggerCount).toBe(1);
+                            });
+
+                            it('reports playing: true', () => {
+                              expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
+                              expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                            });
+
+                            it('is playing', () => {
+                              expect(mockVideoElement.paused).toBe(false);
+                            });
+                          });
+
+                          describe('and toggleMarkersPlayback() is called', () => {
+                            beforeEach(() => componentUnderTest.toggleMarkersPlayback());
+
+                            it('doesn\'t seek again', () => {
+                              expect(seekingEventTriggerCount).toBe(1);
+                            });
+
+                            it('reports playing: true', () => {
+                              expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
+                              expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                            });
+
+                            it('is playing', () => {
+                              expect(mockVideoElement.paused).toBe(false);
+                            });
+                          });
+                        });
+
+                        describe('when a seek is requested before the out marker is reached', () => {
+                          beforeEach(() => componentUnderTest.seekTo(123));
+
+                          it('reports playingMarkers: false', () => {
+                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 4 : 3);
+                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playingMarkers: false }]);
+                          });
+
+                          it('is still playing', () => {
+                            expect(mockVideoElement.paused).toBe(false);
+                          });
+
+                          describe('and a later time event is somehow reported', () => {
+                            beforeEach(() => mockVideoElement.simulateTimeChangeTo(6));
+
+                            it('reports the current time', () => {
+                              expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
+                              expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 6 }]);
+                            });
+
+                            it('is still playing', () => {
+                              expect(mockVideoElement.paused).toBe(false);
+                            });
+                          });
+                        });
+
+                        describe('when setInMarkerToCurrentTime() is called before the out marker is reached', () => {
+                          beforeEach(() => {
+                            mockVideoElement.simulateTimeChangeTo(3); // happens because the player is playing
+                            componentUnderTest.setInMarkerToCurrentTime();
+                          });
+
+                          it('reports current time and inMarker update', () => {
+                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
+                            expect(stateUpdateEmitter.calls.allArgs().slice(-2))
+                              .toEqual([
+                                [{ currentTime: 3 }],
+                                [{ inMarker: 3 }]
+                              ]);
+                          });
+
+                          it('is still playing', () => {
+                            expect(mockVideoElement.paused).toBe(false);
+                          });
+                        });
+
+                        describe('when setOutMarkerToCurrentTime() is called before the out marker is reached', () => {
+                          beforeEach(() => {
+                            mockVideoElement.simulateTimeChangeTo(4); // happens because the player is playing
+                            componentUnderTest.setOutMarkerToCurrentTime();
+                          });
+
+                          it('reports current time, playing: false, playingMarkers: false, outMarker update', () => {
+                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 7 : 6);
+
+                            expect(stateUpdateEmitter.calls.allArgs().slice(-4))
+                              .toEqual([
+                                [{ currentTime: 4 }],
+                                [{ playing: false }],
+                                [{ playingMarkers: false }],
+                                [{ outMarker: 4 }]
+                              ]);
+                          });
+
+                          it('is paused', () => {
+                            expect(mockVideoElement.paused).toBe(true);
+                          });
+                        });
+
+                        describe('when clearMarkers() is called before the out marker is reached', () => {
+                          beforeEach(() => {
+                            mockVideoElement.simulateTimeChangeTo(3.5); // happens because the player is playing
+                            componentUnderTest.clearMarkers();
+                          });
+
+                          it('reports current time, playingMarkers: false, outMarker update', () => {
+                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 6 : 5);
+
+                            expect(stateUpdateEmitter.calls.allArgs().slice(-3))
+                              .toEqual([
+                                [{ currentTime: 3.5 }],
+                                [{ playingMarkers: false }],
+                                [{ inMarker: undefined, outMarker: undefined }]
+                              ]);
+                          });
+
+                          it('is still playing', () => {
+                            expect(mockVideoElement.paused).toBe(false);
+                          });
+                        });
+
+                        [{ condition: 'equal to', time: 5.678 }, { condition: 'greater than', time: 5.679 }].forEach(innerTest => {
+                          describe(`as soon as a time ${innerTest.condition} the out marker is reported`, () => {
+                            beforeEach(() => mockVideoElement.simulateTimeChangeTo(innerTest.time));
+
+                            it('reports current time, playing: false, playingMarkers: false', () => {
                               expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 6 : 5);
+
+                              expect(stateUpdateEmitter.calls.allArgs().slice(-3))
+                                .toEqual([
+                                  [{ currentTime: innerTest.time }],
+                                  [{ playing: false }],
+                                  [{ playingMarkers: false }]
+                                ]);
                             });
 
-                            it('is still paused', () => {
+                            it('is paused', () => {
                               expect(mockVideoElement.paused).toBe(true);
                             });
 
-                            describe('after \'seeked\' event is triggered', () => {
-                              beforeEach(() => mockVideoElement.simulateSeekCompletion());
+                            if (innerTest.condition === 'greater than') {
+                              it('seeks back to the out marker', () => {
+                                expect(seekingEventTriggerCount).toBe(2);
+                              });
 
-                              it('reports current time', () => {
-                                expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 7 : 6);
-                                expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 5.678 }]);
+                              it('emits no additional stateUpdates', () => {
+                                expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 6 : 5);
                               });
 
                               it('is still paused', () => {
                                 expect(mockVideoElement.paused).toBe(true);
                               });
-                            });
-                          }
+
+                              describe('after \'seeked\' event is triggered', () => {
+                                beforeEach(() => mockVideoElement.simulateSeekCompletion());
+
+                                it('reports current time', () => {
+                                  expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 7 : 6);
+                                  expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 5.678 }]);
+                                });
+
+                                it('is still paused', () => {
+                                  expect(mockVideoElement.paused).toBe(true);
+                                });
+                              });
+                            }
+                          });
                         });
                       });
                     });
