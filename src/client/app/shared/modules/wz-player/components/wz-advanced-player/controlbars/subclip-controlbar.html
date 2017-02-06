@@ -1,9 +1,9 @@
 <section flex="80"  layout-align="start stretch">
   <marker-seek-button [type]="'in'" [playerState]="playerState" (request)="forward($event)"></marker-seek-button>
   <marker-time-display [type]="'in'" [playerState]="playerState"></marker-time-display>
-  <marker-set-button [type]="'in'" (request)="forward($event)"></marker-set-button>
+  <marker-set-button [type]="'in'" [playerState]="playerState" (request)="forward($event)"></marker-set-button>
   <markers-playback-button [playerState]="playerState" (request)="forward($event)"></markers-playback-button>
-  <marker-set-button [type]="'out'" (request)="forward($event)"></marker-set-button>
+  <marker-set-button [type]="'out'" [playerState]="playerState" (request)="forward($event)"></marker-set-button>
   <marker-time-display [type]="'out'" [playerState]="playerState"></marker-time-display>
   <marker-seek-button [type]="'out'" [playerState]="playerState" (request)="forward($event)"></marker-seek-button>
   <markers-clear-button [playerState]="playerState" (request)="forward($event)"></markers-clear-button>
