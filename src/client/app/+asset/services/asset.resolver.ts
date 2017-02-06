@@ -6,14 +6,15 @@ import { CurrentUser } from '../../shared/services/current-user.model';
 
 @Injectable()
 export class AssetResolver {
-  constructor(private asset: AssetService, private currentUser:CurrentUser) {
-  }
+  constructor(private asset: AssetService, private currentUser: CurrentUser) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    if (route.params['share_key']) {
-      return this.asset.getData(route.params['name'], route.params['share_key']);
-    } else {
-      return this.asset.getData(route.params['name']);
-    }
+    return this.asset.getData({
+      assetId: route.params['name'],
+      share_key: route.params['share_key'],
+      uuid: route.params['uuid'],
+      timeEnd: route.params['timeEnd'],
+      timeStart: route.params['timeStart']
+    });
   }
 }

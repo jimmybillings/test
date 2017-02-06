@@ -14,6 +14,7 @@ import { AssetService } from '../shared/services/asset.service';
 import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
+
 /**
  * Asset search page component - renders search page results
  */
@@ -107,7 +108,6 @@ export class SearchComponent implements OnDestroy {
       this.speedviewData = Observable.of(event.asset.speedviewData);
       this.wzSpeedview.show(event.position);
     } else {
-      console.log(event.asset);
       this.speedviewData = this.assetService.getSpeedviewData(event.asset.assetId)
         .do((data: any) => {
           event.asset.speedviewData = data;

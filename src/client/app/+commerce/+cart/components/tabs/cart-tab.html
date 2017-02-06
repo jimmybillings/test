@@ -1,7 +1,7 @@
 <section class="cart">
   <div layout="row" md-scroll-y="" layout-align="center center">
     <div flex>
-      <projects-component [projects]="(cart | async).projects" [config]="config" (projectsNotify)="onNotification($event)"></projects-component>
+      <projects-component [projects]="(cart | async).projects" [config]="config" [userCan]="userCan" (projectsNotify)="onNotification($event)"></projects-component>
     </div>
   </div>
   <div flex="95" layout="row" layout-align="end center">

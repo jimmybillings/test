@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { Project } from '../../../shared/interfaces/cart.interface';
+import { Capabilities } from '../../../shared/services/capabilities.service';
 
 @Component({
   moduleId: module.id,
@@ -12,6 +13,7 @@ import { Project } from '../../../shared/interfaces/cart.interface';
 export class ProjectsComponent {
   @Input() config: any;
   @Input() projects: Array<Project>;
+  @Input() userCan: Capabilities;
   @Input() readOnly: boolean = false;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;

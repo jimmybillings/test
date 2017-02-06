@@ -16,8 +16,10 @@ export class WzAsset {
   @Output() onDownloadComp = new EventEmitter();
   @Output() onShowSpeedview = new EventEmitter();
   @Output() onHideSpeedview = new EventEmitter();
+  @Output() onEditAsset = new EventEmitter();
   @Input() public assets: Array<Asset>;
   @Input() public userCan: Capabilities;
+  @Input() public assetType: string = 'search';
   @Input() set collection(value: Collection) {
     this.currentCollection = value;
     this.assetsArr = value.assets.items.map((x) => x.assetId);
@@ -55,8 +57,21 @@ export class WzAsset {
     });
   }
 
+  public editAsset(asset: Asset) {
+    console.log(asset);
+    this.onEditAsset.emit(asset);
+  }
+
   public inCollection(asset: any): boolean {
     return this.assetsArr.indexOf(asset.assetId) > -1;
+  }
+
+  public assetParams(asset: any) {
+    return Object.assign({},
+      asset.uuid ? { uuid: asset.uuid } : null,
+      asset.timeStart ? { timeStart: asset.timeStart } : null,
+      asset.timeEnd ? { timeEnd: asset.timeEnd } : null
+    );
   }
 
   public formatType(format: string): string {

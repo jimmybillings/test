@@ -37,4 +37,12 @@ export class CollectionTrayComponent implements OnInit {
       dialogRef.componentInstance.dialog = dialogRef;
     });
   }
+
+  public assetParams(asset: any) {
+    return Object.assign({},
+      asset.uuid ? { uuid: asset.uuid } : null,
+      asset.timeStart ? { timeStart: asset.timeStart } : null,
+      asset.timeEnd ? { timeEnd: asset.timeEnd } : null
+    );
+  }
 }

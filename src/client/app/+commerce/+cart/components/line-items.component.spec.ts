@@ -51,6 +51,18 @@ export function main() {
       });
     });
 
+    describe('editMarkers()', () => {
+      it('emits the proper request event', () => {
+        let lineItem: any = { some: 'lineItem' };
+        componentUnderTest.lineItemsNotify
+          .subscribe((event: Object) => {
+            expect(event).toEqual({ type: 'EDIT_LINE_ITEM_MARKERS', payload: lineItem });
+          });
+
+        componentUnderTest.editMarkers(lineItem);
+      });
+    });
+
     describe('delegate()', () => {
       it('forwards events', () => {
         componentUnderTest.lineItemsNotify

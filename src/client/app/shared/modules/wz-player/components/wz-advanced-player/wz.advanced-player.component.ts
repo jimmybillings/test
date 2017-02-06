@@ -19,6 +19,7 @@ export class WzAdvancedPlayerComponent {
   @Output() onSubclip = new EventEmitter();
   @Output() onUpdateSubclipData = new EventEmitter();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
+
   public playerStateSubscription: Subscription;
   private currentAsset: any = null;
 
@@ -26,7 +27,13 @@ export class WzAdvancedPlayerComponent {
   public set asset(newAsset: any) {
     this.playerStateService.reset();
     this.currentAsset = newAsset;
-
+    if (this.currentAsset.timeStart || this.currentAsset.timeEnd) {
+      const playerStateParams: PlayerStateChanges = Object.assign({},
+        this.currentAsset.timeStart ? { inMarkerFrameNumber: Number(this.currentAsset.timeStart) } : null,
+        this.currentAsset.timeEnd ? { outMarkerFrameNumber: Number(this.currentAsset.timeEnd) } : null,
+      );
+      this.playerStateService.updateWith(playerStateParams);
+    }
     if (this.assetIsVideo()) this.updateStateFrameRate();
   }
 

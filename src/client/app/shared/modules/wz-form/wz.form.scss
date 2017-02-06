@@ -75,17 +75,14 @@ md-input.ng-touched.ng-dirty.ng-invalid {
   }
 }
 
-md-checkbox.ng-dirty.ng-touched.ng-invalid {
+md-checkbox.ng-dirty.ng-invalid {
   .md-checkbox-inner-container {
     .md-checkbox-frame {
      color: md-color($md-warn, 600); 
     }
   }
-  md-hint.error {
-    span {
-      color: md-color($md-warn, 600);
-      position: relative;
-      top: rem(-16);
-    }
-  }
+  md-hint.md-hint.error {
+    bottom: rem(10);
+    color: md-color($warn, 600);
+  }  
 }

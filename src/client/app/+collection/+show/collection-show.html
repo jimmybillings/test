@@ -91,25 +91,29 @@
 			<wz-asset-grid *ngIf="(userPreference.data | async).assetView =='grid'" class="grid" 
 				[assets]="collection.assets.items" 
 				[userCan]="userCan" 
+				[assetType]="'collection'"
 				[collection]="activeCollection.data | async"
 				(onAddToCollection)="addToCollection($event)" 
 				(onRemoveFromCollection)="removeFromCollection($event)"
 				(onAddToCart)="addAssetToCart($event)" 
 				(onDownloadComp)="downloadComp($event)" 
 				(onShowSpeedview)="showSpeedview($event)" 
-				(onHideSpeedview)="hideSpeedview()">
+				(onHideSpeedview)="hideSpeedview()"
+				(onEditAsset)="editAsset($event)">
 			</wz-asset-grid>
 
 			<wz-asset-list *ngIf="(userPreference.data | async).assetView =='list'" class="list" 
 				[assets]="collection.assets.items" 
 				[userCan]="userCan" 
+				[assetType]="'collection'"
 				[collection]="activeCollection.data | async"
 				(onAddToCollection)="addToCollection($event)" 
 				(onRemoveFromCollection)="removeFromCollection($event)"
 				(onAddToCart)="addAssetToCart($event)" 
 				(onDownloadComp)="downloadComp($event)" 
 				(onShowSpeedview)="showSpeedview($event)" 
-				(onHideSpeedview)="hideSpeedview()">
+				(onHideSpeedview)="hideSpeedview()"
+				(onEditAsset)="editAsset($event)">
 			</wz-asset-list>
 
 			<wz-pagination *ngIf="collection.assets.pagination.totalCount > 0" [pagination]="collection.assets.pagination" (getPage)="changePage($event)"></wz-pagination>
