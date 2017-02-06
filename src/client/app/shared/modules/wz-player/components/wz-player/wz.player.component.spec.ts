@@ -2,45 +2,122 @@ import { ElementRef } from '@angular/core';
 
 import { WzPlayerComponent } from './wz.player.component';
 import { MockJwPlayer } from '../../mocks/mockJwPlayer';
+import { MockVideoEventName, MockVideoElement } from '../../mocks/mockVideoElement';
 
 export function main() {
-  // Player Component
+  // Wz Player Component
   // -- For an Image
   // -- For a Video
   // ---- In basic mode
   // ---- In advanced mode
   // ------ Asset Setter
 
-  describe('Player Component', () => {
+  describe('Wz Player Component', () => {
     let componentUnderTest: WzPlayerComponent;
     let stateUpdateEmitter: jasmine.Spy;
-    let mockElementRef: ElementRef;
+    let mockElementRef: any;
+    let mockRenderer: any;
     let mockZone: any;
     let mockJwPlayer: MockJwPlayer;
+    let mockVideoElement: MockVideoElement;
+
+    const expectResetFor = (assetType: string) => {
+      if (assetType === 'video' || assetType === 'html5Video') {
+        expect(mockJwPlayer.remove).toHaveBeenCalled();
+
+        if (assetType === 'html5Video') {
+          expect(mockVideoElement.numberOfDefinedEventCallbacks).toBe(0);
+        }
+
+        if (componentUnderTest.mode === 'advanced') {
+          expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ duration: undefined, currentTime: 0 });
+        } else {
+          expect(componentUnderTest.stateUpdate.emit).not.toHaveBeenCalled();
+        }
+      }
+
+      expect(mockElementRef.nativeElement.innerHtml).toEqual('');
+    };
 
     beforeEach(() => {
       mockElementRef = { nativeElement: { innerHtml: '', appendChild: jasmine.createSpy('appendChild') } };
+
+      mockRenderer = {
+        listen: (videoElement: MockVideoElement, eventName: MockVideoEventName, callback: Function) => {
+          videoElement.on(eventName, callback);
+          return () => videoElement.off(eventName);
+        }
+      };
+
       mockZone = { run: jasmine.createSpy('zone').and.callFake((wrappedFunction: Function) => wrappedFunction()) };
 
-      componentUnderTest = new WzPlayerComponent(mockElementRef, mockZone);
-      componentUnderTest.window = { jwplayer: (nativeElement: any) => { return mockJwPlayer = new MockJwPlayer(); } };
+      componentUnderTest = new WzPlayerComponent(mockElementRef, mockRenderer, mockZone);
+
+      componentUnderTest.window = {
+        jwplayer: jasmine.createSpy('jwplayer creator').and.returnValue(mockJwPlayer = new MockJwPlayer()),
+        document: {
+          querySelector: (selector: string) => {
+            return selector === 'video' ? (mockVideoElement = new MockVideoElement()) : null;
+          }
+        }
+      };
+
       componentUnderTest.stateUpdate.emit = jasmine.createSpy('stateUpdate emitter');
+
       stateUpdateEmitter = componentUnderTest.stateUpdate.emit as jasmine.Spy;
     });
 
+    it('defaults to basic mode', () => {
+      expect(componentUnderTest.mode).toEqual('basic');
+    });
+
     describe('For an Image', () => {
-      beforeEach(() => {
-        componentUnderTest.asset = {
-          resourceClass: 'Image'
-        };
+      const mockAsset = { resourceClass: 'Image' };
+
+      beforeEach(() => componentUnderTest.asset = mockAsset);
+
+      describe('asset setter', () => {
+        it('doesn\'t set up the player', () => {
+          expect(mockJwPlayer.setup).not.toHaveBeenCalled();
+        });
+
+        it('resets the asset if an asset was present', () => {
+          componentUnderTest.asset = { resourceClass: 'Image', some: 'otherProperty' };
+
+          expectResetFor('image');
+        });
       });
 
-      it('should have a default mode', () => {
-        expect(componentUnderTest.mode).toEqual('basic');
+      describe('asset getter', () => {
+        it('returns the asset', () => {
+          expect(componentUnderTest.asset).toEqual(mockAsset);
+        });
       });
 
-      it('should have an asset getter', () => {
-        expect(componentUnderTest.asset).toEqual({ resourceClass: 'Image' });
+      describe('ngOnDestroy()', () => {
+        it('resets the player', () => {
+          componentUnderTest.ngOnDestroy();
+
+          expectResetFor('image');
+        });
+      });
+
+      describe('togglePlayback()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.togglePlayback()).toThrowError();
+        });
+      });
+
+      describe('seekTo()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.seekTo(6.867)).toThrowError();
+        });
+      });
+
+      describe('toggleMarkersPlayback()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.toggleMarkersPlayback(1.234, 5.678)).toThrowError();
+        });
       });
     });
 
@@ -56,61 +133,52 @@ export function main() {
           };
         });
 
-        it('should set up the player', () => {
+        it('sets up the player', () => {
           expect(mockJwPlayer.setup).toHaveBeenCalledWith({
             image: 'clipThumbnailUrl',
-            file: 'clipUrl',
-            logo: {
-              file: 'assets/img/logo/watermark.png',
-              position: 'top-right',
-              link: 'http://www.wazeedigital.com'
-            }
+            file: 'clipUrl'
           });
         });
 
-        it('ngOnDestroy() should reset the player', () => {
-          componentUnderTest.ngOnDestroy();
-
-          expect(mockJwPlayer.pause).toHaveBeenCalledWith(true);
-          expect(mockJwPlayer.remove).toHaveBeenCalled();
-          expect(componentUnderTest.stateUpdate.emit).not.toHaveBeenCalled();
-          expect(mockElementRef.nativeElement.innerHtml).toEqual('');
-        });
-
-        it('togglePlayback() should call .play() on the player', () => {
-          componentUnderTest.togglePlayback();
-
-          expect(mockJwPlayer.play).toHaveBeenCalled();
-        });
-
-        it('seekTo() should call .seek() on the player with the timeInSeconds', () => {
-          componentUnderTest.seekTo(6.867);
-
-          expect(mockJwPlayer.seek).toHaveBeenCalledWith(6.867);
-        });
-
-        it('toggleMarkersPlayback() should throw a new TypeError', () => {
-          expect(() => { componentUnderTest.toggleMarkersPlayback(1.234, 5.678); })
-            .toThrowError('Must be in advanced mode to play subclip.');
-        });
-
-        it('should reset the player if it already exists when a new asset is set', () => {
-          const previousMockJwPlayer: MockJwPlayer = mockJwPlayer;
-
+        it('resets the player if it already exists when a new asset is set', () => {
           componentUnderTest.asset = {
             resourceClass: 'AnotherNotImage',
             clipThumbnailUrl: 'anotherClipThumbnailUrl',
             clipUrl: 'anotherClipUrl'
           };
 
-          expect(previousMockJwPlayer.pause).toHaveBeenCalledWith(true);
-          expect(previousMockJwPlayer.remove).toHaveBeenCalled();
-          expect(mockJwPlayer).not.toBe(previousMockJwPlayer);
+          expectResetFor('video');
+        });
+
+        describe('ngOnDestroy()', () => {
+          it('resets the player', () => {
+            componentUnderTest.ngOnDestroy();
+
+            expectResetFor('video');
+          });
+        });
+
+        describe('togglePlayback()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.togglePlayback()).toThrowError();
+          });
+        });
+
+        describe('seekTo()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.seekTo(6.867)).toThrowError();
+          });
+        });
+
+
+        describe('toggleMarkersPlayback()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.toggleMarkersPlayback(1.234, 5.678)).toThrowError();
+          });
         });
       });
 
       describe('in advanced mode', () => {
-        // Tests where this.mode === 'advanced'
         beforeEach(() => {
           componentUnderTest.mode = 'advanced';
           componentUnderTest.asset = {
@@ -120,361 +188,421 @@ export function main() {
           };
         });
 
-        describe('ngOnDestroy()', () => {
-          it('should reset the player', () => {
-            componentUnderTest.ngOnDestroy();
-
-            expect(mockJwPlayer.pause).toHaveBeenCalledWith(true);
-            expect(mockJwPlayer.remove).toHaveBeenCalled();
-            expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ duration: undefined, currentTime: 0 });
-            expect(mockElementRef.nativeElement.innerHtml).toEqual('');
-          });
-        });
-
-        describe('Asset Setter', () => {
-          it('should setup the player', () => {
+        describe('asset setter', () => {
+          it('sets up the player', () => {
             expect(mockJwPlayer.setup).toHaveBeenCalledWith({
               image: null,
-              file: 'clipUrl',
-              logo: {
-                file: 'assets/img/logo/watermark.png',
-                position: 'top-right',
-                link: 'http://www.wazeedigital.com'
-              }
+              file: 'clipUrl'
             });
           });
 
-          it('should reset the player if it already exists when a new asset is set', () => {
-            const previousMockJwPlayer: MockJwPlayer = mockJwPlayer;
-
+          it('resets the player if an asset was already present', () => {
             componentUnderTest.asset = {
               resourceClass: 'AnotherNotImage',
               clipThumbnailUrl: 'anotherClipThumbnailUrl',
               clipUrl: 'anotherClipUrl'
             };
 
-            expect(previousMockJwPlayer.pause).toHaveBeenCalledWith(true);
-            expect(previousMockJwPlayer.remove).toHaveBeenCalled();
-            expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ duration: undefined, currentTime: 0 });
-            expect(mockJwPlayer).not.toBe(previousMockJwPlayer);
+            expectResetFor('video');
           });
+        });
 
-          it('should call handleDurationEvent which emits the stateUpdate event with the duration', () => {
-            mockJwPlayer.trigger('time', { duration: 123 });
+        describe('with non-HTML5 video', () => {
+          beforeEach(() => mockJwPlayer.setProviderNameTo('flash'));
 
-            expect(mockJwPlayer.once).toHaveBeenCalledWith('time', jasmine.any(Function));
-            expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ duration: 123 });
-          });
-
-          it('should call handleTimeEvents which emits the stateUpdate event with the currentTime', () => {
-            mockJwPlayer.trigger('time', { position: 456 });
-
-            expect(mockJwPlayer.on).toHaveBeenCalledWith('time', jasmine.any(Function));
-            expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ currentTime: 456 });
-          });
-
-          describe('handlePlaybackStateEvents()', () => {
-            it('should call .on() with \'play\'', () => {
-              expect(mockJwPlayer.on).toHaveBeenCalledWith('play', jasmine.any(Function));
-              mockJwPlayer.trigger('play');
-              expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ playing: true });
-            });
-
-            it('should call .on() with \'pause\'', () => {
-              expect(mockJwPlayer.on).toHaveBeenCalledWith('pause', jasmine.any(Function));
-              mockJwPlayer.trigger('pause');
-              expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ playing: false });
-            });
-
-            it('should call .on() with \'complete\'', () => {
-              expect(mockJwPlayer.on).toHaveBeenCalledWith('complete', jasmine.any(Function));
-              mockJwPlayer.trigger('complete');
-              expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ playing: false });
+          describe('before \'ready\' event is triggered', () => {
+            it('doesn\'t emit a \'canSupportCustomControls\' state update yet', () => {
+              expect(stateUpdateEmitter).not.toHaveBeenCalledWith({ canSupportCustomControls: jasmine.any(Boolean) });
             });
           });
 
-          describe('toggleMarkersPlayback()', () => {
-            [{ initialState: 'paused' }, { initialState: 'playing' }].forEach(test => {
-              describe(`when playback was initially ${test.initialState}`, () => {
-                beforeEach(() => {
-                  // Get rid of initial duration event so that it doesn't effect future verifications.
-                  mockJwPlayer.trigger('time', { position: 0, duration: 12345 });
+          describe('after \'ready\' event is triggered', () => {
+            beforeEach(() => mockJwPlayer.trigger('ready'));
 
-                  if (test.initialState === 'paused') componentUnderTest.togglePlayback();
+            it('reports canSupportCustomControls: false', () => {
+              expect(stateUpdateEmitter).toHaveBeenCalledWith({ canSupportCustomControls: false });
+            });
 
-                  // Don't want initialization calls to affect future verifications.
-                  (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
-                  mockJwPlayer.play.calls.reset();
+            describe('ngOnDestroy()', () => {
+              it('resets the player', () => {
+                componentUnderTest.ngOnDestroy();
 
-                  componentUnderTest.toggleMarkersPlayback(1.234, 5.678);
+                expectResetFor('video');
+              });
+            });
+
+            describe('togglePlayback()', () => {
+              it('is not supported', () => {
+                expect(() => componentUnderTest.togglePlayback()).toThrowError();
+              });
+            });
+
+            describe('seekTo()', () => {
+              it('is not supported', () => {
+                expect(() => componentUnderTest.seekTo(6.867)).toThrowError();
+              });
+            });
+
+            describe('toggleMarkersPlayback()', () => {
+              it('is not supported', () => {
+                expect(() => componentUnderTest.toggleMarkersPlayback(1.234, 5.678)).toThrowError();
+              });
+            });
+          });
+        });
+
+        describe('with HTML5 video', () => {
+          beforeEach(() => mockJwPlayer.setProviderNameTo('html5'));
+
+          describe('before \'ready\' event is triggered', () => {
+            it('doesn\'t emit a \'canSupportCustomControls\' state update yet', () => {
+              expect(stateUpdateEmitter).not.toHaveBeenCalledWith({ canSupportCustomControls: jasmine.any(Boolean) });
+            });
+          });
+
+          describe('after \'ready\' event is triggered', () => {
+            beforeEach(() => mockJwPlayer.trigger('ready'));
+
+            it('reports canSupportCustomControls: true', () => {
+              expect(stateUpdateEmitter).toHaveBeenCalledWith({ canSupportCustomControls: true });
+            });
+
+            describe('after reporting canSupportCustomControls', () => {
+              beforeEach(() => {
+                // Don't want initialization calls to affect future verifications.
+                (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+              });
+
+              describe('when \'durationchange\' event is triggered', () => {
+                beforeEach(() => mockVideoElement.simulateDurationChangeTo(234.567));
+
+                it('reports the asset\'s duration', () => {
+                  expect(stateUpdateEmitter).toHaveBeenCalledWith({ duration: 234.567 });
+                });
+              });
+
+              describe('ngOnDestroy()', () => {
+                it('resets the player', () => {
+                  componentUnderTest.ngOnDestroy();
+
+                  expectResetFor('html5Video');
+                });
+              });
+
+              describe('togglePlayback()', () => {
+                // Tests herein assume autoplay is on, and thus the player is playing by default when it starts.
+
+                describe('when playback was playing', () => {
+                  it('pauses', () => {
+                    componentUnderTest.togglePlayback();
+
+                    expect(mockVideoElement.paused).toBe(true);
+                  });
+
+                  it('reports playing: false', () => {
+                    componentUnderTest.togglePlayback();
+
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
+                  });
                 });
 
-                describe('before \'seeked\' event is triggered', () => {
-                  it('seeks to the in marker', () => {
-                    expect(mockJwPlayer.seek).toHaveBeenCalledWith(1.234);
+                describe('when playback was paused', () => {
+                  beforeEach(() => componentUnderTest.togglePlayback());
+
+                  it('plays', () => {
+                    componentUnderTest.togglePlayback();
+
+                    expect(mockVideoElement.paused).toBe(false);
                   });
 
-                  if (test.initialState === 'paused') {
-                    it('reports playing: true', () => {
-                      expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
-                      expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
-                    });
-                  } else {
-                    it('emits no stateUpdates yet', () => {
-                      expect(stateUpdateEmitter).not.toHaveBeenCalled();
-                    });
-                  }
+                  it('reports playing: true', () => {
+                    componentUnderTest.togglePlayback();
 
-                  it('doesn\'t directly start playback', () => {
-                    expect(mockJwPlayer.play).not.toHaveBeenCalled();
+                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
                   });
+                });
+              });
 
-                  it('indirectly causes playback mode due to autoplay after seek', () => {
-                    expect(mockJwPlayer.getState()).toEqual('playing');
-                  });
+              describe('seekTo()', () => {
+                it('doesn\'t immediately emit a currentTime status update', () => {
+                  componentUnderTest.seekTo(1234.567);
 
-                  describe('and toggleMarkersPlayback() is called again', () => {
-                    beforeEach(() => componentUnderTest.toggleMarkersPlayback(undefined, undefined));
+                  expect(stateUpdateEmitter).not.toHaveBeenCalled();
+                });
 
-                    it('is still playing', () => {
-                      expect(mockJwPlayer.getState()).toEqual('playing');
+                it('reports current time after video element triggers \'seeked\'', () => {
+                  componentUnderTest.seekTo(1234.567);
+                  mockVideoElement.simulateSeekCompletion();
+
+                  expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                  expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1234.567 }]);
+                });
+              });
+
+              describe('toggleMarkersPlayback()', () => {
+                [{ initialState: 'paused' }, { initialState: 'playing' }].forEach(test => {
+                  describe(`when playback was initially ${test.initialState}`, () => {
+                    let seekingEventTriggerCount: number;
+
+                    beforeEach(() => {
+                      seekingEventTriggerCount = 0;
+                      mockVideoElement.on('seeking', () => seekingEventTriggerCount += 1);
+
+                      if (test.initialState === 'paused') {
+                        componentUnderTest.togglePlayback();
+
+                        // Don't want initialization calls to affect future verifications.
+                        (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                      }
+
+                      componentUnderTest.toggleMarkersPlayback(1.234, 5.678);
                     });
 
-                    if (test.initialState === 'paused') {
-                      it('emits no further state updates', () => {
-                        expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                    describe('before \'seeked\' event is triggered', () => {
+                      it('seeks', () => {
+                        expect(seekingEventTriggerCount).toBe(1);
                       });
-                    } else {
-                      it('still emits no stateUpdates', () => {
+
+                      it('emits no stateUpdates yet', () => {
                         expect(stateUpdateEmitter).not.toHaveBeenCalled();
                       });
-                    }
 
-                    it('doesn\'t seek again', () => {
-                      expect(mockJwPlayer.seek).toHaveBeenCalledTimes(1);
-                    });
-                  });
-                });
+                      describe('and toggleMarkersPlayback() is somehow immediately called again', () => {
+                        beforeEach(() => componentUnderTest.toggleMarkersPlayback(undefined, undefined));
 
-                describe('after \'seeked\' event is triggered', () => {
-                  beforeEach(() => {
-                    if (test.initialState === 'paused') {
-                      // We sent a playing: true event.  That's tested above, so let's forget
-                      // about it now so that all the future verifications work the same
-                      // regardless of whether we were initially paused or playing.
-                      (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
-                    }
+                        if (test.initialState === 'paused') {
+                          it('is still paused', () => {
+                            expect(mockVideoElement.paused).toBe(true);
+                          });
+                        } else {
+                          it('is still playing', () => {
+                            expect(mockVideoElement.paused).toBe(false);
+                          });
+                        }
 
-                    mockJwPlayer.trigger('seeked');
-                  });
+                        it('still emits no stateUpdates', () => {
+                          expect(stateUpdateEmitter).not.toHaveBeenCalled();
+                        });
 
-                  it('reports markersPlaying: true', () => {
-                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
-                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playingMarkers: true }]);
-                  });
-
-                  it('is playing', () => {
-                    expect(mockJwPlayer.pause).not.toHaveBeenCalled();
-                    expect(mockJwPlayer.getState()).toEqual('playing');
-                  });
-
-                  describe('when a time less than the out marker is reported', () => {
-                    beforeEach(() => mockJwPlayer.trigger('time', { position: 5.677 }));
-
-                    it('reports current time', () => {
-                      expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);  // Playing markers + this time update
-                      expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 5.677 }]);
-                    });
-
-                    it('continues playback', () => {
-                      expect(mockJwPlayer.pause).not.toHaveBeenCalled();
-                      expect(mockJwPlayer.getState()).toEqual('playing');
-                    });
-                  });
-
-                  describe('when toggleMarkersPlayback() is called before the out marker is reached', () => {
-                    beforeEach(() => componentUnderTest.toggleMarkersPlayback(undefined, undefined));
-
-                    it('doesn\'t seek again', () => {
-                      expect(mockJwPlayer.seek).toHaveBeenCalledTimes(1);
-                    });
-
-                    it('reports playing: false', () => {
-                      expect(stateUpdateEmitter).toHaveBeenCalledTimes(2); // Playing markers + this playing: false
-                      expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
-                    });
-
-                    it('is paused', () => {
-                      expect(mockJwPlayer.getState()).toEqual('paused');
-                    });
-
-                    describe('and toggleMarkersPlayback() is called again', () => {
-                      beforeEach(() => componentUnderTest.toggleMarkersPlayback(undefined, undefined));
-
-                      it('doesn\'t seek again', () => {
-                        expect(mockJwPlayer.seek).toHaveBeenCalledTimes(1);
-                      });
-
-                      it('reports playing: true', () => {
-                        expect(stateUpdateEmitter).toHaveBeenCalledTimes(3);
-                        expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
-                      });
-
-                      it('is playing', () => {
-                        expect(mockJwPlayer.getState()).toEqual('playing');
+                        it('doesn\'t seek again', () => {
+                          expect(seekingEventTriggerCount).toBe(1);
+                        });
                       });
                     });
 
-                    describe('and togglePlayback() is called', () => {
-                      beforeEach(() => componentUnderTest.togglePlayback());
+                    describe('after \'seeked\' event is triggered', () => {
+                      beforeEach(() => mockVideoElement.simulateSeekCompletion());
 
-                      it('doesn\'t seek again', () => {
-                        expect(mockJwPlayer.seek).toHaveBeenCalledTimes(1);
-                      });
-
-                      it('reports playing: true', () => {
-                        expect(stateUpdateEmitter).toHaveBeenCalledTimes(3);
-                        expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
-                      });
-
-                      it('is playing', () => {
-                        expect(mockJwPlayer.getState()).toEqual('playing');
-                      });
-                    });
-                  });
-
-                  describe('when togglePlayback() is called before the out marker is reached', () => {
-                    beforeEach(() => componentUnderTest.togglePlayback());
-
-                    it('doesn\'t seek again', () => {
-                      expect(mockJwPlayer.seek).toHaveBeenCalledTimes(1);
-                    });
-
-                    it('reports playing: false', () => {
-                      expect(stateUpdateEmitter).toHaveBeenCalledTimes(2); // Playing markers + this playing: false
-                      expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
-                    });
-
-                    it('is paused', () => {
-                      expect(mockJwPlayer.getState()).toEqual('paused');
-                    });
-
-                    describe('and togglePlayback() is called again', () => {
-                      beforeEach(() => componentUnderTest.togglePlayback());
-
-                      it('doesn\'t seek again', () => {
-                        expect(mockJwPlayer.seek).toHaveBeenCalledTimes(1);
-                      });
-
-                      it('reports playing: true', () => {
-                        expect(stateUpdateEmitter).toHaveBeenCalledTimes(3);
-                        expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
-                      });
-
-                      it('is playing', () => {
-                        expect(mockJwPlayer.getState()).toEqual('playing');
-                      });
-                    });
-
-                    describe('and toggleMarkersPlayback() is called', () => {
-                      beforeEach(() => componentUnderTest.toggleMarkersPlayback(undefined, undefined));
-
-                      it('doesn\'t seek again', () => {
-                        expect(mockJwPlayer.seek).toHaveBeenCalledTimes(1);
-                      });
-
-                      it('reports playing: true', () => {
-                        expect(stateUpdateEmitter).toHaveBeenCalledTimes(3);
-                        expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
-                      });
-
-                      it('is playing', () => {
-                        expect(mockJwPlayer.getState()).toEqual('playing');
-                      });
-                    });
-                  });
-
-                  describe('when a seek is requested before the out marker is reached', () => {
-                    beforeEach(() => componentUnderTest.seekTo(123));
-
-                    it('reports playingMarkers: false', () => {
-                      expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
-                      expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playingMarkers: false }]);
-                    });
-
-                    describe('and a later time event is reported', () => {
-                      beforeEach(() => mockJwPlayer.trigger('time', { position: 6 }));
-
-                      it('reports the current time', () => {
-                        expect(stateUpdateEmitter).toHaveBeenCalledTimes(3);
-                        expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 6 }]);
-                      });
-
-                      it('is still playing', () => {
-                        expect(mockJwPlayer.getState()).toEqual('playing');
-                      });
-                    });
-                  });
-
-                  [{ condition: 'equal to', time: 5.678 }, { condition: 'greater than', time: 5.679 }].forEach(test => {
-                    describe(`as soon as a time ${test.condition} the out marker is reported`, () => {
-                      beforeEach(() => mockJwPlayer.trigger('time', { position: test.time }));
-
-                      it('reports current time, playing: false, playingMarkers: false', () => {
-                        expect(stateUpdateEmitter).toHaveBeenCalledTimes(4);
-                        expect(stateUpdateEmitter.calls.argsFor(1)).toEqual([{ currentTime: test.time }]);
-                        expect(stateUpdateEmitter.calls.argsFor(2)).toEqual([{ playing: false }]);
-                        expect(stateUpdateEmitter.calls.argsFor(3)).toEqual([{ playingMarkers: false }]);
-                      });
-
-                      it('pauses playback', () => {
-                        expect(mockJwPlayer.pause).toHaveBeenCalledTimes(1);
-                        expect(mockJwPlayer.pause.calls.mostRecent().args).toEqual([true]);
-                      });
-
-                      if (test.condition === 'equal to') {
-                        it('is paused', () => {
-                          expect(mockJwPlayer.getState()).toEqual('paused');
+                      if (test.initialState === 'paused') {
+                        it('reports current time, playingMarkers: true, playing: true', () => {
+                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(3);
+                          expect(stateUpdateEmitter.calls.argsFor(0)).toEqual([{ playingMarkers: true }]);
+                          expect(stateUpdateEmitter.calls.argsFor(1)).toEqual([{ playing: true }]);
+                          expect(stateUpdateEmitter.calls.argsFor(2)).toEqual([{ currentTime: 1.234 }]);
+                        });
+                      } else {
+                        it('reports current time, playingMarkers: true', () => {
+                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                          expect(stateUpdateEmitter.calls.argsFor(0)).toEqual([{ playingMarkers: true }]);
+                          expect(stateUpdateEmitter.calls.argsFor(1)).toEqual([{ currentTime: 1.234 }]);
                         });
                       }
 
-                      if (test.condition === 'greater than') {
-                        it('seeks back to the out marker', () => {
-                          expect(mockJwPlayer.seek).toHaveBeenCalledWith(5.678);
+                      it('is playing', () => {
+                        expect(mockVideoElement.paused).toBe(false);
+                      });
+
+                      describe('when a time less than the out marker is reported', () => {
+                        beforeEach(() => mockVideoElement.simulateTimeChangeTo(5.677));
+
+                        it('reports current time', () => {
+                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 4 : 3);
+                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 5.677 }]);
                         });
 
-                        it('emits no additional stateUpdates', () => {
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(4);
+                        it('is still playing', () => {
+                          expect(mockVideoElement.paused).toBe(false);
+                        });
+                      });
+
+                      describe('when toggleMarkersPlayback() is called before the out marker is reached', () => {
+                        beforeEach(() => componentUnderTest.toggleMarkersPlayback(undefined, undefined));
+
+                        it('doesn\'t seek again', () => {
+                          expect(seekingEventTriggerCount).toBe(1);
                         });
 
-                        it('indirectly causes playback mode due to autoplay after seek', () => {
-                          expect(mockJwPlayer.getState()).toEqual('playing');
+                        it('reports playing: false', () => {
+                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 4 : 3);
+                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
                         });
 
-                        describe('after \'seeked\' event is triggered', () => {
-                          beforeEach(() => mockJwPlayer.trigger('seeked'));
+                        it('is paused', () => {
+                          expect(mockVideoElement.paused).toBe(true);
+                        });
 
-                          it('reports playing: false', () => {
-                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(5);
-                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
+                        describe('and toggleMarkersPlayback() is called again', () => {
+                          beforeEach(() => componentUnderTest.toggleMarkersPlayback(undefined, undefined));
+
+                          it('doesn\'t seek again', () => {
+                            expect(seekingEventTriggerCount).toBe(1);
+                          });
+
+                          it('reports playing: true', () => {
+                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
+                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                          });
+
+                          it('is playing', () => {
+                            expect(mockVideoElement.paused).toBe(false);
+                          });
+                        });
+
+                        describe('and togglePlayback() is called', () => {
+                          beforeEach(() => componentUnderTest.togglePlayback());
+
+                          it('doesn\'t seek again', () => {
+                            expect(seekingEventTriggerCount).toBe(1);
+                          });
+
+                          it('reports playing: true', () => {
+                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
+                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                          });
+
+                          it('is playing', () => {
+                            expect(mockVideoElement.paused).toBe(false);
+                          });
+                        });
+                      });
+
+                      describe('when togglePlayback() is called before the out marker is reached', () => {
+                        beforeEach(() => componentUnderTest.togglePlayback());
+
+                        it('doesn\'t seek again', () => {
+                          expect(seekingEventTriggerCount).toBe(1);
+                        });
+
+                        it('reports playing: false', () => {
+                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 4 : 3);
+                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
+                        });
+
+                        it('is paused', () => {
+                          expect(mockVideoElement.paused).toBe(true);
+                        });
+
+                        describe('and togglePlayback() is called again', () => {
+                          beforeEach(() => componentUnderTest.togglePlayback());
+
+                          it('doesn\'t seek again', () => {
+                            expect(seekingEventTriggerCount).toBe(1);
+                          });
+
+                          it('reports playing: true', () => {
+                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
+                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                          });
+
+                          it('is playing', () => {
+                            expect(mockVideoElement.paused).toBe(false);
+                          });
+                        });
+
+                        describe('and toggleMarkersPlayback() is called', () => {
+                          beforeEach(() => componentUnderTest.toggleMarkersPlayback(undefined, undefined));
+
+                          it('doesn\'t seek again', () => {
+                            expect(seekingEventTriggerCount).toBe(1);
+                          });
+
+                          it('reports playing: true', () => {
+                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
+                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                          });
+
+                          it('is playing', () => {
+                            expect(mockVideoElement.paused).toBe(false);
+                          });
+                        });
+                      });
+
+                      describe('when a seek is requested before the out marker is reached', () => {
+                        beforeEach(() => componentUnderTest.seekTo(123));
+
+                        it('reports playingMarkers: false', () => {
+                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 4 : 3);
+                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playingMarkers: false }]);
+                        });
+
+                        it('is still playing', () => {
+                          expect(mockVideoElement.paused).toBe(false);
+                        });
+
+                        describe('and a later time event is somehow reported', () => {
+                          beforeEach(() => mockVideoElement.simulateTimeChangeTo(6));
+
+                          it('reports the current time', () => {
+                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 5 : 4);
+                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 6 }]);
+                          });
+
+                          it('is still playing', () => {
+                            expect(mockVideoElement.paused).toBe(false);
+                          });
+                        });
+                      });
+
+                      [{ condition: 'equal to', time: 5.678 }, { condition: 'greater than', time: 5.679 }].forEach(innerTest => {
+                        describe(`as soon as a time ${innerTest.condition} the out marker is reported`, () => {
+                          beforeEach(() => mockVideoElement.simulateTimeChangeTo(innerTest.time));
+
+                          it('reports current time, playing: false, playingMarkers: false', () => {
+                            if (test.initialState === 'paused') {
+                              expect(stateUpdateEmitter).toHaveBeenCalledTimes(6);
+                              expect(stateUpdateEmitter.calls.argsFor(3)).toEqual([{ currentTime: innerTest.time }]);
+                              expect(stateUpdateEmitter.calls.argsFor(4)).toEqual([{ playing: false }]);
+                              expect(stateUpdateEmitter.calls.argsFor(5)).toEqual([{ playingMarkers: false }]);
+                            } else {
+                              expect(stateUpdateEmitter).toHaveBeenCalledTimes(5);
+                              expect(stateUpdateEmitter.calls.argsFor(2)).toEqual([{ currentTime: innerTest.time }]);
+                              expect(stateUpdateEmitter.calls.argsFor(3)).toEqual([{ playing: false }]);
+                              expect(stateUpdateEmitter.calls.argsFor(4)).toEqual([{ playingMarkers: false }]);
+                            }
                           });
 
                           it('is paused', () => {
-                            expect(mockJwPlayer.getState()).toEqual('paused');
+                            expect(mockVideoElement.paused).toBe(true);
                           });
-                        });
-                      }
 
-                      describe('when a later time event is reported', () => {
-                        beforeEach(() => mockJwPlayer.trigger('time', { position: 6 }));
+                          if (innerTest.condition === 'greater than') {
+                            it('seeks back to the out marker', () => {
+                              expect(seekingEventTriggerCount).toBe(2);
+                            });
 
-                        it('reports the current time', () => {
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(5);
-                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 6 }]);
-                        });
+                            it('emits no additional stateUpdates', () => {
+                              expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 6 : 5);
+                            });
 
-                        it('doesn\'t pause again', () => {
-                          expect(mockJwPlayer.pause).toHaveBeenCalledTimes(1);
+                            it('is still paused', () => {
+                              expect(mockVideoElement.paused).toBe(true);
+                            });
+
+                            describe('after \'seeked\' event is triggered', () => {
+                              beforeEach(() => mockVideoElement.simulateSeekCompletion());
+
+                              it('reports current time', () => {
+                                expect(stateUpdateEmitter).toHaveBeenCalledTimes(test.initialState === 'paused' ? 7 : 6);
+                                expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 5.678 }]);
+                              });
+
+                              it('is still paused', () => {
+                                expect(mockVideoElement.paused).toBe(true);
+                              });
+                            });
+                          }
                         });
                       });
                     });

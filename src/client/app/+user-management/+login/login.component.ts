@@ -66,8 +66,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.router.navigate(['/']);
       }
       this.currentUser.set(res.user, res.token.token);
-      this.feature.setInLocalStorage(res.siteFeatures);
-      this.feature.set(res.siteFeatures);
+      if (res.siteFeatures) {
+        this.feature.setInLocalStorage(res.siteFeatures);
+        this.feature.set(res.siteFeatures);
+      }
       if (portal === 'commerce') this.pendo.initialize(res.user);
     });
   }

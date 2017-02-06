@@ -73,8 +73,10 @@ export class MockJwPlayer {
   });
 
   private state: MockJwState = 'playing';  // Assumes autoplay is configured.
+  private provider: Object = null;
 
   private onCallbacks: MockJwCallbacks = {
+    ready: new Array<Function>(),
     play: new Array<Function>(),
     pause: new Array<Function>(),
     complete: new Array<Function>(),
@@ -84,6 +86,7 @@ export class MockJwPlayer {
   };
 
   private onceCallbacks: MockJwCallbacks = {
+    ready: new Array<Function>(),
     play: new Array<Function>(),
     pause: new Array<Function>(),
     complete: new Array<Function>(),
@@ -91,6 +94,14 @@ export class MockJwPlayer {
     seeked: new Array<Function>(),
     time: new Array<Function>()
   };
+
+  public getProvider(): Object {
+    return this.provider;
+  }
+
+  public setProviderNameTo(name: string): void {
+    this.provider = { name: name };
+  }
 
   public trigger(eventName: string, args?: any): MockJwPlayer {
     this.onceCallbacks[eventName].forEach((callback: Function) => callback(args));
