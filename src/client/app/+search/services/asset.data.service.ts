@@ -23,6 +23,7 @@ export class AssetData {
 
   public searchAssets(params: any): Observable<any> {
     let cloneParams = JSON.parse(JSON.stringify(params));
+    if (!cloneParams.q) cloneParams.q = 'itemType:clip';
     cloneParams['i'] = (parseFloat(cloneParams['i']) - 1).toString();
     cloneParams['viewType'] = this.userPreference.state.assetView;
     return this.api.get(
