@@ -37,6 +37,15 @@ export const activeCollection: ActionReducer<any> = (state: Collection = initial
 
       return Object.assign({}, state, { assets: updatedAssets, assetsCount: updatedAssets.items.length });
 
+    case 'UPDATE_ASSET_IN_COLLECTION':
+      state.assets.items = state.assets.items.map((item: any) => {
+        if (item.uuid === action.payload.uuid) {
+          return Object.assign({}, item, { timeStart: action.payload.timeStart, timeEnd: action.payload.timeEnd });
+        } else {
+          return item;
+        }
+      });
+      return Object.assign({}, state);
     default:
       return state;
   }
@@ -56,6 +65,10 @@ export class ActiveCollectionStore {
 
   public remove(uuid: string): void {
     this.store.dispatch({ type: 'REMOVE_ASSET_FROM_COLLECTION', payload: uuid });
+  }
+
+  public updateAsset(asset: any) {
+    this.store.dispatch({ type: 'UPDATE_ASSET_IN_COLLECTION', payload: asset });
   }
 
   public updateTo(collection: Collection): void {
