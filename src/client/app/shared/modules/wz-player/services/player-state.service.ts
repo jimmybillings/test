@@ -58,11 +58,27 @@ export class PlayerStateService {
   }
 
   private handleChangeInterdependencies(): void {
+    this.handleInMarkerFrameUpdate();
+    this.handleOutMarkerFrameUpdate();
     this.handleCurrentTimeUpdate();
     this.handleDurationUpdate();
     this.handleInMarkerUpdate();
     this.handleOutMarkerUpdate();
     this.handleMarkerOrderingIssues();
+  }
+
+  private handleInMarkerFrameUpdate(): void {
+    if (!this.changesToApply.hasOwnProperty('inMarkerFrameNumber')) return;
+
+    this.changesToApply.inMarkerFrame = this.newFrame.setFromFrameNumber(this.changesToApply.inMarkerFrameNumber);
+    delete this.changesToApply.inMarkerFrameNumber;
+  }
+
+  private handleOutMarkerFrameUpdate(): void {
+    if (!this.changesToApply.hasOwnProperty('outMarkerFrameNumber')) return;
+
+    this.changesToApply.outMarkerFrame = this.newFrame.setFromFrameNumber(this.changesToApply.outMarkerFrameNumber);
+    delete this.changesToApply.outMarkerFrameNumber;
   }
 
   private handleCurrentTimeUpdate(): void {

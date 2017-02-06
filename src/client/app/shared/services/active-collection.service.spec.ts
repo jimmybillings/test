@@ -181,7 +181,9 @@ export function main() {
 
           expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
           expect(mockApi.post).toHaveBeenCalledWithEndpoint('collection/1/removeAssets');
-          expect(mockApi.post).toHaveBeenCalledWithBody({ list: [{ assetId: 123, uuid: 'abc' }] });
+          expect(mockApi.post).toHaveBeenCalledWithBody({
+            'list': ['abc']
+          });
         });
 
         it('should call remove on the store to remove the asset that was deleted', () => {
@@ -197,7 +199,9 @@ export function main() {
 
           expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
           expect(mockApi.post).toHaveBeenCalledWithEndpoint('collection/1/removeAssets');
-          expect(mockApi.post).toHaveBeenCalledWithBody({ list: [{ assetId: 123, uuid: 'abc' }] });
+          expect(mockApi.post).toHaveBeenCalledWithBody({
+            'list': ['abc']
+          });
         });
 
         it('responds with the list of assets in the collection after removal', () => {

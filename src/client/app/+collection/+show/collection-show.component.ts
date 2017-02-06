@@ -20,6 +20,9 @@ import { CollectionLinkComponent } from '../components/collection-link.component
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
 import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
+import { Asset } from '../../shared/interfaces/asset.interface';
+import { WzAdvancedPlayerComponent } from
+  '../../shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player.component';
 
 @Component({
   moduleId: module.id,
@@ -167,13 +170,25 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.assets = this.collection.assets.items;
   }
 
+  public editAsset(asset: any) {
+    this.asset.getClipPreviewData(asset.assetId).subscribe(data => {
+      asset.clipUrl = data.url;
+      let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '800px' });
+      Object.assign(dialogRef.componentInstance, { window: this.window, asset: asset });
+      dialogRef.componentInstance.onSubclip.subscribe((data: any) => {
+        dialogRef.close();
+      });
+    });
+  }
+
   public editCollection() {
     this.uiConfig.get('collection').take(1).subscribe((config: any) => {
       let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionFormComponent);
-      dialogRef.componentInstance.collection = JSON.parse(JSON.stringify(this.collection));
-      dialogRef.componentInstance.fields = config.config;
-      dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.isEdit = true;
+      Object.assign(dialogRef.componentInstance,
+        {
+          collection: this.collection,
+          fields: config.config, dialog: dialogRef, isEdit: true
+        });
     });
   }
 

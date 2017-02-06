@@ -34,6 +34,10 @@ export class ActiveCollectionService implements OnInit {
     return this.state.id === collectionId;
   }
 
+  public collectionIncludes(uuid: string) {
+    return this.state.assets.items.find((item: any) => uuid === item.uuid);
+  }
+
   public load(collectionId?: number, params: any = { i: 0, n: 100 }): Observable<any> {
     if (!collectionId) {
       return this.api.get(Api.Assets, 'collectionSummary/focused', { loading: true })
@@ -75,12 +79,7 @@ export class ActiveCollectionService implements OnInit {
         `collection/${collection.id}/removeAssets`,
         {
           body: {
-            list: [{
-              assetId: params.asset.assetId,
-              uuid: uuid,
-              timeStart: params.asset.timeStart,
-              timeEnd: params.asset.timeEnd
-            }]
+            list: [uuid]
           }
         })
         .do(response => this.store.remove(response['list'][0]));

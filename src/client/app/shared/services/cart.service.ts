@@ -109,6 +109,7 @@ export class CartService {
 
   public editLineItem(lineItem: LineItem, fieldToEdit: any): void {
     Object.assign(lineItem, fieldToEdit);
+    console.log(lineItem, fieldToEdit);
     this.api.put(Api.Orders, `cart/update/lineItem/${lineItem.id}`, { body: lineItem }).take(1)
       .subscribe(this.updateCart);
   }

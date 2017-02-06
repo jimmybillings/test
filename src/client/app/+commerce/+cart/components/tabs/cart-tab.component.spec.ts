@@ -1,6 +1,9 @@
 import { Observable } from 'rxjs/Rx';
 
 import { CartTabComponent } from './cart-tab.component';
+import { EditProjectComponent } from '../edit-project.component';
+import { WzAdvancedPlayerComponent } from
+  '../../../../shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player.component';
 
 export function main() {
   describe('Cart Tab Component', () => {
@@ -8,6 +11,7 @@ export function main() {
     let mockCartService: any;
     let mockUiConfig: any;
     let mockDialog: any;
+    let mockAssetService: any;
 
     beforeEach(() => {
       mockCartService = {
@@ -27,14 +31,21 @@ export function main() {
 
       mockDialog = {
         open: jasmine.createSpy('open').and.returnValue({
-          componentInstance: {},
+          componentInstance: {
+            onSubclip: Observable.of({})
+          },
           afterClosed: function () {
             return Observable.of({ data: 'hi' });
-          }
+          },
+          close: () => { return true; }
         })
       };
 
-      componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig, mockDialog);
+      mockAssetService = {
+        getClipPreviewData: jasmine.createSpy('getClipPreviewData').and.returnValue(Observable.of({ url: 'fake url' }))
+      };
+
+      componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, mockAssetService, null);
     });
 
     describe('Initialization', () => {
@@ -65,7 +76,7 @@ export function main() {
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
 
-        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig, mockDialog);
+        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
 
@@ -77,7 +88,7 @@ export function main() {
       it('returns an observable of false when the cart has no items', () => {
         mockCartService.data = Observable.of({ itemCount: 0 });
 
-        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig, mockDialog);
+        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null);
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
@@ -86,7 +97,7 @@ export function main() {
       it('returns an observable of false when the cart has no itemCount member', () => {
         mockCartService.data = Observable.of({});
 
-        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig, mockDialog);
+        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null);
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
@@ -95,7 +106,7 @@ export function main() {
       it('returns an observable of true when the cart has at least one line item', () => {
         mockCartService.data = Observable.of({ itemCount: 1 });
 
-        componentUnderTest = new CartTabComponent(mockCartService, mockUiConfig, mockDialog);
+        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null);
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(true));
@@ -120,7 +131,7 @@ export function main() {
         let mockProject = {};
         componentUnderTest.onNotification({ type: 'UPDATE_PROJECT', payload: mockProject });
 
-        expect(mockDialog.open).toHaveBeenCalled();
+        expect(mockDialog.open).toHaveBeenCalledWith(EditProjectComponent, { width: '600px' });
       });
 
       it('moves a line item when notified with MOVE_LINE_ITEM', () => {
@@ -156,6 +167,14 @@ export function main() {
           });
 
         expect(mockCartService.editLineItem).toHaveBeenCalledWith(mockLineItem, { selectedTranscodeTarget: '1080i' });
+      });
+
+      it('edits the assets in and out markers with  EDIT_LINE_ITEM_MARKERS', () => {
+        let mockAsset = { assetId: 1234 };
+        componentUnderTest.onNotification({ type: 'EDIT_LINE_ITEM_MARKERS', payload: { asset: mockAsset } });
+
+        expect(mockAssetService.getClipPreviewData).toHaveBeenCalledWith(1234);
+        expect(mockDialog.open).toHaveBeenCalledWith(WzAdvancedPlayerComponent, { width: '800px' });
       });
     });
   });
