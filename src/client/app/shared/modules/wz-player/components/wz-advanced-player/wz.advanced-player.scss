@@ -1,4 +1,5 @@
 wz-advanced-player {
+  color: white;
   .jwplayer:focus, video:focus {outline:0;}
   .tool-bar {
     background-color: lighten(md-color($foreground, base), 21%);
