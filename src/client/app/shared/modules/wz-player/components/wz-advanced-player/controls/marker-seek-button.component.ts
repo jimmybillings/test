@@ -8,8 +8,12 @@ import { MarkerType, PlayerState, PlayerRequest, PlayerRequestType } from '../..
   selector: 'marker-seek-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button md-icon-button [disabled]="!frame" class="{{ class }}" title="{{ title | translate }}" (click)="onClick()">
-      <md-icon>keyboard_tab</md-icon>
+    <button md-icon-button
+      [disabled]="!frame || alreadyAtMarker" 
+      class="{{ class }}" 
+      title="{{ title | translate }}" 
+      (click)="onClick()">
+        <md-icon>keyboard_tab</md-icon>
     </button>
   `
 })
@@ -21,6 +25,10 @@ export class MarkerSeekButtonComponent {
 
   public get frame(): Frame {
     return this.type === 'in' ? this.playerState.inMarkerFrame : this.playerState.outMarkerFrame;
+  }
+
+  public get alreadyAtMarker(): boolean {
+    return this.frame && this.playerState.currentFrame && this.frame.frameNumber === this.playerState.currentFrame.frameNumber;
   }
 
   public get class(): string {

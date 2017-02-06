@@ -44,6 +44,10 @@ wz-advanced-player {
     padding: 0 rem(.7);
     height: rem(2.5);
     vertical-align: middle;
+
+    &[disabled] {
+      color: rgba(md-color($background, background), 0.87);
+    }
   }
 
   [md-icon-button] {
