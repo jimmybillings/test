@@ -101,7 +101,7 @@
 			<div *ngIf="!userCan.createSubclips(asset)" flex-gt-sm="66" flex="100" class="responsive-video">
 				<wz-player [window]="window" [asset]="asset"></wz-player>
       </div>
-			<asset-save-subclip *ngIf="userCan.createSubclips() && showAssetSaveSubclip" flex=""
+			<asset-save-subclip *ngIf="showAssetSaveSubclip" flex=""
 				[userCan]="userCan"
 				[collectionName]="collection.name"
 				[subclipData]="subclipData"

@@ -4,8 +4,9 @@ import { Subscription } from 'rxjs/Rx';
 import { User } from '../services/user.data.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { CurrentUser } from '../../shared/services/current-user.model';
-import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
 import { ServerErrors } from '../../shared/interfaces/forms.interface';
+import { MdSnackBar } from '@angular/material';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   moduleId: module.id,
@@ -24,7 +25,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private currentUser: CurrentUser,
-    private notification: WzNotificationService) {
+    private translate: TranslateService,
+    private snackbar: MdSnackBar) {
 
   }
 
@@ -39,14 +41,20 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(user: any): void {
-    this.user.resetPassword({ newPassword: user.newPassword }, this.route.snapshot.queryParams['share_key'])
+    this.user.resetPassword({ newPassword: user.newPassword }, this.route.snapshot.params['share_key'])
       .subscribe(
       (res: any) => {
         this.currentUser.set(res.user, res.token.token);
         this.router.navigate(['/']);
-        this.notification.create('RESETPASSWORD.PASSWORD_CHANGED');
+        this.showSnackbar('RESETPASSWORD.PASSWORD_CHANGED');
       }, (error) => {
         this.serverErrors = error.json();
       });
+  }
+
+  private showSnackbar(message: any): void {
+    this.translate.get(message).subscribe((res) => {
+      this.snackbar.open(res, '', { duration: 2000 });
+    });
   }
 }
