@@ -40,7 +40,6 @@ export class WzNotificationService {
     if (!error.status) return;
     if (this.callInProgress) return;
     this.callInProgress = true;
-
     switch (error.status) {
       case 401:
         this.unAuthorized();

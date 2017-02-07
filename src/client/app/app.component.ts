@@ -7,7 +7,6 @@ import { CurrentUser } from './shared/services/current-user.model';
 import { ApiConfig } from './shared/services/api.config';
 import { UiConfig } from './shared/services/ui.config';
 import { SearchContext } from './shared/services/search-context.service';
-import { Authentication } from './shared/services/authentication.data.service';
 import { FilterService } from './shared/services/filter.service';
 import { SortDefinitionsService } from './shared/services/sort-definitions.service';
 import { CollectionsService } from './shared/services/collections.service';
@@ -52,7 +51,6 @@ export class AppComponent implements OnInit {
     public userPreference: UserPreferenceService,
     private notification: WzNotificationService,
     private apiConfig: ApiConfig,
-    private authentication: Authentication,
     private userCan: Capabilities,
     private cart: CartService,
     private window: Window,
@@ -72,7 +70,6 @@ export class AppComponent implements OnInit {
   }
 
   public logout(): void {
-    this.authentication.destroy().subscribe();
     this.currentUser.destroy();
   }
 
