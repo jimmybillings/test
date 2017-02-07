@@ -7,6 +7,7 @@ import {
 import { Collection } from '../../interfaces/collection.interface';
 import { Asset } from '../../interfaces/asset.interface';
 import { Capabilities } from '../../services/capabilities.service';
+import { Frame } from 'wazee-frame-formatter';
 
 export class WzAsset {
   public currentCollection: Collection;
@@ -72,6 +73,10 @@ export class WzAsset {
       asset.timeStart ? { timeStart: asset.timeStart } : null,
       asset.timeEnd ? { timeEnd: asset.timeEnd } : null
     );
+  }
+
+  public frame(framesPerSecond: any, frameNumber: any) {
+    return new Frame(framesPerSecond.split(' fps')[0]).setFromFrameNumber(frameNumber);
   }
 
   public formatType(format: string): string {
