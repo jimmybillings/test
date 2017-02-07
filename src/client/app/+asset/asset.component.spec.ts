@@ -5,7 +5,7 @@ export function main() {
   describe('Asset Component', () => {
 
     let mockCurrentUser: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
-    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockNotification: any, mockCart: any,
+    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockErrorStore: any, mockCart: any,
       mockWindow: any, mockMdDialog: any, mockTranslate: any, mockSnackBar: any;
     let componentUnderTest: AssetComponent;
 
@@ -30,7 +30,7 @@ export function main() {
         state: { assetId: 123456 }
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
-      mockNotification = { create: jasmine.createSpy('create') };
+      mockErrorStore = { dispatch: jasmine.createSpy('dispatch') };
       mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { location: { href: {} } };
       mockTranslate = {
@@ -50,7 +50,7 @@ export function main() {
 
       componentUnderTest = new AssetComponent(
         mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
-        mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification, mockCart,
+        mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore, mockCart,
         mockSnackBar, mockTranslate, mockMdDialog);
 
     });
@@ -102,7 +102,7 @@ export function main() {
 
       it('Should show a notification if the server reponds that no comp is available', () => {
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
-        expect(mockNotification.create).toHaveBeenCalledWith('COMPS.NO_COMP');
+        expect(mockErrorStore.dispatch).toHaveBeenCalledWith({ status: 'COMPS.NO_COMP' });
       });
 
       it('Should set the window.href.url to the location of the comp url if the server responsds with a downloadable comp url', () => {
@@ -112,7 +112,7 @@ export function main() {
         };
         componentUnderTest = new AssetComponent(
           mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
-          mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification,
+          mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore,
           mockCart, mockSnackBar, mockTranslate, mockMdDialog);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.location.href).toEqual('http://downloadcomp.url');

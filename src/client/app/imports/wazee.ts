@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
-
+import { Renderer } from '@angular/core';
 // WAZEE PROVIDERS
 import { ApiConfig } from '../shared/services/api.config';
 // import { AppEventService } from '../shared/services/app-event.service';
 import { CurrentUser } from '../shared/services/current-user.model';
 import { UiConfig } from '../shared/services/ui.config';
-import { ErrorService, ErrorActions } from '../shared/services/error.service';
+import { ErrorStore } from '../shared/stores/error.store';
+import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 import { AssetService } from '../shared/services/asset.service';
 import { SearchContext } from '../shared/services/search-context.service';
 import { CollectionsService } from '../shared/services/collections.service';
@@ -37,7 +38,7 @@ import { uiState } from '../shared/services/ui.state';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { adminResources } from '../+admin/services/admin.store';
 import { searchContext } from '../shared/services/search-context.service';
-import { error } from '../shared/services/error.service';
+import { errorStore } from '../shared/stores/error.store';
 import { multilingualActionReducer } from '../shared/services/multilingual.service';
 import { CollectionsStore, collections } from '../shared/stores/collections.store';
 import { ActiveCollectionStore, activeCollection } from '../shared/stores/active-collection.store';
@@ -54,12 +55,13 @@ import { features } from '../shared/stores/feature.store';
 import { MultilingualService } from '../shared/services/multilingual.service';
 
 export const WAZEE_PROVIDERS = [
+  Renderer,
   ApiConfig,
   CurrentUser,
   UiConfig,
-  ErrorService,
-  ErrorActions,
+  ErrorStore,
   AssetService,
+  WzNotificationService,
   CollectionsStore,
   CollectionsService,
   ActiveCollectionStore,
@@ -99,7 +101,7 @@ export const WAZEE_STORES: any = {
   userPreferences: userPreferences,
   collectionOptions: collectionOptions,
   i18n: multilingualActionReducer,
-  error: error,
+  errorStore: errorStore,
   cart: cart,
   sortDefinitions: sortDefinitions,
   order: order,

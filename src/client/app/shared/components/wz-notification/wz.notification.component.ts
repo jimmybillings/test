@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, HostListener } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -11,5 +11,10 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 })
 
 export class WzNotificationComponent {
+  @Output() onDestroy = new EventEmitter();
   @Input() notice: string;
+  @HostListener('document:click', ['$event.target'])
+  public onClick(targetElement: any) {
+    this.onDestroy.emit();
+  }
 }

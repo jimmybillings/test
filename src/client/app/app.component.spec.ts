@@ -6,7 +6,7 @@ export function main() {
   describe('App Component', () => {
     (<any>window).portal = 'core';
     let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUser: any,
-      mockCollections: any, mockActiveCollection: any, mockUiState: any, mockUserPreference: any, mockRenderer: any, mockNotification: any,
+      mockCollections: any, mockActiveCollection: any, mockUiState: any, mockUserPreference: any, mockNotification: any,
       mockApiConfig: any, mockAuthentication: any, mockUserCan: any, mockCart: any, mockWindow: any,
       mockFilter: any, mockSortDefinition: any;
     let loggedInState = false, canViewCollections = true;
@@ -53,7 +53,6 @@ export function main() {
         toggleFilterTree: jasmine.createSpy('toggleFilterTree'),
         updateSortPreference: jasmine.createSpy('updateSortPreference')
       };
-      mockRenderer = { listenGlobal: jasmine.createSpy('listenGlobal').and.callFake((a: any, b: any, c: Function) => { c(); }) };
       mockNotification = { check: jasmine.createSpy('check'), initialize: jasmine.createSpy('initialize') };
       mockApiConfig = { getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal') };
       mockAuthentication = { destroy: jasmine.createSpy('destroy').and.returnValue(Observable.of({})) };
@@ -65,8 +64,8 @@ export function main() {
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUser,
         mockCollections, mockActiveCollection, mockUiState, mockUserPreference,
-        mockRenderer, mockNotification, mockApiConfig, mockAuthentication, mockUserCan,
-        mockCart, null, mockWindow, mockFilter, mockSortDefinition, null, null);
+        mockNotification, mockApiConfig, mockAuthentication, mockUserCan,
+        mockCart, mockWindow, mockFilter, mockSortDefinition, null, null);
     });
 
 
@@ -90,18 +89,6 @@ export function main() {
         it('Should set the current user', () => {
           componentUnderTest.ngOnInit();
           expect(mockCurrentUser.set).toHaveBeenCalled();
-        });
-      });
-
-      describe('listenGlobal()', () => {
-        it('Should listen for a scroll event', () => {
-          componentUnderTest.ngOnInit();
-          expect(mockRenderer.listenGlobal).toHaveBeenCalledWith('document', 'scroll', jasmine.any(Function));
-        });
-
-        it('Should move the header based on the pageYOffset', () => {
-          componentUnderTest.ngOnInit();
-          expect(mockUiState.showFixedHeader).toHaveBeenCalledWith(133);
         });
       });
 

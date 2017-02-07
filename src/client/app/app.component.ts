@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, HostListener } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { MultilingualService } from './shared/services/multilingual.service';
@@ -17,7 +17,6 @@ import { ActiveCollectionService } from './shared/services/active-collection.ser
 import { CartService } from './shared/services/cart.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
-import { ErrorActions } from './shared/services/error.service';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 
@@ -29,8 +28,7 @@ declare var portal: string;
 @Component({
   moduleId: module.id,
   selector: 'wazee-digital-platform',
-  templateUrl: 'app.html',
-  providers: [WzNotificationService]
+  templateUrl: 'app.html'
 })
 
 export class AppComponent implements OnInit {
@@ -38,7 +36,10 @@ export class AppComponent implements OnInit {
   public state: string = '';
   private bootStrapUserDataSubscription: Subscription;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
-
+  @HostListener('document:scroll', ['$event.target'])
+  public onScroll(targetElement: any) {
+    this.uiState.showFixedHeader(this.window.pageYOffset);
+  }
   constructor(
     public uiConfig: UiConfig,
     public router: Router,
@@ -49,13 +50,11 @@ export class AppComponent implements OnInit {
     public activeCollection: ActiveCollectionService,
     public uiState: UiState,
     public userPreference: UserPreferenceService,
-    private renderer: Renderer,
     private notification: WzNotificationService,
     private apiConfig: ApiConfig,
     private authentication: Authentication,
     private userCan: Capabilities,
     private cart: CartService,
-    private error: ErrorActions,
     private window: Window,
     private filter: FilterService,
     private sortDefinition: SortDefinitionsService,
@@ -65,8 +64,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.apiConfig.setPortal(portal);
     this.currentUser.set();
-    this.renderer.listenGlobal('document', 'scroll', () => this.uiState.showFixedHeader(this.window.pageYOffset));
-    this.uiConfig.initialize(this.currentUser.loggedIn(), this.apiConfig.getPortal()).subscribe();
+    this.uiConfig.initialize(this.currentUser.loggedIn(), this.apiConfig.getPortal())
+      .subscribe();
     this.routerChanges();
     this.processUser();
     this.notification.initialize(this.target);
@@ -106,7 +105,6 @@ export class AppComponent implements OnInit {
         this.uiState.checkForFilters(event.url);
         this.state = event.url;
         this.window.scrollTo(0, 0);
-        this.notification.check(this.state);
       });
   }
 
@@ -119,9 +117,6 @@ export class AppComponent implements OnInit {
     this.userPreference.getPrefs();
     if (this.userCan.viewCollections()) {
       this.activeCollection.load().subscribe(() => {
-        // This needs to be inside here. activeCollection.load will create a 
-        // new collection for first time users if they don't already have one
-        // so we need to collection load all collection after this happens.
         this.collections.load().subscribe(() => { });
       });
     }
