@@ -70,3 +70,16 @@ export interface OrdersUrlParams {
   n?: string;
   loading?: string;
 }
+
+export interface AddAssetParameters {
+  lineItem: {
+    selectedTranscodeTarget?: string;
+    price?: number;
+    asset: {
+      assetId: string | number;
+      startTime?: string;
+      endTime?: string;
+    };
+  };
+  attributes?: any;
+}

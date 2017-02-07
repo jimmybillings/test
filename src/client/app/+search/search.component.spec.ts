@@ -243,7 +243,7 @@ export function main() {
     describe('addAssetToCart()', () => {
       it('Should call the cart summary service to add an asset to the cart', () => {
         componentUnderTest.addAssetToCart({ asset: 'mockAsset', assetId: 'mockId' });
-        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith('mockId');
+        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({ lineItem: { asset: { assetId: 'mockId' } } });
       });
     });
 

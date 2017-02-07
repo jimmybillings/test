@@ -89,7 +89,7 @@ export class AssetService {
     });
   }
 
-  public getPriceAttributes(priceModel: string): Observable<any> {
+  public getPriceAttributes(priceModel?: string): Observable<any> {
     priceModel = priceModel ? priceModel.split(' ').join('') : 'RightsManaged';
     return this.api.get(
       Api.Orders,

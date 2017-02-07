@@ -4,6 +4,7 @@ import { CartTabComponent } from './cart-tab.component';
 import { EditProjectComponent } from '../edit-project.component';
 import { WzAdvancedPlayerComponent } from
   '../../../../shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player.component';
+import { WzPricingComponent } from '../../../../shared/components/wz-pricing/wz.pricing.component';
 
 export function main() {
   describe('Cart Tab Component', () => {
@@ -12,6 +13,7 @@ export function main() {
     let mockUiConfig: any;
     let mockDialog: any;
     let mockAssetService: any;
+    let mockUserPreference: any;
 
     beforeEach(() => {
       mockCartService = {
@@ -32,7 +34,8 @@ export function main() {
       mockDialog = {
         open: jasmine.createSpy('open').and.returnValue({
           componentInstance: {
-            onSubclip: Observable.of({})
+            onSubclip: Observable.of({}),
+            calculatePrice: Observable.of({})
           },
           afterClosed: function () {
             return Observable.of({ data: 'hi' });
@@ -42,10 +45,19 @@ export function main() {
       };
 
       mockAssetService = {
-        getClipPreviewData: jasmine.createSpy('getClipPreviewData').and.returnValue(Observable.of({ url: 'fake url' }))
+        getClipPreviewData: jasmine.createSpy('getClipPreviewData').and.returnValue(Observable.of({ url: 'fake url' })),
+        getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({ some: 'attribute' })),
+        getPrice: jasmine.createSpy('getPrice').and.returnValue(Observable.of({ price: 100 }))
       };
 
-      componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, mockAssetService, null);
+      mockUserPreference = {
+        state: { pricingPreferences: { some: 'attribute' } }
+      };
+
+      componentUnderTest = new CartTabComponent(
+        null, mockCartService, mockUiConfig, mockDialog,
+        mockAssetService, null, mockUserPreference
+      );
     });
 
     describe('Initialization', () => {
@@ -76,7 +88,7 @@ export function main() {
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
 
-        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null);
+        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
 
@@ -88,7 +100,7 @@ export function main() {
       it('returns an observable of false when the cart has no items', () => {
         mockCartService.data = Observable.of({ itemCount: 0 });
 
-        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null);
+        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null);
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
@@ -97,7 +109,7 @@ export function main() {
       it('returns an observable of false when the cart has no itemCount member', () => {
         mockCartService.data = Observable.of({});
 
-        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null);
+        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null);
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
@@ -106,7 +118,7 @@ export function main() {
       it('returns an observable of true when the cart has at least one line item', () => {
         mockCartService.data = Observable.of({ itemCount: 1 });
 
-        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null);
+        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null);
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(true));
@@ -137,7 +149,10 @@ export function main() {
       it('moves a line item when notified with MOVE_LINE_ITEM', () => {
         let mockProject = {};
         let mockLineItem = {};
-        componentUnderTest.onNotification({ type: 'MOVE_LINE_ITEM', payload: { lineItem: mockLineItem, otherProject: mockProject } });
+        componentUnderTest.onNotification({
+          type: 'MOVE_LINE_ITEM',
+          payload: { lineItem: mockLineItem, otherProject: mockProject }
+        });
 
         expect(mockCartService.moveLineItemTo).toHaveBeenCalledWith(mockProject, mockLineItem);
       });
@@ -175,6 +190,13 @@ export function main() {
 
         expect(mockAssetService.getClipPreviewData).toHaveBeenCalledWith(1234);
         expect(mockDialog.open).toHaveBeenCalledWith(WzAdvancedPlayerComponent, { width: '800px' });
+      });
+
+      it('calls shows the pricing dialog when called with SHOW_PRICING_DIALOG', () => {
+        let mockLineItem = { asset: { assetId: 123456 } };
+        componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
+
+        expect(mockDialog.open).toHaveBeenCalledWith(WzPricingComponent);
       });
     });
   });

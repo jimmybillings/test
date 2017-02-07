@@ -42,7 +42,9 @@ export function main() {
       mockMdDialog = {
         open: function () {
           return {
-            componentInstance: {},
+            componentInstance: {
+              calculatePrice: Observable.of({ some: 'data' })
+            },
             afterClosed: jasmine.createSpy('afterClosed').and.returnValue(Observable.of({}))
           };
         }
@@ -124,7 +126,18 @@ export function main() {
       it('Should call the cart summary service with correct params to add an asset to the cart', () => {
         componentUnderTest.usagePrice = Observable.of(100);
         componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
-        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith(123123, 'Target', 100, undefined);
+        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
+          lineItem: {
+            selectedTranscodeTarget: 'Target',
+            price: 100,
+            asset: {
+              assetId: 123123,
+              startTime: undefined,
+              endTime: undefined
+            }
+          },
+          attributes: undefined
+        });
       });
     });
 
