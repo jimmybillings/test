@@ -41,9 +41,9 @@ section.preview-bk {
         margin-left: rem(1.6);    
       }
     }
-    & > div:first-child > div {
-      z-index: 2;
-    }
+    // & > div:first-child > div {
+    //   z-index: 2;
+    // }
   }
   .preview {
     position: relative;

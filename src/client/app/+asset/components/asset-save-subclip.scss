@@ -1,11 +1,12 @@
 asset-save-subclip {
   position: absolute;
+  top: rem(-4.0);
   right: 0;
   @include calc(width, "100% - 10px");
   @include calc(height, "100% + 40px");
   background-color: md-color($background, card);
   z-index: 2;
-  margin-top: rem(-4.0);
+  // margin-top: rem(-4.0);
   padding: rem(2.4);
   border-radius: rem(.2);
   box-sizing: border-box;
