@@ -176,6 +176,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '800px' });
       Object.assign(dialogRef.componentInstance, { window: this.window, asset: asset });
       dialogRef.componentInstance.onSubclip.subscribe((data: any) => {
+        const body = { uuid: asset.uuid, assetId: asset.assetId, timeStart: data.in, timeEnd: data.out };
+        this.activeCollection.updateAsset(this.collection.id, body).subscribe();
         dialogRef.close();
       });
     });

@@ -26,7 +26,7 @@ export class FilterService {
 
   public load(params: any, counted: boolean): Observable<any> {
     let options = JSON.parse(JSON.stringify(Object.assign({}, params, { counted })));
-
+    if (!options.q) options.q = 'itemType:clip';
     return this.api.get(
       Api.Assets,
       this.currentUser.loggedIn() ? 'filter/filterTree' : 'filter/anonymous/filterTree',

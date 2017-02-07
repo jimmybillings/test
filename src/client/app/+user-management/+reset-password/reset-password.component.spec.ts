@@ -10,10 +10,10 @@ export function main() {
     beforeEach(() => {
       mockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
       mockUser = {
-        resetPassword: jasmine.createSpy('resetPassword').and.returnValue(
+        resetPassword: jasmine.createSpy('reset_password').and.returnValue(
           Observable.of({ user: 'james', token: { token: 'loginToken' }, userPreferences: { pref: 1 } }))
       };
-      mockActivatedRoute = { snapshot: { queryParams: { shareKey: 'sldkjf2938sdlkjf289734' } } };
+      mockActivatedRoute = { snapshot: { queryParams: { share_key: 'sldkjf2938sdlkjf289734' } } };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
       mockCurrentUser = { set: jasmine.createSpy('set') };
       mockNotification = { create: jasmine.createSpy('create') };
