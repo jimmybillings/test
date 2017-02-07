@@ -52,7 +52,7 @@ export class WzNotificationService {
         this.expiredSession();
         break;
       default:
-        this.customError(error.status);
+        if (isNaN(error.status)) this.customError(error.status);
         break;
     }
   }
@@ -82,7 +82,7 @@ export class WzNotificationService {
     });
   }
 
-  private customError(errorMessage: string) {
+  private customError(errorMessage: number) {
     this.create(errorMessage);
   }
 }
