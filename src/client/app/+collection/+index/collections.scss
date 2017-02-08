@@ -17,7 +17,7 @@ collections-component .collection-head {
     text-align: right;
     white-space: nowrap;
     button.collapse-search[md-icon-button] {
-      @include transform(rotate(90deg));
+      transform: rotate(90deg);
     }
   }
   header div[flex="100"] > button[md-icon-button] {
@@ -58,7 +58,7 @@ collections-component .query-details {
       position: absolute;
       left: 0;
       top: 48%;
-      @include transform(translateY(-50%));
+      transform: translateY(-50%);
       text-align: center;
     }
     &.search:after {
@@ -90,7 +90,7 @@ collections-component .query-details {
     padding: rem(.2);
     border-radius: $md-button-border-radius;
     border: 1px solid rgba(md-color($background, card), .01);
-    @include transition($swift-ease-out);
+    transition: $swift-ease-out;
     .actions {
       min-height: rem(4.5);
       position: relative;
@@ -226,7 +226,7 @@ collections-component .query-details {
 
 // slide out collection search form
 wz-item-search-form {
-  @include transition($swift-ease-out);
+  transition: $swift-ease-out;
   flex: 1 1 auto;
   position: absolute;
   top: rem(1.1);
@@ -239,17 +239,16 @@ wz-item-search-form {
   }
   form {
     padding-top: 0;
-    @include transition($swift-ease-out);
+    transition: $swift-ease-out;
     display: flex;
     border: 1px solid md-color($foreground, divider);
   }
   &.revealed > div {
-    @include animation-name(slide);
-    @include animation-duration(400ms);
-    @include animation-timing-function($swift-ease-in-timing-function);
-    @include animation-iteration-count(1);
-    // @include animation-delay(1ms);
-    @include animation-fill-mode(backwards);
+    animation-name: slide;
+    animation-duration: 400ms;
+    animation-timing-function: $swift-ease-in-timing-function;
+    animation-iteration-count: 1;
+    animation-fill-mode: backwards;
   }
   input {
     border: none;
@@ -262,8 +261,8 @@ wz-item-search-form {
     background-color:  rgba(md-color($background, app-bar), .9);
     border-radius: 0;
     margin-right:rem(-8.7);
-    @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
-    @include placeholder {
+    transition: max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function;
+    &::placeholder {
       color: md-color($foreground, hint-text);
     }
     &:focus {
@@ -342,7 +341,7 @@ wz-item-search-form {
     }
     button {
       color: md-color($foreground, base, .7);
-      @include transition($swift-ease-out);
+      transition: $swift-ease-out;
       &:hover {
         color: md-color($primary);
         background-color: md-color($foreground, base, .1);
@@ -355,7 +354,7 @@ wz-item-search-form {
   }
 }
 
-@include keyframes(slide) {
+@keyframes slide {
   0% {
     margin-left:125%;
   }

@@ -15,10 +15,10 @@ section.login.hero {
   position: relative;
   margin: 0 auto;
   @include text-contrast(md-color($md-grey, 900));
-  @include background-image(
+  background-image:
     linear-gradient(md-color($md-grey, 900, .75), md-color($md-grey, 900, .5)),
     url($bk-img-user-management)
-  );
+  ;
   background-position: 0 0, 0 0, center center;
   background-repeat: repeat, no-repeat, no-repeat;
   background-size: auto, cover, cover;
@@ -62,7 +62,7 @@ md-card-header .logo-wrapper {
   height: 60px;
   width: 100%;
   .logo {
-    @include background-image(url($logo-simple-form));
+    background-image: url($logo-simple-form);
     background-position: top center;
     background-repeat:no-repeat;
     background-size: 170px;

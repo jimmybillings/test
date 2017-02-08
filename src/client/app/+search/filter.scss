@@ -74,7 +74,7 @@ md-sidenav {
 
     md-input {
       margin: 0 0 0 rem(3.1);
-      @include calc(width, "100% - 62px");
+      width: calc(100% - 62px);
     }
   }
   .filter-count {
@@ -86,7 +86,7 @@ md-sidenav {
       background-color: transparent;
     }
     .connector, .input-container {
-      @include calc(width, '100% - 62px');
+      width: calc(100% - 62px);
       position: relative;
     }
     .connector {
