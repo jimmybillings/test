@@ -108,6 +108,10 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
         }
     }
 
+    public isCollection() {
+        return (this.rawField.endPoint.indexOf('collection') > -1);
+    }
+
     private upKey(event: KeyboardEvent) {
         // Find the active suggestion in the list
         let activeSuggestionIndex = this.suggestions.indexOf(this.activeSuggestion);
@@ -172,10 +176,6 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
 
         suggestions.unshift(this.fControl.value);
         return suggestions;
-    }
-
-    private isCollection() {
-        return (this.rawField.endPoint.indexOf('collection') > -1);
     }
 
     private buildParams() {
