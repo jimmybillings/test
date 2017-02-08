@@ -20,7 +20,7 @@ orders-component .orders-head {
     text-align: right;
     white-space: nowrap;
     button.collapse-search[md-icon-button] {
-      @include transform(rotate(90deg));
+      transform: rotate(90deg);
     }
   }
   header div[flex="100"] > button[md-icon-button] {
@@ -46,7 +46,7 @@ orders-component .orders-head {
     padding: rem(.2);
     border-radius: $md-button-border-radius;
     border: 1px solid rgba(md-color($background, card), .01);
-    @include transition($swift-ease-out);
+    transition: $swift-ease-out;
     &:hover {
       border-color: rgba(md-color($primary, default), .75);
       background-color: md-color($background, card);

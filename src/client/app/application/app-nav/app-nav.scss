@@ -8,9 +8,9 @@ header.app-header {
   position: absolute;
   top: 0;
   left: 0;
-  @include transition($swift-ease-out);
+  transition: $swift-ease-out;
   a.home-link > .logo-wrapper {
-    @include transition(all .4s ease-in-out);
+    transition: all .4s ease-in-out;
     opacity: .7;
     top: 0;
     margin: 0;
@@ -23,7 +23,7 @@ header.app-header {
       opacity: 1;
     }
     .logo img {
-      @include background-image(url($logo-header));
+      background-image: url($logo-header);
       background-position: 0 rem(.9);
       background-repeat: no-repeat;
       background-size: rem(27.2);
@@ -44,7 +44,7 @@ header.app-header {
     @include text-contrast(md-color($background, app-bar), md-color($foreground, secondary-text), md-color($background, app-bar));
     position: fixed;
     top: 0;
-    @include animation(slideDownHeader .75s ease-in-out);
+    animation: slideDownHeader .75s ease-in-out;
     border-bottom: none;
     @include md-elevation(3);
     // width: calc(100% - 16px);
@@ -60,7 +60,7 @@ header.app-header [md-button],
 header.app-header [md-icon-button] {
   @include text-contrast(md-color($md-grey, 900), md-color($foreground, secondary-text), md-color($background, app-bar));
   margin-left: rem(.6);
-  @include transition($swift-ease-out);
+  transition: $swift-ease-out;
   &:first-child{
     margin-left: 0;
   }
@@ -92,7 +92,7 @@ button[md-icon-button].cart {
 header.app-header.fixed [md-button],
 header.app-header.fixed [md-icon-button] {
   @include text-contrast(md-color($background, app-bar), md-color($foreground, secondary-text), md-color($background, app-bar));
-  @include transition($swift-ease-out);
+  transition: $swift-ease-out;
   &:hover {
     background-color: rgba(md-color($background, hover), .08);
   }
@@ -109,15 +109,15 @@ header.app-header.search-closed app-nav button.open-search {
   display: initial;
 }
 
-@include keyframes(slideDownHeader) {
+@keyframes slideDownHeader {
   0% {
     opacity: .8;
-    @include transform(translateY(-200px));
+    transform: translateY(-200px);
   }
 
   100% {
     opacity: 1;
-    @include transform(translateY(0));
+    transform: translateY(0);
   }
 }
 
@@ -134,7 +134,7 @@ header.app-header + div.main-content cms-component,
 header.app-header + div.main-content search-component,
 header.app-header + div.main-content asset-component {
   display: block;
-  @include transition(border-top-width 0.35s, $swift-ease-in-out-timing-function);
+  transition: border-top-width 0.35s, $swift-ease-in-out-timing-function;
   border-top: rem(16.6) solid md-color($md-grey, 900, .7);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     border-top-width: rem(15.2);
@@ -210,7 +210,7 @@ header.app-header.search-closed + div.main-content asset-component {
 // pages that do not have options to open and close search and bins, but don't have a bk hero image or video (admin)
 header.app-header + div.main-content admin-component {
   display: flex;
-  @include transition(border-top-width 0.35s, $swift-ease-in-out-timing-function);
+  transition: border-top-width 0.35s, $swift-ease-in-out-timing-function;
   border-top: rem(16.6) solid md-color($md-grey, 900, .7);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     border-top-width: rem(15.2);

@@ -16,7 +16,7 @@ wz-asset-grid ul.asset-grid-view {
     vertical-align: bottom;
     margin: 1% 0 1.75% 1%;
     width: 19%;
-    @include transition($swift-ease-out);
+    transition: $swift-ease-out;
     .asset {
       padding: 1px;
       padding-bottom: calc(18.4% - 2px);
@@ -42,7 +42,7 @@ wz-asset-grid ul.asset-grid-view {
       left: 1px;
       font-size: rem(1.1);
       line-height: rem(1.1);
-      @include transition($swift-ease-out);
+      transition: $swift-ease-out;
       @include text-contrast(md-color($md-background, app-bar));
       opacity: 0;
     }
@@ -52,10 +52,10 @@ wz-asset-grid ul.asset-grid-view {
       width: 100%;
       position: relative;
       padding: 56.25% 0 0 0;
-      @include background-image(
+      background-image:
         linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.6)),
         linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1))
-      );
+      ;
       &:hover, &:active {
         cursor: pointer;
       }
@@ -66,12 +66,12 @@ wz-asset-grid ul.asset-grid-view {
         bottom: 0;
         left: 0;
         width: 100%;
-        @include background-image(
+        background-image:
           linear-gradient(-7deg, rgba(md-color($md-grey, 900),0.9), rgba(md-color($md-grey, 900),0) 24%),
           linear-gradient(7deg, rgba(md-color($md-grey, 900),0) 75%, rgba(md-color($md-grey, 900),.9))
-        );
+        ;
         opacity: 0.5;
-        @include transition(opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2));
+        transition: opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2);
         z-index: 1;
       }
       img {
@@ -97,7 +97,7 @@ wz-asset-grid ul.asset-grid-view {
       width: calc(100% - 2px);
       margin: 0 1px;
       height: 24%;
-      @include transition(all .2s ease-in-out);
+      transition: all .2s ease-in-out;
       text-decoration: none;
       span.mdata-1 {
         display: block;
@@ -134,7 +134,7 @@ wz-asset-grid ul.asset-grid-view {
       margin: 0 1px 1px;
       height: calc(24% - 1px);
       opacity: 0;
-      @include transition($swift-ease-in-out);
+      transition: $swift-ease-in-out;
       nav.asset-options {
         display: flex;
         height: 100%;
@@ -152,7 +152,7 @@ wz-asset-grid ul.asset-grid-view {
           margin-bottom: auto;
           margin-left: rem(.2);
           margin-right: rem(.2);
-          @include transition($swift-ease-in-out);
+          transition: $swift-ease-in-out;
           span.md-button-wrapper {
             position: static;
             line-height: 1.9;
@@ -221,7 +221,7 @@ wz-asset-grid ul.asset-grid-view {
         right: 0;
         padding: 0 1% 1% 0;
         @include text-contrast(md-color($md-foreground, base));
-        @include transition($swift-ease-out);
+        transition: $swift-ease-out;
         z-index: 1;
         span {
           line-height: 1;
@@ -271,7 +271,7 @@ wz-asset-grid ul.asset-grid-view {
       //   }
       // }
       &.subclip-timeline {
-        @include transition($swift-ease-out);
+        transition: $swift-ease-out;
         position: absolute;
         height: rem(.6);
         width: 100%;

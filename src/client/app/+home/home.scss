@@ -8,10 +8,10 @@ home-component {
     width: 100%;
     position: relative;
     margin: 0 auto;
-    @include background-image(
+    background-image:
       linear-gradient( rgba(md-color($foreground, text), .55), rgba(md-color($foreground, text), .45)),
       url($bk-img-home)
-    );
+    ;
     background-position: 0 0, center center;
     background-repeat: no-repeat, no-repeat;
     background-size: cover, cover;
@@ -21,7 +21,7 @@ home-component {
       height: 250px;
       width: 100%;
       .logo {
-        @include background-image(url($logo-home));
+        background-image: url($logo-home);
         background-position: bottom center;
         background-repeat:no-repeat;
         background-size: 255px;
@@ -85,12 +85,12 @@ home-component {
 
   // MARQUEE
 
-  @include keyframes(loop) {
+  @keyframes loop {
     0%   {
-      @include transform( translateX(0) );
+      transform: translateX(0);
     }
     100% {
-      @include transform( translateX(-(33.3% * 2)));
+      transform: translateX(-(33.3% * 2));
     }
   }
 
@@ -112,8 +112,8 @@ home-component {
       left: 0;
       width: 300%!important;
       height: $height;
-      @include transform(translate3d(0, 0, 0));
-      @include animation(loop 10s linear infinite);
+      transform: translate3d(0, 0, 0);
+      animation: loop 10s linear infinite;
     }
 
     > ul > li {
@@ -150,9 +150,9 @@ home-component {
           bottom: 0;
           left: 0;
           width: 100%;
-          @include background-image(linear-gradient(6deg, rgba(md-color($md-grey, 900),0.9), rgba(md-color($md-grey, 900),0) 50%));
+          background-image:linear-gradient(6deg, rgba(md-color($md-grey, 900),0.9), rgba(md-color($md-grey, 900),0) 50%);
           opacity: 0.6;
-          @include transition(opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2));
+          transition: opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2);
           z-index: 1;
         }
       }
@@ -177,22 +177,22 @@ home-component {
       &:nth-child(1n) .mrkt-collections__highlight_img {
         height: 100%;
         width: 100%;
-        @include background-image(url('../assets/img/highlights/dimoc.jpg'));
+        background-image: url('../assets/img/highlights/dimoc.jpg');
       }
       &:nth-child(2n) .mrkt-collections__highlight_img{
-        @include background-image(url('../assets/img/highlights/ncaa_basketball.jpg'));
+        background-image: url('../assets/img/highlights/ncaa_basketball.jpg');
       }
       &:nth-child(3n) .mrkt-collections__highlight_img{
-        @include background-image(url('../assets/img/highlights/jfk_historic.jpg'));
+        background-image: url('../assets/img/highlights/jfk_historic.jpg');
       }
       &:nth-child(4n) .mrkt-collections__highlight_img{
-        @include background-image(url('../assets/img/highlights/masters_js.jpg'));
+        background-image: url('../assets/img/highlights/masters_js.jpg');
       }
       &:nth-child(5n) .mrkt-collections__highlight_img{
-        @include background-image(url('../assets/img/highlights/nat_geo.jpg'));
+        background-image: url('../assets/img/highlights/nat_geo.jpg');
       }
       &:nth-child(6n) .mrkt-collections__highlight_img{
-        @include background-image(url('../assets/img/highlights/us_open.jpg'));
+        background-image: url('../assets/img/highlights/us_open.jpg');
       }
     }
     @media screen and (max-width: $layout-breakpoint-xs) {
@@ -231,7 +231,7 @@ home-component {
     // opacity: .8;
     background-color: md-color($accent, darker, .8);
     border: 1px solid transparent;
-    @include transition($swift-ease-in);
+     transition: $swift-ease-in;
     &:hover {
       border: 1px solid $white-87-opacity;
       background-color: md-color($accent, darker, .8);
