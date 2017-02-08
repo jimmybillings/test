@@ -7,7 +7,7 @@ export function main() {
     (<any>window).portal = 'core';
     let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUser: any,
       mockCollections: any, mockActiveCollection: any, mockUiState: any, mockUserPreference: any, mockNotification: any,
-      mockApiConfig: any, mockAuthentication: any, mockUserCan: any, mockCart: any, mockWindow: any,
+      mockApiConfig: any, mockUserCan: any, mockCart: any, mockWindow: any,
       mockFilter: any, mockSortDefinition: any;
     let loggedInState = false, canViewCollections = true;
     let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
@@ -55,7 +55,6 @@ export function main() {
       };
       mockNotification = { check: jasmine.createSpy('check'), initialize: jasmine.createSpy('initialize') };
       mockApiConfig = { getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal') };
-      mockAuthentication = { destroy: jasmine.createSpy('destroy').and.returnValue(Observable.of({})) };
       mockUserCan = { viewCollections: () => canViewCollections };
       mockCart = { getCartSummary: jasmine.createSpy('getCartSummary') };
       mockWindow = { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') };
@@ -64,7 +63,7 @@ export function main() {
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUser,
         mockCollections, mockActiveCollection, mockUiState, mockUserPreference,
-        mockNotification, mockApiConfig, mockAuthentication, mockUserCan,
+        mockNotification, mockApiConfig, mockUserCan,
         mockCart, mockWindow, mockFilter, mockSortDefinition, null, null);
     });
 
@@ -157,10 +156,6 @@ export function main() {
     });
 
     describe('logout()', () => {
-      it('Should log out a user on the server', () => {
-        componentUnderTest.logout();
-        expect(mockAuthentication.destroy).toHaveBeenCalled();
-      });
 
       it('Should log out the user in the browser', () => {
         componentUnderTest.logout();
