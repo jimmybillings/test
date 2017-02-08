@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@angular/material';
 import { TranslateModule } from 'ng2-translate';
 import { RouterModule } from '@angular/router';
+import { WzPlayerModule } from '../wz-player/wz.player.module';
 
 import { WzAssetGridComponent } from './wz-asset-grid/wz.asset-grid.component';
 import { WzAssetListComponent } from './wz-asset-list/wz.asset-list.component';
@@ -15,7 +16,8 @@ import { WzSpeedviewDirective } from './wz-speedview/wz.speedview.directive';
     CommonModule,
     MaterialModule,
     TranslateModule,
-    RouterModule
+    RouterModule,
+    WzPlayerModule
   ],
   declarations: [
     WzAssetGridComponent,

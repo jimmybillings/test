@@ -1,8 +1,8 @@
 .pagination {
-  @include display(flex);
-  @include flex-direction(row);
-  @include justify-content(flex-end);
-  @include align-items(center);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
   min-height: rem(3.4);
   // @jimmybillings 01/08/17
   // This causes double scroll bars to appear on the search page when you add 
@@ -35,7 +35,7 @@ wz-pagination {
   }
   button[md-icon-button] {
     margin: 0;
-    @include transition(all .4s ease-in-out);
+    transition: all .4s ease-in-out;
     md-icon.material-icons {
       font-size: rem(3.0);
       width: 100%;

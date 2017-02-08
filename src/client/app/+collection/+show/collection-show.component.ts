@@ -9,7 +9,7 @@ import { CurrentUser } from '../../shared/services/current-user.model';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../shared/services/asset.service';
-import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
+import { ErrorStore } from '../../shared/stores/error.store';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartService } from '../../shared/services/cart.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
@@ -55,7 +55,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public store: Store<CollectionStore>,
     public currentUser: CurrentUser,
     public uiState: UiState,
-    public notification: WzNotificationService,
+    public error: ErrorStore,
     public uiConfig: UiConfig,
     public cart: CartService,
     public userPreference: UserPreferenceService,
@@ -135,7 +135,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       if (res.url && res.url !== '') {
         window.location.href = res.url;
       } else {
-        this.notification.create('COMPS.NO_COMP');
+        this.error.dispatch({ status: 'COMPS.NO_COMP' });
       }
     });
   }

@@ -22,12 +22,12 @@ import { Subscription } from 'rxjs/Rx';
               unicode-bidi: embed;
               white-space: pre;
             }`
-          ]
+  ]
 })
 
 export class SecretConfigComponent implements OnInit, OnDestroy {
   public configForm: FormGroup;
-  private config: UiSubComponentsA;
+  public config: UiSubComponentsA;
   private site: string;
   private routeSubscription: Subscription;
 
@@ -43,7 +43,7 @@ export class SecretConfigComponent implements OnInit, OnDestroy {
         .take(1).subscribe((data: UiSubComponentsA) => {
           this.config = data;
           this.setForm();
-      });
+        });
     });
   }
 

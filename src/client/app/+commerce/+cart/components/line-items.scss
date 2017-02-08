@@ -11,7 +11,7 @@ div.line-items {
       padding: rem(1);      
       button {
         color: md-color($md-grey, 700);
-        @include transition($swift-ease-out);
+        transition: $swift-ease-out;
         &:hover {
           color: md-color($md-primary);
           background-color: rgba(md-color($md-foreground, base), .07);

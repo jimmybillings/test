@@ -15,6 +15,7 @@ import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.component';
+import { ErrorStore } from '../shared/stores/error.store';
 
 @Component({
   moduleId: module.id,
@@ -39,7 +40,7 @@ export class AssetComponent implements OnInit {
     public uiConfig: UiConfig,
     public window: Window,
     private userPreference: UserPreferenceService,
-    private notification: WzNotificationService,
+    private error: ErrorStore,
     private cart: CartService,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
@@ -86,7 +87,7 @@ export class AssetComponent implements OnInit {
       if (res.url && res.url !== '') {
         this.window.location.href = res.url;
       } else {
-        this.notification.create('COMPS.NO_COMP');
+        this.error.dispatch({ status: 'COMPS.NO_COMP' });
       }
     });
   }
@@ -142,7 +143,7 @@ export class AssetComponent implements OnInit {
       if (!data) return;
       if (data.price) this.usagePrice = data.price;
       if (data.attributes) this.userPreference.updatePricingPreferences(data.attributes);
-      if (data.error) this.notification.create('PRICING.ERROR');
+      if (data.error) this.error.dispatch({ status: 'PRICING.ERROR' });
     });
   }
 }

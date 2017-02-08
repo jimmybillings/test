@@ -113,8 +113,6 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
       payload.asset.clipUrl = data.url;
       payload.asset.timeStart = payload.asset.startTime;
       payload.asset.timeEnd = payload.asset.endTime;
-      delete payload.asset.startTime;
-      delete payload.asset.endTime;
       let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '800px' });
       Object.assign(dialogRef.componentInstance, { window: this.window, asset: payload.asset });
       dialogRef.componentInstance.onSubclip.subscribe((data: any) => {

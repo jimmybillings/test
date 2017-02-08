@@ -13,7 +13,7 @@ import { ApiService } from './api.service';
 import { Api, ApiResponse } from '../interfaces/api.interface';
 import { ApiConfig } from './api.config';
 import { UiState } from './ui.state';
-import { ErrorService } from './error.service';
+import { ErrorStore } from '../stores/error.store';
 import { CurrentUser } from './current-user.model';
 
 export function main() {
@@ -47,7 +47,7 @@ export function main() {
           ...beforeEachProvidersArray,
           ApiService,
           { provide: ApiConfig, useValue: mockApiConfig },
-          { provide: ErrorService, useValue: mockErrorService },
+          { provide: ErrorStore, useValue: mockErrorService },
           { provide: MockBackend, useValue: mockBackEnd },
           { provide: CurrentUser, useValue: mockCurrentUser },
           { provide: UiState, useValue: mockUiState }

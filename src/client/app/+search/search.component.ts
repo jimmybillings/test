@@ -8,12 +8,12 @@ import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { Capabilities } from '../shared/services/capabilities.service';
-import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 import { CartService } from '../shared/services/cart.service';
 import { AssetService } from '../shared/services/asset.service';
 import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
+import { ErrorStore } from '../shared/stores/error.store';
 
 /**
  * Asset search page component - renders search page results
@@ -37,7 +37,7 @@ export class SearchComponent implements OnDestroy {
     private cart: CartService,
     private assetService: AssetService,
     private sortDefinition: SortDefinitionsService,
-    private notification: WzNotificationService,
+    private error: ErrorStore,
     private searchContext: SearchContext,
     private uiConfig: UiConfig,
     private assetData: AssetData,
@@ -98,7 +98,7 @@ export class SearchComponent implements OnDestroy {
       if (res.url && res.url !== '') {
         this.window.location.href = res.url;
       } else {
-        this.notification.create('COMPS.NO_COMP');
+        this.error.dispatch({ status: 'COMPS.NO_COMP' });
       }
     });
   }

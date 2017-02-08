@@ -5,7 +5,7 @@ export function main() {
     let serviceUnderTest: LoggedOutGuard;
     let mockCurrentUser: any, mockErrorActions: any;
     beforeEach(() => {
-      mockErrorActions = { handle: jasmine.createSpy('handle') };
+      mockErrorActions = { dispatch: jasmine.createSpy('dispatch') };
     });
 
     describe('canActivate()', () => {
@@ -20,7 +20,7 @@ export function main() {
         mockCurrentUser = { loggedIn: jasmine.createSpy('loggedIn').and.returnValue(false) };
         serviceUnderTest = new LoggedOutGuard(mockCurrentUser, mockErrorActions);
         let action = serviceUnderTest.canActivate();
-        expect(mockErrorActions.handle).toHaveBeenCalledWith({ status: 401 });
+        expect(mockErrorActions.dispatch).toHaveBeenCalledWith({ status: 401 });
         expect(action).toEqual(false);
       });
     });

@@ -8,7 +8,7 @@ app-footer {
       width: 100%;
       .logo {
         margin: rem(.3) 0 0 0;
-        @include background-image(url($logo-footer));
+        background-image: url($logo-footer);
         background-position: center center;
         background-repeat:no-repeat;
         background-size: 133px;
@@ -27,7 +27,7 @@ app-footer {
         a {
           @include text-contrast(md-color($md-grey, 200), md-color($md-foreground, text), $white-87-opacity);
           opacity: .25;
-          @include transition($swift-ease-in);
+           transition: $swift-ease-in;
           &:hover {
             color: md-color($md-primary, default, .9);
             opacity: 1;
@@ -100,7 +100,7 @@ app-footer {
             top: -3px;
             left: -1px;
             opacity: .25;
-            @include transition($swift-ease-in);
+             transition: $swift-ease-in;
           }
         }
       }

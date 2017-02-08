@@ -13,7 +13,7 @@ export function main() {
       beforeEach(() => {
         mockCurrentUser = { loggedIn: () => loggedIn };
         mockCapabilites = { viewAdmin: () => hasRoot };
-        mockError = { handle: jasmine.createSpy('handle') };
+        mockError = { dispatch: jasmine.createSpy('dispatch') };
       });
 
       it('returns true when logged in and has root', () => {
@@ -21,7 +21,7 @@ export function main() {
         hasRoot = true;
 
         expect(new AdminAuthGuard(mockCapabilites, mockError, mockCurrentUser).canActivate()).toBe(true);
-        expect(mockError.handle).not.toHaveBeenCalled();
+        expect(mockError.dispatch).not.toHaveBeenCalled();
       });
 
       it('returns false/unauthenticated when not logged in', () => {
@@ -29,7 +29,7 @@ export function main() {
         hasRoot = false;
 
         expect(new AdminAuthGuard(mockCapabilites, mockError, mockCurrentUser).canActivate()).toBe(false);
-        expect(mockError.handle).toHaveBeenCalledWith({ status: 401 });
+        expect(mockError.dispatch).toHaveBeenCalledWith({ status: 401 });
       });
 
       it('returns false/unauthorized when logged in and not root', () => {
@@ -37,7 +37,7 @@ export function main() {
         hasRoot = false;
 
         expect(new AdminAuthGuard(mockCapabilites, mockError, mockCurrentUser).canActivate()).toBe(false);
-        expect(mockError.handle).toHaveBeenCalledWith({ status: 403 });
+        expect(mockError.dispatch).toHaveBeenCalledWith({ status: 403 });
       });
     });
   });

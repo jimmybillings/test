@@ -1,8 +1,8 @@
-import { Injectable }             from '@angular/core';
-import { CanActivate, Router }    from '@angular/router';
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CurrentUser } from '../../shared/services/current-user.model';
-import { ErrorActions } from '../../shared/services/error.service';
+import { ErrorStore } from '../../shared/stores/error.store';
 
 @Injectable()
 export class CollectionGuard implements CanActivate {
@@ -10,16 +10,16 @@ export class CollectionGuard implements CanActivate {
     private userCan: Capabilities,
     private currentUser: CurrentUser,
     private router: Router,
-    private error: ErrorActions) { }
+    private error: ErrorStore) { }
 
   canActivate() {
     if (this.currentUser.loggedIn() && this.userCan.viewCollections()) {
       return true;
     } else {
       if (this.currentUser.loggedIn() && !this.userCan.viewCollections()) {
-          this.error.handle({status: 403});
+        this.error.dispatch({ status: 403 });
       } else {
-        this.error.handle({status: 401});
+        this.error.dispatch({ status: 401 });
       }
       return false;
     }

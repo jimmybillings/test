@@ -35,7 +35,7 @@
     // }
     .md-button-wrapper::after {
       color: md-color($md-foreground, secondary-text);
-      @include transition(opacity 0.4s);
+      transition: opacity 0.4s;
       font-family: 'Material Icons';
       content: "\e5c5";
       font-size: rem(2.1);
