@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { User } from '../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs/Rx';
 import { MdDialog, MdDialogRef } from '@angular/material';
@@ -15,7 +15,7 @@ export class ProfileComponent implements OnDestroy, OnInit {
   public user: User;
   private userSubscription: Subscription;
 
-  constructor(private currentUser: CurrentUser, private dialog: MdDialog) { }
+  constructor(private currentUser: CurrentUserService, private dialog: MdDialog) { }
 
   ngOnInit() {
     this.userSubscription =

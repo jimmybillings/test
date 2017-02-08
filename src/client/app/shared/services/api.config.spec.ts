@@ -36,13 +36,13 @@ export function main() {
 
   describe('headers()', () => {
     let loggedIn: boolean;
-    let mockCurrentUser: any;
+    let mockCurrentUserService: any;
     let returnedHeaders: Headers;
 
     beforeEach(() => {
       localStorage.clear();
       localStorage.setItem('token', 'LOGIN_TOKEN');
-      mockCurrentUser = {
+      mockCurrentUserService = {
         loggedIn: () => loggedIn
       };
     });
@@ -53,7 +53,7 @@ export function main() {
 
     it('returns appropriate headers for a logged out user', () => {
       loggedIn = false;
-      returnedHeaders = new ApiConfig(mockCurrentUser).headers();
+      returnedHeaders = new ApiConfig(mockCurrentUserService).headers();
 
       expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
       expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
@@ -62,7 +62,7 @@ export function main() {
 
     it('returns appropriate headers for a logged in user', () => {
       loggedIn = true;
-      returnedHeaders = new ApiConfig(mockCurrentUser).headers();
+      returnedHeaders = new ApiConfig(mockCurrentUserService).headers();
 
       expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
       expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
@@ -71,7 +71,7 @@ export function main() {
 
     it('adds overriding auth header for a logged out user', () => {
       loggedIn = false;
-      returnedHeaders = new ApiConfig(mockCurrentUser).headers('OVERRIDING_TOKEN');
+      returnedHeaders = new ApiConfig(mockCurrentUserService).headers('OVERRIDING_TOKEN');
 
       expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
       expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
@@ -80,7 +80,7 @@ export function main() {
 
     it('overrides the normal auth header for a logged in user', () => {
       loggedIn = true;
-      returnedHeaders = new ApiConfig(mockCurrentUser).headers('OVERRIDING_TOKEN');
+      returnedHeaders = new ApiConfig(mockCurrentUserService).headers('OVERRIDING_TOKEN');
 
       expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
       expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);

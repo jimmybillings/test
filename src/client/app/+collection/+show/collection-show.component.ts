@@ -5,7 +5,7 @@ import { ActiveCollectionService } from '../../shared/services/active-collection
 import { Subscription, Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../shared/services/asset.service';
@@ -53,7 +53,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public asset: AssetService,
     public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>,
-    public currentUser: CurrentUser,
+    public currentUser: CurrentUserService,
     public uiState: UiState,
     public error: ErrorStore,
     public uiConfig: UiConfig,

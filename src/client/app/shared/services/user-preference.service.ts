@@ -3,7 +3,7 @@ import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
-import { CurrentUser } from './current-user.model';
+import { CurrentUserService } from './current-user.service';
 
 const defaultPreferences: any = {
   displayFilterCounts: false,
@@ -29,7 +29,7 @@ export class UserPreferenceService {
   public data: Observable<any>;
 
   constructor(
-    public currentUser: CurrentUser,
+    public currentUser: CurrentUserService,
     public store: Store<any>,
     public api: ApiService) {
     this.data = this.store.select('userPreferences');

@@ -10,7 +10,7 @@ export function main() {
       // TODO: This is a minimal mock that exists solely to stop
       // the constructor from failing.  Enhance as needed.
       mockErrorStore = { data: Observable.of({}) };
-      serviceUnderTest = new WzNotificationService(null, null, mockErrorStore, null);
+      serviceUnderTest = new WzNotificationService(null, null, mockErrorStore);
     });
 
     it('has no tests!', () => {

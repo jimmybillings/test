@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { User } from '../services/user.data.service';
 import { UiConfig } from '../../shared/services/ui.config';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ServerErrors } from '../../shared/interfaces/forms.interface';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
@@ -24,7 +24,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     private uiConfig: UiConfig,
     private route: ActivatedRoute,
     private router: Router,
-    private currentUser: CurrentUser,
+    private currentUser: CurrentUserService,
     private translate: TranslateService,
     private snackbar: MdSnackBar) {
 

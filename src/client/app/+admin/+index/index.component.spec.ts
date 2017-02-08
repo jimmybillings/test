@@ -5,7 +5,7 @@ export function main() {
   describe('Admin Index Component', () => {
     let componentUnderTest: IndexComponent;
 
-    const mockCurrentUser: any = null;
+    const mockCurrentUserService: any = null;
     const mockAdminService: any = {
       getResourceIndex: jasmine.createSpy('getResourceIndex').and.callFake(fakeGetResourceIndex)
     };
@@ -28,7 +28,8 @@ export function main() {
     function fakeNavigate(params: any) { return; }
 
     beforeEach(() => {
-      componentUnderTest = new IndexComponent(mockCurrentUser, mockAdminService, mockRoute, mockUiConfig, mockUiState, mockRouter, null);
+      componentUnderTest = new IndexComponent(mockCurrentUserService, mockAdminService, mockRoute,
+        mockUiConfig, mockUiState, mockRouter, null);
     });
 
     describe('Initialization', () => {

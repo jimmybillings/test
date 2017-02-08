@@ -5,7 +5,7 @@ import { Response, ResponseOptions } from '@angular/http';
 export function main() {
   describe('Reset Password Component', () => {
     let mockUiConfig: any, mockUser: any, mockActivatedRoute: any, mockRouter: any,
-      mockCurrentUser: any, mockNotification: any, mockTranslate: any, mockSnackbar: any;
+      mockCurrentUserService: any, mockNotification: any, mockTranslate: any, mockSnackbar: any;
     let componentUnderTest: ResetPasswordComponent;
 
     beforeEach(() => {
@@ -16,14 +16,14 @@ export function main() {
       };
       mockActivatedRoute = { snapshot: { params: { share_key: 'sldkjf2938sdlkjf289734' } } };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
-      mockCurrentUser = { set: jasmine.createSpy('set') };
+      mockCurrentUserService = { set: jasmine.createSpy('set') };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of('translation'))
       };
       mockSnackbar = { open: jasmine.createSpy('open') };
       componentUnderTest = new ResetPasswordComponent(
         mockUser, mockUiConfig, mockActivatedRoute, mockRouter,
-        mockCurrentUser, mockTranslate, mockSnackbar
+        mockCurrentUserService, mockTranslate, mockSnackbar
       );
     });
 
@@ -42,7 +42,7 @@ export function main() {
 
       it('Sets a new user and auth token on response', () => {
         componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
-        expect(mockCurrentUser.set).toHaveBeenCalledWith('james', 'loginToken');
+        expect(mockCurrentUserService.set).toHaveBeenCalledWith('james', 'loginToken');
       });
 
 
@@ -68,7 +68,7 @@ export function main() {
         };
         componentUnderTest = new ResetPasswordComponent(
           mockUser, mockUiConfig, mockActivatedRoute, mockRouter,
-          mockCurrentUser, mockTranslate, mockSnackbar
+          mockCurrentUserService, mockTranslate, mockSnackbar
         );
         componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
         expect(componentUnderTest.serverErrors).toEqual({ newPassword: 'Needs a number and letter' });
@@ -82,7 +82,7 @@ export function main() {
         mockUiConfig = { get: () => mockObservable };
         componentUnderTest = new ResetPasswordComponent(
           mockUser, mockUiConfig, mockActivatedRoute, mockRouter,
-          mockCurrentUser, mockTranslate, mockSnackbar
+          mockCurrentUserService, mockTranslate, mockSnackbar
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();

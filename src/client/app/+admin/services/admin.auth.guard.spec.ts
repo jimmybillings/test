@@ -2,7 +2,7 @@ import { AdminAuthGuard } from './admin.auth.guard';
 
 export function main() {
   describe('Admin Auth Guard', () => {
-    let mockCurrentUser: any;
+    let mockCurrentUserService: any;
     let mockError: any;
     let mockCapabilites: any;
 
@@ -11,7 +11,7 @@ export function main() {
       let hasRoot: boolean;
 
       beforeEach(() => {
-        mockCurrentUser = { loggedIn: () => loggedIn };
+        mockCurrentUserService = { loggedIn: () => loggedIn };
         mockCapabilites = { viewAdmin: () => hasRoot };
         mockError = { dispatch: jasmine.createSpy('dispatch') };
       });
@@ -20,7 +20,7 @@ export function main() {
         loggedIn = true;
         hasRoot = true;
 
-        expect(new AdminAuthGuard(mockCapabilites, mockError, mockCurrentUser).canActivate()).toBe(true);
+        expect(new AdminAuthGuard(mockCapabilites, mockError, mockCurrentUserService).canActivate()).toBe(true);
         expect(mockError.dispatch).not.toHaveBeenCalled();
       });
 
@@ -28,7 +28,7 @@ export function main() {
         loggedIn = false;
         hasRoot = false;
 
-        expect(new AdminAuthGuard(mockCapabilites, mockError, mockCurrentUser).canActivate()).toBe(false);
+        expect(new AdminAuthGuard(mockCapabilites, mockError, mockCurrentUserService).canActivate()).toBe(false);
         expect(mockError.dispatch).toHaveBeenCalledWith({ status: 401 });
       });
 
@@ -36,7 +36,7 @@ export function main() {
         loggedIn = true;
         hasRoot = false;
 
-        expect(new AdminAuthGuard(mockCapabilites, mockError, mockCurrentUser).canActivate()).toBe(false);
+        expect(new AdminAuthGuard(mockCapabilites, mockError, mockCurrentUserService).canActivate()).toBe(false);
         expect(mockError.dispatch).toHaveBeenCalledWith({ status: 403 });
       });
     });

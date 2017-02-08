@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Capabilities } from '../../shared/services/capabilities.service';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ErrorStore } from '../../shared/stores/error.store';
 
 @Injectable()
 export class AssetGuard implements CanActivate {
   constructor(
     private userCan: Capabilities,
-    private currentUser: CurrentUser,
+    private currentUser: CurrentUserService,
     private router: Router,
     private error: ErrorStore) { }
 

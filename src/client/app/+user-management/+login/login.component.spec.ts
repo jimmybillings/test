@@ -5,7 +5,7 @@ export function main() {
 
   describe('Login Component', () => {
     (<any>window).pendo = { initialize: jasmine.createSpy('initialize') };
-    let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUser: any,
+    let mockUiConfig: any, mockAuthentication: any, mockRouter: any, mockCurrentUserService: any,
       mockDocumentService: any, mockActivatedRoute: any, mockPendo: any, mockDialog: any, mockFeatureStore: any;
     let componentUnderTest: LoginComponent;
 
@@ -19,7 +19,7 @@ export function main() {
         }))
       };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
-      mockCurrentUser = { set: jasmine.createSpy('set') };
+      mockCurrentUserService = { set: jasmine.createSpy('set') };
       mockDocumentService = {
         downloadActiveTosDocument:
         jasmine.createSpy('downloadActiveTosDocument'), agreeUserToTerms: jasmine.createSpy('agreeUserToTerms')
@@ -31,7 +31,7 @@ export function main() {
       };
       mockFeatureStore = { set: jasmine.createSpy('set'), setInLocalStorage: jasmine.createSpy('setInLocalStorage') };
       componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-        mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog, mockFeatureStore);
+        mockCurrentUserService, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog, mockFeatureStore);
     });
 
     describe('ngOnInit()', () => {
@@ -43,7 +43,7 @@ export function main() {
       it('Should display a message for a new user', () => {
         mockActivatedRoute = { params: Observable.of({ newUser: 'true' }) };
         componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-          mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog, mockFeatureStore);
+          mockCurrentUserService, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog, mockFeatureStore);
         componentUnderTest.ngOnInit();
         expect(componentUnderTest.firstTimeUser).toBe(true);
       });
@@ -57,7 +57,7 @@ export function main() {
 
       it('Sets a new user and auth token on response', () => {
         componentUnderTest.onSubmit({ 'user': 'james' });
-        expect(mockCurrentUser.set).toHaveBeenCalledWith(
+        expect(mockCurrentUserService.set).toHaveBeenCalledWith(
           { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 }, 'loginToken');
       });
 
@@ -77,7 +77,7 @@ export function main() {
             }))
         };
         componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-          mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog, mockFeatureStore);
+          mockCurrentUserService, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog, mockFeatureStore);
         spyOn(componentUnderTest, 'showTerms');
         componentUnderTest.onSubmit({ 'user': 'ross' });
         expect(componentUnderTest.showTerms).toHaveBeenCalled();
@@ -98,7 +98,7 @@ export function main() {
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
         componentUnderTest = new LoginComponent(mockAuthentication, mockRouter,
-          mockCurrentUser, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog, mockFeatureStore);
+          mockCurrentUserService, mockDocumentService, mockUiConfig, mockActivatedRoute, mockPendo, mockDialog, mockFeatureStore);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();

@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { ErrorStore } from '../../shared/stores/error.store';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 
 @Injectable()
 export class AdminAuthGuard implements CanActivate {
   constructor(
     private userCan: Capabilities,
     private error: ErrorStore,
-    private currentUser: CurrentUser) { }
+    private currentUser: CurrentUserService) { }
 
   canActivate() {
     if (this.userCan.viewAdmin()) {

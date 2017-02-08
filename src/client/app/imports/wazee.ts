@@ -3,7 +3,7 @@ import { Renderer } from '@angular/core';
 // WAZEE PROVIDERS
 import { ApiConfig } from '../shared/services/api.config';
 // import { AppEventService } from '../shared/services/app-event.service';
-import { CurrentUser } from '../shared/services/current-user.model';
+import { CurrentUserService } from '../shared/services/current-user.service';
 import { UiConfig } from '../shared/services/ui.config';
 import { ErrorStore } from '../shared/stores/error.store';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
@@ -32,7 +32,7 @@ import { APP_ROUTES } from '../app.routes';
 // WAZEE STORES
 import { assets } from '../+search/services/asset.store';
 import { asset } from '../shared/services/asset.service';
-import { currentUser } from '../shared/services/current-user.model';
+import { currentUser } from '../shared/services/current-user.service';
 import { config } from '../shared/services/ui.config';
 import { uiState } from '../shared/services/ui.state';
 import { Capabilities } from '../shared/services/capabilities.service';
@@ -57,7 +57,7 @@ import { MultilingualService } from '../shared/services/multilingual.service';
 export const WAZEE_PROVIDERS = [
   Renderer,
   ApiConfig,
-  CurrentUser,
+  CurrentUserService,
   UiConfig,
   ErrorStore,
   AssetService,

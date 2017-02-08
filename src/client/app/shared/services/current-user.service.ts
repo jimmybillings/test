@@ -2,6 +2,7 @@ import { User } from '../interfaces/user.interface';
 import { Observable } from 'rxjs/Rx';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
+import { ErrorStore } from '../stores/error.store';
 
 export const currentUser: ActionReducer<any> = (state = {}, action: Action) => {
 
@@ -14,31 +15,22 @@ export const currentUser: ActionReducer<any> = (state = {}, action: Action) => {
   }
 };
 
-export function isLoggedIn() {
-  return !!localStorage.getItem('token');
-}
-
 /**
  * Model that describes current user, and provides  
  * methods for retrieving user attributes.
  */
 @Injectable()
-export class CurrentUser {
+export class CurrentUserService {
   public permissions: any;
   public data: Observable<any>;
 
   constructor(
-    private store: Store<User>) {
+    private store: Store<User>, private error: ErrorStore) {
     this.data = this.store.select('currentUser');
+    error.data.subscribe((error) => { if (error.status === 401 || error.status === 419) this.destroy(); });
   }
 
-  public get(profilePiece: string = ''): Observable<any> {
-    return this.data.map((user: any) => {
-      return user[profilePiece];
-    });
-  }
-
-  public set(user: User = null, token?:string): void {
+  public set(user: User = null, token?: string): void {
     if (user) localStorage.setItem('currentUser', JSON.stringify(user));
     if (token) localStorage.setItem('token', token);
     this.store.dispatch({ type: 'SET_USER', payload: this._user() });
@@ -55,7 +47,11 @@ export class CurrentUser {
   }
 
   public loggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    let loggedIn: boolean = false;
+    this.data
+      .take(1)
+      .subscribe(user => loggedIn = user.id > 0);
+    return loggedIn;
   }
 
   public fullName(): Observable<any> {
@@ -64,7 +60,7 @@ export class CurrentUser {
 
   public hasPermission(permission: string): boolean {
     let hasPermission: boolean;
-    this.data.map((user:any) => {
+    this.data.map((user: any) => {
       if (user.permissions) {
         return user.permissions;
       } else if (user.roles) {
@@ -72,15 +68,17 @@ export class CurrentUser {
       } else {
         return [];
       }
-    }).take(1).subscribe((permissions:any) => {
-        hasPermission = permissions.indexOf(permission) > -1;
+    }).take(1).subscribe((permissions: any) => {
+      hasPermission = permissions.indexOf(permission) > -1;
     });
     return hasPermission;
   }
 
   public hasPurchaseOnCredit(): boolean {
     let answer: boolean;
-    this.data.take(1).subscribe(user => answer = (user.hasOwnProperty('purchaseOnCredit') ? user.purchaseOnCredit : false));
+    this.data
+      .take(1)
+      .subscribe(user => answer = (user.hasOwnProperty('purchaseOnCredit') ? user.purchaseOnCredit : false));
     return answer;
   }
 

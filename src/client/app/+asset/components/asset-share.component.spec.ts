@@ -5,12 +5,12 @@ import { AssetShareComponent } from './asset-share.component';
 export function main() {
   describe('Asset Share Component', () => {
     let componentUnderTest: AssetShareComponent;
-    let mockCurrentUser: any;
+    let mockCurrentUserService: any;
 
     beforeEach(() => {
       // TODO: This is a minimal mock that exists solely to stop
       // the constructor from failing.  Enhance as needed.
-      mockCurrentUser = { data: Observable.of({}) };
+      mockCurrentUserService = { data: Observable.of({}) };
 
       componentUnderTest = new AssetShareComponent(null, null);
     });
