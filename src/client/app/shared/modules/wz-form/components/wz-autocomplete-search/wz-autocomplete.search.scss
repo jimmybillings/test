@@ -20,13 +20,13 @@ wz-autocomplete-search {
     max-height: rem(4.6);
     min-height: rem(4.6);
     border: none;
-    &::placeholder {
-      color: md-color($md-foreground, hint-text);
-    }
     color: md-color($md-foreground, secondary-text);
     background-color:  rgba(md-color($md-background, app-bar), .9);
     transition: max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function;
     border-radius: 0;
+    &::placeholder {
+      color: md-color($md-foreground, hint-text);
+    }
     &:focus {
       outline: none;
       background-color: lighten(md-color($md-background, app-bar), 40%);
@@ -170,7 +170,20 @@ header.app-header.search-closed wz-autocomplete-search {
     &::placeholder {
       opacity: 0;
     }
+    &::-webkit-input-placeholder {
+      opacity: 0;
+    }
+    &::-moz-input-placeholder {
+      opacity: 0;
+    }
+    &:-moz-input-placeholder {
+      opacity: 0;
+    }
+    &:-ms-input-placeholder {
+      opacity: 0;
+    }
   }
+
   button, button.close, button.filter-toggle {
     max-height: 0;
     min-height: 0;
