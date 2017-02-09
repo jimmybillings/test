@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { AssetService } from '../../shared/services/asset.service';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 
 @Injectable()
 export class AssetResolver {
-  constructor(private asset: AssetService, private currentUser: CurrentUser) { }
+  constructor(private asset: AssetService, private currentUser: CurrentUserService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return this.asset.getData({

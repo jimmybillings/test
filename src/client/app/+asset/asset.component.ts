@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentUser } from '../shared/services/current-user.model';
+import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../shared/services/asset.service';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
 // import { SubclipMarkers } from '../shared/interfaces/asset.interface';
@@ -31,7 +31,7 @@ export class AssetComponent implements OnInit {
   private pageSize: number = 50;
 
   constructor(
-    public currentUser: CurrentUser,
+    public currentUser: CurrentUserService,
     public userCan: Capabilities,
     public activeCollection: ActiveCollectionService,
     public searchContext: SearchContext,

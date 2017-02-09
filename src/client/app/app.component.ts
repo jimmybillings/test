@@ -3,7 +3,7 @@ import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { MultilingualService } from './shared/services/multilingual.service';
 // Services
-import { CurrentUser } from './shared/services/current-user.model';
+import { CurrentUserService } from './shared/services/current-user.service';
 import { ApiConfig } from './shared/services/api.config';
 import { UiConfig } from './shared/services/ui.config';
 import { SearchContext } from './shared/services/search-context.service';
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
     public router: Router,
     public multiLingual: MultilingualService,
     public searchContext: SearchContext,
-    public currentUser: CurrentUser,
+    public currentUser: CurrentUserService,
     public collections: CollectionsService,
     public activeCollection: ActiveCollectionService,
     public uiState: UiState,

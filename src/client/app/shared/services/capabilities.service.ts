@@ -7,7 +7,7 @@ import { AssetCapabilities } from '../../+asset/services/asset.capabilities';
 import { AdminCapabilities } from '../../+admin/services/admin.capabilities';
 import { CollectionCapabilities } from '../../+collection/services/collection.capabilities';
 import { SearchCapabilities } from '../../+search/services/search.capabilities';
-import { CurrentUser } from './current-user.model';
+import { CurrentUserService } from './current-user.service';
 import { UiState } from '../services/ui.state';
 import { FeatureStore } from '../stores/feature.store';
 
@@ -34,7 +34,7 @@ export class Capabilities implements CartCapabilities, CollectionCapabilities, A
   findMetadataValueFor: (metadataName: string, object: any) => string | null;
 
   constructor(
-    public currentUser: CurrentUser,
+    public currentUser: CurrentUserService,
     public route: Router,
     public uiState: UiState,
     public feature: FeatureStore) {

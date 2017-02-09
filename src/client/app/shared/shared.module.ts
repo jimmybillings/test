@@ -12,7 +12,7 @@ import { WzPlayerModule } from './modules/wz-player/wz.player.module';
 import { WzFormModule } from './modules/wz-form/wz-form.module';
 import { WzAssetModule } from './modules/wz-asset/wz-asset.module';
 // Shared Pure Components
-import { WzNotificationComponent } from './components/wz-notification/wz.notification.component';
+import { WzNotificationComponent } from './components/wz-notification/wz.notification.service';
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
 import { WzDropdownComponent, WzDropdownPortalDirective } from './components/wz-dropdown/wz.dropdown.component';
 import { WzListComponent } from './components/wz-list/wz.list.component';
@@ -69,13 +69,13 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     ValuesPipe,
     WzDropdownPortalDirective,
     CollectionFormComponent,
-    WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
     WzClipBoardDirective,
     WzTermsComponent,
     WzPricingComponent,
-    WzComingSoonComponent
+    WzComingSoonComponent,
+    WzNotificationComponent
   ],
   exports: [
     WzBreadcrumbComponent,
@@ -97,7 +97,6 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     ReactiveFormsModule,
     MaterialModule,
     WzPlayerModule,
-    WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
     WzClipBoardDirective,
@@ -105,15 +104,16 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzAssetModule,
     WzPricingComponent,
     WzComingSoonComponent,
-    WzFormModule
+    WzFormModule,
+    WzNotificationComponent
   ],
   entryComponents: [
-    WzNotificationComponent,
     CollectionLinkComponent,
     CollectionFormComponent,
     WzTermsComponent,
     WzPricingComponent,
-    WzComingSoonComponent]
+    WzComingSoonComponent,
+    WzNotificationComponent]
 })
 
 export class SharedModule {

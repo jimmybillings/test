@@ -14,14 +14,14 @@ import { Api, ApiResponse } from '../interfaces/api.interface';
 import { ApiConfig } from './api.config';
 import { UiState } from './ui.state';
 import { ErrorStore } from '../stores/error.store';
-import { CurrentUser } from './current-user.model';
+import { CurrentUserService } from './current-user.service';
 
 export function main() {
   describe('Api Service', () => {
     let mockApiConfig: any;
     let mockUiState: any;
     let mockErrorService: any;
-    let mockCurrentUser: any;
+    let mockCurrentUserService: any;
     let connection: any;
     let loggedIn: boolean = true;
 
@@ -38,7 +38,7 @@ export function main() {
 
       mockUiState = jasmine.createSpyObj('mockUiState', ['loading']);
       mockErrorService = jasmine.createSpyObj('mockErrorService', ['dispatch']);
-      mockCurrentUser = { loggedIn: () => loggedIn };
+      mockCurrentUserService = { loggedIn: () => loggedIn };
 
       mockBackEnd.connections.subscribe((c: any) => connection = c);
 
@@ -49,7 +49,7 @@ export function main() {
           { provide: ApiConfig, useValue: mockApiConfig },
           { provide: ErrorStore, useValue: mockErrorService },
           { provide: MockBackend, useValue: mockBackEnd },
-          { provide: CurrentUser, useValue: mockCurrentUser },
+          { provide: CurrentUserService, useValue: mockCurrentUserService },
           { provide: UiState, useValue: mockUiState }
         ]
       });

@@ -5,7 +5,7 @@ import { NavigationEnd } from '@angular/router';
 export function main() {
   describe('App Component', () => {
     (<any>window).portal = 'core';
-    let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUser: any,
+    let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUserService: any,
       mockCollections: any, mockActiveCollection: any, mockUiState: any, mockUserPreference: any, mockNotification: any,
       mockApiConfig: any, mockUserCan: any, mockCart: any, mockWindow: any,
       mockFilter: any, mockSortDefinition: any;
@@ -23,7 +23,7 @@ export function main() {
         new: jasmine.createSpy('new'),
         state: { q: 'cat', i: 7, n: 100, sortId: 23, filterIds: '1517', filterValues: '1517:2015-12-10 - 2016-12-12' }
       };
-      mockCurrentUser = {
+      mockCurrentUserService = {
         set: jasmine.createSpy('set'),
         destroy: jasmine.createSpy('destroy'),
         loggedIn: () => true,
@@ -61,7 +61,7 @@ export function main() {
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
       componentUnderTest = new AppComponent(
-        mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUser,
+        mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
         mockCollections, mockActiveCollection, mockUiState, mockUserPreference,
         mockNotification, mockApiConfig, mockUserCan,
         mockCart, mockWindow, mockFilter, mockSortDefinition, null, null);
@@ -87,7 +87,7 @@ export function main() {
       describe('currentUser.set()', () => {
         it('Should set the current user', () => {
           componentUnderTest.ngOnInit();
-          expect(mockCurrentUser.set).toHaveBeenCalled();
+          expect(mockCurrentUserService.set).toHaveBeenCalled();
         });
       });
 
@@ -159,7 +159,7 @@ export function main() {
 
       it('Should log out the user in the browser', () => {
         componentUnderTest.logout();
-        expect(mockCurrentUser.destroy).toHaveBeenCalled();
+        expect(mockCurrentUserService.destroy).toHaveBeenCalled();
       });
     });
 

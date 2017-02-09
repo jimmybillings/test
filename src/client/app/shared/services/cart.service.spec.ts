@@ -29,7 +29,7 @@ export function main() {
     let serviceUnderTest: CartService;
     let mockCartStore: any;
     let mockApi: MockApiService;
-    let mockCurrentUserService: any;
+    let mockCurrentUserServiceService: any;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
@@ -42,11 +42,11 @@ export function main() {
 
       mockApi = new MockApiService();
 
-      mockCurrentUserService = {
+      mockCurrentUserServiceService = {
         fullName: jasmine.createSpy('fullName').and.returnValue(Observable.of('Ross Edfort'))
       };
 
-      serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserService);
+      serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
     });
 
     describe('data getter', () => {
@@ -96,7 +96,7 @@ export function main() {
 
       it('does not add a project if one already exists', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserService);
+        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
 
         serviceUnderTest.initializeData().subscribe(() => {
           expect(mockApi.post).not.toHaveBeenCalled();
@@ -179,7 +179,7 @@ export function main() {
 
       it('names new projects based on existing names', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserService);
+        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
 
         serviceUnderTest.addProject();
 
@@ -220,7 +220,7 @@ export function main() {
 
       it('does not add a project if one still exists after a removal', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserService);
+        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
 
         serviceUnderTest.removeProject(mockProject);
 

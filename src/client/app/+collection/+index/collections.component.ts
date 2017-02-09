@@ -3,7 +3,7 @@ import { Collection } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 import { Router } from '@angular/router';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Rx';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
@@ -42,7 +42,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public collections: CollectionsService,
     public collectionContext: CollectionContextService,
     public activeCollection: ActiveCollectionService,
-    public currentUser: CurrentUser,
+    public currentUser: CurrentUserService,
     public uiConfig: UiConfig,
     public uiState: UiState,
     private snackBar: MdSnackBar,

@@ -4,13 +4,13 @@ import { Observable } from 'rxjs/Rx';
 export function main() {
   describe('Asset Component', () => {
 
-    let mockCurrentUser: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
+    let mockCurrentUserService: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockErrorStore: any, mockCart: any,
       mockWindow: any, mockMdDialog: any, mockTranslate: any, mockSnackBar: any;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
-      mockCurrentUser = {};
+      mockCurrentUserService = {};
       mockCapabilities = {};
       mockActiveCollection = {
         addAsset: jasmine.createSpy('addAsset').and.returnValue(Observable.of({})),
@@ -51,7 +51,7 @@ export function main() {
       };
 
       componentUnderTest = new AssetComponent(
-        mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
+        mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
         mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore, mockCart,
         mockSnackBar, mockTranslate, mockMdDialog);
 
@@ -113,7 +113,7 @@ export function main() {
             Observable.of({ url: 'http://downloadcomp.url' }))
         };
         componentUnderTest = new AssetComponent(
-          mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
+          mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
           mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore,
           mockCart, mockSnackBar, mockTranslate, mockMdDialog);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });

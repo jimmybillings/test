@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { Authentication } from '../../shared/services/authentication.data.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { DocumentService } from '../services/document.service';
 import { PendoService } from '../../shared/services/pendo.service';
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private authentication: Authentication,
     private router: Router,
-    private currentUser: CurrentUser,
+    private currentUser: CurrentUserService,
     private document: DocumentService,
     private uiConfig: UiConfig,
     private route: ActivatedRoute,

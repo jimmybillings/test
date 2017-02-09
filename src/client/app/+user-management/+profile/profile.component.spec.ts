@@ -4,7 +4,7 @@ import { Observable } from '../../imports/test.imports';
 export function main() {
   describe('Profile Component', () => {
 
-    let mockCurrentUser: any;
+    let mockCurrentUserService: any;
     let componentUnderTest: ProfileComponent;
     const user: any = {
       emailAddress: 'jamesbonline@yahoo.com',
@@ -12,8 +12,8 @@ export function main() {
     };
 
     beforeEach(() => {
-      mockCurrentUser = { data: Observable.of(user) };
-      componentUnderTest = new ProfileComponent(mockCurrentUser, null);
+      mockCurrentUserService = { data: Observable.of(user) };
+      componentUnderTest = new ProfileComponent(mockCurrentUserService, null);
     });
 
     describe('ngOnInit()', () => {
@@ -27,8 +27,8 @@ export function main() {
       it('unsubscribes from the UI config to prevent memory leakage', () => {
         let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
         let mockObservable = { subscribe: () => mockSubscription };
-        mockCurrentUser = { data: mockObservable };
-        componentUnderTest = new ProfileComponent(mockCurrentUser, null);
+        mockCurrentUserService = { data: mockObservable };
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();

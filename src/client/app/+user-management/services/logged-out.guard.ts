@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ErrorStore } from '../../shared/stores/error.store';
 
 @Injectable()
 export class LoggedOutGuard implements CanActivate {
   constructor(
-    private currentUser: CurrentUser,
+    private currentUser: CurrentUserService,
     private error: ErrorStore) { }
 
   canActivate() {

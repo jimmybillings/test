@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { AssetStore } from './asset.store';
@@ -14,7 +14,7 @@ import { UserPreferenceService } from '../../shared/services/user-preference.ser
 export class AssetData {
   public data: Observable<any>;
   constructor(
-    public currentUser: CurrentUser,
+    public currentUser: CurrentUserService,
     public userPreference: UserPreferenceService,
     private api: ApiService,
     public store: AssetStore) {

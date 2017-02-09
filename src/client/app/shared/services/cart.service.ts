@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { ApiService } from '../services/api.service';
 import { Api, ApiBody } from '../interfaces/api.interface';
-import { CurrentUser } from '../services/current-user.model';
+import { CurrentUserService } from '../services/current-user.service';
 
 import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
 import { CartStore } from '../stores/cart.store';
@@ -14,7 +14,7 @@ export class CartService {
   constructor(
     private store: CartStore,
     private api: ApiService,
-    private currentUser: CurrentUser
+    private currentUser: CurrentUserService
   ) { }
 
   public get data(): Observable<CartStore> {

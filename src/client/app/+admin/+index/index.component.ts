@@ -5,7 +5,7 @@ import {
 } from '../../shared/interfaces/admin.interface';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { AdminService } from '../services/admin.service';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { User } from '../../shared/interfaces/user.interface';
@@ -33,7 +33,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   public resource: User | Account;
   private routeSubscription: Subscription;
 
-  constructor(public currentUser: CurrentUser,
+  constructor(public currentUser: CurrentUserService,
     public adminService: AdminService,
     public route: ActivatedRoute,
     public uiConfig: UiConfig,

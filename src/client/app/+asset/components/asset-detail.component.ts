@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, Input, OnChanges, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { Capabilities } from '../../shared/services/capabilities.service';
@@ -18,7 +18,7 @@ import { Observable } from 'rxjs/Rx';
 
 export class AssetDetailComponent implements OnChanges {
   @Input() public asset: any;
-  @Input() public currentUser: CurrentUser;
+  @Input() public currentUser: CurrentUserService;
   @Input() public userCan: Capabilities;
   @Input() public uiConfig: UiConfig;
   @Input() public collection: Collection;
