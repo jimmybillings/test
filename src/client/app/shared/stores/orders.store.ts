@@ -1,7 +1,7 @@
 import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { Orders } from '../../../shared/interfaces/cart.interface';
+import { Orders } from '../interfaces/cart.interface';
 
 
 /**

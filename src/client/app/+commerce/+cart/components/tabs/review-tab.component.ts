@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { OrderStore } from '../../../+order/services/order.store';
+import { OrderStore } from '../../../../shared/stores/order.store';
 import { Tab } from './tab';
 import { CartService } from '../../../../shared/services/cart.service';
 import { CartCapabilities } from '../../services/cart.capabilities';

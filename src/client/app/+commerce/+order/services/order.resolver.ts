@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
-import { OrderService } from './order.service';
-import { OrderStore } from './order.store';
+import { OrderService } from '../../../shared/services/order.service';
+import { OrderStore } from '../../../shared/stores/order.store';
 
 @Injectable()
 export class OrderResolver implements Resolve<any> {

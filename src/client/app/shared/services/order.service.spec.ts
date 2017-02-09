@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Rx';
-import { MockApiService, mockApiMatchers } from '../../../shared/mocks/mock-api.service';
-import { Api } from '../../../shared/interfaces/api.interface';
+import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
+import { Api } from '../interfaces/api.interface';
 import { OrderService } from './order.service';
 
 export function main() {

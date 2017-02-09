@@ -29,6 +29,10 @@ import { CartStore } from '../shared/stores/cart.store';
 import { FeatureStore } from '../shared/stores/feature.store';
 import { SearchService } from '../shared/services/search.service';
 import { SearchStore } from '../shared/stores/search.store';
+import { OrderService } from '../shared/services/order.service';
+import { OrdersService } from '../shared/services/orders.service';
+import { OrderStore } from '../shared/stores/order.store';
+import { OrdersStore } from '../shared/stores/orders.store';
 // WAZEE ROUTES
 import { APP_ROUTES } from '../app.routes';
 
@@ -51,8 +55,8 @@ import { userPreferences } from '../shared/services/user-preference.service';
 import { CollectionContextService, collectionOptions } from '../shared/services/collection-context.service';
 import { cart } from '../shared/stores/cart.store';
 import { sortDefinitions } from '../shared/services/sort-definitions.service';
-import { order } from '../+commerce/+order/services/order.store';
-import { orders } from '../+commerce/+order/services/orders.store';
+import { order } from '../shared/stores/order.store';
+import { orders } from '../shared/stores/orders.store';
 import { features } from '../shared/stores/feature.store';
 
 // TRANSLATIONS
@@ -91,7 +95,11 @@ export const WAZEE_PROVIDERS = [
   FeatureStore,
   SearchService,
   SearchStore,
-  UserService
+  UserService,
+  OrderService,
+  OrdersService,
+  OrdersStore,
+  OrderStore
 ];
 
 export const WAZEE_STORES: any = {

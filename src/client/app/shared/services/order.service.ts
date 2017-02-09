@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
-import { ApiService } from '../../../shared/services/api.service';
-import { Api } from '../../../shared/interfaces/api.interface';
-import { OrderStore } from './order.store';
+import { ApiService } from '../services/api.service';
+import { Api } from '../interfaces/api.interface';
+import { OrderStore } from '../stores/order.store';
 
 @Injectable()
 export class OrderService {

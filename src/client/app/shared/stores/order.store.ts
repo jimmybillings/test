@@ -1,7 +1,7 @@
 import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { Order } from '../../../shared/interfaces/cart.interface';
+import { Order } from '../interfaces/cart.interface';
 
 const initState: any = { id: 1, projects: [], orderStatus: '', orderType: '' };
 export const order: ActionReducer<any> = (state: any = initState, action: Action) => {
