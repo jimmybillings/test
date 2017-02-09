@@ -61,6 +61,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.apiConfig.setPortal(portal);
+    this.multiLingual.setBaseUrl(this.apiConfig.baseUrl());
     this.currentUser.set();
     this.uiConfig.initialize(this.currentUser.loggedIn(), this.apiConfig.getPortal())
       .subscribe();

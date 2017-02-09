@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { TranslateService } from 'ng2-translate';
 import { ILang, MultilingualStateI } from '../interfaces/language.interface';
-import { ApiConfig } from './api.config';
 import 'rxjs/add/operator/take';
 
 declare let portal: string;
@@ -43,16 +42,16 @@ export class MultilingualService {
 
   constructor(
     private translate: TranslateService,
-    private apiConfig: ApiConfig,
     public store: Store<any>) {
-    this.baseUrl = this.apiConfig.baseUrl();
-    this.setLanguage('en');
-
     // subscribe to changes
     store.select('i18n').subscribe((state: MultilingualStateI) => {
       this.translate.use(state.lang);
     });
+  }
 
+  public setBaseUrl(url: string) {
+    this.baseUrl = url;
+    this.setLanguage('en');
   }
 
   public setLanguage(lang: string) {

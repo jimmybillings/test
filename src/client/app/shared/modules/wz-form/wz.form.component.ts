@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { FormModel } from './wz.form.model';
 import { FormFields, ServerErrors } from '../../../shared/interfaces/forms.interface';
-import { ApiConfig } from '../../services/api.config';
 
 /**
  * Home page component - renders the home page
@@ -31,7 +30,6 @@ export class WzFormComponent implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     private formModel: FormModel,
-    private apiConfig: ApiConfig,
     private element: ElementRef) { }
 
   ngOnChanges(changes: any) {

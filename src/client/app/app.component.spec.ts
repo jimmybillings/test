@@ -16,7 +16,10 @@ export function main() {
     beforeEach(() => {
       mockUiConfig = { initialize: jasmine.createSpy('initialize').and.returnValue(Observable.of({})) };
       mockRouter = { events: Observable.of(nextNavigation) };
-      mockMultiLingual = { setLanguage: jasmine.createSpy('setLanguage') };
+      mockMultiLingual = {
+        setLanguage: jasmine.createSpy('setLanguage'),
+        setBaseUrl: jasmine.createSpy('setBaseUrl')
+      };
       mockSearchContext = {
         update: null,
         go: jasmine.createSpy('go'),
@@ -54,7 +57,10 @@ export function main() {
         updateSortPreference: jasmine.createSpy('updateSortPreference')
       };
       mockNotification = { check: jasmine.createSpy('check'), initialize: jasmine.createSpy('initialize') };
-      mockApiConfig = { getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal') };
+      mockApiConfig = {
+        getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal'),
+        baseUrl: () => jasmine.createSpy('baseUrl')
+      };
       mockUserCan = { viewCollections: () => canViewCollections };
       mockCart = { getCartSummary: jasmine.createSpy('getCartSummary') };
       mockWindow = { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') };

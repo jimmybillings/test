@@ -31,12 +31,14 @@ export function main() {
     });
 
     it('Should set the default language to English', inject([MultilingualService], (service: MultilingualService) => {
+      service.setBaseUrl('http://crxextapi.dev.wzplatform.com/');
       service.store.select('i18n').subscribe((i18n: any) => {
         expect(i18n.lang).toBe('/crxextapi.dev.wzplatform.com/api/identities/v1/translation/core/en');
       });
     }));
 
     it('Should change the current language', inject([MultilingualService], (service: MultilingualService) => {
+      service.setBaseUrl('http://crxextapi.dev.wzplatform.com/');
       spyOn(service.store, 'dispatch').and.callThrough();
       service.setLanguage('fr');
       expect(service.store.dispatch).toHaveBeenCalledWith(
