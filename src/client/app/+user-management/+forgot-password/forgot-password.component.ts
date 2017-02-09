@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
-import { User } from '../services/user.data.service';
+import { UserService } from '../../shared/services/user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 
 @Component({
@@ -16,7 +16,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   private configSubscription: Subscription;
 
   constructor(
-    public user: User,
+    public user: UserService,
     public uiConfig: UiConfig) {
   }
 

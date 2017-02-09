@@ -4,6 +4,7 @@ import { Renderer } from '@angular/core';
 import { ApiConfig } from '../shared/services/api.config';
 // import { AppEventService } from '../shared/services/app-event.service';
 import { CurrentUserService } from '../shared/services/current-user.service';
+import { UserService } from '../shared/services/user.service';
 import { UiConfig } from '../shared/services/ui.config';
 import { ErrorStore } from '../shared/stores/error.store';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
@@ -89,7 +90,8 @@ export const WAZEE_PROVIDERS = [
   CartStore,
   FeatureStore,
   SearchService,
-  SearchStore
+  SearchStore,
+  UserService
 ];
 
 export const WAZEE_STORES: any = {

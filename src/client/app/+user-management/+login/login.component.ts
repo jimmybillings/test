@@ -4,7 +4,7 @@ import { Authentication } from '../../shared/services/authentication.data.servic
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
-import { DocumentService } from '../services/document.service';
+import { UserService } from '../../shared/services/user.service';
 import { PendoService } from '../../shared/services/pendo.service';
 import { Observable } from 'rxjs/Rx';
 import { MdDialog, MdDialogRef } from '@angular/material';
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authentication: Authentication,
     private router: Router,
     private currentUser: CurrentUserService,
-    private document: DocumentService,
+    private user: UserService,
     private uiConfig: UiConfig,
     private route: ActivatedRoute,
     private pendo: PendoService,
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.firstTimeUser = true;
       }
     });
-    this.activeTos = this.document.downloadActiveTosDocument();
+    this.activeTos = this.user.downloadActiveTosDocument();
     this.configSubscription =
       this.uiConfig.get('login').subscribe((config: any) =>
         this.config = config.config);
@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public showTerms() {
-    this.document.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
+    this.user.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
       let dialogRef: MdDialogRef<any> = this.dialog.open(WzTermsComponent, { disableClose: true });
       dialogRef.componentInstance.terms = terms;
       dialogRef.componentInstance.dialog = dialogRef;
@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public agreeToTermsAndClose(): void {
-    this.document.agreeUserToTerms();
+    this.user.agreeUserToTerms();
     this.router.navigate(['/']);
   }
 }

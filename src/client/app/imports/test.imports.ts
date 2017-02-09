@@ -13,7 +13,6 @@ import { WAZEE_STORES, WAZEE_PROVIDERS } from './wazee';
 // SERVICES NOT IN WAZEE_PROVIDERS
 import { AdminService } from '../+admin/services/admin.service';
 import { ConfigService } from '../+admin/services/config.service';
-import { User } from '../+user-management/services/user.data.service';
 import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 
 // MODELS
@@ -43,7 +42,6 @@ export const beforeEachProvidersArray: Array<any> = [
   WzNotificationService,
   ConfigService,
   AdminService,
-  User,
   Renderer,
   LocationStrategy,
   MockBackend,
