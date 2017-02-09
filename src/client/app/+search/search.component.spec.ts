@@ -233,9 +233,9 @@ export function main() {
       });
     });
 
-    describe('onChangeAssetView()', () => {
+    describe('changeAssetView()', () => {
       it('Should update user preference when new view type is selected', () => {
-        componentUnderTest.onChangeAssetView('list');
+        componentUnderTest.changeAssetView('list');
         expect(mockUserPreferences.updateAssetViewPreference).toHaveBeenCalledWith('list');
       });
     });

@@ -134,7 +134,7 @@ export class SearchComponent implements OnDestroy {
     this.searchContext.go();
   }
 
-  public onChangeAssetView(viewType: string): void {
+  public changeAssetView(viewType: string): void {
     this.userPreferences.updateAssetViewPreference(viewType);
   }
 

@@ -6,7 +6,7 @@ import { ILang, MultilingualStateI } from '../interfaces/language.interface';
 import 'rxjs/add/operator/take';
 
 declare let portal: string;
-
+declare let baseUrl: string;
 const initialState: MultilingualStateI = {
   lang: ''
 };
@@ -37,25 +37,18 @@ export class MultilingualService {
     { code: 'de', title: 'German' }
   ];
 
-  public portal: string;
-  public baseUrl: string;
-
   constructor(
     private translate: TranslateService,
     public store: Store<any>) {
     // subscribe to changes
+    this.setLanguage('en');
     store.select('i18n').subscribe((state: MultilingualStateI) => {
       this.translate.use(state.lang);
     });
   }
 
-  public setBaseUrl(url: string) {
-    this.baseUrl = url;
-    this.setLanguage('en');
-  }
-
   public setLanguage(lang: string) {
-    lang = `${this.baseUrl.split(':/')[1]}api/identities/v1/translation/${portal}/${lang}`;
+    lang = `${baseUrl.split(':/')[1]}api/identities/v1/translation/${portal}/${lang}`;
     this.store.dispatch({ type: MULTILINGUAL_ACTIONS.LANG_CHANGE, payload: { lang } });
   }
 }
