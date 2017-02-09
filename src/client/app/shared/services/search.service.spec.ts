@@ -7,8 +7,8 @@ import {
   TestBed
 } from '../../imports/test.imports';
 
-import { AssetData } from './asset.data.service';
-import { AssetStore } from './asset.store';
+import { SearchService } from './search.service';
+import { SearchStore } from '../stores/search.store';
 
 export function main() {
   describe('Asset data service', () => {
@@ -23,13 +23,13 @@ export function main() {
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
         ...beforeEachProvidersArray,
-        AssetStore
+        SearchStore
       ]
     }));
 
     it('Should make a request to the search api with the correct url and params ' +
       'and return the correct payload to cache in the store -- LOGGED OUT',
-      inject([AssetData, MockBackend], (service: AssetData, mockBackend: MockBackend) => {
+      inject([SearchService, MockBackend], (service: SearchService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.searchAssets(searchParams()).subscribe((payload) => {
@@ -46,7 +46,7 @@ export function main() {
 
     it('Should make a request to the search api with the correct url and params and' +
       'return the correct payload to cache in the store -- LOGGED IN',
-      inject([AssetData, MockBackend], (service: AssetData, mockBackend: MockBackend) => {
+      inject([SearchService, MockBackend], (service: SearchService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.currentUser.set(setLoggedInUser(), 'SOME_TOKEN');

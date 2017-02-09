@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, Renderer, ChangeDetectionStrategy } from '@angular/core';
-import { AssetData } from './services/asset.data.service';
+import { SearchService } from '../shared/services/search.service';
 import { UiConfig } from '../shared/services/ui.config';
 import { Observable } from 'rxjs/Rx';
 import { SearchContext } from '../shared/services/search-context.service';
@@ -40,7 +40,7 @@ export class SearchComponent implements OnDestroy {
     private error: ErrorStore,
     private searchContext: SearchContext,
     private uiConfig: UiConfig,
-    private assetData: AssetData,
+    private search: SearchService,
     private userPreferences: UserPreferenceService,
     private renderer: Renderer,
     private window: Window,
@@ -51,7 +51,7 @@ export class SearchComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.assetData.clearAssets();
+    this.search.clearAssets();
   }
 
   public showSnackBar(message: any) {
@@ -94,7 +94,7 @@ export class SearchComponent implements OnDestroy {
   }
 
   public downloadComp(params: any): void {
-    this.assetData.downloadComp(params.assetId, params.compType).subscribe((res) => {
+    this.search.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
         this.window.location.href = res.url;
       } else {

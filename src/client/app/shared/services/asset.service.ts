@@ -5,7 +5,6 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 import { CurrentUserService } from '../../shared/services/current-user.service';
-import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 
 export const asset: ActionReducer<any> = (state = {}, action: Action) => {
   switch (action.type) {
@@ -26,8 +25,7 @@ export class AssetService {
   constructor(
     public store: Store<any>,
     public api: ApiService,
-    private currentUser: CurrentUserService,
-    private activeCollection: ActiveCollectionService) {
+    private currentUser: CurrentUserService) {
     this.data = this.store.select('asset');
   }
 

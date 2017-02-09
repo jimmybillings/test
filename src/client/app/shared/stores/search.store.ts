@@ -14,7 +14,7 @@ const initAssets: any = {
   }
 };
 
-export const assets: ActionReducer<any> = (state: any = initAssets, action: Action) => {
+export const searchStore: ActionReducer<any> = (state: any = initAssets, action: Action) => {
 
   switch (action.type) {
     case 'SEARCH':
@@ -29,12 +29,12 @@ export const assets: ActionReducer<any> = (state: any = initAssets, action: Acti
 };
 
 @Injectable()
-export class AssetStore {
+export class SearchStore {
 
   constructor(private store: Store<any>) { }
 
   public get data(): Observable<any> {
-    return this.store.select('assets');
+    return this.store.select('searchStore');
   }
 
   public storeAssets(payload: any): void {

@@ -8,8 +8,8 @@
 	<section class="search-header" layout="row" layout-align="center center">
 		<header flex-gt-lg="95" flex="100">
 			<div layout="row" layout-align="space-between end">
-				<h2 *ngIf="!(assetData.data | async).items" flex="100" class="md-display-1 alert"> {{ 'SEARCH.NO_RESULTS.PG_HEADING' | translate }}</h2>
-				<div *ngIf="(assetData.data | async).items" class="asset-sort-by tools" flex="auto">
+				<h2 *ngIf="!(search.data | async).items" flex="100" class="md-display-1 alert"> {{ 'SEARCH.NO_RESULTS.PG_HEADING' | translate }}</h2>
+				<div *ngIf="(search.data | async).items" class="asset-sort-by tools" flex="auto">
 					<button md-button class="is-dd" color="primary" [md-menu-trigger-for]="assetSortMenu">
 						<span class="key">{{'SEARCH.SORT_BTN_LABEL' | translate }}</span><span class="value md-caption">{{ (sortDefinition.data | async).currentSort.name }}</span>
 					</button>
@@ -33,12 +33,12 @@
 					<breadcrumb-component layout="row" layout-wrap layout-align="start start" class="search-breadcrumbs root" 
 					[filters]="filter.data | async" 
 					(onFilterEvent)="filterEvent($event)"></breadcrumb-component>
-					<wz-pagination flex="noshrink" *ngIf="(assetData.data | async).pagination.totalCount > 0" [pagination]="(assetData.data | async).pagination" (getPage)="changePage($event)"></wz-pagination>
+					<wz-pagination flex="noshrink" *ngIf="(search.data | async).pagination.totalCount > 0" [pagination]="(search.data | async).pagination" (getPage)="changePage($event)"></wz-pagination>
 				</div>
-				<no-results *ngIf="!(assetData.data | async).items"></no-results>
+				<no-results *ngIf="!(search.data | async).items"></no-results>
 
 				<wz-asset-grid *ngIf="(userPreferences.data | async).assetView =='grid'" class="grid" 
-					[assets]="(assetData.data | async).items" 
+					[assets]="(search.data | async).items" 
 					[userCan]="userCan" 
 					[assetType]="'search'"
 					[collection]="activeCollection.data | async"
@@ -51,7 +51,7 @@
 				</wz-asset-grid>
 
 				<wz-asset-list *ngIf="(userPreferences.data | async).assetView =='list'" class="list" 
-					[assets]="(assetData.data | async).items" 
+					[assets]="(search.data | async).items" 
 					[userCan]="userCan"
 					[assetType]="'search'"
 					[collection]="activeCollection.data | async"
@@ -63,7 +63,7 @@
 					(onHideSpeedview)="hideSpeedview()">
 				</wz-asset-list>
 
-				<wz-pagination flex="noshrink" *ngIf="(assetData.data | async).pagination.totalCount > 0" [pagination]="(assetData.data | async).pagination" (getPage)="changePage($event)"></wz-pagination>
+				<wz-pagination flex="noshrink" *ngIf="(search.data | async).pagination.totalCount > 0" [pagination]="(search.data | async).pagination" (getPage)="changePage($event)"></wz-pagination>
 			</div>
 		</div>
 	</section>

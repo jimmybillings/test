@@ -26,11 +26,14 @@ import { PendoService } from '../shared/services/pendo.service';
 import { CartService } from '../shared/services/cart.service';
 import { CartStore } from '../shared/stores/cart.store';
 import { FeatureStore } from '../shared/stores/feature.store';
+import { SearchService } from '../shared/services/search.service';
+import { SearchStore } from '../shared/stores/search.store';
 // WAZEE ROUTES
 import { APP_ROUTES } from '../app.routes';
 
 // WAZEE STORES
-import { assets } from '../+search/services/asset.store';
+
+import { searchStore } from '../shared/stores/search.store';
 import { asset } from '../shared/services/asset.service';
 import { currentUser } from '../shared/services/current-user.service';
 import { config } from '../shared/services/ui.config';
@@ -84,12 +87,14 @@ export const WAZEE_PROVIDERS = [
   PendoService,
   CartService,
   CartStore,
-  FeatureStore
+  FeatureStore,
+  SearchService,
+  SearchStore
 ];
 
 export const WAZEE_STORES: any = {
   config: config,
-  assets: assets,
+  searchStore: searchStore,
   asset: asset,
   currentUser: currentUser,
   adminResources: adminResources,

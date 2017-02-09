@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
-import { AssetStore } from './asset.store';
+import { SearchStore } from '../stores/search.store';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 
 /**
@@ -11,13 +11,13 @@ import { UserPreferenceService } from '../../shared/services/user-preference.ser
  * and returns search results
  */
 @Injectable()
-export class AssetData {
+export class SearchService {
   public data: Observable<any>;
   constructor(
     public currentUser: CurrentUserService,
     public userPreference: UserPreferenceService,
     private api: ApiService,
-    public store: AssetStore) {
+    public store: SearchStore) {
     this.data = this.store.data;
   }
 
