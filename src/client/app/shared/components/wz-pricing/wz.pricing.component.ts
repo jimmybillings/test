@@ -12,14 +12,14 @@ export class WzPricingComponent implements OnInit {
   @Input() dialog: any;
   @Input() usagePrice: Observable<any>;
   @Input() pricingPreferences: any;
-  @Input() calculatePrice: Function;
+  @Output() calculatePrice: EventEmitter<any> = new EventEmitter();
 
   ngOnInit() {
     this.buildForm();
   }
 
   public onSubmit(): void {
-    this.dialog.close({ price: this.usagePrice, attributes: this.formattedForm });
+    this.calculatePrice.emit({ price: this.usagePrice, attributes: this.formattedForm });
   }
 
   public parentIsEmpty(currentAttribute: any): boolean {
@@ -84,7 +84,7 @@ export class WzPricingComponent implements OnInit {
     this.clearForm(index);
     this.form[index].value = option.value;
     if (index === this.attributes.length - 1) {
-      this.calculatePrice(this.formattedForm);
+      this.calculatePrice.emit(this.formattedForm);
     }
   }
 

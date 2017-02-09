@@ -51,6 +51,10 @@ export class LineItemsComponent {
     this.selectedLineItem = lineItem;
   }
 
+  public showPricingDialog(lineItem: LineItem): void {
+    this.lineItemsNotify.emit({ type: 'SHOW_PRICING_DIALOG', payload: lineItem });
+  }
+
   public selectTarget(currentlySelected: string, newTarget: string, lineItem: LineItem): void {
     if (currentlySelected !== newTarget) {
       this.lineItemsNotify.emit(

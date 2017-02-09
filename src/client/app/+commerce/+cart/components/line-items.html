@@ -12,6 +12,7 @@
 				</div>
 				<div class="line-item-actions" flex-gt-sm="10">
 					<div layout="row" layout-align="center center">
+						<button md-icon-button (click)="showPricingDialog(lineItem)" title="usage pricing"><md-icon>attach_money</md-icon></button>
 						<button md-icon-button (click)="clone(lineItem);" title="copy line item"><md-icon>content_copy</md-icon></button>
 						<button md-icon-button (click)="remove(lineItem)" title="delete line item"><md-icon>clear</md-icon></button>
 						<button md-button *ngIf="this.otherProjects.length === 1" (click)="moveTo(otherProjects[0], lineItem)">{{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProjects[0].name} | slice:0:26 }}</button>
