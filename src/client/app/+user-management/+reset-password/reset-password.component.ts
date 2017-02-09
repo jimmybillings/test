@@ -17,6 +17,7 @@ import { TranslateService } from 'ng2-translate';
 export class ResetPasswordComponent implements OnInit, OnDestroy {
   public config: any;
   public serverErrors: ServerErrors = null;
+  public shareKey: string;
   private configSubscription: Subscription;
 
   constructor(
@@ -31,25 +32,25 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.shareKey = this.route.snapshot.params['share_key'] || null;
+    const configSegment: string = this.currentUser.loggedIn() ? 'changePassword' : 'resetPassword';
     this.configSubscription =
-      this.uiConfig.get('resetPassword').subscribe((config: any) =>
-        this.config = config.config);
+      this.uiConfig.get(configSegment)
+        .subscribe((config: any) => this.config = config.config);
   }
 
   ngOnDestroy() {
     this.configSubscription.unsubscribe();
   }
 
-  public onSubmit(user: any): void {
-    this.user.resetPassword({ newPassword: user.newPassword }, this.route.snapshot.params['share_key'])
-      .subscribe(
-      (res: any) => {
-        this.currentUser.set(res.user, res.token.token);
-        this.router.navigate(['/']);
-        this.showSnackbar('RESETPASSWORD.PASSWORD_CHANGED');
-      }, (error) => {
-        this.serverErrors = error.json();
-      });
+  public onSubmit(form: any): void {
+    this.user.resetUserPassword(form, this.shareKey).subscribe((res: any) => {
+      if (res) this.currentUser.set(res.user, res.token.token);
+      this.router.navigate(['/']);
+      this.showSnackbar('RESETPASSWORD.PASSWORD_CHANGED');
+    }, (error) => {
+      console.log(error);
+    });
   }
 
   private showSnackbar(message: any): void {
