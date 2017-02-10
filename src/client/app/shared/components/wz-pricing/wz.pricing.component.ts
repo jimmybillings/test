@@ -53,7 +53,7 @@ export class WzPricingComponent implements OnInit {
       // There should always be options, however if there aren't we need to alert the user the calculation went wrong
       if (!rawOptions) {
         this.clearForm();
-        this.pricingEvent.emit({ type: 'ERORR', payload: 'PRICING.ERROR' });
+        this.pricingEvent.emit({ type: 'ERROR', payload: 'PRICING.ERROR' });
         return;
       }
       // The raw options is just an array of strings, we need to map them back to the attributeList 

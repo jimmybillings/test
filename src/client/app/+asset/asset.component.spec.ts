@@ -25,7 +25,7 @@ export function main() {
       };
       mockAssetService = {
         downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})),
-        getPrice: jasmine.createSpy('getPrice').and.returnValue(Observable.of({})),
+        getPrice: jasmine.createSpy('getPrice').and.returnValue(Observable.of({ price: 10, some: 'data' })),
         getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({})),
         state: { assetId: 123456 }
       };
@@ -43,7 +43,7 @@ export function main() {
         open: function () {
           return {
             componentInstance: {
-              calculatePrice: Observable.of({ some: 'data' })
+              pricingEvent: Observable.of({ some: 'data' })
             },
             afterClosed: jasmine.createSpy('afterClosed').and.returnValue(Observable.of({}))
           };
@@ -123,37 +123,92 @@ export function main() {
     });
 
     describe('addAssetToCart()', () => {
-      it('Should call the cart summary service with correct params to add an asset to the cart', () => {
-        componentUnderTest.usagePrice = Observable.of(100);
-        componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
-        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
-          lineItem: {
-            selectedTranscodeTarget: 'Target',
-            price: 100,
-            asset: {
-              assetId: 123123,
-              startTime: undefined,
-              endTime: undefined
-            }
-          },
-          attributes: undefined
+      describe('Should call the cart summary service with the correct params', () => {
+        it('with a price', () => {
+          componentUnderTest.usagePrice = Observable.of(100);
+          componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
+          expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
+            lineItem: {
+              selectedTranscodeTarget: 'Target',
+              price: 100,
+              asset: {
+                assetId: 123123,
+                startTime: undefined,
+                endTime: undefined
+              }
+            },
+            attributes: undefined
+          });
+        });
+
+        it('without a price', () => {
+          componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
+
+          expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
+            lineItem: {
+              selectedTranscodeTarget: 'Target',
+              price: undefined,
+              asset: {
+                assetId: 123123,
+                startTime: undefined,
+                endTime: undefined
+              }
+            },
+            attributes: undefined
+          });
+        });
+
+        it('with asset markers', () => {
+          componentUnderTest.addAssetToCart({
+            assetId: 123123, selectedTranscodeTarget: 'Target', markers:
+            { markers: { in: 1, out: 10 } }
+          });
+          expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
+            lineItem: {
+              selectedTranscodeTarget: 'Target',
+              price: undefined,
+              asset: {
+                assetId: 123123,
+                startTime: 1,
+                endTime: 10
+              }
+            },
+            attributes: undefined
+          });
         });
       });
     });
 
-    describe('onCalculatePrice', () => {
+    describe('calculatePrice', () => {
       it('should call the getPrice method on the assetService', () => {
         componentUnderTest.calculatePrice({ 'a': 'b', 'c': 'd' });
 
         expect(mockAssetService.getPrice).toHaveBeenCalledWith(123456, { 'a': 'b', 'c': 'd' });
       });
+
+      it('should return an observable of the price', () => {
+        let result: Observable<number>;
+        result = componentUnderTest.calculatePrice({ a: 'b', c: 'd' });
+
+        result.subscribe((price: number) => {
+          expect(price).toBe(10);
+        });
+        expect(result instanceof Observable).toBe(true);
+      });
     });
 
     describe('getPricingAttributes', () => {
-      it('should call the getPriceAttributes on the assetService', () => {
+      it('should call the getPriceAttributes on the assetService if there is not rights reproduction cached', () => {
         componentUnderTest.getPricingAttributes('Rights Managed');
 
         expect(mockAssetService.getPriceAttributes).toHaveBeenCalledWith('Rights Managed');
+      });
+
+      it('should get the price if the rights reproduction doesnt match the cache', () => {
+        componentUnderTest.rightsReproduction = 'Rights Managed';
+        componentUnderTest.getPricingAttributes('Rights Managed');
+
+        expect(mockAssetService.getPriceAttributes).not.toHaveBeenCalled();
       });
     });
   });
