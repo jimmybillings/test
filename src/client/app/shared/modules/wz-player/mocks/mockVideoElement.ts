@@ -5,7 +5,7 @@ interface MockVideoCallbacks {
 export type MockVideoEventName = 'durationchange' | 'pause' | 'playing' | 'timeupdate' | 'seeked' | 'seeking';
 
 export class MockVideoElement {
-  public paused: boolean = false; // Assumes autoplay.
+  public paused: boolean = false;
 
   private _currentTime: number = 0;
   private _duration: number = 0;
@@ -18,6 +18,10 @@ export class MockVideoElement {
     seeked: new Array<Function>(),
     seeking: new Array<Function>()
   };
+
+  constructor(autoplay: boolean) {
+    this.paused = !autoplay;
+  }
 
   public play(): void {
     if (!this.paused) return;

@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs/Rx';
-
 import { Tab } from './tab';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
@@ -12,6 +12,7 @@ import { AssetService } from '../../../../shared/services/asset.service';
 import { Capabilities } from '../../../../shared/services/capabilities.service';
 import { WzPricingComponent } from '../../../../shared/components/wz-pricing/wz.pricing.component';
 import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
+import { ErrorStore } from '../../../../shared/stores/error.store';
 
 @Component({
   moduleId: module.id,
@@ -24,7 +25,10 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
 
   public cart: Observable<any>;
   public config: any;
+  public priceAttributes: any = null;
+  public pricingPreferences: any;
   private configSubscription: Subscription;
+  private preferencesSubscription: Subscription;
   private usagePrice: any;
 
   constructor(
@@ -34,17 +38,23 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     private dialog: MdDialog,
     private assetService: AssetService,
     private window: Window,
-    private userPreference: UserPreferenceService) {
+    private userPreference: UserPreferenceService,
+    private error: ErrorStore,
+    @Inject(DOCUMENT) private document: any) {
     super();
   }
 
   public ngOnInit(): void {
     this.cart = this.cartService.data;
+    this.preferencesSubscription = this.userPreference.data.subscribe((data: any) => {
+      this.pricingPreferences = data.pricingPreferences;
+    });
     this.configSubscription = this.uiConfig.get('cart').subscribe((config: any) => this.config = config.config);
   }
 
   public ngOnDestroy() {
     this.configSubscription.unsubscribe();
+    this.preferencesSubscription.unsubscribe();
   }
 
   public get assetsInCart(): Observable<boolean> {
@@ -93,19 +103,46 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   private showPricingDialog(lineItem: any): void {
-    this.assetService.getPriceAttributes().subscribe((data: any) => {
-      let dialogRef: MdDialogRef<WzPricingComponent> = this.dialog.open(WzPricingComponent);
-      dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.pricingPreferences = this.userPreference.state.pricingPreferences;
-      dialogRef.componentInstance.attributes = data;
-      dialogRef.componentInstance.calculatePrice.subscribe((form: any) => {
-        dialogRef.componentInstance.usagePrice = this.assetService.getPrice(lineItem.asset.assetId, form)
-          .map((data: any) => {
-            this.cartService.editLineItem(lineItem, { pricingAttributes: form });
-            return data.price;
-          });
+    if (this.priceAttributes) {
+      this.openPricingDialog(lineItem);
+    } else {
+      this.assetService.getPriceAttributes().subscribe((data: any) => {
+        this.priceAttributes = data;
+        this.openPricingDialog(lineItem);
       });
+    }
+  }
+
+  private openPricingDialog(lineItem: any): void {
+    let dialogRef: MdDialogRef<WzPricingComponent> = this.dialog.open(WzPricingComponent);
+    dialogRef.componentInstance.dialog = dialogRef;
+    dialogRef.componentInstance.pricingPreferences = this.pricingPreferences;
+    dialogRef.componentInstance.attributes = this.priceAttributes;
+    dialogRef.componentInstance.pricingEvent.subscribe((event: any) => {
+      this.handlePricingEvent(event, lineItem, dialogRef);
     });
+  }
+
+  private handlePricingEvent(event: any, lineItem: any, dialogRef: MdDialogRef<WzPricingComponent>): void {
+    switch (event.type) {
+      case 'CALCULATE_PRICE':
+        dialogRef.componentInstance.usagePrice = this.calculatePrice(lineItem.asset.assetId, event.payload);
+        this.cartService.editLineItem(lineItem, { pricingAttributes: event.payload });
+        break;
+      case 'UPDATE_PREFERENCES':
+        this.userPreference.updatePricingPreferences(event.payload);
+        dialogRef.close();
+        break;
+      case 'ERROR':
+        this.error.dispatch({ status: event.payload });
+        break;
+      default:
+        break;
+    }
+  }
+
+  private calculatePrice(assetId: number, attributes: any): Observable<number> {
+    return this.assetService.getPrice(assetId, attributes).map((data: any) => { return data.price; });
   }
 
   private editAsset(payload: any) {
@@ -113,13 +150,18 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
       payload.asset.clipUrl = data.url;
       payload.asset.timeStart = payload.asset.startTime;
       payload.asset.timeEnd = payload.asset.endTime;
-      let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '800px' });
-      Object.assign(dialogRef.componentInstance, { window: this.window, asset: payload.asset });
+      let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '544px' });
+      Object.assign(dialogRef.componentInstance, { window: this.window, asset: payload.asset, displayContext: 'subClipEditDialog' });
+      this.document.body.classList.add('subclipping-edit-open');
+      dialogRef.componentInstance.dialog = dialogRef;
       dialogRef.componentInstance.onSubclip.subscribe((data: any) => {
         payload.asset.startTime = data.in;
         payload.asset.endTime = data.out;
         this.cartService.editLineItem(payload, {});
         dialogRef.close();
+      });
+      dialogRef.afterClosed().subscribe(_ => {
+        this.document.body.classList.remove('subclipping-edit-open');
       });
     });
   }

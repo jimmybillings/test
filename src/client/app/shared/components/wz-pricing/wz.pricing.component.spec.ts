@@ -9,7 +9,7 @@ export function main() {
     beforeEach(() => {
       componentUnderTest = new WzPricingComponent();
       componentUnderTest.attributes = mockOptions();
-      componentUnderTest.calculatePrice = new EventEmitter();
+      componentUnderTest.pricingEvent = new EventEmitter();
       componentUnderTest.dialog = {
         close: jasmine.createSpy('close')
       };
@@ -42,13 +42,13 @@ export function main() {
     describe('onSubmit()', () => {
       it('should emit the calculatePricing event with the form', () => {
         componentUnderTest.ngOnInit();
-        spyOn(componentUnderTest.calculatePrice, 'emit');
+        spyOn(componentUnderTest.pricingEvent, 'emit');
         componentUnderTest.usagePrice = Observable.of(10);
         componentUnderTest.onSubmit();
 
-        expect(componentUnderTest.calculatePrice.emit).toHaveBeenCalledWith({
-          price: Observable.of(10),
-          attributes: { A: '', B: '', C: '', D: '' }
+        expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({
+          type: 'UPDATE_PREFERENCES',
+          payload: { A: '', B: '', C: '', D: '' }
         });
       });
     });
@@ -145,6 +145,7 @@ export function main() {
       });
 
       it('should should emit an error and clear the form if there are no valid options', () => {
+        spyOn(componentUnderTest.pricingEvent, 'emit');
         componentUnderTest.form = [
           { name: 'A', value: 'T' },
           { name: 'B', value: 'N' },
@@ -153,7 +154,7 @@ export function main() {
         ];
         componentUnderTest.validOptionsFor(componentUnderTest.attributes[3]);
 
-        expect(componentUnderTest.dialog.close).toHaveBeenCalledWith({ error: null });
+        expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({ type: 'ERROR', payload: 'PRICING.ERROR' });
         expect(componentUnderTest.form).toEqual([
           { name: 'A', value: '' },
           { name: 'B', value: '' },
@@ -211,11 +212,12 @@ export function main() {
       it('should calculate the price if the last field is filled in', () => {
         let attribute: any = componentUnderTest.attributes[3];
         let option: any = attribute.attributeList[0];
-        spyOn(componentUnderTest.calculatePrice, 'emit');
+        spyOn(componentUnderTest.pricingEvent, 'emit');
         componentUnderTest.handleSelect(attribute, option);
 
-        expect(componentUnderTest.calculatePrice.emit).toHaveBeenCalledWith({
-          A: 'R', B: 'J', C: 'V', D: 'Q'
+        expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({
+          type: 'CALCULATE_PRICE',
+          payload: { A: 'R', B: 'J', C: 'V', D: 'Q' }
         });
       });
     });

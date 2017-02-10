@@ -135,15 +135,26 @@ export class AssetComponent implements OnInit {
     dialogRef.componentInstance.dialog = dialogRef;
     dialogRef.componentInstance.pricingPreferences = this.userPreference.state.pricingPreferences;
     dialogRef.componentInstance.attributes = this.pricingAttributes;
-    dialogRef.componentInstance.calculatePrice.subscribe((form: any) => {
-      this.usagePrice = this.calculatePrice(form);
-      dialogRef.componentInstance.usagePrice = this.usagePrice;
+    dialogRef.componentInstance.pricingEvent.subscribe((event: any) => {
+      this.handlePricingEvent(event, dialogRef);
     });
-    dialogRef.afterClosed().subscribe(data => {
-      if (!data) return;
-      if (data.price) this.usagePrice = data.price;
-      if (data.attributes) this.userPreference.updatePricingPreferences(data.attributes);
-      if (data.error) this.error.dispatch({ status: 'PRICING.ERROR' });
-    });
+  }
+
+  private handlePricingEvent(event: any, dialogRef: MdDialogRef<WzPricingComponent>): void {
+    switch (event.type) {
+      case 'CALCULATE_PRICE':
+        this.usagePrice = this.calculatePrice(event.payload);
+        dialogRef.componentInstance.usagePrice = this.usagePrice;
+        break;
+      case 'UPDATE_PREFERENCES':
+        this.userPreference.updatePricingPreferences(event.payload);
+        dialogRef.close();
+        break;
+      case 'ERROR':
+        this.error.dispatch({ status: event.payload });
+        break;
+      default:
+        break;
+    }
   }
 }

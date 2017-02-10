@@ -27,6 +27,7 @@ div.line-items {
         }
       }
       p.price {
+        min-width: rem(10);
         margin: 0 rem(1);
         color: md-color($md-primary);
         font-size: rem(2);
