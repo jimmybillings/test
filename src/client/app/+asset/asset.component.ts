@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentUser } from '../shared/services/current-user.model';
+import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../shared/services/asset.service';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
 // import { SubclipMarkers } from '../shared/interfaces/asset.interface';
@@ -15,6 +15,7 @@ import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.component';
+import { ErrorStore } from '../shared/stores/error.store';
 
 @Component({
   moduleId: module.id,
@@ -30,7 +31,7 @@ export class AssetComponent implements OnInit {
   private pageSize: number = 50;
 
   constructor(
-    public currentUser: CurrentUser,
+    public currentUser: CurrentUserService,
     public userCan: Capabilities,
     public activeCollection: ActiveCollectionService,
     public searchContext: SearchContext,
@@ -39,7 +40,7 @@ export class AssetComponent implements OnInit {
     public uiConfig: UiConfig,
     public window: Window,
     private userPreference: UserPreferenceService,
-    private notification: WzNotificationService,
+    private error: ErrorStore,
     private cart: CartService,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
@@ -86,23 +87,25 @@ export class AssetComponent implements OnInit {
       if (res.url && res.url !== '') {
         this.window.location.href = res.url;
       } else {
-        this.notification.create('COMPS.NO_COMP');
+        this.error.dispatch({ status: 'COMPS.NO_COMP' });
       }
     });
   }
 
   public addAssetToCart(asset: any): void {
     this.usagePrice.take(1).subscribe((price: any) => {
-      if (asset.markers) {
-        console.log(asset.markers);
-        // console.log(asset.markers.markers.in);
-        // console.log(asset.markers.markers.out);
-        this.cart.addAssetToProjectInCart(
-          asset.assetId, asset.selectedTranscodeTarget, price, this.selectedAttrbutes, asset.markers.markers.in, asset.markers.markers.out);
-      } else {
-        this.cart.addAssetToProjectInCart(
-          asset.assetId, asset.selectedTranscodeTarget, price, this.selectedAttrbutes);
-      }
+      this.cart.addAssetToProjectInCart({
+        lineItem: {
+          selectedTranscodeTarget: asset.selectedTranscodeTarget,
+          price: price ? price : undefined,
+          asset: {
+            assetId: asset.assetId,
+            startTime: asset.markers ? asset.markers.markers.in : undefined,
+            endTime: asset.markers ? asset.markers.markers.out : undefined
+          }
+        },
+        attributes: this.selectedAttrbutes
+      });
     });
     this.showSnackBar({
       key: 'ASSET.ADD_TO_CART_TOAST',
@@ -132,15 +135,15 @@ export class AssetComponent implements OnInit {
     dialogRef.componentInstance.dialog = dialogRef;
     dialogRef.componentInstance.pricingPreferences = this.userPreference.state.pricingPreferences;
     dialogRef.componentInstance.attributes = this.pricingAttributes;
-    dialogRef.componentInstance.calculatePrice = (attributes: any) => {
-      this.usagePrice = this.calculatePrice(attributes);
+    dialogRef.componentInstance.calculatePrice.subscribe((form: any) => {
+      this.usagePrice = this.calculatePrice(form);
       dialogRef.componentInstance.usagePrice = this.usagePrice;
-    };
+    });
     dialogRef.afterClosed().subscribe(data => {
       if (!data) return;
       if (data.price) this.usagePrice = data.price;
       if (data.attributes) this.userPreference.updatePricingPreferences(data.attributes);
-      if (data.error) this.notification.create('PRICING.ERROR');
+      if (data.error) this.error.dispatch({ status: 'PRICING.ERROR' });
     });
   }
 }

@@ -13,7 +13,7 @@ wz-asset-list ul.asset-list-view {
     margin-bottom: rem(1.2);
     padding: rem(.2);
     border-radius: $md-button-border-radius;
-    @include transition($swift-ease-out);
+    transition: $swift-ease-out;
     .actions {
       min-height: rem(4.5);
       position: relative;
@@ -104,7 +104,7 @@ wz-asset-list ul.asset-list-view {
         right: 0;
         padding: 0 1% 1% 0;
         @include text-contrast(md-color($md-foreground, base));
-        @include transition($swift-ease-out);
+        transition: $swift-ease-out;
         z-index: 1;
         span {
           line-height: 1;
@@ -178,10 +178,10 @@ wz-asset-list ul.asset-list-view {
       position: relative;
       padding: 56.25% 0 0 0;
       position: relative;
-      @include background-image(
+      background-image:
         linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.6)),
         linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1))
-      );
+      ;
       img {
         position: absolute;
         display: block;
@@ -201,12 +201,12 @@ wz-asset-list ul.asset-list-view {
         bottom: 0;
         left: 0;
         width: 100%;
-        @include background-image(
+        background-image:
           linear-gradient(-7deg, rgba(md-color($md-grey, 900),0.9), rgba(md-color($md-grey, 900),0) 24%),
           linear-gradient(7deg, rgba(md-color($md-grey, 900),0) 75%, rgba(md-color($md-grey, 900),.9))
-        );
+        ;
         opacity: 0.5;
-        @include transition(opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2));
+        transition: opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2);
         z-index: 1;
       }
     }

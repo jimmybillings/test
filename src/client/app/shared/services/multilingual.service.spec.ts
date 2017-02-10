@@ -11,19 +11,21 @@ import { Http } from '@angular/http';
 export function main() {
   describe('Multilingual Service', () => {
 
-    beforeEach(() => TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot({
-          provide: TranslateLoader,
-          useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-          deps: [Http]
-        }),
-      ],
-      providers: [
-        ...beforeEachProvidersArray,
-        MultilingualService
-      ]
-    }));
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          TranslateModule.forRoot({
+            provide: TranslateLoader,
+            useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
+            deps: [Http]
+          }),
+        ],
+        providers: [
+          ...beforeEachProvidersArray,
+          MultilingualService
+        ]
+      });
+    });
 
     it('should at a minimum support english', () => {
       expect(MultilingualService.SUPPORTED_LANGUAGES.length).toBeGreaterThan(0);

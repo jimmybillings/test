@@ -25,7 +25,7 @@
       border-style: solid; 
       border-color: rgba(md-color($md-grey, 400),.5);
       .md-tab-label {
-        @include transition($swift-ease-out);
+        transition: $swift-ease-out;
         line-height: rem(5.6);
         height: rem(5.2);
         &.md-tab-active {

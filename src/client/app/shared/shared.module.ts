@@ -4,15 +4,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpModule, Http } from '@angular/http';
-import { TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService, TranslateParser } from 'ng2-translate';
+import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
 import { MaterialModule } from '@angular/material';
 
 // Shared Wazee Modules
 import { WzPlayerModule } from './modules/wz-player/wz.player.module';
 import { WzFormModule } from './modules/wz-form/wz-form.module';
 import { WzAssetModule } from './modules/wz-asset/wz-asset.module';
+
 // Shared Pure Components
-import { WzNotificationComponent } from './components/wz-notification/wz.notification.component';
+import { WzNotificationComponent } from './components/wz-notification/wz.notification.service';
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
 import { WzDropdownComponent, WzDropdownPortalDirective } from './components/wz-dropdown/wz.dropdown.component';
 import { WzListComponent } from './components/wz-list/wz.list.component';
@@ -31,14 +32,7 @@ import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soo
 
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
-
-// Shared resolvers
-import { AssetResolver } from '../+asset/services/asset.resolver';
-import { SearchResolver } from '../+search/services/search.resolver';
-import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
-import { OrderResolver } from '../+commerce/+order/services/order.resolver';
-import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
-import { WAZEE_PROVIDERS } from '../imports/wazee';
+import { WAZEE_RESOLVERS, WAZEE_GUARDS, WAZEE_SERVICES, WAZEE_STORE_INTERFACES } from '../imports/wazee';
 
 @NgModule({
   imports: [
@@ -69,13 +63,13 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     ValuesPipe,
     WzDropdownPortalDirective,
     CollectionFormComponent,
-    WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
     WzClipBoardDirective,
     WzTermsComponent,
     WzPricingComponent,
-    WzComingSoonComponent
+    WzComingSoonComponent,
+    WzNotificationComponent
   ],
   exports: [
     WzBreadcrumbComponent,
@@ -97,7 +91,6 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     ReactiveFormsModule,
     MaterialModule,
     WzPlayerModule,
-    WzNotificationComponent,
     WzSortComponent,
     CollectionLinkComponent,
     WzClipBoardDirective,
@@ -105,15 +98,16 @@ import { WAZEE_PROVIDERS } from '../imports/wazee';
     WzAssetModule,
     WzPricingComponent,
     WzComingSoonComponent,
-    WzFormModule
+    WzFormModule,
+    WzNotificationComponent
   ],
   entryComponents: [
-    WzNotificationComponent,
     CollectionLinkComponent,
     CollectionFormComponent,
     WzTermsComponent,
     WzPricingComponent,
-    WzComingSoonComponent]
+    WzComingSoonComponent,
+    WzNotificationComponent]
 })
 
 export class SharedModule {
@@ -121,13 +115,11 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        TranslateService,
-        AssetResolver,
-        SearchResolver,
-        CartResolver,
-        OrderResolver,
-        OrdersResolver,
-        WAZEE_PROVIDERS]
+        WAZEE_RESOLVERS,
+        WAZEE_GUARDS,
+        WAZEE_SERVICES,
+        WAZEE_STORE_INTERFACES
+      ]
     };
   }
 }

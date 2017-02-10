@@ -4,8 +4,7 @@ import { Injectable } from '@angular/core';
 
 import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
-import { CurrentUser } from '../../shared/services/current-user.model';
-import { ActiveCollectionService } from '../../shared/services/active-collection.service';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 
 export const asset: ActionReducer<any> = (state = {}, action: Action) => {
   switch (action.type) {
@@ -26,8 +25,7 @@ export class AssetService {
   constructor(
     public store: Store<any>,
     public api: ApiService,
-    private currentUser: CurrentUser,
-    private activeCollection: ActiveCollectionService) {
+    private currentUser: CurrentUserService) {
     this.data = this.store.select('asset');
   }
 
@@ -89,7 +87,7 @@ export class AssetService {
     });
   }
 
-  public getPriceAttributes(priceModel: string): Observable<any> {
+  public getPriceAttributes(priceModel?: string): Observable<any> {
     priceModel = priceModel ? priceModel.split(' ').join('') : 'RightsManaged';
     return this.api.get(
       Api.Orders,

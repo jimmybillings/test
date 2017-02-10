@@ -8,7 +8,7 @@ collection-tray {
     box-shadow: inset 0 1px 0 0 md-color($foreground, divider);
     width: 100%;
     .asset-carousel {
-      // @include transition($swift-ease-out);
+      // transition: $swift-ease-out;
       width: calc(100% - 500px);
       padding: 0 0 0 0;
       max-height: 100%;
@@ -19,13 +19,12 @@ collection-tray {
       border-radius: 0;
     }
     .focused-collection {
-      @include transition(max-height 0.45s, min-height 0.35s, opacity .99s, $swift-ease-in-out-timing-function);
+      transition: max-height 0.45s, min-height 0.35s, opacity .99s, $swift-ease-in-out-timing-function;
       min-height: rem(5.6);
       max-height: rem(5.6);
-      @include background-image(
+      background-image:
         linear-gradient(md-color($md-primary, 800, .06), md-color($md-primary, 800, .06)),
-        linear-gradient(rgba(md-color($md-background, status-bar), 1), rgba(md-color($md-background, status-bar), 1))
-      );
+        linear-gradient(rgba(md-color($md-background, status-bar), 1), rgba(md-color($md-background, status-bar), 1));
       white-space: nowrap;
       .focused {
         margin-left: rem(1);
@@ -92,7 +91,7 @@ header.app-header.collection-tray-closed collection-tray section {
   margin: 0 0 0 0;
   white-space: nowrap;
   overflow-y: hidden;
-  @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
+  transition: max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function;
   min-height: rem(5.6);
   max-height: rem(5.6);
   // padding: 0;
@@ -104,7 +103,7 @@ header.app-header.collection-tray-closed collection-tray section {
     margin: 0 0 0 0;
     width: rem(9.957);
     opacity: .9;
-    @include transition(none);
+    transition: none;
     .asset {
       padding: 0;
       padding-bottom: 0;
@@ -116,10 +115,10 @@ header.app-header.collection-tray-closed collection-tray section {
         width: 100%;
         position: relative;
         padding: 56.25% 0 0 0;
-        @include background-image(
+        background-image:
           linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.6)),
           linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1))
-        );
+        ;
         &:hover, &:active {
           cursor: pointer;
         }
@@ -149,7 +148,7 @@ header.app-header.collection-tray-closed collection-tray section {
         background-image: none;
         box-shadow: 
         inset 0 -3px 0 0 md-color($md-background, card, 1);        
-        @include transition($swift-ease-out);
+        transition: $swift-ease-out;
         z-index: 1;
         opacity:0
       }

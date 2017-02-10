@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import { ErrorService } from './error.service';
+import { ErrorStore } from '../stores/error.store';
 import { ApiConfig } from './api.config';
 import { Api, ApiOptions, ApiParameters, ApiBody, ApiResponse } from '../interfaces/api.interface';
 import { UiState } from './ui.state';
-import { CurrentUser } from './current-user.model';
+import { CurrentUserService } from './current-user.service';
 
 @Injectable()
 export class ApiService {
   constructor(
     private http: Http,
-    private error: ErrorService,
+    private error: ErrorStore,
     private apiConfig: ApiConfig,
     private uiState: UiState,
-    private currentUser: CurrentUser
+    private currentUser: CurrentUserService
   ) {
   }
 

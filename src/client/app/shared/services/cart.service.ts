@@ -3,9 +3,9 @@ import { Observable } from 'rxjs/Rx';
 
 import { ApiService } from '../services/api.service';
 import { Api, ApiBody } from '../interfaces/api.interface';
-import { CurrentUser } from '../services/current-user.model';
+import { CurrentUserService } from '../services/current-user.service';
 
-import { Project, LineItem } from '../interfaces/cart.interface';
+import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
 import { CartStore } from '../stores/cart.store';
 import { CartUtilities } from '../utilities/cart.utilities';
 
@@ -14,7 +14,7 @@ export class CartService {
   constructor(
     private store: CartStore,
     private api: ApiService,
-    private currentUser: CurrentUser
+    private currentUser: CurrentUserService
   ) { }
 
   public get data(): Observable<CartStore> {
@@ -62,20 +62,13 @@ export class CartService {
       });
   }
 
-  public addAssetToProjectInCart(
-    assetId: string,
-    transcodeTarget?: string,
-    price?: number,
-    attributes?: any,
-    startTime?: string,
-    endTime?: string
-  ): void {
+  public addAssetToProjectInCart(addAssetParameters: AddAssetParameters): void {
     let existingProjectNames: Array<string> = this.existingProjectNames;
     this.api.put(
       Api.Orders,
       'cart/asset/lineItem/quick',
       {
-        body: this.formateBody(assetId, transcodeTarget, price, attributes, startTime, endTime),
+        body: this.formatBody(addAssetParameters),
         parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
       }
     ).subscribe(this.updateCart);
@@ -108,32 +101,20 @@ export class CartService {
   }
 
   public editLineItem(lineItem: LineItem, fieldToEdit: any): void {
+    if (!!fieldToEdit.pricingAttributes) {
+      fieldToEdit = { attributes: this.formatAttributes(fieldToEdit.pricingAttributes) };
+    }
     Object.assign(lineItem, fieldToEdit);
-    console.log(lineItem, fieldToEdit);
     this.api.put(Api.Orders, `cart/update/lineItem/${lineItem.id}`, { body: lineItem }).take(1)
       .subscribe(this.updateCart);
   }
 
-  private formateBody(
-    assetId: string,
-    selectedTranscodeTarget?: string,
-    price?: number,
-    attributes?: any,
-    startTime?: string,
-    endTime?: string
-  ): any {
-    let formatted: any = {
-      lineItem: {
-        asset: {
-          assetId: assetId
-        },
-      }
-    };
-    if (selectedTranscodeTarget) Object.assign(formatted.lineItem, { selectedTranscodeTarget });
-    if (price) Object.assign(formatted.lineItem, { price });
-    if (attributes) Object.assign(formatted, { attributes: this.formatAttributes(attributes) });
-    if (startTime) Object.assign(formatted.lineItem.asset, { startTime: startTime });
-    if (endTime) Object.assign(formatted.lineItem.asset, { endTime: endTime });
+  private formatBody(parameters: AddAssetParameters): any {
+    let formatted = {};
+    Object.assign(formatted, { lineItem: parameters.lineItem });
+    if (parameters.attributes) {
+      Object.assign(formatted, { attributes: this.formatAttributes(parameters.attributes) });
+    }
     return formatted;
   }
 

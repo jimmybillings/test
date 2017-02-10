@@ -4,12 +4,12 @@ import { Observable } from 'rxjs/Rx';
 export function main() {
   describe('Admin Dashboard Component', () => {
     let componentUnderTest: DashboardComponent;
-    let mockCurrentUser: any;
+    let mockCurrentUserService: any;
 
     beforeEach(() => {
-      mockCurrentUser = { fullName: () => Observable.of('Ross Edfort') };
+      mockCurrentUserService = { fullName: () => Observable.of('Ross Edfort') };
 
-      componentUnderTest = new DashboardComponent(mockCurrentUser);
+      componentUnderTest = new DashboardComponent(mockCurrentUserService);
     });
 
     describe('instantiated', () => {

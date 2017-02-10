@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { OrderService } from '../services/order.service';
+import { OrderService } from '../../../shared/services/order.service';
 
 @Component({
   moduleId: module.id,

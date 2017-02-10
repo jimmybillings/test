@@ -6,7 +6,6 @@ import { APP_ROUTES } from './app.routes';
 
 import { HomeModule } from './+home/home.module';
 import { UserManagementModule } from './+user-management/user-management.module';
-import { ContentModule } from './+content/content.module';
 import { SearchModule } from './+search/search.module';
 import { AssetModule } from './+asset/asset.module';
 import { AdminModule } from './+admin/admin.module';
@@ -28,7 +27,6 @@ import { NotFoundComponent } from './app.not-found.component';
     SearchModule,
     AssetModule,
     CollectionModule,
-    ContentModule,
     UserManagementModule,
     AdminModule,
     CommerceModule,

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 
 @Injectable()
 export class AdminCapabilities {
-  constructor(public currentUser: CurrentUser) { }
+  constructor(public currentUser: CurrentUserService) { }
 
   public viewAdmin(): boolean {
     return this.userHas('Root');

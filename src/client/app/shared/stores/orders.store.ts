@@ -1,45 +1,46 @@
+import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
+import { Orders } from '../interfaces/cart.interface';
 
-const initAssets: any = {
+
+/**
+ * Orders store -
+ */
+const ordersState: Orders = {
   items: [],
   pagination: {
+    totalCount: 0,
+    currentPage: 1,
+    pageSize: 100,
     hasNextPage: false,
     hasPreviousPage: false,
-    numberOfPages: 0,
-    pageSize: 100,
-    totalCount: 0,
-    currentPage: 1
+    numberOfPages: 0
   }
 };
 
-export const assets: ActionReducer<any> = (state: any = initAssets, action: Action) => {
-
+export const orders: ActionReducer<any> = (state: Orders = ordersState, action: Action) => {
   switch (action.type) {
-    case 'SEARCH':
+    case 'ORDERS.GET_ORDERS':
       return Object.assign({}, action.payload);
-    case 'SEARCH.RESET':
-      return Object.assign({}, initAssets);
-    case 'SEARCH.CLEAR_ASSETS':
-      return Object.assign({}, state, state.items = []);
     default:
       return state;
   }
 };
 
-@Injectable()
-export class AssetStore {
 
+@Injectable()
+export class OrdersStore {
   constructor(private store: Store<any>) { }
 
   public get data(): Observable<any> {
-    return this.store.select('assets');
+    return this.store.select('orders');
   }
 
-  public storeAssets(payload: any): void {
+  public storeOrders(payload: any): void {
+    payload.items = payload.items === undefined ? [] : payload.items;
     this.store.dispatch({
-      type: 'SEARCH', payload: {
+      type: 'ORDERS.GET_ORDERS', payload: {
         'items': payload.items,
         'pagination': {
           'totalCount': payload.totalCount,

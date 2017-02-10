@@ -1,11 +1,12 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { OrderStore } from '../../../+order/services/order.store';
-import { WzNotificationService } from '../../../../shared/components/wz-notification/wz.notification.service';
+import { OrderStore } from '../../../../shared/stores/order.store';
 import { Tab } from './tab';
 import { CartService } from '../../../../shared/services/cart.service';
 import { CartCapabilities } from '../../services/cart.capabilities';
+import { MdSnackBar } from '@angular/material';
+import { TranslateService } from 'ng2-translate';
 declare var baseUrl: any;
 
 @Component({
@@ -22,7 +23,8 @@ export class ReviewTabComponent extends Tab implements OnInit {
     private userCan: CartCapabilities,
     private router: Router,
     private order: OrderStore,
-    private notification: WzNotificationService) {
+    private snackbar: MdSnackBar,
+    private translate: TranslateService) {
     super();
   }
 
@@ -41,7 +43,7 @@ export class ReviewTabComponent extends Tab implements OnInit {
     this.cartService.purchaseOnCredit().subscribe(data => {
       this.order.update(data);
       this.router.navigate(['/commerce/order/' + data.id]).then(() => {
-        this.notification.create('NOTIFICATION.ORDER_PLACED');
+        this.showSnackbar('NOTIFICATION.ORDER_PLACED');
       });
     });
   }
@@ -82,5 +84,12 @@ export class ReviewTabComponent extends Tab implements OnInit {
       // This is the line that fails, with this error: "Cannot read property 'appendChild' of null"
       document.getElementById('paymentArea_').appendChild(f);
     }
+  }
+
+  private showSnackbar(message: any): void {
+    this.translate.get(message)
+      .subscribe((res: string) => {
+        this.snackbar.open(res, '', { duration: 2000 });
+      });
   }
 }

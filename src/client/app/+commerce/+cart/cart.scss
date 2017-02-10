@@ -5,10 +5,17 @@ cart-component .tabs-section md-tab-group {
   .md-tab-header {
     border-width: 0;
   }
+  .md-tab-body-wrapper {
+    .md-tab-body-content {
+      nav {
+        margin: rem(1) rem(2);
+      }
+    }
+  }
 }
 
 section.cart {
-  button.purchase-button {
-    margin-left: rem(2);
+  #paymentArea_ {
+    margin-right: rem(2);
   }
 }

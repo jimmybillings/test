@@ -6,11 +6,11 @@ import { Api } from '../interfaces/api.interface';
 export function main() {
   describe('UserPreferenceService', () => {
     let serviceUnderTest: UserPreferenceService;
-    let mockCurrentUserService: any;
+    let mockCurrentUserServiceService: any;
     let mockStore: any;
     let mockApi: MockApiService;
 
-    mockCurrentUserService = {
+    mockCurrentUserServiceService = {
       loggedIn: () => false
     };
 
@@ -25,7 +25,7 @@ export function main() {
       jasmine.addMatchers(mockApiMatchers);
       mockApi = new MockApiService();
       mockApi.getResponse = { prefs: { displayFilterCounts: 'false', collectionTrayIsOpen: 'true' } };
-      serviceUnderTest = new UserPreferenceService(mockCurrentUserService, mockStore, mockApi.injector);
+      serviceUnderTest = new UserPreferenceService(mockCurrentUserServiceService, mockStore, mockApi.injector);
       serviceUnderTest.reset();
     });
 

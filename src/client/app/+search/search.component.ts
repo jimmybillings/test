@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, Renderer, ChangeDetectionStrategy } from '@angular/core';
-import { AssetData } from './services/asset.data.service';
+import { SearchService } from '../shared/services/search.service';
 import { UiConfig } from '../shared/services/ui.config';
 import { Observable } from 'rxjs/Rx';
 import { SearchContext } from '../shared/services/search-context.service';
@@ -8,12 +8,12 @@ import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { SortDefinitionsService } from '../shared/services/sort-definitions.service';
 import { Capabilities } from '../shared/services/capabilities.service';
-import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
 import { CartService } from '../shared/services/cart.service';
 import { AssetService } from '../shared/services/asset.service';
 import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
+import { ErrorStore } from '../shared/stores/error.store';
 
 /**
  * Asset search page component - renders search page results
@@ -37,10 +37,10 @@ export class SearchComponent implements OnDestroy {
     private cart: CartService,
     private assetService: AssetService,
     private sortDefinition: SortDefinitionsService,
-    private notification: WzNotificationService,
+    private error: ErrorStore,
     private searchContext: SearchContext,
     private uiConfig: UiConfig,
-    private assetData: AssetData,
+    private search: SearchService,
     private userPreferences: UserPreferenceService,
     private renderer: Renderer,
     private window: Window,
@@ -51,7 +51,7 @@ export class SearchComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.assetData.clearAssets();
+    this.search.clearAssets();
   }
 
   public showSnackBar(message: any) {
@@ -86,7 +86,7 @@ export class SearchComponent implements OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cart.addAssetToProjectInCart(asset.assetId);
+    this.cart.addAssetToProjectInCart({ lineItem: { asset: { assetId: asset.assetId } } });
     this.showSnackBar({
       key: 'ASSET.ADD_TO_CART_TOAST',
       value: { assetId: asset.assetId }
@@ -94,11 +94,11 @@ export class SearchComponent implements OnDestroy {
   }
 
   public downloadComp(params: any): void {
-    this.assetData.downloadComp(params.assetId, params.compType).subscribe((res) => {
+    this.search.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
         this.window.location.href = res.url;
       } else {
-        this.notification.create('COMPS.NO_COMP');
+        this.error.dispatch({ status: 'COMPS.NO_COMP' });
       }
     });
   }
@@ -134,7 +134,7 @@ export class SearchComponent implements OnDestroy {
     this.searchContext.go();
   }
 
-  public onChangeAssetView(viewType: string): void {
+  public changeAssetView(viewType: string): void {
     this.userPreferences.updateAssetViewPreference(viewType);
   }
 

@@ -88,6 +88,14 @@ export class ActiveCollectionService implements OnInit {
     }
   }
 
+  public updateAsset(id: any, body: any): Observable<any> {
+    return this.api.put(
+      Api.Identities,
+      `collection/${id}/updateAsset`,
+      { body: body })
+      .do((data) => this.store.updateAsset(data));
+  }
+
   public getItems(collectionId: number, collectionParams: any, set: boolean = true, loading: boolean = true): Observable<any> {
     if (collectionParams['i']) collectionParams['i'] -= 1;
     this.params = Object.assign({}, this.params, collectionParams);

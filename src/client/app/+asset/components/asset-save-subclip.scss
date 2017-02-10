@@ -1,19 +1,20 @@
 asset-save-subclip {
   position: absolute;
+  top: rem(-4.0);
   right: 0;
-  @include calc(width, "100% - 10px");
-  @include calc(height, "100% + 40px");
+  width: calc(100% - 10px);
+  height: calc(100% + 40px);
   background-color: md-color($background, card);
   z-index: 2;
-  margin-top: rem(-4.0);
+  // margin-top: rem(-4.0);
   padding: rem(2.4);
   border-radius: rem(.2);
   box-sizing: border-box;
   @include md-elevation(6);
   color: md-color($foreground, text);
   @media screen and (min-width: $layout-breakpoint-sm) {
-    @include calc(max-height, "100% + 40px");
-    @include calc(max-width, "33% - 4px");
+    max-height: calc(100% + 40px);
+    max-width: calc(33% - 4px);
   }
   .md-dialog-container .wz-dialog {
     width: 100%;

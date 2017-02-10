@@ -13,7 +13,6 @@ export class AppNavComponent {
   @Input() currentUser: any;
   @Input() config: any;
   @Input() supportedLanguages: any;
-  @Input() state: any;
   @Input() collection: Collection;
   @Input() uiState: any;
   @Input() prefs: any;

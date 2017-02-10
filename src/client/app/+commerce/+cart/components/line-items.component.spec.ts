@@ -84,6 +84,18 @@ export function main() {
       });
     });
 
+    describe('showPricingDialog', () => {
+      it('should emit the "SHOW_PRICING_DIALOG" event', () => {
+        let lineItem: any = { some: 'lineItem' };
+
+        componentUnderTest.lineItemsNotify.subscribe((event: Object) => {
+          expect(event).toEqual({ type: 'SHOW_PRICING_DIALOG', payload: lineItem });
+        });
+
+        componentUnderTest.showPricingDialog(lineItem);
+      });
+    });
+
     describe('selectTarget', () => {
       it('emits the proper event', () => {
         let lineItem: any = { some: 'lineItem' };

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api, ApiBody, ApiParameters } from '../interfaces/api.interface';
 import { CartService } from './cart.service';
-import { Project, LineItem } from '../interfaces/cart.interface';
+import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
 
 export function main() {
   describe('Cart Service', () => {
@@ -29,7 +29,7 @@ export function main() {
     let serviceUnderTest: CartService;
     let mockCartStore: any;
     let mockApi: MockApiService;
-    let mockCurrentUserService: any;
+    let mockCurrentUserServiceService: any;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
@@ -42,11 +42,11 @@ export function main() {
 
       mockApi = new MockApiService();
 
-      mockCurrentUserService = {
+      mockCurrentUserServiceService = {
         fullName: jasmine.createSpy('fullName').and.returnValue(Observable.of('Ross Edfort'))
       };
 
-      serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserService);
+      serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
     });
 
     describe('data getter', () => {
@@ -96,7 +96,7 @@ export function main() {
 
       it('does not add a project if one already exists', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserService);
+        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
 
         serviceUnderTest.initializeData().subscribe(() => {
           expect(mockApi.post).not.toHaveBeenCalled();
@@ -131,8 +131,11 @@ export function main() {
           attributes: [{ priceAttributeName: 'key', selectedAttributeValue: 'value' }]
         };
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
-
-        serviceUnderTest.addAssetToProjectInCart('10836', '1080p', 100.5, { key: 'value' });
+        const addAssetParameters: AddAssetParameters = {
+          lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: '1080p', price: 100.5 },
+          attributes: { key: 'value' }
+        };
+        serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
 
         expect(mockApi.put)
           .toHaveBeenCalledWith(Api.Orders, 'cart/asset/lineItem/quick', { body: body, parameters: parameters });
@@ -141,8 +144,11 @@ export function main() {
       it('calls the api service correctly - no transcode target', () => {
         const body: ApiBody = { lineItem: { asset: { assetId: '10836' } } };
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
+        const addAssetParameters: AddAssetParameters = {
+          lineItem: { asset: { assetId: '10836' } }
+        };
 
-        serviceUnderTest.addAssetToProjectInCart('10836');
+        serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
 
         expect(mockApi.put)
           .toHaveBeenCalledWith(Api.Orders, 'cart/asset/lineItem/quick', { body: body, parameters: parameters });
@@ -150,8 +156,11 @@ export function main() {
 
       it('adds the asset to the cart store', () => {
         mockApi.putResponse = { lineItem: { asset: { assetId: '10836' } } };
+        const addAssetParameters: AddAssetParameters = {
+          lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: '1080p' }
+        };
 
-        serviceUnderTest.addAssetToProjectInCart('10836');
+        serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
 
         expect(mockCartStore.replaceWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: '10836' } } });
       });
@@ -170,7 +179,7 @@ export function main() {
 
       it('names new projects based on existing names', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserService);
+        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
 
         serviceUnderTest.addProject();
 
@@ -211,7 +220,7 @@ export function main() {
 
       it('does not add a project if one still exists after a removal', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserService);
+        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
 
         serviceUnderTest.removeProject(mockProject);
 

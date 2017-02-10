@@ -20,12 +20,12 @@ wz-autocomplete-search {
     max-height: rem(4.6);
     min-height: rem(4.6);
     border: none;
-    @include placeholder {
+    &::placeholder {
       color: md-color($md-foreground, hint-text);
     }
     color: md-color($md-foreground, secondary-text);
     background-color:  rgba(md-color($md-background, app-bar), .9);
-    @include transition(max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function);
+    transition: max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function;
     border-radius: 0;
     &:focus {
       outline: none;
@@ -38,7 +38,7 @@ wz-autocomplete-search {
     border: none; 
     background-color: md-color($md-accent, 800, .95);
     min-width: rem(4.4);
-    @include transition($swift-ease-in);
+     transition: $swift-ease-in;
     md-icon.material-icons {
       font-size: rem(3.4);
       width: rem(3.4);
@@ -97,10 +97,10 @@ header.app-header {
     }
   }
   button.filter-toggle {
-    @include background-image(
+    background-image:
       linear-gradient(md-color($md-primary, 800, .06), md-color($md-primary, 800, .06)),
       linear-gradient(rgba(md-color($md-foreground, base), .5), rgba(md-color($md-foreground, base), .5))
-    );
+    ;
     @include text-contrast(md-color($md-foreground, base));
     height: auto;
     border-radius: 0;
@@ -167,9 +167,9 @@ header.app-header.search-closed wz-autocomplete-search {
   input {
     max-height: 0;
     min-height: 0;
-    @include placeholder {
+    &::placeholder {
       opacity: 0;
-  }
+    }
   }
   button, button.close, button.filter-toggle {
     max-height: 0;

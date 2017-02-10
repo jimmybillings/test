@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { CurrentUser } from '../shared/services/current-user.model';
+import { CurrentUserService } from '../shared/services/current-user.service';
 import { UiConfig } from '../shared/services/ui.config';
 import { SearchContext } from '../shared/services/search-context.service';
 import { Subscription } from 'rxjs/Rx';
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private configSubscription: Subscription;
 
   constructor(
-    public currentUser: CurrentUser,
+    public currentUser: CurrentUserService,
     public uiState: UiState,
     private uiConfig: UiConfig,
     private searchContext: SearchContext,

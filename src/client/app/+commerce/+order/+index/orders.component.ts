@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { OrdersService } from '../services/orders.service';
+import { OrdersService } from '../../../shared/services/orders.service';
 import { OrdersUrlParams } from '../../../shared/interfaces/cart.interface';
 
 @Component({

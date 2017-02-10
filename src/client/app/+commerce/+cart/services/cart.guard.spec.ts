@@ -10,7 +10,7 @@ export function main() {
 
       beforeEach(() => {
         mockCartCapabilities = { addToCart: () => viewCarts };
-        mockError = { handle: jasmine.createSpy('handle') };
+        mockError = { dispatch: jasmine.createSpy('dispatch') };
       });
 
       it('returns true when logged in', () => {
@@ -18,7 +18,7 @@ export function main() {
 
         expect(new CartGuard(mockCartCapabilities, mockError).canActivate(null, null))
           .toBe(true);
-        expect(mockError.handle).not.toHaveBeenCalled();
+        expect(mockError.dispatch).not.toHaveBeenCalled();
       });
 
       it('returns false when not logged in', () => {
@@ -26,7 +26,7 @@ export function main() {
 
         expect(new CartGuard(mockCartCapabilities, mockError).canActivate(null, null))
           .toBe(false);
-        expect(mockError.handle).toHaveBeenCalledWith({ status: 403 });
+        expect(mockError.dispatch).toHaveBeenCalledWith({ status: 403 });
       });
     });
   });

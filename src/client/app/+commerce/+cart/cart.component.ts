@@ -17,7 +17,7 @@ export class CartComponent implements OnInit {
     // this.tabLabelKeys = ['cart', 'review', 'billing', 'payment', 'confirm'];
 
     // For now (BETA), we have only cart and review.
-    this.tabLabelKeys = ['cart', 'review'];
+    this.tabLabelKeys = ['cart', 'review', 'billing', 'payment', 'confirm'];
 
     // Enable the first tab and disable the rest.
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
@@ -26,7 +26,7 @@ export class CartComponent implements OnInit {
   }
 
   public onNotification(message: any): void {
-    switch(message.type) {
+    switch (message.type) {
       case 'GO_TO_NEXT_TAB': {
         this.goToNextTab();
         break;
@@ -38,7 +38,7 @@ export class CartComponent implements OnInit {
     }
   }
 
-  private goToNextTab():void {
+  private goToNextTab(): void {
     let nextSelectedTabIndex: number = this.selectedTabIndex + 1;
     if (nextSelectedTabIndex >= this.tabLabelKeys.length) return;
 
@@ -49,7 +49,7 @@ export class CartComponent implements OnInit {
     setTimeout(_ => this.selectedTabIndex = nextSelectedTabIndex, 50);
   }
 
-  private goToPreviousTab():void {
+  private goToPreviousTab(): void {
     if (this.selectedTabIndex === 0) return;
     this.selectedTabIndex -= 1;
   }

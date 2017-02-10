@@ -10,6 +10,8 @@ import { WzAdvancedPlayerComponent } from
   '../../../../shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player.component';
 import { AssetService } from '../../../../shared/services/asset.service';
 import { Capabilities } from '../../../../shared/services/capabilities.service';
+import { WzPricingComponent } from '../../../../shared/components/wz-pricing/wz.pricing.component';
+import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
 
 @Component({
   moduleId: module.id,
@@ -23,6 +25,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   public cart: Observable<any>;
   public config: any;
   private configSubscription: Subscription;
+  private usagePrice: any;
 
   constructor(
     public userCan: Capabilities,
@@ -30,7 +33,8 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     private uiConfig: UiConfig,
     private dialog: MdDialog,
     private assetService: AssetService,
-    private window: Window) {
+    private window: Window,
+    private userPreference: UserPreferenceService) {
     super();
   }
 
@@ -81,7 +85,27 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
         this.editAsset(message.payload);
         break;
       }
+      case 'SHOW_PRICING_DIALOG': {
+        this.showPricingDialog(message.payload);
+        break;
+      }
     };
+  }
+
+  private showPricingDialog(lineItem: any): void {
+    this.assetService.getPriceAttributes().subscribe((data: any) => {
+      let dialogRef: MdDialogRef<WzPricingComponent> = this.dialog.open(WzPricingComponent);
+      dialogRef.componentInstance.dialog = dialogRef;
+      dialogRef.componentInstance.pricingPreferences = this.userPreference.state.pricingPreferences;
+      dialogRef.componentInstance.attributes = data;
+      dialogRef.componentInstance.calculatePrice.subscribe((form: any) => {
+        dialogRef.componentInstance.usagePrice = this.assetService.getPrice(lineItem.asset.assetId, form)
+          .map((data: any) => {
+            this.cartService.editLineItem(lineItem, { pricingAttributes: form });
+            return data.price;
+          });
+      });
+    });
   }
 
   private editAsset(payload: any) {
@@ -89,8 +113,6 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
       payload.asset.clipUrl = data.url;
       payload.asset.timeStart = payload.asset.startTime;
       payload.asset.timeEnd = payload.asset.endTime;
-      delete payload.asset.startTime;
-      delete payload.asset.endTime;
       let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '800px' });
       Object.assign(dialogRef.componentInstance, { window: this.window, asset: payload.asset });
       dialogRef.componentInstance.onSubclip.subscribe((data: any) => {

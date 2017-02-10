@@ -53,9 +53,9 @@
               <span class="subclip-segment" style="width:2.4333%;margin-left:75.654%;"></span>
             </div>
             <ul class="subclip-data" layout="row">
-              <li flex="none"><strong>Start: </strong>{{asset.timeStart}}</li>
-              <li flex="none"><strong>End: </strong>{{asset.timeEnd}}</li>
-              <li flex="" layout-align="end center"><strong>Length: </strong>{{asset.timeEnd - asset.timeStart}}</li>
+              <li flex="none"><strong>Start: </strong>{{frame(asset.metaData[6].value, asset.timeStart) | timecode}}</li>
+              <li flex="none"><strong>End: </strong>{{frame(asset.metaData[6].value, asset.timeEnd) | timecode}}</li>
+              <li flex="" layout-align="end center"><strong>Length: </strong>{{frame(asset.metaData[6].value, asset.timeEnd - asset.timeStart) | timecode}}</li>
             </ul>
           </div>
         </div>

@@ -1,11 +1,11 @@
-import { AssetStore } from './asset.store';
+import { SearchStore } from './search.store';
 
 export function main() {
   describe('Asset Store', () => {
-    let storeUnderTest: AssetStore;
+    let storeUnderTest: SearchStore;
 
     beforeEach(() => {
-      storeUnderTest = new AssetStore(null);
+      storeUnderTest = new SearchStore(null);
     });
 
     it('has no tests!', () => {

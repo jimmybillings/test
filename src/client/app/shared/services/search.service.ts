@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
-import { AssetStore } from './asset.store';
+import { SearchStore } from '../stores/search.store';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 
 /**
@@ -11,18 +11,19 @@ import { UserPreferenceService } from '../../shared/services/user-preference.ser
  * and returns search results
  */
 @Injectable()
-export class AssetData {
+export class SearchService {
   public data: Observable<any>;
   constructor(
-    public currentUser: CurrentUser,
+    public currentUser: CurrentUserService,
     public userPreference: UserPreferenceService,
     private api: ApiService,
-    public store: AssetStore) {
+    public store: SearchStore) {
     this.data = this.store.data;
   }
 
   public searchAssets(params: any): Observable<any> {
     let cloneParams = JSON.parse(JSON.stringify(params));
+    if (!cloneParams.q) cloneParams.q = 'itemType:clip';
     cloneParams['i'] = (parseFloat(cloneParams['i']) - 1).toString();
     cloneParams['viewType'] = this.userPreference.state.assetView;
     return this.api.get(

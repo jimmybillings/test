@@ -4,13 +4,13 @@ import { Observable } from 'rxjs/Rx';
 export function main() {
   describe('Asset Component', () => {
 
-    let mockCurrentUser: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
-    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockNotification: any, mockCart: any,
+    let mockCurrentUserService: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
+    let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockErrorStore: any, mockCart: any,
       mockWindow: any, mockMdDialog: any, mockTranslate: any, mockSnackBar: any;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
-      mockCurrentUser = {};
+      mockCurrentUserService = {};
       mockCapabilities = {};
       mockActiveCollection = {
         addAsset: jasmine.createSpy('addAsset').and.returnValue(Observable.of({})),
@@ -30,7 +30,7 @@ export function main() {
         state: { assetId: 123456 }
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
-      mockNotification = { create: jasmine.createSpy('create') };
+      mockErrorStore = { dispatch: jasmine.createSpy('dispatch') };
       mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
       mockWindow = { location: { href: {} } };
       mockTranslate = {
@@ -42,15 +42,17 @@ export function main() {
       mockMdDialog = {
         open: function () {
           return {
-            componentInstance: {},
+            componentInstance: {
+              calculatePrice: Observable.of({ some: 'data' })
+            },
             afterClosed: jasmine.createSpy('afterClosed').and.returnValue(Observable.of({}))
           };
         }
       };
 
       componentUnderTest = new AssetComponent(
-        mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
-        mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification, mockCart,
+        mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
+        mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore, mockCart,
         mockSnackBar, mockTranslate, mockMdDialog);
 
     });
@@ -102,7 +104,7 @@ export function main() {
 
       it('Should show a notification if the server reponds that no comp is available', () => {
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
-        expect(mockNotification.create).toHaveBeenCalledWith('COMPS.NO_COMP');
+        expect(mockErrorStore.dispatch).toHaveBeenCalledWith({ status: 'COMPS.NO_COMP' });
       });
 
       it('Should set the window.href.url to the location of the comp url if the server responsds with a downloadable comp url', () => {
@@ -111,8 +113,8 @@ export function main() {
             Observable.of({ url: 'http://downloadcomp.url' }))
         };
         componentUnderTest = new AssetComponent(
-          mockCurrentUser, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
-          mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockNotification,
+          mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
+          mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore,
           mockCart, mockSnackBar, mockTranslate, mockMdDialog);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.location.href).toEqual('http://downloadcomp.url');
@@ -124,7 +126,18 @@ export function main() {
       it('Should call the cart summary service with correct params to add an asset to the cart', () => {
         componentUnderTest.usagePrice = Observable.of(100);
         componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
-        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith(123123, 'Target', 100, undefined);
+        expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
+          lineItem: {
+            selectedTranscodeTarget: 'Target',
+            price: 100,
+            asset: {
+              assetId: 123123,
+              startTime: undefined,
+              endTime: undefined
+            }
+          },
+          attributes: undefined
+        });
       });
     });
 

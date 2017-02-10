@@ -5,11 +5,11 @@ import { ActiveCollectionService } from '../../shared/services/active-collection
 import { Subscription, Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { AssetService } from '../../shared/services/asset.service';
-import { WzNotificationService } from '../../shared/components/wz-notification/wz.notification.service';
+import { ErrorStore } from '../../shared/stores/error.store';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartService } from '../../shared/services/cart.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
@@ -53,9 +53,9 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public asset: AssetService,
     public activeCollection: ActiveCollectionService,
     public store: Store<CollectionStore>,
-    public currentUser: CurrentUser,
+    public currentUser: CurrentUserService,
     public uiState: UiState,
-    public notification: WzNotificationService,
+    public error: ErrorStore,
     public uiConfig: UiConfig,
     public cart: CartService,
     public userPreference: UserPreferenceService,
@@ -135,7 +135,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       if (res.url && res.url !== '') {
         window.location.href = res.url;
       } else {
-        this.notification.create('COMPS.NO_COMP');
+        this.error.dispatch({ status: 'COMPS.NO_COMP' });
       }
     });
   }
@@ -158,7 +158,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cart.addAssetToProjectInCart(asset.assetId);
+    this.cart.addAssetToProjectInCart({ lineItem: { asset: { assetId: asset.assetId } } });
     this.showSnackBar({
       key: 'ASSET.ADD_TO_CART_TOAST',
       value: { assetId: asset.assetId }
@@ -176,6 +176,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '800px' });
       Object.assign(dialogRef.componentInstance, { window: this.window, asset: asset });
       dialogRef.componentInstance.onSubclip.subscribe((data: any) => {
+        const body = { uuid: asset.uuid, assetId: asset.assetId, timeStart: data.in, timeEnd: data.out };
+        this.activeCollection.updateAsset(this.collection.id, body).subscribe();
         dialogRef.close();
       });
     });

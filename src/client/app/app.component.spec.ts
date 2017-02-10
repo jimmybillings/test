@@ -5,9 +5,9 @@ import { NavigationEnd } from '@angular/router';
 export function main() {
   describe('App Component', () => {
     (<any>window).portal = 'core';
-    let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUser: any,
-      mockCollections: any, mockActiveCollection: any, mockUiState: any, mockUserPreference: any, mockRenderer: any, mockNotification: any,
-      mockApiConfig: any, mockAuthentication: any, mockUserCan: any, mockCart: any, mockWindow: any,
+    let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUserService: any,
+      mockCollections: any, mockActiveCollection: any, mockUiState: any, mockUserPreference: any, mockNotification: any,
+      mockApiConfig: any, mockUserCan: any, mockCart: any, mockWindow: any,
       mockFilter: any, mockSortDefinition: any;
     let loggedInState = false, canViewCollections = true;
     let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
@@ -16,14 +16,17 @@ export function main() {
     beforeEach(() => {
       mockUiConfig = { initialize: jasmine.createSpy('initialize').and.returnValue(Observable.of({})) };
       mockRouter = { events: Observable.of(nextNavigation) };
-      mockMultiLingual = { setLanguage: jasmine.createSpy('setLanguage') };
+      mockMultiLingual = {
+        setLanguage: jasmine.createSpy('setLanguage'),
+        setBaseUrl: jasmine.createSpy('setBaseUrl')
+      };
       mockSearchContext = {
         update: null,
         go: jasmine.createSpy('go'),
         new: jasmine.createSpy('new'),
         state: { q: 'cat', i: 7, n: 100, sortId: 23, filterIds: '1517', filterValues: '1517:2015-12-10 - 2016-12-12' }
       };
-      mockCurrentUser = {
+      mockCurrentUserService = {
         set: jasmine.createSpy('set'),
         destroy: jasmine.createSpy('destroy'),
         loggedIn: () => true,
@@ -53,20 +56,21 @@ export function main() {
         toggleFilterTree: jasmine.createSpy('toggleFilterTree'),
         updateSortPreference: jasmine.createSpy('updateSortPreference')
       };
-      mockRenderer = { listenGlobal: jasmine.createSpy('listenGlobal').and.callFake((a: any, b: any, c: Function) => { c(); }) };
       mockNotification = { check: jasmine.createSpy('check'), initialize: jasmine.createSpy('initialize') };
-      mockApiConfig = { getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal') };
-      mockAuthentication = { destroy: jasmine.createSpy('destroy').and.returnValue(Observable.of({})) };
+      mockApiConfig = {
+        getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal'),
+        baseUrl: () => jasmine.createSpy('baseUrl')
+      };
       mockUserCan = { viewCollections: () => canViewCollections };
       mockCart = { getCartSummary: jasmine.createSpy('getCartSummary') };
       mockWindow = { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') };
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
       componentUnderTest = new AppComponent(
-        mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUser,
+        mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
         mockCollections, mockActiveCollection, mockUiState, mockUserPreference,
-        mockRenderer, mockNotification, mockApiConfig, mockAuthentication, mockUserCan,
-        mockCart, null, mockWindow, mockFilter, mockSortDefinition, null, null);
+        mockNotification, mockApiConfig, mockUserCan,
+        mockCart, mockWindow, mockFilter, mockSortDefinition, null, null);
     });
 
 
@@ -89,19 +93,7 @@ export function main() {
       describe('currentUser.set()', () => {
         it('Should set the current user', () => {
           componentUnderTest.ngOnInit();
-          expect(mockCurrentUser.set).toHaveBeenCalled();
-        });
-      });
-
-      describe('listenGlobal()', () => {
-        it('Should listen for a scroll event', () => {
-          componentUnderTest.ngOnInit();
-          expect(mockRenderer.listenGlobal).toHaveBeenCalledWith('document', 'scroll', jasmine.any(Function));
-        });
-
-        it('Should move the header based on the pageYOffset', () => {
-          componentUnderTest.ngOnInit();
-          expect(mockUiState.showFixedHeader).toHaveBeenCalledWith(133);
+          expect(mockCurrentUserService.set).toHaveBeenCalled();
         });
       });
 
@@ -170,14 +162,10 @@ export function main() {
     });
 
     describe('logout()', () => {
-      it('Should log out a user on the server', () => {
-        componentUnderTest.logout();
-        expect(mockAuthentication.destroy).toHaveBeenCalled();
-      });
 
       it('Should log out the user in the browser', () => {
         componentUnderTest.logout();
-        expect(mockCurrentUser.destroy).toHaveBeenCalled();
+        expect(mockCurrentUserService.destroy).toHaveBeenCalled();
       });
     });
 

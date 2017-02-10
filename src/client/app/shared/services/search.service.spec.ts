@@ -7,8 +7,8 @@ import {
   TestBed
 } from '../../imports/test.imports';
 
-import { AssetData } from './asset.data.service';
-import { AssetStore } from './asset.store';
+import { SearchService } from './search.service';
+import { SearchStore } from '../stores/search.store';
 
 export function main() {
   describe('Asset data service', () => {
@@ -23,13 +23,13 @@ export function main() {
     beforeEach(() => TestBed.configureTestingModule({
       providers: [
         ...beforeEachProvidersArray,
-        AssetStore
+        SearchStore
       ]
     }));
 
     it('Should make a request to the search api with the correct url and params ' +
       'and return the correct payload to cache in the store -- LOGGED OUT',
-      inject([AssetData, MockBackend], (service: AssetData, mockBackend: MockBackend) => {
+      inject([SearchService, MockBackend], (service: SearchService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.searchAssets(searchParams()).subscribe((payload) => {
@@ -46,10 +46,10 @@ export function main() {
 
     it('Should make a request to the search api with the correct url and params and' +
       'return the correct payload to cache in the store -- LOGGED IN',
-      inject([AssetData, MockBackend], (service: AssetData, mockBackend: MockBackend) => {
+      inject([SearchService, MockBackend], (service: SearchService, mockBackend: MockBackend) => {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        localStorage.setItem('token', 'SOME_TOKEN');
+        service.currentUser.set(setLoggedInUser(), 'SOME_TOKEN');
         service.searchAssets(searchParams()).subscribe((payload) => {
           expect(connection.request.url.split('.com')[1]).toBe(
             '/api/assets/v1/search?q=green&n=25&i=0&viewType=grid');
@@ -62,6 +62,23 @@ export function main() {
         ));
       }));
   });
+
+  function setLoggedInUser() {
+    return {
+      'lastUpdated': '2016-01-14T16:46:21Z',
+      'createdOn': '2016-01-14T16:46:21Z',
+      'id': 6,
+      'emailAddress': 'test_email@email.com',
+      'password': '5daf7de08c0014ec2baa13a64b35a4e0',
+      'firstName': 'first',
+      'lastName': 'last',
+      'siteName': 'cnn',
+      'accountIds': [4],
+      'permissions': [
+        'Root'
+      ]
+    };
+  }
 
   function searchParams() {
     return {

@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { ActiveFilters } from '../interfaces/filters.interface';
@@ -20,13 +20,13 @@ export const filters: ActionReducer<any> = (state: Array<any> = initFilters, act
 export class FilterService {
   public data: Observable<any>;
   public found: boolean = false;
-  constructor(private api: ApiService, private store: Store<any>, private currentUser: CurrentUser) {
+  constructor(private api: ApiService, private store: Store<any>, private currentUser: CurrentUserService) {
     this.data = this.store.select('filters');
   }
 
   public load(params: any, counted: boolean): Observable<any> {
     let options = JSON.parse(JSON.stringify(Object.assign({}, params, { counted })));
-
+    if (!options.q) options.q = 'itemType:clip';
     return this.api.get(
       Api.Assets,
       this.currentUser.loggedIn() ? 'filter/filterTree' : 'filter/anonymous/filterTree',

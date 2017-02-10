@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
-import { CurrentUser } from './current-user.model';
+import { CurrentUserService } from './current-user.service';
 declare var baseUrl: string;
 
 const cmsApi: any = {
@@ -14,7 +14,7 @@ export class ApiConfig {
 
   private _portal: string;
 
-  constructor(private currentUser: CurrentUser) {
+  constructor(private currentUser: CurrentUserService) {
     this._portal = null;
   }
 

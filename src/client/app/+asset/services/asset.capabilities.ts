@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { CurrentUser } from '../../shared/services/current-user.model';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class AssetCapabilities {
-  constructor(public currentUser: CurrentUser, public route: Router) { }
+  constructor(public currentUser: CurrentUserService, public route: Router) { }
 
   public viewAssetDetails(): boolean {
     return this.userHas('ViewClips');

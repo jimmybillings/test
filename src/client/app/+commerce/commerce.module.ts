@@ -22,10 +22,6 @@ import { EditProjectComponent } from './+cart/components/edit-project.component'
 // Order Stuff 
 import { OrdersComponent } from './+order/+index/orders.component';
 import { OrderShowComponent } from './+order/+show/order-show.component';
-import { OrderService } from './+order/services/order.service';
-import { OrdersService } from './+order/services/orders.service';
-import { OrderStore } from './+order/services/order.store';
-import { OrdersStore } from './+order/services/orders.store';
 import { OrderItemListComponent } from './+order/components/order-item-list.component';
 
 @NgModule({
@@ -47,7 +43,7 @@ import { OrderItemListComponent } from './+order/components/order-item-list.comp
     EditProjectComponent
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
-  providers: [OrderService, OrdersService, CartCapabilities, OrderStore, OrdersStore],
+  providers: [CartCapabilities],
   entryComponents: [EditProjectComponent]
 })
 

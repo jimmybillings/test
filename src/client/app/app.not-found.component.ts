@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CurrentUser } from './shared/services/current-user.model';
+import { CurrentUserService } from './shared/services/current-user.service';
 
 @Component({
   moduleId: module.id,
@@ -27,5 +27,5 @@ import { CurrentUser } from './shared/services/current-user.model';
 })
 
 export class NotFoundComponent {
-  constructor(public currentUser: CurrentUser) { }
+  constructor(public currentUser: CurrentUserService) { }
 }

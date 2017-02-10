@@ -1,5 +1,6 @@
 import { WzPricingComponent } from './wz.pricing.component';
 import { Observable } from 'rxjs/Rx';
+import { EventEmitter } from '@angular/core';
 
 export function main() {
   describe('Wz Pricing Component', () => {
@@ -8,7 +9,7 @@ export function main() {
     beforeEach(() => {
       componentUnderTest = new WzPricingComponent();
       componentUnderTest.attributes = mockOptions();
-      componentUnderTest.calculatePrice = jasmine.createSpy('calculatePrice');
+      componentUnderTest.calculatePrice = new EventEmitter();
       componentUnderTest.dialog = {
         close: jasmine.createSpy('close')
       };
@@ -41,12 +42,13 @@ export function main() {
     describe('onSubmit()', () => {
       it('should emit the calculatePricing event with the form', () => {
         componentUnderTest.ngOnInit();
+        spyOn(componentUnderTest.calculatePrice, 'emit');
         componentUnderTest.usagePrice = Observable.of(10);
         componentUnderTest.onSubmit();
 
-        expect(componentUnderTest.dialog.close).toHaveBeenCalledWith({
-          price: Observable.of(10), attributes:
-          { A: '', B: '', C: '', D: '' }
+        expect(componentUnderTest.calculatePrice.emit).toHaveBeenCalledWith({
+          price: Observable.of(10),
+          attributes: { A: '', B: '', C: '', D: '' }
         });
       });
     });
@@ -209,10 +211,10 @@ export function main() {
       it('should calculate the price if the last field is filled in', () => {
         let attribute: any = componentUnderTest.attributes[3];
         let option: any = attribute.attributeList[0];
-
+        spyOn(componentUnderTest.calculatePrice, 'emit');
         componentUnderTest.handleSelect(attribute, option);
 
-        expect(componentUnderTest.calculatePrice).toHaveBeenCalledWith({
+        expect(componentUnderTest.calculatePrice.emit).toHaveBeenCalledWith({
           A: 'R', B: 'J', C: 'V', D: 'Q'
         });
       });

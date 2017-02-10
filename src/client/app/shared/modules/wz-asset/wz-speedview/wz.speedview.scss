@@ -6,10 +6,8 @@
     width: rem(40.0);
     height: rem(22.5);
     position: relative;
-    @include background-image(
-      linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.6)),
-      linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1))
-    );
+    background-image: linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.6)),
+      linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1));
     img.image-speedview {
       position: absolute;
       display: block;

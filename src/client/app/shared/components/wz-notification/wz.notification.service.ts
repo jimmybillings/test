@@ -1,55 +1,108 @@
-import { Injectable, ComponentRef, ComponentFactoryResolver, Renderer, OnDestroy, ViewContainerRef } from '@angular/core';
-import { WzNotificationComponent } from './wz.notification.component';
+import {
+  Injectable,
+  ComponentRef,
+  ComponentFactoryResolver,
+  ViewContainerRef,
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  HostListener
+} from '@angular/core';
+
 import { Router } from '@angular/router';
-import { UiConfig } from '../../services/ui.config';
 import { Subscription } from 'rxjs/Rx';
+import { ErrorStore } from '../../stores/error.store';
+
+@Component({
+  moduleId: module.id,
+  selector: 'wz-notification',
+  template:
+  `<div class="notification">
+      <p>{{notice | translate}}</p>
+    </div>`,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+
+export class WzNotificationComponent {
+  @Output() onDestroy = new EventEmitter();
+  @Input() notice: string;
+  @HostListener('document:click', ['$event.target'])
+  public onClick(targetElement: any) {
+    this.onDestroy.emit();
+  }
+}
 
 @Injectable()
-export class WzNotificationService implements OnDestroy {
-  public cmpRef: ComponentRef<any>;
-  public viewRef: any;
-  public setDestroyTimer: any;
-  public notficationStrategy: any = [];
-  public destroyOnClick: any;
-  private configSubscription: Subscription;
+export class WzNotificationService {
   private target: ViewContainerRef;
-  constructor(
-    private renderer: Renderer,
-    private resolver: ComponentFactoryResolver,
-    public router: Router,
-    public uiConfig: UiConfig) {
-    this.configSubscription = this.uiConfig.get('global').subscribe((config: any) => {
-      if (config.config) this.notficationStrategy = config.config.notifications.items || [];
-    });
-  }
+  private callInProgress: boolean = false;
 
-  ngOnDestroy() {
-    this.configSubscription.unsubscribe();
+  constructor(
+    private resolver: ComponentFactoryResolver,
+    private router: Router,
+    private error: ErrorStore) {
+    error.data.subscribe(this.handle.bind(this));
   }
 
   public initialize(target: ViewContainerRef) {
     this.target = target;
   }
 
-  public check(state: string) {
-    let activeNotification = this.notficationStrategy.filter((notification: any) => (state.indexOf(notification.type) > 0));
-    if (activeNotification.length > 0) this.create(activeNotification[0].trString);
+  private handle(error: any): void {
+    if (!error.status || this.callInProgress) return;
+    this.callInProgress = true;
+    switch (error.status) {
+      case 401:
+        this.unAuthorized();
+        break;
+      case 403:
+        this.forbidden();
+        break;
+      case 419:
+        this.expiredSession();
+        break;
+      default:
+        if (isNaN(error.status)) this.customError(error.status);
+        break;
+    }
   }
 
-  public create(notice: any, target: ViewContainerRef = this.target) {
-    let componentFactory = this.resolver.resolveComponentFactory(WzNotificationComponent);
-    this.cmpRef = target.createComponent(componentFactory);
-    this.cmpRef.instance.notice = notice;
-    this.destroyOnClick = setTimeout(() => {
-      this.viewRef = this.renderer.listenGlobal('body', 'click', () => this.destroy());
-    }, 200);
-    this.setDestroyTimer = setTimeout(() => this.destroy(), 4900);
+  private create(notice: any) {
+    const componentFactory = this.resolver.resolveComponentFactory(WzNotificationComponent);
+    const cmpRef: ComponentRef<WzNotificationComponent> = this.target.createComponent(componentFactory);
+    cmpRef.instance.notice = notice;
+    const onClick: Subscription = cmpRef.instance.onDestroy.subscribe((_: any) => {
+      this.destroy(cmpRef, null, onClick);
+    });
+    const timer: any = setTimeout(() => this.destroy(cmpRef, timer, onClick), 4900);
   }
 
-  public destroy() {
-    this.cmpRef.destroy();
-    this.viewRef();
-    clearTimeout(this.setDestroyTimer);
-    clearTimeout(this.destroyOnClick);
+  private destroy(cmpRef: ComponentRef<WzNotificationComponent>, timer: any = null, onClick: Subscription) {
+    cmpRef.destroy();
+    clearTimeout(timer);
+    onClick.unsubscribe();
+    this.callInProgress = false;
+  }
+
+  private unAuthorized(): void {
+    this.router.navigate(['/user/login']).then(_ => {
+      this.create('NOTIFICATION.INVALID_CREDENTIALS');
+    });
+  }
+
+  private forbidden(): void {
+    this.create('NOTIFICATION.NEED_PERMISSION');
+  }
+
+  private expiredSession(): void {
+    this.router.navigate(['/user/login']).then(_ => {
+      this.create('NOTIFICATION.EXPIRED_SESSION');
+    });
+  }
+
+  private customError(errorMessage: number) {
+    this.create(errorMessage);
   }
 }
