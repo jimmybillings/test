@@ -5,7 +5,11 @@ interface MockJwCallbacks {
 type MockJwState = 'idle' | 'buffering' | 'playing' | 'paused';
 
 export class MockJwPlayer {
-  public setup: jasmine.Spy = jasmine.createSpy('setup');
+  public autoplay: boolean = true;
+
+  public setup: jasmine.Spy = jasmine.createSpy('setup').and.callFake((options: any) => {
+    this.autoplay = options.autostart;
+  });
 
   public remove: jasmine.Spy = jasmine.createSpy('remove');
 

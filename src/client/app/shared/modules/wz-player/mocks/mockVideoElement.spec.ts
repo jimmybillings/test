@@ -5,7 +5,7 @@ export function main() {
     let mockVideoElementUnderTest: MockVideoElement;
 
     beforeEach(() => {
-      mockVideoElementUnderTest = new MockVideoElement();
+      mockVideoElementUnderTest = new MockVideoElement(true);
     });
 
     it('has no tests!', () => {

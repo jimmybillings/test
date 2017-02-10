@@ -29,14 +29,6 @@ export class WzAdvancedPlayerComponent {
   public set asset(newAsset: any) {
     this.playerStateService.reset();
     this.currentAsset = newAsset;
-    if (this.currentAsset.timeStart || this.currentAsset.timeEnd) {
-      const playerStateParams: PlayerStateChanges = Object.assign({},
-        this.currentAsset.timeStart ? { inMarkerFrameNumber: Number(this.currentAsset.timeStart) } : null,
-        this.currentAsset.timeEnd ? { outMarkerFrameNumber: Number(this.currentAsset.timeEnd) } : null,
-      );
-      this.playerStateService.updateWith(playerStateParams);
-    }
-    if (this.assetIsVideo()) this.updateStateFrameRate();
   }
 
   public get asset(): any {
@@ -92,37 +84,5 @@ export class WzAdvancedPlayerComponent {
         this.player.toggleMarkersPlayback();
         break;
     }
-  }
-
-  private updateStateFrameRate(): void {
-    let frameRateMetadata: string = this.findMetadataValueFor('Format.FrameRate', this.currentAsset);
-
-    if (frameRateMetadata === null) {
-      const assetName: string = this.findMetadataValueFor('name', this.currentAsset) || 'asset';
-
-      console.error(`Could not find 'Format.FrameRate' metadata for ${assetName} (id=${this.currentAsset.assetId}).` +
-        ' Using arbitrary frameRate of 29.97fps, which could be completely wrong.');
-
-      frameRateMetadata = '29.97';
-    }
-
-    this.playerStateService.updateWith({ framesPerSecond: parseFloat(frameRateMetadata) });
-  }
-
-  private findMetadataValueFor(metadataName: string, object: any): string {
-    if (object !== Object(object)) return null;
-
-    const keys = Object.keys(object);
-
-    if (keys.length === 2 && keys.sort().join('|') === 'name|value' && object.name === metadataName) {
-      return object.value;
-    }
-
-    for (var key of keys) {
-      const value = this.findMetadataValueFor(metadataName, object[key]);
-      if (value) return value;
-    }
-
-    return null;
   }
 }
