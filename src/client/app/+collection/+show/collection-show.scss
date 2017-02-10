@@ -66,3 +66,27 @@ collection-show .collections-list {
     }
   }
 }
+
+// When the edit sub-clipping dialog is opened
+// override dialog container padding as well as specific styles for the editing dialog
+.subclipping-edit-open .cdk-overlay-pane md-dialog-container.md-dialog-container {
+  padding: rem(.2);
+  min-height: rem(33.0);
+  subclip-edit-actions {
+    text-align: right;
+    padding: rem(1.6) rem(1.6) rem(1.6) 0;
+    [md-button].is-outlined {
+      line-height: rem(3.5);
+      padding: 0 rem(1.6);
+      height: rem(3.5);
+      margin-left: rem(.5);
+    }
+  }
+  subclip-controlbar {
+    position: relative;
+    markers-clear-button {
+      position: absolute;
+      right: rem(0.1);
+    }
+  }
+}

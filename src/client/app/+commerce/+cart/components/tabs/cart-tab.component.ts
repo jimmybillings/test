@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs/Rx';
-
 import { Tab } from './tab';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
@@ -34,7 +34,8 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     private dialog: MdDialog,
     private assetService: AssetService,
     private window: Window,
-    private userPreference: UserPreferenceService) {
+    private userPreference: UserPreferenceService,
+    @Inject(DOCUMENT) private document: any) {
     super();
   }
 
@@ -113,13 +114,18 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
       payload.asset.clipUrl = data.url;
       payload.asset.timeStart = payload.asset.startTime;
       payload.asset.timeEnd = payload.asset.endTime;
-      let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '800px' });
-      Object.assign(dialogRef.componentInstance, { window: this.window, asset: payload.asset });
+      let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '544px' });
+      Object.assign(dialogRef.componentInstance, { window: this.window, asset: payload.asset, displayContext: 'subClipEditDialog' });
+      this.document.body.classList.add('subclipping-edit-open');
+      dialogRef.componentInstance.dialog = dialogRef;
       dialogRef.componentInstance.onSubclip.subscribe((data: any) => {
         payload.asset.startTime = data.in;
         payload.asset.endTime = data.out;
         this.cartService.editLineItem(payload, {});
         dialogRef.close();
+      });
+      dialogRef.afterClosed().subscribe(_ => {
+        this.document.body.classList.remove('subclipping-edit-open');
       });
     });
   }
