@@ -6,6 +6,12 @@
   </player-controlbar>
   <subclip-controlbar class="tool-bar" layout="row" 
     [playerState]="playerStateService.state | async" 
-    (request)="handle($event)">
+    (request)="handle($event)"
+    [displayContext]="displayContext">
   </subclip-controlbar>
+  <subclip-edit-actions *ngIf="displayContext =='subClipEditDialog'" layout="row" layout-align="end center"
+    [dialog]="dialog"
+    [playerState]="playerStateService.state | async" 
+    (request)="handle($event)">
+  </subclip-edit-actions>
 </ng-container>

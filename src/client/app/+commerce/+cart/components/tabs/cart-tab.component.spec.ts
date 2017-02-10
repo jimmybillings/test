@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs/Rx';
-
 import { CartTabComponent } from './cart-tab.component';
 import { EditProjectComponent } from '../edit-project.component';
 import { WzAdvancedPlayerComponent } from
@@ -14,6 +13,7 @@ export function main() {
     let mockDialog: any;
     let mockAssetService: any;
     let mockUserPreference: any;
+    let mockDocument: any;
 
     beforeEach(() => {
       mockCartService = {
@@ -29,6 +29,14 @@ export function main() {
 
       mockUiConfig = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: 'SOME_CONFIG' }))
+      };
+      mockDocument = {
+        body: {
+          classList: {
+            add: jasmine.createSpy('add'),
+            remove: jasmine.createSpy('remove')
+          }
+        }
       };
 
       mockDialog = {
@@ -56,7 +64,7 @@ export function main() {
 
       componentUnderTest = new CartTabComponent(
         null, mockCartService, mockUiConfig, mockDialog,
-        mockAssetService, null, mockUserPreference
+        mockAssetService, null, mockUserPreference, mockDocument
       );
     });
 
@@ -88,7 +96,7 @@ export function main() {
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
 
-        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null);
+        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null, null);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
 
@@ -100,7 +108,7 @@ export function main() {
       it('returns an observable of false when the cart has no items', () => {
         mockCartService.data = Observable.of({ itemCount: 0 });
 
-        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null);
+        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null, null);
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
@@ -109,7 +117,7 @@ export function main() {
       it('returns an observable of false when the cart has no itemCount member', () => {
         mockCartService.data = Observable.of({});
 
-        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null);
+        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null, null);
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
@@ -118,7 +126,7 @@ export function main() {
       it('returns an observable of true when the cart has at least one line item', () => {
         mockCartService.data = Observable.of({ itemCount: 1 });
 
-        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null);
+        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null, null);
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(true));
@@ -189,7 +197,7 @@ export function main() {
         componentUnderTest.onNotification({ type: 'EDIT_LINE_ITEM_MARKERS', payload: { asset: mockAsset } });
 
         expect(mockAssetService.getClipPreviewData).toHaveBeenCalledWith(1234);
-        expect(mockDialog.open).toHaveBeenCalledWith(WzAdvancedPlayerComponent, { width: '800px' });
+        expect(mockDialog.open).toHaveBeenCalledWith(WzAdvancedPlayerComponent, { width: '544px' });
       });
 
       it('calls shows the pricing dialog when called with SHOW_PRICING_DIALOG', () => {

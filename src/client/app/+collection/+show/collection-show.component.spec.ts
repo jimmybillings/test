@@ -8,7 +8,7 @@ export function main() {
     beforeEach(() => {
       mockWindow = {};
       componentUnderTest = new CollectionShowComponent(
-        null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, mockWindow, null);
+        null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, mockWindow, null, null);
 
     });
 

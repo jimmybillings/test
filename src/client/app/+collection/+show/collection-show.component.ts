@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, Renderer, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Renderer, ViewChild, ChangeDetectionStrategy, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
 import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
@@ -64,7 +65,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private renderer: Renderer,
     private window: Window,
-    private dialog: MdDialog) {
+    private dialog: MdDialog,
+    @Inject(DOCUMENT) private document: any) {
     this.screenWidth = this.window.innerWidth;
     this.window.onresize = () => this.screenWidth = this.window.innerWidth;
   }
@@ -173,12 +175,17 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public editAsset(asset: any) {
     this.asset.getClipPreviewData(asset.assetId).subscribe(data => {
       asset.clipUrl = data.url;
-      let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '800px' });
-      Object.assign(dialogRef.componentInstance, { window: this.window, asset: asset });
+      let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '544px' });
+      Object.assign(dialogRef.componentInstance, { window: this.window, asset: asset, displayContext: 'subClipEditDialog' });
+      this.document.body.classList.add('subclipping-edit-open');
+      dialogRef.componentInstance.dialog = dialogRef;
       dialogRef.componentInstance.onSubclip.subscribe((data: any) => {
         const body = { uuid: asset.uuid, assetId: asset.assetId, timeStart: data.in, timeEnd: data.out };
         this.activeCollection.updateAsset(this.collection.id, body).subscribe();
         dialogRef.close();
+      });
+      dialogRef.afterClosed().subscribe(_ => {
+        this.document.body.classList.remove('subclipping-edit-open');
       });
     });
   }
