@@ -10,6 +10,7 @@ import {
   OnDestroy
 } from '@angular/core';
 
+import { AssetInfo } from './assetInfo';
 import { PlayerMode, PlayerStateChanges } from '../../interfaces/player.interface';
 declare var jwplayer: any;
 
@@ -30,18 +31,20 @@ export class WzPlayerComponent implements OnDestroy {
 
   @Input()
   public set asset(newAsset: any) {
-    this.currentAsset = newAsset;
     this.reset();
-    (this.currentAsset.resourceClass === 'Image') ? this.setupImage() : this.setupVideo();
+    this.assetInfo.asset = newAsset;
+
+    newAsset.resourceClass === 'Image' ? this.setupImage() : this.setupVideo();
   }
 
   public get asset(): any {
-    return this.currentAsset;
+    return this.assetInfo.asset;
   }
 
   @Output() stateUpdate: EventEmitter<PlayerStateChanges> = new EventEmitter<PlayerStateChanges>();
 
   private currentAsset: any;
+  private assetInfo: AssetInfo = new AssetInfo();
   private jwPlayer: any;
   private videoElement: any;
   private currentAssetType: AssetType = 'unknown';
@@ -154,10 +157,14 @@ export class WzPlayerComponent implements OnDestroy {
   private setupVideo(): void {
     this.currentAssetType = 'video';
     this.jwPlayer = this.window.jwplayer(this.element.nativeElement);
+    this.inMarker = this.assetInfo.inMarkerAsSeconds;
+    this.outMarker = this.assetInfo.outMarkerAsSeconds;
+    const autostartInAdvancedMode: boolean = !this.inMarker || !this.outMarker;
 
     this.jwPlayer.setup({
-      image: this.currentAsset.clipThumbnailUrl ? this.currentAsset.clipThumbnailUrl : null,
-      file: this.currentAsset.clipUrl
+      image: this.assetInfo.asset.clipThumbnailUrl || null,
+      file: this.assetInfo.asset.clipUrl,
+      autostart: this.mode === 'basic' || autostartInAdvancedMode
     });
 
     if (this.mode === 'advanced') {
@@ -165,6 +172,8 @@ export class WzPlayerComponent implements OnDestroy {
         const jwPlayerProvider = this.jwPlayer.getProvider();
 
         if (jwPlayerProvider && jwPlayerProvider.name === 'html5') {
+          this.currentAssetType = 'html5Video';
+
           // Seems like the "correct" Angular-y way to do this would be to
           // find the <video> tag inside 'this.element.nativeElement'.  But
           // that doesn't seem to work, so we'll resort to this for now.
@@ -173,9 +182,16 @@ export class WzPlayerComponent implements OnDestroy {
 
           this.startVideoEventListeners();
 
-          this.currentAssetType = 'html5Video';
-          this.emitStateUpdateWith({ canSupportCustomControls: true });
+          this.emitStateUpdateWith({
+            canSupportCustomControls: true,
+            framesPerSecond: this.assetInfo.framesPerSecond,
+            inMarker: this.inMarker,
+            outMarker: this.outMarker
+          });
+
+          if (!autostartInAdvancedMode) this.toggleMarkersPlayback();
         } else {
+          if (!autostartInAdvancedMode) this.jwPlayer.play(true);
           this.emitStateUpdateWith({ canSupportCustomControls: false });
         }
       });
@@ -258,7 +274,7 @@ export class WzPlayerComponent implements OnDestroy {
     let imgWrapper: HTMLElement = document.createElement('div');
     imgWrapper.className = 'photo-container';
     let elem: HTMLImageElement = document.createElement('img');
-    elem.src = this.currentAsset.clipUrl;
+    elem.src = this.assetInfo.asset.clipUrl;
     imgWrapper.appendChild(elem);
     this.element.nativeElement.appendChild(imgWrapper);
   }
@@ -276,6 +292,8 @@ export class WzPlayerComponent implements OnDestroy {
       this.videoElement = null;
       this.jwPlayer.remove();
       this.jwPlayer = null;
+      this.inMarker = undefined;
+      this.outMarker = undefined;
     }
 
     this.currentAssetType = 'unknown';
