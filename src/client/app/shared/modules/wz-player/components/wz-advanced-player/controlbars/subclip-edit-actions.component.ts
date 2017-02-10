@@ -6,8 +6,12 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
   selector: 'subclip-edit-actions',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button md-button color="primary" (click)="dialog.close()">Cancel</button>
-    <button md-button class="is-outlined" color="primary" (click)="onSave()">Save sub-clipping</button>
+    <button md-button color="primary" (click)="dialog.close()">
+      {{ 'ASSET.SAVE_SUBCLIP.EDIT_ACTIONS.CANCEL_BTN_LABEL' | translate }}
+    </button>
+    <button md-button class="is-outlined" color="primary" (click)="onSave()">
+      {{ 'ASSET.SAVE_SUBCLIP.EDIT_ACTIONS.SAVE_BTN_LABEL' | translate }}
+    </button>
   `
 })
 
