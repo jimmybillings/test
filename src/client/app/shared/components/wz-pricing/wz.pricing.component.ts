@@ -12,14 +12,14 @@ export class WzPricingComponent implements OnInit {
   @Input() dialog: any;
   @Input() usagePrice: Observable<any>;
   @Input() pricingPreferences: any;
-  @Output() calculatePrice: EventEmitter<any> = new EventEmitter();
+  @Output() pricingEvent: EventEmitter<any> = new EventEmitter();
 
   ngOnInit() {
     this.buildForm();
   }
 
   public onSubmit(): void {
-    this.calculatePrice.emit({ price: this.usagePrice, attributes: this.formattedForm });
+    this.pricingEvent.emit({ type: 'UPDATE_PREFERENCES', payload: this.formattedForm });
   }
 
   public parentIsEmpty(currentAttribute: any): boolean {
@@ -53,7 +53,7 @@ export class WzPricingComponent implements OnInit {
       // There should always be options, however if there aren't we need to alert the user the calculation went wrong
       if (!rawOptions) {
         this.clearForm();
-        this.dialog.close({ error: null });
+        this.pricingEvent.emit({ type: 'ERORR', payload: 'PRICING.ERROR' });
         return;
       }
       // The raw options is just an array of strings, we need to map them back to the attributeList 
@@ -84,7 +84,7 @@ export class WzPricingComponent implements OnInit {
     this.clearForm(index);
     this.form[index].value = option.value;
     if (index === this.attributes.length - 1) {
-      this.calculatePrice.emit(this.formattedForm);
+      this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: this.formattedForm });
     }
   }
 
