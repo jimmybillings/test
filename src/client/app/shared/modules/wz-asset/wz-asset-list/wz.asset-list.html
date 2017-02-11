@@ -17,14 +17,11 @@
                 <span>{{asset.metaData[3].value}}</span>
               </span>
               <span  *ngIf="asset.timeStart" class="mdata-3">
-                <span>{{ asset.timeEnd - asset.timeStart }}</span>
+                <span>{{frame(asset.metaData[6].value, asset.timeEnd - asset.timeStart) | timecode}}</span>
               </span>
               <span *ngIf="asset.metaData[4] && asset.metaData[4].name == 'Resource.Class' && asset.metaData[4].value == 'Image'" class="mdata-4">
                 <span class="{{asset.metaData[4].value | lowercase}}"></span>
               </span>
-              <!--<span *ngIf="asset.timeStart" class="subclip-timeline sub-clip-indicator-2">
-                <span class="subclip-segment" style="width:2.4333%;margin-left:75.654%;"></span>
-              </span>-->
             </div>
           </a>
         </div>
@@ -38,7 +35,7 @@
               {{asset.metaData[1].value}}
             </p>
           </a>
-          <!--keywords coming soon. we need the meta-data then we can comment this in -->
+          <!--keywords coming soon. we need the meta-data then we can comment this in  JH-->
           <!--<div *ngIf="asset.metaData[5]" class="md-caption asset-mdata-keywords">
             <strong>{{ 'COLLECTION.SHOW.KEYWORDS_LABEL' | translate }} </strong>
             <button class="is-outlined keyword" md-button color="primary" *ngFor="let keyword of asset.metaData[5]">{{keyword}}</button>
@@ -50,12 +47,21 @@
           <div *ngIf="asset.timeStart" class="asset-sub-clip md-caption">
             <strong>{{ 'COLLECTION.SHOW.SUB_CLIPPING_LABEL' | translate }} </strong>
             <div class="subclip-timeline">
-              <span class="subclip-segment" style="width:2.4333%;margin-left:75.654%;"></span>
+              <span class="subclip-segment" [ngStyle]="calcSubClipSegments(asset)"></span>
             </div>
             <ul class="subclip-data" layout="row">
-              <li flex="none"><strong>Start: </strong>{{frame(asset.metaData[6].value, asset.timeStart) | timecode}}</li>
-              <li flex="none"><strong>End: </strong>{{frame(asset.metaData[6].value, asset.timeEnd) | timecode}}</li>
-              <li flex="" layout-align="end center"><strong>Length: </strong>{{frame(asset.metaData[6].value, asset.timeEnd - asset.timeStart) | timecode}}</li>
+              <li flex-gt-sm="30" flex-gt-md="25" flex="35">
+                <strong>{{ 'COLLECTION.SHOW.START_TIME_LABEL' | translate }} </strong>
+                {{frame(asset.metaData[6].value, asset.timeStart - 0) | timecode}}
+              </li>
+              <li flex="none">
+                <strong>{{ 'COLLECTION.SHOW.END_TIME_LABEL' | translate }} </strong>
+                {{frame(asset.metaData[6].value, asset.timeEnd - 0) | timecode}}
+              </li>
+              <li flex="" layout-align="end center">
+                <strong>{{ 'COLLECTION.SHOW.SUB_CLIP_LENGTH_LABEL' | translate }} </strong>
+                {{frame(asset.metaData[6].value, asset.timeEnd - asset.timeStart) | timecode}}
+              </li>
             </ul>
           </div>
         </div>
@@ -65,40 +71,30 @@
     <div flex="100" layout="row" layout-xs="column" class="divider"></div>
     <div flex-gt-sm="25" layout-sm="100" flex="auto" class="actions" layout-align="end center">
       <div class="tools">
-        <button
-          *ngIf="assetType === 'collection' && userCan.createSubclips(asset)"
-          md-icon-button
-          title="Edit asset"
-          (click)="editAsset(asset);">
-            <md-icon>mode_edit</md-icon>
-        </button>
         <!-- ADD TO CART -->
         <button
           *ngIf="userCan.addToCart()"
           md-icon-button
-          title="Add to cart"
+          title="{{'COLLECTION.SHOW.ADD_TO_CART_BTN_TITLE' | translate}}"
           (click)="addAssetToCart(asset);">
             <md-icon>shopping_cart</md-icon>
         </button>
 
         <!-- DOWNLOAD COMPS-->
         <button
-          *ngIf="userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
           md-icon-button
-          title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
+          [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+          title="{{ (userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED') | translate }}"
           (click)="setAssetActiveId(asset)"
           [md-menu-trigger-for]="downloadCompMenu">
             <md-icon>file_download</md-icon>
         </button>
-        <button
-          *ngIf="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
-          disabled
-          md-icon-button
-          title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
-          (click)="setAssetActiveId(asset)"
-          [md-menu-trigger-for]="downloadCompMenu">
-            <md-icon>file_download</md-icon>
-        </button>
+
+        <md-menu x-position="after" #downloadCompMenu="mdMenu">
+          <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(hasComp)" (click)="downloadComp('wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
+          <button md-menu-item [disabled]="!userCan.downloadCleanComps(hasComp)" (click)="downloadComp('clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
+          <button md-menu-item [disabled]="!userCan.downloadFullComps(hasComp)" (click)="downloadComp('full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
+        </md-menu>
 
         <!-- ADD / REMOVE FROM COLLECTION -->
         <ng-container *ngIf="userCan.haveCollections()">
@@ -107,21 +103,49 @@
             (click)="removeFromCollection(currentCollection, asset);">
             <md-icon>remove_circle</md-icon>
           </button>
-          <button class="add-to-collection-btn" [disabled]="!userCan.editCollections()" md-icon-button *ngIf="!inCollection(asset)"
+          <button md-icon-button class="add-to-collection-btn" 
+            [disabled]="!userCan.editCollections()"
+            *ngIf="!inCollection(asset)"
             title="{{ 'COLLECTION.ADD_TO_COLLECTION_HOVER_TITLE' | translate:{collectionName:currentCollection.name} }}"
-            (click)="addToCollection(currentCollection, asset);">
+            (click)="addToCollection(currentCollection, asset)">
             <md-icon>library_add</md-icon>
           </button>
         </ng-container>
 
-        <!--<button disabled md-icon-button title="More"><md-icon>more_vert</md-icon></button>-->
+        <button md-icon-button 
+          *ngIf="assetType === 'collection' && userCan.createSubclips(asset)"
+          title="{{'COLLECTION.SHOW.ASSET_MORE_BTN_TITLE' | translate}}"
+          [md-menu-trigger-for]="moreCollectionAssetMenu">
+          <md-icon>more_vert</md-icon>
+        </button>
+        <md-menu x-position="before" #moreCollectionAssetMenu="mdMenu">
+          <!-- ADD/EDIT SUBCLIPPING -->
+          <button md-menu-item (click)="editAsset(asset)">
+            <md-icon>theaters</md-icon>
+            <span>
+              {{ (!asset.timeStart == '' ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING' : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
+            </span>
+          </button>
+          <button [disabled]="true" md-menu-item (click)="editAsset(asset)">
+            <md-icon>mode_comment</md-icon>
+            <span>
+              {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_COMMENTS' | translate }}
+            </span>
+          </button>
+          <button [disabled]="true" md-menu-item (click)="editAsset(asset)">
+            <md-icon>share</md-icon>
+            <span>
+            {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.ASSET_SHARING' | translate }}
+            </span>
+          </button>
+          <a md-menu-item [routerLink]="['/asset/', asset.assetId, assetParams(asset)]">
+            <md-icon>details</md-icon>
+            <span>
+              {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_DETAILS' | translate }}
+            </span>
+          </a>
+        </md-menu>
       </div>
     </div>
   </li>
 </ul>
-
-<md-menu x-position="after" #downloadCompMenu="mdMenu">
-  <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(hasComp)" (click)="downloadComp('wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
-  <button md-menu-item [disabled]="!userCan.downloadCleanComps(hasComp)" (click)="downloadComp('clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
-  <button md-menu-item [disabled]="!userCan.downloadFullComps(hasComp)" (click)="downloadComp('full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
-</md-menu>

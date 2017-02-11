@@ -250,26 +250,6 @@ wz-asset-grid ul.asset-grid-view {
           }
         }
       }
-      // &.sub-clip-indicator {
-      //   font-size: rem(1.2);
-      //   line-height: rem(1.55);
-      //   position: absolute;
-      //   height: rem(2.0);
-      //   width: rem(2.0);
-      //   top: rem(.3);
-      //   right: rem(3.3);
-      //   z-index: 1;
-      //   color: transparent;
-      //   &::before {
-      //     content: "\e54d";
-      //     font-family: 'Material Icons';
-      //     color: rgba(md-color($md-grey, 100),0.55);
-      //     position: absolute;
-      //     top: rem(.3);
-      //     right: rem(-.2);
-      //     font-size: 1.86em;
-      //   }
-      // }
       &.subclip-timeline {
         transition: $swift-ease-out;
         position: absolute;
@@ -281,7 +261,7 @@ wz-asset-grid ul.asset-grid-view {
         background-color: darken(md-color($background, status-bar), 1%);
         opacity: .75;
         .subclip-segment {
-          background-color: darken(md-color($primary), 35%);
+          background-color: rgba(md-color($accent, darker), .95);
           height: 100%;
           position: absolute;
         }

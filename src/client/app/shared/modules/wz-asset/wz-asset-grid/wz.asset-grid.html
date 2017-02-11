@@ -14,47 +14,31 @@
           <span>{{asset.metaData[3].value}}</span>
         </span>
         <span  *ngIf="asset.timeStart" class="mdata-3">
-          <span>{{ asset.timeEnd - asset.timeStart }}</span>
+          <span>{{frame(asset.metaData[6].value, asset.timeEnd - asset.timeStart) | timecode}}</span>
         </span>
         <span *ngIf="asset.metaData[4] && asset.metaData[4].name == 'Resource.Class' && asset.metaData[4].value == 'Image'" class="mdata-4">
           <span class="{{asset.metaData[4].value | lowercase}}"></span>
         </span>
-        <span *ngIf="asset.timeStart" class="subclip-timeline sub-clip-indicator-2">
-          <span class="subclip-segment" style="width:2.4333%;margin-left:75.654%;"></span>
+        <span *ngIf="asset.timeStart" class="subclip-timeline">
+          <span class="subclip-segment" [ngStyle]="calcSubClipSegments(asset)"></span>
         </span>
       </a>
       <section class="actions">
         <nav class="asset-options" flex layout-align="end center">
-          <button
-            *ngIf="assetType === 'collection' && userCan.createSubclips(asset)"
-            md-icon-button
-            title="Edit asset"
-            (click)="editAsset(asset);">
-              <md-icon>mode_edit</md-icon>
-          </button>
           <!-- ADD TO CART -->
           <button
             *ngIf="userCan.addToCart()"
             md-icon-button
-            title="Add to cart"
+            title="{{'COLLECTION.SHOW.ADD_TO_CART_BTN_TITLE' | translate}}"
             (click)="addAssetToCart(asset);">
               <md-icon>shopping_cart</md-icon>
           </button>
 
           <!-- DOWNLOAD COMPS-->
           <button
-            *ngIf="userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
             md-icon-button
-            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' | translate }}"
-            (click)="setAssetActiveId(asset)"
-            [md-menu-trigger-for]="downloadCompMenu">
-              <md-icon>file_download</md-icon>
-          </button>
-          <button
-            *ngIf="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
-            disabled
-            md-icon-button
-            title="{{ 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED' | translate }}"
+            [disabled]="!userCan.viewDownloadCompOptions(asset.hasDownloadableComp)"
+            title="{{ (userCan.viewDownloadCompOptions(asset.hasDownloadableComp) ? 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED') | translate }}"
             (click)="setAssetActiveId(asset)"
             [md-menu-trigger-for]="downloadCompMenu">
               <md-icon>file_download</md-icon>
@@ -75,7 +59,38 @@
             </button>
           </ng-container>
 
-          <button disabled md-icon-button title="More"><md-icon>more_vert</md-icon></button>
+          <button md-icon-button 
+            *ngIf="assetType === 'collection' && userCan.createSubclips(asset)"
+            title="{{'COLLECTION.SHOW.ASSET_MORE_BTN_TITLE' | translate}}"
+            [md-menu-trigger-for]="moreCollectionAssetMenu">
+            <md-icon>more_vert</md-icon>
+          </button>
+          <md-menu x-position="before" y-position="below" #moreCollectionAssetMenu="mdMenu">
+            <button md-menu-item (click)="editAsset(asset)">
+              <md-icon>theaters</md-icon>
+              <span>
+                {{ (!asset.timeStart == '' ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING' : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
+              </span>
+            </button>
+            <button [disabled]="true" md-menu-item>
+              <md-icon>mode_comment</md-icon>
+              <span>
+                {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_COMMENTS' | translate }}
+              </span>
+            </button>
+            <button [disabled]="true" md-menu-item>
+              <md-icon>share</md-icon>
+              <span>
+              {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.ASSET_SHARING' | translate }}
+              </span>
+            </button>
+            <a md-menu-item [routerLink]="['/asset/', asset.assetId, assetParams(asset)]">
+              <md-icon>details</md-icon>
+              <span>
+                {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_DETAILS' | translate }}
+              </span>
+            </a>
+          </md-menu>
         </nav>
       </section>
       <a [routerLink]="['/asset/', asset.assetId]" class="asset-desc">
