@@ -43,7 +43,7 @@ export function main() {
         open: jasmine.createSpy('open').and.returnValue({
           componentInstance: {
             onSubclip: Observable.of({}),
-            calculatePrice: Observable.of({})
+            pricingEvent: Observable.of({})
           },
           afterClosed: function () {
             return Observable.of({ data: 'hi' });
@@ -59,12 +59,12 @@ export function main() {
       };
 
       mockUserPreference = {
-        state: { pricingPreferences: { some: 'attribute' } }
+        data: Observable.of({ pricingPreferences: { some: 'attribute' } })
       };
 
       componentUnderTest = new CartTabComponent(
         null, mockCartService, mockUiConfig, mockDialog,
-        mockAssetService, null, mockUserPreference, mockDocument
+        mockAssetService, null, mockUserPreference, null, mockDocument
       );
     });
 
@@ -96,7 +96,10 @@ export function main() {
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
 
-        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null, null);
+        componentUnderTest = new CartTabComponent(
+          null, mockCartService, mockUiConfig, mockDialog,
+          null, null, mockUserPreference, null, null
+        );
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
 
@@ -108,7 +111,10 @@ export function main() {
       it('returns an observable of false when the cart has no items', () => {
         mockCartService.data = Observable.of({ itemCount: 0 });
 
-        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null, null);
+        componentUnderTest = new CartTabComponent(
+          null, mockCartService, mockUiConfig, mockDialog,
+          null, null, mockUserPreference, null, null
+        );
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
@@ -117,7 +123,10 @@ export function main() {
       it('returns an observable of false when the cart has no itemCount member', () => {
         mockCartService.data = Observable.of({});
 
-        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null, null);
+        componentUnderTest = new CartTabComponent(
+          null, mockCartService, mockUiConfig, mockDialog,
+          null, null, mockUserPreference, null, null
+        );
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
@@ -126,7 +135,10 @@ export function main() {
       it('returns an observable of true when the cart has at least one line item', () => {
         mockCartService.data = Observable.of({ itemCount: 1 });
 
-        componentUnderTest = new CartTabComponent(null, mockCartService, mockUiConfig, mockDialog, null, null, null, null);
+        componentUnderTest = new CartTabComponent(
+          null, mockCartService, mockUiConfig, mockDialog,
+          null, null, mockUserPreference, null, null
+        );
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(true));
@@ -200,11 +212,23 @@ export function main() {
         expect(mockDialog.open).toHaveBeenCalledWith(WzAdvancedPlayerComponent, { width: '544px' });
       });
 
-      it('calls shows the pricing dialog when called with SHOW_PRICING_DIALOG', () => {
-        let mockLineItem = { asset: { assetId: 123456 } };
-        componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
+      describe('calls openPricingDialog with SHOW_PRICING_DIALOG', () => {
+        it('should get the price attributes if they dont already exist', () => {
+          let mockLineItem = { asset: { assetId: 123456 } };
+          componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
 
-        expect(mockDialog.open).toHaveBeenCalledWith(WzPricingComponent);
+          expect(mockAssetService.getPriceAttributes).toHaveBeenCalled();
+          expect(mockDialog.open).toHaveBeenCalledWith(WzPricingComponent);
+        });
+
+        it('should not get the attributes if they already exist', () => {
+          let mockLineItem = { asset: { assetId: 123456 } };
+          componentUnderTest.priceAttributes = { some: 'attr' };
+          componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
+
+          expect(mockAssetService.getPriceAttributes).not.toHaveBeenCalled();
+          expect(mockDialog.open).toHaveBeenCalledWith(WzPricingComponent);
+        });
       });
     });
   });

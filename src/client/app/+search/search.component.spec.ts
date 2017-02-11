@@ -213,22 +213,22 @@ export function main() {
 
     describe('onSortResults()', () => {
       it('Should call the user preference service to update the user sort preference', () => {
-        componentUnderTest.onSortResults({ id: 'sortByDate' });
+        componentUnderTest.sortResults({ id: 'sortByDate' });
         expect(mockUserPreferences.updateSortPreference).toHaveBeenCalledWith('sortByDate');
       });
 
       it('Should call sort definition service to update with new sort', () => {
-        componentUnderTest.onSortResults({ id: 'sortByDate' });
+        componentUnderTest.sortResults({ id: 'sortByDate' });
         expect(mockSortDefinition.update).toHaveBeenCalledWith({ currentSort: { id: 'sortByDate' } });
       });
 
       it('Should call the search context service to update the store with the new sort preference for the url', () => {
-        componentUnderTest.onSortResults({ id: 'sortByDate' });
+        componentUnderTest.sortResults({ id: 'sortByDate' });
         expect(mockSearchContext.update).toEqual({ 'i': 1, 'sortId': 'sortByDate' });
       });
 
       it('Should call the search context service to exectue and new browser url', () => {
-        componentUnderTest.onSortResults({ id: 'sortByDate' });
+        componentUnderTest.sortResults({ id: 'sortByDate' });
         expect(mockSearchContext.go).toHaveBeenCalled();
       });
     });

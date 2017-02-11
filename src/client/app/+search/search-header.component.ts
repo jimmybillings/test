@@ -18,7 +18,11 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
                 </span>
               </button>
               <md-menu x-position="before" #assetSortMenu="mdMenu">
-                <wz-sort-component [current]="currentSort" [items]="sortDefinitionItems" (sort)="onSortResults($event)"></wz-sort-component>
+                <wz-sort-component 
+                  [current]="currentSort" 
+                  [items]="sortDefinitionItems" 
+                  (sort)="onSortResults.emit($event)">
+                </wz-sort-component>
               </md-menu>
               <button md-icon-button color="primary" title="{{ (assetView == 'grid' ? 
                 'SEARCH.ASSET_VIEW_LIST_BTN_TITLE' : 'SEARCH.ASSET_VIEW_GRID_BTN_TITLE') | translate }}" 
@@ -39,4 +43,5 @@ export class SearchHeaderComponent {
   @Input() currentSort: any;
   @Input() assetView: string = 'grid';
   @Output() onChangeAssetView = new EventEmitter();
+  @Output() onSortResults = new EventEmitter();
 }
