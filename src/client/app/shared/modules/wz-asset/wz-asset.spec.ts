@@ -74,6 +74,12 @@ export function main() {
       });
     });
 
+    describe('durationAsFrames()', () => {
+      it('Should return asset duration as frames', () => {
+        expect(componentUnderTest.durationAsFrames('29.97 fps', '00:01:43')).toBe(3087);
+      });
+    });
+
     describe('formatType()', () => {
 
       it('Should map a format name to acronym - HD', () => {

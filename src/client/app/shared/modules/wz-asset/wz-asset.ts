@@ -7,7 +7,7 @@ import {
 import { Collection } from '../../interfaces/collection.interface';
 import { Asset } from '../../interfaces/asset.interface';
 import { Capabilities } from '../../services/capabilities.service';
-import { Frame } from 'wazee-frame-formatter';
+import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
 
 export class WzAsset {
   public currentCollection: Collection;
@@ -59,7 +59,7 @@ export class WzAsset {
   }
 
   public editAsset(asset: Asset) {
-    console.log(asset);
+    // console.log(asset);
     this.onEditAsset.emit(asset);
   }
 
@@ -77,6 +77,23 @@ export class WzAsset {
 
   public frame(framesPerSecond: any, frameNumber: any) {
     return new Frame(framesPerSecond.split(' fps')[0]).setFromFrameNumber(frameNumber);
+  }
+
+  public durationAsFrames(framesPerSecond: any, duration: any) {
+    return new Frame(
+      framesPerSecond.split(' fps')[0])
+      .setFromString(`${duration};00`, TimecodeFormat.SIMPLE_TIME_CONVERSION)
+      .asFrameNumber();
+  }
+  public calcSegmentWidthPecentage(startFrame: number, totalFrames: number) {
+    return startFrame * 100 / totalFrames;
+  }
+
+  public calcSubClipSegments(asset: any) {
+    let totalFrames: number = this.durationAsFrames(asset.metaData[6].value, asset.metaData[3].value);
+    let startPoint: number = this.calcSegmentWidthPecentage(asset.timeStart, totalFrames);
+    let segmentWidth: number = this.calcSegmentWidthPecentage(asset.timeEnd - asset.timeStart, totalFrames);
+    return { 'width.%': segmentWidth, 'margin-left.%': startPoint, 'min-width.px': 2 };
   }
 
   public formatType(format: string): string {

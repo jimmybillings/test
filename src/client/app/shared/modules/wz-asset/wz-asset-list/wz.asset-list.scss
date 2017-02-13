@@ -224,9 +224,13 @@ wz-asset-list ul.asset-list-view {
     }
     .asset-sub-clip {
       margin: rem(1.6) 0 0;
-      width: 90%;
-      min-width: rem(30.0);
-      // max-width: rem(40.0);
+      width: 94%;
+      min-width: rem(38.0);
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        width: 100%;
+        min-width: 100%;
+      }
+
       .subclip-timeline {
         margin: rem(.5) 0 0;
         position: relative;
@@ -234,7 +238,7 @@ wz-asset-list ul.asset-list-view {
         width: 100%;
         background-color: darken(md-color($background, status-bar), 10%);
         .subclip-segment {
-          background-color: darken(md-color($background, status-bar), 30%);
+          background-color: rgba(md-color($accent, darker), .6);
           height: 100%;
           position: absolute;
         }
@@ -246,12 +250,14 @@ wz-asset-list ul.asset-list-view {
         height: rem(2.0);
         line-height: rem(2.0);
         width: 100%;
-        min-width: rem(30.0);
-        // max-width: rem(40.0);
+        min-width: rem(38.0);
         background-color: rgba(md-color($primary), .1);
+        font-size: rem(1.1);
+        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+          font-size: rem(1.0);
+          min-width: 100%;
+        }
         li {
-          // margin:0 rem(.5) 0 rem(.3);
-          // display: inline-block;
           &:first-child {
             margin:0 0 0 rem(0.4);
           }

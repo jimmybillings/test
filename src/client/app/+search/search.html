@@ -10,7 +10,8 @@
 		[sortDefinitionItems]="(sortDefinition.data | async).sorts"
 		[currentSort]="(sortDefinition.data | async).currentSort"
 		[assetView]="(userPreferences.data | async).assetView"
-		(onChangeAssetView)="changeAssetView($event)">
+		(onChangeAssetView)="changeAssetView($event)"
+		(onSortResults)="sortResults($event)">
 	</search-header>
 
 	<section class="search-results">

@@ -80,6 +80,10 @@ collection-show .collections-list {
       padding: 0 rem(1.6);
       height: rem(3.5);
       margin-left: rem(.5);
+      &[disabled] {
+        color: md-color($md-foreground, text);
+        opacity: .35;
+      }
     }
   }
   subclip-controlbar {
