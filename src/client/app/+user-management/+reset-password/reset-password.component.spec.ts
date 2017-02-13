@@ -9,14 +9,29 @@ export function main() {
     let componentUnderTest: ResetPasswordComponent;
 
     beforeEach(() => {
-      mockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
-      mockUser = {
-        resetPassword: jasmine.createSpy('reset_password').and.returnValue(
-          Observable.of({ user: 'james', token: { token: 'loginToken' }, userPreferences: { pref: 1 } }))
+      mockUiConfig = {
+        get: () => { return Observable.of({ config: { someConfig: 'test' } }); }
       };
-      mockActivatedRoute = { snapshot: { params: { share_key: 'sldkjf2938sdlkjf289734' } } };
+      mockUser = {
+        resetPassword: jasmine.createSpy('resetPassword').and.returnValue(
+          Observable.of({
+            user: 'james',
+            token: { token: 'loginToken' },
+            userPreferences: { pref: 1 }
+          })
+        ),
+        changePassword: jasmine.createSpy('changePassword').and.returnValue(
+          Observable.of({})
+        )
+      };
+      mockActivatedRoute = {
+        snapshot: { params: { share_key: 'sldkjf2938sdlkjf289734' } }
+      };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
-      mockCurrentUserService = { set: jasmine.createSpy('set') };
+      mockCurrentUserService = {
+        set: jasmine.createSpy('set'),
+        loggedIn: jasmine.createSpy('loggedIn').and.returnValue(true)
+      };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of('translation'))
       };
@@ -35,26 +50,48 @@ export function main() {
     });
 
     describe('onSubmit() success', () => {
-      it('Submits a set new password request', () => {
-        componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
-        expect(mockUser.resetPassword).toHaveBeenCalledWith({ 'newPassword': 'myNewTestPassword' }, 'sldkjf2938sdlkjf289734');
+      describe('with a share token', () => {
+        beforeEach(() => {
+          componentUnderTest.ngOnInit();
+        });
+
+        it('calls resetPassword()', () => {
+          componentUnderTest.onSubmit({ newPassword: 'myNewTestPassword' });
+          expect(mockUser.resetPassword).toHaveBeenCalledWith({ newPassword: 'myNewTestPassword' }, 'sldkjf2938sdlkjf289734');
+        });
+
+        it('Sets a new user and auth token on response', () => {
+          componentUnderTest.onSubmit({ newPassword: 'myNewTestPassword' });
+          expect(mockCurrentUserService.set).toHaveBeenCalledWith('james', 'loginToken');
+        });
+
+
+        it('Navigates to the home page', () => {
+          componentUnderTest.onSubmit({ newPassword: 'myNewTestPassword' });
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
+        });
+
+        it('Displays a snackbar that the password was sucessfully changed', () => {
+          componentUnderTest.onSubmit({ newPassword: 'myNewTestPassword' });
+          expect(mockTranslate.get).toHaveBeenCalledWith('RESETPASSWORD.PASSWORD_CHANGED');
+          expect(mockSnackbar.open).toHaveBeenCalledWith('translation', '', { duration: 2000 });
+        });
       });
 
-      it('Sets a new user and auth token on response', () => {
-        componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
-        expect(mockCurrentUserService.set).toHaveBeenCalledWith('james', 'loginToken');
-      });
+      describe('without a share key', () => {
+        beforeEach(() => {
+          mockActivatedRoute = { snapshot: { params: {} } };
+          componentUnderTest = new ResetPasswordComponent(
+            mockUser, mockUiConfig, mockActivatedRoute, mockRouter,
+            mockCurrentUserService, mockTranslate, mockSnackbar
+          );
+          componentUnderTest.ngOnInit();
+        });
+        it('calls changePassword()', () => {
+          componentUnderTest.onSubmit({ newPassword: 'abc123' });
 
-
-      it('Navigates to the home page', () => {
-        componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
-      });
-
-      it('Displays a snackbar that the password was sucessfully changed', () => {
-        componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
-        expect(mockTranslate.get).toHaveBeenCalledWith('RESETPASSWORD.PASSWORD_CHANGED');
-        expect(mockSnackbar.open).toHaveBeenCalledWith('translation', '', { duration: 2000 });
+          expect(mockUser.changePassword).toHaveBeenCalledWith({ newPassword: 'abc123' });
+        });
       });
     });
 
@@ -64,6 +101,8 @@ export function main() {
           { body: JSON.stringify({ newPassword: 'Needs a number and letter' }) }));
         mockUser = {
           resetPassword: jasmine.createSpy('resetPassword').and.returnValue(
+            Observable.throw(errorResponse)),
+          changePassword: jasmine.createSpy('resetPassword').and.returnValue(
             Observable.throw(errorResponse))
         };
         componentUnderTest = new ResetPasswordComponent(
