@@ -5,7 +5,7 @@
         <span class="asset-id">
           <span class="id">{{ asset.assetId }}</span>
         </span>
-        <a [routerLink]="['/asset', asset.assetId]"><img src="{{asset.thumbnailUrl}}"/></a>
+        <a [routerLink]="['/asset', asset.assetId, assetParams(asset)]"><img src="{{asset.thumbnailUrl}}"/></a>
       </div>
     </div>
 

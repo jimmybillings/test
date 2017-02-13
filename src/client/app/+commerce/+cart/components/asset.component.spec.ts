@@ -13,8 +13,8 @@ export function main() {
         componentUnderTest.asset = {
           assetId: 0,
           assetName: '',
-          startTime: 0,
-          endTime: 0,
+          timeStart: 0,
+          timeEnd: 0,
           thumbnailUrl: '',
           metadata: [
             { name: 'a', value: 'b' },

@@ -24,8 +24,8 @@ export interface LineItem {
 export interface Asset {
   assetId: number;
   assetName: string;
-  startTime: number;
-  endTime: number;
+  timeStart: number;
+  timeEnd: number;
   thumbnailUrl: string;
   metadata?: Metadatum[];
 }
@@ -77,8 +77,8 @@ export interface AddAssetParameters {
     price?: number;
     asset: {
       assetId: string | number;
-      startTime?: string;
-      endTime?: string;
+      timeStart?: string;
+      timeEnd?: string;
     };
   };
   attributes?: any;
