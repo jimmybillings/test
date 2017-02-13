@@ -13,7 +13,6 @@ export const errorStore: ActionReducer<any> = (state = {}, action: Action) => {
 
 @Injectable()
 export class ErrorStore {
-
   constructor(private store: Store<any>) { }
 
   public get data(): Observable<any> {
@@ -23,5 +22,4 @@ export class ErrorStore {
   public dispatch(error: any): void {
     this.store.dispatch({ type: 'UPDATE_ERROR', payload: error });
   }
-
 }

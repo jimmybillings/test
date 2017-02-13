@@ -51,7 +51,8 @@ export class ApiService {
       .map(response => { try { return response.json(); } catch (exception) { return response; } })
       .do(() => this.hideLoadingIf(options.loading), error => {
         this.hideLoadingIf(options.loading);
-        this.error.dispatch(error);
+        try { return error.json(); } catch (exception) { this.error.dispatch(error); }
+        return error;
       });
   }
 

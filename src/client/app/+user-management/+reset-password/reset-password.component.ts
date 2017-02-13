@@ -44,13 +44,22 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(form: any): void {
-    this.user.resetUserPassword(form, this.shareKey).subscribe((res: any) => {
-      if (res) this.currentUser.set(res.user, res.token.token);
-      this.router.navigate(['/']);
-      this.showSnackbar('RESETPASSWORD.PASSWORD_CHANGED');
-    }, (error) => {
-      console.log(error);
-    });
+    if (this.shareKey) {
+      this.user.resetPassword(form, this.shareKey)
+        .do((res: any) => this.currentUser.set(res.user, res.token.token))
+        .subscribe(this.handleSuccess, this.handleError);
+    } else {
+      this.user.changePassword(form).subscribe(this.handleSuccess, this.handleError);
+    }
+  }
+
+  private handleSuccess = () => {
+    this.router.navigate(['/']);
+    this.showSnackbar('RESETPASSWORD.PASSWORD_CHANGED');
+  }
+
+  private handleError = (error: any) => {
+    this.serverErrors = error.json();
   }
 
   private showSnackbar(message: any): void {

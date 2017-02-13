@@ -51,23 +51,21 @@ export class WzNotificationService {
   }
 
   private handle(error: any): void {
-    try { return error.json(); } catch (exception) {
-      if (!error.status || this.callInProgress) return;
-      this.callInProgress = true;
-      switch (error.status) {
-        case 401:
-          this.unAuthorized();
-          break;
-        case 403:
-          this.forbidden();
-          break;
-        case 419:
-          this.expiredSession();
-          break;
-        default:
-          if (isNaN(error.status)) this.customError(error.status);
-          break;
-      }
+    if (!error.status || this.callInProgress) return;
+    this.callInProgress = true;
+    switch (error.status) {
+      case 401:
+        this.unAuthorized();
+        break;
+      case 403:
+        this.forbidden();
+        break;
+      case 419:
+        this.expiredSession();
+        break;
+      default:
+        if (isNaN(error.status)) this.customError(error.status);
+        break;
     }
   }
 
