@@ -59,6 +59,9 @@ export class WzAdvancedPlayerComponent {
       case PlayerRequestType.ClearMarkers:
         this.player.clearMarkers();
         break;
+      case PlayerRequestType.SaveMarkersAsUndefined:
+        this.onSubclip.emit({ in: undefined, out: undefined });
+        break;
       case PlayerRequestType.SaveMarkers:
         this.onSubclip.emit({ in: state.inMarkerFrame.frameNumber, out: state.outMarkerFrame.frameNumber });
         break;

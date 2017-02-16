@@ -59,7 +59,6 @@ export class WzAsset {
   }
 
   public editAsset(asset: Asset) {
-    // console.log(asset);
     this.onEditAsset.emit(asset);
   }
 
