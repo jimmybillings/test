@@ -16,6 +16,7 @@ import { MarkerSeekButtonComponent } from './components/wz-advanced-player/contr
 import { MarkerSetButtonComponent } from './components/wz-advanced-player/controls/marker-set-button.component';
 import { MarkerTimeDisplayComponent } from './components/wz-advanced-player/controls/marker-time-display.component';
 import { PlaybackToggleButtonComponent } from './components/wz-advanced-player/controls/playback-toggle-button.component';
+import { ScrubberComponent } from './components/wz-advanced-player/controls/scrubber.component';
 import { StepButtonComponent } from './components/wz-advanced-player/controls/step-button.component';
 import { TimeDisplayComponent } from './components/wz-advanced-player/controls/time-display.component';
 
@@ -39,6 +40,7 @@ import { TimeDisplayComponent } from './components/wz-advanced-player/controls/t
     MarkerSetButtonComponent,
     MarkerTimeDisplayComponent,
     PlaybackToggleButtonComponent,
+    ScrubberComponent,
     StepButtonComponent,
     TimeDisplayComponent
   ],

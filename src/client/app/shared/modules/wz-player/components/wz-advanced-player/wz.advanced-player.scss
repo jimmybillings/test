@@ -120,4 +120,112 @@ wz-advanced-player {
       } 
     } 
   }
+
+  $scrubber-slider-height: rem(1.5);
+  $thumb-width: rem(0.4);
+  $scrubber-thumb-height: $scrubber-slider-height;
+
+  $marker-slider-height: 0;
+  $marker-thumb-height: $thumb-width;
+
+  scrub-ber {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    height: $scrubber-slider-height;
+    background-color: gray;
+  }
+
+  md-slider.md-slider-horizontal {
+    width: 100%;
+    padding: 0;
+    vertical-align: top;
+    background-color: gray;
+
+    .md-slider-track {
+      width: calc(100% - #{$thumb-width});
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: gray;
+      cursor: pointer;
+    }
+
+    .md-slider-track-fill {
+      height: $scrubber-slider-height;
+      background-color: white;
+      transition: none;
+    }
+
+    .md-slider-thumb-container {
+      position: relative;
+      top: 0;
+      transition: none;
+    }
+
+    .md-slider-thumb {
+      width: $thumb-width;
+      top: 0;
+      right: -$thumb-width;
+      border-radius: 0;
+      transform: none;
+      transition: none;
+    }
+
+    .md-slider-ticks-container {
+      display: none;
+    }
+
+    &.scrubber {
+      height: $scrubber-slider-height;
+
+      .md-slider-track {
+        height: $scrubber-slider-height;
+      }
+
+      .md-slider-track-fill {
+        height: $scrubber-slider-height;
+      }
+
+      .md-slider-thumb {
+        height: $scrubber-thumb-height;
+        background-color: black;
+      }
+    }
+
+    &.marker {
+      position: absolute;
+      height: $marker-slider-height;
+
+      .md-slider-track {
+        height: $marker-slider-height;
+      }
+
+      .md-slider-track-fill {
+        height: $marker-slider-height;
+      }
+
+      .md-slider-thumb {
+        height: $marker-thumb-height;
+        background-color: darkorange;
+      }
+
+      &.in {
+        top: 0;
+      }
+
+      &.out {
+        top: $scrubber-slider-height - $marker-thumb-height;
+      }
+    }
+  }
+
+  .hover-frame-display {
+    position: absolute;
+    top: rem(-6);
+    background-color: black;
+    border: solid 1px white;
+    font-size: rem(1.25);
+    padding: 4px;
+  }
 }
