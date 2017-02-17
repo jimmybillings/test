@@ -159,10 +159,6 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
         console.log(data);
         payload.asset.timeStart = data.in;
         payload.asset.timeEnd = data.out;
-        // currently assets in a cart have 2 sets of markers
-        // timeStart and timeEnd are the ones that should be used!
-        payload.asset.startTime = undefined;
-        payload.asset.endTime = undefined;
         this.cartService.editLineItem(payload, {});
         dialogRef.close();
       });
