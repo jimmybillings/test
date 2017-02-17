@@ -72,6 +72,7 @@ build_prod() {
 
     # tag the repository with this build version so we can find it again
     git tag "version=${buildVersion}"
+
     git push --tags origin
     restore-maven-version.sh   || exit 1  #CHANGE?
 
@@ -138,4 +139,24 @@ build_prod
 
 # build the UI library
 build_library
+
+cd "$sourceHome/wazee-crux-version-control"
+eval $(python /home/video/bin/tools/jenkins/commitVersionChange.py ${project})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
