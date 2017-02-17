@@ -21,6 +21,7 @@
 baseDir=$( dirname "$0" )
 
 artifactName=wazee-ui
+project=wazee-ui
 
 baseDir=$( dirname "$0" )
 
@@ -117,10 +118,10 @@ if [ ! -d "$sourceHome/wazee-crux-version-control/.git" ]; then
 	rm -rf "$sourceHome/wazee-crux-version-control"
 	[ "$dryrun" ] || git clone "$gitHome/wazee-crux-version-control.git" "$sourceHome/wazee-crux-version-control"
 fi
+
 cd "$sourceHome/wazee-crux-version-control"
 git checkout --force develop
 git pull origin develop
-
 python /home/video/bin/tools/jenkins/incrementVersionFile.py ${project} $(git rev-parse HEAD)
 buildVersion=$(python /home/video/bin/tools/jenkins/currentVersion.py ${sourceHome}/wazee-crux-version-control/${project}.version)
 cd -
