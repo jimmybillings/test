@@ -17,6 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { WAZEE_STORES } from './imports/wazee';
 import { CommerceModule } from './+commerce/commerce.module';
 import { NotFoundComponent } from './app.not-found.component';
+import { GalleryViewModule } from './+gallery-view/gallery-view.module';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { NotFoundComponent } from './app.not-found.component';
     AdminModule,
     CommerceModule,
     ApplicationModule,
+    GalleryViewModule,
     StoreModule.provideStore(WAZEE_STORES)
   ],
   providers: [{
