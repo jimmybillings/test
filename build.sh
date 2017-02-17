@@ -142,21 +142,4 @@ build_library
 
 cd "$sourceHome/wazee-crux-version-control"
 eval $(python /home/video/bin/tools/jenkins/commitVersionChange.py ${project})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+git push
