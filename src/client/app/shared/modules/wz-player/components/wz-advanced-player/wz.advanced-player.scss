@@ -40,7 +40,6 @@ wz-advanced-player {
       min-width: 0;
     }
   }
-
   [md-button].is-outlined {
     background-color: rgba(md-color($background, background), 0.07);
     border-color: rgba(md-color($background, background), 0.18);
@@ -123,14 +122,12 @@ wz-advanced-player {
       } 
     } 
   }
-
   $scrubber-slider-height: rem(1.0);
   $thumb-width: rem(0.3);
   $scrubber-thumb-height: $scrubber-slider-height;
 
   $marker-slider-height: 0;
   $marker-thumb-height: $thumb-width;
-
   scrub-ber {
     position: relative;
     text-align: center;
