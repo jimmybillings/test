@@ -24,6 +24,14 @@ export class AssetComponent implements OnInit {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
+  public assetParams(asset: any) {
+    return Object.assign({},
+      asset.uuid ? { uuid: asset.uuid } : null,
+      asset.timeStart && asset.timeStart >= 0 ? { timeStart: asset.timeStart } : null,
+      asset.timeEnd && asset.timeEnd >= 0 ? { timeEnd: asset.timeEnd } : null
+    );
+  }
+
   private cacheMetadata(): void {
     this.asset.metadata.forEach((metadatum: Metadatum) => {
       this.metadata[metadatum.name] = metadatum.value;

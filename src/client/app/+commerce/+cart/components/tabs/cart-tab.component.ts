@@ -148,15 +148,21 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   private editAsset(payload: any) {
     this.assetService.getClipPreviewData(payload.asset.assetId).subscribe(data => {
       payload.asset.clipUrl = data.url;
-      payload.asset.timeStart = payload.asset.startTime;
-      payload.asset.timeEnd = payload.asset.endTime;
       let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '544px' });
+      // workaround for cart assets that have asset.timeStart = -1, and asset.timeStart = -2
+      if (payload.asset.timeStart < 0) payload.asset.timeStart = undefined;
+      if (payload.asset.timeEnd < 0) payload.asset.timeEnd = undefined;
       Object.assign(dialogRef.componentInstance, { window: this.window, asset: payload.asset, displayContext: 'subClipEditDialog' });
       this.document.body.classList.add('subclipping-edit-open');
       dialogRef.componentInstance.dialog = dialogRef;
       dialogRef.componentInstance.onSubclip.subscribe((data: any) => {
-        payload.asset.startTime = data.in;
-        payload.asset.endTime = data.out;
+        console.log(data);
+        payload.asset.timeStart = data.in;
+        payload.asset.timeEnd = data.out;
+        // currently assets in a cart have 2 sets of markers
+        // timeStart and timeEnd are the ones that should be used!
+        payload.asset.startTime = undefined;
+        payload.asset.endTime = undefined;
         this.cartService.editLineItem(payload, {});
         dialogRef.close();
       });

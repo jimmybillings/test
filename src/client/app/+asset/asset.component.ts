@@ -100,8 +100,8 @@ export class AssetComponent implements OnInit {
           price: price ? price : undefined,
           asset: {
             assetId: asset.assetId,
-            startTime: asset.markers ? asset.markers.markers.in : undefined,
-            endTime: asset.markers ? asset.markers.markers.out : undefined
+            timeStart: asset.markers ? asset.markers.markers.in : undefined,
+            timeEnd: asset.markers ? asset.markers.markers.out : undefined
           }
         },
         attributes: this.selectedAttrbutes

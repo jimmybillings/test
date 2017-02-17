@@ -3,7 +3,7 @@ import { Api } from '../interfaces/api.interface';
 import { UserService } from './user.service';
 
 export function main() {
-  describe('User data service', () => {
+  describe('User Service', () => {
     let serviceUnderTest: UserService;
     let mockApi: MockApiService;
 
@@ -46,12 +46,12 @@ export function main() {
 
     describe('resetPassword()', () => {
       it('Should make a request to change a users password with api token', () => {
-        serviceUnderTest.resetPassword(setUser(), '3234234234234').subscribe((res) => {
+        serviceUnderTest.resetPassword({ oldPassword: 'abc123', newPassword: 'ABC123' }, '3234234234234').subscribe((res) => {
           expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
           expect(mockApi.post).toHaveBeenCalledWithEndpoint('user/passwordReset');
           expect(mockApi.post).toHaveBeenCalledWithLoading(true);
           expect(mockApi.post).toHaveBeenCalledWithOverridingToken('3234234234234');
-          expect(mockApi.post).toHaveBeenCalledWithBody(setUser());
+          expect(mockApi.post).toHaveBeenCalledWithBody({ newPassword: 'ABC123' });
         });
       });
     });

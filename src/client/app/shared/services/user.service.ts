@@ -28,12 +28,6 @@ export class UserService {
     );
   }
 
-  public resetPassword(user: any, overridingToken: string): Observable<any> {
-    return this.api.post(Api.Identities, 'user/passwordReset',
-      { body: user, overridingToken: overridingToken, loading: true }
-    );
-  }
-
   public downloadActiveTosDocument(): Observable<any> {
     return this.api.get(Api.Identities, 'document/public/name/TOS').flatMap((response: ApiResponse) => {
       this.activeVersionId = response[0].activeVersionId;
@@ -45,5 +39,20 @@ export class UserService {
 
   public agreeUserToTerms(): void {
     this.api.post(Api.Identities, `document/version/${this.activeVersionId}/agree`).take(1).subscribe();
+  }
+
+  // Used by a logged-in user to change their password
+  public changePassword(form: any): Observable<any> {
+    return this.api.post(Api.Identities, 'user/changePassword', {
+      body: { oldPassword: form.oldPassword, newPassword: form.newPassword },
+      loading: true
+    });
+  }
+
+  // Used by a logged-out user to reset their password - requires overridingToken
+  public resetPassword(form: any, overridingToken: string): Observable<any> {
+    return this.api.post(Api.Identities, 'user/passwordReset',
+      { body: { newPassword: form.newPassword }, overridingToken: overridingToken, loading: true }
+    );
   }
 }

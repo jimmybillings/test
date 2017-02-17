@@ -12,7 +12,7 @@
               <md-icon>business</md-icon>Account settings
             </button>
             <div class="divider"></div>
-            <button md-menu-item (click)="comingSoonDialog()">
+            <button md-menu-item [routerLink]="['/user/reset-password']">
               <md-icon>lock</md-icon>Change Password
             </button>
           </md-menu>
@@ -61,7 +61,7 @@
               </div>
               <div class="cell">
                 <p class="md-body-1">
-                  <button md-button class="is-outlined" color="primary" (click)="comingSoonDialog()">{{'PROFILE.BASIC_INFO.CHANGE_PASSWORD_BTN_LABEL' | translate }}</button>
+                  <button md-button class="is-outlined" color="primary" [routerLink]="['/user/reset-password']">{{'PROFILE.BASIC_INFO.CHANGE_PASSWORD_BTN_LABEL' | translate }}</button>
                 </p>
               </div>
             </div>

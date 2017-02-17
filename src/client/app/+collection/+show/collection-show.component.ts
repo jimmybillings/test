@@ -160,10 +160,18 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cart.addAssetToProjectInCart({ lineItem: { asset: { assetId: asset.assetId } } });
+    this.cart.addAssetToProjectInCart({
+      lineItem: {
+        asset: {
+          assetId: asset.assetId,
+          timeStart: asset.timeStart ? asset.timeStart : undefined,
+          timeEnd: asset.timeEnd ? asset.timeEnd : undefined
+        }
+      }
+    });
     this.showSnackBar({
       key: 'ASSET.ADD_TO_CART_TOAST',
-      value: { assetId: asset.assetId }
+      value: { assetId: asset.name }
     });
   }
 

@@ -133,8 +133,8 @@ export function main() {
               price: 100,
               asset: {
                 assetId: 123123,
-                startTime: undefined,
-                endTime: undefined
+                timeStart: undefined,
+                timeEnd: undefined
               }
             },
             attributes: undefined
@@ -150,8 +150,8 @@ export function main() {
               price: undefined,
               asset: {
                 assetId: 123123,
-                startTime: undefined,
-                endTime: undefined
+                timeStart: undefined,
+                timeEnd: undefined
               }
             },
             attributes: undefined
@@ -169,8 +169,8 @@ export function main() {
               price: undefined,
               asset: {
                 assetId: 123123,
-                startTime: 1,
-                endTime: 10
+                timeStart: 1,
+                timeEnd: 10
               }
             },
             attributes: undefined
