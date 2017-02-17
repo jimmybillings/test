@@ -17,10 +17,14 @@
 #
 # For a full list, see http://build.thoughtequity.com:8080/jenkins/env-vars.html/
 # set -x
+sourceHome=/home/video/src
+gitHome=git@github.com:t3mediacorp
+PATH=/home/video/bin/tools/jenkins:$PATH
 
 baseDir=$( dirname "$0" )
 
 artifactName=wazee-ui
+project=wazee-ui
 
 baseDir=$( dirname "$0" )
 
@@ -67,8 +71,10 @@ build_prod() {
     deploy-to-nexus.sh --version=${buildVersion} --group="com.wazeedigital.wazee-ui" --artifact=wazee-ui "--file=$deliverable"  || exit 1
 
     # tag the repository with this build version so we can find it again
-    add-and-push-git-tag.sh    || exit 1
-    restore-maven-version.sh   || exit 1
+    git tag "version=${buildVersion}"
+
+    git push --tags origin
+    restore-maven-version.sh   || exit 1  #CHANGE?
 
     # put the calculated artifact version into a properties file so jenkins can find it
     create-jenkins-properties.sh ${buildVersion}
@@ -95,8 +101,8 @@ build_library() {
       if [[ $? == 0 ]]; then
         git add .
       fi
-      git commit -m "Version ${buildVersion}_${BUILD_NUMBER}"  $TMPDIR/wazee-ui-library
-      git tag "${buildVersion}_${BUILD_NUMBER}"
+      git commit -m "version=${buildVersion}"  $TMPDIR/wazee-ui-library
+      git tag "version=${buildVersion}"
       git push --tags origin
       git push origin
     fi
@@ -106,11 +112,24 @@ build_library() {
   return 0
 }
 
-# debugging information
 print-build-environment.sh
 
-# update the artifact with the correct build version
-buildVersion=$(update-maven-version-for-build.sh)  || exit 1 
+
+#checkout/verify/pull wazee-crux-version-control repo
+if [ ! -d "$sourceHome/wazee-crux-version-control/.git" ]; then
+	echo ""
+	echo "Cannot find version repo, cloning repo $gitHome/wazee-crux-version-control.git"
+	rm -rf "$sourceHome/wazee-crux-version-control"
+	[ "$dryrun" ] || git clone "$gitHome/wazee-crux-version-control.git" "$sourceHome/wazee-crux-version-control"
+fi
+
+cd "$sourceHome/wazee-crux-version-control"
+git checkout --force develop
+git pull origin develop
+python /home/video/bin/tools/jenkins/incrementVersionFile.py ${project} $(git rev-parse HEAD)
+buildVersion=$(python /home/video/bin/tools/jenkins/currentVersion.py ${sourceHome}/wazee-crux-version-control/${project}.version)
+cd -
+
 
 # Install modules
 npm install
@@ -120,4 +139,24 @@ build_prod
 
 # build the UI library
 build_library
+
+cd "$sourceHome/wazee-crux-version-control"
+eval $(python /home/video/bin/tools/jenkins/commitVersionChange.py ${project})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
