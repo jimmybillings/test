@@ -17,6 +17,9 @@
 #
 # For a full list, see http://build.thoughtequity.com:8080/jenkins/env-vars.html/
 # set -x
+sourceHome=/home/video/src
+gitHome=git@github.com:t3mediacorp
+PATH=/home/video/bin/tools/jenkins:$PATH
 
 baseDir=$( dirname "$0" )
 
