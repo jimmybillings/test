@@ -102,10 +102,10 @@ build_library() {
         git add .
       fi
       git commit -m "version=${buildVersion}"  $TMPDIR/wazee-ui-library
-      git tag "version=${buildVersion}"
-      git push --tags origin
       git push origin
     fi
+    git tag "version=${buildVersion}"
+    git push --tags origin
     popd
   fi
 
