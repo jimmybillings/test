@@ -30,6 +30,6 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 export class HomeVendorMarqueeComponent {
   @Input() config: any;
 
-  public vendors: any = ['dimoc', 'usta', 'AFV', 'discovery', 'ncaa', 'paramount']
-  public vendors2: any = ['natgeo', 'pac12', 'usga', 'sony', 'big10', 'wpt']
+  public vendors: any = ['dimoc', 'usta', 'AFV', 'discovery', 'ncaa', 'paramount'];
+  public vendors2: any = ['natgeo', 'pac12', 'usga', 'sony', 'big10', 'wpt'];
 }
