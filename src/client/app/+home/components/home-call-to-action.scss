@@ -1,0 +1,24 @@
+home-call-to-action {
+  .mrkt-call-to-action {
+    min-height: rem(44.0);
+    background:  md-color($primary, darker)  url('../assets/img/bk/tex/bktx_dgl_lines_light.png');
+    color: md-color($primary, darker-contrast);
+    text-align: center;
+  }
+  // this should go in some kind of glb scss file
+  .conversion {
+    &[md-button] {
+      font-size: rem(1.8);
+      min-width: rem(30.0);
+      padding: rem(.4) rem(4.0);
+      background-color: md-color($accent, darker, .8);
+      border: 1px solid transparent;
+      transition: $swift-ease-in;
+      &:hover {
+        border: 1px solid $white-87-opacity;
+        background-color: md-color($accent, darker, .8);
+        @include md-elevation(2);
+      }
+    }
+  }
+}
