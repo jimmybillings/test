@@ -17,7 +17,7 @@ export function main() {
 
     it('Should fire an event to change the current selected language', inject([FooterComponent], (component: FooterComponent) => {
       spyOn(component.onChangeLang, 'emit');
-      component.changeLang({target: {value: 'fr'}});
+      component.selectLang('fr');
       expect(component.onChangeLang.emit).toHaveBeenCalledWith('fr');
     }));
   });
