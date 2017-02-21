@@ -1,20 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
+
+import { GalleryViewStore } from './gallery-view.store';
 
 @Injectable()
 export class GalleryViewService {
-  private tempStore: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  constructor(private store: GalleryViewStore) { }
 
   public get data(): Observable<any> {
-    return this.tempStore.asObservable();
+    return this.store.data;
+  }
+
+  public get state(): any {
+    return this.store.state;
   }
 
   public loadZero(): void {
-    this.tempStore.next(JSON.parse(this.fakeLevelZeroResponse).results);
+    this.store.updateWith(JSON.parse(this.fakeLevelZeroResponse).results);
   }
 
   public loadTwo(): void {
-    this.tempStore.next(JSON.parse(this.fakeLevelTwoResponse).results);
+    this.store.updateWith(JSON.parse(this.fakeLevelTwoResponse).results);
   }
 
   public search(parameters: string): void {

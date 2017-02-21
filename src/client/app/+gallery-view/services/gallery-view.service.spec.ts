@@ -5,7 +5,7 @@ export function main() {
     let serviceUnderTest: GalleryViewService;
 
     beforeEach(() => {
-      serviceUnderTest = new GalleryViewService();
+      serviceUnderTest = new GalleryViewService(null);
     });
 
     it('has no tests!', () => {

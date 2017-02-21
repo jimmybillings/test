@@ -1,3 +1,3 @@
-<button *ngFor="let datum of data" [disabled]="datum.resultCount === 0" (click)="onClick(datum)">
-  {{ datum.name }}
+<button *ngFor="let result of data.results" [disabled]="result.resultCount === 0" (click)="onClick(result)">
+  {{ result.name }}
 </button>

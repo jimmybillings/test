@@ -10,10 +10,10 @@ export class OneLevelViewComponent {
   @Input() public data: any;
   @Output() public navigate: EventEmitter<Object> = new EventEmitter<Object>();
 
-  public onClick(datum: any) {
+  public onClick(result: any) {
     this.navigate.emit({
-      params: `${datum.id}:${datum.name}`,
-      method: datum.hasChildren ? 'nextLevel' : 'search'
+      params: `${result.id}:${result.name}`,
+      method: result.hasChildren ? 'nextLevel' : 'search'
     });
   }
 }

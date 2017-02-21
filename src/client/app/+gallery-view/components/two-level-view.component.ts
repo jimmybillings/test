@@ -10,9 +10,9 @@ export class TwoLevelViewComponent {
   @Input() public data: any;
   @Output() public navigate: EventEmitter<Object> = new EventEmitter<Object>();
 
-  public onClick(datum: any, child: any) {
+  public onClick(result: any, child: any) {
     this.navigate.emit({
-      params: `${datum.id}:${datum.name},${child.id}:${child.name}`,
+      params: `${result.id}:${result.name},${child.id}:${child.name}`,
       method: child.hasChildren ? 'nextLevel' : 'search'
     });
   }
