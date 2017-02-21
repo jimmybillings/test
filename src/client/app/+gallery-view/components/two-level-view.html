@@ -1,0 +1,8 @@
+<div *ngFor="let datum of data">
+  <h4>{{ datum.name }}</h4>
+  <ng-container *ngIf="datum.hasChildren">
+    <button *ngFor="let child of datum.children" [disabled]="child.resultCount === 0" (click)="onClick(datum, child)">
+      {{ child.name }}
+    </button>
+  </ng-container>
+</div>

@@ -1,5 +1,10 @@
 <div class="gallery-view" layout="row" layout-align="center center">
   <div flex="95">
-    <h3>Gallery View</h3>
+    <br/><br/>
+    <button (click)="loadViewZero()">Load Top View (temporary cheat)</button>
+    <br/><br/>
+    <one-level-view *ngIf="numberOfLevels === 1" [data]="data | async" (navigate)="onNavigate($event)"></one-level-view>
+    <two-level-view *ngIf="numberOfLevels === 2" [data]="data | async" (navigate)="onNavigate($event)"></two-level-view>
+    <br/><br/>
   </div>
 </div>

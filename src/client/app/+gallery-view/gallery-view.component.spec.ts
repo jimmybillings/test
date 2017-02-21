@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: GalleryViewComponent;
 
     beforeEach(() => {
-      componentUnderTest = new GalleryViewComponent();
+      componentUnderTest = new GalleryViewComponent(null);
     });
 
     it('has no tests!', () => {
