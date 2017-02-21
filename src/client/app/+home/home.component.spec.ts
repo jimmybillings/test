@@ -46,10 +46,6 @@ export function main() {
         expect(mockSearchContext.new).toHaveBeenCalledWith({ q: 'cat', i: 1, n: '100', sortId: 0 });
         expect(mockFilter.clear).toHaveBeenCalled();
       });
-
-      it('Should remove any empty properties in the configurable search params incase HUMANS forgot to put them in there', () => {
-        expect(componentUnderTest.buildSearchContext(JSON.stringify({ q: '', i: 0, n: 100 }))).toEqual({ i: 0, n: 100 });
-      });
     });
 
     describe('ngOnDestroy()', () => {

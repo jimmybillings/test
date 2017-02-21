@@ -1,0 +1,84 @@
+home-highlights {
+  .mrkt-collections {
+    min-height: rem(50.4);
+    background-color:  md-color($md-grey, 100);
+    [layout] {
+      max-height: rem(24.8);
+    }
+    .mrkt-collections__highlight {
+      a {
+        display: block;
+        position: relative;
+        height: rem(24);
+        margin: rem(.8) rem(.8) 0 0;
+        &::before {
+          content: " ";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          background-image:linear-gradient(6deg, rgba(md-color($md-grey, 900),0.9), rgba(md-color($md-grey, 900),0) 50%);
+          opacity: 0.6;
+          transition: opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2);
+          z-index: 1;
+        }
+      }
+      .mrkt-collections__highlight_img {
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+      }
+      .mrkt-collections__highlight_content {
+        color: $white-87-opacity;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        padding: 0 8px 8px 8px;
+        z-index: 2;
+      }
+      &:nth-child(3n) a {
+        margin-right: 0;
+      }
+      &:nth-child(1n) .mrkt-collections__highlight_img {
+        height: 100%;
+        width: 100%;
+        background-image: url('../assets/img/highlights/dimoc.jpg');
+      }
+      &:nth-child(2n) .mrkt-collections__highlight_img{
+        background-image: url('../assets/img/highlights/ncaa_basketball.jpg');
+      }
+      &:nth-child(3n) .mrkt-collections__highlight_img{
+        background-image: url('../assets/img/highlights/jfk_historic.jpg');
+      }
+      &:nth-child(4n) .mrkt-collections__highlight_img{
+        background-image: url('../assets/img/highlights/masters_js.jpg');
+      }
+      &:nth-child(5n) .mrkt-collections__highlight_img{
+        background-image: url('../assets/img/highlights/nat_geo.jpg');
+      }
+      &:nth-child(6n) .mrkt-collections__highlight_img{
+        background-image: url('../assets/img/highlights/us_open.jpg');
+      }
+    }
+    @media screen and (max-width: $layout-breakpoint-xs) {
+      [layout] {
+        max-height: 100%;
+      }
+      .mrkt-collections__highlight {
+        a {
+          margin: 6px 6px 0 6px;
+        }
+        &:nth-child(3n) a {
+          margin-right: 6px;
+        }
+        &:nth-child(6n) a {
+          margin-bottom: 6px;
+        }
+
+      }
+    }
+  }
+}

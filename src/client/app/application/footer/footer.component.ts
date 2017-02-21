@@ -29,7 +29,7 @@ export class FooterComponent implements OnInit {
     });
   }
 
-  public changeLang(e: any) {
-    this.onChangeLang.emit(e.target.value);
+  public selectLang(lang: any) {
+    this.onChangeLang.emit(lang);
   }
 }
