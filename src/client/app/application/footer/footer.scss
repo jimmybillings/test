@@ -17,7 +17,7 @@ app-footer {
       }
     }
     ul.social {
-      margin: 0 0 25px 0;
+      margin: 0 0 rem(-1.0) 0;
       padding:0;
       li {
         list-style: none;
@@ -35,14 +35,26 @@ app-footer {
         }
       }
     }
-    .language-selector label   {
-      margin: 0;
-      padding: 9px 6px;
-      i {
-        @include text-contrast(md-color($md-primary, 900), md-color($md-foreground, secondary-text), md-color($md-background, status-bar));
-        &:hover {
-          color: md-color($md-primary, 300);
-        }
+    .language-selector {
+      position: relative;
+      padding-left: rem(3.8);
+      &::before {
+        content: "\e80b";
+        font-family: 'Material Icons';
+        color: rgba(md-color($md-grey, 100),0.18);
+        position: absolute;
+        top: rem(2.0);
+        left: rem(.4);
+        font-size: 1.7em;
+      }
+      .md-select-value {
+        color: rgba(md-color($background, background), .5);
+      }
+      .md-select-arrow {
+        color: rgba(md-color($background, background), .38);
+      }
+      .md-select-trigger {
+        border-bottom-color:rgba(md-color($md-grey, 100),0.07);
       }
     }
     h3.md-title {
