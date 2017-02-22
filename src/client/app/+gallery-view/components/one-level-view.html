@@ -1,3 +1,13 @@
-<button *ngFor="let result of data.results" [disabled]="result.resultCount === 0" (click)="onClick(result)">
-  {{ result.name }}
-</button>
+<ul class="x">
+  <li *ngFor="let result of data.results" [ngClass]="{disabled: result.resultCount === 0}" (click)="onClick(result)">
+    <div class="item">
+      <a flex="" [routerLink]="['/gallery-view']" class="item-thb">
+        <img src="http://www.masters.com/images/players/2016/480x270/34046.jpg" />
+        <section class="item-info">
+          <div class="item-label">{{ result.name }}</div>
+          <!--<divclass="item-country">{{ result.country }}</div>-->
+        </section>
+      </a>
+    </div>
+  </li>
+</ul>
