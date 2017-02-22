@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 import { GalleryViewService } from './services/gallery-view.service';
+import { GalleryBreadcrumb } from './gallery-view.interface';
 
 @Component({
   moduleId: module.id,
@@ -11,26 +12,27 @@ import { GalleryViewService } from './services/gallery-view.service';
 })
 export class GalleryViewComponent implements OnInit {
   public data: Observable<any>;
-  public numberOfLevels: number = 0;
 
   constructor(private galleryViewService: GalleryViewService) { }
 
   public ngOnInit(): void {
     this.data = this.galleryViewService.data;
-    this.loadViewZero();
+    this.galleryViewService.initialize();
   }
 
-  public loadViewZero(): void {
-    this.numberOfLevels = 2;
-    this.galleryViewService.loadZero();
+  public labelFor(breadcrumb: GalleryBreadcrumb): string {
+    return breadcrumb && breadcrumb.names ? breadcrumb.names.join(' > ') : '';
+  }
+
+  public onClickBreadcrumb(index: number): void {
+    this.galleryViewService.jumpTo(index);
   }
 
   public onNavigate(event: any): void {
     if (event.method === 'nextLevel') {
-      this.numberOfLevels = 1;
-      this.galleryViewService.loadTwo();
+      this.galleryViewService.select(event.breadcrumb);
     } else {
-      this.galleryViewService.search(event.params);
+      this.galleryViewService.search(event.breadcrumb);
     }
   }
 }

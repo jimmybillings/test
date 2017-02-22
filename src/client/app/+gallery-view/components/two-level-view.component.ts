@@ -12,7 +12,7 @@ export class TwoLevelViewComponent {
 
   public onClick(result: any, child: any) {
     this.navigate.emit({
-      params: `${result.id}:${result.name},${child.id}:${child.name}`,
+      breadcrumb: { ids: [result.id, child.id], names: [result.name, child.name] },
       method: child.hasChildren ? 'nextLevel' : 'search'
     });
   }

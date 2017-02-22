@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 import { GalleryViewStore } from './gallery-view.store';
+import { GalleryBreadcrumb } from '../gallery-view.interface';
 
 @Injectable()
 export class GalleryViewService {
@@ -15,16 +16,46 @@ export class GalleryViewService {
     return this.store.state;
   }
 
-  public loadZero(): void {
-    this.store.updateWith(JSON.parse(this.fakeLevelZeroResponse).results);
+  public initialize(): void {
+    this.store.initializeWith(JSON.parse(this.fakeLevelZeroResponse).results);
   }
 
-  public loadTwo(): void {
-    this.store.updateWith(JSON.parse(this.fakeLevelTwoResponse).results);
+  public select(breadcrumb: GalleryBreadcrumb): void {
+    const response: string = this.state.breadcrumbs.length === 1 ? this.fakeLevelTwoResponse : this.fakeLevelThreeResponse;
+
+    this.store.updateWith(JSON.parse(response).results, breadcrumb);
   }
 
-  public search(parameters: string): void {
-    alert(`TO BE IMPLEMENTED\nA search with '${parameters}' would have happened here`);
+  public jumpTo(index: number): void {
+    let breadcrumbs = JSON.parse(JSON.stringify(this.state.breadcrumbs));
+    breadcrumbs = breadcrumbs.slice(0, index + 1);
+
+    this.store.replaceWith(JSON.parse(this.selectFakeResponseFor(index)).results, breadcrumbs);
+  }
+
+  public search(breadcrumb: GalleryBreadcrumb): void {
+    const breadcrumbs = JSON.parse(JSON.stringify(this.state.breadcrumbs));
+    breadcrumbs.shift();
+    breadcrumbs.push(breadcrumb);
+
+    alert(`TO BE IMPLEMENTED\nA search with "${this.stringifyBreadcrumbs(breadcrumbs)}" would have happened here`);
+  }
+
+  private stringifyBreadcrumbs(breadcrumbs: GalleryBreadcrumb[]): string {
+    return breadcrumbs.map((breadcrumb: GalleryBreadcrumb) => this.stringifyBreadcrumb(breadcrumb)).join(',');
+  }
+
+  private stringifyBreadcrumb(breadcrumb: GalleryBreadcrumb): string {
+    return breadcrumb.ids.map((id: number, index: number) => `${id}:'${breadcrumb.names[index]}'`).join(',');
+  }
+
+  private selectFakeResponseFor(index: number): string {
+    switch (index) {
+      case 0: return this.fakeLevelZeroResponse;
+      case 1: return this.fakeLevelTwoResponse;
+    }
+
+    return 'Wha??';
   }
 
   private get fakeLevelZeroResponse(): string {
@@ -111,27 +142,57 @@ export class GalleryViewService {
             "name": "Jordan Spieth",
             "resultCount": 6,
             "thumbUrl": "https://www.masters.com/images/players/2016/1596x668/12345.jpg",
-            "hasChildren": false
+            "hasChildren": true
           },
           {
             "id": 4,
             "name": "Danny Willett",
             "resultCount": 2,
             "thumbUrl": "https://www.masters.com/images/players/2016/1596x668/32139.jpg",
-            "hasChildren": false
+            "hasChildren": true
           },
           {
             "id": 4,
             "name": "Rory McIlroy",
             "resultCount": 5,
             "thumbUrl": "https://www.masters.com/images/players/2016/1596x668/67899.jpg",
-            "hasChildren": false
+            "hasChildren": true
           },
           {
             "id": 4,
             "name": "Tiger Woods",
             "resultCount": 4,
             "thumbUrl": "https://www.masters.com/images/players/2016/1596x668/98765.jpg",
+            "hasChildren": true
+          }
+        ]
+      }
+    `;
+  }
+
+  private get fakeLevelThreeResponse(): string {
+    return `
+      {
+        "results": [
+          {
+            "id": 10,
+            "name": "Tee offs",
+            "resultCount": 6,
+            "thumbUrl": "",
+            "hasChildren": false
+          },
+          {
+            "id": 10,
+            "name": "Drives",
+            "resultCount": 2,
+            "thumbUrl": "",
+            "hasChildren": false
+          },
+          {
+            "id": 10,
+            "name": "Putts",
+            "resultCount": 5,
+            "thumbUrl": "",
             "hasChildren": false
           }
         ]
