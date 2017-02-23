@@ -30,7 +30,7 @@ collections-list-dd, collections-filter-dd, collections-sort-dd, asset-share, as
     min-width: rem(40.0);
     background-color: md-color($md-background, background);
     color: rgba(md-color($md-foreground, text), .7);
-    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       position: static;
       min-width: 100%;
       max-width: 100%;

@@ -29,10 +29,10 @@ md-dialog-content wz-form {
   position: relative;
   width: rem(37.8);
   color: md-color($md-foreground, secondary-text);
-  @media screen and (max-width: $layout-breakpoint-lg) and (min-width: 0)  {
+  @media screen and (max-width: $layout-breakpoint-md) and (min-width: 0)  {
     width: rem(36.5);
   }
-  @media screen and (max-width: $layout-breakpoint-md) and (min-width: 0)  {
+  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
     width: rem(34);
   }
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {

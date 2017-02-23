@@ -21,7 +21,7 @@ export class GalleryViewComponent implements OnInit {
   }
 
   public labelFor(breadcrumb: GalleryBreadcrumb): string {
-    return breadcrumb && breadcrumb.names ? breadcrumb.names.join(' > ') : '';
+    return breadcrumb && breadcrumb.names ? breadcrumb.names.join(' : ') : '';
   }
 
   public onClickBreadcrumb(index: number): void {

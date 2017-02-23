@@ -6,7 +6,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   template: `
     <header class="hero">
       <div layout="row" md-scroll-y="" layout-align="center start" layout-padding>
-        <div flex-xl="40" flex-gt-lg="50" flex-gt-md="55" flex-gt-sm="70" flex="100">
+        <div flex-gt-lg="40" flex-gt-md="50" flex-gt-sm="55" flex-gt-xs="70" flex="100">
           <div layout="column" layout-align="center">
             <div class="logo-wrapper">
               <div class="logo"></div>

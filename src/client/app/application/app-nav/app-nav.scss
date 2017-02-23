@@ -30,12 +30,22 @@ header.app-header {
       width: rem(9.5);
       height: rem(5.7);
     }
-    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    @media (max-width: $layout-breakpoint-sm) and (orientation: landscape)  {
       .logo img {
-        background-position: 0 rem(1.5);
+        background-position: rem(-.5) rem(.6);
         background-repeat: no-repeat;
-        background-size: rem(20);
-        height: rem(5.0);
+        background-size: rem(20.5);
+        height: rem(4.2);
+        width: rem(6.5);
+      }
+    }
+    @media (max-width: $layout-breakpoint-xs) and (orientation: portrait) {
+      .logo img {
+        background-position: rem(-.3) rem(1.0);
+        background-repeat: no-repeat;
+        background-size: rem(21);
+        height: rem(4.5);
+        width: rem(6.6);
       }
     }
   }
@@ -137,12 +147,15 @@ header.app-header + div.main-content asset-component {
   display: block;
   transition: border-top-width 0.35s, $swift-ease-in-out-timing-function;
   border-top: rem(16.6) solid md-color($md-grey, 900, .7);
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+  @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
+    border-top-width: rem(14.4);
+  }
+  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(15.2);
   }
   wz-asset-list {
     min-height: calc(100vh - 518px);
-    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
       min-height: calc(100vh - 799px);
     }
   }
@@ -158,12 +171,15 @@ header.app-header.collection-tray-closed + div.main-content cms-component,
 header.app-header.collection-tray-closed + div.main-content search-component,
 header.app-header.collection-tray-closed + div.main-content asset-component {
   border-top-width: rem(11.0);
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+  @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
+    border-top-width: rem(8.8);
+  }
+  @media (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(9.6);
   }
   wz-asset-list {
     min-height: calc(100vh - 462px);
-    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
       min-height: calc(100vh - 791px);
     }
   }
@@ -179,12 +195,15 @@ header.app-header.collection-tray-closed.search-closed + div.main-content cms-co
 header.app-header.collection-tray-closed.search-closed + div.main-content search-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content asset-component {
   border-top-width: rem(6.4);
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+  @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
+    border-top-width: rem(4.8);
+  }
+  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(5.6);
   }
   wz-asset-list {
     min-height: calc(100vh - 416px);
-    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
       min-height: calc(100vh - 751px);
     }
   }
@@ -200,12 +219,15 @@ header.app-header.search-closed + div.main-content cms-component,
 header.app-header.search-closed + div.main-content search-component,
 header.app-header.search-closed + div.main-content asset-component {
   border-top-width: rem(12.0);
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+  @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
+    border-top-width: rem(10.4);
+  }
+  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(11.2);
   }
   wz-asset-list {
     min-height: calc(100vh - 472px);
-    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0)  {
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0)  {
       min-height: calc(100vh - 807px);
     }
   }
@@ -233,7 +255,10 @@ header.app-header + div.main-content admin-component {
 header.app-header + div.main-content user-component .hero,
 header.app-header + div.main-content home-component .hero {
   padding-top: rem(6.4);
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+  @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
+    border-top-width: rem(4.8);
+  }
+  @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     padding-top: rem(5.6);
   }
 }

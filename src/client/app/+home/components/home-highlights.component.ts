@@ -5,9 +5,9 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   selector: 'home-highlights',
   template: `
     <section layout="row" layout-align="center start" class="mrkt-collections">
-      <div flex-xl="70" flex-gt-lg="80" flex-gt-md="90" flex="100" layout="row" layout-wrap="">
+      <div flex-gt-lg="70" flex-lg="70" flex-gt-md="80" flex-gt-sm="90" flex="100" layout="row" layout-wrap="">
         <div *ngFor="let highlight of config.highlights.items; let i = index" 
-          flex-gt-sm="33" flex="100" 
+          flex-gt-xs="33" flex="100" 
           class="mrkt-collections__highlight"
         >
           <a *ngIf="config" [routerLink]="['/search', buildSearchContext(highlight.searchContext)]">

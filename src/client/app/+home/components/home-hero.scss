@@ -27,7 +27,7 @@ home-hero {
         background-size: 255px;
         height: 255px;
         opacity: .7;
-        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
           background-size: 220px;
         }
       }
@@ -61,7 +61,7 @@ home-hero {
         background-size: 255px;
         height: 255px;
         opacity: .7;
-        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
           background-size: 220px;
         }
       }

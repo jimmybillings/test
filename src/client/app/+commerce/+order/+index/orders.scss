@@ -58,7 +58,7 @@ orders-component .orders-head {
       background-color: rgba(md-color($primary, default), .9);
       color: md-color($primary, default-contrast);
       margin: rem(.7) rem(.2) rem(.7) rem(.7);
-      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         margin-right: rem(.7);
       }
       .order-number {
@@ -107,7 +107,7 @@ orders-component .orders-head {
           letter-spacing: 0;
         }
       }
-      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         text-align: left;
         padding-top: rem(.4);
       }
@@ -130,7 +130,7 @@ orders-component .orders-head {
       .project-label {
         font-weight: 300;
       }
-      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         padding-right: rem(3.4);
       }
     }
@@ -151,7 +151,7 @@ orders-component .orders-head {
       .count {
         @include text-contrast(md-color($foreground, secondary-text));
       }
-      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         position: absolute;
         right: 0;
         top: rem(.4);
@@ -170,7 +170,7 @@ orders-component .orders-head {
       padding-bottom: rem(.6);
       box-shadow: inset 0 1px 0 0 md-color($foreground, divider);
       display: none;
-      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         display: flex;
       }
     }
