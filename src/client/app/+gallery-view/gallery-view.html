@@ -1,55 +1,20 @@
-<!--<div class="gallery-view" layout="row" layout-align="center center">
-  <div flex="95">
-    <ng-container *ngIf="(data | async).breadcrumbs.length > 0">
-      <br/><br/>
-      <button (click)="onClickBreadcrumb(0)">Home</button>
-      <span>&gt;</span>
-
+<section *ngIf="(data | async).breadcrumbs.length > 0" class="gallery-header" layout="row">
+	<header flex-lg="90" flex-gt-md="95" flex="100">
+		<div layout="row" class="bread-crumb" flex="100">
+      <button md-button color="primary" (click)="onClickBreadcrumb(0)">Home</button>
+      <span class="breadcrumb-separator"></span>
       <ng-container *ngFor="let breadcrumb of (data | async).breadcrumbs; let isLast = last; let index = index"> 
-        <button *ngIf="!isLast" (click)="onClickBreadcrumb(index + 1)">{{ labelFor(breadcrumb) }}</button>
-        <span *ngIf="!isLast">&gt;</span>
-        <span *ngIf="isLast">{{ labelFor(breadcrumb) }}</span>
+        <button md-button color="primary" *ngIf="!isLast" (click)="onClickBreadcrumb(index + 1)">
+          {{ labelFor(breadcrumb) }}
+        </button>
+        <span class="breadcrumb-separator" *ngIf="!isLast"></span>
+        <span class="breadcrumb-current" *ngIf="isLast">{{ labelFor(breadcrumb) }}</span>
       </ng-container>
-    </ng-container>
-    <br/><br/>
-    
-    <one-level-view
-      *ngIf="(data | async).numberOfLevels === 1"
-      [data]="data | async"
-      (navigate)="onNavigate($event)">
-    </one-level-view>
-    
-    <two-level-view
-      *ngIf="(data | async).numberOfLevels === 2"
-      [data]="data | async"
-      (navigate)="onNavigate($event)">
-    </two-level-view>
-    <br/><br/>
-  </div>
-</div>
--->
-
-
-
-
-<section class="asset-results-header" layout="row" layout-align="center center">
-	<header flex-xl="90" flex-gt-lg="95" flex="100">
-		<div layout="row">
-			<!--<div class="bread-crumb" flex="100" layout-align="center start">
-        <a (click)="loadViewZero()">Load Top View (temporary cheat)</a>
-			</div>-->
-      <ng-container *ngIf="(data | async).breadcrumbs.length > 1" class="bread-crumb" flex="100" layout-align="center start">
-        <ng-container *ngFor="let breadcrumb of (data | async).breadcrumbs; let isLast = last; let index = index"> 
-          <button md-button *ngIf="!isLast" (click)="onClickBreadcrumb(index)">{{ labelFor(breadcrumb) }}</button>
-          <span *ngIf="!isLast">&gt;</span>
-          <span *ngIf="isLast">{{ labelFor(breadcrumb) }}</span>
-        </ng-container>
-      </ng-container>
-
 		</div>
 	</header>
 </section>
-<section class="x">
+
+<section class="gallery">
 	<div layout="row" md-scroll-y="" layout-align="center start" layout-padding>
     <one-level-view
       flex-gt-lg="65" flex-gt-md="75" flex-gt-sm="85" flex-gt-xs="95" flex="100"
@@ -57,9 +22,8 @@
       [data]="data | async"
       (navigate)="onNavigate($event)">
     </one-level-view>
-    
     <two-level-view
-      flex-xl="95" flex="100"
+      flex-gt-lg="95" flex="100"
       *ngIf="(data | async).numberOfLevels === 2"
       [data]="data | async"
       (navigate)="onNavigate($event)">

@@ -1,6 +1,6 @@
 <ul class="x">
   <li *ngFor="let result of data.results" [ngClass]="{disabled: result.resultCount === 0}" (click)="onClick(result)">
-    <a flex="" [routerLink]="['/gallery-view']" class="item">
+    <a flex="" class="item">
       <img *ngIf="result.thumbUrl" src="{{result.thumbUrl}}" />
       <section class="item-info">
         <div class="item-label">{{ result.name }}</div>
