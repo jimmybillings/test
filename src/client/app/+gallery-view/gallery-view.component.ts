@@ -18,7 +18,6 @@ export class GalleryViewComponent implements OnInit {
 
   public ngOnInit(): void {
     this.data = this.galleryViewService.data;
-    // this.galleryViewService.initialize();
   }
 
   public labelFor(breadcrumb: GalleryBreadcrumb): string {
