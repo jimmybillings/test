@@ -71,13 +71,15 @@ import { SearchResolver } from '../+search/services/search.resolver';
 import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
 import { OrderResolver } from '../+commerce/+order/services/order.resolver';
 import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
+import { GalleryViewResolver } from '../+gallery-view/services/gallery-view.resolver';
 
 export const WAZEE_RESOLVERS = [
   AssetResolver,
   SearchResolver,
   CartResolver,
   OrderResolver,
-  OrdersResolver
+  OrdersResolver,
+  GalleryViewResolver
 ];
 
 export const WAZEE_GUARDS = [

@@ -28,23 +28,6 @@ export class GalleryViewStore {
     return this.store.select('gallery');
   }
 
-  public initializeWith(results: any): void {
-    this.store.dispatch({
-      type: 'UPDATE_GALLERY',
-      payload: { results: results, numberOfLevels: this.numberOfLevelsIn(results), breadcrumbs: [{ ids: [1], names: ['Home'] }] }
-    });
-  }
-
-  public updateWith(results: any, breadcrumb: GalleryBreadcrumb): void {
-    const breadcrumbs: GalleryBreadcrumb[] = (JSON.parse(JSON.stringify(this.state.breadcrumbs)) || []);
-    breadcrumbs.push(breadcrumb);
-
-    this.store.dispatch({
-      type: 'UPDATE_GALLERY',
-      payload: { results: results, numberOfLevels: this.numberOfLevelsIn(results), breadcrumbs: breadcrumbs }
-    });
-  }
-
   public replaceWith(results: any, breadcrumbs: GalleryBreadcrumb[]): void {
     this.store.dispatch({
       type: 'UPDATE_GALLERY',

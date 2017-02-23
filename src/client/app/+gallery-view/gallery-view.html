@@ -1,9 +1,12 @@
 <!--<div class="gallery-view" layout="row" layout-align="center center">
   <div flex="95">
-    <ng-container *ngIf="(data | async).breadcrumbs.length > 1">
+    <ng-container *ngIf="(data | async).breadcrumbs.length > 0">
       <br/><br/>
+      <button (click)="onClickBreadcrumb(0)">Home</button>
+      <span>&gt;</span>
+
       <ng-container *ngFor="let breadcrumb of (data | async).breadcrumbs; let isLast = last; let index = index"> 
-        <button *ngIf="!isLast" (click)="onClickBreadcrumb(index)">{{ labelFor(breadcrumb) }}</button>
+        <button *ngIf="!isLast" (click)="onClickBreadcrumb(index + 1)">{{ labelFor(breadcrumb) }}</button>
         <span *ngIf="!isLast">&gt;</span>
         <span *ngIf="isLast">{{ labelFor(breadcrumb) }}</span>
       </ng-container>

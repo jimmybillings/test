@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { GalleryViewStore } from './gallery-view.store';
 import { GalleryBreadcrumb } from '../gallery-view.interface';
@@ -16,43 +16,17 @@ export class GalleryViewService {
     return this.store.state;
   }
 
-  public initialize(): void {
-    this.store.initializeWith(JSON.parse(this.fakeLevelZeroResponse).results);
-  }
+  public load(breadcrumbs: GalleryBreadcrumb[]): Observable<any> {
+    this.store.replaceWith(JSON.parse(this.selectFakeResponseFor(breadcrumbs.length)).results, breadcrumbs);
 
-  public select(breadcrumb: GalleryBreadcrumb): void {
-    const response: string = this.state.breadcrumbs.length === 1 ? this.fakeLevelTwoResponse : this.fakeLevelThreeResponse;
-
-    this.store.updateWith(JSON.parse(response).results, breadcrumb);
-  }
-
-  public jumpTo(index: number): void {
-    let breadcrumbs = JSON.parse(JSON.stringify(this.state.breadcrumbs));
-    breadcrumbs = breadcrumbs.slice(0, index + 1);
-
-    this.store.replaceWith(JSON.parse(this.selectFakeResponseFor(index)).results, breadcrumbs);
-  }
-
-  public search(breadcrumb: GalleryBreadcrumb): void {
-    const breadcrumbs = JSON.parse(JSON.stringify(this.state.breadcrumbs));
-    breadcrumbs.shift();
-    breadcrumbs.push(breadcrumb);
-
-    alert(`TO BE IMPLEMENTED\nA search with "${this.stringifyBreadcrumbs(breadcrumbs)}" would have happened here`);
-  }
-
-  private stringifyBreadcrumbs(breadcrumbs: GalleryBreadcrumb[]): string {
-    return breadcrumbs.map((breadcrumb: GalleryBreadcrumb) => this.stringifyBreadcrumb(breadcrumb)).join(',');
-  }
-
-  private stringifyBreadcrumb(breadcrumb: GalleryBreadcrumb): string {
-    return breadcrumb.ids.map((id: number, index: number) => `${id}:'${breadcrumb.names[index]}'`).join(',');
+    return Observable.of({ some: 'data' });
   }
 
   private selectFakeResponseFor(index: number): string {
     switch (index) {
       case 0: return this.fakeLevelZeroResponse;
       case 1: return this.fakeLevelTwoResponse;
+      case 2: return this.fakeLevelThreeResponse;
     }
 
     return 'Wha??';

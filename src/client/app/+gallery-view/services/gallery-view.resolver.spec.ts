@@ -6,15 +6,13 @@ export function main() {
     let mockRoute: any, mockState: any;
 
     beforeEach(() => {
-      resolverUnderTest = new GalleryViewResolver();
+      resolverUnderTest = new GalleryViewResolver(null);
       mockRoute = null;
       mockState = null;
     });
 
-    it('resolve() should return fake data for now', () => {
-      resolverUnderTest.resolve(mockRoute, mockState).subscribe((data: any) => {
-        expect(data).toEqual({ some: 'data' });
-      });
+    it('has no tests!', () => {
+      expect(true).toBe(true);
     });
   });
 }
