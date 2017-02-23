@@ -23,7 +23,7 @@ export const APP_ROUTES: Routes = [
   { path: 'collections', component: CollectionsComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'commerce', component: CommerceComponent },
-  { path: 'gallery-view/:path', component: GalleryViewComponent, resolve: { gallery: GalleryViewResolver } },
+  { path: 'gallery-view/:names/:ids', component: GalleryViewComponent, resolve: { gallery: GalleryViewResolver } },
   { path: 'gallery-view', component: GalleryViewComponent, resolve: { gallery: GalleryViewResolver } },
   { path: '**', component: NotFoundComponent }
 ];

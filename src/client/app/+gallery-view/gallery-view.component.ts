@@ -38,19 +38,35 @@ export class GalleryViewComponent implements OnInit {
     if (event.method === 'nextLevel') {
       this.changeRouteFor(breadcrumbs);
     } else {
-      alert(`TO BE IMPLEMENTED\n\nWould have run a search with:\n\n   ${this.stringifyBreadcrumbs(breadcrumbs)}`);
+      alert(`TO BE IMPLEMENTED\n\nWould have run a search with:\n\n   ${this.stringifyBreadcrumbsForSearch(breadcrumbs)}`);
     }
   }
 
   private changeRouteFor(breadcrumbs: GalleryBreadcrumb[]): void {
-    this.router.navigate(breadcrumbs.length === 0 ? ['/gallery-view'] : ['/gallery-view', JSON.stringify(breadcrumbs)]);
+    this.router.navigate(
+      breadcrumbs.length === 0
+        ? ['/gallery-view']
+        : ['/gallery-view', this.stringifyNamesForRouting(breadcrumbs), this.stringifyIdsForRouting(breadcrumbs)]
+    );
   }
 
-  private stringifyBreadcrumbs(breadcrumbs: GalleryBreadcrumb[]): string {
-    return breadcrumbs.map((breadcrumb: GalleryBreadcrumb) => this.stringifyBreadcrumb(breadcrumb)).join(',');
+  private stringifyNamesForRouting(breadcrumbs: GalleryBreadcrumb[]): string {
+    return breadcrumbs
+      .map((breadcrumb: GalleryBreadcrumb) => breadcrumb.names.map(name => name.replace(/ /g, '._.')).join('~~'))
+      .join('~~~');
   }
 
-  private stringifyBreadcrumb(breadcrumb: GalleryBreadcrumb): string {
+  private stringifyIdsForRouting(breadcrumbs: GalleryBreadcrumb[]): string {
+    return breadcrumbs
+      .map((breadcrumb: GalleryBreadcrumb) => breadcrumb.ids.join('~~'))
+      .join('~~~');
+  }
+
+  private stringifyBreadcrumbsForSearch(breadcrumbs: GalleryBreadcrumb[]): string {
+    return breadcrumbs.map((breadcrumb: GalleryBreadcrumb) => this.stringifyBreadcrumbForSearch(breadcrumb)).join(',');
+  }
+
+  private stringifyBreadcrumbForSearch(breadcrumb: GalleryBreadcrumb): string {
     return breadcrumb.ids.map((id: number, index: number) => `${id}:"${breadcrumb.names[index]}"`).join(',');
   }
 }
