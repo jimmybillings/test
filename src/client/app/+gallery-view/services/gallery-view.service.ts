@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { GalleryViewStore } from './gallery-view.store';
-import { GalleryBreadcrumb } from '../gallery-view.interface';
+import { GalleryPath } from '../gallery-view.interface';
 
 @Injectable()
 export class GalleryViewService {
@@ -16,8 +16,8 @@ export class GalleryViewService {
     return this.store.state;
   }
 
-  public load(breadcrumbs: GalleryBreadcrumb[]): Observable<any> {
-    this.store.replaceWith(JSON.parse(this.selectFakeResponseFor(breadcrumbs.length)).results, breadcrumbs);
+  public load(path: GalleryPath): Observable<any> {
+    this.store.replaceWith(JSON.parse(this.selectFakeResponseFor(path.length)).results, path);
 
     return Observable.of({ some: 'data' });
   }

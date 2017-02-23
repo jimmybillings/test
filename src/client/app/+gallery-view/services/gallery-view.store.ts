@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 
-import { Gallery, GalleryBreadcrumb } from '../gallery-view.interface';
+import { Gallery, GalleryPath } from '../gallery-view.interface';
 
 const emptyGallery: Gallery = {
   results: [],
   numberOfLevels: 0,
-  breadcrumbs: []
+  path: []
 };
 
 export const gallery: ActionReducer<any> = (state: any = emptyGallery, action: Action) => {
@@ -28,10 +28,10 @@ export class GalleryViewStore {
     return this.store.select('gallery');
   }
 
-  public replaceWith(results: any, breadcrumbs: GalleryBreadcrumb[]): void {
+  public replaceWith(results: any, path: GalleryPath): void {
     this.store.dispatch({
       type: 'UPDATE_GALLERY',
-      payload: { results: results, numberOfLevels: this.numberOfLevelsIn(results), breadcrumbs: breadcrumbs }
+      payload: { results: results, numberOfLevels: this.numberOfLevelsIn(results), path: path }
     });
   }
 

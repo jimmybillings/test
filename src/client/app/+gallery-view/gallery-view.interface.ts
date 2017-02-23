@@ -1,10 +1,12 @@
 export interface Gallery {
   results: Object[];
   numberOfLevels: number;
-  breadcrumbs: GalleryBreadcrumb[];
+  path: GalleryPath;
 }
 
-export interface GalleryBreadcrumb {
+export type GalleryPath = GalleryPathSegment[];
+
+export interface GalleryPathSegment {
   ids: number[];
   names: string[];
 }

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { GalleryViewService } from './services/gallery-view.service';
-import { GalleryBreadcrumb } from './gallery-view.interface';
+import { GalleryPath, GalleryPathSegment } from './gallery-view.interface';
 
 @Component({
   moduleId: module.id,
@@ -20,53 +20,53 @@ export class GalleryViewComponent implements OnInit {
     this.data = this.galleryViewService.data;
   }
 
-  public labelFor(breadcrumb: GalleryBreadcrumb): string {
-    return breadcrumb && breadcrumb.names ? breadcrumb.names.join(' : ') : '';
+  public breadcrumbLabelFor(path: GalleryPathSegment): string {
+    return (path && path.names) ? path.names.join(' : ') : '';
   }
 
   public onClickBreadcrumb(index: number): void {
-    let breadcrumbs = JSON.parse(JSON.stringify(this.galleryViewService.state.breadcrumbs));
-    breadcrumbs = breadcrumbs.slice(0, index);
+    let path = JSON.parse(JSON.stringify(this.galleryViewService.state.path));
+    path = path.slice(0, index);
 
-    this.changeRouteFor(breadcrumbs);
+    this.changeRouteFor(path);
   }
 
   public onNavigate(event: any): void {
-    const breadcrumbs = JSON.parse(JSON.stringify(this.galleryViewService.state.breadcrumbs));
-    breadcrumbs.push(event.breadcrumb);
+    const path = JSON.parse(JSON.stringify(this.galleryViewService.state.path));
+    path.push(event.pathSegment);
 
     if (event.method === 'nextLevel') {
-      this.changeRouteFor(breadcrumbs);
+      this.changeRouteFor(path);
     } else {
-      alert(`TO BE IMPLEMENTED\n\nWould have run a search with:\n\n   ${this.stringifyBreadcrumbsForSearch(breadcrumbs)}`);
+      alert(`TO BE IMPLEMENTED\n\nWould have run a search with:\n\n   ${this.stringifyPathForSearch(path)}`);
     }
   }
 
-  private changeRouteFor(breadcrumbs: GalleryBreadcrumb[]): void {
+  private changeRouteFor(path: GalleryPath): void {
     this.router.navigate(
-      breadcrumbs.length === 0
+      path.length === 0
         ? ['/gallery-view']
-        : ['/gallery-view', this.stringifyNamesForRouting(breadcrumbs), this.stringifyIdsForRouting(breadcrumbs)]
+        : ['/gallery-view', this.stringifyNamesForRouting(path), this.stringifyIdsForRouting(path)]
     );
   }
 
-  private stringifyNamesForRouting(breadcrumbs: GalleryBreadcrumb[]): string {
-    return breadcrumbs
-      .map((breadcrumb: GalleryBreadcrumb) => breadcrumb.names.map(name => name.replace(/ /g, '._.')).join('~~'))
+  private stringifyNamesForRouting(path: GalleryPath): string {
+    return path
+      .map((segment: GalleryPathSegment) => segment.names.map(name => name.replace(/ /g, '._.')).join('~~'))
       .join('~~~');
   }
 
-  private stringifyIdsForRouting(breadcrumbs: GalleryBreadcrumb[]): string {
-    return breadcrumbs
-      .map((breadcrumb: GalleryBreadcrumb) => breadcrumb.ids.join('~~'))
+  private stringifyIdsForRouting(path: GalleryPath): string {
+    return path
+      .map((segment: GalleryPathSegment) => segment.ids.join('~~'))
       .join('~~~');
   }
 
-  private stringifyBreadcrumbsForSearch(breadcrumbs: GalleryBreadcrumb[]): string {
-    return breadcrumbs.map((breadcrumb: GalleryBreadcrumb) => this.stringifyBreadcrumbForSearch(breadcrumb)).join(',');
+  private stringifyPathForSearch(path: GalleryPath): string {
+    return path.map((segment: GalleryPathSegment) => this.stringifyPathSegmentForSearch(segment)).join(',');
   }
 
-  private stringifyBreadcrumbForSearch(breadcrumb: GalleryBreadcrumb): string {
-    return breadcrumb.ids.map((id: number, index: number) => `${id}:"${breadcrumb.names[index]}"`).join(',');
+  private stringifyPathSegmentForSearch(segment: GalleryPathSegment): string {
+    return segment.ids.map((id: number, index: number) => `${id}:"${segment.names[index]}"`).join(',');
   }
 }

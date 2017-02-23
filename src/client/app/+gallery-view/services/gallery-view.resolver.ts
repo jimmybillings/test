@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { GalleryViewService } from './gallery-view.service';
-import { GalleryBreadcrumb } from '../gallery-view.interface';
+import { GalleryPath } from '../gallery-view.interface';
 
 @Injectable()
 export class GalleryViewResolver {
@@ -12,7 +12,7 @@ export class GalleryViewResolver {
     return this.galleryViewService.load(this.unstringify(route.params));
   }
 
-  private unstringify(parameters: any): GalleryBreadcrumb[] {
+  private unstringify(parameters: any): GalleryPath {
     const namesParameter: string = parameters.names;
     const idsParameter: string = parameters.ids;
 

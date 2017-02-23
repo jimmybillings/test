@@ -12,7 +12,7 @@ export class OneLevelViewComponent {
 
   public onClick(result: any) {
     this.navigate.emit({
-      breadcrumb: { ids: [result.id], names: [result.name] },
+      pathSegment: { ids: [result.id], names: [result.name] },
       method: result.hasChildren ? 'nextLevel' : 'search'
     });
   }
