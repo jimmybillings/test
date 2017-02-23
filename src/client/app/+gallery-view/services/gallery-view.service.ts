@@ -141,28 +141,42 @@ export class GalleryViewService {
             "id": 4,
             "name": "Jordan Spieth",
             "resultCount": 6,
-            "thumbUrl": "https://www.masters.com/images/players/2016/1596x668/12345.jpg",
+            "thumbUrl": "http://www.masters.com/images/players/2016/480x270/34046.jpg",
             "hasChildren": true
           },
           {
             "id": 4,
             "name": "Danny Willett",
             "resultCount": 2,
-            "thumbUrl": "https://www.masters.com/images/players/2016/1596x668/32139.jpg",
+            "thumbUrl": "http://www.masters.com/images/players/2016/480x270/32139.jpg",
             "hasChildren": true
           },
           {
             "id": 4,
             "name": "Rory McIlroy",
             "resultCount": 5,
-            "thumbUrl": "https://www.masters.com/images/players/2016/1596x668/67899.jpg",
+            "thumbUrl": "http://www.masters.com/images/players/2016/480x270/28237.jpg",
             "hasChildren": true
           },
           {
             "id": 4,
-            "name": "Tiger Woods",
+            "name": "Dustin Johnson",
             "resultCount": 4,
-            "thumbUrl": "https://www.masters.com/images/players/2016/1596x668/98765.jpg",
+            "thumbUrl": "http://www.masters.com/images/players/2016/480x270/30925.jpg",
+            "hasChildren": true
+          },
+          {
+            "id": 4,
+            "name": "Bryson DeChambeau",
+            "resultCount": 2,
+            "thumbUrl": "http://www.masters.com/images/players/2016/480x270/47959.jpg",
+            "hasChildren": true
+          },
+          {
+            "id": 4,
+            "name": "Jason Day",
+            "resultCount": 3,
+            "thumbUrl": "http://www.masters.com/images/players/2016/480x270/28089.jpg",
             "hasChildren": true
           }
         ]

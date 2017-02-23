@@ -39,8 +39,8 @@ one-level-view ul {
     position: relative;
     display: inline-block;
     vertical-align: bottom;
-    margin: 1% 0 1.1% 1%;
-    width: 24%;
+    margin: 1% 0 2% 1%;
+    width: 32.333%;
     transition: $swift-ease-out;
     // .asset {
     //   padding: 1px;
@@ -48,16 +48,16 @@ one-level-view ul {
     //   background-color: md-color($md-background, app-bar);
     //   box-shadow: 0 1px 1px 0 md-color($md-grey, 700, .2);
     // }
-    @media screen and (max-width: $layout-breakpoint-lg) {
-      width: 24%  
-    }
+    // @media screen and (max-width: $layout-breakpoint-lg) {
+    //   width: 24%  
+    // }
     @media screen and (max-width: $layout-breakpoint-md) {
       width: 32.3333%
     }
     @media screen and (max-width: $layout-breakpoint-sm) {
       width: 49%;      
     }
-    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       width: 99%;
       margin-bottom: 7%;          
     }
@@ -71,7 +71,7 @@ one-level-view ul {
     //   @include text-contrast(md-color($md-background, app-bar));
     //   opacity: 0;
     // }
-    .item a.item-thb {
+    a.item {
       display: block;
       height: 0;
       width: 100%;

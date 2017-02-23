@@ -34,7 +34,7 @@ section.preview-bk {
     & > div > div {
       position: relative;
       z-index: 1;
-      @media screen and (max-width: $layout-breakpoint-sm)  {
+      @media screen and (max-width: $layout-breakpoint-xs)  {
         margin-right: rem(1.6);    
         margin-left: rem(1.6);    
       }
@@ -87,7 +87,7 @@ section.preview-bk {
     padding:rem(1.6);
     position: relative;
     height: 100%;
-    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
       padding: 0;
       background-color: transparent;
       min-height: rem(33.5);
@@ -98,7 +98,7 @@ section.preview-bk {
         margin-bottom: rem(1.2);
         font-size: 1.2em;
         opacity: .5;
-        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
           margin-top: rem(1.2);
           font-size: 1.1em;
           opacity: .65;
@@ -112,7 +112,7 @@ section.preview-bk {
         font-size: .95em;
         line-height: 1.4;
         opacity: .9;
-        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) {
+        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) {
           height: auto;
           font-size: .9em;
           margin-top: rem(.4);
@@ -123,7 +123,7 @@ section.preview-bk {
         position: absolute;
         bottom: rem(13.0);
         right: rem(3.7);
-        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
           bottom: rem(9.0);
           right: 0;
         }
@@ -157,7 +157,7 @@ section.preview-bk {
         position: absolute;
         right: 0;
         text-align: center;
-        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
           right: 0;
         } 
       }
@@ -180,7 +180,7 @@ section.preview-bk {
         padding-right: rem(.8); 
         position: absolute;
         bottom: rem(1.6);
-        @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
           padding-left: 0; 
           padding-right: 0;
           bottom: rem(-2.0);
@@ -219,11 +219,11 @@ section.preview-bk {
       min-height: rem(38.0);
       max-width: 100%;
       vertical-align: middle;
-      @media screen and (max-width: $layout-breakpoint-md)  {
+      @media screen and (max-width: $layout-breakpoint-sm)  {
         max-height: rem(50.5);
         min-height: rem(23.0);
       }
-      @media screen and (max-width: $layout-breakpoint-sm)  {
+      @media screen and (max-width: $layout-breakpoint-xs)  {
         max-height: rem(47.5);
         min-height: rem(23.0);
       }

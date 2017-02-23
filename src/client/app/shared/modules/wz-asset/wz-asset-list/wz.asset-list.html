@@ -4,9 +4,9 @@
     flex="100" 
     layout="row" 
     layout-xs="column">
-    <div flex="100" flex-gt-sm="75">
+    <div flex="100" flex-gt-xs="75">
       <div flex="100" layout="row" layout-xs="column">
-        <div flex-gt-sm="40" flex-xl="45" flex="100" layout-padding>
+        <div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding>
           <a [routerLink]="['/asset/', asset.assetId, assetParams(asset)]" wzSpeedview (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})" (hidePreview)="onHideSpeedview.emit()">
             <div class="asset-thb">
               <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
@@ -25,7 +25,7 @@
             </div>
           </a>
         </div>
-        <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="65" flex="100" layout-padding>
+        <div flex-gt-xs="60" flex-gt-md="70" flex-gt-lg="75" flex="100" layout-padding>
           <div class="md-caption asset-name">{{asset.name}}</div>
           <a class="asset-title-desc" [routerLink]="['/asset/', asset.assetId]">
             <h4 class="asset-title mdata-0" *ngIf="asset.metaData[0]">
@@ -69,7 +69,7 @@
     </div>
         
     <div flex="100" layout="row" layout-xs="column" class="divider"></div>
-    <div flex-gt-sm="25" layout-sm="100" flex="auto" class="actions" layout-align="end center">
+    <div flex-gt-xs="25" layout-sm="100" flex="auto" class="actions" layout-align="end start">
       <div class="tools">
         <!-- ADD TO CART -->
         <button

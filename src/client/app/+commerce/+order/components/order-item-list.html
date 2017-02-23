@@ -2,7 +2,7 @@
     <li *ngFor="let order of orders" class="order" flex="100" layout="row" layout-xs="column" [routerLink]="['/commerce/order', order.id]">
         <div flex="100" flex-gt-sm="66">
             <div flex="100" layout="row" layout-xs="column">
-                <div flex-gt-sm="40" flex-xl="30" flex="100" layout-padding class="details">
+                <div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding class="details">
                     <div>
                         <div class="order-number">
                           <span class="md-caption order-info heading">{{ 'ORDER.ORDER_NUMBER_LABEL' | translate }}</span>
@@ -14,7 +14,7 @@
                     </div>
                     </div>
                 </div>
-                <div flex-gt-sm="60" flex-gt-lg="80" flex-gt-md="70" flex="100" layout-padding>
+                <div flex-gt-xs="60" flex-gt-sm="70" flex-gt-md="80" flex="100" layout-padding>
                     <section class="projects" *ngFor="let project of order.projects">
                         <h3 class="md-headline">
                             <span class="project-label">

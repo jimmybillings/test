@@ -1,5 +1,5 @@
 <section class="orders-head" layout="row" layout-align="center center">
-	<header flex="100" flex-gt-md="95" flex-gt-lg="85">
+	<header flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
 		<wz-item-search-form 
 			[ngClass]="{ 'revealed' : itemSearchIsShowing }" 
 			[hidden]="!itemSearchIsShowing" 
@@ -27,7 +27,7 @@
 
 <section>
 	<div layout="row" flex="100" layout-margin layout-align="center start">
-		<section class="orders-list" flex="100" flex-gt-md="95" flex-gt-lg="85">
+		<section class="orders-list" flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
 			<wz-pagination *ngIf="(orders.data | async).pagination.totalCount > 0" [pagination]="(orders.data | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">
 			</wz-pagination>

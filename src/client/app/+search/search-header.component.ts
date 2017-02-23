@@ -5,7 +5,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
   selector: 'search-header',
   template: `
     	<section class="search-header" layout="row" layout-align="center center">
-        <header flex-gt-lg="95" flex="100">
+        <header flex-gt-lg="95" flex-lg="95" flex="100">
           <div layout="row" layout-align="space-between end">
             <h2 *ngIf="!hasResults" flex="100" class="md-display-1 alert"> 
               {{ 'SEARCH.NO_RESULTS.PG_HEADING' | translate }}
