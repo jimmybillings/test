@@ -15,7 +15,7 @@ export function main() {
 
       beforeEach(() => {
         mockResult = { id: 42, name: 'A name' };
-        mockChildResult = { id: 87, name: 'Another name', hasChildren: true };
+        mockChildResult = { id: 87, name: 'Another name', hasMore: true };
       });
 
       it('emits the expected event when the clicked child has children', () => {
@@ -26,7 +26,7 @@ export function main() {
       });
 
       it('emits the expected event when the clicked child does not have children', () => {
-        mockChildResult.hasChildren = false;
+        mockChildResult.hasMore = false;
         componentUnderTest.onClick(mockResult, mockChildResult);
 
         expect(componentUnderTest.navigate.emit)

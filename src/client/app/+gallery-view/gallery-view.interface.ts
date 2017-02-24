@@ -11,7 +11,7 @@ export interface GalleryResult {
   name: string;
   resultCount: number;
   thumbUrl?: string;
-  hasChildren: boolean;
+  hasMore: boolean;
   children?: GalleryResults;
 }
 
