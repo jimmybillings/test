@@ -9,7 +9,7 @@ export function main() {
       componentUnderTest.navigate.emit = jasmine.createSpy('navigate emitter');
     });
 
-    fdescribe('onClick()', () => {
+    describe('onClick()', () => {
       let mockResult: any;
 
       beforeEach(() => {
