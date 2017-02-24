@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { GalleryViewService } from './services/gallery-view.service';
+import { GalleryViewUrlifier } from './services/gallery-view-urlifier';
 import { GalleryPath, GalleryPathSegment } from './gallery-view.interface';
 
 @Component({
@@ -43,23 +44,7 @@ export class GalleryViewComponent implements OnInit {
   }
 
   private changeRouteFor(path: GalleryPath): void {
-    this.router.navigate(
-      path.length === 0
-        ? ['/gallery-view']
-        : ['/gallery-view', this.stringifyNamesForRouting(path), this.stringifyIdsForRouting(path)]
-    );
-  }
-
-  private stringifyNamesForRouting(path: GalleryPath): string {
-    return path
-      .map((segment: GalleryPathSegment) => segment.names.map(name => name.replace(/ /g, '._.')).join('~~'))
-      .join('~~~');
-  }
-
-  private stringifyIdsForRouting(path: GalleryPath): string {
-    return path
-      .map((segment: GalleryPathSegment) => segment.ids.join('~~'))
-      .join('~~~');
+    this.router.navigate(['/gallery-view'].concat(GalleryViewUrlifier.urlify(path)));
   }
 
   private stringifyPathForSearch(path: GalleryPath): string {
