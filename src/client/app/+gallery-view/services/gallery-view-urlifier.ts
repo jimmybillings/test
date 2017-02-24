@@ -15,7 +15,7 @@ export class GalleryViewUrlifier {
     const allNames: string[][] = GalleryViewUrlifier.unurlifyNamesIn(names);
     const allIds: number[][] = GalleryViewUrlifier.unurlifyIdsIn(ids);
 
-    return allNames.map((names, index) => { return { names: names, ids: allIds[index] } });
+    return allNames.map((names, index) => { return { names: names, ids: allIds[index] }; });
   }
 
   private static urlifyNamesIn(path: GalleryPath): string {
@@ -25,7 +25,7 @@ export class GalleryViewUrlifier {
           (name: string) => {
             return name.split(' ').join(GalleryViewUrlifier.SPACE_SYMBOL);
           }
-        ).join(GalleryViewUrlifier.SEGMENT_MEMBER_DELIMITER)
+        ).join(GalleryViewUrlifier.SEGMENT_MEMBER_DELIMITER);
       }
     ).join(GalleryViewUrlifier.SEGMENT_DELIMITER);
   }
