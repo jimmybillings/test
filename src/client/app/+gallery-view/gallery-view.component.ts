@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { GalleryViewService } from './services/gallery-view.service';
 import { GalleryViewUrlifier } from './services/gallery-view-urlifier';
-import { GalleryPath, GalleryPathSegment } from './gallery-view.interface';
+import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from './gallery-view.interface';
 
 @Component({
   moduleId: module.id,
@@ -13,7 +13,7 @@ import { GalleryPath, GalleryPathSegment } from './gallery-view.interface';
   templateUrl: 'gallery-view.html'
 })
 export class GalleryViewComponent implements OnInit {
-  public data: Observable<any>;
+  public data: Observable<Gallery>;
 
   constructor(private galleryViewService: GalleryViewService, private router: Router) { }
 
@@ -32,7 +32,7 @@ export class GalleryViewComponent implements OnInit {
     this.changeRouteFor(path);
   }
 
-  public onNavigate(event: any): void {
+  public onNavigate(event: GalleryNavigationEvent): void {
     const path = JSON.parse(JSON.stringify(this.galleryViewService.state.path));
     path.push(event.pathSegment);
 
