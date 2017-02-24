@@ -23,7 +23,7 @@
       (navigate)="onNavigate($event)">
     </one-level-view>
     <two-level-view
-      flex-gt-lg="95" flex="100"
+      flex="100"
       *ngIf="(data | async).numberOfLevels === 2"
       [data]="data | async"
       (navigate)="onNavigate($event)">
