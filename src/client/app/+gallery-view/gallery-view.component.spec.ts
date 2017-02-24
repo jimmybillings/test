@@ -4,7 +4,7 @@ import { GalleryViewComponent } from './gallery-view.component';
 import { GalleryPathSegment } from './gallery-view.interface';
 
 export function main() {
-  fdescribe('Gallery View Component', () => {
+  describe('Gallery View Component', () => {
     let componentUnderTest: GalleryViewComponent;
     let mockData: any;
     let mockService: any;
