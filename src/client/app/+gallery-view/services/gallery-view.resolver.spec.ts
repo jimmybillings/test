@@ -1,18 +1,30 @@
+import { Observable } from 'rxjs/Rx';
+
 import { GalleryViewResolver } from './gallery-view.resolver';
 
 export function main() {
   describe('Gallery View Resolver', () => {
     let resolverUnderTest: GalleryViewResolver;
-    let mockRoute: any, mockState: any;
+    let mockService: any;
+    let mockRoute: any;
 
     beforeEach(() => {
-      resolverUnderTest = new GalleryViewResolver(null);
-      mockRoute = null;
-      mockState = null;
+      mockService = { load: jasmine.createSpy('load').and.returnValue(Observable.of({ some: 'object' })) };
+      mockRoute = { params: { ids: '1~~~2', names: 'Name._.1~~~Name._.2' } };
+
+      resolverUnderTest = new GalleryViewResolver(mockService);
     });
 
-    it('has no tests!', () => {
-      expect(true).toBe(true);
+    describe('resolve()', () => {
+      it('tells the service to load children for the appropriate path', () => {
+        resolverUnderTest.resolve(mockRoute);
+
+        expect(mockService.load).toHaveBeenCalledWith([{ ids: [1], names: ['Name 1'] }, { ids: [2], names: ['Name 2'] }]);
+      });
+
+      it('returns the service\'s returned observable', () => {
+        resolverUnderTest.resolve(mockRoute).subscribe(returnObject => expect(returnObject).toEqual({ some: 'object' }));
+      });
     });
   });
 }

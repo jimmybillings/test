@@ -6,10 +6,30 @@ export function main() {
 
     beforeEach(() => {
       componentUnderTest = new OneLevelViewComponent();
+      componentUnderTest.navigate.emit = jasmine.createSpy('navigate emitter');
     });
 
-    it('has no tests!', () => {
-      expect(true).toBe(true);
+    describe('onClick()', () => {
+      let mockResult: any;
+
+      beforeEach(() => {
+        mockResult = { id: 42, name: 'A name', hasChildren: true };
+      });
+
+      it('emits the expected event when the clicked result has children', () => {
+        componentUnderTest.onClick(mockResult);
+
+        expect(componentUnderTest.navigate.emit)
+          .toHaveBeenCalledWith({ pathSegment: { ids: [42], names: ['A name'] }, method: 'nextLevel' });
+      });
+
+      it('emits the expected event when the clicked result does not have children', () => {
+        mockResult.hasChildren = false;
+        componentUnderTest.onClick(mockResult);
+
+        expect(componentUnderTest.navigate.emit)
+          .toHaveBeenCalledWith({ pathSegment: { ids: [42], names: ['A name'] }, method: 'search' });
+      });
     });
   });
 }

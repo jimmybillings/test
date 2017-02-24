@@ -2,24 +2,24 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { GalleryViewStore } from './gallery-view.store';
-import { GalleryPath } from '../gallery-view.interface';
+import { Gallery, GalleryPath } from '../gallery-view.interface';
 
 @Injectable()
 export class GalleryViewService {
   constructor(private store: GalleryViewStore) { }
 
-  public get data(): Observable<any> {
+  public get data(): Observable<Gallery> {
     return this.store.data;
   }
 
-  public get state(): any {
+  public get state(): Gallery {
     return this.store.state;
   }
 
-  public load(path: GalleryPath): Observable<any> {
+  public load(path: GalleryPath): Observable<Gallery> {
     this.store.replaceWith(JSON.parse(this.selectFakeResponseFor(path.length)).results, path);
 
-    return Observable.of({ some: 'data' });
+    return Observable.of({ results: [] });
   }
 
   private selectFakeResponseFor(index: number): string {

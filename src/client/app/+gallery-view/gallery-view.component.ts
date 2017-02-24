@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { GalleryViewService } from './services/gallery-view.service';
-import { GalleryPath, GalleryPathSegment } from './gallery-view.interface';
+import { GalleryViewUrlifier } from './services/gallery-view-urlifier';
+import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from './gallery-view.interface';
 
 @Component({
   moduleId: module.id,
@@ -12,7 +13,7 @@ import { GalleryPath, GalleryPathSegment } from './gallery-view.interface';
   templateUrl: 'gallery-view.html'
 })
 export class GalleryViewComponent implements OnInit {
-  public data: Observable<any>;
+  public data: Observable<Gallery>;
 
   constructor(private galleryViewService: GalleryViewService, private router: Router) { }
 
@@ -20,18 +21,18 @@ export class GalleryViewComponent implements OnInit {
     this.data = this.galleryViewService.data;
   }
 
-  public breadcrumbLabelFor(path: GalleryPathSegment): string {
-    return (path && path.names) ? path.names.join(' : ') : '';
+  public breadcrumbLabelFor(segment: GalleryPathSegment): string {
+    return (segment && segment.names) ? segment.names.join(' : ') : '';
   }
 
   public onClickBreadcrumb(index: number): void {
-    let path = JSON.parse(JSON.stringify(this.galleryViewService.state.path));
+    let path: GalleryPath = JSON.parse(JSON.stringify(this.galleryViewService.state.path));
     path = path.slice(0, index);
 
     this.changeRouteFor(path);
   }
 
-  public onNavigate(event: any): void {
+  public onNavigate(event: GalleryNavigationEvent): void {
     const path = JSON.parse(JSON.stringify(this.galleryViewService.state.path));
     path.push(event.pathSegment);
 
@@ -43,23 +44,7 @@ export class GalleryViewComponent implements OnInit {
   }
 
   private changeRouteFor(path: GalleryPath): void {
-    this.router.navigate(
-      path.length === 0
-        ? ['/gallery-view']
-        : ['/gallery-view', this.stringifyNamesForRouting(path), this.stringifyIdsForRouting(path)]
-    );
-  }
-
-  private stringifyNamesForRouting(path: GalleryPath): string {
-    return path
-      .map((segment: GalleryPathSegment) => segment.names.map(name => name.replace(/ /g, '._.')).join('~~'))
-      .join('~~~');
-  }
-
-  private stringifyIdsForRouting(path: GalleryPath): string {
-    return path
-      .map((segment: GalleryPathSegment) => segment.ids.join('~~'))
-      .join('~~~');
+    this.router.navigate(['/gallery-view'].concat(GalleryViewUrlifier.urlify(path)));
   }
 
   private stringifyPathForSearch(path: GalleryPath): string {
