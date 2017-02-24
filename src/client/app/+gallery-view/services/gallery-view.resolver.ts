@@ -21,6 +21,6 @@ export class GalleryViewResolver {
     const names: string[][] = namesParameter.replace(/\._\./g, ' ').split('~~~').map(name => name.split('~~'));
     const ids: number[][] = idsParameter.split('~~~').map(idString => idString.split('~~').map(idString => parseInt(idString)));
 
-    return names.map((namesSubarray, index) => { return { names: namesSubarray, ids: ids[index] } });
+    return names.map((namesSubarray, index) => { return { names: namesSubarray, ids: ids[index] }; });
   }
 }

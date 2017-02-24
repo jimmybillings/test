@@ -1,8 +1,26 @@
-<div *ngFor="let result of data.results">
+<!--<div *ngFor="let result of data.results">
   <h4>{{ result.name }}</h4>
-  <ng-container *ngIf="result.hasChildren">
+  <ng-container *ngIf="result.hasMore">
     <button *ngFor="let child of result.children" [disabled]="child.resultCount === 0" (click)="onClick(result, child)">
       {{ child.name }}
     </button>
   </ng-container>
 </div>
+
+-->
+
+<section *ngFor="let result of data.results">
+  <h3>{{ result.name }}</h3>
+  <div class="outer-carousel">
+    <ul class="{{ result.name | lowercase}}">
+      <li *ngFor="let child of result.children" [ngClass]="{disabled: child.resultCount === 0}" (click)="onClick(result, child)">
+        <a flex="" class="item">
+          <img *ngIf="child.thumbUrl" src="{{child.thumbUrl}}" />
+          <section class="item-info">
+            <div class="item-label {{ result.name | lowercase}}">{{ child.name }}</div>
+          </section>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>

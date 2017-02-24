@@ -13,7 +13,7 @@ export class OneLevelViewComponent {
   public onClick(result: any) {
     this.navigate.emit({
       pathSegment: { ids: [result.id], names: [result.name] },
-      method: result.hasChildren ? 'nextLevel' : 'search'
+      method: result.hasMore ? 'nextLevel' : 'search'
     });
   }
 }
