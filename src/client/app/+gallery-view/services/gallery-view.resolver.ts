@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { GalleryViewService } from './gallery-view.service';
@@ -10,7 +10,7 @@ import { Gallery, GalleryPath } from '../gallery-view.interface';
 export class GalleryViewResolver {
   constructor(private galleryViewService: GalleryViewService) { }
 
-  public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Gallery> {
+  public resolve(route: ActivatedRouteSnapshot): Observable<Gallery> {
     return this.galleryViewService.load(GalleryViewUrlifier.unurlify(route.params['names'], route.params['ids']));
   }
 }
