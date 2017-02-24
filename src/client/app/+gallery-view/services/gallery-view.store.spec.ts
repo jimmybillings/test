@@ -66,7 +66,7 @@ export function main() {
 
     describe('replaceWith()', () => {
       it('dispatches REPLACE_GALLERY with the expected payload', () => {
-        const results = [{ id: 3, name: 'Name 3', resultCount: 42, hasChildren: false }];
+        const results = [{ id: 3, name: 'Name 3', resultCount: 42, hasMore: false }];
         const path = [{ ids: [1, 2], names: ['Name 1', 'Name 2'] }];
 
         storeUnderTest.replaceWith(results, path);
@@ -79,19 +79,19 @@ export function main() {
       it('calculates the correct number of levels for a complex results set', () => {
         const results = [
           {
-            id: 3, name: 'Name 3', resultCount: 42, hasChildren: true, children: [
+            id: 3, name: 'Name 3', resultCount: 42, hasMore: true, children: [
               {
-                id: 4, name: 'Name 4_1', resultCount: 17, hasChildren: true, children: [
-                  { id: 5, name: 'Name 5_1', resultCount: 2, hasChildren: false },
-                  { id: 5, name: 'Name 5_2', resultCount: 46, hasChildren: false },
-                  { id: 5, name: 'Name 5_3', resultCount: 23, hasChildren: false }
+                id: 4, name: 'Name 4_1', resultCount: 17, hasMore: true, children: [
+                  { id: 5, name: 'Name 5_1', resultCount: 2, hasMore: false },
+                  { id: 5, name: 'Name 5_2', resultCount: 46, hasMore: false },
+                  { id: 5, name: 'Name 5_3', resultCount: 23, hasMore: false }
                 ]
               },
               {
-                id: 4, name: 'Name 4_2', resultCount: 99, hasChildren: true, children: [
-                  { id: 5, name: 'Name 5_1', resultCount: 2, hasChildren: false },
-                  { id: 5, name: 'Name 5_2', resultCount: 46, hasChildren: false },
-                  { id: 5, name: 'Name 5_3', resultCount: 23, hasChildren: false }
+                id: 4, name: 'Name 4_2', resultCount: 99, hasMore: true, children: [
+                  { id: 5, name: 'Name 5_1', resultCount: 2, hasMore: false },
+                  { id: 5, name: 'Name 5_2', resultCount: 46, hasMore: false },
+                  { id: 5, name: 'Name 5_3', resultCount: 23, hasMore: false }
                 ]
               }
             ]
