@@ -97,13 +97,6 @@ export function main() {
         });
       });
 
-      describe('uiConfig.initialize()', () => {
-        it('Should initailize the UI config with the correct parameters', () => {
-          componentUnderTest.ngOnInit();
-          expect(mockUiConfig.initialize).toHaveBeenCalledWith(true, 'core');
-        });
-      });
-
       describe('processUser()', () => {
         it('Should process the actions for a logged out user', () => {
           loggedInState = false;

@@ -17,6 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { WAZEE_STORES } from './imports/wazee';
 import { CommerceModule } from './+commerce/commerce.module';
 import { NotFoundComponent } from './app.not-found.component';
+import { AppResolver } from './app.resolver';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { NotFoundComponent } from './app.not-found.component';
   {
     provide: Window,
     useValue: window
-  }],
+  },
+    AppResolver],
   declarations: [AppComponent, NotFoundComponent],
   bootstrap: [AppComponent],
 })

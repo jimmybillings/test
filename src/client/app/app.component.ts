@@ -39,6 +39,7 @@ export class AppComponent implements OnInit {
   public onScroll(targetElement: any) {
     this.uiState.showFixedHeader(this.window.pageYOffset);
   }
+
   constructor(
     public uiConfig: UiConfig,
     public router: Router,
@@ -62,8 +63,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.apiConfig.setPortal(portal);
     this.currentUser.set();
-    this.uiConfig.initialize(this.currentUser.loggedIn(), this.apiConfig.getPortal())
-      .subscribe();
     this.routerChanges();
     this.processUser();
     this.notification.initialize(this.target);

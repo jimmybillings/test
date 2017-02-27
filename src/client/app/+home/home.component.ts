@@ -41,12 +41,4 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.filter.clear();
     this.searchContext.new(searchContext);
   }
-
-  // public buildSearchContext(context: any): any {
-  //   context = JSON.parse(context);
-  //   for (let param in context) {
-  //     if (context[param] === '') delete (context[param]);
-  //   }
-  //   return context;
-  // }
 }

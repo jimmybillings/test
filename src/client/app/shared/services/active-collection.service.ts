@@ -104,7 +104,7 @@ export class ActiveCollectionService implements OnInit {
       Api.Assets,
       `collectionSummary/assets/${collectionId}`,
       { parameters: this.params, loading: loading }
-    ).do(response => { if (set) this.store.updateAssetsTo(response); });
+    ).do(response => { if (set) { this.store.updateAssetsTo(response); } });
   }
 
   private set(collectionId: number, params?: any): Observable<any> {

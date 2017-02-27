@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       if (res.documentsRequiringAgreement && res.documentsRequiringAgreement.indexOf('TOS') > -1) {
         this.showTerms();
       } else {
-        this.router.navigate(['/']);
+        this.router.navigate(['/']).then(_ => this.uiConfig.load(res.user.siteName).subscribe());
       }
       this.currentUser.set(res.user, res.token.token);
       if (res.siteFeatures) {

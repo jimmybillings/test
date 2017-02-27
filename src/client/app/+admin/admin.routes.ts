@@ -9,10 +9,11 @@ import { SecretConfigComponent } from './+secret-config/secret-config.component'
 import { TranslationComponent } from './+translation/translation.component';
 import { AdminAuthGuard } from './services/admin.auth.guard';
 import { AdminIndexResolver } from './services/admin-index.resolver';
+import { AppResolver } from '../app.resolver';
 
 export const ADMIN_ROUTES: Routes = [
   {
-    path: 'admin', component: AdminComponent, canActivate: [AdminAuthGuard],
+    path: 'admin', component: AdminComponent, resolve: [AppResolver], canActivate: [AdminAuthGuard],
     children: [
       { path: '', component: DashboardComponent },
       { path: 'config', component: ConfigComponent },

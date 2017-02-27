@@ -12,7 +12,7 @@ export const activeCollection: ActionReducer<any> = (state: Collection = initial
   switch (action.type) {
     case 'UPDATE_ACTIVE_COLLECTION':
       return Object.assign({}, state, action.payload, {
-        assetsCount: (action.payload.assets && action.payload.assets.items) ? action.payload.assets.items.length : 0
+        assetsCount: (action.payload.assets && action.payload.assets.pagination) ? action.payload.assets.pagination.totalCount : 0
       });
 
     case 'RESET_ACTIVE_COLLECTION':
@@ -26,16 +26,15 @@ export const activeCollection: ActionReducer<any> = (state: Collection = initial
       } else {
         updatedAssets = { items: [action.payload] };
       }
-
-      return Object.assign({}, state, { assets: updatedAssets, assetsCount: updatedAssets.items.length });
+      const countWithNewAsset: number = (state.assetsCount) ? state.assetsCount + 1 : 1;
+      return Object.assign({}, state, { assets: updatedAssets, assetsCount: countWithNewAsset });
 
     case 'REMOVE_ASSET_FROM_COLLECTION':
       if (!state.assets || !state.assets.items) return state;
-
       updatedAssets = JSON.parse(JSON.stringify(state.assets));
       updatedAssets.items = updatedAssets.items.filter((item: Assets) => item.uuid !== action.payload);
-
-      return Object.assign({}, state, { assets: updatedAssets, assetsCount: updatedAssets.items.length });
+      const countWithAssetRemoved: number = (state.assetsCount > 0) ? state.assetsCount - 1 : 0;
+      return Object.assign({}, state, { assets: updatedAssets, assetsCount: countWithAssetRemoved });
 
     case 'UPDATE_ASSET_IN_COLLECTION':
       state.assets.items = state.assets.items.map((item: any) => {
@@ -81,7 +80,6 @@ export class ActiveCollectionStore {
 
   public updateAssetsTo(assets: any): void {
     if (!assets) assets = {};
-
     this.store.dispatch({
       type: 'UPDATE_ACTIVE_COLLECTION', payload: {
         assets: {

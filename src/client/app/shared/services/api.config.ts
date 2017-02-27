@@ -53,7 +53,7 @@ export class ApiConfig {
   }
 
   public getPortal(): string {
-    return this._portal || 'core';
+    return this._portal;
   }
 
   public cms(piece: string): string {

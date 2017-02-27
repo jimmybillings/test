@@ -17,8 +17,8 @@ export function main() {
       ]
     }));
 
-    it('should return portal name. If none is set, it should return "core"', inject([ApiConfig], (service: ApiConfig) => {
-      expect(service.getPortal()).toEqual('core');
+    it('should return portal name. If none is set, it should return null', inject([ApiConfig], (service: ApiConfig) => {
+      expect(service.getPortal()).toEqual(null);
     }));
 
     it('Should set portal name with value passed in', inject([ApiConfig], (service: ApiConfig) => {

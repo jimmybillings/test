@@ -123,7 +123,7 @@ export function main() {
           { assets: { items: [{ assetId: 42, uuid: 't123' }, { assetId: 47, uuid: 't456' }] }, assetsCount: 2 },
           { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { assetId: 86, uuid: 't789' } }
         ))
-          .toEqual({ assets: { items: [{ assetId: 42, uuid: 't123' }, { assetId: 47, uuid: 't456' }] }, assetsCount: 2 });
+          .toEqual({ assets: { items: [{ assetId: 42, uuid: 't123' }, { assetId: 47, uuid: 't456' }] }, assetsCount: 1 });
       });
 
       it('returns current state when current state is passed in with assets undefined', () => {

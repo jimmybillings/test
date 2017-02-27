@@ -10,7 +10,10 @@ export function main() {
     let componentUnderTest: LoginComponent;
 
     beforeEach(() => {
-      mockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
+      mockUiConfig = {
+        get: () => { return Observable.of({ config: { someConfig: 'test' } }); },
+        load: () => { return Observable.of({ config: { someConfig: 'test' } }); }
+      };
       mockAuthentication = {
         create: jasmine.createSpy('create').and.returnValue(Observable.of({
           user: { firstName: 'james', lastName: 'billings', siteName: 'core', id: 10 },
@@ -18,7 +21,7 @@ export function main() {
           userPreferences: { pref: 1 }
         }))
       };
-      mockRouter = { navigate: jasmine.createSpy('navigate') };
+      mockRouter = { navigate: jasmine.createSpy('navigate').and.returnValue(Promise.resolve()) };
       mockCurrentUserService = { set: jasmine.createSpy('set') };
       mockDocumentService = {
         downloadActiveTosDocument:
