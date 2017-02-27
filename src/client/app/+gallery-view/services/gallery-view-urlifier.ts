@@ -6,14 +6,14 @@ export class GalleryViewUrlifier {
   private static SPACE_SYMBOL: string = '._.';
 
   public static urlify(path: GalleryPath): string[] {
-    return path.length === 0 ? [] : [this.urlifyNamesIn(path), this.urlifyIdsIn(path)];
+    return (path && path.length > 0) ? [this.urlifyNamesIn(path), this.urlifyIdsIn(path)] : [];
   }
 
-  public static unurlify(names: string, ids: string): GalleryPath {
-    if (!names || !ids) return [];
+  public static unurlify(urlifiedNames: string, urlifiedIds: string): GalleryPath {
+    if (!urlifiedNames || !urlifiedIds) return [];
 
-    const allNames: string[][] = GalleryViewUrlifier.unurlifyNamesIn(names);
-    const allIds: number[][] = GalleryViewUrlifier.unurlifyIdsIn(ids);
+    const allNames: string[][] = GalleryViewUrlifier.unurlifyNamesIn(urlifiedNames);
+    const allIds: number[][] = GalleryViewUrlifier.unurlifyIdsIn(urlifiedIds);
 
     return allNames.map((names, index) => { return { names: names, ids: allIds[index] }; });
   }
