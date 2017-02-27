@@ -9,18 +9,30 @@
 
 -->
 
-<section *ngFor="let result of data.results">
-  <h3>{{ result.name }}</h3>
-  <div class="outer-carousel">
-    <ul class="{{ result.name | lowercase}}">
-      <li *ngFor="let child of result.children" [ngClass]="{disabled: child.resultCount === 0}" (click)="onClick(result, child)">
-        <a flex="" class="item">
-          <img *ngIf="child.thumbUrl" src="{{child.thumbUrl}}" />
-          <section class="item-info">
-            <div class="item-label {{ result.name | lowercase}}">{{ child.name }}</div>
-          </section>
-        </a>
-      </li>
-    </ul>
+<section *ngFor="let result of data.results; let i = index">
+  <header><h3>{{ result.name }}</h3></header>
+  <div class="carousel-hover-trigger">
+    <div class="carousel">
+      <span class="carousel-previous"></span>
+      <div class="carousel-mask">
+        <div class="carousel-content-{{i}} {{ result.name | lowercase}}"
+          [ngClass]="{active: activeItemHovered && i === activeRow}">
+          <div class="carousel-item" 
+            *ngFor="let child of result.children" 
+            [ngClass]="{disabled: child.resultCount === 0}" 
+            (click)="onClick(result, child)"
+            (mouseover)="onMouseOver(child, i)"
+            (mouseout)="onMouseOut(child)">
+            <a flex="">
+              <img *ngIf="child.thumbUrl" src="{{child.thumbUrl}}" />
+              <section class="item-info">
+                <div class="item-label {{ result.name | lowercase}}">{{ child.name }}</div>
+              </section>
+            </a>
+          </div>
+        </div>
+      </div>
+      <span class="carousel-next"></span>
+    </div>
   </div>
 </section>
