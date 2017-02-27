@@ -34,6 +34,7 @@ export class UiConfig {
   }
 
   public load(siteName: string): Observable<any> {
+    console.log('uiConfig', siteName);
     return this.api.get(
       Api.Identities,
       'configuration/site',
