@@ -13,6 +13,6 @@ export class AppResolver {
     private uiConfig: UiConfig) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    return this.uiConfig.initialize(this.apiConfig.getPortal());
+    return this.uiConfig.initialize(portal);
   }
 }
