@@ -22,7 +22,7 @@ if (String('<%= BUILD_TYPE %>') === 'prod') { enableProdMode(); }
 // TP.getTranslationFile().then((providers: any) => {
 // const options: any = { providers };
 
-class Bootstrap {
+class Application {
   private baseUrl: string = baseUrl;
   private portal: string = portal;
   private endpoint: string = '/api/identities/v1/configuration/site?siteName=';
@@ -31,12 +31,12 @@ class Bootstrap {
     'Accept': 'application/json'
   };
 
-  constructor() {
+  public load() {
     if (this.externalDataLoaded()) {
-      this.loadApplication();
+      this.start();
     } else {
       this.loadExternalData()
-        .then(this.loadApplication);
+        .then(this.start);
     }
   }
 
@@ -51,7 +51,7 @@ class Bootstrap {
       });
   }
 
-  private loadApplication() {
+  private start() {
     platformBrowserDynamic().bootstrapModule(AppModule/*, options*/);
   }
 
@@ -61,4 +61,4 @@ class Bootstrap {
   }
 }
 
-new Bootstrap();
+new Application().load();
