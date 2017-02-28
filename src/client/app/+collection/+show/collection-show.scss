@@ -54,7 +54,7 @@ collection-show .collections-list {
       padding-top: rem(.4);
       padding-right: rem(1.6);
       padding-bottom: 0;
-      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         padding-right: 0;
       }
     }

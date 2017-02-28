@@ -9,6 +9,8 @@ import { AssetGuard } from './+asset/services/asset.guard';
 import { SearchResolver } from './+search/services/search.resolver';
 import { CommerceComponent } from './+commerce/commerce.component';
 import { NotFoundComponent } from './app.not-found.component';
+import { GalleryViewComponent } from './+gallery-view/gallery-view.component';
+import { GalleryViewResolver } from './+gallery-view/services/gallery-view.resolver';
 
 import { Routes } from '@angular/router';
 
@@ -22,6 +24,8 @@ export const APP_ROUTES: Routes = [
   { path: 'collections', component: CollectionsComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'commerce', component: CommerceComponent },
+  { path: 'gallery-view/:names/:ids', component: GalleryViewComponent, resolve: { gallery: GalleryViewResolver } },
+  { path: 'gallery-view', component: GalleryViewComponent, resolve: { gallery: GalleryViewResolver } },
   { path: '**', component: NotFoundComponent }
 
 ];
