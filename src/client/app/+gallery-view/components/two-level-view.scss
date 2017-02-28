@@ -1,5 +1,6 @@
 $duration: 300ms;
-
+$bkg-color: #142b0b;
+$heading-color:#e1d31d;
 
 
 
@@ -7,13 +8,18 @@ $duration: 300ms;
 
 two-level-view {
   width: 100%;
-  display: block;
+  // display: block;
+  background-color: $bkg-color;
+  // background-image: linear-gradient(md-color($foreground, base, .01), md-color($foreground, base, .2));
+  // box-shadow: inset 0 3px 9px 0 md-color($md-foreground, base), .15;
   & > section {
     margin: rem(1.4) 0;
     h3 {
       font-weight: 500;
       font-size: 1.4em;
       margin: 0 0 -5px 50px;
+      // @include text-contrast(md-color($md-grey, 900));
+      color: $heading-color;
     }
   }
 }
@@ -49,7 +55,7 @@ two-level-view .carousel {
     bottom: 0;
     height: 100%;
     width: 50px;
-    background: rgba(md-color($background, status-bar), .85);
+    background: rgba($bkg-color, .5);
   }
   .carousel-previous {
     left: 0;
@@ -67,7 +73,7 @@ two-level-view .carousel {
     transition-timing-function: cubic-bezier(0.5, 0, 0.1, 1);
     &.active .carousel-item {
       transform: translate3d(calc((-16.6666% + .3%) * 1.16 / 2) , 0, 0);
-      opacity: .8;
+      opacity: .5;
       @media screen and (max-width: $layout-breakpoint-md) {
         transform: translate3d(calc((-20% + .3%) * 1.16 / 2), 0, 0);
       }
@@ -119,7 +125,7 @@ two-level-view .carousel .carousel-content-3 .carousel-item {
     }
     &:hover ~ .carousel-item {
       transform: translate3d(calc((16.6666% - .3%) * 1.16 / 2) , 0, 0);
-      opacity: .8;
+      opacity: .5;
       @media screen and (max-width: $layout-breakpoint-md) {
         transform: translate3d(calc((20% - .3%) * 1.16 / 2), 0, 0);
       }
