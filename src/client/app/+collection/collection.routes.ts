@@ -4,11 +4,10 @@ import { CollectionsComponent } from './+index/collections.component';
 import { CollectionShowComponent } from './+show/collection-show.component';
 import { CollectionGuard } from './services/collection-guard';
 import { CollectionComponent } from './collection.component';
-import { AppResolver } from '../app.resolver';
 
 export const COLLECTION_ROUTES: Routes = [
   {
-    path: 'collections', component: CollectionComponent, resolve: [AppResolver],
+    path: 'collections', component: CollectionComponent,
     children: [
       {
         path: '',
@@ -16,7 +15,7 @@ export const COLLECTION_ROUTES: Routes = [
         canActivate: [CollectionGuard]
       },
       {
-        path: 'collection/:id',
+        path: ':id',
         component: CollectionShowComponent,
         canActivate: [CollectionGuard],
         resolve: { collection: CollectionShowResolver }

@@ -129,7 +129,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
 
   public changePage(i: any): void {
     this.buildRouteParams({ i });
-    this.router.navigate(['/collection/' + this.collection.id, this.routeParams]);
+    this.router.navigate(['/collections/' + this.collection.id, this.routeParams]);
   }
 
   public downloadComp(params: any): void {

@@ -22,8 +22,6 @@ import { TranslateService } from 'ng2-translate';
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
 
-declare var portal: string;
-
 @Component({
   moduleId: module.id,
   selector: 'wazee-digital-platform',
@@ -61,8 +59,6 @@ export class AppComponent implements OnInit {
     private translate: TranslateService) { }
 
   ngOnInit() {
-    this.apiConfig.setPortal(portal);
-    this.currentUser.set();
     this.routerChanges();
     this.processUser();
     this.notification.initialize(this.target);

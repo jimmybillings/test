@@ -1,5 +1,7 @@
 require('hammerjs');
-
+declare var portal: string;
+declare var baseUrl: string;
+declare var fetch: any;
 /**
  * Bootstraps the application and makes the ROUTER_PROVIDERS and the APP_BASE_HREF available to it.
  * @see https://angular.io/docs/ts/latest/api/platform-browser-dynamic/index/bootstrap-function.html
@@ -19,5 +21,44 @@ if (String('<%= BUILD_TYPE %>') === 'prod') { enableProdMode(); }
 // let TP = new TranslationProviders();
 // TP.getTranslationFile().then((providers: any) => {
 // const options: any = { providers };
-platformBrowserDynamic().bootstrapModule(AppModule/*, options*/);
-// });
+
+class Bootstrap {
+  private baseUrl: string = baseUrl;
+  private portal: string = portal;
+  private endpoint: string = '/api/identities/v1/configuration/site?siteName=';
+  private headers: { [name: string]: any } = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  };
+
+  constructor() {
+    if (this.externalDataLoaded()) {
+      this.loadApplication();
+    } else {
+      this.loadExternalData()
+        .then(this.loadApplication);
+    }
+  }
+
+  private loadExternalData() {
+    return fetch(this.baseUrl + this.endpoint + this.portal, this.headers)
+      .then((response: any) => response.json())
+      .then((response: any) => {
+        localStorage.setItem(
+          'uiConfig',
+          JSON.stringify(Object.assign(response, { loaded: true }))
+        );
+      });
+  }
+
+  private loadApplication() {
+    platformBrowserDynamic().bootstrapModule(AppModule/*, options*/);
+  }
+
+  private externalDataLoaded() {
+    const config = JSON.parse(localStorage.getItem('uiConfig'));
+    return config && config.loaded;
+  }
+}
+
+new Bootstrap();

@@ -9,24 +9,19 @@ import { AssetGuard } from './+asset/services/asset.guard';
 import { SearchResolver } from './+search/services/search.resolver';
 import { CommerceComponent } from './+commerce/commerce.component';
 import { NotFoundComponent } from './app.not-found.component';
-import { AppResolver } from './app.resolver';
 
 import { Routes } from '@angular/router';
 
 export const APP_ROUTES: Routes = [
-  {
-    path: '', resolve: [AppResolver],
-    children: [
-      { path: '', component: HomeComponent },
-      { path: 'notification', component: HomeComponent },
-      { path: 'user', component: UserManagementComponent },
-      { path: 'search', component: SearchComponent, resolve: { search: SearchResolver } },
-      { path: 'asset/:name', component: AssetComponent, canActivate: [AssetGuard], resolve: { asset: AssetResolver } },
-      { path: 'collections', component: CollectionsComponent },
-      { path: 'admin', component: AdminComponent },
-      { path: 'commerce', component: CommerceComponent },
-      { path: '**', component: NotFoundComponent }
-    ]
-  }
+
+  { path: '', component: HomeComponent },
+  { path: 'notification', component: HomeComponent },
+  { path: 'user', component: UserManagementComponent },
+  { path: 'search', component: SearchComponent, resolve: { search: SearchResolver } },
+  { path: 'asset/:name', component: AssetComponent, canActivate: [AssetGuard], resolve: { asset: AssetResolver } },
+  { path: 'collections', component: CollectionsComponent },
+  { path: 'admin', component: AdminComponent },
+  { path: 'commerce', component: CommerceComponent },
+  { path: '**', component: NotFoundComponent }
 
 ];

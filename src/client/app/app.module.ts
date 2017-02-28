@@ -17,7 +17,11 @@ import { StoreModule } from '@ngrx/store';
 import { WAZEE_STORES } from './imports/wazee';
 import { CommerceModule } from './+commerce/commerce.module';
 import { NotFoundComponent } from './app.not-found.component';
-import { AppResolver } from './app.resolver';
+
+import { CurrentUserService } from './shared/services/current-user.service';
+import { ApiConfig } from './shared/services/api.config';
+import { UiConfig } from './shared/services/ui.config';
+declare var portal: string;
 
 @NgModule({
   imports: [
@@ -41,9 +45,17 @@ import { AppResolver } from './app.resolver';
   {
     provide: Window,
     useValue: window
-  },
-    AppResolver],
+  }],
   declarations: [AppComponent, NotFoundComponent],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+  constructor(
+    private uiConfig: UiConfig,
+    private apiConfig: ApiConfig,
+    private currentUser: CurrentUserService) {
+    this.apiConfig.setPortal(portal);
+    this.currentUser.set();
+    this.uiConfig.initialize(this.apiConfig.getPortal());
+  }
+}

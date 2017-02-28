@@ -28,7 +28,7 @@
       <button md-menu-item (click)="list.show($event)">
         <md-icon>folder_special</md-icon>{{ 'COLLECTION.MORE_DD_MENU.CHANGE_SELECTED' | translate }}
       </button>
-      <a md-menu-item *ngIf="collection.id" [routerLink]="['/collection/', collection.id, {i: 1, n: pageSize}]">
+      <a md-menu-item *ngIf="collection.id" [routerLink]="['/collections/', collection.id, {i: 1, n: pageSize}]">
         <md-icon>open_in_browser</md-icon>{{ 'COLLECTION.MORE_DD_MENU.OPEN_SELECTED' | translate }}
       </a>
       <button md-menu-item (click)="getAssetsForLink()">

@@ -7,13 +7,11 @@ import { UserManagementComponent } from './user-management.component';
 import { LoggedInGuard } from './services/logged-in.guard';
 import { LoggedOutGuard } from './services/logged-out.guard';
 import { ResetPasswordComponent } from './+reset-password/reset-password.component';
-import { AppResolver } from '../app.resolver';
 
 export const USER_ROUTES: Routes = [
   {
     path: 'user',
     component: UserManagementComponent,
-    resolve: [AppResolver],
     children: [
       { path: '', component: ProfileComponent, canActivate: [LoggedOutGuard] },
       { path: 'register', component: RegisterComponent, canActivate: [LoggedInGuard] },

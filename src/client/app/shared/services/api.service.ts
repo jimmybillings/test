@@ -115,7 +115,6 @@ export class ApiService {
     }
 
     if (!this.currentUser.loggedIn()) {
-      console.log(this.apiConfig.getPortal());
       search.set('siteName', this.apiConfig.getPortal());
     }
 

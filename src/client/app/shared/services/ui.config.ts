@@ -23,18 +23,12 @@ export const config: ActionReducer<any> = (state = InitState, action: Action) =>
 export class UiConfig {
   constructor(public store: Store<any>, private api: ApiService) { }
 
-  public initialize(siteName: string): Observable<any> {
+  public initialize(siteName: string) {
     let localConfig = localStorage.getItem('uiConfig') || JSON.stringify(InitState);
     this.set(JSON.parse(localConfig));
-    if (!this.hasLoaded()) {
-      return this.load(siteName);
-    } else {
-      return Observable.of({});
-    }
   }
 
   public load(siteName: string): Observable<any> {
-    console.log('uiConfig', siteName);
     return this.api.get(
       Api.Identities,
       'configuration/site',

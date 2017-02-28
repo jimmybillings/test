@@ -76,24 +76,10 @@ export function main() {
 
     describe('ngOnInit()', () => {
 
-      describe('apiConfig.setPortal()', () => {
-        it('Should set the portal name', () => {
-          componentUnderTest.ngOnInit();
-          expect(mockApiConfig.setPortal).toHaveBeenCalledWith('core');
-        });
-      });
-
       describe('notification.initialize()', () => {
         it('Should initialize the notification service with the global element target', () => {
           componentUnderTest.ngOnInit();
           expect(mockNotification.initialize).toHaveBeenCalled();
-        });
-      });
-
-      describe('currentUser.set()', () => {
-        it('Should set the current user', () => {
-          componentUnderTest.ngOnInit();
-          expect(mockCurrentUserService.set).toHaveBeenCalled();
         });
       });
 
