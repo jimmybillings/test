@@ -10,7 +10,7 @@ export function main() {
 
     beforeEach(() => {
       mockService = { load: jasmine.createSpy('load').and.returnValue(Observable.of({ some: 'object' })) };
-      mockRoute = { params: { ids: '1~~~2', names: 'Name._.1~~~Name._.2' } };
+      mockRoute = { params: { ids: '1~~~2', names: 'Name_1~~~Name_2' } };
 
       resolverUnderTest = new GalleryViewResolver(mockService);
     });

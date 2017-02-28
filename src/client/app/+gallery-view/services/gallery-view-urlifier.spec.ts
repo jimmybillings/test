@@ -16,22 +16,22 @@ export function main() {
       });
 
       it('returns an array containing a urlified names string and a urlified ids string', () => {
-        expect(GalleryViewUrlifier.urlify([{ ids: [1], names: ['Name 1'] }])).toEqual(['Name._.1', '1']);
+        expect(GalleryViewUrlifier.urlify([{ ids: [1], names: ['Name 1'] }])).toEqual(['Name_1', '1']);
       });
 
       it('handles multiple levels in one path segment', () => {
         expect(GalleryViewUrlifier.urlify([{ ids: [1, 2], names: ['Name 1', 'Name 2'] }]))
-          .toEqual(['Name._.1~~Name._.2', '1~~2']);
+          .toEqual(['Name_1~~Name_2', '1~~2']);
       });
 
       it('handles multiple path segments', () => {
         expect(GalleryViewUrlifier.urlify([{ ids: [1], names: ['Name 1'] }, { ids: [2], names: ['Name 2'] }]))
-          .toEqual(['Name._.1~~~Name._.2', '1~~~2']);
+          .toEqual(['Name_1~~~Name_2', '1~~~2']);
       });
 
       it('handles multi-level path segments and multiple path segments in the same path', () => {
         expect(GalleryViewUrlifier.urlify([{ ids: [1, 2], names: ['Name 1', 'Name 2'] }, { ids: [3], names: ['Name 3'] }]))
-          .toEqual(['Name._.1~~Name._.2~~~Name._.3', '1~~2~~~3']);
+          .toEqual(['Name_1~~Name_2~~~Name_3', '1~~2~~~3']);
       });
     });
 
@@ -65,21 +65,21 @@ export function main() {
       });
 
       it('returns a gallery path array corresponding to the inputs', () => {
-        expect(GalleryViewUrlifier.unurlify('Name._.1', '1')).toEqual([{ names: ['Name 1'], ids: [1] }]);
+        expect(GalleryViewUrlifier.unurlify('Name_1', '1')).toEqual([{ names: ['Name 1'], ids: [1] }]);
       });
 
       it('handles multiple levels in one path segment', () => {
-        expect(GalleryViewUrlifier.unurlify('Name._.1~~Name._.2', '1~~2'))
+        expect(GalleryViewUrlifier.unurlify('Name_1~~Name_2', '1~~2'))
           .toEqual([{ ids: [1, 2], names: ['Name 1', 'Name 2'] }]);
       });
 
       it('handles multiple path segments', () => {
-        expect(GalleryViewUrlifier.unurlify('Name._.1~~~Name._.2', '1~~~2'))
+        expect(GalleryViewUrlifier.unurlify('Name_1~~~Name_2', '1~~~2'))
           .toEqual([{ ids: [1], names: ['Name 1'] }, { ids: [2], names: ['Name 2'] }]);
       });
 
       it('handles multi-level path segments and multiple path segments in the same path', () => {
-        expect(GalleryViewUrlifier.unurlify('Name._.1~~Name._.2~~~Name._.3', '1~~2~~~3'))
+        expect(GalleryViewUrlifier.unurlify('Name_1~~Name_2~~~Name_3', '1~~2~~~3'))
           .toEqual([{ ids: [1, 2], names: ['Name 1', 'Name 2'] }, { ids: [3], names: ['Name 3'] }]);
       });
     });

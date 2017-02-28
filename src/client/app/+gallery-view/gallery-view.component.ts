@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
-
+import { SearchContext } from '../shared/services/search-context.service';
 import { GalleryViewService } from './services/gallery-view.service';
 import { GalleryViewUrlifier } from './services/gallery-view-urlifier';
 import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from './gallery-view.interface';
@@ -15,7 +15,7 @@ import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from
 export class GalleryViewComponent implements OnInit {
   public data: Observable<Gallery>;
 
-  constructor(private galleryViewService: GalleryViewService, private router: Router) { }
+  constructor(private galleryViewService: GalleryViewService, private router: Router, private search: SearchContext) { }
 
   public ngOnInit(): void {
     this.data = this.galleryViewService.data;
@@ -39,19 +39,11 @@ export class GalleryViewComponent implements OnInit {
     if (event.method === 'nextLevel') {
       this.changeRouteFor(path);
     } else {
-      alert(`TO BE IMPLEMENTED\n\nWould have run a search with:\n\n   ${this.stringifyPathForSearch(path)}`);
+      this.search.new({ gq: this.galleryViewService.stringifyPathForSearch(path), n: 100, i: 1 });
     }
   }
 
   private changeRouteFor(path: GalleryPath): void {
     this.router.navigate(['/gallery-view'].concat(GalleryViewUrlifier.urlify(path)));
-  }
-
-  private stringifyPathForSearch(path: GalleryPath): string {
-    return path.map((segment: GalleryPathSegment) => this.stringifyPathSegmentForSearch(segment)).join(',');
-  }
-
-  private stringifyPathSegmentForSearch(segment: GalleryPathSegment): string {
-    return segment.ids.map((id: number, index: number) => `${id}:"${segment.names[index]}"`).join(',');
   }
 }

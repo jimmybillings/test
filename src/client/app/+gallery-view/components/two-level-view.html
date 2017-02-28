@@ -24,7 +24,7 @@
             (mouseover)="onMouseOver(child, i)"
             (mouseout)="onMouseOut(child)">
             <a flex="">
-              <img *ngIf="child.thumbUrl" src="{{child.thumbUrl}}" />
+              <img *ngIf="child.thumbnailUrl" src="{{child.thumbnailUrl}}" />
               <section class="item-info">
                 <div class="item-label {{ result.name | lowercase}}">{{ child.name }}</div>
               </section>

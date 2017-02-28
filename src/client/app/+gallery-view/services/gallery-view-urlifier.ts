@@ -3,7 +3,7 @@ import { GalleryPath, GalleryPathSegment } from '../gallery-view.interface';
 export class GalleryViewUrlifier {
   private static SEGMENT_DELIMITER: string = '~~~';
   private static SEGMENT_MEMBER_DELIMITER: string = '~~';
-  private static SPACE_SYMBOL: string = '._.';
+  private static SPACE_SYMBOL: string = '_';
 
   public static urlify(path: GalleryPath): string[] {
     return (path && path.length > 0) ? [this.urlifyNamesIn(path), this.urlifyIdsIn(path)] : [];

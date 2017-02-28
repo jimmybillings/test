@@ -10,7 +10,7 @@ export interface GalleryResult {
   id: number;
   name: string;
   resultCount: number;
-  thumbUrl?: string;
+  thumbnailUrl?: string;
   hasMore: boolean;
   children?: GalleryResults;
 }
