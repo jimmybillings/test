@@ -17,6 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { WAZEE_STORES } from './imports/wazee';
 import { CommerceModule } from './+commerce/commerce.module';
 import { NotFoundComponent } from './app.not-found.component';
+import { GalleryViewModule } from './+gallery-view/gallery-view.module';
 
 import { CurrentUserService } from './shared/services/current-user.service';
 import { ApiConfig } from './shared/services/api.config';
@@ -36,6 +37,7 @@ declare var portal: string;
     AdminModule,
     CommerceModule,
     ApplicationModule,
+    GalleryViewModule,
     StoreModule.provideStore(WAZEE_STORES)
   ],
   providers: [{

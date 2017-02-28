@@ -1,10 +1,10 @@
 
 <div layout="row" layout-align="start center" class="glb" *ngIf="config && (config.template.value === 'wpt')">
   <div flex=""></div>
-  <div flex-xl="85" flex-gt-lg="95" flex="100" layout="row" layout-wrap="" layout-padding="">
+  <div flex-gt-lg="85" flex-lg="95" flex="100" layout="row" layout-wrap="" layout-padding="">
     <div hide="" show-gt-md="" flex-gt-md="25" flex="100" layout="column" layout-align="start center" layout-align-gt-md="start start"><a [routerLink]="['/']" class="logo-wrapper">
         <div class="logo"></div></a></div>
-    <div flex-gt-md="25" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start" class="sales">
+    <div flex-gt-sm="25" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start" class="sales">
       <h3 class="md-title">US & RoW</h3>
       <h5 class="md-subhead">Johnny McMahon</h5>
       <md-list>
@@ -19,7 +19,7 @@
       </md-list>
     </div>
 
-    <div flex-gt-md="25" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start" class="sales">
+    <div flex-gt-sm="25" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start" class="sales">
       <h3 class="md-title">Europe</h3>
       <h5 class="md-subhead">Richard Sarris</h5>
       <md-list>
@@ -33,7 +33,7 @@
         </md-list-item>
       </md-list>
     </div>
-    <div flex-gt-md="25" flex="100" layout="column" layout-align="start center" layout-align-gt-md="start start">
+    <div flex-gt-sm="25" flex="100" layout="column" layout-align="start center" layout-align-gt-md="start start">
       <h3 class="md-title">{{'FOOTER.COMMUNITY' | translate }}</h3>
       <ul class="social">
         <li><a href="https://www.facebook.com/WazeeDigital" target="_blank" class="facebook"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-facebook fa-stack-1x fa-inverse"></i></span></a></li>
@@ -55,16 +55,16 @@
 
 <div layout="row" layout-align="start center" class="glb" *ngIf="!config || (config.template.value === 'core')">
   <div flex=""></div>
-  <div flex-xl="85" flex-gt-lg="95" flex="100" layout="row" layout-wrap="" layout-padding="">
-    <div hide="" show-gt-md="" flex-gt-md="25" flex="100" layout="column" layout-align="start center" layout-align-gt-md="start start"><a [routerLink]="['/']" class="logo-wrapper">
+  <div flex-gt-lg="80" flex-lg="85" flex-gt-md="95" flex="100" layout="row" layout-wrap="" layout-padding="">
+    <div hide hide-sm show-gt-sm="" flex-gt-sm="25" flex="100" layout="column" layout-align="start center" layout-align-gt-md="start start"><a [routerLink]="['/']" class="logo-wrapper">
         <div class="logo"></div></a></div>
-    <div flex-gt-md="25" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start">
+    <div flex-gt-sm="25" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start">
       <h3 class="md-title">{{'FOOTER.OFFICE' | translate }}</h3>
       <p class="md-body-1">1515 Arapahoe Street Tower 3, Suite 400 Denver, CO 80202</p>
       <p class="md-body-1"><a flex="" href="http://commerce.help.wazeedigital.com/" target="_blank" title="Help" class="help-link">Help</a></p>
     </div>
 
-    <div flex-gt-md="25" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start" class="sales">
+    <div flex-gt-sm="25" flex="100" layout="column" layout-align="start stretch" layout-align-gt-md="start start" class="sales">
       <h3 class="md-title">{{'FOOTER.SALES' | translate }}</h3>
       <md-list>
         <md-list-item><a md-button href="mailto:platformsales@wazeedigital.com">
@@ -76,7 +76,7 @@
         </md-list-item>
       </md-list>
     </div>
-    <div flex-gt-md="25" flex="100" layout="column" layout-align="start center" layout-align-gt-md="start start">
+    <div flex-gt-sm="25" flex="100" layout="column" layout-align="start center" layout-align-gt-md="start start">
       <h3 class="md-title">{{'FOOTER.COMMUNITY' | translate }}</h3>
       <ul class="social">
         <li><a href="https://www.facebook.com/WazeeDigital" target="_blank" class="facebook"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-facebook fa-stack-1x fa-inverse"></i></span></a></li>

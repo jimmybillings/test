@@ -23,16 +23,16 @@ wz-asset-grid ul.asset-grid-view {
       background-color: md-color($md-background, app-bar);
       box-shadow: 0 1px 1px 0 md-color($md-grey, 700, .2);
     }
-    @media screen and (max-width: $layout-breakpoint-lg) {
+    @media screen and (max-width: $layout-breakpoint-md) {
       width: 24%  
     }
-    @media screen and (max-width: $layout-breakpoint-md) {
+    @media screen and (max-width: $layout-breakpoint-sm) {
       width: 32.3333%
     }
-    @media screen and (max-width: $layout-breakpoint-sm) {
+    @media screen and (max-width: $layout-breakpoint-xs) {
       width: 49%;      
     }
-    @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+    @media screen and (max-width: 435px) and (min-width: 0) and (orientation: portrait)  {
       width: 99%;
       margin-bottom: 7%;          
     }

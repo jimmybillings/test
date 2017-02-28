@@ -1,0 +1,32 @@
+<section *ngIf="(data | async).path.length > 0" class="gallery-header" layout="row">
+	<header flex-lg="90" flex-gt-md="95" flex="100">
+		<div layout="row" class="bread-crumb" flex="100">
+      <button md-button color="primary" (click)="onClickBreadcrumb(0)">Home</button>
+      <span class="breadcrumb-separator"></span>
+      <ng-container *ngFor="let segment of (data | async).path; let isLast = last; let index = index"> 
+        <button md-button color="primary" *ngIf="!isLast" (click)="onClickBreadcrumb(index + 1)">
+          {{ breadcrumbLabelFor(segment) }}
+        </button>
+        <span class="breadcrumb-separator" *ngIf="!isLast"></span>
+        <span class="breadcrumb-current" *ngIf="isLast">{{ breadcrumbLabelFor(segment) }}</span>
+      </ng-container>
+		</div>
+	</header>
+</section>
+
+<section class="gallery">
+	<div layout="row" md-scroll-y="" layout-align="center start">
+    <one-level-view
+      flex-gt-lg="65" flex-gt-md="75" flex-gt-sm="85" flex-gt-xs="95" flex="100"
+      *ngIf="(data | async).numberOfLevels === 1"
+      [data]="data | async"
+      (navigate)="onNavigate($event)">
+    </one-level-view>
+    <two-level-view
+      flex="100"
+      *ngIf="(data | async).numberOfLevels === 2"
+      [data]="data | async"
+      (navigate)="onNavigate($event)">
+    </two-level-view>
+	</div>
+</section>

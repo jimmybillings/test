@@ -63,6 +63,7 @@ import { sortDefinitions } from '../shared/services/sort-definitions.service';
 import { order } from '../shared/stores/order.store';
 import { orders } from '../shared/stores/orders.store';
 import { features } from '../shared/stores/feature.store';
+import { gallery } from '../+gallery-view/services/gallery-view.store';
 
 // WAZEE RESOLVERS
 import { AssetResolver } from '../+asset/services/asset.resolver';
@@ -70,13 +71,15 @@ import { SearchResolver } from '../+search/services/search.resolver';
 import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
 import { OrderResolver } from '../+commerce/+order/services/order.resolver';
 import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
+import { GalleryViewResolver } from '../+gallery-view/services/gallery-view.resolver';
 
 export const WAZEE_RESOLVERS = [
   AssetResolver,
   SearchResolver,
   CartResolver,
   OrderResolver,
-  OrdersResolver
+  OrdersResolver,
+  GalleryViewResolver
 ];
 
 export const WAZEE_GUARDS = [
@@ -144,7 +147,8 @@ export const WAZEE_STORES: any = {
   sortDefinitions: sortDefinitions,
   order: order,
   orders: orders,
-  features: features
+  features: features,
+  gallery: gallery
 };
 
 // WAZEE ROUTES

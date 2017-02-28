@@ -8,7 +8,7 @@ wz-autocomplete-search {
     .suggestions-menu.revealed {
       top: rem(6.5);
       left: 0;
-      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         width: calc(100% - 2px);
       }
     }
@@ -89,7 +89,7 @@ header.app-header {
       left: rem(14.0);
       width: 50vw;
       max-width: rem(55.0);
-      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         left: 0;
         width: 100vw;
         top: rem(4.0);
@@ -138,7 +138,7 @@ header.app-header {
   button:focus {
     outline: none;
   }
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+  @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
     wz-autocomplete-search {
       input {
         // width: calc(100% - 70px);
