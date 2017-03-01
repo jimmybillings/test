@@ -62,7 +62,7 @@ export class UiState {
       this.update({ filtersAreAvailable: false });
       return;
     }
-    let showFilters = currentState.indexOf('search') > -1;
+    let showFilters = currentState.indexOf('search') > -1 && currentState.indexOf('gq=') < 0;
     this.update({ filtersAreAvailable: showFilters });
   }
 
