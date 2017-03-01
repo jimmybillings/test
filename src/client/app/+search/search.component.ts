@@ -14,6 +14,7 @@ import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 import { ErrorStore } from '../shared/stores/error.store';
+import { UiState } from '../shared/services/ui.state';
 
 /**
  * Asset search page component - renders search page results
@@ -31,6 +32,7 @@ export class SearchComponent implements OnDestroy {
   @ViewChild(WzSpeedviewComponent) public wzSpeedview: any;
 
   constructor(
+    public uiState: UiState,
     public userCan: Capabilities,
     public activeCollection: ActiveCollectionService,
     public filter: FilterService,
