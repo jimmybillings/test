@@ -3,9 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable, Subscription } from 'rxjs/Rx';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
-
-import { GalleryViewService } from '../../+gallery-view/services/gallery-view.service';
-
+import { GalleryViewService } from '../../shared/services/gallery-view.service';
 
 @Injectable()
 export class HomeResolver implements Resolve<any> {

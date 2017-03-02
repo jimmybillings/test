@@ -9,9 +9,8 @@ import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { Router } from '@angular/router';
 
-import { GalleryViewUrlifier } from '../+gallery-view/services/gallery-view-urlifier';
-import { GalleryViewService } from '../+gallery-view/services/gallery-view.service';
-import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from '../+gallery-view/gallery-view.interface';
+import { GalleryViewService } from '../shared/services/gallery-view.service';
+import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from '../shared/interfaces/gallery-view.interface';
 
 @Component({
   moduleId: module.id,
@@ -54,7 +53,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.searchContext.new(searchContext);
   }
 
-
   public onNavigate(event: GalleryNavigationEvent): void {
     const path = JSON.parse(JSON.stringify(this.galleryViewService.state.path));
     path.push(event.pathSegment);
@@ -62,12 +60,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (event.method === 'nextLevel') {
       this.changeRouteFor(path);
     } else {
-      this.searchContext.new({ gq: this.galleryViewService.stringifyPathForSearch(path), n: 100, i: 1 });
+      this.searchContext.new({ gq: JSON.stringify(path), n: 100, i: 1 });
     }
   }
 
   private changeRouteFor(path: GalleryPath): void {
-    this.router.navigate(['/gallery-view'].concat(GalleryViewUrlifier.urlify(path)));
-  }
+    const route: any[] = ['/gallery-view'];
+    if (path && path.length > 0) route.push({ path: JSON.stringify(path) });
 
+    this.router.navigate(route);
+  }
 }
