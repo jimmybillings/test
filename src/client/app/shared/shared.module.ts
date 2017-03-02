@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
 import { MaterialModule } from '@angular/material';
+import { WindowRef } from './services/window-ref.service';
 
 // Shared Wazee Modules
 import { WzPlayerModule } from './modules/wz-player/wz.player.module';
@@ -29,8 +30,10 @@ import { CollectionLinkComponent } from '../+collection/components/collection-li
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
 import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soon.component';
+
 import { TwoLevelViewComponent } from '../+gallery-view/components/two-level-view.component';
 
+import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb/wz.gallery-breadcrumb.component';
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
 import { WAZEE_RESOLVERS, WAZEE_GUARDS, WAZEE_SERVICES, WAZEE_STORE_INTERFACES } from '../imports/wazee';
@@ -53,6 +56,7 @@ import { WAZEE_RESOLVERS, WAZEE_GUARDS, WAZEE_SERVICES, WAZEE_STORE_INTERFACES }
     WzAssetModule
   ],
   declarations: [
+    WzGalleryBreadcrumbComponent,
     WzBreadcrumbComponent,
     WzDropdownComponent,
     WzListComponent,
@@ -74,6 +78,7 @@ import { WAZEE_RESOLVERS, WAZEE_GUARDS, WAZEE_SERVICES, WAZEE_STORE_INTERFACES }
     TwoLevelViewComponent
   ],
   exports: [
+    WzGalleryBreadcrumbComponent,
     WzBreadcrumbComponent,
     WzDropdownComponent,
     WzListComponent,
@@ -121,7 +126,8 @@ export class SharedModule {
         WAZEE_RESOLVERS,
         WAZEE_GUARDS,
         WAZEE_SERVICES,
-        WAZEE_STORE_INTERFACES
+        WAZEE_STORE_INTERFACES,
+        WindowRef
       ]
     };
   }

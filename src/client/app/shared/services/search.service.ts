@@ -5,7 +5,7 @@ import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { SearchStore } from '../stores/search.store';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
-
+import { GalleryViewService } from '../../shared/services/gallery-view.service';
 /**
  * Service that provides access to the search api  
  * and returns search results
@@ -16,16 +16,14 @@ export class SearchService {
   constructor(
     public currentUser: CurrentUserService,
     public userPreference: UserPreferenceService,
-    private api: ApiService,
-    public store: SearchStore) {
+    public store: SearchStore,
+    private galleryViewService: GalleryViewService,
+    private api: ApiService) {
     this.data = this.store.data;
   }
 
   public searchAssets(params: any): Observable<any> {
-    let cloneParams = JSON.parse(JSON.stringify(params));
-    if (!cloneParams.q) cloneParams.q = 'itemType:clip';
-    cloneParams['i'] = (parseFloat(cloneParams['i']) - 1).toString();
-    cloneParams['viewType'] = this.userPreference.state.assetView;
+    let cloneParams = this.normalizeParams(params);
     return this.api.get(
       Api.Assets,
       this.currentUser.loggedIn() ? 'search' : 'search/anonymous',
@@ -43,5 +41,14 @@ export class SearchService {
 
   public downloadComp(id: any, compType: any): Observable<any> {
     return this.api.get(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
+  }
+
+  private normalizeParams(params: any): any {
+    let cloneParams = JSON.parse(JSON.stringify(params));
+    if (!cloneParams.q) cloneParams.q = 'itemType:clip';
+    if (cloneParams.gq) cloneParams.gq = this.galleryViewService.stringifyPathForSearch(JSON.parse(cloneParams.gq));
+    cloneParams['i'] = (parseFloat(cloneParams['i']) - 1).toString();
+    cloneParams['viewType'] = this.userPreference.state.assetView;
+    return cloneParams;
   }
 }

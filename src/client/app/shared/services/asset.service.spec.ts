@@ -24,7 +24,7 @@ export function main() {
         let connection: any;
         connection = mockBackend.connections.subscribe((c: any) => connection = c);
         service.initialize(26307591).subscribe(payload => {
-          expect(connection.request.url.indexOf('/api/assets/v1/clip/26307591/clipDetail') !== -1).toBe(true);
+          expect(connection.request.url.indexOf('/assets-api/v1/clip/26307591/clipDetail') !== -1).toBe(true);
 
           // expect(payload).toEqual( { type: 'SET_ASSET', payload: MockAssetResponse()});
         });

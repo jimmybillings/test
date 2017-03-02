@@ -1,6 +1,7 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app.module';
+import { Http } from '@angular/http';
 
 declare var portal: string;
 declare var baseUrl: string;
@@ -9,22 +10,28 @@ declare var fetch: any;
 export class Application {
   private baseUrl: string = baseUrl;
   private portal: string = portal;
-  private endpoint: string = '/api/identities/v1/configuration/site?siteName=';
-  private headers: { [name: string]: any } = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  };
+  private endpoint: string = '/identities-api/v1/configuration/site?siteName=';
 
   constructor(private productionMode: boolean) { }
 
   public load() {
-    (this.externalDataLoaded()) ? this.start() : this.loadExternalData().then(() => this.start());
+    (this.externalDataLoaded()) ? this.start() : this.loadExternalData();
   }
 
   private loadExternalData() {
-    return fetch(this.baseUrl + this.endpoint + this.portal, this.headers)
-      .then((response: any) => response.json())
-      .then(this.storeConfig);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', this.baseUrl + this.endpoint + this.portal);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        this.storeConfig(xhr.responseText);
+        this.start();
+      } else {
+        alert('UI Config request failed to load, responsed with:' + xhr.status);
+      }
+    };
+    xhr.send();
   }
 
   private start() {
@@ -39,7 +46,7 @@ export class Application {
 
   private storeConfig(response: any) {
     localStorage.setItem('uiConfig',
-      JSON.stringify(Object.assign(response, { loaded: true }))
+      Object.assign(response, { loaded: true })
     );
   }
 }

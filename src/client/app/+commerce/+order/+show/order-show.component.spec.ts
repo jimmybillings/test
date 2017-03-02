@@ -12,7 +12,9 @@ export function main() {
         data: Observable.of({ someData: 'SOME_VALUE' })
       };
       mockWindow = {
-        location: { href: '' }
+        nativeWindow: {
+          location: { href: '' }
+        }
       };
       componentUnderTest = new OrderShowComponent(mockWindow, mockOrderService);
     });
@@ -27,7 +29,7 @@ export function main() {
       it('has a downloadMaster function that changes the windows location', () => {
         componentUnderTest.downloadMaster('https://this-is-a-url.com');
 
-        expect(mockWindow.location.href).toBe('https://this-is-a-url.com');
+        expect(mockWindow.nativeWindow.location.href).toBe('https://this-is-a-url.com');
       });
     });
   });

@@ -1,7 +1,6 @@
 
 // Require hammerjs - Needed for Material Design
 require('hammerjs');
-
 // Application class that will handle loading external
 // dependencies if needed before bootstrapping the app
 import { Application } from './application';

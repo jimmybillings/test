@@ -63,7 +63,7 @@ export function main() {
       };
       mockUserCan = { viewCollections: () => canViewCollections };
       mockCart = { getCartSummary: jasmine.createSpy('getCartSummary') };
-      mockWindow = { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') };
+      mockWindow = { nativeWindow: { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') } };
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
       componentUnderTest = new AppComponent(
@@ -135,7 +135,7 @@ export function main() {
         });
         it('Should make sure the page is scrolled to the top on each successful state change', () => {
           componentUnderTest.ngOnInit();
-          expect(mockWindow.scrollTo).toHaveBeenCalledWith(0, 0);
+          expect(mockWindow.nativeWindow.scrollTo).toHaveBeenCalledWith(0, 0);
         });
       });
     });

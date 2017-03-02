@@ -14,6 +14,7 @@ export function main() {
     let mockAssetService: any;
     let mockUserPreference: any;
     let mockDocument: any;
+    let mockWindow: any;
 
     beforeEach(() => {
       mockCartService = {
@@ -52,6 +53,8 @@ export function main() {
         })
       };
 
+      mockWindow = { nativeWindow: { location: { href: {} } } };
+
       mockAssetService = {
         getClipPreviewData: jasmine.createSpy('getClipPreviewData').and.returnValue(Observable.of({ url: 'fake url' })),
         getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({ some: 'attribute' })),
@@ -64,7 +67,7 @@ export function main() {
 
       componentUnderTest = new CartTabComponent(
         null, mockCartService, mockUiConfig, mockDialog,
-        mockAssetService, null, mockUserPreference, null, mockDocument
+        mockAssetService, mockWindow, mockUserPreference, null, mockDocument
       );
     });
 
@@ -98,7 +101,7 @@ export function main() {
 
         componentUnderTest = new CartTabComponent(
           null, mockCartService, mockUiConfig, mockDialog,
-          null, null, mockUserPreference, null, null
+          null, mockWindow, mockUserPreference, null, null
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
@@ -113,7 +116,7 @@ export function main() {
 
         componentUnderTest = new CartTabComponent(
           null, mockCartService, mockUiConfig, mockDialog,
-          null, null, mockUserPreference, null, null
+          null, mockWindow, mockUserPreference, null, null
         );
         componentUnderTest.ngOnInit();
 
@@ -125,7 +128,7 @@ export function main() {
 
         componentUnderTest = new CartTabComponent(
           null, mockCartService, mockUiConfig, mockDialog,
-          null, null, mockUserPreference, null, null
+          null, mockWindow, mockUserPreference, null, null
         );
         componentUnderTest.ngOnInit();
 
@@ -137,7 +140,7 @@ export function main() {
 
         componentUnderTest = new CartTabComponent(
           null, mockCartService, mockUiConfig, mockDialog,
-          null, null, mockUserPreference, null, null
+          null, mockWindow, mockUserPreference, null, null
         );
         componentUnderTest.ngOnInit();
 

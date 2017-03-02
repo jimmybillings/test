@@ -24,6 +24,7 @@ import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview
 import { Asset } from '../../shared/interfaces/asset.interface';
 import { WzAdvancedPlayerComponent } from
   '../../shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player.component';
+import { WindowRef } from '../../shared/services/window-ref.service';
 
 @Component({
   moduleId: module.id,
@@ -64,11 +65,11 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     private snackBar: MdSnackBar,
     private translate: TranslateService,
     private renderer: Renderer,
-    private window: Window,
+    private window: WindowRef,
     private dialog: MdDialog,
     @Inject(DOCUMENT) private document: any) {
-    this.screenWidth = this.window.innerWidth;
-    this.window.onresize = () => this.screenWidth = this.window.innerWidth;
+    this.screenWidth = this.window.nativeWindow.innerWidth;
+    this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
   }
 
   ngOnInit() {
@@ -184,7 +185,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     this.asset.getClipPreviewData(asset.assetId).subscribe(data => {
       asset.clipUrl = data.url;
       let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '544px' });
-      Object.assign(dialogRef.componentInstance, { window: this.window, asset: asset, displayContext: 'subClipEditDialog' });
+      Object.assign(dialogRef.componentInstance, { window: this.window.nativeWindow, asset: asset, displayContext: 'subClipEditDialog' });
       this.document.body.classList.add('subclipping-edit-open');
       dialogRef.componentInstance.dialog = dialogRef;
       dialogRef.componentInstance.onSubclip.subscribe((data: any) => {

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { OrderService } from '../../../shared/services/order.service';
+import { WindowRef } from '../../../shared/services/window-ref.service';
 
 @Component({
   moduleId: module.id,
@@ -8,13 +9,13 @@ import { OrderService } from '../../../shared/services/order.service';
 })
 
 export class OrderShowComponent {
-  constructor(public window: Window, private order: OrderService) { }
+  constructor(public window: WindowRef, private order: OrderService) { }
 
   public translationReady(field: any) {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
   public downloadMaster(masterUrl: string): void {
-    this.window.location.href = masterUrl;
+    this.window.nativeWindow.location.href = masterUrl;
   }
 }

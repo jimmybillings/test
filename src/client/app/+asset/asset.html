@@ -6,7 +6,7 @@
     [collection]="activeCollection.data | async"
     [uiConfig]="uiConfig"
     [usagePrice]="usagePrice"
-    [window]="window"
+    [window]="window.nativeWindow"
     (onAddToCollection)="addToCollection($event)"
     (onRemoveFromCollection)="removeFromCollection($event)"
     (onDownloadComp)="downloadComp($event)"

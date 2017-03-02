@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { Gallery, GalleryResult, GalleryNavigationEvent } from '../gallery-view.interface';
+import { Gallery, GalleryResult, GalleryNavigationEvent } from '../../shared/interfaces/gallery-view.interface';
 
 @Component({
   moduleId: module.id,
