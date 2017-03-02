@@ -24,6 +24,7 @@ import { SearchService } from '../shared/services/search.service';
 import { OrderService } from '../shared/services/order.service';
 import { OrdersService } from '../shared/services/orders.service';
 import { CollectionContextService } from '../shared/services/collection-context.service';
+import { GalleryViewService } from '../shared/services/gallery-view.service';
 
 // STORE INTERFACES
 import { CartStore } from '../shared/stores/cart.store';
@@ -63,7 +64,7 @@ import { sortDefinitions } from '../shared/services/sort-definitions.service';
 import { order } from '../shared/stores/order.store';
 import { orders } from '../shared/stores/orders.store';
 import { features } from '../shared/stores/feature.store';
-import { gallery } from '../+gallery-view/services/gallery-view.store';
+import { gallery, GalleryViewStore } from '../shared/stores/gallery-view.store';
 
 // WAZEE RESOLVERS
 import { AssetResolver } from '../+asset/services/asset.resolver';
@@ -114,7 +115,8 @@ export const WAZEE_SERVICES = [
   UserService,
   OrderService,
   OrdersService,
-  TranslateService
+  TranslateService,
+  GalleryViewService
 ];
 
 export const WAZEE_STORE_INTERFACES = [
@@ -125,7 +127,8 @@ export const WAZEE_STORE_INTERFACES = [
   FeatureStore,
   SearchStore,
   OrdersStore,
-  OrderStore
+  OrderStore,
+  GalleryViewStore
 ];
 
 export const WAZEE_STORES: any = {

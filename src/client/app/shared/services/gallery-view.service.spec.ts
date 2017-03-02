@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs/Rx';
 
 import { GalleryViewService } from './gallery-view.service';
-import { MockApiService, mockApiMatchers } from '../../shared/mocks/mock-api.service';
-import { Api } from '../../shared/interfaces/api.interface';
+import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
+import { Api } from '../interfaces/api.interface';
 
 export function main() {
   describe('Gallery View Service', () => {

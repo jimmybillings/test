@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 
 import { GalleryViewComponent } from './gallery-view.component';
-import { GalleryPathSegment } from './gallery-view.interface';
+import { GalleryPathSegment } from '../shared/interfaces/gallery-view.interface';
 
 export function main() {
   describe('Gallery View Component', () => {
@@ -56,7 +56,11 @@ export function main() {
       it('should do a search if the method is search', () => {
         componentUnderTest.onNavigate({ pathSegment: { names: ['Name 3'], ids: [3] }, method: 'search' });
 
-        expect(mockSearch.new).toHaveBeenCalledWith({ gq: '3:"Name 3"', n: 100, i: 1 });
+        expect(mockSearch.new).toHaveBeenCalledWith({
+          gq: '[{"names":["Name 1"],"ids":[1]},{"names":["Name 2"],"ids":[2]},{"names":["Name 3"],"ids":[3]}]',
+          n: 100,
+          i: 1
+        });
       });
     });
 

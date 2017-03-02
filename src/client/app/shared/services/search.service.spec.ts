@@ -5,7 +5,7 @@ export function main() {
     let serviceUnderTest: SearchService;
     let searchStore: any = { data: 'test' };
     beforeEach(() => {
-      serviceUnderTest = new SearchService(null, null, null, searchStore);
+      serviceUnderTest = new SearchService(null, null, searchStore, null, null);
     });
 
     it('has no tests!', () => {

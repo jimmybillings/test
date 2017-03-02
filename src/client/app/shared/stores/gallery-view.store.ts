@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 
-import { Gallery, GalleryResults, GalleryPath } from '../gallery-view.interface';
+import { Gallery, GalleryResults, GalleryPath } from '../interfaces/gallery-view.interface';
 
 export const gallery: ActionReducer<Gallery> = (state: Gallery = initialState(), action: Action) => {
   switch (action.type) {

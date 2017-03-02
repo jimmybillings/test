@@ -2,8 +2,8 @@ import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { SearchContext } from '../shared/services/search-context.service';
-import { GalleryViewService } from './services/gallery-view.service';
-import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from './gallery-view.interface';
+import { GalleryViewService } from '../shared/services/gallery-view.service';
+import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from '../shared/interfaces/gallery-view.interface';
 
 @Component({
   moduleId: module.id,
@@ -34,7 +34,7 @@ export class GalleryViewComponent implements OnInit {
     if (event.method === 'nextLevel') {
       this.changeRouteFor(path);
     } else {
-      this.search.new({ gq: this.galleryViewService.stringifyPathForSearch(path), n: 100, i: 1 });
+      this.search.new({ gq: JSON.stringify(path), n: 100, i: 1 });
     }
   }
 

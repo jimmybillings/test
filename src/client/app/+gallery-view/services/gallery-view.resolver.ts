@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
-import { GalleryViewService } from './gallery-view.service';
-import { Gallery, GalleryPath } from '../gallery-view.interface';
+import { GalleryViewService } from '../../shared/services/gallery-view.service';
+import { Gallery, GalleryPath } from '../../shared/interfaces/gallery-view.interface';
 
 @Injectable()
 export class GalleryViewResolver {

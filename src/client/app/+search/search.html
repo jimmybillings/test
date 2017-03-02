@@ -10,10 +10,11 @@
 		[sortDefinitionItems]="(sortDefinition.data | async).sorts"
 		[currentSort]="(sortDefinition.data | async).currentSort"
 		[assetView]="(userPreferences.data | async).assetView"
+		[path]="path"
+		(onClickBreadcrumb)="onClickBreadcrumb($event)"
 		(onChangeAssetView)="changeAssetView($event)"
 		(onSortResults)="sortResults($event)">
 	</search-header>
-
 	<section class="search-results">
 		<div layout="row" md-scroll-y="" layout-align="center start">
 			<div flex-gt-lg="95" flex-lg="95" flex="100">
