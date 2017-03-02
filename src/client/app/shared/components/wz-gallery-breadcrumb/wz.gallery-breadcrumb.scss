@@ -1,0 +1,33 @@
+header.wz-gallery-breadcrumb {
+  padding-top: rem(.6);
+  padding-bottom: rem(.5);
+  position: relative;
+  .bread-crumb button[md-button] {
+    min-width: 0;
+  }
+  .breadcrumb-separator {
+    position: relative;
+    width: rem(1.0);
+    &::before {
+      content: "\e5cc";
+      font-family: 'Material Icons';
+      position: absolute;
+      top: rem(.5);
+      left: rem(-.7);
+      font-size: rem(2.4);
+      opacity: .4;
+    }
+  }
+  .breadcrumb-current {
+    text-transform: uppercase;
+    padding: 0 rem(1.6);
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-decoration: none;
+    vertical-align: baseline;
+    font-size: rem(1.4);
+    text-align: center;
+    padding: 0 rem(1.6);
+    line-height: rem(3.6);
+  }
+}

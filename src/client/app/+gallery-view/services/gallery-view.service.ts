@@ -5,6 +5,8 @@ import { Api } from '../../shared/interfaces/api.interface';
 import { GalleryViewStore } from './gallery-view.store';
 import { Gallery, GalleryPath, GalleryPathSegment } from '../gallery-view.interface';
 
+declare var portal: string;
+
 @Injectable()
 export class GalleryViewService {
   constructor(private store: GalleryViewStore, private api: ApiService) { }
@@ -20,7 +22,7 @@ export class GalleryViewService {
   public load(path: GalleryPath): Observable<Gallery> {
     let query: string = path.length > 0 ? this.stringifyPathForSearch(path) : null;
 
-    this.api.get(Api.Assets, 'galleryResult', { parameters: { query: query, siteName: 'core' } }).subscribe((data: any) => {
+    this.api.get(Api.Assets, 'galleryResult', { parameters: { query: query, siteName: portal } }).subscribe((data: any) => {
       this.store.replaceWith(data.list, path);
     });
 

@@ -29,33 +29,6 @@ export function main() {
       });
     });
 
-    describe('breadcrumbLabelFor', () => {
-      it('returns empty string for an undefined segment', () => {
-        expect(componentUnderTest.breadcrumbLabelFor(undefined)).toEqual('');
-      });
-
-      it('returns empty string for a null segment', () => {
-        expect(componentUnderTest.breadcrumbLabelFor(null)).toEqual('');
-      });
-
-      it('returns empty string for a segment with undefined names', () => {
-        expect(componentUnderTest.breadcrumbLabelFor({} as GalleryPathSegment)).toEqual('');
-      });
-
-      it('returns empty string for a segment with null names', () => {
-        expect(componentUnderTest.breadcrumbLabelFor({ names: null } as GalleryPathSegment)).toEqual('');
-      });
-
-      it('returns a simple name for a segment with one name', () => {
-        expect(componentUnderTest.breadcrumbLabelFor({ names: ['name 1'] } as GalleryPathSegment)).toEqual('name 1');
-      });
-
-      it('returns a compound name for a segment with two names', () => {
-        expect(componentUnderTest.breadcrumbLabelFor({ names: ['name 1', 'name 2'] } as GalleryPathSegment))
-          .toEqual('name 1 : name 2');
-      });
-    });
-
     describe('onClickBreadcrumb()', () => {
       it('tells the router to navigate home with index 0', () => {
         componentUnderTest.onClickBreadcrumb(0);

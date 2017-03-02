@@ -21,10 +21,6 @@ export class GalleryViewComponent implements OnInit {
     this.data = this.galleryViewService.data;
   }
 
-  public breadcrumbLabelFor(segment: GalleryPathSegment): string {
-    return (segment && segment.names) ? segment.names.join(' : ') : '';
-  }
-
   public onClickBreadcrumb(index: number): void {
     let path: GalleryPath = JSON.parse(JSON.stringify(this.galleryViewService.state.path));
     path = path.slice(0, index);
