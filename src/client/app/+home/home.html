@@ -2,8 +2,21 @@
   [config]="config"
   [currentUser]="currentUser" 
   [uiState]="uiState"
-  (searchContext)="newSearchContext($event)">
+  (searchContext)="newSearchContext($event)"
+  [ngClass]="{'gallery-view' : currentUser.loggedIn() && config.galleryView}">
 </home-hero>
-<home-highlights [config]="config"></home-highlights>
+<home-highlights [config]="config" *ngIf="!currentUser.loggedIn() || !config.galleryView"></home-highlights>
+
+<section class="gallery" *ngIf="currentUser.loggedIn() && config.galleryView">
+	<div layout="row" md-scroll-y="" layout-align="center start">
+    <two-level-view
+      flex="100"
+      *ngIf="(data | async).numberOfLevels === 2"
+      [data]="data | async"
+      (navigate)="onNavigate($event)">
+    </two-level-view>
+	</div>
+</section>
+
 <home-call-to-action [config]="config" [currentUser]="currentUser"></home-call-to-action>
 <home-vendor-marquee [config]="config"></home-vendor-marquee>

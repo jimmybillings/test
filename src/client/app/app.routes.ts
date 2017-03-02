@@ -11,12 +11,13 @@ import { CommerceComponent } from './+commerce/commerce.component';
 import { NotFoundComponent } from './app.not-found.component';
 import { GalleryViewComponent } from './+gallery-view/gallery-view.component';
 import { GalleryViewResolver } from './+gallery-view/services/gallery-view.resolver';
+import { HomeResolver } from './+home/services/home.resolver';
 
 import { Routes } from '@angular/router';
 
 export const APP_ROUTES: Routes = [
 
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent, resolve: { gallery: HomeResolver } },
   { path: 'notification', component: HomeComponent },
   { path: 'user', component: UserManagementComponent },
   { path: 'search', component: SearchComponent, resolve: { search: SearchResolver } },

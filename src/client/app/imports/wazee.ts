@@ -72,6 +72,7 @@ import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
 import { OrderResolver } from '../+commerce/+order/services/order.resolver';
 import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
 import { GalleryViewResolver } from '../+gallery-view/services/gallery-view.resolver';
+import { HomeResolver } from '../+home/services/home.resolver';
 
 export const WAZEE_RESOLVERS = [
   AssetResolver,
@@ -79,7 +80,8 @@ export const WAZEE_RESOLVERS = [
   CartResolver,
   OrderResolver,
   OrdersResolver,
-  GalleryViewResolver
+  GalleryViewResolver,
+  HomeResolver
 ];
 
 export const WAZEE_GUARDS = [
