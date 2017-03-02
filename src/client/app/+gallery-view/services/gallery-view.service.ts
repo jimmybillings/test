@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
-import { Api } from '../../shared/interfaces/api.interface';
+import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
 import { GalleryViewStore } from './gallery-view.store';
 import { Gallery, GalleryPath, GalleryPathSegment } from '../gallery-view.interface';
 
@@ -19,16 +19,15 @@ export class GalleryViewService {
     return this.store.state;
   }
 
-  public load(path: GalleryPath): Observable<Gallery> {
-    let query: string = path.length > 0 ? this.stringifyPathForSearch(path) : null;
+  public load(path: GalleryPath): Observable<ApiResponse> {
+    let query: string = (path && path.length > 0) ? this.stringifyPathForSearch(path) : null;
 
-    this.api.get(Api.Assets, 'galleryResult', { parameters: { query: query, siteName: portal } }).subscribe((data: any) => {
-      this.store.replaceWith(data.list, path);
-    });
+    return this.api.get(Api.Assets, 'galleryResult', { parameters: { query: query, siteName: 'core' } })
+      .do((response: any) => this.store.replaceWith(response.list, path));
 
+    // TO BE REMOVED:
     // this.store.replaceWith(JSON.parse(this.selectFakeResponseFor(path.length)).results, path);
-
-    return Observable.of({ results: [] });
+    // return Observable.of({ results: [] });
   }
 
   public stringifyPathForSearch(path: GalleryPath): string {
@@ -39,6 +38,7 @@ export class GalleryViewService {
     return segment.ids.map((id: number, index: number) => `${id}:"${segment.names[index]}"`).join(',');
   }
 
+  // TO BE REMOVED (along with the methods it calls)
   private selectFakeResponseFor(index: number): string {
     switch (index) {
       case 0: return this.fakeLevelZeroResponse;
