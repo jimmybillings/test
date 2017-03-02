@@ -13,6 +13,7 @@ import { Capabilities } from '../../../../shared/services/capabilities.service';
 import { WzPricingComponent } from '../../../../shared/components/wz-pricing/wz.pricing.component';
 import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../../shared/stores/error.store';
+import { WindowRef } from '../../../../shared/services/window-ref.service';
 
 @Component({
   moduleId: module.id,
@@ -37,7 +38,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     private uiConfig: UiConfig,
     private dialog: MdDialog,
     private assetService: AssetService,
-    private window: Window,
+    private window: WindowRef,
     private userPreference: UserPreferenceService,
     private error: ErrorStore,
     @Inject(DOCUMENT) private document: any) {
@@ -152,7 +153,8 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
       // workaround for cart assets that have asset.timeStart = -1, and asset.timeStart = -2
       if (payload.asset.timeStart < 0) payload.asset.timeStart = undefined;
       if (payload.asset.timeEnd < 0) payload.asset.timeEnd = undefined;
-      Object.assign(dialogRef.componentInstance, { window: this.window, asset: payload.asset, displayContext: 'subClipEditDialog' });
+      Object.assign(dialogRef.componentInstance,
+        { window: this.window.nativeWindow, asset: payload.asset, displayContext: 'subClipEditDialog' });
       this.document.body.classList.add('subclipping-edit-open');
       dialogRef.componentInstance.dialog = dialogRef;
       dialogRef.componentInstance.onSubclip.subscribe((data: any) => {

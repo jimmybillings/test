@@ -88,20 +88,20 @@ export function main() {
             loggedIn = true;
 
             methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/api/identities/v1/end/point'));
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point'));
 
             methodUnderTest.call(serviceUnderTest, Api.Assets, 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/api/assets/v1/end/point'));
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/assets-api/v1/end/point'));
 
             methodUnderTest.call(serviceUnderTest, Api.Orders, 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/api/orders/v1/end/point'));
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/orders-api/v1/end/point'));
           });
 
           it('is unusable when an undefined backend API is specified', () => {
             loggedIn = true;
 
             methodUnderTest.call(serviceUnderTest, (10836 as Api), 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/api/?/v?/end/point'));
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/?-api/v?/end/point'));
           });
 
           describe('when logged in', () => {
@@ -109,12 +109,12 @@ export function main() {
 
             it('is correct with no options', () => {
               methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-                .subscribe(() => expect(connection.request.url).toEqual('BASE/api/identities/v1/end/point'));
+                .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point'));
             });
 
             it('is correct with parameters', () => {
               methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd' } })
-                .subscribe(() => expect(connection.request.url).toEqual('BASE/api/identities/v1/end/point?a=b&c=d'));
+                .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d'));
             });
           });
 
@@ -123,12 +123,12 @@ export function main() {
 
             it('is correct with no options', () => {
               methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-                .subscribe(() => expect(connection.request.url).toEqual('BASE/api/identities/v1/end/point?siteName=PORTAL'));
+                .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?siteName=PORTAL'));
             });
 
             it('is correct with parameters', () => {
               methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd' } })
-                .subscribe(() => expect(connection.request.url).toEqual('BASE/api/identities/v1/end/point?a=b&c=d&siteName=PORTAL'));
+                .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d&siteName=PORTAL'));
             });
           });
         });

@@ -72,8 +72,10 @@ export function main() {
           .and.callFake((a: any, b: any, c: Function) => { c(); })
       };
       mockWindow = {
-        location: { href: null },
-        innerWidth: 500
+        nativeWindow: {
+          location: { href: null },
+          innerWidth: 500
+        }
       };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
@@ -88,7 +90,7 @@ export function main() {
 
     describe('onresize()', () => {
       it('Should set the screen size variable when screen size change', () => {
-        mockWindow.onresize();
+        mockWindow.nativeWindow.onresize();
         expect(componentUnderTest.screenWidth).toBe(500);
       });
     });
@@ -194,7 +196,7 @@ export function main() {
 
       it('Should set the browser url to be the url in the response from the downloadComp method', () => {
         componentUnderTest.downloadComp({ assetId: 3, compType: 'small' });
-        expect(mockWindow.location.href).toEqual('mockUrl');
+        expect(mockWindow.nativeWindow.location.href).toEqual('mockUrl');
       });
 
       it('Should create a notification if the response doesnt include a url', () => {

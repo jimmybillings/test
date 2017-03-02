@@ -43,10 +43,6 @@ declare var portal: string;
   providers: [{
     provide: APP_BASE_HREF,
     useValue: '<%= APP_BASE %>',
-  },
-  {
-    provide: Window,
-    useValue: window
   }],
   declarations: [AppComponent, NotFoundComponent],
   bootstrap: [AppComponent],

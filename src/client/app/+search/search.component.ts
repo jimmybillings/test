@@ -14,6 +14,7 @@ import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
 import { ErrorStore } from '../shared/stores/error.store';
+import { WindowRef } from '../shared/services/window-ref.service';
 
 /**
  * Asset search page component - renders search page results
@@ -43,11 +44,11 @@ export class SearchComponent implements OnDestroy {
     private search: SearchService,
     private userPreferences: UserPreferenceService,
     private renderer: Renderer,
-    private window: Window,
+    private window: WindowRef,
     private snackBar: MdSnackBar,
     private translate: TranslateService) {
-    this.screenWidth = this.window.innerWidth;
-    this.window.onresize = () => this.screenWidth = this.window.innerWidth;
+    this.screenWidth = this.window.nativeWindow.innerWidth;
+    this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
   }
 
   ngOnDestroy(): void {
@@ -96,7 +97,7 @@ export class SearchComponent implements OnDestroy {
   public downloadComp(params: any): void {
     this.search.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
-        this.window.location.href = res.url;
+        this.window.nativeWindow.location.href = res.url;
       } else {
         this.error.dispatch({ status: 'COMPS.NO_COMP' });
       }

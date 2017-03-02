@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
 import { MaterialModule } from '@angular/material';
+import { WindowRef } from './services/window-ref.service';
 
 // Shared Wazee Modules
 import { WzPlayerModule } from './modules/wz-player/wz.player.module';
@@ -118,7 +119,8 @@ export class SharedModule {
         WAZEE_RESOLVERS,
         WAZEE_GUARDS,
         WAZEE_SERVICES,
-        WAZEE_STORE_INTERFACES
+        WAZEE_STORE_INTERFACES,
+        WindowRef
       ]
     };
   }

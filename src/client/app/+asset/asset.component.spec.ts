@@ -32,7 +32,7 @@ export function main() {
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
       mockErrorStore = { dispatch: jasmine.createSpy('dispatch') };
       mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
-      mockWindow = { location: { href: {} } };
+      mockWindow = { nativeWindow: { location: { href: {} } } };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
       };
@@ -117,7 +117,7 @@ export function main() {
           mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore,
           mockCart, mockSnackBar, mockTranslate, mockMdDialog);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
-        expect(mockWindow.location.href).toEqual('http://downloadcomp.url');
+        expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
       });
 
     });

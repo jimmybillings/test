@@ -16,6 +16,7 @@ import { TranslateService } from 'ng2-translate';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.component';
 import { ErrorStore } from '../shared/stores/error.store';
+import { WindowRef } from '../shared/services/window-ref.service';
 
 @Component({
   moduleId: module.id,
@@ -38,13 +39,14 @@ export class AssetComponent implements OnInit {
     public uiState: UiState,
     public assetService: AssetService,
     public uiConfig: UiConfig,
-    public window: Window,
+    public window: WindowRef,
     private userPreference: UserPreferenceService,
     private error: ErrorStore,
     private cart: CartService,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
     private dialog: MdDialog) {
+    this.window = this.window;
   }
 
   ngOnInit(): void {
@@ -85,7 +87,7 @@ export class AssetComponent implements OnInit {
   public downloadComp(params: any): void {
     this.assetService.downloadComp(params.assetId, params.compType).subscribe((res) => {
       if (res.url && res.url !== '') {
-        this.window.location.href = res.url;
+        this.window.nativeWindow.location.href = res.url;
       } else {
         this.error.dispatch({ status: 'COMPS.NO_COMP' });
       }

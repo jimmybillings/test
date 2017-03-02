@@ -73,7 +73,7 @@ export class ApiService {
   }
 
   private urlFor(api: Api, endpoint: string) {
-    return `${this.apiConfig.baseUrl()}api/${this.pathSegmentFor(api)}/${this.versionFor(api)}/${endpoint}`;
+    return `${this.apiConfig.baseUrl()}${this.pathSegmentFor(api)}-api/${this.versionFor(api)}/${endpoint}`;
   }
 
   private pathSegmentFor(api: Api): string {

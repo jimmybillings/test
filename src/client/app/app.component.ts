@@ -18,6 +18,7 @@ import { UserPreferenceService } from './shared/services/user-preference.service
 import { Capabilities } from './shared/services/capabilities.service';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from 'ng2-translate';
+import { WindowRef } from './shared/services/window-ref.service';
 
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
@@ -33,10 +34,10 @@ export class AppComponent implements OnInit {
   public state: string = '';
   private bootStrapUserDataSubscription: Subscription;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
-  @HostListener('document:scroll', ['$event.target'])
-  public onScroll(targetElement: any) {
-    this.uiState.showFixedHeader(this.window.pageYOffset);
-  }
+  // @HostListener('document:scroll', ['$event.target'])
+  // public onScroll(targetElement: any) {
+  //   this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
+  // }
 
   constructor(
     public uiConfig: UiConfig,
@@ -52,7 +53,7 @@ export class AppComponent implements OnInit {
     private apiConfig: ApiConfig,
     private userCan: Capabilities,
     private cart: CartService,
-    private window: Window,
+    private window: WindowRef,
     private filter: FilterService,
     private sortDefinition: SortDefinitionsService,
     private snackBar: MdSnackBar,
@@ -96,7 +97,7 @@ export class AppComponent implements OnInit {
         this.uiState.checkRouteForSearchBar(event.url);
         this.uiState.checkForFilters(event.url);
         this.state = event.url;
-        this.window.scrollTo(0, 0);
+        this.window.nativeWindow.scrollTo(0, 0);
       });
   }
 
