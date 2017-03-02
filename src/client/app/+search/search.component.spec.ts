@@ -83,7 +83,7 @@ export function main() {
       mockSnackBar = {
         open: () => { }
       };
-      componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart,
+      componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart,
         mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
         mockUserPreferences, mockRenderer, mockWindow, mockSnackBar, mockTranslate);
     });
@@ -205,7 +205,7 @@ export function main() {
           data: Observable.of([{ asset: 'mockAsset1' }, { asset: 'mockAsset2' }]),
           downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({}))
         };
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter,
+        componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter,
           mockCart, mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext,
           mockUiConfig, mockAssetData, mockUserPreferences, mockRenderer, mockWindow, null, null);
         componentUnderTest.downloadComp({ assetId: 3, compType: 'small' });
@@ -301,7 +301,7 @@ export function main() {
     describe('filterAssets()', () => {
       it('Should reset the page number to page 1', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
+        componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
           mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow, null, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
@@ -310,7 +310,7 @@ export function main() {
 
       it('Should update the search context with the filter ids', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [1, 2, 3], values: [] });
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
+        componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
           mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow, null, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
@@ -319,7 +319,7 @@ export function main() {
 
       it('Should remove the filterIds from the search context', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
+        componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
           mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow, null, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
@@ -328,7 +328,7 @@ export function main() {
 
       it('Should update the search context with the filter values', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart,
+        componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart,
           mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow, null, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
@@ -337,7 +337,7 @@ export function main() {
 
       it('Should remove the filterValues from the search context', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
+        componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
           mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow, null, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
@@ -346,7 +346,7 @@ export function main() {
 
       it('Should call go on search context when it has filtered the assets', () => {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
-        componentUnderTest = new SearchComponent(mockUserCan, mockActiveCollection, mockFilter, mockCart,
+        componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart,
           mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow, null, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });

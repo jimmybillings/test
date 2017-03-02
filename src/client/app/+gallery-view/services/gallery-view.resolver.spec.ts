@@ -7,10 +7,12 @@ export function main() {
     let resolverUnderTest: GalleryViewResolver;
     let mockService: any;
     let mockRoute: any;
+    let mockEmptyRoute: any;
 
     beforeEach(() => {
       mockService = { load: jasmine.createSpy('load').and.returnValue(Observable.of({ some: 'object' })) };
-      mockRoute = { params: { ids: '1~~~2', names: 'Name_1~~~Name_2' } };
+      mockRoute = { params: { path: '[{"names":["Name 1"],"ids":[1]},{"names":["Name 2"],"ids":[2]}]' } };
+      mockEmptyRoute = { params: {} };
 
       resolverUnderTest = new GalleryViewResolver(mockService);
     });
@@ -24,6 +26,12 @@ export function main() {
 
       it('returns the service\'s returned observable', () => {
         resolverUnderTest.resolve(mockRoute).subscribe(returnObject => expect(returnObject).toEqual({ some: 'object' }));
+      });
+
+      it('tells the service to load an empty path if there are no route parameters', () => {
+        resolverUnderTest.resolve(mockEmptyRoute);
+
+        expect(mockService.load).toHaveBeenCalledWith([]);
       });
     });
   });
