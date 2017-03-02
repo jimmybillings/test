@@ -16,7 +16,7 @@ import { TranslateService } from 'ng2-translate';
 import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { UiState } from '../shared/services/ui.state';
-
+import { ActivatedRoute, Router } from '@angular/router';
 /**
  * Asset search page component - renders search page results
  */
@@ -27,9 +27,10 @@ import { UiState } from '../shared/services/ui.state';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class SearchComponent implements OnDestroy {
+export class SearchComponent implements OnDestroy, OnInit {
   public speedviewData: any;
   public screenWidth: number;
+  public path: any;
   @ViewChild(WzSpeedviewComponent) public wzSpeedview: any;
 
   constructor(
@@ -48,9 +49,17 @@ export class SearchComponent implements OnDestroy {
     private renderer: Renderer,
     private window: WindowRef,
     private snackBar: MdSnackBar,
-    private translate: TranslateService) {
+    private translate: TranslateService,
+    private route: ActivatedRoute,
+    private router: Router) {
     this.screenWidth = this.window.nativeWindow.innerWidth;
     this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
+  }
+
+  ngOnInit(): void {
+    if (this.route.snapshot.params['gq']) {
+      this.path = JSON.parse(this.route.snapshot.params['gq']);
+    }
   }
 
   ngOnDestroy(): void {
@@ -163,6 +172,13 @@ export class SearchComponent implements OnDestroy {
         this.filterAssets();
         break;
     }
+  }
+
+  public onClickBreadcrumb(index: number): void {
+    const route: any[] = ['/gallery-view'];
+    let pathSegment: any = this.path.slice(0, index);
+    if (pathSegment && pathSegment.length > 0) route.push({ path: JSON.stringify(pathSegment) });
+    this.router.navigate(route);
   }
 
   private filterAssets(): void {

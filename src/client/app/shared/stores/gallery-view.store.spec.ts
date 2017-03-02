@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs/Rx';
 
-import { addStandardReducerTestsFor } from '../../shared/tests/reducer';
+import { addStandardReducerTestsFor } from '../tests/reducer';
 import { gallery, GalleryViewStore } from './gallery-view.store';
-import { Gallery } from '../gallery-view.interface';
+import { Gallery } from '../interfaces/gallery-view.interface';
 
 export function main() {
   const initialState: Gallery = {

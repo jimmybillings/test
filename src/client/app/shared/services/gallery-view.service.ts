@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
-import { ApiService } from '../../shared/services/api.service';
-import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
-import { GalleryViewStore } from './gallery-view.store';
-import { Gallery, GalleryPath, GalleryPathSegment } from '../gallery-view.interface';
+import { ApiService } from '../services/api.service';
+import { Api, ApiResponse } from '../interfaces/api.interface';
+import { GalleryViewStore } from '../stores/gallery-view.store';
+import { Gallery, GalleryPath, GalleryPathSegment } from '../interfaces/gallery-view.interface';
+
+declare var portal: string;
 
 @Injectable()
 export class GalleryViewService {

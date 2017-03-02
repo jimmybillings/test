@@ -7,6 +7,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
     	<section class="search-header" layout="row" layout-align="center center">
         <header flex-gt-lg="95" flex-lg="95" flex="100">
           <div layout="row" layout-align="space-between end">
+            <wz-gallery-breadcrumb *ngIf="path" [path]="path" (clickBreadcrumb)="onClickBreadcrumb.emit($event)"></wz-gallery-breadcrumb>
             <h2 *ngIf="!hasResults" flex="100" class="md-display-1 alert"> 
               {{ 'SEARCH.NO_RESULTS.PG_HEADING' | translate }}
             </h2>
@@ -42,6 +43,8 @@ export class SearchHeaderComponent {
   @Input() sortDefinitionItems: any;
   @Input() currentSort: any;
   @Input() assetView: string = 'grid';
+  @Input() path: any;
   @Output() onChangeAssetView = new EventEmitter();
   @Output() onSortResults = new EventEmitter();
+  @Output() onClickBreadcrumb = new EventEmitter();
 }

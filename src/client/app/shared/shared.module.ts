@@ -30,7 +30,7 @@ import { CollectionLinkComponent } from '../+collection/components/collection-li
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
 import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soon.component';
-
+import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb/wz.gallery-breadcrumb.component';
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
 import { WAZEE_RESOLVERS, WAZEE_GUARDS, WAZEE_SERVICES, WAZEE_STORE_INTERFACES } from '../imports/wazee';
@@ -53,6 +53,7 @@ import { WAZEE_RESOLVERS, WAZEE_GUARDS, WAZEE_SERVICES, WAZEE_STORE_INTERFACES }
     WzAssetModule
   ],
   declarations: [
+    WzGalleryBreadcrumbComponent,
     WzBreadcrumbComponent,
     WzDropdownComponent,
     WzListComponent,
@@ -73,6 +74,7 @@ import { WAZEE_RESOLVERS, WAZEE_GUARDS, WAZEE_SERVICES, WAZEE_STORE_INTERFACES }
     WzNotificationComponent
   ],
   exports: [
+    WzGalleryBreadcrumbComponent,
     WzBreadcrumbComponent,
     WzDropdownComponent,
     WzListComponent,

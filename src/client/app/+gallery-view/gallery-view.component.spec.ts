@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 
 import { GalleryViewComponent } from './gallery-view.component';
-import { GalleryPathSegment } from './gallery-view.interface';
+import { GalleryPathSegment } from '../shared/interfaces/gallery-view.interface';
 
 export function main() {
   describe('Gallery View Component', () => {
@@ -26,33 +26,6 @@ export function main() {
         componentUnderTest.ngOnInit();
 
         expect(componentUnderTest.data.subscribe(data => expect(data).toEqual({ some: 'data' })));
-      });
-    });
-
-    describe('breadcrumbLabelFor', () => {
-      it('returns empty string for an undefined segment', () => {
-        expect(componentUnderTest.breadcrumbLabelFor(undefined)).toEqual('');
-      });
-
-      it('returns empty string for a null segment', () => {
-        expect(componentUnderTest.breadcrumbLabelFor(null)).toEqual('');
-      });
-
-      it('returns empty string for a segment with undefined names', () => {
-        expect(componentUnderTest.breadcrumbLabelFor({} as GalleryPathSegment)).toEqual('');
-      });
-
-      it('returns empty string for a segment with null names', () => {
-        expect(componentUnderTest.breadcrumbLabelFor({ names: null } as GalleryPathSegment)).toEqual('');
-      });
-
-      it('returns a simple name for a segment with one name', () => {
-        expect(componentUnderTest.breadcrumbLabelFor({ names: ['Name 1'] } as GalleryPathSegment)).toEqual('Name 1');
-      });
-
-      it('returns a compound name for a segment with two names', () => {
-        expect(componentUnderTest.breadcrumbLabelFor({ names: ['Name 1', 'Name 2'] } as GalleryPathSegment))
-          .toEqual('Name 1 : Name 2');
       });
     });
 
@@ -83,7 +56,11 @@ export function main() {
       it('should do a search if the method is search', () => {
         componentUnderTest.onNavigate({ pathSegment: { names: ['Name 3'], ids: [3] }, method: 'search' });
 
-        expect(mockSearch.new).toHaveBeenCalledWith({ gq: '3:"Name 3"', n: 100, i: 1 });
+        expect(mockSearch.new).toHaveBeenCalledWith({
+          gq: '[{"names":["Name 1"],"ids":[1]},{"names":["Name 2"],"ids":[2]},{"names":["Name 3"],"ids":[3]}]',
+          n: 100,
+          i: 1
+        });
       });
     });
 
