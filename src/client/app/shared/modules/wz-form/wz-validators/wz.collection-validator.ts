@@ -197,7 +197,7 @@ export interface ValidationResult {
 //             resolve(null);
 //           }
 //         });
-//       return resolve;  
+//       return resolve;
 //     });
 //   }
 // }

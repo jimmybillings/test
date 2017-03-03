@@ -19,7 +19,7 @@ import { LineItemsComponent } from './+cart/components/line-items.component';
 import { AssetComponent } from './+cart/components/asset.component';
 import { EditProjectComponent } from './+cart/components/edit-project.component';
 
-// Order Stuff 
+// Order Stuff
 import { OrdersComponent } from './+order/+index/orders.component';
 import { OrderShowComponent } from './+order/+show/order-show.component';
 import { OrderItemListComponent } from './+order/components/order-item-list.component';

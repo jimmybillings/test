@@ -27,7 +27,7 @@ export class WzSpeedviewDirective {
     this.hidePreview.emit();
   }
 
-  // Determines the x and y coordinate that the preview's top left corner should start at 
+  // Determines the x and y coordinate that the preview's top left corner should start at
   private get previewPosition(): Coordinates {
     let x: number = this.determineHorizontalPreviewPlacement;
     let y: number = this.determineVerticalPreviewPlacement;
@@ -61,7 +61,7 @@ export class WzSpeedviewDirective {
     return window.innerWidth - this.viewport.right - previewWidth >= horizontalPadding;
   }
 
-  // Returns true if there is at least 20px above the hovered element 
+  // Returns true if there is at least 20px above the hovered element
   private get roomAbove(): boolean {
     return 0 + this.viewport.top - (previewHeight / 3) >= verticalPadding;
   }

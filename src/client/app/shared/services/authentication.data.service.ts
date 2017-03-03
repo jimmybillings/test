@@ -5,7 +5,7 @@ import { ApiService } from '../../shared/services/api.service';
 import { Api } from '../../shared/interfaces/api.interface';
 
 /**
- * Service that provides access to the api for logging user in and out.  
+ * Service that provides access to the api for logging user in and out.
  */
 @Injectable()
 export class Authentication {

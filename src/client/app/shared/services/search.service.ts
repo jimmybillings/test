@@ -7,7 +7,7 @@ import { SearchStore } from '../stores/search.store';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 import { GalleryViewService } from '../../shared/services/gallery-view.service';
 /**
- * Service that provides access to the search api  
+ * Service that provides access to the search api
  * and returns search results
  */
 @Injectable()

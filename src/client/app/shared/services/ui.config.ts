@@ -16,7 +16,7 @@ export const config: ActionReducer<any> = (state = InitState, action: Action) =>
   }
 };
 /**
- * Service that exposes low level api paths for site configuration information. 
+ * Service that exposes low level api paths for site configuration information.
  * This information is how will customize different portals.
  */
 @Injectable()

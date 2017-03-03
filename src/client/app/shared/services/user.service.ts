@@ -5,7 +5,7 @@ import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
 import { Response } from '@angular/http';
 
 /**
- * Service that provides api access registering new users.  
+ * Service that provides api access registering new users.
  */
 @Injectable()
 export class UserService {

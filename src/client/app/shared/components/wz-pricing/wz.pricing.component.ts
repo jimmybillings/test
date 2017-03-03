@@ -56,7 +56,7 @@ export class WzPricingComponent implements OnInit {
         this.pricingEvent.emit({ type: 'ERROR', payload: 'PRICING.ERROR' });
         return;
       }
-      // The raw options is just an array of strings, we need to map them back to the attributeList 
+      // The raw options is just an array of strings, we need to map them back to the attributeList
       // of the option to get the name, value, multiplier, etc;
       let options: any = rawOptions.map((o: any) => {
         return this.findOption(o, currentAttribute.attributeList);

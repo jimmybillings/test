@@ -153,7 +153,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
     }
 
     private enterKey(event: KeyboardEvent) {
-        // Select the active suggestion  
+        // Select the active suggestion
         if (this.activeSuggestion) {
             this.selectSuggestion(this.activeSuggestion);
         } else {

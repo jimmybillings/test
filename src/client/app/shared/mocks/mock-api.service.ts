@@ -25,7 +25,7 @@ export class MockApiService {
   // Responses:
   // Set these if you care about the contents of a specific response
   // (so you can verify that some other code uses some part of that response).
-  // 
+  //
   // Otherwise, you can just use them as-is to verify that the appropriate
   // response was passed along to some other code.
   //

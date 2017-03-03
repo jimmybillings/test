@@ -15,7 +15,7 @@ export class AssetGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (!this.currentUser.loggedIn() && !route.params['share_key']) {
-      // Let the api dictate based on site-config whether or 
+      // Let the api dictate based on site-config whether or
       // not a logged out user can visit the clip details page.
       return true;
     } else if (this.userCan.viewAssetDetails()) {

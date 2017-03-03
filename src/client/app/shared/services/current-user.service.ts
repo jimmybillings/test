@@ -16,7 +16,7 @@ export const currentUser: ActionReducer<any> = (state = {}, action: Action) => {
 };
 
 /**
- * Model that describes current user, and provides  
+ * Model that describes current user, and provides
  * methods for retrieving user attributes.
  */
 @Injectable()
