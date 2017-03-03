@@ -1,5 +1,5 @@
-<section *ngIf="(data | async).path.length > 0" class="gallery-header" layout="row">
-	<header class="wz-gallery-breadcrumb" flex-lg="90" flex-gt-md="95" flex="100">
+<section *ngIf="(data | async).path.length > 0" class="gallery-header" layout="row" layout-align="center start">
+	<header class="wz-gallery-breadcrumb" flex-gt-lg="95" flex-lg="95" flex="100">
     <wz-gallery-breadcrumb [path]="(data | async).path" (clickBreadcrumb)="onClickBreadcrumb($event)"></wz-gallery-breadcrumb>
   </header>
 </section>
