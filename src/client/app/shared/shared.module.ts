@@ -31,7 +31,7 @@ import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
 import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soon.component';
 
-import { TwoLevelViewComponent } from '../+gallery-view/components/two-level-view.component';
+import { WzGalleryTwoLevelComponent } from './components/wz-gallery-two-level/wz.gallery-two-level.component';
 
 import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb/wz.gallery-breadcrumb.component';
 // Shared pipes
@@ -75,7 +75,7 @@ import { WAZEE_RESOLVERS, WAZEE_GUARDS, WAZEE_SERVICES, WAZEE_STORE_INTERFACES }
     WzPricingComponent,
     WzComingSoonComponent,
     WzNotificationComponent,
-    TwoLevelViewComponent
+    WzGalleryTwoLevelComponent
   ],
   exports: [
     WzGalleryBreadcrumbComponent,
@@ -107,7 +107,7 @@ import { WAZEE_RESOLVERS, WAZEE_GUARDS, WAZEE_SERVICES, WAZEE_STORE_INTERFACES }
     WzComingSoonComponent,
     WzFormModule,
     WzNotificationComponent,
-    TwoLevelViewComponent
+    WzGalleryTwoLevelComponent
   ],
   entryComponents: [
     CollectionLinkComponent,

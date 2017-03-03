@@ -1,11 +1,11 @@
-import { TwoLevelViewComponent } from './two-level-view.component';
+import { WzGalleryTwoLevelComponent } from './wz.gallery-two-level.component';
 
 export function main() {
   describe('Two Level View Component', () => {
-    let componentUnderTest: TwoLevelViewComponent;
+    let componentUnderTest: WzGalleryTwoLevelComponent;
 
     beforeEach(() => {
-      componentUnderTest = new TwoLevelViewComponent();
+      componentUnderTest = new WzGalleryTwoLevelComponent();
       componentUnderTest.navigate.emit = jasmine.createSpy('navigate emitter');
     });
 

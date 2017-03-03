@@ -1,14 +1,13 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-
-import { Gallery, GalleryResult, GalleryNavigationEvent } from '../../shared/interfaces/gallery-view.interface';
+import { Gallery, GalleryResult, GalleryNavigationEvent } from '../../../shared/interfaces/gallery-view.interface';
 
 @Component({
   moduleId: module.id,
   selector: 'two-level-view',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: 'two-level-view.html'
+  templateUrl: 'wz.gallery-two-level.html'
 })
-export class TwoLevelViewComponent {
+export class WzGalleryTwoLevelComponent {
   @Input() public data: Gallery;
   @Output() public navigate: EventEmitter<GalleryNavigationEvent> = new EventEmitter<GalleryNavigationEvent>();
   public activeItemHovered: boolean = false;

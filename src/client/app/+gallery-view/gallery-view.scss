@@ -1,5 +1,5 @@
 @import './components/one-level-view';
-@import './components/two-level-view';
+@import '../shared/components/wz-gallery-two-level/wz.gallery-two-level';
 
 gallery-view-component .gallery-header {
   color: rgba(md-color($md-foreground, text), .5);
