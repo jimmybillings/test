@@ -17,8 +17,10 @@ export interface LineItem {
   id: string;
   asset?: Asset;
   price: number;
+  rightsManaged: boolean;
   transcodeTargets?: Array<string>;
   selectedTranscodeTarget?: string;
+  attributes?: Array<any>;
 }
 
 export interface Asset {
