@@ -23,7 +23,8 @@ export function main() {
 
     const mockLineItem: LineItem = {
       id: '456',
-      price: 0
+      price: 0,
+      rightsManaged: false
     };
 
     let serviceUnderTest: CartService;
@@ -326,7 +327,7 @@ export function main() {
 
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('cart/update/lineItem/456');
-        expect(mockApi.put).toHaveBeenCalledWithBody({ id: '456', price: 0, selectedTranscodeTarget: '1080i' });
+        expect(mockApi.put).toHaveBeenCalledWithBody({ id: '456', price: 0, rightsManaged: false, selectedTranscodeTarget: '1080i' });
       });
 
       it('replaces the cart store with the response', () => {

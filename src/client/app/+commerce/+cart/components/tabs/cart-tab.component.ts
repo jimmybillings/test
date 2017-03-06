@@ -3,6 +3,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Tab } from './tab';
 import { CartService } from '../../../../shared/services/cart.service';
+import { Project, LineItem } from '../../../../shared/interfaces/cart.interface';
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { EditProjectComponent } from '../edit-project.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
@@ -60,6 +61,23 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
 
   public get assetsInCart(): Observable<boolean> {
     return this.cart.map(cart => (cart.itemCount || 0) > 0);
+  }
+
+
+  public get rmAssetsHaveAttributes(): boolean {
+    if (this.cartService.state.itemCount === 0) return true;
+
+    let validAssets: boolean[] = [];
+
+    this.cartService.state.projects.forEach((project: Project) => {
+      if (project.lineItems) {
+        project.lineItems.forEach((lineItem: LineItem) => {
+          validAssets.push(lineItem.rightsManaged ? !!lineItem.attributes : true);
+        });
+      }
+    });
+
+    return validAssets.indexOf(false) === -1;
   }
 
   public onNotification(message: any): void {
