@@ -34,7 +34,7 @@ export function main() {
 
     it('Should set the default language to English', inject([MultilingualService], (service: MultilingualService) => {
       service.store.select('i18n').subscribe((i18n: any) => {
-        expect(i18n.lang).toBe('/crxextapi.dev.wzplatform.com/api/identities/v1/translation/core/en');
+        expect(i18n.lang).toBe('/crxextapi.dev.wzplatform.com/identities-api/v1/translation/core/en');
       });
     }));
 
@@ -42,9 +42,9 @@ export function main() {
       spyOn(service.store, 'dispatch').and.callThrough();
       service.setLanguage('fr');
       expect(service.store.dispatch).toHaveBeenCalledWith(
-        { type: '[Multilingual] LANG_CHANGE', payload: { lang: '/crxextapi.dev.wzplatform.com/api/identities/v1/translation/core/fr' } });
+        { type: '[Multilingual] LANG_CHANGE', payload: { lang: '/crxextapi.dev.wzplatform.com/identities-api/v1/translation/core/fr' } });
       service.store.select('i18n').subscribe((i18n: any) => {
-        expect(i18n.lang).toBe('/crxextapi.dev.wzplatform.com/api/identities/v1/translation/core/fr');
+        expect(i18n.lang).toBe('/crxextapi.dev.wzplatform.com/identities-api/v1/translation/core/fr');
       });
     }));
   });
