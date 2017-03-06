@@ -12,8 +12,8 @@ import { HomeCallToActionComponent } from './components/home-call-to-action.comp
     HomeComponent,
     HomeHeroComponent,
     HomeHighlightsComponent,
-    HomeCallToActionComponent,
-    HomeVendorMarqueeComponent],
+    HomeVendorMarqueeComponent,
+    HomeCallToActionComponent],
   exports: [HomeComponent],
 })
 

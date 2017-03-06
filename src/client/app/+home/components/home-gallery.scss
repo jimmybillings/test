@@ -1,0 +1,17 @@
+header.app-header + div.main-content home-component .gallery-home .hero {
+    padding-top: 0;
+}
+
+home-hero.gallery-home .hero {
+  min-height: rem(40.8);
+  background-position: 0 0, center 60%;
+  margin-top:  rem(-5.0);
+  .logo-wrapper {
+    height: rem(23.0);
+    .logo {
+      background-size: rem(22.0);
+      height:  rem(23.8);
+      opacity: .3;
+    }
+  }
+}
