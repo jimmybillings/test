@@ -10,7 +10,7 @@ declare var fetch: any;
 export class Application {
   private baseUrl: string = baseUrl;
   private portal: string = portal;
-  private endpoint: string = '/identities-api/v1/configuration/site?siteName=';
+  private endpoint: string = 'identities-api/v1/configuration/site?siteName=';
 
   constructor(private productionMode: boolean) { }
 
