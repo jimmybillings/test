@@ -83,49 +83,5 @@ export function main() {
           .toHaveBeenCalledWith({ id: 10836 });
       });
     });
-
-    describe('userCanCheckout()', () => {
-      it('should return false if there is an RM asset without attributes', () => {
-        expect(componentUnderTest.userCanCheckout).toBe(false);
-      });
-
-      it('should return true if all assets are valid', () => {
-        mockCartServiceState = {
-          projects: [{
-            lineItems: [
-              { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
-              { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
-              { id: '3', price: 59, rightsManaged: false }
-            ]
-          }]
-        };
-
-        mockCartService = {
-          data: Observable.of({ someData: 'SOME_VALUE' }),
-          purchaseOnCredit: () => Observable.of({ id: 10836 }),
-          state: mockCartServiceState
-        };
-
-        componentUnderTest =
-          new ReviewTabComponent(mockCartService, mockCartCapabilities, mockRouter, mockOrderStore, mockSnackbar, mockTranslate);
-
-        expect(componentUnderTest.userCanCheckout).toBe(true);
-      });
-
-      it('should return false if the cart is empty', () => {
-        mockCartServiceState = { itemCount: 0 };
-
-        mockCartService = {
-          data: Observable.of({ someData: 'SOME_VALUE' }),
-          purchaseOnCredit: () => Observable.of({ id: 10836 }),
-          state: mockCartServiceState
-        };
-
-        componentUnderTest =
-          new ReviewTabComponent(mockCartService, mockCartCapabilities, mockRouter, mockOrderStore, mockSnackbar, mockTranslate);
-
-        expect(componentUnderTest.userCanCheckout).toBe(false);
-      });
-    });
   });
 };

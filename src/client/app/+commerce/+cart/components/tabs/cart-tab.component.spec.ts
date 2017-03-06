@@ -15,8 +15,19 @@ export function main() {
     let mockUserPreference: any;
     let mockDocument: any;
     let mockWindow: any;
+    let mockState: any;
 
     beforeEach(() => {
+      mockState = {
+        itemCount: 2,
+        projects: [{
+          lineItems: [
+            { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
+            { id: '2', price: 100, rightsManaged: true }
+          ]
+        }]
+      };
+
       mockCartService = {
         data: Observable.of({ someData: 'SOME_VALUE' }),
         addProject: jasmine.createSpy('addProject'),
@@ -25,7 +36,8 @@ export function main() {
         moveLineItemTo: jasmine.createSpy('moveLineItemTo'),
         cloneLineItem: jasmine.createSpy('cloneLineItem'),
         removeLineItem: jasmine.createSpy('removeLineItem'),
-        editLineItem: jasmine.createSpy('editLineItem')
+        editLineItem: jasmine.createSpy('editLineItem'),
+        state: mockState
       };
 
       mockUiConfig = {
@@ -145,6 +157,49 @@ export function main() {
         componentUnderTest.ngOnInit();
 
         componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(true));
+      });
+    });
+
+    describe('rmAssetsHaveAttributes()', () => {
+      it('should return false if there is an RM asset without attributes', () => {
+        expect(componentUnderTest.rmAssetsHaveAttributes).toBe(false);
+      });
+
+      it('should return true if all assets are valid', () => {
+        mockState = {
+          itemCount: 0,
+          projects: [{
+            lineItems: [
+              { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
+              { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
+              { id: '3', price: 59, rightsManaged: false }
+            ]
+          }]
+        };
+
+        mockCartService = {
+          state: mockState
+        };
+
+        componentUnderTest = new CartTabComponent(
+          null, mockCartService, null, null, null, null, null, null, null
+        );
+
+        expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
+      });
+
+      it('should return true if the cart is empty', () => {
+        mockState = { itemCount: 0 };
+
+        mockCartService = {
+          state: mockState
+        };
+
+        componentUnderTest = new CartTabComponent(
+          null, mockCartService, null, null, null, null, null, null, null
+        );
+
+        expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
       });
     });
 
