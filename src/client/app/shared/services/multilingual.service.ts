@@ -48,7 +48,7 @@ export class MultilingualService {
   }
 
   public setLanguage(lang: string) {
-    lang = `${baseUrl.split(':/')[1]}api/identities/v1/translation/${portal}/${lang}`;
+    lang = `${baseUrl.split(':/')[1]}identities-api/v1/translation/${portal}/${lang}`;
     this.store.dispatch({ type: MULTILINGUAL_ACTIONS.LANG_CHANGE, payload: { lang } });
   }
 }

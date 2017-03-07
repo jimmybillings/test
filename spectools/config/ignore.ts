@@ -7,7 +7,10 @@ export const ignoredFilePatterns: string[] = [
   'system-config',
   'env.config',
   'wz-clipboard.directive',
-  'wz-pikaday.directive'
+  'wz-pikaday.directive',
+  'i18n.providers',
+  'main-prod',
+  'operators'
 ];
 
 export const ignoredDirectoryNames: string[] = [

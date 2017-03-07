@@ -15,8 +15,8 @@ function watchAppFiles(path: string, fileChangeCallback: (e: any, done: () => vo
     join(Config.APP_SRC, path)
   ].concat(Config.TEMP_FILES.map((p) => { return '!' + p; }));
 
-  let busyWithCall : boolean = false;
-  let changesWaiting : any = null;
+  let busyWithCall: boolean = false;
+  let changesWaiting: any = null;
   let afterCall = () => {
     busyWithCall = false;
     if (changesWaiting) {
@@ -47,6 +47,7 @@ gulp.task('watch.while_deving', function () {
 
 export = (done: any) =>
   runSequence('build.test',
+    'build.sass',
     'watch.while_deving',
     'server.start',
     'karma.run.with_coverage',

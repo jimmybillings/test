@@ -5,15 +5,16 @@ import { ReviewTabComponent } from './review-tab.component';
 export function main() {
   describe('Review Tab Component', () => {
     let componentUnderTest: ReviewTabComponent;
-    let mockRouter: any, mockOrderStore: any, mockNotification: any, mockSnackbar: any, mockTranslate: any;
+    let mockRouter: any, mockOrderStore: any, mockNotification: any, mockSnackbar: any, mockTranslate: any,
+      mockCartCapabilities: any, mockCartService: any;
 
     beforeEach(() => {
-      let mockCartService: any = {
+      mockCartService = {
         data: Observable.of({ someData: 'SOME_VALUE' }),
         purchaseOnCredit: () => Observable.of({ id: 10836 })
       };
 
-      let mockCartCapabilities: any = {
+      mockCartCapabilities = {
         purchaseOnCredit: () => true
       };
 

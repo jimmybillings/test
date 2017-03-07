@@ -31,6 +31,12 @@ div.line-items {
         margin: 0 rem(1);
         color: md-color($md-primary);
         font-size: rem(2);
+        &.select-usage {
+          &::after {
+            content: "*";
+            color: md-color($md-accent, 600);
+          }
+        }
       }
     }
   }
