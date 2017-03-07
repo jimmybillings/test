@@ -8,7 +8,7 @@ import { FormBuilder } from '@angular/forms';
 // DIRECTIVES
 
 // STORES & PROVIDERS
-import { WAZEE_RESOLVERS, WAZEE_GUARDS, WAZEE_SERVICES, WAZEE_STORE_INTERFACES, WAZEE_STORES } from './wazee';
+import { WAZEE_PROVIDERS, WAZEE_STORES } from './wazee';
 
 // SERVICES NOT IN WAZEE_PROVIDERS
 import { AdminService } from '../+admin/services/admin.service';
@@ -32,14 +32,10 @@ export { CurrentUserService } from '../shared/services/current-user.service';
 export { inject, TestBed } from '@angular/core/testing';
 export { Response, ResponseOptions, RequestMethod, RequestOptions, Headers } from '@angular/http';
 import { provideStore } from '@ngrx/store';
-// const stores = provideStore(WAZEE_STORES);
 
 export const beforeEachProvidersArray: Array<any> = [
   provideStore(WAZEE_STORES),
-  WAZEE_RESOLVERS,
-  WAZEE_GUARDS,
-  WAZEE_SERVICES,
-  WAZEE_STORE_INTERFACES,
+  WAZEE_PROVIDERS,
   WzNotificationService,
   ConfigService,
   AdminService,

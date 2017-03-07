@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { combineReducers } from '@ngrx/store';
 
 // WAZEE SERVICES
 import { ApiConfig } from '../shared/services/api.config';
@@ -25,6 +26,7 @@ import { OrderService } from '../shared/services/order.service';
 import { OrdersService } from '../shared/services/orders.service';
 import { CollectionContextService } from '../shared/services/collection-context.service';
 import { GalleryViewService } from '../shared/services/gallery-view.service';
+import { WindowRef } from '../shared/services/window-ref.service';
 
 // STORE INTERFACES
 import { CartStore } from '../shared/stores/cart.store';
@@ -75,7 +77,7 @@ import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
 import { GalleryViewResolver } from '../+gallery-view/services/gallery-view.resolver';
 import { HomeResolver } from '../+home/services/home.resolver';
 
-export const WAZEE_RESOLVERS = [
+const WAZEE_RESOLVERS = [
   AssetResolver,
   SearchResolver,
   CartResolver,
@@ -85,7 +87,7 @@ export const WAZEE_RESOLVERS = [
   HomeResolver
 ];
 
-export const WAZEE_GUARDS = [
+const WAZEE_GUARDS = [
   AdminAuthGuard,
   AssetGuard,
   CartGuard,
@@ -93,7 +95,7 @@ export const WAZEE_GUARDS = [
   LoggedOutGuard
 ];
 
-export const WAZEE_SERVICES = [
+const WAZEE_SERVICES = [
   ApiConfig,
   CurrentUserService,
   UiConfig,
@@ -118,10 +120,11 @@ export const WAZEE_SERVICES = [
   OrderService,
   OrdersService,
   TranslateService,
-  GalleryViewService
+  GalleryViewService,
+  WindowRef
 ];
 
-export const WAZEE_STORE_INTERFACES = [
+const WAZEE_STORE_INTERFACES = [
   ErrorStore,
   CollectionsStore,
   ActiveCollectionStore,
@@ -131,6 +134,13 @@ export const WAZEE_STORE_INTERFACES = [
   OrdersStore,
   OrderStore,
   GalleryViewStore
+];
+
+export const WAZEE_PROVIDERS: any = [
+  ...WAZEE_RESOLVERS,
+  ...WAZEE_GUARDS,
+  ...WAZEE_SERVICES,
+  ...WAZEE_STORE_INTERFACES
 ];
 
 export const WAZEE_STORES: any = {
@@ -155,10 +165,3 @@ export const WAZEE_STORES: any = {
   features: features,
   gallery: gallery
 };
-
-// WAZEE ROUTES
-import { APP_ROUTES } from '../app.routes';
-
-export const WAZEE_ROUTES: Routes = [
-  ...APP_ROUTES
-];
