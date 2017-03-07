@@ -10,7 +10,7 @@ $heading-color: md-color($foreground, text);
 two-level-view {
   width: 100%;
   background-color: $bkg-color;
-  padding: rem(2.0) 0;
+  padding: rem(3.2) 0 rem(3.0) 0;
   & > section {
     margin: rem(1.0) 0;
     h3 {
