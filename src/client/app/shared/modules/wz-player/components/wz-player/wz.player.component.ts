@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 import { AssetInfo } from './assetInfo';
-import { PlayerMode, PlayerStateChanges } from '../../interfaces/player.interface';
+import { PlayerMode, PlaybackDirection, PlayerStateChanges } from '../../interfaces/player.interface';
 declare var jwplayer: any;
 
 type AssetType = 'unknown' | 'image' | 'video' | 'html5Video';
@@ -62,7 +62,18 @@ export class WzPlayerComponent implements OnDestroy {
   public togglePlayback(): void {
     this.verifyCustomControlsSupport();
 
+    this.setPlaybackRateTo(1);
     this.videoElement.paused ? this.videoElement.play() : this.videoElement.pause();
+  }
+
+  public playAtSpeed(speed: number, direction: PlaybackDirection = 'forward'): void {
+    this.verifyCustomControlsSupport();
+    if (direction === 'reverse') throw new Error('Reverse playback is not yet supported.');
+
+    // this.setPlaybackRateTo((direction === 'reverse' ? -1 : 1) * speed);
+    this.setPlaybackRateTo(speed);
+
+    if (this.videoElement.paused) this.videoElement.play();
   }
 
   public seekTo(timeInSeconds: number): void {
@@ -202,6 +213,7 @@ export class WzPlayerComponent implements OnDestroy {
     this.startVideoEventListenerFor('durationchange', this.onDurationChange);
     this.startVideoEventListenerFor('pause', this.onPause);
     this.startVideoEventListenerFor('playing', this.onPlaying);
+    this.startVideoEventListenerFor('ratechange', this.onRateChange);
     this.startVideoEventListenerFor('timeupdate', this.onTimeUpdate);
     this.startVideoEventListenerFor('seeked', this.onSeeked);
     this.startVideoEventListenerFor('seeking', this.onSeeking);
@@ -232,6 +244,10 @@ export class WzPlayerComponent implements OnDestroy {
 
   private onPlaying(): void {
     this.emitStateUpdateWith({ playing: true });
+  }
+
+  private onRateChange(): void {
+    this.emitStateUpdateWith({ playbackSpeed: this.videoElement.playbackRate });
   }
 
   private onSeeked(): void {
@@ -299,5 +315,9 @@ export class WzPlayerComponent implements OnDestroy {
     this.currentAssetType = 'unknown';
     this.markersPlaybackMode = 'off';
     this.element.nativeElement.innerHTML = '';
+  }
+
+  private setPlaybackRateTo(newRate: number) {
+    if (newRate !== this.videoElement.playbackRate) this.videoElement.playbackRate = newRate;
   }
 }

@@ -54,10 +54,14 @@ export class WzAdvancedPlayerComponent {
 
   public handle(request: PlayerRequest): void {
     const state: PlayerState = this.playerStateService.snapshot;
+    const payload: any = request.payload;
 
     switch (request.type) {
       case PlayerRequestType.ClearMarkers:
         this.player.clearMarkers();
+        break;
+      case PlayerRequestType.PlayAtSpeed:
+        this.player.playAtSpeed(payload.speed, payload.direction);
         break;
       case PlayerRequestType.SaveMarkersAsUndefined:
         this.onSubclip.emit({ in: undefined, out: undefined });
@@ -66,7 +70,7 @@ export class WzAdvancedPlayerComponent {
         this.onSubclip.emit({ in: state.inMarkerFrame.frameNumber, out: state.outMarkerFrame.frameNumber });
         break;
       case PlayerRequestType.SeekToFrame:
-        this.player.seekTo(request.payload.frame.asSeconds());
+        this.player.seekTo(payload.frame.asSeconds());
         break;
       case PlayerRequestType.SeekToInMarker:
         this.player.seekToInMarker();

@@ -6,6 +6,7 @@ export interface PlayerState {
   readonly canSupportCustomControls: boolean;
   readonly playing: boolean;
   readonly playingMarkers: boolean;
+  readonly playbackSpeed: number;
   readonly framesPerSecond: number;
   readonly currentFrame: Frame;
   readonly durationFrame: Frame;
@@ -22,6 +23,7 @@ export interface PlayerStateChanges {
   canSupportCustomControls?: boolean;
   playing?: boolean;
   playingMarkers?: boolean;
+  playbackSpeed?: number;
   framesPerSecond?: number;
   currentFrame?: Frame;
   durationFrame?: Frame;
@@ -42,6 +44,7 @@ export interface PlayerStateChanges {
 
 export enum PlayerRequestType {
   ClearMarkers,
+  PlayAtSpeed,
   SaveMarkers,
   SaveMarkersAsUndefined,
   SeekToFrame,
@@ -59,3 +62,4 @@ export interface PlayerRequest {
 }
 
 export type MarkerType = 'in' | 'out';
+export type PlaybackDirection = 'reverse' | 'forward';

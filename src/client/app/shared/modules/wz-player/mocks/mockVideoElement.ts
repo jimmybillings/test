@@ -2,18 +2,21 @@ interface MockVideoCallbacks {
   [propertyName: string]: Function[];
 }
 
-export type MockVideoEventName = 'durationchange' | 'pause' | 'playing' | 'timeupdate' | 'seeked' | 'seeking';
+export type MockVideoEventName =
+  'durationchange' | 'pause' | 'playing' | 'ratechange' | 'timeupdate' | 'seeked' | 'seeking';
 
 export class MockVideoElement {
   public paused: boolean = false;
 
   private _currentTime: number = 0;
   private _duration: number = 0;
+  private _playbackRate: number = 1;
   private seekingTo: number = null;
   private eventCallbacks: MockVideoCallbacks = {
     durationchange: new Array<Function>(),
     pause: new Array<Function>(),
     playing: new Array<Function>(),
+    ratechange: new Array<Function>(),
     timeupdate: new Array<Function>(),
     seeked: new Array<Function>(),
     seeking: new Array<Function>()
@@ -48,6 +51,15 @@ export class MockVideoElement {
 
   public get currentTime() {
     return this._currentTime;
+  }
+
+  public set playbackRate(newRate: number) {
+    this._playbackRate = newRate;
+    this.trigger('ratechange');
+  }
+
+  public get playbackRate(): number {
+    return this._playbackRate;
   }
 
   public simulateDurationChangeTo(newDuration: number) {

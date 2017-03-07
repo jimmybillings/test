@@ -101,6 +101,12 @@ export function main() {
         });
       });
 
+      describe('playAtSpeed()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.playAtSpeed(2.5)).toThrowError();
+        });
+      });
+
       describe('seekTo()', () => {
         it('is not supported', () => {
           expect(() => componentUnderTest.seekTo(6.867)).toThrowError();
@@ -193,6 +199,12 @@ export function main() {
         describe('togglePlayback()', () => {
           it('is not supported', () => {
             expect(() => componentUnderTest.togglePlayback()).toThrowError();
+          });
+        });
+
+        describe('playAtSpeed()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.playAtSpeed(2.5)).toThrowError();
           });
         });
 
@@ -336,6 +348,12 @@ export function main() {
                 describe('togglePlayback()', () => {
                   it('is not supported', () => {
                     expect(() => componentUnderTest.togglePlayback()).toThrowError();
+                  });
+                });
+
+                describe('playAtSpeed()', () => {
+                  it('is not supported', () => {
+                    expect(() => componentUnderTest.playAtSpeed(2.5)).toThrowError();
                   });
                 });
 
@@ -485,6 +503,77 @@ export function main() {
 
                           expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
                           expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                        });
+                      });
+
+                      describe('when fast forwarding', () => {
+                        beforeEach(() => {
+                          componentUnderTest.playAtSpeed(4);
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        });
+
+                        it('pauses', () => {
+                          componentUnderTest.togglePlayback();
+
+                          expect(mockVideoElement.paused).toBe(true);
+                        });
+
+                        it('reports playbackSpeed: 1 and playing: false', () => {
+                          componentUnderTest.togglePlayback();
+
+                          expect(stateUpdateEmitter.calls.allArgs())
+                            .toEqual([
+                              [{ playbackSpeed: 1 }],
+                              [{ playing: false }]
+                            ]);
+                        });
+                      });
+                    });
+
+                    describe('playAtSpeed()', () => {
+                      it('does not yet support reverse playback', () => {
+                        expect(() => componentUnderTest.playAtSpeed(1, 'reverse')).toThrowError();
+                      });
+
+                      describe('when playback was playing', () => {
+                        it('is still playing', () => {
+                          componentUnderTest.playAtSpeed(4);
+
+                          expect(mockVideoElement.paused).toBe(false);
+                        });
+
+                        it('reports only playbackSpeed: 4 (and not playing: true)', () => {
+                          componentUnderTest.playAtSpeed(4);
+
+                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playbackSpeed: 4 }]);
+                        });
+                      });
+
+                      describe('when playback was paused', () => {
+                        beforeEach(() => {
+                          componentUnderTest.togglePlayback();
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        });
+
+                        it('plays', () => {
+                          componentUnderTest.playAtSpeed(4);
+
+                          expect(mockVideoElement.paused).toBe(false);
+                        });
+
+                        it('reports playbackSpeed: 4 and playing: true', () => {
+                          componentUnderTest.playAtSpeed(4);
+
+                          expect(stateUpdateEmitter.calls.allArgs())
+                            .toEqual([
+                              [{ playbackSpeed: 4 }],
+                              [{ playing: true }]
+                            ]);
                         });
                       });
                     });

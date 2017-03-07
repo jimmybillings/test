@@ -31,6 +31,7 @@ export class PlayerStateService {
       canSupportCustomControls: true,
       playing: false,
       playingMarkers: false,
+      playbackSpeed: 1,
       framesPerSecond: 29.97,
       currentFrame: undefined,
       durationFrame: undefined,
@@ -49,6 +50,7 @@ export class PlayerStateService {
       canSupportCustomControls: this.latestCanSupportCustomControls,
       playing: this.latestPlaying,
       playingMarkers: this.latestPlayingMarkers,
+      playbackSpeed: this.latestPlaybackSpeed,
       framesPerSecond: this.latestFramesPerSecond,
       currentFrame: this.newFrameFrom(this.latestCurrentFrame),
       durationFrame: this.newFrameFrom(this.latestDurationFrame),
@@ -134,6 +136,12 @@ export class PlayerStateService {
 
   private get latestPlayingMarkers(): boolean {
     return this.changesToApply.hasOwnProperty('playingMarkers') ? this.changesToApply.playingMarkers : this.snapshot.playingMarkers;
+  }
+
+  private get latestPlaybackSpeed(): number {
+    return this.changesToApply.hasOwnProperty('playbackSpeed')
+      ? this.changesToApply.playbackSpeed
+      : this.snapshot.playbackSpeed;
   }
 
   private get latestFramesPerSecond(): number {
