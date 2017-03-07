@@ -175,7 +175,7 @@ export class SearchComponent implements OnDestroy, OnInit {
   }
 
   public onClickBreadcrumb(index: number): void {
-    const route: any[] = ['/gallery-view'];
+    const route: any[] = index === 0 ? ['/'] : ['/gallery-view'];
     let pathSegment: any = this.path.slice(0, index);
     if (pathSegment && pathSegment.length > 0) route.push({ path: JSON.stringify(pathSegment) });
     this.router.navigate(route);
