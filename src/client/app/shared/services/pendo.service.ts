@@ -4,7 +4,9 @@ declare var pendo: any;
 
 @Injectable()
 export class PendoService {
+
   public initialize(user: any): void {
+    if (typeof pendo === 'undefined') return;
     let userUniqueIdentifier: string = `${user.siteName}-${user.id}-${user.firstName.toLowerCase()}-${user.lastName.toLowerCase()}`;
     let accountUniqueIdentifier: string = `${user.siteName}-${user.accountId}`;
     pendo.initialize({
