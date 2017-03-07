@@ -130,7 +130,7 @@ export function main() {
         componentUnderTest.onClick();
 
         expect(componentUnderTest.request.emit)
-          .toHaveBeenCalledWith({ type: PlayerRequestType.PlayAtSpeed, payload: { speed: 4, direction: 'forward' } })
+          .toHaveBeenCalledWith({ type: PlayerRequestType.PlayAtSpeed, payload: { speed: 4, direction: 'forward' } });
       });
 
       it('requests -4x playback when direction = reverse', () => {
@@ -139,7 +139,7 @@ export function main() {
         componentUnderTest.onClick();
 
         expect(componentUnderTest.request.emit)
-          .toHaveBeenCalledWith({ type: PlayerRequestType.PlayAtSpeed, payload: { speed: 4, direction: 'reverse' } })
+          .toHaveBeenCalledWith({ type: PlayerRequestType.PlayAtSpeed, payload: { speed: 4, direction: 'reverse' } });
       });
     });
   });
