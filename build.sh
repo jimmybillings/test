@@ -17,13 +17,11 @@
 #
 # For a full list, see http://build.thoughtequity.com:8080/jenkins/env-vars.html/
 # set -x
-sourceHome=/home/video/src
 gitHome=git@github.com:t3mediacorp
 PATH=/home/video/bin/tools/jenkins:$PATH
 
 baseDir=$( dirname "$0" )
 
-artifactName=wazee-ui
 project=wazee-ui
 
 baseDir=$( dirname "$0" )
@@ -38,13 +36,13 @@ if [ -n "$JENKINS_HOME" ]; then
   export PATH=/home/video/bin/tools/jenkins:$PATH:/home/video/bin
 
   # Setup a tmpdir on a volume with more space
-  export TMPDIR=/home/video/tmp/$artifactName
+  export TMPDIR=/home/video/tmp/$project
 fi
 
 clean_up() {
   # Remove anything in the tmp directory
   if [ -n "$JENKINS_HOME" ]; then
-    rm -rf /home/video/tmp/$artifactName
+    rm -rf /home/video/tmp/$project
     rm -rf $TMPDIR/wazee-ui-library
   fi
   restore-maven-version.sh
@@ -61,7 +59,7 @@ build_prod() {
   create-status-html.sh "${baseDir}/dist/prod/build.properties" "${baseDir}/dist/prod/status.html"
   
   # package into an rpm
-  build-rpm.sh --srcDir=dist/prod --dstDir=. --artifactName=${artifactName} --targetDir=/opt/app/apache/htdocs/hosts/${siteName}/docs --version=${buildVersion} || exit 1
+  build-rpm.sh --srcDir=dist/prod --dstDir=. --artifactName=${project} --targetDir=/opt/app/apache/htdocs/hosts/${siteName}/docs --version=${buildVersion} || exit 1
 
   # Only deploy & tag if we're on Jenkins
   if [ -n "$JENKINS_HOME" ]; then
@@ -116,18 +114,18 @@ print-build-environment.sh
 
 
 #checkout/verify/pull wazee-crux-version-control repo
-if [ ! -d "$sourceHome/wazee-crux-version-control/.git" ]; then
+if [ ! -d "$TMPDIR/wazee-crux-version-control/.git" ]; then
 	echo ""
 	echo "Cannot find version repo, cloning repo $gitHome/wazee-crux-version-control.git"
-	rm -rf "$sourceHome/wazee-crux-version-control"
-	[ "$dryrun" ] || git clone "$gitHome/wazee-crux-version-control.git" "$sourceHome/wazee-crux-version-control"
+	rm -rf "$TMPDIR/wazee-crux-version-control"
+	[ "$dryrun" ] || git clone "$gitHome/wazee-crux-version-control.git" "$TMPDIR/wazee-crux-version-control"
 fi
 
-cd "$sourceHome/wazee-crux-version-control"
+cd "$TMPDIR/wazee-crux-version-control"
 git checkout --force develop
 git pull origin develop
 python /home/video/bin/tools/jenkins/incrementVersionFile.py ${project} $(git rev-parse HEAD)
-buildVersion=$(python /home/video/bin/tools/jenkins/currentVersion.py ${sourceHome}/wazee-crux-version-control/${project}.version)
+buildVersion=$(python /home/video/bin/tools/jenkins/currentVersion.py ${TMPDIR}/wazee-crux-version-control/${project}.version)
 cd -
 
 
@@ -140,7 +138,7 @@ build_prod
 # build the UI library
 build_library
 
-cd "$sourceHome/wazee-crux-version-control"
+cd "$TMPDIR/wazee-crux-version-control"
 git pull origin develop
 eval $(python /home/video/bin/tools/jenkins/commitVersionChange.py ${project})
 git push
