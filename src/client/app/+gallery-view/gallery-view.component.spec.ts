@@ -33,7 +33,7 @@ export function main() {
       it('tells the router to navigate home with index 0', () => {
         componentUnderTest.onClickBreadcrumb(0);
 
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/gallery-view']);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
       });
 
       it('tells the router to navigate to the first path segment with index 1', () => {

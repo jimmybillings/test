@@ -39,7 +39,7 @@ export class GalleryViewComponent implements OnInit {
   }
 
   private changeRouteFor(path: GalleryPath): void {
-    const route: any[] = ['/gallery-view'];
+    const route: any[] = path.length > 0 ? ['/gallery-view'] : ['/'];
     if (path && path.length > 0) route.push({ path: JSON.stringify(path) });
 
     this.router.navigate(route);
