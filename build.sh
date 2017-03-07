@@ -141,5 +141,6 @@ build_prod
 build_library
 
 cd "$sourceHome/wazee-crux-version-control"
+git pull origin develop
 eval $(python /home/video/bin/tools/jenkins/commitVersionChange.py ${project})
 git push
