@@ -1,0 +1,46 @@
+step-button {    
+  [md-icon-button] {
+    line-height: rem(3.1);
+    height: rem(3.1);
+    width: rem(3.1);
+    margin: 0 rem(.1);
+    md-icon {
+      color: rgba(md-color($background, background), 0.87);
+      line-height: rem(1.4);
+      height: rem(1.6);
+      width: rem(3.6);
+      margin-left: rem(.3);
+      position: relative;
+      &.material-icons {
+        font-size: rem(1.6);
+      }
+      &::before {
+        content: "5s";
+        font-family: $md-font-family;
+        font-size: rem(1.1);
+        line-height: rem(1.5);
+        font-weight: 100;
+        position: absolute;
+        margin-left: rem(-0.9);
+      }
+      &.one-frame::before {
+        content: "1f";
+      }
+      &.one-second::before {
+        content: "1s";
+      }
+    }
+    &.reverse md-icon {
+      transform: rotate(180deg);
+      margin-left: rem(-1.4);
+      line-height: rem(1.8);
+      &::before {
+        transform: rotate(180deg);
+        line-height: rem(1.6);
+      }
+      &.one-frame::before {
+        margin-left: rem(-0.8);
+      }
+    } 
+  }
+}
