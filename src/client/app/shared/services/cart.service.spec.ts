@@ -37,8 +37,8 @@ export function main() {
 
       mockCartStore = {
         replaceCartWith: jasmine.createSpy('replaceCartWith'),
-        data: Observable.of({ some: 'data' }),
-        state: { some: 'state' }
+        data: Observable.of({ cart: { some: 'data' }, orderInProgress: {} }),
+        state: { cart: { some: 'state' }, orderInProgress: {} }
       };
 
       mockApi = new MockApiService();
@@ -53,14 +53,14 @@ export function main() {
     describe('data getter', () => {
       it('returns the data from the cart store', () => {
         serviceUnderTest.data.subscribe(data => {
-          expect(data).toEqual({ some: 'data' });
+          expect(data).toEqual({ cart: { some: 'data' }, orderInProgress: {} });
         });
       });
     });
 
     describe('state getter', () => {
       it('returns the state from the cart store', () => {
-        expect(serviceUnderTest.state).toEqual({ some: 'state' });
+        expect(serviceUnderTest.state).toEqual({ cart: { some: 'state' }, orderInProgress: {} });
       });
     });
 
@@ -123,7 +123,7 @@ export function main() {
 
     describe('addAssetToProjectInCart()', () => {
       beforeEach(() => {
-        mockCartStore.state = { projects: [mockProjectB] };
+        mockCartStore.state = { cart: { projects: [mockProjectB] } };
       });
 
       it('calls the api service correctly', () => {
