@@ -357,6 +357,10 @@ export function main() {
               describe('after \'ready\' event is triggered', () => {
                 beforeEach(() => mockJwPlayer.trigger('ready'));
 
+                it('uses JW Player\'s controls', () => {
+                  expect(mockJwPlayer.getControls()).toBe(true);
+                });
+
                 it('reports canSupportCustomControls: false', () => {
                   expect(stateUpdateEmitter).toHaveBeenCalledWith({ canSupportCustomControls: false });
                 });
@@ -448,6 +452,10 @@ export function main() {
 
               describe('after \'ready\' event is triggered', () => {
                 beforeEach(() => mockJwPlayer.trigger('ready'));
+
+                it('disables JW Player\'s controls', () => {
+                  expect(mockJwPlayer.getControls()).toBe(false);
+                });
 
                 it('reports canSupportCustomControls: true, framesPerSecond, in/out markers', () => {
                   expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);

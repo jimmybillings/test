@@ -76,8 +76,17 @@ export class MockJwPlayer {
     return this;
   });
 
+  public setControls(active: boolean) {
+    this.controlsActive = active;
+  }
+
+  public getControls(): boolean {
+    return this.controlsActive;
+  }
+
   private state: MockJwState = 'playing';  // Assumes autoplay is configured.
   private provider: Object = null;
+  private controlsActive: boolean = true;
 
   private onCallbacks: MockJwCallbacks = {
     ready: new Array<Function>(),

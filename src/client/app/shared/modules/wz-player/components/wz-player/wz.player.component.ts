@@ -204,6 +204,7 @@ export class WzPlayerComponent implements OnDestroy {
 
         if (jwPlayerProvider && jwPlayerProvider.name === 'html5') {
           this.currentAssetType = 'html5Video';
+          this.jwPlayer.setControls(false);
 
           // Seems like the "correct" Angular-y way to do this would be to
           // find the <video> tag inside 'this.element.nativeElement'.  But
