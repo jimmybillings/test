@@ -2,19 +2,38 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 
-import { Cart } from '../interfaces/cart.interface';
+import { Address } from '../interfaces/user.interface';
+import { Cart, CartState } from '../interfaces/cart.interface';
 
-const emptyCart: Cart = {
-  userId: NaN,
-  total: 0
+const emptyCart: CartState = {
+  cart: {
+    userId: NaN,
+    total: 0
+  },
+  orderInProgress: {
+    address: {
+      type: '',
+      name: '',
+      address: {
+        street: '',
+        state: '',
+        city: '',
+        country: '',
+        zipcode: '',
+        phone: '',
+        suburb: ''
+      }
+    }
+  }
 };
 
-export const cart: ActionReducer<any> = (state: Cart = emptyCart, action: Action) => {
+export const cart: ActionReducer<any> = (state: any = emptyCart, action: Action) => {
   switch (action.type) {
     case 'REPLACE_CART':
       // payload = the whole cart
-      return Object.assign({}, action.payload);
-
+      return Object.assign({}, state, { cart: action.payload });
+    case 'REPLACE_ORDER_IN_PROGRESS':
+      return Object.assign({}, state, { orderInProgress: { address: action.payload } });
     default:
       return state;
   }
@@ -28,8 +47,12 @@ export class CartStore {
     return this.store.select('cart');
   }
 
-  public replaceWith(cart: any): void {
+  public replaceCartWith(cart: any): void {
     this.store.dispatch({ type: 'REPLACE_CART', payload: cart });
+  }
+
+  public replaceOrderInProgressAddress(address: any): void {
+    this.store.dispatch({ type: 'REPLACE_ORDER_IN_PROGRESS', payload: address });
   }
 
   public get state(): any {

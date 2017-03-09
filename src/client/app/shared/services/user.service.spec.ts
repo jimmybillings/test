@@ -10,7 +10,7 @@ export function main() {
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApi = new MockApiService();
-      serviceUnderTest = new UserService(mockApi.injector);
+      serviceUnderTest = new UserService(mockApi.injector, null);
     });
 
     describe('get()', () => {
@@ -61,7 +61,7 @@ export function main() {
         jasmine.addMatchers(mockApiMatchers);
         mockApi = new MockApiService();
         mockApi.getResponse = [[{ id: 1, activeVersionId: 'abcd1234', name: 'TOS' }], { text: () => { return 'text'; } }];
-        serviceUnderTest = new UserService(mockApi.injector);
+        serviceUnderTest = new UserService(mockApi.injector, null);
       });
       it('hits the API correctly', () => {
         serviceUnderTest.downloadActiveTosDocument();

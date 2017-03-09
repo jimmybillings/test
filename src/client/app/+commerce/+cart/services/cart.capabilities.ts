@@ -27,6 +27,10 @@ export class CartCapabilities {
     return this.haveCart() && this.currentUser.hasPurchaseOnCredit();
   }
 
+  public editAccountBillingAddress(): boolean {
+    return this.userHas('EditAccounts');
+  }
+
   public userHas(permission: string): boolean {
     return this.currentUser.hasPermission(permission);
   }

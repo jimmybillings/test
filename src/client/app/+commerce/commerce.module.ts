@@ -18,6 +18,7 @@ import { ProjectsComponent } from './+cart/components/projects.component';
 import { LineItemsComponent } from './+cart/components/line-items.component';
 import { AssetComponent } from './+cart/components/asset.component';
 import { EditProjectComponent } from './+cart/components/edit-project.component';
+import { AddressFormComponent } from './+cart/components/address-form.component';
 
 // Order Stuff
 import { OrdersComponent } from './+order/+index/orders.component';
@@ -40,11 +41,12 @@ import { OrderItemListComponent } from './+order/components/order-item-list.comp
     OrderShowComponent,
     OrdersComponent,
     OrderItemListComponent,
-    EditProjectComponent
+    EditProjectComponent,
+    AddressFormComponent
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
   providers: [CartCapabilities],
-  entryComponents: [EditProjectComponent]
+  entryComponents: [EditProjectComponent, AddressFormComponent]
 })
 
 export class CommerceModule { }

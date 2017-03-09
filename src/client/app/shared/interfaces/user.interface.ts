@@ -36,5 +36,23 @@ export interface User {
   accessibleCollections?: number[];
   focusedCollection?: number;
   root?: boolean;
+  mailingAddress?: Address;
   [index: string]: any;
+}
+
+export interface Address {
+  street: string;
+  state: string;
+  city: string;
+  country: string;
+  zipcode: string;
+  phone: string;
+  suburb: string;
+  [index: string]: any;
+}
+
+export interface ViewAddress {
+  type: string;
+  name: string;
+  address: Address;
 }
