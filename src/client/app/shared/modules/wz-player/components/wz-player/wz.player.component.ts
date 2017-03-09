@@ -311,7 +311,7 @@ export class WzPlayerComponent implements OnDestroy {
   }
 
   private get currentVolume(): number {
-    // The <video> element reports "muted" and "volume" (0 to 1.0) values separately.
+    // The <video> element separately tracks values for "muted" (true/false) and "volume" (0 to 1.0).
     // To make things simpler for our event consumers, combine these into a single value from 0 to 100.
     return this.videoElement.muted ? 0 : Math.round(this.videoElement.volume * 100);
   }
