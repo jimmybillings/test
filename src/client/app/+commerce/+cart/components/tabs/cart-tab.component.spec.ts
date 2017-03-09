@@ -19,15 +19,13 @@ export function main() {
 
     beforeEach(() => {
       mockState = {
-        cart: {
-          itemCount: 2,
-          projects: [{
-            lineItems: [
-              { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
-              { id: '2', price: 100, rightsManaged: true }
-            ]
-          }]
-        }
+        itemCount: 2,
+        projects: [{
+          lineItems: [
+            { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+            { id: '2', price: 100, rightsManaged: 'Rights Managed' }
+          ]
+        }]
       };
 
       mockCartService = {
@@ -169,16 +167,14 @@ export function main() {
 
       it('should return true if all assets are valid', () => {
         mockState = {
-          cart: {
-            itemCount: 0,
-            projects: [{
-              lineItems: [
-                { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
-                { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
-                { id: '3', price: 59, rightsManaged: false }
-              ]
-            }]
-          }
+          itemCount: 0,
+          projects: [{
+            lineItems: [
+              { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+              { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+              { id: '3', price: 59, rightsManaged: 'Royalty Free' }
+            ]
+          }]
         };
 
         mockCartService = {

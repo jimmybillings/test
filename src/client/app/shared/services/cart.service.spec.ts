@@ -24,7 +24,7 @@ export function main() {
     const mockLineItem: LineItem = {
       id: '456',
       price: 0,
-      rightsManaged: false
+      rightsManaged: 'Rights Managed'
     };
 
     let serviceUnderTest: CartService;

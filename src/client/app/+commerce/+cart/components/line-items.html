@@ -14,7 +14,7 @@
 					<div layout="row" layout-align="center center">
 						<button md-icon-button (click)="clone(lineItem);" title="copy line item"><md-icon>content_copy</md-icon></button>
 						<button md-icon-button (click)="remove(lineItem)" title="delete line item"><md-icon>clear</md-icon></button>
-						<button *ngIf="lineItem.rightsManaged" md-icon-button (click)="showPricingDialog(lineItem)" title="usage pricing"><md-icon>attach_money</md-icon></button>
+						<button *ngIf="lineItem.rightsManaged === 'Rights Managed'" md-icon-button (click)="showPricingDialog(lineItem)" title="usage pricing"><md-icon>attach_money</md-icon></button>
 						<button *ngIf="this.otherProjects.length > 1" md-icon-button [md-menu-trigger-for]="lineItemOptionsMenu" (click)="selectLineItem(lineItem)"><md-icon>more_vert</md-icon></button>
 						<button *ngIf="userCan.createSubclips(lineItem)"md-icon-button title="Edit asset" (click)="editMarkers(lineItem);">
               <md-icon>mode_edit</md-icon>
@@ -22,7 +22,7 @@
 						<button md-button *ngIf="this.otherProjects.length === 1" (click)="moveTo(otherProjects[0], lineItem)">
 							{{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProjects[0].name} | slice:0:26 }}
 						</button>
-						<p class="price" [ngClass]="{'select-usage': lineItem.rightsManaged && !lineItem.attributes}"><strong>{{ lineItem.price | currency:'USD':true:'1.2-2' }}</strong></p>
+						<p class="price" [ngClass]="{'select-usage': lineItem.rightsManaged === 'Rights Managed' && !lineItem.attributes}"><strong>{{ lineItem.price | currency:'USD':true:'1.2-2' }}</strong></p>
 					</div>
 				</div>
 			</div>
