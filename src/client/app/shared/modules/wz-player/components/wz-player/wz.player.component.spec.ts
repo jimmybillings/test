@@ -518,6 +518,40 @@ export function main() {
                       });
                     });
 
+                    describe('when display is clicked', () => {
+                      describe('when playback was playing', () => {
+                        it('pauses', () => {
+                          mockJwPlayer.simulateDisplayClick();
+
+                          expect(mockVideoElement.paused).toBe(true);
+                        });
+
+                        it('reports playing: false', () => {
+                          mockJwPlayer.simulateDisplayClick();
+
+                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
+                        });
+                      });
+
+                      describe('when playback was paused', () => {
+                        beforeEach(() => componentUnderTest.togglePlayback());
+
+                        it('plays', () => {
+                          mockJwPlayer.simulateDisplayClick();
+
+                          expect(mockVideoElement.paused).toBe(false);
+                        });
+
+                        it('reports playing: true', () => {
+                          mockJwPlayer.simulateDisplayClick();
+
+                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                        });
+                      });
+                    });
+
                     describe('togglePlayback()', () => {
                       describe('when playback was playing', () => {
                         it('pauses', () => {

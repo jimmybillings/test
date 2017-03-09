@@ -4,6 +4,13 @@ $md-icon-button-height: $md-icon-button-width;
 wz-advanced-player {
   color: white;
   .jwplayer:focus, video:focus {outline:0;}
+
+  .jwplayer {
+    .jw-media {
+      cursor: pointer;
+    }
+  }
+
   .tool-bar {
     background-color: lighten(md-color($foreground, base), 21%);
     border-top: 1px solid lighten(md-color($foreground, base), 27%);
