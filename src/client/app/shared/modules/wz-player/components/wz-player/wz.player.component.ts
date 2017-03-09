@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 import { AssetInfo } from './assetInfo';
-import { PlayerMode, PlayerStateChanges } from '../../interfaces/player.interface';
+import { PlayerMode, PlaybackDirection, PlayerStateChanges } from '../../interfaces/player.interface';
 declare var jwplayer: any;
 
 type AssetType = 'unknown' | 'image' | 'video' | 'html5Video';
@@ -62,7 +62,18 @@ export class WzPlayerComponent implements OnDestroy {
   public togglePlayback(): void {
     this.verifyCustomControlsSupport();
 
+    this.setPlaybackRateTo(1);
     this.videoElement.paused ? this.videoElement.play() : this.videoElement.pause();
+  }
+
+  public playAtSpeed(speed: number, direction: PlaybackDirection = 'forward'): void {
+    this.verifyCustomControlsSupport();
+    if (direction === 'reverse') throw new Error('Reverse playback is not yet supported.');
+
+    // this.setPlaybackRateTo((direction === 'reverse' ? -1 : 1) * speed);
+    this.setPlaybackRateTo(speed);
+
+    if (this.videoElement.paused) this.videoElement.play();
   }
 
   public seekTo(timeInSeconds: number): void {
@@ -149,6 +160,26 @@ export class WzPlayerComponent implements OnDestroy {
     }
   }
 
+  public toggleMute(): void {
+    this.verifyCustomControlsSupport();
+
+    this.videoElement.muted = !this.videoElement.muted;
+  }
+
+  public setVolumeTo(newVolume: number): void {
+    this.verifyCustomControlsSupport();
+
+    if (this.videoElement.muted) {
+      // We don't want to report any changes until we're all done.
+      this.stopVideoEventListenerFor('volumechange');
+      this.videoElement.muted = false;
+      this.startVideoEventListenerFor('volumechange', this.onVolumeChange);
+    }
+
+    // newVolume is in the range 0 to 100.  The <video> element needs 0 to 1.
+    this.videoElement.volume = newVolume / 100;
+  }
+
   private verifyCustomControlsSupport(): void {
     if (this.mode === 'basic') throw new Error('Basic mode does not support custom controls.');
     if (this.currentAssetType !== 'html5Video') throw new Error('Current asset does not support custom controls.');
@@ -186,7 +217,8 @@ export class WzPlayerComponent implements OnDestroy {
             canSupportCustomControls: true,
             framesPerSecond: this.assetInfo.framesPerSecond,
             inMarker: this.inMarker,
-            outMarker: this.outMarker
+            outMarker: this.outMarker,
+            volume: this.currentVolume
           });
 
           if (!autostartInAdvancedMode) this.toggleMarkersPlayback();
@@ -202,9 +234,11 @@ export class WzPlayerComponent implements OnDestroy {
     this.startVideoEventListenerFor('durationchange', this.onDurationChange);
     this.startVideoEventListenerFor('pause', this.onPause);
     this.startVideoEventListenerFor('playing', this.onPlaying);
+    this.startVideoEventListenerFor('ratechange', this.onRateChange);
     this.startVideoEventListenerFor('timeupdate', this.onTimeUpdate);
     this.startVideoEventListenerFor('seeked', this.onSeeked);
     this.startVideoEventListenerFor('seeking', this.onSeeking);
+    this.startVideoEventListenerFor('volumechange', this.onVolumeChange);
   }
 
   private startVideoEventListenerFor(eventName: string, callback: Function): void {
@@ -216,10 +250,14 @@ export class WzPlayerComponent implements OnDestroy {
 
   private stopVideoEventListeners(): void {
     for (const eventName in this.videoElementListenerRemovers) {
-      this.videoElementListenerRemovers[eventName]();
+      this.stopVideoEventListenerFor(eventName);
     }
 
     this.videoElementListenerRemovers = {};
+  }
+
+  private stopVideoEventListenerFor(eventName: string) {
+    this.videoElementListenerRemovers[eventName]();
   }
 
   private onDurationChange(): void {
@@ -232,6 +270,10 @@ export class WzPlayerComponent implements OnDestroy {
 
   private onPlaying(): void {
     this.emitStateUpdateWith({ playing: true });
+  }
+
+  private onRateChange(): void {
+    this.emitStateUpdateWith({ playbackSpeed: this.videoElement.playbackRate });
   }
 
   private onSeeked(): void {
@@ -262,6 +304,16 @@ export class WzPlayerComponent implements OnDestroy {
 
       if (currentTime > this.outMarker) this.seekTo(this.outMarker);
     }
+  }
+
+  private onVolumeChange(): void {
+    this.emitStateUpdateWith({ volume: this.currentVolume });
+  }
+
+  private get currentVolume(): number {
+    // The <video> element reports "muted" and "volume" (0 to 1.0) values separately.
+    // To make things simpler for our event consumers, combine these into a single value from 0 to 100.
+    return this.videoElement.muted ? 0 : Math.round(this.videoElement.volume * 100);
   }
 
   private emitStateUpdateWith(changes: PlayerStateChanges): void {
@@ -299,5 +351,9 @@ export class WzPlayerComponent implements OnDestroy {
     this.currentAssetType = 'unknown';
     this.markersPlaybackMode = 'off';
     this.element.nativeElement.innerHTML = '';
+  }
+
+  private setPlaybackRateTo(newRate: number) {
+    if (newRate !== this.videoElement.playbackRate) this.videoElement.playbackRate = newRate;
   }
 }

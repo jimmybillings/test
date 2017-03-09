@@ -6,22 +6,12 @@ export function main() {
   describe('Review Tab Component', () => {
     let componentUnderTest: ReviewTabComponent;
     let mockRouter: any, mockOrderStore: any, mockNotification: any, mockSnackbar: any, mockTranslate: any,
-      mockCartCapabilities: any, mockCartService: any, mockCartServiceState: any;
+      mockCartCapabilities: any, mockCartService: any;
 
     beforeEach(() => {
-      mockCartServiceState = {
-        projects: [{
-          lineItems: [
-            { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
-            { id: '2', price: 100, rightsManaged: true }
-          ]
-        }]
-      };
-
       mockCartService = {
         data: Observable.of({ cart: { someData: 'SOME_VALUE' } }),
-        purchaseOnCredit: () => Observable.of({ id: 10836 }),
-        state: mockCartServiceState
+        purchaseOnCredit: () => Observable.of({ id: 10836 })
       };
 
       mockCartCapabilities = {

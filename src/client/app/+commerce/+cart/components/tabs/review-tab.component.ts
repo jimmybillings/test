@@ -31,12 +31,6 @@ export class ReviewTabComponent extends Tab implements OnInit {
   public ngOnInit(): void {
     this.cart = this.cartService.data.map((data: any) => data.cart);
     this.canPurchaseOnCredit = this.userCan.purchaseOnCredit();
-
-    // TODO: Due to recent Angular changes, the last line of createForm() fails.
-    // So we are commenting this out so that it can be refactored into more Angular-like code.
-    // See Jira issue CRUX-1322.
-    //
-    // this.addPayByCardForm();
   }
 
   public purchaseOnCredit(): void {
@@ -46,44 +40,6 @@ export class ReviewTabComponent extends Tab implements OnInit {
         this.showSnackbar('NOTIFICATION.ORDER_PLACED');
       });
     });
-  }
-
-  public addPayByCardForm(): void {
-    this.cart.subscribe(currentCart => {
-      this.createForm(currentCart);
-    });
-  }
-
-  public createForm(currentCart: any): void {
-    let desc = currentCart.itemCount + ' item';
-    if (currentCart.itemCount > 1) {
-      desc += 's';
-    }
-    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser) {
-      let postUrl = baseUrl + 'api/orders/v1/cart/stripe/payment?redirect=true&api_key=' + localStorage.getItem('token');
-      let f = document.createElement('form');
-      f.setAttribute('action', postUrl);
-      f.setAttribute('method', 'POST');
-      f.setAttribute('id', 'stripeForm');
-      f.setAttribute('style', 'padding-left: 20px');
-      let s = document.createElement('script');
-      s.src = 'https://checkout.stripe.com/checkout.js';
-      s.setAttribute('class', 'stripe-button');
-      s.setAttribute('data-key', currentCart.stripePublicKey);
-      s.setAttribute('data-amount', '' + (currentCart.total * 100));
-      s.setAttribute('data-name', 'Pay With Credit Card');
-      s.setAttribute('data-description', desc);
-      s.setAttribute('data-image', 'assets/img/logo/logo-c-alt.png');
-      s.setAttribute('data-allow-remember-me', 'false');
-      s.setAttribute('data-email', currentUser.emailAddress);
-      s.setAttribute('data-zip-code', 'true');
-      s.setAttribute('data-locale', 'auto');
-      f.appendChild(s);
-
-      // This is the line that fails, with this error: "Cannot read property 'appendChild' of null"
-      document.getElementById('paymentArea_').appendChild(f);
-    }
   }
 
   private showSnackbar(message: any): void {

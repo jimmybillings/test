@@ -10,7 +10,7 @@ $heading-color: md-color($foreground, text);
 two-level-view {
   width: 100%;
   background-color: $bkg-color;
-  padding: rem(2.0) 0;
+  padding: rem(3.2) 0 rem(3.0) 0;
   & > section {
     margin: rem(1.0) 0;
     h3 {
@@ -234,18 +234,18 @@ two-level-view .carousel .carousel-content-6 .carousel-item {
         .item-label {
           position: absolute;
           width: calc(100% - 20px);
-          bottom: 26%;
+          bottom: 24%;
           text-align: center;
           text-transform: uppercase;
           font-weight: 500;
-          font-size: rem(3.4);
+          font-size: rem(3.0);
           line-height: 1;
           white-space: normal;
           text-shadow: md-color($md-grey, 900, .66) 0 1px 4px;
           z-index: 2;
           &.promotional {
             font-weight: 400;
-            font-size: rem(2.8);
+            font-size: rem(2.7);
           }
         }
       }

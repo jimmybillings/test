@@ -101,6 +101,12 @@ export function main() {
         });
       });
 
+      describe('playAtSpeed()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.playAtSpeed(2.5)).toThrowError();
+        });
+      });
+
       describe('seekTo()', () => {
         it('is not supported', () => {
           expect(() => componentUnderTest.seekTo(6.867)).toThrowError();
@@ -140,6 +146,18 @@ export function main() {
       describe('toggleMarkersPlayback()', () => {
         it('is not supported', () => {
           expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
+        });
+      });
+
+      describe('toggleMute()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.toggleMute()).toThrowError();
+        });
+      });
+
+      describe('setVolumeTo()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.setVolumeTo(11)).toThrowError();
         });
       });
     });
@@ -196,6 +214,12 @@ export function main() {
           });
         });
 
+        describe('playAtSpeed()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.playAtSpeed(2.5)).toThrowError();
+          });
+        });
+
         describe('seekTo()', () => {
           it('is not supported', () => {
             expect(() => componentUnderTest.seekTo(6.867)).toThrowError();
@@ -235,6 +259,18 @@ export function main() {
         describe('toggleMarkersPlayback()', () => {
           it('is not supported', () => {
             expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
+          });
+        });
+
+        describe('toggleMute()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.toggleMute()).toThrowError();
+          });
+        });
+
+        describe('setVolumeTo()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.setVolumeTo(11)).toThrowError();
           });
         });
       });
@@ -339,6 +375,12 @@ export function main() {
                   });
                 });
 
+                describe('playAtSpeed()', () => {
+                  it('is not supported', () => {
+                    expect(() => componentUnderTest.playAtSpeed(2.5)).toThrowError();
+                  });
+                });
+
                 describe('seekTo()', () => {
                   it('is not supported', () => {
                     expect(() => componentUnderTest.seekTo(6.867)).toThrowError();
@@ -380,6 +422,18 @@ export function main() {
                     expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
                   });
                 });
+
+                describe('toggleMute()', () => {
+                  it('is not supported', () => {
+                    expect(() => componentUnderTest.toggleMute()).toThrowError();
+                  });
+                });
+
+                describe('setVolumeTo()', () => {
+                  it('is not supported', () => {
+                    expect(() => componentUnderTest.setVolumeTo(11)).toThrowError();
+                  });
+                });
               });
             });
 
@@ -401,7 +455,8 @@ export function main() {
                     canSupportCustomControls: true,
                     framesPerSecond: 25,
                     inMarker: assetTest.inSeconds,
-                    outMarker: assetTest.outSeconds
+                    outMarker: assetTest.outSeconds,
+                    volume: 100
                   }]]);
                 });
 
@@ -485,6 +540,159 @@ export function main() {
 
                           expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
                           expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                        });
+                      });
+
+                      describe('when fast forwarding', () => {
+                        beforeEach(() => {
+                          componentUnderTest.playAtSpeed(4);
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        });
+
+                        it('pauses', () => {
+                          componentUnderTest.togglePlayback();
+
+                          expect(mockVideoElement.paused).toBe(true);
+                        });
+
+                        it('reports playbackSpeed: 1 and playing: false', () => {
+                          componentUnderTest.togglePlayback();
+
+                          expect(stateUpdateEmitter.calls.allArgs())
+                            .toEqual([
+                              [{ playbackSpeed: 1 }],
+                              [{ playing: false }]
+                            ]);
+                        });
+                      });
+                    });
+
+                    describe('playAtSpeed()', () => {
+                      it('does not yet support reverse playback', () => {
+                        expect(() => componentUnderTest.playAtSpeed(1, 'reverse')).toThrowError();
+                      });
+
+                      describe('when playback was playing', () => {
+                        it('is still playing', () => {
+                          componentUnderTest.playAtSpeed(4);
+
+                          expect(mockVideoElement.paused).toBe(false);
+                        });
+
+                        it('reports only playbackSpeed: 4 (and not playing: true)', () => {
+                          componentUnderTest.playAtSpeed(4);
+
+                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playbackSpeed: 4 }]);
+                        });
+                      });
+
+                      describe('when playback was paused', () => {
+                        beforeEach(() => {
+                          componentUnderTest.togglePlayback();
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        });
+
+                        it('plays', () => {
+                          componentUnderTest.playAtSpeed(4);
+
+                          expect(mockVideoElement.paused).toBe(false);
+                        });
+
+                        it('reports playbackSpeed: 4 and playing: true', () => {
+                          componentUnderTest.playAtSpeed(4);
+
+                          expect(stateUpdateEmitter.calls.allArgs())
+                            .toEqual([
+                              [{ playbackSpeed: 4 }],
+                              [{ playing: true }]
+                            ]);
+                        });
+                      });
+                    });
+
+                    describe('toggleMute()', () => {
+                      describe('when not muted', () => {
+                        it('mutes', () => {
+                          componentUnderTest.toggleMute();
+
+                          expect(mockVideoElement.muted).toBe(true);
+                        });
+
+                        it('reports volume = 0', () => {
+                          componentUnderTest.toggleMute();
+
+                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 0 }]]);
+                        });
+                      });
+
+                      describe('when muted', () => {
+                        beforeEach(() => {
+                          mockVideoElement.volume = 0.57;
+                          componentUnderTest.toggleMute();
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        });
+
+                        it('unmutes', () => {
+                          componentUnderTest.toggleMute();
+
+                          expect(mockVideoElement.muted).toBe(false);
+                        });
+
+                        it('reports previous volume', () => {
+                          componentUnderTest.toggleMute();
+
+                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 57 }]]);
+                        });
+                      });
+                    });
+
+                    describe('setVolumeTo()', () => {
+                      describe('when not muted', () => {
+                        it('updates the volume', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(mockVideoElement.volume).toBe(0.11);
+                        });
+
+                        it('reports the new volume', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 11 }]]);
+                        });
+                      });
+
+                      describe('when muted', () => {
+                        beforeEach(() => {
+                          mockVideoElement.volume = 0.57;
+                          componentUnderTest.toggleMute();
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        });
+
+                        it('unmutes', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(mockVideoElement.muted).toBe(false);
+                        });
+
+                        it('updates the volume', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(mockVideoElement.volume).toBe(0.11);
+                        });
+
+                        it('reports the new volume', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 11 }]]);
                         });
                       });
                     });

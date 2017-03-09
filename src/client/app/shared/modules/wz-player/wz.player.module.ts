@@ -9,6 +9,7 @@ import { WzAdvancedPlayerComponent } from './components/wz-advanced-player/wz.ad
 import { PlayerControlbarComponent } from './components/wz-advanced-player/controlbars/player-controlbar.component';
 import { SubclipControlbarComponent } from './components/wz-advanced-player/controlbars/subclip-controlbar.component';
 import { SubclipEditActionsComponent } from './components/wz-advanced-player/controlbars/subclip-edit-actions.component';
+import { FastPlaybackButtonComponent } from './components/wz-advanced-player/controls/fast-playback-button.component';
 import { MarkersClearButtonComponent } from './components/wz-advanced-player/controls/markers-clear-button.component';
 import { MarkersPlaybackButtonComponent } from './components/wz-advanced-player/controls/markers-playback-button.component';
 import { MarkersSaveButtonComponent } from './components/wz-advanced-player/controls/markers-save-button.component';
@@ -19,6 +20,7 @@ import { PlaybackToggleButtonComponent } from './components/wz-advanced-player/c
 import { ScrubberComponent } from './components/wz-advanced-player/controls/scrubber.component';
 import { StepButtonComponent } from './components/wz-advanced-player/controls/step-button.component';
 import { TimeDisplayComponent } from './components/wz-advanced-player/controls/time-display.component';
+import { VolumeControlComponent } from './components/wz-advanced-player/controls/volume-control.component';
 
 @NgModule({
   imports: [
@@ -33,6 +35,7 @@ import { TimeDisplayComponent } from './components/wz-advanced-player/controls/t
     PlayerControlbarComponent,
     SubclipControlbarComponent,
     SubclipEditActionsComponent,
+    FastPlaybackButtonComponent,
     MarkersClearButtonComponent,
     MarkersPlaybackButtonComponent,
     MarkersSaveButtonComponent,
@@ -42,7 +45,8 @@ import { TimeDisplayComponent } from './components/wz-advanced-player/controls/t
     PlaybackToggleButtonComponent,
     ScrubberComponent,
     StepButtonComponent,
-    TimeDisplayComponent
+    TimeDisplayComponent,
+    VolumeControlComponent
   ],
   exports: [
     TimecodePipe,

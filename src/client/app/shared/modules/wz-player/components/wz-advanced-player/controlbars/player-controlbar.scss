@@ -1,0 +1,9 @@
+player-controlbar.tool-bar {
+  position: relative;
+  border-top-width: 0;
+  nav.step-playback {
+    margin-left: rem(.8);
+  }
+}
+@import '../controls/step-button';
+@import '../../controls/volume-control';

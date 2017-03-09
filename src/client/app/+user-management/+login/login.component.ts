@@ -10,9 +10,6 @@ import { Observable } from 'rxjs/Rx';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.component';
 import { FeatureStore } from '../../shared/stores/feature.store';
-/**
- * Login page component - renders login page and handles login form submission
- */
 
 declare var portal: string;
 
@@ -39,6 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private pendo: PendoService,
     private dialog: MdDialog,
     private feature: FeatureStore) {
+
   }
 
   ngOnInit(): void {
@@ -59,18 +57,23 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(user: any): void {
-    this.authentication.create(user).take(1).subscribe((res) => {
-      if (res.documentsRequiringAgreement && res.documentsRequiringAgreement.indexOf('TOS') > -1) {
-        this.showTerms();
-      } else {
-        this.router.navigate(['/']).then(_ => this.uiConfig.load(res.user.siteName).subscribe((_: any) => _));
-      }
+    this.authentication.create(user).subscribe((res) => {
+
       this.currentUser.set(res.user, res.token.token);
+      this.pendo.initialize(res.user);
+
       if (res.siteFeatures) {
         this.feature.setInLocalStorage(res.siteFeatures);
         this.feature.set(res.siteFeatures);
       }
-      if (portal === 'commerce') this.pendo.initialize(res.user);
+
+      if (res.documentsRequiringAgreement && res.documentsRequiringAgreement.indexOf('TOS') > -1) {
+        this.showTerms();
+      } else {
+        this.router.navigate(['/']).then((_: any) => {
+          this.uiConfig.load(res.user.siteName).subscribe((_: any) => _);
+        });
+      }
     });
   }
 
@@ -87,4 +90,5 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.user.agreeUserToTerms();
     this.router.navigate(['/']);
   }
+
 }

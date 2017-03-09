@@ -31,11 +31,13 @@ export class PlayerStateService {
       canSupportCustomControls: true,
       playing: false,
       playingMarkers: false,
+      playbackSpeed: 1,
       framesPerSecond: 29.97,
       currentFrame: undefined,
       durationFrame: undefined,
       inMarkerFrame: undefined,
       outMarkerFrame: undefined,
+      volume: 100,
       changeDetectionEnabler: 0
     };
   }
@@ -49,11 +51,13 @@ export class PlayerStateService {
       canSupportCustomControls: this.latestCanSupportCustomControls,
       playing: this.latestPlaying,
       playingMarkers: this.latestPlayingMarkers,
+      playbackSpeed: this.latestPlaybackSpeed,
       framesPerSecond: this.latestFramesPerSecond,
       currentFrame: this.newFrameFrom(this.latestCurrentFrame),
       durationFrame: this.newFrameFrom(this.latestDurationFrame),
       inMarkerFrame: this.newFrameFrom(this.latestInMarkerFrame),
       outMarkerFrame: this.newFrameFrom(this.latestOutMarkerFrame),
+      volume: this.latestVolume,
       changeDetectionEnabler: this.snapshot.changeDetectionEnabler + 1
     };
   }
@@ -136,6 +140,12 @@ export class PlayerStateService {
     return this.changesToApply.hasOwnProperty('playingMarkers') ? this.changesToApply.playingMarkers : this.snapshot.playingMarkers;
   }
 
+  private get latestPlaybackSpeed(): number {
+    return this.changesToApply.hasOwnProperty('playbackSpeed')
+      ? this.changesToApply.playbackSpeed
+      : this.snapshot.playbackSpeed;
+  }
+
   private get latestFramesPerSecond(): number {
     return this.changesToApply.hasOwnProperty('framesPerSecond') ? this.changesToApply.framesPerSecond : this.snapshot.framesPerSecond;
   }
@@ -154,6 +164,10 @@ export class PlayerStateService {
 
   private get latestOutMarkerFrame(): Frame {
     return this.changesToApply.hasOwnProperty('outMarkerFrame') ? this.changesToApply.outMarkerFrame : this.snapshot.outMarkerFrame;
+  }
+
+  private get latestVolume(): number {
+    return this.changesToApply.hasOwnProperty('volume') ? this.changesToApply.volume : this.snapshot.volume;
   }
 
   private newFrameFrom(input: number | Frame): Frame {

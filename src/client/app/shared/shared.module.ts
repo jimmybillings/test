@@ -6,8 +6,9 @@ import { RouterModule } from '@angular/router';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
 import { MaterialModule } from '@angular/material';
-import { WindowRef } from './services/window-ref.service';
 
+// WAZEE PROVIDERS
+import { WAZEE_PROVIDERS } from '../imports/wazee';
 // Shared Wazee Modules
 import { WzPlayerModule } from './modules/wz-player/wz.player.module';
 import { WzFormModule } from './modules/wz-form/wz-form.module';
@@ -36,7 +37,7 @@ import { WzGalleryTwoLevelComponent } from './components/wz-gallery-two-level/wz
 import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb/wz.gallery-breadcrumb.component';
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
-import { WAZEE_RESOLVERS, WAZEE_GUARDS, WAZEE_SERVICES, WAZEE_STORE_INTERFACES } from '../imports/wazee';
+
 
 @NgModule({
   imports: [
@@ -122,13 +123,7 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [
-        WAZEE_RESOLVERS,
-        WAZEE_GUARDS,
-        WAZEE_SERVICES,
-        WAZEE_STORE_INTERFACES,
-        WindowRef
-      ]
+      providers: WAZEE_PROVIDERS
     };
   }
 }

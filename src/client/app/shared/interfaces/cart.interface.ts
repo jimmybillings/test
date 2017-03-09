@@ -4,6 +4,8 @@ export interface Cart {
   userId: number;
   projects?: Project[];
   total: number;
+  stripePublicKey?: string;
+  itemCount?: number;
 }
 
 export interface Project {

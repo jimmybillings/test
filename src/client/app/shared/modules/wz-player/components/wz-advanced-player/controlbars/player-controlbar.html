@@ -1,13 +1,9 @@
 <section flex="90" layout="row">
   <nav class="time-play" layout="row" layout-align="center center">
     <time-display [playerState]="playerState"></time-display>
-    <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.FAST_REWIND_BTN_TITLE' | translate }}">
-      <md-icon>fast_rewind</md-icon>
-    </button>
     <playback-toggle-button [playerState]="playerState" (request)="forward($event)"></playback-toggle-button>
-    <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.FAST_FORWARD_BTN_TITLE' | translate }}">
-      <md-icon>fast_forward</md-icon>
-    </button>
+    <fast-playback-button [playerState]="playerState" [direction]="'forward'" (request)="forward($event)">
+    </fast-playback-button>
   </nav>
   <nav class="step-playback" flex layout="row" layout-align="center center">
     <step-button [playerState]="playerState" [size]="'-5s'" (request)="forward($event)"></step-button>
@@ -19,7 +15,5 @@
   </nav>
 </section>
 <nav flex="10" layout-align="end stretch">
-  <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.SOUND_BTN_TITLE' | translate }}">
-    <md-icon>volume_up</md-icon>
-  </button>
+  <volume-control [playerState]="playerState" (request)="forward($event)"></volume-control>
 </nav>

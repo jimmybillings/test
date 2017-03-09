@@ -1,8 +1,8 @@
 {
-  "typescript.check.workspaceVersion": false,
+  "typescript.check.tscVersion": false,
   "editor.tabSize": 2,
-  "editor.wrappingColumn": 130,
-  "editor.wordWrap": true,
+  "editor.wordWrapColumn": 130,
+  "editor.wordWrap": "wordWrapColumn",
   "editor.formatOnSave": true,
   "html.format.enable": false,
   "files.insertFinalNewline": true

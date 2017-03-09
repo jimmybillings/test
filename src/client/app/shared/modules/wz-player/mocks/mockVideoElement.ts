@@ -2,21 +2,27 @@ interface MockVideoCallbacks {
   [propertyName: string]: Function[];
 }
 
-export type MockVideoEventName = 'durationchange' | 'pause' | 'playing' | 'timeupdate' | 'seeked' | 'seeking';
+export type MockVideoEventName =
+  'durationchange' | 'pause' | 'playing' | 'ratechange' | 'timeupdate' | 'seeked' | 'seeking' | 'volumechange';
 
 export class MockVideoElement {
   public paused: boolean = false;
-
   private _currentTime: number = 0;
   private _duration: number = 0;
+  private _playbackRate: number = 1;
   private seekingTo: number = null;
+  private _volume: number = 1;
+  private _muted: boolean = false;
+
   private eventCallbacks: MockVideoCallbacks = {
     durationchange: new Array<Function>(),
     pause: new Array<Function>(),
     playing: new Array<Function>(),
+    ratechange: new Array<Function>(),
     timeupdate: new Array<Function>(),
     seeked: new Array<Function>(),
-    seeking: new Array<Function>()
+    seeking: new Array<Function>(),
+    volumechange: new Array<Function>()
   };
 
   constructor(autoplay: boolean) {
@@ -48,6 +54,33 @@ export class MockVideoElement {
 
   public get currentTime() {
     return this._currentTime;
+  }
+
+  public set playbackRate(newRate: number) {
+    this._playbackRate = newRate;
+    this.trigger('ratechange');
+  }
+
+  public get playbackRate(): number {
+    return this._playbackRate;
+  }
+
+  public get volume(): number {
+    return this._volume;
+  }
+
+  public set volume(newVolume: number) {
+    this._volume = newVolume;
+    this.trigger('volumechange');
+  }
+
+  public get muted(): boolean {
+    return this._muted;
+  }
+
+  public set muted(newValue: boolean) {
+    this._muted = newValue;
+    this.trigger('volumechange');
   }
 
   public simulateDurationChangeTo(newDuration: number) {

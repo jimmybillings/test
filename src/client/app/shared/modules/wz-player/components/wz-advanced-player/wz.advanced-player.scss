@@ -11,9 +11,6 @@ wz-advanced-player {
       text-align: right;
     }
   }
-  player-controlbar.tool-bar {
-    border-top-width: 0;
-  }
   .timecode {
     display: inline-flex;
     background-color: rgba(md-color($foreground, base), .16);
@@ -54,10 +51,13 @@ wz-advanced-player {
     }
   }
 
+  $md-icon-button-width: rem(3.4);
+  $md-icon-button-height: $md-icon-button-width;
+
   [md-icon-button] {
-    line-height: rem(3.4);
-    height: rem(3.4);
-    width: rem(3.4);
+    line-height: $md-icon-button-height;
+    height: $md-icon-button-height;
+    width: $md-icon-button-width;
     md-icon {
       color: rgba(md-color($background, background), 0.87);
       line-height: rem(2.1);
@@ -75,158 +75,6 @@ wz-advanced-player {
   button[disabled] {
     opacity: .2;
   }
-  .step-playback {
-    margin-left: rem(.8);
-    [md-icon-button] {
-      line-height: rem(3.1);
-      height: rem(3.1);
-      width: rem(3.1);
-      margin: 0 rem(.1);
-      md-icon {
-        color: rgba(md-color($background, background), 0.87);
-        line-height: rem(1.4);
-        height: rem(1.6);
-        width: rem(3.6);
-        margin-left: rem(.3);
-        position: relative;
-        &.material-icons {
-          font-size: rem(1.6);
-        }
-        &::before {
-          content: "5s";
-          font-family: $md-font-family;
-          font-size: rem(1.1);
-          line-height: rem(1.5);
-          font-weight: 100;
-          position: absolute;
-          margin-left: rem(-0.9);
-        }
-        &.one-frame::before {
-          content: "1f";
-        }
-        &.one-second::before {
-          content: "1s";
-        }
-      }
-      &.reverse md-icon {
-        transform: rotate(180deg);
-        margin-left: rem(-1.4);
-        line-height: rem(1.8);
-        &::before {
-          transform: rotate(180deg);
-          line-height: rem(1.6);
-        }
-        &.one-frame::before {
-          margin-left: rem(-0.8);
-        }
-      } 
-    } 
-  }
-  $scrubber-slider-height: rem(1.0);
-  $thumb-width: rem(0.3);
-  $scrubber-thumb-height: $scrubber-slider-height;
-
-  $marker-slider-height: 0;
-  $marker-thumb-height: $thumb-width;
-  scrub-ber {
-    position: relative;
-    text-align: center;
-    width: 100%;
-    height: $scrubber-slider-height;
-    background-color: transparent;
-  }
-
-  md-slider.md-slider-horizontal {
-    width: 100%;
-    padding: 0;
-    vertical-align: top;
-    background-color: lighten(md-color($foreground, base), 38%);
-
-    .md-slider-track {
-      width: calc(100% - #{$thumb-width});
-      top: 0;
-      left: 0;
-      right: 0;
-      background-color: lighten(md-color($foreground, base), 38%);
-      opacity: .9;
-      cursor: pointer;
-    }
-
-    .md-slider-track-fill {
-      height: $scrubber-slider-height;
-      background-color: lighten(md-color($background, background), 0%);
-      transition: none;
-    }
-
-    .md-slider-thumb-container {
-      position: relative;
-      top: 0;
-      transition: none;
-    }
-
-    .md-slider-thumb {
-      width: $thumb-width;
-      top: 0;
-      right: -$thumb-width;
-      border-radius: 0;
-      transform: none;
-      transition: none;
-    }
-
-    .md-slider-ticks-container {
-      display: none;
-    }
-
-    &.scrubber {
-      height: $scrubber-slider-height;
-
-      .md-slider-track {
-        height: $scrubber-slider-height;
-      }
-
-      .md-slider-track-fill {
-        height: $scrubber-slider-height;
-      }
-
-      .md-slider-thumb {
-        height: $scrubber-thumb-height;
-        background-color: lighten(md-color($foreground, text), 5%);
-      }
-    }
-
-    &.marker {
-      position: absolute;
-      height: $marker-slider-height;
-
-      .md-slider-track {
-        height: $marker-slider-height;
-      }
-
-      .md-slider-track-fill {
-        height: $marker-slider-height;
-      }
-
-      .md-slider-thumb {
-        height: $marker-thumb-height;
-        background-color: md-color($accent, darker);
-      }
-
-      &.in {
-        top: 0;
-      }
-
-      &.out {
-        top: $scrubber-slider-height - $marker-thumb-height;
-      }
-    }
-  }
-  .hover-frame-display {
-    position: absolute;
-    top: rem(-7);
-    border-radius: $md-button-border-radius;
-    background-color: rgba(md-color($foreground, base), .5);
-    font-size: rem(1.1);
-    line-height: 1;
-    padding: rem(.8) rem(1.0);
-  }
 }
+@import './controlbars/player-controlbar';
+@import './controls/scrubber';
