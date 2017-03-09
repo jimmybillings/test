@@ -16,7 +16,7 @@ import { FormFields, ServerErrors } from '../../../shared/interfaces/forms.inter
 export class WzFormComponent implements OnInit, OnChanges {
   @Input() items: FormFields[];
   @Input() serverErrors: ServerErrors;
-  @Input() submitLabel: string;
+  @Input() submitLabel: string = 'Submit';
   @Input() includeCancel: boolean = false;
   @Input() cancelLabel: string = 'Cancel';
   @Input() autocomplete: string = 'on';
