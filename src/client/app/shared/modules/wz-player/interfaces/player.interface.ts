@@ -12,6 +12,7 @@ export interface PlayerState {
   readonly durationFrame: Frame;
   readonly inMarkerFrame: Frame;
   readonly outMarkerFrame: Frame;
+  readonly volume: number;
 
   // This enables Angular change detection by making it clear that *something*
   // changed in the state.  (Change detection can't see that a nested object has
@@ -29,6 +30,7 @@ export interface PlayerStateChanges {
   durationFrame?: Frame;
   inMarkerFrame?: Frame;
   outMarkerFrame?: Frame;
+  volume?: number;
 
   // These properties are used to introduce Frame changes
   // based on information represented as other types.
@@ -52,7 +54,9 @@ export enum PlayerRequestType {
   SeekToOutMarker,
   SetInMarker,
   SetOutMarker,
+  SetVolume,
   ToggleMarkersPlayback,
+  ToggleMute,
   TogglePlayback
 }
 

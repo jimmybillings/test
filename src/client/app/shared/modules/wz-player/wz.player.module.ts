@@ -20,6 +20,7 @@ import { PlaybackToggleButtonComponent } from './components/wz-advanced-player/c
 import { ScrubberComponent } from './components/wz-advanced-player/controls/scrubber.component';
 import { StepButtonComponent } from './components/wz-advanced-player/controls/step-button.component';
 import { TimeDisplayComponent } from './components/wz-advanced-player/controls/time-display.component';
+import { VolumeControlComponent } from './components/wz-advanced-player/controls/volume-control.component';
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ import { TimeDisplayComponent } from './components/wz-advanced-player/controls/t
     PlaybackToggleButtonComponent,
     ScrubberComponent,
     StepButtonComponent,
-    TimeDisplayComponent
+    TimeDisplayComponent,
+    VolumeControlComponent
   ],
   exports: [
     TimecodePipe,
