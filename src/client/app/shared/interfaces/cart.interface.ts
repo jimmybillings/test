@@ -1,3 +1,5 @@
+import { Address } from './user.interface';
+
 export interface Cart {
   userId: number;
   projects?: Project[];
@@ -87,3 +89,14 @@ export interface AddAssetParameters {
   };
   attributes?: any;
 }
+
+export interface CartState {
+  cart: Cart;
+  orderInProgress: {
+    address: {
+      type: string;
+      name: string;
+      address: Address;
+    };
+  };
+};

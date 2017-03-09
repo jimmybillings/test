@@ -29,7 +29,7 @@ export class ReviewTabComponent extends Tab implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.cart = this.cartService.data;
+    this.cart = this.cartService.data.map((data: any) => data.cart);
     this.canPurchaseOnCredit = this.userCan.purchaseOnCredit();
   }
 

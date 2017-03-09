@@ -47,7 +47,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.cart = this.cartService.data;
+    this.cart = this.cartService.data.map((data: any) => data.cart);
     this.preferencesSubscription = this.userPreference.data.subscribe((data: any) => {
       this.pricingPreferences = data.pricingPreferences;
     });
@@ -63,13 +63,12 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     return this.cart.map(cart => (cart.itemCount || 0) > 0);
   }
 
-
   public get rmAssetsHaveAttributes(): boolean {
-    if (this.cartService.state.itemCount === 0) return true;
+    if (this.cartService.state.cart.itemCount === 0) return true;
 
     let validAssets: boolean[] = [];
 
-    this.cartService.state.projects.forEach((project: Project) => {
+    this.cartService.state.cart.projects.forEach((project: Project) => {
       if (project.lineItems) {
         project.lineItems.forEach((lineItem: LineItem) => {
           validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);

@@ -134,9 +134,9 @@
       -->
 		<div *ngIf="field.type == 'select'">
 			<div class="md-group">
-				<select formControlName="{{field.name}}">
-            <option *ngFor="let option of parseOptions(field.options)">{{option}}</option>
-          </select>
+				<md-select placeholder="{{field.label}}" formControlName="{{field.name}}">
+          <md-option *ngFor="let option of parseOptions(field.options)" [value]="option">{{option}}</md-option>
+        </md-select>
 			</div>
 		</div>
 		<!--

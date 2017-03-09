@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: BillingTabComponent;
 
     beforeEach(() => {
-      componentUnderTest = new BillingTabComponent();
+      componentUnderTest = new BillingTabComponent(null, null, null, null, null, null);
     });
 
     it('has no functionality yet', () => {

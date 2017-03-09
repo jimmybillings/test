@@ -1,0 +1,33 @@
+div.cart-billing {
+  md-card.billing-card {
+    min-height: 50vh;
+    margin-top: rem(2);
+    md-select {
+      width: 100%;
+    }
+    wz-form {
+      md-input, md-select {
+        font-size: 1em;
+        margin: rem(.5);
+      }
+    }
+    div.selected-address {
+      padding: rem(2);
+      margin-top: rem(2);
+      background-color: md-color($md-grey, 100);
+    }
+  }
+  div.billing-actions {
+    margin-top: rem(2);
+  }
+}
+
+address-form-component {
+  wz-form {
+    md-input, md-select {
+      font-size: 1em;
+      margin: rem(.5);
+      width: 100%;
+    }
+  }
+}

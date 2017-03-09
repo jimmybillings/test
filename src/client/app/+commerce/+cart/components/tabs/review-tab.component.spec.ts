@@ -10,8 +10,8 @@ export function main() {
 
     beforeEach(() => {
       mockCartService = {
-        data: Observable.of({ someData: 'SOME_VALUE' }),
-        purchaseOnCredit: () => Observable.of({ id: 10836 })
+        data: Observable.of({ cart: { someData: 'SOME_VALUE' } }),
+        purchaseOnCredit: () => Observable.of({ id: 10836 }),
       };
 
       mockCartCapabilities = {

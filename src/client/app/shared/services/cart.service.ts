@@ -38,7 +38,7 @@ export class CartService {
   public initializeData(): Observable<any> {
     return this.api.get(Api.Orders, 'cart', { loading: true })
       .do(this.updateCart)
-      .flatMap(_ => this.addProjectIfNoProjectsExist())
+      // .flatMap(_ => this.addProjectIfNoProjectsExist())
       .takeLast(1)
       .map(_ => { return {}; })
       .share();
@@ -47,7 +47,7 @@ export class CartService {
   // Temporary until first time user's cart is created with a project - fix for CRUX-1027
   public getCartSummary(): void {
     this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe((cartSummary: any) => {
-      this.addProjectIfNoProjectsExist().subscribe();
+      // this.addProjectIfNoProjectsExist().subscribe();
     });
   }
 
@@ -59,7 +59,7 @@ export class CartService {
     this.api.delete(Api.Orders, `cart/project/${project.id}`, { loading: true })
       .subscribe(wholeCartResponse => {
         this.updateCart(wholeCartResponse);
-        this.addProjectIfNoProjectsExist().subscribe();
+        // this.addProjectIfNoProjectsExist().subscribe();
       });
   }
 
@@ -110,6 +110,10 @@ export class CartService {
       .subscribe(this.updateCart);
   }
 
+  public updateOrderInProgressAddress(address: any): void {
+    this.store.replaceOrderInProgressAddress(address);
+  }
+
   private formatBody(parameters: AddAssetParameters): any {
     let formatted = {};
     Object.assign(formatted, { lineItem: parameters.lineItem });
@@ -139,7 +143,7 @@ export class CartService {
 
   private createAddProjectRequestBody(): ApiBody {
     return {
-      name: CartUtilities.nextNewProjectNameGiven(this.existingProjectNames),
+      // name: CartUtilities.nextNewProjectNameGiven(this.existingProjectNames),
       clientName: this.fullName
     };
   }
@@ -157,6 +161,6 @@ export class CartService {
   // This is an "instance arrow function", which saves us from having to "bind(this)"
   // every time we use this function as a callback.
   private updateCart = (wholeCartResponse: any): void => {
-    this.store.replaceWith(wholeCartResponse);
+    this.store.replaceCartWith(wholeCartResponse);
   }
 }
