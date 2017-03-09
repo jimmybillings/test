@@ -24,7 +24,7 @@ export class PaymentTabComponent extends Tab implements OnInit {
   }
 
   ngOnInit() {
-    (<any>window).Stripe.setPublishableKey(this.cartService.state.stripePublicKey);
+    (<any>window).Stripe.setPublishableKey(this.cartService.state.cart.stripePublicKey);
     this.configSubscription = this.uiConfig.get('cart')
       .subscribe((config: any) => this.config = config.config.payment);
   }

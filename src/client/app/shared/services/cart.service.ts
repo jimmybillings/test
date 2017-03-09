@@ -8,7 +8,7 @@ import { CurrentUserService } from '../services/current-user.service';
 import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
 import { CartStore } from '../stores/cart.store';
 import { CartUtilities } from '../utilities/cart.utilities';
-import { Cart } from '../interfaces/cart.interface';
+import { Cart, CartState } from '../interfaces/cart.interface';
 
 @Injectable()
 export class CartService {
@@ -22,7 +22,7 @@ export class CartService {
     return this.store.data;
   }
 
-  public get state(): Cart {
+  public get state(): CartState {
     return this.store.state;
   }
 
@@ -132,7 +132,7 @@ export class CartService {
   }
 
   private addProjectIfNoProjectsExist(): Observable<any> {
-    return ((this.state.projects || []).length === 0) ? this.addProjectAndReturnObservable() : Observable.of({});
+    return ((this.state.cart.projects || []).length === 0) ? this.addProjectAndReturnObservable() : Observable.of({});
   }
 
   private addProjectAndReturnObservable(): Observable<any> {
@@ -155,7 +155,7 @@ export class CartService {
   }
 
   private get existingProjectNames(): Array<string> {
-    return (this.state.projects || []).map((project: any) => project.name);
+    return (this.state.cart.projects || []).map((project: any) => project.name);
   }
 
   // This is an "instance arrow function", which saves us from having to "bind(this)"
