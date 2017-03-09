@@ -160,6 +160,26 @@ export class WzPlayerComponent implements OnDestroy {
     }
   }
 
+  public toggleMute(): void {
+    this.verifyCustomControlsSupport();
+
+    this.videoElement.muted = !this.videoElement.muted;
+  }
+
+  public setVolumeTo(newVolume: number): void {
+    this.verifyCustomControlsSupport();
+
+    if (this.videoElement.muted) {
+      // We don't want to report any changes until we're all done.
+      this.stopVideoEventListenerFor('volumechange');
+      this.videoElement.muted = false;
+      this.startVideoEventListenerFor('volumechange', this.onVolumeChange);
+    }
+
+    // newVolume is in the range 0 to 100.  The <video> element needs 0 to 1.
+    this.videoElement.volume = newVolume / 100;
+  }
+
   private verifyCustomControlsSupport(): void {
     if (this.mode === 'basic') throw new Error('Basic mode does not support custom controls.');
     if (this.currentAssetType !== 'html5Video') throw new Error('Current asset does not support custom controls.');
@@ -197,7 +217,8 @@ export class WzPlayerComponent implements OnDestroy {
             canSupportCustomControls: true,
             framesPerSecond: this.assetInfo.framesPerSecond,
             inMarker: this.inMarker,
-            outMarker: this.outMarker
+            outMarker: this.outMarker,
+            volume: this.currentVolume
           });
 
           if (!autostartInAdvancedMode) this.toggleMarkersPlayback();
@@ -217,6 +238,7 @@ export class WzPlayerComponent implements OnDestroy {
     this.startVideoEventListenerFor('timeupdate', this.onTimeUpdate);
     this.startVideoEventListenerFor('seeked', this.onSeeked);
     this.startVideoEventListenerFor('seeking', this.onSeeking);
+    this.startVideoEventListenerFor('volumechange', this.onVolumeChange);
   }
 
   private startVideoEventListenerFor(eventName: string, callback: Function): void {
@@ -228,10 +250,14 @@ export class WzPlayerComponent implements OnDestroy {
 
   private stopVideoEventListeners(): void {
     for (const eventName in this.videoElementListenerRemovers) {
-      this.videoElementListenerRemovers[eventName]();
+      this.stopVideoEventListenerFor(eventName);
     }
 
     this.videoElementListenerRemovers = {};
+  }
+
+  private stopVideoEventListenerFor(eventName: string) {
+    this.videoElementListenerRemovers[eventName]();
   }
 
   private onDurationChange(): void {
@@ -278,6 +304,16 @@ export class WzPlayerComponent implements OnDestroy {
 
       if (currentTime > this.outMarker) this.seekTo(this.outMarker);
     }
+  }
+
+  private onVolumeChange(): void {
+    this.emitStateUpdateWith({ volume: this.currentVolume });
+  }
+
+  private get currentVolume(): number {
+    // The <video> element reports "muted" and "volume" (0 to 1.0) values separately.
+    // To make things simpler for our event consumers, combine these into a single value from 0 to 100.
+    return this.videoElement.muted ? 0 : Math.round(this.videoElement.volume * 100);
   }
 
   private emitStateUpdateWith(changes: PlayerStateChanges): void {

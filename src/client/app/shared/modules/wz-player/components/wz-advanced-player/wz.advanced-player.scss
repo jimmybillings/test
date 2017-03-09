@@ -51,10 +51,13 @@ wz-advanced-player {
     }
   }
 
+  $md-icon-button-width: rem(3.4);
+  $md-icon-button-height: $md-icon-button-width;
+
   [md-icon-button] {
-    line-height: rem(3.4);
-    height: rem(3.4);
-    width: rem(3.4);
+    line-height: $md-icon-button-height;
+    height: $md-icon-button-height;
+    width: $md-icon-button-width;
     md-icon {
       color: rgba(md-color($background, background), 0.87);
       line-height: rem(2.1);

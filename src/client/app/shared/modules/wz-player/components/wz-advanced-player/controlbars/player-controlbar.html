@@ -15,7 +15,5 @@
   </nav>
 </section>
 <nav flex="10" layout-align="end stretch">
-  <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.SOUND_BTN_TITLE' | translate }}">
-    <md-icon>volume_up</md-icon>
-  </button>
+  <volume-control [playerState]="playerState" (request)="forward($event)"></volume-control>
 </nav>

@@ -63,11 +63,11 @@ export class WzAdvancedPlayerComponent {
       case PlayerRequestType.PlayAtSpeed:
         this.player.playAtSpeed(payload.speed, payload.direction);
         break;
-      case PlayerRequestType.SaveMarkersAsUndefined:
-        this.onSubclip.emit({ in: undefined, out: undefined });
-        break;
       case PlayerRequestType.SaveMarkers:
         this.onSubclip.emit({ in: state.inMarkerFrame.frameNumber, out: state.outMarkerFrame.frameNumber });
+        break;
+      case PlayerRequestType.SaveMarkersAsUndefined:
+        this.onSubclip.emit({ in: undefined, out: undefined });
         break;
       case PlayerRequestType.SeekToFrame:
         this.player.seekTo(payload.frame.asSeconds());
@@ -84,11 +84,17 @@ export class WzAdvancedPlayerComponent {
       case PlayerRequestType.SetOutMarker:
         this.player.setOutMarkerToCurrentTime();
         break;
-      case PlayerRequestType.TogglePlayback:
-        this.player.togglePlayback();
+      case PlayerRequestType.SetVolume:
+        this.player.setVolumeTo(payload.volume);
         break;
       case PlayerRequestType.ToggleMarkersPlayback:
         this.player.toggleMarkersPlayback();
+        break;
+      case PlayerRequestType.ToggleMute:
+        this.player.toggleMute();
+        break;
+      case PlayerRequestType.TogglePlayback:
+        this.player.togglePlayback();
         break;
     }
   }

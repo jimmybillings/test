@@ -148,6 +148,18 @@ export function main() {
           expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
         });
       });
+
+      describe('toggleMute()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.toggleMute()).toThrowError();
+        });
+      });
+
+      describe('setVolumeTo()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.setVolumeTo(11)).toThrowError();
+        });
+      });
     });
 
     describe('For a Video', () => {
@@ -247,6 +259,18 @@ export function main() {
         describe('toggleMarkersPlayback()', () => {
           it('is not supported', () => {
             expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
+          });
+        });
+
+        describe('toggleMute()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.toggleMute()).toThrowError();
+          });
+        });
+
+        describe('setVolumeTo()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.setVolumeTo(11)).toThrowError();
           });
         });
       });
@@ -398,6 +422,18 @@ export function main() {
                     expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
                   });
                 });
+
+                describe('toggleMute()', () => {
+                  it('is not supported', () => {
+                    expect(() => componentUnderTest.toggleMute()).toThrowError();
+                  });
+                });
+
+                describe('setVolumeTo()', () => {
+                  it('is not supported', () => {
+                    expect(() => componentUnderTest.setVolumeTo(11)).toThrowError();
+                  });
+                });
               });
             });
 
@@ -419,7 +455,8 @@ export function main() {
                     canSupportCustomControls: true,
                     framesPerSecond: 25,
                     inMarker: assetTest.inSeconds,
-                    outMarker: assetTest.outSeconds
+                    outMarker: assetTest.outSeconds,
+                    volume: 100
                   }]]);
                 });
 
@@ -574,6 +611,88 @@ export function main() {
                               [{ playbackSpeed: 4 }],
                               [{ playing: true }]
                             ]);
+                        });
+                      });
+                    });
+
+                    describe('toggleMute()', () => {
+                      describe('when not muted', () => {
+                        it('mutes', () => {
+                          componentUnderTest.toggleMute();
+
+                          expect(mockVideoElement.muted).toBe(true);
+                        });
+
+                        it('reports volume = 0', () => {
+                          componentUnderTest.toggleMute();
+
+                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 0 }]]);
+                        });
+                      });
+
+                      describe('when muted', () => {
+                        beforeEach(() => {
+                          mockVideoElement.volume = 0.57;
+                          componentUnderTest.toggleMute();
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        });
+
+                        it('unmutes', () => {
+                          componentUnderTest.toggleMute();
+
+                          expect(mockVideoElement.muted).toBe(false);
+                        });
+
+                        it('reports previous volume', () => {
+                          componentUnderTest.toggleMute();
+
+                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 57 }]]);
+                        });
+                      });
+                    });
+
+                    describe('setVolumeTo()', () => {
+                      describe('when not muted', () => {
+                        it('updates the volume', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(mockVideoElement.volume).toBe(0.11);
+                        });
+
+                        it('reports the new volume', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 11 }]]);
+                        });
+                      });
+
+                      describe('when muted', () => {
+                        beforeEach(() => {
+                          mockVideoElement.volume = 0.57;
+                          componentUnderTest.toggleMute();
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        });
+
+                        it('unmutes', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(mockVideoElement.muted).toBe(false);
+                        });
+
+                        it('updates the volume', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(mockVideoElement.volume).toBe(0.11);
+                        });
+
+                        it('reports the new volume', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 11 }]]);
                         });
                       });
                     });
