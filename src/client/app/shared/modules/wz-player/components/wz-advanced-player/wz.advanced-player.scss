@@ -1,3 +1,6 @@
+$md-icon-button-width: rem(3.4);
+$md-icon-button-height: $md-icon-button-width;
+
 wz-advanced-player {
   color: white;
   .jwplayer:focus, video:focus {outline:0;}
@@ -50,9 +53,6 @@ wz-advanced-player {
       color: rgba(md-color($background, background), 0.87);
     }
   }
-
-  $md-icon-button-width: rem(3.4);
-  $md-icon-button-height: $md-icon-button-width;
 
   [md-icon-button] {
     line-height: $md-icon-button-height;
