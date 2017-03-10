@@ -5,7 +5,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 @Component({
   moduleId: module.id,
-  selector: 'scrub-ber',  // Temporary stupid selector to fool the linter, because it doesn't like single-word names.
+  selector: 'wz-scrubber',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container *ngIf="playerState.durationFrame && playerState.currentFrame">
