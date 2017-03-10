@@ -50,11 +50,10 @@ export class CartService {
   public purchase(): Observable<any> {
     const stripe: any = {
       stripeToken: this.state.orderInProgress.authorization.id,
-      stripeTokenType: this.state.orderInProgress.authorization.type,
-      redirect: 'true'
+      stripeTokenType: this.state.orderInProgress.authorization.type
     };
-    return this.api.post(Api.Orders, 'cart/stripe/payment',
-      { parameters: stripe, loading: true, headerType: 'form-urlencoded' });
+    return this.api.post(Api.Orders, 'cart/stripe/process',
+      { body: stripe, loading: true });
   }
 
   public addProject(): void {

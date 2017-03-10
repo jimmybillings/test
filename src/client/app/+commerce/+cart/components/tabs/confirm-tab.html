@@ -13,7 +13,7 @@
         <md-card-content>
           <button md-raised-button class="md-block" (click)="purchase()">CONFIRM</button>
           <pre><code>
-            {{ (cartService.data | async).orderInProgress | json }}
+            {{ (cartService.data | async) | json }}
           </code></pre>
         </md-card-content>
       </md-card>
