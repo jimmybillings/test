@@ -753,6 +753,25 @@ export function main() {
                         expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
                         expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1234.567 }]);
                       });
+
+                      describe('when video has ended', () => {
+                        beforeEach(() => mockVideoElement.simulatePlaybackEnded());
+
+                        it('"primes the pump" by playing/pausing before seeking', () => {
+                          componentUnderTest.seekTo(1234.567);
+
+                          expect(stateUpdateEmitter.calls.allArgs())
+                            .toEqual([[{ playing: true }], [{ playing: false }]]);
+                        });
+
+                        it('reports current time after video element triggers \'seeked\'', () => {
+                          componentUnderTest.seekTo(1234.567);
+                          mockVideoElement.simulateSeekCompletion();
+
+                          expect(stateUpdateEmitter.calls.allArgs())
+                            .toEqual([[{ playing: true }], [{ playing: false }], [{ currentTime: 1234.567 }]]);
+                        });
+                      });
                     });
 
                     describe('seekToInMarker()', () => {

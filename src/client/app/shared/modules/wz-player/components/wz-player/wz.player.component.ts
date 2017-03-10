@@ -79,7 +79,7 @@ export class WzPlayerComponent implements OnDestroy {
   public seekTo(timeInSeconds: number): void {
     this.verifyCustomControlsSupport();
 
-    this.videoElement.currentTime = timeInSeconds;
+    this.videoElement.ended ? this.resetPlaybackAndSeekTo(timeInSeconds) : this.simplySeekTo(timeInSeconds);
   }
 
   public seekToInMarker(): void {
@@ -357,5 +357,25 @@ export class WzPlayerComponent implements OnDestroy {
 
   private setPlaybackRateTo(newRate: number) {
     if (newRate !== this.videoElement.playbackRate) this.videoElement.playbackRate = newRate;
+  }
+
+  private resetPlaybackAndSeekTo(timeInSeconds: number): void {
+    // This is a weird state.  If we merely seek after the video has ended, we will get a 'timeupdate'
+    // event that SAYS the seek has happened, but the video stays stuck at the end.  Thus, we need to
+    // "prime the pump" and do a quick play/pause cycle first.  That seems to reset things properly so that
+    // the seek will actually update the video.
+
+    const oneTimeListenerRemover: Function = this.renderer.listen(this.videoElement, 'playing', () => {
+      this.videoElement.pause();
+      oneTimeListenerRemover();
+      this.simplySeekTo(timeInSeconds);
+    });
+
+    // Start playback, which will immediately pause and seek due to the one-time listener above.
+    this.videoElement.play();
+  }
+
+  private simplySeekTo(timeInSeconds: number) {
+    this.videoElement.currentTime = timeInSeconds;
   }
 }

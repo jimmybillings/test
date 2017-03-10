@@ -7,6 +7,7 @@ export type MockVideoEventName =
 
 export class MockVideoElement {
   public paused: boolean = false;
+  public ended: boolean = false;
   private _currentTime: number = 0;
   private _duration: number = 0;
   private _playbackRate: number = 1;
@@ -33,6 +34,7 @@ export class MockVideoElement {
     if (!this.paused) return;
 
     this.paused = false;
+    this.ended = false;
     this.trigger('playing');
   }
 
@@ -100,6 +102,11 @@ export class MockVideoElement {
     this.seekingTo = null;
     this.trigger('seeked');
     this.trigger('timeupdate');
+  }
+
+  public simulatePlaybackEnded() {
+    this.paused = true;
+    this.ended = true;
   }
 
   public get numberOfDefinedEventCallbacks(): number {
