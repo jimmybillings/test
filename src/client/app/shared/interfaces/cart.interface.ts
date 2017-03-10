@@ -98,5 +98,6 @@ export interface CartState {
       name: string;
       address: Address;
     };
+    authorization: any;
   };
 };

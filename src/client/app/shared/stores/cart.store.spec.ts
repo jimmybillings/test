@@ -22,7 +22,8 @@ export function main() {
             address: {
               type: '', name: '',
               address: { street: '', state: '', city: '', country: '', zipcode: '', phone: '', suburb: '' }
-            }
+            },
+            authorization: {}
           }
         });
     });

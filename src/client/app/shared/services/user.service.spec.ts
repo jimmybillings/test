@@ -77,7 +77,7 @@ export function main() {
         expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/public/name/TOS');
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/public/downloadFile/abcd1234');
-        expect(mockApi.get).toHaveBeenCalledWithDownload(true);
+        expect(mockApi.get).toHaveBeenCalledWithHeaderType('download');
       });
     });
 

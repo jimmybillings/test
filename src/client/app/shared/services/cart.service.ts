@@ -47,6 +47,16 @@ export class CartService {
     this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe();
   }
 
+  public purchase(): Observable<any> {
+    const stripe: any = {
+      stripeToken: this.state.orderInProgress.authorization.id,
+      stripeTokenType: this.state.orderInProgress.authorization.type,
+      redirect: 'true'
+    };
+    return this.api.post(Api.Orders, 'cart/stripe/payment',
+      { parameters: stripe, loading: true, headerType: 'form-urlencoded' });
+  }
+
   public addProject(): void {
     this.addProjectAndReturnObservable().subscribe();
   }
@@ -107,6 +117,10 @@ export class CartService {
 
   public updateOrderInProgressAddress(address: any): void {
     this.store.replaceOrderInProgressAddress(address);
+  }
+
+  public updateOrderInProgressAuthorization(authorization: any): void {
+    this.store.replaceOrderInProgressAuthorization(authorization);
   }
 
   private formatBody(parameters: AddAssetParameters): any {
