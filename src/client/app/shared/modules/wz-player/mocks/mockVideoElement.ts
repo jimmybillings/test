@@ -3,23 +3,28 @@ interface MockVideoCallbacks {
 }
 
 export type MockVideoEventName =
-  'durationchange' | 'pause' | 'playing' | 'ratechange' | 'timeupdate' | 'seeked' | 'seeking';
+  'durationchange' | 'ended' | 'pause' | 'playing' | 'ratechange' | 'timeupdate' | 'seeked' | 'seeking' | 'volumechange';
 
 export class MockVideoElement {
   public paused: boolean = false;
-
+  public ended: boolean = false;
   private _currentTime: number = 0;
   private _duration: number = 0;
   private _playbackRate: number = 1;
   private seekingTo: number = null;
+  private _volume: number = 1;
+  private _muted: boolean = false;
+
   private eventCallbacks: MockVideoCallbacks = {
     durationchange: new Array<Function>(),
+    ended: new Array<Function>(),
     pause: new Array<Function>(),
     playing: new Array<Function>(),
     ratechange: new Array<Function>(),
     timeupdate: new Array<Function>(),
     seeked: new Array<Function>(),
-    seeking: new Array<Function>()
+    seeking: new Array<Function>(),
+    volumechange: new Array<Function>()
   };
 
   constructor(autoplay: boolean) {
@@ -30,6 +35,7 @@ export class MockVideoElement {
     if (!this.paused) return;
 
     this.paused = false;
+    this.ended = false;
     this.trigger('playing');
   }
 
@@ -62,6 +68,24 @@ export class MockVideoElement {
     return this._playbackRate;
   }
 
+  public get volume(): number {
+    return this._volume;
+  }
+
+  public set volume(newVolume: number) {
+    this._volume = newVolume;
+    this.trigger('volumechange');
+  }
+
+  public get muted(): boolean {
+    return this._muted;
+  }
+
+  public set muted(newValue: boolean) {
+    this._muted = newValue;
+    this.trigger('volumechange');
+  }
+
   public simulateDurationChangeTo(newDuration: number) {
     this._duration = newDuration;
     this.trigger('durationchange');
@@ -79,6 +103,13 @@ export class MockVideoElement {
     this.seekingTo = null;
     this.trigger('seeked');
     this.trigger('timeupdate');
+  }
+
+  public simulatePlaybackEnded() {
+    this.paused = true;
+    this.ended = true;
+    this.trigger('ended');
+    this.trigger('pause');
   }
 
   public get numberOfDefinedEventCallbacks(): number {

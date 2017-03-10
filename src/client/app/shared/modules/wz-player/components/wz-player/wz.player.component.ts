@@ -79,7 +79,7 @@ export class WzPlayerComponent implements OnDestroy {
   public seekTo(timeInSeconds: number): void {
     this.verifyCustomControlsSupport();
 
-    this.videoElement.currentTime = timeInSeconds;
+    this.videoElement.ended ? this.resetPlaybackAndSeekTo(timeInSeconds) : this.simplySeekTo(timeInSeconds);
   }
 
   public seekToInMarker(): void {
@@ -160,6 +160,26 @@ export class WzPlayerComponent implements OnDestroy {
     }
   }
 
+  public toggleMute(): void {
+    this.verifyCustomControlsSupport();
+
+    this.videoElement.muted = !this.videoElement.muted;
+  }
+
+  public setVolumeTo(newVolume: number): void {
+    this.verifyCustomControlsSupport();
+
+    if (this.videoElement.muted) {
+      // We don't want to report any changes until we're all done.
+      this.stopVideoEventListenerFor('volumechange');
+      this.videoElement.muted = false;
+      this.startVideoEventListenerFor('volumechange', this.onVolumeChange);
+    }
+
+    // newVolume is in the range 0 to 100.  The <video> element needs 0 to 1.
+    this.videoElement.volume = newVolume / 100;
+  }
+
   private verifyCustomControlsSupport(): void {
     if (this.mode === 'basic') throw new Error('Basic mode does not support custom controls.');
     if (this.currentAssetType !== 'html5Video') throw new Error('Current asset does not support custom controls.');
@@ -184,6 +204,8 @@ export class WzPlayerComponent implements OnDestroy {
 
         if (jwPlayerProvider && jwPlayerProvider.name === 'html5') {
           this.currentAssetType = 'html5Video';
+          this.jwPlayer.setControls(false);
+          this.jwPlayer.on('displayClick', this.togglePlayback.bind(this));
 
           // Seems like the "correct" Angular-y way to do this would be to
           // find the <video> tag inside 'this.element.nativeElement'.  But
@@ -197,7 +219,8 @@ export class WzPlayerComponent implements OnDestroy {
             canSupportCustomControls: true,
             framesPerSecond: this.assetInfo.framesPerSecond,
             inMarker: this.inMarker,
-            outMarker: this.outMarker
+            outMarker: this.outMarker,
+            volume: this.currentVolume
           });
 
           if (!autostartInAdvancedMode) this.toggleMarkersPlayback();
@@ -211,12 +234,14 @@ export class WzPlayerComponent implements OnDestroy {
 
   private startVideoEventListeners(): void {
     this.startVideoEventListenerFor('durationchange', this.onDurationChange);
+    this.startVideoEventListenerFor('ended', this.onEnded);
     this.startVideoEventListenerFor('pause', this.onPause);
     this.startVideoEventListenerFor('playing', this.onPlaying);
     this.startVideoEventListenerFor('ratechange', this.onRateChange);
     this.startVideoEventListenerFor('timeupdate', this.onTimeUpdate);
     this.startVideoEventListenerFor('seeked', this.onSeeked);
     this.startVideoEventListenerFor('seeking', this.onSeeking);
+    this.startVideoEventListenerFor('volumechange', this.onVolumeChange);
   }
 
   private startVideoEventListenerFor(eventName: string, callback: Function): void {
@@ -228,14 +253,22 @@ export class WzPlayerComponent implements OnDestroy {
 
   private stopVideoEventListeners(): void {
     for (const eventName in this.videoElementListenerRemovers) {
-      this.videoElementListenerRemovers[eventName]();
+      this.stopVideoEventListenerFor(eventName);
     }
 
     this.videoElementListenerRemovers = {};
   }
 
+  private stopVideoEventListenerFor(eventName: string) {
+    this.videoElementListenerRemovers[eventName]();
+  }
+
   private onDurationChange(): void {
     this.emitStateUpdateWith({ duration: this.videoElement.duration });
+  }
+
+  private onEnded(): void {
+    this.setPlaybackRateTo(1);
   }
 
   private onPause(): void {
@@ -280,6 +313,16 @@ export class WzPlayerComponent implements OnDestroy {
     }
   }
 
+  private onVolumeChange(): void {
+    this.emitStateUpdateWith({ volume: this.currentVolume });
+  }
+
+  private get currentVolume(): number {
+    // The <video> element separately tracks values for "muted" (true/false) and "volume" (0 to 1.0).
+    // To make things simpler for our event consumers, combine these into a single value from 0 to 100.
+    return this.videoElement.muted ? 0 : Math.round(this.videoElement.volume * 100);
+  }
+
   private emitStateUpdateWith(changes: PlayerStateChanges): void {
     // Run these in "the Angular zone" so that the change detector sees changes now, not on the next cycle.
     this.zone.run(() => this.stateUpdate.emit(changes));
@@ -319,5 +362,25 @@ export class WzPlayerComponent implements OnDestroy {
 
   private setPlaybackRateTo(newRate: number) {
     if (newRate !== this.videoElement.playbackRate) this.videoElement.playbackRate = newRate;
+  }
+
+  private resetPlaybackAndSeekTo(timeInSeconds: number): void {
+    // This is a weird state.  If we merely seek after the video has ended, we will get a 'timeupdate'
+    // event that SAYS the seek has happened, but the video stays stuck at the end.  Thus, we need to
+    // "prime the pump" and do a quick play/pause cycle first.  That seems to reset things properly so that
+    // the seek will actually update the video.
+
+    const oneTimeListenerRemover: Function = this.renderer.listen(this.videoElement, 'playing', () => {
+      this.videoElement.pause();
+      oneTimeListenerRemover();
+      this.simplySeekTo(timeInSeconds);
+    });
+
+    // Start playback, which will immediately pause and seek due to the one-time listener above.
+    this.videoElement.play();
+  }
+
+  private simplySeekTo(timeInSeconds: number) {
+    this.videoElement.currentTime = timeInSeconds;
   }
 }

@@ -37,6 +37,7 @@ export class PlayerStateService {
       durationFrame: undefined,
       inMarkerFrame: undefined,
       outMarkerFrame: undefined,
+      volume: 100,
       changeDetectionEnabler: 0
     };
   }
@@ -56,6 +57,7 @@ export class PlayerStateService {
       durationFrame: this.newFrameFrom(this.latestDurationFrame),
       inMarkerFrame: this.newFrameFrom(this.latestInMarkerFrame),
       outMarkerFrame: this.newFrameFrom(this.latestOutMarkerFrame),
+      volume: this.latestVolume,
       changeDetectionEnabler: this.snapshot.changeDetectionEnabler + 1
     };
   }
@@ -162,6 +164,10 @@ export class PlayerStateService {
 
   private get latestOutMarkerFrame(): Frame {
     return this.changesToApply.hasOwnProperty('outMarkerFrame') ? this.changesToApply.outMarkerFrame : this.snapshot.outMarkerFrame;
+  }
+
+  private get latestVolume(): number {
+    return this.changesToApply.hasOwnProperty('volume') ? this.changesToApply.volume : this.snapshot.volume;
   }
 
   private newFrameFrom(input: number | Frame): Frame {

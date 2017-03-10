@@ -72,7 +72,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     this.cartService.state.projects.forEach((project: Project) => {
       if (project.lineItems) {
         project.lineItems.forEach((lineItem: LineItem) => {
-          validAssets.push(lineItem.rightsManaged ? !!lineItem.attributes : true);
+          validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);
         });
       }
     });

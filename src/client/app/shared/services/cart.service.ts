@@ -8,6 +8,7 @@ import { CurrentUserService } from '../services/current-user.service';
 import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
 import { CartStore } from '../stores/cart.store';
 import { CartUtilities } from '../utilities/cart.utilities';
+import { Cart } from '../interfaces/cart.interface';
 
 @Injectable()
 export class CartService {
@@ -21,7 +22,7 @@ export class CartService {
     return this.store.data;
   }
 
-  public get state(): any {
+  public get state(): Cart {
     return this.store.state;
   }
 

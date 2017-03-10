@@ -33,6 +33,8 @@ export const activeCollection: ActionReducer<any> = (state: Collection = initial
       if (!state.assets || !state.assets.items) return state;
       updatedAssets = JSON.parse(JSON.stringify(state.assets));
       updatedAssets.items = updatedAssets.items.filter((item: Assets) => item.uuid !== action.payload);
+      updatedAssets.pagination.totalCount = updatedAssets.pagination.totalCount - 1;
+      if(updatedAssets.pagination.totalCount < 0) updatedAssets.pagination.totalCount = 0;
       const countWithAssetRemoved: number = (state.assetsCount > 0) ? state.assetsCount - 1 : 0;
       return Object.assign({}, state, { assets: updatedAssets, assetsCount: countWithAssetRemoved });
 

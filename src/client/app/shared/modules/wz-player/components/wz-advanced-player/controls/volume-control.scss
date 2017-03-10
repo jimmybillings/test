@@ -1,0 +1,58 @@
+$volume-control-width: $md-icon-button-width;
+$volume-control-border-width: rem(0.1);
+$volume-control-height: rem(15);
+$volume-control-slider-height: $volume-control-height - $md-icon-button-height;
+$volume-control-slider-color: rgba(md-color($background, background), 0.87);
+
+.volume-control {
+  position: absolute;
+  background-color: lighten(md-color($foreground, base), 21%);
+  border: $volume-control-border-width solid lighten(md-color($foreground, base), 27%);
+  border-bottom: none;
+  width: $volume-control-width;
+  height: $volume-control-height;
+  bottom: 0;
+  right: 0;
+
+  button {
+    position: absolute;
+    bottom: 0;
+    right: -$volume-control-border-width;
+  }
+
+  .md-slider-vertical {
+    position: absolute;
+    width: $volume-control-width;
+    height: $volume-control-slider-height;
+    min-height: $volume-control-slider-height;
+    padding: rem(1) 0 rem(2) 0;
+    left: 0;
+    top: 0;
+
+    .md-slider-ticks-container {
+      display: none;
+    }
+
+    .md-slider-track {
+      position: relative;
+      height: 100%;
+      left: 0;
+      margin: 0 auto;
+      background-color: $volume-control-slider-color;
+      cursor: pointer;
+    }
+
+    .md-slider-track-fill {
+      background-color: $volume-control-slider-color;
+    }
+
+    .md-slider-thumb {
+      height: rem(1);
+      width: rem(1);
+      right: rem(-0.5);
+      bottom: rem(-0.5);
+      transform: none;
+      background-color: $volume-control-slider-color;
+    }
+  }
+}

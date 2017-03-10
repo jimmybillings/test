@@ -78,6 +78,7 @@ export class MockJwPlayer {
 
   private state: MockJwState = 'playing';  // Assumes autoplay is configured.
   private provider: Object = null;
+  private controlsActive: boolean = true;
 
   private onCallbacks: MockJwCallbacks = {
     ready: new Array<Function>(),
@@ -86,7 +87,8 @@ export class MockJwPlayer {
     complete: new Array<Function>(),
     seek: new Array<Function>(),
     seeked: new Array<Function>(),
-    time: new Array<Function>()
+    time: new Array<Function>(),
+    displayClick: new Array<Function>()
   };
 
   private onceCallbacks: MockJwCallbacks = {
@@ -96,7 +98,8 @@ export class MockJwPlayer {
     complete: new Array<Function>(),
     seek: new Array<Function>(),
     seeked: new Array<Function>(),
-    time: new Array<Function>()
+    time: new Array<Function>(),
+    displayClick: new Array<Function>()
   };
 
   public getProvider(): Object {
@@ -105,6 +108,18 @@ export class MockJwPlayer {
 
   public setProviderNameTo(name: string): void {
     this.provider = { name: name };
+  }
+
+  public setControls(active: boolean) {
+    this.controlsActive = active;
+  }
+
+  public getControls(): boolean {
+    return this.controlsActive;
+  }
+
+  public simulateDisplayClick(): void {
+    this.trigger('displayClick');
   }
 
   public trigger(eventName: string, args?: any): MockJwPlayer {

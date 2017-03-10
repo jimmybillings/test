@@ -1,6 +1,16 @@
+$md-icon-button-width: rem(3.4);
+$md-icon-button-height: $md-icon-button-width;
+
 wz-advanced-player {
   color: white;
   .jwplayer:focus, video:focus {outline:0;}
+
+  .jwplayer {
+    .jw-media {
+      cursor: pointer;
+    }
+  }
+
   .tool-bar {
     background-color: lighten(md-color($foreground, base), 21%);
     border-top: 1px solid lighten(md-color($foreground, base), 27%);
@@ -52,9 +62,9 @@ wz-advanced-player {
   }
 
   [md-icon-button] {
-    line-height: rem(3.4);
-    height: rem(3.4);
-    width: rem(3.4);
+    line-height: $md-icon-button-height;
+    height: $md-icon-button-height;
+    width: $md-icon-button-width;
     md-icon {
       color: rgba(md-color($background, background), 0.87);
       line-height: rem(2.1);

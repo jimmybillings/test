@@ -22,8 +22,8 @@ export function main() {
         itemCount: 2,
         projects: [{
           lineItems: [
-            { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
-            { id: '2', price: 100, rightsManaged: true }
+            { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+            { id: '2', price: 100, rightsManaged: 'Rights Managed' }
           ]
         }]
       };
@@ -170,9 +170,9 @@ export function main() {
           itemCount: 0,
           projects: [{
             lineItems: [
-              { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
-              { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
-              { id: '3', price: 59, rightsManaged: false }
+              { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+              { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+              { id: '3', price: 59, rightsManaged: 'Royalty Free' }
             ]
           }]
         };

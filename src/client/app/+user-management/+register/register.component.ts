@@ -45,6 +45,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.successfullySubmitted = true;
       this.newUser = res;
     }, (error => {
+      console.log(error.json());
       this.serverErrors = error.json();
     }));
   }

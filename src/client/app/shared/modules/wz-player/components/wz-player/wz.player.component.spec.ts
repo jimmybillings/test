@@ -148,6 +148,18 @@ export function main() {
           expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
         });
       });
+
+      describe('toggleMute()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.toggleMute()).toThrowError();
+        });
+      });
+
+      describe('setVolumeTo()', () => {
+        it('is not supported', () => {
+          expect(() => componentUnderTest.setVolumeTo(11)).toThrowError();
+        });
+      });
     });
 
     describe('For a Video', () => {
@@ -249,6 +261,18 @@ export function main() {
             expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
           });
         });
+
+        describe('toggleMute()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.toggleMute()).toThrowError();
+          });
+        });
+
+        describe('setVolumeTo()', () => {
+          it('is not supported', () => {
+            expect(() => componentUnderTest.setVolumeTo(11)).toThrowError();
+          });
+        });
       });
 
       describe('in advanced mode', () => {
@@ -333,6 +357,10 @@ export function main() {
               describe('after \'ready\' event is triggered', () => {
                 beforeEach(() => mockJwPlayer.trigger('ready'));
 
+                it('uses JW Player\'s controls', () => {
+                  expect(mockJwPlayer.getControls()).toBe(true);
+                });
+
                 it('reports canSupportCustomControls: false', () => {
                   expect(stateUpdateEmitter).toHaveBeenCalledWith({ canSupportCustomControls: false });
                 });
@@ -398,6 +426,18 @@ export function main() {
                     expect(() => componentUnderTest.toggleMarkersPlayback()).toThrowError();
                   });
                 });
+
+                describe('toggleMute()', () => {
+                  it('is not supported', () => {
+                    expect(() => componentUnderTest.toggleMute()).toThrowError();
+                  });
+                });
+
+                describe('setVolumeTo()', () => {
+                  it('is not supported', () => {
+                    expect(() => componentUnderTest.setVolumeTo(11)).toThrowError();
+                  });
+                });
               });
             });
 
@@ -413,13 +453,18 @@ export function main() {
               describe('after \'ready\' event is triggered', () => {
                 beforeEach(() => mockJwPlayer.trigger('ready'));
 
+                it('disables JW Player\'s controls', () => {
+                  expect(mockJwPlayer.getControls()).toBe(false);
+                });
+
                 it('reports canSupportCustomControls: true, framesPerSecond, in/out markers', () => {
                   expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
                   expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{
                     canSupportCustomControls: true,
                     framesPerSecond: 25,
                     inMarker: assetTest.inSeconds,
-                    outMarker: assetTest.outSeconds
+                    outMarker: assetTest.outSeconds,
+                    volume: 100
                   }]]);
                 });
 
@@ -470,6 +515,40 @@ export function main() {
                         componentUnderTest.ngOnDestroy();
 
                         expectResetFor('html5Video');
+                      });
+                    });
+
+                    describe('when display is clicked', () => {
+                      describe('when playback was playing', () => {
+                        it('pauses', () => {
+                          mockJwPlayer.simulateDisplayClick();
+
+                          expect(mockVideoElement.paused).toBe(true);
+                        });
+
+                        it('reports playing: false', () => {
+                          mockJwPlayer.simulateDisplayClick();
+
+                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
+                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
+                        });
+                      });
+
+                      describe('when playback was paused', () => {
+                        beforeEach(() => componentUnderTest.togglePlayback());
+
+                        it('plays', () => {
+                          mockJwPlayer.simulateDisplayClick();
+
+                          expect(mockVideoElement.paused).toBe(false);
+                        });
+
+                        it('reports playing: true', () => {
+                          mockJwPlayer.simulateDisplayClick();
+
+                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
+                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                        });
                       });
                     });
 
@@ -537,6 +616,14 @@ export function main() {
                         expect(() => componentUnderTest.playAtSpeed(1, 'reverse')).toThrowError();
                       });
 
+                      it('reports normal speed when the end of the video is reached', () => {
+                        componentUnderTest.playAtSpeed(4);
+                        mockVideoElement.simulatePlaybackEnded();
+
+                        expect(stateUpdateEmitter.calls.allArgs())
+                          .toEqual([[{ playbackSpeed: 4 }], [{ playbackSpeed: 1 }], [{ playing: false }]]);
+                      });
+
                       describe('when playback was playing', () => {
                         it('is still playing', () => {
                           componentUnderTest.playAtSpeed(4);
@@ -578,6 +665,88 @@ export function main() {
                       });
                     });
 
+                    describe('toggleMute()', () => {
+                      describe('when not muted', () => {
+                        it('mutes', () => {
+                          componentUnderTest.toggleMute();
+
+                          expect(mockVideoElement.muted).toBe(true);
+                        });
+
+                        it('reports volume = 0', () => {
+                          componentUnderTest.toggleMute();
+
+                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 0 }]]);
+                        });
+                      });
+
+                      describe('when muted', () => {
+                        beforeEach(() => {
+                          mockVideoElement.volume = 0.57;
+                          componentUnderTest.toggleMute();
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        });
+
+                        it('unmutes', () => {
+                          componentUnderTest.toggleMute();
+
+                          expect(mockVideoElement.muted).toBe(false);
+                        });
+
+                        it('reports previous volume', () => {
+                          componentUnderTest.toggleMute();
+
+                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 57 }]]);
+                        });
+                      });
+                    });
+
+                    describe('setVolumeTo()', () => {
+                      describe('when not muted', () => {
+                        it('updates the volume', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(mockVideoElement.volume).toBe(0.11);
+                        });
+
+                        it('reports the new volume', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 11 }]]);
+                        });
+                      });
+
+                      describe('when muted', () => {
+                        beforeEach(() => {
+                          mockVideoElement.volume = 0.57;
+                          componentUnderTest.toggleMute();
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        });
+
+                        it('unmutes', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(mockVideoElement.muted).toBe(false);
+                        });
+
+                        it('updates the volume', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(mockVideoElement.volume).toBe(0.11);
+                        });
+
+                        it('reports the new volume', () => {
+                          componentUnderTest.setVolumeTo(11);
+
+                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 11 }]]);
+                        });
+                      });
+                    });
+
                     describe('seekTo()', () => {
                       it('doesn\'t immediately emit a currentTime status update', () => {
                         componentUnderTest.seekTo(1234.567);
@@ -591,6 +760,30 @@ export function main() {
 
                         expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
                         expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1234.567 }]);
+                      });
+
+                      describe('when video has ended', () => {
+                        beforeEach(() => {
+                          mockVideoElement.simulatePlaybackEnded();
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        });
+
+                        it('"primes the pump" by playing/pausing before seeking', () => {
+                          componentUnderTest.seekTo(1234.567);
+
+                          expect(stateUpdateEmitter.calls.allArgs())
+                            .toEqual([[{ playing: true }], [{ playing: false }]]);
+                        });
+
+                        it('reports current time after video element triggers \'seeked\'', () => {
+                          componentUnderTest.seekTo(1234.567);
+                          mockVideoElement.simulateSeekCompletion();
+
+                          expect(stateUpdateEmitter.calls.allArgs())
+                            .toEqual([[{ playing: true }], [{ playing: false }], [{ currentTime: 1234.567 }]]);
+                        });
                       });
                     });
 
