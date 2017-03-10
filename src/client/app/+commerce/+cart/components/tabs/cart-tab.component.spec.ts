@@ -173,15 +173,9 @@ export function main() {
             itemCount: 0,
             projects: [{
               lineItems: [
-<<<<<<< 7708ef8786da34dcc6d09ed3c0c4d74cad3be971
-                { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
-                { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: true },
-                { id: '3', price: 59, rightsManaged: false }
-=======
                 { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
                 { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
                 { id: '3', price: 59, rightsManaged: 'Royalty Free' }
->>>>>>> CRUX-1305 - add specs and refactor
               ]
             }]
           }

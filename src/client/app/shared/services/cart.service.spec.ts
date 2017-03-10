@@ -85,15 +85,6 @@ export function main() {
         });
       });
 
-      xit('creates a default project if one does not already exist', () => {
-        mockCartStore.state = { projects: [] };
-        serviceUnderTest.initializeData().subscribe(() => {
-          expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
-          expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/project');
-          expect(mockApi.post).toHaveBeenCalledWithBody({ name: 'Project A', clientName: 'Ross Edfort' });
-          expect(mockApi.post).toHaveBeenCalledWithLoading(true);
-        });
-      });
 
       it('does not add a project if one already exists', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
@@ -114,7 +105,6 @@ export function main() {
 
       it('places the response in the cart store', () => {
         mockApi.getResponse = { lineItem: { asset: { assetId: '10836' } } };
-
         serviceUnderTest.getCartSummary();
 
         expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: '10836' } } });
@@ -169,22 +159,22 @@ export function main() {
     });
 
     describe('addProject()', () => {
-      xit('calls the API service correctly', () => {
+      it('calls the API service correctly', () => {
         serviceUnderTest.addProject();
 
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/project');
-        expect(mockApi.post).toHaveBeenCalledWithBody({ name: 'Project A', clientName: 'Ross Edfort' });
+        expect(mockApi.post).toHaveBeenCalledWithBody({ clientName: 'Ross Edfort' });
         expect(mockApi.post).toHaveBeenCalledWithLoading(true);
       });
 
-      xit('names new projects based on existing names', () => {
+      it('names new projects based on existing names', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
         serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
 
         serviceUnderTest.addProject();
 
-        expect(mockApi.post).toHaveBeenCalledWithBody({ name: 'Project B', clientName: 'Ross Edfort' });
+        expect(mockApi.post).toHaveBeenCalledWithBody({ clientName: 'Ross Edfort' });
       });
 
       it('replaces the cart store with the response', () => {
@@ -209,24 +199,6 @@ export function main() {
         expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith(mockApi.deleteResponse);
       });
 
-      xit('creates a new default project if the last one was deleted', () => {
-        serviceUnderTest.removeProject(mockProject);
-        serviceUnderTest.removeProject(mockProjectB);
-
-        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/project');
-        expect(mockApi.post).toHaveBeenCalledWithBody({ name: 'Project A', clientName: 'Ross Edfort' });
-        expect(mockApi.post).toHaveBeenCalledWithLoading(true);
-      });
-
-      xit('does not add a project if one still exists after a removal', () => {
-        mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
-
-        serviceUnderTest.removeProject(mockProject);
-
-        expect(mockApi.post).not.toHaveBeenCalled();
-      });
     });
 
     describe('updateProject()', () => {

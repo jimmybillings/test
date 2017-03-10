@@ -7,7 +7,6 @@ import { CurrentUserService } from '../services/current-user.service';
 
 import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
 import { CartStore } from '../stores/cart.store';
-import { CartUtilities } from '../utilities/cart.utilities';
 import { Cart, CartState } from '../interfaces/cart.interface';
 
 @Injectable()
@@ -38,7 +37,6 @@ export class CartService {
   public initializeData(): Observable<any> {
     return this.api.get(Api.Orders, 'cart', { loading: true })
       .do(this.updateCart)
-      // .flatMap(_ => this.addProjectIfNoProjectsExist())
       .takeLast(1)
       .map(_ => { return {}; })
       .share();
@@ -46,9 +44,7 @@ export class CartService {
 
   // Temporary until first time user's cart is created with a project - fix for CRUX-1027
   public getCartSummary(): void {
-    this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe((cartSummary: any) => {
-      // this.addProjectIfNoProjectsExist().subscribe();
-    });
+    this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe();
   }
 
   public addProject(): void {
@@ -59,7 +55,6 @@ export class CartService {
     this.api.delete(Api.Orders, `cart/project/${project.id}`, { loading: true })
       .subscribe(wholeCartResponse => {
         this.updateCart(wholeCartResponse);
-        // this.addProjectIfNoProjectsExist().subscribe();
       });
   }
 
@@ -143,7 +138,6 @@ export class CartService {
 
   private createAddProjectRequestBody(): ApiBody {
     return {
-      // name: CartUtilities.nextNewProjectNameGiven(this.existingProjectNames),
       clientName: this.fullName
     };
   }
