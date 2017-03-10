@@ -105,25 +105,28 @@ export function main() {
 
     describe('REMOVE_ASSET_FROM_COLLECTION', () => {
       const tempInitialState = JSON.parse(JSON.stringify(initialState));
-      tempInitialState.assets = { items: [{ assetId: 10836, uuid: '123' }] };
+      tempInitialState.assets.items = [{ assetId: 10836, uuid: '123' }];
       const tempPayload = { assetId: 10836, uuid: '123' };
 
       addStandardReducerTestsFor(activeCollection, 'REMOVE_ASSET_FROM_COLLECTION', tempInitialState, tempPayload);
 
       it('returns current state minus the specified asset payload when current state is passed in', () => {
         expect(activeCollection(
-          { assets: { items: [{ assetId: 42, uuid: 't123' }, { assetId: 47, uuid: 't456' }] }, assetsCount: 2 },
+          { assets: { pagination: {totalCount: 2}, items: [{ assetId: 42, uuid: 't123' },
+          { assetId: 47, uuid: 't456' }] }, assetsCount: 2 },
           { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: 't123' }
         ))
-          .toEqual({ assets: { items: [{ assetId: 47, uuid: 't456' }] }, assetsCount: 1 });
+          .toEqual({ assets: { pagination: {totalCount: 1}, items: [{ assetId: 47, uuid: 't456' }] }, assetsCount: 1 });
       });
 
       it('returns current state when current state is passed in and specified asset payload is not present', () => {
         expect(activeCollection(
-          { assets: { items: [{ assetId: 42, uuid: 't123' }, { assetId: 47, uuid: 't456' }] }, assetsCount: 2 },
+          { assets: { pagination: {totalCount: 2}, items: [{ assetId: 42, uuid: 't123' },
+          { assetId: 47, uuid: 't456' }] }, assetsCount: 2 },
           { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { assetId: 86, uuid: 't789' } }
         ))
-          .toEqual({ assets: { items: [{ assetId: 42, uuid: 't123' }, { assetId: 47, uuid: 't456' }] }, assetsCount: 1 });
+          .toEqual({ assets: { pagination: {totalCount: 1}, items: [{ assetId: 42, uuid: 't123' },
+          { assetId: 47, uuid: 't456' }] }, assetsCount: 1 });
       });
 
       it('returns current state when current state is passed in with assets undefined', () => {
