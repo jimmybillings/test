@@ -1,42 +1,133 @@
-div.line-items {
-  div.line-item {
-    background-color: #fff;
-    @include md-elevation(2);
-    margin: rem(1);
+
+line-items-component {
+  padding: 0 rem(1.2) rem(1.2) rem(1.2);
+  display: flex;
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
     min-width: 100%;
-    md-select {
-      width: 90%;
+  }
+  li.cart-asset {
+    position: relative;
+    background-color: rgba(md-color($background, card), .9);
+    color: rgba(md-color($foreground, text), .7);
+    margin: rem(1.2) 0 0 0;
+    padding: rem(.2);
+    border-radius: $md-button-border-radius;
+    border: 1px solid rgba(md-color($background, card), .01);
+    transition: $swift-ease-out;
+    .actions {
+      min-height: rem(4.5);
+      position: relative;
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+        padding-top: rem(.4);
+      }
     }
-    div.line-item-actions {
-      padding: rem(1);      
-      button {
-        color: md-color($md-grey, 700);
-        transition: $swift-ease-out;
-        &:hover {
-          color: md-color($md-primary);
-          background-color: rgba(md-color($md-foreground, base), .07);
-          md-icon {
-            opacity: 1;
-          }
+    .tools {
+      opacity: .85;
+      text-align: right;
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+        padding-bottom: rem(5.0);
+      }
+    }
+    md-select {
+      margin-top: rem(1.4);
+      width: 99%;
+      max-width: rem(24.0);
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+        margin-top: rem(3.0);
+        margin-bottom: rem(3.0);
+        max-width: 99%;
+      }
+    }
+    .asset-description {
+      font-size: rem(1.4);
+      line-height: rem(1.55);
+      margin-top: rem(.3);
+      margin-bottom: rem(1.1);
+    }
+    .asset-name {
+      font-size: rem(1.1);
+      opacity: .7;
+    }
+    .subclip-timeline {
+      margin: rem(.5) 0 0;
+      position: relative;
+      height: rem(.6);
+      width: 100%;
+      background-color: darken(md-color($background, status-bar), 10%);
+      .subclip-segment {
+        background-color: rgba(md-color($accent, darker), .6);
+        height: 100%;
+        position: absolute;
+      }
+    }
+    ul.subclip-data {
+      margin-top: 0;
+      color: md-color($foreground, secondary-text);
+      list-style: none;
+      padding: 0;
+      height: rem(2.0);
+      line-height: rem(2.0);
+      width: 100%;
+      min-width: rem(38.0);
+      background-color: rgba(md-color($primary), .1);
+      font-size: rem(1.1);
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
+        font-size: rem(1.0);
+        min-width: 100%;
+      }
+      li {
+        &:first-child {
+          margin:0 0 0 rem(0.4);
         }
-        &:hover::after {
-          background-color: transparent;
-        }
-        .md-button-ripple {
-          display:none;
+        &:nth-child(3n) {
+          margin:0 rem(0.4) 0 0;
+          text-align: right;
         }
       }
-      p.price {
-        min-width: rem(10);
-        margin: 0 rem(1);
-        color: md-color($md-primary);
-        font-size: rem(2);
-        &.select-usage {
-          &::after {
-            content: "*";
-            color: md-color($md-accent, 600);
-          }
+    }
+
+
+    // & > div[layout="row"] > div[layout-padding]:first-child {
+    //   padding-left: 0;
+    //   padding-top: rem(.4);
+    //   padding-right: rem(1.6);
+    //   padding-bottom: 0;
+    //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+    //     padding-right: 0;
+    //   }
+    // }
+    // & > div[layout="row"] > div[layout-padding]:last-child {
+    //   padding: 0;
+    // }
+    .price {
+      position: absolute;
+      bottom: rem(.7);
+      right: rem(.7);
+      font-size: rem(1.8);
+      &::first-letter {
+        font-size: .83em;
+        vertical-align: top;
+      }
+      &.select-usage {
+        &::after {
+          content: " *";
+          color: md-color($md-accent, darker);
         }
+      }
+    }
+    .divider {
+      margin: rem(.6) rem(.8) 0 rem(.8);
+      padding-bottom: rem(.6);
+      box-shadow: inset 0 1px 0 0 md-color($foreground, divider);
+      display: none;
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+        display: flex;
       }
     }
   }
