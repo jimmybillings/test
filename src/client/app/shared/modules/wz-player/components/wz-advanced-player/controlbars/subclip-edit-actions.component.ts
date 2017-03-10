@@ -3,7 +3,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 @Component({
   moduleId: module.id,
-  selector: 'subclip-edit-actions',
+  selector: 'wz-subclip-edit-actions',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button md-button color="primary" (click)="dialog.close()">

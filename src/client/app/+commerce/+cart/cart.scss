@@ -16,18 +16,41 @@ cart-component .tabs-section md-tab-group {
   }
 }
 
-section.cart {
+section.cart-total {
   #paymentArea_ {
     margin-right: rem(2);
   }
-  p.select-usage-warn {
-    margin: 0;
-    color: md-color($md-primary);
-    font-size: rem(1.4);
-    text-decoration: bold;
+  .select-usage-warn {
+    margin-top: rem(.2);
+    color: md-color($md-warn, darker);
+    font-size: rem(1.5);
     &::after {
       content: " *";
-      color: md-color($md-accent, 600);
+      color: md-color($md-warn, darker);
     }
+  }
+
+  .total {
+    text-align: right;
+    letter-spacing: -.02em;
+    .total-label {
+      font-weight: 100;
+      letter-spacing: 0;
+      padding-left: rem(1.4);
+    }
+    .total-amount {
+      display: inline-block;
+      &::first-letter {
+        font-size: .68em;
+        line-height: 1.7;
+        vertical-align: top;
+        letter-spacing: 0;
+      }
+    }
+  }
+  button.checkout {
+    font-size: 1.1em;
+    line-height: rem(4.8);
+    margin: rem(1.0) 0;
   }
 }

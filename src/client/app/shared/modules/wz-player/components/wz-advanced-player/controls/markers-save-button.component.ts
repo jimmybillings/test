@@ -4,7 +4,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 @Component({
   moduleId: module.id,
-  selector: 'markers-save-button',
+  selector: 'wz-markers-save-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button md-icon-button

@@ -4,7 +4,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 @Component({
   moduleId: module.id,
-  selector: 'volume-control',
+  selector: 'wz-volume-control',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button md-icon-button *ngIf="!active" title="{{ buttonTitle | translate }}" (mouseover)="onMouseOver()">
