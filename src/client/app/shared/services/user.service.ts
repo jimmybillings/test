@@ -58,6 +58,7 @@ export class UserService {
   }
 
   public getAddresses(returnValue?: string): Observable<any[]> {
+    // return this.api.get(Api.Identities, 'user/currentUsersAssociatedAddresses');
     if (returnValue === 'empty') {
       return Observable.of([]);
     } else {
