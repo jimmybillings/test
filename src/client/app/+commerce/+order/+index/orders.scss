@@ -101,8 +101,9 @@ orders-component .orders-head {
       .total-amount {
         display: inline-block;
         &::first-letter {
-          display: inline-block;
-          font-size: .7em;
+          // display: inline-block;
+          font-size: .68em;
+          line-height: 1.7;
           vertical-align: top;
           letter-spacing: 0;
         }

@@ -1,6 +1,6 @@
-<div class="line-items">
+<!--<div class="line-items">
 	<div *ngFor="let lineItem of items; let i = index" layout="column" layout-align="center center">
-		<div class="line-item" flex-gt-sm="95">
+		<div class="line-item">
 			<div layout-gt-sm="row" layout="column" layout-align-gt-sm="space-between center" layout-align="space-around stretch">
 				<div flex-gt-sm="65">
 					<cart-asset-component [asset]="lineItem.asset" (assetNotify)="delegate($event)"></cart-asset-component>
@@ -28,11 +28,50 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div>-->
+
+<ul>
+	<li 
+		*ngFor="let lineItem of items; let i = index"
+		class="cart-asset" 
+		flex="100" 
+		layout="row" 
+		layout-xs="column">
+		<div flex="100" flex-gt-xs="50">
+			<cart-asset-component [asset]="lineItem.asset" (assetNotify)="delegate($event)"></cart-asset-component>
+		</div>
+		<div flex-gt-xs="30" layout-sm="100" flex="auto" class="delivery-format" layout-padding>
+			<md-select placeholder="Delivery format/codec" *ngIf="lineItem.transcodeTargets && lineItem.transcodeTargets.length > 0" [(ngModel)]="targets[i]">
+				<md-option *ngFor="let target of lineItem.transcodeTargets" [value]="target" (onSelect)="selectTarget(targets[i], target, lineItem)">{{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}</md-option>
+			</md-select>
+		</div>
+		<div flex-gt-xs="20" layout-sm="100" flex="auto" class="actions">
+			<div class="tools" flex="100">
+				<button  md-icon-button (click)="remove(lineItem)" title="remove asset item"><md-icon>remove_circle</md-icon></button>
+				<button *ngIf="lineItem.rightsManaged" md-icon-button (click)="showPricingDialog(lineItem)" title="usage pricing"><md-icon>data_usage</md-icon></button>
+				<button md-icon-button [md-menu-trigger-for]="lineItemOptionsMenu" (click)="selectLineItem(lineItem)" title="More asset options"><md-icon>more_vert</md-icon></button>
+			</div>
+			<div flex="100" layout="row" layout-xs="column" class="divider"></div>
+			<div class="price" [ngClass]="{'select-usage': lineItem.rightsManaged && !lineItem.attributes}">
+				{{ lineItem.price | currency:'USD':true:'1.2-2' }}
+			</div>
+		</div>
+	</li>
+</ul>
 
 <md-menu x-position="before" #lineItemOptionsMenu="mdMenu">
+	<button md-menu-item (click)="clone(selectedLineItem)">
+		<md-icon>control_point_duplicate</md-icon>Duplicate asset item 
+	</button>
 	<button md-menu-item *ngFor="let otherProject of otherProjects" (click)="moveTo(otherProject, selectedLineItem)">
-    <md-icon>forward</md-icon>
-    {{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProject.name} | slice:0:26 }}
+    <md-icon>swap_vert_circle</md-icon>
+    {{ 'CART.PROJECTS.MOVE_TO' | translate:{projectName: otherProject.name} | slice:0:30 }}
   </button>
+	<button md-menu-item (click)="editMarkers(selectedLineItem)" *ngIf="userCan.createSubclips(selectedLineItem)">
+		<md-icon>theaters</md-icon>
+		<span>
+			{{ (!selectedLineItem.timeStart ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING' : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
+		</span>
+	</button>
+	<!--{{(selectedLineItem | async).timeStart}}-->
 </md-menu>
