@@ -616,6 +616,14 @@ export function main() {
                         expect(() => componentUnderTest.playAtSpeed(1, 'reverse')).toThrowError();
                       });
 
+                      it('reports normal speed when the end of the video is reached', () => {
+                        componentUnderTest.playAtSpeed(4);
+                        mockVideoElement.simulatePlaybackEnded();
+
+                        expect(stateUpdateEmitter.calls.allArgs())
+                          .toEqual([[{ playbackSpeed: 4 }], [{ playbackSpeed: 1 }], [{ playing: false }]]);
+                      });
+
                       describe('when playback was playing', () => {
                         it('is still playing', () => {
                           componentUnderTest.playAtSpeed(4);
@@ -755,7 +763,12 @@ export function main() {
                       });
 
                       describe('when video has ended', () => {
-                        beforeEach(() => mockVideoElement.simulatePlaybackEnded());
+                        beforeEach(() => {
+                          mockVideoElement.simulatePlaybackEnded();
+
+                          // Don't want initialization calls to affect future verifications.
+                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        });
 
                         it('"primes the pump" by playing/pausing before seeking', () => {
                           componentUnderTest.seekTo(1234.567);
