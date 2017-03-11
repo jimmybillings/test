@@ -32,7 +32,7 @@ import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
 import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soon.component';
 import { WzSubclipEditorComponent } from './components/wz-subclip-editor/wz.subclip-editor.component';
-
+import { SubclipEditActionsComponent } from './components/wz-subclip-editor/subclip-edit-actions.component';
 import { WzGalleryTwoLevelComponent } from './components/wz-gallery-two-level/wz.gallery-two-level.component';
 
 import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb/wz.gallery-breadcrumb.component';
@@ -78,7 +78,8 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzComingSoonComponent,
     WzNotificationComponent,
     WzGalleryTwoLevelComponent,
-    WzSubclipEditorComponent
+    WzSubclipEditorComponent,
+    SubclipEditActionsComponent
   ],
   exports: [
     WzGalleryBreadcrumbComponent,
@@ -111,7 +112,8 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzFormModule,
     WzNotificationComponent,
     WzGalleryTwoLevelComponent,
-    WzSubclipEditorComponent
+    WzSubclipEditorComponent,
+    SubclipEditActionsComponent
   ],
   entryComponents: [
     CollectionLinkComponent,
