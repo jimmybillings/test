@@ -98,4 +98,8 @@ export class WzAdvancedPlayerComponent {
         break;
     }
   }
+
+  public onSaveMarkers(event: any) {
+    this.onSubclip.emit(event);
+  }
 }

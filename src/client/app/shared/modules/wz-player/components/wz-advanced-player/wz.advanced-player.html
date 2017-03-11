@@ -20,6 +20,6 @@
     [dialog]="dialog"
     [inMarkerFrame]="(playerStateService.state | async).inMarkerFrame"
     [outMarkerFrame]="(playerStateService.state | async).outMarkerFrame"
-    (request)="handle($event)">
+    (saveMarkers)="onSaveMarkers($event)">
   </wz-subclip-edit-actions>
 </ng-container>

@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
 import { Frame } from 'wazee-frame-formatter';
 
 @Component({
@@ -29,16 +28,17 @@ export class SubclipEditActionsComponent {
   @Input() hasStoredMarkers: boolean;
   @Input() inMarkerFrame: Frame;
   @Input() outMarkerFrame: Frame;
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() saveMarkers: EventEmitter<any> = new EventEmitter<any>();
 
   public showRemoveMarkers(): boolean {
     return this.hasStoredMarkers && !this.inMarkerFrame && !this.outMarkerFrame ? true : false;
   }
 
   public onSave(): void {
-    this.request.emit({ type: PlayerRequestType.SaveMarkers });
+    this.saveMarkers.emit({ in: this.inMarkerFrame.frameNumber, out: this.outMarkerFrame.frameNumber });
   }
+
   public onRemove(): void {
-    this.request.emit({ type: PlayerRequestType.SaveMarkersAsUndefined });
+    this.saveMarkers.emit({ in: undefined, out: undefined });
   }
 }
