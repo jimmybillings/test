@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: ConfirmTabComponent;
 
     beforeEach(() => {
-      componentUnderTest = new ConfirmTabComponent(null);
+      componentUnderTest = new ConfirmTabComponent(null, null);
     });
 
     it('has no functionality yet', () => {
