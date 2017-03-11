@@ -15,11 +15,4 @@
     (request)="handle($event)"
     [displayContext]="displayContext">
   </wz-subclip-controlbar>
-  <wz-subclip-edit-actions *ngIf="displayContext =='subClipEditDialog'" layout="row" layout-align="end center"
-    [hasStoredMarkers]="asset.timeStart != undefined"
-    [dialog]="dialog"
-    [inMarkerFrame]="(playerStateService.state | async).inMarkerFrame"
-    [outMarkerFrame]="(playerStateService.state | async).outMarkerFrame"
-    (saveMarkers)="onSaveMarkers($event)">
-  </wz-subclip-edit-actions>
 </ng-container>

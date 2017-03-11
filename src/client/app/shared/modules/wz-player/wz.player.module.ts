@@ -52,6 +52,7 @@ import { VolumeControlComponent } from './components/wz-advanced-player/controls
     TimecodePipe,
     WzAdvancedPlayerComponent,
     WzPlayerComponent,
+    SubclipEditActionsComponent
   ],
   entryComponents: [WzAdvancedPlayerComponent]
 })
