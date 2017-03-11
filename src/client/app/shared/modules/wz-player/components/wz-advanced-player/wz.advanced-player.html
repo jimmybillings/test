@@ -12,7 +12,7 @@
   </wz-player-controlbar>
   <wz-subclip-controlbar class="tool-bar" layout="row" 
     [playerState]="playerStateService.state | async" 
-    (request)="handle($event)"
-    [displayContext]="displayContext">
+    [displayAllControls]="displayAllControls"
+    (request)="handle($event)">
   </wz-subclip-controlbar>
 </ng-container>

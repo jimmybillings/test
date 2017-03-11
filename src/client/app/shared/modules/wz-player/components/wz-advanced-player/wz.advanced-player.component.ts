@@ -15,13 +15,12 @@ import { Subscription } from 'rxjs/Rx';
 })
 
 export class WzAdvancedPlayerComponent {
-  @Input() dialog: any;
   @Input() window: any;
+  @Input() displayAllControls: boolean = true;
   @Output() onSubclip = new EventEmitter();
   @Output() onUpdateSubclipData = new EventEmitter();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
-  @Input() public displayContext: string = 'assetDetails';
   public playerStateSubscription: Subscription;
   private currentAsset: any = null;
 

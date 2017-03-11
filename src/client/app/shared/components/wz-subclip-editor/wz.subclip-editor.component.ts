@@ -9,8 +9,7 @@ import { Frame } from 'wazee-frame-formatter';
     <wz-advanced-player
       [window]="window"
       [asset]="asset"
-      [dialog]="dialog"
-      [displayContext]="'subClipEditDialog'"
+      [displayAllControls]="false"
       (onUpdateSubclipData)="onPlayerSubclipUpdate($event)">
     </wz-advanced-player>
 
