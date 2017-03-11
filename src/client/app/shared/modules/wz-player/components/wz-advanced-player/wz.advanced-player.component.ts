@@ -66,9 +66,6 @@ export class WzAdvancedPlayerComponent {
       case PlayerRequestType.SaveMarkers:
         this.onSubclip.emit({ in: state.inMarkerFrame.frameNumber, out: state.outMarkerFrame.frameNumber });
         break;
-      case PlayerRequestType.SaveMarkersAsUndefined:
-        this.onSubclip.emit({ in: undefined, out: undefined });
-        break;
       case PlayerRequestType.SeekToFrame:
         this.player.seekTo(payload.frame.asSeconds());
         break;

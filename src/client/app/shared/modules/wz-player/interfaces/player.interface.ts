@@ -48,7 +48,6 @@ export enum PlayerRequestType {
   ClearMarkers,
   PlayAtSpeed,
   SaveMarkers,
-  SaveMarkersAsUndefined,
   SeekToFrame,
   SeekToInMarker,
   SeekToOutMarker,
