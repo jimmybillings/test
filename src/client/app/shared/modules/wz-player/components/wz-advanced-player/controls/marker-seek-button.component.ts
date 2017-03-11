@@ -5,7 +5,7 @@ import { MarkerType, PlayerState, PlayerRequest, PlayerRequestType } from '../..
 
 @Component({
   moduleId: module.id,
-  selector: 'marker-seek-button',
+  selector: 'wz-marker-seek-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button md-icon-button

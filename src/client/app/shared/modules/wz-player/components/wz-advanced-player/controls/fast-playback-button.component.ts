@@ -4,7 +4,7 @@ import { PlayerState, PlaybackDirection, PlayerRequest, PlayerRequestType } from
 
 @Component({
   moduleId: module.id,
-  selector: 'fast-playback-button',
+  selector: 'wz-fast-playback-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button md-icon-button [disabled]="!canPlayFast()" title="{{ title | translate }}" (click)="onClick()">

@@ -225,7 +225,7 @@ export function main() {
         let mockProject = {};
         componentUnderTest.onNotification({ type: 'UPDATE_PROJECT', payload: mockProject });
 
-        expect(mockDialog.open).toHaveBeenCalledWith(EditProjectComponent, { width: '600px' });
+        expect(mockDialog.open).toHaveBeenCalledWith(EditProjectComponent, { position: { top: '14%' } });
       });
 
       it('moves a line item when notified with MOVE_LINE_ITEM', () => {

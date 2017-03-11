@@ -1,24 +1,24 @@
 <wz-player [window]="window" [asset]="asset" [mode]="'advanced'" (stateUpdate)="onStateUpdate($event)"></wz-player>
 <ng-container *ngIf="assetIsVideo() && (playerStateService.state | async).canSupportCustomControls">
-  <scrub-ber
+  <wz-scrubber
     layout="row"
     [window]="window"
     [playerState]="playerStateService.state | async"
     (request)="handle($event)">
-  </scrub-ber>
-  <player-controlbar class="tool-bar" layout="row" 
+  </wz-scrubber>
+  <wz-player-controlbar class="tool-bar" layout="row" 
     [playerState]="playerStateService.state | async" 
     (request)="handle($event)">
-  </player-controlbar>
-  <subclip-controlbar class="tool-bar" layout="row" 
+  </wz-player-controlbar>
+  <wz-subclip-controlbar class="tool-bar" layout="row" 
     [playerState]="playerStateService.state | async" 
     (request)="handle($event)"
     [displayContext]="displayContext">
-  </subclip-controlbar>
-  <subclip-edit-actions *ngIf="displayContext =='subClipEditDialog'" layout="row" layout-align="end center"
+  </wz-subclip-controlbar>
+  <wz-subclip-edit-actions *ngIf="displayContext =='subClipEditDialog'" layout="row" layout-align="end center"
     [hasStoredMarkers]="asset.timeStart != undefined"
     [dialog]="dialog"
     [playerState]="playerStateService.state | async" 
     (request)="handle($event)">
-  </subclip-edit-actions>
+  </wz-subclip-edit-actions>
 </ng-container>

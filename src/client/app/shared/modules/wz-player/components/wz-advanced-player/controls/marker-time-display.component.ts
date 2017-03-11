@@ -5,7 +5,7 @@ import { MarkerType, PlayerState } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
-  selector: 'marker-time-display',
+  selector: 'wz-marker-time-display',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <span class="timecode">{{ frame | timecode }}</span>

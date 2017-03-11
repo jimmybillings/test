@@ -4,7 +4,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 @Component({
   moduleId: module.id,
-  selector: 'markers-clear-button',
+  selector: 'wz-markers-clear-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button md-icon-button

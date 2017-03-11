@@ -187,7 +187,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   private updateProject(project: any) {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(EditProjectComponent, { width: '600px' });
+    let dialogRef: MdDialogRef<any> = this.dialog.open(EditProjectComponent, { position: { top: '14%' } });
     Object.assign(dialogRef.componentInstance, { items: project.items, dialog: dialogRef });
     dialogRef.afterClosed()
       .filter(data => data)

@@ -22,7 +22,7 @@ export class LineItemsComponent {
   @Input() otherProjects: Project[];
   @Input() userCan: Capabilities;
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
-  private selectedLineItem: LineItem;
+  public selectedLineItem: LineItem;
 
   public moveTo(otherProject: Project, lineItem: LineItem): void {
     this.lineItemsNotify.emit(

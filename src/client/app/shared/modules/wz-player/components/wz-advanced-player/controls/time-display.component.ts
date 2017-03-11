@@ -4,7 +4,7 @@ import { PlayerState } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
-  selector: 'time-display',
+  selector: 'wz-time-display',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <span class="timecode">{{ playerState.currentFrame | timecode }}</span>

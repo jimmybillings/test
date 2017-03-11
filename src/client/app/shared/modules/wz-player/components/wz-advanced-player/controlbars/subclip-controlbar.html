@@ -1,15 +1,15 @@
 <section flex="80"  layout-align="start stretch">
-  <marker-seek-button [type]="'in'" [playerState]="playerState" (request)="forward($event)"></marker-seek-button>
-  <marker-time-display [type]="'in'" [playerState]="playerState"></marker-time-display>
-  <marker-set-button [type]="'in'" [playerState]="playerState" (request)="forward($event)"></marker-set-button>
-  <markers-playback-button [playerState]="playerState" (request)="forward($event)"></markers-playback-button>
-  <marker-set-button [type]="'out'" [playerState]="playerState" (request)="forward($event)"></marker-set-button>
-  <marker-time-display [type]="'out'" [playerState]="playerState"></marker-time-display>
-  <marker-seek-button [type]="'out'" [playerState]="playerState" (request)="forward($event)"></marker-seek-button>
-  <markers-clear-button [playerState]="playerState" (request)="forward($event)"></markers-clear-button>
+  <wz-marker-seek-button [type]="'in'" [playerState]="playerState" (request)="forward($event)"></wz-marker-seek-button>
+  <wz-marker-time-display [type]="'in'" [playerState]="playerState"></wz-marker-time-display>
+  <wz-marker-set-button [type]="'in'" [playerState]="playerState" (request)="forward($event)"></wz-marker-set-button>
+  <wz-markers-playback-button [playerState]="playerState" (request)="forward($event)"></wz-markers-playback-button>
+  <wz-marker-set-button [type]="'out'" [playerState]="playerState" (request)="forward($event)"></wz-marker-set-button>
+  <wz-marker-time-display [type]="'out'" [playerState]="playerState"></wz-marker-time-display>
+  <wz-marker-seek-button [type]="'out'" [playerState]="playerState" (request)="forward($event)"></wz-marker-seek-button>
+  <wz-markers-clear-button [playerState]="playerState" (request)="forward($event)"></wz-markers-clear-button>
 </section>
 <nav class="subclip-options" flex="20" layout-align="end stretch" *ngIf="displayContext == 'assetDetails'">
-  <markers-save-button [playerState]="playerState" (request)="forward($event)"></markers-save-button>
+  <wz-markers-save-button [playerState]="playerState" (request)="forward($event)"></wz-markers-save-button>
   <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.SIMPLE_BTN_TITLE' | translate }}">
     <md-icon>ondemand_video</md-icon>
   </button>
