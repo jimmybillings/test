@@ -31,6 +31,7 @@ import { CollectionLinkComponent } from '../+collection/components/collection-li
 import { WzTermsComponent } from './components/wz-terms/wz.terms.component';
 import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component';
 import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soon.component';
+import { WzSubclipEditorComponent } from './components/wz-subclip-editor/wz.subclip-editor.component';
 
 import { WzGalleryTwoLevelComponent } from './components/wz-gallery-two-level/wz.gallery-two-level.component';
 
@@ -76,7 +77,8 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzPricingComponent,
     WzComingSoonComponent,
     WzNotificationComponent,
-    WzGalleryTwoLevelComponent
+    WzGalleryTwoLevelComponent,
+    WzSubclipEditorComponent
   ],
   exports: [
     WzGalleryBreadcrumbComponent,
@@ -108,7 +110,8 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzComingSoonComponent,
     WzFormModule,
     WzNotificationComponent,
-    WzGalleryTwoLevelComponent
+    WzGalleryTwoLevelComponent,
+    WzSubclipEditorComponent
   ],
   entryComponents: [
     CollectionLinkComponent,
@@ -116,7 +119,8 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzTermsComponent,
     WzPricingComponent,
     WzComingSoonComponent,
-    WzNotificationComponent]
+    WzNotificationComponent,
+    WzSubclipEditorComponent]
 })
 
 export class SharedModule {

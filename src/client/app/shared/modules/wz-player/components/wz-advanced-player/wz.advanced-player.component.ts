@@ -21,7 +21,7 @@ export class WzAdvancedPlayerComponent {
   @Output() onUpdateSubclipData = new EventEmitter();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
-  public displayContext: string = 'assetDetails';
+  @Input() public displayContext: string = 'assetDetails';
   public playerStateSubscription: Subscription;
   private currentAsset: any = null;
 
