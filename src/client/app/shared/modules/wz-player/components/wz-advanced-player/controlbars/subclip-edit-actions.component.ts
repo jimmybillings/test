@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { Frame } from 'wazee-frame-formatter';
 
 @Component({
   moduleId: module.id,
@@ -11,7 +12,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
     </button>
     <button md-button class="is-outlined" color="primary"
       *ngIf="!showRemoveMarkers()"
-      [disabled]="!playerState.inMarkerFrame || !playerState.outMarkerFrame"
+      [disabled]="!inMarkerFrame || !outMarkerFrame"
       (click)="onSave()">
       {{ 'ASSET.SAVE_SUBCLIP.EDIT_ACTIONS.SAVE_BTN_LABEL' | translate }}
     </button>
@@ -26,13 +27,12 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 export class SubclipEditActionsComponent {
   @Input() dialog: any;
   @Input() hasStoredMarkers: boolean;
-  @Input() playerState: PlayerState;
+  @Input() inMarkerFrame: Frame;
+  @Input() outMarkerFrame: Frame;
   @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
 
-  public hasStoredMarkersAndCleared: boolean;
-
   public showRemoveMarkers(): boolean {
-    return this.hasStoredMarkers && !this.playerState.inMarkerFrame && !this.playerState.outMarkerFrame ? true : false;
+    return this.hasStoredMarkers && !this.inMarkerFrame && !this.outMarkerFrame ? true : false;
   }
 
   public onSave(): void {
