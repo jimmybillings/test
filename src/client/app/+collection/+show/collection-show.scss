@@ -72,7 +72,7 @@ collection-show .collections-list {
 .subclipping-edit-open .cdk-overlay-pane md-dialog-container.md-dialog-container {
   padding: rem(.2);
   min-height: rem(33.0);
-  subclip-edit-actions {
+  wz-subclip-edit-actions {
     text-align: right;
     padding: rem(1.6) rem(1.6) rem(1.6) 0;
     [md-button].is-outlined {

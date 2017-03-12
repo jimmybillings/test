@@ -10,12 +10,11 @@ line-items-component {
   }
   li.cart-asset {
     position: relative;
-    background-color: rgba(md-color($background, card), .9);
+    background-color: md-color($background, card);
     color: rgba(md-color($foreground, text), .7);
     margin: rem(1.2) 0 0 0;
     padding: rem(.2);
     border-radius: $md-button-border-radius;
-    border: 1px solid rgba(md-color($background, card), .01);
     transition: $swift-ease-out;
     .actions {
       min-height: rem(4.5);
@@ -28,7 +27,7 @@ line-items-component {
       opacity: .85;
       text-align: right;
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-        padding-bottom: rem(5.0);
+        padding-bottom: rem(3.8);
       }
     }
     md-select {
@@ -128,6 +127,9 @@ line-items-component {
       display: none;
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         display: flex;
+        position: absolute;
+        bottom: rem(3.2);
+        width: calc(100% - 16px);
       }
     }
   }

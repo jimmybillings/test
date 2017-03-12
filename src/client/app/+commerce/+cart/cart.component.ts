@@ -17,7 +17,7 @@ export class CartComponent implements OnInit {
     // this.tabLabelKeys = ['cart', 'review', 'billing', 'payment', 'confirm'];
 
     // For now (BETA), we have only cart and review.
-    this.tabLabelKeys = ['cart', 'review', 'billing', 'payment', 'confirm'];
+    this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];
 
     // Enable the first tab and disable the rest.
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
