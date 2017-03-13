@@ -53,7 +53,11 @@ export class CartService {
       stripeTokenType: this.state.orderInProgress.authorization.type
     };
     return this.api.post(Api.Orders, 'cart/stripe/process',
-      { body: stripe, loading: true });
+      { body: stripe, loading: true })
+      .do((response: any) => {
+        this.initializeData().subscribe();
+        return response;
+      });
   }
 
   public addProject(): void {
@@ -110,7 +114,7 @@ export class CartService {
       fieldToEdit = { attributes: this.formatAttributes(fieldToEdit.pricingAttributes) };
     }
     Object.assign(lineItem, fieldToEdit);
-    this.api.put(Api.Orders, `cart/update/lineItem/${lineItem.id}`, { body: lineItem, parameters: { region: 'AAA' } }).take(1)
+    this.api.put(Api.Orders, `cart/update/lineItem/${lineItem.id}`, { body: lineItem, parameters: { region: 'AAA' } })
       .subscribe(this.updateCart);
   }
 

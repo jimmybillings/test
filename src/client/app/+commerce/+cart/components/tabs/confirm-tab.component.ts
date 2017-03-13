@@ -3,6 +3,7 @@ import { CartService } from '../../../../shared/services/cart.service';
 import { Tab } from './tab';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
+import { ViewAddress } from '../../../../shared/interfaces/user.interface';
 
 @Component({
   moduleId: module.id,
@@ -32,5 +33,15 @@ export class ConfirmTabComponent extends Tab implements OnInit, OnDestroy {
       , (error: any) =>
         console.log(error)
     );
+  }
+
+  public format(address: ViewAddress): string {
+    if (address.address) {
+      return Object.keys(address.address).map((key: string) => {
+        return address.address[key];
+      }).join('<br>');
+    } else {
+      return `There is no address on record for this ${address.type}`;
+    }
   }
 }

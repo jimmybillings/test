@@ -2,16 +2,14 @@
 <section layout="column" flex="100">
   <projects-component flex="100" [readOnly]="true" [projects]="(cartService.data | async).cart.projects"></projects-component>
   <div layout="row" flex="100" layout-align="space-between center">
-    <md-card flex="45">
-      <md-card-title>Confirm</md-card-title>
-      <md-card-content>
-        <pre><code>{{cartStore.orderInProgress.authorization.card | json}}</code></pre>
-      </md-card-content>
+    <md-card flex="40" class="address">
+      <md-card-title>{{cartStore.orderInProgress.address.type + ': ' + cartStore.orderInProgress.address.name}}</md-card-title>
+      <md-card-content [innerHTML]="format(cartStore.orderInProgress.address)"></md-card-content>
     </md-card>
     <md-card flex="45">
       <md-card-title>Confirm</md-card-title>
       <md-card-content>
-        <md-list>
+        <md-list dense>
           <md-list-item> Date: {{cartStore.cart.lastUpdated}} </md-list-item>
           <md-list-item> Card: {{cartStore.orderInProgress.authorization.card.brand}} </md-list-item>
           <md-list-item> Card Number: **** **** **** {{cartStore.orderInProgress.authorization.card.last4}} </md-list-item>
@@ -26,5 +24,4 @@
 </section>
 <nav flex="100" layout="row" layout-align="space-between">
   <button md-raised-button class="md-block" (click)="goToPreviousTab()">BACK TO PAYMENT</button>
-  <button md-raised-button class="md-block">SUBMIT</button>
 </nav>
