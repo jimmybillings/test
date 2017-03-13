@@ -54,7 +54,7 @@ export function main() {
       mockDialog = {
         open: jasmine.createSpy('open').and.returnValue({
           componentInstance: {
-            onSubclip: Observable.of({}),
+            save: Observable.of({}),
             pricingEvent: Observable.of({})
           },
           afterClosed: function () {

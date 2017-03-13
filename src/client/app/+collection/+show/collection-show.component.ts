@@ -187,7 +187,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       Object.assign(dialogRef.componentInstance, { window: this.window.nativeWindow, asset: asset });
       this.document.body.classList.add('subclipping-edit-open');
       dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.onSubclip.subscribe((data: any) => {
+      dialogRef.componentInstance.save.subscribe((data: any) => {
         const body = { uuid: asset.uuid, assetId: asset.assetId, timeStart: data.in, timeEnd: data.out };
         this.activeCollection.updateAsset(this.collection.id, body).subscribe();
         dialogRef.close();
