@@ -10,7 +10,7 @@ import { Frame } from 'wazee-frame-formatter';
       [window]="window"
       [asset]="asset"
       [displayAllControls]="false"
-      (onUpdateSubclipData)="onPlayerSubclipUpdate($event)">
+      (markerChange)="onPlayerMarkerChange($event)">
     </wz-advanced-player>
 
     <section layout="row" layout-align="end">
@@ -43,7 +43,7 @@ export class WzSubclipEditorComponent {
   public inMarkerFrame: Frame;
   public outMarkerFrame: Frame;
 
-  public onPlayerSubclipUpdate(event: any): void {
+  public onPlayerMarkerChange(event: any): void {
     this.inMarkerFrame = event.in;
     this.outMarkerFrame = event.out;
   }

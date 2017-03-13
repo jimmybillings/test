@@ -19,10 +19,12 @@ export class WzAdvancedPlayerComponent {
   @Input() displayAllControls: boolean = true;
   @Output() onSubclip = new EventEmitter();
   @Output() onUpdateSubclipData = new EventEmitter();
+  @Output() markerChange = new EventEmitter();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
   public playerStateSubscription: Subscription;
   private currentAsset: any = null;
+  private currentState: PlayerState = null;
 
   @Input()
   public set asset(newAsset: any) {
@@ -39,11 +41,18 @@ export class WzAdvancedPlayerComponent {
   }
 
   constructor(public playerStateService: PlayerStateService) {
-    this.playerStateSubscription = playerStateService.state.subscribe((data) => {
-      if (data.inMarkerFrame && data.outMarkerFrame) {
-        this.onUpdateSubclipData.emit({ in: data.inMarkerFrame, out: data.outMarkerFrame });
+    this.playerStateSubscription = playerStateService.state.subscribe(newState => {
+      if (newState.inMarkerFrame && newState.outMarkerFrame) {
+        this.onUpdateSubclipData.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
         // this.playerStateSubscription.unsubscribe();
       }
+
+      if (this.currentState && (newState.inMarkerFrame !== this.currentState.inMarkerFrame
+        || newState.outMarkerFrame !== this.currentState.outMarkerFrame)) {
+        this.markerChange.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
+      }
+
+      this.currentState = newState;
     });
   }
 
