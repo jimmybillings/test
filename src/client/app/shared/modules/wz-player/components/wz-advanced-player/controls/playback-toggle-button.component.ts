@@ -4,7 +4,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 @Component({
   moduleId: module.id,
-  selector: 'playback-toggle-button',
+  selector: 'wz-playback-toggle-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button md-icon-button 

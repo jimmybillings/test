@@ -47,6 +47,15 @@ export class CartService {
     this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe();
   }
 
+  public purchase(): Observable<any> {
+    const stripe: any = {
+      stripeToken: this.state.orderInProgress.authorization.id,
+      stripeTokenType: this.state.orderInProgress.authorization.type
+    };
+    return this.api.post(Api.Orders, 'cart/stripe/process',
+      { body: stripe, loading: true });
+  }
+
   public addProject(): void {
     this.addProjectAndReturnObservable().subscribe();
   }
@@ -109,6 +118,10 @@ export class CartService {
     this.store.replaceOrderInProgressAddress(address);
   }
 
+  public updateOrderInProgressAuthorization(authorization: any): void {
+    this.store.replaceOrderInProgressAuthorization(authorization);
+  }
+
   private formatBody(parameters: AddAssetParameters): any {
     let formatted = {};
     Object.assign(formatted, { lineItem: parameters.lineItem });
@@ -155,6 +168,7 @@ export class CartService {
   // This is an "instance arrow function", which saves us from having to "bind(this)"
   // every time we use this function as a callback.
   private updateCart = (wholeCartResponse: any): void => {
+    console.log(wholeCartResponse);
     this.store.replaceCartWith(wholeCartResponse);
   }
 }

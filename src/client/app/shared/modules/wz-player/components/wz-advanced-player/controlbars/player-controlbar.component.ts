@@ -4,7 +4,7 @@ import { PlayerState, PlayerRequest } from '../../../interfaces/player.interface
 
 @Component({
   moduleId: module.id,
-  selector: 'player-controlbar',
+  selector: 'wz-player-controlbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './player-controlbar.html'
 })

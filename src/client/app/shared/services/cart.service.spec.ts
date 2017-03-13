@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api, ApiBody, ApiParameters } from '../interfaces/api.interface';
 import { CartService } from './cart.service';
-import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
+import { Project, LineItem, AddAssetParameters, CartState } from '../interfaces/cart.interface';
 
 export function main() {
   describe('Cart Service', () => {

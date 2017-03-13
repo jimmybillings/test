@@ -23,17 +23,21 @@ const emptyCart: CartState = {
         phone: '',
         suburb: ''
       }
-    }
+    },
+    authorization: {}
   }
 };
 
 export const cart: ActionReducer<any> = (state: any = emptyCart, action: Action) => {
   switch (action.type) {
     case 'REPLACE_CART':
-      // payload = the whole cart
       return Object.assign({}, state, { cart: action.payload });
-    case 'REPLACE_ORDER_IN_PROGRESS':
-      return Object.assign({}, state, { orderInProgress: { address: action.payload } });
+    case 'UPDATE_ORDER_IN_PROGRESS_ADDRESS':
+      state.orderInProgress.address = action.payload;
+      return Object.assign({}, state);
+    case 'UPDATE_ORDER_IN_PROGRESS_AUTHORIZATION':
+      state.orderInProgress.authorization = action.payload;
+      return Object.assign({}, state);
     default:
       return state;
   }
@@ -52,7 +56,11 @@ export class CartStore {
   }
 
   public replaceOrderInProgressAddress(address: any): void {
-    this.store.dispatch({ type: 'REPLACE_ORDER_IN_PROGRESS', payload: address });
+    this.store.dispatch({ type: 'UPDATE_ORDER_IN_PROGRESS_ADDRESS', payload: address });
+  }
+
+  public replaceOrderInProgressAuthorization(authorization: any): void {
+    this.store.dispatch({ type: 'UPDATE_ORDER_IN_PROGRESS_AUTHORIZATION', payload: authorization });
   }
 
   public get state(): any {

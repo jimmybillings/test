@@ -1,31 +1,111 @@
-div.project {
-  background-color: md-color($md-primary, default);
-  @include text-contrast(md-color($md-primary, default));
-  @include md-elevation(1);
-  header.project-info {
-    min-height: rem(7);
-    padding: rem(1) rem(2);
+projects-component section.header {
+  color: md-color($primary, default);
+  padding-left: rem(.8);
+  padding-right: rem(.8);
+  box-shadow: inset 0 -1px 0 0 md-color($md-foreground, divider), 0 1px 0 0 rgba(md-color($md-background, card), .6);
+  header {
+    padding-top: rem(.6);
+    padding-bottom: rem(.5);
+    position: relative;
     .md-display-1 {
       margin: 0;
-      font-size: rem(2);
+      width: calc(100% - 120px);
+      font-size: rem(2.6);
+      // &.alert {
+      //   color: md-color($warn, darker);
+      // }
     }
-    ul {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      li {
-        display: block;
-        list-style-type: none;
-        &:last-child {
-          button {
-            float: right;
-          }
-        }
+  }
+  .tools {
+    text-align: right;
+    // white-space: nowrap;
+    // button.is-dd.md-icon-button.md-primary {
+    //   .md-button-wrapper::after {
+    //     color: md-color($md-primary, default);
+    //   }
+    // }
+  }
+}
+.projects {
+  padding-top: rem(2.4);
+  @media screen and (max-width: $layout-breakpoint-sm)  {
+    padding-top: rem(1.2);
+  }
+}
+div.project {
+  margin-bottom: rem(1.8);
+  background-color: rgba(md-color($background, card), .4);
+  // background-color: md-color($md-background, status-bar, .7);
+  header.project-info {
+    // background-color: md-color($md-grey, 800);
+    background-color:md-color($md-primary, darker, .8);
+    @include text-contrast(md-color($md-primary, default));
+    border-radius: $md-button-border-radius $md-button-border-radius 0 0;
+    position: relative;
+    padding-bottom: rem(2.0);
+    h5[md-display-1] {
+      margin: 0 0 rem(.2) 0;
+      .project-name {
+        font-size: rem(1.8);
+        font-weight: 400;
       }
     }
+    .project-client {
+      line-height: 1.6;
+    }
+    div:first-child {
+      padding: rem(.7) 0 0 rem(1.0);
+    }
+    div:nth-child(2n) {
+      padding: rem(.2) rem(.2) rem(.4) 0;
+      text-align: right;
+    }
+    div.project-asset-count {
+      padding: rem(.4) rem(.8) rem(.6) 0;
+      font-size: rem(1.4);
+    }
+    div.project-subtotal {
+      position: absolute;
+      bottom: rem(.3);
+      right: rem(.2);
+      padding: rem(.2) rem(.2) rem(.2) 0;
+      span {
+        font-size: rem(1.8);
+        display: inline-block;
+        padding-right: rem(.5);
+        &::first-letter {
+          font-size: .83em;
+          vertical-align: top;
+        }
+      }
+      strong {
+        padding-right: rem(.5);
+      }
+    }
+    button.is-outlined {
+      line-height: rem(2.4);
+      min-width: rem(5.0);
+      border-color: md-color($background, background, .25);
+      // border-color: md-color($md-primary, lighter, .8);
+    }
+    // ul {
+    //   width: 100%;
+    //   margin: 0;
+    //   padding: 0;
+    //   li {
+    //     @include md-elevation(1);
+    //     display: block;
+    //     list-style-type: none;
+    //     &:last-child {
+    //       button {
+    //         float: right;
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
 
-div.add-project-button {
-  margin-top: rem(2);
-}
+// div.add-project-button {
+//   margin-top: rem(2);
+// }

@@ -22,11 +22,7 @@ export class ApiConfig {
     return baseUrl;
   }
 
-  public headers(overridingToken: string = '', download: boolean = false): Headers {
-    const headers: { [name: string]: any } = {
-      'Content-Type': 'application/json',
-    };
-
+  public headers(overridingToken: string = '', headerType: string = 'json'): Headers {
     let token: string = '';
 
     if (overridingToken !== '') {
@@ -35,14 +31,28 @@ export class ApiConfig {
       token = localStorage.getItem('token');
     }
 
+    const headers: { [name: string]: any } = {
+      'Content-Type': 'application/json',
+    };
+
     if (token !== '') {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    if (download) {
-      headers['Accept'] = 'application/octet-stream';
-    } else {
-      headers['Accept'] = 'application/json';
+    switch (headerType) {
+      case 'json':
+        headers['Accept'] = 'application/json';
+        break;
+      case 'download':
+        headers['Accept'] = 'application/octet-stream';
+        break;
+      case 'form-urlencoded':
+        headers['Accept'] = 'application/json';
+        headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        break;
+      default:
+        headers['Accept'] = 'application/json';
+        break;
     }
 
     return new Headers(headers);

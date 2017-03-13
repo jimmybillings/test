@@ -21,5 +21,5 @@ export interface ApiOptions {
   body?: ApiBody;
   loading?: boolean;
   overridingToken?: string;
-  download?: boolean;
+  headerType?: string;
 }

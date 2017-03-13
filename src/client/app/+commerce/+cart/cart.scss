@@ -1,33 +1,83 @@
 @import './components/tabs/billing-tab';
 
-cart-component .tabs-section md-tab-group {
-  & > div {
-    margin: 0;
-  }  
-  .md-tab-header {
-    border-width: 0;
+cart-component .tabs-section {
+  & > div > div {
+    // background: rgba(md-color($background, background),0);
+    background: rgba(md-color($background, background),.35);
   }
-  .md-tab-body-wrapper {
-    .md-tab-body-content {
-      nav {
-        margin: rem(1) rem(2);
-      }
+  md-tab-group > div {
+    margin-bottom: 0;
+    margin-top: 0;
+    margin-left: rem(2.6);
+    margin-right: rem(2.6);
+    &:last-child {
+      margin-bottom: rem(3.0);
+    }
+    @media screen and (max-width: $layout-breakpoint-sm)  {
+      margin-left: rem(1.2);
+      margin-right: rem(1.2);
+    }
+  }
+}
+cart-component section.header {
+  color: md-color($primary, default);
+  padding-left: rem(.8);
+  padding-right: rem(.8);
+  box-shadow: inset 0 -1px 0 0 md-color($md-foreground, divider), 0 1px 0 0 rgba(md-color($md-background, card), .6);
+  header {
+    padding-top: rem(.6);
+    padding-bottom: rem(.5);
+    position: relative;
+    .md-display-1 {
+      margin: 0;
+      width: calc(100% - 120px);
+      font-size: rem(2.6);
+      // &.alert {
+      //   color: md-color($warn, darker);
+      // }
     }
   }
 }
 
-section.cart {
-  #paymentArea_ {
-    margin-right: rem(2);
-  }
-  p.select-usage-warn {
-    margin: 0;
-    color: md-color($md-primary);
-    font-size: rem(1.4);
-    text-decoration: bold;
+
+section.cart-total {
+  // #paymentArea_ {
+  //   margin-right: rem(2);
+  // }
+  .select-usage-warn {
+    margin-top: rem(.2);
+    color: md-color($md-warn, darker);
+    font-size: rem(1.5);
     &::after {
       content: " *";
-      color: md-color($md-accent, 600);
+      color: md-color($md-warn, darker);
     }
+  }
+  .total {
+    text-align: right;
+    letter-spacing: -.02em;
+    .total-label {
+      font-weight: 300;
+      letter-spacing: 0;
+      padding-right: rem(1.4);
+      opacity: .7;
+    }
+    .total-amount {
+      display: inline-block;
+      &::first-letter {
+        font-size: .68em;
+        line-height: 1.7;
+        vertical-align: top;
+        letter-spacing: 0;
+      }
+    }
+  }
+  button.checkout {
+    font-size: 1.1em;
+    line-height: rem(4.8);
+    margin: rem(1.0) 0;
+    text-transform: uppercase;
+    background-color: #558b2f;
+    @include text-contrast(#558b2f);
   }
 }

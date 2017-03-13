@@ -4,7 +4,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 @Component({
   moduleId: module.id,
-  selector: 'subclip-controlbar',
+  selector: 'wz-subclip-controlbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './subclip-controlbar.html'
 })

@@ -39,6 +39,8 @@ export class PaymentTabComponent extends Tab implements OnInit {
             // Put payment information into store here
             // before going to next tab.
             // this.cartService.savePaymentInfo(response);
+            this.cartService.updateOrderInProgressAuthorization(response);
+            console.log(this.cartService.state);
             this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
           } else {
             this.serverErrors = { fieldErrors: [] };

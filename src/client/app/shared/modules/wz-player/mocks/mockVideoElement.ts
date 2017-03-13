@@ -3,7 +3,7 @@ interface MockVideoCallbacks {
 }
 
 export type MockVideoEventName =
-  'durationchange' | 'pause' | 'playing' | 'ratechange' | 'timeupdate' | 'seeked' | 'seeking' | 'volumechange';
+  'durationchange' | 'ended' | 'pause' | 'playing' | 'ratechange' | 'timeupdate' | 'seeked' | 'seeking' | 'volumechange';
 
 export class MockVideoElement {
   public paused: boolean = false;
@@ -17,6 +17,7 @@ export class MockVideoElement {
 
   private eventCallbacks: MockVideoCallbacks = {
     durationchange: new Array<Function>(),
+    ended: new Array<Function>(),
     pause: new Array<Function>(),
     playing: new Array<Function>(),
     ratechange: new Array<Function>(),
@@ -107,6 +108,8 @@ export class MockVideoElement {
   public simulatePlaybackEnded() {
     this.paused = true;
     this.ended = true;
+    this.trigger('ended');
+    this.trigger('pause');
   }
 
   public get numberOfDefinedEventCallbacks(): number {

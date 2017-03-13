@@ -2,3 +2,21 @@
   <button md-raised-button class="md-block" (click)="goToPreviousTab()">BACK TO PAYMENT</button>
   <button md-raised-button class="md-block">SUBMIT</button>
 </nav>
+
+<section>
+  <div layout="row" md-scroll-y="" layout-align="center start">
+    <div flex-gt-lg="25" flex-gt-md="30" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="90">
+      <md-card class="wz-form-card">
+        <md-card-title>
+          Confirm
+        </md-card-title>
+        <md-card-content>
+          <button md-raised-button class="md-block" (click)="purchase()">CONFIRM</button>
+          <pre><code>
+            {{ (cartService.data | async) | json }}
+          </code></pre>
+        </md-card-content>
+      </md-card>
+    </div>
+  </div>
+</section>

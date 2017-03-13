@@ -57,7 +57,8 @@ export class AppComponent implements OnInit {
     private filter: FilterService,
     private sortDefinition: SortDefinitionsService,
     private snackBar: MdSnackBar,
-    private translate: TranslateService) { }
+    private translate: TranslateService) {
+  }
 
   ngOnInit() {
     this.routerChanges();

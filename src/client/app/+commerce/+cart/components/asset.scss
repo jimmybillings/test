@@ -1,24 +1,50 @@
 section.cart-asset {
-  margin: rem(1);
   div.cart-asset-thb {
-    span.asset-id {
+    span.asset-duration {
       position: absolute;
-      bottom: 3px;
-      right: 3px;
-      z-index: 2;
-      background-color: rgba(md-color($md-foreground, base), .3);
-      .id {
-        padding: rem(.3);
-        @include text-contrast(md-color($md-foreground, base));
-        opacity: .9;
+      font-size: rem(1.2);
+      line-height: rem(1.55);
+      bottom: 0;
+      right: 0;
+      padding: 0 1% 1% 0;
+      @include text-contrast(md-color($md-foreground, base));
+      transition: $swift-ease-out;
+      z-index: 1;
+      span {
+        line-height: 1;
+        position: relative;
       }
     }
-    margin: 0 rem(1);
+    span.indicate-photo {
+      font-size: rem(1.2);
+      line-height: rem(1.55);
+      position: absolute;
+      height: 30px;
+      width: 40px;
+      top: 3px;
+      right: 3px;
+      z-index: 1;
+      .image {
+        color: transparent;
+        top: 0;
+        right: 0;
+        &::before {
+          content: "\e412";
+          font-family: 'Material Icons';
+          color: rgba(md-color($md-grey, 100),0.4);
+          position: absolute;
+          top: rem(.3);
+          right: rem(-.2);
+          font-size: 1.86em;
+        }
+      }
+    }
+    margin: 0;
     display: block;
     height: 0;
     padding: 56.25% 0 0 0;
     position: relative;
-    background: #000;
+    background: md-color($foreground, base);
     img {
       position: absolute;
       display: block;
@@ -31,33 +57,26 @@ section.cart-asset {
       bottom: 0;
       margin: auto;
     }
-  }
-  div.cart-asset-metadata {
-    @media screen and (max-width: $layout-breakpoint-md) and (min-width: $layout-breakpoint-sm) {
-      display: none;
+    &::before {
+      content: " ";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-image:
+        linear-gradient(-7deg, rgba(md-color($md-grey, 900),0.9), rgba(md-color($md-grey, 900),0) 24%),
+        linear-gradient(7deg, rgba(md-color($md-grey, 900),0) 75%, rgba(md-color($md-grey, 900),.9))
+      ;
+      opacity: 0.5;
+      transition: opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2);
+      z-index: 1;
     }
-    margin: rem(1);
-    table {
-      min-width: 100%;
-      height: 100%;
-      border: 1px solid md-color($md-grey, 300);
-      border-collapse: collapse;
-      th {
-        width: 30%;
-        text-align: right;
-        border-bottom: 1px solid md-color($md-grey, 300);
-        border-right: 1px solid md-color($md-grey, 300);
-        padding: rem(.2) rem(.3);
-        background-color: rgba(md-color($md-grey, 300), .4);
-        @include text-contrast(md-color($md-grey, 100));
-      }
-      td {
-        width: 70%;
-        padding: rem(.2) rem(.3);
-        border-bottom: 1px solid md-color($md-grey, 300);
-        background-color: rgba(md-color($md-grey, 300), .2);
-        @include text-contrast(md-color($md-grey, 100));
-      }
+  }
+  .cart-asset-metadata {
+    line-height: 1.3em;
+    &.md-caption span {
+      display: block;
     }
   }
 }

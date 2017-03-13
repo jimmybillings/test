@@ -32,7 +32,7 @@ export class UserService {
   public downloadActiveTosDocument(): Observable<any> {
     return this.api.get(Api.Identities, 'document/public/name/TOS').flatMap((response: ApiResponse) => {
       this.activeVersionId = response[0].activeVersionId;
-      return this.api.get(Api.Identities, `document/public/downloadFile/${response[0].activeVersionId}`, { download: true });
+      return this.api.get(Api.Identities, `document/public/downloadFile/${response[0].activeVersionId}`, { headerType: 'download' });
     }).map((response: Response) => {
       return response.text();
     });

@@ -62,7 +62,7 @@ export class BillingTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public openAddressFormFor(resourceType: 'account' | 'user', mode: 'add' | 'edit'): void {
-    let dialogRef: MdDialogRef<AddressFormComponent> = this.dialog.open(AddressFormComponent, { width: '500px' });
+    let dialogRef: MdDialogRef<AddressFormComponent> = this.dialog.open(AddressFormComponent, { position: { top: '14%' } });
     dialogRef.componentInstance.items = this.items;
     dialogRef.componentInstance.dialog = dialogRef;
     dialogRef.componentInstance.resourceType = resourceType;

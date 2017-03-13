@@ -16,7 +16,7 @@ declare module jasmine {
     toHaveBeenCalledWithBody(...args: any[]): any;
     toHaveBeenCalledWithParameters(...args: any[]): any;
     toHaveBeenCalledWithLoading(...args: any[]): any;
-    toHaveBeenCalledWithDownload(...args: any[]): any;
+    toHaveBeenCalledWithHeaderType(...args: any[]): any;
     toHaveBeenCalledWithOverridingToken(...args: any[]): any;
   }
 }

@@ -7,7 +7,7 @@ export type StepSize = '-5s' | '-1s' | '-1f' | '+1f' | '+1s' | '+5s';
 
 @Component({
   moduleId: module.id,
-  selector: 'step-button',
+  selector: 'wz-step-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button md-icon-button [disabled]="!canStep" class="{{ direction }}" title="{{ title | translate }}" (click)="onClick()">

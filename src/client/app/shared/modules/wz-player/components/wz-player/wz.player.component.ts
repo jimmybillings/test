@@ -234,6 +234,7 @@ export class WzPlayerComponent implements OnDestroy {
 
   private startVideoEventListeners(): void {
     this.startVideoEventListenerFor('durationchange', this.onDurationChange);
+    this.startVideoEventListenerFor('ended', this.onEnded);
     this.startVideoEventListenerFor('pause', this.onPause);
     this.startVideoEventListenerFor('playing', this.onPlaying);
     this.startVideoEventListenerFor('ratechange', this.onRateChange);
@@ -264,6 +265,10 @@ export class WzPlayerComponent implements OnDestroy {
 
   private onDurationChange(): void {
     this.emitStateUpdateWith({ duration: this.videoElement.duration });
+  }
+
+  private onEnded(): void {
+    this.setPlaybackRateTo(1);
   }
 
   private onPause(): void {
