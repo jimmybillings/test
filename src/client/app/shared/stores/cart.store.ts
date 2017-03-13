@@ -20,8 +20,7 @@ const emptyCart: CartState = {
         city: '',
         country: '',
         zipcode: '',
-        phone: '',
-        suburb: ''
+        phone: ''
       }
     },
     authorization: {}

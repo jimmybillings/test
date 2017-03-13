@@ -47,7 +47,6 @@ export interface Address {
   country: string;
   zipcode: string;
   phone: string;
-  suburb: string;
   [index: string]: any;
 }
 
@@ -56,5 +55,5 @@ export interface ViewAddress {
   defaultAddress: boolean;
   type: string;
   name: string;
-  address: Address;
+  address?: Address;
 }

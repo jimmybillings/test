@@ -168,7 +168,6 @@ export class CartService {
   // This is an "instance arrow function", which saves us from having to "bind(this)"
   // every time we use this function as a callback.
   private updateCart = (wholeCartResponse: any): void => {
-    console.log(wholeCartResponse);
     this.store.replaceCartWith(wholeCartResponse);
   }
 }

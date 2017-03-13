@@ -61,13 +61,28 @@ export class BillingTabComponent extends Tab implements OnInit, OnDestroy {
     this.cartService.updateOrderInProgressAddress(address);
   }
 
-  public openAddressFormFor(resourceType: 'account' | 'user', mode: 'add' | 'edit'): void {
-    let dialogRef: MdDialogRef<AddressFormComponent> = this.dialog.open(AddressFormComponent, { position: { top: '14%' } });
+  public format(address: ViewAddress): string {
+    if (address.address) {
+      return Object.keys(address.address).map((key: string) => {
+        return address.address[key];
+      }).join(', ');
+    } else {
+      return `There is no address on record for this ${address.type}`;
+    }
+  }
+
+  public get userCanProceed(): boolean {
+    return !!this.selectedAddress;
+  }
+
+  public openAddressFormFor(resourceType: 'account' | 'user', mode: 'add' | 'edit', addressToEdit: ViewAddress): void {
+    this.selectAddress(addressToEdit);
+    let dialogRef: MdDialogRef<AddressFormComponent> = this.dialog.open(AddressFormComponent, { position: { top: '10%' } });
     dialogRef.componentInstance.items = this.items;
     dialogRef.componentInstance.dialog = dialogRef;
     dialogRef.componentInstance.resourceType = resourceType;
     dialogRef.componentInstance.mode = mode;
-    dialogRef.componentInstance.address = mode === 'edit' ? this.selectedAddress.address : null;
+    if (mode === 'edit') dialogRef.componentInstance.address = addressToEdit.address;
     dialogRef.afterClosed().subscribe((form: any) => {
       if (typeof form === 'undefined') return;
       if (resourceType === 'user') {
@@ -76,18 +91,6 @@ export class BillingTabComponent extends Tab implements OnInit, OnDestroy {
         this.addAccountAddress(form);
       }
     });
-  }
-
-  public get userCanEditAccountAddress(): boolean {
-    return this.selectedAddress.type === 'account' && this.userCan.editAccountBillingAddress();
-  }
-
-  public get onlyAccountAddressesExist(): boolean {
-    return this.addresses.filter((address: any) => address.type === 'user').length === 0;
-  }
-
-  public get userCanProceed(): boolean {
-    return !!this.selectedAddress;
   }
 
   private fetchAddresses(): void {

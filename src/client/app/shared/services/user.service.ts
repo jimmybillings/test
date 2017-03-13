@@ -59,11 +59,6 @@ export class UserService {
 
   public getAddresses(returnValue?: string): Observable<any[]> {
     return this.api.get(Api.Identities, 'user/currentUsersAssociatedAddresses');
-    // if (returnValue === 'empty') {
-    //   return Observable.of([]);
-    // } else {
-    //   return Observable.of(this.mockAddresses);
-    // }
   }
 
   public addBillingAddress(address: Address): Observable<any> {
@@ -78,55 +73,5 @@ export class UserService {
       let newAccount: any = Object.assign({}, account, { address: address.address });
       return this.api.put(Api.Identities, `account/${address.addressEntityId}`, { body: newAccount });
     });
-  }
-
-  private get mockAddresses(): Array<ViewAddress> {
-    return [
-      {
-        type: 'user',
-        name: 'Ross',
-        addressEntityId: 71,
-        defaultAddress: false,
-        address: {
-          address: '395 South Cherokee Street',
-          city: 'Denver',
-          country: 'USA',
-          state: 'CO',
-          zipcode: '80223',
-          phone: '9086989024',
-          suburb: 'Denver'
-        }
-      },
-      {
-        type: 'account',
-        name: 'Wazee Digital',
-        addressEntityId: 2,
-        defaultAddress: false,
-        address: {
-          address: '1515 Arapahoe Street, Tower 3, Suite 400',
-          city: 'Denver',
-          country: 'USA',
-          state: 'CO',
-          zipcode: '80202',
-          phone: '5555555555',
-          suburb: 'Denver'
-        }
-      },
-      {
-        type: 'account',
-        name: 'Another Acount',
-        addressEntityId: 100000,
-        defaultAddress: false,
-        address: {
-          address: '123 Main Street, Suite 123',
-          city: 'New York',
-          country: 'USA',
-          state: 'NY',
-          zipcode: '10001',
-          phone: '5555555555',
-          suburb: 'Manhattan'
-        }
-      },
-    ];
   }
 }
