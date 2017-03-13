@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
 import { Response } from '@angular/http';
-import { User, Address } from '../../shared/interfaces/user.interface';
+import { User, Address, ViewAddress } from '../../shared/interfaces/user.interface';
 import { CurrentUserService } from './current-user.service';
 /**
  * Service that provides api access registering new users.
@@ -58,12 +58,12 @@ export class UserService {
   }
 
   public getAddresses(returnValue?: string): Observable<any[]> {
-    // return this.api.get(Api.Identities, 'user/currentUsersAssociatedAddresses');
-    if (returnValue === 'empty') {
-      return Observable.of([]);
-    } else {
-      return Observable.of(this.mockAddresses);
-    }
+    return this.api.get(Api.Identities, 'user/currentUsersAssociatedAddresses');
+    // if (returnValue === 'empty') {
+    //   return Observable.of([]);
+    // } else {
+    //   return Observable.of(this.mockAddresses);
+    // }
   }
 
   public addBillingAddress(address: Address): Observable<any> {
@@ -73,13 +73,22 @@ export class UserService {
     });
   }
 
-  private get mockAddresses(): any {
+  public addAccountBillingAddress(address: ViewAddress): Observable<any> {
+    return this.api.get(Api.Identities, `account/${address.addressEntityId}`).flatMap((account: any) => {
+      let newAccount: any = Object.assign({}, account, { address: address.address });
+      return this.api.put(Api.Identities, `account/${address.addressEntityId}`, { body: newAccount });
+    });
+  }
+
+  private get mockAddresses(): Array<ViewAddress> {
     return [
       {
         type: 'user',
         name: 'Ross',
+        addressEntityId: 71,
+        defaultAddress: false,
         address: {
-          street: '395 South Cherokee Street',
+          address: '395 South Cherokee Street',
           city: 'Denver',
           country: 'USA',
           state: 'CO',
@@ -91,8 +100,10 @@ export class UserService {
       {
         type: 'account',
         name: 'Wazee Digital',
+        addressEntityId: 2,
+        defaultAddress: false,
         address: {
-          street: '1515 Arapahoe Street, Tower 3, Suite 400',
+          address: '1515 Arapahoe Street, Tower 3, Suite 400',
           city: 'Denver',
           country: 'USA',
           state: 'CO',
@@ -104,8 +115,10 @@ export class UserService {
       {
         type: 'account',
         name: 'Another Acount',
+        addressEntityId: 100000,
+        defaultAddress: false,
         address: {
-          street: '123 Main Street, Suite 123',
+          address: '123 Main Street, Suite 123',
           city: 'New York',
           country: 'USA',
           state: 'NY',

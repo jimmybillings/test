@@ -15,7 +15,7 @@ const emptyCart: CartState = {
       type: '',
       name: '',
       address: {
-        street: '',
+        address: '',
         state: '',
         city: '',
         country: '',

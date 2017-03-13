@@ -21,7 +21,7 @@ export function main() {
           orderInProgress: {
             address: {
               type: '', name: '',
-              address: { street: '', state: '', city: '', country: '', zipcode: '', phone: '', suburb: '' }
+              address: { address: '', state: '', city: '', country: '', zipcode: '', phone: '', suburb: '' }
             }
           }
         });

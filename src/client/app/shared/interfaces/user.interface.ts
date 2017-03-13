@@ -41,7 +41,7 @@ export interface User {
 }
 
 export interface Address {
-  street: string;
+  address: string;
   state: string;
   city: string;
   country: string;
@@ -52,6 +52,8 @@ export interface Address {
 }
 
 export interface ViewAddress {
+  addressEntityId: number;
+  defaultAddress: boolean;
   type: string;
   name: string;
   address: Address;

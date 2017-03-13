@@ -46,8 +46,9 @@ export function main() {
       };
 
       mockUserService = {
-        getAddresses: jasmine.createSpy('getAddresses').and.returnValue(Observable.of([mockAddressA, mockAddressB])),
-        addBillingAddress: jasmine.createSpy('addBillingAddress').and.returnValue(Observable.of({}))
+        getAddresses: jasmine.createSpy('getAddresses').and.returnValue(Observable.of({ list: [mockAddressA, mockAddressB] })),
+        addBillingAddress: jasmine.createSpy('addBillingAddress').and.returnValue(Observable.of({})),
+        addAccountBillingAddress: jasmine.createSpy('addAccountBillingAddress').and.returnValue(Observable.of({}))
       };
 
       mockCartCapabilities = {
@@ -87,18 +88,19 @@ export function main() {
         it('should set up the user addresses', () => {
           expect(componentUnderTest.addresses).toEqual([mockAddressA, mockAddressB]);
         });
-
-        it('should call updateOrderInProgressAddress to update the store with the first address in the array', () => {
-          expect(mockCartService.updateOrderInProgressAddress).toHaveBeenCalledWith(mockAddressA);
-        });
       });
 
       describe('without addresses', () => {
         beforeEach(() => {
-          mockUserService = {
-            getAddresses: jasmine.createSpy('getAddresses').and.returnValue(Observable.of([]))
+          mockCartService = {
+            data: Observable.of({ cart: { itemCount: 1, projects: [] }, orderInProgress: { address: { type: '' } } }),
+            updateOrderInProgressAddress: jasmine.createSpy('updateOrderInProgressAddress')
           };
-          componentUnderTest = new BillingTabComponent(null, mockCartService, mockUiConfig, mockUserService, null);
+
+          componentUnderTest = new BillingTabComponent(
+            mockCartCapabilities, mockCartService, mockUiConfig, mockUserService, mockDialog
+          );
+
           componentUnderTest.ngOnInit();
         });
 
@@ -106,13 +108,17 @@ export function main() {
           componentUnderTest.ngOnDestroy();
         });
 
-        it('should not call updateOrderInProgressAddress', () => {
-          expect(mockCartService.updateOrderInProgressAddress).not.toHaveBeenCalled();
+        it('should call updateOrderInProgressAddress to update the store with the first address in the array', () => {
+          expect(mockCartService.updateOrderInProgressAddress).toHaveBeenCalledWith(mockAddressA);
         });
       });
     });
 
     describe('addUserAddress()', () => {
+      beforeEach(() => {
+        componentUnderTest.selectedAddress = mockAddressA;
+      });
+
       it('should call addBillingAddress() on the user service', () => {
         componentUnderTest.addUserAddress(mockAddressA);
 
@@ -127,27 +133,29 @@ export function main() {
     });
 
     describe('addAccountAddress()', () => {
-      it('should do nothing for now', () => {
-        spyOn(console, 'log');
+      it('should call addAccountBillingAddress() on the user service', () => {
+        componentUnderTest.selectedAddress = mockAddressA;
+        componentUnderTest.addAccountAddress(mockAddressA.address);
 
-        componentUnderTest.addAccountAddress(mockAddressA);
-
-        expect(console.log).toHaveBeenCalled();
+        expect(mockUserService.addAccountBillingAddress).toHaveBeenCalledWith(mockAddressA);
       });
     });
 
     describe('openAddressFormFor', () => {
       it('should open a dialog and call addAccountAddress if resourceType is "account"', () => {
-        spyOn(componentUnderTest, 'addAccountAddress');
-        componentUnderTest.selectedAddress = mockAddressA;
+        componentUnderTest.selectedAddress = mockAddressB;
         componentUnderTest.openAddressFormFor('account', 'edit');
 
         expect(mockDialog.open).toHaveBeenCalled();
-        expect(componentUnderTest.addAccountAddress).toHaveBeenCalled();
+        expect(mockUserService.addAccountBillingAddress).toHaveBeenCalled();
       });
 
-      it('should open a dialog and call addUserAddress if resourceType is "user', () => {
+      it('should open a dialog and call addUserAddress if resourceType is "user"', () => {
+        componentUnderTest.selectedAddress = mockAddressA;
+        componentUnderTest.openAddressFormFor('user', 'edit');
 
+        expect(mockDialog.open).toHaveBeenCalled();
+        expect(mockUserService.addBillingAddress).toHaveBeenCalled();
       });
     });
 
@@ -174,7 +182,7 @@ export function main() {
       });
     });
 
-    describe('get onlyAccountADdressesExist()', () => {
+    describe('get onlyAccountAddressesExist()', () => {
       it('should return true if only addresses of type "account" exist', () => {
         componentUnderTest.addresses = [mockAddressB];
 

@@ -51,7 +51,10 @@ export class BillingTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public addAccountAddress(address: Address): void {
-    console.log('add this to the account!', address);
+    let addr: ViewAddress = Object.assign({}, this.selectedAddress, { address: address });
+    this.user.addAccountBillingAddress(addr).subscribe((account: any) => {
+      this.fetchAddresses();
+    });
   }
 
   public selectAddress(address: ViewAddress): void {
@@ -88,11 +91,17 @@ export class BillingTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   private fetchAddresses(): void {
-    this.user.getAddresses().take(1).subscribe((addresses: any[]) => {
-      this.addresses = addresses;
-      if (this.addresses.length !== 0) {
-        this.selectAddress(this.addresses[0]);
+    this.user.getAddresses().take(1).subscribe((addresses: any) => {
+      this.addresses = addresses.list;
+      let newSelectedAddress: ViewAddress;
+      if (this.selectedAddress.type === '') {
+        newSelectedAddress = this.addresses[0];
+      } else {
+        newSelectedAddress = this.addresses.filter((addr: ViewAddress) => {
+          return addr.addressEntityId === this.selectedAddress.addressEntityId;
+        })[0];
       }
+      this.selectAddress(newSelectedAddress);
     });
   }
 }
