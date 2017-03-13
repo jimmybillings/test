@@ -1,7 +1,8 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CartService } from '../../../../shared/services/cart.service';
 import { Tab } from './tab';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
@@ -9,11 +10,20 @@ import { Router } from '@angular/router';
   templateUrl: 'confirm-tab.html'
 })
 
-export class ConfirmTabComponent extends Tab {
+export class ConfirmTabComponent extends Tab implements OnInit, OnDestroy {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
-
+  public cartStore: any;
+  public cartSubscription: Subscription;
   constructor(private router: Router, public cartService: CartService) {
     super();
+  }
+
+  ngOnInit() {
+    this.cartSubscription = this.cartService.data.subscribe(data => this.cartStore = data);
+  }
+
+  ngOnDestroy() {
+    this.cartSubscription.unsubscribe();
   }
 
   purchase() {

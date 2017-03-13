@@ -24,7 +24,14 @@ const emptyCart: CartState = {
         suburb: ''
       }
     },
-    authorization: {}
+    authorization: {
+      card: {
+        brand: '',
+        last4: '',
+        exp_month: '',
+        exp_year: ''
+      }
+    }
   }
 };
 

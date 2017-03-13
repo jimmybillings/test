@@ -1,22 +1,30 @@
+
+<section layout="column" flex="100">
+  <projects-component flex="100" [readOnly]="true" [projects]="(cartService.data | async).cart.projects"></projects-component>
+  <div layout="row" flex="100" layout-align="space-between center">
+    <md-card flex="45">
+      <md-card-title>Confirm</md-card-title>
+      <md-card-content>
+        <pre><code>{{cartStore.orderInProgress.authorization.card | json}}</code></pre>
+      </md-card-content>
+    </md-card>
+    <md-card flex="45">
+      <md-card-title>Confirm</md-card-title>
+      <md-card-content>
+        <md-list>
+          <md-list-item> Date: {{cartStore.cart.lastUpdated}} </md-list-item>
+          <md-list-item> Card: {{cartStore.orderInProgress.authorization.card.brand}} </md-list-item>
+          <md-list-item> Card Number: **** **** **** {{cartStore.orderInProgress.authorization.card.last4}} </md-list-item>
+          <md-list-item> Expiry Month: {{cartStore.orderInProgress.authorization.card.exp_month}} </md-list-item>
+          <md-list-item> Expiry Year: {{cartStore.orderInProgress.authorization.card.exp_year}} </md-list-item>
+          <md-list-item> Total Amount: {{cartStore.cart.total | currency}} </md-list-item>
+        </md-list>
+        <button md-raised-button class="md-block" (click)="purchase()">CONFIRM</button>
+      </md-card-content>
+    </md-card>
+  </div>
+</section>
 <nav flex="100" layout="row" layout-align="space-between">
   <button md-raised-button class="md-block" (click)="goToPreviousTab()">BACK TO PAYMENT</button>
   <button md-raised-button class="md-block">SUBMIT</button>
 </nav>
-
-<section>
-  <div layout="row" md-scroll-y="" layout-align="center start">
-    <div flex-gt-lg="25" flex-gt-md="30" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="90">
-      <md-card class="wz-form-card">
-        <md-card-title>
-          Confirm
-        </md-card-title>
-        <md-card-content>
-          <button md-raised-button class="md-block" (click)="purchase()">CONFIRM</button>
-          <pre><code>
-            {{ (cartService.data | async) | json }}
-          </code></pre>
-        </md-card-content>
-      </md-card>
-    </div>
-  </div>
-</section>

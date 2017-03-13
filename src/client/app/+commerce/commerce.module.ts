@@ -10,7 +10,6 @@ import { COMMERCE_ROUTES } from './commerce.routes';
 import { CartCapabilities } from './+cart/services/cart.capabilities';
 import { CartComponent } from './+cart/cart.component';
 import { CartTabComponent } from './+cart/components/tabs/cart-tab.component';
-import { ReviewTabComponent } from './+cart/components/tabs/review-tab.component';
 import { BillingTabComponent } from './+cart/components/tabs/billing-tab.component';
 import { PaymentTabComponent } from './+cart/components/tabs/payment-tab.component';
 import { ConfirmTabComponent } from './+cart/components/tabs/confirm-tab.component';
@@ -31,7 +30,6 @@ import { OrderItemListComponent } from './+order/components/order-item-list.comp
     CommerceComponent,
     CartComponent,
     CartTabComponent,
-    ReviewTabComponent,
     BillingTabComponent,
     PaymentTabComponent,
     ConfirmTabComponent,
