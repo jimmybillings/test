@@ -17,11 +17,23 @@ export function main() {
     it('returns the default state for no current state and an unexpected action type', () => {
       expect(cart(undefined, { type: 'BLAH', payload: { someKey: 'someValue' } }))
         .toEqual({
-          cart: { userId: NaN, total: 0 },
+          cart: {
+            userId: NaN,
+            total: 0
+          },
           orderInProgress: {
             address: {
-              type: '', name: '',
-              address: { street: '', state: '', city: '', country: '', zipcode: '', phone: '', suburb: '' }
+              type: '',
+              name: '',
+              address: {
+                address: '',
+                state: '',
+                city: '',
+                country: '',
+                zipcode: '',
+                phone: '',
+                suburb: ''
+              }
             },
             authorization: {}
           }

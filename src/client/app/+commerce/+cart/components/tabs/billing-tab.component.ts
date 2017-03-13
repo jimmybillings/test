@@ -92,16 +92,18 @@ export class BillingTabComponent extends Tab implements OnInit, OnDestroy {
 
   private fetchAddresses(): void {
     this.user.getAddresses().take(1).subscribe((addresses: any) => {
-      this.addresses = addresses.list;
-      let newSelectedAddress: ViewAddress;
-      if (this.selectedAddress.type === '') {
-        newSelectedAddress = this.addresses[0];
-      } else {
-        newSelectedAddress = this.addresses.filter((addr: ViewAddress) => {
-          return addr.addressEntityId === this.selectedAddress.addressEntityId;
-        })[0];
+      this.addresses = addresses.list ? addresses.list : [];
+      if (this.addresses.length > 0) {
+        let newSelectedAddress: ViewAddress;
+        if (this.selectedAddress.type === '') {
+          newSelectedAddress = this.addresses[0];
+        } else {
+          newSelectedAddress = this.addresses.filter((addr: ViewAddress) => {
+            return addr.addressEntityId === this.selectedAddress.addressEntityId;
+          })[0];
+        }
+        this.selectAddress(newSelectedAddress);
       }
-      this.selectAddress(newSelectedAddress);
     });
   }
 }
