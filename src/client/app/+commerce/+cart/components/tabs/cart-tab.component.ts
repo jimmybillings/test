@@ -7,14 +7,14 @@ import { Project, LineItem } from '../../../../shared/interfaces/cart.interface'
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { EditProjectComponent } from '../edit-project.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
-import { WzAdvancedPlayerComponent } from
-  '../../../../shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player.component';
+import { WzSubclipEditorComponent } from '../../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { AssetService } from '../../../../shared/services/asset.service';
 import { Capabilities } from '../../../../shared/services/capabilities.service';
 import { WzPricingComponent } from '../../../../shared/components/wz-pricing/wz.pricing.component';
 import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../../shared/stores/error.store';
 import { WindowRef } from '../../../../shared/services/window-ref.service';
+import { SubclipMarkers } from '../../../../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -166,17 +166,16 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   private editAsset(payload: any) {
     this.assetService.getClipPreviewData(payload.asset.assetId).subscribe(data => {
       payload.asset.clipUrl = data.url;
-      let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '544px' });
+      let dialogRef: MdDialogRef<WzSubclipEditorComponent> = this.dialog.open(WzSubclipEditorComponent, { width: '544px' });
       // workaround for cart assets that have asset.timeStart = -1, and asset.timeStart = -2
       if (payload.asset.timeStart < 0) payload.asset.timeStart = undefined;
       if (payload.asset.timeEnd < 0) payload.asset.timeEnd = undefined;
-      Object.assign(dialogRef.componentInstance,
-        { window: this.window.nativeWindow, asset: payload.asset, displayContext: 'subClipEditDialog' });
+      Object.assign(dialogRef.componentInstance, { window: this.window.nativeWindow, asset: payload.asset });
       this.document.body.classList.add('subclipping-edit-open');
-      dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.onSubclip.subscribe((data: any) => {
-        payload.asset.timeStart = data.in;
-        payload.asset.timeEnd = data.out;
+      dialogRef.componentInstance.cancel.subscribe(() => dialogRef.close());
+      dialogRef.componentInstance.save.subscribe((newMarkers: SubclipMarkers) => {
+        payload.asset.timeStart = newMarkers.in;
+        payload.asset.timeEnd = newMarkers.out;
         this.cartService.editLineItem(payload, {});
         dialogRef.close();
       });

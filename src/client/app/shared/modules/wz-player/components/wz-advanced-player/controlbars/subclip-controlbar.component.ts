@@ -11,7 +11,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 export class SubclipControlbarComponent {
   @Input() playerState: PlayerState;
-  @Input() displayContext: string;
+  @Input() displayAllControls: boolean = true;
   @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
 
   public forward(request: PlayerRequest): void {

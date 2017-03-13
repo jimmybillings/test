@@ -12,13 +12,7 @@
   </wz-player-controlbar>
   <wz-subclip-controlbar class="tool-bar" layout="row" 
     [playerState]="playerStateService.state | async" 
-    (request)="handle($event)"
-    [displayContext]="displayContext">
-  </wz-subclip-controlbar>
-  <wz-subclip-edit-actions *ngIf="displayContext =='subClipEditDialog'" layout="row" layout-align="end center"
-    [hasStoredMarkers]="asset.timeStart != undefined"
-    [dialog]="dialog"
-    [playerState]="playerStateService.state | async" 
+    [displayAllControls]="displayAllControls"
     (request)="handle($event)">
-  </wz-subclip-edit-actions>
+  </wz-subclip-controlbar>
 </ng-container>

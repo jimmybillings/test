@@ -22,9 +22,9 @@ import { CollectionFormComponent } from '../../application/collection-tray/compo
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
 import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { Asset } from '../../shared/interfaces/asset.interface';
-import { WzAdvancedPlayerComponent } from
-  '../../shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player.component';
+import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
+import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -184,12 +184,12 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public editAsset(asset: any) {
     this.asset.getClipPreviewData(asset.assetId).subscribe(data => {
       asset.clipUrl = data.url;
-      let dialogRef: MdDialogRef<WzAdvancedPlayerComponent> = this.dialog.open(WzAdvancedPlayerComponent, { width: '544px' });
-      Object.assign(dialogRef.componentInstance, { window: this.window.nativeWindow, asset: asset, displayContext: 'subClipEditDialog' });
+      let dialogRef: MdDialogRef<WzSubclipEditorComponent> = this.dialog.open(WzSubclipEditorComponent, { width: '544px' });
+      Object.assign(dialogRef.componentInstance, { window: this.window.nativeWindow, asset: asset });
       this.document.body.classList.add('subclipping-edit-open');
-      dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.onSubclip.subscribe((data: any) => {
-        const body = { uuid: asset.uuid, assetId: asset.assetId, timeStart: data.in, timeEnd: data.out };
+      dialogRef.componentInstance.cancel.subscribe(() => dialogRef.close());
+      dialogRef.componentInstance.save.subscribe((newMarkers: SubclipMarkers) => {
+        const body = { uuid: asset.uuid, assetId: asset.assetId, timeStart: newMarkers.in, timeEnd: newMarkers.out };
         this.activeCollection.updateAsset(this.collection.id, body).subscribe();
         dialogRef.close();
       });

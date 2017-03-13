@@ -1,8 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 import { CartTabComponent } from './cart-tab.component';
 import { EditProjectComponent } from '../edit-project.component';
-import { WzAdvancedPlayerComponent } from
-  '../../../../shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player.component';
+import { WzSubclipEditorComponent } from '../../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WzPricingComponent } from '../../../../shared/components/wz-pricing/wz.pricing.component';
 
 export function main() {
@@ -57,7 +56,8 @@ export function main() {
       mockDialog = {
         open: jasmine.createSpy('open').and.returnValue({
           componentInstance: {
-            onSubclip: Observable.of({}),
+            cancel: Observable.of({}),
+            save: Observable.of({}),
             pricingEvent: Observable.of({})
           },
           afterClosed: function () {
@@ -271,7 +271,7 @@ export function main() {
         componentUnderTest.onNotification({ type: 'EDIT_LINE_ITEM_MARKERS', payload: { asset: mockAsset } });
 
         expect(mockAssetService.getClipPreviewData).toHaveBeenCalledWith(1234);
-        expect(mockDialog.open).toHaveBeenCalledWith(WzAdvancedPlayerComponent, { width: '544px' });
+        expect(mockDialog.open).toHaveBeenCalledWith(WzSubclipEditorComponent, { width: '544px' });
       });
 
       describe('calls openPricingDialog with SHOW_PRICING_DIALOG', () => {

@@ -15,15 +15,16 @@ import { Subscription } from 'rxjs/Rx';
 })
 
 export class WzAdvancedPlayerComponent {
-  @Input() dialog: any;
   @Input() window: any;
+  @Input() displayAllControls: boolean = true;
   @Output() onSubclip = new EventEmitter();
   @Output() onUpdateSubclipData = new EventEmitter();
+  @Output() markerChange: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
-  public displayContext: string = 'assetDetails';
   public playerStateSubscription: Subscription;
   private currentAsset: any = null;
+  private currentState: PlayerState = null;
 
   @Input()
   public set asset(newAsset: any) {
@@ -40,11 +41,21 @@ export class WzAdvancedPlayerComponent {
   }
 
   constructor(public playerStateService: PlayerStateService) {
-    this.playerStateSubscription = playerStateService.state.subscribe((data) => {
-      if (data.inMarkerFrame && data.outMarkerFrame) {
-        this.onUpdateSubclipData.emit({ in: data.inMarkerFrame, out: data.outMarkerFrame });
+    this.playerStateSubscription = playerStateService.state.subscribe(newState => {
+      if (newState.inMarkerFrame && newState.outMarkerFrame) {
+        this.onUpdateSubclipData.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
         // this.playerStateSubscription.unsubscribe();
       }
+
+      if (this.currentState && (newState.inMarkerFrame !== this.currentState.inMarkerFrame
+        || newState.outMarkerFrame !== this.currentState.outMarkerFrame)) {
+        this.markerChange.emit({
+          in: newState.inMarkerFrame ? newState.inMarkerFrame.frameNumber : undefined,
+          out: newState.outMarkerFrame ? newState.outMarkerFrame.frameNumber : undefined
+        });
+      }
+
+      this.currentState = newState;
     });
   }
 
@@ -65,9 +76,6 @@ export class WzAdvancedPlayerComponent {
         break;
       case PlayerRequestType.SaveMarkers:
         this.onSubclip.emit({ in: state.inMarkerFrame.frameNumber, out: state.outMarkerFrame.frameNumber });
-        break;
-      case PlayerRequestType.SaveMarkersAsUndefined:
-        this.onSubclip.emit({ in: undefined, out: undefined });
         break;
       case PlayerRequestType.SeekToFrame:
         this.player.seekTo(payload.frame.asSeconds());

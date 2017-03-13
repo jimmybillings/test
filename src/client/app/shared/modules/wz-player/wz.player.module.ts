@@ -8,7 +8,6 @@ import { WzPlayerComponent } from './components/wz-player/wz.player.component';
 import { WzAdvancedPlayerComponent } from './components/wz-advanced-player/wz.advanced-player.component';
 import { PlayerControlbarComponent } from './components/wz-advanced-player/controlbars/player-controlbar.component';
 import { SubclipControlbarComponent } from './components/wz-advanced-player/controlbars/subclip-controlbar.component';
-import { SubclipEditActionsComponent } from './components/wz-advanced-player/controlbars/subclip-edit-actions.component';
 import { FastPlaybackButtonComponent } from './components/wz-advanced-player/controls/fast-playback-button.component';
 import { MarkersClearButtonComponent } from './components/wz-advanced-player/controls/markers-clear-button.component';
 import { MarkersPlaybackButtonComponent } from './components/wz-advanced-player/controls/markers-playback-button.component';
@@ -34,7 +33,6 @@ import { VolumeControlComponent } from './components/wz-advanced-player/controls
     WzAdvancedPlayerComponent,
     PlayerControlbarComponent,
     SubclipControlbarComponent,
-    SubclipEditActionsComponent,
     FastPlaybackButtonComponent,
     MarkersClearButtonComponent,
     MarkersPlaybackButtonComponent,
@@ -51,8 +49,7 @@ import { VolumeControlComponent } from './components/wz-advanced-player/controls
   exports: [
     TimecodePipe,
     WzAdvancedPlayerComponent,
-    WzPlayerComponent,
-  ],
-  entryComponents: [WzAdvancedPlayerComponent]
+    WzPlayerComponent
+  ]
 })
 export class WzPlayerModule { }
