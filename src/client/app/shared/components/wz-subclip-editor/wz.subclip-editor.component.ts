@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
+import { SubclipMarkers } from '../../interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -20,7 +21,7 @@ import { Frame } from 'wazee-frame-formatter';
 
       <button md-button class="is-outlined" color="primary"
         *ngIf="!markersAreRemovable"
-        [disabled]="!this.markersAreSavable"
+        [disabled]="!markersAreSavable"
         (click)="onSaveButtonClick()">
         {{ 'ASSET.SAVE_SUBCLIP.EDIT_ACTIONS.SAVE_BTN_LABEL' | translate }}
       </button>
@@ -38,29 +39,27 @@ export class WzSubclipEditorComponent {
   @Input() window: any;
   @Input() asset: any;
   @Input() dialog: any;
-  @Output() save = new EventEmitter();
+  @Output() save: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
 
-  public playerInMarker: Frame;
-  public playerOutMarker: Frame;
+  private playerMarkers: SubclipMarkers;
 
   public get markersAreRemovable(): boolean {
     return this.asset.timeStart && !this.markersAreSavable;
   }
 
   public get markersAreSavable(): boolean {
-    return !!this.playerInMarker && !!this.playerOutMarker;
+    return this.playerMarkers && !!this.playerMarkers.in && !!this.playerMarkers.out;
   }
 
-  public onPlayerMarkerChange(event: any): void {
-    this.playerInMarker = event.in;
-    this.playerOutMarker = event.out;
+  public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
+    this.playerMarkers = newMarkers;
   }
 
   public onSaveButtonClick(): void {
-    this.save.emit({ in: this.playerInMarker.frameNumber, out: this.playerOutMarker.frameNumber });
+    this.save.emit(this.playerMarkers);
   }
 
   public onRemoveButtonClick(): void {
-    this.save.emit({ in: undefined, out: undefined });
+    this.save.emit(this.playerMarkers);
   }
 }

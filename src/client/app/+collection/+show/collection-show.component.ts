@@ -24,6 +24,7 @@ import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview
 import { Asset } from '../../shared/interfaces/asset.interface';
 import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
+import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -187,8 +188,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       Object.assign(dialogRef.componentInstance, { window: this.window.nativeWindow, asset: asset });
       this.document.body.classList.add('subclipping-edit-open');
       dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.save.subscribe((data: any) => {
-        const body = { uuid: asset.uuid, assetId: asset.assetId, timeStart: data.in, timeEnd: data.out };
+      dialogRef.componentInstance.save.subscribe((newMarkers: SubclipMarkers) => {
+        const body = { uuid: asset.uuid, assetId: asset.assetId, timeStart: newMarkers.in, timeEnd: newMarkers.out };
         this.activeCollection.updateAsset(this.collection.id, body).subscribe();
         dialogRef.close();
       });

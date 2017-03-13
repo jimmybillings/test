@@ -19,7 +19,7 @@ export class WzAdvancedPlayerComponent {
   @Input() displayAllControls: boolean = true;
   @Output() onSubclip = new EventEmitter();
   @Output() onUpdateSubclipData = new EventEmitter();
-  @Output() markerChange = new EventEmitter();
+  @Output() markerChange: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
   public playerStateSubscription: Subscription;
@@ -49,7 +49,10 @@ export class WzAdvancedPlayerComponent {
 
       if (this.currentState && (newState.inMarkerFrame !== this.currentState.inMarkerFrame
         || newState.outMarkerFrame !== this.currentState.outMarkerFrame)) {
-        this.markerChange.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
+        this.markerChange.emit({
+          in: newState.inMarkerFrame ? newState.inMarkerFrame.frameNumber : undefined,
+          out: newState.outMarkerFrame ? newState.outMarkerFrame.frameNumber : undefined
+        });
       }
 
       this.currentState = newState;

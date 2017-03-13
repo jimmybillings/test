@@ -14,6 +14,7 @@ import { WzPricingComponent } from '../../../../shared/components/wz-pricing/wz.
 import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../../shared/stores/error.store';
 import { WindowRef } from '../../../../shared/services/window-ref.service';
+import { SubclipMarkers } from '../../../../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -173,9 +174,9 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
       Object.assign(dialogRef.componentInstance, { window: this.window.nativeWindow, asset: payload.asset });
       this.document.body.classList.add('subclipping-edit-open');
       dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.save.subscribe((data: any) => {
-        payload.asset.timeStart = data.in;
-        payload.asset.timeEnd = data.out;
+      dialogRef.componentInstance.save.subscribe((newMarkers: SubclipMarkers) => {
+        payload.asset.timeStart = newMarkers.in;
+        payload.asset.timeEnd = newMarkers.out;
         this.cartService.editLineItem(payload, {});
         dialogRef.close();
       });
