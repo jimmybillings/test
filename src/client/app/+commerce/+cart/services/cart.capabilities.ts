@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import { UiState } from '../../../shared/services/ui.state';
 import { FeatureStore } from '../../../shared/stores/feature.store';
 import { Feature } from '../../../shared/interfaces/feature.interface';
+import { Address, ViewAddress } from '../../../shared/interfaces/user.interface';
 
 @Injectable()
 export class CartCapabilities {
@@ -27,8 +28,20 @@ export class CartCapabilities {
     return this.haveCart() && this.currentUser.hasPurchaseOnCredit();
   }
 
-  public editAccountBillingAddress(): boolean {
-    return this.userHas('EditAccounts');
+  public editAddress(address: ViewAddress): boolean {
+    return address.type === 'user' && !!address.address;
+  }
+
+  public addAddress(address: ViewAddress): boolean {
+    return address.type === 'user' && !address.address;
+  }
+
+  public editAccountAddress(address: ViewAddress): boolean {
+    return address.type === 'account' && this.userHas('EditAccounts') && !!address.address;
+  }
+
+  public addAccountAddress(address: ViewAddress): boolean {
+    return address.type === 'account' && this.userHas('EditAccounts') && !address.address;
   }
 
   public userHas(permission: string): boolean {

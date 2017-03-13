@@ -16,25 +16,31 @@ import { Address } from '../../../shared/interfaces/user.interface';
       (formSubmit)="dialog.close($event)"></wz-form>
     </md-dialog-content>
   </div>`
-
-
 })
 export class AddressFormComponent implements OnInit {
   @Input() dialog: any;
   @Input() items: any[];
-  @Input() address: Address;
   @Input() resourceType: 'user' | 'account';
   @Input() mode: 'add' | 'edit';
+  @Input() address: Address;
 
   ngOnInit() {
     if (this.address) {
-      this.items.map((item: any) => {
-        item.value = this.address[item.name];
-      });
+      this.prepopulateForm(this.address);
+    } else {
+      this.clearForm();
     }
   }
 
   public capitalize(s: string): string {
     return s.charAt(0).toUpperCase().concat(s.slice(1));
+  }
+
+  private clearForm(): void {
+    this.items.map((item: any) => item.value = '');
+  }
+
+  private prepopulateForm(address: Address): void {
+    this.items.map((item: any) => item.value = address[item.name]);
   }
 }

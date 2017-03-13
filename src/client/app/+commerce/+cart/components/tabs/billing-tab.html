@@ -2,8 +2,7 @@
   <div class="cart-billing" flex="95">
     <div layout="row" layout-align="center center">
       <div flex="40">
-        <md-card class="billing-card wz-form-card">
-          <div *ngIf="addresses.length === 0">
+        <md-card class="billing-card wz-form-card" *ngIf="addresses.length === 0">
             <md-card-title>
               {{ 'CART.BILLING.ENTER_BILLING_ADDRESS' | translate }}
             </md-card-title>
@@ -14,57 +13,61 @@
                 (formSubmit)="addUserAddress($event)">
               </wz-form>
             </md-card-content>
-          </div>
-          <div *ngIf="addresses.length > 0">
-            <md-select
-              [(ngModel)]="selectedAddress.address"
-              placeholder="{{ 'CART.BILLING.SELECT_BILLING_ADDRESS' | translate }}"
-              required>
-              <md-option
-                *ngFor="let address of addresses"
-                [value]="address.address"
-                (onSelect)="selectAddress(address)">
-                  {{ address.type + ': ' + address.name }}
-              </md-option>
-            </md-select>
-            <div layout="column" layout-align="center center" class="selected-address">
-              <div *ngIf="!!selectedAddress.address.address">
-                <div *ngFor="let item of selectedAddress.address | values">
-                  <p><strong>{{item.key}}:</strong> {{item.value}}</p>
-                </div>
-              </div>
-              <div *ngIf="!selectedAddress.address.address">
-                No Address found for this {{ selectedAddress.type }}
-              </div>
-            </div>
-          </div>
-          <div layout="row" layout-align="space-around center" class="billing-actions">
-            <div *ngIf="selectedAddress.type === 'user'">
-              <button
-                (click)="openAddressFormFor('user', 'edit')"
-                title="{{ 'CART.BILLING.EDIT_USER_ADDRESS_TITLE' | translate }}"
-                md-button class="md-primary">
-                  {{ 'CART.BILLING.EDIT_USER_ADDRESS_BTN' | translate }}
-              </button>        
-            </div>
-            <div *ngIf="onlyAccountAddressesExist">
-              <button
-                (click)="openAddressFormFor('user', 'add')"
-                title="{{ 'CART.BILLING.ADD_USER_ADDRESS_TITLE' | translate }}"
-                md-button class="md-primary">
-                  {{ 'CART.BILLING.ADD_USER_ADDRESS_BTN' | translate }}
-              </button>        
-            </div>
-            <div *ngIf="userCanEditAccountAddress">
-              <button
-                (click)="openAddressFormFor('account', 'edit')"
-                title="{{ 'CART.BILLING.EDIT_ACCOUNT_ADDRESS_TITLE' | translate }}"
-                md-button class="md-primary">
-                  {{ 'CART.BILLING.EDIT_ACCOUNT_ADDRESS_BTN' | translate }}
-              </button>        
-            </div>
-          </div>
         </md-card>
+        <div flex="95" *ngIf="addresses.length > 0" class="addresses">
+          <div layout="column" layout-align="center center">
+            <h3>{{ 'CART.BILLING.SELECT_BILLING_ADDRESS' | translate }}</h3>
+          </div>
+          <ul layout="column" layout-align="center center" layout-gt-md="row">
+            <li *ngFor="let address of this.addresses">
+              <md-card class="address" [ngClass]="{'active': address.addressEntityId === selectedAddress.addressEntityId}">
+                <md-card-title>{{address.type + ': ' + address.name}}</md-card-title>
+                <md-card-content>{{format(address)}}</md-card-content>
+                <md-card-actions class="billing-actions">
+                  <div layout="row" layout-align="space-around center">
+                    <div *ngIf="userCan.editAddress(address)">
+                      <button
+                        (click)="openAddressFormFor('user', 'edit', address)"
+                        title="{{ 'CART.BILLING.EDIT_USER_ADDRESS' | translate }}"
+                        md-button class="md-primary">
+                          {{ 'CART.BILLING.EDIT_USER_ADDRESS' | translate }}
+                      </button>        
+                    </div>
+                    <div *ngIf="userCan.addAddress(address)">
+                      <button
+                        (click)="openAddressFormFor('user', 'add', address)"
+                        title="{{ 'CART.BILLING.ADD_USER_ADDRESS' | translate }}"
+                        md-button class="md-primary">
+                          {{ 'CART.BILLING.ADD_USER_ADDRESS' | translate }}
+                      </button>        
+                    </div>
+                    <div *ngIf="userCan.editAccountAddress(address)">
+                      <button
+                        (click)="openAddressFormFor('account', 'edit', address)"
+                        title="{{ 'CART.BILLING.EDIT_ACCOUNT_ADDRESS' | translate }}"
+                        md-button class="md-primary">
+                          {{ 'CART.BILLING.EDIT_ACCOUNT_ADDRESS' | translate }}
+                      </button>        
+                    </div>
+                    <div *ngIf="userCan.addAccountAddress(address)">
+                      <button
+                        (click)="openAddressFormFor('account', 'add', address)"
+                        title="{{ 'CART.BILLING.ADD_ACCOUNT_ADDRESS' | translate }}"
+                        md-button class="md-primary">
+                          {{ 'CART.BILLING.ADD_ACCOUNT_ADDRESS' | translate }}
+                      </button>        
+                    </div>
+                    <div>
+                      <button md-button class="md-primary" (click)="selectAddress(address)" [disabled]="!address.address">
+                        {{ 'CART.BILLING.SELECT_ADDRESS_BTN' | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </md-card-actions>
+              </md-card>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

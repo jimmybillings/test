@@ -11,14 +11,26 @@ div.cart-billing {
         margin: rem(.5);
       }
     }
-    div.selected-address {
-      padding: rem(2);
-      margin-top: rem(2);
-      background-color: md-color($md-grey, 100);
-    }
   }
-  div.billing-actions {
-    margin-top: rem(2);
+
+  div.addresses {
+    ul {
+      list-style: none;
+      padding: 0;
+      li {
+        margin: rem(2);
+        md-card.address {
+          min-width: rem(36);
+          min-height: rem(12);
+          md-card-content {
+            min-height: rem(6);
+          }
+          &.active {
+            color: green;
+          }
+        }
+      }
+    }
   }
 }
 
