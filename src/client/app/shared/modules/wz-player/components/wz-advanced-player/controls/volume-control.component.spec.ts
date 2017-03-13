@@ -13,8 +13,8 @@ export function main() {
       componentUnderTest.request.emit = jasmine.createSpy('request emitter');
     });
 
-    it('starts with active === false', () => {
-      expect(componentUnderTest.active).toBe(false);
+    it('starts with volumeState === inactive', () => {
+      expect(componentUnderTest.volumeState).toBe('inactive');
     });
 
     it('starts with expected buttonTitle', () => {
@@ -44,19 +44,19 @@ export function main() {
     });
 
     describe('onMouseOver()', () => {
-      it('sets active to true', () => {
+      it('sets volumeState to active', () => {
         componentUnderTest.onMouseOver();
 
-        expect(componentUnderTest.active).toBe(true);
+        expect(componentUnderTest.volumeState).toBe('active');
       });
     });
 
     describe('onMouseLeave()', () => {
-      it('restores active to false', () => {
+      it('restores volumeState to inactive', () => {
         componentUnderTest.onMouseOver();
         componentUnderTest.onMouseLeave();
 
-        expect(componentUnderTest.active).toBe(false);
+        expect(componentUnderTest.volumeState).toBe('inactive');
       });
     });
 
