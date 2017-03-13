@@ -173,7 +173,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
       if (payload.asset.timeEnd < 0) payload.asset.timeEnd = undefined;
       Object.assign(dialogRef.componentInstance, { window: this.window.nativeWindow, asset: payload.asset });
       this.document.body.classList.add('subclipping-edit-open');
-      dialogRef.componentInstance.dialog = dialogRef;
+      dialogRef.componentInstance.cancel.subscribe(() => dialogRef.close());
       dialogRef.componentInstance.save.subscribe((newMarkers: SubclipMarkers) => {
         payload.asset.timeStart = newMarkers.in;
         payload.asset.timeEnd = newMarkers.out;

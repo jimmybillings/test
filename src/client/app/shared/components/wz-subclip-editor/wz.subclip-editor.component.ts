@@ -38,7 +38,7 @@ import { SubclipMarkers } from '../../interfaces/asset.interface';
 export class WzSubclipEditorComponent {
   @Input() window: any;
   @Input() asset: any;
-  @Input() dialog: any;
+  @Output() cancel: EventEmitter<null> = new EventEmitter<null>();
   @Output() save: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
 
   private playerMarkers: SubclipMarkers = { in: undefined, out: undefined };
@@ -56,7 +56,7 @@ export class WzSubclipEditorComponent {
   }
 
   public onCancelButtonClick(): void {
-    this.dialog.close();
+    this.cancel.emit();
   }
 
   public onSaveButtonClick(): void {

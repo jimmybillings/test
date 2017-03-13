@@ -187,7 +187,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       let dialogRef: MdDialogRef<WzSubclipEditorComponent> = this.dialog.open(WzSubclipEditorComponent, { width: '544px' });
       Object.assign(dialogRef.componentInstance, { window: this.window.nativeWindow, asset: asset });
       this.document.body.classList.add('subclipping-edit-open');
-      dialogRef.componentInstance.dialog = dialogRef;
+      dialogRef.componentInstance.cancel.subscribe(() => dialogRef.close());
       dialogRef.componentInstance.save.subscribe((newMarkers: SubclipMarkers) => {
         const body = { uuid: asset.uuid, assetId: asset.assetId, timeStart: newMarkers.in, timeEnd: newMarkers.out };
         this.activeCollection.updateAsset(this.collection.id, body).subscribe();

@@ -54,6 +54,7 @@ export function main() {
       mockDialog = {
         open: jasmine.createSpy('open').and.returnValue({
           componentInstance: {
+            cancel: Observable.of({}),
             save: Observable.of({}),
             pricingEvent: Observable.of({})
           },

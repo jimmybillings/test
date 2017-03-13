@@ -1,11 +1,12 @@
 import { WzSubclipEditorComponent } from './wz.subclip-editor.component';
 
 export function main() {
-  fdescribe('Wz Subclip Editor Component', () => {
+  describe('Wz Subclip Editor Component', () => {
     let componentUnderTest: WzSubclipEditorComponent;
 
     beforeEach(() => {
       componentUnderTest = new WzSubclipEditorComponent();
+      componentUnderTest.cancel.emit = jasmine.createSpy('cancel emitter');
       componentUnderTest.save.emit = jasmine.createSpy('save emitter');
     });
 
@@ -94,11 +95,10 @@ export function main() {
     });
 
     describe('onCancelButtonClick()', () => {
-      it('calls dialog.close()', () => {
-        componentUnderTest.dialog = { close: jasmine.createSpy('close') };
+      it('emits a cancel event', () => {
         componentUnderTest.onCancelButtonClick();
 
-        expect(componentUnderTest.dialog.close).toHaveBeenCalledWith();
+        expect(componentUnderTest.cancel.emit).toHaveBeenCalledWith();
       });
     });
 
