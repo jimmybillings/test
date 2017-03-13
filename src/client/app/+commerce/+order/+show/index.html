@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Enter names in the fields, then click "Submit" to submit the form:</p>
+
+<form id="frm1" action="/action_page.php">
+  aspera spec: <input type="text" name="spec" id="spec"><br><br>
+  <input type="button" onclick="myFunction()" value="Submit">
+</form>
+
+<script type="text/javascript" src="asperaweb-4.js"></script>
+<script type="text/javascript" src="connectinstaller-4.js"></script>
+<script>
+function myFunction() {
+	var x = document.getElementById("frm1");
+	var spec = x.elements[0].value;
+	handleDownload(spec)
+}
+
+function initConnect(id, callback, spec) {
+  var asperaWeb = {};
+  var CONNECT_INSTALLER = '//d3gcli72yxqn2z.cloudfront.net/connect/v4';
+  var asperaWeb = new AW4.Connect({
+    sdkLocation: CONNECT_INSTALLER,
+    minVersion: '3.6.0',
+    id: "aspera_web_transfers-" + id
+  });
+  var asperaInstaller = new AW4.ConnectInstaller({
+    sdkLocation: CONNECT_INSTALLER
+  });
+  var statusEventListener = function (eventType, data) {
+    var status = AW4.Connect.STATUS;
+    if (eventType === AW4.Connect.EVENT.STATUS) {
+      if (data === status.INITIALIZING) {
+        asperaInstaller.showLaunching();
+      }
+      if (data === status.FAILED) {
+        asperaInstaller.showDownload();
+      }
+      if (data === status.OUTDATED) {
+        asperaInstaller.showUpdate();
+      }
+      if (data === status.RUNNING) {
+        asperaInstaller.connected();
+        callback(spec, asperaWeb, id);
+      }
+    }
+  };
+  asperaWeb.addEventListener(AW4.Connect.EVENT.STATUS, statusEventListener);
+  asperaWeb.initSession('nodeConnect-' + id);
+}
+
+//Handler for downloads.  'caller' is reference to HTML element who made the call (for updating progress) and 'spec' is the
+//transferSpec returned from server.
+//Starts Connect Client and starts transfer
+
+function handleDownload(spec) {
+  var random = Math.floor((Math.random() * 10000) + 1);
+  initConnect(random, handleDownloadCallback, spec);
+}
+
+var handleDownloadCallback = function (spec, asperaWeb, random) {
+    //random is a random number used for creating multiple instances of downloads/uploads
+    
+    //Block Connect Dialog from appearing, since we are showing progress on web app
+    connectSettings = {
+        "allow_dialogs": "yes"
+    };
+
+    //Start Download using Connect
+    var transferSpec = spec.transfer_specs[0].transfer_spec;
+    transferSpec['target_rate_kbps'] = 100000;
+    //Add token authentication tag to JSON since is it not returned with transferSpec.
+    transferSpec.authentication = "token";
+    asperaWeb.startTransfer(transferSpec, connectSettings);
+}
+</script>
+
+</body>
+</html>
