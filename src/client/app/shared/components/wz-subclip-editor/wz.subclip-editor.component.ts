@@ -15,7 +15,7 @@ import { SubclipMarkers } from '../../interfaces/asset.interface';
     </wz-advanced-player>
 
     <section layout="row" layout-align="end">
-      <button md-button color="primary" (click)="dialog.close()">
+      <button md-button color="primary" (click)="onCancelButtonClick()">
         {{ 'ASSET.SAVE_SUBCLIP.EDIT_ACTIONS.CANCEL_BTN_LABEL' | translate }}
       </button>
 
@@ -41,18 +41,22 @@ export class WzSubclipEditorComponent {
   @Input() dialog: any;
   @Output() save: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
 
-  private playerMarkers: SubclipMarkers;
+  private playerMarkers: SubclipMarkers = { in: undefined, out: undefined };
 
   public get markersAreRemovable(): boolean {
-    return this.asset.timeStart && !this.markersAreSavable;
+    return !!this.asset.timeStart && !this.markersAreSavable;
   }
 
   public get markersAreSavable(): boolean {
-    return this.playerMarkers && !!this.playerMarkers.in && !!this.playerMarkers.out;
+    return !!this.playerMarkers.in && !!this.playerMarkers.out;
   }
 
   public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
     this.playerMarkers = newMarkers;
+  }
+
+  public onCancelButtonClick(): void {
+    this.dialog.close();
   }
 
   public onSaveButtonClick(): void {
