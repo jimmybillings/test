@@ -31,11 +31,17 @@ export function main() {
                 city: '',
                 country: '',
                 zipcode: '',
-                phone: '',
-                suburb: ''
+                phone: ''
               }
             },
-            authorization: {}
+            authorization: {
+              card: {
+                brand: '',
+                last4: '',
+                exp_month: '',
+                exp_year: ''
+              }
+            }
           }
         });
     });
