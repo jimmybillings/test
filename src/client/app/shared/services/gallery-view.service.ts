@@ -22,7 +22,7 @@ export class GalleryViewService {
   public load(path: GalleryPath): Observable<ApiResponse> {
     let query: string = (path && path.length > 0) ? this.stringifyPathForSearch(path) : null;
 
-    return this.api.get(Api.Assets, 'galleryResult', { parameters: { query: query, siteName: 'core' } })
+    return this.api.get(Api.Assets, 'galleryResult', { loading: true, parameters: { query: query, siteName: 'core' } })
       .do((response: any) => this.store.replaceWith(response.list, path));
 
     // TO BE REMOVED:
