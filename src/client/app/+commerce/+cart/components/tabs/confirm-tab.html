@@ -3,8 +3,10 @@
   <projects-component flex="100" [readOnly]="true" [projects]="(cartService.data | async).cart.projects"></projects-component>
   <div layout="row" flex="100" layout-align="space-between center">
     <md-card flex="40" class="address">
-      <md-card-title>{{cartStore.orderInProgress.address.type + ': ' + cartStore.orderInProgress.address.name}}</md-card-title>
-      <md-card-content [innerHTML]="format(cartStore.orderInProgress.address)"></md-card-content>
+      <md-card-title>
+        {{cartStore.orderInProgress.selectedAddress.type + ': ' + cartStore.orderInProgress.selectedAddress.name}}
+      </md-card-title>
+      <md-card-content [innerHTML]="format(cartStore.orderInProgress.selectedAddress)"></md-card-content>
     </md-card>
     <md-card flex="45">
       <md-card-title>Confirm</md-card-title>

@@ -1,4 +1,4 @@
-import { Address } from './user.interface';
+import { ViewAddress } from './user.interface';
 
 export interface Cart {
   userId: number;
@@ -93,11 +93,8 @@ export interface AddAssetParameters {
 export interface CartState {
   cart: Cart;
   orderInProgress: {
-    address: {
-      type: string;
-      name: string;
-      address: Address;
-    };
+    addresses: ViewAddress[];
+    selectedAddress: ViewAddress;
     authorization: any;
   };
 };

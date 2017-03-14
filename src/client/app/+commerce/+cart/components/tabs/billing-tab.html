@@ -2,7 +2,7 @@
   <div class="cart-billing" flex="95">
     <div layout="row" layout-align="center center">
       <div flex="40">
-        <md-card class="billing-card wz-form-card" *ngIf="addressesAreEmpty">
+        <md-card class="billing-card wz-form-card" *ngIf="addressesAreEmpty | async">
             <md-card-title>
               {{ 'CART.BILLING.ENTER_BILLING_ADDRESS' | translate }}
             </md-card-title>
@@ -14,15 +14,15 @@
               </wz-form>
             </md-card-content>
         </md-card>
-        <div flex="95" *ngIf="addresses.length > 0" class="addresses">
+        <div *ngIf="!(addressesAreEmpty | async)" flex="95" class="addresses">
           <div layout="column" layout-align="center center">
             <h3>{{ 'CART.BILLING.SELECT_BILLING_ADDRESS' | translate }}</h3>
           </div>
           <ul layout="column" layout-align="center center" layout-gt-md="row">
-            <li *ngFor="let address of this.addresses">
-              <md-card class="address" [ngClass]="{'active': address.addressEntityId === selectedAddress.addressEntityId}">
+            <li *ngFor="let address of (orderInProgress | async).addresses">
+              <md-card class="address" [ngClass]="{'active': address === (orderInProgress | async).selectedAddress}">
                 <md-card-title>{{address.type + ': ' + address.name}}</md-card-title>
-                <md-card-content [innerHTML]="format(address)"></md-card-content>
+                <md-card-content><pre>{{address | json}}</pre></md-card-content>
                 <md-card-actions class="billing-actions">
                   <div layout="row" layout-align="space-around center">
                     <div *ngIf="userCan.editAddress(address)">
@@ -74,5 +74,7 @@
 </div>
 <nav flex="100" layout="row" layout-align="space-between">
   <button md-raised-button class="md-block" (click)="goToPreviousTab()">{{ 'CART.BILLING.BACK_BTN' | translate }}</button>
-  <button md-raised-button class="md-block" (click)="goToNextTab()" [disabled]="!userCanProceed">{{ 'CART.BILLING.FORWARD_BTN' | translate }}</button>
+  <button md-raised-button class="md-block" (click)="goToNextTab()" [disabled]="!(userCanProceed | async)">
+    {{ 'CART.BILLING.FORWARD_BTN' | translate }}
+  </button>
 </nav>
