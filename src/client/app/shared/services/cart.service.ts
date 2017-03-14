@@ -45,7 +45,7 @@ export class CartService {
 
   // Temporary until first time user's cart is created with a project - fix for CRUX-1027
   public getCartSummary(): void {
-    this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe();
+    this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe(_ => { });
   }
 
   public purchase(): Observable<any> {

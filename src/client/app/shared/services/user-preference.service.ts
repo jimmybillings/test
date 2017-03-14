@@ -107,7 +107,7 @@ export class UserPreferenceService {
   private update(params: any): void {
     this.updateStore(params);
     if (!this.currentUser.loggedIn()) return;
-    this.put(params).take(1).subscribe();
+    this.put(params).take(1).subscribe(_ => { });
   }
 
   private put(params: any): Observable<any> {

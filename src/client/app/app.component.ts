@@ -116,7 +116,7 @@ export class AppComponent implements OnInit {
       });
     }
     this.cart.getCartSummary();
-    this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
+    this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });
   }
@@ -125,7 +125,7 @@ export class AppComponent implements OnInit {
     this.userPreference.reset();
     this.collections.destroyAll();
     this.uiState.reset();
-    this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
+    this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });
   }
