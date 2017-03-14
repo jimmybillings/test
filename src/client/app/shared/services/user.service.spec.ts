@@ -147,7 +147,7 @@ export function main() {
           expect(mockApi.get).toHaveBeenCalledWithEndpoint('account/3');
           expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
           expect(mockApi.put).toHaveBeenCalledWithEndpoint('account/3');
-          let expectedBody: any = Object.assign(mockApi.getResponse, { address: { address: '123 Oak Street' } });
+          let expectedBody: any = Object.assign(mockApi.getResponse, { billingInfo: { address: { address: '123 Oak Street' } } });
           expect(mockApi.put).toHaveBeenCalledWithBody(expectedBody);
         });
       });

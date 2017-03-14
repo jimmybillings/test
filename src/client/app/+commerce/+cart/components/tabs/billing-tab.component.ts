@@ -67,7 +67,6 @@ export class BillingTabComponent extends Tab implements OnInit {
         return false;
       } else {
         return Object.keys(data.selectedAddress.address).filter((k: string) => {
-          console.log(data.selectedAddress.address[k]);
           return data.selectedAddress.address[k] === '';
         }).length === 0;
       }

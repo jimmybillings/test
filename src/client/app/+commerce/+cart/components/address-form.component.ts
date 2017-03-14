@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Address } from '../../../shared/interfaces/user.interface';
 
 @Component({
@@ -15,7 +15,8 @@ import { Address } from '../../../shared/interfaces/user.interface';
       <wz-form [items]="items" submitLabel="{{ 'CART.BILLING.SAVE_ADDRESS_BTN_LABEL' | translate }}"
       (formSubmit)="dialog.close($event)"></wz-form>
     </md-dialog-content>
-  </div>`
+  </div>`,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressFormComponent implements OnInit {
   @Input() dialog: any;
