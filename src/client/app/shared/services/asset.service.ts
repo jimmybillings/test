@@ -62,7 +62,7 @@ export class AssetService {
 
   public getData(assetParams: any): Observable<any> {
     let options: ApiOptions = { loading: true };
-    if (assetParams.share_token) options.overridingToken = assetParams.share_token;
+    if (assetParams.share_key) options.overridingToken = assetParams.share_key;
 
     return this.api.get(Api.Assets, 'clip/' + assetParams.assetId + '/clipDetail', options)
       .do((res) => this.setActiveAsset(Object.assign(res, assetParams)));

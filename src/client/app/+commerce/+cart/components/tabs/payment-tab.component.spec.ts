@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: PaymentTabComponent;
 
     beforeEach(() => {
-      componentUnderTest = new PaymentTabComponent(null, null, null);
+      componentUnderTest = new PaymentTabComponent(null, null, null, null);
     });
 
     it('has no functionality yet', () => {
