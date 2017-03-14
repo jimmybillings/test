@@ -19,7 +19,6 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   @Input() window: any;
   @Input() displayAllControls: boolean = true;
   @Input() markersSaveButtonEnabled: boolean = true;
-  @Output() onSubclip = new EventEmitter();
   @Output() markersInitialization: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
   @Output() markerChange: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
   @Output() markerSaveButtonClick: EventEmitter<null> = new EventEmitter<null>();
