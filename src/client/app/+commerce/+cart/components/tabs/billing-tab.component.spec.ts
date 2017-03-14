@@ -1,4 +1,5 @@
 import { BillingTabComponent } from './billing-tab.component';
+import { Address, ViewAddress } from '../../../../shared/interfaces/user.interface';
 import { Observable } from 'rxjs/Rx';
 
 export function main() {
@@ -7,9 +8,18 @@ export function main() {
     let mockCartService: any, mockUiConfig: any, mockUserService: any, mockCartCapabilities: any, mockDialog: any;
     let mockUserAccountPermission: boolean;
 
-    let mockAddressA: any = {
+    let mockEmptyAddress: ViewAddress = {
+      type: '',
+      name: '',
+      addressEntityId: NaN,
+      defaultAddress: false
+    };
+
+    let mockAddressA: ViewAddress = {
       type: 'user',
       name: 'Ross Edfort',
+      addressEntityId: 10,
+      defaultAddress: false,
       address: {
         address: '123 Main Street',
         state: 'CO',
@@ -20,9 +30,11 @@ export function main() {
       }
     };
 
-    let mockAddressB: any = {
+    let mockAddressB: ViewAddress = {
       type: 'account',
       name: 'Wazee Digital',
+      addressEntityId: 1,
+      defaultAddress: false,
       address: {
         address: '1515 Arapahoe Street',
         state: 'CO',
@@ -118,13 +130,13 @@ export function main() {
       });
 
       it('should call addBillingAddress() on the user service', () => {
-        componentUnderTest.addUserAddress(mockAddressA);
+        componentUnderTest.addUserAddress(mockAddressA.address);
 
-        expect(mockUserService.addBillingAddress).toHaveBeenCalledWith(mockAddressA);
+        expect(mockUserService.addBillingAddress).toHaveBeenCalledWith(mockAddressA.address);
       });
 
       it('should re-fetch the addresses', () => {
-        componentUnderTest.addUserAddress(mockAddressA);
+        componentUnderTest.addUserAddress(mockAddressA.address);
 
         expect(mockUserService.getAddresses).toHaveBeenCalled();
       });
@@ -133,15 +145,17 @@ export function main() {
     describe('addAccountAddress()', () => {
       it('should call addAccountBillingAddress() on the user service', () => {
         componentUnderTest.selectedAddress = mockAddressA;
-        componentUnderTest.addAccountAddress(mockAddressA.address);
+        componentUnderTest.addAccountAddress(mockAddressB.address, mockAddressA);
 
-        expect(mockUserService.addAccountBillingAddress).toHaveBeenCalledWith(mockAddressA);
+        let newAddress: ViewAddress = Object.assign({}, mockAddressA, { address: mockAddressB.address });
+
+        expect(mockUserService.addAccountBillingAddress).toHaveBeenCalledWith(newAddress);
       });
     });
 
     describe('format', () => {
       it('should format an address object to a string', () => {
-        expect(componentUnderTest.format(mockAddressA)).toEqual('123 Main Street, CO, Denver, USA, 80202, 5555555555');
+        expect(componentUnderTest.format(mockAddressA)).toEqual('123 Main Street<br>CO, Denver, USA, 80202<br>5555555555<br>');
       });
 
       it('should return a default string when no address exists', () => {
@@ -150,31 +164,64 @@ export function main() {
       });
     });
 
-    describe('openAddressFormFor', () => {
-      it('should open a dialog and call addAccountAddress if resourceType is "account"', () => {
-        componentUnderTest.selectedAddress = mockAddressB;
-        componentUnderTest.openAddressFormFor('account', 'edit', mockAddressB);
+    describe('openFormFor', () => {
+      describe('user', () => {
+        it('should open a dialog and call addBillingAddress if mode is "edit"', () => {
+          componentUnderTest.openFormFor('user', 'edit', mockAddressB);
 
-        expect(mockDialog.open).toHaveBeenCalled();
-        expect(mockUserService.addAccountBillingAddress).toHaveBeenCalled();
+          expect(mockDialog.open).toHaveBeenCalled();
+          expect(mockUserService.addBillingAddress).toHaveBeenCalled();
+        });
+
+        it('should open a dialog and call addUserAddress if mode is "create"', () => {
+          componentUnderTest.openFormFor('user', 'create');
+
+          expect(mockDialog.open).toHaveBeenCalled();
+          expect(mockUserService.addBillingAddress).toHaveBeenCalled();
+        });
       });
 
-      it('should open a dialog and call addUserAddress if resourceType is "user"', () => {
-        componentUnderTest.selectedAddress = mockAddressA;
-        componentUnderTest.openAddressFormFor('user', 'edit', mockAddressB);
+      describe('account', () => {
+        it('should open a dialog and call addAccountBillingAddress if mode is "edit"', () => {
+          componentUnderTest.openFormFor('account', 'edit', mockAddressB);
 
-        expect(mockDialog.open).toHaveBeenCalled();
-        expect(mockUserService.addBillingAddress).toHaveBeenCalled();
+          expect(mockDialog.open).toHaveBeenCalled();
+          expect(mockUserService.addAccountBillingAddress).toHaveBeenCalled();
+        });
+
+        it('should open a dialog and call addAccountBillingAddress if mode is "create"', () => {
+          componentUnderTest.openFormFor('account', 'create');
+
+          expect(mockDialog.open).toHaveBeenCalled();
+          expect(mockUserService.addAccountBillingAddress).toHaveBeenCalled();
+        });
+      });
+    });
+
+    describe('addressesAreEmpty', () => {
+      it('should return true if the address are empty', () => {
+        componentUnderTest.addresses = [mockEmptyAddress];
+
+        expect(componentUnderTest.addressesAreEmpty).toBe(true);
+      });
+
+      it('should return false if there is at least one full address', () => {
+        componentUnderTest.addresses = [mockAddressA, mockEmptyAddress];
+
+        expect(componentUnderTest.addressesAreEmpty).toBe(false);
       });
     });
 
     describe('get userCanProceed()', () => {
-      it('should return false if there is no selectedAddress', () => {
-        expect(componentUnderTest.selectedAddress).toBeUndefined();
+      it('should return false if the selectedAddress has values', () => {
+        componentUnderTest.selectedAddress = {
+          type: '', name: '', addressEntityId: 1, defaultAddress: false,
+          address: { address: '', state: '', zipcode: '', city: '', country: '', phone: '' }
+        };
         expect(componentUnderTest.userCanProceed).toBe(false);
       });
 
-      it('should return true if there is a selectedAddress', () => {
+      it('should return true if there is a selectedAddress with all values', () => {
         componentUnderTest.selectedAddress = mockAddressA;
         expect(componentUnderTest.userCanProceed).toBe(true);
       });

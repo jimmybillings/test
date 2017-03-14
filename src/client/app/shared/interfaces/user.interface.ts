@@ -56,4 +56,5 @@ export interface ViewAddress {
   type: string;
   name: string;
   address?: Address;
+  [index: string]: any;
 }

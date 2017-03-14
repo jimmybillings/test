@@ -6,7 +6,7 @@ import { UiConfig } from '../../../../shared/services/ui.config';
 import { CartCapabilities } from '../../services/cart.capabilities';
 import { AddressFormComponent } from '../address-form.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
 import { Tab } from './tab';
 
 @Component({
@@ -18,7 +18,7 @@ import { Tab } from './tab';
 export class BillingTabComponent extends Tab implements OnInit, OnDestroy {
   public addresses: Array<any> = [];
   public items: Array<any>;
-  public selectedAddress: any;
+  public selectedAddress: ViewAddress;
   @Output() tabNotify: EventEmitter<Object> = this.notify;
   private cartStoreSubscription: Subscription;
 
@@ -37,23 +37,23 @@ export class BillingTabComponent extends Tab implements OnInit, OnDestroy {
 
     this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
 
-    this.fetchAddresses();
+    this.fetchAddresses().subscribe(this.determineNewSelectedAddress);
   }
 
   ngOnDestroy() {
     this.cartStoreSubscription.unsubscribe();
   }
 
-  public addUserAddress(address: Address): void {
-    this.user.addBillingAddress(address).subscribe((user: User) => {
-      this.fetchAddresses();
+  public addUserAddress(form: Address): void {
+    this.user.addBillingAddress(form).subscribe((user: User) => {
+      this.fetchAddresses().subscribe(this.determineNewSelectedAddress);
     });
   }
 
-  public addAccountAddress(address: Address): void {
-    let addr: ViewAddress = Object.assign({}, this.selectedAddress, { address: address });
-    this.user.addAccountBillingAddress(addr).subscribe((account: any) => {
-      this.fetchAddresses();
+  public addAccountAddress(form: Address, wholeAddress: ViewAddress): void {
+    let newAddress: ViewAddress = Object.assign({}, wholeAddress, { address: form });
+    this.user.addAccountBillingAddress(newAddress).subscribe((account: any) => {
+      this.fetchAddresses().subscribe(this.determineNewSelectedAddress);
     });
   }
 
@@ -61,52 +61,70 @@ export class BillingTabComponent extends Tab implements OnInit, OnDestroy {
     this.cartService.updateOrderInProgressAddress(address);
   }
 
+  public get userCanProceed(): boolean {
+    return Object.keys(this.selectedAddress.address).filter((key: string) => {
+      return this.selectedAddress.address[key] === '';
+    }).length === 0;
+  }
+
+
+  public get addressesAreEmpty(): boolean {
+    return this.addresses.filter((a: ViewAddress) => !!a.address).length === 0;
+  }
+
   public format(address: ViewAddress): string {
     if (address.address) {
-      return Object.keys(address.address).map((key: string) => {
-        return address.address[key];
-      }).join(', ');
+      return Object.keys(address.address).reduce((previous: string, current: string) => {
+        if (current === 'address' || current === 'zipcode' || current === 'phone') {
+          previous += `${address.address[current]}<br>`;
+        } else {
+          previous += `${address.address[current]}, `;
+        }
+        return previous;
+      }, '');
     } else {
       return `There is no address on record for this ${address.type}`;
     }
   }
 
-  public get userCanProceed(): boolean {
-    return !!this.selectedAddress;
-  }
-
-  public openAddressFormFor(resourceType: 'account' | 'user', mode: 'add' | 'edit', addressToEdit: ViewAddress): void {
-    this.selectAddress(addressToEdit);
+  public openFormFor(resourceType: 'account' | 'user', mode: 'edit' | 'create', address?: ViewAddress): void {
     let dialogRef: MdDialogRef<AddressFormComponent> = this.dialog.open(AddressFormComponent, { position: { top: '10%' } });
     dialogRef.componentInstance.items = this.items;
     dialogRef.componentInstance.dialog = dialogRef;
     dialogRef.componentInstance.resourceType = resourceType;
     dialogRef.componentInstance.mode = mode;
-    if (mode === 'edit') dialogRef.componentInstance.address = addressToEdit.address;
+    if (mode === 'edit') dialogRef.componentInstance.address = address.address;
     dialogRef.afterClosed().subscribe((form: any) => {
       if (typeof form === 'undefined') return;
       if (resourceType === 'user') {
         this.addUserAddress(form);
       } else {
-        this.addAccountAddress(form);
+        this.addAccountAddress(form, address);
       }
     });
   }
 
-  private fetchAddresses(): void {
-    this.user.getAddresses().take(1).subscribe((addresses: any) => {
-      this.addresses = addresses.list ? addresses.list : [];
-      if (this.addresses.length > 0) {
-        let newSelectedAddress: ViewAddress;
-        if (this.selectedAddress.type === '') {
-          newSelectedAddress = this.addresses[0];
-        } else {
-          newSelectedAddress = this.addresses.filter((addr: ViewAddress) => {
-            return addr.addressEntityId === this.selectedAddress.addressEntityId;
-          })[0];
-        }
-        this.selectAddress(newSelectedAddress);
-      }
+  private fetchAddresses(): Observable<any> {
+    return this.user.getAddresses().do((addresses: any) => {
+      this.addresses = addresses.list;
     });
+  }
+
+  private determineNewSelectedAddress = (addresses: { list: Array<ViewAddress> }) => {
+    let newSelected: ViewAddress;
+    if (this.selectedAddress && typeof this.selectedAddress.addressEntityId !== 'undefined') {
+      newSelected = this.previouslySelectedAddress();
+    } else {
+      newSelected = addresses.list[0];
+    }
+    if (!!newSelected.address) {
+      this.selectAddress(newSelected);
+    }
+  }
+
+  private previouslySelectedAddress(): ViewAddress {
+    return this.addresses.filter((a: ViewAddress) => {
+      return a.addressEntityId === this.selectedAddress.addressEntityId;
+    })[0];
   }
 }
