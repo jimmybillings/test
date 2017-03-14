@@ -22,11 +22,7 @@ export function main() {
           expect(mockVideoElement.numberOfDefinedEventCallbacks).toBe(0);
         }
 
-        if (componentUnderTest.mode === 'advanced') {
-          expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ duration: undefined, currentTime: 0 });
-        } else {
-          expect(componentUnderTest.stateUpdate.emit).not.toHaveBeenCalled();
-        }
+        expect(componentUnderTest.stateUpdate.emit).not.toHaveBeenCalled();
       }
 
       expect(mockElementRef.nativeElement.innerHtml).toEqual('');
@@ -367,6 +363,9 @@ export function main() {
 
                 describe('ngOnDestroy()', () => {
                   it('resets the player', () => {
+                    // Don't want initialization calls to affect future verifications.
+                    (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+
                     componentUnderTest.ngOnDestroy();
 
                     expectResetFor('video');

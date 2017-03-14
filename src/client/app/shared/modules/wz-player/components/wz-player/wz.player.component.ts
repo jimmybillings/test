@@ -344,10 +344,6 @@ export class WzPlayerComponent implements OnDestroy {
         this.stopVideoEventListeners();
       }
 
-      if (this.mode === 'advanced') {
-        this.emitStateUpdateWith({ duration: undefined, currentTime: 0 });
-      }
-
       this.videoElement = null;
       this.jwPlayer.remove();
       this.jwPlayer = null;
