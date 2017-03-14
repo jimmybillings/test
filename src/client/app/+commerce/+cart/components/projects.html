@@ -36,8 +36,6 @@
 	</div>
 </section>
 
-
-
 <md-menu x-position="before" #projectOptionsMenu="mdMenu">
 	<button md-menu-item (click)="remove(selectedProject)">{{ 'CART.PROJECTS.REMOVE_PROJECT' | translate }}</button>
 	<div class="divider"></div>
@@ -48,8 +46,3 @@
 	<div class="divider"></div>
 	<button disabled md-menu-item>{{ 'CART.PROJECTS.EDIT_PRICE' | translate }}</button>
 </md-menu>
-
-
-<!--<div *ngIf="!readOnly" flex="95" layout="row" layout-align="end center" class="add-project-button">
-	<button md-raised-button="" (click)="addProject()">{{ 'CART.PROJECTS.ADD_PROJECT_BTN' | translate }}</button>
-</div>-->

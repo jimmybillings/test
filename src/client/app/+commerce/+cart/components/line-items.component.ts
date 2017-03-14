@@ -25,10 +25,9 @@ export class LineItemsComponent {
   public selectedLineItem: LineItem;
 
   public moveTo(otherProject: Project, lineItem: LineItem): void {
-    this.lineItemsNotify.emit(
-      {
-        type: 'MOVE_LINE_ITEM', payload: { lineItem: lineItem, otherProject: otherProject }
-      });
+    this.lineItemsNotify.emit({
+      type: 'MOVE_LINE_ITEM', payload: { lineItem: lineItem, otherProject: otherProject }
+    });
   }
 
   public clone(lineItem: LineItem): void {
@@ -57,11 +56,10 @@ export class LineItemsComponent {
 
   public selectTarget(currentlySelected: string, newTarget: string, lineItem: LineItem): void {
     if (currentlySelected !== newTarget) {
-      this.lineItemsNotify.emit(
-        {
-          type: 'EDIT_LINE_ITEM', payload:
-          { lineItem, fieldToEdit: { selectedTranscodeTarget: newTarget } }
-        });
+      this.lineItemsNotify.emit({
+        type: 'EDIT_LINE_ITEM', payload:
+        { lineItem, fieldToEdit: { selectedTranscodeTarget: newTarget } }
+      });
     }
   }
 }
