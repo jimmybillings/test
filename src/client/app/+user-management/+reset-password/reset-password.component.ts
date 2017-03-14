@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { UserService } from '../../shared/services/user.service';
@@ -12,6 +12,7 @@ import { TranslateService } from 'ng2-translate';
   moduleId: module.id,
   selector: 'reset-password-component',
   templateUrl: 'reset-password.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class ResetPasswordComponent implements OnInit, OnDestroy {
@@ -27,7 +28,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     private router: Router,
     private currentUser: CurrentUserService,
     private translate: TranslateService,
-    private snackbar: MdSnackBar) {
+    private snackbar: MdSnackBar,
+    private ref: ChangeDetectorRef) {
 
   }
 
@@ -56,10 +58,12 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   private handleSuccess = () => {
     this.router.navigate(['/']);
     this.showSnackbar('RESETPASSWORD.PASSWORD_CHANGED');
+    this.ref.markForCheck();
   }
 
   private handleError = (error: any) => {
     this.serverErrors = error.json();
+    this.ref.markForCheck();
   }
 
   private showSnackbar(message: any): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { UserService } from '../../shared/services/user.service';
 import { UiConfig } from '../../shared/services/ui.config';
@@ -7,6 +7,7 @@ import { UiConfig } from '../../shared/services/ui.config';
   moduleId: module.id,
   selector: 'forgot-password-component',
   templateUrl: 'forgot-password.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
@@ -17,7 +18,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
   constructor(
     public user: UserService,
-    public uiConfig: UiConfig) {
+    public uiConfig: UiConfig,
+    private ref: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -33,5 +35,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   public onSubmit(user: Object): void {
     this.user.forgotPassword(user).subscribe();
     this.successfullySubmitted = true;
+    this.ref.markForCheck();
   }
 }

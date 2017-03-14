@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -15,13 +15,16 @@ import { FormControl } from '@angular/forms';
                 </ul>
                 <ng-content></ng-content>
              </div>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class WzInputTagsComponent {
   @Input() fControl: FormControl;
   @Input() tags: Array<string> = [];
   private finalDelete: boolean = false;
+  constructor(private ref: ChangeDetectorRef) {
 
+  }
   public submit(e: any) {
     switch (e.code) {
 
@@ -32,20 +35,23 @@ export class WzInputTagsComponent {
         }
         e.target.value = '';
         e.preventDefault();
+        this.ref.markForCheck();
         return;
 
       case 'Backspace':
-        if(e.target.value === '') {
+        if (e.target.value === '') {
           if (this.finalDelete) {
             this.delete(false, this.tags[this.tags.length - 1]);
           } else {
             this.finalDelete = true;
           }
         }
+        this.ref.markForCheck();
         return;
 
       default:
         this.finalDelete = false;
+        this.ref.markForCheck();
         return;
     }
   }
@@ -54,7 +60,7 @@ export class WzInputTagsComponent {
     return (this.finalDelete && this.tags[this.tags.length - 1] === tag);
   }
 
-  public delete($event=false, tagForDelete: string) {
+  public delete($event = false, tagForDelete: string) {
     this.tags = this.tags.filter((tag) => tag !== tagForDelete);
     this.fControl.setValue(this.tags.toString());
     this.finalDelete = false;

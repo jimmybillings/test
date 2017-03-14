@@ -4,11 +4,12 @@ import { Response, ResponseOptions } from '@angular/http';
 
 export function main() {
   describe('Reset Password Component', () => {
-    let mockUiConfig: any, mockUser: any, mockActivatedRoute: any, mockRouter: any,
+    let mockUiConfig: any, mockUser: any, mockActivatedRoute: any, mockRouter: any, mockRef: any,
       mockCurrentUserService: any, mockNotification: any, mockTranslate: any, mockSnackbar: any;
     let componentUnderTest: ResetPasswordComponent;
 
     beforeEach(() => {
+      mockRef = { markForCheck: function () { } };
       mockUiConfig = {
         get: () => { return Observable.of({ config: { someConfig: 'test' } }); }
       };
@@ -38,7 +39,7 @@ export function main() {
       mockSnackbar = { open: jasmine.createSpy('open') };
       componentUnderTest = new ResetPasswordComponent(
         mockUser, mockUiConfig, mockActivatedRoute, mockRouter,
-        mockCurrentUserService, mockTranslate, mockSnackbar
+        mockCurrentUserService, mockTranslate, mockSnackbar, mockRef
       );
     });
 
@@ -83,7 +84,7 @@ export function main() {
           mockActivatedRoute = { snapshot: { params: {} } };
           componentUnderTest = new ResetPasswordComponent(
             mockUser, mockUiConfig, mockActivatedRoute, mockRouter,
-            mockCurrentUserService, mockTranslate, mockSnackbar
+            mockCurrentUserService, mockTranslate, mockSnackbar, mockRef
           );
           componentUnderTest.ngOnInit();
         });
@@ -107,7 +108,7 @@ export function main() {
         };
         componentUnderTest = new ResetPasswordComponent(
           mockUser, mockUiConfig, mockActivatedRoute, mockRouter,
-          mockCurrentUserService, mockTranslate, mockSnackbar
+          mockCurrentUserService, mockTranslate, mockSnackbar, mockRef
         );
         componentUnderTest.onSubmit({ 'newPassword': 'myNewTestPassword' });
         expect(componentUnderTest.serverErrors).toEqual({ newPassword: 'Needs a number and letter' });
@@ -121,7 +122,7 @@ export function main() {
         mockUiConfig = { get: () => mockObservable };
         componentUnderTest = new ResetPasswordComponent(
           mockUser, mockUiConfig, mockActivatedRoute, mockRouter,
-          mockCurrentUserService, mockTranslate, mockSnackbar
+          mockCurrentUserService, mockTranslate, mockSnackbar, mockRef
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
