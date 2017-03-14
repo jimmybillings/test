@@ -25,7 +25,7 @@
 					<span *ngIf="lineItemCountFor(project) == 1">1 Asset</span>
 					<span *ngIf="lineItemCountFor(project) > 1">{{ lineItemCountFor(project) }} Assets</span>
 				</div>
-<!--Need a translation string here for edit-->
+				<!--Need a translation string here for edit-->
 				<button *ngIf="!readOnly" (click)="edit(project)" md-button class="is-outlined" type="button">Edit</button>
 				<button *ngIf="!readOnly" md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)" title="More project options"><md-icon>more_vert</md-icon></button>
 			</div>

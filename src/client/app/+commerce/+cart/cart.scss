@@ -72,12 +72,20 @@ section.cart-total {
       }
     }
   }
-  button.checkout {
-    font-size: 1.1em;
-    line-height: rem(4.8);
-    margin: rem(1.0) 0;
-    text-transform: uppercase;
-    background-color: #558b2f;
-    @include text-contrast(#558b2f);
-  }
+}
+button.checkout {
+  font-size: 1.1em;
+  line-height: rem(4.8);
+  margin: rem(1.0) 0;
+  background-color: #558b2f;
+  @include text-contrast(#558b2f);
+}
+
+header .cart-heading {
+  font-size: rem(2.8);
+  font-weight: 300;
+  line-height: rem(3.0);
+  margin: .65em 0;
+  padding: 0;
+  color: rgba(md-color($foreground, text), .75);
 }

@@ -15,6 +15,7 @@
 		</div>
 		<div flex-gt-xs="20" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
 			<div class="tools" flex="100">
+				<!--<button *ngIf="lineItem.rightsManaged" (click)="showPricingDialog(lineItem)" md-button class="mini is-outlined" type="button">Price</button>-->
 				<button  md-icon-button (click)="remove(lineItem)" title="remove asset item"><md-icon>remove_circle</md-icon></button>
 				<button *ngIf="lineItem.rightsManaged" md-icon-button (click)="showPricingDialog(lineItem)" title="usage pricing"><md-icon>data_usage</md-icon></button>
 				<button md-icon-button [md-menu-trigger-for]="lineItemOptionsMenu" (click)="selectLineItem(lineItem)" title="More asset options"><md-icon>more_vert</md-icon></button>
