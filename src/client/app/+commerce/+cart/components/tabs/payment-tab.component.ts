@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, NgZone, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Output, EventEmitter, NgZone, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Tab } from './tab';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
@@ -20,18 +20,18 @@ export class PaymentTabComponent extends Tab implements OnInit {
   constructor(
     private _zone: NgZone,
     private cartService: CartService,
-    private uiConfig: UiConfig, ) {
+    private uiConfig: UiConfig,
+    private ref: ChangeDetectorRef) {
     super();
   }
 
   ngOnInit() {
-    (<any>window).Stripe.setPublishableKey(this.cartService.state.cart.stripePublicKey);
     this.configSubscription = this.uiConfig.get('cart')
       .subscribe((config: any) => this.config = config.config.payment);
+    this.loadStripe();
   }
 
   public preAuthorize(form: any) {
-
     (<any>window).Stripe.card.createToken(
       form,
       (status: number, response: any) => {
@@ -40,13 +40,35 @@ export class PaymentTabComponent extends Tab implements OnInit {
             this.cartService.updateOrderInProgressAuthorization(response);
             this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
           } else {
-            this.serverErrors = {
-              fieldErrors: [
-                { code: response.error.code, field: response.error.param }
-              ]
-            };
+            this.serverErrors = { fieldErrors: [] };
+            this.serverErrors.fieldErrors
+              .push({
+                code: response.error.code,
+                field: response.error.param
+              });
+            this.ref.markForCheck();
           }
         });
       });
+  }
+
+  private loadStripe() {
+    const stripeScript = 'https://js.stripe.com/v2/';
+    var scripts = document.getElementsByTagName('script');
+    var i = scripts.length, stripeLoaded = false;
+    while (i--) {
+      if (scripts[i].src === stripeScript) {
+        stripeLoaded = true;
+      }
+    }
+    if (!stripeLoaded) {
+      var script = document.createElement('script');
+      script.src = stripeScript;
+      script.type = 'text/javascript';
+      document.body.appendChild(script);
+      script.onload = () => {
+        (<any>window).Stripe.setPublishableKey(this.cartService.state.cart.stripePublicKey);
+      };
+    }
   }
 }
