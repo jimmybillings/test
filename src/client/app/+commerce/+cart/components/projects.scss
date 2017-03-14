@@ -1,3 +1,9 @@
+projects-component .add-project button {
+  margin: rem(.2) 0 rem(.2) 0;
+  md-icon {
+    padding: 0 rem(.4) rem(.2) 0;
+  }
+}  
 projects-component section.header {
   color: md-color($primary, default);
   padding-left: rem(.8);
@@ -24,12 +30,6 @@ projects-component section.header {
     //     color: md-color($md-primary, default);
     //   }
     // }
-  }
-}
-.projects {
-  padding-top: rem(2.4);
-  @media screen and (max-width: $layout-breakpoint-sm)  {
-    padding-top: rem(1.2);
   }
 }
 div.project {

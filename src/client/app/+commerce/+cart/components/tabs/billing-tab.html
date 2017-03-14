@@ -16,7 +16,7 @@
   </div>
 
 
-  <div  *ngIf="addresses.length > 0" flex="100" flex-gt-lg="85" class="addresses">
+  <div *ngIf="addresses.length > 0" flex="100" flex-gt-lg="85" class="addresses">
     <header layout="column" layout-align="start">
       <h2 class="cart-heading">{{ 'CART.BILLING.SELECT_BILLING_ADDRESS' | translate }}</h2>
     </header>
@@ -27,12 +27,12 @@
         [ngClass]="{'active': address.addressEntityId === selectedAddress.addressEntityId}">
         <section [ngClass]="{'active': address.addressEntityId === selectedAddress.addressEntityId}" layout="column">
           <header>
-            <span>{{address.type}}</span>
+            <span class="{{address.type}}">{{address.type}}</span>
             <span>{{address.name}}</span>
           </header>
           <address [innerHTML]="format(address)"></address>
-          <div layout="column" class="divider"></div>
           <nav layout="column" class="actions">
+            <div class="divider"></div>
             <div layout="row" layout-align="end">
               <button
                 *ngIf="userCan.editAddress(address)"
