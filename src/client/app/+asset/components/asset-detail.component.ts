@@ -5,7 +5,7 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
-import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
+import { SubclipMarkers, SubclipMarkerFrames } from '../../shared/interfaces/asset.interface';
 import { SearchContext } from '../../shared/services/search-context.service';
 import { Observable } from 'rxjs/Rx';
 
@@ -34,7 +34,7 @@ export class AssetDetailComponent implements OnChanges {
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
-  public subclipData: any;
+  public subclipData: SubclipMarkerFrames;
   private assetsArr: Array<number> = [];
 
   ngOnChanges(changes: any): void {
@@ -48,15 +48,30 @@ export class AssetDetailComponent implements OnChanges {
     assetId = parseInt(assetId);
     return this.assetsArr.indexOf(assetId) > -1;
   }
+
   // rename this method to something more meaningful
-  public subclip(params: SubclipMarkers): void {
-    this.onAddToCollection.emit({ 'collection': this.collection, 'asset': this.asset, 'markers': params });
+  public subclip(markers: SubclipMarkers): void {
+    this.onAddToCollection.emit({ 'collection': this.collection, 'asset': this.asset, 'markers': markers });
   }
 
-  public updateSubclipData(data: any): void {
-    if (data) this.showAssetSaveSubclip = true;
-    this.subclipData = data;
+  public onPlayerMarkersInitialize(initialMarkers: SubclipMarkerFrames): void {
+    this.subclipData = initialMarkers;
+    this.showAssetSaveSubclip = false;
   }
+
+  public onPlayerMarkerChange(newMarkers: SubclipMarkerFrames): void {
+    this.subclipData = newMarkers;
+    this.showAssetSaveSubclip = !!newMarkers.in && !!newMarkers.out;
+  }
+
+  public get markersSaveButtonEnabled(): boolean {
+    return !this.showAssetSaveSubclip && this.subclipData && !!this.subclipData.in && !!this.subclipData.out;
+  }
+
+  public onPlayerMarkerSaveButtonClick(): void {
+    this.showAssetSaveSubclip = true;
+  }
+
   public toggleAssetSaveSubclip(): void {
     this.showAssetSaveSubclip = !this.showAssetSaveSubclip;
   }

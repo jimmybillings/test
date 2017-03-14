@@ -8,7 +8,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button md-icon-button
-      [disabled]="!playerState.inMarkerFrame || !playerState.outMarkerFrame"
+      [disabled]="!enabled || !playerState.inMarkerFrame || !playerState.outMarkerFrame"
       title="{{ 'ASSET.ADV_PLAYER.SAVE_BTN_TITLE' | translate }}"
       (click)="onClick()">
       <md-icon>library_add</md-icon>
@@ -18,6 +18,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 export class MarkersSaveButtonComponent {
   @Input() playerState: PlayerState;
+  @Input() enabled: boolean = true;
   @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
 
   public onClick(): void {

@@ -10,7 +10,11 @@
 </section>
 
 <nav *ngIf="displayAllControls" class="subclip-options" flex="20" layout-align="end stretch">
-  <wz-markers-save-button [playerState]="playerState" (request)="forward($event)"></wz-markers-save-button>
+  <wz-markers-save-button
+    [playerState]="playerState"
+    [enabled]="markersSaveButtonEnabled"
+    (request)="forward($event)">
+  </wz-markers-save-button>
   <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.SIMPLE_BTN_TITLE' | translate }}">
     <md-icon>ondemand_video</md-icon>
   </button>

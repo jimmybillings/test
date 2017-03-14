@@ -91,12 +91,14 @@
 	<div layout="row" flex="" layout-align="center">
 		<div flex-gt-xs="95" flex-gt-md="85" flex-lg="75" flex-gt-lg="75" flex="100" layout="row" layout-xs="column">
 			<div *ngIf="userCan.createSubclips(asset)" flex-gt-xs="66" flex="100" class="responsive-video">
-        <wz-advanced-player 
-					[window]="window" 
-					[asset]="asset" 
-					(onSubclip)="subclip($event)" 
-					(onUpdateSubclipData)="updateSubclipData($event)">
-				</wz-advanced-player>
+        <wz-advanced-player
+          [window]="window"
+          [asset]="asset"
+          [markersSaveButtonEnabled]="markersSaveButtonEnabled"
+          (markerFramesInitialize)="onPlayerMarkersInitialize($event)"
+          (markerFrameChange)="onPlayerMarkerChange($event)"
+          (markerSaveButtonClick)="onPlayerMarkerSaveButtonClick($event)">
+        </wz-advanced-player>
       </div>
 			<div *ngIf="!userCan.createSubclips(asset)" flex-gt-xs="66" flex="100" class="responsive-video">
 				<wz-player [window]="window" [asset]="asset"></wz-player>
