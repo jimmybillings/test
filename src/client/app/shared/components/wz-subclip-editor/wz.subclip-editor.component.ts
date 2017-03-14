@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { Frame } from 'wazee-frame-formatter';
-import { SubclipMarkers } from '../../interfaces/asset.interface';
+import { SubclipMarkers, SubclipMarkerFrames } from '../../interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -11,7 +10,7 @@ import { SubclipMarkers } from '../../interfaces/asset.interface';
       [window]="window"
       [asset]="asset"
       [displayAllControls]="false"
-      (markerChange)="onPlayerMarkerChange($event)">
+      (markerFrameChange)="onPlayerMarkerChange($event)">
     </wz-advanced-player>
 
     <section layout="row" layout-align="end">
@@ -41,7 +40,7 @@ export class WzSubclipEditorComponent {
   @Output() cancel: EventEmitter<null> = new EventEmitter<null>();
   @Output() save: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
 
-  private playerMarkers: SubclipMarkers = { in: undefined, out: undefined };
+  private playerMarkers: SubclipMarkerFrames = { in: undefined, out: undefined };
 
   public get markersAreRemovable(): boolean {
     return !!this.asset.timeStart && !this.markersAreSavable;
@@ -51,7 +50,7 @@ export class WzSubclipEditorComponent {
     return !!this.playerMarkers.in && !!this.playerMarkers.out;
   }
 
-  public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
+  public onPlayerMarkerChange(newMarkers: SubclipMarkerFrames): void {
     this.playerMarkers = newMarkers;
   }
 
@@ -60,10 +59,18 @@ export class WzSubclipEditorComponent {
   }
 
   public onSaveButtonClick(): void {
-    this.save.emit(this.playerMarkers);
+    this.emitSaveEvent();
   }
 
   public onRemoveButtonClick(): void {
-    this.save.emit(this.playerMarkers);
+    this.emitSaveEvent();
+  }
+
+  private emitSaveEvent(): void {
+    this.save.emit(
+      this.markersAreSavable
+        ? { in: this.playerMarkers.in.frameNumber, out: this.playerMarkers.out.frameNumber }
+        : { in: undefined, out: undefined }
+    );
   }
 }
