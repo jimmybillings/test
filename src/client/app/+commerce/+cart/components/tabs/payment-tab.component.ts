@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, NgZone, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, NgZone, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Tab } from './tab';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
@@ -7,7 +7,8 @@ import { Observable, Subscription } from 'rxjs/Rx';
 @Component({
   moduleId: module.id,
   selector: 'payment-tab-component',
-  templateUrl: 'payment-tab.html'
+  templateUrl: 'payment-tab.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class PaymentTabComponent extends Tab implements OnInit {

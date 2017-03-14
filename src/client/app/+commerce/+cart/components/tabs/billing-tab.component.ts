@@ -1,4 +1,4 @@
-import { Component, Output, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UserService } from '../../../../shared/services/user.service';
 import { Address, User, ViewAddress } from '../../../../shared/interfaces/user.interface';
@@ -12,7 +12,8 @@ import { Tab } from './tab';
 @Component({
   moduleId: module.id,
   selector: 'billing-tab-component',
-  templateUrl: 'billing-tab.html'
+  templateUrl: 'billing-tab.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class BillingTabComponent extends Tab implements OnInit, OnDestroy {

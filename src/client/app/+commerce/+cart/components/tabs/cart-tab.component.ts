@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Tab } from './tab';
@@ -19,7 +19,9 @@ import { SubclipMarkers } from '../../../../shared/interfaces/asset.interface';
 @Component({
   moduleId: module.id,
   selector: 'cart-tab-component',
-  templateUrl: 'cart-tab.html'
+  templateUrl: 'cart-tab.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 
 export class CartTabComponent extends Tab implements OnInit, OnDestroy {
