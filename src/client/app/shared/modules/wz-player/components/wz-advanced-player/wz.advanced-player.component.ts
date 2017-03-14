@@ -20,7 +20,6 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   @Input() displayAllControls: boolean = true;
   @Input() markersSaveButtonEnabled: boolean = true;
   @Output() onSubclip = new EventEmitter();
-  @Output() markerChange: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
   @Output() markerFramesInitialize: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
   @Output() markerFrameChange: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
   @Output() markerSaveButtonClick: EventEmitter<null> = new EventEmitter<null>();
@@ -107,11 +106,6 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
     if (!this.currentState) {
       this.markerFramesInitialize.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
     } else if (this.markersChangedIn(newState)) {
-      this.markerChange.emit({
-        in: newState.inMarkerFrame ? newState.inMarkerFrame.frameNumber : undefined,
-        out: newState.outMarkerFrame ? newState.outMarkerFrame.frameNumber : undefined
-      });
-
       this.markerFrameChange.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
     }
 
