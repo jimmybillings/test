@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
 import { SubclipMarkers } from '../../interfaces/asset.interface';
@@ -32,7 +32,8 @@ import { SubclipMarkers } from '../../interfaces/asset.interface';
         {{ 'ASSET.SAVE_SUBCLIP.EDIT_ACTIONS.REMOVE_BTN_LABEL' | translate }}
       </button>
     </section>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class WzSubclipEditorComponent {

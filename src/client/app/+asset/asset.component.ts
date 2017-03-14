@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../shared/services/asset.service';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
@@ -21,7 +21,8 @@ import { WindowRef } from '../shared/services/window-ref.service';
 @Component({
   moduleId: module.id,
   selector: 'asset-component',
-  templateUrl: 'asset.html'
+  templateUrl: 'asset.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class AssetComponent implements OnInit {

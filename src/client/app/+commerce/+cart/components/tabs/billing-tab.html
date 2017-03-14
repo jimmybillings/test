@@ -1,80 +1,100 @@
-<div layout="row" layout-align="center center">
-  <div class="cart-billing" flex="95">
-    <div layout="row" layout-align="center center">
-      <div flex="40">
-        <md-card class="billing-card wz-form-card" *ngIf="addressesAreEmpty | async">
-            <md-card-title>
-              {{ 'CART.BILLING.ENTER_BILLING_ADDRESS' | translate }}
-            </md-card-title>
-            <md-card-content>
-              <wz-form
-                [items]="items"
-                [submitLabel]="'CART.BILLING.SAVE_ADDRESS_BTN_LABEL'"
-                (formSubmit)="addUserAddress($event)">
-              </wz-form>
-            </md-card-content>
-        </md-card>
-        <div *ngIf="!(addressesAreEmpty | async)" flex="95" class="addresses">
-          <div layout="column" layout-align="center center">
-            <h3>{{ 'CART.BILLING.SELECT_BILLING_ADDRESS' | translate }}</h3>
-          </div>
-          <ul layout="column" layout-align="center center" layout-gt-md="row">
-            <li *ngFor="let address of (orderInProgress | async).addresses">
-              <md-card class="address" [ngClass]="{'active': address === (orderInProgress | async).selectedAddress}">
-                <md-card-title>{{address.type + ': ' + address.name}}</md-card-title>
-                <md-card-content><pre>{{address | json}}</pre></md-card-content>
-                <md-card-actions class="billing-actions">
-                  <div layout="row" layout-align="space-around center">
-                    <div *ngIf="userCan.editAddress(address)">
-                      <button
-                        (click)="openFormFor('user', 'edit', address)"
-                        title="{{ 'CART.BILLING.EDIT_USER_ADDRESS' | translate }}"
-                        md-button class="md-primary">
-                          {{ 'CART.BILLING.EDIT_USER_ADDRESS' | translate }}
-                      </button>        
-                    </div>
-                    <div *ngIf="userCan.addAddress(address)">
-                      <button
-                        (click)="openFormFor('user', 'create')"
-                        title="{{ 'CART.BILLING.ADD_USER_ADDRESS' | translate }}"
-                        md-button class="md-primary">
-                          {{ 'CART.BILLING.ADD_USER_ADDRESS' | translate }}
-                      </button>        
-                    </div>
-                    <div *ngIf="userCan.editAccountAddress(address)">
-                      <button
-                        (click)="openFormFor('account', 'edit', address)"
-                        title="{{ 'CART.BILLING.EDIT_ACCOUNT_ADDRESS' | translate }}"
-                        md-button class="md-primary">
-                          {{ 'CART.BILLING.EDIT_ACCOUNT_ADDRESS' | translate }}
-                      </button>        
-                    </div>
-                    <div *ngIf="userCan.addAccountAddress(address)">
-                      <button
-                        (click)="openFormFor('account', 'create', address)"
-                        title="{{ 'CART.BILLING.ADD_ACCOUNT_ADDRESS' | translate }}"
-                        md-button class="md-primary">
-                          {{ 'CART.BILLING.ADD_ACCOUNT_ADDRESS' | translate }}
-                      </button>        
-                    </div>
-                    <div>
-                      <button md-button class="md-primary" (click)="selectAddress(address)" [disabled]="!address.address">
-                        {{ 'CART.BILLING.SELECT_ADDRESS_BTN' | translate }}
-                      </button>
-                    </div>
-                  </div>
-                </md-card-actions>
-              </md-card>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+<div class="cart-billing" layout="row" layout-align="center start">
+
+  <div *ngIf="addressesAreEmpty | async" flex-gt-lg="25" flex-gt-md="30" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="100">
+    <md-card class="billing-card wz-form-card">
+      <md-card-title>
+        {{ 'CART.BILLING.ENTER_BILLING_ADDRESS' | translate }}
+      </md-card-title>
+      <md-card-content>
+        <wz-form
+          [items]="items"
+          [submitLabel]="'CART.BILLING.SAVE_ADDRESS_BTN_LABEL'"
+          (formSubmit)="addUserAddress($event)">
+        </wz-form>
+      </md-card-content>
+    </md-card>
+  </div>
+
+
+  <div *ngIf="!(addressesAreEmpty | async)" flex="100" flex-gt-lg="85" class="addresses">
+    <header layout="column" layout-align="start">
+      <h2 class="cart-heading">{{ 'CART.BILLING.SELECT_BILLING_ADDRESS' | translate }}</h2>
+    </header>
+    
+    <ul layout="column" layout-align="start" layout-gt-xs="row">
+      <li *ngFor="let address of (orderInProgress | async).addresses" class="billing-address">
+        <section [ngClass]="{'active': address === (orderInProgress | async).selectedAddress}" layout="column">
+          <header>
+            <span class="{{address.type}}">{{address.type}}</span>
+            <span>{{address.name}}</span>
+          </header>
+          <address [innerHTML]="format(address)"></address>
+          <nav layout="column" class="actions">
+            <div class="divider"></div>
+            <div layout="row" layout-align="end">
+              <button
+                *ngIf="userCan.editAddress(address)"
+                (click)="openFormFor('user', 'edit', address)"
+                title="{{ 'CART.BILLING.EDIT_USER_ADDRESS' | translate }}"
+                md-button class="is-outlined" color="primary" >
+                  {{ 'CART.BILLING.EDIT_USER_ADDRESS' | translate }}
+              </button>        
+              <button
+                *ngIf="userCan.addAddress(address)"
+                (click)="openFormFor('user', 'create')"
+                title="{{ 'CART.BILLING.ADD_USER_ADDRESS' | translate }}"
+                md-button class="is-outlined" color="primary" >
+                  {{ 'CART.BILLING.ADD_USER_ADDRESS' | translate }}
+              </button>        
+              <button
+                *ngIf="userCan.editAccountAddress(address)"
+                (click)="openFormFor('account', 'edit', address)"
+                title="{{ 'CART.BILLING.EDIT_ACCOUNT_ADDRESS' | translate }}"
+                md-button class="is-outlined" color="primary" >
+                  {{ 'CART.BILLING.EDIT_ACCOUNT_ADDRESS' | translate }}
+              </button>        
+              <button
+                *ngIf="userCan.addAccountAddress(address)"
+                (click)="openFormFor('account', 'create', address)"
+                title="{{ 'CART.BILLING.ADD_ACCOUNT_ADDRESS' | translate }}"
+                md-button class="is-outlined" color="primary" >
+                  {{ 'CART.BILLING.ADD_ACCOUNT_ADDRESS' | translate }}
+              </button>        
+              <button md-raised-button color="primary" (click)="selectAddress(address)" [disabled]="!address.address">
+                {{ 'CART.BILLING.SELECT_ADDRESS_BTN' | translate }}
+              </button>
+            </div>
+          </nav>
+        </section>
+      </li>
+    </ul>
   </div>
 </div>
+
 <nav flex="100" layout="row" layout-align="space-between">
-  <button md-raised-button class="md-block" (click)="goToPreviousTab()">{{ 'CART.BILLING.BACK_BTN' | translate }}</button>
-  <button md-raised-button class="md-block" (click)="goToNextTab()" [disabled]="!(userCanProceed | async)">
+  <button md-button color="primary" (click)="goToPreviousTab()">{{ 'CART.BILLING.BACK_BTN' | translate }}</button>
+  <button md-raised-button class="checkout" (click)="goToNextTab()" [disabled]="!(userCanProceed | async)">
     {{ 'CART.BILLING.FORWARD_BTN' | translate }}
   </button>
 </nav>
+
+
+
+<!--<section class="cart-total" layout="row" layout-align="center center">
+	<div flex="100">
+    <div flex="100" layout="row" layout-align="end center" class="total md-headline">
+      <span class="total-label">
+        {{ 'CART.CART_TOTAL' | translate }} 
+      </span>
+      <span class="total-amount">
+        {{ (cart | async).total | currency:'USD':true:'1.2-2' }}
+      </span>
+		</div>
+    <div flex="100" layout="row" layout-align="end center">
+      <button *ngIf="(assetsInCart | async)" [disabled]="!rmAssetsHaveAttributes" md-raised-button class="checkout" (click)="goToNextTab()">{{ 'CART.PROCEED_BTN_LABEL' | translate }}</button>
+		</div>
+    <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!rmAssetsHaveAttributes">
+      {{ 'CART.SELECT_USAGE_WARN' | translate }}
+    </div>
+	</div>
+</section>-->

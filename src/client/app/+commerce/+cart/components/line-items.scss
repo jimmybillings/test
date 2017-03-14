@@ -91,19 +91,6 @@ line-items-component {
       }
     }
 
-
-    // & > div[layout="row"] > div[layout-padding]:first-child {
-    //   padding-left: 0;
-    //   padding-top: rem(.4);
-    //   padding-right: rem(1.6);
-    //   padding-bottom: 0;
-    //   @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-    //     padding-right: 0;
-    //   }
-    // }
-    // & > div[layout="row"] > div[layout-padding]:last-child {
-    //   padding: 0;
-    // }
     .price {
       position: absolute;
       bottom: rem(.7);
@@ -114,9 +101,10 @@ line-items-component {
         vertical-align: top;
       }
       &.select-usage {
+        color: lighten(md-color($md-warn, darker), 30%);
         &::after {
           content: " *";
-          color: md-color($md-accent, darker);
+          color: md-color($md-warn, darker);
         }
       }
     }
@@ -133,4 +121,10 @@ line-items-component {
       }
     }
   }
+}
+button.is-outlined.mini {
+  line-height: rem(2.4);
+  min-width: rem(5.0);
+  padding: 0 rem(1.0);
+  margin-right: rem(1.2);
 }

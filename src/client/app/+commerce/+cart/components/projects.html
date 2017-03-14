@@ -1,8 +1,8 @@
-<!--<div *ngIf="!readOnly" flex="100" layout="row" layout-align="end center" class="add-project-button">
-	<button md-button (click)="addProject()">
+<div *ngIf="!readOnly" flex="100" layout="row" layout-align="end center" class="add-project">
+	<button md-button color="primary" (click)="addProject()">
 		<md-icon>add_circle_outline</md-icon>Create a new project
 	</button>
-</div>-->
+</div>
 
 <section class="projects">
 	<div class="project" *ngFor="let project of projects">
@@ -25,7 +25,7 @@
 					<span *ngIf="lineItemCountFor(project) == 1">1 Asset</span>
 					<span *ngIf="lineItemCountFor(project) > 1">{{ lineItemCountFor(project) }} Assets</span>
 				</div>
-<!--Need a translation string here for edit-->
+				<!--Need a translation string here for edit-->
 				<button *ngIf="!readOnly" (click)="edit(project)" md-button class="is-outlined" type="button">Edit</button>
 				<button *ngIf="!readOnly" md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)" title="More project options"><md-icon>more_vert</md-icon></button>
 			</div>
@@ -45,10 +45,9 @@
 		<md-icon>remove_circle</md-icon>{{ 'CART.PROJECTS.REMOVE_PROJECT' | translate }}
 	</button>-->
 
-	<button md-menu-item (click)="addProject()">
+	<!--<button md-menu-item (click)="addProject()">
 		<md-icon>add_circle_outline</md-icon>Create a new project
-		<!--<md-icon>add_circle</md-icon>{{ 'CART.PROJECTS.ADD_PROJECT_BTN' | translate }}-->
-	</button>
+	</button>-->
 	<div class="divider"></div>
 	<button disabled md-menu-item><md-icon>attachment</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
 	<button disabled md-menu-item><md-icon>receipt</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}</button>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Response } from '@angular/http';
 import { UserService } from '../../shared/services/user.service';
 import { Subscription } from 'rxjs/Rx';
@@ -13,7 +13,8 @@ import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.comp
 @Component({
   moduleId: module.id,
   selector: 'register-component',
-  templateUrl: 'register.html'
+  templateUrl: 'register.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class RegisterComponent implements OnInit, OnDestroy {
@@ -26,7 +27,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     public user: UserService,
     public uiConfig: UiConfig,
-    private dialog: MdDialog) {
+    private dialog: MdDialog,
+    private ref: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -44,9 +46,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.user.create(user).take(1).subscribe((res: Response) => {
       this.successfullySubmitted = true;
       this.newUser = res;
+      this.ref.markForCheck();
     }, (error => {
-      console.log(error.json());
       this.serverErrors = error.json();
+      this.ref.markForCheck();
     }));
   }
 
