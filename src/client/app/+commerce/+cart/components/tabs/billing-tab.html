@@ -28,7 +28,14 @@
             <span class="{{address.type}}">{{address.type}}</span>
             <span>{{address.name}}</span>
           </header>
-          <address [innerHTML]="format(address)"></address>
+          <address *ngIf="address.address">
+            {{address.address.address}}<br>
+            {{address.address.city}}, {{address.address.state}} {{address.address.zipcode}}, {{address.address.country}}<br>
+            {{address.address.phone}}
+          </address>
+          <address *ngIf="!address.address">
+            <p>There is no address on account for this {{address.type}}</p>
+          </address>
           <nav layout="column" class="actions">
             <div class="divider"></div>
             <div layout="row" layout-align="end">

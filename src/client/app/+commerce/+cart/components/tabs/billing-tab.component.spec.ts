@@ -155,7 +155,7 @@ export function main() {
       });
     });
 
-    xdescribe('addressesAreEmpty', () => {
+    describe('addressesAreEmpty', () => {
       it('should return true if the addresses are empty', () => {
         let mockStore: any = {
           orderInProgress: {
@@ -182,7 +182,7 @@ export function main() {
       });
     });
 
-    xdescribe('get userCanProceed()', () => {
+    describe('get userCanProceed()', () => {
       it('should return false if the selectedAddress has no values', () => {
         let mockAddress: any = { type: 'user', address: { address: '', state: '' } };
         let mockStore: any = { orderInProgress: { addresses: [mockAddressA], selectedAddress: mockAddress } };

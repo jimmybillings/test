@@ -63,9 +63,14 @@ export class BillingTabComponent extends Tab implements OnInit {
 
   public get userCanProceed(): Observable<boolean> {
     return this.orderInProgress.map((data: any) => {
-      return Object.keys(data.selectedAddress).filter((k: string) => {
-        return data.selectedAddress[k] === '';
-      }).length === 0;
+      if (!data.selectedAddress.address) {
+        return false;
+      } else {
+        return Object.keys(data.selectedAddress.address).filter((k: string) => {
+          console.log(data.selectedAddress.address[k]);
+          return data.selectedAddress.address[k] === '';
+        }).length === 0;
+      }
     });
   }
 
