@@ -54,7 +54,7 @@ export class AssetDetailComponent implements OnChanges {
     this.onAddToCollection.emit({ 'collection': this.collection, 'asset': this.asset, 'markers': markers });
   }
 
-  public onPlayerMarkersInitialize(initialMarkers: SubclipMarkerFrames): void {
+  public onPlayerMarkersInitialization(initialMarkers: SubclipMarkerFrames): void {
     this.subclipData = initialMarkers;
     this.showAssetSaveSubclip = false;
   }

@@ -20,8 +20,8 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   @Input() displayAllControls: boolean = true;
   @Input() markersSaveButtonEnabled: boolean = true;
   @Output() onSubclip = new EventEmitter();
-  @Output() markerFramesInitialize: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
-  @Output() markerFrameChange: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
+  @Output() markersInitialization: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
+  @Output() markerChange: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
   @Output() markerSaveButtonClick: EventEmitter<null> = new EventEmitter<null>();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
@@ -104,9 +104,9 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
 
   private onStateChange(newState: PlayerState) {
     if (!this.currentState) {
-      this.markerFramesInitialize.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
+      this.markersInitialization.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
     } else if (this.markersChangedIn(newState)) {
-      this.markerFrameChange.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
+      this.markerChange.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
     }
 
     this.currentState = newState;

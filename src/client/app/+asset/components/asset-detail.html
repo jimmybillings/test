@@ -95,8 +95,8 @@
           [window]="window"
           [asset]="asset"
           [markersSaveButtonEnabled]="markersSaveButtonEnabled"
-          (markerFramesInitialize)="onPlayerMarkersInitialize($event)"
-          (markerFrameChange)="onPlayerMarkerChange($event)"
+          (markersInitialization)="onPlayerMarkersInitialization($event)"
+          (markerChange)="onPlayerMarkerChange($event)"
           (markerSaveButtonClick)="onPlayerMarkerSaveButtonClick($event)">
         </wz-advanced-player>
       </div>
