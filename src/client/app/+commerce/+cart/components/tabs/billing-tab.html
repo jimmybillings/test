@@ -1,7 +1,7 @@
 <div class="cart-billing" layout="row" layout-align="center start">
 
-  <div *ngIf="addresses.length === 0" flex-gt-lg="25" flex-gt-md="30" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="100">
-    <md-card class="billing-card wz-form-card" *ngIf="addresses.length === 0">
+  <div *ngIf="addressesAreEmpty" flex-gt-lg="25" flex-gt-md="30" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="100">
+    <md-card class="billing-card wz-form-card">
       <md-card-title>
         {{ 'CART.BILLING.ENTER_BILLING_ADDRESS' | translate }}
       </md-card-title>
@@ -30,36 +30,34 @@
             <span>{{address.type}}</span>
             <span>{{address.name}}</span>
           </header>
-          <address>
-            {{format(address)}}
-          </address>
+          <address [innerHTML]="format(address)"></address>
           <div layout="column" class="divider"></div>
           <nav layout="column" class="actions">
             <div layout="row" layout-align="end">
               <button
                 *ngIf="userCan.editAddress(address)"
-                (click)="openAddressFormFor('user', 'edit', address)"
+                (click)="openFormFor('user', 'edit', address)"
                 title="{{ 'CART.BILLING.EDIT_USER_ADDRESS' | translate }}"
                 md-button class="is-outlined" color="primary" >
                   {{ 'CART.BILLING.EDIT_USER_ADDRESS' | translate }}
               </button>        
               <button
                 *ngIf="userCan.addAddress(address)"
-                (click)="openAddressFormFor('user', 'add', address)"
+                (click)="openFormFor('user', 'create')"
                 title="{{ 'CART.BILLING.ADD_USER_ADDRESS' | translate }}"
                 md-button class="is-outlined" color="primary" >
                   {{ 'CART.BILLING.ADD_USER_ADDRESS' | translate }}
               </button>        
               <button
                 *ngIf="userCan.editAccountAddress(address)"
-                (click)="openAddressFormFor('account', 'edit', address)"
+                (click)="openFormFor('account', 'edit', address)"
                 title="{{ 'CART.BILLING.EDIT_ACCOUNT_ADDRESS' | translate }}"
                 md-button class="is-outlined" color="primary" >
                   {{ 'CART.BILLING.EDIT_ACCOUNT_ADDRESS' | translate }}
               </button>        
               <button
                 *ngIf="userCan.addAccountAddress(address)"
-                (click)="openAddressFormFor('account', 'add', address)"
+                (click)="openFormFor('account', 'create', address)"
                 title="{{ 'CART.BILLING.ADD_ACCOUNT_ADDRESS' | translate }}"
                 md-button class="is-outlined" color="primary" >
                   {{ 'CART.BILLING.ADD_ACCOUNT_ADDRESS' | translate }}

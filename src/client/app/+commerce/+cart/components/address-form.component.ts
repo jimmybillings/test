@@ -21,7 +21,7 @@ export class AddressFormComponent implements OnInit {
   @Input() dialog: any;
   @Input() items: any[];
   @Input() resourceType: 'user' | 'account';
-  @Input() mode: 'add' | 'edit';
+  @Input() mode: 'create' | 'edit';
   @Input() address: Address;
 
   ngOnInit() {

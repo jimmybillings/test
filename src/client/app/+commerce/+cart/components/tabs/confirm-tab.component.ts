@@ -37,9 +37,14 @@ export class ConfirmTabComponent extends Tab implements OnInit, OnDestroy {
 
   public format(address: ViewAddress): string {
     if (address.address) {
-      return Object.keys(address.address).map((key: string) => {
-        return address.address[key];
-      }).join('<br>');
+      return Object.keys(address.address).reduce((previous: string, current: string) => {
+        if (current === 'address' || current === 'zipcode' || current === 'phone') {
+          previous += `${address.address[current]}<br>`;
+        } else {
+          previous += `${address.address[current]}, `;
+        }
+        return previous;
+      }, '');
     } else {
       return `There is no address on record for this ${address.type}`;
     }

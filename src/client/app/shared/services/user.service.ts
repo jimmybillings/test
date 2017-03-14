@@ -57,7 +57,7 @@ export class UserService {
     );
   }
 
-  public getAddresses(returnValue?: string): Observable<any[]> {
+  public getAddresses(): Observable<{ list: Array<ViewAddress> }> {
     return this.api.get(Api.Identities, 'user/currentUsersAssociatedAddresses');
   }
 
