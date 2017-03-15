@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api, ApiBody, ApiParameters } from '../interfaces/api.interface';
 import { CartService } from './cart.service';
+import { ViewAddress, Address } from '../interfaces/user.interface';
 import { Project, LineItem, AddAssetParameters, CartState } from '../interfaces/cart.interface';
 
 export function main() {
@@ -27,6 +28,26 @@ export function main() {
       rightsManaged: 'Rights Managed'
     };
 
+    const mockAddressA: ViewAddress = {
+      type: 'user',
+      name: 'Ross Edfort',
+      defaultAddress: false,
+      addressEntityId: 1,
+      address: {
+        address: '123 Oak Street', state: 'CO', city: 'Denver', country: 'USA', zipcode: '802020', phone: '5555555555'
+      }
+    };
+
+    const mockAddressB: ViewAddress = {
+      type: 'account',
+      name: 'Wazee Digital',
+      defaultAddress: false,
+      addressEntityId: 4,
+      address: {
+        address: '1515 Arapahoe Street', state: 'CO', city: 'Denver', country: 'USA', zipcode: '802020', phone: '5555555555'
+      }
+    };
+
     let serviceUnderTest: CartService;
     let mockCartStore: any;
     let mockApi: MockApiService;
@@ -37,8 +58,17 @@ export function main() {
 
       mockCartStore = {
         replaceCartWith: jasmine.createSpy('replaceCartWith'),
-        data: Observable.of({ cart: { some: 'data' }, orderInProgress: {} }),
-        state: { cart: { some: 'state' }, orderInProgress: {} }
+        data: Observable.of({
+          cart: { some: 'data' },
+          orderInProgress: { selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] }
+        }),
+        state: {
+          cart: { some: 'state' },
+          orderInProgress: { selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] }
+        },
+        setOrderInProgressAddresses: jasmine.createSpy('setOrderInProgressAddresses'),
+        replaceOrderInProgressAddress: jasmine.createSpy('replaceOrderInProgressAddress'),
+        replaceOrderInProgressAuthorization: jasmine.createSpy('replaceOrderInProgressAuthorization')
       };
 
       mockApi = new MockApiService();
@@ -53,14 +83,20 @@ export function main() {
     describe('data getter', () => {
       it('returns the data from the cart store', () => {
         serviceUnderTest.data.subscribe(data => {
-          expect(data).toEqual({ cart: { some: 'data' }, orderInProgress: {} });
+          expect(data).toEqual({
+            cart: { some: 'data' },
+            orderInProgress: { selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] }
+          });
         });
       });
     });
 
     describe('state getter', () => {
       it('returns the state from the cart store', () => {
-        expect(serviceUnderTest.state).toEqual({ cart: { some: 'state' }, orderInProgress: {} });
+        expect(serviceUnderTest.state).toEqual({
+          cart: { some: 'state' },
+          orderInProgress: { selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] }
+        });
       });
     });
 
@@ -308,6 +344,39 @@ export function main() {
         serviceUnderTest.editLineItem(mockLineItem, { selectedTranscodeTarget: '1080i' });
 
         expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith(mockApi.putResponse);
+      });
+    });
+
+    describe('setAddresses', () => {
+      it('should setOrderInProgressAddresses on the store', () => {
+        serviceUnderTest.setAddresses([{}, {}]);
+
+        expect(mockCartStore.setOrderInProgressAddresses).toHaveBeenCalledWith([{}, {}]);
+      });
+    });
+
+    describe('updateSelectedAddress', () => {
+      it('should setOrderInProgressAddresses on the store', () => {
+        serviceUnderTest.updateSelectedAddress({});
+
+        expect(mockCartStore.replaceOrderInProgressAddress).toHaveBeenCalledWith({});
+      });
+    });
+
+    describe('updateOrderInProgressAuthorization', () => {
+      it('should setOrderInProgressAddresses on the store', () => {
+        serviceUnderTest.updateOrderInProgressAuthorization({});
+
+        expect(mockCartStore.replaceOrderInProgressAuthorization).toHaveBeenCalledWith({});
+      });
+    });
+
+    describe('determineNewSelectedAddress()', () => {
+      it('should update the new selected address', () => {
+        spyOn(serviceUnderTest, 'updateSelectedAddress');
+
+        serviceUnderTest.determineNewSelectedAddress([mockAddressA, mockAddressB]);
+        expect(serviceUnderTest.updateSelectedAddress).toHaveBeenCalledWith(mockAddressA);
       });
     });
   });

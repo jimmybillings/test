@@ -170,20 +170,10 @@ export class CartService {
     return formatted;
   }
 
-  private addProjectIfNoProjectsExist(): Observable<any> {
-    return ((this.state.cart.projects || []).length === 0) ? this.addProjectAndReturnObservable() : Observable.of({});
-  }
-
   private addProjectAndReturnObservable(): Observable<any> {
-    return this.api.post(Api.Orders, 'cart/project', { body: this.createAddProjectRequestBody(), loading: true })
+    return this.api.post(Api.Orders, 'cart/project', { body: { clientName: this.fullName }, loading: true })
       .do(this.updateCart)
       .share();
-  }
-
-  private createAddProjectRequestBody(): ApiBody {
-    return {
-      clientName: this.fullName
-    };
   }
 
   private get fullName(): string {
