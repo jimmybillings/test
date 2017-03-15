@@ -22,6 +22,10 @@ export function main() {
             total: 0
           },
           orderInProgress: {
+            purchaseOptions: {
+              purchaseOnCredit: false,
+              creditExemption: false
+            },
             addresses: [],
             selectedAddress: {
               type: '',

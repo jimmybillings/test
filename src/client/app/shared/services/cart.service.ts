@@ -119,38 +119,8 @@ export class CartService {
       .subscribe(this.updateCart);
   }
 
-  public setAddresses(addresses: any[]): void {
-    this.store.setOrderInProgressAddresses(addresses);
-  }
-
-  public updateSelectedAddress(address: any): void {
-    this.store.replaceOrderInProgressAddress(address);
-  }
-
-  public updateOrderInProgressAuthorization(authorization: any): void {
-    this.store.replaceOrderInProgressAuthorization(authorization);
-  }
-
-  public determineNewSelectedAddress = (addresses: Array<ViewAddress>) => {
-    let newSelected: ViewAddress;
-    this.data.take(1).subscribe((data: any) => {
-      if (data.orderInProgress.selectedAddress && typeof data.orderInProgress.selectedAddress.addressEntityId !== 'undefined') {
-        newSelected = this.previouslySelectedAddress;
-      } else {
-        newSelected = data.orderInProgress.addresses[0];
-      }
-    });
-    this.updateSelectedAddress(newSelected);
-  }
-
-  public get previouslySelectedAddress(): ViewAddress {
-    let previouslySelected: ViewAddress;
-    this.data.take(1).subscribe((data: any) => {
-      previouslySelected = data.orderInProgress.addresses.filter((a: ViewAddress) => {
-        return a.addressEntityId === data.orderInProgress.selectedAddress.addressEntityId;
-      })[0];
-    });
-    return previouslySelected;
+  public updateOrderInProgress(type: string, data: any): void {
+    this.store.updateOrderInProgress(type, data);
   }
 
   private formatBody(parameters: AddAssetParameters): any {

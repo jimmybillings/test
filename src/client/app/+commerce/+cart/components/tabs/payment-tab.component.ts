@@ -37,7 +37,7 @@ export class PaymentTabComponent extends Tab implements OnInit {
       (status: number, response: any) => {
         this._zone.run(() => {
           if (status === 200) {
-            this.cartService.updateOrderInProgressAuthorization(response);
+            this.cartService.updateOrderInProgress('authorization', response);
             this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
           } else {
             this.serverErrors = { fieldErrors: [] };

@@ -28,26 +28,6 @@ export function main() {
       rightsManaged: 'Rights Managed'
     };
 
-    const mockAddressA: ViewAddress = {
-      type: 'user',
-      name: 'Ross Edfort',
-      defaultAddress: false,
-      addressEntityId: 1,
-      address: {
-        address: '123 Oak Street', state: 'CO', city: 'Denver', country: 'USA', zipcode: '802020', phone: '5555555555'
-      }
-    };
-
-    const mockAddressB: ViewAddress = {
-      type: 'account',
-      name: 'Wazee Digital',
-      defaultAddress: false,
-      addressEntityId: 4,
-      address: {
-        address: '1515 Arapahoe Street', state: 'CO', city: 'Denver', country: 'USA', zipcode: '802020', phone: '5555555555'
-      }
-    };
-
     let serviceUnderTest: CartService;
     let mockCartStore: any;
     let mockApi: MockApiService;
@@ -60,15 +40,13 @@ export function main() {
         replaceCartWith: jasmine.createSpy('replaceCartWith'),
         data: Observable.of({
           cart: { some: 'data' },
-          orderInProgress: { selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] }
+          orderInProgress: {}
         }),
         state: {
           cart: { some: 'state' },
-          orderInProgress: { selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] }
+          orderInProgress: {}
         },
-        setOrderInProgressAddresses: jasmine.createSpy('setOrderInProgressAddresses'),
-        replaceOrderInProgressAddress: jasmine.createSpy('replaceOrderInProgressAddress'),
-        replaceOrderInProgressAuthorization: jasmine.createSpy('replaceOrderInProgressAuthorization')
+        updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
       };
 
       mockApi = new MockApiService();
@@ -85,7 +63,7 @@ export function main() {
         serviceUnderTest.data.subscribe(data => {
           expect(data).toEqual({
             cart: { some: 'data' },
-            orderInProgress: { selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] }
+            orderInProgress: {}
           });
         });
       });
@@ -95,7 +73,7 @@ export function main() {
       it('returns the state from the cart store', () => {
         expect(serviceUnderTest.state).toEqual({
           cart: { some: 'state' },
-          orderInProgress: { selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] }
+          orderInProgress: {}
         });
       });
     });
@@ -347,36 +325,11 @@ export function main() {
       });
     });
 
-    describe('setAddresses', () => {
-      it('should setOrderInProgressAddresses on the store', () => {
-        serviceUnderTest.setAddresses([{}, {}]);
+    describe('updateOrderInProgress', () => {
+      it('should call updateOrderInProgress on the store', () => {
+        serviceUnderTest.updateOrderInProgress('addresses', [{}, {}]);
 
-        expect(mockCartStore.setOrderInProgressAddresses).toHaveBeenCalledWith([{}, {}]);
-      });
-    });
-
-    describe('updateSelectedAddress', () => {
-      it('should setOrderInProgressAddresses on the store', () => {
-        serviceUnderTest.updateSelectedAddress({});
-
-        expect(mockCartStore.replaceOrderInProgressAddress).toHaveBeenCalledWith({});
-      });
-    });
-
-    describe('updateOrderInProgressAuthorization', () => {
-      it('should setOrderInProgressAddresses on the store', () => {
-        serviceUnderTest.updateOrderInProgressAuthorization({});
-
-        expect(mockCartStore.replaceOrderInProgressAuthorization).toHaveBeenCalledWith({});
-      });
-    });
-
-    describe('determineNewSelectedAddress()', () => {
-      it('should update the new selected address', () => {
-        spyOn(serviceUnderTest, 'updateSelectedAddress');
-
-        serviceUnderTest.determineNewSelectedAddress([mockAddressA, mockAddressB]);
-        expect(serviceUnderTest.updateSelectedAddress).toHaveBeenCalledWith(mockAddressA);
+        expect(mockCartStore.updateOrderInProgress).toHaveBeenCalledWith('addresses', [{}, {}]);
       });
     });
   });
