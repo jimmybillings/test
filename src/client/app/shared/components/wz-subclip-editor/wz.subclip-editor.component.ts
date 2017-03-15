@@ -10,6 +10,7 @@ import { SubclipMarkers, SubclipMarkerFrames } from '../../interfaces/asset.inte
       [window]="window"
       [asset]="asset"
       [displayAllControls]="false"
+      (markersInitialization)="onPlayerMarkerChange($event)"
       (markerChange)="onPlayerMarkerChange($event)">
     </wz-advanced-player>
 
