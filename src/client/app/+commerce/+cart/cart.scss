@@ -1,4 +1,5 @@
 @import './components/tabs/billing-tab';
+@import './components/tabs/confirm-tab';
 
 cart-component .tabs-section {
   & > div > div {
@@ -41,9 +42,6 @@ cart-component section.header {
 
 
 section.cart-total {
-  // #paymentArea_ {
-  //   margin-right: rem(2);
-  // }
   .select-usage-warn {
     margin-top: rem(.2);
     color: md-color($md-warn, darker);
@@ -56,7 +54,9 @@ section.cart-total {
   .total {
     text-align: right;
     letter-spacing: -.02em;
+    line-height: rem(4.8);
     .total-label {
+      line-height: rem(4.0);
       font-weight: 300;
       letter-spacing: 0;
       padding-right: rem(1.4);
@@ -66,7 +66,7 @@ section.cart-total {
       display: inline-block;
       &::first-letter {
         font-size: .68em;
-        line-height: 1.7;
+        line-height: 2.8;
         vertical-align: top;
         letter-spacing: 0;
       }
@@ -76,11 +76,17 @@ section.cart-total {
 button.checkout {
   font-size: 1.1em;
   line-height: rem(4.8);
-  margin: rem(1.0) 0;
+  margin: 0 0 0 rem(1.0);
   background-color: #558b2f;
   @include text-contrast(#558b2f);
 }
-
+button.checkout-back {
+  margin: 0;
+  padding: 0 rem(1.4) 0 rem(1.0);
+  md-icon {
+    padding: 0 0 rem(.2) 0;
+  }
+}
 header .cart-heading {
   font-size: rem(2.8);
   font-weight: 300;

@@ -1,6 +1,6 @@
 <div class="cart-billing" layout="row" layout-align="center start">
 
-  <div *ngIf="addressesAreEmpty" flex-gt-lg="25" flex-gt-md="30" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="100">
+  <div *ngIf="addressesAreEmpty" flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="100">
     <md-card class="billing-card wz-form-card">
       <md-card-title>
         {{ 'CART.BILLING.ENTER_BILLING_ADDRESS' | translate }}
@@ -22,9 +22,7 @@
     </header>
     
     <ul layout="column" layout-align="start" layout-gt-xs="row">
-      <li *ngFor="let address of this.addresses"
-        class="billing-address" 
-        [ngClass]="{'active': address.addressEntityId === selectedAddress.addressEntityId}">
+      <li *ngFor="let address of this.addresses" class="billing-address">
         <section [ngClass]="{'active': address.addressEntityId === selectedAddress.addressEntityId}" layout="column">
           <header>
             <span class="{{address.type}}">{{address.type}}</span>
@@ -74,7 +72,10 @@
 </div>
 
 <nav flex="100" layout="row" layout-align="space-between">
-  <button md-button color="primary" (click)="goToPreviousTab()">{{ 'CART.BILLING.BACK_BTN' | translate }}</button>
+  <button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back">
+    <md-icon>keyboard_backspace</md-icon>
+    {{ 'CART.BILLING.BACK_BTN' | translate }}
+  </button>
   <button md-raised-button class="checkout" (click)="goToNextTab()" [disabled]="!userCanProceed">{{ 'CART.BILLING.FORWARD_BTN' | translate }}</button>
 </nav>
 

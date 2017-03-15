@@ -15,8 +15,7 @@ export class CartComponent implements OnInit {
     // We could initialize a subset of these instead, based on some condition.
     // For example, don't include 'billing' and 'payment' if the cart total is 0.
     // this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];
-
-    // For now (BETA), we have only cart and review.
+    // I think the confirm tab should be place order
     this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];
 
     // Enable the first tab and disable the rest.

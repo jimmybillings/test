@@ -16,10 +16,10 @@
 		<div flex-gt-xs="20" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
 			<div class="tools" flex="100">
 				<!--<button *ngIf="lineItem.rightsManaged" (click)="showPricingDialog(lineItem)" md-button class="mini is-outlined" type="button">Price</button>-->
-				<button *ngIf="lineItem.rightsManaged" md-button color="primary" class="mini is-outlined" (click)="showPricingDialog(lineItem)" title="usage pricing">Pricing</button>
-				<button  md-icon-button (click)="remove(lineItem)" title="remove asset item"><md-icon>remove_circle</md-icon></button>
+				<button *ngIf="lineItem.rightsManaged" md-button color="primary" class="mini is-outlined" (click)="showPricingDialog(lineItem)" title="usage pricing">{{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}</button>
+				<button  md-icon-button (click)="remove(lineItem)" title="{{ 'CART.PROJECTS.REMOVE_ASSET_BTN_HOVER' | translate }}"><md-icon>remove_circle</md-icon></button>
 				<!--<button *ngIf="lineItem.rightsManaged" md-icon-button (click)="showPricingDialog(lineItem)" title="usage pricing"><md-icon>data_usage</md-icon></button>-->
-				<button md-icon-button [md-menu-trigger-for]="lineItemOptionsMenu" (click)="selectLineItem(lineItem)" title="More asset options"><md-icon>more_vert</md-icon></button>
+				<button md-icon-button [md-menu-trigger-for]="lineItemOptionsMenu" (click)="selectLineItem(lineItem)" title="{{ 'CART.PROJECTS.MORE_OPTIONS_BTN_HOVER' | translate }}"><md-icon>more_vert</md-icon></button>
 			</div>
 			<div flex="100" layout="row" layout-xs="column" class="divider"></div>
 			<div class="price" [ngClass]="{'select-usage': lineItem.rightsManaged && !lineItem.attributes}">
@@ -31,7 +31,7 @@
 
 <md-menu x-position="before" #lineItemOptionsMenu="mdMenu">
 	<button md-menu-item (click)="clone(selectedLineItem)">
-		<md-icon>control_point_duplicate</md-icon>Duplicate asset item 
+		<md-icon>control_point_duplicate</md-icon>{{ 'CART.PROJECTS.DUPLICATE_ASSET_BTN_LABEL' | translate }}
 	</button>
 	<div class="divider" *ngIf="otherProjects.length > 0"></div>
 	<button md-menu-item *ngFor="let otherProject of otherProjects" (click)="moveTo(otherProject, selectedLineItem)">
