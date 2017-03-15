@@ -163,7 +163,7 @@
     "reflect-metadata": "^0.1.8",
     "rxjs": "5.0.2",
     "systemjs": "0.19.41",
-    "wazee-frame-formatter": "https://github.com/t3mediacorp/wazee-frame-formatter.git#typescript-version",
+    "wazee-frame-formatter": "git@github.com:t3mediacorp/wazee-frame-formatter.git#typescript-version",
     "zone.js": "^0.7.2"
   }
 }
