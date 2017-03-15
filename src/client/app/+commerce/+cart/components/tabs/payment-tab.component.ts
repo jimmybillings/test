@@ -52,6 +52,31 @@ export class PaymentTabComponent extends Tab implements OnInit {
       });
   }
 
+  public get userCanPurchaseOnCredit(): Observable<boolean> {
+    return this.cartService.data.map((data: any) => {
+      let options: any = data.orderInProgress.purchaseOptions;
+      if (data.orderInProgress.selectedAddress.type === 'user') {
+        return options.purchaseOnCredit;
+      } else {
+        if (options.purchaseOnCredit) {
+          if (options.creditExemption) {
+            return data.cart.total > parseInt(options.creditExemption);
+          } else {
+            return true;
+          }
+        } else {
+          return options.purchaseOnCredit;
+        }
+      }
+    });
+  }
+
+  public purchaseOnCredit(): void {
+    this.cartService.purchaseOnCredit().take(1).subscribe((order: any) => {
+      console.log(order);
+    });
+  }
+
   private loadStripe() {
     const stripeScript = 'https://js.stripe.com/v2/';
     var scripts = document.getElementsByTagName('script');
