@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-terms',
-  templateUrl: 'wz.terms.html'
+  templateUrl: 'wz.terms.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class WzTermsComponent {

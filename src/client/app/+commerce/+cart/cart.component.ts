@@ -14,10 +14,9 @@ export class CartComponent implements OnInit {
   ngOnInit() {
     // We could initialize a subset of these instead, based on some condition.
     // For example, don't include 'billing' and 'payment' if the cart total is 0.
-    // this.tabLabelKeys = ['cart', 'review', 'billing', 'payment', 'confirm'];
-
-    // For now (BETA), we have only cart and review.
-    this.tabLabelKeys = ['cart', 'review', 'billing', 'payment', 'confirm'];
+    // this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];
+    // I think the confirm tab should be place order
+    this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];
 
     // Enable the first tab and disable the rest.
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);

@@ -1,3 +1,5 @@
+import { ViewAddress } from './user.interface';
+
 export interface Cart {
   userId: number;
   projects?: Project[];
@@ -87,3 +89,16 @@ export interface AddAssetParameters {
   };
   attributes?: any;
 }
+
+export interface CartState {
+  cart: Cart;
+  orderInProgress: {
+    purchaseOptions: {
+      purchaseOnCredit: boolean;
+      creditExemption: boolean;
+    }
+    addresses: ViewAddress[];
+    selectedAddress: ViewAddress;
+    authorization: any;
+  };
+};

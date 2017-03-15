@@ -1,12 +1,23 @@
+<section class="header" layout="row" layout-align="center center">
+	<header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
+    <div flex="100" layout="row" layout-align="space-between end">
+			<h2 flex="grow" class="md-display-1">Cart</h2>
+		</div>
+	</header>
+</section>
+
 <section class="tabs-section">
-  <md-tab-group [(selectedIndex)]="selectedTabIndex">
-    <md-tab *ngFor="let tabLabelKey of tabLabelKeys; let i = index" [disabled]="!tabEnabled[i]">
-      <template md-tab-label>{{ tabLabelKey | uppercase }}</template>
-      <cart-tab-component *ngIf="tabLabelKey === 'cart'" (tabNotify)="onNotification($event)"></cart-tab-component>
-      <review-tab-component *ngIf="tabLabelKey === 'review'" (tabNotify)="onNotification($event)"></review-tab-component>
-      <billing-tab-component *ngIf="tabLabelKey === 'billing'" (tabNotify)="onNotification($event)"></billing-tab-component>
-      <payment-tab-component *ngIf="tabLabelKey === 'payment'" (tabNotify)="onNotification($event)"></payment-tab-component>
-      <confirm-tab-component *ngIf="tabLabelKey === 'confirm'" (tabNotify)="onNotification($event)"></confirm-tab-component>
-    </md-tab>
-  </md-tab-group>
+  <div layout="row" flex="100" layout-align="center start">
+     <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
+      <md-tab-group [(selectedIndex)]="selectedTabIndex">
+        <md-tab *ngFor="let tabLabelKey of tabLabelKeys; let i = index" [disabled]="!tabEnabled[i]">
+          <template md-tab-label>{{ tabLabelKey | uppercase }}</template>
+          <cart-tab-component *ngIf="tabLabelKey === 'cart'" (tabNotify)="onNotification($event)"></cart-tab-component>
+          <billing-tab-component *ngIf="tabLabelKey === 'billing'" (tabNotify)="onNotification($event)"></billing-tab-component>
+          <payment-tab-component *ngIf="tabLabelKey === 'payment'" (tabNotify)="onNotification($event)"></payment-tab-component>
+          <confirm-tab-component *ngIf="tabLabelKey === 'confirm'" (tabNotify)="onNotification($event)"></confirm-tab-component>
+        </md-tab>
+      </md-tab-group>
+    </div>
+  </div>
 </section>

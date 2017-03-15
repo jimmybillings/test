@@ -79,34 +79,4 @@ section.cart-asset {
       display: block;
     }
   }
-
-
-  // div.cart-asset-metadata {
-  //   @media screen and (max-width: $layout-breakpoint-md) and (min-width: $layout-breakpoint-sm) {
-  //     display: none;
-  //   }
-  //   margin: rem(1);
-  //   table {
-  //     min-width: 100%;
-  //     height: 100%;
-  //     border: 1px solid md-color($md-grey, 300);
-  //     border-collapse: collapse;
-  //     th {
-  //       width: 30%;
-  //       text-align: right;
-  //       border-bottom: 1px solid md-color($md-grey, 300);
-  //       border-right: 1px solid md-color($md-grey, 300);
-  //       padding: rem(.2) rem(.3);
-  //       background-color: rgba(md-color($md-grey, 300), .4);
-  //       @include text-contrast(md-color($md-grey, 100));
-  //     }
-  //     td {
-  //       width: 70%;
-  //       padding: rem(.2) rem(.3);
-  //       border-bottom: 1px solid md-color($md-grey, 300);
-  //       background-color: rgba(md-color($md-grey, 300), .2);
-  //       @include text-contrast(md-color($md-grey, 100));
-  //     }
-  //   }
-  // }
 }

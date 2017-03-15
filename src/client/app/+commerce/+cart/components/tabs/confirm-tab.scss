@@ -1,0 +1,16 @@
+confirm-tab-component {
+  .md-title {
+    opacity: .6;
+    margin: .6em 0;
+  }
+  .billing {
+    background-color: rgba(md-color($background, card), .65);
+    color: rgba(md-color($foreground, text), .7);
+    // position: relative;
+    padding: rem(1.4);
+    border-radius: $md-button-border-radius;
+    .md-title {
+      margin-top: 0;
+    }
+  }
+}

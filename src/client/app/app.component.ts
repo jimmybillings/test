@@ -34,10 +34,10 @@ export class AppComponent implements OnInit {
   public state: string = '';
   private bootStrapUserDataSubscription: Subscription;
   @ViewChild('target', { read: ViewContainerRef }) private target: any;
-  // @HostListener('document:scroll', ['$event.target'])
-  // public onScroll(targetElement: any) {
-  //   this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
-  // }
+  @HostListener('document:scroll', ['$event.target'])
+  public onScroll(targetElement: any) {
+    this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
+  }
 
   constructor(
     public uiConfig: UiConfig,
@@ -57,7 +57,8 @@ export class AppComponent implements OnInit {
     private filter: FilterService,
     private sortDefinition: SortDefinitionsService,
     private snackBar: MdSnackBar,
-    private translate: TranslateService) { }
+    private translate: TranslateService) {
+  }
 
   ngOnInit() {
     this.routerChanges();
@@ -74,6 +75,7 @@ export class AppComponent implements OnInit {
   }
 
   public newSearchContext(query: any) {
+    this.searchContext.remove = 'gq';
     let searchContext: any = Object.assign({}, this.searchContext.state, { q: query, i: 1, n: 100 });
     this.filter.load(searchContext, this.userPreference.state.displayFilterCounts).subscribe(() => { });
     this.searchContext.new(searchContext);
@@ -114,7 +116,7 @@ export class AppComponent implements OnInit {
       });
     }
     this.cart.getCartSummary();
-    this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
+    this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });
   }
@@ -123,7 +125,7 @@ export class AppComponent implements OnInit {
     this.userPreference.reset();
     this.collections.destroyAll();
     this.uiState.reset();
-    this.sortDefinition.getSortDefinitions().take(1).subscribe((data: any) => {
+    this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });
   }

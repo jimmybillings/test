@@ -10,7 +10,7 @@ export function main() {
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
       mockApi = new MockApiService();
-      serviceUnderTest = new UserService(mockApi.injector);
+      serviceUnderTest = new UserService(mockApi.injector, null);
     });
 
     describe('get()', () => {
@@ -61,7 +61,7 @@ export function main() {
         jasmine.addMatchers(mockApiMatchers);
         mockApi = new MockApiService();
         mockApi.getResponse = [[{ id: 1, activeVersionId: 'abcd1234', name: 'TOS' }], { text: () => { return 'text'; } }];
-        serviceUnderTest = new UserService(mockApi.injector);
+        serviceUnderTest = new UserService(mockApi.injector, null);
       });
       it('hits the API correctly', () => {
         serviceUnderTest.downloadActiveTosDocument();
@@ -77,7 +77,7 @@ export function main() {
         expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/public/name/TOS');
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/public/downloadFile/abcd1234');
-        expect(mockApi.get).toHaveBeenCalledWithDownload(true);
+        expect(mockApi.get).toHaveBeenCalledWithHeaderType('download');
       });
     });
 
@@ -88,6 +88,68 @@ export function main() {
 
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApi.post).toHaveBeenCalledWithEndpoint('document/version/abcd1234/agree');
+      });
+    });
+
+    describe('changePassword', () => {
+      it('should call the API correctly', () => {
+        serviceUnderTest.changePassword({ oldPassword: '123abc', newPassword: 'abc123' });
+
+        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('user/changePassword');
+        expect(mockApi.post).toHaveBeenCalledWithBody({ oldPassword: '123abc', newPassword: 'abc123' });
+        expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+      });
+    });
+
+    describe('resetPassword', () => {
+      it('should call the API correctly', () => {
+        serviceUnderTest.resetPassword({ newPassword: 'abc123' }, 'LKJbcd7e2HCD783cd');
+
+        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('user/passwordReset');
+        expect(mockApi.post).toHaveBeenCalledWithBody({ newPassword: 'abc123' });
+        expect(mockApi.post).toHaveBeenCalledWithOverridingToken('LKJbcd7e2HCD783cd');
+        expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+      });
+    });
+
+    describe('getAddresses', () => {
+      it('should call the API correctly', () => {
+        serviceUnderTest.getAddresses();
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('user/currentUsersAssociatedAddresses');
+      });
+
+      describe('addBillingAddress()', () => {
+        it('should call the API correctly', () => {
+          localStorage.setItem('currentUser', JSON.stringify({ id: 1, firstName: 'ross' }));
+          spyOn(localStorage, 'setItem');
+          let mockAddress: any = { address: '123 Oak Street' };
+          serviceUnderTest.addBillingAddress(mockAddress).take(1).subscribe();
+
+          expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApi.put).toHaveBeenCalledWithEndpoint('user/1');
+          expect(mockApi.put).toHaveBeenCalledWithBody({
+            id: 1, firstName: 'ross', mailingAddress: { address: '123 Oak Street' }
+          });
+          expect(localStorage.setItem).toHaveBeenCalledWith('currentUser', JSON.stringify(mockApi.putResponse));
+        });
+      });
+
+      describe('addAccountBillingAddress', () => {
+        it('should call the API service correctly', () => {
+          let mockAddress: any = { addressEntityId: 3, address: { address: '123 Oak Street' } };
+          serviceUnderTest.addAccountBillingAddress(mockAddress).take(1).subscribe();
+
+          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApi.get).toHaveBeenCalledWithEndpoint('account/3');
+          expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApi.put).toHaveBeenCalledWithEndpoint('account/3');
+          let expectedBody: any = Object.assign(mockApi.getResponse, { billingInfo: { address: { address: '123 Oak Street' } } });
+          expect(mockApi.put).toHaveBeenCalledWithBody(expectedBody);
+        });
       });
     });
 

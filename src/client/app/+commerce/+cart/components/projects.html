@@ -1,55 +1,61 @@
-<section class="header" layout="row" layout-align="center center">
-	<header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-    <div flex="100" layout="row" layout-align="space-between end">
-			<h2 flex="grow" class="md-display-1">Cart</h2>
-			<div class="tools" flex="auto">
-				<button *ngIf="!readOnly" md-button class="add-project" (click)="addProject()">
-					{{ 'CART.PROJECTS.ADD_PROJECT_BTN' | translate }}
-				</button>
-			</div>
-		</div>
-	</header>
-</section>
+<div *ngIf="!readOnly" flex="100" layout="row" layout-align="end center" class="add-project">
+	<button md-button color="primary" (click)="addProject()">
+		<md-icon>add_circle_outline</md-icon>{{ 'CART.PROJECTS.ADD_PROJECT_BTN' | translate }}
+	</button>
+</div>
 
 <section class="projects">
-  <div layout="row" flex="100" layout-align="center start">
-     <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-			<div class="project" *ngFor="let project of projects">
-				<header class="project-info" layout-gt-xs="row" layout-align-gt-xs="space-between center" flex="100" layout="column" layout-align="center center">
-					<span><strong>{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</strong> {{ project.name | slice:0:26 }}</span>
-					<span><strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> {{ project.clientName | slice:0:26 }}</span>
-					<span *ngIf="readOnly">
-						<!--Does the translate pipe support singular vs. plural?-->
-						<span *ngIf="lineItemCountFor(project) == 0">No Assets</span>
-						<span *ngIf="lineItemCountFor(project) == 1">1 Asset</span>
-						<span *ngIf="lineItemCountFor(project) > 1">{{ lineItemCountFor(project) }} Assets</span>
-					</span>
-					<span>
-						<span><strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> {{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
-						<button *ngIf="!readOnly" md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)"><md-icon>more_vert</md-icon></button>
-						<button *ngIf="!readOnly" (click)="edit(project);" md-icon-button type="button"><md-icon>edit</md-icon></button>
-					</span>
-				</header>
-				<line-items-component *ngIf="!readOnly" [lineItems]="project.lineItems" [otherProjects]="projectsOtherThan(project)" [userCan]="userCan" (lineItemsNotify)="delegate($event)"></line-items-component>
+	<div class="project" *ngFor="let project of projects">
+		<header class="project-info" layout-gt-xs="row" layout="column">
+			<div flex="100" flex-gt-sm="70" flex-order-xs="2">
+				<h5 md-display-1>
+					<span class="project-label md-caption">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>
+					<span class="project-name">{{ project.name }}</span>
+				</h5>
+				<span class="project-client md-caption">
+					<strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> 
+					{{ project.clientName }}
+				</span>
 			</div>
-		</div>
+
+			<div flex="100" flex-gt-sm="30" layout-padding flex-order-xs="-1">
+				<div *ngIf="readOnly" class="project-asset-count">
+					<!--Does the translate pipe support singular vs. plural?-->
+					<span *ngIf="lineItemCountFor(project) == 0">No Assets</span>
+					<span *ngIf="lineItemCountFor(project) == 1">1 Asset</span>
+					<span *ngIf="lineItemCountFor(project) > 1">{{ lineItemCountFor(project) }} Assets</span>
+				</div>
+				<button *ngIf="!readOnly" (click)="edit(project)" md-button class="is-outlined" type="button">
+					{{ 'CART.PROJECTS.EDIT_PROJECT_BTN' | translate }}
+				</button>
+				<button *ngIf="!readOnly" md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)" title="More project options"><md-icon>more_vert</md-icon></button>
+			</div>
+			<div class="project-subtotal md-caption">
+				<strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
+				<span>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
+			</div>
+		</header>
+		<line-items-component *ngIf="!readOnly" [lineItems]="project.lineItems" [otherProjects]="projectsOtherThan(project)" [userCan]="userCan" (lineItemsNotify)="delegate($event)"></line-items-component>
 	</div>
 </section>
 
-
-
 <md-menu x-position="before" #projectOptionsMenu="mdMenu">
-	<button md-menu-item (click)="remove(selectedProject)">{{ 'CART.PROJECTS.REMOVE_PROJECT' | translate }}</button>
+	<!--<button md-menu-item (click)="remove(selectedProject)">
+		<md-icon>remove_circle</md-icon>{{ 'CART.PROJECTS.REMOVE_PROJECT' | translate }}
+	</button>-->
+
+	<!--<button md-menu-item (click)="addProject()">
+		<md-icon>add_circle_outline</md-icon>Create a new project
+	</button>-->
 	<div class="divider"></div>
-	<button disabled md-menu-item>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
-	<button disabled md-menu-item>{{ 'CART.PROJECTS.ADD_FEE' | translate }}</button>
-	<button disabled md-menu-item>{{ 'CART.PROJECTS.ADD_CLIP' | translate }}</button>
-	<button disabled md-menu-item>{{ 'CART.PROJECTS.ADD_CLIPS' | translate }}</button>
+	<button disabled md-menu-item><md-icon>attachment</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
+	<button disabled md-menu-item><md-icon>receipt</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}</button>
+	<!--<button disabled md-menu-item>{{ 'CART.PROJECTS.ADD_CLIP' | translate }}</button>-->
+	<button disabled md-menu-item><md-icon>add_to_photos</md-icon>{{ 'CART.PROJECTS.ADD_CLIPS' | translate }}</button>
+	<!--<div class="divider"></div>
+	<button disabled md-menu-item>{{ 'CART.PROJECTS.EDIT_PRICE' | translate }}</button>-->
 	<div class="divider"></div>
-	<button disabled md-menu-item>{{ 'CART.PROJECTS.EDIT_PRICE' | translate }}</button>
+	<button md-menu-item (click)="remove(selectedProject)">
+		<md-icon>delete</md-icon>Delete this project
+	</button>
 </md-menu>
-
-
-<!--<div *ngIf="!readOnly" flex="95" layout="row" layout-align="end center" class="add-project-button">
-	<button md-raised-button="" (click)="addProject()">{{ 'CART.PROJECTS.ADD_PROJECT_BTN' | translate }}</button>
-</div>-->

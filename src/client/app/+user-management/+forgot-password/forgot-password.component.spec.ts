@@ -3,13 +3,14 @@ import { ForgotPasswordComponent } from './forgot-password.component';
 
 export function main() {
   describe('Forgot Password Component', () => {
-    let mockUiConfig: any, mockUser: any;
+    let mockUiConfig: any, mockUser: any, mockRef: any;
     let componentUnderTest: ForgotPasswordComponent;
 
     beforeEach(() => {
       mockUiConfig = { get: () => { return Observable.of({ config: { someConfig: 'test' } }); } };
       mockUser = { forgotPassword: jasmine.createSpy('forgotPassword').and.returnValue(Observable.of({})) };
-      componentUnderTest = new ForgotPasswordComponent(mockUser, mockUiConfig);
+      mockRef = { markForCheck: function () { } };
+      componentUnderTest = new ForgotPasswordComponent(mockUser, mockUiConfig, mockRef);
     });
 
     describe('ngOnInit()', () => {
@@ -32,7 +33,7 @@ export function main() {
         let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
         let mockObservable = { subscribe: () => mockSubscription };
         mockUiConfig = { get: () => mockObservable };
-        componentUnderTest = new ForgotPasswordComponent(mockUser, mockUiConfig);
+        componentUnderTest = new ForgotPasswordComponent(mockUser, mockUiConfig, mockRef);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();

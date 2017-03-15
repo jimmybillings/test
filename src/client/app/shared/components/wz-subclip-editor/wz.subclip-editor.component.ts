@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { SubclipMarkers, SubclipMarkerFrames } from '../../interfaces/asset.interface';
 
@@ -31,7 +31,8 @@ import { SubclipMarkers, SubclipMarkerFrames } from '../../interfaces/asset.inte
         {{ 'ASSET.SAVE_SUBCLIP.EDIT_ACTIONS.REMOVE_BTN_LABEL' | translate }}
       </button>
     </section>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class WzSubclipEditorComponent {

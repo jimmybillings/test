@@ -1,22 +1,24 @@
-<nav flex="100" layout="row" layout-align="space-between">
-  <button md-raised-button class="md-block" (click)="goToPreviousTab()">BACK TO BILLING</button>
-  <button md-raised-button class="md-block" (click)="goToNextTab()">PROCEED TO CONIRM</button>
-</nav>
-
-<section>
-  <div layout="row" md-scroll-y="" layout-align="center start">
-    <div flex-gt-lg="25" flex-gt-md="30" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="90">
-      <md-card class="wz-form-card">
-        <md-card-title>
-          Payment Details
-        </md-card-title>
-        <md-card-content>
-          <wz-form 
-            [items]="config.items" 
-            [serverErrors]="serverErrors"
-            (formSubmit)="preAuthorize($event)"></wz-form>
-        </md-card-content>
-      </md-card>
-    </div>
-  </div>
+<section layout="row" md-scroll-y="" layout-align="center start">
+  <md-card  flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="100" class="wz-form-card">
+    <md-card-title>
+       {{ 'CART.PAYMENT.FORM_TITLE' | translate }}
+    </md-card-title>
+    <md-card-content>
+      <wz-form 
+        [items]="config.items" 
+        [serverErrors]="serverErrors"
+        (formSubmit)="preAuthorize($event)"></wz-form>
+    </md-card-content>
+  </md-card>
+  <p>You can review this order before it's final</p>
 </section>
+
+<nav flex="100" layout="row" layout-align="space-between">
+  <button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back">
+    <md-icon>keyboard_backspace</md-icon>
+    {{ 'CART.PAYMENT.BACK_BTN' | translate }}
+  </button>
+  <button (click)="purchaseOnCredit()" *ngIf="userCanPurchaseOnCredit | async" color="primary" md-button>
+    {{ 'CART.PAYMENT.PURCHASE_ON_CREDIT' | translate }}
+  </button>
+</nav>

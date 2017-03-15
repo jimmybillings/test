@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Tab } from './tab';
@@ -19,7 +19,9 @@ import { SubclipMarkers } from '../../../../shared/interfaces/asset.interface';
 @Component({
   moduleId: module.id,
   selector: 'cart-tab-component',
-  templateUrl: 'cart-tab.html'
+  templateUrl: 'cart-tab.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 
 export class CartTabComponent extends Tab implements OnInit, OnDestroy {
@@ -47,7 +49,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.cart = this.cartService.data;
+    this.cart = this.cartService.data.map((data: any) => data.cart);
     this.preferencesSubscription = this.userPreference.data.subscribe((data: any) => {
       this.pricingPreferences = data.pricingPreferences;
     });
@@ -63,13 +65,12 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     return this.cart.map(cart => (cart.itemCount || 0) > 0);
   }
 
-
   public get rmAssetsHaveAttributes(): boolean {
-    if (this.cartService.state.itemCount === 0) return true;
+    if (this.cartService.state.cart.itemCount === 0) return true;
 
     let validAssets: boolean[] = [];
 
-    this.cartService.state.projects.forEach((project: Project) => {
+    this.cartService.state.cart.projects.forEach((project: Project) => {
       if (project.lineItems) {
         project.lineItems.forEach((lineItem: LineItem) => {
           validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);
