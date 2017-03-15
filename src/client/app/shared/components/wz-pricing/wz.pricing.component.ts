@@ -1,11 +1,13 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-pricing',
-  templateUrl: 'wz.pricing.html'
+  templateUrl: 'wz.pricing.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class WzPricingComponent implements OnInit {
   public form: Array<any>;
   @Input() attributes: Array<any>;

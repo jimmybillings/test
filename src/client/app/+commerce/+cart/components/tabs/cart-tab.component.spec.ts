@@ -18,17 +18,19 @@ export function main() {
 
     beforeEach(() => {
       mockState = {
-        itemCount: 2,
-        projects: [{
-          lineItems: [
-            { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
-            { id: '2', price: 100, rightsManaged: 'Rights Managed' }
-          ]
-        }]
+        cart: {
+          itemCount: 2,
+          projects: [{
+            lineItems: [
+              { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+              { id: '2', price: 100, rightsManaged: 'Rights Managed' }
+            ]
+          }]
+        }
       };
 
       mockCartService = {
-        data: Observable.of({ someData: 'SOME_VALUE' }),
+        data: Observable.of({ cart: { someData: 'SOME_VALUE' } }),
         addProject: jasmine.createSpy('addProject'),
         removeProject: jasmine.createSpy('removeProject'),
         updateProject: jasmine.createSpy('updateProject'),
@@ -124,7 +126,7 @@ export function main() {
 
     describe('assetsInCart()', () => {
       it('returns an observable of false when the cart has no items', () => {
-        mockCartService.data = Observable.of({ itemCount: 0 });
+        mockCartService.data = Observable.of({ cart: { itemCount: 0 } });
 
         componentUnderTest = new CartTabComponent(
           null, mockCartService, mockUiConfig, mockDialog,
@@ -136,7 +138,7 @@ export function main() {
       });
 
       it('returns an observable of false when the cart has no itemCount member', () => {
-        mockCartService.data = Observable.of({});
+        mockCartService.data = Observable.of({ cart: {} });
 
         componentUnderTest = new CartTabComponent(
           null, mockCartService, mockUiConfig, mockDialog,
@@ -148,7 +150,7 @@ export function main() {
       });
 
       it('returns an observable of true when the cart has at least one line item', () => {
-        mockCartService.data = Observable.of({ itemCount: 1 });
+        mockCartService.data = Observable.of({ cart: { itemCount: 1 } });
 
         componentUnderTest = new CartTabComponent(
           null, mockCartService, mockUiConfig, mockDialog,
@@ -167,14 +169,16 @@ export function main() {
 
       it('should return true if all assets are valid', () => {
         mockState = {
-          itemCount: 0,
-          projects: [{
-            lineItems: [
-              { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
-              { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
-              { id: '3', price: 59, rightsManaged: 'Royalty Free' }
-            ]
-          }]
+          cart: {
+            itemCount: 0,
+            projects: [{
+              lineItems: [
+                { id: '1', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+                { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+                { id: '3', price: 59, rightsManaged: 'Royalty Free' }
+              ]
+            }]
+          }
         };
 
         mockCartService = {
@@ -189,7 +193,7 @@ export function main() {
       });
 
       it('should return true if the cart is empty', () => {
-        mockState = { itemCount: 0 };
+        mockState = { cart: { itemCount: 0 } };
 
         mockCartService = {
           state: mockState

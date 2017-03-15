@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api, ApiBody, ApiParameters } from '../interfaces/api.interface';
 import { CartService } from './cart.service';
-import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
+import { Project, LineItem, AddAssetParameters, CartState } from '../interfaces/cart.interface';
 
 export function main() {
   describe('Cart Service', () => {
@@ -36,9 +36,9 @@ export function main() {
       jasmine.addMatchers(mockApiMatchers);
 
       mockCartStore = {
-        replaceWith: jasmine.createSpy('replaceWith'),
-        data: Observable.of({ some: 'data' }),
-        state: { some: 'state' }
+        replaceCartWith: jasmine.createSpy('replaceCartWith'),
+        data: Observable.of({ cart: { some: 'data' }, orderInProgress: {} }),
+        state: { cart: { some: 'state' }, orderInProgress: {} }
       };
 
       mockApi = new MockApiService();
@@ -53,14 +53,14 @@ export function main() {
     describe('data getter', () => {
       it('returns the data from the cart store', () => {
         serviceUnderTest.data.subscribe(data => {
-          expect(data).toEqual({ some: 'data' });
+          expect(data).toEqual({ cart: { some: 'data' }, orderInProgress: {} });
         });
       });
     });
 
     describe('state getter', () => {
       it('returns the state from the cart store', () => {
-        expect(serviceUnderTest.state).toEqual({ some: 'state' });
+        expect(serviceUnderTest.state).toEqual({ cart: { some: 'state' }, orderInProgress: {} });
       });
     });
 
@@ -75,7 +75,7 @@ export function main() {
 
       it('replaces the cart store with the response', () => {
         serviceUnderTest.initializeData().subscribe(() => {
-          expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.getResponse);
+          expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith(mockApi.getResponse);
         });
       });
 
@@ -85,15 +85,6 @@ export function main() {
         });
       });
 
-      it('creates a default project if one does not already exist', () => {
-        mockCartStore.state = { projects: [] };
-        serviceUnderTest.initializeData().subscribe(() => {
-          expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
-          expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/project');
-          expect(mockApi.post).toHaveBeenCalledWithBody({ name: 'Project A', clientName: 'Ross Edfort' });
-          expect(mockApi.post).toHaveBeenCalledWithLoading(true);
-        });
-      });
 
       it('does not add a project if one already exists', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
@@ -114,16 +105,15 @@ export function main() {
 
       it('places the response in the cart store', () => {
         mockApi.getResponse = { lineItem: { asset: { assetId: '10836' } } };
-
         serviceUnderTest.getCartSummary();
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: '10836' } } });
+        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: '10836' } } });
       });
     });
 
     describe('addAssetToProjectInCart()', () => {
       beforeEach(() => {
-        mockCartStore.state = { projects: [mockProjectB] };
+        mockCartStore.state = { cart: { projects: [mockProjectB] } };
       });
 
       it('calls the api service correctly', () => {
@@ -163,7 +153,7 @@ export function main() {
 
         serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: '10836' } } });
+        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: '10836' } } });
       });
 
     });
@@ -174,7 +164,7 @@ export function main() {
 
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/project');
-        expect(mockApi.post).toHaveBeenCalledWithBody({ name: 'Project A', clientName: 'Ross Edfort' });
+        expect(mockApi.post).toHaveBeenCalledWithBody({ clientName: 'Ross Edfort' });
         expect(mockApi.post).toHaveBeenCalledWithLoading(true);
       });
 
@@ -184,13 +174,13 @@ export function main() {
 
         serviceUnderTest.addProject();
 
-        expect(mockApi.post).toHaveBeenCalledWithBody({ name: 'Project B', clientName: 'Ross Edfort' });
+        expect(mockApi.post).toHaveBeenCalledWithBody({ clientName: 'Ross Edfort' });
       });
 
       it('replaces the cart store with the response', () => {
         serviceUnderTest.addProject();
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.postResponse);
+        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith(mockApi.postResponse);
       });
     });
 
@@ -206,27 +196,9 @@ export function main() {
       it('replaces the cart store with the response', () => {
         serviceUnderTest.removeProject(mockProject);
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.deleteResponse);
+        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith(mockApi.deleteResponse);
       });
 
-      it('creates a new default project if the last one was deleted', () => {
-        serviceUnderTest.removeProject(mockProject);
-        serviceUnderTest.removeProject(mockProjectB);
-
-        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/project');
-        expect(mockApi.post).toHaveBeenCalledWithBody({ name: 'Project A', clientName: 'Ross Edfort' });
-        expect(mockApi.post).toHaveBeenCalledWithLoading(true);
-      });
-
-      it('does not add a project if one still exists after a removal', () => {
-        mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
-
-        serviceUnderTest.removeProject(mockProject);
-
-        expect(mockApi.post).not.toHaveBeenCalled();
-      });
     });
 
     describe('updateProject()', () => {
@@ -242,7 +214,7 @@ export function main() {
       it('replaces the cart store with the response', () => {
         serviceUnderTest.updateProject(mockProject);
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.putResponse);
+        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith(mockApi.putResponse);
       });
     });
 
@@ -259,7 +231,7 @@ export function main() {
       it('replaces the cart store with the response', () => {
         serviceUnderTest.moveLineItemTo(mockProject, mockLineItem);
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.putResponse);
+        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith(mockApi.putResponse);
       });
     });
 
@@ -276,7 +248,7 @@ export function main() {
       it('replaces the cart store with the response', () => {
         serviceUnderTest.cloneLineItem(mockLineItem);
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.putResponse);
+        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith(mockApi.putResponse);
       });
     });
 
@@ -292,7 +264,7 @@ export function main() {
       it('replaces the cart store with the response', () => {
         serviceUnderTest.removeLineItem(mockLineItem);
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.deleteResponse);
+        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith(mockApi.deleteResponse);
       });
     });
 
@@ -316,7 +288,7 @@ export function main() {
             expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
             expect(mockApi.get).toHaveBeenCalledWithEndpoint('cart');
             expect(mockApi.get).toHaveBeenCalledWithLoading(true);
-            expect(mockCartStore.replaceWith).toHaveBeenCalled();
+            expect(mockCartStore.replaceCartWith).toHaveBeenCalled();
           });
       });
     });
@@ -335,7 +307,7 @@ export function main() {
       it('replaces the cart store with the response', () => {
         serviceUnderTest.editLineItem(mockLineItem, { selectedTranscodeTarget: '1080i' });
 
-        expect(mockCartStore.replaceWith).toHaveBeenCalledWith(mockApi.putResponse);
+        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith(mockApi.putResponse);
       });
     });
   });

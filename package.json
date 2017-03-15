@@ -147,10 +147,10 @@
     "@angular/core": "~2.4.1",
     "@angular/forms": "~2.4.1",
     "@angular/http": "~2.4.1",
-    "@angular/material": "2.0.0-beta.1",
     "@angular/platform-browser": "~2.4.1",
     "@angular/platform-browser-dynamic": "~2.4.1",
     "@angular/router": "~3.4.1",
+    "@angular/material": "2.0.0-beta.1",
     "@ngrx/core": "^1.1.0",
     "@ngrx/store": "^2.1.2",
     "@types/jwplayer": "0.0.28",
@@ -163,7 +163,7 @@
     "reflect-metadata": "^0.1.8",
     "rxjs": "5.0.2",
     "systemjs": "0.19.41",
-    "wazee-frame-formatter": "git@github.com:t3mediacorp/wazee-frame-formatter.git#typescript-version",
+    "wazee-frame-formatter": "https://github.com/t3mediacorp/wazee-frame-formatter.git#typescript-version",
     "zone.js": "^0.7.2"
   }
 }

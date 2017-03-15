@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { User } from '../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs/Rx';
@@ -8,7 +8,8 @@ import { WzComingSoonComponent } from '../../shared/components/wz-coming-soon/wz
 @Component({
   moduleId: module.id,
   selector: 'profile-component',
-  templateUrl: 'profile.html'
+  templateUrl: 'profile.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class ProfileComponent implements OnDestroy, OnInit {

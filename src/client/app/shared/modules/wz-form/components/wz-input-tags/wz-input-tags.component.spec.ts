@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: WzInputTagsComponent;
 
     beforeEach(() => {
-      componentUnderTest = new WzInputTagsComponent();
+      componentUnderTest = new WzInputTagsComponent(null);
     });
 
     it('has no tests!', () => {

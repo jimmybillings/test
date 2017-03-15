@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, NgZone, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, NgZone, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Tab } from './tab';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
@@ -7,7 +7,8 @@ import { Observable, Subscription } from 'rxjs/Rx';
 @Component({
   moduleId: module.id,
   selector: 'payment-tab-component',
-  templateUrl: 'payment-tab.html'
+  templateUrl: 'payment-tab.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class PaymentTabComponent extends Tab implements OnInit {
@@ -19,26 +20,24 @@ export class PaymentTabComponent extends Tab implements OnInit {
   constructor(
     private _zone: NgZone,
     private cartService: CartService,
-    private uiConfig: UiConfig, ) {
+    private uiConfig: UiConfig,
+    private ref: ChangeDetectorRef) {
     super();
   }
 
   ngOnInit() {
-    (<any>window).Stripe.setPublishableKey(this.cartService.state.stripePublicKey);
     this.configSubscription = this.uiConfig.get('cart')
       .subscribe((config: any) => this.config = config.config.payment);
+    this.loadStripe();
   }
 
   public preAuthorize(form: any) {
-
     (<any>window).Stripe.card.createToken(
       form,
       (status: number, response: any) => {
         this._zone.run(() => {
           if (status === 200) {
-            // Put payment information into store here
-            // before going to next tab.
-            // this.cartService.savePaymentInfo(response);
+            this.cartService.updateOrderInProgressAuthorization(response);
             this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
           } else {
             this.serverErrors = { fieldErrors: [] };
@@ -47,8 +46,29 @@ export class PaymentTabComponent extends Tab implements OnInit {
                 code: response.error.code,
                 field: response.error.param
               });
+            this.ref.markForCheck();
           }
         });
       });
+  }
+
+  private loadStripe() {
+    const stripeScript = 'https://js.stripe.com/v2/';
+    var scripts = document.getElementsByTagName('script');
+    var i = scripts.length, stripeLoaded = false;
+    while (i--) {
+      if (scripts[i].src === stripeScript) {
+        stripeLoaded = true;
+      }
+    }
+    if (!stripeLoaded) {
+      var script = document.createElement('script');
+      script.src = stripeScript;
+      script.type = 'text/javascript';
+      document.body.appendChild(script);
+      script.onload = () => {
+        (<any>window).Stripe.setPublishableKey(this.cartService.state.cart.stripePublicKey);
+      };
+    }
   }
 }

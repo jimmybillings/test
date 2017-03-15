@@ -4,11 +4,11 @@ import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../services/api.service';
 import { Api, ApiBody } from '../interfaces/api.interface';
 import { CurrentUserService } from '../services/current-user.service';
+import { Address, ViewAddress } from '../interfaces/user.interface';
 
 import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
 import { CartStore } from '../stores/cart.store';
-import { CartUtilities } from '../utilities/cart.utilities';
-import { Cart } from '../interfaces/cart.interface';
+import { Cart, CartState } from '../interfaces/cart.interface';
 
 @Injectable()
 export class CartService {
@@ -22,7 +22,7 @@ export class CartService {
     return this.store.data;
   }
 
-  public get state(): Cart {
+  public get state(): CartState {
     return this.store.state;
   }
 
@@ -38,7 +38,6 @@ export class CartService {
   public initializeData(): Observable<any> {
     return this.api.get(Api.Orders, 'cart', { loading: true })
       .do(this.updateCart)
-      .flatMap(_ => this.addProjectIfNoProjectsExist())
       .takeLast(1)
       .map(_ => { return {}; })
       .share();
@@ -46,9 +45,20 @@ export class CartService {
 
   // Temporary until first time user's cart is created with a project - fix for CRUX-1027
   public getCartSummary(): void {
-    this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe((cartSummary: any) => {
-      this.addProjectIfNoProjectsExist().subscribe();
-    });
+    this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe(_ => { });
+  }
+
+  public purchase(): Observable<any> {
+    const stripe: any = {
+      stripeToken: this.state.orderInProgress.authorization.id,
+      stripeTokenType: this.state.orderInProgress.authorization.type
+    };
+    return this.api.post(Api.Orders, 'cart/stripe/process',
+      { body: stripe, loading: true })
+      .do((response: any) => {
+        this.initializeData().subscribe();
+        return response;
+      });
   }
 
   public addProject(): void {
@@ -59,7 +69,6 @@ export class CartService {
     this.api.delete(Api.Orders, `cart/project/${project.id}`, { loading: true })
       .subscribe(wholeCartResponse => {
         this.updateCart(wholeCartResponse);
-        this.addProjectIfNoProjectsExist().subscribe();
       });
   }
 
@@ -106,8 +115,42 @@ export class CartService {
       fieldToEdit = { attributes: this.formatAttributes(fieldToEdit.pricingAttributes) };
     }
     Object.assign(lineItem, fieldToEdit);
-    this.api.put(Api.Orders, `cart/update/lineItem/${lineItem.id}`, { body: lineItem, parameters: { region: 'AAA' } }).take(1)
+    this.api.put(Api.Orders, `cart/update/lineItem/${lineItem.id}`, { body: lineItem, parameters: { region: 'AAA' } })
       .subscribe(this.updateCart);
+  }
+
+  public setAddresses(addresses: any[]): void {
+    this.store.setOrderInProgressAddresses(addresses);
+  }
+
+  public updateSelectedAddress(address: any): void {
+    this.store.replaceOrderInProgressAddress(address);
+  }
+
+  public updateOrderInProgressAuthorization(authorization: any): void {
+    this.store.replaceOrderInProgressAuthorization(authorization);
+  }
+
+  public determineNewSelectedAddress = (addresses: Array<ViewAddress>) => {
+    let newSelected: ViewAddress;
+    this.data.take(1).subscribe((data: any) => {
+      if (data.orderInProgress.selectedAddress && typeof data.orderInProgress.selectedAddress.addressEntityId !== 'undefined') {
+        newSelected = this.previouslySelectedAddress;
+      } else {
+        newSelected = data.orderInProgress.addresses[0];
+      }
+    });
+    this.updateSelectedAddress(newSelected);
+  }
+
+  public get previouslySelectedAddress(): ViewAddress {
+    let previouslySelected: ViewAddress;
+    this.data.take(1).subscribe((data: any) => {
+      previouslySelected = data.orderInProgress.addresses.filter((a: ViewAddress) => {
+        return a.addressEntityId === data.orderInProgress.selectedAddress.addressEntityId;
+      })[0];
+    });
+    return previouslySelected;
   }
 
   private formatBody(parameters: AddAssetParameters): any {
@@ -128,7 +171,7 @@ export class CartService {
   }
 
   private addProjectIfNoProjectsExist(): Observable<any> {
-    return ((this.state.projects || []).length === 0) ? this.addProjectAndReturnObservable() : Observable.of({});
+    return ((this.state.cart.projects || []).length === 0) ? this.addProjectAndReturnObservable() : Observable.of({});
   }
 
   private addProjectAndReturnObservable(): Observable<any> {
@@ -139,7 +182,6 @@ export class CartService {
 
   private createAddProjectRequestBody(): ApiBody {
     return {
-      name: CartUtilities.nextNewProjectNameGiven(this.existingProjectNames),
       clientName: this.fullName
     };
   }
@@ -151,12 +193,12 @@ export class CartService {
   }
 
   private get existingProjectNames(): Array<string> {
-    return (this.state.projects || []).map((project: any) => project.name);
+    return (this.state.cart.projects || []).map((project: any) => project.name);
   }
 
   // This is an "instance arrow function", which saves us from having to "bind(this)"
   // every time we use this function as a callback.
   private updateCart = (wholeCartResponse: any): void => {
-    this.store.replaceWith(wholeCartResponse);
+    this.store.replaceCartWith(wholeCartResponse);
   }
 }

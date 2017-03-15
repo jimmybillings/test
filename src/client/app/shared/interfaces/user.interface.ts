@@ -36,5 +36,25 @@ export interface User {
   accessibleCollections?: number[];
   focusedCollection?: number;
   root?: boolean;
+  mailingAddress?: Address;
+  [index: string]: any;
+}
+
+export interface Address {
+  address: string;
+  state: string;
+  city: string;
+  country: string;
+  zipcode: string;
+  phone: string;
+  [index: string]: any;
+}
+
+export interface ViewAddress {
+  addressEntityId: number;
+  defaultAddress: boolean;
+  type: string;
+  name: string;
+  address?: Address;
   [index: string]: any;
 }
