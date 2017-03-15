@@ -345,8 +345,9 @@ export function main() {
               beforeEach(() => mockJwPlayer.setProviderNameTo('flash'));
 
               describe('before \'ready\' event is triggered', () => {
-                it('doesn\'t emit a \'canSupportCustomControls\' state update yet', () => {
-                  expect(stateChangeRequestEmitter).not.toHaveBeenCalledWith({ canSupportCustomControls: jasmine.any(Boolean) });
+                it('doesn\'t emit a \'canSupportCustomControls\' or \'ready\' state update yet', () => {
+                  expect(stateChangeRequestEmitter)
+                    .not.toHaveBeenCalledWith({ canSupportCustomControls: jasmine.any(Boolean), ready: jasmine.any(Boolean) });
                 });
               });
 
@@ -357,8 +358,8 @@ export function main() {
                   expect(mockJwPlayer.getControls()).toBe(true);
                 });
 
-                it('reports canSupportCustomControls: false', () => {
-                  expect(stateChangeRequestEmitter).toHaveBeenCalledWith({ canSupportCustomControls: false });
+                it('reports canSupportCustomControls: false, ready: true', () => {
+                  expect(stateChangeRequestEmitter).toHaveBeenCalledWith({ canSupportCustomControls: false, ready: true });
                 });
 
                 describe('ngOnDestroy()', () => {
@@ -444,8 +445,9 @@ export function main() {
               beforeEach(() => mockJwPlayer.setProviderNameTo('html5'));
 
               describe('before \'ready\' event is triggered', () => {
-                it('doesn\'t emit a \'canSupportCustomControls\' state update yet', () => {
-                  expect(stateChangeRequestEmitter).not.toHaveBeenCalledWith({ canSupportCustomControls: jasmine.any(Boolean) });
+                it('doesn\'t emit a \'canSupportCustomControls\' or \'ready\' state update yet', () => {
+                  expect(stateChangeRequestEmitter)
+                    .not.toHaveBeenCalledWith({ canSupportCustomControls: jasmine.any(Boolean), ready: jasmine.any(Boolean) });
                 });
               });
 
@@ -456,9 +458,10 @@ export function main() {
                   expect(mockJwPlayer.getControls()).toBe(false);
                 });
 
-                it('reports canSupportCustomControls: true, framesPerSecond, in/out markers', () => {
+                it('reports ready: true, canSupportCustomControls: true, framesPerSecond, in/out markers, volume', () => {
                   expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
                   expect(stateChangeRequestEmitter.calls.allArgs()).toEqual([[{
+                    ready: true,
                     canSupportCustomControls: true,
                     framesPerSecond: 25,
                     inMarker: assetTest.inSeconds,

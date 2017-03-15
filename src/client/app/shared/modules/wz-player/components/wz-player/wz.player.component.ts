@@ -216,6 +216,7 @@ export class WzPlayerComponent implements OnDestroy {
           this.startVideoEventListeners();
 
           this.emitStateChangeRequestWith({
+            ready: true,
             canSupportCustomControls: true,
             framesPerSecond: this.assetInfo.framesPerSecond,
             inMarker: this.inMarker,
@@ -226,7 +227,7 @@ export class WzPlayerComponent implements OnDestroy {
           if (!autostartInAdvancedMode) this.toggleMarkersPlayback();
         } else {
           if (!autostartInAdvancedMode) this.jwPlayer.play(true);
-          this.emitStateChangeRequestWith({ canSupportCustomControls: false });
+          this.emitStateChangeRequestWith({ ready: true, canSupportCustomControls: false });
         }
       });
     }

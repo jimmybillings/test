@@ -27,11 +27,13 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   private playerStateSubscription: Subscription;
   private currentAsset: any = null;
   private currentState: PlayerState = null;
+  private playerReady: boolean = false;
 
   @Input()
   public set asset(newAsset: any) {
     this.playerStateService.reset();
     this.currentState = null;
+    this.playerReady = false;
     this.currentAsset = newAsset;
   }
 
@@ -102,8 +104,9 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   }
 
   private onStateChange(newState: PlayerState) {
-    if (!this.currentState) {
+    if (!this.playerReady && newState.ready) {
       this.markersInitialization.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
+      this.playerReady = true;
     } else if (this.markersChangedIn(newState)) {
       this.markerChange.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
     }
@@ -115,7 +118,7 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
     if (!this.currentState) return false;
 
     return !this.areEqual(newState.inMarkerFrame, this.currentState.inMarkerFrame) ||
-      !this.areEqual(newState.outMarkerFrame, this.currentState.outMarkerFrame)
+      !this.areEqual(newState.outMarkerFrame, this.currentState.outMarkerFrame);
   }
 
   private areEqual(frame1: Frame, frame2: Frame): boolean {
