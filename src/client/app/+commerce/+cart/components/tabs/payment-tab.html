@@ -1,7 +1,7 @@
 <section layout="row" md-scroll-y="" layout-align="center start">
-  <md-card flex-gt-lg="25" flex-gt-md="30" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="90" class="wz-form-card">
+  <md-card  flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="100" class="wz-form-card">
     <md-card-title>
-      Payment Details
+       {{ 'CART.PAYMENT.FORM_TITLE' | translate }}
     </md-card-title>
     <md-card-content>
       <wz-form 
@@ -10,7 +10,12 @@
         (formSubmit)="preAuthorize($event)"></wz-form>
     </md-card-content>
   </md-card>
+  <p>You can review this order before it's final</p>
 </section>
+
 <nav flex="100" layout="row" layout-align="space-between">
-  <button md-button color="primary" class="checkout-back" (click)="goToPreviousTab()">Back</button>
+  <button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back">
+    <md-icon>keyboard_backspace</md-icon>
+    {{ 'CART.PAYMENT.BACK_BTN' | translate }}
+  </button>
 </nav>

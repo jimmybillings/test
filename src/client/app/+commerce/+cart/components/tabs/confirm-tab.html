@@ -1,29 +1,61 @@
-
-<section layout="column" flex="100">
-  <projects-component flex="100" [readOnly]="true" [projects]="(cartService.data | async).cart.projects"></projects-component>
-  <div layout="row" flex="100" layout-align="space-between center">
-    <md-card flex="40" class="address">
-      <md-card-title>
-        {{cartStore.orderInProgress.selectedAddress.type + ': ' + cartStore.orderInProgress.selectedAddress.name}}
-      </md-card-title>
-      <md-card-content [innerHTML]="format(cartStore.orderInProgress.selectedAddress)"></md-card-content>
-    </md-card>
-    <md-card flex="45">
-      <md-card-title>Confirm</md-card-title>
-      <md-card-content>
-        <md-list dense>
-          <md-list-item> Date: {{cartStore.cart.lastUpdated}} </md-list-item>
-          <md-list-item> Card: {{cartStore.orderInProgress.authorization.card.brand}} </md-list-item>
-          <md-list-item> Card Number: **** **** **** {{cartStore.orderInProgress.authorization.card.last4}} </md-list-item>
-          <md-list-item> Expiry Month: {{cartStore.orderInProgress.authorization.card.exp_month}} </md-list-item>
-          <md-list-item> Expiry Year: {{cartStore.orderInProgress.authorization.card.exp_year}} </md-list-item>
-          <md-list-item> Total Amount: {{cartStore.cart.total | currency}} </md-list-item>
-        </md-list>
-        <button md-raised-button class="md-block" (click)="purchase()">CONFIRM</button>
-      </md-card-content>
-    </md-card>
+<div flex="100" flex-gt-lg="85" class="place-order">
+  <section class="cart-total" layout="row" layout-align="end">
+      <div flex="100" class="total md-headline">
+        <span class="total-label">
+          {{ 'CART.CONFIRM.TOTAL' | translate }} 
+        </span>
+        <span class="total-amount">
+          {{ cartStore.cart.total | currency:'USD':true:'1.2-2' }}
+        </span>
+      </div>
+      <div flex="">
+        <button md-raised-button class="checkout" (click)="purchase()">
+          {{ 'CART.CONFIRM.PURCHASE_BTN' | translate }}
+        </button>
+      </div>
+  </section>
+  
+  <header layout="column" layout-align="start">
+    <h2 class="cart-heading">{{ 'CART.CONFIRM.PAGE_TITLE' | translate }}</h2>
+  </header>
+  <div layout="column" layout-gt-xs="row">
+    <section class="billing" flex="100" flex-gt-xs="50" flex-gt-md="33">
+      <h5 class="md-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
+      <address [innerHTML]="format(cartStore.orderInProgress.selectedAddress)">
+      </address>
+    </section>
+    <section class="payment" flex="100" flex-gt-xs="50" flex-gt-md="33">
+      <h5 class="md-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
+      <div>
+        {{cartStore.orderInProgress.authorization.card.brand}} card ending **** {{cartStore.orderInProgress.authorization.card.last4}}
+      </div>
+    </section>
   </div>
+</div>
+
+
+<h5 class="md-title">{{ 'CART.CONFIRM.ORDER_TITLE' | translate }}</h5>
+<projects-component flex="100" [readOnly]="true" [projects]="(cartService.data | async).cart.projects"></projects-component>
+
+<section class="cart-total" layout="column" layout-gt-xs="row" layout-align="space-between">
+  <button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back" flex-order-xs="4" flex="0">
+    <md-icon>keyboard_backspace</md-icon>
+    {{ 'CART.CONFIRM.BACK_BTN' | translate }}
+  </button>
+  <!--<div layout-xs="row" flex="100" flex-order-xs="-1">-->
+    <div flex="100" class="total md-headline">
+      <span class="total-label">
+        {{ 'CART.CONFIRM.TOTAL' | translate }} 
+      </span>
+      <span class="total-amount">
+        {{ cartStore.cart.total | currency:'USD':true:'1.2-2' }}
+      </span>
+    </div>
+    <div flex="" flex-order-xs="2">
+      <button md-raised-button class="checkout" (click)="purchase()">
+        {{ 'CART.CONFIRM.PURCHASE_BTN' | translate }}
+      </button>
+    </div>
+  <!--</div>-->
 </section>
-<nav flex="100" layout="row" layout-align="space-between">
-  <button md-raised-button class="md-block" (click)="goToPreviousTab()">BACK TO PAYMENT</button>
-</nav>
+

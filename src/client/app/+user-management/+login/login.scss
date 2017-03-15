@@ -30,12 +30,12 @@ section.login.hero {
 }
 md-card.wz-form-card {
   @include md-elevation(0);
-  padding: rem(3.6) rem(4.6) rem(2.6) rem(4.6);
+  padding: rem(3.6) rem(4.0) rem(3.6) rem(4.0);
   @media screen and (max-width: $layout-breakpoint-xs) {
     padding: rem(2.4) rem(2.2) rem(2.4) rem(2.2);
   }
   color: md-color($md-foreground, secondary-text);
-  margin: rem(.8);
+  margin: rem(.8) 0;
   md-card-header {
     height: rem(3.4);
     .md-card-header-text {
