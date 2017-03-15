@@ -57,8 +57,11 @@ export class UserService {
     );
   }
 
-  public getAddresses(): Observable<{ list: Array<ViewAddress> }> {
-    return this.api.get(Api.Identities, 'user/currentUsersAssociatedAddresses');
+  public getAddresses(): Observable<Array<ViewAddress>> {
+    return this.api.get(Api.Identities, 'user/currentUsersAssociatedAddresses')
+      .map((addresses: { list: ViewAddress[] }) => {
+        return addresses.list;
+      });
   }
 
   public addBillingAddress(address: Address): Observable<any> {
@@ -70,8 +73,12 @@ export class UserService {
 
   public addAccountBillingAddress(address: ViewAddress): Observable<any> {
     return this.api.get(Api.Identities, `account/${address.addressEntityId}`).flatMap((account: any) => {
-      let newAccount: any = Object.assign({}, account, { address: address.address });
+      let newAccount: any = Object.assign({}, account, { billingInfo: { address: address.address } });
       return this.api.put(Api.Identities, `account/${address.addressEntityId}`, { body: newAccount });
     });
+  }
+
+  public getAccount(accountId: number): Observable<any> {
+    return this.api.get(Api.Identities, `account/${accountId}`);
   }
 }

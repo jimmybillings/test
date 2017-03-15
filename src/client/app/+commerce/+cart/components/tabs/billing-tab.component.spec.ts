@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Rx';
 export function main() {
   describe('Billing Tab Component', () => {
     let componentUnderTest: BillingTabComponent;
-    let mockCartService: any, mockUiConfig: any, mockUserService: any, mockCartCapabilities: any, mockDialog: any;
+    let mockCartService: any, mockUiConfig: any, mockUserService: any, mockDialog: any;
     let mockUserAccountPermission: boolean;
 
     let mockEmptyAddress: ViewAddress = {
@@ -47,8 +47,13 @@ export function main() {
 
     beforeEach(() => {
       mockCartService = {
-        data: Observable.of({ cart: { itemCount: 1, projects: [] }, orderInProgress: { address: mockAddressA } }),
-        updateOrderInProgressAddress: jasmine.createSpy('updateOrderInProgressAddress')
+        data: Observable.of({
+          cart: { itemCount: 1, projects: [] },
+          orderInProgress: { selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] }
+        }),
+        determineNewSelectedAddress: jasmine.createSpy('determineNewSelectedAddress'),
+        updateSelectedAddress: jasmine.createSpy('updateSelectedAddress'),
+        setAddresses: jasmine.createSpy('setAddresses')
       };
 
       mockUiConfig = {
@@ -61,10 +66,6 @@ export function main() {
         addAccountBillingAddress: jasmine.createSpy('addAccountBillingAddress').and.returnValue(Observable.of({}))
       };
 
-      mockCartCapabilities = {
-        editAccountBillingAddress: () => mockUserAccountPermission
-      };
-
       mockDialog = {
         open: jasmine.createSpy('open').and.returnValue({
           afterClosed: jasmine.createSpy('afterClosed').and.returnValue(Observable.of({})),
@@ -73,62 +74,30 @@ export function main() {
       };
 
       componentUnderTest = new BillingTabComponent(
-        mockCartCapabilities, mockCartService, mockUiConfig, mockUserService, mockDialog
+        null, mockCartService, mockUiConfig, mockUserService, mockDialog
       );
     });
 
     describe('ngOnInit()', () => {
-      describe('with addresses', () => {
-        beforeEach(() => {
-          componentUnderTest.ngOnInit();
-        });
+      beforeEach(() => {
+        componentUnderTest.ngOnInit();
+      });
 
-        afterEach(() => {
-          componentUnderTest.ngOnDestroy();
-        });
-
-        it('should set up a subscription to the cart store that updates the selectedAddress', () => {
-          expect(componentUnderTest.selectedAddress).toEqual(mockAddressA);
-        });
-
-        it('should set up the form items from the uiConfig', () => {
-          expect(componentUnderTest.items).toEqual(['1', '2', '3']);
-        });
-
-        it('should set up the user addresses', () => {
-          expect(componentUnderTest.addresses).toEqual([mockAddressA, mockAddressB]);
+      it('should set up an observable of the cart store orderInProgress', () => {
+        componentUnderTest.orderInProgress.take(1).subscribe((data: any) => {
+          expect(data).toEqual({
+            selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB]
+          });
         });
       });
 
-      describe('without addresses', () => {
-        beforeEach(() => {
-          mockCartService = {
-            data: Observable.of({ cart: { itemCount: 1, projects: [] }, orderInProgress: { address: { type: '' } } }),
-            updateOrderInProgressAddress: jasmine.createSpy('updateOrderInProgressAddress')
-          };
-
-          componentUnderTest = new BillingTabComponent(
-            mockCartCapabilities, mockCartService, mockUiConfig, mockUserService, mockDialog
-          );
-
-          componentUnderTest.ngOnInit();
-        });
-
-        afterEach(() => {
-          componentUnderTest.ngOnDestroy();
-        });
-
-        it('should call updateOrderInProgressAddress to update the store with the first address in the array', () => {
-          expect(mockCartService.updateOrderInProgressAddress).toHaveBeenCalledWith(mockAddressA);
-        });
+      it('should set up the form items from the uiConfig', () => {
+        expect(componentUnderTest.items).toEqual(['1', '2', '3']);
       });
     });
 
-    describe('addUserAddress()', () => {
-      beforeEach(() => {
-        componentUnderTest.selectedAddress = mockAddressA;
-      });
 
+    describe('addUserAddress()', () => {
       it('should call addBillingAddress() on the user service', () => {
         componentUnderTest.addUserAddress(mockAddressA.address);
 
@@ -144,23 +113,11 @@ export function main() {
 
     describe('addAccountAddress()', () => {
       it('should call addAccountBillingAddress() on the user service', () => {
-        componentUnderTest.selectedAddress = mockAddressA;
         componentUnderTest.addAccountAddress(mockAddressB.address, mockAddressA);
 
         let newAddress: ViewAddress = Object.assign({}, mockAddressA, { address: mockAddressB.address });
 
         expect(mockUserService.addAccountBillingAddress).toHaveBeenCalledWith(newAddress);
-      });
-    });
-
-    describe('format', () => {
-      it('should format an address object to a string', () => {
-        expect(componentUnderTest.format(mockAddressA)).toEqual('123 Main Street<br>CO, Denver, USA, 80202<br>5555555555<br>');
-      });
-
-      it('should return a default string when no address exists', () => {
-        let incompleteAddress: any = { type: 'user' };
-        expect(componentUnderTest.format(incompleteAddress)).toEqual('There is no address on record for this user');
       });
     });
 
@@ -199,31 +156,53 @@ export function main() {
     });
 
     describe('addressesAreEmpty', () => {
-      it('should return true if the address are empty', () => {
-        componentUnderTest.addresses = [mockEmptyAddress];
-
-        expect(componentUnderTest.addressesAreEmpty).toBe(true);
+      it('should return true if the addresses are empty', () => {
+        let mockStore: any = {
+          orderInProgress: {
+            addresses: [{ type: '', name: '' }, { type: '', name: '' }],
+            selectedAddress: mockEmptyAddress
+          }
+        };
+        mockCartService = { data: Observable.of(mockStore), setAddresses: jasmine.createSpy('setAddresses') };
+        componentUnderTest = new BillingTabComponent(null, mockCartService, mockUiConfig, mockUserService, null);
+        componentUnderTest.ngOnInit();
+        componentUnderTest.addressesAreEmpty.take(1).subscribe((data: any) => {
+          expect(data).toBe(true);
+        });
       });
 
       it('should return false if there is at least one full address', () => {
-        componentUnderTest.addresses = [mockAddressA, mockEmptyAddress];
-
-        expect(componentUnderTest.addressesAreEmpty).toBe(false);
+        let mockStore: any = { orderInProgress: { addresses: [mockAddressA], selectedAddress: mockAddressA } };
+        mockCartService = { data: Observable.of(mockStore), setAddresses: jasmine.createSpy('setAddresses') };
+        componentUnderTest = new BillingTabComponent(null, mockCartService, mockUiConfig, mockUserService, null);
+        componentUnderTest.ngOnInit();
+        componentUnderTest.addressesAreEmpty.take(1).subscribe((data: any) => {
+          expect(data).toBe(false);
+        });
       });
     });
 
     describe('get userCanProceed()', () => {
-      it('should return false if the selectedAddress has values', () => {
-        componentUnderTest.selectedAddress = {
-          type: '', name: '', addressEntityId: 1, defaultAddress: false,
-          address: { address: '', state: '', zipcode: '', city: '', country: '', phone: '' }
-        };
-        expect(componentUnderTest.userCanProceed).toBe(false);
+      it('should return false if the selectedAddress has no values', () => {
+        let mockAddress: any = { type: 'user', address: { address: '', state: '' } };
+        let mockStore: any = { orderInProgress: { addresses: [mockAddressA], selectedAddress: mockAddress } };
+        mockCartService = { data: Observable.of(mockStore), setAddresses: jasmine.createSpy('setAddresses') };
+        componentUnderTest = new BillingTabComponent(null, mockCartService, mockUiConfig, mockUserService, null);
+        componentUnderTest.ngOnInit();
+        componentUnderTest.userCanProceed.take(1).subscribe((data: any) => {
+          expect(data).toBe(false);
+        });
       });
 
       it('should return true if there is a selectedAddress with all values', () => {
-        componentUnderTest.selectedAddress = mockAddressA;
-        expect(componentUnderTest.userCanProceed).toBe(true);
+        let mockAddress: any = { type: 'user', address: { address: 'b', state: 'a' } };
+        let mockStore: any = { orderInProgress: { addresses: [mockAddressA], selectedAddress: mockAddress } };
+        mockCartService = { data: Observable.of(mockStore), setAddresses: jasmine.createSpy('setAddresses') };
+        componentUnderTest = new BillingTabComponent(null, mockCartService, mockUiConfig, mockUserService, null);
+        componentUnderTest.ngOnInit();
+        componentUnderTest.userCanProceed.take(1).subscribe((data: any) => {
+          expect(data).toBe(true);
+        });
       });
     });
   });

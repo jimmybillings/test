@@ -1,5 +1,4 @@
 <div flex="100" flex-gt-lg="85" class="place-order">
-
   <section class="cart-total" layout="row" layout-align="end">
       <div flex="100" class="total md-headline">
         <span class="total-label">
@@ -22,7 +21,8 @@
   <div layout="column" layout-gt-xs="row">
     <section class="billing" flex="100" flex-gt-xs="50" flex-gt-md="33">
       <h5 class="md-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
-      <address [innerHTML]="format(cartStore.orderInProgress.address)"></address>
+      <address [innerHTML]="format(cartStore.orderInProgress.selectedAddress)">
+      </address>
     </section>
     <section class="payment" flex="100" flex-gt-xs="50" flex-gt-md="33">
       <h5 class="md-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
@@ -31,9 +31,7 @@
       </div>
     </section>
   </div>
-
-
-
+</div>
 
 
 <h5 class="md-title">{{ 'CART.CONFIRM.ORDER_TITLE' | translate }}</h5>

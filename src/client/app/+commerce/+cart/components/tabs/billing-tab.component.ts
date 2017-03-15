@@ -1,4 +1,4 @@
-import { Component, Output, OnInit, OnDestroy, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Output, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UserService } from '../../../../shared/services/user.service';
 import { Address, User, ViewAddress } from '../../../../shared/interfaces/user.interface';
@@ -16,12 +16,11 @@ import { Tab } from './tab';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class BillingTabComponent extends Tab implements OnInit, OnDestroy {
-  public addresses: Array<any> = [];
+export class BillingTabComponent extends Tab implements OnInit {
+  public orderInProgress: Observable<any>;
   public items: Array<any>;
-  public selectedAddress: ViewAddress;
   @Output() tabNotify: EventEmitter<Object> = this.notify;
-  private cartStoreSubscription: Subscription;
+  private currentAccount: any;
 
   constructor(
     public userCan: CartCapabilities,
@@ -33,59 +32,51 @@ export class BillingTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.cartStoreSubscription = this.cartService.data
-      .subscribe((data: any) => this.selectedAddress = data.orderInProgress.address);
+    this.orderInProgress = this.cartService.data.map((data: any) => data.orderInProgress);
 
     this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
 
-    this.fetchAddresses().subscribe(this.determineNewSelectedAddress);
-  }
-
-  ngOnDestroy() {
-    this.cartStoreSubscription.unsubscribe();
+    this.fetchAddresses().subscribe(this.cartService.determineNewSelectedAddress);
   }
 
   public addUserAddress(form: Address): void {
     this.user.addBillingAddress(form).subscribe((user: User) => {
-      this.fetchAddresses().subscribe(this.determineNewSelectedAddress);
+      this.fetchAddresses().subscribe(this.cartService.determineNewSelectedAddress);
     });
   }
 
   public addAccountAddress(form: Address, wholeAddress: ViewAddress): void {
     let newAddress: ViewAddress = Object.assign({}, wholeAddress, { address: form });
     this.user.addAccountBillingAddress(newAddress).subscribe((account: any) => {
-      this.fetchAddresses().subscribe(this.determineNewSelectedAddress);
+      this.fetchAddresses().subscribe(this.cartService.determineNewSelectedAddress);
     });
   }
 
   public selectAddress(address: ViewAddress): void {
-    this.cartService.updateOrderInProgressAddress(address);
-  }
-
-  public get userCanProceed(): boolean {
-    return Object.keys(this.selectedAddress.address).filter((key: string) => {
-      return this.selectedAddress.address[key] === '';
-    }).length === 0;
-  }
-
-
-  public get addressesAreEmpty(): boolean {
-    return this.addresses.filter((a: ViewAddress) => !!a.address).length === 0;
-  }
-
-  public format(address: ViewAddress): string {
-    if (address.address) {
-      return Object.keys(address.address).reduce((previous: string, current: string) => {
-        if (current === 'address' || current === 'zipcode' || current === 'phone') {
-          previous += `${address.address[current]}<br>`;
-        } else {
-          previous += `${address.address[current]}, `;
-        }
-        return previous;
-      }, '');
-    } else {
-      return `There is no address on record for this ${address.type}`;
+    this.cartService.updateSelectedAddress(address);
+    if (address.type === 'account' && !this.currentAccount) {
+      this.fetchAccount(address.addressEntityId).subscribe((account: any) => {
+        this.currentAccount = account;
+      });
     }
+  }
+
+  public get userCanProceed(): Observable<boolean> {
+    return this.orderInProgress.map((data: any) => {
+      if (!data.selectedAddress.address) {
+        return false;
+      } else {
+        return Object.keys(data.selectedAddress.address).filter((k: string) => {
+          return data.selectedAddress.address[k] === '';
+        }).length === 0;
+      }
+    });
+  }
+
+  public get addressesAreEmpty(): Observable<boolean> {
+    return this.orderInProgress.map((data: any) => {
+      return data.addresses.filter((a: ViewAddress) => !!a.address).length === 0;
+    });
   }
 
   public openFormFor(resourceType: 'account' | 'user', mode: 'edit' | 'create', address?: ViewAddress): void {
@@ -105,27 +96,13 @@ export class BillingTabComponent extends Tab implements OnInit, OnDestroy {
     });
   }
 
-  private fetchAddresses(): Observable<any> {
-    return this.user.getAddresses().do((addresses: any) => {
-      this.addresses = addresses.list;
+  private fetchAccount(accountId: number): Observable<any> {
+    return this.user.getAccount(accountId);
+  }
+
+  private fetchAddresses(): Observable<Array<ViewAddress>> {
+    return this.user.getAddresses().do((addresses: Array<ViewAddress>) => {
+      this.cartService.setAddresses(addresses);
     });
-  }
-
-  private determineNewSelectedAddress = (addresses: { list: Array<ViewAddress> }) => {
-    let newSelected: ViewAddress;
-    if (this.selectedAddress && typeof this.selectedAddress.addressEntityId !== 'undefined') {
-      newSelected = this.previouslySelectedAddress();
-    } else {
-      newSelected = addresses.list[0];
-    }
-    if (!!newSelected.address) {
-      this.selectAddress(newSelected);
-    }
-  }
-
-  private previouslySelectedAddress(): ViewAddress {
-    return this.addresses.filter((a: ViewAddress) => {
-      return a.addressEntityId === this.selectedAddress.addressEntityId;
-    })[0];
   }
 }

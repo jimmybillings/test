@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../services/api.service';
 import { Api, ApiBody } from '../interfaces/api.interface';
 import { CurrentUserService } from '../services/current-user.service';
+import { Address, ViewAddress } from '../interfaces/user.interface';
 
 import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
 import { CartStore } from '../stores/cart.store';
@@ -44,7 +45,7 @@ export class CartService {
 
   // Temporary until first time user's cart is created with a project - fix for CRUX-1027
   public getCartSummary(): void {
-    this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe();
+    this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe(_ => { });
   }
 
   public purchase(): Observable<any> {
@@ -118,12 +119,38 @@ export class CartService {
       .subscribe(this.updateCart);
   }
 
-  public updateOrderInProgressAddress(address: any): void {
+  public setAddresses(addresses: any[]): void {
+    this.store.setOrderInProgressAddresses(addresses);
+  }
+
+  public updateSelectedAddress(address: any): void {
     this.store.replaceOrderInProgressAddress(address);
   }
 
   public updateOrderInProgressAuthorization(authorization: any): void {
     this.store.replaceOrderInProgressAuthorization(authorization);
+  }
+
+  public determineNewSelectedAddress = (addresses: Array<ViewAddress>) => {
+    let newSelected: ViewAddress;
+    this.data.take(1).subscribe((data: any) => {
+      if (data.orderInProgress.selectedAddress && typeof data.orderInProgress.selectedAddress.addressEntityId !== 'undefined') {
+        newSelected = this.previouslySelectedAddress;
+      } else {
+        newSelected = data.orderInProgress.addresses[0];
+      }
+    });
+    this.updateSelectedAddress(newSelected);
+  }
+
+  public get previouslySelectedAddress(): ViewAddress {
+    let previouslySelected: ViewAddress;
+    this.data.take(1).subscribe((data: any) => {
+      previouslySelected = data.orderInProgress.addresses.filter((a: ViewAddress) => {
+        return a.addressEntityId === data.orderInProgress.selectedAddress.addressEntityId;
+      })[0];
+    });
+    return previouslySelected;
   }
 
   private formatBody(parameters: AddAssetParameters): any {
@@ -143,20 +170,10 @@ export class CartService {
     return formatted;
   }
 
-  private addProjectIfNoProjectsExist(): Observable<any> {
-    return ((this.state.cart.projects || []).length === 0) ? this.addProjectAndReturnObservable() : Observable.of({});
-  }
-
   private addProjectAndReturnObservable(): Observable<any> {
-    return this.api.post(Api.Orders, 'cart/project', { body: this.createAddProjectRequestBody(), loading: true })
+    return this.api.post(Api.Orders, 'cart/project', { body: { clientName: this.fullName }, loading: true })
       .do(this.updateCart)
       .share();
-  }
-
-  private createAddProjectRequestBody(): ApiBody {
-    return {
-      clientName: this.fullName
-    };
   }
 
   private get fullName(): string {

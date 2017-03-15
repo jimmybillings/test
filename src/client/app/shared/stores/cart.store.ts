@@ -11,9 +11,12 @@ const emptyCart: CartState = {
     total: 0
   },
   orderInProgress: {
-    address: {
+    addresses: [],
+    selectedAddress: {
       type: '',
       name: '',
+      defaultAddress: undefined,
+      addressEntityId: undefined,
       address: {
         address: '',
         state: '',
@@ -39,10 +42,13 @@ export const cart: ActionReducer<any> = (state: any = emptyCart, action: Action)
     case 'REPLACE_CART':
       return Object.assign({}, state, { cart: action.payload });
     case 'UPDATE_ORDER_IN_PROGRESS_ADDRESS':
-      state.orderInProgress.address = action.payload;
+      state.orderInProgress.selectedAddress = action.payload;
       return Object.assign({}, state);
     case 'UPDATE_ORDER_IN_PROGRESS_AUTHORIZATION':
       state.orderInProgress.authorization = action.payload;
+      return Object.assign({}, state);
+    case 'UPDATE_ORDER_IN_PROGRESS_ADDRESSES':
+      state.orderInProgress.addresses = action.payload;
       return Object.assign({}, state);
     default:
       return state;
@@ -67,6 +73,10 @@ export class CartStore {
 
   public replaceOrderInProgressAuthorization(authorization: any): void {
     this.store.dispatch({ type: 'UPDATE_ORDER_IN_PROGRESS_AUTHORIZATION', payload: authorization });
+  }
+
+  public setOrderInProgressAddresses(addresses: any): void {
+    this.store.dispatch({ type: 'UPDATE_ORDER_IN_PROGRESS_ADDRESSES', payload: addresses });
   }
 
   public get state(): any {

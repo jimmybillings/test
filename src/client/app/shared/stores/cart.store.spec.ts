@@ -22,9 +22,12 @@ export function main() {
             total: 0
           },
           orderInProgress: {
-            address: {
+            addresses: [],
+            selectedAddress: {
               type: '',
               name: '',
+              defaultAddress: undefined,
+              addressEntityId: undefined,
               address: {
                 address: '',
                 state: '',
