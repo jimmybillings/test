@@ -20,6 +20,7 @@ export function main() {
       componentUnderTest = new WzInputSuggestionsComponent(mockRenderer, mockApi.injector, mockDetector);
       componentUnderTest.fControl = new FormControl('query');
       componentUnderTest.rawField = {
+        'service': 'assets',
         'endPoint': 'search/thesaurusTerms',
         'queryParams': 'maxTerms, 10',
         'name': 'name',
@@ -79,15 +80,6 @@ export function main() {
         expect(componentUnderTest.closeSuggestions).toHaveBeenCalled();
       });
 
-      it('Calls api with correct params', () => {
-        componentUnderTest.suggestionChangeListener();
-        componentUnderTest.activeSuggestion = 'cat';
-        componentUnderTest.fControl.setValue('dog');
-        expect(componentUnderTest.activeSuggestion).toEqual(null);
-        expect(mockApi.get).toHaveBeenCalledWith(Api.Assets, componentUnderTest.rawField.endPoint,
-          { parameters: Object.assign({}, { 'maxTerms': '10' }, { text: 'dog' }, { q: 'dog' }) });
-      });
-
       it('handles flat arrays', () => {
         mockApi.getResponse = { list: ['test', 'testing', 'testing 123'] };
         componentUnderTest.suggestionChangeListener();
@@ -124,6 +116,46 @@ export function main() {
       it('Does not initialize the subscription unless the form control has been initialized first', () => {
         componentUnderTest.fControl = null;
         componentUnderTest.suggestionChangeListener();
+      });
+
+
+      describe('Calls api with correct params', () => {
+        it('for assets', () => {
+          componentUnderTest.suggestionChangeListener();
+          componentUnderTest.activeSuggestion = 'cat';
+          componentUnderTest.fControl.setValue('dog');
+          expect(componentUnderTest.activeSuggestion).toEqual(null);
+          expect(mockApi.get).toHaveBeenCalledWith(Api.Assets, componentUnderTest.rawField.endPoint,
+            { parameters: Object.assign({}, { 'maxTerms': '10' }, { text: 'dog' }, { q: 'dog' }) });
+        });
+
+        it('for identities', () => {
+          componentUnderTest.rawField = {
+            'service': 'identities',
+            'endPoint': 'user/searchFields',
+            'queryParams': 'fields, emailAddress, values',
+            'name': 'emailAddress',
+            'label': 'emailAddress',
+            'type': 'suggestions',
+            'value': '',
+            'validation': 'REQUIRED'
+          };
+          componentUnderTest.suggestionChangeListener();
+          componentUnderTest.activeSuggestion = 'cat';
+          componentUnderTest.fControl.setValue('dog');
+          expect(componentUnderTest.activeSuggestion).toEqual(null);
+          expect(mockApi.get).toHaveBeenCalledWith(Api.Identities, componentUnderTest.rawField.endPoint,
+            { parameters: Object.assign({}, { fields: 'emailAddress', values: 'dog' }) });
+        });
+
+        it('no service, defaults to empty observable', () => {
+          componentUnderTest.rawField = { service: 'nothing', endPoint: 'blah' };
+          componentUnderTest.suggestionChangeListener();
+          componentUnderTest.activeSuggestion = 'cat';
+          componentUnderTest.fControl.setValue('dog');
+          expect(componentUnderTest.activeSuggestion).toEqual(null);
+          expect(mockApi.get).not.toHaveBeenCalled();
+        });
       });
     });
 
@@ -174,7 +206,6 @@ export function main() {
           componentUnderTest.inputKeyDown(eve);
           expect(componentUnderTest.closeSuggestions).toHaveBeenCalled();
         });
-
       });
 
       describe('responds to user hitting the up arrow', () => {

@@ -22,6 +22,7 @@ export class WzAutocompleteSearchComponent {
 
   public searchForm: FormGroup;
   public formOptions = {
+    'service': 'assets',
     'endPoint': 'search/thesaurusTerms',
     'queryParams': 'maxTerms, 10',
     'name': 'name',

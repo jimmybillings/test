@@ -16,8 +16,28 @@
       </span>
 		</div>
     <div flex="100" layout="row" layout-align="end center">
-      <button *ngIf="(assetsInCart | async)" [disabled]="!rmAssetsHaveAttributes" md-raised-button class="checkout" (click)="goToNextTab()">{{ 'CART.PROCEED_BTN_LABEL' | translate }}</button>
-		</div>
+      <button
+        *ngIf="(assetsInCart | async) && !userCan.createQuotes()"
+        [disabled]="!rmAssetsHaveAttributes"
+        md-raised-button class="checkout"
+        (click)="goToNextTab()">
+          {{ 'CART.PROCEED_BTN_LABEL' | translate }}
+      </button>
+      <div *ngIf="userCan.createQuotes()">
+        <button
+          [disabled]="!rmAssetsHaveAttributes"
+          md-raised-button class="checkout"
+          (click)="saveAsDraft()">
+          {{ 'CART.SAVE_AS_DRAFT_BTN' | translate }}
+        </button>
+        <button
+          [disabled]="!rmAssetsHaveAttributes"
+          md-raised-button class="checkout"
+          (click)="openQuoteDialog()">
+          {{ 'CART.CREATE_QUOTE_BTN' | translate }}
+        </button>
+      </div>
+    </div>
     <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!rmAssetsHaveAttributes">
       {{ 'CART.SELECT_USAGE_WARN' | translate }}
     </div>

@@ -3,7 +3,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Tab } from './tab';
 import { CartService } from '../../../../shared/services/cart.service';
-import { Project, LineItem } from '../../../../shared/interfaces/cart.interface';
+import { Project, LineItem, Cart } from '../../../../shared/interfaces/cart.interface';
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { EditProjectComponent } from '../edit-project.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
@@ -15,13 +15,14 @@ import { UserPreferenceService } from '../../../../shared/services/user-preferen
 import { ErrorStore } from '../../../../shared/stores/error.store';
 import { WindowRef } from '../../../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../../../shared/interfaces/asset.interface';
+import { QuoteService } from '../../../services/quote.service';
+import { QuoteFormComponent } from '../quote-form.component';
 
 @Component({
   moduleId: module.id,
   selector: 'cart-tab-component',
   templateUrl: 'cart-tab.html',
   changeDetection: ChangeDetectionStrategy.OnPush
-
 })
 
 export class CartTabComponent extends Tab implements OnInit, OnDestroy {
@@ -34,6 +35,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   private configSubscription: Subscription;
   private preferencesSubscription: Subscription;
   private usagePrice: any;
+  private suggestions: any[];
 
   constructor(
     public userCan: Capabilities,
@@ -44,6 +46,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     private window: WindowRef,
     private userPreference: UserPreferenceService,
     private error: ErrorStore,
+    private quoteService: QuoteService,
     @Inject(DOCUMENT) private document: any) {
     super();
   }
@@ -63,6 +66,24 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
 
   public get assetsInCart(): Observable<boolean> {
     return this.cart.map(cart => (cart.itemCount || 0) > 0);
+  }
+
+  public openQuoteDialog(): void {
+    let dialogRef: MdDialogRef<QuoteFormComponent> = this.dialog.open(QuoteFormComponent, {
+      height: '400px', position: { top: '10%' }
+    });
+    dialogRef.componentInstance.dialog = dialogRef;
+    dialogRef.componentInstance.items = this.config.createQuote.items;
+    dialogRef.afterClosed().subscribe((form: { emailAddress: string }) => {
+      if (form) this.quoteService.createQuote(false, form.emailAddress, this.suggestions).take(1).subscribe();
+    });
+    dialogRef.componentInstance.cacheSuggestions.subscribe((suggestions: any[]) => {
+      this.suggestions = suggestions;
+    });
+  }
+
+  public saveAsDraft(): void {
+    this.quoteService.createQuote(true).take(1).subscribe();
   }
 
   public get rmAssetsHaveAttributes(): boolean {

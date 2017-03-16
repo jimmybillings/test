@@ -24,6 +24,11 @@ import { OrdersComponent } from './+order/+index/orders.component';
 import { OrderShowComponent } from './+order/+show/order-show.component';
 import { OrderItemListComponent } from './+order/components/order-item-list.component';
 
+// Quote Stuff
+import { QuoteFormComponent } from './+cart/components/quote-form.component';
+import { QuoteService } from './services/quote.service';
+
+
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
   declarations: [
@@ -40,11 +45,12 @@ import { OrderItemListComponent } from './+order/components/order-item-list.comp
     OrdersComponent,
     OrderItemListComponent,
     EditProjectComponent,
-    AddressFormComponent
+    AddressFormComponent,
+    QuoteFormComponent
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
-  providers: [CartCapabilities],
-  entryComponents: [EditProjectComponent, AddressFormComponent]
+  providers: [CartCapabilities, QuoteService],
+  entryComponents: [EditProjectComponent, AddressFormComponent, QuoteFormComponent]
 })
 
 export class CommerceModule { }
