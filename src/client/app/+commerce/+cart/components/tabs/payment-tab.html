@@ -18,4 +18,7 @@
     <md-icon>keyboard_backspace</md-icon>
     {{ 'CART.PAYMENT.BACK_BTN' | translate }}
   </button>
+  <button (click)="purchaseOnCredit()" *ngIf="userCanPurchaseOnCredit | async" color="primary" md-button>
+    {{ 'CART.PAYMENT.PURCHASE_ON_CREDIT' | translate }}
+  </button>
 </nav>

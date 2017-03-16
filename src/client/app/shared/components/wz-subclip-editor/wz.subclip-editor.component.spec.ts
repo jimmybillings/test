@@ -1,13 +1,19 @@
 import { WzSubclipEditorComponent } from './wz.subclip-editor.component';
+import { Frame } from 'wazee-frame-formatter';
 
 export function main() {
   describe('Wz Subclip Editor Component', () => {
     let componentUnderTest: WzSubclipEditorComponent;
+    let inMarkerFrame: Frame;
+    let outMarkerFrame: Frame;
 
     beforeEach(() => {
       componentUnderTest = new WzSubclipEditorComponent();
       componentUnderTest.cancel.emit = jasmine.createSpy('cancel emitter');
       componentUnderTest.save.emit = jasmine.createSpy('save emitter');
+
+      inMarkerFrame = new Frame(29.97).setFromFrameNumber(42);
+      outMarkerFrame = new Frame(29.97).setFromFrameNumber(4242);
     });
 
     describe('markersAreRemovable getter', () => {
@@ -15,19 +21,19 @@ export function main() {
 
       describe('when asset.timeStart is undefined', () => {
         it('returns false if player\'s markers are both set', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: 42, out: 4242 });
+          componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: outMarkerFrame });
 
           expect(componentUnderTest.markersAreRemovable).toBe(false);
         });
 
         it('returns false if player\'s in marker is unset', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: undefined, out: 4242 });
+          componentUnderTest.onPlayerMarkerChange({ in: undefined, out: outMarkerFrame });
 
           expect(componentUnderTest.markersAreRemovable).toBe(false);
         });
 
         it('returns false if player\'s out marker is unset', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: 42, out: undefined });
+          componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: undefined });
 
           expect(componentUnderTest.markersAreRemovable).toBe(false);
         });
@@ -43,19 +49,19 @@ export function main() {
         beforeEach(() => componentUnderTest.asset.timeStart = 7);
 
         it('returns false if player\'s markers are both set', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: 42, out: 4242 });
+          componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: outMarkerFrame });
 
           expect(componentUnderTest.markersAreRemovable).toBe(false);
         });
 
         it('returns true if player\'s in marker is unset', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: undefined, out: 4242 });
+          componentUnderTest.onPlayerMarkerChange({ in: undefined, out: outMarkerFrame });
 
           expect(componentUnderTest.markersAreRemovable).toBe(true);
         });
 
         it('returns true if player\'s out marker is unset', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: 42, out: undefined });
+          componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: undefined });
 
           expect(componentUnderTest.markersAreRemovable).toBe(true);
         });
@@ -70,19 +76,19 @@ export function main() {
 
     describe('markersAreSavable getter', () => {
       it('returns true if player\'s markers are both set', () => {
-        componentUnderTest.onPlayerMarkerChange({ in: 42, out: 4242 });
+        componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: outMarkerFrame });
 
         expect(componentUnderTest.markersAreSavable).toBe(true);
       });
 
       it('returns false if player\'s in marker is unset', () => {
-        componentUnderTest.onPlayerMarkerChange({ in: undefined, out: 4242 });
+        componentUnderTest.onPlayerMarkerChange({ in: undefined, out: outMarkerFrame });
 
         expect(componentUnderTest.markersAreSavable).toBe(false);
       });
 
       it('returns false if player\'s out marker is unset', () => {
-        componentUnderTest.onPlayerMarkerChange({ in: 42, out: undefined });
+        componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: undefined });
 
         expect(componentUnderTest.markersAreSavable).toBe(false);
       });
@@ -104,7 +110,7 @@ export function main() {
 
     describe('onSaveButtonClick()', () => {
       it('emits the updated markers', () => {
-        componentUnderTest.onPlayerMarkerChange({ in: 42, out: 4242 });
+        componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: outMarkerFrame });
 
         componentUnderTest.onSaveButtonClick();
 

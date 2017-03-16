@@ -34,9 +34,7 @@ export class BillingTabComponent extends Tab implements OnInit {
 
   ngOnInit() {
     this.orderInProgress = this.cartService.data.map((data: any) => data.orderInProgress);
-
     this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
-
     this.fetchAddresses().subscribe(this.determineNewSelectedAddress);
   }
 
@@ -59,7 +57,7 @@ export class BillingTabComponent extends Tab implements OnInit {
       this.user.getAccount(address.addressEntityId).subscribe((account: any) => {
         this.cartService.updateOrderInProgress('purchaseOptions', {
           purchaseOnCredit: account.purchaseOnCredit ? true : false,
-          creditExemption: account.creditExemption ? true : false
+          creditExemption: account.creditExemption
         });
       });
     } else {

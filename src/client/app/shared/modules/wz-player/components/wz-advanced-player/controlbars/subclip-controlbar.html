@@ -10,17 +10,21 @@
 </section>
 
 <nav *ngIf="displayAllControls" class="subclip-options" flex="20" layout-align="end stretch">
-  <wz-markers-save-button [playerState]="playerState" (request)="forward($event)"></wz-markers-save-button>
-  <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.SIMPLE_BTN_TITLE' | translate }}">
+  <wz-markers-save-button
+    [playerState]="playerState"
+    [enabled]="markersSaveButtonEnabled"
+    (request)="forward($event)">
+  </wz-markers-save-button>
+  <button *ngIf="false" md-icon-button title="{{ 'ASSET.ADV_PLAYER.SIMPLE_BTN_TITLE' | translate }}">
     <md-icon>ondemand_video</md-icon>
   </button>
-  <button md-icon-button title="{{ 'ASSET.ADV_PLAYER.MORE_BTN_TITLE' | translate }}" 
+  <button *ngIf="false" md-icon-button title="{{ 'ASSET.ADV_PLAYER.MORE_BTN_TITLE' | translate }}" 
     [md-menu-trigger-for]="morePlayerOptions">
     <md-icon>more_vert</md-icon>
   </button>
 </nav>
 
-<md-menu class="more-options-menu" x-position="before" #morePlayerOptions="mdMenu">
+<md-menu *ngIf="false" class="more-options-menu" x-position="before" #morePlayerOptions="mdMenu">
   <button md-menu-item><md-icon>fullscreen</md-icon>Show full screen</button>
   <button md-menu-item><md-icon>av_timer</md-icon>Show timecode formats</button>
   <button md-menu-item><md-icon>keyboard</md-icon>Show keyboard shortcuts</button>

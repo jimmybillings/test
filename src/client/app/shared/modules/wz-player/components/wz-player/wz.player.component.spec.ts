@@ -7,7 +7,7 @@ import { MockVideoEventName, MockVideoElement } from '../../mocks/mockVideoEleme
 export function main() {
   describe('Wz Player Component', () => {
     let componentUnderTest: WzPlayerComponent;
-    let stateUpdateEmitter: jasmine.Spy;
+    let stateChangeRequestEmitter: jasmine.Spy;
     let mockElementRef: any;
     let mockRenderer: any;
     let mockZone: any;
@@ -22,11 +22,7 @@ export function main() {
           expect(mockVideoElement.numberOfDefinedEventCallbacks).toBe(0);
         }
 
-        if (componentUnderTest.mode === 'advanced') {
-          expect(componentUnderTest.stateUpdate.emit).toHaveBeenCalledWith({ duration: undefined, currentTime: 0 });
-        } else {
-          expect(componentUnderTest.stateUpdate.emit).not.toHaveBeenCalled();
-        }
+        expect(componentUnderTest.stateChangeRequest.emit).not.toHaveBeenCalled();
       }
 
       expect(mockElementRef.nativeElement.innerHtml).toEqual('');
@@ -55,9 +51,9 @@ export function main() {
         }
       };
 
-      componentUnderTest.stateUpdate.emit = jasmine.createSpy('stateUpdate emitter');
+      componentUnderTest.stateChangeRequest.emit = jasmine.createSpy('stateUpdate emitter');
 
-      stateUpdateEmitter = componentUnderTest.stateUpdate.emit as jasmine.Spy;
+      stateChangeRequestEmitter = componentUnderTest.stateChangeRequest.emit as jasmine.Spy;
     });
 
     it('defaults to basic mode', () => {
@@ -349,8 +345,9 @@ export function main() {
               beforeEach(() => mockJwPlayer.setProviderNameTo('flash'));
 
               describe('before \'ready\' event is triggered', () => {
-                it('doesn\'t emit a \'canSupportCustomControls\' state update yet', () => {
-                  expect(stateUpdateEmitter).not.toHaveBeenCalledWith({ canSupportCustomControls: jasmine.any(Boolean) });
+                it('doesn\'t emit a \'canSupportCustomControls\' or \'ready\' state update yet', () => {
+                  expect(stateChangeRequestEmitter)
+                    .not.toHaveBeenCalledWith({ canSupportCustomControls: jasmine.any(Boolean), ready: jasmine.any(Boolean) });
                 });
               });
 
@@ -361,12 +358,15 @@ export function main() {
                   expect(mockJwPlayer.getControls()).toBe(true);
                 });
 
-                it('reports canSupportCustomControls: false', () => {
-                  expect(stateUpdateEmitter).toHaveBeenCalledWith({ canSupportCustomControls: false });
+                it('reports canSupportCustomControls: false, ready: true', () => {
+                  expect(stateChangeRequestEmitter).toHaveBeenCalledWith({ canSupportCustomControls: false, ready: true });
                 });
 
                 describe('ngOnDestroy()', () => {
                   it('resets the player', () => {
+                    // Don't want initialization calls to affect future verifications.
+                    (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
+
                     componentUnderTest.ngOnDestroy();
 
                     expectResetFor('video');
@@ -445,8 +445,9 @@ export function main() {
               beforeEach(() => mockJwPlayer.setProviderNameTo('html5'));
 
               describe('before \'ready\' event is triggered', () => {
-                it('doesn\'t emit a \'canSupportCustomControls\' state update yet', () => {
-                  expect(stateUpdateEmitter).not.toHaveBeenCalledWith({ canSupportCustomControls: jasmine.any(Boolean) });
+                it('doesn\'t emit a \'canSupportCustomControls\' or \'ready\' state update yet', () => {
+                  expect(stateChangeRequestEmitter)
+                    .not.toHaveBeenCalledWith({ canSupportCustomControls: jasmine.any(Boolean), ready: jasmine.any(Boolean) });
                 });
               });
 
@@ -457,9 +458,10 @@ export function main() {
                   expect(mockJwPlayer.getControls()).toBe(false);
                 });
 
-                it('reports canSupportCustomControls: true, framesPerSecond, in/out markers', () => {
-                  expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
-                  expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{
+                it('reports ready: true, canSupportCustomControls: true, framesPerSecond, in/out markers, volume', () => {
+                  expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
+                  expect(stateChangeRequestEmitter.calls.allArgs()).toEqual([[{
+                    ready: true,
                     canSupportCustomControls: true,
                     framesPerSecond: 25,
                     inMarker: assetTest.inSeconds,
@@ -471,7 +473,7 @@ export function main() {
                 describe('after reporting canSupportCustomControls', () => {
                   beforeEach(() => {
                     // Don't want initialization calls to affect future verifications.
-                    (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                    (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
 
                     if (assetTest.markers.hasOwnProperty('timeStart') && assetTest.markers.hasOwnProperty('timeEnd')) {
                       // Complete the seek caused by toggleMarkersPlayback(), which was
@@ -482,7 +484,7 @@ export function main() {
 
                   if (assetTest.markers.hasOwnProperty('timeStart') && assetTest.markers.hasOwnProperty('timeEnd')) {
                     it('reports playingMarkers: true, playing: true, current time', () => {
-                      expect(stateUpdateEmitter.calls.allArgs())
+                      expect(stateChangeRequestEmitter.calls.allArgs())
                         .toEqual([
                           [{ playingMarkers: true }],
                           [{ playing: true }],
@@ -498,7 +500,7 @@ export function main() {
                         componentUnderTest.seekTo(99);
 
                         // Don't want initialization calls to affect future verifications.
-                        (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                        (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
                       });
                     }
 
@@ -506,7 +508,7 @@ export function main() {
                       beforeEach(() => mockVideoElement.simulateDurationChangeTo(234.567));
 
                       it('reports the asset\'s duration', () => {
-                        expect(stateUpdateEmitter).toHaveBeenCalledWith({ duration: 234.567 });
+                        expect(stateChangeRequestEmitter).toHaveBeenCalledWith({ duration: 234.567 });
                       });
                     });
 
@@ -529,8 +531,8 @@ export function main() {
                         it('reports playing: false', () => {
                           mockJwPlayer.simulateDisplayClick();
 
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
-                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
+                          expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
+                          expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
                         });
                       });
 
@@ -546,8 +548,8 @@ export function main() {
                         it('reports playing: true', () => {
                           mockJwPlayer.simulateDisplayClick();
 
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
-                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                          expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(2);
+                          expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
                         });
                       });
                     });
@@ -563,8 +565,8 @@ export function main() {
                         it('reports playing: false', () => {
                           componentUnderTest.togglePlayback();
 
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
-                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
+                          expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
+                          expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
                         });
                       });
 
@@ -580,8 +582,8 @@ export function main() {
                         it('reports playing: true', () => {
                           componentUnderTest.togglePlayback();
 
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
-                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                          expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(2);
+                          expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
                         });
                       });
 
@@ -590,7 +592,7 @@ export function main() {
                           componentUnderTest.playAtSpeed(4);
 
                           // Don't want initialization calls to affect future verifications.
-                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                          (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
                         });
 
                         it('pauses', () => {
@@ -602,7 +604,7 @@ export function main() {
                         it('reports playbackSpeed: 1 and playing: false', () => {
                           componentUnderTest.togglePlayback();
 
-                          expect(stateUpdateEmitter.calls.allArgs())
+                          expect(stateChangeRequestEmitter.calls.allArgs())
                             .toEqual([
                               [{ playbackSpeed: 1 }],
                               [{ playing: false }]
@@ -620,7 +622,7 @@ export function main() {
                         componentUnderTest.playAtSpeed(4);
                         mockVideoElement.simulatePlaybackEnded();
 
-                        expect(stateUpdateEmitter.calls.allArgs())
+                        expect(stateChangeRequestEmitter.calls.allArgs())
                           .toEqual([[{ playbackSpeed: 4 }], [{ playbackSpeed: 1 }], [{ playing: false }]]);
                       });
 
@@ -634,8 +636,8 @@ export function main() {
                         it('reports only playbackSpeed: 4 (and not playing: true)', () => {
                           componentUnderTest.playAtSpeed(4);
 
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
-                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playbackSpeed: 4 }]);
+                          expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
+                          expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playbackSpeed: 4 }]);
                         });
                       });
 
@@ -644,7 +646,7 @@ export function main() {
                           componentUnderTest.togglePlayback();
 
                           // Don't want initialization calls to affect future verifications.
-                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                          (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
                         });
 
                         it('plays', () => {
@@ -656,7 +658,7 @@ export function main() {
                         it('reports playbackSpeed: 4 and playing: true', () => {
                           componentUnderTest.playAtSpeed(4);
 
-                          expect(stateUpdateEmitter.calls.allArgs())
+                          expect(stateChangeRequestEmitter.calls.allArgs())
                             .toEqual([
                               [{ playbackSpeed: 4 }],
                               [{ playing: true }]
@@ -676,7 +678,7 @@ export function main() {
                         it('reports volume = 0', () => {
                           componentUnderTest.toggleMute();
 
-                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 0 }]]);
+                          expect(stateChangeRequestEmitter.calls.allArgs()).toEqual([[{ volume: 0 }]]);
                         });
                       });
 
@@ -686,7 +688,7 @@ export function main() {
                           componentUnderTest.toggleMute();
 
                           // Don't want initialization calls to affect future verifications.
-                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                          (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
                         });
 
                         it('unmutes', () => {
@@ -698,7 +700,7 @@ export function main() {
                         it('reports previous volume', () => {
                           componentUnderTest.toggleMute();
 
-                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 57 }]]);
+                          expect(stateChangeRequestEmitter.calls.allArgs()).toEqual([[{ volume: 57 }]]);
                         });
                       });
                     });
@@ -714,7 +716,7 @@ export function main() {
                         it('reports the new volume', () => {
                           componentUnderTest.setVolumeTo(11);
 
-                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 11 }]]);
+                          expect(stateChangeRequestEmitter.calls.allArgs()).toEqual([[{ volume: 11 }]]);
                         });
                       });
 
@@ -724,7 +726,7 @@ export function main() {
                           componentUnderTest.toggleMute();
 
                           // Don't want initialization calls to affect future verifications.
-                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                          (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
                         });
 
                         it('unmutes', () => {
@@ -742,7 +744,7 @@ export function main() {
                         it('reports the new volume', () => {
                           componentUnderTest.setVolumeTo(11);
 
-                          expect(stateUpdateEmitter.calls.allArgs()).toEqual([[{ volume: 11 }]]);
+                          expect(stateChangeRequestEmitter.calls.allArgs()).toEqual([[{ volume: 11 }]]);
                         });
                       });
                     });
@@ -751,15 +753,15 @@ export function main() {
                       it('doesn\'t immediately emit a currentTime status update', () => {
                         componentUnderTest.seekTo(1234.567);
 
-                        expect(stateUpdateEmitter).not.toHaveBeenCalled();
+                        expect(stateChangeRequestEmitter).not.toHaveBeenCalled();
                       });
 
                       it('reports current time after video element triggers \'seeked\'', () => {
                         componentUnderTest.seekTo(1234.567);
                         mockVideoElement.simulateSeekCompletion();
 
-                        expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
-                        expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1234.567 }]);
+                        expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
+                        expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1234.567 }]);
                       });
 
                       describe('when video has ended', () => {
@@ -767,13 +769,13 @@ export function main() {
                           mockVideoElement.simulatePlaybackEnded();
 
                           // Don't want initialization calls to affect future verifications.
-                          (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                          (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
                         });
 
                         it('"primes the pump" by playing/pausing before seeking', () => {
                           componentUnderTest.seekTo(1234.567);
 
-                          expect(stateUpdateEmitter.calls.allArgs())
+                          expect(stateChangeRequestEmitter.calls.allArgs())
                             .toEqual([[{ playing: true }], [{ playing: false }]]);
                         });
 
@@ -781,7 +783,7 @@ export function main() {
                           componentUnderTest.seekTo(1234.567);
                           mockVideoElement.simulateSeekCompletion();
 
-                          expect(stateUpdateEmitter.calls.allArgs())
+                          expect(stateChangeRequestEmitter.calls.allArgs())
                             .toEqual([[{ playing: true }], [{ playing: false }], [{ currentTime: 1234.567 }]]);
                         });
                       });
@@ -793,8 +795,9 @@ export function main() {
                           componentUnderTest.seekToInMarker();
                           mockVideoElement.simulateSeekCompletion();
 
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
-                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: assetTest.inSeconds }]);
+                          expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
+                          expect(stateChangeRequestEmitter.calls.mostRecent().args)
+                            .toEqual([{ currentTime: assetTest.inSeconds }]);
                         });
                       } else {
                         it('throws an error', () => {
@@ -809,8 +812,9 @@ export function main() {
                           componentUnderTest.seekToOutMarker();
                           mockVideoElement.simulateSeekCompletion();
 
-                          expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
-                          expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: assetTest.outSeconds }]);
+                          expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
+                          expect(stateChangeRequestEmitter.calls.mostRecent().args)
+                            .toEqual([{ currentTime: assetTest.outSeconds }]);
                         });
                       } else {
                         it('throws an error', () => {
@@ -824,8 +828,8 @@ export function main() {
                         mockVideoElement.simulateTimeChangeTo(0.123);
                         componentUnderTest.setInMarkerToCurrentTime();
 
-                        expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
-                        expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ inMarker: 0.123 }]);
+                        expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(2);
+                        expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ inMarker: 0.123 }]);
                       });
 
                       if (assetTest.markers.hasOwnProperty('timeEnd')) {
@@ -834,8 +838,9 @@ export function main() {
                             mockVideoElement.simulateTimeChangeTo(9.876);
                             componentUnderTest.setInMarkerToCurrentTime();
 
-                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
-                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ inMarker: 9.876, outMarker: 9.876 }]);
+                            expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(2);
+                            expect(stateChangeRequestEmitter.calls.mostRecent().args)
+                              .toEqual([{ inMarker: 9.876, outMarker: 9.876 }]);
                           });
                         });
                       }
@@ -846,8 +851,8 @@ export function main() {
                         mockVideoElement.simulateTimeChangeTo(5.678);
                         componentUnderTest.setOutMarkerToCurrentTime();
 
-                        expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
-                        expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ outMarker: 5.678 }]);
+                        expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(2);
+                        expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ outMarker: 5.678 }]);
                       });
 
                       if (assetTest.markers.hasOwnProperty('timeStart')) {
@@ -856,8 +861,9 @@ export function main() {
                             mockVideoElement.simulateTimeChangeTo(0.999);
                             componentUnderTest.setOutMarkerToCurrentTime();
 
-                            expect(stateUpdateEmitter).toHaveBeenCalledTimes(2);
-                            expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ inMarker: 0.999, outMarker: 0.999 }]);
+                            expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(2);
+                            expect(stateChangeRequestEmitter.calls.mostRecent().args)
+                              .toEqual([{ inMarker: 0.999, outMarker: 0.999 }]);
                           });
                         });
                       }
@@ -867,8 +873,8 @@ export function main() {
                       it('reports inMarker: undefined, outMarker: undefined', () => {
                         componentUnderTest.clearMarkers();
 
-                        expect(stateUpdateEmitter).toHaveBeenCalledTimes(1);
-                        expect(stateUpdateEmitter.calls.mostRecent().args)
+                        expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
+                        expect(stateChangeRequestEmitter.calls.mostRecent().args)
                           .toEqual([{ inMarker: undefined, outMarker: undefined }]);
                       });
                     });
@@ -892,7 +898,7 @@ export function main() {
                                 componentUnderTest.togglePlayback();
 
                                 // Don't want initialization calls to affect future verifications.
-                                (componentUnderTest.stateUpdate.emit as jasmine.Spy).calls.reset();
+                                (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
                               }
 
                               componentUnderTest.toggleMarkersPlayback();
@@ -904,7 +910,7 @@ export function main() {
                               });
 
                               it('emits no stateUpdates yet', () => {
-                                expect(stateUpdateEmitter).not.toHaveBeenCalled();
+                                expect(stateChangeRequestEmitter).not.toHaveBeenCalled();
                               });
 
                               describe('and toggleMarkersPlayback() is somehow immediately called again', () => {
@@ -921,7 +927,7 @@ export function main() {
                                 }
 
                                 it('still emits no stateUpdates', () => {
-                                  expect(stateUpdateEmitter).not.toHaveBeenCalled();
+                                  expect(stateChangeRequestEmitter).not.toHaveBeenCalled();
                                 });
 
                                 it('doesn\'t seek again', () => {
@@ -935,7 +941,7 @@ export function main() {
 
                               if (stateTest.initialState === 'paused') {
                                 it('reports playingMarkers: true, playing: true, current time', () => {
-                                  expect(stateUpdateEmitter.calls.allArgs())
+                                  expect(stateChangeRequestEmitter.calls.allArgs())
                                     .toEqual([
                                       [{ playingMarkers: true }],
                                       [{ playing: true }],
@@ -944,7 +950,7 @@ export function main() {
                                 });
                               } else {
                                 it('reports playingMarkers: true, current time', () => {
-                                  expect(stateUpdateEmitter.calls.allArgs())
+                                  expect(stateChangeRequestEmitter.calls.allArgs())
                                     .toEqual([
                                       [{ playingMarkers: true }],
                                       [{ currentTime: assetTest.inSeconds }]
@@ -960,8 +966,9 @@ export function main() {
                                 beforeEach(() => mockVideoElement.simulateTimeChangeTo(1.5));
 
                                 it('reports current time', () => {
-                                  expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 4 : 3);
-                                  expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1.5 }]);
+                                  expect(stateChangeRequestEmitter)
+                                    .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 4 : 3);
+                                  expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1.5 }]);
                                 });
 
                                 it('is still playing', () => {
@@ -977,8 +984,9 @@ export function main() {
                                 });
 
                                 it('reports playing: false', () => {
-                                  expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 4 : 3);
-                                  expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
+                                  expect(stateChangeRequestEmitter)
+                                    .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 4 : 3);
+                                  expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
                                 });
 
                                 it('is paused', () => {
@@ -993,8 +1001,9 @@ export function main() {
                                   });
 
                                   it('reports playing: true', () => {
-                                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 5 : 4);
-                                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                                    expect(stateChangeRequestEmitter)
+                                      .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 5 : 4);
+                                    expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
                                   });
 
                                   it('is playing', () => {
@@ -1010,8 +1019,9 @@ export function main() {
                                   });
 
                                   it('reports playing: true', () => {
-                                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 5 : 4);
-                                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                                    expect(stateChangeRequestEmitter)
+                                      .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 5 : 4);
+                                    expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
                                   });
 
                                   it('is playing', () => {
@@ -1028,8 +1038,9 @@ export function main() {
                                 });
 
                                 it('reports playing: false', () => {
-                                  expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 4 : 3);
-                                  expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
+                                  expect(stateChangeRequestEmitter)
+                                    .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 4 : 3);
+                                  expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playing: false }]);
                                 });
 
                                 it('is paused', () => {
@@ -1044,8 +1055,9 @@ export function main() {
                                   });
 
                                   it('reports playing: true', () => {
-                                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 5 : 4);
-                                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                                    expect(stateChangeRequestEmitter)
+                                      .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 5 : 4);
+                                    expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
                                   });
 
                                   it('is playing', () => {
@@ -1061,8 +1073,9 @@ export function main() {
                                   });
 
                                   it('reports playing: true', () => {
-                                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 5 : 4);
-                                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
+                                    expect(stateChangeRequestEmitter)
+                                      .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 5 : 4);
+                                    expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playing: true }]);
                                   });
 
                                   it('is playing', () => {
@@ -1075,8 +1088,9 @@ export function main() {
                                 beforeEach(() => componentUnderTest.seekTo(123));
 
                                 it('reports playingMarkers: false', () => {
-                                  expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 4 : 3);
-                                  expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ playingMarkers: false }]);
+                                  expect(stateChangeRequestEmitter)
+                                    .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 4 : 3);
+                                  expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ playingMarkers: false }]);
                                 });
 
                                 it('is still playing', () => {
@@ -1087,8 +1101,9 @@ export function main() {
                                   beforeEach(() => mockVideoElement.simulateTimeChangeTo(6));
 
                                   it('reports the current time', () => {
-                                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 5 : 4);
-                                    expect(stateUpdateEmitter.calls.mostRecent().args).toEqual([{ currentTime: 6 }]);
+                                    expect(stateChangeRequestEmitter)
+                                      .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 5 : 4);
+                                    expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ currentTime: 6 }]);
                                   });
 
                                   it('is still playing', () => {
@@ -1106,8 +1121,9 @@ export function main() {
                                 });
 
                                 it('reports current time and inMarker update', () => {
-                                  expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 5 : 4);
-                                  expect(stateUpdateEmitter.calls.allArgs().slice(-2))
+                                  expect(stateChangeRequestEmitter)
+                                    .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 5 : 4);
+                                  expect(stateChangeRequestEmitter.calls.allArgs().slice(-2))
                                     .toEqual([
                                       [{ currentTime: newTime }],
                                       [{ inMarker: newTime }]
@@ -1128,9 +1144,10 @@ export function main() {
                                 });
 
                                 it('reports current time, playing: false, playingMarkers: false, outMarker update', () => {
-                                  expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 7 : 6);
+                                  expect(stateChangeRequestEmitter)
+                                    .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 7 : 6);
 
-                                  expect(stateUpdateEmitter.calls.allArgs().slice(-4))
+                                  expect(stateChangeRequestEmitter.calls.allArgs().slice(-4))
                                     .toEqual([
                                       [{ currentTime: newTime }],
                                       [{ playing: false }],
@@ -1153,9 +1170,10 @@ export function main() {
                                 });
 
                                 it('reports current time, playingMarkers: false, outMarker update', () => {
-                                  expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 6 : 5);
+                                  expect(stateChangeRequestEmitter)
+                                    .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 6 : 5);
 
-                                  expect(stateUpdateEmitter.calls.allArgs().slice(-3))
+                                  expect(stateChangeRequestEmitter.calls.allArgs().slice(-3))
                                     .toEqual([
                                       [{ currentTime: newTime }],
                                       [{ playingMarkers: false }],
@@ -1176,9 +1194,10 @@ export function main() {
                                   beforeEach(() => mockVideoElement.simulateTimeChangeTo(innerTest.time));
 
                                   it('reports current time, playing: false, playingMarkers: false', () => {
-                                    expect(stateUpdateEmitter).toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 6 : 5);
+                                    expect(stateChangeRequestEmitter)
+                                      .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 6 : 5);
 
-                                    expect(stateUpdateEmitter.calls.allArgs().slice(-3))
+                                    expect(stateChangeRequestEmitter.calls.allArgs().slice(-3))
                                       .toEqual([
                                         [{ currentTime: innerTest.time }],
                                         [{ playing: false }],
@@ -1196,7 +1215,7 @@ export function main() {
                                     });
 
                                     it('emits no additional stateUpdates', () => {
-                                      expect(stateUpdateEmitter)
+                                      expect(stateChangeRequestEmitter)
                                         .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 6 : 5);
                                     });
 
@@ -1208,9 +1227,9 @@ export function main() {
                                       beforeEach(() => mockVideoElement.simulateSeekCompletion());
 
                                       it('reports current time', () => {
-                                        expect(stateUpdateEmitter)
+                                        expect(stateChangeRequestEmitter)
                                           .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 7 : 6);
-                                        expect(stateUpdateEmitter.calls.mostRecent().args)
+                                        expect(stateChangeRequestEmitter.calls.mostRecent().args)
                                           .toEqual([{ currentTime: assetTest.outSeconds }]);
                                       });
 

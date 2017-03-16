@@ -1,10 +1,11 @@
-import { Component, ChangeDetectionStrategy, Input, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 
 import { PlayerStateService } from '../../services/player-state.service';
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
-import { SubclipMarkers } from '../../../../interfaces/asset.interface';
+import { SubclipMarkers, SubclipMarkerFrames } from '../../../../interfaces/asset.interface';
 import { PlayerState, PlayerStateChanges, PlayerRequest, PlayerRequestType } from '../../interfaces/player.interface';
 import { Subscription } from 'rxjs/Rx';
+import { Frame } from 'wazee-frame-formatter';
 
 @Component({
   moduleId: module.id,
@@ -14,21 +15,25 @@ import { Subscription } from 'rxjs/Rx';
   templateUrl: './wz.advanced-player.html'
 })
 
-export class WzAdvancedPlayerComponent {
+export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   @Input() window: any;
   @Input() displayAllControls: boolean = true;
-  @Output() onSubclip = new EventEmitter();
-  @Output() onUpdateSubclipData = new EventEmitter();
-  @Output() markerChange: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
+  @Input() markersSaveButtonEnabled: boolean = true;
+  @Output() markersInitialization: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
+  @Output() markerChange: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
+  @Output() markerSaveButtonClick: EventEmitter<null> = new EventEmitter<null>();
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
 
-  public playerStateSubscription: Subscription;
+  private playerStateSubscription: Subscription;
   private currentAsset: any = null;
   private currentState: PlayerState = null;
+  private playerReady: boolean = false;
 
   @Input()
   public set asset(newAsset: any) {
     this.playerStateService.reset();
+    this.currentState = null;
+    this.playerReady = false;
     this.currentAsset = newAsset;
   }
 
@@ -40,26 +45,17 @@ export class WzAdvancedPlayerComponent {
     return this.currentAsset.resourceClass !== 'Image';
   }
 
-  constructor(public playerStateService: PlayerStateService) {
-    this.playerStateSubscription = playerStateService.state.subscribe(newState => {
-      if (newState.inMarkerFrame && newState.outMarkerFrame) {
-        this.onUpdateSubclipData.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
-        // this.playerStateSubscription.unsubscribe();
-      }
+  constructor(private playerStateService: PlayerStateService) { }
 
-      if (this.currentState && (newState.inMarkerFrame !== this.currentState.inMarkerFrame
-        || newState.outMarkerFrame !== this.currentState.outMarkerFrame)) {
-        this.markerChange.emit({
-          in: newState.inMarkerFrame ? newState.inMarkerFrame.frameNumber : undefined,
-          out: newState.outMarkerFrame ? newState.outMarkerFrame.frameNumber : undefined
-        });
-      }
-
-      this.currentState = newState;
-    });
+  public ngOnInit(): void {
+    this.playerStateSubscription = this.playerStateService.state.subscribe(this.onStateChange.bind(this));
   }
 
-  public onStateUpdate(changes: PlayerStateChanges): void {
+  public ngOnDestroy(): void {
+    this.playerStateSubscription.unsubscribe();
+  }
+
+  public onStateChangeRequest(changes: PlayerStateChanges): void {
     this.playerStateService.updateWith(changes);
   }
 
@@ -75,7 +71,7 @@ export class WzAdvancedPlayerComponent {
         this.player.playAtSpeed(payload.speed, payload.direction);
         break;
       case PlayerRequestType.SaveMarkers:
-        this.onSubclip.emit({ in: state.inMarkerFrame.frameNumber, out: state.outMarkerFrame.frameNumber });
+        this.markerSaveButtonClick.emit();
         break;
       case PlayerRequestType.SeekToFrame:
         this.player.seekTo(payload.frame.asSeconds());
@@ -105,5 +101,31 @@ export class WzAdvancedPlayerComponent {
         this.player.togglePlayback();
         break;
     }
+  }
+
+  private onStateChange(newState: PlayerState) {
+    if (!this.playerReady && newState.ready) {
+      this.markersInitialization.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
+      this.playerReady = true;
+    } else if (this.markersChangedIn(newState)) {
+      this.markerChange.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
+    }
+
+    this.currentState = newState;
+  }
+
+  private markersChangedIn(newState: PlayerState): boolean {
+    if (!this.currentState) return false;
+
+    return !this.areEqual(newState.inMarkerFrame, this.currentState.inMarkerFrame) ||
+      !this.areEqual(newState.outMarkerFrame, this.currentState.outMarkerFrame);
+  }
+
+  private areEqual(frame1: Frame, frame2: Frame): boolean {
+    if (frame1 && !frame2) return false;
+    if (!frame1 && frame2) return false;
+    if (!frame1 && !frame2) return true;
+
+    return frame1.frameNumber === frame2.frameNumber;
   }
 }

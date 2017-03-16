@@ -3,6 +3,7 @@ import { Frame } from 'wazee-frame-formatter';
 export type PlayerMode = 'basic' | 'advanced';
 
 export interface PlayerState {
+  readonly ready: boolean;
   readonly canSupportCustomControls: boolean;
   readonly playing: boolean;
   readonly playingMarkers: boolean;
@@ -21,6 +22,7 @@ export interface PlayerState {
 }
 
 export interface PlayerStateChanges {
+  ready?: boolean;
   canSupportCustomControls?: boolean;
   playing?: boolean;
   playingMarkers?: boolean;

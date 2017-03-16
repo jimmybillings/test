@@ -1,3 +1,5 @@
+import { Frame } from 'wazee-frame-formatter';
+
 export interface AssetDetailI {
   name: string;
   metadata?: Array<Object>;
@@ -25,4 +27,9 @@ export interface Asset {
 export interface SubclipMarkers {
   in?: number;
   out?: number;
+}
+
+export interface SubclipMarkerFrames {
+  in?: Frame;
+  out?: Frame;
 }
