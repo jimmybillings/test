@@ -23,6 +23,7 @@ import { AddressFormComponent } from './+cart/components/address-form.component'
 import { OrdersComponent } from './+order/+index/orders.component';
 import { OrderShowComponent } from './+order/+show/order-show.component';
 import { OrderItemListComponent } from './+order/components/order-item-list.component';
+import { OrderInvoiceComponent } from './+order/components/order-invoice.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
@@ -40,7 +41,8 @@ import { OrderItemListComponent } from './+order/components/order-item-list.comp
     OrdersComponent,
     OrderItemListComponent,
     EditProjectComponent,
-    AddressFormComponent
+    AddressFormComponent,
+    OrderInvoiceComponent
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
   providers: [CartCapabilities],

@@ -53,6 +53,8 @@ export interface Order {
   total: number;
   projects: [Project];
   lastModifiedBy?: any;
+  paymentBalance?: number;
+  lineItems?: any;
 }
 
 export interface Orders {

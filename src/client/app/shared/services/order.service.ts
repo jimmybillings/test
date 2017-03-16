@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import { ApiService } from '../services/api.service';
 import { Api } from '../interfaces/api.interface';
 import { OrderStore } from '../stores/order.store';
+import { Order } from '../interfaces/cart.interface';
 
 @Injectable()
 export class OrderService {
@@ -11,6 +12,10 @@ export class OrderService {
 
   public get data(): Observable<any> {
     return this.store.data;
+  }
+
+  public get state(): Order {
+    return this.store.state;
   }
 
   public getOrder(orderId: number): Observable<any> {

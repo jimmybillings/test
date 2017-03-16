@@ -6,6 +6,7 @@
 			<span class="md-display-1"><strong>Order Placed: </strong>{{ (order.data | async).createdOn | date }}</span>
 		</header>
 	</div>
+	<order-invoice layout="column" [order]="order.data | async"></order-invoice>
 	<div class="order-projects" *ngFor="let project of (order.data | async).projects">
 		<div class="order-project-header" layout-gt-xs="row" layout-align-gt-xs="space-between center" flex="100" layout="column"
 			layout-align="center center">
@@ -13,7 +14,7 @@
 			<span><strong>Client Name: </strong>{{ project.clientName }}</span>
 			<span><strong>Project Subtotal: </strong>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
 		</div>
-		<div class="project-line-items">
+		<div class="project-line-items">	
 			<div *ngFor="let lineItem of project.lineItems; let e = even" layout="row" layout-align="center center">
 				<div class="project-line-item" [ngClass]="{highlight: e}" flex-gt-md="95" flex-gt-xs="45" flex="85">
 					<div layout-gt-md="row" layout="column" layout-align-gt-md="space-between center" layout-align="center stretch">
