@@ -5,7 +5,7 @@ import { WzAdvancedPlayerComponent } from './wz.advanced-player.component';
 import { PlayerStateChanges } from '../../interfaces/player.interface';
 
 export function main() {
-  fdescribe('Wazee Advanced Player Component', () => {
+  describe('Wazee Advanced Player Component', () => {
     let componentUnderTest: WzAdvancedPlayerComponent;
     let mockPlayerStateService: any;
     let simulatedStateSubject: BehaviorSubject<any>;
