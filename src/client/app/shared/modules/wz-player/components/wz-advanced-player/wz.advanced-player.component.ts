@@ -85,10 +85,10 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
         this.player.playAtSpeed(request.speed, request.direction);
         break;
       case SAVE_MARKERS:
-        this.markerSaveButtonClick.emit();
+        if (this.markersSaveButtonEnabled) this.markerSaveButtonClick.emit();
         break;
       case SEEK_TO_FRAME:
-        this.player.seekTo(request.frame.asSeconds());
+        if (request.frame) this.player.seekTo(request.frame.asSeconds());
         break;
       case SEEK_TO_MARKER:
         request.markerType === 'in' ? this.player.seekToInMarker() : this.player.seekToOutMarker();
