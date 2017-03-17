@@ -19,16 +19,6 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   @Input() window: any;
   @Input() displayAllControls: boolean = true;
   @Input() markersSaveButtonEnabled: boolean = true;
-  @Output() markersInitialization: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
-  @Output() markerChange: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
-  @Output() markerSaveButtonClick: EventEmitter<null> = new EventEmitter<null>();
-  @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
-
-  private playerStateSubscription: Subscription;
-  private currentAsset: any = null;
-  private currentState: PlayerState = null;
-  private playerReady: boolean = false;
-
   @Input()
   public set asset(newAsset: any) {
     this.playerStateService.reset();
@@ -37,12 +27,25 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
     this.currentAsset = newAsset;
   }
 
+  @Output() markersInitialization: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
+  @Output() markerChange: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
+  @Output() markerSaveButtonClick: EventEmitter<null> = new EventEmitter<null>();
+
+  @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
+
+  private playerStateSubscription: Subscription;
+  private currentAsset: any = null;
+  private currentState: PlayerState = null;
+  private playerReady: boolean = false;
+
   public get asset(): any {
     return this.currentAsset;
   }
 
   public assetIsVideo(): boolean {
-    return this.currentAsset.resourceClass !== 'Image';
+    return !!this.currentAsset &&
+      this.currentAsset.hasOwnProperty('resourceClass') &&
+      this.currentAsset.resourceClass !== 'Image';
   }
 
   constructor(private playerStateService: PlayerStateService) { }
@@ -60,7 +63,6 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   }
 
   public handle(request: PlayerRequest): void {
-    const state: PlayerState = this.playerStateService.snapshot;
     const payload: any = request.payload;
 
     switch (request.type) {
