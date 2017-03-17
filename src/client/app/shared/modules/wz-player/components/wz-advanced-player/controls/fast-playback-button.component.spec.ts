@@ -1,5 +1,5 @@
 import { FastPlaybackButtonComponent } from './fast-playback-button.component';
-import { PlayerRequestType } from '../../../interfaces/player.interface';
+import { PLAY_AT_SPEED } from '../../../interfaces/player.interface';
 
 export function main() {
   describe('Fast Playback Button Component', () => {
@@ -130,7 +130,7 @@ export function main() {
         componentUnderTest.onClick();
 
         expect(componentUnderTest.request.emit)
-          .toHaveBeenCalledWith({ type: PlayerRequestType.PlayAtSpeed, payload: { speed: 4, direction: 'forward' } });
+          .toHaveBeenCalledWith({ type: PLAY_AT_SPEED, speed: 4, direction: 'forward' });
       });
 
       it('requests -4x playback when direction = reverse', () => {
@@ -139,7 +139,7 @@ export function main() {
         componentUnderTest.onClick();
 
         expect(componentUnderTest.request.emit)
-          .toHaveBeenCalledWith({ type: PlayerRequestType.PlayAtSpeed, payload: { speed: 4, direction: 'reverse' } });
+          .toHaveBeenCalledWith({ type: PLAY_AT_SPEED, speed: 4, direction: 'reverse' });
       });
     });
   });

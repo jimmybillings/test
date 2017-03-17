@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { PlayerState, PlaybackDirection, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerState, PlaybackDirection, PlayAtSpeedRequest, PLAY_AT_SPEED } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -16,7 +16,7 @@ import { PlayerState, PlaybackDirection, PlayerRequest, PlayerRequestType } from
 export class FastPlaybackButtonComponent {
   @Input() playerState: PlayerState;
   @Input() direction: PlaybackDirection = 'forward';
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() request: EventEmitter<PlayAtSpeedRequest> = new EventEmitter<PlayAtSpeedRequest>();
 
   public get iconName(): string {
     return this.direction === 'reverse' ? 'fast_rewind' : 'fast_forward';
@@ -33,6 +33,6 @@ export class FastPlaybackButtonComponent {
   }
 
   public onClick(): void {
-    this.request.emit({ type: PlayerRequestType.PlayAtSpeed, payload: { speed: 4, direction: this.direction } });
+    this.request.emit({ type: PLAY_AT_SPEED, speed: 4, direction: this.direction });
   }
 }

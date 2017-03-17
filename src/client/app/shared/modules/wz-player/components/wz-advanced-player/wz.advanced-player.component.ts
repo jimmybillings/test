@@ -3,9 +3,25 @@ import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, V
 import { PlayerStateService } from '../../services/player-state.service';
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
 import { SubclipMarkers, SubclipMarkerFrames } from '../../../../interfaces/asset.interface';
-import { PlayerState, PlayerStateChanges, PlayerRequest, PlayerRequestType } from '../../interfaces/player.interface';
 import { Subscription } from 'rxjs/Rx';
 import { Frame } from 'wazee-frame-formatter';
+import {
+  PlayerState,
+  PlayerStateChanges,
+  PlayerRequest,
+  CLEAR_MARKERS,
+  PLAY_AT_SPEED,
+  SAVE_MARKERS,
+  SEEK_TO_FRAME,
+  SEEK_TO_IN_MARKER,
+  SEEK_TO_OUT_MARKER,
+  SET_IN_MARKER,
+  SET_OUT_MARKER,
+  SET_VOLUME,
+  TOGGLE_MARKERS_PLAYBACK,
+  TOGGLE_MUTE,
+  TOGGLE_PLAYBACK
+} from '../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -63,43 +79,41 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   }
 
   public handle(request: PlayerRequest): void {
-    const payload: any = request.payload;
-
     switch (request.type) {
-      case PlayerRequestType.ClearMarkers:
+      case CLEAR_MARKERS:
         this.player.clearMarkers();
         break;
-      case PlayerRequestType.PlayAtSpeed:
-        this.player.playAtSpeed(payload.speed, payload.direction);
+      case PLAY_AT_SPEED:
+        this.player.playAtSpeed(request.speed, request.direction);
         break;
-      case PlayerRequestType.SaveMarkers:
+      case SAVE_MARKERS:
         this.markerSaveButtonClick.emit();
         break;
-      case PlayerRequestType.SeekToFrame:
-        this.player.seekTo(payload.frame.asSeconds());
+      case SEEK_TO_FRAME:
+        this.player.seekTo(request.frame.asSeconds());
         break;
-      case PlayerRequestType.SeekToInMarker:
+      case SEEK_TO_IN_MARKER:
         this.player.seekToInMarker();
         break;
-      case PlayerRequestType.SeekToOutMarker:
+      case SEEK_TO_OUT_MARKER:
         this.player.seekToOutMarker();
         break;
-      case PlayerRequestType.SetInMarker:
+      case SET_IN_MARKER:
         this.player.setInMarkerToCurrentTime();
         break;
-      case PlayerRequestType.SetOutMarker:
+      case SET_OUT_MARKER:
         this.player.setOutMarkerToCurrentTime();
         break;
-      case PlayerRequestType.SetVolume:
-        this.player.setVolumeTo(payload.volume);
+      case SET_VOLUME:
+        this.player.setVolumeTo(request.volume);
         break;
-      case PlayerRequestType.ToggleMarkersPlayback:
+      case TOGGLE_MARKERS_PLAYBACK:
         this.player.toggleMarkersPlayback();
         break;
-      case PlayerRequestType.ToggleMute:
+      case TOGGLE_MUTE:
         this.player.toggleMute();
         break;
-      case PlayerRequestType.TogglePlayback:
+      case TOGGLE_PLAYBACK:
         this.player.togglePlayback();
         break;
     }

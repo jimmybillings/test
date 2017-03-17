@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
-import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerState, PlayerRequest, SeekToFrameRequest, SEEK_TO_FRAME } from '../../../interfaces/player.interface';
 
 export type StepSize = '-5s' | '-1s' | '-1f' | '+1f' | '+1s' | '+5s';
 
@@ -52,7 +52,7 @@ export class StepButtonComponent {
     if (needToRecalculate) this.calculateBoundary();
   }
 
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() request: EventEmitter<SeekToFrameRequest> = new EventEmitter<SeekToFrameRequest>();
 
   public direction: 'reverse' | 'forward';
   public title: string;
@@ -74,7 +74,7 @@ export class StepButtonComponent {
   }
 
   public onClick(): void {
-    this.request.emit({ type: PlayerRequestType.SeekToFrame, payload: { frame: this.seekTarget } });
+    this.request.emit({ type: SEEK_TO_FRAME, frame: this.seekTarget });
   }
 
   private calculateBoundary(): void {

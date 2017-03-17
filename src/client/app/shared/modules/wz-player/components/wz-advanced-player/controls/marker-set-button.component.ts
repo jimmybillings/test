@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
-import { MarkerType, PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { MarkerType, PlayerState, PlayerRequest, SetInMarkerRequest, SET_IN_MARKER, SetOutMarkerRequest, SET_OUT_MARKER } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -32,7 +32,11 @@ export class MarkerSetButtonComponent {
   }
 
   public onClick(): void {
-    this.request.emit({ type: this.type === 'in' ? PlayerRequestType.SetInMarker : PlayerRequestType.SetOutMarker });
+    if (this.type === 'in') {
+      this.request.emit({ type: SET_IN_MARKER });
+    } else {
+      this.request.emit({ type: SET_OUT_MARKER });
+    }
   }
 
   private get frame(): Frame {

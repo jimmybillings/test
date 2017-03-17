@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerState, PlayerRequest, ToggleMarkersPlaybackRequest, TOGGLE_MARKERS_PLAYBACK }
+  from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -18,9 +19,9 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 export class MarkersPlaybackButtonComponent {
   @Input() playerState: PlayerState;
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() request: EventEmitter<ToggleMarkersPlaybackRequest> = new EventEmitter<ToggleMarkersPlaybackRequest>();
 
   public onClick(): void {
-    this.request.emit({ type: PlayerRequestType.ToggleMarkersPlayback });
+    this.request.emit({ type: TOGGLE_MARKERS_PLAYBACK });
   }
 }

@@ -1,5 +1,5 @@
 import { MarkerSetButtonComponent } from './marker-set-button.component';
-import { PlayerRequestType } from '../../../interfaces/player.interface';
+import { SET_IN_MARKER, SET_OUT_MARKER } from '../../../interfaces/player.interface';
 
 export function main() {
   describe('Marker Set Button Component', () => {
@@ -22,7 +22,7 @@ export function main() {
       it('onClick() emits the expected event', () => {
         componentUnderTest.onClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.SetInMarker });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: SET_IN_MARKER });
       });
     });
 
@@ -38,7 +38,7 @@ export function main() {
       it('onClick() emits the expected event', () => {
         componentUnderTest.onClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.SetOutMarker });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: SET_OUT_MARKER });
       });
     });
   });

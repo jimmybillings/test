@@ -46,25 +46,95 @@ export interface PlayerStateChanges {
   outMarkerFrameNumber?: number;
 }
 
-export enum PlayerRequestType {
-  ClearMarkers,
-  PlayAtSpeed,
-  SaveMarkers,
-  SeekToFrame,
-  SeekToInMarker,
-  SeekToOutMarker,
-  SetInMarker,
-  SetOutMarker,
-  SetVolume,
-  ToggleMarkersPlayback,
-  ToggleMute,
-  TogglePlayback
-}
-
-export interface PlayerRequest {
-  type: PlayerRequestType;
-  payload?: any;
-}
-
 export type MarkerType = 'in' | 'out';
 export type PlaybackDirection = 'reverse' | 'forward';
+
+export type CLEAR_MARKERS = 'CLEAR_MARKERS';
+export const CLEAR_MARKERS: CLEAR_MARKERS = 'CLEAR_MARKERS';
+export type ClearMarkersRequest = {
+  type: CLEAR_MARKERS
+};
+
+export type PLAY_AT_SPEED = 'PLAY_AT_SPEED';
+export const PLAY_AT_SPEED: PLAY_AT_SPEED = 'PLAY_AT_SPEED';
+export type PlayAtSpeedRequest = {
+  type: PLAY_AT_SPEED,
+  speed: number,
+  direction: PlaybackDirection
+};
+
+export type SAVE_MARKERS = 'SAVE_MARKERS';
+export const SAVE_MARKERS: SAVE_MARKERS = 'SAVE_MARKERS';
+export type SaveMarkersRequest = {
+  type: SAVE_MARKERS
+};
+
+export type SEEK_TO_FRAME = 'SEEK_TO_FRAME';
+export const SEEK_TO_FRAME: SEEK_TO_FRAME = 'SEEK_TO_FRAME';
+export type SeekToFrameRequest = {
+  type: SEEK_TO_FRAME,
+  frame: Frame
+};
+
+export type SEEK_TO_IN_MARKER = 'SEEK_TO_IN_MARKER';
+export const SEEK_TO_IN_MARKER: SEEK_TO_IN_MARKER = 'SEEK_TO_IN_MARKER';
+export type SeekToInMarkerRequest = {
+  type: SEEK_TO_IN_MARKER
+};
+
+export type SEEK_TO_OUT_MARKER = 'SEEK_TO_OUT_MARKER';
+export const SEEK_TO_OUT_MARKER: SEEK_TO_OUT_MARKER = 'SEEK_TO_OUT_MARKER';
+export type SeekToOutMarkerRequest = {
+  type: SEEK_TO_OUT_MARKER
+};
+
+export type SET_IN_MARKER = 'SET_IN_MARKER';
+export const SET_IN_MARKER: SET_IN_MARKER = 'SET_IN_MARKER';
+export type SetInMarkerRequest = {
+  type: SET_IN_MARKER
+};
+
+export type SET_OUT_MARKER = 'SET_OUT_MARKER';
+export const SET_OUT_MARKER: SET_OUT_MARKER = 'SET_OUT_MARKER';
+export type SetOutMarkerRequest = {
+  type: SET_OUT_MARKER
+};
+
+export type SET_VOLUME = 'SET_VOLUME';
+export const SET_VOLUME: SET_VOLUME = 'SET_VOLUME';
+export type SetVolumeRequest = {
+  type: SET_VOLUME,
+  volume: number
+};
+
+export type TOGGLE_MARKERS_PLAYBACK = 'TOGGLE_MARKERS_PLAYBACK';
+export const TOGGLE_MARKERS_PLAYBACK: TOGGLE_MARKERS_PLAYBACK = 'TOGGLE_MARKERS_PLAYBACK';
+export type ToggleMarkersPlaybackRequest = {
+  type: TOGGLE_MARKERS_PLAYBACK
+};
+
+export type TOGGLE_MUTE = 'TOGGLE_MUTE';
+export const TOGGLE_MUTE: TOGGLE_MUTE = 'TOGGLE_MUTE';
+export type ToggleMuteRequest = {
+  type: TOGGLE_MUTE
+};
+
+export type TOGGLE_PLAYBACK = 'TOGGLE_PLAYBACK';
+export const TOGGLE_PLAYBACK: TOGGLE_PLAYBACK = 'TOGGLE_PLAYBACK';
+export type TogglePlaybackRequest = {
+  type: TOGGLE_PLAYBACK
+};
+
+export type PlayerRequest =
+  ClearMarkersRequest |
+  PlayAtSpeedRequest |
+  SaveMarkersRequest |
+  SeekToFrameRequest |
+  SeekToInMarkerRequest |
+  SeekToOutMarkerRequest |
+  SetInMarkerRequest |
+  SetOutMarkerRequest |
+  SetVolumeRequest |
+  ToggleMarkersPlaybackRequest |
+  ToggleMuteRequest |
+  TogglePlaybackRequest
