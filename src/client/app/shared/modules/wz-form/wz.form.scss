@@ -10,15 +10,32 @@ form button {
 form {
   padding-top:rem(2.0);
 }
+wz-cc-form,
 wz-form {
   display: block;
   position: relative;
   form {
+    md-select,
     md-input {
       width: 100%;
       margin-top: rem(1.2);
       margin-bottom: rem(1.2);
       font-size: 1.1em;
+    }
+    md-select {
+      .md-select-trigger {
+        height: rem(1.8);
+        margin: rem(1.6) 0;
+        padding-bottom: rem(1.0);
+        line-height: rem(1.4);
+      }
+      .md-select-value {
+        top: rem(-.2);
+        color: currentColor;
+      }
+      .md-select-arrow {
+        height: rem(.3);
+      }
     }
     a.view-tos {
       text-decoration: underline;
