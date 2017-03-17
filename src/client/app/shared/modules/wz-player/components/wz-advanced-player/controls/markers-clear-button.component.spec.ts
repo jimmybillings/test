@@ -1,5 +1,4 @@
 import { MarkersClearButtonComponent } from './markers-clear-button.component';
-import { CLEAR_MARKERS } from '../../../interfaces/player.interface';
 
 export function main() {
   describe('Markers Clear Button Component', () => {
@@ -14,7 +13,7 @@ export function main() {
       it('emits the expected request event', () => {
         componentUnderTest.onClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: CLEAR_MARKERS });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'CLEAR_MARKERS' });
       });
     });
   });

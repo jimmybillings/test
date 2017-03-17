@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
-import { PlayerState, PlayerSeekRequest, SEEK_TO_FRAME, SEEK_TO_MARKER } from '../../../interfaces/player.interface';
+import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -69,7 +69,7 @@ export class ScrubberComponent {
   }
 
   public onScrubberSliderChange(event: any): void {
-    this.request.emit({ type: SEEK_TO_FRAME, frame: this.hoverFrame });
+    this.request.emit({ type: 'SEEK_TO_FRAME', frame: this.hoverFrame });
   }
 
   public onScrubberMouseOver(): void {
@@ -85,11 +85,11 @@ export class ScrubberComponent {
   }
 
   public onInMarkerClick(): void {
-    this.request.emit({ type: SEEK_TO_MARKER, markerType: 'in' });
+    this.request.emit({ type: 'SEEK_TO_MARKER', markerType: 'in' });
   }
 
   public onOutMarkerClick(): void {
-    this.request.emit({ type: SEEK_TO_MARKER, markerType: 'out' });
+    this.request.emit({ type: 'SEEK_TO_MARKER', markerType: 'out' });
   }
 
   private updateHoverFrameDisplayWith(pageMouseX: number): void {

@@ -49,70 +49,50 @@ export interface PlayerStateChanges {
 export type MarkerType = 'in' | 'out';
 export type PlaybackDirection = 'reverse' | 'forward';
 
-export type CLEAR_MARKERS = 'CLEAR_MARKERS';
-export const CLEAR_MARKERS: CLEAR_MARKERS = 'CLEAR_MARKERS';
 export type ClearMarkersRequest = {
-  type: CLEAR_MARKERS
+  type: 'CLEAR_MARKERS'
 };
 
-export type PLAY_AT_SPEED = 'PLAY_AT_SPEED';
-export const PLAY_AT_SPEED: PLAY_AT_SPEED = 'PLAY_AT_SPEED';
 export type PlayAtSpeedRequest = {
-  type: PLAY_AT_SPEED,
+  type: 'PLAY_AT_SPEED',
   speed: number,
   direction: PlaybackDirection
 };
 
-export type SAVE_MARKERS = 'SAVE_MARKERS';
-export const SAVE_MARKERS: SAVE_MARKERS = 'SAVE_MARKERS';
 export type SaveMarkersRequest = {
-  type: SAVE_MARKERS
+  type: 'SAVE_MARKERS'
 };
 
-export type SEEK_TO_FRAME = 'SEEK_TO_FRAME';
-export const SEEK_TO_FRAME: SEEK_TO_FRAME = 'SEEK_TO_FRAME';
 export type SeekToFrameRequest = {
-  type: SEEK_TO_FRAME,
+  type: 'SEEK_TO_FRAME',
   frame: Frame
 };
 
-export type SEEK_TO_MARKER = 'SEEK_TO_MARKER';
-export const SEEK_TO_MARKER: SEEK_TO_MARKER = 'SEEK_TO_MARKER';
 export type SeekToMarkerRequest = {
-  type: SEEK_TO_MARKER,
+  type: 'SEEK_TO_MARKER',
   markerType: MarkerType
 };
 
-export type SET_MARKER_TO_CURRENT_FRAME = 'SET_MARKER_TO_CURRENT_FRAME';
-export const SET_MARKER_TO_CURRENT_FRAME: SET_MARKER_TO_CURRENT_FRAME = 'SET_MARKER_TO_CURRENT_FRAME';
 export type SetMarkerToCurrentFrameRequest = {
-  type: SET_MARKER_TO_CURRENT_FRAME,
+  type: 'SET_MARKER_TO_CURRENT_FRAME',
   markerType: MarkerType
 };
 
-export type SET_VOLUME = 'SET_VOLUME';
-export const SET_VOLUME: SET_VOLUME = 'SET_VOLUME';
 export type SetVolumeRequest = {
-  type: SET_VOLUME,
+  type: 'SET_VOLUME',
   volume: number
 };
 
-export type TOGGLE_MARKERS_PLAYBACK = 'TOGGLE_MARKERS_PLAYBACK';
-export const TOGGLE_MARKERS_PLAYBACK: TOGGLE_MARKERS_PLAYBACK = 'TOGGLE_MARKERS_PLAYBACK';
 export type ToggleMarkersPlaybackRequest = {
-  type: TOGGLE_MARKERS_PLAYBACK
+  type: 'TOGGLE_MARKERS_PLAYBACK'
 };
 
-export type TOGGLE_MUTE = 'TOGGLE_MUTE';
-export const TOGGLE_MUTE: TOGGLE_MUTE = 'TOGGLE_MUTE';
 export type ToggleMuteRequest = {
-  type: TOGGLE_MUTE
+  type: 'TOGGLE_MUTE'
 };
 
-export type TOGGLE_PLAYBACK = 'TOGGLE_PLAYBACK';
-export const TOGGLE_PLAYBACK: TOGGLE_PLAYBACK = 'TOGGLE_PLAYBACK';
 export type TogglePlaybackRequest = {
-  type: TOGGLE_PLAYBACK
+  type: 'TOGGLE_PLAYBACK'
 };
 
 export type PlayerSeekRequest = SeekToFrameRequest | SeekToMarkerRequest;

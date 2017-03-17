@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { PlayerState, PlaybackDirection, PlayAtSpeedRequest, PLAY_AT_SPEED } from '../../../interfaces/player.interface';
+import { PlayerState, PlaybackDirection, PlayAtSpeedRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -33,6 +33,6 @@ export class FastPlaybackButtonComponent {
   }
 
   public onClick(): void {
-    this.request.emit({ type: PLAY_AT_SPEED, speed: 4, direction: this.direction });
+    this.request.emit({ type: 'PLAY_AT_SPEED', speed: 4, direction: this.direction });
   }
 }

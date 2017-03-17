@@ -3,19 +3,7 @@ import { BehaviorSubject } from 'rxjs/Rx';
 
 import { WzAdvancedPlayerComponent } from './wz.advanced-player.component';
 import { Frame } from 'wazee-frame-formatter';
-import {
-  PlayerStateChanges,
-  CLEAR_MARKERS,
-  PLAY_AT_SPEED,
-  SAVE_MARKERS,
-  SEEK_TO_FRAME,
-  SEEK_TO_MARKER,
-  SET_MARKER_TO_CURRENT_FRAME,
-  SET_VOLUME,
-  TOGGLE_MARKERS_PLAYBACK,
-  TOGGLE_MUTE,
-  TOGGLE_PLAYBACK
-} from '../../interfaces/player.interface';
+import { PlayerStateChanges } from '../../interfaces/player.interface';
 
 export function main() {
   describe('Wazee Advanced Player Component', () => {
@@ -296,7 +284,7 @@ export function main() {
     describe('handle()', () => {
       describe('CLEAR_MARKERS', () => {
         it('tells the player to clear its markers', () => {
-          componentUnderTest.handle({ type: CLEAR_MARKERS });
+          componentUnderTest.handle({ type: 'CLEAR_MARKERS' });
 
           expect(componentUnderTest.player.clearMarkers).toHaveBeenCalled();
         });
@@ -304,7 +292,7 @@ export function main() {
 
       describe('PLAY_AT_SPEED', () => {
         it('tells the player to play at the requested speed', () => {
-          componentUnderTest.handle({ type: PLAY_AT_SPEED, speed: 42, direction: 'forward' });
+          componentUnderTest.handle({ type: 'PLAY_AT_SPEED', speed: 42, direction: 'forward' });
 
           expect(componentUnderTest.player.playAtSpeed).toHaveBeenCalledWith(42, 'forward');
         });
@@ -312,7 +300,7 @@ export function main() {
 
       describe('SAVE_MARKERS', () => {
         it('emits the proper event if markersSaveButtonEnabled is true', () => {
-          componentUnderTest.handle({ type: SAVE_MARKERS });
+          componentUnderTest.handle({ type: 'SAVE_MARKERS' });
 
           expect(componentUnderTest.markerSaveButtonClick.emit).toHaveBeenCalled();
         });
@@ -320,7 +308,7 @@ export function main() {
         it('does not emit an event if markersSaveButtonEnabled is false', () => {
           componentUnderTest.markersSaveButtonEnabled = false;
 
-          componentUnderTest.handle({ type: SAVE_MARKERS });
+          componentUnderTest.handle({ type: 'SAVE_MARKERS' });
 
           expect(componentUnderTest.markerSaveButtonClick.emit).not.toHaveBeenCalled();
         });
@@ -328,13 +316,13 @@ export function main() {
 
       describe('SEEK_TO_FRAME', () => {
         it('tells the player to seek to the requested frame', () => {
-          componentUnderTest.handle({ type: SEEK_TO_FRAME, frame: new Frame(30).setFromSeconds(42) });
+          componentUnderTest.handle({ type: 'SEEK_TO_FRAME', frame: new Frame(30).setFromSeconds(42) });
 
           expect(componentUnderTest.player.seekTo).toHaveBeenCalledWith(42);
         });
 
         it('does nothing if the requested frame is undefined', () => {
-          componentUnderTest.handle({ type: SEEK_TO_FRAME, frame: undefined });
+          componentUnderTest.handle({ type: 'SEEK_TO_FRAME', frame: undefined });
 
           expect(componentUnderTest.player.seekTo).not.toHaveBeenCalled();
         });
@@ -342,13 +330,13 @@ export function main() {
 
       describe('SEEK_TO_MARKER', () => {
         it('tells the player to seek to the in marker if the requested marker type is \'in\'', () => {
-          componentUnderTest.handle({ type: SEEK_TO_MARKER, markerType: 'in' });
+          componentUnderTest.handle({ type: 'SEEK_TO_MARKER', markerType: 'in' });
 
           expect(componentUnderTest.player.seekToInMarker).toHaveBeenCalled();
         });
 
         it('tells the player to seek to the out marker if the requested marker type is \'out\'', () => {
-          componentUnderTest.handle({ type: SEEK_TO_MARKER, markerType: 'out' });
+          componentUnderTest.handle({ type: 'SEEK_TO_MARKER', markerType: 'out' });
 
           expect(componentUnderTest.player.seekToOutMarker).toHaveBeenCalled();
         });
@@ -356,13 +344,13 @@ export function main() {
 
       describe('SET_MARKER_TO_CURRENT_FRAME', () => {
         it('tells the player to set the in marker to the current frame if the requested marker type is \'in\'', () => {
-          componentUnderTest.handle({ type: SET_MARKER_TO_CURRENT_FRAME, markerType: 'in' });
+          componentUnderTest.handle({ type: 'SET_MARKER_TO_CURRENT_FRAME', markerType: 'in' });
 
           expect(componentUnderTest.player.setInMarkerToCurrentTime).toHaveBeenCalled();
         });
 
         it('tells the player to set the out marker to the current frame if the requested marker type is \'out\'', () => {
-          componentUnderTest.handle({ type: SET_MARKER_TO_CURRENT_FRAME, markerType: 'out' });
+          componentUnderTest.handle({ type: 'SET_MARKER_TO_CURRENT_FRAME', markerType: 'out' });
 
           expect(componentUnderTest.player.setOutMarkerToCurrentTime).toHaveBeenCalled();
         });
@@ -370,7 +358,7 @@ export function main() {
 
       describe('SET_VOLUME', () => {
         it('tells the player to set the volume to the requested level', () => {
-          componentUnderTest.handle({ type: SET_VOLUME, volume: 11 });
+          componentUnderTest.handle({ type: 'SET_VOLUME', volume: 11 });
 
           expect(componentUnderTest.player.setVolumeTo).toHaveBeenCalledWith(11);
         });
@@ -378,7 +366,7 @@ export function main() {
 
       describe('TOGGLE_MARKERS_PLAYBACK', () => {
         it('tells the player to toggle playback between markers', () => {
-          componentUnderTest.handle({ type: TOGGLE_MARKERS_PLAYBACK });
+          componentUnderTest.handle({ type: 'TOGGLE_MARKERS_PLAYBACK' });
 
           expect(componentUnderTest.player.toggleMarkersPlayback).toHaveBeenCalled();
         });
@@ -386,7 +374,7 @@ export function main() {
 
       describe('TOGGLE_MUTE', () => {
         it('tells the player to toggle its mute state', () => {
-          componentUnderTest.handle({ type: TOGGLE_MUTE });
+          componentUnderTest.handle({ type: 'TOGGLE_MUTE' });
 
           expect(componentUnderTest.player.toggleMute).toHaveBeenCalled();
         });
@@ -394,7 +382,7 @@ export function main() {
 
       describe('TOGGLE_PLAYBACK', () => {
         it('tells the player to toggle playback', () => {
-          componentUnderTest.handle({ type: TOGGLE_PLAYBACK });
+          componentUnderTest.handle({ type: 'TOGGLE_PLAYBACK' });
 
           expect(componentUnderTest.player.togglePlayback).toHaveBeenCalled();
         });

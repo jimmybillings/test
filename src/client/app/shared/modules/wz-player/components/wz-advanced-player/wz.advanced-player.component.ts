@@ -5,21 +5,7 @@ import { WzPlayerComponent } from '../wz-player/wz.player.component';
 import { SubclipMarkers, SubclipMarkerFrames } from '../../../../interfaces/asset.interface';
 import { Subscription } from 'rxjs/Rx';
 import { Frame } from 'wazee-frame-formatter';
-import {
-  PlayerState,
-  PlayerStateChanges,
-  PlayerRequest,
-  CLEAR_MARKERS,
-  PLAY_AT_SPEED,
-  SAVE_MARKERS,
-  SEEK_TO_FRAME,
-  SEEK_TO_MARKER,
-  SET_MARKER_TO_CURRENT_FRAME,
-  SET_VOLUME,
-  TOGGLE_MARKERS_PLAYBACK,
-  TOGGLE_MUTE,
-  TOGGLE_PLAYBACK
-} from '../../interfaces/player.interface';
+import { PlayerState, PlayerStateChanges, PlayerRequest } from '../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -78,34 +64,34 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
 
   public handle(request: PlayerRequest): void {
     switch (request.type) {
-      case CLEAR_MARKERS:
+      case 'CLEAR_MARKERS':
         this.player.clearMarkers();
         break;
-      case PLAY_AT_SPEED:
+      case 'PLAY_AT_SPEED':
         this.player.playAtSpeed(request.speed, request.direction);
         break;
-      case SAVE_MARKERS:
+      case 'SAVE_MARKERS':
         if (this.markersSaveButtonEnabled) this.markerSaveButtonClick.emit();
         break;
-      case SEEK_TO_FRAME:
+      case 'SEEK_TO_FRAME':
         if (request.frame) this.player.seekTo(request.frame.asSeconds());
         break;
-      case SEEK_TO_MARKER:
+      case 'SEEK_TO_MARKER':
         request.markerType === 'in' ? this.player.seekToInMarker() : this.player.seekToOutMarker();
         break;
-      case SET_MARKER_TO_CURRENT_FRAME:
+      case 'SET_MARKER_TO_CURRENT_FRAME':
         request.markerType === 'in' ? this.player.setInMarkerToCurrentTime() : this.player.setOutMarkerToCurrentTime();
         break;
-      case SET_VOLUME:
+      case 'SET_VOLUME':
         this.player.setVolumeTo(request.volume);
         break;
-      case TOGGLE_MARKERS_PLAYBACK:
+      case 'TOGGLE_MARKERS_PLAYBACK':
         this.player.toggleMarkersPlayback();
         break;
-      case TOGGLE_MUTE:
+      case 'TOGGLE_MUTE':
         this.player.toggleMute();
         break;
-      case TOGGLE_PLAYBACK:
+      case 'TOGGLE_PLAYBACK':
         this.player.togglePlayback();
         break;
     }

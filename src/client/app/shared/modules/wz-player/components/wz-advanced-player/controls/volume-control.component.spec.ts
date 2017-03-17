@@ -1,5 +1,4 @@
 import { VolumeControlComponent } from './volume-control.component';
-import { SET_VOLUME, TOGGLE_MUTE } from '../../../interfaces/player.interface';
 
 export function main() {
   describe('Volume Control Component', () => {
@@ -64,7 +63,7 @@ export function main() {
       it('requests a volume change', () => {
         componentUnderTest.onSliderChange({ value: 42 });
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: SET_VOLUME, volume: 42 });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'SET_VOLUME', volume: 42 });
       });
     });
 
@@ -72,7 +71,7 @@ export function main() {
       it('requests a mute toggle', () => {
         componentUnderTest.onButtonClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: TOGGLE_MUTE });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'TOGGLE_MUTE' });
       });
     });
   });

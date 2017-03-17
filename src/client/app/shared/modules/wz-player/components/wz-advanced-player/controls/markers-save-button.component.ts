@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { PlayerState, PlayerRequest, SaveMarkersRequest, SAVE_MARKERS } from '../../../interfaces/player.interface';
+import { PlayerState, PlayerRequest, SaveMarkersRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -22,6 +22,6 @@ export class MarkersSaveButtonComponent {
   @Output() request: EventEmitter<SaveMarkersRequest> = new EventEmitter<SaveMarkersRequest>();
 
   public onClick(): void {
-    this.request.emit({ type: SAVE_MARKERS });
+    this.request.emit({ type: 'SAVE_MARKERS' });
   }
 }

@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
-import { PlayerState, MarkerType, SeekToMarkerRequest, SEEK_TO_MARKER } from '../../../interfaces/player.interface';
+import { PlayerState, MarkerType, SeekToMarkerRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -40,6 +40,6 @@ export class MarkerSeekButtonComponent {
   }
 
   public onClick(): void {
-    this.request.emit({ type: SEEK_TO_MARKER, markerType: this.type });
+    this.request.emit({ type: 'SEEK_TO_MARKER', markerType: this.type });
   }
 }

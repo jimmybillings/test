@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { PlayerState, PlayerRequest, TogglePlaybackRequest, TOGGLE_PLAYBACK } from '../../../interfaces/player.interface';
+import { PlayerState, PlayerRequest, TogglePlaybackRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -21,6 +21,6 @@ export class PlaybackToggleButtonComponent {
   @Output() request: EventEmitter<TogglePlaybackRequest> = new EventEmitter<TogglePlaybackRequest>();
 
   public onClick(): void {
-    this.request.emit({ type: TOGGLE_PLAYBACK });
+    this.request.emit({ type: 'TOGGLE_PLAYBACK' });
   }
 }

@@ -1,8 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
-import { MarkerType, PlayerState, SetMarkerToCurrentFrameRequest, SET_MARKER_TO_CURRENT_FRAME }
-  from '../../../interfaces/player.interface';
+import { MarkerType, PlayerState, SetMarkerToCurrentFrameRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -33,7 +32,7 @@ export class MarkerSetButtonComponent {
   }
 
   public onClick(): void {
-    this.request.emit({ type: SET_MARKER_TO_CURRENT_FRAME, markerType: this.type });
+    this.request.emit({ type: 'SET_MARKER_TO_CURRENT_FRAME', markerType: this.type });
   }
 
   private get frame(): Frame {

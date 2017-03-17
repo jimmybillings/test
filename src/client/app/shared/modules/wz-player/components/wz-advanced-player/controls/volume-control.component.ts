@@ -11,8 +11,7 @@ import {
   animate
 } from '@angular/core';
 
-import { PlayerState, PlayerVolumeRequest, SET_VOLUME, ToggleMuteRequest, TOGGLE_MUTE }
-  from '../../../interfaces/player.interface';
+import { PlayerState, PlayerVolumeRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -69,11 +68,11 @@ export class VolumeControlComponent {
   }
 
   public onSliderChange(event: any): void {
-    this.request.emit({ type: SET_VOLUME, volume: event.value });
+    this.request.emit({ type: 'SET_VOLUME', volume: event.value });
   }
 
   public onButtonClick(): void {
-    this.request.emit({ type: TOGGLE_MUTE });
+    this.request.emit({ type: 'TOGGLE_MUTE' });
   }
 
 }
