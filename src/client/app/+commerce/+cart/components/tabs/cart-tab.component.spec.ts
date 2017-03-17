@@ -81,7 +81,7 @@ export function main() {
 
       componentUnderTest = new CartTabComponent(
         null, mockCartService, mockUiConfig, mockDialog,
-        mockAssetService, mockWindow, mockUserPreference, null, null, mockDocument
+        mockAssetService, mockWindow, mockUserPreference, null, null, mockDocument, null, null
       );
     });
 
@@ -115,7 +115,7 @@ export function main() {
 
         componentUnderTest = new CartTabComponent(
           null, mockCartService, mockUiConfig, mockDialog,
-          null, mockWindow, mockUserPreference, null, null, null
+          null, mockWindow, mockUserPreference, null, null, null, null, null
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
@@ -130,7 +130,7 @@ export function main() {
 
         componentUnderTest = new CartTabComponent(
           null, mockCartService, mockUiConfig, mockDialog,
-          null, mockWindow, mockUserPreference, null, null, null
+          null, mockWindow, mockUserPreference, null, null, null, null, null
         );
         componentUnderTest.ngOnInit();
 
@@ -142,7 +142,7 @@ export function main() {
 
         componentUnderTest = new CartTabComponent(
           null, mockCartService, mockUiConfig, mockDialog,
-          null, mockWindow, mockUserPreference, null, null, null
+          null, mockWindow, mockUserPreference, null, null, null, null, null
         );
         componentUnderTest.ngOnInit();
 
@@ -154,7 +154,7 @@ export function main() {
 
         componentUnderTest = new CartTabComponent(
           null, mockCartService, mockUiConfig, mockDialog,
-          null, mockWindow, mockUserPreference, null, null, null
+          null, mockWindow, mockUserPreference, null, null, null, null, null
         );
         componentUnderTest.ngOnInit();
 
@@ -186,7 +186,7 @@ export function main() {
         };
 
         componentUnderTest = new CartTabComponent(
-          null, mockCartService, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -200,7 +200,7 @@ export function main() {
         };
 
         componentUnderTest = new CartTabComponent(
-          null, mockCartService, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);

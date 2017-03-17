@@ -6,7 +6,7 @@ import { CartService } from '../../../../shared/services/cart.service';
 import { Project, LineItem, Cart } from '../../../../shared/interfaces/cart.interface';
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { EditProjectComponent } from '../edit-project.component';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { WzSubclipEditorComponent } from '../../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { AssetService } from '../../../../shared/services/asset.service';
 import { Capabilities } from '../../../../shared/services/capabilities.service';
@@ -17,6 +17,7 @@ import { WindowRef } from '../../../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../../../shared/interfaces/asset.interface';
 import { QuoteService } from '../../../services/quote.service';
 import { QuoteFormComponent } from '../quote-form.component';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   moduleId: module.id,
@@ -47,7 +48,9 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     private userPreference: UserPreferenceService,
     private error: ErrorStore,
     private quoteService: QuoteService,
-    @Inject(DOCUMENT) private document: any) {
+    @Inject(DOCUMENT) private document: any,
+    private snackBar: MdSnackBar,
+    private translate: TranslateService) {
     super();
   }
 
@@ -75,7 +78,14 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     dialogRef.componentInstance.dialog = dialogRef;
     dialogRef.componentInstance.items = this.config.createQuote.items;
     dialogRef.afterClosed().subscribe((form: { emailAddress: string }) => {
-      if (form) this.quoteService.createQuote(false, form.emailAddress, this.suggestions).take(1).subscribe();
+      if (form) this.quoteService.createQuote(false, form.emailAddress, this.suggestions).take(1).subscribe((res: any) => {
+        this.showSnackBar({
+          key: 'QUOTE.CREATED_FOR_TOAST',
+          value: { emailAddress: form.emailAddress }
+        });
+      }, (err) => {
+        console.error(err);
+      });
     });
     dialogRef.componentInstance.cacheSuggestions.subscribe((suggestions: any[]) => {
       this.suggestions = suggestions;
@@ -83,7 +93,13 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public saveAsDraft(): void {
-    this.quoteService.createQuote(true).take(1).subscribe();
+    this.quoteService.createQuote(true).take(1).subscribe((res: any) => {
+      this.showSnackBar({
+        key: 'QUOTE.SAVED_AS_DRAFT_TOAST'
+      });
+    }, (err: any) => {
+      console.error(err);
+    });
   }
 
   public get rmAssetsHaveAttributes(): boolean {
@@ -141,6 +157,14 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
         break;
       }
     };
+  }
+
+
+  private showSnackBar(message: any) {
+    this.translate.get(message.key, message.value)
+      .subscribe((res: string) => {
+        this.snackBar.open(res, '', { duration: 2000 });
+      });
   }
 
   private showPricingDialog(lineItem: any): void {
