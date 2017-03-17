@@ -2,6 +2,9 @@ confirm-tab-component {
   .md-title {
     opacity: .6;
     margin: .3em 0;
+    &.order-summary {
+      margin-top: rem(4.4);
+    }
   }
   .billing-payment {
     margin: rem(1.2) 0 0 rem(-1.2);
