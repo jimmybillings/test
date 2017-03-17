@@ -76,28 +76,18 @@ export type SeekToFrameRequest = {
   frame: Frame
 };
 
-export type SEEK_TO_IN_MARKER = 'SEEK_TO_IN_MARKER';
-export const SEEK_TO_IN_MARKER: SEEK_TO_IN_MARKER = 'SEEK_TO_IN_MARKER';
-export type SeekToInMarkerRequest = {
-  type: SEEK_TO_IN_MARKER
+export type SEEK_TO_MARKER = 'SEEK_TO_MARKER';
+export const SEEK_TO_MARKER: SEEK_TO_MARKER = 'SEEK_TO_MARKER';
+export type SeekToMarkerRequest = {
+  type: SEEK_TO_MARKER,
+  markerType: MarkerType
 };
 
-export type SEEK_TO_OUT_MARKER = 'SEEK_TO_OUT_MARKER';
-export const SEEK_TO_OUT_MARKER: SEEK_TO_OUT_MARKER = 'SEEK_TO_OUT_MARKER';
-export type SeekToOutMarkerRequest = {
-  type: SEEK_TO_OUT_MARKER
-};
-
-export type SET_IN_MARKER = 'SET_IN_MARKER';
-export const SET_IN_MARKER: SET_IN_MARKER = 'SET_IN_MARKER';
-export type SetInMarkerRequest = {
-  type: SET_IN_MARKER
-};
-
-export type SET_OUT_MARKER = 'SET_OUT_MARKER';
-export const SET_OUT_MARKER: SET_OUT_MARKER = 'SET_OUT_MARKER';
-export type SetOutMarkerRequest = {
-  type: SET_OUT_MARKER
+export type SET_MARKER_TO_CURRENT_FRAME = 'SET_MARKER_TO_CURRENT_FRAME';
+export const SET_MARKER_TO_CURRENT_FRAME: SET_MARKER_TO_CURRENT_FRAME = 'SET_MARKER_TO_CURRENT_FRAME';
+export type SetMarkerToCurrentFrameRequest = {
+  type: SET_MARKER_TO_CURRENT_FRAME,
+  markerType: MarkerType
 };
 
 export type SET_VOLUME = 'SET_VOLUME';
@@ -130,11 +120,9 @@ export type PlayerRequest =
   PlayAtSpeedRequest |
   SaveMarkersRequest |
   SeekToFrameRequest |
-  SeekToInMarkerRequest |
-  SeekToOutMarkerRequest |
-  SetInMarkerRequest |
-  SetOutMarkerRequest |
+  SeekToMarkerRequest |
+  SetMarkerToCurrentFrameRequest |
   SetVolumeRequest |
   ToggleMarkersPlaybackRequest |
   ToggleMuteRequest |
-  TogglePlaybackRequest
+  TogglePlaybackRequest;

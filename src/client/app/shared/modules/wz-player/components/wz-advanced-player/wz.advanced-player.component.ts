@@ -13,10 +13,8 @@ import {
   PLAY_AT_SPEED,
   SAVE_MARKERS,
   SEEK_TO_FRAME,
-  SEEK_TO_IN_MARKER,
-  SEEK_TO_OUT_MARKER,
-  SET_IN_MARKER,
-  SET_OUT_MARKER,
+  SEEK_TO_MARKER,
+  SET_MARKER_TO_CURRENT_FRAME,
   SET_VOLUME,
   TOGGLE_MARKERS_PLAYBACK,
   TOGGLE_MUTE,
@@ -92,17 +90,11 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
       case SEEK_TO_FRAME:
         this.player.seekTo(request.frame.asSeconds());
         break;
-      case SEEK_TO_IN_MARKER:
-        this.player.seekToInMarker();
+      case SEEK_TO_MARKER:
+        request.markerType === 'in' ? this.player.seekToInMarker() : this.player.seekToOutMarker();
         break;
-      case SEEK_TO_OUT_MARKER:
-        this.player.seekToOutMarker();
-        break;
-      case SET_IN_MARKER:
-        this.player.setInMarkerToCurrentTime();
-        break;
-      case SET_OUT_MARKER:
-        this.player.setOutMarkerToCurrentTime();
+      case SET_MARKER_TO_CURRENT_FRAME:
+        request.markerType === 'in' ? this.player.setInMarkerToCurrentTime() : this.player.setOutMarkerToCurrentTime();
         break;
       case SET_VOLUME:
         this.player.setVolumeTo(request.volume);
