@@ -28,9 +28,9 @@
             <span>{{address.name}}</span>
           </header>
           <address *ngIf="address.address">
-            {{address.address.address}}<br>
-            {{address.address.city}}, {{address.address.state}} {{address.address.zipcode}}, {{address.address.country}}<br>
-            {{address.address.phone}}
+            {{address.address.address}}<br/>
+            {{address.address.city}}, {{address.address.state}} {{address.address.zipcode}}, {{address.address.country}}<br/>
+            <span class="phone">{{address.address.phone}}</span>
           </address>
           <address *ngIf="!address.address">
             <p>There is no address on account for this {{address.type}}</p>

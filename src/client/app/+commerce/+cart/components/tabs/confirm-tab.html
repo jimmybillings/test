@@ -1,61 +1,60 @@
 <div flex="100" flex-gt-lg="85" class="place-order">
-  <section class="cart-total" layout="row" layout-align="end">
-      <div flex="100" class="total md-headline">
-        <span class="total-label">
-          {{ 'CART.CONFIRM.TOTAL' | translate }} 
-        </span>
-        <span class="total-amount">
-          {{ cartStore.cart.total | currency:'USD':true:'1.2-2' }}
-        </span>
-      </div>
-      <div flex="">
-        <button md-raised-button class="checkout" (click)="purchase()">
-          {{ 'CART.CONFIRM.PURCHASE_BTN' | translate }}
-        </button>
-      </div>
-  </section>
-  
   <header layout="column" layout-align="start">
     <h2 class="cart-heading">{{ 'CART.CONFIRM.PAGE_TITLE' | translate }}</h2>
   </header>
-  <div layout="column" layout-gt-xs="row">
-    <section class="billing" flex="100" flex-gt-xs="50" flex-gt-md="33">
-      <h5 class="md-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
-      <address [innerHTML]="format(cartStore.orderInProgress.selectedAddress)">
-      </address>
-    </section>
-    <section class="payment" flex="100" flex-gt-xs="50" flex-gt-md="33">
-      <h5 class="md-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
-      <div>
-        {{cartStore.orderInProgress.authorization.card.brand}} card ending **** {{cartStore.orderInProgress.authorization.card.last4}}
-      </div>
-    </section>
-  </div>
-</div>
-
-
-<h5 class="md-title">{{ 'CART.CONFIRM.ORDER_TITLE' | translate }}</h5>
-<projects-component flex="100" [readOnly]="true" [projects]="(cartService.data | async).cart.projects"></projects-component>
-
-<section class="cart-total" layout="column" layout-gt-xs="row" layout-align="space-between">
-  <button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back" flex-order-xs="4" flex="0">
-    <md-icon>keyboard_backspace</md-icon>
-    {{ 'CART.CONFIRM.BACK_BTN' | translate }}
-  </button>
-  <!--<div layout-xs="row" flex="100" flex-order-xs="-1">-->
-    <div flex="100" class="total md-headline">
+  <section class="cart-total" layout="row" layout-align="end">
+    <span flex="100" class="total md-headline" layout-align="end center">
       <span class="total-label">
         {{ 'CART.CONFIRM.TOTAL' | translate }} 
       </span>
       <span class="total-amount">
         {{ cartStore.cart.total | currency:'USD':true:'1.2-2' }}
       </span>
-    </div>
-    <div flex="" flex-order-xs="2">
+    </span>
+    <span flex="" layout-align="end center">
       <button md-raised-button class="checkout" (click)="purchase()">
         {{ 'CART.CONFIRM.PURCHASE_BTN' | translate }}
       </button>
-    </div>
-  <!--</div>-->
-</section>
+    </span>
+  </section>
 
+  <div layout="column" layout-gt-xs="row" class="billing-payment">
+    <section class="billing" flex="auto">
+      <h5 class="md-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
+      <address *ngIf="cartStore.orderInProgress.selectedAddress.address">
+        {{cartStore.orderInProgress.selectedAddress.address.address}}<br/>
+        {{cartStore.orderInProgress.selectedAddress.address.city}}, {{cartStore.orderInProgress.selectedAddress.address.state}} {{cartStore.orderInProgress.selectedAddress.address.zipcode}}, {{cartStore.orderInProgress.selectedAddress.address.country}}<br/>
+        <span class="phone">{{cartStore.orderInProgress.selectedAddress.address.phone}}</span>
+      </address>
+    </section>
+    <section class="payment" flex="auto">
+      <h5 class="md-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
+      <div class="payment-info">
+        {{cartStore.orderInProgress.authorization.card.brand}} card ending **** {{cartStore.orderInProgress.authorization.card.last4}}
+      </div>
+    </section>
+  </div>
+</div>
+
+<h5 class="md-title order-summary">{{ 'CART.CONFIRM.ORDER_TITLE' | translate }}</h5>
+<projects-component flex="100" [readOnly]="true" [projects]="(cartService.data | async).cart.projects"></projects-component>
+
+<section class="cart-total" layout="column" layout-gt-xs="row" layout-align="space-between">
+  <button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back" flex-order-xs="4" flex="0" layout-align="start center">
+    <md-icon>keyboard_backspace</md-icon>
+    {{ 'CART.CONFIRM.BACK_BTN' | translate }}
+  </button>
+  <span flex="100" class="total md-headline" layout-align="end center">
+    <span class="total-label">
+      {{ 'CART.CONFIRM.TOTAL' | translate }} 
+    </span>
+    <span class="total-amount">
+      {{ cartStore.cart.total | currency:'USD':true:'1.2-2' }}
+    </span>
+  </span>
+  <span flex="" flex-order-xs="2" layout-align="end center">
+    <button md-raised-button class="checkout" (click)="purchase()">
+      {{ 'CART.CONFIRM.PURCHASE_BTN' | translate }}
+    </button>
+  </span>
+</section>

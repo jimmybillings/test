@@ -1,16 +1,61 @@
 confirm-tab-component {
   .md-title {
     opacity: .6;
-    margin: .6em 0;
+    margin: .3em 0;
+    &.order-summary {
+      margin-top: rem(4.4);
+    }
   }
+  .billing-payment {
+    margin: rem(1.2) 0 0 rem(-1.2);
+    @media screen and (max-width: $layout-breakpoint-xs)  {
+      margin: 0 0 rem(1.2) 0;
+    }
+  }
+  .payment,
   .billing {
     background-color: rgba(md-color($background, card), .65);
     color: rgba(md-color($foreground, text), .7);
-    // position: relative;
     padding: rem(1.4);
+    margin-left: rem(1.2);
     border-radius: $md-button-border-radius;
+    max-width: calc(100% - 12px);
+    min-width: calc(100% - 12px);
+    @media screen and (min-width: $layout-breakpoint-lg)  {
+      max-width: calc(25% - 12px);
+      min-width: calc(25% - 12px);
+    }
+    @media screen and (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-lg)  {
+      max-width: calc(33.333% - 12px);
+      min-width: calc(33.333% - 12px);
+    }
+
+    @media screen and (max-width: $layout-breakpoint-sm)  {
+      max-width: calc(50% - 12px);
+      min-width: calc(50% - 12px);
+    }
+    @media screen and (max-width: $layout-breakpoint-xs)  {
+      min-width: 100%;
+      max-width: 100%;
+      margin: rem(1.0) 0 0 0;
+    }
     .md-title {
       margin-top: 0;
+    }
+    .payment-info,
+    address {
+      font-size: rem(1.4);
+      line-height: 1.55;
+      .phone {
+        font-style: normal;
+        line-height: 2.4;
+      }
+    }
+  }
+  .cart-total span {
+    display: flex;
+    &.md-button-wrapper md-icon{
+      padding: rem(.6) rem(.3) 0 0
     }
   }
 }
