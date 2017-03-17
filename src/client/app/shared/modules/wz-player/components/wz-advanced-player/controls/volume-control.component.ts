@@ -11,7 +11,7 @@ import {
   animate
 } from '@angular/core';
 
-import { PlayerState, PlayerRequest, SetVolumeRequest, SET_VOLUME, ToggleMuteRequest, TOGGLE_MUTE }
+import { PlayerState, PlayerVolumeRequest, SET_VOLUME, ToggleMuteRequest, TOGGLE_MUTE }
   from '../../../interfaces/player.interface';
 
 @Component({
@@ -47,7 +47,7 @@ import { PlayerState, PlayerRequest, SetVolumeRequest, SET_VOLUME, ToggleMuteReq
 
 export class VolumeControlComponent {
   @Input() playerState: PlayerState;
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() request: EventEmitter<PlayerVolumeRequest> = new EventEmitter<PlayerVolumeRequest>();
   public volumeState: string = 'inactive';
   public buttonTitle: string = 'ASSET.ADV_PLAYER.SOUND_BTN_TITLE';
 

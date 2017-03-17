@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
-import { PlayerState, PlayerRequest, SEEK_TO_FRAME, SEEK_TO_MARKER } from '../../../interfaces/player.interface';
+import { PlayerState, PlayerSeekRequest, SEEK_TO_FRAME, SEEK_TO_MARKER } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -56,7 +56,7 @@ import { PlayerState, PlayerRequest, SEEK_TO_FRAME, SEEK_TO_MARKER } from '../..
 export class ScrubberComponent {
   @Input() window: any;
   @Input() playerState: PlayerState;
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() request: EventEmitter<PlayerSeekRequest> = new EventEmitter<PlayerSeekRequest>();
 
   public hovering: boolean = false;
   public hoverFrameDisplayPosition: number = 0;

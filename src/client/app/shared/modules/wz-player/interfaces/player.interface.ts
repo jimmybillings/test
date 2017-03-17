@@ -115,14 +115,15 @@ export type TogglePlaybackRequest = {
   type: TOGGLE_PLAYBACK
 };
 
+export type PlayerSeekRequest = SeekToFrameRequest | SeekToMarkerRequest;
+export type PlayerVolumeRequest = SetVolumeRequest | ToggleMuteRequest;
+
 export type PlayerRequest =
+  PlayerSeekRequest |
+  PlayerVolumeRequest |
   ClearMarkersRequest |
   PlayAtSpeedRequest |
   SaveMarkersRequest |
-  SeekToFrameRequest |
-  SeekToMarkerRequest |
   SetMarkerToCurrentFrameRequest |
-  SetVolumeRequest |
   ToggleMarkersPlaybackRequest |
-  ToggleMuteRequest |
   TogglePlaybackRequest;
