@@ -33,7 +33,7 @@ import { WzPricingComponent } from './components/wz-pricing/wz.pricing.component
 import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soon.component';
 import { WzSubclipEditorComponent } from './components/wz-subclip-editor/wz.subclip-editor.component';
 import { WzGalleryTwoLevelComponent } from './components/wz-gallery-two-level/wz.gallery-two-level.component';
-
+import { WzAsperaDownloadDirective } from './components/wz-aspera-download/aspera-download.directive';
 import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb/wz.gallery-breadcrumb.component';
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
@@ -77,7 +77,8 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzComingSoonComponent,
     WzNotificationComponent,
     WzGalleryTwoLevelComponent,
-    WzSubclipEditorComponent
+    WzSubclipEditorComponent,
+    WzAsperaDownloadDirective
   ],
   exports: [
     WzGalleryBreadcrumbComponent,
@@ -110,7 +111,8 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzFormModule,
     WzNotificationComponent,
     WzGalleryTwoLevelComponent,
-    WzSubclipEditorComponent
+    WzSubclipEditorComponent,
+    WzAsperaDownloadDirective
   ],
   entryComponents: [
     CollectionLinkComponent,

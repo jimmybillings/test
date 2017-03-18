@@ -37,7 +37,7 @@ export class CartService {
   // of once per subscriber.
   public initializeData(): Observable<any> {
     return this.api.get(Api.Orders, 'cart', { loading: true })
-      .do(this.updateCart)
+      .do(this.replaceCartWith)
       .takeLast(1)
       .map(_ => { return {}; })
       .share();
@@ -45,7 +45,8 @@ export class CartService {
 
   // Temporary until first time user's cart is created with a project - fix for CRUX-1027
   public getCartSummary(): void {
-    this.api.get(Api.Orders, 'cart/summary').do(this.updateCart).subscribe(_ => { });
+    this.api.get(Api.Orders, 'cart/summary')
+      .subscribe((cartSummary: any) => this.updateCartWith(cartSummary));
   }
 
   public purchase(): Observable<any> {
@@ -68,7 +69,7 @@ export class CartService {
   public removeProject(project: Project): void {
     this.api.delete(Api.Orders, `cart/project/${project.id}`, { loading: true })
       .subscribe(wholeCartResponse => {
-        this.updateCart(wholeCartResponse);
+        this.replaceCartWith(wholeCartResponse);
       });
   }
 
@@ -81,27 +82,27 @@ export class CartService {
         body: this.formatBody(addAssetParameters),
         parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
       }
-    ).subscribe(this.updateCart);
+    ).subscribe(this.replaceCartWith);
   }
 
   public updateProject(project: Project): void {
     this.api.put(Api.Orders, 'cart/project', { body: project, loading: true })
-      .subscribe(this.updateCart);
+      .subscribe(this.replaceCartWith);
   }
 
   public moveLineItemTo(project: Project, lineItem: LineItem): void {
     this.api.put(Api.Orders, 'cart/move/lineItem', { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true })
-      .subscribe(this.updateCart);
+      .subscribe(this.replaceCartWith);
   }
 
   public cloneLineItem(lineItem: LineItem): void {
     this.api.put(Api.Orders, 'cart/clone/lineItem', { parameters: { lineItemId: lineItem.id }, loading: true })
-      .subscribe(this.updateCart);
+      .subscribe(this.replaceCartWith);
   }
 
   public removeLineItem(lineItem: LineItem): void {
     this.api.delete(Api.Orders, `cart/asset/${lineItem.id}`, { loading: true })
-      .subscribe(this.updateCart);
+      .subscribe(this.replaceCartWith);
   }
 
   public purchaseOnCredit(): Observable<any> {
@@ -116,7 +117,7 @@ export class CartService {
     }
     Object.assign(lineItem, fieldToEdit);
     this.api.put(Api.Orders, `cart/update/lineItem/${lineItem.id}`, { body: lineItem, parameters: { region: 'AAA' } })
-      .subscribe(this.updateCart);
+      .subscribe(this.replaceCartWith);
   }
 
   public updateOrderInProgress(type: string, data: any): void {
@@ -142,7 +143,7 @@ export class CartService {
 
   private addProjectAndReturnObservable(): Observable<any> {
     return this.api.post(Api.Orders, 'cart/project', { body: { clientName: this.fullName }, loading: true })
-      .do(this.updateCart)
+      .do(this.replaceCartWith)
       .share();
   }
 
@@ -158,7 +159,13 @@ export class CartService {
 
   // This is an "instance arrow function", which saves us from having to "bind(this)"
   // every time we use this function as a callback.
-  private updateCart = (wholeCartResponse: any): void => {
+  private replaceCartWith = (wholeCartResponse: any): void => {
     this.store.replaceCartWith(wholeCartResponse);
   }
+
+  private updateCartWith = (cartSummary: any): void => {
+    this.store.updateCartWith(cartSummary);
+  }
+
+
 }
