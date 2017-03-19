@@ -1,5 +1,4 @@
 import { MarkerSetButtonComponent } from './marker-set-button.component';
-import { PlayerRequestType } from '../../../interfaces/player.interface';
 
 export function main() {
   describe('Marker Set Button Component', () => {
@@ -22,7 +21,7 @@ export function main() {
       it('onClick() emits the expected event', () => {
         componentUnderTest.onClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.SetInMarker });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'SET_MARKER_TO_CURRENT_FRAME', markerType: 'in' });
       });
     });
 
@@ -38,7 +37,7 @@ export function main() {
       it('onClick() emits the expected event', () => {
         componentUnderTest.onClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.SetOutMarker });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'SET_MARKER_TO_CURRENT_FRAME', markerType: 'out' });
       });
     });
   });

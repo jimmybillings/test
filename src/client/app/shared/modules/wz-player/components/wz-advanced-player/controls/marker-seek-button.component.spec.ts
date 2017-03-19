@@ -1,5 +1,5 @@
 import { MarkerSeekButtonComponent } from './marker-seek-button.component';
-import { PlayerState, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerState } from '../../../interfaces/player.interface';
 import { Frame } from 'wazee-frame-formatter';
 
 export function main() {
@@ -36,7 +36,7 @@ export function main() {
       it('onClick() emits the expected event', () => {
         componentUnderTest.onClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.SeekToInMarker });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'SEEK_TO_MARKER', markerType: 'in' });
       });
     });
 
@@ -60,7 +60,7 @@ export function main() {
       it('onClick() emits the expected event', () => {
         componentUnderTest.onClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.SeekToOutMarker });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'SEEK_TO_MARKER', markerType: 'out' });
       });
     });
   });
