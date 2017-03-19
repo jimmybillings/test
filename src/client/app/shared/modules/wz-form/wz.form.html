@@ -248,7 +248,6 @@
 					align="start" 
 					class="error">
 						<span *ngIf="form.controls[field.name].hasError('required')">
-              {{form.controls[field.name].hasError('required')}}
 							{{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
 						</span>
 						<span *ngIf="form.controls[field.name].hasError('serverError')">

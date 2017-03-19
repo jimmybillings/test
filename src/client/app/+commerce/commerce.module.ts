@@ -25,8 +25,10 @@ import { OrderShowComponent } from './+order/+show/order-show.component';
 import { OrderItemListComponent } from './+order/components/order-item-list.component';
 
 // Quote Stuff
+import { QuoteComponent } from './+quote/+show/quote.component';
+import { QuotesComponent } from './+quote/+index/quotes.component';
 import { QuoteFormComponent } from './+cart/components/quote-form.component';
-import { QuoteService } from './services/quote.service';
+
 
 
 @NgModule({
@@ -46,10 +48,12 @@ import { QuoteService } from './services/quote.service';
     OrderItemListComponent,
     EditProjectComponent,
     AddressFormComponent,
-    QuoteFormComponent
+    QuoteFormComponent,
+    QuoteComponent,
+    QuotesComponent
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
-  providers: [CartCapabilities, QuoteService],
+  providers: [CartCapabilities],
   entryComponents: [EditProjectComponent, AddressFormComponent, QuoteFormComponent]
 })
 
