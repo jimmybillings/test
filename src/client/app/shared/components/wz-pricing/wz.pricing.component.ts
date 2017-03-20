@@ -102,7 +102,7 @@ export class WzPricingComponent implements OnInit {
 
   private buildForm(): void {
     this.form = [];
-    if (this.pricingPreferences) {
+    if (this.pricingPreferences && !this.pricingStructureChanged) {
       for (let pref in this.pricingPreferences) {
         this.form.push({ name: pref, value: this.pricingPreferences[pref] });
       }
@@ -128,5 +128,11 @@ export class WzPricingComponent implements OnInit {
       formatted[field.name] = field.value;
     });
     return formatted;
+  }
+
+  private get pricingStructureChanged(): boolean {
+    return Object.keys(this.pricingPreferences).filter((pref: string, index: number) => {
+      return pref !== this.attributes[index].name;
+    }).length > 0;
   }
 }
