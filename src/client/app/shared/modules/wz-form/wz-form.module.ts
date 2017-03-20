@@ -5,6 +5,7 @@ import { TranslateModule } from 'ng2-translate';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { WzFormComponent } from './wz.form.component';
+import { WzCcFormComponent } from './wz.cc.form.component';
 import { WzInputTagsComponent } from './components/wz-input-tags/wz-input-tags.component';
 import { WzInputSuggestionsComponent } from './components/wz-input-suggestions/wz-input-suggestions.component';
 import { WzAutocompleteSearchComponent } from './components/wz-autocomplete-search/wz-autocomplete-search.component';
@@ -22,6 +23,7 @@ import { FormModel } from './wz.form.model';
   ],
   declarations: [
     WzFormComponent,
+    WzCcFormComponent,
     WzInputTagsComponent,
     WzInputSuggestionsComponent,
     EqualValidatorDirective,
@@ -29,6 +31,7 @@ import { FormModel } from './wz.form.model';
   ],
   exports: [
     WzFormComponent,
+    WzCcFormComponent,
     WzAutocompleteSearchComponent
   ],
   providers: [FormModel]

@@ -32,10 +32,12 @@ import { PlayerState, PlayerVolumeRequest } from '../../../interfaces/player.int
   animations: [
     trigger('volumeState', [
       state('inactive', style({
-        opacity: '0'
+        opacity: '0',
+        zIndex: '-1'
       })),
       state('active', style({
-        opacity: '1'
+        opacity: '1',
+        zIndex: '1'
       })),
       transition('inactive => active', animate('250ms 100ms cubic-bezier(0.55, 0, 0.55, 0.2)')),
       transition('active => inactive', animate('360ms cubic-bezier(0.55, 0, 0.55, 0.2)'))
