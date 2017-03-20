@@ -3,11 +3,11 @@
 
 form button {
   &.conversion {
-    min-width: 94%;
+    min-width: 92%;
   }
 }
 form {
-  padding-top:rem(2.0);
+  padding-top:rem(1.8);
 }
 wz-cc-form,
 wz-form {
@@ -17,25 +17,28 @@ wz-form {
     md-select,
     md-input {
       width: 100%;
-      margin-top: rem(1.2);
-      margin-bottom: rem(1.2);
+      margin-top: rem(1.1);
+      margin-bottom: rem(1.1);
       font-size: 1.1em;
     }
     md-select {
-      .md-select-trigger {
-        height: rem(1.8);
-        margin: rem(1.6) 0;
-        padding-bottom: rem(1.0);
-        line-height: rem(1.4);
-      }
-      .md-select-value {
-        top: rem(-.2);
-        color: currentColor;
-      }
-      .md-select-arrow {
-        height: rem(.3);
-      }
+      position: relative;
     }
+    // md-select {
+    //   .md-select-trigger {
+    //     height: rem(1.8);
+    //     margin: rem(1.6) 0;
+    //     padding-bottom: rem(1.0);
+    //     line-height: rem(1.4);
+    //   }
+    //   .md-select-value {
+    //     top: rem(-.2);
+    //     color: currentColor;
+    //   }
+    //   .md-select-arrow {
+    //     height: rem(.3);
+    //   }
+    // }
     a.view-tos {
       text-decoration: underline;
       cursor: pointer;
@@ -46,7 +49,7 @@ wz-form {
     }
     .indicate-required {
       font-size: 84%;
-      margin-top: rem(3.8);
+      margin-top: rem(3.2);
       margin-bottom: rem(.8);
       opacity: .8;
       > span {
@@ -71,13 +74,23 @@ wz-form {
 
 // testing error display in form.
 // currently using md-hint this may change with ng2 material recommendation
+md-select.show-errors.ng-invalid:not(.md-select-disabled),
+md-select.ng-touched.ng-dirty.ng-invalid:not(.md-select-disabled),
 md-input.show-errors.ng-invalid,
 md-input.ng-touched.ng-dirty.ng-invalid {
+  .md-select-placeholder,
   .md-input-placeholder {
     color: md-color($warn, 600);
     &.md-float.md-focused .md-placeholder-required {
       color: md-color($warn, 600);
     }
+  }
+  .md-select-arrow,
+  .md-select-trigger {
+    color: md-color($warn, 600);
+  }
+  .md-select-trigger {
+    border-bottom: 1px solid md-color($warn, 600);
   }
   .md-input-wrapper {
     .md-input-underline {

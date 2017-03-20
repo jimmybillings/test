@@ -36,6 +36,14 @@ export class ConfirmTabComponent extends Tab implements OnInit, OnDestroy {
     );
   }
 
+  public purchaseOnCredit(): void {
+    this.cartService.purchaseOnCredit().take(1).subscribe((order: any) =>
+      this.router.navigate(['/commerce/order', order.id])
+      , (error: any) =>
+        console.log(error)
+    );
+  }
+
   public format(address: ViewAddress): string {
     if (address.address) {
       return Object.keys(address.address).reduce((previous: string, current: string) => {

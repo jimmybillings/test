@@ -43,6 +43,9 @@ md-card.wz-form-card {
       margin: 0;
     }
   }
+  .md-select-value {
+    color: md-color($md-foreground, secondary-text);
+  }
   md-card-title {
     text-align: center;
   }

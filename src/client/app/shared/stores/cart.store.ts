@@ -37,7 +37,8 @@ const emptyCart: CartState = {
         exp_month: '',
         exp_year: ''
       }
-    }
+    },
+    selectedPurchaseType: ''
   }
 };
 
