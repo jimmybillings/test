@@ -1,6 +1,5 @@
 <div class="cart-billing" layout="row" layout-align="center start">
-
-  <div *ngIf="addressesAreEmpty | async" flex-gt-lg="25" flex-gt-md="30" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="100">
+  <div *ngIf="addressesAreEmpty | async" flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="100">
     <md-card class="billing-card wz-form-card">
       <md-card-title>
         {{ 'CART.BILLING.ENTER_BILLING_ADDRESS' | translate }}
@@ -29,9 +28,9 @@
             <span>{{address.name}}</span>
           </header>
           <address *ngIf="address.address">
-            {{address.address.address}}<br>
-            {{address.address.city}}, {{address.address.state}} {{address.address.zipcode}}, {{address.address.country}}<br>
-            {{address.address.phone}}
+            {{address.address.address}}<br/>
+            {{address.address.city}}, {{address.address.state}} {{address.address.zipcode}}, {{address.address.country}}<br/>
+            <span class="phone">{{address.address.phone}}</span>
           </address>
           <address *ngIf="!address.address">
             <p>There is no address on account for this {{address.type}}</p>
@@ -79,29 +78,11 @@
 </div>
 
 <nav flex="100" layout="row" layout-align="space-between">
-  <button md-button color="primary" (click)="goToPreviousTab()">{{ 'CART.BILLING.BACK_BTN' | translate }}</button>
+  <button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back">
+    <md-icon>keyboard_backspace</md-icon>
+    {{ 'CART.BILLING.BACK_BTN' | translate }}
+  </button>
   <button md-raised-button class="checkout" (click)="goToNextTab()" [disabled]="!(userCanProceed | async)">
     {{ 'CART.BILLING.FORWARD_BTN' | translate }}
   </button>
 </nav>
-
-
-
-<!--<section class="cart-total" layout="row" layout-align="center center">
-	<div flex="100">
-    <div flex="100" layout="row" layout-align="end center" class="total md-headline">
-      <span class="total-label">
-        {{ 'CART.CART_TOTAL' | translate }} 
-      </span>
-      <span class="total-amount">
-        {{ (cart | async).total | currency:'USD':true:'1.2-2' }}
-      </span>
-		</div>
-    <div flex="100" layout="row" layout-align="end center">
-      <button *ngIf="(assetsInCart | async)" [disabled]="!rmAssetsHaveAttributes" md-raised-button class="checkout" (click)="goToNextTab()">{{ 'CART.PROCEED_BTN_LABEL' | translate }}</button>
-		</div>
-    <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!rmAssetsHaveAttributes">
-      {{ 'CART.SELECT_USAGE_WARN' | translate }}
-    </div>
-	</div>
-</section>-->

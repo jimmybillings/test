@@ -28,6 +28,7 @@ export class PlayerStateService {
 
   private get initialValue(): PlayerState {
     return {
+      ready: false,
       canSupportCustomControls: true,
       playing: false,
       playingMarkers: false,
@@ -44,20 +45,21 @@ export class PlayerStateService {
 
   private createNewStateWith(requestedChanges: PlayerStateChanges): PlayerState {
     this.changesToApply = {};
-    Object.keys(requestedChanges).forEach((key: string) => (<any>this.changesToApply)[key] = (<any>requestedChanges)[key]);
+    Object.keys(requestedChanges).forEach((key: string) => (this.changesToApply as any)[key] = (requestedChanges as any)[key]);
     this.handleChangeInterdependencies();
 
     return {
-      canSupportCustomControls: this.latestCanSupportCustomControls,
-      playing: this.latestPlaying,
-      playingMarkers: this.latestPlayingMarkers,
-      playbackSpeed: this.latestPlaybackSpeed,
-      framesPerSecond: this.latestFramesPerSecond,
-      currentFrame: this.newFrameFrom(this.latestCurrentFrame),
-      durationFrame: this.newFrameFrom(this.latestDurationFrame),
-      inMarkerFrame: this.newFrameFrom(this.latestInMarkerFrame),
-      outMarkerFrame: this.newFrameFrom(this.latestOutMarkerFrame),
-      volume: this.latestVolume,
+      ready: this.latest('ready'),
+      canSupportCustomControls: this.latest('canSupportCustomControls'),
+      playing: this.latest('playing'),
+      playingMarkers: this.latest('playingMarkers'),
+      playbackSpeed: this.latest('playbackSpeed'),
+      framesPerSecond: this.latest('framesPerSecond'),
+      currentFrame: this.newFrameFrom(this.latest('currentFrame')),
+      durationFrame: this.newFrameFrom(this.latest('durationFrame')),
+      inMarkerFrame: this.newFrameFrom(this.latest('inMarkerFrame')),
+      outMarkerFrame: this.newFrameFrom(this.latest('outMarkerFrame')),
+      volume: this.latest('volume'),
       changeDetectionEnabler: this.snapshot.changeDetectionEnabler + 1
     };
   }
@@ -115,59 +117,31 @@ export class PlayerStateService {
   }
 
   private handleMarkerOrderingIssues(): void {
-    if (this.changesToApply.inMarkerFrame) {
-      if (this.latestOutMarkerFrame && this.changesToApply.inMarkerFrame.frameNumber > this.latestOutMarkerFrame.frameNumber) {
-        this.changesToApply.outMarkerFrame = this.newFrameFrom(this.changesToApply.inMarkerFrame);
+    const newInMarkerFrame: Frame = this.changesToApply.inMarkerFrame;
+
+    if (newInMarkerFrame) {
+      const latestOutMarkerFrame: Frame = this.latest('outMarkerFrame');
+
+      if (latestOutMarkerFrame && newInMarkerFrame.frameNumber > latestOutMarkerFrame.frameNumber) {
+        this.changesToApply.outMarkerFrame = this.newFrameFrom(newInMarkerFrame);
       }
-    } else if (this.changesToApply.outMarkerFrame) {
-      if (this.latestInMarkerFrame && this.changesToApply.outMarkerFrame.frameNumber < this.latestInMarkerFrame.frameNumber) {
-        this.changesToApply.inMarkerFrame = this.newFrameFrom(this.changesToApply.outMarkerFrame);
+
+      return;
+    }
+
+    const newOutMarkerFrame: Frame = this.changesToApply.outMarkerFrame;
+
+    if (newOutMarkerFrame) {
+      const latestInMarkerFrame: Frame = this.latest('inMarkerFrame');
+
+      if (latestInMarkerFrame && newOutMarkerFrame.frameNumber < latestInMarkerFrame.frameNumber) {
+        this.changesToApply.inMarkerFrame = this.newFrameFrom(newOutMarkerFrame);
       }
     }
   }
 
-  private get latestCanSupportCustomControls(): boolean {
-    return this.changesToApply.hasOwnProperty('canSupportCustomControls')
-      ? this.changesToApply.canSupportCustomControls
-      : this.snapshot.canSupportCustomControls;
-  }
-
-  private get latestPlaying(): boolean {
-    return this.changesToApply.hasOwnProperty('playing') ? this.changesToApply.playing : this.snapshot.playing;
-  }
-
-  private get latestPlayingMarkers(): boolean {
-    return this.changesToApply.hasOwnProperty('playingMarkers') ? this.changesToApply.playingMarkers : this.snapshot.playingMarkers;
-  }
-
-  private get latestPlaybackSpeed(): number {
-    return this.changesToApply.hasOwnProperty('playbackSpeed')
-      ? this.changesToApply.playbackSpeed
-      : this.snapshot.playbackSpeed;
-  }
-
-  private get latestFramesPerSecond(): number {
-    return this.changesToApply.hasOwnProperty('framesPerSecond') ? this.changesToApply.framesPerSecond : this.snapshot.framesPerSecond;
-  }
-
-  private get latestCurrentFrame(): Frame {
-    return this.changesToApply.hasOwnProperty('currentFrame') ? this.changesToApply.currentFrame : this.snapshot.currentFrame;
-  }
-
-  private get latestDurationFrame(): Frame {
-    return this.changesToApply.hasOwnProperty('durationFrame') ? this.changesToApply.durationFrame : this.snapshot.durationFrame;
-  }
-
-  private get latestInMarkerFrame(): Frame {
-    return this.changesToApply.hasOwnProperty('inMarkerFrame') ? this.changesToApply.inMarkerFrame : this.snapshot.inMarkerFrame;
-  }
-
-  private get latestOutMarkerFrame(): Frame {
-    return this.changesToApply.hasOwnProperty('outMarkerFrame') ? this.changesToApply.outMarkerFrame : this.snapshot.outMarkerFrame;
-  }
-
-  private get latestVolume(): number {
-    return this.changesToApply.hasOwnProperty('volume') ? this.changesToApply.volume : this.snapshot.volume;
+  private latest(key: string): any {
+    return this.changesToApply.hasOwnProperty(key) ? (this.changesToApply as any)[key] : (this.snapshot as any)[key];
   }
 
   private newFrameFrom(input: number | Frame): Frame {
@@ -181,6 +155,6 @@ export class PlayerStateService {
   }
 
   private get newFrame(): Frame {
-    return new Frame(this.latestFramesPerSecond);
+    return new Frame(this.latest('framesPerSecond'));
   }
 }

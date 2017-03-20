@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
-import { MarkerType, PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerState, MarkerType, SeekToMarkerRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -21,7 +21,7 @@ import { MarkerType, PlayerState, PlayerRequest, PlayerRequestType } from '../..
 export class MarkerSeekButtonComponent {
   @Input() type: MarkerType;
   @Input() playerState: PlayerState;
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() request: EventEmitter<SeekToMarkerRequest> = new EventEmitter<SeekToMarkerRequest>();
 
   public get frame(): Frame {
     return this.type === 'in' ? this.playerState.inMarkerFrame : this.playerState.outMarkerFrame;
@@ -40,6 +40,6 @@ export class MarkerSeekButtonComponent {
   }
 
   public onClick(): void {
-    this.request.emit({ type: this.type === 'in' ? PlayerRequestType.SeekToInMarker : PlayerRequestType.SeekToOutMarker });
+    this.request.emit({ type: 'SEEK_TO_MARKER', markerType: this.type });
   }
 }

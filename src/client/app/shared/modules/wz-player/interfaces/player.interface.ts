@@ -3,6 +3,7 @@ import { Frame } from 'wazee-frame-formatter';
 export type PlayerMode = 'basic' | 'advanced';
 
 export interface PlayerState {
+  readonly ready: boolean;
   readonly canSupportCustomControls: boolean;
   readonly playing: boolean;
   readonly playingMarkers: boolean;
@@ -21,6 +22,7 @@ export interface PlayerState {
 }
 
 export interface PlayerStateChanges {
+  ready?: boolean;
   canSupportCustomControls?: boolean;
   playing?: boolean;
   playingMarkers?: boolean;
@@ -44,25 +46,64 @@ export interface PlayerStateChanges {
   outMarkerFrameNumber?: number;
 }
 
-export enum PlayerRequestType {
-  ClearMarkers,
-  PlayAtSpeed,
-  SaveMarkers,
-  SeekToFrame,
-  SeekToInMarker,
-  SeekToOutMarker,
-  SetInMarker,
-  SetOutMarker,
-  SetVolume,
-  ToggleMarkersPlayback,
-  ToggleMute,
-  TogglePlayback
-}
-
-export interface PlayerRequest {
-  type: PlayerRequestType;
-  payload?: any;
-}
-
 export type MarkerType = 'in' | 'out';
 export type PlaybackDirection = 'reverse' | 'forward';
+
+export type ClearMarkersRequest = {
+  type: 'CLEAR_MARKERS'
+};
+
+export type PlayAtSpeedRequest = {
+  type: 'PLAY_AT_SPEED',
+  speed: number,
+  direction: PlaybackDirection
+};
+
+export type SaveMarkersRequest = {
+  type: 'SAVE_MARKERS'
+};
+
+export type SeekToFrameRequest = {
+  type: 'SEEK_TO_FRAME',
+  frame: Frame
+};
+
+export type SeekToMarkerRequest = {
+  type: 'SEEK_TO_MARKER',
+  markerType: MarkerType
+};
+
+export type SetMarkerToCurrentFrameRequest = {
+  type: 'SET_MARKER_TO_CURRENT_FRAME',
+  markerType: MarkerType
+};
+
+export type SetVolumeRequest = {
+  type: 'SET_VOLUME',
+  volume: number
+};
+
+export type ToggleMarkersPlaybackRequest = {
+  type: 'TOGGLE_MARKERS_PLAYBACK'
+};
+
+export type ToggleMuteRequest = {
+  type: 'TOGGLE_MUTE'
+};
+
+export type TogglePlaybackRequest = {
+  type: 'TOGGLE_PLAYBACK'
+};
+
+export type PlayerSeekRequest = SeekToFrameRequest | SeekToMarkerRequest;
+export type PlayerVolumeRequest = SetVolumeRequest | ToggleMuteRequest;
+
+export type PlayerRequest =
+  PlayerSeekRequest |
+  PlayerVolumeRequest |
+  ClearMarkersRequest |
+  PlayAtSpeedRequest |
+  SaveMarkersRequest |
+  SetMarkerToCurrentFrameRequest |
+  ToggleMarkersPlaybackRequest |
+  TogglePlaybackRequest;

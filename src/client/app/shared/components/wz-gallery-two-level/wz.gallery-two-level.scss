@@ -18,7 +18,9 @@ two-level-view {
       font-weight: 500;
       font-size: 1.4em;
       margin: 0 0  rem(-.8) rem(5.0);
-      // @include text-contrast(md-color($md-grey, 900));
+      @media screen and (max-width: $layout-breakpoint-sm) {
+        margin-left: rem(3.0);
+      }
       color: $heading-color;
     }
   }
@@ -37,6 +39,9 @@ two-level-view .carousel {
   @media screen and (min-width: $layout-breakpoint-md) {
     margin: 0 0 0 rem(-.5);
   }
+  @media screen and (max-width: $layout-breakpoint-sm) {
+    padding: rem(1.6) rem(3.0);
+  }
   overflow-x: scroll;
   .carousel-mask {
     overflow-x: visible;
@@ -49,7 +54,10 @@ two-level-view .carousel {
     top: 0;
     bottom: 0;
     height: 100%;
-    width: 50px;
+    width: rem(5.0);
+    @media screen and (max-width: $layout-breakpoint-sm) {
+      width: rem(3.0);
+    }
     background: rgba($bkg-color, .5);
   }
   .carousel-previous {
@@ -64,7 +72,13 @@ two-level-view .carousel {
   .carousel-content-3,
   .carousel-content-4,
   .carousel-content-5,
-  .carousel-content-6 {
+  .carousel-content-6,
+  .carousel-content-7,
+  .carousel-content-8,
+  .carousel-content-9,
+  .carousel-content-10,
+  .carousel-content-11,
+  .carousel-content-12 {
     // overflow-x: scroll;
     white-space: nowrap;
     transition: $tr-duration transform;
@@ -101,7 +115,13 @@ two-level-view .carousel .carousel-content-2 .carousel-item,
 two-level-view .carousel .carousel-content-3 .carousel-item,
 two-level-view .carousel .carousel-content-4 .carousel-item,
 two-level-view .carousel .carousel-content-5 .carousel-item,
-two-level-view .carousel .carousel-content-6 .carousel-item {
+two-level-view .carousel .carousel-content-6 .carousel-item,
+two-level-view .carousel .carousel-content-7 .carousel-item,
+two-level-view .carousel .carousel-content-8 .carousel-item,
+two-level-view .carousel .carousel-content-9 .carousel-item,
+two-level-view .carousel .carousel-content-10 .carousel-item,
+two-level-view .carousel .carousel-content-11 .carousel-item,
+two-level-view .carousel .carousel-content-12 .carousel-item {
     white-space: normal;
     position: relative;
     display: inline-block;
@@ -257,7 +277,13 @@ two-level-view .carousel .carousel-content-2 .carousel-item.disabled,
 two-level-view .carousel .carousel-content-3 .carousel-item.disabled,
 two-level-view .carousel .carousel-content-4 .carousel-item.disabled,
 two-level-view .carousel .carousel-content-5 .carousel-item.disabled,
-two-level-view .carousel .carousel-content-6 .carousel-item.disabled {
+two-level-view .carousel .carousel-content-6 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-7 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-8 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-9 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-10 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-11 .carousel-item.disabled,
+two-level-view .carousel .carousel-content-12 .carousel-item.disabled {
   img {
     display: none;
   }

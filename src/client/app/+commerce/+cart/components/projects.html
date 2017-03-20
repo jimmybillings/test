@@ -1,6 +1,6 @@
 <div *ngIf="!readOnly" flex="100" layout="row" layout-align="end center" class="add-project">
 	<button md-button color="primary" (click)="addProject()">
-		<md-icon>add_circle_outline</md-icon>Create a new project
+		<md-icon>add_circle_outline</md-icon>{{ 'CART.PROJECTS.ADD_PROJECT_BTN' | translate }}
 	</button>
 </div>
 
@@ -25,8 +25,9 @@
 					<span *ngIf="lineItemCountFor(project) == 1">1 Asset</span>
 					<span *ngIf="lineItemCountFor(project) > 1">{{ lineItemCountFor(project) }} Assets</span>
 				</div>
-				<!--Need a translation string here for edit-->
-				<button *ngIf="!readOnly" (click)="edit(project)" md-button class="is-outlined" type="button">Edit</button>
+				<button *ngIf="!readOnly" (click)="edit(project)" md-button class="is-outlined" type="button">
+					{{ 'CART.PROJECTS.EDIT_PROJECT_BTN' | translate }}
+				</button>
 				<button *ngIf="!readOnly" md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)" title="More project options"><md-icon>more_vert</md-icon></button>
 			</div>
 			<div class="project-subtotal md-caption">

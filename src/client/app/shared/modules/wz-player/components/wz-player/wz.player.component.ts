@@ -41,7 +41,7 @@ export class WzPlayerComponent implements OnDestroy {
     return this.assetInfo.asset;
   }
 
-  @Output() stateUpdate: EventEmitter<PlayerStateChanges> = new EventEmitter<PlayerStateChanges>();
+  @Output() stateChangeRequest: EventEmitter<PlayerStateChanges> = new EventEmitter<PlayerStateChanges>();
 
   private currentAsset: any;
   private assetInfo: AssetInfo = new AssetInfo();
@@ -103,9 +103,9 @@ export class WzPlayerComponent implements OnDestroy {
 
     if (this.outMarker && this.outMarker < this.inMarker) {
       this.outMarker = this.inMarker;
-      this.emitStateUpdateWith({ inMarker: this.inMarker, outMarker: this.outMarker });
+      this.emitStateChangeRequestWith({ inMarker: this.inMarker, outMarker: this.outMarker });
     } else {
-      this.emitStateUpdateWith({ inMarker: this.inMarker });
+      this.emitStateChangeRequestWith({ inMarker: this.inMarker });
     }
   }
 
@@ -116,16 +116,16 @@ export class WzPlayerComponent implements OnDestroy {
       // We have automatically just reached the out marker because we just moved it to currentTime.
       this.videoElement.pause();
       this.markersPlaybackMode = 'off';
-      this.emitStateUpdateWith({ playingMarkers: false });
+      this.emitStateChangeRequestWith({ playingMarkers: false });
     }
 
     this.outMarker = this.videoElement.currentTime;
 
     if (this.inMarker && this.inMarker > this.outMarker) {
       this.inMarker = this.outMarker;
-      this.emitStateUpdateWith({ inMarker: this.inMarker, outMarker: this.outMarker });
+      this.emitStateChangeRequestWith({ inMarker: this.inMarker, outMarker: this.outMarker });
     } else {
-      this.emitStateUpdateWith({ outMarker: this.outMarker });
+      this.emitStateChangeRequestWith({ outMarker: this.outMarker });
     }
   }
 
@@ -135,13 +135,13 @@ export class WzPlayerComponent implements OnDestroy {
     if (this.markersPlaybackMode === 'on') {
       // Clearing the markers immediately kills markers playback mode.
       this.markersPlaybackMode = 'off';
-      this.emitStateUpdateWith({ playingMarkers: false });
+      this.emitStateChangeRequestWith({ playingMarkers: false });
     }
 
     this.inMarker = undefined;
     this.outMarker = undefined;
 
-    this.emitStateUpdateWith({ inMarker: undefined, outMarker: undefined });
+    this.emitStateChangeRequestWith({ inMarker: undefined, outMarker: undefined });
   }
 
   public toggleMarkersPlayback(): void {
@@ -215,7 +215,8 @@ export class WzPlayerComponent implements OnDestroy {
 
           this.startVideoEventListeners();
 
-          this.emitStateUpdateWith({
+          this.emitStateChangeRequestWith({
+            ready: true,
             canSupportCustomControls: true,
             framesPerSecond: this.assetInfo.framesPerSecond,
             inMarker: this.inMarker,
@@ -226,7 +227,7 @@ export class WzPlayerComponent implements OnDestroy {
           if (!autostartInAdvancedMode) this.toggleMarkersPlayback();
         } else {
           if (!autostartInAdvancedMode) this.jwPlayer.play(true);
-          this.emitStateUpdateWith({ canSupportCustomControls: false });
+          this.emitStateChangeRequestWith({ ready: true, canSupportCustomControls: false });
         }
       });
     }
@@ -264,7 +265,7 @@ export class WzPlayerComponent implements OnDestroy {
   }
 
   private onDurationChange(): void {
-    this.emitStateUpdateWith({ duration: this.videoElement.duration });
+    this.emitStateChangeRequestWith({ duration: this.videoElement.duration });
   }
 
   private onEnded(): void {
@@ -272,21 +273,21 @@ export class WzPlayerComponent implements OnDestroy {
   }
 
   private onPause(): void {
-    this.emitStateUpdateWith({ playing: false });
+    this.emitStateChangeRequestWith({ playing: false });
   }
 
   private onPlaying(): void {
-    this.emitStateUpdateWith({ playing: true });
+    this.emitStateChangeRequestWith({ playing: true });
   }
 
   private onRateChange(): void {
-    this.emitStateUpdateWith({ playbackSpeed: this.videoElement.playbackRate });
+    this.emitStateChangeRequestWith({ playbackSpeed: this.videoElement.playbackRate });
   }
 
   private onSeeked(): void {
     if (this.markersPlaybackMode === 'initializing') {
       this.markersPlaybackMode = 'on';
-      this.emitStateUpdateWith({ playingMarkers: true });
+      this.emitStateChangeRequestWith({ playingMarkers: true });
       if (this.videoElement.paused) this.videoElement.play();
     }
   }
@@ -295,26 +296,26 @@ export class WzPlayerComponent implements OnDestroy {
     if (this.markersPlaybackMode === 'on') {
       // Any seek immediately kills range playback mode.
       this.markersPlaybackMode = 'off';
-      this.emitStateUpdateWith({ playingMarkers: false });
+      this.emitStateChangeRequestWith({ playingMarkers: false });
     }
   }
 
   private onTimeUpdate(): void {
     const currentTime = this.videoElement.currentTime;
 
-    this.emitStateUpdateWith({ currentTime: currentTime });
+    this.emitStateChangeRequestWith({ currentTime: currentTime });
 
     if (this.markersPlaybackMode === 'on' && currentTime >= this.outMarker) {
       this.videoElement.pause();
       this.markersPlaybackMode = 'off';
-      this.emitStateUpdateWith({ playingMarkers: false });
+      this.emitStateChangeRequestWith({ playingMarkers: false });
 
       if (currentTime > this.outMarker) this.seekTo(this.outMarker);
     }
   }
 
   private onVolumeChange(): void {
-    this.emitStateUpdateWith({ volume: this.currentVolume });
+    this.emitStateChangeRequestWith({ volume: this.currentVolume });
   }
 
   private get currentVolume(): number {
@@ -323,9 +324,9 @@ export class WzPlayerComponent implements OnDestroy {
     return this.videoElement.muted ? 0 : Math.round(this.videoElement.volume * 100);
   }
 
-  private emitStateUpdateWith(changes: PlayerStateChanges): void {
+  private emitStateChangeRequestWith(changes: PlayerStateChanges): void {
     // Run these in "the Angular zone" so that the change detector sees changes now, not on the next cycle.
-    this.zone.run(() => this.stateUpdate.emit(changes));
+    this.zone.run(() => this.stateChangeRequest.emit(changes));
   }
 
   private setupImage(): void {
@@ -342,10 +343,6 @@ export class WzPlayerComponent implements OnDestroy {
     if (this.currentAssetType.match(/^video|html5Video$/)) {
       if (this.currentAssetType === 'html5Video') {
         this.stopVideoEventListeners();
-      }
-
-      if (this.mode === 'advanced') {
-        this.emitStateUpdateWith({ duration: undefined, currentTime: 0 });
       }
 
       this.videoElement = null;

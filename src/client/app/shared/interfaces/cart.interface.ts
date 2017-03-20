@@ -93,8 +93,14 @@ export interface AddAssetParameters {
 export interface CartState {
   cart: Cart;
   orderInProgress: {
+    purchaseOptions: {
+      purchaseOnCredit: boolean;
+      creditExemption: boolean;
+    }
     addresses: ViewAddress[];
     selectedAddress: ViewAddress;
     authorization: any;
+    selectedPurchaseType: string;
+
   };
 };

@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
-import { MarkerType, PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { MarkerType, PlayerState, SetMarkerToCurrentFrameRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -21,7 +21,7 @@ import { MarkerType, PlayerState, PlayerRequest, PlayerRequestType } from '../..
 export class MarkerSetButtonComponent {
   @Input() type: MarkerType;
   @Input() playerState: PlayerState;
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() request: EventEmitter<SetMarkerToCurrentFrameRequest> = new EventEmitter<SetMarkerToCurrentFrameRequest>();
 
   public get title(): string {
     return this.type === 'in' ? 'ASSET.ADV_PLAYER.SET_IN_BTN_TITLE' : 'ASSET.ADV_PLAYER.SET_OUT_BTN_TITLE';
@@ -32,7 +32,7 @@ export class MarkerSetButtonComponent {
   }
 
   public onClick(): void {
-    this.request.emit({ type: this.type === 'in' ? PlayerRequestType.SetInMarker : PlayerRequestType.SetOutMarker });
+    this.request.emit({ type: 'SET_MARKER_TO_CURRENT_FRAME', markerType: this.type });
   }
 
   private get frame(): Frame {

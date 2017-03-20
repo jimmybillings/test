@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api, ApiBody, ApiParameters } from '../interfaces/api.interface';
 import { CartService } from './cart.service';
+import { ViewAddress, Address } from '../interfaces/user.interface';
 import { Project, LineItem, AddAssetParameters, CartState } from '../interfaces/cart.interface';
 
 export function main() {
@@ -37,8 +38,15 @@ export function main() {
 
       mockCartStore = {
         replaceCartWith: jasmine.createSpy('replaceCartWith'),
-        data: Observable.of({ cart: { some: 'data' }, orderInProgress: {} }),
-        state: { cart: { some: 'state' }, orderInProgress: {} }
+        data: Observable.of({
+          cart: { some: 'data' },
+          orderInProgress: {}
+        }),
+        state: {
+          cart: { some: 'state' },
+          orderInProgress: {}
+        },
+        updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
       };
 
       mockApi = new MockApiService();
@@ -53,14 +61,20 @@ export function main() {
     describe('data getter', () => {
       it('returns the data from the cart store', () => {
         serviceUnderTest.data.subscribe(data => {
-          expect(data).toEqual({ cart: { some: 'data' }, orderInProgress: {} });
+          expect(data).toEqual({
+            cart: { some: 'data' },
+            orderInProgress: {}
+          });
         });
       });
     });
 
     describe('state getter', () => {
       it('returns the state from the cart store', () => {
-        expect(serviceUnderTest.state).toEqual({ cart: { some: 'state' }, orderInProgress: {} });
+        expect(serviceUnderTest.state).toEqual({
+          cart: { some: 'state' },
+          orderInProgress: {}
+        });
       });
     });
 
@@ -308,6 +322,14 @@ export function main() {
         serviceUnderTest.editLineItem(mockLineItem, { selectedTranscodeTarget: '1080i' });
 
         expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith(mockApi.putResponse);
+      });
+    });
+
+    describe('updateOrderInProgress', () => {
+      it('should call updateOrderInProgress on the store', () => {
+        serviceUnderTest.updateOrderInProgress('addresses', [{}, {}]);
+
+        expect(mockCartStore.updateOrderInProgress).toHaveBeenCalledWith('addresses', [{}, {}]);
       });
     });
   });

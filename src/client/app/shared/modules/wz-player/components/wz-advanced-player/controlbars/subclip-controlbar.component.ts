@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerState, PlayerRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -12,6 +12,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 export class SubclipControlbarComponent {
   @Input() playerState: PlayerState;
   @Input() displayAllControls: boolean = true;
+  @Input() markersSaveButtonEnabled: boolean = true;
   @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
 
   public forward(request: PlayerRequest): void {

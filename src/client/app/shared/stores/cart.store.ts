@@ -11,6 +11,10 @@ const emptyCart: CartState = {
     total: 0
   },
   orderInProgress: {
+    purchaseOptions: {
+      purchaseOnCredit: false,
+      creditExemption: false
+    },
     addresses: [],
     selectedAddress: {
       type: '',
@@ -33,7 +37,8 @@ const emptyCart: CartState = {
         exp_month: '',
         exp_year: ''
       }
-    }
+    },
+    selectedPurchaseType: ''
   }
 };
 
@@ -41,14 +46,8 @@ export const cart: ActionReducer<any> = (state: any = emptyCart, action: Action)
   switch (action.type) {
     case 'REPLACE_CART':
       return Object.assign({}, state, { cart: action.payload });
-    case 'UPDATE_ORDER_IN_PROGRESS_ADDRESS':
-      state.orderInProgress.selectedAddress = action.payload;
-      return Object.assign({}, state);
-    case 'UPDATE_ORDER_IN_PROGRESS_AUTHORIZATION':
-      state.orderInProgress.authorization = action.payload;
-      return Object.assign({}, state);
-    case 'UPDATE_ORDER_IN_PROGRESS_ADDRESSES':
-      state.orderInProgress.addresses = action.payload;
+    case 'UPDATE_ORDER_IN_PROGRESS':
+      state.orderInProgress[action.payload.key] = action.payload.data;
       return Object.assign({}, state);
     default:
       return state;
@@ -67,16 +66,8 @@ export class CartStore {
     this.store.dispatch({ type: 'REPLACE_CART', payload: cart });
   }
 
-  public replaceOrderInProgressAddress(address: any): void {
-    this.store.dispatch({ type: 'UPDATE_ORDER_IN_PROGRESS_ADDRESS', payload: address });
-  }
-
-  public replaceOrderInProgressAuthorization(authorization: any): void {
-    this.store.dispatch({ type: 'UPDATE_ORDER_IN_PROGRESS_AUTHORIZATION', payload: authorization });
-  }
-
-  public setOrderInProgressAddresses(addresses: any): void {
-    this.store.dispatch({ type: 'UPDATE_ORDER_IN_PROGRESS_ADDRESSES', payload: addresses });
+  public updateOrderInProgress(key: string, data: any): void {
+    this.store.dispatch({ type: 'UPDATE_ORDER_IN_PROGRESS', payload: { key, data } });
   }
 
   public get state(): any {

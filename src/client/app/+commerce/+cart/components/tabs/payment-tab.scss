@@ -1,0 +1,21 @@
+payment-tab-component {
+  
+  .md-title {
+    margin: 0;
+    opacity: .7;
+  }
+  md-card.cc-form {
+    // padding: rem(.6) rem(2.4);
+    md-select:last-of-type {
+      padding-left: rem(1.2);
+    }
+  }
+  p.instructions {
+    display: flex;
+    font-size: .9em;
+    font-weight: 300;
+    margin: 0;
+    opacity: .7;
+    padding: rem(.5) 0 rem(2.0) 0;
+  }
+}  

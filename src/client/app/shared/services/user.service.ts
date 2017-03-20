@@ -73,7 +73,7 @@ export class UserService {
 
   public addAccountBillingAddress(address: ViewAddress): Observable<any> {
     return this.api.get(Api.Identities, `account/${address.addressEntityId}`).flatMap((account: any) => {
-      let newAccount: any = Object.assign({}, account, { address: address.address });
+      let newAccount: any = Object.assign({}, account, { billingInfo: { address: address.address } });
       return this.api.put(Api.Identities, `account/${address.addressEntityId}`, { body: newAccount });
     });
   }
