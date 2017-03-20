@@ -1,5 +1,5 @@
 import { MarkerSeekButtonComponent } from './marker-seek-button.component';
-import { PlayerState, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerState } from '../../../interfaces/player.interface';
 import { Frame } from 'wazee-frame-formatter';
 
 export function main() {
@@ -25,6 +25,22 @@ export function main() {
         expect(componentUnderTest.frame.frameNumber).toBe(18);
       });
 
+      describe('the alreadyAtMarker getter', () => {
+        it('returns true if the in marker is the same as the current frame', () => {
+          componentUnderTest.playerState =
+            Object.assign({}, componentUnderTest.playerState, { currentFrame: new Frame(29.97).setFromFrameNumber(18) });
+
+          expect(componentUnderTest.alreadyAtMarker).toBe(true);
+        });
+
+        it('returns false if the in marker is not the same as the current frame', () => {
+          componentUnderTest.playerState =
+            Object.assign({}, componentUnderTest.playerState, { currentFrame: new Frame(29.97).setFromFrameNumber(42) });
+
+          expect(componentUnderTest.alreadyAtMarker).toBe(false);
+        });
+      });
+
       it('the class getter returns the expected value', () => {
         expect(componentUnderTest.class).toBe('seek-in');
       });
@@ -36,7 +52,7 @@ export function main() {
       it('onClick() emits the expected event', () => {
         componentUnderTest.onClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.SeekToInMarker });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'SEEK_TO_MARKER', markerType: 'in' });
       });
     });
 
@@ -47,6 +63,22 @@ export function main() {
 
       it('the frame getter returns the expected value', () => {
         expect(componentUnderTest.frame.frameNumber).toBe(58);
+      });
+
+      describe('the alreadyAtMarker getter', () => {
+        it('returns true if the out marker is the same as the current frame', () => {
+          componentUnderTest.playerState =
+            Object.assign({}, componentUnderTest.playerState, { currentFrame: new Frame(29.97).setFromFrameNumber(58) });
+
+          expect(componentUnderTest.alreadyAtMarker).toBe(true);
+        });
+
+        it('returns false if the out marker is not the same as the current frame', () => {
+          componentUnderTest.playerState =
+            Object.assign({}, componentUnderTest.playerState, { currentFrame: new Frame(29.97).setFromFrameNumber(42) });
+
+          expect(componentUnderTest.alreadyAtMarker).toBe(false);
+        });
       });
 
       it('the class getter returns the expected value', () => {
@@ -60,7 +92,7 @@ export function main() {
       it('onClick() emits the expected event', () => {
         componentUnderTest.onClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.SeekToOutMarker });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'SEEK_TO_MARKER', markerType: 'out' });
       });
     });
   });

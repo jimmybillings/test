@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerState, PlayerRequest, ClearMarkersRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -18,9 +18,9 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 export class MarkersClearButtonComponent {
   @Input() playerState: PlayerState;
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() request: EventEmitter<ClearMarkersRequest> = new EventEmitter<ClearMarkersRequest>();
 
   public onClick(): void {
-    this.request.emit({ type: PlayerRequestType.ClearMarkers });
+    this.request.emit({ type: 'CLEAR_MARKERS' });
   }
 }
