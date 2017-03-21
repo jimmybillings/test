@@ -33,6 +33,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   public config: any;
   public priceAttributes: any = null;
   public pricingPreferences: any;
+  public quoteType: 'standard' | 'provisionalOrder' | 'offlineAgreement' = null;
   private configSubscription: Subscription;
   private preferencesSubscription: Subscription;
   private usagePrice: any;
@@ -71,35 +72,24 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     return this.cart.map(cart => (cart.itemCount || 0) > 0);
   }
 
-  public openQuoteDialog(): void {
+  public onOpenQuoteDialog(): void {
     let dialogRef: MdDialogRef<QuoteFormComponent> = this.dialog.open(QuoteFormComponent, {
       height: '400px', position: { top: '10%' }
     });
     dialogRef.componentInstance.dialog = dialogRef;
     dialogRef.componentInstance.items = this.config.createQuote.items;
     dialogRef.afterClosed().subscribe((form: { emailAddress: string }) => {
-      if (form) this.quoteService.createQuote(false, form.emailAddress, this.suggestions).take(1).subscribe((res: any) => {
-        this.showSnackBar({
-          key: 'QUOTE.CREATED_FOR_TOAST',
-          value: { emailAddress: form.emailAddress }
-        });
-      }, (err) => {
-        console.error(err);
-      });
+      if (form) {
+        this.createQuote({ status: 'ACTIVE', emailAddress: form.emailAddress, users: this.suggestions });
+      }
     });
     dialogRef.componentInstance.cacheSuggestions.subscribe((suggestions: any[]) => {
       this.suggestions = suggestions;
     });
   }
 
-  public saveAsDraft(): void {
-    this.quoteService.createQuote(true).take(1).subscribe((res: any) => {
-      this.showSnackBar({
-        key: 'QUOTE.SAVED_AS_DRAFT_TOAST'
-      });
-    }, (err: any) => {
-      console.error(err);
-    });
+  public onSaveAsDraft(): void {
+    this.createQuote({ saveAsDraft: 'PENDING' });
   }
 
   public get rmAssetsHaveAttributes(): boolean {
@@ -116,6 +106,10 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     });
 
     return validAssets.indexOf(false) === -1;
+  }
+
+  public onSelectQuoteType(event: any): void {
+    this.quoteType = event.type;
   }
 
   public onNotification(message: any): void {
@@ -157,14 +151,6 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
         break;
       }
     };
-  }
-
-
-  private showSnackBar(message: any) {
-    this.translate.get(message.key, message.value)
-      .subscribe((res: string) => {
-        this.snackBar.open(res, '', { duration: 2000 });
-      });
   }
 
   private showPricingDialog(lineItem: any): void {
@@ -242,4 +228,30 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
         this.cartService.updateProject(data);
       });
   }
+
+  private createQuote(options: any): void {
+    Object.assign(options, { quoteType: this.quoteType });
+    this.quoteService.createQuote(options).take(1).subscribe((res: any) => {
+      if (options.status === 'ACTIVE') {
+        this.showSnackBar({
+          key: 'QUOTE.CREATED_FOR_TOAST',
+          value: { emailAddress: options.emailAddress }
+        });
+      } else {
+        this.showSnackBar({
+          key: 'QUOTE.SAVED_AS_DRAFT_TOAST',
+        });
+      }
+    }, (err) => {
+      console.error(err);
+    });
+  }
+
+  private showSnackBar(message: any) {
+    this.translate.get(message.key, message.value)
+      .subscribe((res: string) => {
+        this.snackBar.open(res, '', { duration: 2000 });
+      });
+  }
+
 }

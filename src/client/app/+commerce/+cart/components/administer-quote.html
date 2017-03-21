@@ -1,0 +1,25 @@
+<div flex="100" layout="column" layout-gt-sm="row" layout-align="space-between center">
+  <div class="quote-purchase-types" layout="column" layout-align="start center">
+    <md-select [(ngModel)]="selectedType" placeholder="Please select a quote purchase type">
+      <md-option
+        *ngFor="let type of types"
+        [value]="type.value"
+        (onSelect)="selectQuoteType.emit({ type: type.value });">{{ type.viewValue }}
+      </md-option>
+    </md-select>
+  </div>
+  <div class="create-quote-actions">
+    <button
+      [disabled]="!rmAssetsHaveAttributes"
+      md-raised-button class="checkout"
+      (click)="saveAsDraft.emit()">
+      {{ 'QUOTE.SAVE_AS_DRAFT_BTN' | translate }}
+    </button>
+    <button
+      [disabled]="!rmAssetsHaveAttributes"
+      md-raised-button class="checkout"
+      (click)="openQuoteDialog.emit()">
+      {{ 'QUOTE.CREATE_QUOTE_BTN' | translate }}
+    </button>
+  </div>
+</div>

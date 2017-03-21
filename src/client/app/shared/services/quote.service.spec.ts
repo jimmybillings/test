@@ -41,17 +41,24 @@ export function main() {
           { emailAddress: 'ross.edfort@wazeedigital.com', id: 1 },
           { emailAddress: '', id: 2 }, { emailAddress: '', id: 3 }
         ];
-        serviceUnderTest.createQuote(false, 'ross.edfort@wazeedigital.com', mockUsers).take(1).subscribe();
+        serviceUnderTest.createQuote({
+          status: 'ACTIVE',
+          emailAddress: 'ross.edfort@wazeedigital.com',
+          users: mockUsers,
+          quoteType: 'standard'
+        }).take(1).subscribe();
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
-        expect(mockApi.post).toHaveBeenCalledWithBody({ projects: [], quoteStatus: 'ACTIVE', ownerUserId: 1 });
+        expect(mockApi.post).toHaveBeenCalledWithBody({
+          projects: [], quoteStatus: 'ACTIVE', purchaseType: 'standard', ownerUserId: 1
+        });
       });
 
       it('should call the api service correctly for a "PENDING" quote', () => {
-        serviceUnderTest.createQuote(true).take(1).subscribe();
+        serviceUnderTest.createQuote({ status: 'PENDING', quoteType: 'standard' }).take(1).subscribe();
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
-        expect(mockApi.post).toHaveBeenCalledWithBody({ projects: [], quoteStatus: 'PENDING' });
+        expect(mockApi.post).toHaveBeenCalledWithBody({ projects: [], quoteStatus: 'PENDING', purchaseType: 'standard' });
       });
     });
 

@@ -9,3 +9,10 @@ export interface Quote {
   itemCount?: number;
   quoteStatus: 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED';
 }
+
+export interface QuoteOptions {
+  status: 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED';
+  quoteType: 'standard' | 'provisionalOrder' | 'offlineAggreement';
+  emailAddress?: string;
+  users?: any[];
+}
