@@ -73,9 +73,9 @@ one-level-view ul {
         min-height: 23.333%;
         @include text-contrast(md-color($md-grey, 900));
         .item-label {
-          font-size: rem(2.3);
-          line-height: 1;
-          text-transform: capitalize;
+          font-size: rem(1.8);
+          line-height: rem(2.7);
+          text-transform: uppercase;
         }
       }
       section.item-hover-effect {

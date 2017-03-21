@@ -1,11 +1,13 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-pricing',
-  templateUrl: 'wz.pricing.html'
+  templateUrl: 'wz.pricing.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class WzPricingComponent implements OnInit {
   public form: Array<any>;
   @Input() attributes: Array<any>;
@@ -100,7 +102,7 @@ export class WzPricingComponent implements OnInit {
 
   private buildForm(): void {
     this.form = [];
-    if (this.pricingPreferences) {
+    if (this.pricingPreferences && !this.pricingStructureChanged) {
       for (let pref in this.pricingPreferences) {
         this.form.push({ name: pref, value: this.pricingPreferences[pref] });
       }
@@ -126,5 +128,11 @@ export class WzPricingComponent implements OnInit {
       formatted[field.name] = field.value;
     });
     return formatted;
+  }
+
+  private get pricingStructureChanged(): boolean {
+    return Object.keys(this.pricingPreferences).filter((pref: string, index: number) => {
+      return pref !== this.attributes[index].name;
+    }).length > 0;
   }
 }

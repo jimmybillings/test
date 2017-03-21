@@ -1,5 +1,4 @@
 import { VolumeControlComponent } from './volume-control.component';
-import { PlayerRequestType } from '../../../interfaces/player.interface';
 
 export function main() {
   describe('Volume Control Component', () => {
@@ -13,8 +12,8 @@ export function main() {
       componentUnderTest.request.emit = jasmine.createSpy('request emitter');
     });
 
-    it('starts with active === false', () => {
-      expect(componentUnderTest.active).toBe(false);
+    it('starts with volumeState === inactive', () => {
+      expect(componentUnderTest.volumeState).toBe('inactive');
     });
 
     it('starts with expected buttonTitle', () => {
@@ -44,19 +43,19 @@ export function main() {
     });
 
     describe('onMouseOver()', () => {
-      it('sets active to true', () => {
+      it('sets volumeState to active', () => {
         componentUnderTest.onMouseOver();
 
-        expect(componentUnderTest.active).toBe(true);
+        expect(componentUnderTest.volumeState).toBe('active');
       });
     });
 
     describe('onMouseLeave()', () => {
-      it('restores active to false', () => {
+      it('restores volumeState to inactive', () => {
         componentUnderTest.onMouseOver();
         componentUnderTest.onMouseLeave();
 
-        expect(componentUnderTest.active).toBe(false);
+        expect(componentUnderTest.volumeState).toBe('inactive');
       });
     });
 
@@ -64,8 +63,7 @@ export function main() {
       it('requests a volume change', () => {
         componentUnderTest.onSliderChange({ value: 42 });
 
-        expect(componentUnderTest.request.emit)
-          .toHaveBeenCalledWith({ type: PlayerRequestType.SetVolume, payload: { volume: 42 } });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'SET_VOLUME', volume: 42 });
       });
     });
 
@@ -73,7 +71,7 @@ export function main() {
       it('requests a mute toggle', () => {
         componentUnderTest.onButtonClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.ToggleMute });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'TOGGLE_MUTE' });
       });
     });
   });

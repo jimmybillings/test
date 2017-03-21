@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import { Authentication } from '../../shared/services/authentication.data.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -17,6 +17,7 @@ declare var portal: string;
   moduleId: module.id,
   selector: 'login-component',
   templateUrl: 'login.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class LoginComponent implements OnInit, OnDestroy {
@@ -35,7 +36,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private pendo: PendoService,
     private dialog: MdDialog,
-    private feature: FeatureStore) {
+    private feature: FeatureStore,
+    private ref: ChangeDetectorRef) {
 
   }
 
@@ -75,6 +77,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
       }
     });
+    this.ref.markForCheck();
   }
 
   public showTerms() {

@@ -30,6 +30,12 @@ export class CurrentUserService {
     error.data.subscribe((error) => { if (error.status === 401 || error.status === 419) this.destroy(); });
   }
 
+  public get state(): User {
+    let s: User;
+    this.data.take(1).subscribe((u: User) => s = u);
+    return s;
+  }
+
   public set(user: User = null, token?: string): void {
     if (user) localStorage.setItem('currentUser', JSON.stringify(user));
     if (token) localStorage.setItem('token', token);

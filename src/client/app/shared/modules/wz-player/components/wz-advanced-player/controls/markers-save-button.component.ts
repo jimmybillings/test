@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerState, PlayerRequest, SaveMarkersRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -8,7 +8,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button md-icon-button
-      [disabled]="!playerState.inMarkerFrame || !playerState.outMarkerFrame"
+      [disabled]="!enabled || !playerState.inMarkerFrame || !playerState.outMarkerFrame"
       title="{{ 'ASSET.ADV_PLAYER.SAVE_BTN_TITLE' | translate }}"
       (click)="onClick()">
       <md-icon>library_add</md-icon>
@@ -18,9 +18,10 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 export class MarkersSaveButtonComponent {
   @Input() playerState: PlayerState;
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Input() enabled: boolean = true;
+  @Output() request: EventEmitter<SaveMarkersRequest> = new EventEmitter<SaveMarkersRequest>();
 
   public onClick(): void {
-    this.request.emit({ type: PlayerRequestType.SaveMarkers });
+    this.request.emit({ type: 'SAVE_MARKERS' });
   }
 }

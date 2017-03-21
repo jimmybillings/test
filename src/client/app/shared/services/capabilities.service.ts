@@ -31,6 +31,10 @@ export class Capabilities implements CartCapabilities, CollectionCapabilities, A
   addToCart: () => boolean;
   accessCart: () => boolean;
   haveCart: () => boolean;
+  editAddress: () => boolean;
+  addAddress: () => boolean;
+  editAccountAddress: () => boolean;
+  addAccountAddress: () => boolean;
   findMetadataValueFor: (metadataName: string, object: any) => string | null;
 
   constructor(

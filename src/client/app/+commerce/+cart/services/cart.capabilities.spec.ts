@@ -79,6 +79,112 @@ export function main() {
       });
     });
 
+    describe('editAddress', () => {
+      it('should return true for an address of type "user" that has a valid address', () => {
+        let addr: any = { type: 'user', address: {} };
+        expect(capabilitiesUnderTest.editAddress(addr)).toBe(true);
+      });
+
+      it('should return false for an address of type "account" that has a valid address', () => {
+        let addr: any = { type: 'account', address: {} };
+        expect(capabilitiesUnderTest.editAddress(addr)).toBe(false);
+      });
+
+      it('should return false for an address of type "user" that does not have a valid address', () => {
+        let addr: any = { type: 'account' };
+        expect(capabilitiesUnderTest.editAddress(addr)).toBe(false);
+      });
+    });
+
+    describe('addAddress', () => {
+      it('should return false for an address of type "user" that has a valid address', () => {
+        let addr: any = { type: 'user', address: {} };
+        expect(capabilitiesUnderTest.addAddress(addr)).toBe(false);
+      });
+
+      it('should return false for an address of type "account" that does not have a valid address', () => {
+        let addr: any = { type: 'account' };
+        expect(capabilitiesUnderTest.addAddress(addr)).toBe(false);
+      });
+
+      it('should return true for an address of type "user" that does not have a valid address', () => {
+        let addr: any = { type: 'user' };
+        expect(capabilitiesUnderTest.addAddress(addr)).toBe(true);
+      });
+    });
+
+    describe('editAccountAddress', () => {
+      let hasPermission: boolean, addr: any;
+
+      beforeEach(() => {
+        mockCurrentUserService = { hasPermission: () => hasPermission };
+      });
+
+      it('should return false if the user doesnt have the permission', () => {
+        addr = { type: 'account', address: {} };
+        hasPermission = false;
+        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(false);
+      });
+
+      it('should return false if the address is of type "user"', () => {
+        addr = { type: 'user', address: {} };
+        hasPermission = true;
+        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(false);
+      });
+
+      it('should return false if there is no address', () => {
+        addr = { type: 'account' };
+        hasPermission = true;
+        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(false);
+      });
+
+      it('should return true if all conditions are met', () => {
+        addr = { type: 'account', address: {} };
+        hasPermission = true;
+        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(true);
+      });
+    });
+
+    describe('addAccountAddress', () => {
+      let hasPermission: boolean, addr: any;
+
+      beforeEach(() => {
+        mockCurrentUserService = { hasPermission: () => hasPermission };
+      });
+
+      it('should return false if the user doesnt have the permission', () => {
+        addr = { type: 'account' };
+        hasPermission = false;
+        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(false);
+      });
+
+      it('should return false if the address is of type "user"', () => {
+        addr = { type: 'user' };
+        hasPermission = true;
+        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(false);
+      });
+
+      it('should return false if there is an address', () => {
+        addr = { type: 'account', address: {} };
+        hasPermission = true;
+        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(false);
+      });
+
+      it('should return true if all conditions are met', () => {
+        addr = { type: 'account' };
+        hasPermission = true;
+        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(true);
+      });
+    });
+
     describe('userHas()', () => {
       let hasPermission: boolean;
 

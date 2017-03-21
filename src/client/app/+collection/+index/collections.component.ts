@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
@@ -21,6 +21,7 @@ import { CollectionDeleteComponent } from '../components/collection-delete.compo
   moduleId: module.id,
   selector: 'collections-component',
   templateUrl: 'collections.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class CollectionsComponent implements OnInit, OnDestroy {

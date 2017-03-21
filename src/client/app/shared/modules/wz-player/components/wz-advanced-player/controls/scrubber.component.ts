@@ -1,32 +1,32 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
-import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
   selector: 'wz-scrubber',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="playerState.durationFrame && playerState.currentFrame">
+    <ng-container *ngIf="readyToDisplay">
       <md-slider
         class="scrubber"
         min="0"
         max="{{ largestFrameNumber }}"
-        value="{{ playerState.currentFrame.frameNumber }}"
-        (change)="onScrubberSliderChange($event)"
+        value="{{ currentFrameNumber }}"
+        (change)="onScrubberSliderChange()"
         (mouseover)="onScrubberMouseOver()"
         (mousemove)="onScrubberMouseMove($event)"
         (mouseout)="onScrubberMouseOut()">
       </md-slider>
 
       <md-slider
-        *ngIf="playerState.inMarkerFrame"
+        *ngIf="inMarkerIsSet"
         [disabled]="true"
         class="marker in"
         min="0"
         max="{{ largestFrameNumber }}"
-        value="{{ playerState.inMarkerFrame.frameNumber }}"
+        value="{{ inMarkerFrameNumber }}"
         (click)="onInMarkerClick()"
         (mouseover)="onScrubberMouseOver()"
         (mousemove)="onScrubberMouseMove($event)"
@@ -34,12 +34,12 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
       </md-slider>
 
       <md-slider
-        *ngIf="playerState.outMarkerFrame"
+        *ngIf="outMarkerIsSet"
         [disabled]="true"
         class="marker out"
         min="0"
         max="{{ largestFrameNumber }}"
-        value="{{ playerState.outMarkerFrame.frameNumber }}"
+        value="{{ outMarkerFrameNumber }}"
         (click)="onOutMarkerClick()"
         (mouseover)="onScrubberMouseOver()"
         (mousemove)="onScrubberMouseMove($event)"
@@ -56,47 +56,91 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 export class ScrubberComponent {
   @Input() window: any;
   @Input() playerState: PlayerState;
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() request: EventEmitter<PlayerSeekRequest> = new EventEmitter<PlayerSeekRequest>();
 
-  public hovering: boolean = false;
-  public hoverFrameDisplayPosition: number = 0;
-  public hoverFrame: Frame;
+  private _hovering: boolean = false;
+  private _hoverFrameDisplayPosition: number = 0;
+  private _hoverFrame: Frame;
 
   constructor(private elementRef: ElementRef) { }
 
-  public get largestFrameNumber(): number {
-    return this.playerState.durationFrame.frameNumber - 1;
+  public get readyToDisplay(): boolean {
+    return this.durationIsSet && this.currentFrameIsSet;
   }
 
-  public onScrubberSliderChange(event: any): void {
-    this.request.emit({ type: PlayerRequestType.SeekToFrame, payload: { frame: this.hoverFrame } });
+  public get largestFrameNumber(): number {
+    return this.durationIsSet ? this.playerState.durationFrame.frameNumber - 1 : undefined;
+  }
+
+  public get currentFrameNumber(): number {
+    return this.currentFrameIsSet ? this.playerState.currentFrame.frameNumber : undefined;
+  }
+
+  public get inMarkerIsSet(): boolean {
+    return !!this.playerState && !!this.playerState.inMarkerFrame;
+  }
+
+  public get inMarkerFrameNumber(): number {
+    return this.inMarkerIsSet ? this.playerState.inMarkerFrame.frameNumber : undefined;
+  }
+
+  public get outMarkerIsSet(): boolean {
+    return !!this.playerState && !!this.playerState.outMarkerFrame;
+  }
+
+  public get outMarkerFrameNumber(): number {
+    return this.outMarkerIsSet ? this.playerState.outMarkerFrame.frameNumber : undefined;
+  }
+
+  public onScrubberSliderChange(): void {
+    this.request.emit({ type: 'SEEK_TO_FRAME', frame: this._hoverFrame });
   }
 
   public onScrubberMouseOver(): void {
-    this.hovering = true;
+    this._hovering = true;
+  }
+
+  public onScrubberMouseOut(): void {
+    this._hovering = false;
   }
 
   public onScrubberMouseMove(event: any): void {
     this.updateHoverFrameDisplayWith(event.pageX);
   }
 
-  public onScrubberMouseOut(): void {
-    this.hovering = false;
-  }
-
   public onInMarkerClick(): void {
-    this.request.emit({ type: PlayerRequestType.SeekToInMarker });
+    this.request.emit({ type: 'SEEK_TO_MARKER', markerType: 'in' });
   }
 
   public onOutMarkerClick(): void {
-    this.request.emit({ type: PlayerRequestType.SeekToOutMarker });
+    this.request.emit({ type: 'SEEK_TO_MARKER', markerType: 'out' });
+  }
+
+  public get hovering(): boolean {
+    return this._hovering;
+  }
+
+  public get hoverFrameDisplayPosition(): number {
+    return this._hoverFrameDisplayPosition;
+  }
+
+  public get hoverFrame(): Frame {
+    return this._hoverFrame;
+  }
+
+  private get durationIsSet(): boolean {
+    return !!this.playerState && !!this.playerState.durationFrame;
+  }
+
+  private get currentFrameIsSet(): boolean {
+    return !!this.playerState && !!this.playerState.currentFrame;
   }
 
   private updateHoverFrameDisplayWith(pageMouseX: number): void {
-    const relativeMouseX = pageMouseX - this.scrubberPageOffset;
-    const children = Array.from(this.elementRef.nativeElement.children);
-    const scrubber = this.findByClassNameIn(children, 'scrubber');
-    const frameDisplay = this.findByClassNameIn(children, 'hover-frame-display');
+    const relativeMouseX: number = pageMouseX - this.scrubberPageOffset;
+    const children: any[] = Array.from(this.elementRef.nativeElement.children);
+    const scrubber: any = this.findByClassNameIn(children, 'scrubber');
+    const frameDisplay: any = this.findByClassNameIn(children, 'hover-frame-display');
 
     this.updateHoverFrameWith(relativeMouseX, scrubber);
     this.updateHoverFrameDisplayPositionWith(relativeMouseX, scrubber, frameDisplay);
@@ -119,24 +163,27 @@ export class ScrubberComponent {
   }
 
   private updateHoverFrameWith(relativeMouseX: number, scrubber: any): void {
-    const scubberTrack = this.findByClassNameIn(Array.from(scrubber.children), 'md-slider-track');
-    const scrubberTrackWidth = scubberTrack.offsetWidth;
-    const newFrameNumber = relativeMouseX * this.largestFrameNumber / scrubberTrackWidth;
+    const scrubberTrack: any = this.findByClassNameIn(Array.from(scrubber.children), 'md-slider-track');
+    const scrubberTrackWidth: number = scrubberTrack.offsetWidth;
+    const newFrameNumber: number = Math.round(relativeMouseX * this.playerState.durationFrame.frameNumber / scrubberTrackWidth);
 
-    this.hoverFrame = new Frame(this.playerState.framesPerSecond).setFromFrameNumber(newFrameNumber);
+    this._hoverFrame = new Frame(this.playerState.framesPerSecond).setFromFrameNumber(newFrameNumber);
   }
 
   private updateHoverFrameDisplayPositionWith(relativeMouseX: number, scrubber: any, frameDisplay: any): void {
-    const computedStyle = this.window.getComputedStyle(frameDisplay);
-    const rawWidth = parseFloat(computedStyle.getPropertyValue('width'));
-    const actualWidth =
-      rawWidth
-      + parseInt(computedStyle.getPropertyValue('border-left-width'))
-      + parseInt(computedStyle.getPropertyValue('border-right-width'))
-      + parseInt(computedStyle.getPropertyValue('padding-left'))
-      + parseInt(computedStyle.getPropertyValue('padding-right'));
+    const computedStyle: any = this.window.getComputedStyle(frameDisplay);
+    const width: number =
+      parseFloat(computedStyle.getPropertyValue('width'))
+      + parseFloat(computedStyle.getPropertyValue('border-left-width'))
+      + parseFloat(computedStyle.getPropertyValue('border-right-width'))
+      + parseFloat(computedStyle.getPropertyValue('padding-left'))
+      + parseFloat(computedStyle.getPropertyValue('padding-right'));
 
-    this.hoverFrameDisplayPosition = this.constrainTo(0, scrubber.offsetWidth - actualWidth, relativeMouseX - (rawWidth / 2));
+    const unconstrainedPosition: number = relativeMouseX - (width / 2);
+    const minimumPosition: number = 0;
+    const maximumPosition: number = scrubber.offsetWidth - width;
+
+    this._hoverFrameDisplayPosition = this.constrainTo(minimumPosition, maximumPosition, unconstrainedPosition);
   }
 
   private constrainTo(minimumPosition: number, maximumPosition: number, position: number) {

@@ -1,5 +1,4 @@
 import { MarkersSaveButtonComponent } from './markers-save-button.component';
-import { PlayerRequestType } from '../../../interfaces/player.interface';
 
 export function main() {
   describe('Markers Save Button Component', () => {
@@ -14,7 +13,7 @@ export function main() {
       it('emits the expected request event', () => {
         componentUnderTest.onClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.SaveMarkers });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'SAVE_MARKERS' });
       });
     });
   });

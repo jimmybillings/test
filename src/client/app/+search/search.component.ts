@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, Renderer, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Renderer, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { SearchService } from '../shared/services/search.service';
 import { UiConfig } from '../shared/services/ui.config';
 import { Observable } from 'rxjs/Rx';
@@ -17,6 +17,7 @@ import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { UiState } from '../shared/services/ui.state';
 import { ActivatedRoute, Router } from '@angular/router';
+
 /**
  * Asset search page component - renders search page results
  */
@@ -51,15 +52,17 @@ export class SearchComponent implements OnDestroy, OnInit {
     private snackBar: MdSnackBar,
     private translate: TranslateService,
     private route: ActivatedRoute,
-    private router: Router) {
+    private router: Router,
+    private detector: ChangeDetectorRef) {
     this.screenWidth = this.window.nativeWindow.innerWidth;
     this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
   }
 
   ngOnInit(): void {
-    if (this.route.snapshot.params['gq']) {
-      this.path = JSON.parse(this.route.snapshot.params['gq']);
-    }
+    this.router.events.subscribe(route => {
+      this.path = (this.route.snapshot.params['gq']) ? JSON.parse(this.route.snapshot.params['gq']) : '';
+      this.detector.markForCheck();
+    });
   }
 
   ngOnDestroy(): void {

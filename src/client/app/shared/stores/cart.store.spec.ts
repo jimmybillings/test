@@ -5,8 +5,8 @@ import { cart, CartStore } from './cart.store';
 export function main() {
   describe('cart reducer', () => {
     it('returns the payload for REPLACE_CART', () => {
-      expect(cart({ current: 'State' }, { type: 'REPLACE_CART', payload: { someKey: 'someValue' } }))
-        .toEqual({ someKey: 'someValue' });
+      expect(cart({ cart: {}, orderInProgress: {} }, { type: 'REPLACE_CART', payload: { someKey: 'someValue' } }))
+        .toEqual({ orderInProgress: {}, cart: { someKey: 'someValue' } });
     });
 
     it('returns the current state for an unexpected action type', () => {
@@ -16,7 +16,42 @@ export function main() {
 
     it('returns the default state for no current state and an unexpected action type', () => {
       expect(cart(undefined, { type: 'BLAH', payload: { someKey: 'someValue' } }))
-        .toEqual({ userId: NaN, total: 0 });
+        .toEqual({
+          cart: {
+            userId: NaN,
+            total: 0
+          },
+          orderInProgress: {
+            purchaseOptions: {
+              purchaseOnCredit: false,
+              creditExemption: false
+            },
+            addresses: [],
+            selectedAddress: {
+              type: '',
+              name: '',
+              defaultAddress: undefined,
+              addressEntityId: undefined,
+              address: {
+                address: '',
+                state: '',
+                city: '',
+                country: '',
+                zipcode: '',
+                phone: ''
+              }
+            },
+            authorization: {
+              card: {
+                brand: '',
+                last4: '',
+                exp_month: '',
+                exp_year: ''
+              }
+            },
+            selectedPurchaseType: ''
+          }
+        });
     });
   });
 
@@ -47,7 +82,7 @@ export function main() {
 
     describe('replaceWith()', () => {
       it('dispatches REPLACE_CART with the passed-in cart', () => {
-        storeUnderTest.replaceWith({ something: 'else' });
+        storeUnderTest.replaceCartWith({ something: 'else' });
 
         expect(mockStore.dispatch)
           .toHaveBeenCalledWith({ type: 'REPLACE_CART', payload: { something: 'else' } });

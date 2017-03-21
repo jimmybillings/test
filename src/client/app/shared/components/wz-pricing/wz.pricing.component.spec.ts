@@ -37,6 +37,16 @@ export function main() {
           { name: 'A', value: 'S' }, { name: 'B', value: 'M' }, { name: 'C', value: 'X' }, { name: 'D', value: 'S' }
         ]);
       });
+
+      it('should build a blank form if the preferences are invalid', () => {
+        componentUnderTest.pricingPreferences = {
+          invalid: 'preference'
+        };
+        componentUnderTest.ngOnInit();
+        expect(componentUnderTest.form).toEqual([
+          { name: 'A', value: '' }, { name: 'B', value: '' }, { name: 'C', value: '' }, { name: 'D', value: '' }
+        ]);
+      });
     });
 
     describe('onSubmit()', () => {
