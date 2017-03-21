@@ -2,10 +2,12 @@ import { CartComponent } from './cart.component';
 
 export function main() {
   describe('Cart Component', () => {
-    let componentUnderTest: CartComponent;
+    let componentUnderTest: CartComponent, mockCapabilities: any;
+
+    mockCapabilities = { createQuotes: () => false };
 
     beforeEach(() => {
-      componentUnderTest = new CartComponent();
+      componentUnderTest = new CartComponent(mockCapabilities);
     });
 
     describe('Initialization', () => {

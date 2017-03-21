@@ -18,6 +18,10 @@ import { LineItemsComponent } from './+cart/components/line-items.component';
 import { AssetComponent } from './+cart/components/asset.component';
 import { EditProjectComponent } from './+cart/components/edit-project.component';
 import { AddressFormComponent } from './+cart/components/address-form.component';
+import { QuoteFormComponent } from './+cart/components/quote-form.component';
+import { AdministerQuoteComponent } from './+cart/components/administer-quote.component';
+import { QuoteProjectsComponent } from './+cart/components/quote-projects.component';
+import { QuoteLineItemsComponent } from './+cart/components/quote-line-items.component';
 
 // Order Stuff
 import { OrdersComponent } from './+order/+index/orders.component';
@@ -27,8 +31,6 @@ import { OrderItemListComponent } from './+order/components/order-item-list.comp
 // Quote Stuff
 import { QuoteComponent } from './+quote/+show/quote.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
-import { QuoteFormComponent } from './+cart/components/quote-form.component';
-
 
 
 @NgModule({
@@ -50,7 +52,10 @@ import { QuoteFormComponent } from './+cart/components/quote-form.component';
     AddressFormComponent,
     QuoteFormComponent,
     QuoteComponent,
-    QuotesComponent
+    QuotesComponent,
+    AdministerQuoteComponent,
+    QuoteProjectsComponent,
+    QuoteLineItemsComponent
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
   providers: [CartCapabilities],

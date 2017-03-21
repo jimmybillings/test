@@ -3,7 +3,7 @@ import { ApiService } from '../../shared/services/api.service';
 import { CartService } from '../../shared/services/cart.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Rx';
-import { Quote } from '../../shared/interfaces/quote.interface';
+import { Quote, QuoteOptions } from '../../shared/interfaces/quote.interface';
 import { QuoteStore } from '../../shared/stores/quote.store';
 
 @Injectable()
@@ -21,13 +21,12 @@ export class QuoteService {
     return this.store.state;
   }
 
-  public createQuote(saveAsDraft: boolean, emailAddress?: string, matchingUsers?: any[]): Observable<any> {
-    let quoteStatus: 'ACTIVE' | 'PENDING' = saveAsDraft ? 'PENDING' : 'ACTIVE';
-    let ownerUserId: number = matchingUsers ? matchingUsers.filter((user: any) => {
-      return user.emailAddress === emailAddress;
+  public createQuote(options: QuoteOptions): Observable<any> {
+    let ownerUserId: number = options.users ? options.users.filter((user: any) => {
+      return user.emailAddress === options.emailAddress;
     })[0].id : null;
     return this.cart.data.flatMap((cartStore: any) => {
-      let body: any = Object.assign(cartStore.cart, { quoteStatus });
+      let body: any = Object.assign(cartStore.cart, { quoteStatus: options.status, purchaseType: options.quoteType });
       if (ownerUserId) Object.assign(body, { ownerUserId });
       delete body.id;
       return this.api.post(Api.Orders, 'quote', { body: body });
