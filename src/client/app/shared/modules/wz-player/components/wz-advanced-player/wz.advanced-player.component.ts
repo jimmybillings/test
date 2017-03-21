@@ -43,9 +43,7 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   }
 
   public assetIsVideo(): boolean {
-    return !!this.currentAsset &&
-      this.currentAsset.hasOwnProperty('resourceClass') &&
-      this.currentAsset.resourceClass !== 'Image';
+    return !!this.currentAsset && this.currentAsset.resourceClass !== 'Image';
   }
 
   constructor(private playerStateService: PlayerStateService) { }
