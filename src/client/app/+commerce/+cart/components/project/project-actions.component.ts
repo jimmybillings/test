@@ -13,13 +13,12 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
     </button>
 
     <md-menu x-position="before" #projectOptionsMenu="mdMenu">
-      <div class="divider"></div>
       <button disabled md-menu-item><md-icon>attachment</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
       <button disabled md-menu-item><md-icon>receipt</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}</button>
       <button disabled md-menu-item><md-icon>add_to_photos</md-icon>{{ 'CART.PROJECTS.ADD_CLIPS' | translate }}</button>
       <div class="divider"></div>
       <button md-menu-item (click)="remove.emit()">
-        <md-icon>delete</md-icon>Delete this project
+        <md-icon>delete</md-icon>{{ 'CART.PROJECTS.DELETE_PROJECT_BTN' | translate }}
       </button>
     </md-menu>
   `
