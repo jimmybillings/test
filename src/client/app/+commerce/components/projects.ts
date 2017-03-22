@@ -21,13 +21,16 @@ export class Projects {
     this.projectsNotify.emit({ type: 'ADD_PROJECT' });
   }
 
-  public remove(project: Project): void {
+  public onRemove(project: Project): void {
     this.projectsNotify.emit({ type: 'REMOVE_PROJECT', payload: project });
   }
 
-  public edit(project: Project): void {
+  public onEdit(project: Project): void {
     this.selectProject(project);
-    this.projectsNotify.emit({ type: 'UPDATE_PROJECT', payload: Object.assign({ project: project, items: this.config.form.items }) });
+    this.projectsNotify.emit({
+      type: 'UPDATE_PROJECT',
+      payload: Object.assign({ project: project, items: this.config.form.items })
+    });
   }
 
   public delegate(message: any): void {

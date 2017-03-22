@@ -54,7 +54,7 @@ export function main() {
             expect(event).toEqual({ type: 'REMOVE_PROJECT', payload: project });
           });
 
-        classUnderTest.remove(project);
+        classUnderTest.onRemove(project);
       });
     });
 
@@ -82,7 +82,7 @@ export function main() {
             });
           });
 
-        classUnderTest.edit(project);
+        classUnderTest.onEdit(project);
       });
     });
 

@@ -8,32 +8,20 @@
 	<div class="project" *ngFor="let project of projects">
 		<header class="project-info" layout-gt-xs="row" layout="column">
 			<div flex="100" flex-gt-sm="70" flex-order-xs="2">
-				<h5 md-display-1>
-					<span class="project-label md-caption">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>
-					<span class="project-name">{{ project.name }}</span>
-				</h5>
-				<span class="project-client md-caption">
-					<strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> 
-					{{ project.clientName }}
-				</span>
+				<project-info-component  [name]="project.name" [clientName]="project.clientName"></project-info-component>
 			</div>
-
 			<div flex="100" flex-gt-sm="30" layout-padding flex-order-xs="-1">
-				<div class="project-asset-count">
-					<span *ngIf="lineItemCountFor(project) == 0">No Assets</span>
-					<span *ngIf="lineItemCountFor(project) == 1">1 Asset</span>
-					<span *ngIf="lineItemCountFor(project) > 1">{{ lineItemCountFor(project) }} Assets</span>
-				</div>
-				<button (click)="edit(project)" md-button class="is-outlined" type="button">
-					{{ 'CART.PROJECTS.EDIT_PROJECT_BTN' | translate }}
-				</button>
-				<button md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)" title="More project options"><md-icon>more_vert</md-icon></button>
-			</div>
-			<div *ngIf="quoteType !== 'provisionalOrder'" class="project-subtotal md-caption">
-				<strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
-				<span>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
+				<project-price-info-component
+					*ngIf="quoteType !== 'provisionalOrder'"
+					[subtotal]="project.subtotal">
+				</project-price-info-component>
+				<project-actions-component
+					(remove)="onRemove(project)"
+					(edit)="onEdit(project)">
+				</project-actions-component>
 			</div>
 		</header>
+
 		<quote-line-items-component [quoteType]="quoteType"
 			[lineItems]="project.lineItems"
 			[otherProjects]="projectsOtherThan(project)"
@@ -42,25 +30,3 @@
 		</quote-line-items-component>
 	</div>
 </section>
-
-<md-menu x-position="before" #projectOptionsMenu="mdMenu">
-	<!--<button md-menu-item (click)="remove(selectedProject)">
-		<md-icon>remove_circle</md-icon>{{ 'CART.PROJECTS.REMOVE_PROJECT' | translate }}
-	</button>-->
-
-	<!--<button md-menu-item (click)="addProject()">
-		<md-icon>add_circle_outline</md-icon>Create a new project
-	</button>-->
-	<div class="divider"></div>
-	<button disabled md-menu-item><md-icon>attachment</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
-	<button disabled md-menu-item><md-icon>receipt</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}</button>
-	<!--<button disabled md-menu-item>{{ 'CART.PROJECTS.ADD_CLIP' | translate }}</button>-->
-	<button disabled md-menu-item><md-icon>add_to_photos</md-icon>{{ 'CART.PROJECTS.ADD_CLIPS' | translate }}</button>
-	<!--<div class="divider"></div>
-	<button disabled md-menu-item>{{ 'CART.PROJECTS.EDIT_PRICE' | translate }}</button>-->
-	<div class="divider"></div>
-	<button md-menu-item (click)="remove(selectedProject)">
-		<md-icon>delete</md-icon>Delete this project
-	</button>
-</md-menu>
-

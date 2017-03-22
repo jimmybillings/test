@@ -14,6 +14,10 @@ import { BillingTabComponent } from './+cart/components/tabs/billing-tab.compone
 import { PaymentTabComponent } from './+cart/components/tabs/payment-tab.component';
 import { ConfirmTabComponent } from './+cart/components/tabs/confirm-tab.component';
 import { ProjectsComponent } from './+cart/components/projects.component';
+import { ProjectInfoComponent } from './+cart/components/project-info.component';
+import { ProjectAssetInfoComponent } from './+cart/components/project-asset-info.component';
+import { ProjectPriceInfoComponent } from './+cart/components/project-price-info.component';
+import { ProjectActionsComponent } from './+cart/components/project-actions.component';
 import { LineItemsComponent } from './+cart/components/line-items.component';
 import { AssetComponent } from './+cart/components/asset.component';
 import { EditProjectComponent } from './+cart/components/edit-project.component';
@@ -55,7 +59,11 @@ import { QuotesComponent } from './+quote/+index/quotes.component';
     QuotesComponent,
     AdministerQuoteComponent,
     QuoteProjectsComponent,
-    QuoteLineItemsComponent
+    QuoteLineItemsComponent,
+    ProjectInfoComponent,
+    ProjectAssetInfoComponent,
+    ProjectPriceInfoComponent,
+    ProjectActionsComponent,
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
   providers: [CartCapabilities],
