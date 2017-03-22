@@ -42,7 +42,7 @@ cart-component section.header {
 }
 
 
-section.cart-total {
+.cart-total {
   .select-usage-warn {
     margin-top: rem(.2);
     color: md-color($md-warn, darker);

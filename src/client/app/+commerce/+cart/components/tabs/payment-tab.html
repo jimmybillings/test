@@ -2,7 +2,7 @@
   <div flex="100" flex-gt-lg="85" class="payment-select">
     <header layout="column" layout-align="start">
       <h2 class="cart-heading">{{ 'CART.PAYMENT.SELECT_PAYMENT' | translate }}</h2>
-      <span class="sub-head">You can review this order before it's final</span>
+      <span class="sub-head">{{ 'CART.PAYMENT.ORDER_REVIEW_EXPLAINED' | translate }}</span>
     </header>
       
     <div layout="column" layout-gt-xs="row" layout-padding>
@@ -23,7 +23,7 @@
       <section flex-gt-lg="70" flex-gt-md="65" flex-md="60" flex="100">
         <div *ngIf="userCanPurchaseOnCredit | async">
           <h5 class="md-title">{{ 'CART.PAYMENT.PURCHASE_ON_CREDIT' | translate }}</h5>
-          <p class="instructions">Your account can purchase on credit. To use that option, click the button below.</p>
+          <p class="instructions">{{ 'CART.PAYMENT.PURCHASE_ON_CREDIT_INSTRUCTIONS' | translate }}</p>
           <button md-button
             (click)="selectPurchaseOnCredit()"
             color="primary" 
