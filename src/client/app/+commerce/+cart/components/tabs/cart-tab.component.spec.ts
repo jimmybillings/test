@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { CartTabComponent } from './cart-tab.component';
-import { EditProjectComponent } from '../edit-project.component';
+import { ProjectEditComponent } from '../project/project-edit.component';
 import { WzSubclipEditorComponent } from '../../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WzPricingComponent } from '../../../../shared/components/wz-pricing/wz.pricing.component';
 
@@ -262,7 +262,7 @@ export function main() {
         let mockProject = {};
         componentUnderTest.onNotification({ type: 'UPDATE_PROJECT', payload: mockProject });
 
-        expect(mockDialog.open).toHaveBeenCalledWith(EditProjectComponent, { position: { top: '14%' } });
+        expect(mockDialog.open).toHaveBeenCalledWith(ProjectEditComponent, { position: { top: '14%' } });
       });
 
       it('moves a line item when notified with MOVE_LINE_ITEM', () => {

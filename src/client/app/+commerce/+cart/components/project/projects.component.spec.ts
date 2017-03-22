@@ -1,11 +1,11 @@
-import { Projects } from './projects';
+import { ProjectsComponent } from './projects.component';
 
 export function main() {
   describe('Projects', () => {
-    let classUnderTest: Projects;
+    let classUnderTest: ProjectsComponent;
 
     beforeEach(() => {
-      classUnderTest = new Projects();
+      classUnderTest = new ProjectsComponent();
     });
 
     describe('projectsOtherThan()', () => {

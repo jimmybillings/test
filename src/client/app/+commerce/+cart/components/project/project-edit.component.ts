@@ -2,7 +2,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  selector: 'edit-project-component',
+  selector: 'project-edit-component',
   template: `
     <div class="wz-dialog">
       <button md-icon-button md-dialog-close title="Close" type="button" class="close">
@@ -19,7 +19,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class EditProjectComponent {
+export class ProjectEditComponent {
   @Input() dialog: any;
   @Input() items: any;
 }

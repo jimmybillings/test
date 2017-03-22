@@ -1,19 +1,10 @@
 <projects-component
-  *ngIf="!userCan.createQuotes()"
+  [quoteType]="quoteType"
   [projects]="(cart | async).projects" 
   [config]="config" 
   [userCan]="userCan" 
   (projectsNotify)="onNotification($event)">
 </projects-component>
-
-<quote-projects-component 
-  *ngIf="userCan.createQuotes()"
-  [projects]="(cart | async).projects" 
-  [config]="config"
-  [quoteType]="quoteType"
-  [userCan]="userCan" 
-  (projectsNotify)="onNotification($event)">
-</quote-projects-component>
 
 <section class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">

@@ -1,11 +1,19 @@
-import { Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Project } from '../../shared/interfaces/cart.interface';
-import { Capabilities } from '../../shared/services/capabilities.service';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Project } from '../../../../shared/interfaces/cart.interface';
+import { Capabilities } from '../../../../shared/services/capabilities.service';
 
-export class Projects {
+@Component({
+  moduleId: module.id,
+  selector: 'projects-component',
+  templateUrl: 'projects.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ProjectsComponent {
+  @Input() readOnly: boolean = false;
   @Input() config: any;
   @Input() projects: Array<Project>;
   @Input() userCan: Capabilities;
+  @Input() quoteType: 'standard' | 'provisionalOrder' | 'offlineAgreement';
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;
 

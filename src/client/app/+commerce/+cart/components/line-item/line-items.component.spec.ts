@@ -1,14 +1,14 @@
-import { LineItems } from './line-items';
+import { LineItemsComponent } from './line-items.component';
 
 export function main() {
   describe('Line Items', () => {
-    let classUnderTest: LineItems;
+    let classUnderTest: LineItemsComponent;
 
     beforeEach(() => {
-      classUnderTest = new LineItems();
+      classUnderTest = new LineItemsComponent();
     });
 
-    describe('moveTo()', () => {
+    describe('onMoveTo()', () => {
       it('emits the proper request event', () => {
         let project: any = { some: 'project' };
         let lineItem: any = { some: 'lineItem' };
@@ -21,11 +21,11 @@ export function main() {
             });
           });
 
-        classUnderTest.moveTo(project, lineItem);
+        classUnderTest.onMoveTo(project, lineItem);
       });
     });
 
-    describe('clone()', () => {
+    describe('onClone()', () => {
       it('emits the proper request event', () => {
         let lineItem: any = { some: 'lineItem' };
 
@@ -34,7 +34,7 @@ export function main() {
             expect(event).toEqual({ type: 'CLONE_LINE_ITEM', payload: lineItem });
           });
 
-        classUnderTest.clone(lineItem);
+        classUnderTest.onClone(lineItem);
       });
     });
 
@@ -47,7 +47,7 @@ export function main() {
             expect(event).toEqual({ type: 'REMOVE_LINE_ITEM', payload: lineItem });
           });
 
-        classUnderTest.remove(lineItem);
+        classUnderTest.onRemove(lineItem);
       });
     });
 
@@ -59,7 +59,7 @@ export function main() {
             expect(event).toEqual({ type: 'EDIT_LINE_ITEM_MARKERS', payload: lineItem });
           });
 
-        classUnderTest.editMarkers(lineItem);
+        classUnderTest.onEditMarkers(lineItem);
       });
     });
 
@@ -84,7 +84,7 @@ export function main() {
       });
     });
 
-    describe('showPricingDialog', () => {
+    describe('onShowPricingDialog', () => {
       it('should emit the "SHOW_PRICING_DIALOG" event', () => {
         let lineItem: any = { some: 'lineItem' };
 
@@ -92,11 +92,11 @@ export function main() {
           expect(event).toEqual({ type: 'SHOW_PRICING_DIALOG', payload: lineItem });
         });
 
-        classUnderTest.showPricingDialog(lineItem);
+        classUnderTest.onShowPricingDialog(lineItem);
       });
     });
 
-    describe('selectTarget', () => {
+    describe('onSelectTarget', () => {
       it('emits the proper event', () => {
         let lineItem: any = { some: 'lineItem' };
 
@@ -110,7 +110,7 @@ export function main() {
               });
           });
 
-        classUnderTest.selectTarget('', 'master_copy', lineItem);
+        classUnderTest.onSelectTarget('master_copy', '', lineItem);
       });
     });
   });

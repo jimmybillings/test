@@ -8,16 +8,25 @@
 	<div class="project" *ngFor="let project of projects">
 		<header class="project-info" layout-gt-xs="row" layout="column">
 			<div flex="100" flex-gt-sm="70" flex-order-xs="2">
-				<project-info-component  [name]="project.name" [clientName]="project.clientName"></project-info-component>
+				<project-info-component
+					[name]="project.name"
+					[clientName]="project.clientName">
+				</project-info-component>
 			</div>
 			<div flex="100" flex-gt-sm="30" layout-padding flex-order-xs="-1">
-				<project-price-info-component [subtotal]="project.subtotal"></project-price-info-component>
+				<project-price-info-component
+					*ngIf="quoteType !== 'provisionalOrder'"
+					[subtotal]="project.subtotal">
+				</project-price-info-component>
 				<project-actions-component
 					*ngIf="!readOnly"
 					(remove)="onRemove(project)"
 					(edit)="onEdit(project)">
 				</project-actions-component>
-				<project-asset-info-component *ngIf="readOnly" [count]="lineItemCountFor(project)"></project-asset-info-component>
+				<project-asset-info-component
+					*ngIf="readOnly"
+					[count]="lineItemCountFor(project)">
+				</project-asset-info-component>
 			</div>
 		</header>
 
@@ -26,7 +35,8 @@
 			[lineItems]="project.lineItems"
 			[otherProjects]="projectsOtherThan(project)"
 			[userCan]="userCan"
-			(lineItemsNotify)="delegate($event)"
-		></line-items-component>
+			[quoteType]="quoteType"
+			(lineItemsNotify)="delegate($event)">
+		</line-items-component>
 	</div>
 </section>

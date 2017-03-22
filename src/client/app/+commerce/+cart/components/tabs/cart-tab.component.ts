@@ -5,7 +5,7 @@ import { Tab } from './tab';
 import { CartService } from '../../../../shared/services/cart.service';
 import { Project, LineItem, Cart } from '../../../../shared/interfaces/cart.interface';
 import { UiConfig } from '../../../../shared/services/ui.config';
-import { EditProjectComponent } from '../edit-project.component';
+import { ProjectEditComponent } from '../project/project-edit.component';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { WzSubclipEditorComponent } from '../../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { AssetService } from '../../../../shared/services/asset.service';
@@ -219,7 +219,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   private updateProject(project: any) {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(EditProjectComponent, { position: { top: '14%' } });
+    let dialogRef: MdDialogRef<any> = this.dialog.open(ProjectEditComponent, { position: { top: '14%' } });
     Object.assign(dialogRef.componentInstance, { items: project.items, dialog: dialogRef });
     dialogRef.afterClosed()
       .filter(data => data)

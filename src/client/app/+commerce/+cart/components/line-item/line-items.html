@@ -1,0 +1,37 @@
+<ul>
+	<li *ngFor="let lineItem of items" class="cart-asset" flex="100" layout="row" layout-xs="column">
+		<div flex="100" flex-gt-xs="50">
+			<cart-asset-component
+				[asset]="lineItem.asset"
+				(assetNotify)="delegate($event)">
+			</cart-asset-component>
+		</div>
+		<div flex-gt-xs="30" layout-sm="100" flex="auto" class="delivery-format" layout-padding>
+			<line-item-transcode-select-component
+				*ngIf="shouldShowTargets(lineItem)"
+				[transcodeTargets]="lineItem.transcodeTargets"
+				[selectedTarget]="lineItem.selectedTranscodeTarget"
+				(selectTarget)="onSelectTarget($event, lineItem.selectedTranscodeTarget, lineItem)">
+			</line-item-transcode-select-component>
+		</div>
+		<div flex-gt-xs="20" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
+			<line-item-actions-component
+				[rightsManaged]="lineItem.rightsManaged"
+				[otherProjects]="otherProjects"
+				[userCanCreateSubclips]="userCan.createSubclips(lineItem)"
+				[timeStart]="lineItem.timeStart"
+				(showPricingDialog)="onShowPricingDialog(lineItem)"
+				(clone)="onClone(lineItem)"
+				(moveTo)="onMoveTo($event, lineItem)"
+				(editMarkers)="onEditMarkers(lineItem)"
+				(remove)="onRemove(lineItem)">
+			</line-item-actions-component>
+			<line-item-price-component
+				*ngIf="quoteType !== 'provisionalOrder'"
+				[price]="lineItem.price"
+				[rightsManaged]="lineItem.rightsManaged"
+				[hasAttributes]="!!lineItem.attributes">
+			</line-item-price-component>
+		</div>
+	</li>
+</ul>
