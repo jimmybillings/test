@@ -43,19 +43,16 @@
 	<!--<button md-menu-item (click)="remove(selectedProject)">
 		<md-icon>remove_circle</md-icon>{{ 'CART.PROJECTS.REMOVE_PROJECT' | translate }}
 	</button>-->
-
 	<!--<button md-menu-item (click)="addProject()">
 		<md-icon>add_circle_outline</md-icon>Create a new project
 	</button>-->
-	<div class="divider"></div>
+	<!--<div class="divider"></div>-->
 	<button disabled md-menu-item><md-icon>attachment</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
 	<button disabled md-menu-item><md-icon>receipt</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}</button>
 	<!--<button disabled md-menu-item>{{ 'CART.PROJECTS.ADD_CLIP' | translate }}</button>-->
 	<button disabled md-menu-item><md-icon>add_to_photos</md-icon>{{ 'CART.PROJECTS.ADD_CLIPS' | translate }}</button>
-	<!--<div class="divider"></div>
-	<button disabled md-menu-item>{{ 'CART.PROJECTS.EDIT_PRICE' | translate }}</button>-->
 	<div class="divider"></div>
 	<button md-menu-item (click)="remove(selectedProject)">
-		<md-icon>delete</md-icon>Delete this project
+		<md-icon>delete</md-icon>{{ 'CART.PROJECTS.DELETE_PROJECT_BTN' | translate }}
 	</button>
 </md-menu>

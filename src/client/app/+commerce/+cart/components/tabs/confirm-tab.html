@@ -25,15 +25,15 @@
     <section class="billing" flex="auto">
       <h5 class="md-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
       <address *ngIf="cartStore.orderInProgress.selectedAddress.address">
-        {{cartStore.orderInProgress.selectedAddress.address.address}}<br/>
-        {{cartStore.orderInProgress.selectedAddress.address.city}}, {{cartStore.orderInProgress.selectedAddress.address.state}} {{cartStore.orderInProgress.selectedAddress.address.zipcode}}, {{cartStore.orderInProgress.selectedAddress.address.country}}<br/>
+        <span class="line-1">{{cartStore.orderInProgress.selectedAddress.address.address}}</span>
+        <span class="line-2">{{cartStore.orderInProgress.selectedAddress.address.city}}, {{cartStore.orderInProgress.selectedAddress.address.state}} {{cartStore.orderInProgress.selectedAddress.address.zipcode}}, {{cartStore.orderInProgress.selectedAddress.address.country}}</span>
         <span class="phone">{{cartStore.orderInProgress.selectedAddress.address.phone}}</span>
       </address>
     </section>
     <section class="payment" flex="auto">
       <h5 class="md-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
       <div class="payment-info">
-        <span class="credit-card" *ngIf="cartStore.orderInProgress.authorization.card.last4 && cartStore.orderInProgress.selectedPurchaseType === 'card'">
+        <div class="credit-card" *ngIf="cartStore.orderInProgress.authorization.card.last4 && cartStore.orderInProgress.selectedPurchaseType === 'card'">
           <span class="indicate-cc">
             <strong>{{cartStore.orderInProgress.authorization.card.brand}}:</strong> ending in {{cartStore.orderInProgress.authorization.card.last4}}
           </span>
@@ -41,12 +41,12 @@
             <strong>Expires:</strong>
             {{cartStore.orderInProgress.authorization.card.exp_month}}/{{cartStore.orderInProgress.authorization.card.exp_year}}
           </span>
-        </span>
-        <span class="purchase-on-credit" *ngIf="cartStore.orderInProgress.selectedPurchaseType === 'credit'">
+        </div>
+        <div class="purchase-on-credit" *ngIf="cartStore.orderInProgress.selectedPurchaseType === 'credit'">
           <span class="indicate-credit">
             <strong>Purchase on credit</strong>
           </span>
-        </span>
+        </div>
       </div>
     </section>
   </div>
