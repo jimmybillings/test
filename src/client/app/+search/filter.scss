@@ -80,65 +80,63 @@ md-sidenav {
   .filter-count {
     font-size: .75em;
   }
-  .date-range {
-    .filter-subhead:hover {
-      cursor: default;
-      background-color: transparent;
-    }
-    .connector, .input-container {
-      width: calc(100% - 62px);
-      position: relative;
-    }
-    .connector {
-      display: block;
-      margin: rem(-0.4) 0 0 rem(3.2);
-      font-size: .75em;
-      color: rgba(md-color($foreground, base), .54);
-    }
-    .input-container {
-      margin: rem(.6) 0 rem(1.6) rem(3.2);
-      &::after {
-        content: "\e8df";
-        font-family: 'Material Icons';
-        font-size: rem(2.0);
-        font-weight: 100;
-        position: absolute;
-        right: 0;
-        top: 0;
-        opacity: .25;
-      }
-    }
-    input {
-      width: 100%;
-      border-width: 0 0 1px 0;
-      border-style: solid;
-      border-color: rgba(md-color($foreground, base), .38);
-      border-image: none;
-      background-color: transparent;
-      cursor: pointer;
-      z-index: 1; // To enable clicking the container's ::after icon.
-      padding: rem(.4) 0 rem(.4) 0;
-      position: relative;
-      &:focus, &:active {
-        outline: none;
-        border-color: rgba(md-color($primary, default),.9);
-        border-width: 0 0 2px 0;
-      }
-    }
-  }
 }
 
 
 
 
 
+.date-range {
+  .filter-subhead:hover {
+    cursor: default;
+    background-color: transparent;
+  }
+  .connector, .input-container {
+    width: calc(100% - 62px);
+    position: relative;
+  }
+  .connector {
+    display: block;
+    margin: rem(-0.4) 0 0 rem(3.2);
+    font-size: .75em;
+    color: rgba(md-color($foreground, base), .54);
+  }
+  .input-container {
+    margin: rem(.6) 0 rem(1.6) rem(3.2);
+    &::after {
+      content: "\e8df";
+      font-family: 'Material Icons';
+      font-size: rem(2.0);
+      font-weight: 100;
+      position: absolute;
+      right: 0;
+      top: 0;
+      opacity: .25;
+    }
+  }
+  input {
+    width: 100%;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: md-color($foreground, divider);
+    border-image: none;
+    background-color: transparent;
+    cursor: pointer;
+    z-index: 1; // To enable clicking the container's ::after icon.
+    padding: rem(.4) 0 rem(.4) 0;
+    position: relative;
+    &:focus, &:active {
+      outline: none;
+      border-color: md-color($primary, default);
+      border-width: 0 0 1px 0;
+    }
+  }
+}
 
 .filter .md-checkbox-disabled:not(.md-checkbox-checked) .md-checkbox-label {
   color: md-color($foreground, disabled-text);
 }
 
-
-// this 
 .filter [color="primary"].md-checkbox-checked .md-checkbox-background {
   background-color: md-color($primary, default);
 }

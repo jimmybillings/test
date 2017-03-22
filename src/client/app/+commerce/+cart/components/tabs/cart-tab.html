@@ -8,6 +8,14 @@
 
 <section class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
+    <div *ngIf="quoteType !== 'provisionalOrder'" flex="100" layout="row" layout-align="end center" class="total md-headline">
+      <span class="total-label">
+        {{ 'CART.CART_TOTAL' | translate }} 
+      </span>
+      <span class="total-amount">
+        {{ (cart | async).total | currency:'USD':true:'1.2-2' }}
+      </span>
+		</div>
     <div *ngIf="userCan.createQuotes()" flex="100" layout="row" layout-align="center center">
       <administer-quote-component
         flex="100"
@@ -17,14 +25,8 @@
         (selectQuoteType)="onSelectQuoteType($event)">
       </administer-quote-component>
     </div>
-    <div *ngIf="quoteType !== 'provisionalOrder'" flex="100" layout="row" layout-align="end center" class="total md-headline">
-      <span class="total-label">
-        {{ 'CART.CART_TOTAL' | translate }} 
-      </span>
-      <span class="total-amount">
-        {{ (cart | async).total | currency:'USD':true:'1.2-2' }}
-      </span>
-		</div>
+
+
     <div *ngIf="!userCan.createQuotes()" flex="100" layout="row" layout-align="end center">
       <button
         *ngIf="(assetsInCart | async)"
