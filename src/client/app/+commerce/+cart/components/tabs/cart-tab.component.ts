@@ -98,6 +98,14 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     this.createQuote({ status: 'PENDING', purchaseType: this.quoteType });
   }
 
+  public get userCanProceed(): boolean {
+    if (this.quoteType === 'ProvisionalOrder') {
+      return true;
+    } else {
+      return this.rmAssetsHaveAttributes;
+    }
+  }
+
   public get rmAssetsHaveAttributes(): boolean {
     if (this.cartService.state.cart.itemCount === 0) return true;
 

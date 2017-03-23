@@ -7,7 +7,7 @@ import { Cart, Project, LineItem } from '../../../shared/interfaces/cart.interfa
   template: `<div flex="100" layout="column" layout-gt-sm="row" layout-align="end end">
     <div class="create-quote-actions">
       <button
-        [disabled]="!rmAssetsHaveAttributes"
+        [disabled]="!userCanProceed"
         md-button 
         color="primary"
         class="is-outlined"
@@ -15,7 +15,7 @@ import { Cart, Project, LineItem } from '../../../shared/interfaces/cart.interfa
         {{ 'QUOTE.SAVE_AS_DRAFT_BTN' | translate }}
       </button>
       <button
-        [disabled]="!rmAssetsHaveAttributes"
+        [disabled]="!userCanProceed"
         md-raised-button class="checkout"
         (click)="openQuoteDialog.emit()">
         {{ 'QUOTE.CREATE_QUOTE_BTN' | translate }}
@@ -30,21 +30,7 @@ import { Cart, Project, LineItem } from '../../../shared/interfaces/cart.interfa
 })
 export class AdministerQuoteComponent {
   @Input() cart: Cart;
+  @Input() userCanProceed: boolean;
   @Output() saveAsDraft: EventEmitter<any> = new EventEmitter();
   @Output() openQuoteDialog: EventEmitter<any> = new EventEmitter();
-
-  public get rmAssetsHaveAttributes(): boolean {
-    if (this.cart.itemCount === 0) return true;
-
-    let validAssets: boolean[] = [];
-
-    this.cart.projects.forEach((project: Project) => {
-      if (project.lineItems) {
-        project.lineItems.forEach((lineItem: LineItem) => {
-          validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);
-        });
-      }
-    });
-    return validAssets.indexOf(false) === -1;
-  }
 }
