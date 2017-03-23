@@ -12,7 +12,9 @@ export interface Quote {
 
 export interface QuoteOptions {
   status: 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED';
-  quoteType: 'standard' | 'provisionalOrder' | 'offlineAggreement';
+  purchaseType: PurchaseType;
   emailAddress?: string;
   users?: any[];
 }
+
+export type PurchaseType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
