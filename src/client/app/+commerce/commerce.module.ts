@@ -35,6 +35,7 @@ import { AssetInfoComponent } from './+cart/components/asset/asset-info.componen
 import { AddressFormComponent } from './+cart/components/address-form.component';
 import { QuoteFormComponent } from './+cart/components/quote-form.component';
 import { AdministerQuoteComponent } from './+cart/components/administer-quote.component';
+import { QuotePurchaseTypeComponent } from './+cart/components/quote-purchase-type.component';
 
 // Order Stuff
 import { OrdersComponent } from './+order/+index/orders.component';
@@ -75,7 +76,8 @@ import { QuotesComponent } from './+quote/+index/quotes.component';
     QuoteFormComponent,
     QuoteComponent,
     QuotesComponent,
-    AdministerQuoteComponent
+    AdministerQuoteComponent,
+    QuotePurchaseTypeComponent
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
   providers: [CartCapabilities],
