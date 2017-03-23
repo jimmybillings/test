@@ -1,11 +1,11 @@
 collections-component .collection-head {
   color: md-color($primary, default);
-  padding-left: rem(.8);
-  padding-right: rem(.8);
+  padding-left: rem(.4);
+  padding-right: rem(.4);
   box-shadow: inset 0 -1px 0 0 md-color($foreground, divider), 0 1px 0 0 rgba(md-color($background, card), .6);
   header {
-    padding-top: rem(1.6);
-    padding-bottom: rem(.6);
+    padding-top: rem(.6);
+    padding-bottom: rem(.5);
     position: relative;
     .md-display-1 {
       margin: 0;
@@ -229,7 +229,7 @@ wz-item-search-form {
   transition: $swift-ease-out;
   flex: 1 1 auto;
   position: absolute;
-  top: rem(1.1);
+  top: rem(.4);
   right: rem(13);
   min-width: 375px;
   z-index: 2;
@@ -255,8 +255,8 @@ wz-item-search-form {
     font-size: 1.15em;
     width: 100%;
     padding: 0 0 0 3%;
-    max-height: rem(4.5);
-    min-height: rem(4.5);
+    max-height: rem(4.1);
+    min-height: rem(4.1);
     color: md-color($foreground, secondary-text);
     background-color:  rgba(md-color($background, app-bar), .9);
     border-radius: 0;
