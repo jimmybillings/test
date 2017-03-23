@@ -31,14 +31,14 @@
         *ngIf="userCan.viewCartIcon() | async" 
         md-icon-button
         class="cart"
-        title="{{ 'HEADER.CART_BTN_TITLE' | translate}}"
+        title="{{ (userCan.createQuotes() ? 'HEADER.USER_DD_MENU.QUOTE_LINK' : 'HEADER.USER_DD_MENU.CART_LINK') | translate}}"
         [routerLink]="['/commerce']">
-        <md-icon>shopping_cart</md-icon>
+        <md-icon>{{ userCan.createQuotes() ? 'work' : 'shopping_cart' }}</md-icon>
         <span class="asset-count" *ngIf="cartSize && cartSize > 0">
             <span class="count">{{ formatBadgeNumber(cartSize) }}</span>
         </span>
     </button>
-    
+
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
 </md-toolbar>
 <md-menu x-position="before" #navigation="mdMenu">
@@ -46,16 +46,19 @@
         <md-icon>settings</md-icon>{{ 'HEADER.ADMIN_LABEL' | translate }}
     </a>
     <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/user']">
-        <md-icon>person</md-icon>Open your profile
+        <md-icon>person</md-icon>{{ 'HEADER.USER_DD_MENU.PROFILE_LINK' | translate }}
     </a>
     <a md-menu-item *ngIf="userCan.viewCollections()" [routerLink]="['/collections']">
-        <md-icon>folder_open</md-icon>Open your collections
+        <md-icon>folder_open</md-icon>{{ 'HEADER.USER_DD_MENU.COLLECTIONS_LINK' | translate }}
     </a>
     <a md-menu-item *ngIf="userCan.addToCart()" [routerLink]="['/commerce']">
-        <md-icon>shopping_cart</md-icon>Open your cart
+        <md-icon>{{ userCan.createQuotes() ? 'work' : 'shopping_cart' }}</md-icon>{{ (userCan.createQuotes() ? 'HEADER.USER_DD_MENU.QUOTE_LINK' : 'HEADER.USER_DD_MENU.CART_LINK') | translate}}
+    </a>
+    <a md-menu-item *ngIf="userCan.createQuotes()" [routerLink]="['/commerce/quotes']">
+        <md-icon>inbox</md-icon>{{ 'HEADER.USER_DD_MENU.QUOTES_SAVED_LINK' | translate }}
     </a>
     <a md-menu-item *ngIf="userCan.addToCart()" [routerLink]="['/commerce/orders']">
-        <md-icon>description</md-icon>Open your orders
+        <md-icon>description</md-icon>{{ 'HEADER.USER_DD_MENU.ORDERS_LINK' | translate }}
     </a>
     <div class="divider"></div>
     <a md-menu-item *ngIf="currentUser.loggedInState() | async" (click)="logOut();" [routerLink]="['/']">
