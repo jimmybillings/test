@@ -54,7 +54,10 @@ export class WzAsperaDownloadDirective {
 
   private handleDownloadCallback(spec: any, asperaWeb: any, random: number) {
     const transferSpec = spec.transfer_specs[0].transfer_spec;
-    Object.assign({}, transferSpec, { target_rate_kbps: 100000, authentication: 'token' });
+    transferSpec['target_rate_kbps'] = 100000;
+    //Add token authentication tag to JSON since is it not returned with transferSpec.
+    transferSpec.authentication = 'token';
+    console.log(transferSpec);
     asperaWeb.startTransfer(transferSpec, { 'allow_dialogs': 'yes' });
   }
 
