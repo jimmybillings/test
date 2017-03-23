@@ -14,5 +14,6 @@ export interface QuoteOptions {
   status: 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED';
   quoteType: 'standard' | 'provisionalOrder' | 'offlineAggreement';
   emailAddress?: string;
+  expirationDate?: string;
   users?: any[];
 }

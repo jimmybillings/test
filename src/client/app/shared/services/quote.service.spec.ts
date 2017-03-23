@@ -44,13 +44,14 @@ export function main() {
         serviceUnderTest.createQuote({
           status: 'ACTIVE',
           emailAddress: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017/03/22',
           users: mockUsers,
           quoteType: 'standard'
         }).take(1).subscribe();
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
         expect(mockApi.post).toHaveBeenCalledWithBody({
-          projects: [], quoteStatus: 'ACTIVE', purchaseType: 'standard', ownerUserId: 1
+          projects: [], quoteStatus: 'ACTIVE', purchaseType: 'standard', expirationDate: '2017/03/22', ownerUserId: 1
         });
       });
 

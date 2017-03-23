@@ -78,9 +78,14 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     });
     dialogRef.componentInstance.dialog = dialogRef;
     dialogRef.componentInstance.items = this.config.createQuote.items;
-    dialogRef.afterClosed().subscribe((form: { emailAddress: string }) => {
+    dialogRef.afterClosed().subscribe((form: { emailAddress: string, expirationDate: string }) => {
       if (form) {
-        this.createQuote({ status: 'ACTIVE', emailAddress: form.emailAddress, users: this.suggestions });
+        this.createQuote({
+          status: 'ACTIVE',
+          emailAddress: form.emailAddress,
+          expirationDate: form.expirationDate,
+          users: this.suggestions
+        });
       }
     });
     dialogRef.componentInstance.cacheSuggestions.subscribe((suggestions: any[]) => {

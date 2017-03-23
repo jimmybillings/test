@@ -25,8 +25,12 @@ export class QuoteService {
     let ownerUserId: number = options.users ? options.users.filter((user: any) => {
       return user.emailAddress === options.emailAddress;
     })[0].id : null;
+
     return this.cart.data.flatMap((cartStore: any) => {
-      let body: any = Object.assign(cartStore.cart, { quoteStatus: options.status, purchaseType: options.quoteType });
+      let body: any = Object.assign(
+        cartStore.cart,
+        { quoteStatus: options.status, purchaseType: options.quoteType, expirationDate: options.expirationDate }
+      );
       if (ownerUserId) Object.assign(body, { ownerUserId });
       delete body.id;
       return this.api.post(Api.Orders, 'quote', { body: body });
