@@ -27,8 +27,8 @@ export class QuotePurchaseTypeComponent {
   @Output() selectQuoteType: EventEmitter<any> = new EventEmitter();
   public types: any[] = [
     { viewValue: 'Standard', value: 'standard' },
-    { viewValue: 'Provisional Order', value: 'provisionalOrder' },
-    { viewValue: 'Offline Agreement', value: 'offlineAgreement' }
+    { viewValue: 'Provisional Order', value: 'ProvisionalOrder' },
+    { viewValue: 'Offline Agreement', value: 'OfflineAgreement' }
   ];
   public selectedType: string = this.types[0].value;
 }

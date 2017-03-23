@@ -239,8 +239,8 @@ export function main() {
 
     describe('onSelectQuoteType()', () => {
       it('should set the quoteType instance variable', () => {
-        componentUnderTest.onSelectQuoteType({ type: 'offlineAgreement' });
-        expect(componentUnderTest.quoteType).toBe('offlineAgreement');
+        componentUnderTest.onSelectQuoteType({ type: 'OfflineAgreement' });
+        expect(componentUnderTest.quoteType).toBe('OfflineAgreement');
       });
     });
 

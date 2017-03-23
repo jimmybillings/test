@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Project, LineItem } from '../../../../shared/interfaces/cart.interface';
 import { Capabilities } from '../../../../shared/services/capabilities.service';
+import { PurchaseType } from '../../../../shared/interfaces/quote.interface';
 
 @Component({
   moduleId: module.id,
@@ -19,7 +20,7 @@ export class LineItemsComponent {
       this.items = items;
     }
   };
-  @Input() quoteType: 'standard' | 'provisionalOrder' | 'offlineAgreement';
+  @Input() quoteType: PurchaseType;
   @Input() otherProjects: Project[];
   @Input() userCan: Capabilities;
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();

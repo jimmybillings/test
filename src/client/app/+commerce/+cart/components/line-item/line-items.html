@@ -20,6 +20,7 @@
 				[otherProjects]="otherProjects"
 				[userCanCreateSubclips]="userCan.createSubclips(lineItem)"
 				[timeStart]="lineItem.timeStart"
+				[quoteType]="quoteType"
 				(showPricingDialog)="onShowPricingDialog(lineItem)"
 				(clone)="onClone(lineItem)"
 				(moveTo)="onMoveTo($event, lineItem)"
@@ -27,7 +28,7 @@
 				(remove)="onRemove(lineItem)">
 			</line-item-actions-component>
 			<line-item-price-component
-				*ngIf="quoteType !== 'provisionalOrder'"
+				*ngIf="quoteType !== 'ProvisionalOrder'"
 				[price]="lineItem.price"
 				[rightsManaged]="lineItem.rightsManaged"
 				[hasAttributes]="!!lineItem.attributes">
