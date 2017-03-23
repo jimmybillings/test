@@ -106,4 +106,8 @@
   <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(hasComp)" (click)="downloadComp('wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
   <button md-menu-item [disabled]="!userCan.downloadCleanComps(hasComp)" (click)="downloadComp('clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
   <button md-menu-item [disabled]="!userCan.downloadFullComps(hasComp)" (click)="downloadComp('full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
+  <md-divider></md-divider>
+  <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(hasComp)" (click)="downloadAspera('wm');">{{ "COMPS.DOWNLOAD_WM_ASPERA" | translate }}</button>
+  <button md-menu-item [disabled]="!userCan.downloadCleanComps(hasComp)" (click)="downloadAspera('clean')">{{ "COMPS.DOWNLOAD_CLEAN_ASPERA" | translate }}</button>
+  <button md-menu-item [disabled]="!userCan.downloadFullComps(hasComp)" (click)="downloadAspera('full')">{{ "COMPS.DOWNLOAD_FULL_ASPERA" | translate }}</button>
 </md-menu>

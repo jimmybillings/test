@@ -43,6 +43,10 @@ export class SearchService {
     return this.api.get(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
   }
 
+  public downloadAspera(id: any, compType: any): Observable<any> {
+    return this.api.get(Api.Assets, `renditionType/asperaSpec/${id}`, { parameters: { type: compType } });
+  }
+
   private normalizeParams(params: any): any {
     let cloneParams = JSON.parse(JSON.stringify(params));
     if (!cloneParams.q) cloneParams.q = 'itemType:clip';

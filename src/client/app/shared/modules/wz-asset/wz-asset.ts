@@ -15,6 +15,7 @@ export class WzAsset {
   @Output() onRemoveFromCollection = new EventEmitter();
   @Output() onAddToCart = new EventEmitter();
   @Output() onDownloadComp = new EventEmitter();
+  @Output() onDownloadAspera = new EventEmitter();
   @Output() onShowSpeedview = new EventEmitter();
   @Output() onHideSpeedview = new EventEmitter();
   @Output() onEditAsset = new EventEmitter();
@@ -54,6 +55,12 @@ export class WzAsset {
 
   public downloadComp(compType: string) {
     this.onDownloadComp.emit({
+      'assetId': this.assetId, 'compType': compType
+    });
+  }
+
+  public downloadAspera(compType: string) {
+    this.onDownloadAspera.emit({
       'assetId': this.assetId, 'compType': compType
     });
   }
