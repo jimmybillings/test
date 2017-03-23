@@ -4,6 +4,7 @@ import { CartService } from '../../shared/services/cart.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Rx';
 import { Quote, QuoteOptions } from '../../shared/interfaces/quote.interface';
+import { Cart } from '../../shared/interfaces/cart.interface';
 import { QuoteStore } from '../../shared/stores/quote.store';
 
 @Injectable()
@@ -22,13 +23,8 @@ export class QuoteService {
   }
 
   public createQuote(options: QuoteOptions): Observable<any> {
-    let ownerUserId: number = options.users ? options.users.filter((user: any) => {
-      return user.emailAddress === options.emailAddress;
-    })[0].id : null;
     return this.cart.data.flatMap((cartStore: any) => {
-      let body: any = Object.assign(cartStore.cart, { quoteStatus: options.status, purchaseType: options.quoteType });
-      if (ownerUserId) Object.assign(body, { ownerUserId });
-      delete body.id;
+      let body: any = this.formatBody(cartStore.cart, options);
       return this.api.post(Api.Orders, 'quote', { body: body });
     });
   }
@@ -36,5 +32,27 @@ export class QuoteService {
   public getQuote(quoteId: number): Observable<Quote> {
     return this.api.get(Api.Orders, `quote/${quoteId}`)
       .do((quote: Quote) => this.store.setQuote(quote));
+  }
+
+  private formatBody(cart: Cart, options: QuoteOptions): any {
+    // We don't want to send 'standard' to the API, as it's not a valid option.
+    // we leave it blank so the end user can decide later to pay with credit-card or purchase on credit
+    if (options.purchaseType === 'standard') delete options.purchaseType;
+
+    // find the userId of the user that this quote is for
+    let ownerUserId: number = options.users ? options.users.filter((user: any) => {
+      return user.emailAddress === options.emailAddress;
+    })[0].id : null;
+
+    // shove the extra quote params on to the current cart
+    let body: any = Object.assign(cart, { quoteStatus: options.status, purchaseType: options.purchaseType });
+
+    // add the user id if it exists
+    if (ownerUserId) Object.assign(body, { ownerUserId });
+
+    // delete the id leftover from the cart store
+    delete body.id;
+
+    return body;
   }
 }

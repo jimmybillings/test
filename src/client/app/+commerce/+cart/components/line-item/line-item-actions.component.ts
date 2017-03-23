@@ -1,4 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { PurchaseType } from '../../../../shared/interfaces/quote.interface';
 
 @Component({
   moduleId: module.id,
@@ -7,7 +8,7 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
   template: `
     <div class="tools" flex="100">
       <button
-        *ngIf="isRightsManaged"
+        *ngIf="displayPriceButton"
         md-button color="primary"
         class="mini is-outlined"
         (click)="showPricingDialog.emit()"
@@ -49,14 +50,15 @@ export class LineItemActionsComponent {
   @Input() otherProjects: any[];
   @Input() userCanCreateSubclips: any[];
   @Input() timeStart: number;
+  @Input() quoteType: PurchaseType;
   @Output() showPricingDialog: EventEmitter<any> = new EventEmitter();
   @Output() remove: EventEmitter<any> = new EventEmitter();
   @Output() clone: EventEmitter<any> = new EventEmitter();
   @Output() moveTo: EventEmitter<any> = new EventEmitter();
   @Output() editMarkers: EventEmitter<any> = new EventEmitter();
 
-  public get isRightsManaged(): boolean {
-    return this.rightsManaged === 'Rights Managed';
+  public get displayPriceButton(): boolean {
+    return this.rightsManaged === 'Rights Managed' && this.quoteType !== 'ProvisionalOrder';
   }
 
   public get shouldShowSubclipButton(): boolean {

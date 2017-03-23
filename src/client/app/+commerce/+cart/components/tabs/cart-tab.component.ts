@@ -17,6 +17,7 @@ import { WindowRef } from '../../../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../../../shared/interfaces/asset.interface';
 import { QuoteService } from '../../../../shared/services/quote.service';
 import { QuoteFormComponent } from '../quote-form.component';
+import { PurchaseType, QuoteOptions } from '../../../../shared/interfaces/quote.interface';
 import { TranslateService } from 'ng2-translate';
 
 @Component({
@@ -33,7 +34,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   public config: any;
   public priceAttributes: any = null;
   public pricingPreferences: any;
-  public quoteType: 'standard' | 'provisionalOrder' | 'offlineAgreement' = null;
+  public quoteType: PurchaseType = null;
   private configSubscription: Subscription;
   private preferencesSubscription: Subscription;
   private usagePrice: any;
@@ -80,7 +81,12 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     dialogRef.componentInstance.items = this.config.createQuote.items;
     dialogRef.afterClosed().subscribe((form: { emailAddress: string }) => {
       if (form) {
-        this.createQuote({ status: 'ACTIVE', emailAddress: form.emailAddress, users: this.suggestions });
+        this.createQuote({
+          status: 'ACTIVE',
+          emailAddress: form.emailAddress,
+          users: this.suggestions,
+          purchaseType: this.quoteType
+        });
       }
     });
     dialogRef.componentInstance.cacheSuggestions.subscribe((suggestions: any[]) => {
@@ -89,7 +95,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public onSaveAsDraft(): void {
-    this.createQuote({ saveAsDraft: 'PENDING' });
+    this.createQuote({ status: 'PENDING', purchaseType: this.quoteType });
   }
 
   public get rmAssetsHaveAttributes(): boolean {
@@ -108,7 +114,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     return validAssets.indexOf(false) === -1;
   }
 
-  public onSelectQuoteType(event: any): void {
+  public onSelectQuoteType(event: { type: PurchaseType }): void {
     this.quoteType = event.type;
   }
 
@@ -229,8 +235,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
       });
   }
 
-  private createQuote(options: any): void {
-    Object.assign(options, { quoteType: this.quoteType });
+  private createQuote(options: QuoteOptions): void {
     this.quoteService.createQuote(options).take(1).subscribe((res: any) => {
       if (options.status === 'ACTIVE') {
         this.showSnackBar({

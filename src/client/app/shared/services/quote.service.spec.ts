@@ -45,20 +45,27 @@ export function main() {
           status: 'ACTIVE',
           emailAddress: 'ross.edfort@wazeedigital.com',
           users: mockUsers,
-          quoteType: 'standard'
+          purchaseType: 'ProvisionalOrder'
         }).take(1).subscribe();
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
         expect(mockApi.post).toHaveBeenCalledWithBody({
-          projects: [], quoteStatus: 'ACTIVE', purchaseType: 'standard', ownerUserId: 1
+          projects: [], quoteStatus: 'ACTIVE', purchaseType: 'ProvisionalOrder', ownerUserId: 1
         });
       });
 
       it('should call the api service correctly for a "PENDING" quote', () => {
-        serviceUnderTest.createQuote({ status: 'PENDING', quoteType: 'standard' }).take(1).subscribe();
+        serviceUnderTest.createQuote({ status: 'PENDING', purchaseType: 'ProvisionalOrder' }).take(1).subscribe();
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
-        expect(mockApi.post).toHaveBeenCalledWithBody({ projects: [], quoteStatus: 'PENDING', purchaseType: 'standard' });
+        expect(mockApi.post).toHaveBeenCalledWithBody({ projects: [], quoteStatus: 'PENDING', purchaseType: 'ProvisionalOrder' });
+      });
+
+      it('should remove the purchaseType param if it\'s "standard"', () => {
+        serviceUnderTest.createQuote({ status: 'PENDING', purchaseType: 'standard' }).take(1).subscribe();
+        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
+        expect(mockApi.post).toHaveBeenCalledWithBody({ projects: [], quoteStatus: 'PENDING' });
       });
     });
 
