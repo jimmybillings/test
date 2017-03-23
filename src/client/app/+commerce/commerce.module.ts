@@ -40,7 +40,7 @@ import { OrderItemListComponent } from './+order/components/order-item-list.comp
     OrdersComponent,
     OrderItemListComponent,
     EditProjectComponent,
-    AddressFormComponent
+    AddressFormComponent,
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
   providers: [CartCapabilities],

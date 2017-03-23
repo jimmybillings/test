@@ -46,6 +46,8 @@ export const cart: ActionReducer<any> = (state: any = emptyCart, action: Action)
   switch (action.type) {
     case 'REPLACE_CART':
       return Object.assign({}, state, { cart: action.payload });
+    case 'UPDATE_CART':
+      return Object.assign({}, state, { total: action.payload.total, itemCount: action.payload.itemCount });
     case 'UPDATE_ORDER_IN_PROGRESS':
       state.orderInProgress[action.payload.key] = action.payload.data;
       return Object.assign({}, state);
@@ -64,6 +66,10 @@ export class CartStore {
 
   public replaceCartWith(cart: any): void {
     this.store.dispatch({ type: 'REPLACE_CART', payload: cart });
+  }
+
+  public updateCartWith(cartSummary: any) {
+    this.store.dispatch({ type: 'UPDATE_CART', payload: cartSummary });
   }
 
   public updateOrderInProgress(key: string, data: any): void {
