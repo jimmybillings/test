@@ -5,7 +5,7 @@ export function main() {
     let directiveUnderTest: WzAsperaDownloadDirective;
 
     beforeEach(() => {
-      directiveUnderTest = new WzAsperaDownloadDirective();
+      directiveUnderTest = new WzAsperaDownloadDirective(null, null);
     });
 
     it('has no tests!', () => {

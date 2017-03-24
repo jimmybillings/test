@@ -64,6 +64,7 @@ export class WzNotificationService {
         this.expiredSession();
         break;
       default:
+        this.callInProgress = false;
         if (isNaN(error.status)) this.customError(error.status);
         break;
     }
