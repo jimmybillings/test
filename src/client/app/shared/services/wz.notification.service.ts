@@ -31,6 +31,7 @@ export class WzNotificationService {
         this.cantRegister();
         break;
       default:
+        this.callInProgress = false;
         if (isNaN(error.status)) this.customError(error.status);
         break;
     }

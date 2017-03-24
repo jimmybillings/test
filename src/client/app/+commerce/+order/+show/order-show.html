@@ -90,6 +90,7 @@
 									<div flex-gt-xs="30" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
 										<div class="tools" flex="100" layout-padding>
 											<button [disabled]="!lineItem.asset.masterDownloadUrl" (click)="downloadMaster(lineItem.asset.masterDownloadUrl)" md-button color="primary" class="is-outlined">{{ 'ORDER.SHOW.DOWNLOAD_BTN_TITLE' | translate }}</button>
+											<button wzAsperaDownload [disabled]="!lineItem.asperaSpec" [asperaSpec]="lineItem.asperaSpec" md-icon-button><md-icon>cloud_download</md-icon></button>
 										</div>
 										<div flex="100" layout="row" layout-xs="column" class="divider"></div>
 										<div class="price">

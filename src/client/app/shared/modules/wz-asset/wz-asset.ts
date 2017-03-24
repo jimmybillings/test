@@ -26,8 +26,8 @@ export class WzAsset {
     this.assetsArr = value.assets.items.map((x) => x.assetId);
   };
 
+  public assetId: number;
   private assetsArr: Array<number> = [];
-  private assetId: number;
   private hasComp: boolean;
 
   public addToCollection(collection: Collection, asset: Asset) {
