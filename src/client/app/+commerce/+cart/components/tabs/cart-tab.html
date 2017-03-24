@@ -1,4 +1,16 @@
-<projects-component 
+<div 
+  *ngIf="userCan.createQuotes()" 
+  flex-gt-lg="20" flex-gt-md="30" flex-md="35" flex-gt-sm="40" flex-gt-xs="45" flex="85" 
+  layout="row" 
+  layout-align="start">
+  <quote-purchase-type-component
+    flex="100"
+    (selectQuoteType)="onSelectQuoteType($event)">
+  </quote-purchase-type-component>
+</div>
+
+<projects-component
+  [quoteType]="quoteType"
   [projects]="(cart | async).projects" 
   [config]="config" 
   [userCan]="userCan" 
@@ -7,7 +19,7 @@
 
 <section class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
-    <div flex="100" layout="row" layout-align="end center" class="total md-headline">
+    <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="total md-headline">
       <span class="total-label">
         {{ 'CART.CART_TOTAL' | translate }} 
       </span>
@@ -15,30 +27,25 @@
         {{ (cart | async).total | currency:'USD':true:'1.2-2' }}
       </span>
 		</div>
-    <div flex="100" layout="row" layout-align="end center">
+    <div *ngIf="userCan.createQuotes()" flex="100" layout="row" layout-align="center center">
+      <administer-quote-component
+        flex="100"
+        [cart]="cart | async"
+        [userCanProceed]="userCanProceed"
+        (openQuoteDialog)="onOpenQuoteDialog()"
+        (saveAsDraft)="onSaveAsDraft()">
+      </administer-quote-component>
+    </div>
+    <div *ngIf="!userCan.createQuotes()" flex="100" layout="row" layout-align="end center">
       <button
-        *ngIf="(assetsInCart | async) && !userCan.createQuotes()"
-        [disabled]="!rmAssetsHaveAttributes"
+        *ngIf="(assetsInCart | async)"
+        [disabled]="!userCanProceed"
         md-raised-button class="checkout"
         (click)="goToNextTab()">
           {{ 'CART.PROCEED_BTN_LABEL' | translate }}
       </button>
-      <div *ngIf="userCan.createQuotes()">
-        <button
-          [disabled]="!rmAssetsHaveAttributes"
-          md-raised-button class="checkout"
-          (click)="saveAsDraft()">
-          {{ 'QUOTE.SAVE_AS_DRAFT_BTN' | translate }}
-        </button>
-        <button
-          [disabled]="!rmAssetsHaveAttributes"
-          md-raised-button class="checkout"
-          (click)="openQuoteDialog()">
-          {{ 'QUOTE.CREATE_QUOTE_BTN' | translate }}
-        </button>
-      </div>
     </div>
-    <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!rmAssetsHaveAttributes">
+    <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!userCanProceed">
       {{ 'CART.SELECT_USAGE_WARN' | translate }}
     </div>
 	</div>

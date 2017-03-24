@@ -1,19 +1,19 @@
 import { LineItemsComponent } from './line-items.component';
 
 export function main() {
-  describe('Line Items Component', () => {
-    let componentUnderTest: LineItemsComponent;
+  describe('Line Items', () => {
+    let classUnderTest: LineItemsComponent;
 
     beforeEach(() => {
-      componentUnderTest = new LineItemsComponent();
+      classUnderTest = new LineItemsComponent();
     });
 
-    describe('moveTo()', () => {
+    describe('onMoveTo()', () => {
       it('emits the proper request event', () => {
         let project: any = { some: 'project' };
         let lineItem: any = { some: 'lineItem' };
 
-        componentUnderTest.lineItemsNotify
+        classUnderTest.lineItemsNotify
           .subscribe((event: Object) => {
             expect(event).toEqual({
               type: 'MOVE_LINE_ITEM',
@@ -21,20 +21,20 @@ export function main() {
             });
           });
 
-        componentUnderTest.moveTo(project, lineItem);
+        classUnderTest.onMoveTo(project, lineItem);
       });
     });
 
-    describe('clone()', () => {
+    describe('onClone()', () => {
       it('emits the proper request event', () => {
         let lineItem: any = { some: 'lineItem' };
 
-        componentUnderTest.lineItemsNotify
+        classUnderTest.lineItemsNotify
           .subscribe((event: Object) => {
             expect(event).toEqual({ type: 'CLONE_LINE_ITEM', payload: lineItem });
           });
 
-        componentUnderTest.clone(lineItem);
+        classUnderTest.onClone(lineItem);
       });
     });
 
@@ -42,35 +42,35 @@ export function main() {
       it('emits the proper request event', () => {
         let lineItem: any = { some: 'lineItem' };
 
-        componentUnderTest.lineItemsNotify
+        classUnderTest.lineItemsNotify
           .subscribe((event: Object) => {
             expect(event).toEqual({ type: 'REMOVE_LINE_ITEM', payload: lineItem });
           });
 
-        componentUnderTest.remove(lineItem);
+        classUnderTest.onRemove(lineItem);
       });
     });
 
     describe('editMarkers()', () => {
       it('emits the proper request event', () => {
         let lineItem: any = { some: 'lineItem' };
-        componentUnderTest.lineItemsNotify
+        classUnderTest.lineItemsNotify
           .subscribe((event: Object) => {
             expect(event).toEqual({ type: 'EDIT_LINE_ITEM_MARKERS', payload: lineItem });
           });
 
-        componentUnderTest.editMarkers(lineItem);
+        classUnderTest.onEditMarkers(lineItem);
       });
     });
 
     describe('delegate()', () => {
       it('forwards events', () => {
-        componentUnderTest.lineItemsNotify
+        classUnderTest.lineItemsNotify
           .subscribe((event: Object) => {
             expect(event).toEqual({ some: 'event' });
           });
 
-        componentUnderTest.delegate({ some: 'event' });
+        classUnderTest.delegate({ some: 'event' });
       });
     });
 
@@ -78,29 +78,29 @@ export function main() {
       it('has no visible effect (yet)', () => {
         let lineItem: any = { some: 'lineItem' };
 
-        componentUnderTest.selectLineItem(lineItem);
+        classUnderTest.selectLineItem(lineItem);
 
         expect(true).toBe(true);
       });
     });
 
-    describe('showPricingDialog', () => {
+    describe('onShowPricingDialog', () => {
       it('should emit the "SHOW_PRICING_DIALOG" event', () => {
         let lineItem: any = { some: 'lineItem' };
 
-        componentUnderTest.lineItemsNotify.subscribe((event: Object) => {
+        classUnderTest.lineItemsNotify.subscribe((event: Object) => {
           expect(event).toEqual({ type: 'SHOW_PRICING_DIALOG', payload: lineItem });
         });
 
-        componentUnderTest.showPricingDialog(lineItem);
+        classUnderTest.onShowPricingDialog(lineItem);
       });
     });
 
-    describe('selectTarget', () => {
+    describe('onSelectTarget', () => {
       it('emits the proper event', () => {
         let lineItem: any = { some: 'lineItem' };
 
-        componentUnderTest.lineItemsNotify
+        classUnderTest.lineItemsNotify
           .subscribe((event: Object) => {
             expect(event).toEqual(
               {
@@ -110,8 +110,8 @@ export function main() {
               });
           });
 
-        componentUnderTest.selectTarget('', 'master_copy', lineItem);
+        classUnderTest.onSelectTarget('master_copy', '', lineItem);
       });
     });
   });
-};
+}

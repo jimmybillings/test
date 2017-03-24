@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-
-import { Project } from '../../../shared/interfaces/cart.interface';
-import { Capabilities } from '../../../shared/services/capabilities.service';
+import { Project } from '../../../../shared/interfaces/cart.interface';
+import { Capabilities } from '../../../../shared/services/capabilities.service';
+import { PurchaseType } from '../../../../shared/interfaces/quote.interface';
 
 @Component({
   moduleId: module.id,
@@ -9,12 +9,12 @@ import { Capabilities } from '../../../shared/services/capabilities.service';
   templateUrl: 'projects.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class ProjectsComponent {
+  @Input() readOnly: boolean = false;
   @Input() config: any;
   @Input() projects: Array<Project>;
   @Input() userCan: Capabilities;
-  @Input() readOnly: boolean = false;
+  @Input() quoteType: PurchaseType;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;
 
@@ -30,13 +30,16 @@ export class ProjectsComponent {
     this.projectsNotify.emit({ type: 'ADD_PROJECT' });
   }
 
-  public remove(project: Project): void {
+  public onRemove(project: Project): void {
     this.projectsNotify.emit({ type: 'REMOVE_PROJECT', payload: project });
   }
 
-  public edit(project: Project): void {
+  public onEdit(project: Project): void {
     this.selectProject(project);
-    this.projectsNotify.emit({ type: 'UPDATE_PROJECT', payload: Object.assign({ project: project, items: this.config.form.items }) });
+    this.projectsNotify.emit({
+      type: 'UPDATE_PROJECT',
+      payload: Object.assign({ project: project, items: this.config.form.items })
+    });
   }
 
   public delegate(message: any): void {

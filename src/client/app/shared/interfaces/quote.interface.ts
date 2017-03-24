@@ -9,3 +9,13 @@ export interface Quote {
   itemCount?: number;
   quoteStatus: 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED';
 }
+
+export interface QuoteOptions {
+  status: 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED';
+  purchaseType: PurchaseType;
+  emailAddress?: string;
+  expirationDate?: string;
+  users?: any[];
+}
+
+export type PurchaseType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';

@@ -1,20 +1,14 @@
 import { Observable } from 'rxjs/Rx';
 import { CartTabComponent } from './cart-tab.component';
-import { EditProjectComponent } from '../edit-project.component';
+import { ProjectEditComponent } from '../project/project-edit.component';
 import { WzSubclipEditorComponent } from '../../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WzPricingComponent } from '../../../../shared/components/wz-pricing/wz.pricing.component';
 
 export function main() {
   describe('Cart Tab Component', () => {
-    let componentUnderTest: CartTabComponent;
-    let mockCartService: any;
-    let mockUiConfig: any;
-    let mockDialog: any;
-    let mockAssetService: any;
-    let mockUserPreference: any;
-    let mockDocument: any;
-    let mockWindow: any;
-    let mockState: any;
+    let componentUnderTest: CartTabComponent, mockCartService: any, mockUiConfig: any, mockDialog: any,
+      mockAssetService: any, mockUserPreference: any, mockDocument: any, mockWindow: any, mockState: any,
+      mockQuoteService: any, mockTranslateService: any, mockSnackbar: any;
 
     beforeEach(() => {
       mockState = {
@@ -42,8 +36,11 @@ export function main() {
       };
 
       mockUiConfig = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: 'SOME_CONFIG' }))
+        get: jasmine.createSpy('get').and.returnValue(Observable.of({
+          config: { form: 'SOME_CONFIG', createQuote: { items: [] } }
+        }))
       };
+
       mockDocument = {
         body: {
           classList: {
@@ -58,7 +55,8 @@ export function main() {
           componentInstance: {
             cancel: Observable.of({}),
             save: Observable.of({}),
-            pricingEvent: Observable.of({})
+            pricingEvent: Observable.of({}),
+            cacheSuggestions: Observable.of({})
           },
           afterClosed: function () {
             return Observable.of({ data: 'hi' });
@@ -79,9 +77,23 @@ export function main() {
         data: Observable.of({ pricingPreferences: { some: 'attribute' } })
       };
 
+      mockQuoteService = {
+        createQuote: jasmine.createSpy('createQuote').and.returnValue(Observable.of({}))
+      };
+
+      mockTranslateService = {
+        get: jasmine.createSpy('createQuote').and.returnValue(Observable.of(''))
+      };
+
+      mockSnackbar = {
+        open: jasmine.createSpy('open')
+      };
+
       componentUnderTest = new CartTabComponent(
         null, mockCartService, mockUiConfig, mockDialog,
-        mockAssetService, mockWindow, mockUserPreference, null, null, mockDocument, null, null
+        mockAssetService, mockWindow, mockUserPreference,
+        null, mockQuoteService, mockDocument, mockSnackbar,
+        mockTranslateService
       );
     });
 
@@ -103,7 +115,7 @@ export function main() {
       it('caches the cart UI config', () => {
         componentUnderTest.ngOnInit();
 
-        expect(componentUnderTest.config).toEqual('SOME_CONFIG');
+        expect(componentUnderTest.config).toEqual({ form: 'SOME_CONFIG', createQuote: { items: [] } });
       });
     });
 
@@ -162,6 +174,24 @@ export function main() {
       });
     });
 
+    describe('onOpenQuoteDialog()', () => {
+      beforeEach(() => {
+        componentUnderTest.ngOnInit();
+      });
+
+      it('should open a dialog', () => {
+        componentUnderTest.onOpenQuoteDialog();
+        expect(mockDialog.open).toHaveBeenCalled();
+      });
+    });
+
+    describe('onSaveAsDraft()', () => {
+      it('should call createQuote() on the quote service', () => {
+        componentUnderTest.onSaveAsDraft();
+        expect(mockQuoteService.createQuote).toHaveBeenCalled();
+      });
+    });
+
     describe('rmAssetsHaveAttributes()', () => {
       it('should return false if there is an RM asset without attributes', () => {
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(false);
@@ -207,6 +237,13 @@ export function main() {
       });
     });
 
+    describe('onSelectQuoteType()', () => {
+      it('should set the quoteType instance variable', () => {
+        componentUnderTest.onSelectQuoteType({ type: 'OfflineAgreement' });
+        expect(componentUnderTest.quoteType).toBe('OfflineAgreement');
+      });
+    });
+
     describe('onNotification()', () => {
       it('adds a project when notified with ADD_PROJECT', () => {
         componentUnderTest.onNotification({ type: 'ADD_PROJECT' });
@@ -225,7 +262,7 @@ export function main() {
         let mockProject = {};
         componentUnderTest.onNotification({ type: 'UPDATE_PROJECT', payload: mockProject });
 
-        expect(mockDialog.open).toHaveBeenCalledWith(EditProjectComponent, { position: { top: '14%' } });
+        expect(mockDialog.open).toHaveBeenCalledWith(ProjectEditComponent, { position: { top: '14%' } });
       });
 
       it('moves a line item when notified with MOVE_LINE_ITEM', () => {

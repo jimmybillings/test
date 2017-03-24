@@ -27,12 +27,5 @@ export function main() {
         expect(componentUnderTest.metadata).toEqual({ a: 'b', c: 'd' });
       });
     });
-
-    describe('translationReady()', () => {
-      it('Creates a translation ready version of a fieldname', () => {
-        expect(componentUnderTest.translationReady('some.field.name'))
-          .toEqual('assetmetadata.some_field_name');
-      });
-    });
   });
 };

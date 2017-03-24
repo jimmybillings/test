@@ -1,11 +1,11 @@
 import { ProjectsComponent } from './projects.component';
 
 export function main() {
-  describe('Projects Component', () => {
-    let componentUnderTest: ProjectsComponent;
+  describe('Projects', () => {
+    let classUnderTest: ProjectsComponent;
 
     beforeEach(() => {
-      componentUnderTest = new ProjectsComponent();
+      classUnderTest = new ProjectsComponent();
     });
 
     describe('projectsOtherThan()', () => {
@@ -13,9 +13,9 @@ export function main() {
         let project1: any = { id: '1' };
         let project2: any = { id: '2' };
         let project3: any = { id: '3' };
-        componentUnderTest.projects = [project1, project2, project3];
+        classUnderTest.projects = [project1, project2, project3];
 
-        expect(componentUnderTest.projectsOtherThan(project2))
+        expect(classUnderTest.projectsOtherThan(project2))
           .toEqual([project1, project3]);
       });
     });
@@ -24,24 +24,24 @@ export function main() {
       it('returns the number of lineitems in the project', () => {
         let project: any = { lineItems: [{}, {}, {}] };
 
-        expect(componentUnderTest.lineItemCountFor(project)).toBe(3);
+        expect(classUnderTest.lineItemCountFor(project)).toBe(3);
       });
 
       it('returns zero if the project has no lineItems defined', () => {
         let project: any = {};
 
-        expect(componentUnderTest.lineItemCountFor(project)).toBe(0);
+        expect(classUnderTest.lineItemCountFor(project)).toBe(0);
       });
     });
 
     describe('addProject()', () => {
       it('emits the proper request event', () => {
-        componentUnderTest.projectsNotify
+        classUnderTest.projectsNotify
           .subscribe((event: Object) => {
             expect(event).toEqual({ type: 'ADD_PROJECT' });
           });
 
-        componentUnderTest.addProject();
+        classUnderTest.addProject();
       });
     });
 
@@ -49,12 +49,12 @@ export function main() {
       it('emits the proper request event', () => {
         let project: any = { some: 'project' };
 
-        componentUnderTest.projectsNotify
+        classUnderTest.projectsNotify
           .subscribe((event: Object) => {
             expect(event).toEqual({ type: 'REMOVE_PROJECT', payload: project });
           });
 
-        componentUnderTest.remove(project);
+        classUnderTest.onRemove(project);
       });
     });
 
@@ -62,7 +62,7 @@ export function main() {
       it('emits the proper request event', () => {
         let project: any = { a: 'b', c: 'd', e: 'f' };
 
-        componentUnderTest.config = {
+        classUnderTest.config = {
           form: {
             items: [
               { name: 'a', value: 'x' },
@@ -72,7 +72,7 @@ export function main() {
           }
         };
 
-        componentUnderTest.projectsNotify
+        classUnderTest.projectsNotify
           .subscribe((event: Object) => {
             expect(event).toEqual({
               type: 'UPDATE_PROJECT', payload: {
@@ -82,18 +82,18 @@ export function main() {
             });
           });
 
-        componentUnderTest.edit(project);
+        classUnderTest.onEdit(project);
       });
     });
 
     describe('delegate()', () => {
       it('forwards events', () => {
-        componentUnderTest.projectsNotify
+        classUnderTest.projectsNotify
           .subscribe((event: Object) => {
             expect(event).toEqual({ some: 'event' });
           });
 
-        componentUnderTest.delegate({ some: 'event' });
+        classUnderTest.delegate({ some: 'event' });
       });
     });
 
@@ -101,7 +101,7 @@ export function main() {
       it('updates its config form items', () => {
         let project: any = { a: 'b', c: 'd', e: 'f' };
 
-        componentUnderTest.config = {
+        classUnderTest.config = {
           form: {
             items: [
               { name: 'a', value: 'x' },
@@ -111,9 +111,9 @@ export function main() {
           }
         };
 
-        componentUnderTest.selectProject(project);
+        classUnderTest.selectProject(project);
 
-        expect(componentUnderTest.config.form.items).toEqual([
+        expect(classUnderTest.config.form.items).toEqual([
           { name: 'a', value: 'b' },
           { name: 'c', value: 'd' },
           { name: 'e', value: 'f' }
@@ -121,4 +121,4 @@ export function main() {
       });
     });
   });
-};
+}

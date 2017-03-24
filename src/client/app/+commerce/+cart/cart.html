@@ -1,15 +1,16 @@
 <section class="header" layout="row" layout-align="center center">
 	<header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
     <div flex="100" layout="row" layout-align="space-between end">
-			<h2 flex="grow" class="md-display-1">{{ 'CART.PAGE_TITLE' | translate }}</h2>
+			<h2 *ngIf="!userCan.createQuotes()" flex="grow" class="md-display-1">{{ 'CART.PAGE_TITLE' | translate }}</h2>
+			<h2 *ngIf="userCan.createQuotes()" flex="grow" class="md-display-1">{{ 'QUOTE.CREATE_HEADER' | translate }}</h2>
 		</div>
 	</header>
 </section>
 
-<section class="tabs-section">
+<section class="tabs-section" [ngClass]="{'quote-section' : userCan.createQuotes()}">
   <div layout="row" flex="100" layout-align="center start">
      <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-      <md-tab-group [(selectedIndex)]="selectedTabIndex">
+      <md-tab-group *ngIf="!userCan.createQuotes()" [(selectedIndex)]="selectedTabIndex">
         <md-tab *ngFor="let tabLabelKey of tabLabelKeys; let i = index" [disabled]="!tabEnabled[i]">
           <template md-tab-label>{{ tabLabelKey | uppercase }}</template>
           <cart-tab-component *ngIf="tabLabelKey === 'cart'" (tabNotify)="onNotification($event)"></cart-tab-component>
@@ -18,6 +19,9 @@
           <confirm-tab-component *ngIf="tabLabelKey === 'confirm'" (tabNotify)="onNotification($event)"></confirm-tab-component>
         </md-tab>
       </md-tab-group>
+      <div *ngIf="userCan.createQuotes()" class="quote-wrapper" flex>
+        <cart-tab-component flex></cart-tab-component>
+      </div>
     </div>
   </div>
 </section>

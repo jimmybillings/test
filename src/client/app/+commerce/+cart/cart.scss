@@ -104,3 +104,20 @@ button.checkout-back {
     font-size: rem(1.7);
   }
 }
+
+cart-component .quote-section {
+  & > div > div {
+    background: transparent;
+  }
+  quote-purchase-type-component {
+    @media screen and (max-width: $layout-breakpoint-xs)  {
+      margin-bottom: 0;
+    }
+  }
+}
+.quote-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  margin: rem(.2) rem(.6) rem(3.6) rem(.6);
+}
