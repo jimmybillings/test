@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-// import { Cart, Project, LineItem } from '../../../shared/interfaces/cart.interface';
 
 @Component({
   moduleId: module.id,
@@ -23,7 +22,6 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   ]
 })
 export class QuotePurchaseTypeComponent {
-  // @Input() cart: Cart;
   @Output() selectQuoteType: EventEmitter<any> = new EventEmitter();
   public types: any[] = [
     { viewValue: 'Standard', value: 'standard' },
