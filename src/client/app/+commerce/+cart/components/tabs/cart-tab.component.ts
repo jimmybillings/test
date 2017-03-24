@@ -79,11 +79,12 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     });
     dialogRef.componentInstance.dialog = dialogRef;
     dialogRef.componentInstance.items = this.config.createQuote.items;
-    dialogRef.afterClosed().subscribe((form: { emailAddress: string }) => {
+    dialogRef.afterClosed().subscribe((form: { emailAddress: string, expirationDate: string }) => {
       if (form) {
         this.createQuote({
           status: 'ACTIVE',
           emailAddress: form.emailAddress,
+          expirationDate: form.expirationDate,
           users: this.suggestions,
           purchaseType: this.quoteType
         });
@@ -96,6 +97,14 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
 
   public onSaveAsDraft(): void {
     this.createQuote({ status: 'PENDING', purchaseType: this.quoteType });
+  }
+
+  public get userCanProceed(): boolean {
+    if (this.quoteType === 'ProvisionalOrder') {
+      return true;
+    } else {
+      return this.rmAssetsHaveAttributes;
+    }
   }
 
   public get rmAssetsHaveAttributes(): boolean {

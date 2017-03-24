@@ -14,6 +14,7 @@ export interface QuoteOptions {
   status: 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED';
   purchaseType: PurchaseType;
   emailAddress?: string;
+  expirationDate?: string;
   users?: any[];
 }
 

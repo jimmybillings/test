@@ -45,7 +45,10 @@ export class QuoteService {
     })[0].id : null;
 
     // shove the extra quote params on to the current cart
-    let body: any = Object.assign(cart, { quoteStatus: options.status, purchaseType: options.purchaseType });
+    let body: any = Object.assign(
+      cart,
+      { quoteStatus: options.status, purchaseType: options.purchaseType, expirationDate: options.expirationDate }
+    );
 
     // add the user id if it exists
     if (ownerUserId) Object.assign(body, { ownerUserId });
