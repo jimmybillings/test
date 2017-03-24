@@ -16,6 +16,7 @@ export class WzAsperaDownloadDirective {
   @Input() asperaPreloaded: string = 'true';
   @Input() renditionType: string = null;
   @Input() assetId: string = null;
+
   @HostListener('click', ['$event']) onClick($event: any) {
     (JSON.parse(this.asperaPreloaded))
       ? this.initConnect()
