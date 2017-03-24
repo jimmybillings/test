@@ -51,21 +51,21 @@
 							<button wzAsperaDownload 
 								[asperaPreloaded]="'false'" 
 								[renditionType]="'wm'" 
-								[assetId]="assetId"
+								[assetId]="asset.assetId"
 								[disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)" 
 								md-menu-item>{{ "COMPS.DOWNLOAD_WM_ASPERA" | translate }}</button>
 
 							<button wzAsperaDownload
 								[asperaPreloaded]="'false'" 
 								[renditionType]="'clean'" 
-								[assetId]="assetId"
+								[assetId]="asset.assetId"
 								[disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)" 
 								md-menu-item>{{ "COMPS.DOWNLOAD_CLEAN_ASPERA" | translate }}</button>
 
 							<button wzAsperaDownload 
 								[asperaPreloaded]="'false'" 
 								[renditionType]="'full'"
-								[assetId]="assetId"
+								[assetId]="asset.assetId"
 								[disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)"
 								md-menu-item>{{ "COMPS.DOWNLOAD_FULL_ASPERA" | translate }}</button>
 						</md-menu>
