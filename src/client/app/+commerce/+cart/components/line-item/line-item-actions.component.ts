@@ -11,8 +11,7 @@ import { PurchaseType } from '../../../../shared/interfaces/quote.interface';
         *ngIf="displayPriceButton"
         md-button color="primary"
         class="mini is-outlined"
-        (click)="showPricingDialog.emit()"
-        title="usage pricing">{{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}
+        (click)="showPricingDialog.emit()">{{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}
       </button>
       <button 
         md-icon-button
