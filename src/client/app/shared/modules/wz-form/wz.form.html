@@ -49,6 +49,30 @@
         END: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
 
+		<!--
+        START: FORM INPUT FOR wzdate
+      -->
+    <md-input
+      *ngIf="(field.type == 'wzdate')"
+      wzPikaday
+      [readonly]="true"
+      [minDate]="calculateDateFor(field.minimum)"
+      [maxDate]="calculateDateFor(field.maximum)"
+      [defaultDate]="calculateDateFor(field.default)"
+      (pikadayChange)="updateDateValueFor(field.name, $event.value)"
+      class="md-block"
+      name="{{field.name}}"
+      [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
+      placeholder="{{field.label | translate}}"
+      type="{{field.type}}"
+      formControlName="{{field.name}}"
+      [required]="isRequiredField(field)"
+      id="{{field.name}}">
+    </md-input>
+		<!--
+        END: FORM INPUT FOR wzdate
+      -->
+
       <!--
         START: FORM CONFIRM PASSWORD DOUBLE FIELD
       -->
