@@ -42,10 +42,6 @@ export class AssetService {
     return this.api.get(Api.Assets, `renditionType/downloadUrl/${id}`, { parameters: { type: compType } });
   }
 
-  public downloadAspera(id: any, compType: any): Observable<any> {
-    return this.api.get(Api.Assets, `renditionType/asperaSpec/${id}`, { parameters: { type: compType } });
-  }
-
   public getPrice(id: any, attributes?: any): Observable<any> {
     let formatedAttributes = attributes ? this.formatAttributes(attributes) : null;
     let parameters = formatedAttributes ? { region: 'AAA', attributes: formatedAttributes } : { region: 'AAA' };

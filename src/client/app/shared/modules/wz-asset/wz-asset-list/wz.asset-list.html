@@ -95,9 +95,26 @@
           <button md-menu-item [disabled]="!userCan.downloadCleanComps(hasComp)" (click)="downloadComp('clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
           <button md-menu-item [disabled]="!userCan.downloadFullComps(hasComp)" (click)="downloadComp('full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
           <md-divider></md-divider>
-          <button md-menu-item [disabled]="!userCan.downloadWatermarkComps(hasComp)" (click)="downloadAspera('wm');">{{ "COMPS.DOWNLOAD_WM_ASPERA" | translate }}</button>
-          <button md-menu-item [disabled]="!userCan.downloadCleanComps(hasComp)" (click)="downloadAspera('clean')">{{ "COMPS.DOWNLOAD_CLEAN_ASPERA" | translate }}</button>
-          <button md-menu-item [disabled]="!userCan.downloadFullComps(hasComp)" (click)="downloadAspera('full')">{{ "COMPS.DOWNLOAD_FULL_ASPERA" | translate }}</button>
+          <button wzAsperaDownload 
+            [asperaPreloaded]="'false'" 
+            [renditionType]="'wm'" 
+            [assetId]="assetId"
+            [disabled]="!userCan.downloadWatermarkComps(hasComp)" 
+            md-menu-item>{{ "COMPS.DOWNLOAD_WM_ASPERA" | translate }}</button>
+
+          <button wzAsperaDownload
+            [asperaPreloaded]="'false'" 
+            [renditionType]="'clean'" 
+            [assetId]="assetId"
+            [disabled]="!userCan.downloadCleanComps(hasComp)" 
+            md-menu-item>{{ "COMPS.DOWNLOAD_CLEAN_ASPERA" | translate }}</button>
+
+          <button wzAsperaDownload 
+            [asperaPreloaded]="'false'" 
+            [renditionType]="'full'"
+            [assetId]="assetId"
+            [disabled]="!userCan.downloadFullComps(hasComp)"
+            md-menu-item>{{ "COMPS.DOWNLOAD_FULL_ASPERA" | translate }}</button>
         </md-menu>
 
         <!-- ADD / REMOVE FROM COLLECTION -->

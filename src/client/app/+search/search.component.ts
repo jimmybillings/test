@@ -118,16 +118,6 @@ export class SearchComponent implements OnDestroy, OnInit {
     });
   }
 
-  public downloadAspera(params: any): void {
-    this.search.downloadAspera(params.assetId, params.compType).subscribe((res) => {
-      if (res.url && res.url !== '') {
-        this.window.nativeWindow.location.href = res.url;
-      } else {
-        this.error.dispatch({ status: 'COMPS.NO_COMP' });
-      }
-    });
-  }
-
   public showSpeedview(event: { asset: any, position: any }): void {
     if (event.asset.speedviewData) {
       this.speedviewData = Observable.of(event.asset.speedviewData);

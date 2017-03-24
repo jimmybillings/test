@@ -143,16 +143,6 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     });
   }
 
-  public downloadAspera(params: any): void {
-    this.asset.downloadAspera(params.assetId, params.compType).subscribe((res) => {
-      if (res.url && res.url !== '') {
-        this.window.nativeWindow.location.href = res.url;
-      } else {
-        this.error.dispatch({ status: 'COMPS.NO_COMP' });
-      }
-    });
-  }
-
   public setCollectionForDelete(): void {
     let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionDeleteComponent, { position: { top: '14%' } });
     dialogRef.componentInstance.collection = JSON.parse(JSON.stringify(this.collection));
