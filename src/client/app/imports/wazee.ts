@@ -8,7 +8,7 @@ import { TranslateService } from 'ng2-translate';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { UserService } from '../shared/services/user.service';
 import { UiConfig } from '../shared/services/ui.config';
-import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
+import { WzNotificationService } from '../shared/services/wz.notification.service';
 import { AssetService } from '../shared/services/asset.service';
 import { SearchContext } from '../shared/services/search-context.service';
 import { CollectionsService } from '../shared/services/collections.service';
@@ -27,6 +27,8 @@ import { OrdersService } from '../shared/services/orders.service';
 import { CollectionContextService } from '../shared/services/collection-context.service';
 import { GalleryViewService } from '../shared/services/gallery-view.service';
 import { WindowRef } from '../shared/services/window-ref.service';
+import { QuoteService } from '../shared/services/quote.service';
+import { QuotesService } from '../shared/services/quotes.service';
 
 // STORE INTERFACES
 import { CartStore } from '../shared/stores/cart.store';
@@ -37,6 +39,8 @@ import { OrdersStore } from '../shared/stores/orders.store';
 import { ErrorStore } from '../shared/stores/error.store';
 import { CollectionsStore } from '../shared/stores/collections.store';
 import { ActiveCollectionStore } from '../shared/stores/active-collection.store';
+import { QuoteStore } from '../shared/stores/quote.store';
+import { QuotesStore } from '../shared/stores/quotes.store';
 
 // GUARDS
 import { CartGuard } from '../+commerce/+cart/services/cart.guard';
@@ -67,6 +71,8 @@ import { order } from '../shared/stores/order.store';
 import { orders } from '../shared/stores/orders.store';
 import { features } from '../shared/stores/feature.store';
 import { gallery, GalleryViewStore } from '../shared/stores/gallery-view.store';
+import { quote } from '../shared/stores/quote.store';
+import { quotes } from '../shared/stores/quotes.store';
 
 // WAZEE RESOLVERS
 import { AssetResolver } from '../+asset/services/asset.resolver';
@@ -76,6 +82,8 @@ import { OrderResolver } from '../+commerce/+order/services/order.resolver';
 import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
 import { GalleryViewResolver } from '../+gallery-view/services/gallery-view.resolver';
 import { HomeResolver } from '../+home/services/home.resolver';
+import { QuoteResolver } from '../+commerce/+quote/services/quote.resolver';
+import { QuotesResolver } from '../+commerce/+quote/services/quotes.resolver';
 
 const WAZEE_RESOLVERS = [
   AssetResolver,
@@ -84,7 +92,9 @@ const WAZEE_RESOLVERS = [
   OrderResolver,
   OrdersResolver,
   GalleryViewResolver,
-  HomeResolver
+  HomeResolver,
+  QuoteResolver,
+  QuotesResolver
 ];
 
 const WAZEE_GUARDS = [
@@ -121,7 +131,9 @@ const WAZEE_SERVICES = [
   OrdersService,
   TranslateService,
   GalleryViewService,
-  WindowRef
+  WindowRef,
+  QuoteService,
+  QuotesService
 ];
 
 const WAZEE_STORE_INTERFACES = [
@@ -133,7 +145,9 @@ const WAZEE_STORE_INTERFACES = [
   SearchStore,
   OrdersStore,
   OrderStore,
-  GalleryViewStore
+  GalleryViewStore,
+  QuoteStore,
+  QuotesStore
 ];
 
 export const WAZEE_PROVIDERS: any = [
@@ -163,5 +177,7 @@ export const WAZEE_STORES: any = {
   order: order,
   orders: orders,
   features: features,
-  gallery: gallery
+  gallery: gallery,
+  quote: quote,
+  quotes: quotes
 };

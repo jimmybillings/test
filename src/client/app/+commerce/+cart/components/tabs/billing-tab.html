@@ -28,12 +28,12 @@
             <span>{{address.name}}</span>
           </header>
           <address *ngIf="address.address">
-            {{address.address.address}}<br/>
-            {{address.address.city}}, {{address.address.state}} {{address.address.zipcode}}, {{address.address.country}}<br/>
+            <span class="line-1">{{address.address.address}}</span>
+            <span class="line-2">{{address.address.city}}, {{address.address.state}} {{address.address.zipcode}}, {{address.address.country}}</span>
             <span class="phone">{{address.address.phone}}</span>
           </address>
           <address *ngIf="!address.address">
-            <p>There is no address on account for this {{address.type}}</p>
+            <span>{{ 'CART.BILLING.EMPTY_ADDRESS' | translate:{type: address.type} }}</span>
           </address>
           <nav layout="column" class="actions">
             <div class="divider"></div>

@@ -9,13 +9,14 @@ import { MaterialModule } from '@angular/material';
 
 // WAZEE PROVIDERS
 import { WAZEE_PROVIDERS } from '../imports/wazee';
+
 // Shared Wazee Modules
 import { WzPlayerModule } from './modules/wz-player/wz.player.module';
 import { WzFormModule } from './modules/wz-form/wz-form.module';
 import { WzAssetModule } from './modules/wz-asset/wz-asset.module';
+import { WzDialogModule } from './modules/wz-dialog/wz.dialog.module';
 
 // Shared Pure Components
-import { WzNotificationComponent } from './components/wz-notification/wz.notification.service';
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
 import { WzDropdownComponent, WzDropdownPortalDirective } from './components/wz-dropdown/wz.dropdown.component';
 import { WzListComponent } from './components/wz-list/wz.list.component';
@@ -34,6 +35,7 @@ import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soo
 import { WzSubclipEditorComponent } from './components/wz-subclip-editor/wz.subclip-editor.component';
 import { WzGalleryTwoLevelComponent } from './components/wz-gallery-two-level/wz.gallery-two-level.component';
 import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb/wz.gallery-breadcrumb.component';
+
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
 
@@ -53,7 +55,8 @@ import { ValuesPipe } from './pipes/values.pipe';
     MaterialModule.forRoot(),
     WzPlayerModule,
     WzFormModule,
-    WzAssetModule
+    WzAssetModule,
+    WzDialogModule
   ],
   declarations: [
     WzGalleryBreadcrumbComponent,
@@ -74,7 +77,6 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzTermsComponent,
     WzPricingComponent,
     WzComingSoonComponent,
-    WzNotificationComponent,
     WzGalleryTwoLevelComponent,
     WzSubclipEditorComponent,
   ],
@@ -107,9 +109,9 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzPricingComponent,
     WzComingSoonComponent,
     WzFormModule,
-    WzNotificationComponent,
     WzGalleryTwoLevelComponent,
     WzSubclipEditorComponent,
+    WzDialogModule
   ],
   entryComponents: [
     CollectionLinkComponent,
@@ -117,8 +119,8 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzTermsComponent,
     WzPricingComponent,
     WzComingSoonComponent,
-    WzNotificationComponent,
-    WzSubclipEditorComponent]
+    WzSubclipEditorComponent
+  ]
 })
 
 export class SharedModule {

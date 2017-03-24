@@ -237,7 +237,7 @@
 		<!--
         START: CUSTOM FOR ELEMENT FOR SUGGESTIONS BASED ON TEXT INPUT
       -->
-		<wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]" [rawField]="field">
+		<wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]" [rawField]="field" (cacheSuggestions)="cacheSuggestions.emit($event)">
 			<md-input placeholder="{{field.label | translate}}" 
 				(keydown)="suggestions.inputKeyDown($event)"
 				[ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
@@ -248,7 +248,6 @@
 					align="start" 
 					class="error">
 						<span *ngIf="form.controls[field.name].hasError('required')">
-              {{form.controls[field.name].hasError('required')}}
 							{{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
 						</span>
 						<span *ngIf="form.controls[field.name].hasError('serverError')">

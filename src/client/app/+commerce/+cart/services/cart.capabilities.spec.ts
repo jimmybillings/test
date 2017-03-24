@@ -185,6 +185,24 @@ export function main() {
       });
     });
 
+    describe('createQuotes', () => {
+      let hasPermission: boolean;
+
+      beforeEach(() => {
+        mockCurrentUserService = { hasPermission: () => hasPermission };
+      });
+
+      it('should return false if the user does not have the permission', () => {
+        hasPermission = false;
+        expect(new CartCapabilities(mockCurrentUserService, null, null).createQuotes()).toBe(false);
+      });
+
+      it('should return true if the user has the permission', () => {
+        hasPermission = true;
+        expect(new CartCapabilities(mockCurrentUserService, null, null).createQuotes()).toBe(true);
+      });
+    });
+
     describe('userHas()', () => {
       let hasPermission: boolean;
 

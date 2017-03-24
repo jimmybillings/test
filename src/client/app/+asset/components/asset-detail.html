@@ -33,7 +33,6 @@
 			</div>
 			
 			
-			
 			<div flex-gt-xs="33" flex="100" layout="column">
 				<header class="toolbar-actions">
 					<nav class="asset-options" flex layout-align="end stretch">
@@ -199,9 +198,12 @@
 
 							<ng-container *ngIf="userCan.haveCart()">
 								<md-card-actions *ngIf="(asset.price && asset.price !== 0)" layout="column" layout-align="center center" layout-wrap="">
-									<button [disabled]="!userCan.addToCart()" md-button (click)="getPricingAttributes()" class="is-outlined">{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
+									<button [disabled]="!userCan.addToCart()" md-button (click)="getPricingAttributes()" class="is-outlined">
+										{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
 									<button [disabled]="!userCan.addToCart()" md-raised-button (click)="addAssetToCart(asset.assetId)"
-										class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+										class="md-primary md-hue-7" color="primary">
+										{{ (userCan.createQuotes() ? 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL') | translate}}
+									</button>
 								</md-card-actions>
 							</ng-container>
 

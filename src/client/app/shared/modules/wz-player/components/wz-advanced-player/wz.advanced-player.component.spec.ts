@@ -60,6 +60,12 @@ export function main() {
         expect(componentUnderTest.assetIsVideo()).toBe(true);
       });
 
+      it('returns true if the asset has no resourceClass property', () => {
+        componentUnderTest.asset = {};
+
+        expect(componentUnderTest.assetIsVideo()).toBe(true);
+      });
+
       it('returns false if the asset\'s resource type is \'Image\'', () => {
         componentUnderTest.asset = { resourceClass: 'Image' };
 
@@ -67,12 +73,6 @@ export function main() {
       });
 
       it('returns false if the asset has not been set', () => {
-        expect(componentUnderTest.assetIsVideo()).toBe(false);
-      });
-
-      it('returns false if the asset has no resourceClass property', () => {
-        componentUnderTest.asset = {};
-
         expect(componentUnderTest.assetIsVideo()).toBe(false);
       });
     });

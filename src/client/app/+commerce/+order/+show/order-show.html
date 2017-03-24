@@ -1,42 +1,108 @@
-<section class="order-component">
-	<div class="order-summary">
-		<header layout-gt-xs="row" layout-align-gt-xs="space-between center" flex="100" layout="column" layout-align="center center">
-			<span class="md-display-1"><strong>Order Id: </strong>{{ (order.data | async).id }}</span>
-			<span class="md-display-1"><strong>Order Price: </strong>{{ (order.data | async).total | currency:'USD':true:'1.2-2' }}</span>
-			<span class="md-display-1"><strong>Order Placed: </strong>{{ (order.data | async).createdOn | date }}</span>
-		</header>
-	</div>
-	<div class="order-projects" *ngFor="let project of (order.data | async).projects">
-		<div class="order-project-header" layout-gt-xs="row" layout-align-gt-xs="space-between center" flex="100" layout="column"
-			layout-align="center center">
-			<span><strong>Project Name: </strong>{{ project.name }}</span>
-			<span><strong>Client Name: </strong>{{ project.clientName }}</span>
-			<span><strong>Project Subtotal: </strong>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
+
+<section class="header" layout="row" layout-align="center center">
+	<header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
+    <div flex="100" layout="row" layout-align="space-between end">
+			<h2 flex="grow" class="md-display-1">{{ 'ORDER.SHOW.PAGE_TITLE' | translate }}</h2>
+			<div class="tools" flex="auto">
+				<a [routerLink]="['/commerce/orders']" md-icon-button color="primary" title="View all orders">
+					<md-icon>description</md-icon>
+				</a>
+			</div>
 		</div>
-		<div class="project-line-items">
-			<div *ngFor="let lineItem of project.lineItems; let e = even" layout="row" layout-align="center center">
-				<div class="project-line-item" [ngClass]="{highlight: e}" flex-gt-md="95" flex-gt-xs="45" flex="85">
-					<div layout-gt-md="row" layout="column" layout-align-gt-md="space-between center" layout-align="center stretch">
-						<div class="order-asset-thb" flex-gt-md="15">
-							<img src="{{ lineItem.asset.thumbnailUrl }}" />
-						</div>
-						<div class="order-asset-metadata" flex-gt-md="45">
-							<table>
-								<tr *ngFor="let meta of lineItem.asset.metadata">
-									<th class="md-caption">{{ translationReady(meta.name) | uppercase | translate }}</th>
-									<td class="md-caption">{{ meta.value | slice:0:80 }}</td>
-								</tr>
-							</table>
-						</div>
-						<div layout="row" layout-align="space-around center" flex-gt-md="40">
-							<span>Full Clip</span>
-							<span><strong>{{lineItem.price | currency:'USD':true:'1.2-2'}}</strong></span>
-							<button wzAsperaDownload [disabled]="!lineItem.asperaSpec" [asperaSpec]="lineItem.asperaSpec" md-icon-button><md-icon>cloud_download</md-icon></button>
-							<button [disabled]="!lineItem.asset.masterDownloadUrl" (click)="downloadMaster(lineItem.asset.masterDownloadUrl)" md-icon-button><md-icon>file_download</md-icon></button>
-						</div>
-					</div>
+	</header>
+</section>
+
+<section class="order-summary">
+	<div layout="row" flex="100" layout-align="center center">
+		<div layout="column" layout-gt-xs="row" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout-align-gt-xs="space-between end">
+			<div flex-gt-xs="40" flex="100" class="details">
+				<div class="md-caption order-info">
+					<span class="order-number">
+						<strong>{{ 'ORDER.SHOW.ORDER_NUMBER_LABEL' | translate }}</strong>
+						<span class="number">{{ (order.data | async).id }}</span>
+					</span>
+					<span>
+						<strong>{{ 'ORDER.CREATED_ON_LABEL' | translate }} </strong>{{ (order.data | async).createdOn | date:'short' }}
+					</span>
+					<span>
+						<strong>{{ 'ORDER.ORDER_TYPE_LABEL' | translate }} </strong>{{ (order.data | async).orderType }}
+					</span>
 				</div>
 			</div>
+			<div flex="100" layout="row" layout-xs="column" class="divider"></div>
+			<div class="cart-total" flex-gt-xs="60" flex="100" class="cart-total">
+				<div class="total md-headline" flex="auto" layout="row" layout-align="end center">
+					<button md-button color="primary" class="is-outlined mini">
+						View/print invoice
+					</button>
+					<span class="total-label">
+							{{ 'ORDER.INDEX.ORDER_TOTAL_LABEL' | translate }}
+					</span>
+					<span class="total-amount">
+							{{ (order.data | async).total | currency:'USD':true:'1.2-2' }}
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="project">
+  <div layout="row" flex="100" layout-align="center start">
+		<div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
+				<section class="projects">
+					<div class="project" *ngFor="let project of (order.data | async).projects">
+						<header class="project-info" layout-gt-xs="row" layout="column">
+							<div flex="100" flex-gt-sm="70" flex-order-xs="2">
+								<h5 md-display-1>
+									<span class="project-label md-caption">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>
+									<span class="project-name">{{ project.name }}</span>
+								</h5>
+								<span class="project-client md-caption">
+									<strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> 
+									{{ project.clientName }}
+								</span>
+							</div>
+
+							<div flex="100" flex-gt-sm="30" layout-padding flex-order-xs="-1">
+								<!--<button *ngIf="!readOnly" md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)" title="More project options"><md-icon>more_vert</md-icon></button>-->
+							</div>
+							<div class="project-subtotal md-caption">
+								<strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
+								<span>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
+							</div>
+						</header>
+
+						<section class="assets">
+							<ul class="asset-list">
+								<li 
+									*ngFor="let lineItem of project.lineItems"
+									class="cart-asset" 
+									flex="100" 
+									layout="row" 
+									layout-xs="column">
+									<div flex="100" flex-gt-xs="50">
+										<cart-asset-component [asset]="lineItem.asset" (assetNotify)="delegate($event)"></cart-asset-component>
+									</div>
+									<div flex-gt-xs="20" layout-sm="100" flex="auto" layout-padding>
+										<span>Full Clip</span>
+									</div>
+									<div flex-gt-xs="30" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
+										<div class="tools" flex="100" layout-padding>
+											<button [disabled]="!lineItem.asset.masterDownloadUrl" (click)="downloadMaster(lineItem.asset.masterDownloadUrl)" md-button color="primary" class="is-outlined">{{ 'ORDER.SHOW.DOWNLOAD_BTN_TITLE' | translate }}</button>
+											<button wzAsperaDownload [disabled]="!lineItem.asperaSpec" [asperaSpec]="lineItem.asperaSpec" md-icon-button><md-icon>cloud_download</md-icon></button>
+										</div>
+										<div flex="100" layout="row" layout-xs="column" class="divider"></div>
+										<div class="price">
+											{{ lineItem.price | currency:'USD':true:'1.2-2' }}
+										</div>
+									</div>
+								</li>
+							</ul>
+						</section>
+					</div>
+				</section>
+
 		</div>
 	</div>
 </section>
