@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { MultilingualService } from './shared/services/multilingual.service';
@@ -33,7 +33,6 @@ export class AppComponent implements OnInit {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
   private bootStrapUserDataSubscription: Subscription;
-  @ViewChild('target', { read: ViewContainerRef }) private target: any;
   @HostListener('document:scroll', ['$event.target'])
   public onScroll(targetElement: any) {
     this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
@@ -63,7 +62,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.routerChanges();
     this.processUser();
-    this.notification.initialize(this.target);
   }
 
   public logout(): void {

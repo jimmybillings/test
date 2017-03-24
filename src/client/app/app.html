@@ -1,4 +1,4 @@
-<div class="app" #target>
+<div class="app">
   <header [ngClass]="{
     'fixed': (uiState.data | async).showFixedHeader,
     'collection-tray-closed': !(userPreference.data | async).collectionTrayIsOpen,

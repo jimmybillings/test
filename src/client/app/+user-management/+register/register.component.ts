@@ -48,7 +48,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.newUser = res;
       this.ref.markForCheck();
     }, (error => {
-      this.serverErrors = error.json();
+      if (error.status !== 451) this.serverErrors = error.json();
       this.ref.markForCheck();
     }));
   }
