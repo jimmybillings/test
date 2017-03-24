@@ -5,7 +5,7 @@ import { ActiveCollectionService } from '../shared/services/active-collection.se
 // import { SubclipMarkers } from '../shared/interfaces/asset.interface';
 import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';
-import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
+import { WzNotificationService } from '../shared/services/wz.notification.service';
 import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { SearchContext } from '../shared/services/search-context.service';

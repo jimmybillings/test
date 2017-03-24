@@ -11,7 +11,7 @@ import { FilterService } from './shared/services/filter.service';
 import { SortDefinitionsService } from './shared/services/sort-definitions.service';
 import { CollectionsService } from './shared/services/collections.service';
 import { UiState } from './shared/services/ui.state';
-import { WzNotificationService } from './shared/components/wz-notification/wz.notification.service';
+import { WzNotificationService } from './shared/services/wz.notification.service';
 import { ActiveCollectionService } from './shared/services/active-collection.service';
 import { CartService } from './shared/services/cart.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
