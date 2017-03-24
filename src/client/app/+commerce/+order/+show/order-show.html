@@ -3,6 +3,11 @@
 	<header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
     <div flex="100" layout="row" layout-align="space-between end">
 			<h2 flex="grow" class="md-display-1">{{ 'ORDER.SHOW.PAGE_TITLE' | translate }}</h2>
+			<div class="tools" flex="auto">
+				<a [routerLink]="['/commerce/orders']" md-icon-button color="primary" title="View all orders">
+					<md-icon>description</md-icon>
+				</a>
+			</div>
 		</div>
 	</header>
 </section>
@@ -10,7 +15,7 @@
 <section class="order-summary">
 	<div layout="row" flex="100" layout-align="center center">
 		<div layout="column" layout-gt-xs="row" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout-align-gt-xs="space-between end">
-			<div flex-gt-xs="60" flex="100" class="details">
+			<div flex-gt-xs="40" flex="100" class="details">
 				<div class="md-caption order-info">
 					<span class="order-number">
 						<strong>{{ 'ORDER.SHOW.ORDER_NUMBER_LABEL' | translate }}</strong>
@@ -25,8 +30,11 @@
 				</div>
 			</div>
 			<div flex="100" layout="row" layout-xs="column" class="divider"></div>
-			<div class="cart-total" flex-gt-xs="40" flex="100" class="cart-total" layout-align="end center">
-				<div class="total md-headline">
+			<div class="cart-total" flex-gt-xs="60" flex="100" class="cart-total">
+				<div class="total md-headline" flex="auto" layout="row" layout-align="end center">
+					<button md-button color="primary" class="is-outlined mini">
+						View/print invoice
+					</button>
 					<span class="total-label">
 							{{ 'ORDER.INDEX.ORDER_TOTAL_LABEL' | translate }}
 					</span>
