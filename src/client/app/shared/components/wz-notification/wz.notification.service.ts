@@ -1,53 +1,17 @@
-import {
-  Injectable,
-  ComponentRef,
-  ComponentFactoryResolver,
-  ViewContainerRef,
-  Component,
-  ChangeDetectionStrategy,
-  Input,
-  Output,
-  EventEmitter,
-  HostListener
-} from '@angular/core';
-
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
 import { ErrorStore } from '../../stores/error.store';
-
-@Component({
-  moduleId: module.id,
-  selector: 'wz-notification',
-  template:
-  `<div class="notification">
-      <p>{{notice | translate}}</p>
-    </div>`,
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-
-export class WzNotificationComponent {
-  @Output() onDestroy = new EventEmitter();
-  @Input() notice: string;
-  @HostListener('document:click', ['$event.target'])
-  public onClick(targetElement: any) {
-    this.onDestroy.emit();
-  }
-}
+import { WzDialogService } from '../../modules/wz-dialog/services/wz.dialog.service';
 
 @Injectable()
 export class WzNotificationService {
-  private target: ViewContainerRef;
   private callInProgress: boolean = false;
 
   constructor(
-    private resolver: ComponentFactoryResolver,
     private router: Router,
-    private error: ErrorStore) {
+    private error: ErrorStore,
+    private dialog: WzDialogService) {
     error.data.subscribe(this.handle.bind(this));
-  }
-
-  public initialize(target: ViewContainerRef) {
-    this.target = target;
   }
 
   private handle(error: any): void {
@@ -63,46 +27,58 @@ export class WzNotificationService {
       case 419:
         this.expiredSession();
         break;
+      case 451:
+        this.cantRegister();
+        break;
       default:
         if (isNaN(error.status)) this.customError(error.status);
         break;
     }
   }
 
-  private create(notice: any) {
-    const componentFactory = this.resolver.resolveComponentFactory(WzNotificationComponent);
-    const cmpRef: ComponentRef<WzNotificationComponent> = this.target.createComponent(componentFactory);
-    cmpRef.instance.notice = notice;
-    const onClick: Subscription = cmpRef.instance.onDestroy.subscribe((_: any) => {
-      this.destroy(cmpRef, null, onClick);
-    });
-    const timer: any = setTimeout(() => this.destroy(cmpRef, timer, onClick), 4900);
+  private create(strings: any) {
+    this.dialog.openNotification(strings).subscribe(_ => this.callInProgress = false);
   }
 
-  private destroy(cmpRef: ComponentRef<WzNotificationComponent>, timer: any = null, onClick: Subscription) {
-    cmpRef.destroy();
-    clearTimeout(timer);
-    onClick.unsubscribe();
-    this.callInProgress = false;
+  private cantRegister(): void {
+    this.create({
+      title: 'REGISTER.DISALLOWED.TITLE',
+      message: 'REGISTER.DISALLOWED.MESSAGE',
+      prompt: 'REGISTER.DISALLOWED.PROMPT'
+    });
   }
 
   private unAuthorized(): void {
     this.router.navigate(['/user/login']).then(_ => {
-      this.create('NOTIFICATION.INVALID_CREDENTIALS');
+      this.create({
+        title: 'NOTIFICATION.ERROR',
+        message: 'NOTIFICATION.INVALID_CREDENTIALS',
+        prompt: 'NOTIFICATION.CLOSE'
+      });
     });
   }
 
   private forbidden(): void {
-    this.create('NOTIFICATION.NEED_PERMISSION');
+    this.create({
+      title: 'NOTIFICATION.ERROR',
+      message: 'NOTIFICATION.NEED_PERMISSION',
+      prompt: 'NOTIFICATION.CLOSE'
+    });
   }
 
   private expiredSession(): void {
     this.router.navigate(['/user/login']).then(_ => {
-      this.create('NOTIFICATION.EXPIRED_SESSION');
+      this.create({
+        title: 'NOTIFICATION.ERROR',
+        message: 'NOTIFICATION.EXPIRED_SESSION',
+        prompt: 'NOTIFICATION.CLOSE'
+      });
     });
   }
 
-  private customError(errorMessage: number) {
-    this.create(errorMessage);
+  private customError(errorCode: number) {
+    this.create({
+      title: errorCode
+    });
   }
 }

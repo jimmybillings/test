@@ -75,14 +75,6 @@ export function main() {
 
 
     describe('ngOnInit()', () => {
-
-      describe('notification.initialize()', () => {
-        it('Should initialize the notification service with the global element target', () => {
-          componentUnderTest.ngOnInit();
-          expect(mockNotification.initialize).toHaveBeenCalled();
-        });
-      });
-
       describe('processUser()', () => {
         it('Should process the actions for a logged out user', () => {
           loggedInState = false;
