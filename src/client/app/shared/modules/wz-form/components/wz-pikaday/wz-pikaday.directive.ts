@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 var pikaday = require('pikaday');
 
 @Directive({
@@ -6,10 +6,17 @@ var pikaday = require('pikaday');
 })
 
 export class WzPikaDayDirective {
+  @Output() pikadayChange: EventEmitter<any> = new EventEmitter<any>();
+
   private picker: any;
 
   constructor(public element: ElementRef) {
-    this.picker = new pikaday({ field: this.element.nativeElement });
+    this.picker = new pikaday({ field: this.element.nativeElement, onSelect: this.onSelect.bind(this) });
+  }
+
+  @Input()
+  set defaultDate(dateString: string) {
+    this.picker.setDate(dateString ? this.convertToDateInstance(dateString) : null);
   }
 
   @Input()
@@ -30,5 +37,9 @@ export class WzPikaDayDirective {
     const fudgeFactor = 500;
 
     return new Date(utcDate.getTime() + offsetInMilliseconds + fudgeFactor);
+  }
+
+  private onSelect(date: any): void {
+    this.pikadayChange.emit({ value: this.picker.toString() });
   }
 }

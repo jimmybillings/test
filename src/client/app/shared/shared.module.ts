@@ -20,7 +20,6 @@ import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.
 import { WzDropdownComponent, WzDropdownPortalDirective } from './components/wz-dropdown/wz.dropdown.component';
 import { WzListComponent } from './components/wz-list/wz.list.component';
 import { WzPaginationComponent } from './components/wz-pagination/wz.pagination.component';
-import { WzPikaDayDirective } from './components/wz-pikaday/wz-pikaday.directive';
 import { WzClipBoardDirective } from './components/wz-clipboard/wz-clipboard.directive';
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
 import { CollectionFilterDdComponent } from '../+collection/components/collections-filter-dd.component';
@@ -62,7 +61,6 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzDropdownComponent,
     WzListComponent,
     WzPaginationComponent,
-    WzPikaDayDirective,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
     WzItemSearchFormComponent,
@@ -85,7 +83,6 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzDropdownComponent,
     WzListComponent,
     WzPaginationComponent,
-    WzPikaDayDirective,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
     WzItemSearchFormComponent,
