@@ -25,6 +25,7 @@ export interface LineItem {
   transcodeTargets?: Array<string>;
   selectedTranscodeTarget?: string;
   attributes?: Array<any>;
+  asperaUrl?: string;
 }
 
 export interface Asset {

@@ -8,7 +8,7 @@ import { TranslateService } from 'ng2-translate';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { UserService } from '../shared/services/user.service';
 import { UiConfig } from '../shared/services/ui.config';
-import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
+import { WzNotificationService } from '../shared/services/wz.notification.service';
 import { AssetService } from '../shared/services/asset.service';
 import { SearchContext } from '../shared/services/search-context.service';
 import { CollectionsService } from '../shared/services/collections.service';

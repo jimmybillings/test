@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ErrorStore } from '../../stores/error.store';
-import { WzDialogService } from '../../modules/wz-dialog/services/wz.dialog.service';
+import { ErrorStore } from '../stores/error.store';
+import { WzDialogService } from '../modules/wz-dialog/services/wz.dialog.service';
 
 @Injectable()
 export class WzNotificationService {
@@ -31,6 +31,7 @@ export class WzNotificationService {
         this.cantRegister();
         break;
       default:
+        this.callInProgress = false;
         if (isNaN(error.status)) this.customError(error.status);
         break;
     }

@@ -22,12 +22,6 @@
       <div *ngIf="userCan.createQuotes()" class="quote-wrapper" flex>
         <cart-tab-component flex></cart-tab-component>
       </div>
-      <!--<md-tab-group *ngIf="userCan.createQuotes()" [(selectedIndex)]="selectedTabIndex">
-        <md-tab *ngFor="let tabLabelKey of tabLabelKeys; let i = index" [disabled]="!tabEnabled[i]">
-          <template md-tab-label>{{ tabLabelKey | uppercase }}</template>
-          <cart-tab-component *ngIf="tabLabelKey === 'cart'" (tabNotify)="onNotification($event)"></cart-tab-component>
-        </md-tab>
-      </md-tab-group>-->
     </div>
   </div>
 </section>

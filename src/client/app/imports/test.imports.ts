@@ -13,7 +13,7 @@ import { WAZEE_PROVIDERS, WAZEE_STORES } from './wazee';
 // SERVICES NOT IN WAZEE_PROVIDERS
 import { AdminService } from '../+admin/services/admin.service';
 import { ConfigService } from '../+admin/services/config.service';
-import { WzNotificationService } from '../shared/components/wz-notification/wz.notification.service';
+import { WzNotificationService } from '../shared/services/wz.notification.service';
 
 // MODELS
 import { FormModel } from '../shared/modules/wz-form/wz.form.model';

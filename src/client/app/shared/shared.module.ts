@@ -76,7 +76,7 @@ import { ValuesPipe } from './pipes/values.pipe';
     WzPricingComponent,
     WzComingSoonComponent,
     WzGalleryTwoLevelComponent,
-    WzSubclipEditorComponent
+    WzSubclipEditorComponent,
   ],
   exports: [
     WzGalleryBreadcrumbComponent,

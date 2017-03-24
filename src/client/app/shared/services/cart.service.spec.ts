@@ -38,6 +38,7 @@ export function main() {
 
       mockCartStore = {
         replaceCartWith: jasmine.createSpy('replaceCartWith'),
+        updateCartWith: jasmine.createSpy('updateCartWith'),
         data: Observable.of({
           cart: { some: 'data' },
           orderInProgress: {}
@@ -121,7 +122,7 @@ export function main() {
         mockApi.getResponse = { lineItem: { asset: { assetId: '10836' } } };
         serviceUnderTest.getCartSummary();
 
-        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: '10836' } } });
+        expect(mockCartStore.updateCartWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: '10836' } } });
       });
     });
 

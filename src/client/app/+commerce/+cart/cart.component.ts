@@ -19,7 +19,7 @@ export class CartComponent implements OnInit {
     // For example, don't include 'billing' and 'payment' if the cart total is 0.
     // this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];
     // I think the confirm tab should be place order
-    this.tabLabelKeys = this.userCan.createQuotes() ? ['cart'] : ['cart', 'billing', 'payment', 'confirm'];
+    this.tabLabelKeys = ['cart', 'billing', 'payment', 'confirm'];
 
     // Enable the first tab and disable the rest.
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
