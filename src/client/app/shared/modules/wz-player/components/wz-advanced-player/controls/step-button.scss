@@ -6,7 +6,7 @@ wz-step-button {
     margin: 0 rem(.1);
     md-icon {
       color: rgba(md-color($background, background), 0.87);
-      line-height: rem(1.4);
+      line-height: rem(1.5);
       height: rem(1.6);
       width: rem(3.6);
       margin-left: rem(.3);
@@ -18,13 +18,14 @@ wz-step-button {
         content: "5s";
         font-family: $md-font-family;
         font-size: rem(1.1);
-        line-height: rem(1.5);
+        line-height: 1.5;
         font-weight: 100;
         position: absolute;
         margin-left: rem(-0.9);
       }
       &.one-frame::before {
         content: "1f";
+        margin-left: rem(-0.8);
       }
       &.one-second::before {
         content: "1s";
@@ -33,13 +34,16 @@ wz-step-button {
     &.reverse md-icon {
       transform: rotate(180deg);
       margin-left: rem(-1.4);
-      line-height: rem(1.8);
+      line-height: rem(1.9);
       &::before {
         transform: rotate(180deg);
-        line-height: rem(1.6);
+        // line-height: 1.5;
       }
       &.one-frame::before {
         margin-left: rem(-0.8);
+      }
+      &.five-second::before {
+        margin-left: rem(-1.0);
       }
     } 
   }
