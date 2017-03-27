@@ -13,6 +13,7 @@ export class WzFormBase implements OnInit, OnChanges {
   @Output() formSubmit = new EventEmitter();
   @Output() formCancel = new EventEmitter();
   @Output() onAction = new EventEmitter();
+  @Output() cacheSuggestions = new EventEmitter();
   public submitAttempt: boolean = false;
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
@@ -61,8 +62,12 @@ export class WzFormBase implements OnInit, OnChanges {
     return options.split(',');
   }
 
-  public radioSelect(field: any, option: any) {
-    (<FormControl>this.form.controls[field]).setValue(option);
+  public radioSelect(fieldName: string, option: any) {
+    this.update(fieldName, option);
+  }
+
+  public updateDateValueFor(fieldName: string, dateString: string) {
+    this.update(fieldName, this.calculateDateFor(dateString));
   }
 
   /**
@@ -110,5 +115,39 @@ export class WzFormBase implements OnInit, OnChanges {
     this.submitAttempt = false;
     this.formModel.updateForm(this.form, {});
     this.formModel.markFormAsUntouched(this.form);
+  }
+
+  public calculateDateFor(dateSpec: string): string {
+    if (!dateSpec) return null;
+
+    const upperDateSpec = dateSpec.toUpperCase().replace(/ /g, '');
+
+    if (upperDateSpec === 'TODAY') return this.dateToString(new Date());
+
+    if (upperDateSpec.match(/^TODAY[+-][0-9]+$/)) {
+      const numberOfDaysToAdd: number = parseInt(upperDateSpec.replace('TODAY', ''));
+      const date: Date = new Date();
+      date.setDate(date.getDate() + numberOfDaysToAdd);
+
+      return this.dateToString(date);
+    }
+
+    let date: Date;
+
+    try {
+      date = new Date(dateSpec);
+    } catch (error) {
+      throw new Error(`Could not parse date specification '${dateSpec}'`);
+    }
+
+    return this.dateToString(date);
+  }
+
+  private dateToString(date: Date): string {
+    return date.toISOString().slice(0, 10).replace(/-/g, '/');
+  }
+
+  private update(fieldName: string, value: any) {
+    (<FormControl>this.form.controls[fieldName]).setValue(value);
   }
 }

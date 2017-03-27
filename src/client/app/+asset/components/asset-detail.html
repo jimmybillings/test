@@ -33,7 +33,6 @@
 			</div>
 			
 			
-			
 			<div flex-gt-xs="33" flex="100" layout="column">
 				<header class="toolbar-actions">
 					<nav class="asset-options" flex layout-align="end stretch">
@@ -42,12 +41,133 @@
                 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_ENABLED' : 'COLLECTION.SHOW.DOWNLOAD_BTN_TITLE_DISABLED') | translate }}">
                 <md-icon>file_download</md-icon>
             </button>
-
 						<md-menu x-position="before" #downloadCompMenu="mdMenu">
-							<button md-menu-item [disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)" (click)="downloadComp(asset.assetId, 'wm');">{{ "COMPS.DOWNLOAD_WM_COMP" | translate }}</button>
-							<button md-menu-item [disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)" (click)="downloadComp(asset.assetId, 'clean')">{{ "COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</button>
-							<button md-menu-item [disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)" (click)="downloadComp(asset.assetId, 'full')">{{ "COMPS.DOWNLOAD_FULL_COMP" | translate }}</button>
+							<md-list class="aspera-download-options">
+								<md-list-item>
+									<span md-menu-item disabled flex>{{"COMPS.DOWNLOAD_WM_COMP" | translate }}</span>
+									<div class="actions" flex>
+										<button 
+											md-icon-button
+											title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
+											(click)="downloadComp('wm');" 
+											[disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)">
+												<md-icon>file_download</md-icon>
+											</button>
+										<button 
+											md-icon-button
+											title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
+											[disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)"
+											wzAsperaDownload 
+											[asperaPreloaded]="'false'" 
+											[renditionType]="'wm'" 
+											[assetId]="asset.assetId">
+												<md-icon>whatshot</md-icon>
+											</button>
+									</div>
+								</md-list-item>
+								<md-list-item>
+									<span md-menu-item disabled flex>{{"COMPS.DOWNLOAD_CLEAN_COMP" | translate }}</span>
+									<div class="actions" flex>
+										<button 
+											md-icon-button
+											title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
+											(click)="downloadComp('clean');" 
+											[disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)">
+												<md-icon>file_download</md-icon>
+										</button>
+										<button 
+											md-icon-button
+											title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
+											[disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)"
+											wzAsperaDownload 
+											[asperaPreloaded]="'false'" 
+											[renditionType]="'clean'" 
+											[assetId]="asset.assetId">
+											<md-icon>whatshot</md-icon>
+										</button>
+									</div>
+								</md-list-item>
+								<md-list-item>
+									<span md-menu-item disabled flex>{{"COMPS.DOWNLOAD_FULL_COMP" | translate }}</span>
+									<div class="actions" flex>
+										<button 
+											md-icon-button
+											title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
+											[disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)"
+											(click)="downloadComp('full');">
+											<md-icon>file_download</md-icon>
+										</button>
+										<button 
+											md-icon-button
+											title="{{'COMPS.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}"
+											[disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)"
+											wzAsperaDownload 
+											[asperaPreloaded]="'false'" 
+											[renditionType]="'full'" 
+											[assetId]="asset.assetId">
+												<md-icon>whatshot</md-icon>
+										</button>
+									</div>
+								</md-list-item>
+							</md-list>
 						</md-menu>
+
+
+
+						<!--<md-menu x-position="before" #downloadCompMenu="mdMenu">
+							<md-list>
+								<md-list-item> {{"COMPS.DOWNLOAD_WM_COMP" | translate }}
+									<button 
+										md-icon-button 
+										(click)="downloadComp(asset.assetId, 'wm');" 
+										[disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)">
+											<md-icon>file_download</md-icon>
+										</button>
+									<button md-icon-button 
+										[disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)"
+										wzAsperaDownload 
+										[asperaPreloaded]="'false'" 
+										[renditionType]="'wm'" 
+										[assetId]="asset.assetId">
+											<md-icon>cloud_download</md-icon>
+										</button>
+								</md-list-item>
+								<md-list-item>{{"COMPS.DOWNLOAD_CLEAN_COMP" | translate }} 
+									<button 
+										md-icon-button 
+										(click)="downloadComp(asset.assetId, 'clean')" 
+										[disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)">
+											<md-icon>file_download</md-icon>
+									</button>
+									<button 
+										md-icon-button 
+										[disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)"
+										wzAsperaDownload 
+										[asperaPreloaded]="'false'" 
+										[renditionType]="'clean'" 
+										[assetId]="asset.assetId">
+										<md-icon>cloud_download</md-icon>
+									</button>
+								</md-list-item>
+								<md-list-item>{{"COMPS.DOWNLOAD_FULL_COMP" | translate }}
+									<button 
+										md-icon-button 
+										[disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)"
+										(click)="downloadComp(asset.assetId, 'full')">
+										<md-icon>file_download</md-icon>
+									</button>
+									<button 
+										md-icon-button 
+										[disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)"
+										wzAsperaDownload 
+										[asperaPreloaded]="'false'" 
+										[renditionType]="'full'" 
+										[assetId]="asset.assetId">
+											<md-icon>cloud_download</md-icon>
+									</button>
+								</md-list-item>
+							</md-list>
+						</md-menu>-->
 
 						<button md-icon-button [disabled]="!userCan.createAccessInfo()" title="{{ (userCan.createAccessInfo() ? 
               'ASSET.DETAIL.SHARING_BTN_TITLE' : 'ASSET.DETAIL.SHARING_UNAVAILABLE_BTN_TITLE') | translate }}" (click)="sharing.show($event)">
@@ -150,9 +270,12 @@
 
 							<ng-container *ngIf="userCan.haveCart()">
 								<md-card-actions *ngIf="(asset.price && asset.price !== 0)" layout="column" layout-align="center center" layout-wrap="">
-									<button [disabled]="!userCan.addToCart()" md-button (click)="getPricingAttributes()" class="is-outlined">{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
+									<button [disabled]="!userCan.addToCart()" md-button (click)="getPricingAttributes()" class="is-outlined">
+										{{ 'PRICING.CALCULATE_HEADING' | translate }}</button>
 									<button [disabled]="!userCan.addToCart()" md-raised-button (click)="addAssetToCart(asset.assetId)"
-										class="md-primary md-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+										class="md-primary md-hue-7" color="primary">
+										{{ (userCan.createQuotes() ? 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL') | translate}}
+									</button>
 								</md-card-actions>
 							</ng-container>
 

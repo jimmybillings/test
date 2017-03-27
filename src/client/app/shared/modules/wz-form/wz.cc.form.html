@@ -1,0 +1,81 @@
+<form layout="column" [formGroup]="form" novalidate class="md-inline-form" autocomplete="{{autocomplete}}" (ngSubmit)="onSubmit()">
+
+	<!--<ng-container *ngFor="let field of items; let i=index">-->
+    
+		<!--
+        START: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
+      -->
+  <div>
+    <md-input
+      [ngClass]="{'show-errors': hasErrorType(form.controls[items[0].name])}"
+      placeholder="{{items[0].label | translate}}"
+      type="{{items[0].type}}"
+      formControlName="{{items[0].name}}"
+      [required]="isRequiredField(items[0])"
+      id="{{items[0].name}}">
+
+      <md-hint *ngIf="!form.controls[items[0].name].valid && !form.controls[items[0].name].pristine" [hidden]="form.controls[items[0].name].valid || form.controls[items[0].name].pristine && !submitAttempt"
+        align="start" class="error">
+        <span *ngIf="form.controls[items[0].name].hasError('required')">
+          {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:items[0].label | translate} }}
+        </span>
+      </md-hint>
+    </md-input>
+  </div>
+
+  <div flex="100" layout="row">
+    <md-select
+      flex="50"
+      [ngClass]="{'show-errors': hasErrorType(form.controls[items[1].name])}"
+      placeholder="{{items[1].label | translate}}"
+      formControlName="{{items[1].name}}"
+      [required]="isRequiredField(items[1])"
+      id="{{items[1].name}}">
+      <md-option *ngFor="let option of parseOptions(items[1].options)" [value]="option">{{option}}</md-option>
+    </md-select>
+
+    <md-select
+      flex="50"
+      [ngClass]="{'show-errors': hasErrorType(form.controls[items[2].name])}"
+      placeholder="{{items[2].label | translate}}"
+      formControlName="{{items[2].name}}"
+      [required]="isRequiredField(items[1])"
+      id="{{items[2].name}}">
+      <md-option *ngFor="let option of parseOptions(items[2].options)" [value]="option">{{option}}</md-option>
+    </md-select>
+  </div>
+
+  <div flex="20" layout="row">
+    <md-input
+      [ngClass]="{'show-errors': hasErrorType(form.controls[items[3].name])}"
+      placeholder="{{items[3].label | translate}}"
+      type="{{items[3].type}}"
+      formControlName="{{items[3].name}}"
+      [required]="isRequiredField(items[3])"
+      id="{{items[3].name}}">
+      <md-hint *ngIf="!form.controls[items[3].name].valid && !form.controls[items[3].name].pristine" [hidden]="form.controls[items[3].name].valid || form.controls[items[3].name].pristine && !submitAttempt"
+        align="start" class="error">
+        <span *ngIf="form.controls[items[3].name].hasError('required')">
+          {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:items[3].label | translate} }}
+        </span>
+      </md-hint>
+    </md-input>
+  </div>
+
+
+	<!--
+      SHOW THE REQUIRED LEGEND IF FORM HAS AT LEAST ONE REQUIRED FIELD.
+    -->
+	<div class="indicate-required" *ngIf="hasRequiredFields(items)">
+		<span>{{ 'ERRORS.INDICATES_REQUIRED_FIELD' | translate }}</span>
+	</div>
+
+	<md-card-actions layout="row" layout-align="end center" *ngIf="includeCancel">
+		<button md-button type="reset" color="primary" (click)="formCancel.emit()">{{cancelLabel | translate}}</button>
+		<button md-button type="submit" color="primary">{{submitLabel | translate}}</button>
+	</md-card-actions>
+
+	<md-card-actions layout="row" layout-align="center center" *ngIf="!includeCancel">
+		<button md-raised-button type="submit" color="primary" class="conversion">{{submitLabel | translate}}</button>
+	</md-card-actions>
+</form>

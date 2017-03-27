@@ -11,7 +11,7 @@ import {
   animate
 } from '@angular/core';
 
-import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerState, PlayerVolumeRequest } from '../../../interfaces/player.interface';
 
 @Component({
   moduleId: module.id,
@@ -32,10 +32,12 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
   animations: [
     trigger('volumeState', [
       state('inactive', style({
-        opacity: '0'
+        opacity: '0',
+        zIndex: '-1'
       })),
       state('active', style({
-        opacity: '1'
+        opacity: '1',
+        zIndex: '1'
       })),
       transition('inactive => active', animate('250ms 100ms cubic-bezier(0.55, 0, 0.55, 0.2)')),
       transition('active => inactive', animate('360ms cubic-bezier(0.55, 0, 0.55, 0.2)'))
@@ -46,7 +48,7 @@ import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfac
 
 export class VolumeControlComponent {
   @Input() playerState: PlayerState;
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() request: EventEmitter<PlayerVolumeRequest> = new EventEmitter<PlayerVolumeRequest>();
   public volumeState: string = 'inactive';
   public buttonTitle: string = 'ASSET.ADV_PLAYER.SOUND_BTN_TITLE';
 
@@ -68,11 +70,11 @@ export class VolumeControlComponent {
   }
 
   public onSliderChange(event: any): void {
-    this.request.emit({ type: PlayerRequestType.SetVolume, payload: { volume: event.value } });
+    this.request.emit({ type: 'SET_VOLUME', volume: event.value });
   }
 
   public onButtonClick(): void {
-    this.request.emit({ type: PlayerRequestType.ToggleMute });
+    this.request.emit({ type: 'TOGGLE_MUTE' });
   }
 
 }

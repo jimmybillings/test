@@ -1,5 +1,4 @@
 import { MarkersPlaybackButtonComponent } from './markers-playback-button.component';
-import { PlayerRequestType } from '../../../interfaces/player.interface';
 
 export function main() {
   describe('Markers Playback Button Component', () => {
@@ -14,7 +13,7 @@ export function main() {
       it('emits the expected request event', () => {
         componentUnderTest.onClick();
 
-        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: PlayerRequestType.ToggleMarkersPlayback });
+        expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'TOGGLE_MARKERS_PLAYBACK' });
       });
     });
   });

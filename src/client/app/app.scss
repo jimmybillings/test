@@ -16,9 +16,7 @@
 // SHARED COMPONENTS
 @import 'shared/components/wz-list/wz.list';
 @import 'shared/components/wz-pagination/wz.pagination';
-@import 'shared/components/wz-notification/wz.notification';
 @import 'shared/components/wz-breadcrumb/wz-breadcrumb';
-@import 'shared/components/wz-pikaday/wz.pikaday';
 @import 'shared/components/wz-sort/wz.sort';
 @import 'shared/components/wz-pricing/wz.pricing';
 
@@ -39,9 +37,9 @@
 @import '+search/filter';
 @import '+admin/+ui-config/ui-config';
 @import '+commerce/+cart/cart';
-@import '+commerce/+cart/components/projects';
-@import '+commerce/+cart/components/line-items';
-@import '+commerce/+cart/components/asset';
+@import '+commerce/+cart/components/project/projects';
+@import '+commerce/+cart/components/line-item/line-items';
+@import '+commerce/+cart/components/asset/asset';
 @import '+commerce/+order/+show/order-show';
 @import '+commerce/+order/+index/orders';
 @import '+gallery-view/gallery-view';

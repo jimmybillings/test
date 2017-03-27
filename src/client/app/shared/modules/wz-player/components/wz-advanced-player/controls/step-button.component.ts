@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
-import { PlayerState, PlayerRequest, PlayerRequestType } from '../../../interfaces/player.interface';
+import { PlayerState, SeekToFrameRequest } from '../../../interfaces/player.interface';
 
 export type StepSize = '-5s' | '-1s' | '-1f' | '+1f' | '+1s' | '+5s';
 
@@ -19,7 +19,14 @@ export type StepSize = '-5s' | '-1s' | '-1f' | '+1f' | '+1s' | '+5s';
 export class StepButtonComponent {
   @Input()
   public set size(size: StepSize) {
+    this.direction = undefined;
+    this.title = undefined;
+    this.iconClass = undefined;
+
+    if (size.length !== 3) return;
+
     const [sign, magnitude, unit] = size.split('');
+    if (!sign.match(/^[-+]$/) || !magnitude.match(/^[15]$/) || !unit.match(/^[fs]$/)) return;
 
     this.direction = sign === '-' ? 'reverse' : 'forward';
     this.vector = parseInt(magnitude);
@@ -27,24 +34,27 @@ export class StepButtonComponent {
     this.unit = unit === 'f' ? 'frame' : 'second';
     this.title = `ASSET.ADV_PLAYER.SKIP_${magnitude}${unit.toUpperCase()}_${sign === '-' ? 'BACK' : 'FORWARD'}_BTN_TITLE`;
     this.iconClass = `${magnitude === '5' ? 'five' : 'one'}-${this.unit}`;
+
+    this.calculateBoundary();
   }
 
   @Input()
-  public set playerState(playerState: PlayerState) {
-    this._playerState = playerState;
+  public set playerState(newState: PlayerState) {
+    this._playerState = newState;
+    if (!newState) return;
 
     let needToRecalculate: boolean = false;
 
-    if (playerState.framesPerSecond !== this.framesPerSecond) {
-      this.framesPerSecond = playerState.framesPerSecond;
+    if (newState.framesPerSecond !== this.framesPerSecond) {
+      this.framesPerSecond = newState.framesPerSecond;
       needToRecalculate = true;
     }
 
-    if (this.direction === 'forward' && playerState.durationFrame) {
-      const newFrameNumber: number = playerState.durationFrame.frameNumber;
+    if (newState.durationFrame) {
+      const newDurationFrameNumber: number = newState.durationFrame.frameNumber;
 
-      if (newFrameNumber !== this.durationFrameNumber) {
-        this.durationFrameNumber = newFrameNumber;
+      if (newDurationFrameNumber !== this.durationFrameNumber) {
+        this.durationFrameNumber = newDurationFrameNumber;
         needToRecalculate = true;
       }
     }
@@ -52,7 +62,7 @@ export class StepButtonComponent {
     if (needToRecalculate) this.calculateBoundary();
   }
 
-  @Output() request: EventEmitter<PlayerRequest> = new EventEmitter<PlayerRequest>();
+  @Output() request: EventEmitter<SeekToFrameRequest> = new EventEmitter<SeekToFrameRequest>();
 
   public direction: 'reverse' | 'forward';
   public title: string;
@@ -66,15 +76,20 @@ export class StepButtonComponent {
   private boundaryFrameNumber: number;
 
   public get canStep(): boolean {
-    if (!this._playerState.currentFrame) return false;
+    if (!this._playerState) return false;
+
+    const currentFrame: Frame = this._playerState.currentFrame;
+    if (!currentFrame) return false;
+
+    const currentFrameNumber: number = currentFrame.frameNumber;
 
     return this.direction === 'reverse'
-      ? this._playerState.currentFrame.frameNumber > this.boundaryFrameNumber
-      : this._playerState.currentFrame.frameNumber < this.boundaryFrameNumber;
+      ? currentFrameNumber >= this.boundaryFrameNumber
+      : currentFrameNumber <= this.boundaryFrameNumber;
   }
 
   public onClick(): void {
-    this.request.emit({ type: PlayerRequestType.SeekToFrame, payload: { frame: this.seekTarget } });
+    if (this.canStep) this.request.emit({ type: 'SEEK_TO_FRAME', frame: this.seekTarget });
   }
 
   private calculateBoundary(): void {

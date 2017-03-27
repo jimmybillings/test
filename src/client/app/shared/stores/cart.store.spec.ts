@@ -48,7 +48,8 @@ export function main() {
                 exp_month: '',
                 exp_year: ''
               }
-            }
+            },
+            selectedPurchaseType: ''
           }
         });
     });

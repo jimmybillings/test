@@ -3,10 +3,10 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Tab } from './tab';
 import { CartService } from '../../../../shared/services/cart.service';
-import { Project, LineItem } from '../../../../shared/interfaces/cart.interface';
+import { Project, LineItem, Cart } from '../../../../shared/interfaces/cart.interface';
 import { UiConfig } from '../../../../shared/services/ui.config';
-import { EditProjectComponent } from '../edit-project.component';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { ProjectEditComponent } from '../project/project-edit.component';
+import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { WzSubclipEditorComponent } from '../../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { AssetService } from '../../../../shared/services/asset.service';
 import { Capabilities } from '../../../../shared/services/capabilities.service';
@@ -15,13 +15,16 @@ import { UserPreferenceService } from '../../../../shared/services/user-preferen
 import { ErrorStore } from '../../../../shared/stores/error.store';
 import { WindowRef } from '../../../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../../../shared/interfaces/asset.interface';
+import { QuoteService } from '../../../../shared/services/quote.service';
+import { QuoteFormComponent } from '../quote-form.component';
+import { PurchaseType, QuoteOptions } from '../../../../shared/interfaces/quote.interface';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   moduleId: module.id,
   selector: 'cart-tab-component',
   templateUrl: 'cart-tab.html',
   changeDetection: ChangeDetectionStrategy.OnPush
-
 })
 
 export class CartTabComponent extends Tab implements OnInit, OnDestroy {
@@ -31,9 +34,11 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   public config: any;
   public priceAttributes: any = null;
   public pricingPreferences: any;
+  public quoteType: PurchaseType = null;
   private configSubscription: Subscription;
   private preferencesSubscription: Subscription;
   private usagePrice: any;
+  private suggestions: any[];
 
   constructor(
     public userCan: Capabilities,
@@ -44,7 +49,10 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     private window: WindowRef,
     private userPreference: UserPreferenceService,
     private error: ErrorStore,
-    @Inject(DOCUMENT) private document: any) {
+    private quoteService: QuoteService,
+    @Inject(DOCUMENT) private document: any,
+    private snackBar: MdSnackBar,
+    private translate: TranslateService) {
     super();
   }
 
@@ -65,6 +73,40 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     return this.cart.map(cart => (cart.itemCount || 0) > 0);
   }
 
+  public onOpenQuoteDialog(): void {
+    let dialogRef: MdDialogRef<QuoteFormComponent> = this.dialog.open(QuoteFormComponent, {
+      height: '400px', position: { top: '10%' }
+    });
+    dialogRef.componentInstance.dialog = dialogRef;
+    dialogRef.componentInstance.items = this.config.createQuote.items;
+    dialogRef.afterClosed().subscribe((form: { emailAddress: string, expirationDate: string }) => {
+      if (form) {
+        this.createQuote({
+          status: 'ACTIVE',
+          emailAddress: form.emailAddress,
+          expirationDate: form.expirationDate,
+          users: this.suggestions,
+          purchaseType: this.quoteType
+        });
+      }
+    });
+    dialogRef.componentInstance.cacheSuggestions.subscribe((suggestions: any[]) => {
+      this.suggestions = suggestions;
+    });
+  }
+
+  public onSaveAsDraft(): void {
+    this.createQuote({ status: 'PENDING', purchaseType: this.quoteType });
+  }
+
+  public get userCanProceed(): boolean {
+    if (this.quoteType === 'ProvisionalOrder') {
+      return true;
+    } else {
+      return this.rmAssetsHaveAttributes;
+    }
+  }
+
   public get rmAssetsHaveAttributes(): boolean {
     if (this.cartService.state.cart.itemCount === 0) return true;
 
@@ -79,6 +121,10 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
     });
 
     return validAssets.indexOf(false) === -1;
+  }
+
+  public onSelectQuoteType(event: { type: PurchaseType }): void {
+    this.quoteType = event.type;
   }
 
   public onNotification(message: any): void {
@@ -188,7 +234,7 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   private updateProject(project: any) {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(EditProjectComponent, { position: { top: '14%' } });
+    let dialogRef: MdDialogRef<any> = this.dialog.open(ProjectEditComponent, { position: { top: '14%' } });
     Object.assign(dialogRef.componentInstance, { items: project.items, dialog: dialogRef });
     dialogRef.afterClosed()
       .filter(data => data)
@@ -197,4 +243,29 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
         this.cartService.updateProject(data);
       });
   }
+
+  private createQuote(options: QuoteOptions): void {
+    this.quoteService.createQuote(options).take(1).subscribe((res: any) => {
+      if (options.status === 'ACTIVE') {
+        this.showSnackBar({
+          key: 'QUOTE.CREATED_FOR_TOAST',
+          value: { emailAddress: options.emailAddress }
+        });
+      } else {
+        this.showSnackBar({
+          key: 'QUOTE.SAVED_AS_DRAFT_TOAST',
+        });
+      }
+    }, (err) => {
+      console.error(err);
+    });
+  }
+
+  private showSnackBar(message: any) {
+    this.translate.get(message.key, message.value)
+      .subscribe((res: string) => {
+        this.snackBar.open(res, '', { duration: 2000 });
+      });
+  }
+
 }

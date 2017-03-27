@@ -62,4 +62,24 @@ md-dialog-content wz-form {
     font-size: rem(2.4);
     font-weight: 400;
   }
+  .md-select-value {
+    color: md-color($md-foreground, secondary-text);
+  }
+}
+
+// For the notification dialog, these match the MD specs. The md-dialog currently does not.
+md-dialog-container.md-dialog-container wz-notification-dialog {
+  [md-dialog-title] {
+    font-weight: 500;
+    color: md-color($md-foreground, text);
+    margin-bottom: rem(1.2);
+  }
+  md-dialog-content {
+    margin-bottom: rem(.8);
+    color: md-color($md-foreground, secondary-text);
+    line-height: 1.44;
+  }
+  md-dialog-actions button:last-child {
+    margin-right: rem(-1.2);
+  }
 }

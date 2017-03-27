@@ -4,7 +4,7 @@ import { Order } from '../../../shared/interfaces/cart.interface';
 @Component({
   moduleId: module.id,
   selector: 'order-invoice',
-  template: '<button md-raised-button flex="none" class="view-invoice" (click)="displayInvoice()">View Invoice</button>',
+  template: '<button md-button class="is-outlined mini" color="primary" (click)="displayInvoice()">View Invoice</button>',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -30,7 +30,7 @@ export class OrderInvoiceComponent {
         <head>
           <meta charset="utf-8">
           <title>Invoice</title>
-          <link rel="stylesheet" type="text/css" href="/assets/styles/invoice.css">
+          <style>${this.styles()}</style>
         </head>
         <body>
           <header>
@@ -79,20 +79,26 @@ export class OrderInvoiceComponent {
       text += '</tr></table>';
       text += '<table class="inventory"><thead><tr>';
       text += '<th><span>Product</span></th>';
+      text += '<th><span>Rights</span></th>';
       text += '<th><span>Use</span></th>';
-      text += '<th><span>Notes</span></th>';
+      text += '<th><span>Term</span></th>';
       text += '<th><span>Price</span></th>';
-      text += '<th><span>Discount</span></th>';
-      text += '<th><span>Total</span></th>';
       text += '</tr></thead>';
       if (project.lineItems) {
         project.lineItems.forEach(item => {
           text += '<tr><td><span>' + item.asset.assetName + '</span></td>';
-          text += '<td><span>' + item.asset.assetName + '</span></td>';
-          text += '<td><span>' + item.asset.assetName + '</span></td>';
-          text += '<td><span>' + item.price + '</span></td>';
-          text += '<td><span>' + item.asset.assetName + '</span></td>';
-          text += '<td><span>' + item.price + '</span></td></tr>';
+          text += '<td><span>' + item.rightsManaged + '</span></td>';
+          text += '<td><span>' + item.attributes.filter(item => {
+            return item.priceAttributeName === 'Project Type'
+          }).map(item => {
+            return item.selectedAttributeValue;
+          })[0] + '</span></td>';
+          text += '<td><span>' + item.attributes.filter(item => {
+            return item.priceAttributeName === 'Term'
+          }).map(item => {
+            return item.selectedAttributeValue;
+          })[0] + '</span></td>';
+          text += '<td><span>$' + item.price + '</span></td></tr>';
         });
       }
       text += '</table>';
@@ -199,8 +205,8 @@ export class OrderInvoiceComponent {
 
       table.inventory td:nth-child(1) { width: 26%; }
       table.inventory td:nth-child(2) { width: 38%; }
-      table.inventory td:nth-child(3) { text-align: right; width: 12%; }
-      table.inventory td:nth-child(4) { text-align: right; width: 12%; }
+      table.inventory td:nth-child(3) { text-align: left; width: 12%; }
+      table.inventory td:nth-child(4) { text-align: left; width: 12%; }
       table.inventory td:nth-child(5) { text-align: right; width: 12%; }
 
       /* table balance */

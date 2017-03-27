@@ -1,4 +1,5 @@
 @import './components/tabs/billing-tab';
+@import './components/tabs/payment-tab';
 @import './components/tabs/confirm-tab';
 
 cart-component .tabs-section {
@@ -41,7 +42,7 @@ cart-component section.header {
 }
 
 
-section.cart-total {
+.cart-total {
   .select-usage-warn {
     margin-top: rem(.2);
     color: md-color($md-warn, darker);
@@ -87,11 +88,36 @@ button.checkout-back {
     padding: 0 0 rem(.2) 0;
   }
 }
-header .cart-heading {
-  font-size: rem(2.8);
-  font-weight: 300;
-  line-height: rem(3.0);
-  margin: .65em 0;
-  padding: 0;
-  color: rgba(md-color($foreground, text), .75);
+.md-tab-body-content header {
+  margin-bottom: rem(1.2);
+  .cart-heading {
+    font-size: rem(2.6);
+    font-weight: 300;
+    line-height: rem(3.0);
+    margin: .7em 0 .3em 0;
+    padding: 0;
+    color: rgba(md-color($foreground, text), .8);
+  }
+  .sub-head {
+    font-weight: 300;
+    opacity: .7;
+    font-size: rem(1.7);
+  }
+}
+
+cart-component .quote-section {
+  & > div > div {
+    background: transparent;
+  }
+  quote-purchase-type-component {
+    @media screen and (max-width: $layout-breakpoint-xs)  {
+      margin-bottom: 0;
+    }
+  }
+}
+.quote-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  margin: rem(.2) rem(.6) rem(3.6) rem(.6);
 }

@@ -25,6 +25,7 @@ export interface LineItem {
   transcodeTargets?: Array<string>;
   selectedTranscodeTarget?: string;
   attributes?: Array<any>;
+  asperaUrl?: string;
 }
 
 export interface Asset {
@@ -102,5 +103,7 @@ export interface CartState {
     addresses: ViewAddress[];
     selectedAddress: ViewAddress;
     authorization: any;
+    selectedPurchaseType: string;
+
   };
 };

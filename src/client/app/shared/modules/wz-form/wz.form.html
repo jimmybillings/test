@@ -49,6 +49,30 @@
         END: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
 
+		<!--
+        START: FORM INPUT FOR wzdate
+      -->
+    <md-input
+      *ngIf="(field.type == 'wzdate')"
+      wzPikaday
+      [readonly]="true"
+      [minDate]="calculateDateFor(field.minimum)"
+      [maxDate]="calculateDateFor(field.maximum)"
+      [defaultDate]="calculateDateFor(field.default)"
+      (pikadayChange)="updateDateValueFor(field.name, $event.value)"
+      class="md-block"
+      name="{{field.name}}"
+      [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
+      placeholder="{{field.label | translate}}"
+      type="{{field.type}}"
+      formControlName="{{field.name}}"
+      [required]="isRequiredField(field)"
+      id="{{field.name}}">
+    </md-input>
+		<!--
+        END: FORM INPUT FOR wzdate
+      -->
+
       <!--
         START: FORM CONFIRM PASSWORD DOUBLE FIELD
       -->
@@ -134,8 +158,45 @@
       -->
 		<div *ngIf="field.type == 'select'">
 			<div class="md-group">
-				<md-select placeholder="{{field.label}}" formControlName="{{field.name}}">
+				<md-select
+          class="md-block"
+          [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
+          placeholder="{{field.label | translate}}"
+          formControlName="{{field.name}}"
+          [required]="isRequiredField(field)"
+          id="{{field.name}}">
           <md-option *ngFor="let option of parseOptions(field.options)" [value]="option">{{option}}</md-option>
+
+          <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
+          <!--<md-hint *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart" align="start">
+            {{ field.hintTextStart | translate }}
+          </md-hint>
+          <md-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
+            {{ field.hintTextEnd | translate }}
+          </md-hint>
+
+          <md-hint *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine" [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
+            align="start" class="error">
+            <span *ngIf="form.controls[field.name].hasError('required')">
+              {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+            </span>
+            <span *ngIf="form.controls[field.name].hasError('minlength')">
+              {{ 'ERRORS.MIN_LENGTH_REQUIRED' | translate:{charLength:form.controls[field.name]._errors.minlength.requiredLength} }}
+            </span>
+            <span *ngIf="form.controls[field.name].hasError('pattern') && !form.controls[field.name].hasError('minlength')">
+              {{ 'ERRORS.VALID_EMAIL_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="form.controls[field.name].hasError('startsWithNumber')">
+              {{ 'ERRORS.NAME_ALREADY_TAKEN' | translate:{fieldName:field.label | translate} }}
+            </span>
+            <span *ngIf="form.controls[field.name].hasError('collectionNameTaken')">
+              Name is already taken
+            </span>
+            <span *ngIf="form.controls[field.name].hasError('serverError')">
+              {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
+            </span>
+          </md-hint>-->
+
         </md-select>
 			</div>
 		</div>
@@ -200,7 +261,7 @@
 		<!--
         START: CUSTOM FOR ELEMENT FOR SUGGESTIONS BASED ON TEXT INPUT
       -->
-		<wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]" [rawField]="field">
+		<wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]" [rawField]="field" (cacheSuggestions)="cacheSuggestions.emit($event)">
 			<md-input placeholder="{{field.label | translate}}" 
 				(keydown)="suggestions.inputKeyDown($event)"
 				[ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
@@ -211,7 +272,6 @@
 					align="start" 
 					class="error">
 						<span *ngIf="form.controls[field.name].hasError('required')">
-              {{form.controls[field.name].hasError('required')}}
 							{{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
 						</span>
 						<span *ngIf="form.controls[field.name].hasError('serverError')">
