@@ -77,9 +77,10 @@ export class WzNotificationService {
     });
   }
 
-  private customError(errorCode: number) {
+  private customError(error: number | string) {
     this.create({
-      title: errorCode
+      title: error,
+      prompt: 'NOTIFICATION.CLOSE'
     });
   }
 }
