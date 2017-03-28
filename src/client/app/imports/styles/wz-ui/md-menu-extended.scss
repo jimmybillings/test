@@ -25,15 +25,19 @@
  * unique menu list. they have an inactive label width two buttons as icon for each menu item
  ************/
 md-list.aspera-download-options md-list-item .md-list-item {
-  align-content: flex-end;
+  align-items: center;
+  align-content: center;
   justify-content: space-between;
   [md-menu-item][disabled] {
     padding: 0 rem(.5) 0 0;
     color: md-color($foreground, secondary-text);
   }
   .actions {
-    max-width: rem(8.4);
-    margin-right: rem(-.8);
+    max-width: rem(8.5);
+    min-width: rem(8.5);
+    margin-right: rem(-1.0);
+    margin-bottom: rem(.4);
+    text-align: right;
     button[md-icon-button] {
       color: md-color($foreground, icon);
     }
