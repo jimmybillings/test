@@ -36,10 +36,5 @@
 @import '+search/search';
 @import '+search/filter';
 @import '+admin/+ui-config/ui-config';
-@import '+commerce/+cart/cart';
-@import '+commerce/+cart/components/project/projects';
-@import '+commerce/+cart/components/line-item/line-items';
-@import '+commerce/+cart/components/asset/asset';
-@import '+commerce/+order/+show/order-show';
-@import '+commerce/+order/+index/orders';
+@import '+commerce/commerce';
 @import '+gallery-view/gallery-view';

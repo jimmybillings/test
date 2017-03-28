@@ -2,23 +2,31 @@ import { QuotesStore, quotes } from './quotes.store';
 import { Observable } from 'rxjs/Rx';
 
 export function main() {
-  const initState: any = { quotes: [] };
+  const initState: any = {
+    items: [],
+    pagination: {
+      totalCount: 0,
+      currentPage: 1,
+      pageSize: 20,
+      hasNextPage: false,
+      hasPreviousPage: false,
+      numberOfPages: 0
+    }
+  };
 
   describe('quotes reducer', () => {
     it('returns the payload for QUOTES.SET_QUOTES', () => {
-      expect(quotes(initState, { type: 'QUOTES.SET_QUOTES', payload: [{ key: 'value' }] }))
-        .toEqual({
-          quotes: [{ key: 'value' }]
-        });
+      expect(quotes(initState, { type: 'QUOTES.SET_QUOTES', payload: { key: 'value' } }))
+        .toEqual({ key: 'value' });
     });
 
     it('returns the current state for an unexpected action type', () => {
-      expect(quotes(initState, { type: 'BLAH', payload: [{ someKey: 'someValue' }] }))
+      expect(quotes(initState, { type: 'BLAH', payload: { someKey: 'someValue' } }))
         .toEqual(initState);
     });
 
     it('returns the default state for no current state and an unexpected action type', () => {
-      expect(quotes(undefined, { type: 'BLAH', payload: [{ someKey: 'someValue' }] }))
+      expect(quotes(undefined, { type: 'BLAH', payload: { someKey: 'someValue' } }))
         .toEqual(initState);
     });
   });
@@ -29,7 +37,7 @@ export function main() {
     beforeEach(() => {
       mockStore = {
         dispatch: jasmine.createSpy('dispatch'),
-        select: jasmine.createSpy('select').and.returnValue(Observable.of({ quotes: [{ key: 'value' }] }))
+        select: jasmine.createSpy('select').and.returnValue(Observable.of(initState))
       };
       storeUnderTest = new QuotesStore(mockStore);
     });
@@ -37,7 +45,7 @@ export function main() {
     describe('data getter', () => {
       it('should return the right data', () => {
         storeUnderTest.data.take(1).subscribe(d => {
-          expect(d).toEqual({ quotes: [{ key: 'value' }] });
+          expect(d).toEqual(initState);
         });
       });
 
@@ -50,15 +58,36 @@ export function main() {
 
     describe('state', () => {
       it('should return the right state', () => {
-        expect(storeUnderTest.state).toEqual({ quotes: [{ key: 'value' }] });
+        expect(storeUnderTest.state).toEqual(initState);
       });
     });
 
     describe('setQuotes', () => {
       it('should call dispatch on the store with the right payload', () => {
-        let newQuotes: any = [{ new: 'quote' }];
+        let newQuotes: any = {
+          items: [],
+          totalCount: 0,
+          currentPage: 0,
+          pageSize: 20,
+          hasNextPage: false,
+          hasPreviousPage: false,
+          numberOfPages: 0
+        };
         storeUnderTest.setQuotes(newQuotes);
-        expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'QUOTES.SET_QUOTES', payload: newQuotes });
+        expect(mockStore.dispatch).toHaveBeenCalledWith({
+          type: 'QUOTES.SET_QUOTES',
+          payload: {
+            items: [],
+            pagination: {
+              totalCount: 0,
+              currentPage: 1,
+              pageSize: 20,
+              hasNextPage: false,
+              hasPreviousPage: false,
+              numberOfPages: 0
+            }
+          }
+        });
       });
     });
   });

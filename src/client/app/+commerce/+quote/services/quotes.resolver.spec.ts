@@ -9,7 +9,7 @@ export function main() {
       mockQuotesService = {
         getQuotes: jasmine.createSpy('getQuotes').and.returnValue(Observable.of([{ some: 'quote' }, { another: 'quote' }]))
       };
-      mockActivatedRoute = {};
+      mockActivatedRoute = { params: { s: 'createdOn' } };
       mockRouterState = {};
       resolverUnderTest = new QuotesResolver(mockQuotesService);
     });
@@ -17,7 +17,7 @@ export function main() {
     describe('resolve()', () => {
       it('should return an observable of some data', () => {
         let result: Observable<any> = resolverUnderTest.resolve(mockActivatedRoute, mockRouterState);
-        expect(mockQuotesService.getQuotes).toHaveBeenCalled();
+        expect(mockQuotesService.getQuotes).toHaveBeenCalledWith({ s: 'createdOn' });
 
         result.take(1).subscribe(d => {
           expect(d).toEqual([{ some: 'quote' }, { another: 'quote' }]);

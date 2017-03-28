@@ -26,17 +26,6 @@ export function main() {
       });
     });
 
-    describe('toggleShowOrderSearch()', () => {
-      it('Should be set to false when class is instantiated', () => {
-        expect(componentUnderTest.itemSearchIsShowing).toEqual(false);
-      });
-
-      it('Should change to true when the method is first called', () => {
-        componentUnderTest.toggleShowOrderSearch();
-        expect(componentUnderTest.itemSearchIsShowing).toEqual(true);
-      });
-    });
-
     describe('changePage()', () => {
       it('Should accept a page number and navigate to the correct page url', () => {
         componentUnderTest.changePage('99');
@@ -46,7 +35,7 @@ export function main() {
 
     describe('search()', () => {
       it('Should accept a search query and navigate to a url that include the search query', () => {
-        componentUnderTest.search({q: 'dogs'});
+        componentUnderTest.onSearch({ q: 'dogs' });
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/orders', { n: '20', q: 'dogs', i: 1 }]);
       });
     });

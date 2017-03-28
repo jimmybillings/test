@@ -3,13 +3,16 @@ import { Observable } from 'rxjs/Rx';
 
 export function main() {
   describe('Quotes Component', () => {
-    let componentUnderTest: QuotesComponent, mockQuotesService: any;
+    let componentUnderTest: QuotesComponent, mockQuotesService: any, mockUiConfig: any;
 
     beforeEach(() => {
       mockQuotesService = {
         data: Observable.of({})
       };
-      componentUnderTest = new QuotesComponent(mockQuotesService);
+      mockUiConfig = {
+        get: jasmine.createSpy('get').and.returnValue(Observable.of({}))
+      };
+      componentUnderTest = new QuotesComponent(null, mockQuotesService, mockUiConfig, null);
     });
 
     it('has no tests!', () => {

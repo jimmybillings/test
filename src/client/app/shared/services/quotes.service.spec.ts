@@ -37,14 +37,14 @@ export function main() {
 
     describe('getQuotes', () => {
       it('should call the api service correctly', () => {
-        serviceUnderTest.getQuotes().take(1).subscribe();
+        serviceUnderTest.getQuotes({ i: 0, n: 20, s: 'createdOn', d: true }).take(1).subscribe();
         expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('quote/myQuotes');
-        expect(mockApi.get).toHaveBeenCalledWithParameters({ i: '0', n: '20', s: 'createdOn', d: 'true' });
+        expect(mockApi.get).toHaveBeenCalledWithParameters({ q: '', i: 0, n: 20, s: 'createdOn', d: true });
       });
 
       it('should update the quotes store', () => {
-        serviceUnderTest.getQuotes().take(1).subscribe();
+        serviceUnderTest.getQuotes({}).take(1).subscribe();
         expect(mockQuotesStore.setQuotes).toHaveBeenCalled();
       });
     });

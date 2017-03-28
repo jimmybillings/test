@@ -40,11 +40,14 @@ import { QuotePurchaseTypeComponent } from './+cart/components/quote-purchase-ty
 // Order Stuff
 import { OrdersComponent } from './+order/+index/orders.component';
 import { OrderShowComponent } from './+order/+show/order-show.component';
-import { OrderItemListComponent } from './+order/components/order-item-list.component';
 
 // Quote Stuff
-import { QuoteComponent } from './+quote/+show/quote.component';
+import { QuoteComponent } from './+quote/+show/quote-show.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
+
+// SHARED STUFF
+import { CommerceListComponent } from './components/commerce-list.component';
+import { CommerceHeaderComponent } from './components/commerce-header.component';
 
 
 @NgModule({
@@ -71,7 +74,8 @@ import { QuotesComponent } from './+quote/+index/quotes.component';
         AssetInfoComponent,
         OrderShowComponent,
         OrdersComponent,
-        OrderItemListComponent,
+        CommerceListComponent,
+        CommerceHeaderComponent,
         AddressFormComponent,
         QuoteFormComponent,
         QuoteComponent,

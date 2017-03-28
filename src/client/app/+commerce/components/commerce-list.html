@@ -1,0 +1,69 @@
+<ul>
+  <li
+    *ngFor="let item of items"
+    class="item"
+    flex="100" layout="row"
+    layout-xs="column"
+    [routerLink]="['/commerce/' + type.toLowerCase(), item.id]">
+    <div flex="100" flex-gt-sm="66">
+      <div flex="100" layout="row" layout-xs="column">
+        <div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding class="details">
+          <div>
+            <div class="item-number">
+              <span class="md-caption item-info heading">{{ type + '.NUMBER_LABEL' | translate }}</span>
+              <span class="number">{{ item.id }}</span>
+            </div>
+            <div class="md-caption item-info">
+              <span><strong>{{ type + '.CREATED_ON_LABEL' | translate }} </strong>{{ item.createdOn | date:'short' }}</span>
+              <span>
+                <strong>{{ type + '.PURCHASE_TYPE_LABEL' | translate }} </strong>
+                {{ type === 'order' ? item.orderType : item.purchaseType }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div flex-gt-xs="60" flex-gt-sm="70" flex-gt-md="80" flex="100" layout-padding>
+          <section class="projects" *ngFor="let project of item.projects">
+            <h3 class="md-headline">
+              <span class="project-label">
+                {{ project.name }}
+              </span>
+              <span class="asset-count" *ngIf="project.lineItems">
+                <span class="count">{{ project.lineItems.length }}</span>
+              </span>
+              <span class="asset-count" *ngIf="!project.lineItems">
+                <span class="count">0</span>
+              </span>
+            </h3>
+            <div class="md-caption item-info">
+              <span><strong>{{ type + '.INDEX.PROJECTS.CLIENT_NAME' | translate }} </strong>{{ project.clientName }}</span>
+              <span>
+                <strong>{{ type + '.INDEX.PROJECTS.SUBTOTAL_LABEL' | translate }} </strong>
+                {{ project.subtotal | currency:'USD':true:'1.2-2' }}
+              </span>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <div flex="100" layout="row" layout-xs="column" class="divider"></div>
+    <div flex-gt-sm="33" layout-sm="100" flex="auto" class="total md-headline">
+      <p *ngIf="type === 'QUOTE'" class="status {{ item.quoteStatus.toLowerCase() }}">
+        {{ item.quoteStatus }}
+      </p>
+      <span class="total-label">
+        {{ type + '.INDEX.TOTAL_LABEL' | translate }}
+      </span>
+      <span class="total-amount">
+        {{ item.total | currency:'USD':true:'1.2-2' }}
+      </span>
+      <button
+        md-button
+        class="is-outlined"
+        color="primary"
+        [routerLink]="['/commerce/' + type.toLowerCase(), item.id]">
+        {{ type + '.INDEX.DETAIL_BTN_TITLE' | translate }}
+      </button>
+    </div>
+  </li>
+</ul>

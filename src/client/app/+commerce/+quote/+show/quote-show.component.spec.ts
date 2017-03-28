@@ -1,4 +1,4 @@
-import { QuoteComponent } from './quote.component';
+import { QuoteComponent } from './quote-show.component';
 import { Observable } from 'rxjs/Rx';
 
 export function main() {

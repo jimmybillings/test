@@ -2,11 +2,12 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  selector: 'order-item-list',
-  templateUrl: 'order-item-list.html',
+  selector: 'commerce-list',
+  templateUrl: 'commerce-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class OrderItemListComponent {
-  @Input() orders: any;
+export class CommerceListComponent {
+  @Input() items: any;
+  @Input() type: 'ORDER' | 'QUOTE';
 }

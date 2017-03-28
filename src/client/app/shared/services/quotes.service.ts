@@ -21,8 +21,13 @@ export class QuotesService {
     return this.store.state;
   }
 
-  public getQuotes(): Observable<Quote[]> {
-    return this.api.get(Api.Orders, 'quote/myQuotes', { parameters: { i: '0', n: '20', s: 'createdOn', d: 'true' } })
+  public getQuotes(params: any): Observable<Quote[]> {
+    return this.api.get(Api.Orders, 'quote/myQuotes', { parameters: this.buildSearchParams(params) })
       .do((quotes: Quote[]) => this.store.setQuotes(quotes));
+  }
+
+  private buildSearchParams(params: any) {
+    params['i'] = (params['i'] && params['i'] > 0) ? params['i'] - 1 : 0;
+    return Object.assign({}, { q: '', i: 0, n: 20, s: '', d: '' }, params);
   }
 }
