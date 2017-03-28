@@ -1,5 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Order } from '../../../shared/interfaces/cart.interface';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   moduleId: module.id,
@@ -10,6 +11,15 @@ import { Order } from '../../../shared/interfaces/cart.interface';
 
 export class OrderInvoiceComponent {
   @Input() order: Order;
+  private addresses: any;
+  constructor(private translate: TranslateService) {
+    this.translate.get([
+      'ORDER.PRINT_INVOICE.ADDRESS_ONE',
+      'ORDER.PRINT_INVOICE.ADDRESS_TWO',
+      'ORDER.PRINT_INVOICE.ADDRESS_THREE',
+      'ORDER.PRINT_INVOICE.ADDRESS_FOUR'
+    ]).subscribe((res: any) => this.addresses = res);
+  }
 
   public displayInvoice() {
 
@@ -36,9 +46,7 @@ export class OrderInvoiceComponent {
           <header>
             <h1>Invoice</h1>
             <address>
-              <p>Jonathan Neal</p>
-              <p>101 E. Chapman Ave<br>Orange, CA 92866</p>
-              <p>(800) 555-1234</p>
+              ${this.addresses['ORDER.PRINT_INVOICE.ADDRESS_ONE']}
             </address>
             
           </header>
@@ -64,6 +72,13 @@ export class OrderInvoiceComponent {
             ${this.projectsAndAssets()}
             ${this.paymentSummary()}
           </article>
+          <table class="addresses">
+              <tr>
+                <td><address>${this.addresses['ORDER.PRINT_INVOICE.ADDRESS_TWO']}</address></td>
+                <td><address>${this.addresses['ORDER.PRINT_INVOICE.ADDRESS_THREE']}</address></td>
+                <td><address>${this.addresses['ORDER.PRINT_INVOICE.ADDRESS_FOUR']}</address></td>
+              </tr>
+            </table>
         </body>
       </html>
     `;
@@ -88,16 +103,14 @@ export class OrderInvoiceComponent {
         project.lineItems.forEach(item => {
           text += '<tr><td><span>' + item.asset.assetName + '</span></td>';
           text += '<td><span>' + item.rightsManaged + '</span></td>';
-          text += '<td><span>' + item.attributes.filter(item => {
-            return item.priceAttributeName === 'Project Type'
-          }).map(item => {
-            return item.selectedAttributeValue;
-          })[0] + '</span></td>';
-          text += '<td><span>' + item.attributes.filter(item => {
-            return item.priceAttributeName === 'Term'
-          }).map(item => {
-            return item.selectedAttributeValue;
-          })[0] + '</span></td>';
+          text += '<td><span>' + item.attributes.filter(item => item.priceAttributeName === 'Project Type')
+            .map(item => {
+              return item.selectedAttributeValue;
+            })[0] + '</span></td>';
+          text += '<td><span>' + item.attributes.filter(item => item.priceAttributeName === 'Term')
+            .map(item => {
+              return item.selectedAttributeValue;
+            })[0] + '</span></td>';
           text += '<td><span>$' + item.price + '</span></td></tr>';
         });
       }
@@ -171,7 +184,7 @@ export class OrderInvoiceComponent {
       header:after { clear: both; content: ""; display: table; }
 
       header h1 { background: #000; border-radius: 0.25em; color: #FFF; margin: 0 0 1em; padding: 0.5em 0; }
-      header address { float: left; font-size: 75%; font-style: normal; line-height: 1.25; margin: 0 1em 1em 0; }
+      header address { float: left; font-style: normal; line-height: 1.25; margin: 0 1em 1em 0; }
       header address p { margin: 0 0 0.25em; }
       header span, header img { display: block; float: right; }
       header span { margin: 0 0 1em 1em; max-height: 25%; max-width: 60%; position: relative; }
@@ -208,7 +221,8 @@ export class OrderInvoiceComponent {
       table.inventory td:nth-child(3) { text-align: left; width: 12%; }
       table.inventory td:nth-child(4) { text-align: left; width: 12%; }
       table.inventory td:nth-child(5) { text-align: right; width: 12%; }
-
+      table.addresses td { border-color: transparent; }
+      table.addresses address { line-height: 1.25; }
       /* table balance */
 
       table.balance th, table.balance td { width: 50%; }
