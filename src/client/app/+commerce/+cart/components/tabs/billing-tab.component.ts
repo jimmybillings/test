@@ -35,7 +35,7 @@ export class BillingTabComponent extends Tab implements OnInit {
   ngOnInit() {
     this.orderInProgress = this.cartService.data.map((data: any) => data.orderInProgress);
     this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
-    this.fetchAddresses().subscribe(this.determineNewSelectedAddress);
+    this.fetchAddresses().subscribe();
   }
 
   public addUserAddress(form: Address): void {
@@ -114,7 +114,7 @@ export class BillingTabComponent extends Tab implements OnInit {
       if (data.selectedAddress && typeof data.selectedAddress.addressEntityId !== 'undefined') {
         newSelected = this.previouslySelectedAddress;
       } else {
-        newSelected = data.addresses[0];
+        newSelected = data.addresses.filter((a: ViewAddress) => !!a.address)[0];
       }
     });
     this.selectAddress(newSelected);

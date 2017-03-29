@@ -53,8 +53,10 @@ export class QuoteService {
     // add the user id if it exists
     if (ownerUserId) Object.assign(body, { ownerUserId });
 
-    // delete the id leftover from the cart store
+    // delete the fields leftover from the cart store
     delete body.id;
+    delete body.createdOn;
+    delete body.lastUpdated;
 
     return body;
   }

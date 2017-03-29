@@ -47,7 +47,8 @@ export const cart: ActionReducer<any> = (state: any = emptyCart, action: Action)
     case 'REPLACE_CART':
       return Object.assign({}, state, { cart: action.payload });
     case 'UPDATE_CART':
-      return Object.assign({}, state, { total: action.payload.total, itemCount: action.payload.itemCount });
+      let newCart: any = Object.assign({}, state.cart, { total: action.payload.total, itemCount: action.payload.itemCount });
+      return Object.assign({}, state, { cart: newCart });
     case 'UPDATE_ORDER_IN_PROGRESS':
       state.orderInProgress[action.payload.key] = action.payload.data;
       return Object.assign({}, state);
