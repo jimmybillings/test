@@ -18,6 +18,9 @@ export class WzNotificationService {
     if (!error.status || this.callInProgress) return;
     this.callInProgress = true;
     switch (error.status) {
+      case 400:
+        this.BadRequest();
+        break;
       case 401:
         this.unAuthorized();
         break;
@@ -39,6 +42,18 @@ export class WzNotificationService {
 
   private create(strings: any) {
     this.dialog.openNotification(strings).subscribe(_ => this.callInProgress = false);
+  }
+
+  // I think this is only being used when "disableAnonymousSearch": true is in the site config.
+  // a 400 error is return when someone not logged in attempts a search.
+  private BadRequest(): void {
+    this.router.navigate(['/user/login']).then(_ => {
+      this.create({
+        title: 'NOTIFICATION.REQUIRE_LOGIN',
+        message: 'NOTIFICATION.REQUIRE_LOGIN_MESSAGE',
+        prompt: 'NOTIFICATION.CLOSE'
+      });
+    });
   }
 
   private cantRegister(): void {
