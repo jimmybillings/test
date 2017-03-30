@@ -45,7 +45,7 @@
           {{ 'CART.PROCEED_BTN_LABEL' | translate }}
       </button>
     </div>
-    <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!userCanProceed">
+    <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!rmAssetsHaveAttributes">
       {{ 'CART.SELECT_USAGE_WARN' | translate }}
     </div>
 	</div>

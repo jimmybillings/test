@@ -221,20 +221,6 @@ export function main() {
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
       });
-
-      it('should return true if the cart is empty', () => {
-        mockState = { cart: { itemCount: 0 } };
-
-        mockCartService = {
-          state: mockState
-        };
-
-        componentUnderTest = new CartTabComponent(
-          null, mockCartService, null, null, null, null, null, null, null, null, null, null
-        );
-
-        expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
-      });
     });
 
     describe('onSelectQuoteType()', () => {

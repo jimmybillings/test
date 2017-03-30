@@ -100,16 +100,29 @@ export class CartTabComponent extends Tab implements OnInit, OnDestroy {
   }
 
   public get userCanProceed(): boolean {
+    if (this.cartService.state.cart.itemCount === 0) return true;
     if (this.quoteType === 'ProvisionalOrder') {
       return true;
     } else {
-      return this.rmAssetsHaveAttributes;
+      return this.rmAssetsHaveAttributes && this.allAssetsHaveTranscodeTargets;
     }
   }
 
-  public get rmAssetsHaveAttributes(): boolean {
-    if (this.cartService.state.cart.itemCount === 0) return true;
+  public get allAssetsHaveTranscodeTargets(): boolean {
+    let validAssets: boolean[] = [];
 
+    this.cartService.state.cart.projects.forEach((project: Project) => {
+      if (project.lineItems) {
+        project.lineItems.forEach((lineItem: LineItem) => {
+          validAssets.push(!!lineItem.selectedTranscodeTarget);
+        });
+      }
+    });
+
+    return validAssets.indexOf(false) === -1;
+  }
+
+  public get rmAssetsHaveAttributes(): boolean {
     let validAssets: boolean[] = [];
 
     this.cartService.state.cart.projects.forEach((project: Project) => {
