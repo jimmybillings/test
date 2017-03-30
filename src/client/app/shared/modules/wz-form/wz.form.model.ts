@@ -68,8 +68,8 @@ export class FormModel {
     return Validators.compose([
       Validators.required,
       Validators.minLength(5),
-      Validators.pattern('[a-z0-9!#$%&`*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?' +
-        '(\.[a-z0-9]([a-z0-9-]*[a-z0-9]){1,}?)*')
+      Validators.pattern('[a-zA-Z0-9!#$%&`*+\/=?^_`{|}~.-]+@[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?' +
+        '(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9]){1,}?)*')
     ]);
   }
 
