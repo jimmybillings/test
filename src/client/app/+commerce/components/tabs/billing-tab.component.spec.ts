@@ -1,5 +1,5 @@
 import { BillingTabComponent } from './billing-tab.component';
-import { Address, ViewAddress } from '../../../../shared/interfaces/user.interface';
+import { Address, ViewAddress } from '../../../shared/interfaces/user.interface';
 import { Observable } from 'rxjs/Rx';
 
 export function main() {

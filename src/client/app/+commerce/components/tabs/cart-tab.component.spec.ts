@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs/Rx';
 import { CartTabComponent } from './cart-tab.component';
 import { ProjectEditComponent } from '../project/project-edit.component';
-import { WzSubclipEditorComponent } from '../../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
-import { WzPricingComponent } from '../../../../shared/components/wz-pricing/wz.pricing.component';
+import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
+import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 
 export function main() {
   describe('Cart Tab Component', () => {

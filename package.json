@@ -137,7 +137,9 @@
     "tslint": "^4.3.0",
     "typescript": "^2.1.5",
     "walk": "^2.3.9",
-    "yargs": "^6.0.0"
+    "yargs": "^6.0.0",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "phantomjs-prebuilt": "^2.1.7"
   },
   "dependencies": {
     "@angular/animations": "^4.0.0",

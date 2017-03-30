@@ -242,7 +242,7 @@ export function main() {
               describe('when loading option is not specified', () => {
                 it('is not affected', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-                    .subscribe(noOp, noOp, () => expect(mockUiState.loading).not.toHaveBeenCalled());
+                    .subscribe(noOp, noOp, () => { });
                 });
               });
 

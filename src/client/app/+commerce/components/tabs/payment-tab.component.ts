@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, NgZone, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Tab } from './tab';
-import { CartService } from '../../../../shared/services/cart.service';
-import { UiConfig } from '../../../../shared/services/ui.config';
+import { CartService } from '../../../shared/services/cart.service';
+import { UiConfig } from '../../../shared/services/ui.config';
 import { Observable, Subscription } from 'rxjs/Rx';
 
 @Component({

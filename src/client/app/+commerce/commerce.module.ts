@@ -10,32 +10,32 @@ import { COMMERCE_ROUTES } from './commerce.routes';
 // tabs
 import { CartCapabilities } from './+cart/services/cart.capabilities';
 import { CartComponent } from './+cart/cart.component';
-import { CartTabComponent } from './+cart/components/tabs/cart-tab.component';
-import { BillingTabComponent } from './+cart/components/tabs/billing-tab.component';
-import { PaymentTabComponent } from './+cart/components/tabs/payment-tab.component';
-import { ConfirmTabComponent } from './+cart/components/tabs/confirm-tab.component';
+import { CartTabComponent } from './components/tabs/cart-tab.component';
+import { BillingTabComponent } from './components/tabs/billing-tab.component';
+import { PaymentTabComponent } from './components/tabs/payment-tab.component';
+import { ConfirmTabComponent } from './components/tabs/confirm-tab.component';
 // project
-import { ProjectsComponent } from './+cart/components/project/projects.component';
-import { ProjectInfoComponent } from './+cart/components/project/project-info.component';
-import { ProjectAssetInfoComponent } from './+cart/components/project/project-asset-info.component';
-import { ProjectPriceInfoComponent } from './+cart/components/project/project-price-info.component';
-import { ProjectActionsComponent } from './+cart/components/project/project-actions.component';
-import { ProjectEditComponent } from './+cart/components/project/project-edit.component';
+import { ProjectsComponent } from './components/project/projects.component';
+import { ProjectInfoComponent } from './components/project/project-info.component';
+import { ProjectAssetInfoComponent } from './components/project/project-asset-info.component';
+import { ProjectPriceInfoComponent } from './components/project/project-price-info.component';
+import { ProjectActionsComponent } from './components/project/project-actions.component';
+import { ProjectEditComponent } from './components/project/project-edit.component';
 // lineitem
-import { LineItemsComponent } from './+cart/components/line-item/line-items.component';
-import { LineItemTranscodeSelectComponent } from './+cart/components/line-item/line-item-transcode-select.component';
-import { LineItemActionsComponent } from './+cart/components/line-item/line-item-actions.component';
-import { LineItemPriceComponent } from './+cart/components/line-item/line-item-price.component';
+import { LineItemsComponent } from './components/line-item/line-items.component';
+import { LineItemTranscodeSelectComponent } from './components/line-item/line-item-transcode-select.component';
+import { LineItemActionsComponent } from './components/line-item/line-item-actions.component';
+import { LineItemPriceComponent } from './components/line-item/line-item-price.component';
 // asset
-import { AssetComponent } from './+cart/components/asset/asset.component';
-import { AssetThumbnailComponent } from './+cart/components/asset/asset-thumbnail.component';
-import { AssetInfoComponent } from './+cart/components/asset/asset-info.component';
+import { AssetComponent } from './components/asset/asset.component';
+import { AssetThumbnailComponent } from './components/asset/asset-thumbnail.component';
+import { AssetInfoComponent } from './components/asset/asset-info.component';
 
 // miscellaneous
-import { AddressFormComponent } from './+cart/components/address-form.component';
-import { QuoteFormComponent } from './+cart/components/quote-form.component';
-import { AdministerQuoteComponent } from './+cart/components/administer-quote.component';
-import { QuotePurchaseTypeComponent } from './+cart/components/quote-purchase-type.component';
+import { AddressFormComponent } from './components/address-form/address-form.component';
+import { QuoteFormComponent } from './+quote/components/quote-form.component';
+import { AdministerQuoteComponent } from './+quote/components/administer-quote.component';
+import { QuotePurchaseTypeComponent } from './+quote/components/quote-purchase-type.component';
 
 // Order Stuff
 import { OrdersComponent } from './+order/+index/orders.component';

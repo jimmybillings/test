@@ -1,6 +1,6 @@
-@import './components/tabs/billing-tab';
-@import './components/tabs/payment-tab';
-@import './components/tabs/confirm-tab';
+@import '../components/tabs/billing-tab';
+@import '../components/tabs/payment-tab';
+@import '../components/tabs/confirm-tab';
 
 cart-component .tabs-section {
   & > div > div {

@@ -1,15 +1,15 @@
-import { QuotesComponent } from './quotes.component';
+import { QuoteEditComponent } from './quote-edit.component';
 import { Observable } from 'rxjs/Rx';
 
 export function main() {
   describe('Quotes Component', () => {
-    let componentUnderTest: QuotesComponent, mockQuotesService: any;
+    let componentUnderTest: QuoteEditComponent, mockQuotesService: any;
 
     beforeEach(() => {
       mockQuotesService = {
         data: Observable.of({})
       };
-      componentUnderTest = new QuotesComponent(mockQuotesService);
+      componentUnderTest = new QuoteEditComponent(mockQuotesService);
     });
 
     it('has no tests!', () => {

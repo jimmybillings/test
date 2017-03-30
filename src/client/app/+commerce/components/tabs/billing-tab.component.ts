@@ -1,11 +1,11 @@
 import { Component, Output, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { CartService } from '../../../../shared/services/cart.service';
-import { UserService } from '../../../../shared/services/user.service';
-import { CurrentUserService } from '../../../../shared/services/current-user.service';
-import { Address, User, ViewAddress } from '../../../../shared/interfaces/user.interface';
-import { UiConfig } from '../../../../shared/services/ui.config';
-import { CartCapabilities } from '../../services/cart.capabilities';
-import { AddressFormComponent } from '../address-form.component';
+import { CartService } from '../../../shared/services/cart.service';
+import { UserService } from '../../../shared/services/user.service';
+import { CurrentUserService } from '../../../shared/services/current-user.service';
+import { Address, User, ViewAddress } from '../../../shared/interfaces/user.interface';
+import { UiConfig } from '../../../shared/services/ui.config';
+import { CartCapabilities } from '../../+cart/services/cart.capabilities';
+import { AddressFormComponent } from '../address-form/address-form.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { Subscription, Observable } from 'rxjs/Rx';
 import { Tab } from './tab';

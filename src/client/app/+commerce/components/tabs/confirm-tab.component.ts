@@ -1,9 +1,9 @@
 import { Component, Output, EventEmitter, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { CartService } from '../../../../shared/services/cart.service';
+import { CartService } from '../../../shared/services/cart.service';
 import { Tab } from './tab';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { ViewAddress } from '../../../../shared/interfaces/user.interface';
+import { ViewAddress } from '../../../shared/interfaces/user.interface';
 
 @Component({
   moduleId: module.id,

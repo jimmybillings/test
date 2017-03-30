@@ -2,22 +2,22 @@ import { Component, OnInit, OnDestroy, Output, EventEmitter, Inject, ChangeDetec
 import { DOCUMENT } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Tab } from './tab';
-import { CartService } from '../../../../shared/services/cart.service';
-import { Project, LineItem, Cart } from '../../../../shared/interfaces/cart.interface';
-import { UiConfig } from '../../../../shared/services/ui.config';
+import { CartService } from '../../../shared/services/cart.service';
+import { Project, LineItem, Cart } from '../../../shared/interfaces/cart.interface';
+import { UiConfig } from '../../../shared/services/ui.config';
 import { ProjectEditComponent } from '../project/project-edit.component';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
-import { WzSubclipEditorComponent } from '../../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
-import { AssetService } from '../../../../shared/services/asset.service';
-import { Capabilities } from '../../../../shared/services/capabilities.service';
-import { WzPricingComponent } from '../../../../shared/components/wz-pricing/wz.pricing.component';
-import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
-import { ErrorStore } from '../../../../shared/stores/error.store';
-import { WindowRef } from '../../../../shared/services/window-ref.service';
-import { SubclipMarkers } from '../../../../shared/interfaces/asset.interface';
-import { QuoteService } from '../../../../shared/services/quote.service';
-import { QuoteFormComponent } from '../quote-form.component';
-import { PurchaseType, QuoteOptions } from '../../../../shared/interfaces/quote.interface';
+import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
+import { AssetService } from '../../../shared/services/asset.service';
+import { Capabilities } from '../../../shared/services/capabilities.service';
+import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
+import { UserPreferenceService } from '../../../shared/services/user-preference.service';
+import { ErrorStore } from '../../../shared/stores/error.store';
+import { WindowRef } from '../../../shared/services/window-ref.service';
+import { SubclipMarkers } from '../../../shared/interfaces/asset.interface';
+import { QuoteService } from '../../../shared/services/quote.service';
+import { QuoteFormComponent } from '../../+quote/components/quote-form.component';
+import { PurchaseType, QuoteOptions } from '../../../shared/interfaces/quote.interface';
 import { TranslateService } from 'ng2-translate';
 
 @Component({
