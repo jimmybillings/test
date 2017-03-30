@@ -28,7 +28,6 @@ import { TranslateService } from 'ng2-translate';
 })
 
 export class CartTabComponent extends Tab implements OnInit, OnDestroy {
-  @Output() tabNotify: EventEmitter<Object> = this.notify;
 
   public cart: Observable<any>;
   public config: any;

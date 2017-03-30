@@ -76,12 +76,6 @@ export class PaymentTabComponent extends Tab implements OnInit {
     });
   }
 
-  // public purchaseOnCredit(): void {
-  //   this.cartService.purchaseOnCredit().take(1).subscribe((order: any) => {
-  //     console.log(order);
-  //   });
-  // }
-
   private loadStripe() {
     const stripeScript = 'https://js.stripe.com/v2/';
     var scripts = document.getElementsByTagName('script');
