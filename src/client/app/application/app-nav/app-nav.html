@@ -28,12 +28,24 @@
     <button *ngIf="userCan.viewCollectionTray() | async" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleCollectionTray()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
     
     <button 
-        *ngIf="userCan.viewCartIcon() | async" 
+        *ngIf="(userCan.viewCartIcon() | async) && !userCan.createQuotes()" 
         md-icon-button
         class="cart"
-        title="{{ (userCan.createQuotes() ? 'HEADER.USER_DD_MENU.QUOTE_LINK' : 'HEADER.USER_DD_MENU.CART_LINK') | translate}}"
+        title="{{ 'HEADER.USER_DD_MENU.CART_LINK' | translate}}"
         [routerLink]="['/commerce']">
-        <md-icon>{{ userCan.createQuotes() ? 'work' : 'shopping_cart' }}</md-icon>
+        <md-icon>shopping_cart</md-icon>
+        <span class="asset-count" *ngIf="cartSize && cartSize > 0">
+            <span class="count">{{ formatBadgeNumber(cartSize) }}</span>
+        </span>
+    </button>
+
+    <button 
+        *ngIf="(userCan.viewCartIcon() | async) && userCan.createQuotes()" 
+        md-icon-button
+        class="cart"
+        title="{{ 'HEADER.USER_DD_MENU.QUOTE_LINK'| translate}}"
+        [routerLink]="['/commerce/activeQuote']">
+        <md-icon>work</md-icon>
         <span class="asset-count" *ngIf="cartSize && cartSize > 0">
             <span class="count">{{ formatBadgeNumber(cartSize) }}</span>
         </span>
@@ -51,8 +63,11 @@
     <a md-menu-item *ngIf="userCan.viewCollections()" [routerLink]="['/collections']">
         <md-icon>folder_open</md-icon>{{ 'HEADER.USER_DD_MENU.COLLECTIONS_LINK' | translate }}
     </a>
-    <a md-menu-item *ngIf="userCan.addToCart()" [routerLink]="['/commerce']">
-        <md-icon>{{ userCan.createQuotes() ? 'work' : 'shopping_cart' }}</md-icon>{{ (userCan.createQuotes() ? 'HEADER.USER_DD_MENU.QUOTE_LINK' : 'HEADER.USER_DD_MENU.CART_LINK') | translate}}
+    <a md-menu-item *ngIf="userCan.addToCart() && !userCan.createQuotes()" [routerLink]="['/commerce']">
+        <md-icon>shopping_cart</md-icon>{{ 'HEADER.USER_DD_MENU.CART_LINK' | translate}}
+    </a>
+    <a md-menu-item *ngIf="userCan.addToCart() && userCan.createQuotes()" [routerLink]="['/commerce/activeQuote']">
+        <md-icon>work</md-icon>{{ 'HEADER.USER_DD_MENU.QUOTE_LINK' | translate}}
     </a>
     <a md-menu-item *ngIf="userCan.createQuotes()" [routerLink]="['/commerce/quotes']">
         <md-icon>inbox</md-icon>{{ 'HEADER.USER_DD_MENU.QUOTES_SAVED_LINK' | translate }}

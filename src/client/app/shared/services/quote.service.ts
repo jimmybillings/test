@@ -22,16 +22,16 @@ export class QuoteService {
     return this.store.state;
   }
 
-  public createQuote(options: QuoteOptions): Observable<any> {
-    return this.cart.data.flatMap((cartStore: any) => {
-      let body: any = this.formatBody(cartStore.cart, options);
-      return this.api.post(Api.Orders, 'quote', { body: body });
-    });
-  }
-
   public getQuote(quoteId: number): Observable<Quote> {
     return this.api.get(Api.Orders, `quote/${quoteId}`)
       .do((quote: Quote) => this.store.setQuote(quote));
+  }
+
+  public createQuote(options: QuoteOptions): Observable<any> {
+    return this.store.data.flatMap((cartStore: any) => {
+      let body: any = this.formatBody(cartStore.cart, options);
+      return this.api.post(Api.Orders, 'quote', { body: body });
+    });
   }
 
   private formatBody(cart: Cart, options: QuoteOptions): any {
@@ -60,4 +60,5 @@ export class QuoteService {
 
     return body;
   }
+
 }

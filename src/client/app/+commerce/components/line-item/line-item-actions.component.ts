@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { PurchaseType } from '../../../../shared/interfaces/quote.interface';
+import { PurchaseType } from '../../../shared/interfaces/quote.interface';
 
 @Component({
   moduleId: module.id,

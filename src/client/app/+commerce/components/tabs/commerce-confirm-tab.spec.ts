@@ -1,11 +1,11 @@
-import { ConfirmTabComponent } from './confirm-tab.component';
+import { CommerceConfirmTab } from './commerce-confirm-tab';
 
 export function main() {
   describe('Confirm Tab Component', () => {
-    let componentUnderTest: ConfirmTabComponent;
+    let componentUnderTest: CommerceConfirmTab;
 
     beforeEach(() => {
-      componentUnderTest = new ConfirmTabComponent(null, null);
+      componentUnderTest = new CommerceConfirmTab(null, null);
     });
 
     it('has no functionality yet', () => {

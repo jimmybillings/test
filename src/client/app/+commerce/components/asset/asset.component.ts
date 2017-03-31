@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
-import { Asset, Metadatum } from '../../../../shared/interfaces/cart.interface';
+import { Asset, Metadatum } from '../../../shared/interfaces/cart.interface';
 
 @Component({
   moduleId: module.id,

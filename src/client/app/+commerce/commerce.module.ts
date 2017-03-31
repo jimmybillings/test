@@ -11,31 +11,32 @@ import { COMMERCE_ROUTES } from './commerce.routes';
 import { CartCapabilities } from './+cart/services/cart.capabilities';
 import { CartComponent } from './+cart/cart.component';
 import { CartTabComponent } from './+cart/components/tabs/cart-tab.component';
-import { BillingTabComponent } from './+cart/components/tabs/billing-tab.component';
-import { PaymentTabComponent } from './+cart/components/tabs/payment-tab.component';
-import { ConfirmTabComponent } from './+cart/components/tabs/confirm-tab.component';
+import { CartBillingTabComponent } from './+cart/components/tabs/cart-billing-tab.component';
+import { CartPaymentTabComponent } from './+cart/components/tabs/cart-payment-tab.component';
+import { CartConfirmTabComponent } from './+cart/components/tabs/cart-confirm-tab.component';
 // project
-import { ProjectsComponent } from './+cart/components/project/projects.component';
-import { ProjectInfoComponent } from './+cart/components/project/project-info.component';
-import { ProjectAssetInfoComponent } from './+cart/components/project/project-asset-info.component';
-import { ProjectPriceInfoComponent } from './+cart/components/project/project-price-info.component';
-import { ProjectActionsComponent } from './+cart/components/project/project-actions.component';
-import { ProjectEditComponent } from './+cart/components/project/project-edit.component';
+import { ProjectsComponent } from './components/project/projects.component';
+import { ProjectInfoComponent } from './components/project/project-info.component';
+import { ProjectAssetInfoComponent } from './components/project/project-asset-info.component';
+import { ProjectPriceInfoComponent } from './components/project/project-price-info.component';
+import { ProjectActionsComponent } from './components/project/project-actions.component';
+import { ProjectEditComponent } from './components/project/project-edit.component';
 // lineitem
-import { LineItemsComponent } from './+cart/components/line-item/line-items.component';
-import { LineItemTranscodeSelectComponent } from './+cart/components/line-item/line-item-transcode-select.component';
-import { LineItemActionsComponent } from './+cart/components/line-item/line-item-actions.component';
-import { LineItemPriceComponent } from './+cart/components/line-item/line-item-price.component';
+import { LineItemsComponent } from './components/line-item/line-items.component';
+import { LineItemTranscodeSelectComponent } from './components/line-item/line-item-transcode-select.component';
+import { LineItemActionsComponent } from './components/line-item/line-item-actions.component';
+import { LineItemPriceComponent } from './components/line-item/line-item-price.component';
 // asset
-import { AssetComponent } from './+cart/components/asset/asset.component';
-import { AssetThumbnailComponent } from './+cart/components/asset/asset-thumbnail.component';
-import { AssetInfoComponent } from './+cart/components/asset/asset-info.component';
+import { AssetComponent } from './components/asset/asset.component';
+import { AssetThumbnailComponent } from './components/asset/asset-thumbnail.component';
+import { AssetInfoComponent } from './components/asset/asset-info.component';
+import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-display.component';
 
 // miscellaneous
-import { AddressFormComponent } from './+cart/components/address-form.component';
-import { QuoteFormComponent } from './+cart/components/quote-form.component';
-import { AdministerQuoteComponent } from './+cart/components/administer-quote.component';
-import { QuotePurchaseTypeComponent } from './+cart/components/quote-purchase-type.component';
+import { AddressFormComponent } from './components/address-form/address-form.component';
+import { QuoteFormComponent } from './+quote/components/quote-form.component';
+import { AdministerQuoteComponent } from './+quote/components/administer-quote.component';
+import { QuotePurchaseTypeComponent } from './+quote/components/quote-purchase-type.component';
 
 // Order Stuff
 import { OrdersComponent } from './+order/+index/orders.component';
@@ -45,7 +46,8 @@ import { OrderItemListComponent } from './+order/components/order-item-list.comp
 // Quote Stuff
 import { QuoteComponent } from './+quote/+show/quote.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
-
+import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
+import { QuoteEditTabComponent } from './+quote/+edit/components/tabs/quote-edit-tab.component';
 
 @NgModule({
     imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
@@ -53,9 +55,9 @@ import { QuotesComponent } from './+quote/+index/quotes.component';
         CommerceComponent,
         CartComponent,
         CartTabComponent,
-        BillingTabComponent,
-        PaymentTabComponent,
-        ConfirmTabComponent,
+        CartBillingTabComponent,
+        CartPaymentTabComponent,
+        CartConfirmTabComponent,
         ProjectsComponent,
         ProjectInfoComponent,
         ProjectAssetInfoComponent,
@@ -69,6 +71,7 @@ import { QuotesComponent } from './+quote/+index/quotes.component';
         AssetComponent,
         AssetThumbnailComponent,
         AssetInfoComponent,
+        AssetSubclipDisplayComponent,
         OrderShowComponent,
         OrdersComponent,
         OrderItemListComponent,
@@ -77,7 +80,9 @@ import { QuotesComponent } from './+quote/+index/quotes.component';
         QuoteComponent,
         QuotesComponent,
         AdministerQuoteComponent,
-        QuotePurchaseTypeComponent
+        QuotePurchaseTypeComponent,
+        QuoteEditComponent,
+        QuoteEditTabComponent
     ],
     exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
     providers: [CartCapabilities],
