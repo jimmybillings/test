@@ -29,9 +29,9 @@
           <button
             *ngIf="userCan.addToCart()"
             md-icon-button
-            title="{{ (userCan.createQuotes() ? 'COLLECTION.SHOW.ADD_TO_QUOTE_BTN_TITLE' : 'COLLECTION.SHOW.ADD_TO_CART_BTN_TITLE') | translate}}"
+            title="{{ (userCan.administerQuotes() ? 'COLLECTION.SHOW.ADD_TO_QUOTE_BTN_TITLE' : 'COLLECTION.SHOW.ADD_TO_CART_BTN_TITLE') | translate}}"
             (click)="addAssetToCart(asset);">
-              <md-icon>{{userCan.createQuotes() ? 'work': 'shopping_cart'}}</md-icon>
+              <md-icon>{{userCan.administerQuotes() ? 'work': 'shopping_cart'}}</md-icon>
           </button>
           <!-- DOWNLOAD COMPS-->
           <button

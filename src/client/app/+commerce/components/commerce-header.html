@@ -1,0 +1,54 @@
+<section class="header" layout="row" layout-align="center center">
+	<header flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
+		<wz-item-search-form 
+			[ngClass]="{ 'revealed' : itemSearchIsShowing }" 
+			[hidden]="!itemSearchIsShowing" 
+			[currentSearchQuery]="{'q': ''}"
+			placeholderTxt="{{ type + '.INDEX.SEARCH_BOX_LABEL' | translate }}"
+			(query)="search.emit($event)"
+			(closeSearch)="toggleSearch()">
+		</wz-item-search-form>
+		<div flex="100" layout="row" layout-align="space-between end">
+			<h2 flex="grow" class="md-display-1">{{ type + '.INDEX.PAGE_TITLE' | translate }}</h2>
+			<div class="tools" flex="auto">
+				<button
+					md-icon-button
+					*ngIf="!itemSearchIsShowing"
+					title="{{ type + '.INDEX.SEARCH_BTN_TITLE' | translate }}"
+					type="button"
+					(click)="toggleSearch()">
+            <md-icon *ngIf="!itemSearchIsShowing">search</md-icon>
+        </button>
+				<button
+					md-icon-button
+					*ngIf="itemSearchIsShowing"
+					class="collapse-search"
+					title="{{ type + '.INDEX.COLLAPSE_SEARCH_BTN_TITLE' | translate }}"
+					type="button"
+					(click)="toggleSearch()">
+          	<md-icon>arrow_drop_up</md-icon>
+        </button>
+				<button
+					*ngIf="filterOptions"
+					md-icon-button
+					title="sort"
+					[md-menu-trigger-for]="quotesFilterMenu"><md-icon>filter_list</md-icon>
+				</button>
+				<button
+					*ngIf="sortOptions"
+					md-icon-button
+					title="sort"
+					[md-menu-trigger-for]="quotesSortMenu"><md-icon>sort</md-icon>
+				</button>
+			</div>
+		</div>
+	</header>
+</section>
+
+<md-menu x-position="after" #quotesFilterMenu="mdMenu">
+	<wz-sort-component [current]="currentFilter" [items]="filterOptions" (sort)="onFilterResults.emit($event)"></wz-sort-component>
+</md-menu>
+
+<md-menu x-position="after" #quotesSortMenu="mdMenu">
+	<wz-sort-component [current]="currentSort" [items]="sortOptions" (sort)="onSortResults.emit($event)"></wz-sort-component>
+</md-menu>

@@ -1,9 +1,33 @@
-<section class="quotes">
-  <div layout="row" flex="100" layout-align="center start">
-    <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-      <div layout="row" layout-align="center center">
-        <h3>Quotes</h3>
-      </div>
-    </div>
-  </div>
+<commerce-header
+	[type]="'QUOTE'"
+	[currentSort]="currentSort"
+	[currentFilter]="currentFilter"
+	[sortOptions]="sortOptions"
+	[filterOptions]="filterOptions"
+	(search)="onSearch($event)"
+	(onSortResults)="onSortResults($event)"
+	(onFilterResults)="onFilterResults($event)">
+</commerce-header>
+<section>
+	<div layout="row" flex="100" layout-margin layout-align="center start">
+		<section class="commerce-list" flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
+			<wz-pagination *ngIf="(quotes | async).pagination.totalCount > 0" [pagination]="(quotes | async).pagination"
+				flex layout-align="end stretch" (getPage)="changePage($event)">
+			</wz-pagination>
+			<md-card *ngIf="(quotes | async).items.length == 0">
+				<md-card-title>You currently do not have any quotes</md-card-title>
+			</md-card>
+      <commerce-list
+				*ngIf="(quotes | async).items.length > 0"
+				[type]="'QUOTE'"
+				[items]="(quotes | async).items"
+				[userCanAdministerQuotes]="userCan.administerQuotes()"
+				(editQuote)="onEditQuote($event)"
+				(setAsFocusedQuote)="onSetAsFocusedQuote($event)">
+			</commerce-list>
+			<wz-pagination *ngIf="(quotes | async).pagination.totalCount > 0" [pagination]="(quotes | async).pagination"
+				flex layout-align="end stretch" (getPage)="changePage($event)">
+			</wz-pagination>
+		</section>
+	</div>
 </section>

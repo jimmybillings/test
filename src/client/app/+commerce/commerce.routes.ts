@@ -7,7 +7,7 @@ import { CartGuard } from './+cart/services/cart.guard';
 import { CartResolver } from './+cart/services/cart.resolver';
 import { OrderResolver } from './+order/services/order.resolver';
 import { OrdersResolver } from './+order/services/orders.resolver';
-import { QuoteComponent } from './+quote/+show/quote.component';
+import { QuoteComponent } from './+quote/+show/quote-show.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
 import { QuoteResolver } from './+quote/services/quote.resolver';
 import { QuotesResolver } from './+quote/services/quotes.resolver';

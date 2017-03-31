@@ -10,7 +10,8 @@ export function main() {
     beforeEach(() => {
       mockApi = new MockApiService();
       mockCartService = {
-        data: Observable.of({ cart: { projects: [] } })
+        data: Observable.of({ cart: { projects: [] } }),
+        state: { cart: { projects: [] } }
       };
       mockQuoteStore = {
         data: Observable.of({ id: 3, ownerUserId: 10 }),
@@ -35,7 +36,7 @@ export function main() {
       });
     });
 
-    xdescribe('createQuote', () => {
+    describe('createQuote', () => {
       it('should call the api service correctly for an "ACTIVE" quote', () => {
         let mockUsers: any[] = [
           { emailAddress: 'ross.edfort@wazeedigital.com', id: 1 },

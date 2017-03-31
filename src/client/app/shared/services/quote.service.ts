@@ -22,16 +22,15 @@ export class QuoteService {
     return this.store.state;
   }
 
-  public getQuote(quoteId: number): Observable<Quote> {
-    return this.api.get(Api.Orders, `quote/${quoteId}`)
-      .do((quote: Quote) => this.store.setQuote(quote));
+  public createQuote(options: QuoteOptions): Observable<any> {
+    let cartStore: any = this.cart.state;
+    let body: any = this.formatBody(cartStore.cart, options);
+    return this.api.post(Api.Orders, 'quote', { body: body, loading: true });
   }
 
-  public createQuote(options: QuoteOptions): Observable<any> {
-    return this.store.data.flatMap((cartStore: any) => {
-      let body: any = this.formatBody(cartStore.cart, options);
-      return this.api.post(Api.Orders, 'quote', { body: body });
-    });
+  public getQuote(quoteId: number): Observable<Quote> {
+    return this.api.get(Api.Orders, `quote/${quoteId}`, { loading: true })
+      .do((quote: Quote) => this.store.setQuote(quote));
   }
 
   private formatBody(cart: Cart, options: QuoteOptions): any {
