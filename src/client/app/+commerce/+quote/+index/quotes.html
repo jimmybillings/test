@@ -21,7 +21,7 @@
 				*ngIf="(quotes | async).items.length > 0"
 				[type]="'QUOTE'"
 				[items]="(quotes | async).items"
-				[userCanAdministerQuotes]="userCan.createQuotes()"
+				[userCanAdministerQuotes]="userCan.administerQuotes()"
 				(editQuote)="onEditQuote($event)"
 				(setAsFocusedQuote)="onSetAsFocusedQuote($event)">
 			</commerce-list>

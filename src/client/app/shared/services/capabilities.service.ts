@@ -7,12 +7,15 @@ import { AssetCapabilities } from '../../+asset/services/asset.capabilities';
 import { AdminCapabilities } from '../../+admin/services/admin.capabilities';
 import { CollectionCapabilities } from '../../+collection/services/collection.capabilities';
 import { SearchCapabilities } from '../../+search/services/search.capabilities';
+import { QuoteCapabilities } from '../../+commerce/+quote/services/quote.capabilities';
+
 import { CurrentUserService } from './current-user.service';
 import { UiState } from '../services/ui.state';
 import { FeatureStore } from '../stores/feature.store';
 
 @Injectable()
-export class Capabilities implements CartCapabilities, CollectionCapabilities, AssetCapabilities, AdminCapabilities, SearchCapabilities {
+export class Capabilities implements CartCapabilities, CollectionCapabilities, AssetCapabilities,
+  AdminCapabilities, SearchCapabilities, QuoteCapabilities {
   haveCollections: () => boolean;
   viewCollections: () => boolean;
   editCollections: () => boolean;
@@ -35,7 +38,7 @@ export class Capabilities implements CartCapabilities, CollectionCapabilities, A
   addAddress: () => boolean;
   editAccountAddress: () => boolean;
   addAccountAddress: () => boolean;
-  createQuotes: () => boolean;
+  administerQuotes: () => boolean;
   findMetadataValueFor: (metadataName: string, object: any) => string | null;
 
   constructor(

@@ -4,7 +4,7 @@ export function main() {
   describe('Cart Component', () => {
     let componentUnderTest: CartComponent, mockCapabilities: any;
 
-    mockCapabilities = { createQuotes: () => false };
+    mockCapabilities = { administerQuotes: () => false };
 
     beforeEach(() => {
       componentUnderTest = new CartComponent(mockCapabilities);

@@ -23,10 +23,9 @@ export class QuoteService {
   }
 
   public createQuote(options: QuoteOptions): Observable<any> {
-    return this.store.data.flatMap((cartStore: any) => {
-      let body: any = this.formatBody(cartStore.cart, options);
-      return this.api.post(Api.Orders, 'quote', { body: body, loading: true });
-    });
+    let cartStore: any = this.cart.state;
+    let body: any = this.formatBody(cartStore.cart, options);
+    return this.api.post(Api.Orders, 'quote', { body: body, loading: true });
   }
 
   public getQuote(quoteId: number): Observable<Quote> {

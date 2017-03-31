@@ -1,7 +1,4 @@
 @import './+cart/cart';
-@import './+cart/components/project/projects';
-@import './+cart/components/line-item/line-items';
-@import './+cart/components/asset/asset';
 
 @import './+order/+show/order-show';
 @import './+order/+index/orders';
@@ -10,3 +7,6 @@
 
 @import './components/commerce-list';
 @import './components/commerce-header';
+@import './components/project/projects';
+@import './components/line-item/line-items';
+@import './components/asset/asset';

@@ -28,7 +28,7 @@
   </div>
   <footer flex="100" layout="row" layout-align="center center" *ngIf="userCan.haveCart()">
     <button [disabled]="!userCan.addToCart()" md-button class="is-outlined" color="primary" (click)="addSubclipToCart()">
-      {{ (userCan.createQuotes() ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE' : 'ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE') | translate}}
+      {{ (userCan.administerQuotes() ? 'ASSET.SAVE_SUBCLIP.SAVE_TO_QUOTE_BTN_TITLE' : 'ASSET.SAVE_SUBCLIP.SAVE_TO_CART_BTN_TITLE') | translate}}
     </button>
   </footer>
 </div>

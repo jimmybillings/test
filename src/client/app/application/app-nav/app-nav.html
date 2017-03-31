@@ -28,7 +28,7 @@
     <button *ngIf="userCan.viewCollectionTray() | async" md-icon-button title="{{'HEADER.OPEN_COLLECTIONS_LABEL' | translate}}" (click)="toggleCollectionTray()" class="open-collection-tray"><md-icon>folder_open</md-icon></button>
     
     <button 
-        *ngIf="(userCan.viewCartIcon() | async) && !userCan.createQuotes()" 
+        *ngIf="(userCan.viewCartIcon() | async) && !userCan.administerQuotes()" 
         md-icon-button
         class="cart"
         title="{{ 'HEADER.USER_DD_MENU.CART_LINK' | translate}}"
@@ -40,7 +40,7 @@
     </button>
 
     <button 
-        *ngIf="(userCan.viewCartIcon() | async) && userCan.createQuotes()" 
+        *ngIf="(userCan.viewCartIcon() | async) && userCan.administerQuotes()" 
         md-icon-button
         class="cart"
         title="{{ 'HEADER.USER_DD_MENU.QUOTE_LINK'| translate}}"
@@ -63,10 +63,10 @@
     <a md-menu-item *ngIf="userCan.viewCollections()" [routerLink]="['/collections']">
         <md-icon>folder_open</md-icon>{{ 'HEADER.USER_DD_MENU.COLLECTIONS_LINK' | translate }}
     </a>
-    <a md-menu-item *ngIf="userCan.addToCart() && !userCan.createQuotes()" [routerLink]="['/commerce']">
+    <a md-menu-item *ngIf="userCan.addToCart() && !userCan.administerQuotes()" [routerLink]="['/commerce']">
         <md-icon>shopping_cart</md-icon>{{ 'HEADER.USER_DD_MENU.CART_LINK' | translate}}
     </a>
-    <a md-menu-item *ngIf="userCan.addToCart() && userCan.createQuotes()" [routerLink]="['/commerce/activeQuote']">
+    <a md-menu-item *ngIf="userCan.addToCart() && userCan.administerQuotes()" [routerLink]="['/commerce/activeQuote']">
         <md-icon>work</md-icon>{{ 'HEADER.USER_DD_MENU.QUOTE_LINK' | translate}}
     </a>
     <a md-menu-item [routerLink]="['/commerce/quotes']">

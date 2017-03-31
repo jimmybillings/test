@@ -8,7 +8,7 @@ export function main() {
 
     beforeEach(() => {
       hasPermission = false;
-      mockUserCapabilities = { createQuotes: jasmine.createSpy('createQuotes').and.returnValue(hasPermission) };
+      mockUserCapabilities = { administerQuotes: jasmine.createSpy('administerQuotes').and.returnValue(hasPermission) };
       mockQuotesService = {
         data: Observable.of({}),
         getQuotes: jasmine.createSpy('getQuotes').and.returnValue(Observable.of({}))
