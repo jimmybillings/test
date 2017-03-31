@@ -1,6 +1,5 @@
 import {
   inject,
-  beforeEachProvidersArray,
   TestBed,
   MockBackend,
   Headers,
@@ -8,7 +7,7 @@ import {
   RequestMethod,
   ResponseOptions
 } from '../../imports/test.imports';
-
+import { BaseRequestOptions, Http, ConnectionBackend } from '@angular/http';
 import { ApiService } from './api.service';
 import { Api, ApiResponse } from '../interfaces/api.interface';
 import { ApiConfig } from './api.config';
@@ -44,8 +43,16 @@ export function main() {
 
       TestBed.configureTestingModule({
         providers: [
-          ...beforeEachProvidersArray,
           ApiService,
+          {
+            provide: Http,
+            useFactory: function (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) {
+              return new Http(backend, defaultOptions);
+            },
+            deps: [MockBackend, BaseRequestOptions]
+          },
+          MockBackend,
+          BaseRequestOptions,
           { provide: ApiConfig, useValue: mockApiConfig },
           { provide: ErrorStore, useValue: mockErrorService },
           { provide: MockBackend, useValue: mockBackEnd },
@@ -242,7 +249,7 @@ export function main() {
               describe('when loading option is not specified', () => {
                 it('is not affected', () => {
                   methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-                    .subscribe(noOp, noOp, () => { });
+                    .subscribe(noOp, noOp, () => expect(mockUiState.loading).not.toHaveBeenCalled());
                 });
               });
 

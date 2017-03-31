@@ -1,6 +1,10 @@
 <div 
-  *ngIf="userCan.createQuotes()" 
-  flex-gt-lg="20" flex-gt-md="30" flex-md="35" flex-gt-sm="40" flex-gt-xs="45" flex="85" 
+  flex-gt-lg="20" 
+  flex-gt-md="30" 
+  flex-md="35" 
+  flex-gt-sm="40" 
+  flex-gt-xs="45" 
+  flex="85" 
   layout="row" 
   layout-align="start">
   <quote-purchase-type-component
@@ -11,7 +15,7 @@
 
 <projects-component
   [quoteType]="quoteType"
-  [projects]="(cart | async).projects" 
+  [projects]="quoteService.projects | async"
   [config]="config" 
   [userCan]="userCan" 
   (projectsNotify)="onNotification($event)">
@@ -24,28 +28,19 @@
         {{ 'CART.CART_TOTAL' | translate }} 
       </span>
       <span class="total-amount">
-        {{ (cart | async).total | currency:'USD':true:'1.2-2' }}
+        {{ quoteService.total | async | currency:'USD':true:'1.2-2' }}
       </span>
 		</div>
-    <div *ngIf="userCan.createQuotes()" flex="100" layout="row" layout-align="center center">
+    <div flex="100" layout="row" layout-align="center center">
       <administer-quote-component
         flex="100"
-        [cart]="cart | async"
+        [cart]="quoteService.cart | async"
         [userCanProceed]="userCanProceed"
         (openQuoteDialog)="onOpenQuoteDialog()"
         (saveAsDraft)="onSaveAsDraft()">
       </administer-quote-component>
     </div>
-    <div *ngIf="!userCan.createQuotes()" flex="100" layout="row" layout-align="end center">
-      <button
-        *ngIf="(assetsInCart | async)"
-        [disabled]="!userCanProceed"
-        md-raised-button class="checkout"
-        (click)="goToNextTab()">
-          {{ 'CART.PROCEED_BTN_LABEL' | translate }}
-      </button>
-    </div>
-    <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!userCanProceed">
+    <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!rmAssetsHaveAttributes">
       {{ 'CART.SELECT_USAGE_WARN' | translate }}
     </div>
 	</div>

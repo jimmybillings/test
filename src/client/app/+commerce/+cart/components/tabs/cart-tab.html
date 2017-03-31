@@ -1,0 +1,32 @@
+<projects-component
+  [quoteType]="quoteType"
+  [projects]="cartService.projects | async" 
+  [config]="config" 
+  [userCan]="userCan" 
+  (projectsNotify)="onNotification($event)">
+</projects-component>
+
+<section class="cart-total" layout="row" layout-align="center center">
+	<div flex="100">
+    <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="total md-headline">
+      <span class="total-label">
+        {{ 'CART.CART_TOTAL' | translate }} 
+      </span>
+      <span class="total-amount">
+        {{ cartService.total | async | currency:'USD':true:'1.2-2' }}
+      </span>
+		</div>
+    <div flex="100" layout="row" layout-align="end center">
+      <button
+        *ngIf="cartService.hasAssets | async"
+        [disabled]="!userCanProceed"
+        md-raised-button class="checkout"
+        (click)="goToNextTab()">
+          {{ 'CART.PROCEED_BTN_LABEL' | translate }}
+      </button>
+    </div>
+    <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!userCanProceed">
+      {{ 'CART.SELECT_USAGE_WARN' | translate }}
+    </div>
+	</div>
+</section>

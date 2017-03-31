@@ -1,18 +1,11 @@
-import { Component, Output, EventEmitter, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CartService } from '../../../shared/services/cart.service';
 import { Tab } from './tab';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
 
-@Component({
-  moduleId: module.id,
-  selector: 'confirm-tab-component',
-  templateUrl: 'confirm-tab.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-
-export class ConfirmTabComponent extends Tab implements OnInit, OnDestroy {
+export class CommerceConfirmTab extends Tab implements OnInit, OnDestroy {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
   public cartStore: any;
   public cartSubscription: Subscription;

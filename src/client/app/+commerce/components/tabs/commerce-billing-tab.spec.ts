@@ -1,10 +1,10 @@
-import { BillingTabComponent } from './billing-tab.component';
+import { CommerceBillingTab } from './commerce-billing-tab';
 import { Address, ViewAddress } from '../../../shared/interfaces/user.interface';
 import { Observable } from 'rxjs/Rx';
 
 export function main() {
   describe('Billing Tab Component', () => {
-    let componentUnderTest: BillingTabComponent;
+    let componentUnderTest: CommerceBillingTab;
     let mockCartService: any, mockUiConfig: any, mockUserService: any, mockDialog: any, mockCurrentUserService: any;
     let mockUserAccountPermission: boolean;
 
@@ -76,7 +76,7 @@ export function main() {
         state: { purchaseOnCredit: true }
       };
 
-      componentUnderTest = new BillingTabComponent(
+      componentUnderTest = new CommerceBillingTab(
         null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, mockDialog
       );
     });
@@ -182,7 +182,7 @@ export function main() {
           data: Observable.of(mockStore),
           updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
         };
-        componentUnderTest = new BillingTabComponent(
+        componentUnderTest = new CommerceBillingTab(
           null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null
         );
         componentUnderTest.ngOnInit();
@@ -197,7 +197,7 @@ export function main() {
           data: Observable.of(mockStore),
           updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
         };
-        componentUnderTest = new BillingTabComponent(
+        componentUnderTest = new CommerceBillingTab(
           null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null
         );
         componentUnderTest.ngOnInit();
@@ -215,7 +215,7 @@ export function main() {
           data: Observable.of(mockStore),
           updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
         };
-        componentUnderTest = new BillingTabComponent(
+        componentUnderTest = new CommerceBillingTab(
           null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null
         );
         componentUnderTest.ngOnInit();
@@ -231,7 +231,7 @@ export function main() {
           data: Observable.of(mockStore),
           updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
         };
-        componentUnderTest = new BillingTabComponent(
+        componentUnderTest = new CommerceBillingTab(
           null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null
         );
         componentUnderTest.ngOnInit();

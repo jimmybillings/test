@@ -1,11 +1,11 @@
-import { PaymentTabComponent } from './payment-tab.component';
+import { CommercePaymentTab } from './commerce-payment-tab';
 
 export function main() {
   describe('Payment Tab Component', () => {
-    let componentUnderTest: PaymentTabComponent;
+    let componentUnderTest: CommercePaymentTab;
 
     beforeEach(() => {
-      componentUnderTest = new PaymentTabComponent(null, null, null, null);
+      componentUnderTest = new CommercePaymentTab(null, null, null, null);
     });
 
     it('has no functionality yet', () => {

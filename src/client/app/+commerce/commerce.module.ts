@@ -10,10 +10,10 @@ import { COMMERCE_ROUTES } from './commerce.routes';
 // tabs
 import { CartCapabilities } from './+cart/services/cart.capabilities';
 import { CartComponent } from './+cart/cart.component';
-import { CartTabComponent } from './components/tabs/cart-tab.component';
-import { BillingTabComponent } from './components/tabs/billing-tab.component';
-import { PaymentTabComponent } from './components/tabs/payment-tab.component';
-import { ConfirmTabComponent } from './components/tabs/confirm-tab.component';
+import { CartTabComponent } from './+cart/components/tabs/cart-tab.component';
+import { CartBillingTabComponent } from './+cart/components/tabs/cart-billing-tab.component';
+import { CartPaymentTabComponent } from './+cart/components/tabs/cart-payment-tab.component';
+import { CartConfirmTabComponent } from './+cart/components/tabs/cart-confirm-tab.component';
 // project
 import { ProjectsComponent } from './components/project/projects.component';
 import { ProjectInfoComponent } from './components/project/project-info.component';
@@ -30,6 +30,7 @@ import { LineItemPriceComponent } from './components/line-item/line-item-price.c
 import { AssetComponent } from './components/asset/asset.component';
 import { AssetThumbnailComponent } from './components/asset/asset-thumbnail.component';
 import { AssetInfoComponent } from './components/asset/asset-info.component';
+import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-display.component';
 
 // miscellaneous
 import { AddressFormComponent } from './components/address-form/address-form.component';
@@ -45,7 +46,8 @@ import { OrderItemListComponent } from './+order/components/order-item-list.comp
 // Quote Stuff
 import { QuoteComponent } from './+quote/+show/quote.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
-
+import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
+import { QuoteEditTabComponent } from './+quote/+edit/components/tabs/quote-edit-tab.component';
 
 @NgModule({
     imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
@@ -53,9 +55,9 @@ import { QuotesComponent } from './+quote/+index/quotes.component';
         CommerceComponent,
         CartComponent,
         CartTabComponent,
-        BillingTabComponent,
-        PaymentTabComponent,
-        ConfirmTabComponent,
+        CartBillingTabComponent,
+        CartPaymentTabComponent,
+        CartConfirmTabComponent,
         ProjectsComponent,
         ProjectInfoComponent,
         ProjectAssetInfoComponent,
@@ -69,6 +71,7 @@ import { QuotesComponent } from './+quote/+index/quotes.component';
         AssetComponent,
         AssetThumbnailComponent,
         AssetInfoComponent,
+        AssetSubclipDisplayComponent,
         OrderShowComponent,
         OrdersComponent,
         OrderItemListComponent,
@@ -77,7 +80,9 @@ import { QuotesComponent } from './+quote/+index/quotes.component';
         QuoteComponent,
         QuotesComponent,
         AdministerQuoteComponent,
-        QuotePurchaseTypeComponent
+        QuotePurchaseTypeComponent,
+        QuoteEditComponent,
+        QuoteEditTabComponent
     ],
     exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
     providers: [CartCapabilities],

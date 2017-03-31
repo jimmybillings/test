@@ -29,7 +29,7 @@ import { GalleryViewService } from '../shared/services/gallery-view.service';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { QuoteService } from '../shared/services/quote.service';
 import { QuotesService } from '../shared/services/quotes.service';
-
+import { QuoteEditService } from '../shared/services/quote-edit.service';
 // STORE INTERFACES
 import { CartStore } from '../shared/stores/cart.store';
 import { FeatureStore } from '../shared/stores/feature.store';
@@ -133,7 +133,8 @@ const WAZEE_SERVICES = [
   GalleryViewService,
   WindowRef,
   QuoteService,
-  QuotesService
+  QuotesService,
+  QuoteEditService
 ];
 
 const WAZEE_STORE_INTERFACES = [

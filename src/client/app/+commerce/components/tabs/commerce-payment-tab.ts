@@ -1,17 +1,10 @@
-import { Component, Output, EventEmitter, NgZone, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Output, EventEmitter, NgZone, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { Observable, Subscription } from 'rxjs/Rx';
 
-@Component({
-  moduleId: module.id,
-  selector: 'payment-tab-component',
-  templateUrl: 'payment-tab.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-
-export class PaymentTabComponent extends Tab implements OnInit {
+export class CommercePaymentTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
   public serverErrors: any = null;
   public config: any;

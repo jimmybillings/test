@@ -19,6 +19,9 @@
         <span *ngIf="form.controls[items[0].name].hasError('required')">
           {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:items[0].label | translate} }}
         </span>
+        <span *ngIf="form.controls[items[0].name].hasError('serverError')">
+          {{ 'ERRORS.'+form.controls[items[0].name].errors.serverError | translate }}
+        </span>
       </md-hint>
     </md-input>
   </div>

@@ -1,27 +1,35 @@
 <section class="header" layout="row" layout-align="center center">
 	<header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
     <div flex="100" layout="row" layout-align="space-between end">
-			<h2 *ngIf="!userCan.createQuotes()" flex="grow" class="md-display-1">{{ 'CART.PAGE_TITLE' | translate }}</h2>
-			<h2 *ngIf="userCan.createQuotes()" flex="grow" class="md-display-1">{{ 'QUOTE.CREATE_HEADER' | translate }}</h2>
+			<h2 flex="grow" class="md-display-1">{{ 'CART.PAGE_TITLE' | translate }}</h2>
 		</div>
 	</header>
 </section>
 
-<section class="tabs-section" [ngClass]="{'quote-section' : userCan.createQuotes()}">
+<section class="tabs-section">
   <div layout="row" flex="100" layout-align="center start">
      <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-      <md-tab-group *ngIf="!userCan.createQuotes()" [(selectedIndex)]="selectedTabIndex">
+      <md-tab-group [(selectedIndex)]="selectedTabIndex">
         <md-tab *ngFor="let tabLabelKey of tabLabelKeys; let i = index" [disabled]="!tabEnabled[i]">
           <template md-tab-label>{{ tabLabelKey | uppercase }}</template>
-          <cart-tab-component *ngIf="tabLabelKey === 'cart'" (notify)="onNotification($event)"></cart-tab-component>
-          <billing-tab-component *ngIf="tabLabelKey === 'billing'" (notify)="onNotification($event)"></billing-tab-component>
-          <payment-tab-component *ngIf="tabLabelKey === 'payment'" (notify)="onNotification($event)"></payment-tab-component>
-          <confirm-tab-component *ngIf="tabLabelKey === 'confirm'" (notify)="onNotification($event)"></confirm-tab-component>
+          <cart-tab-component 
+            *ngIf="tabLabelKey === 'cart'" 
+            (notify)="onNotification($event)">
+          </cart-tab-component>
+          <cart-billing-tab-component 
+            *ngIf="tabLabelKey === 'billing'" 
+            (notify)="onNotification($event)">
+          </cart-billing-tab-component>
+          <cart-payment-tab-component 
+            *ngIf="tabLabelKey === 'payment'" 
+            (notify)="onNotification($event)">
+          </cart-payment-tab-component>
+          <cart-confirm-tab-component 
+            *ngIf="tabLabelKey === 'confirm'" 
+            (notify)="onNotification($event)">
+          </cart-confirm-tab-component>
         </md-tab>
       </md-tab-group>
-      <div *ngIf="userCan.createQuotes()" class="quote-wrapper" flex>
-        <cart-tab-component flex></cart-tab-component>
-      </div>
     </div>
   </div>
 </section>

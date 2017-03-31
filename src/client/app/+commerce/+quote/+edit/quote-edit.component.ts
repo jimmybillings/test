@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
-import { QuotesService } from '../../../shared/services/quotes.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
+  moduleId: module.id,
   selector: 'quote-edit-component',
-  templateUrl: 'quote-edit.html',
-  moduleId: module.id
+  templateUrl: 'quote-edit.html'
 })
-export class QuoteEditComponent {
-  constructor(private quotesService: QuotesService) {
-    this.quotesService.data.subscribe((d: any) => console.log(d));
+
+export class QuoteEditComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
   }
 }

@@ -10,14 +10,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { Subscription, Observable } from 'rxjs/Rx';
 import { Tab } from './tab';
 
-@Component({
-  moduleId: module.id,
-  selector: 'billing-tab-component',
-  templateUrl: 'billing-tab.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-
-export class BillingTabComponent extends Tab implements OnInit {
+export class CommerceBillingTab extends Tab implements OnInit {
   public orderInProgress: Observable<any>;
   public items: Array<any>;
   @Output() tabNotify: EventEmitter<Object> = this.notify;

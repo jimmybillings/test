@@ -49,7 +49,7 @@ export class SourceParser {
   }
 
   private isNodeExported(node: ts.Node): boolean {
-    return (node.flags & ts.NodeFlags.Export) !== 0 ||
+    return (node.flags & ts.NodeFlags.ExportContext) !== 0 ||
       (node.parent && node.parent.kind === ts.SyntaxKind.SourceFile);
   }
 }
