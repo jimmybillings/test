@@ -19,6 +19,9 @@
         <span *ngIf="form.controls[items[0].name].hasError('required')">
           {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:items[0].label | translate} }}
         </span>
+        <span *ngIf="form.controls[items[0].name].hasError('serverError')">
+          {{ 'ERRORS.'+form.controls[items[0].name].errors.serverError | translate }}
+        </span>
       </md-hint>
     </md-input>
   </div>
@@ -32,6 +35,14 @@
       [required]="isRequiredField(items[1])"
       id="{{items[1].name}}">
       <md-option *ngFor="let option of parseOptions(items[1].options)" [value]="option">{{option}}</md-option>
+      <md-hint *ngIf="!form.controls[items[1].name].valid && !form.controls[items[1].name].pristine" [hidden]="form.controls[items[1].name].valid || form.controls[items[1].name].pristine && !submitAttempt" align="start" class="error">
+        <span *ngIf="form.controls[items[1].name].hasError('required')">
+          {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+        </span>
+        <span *ngIf="form.controls[items[1].name].hasError('serverError')">
+          {{ 'ERRORS.'+form.controls[items[1].name].errors.serverError | translate }}
+        </span>
+      </md-hint>
     </md-select>
 
     <md-select
@@ -39,9 +50,17 @@
       [ngClass]="{'show-errors': hasErrorType(form.controls[items[2].name])}"
       placeholder="{{items[2].label | translate}}"
       formControlName="{{items[2].name}}"
-      [required]="isRequiredField(items[1])"
+      [required]="isRequiredField(items[2])"
       id="{{items[2].name}}">
       <md-option *ngFor="let option of parseOptions(items[2].options)" [value]="option">{{option}}</md-option>
+      <md-hint *ngIf="!form.controls[items[2].name].valid && !form.controls[items[2].name].pristine" [hidden]="form.controls[items[2].name].valid || form.controls[items[2].name].pristine && !submitAttempt" align="start" class="error">
+        <span *ngIf="form.controls[items[2].name].hasError('required')">
+          {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+        </span>
+        <span *ngIf="form.controls[items[2].name].hasError('serverError')">
+          {{ 'ERRORS.'+form.controls[items[2].name].errors.serverError | translate }}
+        </span>
+      </md-hint>
     </md-select>
   </div>
 
@@ -57,6 +76,9 @@
         align="start" class="error">
         <span *ngIf="form.controls[items[3].name].hasError('required')">
           {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:items[3].label | translate} }}
+        </span>
+        <span *ngIf="form.controls[items[3].name].hasError('serverError')">
+          {{ 'ERRORS.'+form.controls[items[3].name].errors.serverError | translate }}
         </span>
       </md-hint>
     </md-input>
