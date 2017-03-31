@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { QuoteService } from '../../../shared/services/quote.service';
+import { Quote } from '../../../shared/interfaces/quote.interface';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   selector: 'quote-show-component',
@@ -7,7 +9,8 @@ import { QuoteService } from '../../../shared/services/quote.service';
   moduleId: module.id
 })
 export class QuoteComponent {
+  public quote: Observable<Quote>;
   constructor(private quoteService: QuoteService) {
-    this.quoteService.data.subscribe((d: any) => console.log(d));
+    this.quote = this.quoteService.data;
   }
 }

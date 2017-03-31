@@ -1,9 +1,12 @@
 <commerce-header
 	[type]="'QUOTE'"
 	[currentSort]="currentSort"
+	[currentFilter]="currentFilter"
 	[sortOptions]="sortOptions"
+	[filterOptions]="filterOptions"
 	(search)="onSearch($event)"
-	(onSortResults)="onSortResults($event)">
+	(onSortResults)="onSortResults($event)"
+	(onFilterResults)="onFilterResults($event)">
 </commerce-header>
 <section>
 	<div layout="row" flex="100" layout-margin layout-align="center start">
@@ -17,7 +20,10 @@
       <commerce-list
 				*ngIf="(quotes | async).items.length > 0"
 				[type]="'QUOTE'"
-				[items]="(quotes | async).items">
+				[items]="(quotes | async).items"
+				[userCanAdministerQuotes]="userCan.createQuotes()"
+				(editQuote)="onEditQuote($event)"
+				(setAsFocusedQuote)="onSetAsFocusedQuote($event)">
 			</commerce-list>
 			<wz-pagination *ngIf="(quotes | async).pagination.totalCount > 0" [pagination]="(quotes | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">

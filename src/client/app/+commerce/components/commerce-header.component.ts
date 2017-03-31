@@ -9,9 +9,12 @@ import { Component, Output, Input, EventEmitter, ChangeDetectionStrategy } from 
 export class CommerceHeaderComponent {
   @Input() type: 'QUOTE' | 'ORDER';
   @Input() sortOptions: any[];
+  @Input() filterOptions: any[];
   @Input() currentSort: any;
+  @Input() currentFilter: any;
   @Output() search: EventEmitter<any> = new EventEmitter();
   @Output() onSortResults: EventEmitter<any> = new EventEmitter();
+  @Output() onFilterResults: EventEmitter<any> = new EventEmitter();
   public itemSearchIsShowing: boolean = false;
 
   public toggleSearch() {

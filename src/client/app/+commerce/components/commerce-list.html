@@ -4,7 +4,7 @@
     class="item"
     flex="100" layout="row"
     layout-xs="column"
-    [routerLink]="['/commerce/' + type.toLowerCase(), item.id]">
+    [ngClass]="{'focused': type === 'QUOTE' && item.focused}">
     <div flex="100" flex-gt-sm="66">
       <div flex="100" layout="row" layout-xs="column">
         <div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding class="details">
@@ -17,7 +17,7 @@
               <span><strong>{{ type + '.CREATED_ON_LABEL' | translate }} </strong>{{ item.createdOn | date:'short' }}</span>
               <span>
                 <strong>{{ type + '.PURCHASE_TYPE_LABEL' | translate }} </strong>
-                {{ type === 'order' ? item.orderType : item.purchaseType }}
+                {{ type === 'ORDER' ? item.orderType : item.purchaseType ? item.purchaseType : 'none' }}
               </span>
             </div>
           </div>
@@ -47,23 +47,54 @@
       </div>
     </div>
     <div flex="100" layout="row" layout-xs="column" class="divider"></div>
-    <div flex-gt-sm="33" layout-sm="100" flex="auto" class="total md-headline">
-      <p *ngIf="type === 'QUOTE'" class="status {{ item.quoteStatus.toLowerCase() }}">
-        {{ item.quoteStatus }}
-      </p>
-      <span class="total-label">
-        {{ type + '.INDEX.TOTAL_LABEL' | translate }}
-      </span>
-      <span class="total-amount">
-        {{ item.total | currency:'USD':true:'1.2-2' }}
-      </span>
-      <button
-        md-button
-        class="is-outlined"
-        color="primary"
-        [routerLink]="['/commerce/' + type.toLowerCase(), item.id]">
-        {{ type + '.INDEX.DETAIL_BTN_TITLE' | translate }}
-      </button>
+    <div flex-gt-sm="33" layout-sm="100" flex="auto" class="md-headline">
+      <div class="total" layout="column" layout-align="center center" layout-align-gt-sm="space-between end">
+        <div flex>
+          <p flex *ngIf="type === 'QUOTE'" class="status {{ item.quoteStatus.toLowerCase() }}">
+            {{ item.quoteStatus }}
+          </p>
+          <span class="total-label">
+            {{ type + '.INDEX.TOTAL_LABEL' | translate }}
+          </span>
+          <span class="total-amount">
+            {{ item.total | currency:'USD':true:'1.2-2' }}
+          </span>
+        </div>
+        <div flex layout="row" layout-align="center center" layout-sm="column" layout-align-gt-xs="end end">
+          <button
+            *ngIf="shouldShowSetFocusedButton(item)"
+            (click)="setAsFocusedQuote.emit(item)"
+            md-button
+            class="is-outlined"
+            color="primary">
+            {{ 'QUOTE.INDEX.SET_AS_FOCUSED_BTN' | translate }}  
+          </button>
+          <button
+            *ngIf="shouldShowEditQuoteButton(item)"
+            (click)="editQuote.emit(item)"
+            md-button
+            class="is-outlined"
+            color="primary">
+            {{ 'QUOTE.INDEX.EDIT_BTN_TITLE' | translate }}  
+          </button>
+          <button
+            *ngIf="shouldShowViewQuoteButton(item)"
+            md-button
+            class="is-outlined"
+            color="primary"
+            [routerLink]="['/commerce/quote', item.id]">
+            {{ 'QUOTE.INDEX.DETAIL_BTN_TITLE' | translate }}
+          </button>
+          <button
+            *ngIf="shouldShowViewOrderButton"
+            md-button
+            class="is-outlined"
+            color="primary"
+            [routerLink]="['/commerce/order', item.id]">
+            {{ 'ORDER.INDEX.DETAIL_BTN_TITLE' | translate }}
+          </button>
+        </div>
+      </div>
     </div>
   </li>
 </ul>

@@ -1,32 +1,7 @@
 orders-component section.header {
-  color: md-color($primary, default);
-  padding-left: rem(.4);
-  padding-right: rem(.4);
-  box-shadow: inset 0 -1px 0 0 md-color($foreground, divider), 0 1px 0 0 rgba(md-color($background, card), .6);
   header {
-    padding-top: rem(.6);
-    padding-bottom: rem(.5);
-    position: relative;
-    .md-display-1 {
-      margin: 0;
-      width: calc(100% - 120px);
-      font-size: rem(2.6);
-    }
     wz-item-search-form {
       right: rem(4.5);
     }
-  }
-  .tools {
-    text-align: right;
-    white-space: nowrap;
-    button.collapse-search[md-icon-button] {
-      transform: rotate(90deg);
-    }
-  }
-  header div[flex="100"] > button[md-icon-button] {
-    margin-right: rem(1.6);
-  }
-  orders-filter-dd.revealed {
-    padding-right: rem(4.0);
   }
 }

@@ -19,3 +19,15 @@ export interface QuoteOptions {
 }
 
 export type PurchaseType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
+
+export interface QuoteList {
+  items: Quote[];
+  pagination: {
+    totalCount: number;
+    currentPage: number;
+    pageSize: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    numberOfPages: number;
+  };
+}

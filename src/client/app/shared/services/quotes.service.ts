@@ -3,7 +3,7 @@ import { ApiService } from '../../shared/services/api.service';
 import { CartService } from '../../shared/services/cart.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Rx';
-import { Quote } from '../../shared/interfaces/quote.interface';
+import { Quote, QuoteList } from '../../shared/interfaces/quote.interface';
 import { QuotesStore } from '../../shared/stores/quotes.store';
 
 @Injectable()
@@ -13,17 +13,17 @@ export class QuotesService {
     private store: QuotesStore) { }
 
 
-  public get data(): Observable<Quote[]> {
+  public get data(): Observable<QuoteList> {
     return this.store.data;
   }
 
-  public get state(): Quote[] {
+  public get state(): QuoteList {
     return this.store.state;
   }
 
-  public getQuotes(params: any): Observable<Quote[]> {
-    return this.api.get(Api.Orders, 'quote/myQuotes', { parameters: this.buildSearchParams(params) })
-      .do((quotes: Quote[]) => this.store.setQuotes(quotes));
+  public getQuotes(params: any): Observable<any> {
+    return this.api.get(Api.Orders, 'quote/myQuotes', { parameters: this.buildSearchParams(params), loading: true })
+      .do((quotes: any) => this.store.setQuotes(quotes));
   }
 
   private buildSearchParams(params: any) {

@@ -29,6 +29,13 @@
           	<md-icon>arrow_drop_up</md-icon>
         </button>
 				<button
+					*ngIf="filterOptions"
+					md-icon-button
+					title="sort"
+					[md-menu-trigger-for]="quotesFilterMenu"><md-icon>filter_list</md-icon>
+				</button>
+				<button
+					*ngIf="sortOptions"
 					md-icon-button
 					title="sort"
 					[md-menu-trigger-for]="quotesSortMenu"><md-icon>sort</md-icon>
@@ -37,6 +44,10 @@
 		</div>
 	</header>
 </section>
+
+<md-menu x-position="after" #quotesFilterMenu="mdMenu">
+	<wz-sort-component [current]="currentFilter" [items]="filterOptions" (sort)="onFilterResults.emit($event)"></wz-sort-component>
+</md-menu>
 
 <md-menu x-position="after" #quotesSortMenu="mdMenu">
 	<wz-sort-component [current]="currentSort" [items]="sortOptions" (sort)="onSortResults.emit($event)"></wz-sort-component>

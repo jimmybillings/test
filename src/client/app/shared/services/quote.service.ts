@@ -25,12 +25,12 @@ export class QuoteService {
   public createQuote(options: QuoteOptions): Observable<any> {
     return this.cart.data.flatMap((cartStore: any) => {
       let body: any = this.formatBody(cartStore.cart, options);
-      return this.api.post(Api.Orders, 'quote', { body: body });
+      return this.api.post(Api.Orders, 'quote', { body: body, loading: true });
     });
   }
 
   public getQuote(quoteId: number): Observable<Quote> {
-    return this.api.get(Api.Orders, `quote/${quoteId}`)
+    return this.api.get(Api.Orders, `quote/${quoteId}`, { loading: true })
       .do((quote: Quote) => this.store.setQuote(quote));
   }
 

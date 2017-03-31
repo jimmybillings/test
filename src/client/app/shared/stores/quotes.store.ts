@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActionReducer, Store, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
-import { Quote } from '../interfaces/quote.interface';
+import { Quote, QuoteList } from '../interfaces/quote.interface';
 
-const initState: any = {
+const initState: QuoteList = {
   items: [],
   pagination: {
     totalCount: 0,
@@ -28,13 +28,13 @@ export const quotes: ActionReducer<any> = (state: any = initState, action: Actio
 export class QuotesStore {
   constructor(private store: Store<any>) { }
 
-  public get data(): Observable<Quote[]> {
+  public get data(): Observable<QuoteList> {
     return this.store.select('quotes');
   }
 
-  public get state(): Quote[] {
-    let s: Quote[];
-    this.data.take(1).subscribe((quotes: Quote[]) => s = quotes);
+  public get state(): QuoteList {
+    let s: QuoteList;
+    this.data.take(1).subscribe((quotes: QuoteList) => s = quotes);
     return s;
   }
 

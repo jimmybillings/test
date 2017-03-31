@@ -29,8 +29,7 @@ export class OrdersComponent implements OnInit {
   }
 
   public onSearch(query: { q: string }) {
-    this.buildRouteParams(Object.assign(query, { i: 1 }));
-    this.router.navigate(['/commerce/orders', this.params]);
+    this.orders.getOrders(query).subscribe();
   }
 
   private buildRouteParams(params: OrdersUrlParams) {

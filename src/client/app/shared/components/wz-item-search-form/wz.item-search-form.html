@@ -1,15 +1,25 @@
 <div layout="row" layout-align="end center">
-  <!--<div class="tools" flex="auto">
-    <button md-icon-button title="{{ 'COLLECTION.DD_MENU.PREVIOUS_HOVER_TITLE' | translate }}" (click)="closeSearch.emit()"><md-icon>arrow_back</md-icon></button>
-  </div>-->
   <form flex="100" [formGroup]="itemSearch" (ngSubmit)="onSubmit(itemSearch.value.q)" class="md-inline-form">
     <input type="text" [placeholder]="placeholderTxt" [value]="currentSearchQuery.q" formControlName="q" />
-    <button md-icon-button type="submit" disableRipple="true" title="{{ 'COLLECTION.DD_MENU.SUBMIT_HOVER_TITLE' | translate }}"><md-icon>search</md-icon></button>
+    <button
+      md-icon-button type="submit"
+      disableRipple="true"
+      title="{{ 'COLLECTION.DD_MENU.SUBMIT_HOVER_TITLE' | translate }}"><md-icon>search</md-icon>
+    </button>
     <span class="vertical-divider"></span>
-    <button md-icon-button type="reset" disableRipple="true" title="{{ 'COLLECTION.DD_MENU.RESET_HOVER_TITLE' | translate }}"
-      (click)="resetSearch()"><md-icon>close</md-icon></button>
+    <button
+      md-icon-button
+      type="reset"
+      disableRipple="true"
+      title="{{ 'COLLECTION.DD_MENU.RESET_HOVER_TITLE' | translate }}"
+      (click)="resetSearch()"><md-icon>close</md-icon>
+    </button>
   </form>
   <div class="tools" flex="auto">
-    <button md-icon-button title="{{ 'COLLECTION.DD_MENU.CLOSE_HOVER_TITLE' | translate }}" (click)="closeSearch.emit()"><md-icon>arrow_drop_up</md-icon></button>
+    <button
+      md-icon-button
+      title="{{ 'COLLECTION.DD_MENU.CLOSE_HOVER_TITLE' | translate }}"
+      (click)="closeSearch.emit()"><md-icon>arrow_drop_up</md-icon>
+    </button>
   </div>
 </div>

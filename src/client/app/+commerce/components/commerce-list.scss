@@ -14,11 +14,10 @@
     border-radius: $md-button-border-radius;
     border: 1px solid rgba(md-color($background, card), .01);
     transition: $swift-ease-out;
-    &:hover {
-      border-color: rgba(md-color($primary, default), .75);
-      background-color: md-color($background, card);
-      @include md-elevation(1);
-      cursor: pointer;
+    &.focused {
+      background-color: rgba(md-color($background, card), 1);
+      @include md-elevation(2);
+      border: 1px solid rgba(md-color($primary, default), .75);
     }
     .details {
       padding: rem(.7) rem(1.0);
@@ -60,7 +59,7 @@
       padding-left: rem(.8);
       padding-top: rem(.2);
       position: relative;
-      min-height: rem(4.4);
+      min-height: 100%;
       .total-label {
         font-weight: 100;
         letter-spacing: 0;
@@ -77,7 +76,9 @@
       }
       .status {
         margin: 0;
-        letter-spacing: .05em;
+        letter-spacing: .1em;
+        font-size: .75em;
+        font-weight: 600;
         &.pending {
           color: md-color($md-accent, 500);
         }
@@ -90,15 +91,19 @@
         &.ordered {
           color: md-color($md-blue, 500);
         }
-      }
-      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-        text-align: left;
-        padding-top: rem(.4);
+        &.cancelled {
+          color: md-color($md-grey, 500);
+        }
       }
       button {
-        position: absolute;
-        bottom: rem(.7);
-        right: rem(.7);
+        margin-bottom: rem(1);
+        &:last-child {
+          margin-left: rem(1);
+        }
+      }
+      @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+        text-align: center;
+        padding-top: rem(.4);
       }
     }
     .projects {
@@ -143,11 +148,6 @@
     }
     .md-caption span {
       display: block;
-    }
-    &.focused {
-      background-color: rgba(md-color($background, card), 1);
-      @include md-elevation(2);
-      border: 1px solid rgba(md-color($primary, default), .75);
     }
     .divider {
       margin: rem(.6) rem(.8) 0 rem(.8);

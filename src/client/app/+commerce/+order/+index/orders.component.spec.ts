@@ -4,12 +4,13 @@ import { Observable } from 'rxjs/Rx';
 export function main() {
   describe('Orders Component', () => {
     let componentUnderTest: OrdersComponent;
-    let mockRouter: any, mockRoute: any;
+    let mockRouter: any, mockRoute: any, mockOrdersService: any;
 
     beforeEach(() => {
       mockRoute = { params: Observable.of({ i: '1', n: '4' }) };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
-      componentUnderTest = new OrdersComponent(null, mockRoute, mockRouter);
+      mockOrdersService = { getOrders: jasmine.createSpy('getOrders').and.returnValue(Observable.of({})) };
+      componentUnderTest = new OrdersComponent(mockOrdersService, mockRoute, mockRouter);
     });
 
     describe('Initialization', () => {
@@ -36,7 +37,7 @@ export function main() {
     describe('search()', () => {
       it('Should accept a search query and navigate to a url that include the search query', () => {
         componentUnderTest.onSearch({ q: 'dogs' });
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/orders', { n: '20', q: 'dogs', i: 1 }]);
+        expect(mockOrdersService.getOrders).toHaveBeenCalledWith({ q: 'dogs' });
       });
     });
   });
