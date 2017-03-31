@@ -10,7 +10,6 @@ import { OrdersUrlParams } from '../../../shared/interfaces/cart.interface';
 })
 
 export class OrdersComponent implements OnInit {
-  public itemSearchIsShowing: boolean = false;
   public ordersPerPage: string = '20';
   private params: any;
   constructor(
@@ -24,18 +23,13 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  public toggleShowOrderSearch() {
-    this.itemSearchIsShowing = !this.itemSearchIsShowing;
-  }
-
   public changePage(i: string): void {
     this.buildRouteParams({ i });
     this.router.navigate(['/commerce/orders', this.params]);
   }
 
-  public search(query: { q: string }) {
-    this.buildRouteParams(Object.assign(query, { i: 1 }));
-    this.router.navigate(['/commerce/orders', this.params]);
+  public onSearch(query: { q: string }) {
+    this.orders.getOrders(query).subscribe();
   }
 
   private buildRouteParams(params: OrdersUrlParams) {

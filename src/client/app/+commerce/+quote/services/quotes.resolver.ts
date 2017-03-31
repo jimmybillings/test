@@ -8,6 +8,6 @@ export class QuotesResolver implements Resolve<any> {
   constructor(private quotesService: QuotesService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    return this.quotesService.getQuotes();
+    return this.quotesService.getQuotes(JSON.parse(JSON.stringify(route.params)));
   }
 }

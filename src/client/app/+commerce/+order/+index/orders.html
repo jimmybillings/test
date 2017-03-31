@@ -1,33 +1,7 @@
-<section class="header" layout="row" layout-align="center center">
-	<header flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
-		<wz-item-search-form 
-			[ngClass]="{ 'revealed' : itemSearchIsShowing }" 
-			[hidden]="!itemSearchIsShowing" 
-			[currentSearchQuery]="{'q': ''}"
-			placeholderTxt="{{ 'ORDER.INDEX.SEARCH_BOX_LABEL' | translate }}"
-			(query)="search($event)"
-			(closeSearch)="toggleShowOrderSearch()"
-			>
-		</wz-item-search-form>
-		<div flex="100" layout="row" layout-align="space-between end">
-			<h2 flex="grow" class="md-display-1">{{ 'ORDER.INDEX.PAGE_TITLE' | translate }}</h2>
-			<div class="tools" flex="auto">
-				<button md-icon-button *ngIf="!itemSearchIsShowing" title="{{ 'ORDER.INDEX.SEARCH_BTN_TITLE' | translate }}"
-					type="button" (click)="toggleShowOrderSearch()">
-            <md-icon *ngIf="!itemSearchIsShowing">search</md-icon>
-          </button>
-				<button md-icon-button *ngIf="itemSearchIsShowing" class="collapse-search" title="{{ 'ORDER.INDEX.COLLAPSE_SEARCH_BTN_TITLE' | translate }}"
-					type="button" (click)="toggleShowOrderSearch()">
-          <md-icon>arrow_drop_up</md-icon>
-        </button>
-			</div>
-		</div>
-	</header>
-</section>
-
+<commerce-header [type]="'ORDER'" (search)="onSearch($event)"></commerce-header>
 <section>
 	<div layout="row" flex="100" layout-margin layout-align="center start">
-		<section class="orders-list" flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
+		<section class="commerce-list" flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
 			<wz-pagination *ngIf="(orders.data | async).pagination.totalCount > 0" [pagination]="(orders.data | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">
 			</wz-pagination>
@@ -36,7 +10,11 @@
 				<md-card-title>You currently do not have any orders</md-card-title>
 			</md-card>
 			<!-- ORDER LIST -->
-			<order-item-list *ngIf="(orders.data | async).items.length > 0" [orders]="(orders.data | async).items"></order-item-list>
+			<commerce-list
+				*ngIf="(orders.data | async).items.length > 0"
+				[type]="'ORDER'"
+				[items]="(orders.data | async).items">
+			</commerce-list>
 			<wz-pagination *ngIf="(orders.data | async).pagination.totalCount > 0" [pagination]="(orders.data | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">
 			</wz-pagination>

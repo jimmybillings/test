@@ -44,8 +44,8 @@ export class CartCapabilities {
     return address.type === 'account' && this.userHas('EditAccounts') && !address.address;
   }
 
-  public createQuotes(): boolean {
-    return this.userHas('CreateQuotes');
+  public administerQuotes(): boolean {
+    return this.userHas('CreateQuotes') && this.userHas('DeleteQuotes') && this.userHas('EditQuotes');
   }
 
   public userHas(permission: string): boolean {

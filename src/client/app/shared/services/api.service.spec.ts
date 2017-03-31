@@ -13,16 +13,13 @@ import { Api, ApiResponse } from '../interfaces/api.interface';
 import { ApiConfig } from './api.config';
 import { UiState } from './ui.state';
 import { ErrorStore } from '../stores/error.store';
-import { CurrentUserService } from './current-user.service';
 
 export function main() {
   describe('Api Service', () => {
     let mockApiConfig: any;
     let mockUiState: any;
     let mockErrorService: any;
-    let mockCurrentUserService: any;
     let connection: any;
-    let loggedIn: boolean = true;
 
     const mockBackEnd: MockBackend = new MockBackend();
     const successResponse: Response = new Response(new ResponseOptions({ body: '{"status":200}' }));
@@ -37,7 +34,6 @@ export function main() {
 
       mockUiState = jasmine.createSpyObj('mockUiState', ['loading']);
       mockErrorService = jasmine.createSpyObj('mockErrorService', ['dispatch']);
-      mockCurrentUserService = { loggedIn: () => loggedIn };
 
       mockBackEnd.connections.subscribe((c: any) => connection = c);
 
@@ -56,7 +52,6 @@ export function main() {
           { provide: ApiConfig, useValue: mockApiConfig },
           { provide: ErrorStore, useValue: mockErrorService },
           { provide: MockBackend, useValue: mockBackEnd },
-          { provide: CurrentUserService, useValue: mockCurrentUserService },
           { provide: UiState, useValue: mockUiState }
         ]
       });
@@ -92,51 +87,29 @@ export function main() {
           afterEach(() => connection.mockRespond(successResponse));
 
           it('is correct for all backend APIs', () => {
-            loggedIn = true;
-
             methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point'));
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?siteName=PORTAL'));
 
             methodUnderTest.call(serviceUnderTest, Api.Assets, 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/assets-api/v1/end/point'));
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/assets-api/v1/end/point?siteName=PORTAL'));
 
             methodUnderTest.call(serviceUnderTest, Api.Orders, 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/orders-api/v1/end/point'));
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/orders-api/v1/end/point?siteName=PORTAL'));
           });
 
           it('is unusable when an undefined backend API is specified', () => {
-            loggedIn = true;
-
             methodUnderTest.call(serviceUnderTest, (10836 as Api), 'end/point')
-              .subscribe(() => expect(connection.request.url).toEqual('BASE/?-api/v?/end/point'));
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/?-api/v?/end/point&siteName=PORTAL'));
           });
 
-          describe('when logged in', () => {
-            beforeEach(() => loggedIn = true);
-
-            it('is correct with no options', () => {
-              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-                .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point'));
-            });
-
-            it('is correct with parameters', () => {
-              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd' } })
-                .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d'));
-            });
+          it('is correct with no options', () => {
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?siteName=PORTAL'));
           });
 
-          describe('when logged out', () => {
-            beforeEach(() => loggedIn = false);
-
-            it('is correct with no options', () => {
-              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-                .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?siteName=PORTAL'));
-            });
-
-            it('is correct with parameters', () => {
-              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd' } })
-                .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d&siteName=PORTAL'));
-            });
+          it('is correct with parameters', () => {
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd' } })
+              .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d&siteName=PORTAL'));
           });
         });
 
@@ -156,33 +129,14 @@ export function main() {
 
         describe('body', () => {
           afterEach(() => connection.mockRespond(successResponse));
-
-          describe('when logged in', () => {
-            beforeEach(() => loggedIn = true);
-
-            it('is empty when no body option is specified', () => {
-              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-                .subscribe(() => expect(connection.request._body).toEqual('{}'));
-            });
-
-            it('is the specified body option', () => {
-              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { body: { a: 'b' } })
-                .subscribe(() => expect(connection.request._body).toEqual('{"a":"b"}'));
-            });
+          it('is just the site name when no body option is specified', () => {
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
+              .subscribe(() => expect(connection.request._body).toEqual('{"siteName":"PORTAL"}'));
           });
 
-          describe('when logged out', () => {
-            beforeEach(() => loggedIn = false);
-
-            it('is just the site name when no body option is specified', () => {
-              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point')
-                .subscribe(() => expect(connection.request._body).toEqual('{"siteName":"PORTAL"}'));
-            });
-
-            it('is the specified body plus the site name', () => {
-              methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { body: { a: 'b' } })
-                .subscribe(() => expect(connection.request._body).toEqual('{"a":"b","siteName":"PORTAL"}'));
-            });
+          it('is the specified body plus the site name', () => {
+            methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { body: { a: 'b' } })
+              .subscribe(() => expect(connection.request._body).toEqual('{"a":"b","siteName":"PORTAL"}'));
           });
         });
 
