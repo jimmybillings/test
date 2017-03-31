@@ -5,7 +5,6 @@ import { ErrorStore } from '../stores/error.store';
 import { ApiConfig } from './api.config';
 import { Api, ApiOptions, ApiParameters, ApiBody, ApiResponse } from '../interfaces/api.interface';
 import { UiState } from './ui.state';
-import { CurrentUserService } from './current-user.service';
 
 @Injectable()
 export class ApiService {
@@ -13,8 +12,7 @@ export class ApiService {
     private http: Http,
     private error: ErrorStore,
     private apiConfig: ApiConfig,
-    private uiState: UiState,
-    private currentUser: CurrentUserService
+    private uiState: UiState
   ) {
   }
 
@@ -90,9 +88,7 @@ export class ApiService {
   }
 
   private bodyJsonFrom(bodyObject: ApiBody): string {
-    if (!this.currentUser.loggedIn()) {
-      bodyObject = Object.assign({}, bodyObject, { siteName: this.apiConfig.getPortal() });
-    }
+    bodyObject = Object.assign({}, bodyObject, { siteName: this.apiConfig.getPortal() });
 
     return JSON.stringify(bodyObject);
   }
@@ -114,9 +110,7 @@ export class ApiService {
       search.set(parameter, parameters[parameter]);
     }
 
-    if (!this.currentUser.loggedIn()) {
-      search.set('siteName', this.apiConfig.getPortal());
-    }
+    search.set('siteName', this.apiConfig.getPortal());
 
     return [search, search.toString().length > 0];
   }

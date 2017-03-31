@@ -22,7 +22,6 @@ declare var portal: string;
 
 export class LoginComponent implements OnInit, OnDestroy {
   public config: any;
-  public activeTos: Observable<any>;
   public firstTimeUser: boolean;
   private configSubscription: Subscription;
   private routeSubscription: Subscription;
@@ -47,7 +46,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.firstTimeUser = true;
       }
     });
-    this.activeTos = this.user.downloadActiveTosDocument();
     this.configSubscription =
       this.uiConfig.get('login').subscribe((config: any) =>
         this.config = config.config);
