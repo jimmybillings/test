@@ -6,13 +6,14 @@ import { Api, ApiBody } from '../interfaces/api.interface';
 import { CurrentUserService } from '../services/current-user.service';
 import { Address, ViewAddress } from '../interfaces/user.interface';
 
+import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
 import { CartStore } from '../stores/cart.store';
-import { Cart, CartState, Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
+import { Cart, CartState } from '../interfaces/cart.interface';
 
 import { QuoteOptions } from '../../shared/interfaces/quote.interface';
 
 @Injectable()
-export class CartService {
+export class QuoteEditService {
   constructor(
     private store: CartStore,
     private api: ApiService,
@@ -96,7 +97,7 @@ export class CartService {
       Api.Orders,
       'cart/asset/lineItem/quick',
       {
-        body: this.formatBody(addAssetParameters),
+        body: this.formatAssetBody(addAssetParameters),
         parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
       }
     ).subscribe(this.replaceCartWith);
@@ -148,7 +149,7 @@ export class CartService {
     this.store.updateOrderInProgress(type, data);
   }
 
-  private formatBody(parameters: AddAssetParameters): any {
+  private formatAssetBody(parameters: AddAssetParameters): any {
     let formatted = {};
     Object.assign(formatted, { lineItem: parameters.lineItem });
     if (parameters.attributes) {

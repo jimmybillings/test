@@ -22,11 +22,13 @@ import { GalleryViewModule } from './+gallery-view/gallery-view.module';
 import { CurrentUserService } from './shared/services/current-user.service';
 import { ApiConfig } from './shared/services/api.config';
 import { UiConfig } from './shared/services/ui.config';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 declare var portal: string;
 
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot(APP_ROUTES),
     SharedModule.forRoot(),
     HomeModule,

@@ -11,6 +11,7 @@ import { QuoteComponent } from './+quote/+show/quote-show.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
 import { QuoteResolver } from './+quote/services/quote.resolver';
 import { QuotesResolver } from './+quote/services/quotes.resolver';
+import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
 
 export const COMMERCE_ROUTES: Routes = [
   {
@@ -22,7 +23,8 @@ export const COMMERCE_ROUTES: Routes = [
       { path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver } },
       { path: 'order/:orderId', component: OrderShowComponent, resolve: { order: OrderResolver } },
       { path: 'quotes', component: QuotesComponent, resolve: { quotes: QuotesResolver } },
-      { path: 'quote/:quoteId', component: QuoteComponent, resolve: { quote: QuoteResolver } }
+      { path: 'quote/:quoteId', component: QuoteComponent, resolve: { quote: QuoteResolver } },
+      { path: 'activeQuote', component: QuoteEditComponent, resolve: { quote: CartResolver } }
     ]
   }
 ];

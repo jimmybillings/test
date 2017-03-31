@@ -1,8 +1,8 @@
-@import './components/tabs/billing-tab';
-@import './components/tabs/payment-tab';
-@import './components/tabs/confirm-tab';
+@import '../components/tabs/commerce-billing-tab';
+@import '../components/tabs/commerce-payment-tab';
+@import '../components/tabs/commerce-confirm-tab';
 
-cart-component .tabs-section {
+cart-component .tabs-section, quote-edit-component .tabs-section{
   & > div > div {
     // background: rgba(md-color($background, background),0);
     background: rgba(md-color($background, background),.35);
@@ -21,7 +21,7 @@ cart-component .tabs-section {
     }
   }
 }
-cart-component section.header {
+cart-component section.header, quote-edit-component section.header {
   color: md-color($primary, default);
   padding-left: rem(.8);
   padding-right: rem(.8);
@@ -105,7 +105,7 @@ button.checkout-back {
   }
 }
 
-cart-component .quote-section {
+quote-edit-component .quote-section {
   & > div > div {
     background: transparent;
   }
