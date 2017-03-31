@@ -5,7 +5,7 @@ import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 
 export function main() {
-  describe('Cart Tab Component', () => {
+  describe('Commerce Edit tab', () => {
     let componentUnderTest: CommerceEditTab, mockCartService: any, mockUiConfig: any, mockDialog: any,
       mockAssetService: any, mockUserPreference: any, mockDocument: any, mockWindow: any, mockState: any,
       mockQuoteService: any, mockTranslateService: any, mockSnackbar: any;
@@ -98,13 +98,6 @@ export function main() {
     });
 
     describe('Initialization', () => {
-      it('connects to the CartService data', () => {
-        componentUnderTest.ngOnInit();
-
-        componentUnderTest.cart.subscribe((cartData) => {
-          expect(cartData.someData).toBe('SOME_VALUE');
-        });
-      });
 
       it('gets the UI config specifically for the cart', () => {
         componentUnderTest.ngOnInit();
@@ -136,61 +129,6 @@ export function main() {
       });
     });
 
-    describe('assetsInCart()', () => {
-      it('returns an observable of false when the cart has no items', () => {
-        mockCartService.data = Observable.of({ cart: { itemCount: 0 } });
-
-        componentUnderTest = new CommerceEditTab(
-          null, mockCartService, mockUiConfig, mockDialog,
-          null, mockWindow, mockUserPreference, null, null, null, null
-        );
-        componentUnderTest.ngOnInit();
-
-        componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
-      });
-
-      it('returns an observable of false when the cart has no itemCount member', () => {
-        mockCartService.data = Observable.of({ cart: {} });
-
-        componentUnderTest = new CommerceEditTab(
-          null, mockCartService, mockUiConfig, mockDialog,
-          null, mockWindow, mockUserPreference, null, null, null, null
-        );
-        componentUnderTest.ngOnInit();
-
-        componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(false));
-      });
-
-      it('returns an observable of true when the cart has at least one line item', () => {
-        mockCartService.data = Observable.of({ cart: { itemCount: 1 } });
-
-        componentUnderTest = new CommerceEditTab(
-          null, mockCartService, mockUiConfig, mockDialog,
-          null, mockWindow, mockUserPreference, null, null, null, null
-        );
-        componentUnderTest.ngOnInit();
-
-        componentUnderTest.assetsInCart.subscribe(answer => expect(answer).toBe(true));
-      });
-    });
-
-    describe('onOpenQuoteDialog()', () => {
-      beforeEach(() => {
-        componentUnderTest.ngOnInit();
-      });
-
-      // it('should open a dialog', () => {
-      //   componentUnderTest.onOpenQuoteDialog();
-      //   expect(mockDialog.open).toHaveBeenCalled();
-      // });
-    });
-
-    describe('onSaveAsDraft()', () => {
-      // it('should call createQuote() on the quote service', () => {
-      //   componentUnderTest.onSaveAsDraft();
-      //   expect(mockQuoteService.createQuote).toHaveBeenCalled();
-      // });
-    });
 
     describe('rmAssetsHaveAttributes()', () => {
       it('should return false if there is an RM asset without attributes', () => {
