@@ -118,3 +118,11 @@ md-checkbox.ng-dirty.ng-invalid {
     color: md-color($warn, 600);
   }  
 }
+
+// two shorter inputs on 1 line
+form .two-col div[flex="50"]:first-child {
+  padding: 0 rem(.5) 0 0;
+}
+form .two-col div[flex="50"]:last-child {
+  padding: 0 0 0 rem(.5);
+}
