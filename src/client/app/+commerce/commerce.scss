@@ -7,6 +7,11 @@
 
 @import './components/commerce-list/commerce-list';
 @import './components/commerce-header/commerce-header';
+
 @import './components/project/projects';
 @import './components/line-item/line-items';
 @import './components/asset/asset';
+
+@import './components/tabs/commerce-billing-tab';
+@import './components/tabs/commerce-payment-tab';
+@import './components/tabs/commerce-confirm-tab';

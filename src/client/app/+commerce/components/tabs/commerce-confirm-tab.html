@@ -1,6 +1,6 @@
 <div flex="100" flex-gt-lg="85" class="place-order">
   <header layout="column" layout-align="start">
-    <h2 class="cart-heading">{{ 'CART.CONFIRM.PAGE_TITLE' | translate }}</h2>
+    <h2 class="commerce-heading">{{ 'CART.CONFIRM.PAGE_TITLE' | translate }}</h2>
   </header>
 
   <div layout="column" layout-gt-xs="row" class="billing-payment">
@@ -40,7 +40,7 @@
 <h5 class="md-title order-summary">{{ 'CART.CONFIRM.ORDER_TITLE' | translate }}</h5>
 <projects-component flex="100" [readOnly]="true" [projects]="(commerceService.data | async).cart.projects"></projects-component>
 
-<section class="cart-total" layout="column" layout-gt-xs="row" layout-align="space-between">
+<section class="commerce-total" layout="column" layout-gt-xs="row" layout-align="space-between">
   <button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back" flex-order-xs="4" flex="0" layout-align="start center">
     <md-icon>keyboard_backspace</md-icon>
     {{ 'CART.CONFIRM.BACK_BTN' | translate }}

@@ -1,8 +1,4 @@
-@import '../components/tabs/commerce-billing-tab';
-@import '../components/tabs/commerce-payment-tab';
-@import '../components/tabs/commerce-confirm-tab';
-
-cart-component .tabs-section, quote-edit-component .tabs-section{
+cart-component .tabs-section, quote-edit-component .tabs-section {
   & > div > div {
     // background: rgba(md-color($background, background),0);
     background: rgba(md-color($background, background),.35);
@@ -90,7 +86,7 @@ button.checkout-back {
 }
 .md-tab-body-content header {
   margin-bottom: rem(1.2);
-  .cart-heading {
+  .commerce-heading {
     font-size: rem(2.6);
     font-weight: 300;
     line-height: rem(3.0);

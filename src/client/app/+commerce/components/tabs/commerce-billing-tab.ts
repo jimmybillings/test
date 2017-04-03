@@ -80,7 +80,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   public openFormFor(resourceType: 'account' | 'user', mode: 'edit' | 'create', address?: ViewAddress): void {
-    let dialogRef: MdDialogRef<AddressFormComponent> = this.dialog.open(AddressFormComponent, { position: { top: '10%' } });
+    let dialogRef: MdDialogRef<AddressFormComponent> = this.dialog.open(AddressFormComponent, { position: { top: '6%' } });
     dialogRef.componentInstance.items = this.items;
     dialogRef.componentInstance.dialog = dialogRef;
     dialogRef.componentInstance.resourceType = resourceType;
