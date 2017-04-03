@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { CurrentUserService } from '../../../shared/services/current-user.service';
+import { CurrentUserService } from '../../shared/services/current-user.service';
 import { Observable } from 'rxjs/Rx';
-import { UiState } from '../../../shared/services/ui.state';
-import { FeatureStore } from '../../../shared/stores/feature.store';
-import { Feature } from '../../../shared/interfaces/feature.interface';
-import { Address, ViewAddress } from '../../../shared/interfaces/user.interface';
+import { UiState } from '../../shared/services/ui.state';
+import { FeatureStore } from '../../shared/stores/feature.store';
+import { Feature } from '../../shared/interfaces/feature.interface';
+import { Address, ViewAddress } from '../../shared/interfaces/user.interface';
 
 @Injectable()
-export class CartCapabilities {
+export class CommerceCapabilities {
   constructor(public currentUser: CurrentUserService, public uiState: UiState, public feature: FeatureStore) { }
 
   public haveCart(): boolean {

@@ -7,7 +7,7 @@ import { CartGuard } from './+cart/services/cart.guard';
 import { CartResolver } from './+cart/services/cart.resolver';
 import { OrderResolver } from './+order/services/order.resolver';
 import { OrdersResolver } from './+order/services/orders.resolver';
-import { QuoteComponent } from './+quote/+show/quote-show.component';
+import { QuoteShowComponent } from './+quote/+show/quote-show.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
 import { QuoteResolver } from './+quote/services/quote.resolver';
 import { QuotesResolver } from './+quote/services/quotes.resolver';
@@ -23,7 +23,7 @@ export const COMMERCE_ROUTES: Routes = [
       { path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver } },
       { path: 'order/:orderId', component: OrderShowComponent, resolve: { order: OrderResolver } },
       { path: 'quotes', component: QuotesComponent, resolve: { quotes: QuotesResolver } },
-      { path: 'quote/:quoteId', component: QuoteComponent, resolve: { quote: QuoteResolver } },
+      { path: 'quote/:quoteId', component: QuoteShowComponent, resolve: { quote: QuoteResolver } },
       { path: 'activeQuote', component: QuoteEditComponent, resolve: { quote: CartResolver } }
     ]
   }

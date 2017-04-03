@@ -1,5 +1,6 @@
 import { Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CartService } from '../../../shared/services/cart.service';
+import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { Tab } from './tab';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
@@ -7,22 +8,25 @@ import { ViewAddress } from '../../../shared/interfaces/user.interface';
 
 export class CommerceConfirmTab extends Tab implements OnInit, OnDestroy {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
-  public cartStore: any;
-  public cartSubscription: Subscription;
-  constructor(private router: Router, public cartService: CartService) {
+  public store: any;
+  public storeSubscription: Subscription;
+  constructor(
+    protected router: Router,
+    public commerceService: CartService | QuoteEditService
+  ) {
     super();
   }
 
   ngOnInit() {
-    this.cartSubscription = this.cartService.data.subscribe(data => this.cartStore = data);
+    this.storeSubscription = this.commerceService.data.subscribe(data => this.store = data);
   }
 
   ngOnDestroy() {
-    this.cartSubscription.unsubscribe();
+    this.storeSubscription.unsubscribe();
   }
 
   purchase() {
-    this.cartService.purchase().subscribe((orderId: any) =>
+    this.commerceService.purchase().subscribe((orderId: any) =>
       this.router.navigate(['/commerce/order', orderId])
       , (error: any) =>
         console.log(error)
@@ -30,7 +34,7 @@ export class CommerceConfirmTab extends Tab implements OnInit, OnDestroy {
   }
 
   public purchaseOnCredit(): void {
-    this.cartService.purchaseOnCredit().take(1).subscribe((order: any) =>
+    this.commerceService.purchaseOnCredit().take(1).subscribe((order: any) =>
       this.router.navigate(['/commerce/order', order.id])
       , (error: any) =>
         console.log(error)

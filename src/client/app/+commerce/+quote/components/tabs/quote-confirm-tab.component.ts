@@ -1,22 +1,20 @@
 import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommerceConfirmTab } from '../../../components/tabs/commerce-confirm-tab';
-import { CartService } from '../../../../shared/services/cart.service';
+import { QuoteEditService } from '../../../../shared/services/quote-edit.service';
 import { Router } from '@angular/router';
 
 @Component({
   moduleId: module.id,
-  selector: 'cart-confirm-tab-component',
+  selector: 'quote-confirm-tab',
   templateUrl: '../../../components/tabs/commerce-confirm-tab.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CartConfirmTabComponent extends CommerceConfirmTab {
-
+export class QuoteConfirmTabComponent extends CommerceConfirmTab {
   constructor(
-    router: Router,
-    cartService: CartService
+    protected router: Router,
+    public quoteEditService: QuoteEditService
   ) {
-    super(router, cartService);
+    super(router, quoteEditService);
   }
-
 }

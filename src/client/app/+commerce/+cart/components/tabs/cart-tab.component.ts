@@ -23,7 +23,7 @@ export class CartTabComponent extends CommerceEditTab {
 
   constructor(
     public userCan: Capabilities,
-    protected cartService: CartService,
+    public cartService: CartService,
     protected uiConfig: UiConfig,
     protected dialog: MdDialog,
     protected assetService: AssetService,

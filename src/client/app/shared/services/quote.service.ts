@@ -13,6 +13,9 @@ export class QuoteService {
     private cart: CartService,
     private store: QuoteStore) { }
 
+  public get total(): Observable<number> {
+    return this.store.data.map((quote: Quote) => quote.total);
+  }
 
   public get data(): Observable<Quote> {
     return this.store.data;

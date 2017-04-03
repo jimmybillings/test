@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { QuotesService } from '../../../shared/services/quotes.service';
-import { QuoteCapabilities } from '../services/quote.capabilities';
+import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { Quote } from '../../../shared/interfaces/quote.interface';
 
@@ -19,7 +19,7 @@ export class QuotesComponent {
   public currentFilter: any;
   private params: any;
   constructor(
-    public userCan: QuoteCapabilities,
+    public userCan: CommerceCapabilities,
     private quotesService: QuotesService,
     private uiConfig: UiConfig,
     private router: Router) {

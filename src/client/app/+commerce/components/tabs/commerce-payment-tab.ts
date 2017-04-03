@@ -1,6 +1,7 @@
 import { Output, EventEmitter, NgZone, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
+import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { Observable, Subscription } from 'rxjs/Rx';
 
@@ -12,7 +13,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
 
   constructor(
     private _zone: NgZone,
-    private cartService: CartService,
+    private commerceService: CartService | QuoteEditService,
     private uiConfig: UiConfig,
     private ref: ChangeDetectorRef) {
     super();
@@ -25,7 +26,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
   }
 
   public selectPurchaseOnCredit() {
-    this.cartService.updateOrderInProgress('selectedPurchaseType', 'credit');
+    this.commerceService.updateOrderInProgress('selectedPurchaseType', 'credit');
     this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
   }
   public preAuthorize(form: any) {
@@ -34,8 +35,8 @@ export class CommercePaymentTab extends Tab implements OnInit {
       (status: number, response: any) => {
         this._zone.run(() => {
           if (status === 200) {
-            this.cartService.updateOrderInProgress('authorization', response);
-            this.cartService.updateOrderInProgress('selectedPurchaseType', 'card');
+            this.commerceService.updateOrderInProgress('authorization', response);
+            this.commerceService.updateOrderInProgress('selectedPurchaseType', 'card');
             this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
           } else {
             this.serverErrors = { fieldErrors: [] };
@@ -51,7 +52,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
   }
 
   public get userCanPurchaseOnCredit(): Observable<boolean> {
-    return this.cartService.data.map((data: any) => {
+    return this.commerceService.data.map((data: any) => {
       let options: any = data.orderInProgress.purchaseOptions;
       if (data.orderInProgress.selectedAddress.type === 'user') {
         return options.purchaseOnCredit;
@@ -84,7 +85,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
       script.type = 'text/javascript';
       document.body.appendChild(script);
       script.onload = () => {
-        (<any>window).Stripe.setPublishableKey(this.cartService.state.cart.stripePublicKey);
+        (<any>window).Stripe.setPublishableKey(this.commerceService.state.cart.stripePublicKey);
       };
     }
   }

@@ -25,7 +25,7 @@ export class QuoteEditTabComponent extends CommerceEditTab {
 
   constructor(
     public userCan: Capabilities,
-    protected quoteService: QuoteEditService,
+    public quoteService: QuoteEditService,
     protected uiConfig: UiConfig,
     protected dialog: MdDialog,
     protected assetService: AssetService,
