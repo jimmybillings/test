@@ -49,7 +49,7 @@
 										<button 
 											md-icon-button
 											title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
-											(click)="downloadComp('wm');" 
+											(click)="downloadComp(asset.assetId,'wm');" 
 											[disabled]="!userCan.downloadWatermarkComps(asset.hasDownloadableComp)">
 												<md-icon>file_download</md-icon>
 											</button>
@@ -71,7 +71,7 @@
 										<button 
 											md-icon-button
 											title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
-											(click)="downloadComp('clean');" 
+											(click)="downloadComp(asset.assetId,'clean');" 
 											[disabled]="!userCan.downloadCleanComps(asset.hasDownloadableComp)">
 												<md-icon>file_download</md-icon>
 										</button>
@@ -94,7 +94,7 @@
 											md-icon-button
 											title="{{'COMPS.DOWNLOAD_BTN_TITLE' | translate }}"
 											[disabled]="!userCan.downloadFullComps(asset.hasDownloadableComp)"
-											(click)="downloadComp('full');">
+											(click)="downloadComp(asset.assetId,'full');">
 											<md-icon>file_download</md-icon>
 										</button>
 										<button 
