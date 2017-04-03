@@ -34,7 +34,7 @@
             </span>
             <span>
               <strong>{{ 'QUOTE.PURCHASE_TYPE_LABEL' | translate }} </strong>
-              {{ (quote | async).purchaseType ? quote.purchaseType : 'none' }}
+              {{ (quote | async).purchaseType ? (quote | async).purchaseType : 'none' }}
             </span>
             <span>
               <strong>{{ 'QUOTE.SHOW.STATUS_LABEL' | translate }} </strong>

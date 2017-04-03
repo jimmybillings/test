@@ -36,8 +36,8 @@ import { QuotePaymentTabComponent } from './+quote/components/tabs/quote-payment
 import { QuoteConfirmTabComponent } from './+quote/components/tabs/quote-confirm-tab.component';
 
 // SHARED STUFF
-import { CommerceListComponent } from './components/commerce-list.component';
-import { CommerceHeaderComponent } from './components/commerce-header.component';
+import { CommerceListComponent } from './components/commerce-list/commerce-list.component';
+import { CommerceHeaderComponent } from './components/commerce-header/commerce-header.component';
 import { AddressFormComponent } from './components/address-form/address-form.component';
 
 // project
