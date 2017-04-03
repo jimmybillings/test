@@ -26,46 +26,70 @@
     </md-input>
   </div>
 
-  <div flex="100" layout="row">
-    <md-select
-      flex="50"
-      [ngClass]="{'show-errors': hasErrorType(form.controls[items[1].name])}"
-      placeholder="{{items[1].label | translate}}"
-      formControlName="{{items[1].name}}"
-      [required]="isRequiredField(items[1])"
-      id="{{items[1].name}}">
-      <md-option *ngFor="let option of parseOptions(items[1].options)" [value]="option">{{option}}</md-option>
-      <md-hint *ngIf="!form.controls[items[1].name].valid && !form.controls[items[1].name].pristine" [hidden]="form.controls[items[1].name].valid || form.controls[items[1].name].pristine && !submitAttempt" align="start" class="error">
-        <span *ngIf="form.controls[items[1].name].hasError('required')">
-          {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
-        </span>
-        <span *ngIf="form.controls[items[1].name].hasError('serverError')">
-          {{ 'ERRORS.'+form.controls[items[1].name].errors.serverError | translate }}
-        </span>
-      </md-hint>
-    </md-select>
+  <div flex="100" layout="row" class="two-col">
+    <div flex="50">
+      <md-input
+        pattern=".{2,}"
+        maxlength="2"
+        [ngClass]="{'show-errors': hasErrorType(form.controls[items[1].name])}"
+        placeholder="{{items[1].label | translate}}"
+        type="{{items[1].type}}"
+        formControlName="{{items[1].name}}"
+        [required]="isRequiredField(items[1])"
+        id="{{items[1].name}}">
 
-    <md-select
-      flex="50"
-      [ngClass]="{'show-errors': hasErrorType(form.controls[items[2].name])}"
-      placeholder="{{items[2].label | translate}}"
-      formControlName="{{items[2].name}}"
-      [required]="isRequiredField(items[2])"
-      id="{{items[2].name}}">
-      <md-option *ngFor="let option of parseOptions(items[2].options)" [value]="option">{{option}}</md-option>
-      <md-hint *ngIf="!form.controls[items[2].name].valid && !form.controls[items[2].name].pristine" [hidden]="form.controls[items[2].name].valid || form.controls[items[2].name].pristine && !submitAttempt" align="start" class="error">
-        <span *ngIf="form.controls[items[2].name].hasError('required')">
-          {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
-        </span>
-        <span *ngIf="form.controls[items[2].name].hasError('serverError')">
-          {{ 'ERRORS.'+form.controls[items[2].name].errors.serverError | translate }}
-        </span>
-      </md-hint>
-    </md-select>
+        <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
+        <md-hint *ngIf="(form.controls[items[1].name].valid || form.controls[items[1].name].pristine) && items[1].hintTextStart" align="start">
+          {{ items[1].hintTextStart | translate }}
+        </md-hint>
+        <md-hint *ngIf="!form.controls[items[1].name].valid && !form.controls[items[1].name].pristine" [hidden]="form.controls[items[1].name].valid || form.controls[items[1].name].pristine && !submitAttempt" align="start" class="error">
+          <span *ngIf="form.controls[items[1].name].hasError('required')">
+            {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:items[1].label | translate} }}
+          </span>
+          <span *ngIf="form.controls[items[1].name].hasError('serverError')">
+            {{ 'ERRORS.'+form.controls[items[1].name].errors.serverError | translate }}
+          </span>
+          <span *ngIf="form.controls[items[1].name].hasError('pattern') && !form.controls[items[1].name].hasError('minlength')">
+            {{ 'ERRORS.MIN_LENGTH_EXPIRY_MONTH' | translate }}
+          </span>
+        </md-hint>
+      </md-input>
+    </div>
+
+    <div flex="50">
+      <md-input
+        pattern=".{4,}"
+        maxlength="4"
+        [ngClass]="{'show-errors': hasErrorType(form.controls[items[2].name])}"
+        placeholder="{{items[2].label | translate}}"
+        type="{{items[2].type}}"
+        formControlName="{{items[2].name}}"
+        [required]="isRequiredField(items[2])"
+        id="{{items[2].name}}">
+
+        <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->
+        <md-hint *ngIf="(form.controls[items[2].name].valid || form.controls[items[2].name].pristine) && items[2].hintTextStart" align="start">
+          {{ items[2].hintTextStart | translate }}
+        </md-hint>
+        <md-hint *ngIf="!form.controls[items[2].name].valid && !form.controls[items[2].name].pristine" [hidden]="form.controls[items[2].name].valid || form.controls[items[2].name].pristine && !submitAttempt" align="start" class="error">
+          <span *ngIf="form.controls[items[2].name].hasError('required')">
+            {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:items[1].label | translate} }}
+          </span>
+          <span *ngIf="form.controls[items[2].name].hasError('serverError')">
+            {{ 'ERRORS.'+form.controls[items[2].name].errors.serverError | translate }}
+          </span>
+          <span *ngIf="form.controls[items[2].name].hasError('pattern') && !form.controls[items[2].name].hasError('minlength')">
+            {{ 'ERRORS.MIN_LENGTH_EXPIRY_YEAR' | translate }}
+          </span>
+        </md-hint>
+      </md-input>
+    </div>
   </div>
 
-  <div flex="20" layout="row">
+  <div>
     <md-input
+      pattern=".{3,4}"
+      maxlength="4"
       [ngClass]="{'show-errors': hasErrorType(form.controls[items[3].name])}"
       placeholder="{{items[3].label | translate}}"
       type="{{items[3].type}}"
@@ -79,6 +103,9 @@
         </span>
         <span *ngIf="form.controls[items[3].name].hasError('serverError')">
           {{ 'ERRORS.'+form.controls[items[3].name].errors.serverError | translate }}
+        </span>
+        <span *ngIf="form.controls[items[3].name].hasError('pattern') && !form.controls[items[3].name].hasError('minlength')">
+          {{ 'ERRORS.MIN_LENGTH_CVC' | translate }}
         </span>
       </md-hint>
     </md-input>
