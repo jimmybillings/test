@@ -12,13 +12,13 @@
 
 .md-menu-content a[md-menu-item][disabled] md-icon.material-icons,
 .md-menu-content button[md-menu-item][disabled] md-icon.material-icons {
-  color: md-color($foreground, disabled);
+  color: mat-color($foreground, disabled);
 }
 .md-menu-content .divider {
   width: 100%;
   margin-top: rem(0);
   padding-bottom: rem(.1);
-  box-shadow: inset 0 1px 0 0 md-color($foreground, divider);
+  box-shadow: inset 0 1px 0 0 mat-color($foreground, divider);
 }
 /************
  * Aspera download options
@@ -30,7 +30,7 @@ md-list.aspera-download-options md-list-item .md-list-item {
   justify-content: space-between;
   [md-menu-item][disabled] {
     padding: 0 rem(.5) 0 0;
-    color: md-color($foreground, secondary-text);
+    color: mat-color($foreground, secondary-text);
   }
   .actions {
     max-width: rem(8.5);
@@ -39,10 +39,10 @@ md-list.aspera-download-options md-list-item .md-list-item {
     margin-bottom: rem(.4);
     text-align: right;
     button[md-icon-button] {
-      color: md-color($foreground, icon);
+      color: mat-color($foreground, icon);
     }
     button[md-icon-button][disabled] {
-      color: md-color($foreground, disabled);
+      color: mat-color($foreground, disabled);
     }
   }
 }

@@ -5,8 +5,8 @@
 		<!--
         START: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
-      <md-input
-        *ngIf="(field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')"
+      <md-input-container *ngIf="(field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')">
+        <input mdInput
         class="md-block"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         placeholder="{{field.label | translate}}"
@@ -44,16 +44,15 @@
               {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
             </span>
 			</md-hint>
-		</md-input>
+		</md-input-container>
 		<!--
         END: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
-
 		<!--
         START: FORM INPUT FOR wzdate
       -->
-    <md-input
-      *ngIf="(field.type == 'wzdate')"
+    <md-input-container *ngIf="(field.type == 'wzdate')">
+      <input mdInput
       wzPikaday
       [readonly]="true"
       [minDate]="calculateDateFor(field.minimum)"
@@ -68,7 +67,7 @@
       formControlName="{{field.name}}"
       [required]="isRequiredField(field)"
       id="{{field.name}}">
-    </md-input>
+    </md-input-container>
 		<!--
         END: FORM INPUT FOR wzdate
       -->
@@ -76,8 +75,8 @@
       <!--
         START: FORM CONFIRM PASSWORD DOUBLE FIELD
       -->
-      <md-input
-        *ngIf="field.name == 'confirmPassword'"
+      <md-input-container *ngIf="field.name == 'confirmPassword'">
+        <input mdInput
         class="md-block"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         placeholder="{{field.label | translate}}"
@@ -112,10 +111,10 @@
               {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
             </span>  
         </md-hint>
-      </md-input>
+      </md-input-container>
 
-      <md-input
-        *ngIf="field.name == 'newPassword'"
+      <md-input-container *ngIf="field.name == 'newPassword'">
+        <input mdInput
         class="md-block"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
         placeholder="{{field.label | translate}}"
@@ -148,7 +147,7 @@
               {{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
             </span>   
         </md-hint>
-      </md-input>
+      </md-input-container>
       <!--
         END: FORM CONFIRM PASSWORD DOUBLE FIELD
       -->
@@ -252,7 +251,9 @@
       -->
 		<wz-input-tags *ngIf="field.type == 'tags'" #tags [tags]="field.tags" [fControl]="form.controls[field.name]">
 			<input type="hidden" formControlName="{{field.name}}">
-			<md-input placeholder="{{field.label | translate}}" (keydown)="tags.submit($event)" id="{{field.name}}"></md-input>
+      <md-input-container>
+        <input mdInput placeholder="{{field.label | translate}}" (keydown)="tags.submit($event)" id="{{field.name}}">
+      </md-input-container>
 		</wz-input-tags>
 		<!--
         END: CUSTOM FOR ELEMENT FOR CREATING TAGS
@@ -262,7 +263,8 @@
         START: CUSTOM FOR ELEMENT FOR SUGGESTIONS BASED ON TEXT INPUT
       -->
 		<wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]" [rawField]="field" (cacheSuggestions)="cacheSuggestions.emit($event)">
-			<md-input placeholder="{{field.label | translate}}" 
+			<md-input-container>
+        <input mdInput placeholder="{{field.label | translate}}" 
 				(keydown)="suggestions.inputKeyDown($event)"
 				[ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
 				formControlName="{{field.name}}"
@@ -278,7 +280,7 @@
 							{{ 'ERRORS.'+form.controls[field.name].errors.serverError | translate }}
 						</span>
 				</md-hint>
-			</md-input>
+			</md-input-container>
 		</wz-input-suggestions>
 	</div>
 	<!--

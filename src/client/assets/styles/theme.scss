@@ -1,19 +1,19 @@
 
 // Include the base styles for Angular Material core. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
-@include md-core();
+@include mat-core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
-$primary: md-palette($md-blue-grey, 500, 300, 700);
-$accent:  md-palette($md-orange, 600, 400, 800);
+$primary: mat-palette($mat-blue-grey, 500, 300, 700);
+$accent:  mat-palette($mat-orange, 600, 400, 800);
 
 // The warn palette is optional (defaults to red).
-$warn:    md-palette($md-red, A700, 600, 900);
+$warn:    mat-palette($mat-red, A700, 600, 900);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$theme: md-light-theme($primary, $accent, $warn);
+$theme: mat-light-theme($primary, $accent, $warn);
 
 // temp variables until we get theming figured out, and import all the components.
 $primary: map-get($theme, primary);
@@ -22,13 +22,13 @@ $warn: map-get($theme, warn);
 $background: map-get($theme, background);
 $foreground: map-get($theme, foreground);
 
-$md-foreground: $foreground;
-$md-background: $background;
-$md-primary: $primary;
-$md-accent: $accent;
-$md-warn: $warn;
+$mat-foreground: $foreground;
+$mat-background: $background;
+$mat-primary: $primary;
+$mat-accent: $accent;
+$mat-warn: $warn;
 
-$md-button-border-radius: 2px;
+$mat-button-border-radius: 2px;
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component

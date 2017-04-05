@@ -6,15 +6,16 @@
         START: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
   <div>
-    <md-input
+    <md-input-container>
+      <input mdInput
       [ngClass]="{'show-errors': hasErrorType(form.controls[items[0].name])}"
       placeholder="{{items[0].label | translate}}"
       type="{{items[0].type}}"
       formControlName="{{items[0].name}}"
       [required]="isRequiredField(items[0])"
       id="{{items[0].name}}">
-
-      <md-hint *ngIf="!form.controls[items[0].name].valid && !form.controls[items[0].name].pristine" [hidden]="form.controls[items[0].name].valid || form.controls[items[0].name].pristine && !submitAttempt"
+        
+       <md-hint *ngIf="!form.controls[items[0].name].valid && !form.controls[items[0].name].pristine" [hidden]="form.controls[items[0].name].valid || form.controls[items[0].name].pristine && !submitAttempt"
         align="start" class="error">
         <span *ngIf="form.controls[items[0].name].hasError('required')">
           {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:items[0].label | translate} }}
@@ -23,12 +24,13 @@
           {{ 'ERRORS.'+form.controls[items[0].name].errors.serverError | translate }}
         </span>
       </md-hint>
-    </md-input>
+     </md-input-container>
   </div>
 
   <div flex="100" layout="row" class="two-col">
     <div flex="50">
-      <md-input
+      <md-input-container>
+        <input mdInput
         pattern=".{2,}"
         maxlength="2"
         [ngClass]="{'show-errors': hasErrorType(form.controls[items[1].name])}"
@@ -53,11 +55,12 @@
             {{ 'ERRORS.MIN_LENGTH_EXPIRY_MONTH' | translate }}
           </span>
         </md-hint>
-      </md-input>
+      </md-input-container>
     </div>
 
     <div flex="50">
-      <md-input
+      <md-input-container>
+        <input mdInput
         pattern=".{4,}"
         maxlength="4"
         [ngClass]="{'show-errors': hasErrorType(form.controls[items[2].name])}"
@@ -82,12 +85,13 @@
             {{ 'ERRORS.MIN_LENGTH_EXPIRY_YEAR' | translate }}
           </span>
         </md-hint>
-      </md-input>
+      </md-input-container>
     </div>
   </div>
 
   <div>
-    <md-input
+    <md-input-container>
+      <input mdInput
       pattern=".{3,4}"
       maxlength="4"
       [ngClass]="{'show-errors': hasErrorType(form.controls[items[3].name])}"
@@ -108,7 +112,7 @@
           {{ 'ERRORS.MIN_LENGTH_CVC' | translate }}
         </span>
       </md-hint>
-    </md-input>
+    </md-input-container>
   </div>
 
 

@@ -82,40 +82,40 @@ md-input.show-errors.ng-invalid,
 md-input.ng-touched.ng-dirty.ng-invalid {
   .md-select-placeholder,
   .md-input-placeholder {
-    color: md-color($warn, 600);
+    color: mat-color($warn, 600);
     &.md-float.md-focused .md-placeholder-required {
-      color: md-color($warn, 600);
+      color: mat-color($warn, 600);
     }
   }
   .md-select-arrow,
   .md-select-trigger {
-    color: md-color($warn, 600);
+    color: mat-color($warn, 600);
   }
   .md-select-trigger {
-    border-bottom: 1px solid md-color($warn, 600);
+    border-bottom: 1px solid mat-color($warn, 600);
   }
   .md-input-wrapper {
     .md-input-underline {
-      border-top-color: md-color($warn, 600);
+      border-top-color: mat-color($warn, 600);
       .md-input-ripple {
-        background-color: md-color($warn, 600);
+        background-color: mat-color($warn, 600);
       }
     }
   } 
   md-hint.error {
-    color: md-color($warn, 600);
+    color: mat-color($warn, 600);
   }
 }
 
 md-checkbox.ng-dirty.ng-invalid {
   .md-checkbox-inner-container {
     .md-checkbox-frame {
-     color: md-color($md-warn, 600); 
+     color: mat-color($mat-warn, 600); 
     }
   }
   md-hint.md-hint.error {
     bottom: rem(10);
-    color: md-color($warn, 600);
+    color: mat-color($warn, 600);
   }  
 }
 

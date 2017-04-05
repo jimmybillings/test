@@ -59,7 +59,7 @@ export function createTranslateLoader(http: Http) {
 
     HttpModule,
     ReactiveFormsModule,
-    MaterialModule.forRoot(),
+    MaterialModule,
     WzPlayerModule,
     WzFormModule,
     WzAssetModule,

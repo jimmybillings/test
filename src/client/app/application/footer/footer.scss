@@ -1,8 +1,8 @@
 app-footer {
   display: block;
-  background-color: md-color($md-primary, 900, .9);
+  background-color: mat-color($mat-primary, 900, .9);
   .glb {
-    @include text-contrast(md-color($md-primary, 900), md-color($md-grey, 700), md-color($md-grey, 400, .8));
+    @include text-contrast(mat-color($mat-primary, 900), mat-color($mat-grey, 700), mat-color($mat-grey, 400, .8));
     .logo-wrapper {
       height: 170px;
       width: 100%;
@@ -26,11 +26,11 @@ app-footer {
         float: left;
         // margin-left: 3px;
         a {
-          @include text-contrast(md-color($md-grey, 200), md-color($md-foreground, text), $white-87-opacity);
+          @include text-contrast(mat-color($mat-grey, 200), mat-color($mat-foreground, text), $white-87-opacity);
           opacity: .25;
            transition: $swift-ease-in;
           &:hover {
-            color: md-color($md-primary, default, .9);
+            color: mat-color($mat-primary, default, .9);
             opacity: 1;
           } 
         }
@@ -42,20 +42,20 @@ app-footer {
       &::before {
         content: "\e80b";
         font-family: 'Material Icons';
-        color: rgba(md-color($md-grey, 100),0.18);
+        color: rgba(mat-color($mat-grey, 100),0.18);
         position: absolute;
         top: rem(2.0);
         left: rem(.4);
         font-size: 1.7em;
       }
       .md-select-value {
-        color: rgba(md-color($background, background), .55);
+        color: rgba(mat-color($background, background), .55);
       }
       .md-select-arrow {
-        color: rgba(md-color($background, background), .38);
+        color: rgba(mat-color($background, background), .38);
       }
       .md-select-trigger {
-        border-bottom-color:rgba(md-color($md-grey, 100),0.07);
+        border-bottom-color:rgba(mat-color($mat-grey, 100),0.07);
       }
     }
     h3.md-title {
@@ -66,7 +66,7 @@ app-footer {
     }
     .help-link {
       font-size: rem(1.6);
-      color: md-color($md-grey, 500);
+      color: mat-color($mat-grey, 500);
     }
     .sales {
       md-list {
@@ -88,15 +88,15 @@ app-footer {
       *[md-button] {
         margin: 0;
         padding: 9px 6px;
-        @include text-contrast(md-color($md-primary, 900), md-color($md-foreground, secondary-text), md-color($md-grey, 400, .8));
+        @include text-contrast(mat-color($mat-primary, 900), mat-color($mat-foreground, secondary-text), mat-color($mat-grey, 400, .8));
         &:hover {
-          background: md-color($md-background, hover);
-          color: md-color($md-primary, 300);
+          background: mat-color($mat-background, hover);
+          color: mat-color($mat-primary, 300);
         }
         &.phone:hover {
           cursor: default;
           background: transparent;
-          @include text-contrast(md-color($md-primary, 900), md-color($md-foreground, secondary-text), md-color($md-grey, 400, .8));
+          @include text-contrast(mat-color($mat-primary, 900), mat-color($mat-foreground, secondary-text), mat-color($mat-grey, 400, .8));
         }
         &.phone:hover .md-body-1 md-icon {
           opacity: .25;

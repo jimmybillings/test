@@ -13,7 +13,7 @@ register-component {
     margin-top:rem(4.2);
     .email {
       display: block;
-      color:  md-color($md-primary, default);
+      color:  mat-color($mat-primary, default);
       font-weight: 500;
       margin-top: rem(-.4);
       margin-bottom: rem(.8);
@@ -32,11 +32,11 @@ register-component {
   .content {
     font-size: .84em;
     padding: 0 rem(1.4);
-    border: 1px solid md-color($md-foreground, divider); 
+    border: 1px solid mat-color($mat-foreground, divider); 
     overflow-y: scroll;
     height: calc(100% - 114px);
     margin-bottom: rem(2.2);
-    color: rgba(md-color($md-foreground, text),.7);
+    color: rgba(mat-color($mat-foreground, text),.7);
   }
   .terms-actions button.md-primary {
     width: 66%;

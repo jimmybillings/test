@@ -2,10 +2,10 @@ search-component .md-sidenav-container {
   background-color: transparent;
 }
 search-component .search-header {
-  color: rgba(md-color($md-foreground, text), .5);
+  color: rgba(mat-color($mat-foreground, text), .5);
   padding-left: rem(.8);
   padding-right: rem(.8);
-  box-shadow: inset 0 -1px 0 0 md-color($md-foreground, divider), 0 1px 0 0 rgba(md-color($md-background, card), .6);
+  box-shadow: inset 0 -1px 0 0 mat-color($mat-foreground, divider), 0 1px 0 0 rgba(mat-color($mat-background, card), .6);
   header {
     padding-top: rem(.6);
     padding-bottom: rem(.5);
@@ -15,7 +15,7 @@ search-component .search-header {
       width: calc(100% - 120px);
       font-size: rem(2.6);
       &.alert {
-        color: md-color($warn, darker);
+        color: mat-color($warn, darker);
       }
     }
   } 
@@ -26,7 +26,7 @@ search-component .search-header {
     margin-bottom: rem(-.1);
     button.is-dd.md-icon-button.md-primary {
       .md-button-wrapper::after {
-        color: md-color($md-primary, default);
+        color: mat-color($mat-primary, default);
       }
     }
   }
@@ -43,10 +43,10 @@ search-component .search-header {
     opacity: .75;
   }
   &.md-primary[md-button], &[md-button].is-dd.md-primary .md-button-wrapper::after {
-    color: md-color($md-primary, default);
+    color: mat-color($mat-primary, default);
   }
   &[md-button]:hover.md-primary::after, [md-icon-button]:hover.md-primary::after {
-    background-color: rgba(md-color($md-primary, default), .12);
+    background-color: rgba(mat-color($mat-primary, default), .12);
   }
   &.md-primary[md-button].settings {
     padding: 0 rem(1.2) 0 rem(1.0);
@@ -75,7 +75,7 @@ search-component .search-results > div > div {
   padding-right: rem(.8);
 }
 md-slide-toggle.count-toggle {
-  background-color: md-color($background, background);
+  background-color: mat-color($background, background);
   margin: 0;
   padding: rem(.7) rem(1.6);
   .md-slide-toggle-content {
@@ -92,7 +92,7 @@ no-results > div {
     margin-top: rem(0.7);
     margin-bottom: rem(2.4);
     a {
-      color: md-color($primary);
+      color: mat-color($primary);
       text-decoration: none;
       &:hover {
         text-decoration: underline;

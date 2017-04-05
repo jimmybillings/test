@@ -76,7 +76,9 @@
 			<md-card>
 				<form layout="column" (ngSubmit)="onSubmit()" class="md-inline-form">
 					<div *ngFor="let control of form | values; of let i = index">
-						<md-input [(ngModel)]="form[control.key]" placeholder="{{control.key}}" name="{{control.key}}"></md-input>
+						<md-input-container>
+							<input mdInput [(ngModel)]="form[control.key]" placeholder="{{control.key}}" name="{{control.key}}">
+						</md-input-container>
 					</div>
 					<md-card-actions layout="row" layout-align="center center">
 						<button md-raised-button type="submit">update</button>

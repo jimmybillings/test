@@ -20,23 +20,23 @@ wz-autocomplete-search {
     max-height: rem(4.6);
     min-height: rem(4.6);
     border: none;
-    color: md-color($md-foreground, secondary-text);
-    background-color:  rgba(md-color($md-background, app-bar), .9);
+    color: mat-color($mat-foreground, secondary-text);
+    background-color:  rgba(mat-color($mat-background, app-bar), .9);
     transition: max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function;
     border-radius: 0;
     &::placeholder {
-      color: md-color($md-foreground, hint-text);
+      color: mat-color($mat-foreground, hint-text);
     }
     &:focus {
       outline: none;
-      background-color: lighten(md-color($md-background, app-bar), 40%);
+      background-color: lighten(mat-color($mat-background, app-bar), 40%);
     }
   }
   button[type="submit"] {
     cursor: pointer;
     font-size: 0;
     border: none; 
-    background-color: md-color($md-accent, 800, .95);
+    background-color: mat-color($mat-accent, 800, .95);
     min-width: rem(4.4);
      transition: $swift-ease-in;
     md-icon.material-icons {
@@ -44,14 +44,14 @@ wz-autocomplete-search {
       width: rem(3.4);
       height: rem(3.4);
       color: $white-87-opacity;
-      text-shadow: md-color($md-grey, 900, .2) 0 1px 2px;
+      text-shadow: mat-color($mat-grey, 900, .2) 0 1px 2px;
     }
     &:hover {
-      background-color: md-color($md-accent, 700, 1);
+      background-color: mat-color($mat-accent, 700, 1);
     }
     &[disabled] {
       cursor: default;
-      background-color: md-color($md-accent, 800, .95);
+      background-color: mat-color($mat-accent, 800, .95);
       md-icon.material-icons {
         opacity: .6;
        }
@@ -69,7 +69,7 @@ header.app-header {
   wz-autocomplete-search {
     form {
       padding-top: 0;
-      background-color: md-color($md-background, app-bar);
+      background-color: mat-color($mat-background, app-bar);
     }
     margin: 0;
     input {
@@ -78,7 +78,7 @@ header.app-header {
       padding: 0 0 0 rem(1.6);
     }
     button[type="submit"] {
-      background-color: md-color($md-primary, 700, .45);
+      background-color: mat-color($mat-primary, 700, .45);
       md-icon.material-icons {
         font-size: rem(3.3);
         text-shadow: none;
@@ -98,10 +98,10 @@ header.app-header {
   }
   button.filter-toggle {
     background-image:
-      linear-gradient(md-color($md-primary, 800, .06), md-color($md-primary, 800, .06)),
-      linear-gradient(rgba(md-color($md-foreground, base), .5), rgba(md-color($md-foreground, base), .5))
+      linear-gradient(mat-color($mat-primary, 800, .06), mat-color($mat-primary, 800, .06)),
+      linear-gradient(rgba(mat-color($mat-foreground, base), .5), rgba(mat-color($mat-foreground, base), .5))
     ;
-    @include text-contrast(md-color($md-foreground, base));
+    @include text-contrast(mat-color($mat-foreground, base));
     height: auto;
     border-radius: 0;
     padding: 0 rem(4.0) 0 rem(3.0);
@@ -114,7 +114,7 @@ header.app-header {
       right: rem(2.4);
     }
     &:hover {
-      background-color: rgba(md-color($md-foreground, base), .55);
+      background-color: rgba(mat-color($mat-foreground, base), .55);
     }
   }
   button.close {
@@ -131,7 +131,7 @@ header.app-header {
     md-icon.material-icons {
       font-size: rem(2.3);
       line-height: .5;
-      @include text-contrast(md-color($md-background, background));
+      @include text-contrast(mat-color($mat-background, background));
       opacity: .5;
     }
   }
@@ -152,14 +152,14 @@ header.app-header {
 header.app-header.fixed {
   wz-autocomplete-search {
     form {
-      box-shadow: inset 0 1px 0 0 md-color($md-grey, 800, .1);
+      box-shadow: inset 0 1px 0 0 mat-color($mat-grey, 800, .1);
       background-color: transparent;
     }
     input {
       background-color: transparent;
     }
     button[type="submit"] md-icon.material-icons, button.filter-toggle {
-      @include text-contrast(md-color($md-primary, 700), md-color($md-grey, 700), md-color($md-grey, 100));
+      @include text-contrast(mat-color($mat-primary, 700), mat-color($mat-grey, 700), mat-color($mat-grey, 100));
     }
   }
 }

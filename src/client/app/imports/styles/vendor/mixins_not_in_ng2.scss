@@ -8,14 +8,14 @@
 }
 
 @mixin md-body-1() {
-  font-size: $md-body-font-size-base;
+  font-size: $mat-body-font-size-base;
   font-weight: 400;
   letter-spacing: 0.010em;
   line-height: rem(2);
 }
 
 @mixin md-body-2() {
-  font-size: $md-body-font-size-base;
+  font-size: $mat-body-font-size-base;
   font-weight: 500;
   letter-spacing: 0.010em;
   line-height: rem(2.4);

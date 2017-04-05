@@ -1,11 +1,11 @@
-$volume-control-width: $md-icon-button-width;
+$volume-control-width: $mat-icon-button-width;
 $volume-control-height: rem(15);
-$volume-control-slider-height: $volume-control-height - $md-icon-button-height;
-$volume-control-slider-color: darken(md-color($background, background), 8%);
+$volume-control-slider-height: $volume-control-height - $mat-icon-button-height;
+$volume-control-slider-color: darken(mat-color($background, background), 8%);
 
 .volume-control {
   position: absolute;
-  background-color: rgba(lighten(md-color($foreground, base), 21%), .65);
+  background-color: rgba(lighten(mat-color($foreground, base), 21%), .65);
   width: $volume-control-width;
   height: $volume-control-height;
   bottom: 0;

@@ -36,16 +36,16 @@ one-level-view ul {
       position: relative;
       padding: 56.25% 0 0 0;
       background-image:
-        linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.6)),
-        linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1))
+        linear-gradient(rgba(mat-color($mat-grey, 900),1), rgba(mat-color($mat-grey, 900),.6)),
+        linear-gradient(rgba(mat-color($mat-grey, 900),.5), rgba(mat-color($mat-grey, 900),1))
       ;
       transition: $swift-ease-out;
       &:hover, &:active {
         cursor: pointer;
-        // box-shadow: 0 rem(.8) 0 0 md-color($background, card);
+        // box-shadow: 0 rem(.8) 0 0 mat-color($background, card);
         section.item-hover-effect {
-          border-color: md-color($background, card);
-          box-shadow: 0 1px 3px 0 rgba(md-color($md-grey, 900), .4);
+          border-color: mat-color($background, card);
+          box-shadow: 0 1px 3px 0 rgba(mat-color($mat-grey, 900), .4);
         }
       }
       img {
@@ -69,9 +69,9 @@ one-level-view ul {
         left:0;
         width: 100%;
         padding: rem(.5) rem(1.0);
-        background-color: rgba(md-color($md-grey, 900),.6);
+        background-color: rgba(mat-color($mat-grey, 900),.6);
         min-height: 23.333%;
-        @include text-contrast(md-color($md-grey, 900));
+        @include text-contrast(mat-color($mat-grey, 900));
         .item-label {
           font-size: rem(1.8);
           line-height: rem(2.7);

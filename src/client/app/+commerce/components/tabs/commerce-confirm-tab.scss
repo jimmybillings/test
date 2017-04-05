@@ -14,11 +14,11 @@ confirm-tab-component {
   }
   .payment,
   .billing {
-    background-color: rgba(md-color($background, card), .65);
-    color: rgba(md-color($foreground, text), .7);
+    background-color: rgba(mat-color($background, card), .65);
+    color: rgba(mat-color($foreground, text), .7);
     padding: rem(1.4);
     margin-left: rem(1.2);
-    border-radius: $md-button-border-radius;
+    border-radius: $mat-button-border-radius;
     max-width: calc(100% - 12px);
     min-width: calc(100% - 12px);
     @media screen and (min-width: $layout-breakpoint-lg)  {
@@ -67,7 +67,7 @@ confirm-tab-component {
               content: "\e870";
               font-family: 'Material Icons';
               font-weight: normal;
-              color: rgba(md-color($foreground, text),0.45);
+              color: rgba(mat-color($foreground, text),0.45);
               position: absolute;
               top: rem(-1.0);
               left: 0;

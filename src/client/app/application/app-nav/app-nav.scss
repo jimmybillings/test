@@ -2,9 +2,9 @@ header.app-header {
   position: relative;
   width: 100%;
   z-index: 3;
-  background-color:rgba(md-color($primary, 900), .3);
-  // border-bottom: solid 1px rgba(contrast-color(md-color($primary, 900)), .25);
-  @include md-elevation(1);
+  background-color:rgba(mat-color($primary, 900), .3);
+  // border-bottom: solid 1px rgba(contrast-color(mat-color($primary, 900)), .25);
+  @include mat-elevation(1);
   position: absolute;
   top: 0;
   left: 0;
@@ -50,13 +50,13 @@ header.app-header {
     }
   }
   &.fixed {
-    background-color:rgba(md-color($background, app-bar), .95);
-    @include text-contrast(md-color($background, app-bar), md-color($foreground, secondary-text), md-color($background, app-bar));
+    background-color:rgba(mat-color($background, app-bar), .95);
+    @include text-contrast(mat-color($background, app-bar), mat-color($foreground, secondary-text), mat-color($background, app-bar));
     position: fixed;
     top: 0;
     animation: slideDownHeader .75s ease-in-out;
     border-bottom: none;
-    @include md-elevation(3);
+    @include mat-elevation(3);
     // width: calc(100% - 16px);
     a.home-link > .logo-wrapper {
       opacity: .95;
@@ -68,7 +68,7 @@ header.app-header md-toolbar {
 }
 header.app-header [md-button],
 header.app-header [md-icon-button] {
-  @include text-contrast(md-color($md-grey, 900), md-color($foreground, secondary-text), md-color($background, app-bar));
+  @include text-contrast(mat-color($mat-grey, 900), mat-color($foreground, secondary-text), mat-color($background, app-bar));
   margin-left: rem(.6);
   transition: $swift-ease-out;
   &:first-child{
@@ -77,7 +77,7 @@ header.app-header [md-icon-button] {
 }
 header.app-header md-toolbar:not(.md-menu-toolbar) [md-button] {
   &.md-accent {
-    color: rgba(md-color($accent, 500), .8);
+    color: rgba(mat-color($accent, 500), .8);
   }
 }
 button[md-icon-button].cart {
@@ -85,8 +85,8 @@ button[md-icon-button].cart {
     position: absolute;
     top:0;
     right: rem(-.2);
-    border-radius: $md-button-border-radius;
-    background-color: rgba(md-color($warn, 700), .9);
+    border-radius: $mat-button-border-radius;
+    background-color: rgba(mat-color($warn, 700), .9);
     min-width: rem(1.4);
     font-size: .8em;
     line-height: 1;
@@ -94,17 +94,17 @@ button[md-icon-button].cart {
     margin-left: 0;
     padding: 2px 3px;
     .count {
-      @include text-contrast(md-color($warn, 900));
+      @include text-contrast(mat-color($warn, 900));
     }
   }
 }
 
 header.app-header.fixed [md-button],
 header.app-header.fixed [md-icon-button] {
-  @include text-contrast(md-color($background, app-bar), md-color($foreground, secondary-text), md-color($background, app-bar));
+  @include text-contrast(mat-color($background, app-bar), mat-color($foreground, secondary-text), mat-color($background, app-bar));
   transition: $swift-ease-out;
   &:hover {
-    background-color: rgba(md-color($background, hover), .08);
+    background-color: rgba(mat-color($background, hover), .08);
   }
   &:hover::after {
     background-color: transparent;
@@ -146,7 +146,7 @@ header.app-header + div.main-content search-component,
 header.app-header + div.main-content asset-component {
   display: block;
   transition: border-top-width 0.35s, $swift-ease-in-out-timing-function;
-  border-top: rem(16.6) solid md-color($md-grey, 900, .7);
+  border-top: rem(16.6) solid mat-color($mat-grey, 900, .7);
   @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
     border-top-width: rem(14.4);
   }
@@ -237,7 +237,7 @@ header.app-header.search-closed + div.main-content asset-component {
 header.app-header + div.main-content admin-component {
   display: flex;
   transition: border-top-width 0.35s, $swift-ease-in-out-timing-function;
-  border-top: rem(16.6) solid md-color($md-grey, 900, .7);
+  border-top: rem(16.6) solid mat-color($mat-grey, 900, .7);
   @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
     border-top-width: rem(15.2);
   }
