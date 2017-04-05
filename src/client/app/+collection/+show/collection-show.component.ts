@@ -15,7 +15,7 @@ import { Capabilities } from '../../shared/services/capabilities.service';
 import { CartService } from '../../shared/services/cart.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 import { MdSnackBar } from '@angular/material';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';

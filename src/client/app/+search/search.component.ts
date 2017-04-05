@@ -12,7 +12,7 @@ import { CartService } from '../shared/services/cart.service';
 import { AssetService } from '../shared/services/asset.service';
 import { WzSpeedviewComponent } from '../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { MdSnackBar } from '@angular/material';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { UiState } from '../shared/services/ui.state';

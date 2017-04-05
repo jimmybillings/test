@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Rx';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
 import { UiState } from '../../shared/services/ui.state';
 import { MdSnackBar } from '@angular/material';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';

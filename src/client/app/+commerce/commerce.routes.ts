@@ -17,7 +17,7 @@ export const COMMERCE_ROUTES: Routes = [
   {
     path: 'commerce',
     component: CommerceComponent,
-    canActivate: [CartGuard],
+    // canActivate: [CartGuard],
     children: [
       { path: '', component: CartComponent, resolve: { cart: CartResolver } },
       { path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver } },

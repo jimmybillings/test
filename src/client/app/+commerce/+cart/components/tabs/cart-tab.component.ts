@@ -10,7 +10,7 @@ import { Capabilities } from '../../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../../shared/stores/error.store';
 import { WindowRef } from '../../../../shared/services/window-ref.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   moduleId: module.id,
@@ -23,16 +23,16 @@ export class CartTabComponent extends CommerceEditTab {
 
   constructor(
     public userCan: Capabilities,
-    protected cartService: CartService,
-    protected uiConfig: UiConfig,
-    protected dialog: MdDialog,
-    protected assetService: AssetService,
-    protected window: WindowRef,
-    protected userPreference: UserPreferenceService,
-    protected error: ErrorStore,
-    @Inject(DOCUMENT) protected document: any,
-    protected snackBar: MdSnackBar,
-    protected translate: TranslateService
+    public cartService: CartService,
+    public uiConfig: UiConfig,
+    public dialog: MdDialog,
+    public assetService: AssetService,
+    public window: WindowRef,
+    public userPreference: UserPreferenceService,
+    public error: ErrorStore,
+    @Inject(DOCUMENT) public document: any,
+    public snackBar: MdSnackBar,
+    public translate: TranslateService
   ) {
     super(userCan, cartService, uiConfig, dialog, assetService, window, userPreference, error, document, snackBar, translate);
   }

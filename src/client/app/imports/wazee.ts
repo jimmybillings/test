@@ -4,7 +4,7 @@ import { combineReducers } from '@ngrx/store';
 // WAZEE SERVICES
 import { ApiConfig } from '../shared/services/api.config';
 import { MultilingualService } from '../shared/services/multilingual.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { UserService } from '../shared/services/user.service';
 import { UiConfig } from '../shared/services/ui.config';

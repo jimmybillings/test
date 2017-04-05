@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpModule, Http } from '@angular/http';
-import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MaterialModule } from '@angular/material';
 
 // WAZEE PROVIDERS
@@ -38,6 +39,10 @@ import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
 
+// AoT requires an exported function for factories
+export function createTranslateLoader(http: Http) {
+  return new TranslateHttpLoader(http, 'https://', '.json');
+}
 
 @NgModule({
   imports: [
@@ -45,10 +50,13 @@ import { ValuesPipe } from './pipes/values.pipe';
     RouterModule,
     FormsModule,
     TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useFactory: (http: Http) => new TranslateStaticLoader(http, 'https://', '.json'),
-      deps: [Http]
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [Http]
+      }
     }),
+
     HttpModule,
     ReactiveFormsModule,
     MaterialModule.forRoot(),

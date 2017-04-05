@@ -5,8 +5,14 @@ import {
 } from '../../imports/test.imports';
 
 import { MultilingualService } from './multilingual.service';
-import { TranslateLoader, TranslateStaticLoader, TranslateModule } from 'ng2-translate';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
 import { Http } from '@angular/http';
+
+export function createTranslateLoader(http: Http) {
+  return new TranslateHttpLoader(http, 'assets/i18n', '.json');
+}
 
 export function main() {
   describe('Multilingual Service', () => {
@@ -15,10 +21,12 @@ export function main() {
       TestBed.configureTestingModule({
         imports: [
           TranslateModule.forRoot({
-            provide: TranslateLoader,
-            useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-            deps: [Http]
-          }),
+            loader: {
+              provide: TranslateLoader,
+              useFactory: createTranslateLoader,
+              deps: [Http]
+            }
+          })
         ],
         providers: [
           ...beforeEachProvidersArray,

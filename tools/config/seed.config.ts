@@ -384,7 +384,8 @@ export class SeedConfig {
       `/node_modules/*/package.json`,
       `/node_modules/**/package.json`,
       `/node_modules/@angular/*/package.json`,
-      `/node_modules/@ngrx/*/package.json`
+      `/node_modules/@ngrx/*/package.json`,
+      `/node_modules/@ngx-translate/*/package.json`
     ],
     paths: {
       [this.BOOTSTRAP_MODULE]: `${this.APP_BASE}${this.BOOTSTRAP_MODULE}`,
@@ -409,10 +410,13 @@ export class SeedConfig {
       '@angular/platform-browser-dynamic/testing':
       'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
       '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
-      'ng2-translate': 'node_modules/ng2-translate/bundles/index.js',
       'rxjs/*': 'node_modules/rxjs/*',
       '@ngrx/core': 'node_modules/@ngrx/core/bundles/core.min.umd.js',
       '@ngrx/store': 'node_modules/@ngrx/store/bundles/store.min.umd.js',
+
+      '@ngx-translate/core': 'node_modules/@ngx-translate/core/bundles/core.umd.js',
+      '@ngx-translate/http-loader': 'node_modules/@ngx-translate/http-loader/bundles/http-loader.umd.js',
+
       'wazee-frame-formatter': 'node_modules/wazee-frame-formatter/dist/index.js',
       '@angular/material': 'node_modules/@angular/material/bundles/material.umd.js',
       'app/*': '/app/*',
@@ -442,7 +446,8 @@ export class SeedConfig {
     packageConfigPaths: [
       join('node_modules', '*', 'package.json'),
       join('node_modules', '@angular', '*', 'package.json'),
-      join('node_modules', '@ngrx', '*', 'package.json')
+      join('node_modules', '@ngrx', '*', 'package.json'),
+      join('node_modules', '@ngx-translate', '*', 'package.json')
     ],
 
     paths: {

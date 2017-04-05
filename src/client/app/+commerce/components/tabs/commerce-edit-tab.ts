@@ -17,7 +17,7 @@ import { WindowRef } from '../../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../../shared/interfaces/asset.interface';
 import { QuoteFormComponent } from '../../+quote/components/quote-form.component';
 import { PurchaseType, QuoteOptions } from '../../../shared/interfaces/quote.interface';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 
 export class CommerceEditTab extends Tab implements OnInit, OnDestroy {

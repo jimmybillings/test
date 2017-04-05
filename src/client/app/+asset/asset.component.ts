@@ -12,7 +12,7 @@ import { SearchContext } from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
 import { Observable } from 'rxjs/Rx';
 import { MdSnackBar } from '@angular/material';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.component';
 import { ErrorStore } from '../shared/stores/error.store';

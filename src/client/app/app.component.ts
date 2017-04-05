@@ -17,7 +17,7 @@ import { CartService } from './shared/services/cart.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
 import { MdSnackBar } from '@angular/material';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { WindowRef } from './shared/services/window-ref.service';
 
 // /Interfaces

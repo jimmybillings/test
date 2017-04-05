@@ -50,7 +50,7 @@ module.exports = function (config) {
       { pattern: 'node_modules/@angular/**/*.js', included: false, watched: true },
       { pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: false },
 
-      { pattern: 'node_modules/ng2-translate/**/*.js', included: false, watched: false },
+      { pattern: 'node_modules/@ngx-translate/**/*.js', included: false, watched: false },
       { pattern: 'node_modules/@ngrx/**/*.js', included: false, watched: false },
       { pattern: 'node_modules/pikaday/pikaday.js', included: false, watched: false },
       { pattern: 'node_modules/clipboard/dist/clipboard.min.js', included: false, watched: false },
