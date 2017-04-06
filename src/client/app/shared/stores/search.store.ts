@@ -14,7 +14,7 @@ const initAssets: any = {
   }
 };
 
-export const searchStore: ActionReducer<any> = (state: any = initAssets, action: Action) => {
+export function searchStore(state: any = initAssets, action: Action) {
 
   switch (action.type) {
     case 'SEARCH':

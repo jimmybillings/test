@@ -7,7 +7,7 @@ import { Api } from '../../shared/interfaces/api.interface';
 import { ActiveFilters } from '../interfaces/filters.interface';
 
 const initFilters: any = {};
-export const filters: ActionReducer<any> = (state: Array<any> = initFilters, action: Action) => {
+export function filters(state: Array<any> = initFilters, action: Action) {
   switch (action.type) {
     case 'FILTERS.SET_FILTERS':
       return Object.assign({}, JSON.parse(JSON.stringify(action.payload)));

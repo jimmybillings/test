@@ -4,7 +4,7 @@ import { Store, ActionReducer, Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { ErrorStore } from '../stores/error.store';
 
-export const currentUser: ActionReducer<any> = (state = {}, action: Action) => {
+export function currentUser(state = {}, action: Action) {
 
   switch (action.type) {
     case 'SET_USER':

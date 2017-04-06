@@ -42,7 +42,7 @@ const emptyCart: CartState = {
   }
 };
 
-export const cart: ActionReducer<any> = (state: any = emptyCart, action: Action) => {
+export function cart(state: any = emptyCart, action: Action) {
   switch (action.type) {
     case 'REPLACE_CART':
       return Object.assign({}, state, { cart: action.payload });

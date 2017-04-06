@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 
-export const errorStore: ActionReducer<any> = (state = {}, action: Action) => {
+export function errorStore(state = {}, action: Action) {
   switch (action.type) {
     case 'UPDATE_ERROR':
       return Object.assign({}, state, action.payload);

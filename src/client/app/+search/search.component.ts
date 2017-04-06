@@ -32,6 +32,9 @@ export class SearchComponent implements OnDestroy, OnInit {
   public speedviewData: any;
   public screenWidth: number;
   public path: any;
+  public userPreferences: UserPreferenceService;
+  public search: SearchService;
+  public sortDefinition: SortDefinitionsService;
   @ViewChild(WzSpeedviewComponent) public wzSpeedview: any;
 
   constructor(
@@ -41,12 +44,12 @@ export class SearchComponent implements OnDestroy, OnInit {
     public filter: FilterService,
     private cart: CartService,
     private assetService: AssetService,
-    private sortDefinition: SortDefinitionsService,
+    private sortDefinitionService: SortDefinitionsService,
     private error: ErrorStore,
     private searchContext: SearchContext,
     private uiConfig: UiConfig,
-    private search: SearchService,
-    private userPreferences: UserPreferenceService,
+    private searchService: SearchService,
+    private userPreferencesService: UserPreferenceService,
     private renderer: Renderer,
     private window: WindowRef,
     private snackBar: MdSnackBar,
@@ -56,6 +59,9 @@ export class SearchComponent implements OnDestroy, OnInit {
     private detector: ChangeDetectorRef) {
     this.screenWidth = this.window.nativeWindow.innerWidth;
     this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
+    this.userPreferences = userPreferencesService;
+    this.search = searchService;
+    this.sortDefinition = sortDefinitionService;
   }
 
   ngOnInit(): void {

@@ -4,7 +4,7 @@ import { Store, ActionReducer, Action } from '@ngrx/store';
 
 import { Gallery, GalleryResults, GalleryPath } from '../interfaces/gallery-view.interface';
 
-export const gallery: ActionReducer<Gallery> = (state: Gallery = initialState(), action: Action) => {
+export function gallery(state: Gallery = initialState(), action: Action) {
   switch (action.type) {
     case 'REPLACE_GALLERY':
       return Object.assign({}, action.payload ? action.payload : initialState());

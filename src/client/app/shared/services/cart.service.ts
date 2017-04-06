@@ -19,7 +19,7 @@ export class CartService {
     private currentUser: CurrentUserService
   ) { }
 
-  public get data(): Observable<CartStore> {
+  public get data(): Observable<CartState> {
     return this.store.data;
   }
 

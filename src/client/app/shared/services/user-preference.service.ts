@@ -15,7 +15,7 @@ const defaultPreferences: any = {
   pricingPreferences: ''
 };
 
-export const userPreferences: ActionReducer<any> = (state = defaultPreferences, action: Action) => {
+export function userPreferences(state = defaultPreferences, action: Action) {
   switch (action.type) {
     case 'USER_PREFS.UPDATE_PREFERENCES':
       return Object.assign({}, state, action.payload);

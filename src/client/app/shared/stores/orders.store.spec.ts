@@ -4,12 +4,12 @@ import { orders, OrdersStore } from './orders.store';
 export function main() {
   describe('orders reducer', () => {
     it('returns the payload for ORDERS.GET_ORDERS', () => {
-      expect(orders({ current: 'State' }, { type: 'ORDERS.GET_ORDERS', payload: { someKey: 'someValue' } }))
+      expect(orders({ current: 'State' } as any, { type: 'ORDERS.GET_ORDERS', payload: { someKey: 'someValue' } }))
         .toEqual({ someKey: 'someValue' });
     });
 
     it('returns the current state for an unexpected action type', () => {
-      expect(orders({ current: 'State' }, { type: 'BLAH', payload: { someKey: 'someValue' } }))
+      expect(orders({ current: 'State' } as any, { type: 'BLAH', payload: { someKey: 'someValue' } }))
         .toEqual({ current: 'State' });
     });
 

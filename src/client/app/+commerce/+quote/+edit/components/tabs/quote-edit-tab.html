@@ -15,7 +15,7 @@
 
 <projects-component
   [quoteType]="quoteType"
-  [projects]="commerceService.projects | async"
+  [projects]="quoteEditService.projects | async"
   [config]="config" 
   [userCan]="userCan" 
   (projectsNotify)="onNotification($event)">
@@ -28,13 +28,13 @@
         {{ 'CART.CART_TOTAL' | translate }} 
       </span>
       <span class="total-amount">
-        {{ commerceService.total | async | currency:'USD':true:'1.2-2' }}
+        {{ quoteEditService.total | async | currency:'USD':true:'1.2-2' }}
       </span>
 		</div>
     <div flex="100" layout="row" layout-align="center center">
       <administer-quote-component
         flex="100"
-        [cart]="commerceService.cart | async"
+        [cart]="quoteEditService.cart | async"
         [userCanProceed]="userCanProceed"
         (openQuoteDialog)="onOpenQuoteDialog()"
         (saveAsDraft)="onSaveAsDraft()">

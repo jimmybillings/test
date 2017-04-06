@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, V
 import { PlayerStateService } from '../../services/player-state.service';
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
 import { SubclipMarkers, SubclipMarkerFrames } from '../../../../interfaces/asset.interface';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
 import { Frame } from 'wazee-frame-formatter';
 import { PlayerState, PlayerStateChanges, PlayerRequest } from '../../interfaces/player.interface';
 
@@ -47,6 +47,10 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
   }
 
   constructor(private playerStateService: PlayerStateService) { }
+
+  public get playerState(): Observable<any> {
+    return this.playerStateService.state;
+  }
 
   public ngOnInit(): void {
     this.playerStateSubscription = this.playerStateService.state.subscribe(this.onStateChange.bind(this));

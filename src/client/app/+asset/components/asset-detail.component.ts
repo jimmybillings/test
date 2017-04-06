@@ -2,7 +2,6 @@ import { Component, Output, EventEmitter, Input, OnChanges, ChangeDetectionStrat
 import { Collection } from '../../shared/interfaces/collection.interface';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
-import { UiState } from '../../shared/services/ui.state';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
 import { SubclipMarkers, SubclipMarkerFrames } from '../../shared/interfaces/asset.interface';

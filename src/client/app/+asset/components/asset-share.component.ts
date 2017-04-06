@@ -17,7 +17,6 @@ import { Subscription } from 'rxjs/Rx';
 
 export class AssetShareComponent {
   @Input() userEmail: string;
-  @Input() uiState: any;
   @Input() config: any;
   @Input() assetThumbnailUrl: any;
   @Input() assetName: any;

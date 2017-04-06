@@ -8,6 +8,7 @@ export interface Quote {
   total: number;
   itemCount?: number;
   quoteStatus: 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED';
+  purchaseType?: 'string';
 }
 
 export interface QuoteOptions {

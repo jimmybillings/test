@@ -4,7 +4,7 @@ import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
 
 const adminState: AdminState = { items: [], pagination: {} };
-export const adminResources: ActionReducer<AdminState> = (state = adminState, action: Action) => {
+export function adminResources(state = adminState, action: Action) {
   switch (action.type) {
     case 'ADMIN_SERVICE.SET_RESOURCES':
       return Object.assign({}, state, action.payload);

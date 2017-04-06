@@ -6,7 +6,7 @@ import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 
-export const asset: ActionReducer<any> = (state = {}, action: Action) => {
+export function asset(state = {}, action: Action) {
   switch (action.type) {
     case 'SET_ASSET':
       return Object.assign({}, action.payload);

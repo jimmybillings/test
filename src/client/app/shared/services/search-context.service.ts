@@ -10,7 +10,7 @@ const initSearchContext: any = {
   sortId: 0
 };
 
-export const searchContext: ActionReducer<any> = (state: any = initSearchContext, action: Action) => {
+export function searchContext(state: any = initSearchContext, action: Action) {
   switch (action.type) {
     case 'SEARCHCONTEXT.CREATE':
       return Object.assign({}, action.payload);

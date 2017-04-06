@@ -19,7 +19,7 @@
               <span  *ngIf="asset.timeStart" class="mdata-3">
                 <span>{{frame(asset.metaData[6].value, asset.timeEnd - asset.timeStart) | timecode}}</span>
               </span>
-              <span *ngIf="asset.metaData[4] && asset.metaData[4].name == 'Resource.Class' && asset.metaData[4].value == 'Image'" class="mdata-4">
+              <span *ngIf="asset.metaData[4] && asset.metaData[4].name === 'Resource.Class' && asset.metaData[4].value === 'Image'" class="mdata-4">
                 <span class="{{asset.metaData[4].value | lowercase}}"></span>
               </span>
             </div>
@@ -187,7 +187,7 @@
           <button md-menu-item (click)="editAsset(asset)">
             <md-icon>theaters</md-icon>
             <span>
-              {{ (!asset.timeStart == '' ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING' : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
+              {{ (asset.timeStart !== '' ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING' : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
             </span>
           </button>
           <button [disabled]="true" md-menu-item (click)="editAsset(asset)">

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import { Order } from '../interfaces/cart.interface';
 
 const initState: any = { id: 1, projects: [], orderStatus: '', orderType: '' };
-export const order: ActionReducer<any> = (state: any = initState, action: Action) => {
+export function order(state: any = initState, action: Action) {
   switch (action.type) {
     case 'ORDER.SET_CURRENT_ORDER':
       return Object.assign({}, action.payload);

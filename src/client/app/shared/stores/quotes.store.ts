@@ -15,7 +15,7 @@ const initState: QuoteList = {
   }
 };
 
-export const quotes: ActionReducer<any> = (state: any = initState, action: Action) => {
+export function quotes(state: any = initState, action: Action) {
   switch (action.type) {
     case 'QUOTES.SET_QUOTES':
       return Object.assign({}, action.payload);

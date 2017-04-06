@@ -9,7 +9,7 @@ const InitUiState: any = {
   filtersAreAvailable: false
 };
 
-export const uiState: ActionReducer<any> = (state = InitUiState, action: Action) => {
+export function uiState(state = InitUiState, action: Action) {
 
   switch (action.type) {
     case 'UI.STATE.INITIALIZE':

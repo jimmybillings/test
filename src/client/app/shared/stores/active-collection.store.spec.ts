@@ -37,7 +37,7 @@ export function main() {
 
       it('returns current state merged with payload when current state is passed in', () => {
         expect(activeCollection(
-          { property1: 'existing1', property2: 'existing2' },
+          { property1: 'existing1', property2: 'existing2' } as any,
           { type: 'UPDATE_ACTIVE_COLLECTION', payload: { property1: 'new', other: 'stuff' } }
         ))
           .toEqual({ property1: 'new', property2: 'existing2', other: 'stuff', assetsCount: 0 });
@@ -57,7 +57,7 @@ export function main() {
 
       it('ignores payload and returns initial state when current state is passed in', () => {
         expect(activeCollection(
-          { property1: 'existing1', property2: 'existing2' },
+          { property1: 'existing1', property2: 'existing2' } as any,
           { type: 'RESET_ACTIVE_COLLECTION', payload: { property1: 'new', other: 'stuff' } }
         ))
           .toEqual(initialState);
@@ -77,19 +77,19 @@ export function main() {
 
       it('returns current state plus the new asset payload when current state is passed in', () => {
         expect(activeCollection(
-          { assets: { items: [{ some: 'item1' }] }, assetsCount: 1 },
+          { assets: { items: [{ some: 'item1' }] }, assetsCount: 1 } as any,
           { type: 'ADD_ASSET_TO_COLLECTION', payload: { some: 'item2' } }
         ))
           .toEqual({ assets: { items: [{ some: 'item2' }, { some: 'item1' }] }, assetsCount: 2 });
       });
 
       it('returns current state plus the new asset payload when current state is passed in with assets undefined', () => {
-        expect(activeCollection({}, { type: 'ADD_ASSET_TO_COLLECTION', payload: { some: 'item1' } }))
+        expect(activeCollection({} as any, { type: 'ADD_ASSET_TO_COLLECTION', payload: { some: 'item1' } }))
           .toEqual({ assets: { items: [{ some: 'item1' }] }, assetsCount: 1 });
       });
 
       it('returns current state plus the new asset payload when current state is passed in with items undefined', () => {
-        expect(activeCollection({ assets: {} }, { type: 'ADD_ASSET_TO_COLLECTION', payload: { some: 'item1' } }))
+        expect(activeCollection({ assets: {} } as any, { type: 'ADD_ASSET_TO_COLLECTION', payload: { some: 'item1' } }))
           .toEqual({ assets: { items: [{ some: 'item1' }] }, assetsCount: 1 });
       });
 
@@ -112,26 +112,38 @@ export function main() {
 
       it('returns current state minus the specified asset payload when current state is passed in', () => {
         expect(activeCollection(
-          { assets: { pagination: {totalCount: 2}, items: [{ assetId: 42, uuid: 't123' },
-          { assetId: 47, uuid: 't456' }] }, assetsCount: 2 },
+          {
+            assets: {
+              pagination: { totalCount: 2 }, items: [{ assetId: 42, uuid: 't123' },
+              { assetId: 47, uuid: 't456' }]
+            }, assetsCount: 2
+          } as any,
           { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: 't123' }
         ))
-          .toEqual({ assets: { pagination: {totalCount: 1}, items: [{ assetId: 47, uuid: 't456' }] }, assetsCount: 1 });
+          .toEqual({ assets: { pagination: { totalCount: 1 }, items: [{ assetId: 47, uuid: 't456' }] }, assetsCount: 1 });
       });
 
       it('returns current state when current state is passed in and specified asset payload is not present', () => {
         expect(activeCollection(
-          { assets: { pagination: {totalCount: 2}, items: [{ assetId: 42, uuid: 't123' },
-          { assetId: 47, uuid: 't456' }] }, assetsCount: 2 },
+          {
+            assets: {
+              pagination: { totalCount: 2 }, items: [{ assetId: 42, uuid: 't123' },
+              { assetId: 47, uuid: 't456' }]
+            }, assetsCount: 2
+          } as any,
           { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { assetId: 86, uuid: 't789' } }
         ))
-          .toEqual({ assets: { pagination: {totalCount: 1}, items: [{ assetId: 42, uuid: 't123' },
-          { assetId: 47, uuid: 't456' }] }, assetsCount: 1 });
+          .toEqual({
+            assets: {
+              pagination: { totalCount: 1 }, items: [{ assetId: 42, uuid: 't123' },
+              { assetId: 47, uuid: 't456' }]
+            }, assetsCount: 1
+          });
       });
 
       it('returns current state when current state is passed in with assets undefined', () => {
         expect(activeCollection(
-          {},
+          {} as any,
           { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { assetId: 86 } }
         ))
           .toEqual({});
@@ -139,7 +151,7 @@ export function main() {
 
       it('returns current state when current state is passed in with items undefined', () => {
         expect(activeCollection(
-          { assets: {} },
+          { assets: {} } as any,
           { type: 'REMOVE_ASSET_FROM_COLLECTION', payload: { assetId: 86 } }
         ))
           .toEqual({ assets: {} });
@@ -153,7 +165,7 @@ export function main() {
 
     describe('Unexpected action type', () => {
       it('returns the current state when current state is passed in', () => {
-        expect(activeCollection({ current: 'state' }, { type: 'BLAH', payload: { someKey: 'someValue' } }))
+        expect(activeCollection({ current: 'state' } as any, { type: 'BLAH', payload: { someKey: 'someValue' } }))
           .toEqual({ current: 'state' });
       });
 

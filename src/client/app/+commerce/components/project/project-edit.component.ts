@@ -12,7 +12,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
         {{ 'CART.PROJECTS.FORM.TITLE' | translate }}
       </h1>
       <md-dialog-content>
-        <wz-form *ngIf="!readOnly" [items]="items" submitLabel="{{ 'CART.PROJECTS.FORM.SUBMIT_LABEL' | translate }}"
+        <wz-form [items]="items" submitLabel="{{ 'CART.PROJECTS.FORM.SUBMIT_LABEL' | translate }}"
         (formSubmit)="dialog.close($event)"></wz-form>
       </md-dialog-content>
     </div>`,

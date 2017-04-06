@@ -8,7 +8,7 @@ const initState: Features = {
   disableCollectionAccess: false
 };
 
-export const features: ActionReducer<any> = (state: Features = initState, action: Action) => {
+export function features(state: Features = initState, action: Action) {
   switch (action.type) {
     case 'FEATURE.SET_STATE':
       return Object.assign({}, state, action.payload);

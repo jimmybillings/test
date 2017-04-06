@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription, Observable } from 'rxjs/Rx';
 import { MultilingualService } from './shared/services/multilingual.service';
 // Services
 import { CurrentUserService } from './shared/services/current-user.service';
@@ -19,7 +19,6 @@ import { Capabilities } from './shared/services/capabilities.service';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { WindowRef } from './shared/services/window-ref.service';
-
 // /Interfaces
 import { ILang } from './shared/interfaces/language.interface';
 
@@ -32,6 +31,7 @@ import { ILang } from './shared/interfaces/language.interface';
 export class AppComponent implements OnInit {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
+  public userCan: Capabilities;
   private bootStrapUserDataSubscription: Subscription;
   @HostListener('document:scroll', ['$event.target'])
   public onScroll(targetElement: any) {
@@ -50,18 +50,23 @@ export class AppComponent implements OnInit {
     public userPreference: UserPreferenceService,
     private notification: WzNotificationService,
     private apiConfig: ApiConfig,
-    private userCan: Capabilities,
-    private cart: CartService,
+    private capabilities: Capabilities,
+    private cartService: CartService,
     private window: WindowRef,
     private filter: FilterService,
     private sortDefinition: SortDefinitionsService,
     private snackBar: MdSnackBar,
     private translate: TranslateService) {
+    this.userCan = capabilities;
   }
 
   ngOnInit() {
     this.routerChanges();
     this.processUser();
+  }
+
+  public get cartCount(): Observable<any> {
+    return this.cartService.data.map((data) => data.cart.itemCount);
   }
 
   public logout(): void {
@@ -113,7 +118,7 @@ export class AppComponent implements OnInit {
         this.collections.load().subscribe(() => { });
       });
     }
-    this.cart.getCartSummary();
+    this.cartService.getCartSummary();
     this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });

@@ -7,7 +7,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
     <md-card-title>Coming Soon!</md-card-title>
     <md-card-subtitle>Apologies!! This feature has not been implemented yet. Please keep checking for it.</md-card-subtitle>
     <md-card-actions align="end" class="confirmation-buttons">
-      <button md-button color="primary" (click)="dialog.close()">Close</button>
+      <button md-button color="primary">Close</button>
     </md-card-actions>
   </md-card>`,
   styles: [

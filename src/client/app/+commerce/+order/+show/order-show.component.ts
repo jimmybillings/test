@@ -9,7 +9,7 @@ import { WindowRef } from '../../../shared/services/window-ref.service';
 })
 
 export class OrderShowComponent {
-  constructor(public window: WindowRef, private order: OrderService) { }
+  constructor(public window: WindowRef, public order: OrderService) { }
 
   public translationReady(field: any) {
     return 'assetmetadata.' + field.replace(/\./g, '_');

@@ -6,7 +6,7 @@ import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
 
 const InitState: any = { loaded: false, components: {} };
-export const config: ActionReducer<any> = (state = InitState, action: Action) => {
+export function config(state = InitState, action: Action) {
 
   switch (action.type) {
     case 'INITIALIZE':

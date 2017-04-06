@@ -4,7 +4,7 @@ import { Store, ActionReducer, Action } from '@ngrx/store';
 
 import { Collection, CollectionStore, Items, Assets } from '../interfaces/collection.interface';
 
-export const activeCollection: ActionReducer<any> = (state: Collection = initialState(), action: Action) => {
+export function activeCollection(state: Collection = initialState(), action: Action) {
   if (state === null) state = initialState();
 
   let updatedAssets: Items;
@@ -34,7 +34,7 @@ export const activeCollection: ActionReducer<any> = (state: Collection = initial
       updatedAssets = JSON.parse(JSON.stringify(state.assets));
       updatedAssets.items = updatedAssets.items.filter((item: Assets) => item.uuid !== action.payload);
       updatedAssets.pagination.totalCount = updatedAssets.pagination.totalCount - 1;
-      if(updatedAssets.pagination.totalCount < 0) updatedAssets.pagination.totalCount = 0;
+      if (updatedAssets.pagination.totalCount < 0) updatedAssets.pagination.totalCount = 0;
       const countWithAssetRemoved: number = (state.assetsCount > 0) ? state.assetsCount - 1 : 0;
       return Object.assign({}, state, { assets: updatedAssets, assetsCount: countWithAssetRemoved });
 

@@ -39,13 +39,13 @@
 
 						<div flex-gt-xs="33" layout-md="100" flex="100" class="actions" layout-align="end center">
 							<button md-icon-button title="{{ 'COLLECTION.SHOW.EDIT_BTN_TITLE' | translate }}" (click)="editCollection();resetCollection()"><md-icon>edit</md-icon></button>
-							<button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" (click)="showShare(collection)" [disabled]="true"><md-icon>share</md-icon></button>
-							<button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" (click)="showComments($event)" [disabled]="true"><md-icon>mode_comment</md-icon></button>
+							<button md-icon-button title="{{ 'COLLECTION.SHOW.SHARE_BTN_TITLE' | translate }}" [disabled]="true"><md-icon>share</md-icon></button>
+							<button md-icon-button title="{{ 'COLLECTION.SHOW.COMMENT_BTN_TITLE' | translate }}" [disabled]="true"><md-icon>mode_comment</md-icon></button>
 							<button md-icon-button title="{{ 'COLLECTION.SHOW.MORE_BTN_TITLE' | translate }}" [md-menu-trigger-for]="moreShowCollectionOptions"><md-icon>more_vert</md-icon></button>
 
 							<md-menu class="more-collections-menu" x-position="before" #moreShowCollectionOptions="mdMenu">
 								<button md-menu-item disabled><md-icon>file_download</md-icon>Download all comps</button>
-								<button md-menu-item disabled (click)="showHistory(collection)"><md-icon>history</md-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}</button>
+								<button md-menu-item disabled><md-icon>history</md-icon>{{ 'COLLECTION.SHOW.HISTORY_BTN_TITLE' | translate }}</button>
 								<div class="divider"></div>
 								<button md-menu-item disabled><md-icon>import_export</md-icon>Export collection as XML</button>
 								<button md-menu-item disabled><md-icon>print</md-icon>Print collection asset list</button>

@@ -10,7 +10,7 @@ const initSortState: any = {
   currentSort: {}
 };
 
-export const sortDefinitions: ActionReducer<any> = (state = initSortState, action: Action) => {
+export function sortDefinitions(state = initSortState, action: Action) {
   switch (action.type) {
     case 'SORTS.UPDATE_DEFINITIONS':
       return Object.assign({}, state, action.payload);

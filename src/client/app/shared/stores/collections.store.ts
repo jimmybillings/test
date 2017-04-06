@@ -4,7 +4,7 @@ import { Store, ActionReducer, Action } from '@ngrx/store';
 
 import { Collection, Collections, CollectionStore } from '../interfaces/collection.interface';
 
-export const collections: ActionReducer<any> = (state: Collections = initialState(), action: Action) => {
+export function collections(state: Collections = initialState(), action: Action) {
   if (state === null) state = initialState();
 
   let updatedItems: Collection[];

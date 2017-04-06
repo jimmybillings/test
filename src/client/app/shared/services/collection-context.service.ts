@@ -18,7 +18,7 @@ const collectionOptionsState: any = {
   currentSearchQuery: { 'q': '' }
 };
 
-export const collectionOptions: ActionReducer<any> = (state = collectionOptionsState, action: Action) => {
+export function collectionOptions(state = collectionOptionsState, action: Action) {
   switch (action.type) {
     case 'RESET_OPTIONS':
       return Object.assign({}, action.payload);

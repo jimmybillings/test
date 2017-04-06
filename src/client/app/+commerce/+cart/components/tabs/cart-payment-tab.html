@@ -38,7 +38,7 @@
       <md-icon>keyboard_backspace</md-icon>
       {{ 'CART.PAYMENT.BACK_BTN' | translate }}
     </button>
-    <button md-raised-button class="checkout" (click)="goToNextTab()" [disabled]="!(userCanProceed | async)">
+    <button md-raised-button class="checkout" (click)="goToNextTab()">
       {{ 'CART.BILLING.FORWARD_BTN' | translate }}
     </button>
   </nav>

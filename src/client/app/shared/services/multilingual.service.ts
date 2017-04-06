@@ -17,7 +17,7 @@ const MULTILINGUAL_ACTIONS: any = {
 };
 
 // ActionReducer
-export const multilingualActionReducer: ActionReducer<MultilingualStateI> = (state: MultilingualStateI = initialState, action: Action) => {
+export function multilingualActionReducer(state: MultilingualStateI = initialState, action: Action) {
   switch (action.type) {
     case MULTILINGUAL_ACTIONS.LANG_CHANGE:
       return Object.assign({}, state, action.payload);

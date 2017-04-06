@@ -25,7 +25,7 @@ export class Capabilities implements CartCapabilities, CollectionCapabilities, A
   downloadCleanComps: (hasComp: boolean) => boolean;
   downloadFullComps: (hasComp: boolean) => boolean;
   createAccessInfo: () => boolean;
-  createSubclips: () => boolean;
+  createSubclips: (asset: any) => boolean;
   viewAdmin: () => boolean;
   viewCollectionTray: () => Observable<boolean>;
   viewSearchBar: () => Observable<boolean>;

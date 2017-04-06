@@ -5,7 +5,7 @@ import { Quote } from '../interfaces/quote.interface';
 
 const initState: any = {};
 
-export const quote: ActionReducer<any> = (state: any = initState, action: Action) => {
+export function quote(state: any = initState, action: Action) {
   switch (action.type) {
     case 'QUOTE.SET_QUOTE':
       return Object.assign({}, action.payload);
