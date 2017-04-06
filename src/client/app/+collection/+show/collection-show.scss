@@ -28,7 +28,7 @@ collection-show .asset-results-header {
     text-align: right;
     white-space: nowrap;
     button.is-dd.md-icon-button.md-primary {
-      .md-button-wrapper::after {
+      .mat-button-wrapper::after {
         color: mat-color($mat-primary, default);
       }
     }
@@ -83,7 +83,7 @@ wz-subclip-editor > section {
     }
   }
 }
-.subclipping-edit-open .cdk-overlay-pane md-dialog-container.md-dialog-container {
+.subclipping-edit-open .cdk-overlay-pane md-dialog-container.mat-dialog-container {
   padding: rem(.2);
   min-height: rem(33.0);
   wz-subclip-edit-actions {

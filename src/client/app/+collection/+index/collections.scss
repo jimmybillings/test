@@ -296,8 +296,8 @@ wz-item-search-form {
   }
 }
 // Copy legacy link.This may change into copy share link
-.md-dialog-container collection-delete-component .wz-dialog,
-.md-dialog-container .wz-dialog.wz-legacy-link {
+.mat-dialog-container collection-delete-component .wz-dialog,
+.mat-dialog-container .wz-dialog.wz-legacy-link {
   padding: rem(.2) rem(.2) rem(.6);
   width: rem(42.0);
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {

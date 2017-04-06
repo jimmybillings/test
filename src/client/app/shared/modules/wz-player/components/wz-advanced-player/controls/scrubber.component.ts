@@ -163,7 +163,7 @@ export class ScrubberComponent {
   }
 
   private updateHoverFrameWith(relativeMouseX: number, scrubber: any): void {
-    const scrubberTrack: any = this.findByClassNameIn(Array.from(scrubber.children), 'md-slider-track');
+    const scrubberTrack: any = this.findByClassNameIn(Array.from(scrubber.children), 'mat-slider-wrapper');
     const scrubberTrackWidth: number = scrubberTrack.offsetWidth;
     const newFrameNumber: number = Math.round(relativeMouseX * this.playerState.durationFrame.frameNumber / scrubberTrackWidth);
 

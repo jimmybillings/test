@@ -15,28 +15,18 @@
         margin-bottom: rem(4.6);
       }
     }
-    .md-tab-header {
-      background-color: mat-color($background, card);
-      margin-top: 0;
-      margin-left: 0;
-      margin-right: 0;
-      text-transform: uppercase;
-      border-width: 0 0 1px 0;
-      border-style: solid; 
-      border-color: rgba(mat-color($mat-grey, 400),.5);
-      .md-tab-label {
-        transition: $swift-ease-out;
-        line-height: rem(5.6);
-        height: rem(5.2);
-        &.md-tab-active {
-          opacity: 1;
-          background-color: rgba(mat-color($primary, lighter), .00);
-          color: mat-color($primary, default);
-        }
-        &.md-tab-disabled {
-          opacity: .25;
-        }
-      }
+    .mat-tab-header .mat-tab-list .mat-tab-labels {
+        text-transform: uppercase;
+      //   transition: $swift-ease-out;
+      //   line-height: rem(5.6);
+      //   height: rem(5.2);
+      //   &.mat-tab-active {
+      //     opacity: 1;
+      //     background-color: rgba(mat-color($primary, lighter), .00);
+      //     color: mat-color($primary, default);
+      //   }
+      //   &.mat-tab-disabled {
+      //     opacity: .25;
     }
     md-content {
       min-width: 100%;

@@ -17,27 +17,27 @@ wz-form {
   position: relative;
   form {
     md-select,
-    md-input {
+    .mat-input-container {
       width: 100%;
       margin-top: rem(1.1);
       margin-bottom: rem(1.1);
-      font-size: 1.1em;
+      // font-size: 1.1em;
     }
     md-select {
       position: relative;
     }
     // md-select {
-    //   .md-select-trigger {
+    //   .mat-select-trigger {
     //     height: rem(1.8);
     //     margin: rem(1.6) 0;
     //     padding-bottom: rem(1.0);
     //     line-height: rem(1.4);
     //   }
-    //   .md-select-value {
+    //   .mat-select-value {
     //     top: rem(-.2);
     //     color: currentColor;
     //   }
-    //   .md-select-arrow {
+    //   .mat-select-arrow {
     //     height: rem(.3);
     //   }
     // }
@@ -45,7 +45,8 @@ wz-form {
       text-decoration: underline;
       cursor: pointer;
     }
-    md-card-actions {
+    md-card-actions.mat-card-actions {
+      display: flex;
       margin: rem(1.6) 0 0 0;
       padding: rem(.4) 0;
     }
@@ -76,28 +77,28 @@ wz-form {
 
 // testing error display in form.
 // currently using md-hint this may change with ng2 material recommendation
-md-select.show-errors.ng-invalid:not(.md-select-disabled),
-md-select.ng-touched.ng-dirty.ng-invalid:not(.md-select-disabled),
+md-select.show-errors.ng-invalid:not(.mat-select-disabled),
+md-select.ng-touched.ng-dirty.ng-invalid:not(.mat-select-disabled),
 md-input.show-errors.ng-invalid,
-md-input.ng-touched.ng-dirty.ng-invalid {
-  .md-select-placeholder,
-  .md-input-placeholder {
+.mat-input-container.ng-touched.ng-dirty.ng-invalid { 
+  .mat-select-placeholder,
+  .mat-input-placeholder {
     color: mat-color($warn, 600);
-    &.md-float.md-focused .md-placeholder-required {
+    &.mat-float.mat-focused .mat-placeholder-required {
       color: mat-color($warn, 600);
     }
   }
-  .md-select-arrow,
-  .md-select-trigger {
+  .mat-select-arrow,
+  .mat-select-trigger {
     color: mat-color($warn, 600);
   }
-  .md-select-trigger {
+  .mat-select-trigger {
     border-bottom: 1px solid mat-color($warn, 600);
   }
-  .md-input-wrapper {
-    .md-input-underline {
+  .mat-input-wrapper {
+    .mat-input-underline {
       border-top-color: mat-color($warn, 600);
-      .md-input-ripple {
+      .mat-input-ripple {
         background-color: mat-color($warn, 600);
       }
     }
@@ -108,12 +109,12 @@ md-input.ng-touched.ng-dirty.ng-invalid {
 }
 
 md-checkbox.ng-dirty.ng-invalid {
-  .md-checkbox-inner-container {
-    .md-checkbox-frame {
+  .mat-checkbox-inner-container {
+    .mat-checkbox-frame {
      color: mat-color($mat-warn, 600); 
     }
   }
-  md-hint.md-hint.error {
+  md-hint.mat-hint.error {
     bottom: rem(10);
     color: mat-color($warn, 600);
   }  

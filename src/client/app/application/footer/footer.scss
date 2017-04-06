@@ -48,14 +48,14 @@ app-footer {
         left: rem(.4);
         font-size: 1.7em;
       }
-      .md-select-value {
+      .mat-select-value {
         color: rgba(mat-color($background, background), .55);
       }
-      .md-select-arrow {
+      .mat-select-arrow {
         color: rgba(mat-color($background, background), .38);
       }
-      .md-select-trigger {
-        border-bottom-color:rgba(mat-color($mat-grey, 100),0.07);
+      .mat-select-underline {
+        background-color:rgba(mat-color($mat-grey, 100),0.07);
       }
     }
     h3.md-title {
@@ -72,11 +72,11 @@ app-footer {
       md-list {
         padding: 0;
       }
-      md-list-item, .md-list-item-inner {
+      md-list-item, .mat-list-item-content {
         padding: 0;
         min-height: 0;
       }
-      md-list md-list-item .md-list-item {
+      md-list md-list-item .mat-list-item {
         height: rem(4.0);
         padding: 0;
       }

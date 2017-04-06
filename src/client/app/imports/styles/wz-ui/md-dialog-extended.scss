@@ -10,7 +10,7 @@
   background-image: url("../assets/img/bk/tex/bktx_dgl_lines_light.png");
 }
 // make max-width on very small screens a little bigger than their default 
-md-dialog-container.md-dialog-container {
+md-dialog-container.mat-dialog-container {
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     width: 94vw;
     min-width: rem(33.0);
@@ -23,7 +23,7 @@ md-dialog-content wz-form {
 }
 // This sets the defaults for dialogs. Override widths can be set on specific components.
 // like: md-dialog-content collection-form .wz-dialog {}
-.md-dialog-container .wz-dialog {
+.mat-dialog-container .wz-dialog {
   box-sizing: border-box;
   padding: rem(1.6) rem(1.5) rem(1.6);
   position: relative;
@@ -51,8 +51,8 @@ md-dialog-content wz-form {
       height: 1em;
       width: 1em;
     }
-    &:hover .md-button-focus-overlay,
-    .md-button-focus-overlay {
+    &:hover .mat-button-focus-overlay,
+    .mat-button-focus-overlay {
         opacity: 0;
     }
   }
@@ -62,13 +62,13 @@ md-dialog-content wz-form {
     font-size: rem(2.4);
     font-weight: 400;
   }
-  .md-select-value {
+  .mat-select-value {
     color: mat-color($mat-foreground, secondary-text);
   }
 }
 
 // For the notification dialog, these match the MD specs. The md-dialog currently does not.
-md-dialog-container.md-dialog-container wz-notification-dialog {
+md-dialog-container.mat-dialog-container wz-notification-dialog {
   [md-dialog-title] {
     font-weight: 500;
     color: mat-color($mat-foreground, text);

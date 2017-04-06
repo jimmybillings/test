@@ -10,11 +10,11 @@
  * Once material has better menu support these possibly can be removed.
  ************/
 
-.md-menu-content a[md-menu-item][disabled] md-icon.material-icons,
-.md-menu-content button[md-menu-item][disabled] md-icon.material-icons {
+.mat-menu-content a[md-menu-item][disabled] md-icon.material-icons,
+.mat-menu-content button[md-menu-item][disabled] md-icon.material-icons {
   color: mat-color($foreground, disabled);
 }
-.md-menu-content .divider {
+.mat-menu-content .divider {
   width: 100%;
   margin-top: rem(0);
   padding-bottom: rem(.1);

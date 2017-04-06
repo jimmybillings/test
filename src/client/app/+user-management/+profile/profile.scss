@@ -16,7 +16,7 @@ profile-component .profile-head {
     text-align: right;
     white-space: nowrap;
     button.is-dd.md-icon-button.md-primary {
-      .md-button-wrapper::after {
+      .mat-button-wrapper::after {
         color: mat-color($mat-primary, default);
       }
     }

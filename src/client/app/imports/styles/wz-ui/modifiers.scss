@@ -37,7 +37,7 @@
     // &[hide] {
     //   display: none;
     // }
-    .md-button-wrapper::after {
+    .mat-button-wrapper::after {
       color: mat-color($mat-foreground, secondary-text);
       transition: opacity 0.4s;
       font-family: 'Material Icons';
@@ -47,13 +47,13 @@
       right: rem(.2);
       top: 0;
     }
-    &.md-primary .md-button-wrapper::after {
+    &.md-primary .mat-button-wrapper::after {
       color: contrast-color(mat-color($mat-primary));
     }
-    &.md-accent .md-button-wrapper::after {
+    &.md-accent .mat-button-wrapper::after {
       color: contrast-contrast(mat-color($mat-accent));
     }
-    &.md-warn .md-button-wrapper::after {
+    &.md-warn .mat-button-wrapper::after {
       color: contrast-color(mat-color($mat-warn));
     }
     &.md-icon-button {
@@ -63,7 +63,7 @@
       border-radius: rem(.2);
       padding-left: rem(.4);
       padding-right: rem(1.2);
-      .md-button-wrapper::after {
+      .mat-button-wrapper::after {
         right: rem(-.3);
         top: rem(.3);
       }
