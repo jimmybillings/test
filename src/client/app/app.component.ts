@@ -33,10 +33,6 @@ export class AppComponent implements OnInit {
   public supportedLanguages: Array<ILang> = MultilingualService.SUPPORTED_LANGUAGES;
   public state: string = '';
   private bootStrapUserDataSubscription: Subscription;
-  // @HostListener('document:scroll', ['$event.target'])
-  // public onScroll(targetElement: any) {
-  //   this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
-  // }
 
   constructor(
     public uiConfig: UiConfig,
@@ -61,8 +57,8 @@ export class AppComponent implements OnInit {
     zone.runOutsideAngular(() => {
       document.addEventListener('scroll', () => {
         this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
-      })
-    })
+      });
+    });
   }
 
   ngOnInit() {
