@@ -163,15 +163,15 @@ section.preview-bk {
       }
       md-card-actions {
         md-select {
-          div.md-select-trigger {
-            border-bottom: 1px solid #fff;
-          }
           width: 100%;
           margin-bottom: rem(2);
-          span.md-select-placeholder.md-floating-placeholder,
-          span.md-select-value,
-          span.md-select-arrow {
-            color: #fff;
+          .mat-select-underline {
+            background-color: mat-color($background, background, .2);
+          }
+          .mat-select-placeholder.mat-floating-placeholder,
+          .mat-select-value,
+          .mat-select-arrow {
+            color: mat-color($background, background, .7);
           }
         }
         width: calc(100% - 42px);
