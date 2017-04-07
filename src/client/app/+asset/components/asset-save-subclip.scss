@@ -46,7 +46,10 @@ asset-save-subclip {
     wz-form {
       font-size: rem(1.4);
       form {
-        padding-top: 10px
+        padding-top: 10px;
+        .mat-select-trigger {
+          font-size: rem(1.4);
+        }
       }
     }
   }

@@ -1,19 +1,19 @@
-.md-sidenav-backdrop.md-sidenav-shown {
-  display: none !important;
-}
-md-sidenav {
+// .mat-sidenav-backdrop.mat-sidenav-shown {
+//   display: none !important;
+// }
+.mat-sidenav {
   width: rem(29.0);
-  .cdk-overlay-container {
-    pointer-events: all;
-    opacity: .5;
-  }
+  // .cdk-overlay-container {
+  //   pointer-events: all;
+  //   opacity: .5;
+  // }
 }
 .filter {
   md-list {
     padding-top: 0;
   }
-  md-list md-list-item {
-    &.md-primary .md-list-item {
+  .mat-list md-list-item {
+    &.mat-primary .mat-list-item {
       height: rem(3.0);
       padding: 0 rem(1.6) 0 rem(3.6);
       color: rgba(mat-color($primary, default), 1);
@@ -22,7 +22,7 @@ md-sidenav {
         cursor: pointer;
       }
     }
-    &.md-primary.active .md-list-item {
+    &.mat-primary.active .mat-list-item {
       background-color: rgba(mat-color($primary, default), 1);
       color: mat-color($primary, default-contrast);
     }
@@ -133,10 +133,10 @@ md-sidenav {
   }
 }
 
-.filter .md-checkbox-disabled:not(.md-checkbox-checked) .md-checkbox-label {
+.filter .mat-checkbox-disabled:not(.mat-checkbox-checked) .mat-checkbox-label {
   color: mat-color($foreground, disabled-text);
 }
 
-.filter [color="primary"].md-checkbox-checked .md-checkbox-background {
+.filter [color="primary"].mat-checkbox-checked .mat-checkbox-background {
   background-color: mat-color($primary, default);
 }
