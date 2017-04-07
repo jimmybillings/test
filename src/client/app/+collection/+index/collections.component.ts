@@ -5,7 +5,7 @@ import { ActiveCollectionService } from '../../shared/services/active-collection
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
 import { UiState } from '../../shared/services/ui.state';
 import { MdSnackBar } from '@angular/material';

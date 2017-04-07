@@ -5,7 +5,7 @@ import { CollectionsService } from '../../../shared/services/collections.service
 import { UiConfig } from '../../../shared/services/ui.config';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
 import { ActiveCollectionService } from '../../../shared/services/active-collection.service';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { UiState } from '../../../shared/services/ui.state';
 
 /**

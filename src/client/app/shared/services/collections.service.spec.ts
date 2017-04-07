@@ -2,7 +2,7 @@ import { CollectionsService } from './collections.service';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api } from '../interfaces/api.interface';
 import { Collection } from '../interfaces/collection.interface';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Collections service', () => {

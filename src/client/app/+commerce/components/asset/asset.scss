@@ -7,7 +7,7 @@ section.cart-asset {
       bottom: 0;
       right: 0;
       padding: 0 1% 1% 0;
-      @include text-contrast(md-color($md-foreground, base));
+      @include text-contrast(mat-color($mat-foreground, base));
       transition: $swift-ease-out;
       z-index: 1;
       span {
@@ -31,7 +31,7 @@ section.cart-asset {
         &::before {
           content: "\e412";
           font-family: 'Material Icons';
-          color: rgba(md-color($md-grey, 100),0.4);
+          color: rgba(mat-color($mat-grey, 100),0.4);
           position: absolute;
           top: rem(.3);
           right: rem(-.2);
@@ -44,7 +44,7 @@ section.cart-asset {
     height: 0;
     padding: 56.25% 0 0 0;
     position: relative;
-    background: md-color($foreground, base);
+    background: mat-color($foreground, base);
     img {
       position: absolute;
       display: block;
@@ -65,8 +65,8 @@ section.cart-asset {
       left: 0;
       width: 100%;
       background-image:
-        linear-gradient(-7deg, rgba(md-color($md-grey, 900),0.9), rgba(md-color($md-grey, 900),0) 24%),
-        linear-gradient(7deg, rgba(md-color($md-grey, 900),0) 75%, rgba(md-color($md-grey, 900),.9))
+        linear-gradient(-7deg, rgba(mat-color($mat-grey, 900),0.9), rgba(mat-color($mat-grey, 900),0) 24%),
+        linear-gradient(7deg, rgba(mat-color($mat-grey, 900),0) 75%, rgba(mat-color($mat-grey, 900),.9))
       ;
       opacity: 0.5;
       transition: opacity 1.5s cubic-bezier(0.55, 0, 0.55, 0.2);

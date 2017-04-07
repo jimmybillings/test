@@ -1,5 +1,5 @@
 import { OrdersComponent } from './orders.component';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Orders Component', () => {

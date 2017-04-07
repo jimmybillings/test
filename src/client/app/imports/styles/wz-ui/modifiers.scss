@@ -14,16 +14,16 @@
 [md-button] {
 // outlined button
   &.is-outlined {
-    border: 1px solid md-color($md-foreground, divider);
+    border: 1px solid mat-color($mat-foreground, divider);
     line-height: rem(3.300);
     &.md-primary {
-      border: 1px solid md-color($md-primary, default, .4);
+      border: 1px solid mat-color($mat-primary, default, .4);
     }
     &.md-accent {
-      border: 1px solid md-color($md-accent, 500, .4);
+      border: 1px solid mat-color($mat-accent, 500, .4);
     }
     &.md-warn {
-      border: 1px solid md-color($md-warn, 500, .4);
+      border: 1px solid mat-color($mat-warn, 500, .4);
     }
   }
 // drop down indicator on a button
@@ -37,8 +37,8 @@
     // &[hide] {
     //   display: none;
     // }
-    .md-button-wrapper::after {
-      color: md-color($md-foreground, secondary-text);
+    .mat-button-wrapper::after {
+      color: mat-color($mat-foreground, secondary-text);
       transition: opacity 0.4s;
       font-family: 'Material Icons';
       content: "\e5c5";
@@ -47,14 +47,14 @@
       right: rem(.2);
       top: 0;
     }
-    &.md-primary .md-button-wrapper::after {
-      color: contrast-color(md-color($md-primary));
+    &.md-primary .mat-button-wrapper::after {
+      color: contrast-color(mat-color($mat-primary));
     }
-    &.md-accent .md-button-wrapper::after {
-      color: contrast-contrast(md-color($md-accent));
+    &.md-accent .mat-button-wrapper::after {
+      color: contrast-contrast(mat-color($mat-accent));
     }
-    &.md-warn .md-button-wrapper::after {
-      color: contrast-color(md-color($md-warn));
+    &.md-warn .mat-button-wrapper::after {
+      color: contrast-color(mat-color($mat-warn));
     }
     &.md-icon-button {
       min-width: rem(4.0);
@@ -63,7 +63,7 @@
       border-radius: rem(.2);
       padding-left: rem(.4);
       padding-right: rem(1.2);
-      .md-button-wrapper::after {
+      .mat-button-wrapper::after {
         right: rem(-.3);
         top: rem(.3);
       }
@@ -74,16 +74,16 @@
 md-progress-bar {
     .md-progress-bar-primary.md-progress-bar-fill {
         &:after {
-            background-color:md-color($md-accent, 0);
+            background-color:mat-color($mat-accent, 0);
         }
     }
     .md-progress-bar-secondary.md-progress-bar-fill {
         &:after {
-            background-color:md-color($md-accent);
+            background-color:mat-color($mat-accent);
         }
     }
     .md-progress-bar-buffer {
-        background-color:md-color($md-accent, 100);
+        background-color:mat-color($mat-accent, 100);
     }
 }
 

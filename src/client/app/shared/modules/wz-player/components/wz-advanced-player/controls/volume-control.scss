@@ -1,11 +1,11 @@
-$volume-control-width: $md-icon-button-width;
+$volume-control-width: $mat-icon-button-width;
 $volume-control-height: rem(15);
-$volume-control-slider-height: $volume-control-height - $md-icon-button-height;
-$volume-control-slider-color: darken(md-color($background, background), 8%);
+$volume-control-slider-height: $volume-control-height - $mat-icon-button-height;
+$volume-control-slider-color: darken(mat-color($background, background), 8%);
 
 .volume-control {
   position: absolute;
-  background-color: rgba(lighten(md-color($foreground, base), 21%), .65);
+  background-color: rgba(lighten(mat-color($foreground, base), 21%), .65);
   width: $volume-control-width;
   height: $volume-control-height;
   bottom: 0;
@@ -17,7 +17,7 @@ $volume-control-slider-color: darken(md-color($background, background), 8%);
     right: 0;
   }
 
-  .md-slider-vertical {
+  .mat-slider-vertical {
     position: absolute;
     width: $volume-control-width;
     height: $volume-control-slider-height;
@@ -25,12 +25,14 @@ $volume-control-slider-color: darken(md-color($background, background), 8%);
     padding: rem(1) 0 rem(2) 0;
     left: 0;
     top: 0;
-
-    .md-slider-ticks-container {
+    .mat-slider-wrapper {
+      left: rem(1.8);
+    }
+    .mat-slider-ticks-container {
       display: none;
     }
 
-    .md-slider-track {
+    .mat-slider-track {
       position: relative;
       height: 100%;
       left: 0;
@@ -39,11 +41,11 @@ $volume-control-slider-color: darken(md-color($background, background), 8%);
       cursor: pointer;
     }
 
-    .md-slider-track-fill {
+    .mat-slider-track-fill {
       background-color: $volume-control-slider-color;
     }
 
-    .md-slider-thumb {
+    .mat-slider-thumb {
       height: rem(1);
       width: rem(1);
       right: rem(-0.5);

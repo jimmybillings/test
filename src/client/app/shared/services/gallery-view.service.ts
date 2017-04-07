@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs/Rx';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../services/api.service';
 import { Api, ApiResponse } from '../interfaces/api.interface';
 import { GalleryViewStore } from '../stores/gallery-view.store';

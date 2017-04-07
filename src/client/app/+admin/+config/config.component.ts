@@ -3,7 +3,7 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { TableHeaders, AdminSiteResponse, AdminUiResponse } from '../../shared/interfaces/admin.interface';
 import { ConfigService } from '../services/config.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   moduleId: module.id,

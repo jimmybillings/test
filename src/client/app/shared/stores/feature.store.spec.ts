@@ -1,6 +1,6 @@
 import { features, FeatureStore } from './feature.store';
 import { Feature } from '../interfaces/feature.interface';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   const initState: any = {

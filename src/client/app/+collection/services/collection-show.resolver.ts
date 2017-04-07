@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 

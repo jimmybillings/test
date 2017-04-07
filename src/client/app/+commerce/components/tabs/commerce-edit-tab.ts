@@ -1,6 +1,7 @@
 import { OnInit, OnDestroy, Output, EventEmitter, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
 import { Project, LineItem, Cart } from '../../../shared/interfaces/cart.interface';

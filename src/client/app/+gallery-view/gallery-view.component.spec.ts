@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { GalleryViewComponent } from './gallery-view.component';
 import { GalleryPathSegment } from '../shared/interfaces/gallery-view.interface';

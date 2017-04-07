@@ -12,7 +12,7 @@ import { User } from '../../shared/interfaces/user.interface';
 import { Account } from '../../shared/interfaces/admin.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UiState } from '../../shared/services/ui.state';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { EditLineItemComponent } from './edit-line-item.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
 

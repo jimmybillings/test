@@ -1,6 +1,6 @@
 import { CommerceBillingTab } from './commerce-billing-tab';
 import { Address, ViewAddress } from '../../../shared/interfaces/user.interface';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Billing Tab Component', () => {

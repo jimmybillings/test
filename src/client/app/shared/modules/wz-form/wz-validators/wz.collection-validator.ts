@@ -4,8 +4,7 @@
 import { FormControl } from '@angular/forms';
 // import { CollectionsService } from '../../../../shared/services/collections.service';
 // import { Collections } from '../../../../shared/interfaces/collection.interface';
-// import { Observable } from 'rxjs/Rx';
-// import 'rxjs/Rx';
+// import { Observable } from 'rxjs/Observable';
 
 
 export interface ValidationResult {

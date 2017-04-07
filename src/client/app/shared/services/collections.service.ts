@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Collection, Collections } from '../../shared/interfaces/collection.interface';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { ActiveCollectionService } from './active-collection.service';
 import { CollectionsStore } from '../stores/collections.store';
 import { ApiService } from '../../shared/services/api.service';

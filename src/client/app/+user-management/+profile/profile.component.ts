@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { User } from '../../shared/interfaces/user.interface';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzComingSoonComponent } from '../../shared/components/wz-coming-soon/wz-coming-soon.component';
 

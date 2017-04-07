@@ -4,7 +4,7 @@ import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
 import { ConfigService } from '../services/config.service';
 import { ActivatedRoute } from '@angular/router';
 import { UiSubComponentsA } from '../../shared/interfaces/admin.interface';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,

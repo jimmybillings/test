@@ -16,15 +16,15 @@ md-sidenav {
     &.md-primary .md-list-item {
       height: rem(3.0);
       padding: 0 rem(1.6) 0 rem(3.6);
-      color: rgba(md-color($primary, default), 1);
+      color: rgba(mat-color($primary, default), 1);
       &:hover {
-        background-color: rgba(md-color($foreground, base), .02);
+        background-color: rgba(mat-color($foreground, base), .02);
         cursor: pointer;
       }
     }
     &.md-primary.active .md-list-item {
-      background-color: rgba(md-color($primary, default), 1);
-      color: md-color($primary, default-contrast);
+      background-color: rgba(mat-color($primary, default), 1);
+      color: mat-color($primary, default-contrast);
     }
   } 
   li {
@@ -38,10 +38,10 @@ md-sidenav {
       font-weight: 500;
       letter-spacing: .01em;
       line-height: .9em;
-      color: rgba(md-color($foreground, base), .54);
+      color: rgba(mat-color($foreground, base), .54);
       &:hover {
         cursor: pointer;
-        background-color: rgba(md-color($foreground, base), .02);
+        background-color: rgba(mat-color($foreground, base), .02);
       }
       .filter-subhead-inner {
         display: block;
@@ -58,7 +58,7 @@ md-sidenav {
     md-divider {
       border-top-style: solid;
       border-top-width: 1px;
-      border-top-color: md-color($foreground, divider);
+      border-top-color: mat-color($foreground, divider);
     }
     .exclusive-list .filter-subhead:hover {
       cursor: default;
@@ -99,7 +99,7 @@ md-sidenav {
     display: block;
     margin: rem(-0.4) 0 0 rem(3.2);
     font-size: .75em;
-    color: rgba(md-color($foreground, base), .54);
+    color: rgba(mat-color($foreground, base), .54);
   }
   .input-container {
     margin: rem(.6) 0 rem(1.6) rem(3.2);
@@ -118,7 +118,7 @@ md-sidenav {
     width: 100%;
     border-width: 0 0 1px 0;
     border-style: solid;
-    border-color: md-color($foreground, divider);
+    border-color: mat-color($foreground, divider);
     border-image: none;
     background-color: transparent;
     cursor: pointer;
@@ -127,16 +127,16 @@ md-sidenav {
     position: relative;
     &:focus, &:active {
       outline: none;
-      border-color: md-color($primary, default);
+      border-color: mat-color($primary, default);
       border-width: 0 0 1px 0;
     }
   }
 }
 
 .filter .md-checkbox-disabled:not(.md-checkbox-checked) .md-checkbox-label {
-  color: md-color($foreground, disabled-text);
+  color: mat-color($foreground, disabled-text);
 }
 
 .filter [color="primary"].md-checkbox-checked .md-checkbox-background {
-  background-color: md-color($primary, default);
+  background-color: mat-color($primary, default);
 }

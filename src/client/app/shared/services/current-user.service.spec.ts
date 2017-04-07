@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { CurrentUserService } from './current-user.service';
 import { User } from '../interfaces/user.interface';
 import { ErrorStore } from '../stores/error.store';

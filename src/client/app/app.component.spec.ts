@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { AppComponent } from './app.component';
 import { NavigationEnd } from '@angular/router';
 
@@ -7,7 +7,7 @@ export function main() {
     (<any>window).portal = 'core';
     let mockUiConfig: any, mockRouter: any, mockMultiLingual: any, mockSearchContext: any, mockCurrentUserService: any,
       mockCollections: any, mockActiveCollection: any, mockUiState: any, mockUserPreference: any, mockNotification: any,
-      mockApiConfig: any, mockUserCan: any, mockCart: any, mockWindow: any,
+      mockApiConfig: any, mockUserCan: any, mockCart: any, mockWindow: any, mockNgZone: any,
       mockFilter: any, mockSortDefinition: any;
     let loggedInState = false, canViewCollections = true;
     let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
@@ -66,11 +66,12 @@ export function main() {
       mockWindow = { nativeWindow: { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') } };
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
+      mockNgZone = { runOutsideAngular: () => true };
       componentUnderTest = new AppComponent(
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
         mockCollections, mockActiveCollection, mockUiState, mockUserPreference,
         mockNotification, mockApiConfig, mockUserCan,
-        mockCart, mockWindow, mockFilter, mockSortDefinition, null, null);
+        mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone);
     });
 
 

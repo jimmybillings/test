@@ -2,7 +2,8 @@ import { Output, EventEmitter, NgZone, OnInit, ChangeDetectorRef } from '@angula
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
 import { UiConfig } from '../../../shared/services/ui.config';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 export class CommercePaymentTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;

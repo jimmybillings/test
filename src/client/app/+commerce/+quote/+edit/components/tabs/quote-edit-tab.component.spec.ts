@@ -1,5 +1,5 @@
 import { QuoteEditTabComponent } from './quote-edit-tab.component';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Quotes Component', () => {

@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Response } from '@angular/http';
 import { UserService } from '../../shared/services/user.service';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { UiConfig } from '../../shared/services/ui.config';
 import { ServerErrors } from '../../shared/interfaces/forms.interface';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.component';
 /**

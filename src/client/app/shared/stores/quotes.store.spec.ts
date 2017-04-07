@@ -1,5 +1,5 @@
 import { QuotesStore, quotes } from './quotes.store';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   const initState: any = {

@@ -1,4 +1,4 @@
-<md-sidenav-layout>
+<md-sidenav-container>
 	<md-sidenav #searchFilter [opened]="(userPreferences.data | async).displayFilterTree && (uiState.data | async).filtersAreAvailable" align="start" [mode]="(screenWidth > 600) ? 'side' : 'over'">
 		<md-slide-toggle class="count-toggle" [checked]="(userPreferences.data | async).displayFilterCounts" color="primary" value="toggle" (change)="countToggle()">{{ 'SEARCH.FILTERS.FILTER_COUNT_TOOGLE_LABEL' | translate }}</md-slide-toggle>
 		<filter-component (onFilterEvent)="filterEvent($event)" class="filter" [counted]="(userPreferences.data | async).displayFilterCounts" [filters]="filter.data | async"></filter-component>
@@ -56,6 +56,6 @@
 			</div>
 		</div>
 	</section>
-</md-sidenav-layout>
+</md-sidenav-container>
 
 <wz-speedview [speedviewData]="speedviewData | async"></wz-speedview>

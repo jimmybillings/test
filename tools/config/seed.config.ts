@@ -510,10 +510,6 @@ export class SeedConfig {
         main: 'Rx.js',
         defaultExtension: 'js'
       },
-      '@angular/material': {
-        format: 'cjs',
-        main: 'bundles/material.umd.js',
-      },
       'wazee-frame-formatter': {
         main: 'dist/index.js',
         defaultExtension: 'js'

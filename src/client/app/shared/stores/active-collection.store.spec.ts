@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { activeCollection, ActiveCollectionStore } from './active-collection.store';
 import { Collection } from '../interfaces/collection.interface';

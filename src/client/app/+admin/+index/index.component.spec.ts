@@ -1,5 +1,5 @@
 import { IndexComponent } from './index.component';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Admin Index Component', () => {

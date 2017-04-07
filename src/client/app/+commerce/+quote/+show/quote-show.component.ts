@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { QuoteService } from '../../../shared/services/quote.service';
 import { Quote } from '../../../shared/interfaces/quote.interface';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'quote-show-component',

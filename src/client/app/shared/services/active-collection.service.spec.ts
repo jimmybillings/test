@@ -1,5 +1,5 @@
 import { ActiveCollectionService } from './active-collection.service';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api } from '../interfaces/api.interface';
 import { Collection } from '../interfaces/collection.interface';

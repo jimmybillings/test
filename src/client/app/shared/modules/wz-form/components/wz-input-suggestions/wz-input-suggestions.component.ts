@@ -3,7 +3,8 @@ import {
   ChangeDetectionStrategy, Renderer, OnDestroy, EventEmitter
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../../../../services/api.service';
 import { Api, ApiResponse } from '../../../../interfaces/api.interface';
 

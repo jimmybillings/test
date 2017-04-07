@@ -4,26 +4,26 @@ asset-save-subclip {
   right: 0;
   width: calc(100% - 10px);
   height: calc(100% + 40px);
-  background-color: md-color($background, card);
+  background-color: mat-color($background, card);
   z-index: 2;
   // margin-top: rem(-4.0);
   padding: rem(2.4);
   border-radius: rem(.2);
   box-sizing: border-box;
-  @include md-elevation(6);
-  color: md-color($foreground, text);
+  @include mat-elevation(6);
+  color: mat-color($foreground, text);
   @media screen and (min-width: $layout-breakpoint-sm) {
     max-height: calc(100% + 40px);
     max-width: calc(33% - 4px);
   }
-  .md-dialog-container .wz-dialog {
+  .mat-dialog-container .wz-dialog {
     width: 100%;
     padding: rem(1.4) 0 rem(1.2);
     .wz-dialog-title {
       margin: 0 0 rem(.2);
       font-size: rem(2.2);
       font-weight: 400;
-      color: rgba(md-color($foreground, text), .65);
+      color: rgba(mat-color($foreground, text), .65);
     }
     .collection-name {
       margin: 0;
@@ -37,7 +37,7 @@ asset-save-subclip {
       }
       span {
         padding: rem(.3) rem(.4);
-        background-color:  rgba(md-color($primary), .04);
+        background-color:  rgba(mat-color($primary), .04);
         &:nth-child(2) {
           margin-right: rem(2.6);
         }
@@ -56,6 +56,6 @@ asset-save-subclip {
     bottom: 0;
     width: 100%;
     padding: rem(2.0) 0 rem(2.4);
-    background-color:  rgba(md-color($primary), .1);
+    background-color:  rgba(mat-color($primary), .1);
   }
 }

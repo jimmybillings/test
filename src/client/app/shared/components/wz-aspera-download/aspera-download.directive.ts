@@ -2,7 +2,7 @@ import { Directive, ChangeDetectionStrategy, HostListener, Input } from '@angula
 import { Order } from '../../interfaces/cart.interface';
 import { ApiService } from '../../services/api.service';
 import { Api, ApiOptions } from '../../interfaces/api.interface';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { ErrorStore } from '../../stores/error.store';
 
 declare var AW4: any;

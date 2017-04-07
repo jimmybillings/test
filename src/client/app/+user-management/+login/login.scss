@@ -14,9 +14,9 @@ section.login.hero {
   width: 100%;
   position: relative;
   margin: 0 auto;
-  @include text-contrast(md-color($md-grey, 900));
+  @include text-contrast(mat-color($mat-grey, 900));
   background-image:
-    linear-gradient(md-color($md-grey, 900, .75), md-color($md-grey, 900, .5)),
+    linear-gradient(mat-color($mat-grey, 900, .75), mat-color($mat-grey, 900, .5)),
     url($bk-img-user-management)
   ;
   background-position: 0 0, 0 0, center center;
@@ -29,12 +29,12 @@ section.login.hero {
   }
 }
 md-card.wz-form-card {
-  @include md-elevation(0);
+  @include mat-elevation(0);
   padding: rem(3.6) rem(4.0) rem(3.6) rem(4.0);
   @media screen and (max-width: $layout-breakpoint-xs) {
     padding: rem(2.4) rem(2.2) rem(2.4) rem(2.2);
   }
-  color: md-color($md-foreground, secondary-text);
+  color: mat-color($mat-foreground, secondary-text);
   margin: rem(.8) 0;
   md-card-header {
     height: rem(3.4);
@@ -44,7 +44,7 @@ md-card.wz-form-card {
     }
   }
   .md-select-value {
-    color: md-color($md-foreground, secondary-text);
+    color: mat-color($mat-foreground, secondary-text);
   }
   md-card-title {
     text-align: center;

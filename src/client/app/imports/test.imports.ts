@@ -24,7 +24,7 @@ class MockRouter {
 }
 class MockActivatedRoute { }
 export { Store } from '@ngrx/store';
-export { Observable } from 'rxjs/Rx';
+export { Observable } from 'rxjs/Observable';
 export { Injectable } from '@angular/core';
 export { ActivatedRoute } from '@angular/router';
 export { MockBackend } from '@angular/http/testing';

@@ -1,5 +1,5 @@
 
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { HomeComponent } from './home.component';
 
 export function main() {

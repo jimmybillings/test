@@ -1,5 +1,5 @@
 import { QuotesResolver } from './quotes.resolver';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Quotes Resolver', () => {

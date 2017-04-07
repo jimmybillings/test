@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { UiConfig } from '../shared/services/ui.config';
 import { SearchContext } from '../shared/services/search-context.service';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { UiState } from '../shared/services/ui.state';
 import { FilterService } from '../shared/services/filter.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';

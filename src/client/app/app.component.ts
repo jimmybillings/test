@@ -1,6 +1,8 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import './operators';
+import { Component, OnInit, HostListener, NgZone } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
-import { Subscription, Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { MultilingualService } from './shared/services/multilingual.service';
 // Services
 import { CurrentUserService } from './shared/services/current-user.service';
@@ -33,10 +35,6 @@ export class AppComponent implements OnInit {
   public state: string = '';
   public userCan: Capabilities;
   private bootStrapUserDataSubscription: Subscription;
-  @HostListener('document:scroll', ['$event.target'])
-  public onScroll(targetElement: any) {
-    this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
-  }
 
   constructor(
     public uiConfig: UiConfig,
@@ -56,8 +54,14 @@ export class AppComponent implements OnInit {
     private filter: FilterService,
     private sortDefinition: SortDefinitionsService,
     private snackBar: MdSnackBar,
-    private translate: TranslateService) {
+    private translate: TranslateService,
+    private zone: NgZone) {
     this.userCan = capabilities;
+    zone.runOutsideAngular(() => {
+      document.addEventListener('scroll', () => {
+        this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
+      });
+    });
   }
 
   ngOnInit() {

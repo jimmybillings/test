@@ -1,5 +1,5 @@
 import { AdminIndexResolver } from './admin-index.resolver';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Admin Index Resolver', () => {

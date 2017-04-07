@@ -1,5 +1,5 @@
 import { HomeResolver } from './home.resolver';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Home Resolver', () => {

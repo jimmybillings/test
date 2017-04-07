@@ -1,13 +1,13 @@
 .wz-speedview {
   padding: rem(1.2) rem(1.2) rem(1) rem(1.2);
-  @include md-elevation(6);
-  background-color: md-color($background, card);
+  @include mat-elevation(6);
+  background-color: mat-color($background, card);
   div.image-bg {
     width: rem(40.0);
     height: rem(22.5);
     position: relative;
-    background-image: linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.6)),
-      linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1));
+    background-image: linear-gradient(rgba(mat-color($mat-grey, 900),1), rgba(mat-color($mat-grey, 900),.6)),
+      linear-gradient(rgba(mat-color($mat-grey, 900),.5), rgba(mat-color($mat-grey, 900),1));
     img.image-speedview {
       position: absolute;
       display: block;

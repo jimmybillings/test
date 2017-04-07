@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { GalleryViewService } from './gallery-view.service';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';

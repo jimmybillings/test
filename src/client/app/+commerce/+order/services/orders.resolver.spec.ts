@@ -1,5 +1,5 @@
 import { RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { OrdersResolver } from './orders.resolver';
 

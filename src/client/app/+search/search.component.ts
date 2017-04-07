@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, Renderer, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { SearchService } from '../shared/services/search.service';
 import { UiConfig } from '../shared/services/ui.config';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { SearchContext } from '../shared/services/search-context.service';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
 import { FilterService } from '../shared/services/filter.service';

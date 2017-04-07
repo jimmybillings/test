@@ -2,7 +2,7 @@
 .data-bk, .tabs-section {
   background-color: transparent !important;
   & > div > div {
-    background: rgba(md-color($background, background),.7);
+    background: rgba(mat-color($background, background),.7);
   }
   md-tab-group {
     min-width: 100%;
@@ -15,28 +15,8 @@
         margin-bottom: rem(4.6);
       }
     }
-    .md-tab-header {
-      background-color: md-color($background, card);
-      margin-top: 0;
-      margin-left: 0;
-      margin-right: 0;
-      text-transform: uppercase;
-      border-width: 0 0 1px 0;
-      border-style: solid; 
-      border-color: rgba(md-color($md-grey, 400),.5);
-      .md-tab-label {
-        transition: $swift-ease-out;
-        line-height: rem(5.6);
-        height: rem(5.2);
-        &.md-tab-active {
-          opacity: 1;
-          background-color: rgba(md-color($primary, lighter), .00);
-          color: md-color($primary, default);
-        }
-        &.md-tab-disabled {
-          opacity: .25;
-        }
-      }
+    .mat-tab-header .mat-tab-list .mat-tab-labels {
+        text-transform: uppercase;
     }
     md-content {
       min-width: 100%;
@@ -53,8 +33,8 @@
   text-align: left;
   overflow: hidden;
   padding: 0;
-  background-color: rgba(md-color($md-grey, 100), 1);
-  border-top: 1px solid rgba(md-color($md-grey, 400),.5);
+  background-color: rgba(mat-color($mat-grey, 100), 1);
+  border-top: 1px solid rgba(mat-color($mat-grey, 400),.5);
   display: table;
   min-width: 100%;
   margin-top: rem(3.7);
@@ -64,8 +44,8 @@
   & > .row {
     display: table-row;
     .cell {
-      border-right: 1px solid rgba(md-color($md-grey, 400),.5);
-      border-bottom: 1px solid rgba(md-color($md-grey, 400),.5);
+      border-right: 1px solid rgba(mat-color($mat-grey, 400),.5);
+      border-bottom: 1px solid rgba(mat-color($mat-grey, 400),.5);
       display: table-cell;
       padding: 10px 20px 10px 12px;
       vertical-align: top;
@@ -76,8 +56,8 @@
       }
     }
     .cell:first-child {
-      border-left: 1px solid rgba(md-color($md-grey, 400),.5);
-      background: rgba(md-color($md-grey, 300),.6);
+      border-left: 1px solid rgba(mat-color($mat-grey, 400),.5);
+      background: rgba(mat-color($mat-grey, 300),.6);
       text-align: right;
       white-space: nowrap;
       padding: 10px 12px 10px 40px;
@@ -88,7 +68,7 @@
     }
   }
   & > .row.divider {
-    background-color: md-color($md-grey, 100);
+    background-color: mat-color($mat-grey, 100);
     .cell {
       padding: 18px 0;
       border-right-width: 0;

@@ -6,7 +6,7 @@ import { AssetService } from '../../shared/services/asset.service';
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/modules/wz-form/wz.form.component';
 import { User } from '../../shared/interfaces/user.interface';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,

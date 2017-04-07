@@ -7,7 +7,8 @@ import { UiConfig } from '../../../shared/services/ui.config';
 import { CartCapabilities } from '../../+cart/services/cart.capabilities';
 import { AddressFormComponent } from '../address-form/address-form.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
-import { Subscription, Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { Tab } from './tab';
 
 export class CommerceBillingTab extends Tab implements OnInit {

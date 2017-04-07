@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { ActiveCollectionStore } from '../stores/active-collection.store';
 import { Collection } from '../interfaces/collection.interface';
@@ -77,7 +77,7 @@ export class ActiveCollectionService implements OnInit {
       return this.api.post(
         Api.Identities,
         `collection/${collection.id}/removeAssets`,
-        { body: {list: [uuid]}, loading: true})
+        { body: { list: [uuid] }, loading: true })
         .do(response => this.store.remove(response['list'][0]));
     } else {
       return Observable.of({});

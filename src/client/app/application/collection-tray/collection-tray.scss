@@ -3,9 +3,9 @@ collection-tray {
   margin: 0;
   & > section {
     overflow: hidden;
-    background-color: darken(md-color($background, app-bar), 1%);
+    background-color: darken(mat-color($background, app-bar), 1%);
     height: auto;
-    box-shadow: inset 0 1px 0 0 md-color($foreground, divider);
+    box-shadow: inset 0 1px 0 0 mat-color($foreground, divider);
     width: 100%;
     .asset-carousel {
       // transition: $swift-ease-out;
@@ -14,8 +14,8 @@ collection-tray {
       max-height: 100%;
       min-height: 100%;
       border: none;
-      color: md-color($foreground, secondary-text);
-      background-color: rgba(darken(md-color($background, app-bar), 50%), .06);
+      color: mat-color($foreground, secondary-text);
+      background-color: rgba(darken(mat-color($background, app-bar), 50%), .06);
       border-radius: 0;
     }
     .focused-collection {
@@ -23,8 +23,8 @@ collection-tray {
       min-height: rem(5.6);
       max-height: rem(5.6);
       background-image:
-        linear-gradient(md-color($md-primary, 800, .06), md-color($md-primary, 800, .06)),
-        linear-gradient(rgba(md-color($md-background, status-bar), 1), rgba(md-color($md-background, status-bar), 1));
+        linear-gradient(mat-color($mat-primary, 800, .06), mat-color($mat-primary, 800, .06)),
+        linear-gradient(rgba(mat-color($mat-background, status-bar), 1), rgba(mat-color($mat-background, status-bar), 1));
       white-space: nowrap;
       .focused {
         margin-left: rem(1);
@@ -32,21 +32,21 @@ collection-tray {
         white-space: nowrap;
       
         button.is-dd[md-button] {
-          color: rgba(md-color($md-foreground, secondary-text), .6);
+          color: rgba(mat-color($mat-foreground, secondary-text), .6);
         }
         .asset-count {
-          border-radius: $md-button-border-radius;
-          background-color: rgba(md-color($md-foreground, secondary-text), .4);
+          border-radius: $mat-button-border-radius;
+          background-color: rgba(mat-color($mat-foreground, secondary-text), .4);
           min-width: rem(2.4);
           line-height: 1em;
           margin-right: 0;
           margin-left: 0;
           padding: 2px 3px;
           .count {
-            @include text-contrast(md-color($md-foreground, secondary-text));
+            @include text-contrast(mat-color($mat-foreground, secondary-text));
           }
           &:hover {
-            background-color: rgba(md-color($md-foreground, secondary-text), .4);
+            background-color: rgba(mat-color($mat-foreground, secondary-text), .4);
             cursor: default;
           }
           &:hover::after {
@@ -59,9 +59,9 @@ collection-tray {
         margin-right: rem(.4);
         max-width: rem(4.0);
         min-width: rem(4.0);
-        color: rgba(md-color($md-foreground, secondary-text), .6);
+        color: rgba(mat-color($mat-foreground, secondary-text), .6);
         &:hover {
-          background-color: rgba(md-color($md-foreground, base), .1);
+          background-color: rgba(mat-color($mat-foreground, base), .1);
         }
         &:hover::after {
           background-color: transparent;
@@ -107,7 +107,7 @@ header.app-header.collection-tray-closed collection-tray section {
     .asset {
       padding: 0;
       padding-bottom: 0;
-      background-color: md-color($md-background, app-bar);
+      background-color: mat-color($mat-background, app-bar);
 
       a.asset-thb {
         display: block;
@@ -116,8 +116,8 @@ header.app-header.collection-tray-closed collection-tray section {
         position: relative;
         padding: 56.25% 0 0 0;
         background-image:
-          linear-gradient(rgba(md-color($md-grey, 900),1), rgba(md-color($md-grey, 900),.6)),
-          linear-gradient(rgba(md-color($md-grey, 900),.5), rgba(md-color($md-grey, 900),1))
+          linear-gradient(rgba(mat-color($mat-grey, 900),1), rgba(mat-color($mat-grey, 900),.6)),
+          linear-gradient(rgba(mat-color($mat-grey, 900),.5), rgba(mat-color($mat-grey, 900),1))
         ;
         &:hover, &:active {
           cursor: pointer;
@@ -144,10 +144,10 @@ header.app-header.collection-tray-closed collection-tray section {
         bottom: 0;
         left: 0;
         width: 100%;
-        background-color: md-color($md-foreground, base, .2);
+        background-color: mat-color($mat-foreground, base, .2);
         background-image: none;
         box-shadow: 
-        inset 0 -3px 0 0 md-color($md-background, card, 1);        
+        inset 0 -3px 0 0 mat-color($mat-background, card, 1);        
         transition: $swift-ease-out;
         z-index: 1;
         opacity:0

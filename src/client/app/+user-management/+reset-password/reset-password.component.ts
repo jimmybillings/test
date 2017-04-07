@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { UserService } from '../../shared/services/user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { CurrentUserService } from '../../shared/services/current-user.service';

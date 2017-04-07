@@ -5,7 +5,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   moduleId: module.id,
   selector: 'edit-line-item-component',
   template: `<div flex-gt-lg="100" flex-gt-md="100" flex-gt-sm="100" flex="100">
-		<md-card class="wz-form-card md-elevation-z20">
+		<md-card class="wz-form-card mat-elevation-z20">
 			<button md-dialog-close md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
 			<md-card-title>
 				{{ 'ADMIN.' + currentComponent.toUpperCase() + '.' + translationStrings.title | translate }}

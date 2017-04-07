@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { ApiService } from '../services/api.service';
 import { ApiResponse } from '../interfaces/api.interface';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
 import { CartCapabilities } from '../../+commerce/+cart/services/cart.capabilities';

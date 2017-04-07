@@ -1,7 +1,6 @@
 import { WzInputSuggestionsComponent } from './wz-input-suggestions.component';
 import { MockApiService, mockApiMatchers } from '../../../../mocks/mock-api.service';
 import { FormControl } from '@angular/forms';
-import 'rxjs/Rx';
 import { Api } from '../../../../interfaces/api.interface';
 
 export function main() {

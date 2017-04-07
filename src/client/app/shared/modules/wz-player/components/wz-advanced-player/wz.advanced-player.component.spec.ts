@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/Rx';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { WzAdvancedPlayerComponent } from './wz.advanced-player.component';
 import { Frame } from 'wazee-frame-formatter';

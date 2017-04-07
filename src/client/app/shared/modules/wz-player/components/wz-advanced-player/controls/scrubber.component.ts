@@ -19,7 +19,6 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         (mousemove)="onScrubberMouseMove($event)"
         (mouseout)="onScrubberMouseOut()">
       </md-slider>
-
       <md-slider
         *ngIf="inMarkerIsSet"
         [disabled]="true"
@@ -32,7 +31,6 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         (mousemove)="onScrubberMouseMove($event)"
         (mouseout)="onScrubberMouseOut()">
       </md-slider>
-
       <md-slider
         *ngIf="outMarkerIsSet"
         [disabled]="true"
@@ -45,7 +43,6 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         (mousemove)="onScrubberMouseMove($event)"
         (mouseout)="onScrubberMouseOut()">
       </md-slider>
-
       <span *ngIf="hovering" class="hover-frame-display" [style.left.px]="hoverFrameDisplayPosition">
         {{ hoverFrame | timecode }}
       </span>

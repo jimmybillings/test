@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
 import { CurrentUserService } from './current-user.service';

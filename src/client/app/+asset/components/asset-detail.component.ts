@@ -6,7 +6,7 @@ import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
 import { SubclipMarkers, SubclipMarkerFrames } from '../../shared/interfaces/asset.interface';
 import { SearchContext } from '../../shared/services/search-context.service';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   moduleId: module.id,

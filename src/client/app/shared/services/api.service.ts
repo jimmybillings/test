@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Request, RequestMethod, RequestOptions, RequestOptionsArgs, URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { ErrorStore } from '../stores/error.store';
 import { ApiConfig } from './api.config';
 import { Api, ApiOptions, ApiParameters, ApiBody, ApiResponse } from '../interfaces/api.interface';

@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { addStandardReducerTestsFor } from '../tests/reducer';
 import { gallery, GalleryViewStore } from './gallery-view.store';

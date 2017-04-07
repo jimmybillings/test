@@ -72,13 +72,14 @@
       </span>
 
       <span *ngSwitchCase="'Text'" class="text">
-        <md-input
-          name="filterValue"
-          color="primary"
-          placeholder="{{filter.name}}"
-          [value]=  "filter.filterValue"
-          (keypress)="applyCustomValue($event, filter)">
-        </md-input>
+        <md-input-container>
+            <input mdInput
+            name="filterValue"
+            color="primary"
+            placeholder="{{filter.name}}"
+            [value]=  "filter.filterValue"
+            (keypress)="applyCustomValue($event, filter)">
+        </md-input-container>
 
         <filter-component (onFilterEvent)="onFilterEvent.emit($event)" *ngIf="filter.active" [filters]="filter" [counted]="counted"></filter-component>
       </span>

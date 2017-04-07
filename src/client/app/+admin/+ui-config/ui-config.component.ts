@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ConfigService } from '../services/config.service';
 import { ApiConfig } from '../../shared/services/api.config';
 import { UiConfig } from '../../shared/services/ui.config';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,

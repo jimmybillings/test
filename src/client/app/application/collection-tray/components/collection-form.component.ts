@@ -8,7 +8,7 @@ import { CollectionsService } from '../../../shared/services/collections.service
 import { ActiveCollectionService } from '../../../shared/services/active-collection.service';
 import { CollectionContextService } from '../../../shared/services/collection-context.service';
 import { UiState } from '../../../shared/services/ui.state';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 /**
  * Directive that renders a list of collections
  */

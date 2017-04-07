@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { GalleryViewService } from '../../shared/services/gallery-view.service';

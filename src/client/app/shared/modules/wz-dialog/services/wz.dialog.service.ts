@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 
 import { WzNotificationDialogComponent } from '../components/wz.notification-dialog.component';

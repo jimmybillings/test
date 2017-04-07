@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { Authentication } from '../../shared/services/authentication.data.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { UserService } from '../../shared/services/user.service';
 import { PendoService } from '../../shared/services/pendo.service';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.component';
 import { FeatureStore } from '../../shared/stores/feature.store';

@@ -11,8 +11,8 @@
         padding-right: rem(.9);
         padding-left: rem(.9);
         margin-right: rem(.7);
-        background-color: rgba(md-color($md-foreground, secondary-text), .12);
-        color: md-color($md-foreground, secondary-text);
+        background-color: rgba(mat-color($mat-foreground, secondary-text), .12);
+        color: mat-color($mat-foreground, secondary-text);
         [md-icon-button] {
           min-width: 0;
           padding: 0;

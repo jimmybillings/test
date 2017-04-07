@@ -1,15 +1,15 @@
 home-hero { 
   .hero {
     text-align: center;
-    // @include text-contrast(md-color($md-primary, 900));
-    // color: md-color($primary, 900, contrast);
+    // @include text-contrast(mat-color($mat-primary, 900));
+    // color: mat-color($primary, 900, contrast);
     color: $white-87-opacity;
     overflow: hidden;
     width: 100%;
     position: relative;
     margin: 0 auto;
     background-image:
-      linear-gradient( rgba(md-color($foreground, text), .55), rgba(md-color($foreground, text), .45)),
+      linear-gradient( rgba(mat-color($foreground, text), .55), rgba(mat-color($foreground, text), .45)),
       url($bk-img-home)
     ;
     background-position: 0 0, center center;
@@ -35,15 +35,15 @@ home-hero {
   }
     .hero {
     text-align: center;
-    // @include text-contrast(md-color($md-primary, 900));
-    // color: md-color($primary, 900, contrast);
+    // @include text-contrast(mat-color($mat-primary, 900));
+    // color: mat-color($primary, 900, contrast);
     color: $white-87-opacity;
     overflow: hidden;
     width: 100%;
     position: relative;
     margin: 0 auto;
     background-image:
-      linear-gradient( rgba(md-color($foreground, text), .55), rgba(md-color($foreground, text), .45)),
+      linear-gradient( rgba(mat-color($foreground, text), .55), rgba(mat-color($foreground, text), .45)),
       url($bk-img-home)
     ;
     background-position: 0 0, center center;

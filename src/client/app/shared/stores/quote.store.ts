@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActionReducer, Store, Action } from '@ngrx/store';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { Quote } from '../interfaces/quote.interface';
 
 const initState: any = {};

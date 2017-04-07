@@ -1,7 +1,7 @@
 import { collections, CollectionsStore } from './collections.store';
 import { Collections, Collection } from '../interfaces/collection.interface';
 import { addStandardReducerTestsFor } from '../tests/reducer';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   const initialState: Collections = {

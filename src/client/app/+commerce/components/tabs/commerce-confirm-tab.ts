@@ -2,7 +2,7 @@ import { Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CartService } from '../../../shared/services/cart.service';
 import { Tab } from './tab';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
 
 export class CommerceConfirmTab extends Tab implements OnInit, OnDestroy {

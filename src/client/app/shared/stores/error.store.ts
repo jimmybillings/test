@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActionReducer, Action, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 export function errorStore(state = {}, action: Action) {
   switch (action.type) {

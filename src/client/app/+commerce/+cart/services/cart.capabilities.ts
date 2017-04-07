@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CurrentUserService } from '../../../shared/services/current-user.service';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { UiState } from '../../../shared/services/ui.state';
 import { FeatureStore } from '../../../shared/stores/feature.store';
 import { Feature } from '../../../shared/interfaces/feature.interface';

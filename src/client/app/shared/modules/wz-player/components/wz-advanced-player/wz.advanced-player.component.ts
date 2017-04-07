@@ -3,7 +3,8 @@ import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, V
 import { PlayerStateService } from '../../services/player-state.service';
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
 import { SubclipMarkers, SubclipMarkerFrames } from '../../../../interfaces/asset.interface';
-import { Subscription, Observable } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
 import { PlayerState, PlayerStateChanges, PlayerRequest } from '../../interfaces/player.interface';
 

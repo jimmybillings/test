@@ -1,5 +1,5 @@
 import { WzPricingComponent } from './wz.pricing.component';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { EventEmitter } from '@angular/core';
 
 export function main() {

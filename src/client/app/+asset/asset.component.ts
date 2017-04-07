@@ -10,7 +10,7 @@ import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
 import { SearchContext } from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
