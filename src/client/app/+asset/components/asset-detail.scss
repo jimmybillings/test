@@ -191,7 +191,7 @@ section.preview-bk {
           width: 100%;
           margin-bottom: rem(1.0);
           text-transform: uppercase;
-          &.md-primary.md-hue-7 {
+          &.mat-primary.mat-hue-7 {
             background-color: scale-color(mat-color($primary, default), $lightness: -10%, $alpha: -35%);
             &:hover {
               background-color: scale-color(mat-color($primary, default), $lightness: 0%, $alpha: -25%);

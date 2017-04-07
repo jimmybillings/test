@@ -27,7 +27,7 @@ collection-show .asset-results-header {
   .tools {
     text-align: right;
     white-space: nowrap;
-    button.is-dd.md-icon-button.md-primary {
+    button.is-dd.mat-icon-button.mat-primary {
       .mat-button-wrapper::after {
         color: mat-color($mat-primary, default);
       }
