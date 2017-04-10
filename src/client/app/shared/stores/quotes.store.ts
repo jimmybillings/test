@@ -19,6 +19,8 @@ export const quotes: ActionReducer<any> = (state: any = initState, action: Actio
   switch (action.type) {
     case 'QUOTES.SET_QUOTES':
       return Object.assign({}, action.payload);
+    case 'QUOTES.UPDATE_QUOTES':
+      return Object.assign({}, state, action.payload);
     default:
       return state;
   }
@@ -36,6 +38,10 @@ export class QuotesStore {
     let s: QuoteList;
     this.data.take(1).subscribe((quotes: QuoteList) => s = quotes);
     return s;
+  }
+
+  public updateQuotes(payload: { items: Quote[] }): void {
+    this.store.dispatch({ type: 'QUOTES.UPDATE_QUOTES', payload: payload });
   }
 
   public setQuotes(payload: any): void {

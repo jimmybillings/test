@@ -63,7 +63,8 @@
         <div flex layout="row" layout-align="center center" layout-sm="column" layout-align-gt-xs="end end">
           <button
             *ngIf="shouldShowSetFocusedButton(item)"
-            (click)="setAsFocusedQuote.emit(item)"
+            [disabled]="item.focused"
+            (click)="setAsFocusedQuote.emit(item.id)"
             md-button
             class="is-outlined"
             color="primary">
@@ -71,7 +72,7 @@
           </button>
           <button
             *ngIf="shouldShowEditQuoteButton(item)"
-            (click)="editQuote.emit(item)"
+            (click)="editQuote.emit(item.id)"
             md-button
             class="is-outlined"
             color="primary">

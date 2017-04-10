@@ -15,6 +15,27 @@ quote-show-component section.header {
         color: md-color($warn, darker);
       }
     }
+    .status {
+      margin: 0;
+      padding-bottom: rem(.5);
+      letter-spacing: .1em;
+      font-weight: 600;
+      &.pending {
+        color: md-color($md-accent, 500);
+      }
+      &.active {
+        color: md-color($md-green, 500);
+      }
+      &.expired {
+        color: md-color($md-warn, 500);
+      }
+      &.ordered {
+        color: md-color($md-blue, 500);
+      }
+      &.cancelled {
+        color: md-color($md-grey, 500);
+      }
+    }
     .tools {
       text-align: right;
     }

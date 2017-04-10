@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { QuotesService } from '../../../shared/services/quotes.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UiConfig } from '../../../shared/services/ui.config';
-import { Quote } from '../../../shared/interfaces/quote.interface';
+import { Quote, QuoteList } from '../../../shared/interfaces/quote.interface';
 
 @Component({
   selector: 'quotes-component',
@@ -24,10 +24,8 @@ export class QuotesComponent {
     private uiConfig: UiConfig,
     private router: Router) {
     this.quotes = this.quotesService.data;
-    this.sortOptions = this.theSortOptions;
-    this.filterOptions = this.theFilterOptions;
-    this.currentSort = this.sortOptions[0].first;
-    this.currentFilter = this.filterOptions[0].first;
+    this.buildFilterOptions();
+    this.buildSortOptions();
     this.config = this.uiConfig.get('cart')
       .take(1).subscribe((config: any) => this.config = config.config);
   }
@@ -45,28 +43,50 @@ export class QuotesComponent {
 
   public onSearch(query: { q: string }): void {
     this.buildRouteParams(query);
-    this.quotesService.getQuotes(this.params).subscribe();
+    this.quotesService.getQuotes(this.userCan.administerQuotes(), this.params).subscribe();
   }
 
   public onFilterResults(filter: any): void {
     this.currentFilter = filter;
     this.buildRouteParams(filter.status);
-    this.quotesService.getQuotes(this.params).subscribe();
+    this.quotesService.getQuotes(this.userCan.administerQuotes(), this.params).subscribe();
   }
 
-  public onEditQuote(quote: Quote): void {
-    console.log(quote);
+  public onEditQuote(quoteId: number): void {
+    this.quotesService.setFocused(quoteId).subscribe((quote: Quote) => {
+      this.router.navigate(['/commerce/activeQuote']);
+    });
   }
 
-  public onSetAsFocusedQuote(quote: Quote): void {
-    console.log(quote);
+  public onSetAsFocusedQuote(quoteId: number): void {
+    this.quotesService.setFocused(quoteId).subscribe();
   }
 
   private buildRouteParams(params: any) {
-    this.params = Object.assign({}, this.params, { n: 20 }, params);
+    this.params = Object.assign({}, this.params, params);
   }
 
-  public get theSortOptions(): any[] {
+  private buildSortOptions(): void {
+    this.sortOptions = this.theSortOptions;
+    this.currentSort = this.sortOptions[0].first;
+  }
+
+  private buildFilterOptions(): void {
+    this.filterOptions = this.theFilterOptions;
+    if (this.userCan.administerQuotes()) this.addPendingFilterOption();
+    this.currentFilter = this.filterOptions[0].first;
+  }
+
+  private addPendingFilterOption(): void {
+    this.filterOptions[1]['fifth'] = {
+      'id': 5,
+      'name': 'QUOTE.INDEX.FILTER.PENDING',
+      'value': 'pending',
+      'status': { 'status': 'PENDING' }
+    };
+  }
+
+  private get theSortOptions(): any[] {
     return [
       {
         'first': {
@@ -98,13 +118,13 @@ export class QuotesComponent {
       },
       {
         'first': {
-          'id': 6,
+          'id': 5,
           'name': 'QUOTE.INDEX.SORT.CREATOR_EMAIL_ADDRESS_ASC',
           'value': 'createdEmailAddress',
           'sort': { 's': 'createdEmailAddress', 'd': false }
         },
         'second': {
-          'id': 5,
+          'id': 6,
           'name': 'QUOTE.INDEX.SORT.CREATOR_EMAIL_ADDRESS_DESC',
           'value': 'createdEmailAddress',
           'sort': { 's': 'createdEmailAddress', 'd': true }
@@ -113,15 +133,15 @@ export class QuotesComponent {
       {
         'first': {
           'id': 7,
-          'name': 'QUOTE.INDEX.SORT.EXPIRATION_DATE_ASC',
-          'value': 'expirationDate',
-          'sort': { 's': 'expirationDate', 'd': false }
-        },
-        'second': {
-          'id': 8,
           'name': 'QUOTE.INDEX.SORT.EXPIRATION_DATE_DESC',
           'value': 'expirationDate',
           'sort': { 's': 'expirationDate', 'd': true }
+        },
+        'second': {
+          'id': 8,
+          'name': 'QUOTE.INDEX.SORT.EXPIRATION_DATE_ASC',
+          'value': 'expirationDate',
+          'sort': { 's': 'expirationDate', 'd': false }
         }
       }
     ];
@@ -134,39 +154,33 @@ export class QuotesComponent {
           'id': 0,
           'name': 'QUOTE.INDEX.FILTER.ALL',
           'value': 'all',
-          'status': { 'status': 'all' }
+          'status': { 'status': 'ALL' }
         }
       },
       {
         'first': {
           'id': 1,
-          'name': 'QUOTE.INDEX.FILTER.PENDING',
-          'value': 'pending',
-          'status': { 'status': 'pending' }
+          'name': 'QUOTE.INDEX.FILTER.ACTIVE',
+          'value': 'active',
+          'status': { 'status': 'ACTIVE' }
         },
         'second': {
           'id': 2,
-          'name': 'QUOTE.INDEX.FILTER.ACTIVE',
-          'value': 'active',
-          'status': { 'status': 'active' }
+          'name': 'QUOTE.INDEX.FILTER.ORDERED',
+          'value': 'ordered',
+          'status': { 'status': 'ORDERED' }
         },
         'third': {
           'id': 3,
-          'name': 'QUOTE.INDEX.FILTER.ORDERED',
-          'value': 'ordered',
-          'status': { 'status': 'ordered' }
+          'name': 'QUOTE.INDEX.FILTER.EXPIRED',
+          'value': 'expired',
+          'status': { 'status': 'EXPIRED' }
         },
         'fourth': {
           'id': 4,
-          'name': 'QUOTE.INDEX.FILTER.EXPIRED',
-          'value': 'expired',
-          'status': { 'status': 'expired' }
-        },
-        'fifth': {
-          'id': 5,
           'name': 'QUOTE.INDEX.FILTER.CANCELLED',
           'value': 'cancelled',
-          'status': { 'status': 'cancelled' }
+          'status': { 'status': 'CANCELLED' }
         }
       },
     ];

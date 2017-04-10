@@ -1,13 +1,15 @@
 import { Project } from './cart.interface';
 
 export interface Quote {
-  createdUserId?: number;
+  id: number;
+  createdUserId: number;
   ownerUserId: number;
   userId: number;
-  projects?: Project[];
   total: number;
-  itemCount?: number;
   quoteStatus: 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED';
+  projects?: Project[];
+  itemCount?: number;
+  focused?: boolean;
 }
 
 export interface QuoteOptions {
