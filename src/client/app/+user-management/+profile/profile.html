@@ -3,7 +3,7 @@
     <div layout="row"  layout-align="space-between end">
       <h2 flex="100" class="md-display-1">{{ 'PROFILE.PAGE_TITLE' | translate }}</h2>
       <div class="tools" flex="auto">
-          <button md-button title="{{ 'PROFILE.SETTING_BTN_HOVER_TITLE' | translate }}" [md-menu-trigger-for]="profileSettings" class="md-icon-button is-dd" color="primary"><md-icon>settings</md-icon></button>
+          <button md-button title="{{ 'PROFILE.SETTING_BTN_HOVER_TITLE' | translate }}" [md-menu-trigger-for]="profileSettings" class="icon-dd-button is-dd" color="primary"><md-icon>settings</md-icon></button>
           <md-menu x-position="before" #profileSettings="mdMenu">
             <button md-menu-item disabled>
               <md-icon>settings_applications</md-icon>User preferences
