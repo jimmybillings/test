@@ -1,5 +1,5 @@
 import { Directive, ElementRef } from '@angular/core';
-var clipboard = require('clipboard');
+declare var Clipboard: any;
 
 @Directive({
   selector: '[wzClipboard]'
@@ -7,6 +7,6 @@ var clipboard = require('clipboard');
 
 export class WzClipBoardDirective {
   constructor(public element: ElementRef) {
-    new clipboard(this.element.nativeElement);
+    new Clipboard(this.element.nativeElement);
   }
 }

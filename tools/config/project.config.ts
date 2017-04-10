@@ -23,7 +23,8 @@ export class ProjectConfig extends SeedConfig {
     this.NPM_DEPENDENCIES = [
       ...this.NPM_DEPENDENCIES,
       // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
-      // {src: 'lodash/lodash.min.js', inject: 'libs'},
+      { src: 'pikaday/pikaday.js', inject: 'libs' },
+      { src: 'clipboard/dist/clipboard.min.js', inject: 'libs' },
     ];
 
     // Add `local` third-party libraries to be injected/bundled.

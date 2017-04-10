@@ -56,7 +56,6 @@ export function createTranslateLoader(http: Http) {
         deps: [Http]
       }
     }),
-
     HttpModule,
     ReactiveFormsModule,
     MaterialModule,

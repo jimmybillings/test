@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, Output, EventEmitter } from '@angular/core';
-var pikaday = require('pikaday');
+declare var Pikaday: any;
 
 @Directive({
   selector: '[wzPikaday]'
@@ -11,7 +11,7 @@ export class WzPikaDayDirective {
   private picker: any;
 
   constructor(public element: ElementRef) {
-    this.picker = new pikaday({ field: this.element.nativeElement, onSelect: this.onSelect.bind(this) });
+    this.picker = new Pikaday({ field: this.element.nativeElement, onSelect: this.onSelect.bind(this) });
   }
 
   @Input()
