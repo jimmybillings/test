@@ -20,9 +20,9 @@ export class WzDropdownPortalDirective extends TemplatePortalDirective {
   selector: 'wz-dropdown',
   encapsulation: ViewEncapsulation.None,
   template: `
-  <template wzDropdownPortalDirective>
+  <ng-template wzDropdownPortalDirective>
     <ng-content></ng-content>
-  </template>`,
+  </ng-template>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 

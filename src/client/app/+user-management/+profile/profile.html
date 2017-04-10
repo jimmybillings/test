@@ -26,7 +26,7 @@
     <div flex-gt-lg="80" flex-lg="80" flex-gt-sm="95" flex="100" layout="row" layout-wrap="" layout-align="center start">
       <md-tab-group>
         <md-tab label="'PROFILE.BASIC_INFO_TAB_LABEL' | uppercase | translate">
-          <template md-tab-label>{{'PROFILE.BASIC_INFO_TAB_LABEL' | translate }}</template>
+          <ng-template md-tab-label>{{'PROFILE.BASIC_INFO_TAB_LABEL' | translate }}</ng-template>
           <!--<div layout="row" layout-align="end center">
             <button md-button md-raised-button [md-menu-trigger-for]="profileSettings" color="primary">Edit basic info</button>
           </div>-->
@@ -112,7 +112,7 @@
         </md-tab>
 
         <md-tab label="'PROFILE.PERMISSION_TAB_LABEL' | uppercase | translate">
-          <template md-tab-label>{{'PROFILE.PERMISSION_TAB_LABEL' | translate }}</template>
+          <ng-template md-tab-label>{{'PROFILE.PERMISSION_TAB_LABEL' | translate }}</ng-template>
           <div class="m-data">
             <div class="row" *ngIf="user.permissions">
               <div class="cell">

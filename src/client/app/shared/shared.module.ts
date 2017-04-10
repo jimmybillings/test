@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { MaterialModule } from '@angular/material';
+import { MaterialModule } from './modules/wz-design/wz-design.module';
 
 // WAZEE PROVIDERS
 import { WAZEE_PROVIDERS } from '../imports/wazee';
