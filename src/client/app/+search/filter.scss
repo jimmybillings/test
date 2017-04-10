@@ -1,30 +1,35 @@
-// .mat-sidenav-backdrop.mat-sidenav-shown {
-//   display: none !important;
-// }
+search-component md-sidenav-container.mat-sidenav-container {
+  background-color: transparent;
+}
 .mat-sidenav {
   width: rem(29.0);
-  // .cdk-overlay-container {
-  //   pointer-events: all;
-  //   opacity: .5;
-  // }
+  &.mat-sidenav-side.mat-sidenav-opened,
+  &.mat-sidenav-side.mat-sidenav-opening {
+    @include mat-elevation(16);
+  }
 }
 .filter {
-  md-list {
+  .mat-nav-list {
     padding-top: 0;
   }
-  .mat-list md-list-item {
-    &.mat-primary .mat-list-item {
+  .exclusive-list .mat-list-item {
+    .mat-list-item-content {
+      padding: 0;
       height: rem(3.0);
+    }       
+    .mat-button {
+      height: 100%;
       padding: 0 rem(1.6) 0 rem(3.6);
-      color: rgba(mat-color($primary, default), 1);
-      &:hover {
-        background-color: rgba(mat-color($foreground, base), .02);
-        cursor: pointer;
+      text-transform: none;
+      text-align: left;
+      width: 100%;
+      font-size: rem(1.6);
+      font-weight: 400;
+      line-height: 1;
+      &.mat-primary.active {
+        background-color: rgba(mat-color($primary, default), 1);
+        color: mat-color($primary, default-contrast);
       }
-    }
-    &.mat-primary.active .mat-list-item {
-      background-color: rgba(mat-color($primary, default), 1);
-      color: mat-color($primary, default-contrast);
     }
   } 
   li {
@@ -50,15 +55,8 @@
       .filter-subhead-content {
         display: block;
         position: relative;
-        z-index:1;
+        z-index: 1;
       }
-    }
-    // this can be removed when they fix
-    // https://github.com/angular/material2/issues/1336
-    md-divider {
-      border-top-style: solid;
-      border-top-width: 1px;
-      border-top-color: mat-color($foreground, divider);
     }
     .exclusive-list .filter-subhead:hover {
       cursor: default;
@@ -72,8 +70,8 @@
       line-height: 2;
     }
 
-    md-input {
-      margin: 0 0 0 rem(3.1);
+    .mat-input-container {
+      margin: rem(.4) 0 0 rem(3.1);
       width: calc(100% - 62px);
     }
   }
@@ -81,10 +79,6 @@
     font-size: .75em;
   }
 }
-
-
-
-
 
 .date-range {
   .filter-subhead:hover {
@@ -137,6 +131,3 @@
   color: mat-color($foreground, disabled-text);
 }
 
-.filter [color="primary"].mat-checkbox-checked .mat-checkbox-background {
-  background-color: mat-color($primary, default);
-}

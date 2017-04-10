@@ -1,27 +1,25 @@
-div.md-menu-panel div.mat-menu-content wz-sort-component div.dense,
-.md-menu.dd-menu-wrapper.dense {
+div.mat-menu-panel div.mat-menu-content wz-sort-component div.dense,
+.mat-menu.dd-menu-wrapper.dense {
   min-width: rem(27.5);
   .select-dd {
-    height: rem(3.2);
-    flex-direction: column;
-    justify-content: space-between;
+    // height: rem(3.2);
+    // flex-direction: column;
+    // justify-content: space-between;
     button[md-menu-item]{
       font-size: .9em;
-      flex: 1 0 100%;
       height: rem(3.2);
-      box-shadow: none;
-      position: relative;
-      md-icon.material-icons {
+      line-height: rem(3.2);
+      .mat-icon.material-icons {
         opacity: 0;
         margin-top: rem(-.8);
+        color: mat-color($primary);
       }
     }
   }
   .select-dd.active button[md-menu-item] {
     background-color: transparent;
     color: mat-color($primary);
-    md-icon.material-icons {
-      color: mat-color($primary);
+    .mat-icon.material-icons {
       opacity: 1;
     }
   }

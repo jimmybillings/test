@@ -75,8 +75,8 @@ header.app-header [md-icon-button] {
     margin-left: 0;
   }
 }
-header.app-header md-toolbar:not(.md-menu-toolbar) [md-button] {
-  &.md-accent {
+header.app-header md-toolbar:not(.mat-menu-toolbar) .mat-button {
+  &.mat-accent {
     color: rgba(mat-color($accent, 500), .8);
   }
 }

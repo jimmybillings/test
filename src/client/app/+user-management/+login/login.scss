@@ -28,7 +28,7 @@ section.login.hero {
     margin-top: rem(1.1);
   }
 }
-md-card.wz-form-card {
+.mat-card.wz-form-card {
   @include mat-elevation(0);
   padding: rem(3.6) rem(4.0) rem(3.6) rem(4.0);
   @media screen and (max-width: $layout-breakpoint-xs) {
@@ -36,14 +36,7 @@ md-card.wz-form-card {
   }
   color: mat-color($mat-foreground, secondary-text);
   margin: rem(.8) 0;
-  md-card-header {
-    height: rem(3.4);
-    .md-card-header-text {
-      height: 0;
-      margin: 0;
-    }
-  }
-  .md-select-value {
+  .mat-select-value {
     color: mat-color($mat-foreground, secondary-text);
   }
   md-card-title {

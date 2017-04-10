@@ -16,13 +16,13 @@
   &.is-outlined {
     border: 1px solid mat-color($mat-foreground, divider);
     line-height: rem(3.300);
-    &.md-primary {
+    &.mat-primary {
       border: 1px solid mat-color($mat-primary, default, .4);
     }
-    &.md-accent {
+    &.mat-accent {
       border: 1px solid mat-color($mat-accent, 500, .4);
     }
-    &.md-warn {
+    &.mat-warn {
       border: 1px solid mat-color($mat-warn, 500, .4);
     }
   }
@@ -47,16 +47,16 @@
       right: rem(.2);
       top: 0;
     }
-    &.md-primary .mat-button-wrapper::after {
+    &.mat-primary .mat-button-wrapper::after {
       color: contrast-color(mat-color($mat-primary));
     }
-    &.md-accent .mat-button-wrapper::after {
+    &.mat-accent .mat-button-wrapper::after {
       color: contrast-contrast(mat-color($mat-accent));
     }
-    &.md-warn .mat-button-wrapper::after {
+    &.mat-warn .mat-button-wrapper::after {
       color: contrast-color(mat-color($mat-warn));
     }
-    &.md-icon-button {
+    &.icon-dd-button {
       min-width: rem(4.0);
       max-height: rem(4.0);
       min-height: rem(4.0);
@@ -69,22 +69,6 @@
       }
     }
   }
-}
-
-md-progress-bar {
-    .md-progress-bar-primary.md-progress-bar-fill {
-        &:after {
-            background-color:mat-color($mat-accent, 0);
-        }
-    }
-    .md-progress-bar-secondary.md-progress-bar-fill {
-        &:after {
-            background-color:mat-color($mat-accent);
-        }
-    }
-    .md-progress-bar-buffer {
-        background-color:mat-color($mat-accent, 100);
-    }
 }
 
 /* TODO - Should look at removing this in the future. The overlay index clashes with our header.*/
