@@ -29,7 +29,8 @@
     "@types/jwplayer": "0.0.28",
     "clipboard": "^1.5.12",
     "hammerjs": "^2.0.8",
-    "ng2-translate": "^5.0.0",
+    "@ngx-translate/core": "6.0.1",
+    "@ngx-translate/http-loader": "0.0.3",
     "pikaday": "^1.4.0",
     "reflect-metadata": "^0.1.8",
     "wazee-frame-formatter": "git@github.com:t3mediacorp/wazee-frame-formatter.git#typescript-version"

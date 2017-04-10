@@ -102,6 +102,5 @@ export interface CartState {
     selectedAddress: ViewAddress;
     authorization: any;
     selectedPurchaseType: string;
-
   };
 };

@@ -6,7 +6,7 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { ServerErrors } from '../../shared/interfaces/forms.interface';
 import { MdSnackBar } from '@angular/material';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   moduleId: module.id,

@@ -9,7 +9,7 @@ import { Capabilities } from '../../../../../shared/services/capabilities.servic
 import { UserPreferenceService } from '../../../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../../../shared/stores/error.store';
 import { WindowRef } from '../../../../../shared/services/window-ref.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { QuoteFormComponent } from '../../../components/quote-form.component';
 import { QuoteOptions } from '../../../../../shared/interfaces/quote.interface';
 import { QuoteEditService } from '../../../../../shared/services/quote-edit.service';
@@ -25,18 +25,18 @@ export class QuoteEditTabComponent extends CommerceEditTab {
 
   constructor(
     public userCan: Capabilities,
-    public quoteService: QuoteEditService,
-    protected uiConfig: UiConfig,
-    protected dialog: MdDialog,
-    protected assetService: AssetService,
-    protected window: WindowRef,
-    protected userPreference: UserPreferenceService,
-    protected error: ErrorStore,
-    @Inject(DOCUMENT) protected document: any,
-    protected snackBar: MdSnackBar,
-    protected translate: TranslateService
+    public quoteEditService: QuoteEditService,
+    public uiConfig: UiConfig,
+    public dialog: MdDialog,
+    public assetService: AssetService,
+    public window: WindowRef,
+    public userPreference: UserPreferenceService,
+    public error: ErrorStore,
+    @Inject(DOCUMENT) public document: any,
+    public snackBar: MdSnackBar,
+    public translate: TranslateService
   ) {
-    super(userCan, quoteService, uiConfig, dialog, assetService, window, userPreference, error, document, snackBar, translate);
+    super(userCan, quoteEditService, uiConfig, dialog, assetService, window, userPreference, error, document, snackBar, translate);
   }
 
   public onOpenQuoteDialog(): void {
@@ -66,7 +66,7 @@ export class QuoteEditTabComponent extends CommerceEditTab {
   }
 
   private createQuote(options: QuoteOptions): void {
-    this.quoteService.createQuote(options).take(1).subscribe((res: any) => {
+    this.quoteEditService.createQuote(options).take(1).subscribe((res: any) => {
       if (options.status === 'ACTIVE') {
         this.showSnackBar({
           key: 'QUOTE.CREATED_FOR_TOAST',

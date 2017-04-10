@@ -21,7 +21,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
 
   ngOnInit() {
     this.configSubscription = this.uiConfig.get('cart')
-      .subscribe((config: any) => this.config = config.config.payment);
+      .subscribe((config: any) => { console.log(config); this.config = config.config.payment; });
     this.loadStripe();
   }
 

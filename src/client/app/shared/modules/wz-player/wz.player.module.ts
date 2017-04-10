@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@angular/material';
-import { TranslateModule } from 'ng2-translate';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { TimecodePipe } from './pipes/timecode.pipe';
 import { WzPlayerComponent } from './components/wz-player/wz.player.component';
