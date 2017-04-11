@@ -19,6 +19,7 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         (mousemove)="onScrubberMouseMove($event)"
         (mouseout)="onScrubberMouseOut()">
       </md-slider>
+
       <md-slider
         *ngIf="inMarkerIsSet"
         [disabled]="true"
@@ -31,6 +32,7 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         (mousemove)="onScrubberMouseMove($event)"
         (mouseout)="onScrubberMouseOut()">
       </md-slider>
+
       <md-slider
         *ngIf="outMarkerIsSet"
         [disabled]="true"
@@ -43,6 +45,7 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         (mousemove)="onScrubberMouseMove($event)"
         (mouseout)="onScrubberMouseOut()">
       </md-slider>
+
       <span *ngIf="hovering" class="hover-frame-display" [style.left.px]="hoverFrameDisplayPosition">
         {{ hoverFrame | timecode }}
       </span>
@@ -160,7 +163,7 @@ export class ScrubberComponent {
   }
 
   private updateHoverFrameWith(relativeMouseX: number, scrubber: any): void {
-    const scrubberTrack: any = this.findByClassNameIn(Array.from(scrubber.children), 'md-slider-track');
+    const scrubberTrack: any = this.findByClassNameIn(Array.from(scrubber.children), 'mat-slider-wrapper');
     const scrubberTrackWidth: number = scrubberTrack.offsetWidth;
     const newFrameNumber: number = Math.round(relativeMouseX * this.playerState.durationFrame.frameNumber / scrubberTrackWidth);
 
