@@ -15,8 +15,11 @@
         margin-bottom: rem(4.6);
       }
     }
+    .mat-tab-header {
+      background-color: mat-color($background, card);
+    }
     .mat-tab-header .mat-tab-list .mat-tab-labels {
-        text-transform: uppercase;
+      text-transform: uppercase;
     }
     md-content {
       min-width: 100%;
