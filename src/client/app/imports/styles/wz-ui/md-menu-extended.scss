@@ -39,7 +39,7 @@
     margin-bottom: rem(.4);
     text-align: right;
     button[md-icon-button] {
-      color: mat-color($foreground, icon);
+      color: mat-color($foreground, base, .7);
     }
     button[md-icon-button][disabled] {
       color: mat-color($foreground, disabled);

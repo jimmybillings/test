@@ -60,12 +60,12 @@ collection-tray {
         max-width: rem(4.0);
         min-width: rem(4.0);
         color: rgba(mat-color($mat-foreground, secondary-text), .6);
-        &:hover {
-          background-color: rgba(mat-color($mat-foreground, base), .1);
-        }
-        &:hover::after {
-          background-color: transparent;
-        }
+        // &:hover {
+        //   background-color: rgba(mat-color($mat-foreground, base), .1);
+        // }
+        // &:hover::after {
+        //   background-color: transparent;
+        // }
       } 
     }
   }
