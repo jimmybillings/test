@@ -247,8 +247,8 @@
 							</div>
 							<md-card-actions *ngIf="asset.primary[3].value === 'Royalty Free'" layout="column" layout-align="center center" layout-wrap="">
 								<ng-container *ngIf="userCan.haveCart()">
-									<md-select *ngIf="userCan.addToCart() && asset.transcodeTargets" [(ngModel)]="selectedTarget">
-										<md-option *ngFor="let target of asset.transcodeTargets" [value]="target" (onSelect)="onSelectTarget(target)">{{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}</md-option>
+									<md-select (change)="onSelectTarget($event)" *ngIf="userCan.addToCart() && asset.transcodeTargets" [(ngModel)]="selectedTarget">
+										<md-option *ngFor="let target of asset.transcodeTargets" [value]="target">{{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}</md-option>
 									</md-select>
 									<button md-raised-button [disabled]="!userCan.addToCart()" (click)="addAssetToCart(asset.assetId)"
 										class="mat-primary mat-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>

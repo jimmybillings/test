@@ -42,10 +42,12 @@
         <li><a href="https://www.linkedin.com/company/wazeedigital?trk=top_nav_home" target="_blank" class="linkedin"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li>
         <li><a href="https://www.youtube.com/user/thoughtequity" target="_blank" class="youtube"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-youtube fa-stack-1x fa-inverse"></i></span></a></li>
       </ul>
-      <form>
-        Change Language: <select [(ngModel)]="lang" (change)="changeLang($event)" name="lang">
-          <option *ngFor="let l of supportedLanguages" [value]="l.code">{{l.title}}</option>
-        </select>
+      <form class="language-selector">
+        <md-select [(ngModel)]="lang" name="lang" (change)="selectLang($event)" name="lang">
+          <md-option *ngFor="let l of supportedLanguages" [value]="l.code">
+            {{l.title}}
+          </md-option>
+        </md-select>
       </form>
     </div>
   </div>
@@ -86,8 +88,8 @@
         <li><a href="https://www.youtube.com/user/thoughtequity" target="_blank" class="youtube"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-youtube fa-stack-1x fa-inverse"></i></span></a></li>
       </ul>
       <form class="language-selector">
-        <md-select [placeholder]="Language" [(ngModel)]="lang" name="lang">
-          <md-option *ngFor="let l of supportedLanguages" (onSelect)="selectLang(l.code)" [value]="l.code">
+        <md-select [(ngModel)]="lang" name="lang" (change)="selectLang($event)" name="lang">
+          <md-option *ngFor="let l of supportedLanguages" [value]="l.code">
             {{l.title}}
           </md-option>
         </md-select>
@@ -112,8 +114,8 @@
     </div>
     <div flex-gt-sm="25" flex="100" layout="column" layout-align="end start" layout-align-gt-md="end start">
       <form class="language-selector">
-        <md-select [placeholder]="Language" [(ngModel)]="lang" name="lang">
-          <md-option *ngFor="let l of supportedLanguages" (onSelect)="selectLang(l.code)" [value]="l.code">
+        <md-select [(ngModel)]="lang" name="lang" name="lang" (change)="selectLang($event)">
+          <md-option *ngFor="let l of supportedLanguages" [value]="l.code">
             {{l.title}}
           </md-option>
         </md-select>

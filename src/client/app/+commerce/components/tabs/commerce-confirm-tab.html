@@ -6,28 +6,28 @@
   <div layout="column" layout-gt-xs="row" class="billing-payment">
     <section class="billing" flex="auto">
       <h5 class="md-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
-      <address *ngIf="store.orderInProgress.selectedAddress.address">
-        <span class="line-1">{{ store.orderInProgress.selectedAddress.address.address }}</span>
-        <span class="line-2">{{ store.orderInProgress.selectedAddress.address.city }},
-          {{ store.orderInProgress.selectedAddress.address.state }} {{ store.orderInProgress.selectedAddress.address.zipcode }},
-          {{ store.orderInProgress.selectedAddress.address.country }}</span>
-        <span class="phone">{{ store.orderInProgress.selectedAddress.address.phone }}</span>
+      <address *ngIf="(orderInProgress | async).selectedAddress.address">
+        <span class="line-1">{{ (orderInProgress | async).selectedAddress.address.address }}</span>
+        <span class="line-2">{{ (orderInProgress | async).selectedAddress.address.city }},
+          {{ (orderInProgress | async).selectedAddress.address.state }} {{ (orderInProgress | async).selectedAddress.address.zipcode }},
+          {{ (orderInProgress | async).selectedAddress.address.country }}</span>
+        <span class="phone">{{ (orderInProgress | async).selectedAddress.address.phone }}</span>
       </address>
     </section>
     <section class="payment" flex="auto">
       <h5 class="md-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
       <div class="payment-info">
-        <div class="credit-card" *ngIf="store.orderInProgress.authorization.card.last4 && store.orderInProgress.selectedPurchaseType === 'card'">
+        <div class="credit-card" *ngIf="(orderInProgress | async).authorization.card.last4 && (orderInProgress | async).selectedPurchaseType === 'card'">
           <span class="indicate-cc">
-            <strong>{{ store.orderInProgress.authorization.card.brand }}:</strong>
-            ending in {{ store.orderInProgress.authorization.card.last4 }}
+            <strong>{{ (orderInProgress | async).authorization.card.brand }}:</strong>
+            ending in {{ (orderInProgress | async).authorization.card.last4 }}
           </span>
           <span class="expires">
             <strong>Expires:</strong>
-            {{ store.orderInProgress.authorization.card.exp_month }}/{{ store.orderInProgress.authorization.card.exp_year }}
+            {{ (orderInProgress | async).authorization.card.exp_month }}/{{ (orderInProgress | async).authorization.card.exp_year }}
           </span>
         </div>
-        <div class="purchase-on-credit" *ngIf="store.orderInProgress.selectedPurchaseType === 'credit'">
+        <div class="purchase-on-credit" *ngIf="(orderInProgress | async).selectedPurchaseType === 'credit'">
           <span class="indicate-credit">
             <strong>Purchase on credit</strong>
           </span>
@@ -50,14 +50,14 @@
       {{ 'CART.CONFIRM.TOTAL' | translate }} 
     </span>
     <span class="total-amount">
-      {{ store.cart.total | currency:'USD':true:'1.2-2' }}
+      {{ (cart | async).total | currency:'USD':true:'1.2-2' }}
     </span>
   </span>
   <span flex="" flex-order-xs="2" layout-align="end center">
-    <button md-raised-button class="checkout" (click)="purchaseOnCredit()" *ngIf="store.orderInProgress.selectedPurchaseType === 'credit'">
+    <button md-raised-button class="checkout" (click)="purchaseOnCredit()" *ngIf="(orderInProgress | async).selectedPurchaseType === 'credit'">
       {{ 'CART.CONFIRM.PURCHASE_BTN' | translate }}
     </button>
-    <button md-raised-button class="checkout" (click)="purchase()" *ngIf="store.orderInProgress.selectedPurchaseType === 'card'">
+    <button md-raised-button class="checkout" (click)="purchase()" *ngIf="(orderInProgress | async).selectedPurchaseType === 'card'">
       {{ 'CART.CONFIRM.PURCHASE_BTN' | translate }}
     </button>
   </span>

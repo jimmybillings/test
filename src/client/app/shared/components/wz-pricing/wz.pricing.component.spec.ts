@@ -209,7 +209,7 @@ export function main() {
         let attribute: any = componentUnderTest.attributes[0];
         let option: any = attribute.attributeList[0];
 
-        componentUnderTest.handleSelect(attribute, option);
+        componentUnderTest.handleSelect(option, attribute);
 
         expect(componentUnderTest.form).toEqual([
           { name: 'A', value: 'R' },
@@ -223,7 +223,7 @@ export function main() {
         let attribute: any = componentUnderTest.attributes[3];
         let option: any = attribute.attributeList[0];
         spyOn(componentUnderTest.pricingEvent, 'emit');
-        componentUnderTest.handleSelect(attribute, option);
+        componentUnderTest.handleSelect(option, attribute);
 
         expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({
           type: 'CALCULATE_PRICE',

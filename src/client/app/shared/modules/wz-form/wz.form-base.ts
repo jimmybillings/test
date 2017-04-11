@@ -1,5 +1,5 @@
 import { Input, Output, EventEmitter, OnInit, OnChanges, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, AbstractControl } from '@angular/forms';
 import { FormModel } from './wz.form.model';
 import { FormFields, ServerErrors } from '../../../shared/interfaces/forms.interface';
 
@@ -84,7 +84,7 @@ export class WzFormBase implements OnInit, OnChanges {
       field.validation === 'COLLECTION') ? true : false;
   }
 
-  public hasErrorType(field: FormControl): boolean {
+  public hasErrorType(field: FormControl | AbstractControl): boolean {
     return (!field.valid && field.pristine && this.submitAttempt) ||
       (!field.valid && !field.pristine && this.submitAttempt) ||
       (!field.valid && !field.pristine && !this.submitAttempt);

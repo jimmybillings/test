@@ -22,8 +22,12 @@ export class CommercePaymentTab extends Tab implements OnInit {
 
   ngOnInit() {
     this.configSubscription = this.uiConfig.get('cart')
-      .subscribe((config: any) => { console.log(config); this.config = config.config.payment; });
+      .map((config: any) => config.config.payment.items).subscribe(data => console.log(data));
     this.loadStripe();
+  }
+
+  public get formItems(): Observable<any> {
+    return this.uiConfig.get('cart').map((config: any) => config.config.payment.items);
   }
 
   public selectPurchaseOnCredit() {

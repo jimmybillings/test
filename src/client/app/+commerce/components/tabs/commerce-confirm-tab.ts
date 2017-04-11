@@ -1,4 +1,4 @@
-import { Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Output, EventEmitter } from '@angular/core';
 import { CartService } from '../../../shared/services/cart.service';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { Tab } from './tab';
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
 
-export class CommerceConfirmTab extends Tab implements OnInit, OnDestroy {
+export class CommerceConfirmTab extends Tab {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
   public store: any;
   public storeSubscription: Subscription;
@@ -17,12 +17,12 @@ export class CommerceConfirmTab extends Tab implements OnInit, OnDestroy {
     super();
   }
 
-  ngOnInit() {
-    this.storeSubscription = this.commerceService.data.subscribe(data => this.store = data);
+  public get orderInProgress() {
+    return this.commerceService.data.map((data: any) => data.orderInProgress);
   }
 
-  ngOnDestroy() {
-    this.storeSubscription.unsubscribe();
+  public get cart() {
+    return this.commerceService.data.map((data: any) => data.cart);
   }
 
   purchase() {

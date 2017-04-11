@@ -30,6 +30,6 @@ export class FooterComponent implements OnInit {
   }
 
   public selectLang(lang: any) {
-    this.onChangeLang.emit(lang);
+    this.onChangeLang.emit(lang.value);
   }
 }

@@ -5,8 +5,8 @@
     <form #f="ngForm" (ngSubmit)="onSubmit()">
       <div *ngFor="let attribute of attributes; let i = index" class="input">
         <div layout="row" layout-align="center center">
-          <md-select placeholder="{{attribute.name}}" [disabled]="parentIsEmpty(attribute)" [(ngModel)]="form[i].value" [ngModelOptions]="{standalone: true}">
-            <md-option *ngFor="let option of validOptionsFor(attribute)" (onSelect)="handleSelect(attribute, option)" [value]="option.value">{{option.name}}</md-option>
+          <md-select (change)="handleSelect($event, attribute)" placeholder="{{attribute.name}}" [disabled]="parentIsEmpty(attribute)" [(ngModel)]="form[i].value" [ngModelOptions]="{standalone: true}">
+            <md-option *ngFor="let option of validOptionsFor(attribute)" [value]="option.value">{{option.name}}</md-option>
           </md-select>
         </div>
         <br>

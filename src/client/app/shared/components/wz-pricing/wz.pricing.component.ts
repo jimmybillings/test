@@ -81,7 +81,7 @@ export class WzPricingComponent implements OnInit {
     }, []).indexOf('') !== -1;
   }
 
-  public handleSelect(attribute: any, option: any): void {
+  public handleSelect(option: any, attribute: any): void {
     let index: number = this.attributes.indexOf(attribute);
     this.clearForm(index);
     this.form[index].value = option.value;

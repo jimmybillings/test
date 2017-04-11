@@ -5,11 +5,13 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   selector: 'quote-purchase-type-component',
   template: `
     <div class="quote-purchase-types" layout="column" layout-align="start center">
-      <md-select [(ngModel)]="selectedType" placeholder="Please select a quote purchase type">
+      <md-select 
+        (change)="selectQuoteType.emit({ type: $event.value });" 
+        [(ngModel)]="selectedType" 
+        placeholder="Please select a quote purchase type">
         <md-option
           *ngFor="let type of types"
-          [value]="type.value"
-          (onSelect)="selectQuoteType.emit({ type: type.value });">{{ type.viewValue }}
+          [value]="type.value">{{ type.viewValue }}
         </md-option>
       </md-select>
     </div>

@@ -7,11 +7,11 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   template: `
     <md-select
       placeholder="Delivery format/codec"
-      [(ngModel)]="selectedTarget">
+      [(ngModel)]="selectedTarget"
+      (change)="selectTarget.emit($event.value)">
         <md-option
           *ngFor="let target of transcodeTargets"
-          [value]="target"
-          (onSelect)="selectTarget.emit(target)">{{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
+          [value]="target">{{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
         </md-option>
     </md-select>
   `

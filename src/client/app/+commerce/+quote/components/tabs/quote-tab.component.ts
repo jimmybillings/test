@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Rx';
 
 export class QuoteTabComponent extends Tab {
   public quote: Observable<Quote>;
-  constructor(private quoteService: QuoteService, private userCan: CommerceCapabilities) {
+  constructor(private quoteService: QuoteService, public userCan: CommerceCapabilities) {
     super();
     this.quote = this.quoteService.data;
   }

@@ -97,8 +97,8 @@ export class AssetDetailComponent implements OnChanges {
     this.getPriceAttributes.emit(this.asset.primary[3].value);
   }
 
-  public onSelectTarget(target: string): void {
-    this.selectedTarget = target;
+  public onSelectTarget(target: any): void {
+    this.selectedTarget = target.value;
   }
 
   private parseNewAsset(asset: any) {
