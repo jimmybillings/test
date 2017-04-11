@@ -1,1 +1,0 @@
-var baseUrl = 'https://crxextapi.dev.wzplatform.com/';
