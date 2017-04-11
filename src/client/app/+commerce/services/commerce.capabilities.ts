@@ -45,7 +45,7 @@ export class CommerceCapabilities {
   }
 
   public administerQuotes(): boolean {
-    return this.userHas('CreateQuotes') && this.userHas('DeleteQuotes') && this.userHas('EditQuotes');
+    return this.userHas('AdministerQuotes');
   }
 
   public userHas(permission: string): boolean {

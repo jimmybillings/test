@@ -21,19 +21,19 @@ quote-show-component section.header {
       letter-spacing: .1em;
       font-weight: 600;
       &.pending {
-        color: md-color($mat-accent, 500);
+        color: mat-color($mat-accent, 500);
       }
       &.active {
-        color: md-color($mat-green, 500);
+        color: mat-color($mat-green, 500);
       }
       &.expired {
-        color: md-color($mat-warn, 500);
+        color: mat-color($mat-warn, 500);
       }
       &.ordered {
-        color: md-color($mat-blue, 500);
+        color: mat-color($mat-blue, 500);
       }
       &.cancelled {
-        color: md-color($mat-grey, 500);
+        color: mat-color($mat-grey, 500);
       }
     }
     .tools {
