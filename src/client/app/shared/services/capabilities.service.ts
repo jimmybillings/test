@@ -2,20 +2,19 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
-import { CartCapabilities } from '../../+commerce/+cart/services/cart.capabilities';
+import { CommerceCapabilities } from '../../+commerce/services/commerce.capabilities';
 import { AssetCapabilities } from '../../+asset/services/asset.capabilities';
 import { AdminCapabilities } from '../../+admin/services/admin.capabilities';
 import { CollectionCapabilities } from '../../+collection/services/collection.capabilities';
 import { SearchCapabilities } from '../../+search/services/search.capabilities';
-import { QuoteCapabilities } from '../../+commerce/+quote/services/quote.capabilities';
 
 import { CurrentUserService } from './current-user.service';
 import { UiState } from '../services/ui.state';
 import { FeatureStore } from '../stores/feature.store';
 
 @Injectable()
-export class Capabilities implements CartCapabilities, CollectionCapabilities, AssetCapabilities,
-  AdminCapabilities, SearchCapabilities, QuoteCapabilities {
+export class Capabilities implements CommerceCapabilities, CollectionCapabilities, AssetCapabilities,
+  AdminCapabilities, SearchCapabilities {
   haveCollections: () => boolean;
   viewCollections: () => boolean;
   editCollections: () => boolean;
@@ -47,7 +46,7 @@ export class Capabilities implements CartCapabilities, CollectionCapabilities, A
     public uiState: UiState,
     public feature: FeatureStore) {
     this.applyMixins(Capabilities, [
-      CartCapabilities,
+      CommerceCapabilities,
       CollectionCapabilities,
       AssetCapabilities,
       AdminCapabilities,

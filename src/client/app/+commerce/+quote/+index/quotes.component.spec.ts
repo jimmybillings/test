@@ -11,7 +11,8 @@ export function main() {
       mockUserCapabilities = { administerQuotes: jasmine.createSpy('administerQuotes').and.returnValue(hasPermission) };
       mockQuotesService = {
         data: Observable.of({}),
-        getQuotes: jasmine.createSpy('getQuotes').and.returnValue(Observable.of({}))
+        getQuotes: jasmine.createSpy('getQuotes').and.returnValue(Observable.of({})),
+        setFocused: jasmine.createSpy('setFocused').and.returnValue(Observable.of({}))
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({})) };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
@@ -21,14 +22,14 @@ export function main() {
     describe('changePage()', () => {
       it('should call navigate on the router with the proper params', () => {
         componentUnderTest.changePage('3');
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/quotes', { n: 20, i: '3' }]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/quotes', { i: '3' }]);
       });
     });
 
     describe('onSearch()', () => {
       it('should call getQuotes on the quotes service with the proper query', () => {
         componentUnderTest.onSearch({ q: 'ross' });
-        expect(mockQuotesService.getQuotes).toHaveBeenCalledWith({ n: 20, q: 'ross' });
+        expect(mockQuotesService.getQuotes).toHaveBeenCalledWith(false, { q: 'ross' });
       });
     });
 
@@ -43,7 +44,7 @@ export function main() {
       });
 
       it('should call navigate on the router with the proper params', () => {
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/quotes', { n: 20, s: 'createdOn', d: true }]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/quotes', { s: 'createdOn', d: true }]);
       });
     });
 
@@ -59,25 +60,29 @@ export function main() {
       });
 
       it('should call getQuotes on the quotes servicve with the correct params', () => {
-        expect(mockQuotesService.getQuotes).toHaveBeenCalledWith({ n: 20, status: 'active' });
+        expect(mockQuotesService.getQuotes).toHaveBeenCalledWith(false, { status: 'active' });
       });
     });
 
     describe('onEditQuote()', () => {
-      it('should console.log() for now', () => {
-        spyOn(console, 'log');
-        let mockQuote: any = { quote: 'yay' };
-        componentUnderTest.onEditQuote(mockQuote);
-        expect(console.log).toHaveBeenCalled();
+      it('call setFocused() on the quotes service', () => {
+        componentUnderTest.onEditQuote(1);
+
+        expect(mockQuotesService.setFocused).toHaveBeenCalledWith(1);
+      });
+
+      it('should navigate', () => {
+        componentUnderTest.onEditQuote(1);
+
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/activeQuote']);
       });
     });
 
     describe('onSetAsFocusedQuote()', () => {
-      it('should console.log() for now', () => {
-        spyOn(console, 'log');
-        let mockQuote: any = { quote: 'yay' };
-        componentUnderTest.onSetAsFocusedQuote(mockQuote);
-        expect(console.log).toHaveBeenCalled();
+      it('call setFocused() on the quotes service', () => {
+        componentUnderTest.onSetAsFocusedQuote(1);
+
+        expect(mockQuotesService.setFocused).toHaveBeenCalledWith(1);
       });
     });
   });

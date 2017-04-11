@@ -1,4 +1,4 @@
-<div class="cart-billing" layout="row" layout-align="center start">
+<div class="commerce-billing" layout="row" layout-align="center start">
   <div *ngIf="addressesAreEmpty | async" flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="100">
     <md-card class="billing-card wz-form-card">
       <md-card-title>
@@ -17,7 +17,7 @@
 
   <div *ngIf="!(addressesAreEmpty | async)" flex="100" flex-gt-lg="85" class="addresses">
     <header layout="column" layout-align="start">
-      <h2 class="cart-heading">{{ 'CART.BILLING.SELECT_BILLING_ADDRESS' | translate }}</h2>
+      <h2 class="commerce-heading">{{ 'CART.BILLING.SELECT_BILLING_ADDRESS' | translate }}</h2>
     </header>
     
     <ul layout="column" layout-align="start" layout-gt-xs="row">

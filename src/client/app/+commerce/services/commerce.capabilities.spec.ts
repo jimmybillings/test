@@ -1,16 +1,16 @@
 import { Observable } from 'rxjs/Observable';
 
-import { CartCapabilities } from './cart.capabilities';
+import { CommerceCapabilities } from './commerce.capabilities';
 
 export function main() {
   describe('Cart Capabilities', () => {
     let mockCurrentUserService: any;
     let mockUiState: any;
     let mockFeature: any;
-    let capabilitiesUnderTest: CartCapabilities;
+    let capabilitiesUnderTest: CommerceCapabilities;
 
     beforeEach(() => {
-      capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, mockUiState, mockFeature);
+      capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature);
       mockCurrentUserService = {};
       mockUiState = {};
       mockFeature = {};
@@ -30,28 +30,28 @@ export function main() {
       it('returns observable of false when header not expanded and no permission', () => {
         loggedIn = true;
         headerIsExpanded = false;
-        new CartCapabilities(mockCurrentUserService, mockUiState, mockFeature).viewCartIcon()
+        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).viewCartIcon()
           .subscribe(answer => expect(answer).toBe(false));
       });
 
       it('returns observable of false when header is expanded but no permission', () => {
         loggedIn = false;
         headerIsExpanded = true;
-        new CartCapabilities(mockCurrentUserService, mockUiState, mockFeature).viewCartIcon()
+        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).viewCartIcon()
           .subscribe(answer => expect(answer).toBe(false));
       });
 
       it('returns observable of false when header not expanded but has permission', () => {
         loggedIn = false;
         headerIsExpanded = false;
-        new CartCapabilities(mockCurrentUserService, mockUiState, mockFeature).viewCartIcon()
+        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).viewCartIcon()
           .subscribe(answer => expect(answer).toBe(false));
       });
 
       it('returns observable of true when header is expanded and has permission', () => {
         loggedIn = true;
         headerIsExpanded = true;
-        new CartCapabilities(mockCurrentUserService, mockUiState, mockFeature).viewCartIcon()
+        new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).viewCartIcon()
           .subscribe(answer => expect(answer).toBe(true));
       });
     });
@@ -67,14 +67,14 @@ export function main() {
       it('returns false when user does not have purchaseOnCredit', () => {
         hasPurchaseOnCredit = false;
 
-        expect(new CartCapabilities(mockCurrentUserService, mockUiState, mockFeature).purchaseOnCredit())
+        expect(new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).purchaseOnCredit())
           .toBe(false);
       });
 
       it('returns true when user has purchaseOnCredit', () => {
         hasPurchaseOnCredit = true;
 
-        expect(new CartCapabilities(mockCurrentUserService, mockUiState, mockFeature).purchaseOnCredit())
+        expect(new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).purchaseOnCredit())
           .toBe(true);
       });
     });
@@ -123,28 +123,28 @@ export function main() {
       it('should return false if the user doesnt have the permission', () => {
         addr = { type: 'account', address: {} };
         hasPermission = false;
-        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(false);
       });
 
       it('should return false if the address is of type "user"', () => {
         addr = { type: 'user', address: {} };
         hasPermission = true;
-        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(false);
       });
 
       it('should return false if there is no address', () => {
         addr = { type: 'account' };
         hasPermission = true;
-        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(false);
       });
 
       it('should return true if all conditions are met', () => {
         addr = { type: 'account', address: {} };
         hasPermission = true;
-        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(true);
       });
     });
@@ -159,28 +159,28 @@ export function main() {
       it('should return false if the user doesnt have the permission', () => {
         addr = { type: 'account' };
         hasPermission = false;
-        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(false);
       });
 
       it('should return false if the address is of type "user"', () => {
         addr = { type: 'user' };
         hasPermission = true;
-        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(false);
       });
 
       it('should return false if there is an address', () => {
         addr = { type: 'account', address: {} };
         hasPermission = true;
-        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(false);
       });
 
       it('should return true if all conditions are met', () => {
         addr = { type: 'account' };
         hasPermission = true;
-        capabilitiesUnderTest = new CartCapabilities(mockCurrentUserService, null, null);
+        capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(true);
       });
     });
@@ -195,14 +195,14 @@ export function main() {
       it('returns false when user does not have permission', () => {
         hasPermission = false;
 
-        expect(new CartCapabilities(mockCurrentUserService, mockUiState, mockFeature).userHas('whatever'))
+        expect(new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).userHas('whatever'))
           .toBe(false);
       });
 
       it('returns true when user has permission', () => {
         hasPermission = true;
 
-        expect(new CartCapabilities(mockCurrentUserService, mockUiState, mockFeature).userHas('whatever'))
+        expect(new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).userHas('whatever'))
           .toBe(true);
       });
     });

@@ -1,25 +1,21 @@
 import { Component, Inject, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommercePaymentTab } from '../../../components/tabs/commerce-payment-tab';
-import { CartService } from '../../../../shared/services/cart.service';
+import { QuoteEditService } from '../../../../shared/services/quote-edit.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
-
 
 @Component({
   moduleId: module.id,
-  selector: 'cart-payment-tab-component',
-  templateUrl: '../../../components/tabs/commerce-payment-tab.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'quote-payment-tab',
+  templateUrl: '../../../components/tabs/commerce-payment-tab.html'
 })
 
-export class CartPaymentTabComponent extends CommercePaymentTab {
-
+export class QuotePaymentTabComponent extends CommercePaymentTab {
   constructor(
     _zone: NgZone,
-    cartService: CartService,
+    quoteEditService: QuoteEditService,
     uiConfig: UiConfig,
     ref: ChangeDetectorRef
   ) {
-    super(_zone, cartService, uiConfig, ref);
+    super(_zone, quoteEditService, uiConfig, ref);
   }
-
 }

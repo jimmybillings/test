@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CartCapabilities } from './services/cart.capabilities';
+import { CommerceCapabilities } from '../services/commerce.capabilities';
 
 @Component({
   moduleId: module.id,
@@ -12,7 +12,7 @@ export class CartComponent implements OnInit {
   public tabEnabled: boolean[];
   public selectedTabIndex: number;
 
-  constructor(public userCan: CartCapabilities) { }
+  constructor(public userCan: CommerceCapabilities) { }
 
   ngOnInit() {
     // We could initialize a subset of these instead, based on some condition.

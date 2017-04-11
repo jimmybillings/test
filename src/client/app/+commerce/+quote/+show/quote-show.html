@@ -1,93 +1,94 @@
 <section class="header" layout="row" layout-align="center center">
-	<header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
+  <header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
     <div flex="100" layout="row" layout-align="space-between end">
-			<h2 flex="grow" class="md-display-1">{{ 'QUOTE.SHOW.PAGE_TITLE' | translate }}</h2>
-			<div class="tools" flex="auto">
-				<a [routerLink]="['/commerce/quotes']" md-icon-button color="primary" title="View all quotes">
-					<md-icon>description</md-icon>
-				</a>
-			</div>
-		</div>
-	</header>
+      <h2 *ngIf="userCan.administerQuotes() || (quote | async).quoteStatus !== 'ACTIVE'" flex="grow" class="md-display-1">
+        Review Quote
+      </h2>
+      <h2 *ngIf="!userCan.administerQuotes() && (quote | async).quoteStatus === 'ACTIVE'" flex="grow" class="md-display-1">
+        Purchase Quote
+      </h2>
+      <h2 class="md-display status {{ (quote | async).quoteStatus.toLowerCase() }}">
+        {{ (quote | async).quoteStatus }}
+      </h2>
+    </div>
+  </header>
 </section>
 
-<section class="quote-summary">
+<section *ngIf="userCan.administerQuotes() || (quote | async).quoteStatus !== 'ACTIVE'" class="quote-summary">
 	<div layout="row" flex="100" layout-align="center center">
-		<div layout="column" layout-gt-xs="row" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout-align-gt-xs="space-between end">
-			<div flex-gt-xs="40" flex="100" class="details">
-				<div class="md-caption quote-info">
-					<span class="quote-number">
-						<strong>{{ 'QUOTE.SHOW.NUMBER_LABEL' | translate }}</strong>
-						<span class="number">{{ (quote | async).id }}</span>
-					</span>
-					<span>
-						<strong>{{ 'QUOTE.CREATED_ON_LABEL' | translate }} </strong>
-            {{ (quote | async).createdOn | date:'short' }}
-					</span>
-					<span>
-						<strong>{{ 'QUOTE.PURCHASE_TYPE_LABEL' | translate }} </strong>
-            {{ (quote | async).purchaseType ? (quote | async).purchaseType : 'none' }}
-					</span>
-					<span>
-						<strong>{{ 'QUOTE.SHOW.STATUS_LABEL' | translate }} </strong>
-            {{ (quote | async).quoteStatus }}
-					</span>
-				</div>
-			</div>
-			<div flex="100" layout="row" layout-xs="column" class="divider"></div>
-			<div class="cart-total" flex-gt-xs="60" flex="100" class="cart-total">
-				<div class="total md-headline" flex="auto" layout="row" layout-align="end center">
-					<span class="total-label">
-							{{ 'QUOTE.INDEX.TOTAL_LABEL' | translate }}
-					</span>
-					<span class="total-amount">
-							{{ (quote | async).total | currency:'USD':true:'1.2-2' }}
-					</span>
-				</div>
-			</div>
-		</div>
+    <div
+      layout="column"
+      layout-gt-xs="row"
+      flex="100"
+      flex-gt-sm="95"
+      flex-gt-md="85"
+      flex-gt-lg="80"
+      layout-align-gt-xs="space-between end">
+      <div layout="column" layout-gt-xs="row" flex="100" layout-align-gt-xs="space-between end">
+        <div flex-gt-xs="40" flex="100" class="details">
+          <div class="md-caption quote-info">
+            <span class="quote-number">
+              <strong>{{ 'QUOTE.SHOW.NUMBER_LABEL' | translate }}</strong>
+              <span class="number">{{ (quote | async).id }}</span>
+            </span>
+            <span>
+              <strong>{{ 'QUOTE.CREATED_ON_LABEL' | translate }} </strong>
+              {{ (quote | async).createdOn | date:'short' }}
+            </span>
+            <span>
+              <strong>{{ 'QUOTE.PURCHASE_TYPE_LABEL' | translate }} </strong>
+              {{ (quote | async).purchaseType ? (quote | async).purchaseType : 'none' }}
+            </span>
+          </div>
+        </div>
+        <div flex="100" layout="row" layout-xs="column" class="divider"></div>
+        <div class="cart-total" flex-gt-xs="60" flex="100" class="cart-total">
+          <div class="total md-headline" flex="auto" layout="row" layout-align="end center">
+            <span class="total-label">
+                {{ 'QUOTE.INDEX.TOTAL_LABEL' | translate }}
+            </span>
+            <span class="total-amount">
+                {{ (quote | async).total | currency:'USD':true:'1.2-2' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
 	</div>
 </section>
 
-<section class="project">
+<section class="tabs-section">
   <div layout="row" flex="100" layout-align="center start">
-		<div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-				<section class="projects">
-					<div class="project" *ngFor="let project of (quote | async).projects">
-						<header class="project-info" layout-gt-xs="row" layout="column">
-							<div flex="100" flex-gt-sm="70" flex-order-xs="2">
-								<h5 md-display-1>
-									<span class="project-label md-caption">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>
-									<span class="project-name">{{ project.name }}</span>
-								</h5>
-								<span class="project-client md-caption">
-									<strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> 
-									{{ project.clientName }}
-								</span>
-							</div>
-							<div class="project-subtotal md-caption">
-								<strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
-								<span>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
-							</div>
-						</header>
-
-						<section class="assets">
-							<ul class="asset-list">
-								<li 
-									*ngFor="let lineItem of project.lineItems"
-									class="cart-asset" 
-									flex="100" 
-									layout="row" 
-									layout-xs="column">
-									<div flex="100" flex-gt-xs="50">
-										<!--<cart-asset-component [asset]="lineItem.asset" (assetNotify)="delegate($event)"></cart-asset-component>-->
-									</div>
-								</li>
-							</ul>
-						</section>
-					</div>
-				</section>
-
-		</div>
-	</div>
+     <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
+      <div *ngIf="userCan.administerQuotes()">
+        <quote-tab flex></quote-tab>
+      </div>
+      <div *ngIf="!userCan.administerQuotes()">
+        <md-tab-group *ngIf="(quote | async).quoteStatus === 'ACTIVE'" [(selectedIndex)]="selectedTabIndex">
+          <md-tab *ngFor="let tabLabelKey of tabLabelKeys; let i = index" [disabled]="!tabEnabled[i]">
+            <ng-template md-tab-label>{{ tabLabelKey | uppercase }}</ng-template>
+            <quote-tab 
+              *ngIf="tabLabelKey === 'quote'" 
+              (notify)="onNotification($event)">
+            </quote-tab>
+            <quote-billing-tab 
+              *ngIf="tabLabelKey === 'billing'" 
+              (notify)="onNotification($event)">
+            </quote-billing-tab>
+            <quote-payment-tab 
+              *ngIf="tabLabelKey === 'payment'" 
+              (notify)="onNotification($event)">
+            </quote-payment-tab>
+            <quote-confirm-tab 
+              *ngIf="tabLabelKey === 'confirm'" 
+              (notify)="onNotification($event)">
+            </quote-confirm-tab>
+          </md-tab>
+        </md-tab-group>
+        <div *ngIf="(quote |async).quoteStatus !== 'ACTIVE'">
+          <quote-tab flex></quote-tab>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

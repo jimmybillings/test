@@ -1,10 +1,11 @@
 import { Component, Output, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CartService } from '../../../shared/services/cart.service';
+import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { UserService } from '../../../shared/services/user.service';
 import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { Address, User, ViewAddress } from '../../../shared/interfaces/user.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
-import { CartCapabilities } from '../../+cart/services/cart.capabilities';
+import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { AddressFormComponent } from '../address-form/address-form.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
@@ -17,17 +18,17 @@ export class CommerceBillingTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
 
   constructor(
-    public userCan: CartCapabilities,
-    private cartService: CartService,
-    private uiConfig: UiConfig,
-    private user: UserService,
-    private currentUser: CurrentUserService,
-    private dialog: MdDialog) {
+    public userCan: CommerceCapabilities,
+    protected commerceService: CartService | QuoteEditService,
+    protected uiConfig: UiConfig,
+    protected user: UserService,
+    protected currentUser: CurrentUserService,
+    protected dialog: MdDialog) {
     super();
   }
 
   ngOnInit() {
-    this.orderInProgress = this.cartService.data.map((data: any) => data.orderInProgress);
+    this.orderInProgress = this.commerceService.data.map((data: any) => data.orderInProgress);
     this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
     this.fetchAddresses().subscribe();
   }
@@ -46,16 +47,16 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   public selectAddress(address: ViewAddress): void {
-    this.cartService.updateOrderInProgress('selectedAddress', address);
+    this.commerceService.updateOrderInProgress('selectedAddress', address);
     if (address.type === 'account') {
       this.user.getAccount(address.addressEntityId).subscribe((account: any) => {
-        this.cartService.updateOrderInProgress('purchaseOptions', {
+        this.commerceService.updateOrderInProgress('purchaseOptions', {
           purchaseOnCredit: account.purchaseOnCredit ? true : false,
           creditExemption: account.creditExemption
         });
       });
     } else {
-      this.cartService.updateOrderInProgress('purchaseOptions', {
+      this.commerceService.updateOrderInProgress('purchaseOptions', {
         purchaseOnCredit: this.currentUser.state.purchaseOnCredit
       });
     }
@@ -80,7 +81,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   public openFormFor(resourceType: 'account' | 'user', mode: 'edit' | 'create', address?: ViewAddress): void {
-    let dialogRef: MdDialogRef<AddressFormComponent> = this.dialog.open(AddressFormComponent, { position: { top: '10%' } });
+    let dialogRef: MdDialogRef<AddressFormComponent> = this.dialog.open(AddressFormComponent, { position: { top: '6%' } });
     dialogRef.componentInstance.items = this.items;
     dialogRef.componentInstance.dialog = dialogRef;
     dialogRef.componentInstance.resourceType = resourceType;
@@ -98,7 +99,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
 
   private fetchAddresses(): Observable<Array<ViewAddress>> {
     return this.user.getAddresses().do((addresses: Array<ViewAddress>) => {
-      this.cartService.updateOrderInProgress('addresses', addresses);
+      this.commerceService.updateOrderInProgress('addresses', addresses);
     });
   }
 

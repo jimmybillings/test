@@ -4,10 +4,10 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 
 import { CommerceComponent } from './commerce.component';
+import { CommerceCapabilities } from './services/commerce.capabilities';
 import { COMMERCE_ROUTES } from './commerce.routes';
 
 // Cart Stuff
-import { CartCapabilities } from './+cart/services/cart.capabilities';
 import { CartComponent } from './+cart/cart.component';
 
 // tabs
@@ -21,18 +21,23 @@ import { OrdersComponent } from './+order/+index/orders.component';
 import { OrderShowComponent } from './+order/+show/order-show.component';
 
 // Quote Stuff
-import { QuoteComponent } from './+quote/+show/quote-show.component';
+import { QuoteShowComponent } from './+quote/+show/quote-show.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
-import { QuoteCapabilities } from './+quote/services/quote.capabilities';
 import { QuoteFormComponent } from './+quote/components/quote-form.component';
 import { AdministerQuoteComponent } from './+quote/components/administer-quote.component';
 import { QuotePurchaseTypeComponent } from './+quote/components/quote-purchase-type.component';
 import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
+
+// tabs
 import { QuoteEditTabComponent } from './+quote/+edit/components/tabs/quote-edit-tab.component';
+import { QuoteTabComponent } from './+quote/components/tabs/quote-tab.component';
+import { QuoteBillingTabComponent } from './+quote/components/tabs/quote-billing-tab.component';
+import { QuotePaymentTabComponent } from './+quote/components/tabs/quote-payment-tab.component';
+import { QuoteConfirmTabComponent } from './+quote/components/tabs/quote-confirm-tab.component';
 
 // SHARED STUFF
-import { CommerceListComponent } from './components/commerce-list.component';
-import { CommerceHeaderComponent } from './components/commerce-header.component';
+import { CommerceListComponent } from './components/commerce-list/commerce-list.component';
+import { CommerceHeaderComponent } from './components/commerce-header/commerce-header.component';
 import { AddressFormComponent } from './components/address-form/address-form.component';
 
 // project
@@ -84,15 +89,19 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
         CommerceHeaderComponent,
         AddressFormComponent,
         QuoteFormComponent,
-        QuoteComponent,
+        QuoteShowComponent,
         QuotesComponent,
         AdministerQuoteComponent,
         QuotePurchaseTypeComponent,
         QuoteEditComponent,
-        QuoteEditTabComponent
+        QuoteEditTabComponent,
+        QuoteTabComponent,
+        QuoteBillingTabComponent,
+        QuotePaymentTabComponent,
+        QuoteConfirmTabComponent
     ],
     exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
-    providers: [CartCapabilities, QuoteCapabilities],
+    providers: [CommerceCapabilities],
     entryComponents: [ProjectEditComponent, AddressFormComponent, QuoteFormComponent]
 })
 

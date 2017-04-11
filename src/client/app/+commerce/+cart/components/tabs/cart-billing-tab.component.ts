@@ -5,19 +5,19 @@ import { UiConfig } from '../../../../shared/services/ui.config';
 import { MdDialog } from '@angular/material';
 import { UserService } from '../../../../shared/services/user.service';
 import { CurrentUserService } from '../../../../shared/services/current-user.service';
-import { CartCapabilities } from '../../../+cart/services/cart.capabilities';
+import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 
 @Component({
   moduleId: module.id,
   selector: 'cart-billing-tab-component',
-  templateUrl: 'cart-billing-tab.html',
+  templateUrl: '../../../components/tabs/commerce-billing-tab.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class CartBillingTabComponent extends CommerceBillingTab {
 
   constructor(
-    userCan: CartCapabilities,
+    userCan: CommerceCapabilities,
     cartService: CartService,
     uiConfig: UiConfig,
     user: UserService,

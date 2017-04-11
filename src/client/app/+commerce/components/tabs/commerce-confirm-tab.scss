@@ -1,4 +1,5 @@
-cart-confirm-tab-component {
+
+cart-confirm-tab-component, quote-confirm-tab {
   .md-title {
     opacity: .6;
     margin: .3em 0;
@@ -88,7 +89,7 @@ cart-confirm-tab-component {
       }
     }
   }
-  .cart-total span {
+  .cart-total, .quote-total span {
     display: flex;
     &.mat-button-wrapper md-icon{
       padding: rem(.6) rem(.3) 0 0
