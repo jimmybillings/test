@@ -69,11 +69,11 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   public get rmAssetsHaveAttributes(): boolean {
-    if (this.commerceService.state.cart.itemCount === 0) return true;
+    if (this.commerceService.state.data.itemCount === 0) return true;
 
     let validAssets: boolean[] = [];
 
-    this.commerceService.state.cart.projects.forEach((project: Project) => {
+    this.commerceService.state.data.projects.forEach((project: Project) => {
       if (project.lineItems) {
         project.lineItems.forEach((lineItem: LineItem) => {
           validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);

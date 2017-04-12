@@ -17,7 +17,7 @@ export class QuoteShowComponent implements OnInit {
   public quote: Observable<Quote>;
 
   constructor(public userCan: CommerceCapabilities, public quoteService: QuoteService) {
-    this.quote = this.quoteService.data;
+    this.quote = this.quoteService.data.map(state => state.data);
   }
 
   ngOnInit() {

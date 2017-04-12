@@ -57,7 +57,6 @@ export class LineItemsComponent {
   }
 
   public onSelectTarget(newTarget: string, currentlySelected: string, lineItem: LineItem): void {
-    console.log(newTarget);
     if (currentlySelected !== newTarget) {
       this.lineItemsNotify.emit({
         type: 'EDIT_LINE_ITEM', payload:

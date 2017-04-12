@@ -1,132 +1,103 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { ApiService } from '../services/api.service';
 import { Api, ApiBody } from '../interfaces/api.interface';
-import { CurrentUserService } from '../services/current-user.service';
 import { Address, ViewAddress } from '../interfaces/user.interface';
-
 import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
-import { CartStore } from '../stores/cart.store';
-import { Cart, CartState } from '../interfaces/cart.interface';
-
+import { ActiveQuoteStore } from '../stores/active-quote.store';
+import { Quote, QuoteState } from '../interfaces/quote.interface';
 import { QuoteOptions } from '../../shared/interfaces/quote.interface';
 
 @Injectable()
 export class QuoteEditService {
   constructor(
-    private store: CartStore,
-    private api: ApiService,
-    private currentUser: CurrentUserService
+    private store: ActiveQuoteStore,
+    private api: ApiService
   ) { }
 
-  public get data(): Observable<CartStore> {
+  // Store Accessors
+
+  public get data(): Observable<QuoteState> {
     return this.store.data;
   }
 
-  public get state(): CartState {
+  public get state(): QuoteState {
     return this.store.state;
   }
 
-  public get cart(): Observable<Cart> {
-    return this.data.map((data: any) => data.cart);
+  public get quote(): Observable<Quote> {
+    return this.data.map((state: QuoteState) => state.data);
   }
 
   public get projects(): Observable<Project[]> {
-    return this.cart.map((data: Cart) => data.projects);
+    return this.quote.map((data: Quote) => data.projects);
   }
 
   public get total(): Observable<Number> {
-    return this.cart.map((data: Cart) => data.total);
+    return this.quote.map((data: Quote) => data.total);
   }
 
   public get hasAssets(): Observable<boolean> {
-    return this.cart.map(cart => (cart.itemCount || 0) > 0);
+    return this.quote.map(quote => (quote.itemCount || 0) > 0);
   }
 
-  // Loads the cart and returns just the observable's termination notification,
-  // because our subscribers care about the fact that we are complete, but they
-  // should be getting the data elsewhere.  Also, we take a detour to add a project
-  // if one doesn't exist, which creates a second HTTP call (or just returns
-  // a synchronous observable).  Either way, we flatMap() that second call's observable
-  // to this one, and the termination notification is delayed until both observables
-  // are terminated.  We take the last emitted value only, and map the data out of it.
-  // Finally, we call share() to ensure that the do() call happens exactly once instead
-  // of once per subscriber.
-  public initializeData(): Observable<any> {
-    return this.api.get(Api.Orders, 'cart', { loading: true })
-      .do(this.replaceCartWith)
-      .takeLast(1)
-      .map(_ => { return {}; })
-      .share();
+  // Public Api
+
+  public getFocusedQuote(): Observable<Quote> {
+    return this.api.get(Api.Orders, 'quote/focused', { loading: true }).do(this.replaceQuoteWith);
   }
 
-  // Temporary until first time user's cart is created with a project - fix for CRUX-1027
-  public getCartSummary(): void {
-    this.api.get(Api.Orders, 'cart/summary')
-      .subscribe((cartSummary: any) => this.updateCartWith(cartSummary));
-  }
-
-  public purchase(): Observable<any> {
-    const stripe: any = {
-      stripeToken: this.state.orderInProgress.authorization.id,
-      stripeTokenType: this.state.orderInProgress.authorization.type
-    };
-    return this.api.post(Api.Orders, 'cart/stripe/process',
-      { body: stripe, loading: true })
-      .do((response: any) => {
-        this.initializeData().subscribe();
-        return response;
-      });
+  public getQuoteSummary(): void {
+    this.api.get(Api.Orders, 'quote/summary')
+      .subscribe((quoteSummary: any) => this.updateQuoteWith(quoteSummary));
   }
 
   public addProject(): void {
-    this.addProjectAndReturnObservable().subscribe();
+    this.api.post(Api.Orders, 'quote/project', { loading: true })
+      .do(this.replaceQuoteWith)
+      .subscribe();
   }
 
   public removeProject(project: Project): void {
-    this.api.delete(Api.Orders, `cart/project/${project.id}`, { loading: true })
-      .subscribe(wholeCartResponse => {
-        this.replaceCartWith(wholeCartResponse);
-      });
+    console.warn('this needs to be fixed!');
+    // this.api.delete(Api.Orders, `quote/project/${project.id}`, { loading: true })
+    //   .subscribe(this.replaceQuoteWith);
   }
 
-  public addAssetToProjectInCart(addAssetParameters: AddAssetParameters): void {
+  public addAssetToProjectInQuote(addAssetParameters: AddAssetParameters): void {
     let existingProjectNames: Array<string> = this.existingProjectNames;
     this.api.put(
       Api.Orders,
-      'cart/asset/lineItem/quick',
+      'quote/asset/lineItem/quick',
       {
         body: this.formatAssetBody(addAssetParameters),
         parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
       }
-    ).subscribe(this.replaceCartWith);
+    ).subscribe(this.replaceQuoteWith);
   }
 
   public updateProject(project: Project): void {
-    this.api.put(Api.Orders, 'cart/project', { body: project, loading: true })
-      .subscribe(this.replaceCartWith);
+    this.api.put(Api.Orders, 'quote/project', { body: project, loading: true })
+      .subscribe(this.replaceQuoteWith);
   }
 
   public moveLineItemTo(project: Project, lineItem: LineItem): void {
-    this.api.put(Api.Orders, 'cart/move/lineItem', { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true })
-      .subscribe(this.replaceCartWith);
+    this.api.put(
+      Api.Orders,
+      'quote/move/lineItem',
+      { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true }
+    ).subscribe(this.replaceQuoteWith);
   }
 
   public cloneLineItem(lineItem: LineItem): void {
-    this.api.put(Api.Orders, 'cart/clone/lineItem', { parameters: { lineItemId: lineItem.id }, loading: true })
-      .subscribe(this.replaceCartWith);
+    this.api.put(Api.Orders, 'quote/clone/lineItem', { parameters: { lineItemId: lineItem.id }, loading: true })
+      .subscribe(this.replaceQuoteWith);
   }
 
   public removeLineItem(lineItem: LineItem): void {
-    this.api.delete(Api.Orders, `cart/asset/${lineItem.id}`, { loading: true })
-      .subscribe(this.replaceCartWith);
-  }
-
-  public purchaseOnCredit(): Observable<any> {
-    return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { loading: true }).do(() => {
-      this.initializeData().subscribe();
-    });
+    console.warn('this needs to be fixed!');
+    // this.api.delete(Api.Orders, `quote/asset/${lineItem.id}`, { loading: true })
+    //   .subscribe(this.replaceQuoteWith);
   }
 
   public editLineItem(lineItem: LineItem, fieldToEdit: any): void {
@@ -134,20 +105,20 @@ export class QuoteEditService {
       fieldToEdit = { attributes: this.formatAttributes(fieldToEdit.pricingAttributes) };
     }
     Object.assign(lineItem, fieldToEdit);
-    this.api.put(Api.Orders, `cart/update/lineItem/${lineItem.id}`, { body: lineItem, parameters: { region: 'AAA' } })
-      .subscribe(this.replaceCartWith);
+    this.api.put(Api.Orders, `quote/update/lineItem/${lineItem.id}`, { body: lineItem, parameters: { region: 'AAA' } })
+      .subscribe(this.replaceQuoteWith);
   }
 
-  public createQuote(options: QuoteOptions): Observable<any> {
-    return this.store.data.flatMap((cartStore: any) => {
-      let body: any = this.formatQuoteBody(cartStore.cart, options);
-      return this.api.post(Api.Orders, 'quote', { body: body });
-    });
+  public sendQuote(options: QuoteOptions): Observable<any> {
+    console.warn('this needs to be fixed!');
+    return Observable.of({});
+    // return this.store.data.flatMap((state: QuoteState) => {
+    //   let body: any = this.formatQuoteBody(state.data, options);
+    //   return this.api.post(Api.Orders, 'quote', { body: body });
+    // });
   }
 
-  public updateOrderInProgress(type: string, data: any): void {
-    this.store.updateOrderInProgress(type, data);
-  }
+  // Private helper methods
 
   private formatAssetBody(parameters: AddAssetParameters): any {
     let formatted = {};
@@ -166,23 +137,11 @@ export class QuoteEditService {
     return formatted;
   }
 
-  private addProjectAndReturnObservable(): Observable<any> {
-    return this.api.post(Api.Orders, 'cart/project', { body: { clientName: this.fullName }, loading: true })
-      .do(this.replaceCartWith)
-      .share();
-  }
-
-  private get fullName(): string {
-    let userName: string;
-    this.currentUser.fullName().take(1).subscribe(fullName => userName = fullName);
-    return userName;
-  }
-
   private get existingProjectNames(): Array<string> {
-    return (this.state.cart.projects || []).map((project: any) => project.name);
+    return (this.state.data.projects || []).map((project: any) => project.name);
   }
 
-  private formatQuoteBody(cart: Cart, options: QuoteOptions): any {
+  private formatQuoteBody(cart: any, options: QuoteOptions): any {
     // We don't want to send 'standard' to the API, as it's not a valid option.
     // we leave it blank so the end user can decide later to pay with credit-card or purchase on credit
     if (options.purchaseType === 'standard') delete options.purchaseType;
@@ -195,7 +154,7 @@ export class QuoteEditService {
     // shove the extra quote params on to the current cart
     let body: any = Object.assign(
       cart,
-      { quoteStatus: options.status, purchaseType: options.purchaseType, expirationDate: options.expirationDate }
+      { purchaseType: options.purchaseType, expirationDate: options.expirationDate }
     );
 
     // add the user id if it exists
@@ -211,12 +170,12 @@ export class QuoteEditService {
 
   // This is an "instance arrow function", which saves us from having to "bind(this)"
   // every time we use this function as a callback.
-  private replaceCartWith = (wholeCartResponse: any): void => {
-    this.store.replaceCartWith(wholeCartResponse);
+  private replaceQuoteWith = (quote: Quote): void => {
+    this.store.replaceQuoteWith(quote);
   }
 
-  private updateCartWith = (cartSummary: any): void => {
-    this.store.updateCartWith(cartSummary);
+  private updateQuoteWith = (quoteSummary: any): void => {
+    this.store.updateQuoteWith(quoteSummary);
   }
 
 }

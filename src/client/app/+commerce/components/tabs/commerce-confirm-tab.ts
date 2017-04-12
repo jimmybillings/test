@@ -1,10 +1,12 @@
 import { Output, EventEmitter } from '@angular/core';
 import { CartService } from '../../../shared/services/cart.service';
-import { QuoteEditService } from '../../../shared/services/quote-edit.service';
+import { QuoteService } from '../../../shared/services/quote.service';
 import { Tab } from './tab';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
+import { QuoteState } from '../../../shared/interfaces/quote.interface';
+import { CartState } from '../../../shared/interfaces/cart.interface';
 
 export class CommerceConfirmTab extends Tab {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
@@ -12,22 +14,22 @@ export class CommerceConfirmTab extends Tab {
   public storeSubscription: Subscription;
   constructor(
     protected router: Router,
-    public commerceService: CartService | QuoteEditService
+    public commerceService: CartService | QuoteService
   ) {
     super();
   }
 
   public get orderInProgress() {
-    return this.commerceService.data.map((data: any) => data.orderInProgress);
+    return this.commerceService.data.map((state: QuoteState | CartState) => state.orderInProgress);
   }
 
-  public get cart() {
-    return this.commerceService.data.map((data: any) => data.cart);
+  public get data() {
+    return this.commerceService.data.map((state: QuoteState | CartState) => state.data);
   }
 
   purchase() {
     this.commerceService.purchase().subscribe((orderId: any) =>
-      this.router.navigate(['/commerce/order', orderId])
+      this.router.navigate(['/commerce/orders', orderId])
       , (error: any) =>
         console.log(error)
     );
@@ -35,7 +37,7 @@ export class CommerceConfirmTab extends Tab {
 
   public purchaseOnCredit(): void {
     this.commerceService.purchaseOnCredit().take(1).subscribe((order: any) =>
-      this.router.navigate(['/commerce/order', order.id])
+      this.router.navigate(['/commerce/orders', order.id])
       , (error: any) =>
         console.log(error)
     );

@@ -34,7 +34,7 @@
     <div flex="100" layout="row" layout-align="center center">
       <administer-quote-component
         flex="100"
-        [cart]="quoteEditService.cart | async"
+        [cart]="cart | async"
         [userCanProceed]="userCanProceed"
         (openQuoteDialog)="onOpenQuoteDialog()"
         (saveAsDraft)="onSaveAsDraft()">

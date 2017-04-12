@@ -1,27 +1,29 @@
 import { Project } from './cart.interface';
+import { ViewAddress } from './user.interface';
+
+export type PurchaseType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
+export type QuoteStatus = 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED' | 'CANCELLED';
 
 export interface Quote {
   id: number;
   createdUserId: number;
   ownerUserId: number;
-  userId: number;
   total: number;
-  quoteStatus: 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED';
+  quoteStatus: QuoteStatus;
   purchaseType?: 'string';
   projects?: Project[];
   itemCount?: number;
   focused?: boolean;
+  // bogus stuff for cart/quote compatibility
+  stripePublicKey?: string;
 }
 
 export interface QuoteOptions {
-  status: 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED';
   purchaseType: PurchaseType;
   emailAddress?: string;
   expirationDate?: string;
   users?: any[];
 }
-
-export type PurchaseType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
 
 export interface QuoteList {
   items: Quote[];
@@ -34,3 +36,17 @@ export interface QuoteList {
     numberOfPages: number;
   };
 }
+
+export interface QuoteState {
+  data: Quote;
+  orderInProgress: {
+    purchaseOptions: {
+      purchaseOnCredit: boolean;
+      creditExemption: boolean;
+    }
+    addresses: ViewAddress[];
+    selectedAddress: ViewAddress;
+    authorization: any;
+    selectedPurchaseType: string;
+  };
+};

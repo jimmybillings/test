@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { Store, ActionReducer, Action } from '@ngrx/store';
-
-import { Address } from '../interfaces/user.interface';
-import { Cart, CartState } from '../interfaces/cart.interface';
+import { Observable } from 'rxjs/Observable';
+import { CartState } from '../interfaces/cart.interface';
 
 const emptyCart: CartState = {
-  cart: {
+  data: {
     userId: NaN,
     total: 0
   },
@@ -45,10 +43,10 @@ const emptyCart: CartState = {
 export function cart(state: any = emptyCart, action: Action) {
   switch (action.type) {
     case 'REPLACE_CART':
-      return Object.assign({}, state, { cart: action.payload });
+      return Object.assign({}, state, { data: action.payload });
     case 'UPDATE_CART':
-      let newCart: any = Object.assign({}, state.cart, { total: action.payload.total, itemCount: action.payload.itemCount });
-      return Object.assign({}, state, { cart: newCart });
+      let newCart: any = Object.assign({}, state.data, { total: action.payload.total, itemCount: action.payload.itemCount });
+      return Object.assign({}, state, { data: newCart });
     case 'UPDATE_ORDER_IN_PROGRESS':
       state.orderInProgress[action.payload.key] = action.payload.data;
       return Object.assign({}, state);

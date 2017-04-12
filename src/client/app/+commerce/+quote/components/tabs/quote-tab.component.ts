@@ -15,6 +15,6 @@ export class QuoteTabComponent extends Tab {
   public quote: Observable<Quote>;
   constructor(private quoteService: QuoteService, public userCan: CommerceCapabilities) {
     super();
-    this.quote = this.quoteService.data;
+    this.quote = this.quoteService.data.map(state => state.data);
   }
 }

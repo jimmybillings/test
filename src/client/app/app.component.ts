@@ -16,6 +16,7 @@ import { UiState } from './shared/services/ui.state';
 import { WzNotificationService } from './shared/services/wz.notification.service';
 import { ActiveCollectionService } from './shared/services/active-collection.service';
 import { CartService } from './shared/services/cart.service';
+import { QuoteEditService } from './shared/services/quote-edit.service';
 import { UserPreferenceService } from './shared/services/user-preference.service';
 import { Capabilities } from './shared/services/capabilities.service';
 import { MdSnackBar } from '@angular/material';
@@ -55,7 +56,8 @@ export class AppComponent implements OnInit {
     private sortDefinition: SortDefinitionsService,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
-    private zone: NgZone) {
+    private zone: NgZone,
+    private quoteEditService: QuoteEditService) {
     this.userCan = capabilities;
     zone.runOutsideAngular(() => {
       document.addEventListener('scroll', () => {
@@ -70,7 +72,11 @@ export class AppComponent implements OnInit {
   }
 
   public get cartCount(): Observable<any> {
-    return this.cartService.data.map((data) => data.cart.itemCount);
+    if (this.userCan.administerQuotes()) {
+      return this.quoteEditService.data.map((state) => state.data.itemCount);
+    } else {
+      return this.cartService.data.map((state) => state.data.itemCount);
+    }
   }
 
   public logout(): void {
@@ -122,7 +128,11 @@ export class AppComponent implements OnInit {
         this.collections.load().subscribe(() => { });
       });
     }
-    this.cartService.getCartSummary();
+    if (this.userCan.administerQuotes()) {
+      this.quoteEditService.getQuoteSummary();
+    } else {
+      this.cartService.getCartSummary();
+    }
     this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });

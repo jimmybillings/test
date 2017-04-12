@@ -1,6 +1,6 @@
 import { Component, Inject, NgZone, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommercePaymentTab } from '../../../components/tabs/commerce-payment-tab';
-import { QuoteEditService } from '../../../../shared/services/quote-edit.service';
+import { QuoteService } from '../../../../shared/services/quote.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
 
 @Component({
@@ -12,10 +12,10 @@ import { UiConfig } from '../../../../shared/services/ui.config';
 export class QuotePaymentTabComponent extends CommercePaymentTab {
   constructor(
     _zone: NgZone,
-    quoteEditService: QuoteEditService,
+    quoteService: QuoteService,
     uiConfig: UiConfig,
     ref: ChangeDetectorRef
   ) {
-    super(_zone, quoteEditService, uiConfig, ref);
+    super(_zone, quoteService, uiConfig, ref);
   }
 }
