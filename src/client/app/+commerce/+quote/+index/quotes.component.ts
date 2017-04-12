@@ -48,8 +48,12 @@ export class QuotesComponent {
 
   public onFilterResults(filter: any): void {
     this.currentFilter = filter;
-    this.buildRouteParams(filter.status);
-    this.quotesService.getQuotes(this.userCan.administerQuotes(), this.params).subscribe();
+    if (!filter.status) {
+      delete this.params.status;
+    } else {
+      this.buildRouteParams(filter.status);
+    }
+    this.router.navigate(['/commerce/quotes', this.params]);
   }
 
   public onEditQuote(quoteId: number): void {
@@ -153,8 +157,7 @@ export class QuotesComponent {
         'first': {
           'id': 0,
           'name': 'QUOTE.INDEX.FILTER.ALL',
-          'value': 'all',
-          'status': { 'status': 'ALL' }
+          'value': 'all'
         }
       },
       {

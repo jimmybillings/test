@@ -59,8 +59,8 @@ export function main() {
         expect(componentUnderTest.currentFilter).toBe(mockFilter);
       });
 
-      it('should call getQuotes on the quotes servicve with the correct params', () => {
-        expect(mockQuotesService.getQuotes).toHaveBeenCalledWith(false, { status: 'active' });
+      it('should call navigate on the router with the correct params', () => {
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/quotes', { status: 'active' }]);
       });
     });
 
