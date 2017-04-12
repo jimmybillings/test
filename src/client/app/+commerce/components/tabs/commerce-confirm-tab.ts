@@ -4,6 +4,7 @@ import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { Tab } from './tab';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
 
 export class CommerceConfirmTab extends Tab {
@@ -17,11 +18,11 @@ export class CommerceConfirmTab extends Tab {
     super();
   }
 
-  public get orderInProgress() {
+  public get orderInProgress(): Observable<any> {
     return this.commerceService.data.map((data: any) => data.orderInProgress);
   }
 
-  public get cart() {
+  public get cart(): Observable<any> {
     return this.commerceService.data.map((data: any) => data.cart);
   }
 
