@@ -14,7 +14,6 @@
 @import 'application/collection-tray/components/collections-list-dd';
 
 // SHARED COMPONENTS
-@import 'shared/components/wz-list/wz.list';
 @import 'shared/components/wz-pagination/wz.pagination';
 @import 'shared/components/wz-breadcrumb/wz-breadcrumb';
 @import 'shared/components/wz-sort/wz.sort';
@@ -35,6 +34,5 @@
 @import '+asset/asset';
 @import '+search/search';
 @import '+search/filter';
-@import '+admin/+ui-config/ui-config';
 @import '+commerce/commerce';
 @import '+gallery-view/gallery-view';

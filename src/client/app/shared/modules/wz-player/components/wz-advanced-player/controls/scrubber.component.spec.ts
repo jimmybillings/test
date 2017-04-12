@@ -29,7 +29,7 @@ export function main() {
               offsetWidth: scrubberWidth,
               children: [
                 {
-                  classList: ['md-slider-track'],
+                  classList: ['mat-slider-wrapper'],
                   offsetWidth: scrubberWidth
                 }
               ]

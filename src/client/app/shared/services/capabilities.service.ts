@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 
 import { CommerceCapabilities } from '../../+commerce/services/commerce.capabilities';
 import { AssetCapabilities } from '../../+asset/services/asset.capabilities';
-import { AdminCapabilities } from '../../+admin/services/admin.capabilities';
 import { CollectionCapabilities } from '../../+collection/services/collection.capabilities';
 import { SearchCapabilities } from '../../+search/services/search.capabilities';
 
@@ -13,8 +12,7 @@ import { UiState } from '../services/ui.state';
 import { FeatureStore } from '../stores/feature.store';
 
 @Injectable()
-export class Capabilities implements CommerceCapabilities, CollectionCapabilities, AssetCapabilities,
-  AdminCapabilities, SearchCapabilities {
+export class Capabilities implements CommerceCapabilities, CollectionCapabilities, AssetCapabilities, SearchCapabilities {
   haveCollections: () => boolean;
   viewCollections: () => boolean;
   editCollections: () => boolean;
@@ -25,7 +23,6 @@ export class Capabilities implements CommerceCapabilities, CollectionCapabilitie
   downloadFullComps: (hasComp: boolean) => boolean;
   createAccessInfo: () => boolean;
   createSubclips: (asset: any) => boolean;
-  viewAdmin: () => boolean;
   viewCollectionTray: () => Observable<boolean>;
   viewSearchBar: () => Observable<boolean>;
   viewCartIcon: () => Observable<boolean>;
@@ -49,7 +46,6 @@ export class Capabilities implements CommerceCapabilities, CollectionCapabilitie
       CommerceCapabilities,
       CollectionCapabilities,
       AssetCapabilities,
-      AdminCapabilities,
       SearchCapabilities
     ]);
   }

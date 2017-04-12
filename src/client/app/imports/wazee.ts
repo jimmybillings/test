@@ -46,7 +46,6 @@ import { QuotesStore } from '../shared/stores/quotes.store';
 import { CartGuard } from '../+commerce/+cart/services/cart.guard';
 import { LoggedInGuard } from '../+user-management/services/logged-in.guard';
 import { LoggedOutGuard } from '../+user-management/services/logged-out.guard';
-import { AdminAuthGuard } from '../+admin/services/admin.auth.guard';
 import { AssetGuard } from '../+asset/services/asset.guard';
 
 // WAZEE STORES
@@ -56,7 +55,6 @@ import { currentUser } from '../shared/services/current-user.service';
 import { config } from '../shared/services/ui.config';
 import { uiState } from '../shared/services/ui.state';
 import { Capabilities } from '../shared/services/capabilities.service';
-import { adminResources } from '../+admin/services/admin.store';
 import { searchContext } from '../shared/services/search-context.service';
 import { errorStore } from '../shared/stores/error.store';
 import { multilingualActionReducer } from '../shared/services/multilingual.service';
@@ -98,7 +96,6 @@ const WAZEE_RESOLVERS = [
 ];
 
 const WAZEE_GUARDS = [
-  AdminAuthGuard,
   AssetGuard,
   CartGuard,
   LoggedInGuard,
@@ -163,7 +160,6 @@ export const WAZEE_STORES: any = {
   searchStore: searchStore,
   asset: asset,
   currentUser: currentUser,
-  adminResources: adminResources,
   searchContext: searchContext,
   collections: collections,
   activeCollection: activeCollection,
