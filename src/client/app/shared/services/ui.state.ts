@@ -52,7 +52,7 @@ export class UiState {
       this.update({ headerIsExpanded: false });
       return;
     }
-    let showSearchBar = ['user/forgot-password', 'user/register', 'user/login', 'user/reset-password', 'admin', 'notification']
+    let showSearchBar = ['user/forgot-password', 'user/register', 'user/login', 'user/reset-password', 'notification']
       .filter((state) => currentState.indexOf(state) > -1).length === 0;
     this.update({ headerIsExpanded: showSearchBar });
   }

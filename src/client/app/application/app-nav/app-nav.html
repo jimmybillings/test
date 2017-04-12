@@ -56,9 +56,6 @@
     <!--<a button md-button="" title="More" [routerLink]="['/']" class="md-icon-button open-search" hide show-gt-sm><i md-icon="" class="material-icons">more_vert</i></a>-->
 </md-toolbar>
 <md-menu x-position="before" #navigation="mdMenu">
-    <a md-menu-item *ngIf="userCan.viewAdmin()" [routerLink]="['/admin']">
-        <md-icon>settings</md-icon>{{ 'HEADER.ADMIN_LABEL' | translate }}
-    </a>
     <a md-menu-item *ngIf="currentUser.loggedInState() | async" [routerLink]="['/user']">
         <md-icon>person</md-icon>{{ 'HEADER.USER_DD_MENU.PROFILE_LINK' | translate }}
     </a>

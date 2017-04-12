@@ -233,23 +233,6 @@ header.app-header.search-closed + div.main-content asset-component {
   }
 }
 
-// pages that do not have options to open and close search and bins, but don't have a bk hero image or video (admin)
-header.app-header + div.main-content admin-component {
-  display: flex;
-  transition: border-top-width 0.35s, $swift-ease-in-out-timing-function;
-  border-top: rem(16.6) solid mat-color($mat-grey, 900, .7);
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    border-top-width: rem(15.2);
-  }
-}
-
-header.app-header + div.main-content admin-component {
-  border-top-width: rem(6.4);
-  @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
-    border-top-width: rem(5.6);
-  }
-}
-
 // pages that do not have options to open and close search and bins with a bk hero image or video (user, home)
 // currently the latest material header toolbar does not change sizes for mobile. If it does, then used the media query
 header.app-header + div.main-content user-component .hero,

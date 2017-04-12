@@ -8,7 +8,6 @@ import { HomeModule } from './+home/home.module';
 import { UserManagementModule } from './+user-management/user-management.module';
 import { SearchModule } from './+search/search.module';
 import { AssetModule } from './+asset/asset.module';
-import { AdminModule } from './+admin/admin.module';
 import { CollectionModule } from './+collection/collection.module';
 import { ApplicationModule } from './application/application.module';
 import { SharedModule } from './shared/shared.module';
@@ -36,7 +35,6 @@ declare var portal: string;
     AssetModule,
     CollectionModule,
     UserManagementModule,
-    AdminModule,
     CommerceModule,
     ApplicationModule,
     GalleryViewModule,
