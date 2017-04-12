@@ -41,11 +41,6 @@ export class QuotesComponent {
     this.router.navigate(['/commerce/quotes', this.params]);
   }
 
-  public onSearch(query: { q: string }): void {
-    this.buildRouteParams(query);
-    this.quotesService.getQuotes(this.userCan.administerQuotes(), this.params).subscribe();
-  }
-
   public onFilterResults(filter: any): void {
     this.currentFilter = filter;
     if (!filter.status) {
@@ -123,26 +118,12 @@ export class QuotesComponent {
       {
         'first': {
           'id': 5,
-          'name': 'QUOTE.INDEX.SORT.CREATOR_EMAIL_ADDRESS_ASC',
-          'value': 'createdEmailAddress',
-          'sort': { 's': 'createdEmailAddress', 'd': false }
-        },
-        'second': {
-          'id': 6,
-          'name': 'QUOTE.INDEX.SORT.CREATOR_EMAIL_ADDRESS_DESC',
-          'value': 'createdEmailAddress',
-          'sort': { 's': 'createdEmailAddress', 'd': true }
-        }
-      },
-      {
-        'first': {
-          'id': 7,
           'name': 'QUOTE.INDEX.SORT.EXPIRATION_DATE_DESC',
           'value': 'expirationDate',
           'sort': { 's': 'expirationDate', 'd': true }
         },
         'second': {
-          'id': 8,
+          'id': 6,
           'name': 'QUOTE.INDEX.SORT.EXPIRATION_DATE_ASC',
           'value': 'expirationDate',
           'sort': { 's': 'expirationDate', 'd': false }

@@ -29,6 +29,18 @@ export class QuoteShowComponent implements OnInit {
     this.selectedTabIndex = 0;
   }
 
+  public get hasPurchaseType(): boolean {
+    return !!this.quoteService.state.data.purchaseType;
+  }
+
+  public get shouldDisplayReview(): boolean {
+    return this.userCan.administerQuotes() || this.quoteService.state.data.quoteStatus !== 'ACTIVE';
+  }
+
+  public get shouldDisplayPurchaseHeader(): boolean {
+    return !this.userCan.administerQuotes() && this.quoteService.state.data.quoteStatus === 'ACTIVE';
+  }
+
   public onNotification(message: any): void {
     switch (message.type) {
       case 'GO_TO_NEXT_TAB': {

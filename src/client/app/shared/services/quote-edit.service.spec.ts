@@ -4,7 +4,7 @@ import { Api } from '../interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
 
 export function main() {
-  xdescribe('Quote Edit Service', () => {
+  describe('Quote Edit Service', () => {
     let serviceUnderTest: QuoteEditService, mockApi: MockApiService, mockQuoteStore: any;
 
     beforeEach(() => {
@@ -19,7 +19,7 @@ export function main() {
       serviceUnderTest = new QuoteEditService(null, null);
     });
 
-    describe('sendQuote', () => {
+    xdescribe('sendQuote', () => {
       it('should call the api service correctly for an "ACTIVE" quote', () => {
         let mockUsers: any[] = [
           { emailAddress: 'ross.edfort@wazeedigital.com', id: 1 },

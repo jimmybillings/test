@@ -44,35 +44,6 @@ export class QuoteService {
   }
 
   public purchaseOnCredit(): Observable<any> {
-    return this.api.post(Api.Orders, 'quote/checkout/purchaseOnCredit', { loading: true });
+    return this.api.post(Api.Orders, 'quote/checkout/convertToOrder', { loading: true });
   }
-
-
-  // private formatBody(cart: Cart, options: QuoteOptions): any {
-  //   // We don't want to send 'standard' to the API, as it's not a valid option.
-  //   // we leave it blank so the end user can decide later to pay with credit-card or purchase on credit
-  //   if (options.purchaseType === 'standard') delete options.purchaseType;
-
-  //   // find the userId of the user that this quote is for
-  //   let ownerUserId: number = options.users ? options.users.filter((user: any) => {
-  //     return user.emailAddress === options.emailAddress;
-  //   })[0].id : null;
-
-  //   // shove the extra quote params on to the current cart
-  //   let body: any = Object.assign(
-  //     cart,
-  //     { quoteStatus: options.status, purchaseType: options.purchaseType, expirationDate: options.expirationDate }
-  //   );
-
-  //   // add the user id if it exists
-  //   if (ownerUserId) Object.assign(body, { ownerUserId });
-
-  //   // delete the fields leftover from the cart store
-  //   delete body.id;
-  //   delete body.createdOn;
-  //   delete body.lastUpdated;
-
-  //   return body;
-  // }
-
 }

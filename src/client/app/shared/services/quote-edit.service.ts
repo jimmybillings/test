@@ -59,21 +59,23 @@ export class QuoteEditService {
   }
 
   public removeProject(project: Project): void {
-    console.warn('this needs to be fixed!');
+    console.warn('this needs to be implemented!');
     // this.api.delete(Api.Orders, `quote/project/${project.id}`, { loading: true })
     //   .subscribe(this.replaceQuoteWith);
   }
 
-  public addAssetToProjectInQuote(addAssetParameters: AddAssetParameters): void {
-    let existingProjectNames: Array<string> = this.existingProjectNames;
-    this.api.put(
-      Api.Orders,
-      'quote/asset/lineItem/quick',
-      {
-        body: this.formatAssetBody(addAssetParameters),
-        parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
-      }
-    ).subscribe(this.replaceQuoteWith);
+  public addAssetToProjectInQuote(addAssetParameters: AddAssetParameters): Observable<any> {
+    console.warn('this needs to be implemented!');
+    return Observable.of({});
+    // let existingProjectNames: Array<string> = this.existingProjectNames;
+    // return this.api.put(
+    //   Api.Orders,
+    //   'quote/asset/lineItem/quick',
+    //   {
+    //     body: this.formatAssetBody(addAssetParameters),
+    //     parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
+    //   }
+    // ).do(this.replaceQuoteWith);
   }
 
   public updateProject(project: Project): void {
@@ -95,7 +97,7 @@ export class QuoteEditService {
   }
 
   public removeLineItem(lineItem: LineItem): void {
-    console.warn('this needs to be fixed!');
+    console.warn('this needs to be implemented!');
     // this.api.delete(Api.Orders, `quote/asset/${lineItem.id}`, { loading: true })
     //   .subscribe(this.replaceQuoteWith);
   }
@@ -110,7 +112,7 @@ export class QuoteEditService {
   }
 
   public sendQuote(options: QuoteOptions): Observable<any> {
-    console.warn('this needs to be fixed!');
+    console.warn('this needs to be implemented!');
     return Observable.of({});
     // return this.store.data.flatMap((state: QuoteState) => {
     //   let body: any = this.formatQuoteBody(state.data, options);

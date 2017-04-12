@@ -26,13 +26,6 @@ export function main() {
       });
     });
 
-    describe('onSearch()', () => {
-      it('should call getQuotes on the quotes service with the proper query', () => {
-        componentUnderTest.onSearch({ q: 'ross' });
-        expect(mockQuotesService.getQuotes).toHaveBeenCalledWith(false, { q: 'ross' });
-      });
-    });
-
     describe('onSortResults()', () => {
       let mockSort: any;
       beforeEach(() => {

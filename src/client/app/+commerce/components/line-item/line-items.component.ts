@@ -23,6 +23,7 @@ export class LineItemsComponent {
   @Input() quoteType: PurchaseType;
   @Input() otherProjects: Project[];
   @Input() userCan: Capabilities;
+  @Input() readOnly: boolean = false;
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   public selectedLineItem: LineItem;
 
@@ -67,5 +68,9 @@ export class LineItemsComponent {
 
   public shouldShowTargets(lineItem: LineItem): boolean {
     return lineItem.transcodeTargets && lineItem.transcodeTargets.length > 0;
+  }
+
+  public get shouldDisplayPricing(): boolean {
+    return this.quoteType !== 'ProvisionalOrder';
   }
 }

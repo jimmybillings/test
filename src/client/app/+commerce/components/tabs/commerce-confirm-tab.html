@@ -38,7 +38,7 @@
 </div>
 
 <h5 class="md-title order-summary">{{ 'CART.CONFIRM.ORDER_TITLE' | translate }}</h5>
-<projects-component flex="100" [readOnly]="true" [projects]="(data | async).projects"></projects-component>
+<projects-component flex="100" [readOnly]="true" [projects]="(data | async).projects" [userCan]="userCan"></projects-component>
 
 <section class="commerce-total" layout="column" layout-gt-xs="row" layout-align="space-between">
   <button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back" flex-order-xs="4" flex="0" layout-align="start center">

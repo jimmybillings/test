@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
 import { QuoteState } from '../../../shared/interfaces/quote.interface';
 import { CartState } from '../../../shared/interfaces/cart.interface';
+import { CommerceCapabilities } from '../../services/commerce.capabilities';
 
 export class CommerceConfirmTab extends Tab {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
@@ -14,7 +15,8 @@ export class CommerceConfirmTab extends Tab {
   public storeSubscription: Subscription;
   constructor(
     protected router: Router,
-    public commerceService: CartService | QuoteService
+    public commerceService: CartService | QuoteService,
+    public userCan: CommerceCapabilities
   ) {
     super();
   }

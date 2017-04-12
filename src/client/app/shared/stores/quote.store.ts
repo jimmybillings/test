@@ -49,6 +49,9 @@ export function quote(state: any = initState, action: Action) {
       return Object.assign({}, { data: action.payload });
     case 'QUOTE.UPDATE_QUOTE':
       return Object.assign({}, state, { data: action.payload });
+    case 'QUOTE.UPDATE_ORDER_IN_PROGRESS':
+      state.orderInProgress[action.payload.key] = action.payload.data;
+      return Object.assign({}, state);
     default:
       return state;
   }
@@ -56,9 +59,7 @@ export function quote(state: any = initState, action: Action) {
 
 @Injectable()
 export class QuoteStore {
-  constructor(private store: Store<any>) {
-    this.data.subscribe(d => console.log(d));
-  }
+  constructor(private store: Store<any>) { }
 
   public get data(): Observable<QuoteState> {
     return this.store.select('quote');
@@ -79,6 +80,6 @@ export class QuoteStore {
   }
 
   public updateOrderInProgress(key: string, data: any): void {
-    this.store.dispatch({ type: 'UPDATE_ORDER_IN_PROGRESS', payload: { key, data } });
+    this.store.dispatch({ type: 'QUOTE.UPDATE_ORDER_IN_PROGRESS', payload: { key, data } });
   }
 }

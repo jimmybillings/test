@@ -3,7 +3,7 @@ import { QuoteService } from '../../../../shared/services/quote.service';
 import { Quote } from '../../../../shared/interfaces/quote.interface';
 import { Tab } from '../../../components/tabs/tab';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   moduleId: module.id,
@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Rx';
 
 export class QuoteTabComponent extends Tab {
   public quote: Observable<Quote>;
-  constructor(private quoteService: QuoteService, public userCan: CommerceCapabilities) {
+  constructor(public quoteService: QuoteService, public userCan: CommerceCapabilities) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
   }

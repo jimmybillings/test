@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 
 import { Address } from '../interfaces/user.interface';
@@ -25,9 +25,7 @@ export const activeQuote: ActionReducer<any> = (state: any = emptyQuote, action:
 
 @Injectable()
 export class ActiveQuoteStore {
-  constructor(private store: Store<any>) {
-    this.data.subscribe(d => console.log(d));
-  }
+  constructor(private store: Store<any>) { }
 
   public get data(): Observable<any> {
     return this.store.select('activeQuote');

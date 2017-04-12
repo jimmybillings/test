@@ -19,6 +19,9 @@
                 <strong>{{ type + '.PURCHASE_TYPE_LABEL' | translate }} </strong>
                 {{ type === 'ORDER' ? item.orderType : item.purchaseType ? item.purchaseType : 'none' }}
               </span>
+              <span *ngIf="type === 'QUOTE'">
+                <strong>{{ 'QUOTE.EXPIRATION_LABEL' | translate }} </strong>{{ item.expirationDate }}
+              </span>
             </div>
           </div>
         </div>

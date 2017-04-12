@@ -14,6 +14,9 @@ export interface Quote {
   projects?: Project[];
   itemCount?: number;
   focused?: boolean;
+  createdOn?: string;
+  lastUpdated?: string;
+  expirationDate?: string;
   // bogus stuff for cart/quote compatibility
   stripePublicKey?: string;
 }
