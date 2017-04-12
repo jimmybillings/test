@@ -2,7 +2,6 @@ import { UserManagementComponent } from './+user-management/user-management.comp
 import { HomeComponent } from './+home/home.component';
 import { SearchComponent } from './+search/search.component';
 import { AssetComponent } from './+asset/asset.component';
-import { AdminComponent } from './+admin/admin.component';
 import { CollectionsComponent } from './+collection/+index/collections.component';
 import { AssetResolver } from './+asset/services/asset.resolver';
 import { AssetGuard } from './+asset/services/asset.guard';
@@ -23,7 +22,6 @@ export const APP_ROUTES: Routes = [
   { path: 'search', component: SearchComponent, resolve: { search: SearchResolver } },
   { path: 'asset/:name', component: AssetComponent, canActivate: [AssetGuard], resolve: { asset: AssetResolver } },
   { path: 'collections', component: CollectionsComponent },
-  { path: 'admin', component: AdminComponent },
   { path: 'commerce', component: CommerceComponent },
   { path: 'gallery-view', component: GalleryViewComponent, resolve: { gallery: GalleryViewResolver } },
   { path: '**', component: NotFoundComponent }

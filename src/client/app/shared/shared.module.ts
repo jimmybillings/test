@@ -20,7 +20,6 @@ import { WzDialogModule } from './modules/wz-dialog/wz.dialog.module';
 // Shared Pure Components
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
 import { WzDropdownComponent, WzDropdownPortalDirective } from './components/wz-dropdown/wz.dropdown.component';
-import { WzListComponent } from './components/wz-list/wz.list.component';
 import { WzPaginationComponent } from './components/wz-pagination/wz.pagination.component';
 import { WzClipBoardDirective } from './components/wz-clipboard/wz-clipboard.directive';
 import { CollectionSortDdComponent } from '../+collection/components/collections-sort-dd.component';
@@ -68,7 +67,6 @@ export function createTranslateLoader(http: Http) {
     WzGalleryBreadcrumbComponent,
     WzBreadcrumbComponent,
     WzDropdownComponent,
-    WzListComponent,
     WzPaginationComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,
@@ -89,7 +87,6 @@ export function createTranslateLoader(http: Http) {
     WzGalleryBreadcrumbComponent,
     WzBreadcrumbComponent,
     WzDropdownComponent,
-    WzListComponent,
     WzPaginationComponent,
     CollectionSortDdComponent,
     CollectionFilterDdComponent,

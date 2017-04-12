@@ -11,8 +11,6 @@ import { FormBuilder } from '@angular/forms';
 import { WAZEE_PROVIDERS, WAZEE_STORES } from './wazee';
 
 // SERVICES NOT IN WAZEE_PROVIDERS
-import { AdminService } from '../+admin/services/admin.service';
-import { ConfigService } from '../+admin/services/config.service';
 import { WzNotificationService } from '../shared/services/wz.notification.service';
 
 // MODELS
@@ -37,8 +35,6 @@ export const beforeEachProvidersArray: Array<any> = [
   provideStore(WAZEE_STORES),
   WAZEE_PROVIDERS,
   WzNotificationService,
-  ConfigService,
-  AdminService,
   Renderer,
   LocationStrategy,
   MockBackend,
