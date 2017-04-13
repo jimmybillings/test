@@ -59,9 +59,9 @@ export function main() {
       });
     });
 
-    describe('onSliderChange()', () => {
+    describe('onSliderInput()', () => {
       it('requests a volume change', () => {
-        componentUnderTest.onSliderChange({ value: 42 });
+        componentUnderTest.onSliderInput({ value: 42 });
 
         expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'SET_VOLUME', volume: 42 });
       });
