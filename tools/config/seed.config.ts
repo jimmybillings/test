@@ -423,9 +423,6 @@ export class SeedConfig {
       // For test config
       'dist/dev/*': '/base/dist/dev/*',
       '*': 'node_modules/*'
-    },
-    packages: {
-      'ng2-translate': { defaultExtension: 'js' }
     }
   };
 
