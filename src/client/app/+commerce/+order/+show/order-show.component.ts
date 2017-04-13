@@ -11,10 +11,6 @@ import { WindowRef } from '../../../shared/services/window-ref.service';
 export class OrderShowComponent {
   constructor(public window: WindowRef, public order: OrderService) { }
 
-  public translationReady(field: any) {
-    return 'assetmetadata.' + field.replace(/\./g, '_');
-  }
-
   public downloadMaster(masterUrl: string): void {
     this.window.nativeWindow.location.href = masterUrl;
   }

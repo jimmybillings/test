@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { QuoteService } from '../../../shared/services/quote.service';
-import { Quote } from '../../../shared/interfaces/quote.interface';
+import { Quote } from '../../../shared/interfaces/commerce.interface';
 import { Observable } from 'rxjs/Observable';
+import { CommerceMessage } from '../../../shared/interfaces/commerce.interface';
 
 @Component({
   moduleId: module.id,
@@ -41,7 +42,7 @@ export class QuoteShowComponent implements OnInit {
     return !this.userCan.administerQuotes() && this.quoteService.state.data.quoteStatus === 'ACTIVE';
   }
 
-  public onNotification(message: any): void {
+  public onNotification(message: CommerceMessage): void {
     switch (message.type) {
       case 'GO_TO_NEXT_TAB': {
         this.goToNextTab();

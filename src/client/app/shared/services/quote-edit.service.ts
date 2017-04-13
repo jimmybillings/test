@@ -3,10 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../services/api.service';
 import { Api, ApiBody } from '../interfaces/api.interface';
 import { Address, ViewAddress } from '../interfaces/user.interface';
-import { Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
+import { Project, AssetLineItem, AddAssetParameters, Quote, QuoteState, QuoteOptions } from '../interfaces/commerce.interface';
 import { ActiveQuoteStore } from '../stores/active-quote.store';
-import { Quote, QuoteState } from '../interfaces/quote.interface';
-import { QuoteOptions } from '../../shared/interfaces/quote.interface';
 
 @Injectable()
 export class QuoteEditService {
@@ -83,7 +81,7 @@ export class QuoteEditService {
       .subscribe(this.replaceQuoteWith);
   }
 
-  public moveLineItemTo(project: Project, lineItem: LineItem): void {
+  public moveLineItemTo(project: Project, lineItem: AssetLineItem): void {
     this.api.put(
       Api.Orders,
       'quote/move/lineItem',
@@ -91,18 +89,18 @@ export class QuoteEditService {
     ).subscribe(this.replaceQuoteWith);
   }
 
-  public cloneLineItem(lineItem: LineItem): void {
+  public cloneLineItem(lineItem: AssetLineItem): void {
     this.api.put(Api.Orders, 'quote/clone/lineItem', { parameters: { lineItemId: lineItem.id }, loading: true })
       .subscribe(this.replaceQuoteWith);
   }
 
-  public removeLineItem(lineItem: LineItem): void {
+  public removeLineItem(lineItem: AssetLineItem): void {
     console.warn('this needs to be implemented!');
     // this.api.delete(Api.Orders, `quote/asset/${lineItem.id}`, { loading: true })
     //   .subscribe(this.replaceQuoteWith);
   }
 
-  public editLineItem(lineItem: LineItem, fieldToEdit: any): void {
+  public editLineItem(lineItem: AssetLineItem, fieldToEdit: any): void {
     if (!!fieldToEdit.pricingAttributes) {
       fieldToEdit = { attributes: this.formatAttributes(fieldToEdit.pricingAttributes) };
     }

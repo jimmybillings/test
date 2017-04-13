@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Address } from '../../../shared/interfaces/user.interface';
+import { MdDialogRef } from '@angular/material';
 
 @Component({
   moduleId: module.id,
@@ -19,7 +20,7 @@ import { Address } from '../../../shared/interfaces/user.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressFormComponent implements OnInit {
-  @Input() dialog: any;
+  @Input() dialog: MdDialogRef<AddressFormComponent>;
   @Input() items: any[];
   @Input() resourceType: 'user' | 'account';
   @Input() mode: 'create' | 'edit';

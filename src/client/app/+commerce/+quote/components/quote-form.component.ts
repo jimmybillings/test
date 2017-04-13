@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { MdDialogRef } from '@angular/material';
 
 @Component({
   selector: 'quote-form-component',
@@ -25,6 +26,6 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
 })
 export class QuoteFormComponent {
   @Input() items: any[];
-  @Input() dialog: any;
-  @Output() cacheSuggestions: any = new EventEmitter();
+  @Input() dialog: MdDialogRef<QuoteFormComponent>;
+  @Output() cacheSuggestions: EventEmitter<any> = new EventEmitter();
 }

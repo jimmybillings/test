@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Renderer, ViewChild, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
+import { Collection, CollectionsStoreI } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 import { Observable } from 'rxjs/Observable';
@@ -22,7 +22,6 @@ import { CollectionLinkComponent } from '../components/collection-link.component
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
 import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
-import { Asset } from '../../shared/interfaces/asset.interface';
 import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
@@ -55,7 +54,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public collections: CollectionsService,
     public asset: AssetService,
     public activeCollection: ActiveCollectionService,
-    public store: Store<CollectionStore>,
+    public store: Store<CollectionsStoreI>,
     public currentUser: CurrentUserService,
     public uiState: UiState,
     public error: ErrorStore,

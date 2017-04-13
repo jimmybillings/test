@@ -1,6 +1,6 @@
 import { QuoteStore, quote } from './quote.store';
 import { Observable } from 'rxjs/Observable';
-import { QuoteState } from '../interfaces/quote.interface';
+import { QuoteState } from '../interfaces/commerce.interface';
 
 export function main() {
   const initState: QuoteState = {

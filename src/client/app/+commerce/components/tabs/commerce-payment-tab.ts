@@ -5,8 +5,7 @@ import { QuoteService } from '../../../shared/services/quote.service';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { QuoteState } from '../../../shared/interfaces/quote.interface';
-import { CartState } from '../../../shared/interfaces/cart.interface';
+import { QuoteState, CartState } from '../../../shared/interfaces/commerce.interface';
 
 export class CommercePaymentTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;

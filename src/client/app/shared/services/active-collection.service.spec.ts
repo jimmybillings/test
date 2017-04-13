@@ -14,16 +14,16 @@ export function main() {
       mockApi = new MockApiService();
       collection = {
         id: 1,
-        createdOn: '123',
-        lastUpdated: '456',
+        createdOn: null,
+        lastUpdated: null,
         siteName: 'core',
         name: 'cats',
         owner: 25,
         assets: {
           items: [
-            { assetId: 123, uuid: 'abc' },
-            { assetId: 456, uuid: 'def' },
-            { assetId: 789, uuid: 'ghi' }
+            { assetId: 123, uuid: 'abc', name: '' },
+            { assetId: 456, uuid: 'def', name: '' },
+            { assetId: 789, uuid: 'ghi', name: '' }
           ]
         }
       };
@@ -177,7 +177,7 @@ export function main() {
 
       describe('Asset has a uuid and it is in the collection', () => {
         it('should call the apiService correctly', () => {
-          serviceUnderTest.removeAsset({ collection: collection, asset: { assetId: 123, uuid: 'abc' } });
+          serviceUnderTest.removeAsset({ collection: collection, asset: { assetId: 123, uuid: 'abc', name: '' } });
 
           expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
           expect(mockApi.post).toHaveBeenCalledWithEndpoint('collection/1/removeAssets');
@@ -187,7 +187,9 @@ export function main() {
         });
 
         it('should call remove on the store to remove the asset that was deleted', () => {
-          serviceUnderTest.removeAsset({ collection: collection, asset: { assetId: 123, uuid: 'abc' } }).take(1).subscribe();
+          serviceUnderTest.removeAsset({
+            collection: collection, asset: { assetId: 123, uuid: 'abc', name: '' }
+          }).take(1).subscribe();
 
           expect(mockStore.remove).toHaveBeenCalled();
         });

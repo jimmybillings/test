@@ -1,6 +1,6 @@
 import { WzAsset } from './wz-asset';
 import { Collection } from '../../interfaces/collection.interface';
-import { Asset } from '../../interfaces/asset.interface';
+import { Asset } from '../../interfaces/common.interface';
 
 
 export function main() {
@@ -11,9 +11,9 @@ export function main() {
     let mockAsset: Asset;
     beforeEach(() => {
       mockCollection = {
-        name: 'testCollection', createdOn: 'createOn', lastUpdated: 'lastUpdate', id: 1, siteName: 'test', owner: 1, assets: {
-          items: [{ assetId: 1234, uuid: 'mockAssetuuid1' }, { assetId: 1235, uuid: 'mockAssetuuid2' },
-          { assetId: 1236, uuid: 'mockAssetuuid3' }]
+        name: 'testCollection', createdOn: null, lastUpdated: null, id: 1, siteName: 'test', owner: 1, assets: {
+          items: [{ assetId: 1234, uuid: 'mockAssetuuid1', name: '' }, { assetId: 1235, uuid: 'mockAssetuuid2', name: '' },
+          { assetId: 1236, uuid: 'mockAssetuuid3', name: '' }]
         }
       };
       mockAsset = { assetId: 1234, name: 'mockAsset' };
@@ -66,11 +66,11 @@ export function main() {
       beforeEach(() => componentUnderTest.collection = mockCollection);
 
       it('Should return true if an asset is already in the current collection', () => {
-        expect(componentUnderTest.inCollection({ assetId: 1234, uuid: 'mockAssetuuid1' })).toBe(true);
+        expect(componentUnderTest.inCollection({ assetId: 1234, uuid: 'mockAssetuuid1', name: '' })).toBe(true);
       });
 
       it('Should return false if an asset is not in the current collection', () => {
-        expect(componentUnderTest.inCollection({ assetId: 12334, uuid: 'mockAssetuuid1' })).toBe(false);
+        expect(componentUnderTest.inCollection({ assetId: 12334, uuid: 'mockAssetuuid1', name: '' })).toBe(false);
       });
     });
 

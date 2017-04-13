@@ -29,8 +29,8 @@ export function main() {
 
     describe('changePage()', () => {
       it('Should accept a page number and navigate to the correct page url', () => {
-        componentUnderTest.changePage('99');
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/orders', { i: '99', n: '20' }]);
+        componentUnderTest.changePage(99);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/orders', { n: '20', i: 99 }]);
       });
     });
 

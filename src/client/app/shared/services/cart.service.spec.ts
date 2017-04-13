@@ -4,7 +4,7 @@ import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api, ApiBody, ApiParameters } from '../interfaces/api.interface';
 import { CartService } from './cart.service';
 import { ViewAddress, Address } from '../interfaces/user.interface';
-import { Project, LineItem, AddAssetParameters, CartState } from '../interfaces/cart.interface';
+import { Project, AssetLineItem, AddAssetParameters, CartState } from '../interfaces/commerce.interface';
 
 export function main() {
   describe('Cart Service', () => {
@@ -22,7 +22,7 @@ export function main() {
       subtotal: 0
     };
 
-    const mockLineItem: LineItem = {
+    const mockLineItem: AssetLineItem = {
       id: '456',
       price: 0,
       rightsManaged: 'Rights Managed'
@@ -133,12 +133,12 @@ export function main() {
 
       it('calls the api service correctly', () => {
         const body: ApiBody = {
-          lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: '1080p', price: 100.5 },
+          lineItem: { asset: { assetId: 10836 }, selectedTranscodeTarget: '1080p', price: 100.5 },
           attributes: [{ priceAttributeName: 'key', selectedAttributeValue: 'value' }]
         };
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
         const addAssetParameters: AddAssetParameters = {
-          lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: '1080p', price: 100.5 },
+          lineItem: { asset: { assetId: 10836 }, selectedTranscodeTarget: '1080p', price: 100.5 },
           attributes: { key: 'value' }
         };
         serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
@@ -148,10 +148,10 @@ export function main() {
       });
 
       it('calls the api service correctly - no transcode target', () => {
-        const body: ApiBody = { lineItem: { asset: { assetId: '10836' } } };
+        const body: ApiBody = { lineItem: { asset: { assetId: 10836 } } };
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
         const addAssetParameters: AddAssetParameters = {
-          lineItem: { asset: { assetId: '10836' } }
+          lineItem: { asset: { assetId: 10836 } }
         };
 
         serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
@@ -161,14 +161,14 @@ export function main() {
       });
 
       it('adds the asset to the cart store', () => {
-        mockApi.putResponse = { lineItem: { asset: { assetId: '10836' } } };
+        mockApi.putResponse = { lineItem: { asset: { assetId: 10836 } } };
         const addAssetParameters: AddAssetParameters = {
-          lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: '1080p' }
+          lineItem: { asset: { assetId: 10836 }, selectedTranscodeTarget: '1080p' }
         };
 
         serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
 
-        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: '10836' } } });
+        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: 10836 } } });
       });
 
     });

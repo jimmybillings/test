@@ -7,9 +7,7 @@ import { CurrentUserService } from '../services/current-user.service';
 import { Address, ViewAddress } from '../interfaces/user.interface';
 
 import { CartStore } from '../stores/cart.store';
-import { Cart, CartState, Project, LineItem, AddAssetParameters } from '../interfaces/cart.interface';
-
-import { QuoteOptions } from '../../shared/interfaces/quote.interface';
+import { Cart, CartState, Project, AssetLineItem, AddAssetParameters, QuoteOptions } from '../interfaces/commerce.interface';
 
 @Injectable()
 export class CartService {
@@ -52,7 +50,7 @@ export class CartService {
   // are terminated.  We take the last emitted value only, and map the data out of it.
   // Finally, we call share() to ensure that the do() call happens exactly once instead
   // of once per subscriber.
-  public initializeData(): Observable<any> {
+  public initializeData(): Observable<Cart> {
     return this.api.get(Api.Orders, 'cart', { loading: true })
       .do(this.replaceCartWith)
       .takeLast(1)
@@ -91,6 +89,7 @@ export class CartService {
   }
 
   public addAssetToProjectInCart(addAssetParameters: AddAssetParameters): void {
+    console.log(addAssetParameters);
     let existingProjectNames: Array<string> = this.existingProjectNames;
     this.api.put(
       Api.Orders,
@@ -107,17 +106,17 @@ export class CartService {
       .subscribe(this.replaceCartWith);
   }
 
-  public moveLineItemTo(project: Project, lineItem: LineItem): void {
+  public moveLineItemTo(project: Project, lineItem: AssetLineItem): void {
     this.api.put(Api.Orders, 'cart/move/lineItem', { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true })
       .subscribe(this.replaceCartWith);
   }
 
-  public cloneLineItem(lineItem: LineItem): void {
+  public cloneLineItem(lineItem: AssetLineItem): void {
     this.api.put(Api.Orders, 'cart/clone/lineItem', { parameters: { lineItemId: lineItem.id }, loading: true })
       .subscribe(this.replaceCartWith);
   }
 
-  public removeLineItem(lineItem: LineItem): void {
+  public removeLineItem(lineItem: AssetLineItem): void {
     this.api.delete(Api.Orders, `cart/asset/${lineItem.id}`, { loading: true })
       .subscribe(this.replaceCartWith);
   }
@@ -128,7 +127,7 @@ export class CartService {
     });
   }
 
-  public editLineItem(lineItem: LineItem, fieldToEdit: any): void {
+  public editLineItem(lineItem: AssetLineItem, fieldToEdit: any): void {
     if (!!fieldToEdit.pricingAttributes) {
       fieldToEdit = { attributes: this.formatAttributes(fieldToEdit.pricingAttributes) };
     }

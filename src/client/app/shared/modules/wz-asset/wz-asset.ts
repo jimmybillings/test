@@ -5,7 +5,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { Collection } from '../../interfaces/collection.interface';
-import { Asset } from '../../interfaces/asset.interface';
+import { Asset } from '../../interfaces/common.interface';
 import { Capabilities } from '../../services/capabilities.service';
 import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
 

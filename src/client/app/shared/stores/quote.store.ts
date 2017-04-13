@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ActionReducer, Store, Action } from '@ngrx/store';
+import { Store, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { QuoteState, Quote } from '../interfaces/quote.interface';
+import { QuoteState, Quote } from '../interfaces/commerce.interface';
 
 const initState: QuoteState = {
   data: {

@@ -10,13 +10,13 @@ export function main() {
       mockActiveCollection: any, mockApi: MockApiService, mockCollection: Collection;
 
     mockCollection = {
-      'lastUpdated': '2016-06-17T21:44:12Z',
-      'createdOn': '2016-06-17T21:44:12Z',
-      'id': 158,
-      'siteName': 'core',
-      'name': 'golf',
-      'owner': 33,
-      'tags': ['golf', 'green', 'sport']
+      lastUpdated: null,
+      createdOn: null,
+      id: 158,
+      siteName: 'core',
+      name: 'golf',
+      owner: 33,
+      tags: ['golf', 'green', 'sport']
     };
 
     function isActiveCollection(id: number): boolean { return id === 123; }

@@ -5,8 +5,7 @@ import { Tab } from './tab';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
-import { QuoteState } from '../../../shared/interfaces/quote.interface';
-import { CartState } from '../../../shared/interfaces/cart.interface';
+import { CartState, QuoteState } from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 
 export class CommerceConfirmTab extends Tab {

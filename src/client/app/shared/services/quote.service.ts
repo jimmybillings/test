@@ -3,7 +3,7 @@ import { ApiService } from '../../shared/services/api.service';
 import { CartService } from '../../shared/services/cart.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
-import { Quote, QuoteOptions, QuoteState } from '../../shared/interfaces/quote.interface';
+import { Quote, QuoteOptions, QuoteState } from '../../shared/interfaces/commerce.interface';
 import { QuoteStore } from '../../shared/stores/quote.store';
 
 @Injectable()
