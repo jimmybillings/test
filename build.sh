@@ -24,7 +24,7 @@ PATH=/home/video/bin/tools/jenkins:$PATH
 
 baseDir=$( dirname "$0" )
 
-project=wazee-ui-poc-nineteen
+project=wazee-ui
 
 # This is used as the apache host directory for the site. It should match the 
 # first part of the hostname for the site.
