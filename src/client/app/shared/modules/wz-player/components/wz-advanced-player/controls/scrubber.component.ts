@@ -14,7 +14,7 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         min="0"
         max="{{ largestFrameNumber }}"
         value="{{ currentFrameNumber }}"
-        (change)="onScrubberSliderChange()"
+        (input)="onScrubberSliderInput()"
         (mouseover)="onScrubberMouseOver()"
         (mousemove)="onScrubberMouseMove($event)"
         (mouseout)="onScrubberMouseOut()">
@@ -92,7 +92,7 @@ export class ScrubberComponent {
     return this.outMarkerIsSet ? this.playerState.outMarkerFrame.frameNumber : undefined;
   }
 
-  public onScrubberSliderChange(): void {
+  public onScrubberSliderInput(): void {
     this.request.emit({ type: 'SEEK_TO_FRAME', frame: this._hoverFrame });
   }
 

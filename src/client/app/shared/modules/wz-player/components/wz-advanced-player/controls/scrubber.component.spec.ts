@@ -221,13 +221,13 @@ export function main() {
       });
     });
 
-    describe('onScrubberSliderChange()', () => {
+    describe('onScrubberSliderInput()', () => {
       it('requests a seek to the frame represented by the mouse\'s scrubber-relative X position', () => {
         // When the scrubber slider drags, that also creates mouse move events on the main slider, so that's
         // how we know where we are on the scrubber.
         componentUnderTest.onScrubberMouseMove({ pageX: scrubberOffset + 200 });
 
-        componentUnderTest.onScrubberSliderChange();
+        componentUnderTest.onScrubberSliderInput();
 
         expect(componentUnderTest.request.emit)
           .toHaveBeenCalledWith({ type: 'SEEK_TO_FRAME', frame: new Frame(29.97).setFromFrameNumber(200 * framesPerPixel) });
