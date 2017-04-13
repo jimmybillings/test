@@ -13,7 +13,11 @@ const plugins = <any>gulpLoadPlugins();
  * environment.
  */
 export = () => {
-  return gulp.src(join(Config.APP_SRC, 'index.html'))
+  return gulp.src([
+    join(Config.APP_SRC, 'index.html'),
+    join(Config.APP_SRC, 'dev.index.html'),
+    join(Config.APP_SRC, 'qa.index.html'),
+    join(Config.APP_SRC, 'prod.index.html')])
     .pipe(injectJs())
     .pipe(injectCss())
     .pipe(plugins.template(new TemplateLocalsBuilder().withoutStringifiedEnvConfig().build()))
@@ -25,10 +29,10 @@ export = () => {
  * @param {Array<string>} files - The files to be injected.
  */
 function inject(...files: Array<string>) {
-    return plugins.inject(gulp.src(files, { read: false }), {
-        files,
-        transform: transformPath()
-    });
+  return plugins.inject(gulp.src(files, { read: false }), {
+    files,
+    transform: transformPath()
+  });
 }
 
 /**
@@ -50,7 +54,7 @@ function injectCss() {
  * environment.
  */
 function transformPath() {
-  return function(filepath: string) {
+  return function (filepath: string) {
     let path: Array<string> = normalize(filepath).split(sep);
     let slice_after = path.indexOf(Config.APP_DEST);
     if (slice_after > -1) {
