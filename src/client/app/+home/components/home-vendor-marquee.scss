@@ -1,4 +1,5 @@
-home-vendor-marquee {  
+home-vendor-marquee {
+  display: none;
   // scrolling vendor marquee
   @mixin center-vertically($pseudo-el: 'before') {
       position: relative;

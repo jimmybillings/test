@@ -45,22 +45,22 @@ home-highlights {
       &:nth-child(1n) .mrkt-collections__highlight_img {
         height: 100%;
         width: 100%;
-        background-image: url('../assets/img/highlights/dimoc.jpg');
+        background-image: url('../assets/img/highlights/1_sports.jpg');
       }
       &:nth-child(2n) .mrkt-collections__highlight_img{
-        background-image: url('../assets/img/highlights/ncaa_basketball.jpg');
+        background-image: url('../assets/img/highlights/2_drone.jpg');
       }
       &:nth-child(3n) .mrkt-collections__highlight_img{
-        background-image: url('../assets/img/highlights/jfk_historic.jpg');
+        background-image: url('../assets/img/highlights/hl_life_story.jpg');
       }
       &:nth-child(4n) .mrkt-collections__highlight_img{
-        background-image: url('../assets/img/highlights/masters_js.jpg');
+        background-image: url('../assets/img/highlights/4_film_illustration.jpg');
       }
       &:nth-child(5n) .mrkt-collections__highlight_img{
-        background-image: url('../assets/img/highlights/nat_geo.jpg');
+        background-image: url('../assets/img/highlights/5_screens.jpg');
       }
       &:nth-child(6n) .mrkt-collections__highlight_img{
-        background-image: url('../assets/img/highlights/us_open.jpg');
+        background-image: url('../assets/img/highlights/hl_jfk_historic.jpg');
       }
     }
     @media screen and (max-width: $layout-breakpoint-xs) {
