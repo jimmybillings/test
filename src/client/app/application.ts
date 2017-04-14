@@ -8,7 +8,7 @@ import { AppModuleNgFactory } from './app.module.ngfactory';
 declare var portal: string;
 declare var baseUrl: string;
 declare var fetch: any;
-
+portal = (localStorage.getItem('currentSite')) ? localStorage.getItem('currentSite') : portal;
 export class Application {
   private baseUrl: string = baseUrl;
   private portal: string = portal;
