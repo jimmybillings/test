@@ -1,7 +1,9 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { platformBrowser } from '@angular/platform-browser';
 import { AppModule } from './app.module';
 import { Http } from '@angular/http';
+import { AppModuleNgFactory } from './app.module.ngfactory';
 
 declare var portal: string;
 declare var baseUrl: string;
@@ -12,7 +14,7 @@ export class Application {
   private portal: string = portal;
   private endpoint: string = 'identities-api/v1/configuration/site?siteName=';
 
-  constructor(private productionMode: boolean) { }
+  constructor(private productionMode: boolean, private aot: boolean = false) { }
 
   public load() {
     (this.externalDataLoaded()) ? this.start() : this.loadExternalData();
@@ -36,7 +38,11 @@ export class Application {
 
   private start() {
     if (this.productionMode) enableProdMode();
-    platformBrowserDynamic().bootstrapModule(AppModule/*, options*/);
+    if (this.aot) {
+      platformBrowser().bootstrapModuleFactory(AppModuleNgFactory as any);
+    } else {
+      platformBrowserDynamic().bootstrapModule(AppModule/*, options*/);
+    }
   }
 
   private externalDataLoaded() {

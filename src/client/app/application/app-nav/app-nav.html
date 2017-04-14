@@ -68,7 +68,7 @@
     <a md-menu-item *ngIf="userCan.addToCart() && userCan.administerQuotes()" [routerLink]="['/commerce/activeQuote']">
         <md-icon>work</md-icon>{{ 'HEADER.USER_DD_MENU.QUOTE_LINK' | translate}}
     </a>
-    <a md-menu-item [routerLink]="['/commerce/quotes']">
+    <a md-menu-item *ngIf="userCan.addToCart()" [routerLink]="['/commerce/quotes']">
         <md-icon>inbox</md-icon>{{ 'HEADER.USER_DD_MENU.QUOTES_SAVED_LINK' | translate }}
     </a>
     <a md-menu-item *ngIf="userCan.addToCart()" [routerLink]="['/commerce/orders']">

@@ -84,6 +84,36 @@ build_prod() {
   return 0
 }
 
+build_library() {
+  npm run build.library  || exit 1
+
+  # Only deploy & tag if we're on Jenkins
+  if [ -n "$JENKINS_HOME" ]; then
+    # push to github. ||| NOTE: Eventually we want to move this to the nexus repo, but we're waiting on
+    # nexus to get upgraded to include support for node modules
+    git clone git@github.com:t3mediacorp/wazee-ui-library.git $TMPDIR/wazee-ui-library || exit 1
+    rm -rf $TMPDIR/wazee-ui-library/*
+    mv dist/library/* $TMPDIR/wazee-ui-library || exit 1
+    pushd $TMPDIR/wazee-ui-library || exit 1
+
+    # only push if there are changes
+    changes=$( git status -s )
+    if [ -n "${changes}" ]; then
+      echo $changes | grep -q '??'
+      if [[ $? == 0 ]]; then
+        git add .
+      fi
+      git commit -m "version=${buildVersion}"  $TMPDIR/wazee-ui-library
+      git push origin
+    fi
+    git tag "version=${buildVersion}"
+    git push --tags origin
+    popd
+  fi
+
+  return 0
+}
+
 # debugging information
 print-build-environment.sh
 
@@ -107,6 +137,9 @@ npm install
 
 # Build the dev webapp
 build_prod
+
+# build the UI library
+build_library
 
 cd "$TMPDIR/wazee-crux-version-control"
 git pull origin develop
