@@ -41,7 +41,7 @@
             </span>
             <span>
               <strong>{{ 'QUOTE.EXPIRATION_LABEL' | translate }} </strong>
-              {{ (quote | async).expirationDate ? (quote | async).expirationDate : 'none' }}
+              {{ (quote | async).expirationDate | date:'short' }}
             </span>
           </div>
         </div>

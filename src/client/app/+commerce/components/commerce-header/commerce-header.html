@@ -13,7 +13,7 @@
 			<div class="tools" flex="auto">
 				<button
 					md-icon-button
-					*ngIf="!itemSearchIsShowing && type !== 'QUOTE'"
+					*ngIf="!itemSearchIsShowing"
 					title="{{ type + '.INDEX.SEARCH_BTN_TITLE' | translate }}"
 					type="button"
 					(click)="toggleSearch()">

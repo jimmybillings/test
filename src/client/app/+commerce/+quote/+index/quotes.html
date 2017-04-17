@@ -4,6 +4,7 @@
 	[currentFilter]="currentFilter"
 	[sortOptions]="sortOptions"
 	[filterOptions]="filterOptions"
+	(search)="onSearch($event)"
 	(onSortResults)="onSortResults($event)"
 	(onFilterResults)="onFilterResults($event)">
 </commerce-header>
