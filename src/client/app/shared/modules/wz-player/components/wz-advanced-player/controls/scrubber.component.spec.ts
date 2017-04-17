@@ -6,6 +6,9 @@ export function main() {
   describe('Scrubber Component', () => {
     let componentUnderTest: ScrubberComponent;
     let mockElementRef: any;
+    let mockRenderer: any;
+    let mockChangeDetectorRef: any;
+    let mockDocument: any;
 
     const scrubberOffset: number = 25 + 25 + 50;
     const scrubberWidth: number = 400;
@@ -41,13 +44,36 @@ export function main() {
         }
       };
 
-      componentUnderTest = new ScrubberComponent(mockElementRef);
+      mockRenderer = {
+        elements: {},
+        callbacks: {},
+        removers: {},
+        listen: (element: any, eventName: string, callback: Function) => {
+          mockRenderer.elements[eventName] = element;
+          mockRenderer.callbacks[eventName] = callback;
+
+          const remover = jasmine.createSpy(`${eventName} remover`);
+          mockRenderer.removers[eventName] = remover;
+          return remover;
+        },
+        trigger: (eventName: string, args: any) => {
+          mockRenderer.callbacks[eventName](args);
+        }
+      };
+
+      mockChangeDetectorRef = {
+        markForCheck: jasmine.createSpy('markForCheck')
+      };
+
+      componentUnderTest = new ScrubberComponent(mockElementRef, mockRenderer, mockChangeDetectorRef);
       componentUnderTest.request.emit = jasmine.createSpy('request emitter');
 
       componentUnderTest.playerState = {
         durationFrame: new Frame(29.97).setFromFrameNumber(durationInFrames),
         framesPerSecond: 29.97
       } as PlayerState;
+
+      mockDocument = {};
 
       componentUnderTest.window = {
         getComputedStyle: () => {
@@ -64,8 +90,35 @@ export function main() {
               throw new Error('unexpected propertyName');
             }
           };
-        }
+        },
+        document: mockDocument
       };
+
+      componentUnderTest.ngOnInit();
+    });
+
+    describe('ngOnInit()', () => {
+      it('sets up document mouse move listener', () => {
+        expect(mockRenderer.elements['mousemove']).toEqual(mockDocument);
+      });
+
+      it('sets up document mouse up listener', () => {
+        expect(mockRenderer.elements['mouseup']).toEqual(mockDocument);
+      });
+    });
+
+    describe('ngOnDestroy()', () => {
+      it('removes document mouse move listener', () => {
+        componentUnderTest.ngOnDestroy();
+
+        expect(mockRenderer.removers['mousemove']).toHaveBeenCalled();
+      });
+
+      it('removes document mouse up listener', () => {
+        componentUnderTest.ngOnDestroy();
+
+        expect(mockRenderer.removers['mouseup']).toHaveBeenCalled();
+      });
     });
 
     describe('readyToDisplay getter', () => {
@@ -221,64 +274,91 @@ export function main() {
       });
     });
 
-    describe('onScrubberSliderChange()', () => {
+    describe('onSliderInput()', () => {
       it('requests a seek to the frame represented by the mouse\'s scrubber-relative X position', () => {
         // When the scrubber slider drags, that also creates mouse move events on the main slider, so that's
         // how we know where we are on the scrubber.
-        componentUnderTest.onScrubberMouseMove({ pageX: scrubberOffset + 200 });
+        componentUnderTest.onMouseOver();
+        mockRenderer.trigger('mousemove', { pageX: scrubberOffset + 200 });
 
-        componentUnderTest.onScrubberSliderChange();
+        componentUnderTest.onSliderInput();
 
         expect(componentUnderTest.request.emit)
           .toHaveBeenCalledWith({ type: 'SEEK_TO_FRAME', frame: new Frame(29.97).setFromFrameNumber(200 * framesPerPixel) });
       });
     });
 
-    describe('onScrubberMouseOver()', () => {
-      it('sets hovering flag to true', () => {
-        componentUnderTest.onScrubberMouseOver();
-
-        expect(componentUnderTest.hovering).toBe(true);
-      });
-    });
-
-    describe('onScrubberMouseOut()', () => {
-      it('sets hovering flag to false', () => {
-        componentUnderTest.onScrubberMouseOver();
-
-        componentUnderTest.onScrubberMouseOut();
-
-        expect(componentUnderTest.hovering).toBe(false);
-      });
-    });
-
-    describe('onScrubberMouseMove()', () => {
+    describe('mousemove handler', () => {
       const frameDisplayWidth: number = 50 + 1 + 1 + 5 + 5;
       const halfFrameDisplayWidth: number = frameDisplayWidth / 2;
 
+      beforeEach(() => componentUnderTest.onMouseOver());
+
       it('sets the hover frame to the frame represented by the mouse\'s scrubber-relative X position', () => {
-        componentUnderTest.onScrubberMouseMove({ pageX: scrubberOffset + 300 });
+        mockRenderer.trigger('mousemove', { pageX: scrubberOffset + 300 });
 
         expect(componentUnderTest.hoverFrame).toEqual(new Frame(29.97).setFromFrameNumber(300 * framesPerPixel));
       });
 
+      it('constrains the hover frame to >= 0', () => {
+        mockRenderer.trigger('mousemove', { pageX: scrubberOffset - 1 });
+
+        expect(componentUnderTest.hoverFrame).toEqual(new Frame(29.97).setFromFrameNumber(0));
+      });
+
+      it('constrains the hover frame to <= the asset duration', () => {
+        mockRenderer.trigger('mousemove', { pageX: scrubberOffset + scrubberWidth + 1 });
+
+        expect(componentUnderTest.hoverFrame).toEqual(new Frame(29.97).setFromFrameNumber(durationInFrames));
+      });
+
       it('sets the hover frame display position to center above the cursor', () => {
-        componentUnderTest.onScrubberMouseMove({ pageX: scrubberOffset + 300 });
+        mockRenderer.trigger('mousemove', { pageX: scrubberOffset + 300 });
 
         expect(componentUnderTest.hoverFrameDisplayPosition).toEqual(300 - halfFrameDisplayWidth);
       });
 
       it('constrains the hover frame display position to >= 0', () => {
-        componentUnderTest.onScrubberMouseMove({ pageX: scrubberOffset + halfFrameDisplayWidth - 1 });
+        mockRenderer.trigger('mousemove', { pageX: scrubberOffset + halfFrameDisplayWidth - 1 });
 
         expect(componentUnderTest.hoverFrameDisplayPosition).toEqual(0);
       });
 
       it('constrains the hover frame display position to <= (right edge - display width)', () => {
-        componentUnderTest.onScrubberMouseMove({ pageX: scrubberOffset + scrubberWidth - halfFrameDisplayWidth + 1 });
+        mockRenderer.trigger('mousemove', { pageX: scrubberOffset + scrubberWidth - halfFrameDisplayWidth + 1 });
 
         expect(componentUnderTest.hoverFrameDisplayPosition).toEqual(scrubberWidth - frameDisplayWidth);
       });
+
+      it('marks the component for change detection', () => {
+        mockRenderer.trigger('mousemove', { pageX: scrubberOffset + 300 });
+
+        expect(mockChangeDetectorRef.markForCheck).toHaveBeenCalled();
+      });
+
+      describe('when no longer hovering', () => {
+        beforeEach(() => {
+          // Set hover frame to verify later, then reset our spy.
+          mockRenderer.trigger('mousemove', { pageX: scrubberOffset + 300 });
+          mockChangeDetectorRef.markForCheck.calls.reset();
+
+          componentUnderTest.onMouseOut();
+        });
+
+        it('doesn\'t update the hover frame', () => {
+          mockRenderer.trigger('mousemove', { pageX: scrubberOffset + 500 });
+
+          // same position as before the "mouseout" event
+          expect(componentUnderTest.hoverFrame).toEqual(new Frame(29.97).setFromFrameNumber(300 * framesPerPixel));
+        });
+
+        it('doesn\'t mark the component for change detection', () => {
+          mockRenderer.trigger('mousemove', { pageX: scrubberOffset + 500 });
+
+          expect(mockChangeDetectorRef.markForCheck).not.toHaveBeenCalled();
+        });
+      });
+
     });
 
     describe('onInMarkerClick()', () => {
@@ -294,6 +374,59 @@ export function main() {
         componentUnderTest.onOutMarkerClick();
 
         expect(componentUnderTest.request.emit).toHaveBeenCalledWith({ type: 'SEEK_TO_MARKER', markerType: 'out' });
+      });
+    });
+
+    describe('hoverFrameDisplayIsVisible getter', () => {
+      it('returns false when neither hovering nor scrubbing', () => {
+        expect(componentUnderTest.hoverFrameDisplayIsVisible).toBe(false);
+      });
+
+      it('returns true when just hovering', () => {
+        componentUnderTest.onMouseOver();
+
+        expect(componentUnderTest.hoverFrameDisplayIsVisible).toBe(true);
+      });
+
+      it('returns true when hovering and scrubbing', () => {
+        componentUnderTest.onMouseOver();
+        componentUnderTest.onMouseDown();
+
+        expect(componentUnderTest.hoverFrameDisplayIsVisible).toBe(true);
+      });
+
+      it('returns true when hovering and scrubbing, then no longer scrubbing', () => {
+        componentUnderTest.onMouseOver();
+        componentUnderTest.onMouseDown();
+        mockRenderer.trigger('mouseup');
+
+        expect(componentUnderTest.hoverFrameDisplayIsVisible).toBe(true);
+      });
+
+      it('returns true when hovering and scrubbing, then no longer hovering', () => {
+        componentUnderTest.onMouseOver();
+        componentUnderTest.onMouseDown();
+        componentUnderTest.onMouseOut();
+
+        expect(componentUnderTest.hoverFrameDisplayIsVisible).toBe(true);
+      });
+
+      it('returns false when hovering and scrubbing, then no longer scrubbing, then no longer hovering', () => {
+        componentUnderTest.onMouseOver();
+        componentUnderTest.onMouseDown();
+        mockRenderer.trigger('mouseup');
+        componentUnderTest.onMouseOut();
+
+        expect(componentUnderTest.hoverFrameDisplayIsVisible).toBe(false);
+      });
+
+      it('returns false when hovering and scrubbing, then no longer hovering, then no longer scrubbing', () => {
+        componentUnderTest.onMouseOver();
+        componentUnderTest.onMouseDown();
+        componentUnderTest.onMouseOut();
+        mockRenderer.trigger('mouseup');
+
+        expect(componentUnderTest.hoverFrameDisplayIsVisible).toBe(false);
       });
     });
   });

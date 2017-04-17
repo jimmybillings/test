@@ -498,6 +498,7 @@ export function main() {
                       beforeEach(() => {
                         // Kill initial autoplay between markers.
                         componentUnderTest.seekTo(99);
+                        mockVideoElement.simulateSeekCompletion();
 
                         // Don't want initialization calls to affect future verifications.
                         (componentUnderTest.stateChangeRequest.emit as jasmine.Spy).calls.reset();
@@ -762,6 +763,27 @@ export function main() {
 
                         expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
                         expect(stateChangeRequestEmitter.calls.mostRecent().args).toEqual([{ currentTime: 1234.567 }]);
+                      });
+
+                      describe('when multiple seeks are requested', () => {
+                        it('performs the first seek, then the final one, ignoring the others', () => {
+                          // first seek
+                          componentUnderTest.seekTo(1234.567);
+
+                          // several more seeks
+                          componentUnderTest.seekTo(2234.567);
+                          componentUnderTest.seekTo(3234.567);
+                          componentUnderTest.seekTo(4234.567);
+
+                          // first seek completes
+                          mockVideoElement.simulateSeekCompletion();
+
+                          // final seek completes
+                          mockVideoElement.simulateSeekCompletion();
+
+                          expect(stateChangeRequestEmitter.calls.allArgs())
+                            .toEqual([[{ currentTime: 1234.567 }], [{ currentTime: 4234.567 }]]);
+                        });
                       });
 
                       describe('when video has ended', () => {
