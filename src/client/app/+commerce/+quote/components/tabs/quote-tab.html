@@ -1,38 +1,9 @@
-<section class="projects">
-	<div class="project" *ngFor="let project of (quote | async).projects">
-		<header class="project-info" layout-gt-xs="row" layout="column">
-			<div flex="100" flex-gt-sm="70" flex-order-xs="2">
-				<h5 md-display-1>
-					<span class="project-label md-caption">{{ 'CART.PROJECTS.PROJECT_NAME' | translate }}</span>
-					<span class="project-name">{{ project.name }}</span>
-				</h5>
-				<span class="project-client md-caption">
-					<strong>{{ 'CART.PROJECTS.CLIENT_NAME' | translate }}</strong> 
-					{{ project.clientName }}
-				</span>
-			</div>
-			<div class="project-subtotal md-caption">
-				<strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
-				<span>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
-			</div>
-		</header>
-
-		<section class="assets">
-			<ul class="asset-list">
-				<li 
-					*ngFor="let lineItem of project.lineItems"
-					class="cart-asset" 
-					flex="100" 
-					layout="row" 
-					layout-xs="column">
-					<div flex="100" flex-gt-xs="50">
-						<cart-asset-component [asset]="lineItem.asset" (assetNotify)="delegate($event)"></cart-asset-component>
-					</div>
-				</li>
-			</ul>
-		</section>
-	</div>
-</section>
+<projects-component
+	[readOnly]="true"
+  [quoteType]="(quote | async).purchaseType"
+  [projects]="(quote | async).projects" 
+  [userCan]="userCan">
+</projects-component>
 
 <section
 	*ngIf="!userCan.administerQuotes() && (quote | async).quoteStatus === 'ACTIVE'"

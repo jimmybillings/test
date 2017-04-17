@@ -17,7 +17,7 @@ export class QuoteShowComponent implements OnInit {
   public quote: Observable<Quote>;
 
   constructor(public userCan: CommerceCapabilities, public quoteService: QuoteService) {
-    this.quote = this.quoteService.data;
+    this.quote = this.quoteService.data.map(state => state.data);
   }
 
   ngOnInit() {
@@ -27,6 +27,18 @@ export class QuoteShowComponent implements OnInit {
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);
 
     this.selectedTabIndex = 0;
+  }
+
+  public get hasPurchaseType(): boolean {
+    return !!this.quoteService.state.data.purchaseType;
+  }
+
+  public get shouldDisplayReview(): boolean {
+    return this.userCan.administerQuotes() || this.quoteService.state.data.quoteStatus !== 'ACTIVE';
+  }
+
+  public get shouldDisplayPurchaseHeader(): boolean {
+    return !this.userCan.administerQuotes() && this.quoteService.state.data.quoteStatus === 'ACTIVE';
   }
 
   public onNotification(message: any): void {

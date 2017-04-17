@@ -92,7 +92,7 @@ export interface AddAssetParameters {
 }
 
 export interface CartState {
-  cart: Cart;
+  data: Cart;
   orderInProgress: {
     purchaseOptions: {
       purchaseOnCredit: boolean;

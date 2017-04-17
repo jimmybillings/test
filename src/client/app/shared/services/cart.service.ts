@@ -28,7 +28,7 @@ export class CartService {
   }
 
   public get cart(): Observable<Cart> {
-    return this.data.map((data: any) => data.cart);
+    return this.data.map((state: CartState) => state.data);
   }
 
   public get projects(): Observable<Project[]> {
@@ -137,13 +137,6 @@ export class CartService {
       .subscribe(this.replaceCartWith);
   }
 
-  public createQuote(options: QuoteOptions): Observable<any> {
-    return this.store.data.flatMap((cartStore: any) => {
-      let body: any = this.formatQuoteBody(cartStore.cart, options);
-      return this.api.post(Api.Orders, 'quote', { body: body });
-    });
-  }
-
   public updateOrderInProgress(type: string, data: any): void {
     this.store.updateOrderInProgress(type, data);
   }
@@ -178,34 +171,7 @@ export class CartService {
   }
 
   private get existingProjectNames(): Array<string> {
-    return (this.state.cart.projects || []).map((project: any) => project.name);
-  }
-
-  private formatQuoteBody(cart: Cart, options: QuoteOptions): any {
-    // We don't want to send 'standard' to the API, as it's not a valid option.
-    // we leave it blank so the end user can decide later to pay with credit-card or purchase on credit
-    if (options.purchaseType === 'standard') delete options.purchaseType;
-
-    // find the userId of the user that this quote is for
-    let ownerUserId: number = options.users ? options.users.filter((user: any) => {
-      return user.emailAddress === options.emailAddress;
-    })[0].id : null;
-
-    // shove the extra quote params on to the current cart
-    let body: any = Object.assign(
-      cart,
-      { quoteStatus: options.status, purchaseType: options.purchaseType, expirationDate: options.expirationDate }
-    );
-
-    // add the user id if it exists
-    if (ownerUserId) Object.assign(body, { ownerUserId });
-
-    // delete the fields leftover from the cart store
-    delete body.id;
-    delete body.createdOn;
-    delete body.lastUpdated;
-
-    return body;
+    return (this.state.data.projects || []).map((project: any) => project.name);
   }
 
   // This is an "instance arrow function", which saves us from having to "bind(this)"

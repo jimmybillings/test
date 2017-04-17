@@ -48,8 +48,12 @@ export class QuotesComponent {
 
   public onFilterResults(filter: any): void {
     this.currentFilter = filter;
-    this.buildRouteParams(filter.status);
-    this.quotesService.getQuotes(this.userCan.administerQuotes(), this.params).subscribe();
+    if (!filter.status) {
+      delete this.params.status;
+    } else {
+      this.buildRouteParams(filter.status);
+    }
+    this.router.navigate(['/commerce/quotes', this.params]);
   }
 
   public onEditQuote(quoteId: number): void {
@@ -119,26 +123,12 @@ export class QuotesComponent {
       {
         'first': {
           'id': 5,
-          'name': 'QUOTE.INDEX.SORT.CREATOR_EMAIL_ADDRESS_ASC',
-          'value': 'createdEmailAddress',
-          'sort': { 's': 'createdEmailAddress', 'd': false }
-        },
-        'second': {
-          'id': 6,
-          'name': 'QUOTE.INDEX.SORT.CREATOR_EMAIL_ADDRESS_DESC',
-          'value': 'createdEmailAddress',
-          'sort': { 's': 'createdEmailAddress', 'd': true }
-        }
-      },
-      {
-        'first': {
-          'id': 7,
           'name': 'QUOTE.INDEX.SORT.EXPIRATION_DATE_DESC',
           'value': 'expirationDate',
           'sort': { 's': 'expirationDate', 'd': true }
         },
         'second': {
-          'id': 8,
+          'id': 6,
           'name': 'QUOTE.INDEX.SORT.EXPIRATION_DATE_ASC',
           'value': 'expirationDate',
           'sort': { 's': 'expirationDate', 'd': false }
@@ -153,8 +143,7 @@ export class QuotesComponent {
         'first': {
           'id': 0,
           'name': 'QUOTE.INDEX.FILTER.ALL',
-          'value': 'all',
-          'status': { 'status': 'ALL' }
+          'value': 'all'
         }
       },
       {

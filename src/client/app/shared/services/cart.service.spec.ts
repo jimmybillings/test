@@ -44,7 +44,7 @@ export function main() {
           orderInProgress: {}
         }),
         state: {
-          cart: { some: 'state' },
+          data: { some: 'state' },
           orderInProgress: {}
         },
         updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
@@ -73,7 +73,7 @@ export function main() {
     describe('state getter', () => {
       it('returns the state from the cart store', () => {
         expect(serviceUnderTest.state).toEqual({
-          cart: { some: 'state' },
+          data: { some: 'state' },
           orderInProgress: {}
         });
       });
@@ -128,7 +128,7 @@ export function main() {
 
     describe('addAssetToProjectInCart()', () => {
       beforeEach(() => {
-        mockCartStore.state = { cart: { projects: [mockProjectB] } };
+        mockCartStore.state = { data: { projects: [mockProjectB] } };
       });
 
       it('calls the api service correctly', () => {

@@ -8,14 +8,6 @@ import { Cart, Project, LineItem } from '../../../shared/interfaces/cart.interfa
     <div class="create-quote-actions">
       <button
         [disabled]="!userCanProceed"
-        md-button 
-        color="primary"
-        class="is-outlined"
-        (click)="saveAsDraft.emit()">
-        {{ 'QUOTE.SAVE_AS_DRAFT_BTN' | translate }}
-      </button>
-      <button
-        [disabled]="!userCanProceed"
         md-raised-button class="checkout"
         (click)="openQuoteDialog.emit()">
         {{ 'QUOTE.CREATE_QUOTE_BTN' | translate }}

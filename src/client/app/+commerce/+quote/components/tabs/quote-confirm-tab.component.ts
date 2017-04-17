@@ -1,7 +1,8 @@
 import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommerceConfirmTab } from '../../../components/tabs/commerce-confirm-tab';
-import { QuoteEditService } from '../../../../shared/services/quote-edit.service';
+import { QuoteService } from '../../../../shared/services/quote.service';
 import { Router } from '@angular/router';
+import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 
 @Component({
   moduleId: module.id,
@@ -13,8 +14,9 @@ import { Router } from '@angular/router';
 export class QuoteConfirmTabComponent extends CommerceConfirmTab {
   constructor(
     protected router: Router,
-    public quoteEditService: QuoteEditService
+    public quoteService: QuoteService,
+    public userCan: CommerceCapabilities
   ) {
-    super(router, quoteEditService);
+    super(router, quoteService, userCan);
   }
 }

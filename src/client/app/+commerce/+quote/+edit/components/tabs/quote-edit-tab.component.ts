@@ -47,8 +47,7 @@ export class QuoteEditTabComponent extends CommerceEditTab {
     dialogRef.componentInstance.items = this.config.createQuote.items;
     dialogRef.afterClosed().subscribe((form: { emailAddress: string, expirationDate: string }) => {
       if (form) {
-        this.createQuote({
-          status: 'ACTIVE',
+        this.sendQuote({
           emailAddress: form.emailAddress,
           expirationDate: form.expirationDate,
           users: this.suggestions,
@@ -61,22 +60,12 @@ export class QuoteEditTabComponent extends CommerceEditTab {
     });
   }
 
-  public onSaveAsDraft(): void {
-    this.createQuote({ status: 'PENDING', purchaseType: this.quoteType });
-  }
-
-  private createQuote(options: QuoteOptions): void {
-    this.quoteEditService.createQuote(options).take(1).subscribe((res: any) => {
-      if (options.status === 'ACTIVE') {
-        this.showSnackBar({
-          key: 'QUOTE.CREATED_FOR_TOAST',
-          value: { emailAddress: options.emailAddress }
-        });
-      } else {
-        this.showSnackBar({
-          key: 'QUOTE.SAVED_AS_DRAFT_TOAST',
-        });
-      }
+  private sendQuote(options: QuoteOptions): void {
+    this.quoteEditService.sendQuote(options).take(1).subscribe((res: any) => {
+      this.showSnackBar({
+        key: 'QUOTE.CREATED_FOR_TOAST',
+        value: { emailAddress: options.emailAddress }
+      });
     }, (err) => {
       console.error(err);
     });

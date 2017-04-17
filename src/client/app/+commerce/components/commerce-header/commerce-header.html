@@ -1,6 +1,6 @@
 <section class="header" layout="row" layout-align="center center">
 	<header flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
-		<wz-item-search-form 
+		<wz-item-search-form
 			[ngClass]="{ 'revealed' : itemSearchIsShowing }" 
 			[hidden]="!itemSearchIsShowing" 
 			[currentSearchQuery]="{'q': ''}"
@@ -32,23 +32,23 @@
 					*ngIf="filterOptions"
 					md-icon-button
 					title="sort"
-					[md-menu-trigger-for]="quotesFilterMenu"><md-icon>filter_list</md-icon>
+					[md-menu-trigger-for]="commerceFilterMenu"><md-icon>filter_list</md-icon>
 				</button>
 				<button
 					*ngIf="sortOptions"
 					md-icon-button
 					title="sort"
-					[md-menu-trigger-for]="quotesSortMenu"><md-icon>sort</md-icon>
+					[md-menu-trigger-for]="commerceSortMenu"><md-icon>sort</md-icon>
 				</button>
 			</div>
 		</div>
 	</header>
 </section>
 
-<md-menu x-position="after" #quotesFilterMenu="mdMenu">
+<md-menu x-position="after" #commerceFilterMenu="mdMenu">
 	<wz-sort-component [current]="currentFilter" [items]="filterOptions" (sort)="onFilterResults.emit($event)"></wz-sort-component>
 </md-menu>
 
-<md-menu x-position="after" #quotesSortMenu="mdMenu">
+<md-menu x-position="after" #commerceSortMenu="mdMenu">
 	<wz-sort-component [current]="currentSort" [items]="sortOptions" (sort)="onSortResults.emit($event)"></wz-sort-component>
 </md-menu>

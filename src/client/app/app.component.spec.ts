@@ -61,7 +61,7 @@ export function main() {
         getPortal: () => (<any>window).portal, setPortal: jasmine.createSpy('setPortal'),
         baseUrl: () => jasmine.createSpy('baseUrl')
       };
-      mockUserCan = { viewCollections: () => canViewCollections };
+      mockUserCan = { viewCollections: () => canViewCollections, administerQuotes: () => false };
       mockCart = { getCartSummary: jasmine.createSpy('getCartSummary') };
       mockWindow = { nativeWindow: { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') } };
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
@@ -71,7 +71,7 @@ export function main() {
         mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
         mockCollections, mockActiveCollection, mockUiState, mockUserPreference,
         mockNotification, mockApiConfig, mockUserCan,
-        mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone);
+        mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null);
     });
 
 

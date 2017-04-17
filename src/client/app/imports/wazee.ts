@@ -30,6 +30,7 @@ import { WindowRef } from '../shared/services/window-ref.service';
 import { QuoteService } from '../shared/services/quote.service';
 import { QuotesService } from '../shared/services/quotes.service';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
+
 // STORE INTERFACES
 import { CartStore } from '../shared/stores/cart.store';
 import { FeatureStore } from '../shared/stores/feature.store';
@@ -41,9 +42,11 @@ import { CollectionsStore } from '../shared/stores/collections.store';
 import { ActiveCollectionStore } from '../shared/stores/active-collection.store';
 import { QuoteStore } from '../shared/stores/quote.store';
 import { QuotesStore } from '../shared/stores/quotes.store';
+import { ActiveQuoteStore } from '../shared/stores/active-quote.store';
 
 // GUARDS
 import { CartGuard } from '../+commerce/+cart/services/cart.guard';
+import { QuoteEditGuard } from '../+commerce/+quote/services/quote-edit.guard';
 import { LoggedInGuard } from '../+user-management/services/logged-in.guard';
 import { LoggedOutGuard } from '../+user-management/services/logged-out.guard';
 import { AssetGuard } from '../+asset/services/asset.guard';
@@ -71,6 +74,7 @@ import { features } from '../shared/stores/feature.store';
 import { gallery, GalleryViewStore } from '../shared/stores/gallery-view.store';
 import { quote } from '../shared/stores/quote.store';
 import { quotes } from '../shared/stores/quotes.store';
+import { activeQuote } from '../shared/stores/active-quote.store';
 
 // WAZEE RESOLVERS
 import { AssetResolver } from '../+asset/services/asset.resolver';
@@ -82,6 +86,7 @@ import { GalleryViewResolver } from '../+gallery-view/services/gallery-view.reso
 import { HomeResolver } from '../+home/services/home.resolver';
 import { QuoteResolver } from '../+commerce/+quote/services/quote.resolver';
 import { QuotesResolver } from '../+commerce/+quote/services/quotes.resolver';
+import { QuoteEditResolver } from '../+commerce/+quote/services/quote-edit.resolver';
 
 const WAZEE_RESOLVERS = [
   AssetResolver,
@@ -92,14 +97,16 @@ const WAZEE_RESOLVERS = [
   GalleryViewResolver,
   HomeResolver,
   QuoteResolver,
-  QuotesResolver
+  QuotesResolver,
+  QuoteEditResolver
 ];
 
 const WAZEE_GUARDS = [
   AssetGuard,
   CartGuard,
   LoggedInGuard,
-  LoggedOutGuard
+  LoggedOutGuard,
+  QuoteEditGuard
 ];
 
 const WAZEE_SERVICES = [
@@ -145,7 +152,8 @@ const WAZEE_STORE_INTERFACES = [
   OrderStore,
   GalleryViewStore,
   QuoteStore,
-  QuotesStore
+  QuotesStore,
+  ActiveQuoteStore
 ];
 
 export const WAZEE_PROVIDERS: any = [
@@ -176,5 +184,6 @@ export const WAZEE_STORES: any = {
   features: features,
   gallery: gallery,
   quote: quote,
-  quotes: quotes
+  quotes: quotes,
+  activeQuote: activeQuote
 };

@@ -1,6 +1,6 @@
 import { Component, Output, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CartService } from '../../../shared/services/cart.service';
-import { QuoteEditService } from '../../../shared/services/quote-edit.service';
+import { QuoteService } from '../../../shared/services/quote.service';
 import { UserService } from '../../../shared/services/user.service';
 import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { Address, User, ViewAddress } from '../../../shared/interfaces/user.interface';
@@ -19,7 +19,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
 
   constructor(
     public userCan: CommerceCapabilities,
-    protected commerceService: CartService | QuoteEditService,
+    protected commerceService: CartService | QuoteService,
     protected uiConfig: UiConfig,
     protected user: UserService,
     protected currentUser: CurrentUserService,
