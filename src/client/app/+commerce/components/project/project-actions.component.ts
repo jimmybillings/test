@@ -20,8 +20,9 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
 
     <md-menu x-position="before" #projectOptionsMenu="mdMenu">
       <button disabled md-menu-item><md-icon>attachment</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
-      <button disabled md-menu-item><md-icon>receipt</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}</button>
-      <button md-menu-item><md-icon>add_to_photos</md-icon>{{ 'CART.PROJECTS.ADD_CLIPS' | translate }}</button>
+      <button md-menu-item (click)="onAddFeeButtonClick()">
+        <md-icon>receipt</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}
+      </button>
       <div class="divider"></div>
       <button md-menu-item (click)="onRemoveButtonClick()"> <md-icon>delete</md-icon>{{ 'CART.PROJECTS.DELETE_PROJECT_BTN' | translate }}
       </button>
@@ -31,6 +32,7 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
 export class ProjectActionsComponent {
   @Output() remove: EventEmitter<null> = new EventEmitter();
   @Output() edit: EventEmitter<null> = new EventEmitter();
+  @Output() addFee: EventEmitter<null> = new EventEmitter();
 
   public onEditButtonClick(): void {
     this.edit.emit();
@@ -38,5 +40,9 @@ export class ProjectActionsComponent {
 
   public onRemoveButtonClick(): void {
     this.remove.emit();
+  }
+
+  public onAddFeeButtonClick(): void {
+    this.addFee.emit();
   }
 }

@@ -8,6 +8,7 @@ export function main() {
       componentUnderTest = new ProjectActionsComponent();
       componentUnderTest.edit.emit = jasmine.createSpy('edit emitter');
       componentUnderTest.remove.emit = jasmine.createSpy('remove emitter');
+      componentUnderTest.addFee.emit = jasmine.createSpy('addFee emitter');
     });
 
     describe('onEditButtonClick()', () => {
@@ -23,6 +24,14 @@ export function main() {
         componentUnderTest.onRemoveButtonClick();
 
         expect(componentUnderTest.remove.emit).toHaveBeenCalled();
+      });
+    });
+
+    describe('onAddFeeButtonClick()', () => {
+      it('emits an addFee request', () => {
+        componentUnderTest.onAddFeeButtonClick();
+
+        expect(componentUnderTest.addFee.emit).toHaveBeenCalled();
       });
     });
   });
