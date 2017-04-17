@@ -6,10 +6,24 @@ export function main() {
 
     beforeEach(() => {
       componentUnderTest = new ProjectActionsComponent();
+      componentUnderTest.edit.emit = jasmine.createSpy('edit emitter');
+      componentUnderTest.remove.emit = jasmine.createSpy('remove emitter');
     });
 
-    it('has no tests!', () => {
-      expect(true).toBe(true);
+    describe('onEditButtonClick()', () => {
+      it('emits an edit request', () => {
+        componentUnderTest.onEditButtonClick();
+
+        expect(componentUnderTest.edit.emit).toHaveBeenCalled();
+      });
+    });
+
+    describe('onRemoveButtonClick()', () => {
+      it('emits an remove request', () => {
+        componentUnderTest.onRemoveButtonClick();
+
+        expect(componentUnderTest.remove.emit).toHaveBeenCalled();
+      });
     });
   });
 }
