@@ -11,7 +11,7 @@ const emptyQuote: any = {
   }
 };
 
-export const activeQuote: ActionReducer<any> = (state: any = emptyQuote, action: Action) => {
+export function activeQuote(state: any = emptyQuote, action: Action) {
   switch (action.type) {
     case 'ACTIVE_QUOTE.REPLACE_QUOTE':
       return Object.assign({}, state, { data: action.payload });
