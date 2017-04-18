@@ -80,6 +80,7 @@ wz-form {
 md-select.show-errors.ng-invalid:not(.mat-select-disabled),
 md-select.ng-touched.ng-dirty.ng-invalid:not(.mat-select-disabled),
 md-input.show-errors.ng-invalid,
+.mat-input-container.mat-input-invalid.ng-dirty.ng-invalid,
 .mat-input-container.ng-touched.ng-dirty.ng-invalid { 
   .mat-select-placeholder,
   .mat-input-placeholder {

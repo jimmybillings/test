@@ -30,7 +30,13 @@ export class Application {
         this.storeConfig(xhr.responseText);
         this.start();
       } else {
-        alert('UI Config request failed to load, responsed with:' + xhr.status);
+        if (localStorage.getItem('currentSite')) {
+          alert('This site has no configs in this environment, going to reset to Commerce.');
+          localStorage.clear();
+          location.reload();
+        } else {
+          alert('UI Config request failed to load, responded with:' + xhr.status);
+        }
       }
     };
     xhr.send();
