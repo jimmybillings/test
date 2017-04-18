@@ -1,4 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ElementRef } from '@angular/core';
+import {
+  Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, EventEmitter, ElementRef, Renderer, ChangeDetectorRef
+} from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
 import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.interface';
@@ -14,10 +16,10 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         min="0"
         max="{{ largestFrameNumber }}"
         value="{{ currentFrameNumber }}"
-        (change)="onScrubberSliderChange()"
-        (mouseover)="onScrubberMouseOver()"
-        (mousemove)="onScrubberMouseMove($event)"
-        (mouseout)="onScrubberMouseOut()">
+        (input)="onSliderInput()"
+        (mouseover)="onMouseOver()"
+        (mouseout)="onMouseOut()"
+        (mousedown)="onMouseDown()">
       </md-slider>
 
       <md-slider
@@ -28,9 +30,8 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         max="{{ largestFrameNumber }}"
         value="{{ inMarkerFrameNumber }}"
         (click)="onInMarkerClick()"
-        (mouseover)="onScrubberMouseOver()"
-        (mousemove)="onScrubberMouseMove($event)"
-        (mouseout)="onScrubberMouseOut()">
+        (mouseover)="onMouseOver()"
+        (mouseout)="onMouseOut()">
       </md-slider>
 
       <md-slider
@@ -41,28 +42,42 @@ import { PlayerState, PlayerSeekRequest } from '../../../interfaces/player.inter
         max="{{ largestFrameNumber }}"
         value="{{ outMarkerFrameNumber }}"
         (click)="onOutMarkerClick()"
-        (mouseover)="onScrubberMouseOver()"
-        (mousemove)="onScrubberMouseMove($event)"
-        (mouseout)="onScrubberMouseOut()">
+        (mouseover)="onMouseOver()"
+        (mouseout)="onMouseOut()">
       </md-slider>
 
-      <span *ngIf="hovering" class="hover-frame-display" [style.left.px]="hoverFrameDisplayPosition">
+      <span *ngIf="hoverFrameDisplayIsVisible" class="hover-frame-display" [style.left.px]="hoverFrameDisplayPosition">
         {{ hoverFrame | timecode }}
       </span>
     </ng-container>
   `
 })
 
-export class ScrubberComponent {
+export class ScrubberComponent implements OnInit, OnDestroy {
   @Input() window: any;
   @Input() playerState: PlayerState;
   @Output() request: EventEmitter<PlayerSeekRequest> = new EventEmitter<PlayerSeekRequest>();
 
-  private _hovering: boolean = false;
+  private scrubbing: boolean = false;
+  private hovering: boolean = false;
   private _hoverFrameDisplayPosition: number = 0;
   private _hoverFrame: Frame;
+  private documentMouseMoveListenerRemover: Function;
+  private documentMouseUpListenerRemover: Function;
 
-  constructor(private elementRef: ElementRef) { }
+  constructor(private elementRef: ElementRef, private renderer: Renderer, private changeDetector: ChangeDetectorRef) { }
+
+  public ngOnInit(): void {
+    const document = this.window.document;
+
+    this.documentMouseMoveListenerRemover = this.renderer.listen(document, 'mousemove', this.onMouseMove.bind(this));
+    this.documentMouseUpListenerRemover = this.renderer.listen(document, 'mouseup', this.onMouseUp.bind(this));
+  }
+
+  public ngOnDestroy(): void {
+    this.documentMouseMoveListenerRemover();
+    this.documentMouseUpListenerRemover();
+  }
 
   public get readyToDisplay(): boolean {
     return this.durationIsSet && this.currentFrameIsSet;
@@ -92,20 +107,20 @@ export class ScrubberComponent {
     return this.outMarkerIsSet ? this.playerState.outMarkerFrame.frameNumber : undefined;
   }
 
-  public onScrubberSliderChange(): void {
+  public onSliderInput(): void {
     this.request.emit({ type: 'SEEK_TO_FRAME', frame: this._hoverFrame });
   }
 
-  public onScrubberMouseOver(): void {
-    this._hovering = true;
+  public onMouseOver(): void {
+    this.hovering = true;
   }
 
-  public onScrubberMouseOut(): void {
-    this._hovering = false;
+  public onMouseOut(): void {
+    this.hovering = false;
   }
 
-  public onScrubberMouseMove(event: any): void {
-    this.updateHoverFrameDisplayWith(event.pageX);
+  public onMouseDown(): void {
+    this.scrubbing = true;
   }
 
   public onInMarkerClick(): void {
@@ -116,8 +131,8 @@ export class ScrubberComponent {
     this.request.emit({ type: 'SEEK_TO_MARKER', markerType: 'out' });
   }
 
-  public get hovering(): boolean {
-    return this._hovering;
+  public get hoverFrameDisplayIsVisible(): boolean {
+    return this.hovering || this.scrubbing;
   }
 
   public get hoverFrameDisplayPosition(): number {
@@ -126,6 +141,18 @@ export class ScrubberComponent {
 
   public get hoverFrame(): Frame {
     return this._hoverFrame;
+  }
+
+  private onMouseMove(event: any): void {
+    if (!this.hoverFrameDisplayIsVisible) return;
+
+    this.updateHoverFrameDisplayWith(event.pageX);
+    this.changeDetector.markForCheck();  // Because this event is tracked outside the component.
+  }
+
+  private onMouseUp(): void {
+    this.scrubbing = false;
+    this.changeDetector.markForCheck();  // Because this event is tracked outside the component.
   }
 
   private get durationIsSet(): boolean {
@@ -165,7 +192,9 @@ export class ScrubberComponent {
   private updateHoverFrameWith(relativeMouseX: number, scrubber: any): void {
     const scrubberTrack: any = this.findByClassNameIn(Array.from(scrubber.children), 'mat-slider-wrapper');
     const scrubberTrackWidth: number = scrubberTrack.offsetWidth;
-    const newFrameNumber: number = Math.round(relativeMouseX * this.playerState.durationFrame.frameNumber / scrubberTrackWidth);
+
+    let newFrameNumber: number = Math.round(relativeMouseX * this.playerState.durationFrame.frameNumber / scrubberTrackWidth);
+    newFrameNumber = this.constrainTo(0, this.playerState.durationFrame.frameNumber, newFrameNumber);
 
     this._hoverFrame = new Frame(this.playerState.framesPerSecond).setFromFrameNumber(newFrameNumber);
   }
@@ -186,7 +215,7 @@ export class ScrubberComponent {
     this._hoverFrameDisplayPosition = this.constrainTo(minimumPosition, maximumPosition, unconstrainedPosition);
   }
 
-  private constrainTo(minimumPosition: number, maximumPosition: number, position: number) {
-    return Math.max(minimumPosition, Math.min(maximumPosition, position));
+  private constrainTo(minimumAllowed: number, maximumAllowed: number, value: number) {
+    return Math.max(minimumAllowed, Math.min(maximumAllowed, value));
   }
 }

@@ -52,6 +52,8 @@ export class WzPlayerComponent implements OnDestroy {
   private inMarker: number = undefined;
   private outMarker: number = undefined;
   private videoElementListenerRemovers: any;
+  private waitingForSeek: boolean = false;
+  private pendingSeekRequest: number = null;
 
   constructor(private element: ElementRef, private renderer: Renderer, private zone: NgZone) { }
 
@@ -290,6 +292,14 @@ export class WzPlayerComponent implements OnDestroy {
       this.emitStateChangeRequestWith({ playingMarkers: true });
       if (this.videoElement.paused) this.videoElement.play();
     }
+
+    this.waitingForSeek = false;
+
+    if (this.pendingSeekRequest) {
+      const newTime: number = this.pendingSeekRequest;
+      this.pendingSeekRequest = null;
+      this.seekTo(newTime);
+    }
   }
 
   private onSeeking(): void {
@@ -350,6 +360,8 @@ export class WzPlayerComponent implements OnDestroy {
       this.jwPlayer = null;
       this.inMarker = undefined;
       this.outMarker = undefined;
+      this.waitingForSeek = false;
+      this.pendingSeekRequest = null;
     }
 
     this.currentAssetType = 'unknown';
@@ -378,6 +390,14 @@ export class WzPlayerComponent implements OnDestroy {
   }
 
   private simplySeekTo(timeInSeconds: number) {
-    this.videoElement.currentTime = timeInSeconds;
+    if (this.waitingForSeek) {
+      // If we get several seek requests while we are waiting for one to complete, we'll remember
+      // just the most recent request (throwing away all others), and seek there as soon as the current
+      // seek is done.  This lets us repeatedly seek just as fast as the browser can handle it.
+      this.pendingSeekRequest = timeInSeconds;
+    } else {
+      this.waitingForSeek = true;
+      this.videoElement.currentTime = timeInSeconds;
+    }
   }
 }

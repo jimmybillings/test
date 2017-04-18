@@ -34,6 +34,7 @@ import { WzComingSoonComponent } from './components/wz-coming-soon/wz-coming-soo
 import { WzSubclipEditorComponent } from './components/wz-subclip-editor/wz.subclip-editor.component';
 import { WzGalleryTwoLevelComponent } from './components/wz-gallery-two-level/wz.gallery-two-level.component';
 import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb/wz.gallery-breadcrumb.component';
+import { WzSiteChangerComponent } from './components/wz-site-changer/wz-site-changer.component';
 
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
@@ -82,6 +83,7 @@ export function createTranslateLoader(http: Http) {
     WzComingSoonComponent,
     WzGalleryTwoLevelComponent,
     WzSubclipEditorComponent,
+    WzSiteChangerComponent
   ],
   exports: [
     WzGalleryBreadcrumbComponent,
@@ -112,6 +114,7 @@ export function createTranslateLoader(http: Http) {
     WzFormModule,
     WzGalleryTwoLevelComponent,
     WzSubclipEditorComponent,
+    WzSiteChangerComponent,
     WzDialogModule
   ],
   entryComponents: [

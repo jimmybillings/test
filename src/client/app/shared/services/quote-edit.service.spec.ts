@@ -10,17 +10,37 @@ export function main() {
     beforeEach(() => {
       mockApi = new MockApiService();
       mockQuoteStore = {
-        data: Observable.of({ id: 3, ownerUserId: 10 }),
-        state: { id: 3, ownerUserId: 10 },
+        data: Observable.of({ data: { id: 3, ownerUserId: 10 } }),
+        state: { data: { id: 3, ownerUserId: 10 } },
         replaceQuoteWith: jasmine.createSpy('replaceQuoteWith'),
         updateQuoteWith: jasmine.createSpy('updateQuoteWith')
       };
       jasmine.addMatchers(mockApiMatchers);
-      serviceUnderTest = new QuoteEditService(null, null);
+      serviceUnderTest = new QuoteEditService(mockQuoteStore, mockApi.injector);
     });
 
-    it('should have no tests', () => {
-      expect(true).toBe(true);
+    describe('sendQuote', () => {
+      it('should call the api service correctly', () => {
+        let mockUsers: any[] = [
+          { emailAddress: 'ross.edfort@wazeedigital.com', id: 1 },
+          { emailAddress: '', id: 2 }, { emailAddress: '', id: 3 }
+        ];
+        serviceUnderTest.sendQuote({
+          emailAddress: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017/03/22',
+          users: mockUsers,
+          purchaseType: 'ProvisionalOrder'
+        }).take(1).subscribe();
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3');
+        expect(mockApi.put).toHaveBeenCalledWithBody({
+          id: 3,
+          ownerUserId: 1,
+          purchaseType: 'ProvisionalOrder',
+          expirationDate: '2017-03-22T06:00:00.000Z',
+          quoteStatus: 'ACTIVE',
+        });
+      });
     });
   });
 }

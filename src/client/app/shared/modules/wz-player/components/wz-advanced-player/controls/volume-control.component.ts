@@ -22,7 +22,7 @@ import { PlayerState, PlayerVolumeRequest } from '../../../interfaces/player.int
       <md-icon>{{ iconName }}</md-icon>
     </button>
     <div class="volume-control" [@volumeState]="volumeState" (mouseleave)="onMouseLeave()">
-      <md-slider vertical min="0" max="100" value="{{ playerState.volume }}" (change)="onSliderChange($event)"></md-slider>
+      <md-slider vertical min="0" max="100" value="{{ playerState.volume }}" (input)="onSliderInput($event)"></md-slider>
       <button md-icon-button title="{{ buttonTitle | translate }}" (click)="onButtonClick()">
         <md-icon>{{ iconName }}</md-icon>
       </button>
@@ -69,7 +69,7 @@ export class VolumeControlComponent {
     this.volumeState = 'inactive';
   }
 
-  public onSliderChange(event: any): void {
+  public onSliderInput(event: any): void {
     this.request.emit({ type: 'SET_VOLUME', volume: event.value });
   }
 

@@ -42,6 +42,11 @@ export class QuotesComponent {
     this.router.navigate(['/commerce/quotes', this.params]);
   }
 
+  public onSearch(query: { q: string }): void {
+    this.buildRouteParams(query);
+    this.quotesService.getQuotes(this.userCan.administerQuotes(), this.params).subscribe();
+  }
+
   public onFilterResults(filter: any): void {
     this.currentFilter = filter;
     if (!filter.status) {
