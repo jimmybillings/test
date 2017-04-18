@@ -6,7 +6,7 @@
       </div>
     </div>
   </a>
-    
+    <wz-site-changer-component></wz-site-changer-component>
     <!--THESE LINKS SHOW ONLY FOR LOGGED IN USERS-->
     <button md-button *ngIf="currentUser.loggedInState() | async" [md-menu-trigger-for]="navigation" [ngClass]="{'mat-primary': !(uiState.data | async).showFixedHeader}" hide show-gt-xs class="is-dd nav-dropdown-btn">
       {{currentUser.fullName() | async}}

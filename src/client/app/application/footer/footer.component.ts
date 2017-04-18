@@ -16,14 +16,8 @@ export class FooterComponent implements OnInit {
   @Input() supportedLanguages: any;
   @Output() onChangeLang = new EventEmitter();
   public lang: any;
-  public currentSite: string = localStorage.getItem('currentSite') || 'commerce';
   public config: any;
   public configSubscription: Subscription;
-  public sites: string[] = [
-    'core', 'commerce', 'usopen', 'cnn', 'usta-usopen',
-    'bbcws', 'hbo-boxing', 'wpt', 'dvids', 'augusta',
-    'laac', 'cfp', 'sony', 'augusta', 'augusta', 'nab', 'amblin'
-  ];
 
   constructor(
     public uiConfig: UiConfig) { }
@@ -37,15 +31,5 @@ export class FooterComponent implements OnInit {
 
   public selectLang(lang: any) {
     this.onChangeLang.emit(lang.value);
-  }
-
-  public selectSite(site: any) {
-    localStorage.clear();
-    localStorage.setItem('currentSite', site.value);
-    location.reload();
-  }
-
-  public isPocNineTeen() {
-    return location.host.indexOf('poc19') > -1 || location.host.indexOf('localhost') > -1;
   }
 }
