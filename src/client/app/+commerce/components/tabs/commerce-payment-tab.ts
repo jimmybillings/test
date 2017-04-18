@@ -1,10 +1,12 @@
 import { Output, EventEmitter, NgZone, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
-import { QuoteEditService } from '../../../shared/services/quote-edit.service';
+import { QuoteService } from '../../../shared/services/quote.service';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import { QuoteState } from '../../../shared/interfaces/quote.interface';
+import { CartState } from '../../../shared/interfaces/cart.interface';
 
 export class CommercePaymentTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
@@ -14,15 +16,13 @@ export class CommercePaymentTab extends Tab implements OnInit {
 
   constructor(
     private _zone: NgZone,
-    private commerceService: CartService | QuoteEditService,
+    private commerceService: CartService | QuoteService,
     private uiConfig: UiConfig,
     private ref: ChangeDetectorRef) {
     super();
   }
 
   ngOnInit() {
-    this.configSubscription = this.uiConfig.get('cart')
-      .map((config: any) => config.config.payment.items).subscribe(data => console.log(data));
     this.loadStripe();
   }
 
@@ -57,14 +57,14 @@ export class CommercePaymentTab extends Tab implements OnInit {
   }
 
   public get userCanPurchaseOnCredit(): Observable<boolean> {
-    return this.commerceService.data.map((data: any) => {
-      let options: any = data.orderInProgress.purchaseOptions;
-      if (data.orderInProgress.selectedAddress.type === 'user') {
+    return this.commerceService.data.map((state: CartState | QuoteState) => {
+      let options: any = state.orderInProgress.purchaseOptions;
+      if (state.orderInProgress.selectedAddress.type === 'user') {
         return options.purchaseOnCredit;
       } else {
         if (options.purchaseOnCredit) {
           if (options.creditExemption) {
-            return data.cart.total > parseInt(options.creditExemption);
+            return state.data.total > parseInt(options.creditExemption);
           } else {
             return true;
           }
@@ -90,7 +90,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
       script.type = 'text/javascript';
       document.body.appendChild(script);
       script.onload = () => {
-        (<any>window).Stripe.setPublishableKey(this.commerceService.state.cart.stripePublicKey);
+        (<any>window).Stripe.setPublishableKey(this.commerceService.state.data.stripePublicKey);
       };
     }
   }

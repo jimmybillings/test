@@ -5,8 +5,8 @@ import { cart, CartStore } from './cart.store';
 export function main() {
   describe('cart reducer', () => {
     it('returns the payload for REPLACE_CART', () => {
-      expect(cart({ cart: {}, orderInProgress: {} }, { type: 'REPLACE_CART', payload: { someKey: 'someValue' } }))
-        .toEqual({ orderInProgress: {}, cart: { someKey: 'someValue' } });
+      expect(cart({ data: {}, orderInProgress: {} }, { type: 'REPLACE_CART', payload: { someKey: 'someValue' } }))
+        .toEqual({ orderInProgress: {}, data: { someKey: 'someValue' } });
     });
 
     it('returns the current state for an unexpected action type', () => {
@@ -17,7 +17,7 @@ export function main() {
     it('returns the default state for no current state and an unexpected action type', () => {
       expect(cart(undefined, { type: 'BLAH', payload: { someKey: 'someValue' } }))
         .toEqual({
-          cart: {
+          data: {
             userId: NaN,
             total: 0
           },

@@ -12,19 +12,20 @@ import { QuotesComponent } from './+quote/+index/quotes.component';
 import { QuoteResolver } from './+quote/services/quote.resolver';
 import { QuotesResolver } from './+quote/services/quotes.resolver';
 import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
+import { QuoteEditResolver } from './+quote/services/quote-edit.resolver';
+import { QuoteEditGuard } from './+quote/services/quote-edit.guard';
 
 export const COMMERCE_ROUTES: Routes = [
   {
     path: 'commerce',
     component: CommerceComponent,
-    // canActivate: [CartGuard],
     children: [
       { path: '', component: CartComponent, resolve: { cart: CartResolver } },
       { path: 'orders', component: OrdersComponent, resolve: { orders: OrdersResolver } },
-      { path: 'order/:orderId', component: OrderShowComponent, resolve: { order: OrderResolver } },
+      { path: 'orders/:orderId', component: OrderShowComponent, resolve: { order: OrderResolver } },
       { path: 'quotes', component: QuotesComponent, resolve: { quotes: QuotesResolver } },
-      { path: 'quote/:quoteId', component: QuoteShowComponent, resolve: { quote: QuoteResolver } },
-      { path: 'activeQuote', component: QuoteEditComponent, resolve: { quote: CartResolver } }
+      { path: 'quotes/:quoteId', component: QuoteShowComponent, resolve: { quote: QuoteResolver } },
+      { path: 'activeQuote', component: QuoteEditComponent, resolve: { quote: QuoteEditResolver }, canActivate: [QuoteEditGuard] }
     ]
   }
 ];

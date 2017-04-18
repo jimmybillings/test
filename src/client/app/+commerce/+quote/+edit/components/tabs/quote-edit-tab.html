@@ -34,10 +34,9 @@
     <div flex="100" layout="row" layout-align="center center">
       <administer-quote-component
         flex="100"
-        [cart]="quoteEditService.cart | async"
+        [cart]="cart | async"
         [userCanProceed]="userCanProceed"
-        (openQuoteDialog)="onOpenQuoteDialog()"
-        (saveAsDraft)="onSaveAsDraft()">
+        (openQuoteDialog)="onOpenQuoteDialog()">
       </administer-quote-component>
     </div>
     <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!rmAssetsHaveAttributes">

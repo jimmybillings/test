@@ -12,7 +12,7 @@ export function main() {
 
     beforeEach(() => {
       mockState = {
-        cart: {
+        data: {
           itemCount: 2,
           projects: [{
             lineItems: [
@@ -24,7 +24,7 @@ export function main() {
       };
 
       mockCartService = {
-        data: Observable.of({ cart: { someData: 'SOME_VALUE' } }),
+        data: Observable.of({ data: { someData: 'SOME_VALUE' } }),
         addProject: jasmine.createSpy('addProject'),
         removeProject: jasmine.createSpy('removeProject'),
         updateProject: jasmine.createSpy('updateProject'),
@@ -137,7 +137,7 @@ export function main() {
 
       it('should return true if all assets are valid', () => {
         mockState = {
-          cart: {
+          data: {
             itemCount: 0,
             projects: [{
               lineItems: [
@@ -161,7 +161,7 @@ export function main() {
       });
 
       it('should return true if the cart is empty', () => {
-        mockState = { cart: { itemCount: 0 } };
+        mockState = { data: { itemCount: 0 } };
 
         mockCartService = {
           state: mockState

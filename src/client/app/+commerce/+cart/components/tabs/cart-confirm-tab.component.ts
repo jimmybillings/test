@@ -2,6 +2,7 @@ import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommerceConfirmTab } from '../../../components/tabs/commerce-confirm-tab';
 import { CartService } from '../../../../shared/services/cart.service';
 import { Router } from '@angular/router';
+import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 
 @Component({
   moduleId: module.id,
@@ -14,9 +15,10 @@ export class CartConfirmTabComponent extends CommerceConfirmTab {
 
   constructor(
     router: Router,
-    cartService: CartService
+    cartService: CartService,
+    userCan: CommerceCapabilities
   ) {
-    super(router, cartService);
+    super(router, cartService, userCan);
   }
 
 }

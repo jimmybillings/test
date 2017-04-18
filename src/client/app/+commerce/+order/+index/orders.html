@@ -2,20 +2,20 @@
 <section>
 	<div layout="row" flex="100" layout-margin layout-align="center start">
 		<section class="commerce-list" flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
-			<wz-pagination *ngIf="(orders.data | async).pagination.totalCount > 0" [pagination]="(orders.data | async).pagination"
+			<wz-pagination *ngIf="(orders | async).pagination.totalCount > 0" [pagination]="(orders | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">
 			</wz-pagination>
 			<!-- Current user has no orders-->
-			<md-card *ngIf="(orders.data | async).items.length == 0">
+			<md-card *ngIf="(orders | async).items.length == 0">
 				<md-card-title>You currently do not have any orders</md-card-title>
 			</md-card>
 			<!-- ORDER LIST -->
 			<commerce-list
-				*ngIf="(orders.data | async).items.length > 0"
+				*ngIf="(orders | async).items.length > 0"
 				[type]="'ORDER'"
-				[items]="(orders.data | async).items">
+				[items]="(orders | async).items">
 			</commerce-list>
-			<wz-pagination *ngIf="(orders.data | async).pagination.totalCount > 0" [pagination]="(orders.data | async).pagination"
+			<wz-pagination *ngIf="(orders | async).pagination.totalCount > 0" [pagination]="(orders | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">
 			</wz-pagination>
 		</section>

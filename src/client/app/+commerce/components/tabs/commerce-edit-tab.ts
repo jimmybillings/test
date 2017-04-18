@@ -10,7 +10,7 @@ import { ProjectEditComponent } from '../project/project-edit.component';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { AssetService } from '../../../shared/services/asset.service';
-import { Capabilities } from '../../../shared/services/capabilities.service';
+import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../shared/stores/error.store';
@@ -34,7 +34,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   protected suggestions: any[];
 
   constructor(
-    public userCan: Capabilities,
+    public userCan: CommerceCapabilities,
     protected commerceService: CartService | QuoteEditService,
     protected uiConfig: UiConfig,
     protected dialog: MdDialog,
@@ -69,11 +69,11 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   public get rmAssetsHaveAttributes(): boolean {
-    if (this.commerceService.state.cart.itemCount === 0) return true;
+    if (this.commerceService.state.data.itemCount === 0) return true;
 
     let validAssets: boolean[] = [];
 
-    this.commerceService.state.cart.projects.forEach((project: Project) => {
+    this.commerceService.state.data.projects.forEach((project: Project) => {
       if (project.lineItems) {
         project.lineItems.forEach((lineItem: LineItem) => {
           validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);

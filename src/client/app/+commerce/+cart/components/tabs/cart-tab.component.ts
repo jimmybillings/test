@@ -6,7 +6,7 @@ import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { MdDialog, MdSnackBar } from '@angular/material';
 import { AssetService } from '../../../../shared/services/asset.service';
-import { Capabilities } from '../../../../shared/services/capabilities.service';
+import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { UserPreferenceService } from '../../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../../shared/stores/error.store';
 import { WindowRef } from '../../../../shared/services/window-ref.service';
@@ -22,7 +22,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class CartTabComponent extends CommerceEditTab {
 
   constructor(
-    public userCan: Capabilities,
+    public userCan: CommerceCapabilities,
     public cartService: CartService,
     public uiConfig: UiConfig,
     public dialog: MdDialog,

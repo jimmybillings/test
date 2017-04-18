@@ -38,7 +38,7 @@
 </div>
 
 <h5 class="md-title order-summary">{{ 'CART.CONFIRM.ORDER_TITLE' | translate }}</h5>
-<projects-component flex="100" [readOnly]="true" [projects]="(commerceService.data | async).cart.projects"></projects-component>
+<projects-component flex="100" [readOnly]="true" [projects]="(data | async).projects" [userCan]="userCan"></projects-component>
 
 <section class="commerce-total" layout="column" layout-gt-xs="row" layout-align="space-between">
   <button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back" flex-order-xs="4" flex="0" layout-align="start center">
@@ -50,7 +50,7 @@
       {{ 'CART.CONFIRM.TOTAL' | translate }} 
     </span>
     <span class="total-amount">
-      {{ (cart | async).total | currency:'USD':true:'1.2-2' }}
+      {{ (data | async).total | currency:'USD':true:'1.2-2' }}
     </span>
   </span>
   <span flex="" flex-order-xs="2" layout-align="end center">

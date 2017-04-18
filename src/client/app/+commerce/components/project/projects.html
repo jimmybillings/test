@@ -14,15 +14,15 @@
 				</project-info-component>
 			</div>
 			<div flex="100" flex-gt-sm="30" layout-padding flex-order-xs="-1">
-				<project-price-info-component
-					*ngIf="quoteType !== 'ProvisionalOrder'"
-					[subtotal]="project.subtotal">
-				</project-price-info-component>
 				<project-actions-component
 					*ngIf="!readOnly"
 					(remove)="onRemove(project)"
 					(edit)="onEdit(project)">
 				</project-actions-component>
+				<project-price-info-component
+					*ngIf="quoteType !== 'ProvisionalOrder'"
+					[subtotal]="project.subtotal">
+				</project-price-info-component>
 				<project-asset-info-component
 					*ngIf="readOnly"
 					[count]="lineItemCountFor(project)">
@@ -31,7 +31,7 @@
 		</header>
 
 		<line-items-component
-			*ngIf="!readOnly"
+			[readOnly]="readOnly"
 			[lineItems]="project.lineItems"
 			[otherProjects]="projectsOtherThan(project)"
 			[userCan]="userCan"

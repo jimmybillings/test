@@ -19,6 +19,9 @@
                 <strong>{{ type + '.PURCHASE_TYPE_LABEL' | translate }} </strong>
                 {{ type === 'ORDER' ? item.orderType : item.purchaseType ? item.purchaseType : 'none' }}
               </span>
+              <span *ngIf="type === 'QUOTE'">
+                <strong>{{ 'QUOTE.EXPIRATION_LABEL' | translate }} </strong>{{ item.expirationDate | date:'short' }}
+              </span>
             </div>
           </div>
         </div>
@@ -83,7 +86,7 @@
             md-button
             class="is-outlined"
             color="primary"
-            [routerLink]="['/commerce/quote', item.id]">
+            [routerLink]="['/commerce/quotes', item.id]">
             {{ 'QUOTE.INDEX.DETAIL_BTN_TITLE' | translate }}
           </button>
           <button
@@ -91,7 +94,7 @@
             md-button
             class="is-outlined"
             color="primary"
-            [routerLink]="['/commerce/order', item.id]">
+            [routerLink]="['/commerce/orders', item.id]">
             {{ 'ORDER.INDEX.DETAIL_BTN_TITLE' | translate }}
           </button>
         </div>

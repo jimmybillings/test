@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommerceBillingTab } from '../../../components/tabs/commerce-billing-tab';
-import { QuoteEditService } from '../../../../shared/services/quote-edit.service';
+import { QuoteService } from '../../../../shared/services/quote.service';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { UserService } from '../../../../shared/services/user.service';
@@ -16,12 +16,12 @@ import { MdDialog } from '@angular/material';
 export class QuoteBillingTabComponent extends CommerceBillingTab {
   constructor(
     public userCan: CommerceCapabilities,
-    protected quoteEditService: QuoteEditService,
+    protected quoteService: QuoteService,
     protected uiConfig: UiConfig,
     protected user: UserService,
     protected currentUser: CurrentUserService,
     protected dialog: MdDialog,
   ) {
-    super(userCan, quoteEditService, uiConfig, user, currentUser, dialog);
+    super(userCan, quoteService, uiConfig, user, currentUser, dialog);
   }
 }

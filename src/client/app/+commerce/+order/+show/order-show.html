@@ -63,10 +63,6 @@
 									{{ project.clientName }}
 								</span>
 							</div>
-
-							<div flex="100" flex-gt-sm="30" layout-padding flex-order-xs="-1">
-								<!--<button *ngIf="!readOnly" md-icon-button [md-menu-trigger-for]="projectOptionsMenu" (click)="selectProject(project)" title="More project options"><md-icon>more_vert</md-icon></button>-->
-							</div>
 							<div class="project-subtotal md-caption">
 								<strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
 								<span>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
@@ -82,11 +78,8 @@
 									layout="row" 
 									layout-xs="column">
 									<div flex="100" flex-gt-xs="50">
-										<cart-asset-component [asset]="lineItem.asset" (assetNotify)="delegate($event)"></cart-asset-component>
+										<cart-asset-component [asset]="lineItem.asset"></cart-asset-component>
 									</div>
-									<!--<div flex-gt-xs="20" layout-sm="100" flex="auto" layout-padding>
-										<span>Full Clip</span>
-									</div>-->
 									<div flex-gt-xs="50" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
 										<div class="tools" flex="100" layout-padding>
 											<button [disabled]="!lineItem.asset.masterDownloadUrl" (click)="downloadMaster(lineItem.asset.masterDownloadUrl)" md-button color="primary" class="is-outlined">{{ 'ORDER.SHOW.DOWNLOAD_BTN_TITLE' | translate }}</button>

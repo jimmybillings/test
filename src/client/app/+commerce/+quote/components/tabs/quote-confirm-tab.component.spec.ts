@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: QuoteConfirmTabComponent;
 
     beforeEach(() => {
-      componentUnderTest = new QuoteConfirmTabComponent(null, null);
+      componentUnderTest = new QuoteConfirmTabComponent(null, null, null);
     });
 
     it('has no tests!', () => {

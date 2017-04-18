@@ -23,10 +23,10 @@ export class QuotesService {
 
   public getQuotes(getFocused: boolean, params: any): Observable<any> {
     if (getFocused) {
-      return this.getFocused().switchMap((focusedQuote: Quote) => {
+      return this.getFocused().switchMap((activeQuote: Quote) => {
         return this.quotesList(params)
           .map((res: QuoteList) => { res.items = res.items ? res.items : []; return res; })
-          .do((res: QuoteList) => this.findNewFocused(res.items, focusedQuote.id))
+          .do((res: QuoteList) => this.findNewFocused(res.items, activeQuote.id))
           .do(this.setQuotesInStore);
       });
     } else {
@@ -44,9 +44,9 @@ export class QuotesService {
     });
   }
 
-  private findNewFocused(quotes: Quote[], focusedQuoteId: number): Quote[] {
+  private findNewFocused(quotes: Quote[], activeQuoteId: number): Quote[] {
     return quotes.map((quote: Quote) => {
-      quote.focused = quote.id === focusedQuoteId ? true : false;
+      quote.focused = quote.id === activeQuoteId ? true : false;
       return quote;
     });
   }
