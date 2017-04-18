@@ -94,13 +94,6 @@
           </md-option>
         </md-select>
       </form>
-      <form  *ngIf="isPocNineTeen()" class="language-selector">
-        <md-select [(ngModel)]="currentSite" name="currentSite" (change)="selectSite($event)">
-          <md-option *ngFor="let site of sites" [value]="site">
-            {{site}}
-          </md-option>
-        </md-select>
-      </form>
     </div>
   </div>
   <div flex=""></div>
@@ -124,13 +117,6 @@
         <md-select [(ngModel)]="lang" name="lang" name="lang" (change)="selectLang($event)">
           <md-option *ngFor="let l of supportedLanguages" [value]="l.code">
             {{l.title}}
-          </md-option>
-        </md-select>
-      </form>
-      <form *ngIf="isPocNineTeen()" class="language-selector">
-        <md-select [(ngModel)]="currentSite" name="currentSite" (change)="selectSite($event)">
-          <md-option *ngFor="let site of sites" [value]="site">
-            {{site}}
           </md-option>
         </md-select>
       </form>
