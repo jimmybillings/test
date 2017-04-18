@@ -112,12 +112,11 @@ export class QuoteEditService {
   }
 
   public sendQuote(options: QuoteOptions): Observable<any> {
-    console.warn('this needs to be implemented!');
-    return Observable.of({});
-    // return this.store.data.flatMap((state: QuoteState) => {
-    //   let body: any = this.formatQuoteBody(state.data, options);
-    //   return this.api.post(Api.Orders, 'quote', { body: body });
-    // });
+    return this.api.put(
+      Api.Orders,
+      `quote/${this.state.data.id}`,
+      { body: this.formatQuoteBody(this.state.data, options) }
+    );
   }
 
   // Private helper methods
@@ -143,10 +142,10 @@ export class QuoteEditService {
     return (this.state.data.projects || []).map((project: any) => project.name);
   }
 
-  private formatQuoteBody(cart: any, options: QuoteOptions): any {
+  private formatQuoteBody(quote: Quote, options: QuoteOptions): any {
     // We don't want to send 'standard' to the API, as it's not a valid option.
     // we leave it blank so the end user can decide later to pay with credit-card or purchase on credit
-    if (options.purchaseType === 'standard') delete options.purchaseType;
+    if (options.purchaseType === 'standard') options.purchaseType = null;
 
     // find the userId of the user that this quote is for
     let ownerUserId: number = options.users ? options.users.filter((user: any) => {
@@ -155,17 +154,16 @@ export class QuoteEditService {
 
     // shove the extra quote params on to the current cart
     let body: any = Object.assign(
-      cart,
-      { purchaseType: options.purchaseType, expirationDate: options.expirationDate }
+      quote,
+      {
+        purchaseType: options.purchaseType,
+        expirationDate: new Date(options.expirationDate).toISOString(),
+        quoteStatus: 'ACTIVE'
+      }
     );
 
     // add the user id if it exists
     if (ownerUserId) Object.assign(body, { ownerUserId });
-
-    // delete the fields leftover from the cart store
-    delete body.id;
-    delete body.createdOn;
-    delete body.lastUpdated;
 
     return body;
   }
