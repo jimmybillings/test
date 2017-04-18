@@ -21,9 +21,9 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 
 export class WzSiteChangerComponent {
   public sites: string[] = [
-    'core', 'commerce', 'usopen', 'cnn', 'usta-usopen',
+    'commerce', 'usopen', 'cnn', 'usta-usopen',
     'bbcws', 'hbo-boxing', 'wpt', 'dvids', 'augusta',
-    'laac', 'cfp', 'sony', 'augusta', 'augusta', 'nab', 'amblin'
+    'laac', 'cfp', 'sony', 'nab', 'amblin'
   ];
   public currentSite: string = localStorage.getItem('currentSite') || 'commerce';
 
