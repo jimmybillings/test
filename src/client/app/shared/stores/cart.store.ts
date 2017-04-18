@@ -7,36 +7,6 @@ const emptyCart: CartState = {
   data: {
     userId: NaN,
     total: 0
-  },
-  orderInProgress: {
-    purchaseOptions: {
-      purchaseOnCredit: false,
-      creditExemption: false
-    },
-    addresses: [],
-    selectedAddress: {
-      type: '',
-      name: '',
-      defaultAddress: undefined,
-      addressEntityId: undefined,
-      address: {
-        address: '',
-        state: '',
-        city: '',
-        country: '',
-        zipcode: '',
-        phone: ''
-      }
-    },
-    authorization: {
-      card: {
-        brand: '',
-        last4: '',
-        exp_month: '',
-        exp_year: ''
-      }
-    },
-    selectedPurchaseType: ''
   }
 };
 
@@ -47,9 +17,6 @@ export function cart(state: any = emptyCart, action: Action) {
     case 'UPDATE_CART':
       let newCart: any = Object.assign({}, state.data, { total: action.payload.total, itemCount: action.payload.itemCount });
       return Object.assign({}, state, { data: newCart });
-    case 'UPDATE_ORDER_IN_PROGRESS':
-      state.orderInProgress[action.payload.key] = action.payload.data;
-      return Object.assign({}, state);
     default:
       return state;
   }
@@ -69,10 +36,6 @@ export class CartStore {
 
   public updateCartWith(cartSummary: any) {
     this.store.dispatch({ type: 'UPDATE_CART', payload: cartSummary });
-  }
-
-  public updateOrderInProgress(key: string, data: any): void {
-    this.store.dispatch({ type: 'UPDATE_ORDER_IN_PROGRESS', payload: { key, data } });
   }
 
   public get state(): any {

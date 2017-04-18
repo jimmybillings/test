@@ -10,36 +10,6 @@ const initState: QuoteState = {
     createdUserId: 0,
     ownerUserId: 0,
     quoteStatus: 'PENDING'
-  },
-  orderInProgress: {
-    purchaseOptions: {
-      purchaseOnCredit: false,
-      creditExemption: false
-    },
-    addresses: [],
-    selectedAddress: {
-      type: '',
-      name: '',
-      defaultAddress: undefined,
-      addressEntityId: undefined,
-      address: {
-        address: '',
-        state: '',
-        city: '',
-        country: '',
-        zipcode: '',
-        phone: ''
-      }
-    },
-    authorization: {
-      card: {
-        brand: '',
-        last4: '',
-        exp_month: '',
-        exp_year: ''
-      }
-    },
-    selectedPurchaseType: ''
   }
 };
 
@@ -49,9 +19,6 @@ export function quote(state: any = initState, action: Action) {
       return Object.assign({}, { data: action.payload });
     case 'QUOTE.UPDATE_QUOTE':
       return Object.assign({}, state, { data: action.payload });
-    case 'QUOTE.UPDATE_ORDER_IN_PROGRESS':
-      state.orderInProgress[action.payload.key] = action.payload.data;
-      return Object.assign({}, state);
     default:
       return state;
   }
@@ -77,9 +44,5 @@ export class QuoteStore {
 
   public updateQuote(quote: Quote): void {
     this.store.dispatch({ type: 'QUOTE.UPDATE_QUOTE', payload: quote });
-  }
-
-  public updateOrderInProgress(key: string, data: any): void {
-    this.store.dispatch({ type: 'QUOTE.UPDATE_ORDER_IN_PROGRESS', payload: { key, data } });
   }
 }

@@ -10,36 +10,6 @@ export function main() {
       createdUserId: 0,
       ownerUserId: 0,
       quoteStatus: 'PENDING'
-    },
-    orderInProgress: {
-      purchaseOptions: {
-        purchaseOnCredit: false,
-        creditExemption: false
-      },
-      addresses: [],
-      selectedAddress: {
-        type: '',
-        name: '',
-        defaultAddress: undefined,
-        addressEntityId: undefined,
-        address: {
-          address: '',
-          state: '',
-          city: '',
-          country: '',
-          zipcode: '',
-          phone: ''
-        }
-      },
-      authorization: {
-        card: {
-          brand: '',
-          last4: '',
-          exp_month: '',
-          exp_year: ''
-        }
-      },
-      selectedPurchaseType: ''
     }
   };
 

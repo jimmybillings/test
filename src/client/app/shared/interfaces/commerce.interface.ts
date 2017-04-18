@@ -73,15 +73,13 @@ export interface Metadatum {
 
 export interface CartState {
   data: Cart;
-  orderInProgress: OrderInProgressState;
 };
 
 export interface QuoteState {
   data: Quote;
-  orderInProgress: OrderInProgressState;
 };
 
-export interface OrderInProgressState {
+export interface CheckoutState {
   purchaseOptions: {
     purchaseOnCredit: boolean;
     creditExemption: boolean;
@@ -175,4 +173,3 @@ export interface CommerceMessage {
   type: string;
   payload?: any;
 }
-

@@ -30,6 +30,7 @@ export function main() {
 
     let serviceUnderTest: CartService;
     let mockCartStore: any;
+    let mockCheckoutStore: any;
     let mockApi: MockApiService;
     let mockCurrentUserServiceService: any;
 
@@ -46,7 +47,12 @@ export function main() {
         state: {
           data: { some: 'state' },
           orderInProgress: {}
-        },
+        }
+      };
+
+      mockCheckoutStore = {
+        state: {},
+        data: Observable.of({}),
         updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
       };
 
@@ -56,7 +62,7 @@ export function main() {
         fullName: jasmine.createSpy('fullName').and.returnValue(Observable.of('Ross Edfort'))
       };
 
-      serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
+      serviceUnderTest = new CartService(mockCartStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
     });
 
     describe('data getter', () => {
@@ -103,7 +109,7 @@ export function main() {
 
       it('does not add a project if one already exists', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
+        serviceUnderTest = new CartService(mockCartStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
 
         serviceUnderTest.initializeData().subscribe(() => {
           expect(mockApi.post).not.toHaveBeenCalled();
@@ -185,7 +191,7 @@ export function main() {
 
       it('names new projects based on existing names', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
+        serviceUnderTest = new CartService(mockCartStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
 
         serviceUnderTest.addProject();
 
@@ -330,7 +336,7 @@ export function main() {
       it('should call updateOrderInProgress on the store', () => {
         serviceUnderTest.updateOrderInProgress('addresses', [{}, {}]);
 
-        expect(mockCartStore.updateOrderInProgress).toHaveBeenCalledWith('addresses', [{}, {}]);
+        expect(mockCheckoutStore.updateOrderInProgress).toHaveBeenCalledWith('addresses', [{}, {}]);
       });
     });
   });

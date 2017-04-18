@@ -5,7 +5,7 @@ import { QuoteService } from '../../../shared/services/quote.service';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { QuoteState, CartState } from '../../../shared/interfaces/commerce.interface';
+import { QuoteState, CartState, CheckoutState } from '../../../shared/interfaces/commerce.interface';
 
 export class CommercePaymentTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
@@ -33,6 +33,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
     this.commerceService.updateOrderInProgress('selectedPurchaseType', 'credit');
     this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
   }
+
   public preAuthorize(form: any) {
     (<any>window).Stripe.card.createToken(
       form,
@@ -56,14 +57,14 @@ export class CommercePaymentTab extends Tab implements OnInit {
   }
 
   public get userCanPurchaseOnCredit(): Observable<boolean> {
-    return this.commerceService.data.map((state: CartState | QuoteState) => {
-      let options: any = state.orderInProgress.purchaseOptions;
-      if (state.orderInProgress.selectedAddress.type === 'user') {
+    return this.commerceService.checkoutData.map((state: CheckoutState) => {
+      let options: any = state.purchaseOptions;
+      if (state.selectedAddress.type === 'user') {
         return options.purchaseOnCredit;
       } else {
         if (options.purchaseOnCredit) {
           if (options.creditExemption) {
-            return state.data.total > parseInt(options.creditExemption);
+            return this.commerceService.state.data.total > parseInt(options.creditExemption);
           } else {
             return true;
           }

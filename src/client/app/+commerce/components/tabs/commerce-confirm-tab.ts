@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
-import { CartState, QuoteState } from '../../../shared/interfaces/commerce.interface';
+import { CartState, QuoteState, CheckoutState } from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 
 export class CommerceConfirmTab extends Tab {
@@ -21,8 +21,8 @@ export class CommerceConfirmTab extends Tab {
     super();
   }
 
-  public get orderInProgress(): Observable<any> {
-    return this.commerceService.data.map((state: QuoteState | CartState) => state.orderInProgress);
+  public get orderInProgress(): Observable<CheckoutState> {
+    return this.commerceService.checkoutData;
   }
 
   public get data(): Observable<any> {

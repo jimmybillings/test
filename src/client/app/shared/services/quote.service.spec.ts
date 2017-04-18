@@ -19,7 +19,7 @@ export function main() {
         updateQuote: jasmine.createSpy('updateQuote')
       };
       jasmine.addMatchers(mockApiMatchers);
-      serviceUnderTest = new QuoteService(mockApi.injector, mockCartService, mockQuoteStore);
+      serviceUnderTest = new QuoteService(mockApi.injector, mockCartService, mockQuoteStore, null);
     });
 
     describe('data getter', () => {

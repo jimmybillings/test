@@ -20,36 +20,6 @@ export function main() {
           data: {
             userId: NaN,
             total: 0
-          },
-          orderInProgress: {
-            purchaseOptions: {
-              purchaseOnCredit: false,
-              creditExemption: false
-            },
-            addresses: [],
-            selectedAddress: {
-              type: '',
-              name: '',
-              defaultAddress: undefined,
-              addressEntityId: undefined,
-              address: {
-                address: '',
-                state: '',
-                city: '',
-                country: '',
-                zipcode: '',
-                phone: ''
-              }
-            },
-            authorization: {
-              card: {
-                brand: '',
-                last4: '',
-                exp_month: '',
-                exp_year: ''
-              }
-            },
-            selectedPurchaseType: ''
           }
         });
     });

@@ -7,22 +7,40 @@ import { CurrentUserService } from '../services/current-user.service';
 import { Address, ViewAddress } from '../interfaces/user.interface';
 
 import { CartStore } from '../stores/cart.store';
-import { Cart, CartState, Project, AssetLineItem, AddAssetParameters, QuoteOptions } from '../interfaces/commerce.interface';
+import { CheckoutStore } from '../stores/checkout.store';
+import {
+  Cart,
+  CartState,
+  Project,
+  AssetLineItem,
+  AddAssetParameters,
+  QuoteOptions,
+  CheckoutState
+} from '../interfaces/commerce.interface';
 
 @Injectable()
 export class CartService {
   constructor(
-    private store: CartStore,
+    private cartStore: CartStore,
+    private checkoutStore: CheckoutStore,
     private api: ApiService,
     private currentUser: CurrentUserService
   ) { }
 
   public get data(): Observable<CartState> {
-    return this.store.data;
+    return this.cartStore.data;
   }
 
   public get state(): CartState {
-    return this.store.state;
+    return this.cartStore.state;
+  }
+
+  public get checkoutState(): CheckoutState {
+    return this.checkoutStore.state;
+  }
+
+  public get checkoutData(): Observable<CheckoutState> {
+    return this.checkoutStore.data;
   }
 
   public get cart(): Observable<Cart> {
@@ -66,8 +84,8 @@ export class CartService {
 
   public purchase(): Observable<any> {
     const stripe: any = {
-      stripeToken: this.state.orderInProgress.authorization.id,
-      stripeTokenType: this.state.orderInProgress.authorization.type
+      stripeToken: this.checkoutState.authorization.id,
+      stripeTokenType: this.checkoutState.authorization.type
     };
     return this.api.post(Api.Orders, 'cart/stripe/process',
       { body: stripe, loading: true })
@@ -137,7 +155,7 @@ export class CartService {
   }
 
   public updateOrderInProgress(type: string, data: any): void {
-    this.store.updateOrderInProgress(type, data);
+    this.checkoutStore.updateOrderInProgress(type, data);
   }
 
   private formatBody(parameters: AddAssetParameters): any {
@@ -176,11 +194,11 @@ export class CartService {
   // This is an "instance arrow function", which saves us from having to "bind(this)"
   // every time we use this function as a callback.
   private replaceCartWith = (wholeCartResponse: any): void => {
-    this.store.replaceCartWith(wholeCartResponse);
+    this.cartStore.replaceCartWith(wholeCartResponse);
   }
 
   private updateCartWith = (cartSummary: any): void => {
-    this.store.updateCartWith(cartSummary);
+    this.cartStore.updateCartWith(cartSummary);
   }
 
 }
