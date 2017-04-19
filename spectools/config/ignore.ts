@@ -2,6 +2,7 @@ export const ignoredFilePatterns: string[] = [
   // The ending '.ts' is implied.
   '*.interface',
   '*.module',
+  'app.module.ngfactory',
   '*.routes',
   'main',
   'system-config',
