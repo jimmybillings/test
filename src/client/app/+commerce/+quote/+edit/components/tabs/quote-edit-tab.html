@@ -4,7 +4,7 @@
   flex-md="30" 
   flex-gt-sm="40" 
   flex-gt-xs="45" 
-  flex="95" 
+  flex="100" 
   layout="row" 
   layout-align="start">
   <quote-purchase-type-component
@@ -23,11 +23,27 @@
 
 <section class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
+    <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+      <span class="total-label" flex="100">
+        {{ 'CART.CART_SUBTOTAL' | translate }} 
+      </span>
+      <span class="total-amount" flex="nogrow">
+        {{ '2599.80' | currency:'USD':true:'1.2-2' }}
+      </span>
+		</div>
+    <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="discount md-headline">
+      <span class="total-label" flex="100">
+        {{ 'CART.CART_DISCOUNT' | translate }} 
+      </span>
+      <span class="total-amount" flex="nogrow">
+        {{ '500' | currency:'USD':true:'1.2-2' }}
+      </span>
+		</div>
     <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="total md-headline">
-      <span class="total-label">
+      <span class="total-label" flex="100">
         {{ 'CART.CART_TOTAL' | translate }} 
       </span>
-      <span class="total-amount">
+      <span class="total-amount" flex="nogrow">
         {{ quoteEditService.total | async | currency:'USD':true:'1.2-2' }}
       </span>
 		</div>

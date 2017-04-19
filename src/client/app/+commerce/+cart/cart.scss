@@ -48,6 +48,7 @@ cart-component section.header, quote-edit-component section.header {
       color: mat-color($mat-warn, darker);
     }
   }
+
   .total {
     text-align: right;
     letter-spacing: -.02em;
@@ -56,14 +57,40 @@ cart-component section.header, quote-edit-component section.header {
       line-height: rem(4.0);
       font-weight: 300;
       letter-spacing: 0;
-      padding-right: rem(1.4);
+      // padding-right: rem(1.4);
       opacity: .7;
     }
     .total-amount {
       display: inline-block;
+      min-width: rem(13.0);
       &::first-letter {
         font-size: .68em;
         line-height: 2.8;
+        vertical-align: top;
+        letter-spacing: 0;
+      }
+    }
+  }
+  .subtotal,
+  .discount, {
+    text-align: right;
+    letter-spacing: -.02em;
+    line-height: rem(2.6);
+    font-size: rem(1.8);
+    .total-label {
+      line-height: rem(2.6);
+      font-weight: 300;
+      letter-spacing: 0;
+      // padding-right: rem(3.9);
+      opacity: .7;
+    }
+    .total-amount {
+      font-weight: 300;
+      display: inline-block;
+      min-width: rem(13.0);
+      &::first-letter {
+        font-size: .7em;
+        line-height: 1.69;
         vertical-align: top;
         letter-spacing: 0;
       }
