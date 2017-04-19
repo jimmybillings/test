@@ -39,7 +39,6 @@ export function main() {
 
       mockCartStore = {
         replaceCartWith: jasmine.createSpy('replaceCartWith'),
-        updateCartWith: jasmine.createSpy('updateCartWith'),
         data: Observable.of({
           cart: { some: 'data' },
           orderInProgress: {}

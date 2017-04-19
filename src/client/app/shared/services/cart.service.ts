@@ -189,9 +189,4 @@ export class CartService {
   private replaceCartWith = (wholeCartResponse: any): void => {
     this.cartStore.replaceCartWith(wholeCartResponse);
   }
-
-  private updateCartWith = (cartSummary: any): void => {
-    this.cartStore.updateCartWith(cartSummary);
-  }
-
 }

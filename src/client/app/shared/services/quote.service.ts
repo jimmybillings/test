@@ -50,10 +50,10 @@ export class QuoteService {
       stripeToken: this.checkoutState.authorization.id,
       stripeTokenType: this.checkoutState.authorization.type
     };
-    return this.api.post(Api.Orders, 'quote/stripe/process', { body: stripe, loading: true });
+    return this.api.post(Api.Orders, `quote/${this.state.data.id}/stripe/process`, { body: stripe, loading: true });
   }
 
   public purchaseOnCredit(): Observable<any> {
-    return this.api.post(Api.Orders, 'quote/checkout/convertToOrder', { loading: true });
+    return this.api.post(Api.Orders, `quote/${this.state.data.id}/checkout/convertToOrder`, { loading: true });
   }
 }

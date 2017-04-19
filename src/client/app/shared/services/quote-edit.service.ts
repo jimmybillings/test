@@ -39,6 +39,10 @@ export class QuoteEditService {
     return this.quote.map(quote => (quote.itemCount || 0) > 0);
   }
 
+  public get quoteId(): number {
+    return this.state.data.id;
+  }
+
   // Public Api
 
   public getFocusedQuote(): Observable<Quote> {
@@ -46,13 +50,13 @@ export class QuoteEditService {
   }
 
   public addProject(): void {
-    this.api.post(Api.Orders, 'quote/project', { loading: true })
+    this.api.post(Api.Orders, `quote/${this.quoteId}/project`, { loading: true })
       .do(this.replaceQuote)
       .subscribe();
   }
 
   public removeProject(project: Project): void {
-    this.api.delete(Api.Orders, `quote/${this.state.data.id}/project/${project.id}`, { loading: true })
+    this.api.delete(Api.Orders, `quote/${this.quoteId}/project/${project.id}`, { loading: true })
       .subscribe(this.replaceQuote);
   }
 
@@ -60,7 +64,7 @@ export class QuoteEditService {
     let existingProjectNames: Array<string> = this.existingProjectNames;
     this.api.put(
       Api.Orders,
-      `quote/${this.state.data.id}/asset/lineItem/quick`,
+      `quote/${this.quoteId}/asset/lineItem`,
       {
         body: this.formatAssetBody(addAssetParameters),
         parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
@@ -69,25 +73,25 @@ export class QuoteEditService {
   }
 
   public updateProject(project: Project): void {
-    this.api.put(Api.Orders, 'quote/project', { body: project, loading: true })
+    this.api.put(Api.Orders, `quote/${this.quoteId}/project`, { body: project, loading: true })
       .subscribe(this.replaceQuote);
   }
 
   public moveLineItemTo(project: Project, lineItem: AssetLineItem): void {
     this.api.put(
       Api.Orders,
-      'quote/move/lineItem',
+      `quote/${this.quoteId}/move/lineItem`,
       { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true }
     ).subscribe(this.replaceQuote);
   }
 
   public cloneLineItem(lineItem: AssetLineItem): void {
-    this.api.put(Api.Orders, 'quote/clone/lineItem', { parameters: { lineItemId: lineItem.id }, loading: true })
+    this.api.put(Api.Orders, `quote/${this.quoteId}/clone/lineItem`, { parameters: { lineItemId: lineItem.id }, loading: true })
       .subscribe(this.replaceQuote);
   }
 
   public removeLineItem(lineItem: AssetLineItem): void {
-    this.api.delete(Api.Orders, `quote/${this.state.data.id}/asset/${lineItem.id}`, { loading: true })
+    this.api.delete(Api.Orders, `quote/${this.quoteId}/asset/${lineItem.id}`, { loading: true })
       .subscribe(this.replaceQuote);
   }
 
@@ -95,15 +99,22 @@ export class QuoteEditService {
     if (!!fieldToEdit.pricingAttributes) {
       fieldToEdit = { attributes: this.formatAttributes(fieldToEdit.pricingAttributes) };
     }
+
     Object.assign(lineItem, fieldToEdit);
-    this.api.put(Api.Orders, `quote/update/lineItem/${lineItem.id}`, { body: lineItem, parameters: { region: 'AAA' } })
-      .subscribe(this.replaceQuote);
+
+    this.api.put(
+      Api.Orders,
+      `quote/${this.quoteId}/update/lineItem/${lineItem.id}`,
+      { body: lineItem, parameters: { region: 'AAA' } }
+    ).subscribe(this.replaceQuote);
   }
+
+  // This will eventually change to a /sendQuote endpoint via CRUX-1846
 
   public sendQuote(options: QuoteOptions): Observable<any> {
     return this.api.put(
       Api.Orders,
-      `quote/${this.state.data.id}`,
+      `quote/${this.quoteId}`,
       { body: this.formatQuoteBody(this.state.data, options) }
     );
   }
@@ -160,9 +171,4 @@ export class QuoteEditService {
   private replaceQuote = (quote: Quote): void => {
     this.store.replaceQuote(quote);
   }
-
-  private updateQuote = (quoteSummary: any): void => {
-    this.store.updateQuote(quoteSummary);
-  }
-
 }

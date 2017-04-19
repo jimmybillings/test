@@ -19,9 +19,6 @@ export function activeQuote(state: any = emptyQuote, action: Action) {
   switch (action.type) {
     case 'ACTIVE_QUOTE.REPLACE_QUOTE':
       return Object.assign({}, state, { data: action.payload });
-    case 'ACTIVE_QUOTE.UPDATE_QUOTE':
-      let newQuote: any = Object.assign({}, state.data, { total: action.payload.total, itemCount: action.payload.itemCount });
-      return Object.assign({}, state, { data: newQuote });
     default:
       return state;
   }
@@ -43,9 +40,5 @@ export class ActiveQuoteStore {
 
   public replaceQuote(quote: any): void {
     this.store.dispatch({ type: 'ACTIVE_QUOTE.REPLACE_QUOTE', payload: quote });
-  }
-
-  public updateQuote(quoteSummary: any) {
-    this.store.dispatch({ type: 'ACTIVE_QUOTE.UPDATE_QUOTE', payload: quoteSummary });
   }
 }
