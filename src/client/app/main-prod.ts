@@ -2,6 +2,10 @@
  * Bootstraps the application and makes the ROUTER_PROVIDERS and the APP_BASE_HREF available to it.
  * @see https://angular.io/docs/ts/latest/api/platform-browser-dynamic/index/bootstrap-function.html
  */
+
+// Require hammerjs - Needed for Material Design
+require('hammerjs');
+
 import { enableProdMode } from '@angular/core';
 
 import { Application } from './application';
