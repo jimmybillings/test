@@ -5,7 +5,10 @@
 
   <div layout="column" layout-gt-xs="row" class="billing-payment">
     <section class="billing" flex="auto">
-      <h5 class="md-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
+      <div layout="row" layout-align="space-between">
+        <h5 class="md-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
+        <button md-button (click)="goToTab(1)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
+      </div>
       <address *ngIf="(orderInProgress | async).selectedAddress.address">
         <span class="line-1">{{ (orderInProgress | async).selectedAddress.address.address }}</span>
         <span class="line-2">{{ (orderInProgress | async).selectedAddress.address.city }},
@@ -15,7 +18,10 @@
       </address>
     </section>
     <section class="payment" flex="auto">
-      <h5 class="md-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
+      <div layout="row" layout-align="space-between">
+        <h5 class="md-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
+        <button md-button (click)="goToTab(2)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
+      </div>
       <div class="payment-info">
         <div class="credit-card" *ngIf="(orderInProgress | async).authorization.card.last4 && (orderInProgress | async).selectedPurchaseType === 'card'">
           <span class="indicate-cc">
@@ -38,13 +44,14 @@
 </div>
 
 <h5 class="md-title order-summary">{{ 'CART.CONFIRM.ORDER_TITLE' | translate }}</h5>
+<button md-button (click)="goToTab(0)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
 <projects-component flex="100" [readOnly]="true" [projects]="(data | async).projects" [userCan]="userCan"></projects-component>
 
 <section class="commerce-total" layout="column" layout-gt-xs="row" layout-align="space-between">
-  <button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back" flex-order-xs="4" flex="0" layout-align="start center">
+  <!--<button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back" flex-order-xs="4" flex="0" layout-align="start center">
     <md-icon>keyboard_backspace</md-icon>
     {{ 'CART.CONFIRM.BACK_BTN' | translate }}
-  </button>
+  </button>-->
   <span flex="100" class="total md-headline" layout-align="end center">
     <span class="total-label">
       {{ 'CART.CONFIRM.TOTAL' | translate }} 

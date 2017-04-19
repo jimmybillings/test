@@ -17,6 +17,7 @@ export class FormModel {
       newForm[field.name] = [field.value];
       newForm[field.name].push(this._getValidator(field.validation));
     });
+    console.log(newForm);
     return newForm;
   }
 

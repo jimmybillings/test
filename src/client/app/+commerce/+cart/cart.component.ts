@@ -37,6 +37,13 @@ export class CartComponent implements OnInit {
         this.goToPreviousTab();
         break;
       }
+      case 'GO_TO_TAB': {
+        this.goToTab(message.payload);
+        break;
+      }
+      case 'DISABLE_TAB': {
+        this.disableTab(message.payload);
+      }
     }
   }
 
@@ -54,5 +61,13 @@ export class CartComponent implements OnInit {
   private goToPreviousTab(): void {
     if (this.selectedTabIndex === 0) return;
     this.selectedTabIndex -= 1;
+  }
+
+  private disableTab(tabIndex: number) {
+    this.tabEnabled[tabIndex] = false;
+  }
+
+  private goToTab(tabIndex: number) {
+    this.selectedTabIndex = tabIndex;
   }
 }

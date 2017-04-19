@@ -52,6 +52,26 @@ export class WzFormBase implements OnInit, OnChanges {
     });
   }
 
+  public disableForm() {
+    this.items.forEach((field: any) => {
+      for (let control in this.form.controls) {
+        if (control === field.name) {
+          (<FormControl>this.form.controls[control]).disable();
+        }
+      }
+    });
+  }
+
+  public activateForm() {
+    this.items.forEach((field: any) => {
+      for (let control in this.form.controls) {
+        if (control === field.name) {
+          (<FormControl>this.form.controls[control]).enable();
+        }
+      }
+    });
+  }
+
   public markFieldsAsDirty() {
     for (let control in this.form.controls) {
       (<FormControl>this.form.controls[control]).markAsDirty();
