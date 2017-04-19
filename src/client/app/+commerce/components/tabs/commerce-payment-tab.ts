@@ -12,6 +12,9 @@ export class CommercePaymentTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
   public serverErrors: any = null;
   public config: any;
+  public paymentMethods: string[] = ['Credit Card', 'Purchase on Credit'];
+  public paymentMethod: string;
+  public userCanProceed: boolean = false;
   private configSubscription: Subscription;
 
   constructor(
@@ -33,7 +36,9 @@ export class CommercePaymentTab extends Tab implements OnInit {
   public selectPurchaseOnCredit() {
     this.commerceService.updateOrderInProgress('selectedPurchaseType', 'credit');
     this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
+    this.userCanProceed = true;
   }
+
   public preAuthorize(form: any) {
     (<any>window).Stripe.card.createToken(
       form,
@@ -43,6 +48,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
             this.commerceService.updateOrderInProgress('authorization', response);
             this.commerceService.updateOrderInProgress('selectedPurchaseType', 'card');
             this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
+            this.userCanProceed = true;
           } else {
             this.serverErrors = { fieldErrors: [] };
             this.serverErrors.fieldErrors
@@ -86,8 +92,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
     }
     if (!stripeLoaded) {
       var script = document.createElement('script');
-      script.src = stripeScript;
-      script.type = 'text/javascript';
+      Object.assign(script, { src: stripeScript, type: 'text/javascript' });
       document.body.appendChild(script);
       script.onload = () => {
         (<any>window).Stripe.setPublishableKey(this.commerceService.state.data.stripePublicKey);

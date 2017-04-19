@@ -82,7 +82,8 @@
     <md-icon>keyboard_backspace</md-icon>
     {{ 'CART.BILLING.BACK_BTN' | translate }}
   </button>
-  <button md-raised-button class="checkout" (click)="goToNextTab()" [disabled]="!(userCanProceed | async)">
+  <button md-button color="primary" (click)="goToNextTab()" class="checkout-forward" [disabled]="!(userCanProceed | async)">
     {{ 'CART.BILLING.FORWARD_BTN' | translate }}
+    <md-icon>keyboard_backspace</md-icon>
   </button>
 </nav>

@@ -46,19 +46,26 @@ export class CommerceBillingTab extends Tab implements OnInit {
     });
   }
 
-  public selectAddress(address: ViewAddress): void {
-    this.commerceService.updateOrderInProgress('selectedAddress', address);
+  public selectAddress(address: ViewAddress, nextTab: boolean = true): void {
     if (address.type === 'account') {
       this.user.getAccount(address.addressEntityId).subscribe((account: any) => {
         this.commerceService.updateOrderInProgress('purchaseOptions', {
           purchaseOnCredit: account.purchaseOnCredit ? true : false,
           creditExemption: account.creditExemption
         });
+        this.commerceService.updateOrderInProgress('selectedAddress', address);
+        if (nextTab) this.goToNextTab();
+      }, () => {
+        this.orderInProgress.take(1).subscribe(data => {
+          this.commerceService.updateOrderInProgress('selectedAddress', data.addresses[0]);
+        });
       });
     } else {
       this.commerceService.updateOrderInProgress('purchaseOptions', {
         purchaseOnCredit: this.currentUser.state.purchaseOnCredit
       });
+      this.commerceService.updateOrderInProgress('selectedAddress', address);
+      if (nextTab) this.goToNextTab();
     }
   }
 
@@ -112,7 +119,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
         newSelected = data.addresses.filter((a: ViewAddress) => !!a.address)[0];
       }
     });
-    this.selectAddress(newSelected);
+    this.selectAddress(newSelected, false);
   }
 
   private get previouslySelectedAddress(): ViewAddress {

@@ -60,6 +60,9 @@ import { AssetThumbnailComponent } from './components/asset/asset-thumbnail.comp
 import { AssetInfoComponent } from './components/asset/asset-info.component';
 import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-display.component';
 
+// Payment
+import { PaymentTypeComponent } from './components/payment-type/payment-type.component';
+
 @NgModule({
     imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
     declarations: [
@@ -98,7 +101,8 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
         QuoteTabComponent,
         QuoteBillingTabComponent,
         QuotePaymentTabComponent,
-        QuoteConfirmTabComponent
+        QuoteConfirmTabComponent,
+        PaymentTypeComponent
     ],
     exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
     providers: [CommerceCapabilities],

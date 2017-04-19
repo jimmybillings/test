@@ -10,7 +10,7 @@
   <div layout="row" flex="100" layout-align="center start">
      <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
       <md-tab-group [(selectedIndex)]="selectedTabIndex">
-        <md-tab *ngFor="let tabLabelKey of tabLabelKeys; let i = index" [disabled]="!tabEnabled[i]">
+        <md-tab *ngFor="let tabLabelKey of tabLabelKeys; let i = index" disabled>
           <ng-template md-tab-label>{{ tabLabelKey | uppercase }}</ng-template>
           <cart-tab-component 
             *ngIf="tabLabelKey === 'cart'" 

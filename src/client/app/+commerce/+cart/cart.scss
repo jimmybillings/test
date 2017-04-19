@@ -84,6 +84,17 @@ button.checkout-back {
     padding: 0 0 rem(.2) 0;
   }
 }
+button.checkout-forward {
+  margin: 0;
+  padding: 0 rem(1.4) 0 rem(1.0);
+  &:disabled {
+    background-color: transparent;
+  }
+  md-icon {
+    padding: 0;
+    transform: rotate(180deg);
+  }
+}
 .mat-tab-body-content header {
   margin-bottom: rem(1.2);
   .commerce-heading {
