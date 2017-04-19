@@ -129,9 +129,9 @@ export class AppComponent implements OnInit {
       });
     }
     if (this.userCan.administerQuotes()) {
-      this.quoteEditService.getQuoteSummary();
+      this.quoteEditService.getFocusedQuote().subscribe();
     } else {
-      this.cartService.getCartSummary();
+      this.cartService.initializeData().subscribe();
     }
     this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);

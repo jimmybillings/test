@@ -6,12 +6,12 @@ export function main() {
 
     let mockCurrentUserService: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockErrorStore: any, mockCart: any,
-      mockWindow: any, mockMdDialog: any, mockTranslate: any, mockSnackBar: any;
+      mockWindow: any, mockMdDialog: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
       mockCurrentUserService = {};
-      mockCapabilities = {};
+      mockCapabilities = { administerQuotes: () => false };
       mockActiveCollection = {
         addAsset: jasmine.createSpy('addAsset').and.returnValue(Observable.of({})),
         removeAsset: jasmine.createSpy('removeAsset').and.returnValue(Observable.of({})),
@@ -50,10 +50,12 @@ export function main() {
         }
       };
 
+      mockQuoteEditService = { addAssetToProjectInQuote: jasmine.createSpy('addAssetToProjectInQuote') };
+
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
         mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore, mockCart,
-        mockSnackBar, mockTranslate, mockMdDialog);
+        mockSnackBar, mockTranslate, mockMdDialog, mockQuoteEditService);
 
     });
 
@@ -115,7 +117,7 @@ export function main() {
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
           mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore,
-          mockCart, mockSnackBar, mockTranslate, mockMdDialog);
+          mockCart, mockSnackBar, mockTranslate, mockMdDialog, mockQuoteEditService);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
       });

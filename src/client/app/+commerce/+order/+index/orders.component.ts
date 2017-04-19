@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrdersService } from '../../../shared/services/orders.service';
 import { UrlParams } from '../../../shared/interfaces/common.interface';
-import { OrdersStoreI } from '../../../shared/interfaces/commerce.interface';
+import { OrdersState } from '../../../shared/interfaces/commerce.interface';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -25,7 +25,7 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  public get orders(): Observable<OrdersStoreI> {
+  public get orders(): Observable<OrdersState> {
     return this.ordersService.data;
   }
 

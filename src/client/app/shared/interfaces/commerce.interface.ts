@@ -141,7 +141,7 @@ export interface Orders extends ApiResults {
   items: Order[];
 }
 
-export interface OrdersStoreI extends Store {
+export interface OrdersState extends Store {
   items: Order[];
   pagination: Pagination;
 }
@@ -150,7 +150,7 @@ export interface Quotes extends ApiResults {
   items: Quote[];
 }
 
-export interface QuotesStoreI extends Store {
+export interface QuotesState extends Store {
   items: Quote[];
   pagination: Pagination;
 }

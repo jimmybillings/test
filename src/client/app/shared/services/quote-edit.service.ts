@@ -42,43 +42,35 @@ export class QuoteEditService {
   // Public Api
 
   public getFocusedQuote(): Observable<Quote> {
-    return this.api.get(Api.Orders, 'quote/focused', { loading: true }).do(this.replaceQuoteWith);
-  }
-
-  public getQuoteSummary(): void {
-    this.api.get(Api.Orders, 'quote/summary')
-      .subscribe((quoteSummary: any) => this.updateQuoteWith(quoteSummary));
+    return this.api.get(Api.Orders, 'quote/focused', { loading: true }).do(this.replaceQuote);
   }
 
   public addProject(): void {
     this.api.post(Api.Orders, 'quote/project', { loading: true })
-      .do(this.replaceQuoteWith)
+      .do(this.replaceQuote)
       .subscribe();
   }
 
   public removeProject(project: Project): void {
-    console.warn('this needs to be implemented!');
-    // this.api.delete(Api.Orders, `quote/project/${project.id}`, { loading: true })
-    //   .subscribe(this.replaceQuoteWith);
+    this.api.delete(Api.Orders, `quote/${this.state.data.id}/project/${project.id}`, { loading: true })
+      .subscribe(this.replaceQuote);
   }
 
-  public addAssetToProjectInQuote(addAssetParameters: AddAssetParameters): Observable<any> {
-    console.warn('this needs to be implemented!');
-    return Observable.of({});
-    // let existingProjectNames: Array<string> = this.existingProjectNames;
-    // return this.api.put(
-    //   Api.Orders,
-    //   'quote/asset/lineItem/quick',
-    //   {
-    //     body: this.formatAssetBody(addAssetParameters),
-    //     parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
-    //   }
-    // ).do(this.replaceQuoteWith);
+  public addAssetToProjectInQuote(addAssetParameters: AddAssetParameters): void {
+    let existingProjectNames: Array<string> = this.existingProjectNames;
+    this.api.put(
+      Api.Orders,
+      `quote/${this.state.data.id}/asset/lineItem/quick`,
+      {
+        body: this.formatAssetBody(addAssetParameters),
+        parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
+      }
+    ).subscribe(this.replaceQuote);
   }
 
   public updateProject(project: Project): void {
     this.api.put(Api.Orders, 'quote/project', { body: project, loading: true })
-      .subscribe(this.replaceQuoteWith);
+      .subscribe(this.replaceQuote);
   }
 
   public moveLineItemTo(project: Project, lineItem: AssetLineItem): void {
@@ -86,18 +78,17 @@ export class QuoteEditService {
       Api.Orders,
       'quote/move/lineItem',
       { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true }
-    ).subscribe(this.replaceQuoteWith);
+    ).subscribe(this.replaceQuote);
   }
 
   public cloneLineItem(lineItem: AssetLineItem): void {
     this.api.put(Api.Orders, 'quote/clone/lineItem', { parameters: { lineItemId: lineItem.id }, loading: true })
-      .subscribe(this.replaceQuoteWith);
+      .subscribe(this.replaceQuote);
   }
 
   public removeLineItem(lineItem: AssetLineItem): void {
-    console.warn('this needs to be implemented!');
-    // this.api.delete(Api.Orders, `quote/asset/${lineItem.id}`, { loading: true })
-    //   .subscribe(this.replaceQuoteWith);
+    this.api.delete(Api.Orders, `quote/${this.state.data.id}/asset/${lineItem.id}`, { loading: true })
+      .subscribe(this.replaceQuote);
   }
 
   public editLineItem(lineItem: AssetLineItem, fieldToEdit: any): void {
@@ -106,7 +97,7 @@ export class QuoteEditService {
     }
     Object.assign(lineItem, fieldToEdit);
     this.api.put(Api.Orders, `quote/update/lineItem/${lineItem.id}`, { body: lineItem, parameters: { region: 'AAA' } })
-      .subscribe(this.replaceQuoteWith);
+      .subscribe(this.replaceQuote);
   }
 
   public sendQuote(options: QuoteOptions): Observable<any> {
@@ -145,12 +136,12 @@ export class QuoteEditService {
     // we leave it blank so the end user can decide later to pay with credit-card or purchase on credit
     if (options.purchaseType === 'standard') options.purchaseType = null;
 
-    // find the userId of the user that this quote is for
+    // find the id of the user that this quote is for
     let ownerUserId: number = options.users ? options.users.filter((user: any) => {
       return user.emailAddress === options.emailAddress;
     })[0].id : null;
 
-    // shove the extra quote params on to the current cart
+    // shove the extra quote params on to the current quote
     let body: any = Object.assign(
       quote,
       {
@@ -166,14 +157,12 @@ export class QuoteEditService {
     return body;
   }
 
-  // This is an "instance arrow function", which saves us from having to "bind(this)"
-  // every time we use this function as a callback.
-  private replaceQuoteWith = (quote: Quote): void => {
-    this.store.replaceQuoteWith(quote);
+  private replaceQuote = (quote: Quote): void => {
+    this.store.replaceQuote(quote);
   }
 
-  private updateQuoteWith = (quoteSummary: any): void => {
-    this.store.updateQuoteWith(quoteSummary);
+  private updateQuote = (quoteSummary: any): void => {
+    this.store.updateQuote(quoteSummary);
   }
 
 }

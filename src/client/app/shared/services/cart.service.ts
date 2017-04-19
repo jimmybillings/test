@@ -76,12 +76,6 @@ export class CartService {
       .share();
   }
 
-  // Temporary until first time user's cart is created with a project - fix for CRUX-1027
-  public getCartSummary(): void {
-    this.api.get(Api.Orders, 'cart/summary')
-      .subscribe((cartSummary: any) => this.updateCartWith(cartSummary));
-  }
-
   public purchase(): Observable<any> {
     const stripe: any = {
       stripeToken: this.checkoutState.authorization.id,
@@ -107,7 +101,6 @@ export class CartService {
   }
 
   public addAssetToProjectInCart(addAssetParameters: AddAssetParameters): void {
-    console.log(addAssetParameters);
     let existingProjectNames: Array<string> = this.existingProjectNames;
     this.api.put(
       Api.Orders,

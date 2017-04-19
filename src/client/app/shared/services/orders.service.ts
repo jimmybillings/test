@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
-import { OrdersStoreI, Orders } from '../interfaces/commerce.interface';
+import { OrdersState, Orders } from '../interfaces/commerce.interface';
 import { UrlParams } from '../interfaces/common.interface';
 import { OrdersStore } from '../stores/orders.store';
 
@@ -13,7 +13,7 @@ export class OrdersService {
     private api: ApiService,
     private store: OrdersStore) { }
 
-  public get data(): Observable<OrdersStoreI> {
+  public get data(): Observable<OrdersState> {
     return this.store.data;
   }
 

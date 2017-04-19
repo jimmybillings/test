@@ -12,8 +12,8 @@ export function main() {
       mockQuoteStore = {
         data: Observable.of({ data: { id: 3, ownerUserId: 10 } }),
         state: { data: { id: 3, ownerUserId: 10 } },
-        replaceQuoteWith: jasmine.createSpy('replaceQuoteWith'),
-        updateQuoteWith: jasmine.createSpy('updateQuoteWith')
+        replaceQuote: jasmine.createSpy('replaceQuote'),
+        updateQuote: jasmine.createSpy('updateQuote')
       };
       jasmine.addMatchers(mockApiMatchers);
       serviceUnderTest = new QuoteEditService(mockQuoteStore, mockApi.injector);

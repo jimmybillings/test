@@ -117,21 +117,6 @@ export function main() {
       });
     });
 
-    describe('getCartSummary', () => {
-      it('calls the api service correctly', () => {
-        serviceUnderTest.getCartSummary();
-
-        expect(mockApi.get).toHaveBeenCalledWith(Api.Orders, 'cart/summary');
-      });
-
-      it('places the response in the cart store', () => {
-        mockApi.getResponse = { lineItem: { asset: { assetId: '10836' } } };
-        serviceUnderTest.getCartSummary();
-
-        expect(mockCartStore.updateCartWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: '10836' } } });
-      });
-    });
-
     describe('addAssetToProjectInCart()', () => {
       beforeEach(() => {
         mockCartStore.state = { data: { projects: [mockProjectB] } };
