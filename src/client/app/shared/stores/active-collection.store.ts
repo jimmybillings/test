@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 
-import { Collection, CollectionStore, Items, Assets } from '../interfaces/collection.interface';
+import { Collection, CollectionsStoreI, CollectionItems } from '../interfaces/collection.interface';
+import { Asset } from '../interfaces/common.interface';
 
 export function activeCollection(state: Collection = initialState(), action: Action) {
   if (state === null) state = initialState();
 
-  let updatedAssets: Items;
+  let updatedAssets: CollectionItems;
 
   switch (action.type) {
     case 'UPDATE_ACTIVE_COLLECTION':
@@ -32,7 +33,7 @@ export function activeCollection(state: Collection = initialState(), action: Act
     case 'REMOVE_ASSET_FROM_COLLECTION':
       if (!state.assets || !state.assets.items) return state;
       updatedAssets = JSON.parse(JSON.stringify(state.assets));
-      updatedAssets.items = updatedAssets.items.filter((item: Assets) => item.uuid !== action.payload);
+      updatedAssets.items = updatedAssets.items.filter((item: Asset) => item.uuid !== action.payload);
       updatedAssets.pagination.totalCount = updatedAssets.pagination.totalCount - 1;
       if (updatedAssets.pagination.totalCount < 0) updatedAssets.pagination.totalCount = 0;
       const countWithAssetRemoved: number = (state.assetsCount > 0) ? state.assetsCount - 1 : 0;
@@ -54,7 +55,7 @@ export function activeCollection(state: Collection = initialState(), action: Act
 
 @Injectable()
 export class ActiveCollectionStore {
-  constructor(private store: Store<CollectionStore>) { }
+  constructor(private store: Store<CollectionsStoreI>) { }
 
   public get data(): Observable<any> {
     return this.store.select('activeCollection');
@@ -108,8 +109,8 @@ export class ActiveCollectionStore {
 
 function initialState(): Collection {
   return {
-    createdOn: '',
-    lastUpdated: '',
+    createdOn: null,
+    lastUpdated: null,
     id: null,
     siteName: '',
     name: '',
@@ -136,8 +137,8 @@ function initialState(): Collection {
 
 function collectionSummary(collection: any): Collection {
   return {
-    createdOn: collection.createdOn || '',
-    lastUpdated: collection.lastUpdated || '',
+    createdOn: collection.createdOn || null,
+    lastUpdated: collection.lastUpdated || null,
     id: collection.id || null,
     siteName: collection.siteName || '',
     name: collection.name || '',

@@ -43,6 +43,7 @@ import { ActiveCollectionStore } from '../shared/stores/active-collection.store'
 import { QuoteStore } from '../shared/stores/quote.store';
 import { QuotesStore } from '../shared/stores/quotes.store';
 import { ActiveQuoteStore } from '../shared/stores/active-quote.store';
+import { CheckoutStore } from '../shared/stores/checkout.store';
 
 // GUARDS
 import { CartGuard } from '../+commerce/+cart/services/cart.guard';
@@ -75,6 +76,7 @@ import { gallery, GalleryViewStore } from '../shared/stores/gallery-view.store';
 import { quote } from '../shared/stores/quote.store';
 import { quotes } from '../shared/stores/quotes.store';
 import { activeQuote } from '../shared/stores/active-quote.store';
+import { checkout } from '../shared/stores/checkout.store';
 
 // WAZEE RESOLVERS
 import { AssetResolver } from '../+asset/services/asset.resolver';
@@ -153,7 +155,8 @@ const WAZEE_STORE_INTERFACES = [
   GalleryViewStore,
   QuoteStore,
   QuotesStore,
-  ActiveQuoteStore
+  ActiveQuoteStore,
+  CheckoutStore
 ];
 
 export const WAZEE_PROVIDERS: any = [
@@ -185,5 +188,6 @@ export const WAZEE_STORES: any = {
   gallery: gallery,
   quote: quote,
   quotes: quotes,
-  activeQuote: activeQuote
+  activeQuote: activeQuote,
+  checkout: checkout
 };

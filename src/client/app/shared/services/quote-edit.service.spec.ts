@@ -10,17 +10,17 @@ export function main() {
     beforeEach(() => {
       mockApi = new MockApiService();
       mockQuoteStore = {
-        data: Observable.of({ id: 3, ownerUserId: 10 }),
-        state: { id: 3, ownerUserId: 10 },
-        replaceQuoteWith: jasmine.createSpy('replaceQuoteWith'),
-        updateQuoteWith: jasmine.createSpy('updateQuoteWith')
+        data: Observable.of({ data: { id: 3, ownerUserId: 10 } }),
+        state: { data: { id: 3, ownerUserId: 10 } },
+        replaceQuote: jasmine.createSpy('replaceQuote'),
+        updateQuote: jasmine.createSpy('updateQuote')
       };
       jasmine.addMatchers(mockApiMatchers);
-      serviceUnderTest = new QuoteEditService(null, null);
+      serviceUnderTest = new QuoteEditService(mockQuoteStore, mockApi.injector);
     });
 
-    xdescribe('sendQuote', () => {
-      it('should call the api service correctly for an "ACTIVE" quote', () => {
+    describe('sendQuote', () => {
+      it('should call the api service correctly', () => {
         let mockUsers: any[] = [
           { emailAddress: 'ross.edfort@wazeedigital.com', id: 1 },
           { emailAddress: '', id: 2 }, { emailAddress: '', id: 3 }
@@ -31,25 +31,15 @@ export function main() {
           users: mockUsers,
           purchaseType: 'ProvisionalOrder'
         }).take(1).subscribe();
-        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
-        expect(mockApi.post).toHaveBeenCalledWithBody({
-          projects: [], quoteStatus: 'ACTIVE', purchaseType: 'ProvisionalOrder', expirationDate: '2017/03/22', ownerUserId: 1
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3');
+        expect(mockApi.put).toHaveBeenCalledWithBody({
+          id: 3,
+          ownerUserId: 1,
+          purchaseType: 'ProvisionalOrder',
+          expirationDate: '2017-03-22T06:00:00.000Z',
+          quoteStatus: 'ACTIVE',
         });
-      });
-
-      it('should call the api service correctly for a "PENDING" quote', () => {
-        serviceUnderTest.sendQuote({ purchaseType: 'ProvisionalOrder' }).take(1).subscribe();
-        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
-        expect(mockApi.post).toHaveBeenCalledWithBody({ projects: [], purchaseType: 'ProvisionalOrder' });
-      });
-
-      it('should remove the purchaseType param if it\'s "standard"', () => {
-        serviceUnderTest.sendQuote({ purchaseType: 'standard' }).take(1).subscribe();
-        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
-        expect(mockApi.post).toHaveBeenCalledWithBody({ projects: [], quoteStatus: 'PENDING' });
       });
     });
   });

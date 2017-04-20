@@ -3,7 +3,7 @@ import { ApiService } from '../../shared/services/api.service';
 import { CartService } from '../../shared/services/cart.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
-import { Quote, QuoteList } from '../../shared/interfaces/quote.interface';
+import { Quote, Quotes } from '../../shared/interfaces/commerce.interface';
 import { QuotesStore } from '../../shared/stores/quotes.store';
 
 @Injectable()
@@ -13,11 +13,11 @@ export class QuotesService {
     private store: QuotesStore) { }
 
 
-  public get data(): Observable<QuoteList> {
+  public get data(): Observable<Quotes> {
     return this.store.data;
   }
 
-  public get state(): QuoteList {
+  public get state(): Quotes {
     return this.store.state;
   }
 
@@ -25,8 +25,8 @@ export class QuotesService {
     if (getFocused) {
       return this.getFocused().switchMap((activeQuote: Quote) => {
         return this.quotesList(params)
-          .map((res: QuoteList) => { res.items = res.items ? res.items : []; return res; })
-          .do((res: QuoteList) => this.findNewFocused(res.items, activeQuote.id))
+          .map((res: Quotes) => { res.items = res.items ? res.items : []; return res; })
+          .do((res: Quotes) => this.findNewFocused(res.items, activeQuote.id))
           .do(this.setQuotesInStore);
       });
     } else {
@@ -56,7 +56,7 @@ export class QuotesService {
   }
 
   private updateNewFocusedQuote(quoteId: number): void {
-    this.data.do((data: QuoteList) => {
+    this.data.do((data: Quotes) => {
       data.items.map((quote: Quote) => {
         quote.focused = false;
         if (quote.id === quoteId) quote.focused = true;
@@ -70,11 +70,11 @@ export class QuotesService {
     return Object.assign({}, { q: '', i: 0, n: 20, s: '', d: '' }, params);
   }
 
-  private updateQuotesInStore = (quotes: QuoteList): void => {
+  private updateQuotesInStore = (quotes: Quotes): void => {
     this.store.updateQuotes({ items: quotes.items });
   }
 
-  private setQuotesInStore = (quotes: QuoteList): void => {
+  private setQuotesInStore = (quotes: Quotes): void => {
     this.store.setQuotes(quotes);
   }
 }

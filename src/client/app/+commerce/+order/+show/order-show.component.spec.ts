@@ -20,12 +20,6 @@ export function main() {
     });
 
     describe('component', () => {
-      it('has a translationReady function for formatting metadata', () => {
-        let trReady: string = componentUnderTest.translationReady('Format.QuickTime.Codec');
-
-        expect(trReady).toBe('assetmetadata.Format_QuickTime_Codec');
-      });
-
       it('has a downloadMaster function that changes the windows location', () => {
         componentUnderTest.downloadMaster('https://this-is-a-url.com');
 

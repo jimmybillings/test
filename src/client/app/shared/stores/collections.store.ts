@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 
-import { Collection, Collections, CollectionStore } from '../interfaces/collection.interface';
+import { Collection, CollectionsStoreI } from '../interfaces/collection.interface';
 
-export function collections(state: Collections = initialState(), action: Action) {
+export function collections(state: CollectionsStoreI = initialState(), action: Action) {
   if (state === null) state = initialState();
 
   let updatedItems: Collection[];
@@ -44,13 +44,13 @@ export function collections(state: Collections = initialState(), action: Action)
 
 @Injectable()
 export class CollectionsStore {
-  constructor(private store: Store<CollectionStore>) { }
+  constructor(private store: Store<CollectionsStoreI>) { }
 
-  public get data(): Observable<any> {
+  public get data(): Observable<Collection[]> {
     return this.store.select('collections');
   }
 
-  public get state(): any {
+  public get state(): Collection[] {
     let s: any;
     this.data.take(1).subscribe(state => s = state);
     return s;
@@ -90,7 +90,7 @@ export class CollectionsStore {
   }
 }
 
-function initialState(): Collections {
+function initialState(): CollectionsStoreI {
   return {
     items: [],
     pagination: {

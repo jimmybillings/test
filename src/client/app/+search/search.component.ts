@@ -17,6 +17,8 @@ import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { UiState } from '../shared/services/ui.state';
 import { ActivatedRoute, Router } from '@angular/router';
+import { QuoteEditService } from '../shared/services/quote-edit.service';
+import { AddAssetParameters } from '../shared/interfaces/commerce.interface';
 
 /**
  * Asset search page component - renders search page results
@@ -56,7 +58,8 @@ export class SearchComponent implements OnDestroy, OnInit {
     private translate: TranslateService,
     private route: ActivatedRoute,
     private router: Router,
-    private detector: ChangeDetectorRef) {
+    private detector: ChangeDetectorRef,
+    private quoteEditService: QuoteEditService) {
     this.screenWidth = this.window.nativeWindow.innerWidth;
     this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
     this.userPreferences = userPreferencesService;
@@ -107,9 +110,14 @@ export class SearchComponent implements OnDestroy, OnInit {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cart.addAssetToProjectInCart({ lineItem: { asset: { assetId: asset.assetId } } });
+    let params: AddAssetParameters = { lineItem: { asset: { assetId: asset.assetId } } };
+    if (this.userCan.administerQuotes()) {
+      this.quoteEditService.addAssetToProjectInQuote(params);
+    } else {
+      this.cart.addAssetToProjectInCart(params);
+    }
     this.showSnackBar({
-      key: 'ASSET.ADD_TO_CART_TOAST',
+      key: this.userCan.administerQuotes() ? 'ASSET.ADD_TO_QUOTE_TOAST' : 'ASSET.ADD_TO_CART_TOAST',
       value: { assetId: asset.assetId }
     });
   }

@@ -11,8 +11,10 @@ import { ErrorStore } from '../../../../../shared/stores/error.store';
 import { WindowRef } from '../../../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteFormComponent } from '../../../components/quote-form.component';
-import { QuoteOptions } from '../../../../../shared/interfaces/quote.interface';
+import { QuoteOptions } from '../../../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../../../shared/services/quote-edit.service';
+import { User } from '../../../../../shared/interfaces/user.interface';
+import { Quote } from '../../../../../shared/interfaces/commerce.interface';
 
 @Component({
   moduleId: module.id,
@@ -55,13 +57,13 @@ export class QuoteEditTabComponent extends CommerceEditTab {
         });
       }
     });
-    dialogRef.componentInstance.cacheSuggestions.subscribe((suggestions: any[]) => {
+    dialogRef.componentInstance.cacheSuggestions.subscribe((suggestions: User[]) => {
       this.suggestions = suggestions;
     });
   }
 
   private sendQuote(options: QuoteOptions): void {
-    this.quoteEditService.sendQuote(options).take(1).subscribe((res: any) => {
+    this.quoteEditService.sendQuote(options).take(1).subscribe((res: Quote) => {
       this.showSnackBar({
         key: 'QUOTE.CREATED_FOR_TOAST',
         value: { emailAddress: options.emailAddress }

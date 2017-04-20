@@ -62,7 +62,7 @@ export function main() {
         baseUrl: () => jasmine.createSpy('baseUrl')
       };
       mockUserCan = { viewCollections: () => canViewCollections, administerQuotes: () => false };
-      mockCart = { getCartSummary: jasmine.createSpy('getCartSummary') };
+      mockCart = { initializeData: jasmine.createSpy('initializeData').and.returnValue(Observable.of({})) };
       mockWindow = { nativeWindow: { pageYOffset: 133, scrollTo: jasmine.createSpy('scrollTo') } };
       mockFilter = { load: jasmine.createSpy('load').and.returnValue(Observable.of({})) };
       mockSortDefinition = { getSortDefinitions: () => Observable.of({ currentSort: { id: 1 } }) };
@@ -90,7 +90,7 @@ export function main() {
           canViewCollections = false;
           componentUnderTest.ngOnInit();
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
-          expect(mockCart.getCartSummary).toHaveBeenCalled();
+          expect(mockCart.initializeData).toHaveBeenCalled();
           expect(mockActiveCollection.load).not.toHaveBeenCalled();
         });
 
@@ -101,7 +101,7 @@ export function main() {
           expect(mockUserPreference.getPrefs).toHaveBeenCalled();
           expect(mockActiveCollection.load).toHaveBeenCalled();
           expect(mockCollections.load).toHaveBeenCalled();
-          expect(mockCart.getCartSummary).toHaveBeenCalled();
+          expect(mockCart.initializeData).toHaveBeenCalled();
         });
       });
 

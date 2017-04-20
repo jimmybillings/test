@@ -251,7 +251,9 @@
 										<md-option *ngFor="let target of asset.transcodeTargets" [value]="target">{{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}</md-option>
 									</md-select>
 									<button md-raised-button [disabled]="!userCan.addToCart()" (click)="addAssetToCart(asset.assetId)"
-										class="mat-primary mat-hue-7">{{ 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL' | translate }}</button>
+										class="mat-primary mat-hue-7">
+										{{ (userCan.administerQuotes() ? 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL') | translate}}
+										</button>
 								</ng-container>
 							</md-card-actions>
 						</div>

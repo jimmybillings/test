@@ -6,7 +6,8 @@ import { UiConfig } from '../../../../shared/services/ui.config';
 @Component({
   moduleId: module.id,
   selector: 'quote-payment-tab',
-  templateUrl: '../../../components/tabs/commerce-payment-tab.html'
+  templateUrl: '../../../components/tabs/commerce-payment-tab.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class QuotePaymentTabComponent extends CommercePaymentTab {

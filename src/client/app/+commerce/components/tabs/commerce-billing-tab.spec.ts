@@ -48,9 +48,9 @@ export function main() {
     beforeEach(() => {
       mockCartService = {
         data: Observable.of({
-          cart: { itemCount: 1, projects: [] },
-          orderInProgress: { selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] }
+          cart: { itemCount: 1, projects: [] }
         }),
+        checkoutData: Observable.of({ selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] }),
         determineNewSelectedAddress: jasmine.createSpy('determineNewSelectedAddress'),
         updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
       };
@@ -86,7 +86,7 @@ export function main() {
         componentUnderTest.ngOnInit();
       });
 
-      it('should set up an observable of the cart store orderInProgress', () => {
+      it('should set up an observable of the orderInProgress', () => {
         componentUnderTest.orderInProgress.take(1).subscribe((data: any) => {
           expect(data).toEqual({
             selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB]
@@ -173,13 +173,12 @@ export function main() {
     describe('addressesAreEmpty', () => {
       it('should return true if the addresses are empty', () => {
         let mockStore: any = {
-          orderInProgress: {
-            addresses: [{ type: '', name: '' }, { type: '', name: '' }],
-            selectedAddress: { type: '', name: '' }
-          }
+          addresses: [{ type: '', name: '' }, { type: '', name: '' }],
+          selectedAddress: { type: '', name: '' }
         };
         mockCartService = {
-          data: Observable.of(mockStore),
+          checkoutData: Observable.of(mockStore),
+          data: Observable.of({}),
           updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
         };
         componentUnderTest = new CommerceBillingTab(
@@ -192,9 +191,10 @@ export function main() {
       });
 
       it('should return false if there is at least one full address', () => {
-        let mockStore: any = { orderInProgress: { addresses: [mockAddressA], selectedAddress: mockAddressA } };
+        let mockStore: any = { addresses: [mockAddressA], selectedAddress: mockAddressA };
         mockCartService = {
-          data: Observable.of(mockStore),
+          checkoutData: Observable.of(mockStore),
+          data: Observable.of({}),
           updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
         };
         componentUnderTest = new CommerceBillingTab(
@@ -210,9 +210,10 @@ export function main() {
     describe('get userCanProceed()', () => {
       it('should return false if the selectedAddress has no values', () => {
         let mockAddress: any = { type: 'user', address: { address: '', state: '' } };
-        let mockStore: any = { orderInProgress: { addresses: [mockAddressA], selectedAddress: mockAddress } };
+        let mockStore: any = { addresses: [mockAddressA], selectedAddress: mockAddress };
         mockCartService = {
-          data: Observable.of(mockStore),
+          data: Observable.of({}),
+          checkoutData: Observable.of(mockStore),
           updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
         };
         componentUnderTest = new CommerceBillingTab(
@@ -226,9 +227,10 @@ export function main() {
 
       it('should return true if there is a selectedAddress with all values', () => {
         let mockAddress: any = { type: 'user', address: { address: 'b', state: 'a' } };
-        let mockStore: any = { orderInProgress: { addresses: [mockAddressA], selectedAddress: mockAddress } };
+        let mockStore: any = { addresses: [mockAddressA], selectedAddress: mockAddress };
         mockCartService = {
-          data: Observable.of(mockStore),
+          data: Observable.of({}),
+          checkoutData: Observable.of(mockStore),
           updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
         };
         componentUnderTest = new CommerceBillingTab(

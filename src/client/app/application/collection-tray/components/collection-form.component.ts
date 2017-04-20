@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
-import { Asset } from '../../../shared/interfaces/asset.interface';
+import { Asset } from '../../../shared/interfaces/common.interface';
 
 import { WzFormComponent } from '../../../shared/modules/wz-form/wz.form.component';
 import { CollectionsService } from '../../../shared/services/collections.service';

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Renderer, ViewChild, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { Collection, CollectionStore } from '../../shared/interfaces/collection.interface';
+import { Collection, CollectionsStoreI } from '../../shared/interfaces/collection.interface';
 import { CollectionsService } from '../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 import { Observable } from 'rxjs/Observable';
@@ -22,10 +22,11 @@ import { CollectionLinkComponent } from '../components/collection-link.component
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
 import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
-import { Asset } from '../../shared/interfaces/asset.interface';
 import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
+import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
+import { QuoteEditService } from '../../shared/services/quote-edit.service';
 
 @Component({
   moduleId: module.id,
@@ -55,7 +56,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     public collections: CollectionsService,
     public asset: AssetService,
     public activeCollection: ActiveCollectionService,
-    public store: Store<CollectionStore>,
+    public store: Store<CollectionsStoreI>,
     public currentUser: CurrentUserService,
     public uiState: UiState,
     public error: ErrorStore,
@@ -68,6 +69,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     private renderer: Renderer,
     private window: WindowRef,
     private dialog: MdDialog,
+    private quoteEditService: QuoteEditService,
     @Inject(DOCUMENT) private document: any) {
     this.screenWidth = this.window.nativeWindow.innerWidth;
     this.window.nativeWindow.onresize = () => this.screenWidth = this.window.nativeWindow.innerWidth;
@@ -162,7 +164,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    this.cart.addAssetToProjectInCart({
+    let params: AddAssetParameters = {
       lineItem: {
         asset: {
           assetId: asset.assetId,
@@ -170,9 +172,14 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
           timeEnd: asset.timeEnd ? asset.timeEnd : undefined
         }
       }
-    });
+    };
+    if (this.userCan.administerQuotes()) {
+      this.quoteEditService.addAssetToProjectInQuote(params);
+    } else {
+      this.cart.addAssetToProjectInCart(params);
+    }
     this.showSnackBar({
-      key: 'ASSET.ADD_TO_CART_TOAST',
+      key: this.userCan.administerQuotes() ? 'ASSET.ADD_TO_QUOTE_TOAST' : 'ASSET.ADD_TO_CART_TOAST',
       value: { assetId: asset.name }
     });
   }

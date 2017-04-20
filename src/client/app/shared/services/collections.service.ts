@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Collection, Collections } from '../../shared/interfaces/collection.interface';
+import { Collection } from '../../shared/interfaces/collection.interface';
 import { Observable } from 'rxjs/Observable';
 import { ActiveCollectionService } from './active-collection.service';
 import { CollectionsStore } from '../stores/collections.store';
@@ -19,7 +19,7 @@ export class CollectionsService {
     this.syncActiveCollection();
   }
 
-  public get data(): Observable<Collections> {
+  public get data(): Observable<Collection[]> {
     return this.store.data;
   }
 
