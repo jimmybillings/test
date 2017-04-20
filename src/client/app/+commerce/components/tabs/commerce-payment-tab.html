@@ -20,6 +20,7 @@
               [items]="formItems | async" 
               [serverErrors]="serverErrors"
               [successfullyVerified]="successfullyVerified | async"
+              submitLabel="{{'CART.PAYMENT.VERIFY' | translate}}"
               (onEdit)="editCreditCard()"
               (formSubmit)="preAuthorize($event)"></wz-cc-form>
           </md-card-content>
@@ -48,6 +49,7 @@
               [items]="formItems | async" 
               [serverErrors]="serverErrors"
               [successfullyVerified]="successfullyVerified | async"
+              submitLabel="{{'CART.PAYMENT.VERIFY' | translate}}"
               (onEdit)="editCreditCard()"
               (formSubmit)="preAuthorize($event)"></wz-cc-form>
           </md-card-content>
