@@ -10,4 +10,12 @@ export class Tab {
   public goToNextTab(): void {
     this.notify.emit({ type: 'GO_TO_NEXT_TAB' });
   }
+
+  public goToTab(tabIndex: number): void {
+    this.notify.emit({ type: 'GO_TO_TAB', payload: tabIndex });
+  }
+
+  public disableTab(tabIndex: number): void {
+    this.notify.emit({ type: 'DISABLE_TAB', payload: tabIndex });
+  }
 }

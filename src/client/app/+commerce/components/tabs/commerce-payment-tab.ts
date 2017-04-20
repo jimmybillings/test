@@ -4,6 +4,7 @@ import { CartService } from '../../../shared/services/cart.service';
 import { QuoteService } from '../../../shared/services/quote.service';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { QuoteState, CartState, CheckoutState } from '../../../shared/interfaces/commerce.interface';
 
@@ -11,6 +12,9 @@ export class CommercePaymentTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
   public serverErrors: any = null;
   public config: any;
+  public paymentMethods: string[] = ['Credit Card', 'Purchase on Credit'];
+  public paymentMethod: string;
+  public successfullyVerified: Subject<any> = new Subject();
   private configSubscription: Subscription;
 
   constructor(
@@ -19,6 +23,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
     private uiConfig: UiConfig,
     private ref: ChangeDetectorRef) {
     super();
+    this.successfullyVerified.next(false);
   }
 
   ngOnInit() {
@@ -29,9 +34,13 @@ export class CommercePaymentTab extends Tab implements OnInit {
     return this.uiConfig.get('cart').map((config: any) => config.config.payment.items);
   }
 
-  public selectPurchaseOnCredit() {
-    this.commerceService.updateOrderInProgress('selectedPurchaseType', 'credit');
-    this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
+  public selectPurchaseOnCredit(event: any) {
+    if (event.checked) {
+      this.commerceService.updateOrderInProgress('selectedPurchaseType', 'credit');
+      this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
+    } else {
+      this.disableTab(3);
+    }
   }
 
   public preAuthorize(form: any) {
@@ -43,6 +52,8 @@ export class CommercePaymentTab extends Tab implements OnInit {
             this.commerceService.updateOrderInProgress('authorization', response);
             this.commerceService.updateOrderInProgress('selectedPurchaseType', 'card');
             this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
+            this.successfullyVerified.next(true);
+            this.ref.markForCheck();
           } else {
             this.serverErrors = { fieldErrors: [] };
             this.serverErrors.fieldErrors
@@ -50,6 +61,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
                 code: response.error.code,
                 field: response.error.param
               });
+            this.successfullyVerified.next(false);
             this.ref.markForCheck();
           }
         });
@@ -75,6 +87,11 @@ export class CommercePaymentTab extends Tab implements OnInit {
     });
   }
 
+  public editCreditCard() {
+    this.successfullyVerified.next(false);
+    this.disableTab(3);
+  }
+
   private loadStripe() {
     const stripeScript = 'https://js.stripe.com/v2/';
     var scripts = document.getElementsByTagName('script');
@@ -86,8 +103,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
     }
     if (!stripeLoaded) {
       var script = document.createElement('script');
-      script.src = stripeScript;
-      script.type = 'text/javascript';
+      Object.assign(script, { src: stripeScript, type: 'text/javascript' });
       document.body.appendChild(script);
       script.onload = () => {
         (<any>window).Stripe.setPublishableKey(this.commerceService.state.data.stripePublicKey);

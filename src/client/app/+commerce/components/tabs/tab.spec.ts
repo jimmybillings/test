@@ -24,5 +24,13 @@ export function main() {
         expect(classUnderTest.notify.emit).toHaveBeenCalledWith({ type: 'GO_TO_NEXT_TAB' });
       });
     });
+
+    describe('goToTab()', () => {
+      it('emits the expected event', () => {
+        classUnderTest.goToTab(1);
+
+        expect(classUnderTest.notify.emit).toHaveBeenCalledWith({ type: 'GO_TO_TAB', payload: 1 });
+      });
+    });
   });
 };
