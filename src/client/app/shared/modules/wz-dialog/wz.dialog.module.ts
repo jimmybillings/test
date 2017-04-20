@@ -12,8 +12,6 @@ import { WzDialogService } from './services/wz.dialog.service';
 import { WzNotificationDialogComponent } from './components/wz.notification-dialog.component';
 import { WzFormDialogComponent } from './components/wz.form-dialog.component';
 
-import { FormDialogOptions } from './interfaces/wz.dialog.interface';
-
 @NgModule({
   imports: [
     CommonModule,
