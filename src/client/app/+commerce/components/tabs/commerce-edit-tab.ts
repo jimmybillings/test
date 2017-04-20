@@ -16,7 +16,6 @@ import { UserPreferenceService } from '../../../shared/services/user-preference.
 import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../../shared/interfaces/asset.interface';
-import { QuoteFormComponent } from '../../+quote/components/quote-form.component';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 

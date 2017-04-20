@@ -4,13 +4,13 @@ import { CommerceEditTab } from '../../../../components/tabs/commerce-edit-tab';
 
 import { UiConfig } from '../../../../../shared/services/ui.config';
 import { MdDialog, MdSnackBar, MdDialogRef } from '@angular/material';
+import { WzDialogService } from '../../../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { AssetService } from '../../../../../shared/services/asset.service';
 import { Capabilities } from '../../../../../shared/services/capabilities.service';
 import { UserPreferenceService } from '../../../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../../../shared/stores/error.store';
 import { WindowRef } from '../../../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
-import { QuoteFormComponent } from '../../../components/quote-form.component';
 import { QuoteOptions } from '../../../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../../../shared/services/quote-edit.service';
 import { User } from '../../../../../shared/interfaces/user.interface';
@@ -30,6 +30,7 @@ export class QuoteEditTabComponent extends CommerceEditTab {
     public quoteEditService: QuoteEditService,
     public uiConfig: UiConfig,
     public dialog: MdDialog,
+    public dialogService: WzDialogService,
     public assetService: AssetService,
     public window: WindowRef,
     public userPreference: UserPreferenceService,
@@ -38,27 +39,25 @@ export class QuoteEditTabComponent extends CommerceEditTab {
     public snackBar: MdSnackBar,
     public translate: TranslateService
   ) {
-    super(userCan, quoteEditService, uiConfig, dialog, assetService, window, userPreference, error, document, snackBar, translate);
+    super(
+      userCan, quoteEditService, uiConfig, dialog, assetService, window, userPreference, error, document, snackBar, translate
+    );
   }
 
   public onOpenQuoteDialog(): void {
-    let dialogRef: MdDialogRef<QuoteFormComponent> = this.dialog.open(QuoteFormComponent, {
-      height: '400px', position: { top: '10%' }
-    });
-    dialogRef.componentInstance.dialog = dialogRef;
-    dialogRef.componentInstance.items = this.config.createQuote.items;
-    dialogRef.afterClosed().subscribe((form: { emailAddress: string, expirationDate: string }) => {
-      if (form) {
-        this.sendQuote({
-          emailAddress: form.emailAddress,
-          expirationDate: form.expirationDate,
-          users: this.suggestions,
-          purchaseType: this.quoteType
-        });
-      }
-    });
-    dialogRef.componentInstance.cacheSuggestions.subscribe((suggestions: User[]) => {
-      this.suggestions = suggestions;
+    this.dialogService.openFormDialog(
+      this.config.createQuote.items,
+      { title: 'QUOTE.CREATE_HEADER', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
+      this.onSubmitQuoteDialog.bind(this)
+    );
+  }
+
+  private onSubmitQuoteDialog = (result: { emailAddress: string, expirationDate: string, suggestions: any[] }): void => {
+    this.sendQuote({
+      emailAddress: result.emailAddress,
+      expirationDate: result.expirationDate,
+      users: result.suggestions,
+      purchaseType: this.quoteType
     });
   }
 
@@ -72,5 +71,4 @@ export class QuoteEditTabComponent extends CommerceEditTab {
       console.error(err);
     });
   }
-
 }

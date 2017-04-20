@@ -23,7 +23,6 @@ import { OrderShowComponent } from './+order/+show/order-show.component';
 // Quote Stuff
 import { QuoteShowComponent } from './+quote/+show/quote-show.component';
 import { QuotesComponent } from './+quote/+index/quotes.component';
-import { QuoteFormComponent } from './+quote/components/quote-form.component';
 import { AdministerQuoteComponent } from './+quote/components/administer-quote.component';
 import { QuotePurchaseTypeComponent } from './+quote/components/quote-purchase-type.component';
 import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
@@ -61,48 +60,47 @@ import { AssetInfoComponent } from './components/asset/asset-info.component';
 import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-display.component';
 
 @NgModule({
-    imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
-    declarations: [
-        CommerceComponent,
-        CartComponent,
-        CartTabComponent,
-        CartBillingTabComponent,
-        CartPaymentTabComponent,
-        CartConfirmTabComponent,
-        ProjectsComponent,
-        ProjectInfoComponent,
-        ProjectAssetInfoComponent,
-        ProjectPriceInfoComponent,
-        ProjectActionsComponent,
-        ProjectEditComponent,
-        LineItemsComponent,
-        LineItemTranscodeSelectComponent,
-        LineItemActionsComponent,
-        LineItemPriceComponent,
-        AssetComponent,
-        AssetThumbnailComponent,
-        AssetInfoComponent,
-        AssetSubclipDisplayComponent,
-        OrderShowComponent,
-        OrdersComponent,
-        CommerceListComponent,
-        CommerceHeaderComponent,
-        AddressFormComponent,
-        QuoteFormComponent,
-        QuoteShowComponent,
-        QuotesComponent,
-        AdministerQuoteComponent,
-        QuotePurchaseTypeComponent,
-        QuoteEditComponent,
-        QuoteEditTabComponent,
-        QuoteTabComponent,
-        QuoteBillingTabComponent,
-        QuotePaymentTabComponent,
-        QuoteConfirmTabComponent
-    ],
-    exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
-    providers: [CommerceCapabilities],
-    entryComponents: [ProjectEditComponent, AddressFormComponent, QuoteFormComponent]
+  imports: [SharedModule, RouterModule.forChild(COMMERCE_ROUTES)],
+  declarations: [
+    CommerceComponent,
+    CartComponent,
+    CartTabComponent,
+    CartBillingTabComponent,
+    CartPaymentTabComponent,
+    CartConfirmTabComponent,
+    ProjectsComponent,
+    ProjectInfoComponent,
+    ProjectAssetInfoComponent,
+    ProjectPriceInfoComponent,
+    ProjectActionsComponent,
+    ProjectEditComponent,
+    LineItemsComponent,
+    LineItemTranscodeSelectComponent,
+    LineItemActionsComponent,
+    LineItemPriceComponent,
+    AssetComponent,
+    AssetThumbnailComponent,
+    AssetInfoComponent,
+    AssetSubclipDisplayComponent,
+    OrderShowComponent,
+    OrdersComponent,
+    CommerceListComponent,
+    CommerceHeaderComponent,
+    AddressFormComponent,
+    QuoteShowComponent,
+    QuotesComponent,
+    AdministerQuoteComponent,
+    QuotePurchaseTypeComponent,
+    QuoteEditComponent,
+    QuoteEditTabComponent,
+    QuoteTabComponent,
+    QuoteBillingTabComponent,
+    QuotePaymentTabComponent,
+    QuoteConfirmTabComponent
+  ],
+  exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
+  providers: [CommerceCapabilities],
+  entryComponents: [ProjectEditComponent, AddressFormComponent]
 })
 
 export class CommerceModule { }

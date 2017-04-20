@@ -9,7 +9,7 @@ export function main() {
       mockQuotesService = {
         data: Observable.of({})
       };
-      componentUnderTest = new QuoteEditTabComponent(null, null, null, null, null, null, null, null, null, null, null);
+      componentUnderTest = new QuoteEditTabComponent(null, null, null, null, null, null, null, null, null, null, null, null);
     });
 
     it('has no tests!', () => {
