@@ -4,7 +4,7 @@ import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api, ApiBody, ApiParameters } from '../interfaces/api.interface';
 import { CartService } from './cart.service';
 import { ViewAddress, Address } from '../interfaces/user.interface';
-import { Project, LineItem, AddAssetParameters, CartState } from '../interfaces/cart.interface';
+import { Project, AssetLineItem, AddAssetParameters, CartState } from '../interfaces/commerce.interface';
 
 export function main() {
   describe('Cart Service', () => {
@@ -22,7 +22,7 @@ export function main() {
       subtotal: 0
     };
 
-    const mockLineItem: LineItem = {
+    const mockLineItem: AssetLineItem = {
       id: '456',
       price: 0,
       rightsManaged: 'Rights Managed'
@@ -30,6 +30,7 @@ export function main() {
 
     let serviceUnderTest: CartService;
     let mockCartStore: any;
+    let mockCheckoutStore: any;
     let mockApi: MockApiService;
     let mockCurrentUserServiceService: any;
 
@@ -38,7 +39,6 @@ export function main() {
 
       mockCartStore = {
         replaceCartWith: jasmine.createSpy('replaceCartWith'),
-        updateCartWith: jasmine.createSpy('updateCartWith'),
         data: Observable.of({
           cart: { some: 'data' },
           orderInProgress: {}
@@ -46,7 +46,12 @@ export function main() {
         state: {
           data: { some: 'state' },
           orderInProgress: {}
-        },
+        }
+      };
+
+      mockCheckoutStore = {
+        state: {},
+        data: Observable.of({}),
         updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
       };
 
@@ -56,7 +61,7 @@ export function main() {
         fullName: jasmine.createSpy('fullName').and.returnValue(Observable.of('Ross Edfort'))
       };
 
-      serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
+      serviceUnderTest = new CartService(mockCartStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
     });
 
     describe('data getter', () => {
@@ -103,26 +108,11 @@ export function main() {
 
       it('does not add a project if one already exists', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
+        serviceUnderTest = new CartService(mockCartStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
 
         serviceUnderTest.initializeData().subscribe(() => {
           expect(mockApi.post).not.toHaveBeenCalled();
         });
-      });
-    });
-
-    describe('getCartSummary', () => {
-      it('calls the api service correctly', () => {
-        serviceUnderTest.getCartSummary();
-
-        expect(mockApi.get).toHaveBeenCalledWith(Api.Orders, 'cart/summary');
-      });
-
-      it('places the response in the cart store', () => {
-        mockApi.getResponse = { lineItem: { asset: { assetId: '10836' } } };
-        serviceUnderTest.getCartSummary();
-
-        expect(mockCartStore.updateCartWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: '10836' } } });
       });
     });
 
@@ -133,12 +123,12 @@ export function main() {
 
       it('calls the api service correctly', () => {
         const body: ApiBody = {
-          lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: '1080p', price: 100.5 },
+          lineItem: { asset: { assetId: 10836 }, selectedTranscodeTarget: '1080p', price: 100.5 },
           attributes: [{ priceAttributeName: 'key', selectedAttributeValue: 'value' }]
         };
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
         const addAssetParameters: AddAssetParameters = {
-          lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: '1080p', price: 100.5 },
+          lineItem: { asset: { assetId: 10836 }, selectedTranscodeTarget: '1080p', price: 100.5 },
           attributes: { key: 'value' }
         };
         serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
@@ -148,10 +138,10 @@ export function main() {
       });
 
       it('calls the api service correctly - no transcode target', () => {
-        const body: ApiBody = { lineItem: { asset: { assetId: '10836' } } };
+        const body: ApiBody = { lineItem: { asset: { assetId: 10836 } } };
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
         const addAssetParameters: AddAssetParameters = {
-          lineItem: { asset: { assetId: '10836' } }
+          lineItem: { asset: { assetId: 10836 } }
         };
 
         serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
@@ -161,14 +151,14 @@ export function main() {
       });
 
       it('adds the asset to the cart store', () => {
-        mockApi.putResponse = { lineItem: { asset: { assetId: '10836' } } };
+        mockApi.putResponse = { lineItem: { asset: { assetId: 10836 } } };
         const addAssetParameters: AddAssetParameters = {
-          lineItem: { asset: { assetId: '10836' }, selectedTranscodeTarget: '1080p' }
+          lineItem: { asset: { assetId: 10836 }, selectedTranscodeTarget: '1080p' }
         };
 
         serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
 
-        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: '10836' } } });
+        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: 10836 } } });
       });
 
     });
@@ -185,7 +175,7 @@ export function main() {
 
       it('names new projects based on existing names', () => {
         mockCartStore.state = { projects: [{ name: 'Project A', clientName: 'Ross Edfort' }] };
-        serviceUnderTest = new CartService(mockCartStore, mockApi.injector, mockCurrentUserServiceService);
+        serviceUnderTest = new CartService(mockCartStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
 
         serviceUnderTest.addProject();
 
@@ -330,7 +320,7 @@ export function main() {
       it('should call updateOrderInProgress on the store', () => {
         serviceUnderTest.updateOrderInProgress('addresses', [{}, {}]);
 
-        expect(mockCartStore.updateOrderInProgress).toHaveBeenCalledWith('addresses', [{}, {}]);
+        expect(mockCheckoutStore.updateOrderInProgress).toHaveBeenCalledWith('addresses', [{}, {}]);
       });
     });
   });

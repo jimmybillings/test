@@ -1,5 +1,5 @@
 import { Directive, ChangeDetectionStrategy, HostListener, Input } from '@angular/core';
-import { Order } from '../../interfaces/cart.interface';
+import { Order } from '../../interfaces/commerce.interface';
 import { ApiService } from '../../services/api.service';
 import { Api, ApiOptions } from '../../interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';

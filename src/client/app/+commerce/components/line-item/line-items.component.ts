@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Project, LineItem } from '../../../shared/interfaces/cart.interface';
+import { Project, AssetLineItem, PurchaseType } from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
-import { PurchaseType } from '../../../shared/interfaces/quote.interface';
 
 @Component({
   moduleId: module.id,
@@ -11,10 +10,10 @@ import { PurchaseType } from '../../../shared/interfaces/quote.interface';
 })
 export class LineItemsComponent {
   public targets: any = {};
-  public items: LineItem[];
-  @Input() set lineItems(items: LineItem[]) {
+  public items: AssetLineItem[];
+  @Input() set lineItems(items: AssetLineItem[]) {
     if (items) {
-      items.forEach((item: LineItem, index: number) => {
+      items.forEach((item: AssetLineItem, index: number) => {
         this.targets[index] = item.selectedTranscodeTarget;
       });
       this.items = items;
@@ -25,23 +24,23 @@ export class LineItemsComponent {
   @Input() userCan: Capabilities;
   @Input() readOnly: boolean = false;
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
-  public selectedLineItem: LineItem;
+  public selectedLineItem: AssetLineItem;
 
-  public onMoveTo(otherProject: Project, lineItem: LineItem): void {
+  public onMoveTo(otherProject: Project, lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({
       type: 'MOVE_LINE_ITEM', payload: { lineItem: lineItem, otherProject: otherProject }
     });
   }
 
-  public onClone(lineItem: LineItem): void {
+  public onClone(lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({ type: 'CLONE_LINE_ITEM', payload: lineItem });
   }
 
-  public onRemove(lineItem: LineItem): void {
+  public onRemove(lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({ type: 'REMOVE_LINE_ITEM', payload: lineItem });
   }
 
-  public onEditMarkers(lineItem: LineItem): void {
+  public onEditMarkers(lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({ type: 'EDIT_LINE_ITEM_MARKERS', payload: lineItem });
   }
 
@@ -49,15 +48,15 @@ export class LineItemsComponent {
     this.lineItemsNotify.emit(message);
   }
 
-  public selectLineItem(lineItem: LineItem) {
+  public selectLineItem(lineItem: AssetLineItem) {
     this.selectedLineItem = lineItem;
   }
 
-  public onShowPricingDialog(lineItem: LineItem): void {
+  public onShowPricingDialog(lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({ type: 'SHOW_PRICING_DIALOG', payload: lineItem });
   }
 
-  public onSelectTarget(newTarget: string, currentlySelected: string, lineItem: LineItem): void {
+  public onSelectTarget(newTarget: string, currentlySelected: string, lineItem: AssetLineItem): void {
     if (currentlySelected !== newTarget) {
       this.lineItemsNotify.emit({
         type: 'EDIT_LINE_ITEM', payload:
@@ -66,7 +65,7 @@ export class LineItemsComponent {
     }
   }
 
-  public shouldShowTargets(lineItem: LineItem): boolean {
+  public shouldShowTargets(lineItem: AssetLineItem): boolean {
     return lineItem.transcodeTargets && lineItem.transcodeTargets.length > 0;
   }
 

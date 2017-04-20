@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Project } from '../../../shared/interfaces/cart.interface';
+import { Project, PurchaseType } from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
-import { PurchaseType } from '../../../shared/interfaces/quote.interface';
 
 @Component({
   moduleId: module.id,

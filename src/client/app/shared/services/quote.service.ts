@@ -3,23 +3,33 @@ import { ApiService } from '../../shared/services/api.service';
 import { CartService } from '../../shared/services/cart.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
-import { Quote, QuoteOptions, QuoteState } from '../../shared/interfaces/quote.interface';
+import { Quote, QuoteOptions, QuoteState, CheckoutState } from '../../shared/interfaces/commerce.interface';
 import { QuoteStore } from '../../shared/stores/quote.store';
+import { CheckoutStore } from '../../shared/stores/checkout.store';
 
 @Injectable()
 export class QuoteService {
   constructor(
     private api: ApiService,
     private cartService: CartService,
-    private store: QuoteStore
+    private quoteStore: QuoteStore,
+    private checkoutStore: CheckoutStore
   ) { }
 
   public get data(): Observable<QuoteState> {
-    return this.store.data;
+    return this.quoteStore.data;
   }
 
   public get state(): QuoteState {
-    return this.store.state;
+    return this.quoteStore.state;
+  }
+
+  public get checkoutData(): Observable<CheckoutState> {
+    return this.checkoutStore.data;
+  }
+
+  public get checkoutState(): CheckoutState {
+    return this.checkoutStore.state;
   }
 
   public get total(): Observable<number> {
@@ -28,22 +38,22 @@ export class QuoteService {
 
   public getQuote(quoteId: number): Observable<Quote> {
     return this.api.get(Api.Orders, `quote/${quoteId}`, { loading: true })
-      .do((quote: Quote) => this.store.updateQuote(quote));
+      .do((quote: Quote) => this.quoteStore.updateQuote(quote));
   }
 
   public updateOrderInProgress(type: string, data: any): void {
-    this.store.updateOrderInProgress(type, data);
+    this.checkoutStore.updateOrderInProgress(type, data);
   }
 
   public purchase(): Observable<any> {
     const stripe: any = {
-      stripeToken: this.state.orderInProgress.authorization.id,
-      stripeTokenType: this.state.orderInProgress.authorization.type
+      stripeToken: this.checkoutState.authorization.id,
+      stripeTokenType: this.checkoutState.authorization.type
     };
-    return this.api.post(Api.Orders, 'quote/stripe/process', { body: stripe, loading: true });
+    return this.api.post(Api.Orders, `quote/${this.state.data.id}/stripe/process`, { body: stripe, loading: true });
   }
 
   public purchaseOnCredit(): Observable<any> {
-    return this.api.post(Api.Orders, 'quote/checkout/convertToOrder', { loading: true });
+    return this.api.post(Api.Orders, `quote/${this.state.data.id}/checkout/convertToOrder`, { loading: true });
   }
 }

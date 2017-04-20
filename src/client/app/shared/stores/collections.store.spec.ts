@@ -1,10 +1,10 @@
 import { collections, CollectionsStore } from './collections.store';
-import { Collections, Collection } from '../interfaces/collection.interface';
+import { Collection, CollectionsStoreI } from '../interfaces/collection.interface';
 import { addStandardReducerTestsFor } from '../tests/reducer';
 import { Observable } from 'rxjs/Observable';
 
 export function main() {
-  const initialState: Collections = {
+  const initialState: CollectionsStoreI = {
     items: [],
     pagination: {
       totalCount: 0,
@@ -203,7 +203,7 @@ describe('Collections Store', () => {
 
   describe('add()', () => {
     it('should dispatch ADD_COLLECTION with the new collection', () => {
-      let newCollection: Collection = { id: 1, name: 'Cats', owner: 12, lastUpdated: '123871', createdOn: '1232424', siteName: 'core' };
+      let newCollection: Collection = { id: 1, name: 'Cat', owner: 12, lastUpdated: null, createdOn: null, siteName: 'core' };
       storeUnderTest.add(newCollection);
 
       expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'ADD_COLLECTION', payload: newCollection });
@@ -212,7 +212,7 @@ describe('Collections Store', () => {
 
   describe('update()', () => {
     it('should dispatch UPDATE_COLLECTION with the updated collection', () => {
-      let updatedCollection: Collection = { id: 1, name: 'Dogs', owner: 12, lastUpdated: '123871', createdOn: '1232424', siteName: 'core' };
+      let updatedCollection: Collection = { id: 1, name: 'Dog', owner: 12, lastUpdated: null, createdOn: null, siteName: 'core' };
       storeUnderTest.update(updatedCollection);
 
       expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UPDATE_COLLECTION', payload: updatedCollection });
@@ -221,7 +221,7 @@ describe('Collections Store', () => {
 
   describe('replaceAllCollectionsWith()', () => {
     it('should replace with the items passed in', () => {
-      let collection: Collection = { id: 1, name: 'Dogs', owner: 12, lastUpdated: '123871', createdOn: '1232424', siteName: 'core' };
+      let collection: Collection = { id: 1, name: 'Dogs', owner: 12, lastUpdated: null, createdOn: null, siteName: 'core' };
       let replacements: any = {
         items: [collection], totalCount: 1, currentPage: 0,
         hasNextPage: false, hasPreviousPage: false, numberOfPages: 1, pageSize: 1

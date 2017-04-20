@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
-import { Project, LineItem, Cart } from '../../../shared/interfaces/cart.interface';
+import { Project, AssetLineItem, Cart, PurchaseType, QuoteOptions } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { ProjectEditComponent } from '../project/project-edit.component';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
@@ -17,7 +17,6 @@ import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../../shared/interfaces/asset.interface';
 import { QuoteFormComponent } from '../../+quote/components/quote-form.component';
-import { PurchaseType, QuoteOptions } from '../../../shared/interfaces/quote.interface';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 
@@ -76,7 +75,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
 
     this.commerceService.state.data.projects.forEach((project: Project) => {
       if (project.lineItems) {
-        project.lineItems.forEach((lineItem: LineItem) => {
+        project.lineItems.forEach((lineItem: AssetLineItem) => {
           validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);
         });
       }

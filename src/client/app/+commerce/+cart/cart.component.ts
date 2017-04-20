@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommerceCapabilities } from '../services/commerce.capabilities';
+import { CommerceMessage } from '../../shared/interfaces/commerce.interface';
 
 @Component({
   moduleId: module.id,
@@ -27,7 +28,7 @@ export class CartComponent implements OnInit {
     this.selectedTabIndex = 0;
   }
 
-  public onNotification(message: any): void {
+  public onNotification(message: CommerceMessage): void {
     switch (message.type) {
       case 'GO_TO_NEXT_TAB': {
         this.goToNextTab();

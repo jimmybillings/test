@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { QuoteService } from '../../../../shared/services/quote.service';
-import { Quote } from '../../../../shared/interfaces/quote.interface';
+import { Quote } from '../../../../shared/interfaces/commerce.interface';
 import { Tab } from '../../../components/tabs/tab';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { Observable } from 'rxjs/Observable';

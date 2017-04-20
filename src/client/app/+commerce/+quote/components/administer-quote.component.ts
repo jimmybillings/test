@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Cart, Project, LineItem } from '../../../shared/interfaces/cart.interface';
+import { Cart } from '../../../shared/interfaces/commerce.interface';
 
 @Component({
   moduleId: module.id,

@@ -7,8 +7,8 @@ import { addStandardReducerTestsFor } from '../tests/reducer';
 export function main() {
   describe('Active Collection reducer', () => {
     let initialState: Collection = {
-      createdOn: '',
-      lastUpdated: '',
+      createdOn: null,
+      lastUpdated: null,
       id: null,
       siteName: '',
       name: '',
@@ -227,8 +227,8 @@ export function main() {
           .toHaveBeenCalledWith({
             type: 'UPDATE_ACTIVE_COLLECTION',
             payload: {
-              createdOn: '',
-              lastUpdated: '',
+              createdOn: null,
+              lastUpdated: null,
               id: null,
               siteName: '',
               name: '',
@@ -245,8 +245,8 @@ export function main() {
 
       it('dispatches UPDATE_ACTIVE_COLLECTION with an edited version of the passed-in collection', () => {
         const newCollection: Collection = {
-          createdOn: 'some date',
-          lastUpdated: 'some other date',
+          createdOn: null,
+          lastUpdated: null,
           id: 10836,
           siteName: 'some sitename',
           name: 'some name',
@@ -264,8 +264,8 @@ export function main() {
           assetsCount: 2,
           assets: {
             items: [
-              { assetId: 17, uuid: 'some UUID' },
-              { assetId: 33, uuid: 'some other UUID' }
+              { assetId: 17, uuid: 'some UUID', name: '' },
+              { assetId: 33, uuid: 'some other UUID', name: '' }
             ]
           }
         };

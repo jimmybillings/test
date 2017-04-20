@@ -3,7 +3,6 @@ import { CommercePaymentTab } from '../../../components/tabs/commerce-payment-ta
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
 
-
 @Component({
   moduleId: module.id,
   selector: 'cart-payment-tab-component',
@@ -12,7 +11,6 @@ import { UiConfig } from '../../../../shared/services/ui.config';
 })
 
 export class CartPaymentTabComponent extends CommercePaymentTab {
-
   constructor(
     _zone: NgZone,
     cartService: CartService,
@@ -21,5 +19,4 @@ export class CartPaymentTabComponent extends CommercePaymentTab {
   ) {
     super(_zone, cartService, uiConfig, ref);
   }
-
 }

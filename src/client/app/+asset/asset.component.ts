@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../shared/services/asset.service';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
-// import { SubclipMarkers } from '../shared/interfaces/asset.interface';
+import { AddAssetParameters } from '../shared/interfaces/commerce.interface';
 import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/services/wz.notification.service';
@@ -17,6 +17,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.component';
 import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
+import { QuoteEditService } from '../shared/services/quote-edit.service';
 
 @Component({
   moduleId: module.id,
@@ -46,7 +47,8 @@ export class AssetComponent implements OnInit {
     private cart: CartService,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
-    private dialog: MdDialog) {
+    private dialog: MdDialog,
+    private quoteEditService: QuoteEditService) {
     this.window = this.window;
   }
 
@@ -97,7 +99,7 @@ export class AssetComponent implements OnInit {
 
   public addAssetToCart(asset: any): void {
     this.usagePrice.take(1).subscribe((price: any) => {
-      this.cart.addAssetToProjectInCart({
+      let options: AddAssetParameters = {
         lineItem: {
           selectedTranscodeTarget: asset.selectedTranscodeTarget,
           price: price ? price : undefined,
@@ -108,10 +110,13 @@ export class AssetComponent implements OnInit {
           }
         },
         attributes: this.selectedAttrbutes
-      });
+      };
+      this.userCan.administerQuotes() ?
+        this.quoteEditService.addAssetToProjectInQuote(options) :
+        this.cart.addAssetToProjectInCart(options);
     });
     this.showSnackBar({
-      key: 'ASSET.ADD_TO_CART_TOAST',
+      key: this.userCan.administerQuotes() ? 'ASSET.ADD_TO_QUOTE_TOAST' : 'ASSET.ADD_TO_CART_TOAST',
       value: { assetId: asset.assetId }
     });
   }

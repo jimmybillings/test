@@ -13,7 +13,7 @@
     "build.prod.exp": "gulp build.prod.aot --color --env-config prod --build-type prod",
     "build.library": "gulp build.library.export --env library",
     "build.prod.rollup.aot": "gulp build.prod.rollup.aot --color --env-config prod --build-type prod",
-    "build.prod.aot": "npm test && gulp build.prod.aot --color --env-config prod --build-type prod",
+    "build.prod.aot": "npm test && npm run spec.validate && gulp build.prod.aot --color --env-config prod --build-type prod",
     "build.test": "gulp build.test --color",
     "test.watch": "gulp test.watch --color",
     "generate.manifest": "gulp generate.manifest --color",

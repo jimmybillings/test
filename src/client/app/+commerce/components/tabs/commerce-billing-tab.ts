@@ -4,6 +4,7 @@ import { QuoteService } from '../../../shared/services/quote.service';
 import { UserService } from '../../../shared/services/user.service';
 import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { Address, User, ViewAddress } from '../../../shared/interfaces/user.interface';
+import { CheckoutState } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { AddressFormComponent } from '../address-form/address-form.component';
@@ -13,7 +14,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Tab } from './tab';
 
 export class CommerceBillingTab extends Tab implements OnInit {
-  public orderInProgress: Observable<any>;
+  public orderInProgress: Observable<CheckoutState>;
   public items: Array<any>;
   @Output() tabNotify: EventEmitter<Object> = this.notify;
 
@@ -28,7 +29,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   ngOnInit() {
-    this.orderInProgress = this.commerceService.data.map((data: any) => data.orderInProgress);
+    this.orderInProgress = this.commerceService.checkoutData;
     this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
     this.fetchAddresses().subscribe();
   }
@@ -50,7 +51,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
     if (address.type === 'account') {
       this.user.getAccount(address.addressEntityId).subscribe((account: any) => {
         this.commerceService.updateOrderInProgress('purchaseOptions', {
-          purchaseOnCredit: account.purchaseOnCredit ? true : false,
+          purchaseOnCredit: !!account.purchaseOnCredit,
           creditExemption: account.creditExemption
         });
         this.commerceService.updateOrderInProgress('selectedAddress', address);
@@ -62,7 +63,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
       });
     } else {
       this.commerceService.updateOrderInProgress('purchaseOptions', {
-        purchaseOnCredit: this.currentUser.state.purchaseOnCredit
+        purchaseOnCredit: !!this.currentUser.state.purchaseOnCredit
       });
       this.commerceService.updateOrderInProgress('selectedAddress', address);
       if (nextTab) this.goToNextTab();

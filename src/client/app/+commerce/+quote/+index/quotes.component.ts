@@ -3,7 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { QuotesService } from '../../../shared/services/quotes.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UiConfig } from '../../../shared/services/ui.config';
-import { Quote, QuoteList } from '../../../shared/interfaces/quote.interface';
+import { Quote, Quotes } from '../../../shared/interfaces/commerce.interface';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'quotes-component',
@@ -11,7 +12,7 @@ import { Quote, QuoteList } from '../../../shared/interfaces/quote.interface';
   moduleId: module.id
 })
 export class QuotesComponent {
-  public quotes: any;
+  public quotes: Observable<Quotes>;
   public config: any;
   public sortOptions: any[];
   public filterOptions: any[];
