@@ -7,12 +7,13 @@ import { PurchaseType } from '../../../shared/interfaces/quote.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="tools" flex="100">
-      <button
+      <!-- CRUX-1715 -->
+      <!-- <button
         *ngIf="displayPriceButton"
         md-button color="primary"
         class="mini is-outlined"
         (click)="showPricingDialog.emit()">{{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}
-      </button>
+      </button> -->
       <button 
         md-icon-button
         (click)="remove.emit()"

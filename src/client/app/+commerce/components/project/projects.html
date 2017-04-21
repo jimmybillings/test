@@ -2,7 +2,8 @@
 	<button md-button color="primary" (click)="addProject()">
 		<md-icon>add_circle_outline</md-icon>{{ 'CART.PROJECTS.ADD_PROJECT_BTN' | translate }}
 	</button>
-	<button
+	<!--CRUX-1722 and CRUX-1685-->
+	<!--<button
 		md-icon-button
 		[md-menu-trigger-for]="quoteOptionsMenu"
 		title="{{ 'CART.PROJECTS.MORE_OPTIONS_BTN_HOVER' | translate }}">
@@ -11,7 +12,7 @@
 	<md-menu x-position="before" #quoteOptionsMenu="mdMenu">
 		<button md-menu-item><md-icon>bookmark_border</md-icon>Add bulk order id</button>
 		<button md-menu-item><md-icon>monetization_on</md-icon>Add a discount</button>
-	</md-menu>
+	</md-menu>-->
 </div>
 
 <section class="projects">

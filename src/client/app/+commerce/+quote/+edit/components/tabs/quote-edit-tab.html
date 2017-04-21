@@ -23,7 +23,8 @@
 
 <section class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
-    <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+    <!--CRUX-1685 discount display-->
+    <!--<div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
       <span class="total-label" flex="100">
         {{ 'CART.CART_SUBTOTAL' | translate }} 
       </span>
@@ -38,7 +39,7 @@
       <span class="total-amount" flex="nogrow">
         {{ '500' | currency:'USD':true:'1.2-2' }}
       </span>
-		</div>
+		</div>-->
     <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="total md-headline">
       <span class="total-label" flex="100">
         {{ 'CART.CART_TOTAL' | translate }} 
