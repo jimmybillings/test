@@ -48,7 +48,7 @@ export class QuoteEditTabComponent extends CommerceEditTab {
     this.dialogService.openFormDialog(
       this.config.createQuote.items,
       { title: 'QUOTE.CREATE_HEADER', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
-      this.onSubmitQuoteDialog.bind(this)
+      this.onSubmitQuoteDialog
     );
   }
 
