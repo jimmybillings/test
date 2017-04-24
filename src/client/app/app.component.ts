@@ -64,7 +64,6 @@ export class AppComponent implements OnInit {
         this.uiState.showFixedHeader(this.window.nativeWindow.pageYOffset);
       });
     });
-    console.log('Test build');
   }
 
   ngOnInit() {

@@ -74,16 +74,24 @@ export class QuoteEditTabComponent extends CommerceEditTab {
 
   private addBulkOrderId() {
     this.dialogService.openFormDialog(
-      this.config.addBulkOrderId.items,
-      { title: 'QUOTE.BULK_ORDER_ID_TITLE', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
+      this.mergeFormValues(this.config.addBulkOrderId.items, 'bulkOrderId'),
+      {
+        title: (this.hasProperty('bulkOrderId')) ?
+          'QUOTE.EDIT_BULK_ORDER_ID_TITLE' : 'QUOTE.ADD_BULK_ORDER_ID_TITLE',
+        submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off'
+      },
       this.updateQuoteField
     );
   }
 
   private editDiscount() {
     this.dialogService.openFormDialog(
-      this.config.addDiscount.items,
-      { title: 'QUOTE.EDIT_A_DISCOUNT', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
+      this.mergeFormValues(this.config.addDiscount.items, 'discount'),
+      {
+        title: (this.hasProperty('discount')) ?
+          'QUOTE.EDIT_DISCOUNT_TITLE' : 'QUOTE.ADD_DISCOUNT_TITLE',
+        submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off'
+      },
       this.updateQuoteField
     );
   }
@@ -109,6 +117,23 @@ export class QuoteEditTabComponent extends CommerceEditTab {
       });
     }, (err) => {
       console.error(err);
+    });
+  }
+
+  private hasProperty = (property: string) => {
+    let has;
+    this.quoteEditService.hasProperty(property)
+      .take(1).subscribe((value: string) => {
+        has = value;
+      });
+    return has;
+  }
+
+  private mergeFormValues(fields: any, property: string) {
+    return fields.map((item: any) => {
+      let value = this.hasProperty(property);
+      item.value = value ? value : '';
+      return item;
     });
   }
 }

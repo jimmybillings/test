@@ -11,6 +11,9 @@
     flex="100"
     (selectQuoteType)="onSelectQuoteType($event)">
   </quote-purchase-type-component>
+  <div *ngIf="quoteEditService.hasProperty('bulkOrderId') | async">
+    {{ 'QUOTE.BULK_ORDER_ID' | translate }}: {{quoteEditService.hasProperty('bulkOrderId') | async}}
+  </div>
   
 </div>
 
@@ -25,12 +28,12 @@
 <section class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
     <!--CRUX-1685 discount display-->
-    <!--<div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+    <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
       <span class="total-label" flex="100">
         {{ 'CART.CART_SUBTOTAL' | translate }} 
       </span>
       <span class="total-amount" flex="nogrow">
-        {{ '2599.80' | currency:'USD':true:'1.2-2' }}
+        {{ quoteEditService.subTotal | async | currency:'USD':true:'1.2-2' }}
       </span>
 		</div>
     <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="discount md-headline">
@@ -38,9 +41,9 @@
         {{ 'CART.CART_DISCOUNT' | translate }} 
       </span>
       <span class="total-amount" flex="nogrow">
-        {{ '500' | currency:'USD':true:'1.2-2' }}
+        {{ quoteEditService.hasProperty('discount') | async | currency:'USD':true:'1.2-2' }}
       </span>
-		</div>-->
+		</div>
     <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="total md-headline">
       <span class="total-label" flex="100">
         {{ 'CART.CART_TOTAL' | translate }} 

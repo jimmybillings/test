@@ -5,7 +5,7 @@
 		<!--
         START: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
-      <md-input-container *ngIf="(field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')">
+      <md-input-container *ngIf="(field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date' || field.type == 'number')">
         <input mdInput
         class="md-block"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"

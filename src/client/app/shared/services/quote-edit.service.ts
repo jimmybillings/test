@@ -3,7 +3,10 @@ import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../services/api.service';
 import { Api, ApiBody } from '../interfaces/api.interface';
 import { Address, ViewAddress } from '../interfaces/user.interface';
-import { Project, AssetLineItem, AddAssetParameters, Quote, QuoteState, QuoteOptions } from '../interfaces/commerce.interface';
+import {
+  Project, AssetLineItem, AddAssetParameters, Quote, QuoteState,
+  QuoteOptions, EditableQuoteFields
+} from '../interfaces/commerce.interface';
 import { ActiveQuoteStore } from '../stores/active-quote.store';
 
 @Injectable()
@@ -35,12 +38,20 @@ export class QuoteEditService {
     return this.quote.map((data: Quote) => data.total);
   }
 
+  public get subTotal(): Observable<Number> {
+    return this.quote.map((data: Quote) => data.subTotal);
+  }
+
   public get hasAssets(): Observable<boolean> {
     return this.quote.map(quote => (quote.itemCount || 0) > 0);
   }
 
   public get quoteId(): number {
     return this.state.data.id;
+  }
+
+  public hasProperty(prop: string) {
+    return this.quote.map((data: any) => data[prop]);
   }
 
   // Public Api
@@ -109,13 +120,21 @@ export class QuoteEditService {
     ).subscribe(this.replaceQuote);
   }
 
-  public updateQuoteField(quoteField: any) {
+  public updateQuoteField(quoteField: { [index: string]: any }) {
+    let property: EditableQuoteFields = Object.keys(quoteField)[0] as EditableQuoteFields;
+    if (quoteField[property] === '') {
+      delete this.state.data[property];
+    } else {
+      Object.assign(this.state.data, quoteField);
+    }
+
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}`,
-      { body: Object.assign(this.state.data, quoteField) }
+      { body: this.state.data, loading: true },
     ).subscribe(this.replaceQuote);
   }
+
   // This will eventually change to a /sendQuote endpoint via CRUX-1846
   public sendQuote(options: QuoteOptions): Observable<any> {
     return this.api.put(
@@ -126,7 +145,6 @@ export class QuoteEditService {
   }
 
   // Private helper methods
-
   private formatAssetBody(parameters: AddAssetParameters): any {
     let formatted = {};
     Object.assign(formatted, { lineItem: parameters.lineItem });
