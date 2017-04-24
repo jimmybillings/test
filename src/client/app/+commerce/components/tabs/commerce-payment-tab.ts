@@ -6,7 +6,7 @@ import { UiConfig } from '../../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import { QuoteState, CartState, CheckoutState } from '../../../shared/interfaces/commerce.interface';
+import { QuoteState, CartState, CheckoutState, OrderType } from '../../../shared/interfaces/commerce.interface';
 
 export class CommercePaymentTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
@@ -34,9 +34,13 @@ export class CommercePaymentTab extends Tab implements OnInit {
     return this.uiConfig.get('cart').map((config: any) => config.config.payment.items);
   }
 
+  public get purchaseType(): Observable<OrderType> {
+    return this.commerceService.purchaseType;
+  }
+
   public selectPurchaseOnCredit(event: any) {
     if (event.checked) {
-      this.commerceService.updateOrderInProgress('selectedPurchaseType', 'credit');
+      this.commerceService.updateOrderInProgress('selectedPurchaseType', 'PurchaseOnCredit');
       this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
     } else {
       this.disableTab(3);
@@ -50,7 +54,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
         this._zone.run(() => {
           if (status === 200) {
             this.commerceService.updateOrderInProgress('authorization', response);
-            this.commerceService.updateOrderInProgress('selectedPurchaseType', 'card');
+            this.commerceService.updateOrderInProgress('selectedPurchaseType', 'CreditCard');
             this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
             this.successfullyVerified.next(true);
             this.ref.markForCheck();

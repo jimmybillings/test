@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
-import { Project, AssetLineItem, Cart, PurchaseType, QuoteOptions } from '../../../shared/interfaces/commerce.interface';
+import { Project, AssetLineItem, Cart, QuoteType, QuoteOptions } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { ProjectEditComponent } from '../project/project-edit.component';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
@@ -26,7 +26,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   public config: any;
   public priceAttributes: any = null;
   public pricingPreferences: any;
-  public quoteType: PurchaseType = null;
+  public quoteType: QuoteType = null;
   protected configSubscription: Subscription;
   protected preferencesSubscription: Subscription;
   protected usagePrice: any;
@@ -84,7 +84,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     return validAssets.indexOf(false) === -1;
   }
 
-  public onSelectQuoteType(event: { type: PurchaseType }): void {
+  public onSelectQuoteType(event: { type: QuoteType }): void {
     this.quoteType = event.type;
   }
 

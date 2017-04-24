@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Project, AssetLineItem, PurchaseType } from '../../../shared/interfaces/commerce.interface';
+import { Project, AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class LineItemsComponent {
       this.items = items;
     }
   };
-  @Input() quoteType: PurchaseType;
+  @Input() quoteType: QuoteType;
   @Input() otherProjects: Project[];
   @Input() userCan: Capabilities;
   @Input() readOnly: boolean = false;
