@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { SearchContext } from '../shared/services/search-context.service';
 import { GalleryViewService } from '../shared/services/gallery-view.service';
 import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from '../shared/interfaces/gallery-view.interface';
+import { UserPreferenceService } from '../shared/services/user-preference.service';
 
 @Component({
   moduleId: module.id,
@@ -14,7 +15,11 @@ import { Gallery, GalleryPath, GalleryPathSegment, GalleryNavigationEvent } from
 export class GalleryViewComponent implements OnInit {
   public data: Observable<Gallery>;
 
-  constructor(private galleryViewService: GalleryViewService, private router: Router, private search: SearchContext) { }
+  constructor(
+    private userPreference: UserPreferenceService,
+    private galleryViewService: GalleryViewService,
+    private router: Router,
+    private search: SearchContext) { }
 
   public ngOnInit(): void {
     this.data = this.galleryViewService.data;
@@ -34,7 +39,7 @@ export class GalleryViewComponent implements OnInit {
     if (event.method === 'nextLevel') {
       this.changeRouteFor(path);
     } else {
-      this.search.new({ gq: JSON.stringify(path), n: 100, i: 1 });
+      this.search.new({ gq: JSON.stringify(path), n: 100, i: 1, sortId: this.userPreference.state.sortId });
     }
   }
 
