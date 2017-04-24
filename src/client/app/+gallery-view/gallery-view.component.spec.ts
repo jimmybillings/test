@@ -6,10 +6,11 @@ import { GalleryPathSegment } from '../shared/interfaces/gallery-view.interface'
 export function main() {
   describe('Gallery View Component', () => {
     let componentUnderTest: GalleryViewComponent;
-    let mockData: any, mockService: any, mockRouter: any, mockSearch: any;
+    let mockData: any, mockUserPreference: any, mockService: any, mockRouter: any, mockSearch: any;
 
     beforeEach(() => {
       mockData = Observable.of({ some: 'data' });
+      mockUserPreference = { state: { sortId: 1 } };
       mockService = {
         data: mockData,
         state: { path: [{ names: ['Name 1'], ids: [1] }, { names: ['Name 2'], ids: [2] }] },
@@ -17,8 +18,7 @@ export function main() {
       };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
       mockSearch = { new: jasmine.createSpy('new') };
-
-      componentUnderTest = new GalleryViewComponent(mockService, mockRouter, mockSearch);
+      componentUnderTest = new GalleryViewComponent(mockUserPreference, mockService, mockRouter, mockSearch);
     });
 
     describe('ngOnInit()', () => {
@@ -59,7 +59,8 @@ export function main() {
         expect(mockSearch.new).toHaveBeenCalledWith({
           gq: '[{"names":["Name 1"],"ids":[1]},{"names":["Name 2"],"ids":[2]},{"names":["Name 3"],"ids":[3]}]',
           n: 100,
-          i: 1
+          i: 1,
+          sortId: 1
         });
       });
     });
