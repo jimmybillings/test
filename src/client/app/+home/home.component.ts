@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (event.method === 'nextLevel') {
       this.changeRouteFor(path);
     } else {
-      this.searchContext.new({ gq: JSON.stringify(path), n: 100, i: 1 });
+      this.searchContext.new({ gq: JSON.stringify(path), n: 100, i: 1, sortId: this.userPreference.state.sortId });
     }
   }
 
