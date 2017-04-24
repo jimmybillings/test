@@ -44,12 +44,52 @@ export class QuoteEditTabComponent extends CommerceEditTab {
     );
   }
 
-  public onOpenQuoteDialog(): void {
+  public onNotification(message: any): void {
+    switch (message.type) {
+
+      case 'OPEN_QUOTE_DIALOG':
+        this.openQuoteDialog();
+        break;
+
+      case 'ADD_BULK_ORDER_ID':
+        this.addBulkOrderId();
+        break;
+
+      case 'EDIT_DISCOUNT':
+        this.editDiscount();
+        break;
+
+      default:
+        super.onNotification(message);
+    };
+  }
+
+  private openQuoteDialog(): void {
     this.dialogService.openFormDialog(
       this.config.createQuote.items,
       { title: 'QUOTE.CREATE_HEADER', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
       this.onSubmitQuoteDialog
     );
+  }
+
+  private addBulkOrderId() {
+    this.dialogService.openFormDialog(
+      this.config.addBulkOrderId.items,
+      { title: 'QUOTE.BULK_ORDER_ID_TITLE', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
+      this.updateQuoteField
+    );
+  }
+
+  private editDiscount() {
+    this.dialogService.openFormDialog(
+      this.config.addDiscount.items,
+      { title: 'QUOTE.EDIT_A_DISCOUNT', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
+      this.updateQuoteField
+    );
+  }
+
+  private updateQuoteField = (options: any) => {
+    this.quoteEditService.updateQuoteField(options);
   }
 
   private onSubmitQuoteDialog = (result: { emailAddress: string, expirationDate: string, suggestions: any[] }): void => {

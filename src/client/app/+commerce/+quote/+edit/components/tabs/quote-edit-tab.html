@@ -11,6 +11,7 @@
     flex="100"
     (selectQuoteType)="onSelectQuoteType($event)">
   </quote-purchase-type-component>
+  
 </div>
 
 <projects-component
@@ -36,7 +37,7 @@
         flex="100"
         [cart]="cart | async"
         [userCanProceed]="userCanProceed"
-        (openQuoteDialog)="onOpenQuoteDialog()">
+        (openQuoteDialog)="onNotification({type: 'OPEN_QUOTE_DIALOG'})">
       </administer-quote-component>
     </div>
     <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!userCanProceed">
