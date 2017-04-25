@@ -1,30 +1,60 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { FormFields } from '../../../../shared/interfaces/forms.interface';
 import { MdDialogRef, MdDialog, MdDialogConfig, DialogPosition } from '@angular/material';
 
-import { WzNotificationDialogComponent } from '../components/wz.notification-dialog.component';
-import { WzFormDialogComponent } from '../components/wz.form-dialog.component';
 import {
-  FormDialogOptions, defaultFormDialogOptions, FormDialogSubmitCallback, FormDialogCancelCallback
+  WzFormDialogComponent,
+  WzNotificationDialogComponent,
+  WzConfirmationDialogComponent
+} from '../components/index';
+
+import {
+  FormDialogOptions,
+  defaultFormDialogOptions,
+  defaultConfirmationDialogOptions,
+  defaultNotificationDialogOptions,
+  DialogResultCallback,
+  DialogNoResultCallback,
+  DialogCallback
 } from '../interfaces/wz.dialog.interface';
-import { FormFields } from '../../../../shared/interfaces/forms.interface';
 
 @Injectable()
 export class WzDialogService {
   constructor(private dialog: MdDialog) { }
 
   public openNotification(strings: any = {}, config: MdDialogConfig = {}): Observable<any> {
-    Object.assign(config, { disableClose: true, width: '375px', position: { top: '12%' } });
-    let dialogRef: MdDialogRef<any> = this.dialog.open(WzNotificationDialogComponent, config);
+    Object.assign(config, defaultNotificationDialogOptions);
+    const dialogRef: MdDialogRef<WzNotificationDialogComponent> = this.dialog.open(WzNotificationDialogComponent, config);
     dialogRef.componentInstance.strings = strings;
+    return dialogRef.afterClosed();
+  }
+
+  public openConfirmationDialog(
+    strings: any,
+    config: MdDialogConfig,
+    onAccept: DialogNoResultCallback,
+    onDecline: DialogNoResultCallback = () => { }
+  ): Observable<any> {
+    Object.assign(config, defaultConfirmationDialogOptions);
+    const dialogRef: MdDialogRef<WzConfirmationDialogComponent> = this.dialog.open(WzConfirmationDialogComponent, config);
+    const component: WzConfirmationDialogComponent = dialogRef.componentInstance;
+
+    dialogRef.componentInstance.strings = strings;
+
+    this.setupCallbacks(component, dialogRef, [
+      { event: 'accept', callback: onAccept, closeOnEvent: false },
+      { event: 'decline', callback: onDecline, closeOnEvent: false }
+    ]);
+
     return dialogRef.afterClosed();
   }
 
   public openFormDialog(
     formItems: FormFields[],
     options: FormDialogOptions,
-    onSubmit: FormDialogSubmitCallback,
-    onCancel: FormDialogCancelCallback = () => { }
+    onSubmit: DialogResultCallback,
+    onCancel: DialogNoResultCallback = () => { }
   ): Observable<any> {
     const mergedDialogPosition: DialogPosition =
       Object.assign({}, (defaultFormDialogOptions.dialogConfig || {}).position, (options.dialogConfig || {}).position);
@@ -44,16 +74,20 @@ export class WzDialogService {
     component.displayCancelButton = mergedOptions.displayCancelButton;
     component.autocomplete = mergedOptions.autocomplete;
 
-    component.submit.subscribe((result: any) => {
-      dialogRef.close();
-      if (onSubmit) onSubmit(result);
-    });
-
-    component.cancel.subscribe(() => {
-      dialogRef.close();
-      if (onCancel) onCancel();
-    });
+    this.setupCallbacks(component, dialogRef, [
+      { event: 'submit', callback: onSubmit, closeOnEvent: true },
+      { event: 'cancel', callback: onCancel, closeOnEvent: true }
+    ]);
 
     return dialogRef.afterClosed();
+  }
+
+  private setupCallbacks(component: any, dialogRef: MdDialogRef<any>, callbacks: Array<DialogCallback>): void {
+    callbacks.forEach((cb: DialogCallback) => {
+      component[cb.event].subscribe((result?: any) => {
+        if (cb.closeOnEvent) dialogRef.close();
+        if (cb.callback) cb.callback(result);
+      });
+    });
   }
 }

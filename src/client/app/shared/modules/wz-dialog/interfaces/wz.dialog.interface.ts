@@ -18,5 +18,20 @@ export const defaultFormDialogOptions: FormDialogOptions = {
   dialogConfig: { disableClose: true, position: { top: '10%' } }
 };
 
-export type FormDialogSubmitCallback = (result: any) => void;
-export type FormDialogCancelCallback = () => void;
+export const defaultConfirmationDialogOptions: MdDialogConfig = {
+  disableClose: true, width: '375px', position: { top: '12%' }
+};
+
+export const defaultNotificationDialogOptions: MdDialogConfig = {
+  disableClose: true, width: '375px', position: { top: '12%' }
+};
+
+export interface DialogCallback {
+  event: string;
+  callback: Function;
+  closeOnEvent: boolean;
+}
+
+export type DialogResultCallback = (result: any) => void;
+export type DialogNoResultCallback = () => void;
+

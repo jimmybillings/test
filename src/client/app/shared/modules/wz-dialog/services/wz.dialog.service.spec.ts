@@ -199,7 +199,7 @@ export function main() {
           serviceUnderTest.openFormDialog([], {}, null, callback);
           formCancelSubject.next();
 
-          expect(callback).toHaveBeenCalledWith(/* nothing */);
+          expect(callback).toHaveBeenCalledWith(undefined);
         });
       });
     });
