@@ -6,7 +6,7 @@ import { UiConfig } from '../../../../shared/services/ui.config';
 @Component({
   moduleId: module.id,
   selector: 'cart-payment-tab-component',
-  templateUrl: '../../../components/tabs/commerce-payment-tab.html',
+  templateUrl: 'cart-payment-tab.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

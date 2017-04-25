@@ -65,7 +65,6 @@ export class CartService {
     return this.checkoutData.map((state: CheckoutState) => state.selectedPurchaseType);
   }
 
-
   // Loads the cart and returns just the observable's termination notification,
   // because our subscribers care about the fact that we are complete, but they
   // should be getting the data elsewhere.  Also, we take a detour to add a project
@@ -123,8 +122,11 @@ export class CartService {
   }
 
   public moveLineItemTo(project: Project, lineItem: AssetLineItem): void {
-    this.api.put(Api.Orders, 'cart/move/lineItem', { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true })
-      .subscribe(this.replaceCartWith);
+    this.api.put(
+      Api.Orders,
+      'cart/move/lineItem',
+      { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true }
+    ).subscribe(this.replaceCartWith);
   }
 
   public cloneLineItem(lineItem: AssetLineItem): void {
@@ -159,7 +161,7 @@ export class CartService {
     };
     return this.api.post(Api.Orders, 'cart/stripe/process', { body: stripe, loading: true })
       .do(() => this.initializeData().subscribe())
-      .map((_: any) => _ as Number);
+      .map(_ => _ as Number);
 
   }
 

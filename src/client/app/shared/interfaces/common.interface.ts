@@ -16,9 +16,7 @@ export interface Common {
   lastUpdated?: Date;
 }
 
-export interface ApiResults extends Common, Pagination { }
-
-export interface Store extends Common {
+export interface Store {
   pagination: Pagination;
 }
 

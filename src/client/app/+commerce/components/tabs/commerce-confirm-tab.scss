@@ -56,9 +56,11 @@ cart-confirm-tab-component, quote-confirm-tab {
         line-height: 2.4;
       }
       .purchase-on-credit,
+      .offline-agreement,
       .credit-card {
         font-size: rem(1.3);
         .indicate-credit,
+        .indicate-offline,
         .indicate-cc {
           display: flex;
           strong {
@@ -86,7 +88,9 @@ cart-confirm-tab-component, quote-confirm-tab {
       }
       .purchase-on-credit .indicate-credit strong::before {
         content: "\e84f";
-        font-size: rem(2.4);
+      }
+      .offline-agreement .indicate-offline strong::before {
+        content: "\e8e8";
       }
     }
   }

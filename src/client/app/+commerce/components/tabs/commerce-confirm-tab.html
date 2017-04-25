@@ -40,6 +40,11 @@
             <strong>Purchase on credit</strong>
           </span>
         </div>
+        <div class="offline-agreement" *ngIf="(purchaseType | async) === 'OfflineAgreement'">
+          <span class="indicate-offline">
+            <strong>Offline Agreement</strong>
+          </span>
+        </div>
       </div>
     </section>
   </div>

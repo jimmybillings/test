@@ -14,7 +14,7 @@
 			<wz-pagination *ngIf="(quotes | async).pagination.totalCount > 0" [pagination]="(quotes | async).pagination"
 				flex layout-align="end stretch" (getPage)="changePage($event)">
 			</wz-pagination>
-			<md-card *ngIf="(quotes | async).items.length == 0">
+			<md-card *ngIf="!(quotes | async).items">
 				<md-card-title>You currently do not have any quotes</md-card-title>
 			</md-card>
       <commerce-list
