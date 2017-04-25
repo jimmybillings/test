@@ -1,6 +1,6 @@
 import { ViewAddress, Pagination, Common, PriceAttributes, ApiResults, Store } from './common.interface';
 
-export type PurchaseType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
+export type QuoteType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
 export type QuoteStatus = 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED' | 'CANCELLED';
 export type TranscodeStatus = 'Submitted' | 'Completed' | 'Failed' | 'UrlError' | 'Deleted';
 export type OrderType = 'PurchaseOnCredit' | 'CreditCard' | 'BadDebt' | 'ChannelOrder'
@@ -87,7 +87,7 @@ export interface CheckoutState {
   addresses: ViewAddress[];
   selectedAddress: ViewAddress;
   authorization: any;
-  selectedPurchaseType: string;
+  selectedPurchaseType: OrderType;
 }
 
 // Models
@@ -129,7 +129,7 @@ export interface Quote extends CommonCommerce {
   ownerUserId: number;
   total: number;
   quoteStatus: QuoteStatus;
-  purchaseType?: string;
+  purchaseType?: QuoteType;
   projects?: Project[];
   itemCount?: number;
   expirationDate?: string;
@@ -163,7 +163,7 @@ export interface AddAssetParameters {
 }
 
 export interface QuoteOptions {
-  purchaseType: PurchaseType;
+  purchaseType: QuoteType;
   emailAddress?: string;
   expirationDate?: string;
   users?: any[];
