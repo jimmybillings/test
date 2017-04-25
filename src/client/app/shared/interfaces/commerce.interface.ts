@@ -1,4 +1,4 @@
-import { ViewAddress, Pagination, Common, PriceAttributes, ApiResults, Store } from './common.interface';
+import { ViewAddress, Pagination, Common, PriceAttributes, Store } from './common.interface';
 
 export type QuoteType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
 export type QuoteStatus = 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED' | 'CANCELLED';
@@ -137,22 +137,20 @@ export interface Quote extends CommonCommerce {
   stripePublicKey?: string;
 }
 
-export interface Orders extends ApiResults {
+export interface OrdersApiResponse extends Pagination {
   items: Order[];
 }
 
-export interface OrdersState extends Store {
+export interface Orders extends Store {
   items: Order[];
-  pagination: Pagination;
 }
 
-export interface Quotes extends ApiResults {
+export interface QuotesApiResponse extends Pagination {
   items: Quote[];
 }
 
-export interface QuotesState extends Store {
+export interface Quotes extends Store {
   items: Quote[];
-  pagination: Pagination;
 }
 
 export interface AddAssetParameters {

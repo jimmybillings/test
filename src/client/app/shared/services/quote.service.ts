@@ -3,7 +3,9 @@ import { ApiService } from '../../shared/services/api.service';
 import { CartService } from '../../shared/services/cart.service';
 import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
-import { Quote, Order, QuoteOptions, QuoteState, CheckoutState, OrderType } from '../../shared/interfaces/commerce.interface';
+import {
+  Quote, Order, QuoteOptions, QuoteState, CheckoutState, OrderType, QuoteType
+} from '../../shared/interfaces/commerce.interface';
 import { QuoteStore } from '../../shared/stores/quote.store';
 import { CheckoutStore } from '../../shared/stores/checkout.store';
 
@@ -63,7 +65,9 @@ export class QuoteService {
       case 'PurchaseOnCredit':
         return this.purchaseOnCredit();
       case 'ProvisionalOrder':
-        return this.purchaseProvisionalOrder();
+        return this.purchaseQuoteType('ProvisionalOrder');
+      case 'OfflineAgreement':
+        return this.purchaseQuoteType('OfflineAgreement');
       default:
         return Observable.of(NaN);
     }
@@ -80,7 +84,7 @@ export class QuoteService {
       Api.Orders,
       `quote/${this.state.data.id}/stripe/process`,
       { body: stripe, loading: true }
-    ).map((_: any) => _ as Number);
+    ).map(_ => _ as Number);
   }
 
   private purchaseOnCredit(): Observable<number> {
@@ -91,11 +95,11 @@ export class QuoteService {
     ).map((order: Order) => order.id);
   }
 
-  private purchaseProvisionalOrder(): Observable<number> {
+  private purchaseQuoteType(type: QuoteType): Observable<number> {
     return this.api.post(
       Api.Orders,
       `quote/${this.state.data.id}/checkout/convertToOrder`,
-      { loading: true, body: { options: { purchaseType: 'ProvisionalOrder' } } }
+      { loading: true, body: { options: { orderType: type } } }
     ).map((order: Order) => order.id);
   }
 }
