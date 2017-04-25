@@ -6,7 +6,7 @@ import { UiConfig } from '../../../../shared/services/ui.config';
 @Component({
   moduleId: module.id,
   selector: 'quote-payment-tab',
-  templateUrl: '../../../components/tabs/commerce-payment-tab.html',
+  templateUrl: 'quote-payment-tab.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -18,5 +18,13 @@ export class QuotePaymentTabComponent extends CommercePaymentTab {
     ref: ChangeDetectorRef
   ) {
     super(_zone, quoteService, uiConfig, ref);
+  }
+
+  public selectInvoiceLater(event: any) {
+    if (event.checked) {
+      this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
+    } else {
+      this.disableTab(3);
+    }
   }
 }

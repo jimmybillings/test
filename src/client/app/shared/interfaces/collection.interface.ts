@@ -1,4 +1,4 @@
-import { Common, ApiResults, Pagination, Asset } from './common.interface';
+import { Common, Pagination, Asset } from './common.interface';
 
 export interface Collection extends Common {
   name: string;

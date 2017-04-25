@@ -5,7 +5,8 @@ import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Quote Service', () => {
-    let serviceUnderTest: QuoteService, mockApi: MockApiService, mockCartService: any, mockQuoteStore: any;
+    let serviceUnderTest: QuoteService, mockApi: MockApiService, mockCartService: any,
+      mockQuoteStore: any, mockCheckoutStore: any;
 
     beforeEach(() => {
       mockApi = new MockApiService();
@@ -18,8 +19,9 @@ export function main() {
         state: { id: 3, ownerUserId: 10 },
         updateQuote: jasmine.createSpy('updateQuote')
       };
+      mockCheckoutStore = { updateOrderInProgress: jasmine.createSpy('updateOrderInProgress') };
       jasmine.addMatchers(mockApiMatchers);
-      serviceUnderTest = new QuoteService(mockApi.injector, mockCartService, mockQuoteStore, null);
+      serviceUnderTest = new QuoteService(mockApi.injector, mockCartService, mockQuoteStore, mockCheckoutStore);
     });
 
     describe('data getter', () => {
@@ -43,9 +45,14 @@ export function main() {
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('quote/1');
       });
 
-      it('should set the quote in the store', () => {
+      it('should set the quote in the quote store', () => {
         serviceUnderTest.getQuote(1).take(1).subscribe();
         expect(mockQuoteStore.updateQuote).toHaveBeenCalled();
+      });
+
+      it('should set the purchaseType in the checkout store', () => {
+        serviceUnderTest.getQuote(1).take(1).subscribe();
+        expect(mockCheckoutStore.updateOrderInProgress).toHaveBeenCalled();
       });
     });
   });

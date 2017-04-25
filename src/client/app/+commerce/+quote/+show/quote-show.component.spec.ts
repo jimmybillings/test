@@ -7,7 +7,7 @@ export function main() {
     let componentUnderTest: QuoteShowComponent, mockCapabilities: any, mockQuoteService: any;
 
     mockCapabilities = { administerQuotes: () => false };
-    mockQuoteService = { data: Observable.of({}) };
+    mockQuoteService = { data: Observable.of({}), state: { data: { purchaseType: 'blah' } } };
 
     beforeEach(() => {
       componentUnderTest = new QuoteShowComponent(mockCapabilities, mockQuoteService);
