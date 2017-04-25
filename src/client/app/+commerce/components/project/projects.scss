@@ -75,4 +75,7 @@ div.project {
       border-color: mat-color($background, background, .25);
     }
   }
+  &:last-child {
+    margin-bottom: rem(.7);
+  }
 }
