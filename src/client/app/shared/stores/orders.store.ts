@@ -1,13 +1,13 @@
 import { ActionReducer, Action, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { OrdersState } from '../interfaces/commerce.interface';
+import { Orders } from '../interfaces/commerce.interface';
 
 
 /**
  * Orders store -
  */
-const ordersState: OrdersState = {
+const ordersState: Orders = {
   items: [],
   pagination: {
     totalCount: 0,
@@ -19,7 +19,7 @@ const ordersState: OrdersState = {
   }
 };
 
-export function orders(state: OrdersState = ordersState, action: Action) {
+export function orders(state: Orders = ordersState, action: Action) {
   switch (action.type) {
     case 'ORDERS.GET_ORDERS':
       return Object.assign({}, action.payload);

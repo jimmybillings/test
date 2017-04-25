@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
-import { CartState, QuoteState, CheckoutState } from '../../../shared/interfaces/commerce.interface';
+import { CartState, QuoteState, CheckoutState, OrderType } from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 
 export class CommerceConfirmTab extends Tab {
@@ -29,17 +29,25 @@ export class CommerceConfirmTab extends Tab {
     return this.commerceService.data.map((state: QuoteState | CartState) => state.data);
   }
 
-  purchase() {
-    this.commerceService.purchase().subscribe((orderId: any) =>
-      this.router.navigate(['/commerce/orders', orderId])
-      , (error: any) =>
-        console.log(error)
-    );
+  public get purchaseType(): Observable<OrderType> {
+    return this.commerceService.purchaseType;
   }
 
-  public purchaseOnCredit(): void {
-    this.commerceService.purchaseOnCredit().take(1).subscribe((order: any) =>
-      this.router.navigate(['/commerce/orders', order.id])
+  public get showPurchaseBtn(): Observable<boolean> {
+    return this.purchaseType.map((type: OrderType) => {
+      return type === 'CreditCard';
+    });
+  }
+
+  public get showPurchaseOnCreditBtn(): Observable<boolean> {
+    return this.purchaseType.map((type: OrderType) => {
+      return type === 'PurchaseOnCredit' || type === 'ProvisionalOrder';
+    });
+  }
+
+  public purchase(): void {
+    this.commerceService.purchase().subscribe((orderId: Number) =>
+      this.router.navigate(['/commerce/orders', orderId])
       , (error: any) =>
         console.log(error)
     );

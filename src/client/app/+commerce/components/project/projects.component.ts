@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Project, PurchaseType } from '../../../shared/interfaces/commerce.interface';
+import { Project, QuoteType } from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class ProjectsComponent {
   @Input() config: any;
   @Input() projects: Array<Project>;
   @Input() userCan: Capabilities;
-  @Input() quoteType: PurchaseType;
+  @Input() quoteType: QuoteType;
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;
 

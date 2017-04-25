@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActionReducer, Store, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Quote, Quotes, QuotesState } from '../interfaces/commerce.interface';
+import { Quote, Quotes } from '../interfaces/commerce.interface';
 
-const initState: QuotesState = {
+const initState: Quotes = {
   items: [],
   pagination: {
     totalCount: 0,

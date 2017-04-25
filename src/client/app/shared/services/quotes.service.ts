@@ -3,7 +3,7 @@ import { ApiService } from '../../shared/services/api.service';
 import { CartService } from '../../shared/services/cart.service';
 import { Api } from '../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
-import { Quote, Quotes } from '../../shared/interfaces/commerce.interface';
+import { Quote, Quotes, QuotesApiResponse } from '../../shared/interfaces/commerce.interface';
 import { QuotesStore } from '../../shared/stores/quotes.store';
 
 @Injectable()
@@ -25,8 +25,8 @@ export class QuotesService {
     if (getFocused) {
       return this.getFocused().switchMap((activeQuote: Quote) => {
         return this.quotesList(params)
-          .map((res: Quotes) => { res.items = res.items ? res.items : []; return res; })
-          .do((res: Quotes) => this.findNewFocused(res.items, activeQuote.id))
+          .map((res: QuotesApiResponse) => { res.items = res.items ? res.items : []; return res; })
+          .do((res: QuotesApiResponse) => this.findNewFocused(res.items, activeQuote.id))
           .do(this.setQuotesInStore);
       });
     } else {
@@ -74,7 +74,7 @@ export class QuotesService {
     this.store.updateQuotes({ items: quotes.items });
   }
 
-  private setQuotesInStore = (quotes: Quotes): void => {
+  private setQuotesInStore = (quotes: QuotesApiResponse): void => {
     this.store.setQuotes(quotes);
   }
 }
