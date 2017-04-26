@@ -104,3 +104,7 @@ cart-confirm-tab-component, quote-confirm-tab {
     }
   }
 }
+cart-component .tabs-section md-tab-group > div cart-confirm-tab-component .project:first-child,
+quote-show-component .tabs-section md-tab-group > div quote-confirm-tab .project:first-child {
+  margin-top: rem(.2);
+}
