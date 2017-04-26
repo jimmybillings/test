@@ -20,7 +20,7 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
 
     <md-menu x-position="before" #projectOptionsMenu="mdMenu">
       <button disabled md-menu-item><md-icon>attachment</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
-      <button md-menu-item (click)="onAddFeeButtonClick()">
+      <button [disabled]="!includeFees" md-menu-item (click)="onAddFeeButtonClick()">
         <md-icon>receipt</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}
       </button>
       <div class="divider"></div>
@@ -30,6 +30,7 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
   `
 })
 export class ProjectActionsComponent {
+  @Input() includeFees: boolean = false;
   @Output() remove: EventEmitter<null> = new EventEmitter();
   @Output() edit: EventEmitter<null> = new EventEmitter();
   @Output() addFee: EventEmitter<null> = new EventEmitter();
