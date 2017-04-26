@@ -164,7 +164,7 @@ export interface AddAssetParameters {
 }
 
 export interface QuoteOptions {
-  purchaseType?: PurchaseType;
+  purchaseType?: string;
   emailAddress?: string;
   expirationDate?: string;
   users?: any[];

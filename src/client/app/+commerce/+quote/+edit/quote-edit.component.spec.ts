@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: QuoteEditComponent;
 
     beforeEach(() => {
-      componentUnderTest = new QuoteEditComponent();
+      componentUnderTest = new QuoteEditComponent(null, null, null, null, null, null, null, null, null, null, null, null);
     });
 
     it('has no tests!', () => {
