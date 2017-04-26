@@ -9,6 +9,19 @@ export interface FormDialogOptions {
   dialogConfig?: MdDialogConfig;
 };
 
+export interface NotifcationDialogStrings {
+  title: string;
+  message: string;
+  prompt: string;
+}
+
+export interface ConfirmationDialogStrings {
+  title: string;
+  message: string;
+  accept: string;
+  decline: string;
+}
+
 export const defaultFormDialogOptions: FormDialogOptions = {
   title: undefined,
   submitLabel: 'Submit',

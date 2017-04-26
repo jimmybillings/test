@@ -1,9 +1,20 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { MdDialogConfig } from '@angular/material';
+import { MdDialogConfig, MdDialog } from '@angular/material';
 
-import { WzFormDialogComponent } from '../components/wz.form-dialog.component';
-import { WzDialogService } from './wz.dialog.service';
+import { WzDialogService } from '../services/wz.dialog.service';
+
+import {
+  ConfirmationDialogStrings,
+  defaultConfirmationDialogOptions,
+  defaultNotificationDialogOptions
+} from '../interfaces/wz.dialog.interface';
+
+import {
+  WzConfirmationDialogComponent,
+  WzNotificationDialogComponent,
+  WzFormDialogComponent,
+} from '../components/index';
 
 export function main() {
   describe('Wz Dialog Service', () => {
@@ -28,10 +39,77 @@ export function main() {
       serviceUnderTest = new WzDialogService(mockDialog);
     });
 
-    describe('openNotification()', () => {
+    describe('openNotificationDialog()', () => {
       it('should open a dialog', () => {
-        serviceUnderTest.openNotification({}, {});
-        expect(mockDialog.open).toHaveBeenCalled();
+        serviceUnderTest.openNotificationDialog({ title: '', message: '', prompt: '' }, {});
+        expect(mockDialog.open).toHaveBeenCalledWith(
+          WzNotificationDialogComponent,
+          defaultNotificationDialogOptions
+        );
+      });
+
+      it('should return the value of the afterClosed() method', () => {
+        expect(serviceUnderTest.openNotificationDialog(
+          { title: '', message: '', prompt: '' },
+          {}
+        )).toEqual('thingReturnedByAfterClosed');
+      });
+    });
+
+    describe('openConfirmationDialog', () => {
+      let acceptSubject: Subject<any>;
+      let declineSubject: Subject<any>;
+      let strings: ConfirmationDialogStrings = { title: '', message: '', accept: '', decline: '' };
+
+      beforeEach(() => {
+        acceptSubject = new Subject<any>();
+        declineSubject = new Subject<any>();
+
+        mockComponentInstance.accept = acceptSubject.asObservable();
+        mockComponentInstance.decline = declineSubject.asObservable();
+      });
+
+      it('should open a dialog with the right component and config', () => {
+        serviceUnderTest.openConfirmationDialog(strings, {}, null, null);
+
+        expect(mockDialog.open).toHaveBeenCalledWith(WzConfirmationDialogComponent, defaultConfirmationDialogOptions);
+      });
+
+      it('returns the value of dialogRef\'s afterClosed method', () => {
+        expect(serviceUnderTest.openConfirmationDialog(strings, {}, null, null)).toEqual('thingReturnedByAfterClosed');
+      });
+
+      it('should merge any config passed in', () => {
+        serviceUnderTest.openConfirmationDialog(strings, { width: 'NEW_WIDTH' }, null, null);
+        const expectedConfig: any = Object.assign(defaultNotificationDialogOptions, { width: 'NEW_WIDTH' });
+        expect(mockDialog.open).toHaveBeenCalledWith(WzConfirmationDialogComponent, expectedConfig);
+      });
+
+      it('should set a "strings" variable on the component instance', () => {
+        expect(mockComponentInstance.strings).not.toBeDefined();
+        serviceUnderTest.openConfirmationDialog(strings, {}, null, null);
+        expect(mockComponentInstance.strings).toBe(strings);
+      });
+
+      describe('callbacks', () => {
+        let acceptCallback: any;
+        let declineCallback: any;
+        beforeEach(() => {
+          acceptCallback = jasmine.createSpy('acceptCallback');
+          declineCallback = jasmine.createSpy('declineCallback');
+        });
+
+        it('should call the accept callback on the accept event', () => {
+          serviceUnderTest.openConfirmationDialog(strings, {}, acceptCallback, declineCallback);
+          acceptSubject.next();
+          expect(acceptCallback).toHaveBeenCalled();
+        });
+
+        it('should call the decline callback on the decline event', () => {
+          serviceUnderTest.openConfirmationDialog(strings, {}, acceptCallback, declineCallback);
+          declineSubject.next();
+          expect(declineCallback).toHaveBeenCalled();
+        });
       });
     });
 

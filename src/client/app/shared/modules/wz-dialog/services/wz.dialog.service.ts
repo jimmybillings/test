@@ -10,34 +10,38 @@ import {
 } from '../components/index';
 
 import {
+  DialogCallback,
   FormDialogOptions,
-  defaultFormDialogOptions,
-  defaultConfirmationDialogOptions,
-  defaultNotificationDialogOptions,
   DialogResultCallback,
   DialogNoResultCallback,
-  DialogCallback
+  NotifcationDialogStrings,
+  defaultFormDialogOptions,
+  ConfirmationDialogStrings,
+  defaultConfirmationDialogOptions,
+  defaultNotificationDialogOptions
 } from '../interfaces/wz.dialog.interface';
 
 @Injectable()
 export class WzDialogService {
   constructor(private dialog: MdDialog) { }
 
-  public openNotification(strings: any = {}, config: MdDialogConfig = {}): Observable<any> {
-    Object.assign(config, defaultNotificationDialogOptions);
-    const dialogRef: MdDialogRef<WzNotificationDialogComponent> = this.dialog.open(WzNotificationDialogComponent, config);
+  public openNotificationDialog(strings: NotifcationDialogStrings, config: MdDialogConfig = {}): Observable<any> {
+    const newConfig: MdDialogConfig = Object.assign(defaultNotificationDialogOptions, config);
+    const dialogRef: MdDialogRef<WzNotificationDialogComponent> = this.dialog.open(WzNotificationDialogComponent, newConfig);
+
     dialogRef.componentInstance.strings = strings;
+
     return dialogRef.afterClosed();
   }
 
   public openConfirmationDialog(
-    strings: any,
+    strings: ConfirmationDialogStrings,
     config: MdDialogConfig,
     onAccept: DialogNoResultCallback,
     onDecline: DialogNoResultCallback = () => { }
   ): Observable<any> {
-    Object.assign(config, defaultConfirmationDialogOptions);
-    const dialogRef: MdDialogRef<WzConfirmationDialogComponent> = this.dialog.open(WzConfirmationDialogComponent, config);
+    const newConfig: MdDialogConfig = Object.assign(defaultConfirmationDialogOptions, config);
+    const dialogRef: MdDialogRef<WzConfirmationDialogComponent> = this.dialog.open(WzConfirmationDialogComponent, newConfig);
     const component: WzConfirmationDialogComponent = dialogRef.componentInstance;
 
     dialogRef.componentInstance.strings = strings;
