@@ -2,14 +2,6 @@
 	<button md-button color="primary" (click)="addProject()">
 		<md-icon>add_circle_outline</md-icon>{{ 'CART.PROJECTS.ADD_PROJECT_BTN' | translate }}
 	</button>
-
-	<button md-icon-button [md-menu-trigger-for]="quoteOptionsMenu" title="More cart options">
-      <md-icon>more_vert</md-icon>
-    </button>
-    <md-menu x-position="before" #quoteOptionsMenu="mdMenu">
-      <button md-menu-item (click)="addBulkOrderId()"><md-icon>bookmark_border</md-icon>{{ 'QUOTE.ADD_BULK_ORDER_ID_TITLE' | translate }}</button>
-      <button md-menu-item (click)="editDiscount()"><md-icon>monetization_on</md-icon>{{ 'QUOTE.EDIT_A_DISCOUNT' | translate }}</button>
-    </md-menu>
 </div>
 
 <section class="projects">

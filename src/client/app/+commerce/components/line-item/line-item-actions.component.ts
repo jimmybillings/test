@@ -8,12 +8,13 @@ import { PurchaseType } from '../../../shared/interfaces/commerce.interface';
   template: `
     <div class="tools" flex="100">
       <!-- CRUX-1715 -->
-      <!-- <button
+      <!-- this rights button can go away when it added to the project -->
+      <button
         *ngIf="displayPriceButton"
         md-button color="primary"
         class="mini is-outlined"
         (click)="showPricingDialog.emit()">{{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}
-      </button> -->
+      </button>
       <button 
         md-icon-button
         (click)="remove.emit()"

@@ -5,9 +5,12 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
   selector: 'project-actions-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    <!-- CRUX-1715 -->
+    <!--
     <button md-button  class="is-outlined" type="button">
       {{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}
     </button>
+    -->
     <button md-icon-button (click)="edit.emit()" title="Edit project details">
       <md-icon>edit</md-icon>
     </button>
