@@ -17,10 +17,6 @@ md-dialog-container.mat-dialog-container {
     max-width: 94vw;
   }
 }
-// font-size override (this is the same as md-card-content from material)
-md-dialog-content wz-form {
-  font-size: rem(1.4);
-}
 // This sets the defaults for dialogs. Override widths can be set on specific components.
 // like: md-dialog-content collection-form .wz-dialog {}
 .mat-dialog-container .wz-dialog {
