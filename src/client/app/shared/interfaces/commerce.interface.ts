@@ -8,7 +8,7 @@ export type OrderType = 'PurchaseOnCredit' | 'CreditCard' | 'BadDebt' | 'Channel
   | 'ProvisionalOrder' | 'PurchaseOrder' | 'RevenueOnly' | 'SubscriptionOrder';
 export type OrderStatus = 'Order';
 export type TranscodeTatus = 'Submitted' | 'Completed' | 'Failed' | 'UrlError' | 'Deleted';
-
+export type EditableQuoteFields = 'bulkOrderId' | 'discount';
 // Base interfaces
 
 export interface CommonCommerce extends Common {
@@ -128,6 +128,7 @@ export interface Quote extends CommonCommerce {
   createdUserId: number;
   ownerUserId: number;
   total: number;
+  subTotal?: number;
   quoteStatus: QuoteStatus;
   purchaseType?: QuoteType;
   projects?: Project[];
@@ -135,6 +136,8 @@ export interface Quote extends CommonCommerce {
   expirationDate?: string;
   focused?: boolean;
   stripePublicKey?: string;
+  bulkOrderId?: string;
+  discount?: string;
 }
 
 export interface OrdersApiResponse extends Pagination {
@@ -161,7 +164,7 @@ export interface AddAssetParameters {
 }
 
 export interface QuoteOptions {
-  purchaseType: QuoteType;
+  purchaseType?: PurchaseType;
   emailAddress?: string;
   expirationDate?: string;
   users?: any[];
@@ -171,3 +174,4 @@ export interface CommerceMessage {
   type: string;
   payload?: any;
 }
+

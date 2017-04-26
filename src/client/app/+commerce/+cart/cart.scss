@@ -1,6 +1,5 @@
 cart-component .tabs-section, quote-edit-component .tabs-section {
   & > div > div {
-    // background: rgba(mat-color($background, background),0);
     background: rgba(mat-color($background, background),.35);
   }
   md-tab-group > div {
@@ -33,6 +32,9 @@ cart-component section.header, quote-edit-component section.header {
       // &.alert {
       //   color: mat-color($warn, darker);
       // }
+    }
+    .tools  {
+      text-align: right;
     }
   }
 }
@@ -81,7 +83,6 @@ cart-component section.header, quote-edit-component section.header {
       line-height: rem(2.6);
       font-weight: 300;
       letter-spacing: 0;
-      // padding-right: rem(3.9);
       opacity: .7;
     }
     .total-amount {
@@ -94,6 +95,19 @@ cart-component section.header, quote-edit-component section.header {
         vertical-align: top;
         letter-spacing: 0;
       }
+    }
+  }
+  .discount .total-amount {
+    position: relative;
+    &::first-letter {
+      font-size: inherit;
+      line-height: inherit;
+      vertical-align: none;
+      letter-spacing: 0;
+    }
+    &::after {
+      font-size: .9em;
+      content: "%";
     }
   }
 }
@@ -154,4 +168,12 @@ quote-edit-component .quote-section {
   overflow: hidden;
   display: flex;
   margin: rem(.2) rem(.6) rem(3.6) rem(.6);
+}
+.bulk-order {
+  font-size: .85em;
+  line-height: rem(3.3);
+  & > span {
+    font-weight: bold;
+    padding-right: rem(.4);
+  }
 }
