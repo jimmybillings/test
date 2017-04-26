@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { PurchaseType } from '../../../shared/interfaces/commerce.interface';
+import { QuoteType } from '../../../shared/interfaces/commerce.interface';
 
 @Component({
   moduleId: module.id,
@@ -51,7 +51,7 @@ export class LineItemActionsComponent {
   @Input() otherProjects: any[];
   @Input() userCanCreateSubclips: any[];
   @Input() timeStart: number;
-  @Input() quoteType: PurchaseType;
+  @Input() quoteType: QuoteType;
   @Output() showPricingDialog: EventEmitter<any> = new EventEmitter();
   @Output() remove: EventEmitter<any> = new EventEmitter();
   @Output() clone: EventEmitter<any> = new EventEmitter();

@@ -9,13 +9,15 @@ import { Address, ViewAddress } from '../interfaces/user.interface';
 import { CartStore } from '../stores/cart.store';
 import { CheckoutStore } from '../stores/checkout.store';
 import {
+  Order,
   Cart,
   CartState,
   Project,
   AssetLineItem,
   AddAssetParameters,
   QuoteOptions,
-  CheckoutState
+  CheckoutState,
+  OrderType
 } from '../interfaces/commerce.interface';
 
 @Injectable()
@@ -59,6 +61,10 @@ export class CartService {
     return this.cart.map(cart => (cart.itemCount || 0) > 0);
   }
 
+  public get purchaseType(): Observable<OrderType> {
+    return this.checkoutData.map((state: CheckoutState) => state.selectedPurchaseType);
+  }
+
   // Loads the cart and returns just the observable's termination notification,
   // because our subscribers care about the fact that we are complete, but they
   // should be getting the data elsewhere.  Also, we take a detour to add a project
@@ -76,17 +82,15 @@ export class CartService {
       .share();
   }
 
-  public purchase(): Observable<any> {
-    const stripe: any = {
-      stripeToken: this.checkoutState.authorization.id,
-      stripeTokenType: this.checkoutState.authorization.type
-    };
-    return this.api.post(Api.Orders, 'cart/stripe/process',
-      { body: stripe, loading: true })
-      .do((response: any) => {
-        this.initializeData().subscribe();
-        return response;
-      });
+  public purchase(): Observable<number> {
+    switch (this.checkoutState.selectedPurchaseType) {
+      case 'CreditCard':
+        return this.purchaseWithCreditCard();
+      case 'PurchaseOnCredit':
+        return this.purchaseOnCredit();
+      default:
+        return Observable.of(NaN);
+    }
   }
 
   public addProject(): void {
@@ -118,8 +122,11 @@ export class CartService {
   }
 
   public moveLineItemTo(project: Project, lineItem: AssetLineItem): void {
-    this.api.put(Api.Orders, 'cart/move/lineItem', { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true })
-      .subscribe(this.replaceCartWith);
+    this.api.put(
+      Api.Orders,
+      'cart/move/lineItem',
+      { parameters: { lineItemId: lineItem.id, projectId: project.id }, loading: true }
+    ).subscribe(this.replaceCartWith);
   }
 
   public cloneLineItem(lineItem: AssetLineItem): void {
@@ -130,12 +137,6 @@ export class CartService {
   public removeLineItem(lineItem: AssetLineItem): void {
     this.api.delete(Api.Orders, `cart/asset/${lineItem.id}`, { loading: true })
       .subscribe(this.replaceCartWith);
-  }
-
-  public purchaseOnCredit(): Observable<any> {
-    return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { loading: true }).do(() => {
-      this.initializeData().subscribe();
-    });
   }
 
   public editLineItem(lineItem: AssetLineItem, fieldToEdit: any): void {
@@ -149,6 +150,26 @@ export class CartService {
 
   public updateOrderInProgress(type: string, data: any): void {
     this.checkoutStore.updateOrderInProgress(type, data);
+  }
+
+  // Private methods
+
+  private purchaseWithCreditCard(): Observable<number> {
+    const stripe: any = {
+      stripeToken: this.checkoutState.authorization.id,
+      stripeTokenType: this.checkoutState.authorization.type
+    };
+    return this.api.post(Api.Orders, 'cart/stripe/process', { body: stripe, loading: true })
+      .do(() => this.initializeData().subscribe())
+      .map(_ => _ as Number);
+
+  }
+
+  private purchaseOnCredit(): Observable<number> {
+    return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { loading: true })
+      .do(() => this.initializeData().subscribe())
+      .map((order: Order) => order.id);
+
   }
 
   private formatBody(parameters: AddAssetParameters): any {

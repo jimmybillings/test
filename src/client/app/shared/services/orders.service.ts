@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
-import { OrdersState, Orders } from '../interfaces/commerce.interface';
+import { Orders, OrdersApiResponse } from '../interfaces/commerce.interface';
 import { UrlParams } from '../interfaces/common.interface';
 import { OrdersStore } from '../stores/orders.store';
 
@@ -13,11 +13,11 @@ export class OrdersService {
     private api: ApiService,
     private store: OrdersStore) { }
 
-  public get data(): Observable<OrdersState> {
+  public get data(): Observable<Orders> {
     return this.store.data;
   }
 
-  public getOrders(params: UrlParams): Observable<Orders> {
+  public getOrders(params: UrlParams): Observable<OrdersApiResponse> {
     return this.api.get(Api.Orders, 'order/myOrders',
       { parameters: this.buildSearchParams(params), loading: true }
     ).do(response => this.store.storeOrders(response));

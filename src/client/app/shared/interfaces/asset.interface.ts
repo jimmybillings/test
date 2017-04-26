@@ -1,12 +1,12 @@
 import { Frame } from 'wazee-frame-formatter';
-import { Asset, ApiResults } from './common.interface';
+import { Asset, Pagination } from './common.interface';
 
 export interface AssetDetailI {
   name: string;
   metadata?: Array<Object>;
 }
 
-export interface SearchResult extends ApiResults {
+export interface SearchResult extends Pagination {
   items?: Array<Asset>;
 }
 

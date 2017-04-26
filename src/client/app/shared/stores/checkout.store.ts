@@ -31,7 +31,7 @@ const emptyCheckout: CheckoutState = {
       exp_year: ''
     }
   },
-  selectedPurchaseType: ''
+  selectedPurchaseType: 'CreditCard'
 };
 
 export function checkout(state: any = emptyCheckout, action: Action) {

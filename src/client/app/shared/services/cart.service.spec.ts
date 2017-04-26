@@ -28,11 +28,8 @@ export function main() {
       rightsManaged: 'Rights Managed'
     };
 
-    let serviceUnderTest: CartService;
-    let mockCartStore: any;
-    let mockCheckoutStore: any;
-    let mockApi: MockApiService;
-    let mockCurrentUserServiceService: any;
+    let serviceUnderTest: CartService, mockApi: MockApiService, mockCartStore: any,
+      mockCheckoutStore: any, mockCurrentUserServiceService: any;
 
     beforeEach(() => {
       jasmine.addMatchers(mockApiMatchers);
@@ -273,28 +270,65 @@ export function main() {
       });
     });
 
-    describe('purchaseOnCredit()', () => {
-      it('calls the API service correctly', () => {
-        serviceUnderTest.purchaseOnCredit();
+    describe('purchase()', () => {
+      let mockCheckoutStoreState: any;
+      describe('for a credit card', () => {
+        beforeEach(() => {
+          mockCheckoutStoreState = { selectedPurchaseType: 'CreditCard', authorization: { id: 123 } };
+          mockCheckoutStore = {
+            state: mockCheckoutStoreState,
+            updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
+          };
+          serviceUnderTest = new CartService(mockCartStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
+        });
+        it('calls the API service correctly', () => {
+          serviceUnderTest.purchase();
 
-        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/checkout/purchaseOnCredit');
-        expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+          expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/stripe/process');
+          expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+        });
+
+        it('returns an observable of the back-end response', () => {
+          serviceUnderTest.purchase()
+            .subscribe(response => expect(response).toEqual(mockApi.postResponse));
+        });
+
+        it('replaces the cart store with a new cart', () => {
+          serviceUnderTest.purchase()
+            .subscribe(_ => {
+              expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
+              expect(mockApi.get).toHaveBeenCalledWithEndpoint('cart');
+              expect(mockApi.get).toHaveBeenCalledWithLoading(true);
+              expect(mockCartStore.replaceCartWith).toHaveBeenCalled();
+            });
+        });
       });
 
-      it('returns an observable of the back-end response', () => {
-        serviceUnderTest.purchaseOnCredit()
-          .subscribe(response => expect(response).toEqual(mockApi.postResponse));
-      });
+      describe('for purchase on credit', () => {
+        beforeEach(() => {
+          mockCheckoutStoreState = { selectedPurchaseType: 'PurchaseOnCredit' };
+          mockCheckoutStore = {
+            state: mockCheckoutStoreState,
+            updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
+          };
+          serviceUnderTest = new CartService(mockCartStore, mockCheckoutStore, mockApi.injector, mockCurrentUserServiceService);
+        });
 
-      it('replaces the cart store with a new cart', () => {
-        serviceUnderTest.purchaseOnCredit()
-          .subscribe(_ => {
-            expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
-            expect(mockApi.get).toHaveBeenCalledWithEndpoint('cart');
-            expect(mockApi.get).toHaveBeenCalledWithLoading(true);
-            expect(mockCartStore.replaceCartWith).toHaveBeenCalled();
+        it('should call the API service correctly', () => {
+          serviceUnderTest.purchase();
+
+          expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApi.post).toHaveBeenCalledWithEndpoint('cart/checkout/purchaseOnCredit');
+          expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+        });
+
+        it('return an observable of the order id', () => {
+          mockApi.postResponse = { id: 1, createdOn: null, total: 10000.00 };
+          serviceUnderTest.purchase().take(1).subscribe((response: any) => {
+            expect(response).toEqual(1);
           });
+        });
       });
     });
 
