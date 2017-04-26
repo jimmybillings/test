@@ -1,10 +1,9 @@
-<button *ngIf="allowEdit" md-raised-button (click)="editCard()">Edit</button>
+<!--<section *ngIf="allowEdit" class="edit-cc" layout="row" layout-align="end start">-->
+  <button  *ngIf="allowEdit" md-button class="mini is-outlined" color="primary" (click)="editCard()">
+    {{ 'CART.CONFIRM.EDIT' | translate }}
+  </button>
+<!--</section>-->
 <form layout="column" [formGroup]="form" novalidate class="md-inline-form" autocomplete="{{autocomplete}}" (ngSubmit)="onSubmit()" disabled>
-	<!--<ng-container *ngFor="let field of items; let i=index">-->
-    
-		<!--
-        START: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
-      -->
   <div>
     <md-input-container>
       <input mdInput

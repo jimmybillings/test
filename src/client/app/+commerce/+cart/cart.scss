@@ -1,4 +1,6 @@
-cart-component .tabs-section, quote-edit-component .tabs-section {
+cart-component .tabs-section, 
+quote-show-component .tabs-section,
+quote-edit-component .tabs-section {
   & > div > div {
     background: rgba(mat-color($background, background),.35);
   }
@@ -15,6 +17,9 @@ cart-component .tabs-section, quote-edit-component .tabs-section {
       margin-right: rem(1.2);
     }
   }
+}
+quote-show-component .tabs-section md-tab-group > div .project:first-child {
+  margin-top: rem(2.2);
 }
 cart-component section.header, quote-edit-component section.header {
   color: mat-color($primary, default);
@@ -137,12 +142,11 @@ button.checkout-forward {
   }
 }
 .mat-tab-body-content header {
-  margin-bottom: rem(1.2);
   .commerce-heading {
     font-size: rem(2.6);
     font-weight: 300;
-    line-height: rem(3.0);
-    margin: .7em 0 .3em 0;
+    line-height: 1;
+    margin: .6em 0 .3em 0;
     padding: 0;
     color: rgba(mat-color($foreground, text), .8);
   }

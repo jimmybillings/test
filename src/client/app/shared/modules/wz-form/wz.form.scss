@@ -70,6 +70,17 @@ wz-form {
     }
   }
 }
+// cc form has no title
+wz-cc-form form {
+  padding-top: 0;
+}
+  //show hide edit button 
+wz-cc-form button.mini.is-outlined {
+  position: absolute;
+  top: rem(-2.2);
+  right: rem(-2.4);
+  margin-right: 0;
+}
 
 *[md-button] {
   text-transform: uppercase;
