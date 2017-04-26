@@ -5,6 +5,7 @@ import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { Quote, Quotes } from '../../../shared/interfaces/commerce.interface';
 import { Observable } from 'rxjs/Observable';
+import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 
 @Component({
   selector: 'quotes-component',
@@ -19,11 +20,13 @@ export class QuotesComponent {
   public currentSort: any;
   public currentFilter: any;
   private params: any;
+  private quoteToReject: Quote;
   constructor(
     public userCan: CommerceCapabilities,
     private quotesService: QuotesService,
     private uiConfig: UiConfig,
-    private router: Router) {
+    private router: Router,
+    private dialogService: WzDialogService) {
     this.quotes = this.quotesService.data;
     this.buildFilterOptions();
     this.buildSortOptions();
@@ -65,6 +68,20 @@ export class QuotesComponent {
 
   public onSetAsFocusedQuote(quoteId: number): void {
     this.quotesService.setFocused(quoteId).subscribe();
+  }
+
+  public onRejectQuote(quote: Quote): void {
+    this.quoteToReject = quote;
+    this.dialogService.openConfirmationDialog({
+      title: `Reject Quote ${quote.id}`,
+      message: 'Are you sure you want to reject this quote? It will no longer be available to purchase.',
+      accept: 'yes, I\'m sure',
+      decline: 'no'
+    }, {}, this.rejectQuote);
+  }
+
+  private rejectQuote = () => {
+    this.quotesService.rejectQuote(this.quoteToReject);
   }
 
   private buildRouteParams(params: any) {

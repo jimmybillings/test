@@ -90,6 +90,14 @@
             {{ 'QUOTE.INDEX.DETAIL_BTN_TITLE' | translate }}
           </button>
           <button
+            *ngIf="shouldShowRejectQuoteButton(item)"
+            (click)="rejectQuote.emit(item)"
+            md-button
+            class="is-outlined"
+            color="primary">
+            reject quote
+          </button>
+          <button
             *ngIf="shouldShowViewOrderButton"
             md-button
             class="is-outlined"
