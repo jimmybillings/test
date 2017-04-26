@@ -7,7 +7,6 @@ export type OrderType = 'PurchaseOnCredit' | 'CreditCard' | 'BadDebt' | 'Channel
   | 'PromotionalOrder' | 'FulfillmentOrder' | 'OfflineAgreement'
   | 'ProvisionalOrder' | 'PurchaseOrder' | 'RevenueOnly' | 'SubscriptionOrder';
 export type OrderStatus = 'Order';
-export type TranscodeTatus = 'Submitted' | 'Completed' | 'Failed' | 'UrlError' | 'Deleted';
 export type EditableQuoteFields = 'bulkOrderId' | 'discount';
 // Base interfaces
 
