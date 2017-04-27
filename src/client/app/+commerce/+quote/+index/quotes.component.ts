@@ -81,7 +81,7 @@ export class QuotesComponent {
   }
 
   private rejectQuote = () => {
-    this.quotesService.rejectQuote(this.quoteToReject);
+    this.quotesService.rejectQuote(this.quoteToReject.id);
   }
 
   private buildRouteParams(params: any) {

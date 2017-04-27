@@ -44,10 +44,8 @@ export class QuotesService {
     });
   }
 
-  public rejectQuote(quote: Quote): void {
-    // this will eventually hit the endpoint created in CRUX-1936
-    // something like PUT /quote/{id}/reject
-    console.log(quote);
+  public rejectQuote(quoteId: number): void {
+    this.api.put(Api.Orders, `quote/reject/${quoteId}`).do(() => this.getQuotes()).subscribe();
   }
 
   private findNewFocused(quotes: Quote[], activeQuoteId: number): Quote[] {
