@@ -44,8 +44,8 @@ export class QuotesService {
     });
   }
 
-  public rejectQuote(quoteId: number): void {
-    this.api.put(Api.Orders, `quote/reject/${quoteId}`).do(() => this.getQuotes()).subscribe();
+  public rejectQuote(quoteId: number): Observable<Quote> {
+    return this.api.put(Api.Orders, `quote/reject/${quoteId}`);
   }
 
   private findNewFocused(quotes: Quote[], activeQuoteId: number): Quote[] {

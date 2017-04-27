@@ -73,15 +73,17 @@ export class QuotesComponent {
   public onRejectQuote(quote: Quote): void {
     this.quoteToReject = quote;
     this.dialogService.openConfirmationDialog({
-      title: `Reject Quote ${quote.id}`,
-      message: 'Are you sure you want to reject this quote? It will no longer be available to purchase.',
-      accept: 'yes, I\'m sure',
-      decline: 'no'
+      title: 'QUOTE.INDEX.REJECT.TITLE',
+      message: 'QUOTE.INDEX.REJECT.MESSAGE',
+      accept: 'QUOTE.INDEX.REJECT.ACCEPT',
+      decline: 'QUOTE.INDEX.REJECT.DECLINE'
     }, {}, this.rejectQuote);
   }
 
   private rejectQuote = () => {
-    this.quotesService.rejectQuote(this.quoteToReject.id);
+    this.quotesService.rejectQuote(this.quoteToReject.id).subscribe(() => {
+      this.quotesService.getQuotes(this.userCan.administerQuotes(), this.params).subscribe();
+    });
   }
 
   private buildRouteParams(params: any) {
