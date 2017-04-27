@@ -16,8 +16,10 @@
 			<div flex="100" flex-gt-sm="30" layout-padding flex-order-xs="-1">
 				<project-actions-component
 					*ngIf="!readOnly"
+          [includeFees]="includeFees"
 					(remove)="onRemove(project)"
-					(edit)="onEdit(project)">
+					(edit)="onEdit(project)"
+          (addFee)="onClickAddFeeButtonFor(project)">
 				</project-actions-component>
 				<project-price-info-component
 					*ngIf="quoteType !== 'ProvisionalOrder'"
@@ -38,5 +40,11 @@
 			[quoteType]="quoteType"
 			(lineItemsNotify)="delegate($event)">
 		</line-items-component>
+
+		<fee-line-items-component
+			[readOnly]="readOnly"
+			[feeLineItems]="project.feeLineItems"
+			(feeLineItemsNotify)="delegate($event)">
+		</fee-line-items-component>
 	</div>
 </section>

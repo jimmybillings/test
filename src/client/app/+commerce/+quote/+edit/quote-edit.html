@@ -54,7 +54,8 @@
             [quoteType]="quoteType"
             [projects]="quoteEditService.projects | async"
             [config]="config" 
-            [userCan]="userCan" 
+            [userCan]="userCan"
+            [includeFees]="true"
             (projectsNotify)="onNotification($event)">
           </projects-component>
 

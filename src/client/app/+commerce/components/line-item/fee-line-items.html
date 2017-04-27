@@ -1,0 +1,29 @@
+<ul class="fee-list">
+	<li *ngFor="let feeLineItem of feeLineItems" class="fee-item" flex="100" layout="row" layout-xs="column">
+    <div flex="100" flex-gt-xs="70">
+      <div layout-align="start stretch" layout-gt-xs="row">
+        <div flex-gt-sm="25" flex-sm="40" flex="100" layout-padding>
+          <div class="fee-indicator"></div>
+        </div>
+        <div flex-gt-sm="75" flex-sm="60" flex="100" layout-padding>
+          <div class="md-caption fee-type">
+            {{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.TITLE' | translate:{type:feeLineItem.feeType} }}
+          </div>
+          <p class="fee-notes">{{ feeLineItem.notes }}</p>
+        </div>
+      </div>
+		</div>
+    <div flex-gt-xs="30" layout-sm="100" flex="auto" class="tools actions" flex-order-xs="-3">
+      <button 
+        md-icon-button
+        title="{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.REMOVE_BTN_HOVER' | translate }}"
+        (click)="onRemove(feeLineItem)">
+          <md-icon>remove_circle</md-icon>
+      </button>
+      <div flex="100" layout="row" layout-xs="column" class="divider"></div>
+      <div class="amount">
+        {{ feeLineItem.amount | currency:'USD':true:'1.2-2' }}
+      </div>
+		</div>
+	</li>
+</ul>
