@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
 import { SharedModule } from '../shared/shared.module';
-
 import { CommerceComponent } from './commerce.component';
 import { CommerceCapabilities } from './services/commerce.capabilities';
 import { COMMERCE_ROUTES } from './commerce.routes';
@@ -28,7 +26,6 @@ import { QuotePurchaseTypeComponent } from './+quote/components/quote-purchase-t
 import { QuoteEditComponent } from './+quote/+edit/quote-edit.component';
 
 // tabs
-import { QuoteEditTabComponent } from './+quote/+edit/components/tabs/quote-edit-tab.component';
 import { QuoteTabComponent } from './+quote/components/tabs/quote-tab.component';
 import { QuoteBillingTabComponent } from './+quote/components/tabs/quote-billing-tab.component';
 import { QuotePaymentTabComponent } from './+quote/components/tabs/quote-payment-tab.component';
@@ -92,7 +89,6 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     AdministerQuoteComponent,
     QuotePurchaseTypeComponent,
     QuoteEditComponent,
-    QuoteEditTabComponent,
     QuoteTabComponent,
     QuoteBillingTabComponent,
     QuotePaymentTabComponent,

@@ -41,6 +41,14 @@ export class ProjectsComponent {
     });
   }
 
+  public addBulkOrderId() {
+    this.projectsNotify.emit({ type: 'ADD_BULK_ORDER_ID' });
+  }
+
+  public editDiscount() {
+    this.projectsNotify.emit({ type: 'EDIT_DISCOUNT' });
+  }
+
   public delegate(message: any): void {
     this.projectsNotify.emit(message);
   }
