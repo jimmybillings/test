@@ -1,9 +1,21 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { MdDialogConfig } from '@angular/material';
+import { MdDialogConfig, MdDialog } from '@angular/material';
 
-import { WzFormDialogComponent } from '../components/wz.form-dialog.component';
-import { WzDialogService } from './wz.dialog.service';
+import { WzDialogService } from '../services/wz.dialog.service';
+
+import {
+  ConfirmationDialogStrings,
+  ConfirmationDialogOptions,
+  defaultConfirmationDialogOptions,
+  defaultNotificationDialogOptions
+} from '../interfaces/wz.dialog.interface';
+
+import {
+  WzConfirmationDialogComponent,
+  WzNotificationDialogComponent,
+  WzFormDialogComponent,
+} from '../components/index';
 
 export function main() {
   describe('Wz Dialog Service', () => {
@@ -28,10 +40,133 @@ export function main() {
       serviceUnderTest = new WzDialogService(mockDialog);
     });
 
-    describe('openNotification()', () => {
+    describe('openNotificationDialog()', () => {
       it('should open a dialog', () => {
-        serviceUnderTest.openNotification({}, {});
-        expect(mockDialog.open).toHaveBeenCalled();
+        serviceUnderTest.openNotificationDialog({});
+        expect(mockDialog.open).toHaveBeenCalledWith(
+          WzNotificationDialogComponent,
+          defaultNotificationDialogOptions.dialogConfig
+        );
+      });
+
+      it('should return the value of the afterClosed() method', () => {
+        expect(serviceUnderTest.openNotificationDialog(
+          { title: '', message: '' }
+        )).toEqual('thingReturnedByAfterClosed');
+      });
+    });
+
+    describe('openConfirmationDialog', () => {
+      let acceptSubject: Subject<any>;
+      let declineSubject: Subject<any>;
+      let options: ConfirmationDialogOptions = {};
+
+      beforeEach(() => {
+        acceptSubject = new Subject<any>();
+        declineSubject = new Subject<any>();
+
+        mockComponentInstance.accept = acceptSubject.asObservable();
+        mockComponentInstance.decline = declineSubject.asObservable();
+      });
+
+      it('should open a dialog with the right component and default config', () => {
+        serviceUnderTest.openConfirmationDialog(options, null, null);
+
+        expect(mockDialog.open).toHaveBeenCalledWith(
+          WzConfirmationDialogComponent,
+          defaultConfirmationDialogOptions.dialogConfig
+        );
+      });
+
+      it('returns the value of dialogRef\'s afterClosed method', () => {
+        expect(serviceUnderTest.openConfirmationDialog(options, null, null)).toEqual('thingReturnedByAfterClosed');
+      });
+
+      describe('component options', () => {
+        it('should set a "strings" variable on the component instance', () => {
+          options = { title: '', message: '', accept: '', decline: '' };
+          expect(mockComponentInstance.strings).not.toBeDefined();
+          serviceUnderTest.openConfirmationDialog(options, null, null);
+          expect(mockComponentInstance.strings).toEqual({ title: '', message: '', accept: '', decline: '' });
+        });
+      });
+
+      describe('dialog display options', () => {
+        it('has default values', () => {
+          serviceUnderTest.openConfirmationDialog({}, null, null);
+
+          expect(mockDialog.open).toHaveBeenCalledWith(
+            WzConfirmationDialogComponent,
+            { disableClose: true, width: '375px', position: { top: '12%' } }
+          );
+        });
+
+        it('can override disableClose', () => {
+          serviceUnderTest.openConfirmationDialog({ dialogConfig: { disableClose: false } }, null, null);
+
+          expect(mockDialog.open).toHaveBeenCalledWith(
+            WzConfirmationDialogComponent,
+            { disableClose: false, width: '375px', position: { top: '12%' } }
+          );
+        });
+
+        it('can override the top position', () => {
+          serviceUnderTest.openConfirmationDialog({ dialogConfig: { position: { top: '42%' } } }, null, null);
+
+          expect(mockDialog.open).toHaveBeenCalledWith(
+            WzConfirmationDialogComponent,
+            { disableClose: true, width: '375px', position: { top: '42%' } }
+          );
+        });
+
+        it('can add a height', () => {
+          serviceUnderTest.openConfirmationDialog({ dialogConfig: { height: '500px' } }, null, null);
+
+          expect(mockDialog.open).toHaveBeenCalledWith(
+            WzConfirmationDialogComponent,
+            { disableClose: true, width: '375px', position: { top: '12%' }, height: '500px' }
+          );
+        });
+
+        it('can add a left position', () => {
+          serviceUnderTest.openConfirmationDialog({ dialogConfig: { position: { left: '17%' } } }, null, null);
+
+          expect(mockDialog.open).toHaveBeenCalledWith(
+            WzConfirmationDialogComponent,
+            { disableClose: true, width: '375px', position: { left: '17%', top: '12%' } }
+          );
+        });
+
+        it('can override and add several properties at once', () => {
+          const dialogConfig: MdDialogConfig = {
+            disableClose: false, height: '300px', width: '900px', position: { left: '23%', top: '5%' }
+          };
+
+          serviceUnderTest.openConfirmationDialog({ dialogConfig: dialogConfig }, null, null);
+
+          expect(mockDialog.open).toHaveBeenCalledWith(WzConfirmationDialogComponent, dialogConfig);
+        });
+      });
+
+      describe('callbacks', () => {
+        let acceptCallback: any;
+        let declineCallback: any;
+        beforeEach(() => {
+          acceptCallback = jasmine.createSpy('acceptCallback');
+          declineCallback = jasmine.createSpy('declineCallback');
+        });
+
+        it('should call the accept callback on the accept event', () => {
+          serviceUnderTest.openConfirmationDialog(options, acceptCallback, declineCallback);
+          acceptSubject.next();
+          expect(acceptCallback).toHaveBeenCalled();
+        });
+
+        it('should call the decline callback on the decline event', () => {
+          serviceUnderTest.openConfirmationDialog(options, acceptCallback, declineCallback);
+          declineSubject.next();
+          expect(declineCallback).toHaveBeenCalled();
+        });
       });
     });
 
@@ -199,7 +334,7 @@ export function main() {
           serviceUnderTest.openFormDialog([], {}, null, callback);
           formCancelSubject.next();
 
-          expect(callback).toHaveBeenCalledWith(/* nothing */);
+          expect(callback).toHaveBeenCalledWith(undefined);
         });
       });
     });

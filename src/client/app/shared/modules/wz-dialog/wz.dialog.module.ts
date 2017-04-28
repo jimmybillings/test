@@ -9,8 +9,11 @@ import { WzFormModule } from '../wz-form/wz-form.module';
 import { WzDialogService } from './services/wz.dialog.service';
 
 // Dialog types
-import { WzNotificationDialogComponent } from './components/wz.notification-dialog.component';
-import { WzFormDialogComponent } from './components/wz.form-dialog.component';
+import {
+  WzConfirmationDialogComponent,
+  WzNotificationDialogComponent,
+  WzFormDialogComponent
+} from './components/index';
 
 @NgModule({
   imports: [
@@ -21,10 +24,12 @@ import { WzFormDialogComponent } from './components/wz.form-dialog.component';
   ],
   declarations: [
     WzNotificationDialogComponent,
+    WzConfirmationDialogComponent,
     WzFormDialogComponent
   ],
   entryComponents: [
     WzNotificationDialogComponent,
+    WzConfirmationDialogComponent,
     WzFormDialogComponent
   ],
   providers: [WzDialogService]

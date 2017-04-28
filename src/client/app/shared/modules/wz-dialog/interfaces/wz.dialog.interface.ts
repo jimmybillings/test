@@ -1,13 +1,47 @@
 import { MdDialogConfig } from '@angular/material';
 
-export interface FormDialogOptions {
+export interface DialogConfig {
+  mergedDialogConfig: MdDialogConfig;
+  mergedOptions: DialogOptions;
+}
+
+export interface BaseDialogConfig {
+  dialogConfig?: MdDialogConfig;
+}
+
+export interface FormDialogOptions extends BaseDialogConfig {
   title?: string;
   submitLabel?: string;
   cancelLabel?: string;
   displayCancelButton?: boolean;
   autocomplete?: string;
-  dialogConfig?: MdDialogConfig;
 };
+
+export interface NotificationDialogOptions extends BaseDialogConfig {
+  title?: string;
+  message?: string;
+  prompt?: string;
+}
+
+export interface ConfirmationDialogOptions extends BaseDialogConfig {
+  title?: string;
+  message?: string;
+  accept?: string;
+  decline?: string;
+}
+
+export interface NotificationDialogStrings {
+  title?: string;
+  message?: string;
+  prompt?: string;
+}
+
+export interface ConfirmationDialogStrings {
+  title?: string;
+  message?: string;
+  accept?: string;
+  decline?: string;
+}
 
 export const defaultFormDialogOptions: FormDialogOptions = {
   title: undefined,
@@ -18,5 +52,21 @@ export const defaultFormDialogOptions: FormDialogOptions = {
   dialogConfig: { disableClose: true, position: { top: '10%' } }
 };
 
-export type FormDialogSubmitCallback = (result: any) => void;
-export type FormDialogCancelCallback = () => void;
+export const defaultConfirmationDialogOptions: ConfirmationDialogOptions = {
+  dialogConfig: { disableClose: true, width: '375px', position: { top: '12%' } }
+};
+
+export const defaultNotificationDialogOptions: NotificationDialogOptions = {
+  prompt: 'close', dialogConfig: { disableClose: true, width: '375px', position: { top: '12%' } }
+};
+
+export interface DialogCallback {
+  event: string;
+  callback: Function;
+  closeOnEvent: boolean;
+}
+
+export type DialogOptions = FormDialogOptions | ConfirmationDialogOptions | NotificationDialogOptions;
+export type DialogResultCallback = (result: any) => void;
+export type DialogNoResultCallback = () => void;
+
