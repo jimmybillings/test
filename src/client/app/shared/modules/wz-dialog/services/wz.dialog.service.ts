@@ -11,40 +11,62 @@ import {
 
 import {
   DialogCallback,
-  FormDialogOptions,
+  DialogConfig,
+  DialogOptions,
   DialogResultCallback,
   DialogNoResultCallback,
-  NotifcationDialogStrings,
-  defaultFormDialogOptions,
+  FormDialogOptions,
+  NotificationDialogOptions,
+  ConfirmationDialogOptions,
+  NotificationDialogStrings,
   ConfirmationDialogStrings,
+  defaultFormDialogOptions,
   defaultConfirmationDialogOptions,
-  defaultNotificationDialogOptions
+  defaultNotificationDialogOptions,
 } from '../interfaces/wz.dialog.interface';
 
 @Injectable()
 export class WzDialogService {
   constructor(private dialog: MdDialog) { }
 
-  public openNotificationDialog(strings: NotifcationDialogStrings, config: MdDialogConfig = {}): Observable<any> {
-    const newConfig: MdDialogConfig = Object.assign(defaultNotificationDialogOptions, config);
-    const dialogRef: MdDialogRef<WzNotificationDialogComponent> = this.dialog.open(WzNotificationDialogComponent, newConfig);
+  public openNotificationDialog(options: NotificationDialogOptions): Observable<any> {
+    const mergedDialogConfig: MdDialogConfig = this.mergeDialogConfigs(defaultNotificationDialogOptions, options);
+    const mergedOptions: NotificationDialogOptions = Object.assign({}, defaultNotificationDialogOptions, options);
 
-    dialogRef.componentInstance.strings = strings;
+    const dialogRef: MdDialogRef<WzNotificationDialogComponent> = this.dialog.open(
+      WzNotificationDialogComponent,
+      mergedDialogConfig
+    );
+
+    dialogRef.componentInstance.strings = {
+      title: mergedOptions.title,
+      message: mergedOptions.message,
+      prompt: mergedOptions.prompt
+    };
 
     return dialogRef.afterClosed();
   }
 
   public openConfirmationDialog(
-    strings: ConfirmationDialogStrings,
-    config: MdDialogConfig,
+    options: ConfirmationDialogOptions,
     onAccept: DialogNoResultCallback,
     onDecline: DialogNoResultCallback = () => { }
   ): Observable<any> {
-    const newConfig: MdDialogConfig = Object.assign(defaultConfirmationDialogOptions, config);
-    const dialogRef: MdDialogRef<WzConfirmationDialogComponent> = this.dialog.open(WzConfirmationDialogComponent, newConfig);
+    const mergedDialogConfig: MdDialogConfig = this.mergeDialogConfigs(defaultConfirmationDialogOptions, options);
+    const mergedOptions: ConfirmationDialogOptions = Object.assign({}, defaultConfirmationDialogOptions, options);
+
+    const dialogRef: MdDialogRef<WzConfirmationDialogComponent> = this.dialog.open(
+      WzConfirmationDialogComponent,
+      mergedDialogConfig
+    );
     const component: WzConfirmationDialogComponent = dialogRef.componentInstance;
 
-    dialogRef.componentInstance.strings = strings;
+    dialogRef.componentInstance.strings = {
+      title: mergedOptions.title,
+      message: mergedOptions.message,
+      accept: mergedOptions.accept,
+      decline: mergedOptions.decline,
+    };
 
     this.setupCallbacks(component, dialogRef, [
       { event: 'accept', callback: onAccept, closeOnEvent: false },
@@ -60,12 +82,7 @@ export class WzDialogService {
     onSubmit: DialogResultCallback,
     onCancel: DialogNoResultCallback = () => { }
   ): Observable<any> {
-    const mergedDialogPosition: DialogPosition =
-      Object.assign({}, (defaultFormDialogOptions.dialogConfig || {}).position, (options.dialogConfig || {}).position);
-
-    const mergedDialogConfig: MdDialogConfig =
-      Object.assign({}, defaultFormDialogOptions.dialogConfig, options.dialogConfig, { position: mergedDialogPosition });
-
+    const mergedDialogConfig: MdDialogConfig = this.mergeDialogConfigs(defaultFormDialogOptions, options);
     const mergedOptions: FormDialogOptions = Object.assign({}, defaultFormDialogOptions, options);
 
     const dialogRef: MdDialogRef<WzFormDialogComponent> = this.dialog.open(WzFormDialogComponent, mergedDialogConfig);
@@ -93,5 +110,12 @@ export class WzDialogService {
         if (cb.callback) cb.callback(result);
       });
     });
+  }
+
+  private mergeDialogConfigs(defaultOptions: DialogOptions, options: DialogOptions): MdDialogConfig {
+    const mergedDialogPosition: DialogPosition =
+      Object.assign({}, (defaultOptions.dialogConfig || {}).position, (options.dialogConfig || {}).position);
+
+    return Object.assign({}, defaultOptions.dialogConfig, options.dialogConfig, { position: mergedDialogPosition });
   }
 }

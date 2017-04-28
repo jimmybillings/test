@@ -8,8 +8,20 @@ export function main() {
       componentUnderTest = new WzConfirmationDialogComponent();
     });
 
-    it('has no tests!', () => {
-      expect(true).toBe(true);
+    describe('onClickAccept', () => {
+      it('should emit the accept event', () => {
+        spyOn(componentUnderTest.accept, 'emit');
+        componentUnderTest.onClickAccept();
+        expect(componentUnderTest.accept.emit).toHaveBeenCalled();
+      });
+    });
+
+    describe('onClickDecline', () => {
+      it('should emit the decline event', () => {
+        spyOn(componentUnderTest.decline, 'emit');
+        componentUnderTest.onClickDecline();
+        expect(componentUnderTest.decline.emit).toHaveBeenCalled();
+      });
     });
   });
 }

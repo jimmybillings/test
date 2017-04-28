@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ConfirmationDialogStrings } from '../interfaces/wz.dialog.interface';
 
 @Component({
   moduleId: module.id,
@@ -9,17 +10,25 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
       <div flex>{{ strings.message | translate }}</div>
     </md-dialog-content>
     <md-dialog-actions layout="row" layout-align="end end">
-      <button (click)="accept.emit()" md-button md-dialog-close color="primary" title="{{ strings.accept | translate }}">
+      <button (click)="onClickAccept()" md-button md-dialog-close color="primary" title="{{ strings.accept | translate }}">
         {{ strings.accept | translate }}
       </button>
-      <button (click)="decline.emit()" md-button md-dialog-close color="primary" title="{{ strings.decline | translate }}">
+      <button (click)="onClickDecline()" md-button md-dialog-close color="primary" title="{{ strings.decline | translate }}">
         {{ strings.decline | translate }}
       </button>
     </md-dialog-actions>
   `
 })
 export class WzConfirmationDialogComponent {
-  @Input() strings: any;
-  @Output() accept: EventEmitter<any> = new EventEmitter();
-  @Output() decline: EventEmitter<any> = new EventEmitter();
+  @Input() strings: ConfirmationDialogStrings;
+  @Output() accept: EventEmitter<null> = new EventEmitter();
+  @Output() decline: EventEmitter<null> = new EventEmitter();
+
+  public onClickAccept(): void {
+    this.accept.emit();
+  }
+
+  public onClickDecline(): void {
+    this.decline.emit();
+  }
 }

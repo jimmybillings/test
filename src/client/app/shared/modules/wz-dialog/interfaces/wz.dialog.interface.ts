@@ -1,25 +1,46 @@
 import { MdDialogConfig } from '@angular/material';
 
-export interface FormDialogOptions {
+export interface DialogConfig {
+  mergedDialogConfig: MdDialogConfig;
+  mergedOptions: DialogOptions;
+}
+
+export interface BaseDialogConfig {
+  dialogConfig?: MdDialogConfig;
+}
+
+export interface FormDialogOptions extends BaseDialogConfig {
   title?: string;
   submitLabel?: string;
   cancelLabel?: string;
   displayCancelButton?: boolean;
   autocomplete?: string;
-  dialogConfig?: MdDialogConfig;
 };
 
-export interface NotifcationDialogStrings {
-  title: string;
-  message: string;
-  prompt: string;
+export interface NotificationDialogOptions extends BaseDialogConfig {
+  title?: string;
+  message?: string;
+  prompt?: string;
+}
+
+export interface ConfirmationDialogOptions extends BaseDialogConfig {
+  title?: string;
+  message?: string;
+  accept?: string;
+  decline?: string;
+}
+
+export interface NotificationDialogStrings {
+  title?: string;
+  message?: string;
+  prompt?: string;
 }
 
 export interface ConfirmationDialogStrings {
-  title: string;
-  message: string;
-  accept: string;
-  decline: string;
+  title?: string;
+  message?: string;
+  accept?: string;
+  decline?: string;
 }
 
 export const defaultFormDialogOptions: FormDialogOptions = {
@@ -31,12 +52,12 @@ export const defaultFormDialogOptions: FormDialogOptions = {
   dialogConfig: { disableClose: true, position: { top: '10%' } }
 };
 
-export const defaultConfirmationDialogOptions: MdDialogConfig = {
-  disableClose: true, width: '375px', position: { top: '12%' }
+export const defaultConfirmationDialogOptions: ConfirmationDialogOptions = {
+  dialogConfig: { disableClose: true, width: '375px', position: { top: '12%' } }
 };
 
-export const defaultNotificationDialogOptions: MdDialogConfig = {
-  disableClose: true, width: '375px', position: { top: '12%' }
+export const defaultNotificationDialogOptions: NotificationDialogOptions = {
+  prompt: 'close', dialogConfig: { disableClose: true, width: '375px', position: { top: '12%' } }
 };
 
 export interface DialogCallback {
@@ -45,6 +66,7 @@ export interface DialogCallback {
   closeOnEvent: boolean;
 }
 
+export type DialogOptions = FormDialogOptions | ConfirmationDialogOptions | NotificationDialogOptions;
 export type DialogResultCallback = (result: any) => void;
 export type DialogNoResultCallback = () => void;
 
