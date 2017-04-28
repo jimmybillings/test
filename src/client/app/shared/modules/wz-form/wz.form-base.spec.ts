@@ -8,7 +8,7 @@ export function main() {
       classUnderTest = new WzFormBase(null, null, null);
     });
 
-    fdescribe('onDollarsInput()', () => {
+    describe('onDollarsInput()', () => {
       let event: any;
       const getCursorPostionIn: Function = (string: string) => {
         const position: number = string.indexOf('|');
