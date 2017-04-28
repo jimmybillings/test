@@ -10,12 +10,22 @@ import { MaterialModule } from './modules/wz-design/wz-design.module';
 
 // WAZEE PROVIDERS
 import { WAZEE_PROVIDERS } from '../imports/wazee';
+import { StoreModule } from '@ngrx/store';
+import { WAZEE_STORES } from '../imports/wazee';
 
 // Shared Wazee Modules
 import { WzPlayerModule } from './modules/wz-player/wz.player.module';
 import { WzFormModule } from './modules/wz-form/wz-form.module';
 import { WzAssetModule } from './modules/wz-asset/wz-asset.module';
-import { WzDialogModule } from './modules/wz-dialog/wz.dialog.module';
+// import { WzDialogModule } from './modules/wz-dialog/wz.dialog.module';
+
+// Wrapper service
+import { WzDialogService } from './modules/wz-dialog/services/wz.dialog.service';
+
+// Dialog types
+import { WzNotificationDialogComponent } from './modules/wz-dialog/components/wz.notification-dialog.component';
+import { WzFormDialogComponent } from './modules/wz-dialog/components/wz.form-dialog.component';
+import { WzPricingDialogComponent } from './modules/wz-dialog/components/wz.pricing-dialog.component';
 
 // Shared Pure Components
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
@@ -35,6 +45,7 @@ import { WzSubclipEditorComponent } from './components/wz-subclip-editor/wz.subc
 import { WzGalleryTwoLevelComponent } from './components/wz-gallery-two-level/wz.gallery-two-level.component';
 import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb/wz.gallery-breadcrumb.component';
 import { WzSiteChangerComponent } from './components/wz-site-changer/wz-site-changer.component';
+import { WzNotFoundComponent } from './components/wz-not-found/wz-not-found.component';
 
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
@@ -62,7 +73,7 @@ export function createTranslateLoader(http: Http) {
     WzPlayerModule,
     WzFormModule,
     WzAssetModule,
-    WzDialogModule
+    StoreModule.provideStore(WAZEE_STORES)
   ],
   declarations: [
     WzGalleryBreadcrumbComponent,
@@ -83,9 +94,14 @@ export function createTranslateLoader(http: Http) {
     WzComingSoonComponent,
     WzGalleryTwoLevelComponent,
     WzSubclipEditorComponent,
-    WzSiteChangerComponent
+    WzSiteChangerComponent,
+    WzNotFoundComponent,
+    WzNotificationDialogComponent,
+    WzFormDialogComponent,
+    WzPricingDialogComponent
   ],
   exports: [
+    StoreModule,
     WzGalleryBreadcrumbComponent,
     WzBreadcrumbComponent,
     WzDropdownComponent,
@@ -115,7 +131,10 @@ export function createTranslateLoader(http: Http) {
     WzGalleryTwoLevelComponent,
     WzSubclipEditorComponent,
     WzSiteChangerComponent,
-    WzDialogModule
+    WzNotFoundComponent,
+    WzNotificationDialogComponent,
+    WzFormDialogComponent,
+    WzPricingDialogComponent
   ],
   entryComponents: [
     CollectionLinkComponent,
@@ -123,7 +142,10 @@ export function createTranslateLoader(http: Http) {
     WzTermsComponent,
     WzPricingComponent,
     WzComingSoonComponent,
-    WzSubclipEditorComponent
+    WzSubclipEditorComponent,
+    WzNotificationDialogComponent,
+    WzFormDialogComponent,
+    WzPricingDialogComponent
   ]
 })
 
@@ -131,7 +153,7 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: WAZEE_PROVIDERS
+      providers: [WAZEE_PROVIDERS, WzDialogService]
     };
   }
 }

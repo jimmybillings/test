@@ -1,4 +1,3 @@
-import './operators';
 import { Component, OnInit, HostListener, NgZone } from '@angular/core';
 import { Router, RoutesRecognized, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';

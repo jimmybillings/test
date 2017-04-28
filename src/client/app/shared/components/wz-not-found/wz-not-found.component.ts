@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CurrentUserService } from './shared/services/current-user.service';
+import { CurrentUserService } from '../../services/current-user.service';
 
 @Component({
   moduleId: module.id,
@@ -26,6 +26,6 @@ import { CurrentUserService } from './shared/services/current-user.service';
           `]
 })
 
-export class NotFoundComponent {
+export class WzNotFoundComponent {
   constructor(public currentUser: CurrentUserService) { }
 }

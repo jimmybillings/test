@@ -1,11 +1,11 @@
-import { NotFoundComponent } from './app.not-found.component';
+import { WzNotFoundComponent } from './wz-not-found.component';
 
 export function main() {
   describe('Not Found Component', () => {
-    let componentUnderTest: NotFoundComponent;
+    let componentUnderTest: WzNotFoundComponent;
 
     beforeEach(() => {
-      componentUnderTest = new NotFoundComponent(null);
+      componentUnderTest = new WzNotFoundComponent(null);
     });
 
     it('has no tests!', () => {

@@ -12,7 +12,7 @@ import { WzDialogService } from './services/wz.dialog.service';
 import {
   WzConfirmationDialogComponent,
   WzNotificationDialogComponent,
-  WzFormDialogComponent
+  WzFormDialogComponent,
 } from './components/index';
 
 @NgModule({

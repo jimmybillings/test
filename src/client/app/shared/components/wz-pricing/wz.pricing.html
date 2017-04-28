@@ -1,7 +1,5 @@
 <div class="wz-dialog pricing">
-  <button md-dialog-close md-icon-button title="close dialog" type="button" class="close"><md-icon>close</md-icon></button>
   <h1 md-dialog-title>{{ 'PRICING.CALCULATE_HEADING' | translate }}</h1>
-  <md-dialog-content> 
     <form #f="ngForm" (ngSubmit)="onSubmit()">
       <div *ngFor="let attribute of attributes; let i = index" class="input">
         <div layout="row" layout-align="center center">
@@ -19,5 +17,4 @@
       <p *ngIf="usagePrice" class="md-body-3">{{ usagePrice | async | currency:'USD':true:'1.2-2' }}</p>
       <p *ngIf="!usagePrice" class="md-body-2 disabled">{{ 'PRICING.PENDING_SELECTION' | translate }}</p>
     </div>
-  </md-dialog-content>
 </div>

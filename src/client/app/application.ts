@@ -3,7 +3,6 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { platformBrowser } from '@angular/platform-browser';
 import { AppModule } from './app.module';
 import { Http } from '@angular/http';
-import { AppModuleNgFactory } from './app.module.ngfactory';
 
 declare var portal: string;
 declare var baseUrl: string;
@@ -45,7 +44,7 @@ export class Application {
   private start() {
     if (this.productionMode) enableProdMode();
     if (this.aot) {
-      platformBrowser().bootstrapModuleFactory(AppModuleNgFactory as any);
+      platformBrowser().bootstrapModuleFactory(this.aot as any);
     } else {
       platformBrowserDynamic().bootstrapModule(AppModule/*, options*/);
     }

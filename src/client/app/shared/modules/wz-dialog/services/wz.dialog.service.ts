@@ -3,10 +3,12 @@ import { Observable } from 'rxjs/Observable';
 import { FormFields } from '../../../../shared/interfaces/forms.interface';
 import { MdDialogRef, MdDialog, MdDialogConfig, DialogPosition } from '@angular/material';
 
+
 import {
   WzFormDialogComponent,
   WzNotificationDialogComponent,
-  WzConfirmationDialogComponent
+  WzConfirmationDialogComponent,
+  WzPricingDialogComponent
 } from '../components/index';
 
 import {
@@ -117,5 +119,24 @@ export class WzDialogService {
       Object.assign({}, (defaultOptions.dialogConfig || {}).position, (options.dialogConfig || {}).position);
 
     return Object.assign({}, defaultOptions.dialogConfig, options.dialogConfig, { position: mergedDialogPosition });
+  }
+
+  public openPricingDialog(
+    attributes: Array<any>,
+    pricingPreferences: any,
+    lineItem: any,
+    usagePrice: Observable<any> = null,
+    applyPricingCallBack: any) {
+
+    const dialogRef: MdDialogRef<WzPricingDialogComponent> = this.dialog.open(WzPricingDialogComponent);
+    const component: WzPricingDialogComponent = dialogRef.componentInstance;
+    component.attributes = attributes;
+    component.pricingPreferences = pricingPreferences;
+    component.usagePrice = usagePrice;
+
+    component.pricingEvent.subscribe((event: any) => {
+      applyPricingCallBack(event, lineItem, dialogRef);
+    });
+    return dialogRef.afterClosed();
   }
 }

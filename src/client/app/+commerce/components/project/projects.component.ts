@@ -31,6 +31,10 @@ export class ProjectsComponent {
     return (project.lineItems || []).length;
   }
 
+  public editProjectPricing(): void {
+    this.projectsNotify.emit({ type: 'ADD_PROJECT' });
+  }
+
   public addProject(): void {
     this.projectsNotify.emit({ type: 'ADD_PROJECT' });
   }
