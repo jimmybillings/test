@@ -108,6 +108,14 @@
       mdTextareaAutosize
       id="{{field.name}}"
       ></textarea>
+      <md-hint
+        *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart"
+        align="start">
+        {{ field.hintTextStart | translate }}
+      </md-hint>
+      <md-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
+        {{ field.hintTextEnd | translate }}
+      </md-hint>
     </md-input-container>
 		<!--
         END: FORM INPUT FOR textarea
