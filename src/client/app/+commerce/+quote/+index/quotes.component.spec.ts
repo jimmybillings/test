@@ -16,7 +16,7 @@ export function main() {
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({})) };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
-      componentUnderTest = new QuotesComponent(mockUserCapabilities, mockQuotesService, mockUiConfig, mockRouter);
+      componentUnderTest = new QuotesComponent(mockUserCapabilities, mockQuotesService, mockUiConfig, mockRouter, null);
     });
 
     describe('changePage()', () => {

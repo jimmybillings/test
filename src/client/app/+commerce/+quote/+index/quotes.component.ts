@@ -77,7 +77,7 @@ export class QuotesComponent {
       message: 'QUOTE.INDEX.REJECT.MESSAGE',
       accept: 'QUOTE.INDEX.REJECT.ACCEPT',
       decline: 'QUOTE.INDEX.REJECT.DECLINE'
-    }, {}, this.rejectQuote);
+    }, this.rejectQuote);
   }
 
   private rejectQuote = () => {
