@@ -21,7 +21,7 @@ export class QuotesService {
     return this.store.state;
   }
 
-  public getQuotes(getFocused: boolean, params: any): Observable<any> {
+  public getQuotes(getFocused: boolean = false, params: any = {}): Observable<any> {
     if (getFocused) {
       return this.getFocused().switchMap((activeQuote: Quote) => {
         return this.quotesList(params)
@@ -44,6 +44,10 @@ export class QuotesService {
     });
   }
 
+  public rejectQuote(quoteId: number): Observable<Quote> {
+    return this.api.put(Api.Orders, `quote/reject/${quoteId}`);
+  }
+
   private findNewFocused(quotes: Quote[], activeQuoteId: number): Quote[] {
     return quotes.map((quote: Quote) => {
       quote.focused = quote.id === activeQuoteId ? true : false;
@@ -51,7 +55,7 @@ export class QuotesService {
     });
   }
 
-  private quotesList(params: any): Observable<any> {
+  private quotesList(params: any = {}): Observable<any> {
     return this.api.get(Api.Orders, 'quote/myQuotes', { parameters: this.buildSearchParams(params), loading: true });
   }
 

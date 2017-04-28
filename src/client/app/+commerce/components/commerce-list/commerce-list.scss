@@ -80,13 +80,13 @@
         font-size: .75em;
         font-weight: 600;
         &.pending {
-          color: mat-color($mat-accent, 500);
+          color: mat-color($mat-orange, 500);
         }
         &.active {
           color: mat-color($mat-green, 500);
         }
         &.expired {
-          color: mat-color($mat-warn, 500);
+          color: mat-color($mat-red, 500);
         }
         &.ordered {
           color: mat-color($mat-blue, 500);
