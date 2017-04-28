@@ -10,7 +10,7 @@ export function main() {
 
     describe('onDollarsInput()', () => {
       let event: any;
-      const getCursorPostionIn: Function = (string: string) => {
+      const getCursorPositionIn: Function = (string: string) => {
         const position: number = string.indexOf('|');
         return position === -1 ? string.length : position;
       };
@@ -33,7 +33,7 @@ export function main() {
       //
       // Also, note that input values can come in one big chunk, in the form of a paste operation.  Thus, inputs like
       // '1.2.3.4' can happen, even if they can't happen one character at a time.
-      // 
+      //
       let tests: any = [
         { name: 'accepts an empty string', input: '', output: '' },
         { name: 'accepts numbers', input: '1234567890', output: '1234567890' },
@@ -68,12 +68,12 @@ export function main() {
       for (const test of tests) {
         it(test.name, () => {
           event.target.value = test.input.replace('|', '');
-          event.target.selectionStart = event.target.selectionEnd = getCursorPostionIn(test.input);
+          event.target.selectionStart = event.target.selectionEnd = getCursorPositionIn(test.input);
 
           classUnderTest.onDollarsInput(event);
 
           expect(event.target.value).toEqual(test.output.replace('|', ''));
-          expect(event.target.selectionStart).toEqual(getCursorPostionIn(test.output));
+          expect(event.target.selectionStart).toEqual(getCursorPositionIn(test.output));
           expect(event.target.selectionEnd).toEqual(event.target.selectionStart);
         });
       }

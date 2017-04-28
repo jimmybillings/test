@@ -139,7 +139,7 @@ export class WzFormBase implements OnInit, OnChanges {
 
   public onDollarsInput(event: any): void {
     const target: any = event.target;
-    const cleaner: DollarsInputCleaner = new DollarsInputCleaner(target.value, target.selectionStart)
+    const cleaner: DollarsInputCleaner = new DollarsInputCleaner(target.value, target.selectionStart);
 
     cleaner.clean();
     target.value = cleaner.inputValue;
