@@ -67,7 +67,7 @@ export function main() {
         serviceUnderTest.removeFee({ some: 'fee', id: 47 } as any);
 
         expect(mockApi.delete).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.delete).toHaveBeenCalledWithEndpoint('quote/3/fee/47')
+        expect(mockApi.delete).toHaveBeenCalledWithEndpoint('quote/3/fee/47');
         expect(mockApi.delete).toHaveBeenCalledWithLoading(true);
       });
 

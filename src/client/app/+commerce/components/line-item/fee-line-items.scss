@@ -1,23 +1,39 @@
 fee-line-items-component {
-  padding: 0 rem(1.2) rem(1.2) rem(1.2);
+  padding: 0 rem(1.2) 0 rem(1.2);
   display: flex;
 }
-
 ul.fee-list {
   margin: 0;
   padding: 0;
   list-style: none;
   min-width: 100%;
 }
-
 li.fee-item {
+  margin-bottom: rem(1.2);
   position: relative;
   background-color: mat-color($background, card);
   color: rgba(mat-color($foreground, text), .7);
-  margin: rem(1.2) 0 0 0;
   padding: rem(.2);
   border-radius: $mat-button-border-radius;
   transition: $swift-ease-out;
+  .fee-indicator {
+    background: mat-color($primary, lighter,.8);
+    height: 100%;
+    position: relative;
+    @include text-contrast(mat-color($primary, darker));
+    &::after {
+      content: "\e8b0";
+      font-family: 'Material Icons';
+      font-size: rem(3.0);
+      font-weight: 100;
+      line-height: rem(3.0);
+      height: rem(3.0);
+      width: rem(3.0);
+      position: absolute;
+      right: rem(.6);
+      top: rem(.6);
+    }
+  }
 
   .md-caption.fee-type {
     font-size: rem(1.1);
@@ -42,7 +58,9 @@ li.fee-item {
       vertical-align: top;
     }
   }
-
+  .tools {
+    text-align: right;
+  }
   .divider {
     margin: rem(.6) rem(.8) 0 rem(.8);
     padding-bottom: rem(.6);
