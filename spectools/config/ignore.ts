@@ -11,7 +11,8 @@ export const ignoredFilePatterns: string[] = [
   'wz-pikaday.directive',
   'i18n.providers',
   'main-prod',
-  'operators'
+  'operators',
+  'shared/modules/wz-dialog/components/index'
 ];
 
 export const ignoredDirectoryNames: string[] = [

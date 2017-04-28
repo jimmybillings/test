@@ -41,7 +41,7 @@ export class WzNotificationService {
   }
 
   private create(strings: any) {
-    this.dialog.openNotification(strings).subscribe(_ => this.callInProgress = false);
+    this.dialog.openNotificationDialog(strings).subscribe(_ => this.callInProgress = false);
   }
 
   // I think this is only being used when "disableAnonymousSearch": true is in the site config.
