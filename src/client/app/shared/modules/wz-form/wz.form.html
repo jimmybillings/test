@@ -92,6 +92,27 @@
         END: FORM INPUT FOR dollars
       -->
 
+		<!--
+        START: FORM INPUT FOR textarea
+      -->
+    <md-input-container *ngIf="(field.type == 'textarea')">
+      <textarea mdInput
+      class="md-block"
+      name="{{field.name}}"
+      [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
+      placeholder="{{field.label | translate}}"
+      formControlName="{{field.name}}"
+      [required]="isRequiredField(field)"
+      rows="1"
+      [maxRows]="6"
+      mdTextareaAutosize
+      id="{{field.name}}"
+      ></textarea>
+    </md-input-container>
+		<!--
+        END: FORM INPUT FOR textarea
+      -->
+
       <!--
         START: FORM CONFIRM PASSWORD DOUBLE FIELD
       -->
