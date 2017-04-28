@@ -137,6 +137,15 @@ export class WzFormBase implements OnInit, OnChanges {
     this.formModel.markFormAsUntouched(this.form);
   }
 
+  public onDollarsInput(event: any): void {
+    const target: any = event.target;
+    const cleaner: DollarsInputCleaner = new DollarsInputCleaner(target.value, target.selectionStart)
+
+    cleaner.clean();
+    target.value = cleaner.inputValue;
+    target.selectionStart = target.selectionEnd = cleaner.cursorPosition;
+  }
+
   public calculateDateFor(dateSpec: string): string {
     if (!dateSpec) return null;
 
@@ -169,5 +178,73 @@ export class WzFormBase implements OnInit, OnChanges {
 
   private update(fieldName: string, value: any) {
     (<FormControl>this.form.controls[fieldName]).setValue(value);
+  }
+}
+
+// Used internally only.
+class DollarsInputCleaner {
+  constructor(public inputValue: string, public cursorPosition: number) { }
+
+  public clean(): void {
+    this.removeNonDollarCharacters();
+    this.removeLeadingZeros();
+    this.removeExcessDecimalPoints();
+    this.removeExcessPostDecimalDigits();
+  }
+
+  //// Main cleaner methods
+
+  private removeNonDollarCharacters(): void {
+    this.modifyInputValueWith(string => string.replace(/[^\d\.]/g, ''));
+  }
+
+  private removeLeadingZeros(): void {
+    this.modifyInputValueWith(string => string.replace(/^0*(\d.*)/, '$1'));
+  }
+
+  private removeExcessDecimalPoints(): void {
+    // Remove all decimal points left of the cursorPosition until we hit the left edge or
+    // we are down to one decimal point, whichever comes first.  This lets us remove a newly
+    // inserted second decimal point if another one already existed somewhere to the right of
+    // the cursor.  If we just always kept the leftmost decimal point, then we might "move" the
+    // original decimal point, which is confusing for the user.
+    this.modifyInputValueWith(string => this.removeExcessDecimalPointsLeftOf(this.cursorPosition, string));
+
+    // If there are still two or more decimal points, then they are to the right of the cursorPosition.
+    // There doesn't seem to be a way that could happen in real life with a text input, but we'll cover
+    // the edge case (just in case) by deleting excess decimal points starting from the right edge of the string.
+    this.modifyInputValueWith(string => this.removeExcessDecimalPointsLeftOf(string.length, string), false);
+  }
+
+  private removeExcessPostDecimalDigits(): void {
+    this.modifyInputValueWith(string => string.replace(/^(.*\.\d\d).*$/, '$1'), false);
+    this.cursorPosition = Math.min(this.cursorPosition, this.inputValue.length);
+  }
+
+  //// Utility methods
+
+  private modifyInputValueWith(pureModifier: ((string: string) => string), recalculateCursorPosition: boolean = true): void {
+    const lengthBeforeModification: number = this.inputValue.length;
+
+    this.inputValue = pureModifier(this.inputValue);
+    if (recalculateCursorPosition) this.cursorPosition -= (lengthBeforeModification - this.inputValue.length);
+  }
+
+  private removeExcessDecimalPointsLeftOf(position: number, string: string): string {
+    let numberOfDecimalPoints: number = string.split('.').length - 1;
+    let result: string = string;
+
+    for (let i = position; i >= 0 && numberOfDecimalPoints > 1; i -= 1) {
+      if (result.charAt(i) === '.') {
+        result = this.removeCharacterAt(i, result);
+        numberOfDecimalPoints -= 1;
+      }
+    }
+
+    return result;
+  }
+
+  private removeCharacterAt(index: number, string: string): string {
+    return string.substr(0, index) + string.substr(index + 1);
   }
 }

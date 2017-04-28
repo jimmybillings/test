@@ -72,6 +72,26 @@
         END: FORM INPUT FOR wzdate
       -->
 
+		<!--
+        START: FORM INPUT FOR dollars
+      -->
+    <md-input-container *ngIf="(field.type == 'dollars')">
+      <input mdInput
+      type="text"
+      class="md-block"
+      name="{{field.name}}"
+      [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
+      placeholder="{{field.label | translate}}"
+      formControlName="{{field.name}}"
+      [required]="isRequiredField(field)"
+      id="{{field.name}}"
+      (input)="onDollarsInput($event, field)"
+      >
+    </md-input-container>
+		<!--
+        END: FORM INPUT FOR dollars
+      -->
+
       <!--
         START: FORM CONFIRM PASSWORD DOUBLE FIELD
       -->
