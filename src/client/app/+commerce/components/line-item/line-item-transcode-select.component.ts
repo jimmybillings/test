@@ -21,7 +21,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
     </div>
   `,
   styles: [
-    `.read-only-transcode { margin-top: -5px; }`
+    `.read-only-transcode { margin-top: -5px; margin-left: 40px;}`
   ]
 })
 export class LineItemTranscodeSelectComponent {
