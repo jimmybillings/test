@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 export function main() {
   describe('Quotes Component', () => {
     let componentUnderTest: QuotesComponent, mockQuotesService: any, mockUiConfig: any,
-      mockUserCapabilities: any, mockRouter: any, hasPermission: boolean;
+      mockUserCapabilities: any, mockRouter: any, hasPermission: boolean, mockDialogService: any;
 
     beforeEach(() => {
       hasPermission = false;
@@ -16,7 +16,10 @@ export function main() {
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({})) };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
-      componentUnderTest = new QuotesComponent(mockUserCapabilities, mockQuotesService, mockUiConfig, mockRouter);
+      mockDialogService = { openConfirmationDialog: jasmine.createSpy('openConfirmationDialog') };
+      componentUnderTest = new QuotesComponent(
+        mockUserCapabilities, mockQuotesService, mockUiConfig, mockRouter, mockDialogService
+      );
     });
 
     describe('changePage()', () => {
@@ -76,6 +79,25 @@ export function main() {
         componentUnderTest.onSetAsFocusedQuote(1);
 
         expect(mockQuotesService.setFocused).toHaveBeenCalledWith(1);
+      });
+    });
+
+    describe('onRejectQuote()', () => {
+      it('should call openConfirmationDialog on the dialog service', () => {
+        componentUnderTest.onRejectQuote({ id: 1 } as any);
+
+        expect(mockDialogService.openConfirmationDialog).toHaveBeenCalled();
+      });
+
+      it('should pass the right config to the dialog service', () => {
+        componentUnderTest.onRejectQuote({ id: 1 } as any);
+
+        expect(mockDialogService.openConfirmationDialog).toHaveBeenCalledWith({
+          title: 'QUOTE.INDEX.REJECT.TITLE',
+          message: 'QUOTE.INDEX.REJECT.MESSAGE',
+          accept: 'QUOTE.INDEX.REJECT.ACCEPT',
+          decline: 'QUOTE.INDEX.REJECT.DECLINE'
+        }, jasmine.any(Function));
       });
     });
   });
