@@ -134,3 +134,12 @@ button.is-outlined.mini {
   padding: 0 rem(1.0);
   margin-right: rem(1.2);
 }
+button.mat-icon-button.select-usage {
+  color: mat-color($mat-warn, darker);
+}
+.cart-asset asset-subclip-display-component .asset-sub-clip {
+  margin-top: rem(1.4);
+  ul.subclip-data {
+    min-width: rem(34.0);
+  }
+}

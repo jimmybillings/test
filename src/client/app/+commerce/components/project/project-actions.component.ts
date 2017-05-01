@@ -21,7 +21,7 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
     <md-menu x-position="before" #projectOptionsMenu="mdMenu">
       <button disabled md-menu-item><md-icon>attachment</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
       <button [disabled]="!includeFees" md-menu-item (click)="onAddFeeButtonClick()">
-        <md-icon>receipt</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}
+        <md-icon>note_add</md-icon>{{ 'CART.PROJECTS.ADD_FEE' | translate }}
       </button>
       <div class="divider"></div>
       <button md-menu-item (click)="onRemoveButtonClick()"> <md-icon>delete</md-icon>{{ 'CART.PROJECTS.DELETE_PROJECT_BTN' | translate }}

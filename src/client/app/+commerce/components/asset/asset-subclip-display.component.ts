@@ -11,7 +11,7 @@ import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
       <div class="subclip-timeline">
         <span class="subclip-segment" [ngStyle]="calcSubClipSegments(asset)"></span>
       </div>
-      <ul class="subclip-data" layout="row">
+      <ul class="subclip-data" layout="row" hide-sm>
         <li flex-gt-sm="30" flex-gt-md="25" flex="35">
           <strong>{{ 'COLLECTION.SHOW.START_TIME_LABEL' | translate }} </strong>
           {{frame(asset.metadata[2].value, asset.timeStart - 0) | timecode}}

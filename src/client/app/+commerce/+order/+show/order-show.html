@@ -77,10 +77,10 @@
 									flex="100" 
 									layout="row" 
 									layout-xs="column">
-									<div flex="100" flex-gt-xs="50">
+									<div flex="100" flex-gt-xs="60">
 										<cart-asset-component [asset]="lineItem.asset"></cart-asset-component>
 									</div>
-									<div flex-gt-xs="50" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
+									<div flex-gt-xs="40" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
 										<div class="tools" flex="100" layout-padding>
 											<button [disabled]="!lineItem.asset.masterDownloadUrl" (click)="downloadMaster(lineItem.asset.masterDownloadUrl)" md-button color="primary" class="is-outlined">{{ 'ORDER.SHOW.DOWNLOAD_BTN_TITLE' | translate }}</button>
 											<button 

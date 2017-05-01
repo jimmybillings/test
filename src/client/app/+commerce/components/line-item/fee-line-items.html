@@ -1,11 +1,14 @@
 <ul class="fee-list">
 	<li *ngFor="let feeLineItem of feeLineItems" class="fee-item" flex="100" layout="row" layout-xs="column">
-    <div flex="100" flex-gt-xs="70">
+    <div flex="100" flex-gt-xs="75">
       <div layout-align="start stretch" layout-gt-xs="row">
-        <div flex-gt-sm="25" flex-sm="40" flex="100" layout-padding>
-          <div class="fee-indicator"></div>
+        <div flex-gt-sm="30" flex-sm="40" flex="100" layout-padding>
+          <div class="fee-indicator" layout="column">
+            <span flex class="fee-title">{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.HEADING' | translate }}</span>
+            <span flex class="fee-type md-caption">{{feeLineItem.feeType}}</span>
+          </div>
         </div>
-        <div flex-gt-sm="75" flex-sm="60" flex="100" layout-padding>
+        <div flex-gt-sm="80" flex-sm="75" flex="100" layout-padding>
           <div class="md-caption fee-type">
             {{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.TITLE' | translate:{type:feeLineItem.feeType} }}
           </div>
@@ -13,7 +16,8 @@
         </div>
       </div>
 		</div>
-    <div flex-gt-xs="30" layout-sm="100" flex="auto" class="tools actions" flex-order-xs="-3">
+    <div flex="100" flex-gt-xs="25" layout-padding></div>
+    <div flex-gt-xs="15" flex-sm="15" flex="auto" class="tools actions" flex-order-xs="-3">
       <button 
         md-icon-button
         title="{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.REMOVE_BTN_HOVER' | translate }}"
