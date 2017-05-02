@@ -94,8 +94,8 @@ export class CurrentUserService {
 
   private mayflyUser(): User {
     return {
-      'lastUpdated': '',
-      'createdOn': '',
+      'lastUpdated': new Date(),
+      'createdOn': new Date(),
       'id': 0,
       'emailAddress': '',
       'password': '',
