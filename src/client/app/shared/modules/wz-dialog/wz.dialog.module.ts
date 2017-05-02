@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@angular/material';
+import { MaterialModule } from '../wz-design/wz-design.module';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { WzFormModule } from '../wz-form/wz-form.module';

@@ -13,7 +13,7 @@ export class Application {
   private portal: string = portal;
   private endpoint: string = 'identities-api/v1/configuration/site?siteName=';
 
-  constructor(private productionMode: boolean, private aot: boolean = false) { }
+  constructor(private productionMode: boolean, private aot: any = false) { }
 
   public load() {
     (this.externalDataLoaded()) ? this.start() : this.loadExternalData();

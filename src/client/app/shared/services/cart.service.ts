@@ -17,8 +17,9 @@ import {
   AddAssetParameters,
   QuoteOptions,
   CheckoutState,
-  OrderType
+  OrderType,
 } from '../interfaces/commerce.interface';
+import { PriceAttributes } from '../interfaces/common.interface';
 
 @Injectable()
 export class CartService {
@@ -119,6 +120,14 @@ export class CartService {
   public updateProject(project: Project): void {
     this.api.put(Api.Orders, 'cart/project', { body: project, loading: true })
       .subscribe(this.replaceCartWith);
+  }
+
+  public updateProjectPriceAttributes(priceAttributes: PriceAttributes, project: Project) {
+    this.api.put(
+      Api.Orders,
+      `cart/project/priceAttributes/${project.id}`,
+      { body: { attributes: priceAttributes }, loading: true }
+    ).subscribe(this.replaceCartWith);
   }
 
   public moveLineItemTo(project: Project, lineItem: AssetLineItem): void {

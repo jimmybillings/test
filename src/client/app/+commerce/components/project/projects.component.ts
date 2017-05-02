@@ -69,6 +69,10 @@ export class ProjectsComponent {
     });
   }
 
+  public editProjectPrice(message: any, payload: any) {
+    this.projectsNotify.emit(Object.assign(message, { payload: payload }));
+  }
+
   public delegate(message: any): void {
     this.projectsNotify.emit(message);
   }

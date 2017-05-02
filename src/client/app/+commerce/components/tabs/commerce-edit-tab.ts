@@ -18,6 +18,7 @@ import { SubclipMarkers } from '../../../shared/interfaces/asset.interface';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
+import { PriceAttributes } from '../../../shared/interfaces/common.interface';
 
 export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
 
@@ -100,7 +101,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         break;
       }
       case 'EDIT_PROJECT_PRICING': {
-        this.editProjectPricing();
+        this.editProjectPricing(message.payload);
         break;
       }
     };
@@ -134,8 +135,10 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     this.quoteType = event.type;
   }
 
-  protected editProjectPricing() {
-    console.log(this.priceAttributes);
+  protected editProjectPricing(project: Project) {
+    this.assetService.getPriceAttributes().subscribe((priceAttributes: PriceAttributes) => {
+      this.openProjectPricingDialog(priceAttributes, project);
+    });
   }
 
   protected showPricingDialog(lineItem: any): void {
@@ -146,6 +149,42 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         this.priceAttributes = data;
         this.openPricingDialog(lineItem);
       });
+    }
+  }
+
+  protected openProjectPricingDialog(priceAttributes: PriceAttributes, project: Project): void {
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: WzPricingComponent,
+        inputOptions: {
+          attributes: priceAttributes,
+          pricingPreferences: this.pricingPreferences,
+          usagePrice: null
+        },
+        outputOptions: [
+          {
+            event: 'pricingEvent',
+            callback: (event: any, dialogRef: any) => {
+              this.applyProjectPricing(event, dialogRef, project);
+            }
+          }
+        ]
+      }
+    );
+  }
+
+  protected applyProjectPricing(event: any, dialogRef: any, project: Project) {
+    switch (event.type) {
+      case 'UPDATE_PREFERENCES':
+        this.commerceService.updateProjectPriceAttributes(event.payload, project);
+        this.userPreference.updatePricingPreferences(event.payload);
+        dialogRef.close();
+        break;
+      case 'ERROR':
+        this.error.dispatch({ status: event.payload });
+        break;
+      default:
+        break;
     }
   }
 

@@ -7,7 +7,9 @@ import {
   Project, AssetLineItem, FeeLineItem, AddAssetParameters, Quote, QuoteState, QuoteOptions, EditableQuoteFields, FeeConfig
 } from '../interfaces/commerce.interface';
 import { ActiveQuoteStore } from '../stores/active-quote.store';
+
 import { FeeConfigStore } from '../stores/fee-config.store';
+import { PriceAttributes } from '../interfaces/common.interface';
 
 @Injectable()
 export class QuoteEditService {
@@ -87,6 +89,14 @@ export class QuoteEditService {
   public updateProject(project: Project): void {
     this.api.put(Api.Orders, `quote/${this.quoteId}/project`, { body: project, loading: true })
       .subscribe(this.replaceQuote);
+  }
+
+  public updateProjectPriceAttributes(priceAttributes: PriceAttributes, project: Project) {
+    this.api.put(
+      Api.Orders,
+      `quote/${this.quoteId}/project/priceAttributes/${project.id}`,
+      { body: { attributes: priceAttributes }, loading: true }
+    ).subscribe(this.replaceQuote);
   }
 
   public moveLineItemTo(project: Project, lineItem: AssetLineItem): void {

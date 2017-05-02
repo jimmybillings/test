@@ -68,6 +68,7 @@ export interface DialogCallback {
 
 export interface DefaultComponentOptions {
   componentType: any;
+  dialogConfig?: MdDialogConfig;
   inputOptions?: { [index: string]: any };
   outputOptions?: Array<DialogCallback>;
 };
