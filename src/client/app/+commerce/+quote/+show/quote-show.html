@@ -35,6 +35,10 @@
               <strong>{{ 'QUOTE.CREATED_ON_LABEL' | translate }} </strong>
               {{ (quote | async).createdOn | date:'short' }}
             </span>
+            <span *ngIf="(quote | async).bulkOrderId">
+              <strong>{{ 'QUOTE.BULK_ORDER_NAME' | translate }} </strong>
+              {{ (quote | async).bulkOrderId }}
+            </span>
             <span>
               <strong>{{ 'QUOTE.PURCHASE_TYPE_LABEL' | translate }} </strong>
               {{ (quote | async).purchaseType ? (quote | async).purchaseType : 'none' }}
