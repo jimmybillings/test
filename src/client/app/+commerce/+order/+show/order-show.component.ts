@@ -14,4 +14,10 @@ export class OrderShowComponent {
   public downloadMaster(masterUrl: string): void {
     this.window.nativeWindow.location.href = masterUrl;
   }
+
+  public displayOrderAssetCount(count: number): string {
+    if (count > 0) {
+      return (count === 1) ? 'ORDER.PROJECTS.ONLY_ONE_ASSET' : 'ORDER.PROJECTS.MORE_THAN_ONE_ASSET';
+    } else return 'ORDER.PROJECTS.NO_ASSETS';
+  }
 }

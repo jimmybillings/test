@@ -69,9 +69,9 @@
 									<span>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
 								</div>
 								<div class="project-asset-count">
-									<span *ngIf="project.lineItems.length == 0">No Assets</span>
-									<span *ngIf="project.lineItems.length == 1">1 Asset</span>
-									<span *ngIf="project.lineItems.length > 1">{{ project.lineItems.length }} Assets</span>
+									<span>
+										{{ displayOrderAssetCount(project.lineItems.length) | translate:{count:project.lineItems.length} }}
+									</span>
 								</div>
 							</div>
 						</header>
