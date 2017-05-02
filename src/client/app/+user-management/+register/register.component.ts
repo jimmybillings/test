@@ -59,6 +59,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       dialogRef.componentInstance.terms = terms;
       dialogRef.componentInstance.dialog = dialogRef;
       dialogRef.componentInstance.btnLabel = 'REGISTER.CLOSE_TOS_DIALOG';
+      dialogRef.componentInstance.header = 'REGISTER.TOS_TITLE';
     });
   }
 }

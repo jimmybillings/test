@@ -11,4 +11,5 @@ export class WzTermsComponent {
   @Input() terms: any;
   @Input() dialog: any;
   @Input() btnLabel: string;
+  @Input() header: string;
 }

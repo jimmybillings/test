@@ -84,6 +84,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       dialogRef.componentInstance.terms = terms;
       dialogRef.componentInstance.dialog = dialogRef;
       dialogRef.componentInstance.btnLabel = 'LOGIN.AGREE_TO_TOS';
+      dialogRef.componentInstance.header = 'LOGIN.TOS_TITLE';
       dialogRef.afterClosed().subscribe(this.agreeToTermsAndClose);
     });
   }
