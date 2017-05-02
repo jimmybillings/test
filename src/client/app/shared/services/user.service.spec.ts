@@ -60,13 +60,14 @@ export function main() {
       beforeEach(() => {
         jasmine.addMatchers(mockApiMatchers);
         mockApi = new MockApiService();
-        mockApi.getResponse = [[{ id: 1, activeVersionId: 'abcd1234', name: 'TOS' }], { text: () => { return 'text'; } }];
+        mockApi.getResponse = [{ id: 1, activeVersionId: 'abcd1234', name: 'TOS' }, { text: () => { return 'text'; } }];
         serviceUnderTest = new UserService(mockApi.injector, null);
       });
+
       it('hits the API correctly', () => {
         serviceUnderTest.downloadActiveTosDocument();
         expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
-        expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/public/name/TOS');
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/activeVersion/TOS');
       });
 
       it('Should flatmap the response to make another request', () => {
@@ -75,19 +76,18 @@ export function main() {
         });
 
         expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
-        expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/public/name/TOS');
-        expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/public/downloadFile/abcd1234');
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('document/downloadDocumentFile/1');
         expect(mockApi.get).toHaveBeenCalledWithHeaderType('download');
       });
     });
 
     describe('agreeUserToTerms', () => {
       it('hits the API correctly', () => {
-        serviceUnderTest.activeVersionId = 'abcd1234';
+        serviceUnderTest.documentId = 1;
         serviceUnderTest.agreeUserToTerms();
 
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
-        expect(mockApi.post).toHaveBeenCalledWithEndpoint('document/version/abcd1234/agree');
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('document/version/1/agree');
       });
     });
 

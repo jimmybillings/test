@@ -3,14 +3,14 @@ import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
 import { Response } from '@angular/http';
-import { User, Address, ViewAddress } from '../../shared/interfaces/user.interface';
+import { User, Address, ViewAddress, Document } from '../../shared/interfaces/user.interface';
 import { CurrentUserService } from './current-user.service';
 /**
  * Service that provides api access registering new users.
  */
 @Injectable()
 export class UserService {
-  public activeVersionId: string;
+  public documentId: number;
   constructor(private api: ApiService, private currentUser: CurrentUserService) { }
 
   public get(): Observable<any> {
@@ -30,11 +30,11 @@ export class UserService {
   }
 
   public downloadActiveTosDocument(): Observable<any> {
-    return this.api.get(Api.Identities, 'document/public/name/TOS').flatMap((response: ApiResponse) => {
-      this.activeVersionId = response[0].activeVersionId;
+    return this.api.get(Api.Identities, 'document/activeVersion/TOS').flatMap((response: Document) => {
+      this.documentId = response.id;
       return this.api.get(
         Api.Identities,
-        `document/public/downloadFile/${response[0].activeVersionId}`,
+        `document/downloadDocumentFile/${response.id}`,
         { headerType: 'download' }
       );
     }).map((response: Response) => {
@@ -43,7 +43,7 @@ export class UserService {
   }
 
   public agreeUserToTerms(): void {
-    this.api.post(Api.Identities, `document/version/${this.activeVersionId}/agree`).take(1).subscribe();
+    this.api.post(Api.Identities, `document/version/${this.documentId}/agree`).take(1).subscribe();
   }
 
   // Used by a logged-in user to change their password

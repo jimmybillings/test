@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from './api.service';
-import { Api } from '../interfaces/api.interface';
+import { Api, ApiParameters } from '../interfaces/api.interface';
 import { Orders, OrdersApiResponse } from '../interfaces/commerce.interface';
-import { UrlParams } from '../interfaces/common.interface';
 import { OrdersStore } from '../stores/orders.store';
 
 @Injectable()
@@ -17,13 +16,13 @@ export class OrdersService {
     return this.store.data;
   }
 
-  public getOrders(params: UrlParams): Observable<OrdersApiResponse> {
+  public getOrders(params: any): Observable<OrdersApiResponse> {
     return this.api.get(Api.Orders, 'order/myOrders',
       { parameters: this.buildSearchParams(params), loading: true }
-    ).do(response => this.store.storeOrders(response));
+    ).do((response: OrdersApiResponse) => this.store.storeOrders(response));
   }
 
-  private buildSearchParams(params: UrlParams) {
+  private buildSearchParams(params: any): any {
     params.i = (params.i && params.i > 0) ? params.i - 1 : 0;
     return Object.assign({}, { q: '', s: '', d: '', i: 0, n: 20 }, params);
   }

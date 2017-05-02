@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(user: any): void {
-    Object.assign(user, { termsAgreedTo: this.user.activeVersionId });
+    Object.assign(user, { termsAgreedTo: this.user.documentId });
     this.user.create(user).take(1).subscribe((res: Response) => {
       this.successfullySubmitted = true;
       this.newUser = res;
