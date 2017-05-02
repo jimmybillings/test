@@ -1,12 +1,10 @@
-export interface User {
-  id: number;
-  siteName: string;
+import { Common } from './common.interface';
+
+export interface User extends Common {
   password: string;
   firstName: string;
   lastName: string;
   emailAddress: string;
-  lastUpdated: string;
-  createdOn: string;
   searchConfiguration?: {
     filter: string;
     searchableFields: string[];
@@ -57,4 +55,15 @@ export interface ViewAddress {
   name: string;
   address?: Address;
   [index: string]: any;
+}
+
+export interface Document extends Common {
+  name: string;
+  description: string;
+  documentType: string;
+  documentStatus: string;
+  language: string;
+  documentContentType: string;
+  filename: string;
+  fileId: string;
 }
