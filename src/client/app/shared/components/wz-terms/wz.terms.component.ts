@@ -10,4 +10,5 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 export class WzTermsComponent {
   @Input() terms: any;
   @Input() dialog: any;
+  @Input() btnLabel: string;
 }

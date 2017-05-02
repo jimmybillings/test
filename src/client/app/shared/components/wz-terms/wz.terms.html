@@ -2,6 +2,8 @@
   <h1 md-dialog-title>{{ 'REGISTER.TOS_TITLE' | translate }}</h1>
   <div class="content" [innerHtml]="terms"></div>
   <div class="terms-actions" layout="row" layout-align="center center">
-    <button (click)="dialog.close()" md-raised-button type="button" color="primary" class="conversion">{{ 'REGISTER.CLOSE_TOS_DIALOG' | translate }}</button>
+    <button md-dialog-close md-raised-button type="button" color="primary" class="conversion">
+      {{ btnLabel | translate }}
+    </button>
   </div>
 </div>
