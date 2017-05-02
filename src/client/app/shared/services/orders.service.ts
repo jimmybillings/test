@@ -25,6 +25,6 @@ export class OrdersService {
 
   private buildSearchParams(params: UrlParams): ApiParameters {
     params.i = (params.i && params.i > 0) ? params.i - 1 : 0;
-    return Object.assign({}, { q: '', s: '', d: '', i: 0, n: 20 }, params);
+    return Object.assign({}, { q: '', s: '', d: '', i: 0, n: 20 }, params) as ApiParameters;
   }
 }
