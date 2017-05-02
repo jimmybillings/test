@@ -25,13 +25,13 @@ export function main() {
         expect(mockWindow.nativeWindow.location.href).toBe('https://this-is-a-url.com');
       });
       it('should return pluralized translatable string based on asset count. If count is 0 return no assets', () => {
-        expect(componentUnderTest.displayOrderAssetCount(0)).toBe('ORDER.PROJECTS.NO_ASSETS');
+        expect(componentUnderTest.displayOrderAssetCount(0)).toBe('ORDER.SHOW.PROJECTS.NO_ASSETS');
       });
       it('should return 1 asset if asset count is 1', () => {
-        expect(componentUnderTest.displayOrderAssetCount(1)).toBe('ORDER.PROJECTS.ONLY_ONE_ASSET');
+        expect(componentUnderTest.displayOrderAssetCount(1)).toBe('ORDER.SHOW.PROJECTS.ONLY_ONE_ASSET');
       });
       it('should return x assets if asset count is more than 1', () => {
-        expect(componentUnderTest.displayOrderAssetCount(20)).toBe('ORDER.PROJECTS.MORE_THAN_ONE_ASSET');
+        expect(componentUnderTest.displayOrderAssetCount(20)).toBe('ORDER.SHOW.PROJECTS.MORE_THAN_ONE_ASSET');
       });
     });
   });

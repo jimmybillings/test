@@ -345,7 +345,7 @@ export function main() {
     };
   }
 
-  function setLoggedOutUser(): User {
+  function setLoggedOutUser(): any {
     return {
       'lastUpdated': '',
       'createdOn': '',

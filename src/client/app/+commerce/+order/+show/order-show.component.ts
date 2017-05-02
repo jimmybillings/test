@@ -17,7 +17,7 @@ export class OrderShowComponent {
 
   public displayOrderAssetCount(count: number): string {
     if (count > 0) {
-      return (count === 1) ? 'ORDER.PROJECTS.ONLY_ONE_ASSET' : 'ORDER.PROJECTS.MORE_THAN_ONE_ASSET';
-    } else return 'ORDER.PROJECTS.NO_ASSETS';
+      return (count === 1) ? 'ORDER.SHOW.PROJECTS.ONLY_ONE_ASSET' : 'ORDER.SHOW.PROJECTS.MORE_THAN_ONE_ASSET';
+    } else return 'ORDER.SHOW.PROJECTS.NO_ASSETS';
   }
 }
