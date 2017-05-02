@@ -72,6 +72,55 @@
         END: FORM INPUT FOR wzdate
       -->
 
+		<!--
+        START: FORM INPUT FOR dollars
+      -->
+    <md-input-container *ngIf="(field.type == 'dollars')">
+      <input mdInput
+      type="text"
+      class="md-block"
+      name="{{field.name}}"
+      [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
+      placeholder="{{field.label | translate}}"
+      formControlName="{{field.name}}"
+      [required]="isRequiredField(field)"
+      id="{{field.name}}"
+      (input)="onDollarsInput($event, field)"
+      >
+    </md-input-container>
+		<!--
+        END: FORM INPUT FOR dollars
+      -->
+
+		<!--
+        START: FORM INPUT FOR textarea
+      -->
+    <md-input-container *ngIf="(field.type == 'textarea')">
+      <textarea mdInput
+      class="md-block"
+      name="{{field.name}}"
+      [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
+      placeholder="{{field.label | translate}}"
+      formControlName="{{field.name}}"
+      [required]="isRequiredField(field)"
+      rows="1"
+      [maxRows]="6"
+      mdTextareaAutosize
+      id="{{field.name}}"
+      ></textarea>
+      <md-hint
+        *ngIf="(form.controls[field.name].valid || form.controls[field.name].pristine) && field.hintTextStart"
+        align="start">
+        {{ field.hintTextStart | translate }}
+      </md-hint>
+      <md-hint *ngIf="field.hintTextEnd && !form.controls[field.name].errors" align="end">
+        {{ field.hintTextEnd | translate }}
+      </md-hint>
+    </md-input-container>
+		<!--
+        END: FORM INPUT FOR textarea
+      -->
+
       <!--
         START: FORM CONFIRM PASSWORD DOUBLE FIELD
       -->
