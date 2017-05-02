@@ -7,7 +7,7 @@
     <section class="billing" flex="auto">
       <div layout="row" layout-align="space-between">
         <h5 class="md-title">{{ 'CART.CONFIRM.BILLING_TITLE' | translate }}</h5>
-        <button md-button (click)="goToTab(1)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
+        <button md-button class="mini is-outlined" color="primary" (click)="goToTab(1)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
       </div>
       <address *ngIf="(orderInProgress | async).selectedAddress.address">
         <span class="line-1">{{ (orderInProgress | async).selectedAddress.address.address }}</span>
@@ -20,7 +20,7 @@
     <section *ngIf="(purchaseType | async) !== 'ProvisionalOrder'" class="payment" flex="auto">
       <div layout="row" layout-align="space-between">
         <h5 class="md-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
-        <button md-button (click)="goToTab(2)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
+        <button md-button class="mini is-outlined" color="primary" (click)="goToTab(2)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
       </div>
       <div class="payment-info">
         <div 
@@ -51,7 +51,9 @@
 </div>
 
 <h5 class="md-title order-summary">{{ 'CART.CONFIRM.ORDER_TITLE' | translate }}</h5>
-<button md-button (click)="goToTab(0)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
+<button md-button class="mini is-outlined" color="primary" (click)="goToTab(0)">
+  {{ 'CART.CONFIRM.EDIT' | translate }}
+</button>
 <projects-component
   flex="100"
   [readOnly]="true"

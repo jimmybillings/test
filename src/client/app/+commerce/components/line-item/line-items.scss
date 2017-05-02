@@ -39,7 +39,7 @@ li.cart-asset {
   md-select {
     margin-top: rem(1.4);
     width: 99%;
-    max-width: rem(24.0);
+    max-width: rem(19.0);
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -133,4 +133,13 @@ button.is-outlined.mini {
   min-width: rem(5.0);
   padding: 0 rem(1.0);
   margin-right: rem(1.2);
+}
+button.mat-icon-button.select-usage {
+  color: mat-color($mat-warn, darker);
+}
+.cart-asset asset-subclip-display-component .asset-sub-clip {
+  margin-top: rem(1.4);
+  ul.subclip-data {
+    min-width: rem(34.0);
+  }
 }

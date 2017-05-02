@@ -41,6 +41,9 @@ cart-confirm-tab-component, quote-confirm-tab {
       max-width: 100%;
       margin: rem(1.0) 0 0 0;
     }
+    button.is-outlined.mini {
+      margin-right: 0;
+    }
     .md-title {
       margin-top: 0;
     }
@@ -100,4 +103,8 @@ cart-confirm-tab-component, quote-confirm-tab {
       padding: rem(.6) rem(.3) 0 0
     }
   }
+}
+cart-component .tabs-section md-tab-group > div cart-confirm-tab-component .project:first-child,
+quote-show-component .tabs-section md-tab-group > div quote-confirm-tab .project:first-child {
+  margin-top: rem(.2);
 }

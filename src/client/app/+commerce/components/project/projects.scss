@@ -43,7 +43,7 @@ div.project {
       line-height: 1.6;
     }
     div:first-child {
-      padding: rem(1.0);
+      padding: rem(.7) rem(.8) rem(.7) rem(1.0);
     }
     div:nth-child(2n) {
       padding: rem(.2) rem(.2) rem(.4) 0;
@@ -51,6 +51,7 @@ div.project {
     }
     div.project-asset-count {
       font-size: rem(1.4);
+      padding: rem(.3) rem(.9) 0 0;
     }
     div.project-subtotal {
       bottom: rem(.3);
@@ -59,7 +60,7 @@ div.project {
       span {
         font-size: rem(1.8);
         display: inline-block;
-        padding-right: rem(.5);
+        padding: rem(.1) rem(.6) 0 0;
         &::first-letter {
           font-size: .83em;
           vertical-align: top;
