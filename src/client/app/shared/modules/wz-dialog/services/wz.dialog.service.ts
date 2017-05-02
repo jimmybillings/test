@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { FormFields } from '../../../../shared/interfaces/forms.interface';
 import { MdDialogRef, MdDialog, MdDialogConfig, DialogPosition } from '@angular/material';
-
 
 import {
   WzFormDialogComponent,
   WzNotificationDialogComponent,
   WzConfirmationDialogComponent,
-  WzPricingDialogComponent
 } from '../components/index';
 
 import {
@@ -25,6 +24,7 @@ import {
   defaultFormDialogOptions,
   defaultConfirmationDialogOptions,
   defaultNotificationDialogOptions,
+  DefaultComponentOptions
 } from '../interfaces/wz.dialog.interface';
 
 @Injectable()
@@ -90,26 +90,32 @@ export class WzDialogService {
     const dialogRef: MdDialogRef<WzFormDialogComponent> = this.dialog.open(WzFormDialogComponent, mergedDialogConfig);
     const component: WzFormDialogComponent = dialogRef.componentInstance;
 
-    component.formItems = formItems;
-    component.title = mergedOptions.title;
-    component.cancelLabel = mergedOptions.cancelLabel;
-    component.submitLabel = mergedOptions.submitLabel;
-    component.displayCancelButton = mergedOptions.displayCancelButton;
-    component.autocomplete = mergedOptions.autocomplete;
+    Object.assign(component, { formItems: formItems }, mergedOptions);
 
     this.setupCallbacks(component, dialogRef, [
       { event: 'submit', callback: onSubmit, closeOnEvent: true },
-      { event: 'cancel', callback: onCancel, closeOnEvent: true }
+      { event: 'cancel', callback: onCancel, closeOnEvent: true },
     ]);
 
     return dialogRef.afterClosed();
   }
 
-  private setupCallbacks(component: any, dialogRef: MdDialogRef<any>, callbacks: Array<DialogCallback>): void {
-    callbacks.forEach((cb: DialogCallback) => {
-      component[cb.event].subscribe((result?: any) => {
+  public openComponentInDialog(options: DefaultComponentOptions) {
+
+    const dialogRef: MdDialogRef<any> = this.dialog.open(options.componentType);
+    const component: any = dialogRef.componentInstance;
+
+    if (options.inputOptions) Object.assign(component, options.inputOptions);
+    if (options.outputOptions) this.setupCallbacks(component, dialogRef, options.outputOptions);
+
+    return dialogRef.afterClosed();
+  }
+
+  private setupCallbacks(component: any, dialogRef: MdDialogRef<any>, outputOptions: Array<DialogCallback>): void {
+    outputOptions.forEach((cb: DialogCallback) => {
+      component[cb.event].subscribe((event?: any) => {
         if (cb.closeOnEvent) dialogRef.close();
-        if (cb.callback) cb.callback(result);
+        if (cb.callback) cb.callback(event, dialogRef);
       });
     });
   }
@@ -119,24 +125,5 @@ export class WzDialogService {
       Object.assign({}, (defaultOptions.dialogConfig || {}).position, (options.dialogConfig || {}).position);
 
     return Object.assign({}, defaultOptions.dialogConfig, options.dialogConfig, { position: mergedDialogPosition });
-  }
-
-  public openPricingDialog(
-    attributes: Array<any>,
-    pricingPreferences: any,
-    lineItem: any,
-    usagePrice: Observable<any> = null,
-    applyPricingCallBack: any) {
-
-    const dialogRef: MdDialogRef<WzPricingDialogComponent> = this.dialog.open(WzPricingDialogComponent);
-    const component: WzPricingDialogComponent = dialogRef.componentInstance;
-    component.attributes = attributes;
-    component.pricingPreferences = pricingPreferences;
-    component.usagePrice = usagePrice;
-
-    component.pricingEvent.subscribe((event: any) => {
-      applyPricingCallBack(event, lineItem, dialogRef);
-    });
-    return dialogRef.afterClosed();
   }
 }

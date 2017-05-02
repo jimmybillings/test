@@ -13,7 +13,8 @@ import { UiState } from '../shared/services/ui.state';
 import { Observable } from 'rxjs/Observable';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MdDialogRef } from '@angular/material';
+import { WzDialogService } from '../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.component';
 import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
@@ -23,7 +24,7 @@ import { QuoteEditService } from '../shared/services/quote-edit.service';
   moduleId: module.id,
   selector: 'asset-component',
   templateUrl: 'asset.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class AssetComponent implements OnInit {
@@ -47,7 +48,7 @@ export class AssetComponent implements OnInit {
     private cart: CartService,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
-    private dialog: MdDialog,
+    private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService) {
     this.window = this.window;
   }
@@ -123,36 +124,49 @@ export class AssetComponent implements OnInit {
 
   public calculatePrice(attributes: any): Observable<number> {
     this.selectedAttrbutes = attributes;
-    return this.assetService.getPrice(this.assetService.state.assetId, attributes).map((data: any) => { return data.price; });
+    return this.assetService.getPrice(this.assetService.state.assetId, attributes)
+      .map((data: any) => { return data.price; })
+      .share();
   }
 
   public getPricingAttributes(rightsReproduction: string): void {
     if (this.rightsReproduction === rightsReproduction) {
-      this.buildPricingDialog();
+      this.openPricingDialog();
     } else {
       this.assetService.getPriceAttributes(rightsReproduction).subscribe((attributes: any) => {
         this.pricingAttributes = attributes;
-        this.buildPricingDialog();
+        this.openPricingDialog();
       });
     }
     this.rightsReproduction = rightsReproduction;
   }
 
-  private buildPricingDialog(): void {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(WzPricingComponent);
-    dialogRef.componentInstance.dialog = dialogRef;
-    dialogRef.componentInstance.pricingPreferences = this.userPreference.state.pricingPreferences;
-    dialogRef.componentInstance.attributes = this.pricingAttributes;
-    dialogRef.componentInstance.pricingEvent.subscribe((event: any) => {
-      this.handlePricingEvent(event, dialogRef);
-    });
+  private openPricingDialog(): void {
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: WzPricingComponent,
+        inputOptions: {
+          attributes: this.pricingAttributes,
+          pricingPreferences: this.userPreference.state.pricingPreferences,
+          usagePrice: null
+        },
+        outputOptions: [
+          {
+            event: 'pricingEvent',
+            callback: this.applyPricing
+          }
+        ]
+      }
+    );
   }
 
-  private handlePricingEvent(event: any, dialogRef: MdDialogRef<WzPricingComponent>): void {
+  private applyPricing = (event: any, dialogRef: MdDialogRef<WzPricingComponent>) => {
     switch (event.type) {
       case 'CALCULATE_PRICE':
-        this.usagePrice = this.calculatePrice(event.payload);
-        dialogRef.componentInstance.usagePrice = this.usagePrice;
+        this.calculatePrice(event.payload).subscribe(usagePrice => {
+          dialogRef.componentInstance.usagePrice = Observable.of(usagePrice);
+          this.usagePrice = Observable.of(usagePrice);
+        });
         break;
       case 'UPDATE_PREFERENCES':
         this.userPreference.updatePricingPreferences(event.payload);

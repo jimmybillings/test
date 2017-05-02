@@ -17,15 +17,8 @@ import { WAZEE_STORES } from '../imports/wazee';
 import { WzPlayerModule } from './modules/wz-player/wz.player.module';
 import { WzFormModule } from './modules/wz-form/wz-form.module';
 import { WzAssetModule } from './modules/wz-asset/wz-asset.module';
-// import { WzDialogModule } from './modules/wz-dialog/wz.dialog.module';
+import { WzDialogModule } from './modules/wz-dialog/wz.dialog.module';
 
-// Wrapper service
-import { WzDialogService } from './modules/wz-dialog/services/wz.dialog.service';
-
-// Dialog types
-import { WzNotificationDialogComponent } from './modules/wz-dialog/components/wz.notification-dialog.component';
-import { WzFormDialogComponent } from './modules/wz-dialog/components/wz.form-dialog.component';
-import { WzPricingDialogComponent } from './modules/wz-dialog/components/wz.pricing-dialog.component';
 
 // Shared Pure Components
 import { WzBreadcrumbComponent } from './components/wz-breadcrumb/wz.breadcrumb.component';
@@ -73,6 +66,7 @@ export function createTranslateLoader(http: Http) {
     WzPlayerModule,
     WzFormModule,
     WzAssetModule,
+    WzDialogModule,
     StoreModule.provideStore(WAZEE_STORES)
   ],
   declarations: [
@@ -95,10 +89,7 @@ export function createTranslateLoader(http: Http) {
     WzGalleryTwoLevelComponent,
     WzSubclipEditorComponent,
     WzSiteChangerComponent,
-    WzNotFoundComponent,
-    WzNotificationDialogComponent,
-    WzFormDialogComponent,
-    WzPricingDialogComponent
+    WzNotFoundComponent
   ],
   exports: [
     StoreModule,
@@ -131,10 +122,7 @@ export function createTranslateLoader(http: Http) {
     WzGalleryTwoLevelComponent,
     WzSubclipEditorComponent,
     WzSiteChangerComponent,
-    WzNotFoundComponent,
-    WzNotificationDialogComponent,
-    WzFormDialogComponent,
-    WzPricingDialogComponent
+    WzNotFoundComponent
   ],
   entryComponents: [
     CollectionLinkComponent,
@@ -142,10 +130,7 @@ export function createTranslateLoader(http: Http) {
     WzTermsComponent,
     WzPricingComponent,
     WzComingSoonComponent,
-    WzSubclipEditorComponent,
-    WzNotificationDialogComponent,
-    WzFormDialogComponent,
-    WzPricingDialogComponent
+    WzSubclipEditorComponent
   ]
 })
 
@@ -153,7 +138,7 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [WAZEE_PROVIDERS, WzDialogService]
+      providers: [WAZEE_PROVIDERS]
     };
   }
 }

@@ -6,7 +6,6 @@ import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
 import { Project, AssetLineItem, Cart, QuoteType, QuoteOptions } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
-import { ProjectEditComponent } from '../project/project-edit.component';
 import { MdSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
@@ -18,6 +17,7 @@ import { WindowRef } from '../../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../../shared/interfaces/asset.interface';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
+import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 
 export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
 
@@ -26,6 +26,8 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   public priceAttributes: any = null;
   public pricingPreferences: any;
   public quoteType: QuoteType = null;
+  public lineItem: any;
+  public asset: any;
   protected configSubscription: Subscription;
   protected preferencesSubscription: Subscription;
   protected usagePrice: any;
@@ -69,10 +71,10 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         this.commerceService.removeProject(message.payload);
         break;
       }
-      // case 'UPDATE_PROJECT': {
-      //   this.updateProject(message.payload);
-      //   break;
-      // }
+      case 'UPDATE_PROJECT': {
+        this.updateProject(message.payload);
+        break;
+      }
       case 'MOVE_LINE_ITEM': {
         this.commerceService.moveLineItemTo(message.payload.otherProject, message.payload.lineItem);
         break;
@@ -89,10 +91,10 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         this.commerceService.editLineItem(message.payload.lineItem, message.payload.fieldToEdit);
         break;
       }
-      // case 'EDIT_LINE_ITEM_MARKERS': {
-      //   this.editAsset(message.payload);
-      //   break;
-      // }
+      case 'EDIT_LINE_ITEM_MARKERS': {
+        this.editAsset(message.payload);
+        break;
+      }
       case 'SHOW_PRICING_DIALOG': {
         this.showPricingDialog(message.payload);
         break;
@@ -148,12 +150,27 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   protected openPricingDialog(lineItem: any): void {
-    this.dialogService.openPricingDialog(
-      this.priceAttributes, this.pricingPreferences, lineItem, null, this.applyPricing.bind(this)
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: WzPricingComponent,
+        inputOptions: {
+          attributes: this.priceAttributes,
+          pricingPreferences: this.pricingPreferences,
+          usagePrice: null
+        },
+        outputOptions: [
+          {
+            event: 'pricingEvent',
+            callback: (event: any, dialogRef: any) => {
+              this.applyPricing(event, dialogRef, lineItem);
+            }
+          }
+        ]
+      }
     );
   }
 
-  public applyPricing(event: any, lineItem: any, dialogRef: any) {
+  protected applyPricing(event: any, dialogRef: any, lineItem: any) {
     switch (event.type) {
       case 'CALCULATE_PRICE':
         this.assetService.getPrice(lineItem.asset.assetId, event.payload)
@@ -173,37 +190,55 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     }
   }
 
-  // protected editAsset(payload: any) {
-  //   this.assetService.getClipPreviewData(payload.asset.assetId).subscribe(data => {
-  //     payload.asset.clipUrl = data.url;
-  //     let dialogRef: MdDialogRef<WzSubclipEditorComponent> = this.dialog.open(WzSubclipEditorComponent, { width: '544px' });
-  //     // workaround for cart assets that have asset.timeStart = -1, and asset.timeStart = -2
-  //     if (payload.asset.timeStart < 0) payload.asset.timeStart = undefined;
-  //     if (payload.asset.timeEnd < 0) payload.asset.timeEnd = undefined;
-  //     Object.assign(dialogRef.componentInstance, { window: this.window.nativeWindow, asset: payload.asset });
-  //     this.document.body.classList.add('subclipping-edit-open');
-  //     dialogRef.componentInstance.cancel.subscribe(() => dialogRef.close());
-  //     dialogRef.componentInstance.save.subscribe((newMarkers: SubclipMarkers) => {
-  //       Object.assign(payload.asset, { timeStart: newMarkers.in, timeEnd: newMarkers.out });
-  //       this.commerceService.editLineItem(payload, {});
-  //       dialogRef.close();
-  //     });
-  //     dialogRef.afterClosed().subscribe(_ => {
-  //       this.document.body.classList.remove('subclipping-edit-open');
-  //     });
-  //   });
-  // }
+  protected editAsset(payload: any) {
+    this.assetService.getClipPreviewData(payload.asset.assetId)
+      .subscribe(data => {
+        this.document.body.classList.add('subclipping-edit-open');
+        payload.asset.clipUrl = data.url;
+        this.dialogService.openComponentInDialog(
+          {
+            componentType: WzSubclipEditorComponent,
+            inputOptions: {
+              window: this.window.nativeWindow,
+              asset: payload.asset,
+              usagePrice: null
+            },
+            outputOptions: [
+              {
+                event: 'cancel',
+                callback: (event: any) => { return true; },
+                closeOnEvent: true
+              },
+              {
+                event: 'save',
+                callback: (event: any) => {
+                  Object.assign(payload.asset.asset,
+                    { timeStart: event.in, timeEnd: event.out });
+                  this.commerceService.editLineItem(payload, {});
+                },
+                closeOnEvent: true
+              }
+            ]
+          }
+        ).subscribe(_ => {
+          this.document.body.classList.remove('subclipping-edit-open');
+        });
+      });
+  }
 
-  // protected updateProject(project: any) {
-  //   let dialogRef: MdDialogRef<any> = this.dialog.open(ProjectEditComponent, { position: { top: '14%' } });
-  //   Object.assign(dialogRef.componentInstance, { items: project.items, dialog: dialogRef });
-  //   dialogRef.afterClosed()
-  //     .filter(data => data)
-  //     .map(data => Object.assign({}, project.project, data))
-  //     .subscribe((data: any) => {
-  //       this.commerceService.updateProject(data);
-  //     });
-  // }
+  protected updateProject(project: any) {
+    this.dialogService.openFormDialog(
+      project.items,
+      {
+        title: 'CART.PROJECTS.FORM.TITLE',
+        submitLabel: 'CART.PROJECTS.FORM.SUBMIT_LABEL',
+        autocomplete: 'off'
+      },
+      (data: any) => {
+        this.commerceService.updateProject(Object.assign(project.project, data));
+      }
+    );
+  }
 
   protected showSnackBar(message: any) {
     this.translate.get(message.key, message.value)
@@ -211,5 +246,4 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         this.snackBar.open(res, '', { duration: 2000 });
       });
   }
-
 }

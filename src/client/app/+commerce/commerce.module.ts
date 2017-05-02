@@ -42,7 +42,6 @@ import { ProjectInfoComponent } from './components/project/project-info.componen
 import { ProjectAssetInfoComponent } from './components/project/project-asset-info.component';
 import { ProjectPriceInfoComponent } from './components/project/project-price-info.component';
 import { ProjectActionsComponent } from './components/project/project-actions.component';
-import { ProjectEditComponent } from './components/project/project-edit.component';
 
 // lineitem
 import { LineItemsComponent } from './components/line-item/line-items.component';
@@ -71,7 +70,6 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     ProjectAssetInfoComponent,
     ProjectPriceInfoComponent,
     ProjectActionsComponent,
-    ProjectEditComponent,
     LineItemsComponent,
     LineItemTranscodeSelectComponent,
     LineItemActionsComponent,
@@ -98,7 +96,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
   providers: [CommerceCapabilities],
-  entryComponents: [ProjectEditComponent, AddressFormComponent]
+  entryComponents: [AddressFormComponent]
 })
 
 export class CommerceModule { }

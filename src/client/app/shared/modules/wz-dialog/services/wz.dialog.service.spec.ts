@@ -304,7 +304,7 @@ export function main() {
           serviceUnderTest.openFormDialog([], {}, callback, null);
           formSubmitSubject.next({ x: 37 });
 
-          expect(callback).toHaveBeenCalledWith({ x: 37 });
+          expect(callback).toHaveBeenCalledWith({ x: 37 }, jasmine.any(Object));
         });
       });
 
@@ -334,7 +334,7 @@ export function main() {
           serviceUnderTest.openFormDialog([], {}, null, callback);
           formCancelSubject.next();
 
-          expect(callback).toHaveBeenCalledWith(undefined);
+          expect(callback).toHaveBeenCalledWith(undefined, jasmine.any(Object));
         });
       });
     });

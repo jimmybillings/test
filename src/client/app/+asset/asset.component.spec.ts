@@ -40,14 +40,7 @@ export function main() {
         open: () => { }
       };
       mockMdDialog = {
-        open: function () {
-          return {
-            componentInstance: {
-              pricingEvent: Observable.of({ some: 'data' })
-            },
-            afterClosed: jasmine.createSpy('afterClosed').and.returnValue(Observable.of({}))
-          };
-        }
+        openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' }))
       };
 
       mockQuoteEditService = { addAssetToProjectInQuote: jasmine.createSpy('addAssetToProjectInQuote') };
