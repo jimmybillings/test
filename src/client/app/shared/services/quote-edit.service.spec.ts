@@ -42,5 +42,40 @@ export function main() {
         });
       });
     });
+
+    describe('addFeeTo()', () => {
+      it('calls the API service as expected', () => {
+        serviceUnderTest.addFeeTo({ some: 'project', name: 'projectName' } as any, { some: 'fee' } as any);
+
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3/fee/lineItem');
+        expect(mockApi.put).toHaveBeenCalledWithBody({ some: 'fee' });
+        expect(mockApi.put).toHaveBeenCalledWithParameters({ projectName: 'projectName' });
+        expect(mockApi.put).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('replaces the current quote', () => {
+        serviceUnderTest.addFeeTo({ some: 'project', name: 'projectName' } as any, { some: 'fee' } as any);
+
+        expect(mockQuoteStore.replaceQuote).toHaveBeenCalled();
+      });
+    });
+
+
+    describe('removeFee()', () => {
+      it('calls the API service as expected', () => {
+        serviceUnderTest.removeFee({ some: 'fee', id: 47 } as any);
+
+        expect(mockApi.delete).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.delete).toHaveBeenCalledWithEndpoint('quote/3/fee/47');
+        expect(mockApi.delete).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('replaces the current quote', () => {
+        serviceUnderTest.removeFee({ some: 'fee', id: 47 } as any);
+
+        expect(mockQuoteStore.replaceQuote).toHaveBeenCalled();
+      });
+    });
   });
 }

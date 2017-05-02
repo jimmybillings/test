@@ -11,7 +11,7 @@ import { UserPreferenceService } from '../../../shared/services/user-preference.
 import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
-import { QuoteOptions } from '../../../shared/interfaces/commerce.interface';
+import { QuoteOptions, Project, FeeLineItem } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { Quote } from '../../../shared/interfaces/commerce.interface';
@@ -57,6 +57,14 @@ export class QuoteEditComponent extends CommerceEditTab {
 
       case 'EDIT_DISCOUNT':
         this.editDiscount();
+        break;
+
+      case 'ADD_QUOTE_FEE':
+        this.quoteEditService.addFeeTo(message.payload.project, message.payload.fee);
+        break;
+
+      case 'REMOVE_QUOTE_FEE':
+        this.quoteEditService.removeFee(message.payload);
         break;
 
       default:

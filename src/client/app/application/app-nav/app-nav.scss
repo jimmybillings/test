@@ -147,9 +147,9 @@ header.app-header + div.main-content asset-component {
   display: block;
   transition: border-top-width 0.35s, $swift-ease-in-out-timing-function;
   border-top: rem(16.6) solid mat-color($mat-grey, 900, .7);
-  @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-    border-top-width: rem(14.4);
-  }
+  // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
+  //   border-top-width: rem(14.4);
+  // }
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(15.2);
   }
@@ -171,9 +171,9 @@ header.app-header.collection-tray-closed + div.main-content cms-component,
 header.app-header.collection-tray-closed + div.main-content search-component,
 header.app-header.collection-tray-closed + div.main-content asset-component {
   border-top-width: rem(11.0);
-  @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-    border-top-width: rem(8.8);
-  }
+  // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
+  //   border-top-width: rem(8.8);
+  // }
   @media (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(9.6);
   }
@@ -195,9 +195,9 @@ header.app-header.collection-tray-closed.search-closed + div.main-content cms-co
 header.app-header.collection-tray-closed.search-closed + div.main-content search-component,
 header.app-header.collection-tray-closed.search-closed + div.main-content asset-component {
   border-top-width: rem(6.4);
-  @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-    border-top-width: rem(4.8);
-  }
+  // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
+  //   border-top-width: rem(4.8);
+  // }
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(5.6);
   }
@@ -219,9 +219,9 @@ header.app-header.search-closed + div.main-content cms-component,
 header.app-header.search-closed + div.main-content search-component,
 header.app-header.search-closed + div.main-content asset-component {
   border-top-width: rem(12.0);
-  @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
-    border-top-width: rem(10.4);
-  }
+  // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape) {
+  //   border-top-width: rem(10.4);
+  // }
   @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
     border-top-width: rem(11.2);
   }

@@ -35,67 +35,62 @@
 <section class="tabs-section quote-section">
   <div layout="row" flex="100" layout-align="center start">
     <div flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-      <div class="quote-wrapper">
-        <div flex>
-          <div 
-            flex-gt-lg="20" 
-            flex-gt-md="25" 
-            flex-md="30" 
-            flex-gt-sm="40" 
-            flex-gt-xs="45" 
-            flex="100" 
-            layout="row" 
-            layout-align="start">
-            <quote-purchase-type-component flex="100" (selectQuoteType)="onSelectQuoteType($event)">
-            </quote-purchase-type-component>
-          </div>
+      <div flex>
+        <quote-purchase-type-component
+          flex-gt-xs="auto" 
+          flex="100" 
+          layout-gt-xs="row" 
+          layout="column" 
+          layout-align="start"
+          (selectQuoteType)="onSelectQuoteType($event)">
+        </quote-purchase-type-component>
 
-          <projects-component
-            [quoteType]="quoteType"
-            [projects]="quoteEditService.projects | async"
-            [config]="config" 
-            [userCan]="userCan" 
-            (projectsNotify)="onNotification($event)">
-          </projects-component>
+        <projects-component
+          [quoteType]="quoteType"
+          [projects]="quoteEditService.projects | async"
+          [config]="config" 
+          [userCan]="userCan"
+          [includeFees]="true"
+          (projectsNotify)="onNotification($event)">
+        </projects-component>
 
-          <section class="cart-total" layout="row" layout-align="center center">
-            <div flex="100">
-              <div *ngIf="showDiscount()" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
-                <span class="total-label" flex="100">
-                  {{ 'CART.CART_SUBTOTAL' | translate }} 
-                </span>
-                <span class="total-amount" flex="nogrow">
-                  {{ quoteEditService.subTotal | async | currency:'USD':true:'1.2-2' }}
-                </span>
-              </div>
-              <div *ngIf="showDiscount()" flex="100" layout="row" layout-align="end center" class="discount md-headline">
-                <span class="total-label" flex="100">
-                  {{ 'CART.CART_DISCOUNT' | translate }} 
-                </span>
-                <span class="total-amount" flex="nogrow">{{ quoteEditService.hasProperty('discount') | async }}</span>
-              </div>
-              <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="total md-headline">
-                <span class="total-label" flex="100">
-                  {{ 'CART.CART_TOTAL' | translate }} 
-                </span>
-                <span class="total-amount" flex="nogrow">
-                  {{ quoteEditService.total | async | currency:'USD':true:'1.2-2' }}
-                </span>
-              </div>
-              <div flex="100" layout="row" layout-align="center center">
-                <administer-quote-component
-                  flex="100"
-                  [cart]="cart | async"
-                  [userCanProceed]="userCanProceed"
-                  (openQuoteDialog)="onNotification({type: 'OPEN_QUOTE_DIALOG'})">
-                </administer-quote-component>
-              </div>
-              <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!userCanProceed">
-                {{ 'CART.SELECT_USAGE_WARN' | translate }}
-              </div>
+        <section class="cart-total" layout="row" layout-align="center center">
+          <div flex="100">
+            <div *ngIf="showDiscount()" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+              <span class="total-label" flex="100">
+                {{ 'CART.CART_SUBTOTAL' | translate }} 
+              </span>
+              <span class="total-amount" flex="nogrow">
+                {{ quoteEditService.subTotal | async | currency:'USD':true:'1.2-2' }}
+              </span>
             </div>
-          </section>
-        </div>
+            <div *ngIf="showDiscount()" flex="100" layout="row" layout-align="end center" class="discount md-headline">
+              <span class="total-label" flex="100">
+                {{ 'CART.CART_DISCOUNT' | translate }} 
+              </span>
+              <span class="total-amount" flex="nogrow">{{ quoteEditService.hasProperty('discount') | async }}</span>
+            </div>
+            <div *ngIf="quoteType !== 'ProvisionalOrder'" flex="100" layout="row" layout-align="end center" class="total md-headline">
+              <span class="total-label" flex="100">
+                {{ 'CART.CART_TOTAL' | translate }} 
+              </span>
+              <span class="total-amount" flex="nogrow">
+                {{ quoteEditService.total | async | currency:'USD':true:'1.2-2' }}
+              </span>
+            </div>
+            <div flex="100" layout="row" layout-align="center center">
+              <administer-quote-component
+                flex="100"
+                [cart]="cart | async"
+                [userCanProceed]="userCanProceed"
+                (openQuoteDialog)="onNotification({type: 'OPEN_QUOTE_DIALOG'})">
+              </administer-quote-component>
+            </div>
+            <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!userCanProceed">
+              {{ 'CART.SELECT_USAGE_WARN' | translate }}
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   </div>

@@ -63,9 +63,16 @@
 									{{ project.clientName }}
 								</span>
 							</div>
-							<div class="project-subtotal md-caption">
-								<strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
-								<span>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
+							<div flex="100" flex-gt-sm="30" flex-order-xs="-1" layout-padding>
+								<div class="project-subtotal md-caption">
+									<strong>{{ 'CART.PROJECTS.PROJECT_SUBTOTAL' | translate }}</strong> 
+									<span>{{ project.subtotal | currency:'USD':true:'1.2-2' }}</span>
+								</div>
+								<div class="project-asset-count">
+									<span *ngIf="project.lineItems.length == 0">No Assets</span>
+									<span *ngIf="project.lineItems.length == 1">1 Asset</span>
+									<span *ngIf="project.lineItems.length > 1">{{ project.lineItems.length }} Assets</span>
+								</div>
 							</div>
 						</header>
 
@@ -77,10 +84,10 @@
 									flex="100" 
 									layout="row" 
 									layout-xs="column">
-									<div flex="100" flex-gt-xs="50">
+									<div flex="100" flex-gt-xs="60">
 										<cart-asset-component [asset]="lineItem.asset"></cart-asset-component>
 									</div>
-									<div flex-gt-xs="50" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
+									<div flex-gt-xs="40" layout-sm="100" flex="auto" class="actions" flex-order-xs="-3">
 										<div class="tools" flex="100" layout-padding>
 											<button [disabled]="!lineItem.asset.masterDownloadUrl" (click)="downloadMaster(lineItem.asset.masterDownloadUrl)" md-button color="primary" class="is-outlined">{{ 'ORDER.SHOW.DOWNLOAD_BTN_TITLE' | translate }}</button>
 											<button 

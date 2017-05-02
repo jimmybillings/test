@@ -4,8 +4,7 @@ import { ApiService } from '../services/api.service';
 import { Api, ApiBody } from '../interfaces/api.interface';
 import { Address, ViewAddress } from '../interfaces/user.interface';
 import {
-  Project, AssetLineItem, AddAssetParameters, Quote, QuoteState,
-  QuoteOptions, EditableQuoteFields
+  Project, AssetLineItem, FeeLineItem, AddAssetParameters, Quote, QuoteState, QuoteOptions, EditableQuoteFields
 } from '../interfaces/commerce.interface';
 import { ActiveQuoteStore } from '../stores/active-quote.store';
 
@@ -142,6 +141,22 @@ export class QuoteEditService {
       `quote/${this.quoteId}`,
       { body: this.formatQuoteBody(this.state.data, options) }
     );
+  }
+
+  public addFeeTo(project: Project, fee: FeeLineItem): void {
+    this.api.put(
+      Api.Orders,
+      `quote/${this.quoteId}/fee/lineItem`,
+      { body: fee, parameters: { projectName: project.name }, loading: true }
+    ).subscribe(this.replaceQuote);
+  }
+
+  public removeFee(fee: FeeLineItem): void {
+    this.api.delete(
+      Api.Orders,
+      `quote/${this.quoteId}/fee/${fee.id}`,
+      { loading: true }
+    ).subscribe(this.replaceQuote);
   }
 
   // Private helper methods

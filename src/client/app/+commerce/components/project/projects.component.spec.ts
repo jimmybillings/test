@@ -3,9 +3,17 @@ import { ProjectsComponent } from './projects.component';
 export function main() {
   describe('Projects', () => {
     let classUnderTest: ProjectsComponent;
+    let mockDialogService: any;
 
     beforeEach(() => {
-      classUnderTest = new ProjectsComponent();
+      mockDialogService = {
+        openFormDialog: jasmine.createSpy('openFormDialog').and.callFake((_: any, __: any, onSubmitCallback: Function) => {
+          mockDialogService.onSubmitCallback = onSubmitCallback;
+        })
+      };
+
+      classUnderTest = new ProjectsComponent(mockDialogService);
+      classUnderTest.projectsNotify.emit = jasmine.createSpy('projectsNotify');
     });
 
     describe('projectsOtherThan()', () => {
@@ -94,6 +102,31 @@ export function main() {
           });
 
         classUnderTest.delegate({ some: 'event' });
+      });
+    });
+
+    describe('onClickAddFeeButtonFor()', () => {
+      beforeEach(() => classUnderTest.config = { addQuoteFee: { items: [] } });
+
+      it('opens a dialog', () => {
+        classUnderTest.onClickAddFeeButtonFor({ some: 'project' } as any);
+
+        expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+          classUnderTest.config.addQuoteFee.items,
+          { title: 'QUOTE.ADD_FEE.HEADER', submitLabel: 'QUOTE.ADD_FEE.SUBMIT' },
+          jasmine.any(Function)
+        );
+      });
+
+      it('emits the expected event when the dialog is submitted', () => {
+        classUnderTest.onClickAddFeeButtonFor({ some: 'project' } as any);
+
+        mockDialogService.onSubmitCallback({ some: 'fee' });
+
+        expect(classUnderTest.projectsNotify.emit).toHaveBeenCalledWith({
+          type: 'ADD_QUOTE_FEE',
+          payload: { project: { some: 'project' }, fee: { some: 'fee' } }
+        });
       });
     });
 

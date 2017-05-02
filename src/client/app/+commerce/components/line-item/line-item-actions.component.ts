@@ -10,10 +10,12 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
       <!-- CRUX-1715 -->
       <!-- this rights button can go away when it added to the project -->
       <button
+        md-icon-button
         *ngIf="displayPriceButton"
-        md-button color="primary"
-        class="mini is-outlined"
-        (click)="showPricingDialog.emit()">{{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}
+        [ngClass]="{'select-usage': needsAttributes }"
+        title="{{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}"
+        (click)="showPricingDialog.emit()">
+        <md-icon>assignment</md-icon>
       </button>
       <button 
         md-icon-button
@@ -48,6 +50,7 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
 })
 export class LineItemActionsComponent {
   @Input() rightsManaged: string;
+  @Input() hasAttributes: boolean;
   @Input() otherProjects: any[];
   @Input() userCanCreateSubclips: any[];
   @Input() timeStart: number;
@@ -61,7 +64,9 @@ export class LineItemActionsComponent {
   public get displayPriceButton(): boolean {
     return this.rightsManaged === 'Rights Managed' && this.quoteType !== 'ProvisionalOrder';
   }
-
+  public get needsAttributes(): boolean {
+    return this.rightsManaged === 'Rights Managed' && !this.hasAttributes;
+  }
   public get shouldShowSubclipButton(): boolean {
     return this.userCanCreateSubclips && this.otherProjects.length > 0;
   }

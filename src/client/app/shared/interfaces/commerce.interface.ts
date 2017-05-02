@@ -44,6 +44,7 @@ export interface AssetLineItem {
 }
 
 export interface FeeLineItem {
+  id?: string;
   amount?: string;
   feeType?: string;
   notes?: string;
