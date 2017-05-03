@@ -235,7 +235,13 @@ export function main() {
         componentUnderTest.onNotification({ type: 'EDIT_LINE_ITEM_MARKERS', payload: { asset: mockAsset } });
 
         expect(mockAssetService.getClipPreviewData).toHaveBeenCalledWith(1234);
-        // expect(mockDialog.openComponentInDialog).toHaveBeenCalled();
+      });
+
+      it('edits the project pricing with EDIT_PROJECT_PRICING', () => {
+        let mockAsset = { assetId: 1234 };
+        componentUnderTest.onNotification({ type: 'EDIT_PROJECT_PRICING', payload: { asset: mockAsset } });
+
+        expect(mockAssetService.getPriceAttributes).toHaveBeenCalledWith();
       });
 
       describe('calls openPricingDialog with SHOW_PRICING_DIALOG', () => {

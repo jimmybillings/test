@@ -95,7 +95,7 @@ export class QuoteEditService {
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}/project/priceAttributes/${project.id}`,
-      { body: { attributes: priceAttributes }, loading: true }
+      { body: priceAttributes, loading: true }
     ).subscribe(this.replaceQuote);
   }
 
@@ -108,7 +108,8 @@ export class QuoteEditService {
   }
 
   public cloneLineItem(lineItem: AssetLineItem): void {
-    this.api.put(Api.Orders, `quote/${this.quoteId}/clone/lineItem`, { parameters: { lineItemId: lineItem.id }, loading: true })
+    this.api.put(Api.Orders, `quote/${this.quoteId}/clone/lineItem`,
+      { parameters: { lineItemId: lineItem.id }, loading: true })
       .subscribe(this.replaceQuote);
   }
 

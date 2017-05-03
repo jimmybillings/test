@@ -66,6 +66,10 @@ export class CartService {
     return this.checkoutData.map((state: CheckoutState) => state.selectedPurchaseType);
   }
 
+  public get loaded(): boolean {
+    return !isNaN(this.state.data.userId);
+  }
+
   // Loads the cart and returns just the observable's termination notification,
   // because our subscribers care about the fact that we are complete, but they
   // should be getting the data elsewhere.  Also, we take a detour to add a project
@@ -109,7 +113,7 @@ export class CartService {
     let existingProjectNames: Array<string> = this.existingProjectNames;
     this.api.put(
       Api.Orders,
-      'cart/asset/lineItem/quick',
+      'cart/asset/lineItem',
       {
         body: this.formatBody(addAssetParameters),
         parameters: { projectName: existingProjectNames[existingProjectNames.length - 1], region: 'AAA' }
@@ -126,7 +130,7 @@ export class CartService {
     this.api.put(
       Api.Orders,
       `cart/project/priceAttributes/${project.id}`,
-      { body: { attributes: priceAttributes }, loading: true }
+      { body: priceAttributes, loading: true }
     ).subscribe(this.replaceCartWith);
   }
 
