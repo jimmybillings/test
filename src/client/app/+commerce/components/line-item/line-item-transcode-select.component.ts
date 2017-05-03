@@ -7,7 +7,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   template: `
     <md-select
     *ngIf="!readOnly"
-      placeholder="Delivery format/codec"
+      placeholder="{{ 'ASSET.TRANSCODE_TARGETS.FORM_PLACEHOLDER' | translate }}"
       [(ngModel)]="selectedTarget"
       (change)="selectTarget.emit($event.value)">
         <md-option
@@ -15,10 +15,14 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
           [value]="target">{{ 'ASSET.TRANSCODE_TARGETS.' + target | translate }}
         </md-option>
     </md-select>
-    <div *ngIf="readOnly">
-      <p>{{ 'ASSET.TRANSCODE_TARGETS.' + selectedTarget | translate }}</p>
+    <div *ngIf="readOnly" class="read-only-transcode">
+      <span class="md-caption asset-name">{{ 'ASSET.TRANSCODE_TARGETS.FORM_PLACEHOLDER' | translate }}</span>
+      <div>{{ 'ASSET.TRANSCODE_TARGETS.' + selectedTarget | translate }}</div>
     </div>
-  `
+  `,
+  styles: [
+    `.read-only-transcode { margin-top: -5px; margin-left: 40px;}`
+  ]
 })
 export class LineItemTranscodeSelectComponent {
   @Input() transcodeTargets: string[];

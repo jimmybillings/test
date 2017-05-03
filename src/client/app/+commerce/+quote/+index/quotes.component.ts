@@ -55,7 +55,9 @@ export class QuotesComponent {
     if (!filter.status) {
       delete this.params.status;
     } else {
-      this.buildRouteParams(filter.status);
+      let newParams: any = Object.assign({}, filter.status, { i: 1 });
+      this.buildRouteParams(newParams);
+
     }
     this.router.navigate(['/commerce/quotes', this.params]);
   }

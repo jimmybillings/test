@@ -19,8 +19,8 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `md-select { width: 100%; margin-top: 11px; margin-bottom: 11px; }`,
-    `.quote-purchase-types { padding-top: 12px; padding-left: 2px; }`,
-    `:host {margin-bottom: -37px}`
+    `.quote-purchase-types { padding: 12px 5px 0 5px; }`,
+    `:host {margin-bottom: -38px; min-width: 284px;}`
   ]
 })
 export class QuotePurchaseTypeComponent {

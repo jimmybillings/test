@@ -8,16 +8,12 @@ import { Cart } from '../../../shared/interfaces/commerce.interface';
     <div class="create-quote-actions">
       <button
         [disabled]="!userCanProceed"
-        md-raised-button class="checkout"
+        md-button class="checkout"
         (click)="openQuoteDialog.emit()">
         {{ 'QUOTE.CREATE_QUOTE_BTN' | translate }}
       </button>
     </div>
   </div>`,
-  styles: [
-    `button.is-outlined { line-height: 48px; }`,
-    `button.checkout { margin-left: 2px; }`
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdministerQuoteComponent {

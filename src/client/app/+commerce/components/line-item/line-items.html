@@ -1,24 +1,23 @@
 <ul class="asset-list">
 	<li *ngFor="let lineItem of items" class="cart-asset" flex="100" layout="row" layout-xs="column">
-		<div flex="100" flex-gt-xs="50">
-			<cart-asset-component
-				[asset]="lineItem.asset"
-				(assetNotify)="delegate($event)">
-			</cart-asset-component>
-		</div>
-		<div flex-gt-xs="30" layout-sm="100" flex="auto" class="delivery-format" layout-padding>
-			<line-item-transcode-select-component
-				*ngIf="shouldShowTargets(lineItem)"
-				[readOnly]="readOnly"
-				[transcodeTargets]="lineItem.transcodeTargets"
-				[selectedTarget]="lineItem.selectedTranscodeTarget"
-				(selectTarget)="onSelectTarget($event, lineItem.selectedTranscodeTarget, lineItem)">
-			</line-item-transcode-select-component>
-		</div>
-		<div flex-gt-xs="20" flex="auto" class="actions" flex-order-xs="-3">
+		<cart-asset-component
+			[asset]="lineItem.asset"
+			(assetNotify)="delegate($event)"
+			flex="100" flex-gt-xs="60">
+		</cart-asset-component>
+		<line-item-transcode-select-component
+			*ngIf="shouldShowTargets(lineItem)"
+			[readOnly]="readOnly"
+			[transcodeTargets]="lineItem.transcodeTargets"
+			[selectedTarget]="lineItem.selectedTranscodeTarget"
+			(selectTarget)="onSelectTarget($event, lineItem.selectedTranscodeTarget, lineItem)"
+			flex-gt-xs="30" flex-gt-sm="25" flex="auto" class="delivery-format" layout-padding>
+		</line-item-transcode-select-component>
+		<div flex-gt-xs="15" flex="auto" class="actions" flex-order-xs="-3">
 			<line-item-actions-component
 				*ngIf="!readOnly"
 				[rightsManaged]="lineItem.rightsManaged"
+				[hasAttributes]="!!lineItem.attributes"
 				[otherProjects]="otherProjects"
 				[userCanCreateSubclips]="userCan.createSubclips(lineItem)"
 				[timeStart]="lineItem.timeStart"

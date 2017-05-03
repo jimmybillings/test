@@ -20,17 +20,25 @@ li.fee-item {
     background: mat-color($primary, lighter,.8);
     height: 100%;
     position: relative;
+    margin-right: rem(-0.2);
+    padding: rem(.8) 0 rem(.8) rem(3.5);
     @include text-contrast(mat-color($primary, darker));
+    .fee-title {
+      font-weight: 500;
+      padding: 0 0 rem(.2) 0;
+      flex: 0 0 0%;
+    }
     &::after {
-      content: "\e8b0";
+      content: "\e89c";
+      // content: "\e8b0";
       font-family: 'Material Icons';
-      font-size: rem(3.0);
+      font-size: rem(2.5);
       font-weight: 100;
-      line-height: rem(3.0);
-      height: rem(3.0);
-      width: rem(3.0);
+      line-height: rem(2.5);
+      height: rem(2.5);
+      width: rem(2.5);
       position: absolute;
-      right: rem(.6);
+      left: rem(.6);
       top: rem(.6);
     }
   }
@@ -59,6 +67,7 @@ li.fee-item {
     }
   }
   .tools {
+    opacity: .85;
     text-align: right;
   }
   .divider {

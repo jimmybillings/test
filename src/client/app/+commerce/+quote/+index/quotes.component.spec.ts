@@ -56,7 +56,7 @@ export function main() {
       });
 
       it('should call navigate on the router with the correct params', () => {
-        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/quotes', { status: 'active' }]);
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/quotes', { status: 'active', i: 1 }]);
       });
     });
 
