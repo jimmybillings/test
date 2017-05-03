@@ -1,9 +1,12 @@
+import { Observable } from 'rxjs/Observable';
+
 import { ProjectsComponent } from './projects.component';
 
 export function main() {
   describe('Projects', () => {
     let classUnderTest: ProjectsComponent;
     let mockDialogService: any;
+    let mockQuoteEditService: any;
 
     beforeEach(() => {
       mockDialogService = {
@@ -12,7 +15,11 @@ export function main() {
         })
       };
 
-      classUnderTest = new ProjectsComponent(mockDialogService);
+      mockQuoteEditService = {
+        feeConfig: Observable.of({ some: 'fee config' })
+      };
+
+      classUnderTest = new ProjectsComponent(mockDialogService, mockQuoteEditService);
       classUnderTest.projectsNotify.emit = jasmine.createSpy('projectsNotify');
     });
 
@@ -106,13 +113,72 @@ export function main() {
     });
 
     describe('onClickAddFeeButtonFor()', () => {
-      beforeEach(() => classUnderTest.config = { addQuoteFee: { items: [] } });
+      beforeEach(() => {
+        classUnderTest.config = { addQuoteFee: { items: [{ name: 'feeType' }, { name: 'amount' }] } };
+
+        mockQuoteEditService.feeConfig = Observable.of({
+          items: [
+            { name: 'fee1', amount: 100 },
+            { name: 'fee2', amount: 200 },
+            { name: 'fee3', amount: .5 },
+            { name: 'fee4', amount: 123.45 },
+            { name: 'fee5', amount: 0 },
+            { name: 'fee6' }
+          ]
+        });
+      });
 
       it('opens a dialog', () => {
         classUnderTest.onClickAddFeeButtonFor({ some: 'project' } as any);
 
+        const expectedItems: any = [
+          {
+            name: 'feeType',
+            options: 'fee1,fee2,fee3,fee4,fee5,fee6',
+            value: 'fee1',
+            slaveFieldName: 'amount',
+            slaveFieldValues: ['100.00', '200.00', '0.50', '123.45', '0.00', '0.00']
+          },
+          {
+            name: 'amount',
+            value: '100.00'
+          }
+        ];
+
         expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
-          classUnderTest.config.addQuoteFee.items,
+          expectedItems,
+          { title: 'QUOTE.ADD_FEE.HEADER', submitLabel: 'QUOTE.ADD_FEE.SUBMIT' },
+          jasmine.any(Function)
+        );
+      });
+
+      it('can open a dialog when UI config form has no amount', () => {
+        classUnderTest.config = { addQuoteFee: { items: [{ name: 'feeType' }] } };
+
+        classUnderTest.onClickAddFeeButtonFor({ some: 'project' } as any);
+
+        const expectedItems: any = [
+          {
+            name: 'feeType',
+            options: 'fee1,fee2,fee3,fee4,fee5,fee6',
+            value: 'fee1'
+          }
+        ];
+
+        expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+          expectedItems,
+          { title: 'QUOTE.ADD_FEE.HEADER', submitLabel: 'QUOTE.ADD_FEE.SUBMIT' },
+          jasmine.any(Function)
+        );
+      });
+
+      it('can open a dialog when UI config form has no fee type', () => {
+        classUnderTest.config = { addQuoteFee: { items: [{ whatever: 'stuff' }] } };
+
+        classUnderTest.onClickAddFeeButtonFor({ some: 'project' } as any);
+
+        expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+          [{ whatever: 'stuff' }],
           { title: 'QUOTE.ADD_FEE.HEADER', submitLabel: 'QUOTE.ADD_FEE.SUBMIT' },
           jasmine.any(Function)
         );

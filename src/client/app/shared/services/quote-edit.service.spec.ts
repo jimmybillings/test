@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Quote Edit Service', () => {
-    let serviceUnderTest: QuoteEditService, mockApi: MockApiService, mockQuoteStore: any;
+    let serviceUnderTest: QuoteEditService, mockApi: MockApiService, mockQuoteStore: any, mockFeeConfigStore: any;
 
     beforeEach(() => {
       mockApi = new MockApiService();
@@ -15,8 +15,9 @@ export function main() {
         replaceQuote: jasmine.createSpy('replaceQuote'),
         updateQuote: jasmine.createSpy('updateQuote')
       };
+      mockFeeConfigStore = {};
       jasmine.addMatchers(mockApiMatchers);
-      serviceUnderTest = new QuoteEditService(mockQuoteStore, mockApi.injector);
+      serviceUnderTest = new QuoteEditService(mockQuoteStore, mockFeeConfigStore, mockApi.injector);
     });
 
     describe('sendQuote', () => {
@@ -75,6 +76,49 @@ export function main() {
         serviceUnderTest.removeFee({ some: 'fee', id: 47 } as any);
 
         expect(mockQuoteStore.replaceQuote).toHaveBeenCalled();
+      });
+    });
+
+    describe('feeconfig getter', () => {
+      describe('when the FeeConfig store is initialized', () => {
+        beforeEach(() => {
+          mockFeeConfigStore.initialized = true;
+          mockFeeConfigStore.feeConfig = { existing: 'feeConfig' };
+        });
+
+        it('returns an Observable of the existing FeeConfig store', () => {
+          expect(serviceUnderTest.feeConfig).toEqual(Observable.of({ existing: 'feeConfig' }));
+        });
+      });
+
+      describe('when the FeeConfig store is not initialized', () => {
+        beforeEach(() => {
+          mockFeeConfigStore.initialized = false;
+          mockFeeConfigStore.replaceFeeConfigWith = jasmine.createSpy('replaceFeeConfigWith');
+          mockApi.getResponse = { loaded: 'feeConfig' };
+        });
+
+        it('calls the server\'s feeconfig endpoint as expected', () => {
+          serviceUnderTest.feeConfig.subscribe();
+
+          expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
+          expect(mockApi.get).toHaveBeenCalledWithEndpoint('feeConfig/search');
+          expect(mockApi.get).not.toHaveBeenCalledWithBody();
+          expect(mockApi.get).not.toHaveBeenCalledWithParameters();
+          expect(mockApi.get).toHaveBeenCalledWithLoading(true);
+        });
+
+        it('replaces the contents of the FeeConfig store', () => {
+          serviceUnderTest.feeConfig.subscribe(response => {
+            expect(mockFeeConfigStore.replaceFeeConfigWith).toHaveBeenCalledWith({ loaded: 'feeConfig' });
+          });
+        });
+
+        it('returns an Observable of the server\'s returned FeeConfig', () => {
+          serviceUnderTest.feeConfig.subscribe(response => {
+            expect(response).toEqual({ loaded: 'feeConfig' });
+          });
+        });
       });
     });
   });
