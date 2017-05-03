@@ -1,7 +1,9 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Project, QuoteType, FeeLineItem } from '../../../shared/interfaces/commerce.interface';
+import { Project, QuoteType, FeeLineItem, FeeConfig, FeeConfigItem } from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { FormFields } from '../../../shared/interfaces/forms.interface';
+import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 
 @Component({
   moduleId: module.id,
@@ -19,7 +21,7 @@ export class ProjectsComponent {
   @Output() projectsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   private selectedProject: Project;
 
-  constructor(private dialogService: WzDialogService) { }
+  constructor(private dialogService: WzDialogService, private quoteEditService: QuoteEditService) { }
 
   public projectsOtherThan(currentProject: Project) {
     return this.projects.filter(project => project.id !== currentProject.id);
@@ -54,11 +56,13 @@ export class ProjectsComponent {
   }
 
   public onClickAddFeeButtonFor(project: Project): void {
-    this.dialogService.openFormDialog(
-      this.config.addQuoteFee.items,
-      { title: 'QUOTE.ADD_FEE.HEADER', submitLabel: 'QUOTE.ADD_FEE.SUBMIT' },
-      (result: FeeLineItem) => this.addFeeTo(project, result)
-    );
+    this.quoteEditService.feeConfig.subscribe(feeConfig => {
+      this.dialogService.openFormDialog(
+        this.initializeQuoteFeeFieldsFrom(feeConfig),
+        { title: 'QUOTE.ADD_FEE.HEADER', submitLabel: 'QUOTE.ADD_FEE.SUBMIT' },
+        (result: FeeLineItem) => this.addFeeTo(project, result)
+      );
+    });
   }
 
   public delegate(message: any): void {
@@ -71,6 +75,39 @@ export class ProjectsComponent {
       item.value = this.selectedProject[item.name];
       return item;
     });
+  }
+
+  private initializeQuoteFeeFieldsFrom(feeConfig: FeeConfig): FormFields[] {
+    // This is sort of bogus, because the fields are completely dependent on UI config to be "correct".
+    // (Though it's no more bogus than expecting "this.config.addQuoteFee.items" to be present...)
+    // We'll at least check to make sure the fields are found before we try to manipulate them.
+
+    const fields: FormFields[] = JSON.parse(JSON.stringify(this.config.addQuoteFee.items));
+    const feeTypeField: FormFields = fields.find(field => field.name === 'feeType');
+
+    if (feeTypeField) {
+      const options: string[] = feeConfig.items.map(configItem => configItem.name);
+      feeTypeField.options = options.join(',');
+      feeTypeField.value = options[0];
+
+      const amountField: FormFields = fields.find(field => field.name === 'amount');
+
+      if (amountField) {
+        feeTypeField.slaveFieldName = 'amount';
+        feeTypeField.slaveFieldValues = feeConfig.items.map(this.formatFeeConfigItemAmount);
+        amountField.value = feeTypeField.slaveFieldValues[0];
+      }
+    }
+
+    return fields;
+  }
+
+  private formatFeeConfigItemAmount = (configItem: FeeConfigItem) => {
+    // Update this if we ever use anything but US dollars.
+    return `${(configItem.amount || 0) * 100}` // 100 => '10000', .50 => '50', 0 => '0', undefined => '0'
+      .replace(/(\d\d)$/, '.$1')               // 10000 => '100.00', '50' => '.50', '0' => '0'
+      .replace(/^\./, '0.')                    // '100.00' => '100.00', '.50' => '0.50, '0' => '0'
+      .replace(/^0$/, '0.00');                 // '100.00' => '100.00', '0.50' => '0.50', '0' => '0.00'
   }
 
   private addFeeTo(project: Project, fee: FeeLineItem) {

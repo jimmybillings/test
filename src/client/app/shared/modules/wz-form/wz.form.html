@@ -212,7 +212,8 @@
           placeholder="{{field.label | translate}}"
           formControlName="{{field.name}}"
           [required]="isRequiredField(field)"
-          id="{{field.name}}">
+          id="{{field.name}}"
+          (change)="onSelectChange($event, field)">
           <md-option *ngFor="let option of parseOptions(field.options)" [value]="option">{{option}}</md-option>
 
           <!--secondary field explainations (hints) there are two places for these below the field at the start and end-->

@@ -69,6 +69,20 @@ export interface Metadatum {
   value: string;
 }
 
+export interface FeeConfigItem {
+  id: number;
+  siteName: string;
+  name: string;
+  amount: number;
+  financeCode: string;
+  paymentRestriction: string;
+  accountId: number;
+}
+
+export interface FeeConfig {
+  items: FeeConfigItem[];
+}
+
 // Store initial states
 
 export interface CartState {
@@ -88,6 +102,11 @@ export interface CheckoutState {
   selectedAddress: ViewAddress;
   authorization: any;
   selectedPurchaseType: OrderType;
+}
+
+export interface FeeConfigState {
+  initialized: boolean;
+  feeConfig: FeeConfig;
 }
 
 // Models
@@ -174,4 +193,3 @@ export interface CommerceMessage {
   type: string;
   payload?: any;
 }
-
