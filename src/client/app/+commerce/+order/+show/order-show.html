@@ -5,7 +5,7 @@
 			<h2 flex="grow" class="md-display-1">{{ 'ORDER.SHOW.PAGE_TITLE' | translate }}</h2>
 			<div class="tools" flex="auto">
 				<a [routerLink]="['/commerce/orders']" md-icon-button color="primary" title="View all orders">
-					<md-icon>description</md-icon>
+					<md-icon>toc</md-icon>
 				</a>
 			</div>
 		</div>
@@ -23,6 +23,9 @@
 					</span>
 					<span>
 						<strong>{{ 'ORDER.CREATED_ON_LABEL' | translate }} </strong>{{ (order.data | async).createdOn | date:'short' }}
+					</span>
+					<span *ngIf="(order.data | async).bulkOrderId">
+						<strong>{{ 'QUOTE.BULK_ORDER_NAME' | translate }} </strong>{{ (order.data | async).bulkOrderId }}
 					</span>
 					<span>
 						<strong>{{ 'ORDER.PURCHASE_TYPE_LABEL' | translate }} </strong>{{ (order.data | async).orderType }}
