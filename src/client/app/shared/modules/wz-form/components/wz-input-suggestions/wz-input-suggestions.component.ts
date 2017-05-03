@@ -21,7 +21,6 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
   @Input() fControl: FormControl;
   @Input() rawField: any;
   @Output() newSuggestion = new EventEmitter();
-  @Output() cacheSuggestions = new EventEmitter();
   public suggestions: Array<string> = [];
   public activeSuggestion: string;
 
@@ -206,7 +205,7 @@ export class WzInputSuggestionsComponent implements OnInit, OnDestroy {
           Api.Identities,
           this.rawField.endPoint,
           { parameters: Object.assign({}, this.buildSearchFields(query)) }
-        ).do((res: { items: any[] }) => this.cacheSuggestions.emit(res.items));
+        );
       case 'assets':
         return this.api.get(
           Api.Assets,

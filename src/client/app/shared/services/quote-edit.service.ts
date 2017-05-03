@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../services/api.service';
-import { Api, ApiBody } from '../interfaces/api.interface';
+import { Api, ApiBody, ApiParameters } from '../interfaces/api.interface';
 import { Address, ViewAddress } from '../interfaces/user.interface';
 import {
   Project, AssetLineItem, FeeLineItem, AddAssetParameters, Quote, QuoteState, QuoteOptions, EditableQuoteFields, FeeConfig
@@ -151,8 +151,8 @@ export class QuoteEditService {
   public sendQuote(options: QuoteOptions): Observable<any> {
     return this.api.put(
       Api.Orders,
-      `quote/${this.quoteId}`,
-      { body: this.formatQuoteBody(this.state.data, options) }
+      `quote/send/${this.quoteId}`,
+      { parameters: options as ApiParameters }
     );
   }
 
@@ -196,32 +196,6 @@ export class QuoteEditService {
 
   private get existingProjectNames(): Array<string> {
     return (this.state.data.projects || []).map((project: any) => project.name);
-  }
-
-  private formatQuoteBody(quote: Quote, options: QuoteOptions): any {
-    // We don't want to send 'standard' to the API, as it's not a valid option.
-    // we leave it blank so the end user can decide later to pay with credit-card or purchase on credit
-    if (options.purchaseType === 'standard') options.purchaseType = null;
-
-    // find the id of the user that this quote is for
-    let ownerUserId: number = options.users ? options.users.filter((user: any) => {
-      return user.emailAddress === options.emailAddress;
-    })[0].id : null;
-
-    // shove the extra quote params on to the current quote
-    let body: any = Object.assign(
-      quote,
-      {
-        purchaseType: options.purchaseType,
-        expirationDate: new Date(options.expirationDate).toISOString(),
-        quoteStatus: 'ACTIVE'
-      }
-    );
-
-    // add the user id if it exists
-    if (ownerUserId) Object.assign(body, { ownerUserId });
-
-    return body;
   }
 
   private replaceQuote = (quote: Quote): void => {

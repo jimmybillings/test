@@ -22,24 +22,17 @@ export function main() {
 
     describe('sendQuote', () => {
       it('should call the api service correctly', () => {
-        let mockUsers: any[] = [
-          { emailAddress: 'ross.edfort@wazeedigital.com', id: 1 },
-          { emailAddress: '', id: 2 }, { emailAddress: '', id: 3 }
-        ];
         serviceUnderTest.sendQuote({
-          emailAddress: 'ross.edfort@wazeedigital.com',
-          expirationDate: '2017/03/22',
-          users: mockUsers,
+          ownerEmail: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017-03-22T06:00:00.000Z',
           purchaseType: 'ProvisionalOrder'
         }).take(1).subscribe();
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3');
-        expect(mockApi.put).toHaveBeenCalledWithBody({
-          id: 3,
-          ownerUserId: 1,
-          purchaseType: 'ProvisionalOrder',
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/send/3');
+        expect(mockApi.put).toHaveBeenCalledWithParameters({
+          ownerEmail: 'ross.edfort@wazeedigital.com',
           expirationDate: '2017-03-22T06:00:00.000Z',
-          quoteStatus: 'ACTIVE',
+          purchaseType: 'ProvisionalOrder'
         });
       });
     });

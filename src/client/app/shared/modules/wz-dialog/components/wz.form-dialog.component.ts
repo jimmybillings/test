@@ -19,8 +19,7 @@ import { FormFields } from '../../../../shared/interfaces/forms.interface';
           [submitLabel]="submitLabel"
           [autocomplete]="autocomplete"
           (formCancel)="onFormCancel()"
-          (formSubmit)="onFormSubmit($event)"
-          (cacheSuggestions)="onFormSuggestions($event)">
+          (formSubmit)="onFormSubmit($event)">
         </wz-form>
       </md-dialog-content>
     </div>
@@ -37,17 +36,11 @@ export class WzFormDialogComponent {
   @Output() cancel: EventEmitter<null> = new EventEmitter<null>();
   @Output() submit: EventEmitter<any> = new EventEmitter<any>();
 
-  private suggestions: any;
-
   public onFormCancel(): void {
     this.cancel.emit();
   }
 
   public onFormSubmit(results: any): void {
-    this.submit.emit(Object.assign({}, results, this.suggestions ? { suggestions: this.suggestions } : {}));
-  }
-
-  public onFormSuggestions(suggestions: any): void {
-    this.suggestions = suggestions;
+    this.submit.emit(results);
   }
 }

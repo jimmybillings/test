@@ -281,7 +281,8 @@
 		<!--
         START: CUSTOM FOR ELEMENT FOR SUGGESTIONS BASED ON TEXT INPUT
       -->
-		<wz-input-suggestions *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]" [rawField]="field" (cacheSuggestions)="cacheSuggestions.emit($event)">
+		<wz-input-suggestions
+      *ngIf="field.type == 'suggestions'" #suggestions [fControl]="form.controls[field.name]" [rawField]="field">
 			<md-input-container>
         <input mdInput placeholder="{{field.label | translate}}" 
 				(keydown)="suggestions.inputKeyDown($event)"

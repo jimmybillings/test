@@ -128,11 +128,10 @@ export class QuoteEditComponent extends CommerceEditTab {
     this.quoteEditService.updateQuoteField(options);
   }
 
-  private onSubmitQuoteDialog = (result: { emailAddress: string, expirationDate: string, suggestions: any[] }): void => {
+  private onSubmitQuoteDialog = (result: { emailAddress: string, expirationDate: string }): void => {
     this.sendQuote({
-      emailAddress: result.emailAddress,
-      expirationDate: result.expirationDate,
-      users: result.suggestions,
+      ownerEmail: result.emailAddress,
+      expirationDate: new Date(result.expirationDate).toISOString(),
       purchaseType: this.quoteType
     });
   }
@@ -141,7 +140,7 @@ export class QuoteEditComponent extends CommerceEditTab {
     this.quoteEditService.sendQuote(options).take(1).subscribe((res: Quote) => {
       this.showSnackBar({
         key: 'QUOTE.CREATED_FOR_TOAST',
-        value: { emailAddress: options.emailAddress }
+        value: { emailAddress: options.ownerEmail }
       });
     }, (err) => {
       console.error(err);
