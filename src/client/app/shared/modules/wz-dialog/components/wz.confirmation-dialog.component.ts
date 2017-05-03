@@ -10,11 +10,11 @@ import { ConfirmationDialogStrings } from '../interfaces/wz.dialog.interface';
       <div flex>{{ strings.message | translate }}</div>
     </md-dialog-content>
     <md-dialog-actions layout="row" layout-align="end end">
-      <button (click)="onClickAccept()" md-button md-dialog-close color="primary" title="{{ strings.accept | translate }}">
-        {{ strings.accept | translate }}
-      </button>
-      <button (click)="onClickDecline()" md-button md-dialog-close color="primary" title="{{ strings.decline | translate }}">
+      <button (click)="onClickDecline()" md-button md-dialog-close color="primary">
         {{ strings.decline | translate }}
+      </button>
+      <button (click)="onClickAccept()" md-button md-dialog-close color="primary">
+        {{ strings.accept | translate }}
       </button>
     </md-dialog-actions>
   `
