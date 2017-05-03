@@ -80,16 +80,17 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public showTerms() {
     this.user.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
-      let dialogRef: MdDialogRef<any> = this.dialog.open(WzTermsComponent, { disableClose: true });
+      let dialogRef: MdDialogRef<WzTermsComponent> = this.dialog.open(WzTermsComponent, { disableClose: true });
       dialogRef.componentInstance.terms = terms;
       dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.afterClosed().subscribe(_ => this.agreeToTermsAndClose());
+      dialogRef.componentInstance.btnLabel = 'LOGIN.AGREE_TO_TOS';
+      dialogRef.componentInstance.header = 'LOGIN.TOS_TITLE';
+      dialogRef.afterClosed().subscribe(this.agreeToTermsAndClose);
     });
   }
 
-  public agreeToTermsAndClose(): void {
+  private agreeToTermsAndClose = () => {
     this.user.agreeUserToTerms();
     this.router.navigate(['/']);
   }
-
 }

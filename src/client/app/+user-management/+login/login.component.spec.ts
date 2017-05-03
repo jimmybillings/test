@@ -108,15 +108,5 @@ export function main() {
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();
       });
     });
-
-    describe('agreeToTerms()', () => {
-      it('calls the service and navigates', () => {
-        componentUnderTest.agreeToTermsAndClose();
-
-        expect(mockDocumentService.agreeUserToTerms).toHaveBeenCalled();
-        expect(mockRouter.navigate).toHaveBeenCalled();
-      });
-    });
-
   });
 }
