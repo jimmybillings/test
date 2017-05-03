@@ -8,7 +8,7 @@
         {{ 'QUOTE.PURCHASE_HEADER' | translate }} <span *ngIf="hasPurchaseType">- {{ (quote | async).purchaseType }}</span>
       </h2>
       <div class="tools" flex="auto">
-				<a [routerLink]="['/commerce/quotes']" md-icon-button color="primary" title="View all quotes">
+				<a [routerLink]="['/commerce/quotes']" md-icon-button color="primary" title="{{ 'QUOTE.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
 					<md-icon>inbox</md-icon>
 				</a>
 			</div>
