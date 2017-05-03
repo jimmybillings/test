@@ -86,7 +86,7 @@ export class WzFormBase implements OnInit, OnChanges {
     if (field.options && field.slaveFieldName && field.slaveFieldValues) {
       const selectedIndex: number = field.options.split(',').indexOf(event.value);
 
-      this.update(field.slaveFieldName, field.slaveFieldValues[selectedIndex])
+      this.update(field.slaveFieldName, field.slaveFieldValues[selectedIndex]);
     }
   }
 

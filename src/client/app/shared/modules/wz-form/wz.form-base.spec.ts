@@ -32,7 +32,7 @@ export function main() {
         otherField = { value: 'slaveZero', setValue: (newValue: any) => otherField.value = newValue };
         mockForm.controls = { otherFieldName: otherField };
 
-        classUnderTest.ngOnInit()
+        classUnderTest.ngOnInit();
       });
 
       it('updates a slave field based on this field\'s selection', () => {

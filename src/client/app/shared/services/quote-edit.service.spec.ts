@@ -99,7 +99,7 @@ export function main() {
         });
 
         it('calls the server\'s feeconfig endpoint as expected', () => {
-          serviceUnderTest.feeConfig;
+          serviceUnderTest.feeConfig.subscribe();
 
           expect(mockApi.get).toHaveBeenCalledWithApi(Api.Identities);
           expect(mockApi.get).toHaveBeenCalledWithEndpoint('feeConfig/search');
