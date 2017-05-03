@@ -55,9 +55,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   public openTermsDialog() {
     this.user.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
-      let dialogRef: MdDialogRef<any> = this.dialog.open(WzTermsComponent);
+      let dialogRef: MdDialogRef<WzTermsComponent> = this.dialog.open(WzTermsComponent);
       dialogRef.componentInstance.terms = terms;
       dialogRef.componentInstance.dialog = dialogRef;
+      dialogRef.componentInstance.btnLabel = 'REGISTER.CLOSE_TOS_DIALOG';
+      dialogRef.componentInstance.header = 'REGISTER.TOS_TITLE';
     });
   }
 }

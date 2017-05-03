@@ -87,7 +87,8 @@ export function main() {
         serviceUnderTest.agreeUserToTerms();
 
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
-        expect(mockApi.post).toHaveBeenCalledWithEndpoint('document/version/1/agree');
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('document/version/agree');
+        expect(mockApi.post).toHaveBeenCalledWithParameters({ documentId: '1' });
       });
     });
 

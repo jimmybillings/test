@@ -43,7 +43,11 @@ export class UserService {
   }
 
   public agreeUserToTerms(): void {
-    this.api.post(Api.Identities, `document/version/${this.documentId}/agree`).take(1).subscribe();
+    this.api.post(
+      Api.Identities,
+      `document/version/agree`,
+      { parameters: { documentId: this.documentId.toString() } }
+    ).take(1).subscribe();
   }
 
   // Used by a logged-in user to change their password
