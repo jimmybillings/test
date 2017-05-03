@@ -6,7 +6,7 @@ export function main() {
 
     let mockCurrentUserService: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockErrorStore: any, mockCart: any,
-      mockWindow: any, mockMdDialog: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any;
+      mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
@@ -39,15 +39,8 @@ export function main() {
       mockSnackBar = {
         open: () => { }
       };
-      mockMdDialog = {
-        open: function () {
-          return {
-            componentInstance: {
-              pricingEvent: Observable.of({ some: 'data' })
-            },
-            afterClosed: jasmine.createSpy('afterClosed').and.returnValue(Observable.of({}))
-          };
-        }
+      mockDialogService = {
+        openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' }))
       };
 
       mockQuoteEditService = { addAssetToProjectInQuote: jasmine.createSpy('addAssetToProjectInQuote') };
@@ -55,7 +48,7 @@ export function main() {
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
         mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore, mockCart,
-        mockSnackBar, mockTranslate, mockMdDialog, mockQuoteEditService);
+        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService);
 
     });
 
@@ -117,7 +110,7 @@ export function main() {
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
           mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore,
-          mockCart, mockSnackBar, mockTranslate, mockMdDialog, mockQuoteEditService);
+          mockCart, mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService);
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
       });

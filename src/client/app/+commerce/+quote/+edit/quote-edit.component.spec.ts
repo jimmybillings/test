@@ -12,7 +12,7 @@ export function main() {
       };
 
       componentUnderTest =
-        new QuoteEditComponent(null, mockQuoteEditService, null, null, null, null, null, null, null, null, null, null);
+        new QuoteEditComponent(null, mockQuoteEditService, null, null, null, null, null, null, null, null, null);
     });
 
     describe('onNotification()', () => {

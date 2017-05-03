@@ -5,31 +5,33 @@ import { CartResolver } from './cart.resolver';
 
 export function main() {
   describe('Cart Resolver', () => {
-    const mockObservable = Observable.of({});
-    const mockCartService: any = {
-      initializeData: jasmine.createSpy('initializeData() spy').and.returnValue(mockObservable)
-    };
+    const mockObservable = Observable.of({ userId: 123 });
     const mockRoute: ActivatedRouteSnapshot = undefined;
     const mockState: RouterStateSnapshot = undefined;
     let resolverUnderTest: CartResolver;
+    let mockCartService: any = {
+      loaded: false,
+      data: Observable.of(mockObservable)
+    };
 
     beforeEach(() => {
       resolverUnderTest = new CartResolver(mockCartService);
     });
 
     describe('resolve()', () => {
-      let returnedObservable: Observable<any>;
-
-      beforeEach(() => {
-        returnedObservable = resolverUnderTest.resolve(mockRoute, mockState);
+      it('Should not resolve if the Cart store has no data from the server', () => {
+        expect(() => {
+          resolverUnderTest.resolve(mockRoute, mockState).take(1).subscribe((data) => {
+            throw new Error();
+          });
+        }).not.toThrow();
       });
 
-      it('tells the cart service to load data', () => {
-        expect(mockCartService.initializeData).toHaveBeenCalled();
-      });
-
-      it('returns the Observable returned by initializeData()', () => {
-        expect(returnedObservable).toBe(mockObservable);
+      it('Should resolve if the Cart store already has data from the server', () => {
+        mockCartService.loaded = true;
+        resolverUnderTest.resolve(mockRoute, mockState).take(1).subscribe((data) => {
+          expect(data).toEqual(mockObservable);
+        });
       });
     });
   });

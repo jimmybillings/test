@@ -4,39 +4,41 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
-import { Project, AssetLineItem, Cart, QuoteType, QuoteOptions } from '../../../shared/interfaces/commerce.interface';
+import {
+  Project, AssetLineItem, Cart, QuoteType, QuoteOptions, Asset,
+  PriceAttributes
+} from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
-import { ProjectEditComponent } from '../project/project-edit.component';
-import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
+import { MdSnackBar, MdDialogRef } from '@angular/material';
+import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { AssetService } from '../../../shared/services/asset.service';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
-import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 import { UserPreferenceService } from '../../../shared/services/user-preference.service';
 import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../../shared/interfaces/asset.interface';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
+import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
+import { SelectedPriceAttributes, WzEvent, Poj } from '../../../shared/interfaces/common.interface';
 
 export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
 
   public cart: Observable<any>;
   public config: any;
-  public priceAttributes: any = null;
-  public pricingPreferences: any;
+  public priceAttributes: PriceAttributes = null;
+  public pricingPreferences: Poj;
   public quoteType: QuoteType = null;
   protected configSubscription: Subscription;
   protected preferencesSubscription: Subscription;
-  protected usagePrice: any;
-  protected suggestions: any[];
-
+  protected usagePrice: Observable<number>;
 
   constructor(
     public userCan: CommerceCapabilities,
     protected commerceService: CartService | QuoteEditService,
     protected uiConfig: UiConfig,
-    protected dialog: MdDialog,
+    protected dialogService: WzDialogService,
     protected assetService: AssetService,
     protected window: WindowRef,
     protected userPreference: UserPreferenceService,
@@ -59,35 +61,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     this.preferencesSubscription.unsubscribe();
   }
 
-  public get userCanProceed(): boolean {
-    if (this.quoteType === 'ProvisionalOrder') {
-      return true;
-    } else {
-      return this.rmAssetsHaveAttributes;
-    }
-  }
-
-  public get rmAssetsHaveAttributes(): boolean {
-    if (this.commerceService.state.data.itemCount === 0) return true;
-
-    let validAssets: boolean[] = [];
-
-    this.commerceService.state.data.projects.forEach((project: Project) => {
-      if (project.lineItems) {
-        project.lineItems.forEach((lineItem: AssetLineItem) => {
-          validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);
-        });
-      }
-    });
-
-    return validAssets.indexOf(false) === -1;
-  }
-
-  public onSelectQuoteType(event: { type: QuoteType }): void {
-    this.quoteType = event.type;
-  }
-
-  public onNotification(message: any): void {
+  public onNotification(message: WzEvent): void {
     switch (message.type) {
       case 'ADD_PROJECT': {
         this.commerceService.addProject();
@@ -125,34 +99,117 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         this.showPricingDialog(message.payload);
         break;
       }
+      case 'EDIT_PROJECT_PRICING': {
+        this.editProjectPricing(message.payload);
+        break;
+      }
     };
   }
 
-  protected showPricingDialog(lineItem: any): void {
+  public get userCanProceed(): boolean {
+    return (this.quoteType === 'ProvisionalOrder') || this.rmAssetsHaveAttributes;
+  }
+
+  public get rmAssetsHaveAttributes(): boolean {
+    if (this.commerceService.state.data.itemCount === 0) return true;
+
+    let validAssets: boolean[] = [];
+
+    this.commerceService.state.data.projects.forEach((project: Project) => {
+      if (project.lineItems) {
+        project.lineItems.forEach((lineItem: AssetLineItem) => {
+          validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);
+        });
+      }
+    });
+
+    return validAssets.indexOf(false) === -1;
+  }
+
+  public onSelectQuoteType(event: { type: QuoteType }): void {
+    this.quoteType = event.type;
+  }
+
+  protected editProjectPricing(project: Project) {
+    this.assetService.getPriceAttributes().subscribe((priceAttributes: PriceAttributes) => {
+      this.openProjectPricingDialog(priceAttributes, project);
+    });
+  }
+
+  protected showPricingDialog(lineItem: AssetLineItem): void {
     if (this.priceAttributes) {
       this.openPricingDialog(lineItem);
     } else {
-      this.assetService.getPriceAttributes().subscribe((data: any) => {
-        this.priceAttributes = data;
+      this.assetService.getPriceAttributes().subscribe((priceAttributes: PriceAttributes) => {
+        this.priceAttributes = priceAttributes;
         this.openPricingDialog(lineItem);
       });
     }
   }
 
-  protected openPricingDialog(lineItem: any): void {
-    let dialogRef: MdDialogRef<WzPricingComponent> = this.dialog.open(WzPricingComponent);
-    dialogRef.componentInstance.dialog = dialogRef;
-    dialogRef.componentInstance.pricingPreferences = this.pricingPreferences;
-    dialogRef.componentInstance.attributes = this.priceAttributes;
-    dialogRef.componentInstance.pricingEvent.subscribe((event: any) => {
-      this.handlePricingEvent(event, lineItem, dialogRef);
-    });
+  protected openProjectPricingDialog(priceAttributes: PriceAttributes, project: Project): void {
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: WzPricingComponent,
+        inputOptions: {
+          attributes: priceAttributes,
+          pricingPreferences: this.pricingPreferences,
+          usagePrice: null
+        },
+        outputOptions: [
+          {
+            event: 'pricingEvent',
+            callback: (event: WzEvent, dialogRef: any) => {
+              this.applyProjectPricing(event, dialogRef, project);
+            }
+          }
+        ]
+      }
+    );
   }
 
-  protected handlePricingEvent(event: any, lineItem: any, dialogRef: MdDialogRef<WzPricingComponent>): void {
+  protected applyProjectPricing(event: WzEvent, dialogRef: MdDialogRef<WzPricingComponent>, project: Project) {
+    switch (event.type) {
+      case 'UPDATE_PREFERENCES':
+        this.commerceService.updateProjectPriceAttributes(event.payload, project);
+        this.userPreference.updatePricingPreferences(event.payload);
+        dialogRef.close();
+        break;
+      case 'ERROR':
+        this.error.dispatch({ status: event.payload });
+        break;
+      default:
+        break;
+    }
+  }
+
+  protected openPricingDialog(lineItem: AssetLineItem): void {
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: WzPricingComponent,
+        inputOptions: {
+          attributes: this.priceAttributes,
+          pricingPreferences: this.pricingPreferences,
+          usagePrice: null
+        },
+        outputOptions: [
+          {
+            event: 'pricingEvent',
+            callback: (event: WzEvent, dialogRef: any) => {
+              this.applyPricing(event, dialogRef, lineItem);
+            }
+          }
+        ]
+      }
+    );
+  }
+
+  protected applyPricing(event: WzEvent, dialogRef: MdDialogRef<WzPricingComponent>, lineItem: AssetLineItem) {
     switch (event.type) {
       case 'CALCULATE_PRICE':
-        dialogRef.componentInstance.usagePrice = this.calculatePrice(lineItem.asset.assetId, event.payload);
+        this.assetService.getPrice(lineItem.asset.assetId, event.payload)
+          .map(data => data.price)
+          .subscribe(data => dialogRef.componentInstance.usagePrice = Observable.of(data));
         this.commerceService.editLineItem(lineItem, { pricingAttributes: event.payload });
         break;
       case 'UPDATE_PREFERENCES':
@@ -167,48 +224,60 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     }
   }
 
-  protected calculatePrice(assetId: number, attributes: any): Observable<number> {
-    return this.assetService.getPrice(assetId, attributes).map((data: any) => { return data.price; });
+  protected editAsset(lineItem: AssetLineItem) {
+    this.assetService.getClipPreviewData(lineItem.asset.assetId)
+      .subscribe(data => {
+        this.document.body.classList.add('subclipping-edit-open');
+        lineItem.asset.clipUrl = data.url;
+        this.dialogService.openComponentInDialog(
+          {
+            componentType: WzSubclipEditorComponent,
+            inputOptions: {
+              window: this.window.nativeWindow,
+              asset: lineItem.asset,
+              usagePrice: null
+            },
+            outputOptions: [
+              {
+                event: 'cancel',
+                callback: (event: any) => { return true; },
+                closeOnEvent: true
+              },
+              {
+                event: 'save',
+                callback: (event: any) => {
+                  Object.assign(lineItem.asset,
+                    { timeStart: event.in, timeEnd: event.out });
+                  this.commerceService.editLineItem(lineItem, {});
+                },
+                closeOnEvent: true
+              }
+            ]
+          }
+        ).subscribe(_ => {
+          this.document.body.classList.remove('subclipping-edit-open');
+        });
+      });
   }
 
-  protected editAsset(payload: any) {
-    this.assetService.getClipPreviewData(payload.asset.assetId).subscribe(data => {
-      payload.asset.clipUrl = data.url;
-      let dialogRef: MdDialogRef<WzSubclipEditorComponent> = this.dialog.open(WzSubclipEditorComponent, { width: '544px' });
-      // workaround for cart assets that have asset.timeStart = -1, and asset.timeStart = -2
-      if (payload.asset.timeStart < 0) payload.asset.timeStart = undefined;
-      if (payload.asset.timeEnd < 0) payload.asset.timeEnd = undefined;
-      Object.assign(dialogRef.componentInstance, { window: this.window.nativeWindow, asset: payload.asset });
-      this.document.body.classList.add('subclipping-edit-open');
-      dialogRef.componentInstance.cancel.subscribe(() => dialogRef.close());
-      dialogRef.componentInstance.save.subscribe((newMarkers: SubclipMarkers) => {
-        payload.asset.timeStart = newMarkers.in;
-        payload.asset.timeEnd = newMarkers.out;
-        this.commerceService.editLineItem(payload, {});
-        dialogRef.close();
-      });
-      dialogRef.afterClosed().subscribe(_ => {
-        this.document.body.classList.remove('subclipping-edit-open');
-      });
-    });
+  protected updateProject(project: Project) {
+    this.dialogService.openFormDialog(
+      project.items,
+      {
+        title: 'CART.PROJECTS.FORM.TITLE',
+        submitLabel: 'CART.PROJECTS.FORM.SUBMIT_LABEL',
+        autocomplete: 'off'
+      },
+      (data: any) => {
+        this.commerceService.updateProject(Object.assign(project.project, data));
+      }
+    );
   }
 
-  protected updateProject(project: any) {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(ProjectEditComponent, { position: { top: '14%' } });
-    Object.assign(dialogRef.componentInstance, { items: project.items, dialog: dialogRef });
-    dialogRef.afterClosed()
-      .filter(data => data)
-      .map(data => Object.assign({}, project.project, data))
-      .subscribe((data: any) => {
-        this.commerceService.updateProject(data);
-      });
-  }
-
-  protected showSnackBar(message: any) {
+  protected showSnackBar(message: Poj) {
     this.translate.get(message.key, message.value)
       .subscribe((res: string) => {
         this.snackBar.open(res, '', { duration: 2000 });
       });
   }
-
 }

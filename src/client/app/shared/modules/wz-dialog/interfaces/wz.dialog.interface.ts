@@ -63,8 +63,15 @@ export const defaultNotificationDialogOptions: NotificationDialogOptions = {
 export interface DialogCallback {
   event: string;
   callback: Function;
-  closeOnEvent: boolean;
+  closeOnEvent?: boolean;
 }
+
+export interface DefaultComponentOptions {
+  componentType: any;
+  dialogConfig?: MdDialogConfig;
+  inputOptions?: { [index: string]: any };
+  outputOptions?: Array<DialogCallback>;
+};
 
 export type DialogOptions = FormDialogOptions | ConfirmationDialogOptions | NotificationDialogOptions;
 export type DialogResultCallback = (result: any) => void;

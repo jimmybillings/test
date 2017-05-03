@@ -7,7 +7,7 @@ import { AssetResolver } from './+asset/services/asset.resolver';
 import { AssetGuard } from './+asset/services/asset.guard';
 import { SearchResolver } from './+search/services/search.resolver';
 import { CommerceComponent } from './+commerce/commerce.component';
-import { NotFoundComponent } from './app.not-found.component';
+import { WzNotFoundComponent } from './shared/components/wz-not-found/wz-not-found.component';
 import { GalleryViewComponent } from './+gallery-view/gallery-view.component';
 import { GalleryViewResolver } from './+gallery-view/services/gallery-view.resolver';
 import { HomeResolver } from './+home/services/home.resolver';
@@ -24,6 +24,6 @@ export const APP_ROUTES: Routes = [
   { path: 'collections', component: CollectionsComponent },
   { path: 'commerce', component: CommerceComponent },
   { path: 'gallery-view', component: GalleryViewComponent, resolve: { gallery: GalleryViewResolver } },
-  { path: '**', component: NotFoundComponent }
+  { path: '**', component: WzNotFoundComponent }
 
 ];

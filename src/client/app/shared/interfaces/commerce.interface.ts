@@ -1,4 +1,4 @@
-import { ViewAddress, Pagination, Common, PriceAttributes, Store } from './common.interface';
+import { ViewAddress, Pagination, Common, SelectedPriceAttributes, Store } from './common.interface';
 
 export type QuoteType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
 export type QuoteStatus = 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED' | 'CANCELLED';
@@ -37,7 +37,7 @@ export interface AssetLineItem {
   selectedTranscodeTarget?: string;
   transcodeTargets?: Array<string>;
   expirationDate?: number;
-  attributes?: Array<PriceAttributes>;
+  attributes?: Array<SelectedPriceAttributes>;
   salesForceId?: string;
   price?: number;
   rightsManaged?: string;
@@ -62,6 +62,7 @@ export interface Asset {
   thumbnailUrl?: string;
   timeStart?: number;
   timeEnd?: number;
+  clipUrl?: string;
 }
 
 export interface Metadatum {
@@ -192,4 +193,22 @@ export interface QuoteOptions {
 export interface CommerceMessage {
   type: string;
   payload?: any;
+}
+
+export interface PriceAttributes {
+  attributeList: [{
+    amount: number;
+    multiplier: boolean;
+    name: string;
+    value: string;
+  }];
+  childId: number;
+  createdOn: string;
+  displayName: string;
+  id: number;
+  lastUpdated: string;
+  name: string;
+  priceModel: string;
+  siteName: string;
+  validChildChoicesMap: Object;
 }
