@@ -4,9 +4,12 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
-import { Project, AssetLineItem, Cart, QuoteType, QuoteOptions } from '../../../shared/interfaces/commerce.interface';
+import {
+  Project, AssetLineItem, Cart, QuoteType, QuoteOptions, Asset,
+  PriceAttributes
+} from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
-import { MdSnackBar } from '@angular/material';
+import { MdSnackBar, MdDialogRef } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { AssetService } from '../../../shared/services/asset.service';
@@ -18,22 +21,18 @@ import { SubclipMarkers } from '../../../shared/interfaces/asset.interface';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
-import { PriceAttributes } from '../../../shared/interfaces/common.interface';
+import { SelectedPriceAttributes, WzEvent, Poj } from '../../../shared/interfaces/common.interface';
 
 export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
 
   public cart: Observable<any>;
   public config: any;
-  public priceAttributes: any = null;
-  public pricingPreferences: any;
+  public priceAttributes: PriceAttributes = null;
+  public pricingPreferences: Poj;
   public quoteType: QuoteType = null;
-  public lineItem: any;
-  public asset: any;
   protected configSubscription: Subscription;
   protected preferencesSubscription: Subscription;
-  protected usagePrice: any;
-  protected suggestions: any[];
-
+  protected usagePrice: Observable<number>;
 
   constructor(
     public userCan: CommerceCapabilities,
@@ -62,7 +61,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     this.preferencesSubscription.unsubscribe();
   }
 
-  public onNotification(message: any): void {
+  public onNotification(message: WzEvent): void {
     switch (message.type) {
       case 'ADD_PROJECT': {
         this.commerceService.addProject();
@@ -108,11 +107,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   public get userCanProceed(): boolean {
-    if (this.quoteType === 'ProvisionalOrder') {
-      return true;
-    } else {
-      return this.rmAssetsHaveAttributes;
-    }
+    return (this.quoteType === 'ProvisionalOrder') || this.rmAssetsHaveAttributes;
   }
 
   public get rmAssetsHaveAttributes(): boolean {
@@ -141,12 +136,12 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     });
   }
 
-  protected showPricingDialog(lineItem: any): void {
+  protected showPricingDialog(lineItem: AssetLineItem): void {
     if (this.priceAttributes) {
       this.openPricingDialog(lineItem);
     } else {
-      this.assetService.getPriceAttributes().subscribe((data: any) => {
-        this.priceAttributes = data;
+      this.assetService.getPriceAttributes().subscribe((priceAttributes: PriceAttributes) => {
+        this.priceAttributes = priceAttributes;
         this.openPricingDialog(lineItem);
       });
     }
@@ -164,7 +159,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         outputOptions: [
           {
             event: 'pricingEvent',
-            callback: (event: any, dialogRef: any) => {
+            callback: (event: WzEvent, dialogRef: any) => {
               this.applyProjectPricing(event, dialogRef, project);
             }
           }
@@ -173,7 +168,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     );
   }
 
-  protected applyProjectPricing(event: any, dialogRef: any, project: Project) {
+  protected applyProjectPricing(event: WzEvent, dialogRef: MdDialogRef<WzPricingComponent>, project: Project) {
     switch (event.type) {
       case 'UPDATE_PREFERENCES':
         this.commerceService.updateProjectPriceAttributes(event.payload, project);
@@ -188,7 +183,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     }
   }
 
-  protected openPricingDialog(lineItem: any): void {
+  protected openPricingDialog(lineItem: AssetLineItem): void {
     this.dialogService.openComponentInDialog(
       {
         componentType: WzPricingComponent,
@@ -200,7 +195,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         outputOptions: [
           {
             event: 'pricingEvent',
-            callback: (event: any, dialogRef: any) => {
+            callback: (event: WzEvent, dialogRef: any) => {
               this.applyPricing(event, dialogRef, lineItem);
             }
           }
@@ -209,7 +204,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     );
   }
 
-  protected applyPricing(event: any, dialogRef: any, lineItem: any) {
+  protected applyPricing(event: WzEvent, dialogRef: MdDialogRef<WzPricingComponent>, lineItem: AssetLineItem) {
     switch (event.type) {
       case 'CALCULATE_PRICE':
         this.assetService.getPrice(lineItem.asset.assetId, event.payload)
@@ -229,17 +224,17 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     }
   }
 
-  protected editAsset(payload: any) {
-    this.assetService.getClipPreviewData(payload.asset.assetId)
+  protected editAsset(lineItem: AssetLineItem) {
+    this.assetService.getClipPreviewData(lineItem.asset.assetId)
       .subscribe(data => {
         this.document.body.classList.add('subclipping-edit-open');
-        payload.asset.clipUrl = data.url;
+        lineItem.asset.clipUrl = data.url;
         this.dialogService.openComponentInDialog(
           {
             componentType: WzSubclipEditorComponent,
             inputOptions: {
               window: this.window.nativeWindow,
-              asset: payload.asset,
+              asset: lineItem.asset,
               usagePrice: null
             },
             outputOptions: [
@@ -251,9 +246,9 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
               {
                 event: 'save',
                 callback: (event: any) => {
-                  Object.assign(payload.asset.asset,
+                  Object.assign(lineItem.asset,
                     { timeStart: event.in, timeEnd: event.out });
-                  this.commerceService.editLineItem(payload, {});
+                  this.commerceService.editLineItem(lineItem, {});
                 },
                 closeOnEvent: true
               }
@@ -265,7 +260,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
       });
   }
 
-  protected updateProject(project: any) {
+  protected updateProject(project: Project) {
     this.dialogService.openFormDialog(
       project.items,
       {
@@ -279,7 +274,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     );
   }
 
-  protected showSnackBar(message: any) {
+  protected showSnackBar(message: Poj) {
     this.translate.get(message.key, message.value)
       .subscribe((res: string) => {
         this.snackBar.open(res, '', { duration: 2000 });

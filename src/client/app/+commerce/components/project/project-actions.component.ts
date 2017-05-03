@@ -9,9 +9,7 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
     <button md-button  (click)="editProjectPricing()" class="is-outlined" type="button">
       {{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}
     </button>
-    -->
     <button md-icon-button (click)="onEditButtonClick()" title="Edit project details">
-
       <md-icon>edit</md-icon>
     </button>
     <button md-icon-button [md-menu-trigger-for]="projectOptionsMenu" title="More project options">

@@ -22,10 +22,10 @@
       </div>
       <md-menu x-position="before" #quoteOptionsMenu="mdMenu">
         <button md-menu-item (click)="addBulkOrderId()">
-          <md-icon>bookmark_border</md-icon>{{ bulkOrderIdActionLabel() | translate }}
+          <md-icon>bookmark_border</md-icon>{{ bulkOrderIdActionLabel | translate }}
         </button>
         <button md-menu-item (click)="editDiscount()">
-          <md-icon>monetization_on</md-icon>{{ discountActionLabel() | translate }}
+          <md-icon>monetization_on</md-icon>{{ discountActionLabel | translate }}
         </button>
       </md-menu>
 		</div>
@@ -56,7 +56,7 @@
 
         <section class="cart-total" layout="row" layout-align="center center">
           <div flex="100">
-            <div *ngIf="showDiscount()" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+            <div *ngIf="showDiscount" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
               <span class="total-label" flex="100">
                 {{ 'CART.CART_SUBTOTAL' | translate }} 
               </span>
@@ -64,7 +64,7 @@
                 {{ quoteEditService.subTotal | async | currency:'USD':true:'1.2-2' }}
               </span>
             </div>
-            <div *ngIf="showDiscount()" flex="100" layout="row" layout-align="end center" class="discount md-headline">
+            <div *ngIf="showDiscount" flex="100" layout="row" layout-align="end center" class="discount md-headline">
               <span class="total-label" flex="100">
                 {{ 'CART.CART_DISCOUNT' | translate }} 
               </span>

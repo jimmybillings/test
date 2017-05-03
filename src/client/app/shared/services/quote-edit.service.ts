@@ -9,7 +9,7 @@ import {
 import { ActiveQuoteStore } from '../stores/active-quote.store';
 
 import { FeeConfigStore } from '../stores/fee-config.store';
-import { PriceAttributes } from '../interfaces/common.interface';
+import { SelectedPriceAttributes } from '../interfaces/common.interface';
 
 @Injectable()
 export class QuoteEditService {
@@ -91,7 +91,7 @@ export class QuoteEditService {
       .subscribe(this.replaceQuote);
   }
 
-  public updateProjectPriceAttributes(priceAttributes: PriceAttributes, project: Project) {
+  public updateProjectPriceAttributes(priceAttributes: SelectedPriceAttributes, project: Project) {
     this.api.put(
       Api.Orders,
       `quote/${this.quoteId}/project/priceAttributes/${project.id}`,

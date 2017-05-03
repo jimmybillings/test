@@ -3,6 +3,7 @@ import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../shared/services/asset.service';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
 import { AddAssetParameters } from '../shared/interfaces/commerce.interface';
+import { WzEvent } from '../shared/interfaces/common.interface';
 import { UiConfig } from '../shared/services/ui.config';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/services/wz.notification.service';
@@ -160,7 +161,7 @@ export class AssetComponent implements OnInit {
     );
   }
 
-  private applyPricing = (event: any, dialogRef: MdDialogRef<WzPricingComponent>) => {
+  private applyPricing = (event: WzEvent, dialogRef: MdDialogRef<WzPricingComponent>) => {
     switch (event.type) {
       case 'CALCULATE_PRICE':
         this.calculatePrice(event.payload).subscribe(usagePrice => {

@@ -15,6 +15,7 @@ import { QuoteOptions, Project, FeeLineItem } from '../../../shared/interfaces/c
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { Quote } from '../../../shared/interfaces/commerce.interface';
+import { WzEvent } from '../../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -43,7 +44,7 @@ export class QuoteEditComponent extends CommerceEditTab {
     );
   }
 
-  public onNotification(message: any): void {
+  public onNotification(message: WzEvent): void {
     switch (message.type) {
 
       case 'OPEN_QUOTE_DIALOG':
@@ -71,23 +72,23 @@ export class QuoteEditComponent extends CommerceEditTab {
     };
   }
 
-  public bulkOrderIdActionLabel(): string {
+  public get bulkOrderIdActionLabel(): string {
     return (this.hasProperty('bulkOrderId')) ? 'QUOTE.EDIT_BULK_ORDER_ID_TITLE' : 'QUOTE.ADD_BULK_ORDER_ID_TITLE';
   }
 
-  public discountActionLabel(): string {
+  public get discountActionLabel(): string {
     return (this.hasProperty('discount')) ? 'QUOTE.EDIT_DISCOUNT_TITLE' : 'QUOTE.ADD_DISCOUNT_TITLE';
   }
 
-  public bulkOrderIdSubmitLabel(): string {
+  public get bulkOrderIdSubmitLabel(): string {
     return (this.hasProperty('bulkOrderId')) ? 'QUOTE.EDIT_BULK_ORDER_ID_TITLE' : 'QUOTE.ADD_BULK_ORDER_ID_TITLE';
   }
 
-  public discountSubmitLabel(): string {
+  public get discountSubmitLabel(): string {
     return (this.hasProperty('discount')) ? 'QUOTE.EDIT_DISCOUNT_TITLE' : 'QUOTE.ADD_DISCOUNT_TITLE';
   }
 
-  public showDiscount(): boolean {
+  public get showDiscount(): boolean {
     return (this.hasProperty('discount') && this.quoteType !== 'ProvisionalOrder') ? true : false;
   }
 
@@ -95,8 +96,8 @@ export class QuoteEditComponent extends CommerceEditTab {
     this.dialogService.openFormDialog(
       this.mergeFormValues(this.config.addBulkOrderId.items, 'bulkOrderId'),
       {
-        title: this.bulkOrderIdActionLabel(),
-        submitLabel: this.bulkOrderIdSubmitLabel(),
+        title: this.bulkOrderIdActionLabel,
+        submitLabel: this.bulkOrderIdSubmitLabel,
         autocomplete: 'off'
       },
       this.updateQuoteField
@@ -107,8 +108,8 @@ export class QuoteEditComponent extends CommerceEditTab {
     this.dialogService.openFormDialog(
       this.mergeFormValues(this.config.addDiscount.items, 'discount'),
       {
-        title: this.discountActionLabel(),
-        submitLabel: this.discountSubmitLabel(),
+        title: this.discountActionLabel,
+        submitLabel: this.discountSubmitLabel,
         autocomplete: 'off'
       },
       this.updateQuoteField

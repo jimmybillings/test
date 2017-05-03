@@ -16,11 +16,16 @@ export interface Common {
   lastUpdated?: Date;
 }
 
+export interface WzEvent {
+  type: string;
+  payload?: any;
+}
+
 export interface Store {
   pagination: Pagination;
 }
 
-export interface PriceAttributes {
+export interface SelectedPriceAttributes {
   priceAttributeName: string;
   selectedAttributeValue: string;
 }
@@ -43,4 +48,8 @@ export interface Asset extends Common {
   primary?: Array<{ value: string }>;
   detailTypeMap?: any;
   uuid?: string;
+}
+
+export interface Poj {
+  [index: string]: any;
 }

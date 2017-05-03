@@ -19,7 +19,7 @@ import {
   CheckoutState,
   OrderType,
 } from '../interfaces/commerce.interface';
-import { PriceAttributes } from '../interfaces/common.interface';
+import { SelectedPriceAttributes } from '../interfaces/common.interface';
 
 @Injectable()
 export class CartService {
@@ -126,7 +126,7 @@ export class CartService {
       .subscribe(this.replaceCartWith);
   }
 
-  public updateProjectPriceAttributes(priceAttributes: PriceAttributes, project: Project) {
+  public updateProjectPriceAttributes(priceAttributes: SelectedPriceAttributes, project: Project) {
     this.api.put(
       Api.Orders,
       `cart/project/priceAttributes/${project.id}`,
