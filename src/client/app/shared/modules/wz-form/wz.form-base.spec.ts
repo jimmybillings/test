@@ -3,9 +3,64 @@ import { WzFormBase } from './wz.form-base';
 export function main() {
   describe('Wz Form Base', () => {
     let classUnderTest: WzFormBase;
+    let mockForm: any;
+    let mockFormModel: any;
+    let mockFormBuilder: any;
 
     beforeEach(() => {
-      classUnderTest = new WzFormBase(null, null, null);
+      mockForm = {
+        controls: {}
+      };
+
+      mockFormModel = {
+        create: jasmine.createSpy('create')
+      };
+
+      mockFormBuilder = {
+        group: jasmine.createSpy('group').and.returnValue(mockForm)
+      };
+
+      classUnderTest = new WzFormBase(mockFormBuilder, mockFormModel, null);
+    });
+
+    describe('onSelectChange()', () => {
+      let selectField: any;
+      let otherField: any;
+
+      beforeEach(() => {
+        selectField = { options: 'zero,one', slaveFieldName: 'otherFieldName', slaveFieldValues: ['slaveZero', 'slaveOne'] };
+        otherField = { value: 'slaveZero', setValue: (newValue: any) => otherField.value = newValue };
+        mockForm.controls = { otherFieldName: otherField };
+
+        classUnderTest.ngOnInit()
+      });
+
+      it('updates a slave field based on this field\'s selection', () => {
+        classUnderTest.onSelectChange({ value: 'one' }, selectField);
+
+        expect(otherField.value).toEqual('slaveOne');
+      });
+
+      it('does nothing if the select field\'s options property is missing', () => {
+        delete selectField.options;
+        classUnderTest.onSelectChange({ value: 'one' }, selectField);
+
+        expect(otherField.value).toEqual('slaveZero');
+      });
+
+      it('does nothing if the select field\'s slaveFieldName property is missing', () => {
+        delete selectField.slaveFieldName;
+        classUnderTest.onSelectChange({ value: 'one' }, selectField);
+
+        expect(otherField.value).toEqual('slaveZero');
+      });
+
+      it('does nothing if the select field\'s slaveFieldValues property is missing', () => {
+        delete selectField.slaveFieldValues;
+        classUnderTest.onSelectChange({ value: 'one' }, selectField);
+
+        expect(otherField.value).toEqual('slaveZero');
+      });
     });
 
     describe('onDollarsInput()', () => {

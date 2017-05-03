@@ -8,6 +8,14 @@ export interface FormFields {
   validation?: string;
   options?: string;
   tags?: Array<string>;
+
+  // Use the following to control an input from a select.
+  // The number of options should equal the number
+  // of slaveFieldValues.  When an option is
+  // selected, the slave field is updated to the
+  // corresponding slave field value.
+  slaveFieldName?: string;
+  slaveFieldValues?: string[];
 }
 
 export interface ServerErrors {

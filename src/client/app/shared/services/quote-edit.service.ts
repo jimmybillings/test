@@ -4,14 +4,16 @@ import { ApiService } from '../services/api.service';
 import { Api, ApiBody } from '../interfaces/api.interface';
 import { Address, ViewAddress } from '../interfaces/user.interface';
 import {
-  Project, AssetLineItem, FeeLineItem, AddAssetParameters, Quote, QuoteState, QuoteOptions, EditableQuoteFields
+  Project, AssetLineItem, FeeLineItem, AddAssetParameters, Quote, QuoteState, QuoteOptions, EditableQuoteFields, FeeConfig
 } from '../interfaces/commerce.interface';
 import { ActiveQuoteStore } from '../stores/active-quote.store';
+import { FeeConfigStore } from '../stores/fee-config.store';
 
 @Injectable()
 export class QuoteEditService {
   constructor(
     private store: ActiveQuoteStore,
+    private feeConfigStore: FeeConfigStore,
     private api: ApiService
   ) { }
 
@@ -159,6 +161,10 @@ export class QuoteEditService {
     ).subscribe(this.replaceQuote);
   }
 
+  public get feeConfig(): Observable<FeeConfig> {
+    return this.feeConfigStore.initialized ? Observable.of(this.feeConfigStore.feeConfig) : this.loadFeeConfig();
+  }
+
   // Private helper methods
   private formatAssetBody(parameters: AddAssetParameters): any {
     let formatted = {};
@@ -209,5 +215,10 @@ export class QuoteEditService {
 
   private replaceQuote = (quote: Quote): void => {
     this.store.replaceQuote(quote);
+  }
+
+  private loadFeeConfig(): Observable<FeeConfig> {
+    return this.api.get(Api.Identities, 'feeConfig/search', { loading: true })
+      .do((response: FeeConfig) => this.feeConfigStore.replaceFeeConfigWith(response));
   }
 }

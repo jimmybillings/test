@@ -82,6 +82,14 @@ export class WzFormBase implements OnInit, OnChanges {
     return options.split(',');
   }
 
+  public onSelectChange(event: any, field: FormFields): void {
+    if (field.options && field.slaveFieldName && field.slaveFieldValues) {
+      const selectedIndex: number = field.options.split(',').indexOf(event.value);
+
+      this.update(field.slaveFieldName, field.slaveFieldValues[selectedIndex])
+    }
+  }
+
   public radioSelect(fieldName: string, option: any) {
     this.update(fieldName, option);
   }
