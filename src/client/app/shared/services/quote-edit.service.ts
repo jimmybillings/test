@@ -53,7 +53,7 @@ export class QuoteEditService {
     return this.state.data.id;
   }
 
-  public hasProperty(prop: string) {
+  public hasProperty(prop: string): Observable<string | undefined> {
     return this.quote.map((data: any) => data[prop]);
   }
 

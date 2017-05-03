@@ -11,11 +11,11 @@ import { UserPreferenceService } from '../../../shared/services/user-preference.
 import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
-import { QuoteOptions, Project, FeeLineItem } from '../../../shared/interfaces/commerce.interface';
+import { QuoteOptions, Project, FeeLineItem, Quote } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
-import { Quote } from '../../../shared/interfaces/commerce.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
+import { FormFields } from '../../../shared/interfaces/forms.interface';
 
 @Component({
   moduleId: module.id,
@@ -92,7 +92,7 @@ export class QuoteEditComponent extends CommerceEditTab {
     return (this.hasProperty('discount') && this.quoteType !== 'ProvisionalOrder') ? true : false;
   }
 
-  public addBulkOrderId() {
+  public addBulkOrderId(): void {
     this.dialogService.openFormDialog(
       this.mergeFormValues(this.config.addBulkOrderId.items, 'bulkOrderId'),
       {
@@ -104,7 +104,7 @@ export class QuoteEditComponent extends CommerceEditTab {
     );
   }
 
-  public editDiscount() {
+  public editDiscount(): void {
     this.dialogService.openFormDialog(
       this.mergeFormValues(this.config.addDiscount.items, 'discount'),
       {
@@ -124,7 +124,7 @@ export class QuoteEditComponent extends CommerceEditTab {
     );
   }
 
-  private updateQuoteField = (options: any) => {
+  private updateQuoteField = (options: any): void => {
     this.quoteEditService.updateQuoteField(options);
   }
 
@@ -147,16 +147,16 @@ export class QuoteEditComponent extends CommerceEditTab {
     });
   }
 
-  private hasProperty = (property: string) => {
+  private hasProperty = (property: string): string | undefined => {
     let has;
     this.quoteEditService.hasProperty(property)
-      .take(1).subscribe((value: string) => {
+      .take(1).subscribe((value: string | undefined) => {
         has = value;
       });
     return has;
   }
 
-  private mergeFormValues(fields: any, property: string) {
+  private mergeFormValues(fields: any, property: string): Array<FormFields> {
     return fields.map((item: any) => {
       let value = this.hasProperty(property);
       item.value = value ? value : '';
