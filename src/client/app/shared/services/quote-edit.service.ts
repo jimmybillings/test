@@ -147,7 +147,6 @@ export class QuoteEditService {
     ).subscribe(this.replaceQuote);
   }
 
-  // This will eventually change to a /sendQuote endpoint via CRUX-1846
   public sendQuote(options: QuoteOptions): Observable<any> {
     return this.api.put(
       Api.Orders,

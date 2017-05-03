@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 export function main() {
   describe('Quote Edit Component', () => {
     let componentUnderTest: QuoteEditComponent, mockCapabilities: any, mockQuoteEditService: any, mockUiConfig: any,
-      mockDialog: any, mockDialogService: any, mockAssetService: any, mockWindow: any, mockUserPreference: any,
+      mockDialogService: any, mockAssetService: any, mockWindow: any, mockUserPreference: any,
       mockErrorStore: any, mockDocument: any, mockSnackbar: any, mockTranslateService: any;
 
     beforeEach(() => {
@@ -40,7 +40,7 @@ export function main() {
 
       componentUnderTest =
         new QuoteEditComponent(
-          mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialog, mockDialogService, mockAssetService,
+          mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
           mockWindow, mockUserPreference, mockErrorStore, mockDocument, mockSnackbar, mockTranslateService
         );
     });
@@ -52,7 +52,7 @@ export function main() {
         updateQuoteField: jasmine.createSpy('updateQuoteField')
       };
       componentUnderTest = new QuoteEditComponent(
-        null, mockQuoteEditService, mockUiConfig, null, mockDialogService, null, null, mockUserPreference, null, null, null, null
+        null, mockQuoteEditService, mockUiConfig, mockDialogService, null, null, mockUserPreference, null, null, null, null
       );
       return componentUnderTest;
     };
