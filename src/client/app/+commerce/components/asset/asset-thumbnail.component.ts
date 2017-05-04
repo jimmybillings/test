@@ -1,24 +1,22 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+
 import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
+import { Asset } from '../../../shared/interfaces/commerce.interface';
 
 @Component({
   moduleId: module.id,
   selector: 'asset-thumbnail-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <a [routerLink]="['/asset', asset.assetId, assetParams(asset)]">
+    <a [routerLink]="routerLink">
       <div class="cart-asset-thb">
-          <span *ngIf="isNotSubclipped" class="asset-duration">
-            <span>{{ fullTimecode | timecode }}</span>
-          </span>
-          <span *ngIf="isSubclipped" class="asset-duration">
-            <span>{{ subclipTimecode | timecode }}</span>
-          </span>
-          <span
-            *ngIf="isImage" class="indicate-photo">
-            <span class="{{ asset.metadata[6].value | lowercase }}"></span>
-          </span>
-          <img src="{{ asset.thumbnailUrl }}"/>
+        <span class="asset-duration">
+          <span>{{ durationAsFrame | timecode }}</span>
+        </span>
+        <span *ngIf="isImage" class="indicate-photo">
+          <span class="image"></span>
+        </span>
+        <img src="{{ thumbnailUrl }}"/>
       </div>
     </a>
   `
@@ -26,12 +24,15 @@ import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
 export class AssetThumbnailComponent {
   @Input() asset: any;
 
-  public get isNotSubclipped(): boolean {
-    return this.asset.timeStart === -2 && this.asset.metadata[2].value;
+  public get routerLink(): any[] {
+    return ['/asset', this.asset.assetId, this.assetParams(this.asset)];
   }
 
-  public get isSubclipped(): boolean {
-    return this.asset.timeStart !== -2;
+  public get durationAsFrame(): Frame {
+    if (this.isSubclipped) return this.subclipTimecode;
+    if (this.isNotSubclipped) return this.fullTimecode;
+
+    return undefined;
   }
 
   public get isImage(): boolean {
@@ -40,21 +41,33 @@ export class AssetThumbnailComponent {
       this.asset.metadata[6].value === 'Image';
   }
 
-  public get fullTimecode(): Frame {
+  public get thumbnailUrl(): string {
+    return this.asset.thumbnailUrl;
+  }
+
+  private get isNotSubclipped(): boolean {
+    return this.asset.timeStart === -2 && this.asset.metadata[2].value;
+  }
+
+  private get isSubclipped(): boolean {
+    return this.asset.timeStart !== -2;
+  }
+
+  private get fullTimecode(): Frame {
     return this.frame(
       this.asset.metadata[2].value,
       this.durationAsFrames(this.asset.metadata[2].value, this.asset.metadata[5].value / 1000.0)
     );
   }
 
-  public get subclipTimecode(): Frame {
+  private get subclipTimecode(): Frame {
     return this.frame(
       this.asset.metadata[2].value,
       this.asset.timeEnd - this.asset.timeStart
     );
   }
 
-  public assetParams(asset: any): any {
+  private assetParams(asset: any): any {
     return Object.assign({},
       asset.uuid ? { uuid: asset.uuid } : null,
       asset.timeStart && asset.timeStart >= 0 ? { timeStart: asset.timeStart } : null,
@@ -62,14 +75,14 @@ export class AssetThumbnailComponent {
     );
   }
 
-  public durationAsFrames(framesPerSecond: any, duration: any): number {
+  private durationAsFrames(framesPerSecond: any, duration: any): number {
     return new Frame(
       framesPerSecond.split(' fps')[0])
       .setFromString(`${duration};00`, TimecodeFormat.SIMPLE_TIME_CONVERSION)
       .asFrameNumber();
   }
 
-  public frame(framesPerSecond: any, frameNumber: number): Frame {
+  private frame(framesPerSecond: any, frameNumber: number): Frame {
     return new Frame(framesPerSecond.split(' fps')[0]).setFromFrameNumber(frameNumber);
   }
 }
