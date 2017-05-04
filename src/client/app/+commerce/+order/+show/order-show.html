@@ -30,6 +30,12 @@
 					<span>
 						<strong>{{ 'ORDER.PURCHASE_TYPE_LABEL' | translate }} </strong>{{ (order.data | async).orderType }}
 					</span>
+					<span *ngIf="(order.data | async).creditMemoForOrderId">
+						<strong>Refund for Order:</strong>
+						<a [routerLink]="['/commerce/orders/', (order.data | async).creditMemoForOrderId]">
+							{{ (order.data | async).creditMemoForOrderId }}
+						</a>
+					</span>
 				</div>
 			</div>
 			<div flex="100" layout="row" layout-xs="column" class="divider"></div>
