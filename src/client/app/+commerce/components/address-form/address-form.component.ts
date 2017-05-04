@@ -1,6 +1,5 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { Address } from '../../../shared/interfaces/user.interface';
-import { MdDialogRef } from '@angular/material';
 
 @Component({
   moduleId: module.id,
@@ -14,17 +13,17 @@ import { MdDialogRef } from '@angular/material';
     </h1>
     <md-dialog-content>
       <wz-form [items]="items" submitLabel="{{ 'CART.BILLING.SAVE_ADDRESS_BTN_LABEL' | translate }}"
-      (formSubmit)="dialog.close($event)"></wz-form>
+      (formSubmit)="saveAddress($event)"></wz-form>
     </md-dialog-content>
   </div>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressFormComponent implements OnInit {
-  @Input() dialog: MdDialogRef<AddressFormComponent>;
   @Input() items: any[];
   @Input() resourceType: 'user' | 'account';
   @Input() mode: 'create' | 'edit';
   @Input() address: Address;
+  @Output() onSaveAddress = new EventEmitter();
 
   ngOnInit() {
     if (this.address) {
@@ -32,6 +31,10 @@ export class AddressFormComponent implements OnInit {
     } else {
       this.clearForm();
     }
+  }
+
+  public saveAddress(form: any) {
+    this.onSaveAddress.emit(form);
   }
 
   public capitalize(s: string): string {

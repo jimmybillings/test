@@ -17,7 +17,6 @@
     </form>
     <div class="price-info" layout="row" layout-align="center center">
       <p *ngIf="usagePrice" class="md-body-3">{{ usagePrice | async | currency:'USD':true:'1.2-2' }}</p>
-      <p *ngIf="!usagePrice" class="md-body-2 disabled">{{ 'PRICING.PENDING_SELECTION' | translate }}</p>
     </div>
   </md-dialog-content>
 </div>

@@ -1,12 +1,11 @@
 import { Observable } from 'rxjs/Observable';
 import { CommerceEditTab } from './commerce-edit-tab';
-import { ProjectEditComponent } from '../project/project-edit.component';
 import { WzSubclipEditorComponent } from '../../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 
 export function main() {
   describe('Commerce Edit tab', () => {
-    let componentUnderTest: CommerceEditTab, mockCartService: any, mockUiConfig: any, mockDialog: any,
+    let componentUnderTest: CommerceEditTab, mockCartService: any, mockUiConfig: any, mockDialogService: any,
       mockAssetService: any, mockUserPreference: any, mockDocument: any, mockWindow: any, mockState: any,
       mockQuoteService: any, mockTranslateService: any, mockSnackbar: any;
 
@@ -50,19 +49,9 @@ export function main() {
         }
       };
 
-      mockDialog = {
-        open: jasmine.createSpy('open').and.returnValue({
-          componentInstance: {
-            cancel: Observable.of({}),
-            save: Observable.of({}),
-            pricingEvent: Observable.of({}),
-            cacheSuggestions: Observable.of({})
-          },
-          afterClosed: function () {
-            return Observable.of({ data: 'hi' });
-          },
-          close: () => { return true; }
-        })
+      mockDialogService = {
+        openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' })),
+        openFormDialog: jasmine.createSpy('openFormDialog').and.returnValue(Observable.of({ data: 'Test data' }))
       };
 
       mockWindow = { nativeWindow: { location: { href: {} } } };
@@ -90,7 +79,7 @@ export function main() {
       };
 
       componentUnderTest = new CommerceEditTab(
-        null, mockCartService, mockUiConfig, mockDialog,
+        null, mockCartService, mockUiConfig, mockDialogService,
         mockAssetService, mockWindow, mockUserPreference,
         null, mockDocument, mockSnackbar,
         mockTranslateService
@@ -119,7 +108,7 @@ export function main() {
         mockUiConfig = { get: () => mockObservable };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, mockUiConfig, mockDialog,
+          null, mockCartService, mockUiConfig, mockDialogService,
           null, mockWindow, mockUserPreference, null, null, null, null
         );
         componentUnderTest.ngOnInit();
@@ -200,7 +189,7 @@ export function main() {
         let mockProject = {};
         componentUnderTest.onNotification({ type: 'UPDATE_PROJECT', payload: mockProject });
 
-        expect(mockDialog.open).toHaveBeenCalledWith(ProjectEditComponent, { position: { top: '14%' } });
+        expect(mockDialogService.openFormDialog).toHaveBeenCalled();
       });
 
       it('moves a line item when notified with MOVE_LINE_ITEM', () => {
@@ -246,7 +235,13 @@ export function main() {
         componentUnderTest.onNotification({ type: 'EDIT_LINE_ITEM_MARKERS', payload: { asset: mockAsset } });
 
         expect(mockAssetService.getClipPreviewData).toHaveBeenCalledWith(1234);
-        expect(mockDialog.open).toHaveBeenCalledWith(WzSubclipEditorComponent, { width: '544px' });
+      });
+
+      it('edits the project pricing with EDIT_PROJECT_PRICING', () => {
+        let mockAsset = { assetId: 1234 };
+        componentUnderTest.onNotification({ type: 'EDIT_PROJECT_PRICING', payload: { asset: mockAsset } });
+
+        expect(mockAssetService.getPriceAttributes).toHaveBeenCalledWith();
       });
 
       describe('calls openPricingDialog with SHOW_PRICING_DIALOG', () => {
@@ -255,16 +250,16 @@ export function main() {
           componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
 
           expect(mockAssetService.getPriceAttributes).toHaveBeenCalled();
-          expect(mockDialog.open).toHaveBeenCalledWith(WzPricingComponent);
+          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
         });
 
         it('should not get the attributes if they already exist', () => {
           let mockLineItem = { asset: { assetId: 123456 } };
-          componentUnderTest.priceAttributes = { some: 'attr' };
+          componentUnderTest.priceAttributes = { some: 'attr' } as any;
           componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
 
           expect(mockAssetService.getPriceAttributes).not.toHaveBeenCalled();
-          expect(mockDialog.open).toHaveBeenCalledWith(WzPricingComponent);
+          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
         });
       });
     });

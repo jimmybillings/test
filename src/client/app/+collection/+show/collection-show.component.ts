@@ -17,7 +17,6 @@ import { CartService } from '../../shared/services/cart.service';
 import { UserPreferenceService } from '../../shared/services/user-preference.service';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
 import { CollectionLinkComponent } from '../components/collection-link.component';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
@@ -27,6 +26,8 @@ import { WindowRef } from '../../shared/services/window-ref.service';
 import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
 import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../shared/services/quote-edit.service';
+import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { WzEvent } from '../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -68,7 +69,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private renderer: Renderer,
     private window: WindowRef,
-    private dialog: MdDialog,
+    private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService,
     @Inject(DOCUMENT) private document: any) {
     this.screenWidth = this.window.nativeWindow.innerWidth;
@@ -147,12 +148,20 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public setCollectionForDelete(): void {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionDeleteComponent, { position: { top: '14%' } });
-    dialogRef.componentInstance.collection = JSON.parse(JSON.stringify(this.collection));
-    dialogRef.componentInstance.dialog = dialogRef;
-    dialogRef.afterClosed()
-      .filter((collectionId) => collectionId)
-      .subscribe((collectionId) => this.deleteCollection(collectionId));
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: CollectionDeleteComponent,
+        dialogConfig: { position: { top: '14%' } },
+        inputOptions: {
+          collection: JSON.parse(JSON.stringify(this.collection)),
+        },
+        outputOptions: [{
+          event: 'deleteEvent',
+          callback: (event: WzEvent) => this.deleteCollection(event.payload),
+          closeOnEvent: true
+        }]
+      }
+    );
   }
 
   public deleteCollection(id: number) {
@@ -185,36 +194,72 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public getAssetsForLink(): void {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionLinkComponent);
-    dialogRef.componentInstance.assets = this.collection.assets.items;
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: CollectionLinkComponent,
+        inputOptions: { assets: this.collection.assets.items }
+      }
+    );
   }
 
   public editAsset(asset: any) {
-    this.asset.getClipPreviewData(asset.assetId).subscribe(data => {
-      asset.clipUrl = data.url;
-      let dialogRef: MdDialogRef<WzSubclipEditorComponent> = this.dialog.open(WzSubclipEditorComponent, { width: '544px' });
-      Object.assign(dialogRef.componentInstance, { window: this.window.nativeWindow, asset: asset });
-      this.document.body.classList.add('subclipping-edit-open');
-      dialogRef.componentInstance.cancel.subscribe(() => dialogRef.close());
-      dialogRef.componentInstance.save.subscribe((newMarkers: SubclipMarkers) => {
-        const body = { uuid: asset.uuid, assetId: asset.assetId, timeStart: newMarkers.in, timeEnd: newMarkers.out };
-        this.activeCollection.updateAsset(this.collection.id, body).subscribe();
-        dialogRef.close();
+    this.asset.getClipPreviewData(asset.assetId)
+      .subscribe(data => {
+        this.document.body.classList.add('subclipping-edit-open');
+        asset.clipUrl = data.url;
+        this.dialogService.openComponentInDialog(
+          {
+            componentType: WzSubclipEditorComponent,
+            dialogConfig: { width: '544px' },
+            inputOptions: {
+              window: this.window.nativeWindow,
+              asset: asset,
+              usagePrice: null
+            },
+            outputOptions: [
+              {
+                event: 'cancel',
+                callback: (event: any) => { return true; },
+                closeOnEvent: true
+              },
+              {
+                event: 'save',
+                callback: (event: any) => {
+                  const body = {
+                    uuid: asset.uuid,
+                    assetId: asset.assetId,
+                    timeStart: event.in,
+                    timeEnd: event.out
+                  };
+                  this.activeCollection.updateAsset(this.collection.id, body).subscribe();
+                },
+                closeOnEvent: true
+              }
+            ]
+          }
+        ).subscribe(_ => {
+          this.document.body.classList.remove('subclipping-edit-open');
+        });
       });
-      dialogRef.afterClosed().subscribe(_ => {
-        this.document.body.classList.remove('subclipping-edit-open');
-      });
-    });
   }
 
   public editCollection() {
     this.uiConfig.get('collection').take(1).subscribe((config: any) => {
-      let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionFormComponent);
-      Object.assign(dialogRef.componentInstance,
+      this.dialogService.openComponentInDialog(
         {
-          collection: this.collection,
-          fields: config.config, dialog: dialogRef, isEdit: true
-        });
+          componentType: CollectionFormComponent,
+          inputOptions: {
+            collection: JSON.parse(JSON.stringify(this.collection)),
+            fields: config.config,
+            isEdit: true
+          },
+          outputOptions: [{
+            event: 'collectionSaved',
+            callback: (event: WzEvent) => true,
+            closeOnEvent: true
+          }]
+        }
+      );
     });
   }
 

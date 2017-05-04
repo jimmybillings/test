@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -7,10 +7,10 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
     <h1 md-dialog-title>{{ 'COLLECTION.INDEX.CONFIRMATION_TITLE' | translate:{collectionName: collection.name} }}</h1>
     <p class="dialog-summary">{{ 'COLLECTION.INDEX.CONFIRMATION_SUBTITLE' | translate }}</p>
     <md-dialog-actions align="end" class="confirmation-buttons">
-      <button md-button color="primary" (click)="dialog.close()">
+      <button md-button color="primary" md-dialog-close>
         {{ 'COLLECTION.INDEX.CONFIRMATION_CANCEL_BTN_TITLE' | translate }}
       </button>
-      <button md-button color="primary" (click)="dialog.close(collection.id)">
+      <button md-button color="primary" md-dialog-close (click)="deleteCollection()">
       {{ 'COLLECTION.INDEX.CONFIRMATION_DELETE_BTN_TITLE' | translate }}</button>
     </md-dialog-actions>
 	</div>`,
@@ -21,6 +21,10 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 })
 
 export class CollectionDeleteComponent {
-  @Input() dialog: any;
+  @Output() deleteEvent: any = new EventEmitter();;
   @Input() collection: any;
+
+  public deleteCollection() {
+    this.deleteEvent.emit({ type: 'DELETE_COLLECTION', payload: this.collection.id });
+  }
 }

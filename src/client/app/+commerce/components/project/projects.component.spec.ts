@@ -105,10 +105,10 @@ export function main() {
       it('forwards events', () => {
         classUnderTest.projectsNotify
           .subscribe((event: Object) => {
-            expect(event).toEqual({ some: 'event' });
+            expect(event).toEqual({ type: 'event' });
           });
 
-        classUnderTest.delegate({ some: 'event' });
+        classUnderTest.delegate({ type: 'event' });
       });
     });
 

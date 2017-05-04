@@ -4,6 +4,7 @@ import { Capabilities } from '../../../shared/services/capabilities.service';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
+import { WzEvent } from '../../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -27,8 +28,12 @@ export class ProjectsComponent {
     return this.projects.filter(project => project.id !== currentProject.id);
   }
 
-  public lineItemCountFor(project: any): number {
+  public lineItemCountFor(project: Project): number {
     return (project.lineItems || []).length;
+  }
+
+  public editProjectPrice(message: WzEvent, payload: any) {
+    this.projectsNotify.emit(Object.assign(message, { payload: payload }));
   }
 
   public addProject(): void {
@@ -65,7 +70,7 @@ export class ProjectsComponent {
     });
   }
 
-  public delegate(message: any): void {
+  public delegate(message: WzEvent): void {
     this.projectsNotify.emit(message);
   }
 

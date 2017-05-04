@@ -11,7 +11,6 @@ import { Observable } from 'rxjs/Observable';
 export class WzPricingComponent implements OnInit {
   public form: Array<any>;
   @Input() attributes: Array<any>;
-  @Input() dialog: any;
   @Input() usagePrice: Observable<any>;
   @Input() pricingPreferences: any;
   @Output() pricingEvent: EventEmitter<any> = new EventEmitter();

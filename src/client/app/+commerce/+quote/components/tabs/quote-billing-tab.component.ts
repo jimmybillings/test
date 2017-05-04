@@ -5,7 +5,7 @@ import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { UserService } from '../../../../shared/services/user.service';
 import { CurrentUserService } from '../../../../shared/services/current-user.service';
-import { MdDialog } from '@angular/material';
+import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
 
 @Component({
   moduleId: module.id,
@@ -20,7 +20,7 @@ export class QuoteBillingTabComponent extends CommerceBillingTab {
     protected uiConfig: UiConfig,
     protected user: UserService,
     protected currentUser: CurrentUserService,
-    protected dialog: MdDialog,
+    protected dialog: WzDialogService,
   ) {
     super(userCan, quoteService, uiConfig, user, currentUser, dialog);
   }

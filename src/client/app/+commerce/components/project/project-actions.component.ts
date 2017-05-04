@@ -6,11 +6,9 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- CRUX-1715 -->
-    <!--
-    <button md-button  class="is-outlined" type="button">
+    <button md-button  (click)="editProjectPricing()" class="is-outlined" type="button">
       {{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}
     </button>
-    -->
     <button md-icon-button (click)="onEditButtonClick()" title="Edit project details">
       <md-icon>edit</md-icon>
     </button>
@@ -34,6 +32,7 @@ export class ProjectActionsComponent {
   @Output() remove: EventEmitter<null> = new EventEmitter();
   @Output() edit: EventEmitter<null> = new EventEmitter();
   @Output() addFee: EventEmitter<null> = new EventEmitter();
+  @Output() projectActionsNotify: EventEmitter<Object> = new EventEmitter<Object>();
 
   public onEditButtonClick(): void {
     this.edit.emit();
@@ -45,5 +44,9 @@ export class ProjectActionsComponent {
 
   public onAddFeeButtonClick(): void {
     this.addFee.emit();
+  }
+
+  public editProjectPricing() {
+    this.projectActionsNotify.emit({ type: 'EDIT_PROJECT_PRICING' });
   }
 }

@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { MdDialogConfig, MdDialog } from '@angular/material';
-
+import { MdDialogConfig } from '@angular/material';
+import { Component, Output } from '@angular/core';
 import { WzDialogService } from '../services/wz.dialog.service';
 
 import {
@@ -170,6 +170,47 @@ export function main() {
       });
     });
 
+    describe('openComponentInDialog()', () => {
+      function TestComponent() { }
+      let testEvent: Observable<any>;
+      beforeEach(() => {
+        mockComponentInstance.testEvent = Observable.of({ 'testEvent': 123 });
+      });
+
+      mockDialogRef = {
+        componentInstance: mockComponentInstance,
+        close: jasmine.createSpy('close'),
+        afterClosed: () => mockComponentInstance.testEvent
+      };
+
+      const options = {
+        componentType: TestComponent,
+        inputOptions: { testInput: { input: 123 } },
+        outputOptions: [{ event: 'testEvent', callback: () => true }]
+      };
+
+      it('should open a dialog', () => {
+        serviceUnderTest.openComponentInDialog(options);
+        expect(mockDialog.open).toHaveBeenCalledWith(TestComponent, { position: {} });
+      });
+
+      it('should assign the input and output attributes correctly', () => {
+        serviceUnderTest.openComponentInDialog(options);
+        expect(mockDialogRef.componentInstance).toEqual({
+          testEvent: Observable.of({ 'testEvent': 123 }),
+          testInput: { input: 123 }
+        });
+      });
+
+      it('should should handle a component without inputs', () => {
+        delete options.inputOptions;
+        serviceUnderTest.openComponentInDialog(options);
+        expect(mockDialogRef.componentInstance).toEqual({
+          testEvent: Observable.of({ 'testEvent': 123 })
+        });
+      });
+    });
+
     describe('openFormDialog', () => {
       let formSubmitSubject: Subject<any>;
       let formCancelSubject: Subject<any>;
@@ -304,7 +345,7 @@ export function main() {
           serviceUnderTest.openFormDialog([], {}, callback, null);
           formSubmitSubject.next({ x: 37 });
 
-          expect(callback).toHaveBeenCalledWith({ x: 37 });
+          expect(callback).toHaveBeenCalledWith({ x: 37 }, jasmine.any(Object));
         });
       });
 
@@ -334,9 +375,11 @@ export function main() {
           serviceUnderTest.openFormDialog([], {}, null, callback);
           formCancelSubject.next();
 
-          expect(callback).toHaveBeenCalledWith(undefined);
+          expect(callback).toHaveBeenCalledWith(undefined, jasmine.any(Object));
         });
       });
     });
   });
 }
+
+

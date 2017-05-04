@@ -10,9 +10,6 @@ export function main() {
       componentUnderTest = new WzPricingComponent();
       componentUnderTest.attributes = mockOptions();
       componentUnderTest.pricingEvent = new EventEmitter();
-      componentUnderTest.dialog = {
-        close: jasmine.createSpy('close')
-      };
     });
 
     describe('ngOnInit()', () => {

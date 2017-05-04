@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@angular/material';
+import { MaterialModule } from '../wz-design/wz-design.module';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { WzFormModule } from '../wz-form/wz-form.module';
@@ -8,11 +8,12 @@ import { WzFormModule } from '../wz-form/wz-form.module';
 // Wrapper service
 import { WzDialogService } from './services/wz.dialog.service';
 
+
 // Dialog types
 import {
-  WzConfirmationDialogComponent,
+  WzFormDialogComponent,
   WzNotificationDialogComponent,
-  WzFormDialogComponent
+  WzConfirmationDialogComponent,
 } from './components/index';
 
 @NgModule({
@@ -24,13 +25,13 @@ import {
   ],
   declarations: [
     WzNotificationDialogComponent,
-    WzConfirmationDialogComponent,
-    WzFormDialogComponent
+    WzFormDialogComponent,
+    WzConfirmationDialogComponent
   ],
   entryComponents: [
     WzNotificationDialogComponent,
-    WzConfirmationDialogComponent,
-    WzFormDialogComponent
+    WzFormDialogComponent,
+    WzConfirmationDialogComponent
   ],
   providers: [WzDialogService]
 })

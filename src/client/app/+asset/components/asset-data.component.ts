@@ -11,7 +11,6 @@ export class AssetDataComponent implements OnChanges {
   public secondaryKeys: Array<string>;
   public secondaryMdata: Object;
   @Input() public asset: any;
-  @Input() currentUser: any;
 
   ngOnChanges(changes: any): void {
     if (changes.asset) {

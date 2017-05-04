@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Collection } from '../../../shared/interfaces/collection.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
 import { Asset } from '../../../shared/interfaces/common.interface';
@@ -25,6 +25,7 @@ export class CollectionFormComponent implements OnInit {
   @Input() dialog: any;
   @Input() fields: any;
   @Input() isEdit: boolean = false;
+  @Output() collectionSaved = new EventEmitter();
 
   // public originalName: string;
   public assetForNewCollection: Asset;
@@ -94,7 +95,7 @@ export class CollectionFormComponent implements OnInit {
     this.formItems = this.clearForm();
     this.wzForm.resetForm();
     this.detector.markForCheck();
-    this.dialog.close();
+    this.collectionSaved.emit();
   }
 
   private error(error: any) {

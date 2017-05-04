@@ -1,6 +1,3 @@
-import { Routes } from '@angular/router';
-import { combineReducers } from '@ngrx/store';
-
 // WAZEE SERVICES
 import { ApiConfig } from '../shared/services/api.config';
 import { MultilingualService } from '../shared/services/multilingual.service';
@@ -31,21 +28,6 @@ import { QuoteService } from '../shared/services/quote.service';
 import { QuotesService } from '../shared/services/quotes.service';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
 
-// STORE INTERFACES
-import { CartStore } from '../shared/stores/cart.store';
-import { FeatureStore } from '../shared/stores/feature.store';
-import { SearchStore } from '../shared/stores/search.store';
-import { OrderStore } from '../shared/stores/order.store';
-import { OrdersStore } from '../shared/stores/orders.store';
-import { ErrorStore } from '../shared/stores/error.store';
-import { CollectionsStore } from '../shared/stores/collections.store';
-import { ActiveCollectionStore } from '../shared/stores/active-collection.store';
-import { QuoteStore } from '../shared/stores/quote.store';
-import { QuotesStore } from '../shared/stores/quotes.store';
-import { ActiveQuoteStore } from '../shared/stores/active-quote.store';
-import { CheckoutStore } from '../shared/stores/checkout.store';
-import { FeeConfigStore } from '../shared/stores/fee-config.store';
-
 // GUARDS
 import { CartGuard } from '../+commerce/+cart/services/cart.guard';
 import { QuoteEditGuard } from '../+commerce/+quote/services/quote-edit.guard';
@@ -54,31 +36,34 @@ import { LoggedOutGuard } from '../+user-management/services/logged-out.guard';
 import { AssetGuard } from '../+asset/services/asset.guard';
 
 // WAZEE STORES
-import { searchStore } from '../shared/stores/search.store';
+import { searchStore, SearchStore } from '../shared/stores/search.store';
+import { cart, CartStore } from '../shared/stores/cart.store';
+import { collections, CollectionsStore } from '../shared/stores/collections.store';
+import { activeCollection, ActiveCollectionStore } from '../shared/stores/active-collection.store';
+import { errorStore, ErrorStore } from '../shared/stores/error.store';
+import { order, OrderStore } from '../shared/stores/order.store';
+import { orders, OrdersStore } from '../shared/stores/orders.store';
+import { features, FeatureStore } from '../shared/stores/feature.store';
+import { gallery, GalleryViewStore } from '../shared/stores/gallery-view.store';
+import { quote, QuoteStore } from '../shared/stores/quote.store';
+import { quotes, QuotesStore } from '../shared/stores/quotes.store';
+import { activeQuote, ActiveQuoteStore } from '../shared/stores/active-quote.store';
+import { checkout, CheckoutStore } from '../shared/stores/checkout.store';
+import { feeConfig, FeeConfigStore } from '../shared/stores/fee-config.store';
+
+
 import { asset } from '../shared/services/asset.service';
 import { currentUser } from '../shared/services/current-user.service';
 import { config } from '../shared/services/ui.config';
 import { uiState } from '../shared/services/ui.state';
 import { Capabilities } from '../shared/services/capabilities.service';
 import { searchContext } from '../shared/services/search-context.service';
-import { errorStore } from '../shared/stores/error.store';
 import { multilingualActionReducer } from '../shared/services/multilingual.service';
-import { collections } from '../shared/stores/collections.store';
-import { activeCollection } from '../shared/stores/active-collection.store';
 import { filters } from '../shared/services/filter.service';
 import { userPreferences } from '../shared/services/user-preference.service';
 import { collectionOptions } from '../shared/services/collection-context.service';
-import { cart } from '../shared/stores/cart.store';
 import { sortDefinitions } from '../shared/services/sort-definitions.service';
-import { order } from '../shared/stores/order.store';
-import { orders } from '../shared/stores/orders.store';
-import { features } from '../shared/stores/feature.store';
-import { gallery, GalleryViewStore } from '../shared/stores/gallery-view.store';
-import { quote } from '../shared/stores/quote.store';
-import { quotes } from '../shared/stores/quotes.store';
-import { activeQuote } from '../shared/stores/active-quote.store';
-import { checkout } from '../shared/stores/checkout.store';
-import { feeConfig } from '../shared/stores/fee-config.store';
+
 
 // WAZEE RESOLVERS
 import { AssetResolver } from '../+asset/services/asset.resolver';
