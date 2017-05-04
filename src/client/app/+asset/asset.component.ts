@@ -60,6 +60,10 @@ export class AssetComponent implements OnInit {
     });
   }
 
+  public get userEmail(): Observable<any> {
+    return this.currentUser.data.map(user => user.emailAddress);
+  }
+
   public showSnackBar(message: any) {
     this.translate.get(message.key, message.value)
       .subscribe((res: string) => {

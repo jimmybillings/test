@@ -291,7 +291,7 @@
 
 <wz-dropdown #sharing>
 	<asset-share layout="row" layout-align="end start" class="revealed"
-		[userEmail]="(currentUser.data | async).emailAddress" 
+		[userEmail]="userEmail | async" 
 		[assetThumbnailUrl]="asset.clipThumbnailUrl" 
 		[assetName]="asset.common[5].value"
 		[assetId]="asset.assetId" 

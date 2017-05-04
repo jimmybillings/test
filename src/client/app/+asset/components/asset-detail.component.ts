@@ -1,6 +1,5 @@
 import { Component, Output, EventEmitter, Input, OnChanges, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { Collection } from '../../shared/interfaces/collection.interface';
-import { CurrentUserService } from '../../shared/services/current-user.service';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
@@ -17,7 +16,7 @@ import { Observable } from 'rxjs/Observable';
 
 export class AssetDetailComponent implements OnChanges {
   @Input() public asset: any;
-  @Input() public currentUser: CurrentUserService;
+  @Input() public userEmail: Observable<string>;
   @Input() public userCan: Capabilities;
   @Input() public uiConfig: UiConfig;
   @Input() public collection: Collection;

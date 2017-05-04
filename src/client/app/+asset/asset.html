@@ -1,5 +1,5 @@
   <asset-detail #target
-    [currentUser]="currentUser"
+    [userEmail]="userEmail"
     [userCan]="userCan"
     [asset]="assetService.data | async"
     [searchContext]="searchContext"
@@ -16,7 +16,6 @@
   >
   </asset-detail>
   <asset-data
-    [currentUser]="currentUser"
     [asset]="assetService.data | async">
   </asset-data>
 
