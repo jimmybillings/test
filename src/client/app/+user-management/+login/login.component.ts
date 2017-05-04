@@ -7,9 +7,9 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { UserService } from '../../shared/services/user.service';
 import { PendoService } from '../../shared/services/pendo.service';
 import { Observable } from 'rxjs/Observable';
-import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.component';
 import { FeatureStore } from '../../shared/stores/feature.store';
+import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 
 declare var portal: string;
 
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private uiConfig: UiConfig,
     private route: ActivatedRoute,
     private pendo: PendoService,
-    private dialog: MdDialog,
+    private dialogService: WzDialogService,
     private feature: FeatureStore,
     private ref: ChangeDetectorRef) {
 
@@ -80,12 +80,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public showTerms() {
     this.user.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
-      let dialogRef: MdDialogRef<WzTermsComponent> = this.dialog.open(WzTermsComponent, { disableClose: true });
-      dialogRef.componentInstance.terms = terms;
-      dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.btnLabel = 'LOGIN.AGREE_TO_TOS';
-      dialogRef.componentInstance.header = 'LOGIN.TOS_TITLE';
-      dialogRef.afterClosed().subscribe(this.agreeToTermsAndClose);
+      this.dialogService.openComponentInDialog({
+        componentType: WzTermsComponent,
+        inputOptions: {
+          terms: terms,
+          btnLabel: 'LOGIN.AGREE_TO_TOS',
+          header: 'LOGIN.TOS_TITLE'
+        }
+      }).subscribe(() => this.agreeToTermsAndClose());
     });
   }
 

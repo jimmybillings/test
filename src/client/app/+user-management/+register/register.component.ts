@@ -5,8 +5,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { UiConfig } from '../../shared/services/ui.config';
 import { ServerErrors } from '../../shared/interfaces/forms.interface';
 import { Observable } from 'rxjs/Observable';
-import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.component';
+import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
+
 /**
  * Registration page component - renders registration page and handles submiting registation form.
  */
@@ -27,7 +28,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     public user: UserService,
     public uiConfig: UiConfig,
-    private dialog: MdDialog,
+    private dialogService: WzDialogService,
     private ref: ChangeDetectorRef) {
   }
 
@@ -55,11 +56,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   public openTermsDialog() {
     this.user.downloadActiveTosDocument().take(1).subscribe((terms: any) => {
-      let dialogRef: MdDialogRef<WzTermsComponent> = this.dialog.open(WzTermsComponent);
-      dialogRef.componentInstance.terms = terms;
-      dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.btnLabel = 'REGISTER.CLOSE_TOS_DIALOG';
-      dialogRef.componentInstance.header = 'REGISTER.TOS_TITLE';
+      this.dialogService.openComponentInDialog({
+        componentType: WzTermsComponent,
+        inputOptions: {
+          terms: terms,
+          btnLabel: 'REGISTER.CLOSE_TOS_DIALOG',
+          header: 'REGISTER.TOS_TITLE'
+        }
+      });
     });
   }
 }

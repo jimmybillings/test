@@ -12,7 +12,6 @@ export class CollectionLinkComponent {
   set assets(value: any) {
     this.buildLegacyLink(value);
   }
-  @Input() dialog: any;
   @Output() onOpenSnackbar = new EventEmitter();
 
   public legacyLink: string;

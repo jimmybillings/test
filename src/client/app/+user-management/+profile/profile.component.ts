@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/
 import { CurrentUserService } from '../../shared/services/current-user.service';
 import { User } from '../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs/Subscription';
-import { MdDialog, MdDialogRef } from '@angular/material';
 import { WzComingSoonComponent } from '../../shared/components/wz-coming-soon/wz-coming-soon.component';
+import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 
 @Component({
   moduleId: module.id,
@@ -16,7 +16,7 @@ export class ProfileComponent implements OnDestroy, OnInit {
   public user: User;
   private userSubscription: Subscription;
 
-  constructor(private currentUser: CurrentUserService, private dialog: MdDialog) { }
+  constructor(private currentUser: CurrentUserService, private dialogService: WzDialogService) { }
 
   ngOnInit() {
     this.userSubscription =
@@ -29,7 +29,9 @@ export class ProfileComponent implements OnDestroy, OnInit {
   }
 
   public comingSoonDialog() {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(WzComingSoonComponent, { position: { top: '16%' } });
-    dialogRef.componentInstance.dialog = dialogRef;
+    this.dialogService.openComponentInDialog({
+      componentType: WzComingSoonComponent,
+      dialogConfig: { position: { top: '16%' } }
+    });
   }
 }

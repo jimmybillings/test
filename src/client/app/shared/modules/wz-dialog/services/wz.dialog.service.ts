@@ -114,7 +114,7 @@ export class WzDialogService {
   private setupCallbacks(component: any, dialogRef: MdDialogRef<any>, outputOptions: Array<DialogCallback>): void {
     outputOptions.forEach((cb: DialogCallback) => {
       component[cb.event].subscribe((event?: any) => {
-        if (cb.closeOnEvent) dialogRef.close();
+        if (cb.closeOnEvent) dialogRef.close(event);
         if (cb.callback) cb.callback(event, dialogRef);
       });
     });

@@ -1,7 +1,8 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
 import { CollectionLinkComponent } from '../../+collection/components/collection-link.component';
-import { MdDialog, MdDialogRef } from '@angular/material';
 import { CollectionFormComponent } from './components/collection-form.component';
+import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { WzEvent } from '../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -17,7 +18,7 @@ export class CollectionTrayComponent implements OnInit {
   @Output() onOpenSnackbar = new EventEmitter();
   public pageSize: string;
 
-  constructor(private dialog: MdDialog) { }
+  constructor(private dialogService: WzDialogService) { }
 
   ngOnInit() {
     this.uiConfig.get('global').take(1).subscribe((config: any) => {
@@ -26,15 +27,25 @@ export class CollectionTrayComponent implements OnInit {
   }
 
   public getAssetsForLink(): void {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionLinkComponent);
-    dialogRef.componentInstance.assets = this.collection.assets.items;
+    this.dialogService.openComponentInDialog({
+      componentType: CollectionLinkComponent,
+      inputOptions: { assets: this.collection.assets.items }
+    });
   }
 
   public createCollection() {
     this.uiConfig.get('collection').take(1).subscribe((config: any) => {
-      let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionFormComponent);
-      dialogRef.componentInstance.fields = config.config;
-      dialogRef.componentInstance.dialog = dialogRef;
+      this.dialogService.openComponentInDialog({
+        componentType: CollectionFormComponent,
+        inputOptions: {
+          fields: config.config,
+        },
+        outputOptions: [{
+          event: 'collectionSaved',
+          callback: (event: WzEvent) => true,
+          closeOnEvent: true
+        }]
+      });
     });
   }
 
