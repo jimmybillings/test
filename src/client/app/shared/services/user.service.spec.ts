@@ -133,7 +133,7 @@ export function main() {
           expect(mockApi.put).toHaveBeenCalledWithApi(Api.Identities);
           expect(mockApi.put).toHaveBeenCalledWithEndpoint('user/1');
           expect(mockApi.put).toHaveBeenCalledWithBody({
-            id: 1, firstName: 'ross', mailingAddress: { address: '123 Oak Street' }
+            id: 1, firstName: 'ross', billingInfo: { address: { address: '123 Oak Street' } }
           });
           expect(localStorage.setItem).toHaveBeenCalledWith('currentUser', JSON.stringify(mockApi.putResponse));
         });
