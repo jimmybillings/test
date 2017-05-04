@@ -88,12 +88,13 @@ export function main() {
         });
 
         it('calls the callback on form submit', () => {
+          componentUnderTest.quoteType = 'ProvisionalOrder';
           componentUnderTest.onNotification({ type: 'OPEN_QUOTE_DIALOG' });
           mockDialogService.onSubmitCallback({ emailAddress: 'ross.edfort@wazeedigital.com', expirationDate: '2017/05/03' });
           expect(mockQuoteEditService.sendQuote).toHaveBeenCalledWith({
             ownerEmail: 'ross.edfort@wazeedigital.com',
             expirationDate: '2017-05-03T06:00:00.000Z',
-            purchaseType: null
+            purchaseType: 'ProvisionalOrder'
           });
         });
       });
