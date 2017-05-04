@@ -34,7 +34,7 @@ export interface User extends Common {
   accessibleCollections?: number[];
   focusedCollection?: number;
   root?: boolean;
-  mailingAddress?: Address;
+  billingInfo?: Address;
   [index: string]: any;
 }
 

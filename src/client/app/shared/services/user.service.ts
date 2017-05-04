@@ -73,7 +73,7 @@ export class UserService {
   }
 
   public addBillingAddress(address: Address): Observable<any> {
-    let newUser: User = Object.assign({}, JSON.parse(localStorage.getItem('currentUser')), { mailingAddress: address });
+    let newUser: User = Object.assign({}, JSON.parse(localStorage.getItem('currentUser')), { billingInfo: { address: address } });
     return this.api.put(Api.Identities, `user/${newUser.id}`, { body: newUser }).do((user: User) => {
       localStorage.setItem('currentUser', JSON.stringify(user));
     });
