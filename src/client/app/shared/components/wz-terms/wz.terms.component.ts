@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -9,7 +9,6 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 
 export class WzTermsComponent {
   @Input() terms: any;
-  @Input() dialog: any;
   @Input() btnLabel: string;
   @Input() header: string;
 }

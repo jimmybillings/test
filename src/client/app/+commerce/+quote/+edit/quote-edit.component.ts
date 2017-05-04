@@ -3,7 +3,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
 
 import { UiConfig } from '../../../shared/services/ui.config';
-import { MdDialog, MdSnackBar, MdDialogRef } from '@angular/material';
+import { MdSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { AssetService } from '../../../shared/services/asset.service';
 import { Capabilities } from '../../../shared/services/capabilities.service';

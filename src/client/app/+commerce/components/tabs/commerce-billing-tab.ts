@@ -8,10 +8,11 @@ import { CheckoutState } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { AddressFormComponent } from '../address-form/address-form.component';
-import { MdDialog, MdDialogRef } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Tab } from './tab';
+import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
+
 
 export class CommerceBillingTab extends Tab implements OnInit {
   public orderInProgress: Observable<CheckoutState>;
@@ -24,7 +25,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
     protected uiConfig: UiConfig,
     protected user: UserService,
     protected currentUser: CurrentUserService,
-    protected dialog: MdDialog) {
+    protected dialog: WzDialogService) {
     super();
   }
 
@@ -89,20 +90,30 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   public openFormFor(resourceType: 'account' | 'user', mode: 'edit' | 'create', address?: ViewAddress): void {
-    let dialogRef: MdDialogRef<AddressFormComponent> = this.dialog.open(AddressFormComponent, { position: { top: '6%' } });
-    dialogRef.componentInstance.items = this.items;
-    dialogRef.componentInstance.dialog = dialogRef;
-    dialogRef.componentInstance.resourceType = resourceType;
-    dialogRef.componentInstance.mode = mode;
-    if (mode === 'edit') dialogRef.componentInstance.address = address.address;
-    dialogRef.afterClosed().subscribe((form: any) => {
-      if (typeof form === 'undefined') return;
-      if (resourceType === 'user') {
-        this.addUserAddress(form);
-      } else {
-        this.addAccountAddress(form, address);
+    this.dialog.openComponentInDialog(
+      {
+        componentType: AddressFormComponent,
+        dialogConfig: { position: { top: '6%' } },
+        inputOptions: {
+          items: this.items,
+          resourceType: resourceType,
+          mode: mode,
+          address: (mode === 'edit') ? address.address : undefined
+        },
+        outputOptions: [{
+          event: 'onSaveAddress',
+          callback: (form: any) => {
+            if (typeof form === 'undefined') return;
+            if (resourceType === 'user') {
+              this.addUserAddress(form);
+            } else {
+              this.addAccountAddress(form, address);
+            }
+          },
+          closeOnEvent: true
+        }]
       }
-    });
+    );
   }
 
   private fetchAddresses(): Observable<Array<ViewAddress>> {

@@ -4,6 +4,7 @@ import { CollectionsService } from '../../shared/services/collections.service';
 import { ActiveCollectionService } from '../../shared/services/active-collection.service';
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../../shared/services/current-user.service';
+import { WzEvent } from '../../shared/interfaces/common.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Subscription';
 import { CollectionContextService } from '../../shared/services/collection-context.service';
@@ -11,11 +12,9 @@ import { UiState } from '../../shared/services/ui.state';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { CollectionLinkComponent } from '../components/collection-link.component';
-import { MdDialog, MdDialogRef } from '@angular/material';
 import { CollectionFormComponent } from '../../application/collection-tray/components/collection-form.component';
 import { CollectionDeleteComponent } from '../components/collection-delete.component';
-
-
+import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 
 @Component({
   moduleId: module.id,
@@ -48,7 +47,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
     public uiState: UiState,
     private snackBar: MdSnackBar,
     private translate: TranslateService,
-    private dialog: MdDialog) {
+    private dialogService: WzDialogService) {
 
     this.filterOptions = [
       {
@@ -161,12 +160,20 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   public setCollectionForDelete(collection: any): void {
-    let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionDeleteComponent, { position: { top: '14%' } });
-    dialogRef.componentInstance.collection = JSON.parse(JSON.stringify(collection));
-    dialogRef.componentInstance.dialog = dialogRef;
-    dialogRef.afterClosed()
-      .filter((data) => data)
-      .subscribe((collectionId) => this.deleteCollection(collectionId));
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: CollectionDeleteComponent,
+        dialogConfig: { position: { top: '14%' } },
+        inputOptions: {
+          collection: JSON.parse(JSON.stringify(collection)),
+        },
+        outputOptions: [{
+          event: 'deleteEvent',
+          callback: (event: WzEvent) => this.deleteCollection(event.payload),
+          closeOnEvent: true
+        }]
+      }
+    );
   }
 
   public deleteCollection(id: number): void {
@@ -199,18 +206,32 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   public getAssetsForLink(collectionId: number): void {
     this.activeCollection.getItems(collectionId, { n: 100 }, false).subscribe(data => {
       this.assetsForLink = data.items;
-      let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionLinkComponent);
-      dialogRef.componentInstance.assets = this.assetsForLink;
+      this.dialogService.openComponentInDialog(
+        {
+          componentType: CollectionLinkComponent,
+          inputOptions: { assets: this.assetsForLink }
+        }
+      );
     });
   }
 
   public editCollection(collection: Collection) {
     this.uiConfig.get('collection').take(1).subscribe((config: any) => {
-      let dialogRef: MdDialogRef<any> = this.dialog.open(CollectionFormComponent);
-      dialogRef.componentInstance.collection = JSON.parse(JSON.stringify(collection));
-      dialogRef.componentInstance.fields = config.config;
-      dialogRef.componentInstance.dialog = dialogRef;
-      dialogRef.componentInstance.isEdit = true;
+      this.dialogService.openComponentInDialog(
+        {
+          componentType: CollectionFormComponent,
+          inputOptions: {
+            collection: JSON.parse(JSON.stringify(collection)),
+            fields: config.config,
+            isEdit: true
+          },
+          outputOptions: [{
+            event: 'collectionSaved',
+            callback: (event: WzEvent) => true,
+            closeOnEvent: true
+          }]
+        }
+      );
     });
   }
 }
