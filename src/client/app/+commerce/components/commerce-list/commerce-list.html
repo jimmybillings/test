@@ -59,7 +59,7 @@
           <h5 flex *ngIf="type === 'QUOTE'" class="md-subhead status {{ item.quoteStatus.toLowerCase() }}">
             {{ item.quoteStatus }}
           </h5>
-          <div *ngIf="showRefundIndicatorFor(item)" class="indicate-refund">
+          <div *ngIf="shouldShowRefundIndicatorFor(item)" class="indicate-refund">
             <span class="total-label">
               {{ 'ORDER.INDEX.INDICATE_REFUND' | translate }}
             </span>

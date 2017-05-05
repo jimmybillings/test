@@ -32,7 +32,7 @@ export class CommerceListComponent {
     return this.type === 'QUOTE' && item.quoteStatus === 'ACTIVE' && !this.userCanAdministerQuotes;
   }
 
-  public showRefundIndicatorFor(item: Order): boolean {
+  public shouldShowRefundIndicatorFor(item: Order): boolean {
     return this.type === 'ORDER' && !!item.creditMemoForOrderId;
   }
 

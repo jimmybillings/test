@@ -77,6 +77,27 @@ export function main() {
       });
     });
 
+    describe('shouldShowRefundIndicatorFor()', () => {
+      describe('should return false', () => {
+        it('if the type is not "ORDER"', () => {
+          componentUnderTest.type = 'QUOTE';
+          expect(componentUnderTest.shouldShowRefundIndicatorFor({} as any)).toBe(false);
+        });
+
+        it('if the order does not have a creditMemoForOrderId field', () => {
+          componentUnderTest.type = 'ORDER';
+          expect(componentUnderTest.shouldShowRefundIndicatorFor({} as any)).toBe(false);
+        });
+      });
+
+      describe('should return true', () => {
+        it('if the type is "ORDER" and the order has a creditMemoForOrderId field', () => {
+          componentUnderTest.type = 'ORDER';
+          expect(componentUnderTest.shouldShowRefundIndicatorFor({ creditMemoForOrderId: 12345 } as any)).toBe(true);
+        });
+      });
+    });
+
     describe('shouldShowViewOrderButton()', () => {
       it('should return true if the type is order', () => {
         componentUnderTest.type = 'ORDER';
