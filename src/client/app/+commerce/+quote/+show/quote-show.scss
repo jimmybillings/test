@@ -15,27 +15,6 @@ quote-show-component section.header {
         color: mat-color($warn, darker);
       }
     }
-    .status {
-      margin: 0;
-      padding-bottom: rem(.5);
-      letter-spacing: .1em;
-      font-weight: 600;
-      &.pending {
-        color: mat-color($mat-accent, 500);
-      }
-      &.active {
-        color: mat-color($mat-green, 500);
-      }
-      &.expired {
-        color: mat-color($mat-warn, 500);
-      }
-      &.ordered {
-        color: mat-color($mat-blue, 500);
-      }
-      &.cancelled {
-        color: mat-color($mat-grey, 500);
-      }
-    }
     .tools {
       text-align: right;
     }
@@ -51,7 +30,7 @@ quote-show-component .project .assets {
   padding-right: rem(.4);
   .details {
     opacity: .7;
-    margin: rem(1.8) 0 rem(.7) 0;
+    margin: rem(1.2) 0 rem(1.3) 0;
   }
   .quote-info {
     line-height: 1.4;

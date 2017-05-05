@@ -15,9 +15,12 @@
             </div>
             <div class="md-caption item-info">
               <span><strong>{{ type + '.CREATED_ON_LABEL' | translate }} </strong>{{ item.createdOn | date:'short' }}</span>
+              <span *ngIf="item.bulkOrderId">
+                <strong>{{ type + '.BULK_ORDER_NAME' | translate }} </strong>{{ item.bulkOrderId }}
+              </span>
               <span>
                 <strong>{{ type + '.PURCHASE_TYPE_LABEL' | translate }} </strong>
-                {{ type === 'ORDER' ? item.orderType : item.purchaseType ? item.purchaseType : 'none' }}
+                {{ type === 'ORDER' ? item.orderType : item.purchaseType ? item.purchaseType : 'Standard' }}
               </span>
               <span *ngIf="type === 'QUOTE'">
                 <strong>{{ 'QUOTE.EXPIRATION_LABEL' | translate }} </strong>{{ item.expirationDate | date:'short' }}
@@ -53,9 +56,9 @@
     <div flex-gt-sm="33" layout-sm="100" flex="auto" class="md-headline">
       <div class="total" layout="column" layout-align="center center" layout-align-gt-sm="space-between end">
         <div flex>
-          <p flex *ngIf="type === 'QUOTE'" class="status {{ item.quoteStatus.toLowerCase() }}">
+          <h5 flex *ngIf="type === 'QUOTE'" class="md-subhead status {{ item.quoteStatus.toLowerCase() }}">
             {{ item.quoteStatus }}
-          </p>
+          </h5>
           <span class="total-label">
             {{ type + '.INDEX.TOTAL_LABEL' | translate }}
           </span>

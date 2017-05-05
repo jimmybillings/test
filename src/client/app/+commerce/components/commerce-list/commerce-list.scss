@@ -74,27 +74,6 @@
           letter-spacing: 0;
         }
       }
-      .status {
-        margin: 0;
-        letter-spacing: .1em;
-        font-size: .75em;
-        font-weight: 600;
-        &.pending {
-          color: mat-color($mat-orange, 500);
-        }
-        &.active {
-          color: mat-color($mat-green, 500);
-        }
-        &.expired {
-          color: mat-color($mat-red, 500);
-        }
-        &.ordered {
-          color: mat-color($mat-blue, 500);
-        }
-        &.cancelled {
-          color: mat-color($mat-grey, 500);
-        }
-      }
       button {
         margin-bottom: rem(1);
         &:last-child {
@@ -158,5 +137,26 @@
         display: flex;
       }
     }
+  }
+}
+.status {
+  margin: 0;
+  letter-spacing: .04em;
+  font-weight: 600;
+  text-align: right;
+  &.pending {
+    color: mat-color($mat-orange, 700);
+  }
+  &.active {
+    color: mat-color($mat-green, 700);
+  }
+  &.expired {
+    color: mat-color($warn, darker);
+  }
+  &.ordered {
+    color: mat-color($mat-blue, 700);
+  }
+  &.cancelled {
+    color: mat-color($foreground, disabled-text);
   }
 }

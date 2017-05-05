@@ -7,9 +7,11 @@
       <h2 *ngIf="shouldDisplayPurchaseHeader" flex="grow" class="md-display-1">
         {{ 'QUOTE.PURCHASE_HEADER' | translate }} <span *ngIf="hasPurchaseType">- {{ (quote | async).purchaseType }}</span>
       </h2>
-      <h2 class="md-display status {{ (quote | async).quoteStatus.toLowerCase() }}">
-        {{ (quote | async).quoteStatus }}
-      </h2>
+      <div class="tools" flex="auto">
+				<a [routerLink]="['/commerce/quotes']" md-icon-button color="primary" title="{{ 'QUOTE.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
+					<md-icon>inbox</md-icon>
+				</a>
+			</div>
     </div>
   </header>
 </section>
@@ -35,6 +37,10 @@
               <strong>{{ 'QUOTE.CREATED_ON_LABEL' | translate }} </strong>
               {{ (quote | async).createdOn | date:'short' }}
             </span>
+            <span *ngIf="(quote | async).bulkOrderId">
+              <strong>{{ 'QUOTE.BULK_ORDER_NAME' | translate }} </strong>
+              {{ (quote | async).bulkOrderId }}
+            </span>
             <span>
               <strong>{{ 'QUOTE.PURCHASE_TYPE_LABEL' | translate }} </strong>
               {{ (quote | async).purchaseType ? (quote | async).purchaseType : 'none' }}
@@ -47,6 +53,9 @@
         </div>
         <div flex="100" layout="row" layout-xs="column" class="divider"></div>
         <div class="cart-total" flex-gt-xs="60" flex="100" class="cart-total">
+          <h5 class="md-subhead status {{ (quote | async).quoteStatus.toLowerCase() }}">
+            {{ (quote | async).quoteStatus }}
+          </h5>
           <div class="total md-headline" flex="auto" layout="row" layout-align="end center">
             <span class="total-label">
                 {{ 'QUOTE.INDEX.TOTAL_LABEL' | translate }}

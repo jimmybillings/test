@@ -64,6 +64,7 @@ md-dialog-container.mat-dialog-container {
 }
 
 // For the notification dialog, these match the MD specs. The md-dialog currently does not.
+md-dialog-container.mat-dialog-container wz-confirmation-dialog,
 md-dialog-container.mat-dialog-container wz-notification-dialog {
   [md-dialog-title] {
     font-weight: 500;
