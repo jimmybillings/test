@@ -13,7 +13,6 @@ export class WzFormBase implements OnInit, OnChanges {
   @Output() formSubmit = new EventEmitter();
   @Output() formCancel = new EventEmitter();
   @Output() onAction = new EventEmitter();
-  @Output() cacheSuggestions = new EventEmitter();
   public submitAttempt: boolean = false;
   public showRequiredLegend: boolean = false;
   public form: FormGroup;
