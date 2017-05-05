@@ -8,7 +8,7 @@ import { Cart } from '../../../shared/interfaces/commerce.interface';
     <div class="create-quote-actions">
       <button
         [disabled]="!userCanProceed"
-        md-button class="checkout"
+        md-raised-button class="checkout"
         (click)="openQuoteDialog.emit()">
         {{ 'QUOTE.CREATE_QUOTE_BTN' | translate }}
       </button>
