@@ -19,6 +19,7 @@ export interface Project {
   name: string;
   clientName: string;
   subtotal: number;
+  creditMemoForProjectId?: number;
   lineItems?: Array<AssetLineItem | FeeLineItem>;
   [index: string]: any;
 }
