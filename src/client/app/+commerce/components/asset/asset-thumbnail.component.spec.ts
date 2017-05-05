@@ -2,7 +2,7 @@ import { AssetThumbnailComponent } from './asset-thumbnail.component';
 import { Frame } from 'wazee-frame-formatter';
 
 export function main() {
-  describe('Asset Thumbnail Component', () => {
+  fdescribe('Asset Thumbnail Component', () => {
     let componentUnderTest: AssetThumbnailComponent;
 
     beforeEach(() => {
@@ -52,10 +52,10 @@ export function main() {
           expect(componentUnderTest.routerLink[2]).toEqual({ timeStart: 1 });
         });
 
-        it('BUG - does not get added when it is zero', () => {
+        it('gets added when it is zero', () => {
           componentUnderTest.asset.timeStart = 0;
 
-          expect(componentUnderTest.routerLink[2]).toEqual({});
+          expect(componentUnderTest.routerLink[2]).toEqual({ timeStart: 0 });
         });
 
         it('does not get added when it is negative', () => {
@@ -78,10 +78,10 @@ export function main() {
           expect(componentUnderTest.routerLink[2]).toEqual({ timeEnd: 1 });
         });
 
-        it('BUG - does not get added when it is zero', () => {
+        it('gets added when it is zero', () => {
           componentUnderTest.asset.timeEnd = 0;
 
-          expect(componentUnderTest.routerLink[2]).toEqual({});
+          expect(componentUnderTest.routerLink[2]).toEqual({ timeEnd: 0 });
         });
 
         it('does not get added when it is negative', () => {
@@ -111,32 +111,32 @@ export function main() {
           componentUnderTest.asset.timeEnd = 200;
         });
 
-        it('BUG - throws when there is no asset metadata', () => {
-          delete componentUnderTest.asset.metadata;
-
-          expect(() => componentUnderTest.durationAsFrame).toThrow();
-        });
-
-        it('BUG - throws when there is no asset frameRate metadata', () => {
-          delete componentUnderTest.asset.metadata[2];
-
-          expect(() => componentUnderTest.durationAsFrame).toThrow();
-        });
-
-        it('BUG - throws when there is no asset frameRate metadata value', () => {
-          componentUnderTest.asset.metadata[2] = {};
-
-          expect(() => componentUnderTest.durationAsFrame).toThrow();
-        });
-
-        it('returns subclip duration as a Frame when the sufficient data is present', () => {
+        it('returns subclip duration as a Frame when sufficient data is present', () => {
           expect(componentUnderTest.durationAsFrame.frameNumber).toEqual(50);
         });
 
-        it('BUG - returns NaN as a Frame when the asset has no timeEnd', () => {
+        it('returns undefined when there is no asset metadata', () => {
+          delete componentUnderTest.asset.metadata;
+
+          expect(componentUnderTest.durationAsFrame).toBeUndefined();
+        });
+
+        it('returns undefined when there is no asset frameRate metadata', () => {
+          delete componentUnderTest.asset.metadata[2];
+
+          expect(componentUnderTest.durationAsFrame).toBeUndefined();
+        });
+
+        it('returns undefined when there is no asset frameRate metadata value', () => {
+          componentUnderTest.asset.metadata[2] = {};
+
+          expect(componentUnderTest.durationAsFrame).toBeUndefined();
+        });
+
+        it('returns undefined when the asset has no timeEnd', () => {
           delete componentUnderTest.asset.timeEnd;
 
-          expect(componentUnderTest.durationAsFrame.frameNumber).toBeNaN();
+          expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
       });
 
@@ -149,17 +149,16 @@ export function main() {
           expect(componentUnderTest.durationAsFrame.frameNumber).toEqual(300);
         });
 
-
-        it('BUG - throws when there is no asset metadata', () => {
+        it('returns undefined when there is no asset metadata', () => {
           delete componentUnderTest.asset.metadata;
 
-          expect(() => componentUnderTest.durationAsFrame).toThrow();
+          expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
 
-        it('BUG - throws when there is no asset frameRate metadata', () => {
+        it('returns undefined when there is no asset frameRate metadata', () => {
           delete componentUnderTest.asset.metadata[2];
 
-          expect(() => componentUnderTest.durationAsFrame).toThrow();
+          expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
 
         it('returns undefined when there is no asset frameRate metadata value', () => {
@@ -168,16 +167,16 @@ export function main() {
           expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
 
-        it('BUG - throws when there is no asset duration metadata', () => {
+        it('returns undefined when there is no asset duration metadata', () => {
           delete componentUnderTest.asset.metadata[5];
 
-          expect(() => componentUnderTest.durationAsFrame).toThrow();
+          expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
 
-        it('BUG - returns 0 as a Frame when there is no asset duration metadata value', () => {
+        it('returns undefined when there is no asset duration metadata value', () => {
           componentUnderTest.asset.metadata[5] = {};
 
-          expect(componentUnderTest.durationAsFrame.frameNumber).toEqual(0);
+          expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
       });
     });
@@ -192,22 +191,22 @@ export function main() {
         expect(componentUnderTest.isImage).toBe(true);
       });
 
-      it('BUG - throws when there is no asset metadata', () => {
+      it('returns false when there is no asset metadata', () => {
         delete componentUnderTest.asset.metadata;
 
-        expect(() => componentUnderTest.isImage).toThrow;
+        expect(componentUnderTest.isImage).toBe(false);
       });
 
-      it('BUG - throws when there is no asset resource class metadata', () => {
+      it('returns false when there is no asset resource class metadata', () => {
         delete componentUnderTest.asset.metadata[6];
 
-        expect(() => componentUnderTest.isImage).toThrow;
+        expect(componentUnderTest.isImage).toBe(false);
       });
 
-      it('BUG - returns undefined when asset resource class metadata is undefined', () => {
+      it('returns false when asset resource class metadata is undefined', () => {
         componentUnderTest.asset.metadata[6] = undefined;
 
-        expect(componentUnderTest.isImage).toBeUndefined();
+        expect(componentUnderTest.isImage).toBe(false);
       });
 
       it('returns false when there is no asset resource class metadata name', () => {

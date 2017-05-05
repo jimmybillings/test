@@ -36,7 +36,8 @@ export class AssetThumbnailComponent {
   }
 
   public get isImage(): boolean {
-    return this.asset.metadata[6] &&
+    return !!this.asset.metadata &&
+      !!this.asset.metadata[6] &&
       this.asset.metadata[6].name === 'Resource.Class' &&
       this.asset.metadata[6].value === 'Image';
   }
@@ -46,14 +47,20 @@ export class AssetThumbnailComponent {
   }
 
   private get isNotSubclipped(): boolean {
+    if (!this.asset.metadata || !this.asset.metadata[2]) return false;
+
     return this.asset.timeStart === -2 && this.asset.metadata[2].value;
   }
 
   private get isSubclipped(): boolean {
+    if (!this.asset.metadata || !this.asset.metadata[2] || !this.asset.metadata[2].value) return false;
+
     return this.asset.timeStart !== -2;
   }
 
   private get fullTimecode(): Frame {
+    if (!this.asset.metadata[5] || !this.asset.metadata[5].value) return undefined;
+
     return this.frame(
       this.asset.metadata[2].value,
       this.durationAsFrames(this.asset.metadata[2].value, this.asset.metadata[5].value / 1000.0)
@@ -61,6 +68,8 @@ export class AssetThumbnailComponent {
   }
 
   private get subclipTimecode(): Frame {
+    if (!this.asset.timeEnd) return undefined;
+
     return this.frame(
       this.asset.metadata[2].value,
       this.asset.timeEnd - this.asset.timeStart
@@ -70,8 +79,8 @@ export class AssetThumbnailComponent {
   private assetParams(asset: any): any {
     return Object.assign({},
       asset.uuid ? { uuid: asset.uuid } : null,
-      asset.timeStart && asset.timeStart >= 0 ? { timeStart: asset.timeStart } : null,
-      asset.timeEnd && asset.timeEnd >= 0 ? { timeEnd: asset.timeEnd } : null
+      asset.timeStart >= 0 ? { timeStart: asset.timeStart } : null,
+      asset.timeEnd >= 0 ? { timeEnd: asset.timeEnd } : null
     );
   }
 
