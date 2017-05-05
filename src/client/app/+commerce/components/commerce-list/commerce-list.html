@@ -59,12 +59,22 @@
           <h5 flex *ngIf="type === 'QUOTE'" class="md-subhead status {{ item.quoteStatus.toLowerCase() }}">
             {{ item.quoteStatus }}
           </h5>
-          <span class="total-label">
-            {{ type + '.INDEX.TOTAL_LABEL' | translate }}
-          </span>
-          <span class="total-amount">
-            {{ item.total | currency:'USD':true:'1.2-2' }}
-          </span>
+          <div *ngIf="showRefundIndicatorFor(item)" class="refund">
+            <span class="total-label">
+              {{ 'ORDER.INDEX.INDICATE_REFUND' | translate }}
+            </span>
+            <span class="total-amount">
+              {{ item.total | currency:'USD':true:'1.2-2' | slice:1 }}
+            </span>
+          </div>
+          <div *ngIf="!item.creditMemoForOrderId">
+            <span class="total-label">
+              {{ type + '.INDEX.TOTAL_LABEL' | translate }}
+            </span>
+            <span class="total-amount">
+              {{ item.total | currency:'USD':true:'1.2-2' }}
+            </span>
+          </div>
         </div>
         <div flex layout="row" layout-align="center center" layout-sm="column" layout-align-gt-xs="end end">
           <button
