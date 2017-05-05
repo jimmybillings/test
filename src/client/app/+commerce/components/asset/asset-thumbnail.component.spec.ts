@@ -2,12 +2,14 @@ import { AssetThumbnailComponent } from './asset-thumbnail.component';
 import { Frame } from 'wazee-frame-formatter';
 
 export function main() {
-  fdescribe('Asset Thumbnail Component', () => {
+  describe('Asset Thumbnail Component', () => {
     let componentUnderTest: AssetThumbnailComponent;
+    let mockAsset: any;
 
     beforeEach(() => {
+      mockAsset = { assetId: 47 };
       componentUnderTest = new AssetThumbnailComponent();
-      componentUnderTest.asset = { assetId: 47 };
+      componentUnderTest.asset = mockAsset;
     });
 
     describe('routerLink()', () => {
@@ -24,22 +26,25 @@ export function main() {
       });
 
       it('adds a full parameters object when everything is proper', () => {
-        componentUnderTest.asset.uuid = 'some UUID';
-        componentUnderTest.asset.timeStart = 1;
-        componentUnderTest.asset.timeEnd = 2;
+        mockAsset.uuid = 'some UUID';
+        mockAsset.timeStart = 1;
+        mockAsset.timeEnd = 2;
+        componentUnderTest.asset = mockAsset;
 
         expect(componentUnderTest.routerLink[2]).toEqual({ uuid: 'some UUID', timeStart: 1, timeEnd: 2 });
       });
 
       describe('UUID', () => {
         it('gets added when it is defined', () => {
-          componentUnderTest.asset.uuid = 'some UUID';
+          mockAsset.uuid = 'some UUID';
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.routerLink[2]).toEqual({ uuid: 'some UUID' });
         });
 
         it('does not get added when it is undefined', () => {
-          componentUnderTest.asset.uuid = undefined;
+          mockAsset.uuid = undefined;
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.routerLink[2]).toEqual({});
         });
@@ -47,25 +52,29 @@ export function main() {
 
       describe('timeStart', () => {
         it('gets added when it is positive', () => {
-          componentUnderTest.asset.timeStart = 1;
+          mockAsset.timeStart = 1;
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.routerLink[2]).toEqual({ timeStart: 1 });
         });
 
         it('gets added when it is zero', () => {
-          componentUnderTest.asset.timeStart = 0;
+          mockAsset.timeStart = 0;
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.routerLink[2]).toEqual({ timeStart: 0 });
         });
 
         it('does not get added when it is negative', () => {
-          componentUnderTest.asset.timeStart = -1;
+          mockAsset.timeStart = -1;
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.routerLink[2]).toEqual({});
         });
 
         it('does not get added when it is undefined', () => {
-          componentUnderTest.asset.timeStart = undefined;
+          mockAsset.timeStart = undefined;
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.routerLink[2]).toEqual({});
         });
@@ -73,25 +82,29 @@ export function main() {
 
       describe('timeEnd', () => {
         it('gets added when it is positive', () => {
-          componentUnderTest.asset.timeEnd = 1;
+          mockAsset.timeEnd = 1;
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.routerLink[2]).toEqual({ timeEnd: 1 });
         });
 
         it('gets added when it is zero', () => {
-          componentUnderTest.asset.timeEnd = 0;
+          mockAsset.timeEnd = 0;
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.routerLink[2]).toEqual({ timeEnd: 0 });
         });
 
         it('does not get added when it is negative', () => {
-          componentUnderTest.asset.timeEnd = -1;
+          mockAsset.timeEnd = -1;
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.routerLink[2]).toEqual({});
         });
 
         it('does not get added when it is undefined', () => {
-          componentUnderTest.asset.timeEnd = undefined;
+          mockAsset.timeEnd = undefined;
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.routerLink[2]).toEqual({});
         });
@@ -100,15 +113,17 @@ export function main() {
 
     describe('durationAsFrame()', () => {
       beforeEach(() => {
-        componentUnderTest.asset.metadata = [];
-        componentUnderTest.asset.metadata[2] = { value: '29.97 fps' };
-        componentUnderTest.asset.metadata[5] = { value: '10000' };
+        mockAsset.metadata = [];
+        mockAsset.metadata[2] = { name: 'Format.FrameRate', value: '29.97 fps' };
+        mockAsset.metadata[5] = { name: 'Format.Duration', value: '10000' };
+        componentUnderTest.asset = mockAsset;
       });
 
       describe('for a subclipped asset', () => {
         beforeEach(() => {
-          componentUnderTest.asset.timeStart = 150;
-          componentUnderTest.asset.timeEnd = 200;
+          mockAsset.timeStart = 150;
+          mockAsset.timeEnd = 200;
+          componentUnderTest.asset = mockAsset;
         });
 
         it('returns subclip duration as a Frame when sufficient data is present', () => {
@@ -116,25 +131,29 @@ export function main() {
         });
 
         it('returns undefined when there is no asset metadata', () => {
-          delete componentUnderTest.asset.metadata;
+          delete mockAsset.metadata;
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
 
         it('returns undefined when there is no asset frameRate metadata', () => {
-          delete componentUnderTest.asset.metadata[2];
+          delete mockAsset.metadata[2];
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
 
         it('returns undefined when there is no asset frameRate metadata value', () => {
-          componentUnderTest.asset.metadata[2] = {};
+          mockAsset.metadata[2] = {};
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
 
         it('returns undefined when the asset has no timeEnd', () => {
-          delete componentUnderTest.asset.timeEnd;
+          delete mockAsset.timeEnd;
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
@@ -142,7 +161,8 @@ export function main() {
 
       describe('for a non-subclipped asset', () => {
         beforeEach(() => {
-          componentUnderTest.asset.timeStart = -2;
+          mockAsset.timeStart = -2;
+          componentUnderTest.asset = mockAsset;
         });
 
         it('returns full clip duration as a Frame when the sufficient data is present', () => {
@@ -150,31 +170,36 @@ export function main() {
         });
 
         it('returns undefined when there is no asset metadata', () => {
-          delete componentUnderTest.asset.metadata;
+          delete mockAsset.metadata;
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
 
         it('returns undefined when there is no asset frameRate metadata', () => {
-          delete componentUnderTest.asset.metadata[2];
+          delete mockAsset.metadata[2];
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
 
         it('returns undefined when there is no asset frameRate metadata value', () => {
-          componentUnderTest.asset.metadata[2] = {};
+          mockAsset.metadata[2] = {};
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
 
         it('returns undefined when there is no asset duration metadata', () => {
-          delete componentUnderTest.asset.metadata[5];
+          delete mockAsset.metadata[5];
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
 
         it('returns undefined when there is no asset duration metadata value', () => {
-          componentUnderTest.asset.metadata[5] = {};
+          mockAsset.metadata[5] = {};
+          componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.durationAsFrame).toBeUndefined();
         });
@@ -183,8 +208,9 @@ export function main() {
 
     describe('isImage()', () => {
       beforeEach(() => {
-        componentUnderTest.asset.metadata = [];
-        componentUnderTest.asset.metadata[6] = { name: 'Resource.Class', value: 'Image' };
+        mockAsset.metadata = [];
+        mockAsset.metadata[6] = { name: 'Resource.Class', value: 'Image' };
+        componentUnderTest.asset = mockAsset;
       });
 
       it('returns true for an image', () => {
@@ -192,43 +218,50 @@ export function main() {
       });
 
       it('returns false when there is no asset metadata', () => {
-        delete componentUnderTest.asset.metadata;
+        delete mockAsset.metadata;
+        componentUnderTest.asset = mockAsset;
 
         expect(componentUnderTest.isImage).toBe(false);
       });
 
       it('returns false when there is no asset resource class metadata', () => {
-        delete componentUnderTest.asset.metadata[6];
+        delete mockAsset.metadata[6];
+        componentUnderTest.asset = mockAsset;
 
         expect(componentUnderTest.isImage).toBe(false);
       });
 
       it('returns false when asset resource class metadata is undefined', () => {
-        componentUnderTest.asset.metadata[6] = undefined;
+        mockAsset.metadata[6] = undefined;
+        componentUnderTest.asset = mockAsset;
 
         expect(componentUnderTest.isImage).toBe(false);
       });
 
       it('returns false when there is no asset resource class metadata name', () => {
-        delete componentUnderTest.asset.metadata[6].name;
+        delete mockAsset.metadata[6].name;
+        componentUnderTest.asset = mockAsset;
 
         expect(componentUnderTest.isImage).toBe(false);
       });
 
       it('returns false when there is no asset resource class metadata value', () => {
-        delete componentUnderTest.asset.metadata[6].value;
+        delete mockAsset.metadata[6].value;
+        componentUnderTest.asset = mockAsset;
 
         expect(componentUnderTest.isImage).toBe(false);
       });
 
       it('returns false when the asset resource class metadata name is not "Resource.Class"', () => {
-        componentUnderTest.asset.metadata[6].name = 'blah';
+        mockAsset.metadata[6].name = 'blah';
+        componentUnderTest.asset = mockAsset;
 
         expect(componentUnderTest.isImage).toBe(false);
       });
 
       it('returns false when the asset resource class metadata value is not "Image"', () => {
-        componentUnderTest.asset.metadata[6].name = 'blah';
+        mockAsset.metadata[6].name = 'blah';
+        componentUnderTest.asset = mockAsset;
 
         expect(componentUnderTest.isImage).toBe(false);
       });
@@ -236,7 +269,8 @@ export function main() {
 
     describe('thumbnailUrl()', () => {
       it('returns the asset thumbnail URL', () => {
-        componentUnderTest.asset.thumbnailUrl = '/some/url';
+        mockAsset.thumbnailUrl = '/some/url';
+        componentUnderTest.asset = mockAsset;
 
         expect(componentUnderTest.thumbnailUrl).toEqual('/some/url');
       });

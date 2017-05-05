@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
-import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
-import { Asset } from '../../../shared/interfaces/commerce.interface';
+import { Frame } from 'wazee-frame-formatter';
+import { Asset, Metadatum } from '../../../shared/interfaces/commerce.interface';
 
 @Component({
   moduleId: module.id,
@@ -22,76 +22,70 @@ import { Asset } from '../../../shared/interfaces/commerce.interface';
   `
 })
 export class AssetThumbnailComponent {
-  @Input() asset: any;
+  @Input() public set asset(asset: Asset) {
+    this._asset = asset;
+
+    this.resourceClass = this.getMetadataAtIndex(6, 'Resource.Class');
+    this.framesPerSecond = parseFloat(this.getMetadataAtIndex(2, 'Format.FrameRate'));
+    this.durationInMilliseconds = parseFloat(this.getMetadataAtIndex(5, 'Format.Duration'));
+  }
+
+  private _asset: Asset = {};
+  private framesPerSecond: number = undefined;
+  private resourceClass: string = '';
+  private durationInMilliseconds: number = undefined;
+
+  public get asset(): Asset {
+    return this._asset;
+  }
 
   public get routerLink(): any[] {
-    return ['/asset', this.asset.assetId, this.assetParams(this.asset)];
+    return ['/asset', this._asset.assetId, this.routerParameters];
   }
 
   public get durationAsFrame(): Frame {
-    if (this.isSubclipped) return this.subclipTimecode;
-    if (this.isNotSubclipped) return this.fullTimecode;
+    if (!this.framesPerSecond) return undefined;
 
-    return undefined;
+    return this.isSubclipped ? this.subclipDurationAsFrame : this.assetDurationAsFrame;
   }
 
   public get isImage(): boolean {
-    return !!this.asset.metadata &&
-      !!this.asset.metadata[6] &&
-      this.asset.metadata[6].name === 'Resource.Class' &&
-      this.asset.metadata[6].value === 'Image';
+    return this.resourceClass === 'Image';
   }
 
   public get thumbnailUrl(): string {
-    return this.asset.thumbnailUrl;
+    return this._asset.thumbnailUrl;
   }
 
-  private get isNotSubclipped(): boolean {
-    if (!this.asset.metadata || !this.asset.metadata[2]) return false;
+  private getMetadataAtIndex(index: number, expectedName: string): string {
+    if (!this._asset.metadata) return '';
 
-    return this.asset.timeStart === -2 && this.asset.metadata[2].value;
+    const metadatum: Metadatum = this._asset.metadata[index];
+
+    return metadatum && metadatum.name === expectedName ? metadatum.value : '';
   }
 
   private get isSubclipped(): boolean {
-    if (!this.asset.metadata || !this.asset.metadata[2] || !this.asset.metadata[2].value) return false;
-
-    return this.asset.timeStart !== -2;
+    return this._asset.timeStart !== -2;
   }
 
-  private get fullTimecode(): Frame {
-    if (!this.asset.metadata[5] || !this.asset.metadata[5].value) return undefined;
+  private get assetDurationAsFrame(): Frame {
+    if (!this.durationInMilliseconds) return undefined;
 
-    return this.frame(
-      this.asset.metadata[2].value,
-      this.durationAsFrames(this.asset.metadata[2].value, this.asset.metadata[5].value / 1000.0)
-    );
+    return new Frame(this.framesPerSecond).setFromSeconds(this.durationInMilliseconds / 1000.0);
   }
 
-  private get subclipTimecode(): Frame {
-    if (!this.asset.timeEnd) return undefined;
+  private get subclipDurationAsFrame(): Frame {
+    if (!this._asset.timeEnd) return undefined;
 
-    return this.frame(
-      this.asset.metadata[2].value,
-      this.asset.timeEnd - this.asset.timeStart
-    );
+    return new Frame(this.framesPerSecond).setFromFrameNumber(this._asset.timeEnd - this._asset.timeStart)
   }
 
-  private assetParams(asset: any): any {
+  private get routerParameters(): any {
     return Object.assign({},
-      asset.uuid ? { uuid: asset.uuid } : null,
-      asset.timeStart >= 0 ? { timeStart: asset.timeStart } : null,
-      asset.timeEnd >= 0 ? { timeEnd: asset.timeEnd } : null
+      this._asset.uuid ? { uuid: this._asset.uuid } : null,
+      this._asset.timeStart >= 0 ? { timeStart: this._asset.timeStart } : null,
+      this._asset.timeEnd >= 0 ? { timeEnd: this._asset.timeEnd } : null
     );
-  }
-
-  private durationAsFrames(framesPerSecond: any, duration: any): number {
-    return new Frame(
-      framesPerSecond.split(' fps')[0])
-      .setFromString(`${duration};00`, TimecodeFormat.SIMPLE_TIME_CONVERSION)
-      .asFrameNumber();
-  }
-
-  private frame(framesPerSecond: any, frameNumber: number): Frame {
-    return new Frame(framesPerSecond.split(' fps')[0]).setFromFrameNumber(frameNumber);
   }
 }

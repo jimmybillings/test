@@ -64,6 +64,7 @@ export interface Asset {
   timeStart?: number;
   timeEnd?: number;
   clipUrl?: string;
+  uuid?: string;
 }
 
 export interface Metadatum {
