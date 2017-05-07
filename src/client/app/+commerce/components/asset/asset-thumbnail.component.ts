@@ -2,6 +2,8 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
 import { Asset, Metadatum } from '../../../shared/interfaces/commerce.interface';
+import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
+import { AssetService } from '../../../shared/services/asset.service';
 
 @Component({
   moduleId: module.id,
@@ -22,70 +24,35 @@ import { Asset, Metadatum } from '../../../shared/interfaces/commerce.interface'
   `
 })
 export class AssetThumbnailComponent {
+  private enhancedAsset: EnhancedAsset;
+
+  constructor(private assetService: AssetService) { }
+
   @Input() public set asset(asset: Asset) {
-    this._asset = asset;
-
-    this.resourceClass = this.getMetadataAtIndex(6, 'Resource.Class');
-    this.framesPerSecond = parseFloat(this.getMetadataAtIndex(2, 'Format.FrameRate'));
-    this.durationInMilliseconds = parseFloat(this.getMetadataAtIndex(5, 'Format.Duration'));
-  }
-
-  private _asset: Asset = {};
-  private framesPerSecond: number = undefined;
-  private resourceClass: string = '';
-  private durationInMilliseconds: number = undefined;
-
-  public get asset(): Asset {
-    return this._asset;
+    this.enhancedAsset = this.assetService.enhance(asset);
   }
 
   public get routerLink(): any[] {
-    return ['/asset', this._asset.assetId, this.routerParameters];
+    return ['/asset', this.enhancedAsset.assetId, this.routerParameters];
   }
 
   public get durationAsFrame(): Frame {
-    if (!this.framesPerSecond) return undefined;
-
-    return this.isSubclipped ? this.subclipDurationAsFrame : this.assetDurationAsFrame;
+    return this.enhancedAsset.subclipDurationAsFrame || this.enhancedAsset.fullDurationAsFrame;
   }
 
   public get isImage(): boolean {
-    return this.resourceClass === 'Image';
+    return this.enhancedAsset.isImage;
   }
 
   public get thumbnailUrl(): string {
-    return this._asset.thumbnailUrl;
-  }
-
-  private getMetadataAtIndex(index: number, expectedName: string): string {
-    if (!this._asset.metadata) return '';
-
-    const metadatum: Metadatum = this._asset.metadata[index];
-
-    return metadatum && metadatum.name === expectedName ? metadatum.value : '';
-  }
-
-  private get isSubclipped(): boolean {
-    return this._asset.timeStart !== -2;
-  }
-
-  private get assetDurationAsFrame(): Frame {
-    if (!this.durationInMilliseconds) return undefined;
-
-    return new Frame(this.framesPerSecond).setFromSeconds(this.durationInMilliseconds / 1000.0);
-  }
-
-  private get subclipDurationAsFrame(): Frame {
-    if (!this._asset.timeEnd) return undefined;
-
-    return new Frame(this.framesPerSecond).setFromFrameNumber(this._asset.timeEnd - this._asset.timeStart)
+    return this.enhancedAsset.thumbnailUrl;
   }
 
   private get routerParameters(): any {
     return Object.assign({},
-      this._asset.uuid ? { uuid: this._asset.uuid } : null,
-      this._asset.timeStart >= 0 ? { timeStart: this._asset.timeStart } : null,
-      this._asset.timeEnd >= 0 ? { timeEnd: this._asset.timeEnd } : null
+      this.enhancedAsset.uuid ? { uuid: this.enhancedAsset.uuid } : null,
+      this.enhancedAsset.timeStart >= 0 ? { timeStart: this.enhancedAsset.timeStart } : null,
+      this.enhancedAsset.timeEnd >= 0 ? { timeEnd: this.enhancedAsset.timeEnd } : null
     );
   }
 }

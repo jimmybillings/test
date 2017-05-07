@@ -1,14 +1,24 @@
 import { AssetThumbnailComponent } from './asset-thumbnail.component';
 import { Frame } from 'wazee-frame-formatter';
+import { AssetService } from '../../../shared/services/asset.service';
+import { Asset } from '../../../shared/interfaces/commerce.interface';
+import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 
 export function main() {
   describe('Asset Thumbnail Component', () => {
     let componentUnderTest: AssetThumbnailComponent;
     let mockAsset: any;
+    let mockAssetService: any;
 
     beforeEach(() => {
       mockAsset = { assetId: 47 };
-      componentUnderTest = new AssetThumbnailComponent();
+      mockAssetService = {
+        enhance: (asset: Asset): EnhancedAsset => {
+          return Object.assign(new EnhancedAsset(), asset);
+        }
+      };
+
+      componentUnderTest = new AssetThumbnailComponent(mockAssetService);
       componentUnderTest.asset = mockAsset;
     });
 
@@ -146,13 +156,6 @@ export function main() {
 
         it('returns undefined when there is no asset frameRate metadata value', () => {
           mockAsset.metadata[2] = {};
-          componentUnderTest.asset = mockAsset;
-
-          expect(componentUnderTest.durationAsFrame).toBeUndefined();
-        });
-
-        it('returns undefined when the asset has no timeEnd', () => {
-          delete mockAsset.timeEnd;
           componentUnderTest.asset = mockAsset;
 
           expect(componentUnderTest.durationAsFrame).toBeUndefined();

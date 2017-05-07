@@ -7,6 +7,9 @@ import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 import { AssetState } from '../../shared/interfaces/asset.interface';
 import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
 import { CurrentUserService } from '../../shared/services/current-user.service';
+import { Asset } from '../interfaces/commerce.interface';
+import { EnhancedAsset } from '../interfaces/enhanced-asset';
+
 
 export function asset(state: any = {}, action: Action) {
   switch (action.type) {
@@ -116,6 +119,10 @@ export class AssetService {
     let state: any = {};
     this.data.take(1).subscribe(f => state = f);
     return state;
+  }
+
+  public enhance(asset: Asset): EnhancedAsset {
+    return Object.assign(new EnhancedAsset(), asset);
   }
 
   private formatAttributes(attrs: any): any {
