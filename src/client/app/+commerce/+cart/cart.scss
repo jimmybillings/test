@@ -10,7 +10,7 @@ quote-edit-component .tabs-section {
     margin-left: rem(2.6);
     margin-right: rem(2.6);
     &:last-child {
-      margin-bottom: rem(3.0);
+      margin-bottom: rem(6.0);
     }
     @media screen and (max-width: $layout-breakpoint-sm)  {
       margin-left: rem(1.2);
@@ -168,7 +168,7 @@ quote-edit-component .quote-section {
     }
   }
   .cart-total {
-    padding: 0 rem(.4) rem(2.0) 0;
+    padding: 0 rem(.4) rem(6.0) 0;
   }
 }
 .bulk-order {

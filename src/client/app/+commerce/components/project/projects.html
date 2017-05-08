@@ -17,6 +17,7 @@
 				<project-actions-component
 					*ngIf="!readOnly"
           [includeFees]="includeFees"
+					[lineItems]="project.lineItems"
 					(projectActionsNotify)="editProjectPrice($event, project)"
 					(remove)="onRemove(project)"
 					(edit)="onEdit(project)"

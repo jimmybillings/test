@@ -1,21 +1,26 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-
+import { AssetLineItem } from '../../../shared/interfaces/commerce.interface';
 @Component({
   moduleId: module.id,
   selector: 'project-actions-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- CRUX-1715 -->
-    <button md-button  (click)="editProjectPricing()" class="is-outlined" type="button">
+    <button md-button type="button"
+      *ngIf="projectHasRmAssets"
+      (click)="editProjectPricing()" 
+      class="is-outlined rights-pkg"
+      [ngClass]="{'select-usage': !rmAssetsHaveAttributes }">
+      <md-icon>assignment</md-icon>
       {{ 'CART.PROJECTS.EDIT_USAGE_BTN_LABEL' | translate }}
     </button>
-    <button md-icon-button (click)="onEditButtonClick()" title="Edit project details">
+    <button md-icon-button (click)="onEditButtonClick()" title="{{ 'CART.PROJECTS.EDIT_PROJECT_BTN_TITLE' | translate }}">
       <md-icon>edit</md-icon>
     </button>
-    <button md-icon-button [md-menu-trigger-for]="projectOptionsMenu" title="More project options">
+    <button md-icon-button 
+      [md-menu-trigger-for]="projectOptionsMenu" 
+      title="{{ 'CART.PROJECTS.MORE_OPTIONS_BTN_TITLE' | translate }}">
       <md-icon>more_vert</md-icon>
     </button>
-
     <md-menu x-position="before" #projectOptionsMenu="mdMenu">
       <button disabled md-menu-item><md-icon>attachment</md-icon>{{ 'CART.PROJECTS.ADD_PACKAGE' | translate }}</button>
       <button [disabled]="!includeFees" md-menu-item (click)="onAddFeeButtonClick()">
@@ -28,7 +33,14 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
   `
 })
 export class ProjectActionsComponent {
+  public items: AssetLineItem[];
   @Input() includeFees: boolean = false;
+  @Input() set lineItems(items: AssetLineItem[]) {
+    if (items) {
+      this.items = items;
+      console.log(this.items);
+    }
+  };
   @Output() remove: EventEmitter<null> = new EventEmitter();
   @Output() edit: EventEmitter<null> = new EventEmitter();
   @Output() addFee: EventEmitter<null> = new EventEmitter();
@@ -48,5 +60,27 @@ export class ProjectActionsComponent {
 
   public editProjectPricing() {
     this.projectActionsNotify.emit({ type: 'EDIT_PROJECT_PRICING' });
+  }
+
+  public get rmAssetsHaveAttributes(): boolean {
+    if (!this.items || this.items.length === 0) return true;
+    let validAssets: boolean[] = [];
+    if (this.items) {
+      this.items.forEach((lineItem: AssetLineItem) => {
+        validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);
+      });
+    }
+    return validAssets.indexOf(false) === -1;
+  }
+
+  public get projectHasRmAssets(): boolean {
+    if (!this.items || this.items.length === 0) return false;
+    let validAssets: boolean[] = [];
+    if (this.items) {
+      this.items.forEach((lineItem: AssetLineItem) => {
+        validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? true : false);
+      });
+    }
+    return validAssets.indexOf(true) !== -1;
   }
 }

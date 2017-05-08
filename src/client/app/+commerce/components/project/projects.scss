@@ -74,6 +74,18 @@ div.project {
       line-height: rem(2.4);
       min-width: rem(5.0);
       border-color: mat-color($background, background, .25);
+      &.select-usage {
+        border: none;
+        color: mat-color($warn, darker);
+        background-color:  mat-color($background, background);
+      }
+      &.select-usage .mat-icon {
+        color: mat-color($warn, darker);
+      }
+    }
+    button.rights-pkg .mat-icon {
+      font-size: rem(1.8);
+      line-height: 1.32em;
     }
   }
   &:last-child {
