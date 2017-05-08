@@ -20,7 +20,7 @@ export class EnhancedAsset implements Asset {
   private _durationAsMilliseconds: number;
 
   public get resourceClass(): string {
-    if (!this._resourceClass) this._resourceClass = this.getMetadataAtIndex(6, 'Resource.Class');
+    if (!this._resourceClass) this._resourceClass = this.findMetadataValueFor('Resource.Class');
 
     return this._resourceClass;
   }
@@ -30,13 +30,13 @@ export class EnhancedAsset implements Asset {
   }
 
   public get framesPerSecond(): number {
-    if (!this._framesPerSecond) this._framesPerSecond = parseFloat(this.getMetadataAtIndex(2, 'Format.FrameRate'));
+    if (!this._framesPerSecond) this._framesPerSecond = parseFloat(this.findMetadataValueFor('Format.FrameRate'));
 
     return this._framesPerSecond;
   }
 
   public get durationAsMilliseconds(): number {
-    if (!this._durationAsMilliseconds) this._durationAsMilliseconds = parseFloat(this.getMetadataAtIndex(5, 'Format.Duration'));
+    if (!this._durationAsMilliseconds) this._durationAsMilliseconds = parseFloat(this.findMetadataValueFor('Format.Duration'));
 
     return this._durationAsMilliseconds;
   }
@@ -57,11 +57,22 @@ export class EnhancedAsset implements Asset {
     return new Frame(this.framesPerSecond).setFromSeconds(this.durationAsMilliseconds / 1000.0);
   }
 
-  private getMetadataAtIndex(index: number, expectedName: string): string {
-    if (!this.metadata) return '';
+  private findMetadataValueFor(metadataName: string, object: any = this.metadata): string {
+    if (object !== Object(object)) return null;
 
-    const metadatum: Metadatum = this.metadata[index];
+    const keys: string[] = Object.keys(object);
 
-    return metadatum && metadatum.name === expectedName ? metadatum.value : '';
+    if (keys.length === 2 && keys.sort().join('|') === 'name|value' && object.name === metadataName) {
+      return object.value;
+    }
+
+    for (var key of keys) {
+      if (object[key]) {
+        const value = this.findMetadataValueFor(metadataName, object[key]);
+        if (value) return value;
+      }
+    }
+
+    return null;
   }
 }
