@@ -4,14 +4,25 @@ import { Injectable } from '@angular/core';
 
 import { ApiService } from '../../shared/services/api.service';
 import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
+import { AssetState } from '../../shared/interfaces/asset.interface';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 
-export function asset(state = {}, action: Action) {
+const initState: AssetState = {
+  asset: null,
+  priceForDialog: NaN,
+  priceForDetails: NaN
+};
+
+export function asset(state: any = initState, action: Action) {
   switch (action.type) {
     case 'SET_ASSET':
-      return Object.assign({}, action.payload);
+      return Object.assign({}, { asset: action.payload });
     case 'SET_VIRTUAL_PROPERTIES':
-      return Object.assign({}, state, action.payload);
+      return Object.assign({}, state, { asset: action.payload });
+    case 'SET_PRICE_FOR_DIALOG':
+      return Object.assign({}, state, { priceForDialog: action.payload });
+    case 'SET_PRICE_FOR_DETAILS':
+      return Object.assign({}, state, { priceForDetails: action.payload });
     default:
       return state;
   }
@@ -27,6 +38,15 @@ export class AssetService {
     public api: ApiService,
     private currentUser: CurrentUserService) {
     this.data = this.store.select('asset');
+    this.data.subscribe(d => console.log(d));
+  }
+
+  public get priceForDetails(): Observable<number> {
+    return this.data.map((data: any) => data.priceForDetails);
+  }
+
+  public get priceForDialog(): Observable<number> {
+    return this.data.map((data: any) => data.priceForDialog);
   }
 
   public initialize(id: any): Observable<any> {
@@ -45,7 +65,7 @@ export class AssetService {
   public getPrice(id: any, attributes?: any): Observable<any> {
     let formatedAttributes = attributes ? this.formatAttributes(attributes) : null;
     let parameters = formatedAttributes ? { region: 'AAA', attributes: formatedAttributes } : { region: 'AAA' };
-    return this.api.get(Api.Orders, `priceBook/price/${id}`, { parameters });
+    return this.api.get(Api.Orders, `priceBook/price/${id}`, { parameters }).map((data: any) => data.price);
   }
 
   public getshareLink(id: any, accessStartDate: any, accessEndDate: any): Observable<any> {
@@ -109,7 +129,7 @@ export class AssetService {
     return this.api.get(Api.Assets, `renditionType/${assetId}`, viewType);
   }
 
-  public get state() {
+  public get state(): AssetState {
     let state: any = {};
     this.data.take(1).subscribe(f => state = f);
     return state;

@@ -27,7 +27,8 @@ export function main() {
         downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})),
         getPrice: jasmine.createSpy('getPrice').and.returnValue(Observable.of({ price: 10, some: 'data' })),
         getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({})),
-        state: { assetId: 123456 }
+        state: { asset: { assetId: 123456 } },
+        priceForDetails: Observable.of(100)
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
       mockErrorStore = { dispatch: jasmine.createSpy('dispatch') };
@@ -120,29 +121,11 @@ export function main() {
     describe('addAssetToCart()', () => {
       describe('Should call the cart summary service with the correct params', () => {
         it('with a price', () => {
-          componentUnderTest.usagePrice = Observable.of(100);
           componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
           expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
             lineItem: {
               selectedTranscodeTarget: 'Target',
               price: 100,
-              asset: {
-                assetId: 123123,
-                timeStart: undefined,
-                timeEnd: undefined
-              }
-            },
-            attributes: undefined
-          });
-        });
-
-        it('without a price', () => {
-          componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
-
-          expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
-            lineItem: {
-              selectedTranscodeTarget: 'Target',
-              price: undefined,
               asset: {
                 assetId: 123123,
                 timeStart: undefined,
@@ -161,7 +144,7 @@ export function main() {
           expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
             lineItem: {
               selectedTranscodeTarget: 'Target',
-              price: undefined,
+              price: 100,
               asset: {
                 assetId: 123123,
                 timeStart: 1,
@@ -171,24 +154,6 @@ export function main() {
             attributes: undefined
           });
         });
-      });
-    });
-
-    describe('calculatePrice', () => {
-      it('should call the getPrice method on the assetService', () => {
-        componentUnderTest.calculatePrice({ 'a': 'b', 'c': 'd' });
-
-        expect(mockAssetService.getPrice).toHaveBeenCalledWith(123456, { 'a': 'b', 'c': 'd' });
-      });
-
-      it('should return an observable of the price', () => {
-        let result: Observable<number>;
-        result = componentUnderTest.calculatePrice({ a: 'b', c: 'd' });
-
-        result.subscribe((price: number) => {
-          expect(price).toBe(10);
-        });
-        expect(result instanceof Observable).toBe(true);
       });
     });
 

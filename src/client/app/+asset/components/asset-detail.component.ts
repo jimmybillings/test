@@ -21,7 +21,7 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public uiConfig: UiConfig;
   @Input() public collection: Collection;
   @Input() public searchContext: SearchContext;
-  @Input() public usagePrice: Observable<any>;
+  @Input() public usagePrice: Observable<number>;
   @Input() public window: Window;
   @Output() onAddToCollection = new EventEmitter();
   @Output() onRemoveFromCollection = new EventEmitter();

@@ -1,5 +1,15 @@
-import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { MdOption } from '@angular/material';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+// temporary interface until material gets the shit together - remove with new release
+// see here https://github.com/angular/material2/commit/af978cd6edc75113941b3e0e8df7a220e8d730be
+// and here https://github.com/angular/material2/blob/master/src/lib/core/option/option.ts#L26
+export interface MdOptionSelectionChange {
+  source: MdOption;
+  isUserInput: boolean;
+};
 
 @Component({
   moduleId: module.id,
@@ -8,19 +18,36 @@ import { Observable } from 'rxjs/Observable';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class WzPricingComponent implements OnInit {
-  public form: Array<any>;
+export class WzPricingComponent implements OnInit, OnDestroy {
+  public form: FormGroup;
   @Input() attributes: Array<any>;
   @Input() usagePrice: Observable<any>;
   @Input() pricingPreferences: any;
   @Output() pricingEvent: EventEmitter<any> = new EventEmitter();
+  private subscription: Subscription;
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.buildForm();
+    if (this.pricingPreferences && !this.pricingStructureChanged) {
+      this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: this.pricingPreferences });
+      this.form = this.prePopulatedForm;
+    } else {
+      this.form = this.blankForm;
+    }
+    this.subscription = this.form.valueChanges.subscribe((value: any) => {
+      if (this.form.valid) this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: this.formattedForm });
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   public onSubmit(): void {
-    this.pricingEvent.emit({ type: 'UPDATE_PREFERENCES', payload: this.formattedForm });
+    this.usagePrice.take(1).subscribe((price: number) => {
+      this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { price: price, attributes: this.formattedForm } });
+    });
   }
 
   public parentIsEmpty(currentAttribute: any): boolean {
@@ -30,9 +57,7 @@ export class WzPricingComponent implements OnInit {
     } else {
       // Find the parent attribute of the currentAttribute
       let parent: any = this.findParentOf(currentAttribute);
-      // Find the parent's index in the attributes list, and check if its form value is empty
-      let parentIndex: number = this.attributes.indexOf(parent);
-      return this.form[parentIndex].value === '';
+      return this.form.controls[parent.name].value === '';
     }
   }
 
@@ -45,10 +70,8 @@ export class WzPricingComponent implements OnInit {
     } else {
       // Find the parent attribute of the currentAttribute
       let parent: any = this.findParentOf(currentAttribute);
-      // Find the parent's index in the attributes list
-      let parentIndex: number = this.attributes.indexOf(parent);
       // Use the parent attribute's name to find its current form value
-      let parentFormValue: any = this.form[parentIndex].value;
+      let parentFormValue: any = this.form.controls[parent.name].value;
       // Find the valid choices array that corresponds to the previous option the user selected
       let rawOptions: any = parent.validChildChoicesMap[parentFormValue];
       // There should always be options, however if there aren't we need to alert the user the calculation went wrong
@@ -64,33 +87,21 @@ export class WzPricingComponent implements OnInit {
       });
       // If there is only 1 option, update the form value for that attribute
       if (options.length === 1) {
-        let currentAttributeIndex: number = this.attributes.indexOf(currentAttribute);
-        this.form[currentAttributeIndex].value = options[0].name;
+        this.form.controls[currentAttribute.name].setValue(options[0].name);
       }
       // Finally, return the valid options
       return options;
     }
   }
 
-  // Checks if any of the values in the form are an empty string
-  public get formIsInvalid(): boolean {
-    return this.form.reduce((prev: Array<any>, current: any) => {
-      prev.push(current.value);
-      return prev;
-    }, []).indexOf('') !== -1;
-  }
-
-  public handleSelect(option: any, attribute: any): void {
-    let index: number = this.attributes.indexOf(attribute);
-    this.clearForm(index);
-    this.form[index].value = option.value;
-    if (index === this.attributes.length - 1) {
-      this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: this.formattedForm });
+  public handleSelect(event: MdOptionSelectionChange, attribute: any): void {
+    if (event.isUserInput) {
+      this.clearForm(this.attributes.indexOf(attribute));
     }
   }
 
   private findParentOf(currentAttribute: any): any {
-    return this.attributes.filter((o: any) => o.childId === currentAttribute.id)[0];
+    return this.attributes.find((attr: any) => attr.childId === currentAttribute.id);
   }
 
   private findOption(optionName: string, options: any): any {
@@ -99,36 +110,53 @@ export class WzPricingComponent implements OnInit {
     })[0];
   }
 
-  private buildForm(): void {
-    this.form = [];
-    if (this.pricingPreferences && !this.pricingStructureChanged) {
-      for (let pref in this.pricingPreferences) {
-        this.form.push({ name: pref, value: this.pricingPreferences[pref] });
-      }
-    } else {
-      this.attributes.forEach((attribute: any, index: number) => {
-        this.form.push({ name: attribute.name, value: '' });
-      });
+  private get prePopulatedForm(): FormGroup {
+    let form: any = {};
+    for (let pref in this.pricingPreferences) {
+      form[pref] = [this.pricingPreferences[pref]];
+      form[pref].push(Validators.required);
     }
+    return this.fb.group(form);
   }
 
+  private get blankForm(): FormGroup {
+    let form: any = {};
+    this.attributes.forEach((attribute: any) => {
+      form[attribute.name] = [''];
+      form[attribute.name].push(Validators.required);
+    });
+    return this.fb.group(form);
+  }
+
+  /**
+    * @param { number } index
+    * Given an index, this function will clear the form fields greater than that index.
+     * i.e. given a 2, it will clear fields 3,4,5...
+    * Given no index, it will clear the entire form
+  */
   private clearForm(index?: number): void {
     index = index ? index : -1;
-    this.form.map((field: any, i: number) => {
-      if (i > index) field.value = '';
-      return field;
+    Object.keys(this.form.controls).forEach((key: string, i: number) => {
+      if (i > index) this.form.controls[key].setValue('');
     });
-    this.usagePrice = null;
   }
 
+  /**
+   * @returns the form in object form, as opposed to an array of objects
+   * @example [{ name: 'Distribution', value: 'Online' }, ...] -> { Distribution: 'Online', ... }
+   */
   private get formattedForm(): any {
     let formatted: any = {};
-    this.form.forEach((field: any) => {
-      formatted[field.name] = field.value;
-    });
+    for (let controlName in this.form.controls) {
+      formatted[controlName] = this.form.controls[controlName].value;
+    }
     return formatted;
   }
 
+  /**
+   * @returns a boolean that represents whether the structure of the pricing options changed
+   * by comparing keys of the user preference vs. the actual pricing options
+   */
   private get pricingStructureChanged(): boolean {
     return Object.keys(this.pricingPreferences).filter((pref: string, index: number) => {
       return pref !== this.attributes[index].name;
