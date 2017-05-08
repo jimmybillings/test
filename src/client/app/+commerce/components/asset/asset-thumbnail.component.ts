@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { Frame } from 'wazee-frame-formatter';
-import { Asset, Metadatum } from '../../../shared/interfaces/commerce.interface';
+import { Asset } from '../../../shared/interfaces/commerce.interface';
 import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 import { AssetService } from '../../../shared/services/asset.service';
 
@@ -13,7 +13,7 @@ import { AssetService } from '../../../shared/services/asset.service';
     <a [routerLink]="routerLink">
       <div class="cart-asset-thb">
         <span class="asset-duration">
-          <span>{{ durationAsFrame | timecode }}</span>
+          <span>{{ durationFrame | timecode }}</span>
         </span>
         <span *ngIf="isImage" class="indicate-photo">
           <span class="image"></span>
@@ -36,8 +36,8 @@ export class AssetThumbnailComponent {
     return ['/asset', this.enhancedAsset.assetId, this.routerParameters];
   }
 
-  public get durationAsFrame(): Frame {
-    return this.enhancedAsset.subclipDurationAsFrame || this.enhancedAsset.fullDurationAsFrame;
+  public get durationFrame(): Frame {
+    return this.enhancedAsset.subclipDurationFrame;
   }
 
   public get isImage(): boolean {
@@ -49,7 +49,8 @@ export class AssetThumbnailComponent {
   }
 
   private get routerParameters(): any {
-    return Object.assign({},
+    return Object.assign(
+      {},
       this.enhancedAsset.uuid ? { uuid: this.enhancedAsset.uuid } : null,
       this.enhancedAsset.timeStart >= 0 ? { timeStart: this.enhancedAsset.timeStart } : null,
       this.enhancedAsset.timeEnd >= 0 ? { timeEnd: this.enhancedAsset.timeEnd } : null
