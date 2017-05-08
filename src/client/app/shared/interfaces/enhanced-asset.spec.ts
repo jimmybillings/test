@@ -306,5 +306,44 @@ export function main() {
         expect(assetUnderTest.getMetadataValueFor).toHaveBeenCalledTimes(1);
       });
     });
+
+    describe('isSubclipped getter', () => {
+      const tests: any = [
+        { condition: 'has no timeStart and no timeEnd', expected: false },
+
+        { condition: 'has only a positive timeStart', timeStart: 100, expected: true },
+        { condition: 'has only a zero timeStart', timeStart: 0, expected: true },
+        { condition: 'has only a negative timeStart', timeStart: -1, expected: false },
+
+        { condition: 'has only a positive timeEnd', timeEnd: 200, expected: true },
+        { condition: 'has only a zero timeEnd', timeEnd: 0, expected: true },
+        { condition: 'has only a negative timeEnd', timeEnd: -2, expected: false },
+
+        { condition: 'has a positive timeStart and a positive timeEnd', timeStart: 100, timeEnd: 200, expected: true },
+        { condition: 'has a zero timeStart and a positive timeEnd', timeStart: 0, timeEnd: 200, expected: true },
+        { condition: 'has a negative timeStart and a positive timeEnd', timeStart: -1, timeEnd: 200, expected: true },
+
+        { condition: 'has a positive timeStart and a zero timeEnd', timeStart: 100, timeEnd: 0, expected: true },
+        { condition: 'has a zero timeStart and a zero timeEnd', timeStart: 0, timeEnd: 0, expected: true },
+        { condition: 'has a negative timeStart and a zero timeEnd', timeStart: -1, timeEnd: 0, expected: true },
+
+        { condition: 'has a positive timeStart and a negative timeEnd', timeStart: 100, timeEnd: -2, expected: true },
+        { condition: 'has a zero timeStart and a negative timeEnd', timeStart: 0, timeEnd: -2, expected: true },
+        { condition: 'has a negative timeStart and a negative timeEnd', timeStart: -1, timeEnd: -2, expected: false }
+      ];
+
+      for (const test of tests) {
+        it(`returns ${test.expected} for an asset that ${test.condition}`, () => {
+          Object.assign(
+            assetUnderTest,
+            { metadata: [] },
+            test.hasOwnProperty('timeStart') ? { timeStart: test.timeStart } : null,
+            test.hasOwnProperty('timeEnd') ? { timeEnd: test.timeEnd } : null
+          );
+
+          expect(assetUnderTest.isSubclipped).toBe(test.expected);
+        });
+      }
+    });
   });
 }

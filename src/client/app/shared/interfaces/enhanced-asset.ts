@@ -103,6 +103,10 @@ export class EnhancedAsset implements Asset {
     return this.getCached('framesPerSecond');
   }
 
+  public get isSubclipped(): boolean {
+    return this.timeStart >= 0 || this.timeEnd >= 0;
+  }
+
   //// private methods
 
   private getCached(key: string): any {
