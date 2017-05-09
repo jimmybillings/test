@@ -21,9 +21,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
 import { SelectedPriceAttributes, WzEvent, Poj } from '../../../shared/interfaces/common.interface';
+import { PricingStore } from '../../../shared/stores/pricing.store';
 
 export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
-
   public cart: Observable<any>;
   public config: any;
   public priceAttributes: Array<PriceAttribute> = null;
@@ -44,7 +44,8 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     protected error: ErrorStore,
     protected document: any,
     protected snackBar: MdSnackBar,
-    protected translate: TranslateService) {
+    protected translate: TranslateService,
+    protected pricingStore: PricingStore) {
     super();
   }
 
@@ -189,7 +190,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         inputOptions: {
           attributes: this.priceAttributes,
           pricingPreferences: this.pricingPreferences,
-          usagePrice: null
+          usagePrice: this.pricingStore.priceForDialog
         },
         outputOptions: [
           {
@@ -206,11 +207,10 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   protected applyPricing(event: WzEvent, dialogRef: MdDialogRef<WzPricingComponent>, lineItem: AssetLineItem) {
     switch (event.type) {
       case 'CALCULATE_PRICE':
-        dialogRef.componentInstance.usagePrice = this.assetService.getPrice(
-          lineItem.asset.assetId,
-          event.payload,
-          { startSecond: lineItem.asset.timeStart, endSecond: lineItem.asset.timeEnd }
-        );
+        this.calculatePrice(event.payload, lineItem).subscribe((price: number) => {
+          console.log(price);
+          this.pricingStore.setPriceForDialog(price);
+        });
         break;
       case 'APPLY_PRICE':
         this.commerceService.editLineItem(lineItem, { pricingAttributes: event.payload.attributes });
@@ -280,5 +280,13 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
       .subscribe((res: string) => {
         this.snackBar.open(res, '', { duration: 2000 });
       });
+  }
+
+  protected calculatePrice(attributes: Poj, lineItem: AssetLineItem): Observable<number> {
+    return this.assetService.getPrice(
+      lineItem.asset.assetId,
+      attributes,
+      { startSecond: lineItem.asset.timeStart, endSecond: lineItem.asset.timeEnd }
+    );
   }
 }

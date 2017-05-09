@@ -16,6 +16,7 @@ import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
+import { PricingStore } from '../../../shared/stores/pricing.store';
 
 @Component({
   moduleId: module.id,
@@ -37,10 +38,12 @@ export class QuoteEditComponent extends CommerceEditTab {
     public error: ErrorStore,
     @Inject(DOCUMENT) public document: any,
     public snackBar: MdSnackBar,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public pricingStore: PricingStore
   ) {
     super(
-      userCan, quoteEditService, uiConfig, dialogService, assetService, window, userPreference, error, document, snackBar, translate
+      userCan, quoteEditService, uiConfig, dialogService, assetService, window,
+      userPreference, error, document, snackBar, translate, pricingStore
     );
   }
 

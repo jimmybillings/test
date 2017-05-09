@@ -20,6 +20,7 @@ import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.c
 import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
+import { PricingStore } from '../shared/stores/pricing.store';
 
 @Component({
   moduleId: module.id,
@@ -48,7 +49,8 @@ export class AssetComponent implements OnInit {
     private snackBar: MdSnackBar,
     private translate: TranslateService,
     private dialogService: WzDialogService,
-    private quoteEditService: QuoteEditService) {
+    private quoteEditService: QuoteEditService,
+    private pricingStore: PricingStore) {
     this.window = this.window;
   }
 
@@ -60,6 +62,10 @@ export class AssetComponent implements OnInit {
 
   public get userEmail(): Observable<any> {
     return this.currentUser.data.map(user => user.emailAddress);
+  }
+
+  public get priceForDetails(): Observable<number> {
+    return this.pricingStore.priceForDetails;
   }
 
   public showSnackBar(message: any) {
@@ -102,7 +108,7 @@ export class AssetComponent implements OnInit {
   }
 
   public addAssetToCart(asset: any): void {
-    this.assetService.priceForDetails.take(1).subscribe((price: any) => {
+    this.pricingStore.priceForDetails.take(1).subscribe((price: any) => {
       let options: AddAssetParameters = {
         lineItem: {
           selectedTranscodeTarget: asset.selectedTranscodeTarget,
@@ -144,7 +150,7 @@ export class AssetComponent implements OnInit {
         inputOptions: {
           attributes: this.pricingAttributes,
           pricingPreferences: this.userPreference.state.pricingPreferences,
-          usagePrice: this.assetService.priceForDialog
+          usagePrice: this.pricingStore.priceForDialog
         },
         outputOptions: [
           {
@@ -160,11 +166,11 @@ export class AssetComponent implements OnInit {
     switch (event.type) {
       case 'CALCULATE_PRICE':
         this.calculatePrice(event.payload).subscribe((price: number) => {
-          this.assetService.set({ type: 'SET_PRICE_FOR_DIALOG', payload: price });
+          this.pricingStore.setPriceForDialog(price);
         });
         break;
       case 'APPLY_PRICE':
-        this.assetService.set({ type: 'SET_PRICE_FOR_DETAILS', payload: event.payload.price });
+        this.pricingStore.setPriceForDetails(event.payload.price);
         this.userPreference.updatePricingPreferences(event.payload.attributes);
         dialogRef.close();
         break;
@@ -178,6 +184,6 @@ export class AssetComponent implements OnInit {
 
   private calculatePrice(attributes: any): Observable<number> {
     this.selectedAttrbutes = attributes;
-    return this.assetService.getPrice(this.assetService.state.asset.assetId, attributes);
+    return this.assetService.getPrice(this.assetService.state.assetId, attributes);
   }
 }

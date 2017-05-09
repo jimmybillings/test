@@ -221,7 +221,7 @@ export interface PriceAttribute {
   primary?: boolean;
 }
 
-export interface PaymentState {
+export interface PricingState {
   priceForDetails: number;
   priceForDialog: number;
 }

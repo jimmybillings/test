@@ -12,6 +12,7 @@ import { UserPreferenceService } from '../../../../shared/services/user-preferen
 import { ErrorStore } from '../../../../shared/stores/error.store';
 import { WindowRef } from '../../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
+import { PricingStore } from '../../../../shared/stores/pricing.store';
 
 @Component({
   moduleId: module.id,
@@ -33,8 +34,12 @@ export class CartTabComponent extends CommerceEditTab {
     public error: ErrorStore,
     @Inject(DOCUMENT) public document: any,
     public snackBar: MdSnackBar,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public pricingStore: PricingStore
   ) {
-    super(userCan, cartService, uiConfig, dialogService, assetService, window, userPreference, error, document, snackBar, translate);
+    super(
+      userCan, cartService, uiConfig, dialogService, assetService, window,
+      userPreference, error, document, snackBar, translate, pricingStore
+    );
   }
 }

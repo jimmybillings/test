@@ -8,22 +8,12 @@ import { AssetState } from '../../shared/interfaces/asset.interface';
 import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
 import { CurrentUserService } from '../../shared/services/current-user.service';
 
-const initState: AssetState = {
-  asset: null,
-  priceForDialog: NaN,
-  priceForDetails: NaN
-};
-
-export function asset(state: any = initState, action: Action) {
+export function asset(state: any = {}, action: Action) {
   switch (action.type) {
     case 'SET_ASSET':
-      return Object.assign({}, { asset: action.payload });
+      return Object.assign({}, action.payload);
     case 'SET_VIRTUAL_PROPERTIES':
-      return Object.assign({}, state, { asset: action.payload });
-    case 'SET_PRICE_FOR_DIALOG':
-      return Object.assign({}, state, { priceForDialog: action.payload });
-    case 'SET_PRICE_FOR_DETAILS':
-      return Object.assign({}, state, { priceForDetails: action.payload });
+      return Object.assign({}, state, action.payload);
     default:
       return state;
   }
@@ -40,14 +30,6 @@ export class AssetService {
     private currentUser: CurrentUserService) {
     this.data = this.store.select('asset');
     this.data.subscribe(d => console.log(d));
-  }
-
-  public get priceForDetails(): Observable<number> {
-    return this.data.map((data: any) => data.priceForDetails);
-  }
-
-  public get priceForDialog(): Observable<number> {
-    return this.data.map((data: any) => data.priceForDialog);
   }
 
   public initialize(id: any): Observable<any> {
@@ -131,7 +113,7 @@ export class AssetService {
     return this.api.get(Api.Assets, `renditionType/${assetId}`, viewType);
   }
 
-  public get state(): AssetState {
+  public get state(): any {
     let state: any = {};
     this.data.take(1).subscribe(f => state = f);
     return state;
