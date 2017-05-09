@@ -6,40 +6,52 @@ export function main() {
     let assetUnderTest: EnhancedAsset;
     const durationInFrames: number = 400;
 
-    const generateFrameTestsFrom: Function =
-      (tests: any[], frameGetterName: string, frameNumberGetterName: string, millisecondsGetterName: string = undefined) => {
-        for (const test of tests) {
-          const expectedResultDescription: string = test.expected ? 'the expected values' : 'undefined';
+    const generateFrameTestsFrom: Function = (
+      tests: any[],
+      frameGetterName: string,
+      frameNumberGetterName: string,
+      millisecondsGetterName: string = undefined,
+      percentageGetterName: string = undefined
+    ) => {
+      for (const test of tests) {
+        const expectedResultDescription: string = test.expected ? 'the expected values' : 'undefined';
 
-          it(`return ${expectedResultDescription} when the asset ${test.condition}`, () => {
-            Object.assign(
-              assetUnderTest,
-              { metadata: [] },
-              test.hasOwnProperty('timeStart') ? { timeStart: test.timeStart } : null,
-              test.hasOwnProperty('timeEnd') ? { timeEnd: test.timeEnd } : null
-            );
+        it(`return ${expectedResultDescription} when the asset ${test.condition}`, () => {
+          Object.assign(
+            assetUnderTest,
+            { metadata: [] },
+            test.hasOwnProperty('timeStart') ? { timeStart: test.timeStart } : null,
+            test.hasOwnProperty('timeEnd') ? { timeEnd: test.timeEnd } : null
+          );
 
-            if (test.frameRate) assetUnderTest.metadata[0] = { name: 'Format.FrameRate', value: '30 fps' };
-            if (test.duration) assetUnderTest.metadata[1] = { name: 'Format.Duration', value: `${1000 * durationInFrames / 30}` };
+          if (test.frameRate) assetUnderTest.metadata[0] = { name: 'Format.FrameRate', value: '30 fps' };
+          if (test.duration) assetUnderTest.metadata[1] = { name: 'Format.Duration', value: `${1000 * durationInFrames / 30}` };
 
-            if (test.expected >= 0) {
-              const expectedFrame: Frame = new Frame(30).setFromFrameNumber(test.expected);
+          if (test.expected >= 0) {
+            const expectedFrame: Frame = new Frame(30).setFromFrameNumber(test.expected);
 
-              expect((assetUnderTest as any)[frameGetterName]).toEqual(expectedFrame);
-              expect((assetUnderTest as any)[frameNumberGetterName]).toEqual(test.expected);
-              if (millisecondsGetterName) {
-                expect((assetUnderTest as any)[millisecondsGetterName]).toEqual(expectedFrame.asSeconds() * 1000);
-              }
-            } else {
-              expect((assetUnderTest as any)[frameGetterName]).toBeUndefined();
-              expect((assetUnderTest as any)[frameNumberGetterName]).toBeUndefined();
-              if (millisecondsGetterName) {
-                expect((assetUnderTest as any)[millisecondsGetterName]).toBeUndefined();
-              }
+            expect((assetUnderTest as any)[frameGetterName]).toEqual(expectedFrame);
+            expect((assetUnderTest as any)[frameNumberGetterName]).toEqual(test.expected);
+            if (millisecondsGetterName) {
+              expect((assetUnderTest as any)[millisecondsGetterName]).toEqual(expectedFrame.asSeconds() * 1000);
             }
-          });
-        }
-      };
+            if (percentageGetterName) {
+              expect((assetUnderTest as any)[percentageGetterName])
+                .toEqual(test.duration ? test.expected * 100 / durationInFrames : 0);
+            }
+          } else {
+            expect((assetUnderTest as any)[frameGetterName]).toBeUndefined();
+            expect((assetUnderTest as any)[frameNumberGetterName]).toBeUndefined();
+            if (millisecondsGetterName) {
+              expect((assetUnderTest as any)[millisecondsGetterName]).toBeUndefined();
+            }
+            if (percentageGetterName) {
+              expect((assetUnderTest as any)[percentageGetterName]).toBe(0);
+            }
+          }
+        });
+      }
+    };
 
     beforeEach(() => {
       assetUnderTest = new EnhancedAsset();
@@ -88,45 +100,49 @@ export function main() {
       });
     });
 
-    describe('subclipDurationFrame, subclipDurationFrameNumber, and subclipDurationMilliseconds getters', () => {
-      const tests: any = [
-        { condition: 'has no timeStart, no timeEnd, no duration, and no frame rate', expected: undefined },
-        { condition: 'has only a frame rate', frameRate: true, expected: undefined },
-        { condition: 'has only a duration', duration: true, expected: undefined },
-        { condition: 'has a duration and a frame rate', duration: true, frameRate: true, expected: durationInFrames - 0 },
-        { condition: 'has only a timeEnd', timeEnd: 200, expected: undefined },
-        { condition: 'has a timeEnd and a frame rate', timeEnd: 200, frameRate: true, expected: 200 - 0 },
-        { condition: 'has a timeEnd and a duration', timeEnd: 200, duration: true, expected: undefined },
-        {
-          condition: 'has a timeEnd, a duration, and a frame rate',
-          timeEnd: 200, duration: true, frameRate: true, expected: 200 - 0
-        },
-        { condition: 'has only a timeStart', timeStart: 100, expected: undefined },
-        { condition: 'has a timeStart and a frame rate', timeStart: 100, frameRate: true, expected: undefined },
-        { condition: 'has a timeStart and a duration', timeStart: 100, duration: true, expected: undefined },
-        {
-          condition: 'has a timeStart, a frame rate, and a duration',
-          timeStart: 100, frameRate: true, duration: true, expected: durationInFrames - 100
-        },
-        { condition: 'has a timeStart and a timeEnd', timeStart: 100, timeEnd: 200, expected: undefined },
-        {
-          condition: 'has a timeStart, a timeEnd, and a frame rate',
-          timeStart: 100, timeEnd: 200, frameRate: true, expected: 200 - 100
-        },
-        {
-          condition: 'has a timeStart, a timeEnd, and a duration',
-          timeStart: 100, timeEnd: 200, duration: true, expected: undefined
-        },
-        {
-          condition: 'has a timeStart, a timeEnd, a duration, and a frame rate',
-          timeStart: 100, timeEnd: 200, duration: true, frameRate: true, expected: 200 - 100
-        }
-      ];
+    describe(
+      'subclipDurationFrame, subclipDurationFrameNumber, subclipDurationMilliseconds, and subclipDurationPercentage getters',
+      () => {
+        const tests: any = [
+          { condition: 'has no timeStart, no timeEnd, no duration, and no frame rate', expected: undefined },
+          { condition: 'has only a frame rate', frameRate: true, expected: undefined },
+          { condition: 'has only a duration', duration: true, expected: undefined },
+          { condition: 'has a duration and a frame rate', duration: true, frameRate: true, expected: durationInFrames - 0 },
+          { condition: 'has only a timeEnd', timeEnd: 200, expected: undefined },
+          { condition: 'has a timeEnd and a frame rate', timeEnd: 200, frameRate: true, expected: 200 - 0 },
+          { condition: 'has a timeEnd and a duration', timeEnd: 200, duration: true, expected: undefined },
+          {
+            condition: 'has a timeEnd, a duration, and a frame rate',
+            timeEnd: 200, duration: true, frameRate: true, expected: 200 - 0
+          },
+          { condition: 'has only a timeStart', timeStart: 100, expected: undefined },
+          { condition: 'has a timeStart and a frame rate', timeStart: 100, frameRate: true, expected: undefined },
+          { condition: 'has a timeStart and a duration', timeStart: 100, duration: true, expected: undefined },
+          {
+            condition: 'has a timeStart, a frame rate, and a duration',
+            timeStart: 100, frameRate: true, duration: true, expected: durationInFrames - 100
+          },
+          { condition: 'has a timeStart and a timeEnd', timeStart: 100, timeEnd: 200, expected: undefined },
+          {
+            condition: 'has a timeStart, a timeEnd, and a frame rate',
+            timeStart: 100, timeEnd: 200, frameRate: true, expected: 200 - 100
+          },
+          {
+            condition: 'has a timeStart, a timeEnd, and a duration',
+            timeStart: 100, timeEnd: 200, duration: true, expected: undefined
+          },
+          {
+            condition: 'has a timeStart, a timeEnd, a duration, and a frame rate',
+            timeStart: 100, timeEnd: 200, duration: true, frameRate: true, expected: 200 - 100
+          }
+        ];
 
-      generateFrameTestsFrom(tests, 'subclipDurationFrame', 'subclipDurationFrameNumber', 'subclipDurationMilliseconds');
-    });
+        generateFrameTestsFrom(
+          tests, 'subclipDurationFrame', 'subclipDurationFrameNumber', 'subclipDurationMilliseconds', 'subclipDurationPercentage'
+        );
+      });
 
-    describe('inMarkerFrame, inMarkerFrameNumber, and inMarkerMilliseconds getters', () => {
+    describe('inMarkerFrame, inMarkerFrameNumber, inMarkerMilliseconds, and inMarkerPercentage getters', () => {
       const tests: any = [
         { condition: 'has no timeStart and no frame rate', expected: undefined },
         { condition: 'has only a frame rate', frameRate: true, expected: 0 },
@@ -138,10 +154,10 @@ export function main() {
         { condition: 'has a negative timeStart and a frame rate', timeStart: -1, frameRate: true, expected: 0 }
       ];
 
-      generateFrameTestsFrom(tests, 'inMarkerFrame', 'inMarkerFrameNumber', 'inMarkerMilliseconds');
+      generateFrameTestsFrom(tests, 'inMarkerFrame', 'inMarkerFrameNumber', 'inMarkerMilliseconds', 'inMarkerPercentage');
     });
 
-    describe('outMarkerFrame, outMarkerFrameNumber, and outMarkerMilliseconds getters', () => {
+    describe('outMarkerFrame, outMarkerFrameNumber, outMarkerMilliseconds, and outMarkerPercentage getters', () => {
       const tests: any = [
         { condition: 'has no timeEnd, no duration, and no frame rate', expected: undefined },
         { condition: 'has only a frame rate', frameRate: true, expected: undefined },
@@ -170,7 +186,7 @@ export function main() {
         }
       ];
 
-      generateFrameTestsFrom(tests, 'outMarkerFrame', 'outMarkerFrameNumber', 'outMarkerMilliseconds');
+      generateFrameTestsFrom(tests, 'outMarkerFrame', 'outMarkerFrameNumber', 'outMarkerMilliseconds', 'outMarkerPercentage');
     });
 
     describe('getMetadataValueFor()', () => {

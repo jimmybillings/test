@@ -49,6 +49,10 @@ export class EnhancedAsset implements Asset {
     return this.millisecondsFrom(this.subclipDurationFrame);
   }
 
+  public get subclipDurationPercentage(): number {
+    return this.percentageFor(this.subclipDurationFrame);
+  }
+
   //// in marker
 
   public get inMarkerFrame(): Frame {
@@ -63,6 +67,10 @@ export class EnhancedAsset implements Asset {
     return this.millisecondsFrom(this.inMarkerFrame);
   }
 
+  public get inMarkerPercentage(): number {
+    return this.percentageFor(this.inMarkerFrame);
+  }
+
   //// out marker
 
   public get outMarkerFrame(): Frame {
@@ -75,6 +83,10 @@ export class EnhancedAsset implements Asset {
 
   public get outMarkerMilliseconds(): number {
     return this.millisecondsFrom(this.outMarkerFrame);
+  }
+
+  public get outMarkerPercentage(): number {
+    return this.percentageFor(this.outMarkerFrame);
   }
 
   //// metadata
@@ -155,12 +167,16 @@ export class EnhancedAsset implements Asset {
     return new Frame(this.framesPerSecond);
   }
 
-  private frameNumberFrom(frame: Frame) {
+  private frameNumberFrom(frame: Frame): number {
     return frame ? frame.asFrameNumber() : undefined;
   }
 
-  private millisecondsFrom(frame: Frame) {
+  private millisecondsFrom(frame: Frame): number {
     return frame ? frame.asSeconds() * 1000 : undefined;
+  }
+
+  private percentageFor(frame: Frame): number {
+    return frame && this.durationFrameNumber ? this.frameNumberFrom(frame) * 100 / this.durationFrameNumber : 0;
   }
 
   private findMetadataValueFor(metadataName: string, object: any = this.metadata): string {
