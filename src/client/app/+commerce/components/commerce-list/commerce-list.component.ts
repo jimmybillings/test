@@ -32,6 +32,10 @@ export class CommerceListComponent {
     return this.type === 'QUOTE' && item.quoteStatus === 'ACTIVE' && !this.userCanAdministerQuotes;
   }
 
+  public shouldShowRefundIndicatorFor(item: Order): boolean {
+    return this.type === 'ORDER' && !!item.creditMemoForOrderId;
+  }
+
   public get shouldShowViewOrderButton(): boolean {
     return this.type === 'ORDER';
   }

@@ -30,6 +30,9 @@
 					<span>
 						<strong>{{ 'ORDER.PURCHASE_TYPE_LABEL' | translate }} </strong>{{ (order.data | async).orderType }}
 					</span>
+					<a *ngIf="isRefund | async" class="indicate-refund" [routerLink]="['/commerce/orders/', creditMemoForOrderId | async]">
+						<strong>{{ 'ORDER.SHOW.REFUND_FOR_ORDER' | translate }}</strong> {{ creditMemoForOrderId | async }}
+					</a>
 				</div>
 			</div>
 			<div flex="100" layout="row" layout-xs="column" class="divider"></div>
@@ -38,12 +41,22 @@
 					<button md-button color="primary" class="is-outlined mini">
 						View/print invoice
 					</button>
-					<span class="total-label">
-							{{ 'ORDER.INDEX.ORDER_TOTAL_LABEL' | translate }}
-					</span>
-					<span class="total-amount">
-							{{ (order.data | async).total | currency:'USD':true:'1.2-2' }}
-					</span>
+					<div *ngIf="isRefund | async" class="indicate-refund">
+						<span class="total-label">
+								{{ 'ORDER.INDEX.INDICATE_REFUND' | translate }}
+						</span>
+						<span class="total-amount">
+								{{ (order.data | async).total | currency:'USD':true:'1.2-2' | slice:1 }}
+						</span>
+					</div>
+					<div *ngIf="!(isRefund | async)">
+						<span class="total-label">
+								{{ 'ORDER.INDEX.ORDER_TOTAL_LABEL' | translate }}
+						</span>
+						<span class="total-amount">
+								{{ (order.data | async).total | currency:'USD':true:'1.2-2' }}
+						</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -104,7 +117,10 @@
 											</button>
 										</div>
 										<div flex="100" layout="row" layout-xs="column" class="divider"></div>
-										<div class="price">
+										<div *ngIf="isRefundedLineItem(lineItem)" class="price indicate-refund" >
+											{{ lineItem.price | currency:'USD':true:'1.2-2' | slice:1 }}
+										</div>
+										<div *ngIf="!isRefundedLineItem(lineItem)" class="price" >
 											{{ lineItem.price | currency:'USD':true:'1.2-2' }}
 										</div>
 									</div>

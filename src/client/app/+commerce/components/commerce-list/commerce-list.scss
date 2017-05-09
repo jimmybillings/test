@@ -74,6 +74,9 @@
           letter-spacing: 0;
         }
       }
+      .indicate-refund {
+        color: mat-color($warn, darker);
+      }
       button {
         margin-bottom: rem(1);
         &:last-child {

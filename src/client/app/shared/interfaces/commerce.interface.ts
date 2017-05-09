@@ -19,6 +19,7 @@ export interface Project {
   name: string;
   clientName: string;
   subtotal: number;
+  creditMemoForProjectId?: number;
   lineItems?: Array<AssetLineItem | FeeLineItem>;
   [index: string]: any;
 }
@@ -141,6 +142,7 @@ export interface Order extends CommonCommerce {
   createdByIntegration: boolean;
   salesForceSyncedError: boolean;
   paymentBalance: number;
+  creditMemoForOrderId?: number;
   projects: Project[];
 }
 
