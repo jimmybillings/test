@@ -6,7 +6,8 @@ export function main() {
 
     let mockCurrentUserService: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockErrorStore: any, mockCart: any,
-      mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any;
+      mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
+      mockPricingStore: any;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
@@ -43,14 +44,13 @@ export function main() {
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' }))
       };
-
       mockQuoteEditService = { addAssetToProjectInQuote: jasmine.createSpy('addAssetToProjectInQuote') };
-
+      mockPricingStore = { priceForDialog: Observable.of(1000), priceForDetails: Observable.of(100) };
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
         mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore, mockCart,
-        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService);
-
+        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore
+      );
     });
 
     describe('ngOnInit()', () => {
@@ -111,7 +111,8 @@ export function main() {
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
           mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore,
-          mockCart, mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService);
+          mockCart, mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore
+        );
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
       });

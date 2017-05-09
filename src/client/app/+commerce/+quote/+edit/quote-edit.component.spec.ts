@@ -41,7 +41,8 @@ export function main() {
       componentUnderTest =
         new QuoteEditComponent(
           mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
-          mockWindow, mockUserPreference, mockErrorStore, mockDocument, mockSnackbar, mockTranslateService
+          mockWindow, mockUserPreference, mockErrorStore, mockDocument, mockSnackbar, mockTranslateService,
+          null
         );
     });
 
@@ -52,7 +53,7 @@ export function main() {
         updateQuoteField: jasmine.createSpy('updateQuoteField')
       };
       componentUnderTest = new QuoteEditComponent(
-        null, mockQuoteEditService, mockUiConfig, mockDialogService, null, null, mockUserPreference, null, null, null, null
+        null, mockQuoteEditService, mockUiConfig, mockDialogService, null, null, mockUserPreference, null, null, null, null, null
       );
       return componentUnderTest;
     };

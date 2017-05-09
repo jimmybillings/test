@@ -38,7 +38,7 @@ export function main() {
     beforeEach(() => {
       mockFormBuilder = new MockFormBuilder();
       componentUnderTest = new WzPricingComponent(mockFormBuilder);
-      componentUnderTest.attributes = mockOptions();
+      componentUnderTest.attributes = mockOptions() as any;
       componentUnderTest.pricingEvent = new EventEmitter();
     });
 
