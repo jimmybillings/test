@@ -196,13 +196,19 @@ export interface CommerceMessage {
   payload?: any;
 }
 
-export interface PriceAttributes {
-  attributeList: [{
-    amount: number;
-    multiplier: boolean;
-    name: string;
-    value: string;
-  }];
+export interface PriceOption {
+  amount: number;
+  multiplier: boolean;
+  name: string;
+  value: string;
+}
+
+export interface ValidChildChoicesMap {
+  [key: string]: Array<string>;
+}
+
+export interface PriceAttribute {
+  attributeList: Array<PriceOption>;
   childId: number;
   createdOn: string;
   displayName: string;
@@ -211,5 +217,11 @@ export interface PriceAttributes {
   name: string;
   priceModel: string;
   siteName: string;
-  validChildChoicesMap: Object;
+  validChildChoicesMap: ValidChildChoicesMap;
+  primary?: boolean;
+}
+
+export interface PaymentState {
+  priceForDetails: number;
+  priceForDialog: number;
 }

@@ -5,8 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Tab } from './tab';
 import { CartService } from '../../../shared/services/cart.service';
 import {
-  Project, AssetLineItem, Cart, QuoteType, QuoteOptions, Asset,
-  PriceAttributes
+  Project, AssetLineItem, Cart, QuoteType, QuoteOptions, Asset, PriceAttribute
 } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { MdSnackBar, MdDialogRef } from '@angular/material';
@@ -27,7 +26,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
 
   public cart: Observable<any>;
   public config: any;
-  public priceAttributes: PriceAttributes = null;
+  public priceAttributes: Array<PriceAttribute> = null;
   public pricingPreferences: Poj;
   public quoteType: QuoteType = null;
   protected configSubscription: Subscription;
@@ -131,7 +130,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   protected editProjectPricing(project: Project) {
-    this.assetService.getPriceAttributes().subscribe((priceAttributes: PriceAttributes) => {
+    this.assetService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
       this.openProjectPricingDialog(priceAttributes, project);
     });
   }
@@ -140,14 +139,14 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     if (this.priceAttributes) {
       this.openPricingDialog(lineItem);
     } else {
-      this.assetService.getPriceAttributes().subscribe((priceAttributes: PriceAttributes) => {
+      this.assetService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
         this.priceAttributes = priceAttributes;
         this.openPricingDialog(lineItem);
       });
     }
   }
 
-  protected openProjectPricingDialog(priceAttributes: PriceAttributes, project: Project): void {
+  protected openProjectPricingDialog(priceAttributes: Array<PriceAttribute>, project: Project): void {
     this.dialogService.openComponentInDialog(
       {
         componentType: WzPricingComponent,
@@ -170,9 +169,9 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
 
   protected applyProjectPricing(event: WzEvent, dialogRef: MdDialogRef<WzPricingComponent>, project: Project) {
     switch (event.type) {
-      case 'UPDATE_PREFERENCES':
-        this.commerceService.updateProjectPriceAttributes(event.payload, project);
-        this.userPreference.updatePricingPreferences(event.payload);
+      case 'APPLY_PRICE':
+        this.commerceService.updateProjectPriceAttributes(event.payload.attributes, project);
+        this.userPreference.updatePricingPreferences(event.payload.attributes);
         dialogRef.close();
         break;
       case 'ERROR':
@@ -207,13 +206,15 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   protected applyPricing(event: WzEvent, dialogRef: MdDialogRef<WzPricingComponent>, lineItem: AssetLineItem) {
     switch (event.type) {
       case 'CALCULATE_PRICE':
-        this.assetService.getPrice(lineItem.asset.assetId, event.payload)
-          .map(data => data.price)
-          .subscribe(data => dialogRef.componentInstance.usagePrice = Observable.of(data));
-        this.commerceService.editLineItem(lineItem, { pricingAttributes: event.payload });
+        dialogRef.componentInstance.usagePrice = this.assetService.getPrice(
+          lineItem.asset.assetId,
+          event.payload,
+          { startSecond: lineItem.asset.timeStart, endSecond: lineItem.asset.timeEnd }
+        );
         break;
-      case 'UPDATE_PREFERENCES':
-        this.userPreference.updatePricingPreferences(event.payload);
+      case 'APPLY_PRICE':
+        this.commerceService.editLineItem(lineItem, { pricingAttributes: event.payload.attributes });
+        this.userPreference.updatePricingPreferences(event.payload.attributes);
         dialogRef.close();
         break;
       case 'ERROR':
