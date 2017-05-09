@@ -33,14 +33,9 @@ import { AssetLineItem } from '../../../shared/interfaces/commerce.interface';
   `
 })
 export class ProjectActionsComponent {
-  public items: AssetLineItem[];
   @Input() includeFees: boolean = false;
-  @Input() set lineItems(items: AssetLineItem[]) {
-    if (items) {
-      this.items = items;
-      console.log(this.items);
-    }
-  };
+  @Input() projectHasRmAssets: boolean = false;
+  @Input() rmAssetsHaveAttributes: boolean = false;
   @Output() remove: EventEmitter<null> = new EventEmitter();
   @Output() edit: EventEmitter<null> = new EventEmitter();
   @Output() addFee: EventEmitter<null> = new EventEmitter();
@@ -60,27 +55,5 @@ export class ProjectActionsComponent {
 
   public editProjectPricing() {
     this.projectActionsNotify.emit({ type: 'EDIT_PROJECT_PRICING' });
-  }
-
-  public get rmAssetsHaveAttributes(): boolean {
-    if (!this.items || this.items.length === 0) return true;
-    let validAssets: boolean[] = [];
-    if (this.items) {
-      this.items.forEach((lineItem: AssetLineItem) => {
-        validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);
-      });
-    }
-    return validAssets.indexOf(false) === -1;
-  }
-
-  public get projectHasRmAssets(): boolean {
-    if (!this.items || this.items.length === 0) return false;
-    let validAssets: boolean[] = [];
-    if (this.items) {
-      this.items.forEach((lineItem: AssetLineItem) => {
-        validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? true : false);
-      });
-    }
-    return validAssets.indexOf(true) !== -1;
   }
 }

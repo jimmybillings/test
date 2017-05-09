@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Project, QuoteType, FeeLineItem, FeeConfig, FeeConfigItem } from '../../../shared/interfaces/commerce.interface';
+import { Project, QuoteType, FeeLineItem, FeeConfig, FeeConfigItem, AssetLineItem }
+  from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { FormFields } from '../../../shared/interfaces/forms.interface';
@@ -80,6 +81,28 @@ export class ProjectsComponent {
       item.value = this.selectedProject[item.name];
       return item;
     });
+  }
+
+  public rmAssetsHaveAttributes(project: Project): boolean {
+    if (!project.lineItems || project.lineItems.length === 0) return true;
+    let validAssets: boolean[] = [];
+    if (project.lineItems) {
+      project.lineItems.forEach((lineItem: AssetLineItem) => {
+        validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? !!lineItem.attributes : true);
+      });
+    }
+    return validAssets.indexOf(false) === -1;
+  }
+
+  public projectHasRmAssets(project: Project): boolean {
+    if (!project.lineItems || project.lineItems.length === 0) return false;
+    let validAssets: boolean[] = [];
+    if (project.lineItems) {
+      project.lineItems.forEach((lineItem: AssetLineItem) => {
+        validAssets.push(lineItem.rightsManaged === 'Rights Managed' ? true : false);
+      });
+    }
+    return validAssets.indexOf(true) !== -1;
   }
 
   private initializeQuoteFeeFieldsFrom(feeConfig: FeeConfig): FormFields[] {

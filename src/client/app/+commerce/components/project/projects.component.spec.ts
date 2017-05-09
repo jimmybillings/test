@@ -4,6 +4,20 @@ import { ProjectsComponent } from './projects.component';
 
 export function main() {
   describe('Projects', () => {
+
+    const mockLineItem: any = {
+      id: '456',
+      price: 0,
+      rightsManaged: 'Rights Managed'
+    };
+
+    const mockLineItemB: any = {
+      id: '789',
+      attributes: [],
+      price: 0,
+      rightsManaged: 'Royalty Free'
+    };
+
     let classUnderTest: ProjectsComponent;
     let mockDialogService: any;
     let mockQuoteEditService: any;
@@ -21,6 +35,41 @@ export function main() {
 
       classUnderTest = new ProjectsComponent(mockDialogService, mockQuoteEditService);
       classUnderTest.projectsNotify.emit = jasmine.createSpy('projectsNotify');
+    });
+
+    describe('rmAssetsHaveAttributes()', () => {
+      it('returns false when any lineItems are missing their price attributes', () => {
+        let project: any = { lineItems: [mockLineItem, mockLineItemB] };
+
+        expect(classUnderTest.rmAssetsHaveAttributes(project))
+          .toBe(false);
+      });
+      it('returns true when all lineItems have price attributes', () => {
+        let project: any = { lineItems: [mockLineItemB] };
+
+        expect(classUnderTest.rmAssetsHaveAttributes(project))
+          .toBe(true);
+      });
+    });
+    describe('projectHasRmAssets()', () => {
+      it('returns true when at least one lineItem is a rights manage asset', () => {
+        let project: any = { lineItems: [mockLineItem, mockLineItemB] };
+
+        expect(classUnderTest.projectHasRmAssets(project))
+          .toBe(true);
+      });
+      it('returns false when no lineItems are rights managed', () => {
+        let project: any = { lineItems: [mockLineItemB] };
+
+        expect(classUnderTest.projectHasRmAssets(project))
+          .toBe(false);
+      });
+      it('returns false when no there are no lineItems', () => {
+        let project: any = { lineItems: [] };
+
+        expect(classUnderTest.projectHasRmAssets(project))
+          .toBe(false);
+      });
     });
 
     describe('projectsOtherThan()', () => {

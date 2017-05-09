@@ -16,8 +16,9 @@
 			<div flex="100" flex-gt-sm="30" layout-padding flex-order-xs="-1">
 				<project-actions-component
 					*ngIf="!readOnly"
+					[projectHasRmAssets]="projectHasRmAssets(project)"
+					[rmAssetsHaveAttributes]="rmAssetsHaveAttributes(project)"
           [includeFees]="includeFees"
-					[lineItems]="project.lineItems"
 					(projectActionsNotify)="editProjectPrice($event, project)"
 					(remove)="onRemove(project)"
 					(edit)="onEdit(project)"
