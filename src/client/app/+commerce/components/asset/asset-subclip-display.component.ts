@@ -42,41 +42,26 @@ export class AssetSubclipDisplayComponent {
   }
 
   public get isSubclipped(): boolean {
-    return this.enhancedAsset.timeStart !== -2;
-  }
-
-  public get inMarkerFrame(): Frame {
-    return this.frame(this.enhancedAsset.metadata[2].value, this.enhancedAsset.timeStart - 0);
-  }
-
-  public get outMarkerFrame(): Frame {
-    return this.frame(this.enhancedAsset.metadata[2].value, this.enhancedAsset.timeEnd - 0);
-  }
-
-  public get subclipDurationFrame(): Frame {
-    return this.frame(this.enhancedAsset.metadata[2].value, this.enhancedAsset.timeEnd - this.enhancedAsset.timeStart);
-  }
-
-  public frame(framesPerSecond: any, frameNumber: any) {
-    return new Frame(framesPerSecond.split(' fps')[0]).setFromFrameNumber(frameNumber);
+    return this.enhancedAsset.isSubclipped;
   }
 
   public get subclipSegmentStyles(): object {
-    let lengthAsSeconds: number = parseInt(this.enhancedAsset.metadata[5].value) / 1000.0;
-    let totalFrames: number = this.durationAsFrames(this.enhancedAsset.metadata[2].value, lengthAsSeconds);
-    let startPoint: number = this.calcSegmentWidthPecentage(this.enhancedAsset.timeStart, totalFrames);
-    let segmentWidth: number = this.calcSegmentWidthPecentage(this.enhancedAsset.timeEnd - this.enhancedAsset.timeStart, totalFrames);
-    return { 'width.%': segmentWidth, 'margin-left.%': startPoint, 'min-width.px': 2 };
+    return {
+      'margin-left.%': this.enhancedAsset.inMarkerPercentage,
+      'width.%': this.enhancedAsset.subclipDurationPercentage,
+      'min-width.px': 2
+    };
   }
 
-  private durationAsFrames(framesPerSecond: any, duration: any) {
-    return new Frame(
-      framesPerSecond.split(' fps')[0])
-      .setFromString(`${duration};00`, TimecodeFormat.SIMPLE_TIME_CONVERSION)
-      .asFrameNumber();
+  public get inMarkerFrame(): Frame {
+    return this.enhancedAsset.inMarkerFrame;
   }
 
-  private calcSegmentWidthPecentage(startFrame: number, totalFrames: number) {
-    return startFrame * 100 / totalFrames;
+  public get outMarkerFrame(): Frame {
+    return this.enhancedAsset.outMarkerFrame;
+  }
+
+  public get subclipDurationFrame(): Frame {
+    return this.enhancedAsset.subclipDurationFrame;
   }
 }
