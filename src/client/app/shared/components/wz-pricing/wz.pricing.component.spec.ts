@@ -1,44 +1,16 @@
 import { WzPricingComponent } from './wz.pricing.component';
 import { Observable } from 'rxjs/Observable';
 import { EventEmitter } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-
-class MockFormBuilder {
-  public mockForm: any;
-  constructor() {
-    this.mockForm = {
-      valueChanges: Observable.of('some changes'),
-      controls: {},
-      value: {},
-      valid: () => Object.keys(this.mockForm.value).filter((k) => this.mockForm.value[k] !== '').length === 0
-    };
-  }
-
-  public group(options: any): FormGroup {
-    for (let key in options) {
-      this.mockForm.value[key] = options[key][0];
-
-      this.mockForm.controls[key] = {
-        value: options[key][0],
-        setValue: (value: any) => {
-          this.mockForm.value[key] = value;
-          this.mockForm.controls[key].value = value;
-        }
-      };
-    }
-
-    return this.mockForm;
-  }
-}
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 export function main() {
   describe('Wz Pricing Component', () => {
     let componentUnderTest: WzPricingComponent, mockFormBuilder: any, mockForm: any;
 
     beforeEach(() => {
-      mockFormBuilder = new MockFormBuilder();
+      mockFormBuilder = new FormBuilder();
       componentUnderTest = new WzPricingComponent(mockFormBuilder);
-      componentUnderTest.attributes = mockOptions() as any;
+      componentUnderTest.attributes = mockPriceAttributes() as any;
       componentUnderTest.pricingEvent = new EventEmitter();
     });
 
@@ -46,12 +18,7 @@ export function main() {
       it('should build the form properly with no preferences', () => {
         componentUnderTest.ngOnInit();
 
-        expect(componentUnderTest.form.value).toEqual({
-          A: '',
-          B: '',
-          C: '',
-          D: ''
-        });
+        expect(componentUnderTest.form.value).toEqual({ A: '' });
       });
 
       it('should build the form properly with preferences', () => {
@@ -63,12 +30,7 @@ export function main() {
         };
         componentUnderTest.ngOnInit();
 
-        expect(componentUnderTest.form.value).toEqual({
-          A: 'S',
-          B: 'M',
-          C: 'X',
-          D: 'S'
-        });
+        expect(componentUnderTest.form.value).toEqual({ A: 'S', B: 'M', C: 'X', D: 'S' });
       });
 
       it('should build a blank form if the preferences are invalid', () => {
@@ -76,17 +38,18 @@ export function main() {
           invalid: 'preference'
         };
         componentUnderTest.ngOnInit();
-        expect(componentUnderTest.form.value).toEqual({
-          A: '',
-          B: '',
-          C: '',
-          D: ''
-        });
+        expect(componentUnderTest.form.value).toEqual({ A: '' });
       });
     });
 
     describe('onSubmit()', () => {
       it('should emit the calculatePricing event with the form', () => {
+        componentUnderTest.pricingPreferences = {
+          A: 'S',
+          B: 'M',
+          C: 'X',
+          D: 'S'
+        };
         componentUnderTest.ngOnInit();
         spyOn(componentUnderTest.pricingEvent, 'emit');
         componentUnderTest.usagePrice = Observable.of(10);
@@ -94,7 +57,7 @@ export function main() {
 
         expect(componentUnderTest.pricingEvent.emit).toHaveBeenCalledWith({
           type: 'APPLY_PRICE',
-          payload: { price: 10, attributes: { A: '', B: '', C: '', D: '' } }
+          payload: { price: 10, attributes: { A: 'S', B: 'M', C: 'X', D: 'S' } }
         });
       });
     });
@@ -141,7 +104,7 @@ export function main() {
         componentUnderTest.ngOnInit();
         let result = componentUnderTest.validOptionsFor(componentUnderTest.attributes[0]);
 
-        expect(result).toEqual(mockOptions()[0].attributeList);
+        expect(result).toEqual(mockPriceAttributes()[0].attributeList);
       });
 
       it('should return valid options for a non-primary attribute', () => {
@@ -210,21 +173,19 @@ export function main() {
         });
       });
 
-      it('should clear all the children of a given field if even is user input', () => {
+      it('should clear all the children of a given field if event is user input', () => {
         let attribute: any = componentUnderTest.attributes[0];
         componentUnderTest.handleSelect({ isUserInput: true } as any, attribute);
 
         expect(componentUnderTest.form.value).toEqual({
-          A: '',
-          B: '',
-          C: '',
-          D: ''
+          A: 'R',
+          B: ''
         });
       });
     });
   });
 
-  function mockOptions() {
+  function mockPriceAttributes() {
     return [
       {
         'primary': true,

@@ -26,8 +26,7 @@ export class WzPricingComponent implements OnInit, OnDestroy {
   @Input() usagePrice: Observable<number>;
   @Input() pricingPreferences: Poj;
   @Output() pricingEvent: EventEmitter<WzEvent> = new EventEmitter<WzEvent>();
-  private subscription: Subscription;
-
+  private formSubscription: Subscription;
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
@@ -37,23 +36,24 @@ export class WzPricingComponent implements OnInit, OnDestroy {
     } else {
       this.form = this.blankForm;
     }
-    this.subscription = this.form.valueChanges.subscribe((value: any) => {
-      if (this.form.valid) this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: this.formattedForm });
+    this.formSubscription = this.form.valueChanges.subscribe((value: any) => {
+      if (this.form.valid) this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: value });
     });
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.formSubscription.unsubscribe();
   }
 
   public onSubmit(): void {
+    if (!this.form.valid) return;
     // When the form is opened at the project level in a cart/quote, there is no usagePrice
     if (this.usagePrice) {
       this.usagePrice.take(1).subscribe((price: number) => {
-        this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { price: price, attributes: this.formattedForm } });
+        this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { price: price, attributes: this.form.value } });
       });
     } else {
-      this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { attributes: this.formattedForm } });
+      this.pricingEvent.emit({ type: 'APPLY_PRICE', payload: { attributes: this.form.value } });
     }
   }
 
@@ -107,8 +107,8 @@ export class WzPricingComponent implements OnInit, OnDestroy {
       let currentControlIndex: number = controlNames.indexOf(attribute.name);
       let controlNamesToClear: Array<string> = controlNames.slice(currentControlIndex + 1);
       let controlNamesToDisable: Array<string> = controlNames.slice(currentControlIndex + 2);
-      this.clearForm(controlNamesToClear);
-      this.disableForm(controlNamesToDisable);
+      if (controlNamesToClear.length) this.clearForm(controlNamesToClear);
+      if (controlNamesToDisable.length) this.disableForm(controlNamesToDisable);
     }
   }
 
@@ -131,9 +131,7 @@ export class WzPricingComponent implements OnInit, OnDestroy {
   private get blankForm(): FormGroup {
     let form: Poj = {};
     this.attributes.forEach((attribute: PriceAttribute, index: number) => {
-      form[attribute.name] = index === 0 ?
-        new FormControl({ value: '', disabled: true }, Validators.required) :
-        new FormControl({ value: '' }, Validators.required);
+      form[attribute.name] = new FormControl({ value: '', disabled: index !== 0 }, Validators.required);
     });
     return this.fb.group(form);
   }
@@ -141,24 +139,14 @@ export class WzPricingComponent implements OnInit, OnDestroy {
   private clearForm(controlNames: Array<string>): void {
     for (let control of controlNames) {
       this.form.controls[control].setValue('');
+      this.form.controls[control].enable();
     }
   }
 
   private disableForm(controlNames: Array<string>): void {
-    for (let control in this.form.controls) {
-      this.form.controls[control].enable();
-    }
     for (let control of controlNames) {
       this.form.controls[control].disable();
     }
-  }
-
-  private get formattedForm(): Poj {
-    let formatted: Poj = {};
-    for (let controlName in this.form.controls) {
-      formatted[controlName] = this.form.controls[controlName].value;
-    }
-    return formatted;
   }
 
   private get pricingStructureChanged(): boolean {
