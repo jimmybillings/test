@@ -14,11 +14,6 @@ section.login.hero {
   width: 100%;
   position: relative;
   margin: 0 auto;
-  @include text-contrast(mat-color($mat-grey, 900));
-  background-image:
-    linear-gradient(mat-color($mat-grey, 900, .75), mat-color($mat-grey, 900, .5)),
-    url($bk-img-user-management)
-  ;
   background-position: 0 0, 0 0, center center;
   background-repeat: repeat, no-repeat, no-repeat;
   background-size: auto, cover, cover;
@@ -34,11 +29,7 @@ section.login.hero {
   @media screen and (max-width: $layout-breakpoint-xs) {
     padding: rem(2.4) rem(2.2) rem(2.4) rem(2.2);
   }
-  color: mat-color($mat-foreground, secondary-text);
   margin: rem(.8) 0;
-  .mat-select-value {
-    color: mat-color($mat-foreground, secondary-text);
-  }
   md-card-title {
     text-align: center;
   }
@@ -61,7 +52,6 @@ md-card-header .logo-wrapper {
   height: 60px;
   width: 100%;
   .logo {
-    background-image: url($logo-simple-form);
     background-position: top center;
     background-repeat:no-repeat;
     background-size: 170px;

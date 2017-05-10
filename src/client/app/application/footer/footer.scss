@@ -1,14 +1,11 @@
 app-footer {
   display: block;
-  background-color: mat-color($mat-primary, 900, .9);
   .glb {
-    @include text-contrast(mat-color($mat-primary, 900), mat-color($mat-grey, 700), mat-color($mat-grey, 400, .8));
     .logo-wrapper {
       height: 170px;
       width: 100%;
       .logo {
         margin: rem(.3) 0 0 0;
-        background-image: url($logo-footer);
         background-position: center center;
         background-repeat:no-repeat;
         background-size: 133px;
@@ -24,13 +21,10 @@ app-footer {
         list-style: none;
         display: block;
         float: left;
-        // margin-left: 3px;
         a {
-          @include text-contrast(mat-color($mat-grey, 200), mat-color($mat-foreground, text), $white-87-opacity);
           opacity: .25;
            transition: $swift-ease-in;
           &:hover {
-            color: mat-color($mat-primary, default, .9);
             opacity: 1;
           } 
         }
@@ -52,15 +46,6 @@ app-footer {
       .mat-select {
         min-width: rem(16.7);
       }  
-      .mat-select-value {
-        color: rgba(mat-color($background, background), .55);
-      }
-      .mat-select-arrow {
-        color: rgba(mat-color($background, background), .38);
-      }
-      .mat-select-underline {
-        background-color:rgba(mat-color($mat-grey, 100),0.07);
-      }
     }
     h3.md-title {
       margin-bottom: .5em;
@@ -98,15 +83,9 @@ app-footer {
       *[md-button] {
         margin: 0;
         padding: 9px 6px;
-        @include text-contrast(mat-color($mat-primary, 900), mat-color($mat-foreground, secondary-text), mat-color($mat-grey, 400, .8));
-        &:hover {
-          background: mat-color($mat-background, hover);
-          color: mat-color($mat-primary, 300);
-        }
         &.phone:hover {
           cursor: default;
           background: transparent;
-          @include text-contrast(mat-color($mat-primary, 900), mat-color($mat-foreground, secondary-text), mat-color($mat-grey, 400, .8));
         }
         &.phone:hover .md-body-1 md-icon {
           opacity: .25;
