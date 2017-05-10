@@ -1,38 +1,38 @@
-@import 'imports/styles/vendor';
+@import 'styles/vendor';
 
 // change theme colors and any other global variables
 @import '../assets/styles/theme';
 
 @import '../assets/styles/config';
-@import 'imports/styles/wazee';
+@import 'styles/wazee';
 
 // APPLICATION WIDE COMPONENTS
-@import 'application/app-nav/app-nav';
-@import 'application/footer/footer';
-@import 'application/collection-tray/collection-tray';
-@import 'application/collection-tray/components/collection-form';
-@import 'application/collection-tray/components/collections-list-dd';
+// @import 'application/app-nav/app-nav';
+// @import 'application/footer/footer';
+// @import 'application/collection-tray/collection-tray';
+// @import 'application/collection-tray/components/collection-form';
+// @import 'application/collection-tray/components/collections-list-dd';
 
 // SHARED COMPONENTS
-@import 'shared/components/wz-pagination/wz.pagination';
-@import 'shared/components/wz-breadcrumb/wz-breadcrumb';
-@import 'shared/components/wz-sort/wz.sort';
-@import 'shared/components/wz-pricing/wz.pricing';
+// @import 'shared/components/wz-pagination/wz.pagination';
+// @import 'shared/components/wz-breadcrumb/wz-breadcrumb';
+// @import 'shared/components/wz-sort/wz.sort';
+// @import 'shared/components/wz-pricing/wz.pricing';
 
 // SHARED MODULES
-@import 'shared/modules/wz-form/wz.form';
-@import 'shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player';
-@import 'shared/modules/wz-asset/wz-asset';
+// @import 'shared/modules/wz-form/wz.form';
+// @import 'shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player';
+// @import 'shared/modules/wz-asset/wz-asset';
 
 // ROUTE COMPONENTS
-@import '+home/home';
-@import '+user-management/+login/login';
-@import '+user-management/+register/register';
-@import '+user-management/+profile/profile';
-@import '+collection/+index/collections';
-@import '+collection/+show/collection-show';
-@import '+asset/asset';
-@import '+search/search';
-@import '+search/filter';
-@import '+commerce/commerce';
-@import '+gallery-view/gallery-view';
+// @import '+home/home';
+// @import '+user-management/+login/login';
+// @import '+user-management/+register/register';
+// @import '+user-management/+profile/profile';
+// @import '+collection/+index/collections';
+// @import '+collection/+show/collection-show';
+// @import '+asset/asset';
+// @import '+search/search';
+// @import '+search/filter';
+// @import '+commerce/commerce';
+// @import '+gallery-view/gallery-view';
