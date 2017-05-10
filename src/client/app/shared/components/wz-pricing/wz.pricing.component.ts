@@ -83,7 +83,7 @@ export class WzPricingComponent implements OnInit, OnDestroy {
       let rawOptions: Array<string> = parent.validChildChoicesMap[parentFormValue];
       // There should always be options, however if there aren't we need to alert the user the calculation went wrong
       if (!rawOptions) {
-        this.clearForm();
+        this.clearForm(Object.keys(this.form.controls));
         this.pricingEvent.emit({ type: 'ERROR', payload: 'PRICING.ERROR' });
         return;
       }
@@ -103,7 +103,12 @@ export class WzPricingComponent implements OnInit, OnDestroy {
 
   public handleSelect(event: MdOptionSelectionChange, attribute: PriceAttribute): void {
     if (event.isUserInput) {
-      this.clearForm(this.attributes.indexOf(attribute));
+      let controlNames: Array<string> = Object.keys(this.form.controls);
+      let currentControlIndex: number = controlNames.indexOf(attribute.name);
+      let controlNamesToClear: Array<string> = controlNames.slice(currentControlIndex + 1);
+      let controlNamesToDisable: Array<string> = controlNames.slice(currentControlIndex + 2);
+      this.clearForm(controlNamesToClear);
+      this.disableForm(controlNamesToDisable);
     }
   }
 
@@ -115,47 +120,39 @@ export class WzPricingComponent implements OnInit, OnDestroy {
     return options.find((attribute: PriceOption) => attribute.name === optionName);
   }
 
-  /**
-   * @returns a FormGroup with values filled in based on user preferences
-   */
   private get prePopulatedForm(): FormGroup {
     let form: Poj = {};
     for (let pref in this.pricingPreferences) {
-      form[pref] = [this.pricingPreferences[pref]];
-      form[pref].push(Validators.required);
+      form[pref] = new FormControl({ value: this.pricingPreferences[pref], disabled: false }, Validators.required);
     }
     return this.fb.group(form);
   }
 
-  /**
-   * @returns a FormGroup with blank values
-   */
   private get blankForm(): FormGroup {
     let form: Poj = {};
-    this.attributes.forEach((attribute: PriceAttribute) => {
-      form[attribute.name] = [''];
-      form[attribute.name].push(Validators.required);
+    this.attributes.forEach((attribute: PriceAttribute, index: number) => {
+      form[attribute.name] = index === 0 ?
+        new FormControl({ value: '', disabled: true }, Validators.required) :
+        new FormControl({ value: '' }, Validators.required);
     });
     return this.fb.group(form);
   }
 
-  /**
-    * @param { number } index
-    * Given an index, this function will clear the form fields greater than that index.
-     * i.e. given a 2, it will clear fields 3,4,5...
-    * Given no index, it will clear the entire form
-  */
-  private clearForm(index?: number): void {
-    index = index ? index : -1;
-    Object.keys(this.form.controls).forEach((key: string, i: number) => {
-      if (i > index) this.form.controls[key].setValue('');
-    });
+  private clearForm(controlNames: Array<string>): void {
+    for (let control of controlNames) {
+      this.form.controls[control].setValue('');
+    }
   }
 
-  /**
-   * @returns the form in object form, as opposed to an array of objects
-   * @example [{ name: 'Distribution', value: 'Online' }, ...] -> { Distribution: 'Online', ... }
-   */
+  private disableForm(controlNames: Array<string>): void {
+    for (let control in this.form.controls) {
+      this.form.controls[control].enable();
+    }
+    for (let control of controlNames) {
+      this.form.controls[control].disable();
+    }
+  }
+
   private get formattedForm(): Poj {
     let formatted: Poj = {};
     for (let controlName in this.form.controls) {
@@ -164,10 +161,6 @@ export class WzPricingComponent implements OnInit, OnDestroy {
     return formatted;
   }
 
-  /**
-   * @returns a boolean that represents whether the structure of the pricing options changed
-   * by comparing keys of the user preference vs. the actual pricing options
-   */
   private get pricingStructureChanged(): boolean {
     return Object.keys(this.pricingPreferences).filter((pref: string, index: number) => {
       return pref !== this.attributes[index].name;

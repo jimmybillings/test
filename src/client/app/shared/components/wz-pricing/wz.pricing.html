@@ -8,8 +8,7 @@
           <md-select
             required
             placeholder="{{attribute.name}}"
-            formControlName="{{attribute.name}}"
-            [disabled]="this.parentIsEmpty(attribute)">
+            formControlName="{{attribute.name}}">
             <md-option
               *ngFor="let option of validOptionsFor(attribute)"
               (onSelectionChange)="handleSelect($event, attribute)"

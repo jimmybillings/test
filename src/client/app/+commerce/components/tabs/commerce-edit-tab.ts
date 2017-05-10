@@ -208,7 +208,6 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     switch (event.type) {
       case 'CALCULATE_PRICE':
         this.calculatePrice(event.payload, lineItem).subscribe((price: number) => {
-          console.log(price);
           this.pricingStore.setPriceForDialog(price);
         });
         break;

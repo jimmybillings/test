@@ -29,7 +29,6 @@ export class AssetService {
     public api: ApiService,
     private currentUser: CurrentUserService) {
     this.data = this.store.select('asset');
-    this.data.subscribe(d => console.log(d));
   }
 
   public initialize(id: any): Observable<any> {
