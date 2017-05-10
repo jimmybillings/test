@@ -1,0 +1,18 @@
+asset-share-link .link {
+  .link-input {
+    border: 1px solid rgba(mat-color($foreground, base), .8);
+    color: rgba(mat-color($primary, default),.75);
+    &:focus, &:active {
+      border-color: rgba(mat-color($primary, default), .9);
+    }
+    &::selection {
+      background: rgba(mat-color($accent, default), .25);
+      color: mat-color($primary, darker);
+    }
+  }
+  button {
+    &:hover {
+      color: mat-color($primary);
+    }
+  }
+}

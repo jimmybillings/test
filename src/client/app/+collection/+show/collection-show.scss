@@ -1,5 +1,4 @@
 collection-show .collection-head {
-  background-color: rgba(mat-color($background, card), .5);
   @include mat-elevation(2);
   padding-left: rem(.8);
   padding-top: rem(1.1);
@@ -7,10 +6,8 @@ collection-show .collection-head {
   padding-right: rem(.8);
 }
 collection-show .asset-results-header {
-  color: mat-color($primary, default);
   padding-left: rem(1.6);
   padding-right: rem(1.6);
-  box-shadow: inset 0 -1px 0 0 mat-color($mat-foreground, divider), 0 1px 0 0 rgba(mat-color($mat-background, card), .6);
   header {
     padding-top: rem(.6);
     padding-bottom: rem(.5);
@@ -19,19 +16,11 @@ collection-show .asset-results-header {
       margin: 0;
       width: calc(100% - 120px);
       font-size: rem(2.6);
-      &.alert {
-        color: mat-color($warn, darker);
-      }
     }
   }
   .tools {
     text-align: right;
     white-space: nowrap;
-    button.is-dd.mat-icon-button.mat-primary {
-      .mat-button-wrapper::after {
-        color: mat-color($mat-primary, default);
-      }
-    }
   }
 }
 collection-show .search-results > div > div {
@@ -78,7 +67,6 @@ wz-subclip-editor > section {
     height: rem(3.5);
     margin-left: rem(.5);
     &[disabled] {
-      color: mat-color($mat-foreground, text);
       opacity: .35;
     }
   }
@@ -95,7 +83,6 @@ wz-subclip-editor > section {
       height: rem(3.5);
       margin-left: rem(.5);
       &[disabled] {
-        color: mat-color($mat-foreground, text);
         opacity: .35;
       }
     }
