@@ -5,3 +5,16 @@
 
 @import '../+collection/+index/collections-theme';
 @import '../+collection/+show/collection-show-theme';
+
+@import '../+commerce/+cart/cart-theme';
+@import '../+commerce/+order/+show/order-show-theme';
+@import '../+commerce/+quote/+show/quote-show-theme';
+@import '../+commerce/components/commerce-header/commerce-header-theme';
+@import '../+commerce/components/commerce-list/commerce-list-theme';
+@import '../+commerce/components/line-item/fee-line-items-theme';
+@import '../+commerce/components/line-item/line-items-theme';
+@import '../+commerce/components/project/projects-theme';
+@import '../+commerce/components/tabs/commerce-billing-tab-theme';
+@import '../+commerce/components/tabs/commerce-confirm-tab-theme';
+
+@import '../+gallery-view/gallery-view-theme';
