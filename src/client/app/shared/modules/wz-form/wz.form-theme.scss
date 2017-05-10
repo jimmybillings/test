@@ -1,0 +1,43 @@
+md-select.show-errors.ng-invalid:not(.mat-select-disabled),
+md-select.ng-touched.ng-dirty.ng-invalid:not(.mat-select-disabled),
+md-input.show-errors.ng-invalid,
+.mat-input-container.mat-input-invalid.ng-dirty.ng-invalid,
+.mat-input-container.ng-touched.ng-dirty.ng-invalid { 
+  .mat-select-placeholder,
+  .mat-input-placeholder {
+    color: mat-color($warn, 600);
+    &.mat-float.mat-focused .mat-placeholder-required {
+      color: mat-color($warn, 600);
+    }
+  }
+  .mat-select-arrow,
+  .mat-select-trigger {
+    color: mat-color($warn, 600);
+  }
+  .mat-select-trigger {
+    border-bottom: 1px solid mat-color($warn, 600);
+  }
+  .mat-input-wrapper {
+    .mat-input-underline {
+      border-top-color: mat-color($warn, 600);
+      .mat-input-ripple {
+        background-color: mat-color($warn, 600);
+      }
+    }
+  } 
+  md-hint.error {
+    color: mat-color($warn, 600);
+  }
+}
+
+md-checkbox.ng-dirty.ng-invalid {
+  .mat-checkbox-inner-container {
+    .mat-checkbox-frame {
+     color: mat-color($mat-warn, 600); 
+    }
+  }
+  md-hint.mat-hint.error {
+    color: mat-color($warn, 600);
+  }  
+}
+

@@ -1,0 +1,41 @@
+
+wz-asset-list ul.asset-list-view {
+  & > li {
+    background-color: rgba(mat-color($background, card), .65);
+    color: rgba(mat-color($foreground, text), .7);
+    .tools {
+      color: mat-color($foreground, secondary-text);
+    }
+    a.asset-title-desc {
+      &:hover {
+        color: mat-color($primary);
+      }
+    }
+    .divider {
+      box-shadow: inset 0 1px 0 0 mat-color($foreground, divider);
+    }
+    span {
+      &.mdata-3 {
+        @include text-contrast(mat-color($mat-foreground, base));
+      }
+      &.subclip-timeline.sub-clip-indicator-2 {
+        background-color: darken(mat-color($background, status-bar), 1%);
+        .subclip-segment {
+          background-color: darken(mat-color($primary), 35%);
+        }
+      }  
+    }
+    .asset-sub-clip {
+      .subclip-timeline {
+        background-color: darken(mat-color($background, status-bar), 10%);
+        .subclip-segment {
+          background-color: rgba(mat-color($accent, darker), .6);
+        }
+      }
+      ul {
+        color: mat-color($foreground, secondary-text);
+        background-color: rgba(mat-color($primary), .1);
+      }
+    }
+  }
+}

@@ -1,15 +1,8 @@
 $tr-duration: 300ms;
 
-// $bkg-color: #142b0b;
-// $bkg-color: #222;
-// $heading-color:#e1d31d;
-
-$bkg-color: mat-color($background, background);
-$heading-color: mat-color($foreground, text);
 
 two-level-view {
   width: 100%;
-  background-color: $bkg-color;
   padding: rem(3.2) 0 rem(3.0) 0;
   & > section {
     margin: rem(1.0) 0;
@@ -21,7 +14,6 @@ two-level-view {
       @media screen and (max-width: $layout-breakpoint-sm) {
         margin-left: rem(3.0);
       }
-      color: $heading-color;
     }
   }
 }
@@ -58,7 +50,6 @@ two-level-view .carousel {
     @media screen and (max-width: $layout-breakpoint-sm) {
       width: rem(3.0);
     }
-    background: rgba($bkg-color, .5);
   }
   .carousel-previous {
     left: 0;
@@ -248,9 +239,7 @@ two-level-view .carousel .carousel-content-12 .carousel-item {
         width: calc(100% - 20px);
         height: calc(100% - 10px);
         padding: rem(.5) rem(1.0);
-        // background-color: rgba(mat-color($mat-grey, 900), .14);
         min-height: 23.333%;
-        @include text-contrast(mat-color($mat-grey, 900), mat-color($foreground, text), mat-color($background, card));
         .item-label {
           position: absolute;
           width: calc(100% - 20px);
