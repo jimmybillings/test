@@ -25,7 +25,7 @@ projects-component section.header {
   }
 }
 div.project {
-  margin-bottom: rem(1.8);
+  margin-bottom: 0;
   background-color: rgba(mat-color($background, card), .4);
   header.project-info {
     background-color: mat-color($mat-primary, darker, .8);
@@ -89,6 +89,6 @@ div.project {
     }
   }
   &:last-child {
-    margin-bottom: rem(.5);
+    margin-bottom: 0;
   }
 }
