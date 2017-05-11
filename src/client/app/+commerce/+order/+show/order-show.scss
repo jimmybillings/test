@@ -17,9 +17,13 @@ order-show-component {
     }
   } 
 }
-order-show-component .project .assets {
+order-show-component .project .assets,
+order-show-component .project .fees {
   padding: 0 rem(1.2) rem(1.2) rem(1.2);
   display: flex;
+}
+order-show-component .project .fees {
+  padding-bottom: 0;
 }
 .order-summary {
   padding-left: rem(.4);

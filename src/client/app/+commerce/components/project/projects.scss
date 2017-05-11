@@ -23,7 +23,7 @@ projects-component section.header {
   }
 }
 div.project {
-  margin-bottom: rem(1.8);
+  margin-bottom: 0;
   header.project-info {
     border-radius: $mat-button-border-radius $mat-button-border-radius 0 0;
     position: relative;
@@ -78,6 +78,6 @@ div.project {
     }
   }
   &:last-child {
-    margin-bottom: rem(.5);
+    margin-bottom: 0;
   }
 }
