@@ -107,4 +107,72 @@ export class WzAsset {
         return 'hd';
     }
   }
+
+  public nameOf(asset: Asset): string {
+    return asset.name;
+  }
+
+  public routerLinkFor(asset: Asset): any[] {
+    return ['/asset/', asset.assetId, this.assetParams(asset)];
+  }
+
+  public hasThumbnail(asset: Asset): boolean {
+    return !!asset.thumbnail;
+  }
+
+  public thumbnailUrlFor(asset: Asset): string {
+    return this.hasThumbnail(asset) ? asset.thumbnail.urls.https : '';
+  }
+
+  public hasTitle(asset: Asset): boolean {
+    return !!asset.metaData[0];
+  }
+
+  public titleOf(asset: Asset): string {
+    return asset.metaData[0].value;
+  }
+
+  public hasFormatType(asset: Asset): boolean {
+    return asset.metaData[2] && asset.metaData[2].value != '';
+  }
+
+  public formatTypeOf(asset: Asset): string {
+    return asset.metaData[2].value;
+  }
+
+  public formatClassNameFor(asset: Asset): string {
+    return this.formatType(asset.metaData[2].value);
+  }
+
+  public hasFullDuration(asset: Asset): boolean {
+    return !asset.timeStart && !!asset.metaData[3];
+  }
+
+  public fullDurationOf(asset: Asset): string {
+    return asset.metaData[3].value;
+  }
+
+  public hasSubclipDuration(asset: Asset): boolean {
+    return !!asset.timeStart;
+  }
+
+  public subclipDurationFrameFor(asset: Asset): Frame {
+    return this.frame(asset.metaData[6].value, asset.timeEnd - asset.timeStart);
+  }
+
+  public isImage(asset: Asset): boolean {
+    return asset.metaData[4] && asset.metaData[4].name === 'Resource.Class' && asset.metaData[4].value === 'Image';
+  }
+
+  public isSubclipped(asset: Asset): boolean {
+    return !!asset.timeStart;
+  }
+
+  public hasDescription(asset: Asset): boolean {
+    return !!asset.metaData[1];
+  }
+
+  public descriptionOf(asset: Asset): string {
+    return asset.metaData[1].value;
+  }
 }
