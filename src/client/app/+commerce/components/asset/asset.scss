@@ -7,7 +7,7 @@ section.cart-asset {
       bottom: 0;
       right: 0;
       padding: 0 1% 1% 0;
-      @include text-contrast(mat-color($mat-foreground, base));
+      color: mat-color($mat-grey, 50);
       transition: $swift-ease-out;
       z-index: 1;
       span {
@@ -19,10 +19,10 @@ section.cart-asset {
       font-size: rem(1.2);
       line-height: rem(1.55);
       position: absolute;
-      height: 30px;
-      width: 40px;
-      top: 3px;
-      right: 3px;
+      height: rem(3.0);
+      width: rem(4.0);
+      top: rem(0.3);
+      right: rem(0.3);
       z-index: 1;
       .image {
         color: transparent;
@@ -31,7 +31,7 @@ section.cart-asset {
         &::before {
           content: "\e412";
           font-family: 'Material Icons';
-          color: rgba(mat-color($mat-grey, 100),0.4);
+          color: rgba(mat-color($mat-grey, 50),0.4);
           position: absolute;
           top: rem(.3);
           right: rem(-.2);
@@ -44,7 +44,7 @@ section.cart-asset {
     height: 0;
     padding: 56.25% 0 0 0;
     position: relative;
-    background: mat-color($foreground, base);
+    background: mat-color($mat-grey, 900, .9);
     img {
       position: absolute;
       display: block;

@@ -2,8 +2,6 @@ header.app-header {
   position: relative;
   width: 100%;
   z-index: 3;
-  background-color:rgba(mat-color($primary, 900), .3);
-  // border-bottom: solid 1px rgba(contrast-color(mat-color($primary, 900)), .25);
   @include mat-elevation(1);
   position: absolute;
   top: 0;
@@ -23,7 +21,6 @@ header.app-header {
       opacity: 1;
     }
     .logo img {
-      background-image: url($logo-header);
       background-position: 0 rem(.9);
       background-repeat: no-repeat;
       background-size: rem(27.2);
@@ -50,8 +47,6 @@ header.app-header {
     }
   }
   &.fixed {
-    background-color:rgba(mat-color($background, app-bar), .95);
-    @include text-contrast(mat-color($background, app-bar), mat-color($foreground, secondary-text), mat-color($background, app-bar));
     position: fixed;
     top: 0;
     animation: slideDownHeader .75s ease-in-out;
@@ -68,44 +63,31 @@ header.app-header md-toolbar {
 }
 header.app-header [md-button],
 header.app-header [md-icon-button] {
-  @include text-contrast(mat-color($mat-grey, 900), mat-color($foreground, secondary-text), mat-color($background, app-bar));
   margin-left: rem(.6);
   transition: $swift-ease-out;
   &:first-child{
     margin-left: 0;
   }
 }
-header.app-header md-toolbar:not(.mat-menu-toolbar) .mat-button {
-  &.mat-accent {
-    color: rgba(mat-color($accent, 500), .8);
-  }
-}
+
 button[md-icon-button].cart {
   .asset-count {
     position: absolute;
     top:0;
     right: rem(-.2);
     border-radius: $mat-button-border-radius;
-    background-color: rgba(mat-color($warn, 700), .9);
     min-width: rem(1.4);
     font-size: .8em;
     line-height: 1;
     margin-right: 0;
     margin-left: 0;
     padding: 2px 3px;
-    .count {
-      @include text-contrast(mat-color($warn, 900));
-    }
   }
 }
 
 header.app-header.fixed [md-button],
 header.app-header.fixed [md-icon-button] {
-  @include text-contrast(mat-color($background, app-bar), mat-color($foreground, secondary-text), mat-color($background, app-bar));
   transition: $swift-ease-out;
-  &:hover {
-    background-color: rgba(mat-color($background, hover), .08);
-  }
   &:hover::after {
     background-color: transparent;
   }

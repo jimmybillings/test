@@ -5,19 +5,9 @@ section.preview-bk {
   position: relative;
   padding-top: rem(1.8);
   padding-bottom: rem(7.4);
-  // @media screen and (max-width: $layout-breakpoint-md)  {
-  //   padding-top: rem(2);    
-  //   padding-bottom: rem(4);
-  // }
   &.theater {
     height: 100%;
     @include mat-elevation(2);
-    @include text-contrast(mat-color($foreground, base));
-    background-image:
-      linear-gradient(mat-color($foreground, base, .57), mat-color($foreground, base, .56)),
-      linear-gradient(mat-color($primary, 900, .07), mat-color($primary, 700, .07)),
-      linear-gradient(mat-color($foreground, base, .57), mat-color($foreground, base, .56))
-    ;
     position: relative;
     &::after {
       content: " ";
@@ -70,20 +60,12 @@ section.preview-bk {
     nav.asset-options {
       display: flex;
       button[md-icon-button] {
-        @include text-contrast(mat-color($foreground, base));
         margin-left: rem(.6);
-        &:disabled {
-          md-icon {
-            color: rgba(mat-color($background, background),.2);
-          }
-        }
       }
     }
   }
   div.primary-info {
-    @include text-contrast(mat-color($foreground, base));
     box-shadow: none;
-    background-color: rgba(mat-color($foreground, base), .05);
     padding:rem(1.6);
     position: relative;
     height: 100%;
@@ -147,7 +129,6 @@ section.preview-bk {
       .contact-us-pricing {
         width: calc(100% - 32px);
         bottom: rem(13.5);
-        color: rgba(mat-color($accent, 500), .75);
         display: block;
         font-size: 1.12em;
         font-weight: 200;
@@ -165,14 +146,6 @@ section.preview-bk {
         md-select {
           width: 100%;
           margin-bottom: rem(2);
-          .mat-select-underline {
-            background-color: mat-color($background, background, .2);
-          }
-          .mat-select-placeholder.mat-floating-placeholder,
-          .mat-select-value,
-          .mat-select-arrow {
-            color: mat-color($background, background, .7);
-          }
         }
         width: calc(100% - 42px);
         margin: 0;
@@ -184,19 +157,12 @@ section.preview-bk {
           padding-left: 0; 
           padding-right: 0;
           bottom: rem(-2.0);
-          // position: static;
           width: 100%;
         }
         button {
           width: 100%;
           margin-bottom: rem(1.0);
           text-transform: uppercase;
-          &.mat-primary.mat-hue-7 {
-            background-color: scale-color(mat-color($primary, default), $lightness: -10%, $alpha: -35%);
-            &:hover {
-              background-color: scale-color(mat-color($primary, default), $lightness: 0%, $alpha: -25%);
-            }
-          }
           &.is-outlined {
             color: scale-color(mat-color($mat-grey, 50), $lightness: 0%, $alpha: -15%);
             border-color: scale-color(mat-color($mat-grey, 50), $lightness: 0%, $alpha: -40%);
@@ -212,7 +178,6 @@ section.preview-bk {
   position: relative;
 	height: auto;
   .photo-container {
-    background-image: linear-gradient(mat-color($foreground, base, .17), mat-color($foreground, base, .16));
     text-align: center;
     img {
       max-height: rem(63.5);
@@ -232,7 +197,6 @@ section.preview-bk {
 }
 div.primary-info-t {
   height: rem(4.8);
-  @include text-contrast(mat-color($foreground, base));
   div.primary-content-t {
     .back-to-search {
       margin-right: rem(.2);
@@ -248,8 +212,6 @@ div.primary-info-t {
       border-radius: rem(.3);
       border-width: 1px;
       border-style: solid;
-      border-color: rgba(mat-color($background, app-bar), .4);
-      background-color: rgba(mat-color($foreground, base), .3);
       position: relative;
       &::before {
         content: "HD";
@@ -266,11 +228,8 @@ div.primary-info-t {
       width: rem(2.7);
       height: rem(1.8);
       border-radius: 50%;
-      border-color: rgba(mat-color($foreground, base), 0);
-      background-color: rgba(mat-color($background, card), .5);
       &::before {
         content: "SD";
-        color: mat-color($foreground, text);
         opacity: 0.9;
       }
     }

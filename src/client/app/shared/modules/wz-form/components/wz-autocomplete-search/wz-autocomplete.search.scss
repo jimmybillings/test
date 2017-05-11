@@ -20,23 +20,16 @@ wz-autocomplete-search {
     max-height: rem(4.6);
     min-height: rem(4.6);
     border: none;
-    color: mat-color($mat-foreground, secondary-text);
-    background-color:  rgba(mat-color($mat-background, app-bar), .9);
     transition: max-height 0.45s, min-height 0.35s, $swift-ease-in-out-timing-function;
     border-radius: 0;
-    &::placeholder {
-      color: mat-color($mat-foreground, hint-text);
-    }
     &:focus {
       outline: none;
-      background-color: lighten(mat-color($mat-background, app-bar), 40%);
     }
   }
   button[type="submit"] {
     cursor: pointer;
     font-size: 0;
     border: none; 
-    background-color: mat-color($mat-accent, 800, .95);
     min-width: rem(4.4);
      transition: $swift-ease-in;
     md-icon.material-icons {
@@ -46,12 +39,8 @@ wz-autocomplete-search {
       color: $white-87-opacity;
       text-shadow: mat-color($mat-grey, 900, .2) 0 1px 2px;
     }
-    &:hover {
-      background-color: mat-color($mat-accent, 700, 1);
-    }
     &[disabled] {
       cursor: default;
-      background-color: mat-color($mat-accent, 800, .95);
       md-icon.material-icons {
         opacity: .6;
        }
@@ -69,7 +58,6 @@ header.app-header {
   wz-autocomplete-search {
     form {
       padding-top: 0;
-      background-color: mat-color($mat-background, app-bar);
     }
     margin: 0;
     input {
@@ -78,7 +66,6 @@ header.app-header {
       padding: 0 0 0 rem(1.6);
     }
     button[type="submit"] {
-      background-color: mat-color($mat-primary, 700, .45);
       md-icon.material-icons {
         font-size: rem(3.3);
         text-shadow: none;
@@ -97,11 +84,6 @@ header.app-header {
     }
   }
   button.filter-toggle {
-    background-image:
-      linear-gradient(mat-color($mat-primary, 800, .06), mat-color($mat-primary, 800, .06)),
-      linear-gradient(rgba(mat-color($mat-foreground, base), .5), rgba(mat-color($mat-foreground, base), .5))
-    ;
-    @include text-contrast(mat-color($mat-foreground, base));
     height: auto;
     border-radius: 0;
     padding: 0 rem(4.0) 0 rem(3.0);
@@ -112,9 +94,6 @@ header.app-header {
       position: absolute;
       top: rem(1.0);
       right: rem(2.4);
-    }
-    &:hover {
-      background-color: rgba(mat-color($mat-foreground, base), .55);
     }
   }
   button.close {
@@ -131,7 +110,6 @@ header.app-header {
     md-icon.material-icons {
       font-size: rem(2.3);
       line-height: .5;
-      @include text-contrast(mat-color($mat-background, background));
       opacity: .5;
     }
   }
@@ -157,9 +135,6 @@ header.app-header.fixed {
     }
     input {
       background-color: transparent;
-    }
-    button[type="submit"] md-icon.material-icons, button.filter-toggle {
-      @include text-contrast(mat-color($mat-primary, 700), mat-color($mat-grey, 700), mat-color($mat-grey, 100));
     }
   }
 }

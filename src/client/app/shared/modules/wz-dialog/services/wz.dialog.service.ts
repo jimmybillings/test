@@ -101,7 +101,8 @@ export class WzDialogService {
   }
 
   public openComponentInDialog(options: DefaultComponentOptions) {
-    const mergedDialogConfig: MdDialogConfig = this.mergeDialogConfigs({}, options.dialogConfig || {});
+    const mergedDialogConfig: MdDialogConfig = this.mergeDialogConfigs(
+      {}, { dialogConfig: options.dialogConfig } || {});
     const dialogRef: MdDialogRef<any> = this.dialog.open(options.componentType, mergedDialogConfig);
     const component: any = dialogRef.componentInstance;
 

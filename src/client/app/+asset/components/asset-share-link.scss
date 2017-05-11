@@ -12,26 +12,13 @@ asset-share-link .link {
     margin-right: rem(.4);
     width: calc(100% - 44px);
     max-width: calc(100% - 44px);
-    border: 1px solid rgba(mat-color($foreground, base), .8);
     padding-top: rem(1.3);
     padding-right: rem(.5);
     padding-bottom: rem(1.3);
     padding-left: rem(.5);
     font-size: .9em;
-    color: rgba(mat-color($primary, default),.75);
     &:focus, &:active {
       outline: none;
-      border-color: rgba(mat-color($primary, default), .9);
-    }
-    &::selection {
-      background: rgba(mat-color($accent, default), .25);
-      color: mat-color($primary, darker);
-    }
-  }
-  button {
-    // transition: $swift-ease-out;
-    &:hover {
-      color: mat-color($primary);
     }
   }
 }

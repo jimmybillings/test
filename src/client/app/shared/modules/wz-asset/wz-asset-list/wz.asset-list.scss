@@ -8,8 +8,6 @@ wz-asset-list ul.asset-list-view {
   padding: 0;
   & > li {
     position: relative;
-    background-color: rgba(mat-color($background, card), .65);
-    color: rgba(mat-color($foreground, text), .7);
     margin-bottom: rem(1.2);
     padding: rem(.2);
     border-radius: $mat-button-border-radius;
@@ -23,17 +21,10 @@ wz-asset-list ul.asset-list-view {
     }
     .tools {
       text-align: right;
-      color: mat-color($foreground, secondary-text);
-      button:hover {
-        color: mat-color($primary);
-      }
     }
     a.asset-title-desc {
       color: inherit;
       text-decoration: none;
-      &:hover {
-        color: mat-color($primary);
-      }
     }
     .asset-title {
       font-size: rem(1.7);
@@ -55,7 +46,6 @@ wz-asset-list ul.asset-list-view {
     .divider {
       margin: rem(.6) rem(.8) 0 rem(.8);
       padding-bottom: rem(.6);
-      box-shadow: inset 0 1px 0 0 mat-color($foreground, divider);
       display: none;
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         display: flex;
@@ -103,7 +93,6 @@ wz-asset-list ul.asset-list-view {
         bottom: 0;
         right: 0;
         padding: 0 1% 1% 0;
-        @include text-contrast(mat-color($mat-foreground, base));
         transition: $swift-ease-out;
         z-index: 1;
         span {
@@ -135,26 +124,7 @@ wz-asset-list ul.asset-list-view {
           }
         }
       }
-      // &.sub-clip-indicator {
-      //   font-size: rem(1.2);
-      //   line-height: rem(1.55);
-      //   position: absolute;
-      //   height: rem(2.0);
-      //   width: rem(2.0);
-      //   top: rem(.3);
-      //   right: rem(3.3);
-      //   z-index: 1;
-      //   color: transparent;
-      //   &::before {
-      //     content: "\e54d";
-      //     font-family: 'Material Icons';
-      //     color: rgba(mat-color($mat-grey, 100),0.55);
-      //     position: absolute;
-      //     top: rem(.3);
-      //     right: rem(-.2);
-      //     font-size: 1.86em;
-      //   }
-      // }
+
       &.subclip-timeline.sub-clip-indicator-2 {
         position: absolute;
         height: rem(.6);
@@ -162,10 +132,8 @@ wz-asset-list ul.asset-list-view {
         bottom: rem(2.6);
         left: rem(0.0);
         z-index: 1;
-        background-color: darken(mat-color($background, status-bar), 1%);
         opacity: .75;
         .subclip-segment {
-          background-color: darken(mat-color($primary), 35%);
           height: 100%;
           position: absolute;
         }
@@ -236,22 +204,18 @@ wz-asset-list ul.asset-list-view {
         position: relative;
         height: rem(.6);
         width: 100%;
-        background-color: darken(mat-color($background, status-bar), 10%);
         .subclip-segment {
-          background-color: rgba(mat-color($accent, darker), .6);
           height: 100%;
           position: absolute;
         }
       }
       ul {
-        color: mat-color($foreground, secondary-text);
         list-style: none;
         padding: 0;
         height: rem(2.0);
         line-height: rem(2.0);
         width: 100%;
         min-width: rem(38.0);
-        background-color: rgba(mat-color($primary), .1);
         font-size: rem(1.1);
         @media screen and (max-width: $layout-breakpoint-sm) and (min-width: 0) and (orientation: portrait)  {
           font-size: rem(1.0);

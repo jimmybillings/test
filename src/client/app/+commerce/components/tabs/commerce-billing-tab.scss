@@ -34,19 +34,14 @@
           margin: rem(1.0) 0 0 0;
         }
         section {
-          background-color: rgba(mat-color($background, card), .65);
-          color: rgba(mat-color($foreground, text), .7);
           position: relative;
           padding: rem(1.4);
           border-radius: $mat-button-border-radius;
-          border: 1px solid rgba(mat-color($background, card), .01);
           transition: $swift-ease-out;
           min-height: rem(21.5);
           margin-bottom: rem(1.0);
           &.active {
             @include mat-elevation(2);
-            background-color: rgba(mat-color($background, card), 1);
-            border: 1px solid rgba(mat-color($primary, default), .9);
           }
           header > span:last-child {
             font-size: rem(2.0);
@@ -89,7 +84,6 @@
             }
           }
           .divider {
-            box-shadow: inset 0 1px 0 0 mat-color($foreground, divider);
             margin: rem(.8) 0 rem(.7) 0;
             padding-bottom: rem(.7);
           }

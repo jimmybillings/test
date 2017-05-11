@@ -1,8 +1,7 @@
 home-call-to-action {
   .mrkt-call-to-action {
     min-height: rem(44.0);
-    background:  mat-color($primary, darker)  url('../assets/img/bk/tex/bktx_dgl_lines_light.png');
-    color: mat-color($primary, darker-contrast);
+    background-image: url('../assets/img/bk/tex/bktx_dgl_lines_light.png');
     text-align: center;
   }
   // this should go in some kind of glb scss file
@@ -11,12 +10,10 @@ home-call-to-action {
       font-size: rem(1.8);
       min-width: rem(30.0);
       padding: rem(.4) rem(4.0);
-      background-color: mat-color($accent, darker, .8);
       border: 1px solid transparent;
       transition: $swift-ease-in;
       &:hover {
         border: 1px solid $white-87-opacity;
-        background-color: mat-color($accent, darker, .8);
         @include mat-elevation(2);
       }
     }
