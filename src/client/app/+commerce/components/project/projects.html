@@ -3,7 +3,6 @@
 		<md-icon>add_circle_outline</md-icon>{{ 'CART.PROJECTS.ADD_PROJECT_BTN' | translate }}
 	</button>
 </div>
-
 <section class="projects">
 	<div class="project" *ngFor="let project of projects">
 		<header class="project-info" layout-gt-xs="row" layout="column">
@@ -16,6 +15,7 @@
 			<div flex="100" flex-gt-sm="30" layout-padding flex-order-xs="-1">
 				<project-actions-component
 					*ngIf="!readOnly"
+					[quoteType]="quoteType"
 					[projectHasRmAssets]="projectHasRmAssets(project)"
 					[rmAssetsHaveAttributes]="rmAssetsHaveAttributes(project)"
           [includeFees]="includeFees"

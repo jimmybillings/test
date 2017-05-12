@@ -31,5 +31,40 @@ export function main() {
         expect(componentUnderTest.addFee.emit).toHaveBeenCalled();
       });
     });
+
+    describe('showRightsPricingBtn()', () => {
+      describe('returns false', () => {
+        it('when the quote type is ProvisionalOrder', () => {
+          componentUnderTest.quoteType = 'ProvisionalOrder';
+          componentUnderTest.projectHasRmAssets = true;
+          expect(componentUnderTest.showRightsPricingBtn).toBe(false);
+        });
+
+        it('project does not have any rights managed assets', () => {
+          componentUnderTest.quoteType = null;
+          componentUnderTest.projectHasRmAssets = false;
+          expect(componentUnderTest.showRightsPricingBtn).toBe(false);
+        });
+      });
+      describe('returns true', () => {
+        it('when the quote type is OfflineAgreement and project has rights managed assets', () => {
+          componentUnderTest.quoteType = 'OfflineAgreement';
+          componentUnderTest.projectHasRmAssets = true;
+          expect(componentUnderTest.showRightsPricingBtn).toBe(true);
+        });
+
+        it('when the quote type is standard and project has rights managed assets', () => {
+          componentUnderTest.quoteType = 'standard';
+          componentUnderTest.projectHasRmAssets = true;
+          expect(componentUnderTest.showRightsPricingBtn).toBe(true);
+        });
+
+        it('when the quote type is null and project has rights managed assets', () => {
+          componentUnderTest.quoteType = null;
+          componentUnderTest.projectHasRmAssets = true;
+          expect(componentUnderTest.showRightsPricingBtn).toBe(true);
+        });
+      });
+    });
   });
 }
