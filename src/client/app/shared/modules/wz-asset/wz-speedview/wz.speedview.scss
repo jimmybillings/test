@@ -1,7 +1,6 @@
 .wz-speedview {
   padding: rem(1.2) rem(1.2) rem(1) rem(1.2);
   @include mat-elevation(6);
-  background-color: mat-color($background, card);
   div.image-bg {
     width: rem(40.0);
     height: rem(22.5);

@@ -1,0 +1,14 @@
+home-call-to-action {
+  .mrkt-call-to-action {
+    background-color: mat-color($primary, darker);
+    color: mat-color($primary, darker-contrast);
+  }
+  .conversion {
+    &[md-button] {
+      background-color: mat-color($accent, darker, .8);
+      &:hover {
+        background-color: mat-color($accent, darker, .8);
+      }
+    }
+  }
+}

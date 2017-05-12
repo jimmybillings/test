@@ -74,7 +74,7 @@ cart-confirm-tab-component, quote-confirm-tab {
               content: "\e870";
               font-family: 'Material Icons';
               font-weight: normal;
-              color: rgba(mat-color($foreground, text),0.45);
+              opacity: .45;
               position: absolute;
               top: rem(-1.0);
               left: 0;

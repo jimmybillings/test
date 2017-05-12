@@ -20,7 +20,6 @@ wz-asset-grid ul.asset-grid-view {
     .asset {
       padding: 1px;
       padding-bottom: calc(18.4% - 2px);
-      background-color: mat-color($mat-background, app-bar);
       box-shadow: 0 1px 1px 0 mat-color($mat-grey, 700, .2);
     }
     @media screen and (max-width: $layout-breakpoint-md) {
@@ -43,7 +42,6 @@ wz-asset-grid ul.asset-grid-view {
       font-size: rem(1.1);
       line-height: rem(1.1);
       transition: $swift-ease-out;
-      @include text-contrast(mat-color($mat-background, app-bar));
       opacity: 0;
     }
     .asset a.asset-thb {
@@ -105,7 +103,6 @@ wz-asset-grid ul.asset-grid-view {
         font-size: rem(1.2);
         line-height: rem(1.55);
         height: 72%;
-        @include text-contrast(mat-color($mat-background, background));
         padding: 2.5% 3% 0 3%;
         opacity: .65;
         overflow: hidden;
@@ -121,7 +118,6 @@ wz-asset-grid ul.asset-grid-view {
       span.mdata-1 {
         padding-bottom: 2%;
         opacity: 1;
-        @include text-contrast(mat-color($mat-foreground, base));
         overflow-y: hidden;
       }
     }
@@ -140,11 +136,9 @@ wz-asset-grid ul.asset-grid-view {
         height: 100%;
         min-height: 100%;
         max-height: 100%;
-        background-color: rgba(mat-color($mat-foreground, base), .6);
         padding-left: rem(.6);
         padding-right: rem(.6);
         button[md-icon-button] {
-          @include text-contrast(mat-color($mat-foreground, base));
           height: rem(3.6);
           width: rem(3.6);
           padding: rem(.6);
@@ -161,14 +155,6 @@ wz-asset-grid ul.asset-grid-view {
           md-icon.material-icons {
             font-size: 22px;
             vertical-align: inherit;
-          }
-          &:hover {
-            background-color: rgba(mat-color($mat-foreground, base), .18);
-          }
-          &:disabled {
-            md-icon {
-              color: rgba(mat-color($mat-background, background),.2);;
-            }
           }
         }
       }
@@ -220,7 +206,6 @@ wz-asset-grid ul.asset-grid-view {
         bottom: 0;
         right: 0;
         padding: 0 1% 1% 0;
-        @include text-contrast(mat-color($mat-foreground, base));
         transition: $swift-ease-out;
         z-index: 1;
         span {
@@ -258,10 +243,8 @@ wz-asset-grid ul.asset-grid-view {
         bottom: rem(2.2);
         left: rem(0.0);
         z-index: 1;
-        background-color: darken(mat-color($background, status-bar), 1%);
         opacity: .75;
         .subclip-segment {
-          background-color: rgba(mat-color($accent, darker), .95);
           height: 100%;
           position: absolute;
         }

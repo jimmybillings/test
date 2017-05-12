@@ -19,6 +19,7 @@
     <div flex="100" flex-gt-xs="25" layout-padding></div>
     <div flex-gt-xs="15" flex-sm="15" flex="auto" class="tools actions" flex-order-xs="-3">
       <button 
+        *ngIf="!readOnly"
         md-icon-button
         title="{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.REMOVE_BTN_HOVER' | translate }}"
         (click)="onRemove(feeLineItem)">

@@ -21,26 +21,10 @@ wz-form {
       width: 100%;
       margin-top: rem(1.1);
       margin-bottom: rem(1.1);
-      // font-size: 1.1em;
     }
     md-select {
       position: relative;
     }
-    // md-select {
-    //   .mat-select-trigger {
-    //     height: rem(1.8);
-    //     margin: rem(1.6) 0;
-    //     padding-bottom: rem(1.0);
-    //     line-height: rem(1.4);
-    //   }
-    //   .mat-select-value {
-    //     top: rem(-.2);
-    //     color: currentColor;
-    //   }
-    //   .mat-select-arrow {
-    //     height: rem(.3);
-    //   }
-    // }
     a.view-tos {
       text-decoration: underline;
       cursor: pointer;
@@ -86,49 +70,9 @@ wz-cc-form button.mini.is-outlined {
   text-transform: uppercase;
 }
 
-// testing error display in form.
-// currently using md-hint this may change with ng2 material recommendation
-md-select.show-errors.ng-invalid:not(.mat-select-disabled),
-md-select.ng-touched.ng-dirty.ng-invalid:not(.mat-select-disabled),
-md-input.show-errors.ng-invalid,
-.mat-input-container.mat-input-invalid.ng-dirty.ng-invalid,
-.mat-input-container.ng-touched.ng-dirty.ng-invalid { 
-  .mat-select-placeholder,
-  .mat-input-placeholder {
-    color: mat-color($warn, 600);
-    &.mat-float.mat-focused .mat-placeholder-required {
-      color: mat-color($warn, 600);
-    }
-  }
-  .mat-select-arrow,
-  .mat-select-trigger {
-    color: mat-color($warn, 600);
-  }
-  .mat-select-trigger {
-    border-bottom: 1px solid mat-color($warn, 600);
-  }
-  .mat-input-wrapper {
-    .mat-input-underline {
-      border-top-color: mat-color($warn, 600);
-      .mat-input-ripple {
-        background-color: mat-color($warn, 600);
-      }
-    }
-  } 
-  md-hint.error {
-    color: mat-color($warn, 600);
-  }
-}
-
-md-checkbox.ng-dirty.ng-invalid {
-  .mat-checkbox-inner-container {
-    .mat-checkbox-frame {
-     color: mat-color($mat-warn, 600); 
-    }
-  }
+md-checkbox.ng-dirty.ng-invalid {  
   md-hint.mat-hint.error {
     bottom: rem(10);
-    color: mat-color($warn, 600);
   }  
 }
 

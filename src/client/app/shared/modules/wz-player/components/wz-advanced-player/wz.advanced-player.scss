@@ -12,8 +12,6 @@ wz-advanced-player {
   }
 
   .tool-bar {
-    background-color: lighten(mat-color($foreground, base), 21%);
-    border-top: 1px solid lighten(mat-color($foreground, base), 27%);
     section {
       padding: 0 rem(.5);
     }
@@ -23,10 +21,8 @@ wz-advanced-player {
   }
   .timecode {
     display: inline-flex;
-    background-color: rgba(mat-color($foreground, base), .16);
     font-size: rem(1.25);
     padding: rem(.5);
-    border: 1px solid rgba(mat-color($foreground, base), .04);
     min-width: rem(6.7);
     min-height: rem(1.3);
     vertical-align: middle;
@@ -48,17 +44,11 @@ wz-advanced-player {
     }
   }
   [md-button].is-outlined {
-    background-color: rgba(mat-color($background, background), 0.07);
-    border-color: rgba(mat-color($background, background), 0.18);
     line-height: rem(2.3);
     min-width: rem(4.4);
     padding: 0 rem(.7);
     height: rem(2.5);
     vertical-align: middle;
-
-    &[disabled] {
-      color: rgba(mat-color($background, background), 0.87);
-    }
   }
 
   [md-icon-button] {
@@ -66,7 +56,6 @@ wz-advanced-player {
     height: $mat-icon-button-height;
     width: $mat-icon-button-width;
     md-icon {
-      color: rgba(mat-color($background, background), 0.87);
       line-height: rem(2.1);
       height: rem(2.3);
       width: rem(2.3);

@@ -1,0 +1,17 @@
+asset-save-subclip {
+  background-color: mat-color($background, card);
+  color: mat-color($foreground, text);
+  .mat-dialog-container {
+    .wz-dialog {
+      .wz-dialog-title {
+        color: rgba(mat-color($foreground, text), .65);
+      }
+      .in-out-markers span {
+        background-color:  rgba(mat-color($primary), .04);
+      }
+    }
+    footer {
+      background-color:  rgba(mat-color($primary), .1);
+    }
+  }
+}

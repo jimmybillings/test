@@ -4,6 +4,9 @@
     <div flex="100" layout="row" layout-align="space-between end">
 			<h2 flex="grow" class="md-display-1">{{ 'ORDER.SHOW.PAGE_TITLE' | translate }}</h2>
 			<div class="tools" flex="auto">
+				<button md-button color="primary" class="is-outlined mini">
+					View/print invoice
+				</button>
 				<a [routerLink]="['/commerce/orders']" md-icon-button color="primary" title="{{ 'ORDER.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
 					<md-icon>description</md-icon>
 				</a>
@@ -35,12 +38,9 @@
 					</a>
 				</div>
 			</div>
-			<div flex="100" layout="row" layout-xs="column" class="divider"></div>
+			<!--<div flex="100" layout="row" layout-xs="column" class="divider"></div>-->
 			<div class="cart-total" flex-gt-xs="60" flex="100" class="cart-total">
 				<div class="total md-headline" flex="auto" layout="row" layout-align="end center">
-					<button md-button color="primary" class="is-outlined mini">
-						View/print invoice
-					</button>
 					<div *ngIf="isRefund | async" class="indicate-refund">
 						<span class="total-label">
 								{{ 'ORDER.INDEX.INDICATE_REFUND' | translate }}
@@ -92,7 +92,7 @@
 							</div>
 						</header>
 
-						<section class="assets">
+						<section class="assets" layout="column">
 							<ul class="asset-list">
 								<li 
 									*ngFor="let lineItem of project.lineItems"
@@ -127,6 +127,36 @@
 								</li>
 							</ul>
 						</section>
+						<section class="fees" layout="column" *ngIf="project.feeLineItems">
+							<ul class="fee-list">
+								<li *ngFor="let feeLineItem of project.feeLineItems" class="fee-item" flex="100" layout="row" layout-xs="column">
+									<div flex="100" flex-gt-xs="75">
+										<div layout-align="start stretch" layout-gt-xs="row">
+											<div flex-gt-sm="30" flex-sm="40" flex="100" layout-padding>
+												<div class="fee-indicator" layout="column">
+													<span flex class="fee-title">{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.HEADING' | translate }}</span>
+													<span flex class="fee-type md-caption">{{feeLineItem.feeType}}</span>
+												</div>
+											</div>
+											<div flex-gt-sm="80" flex-sm="75" flex="100" layout-padding>
+												<div class="md-caption fee-type">
+													{{ 'QUOTE.INDEX.PROJECTS.FEE_ITEM.TITLE' | translate:{type:feeLineItem.feeType} }}
+												</div>
+												<p class="fee-notes">{{ feeLineItem.notes }}</p>
+											</div>
+										</div>
+									</div>
+									<div flex="100" flex-gt-xs="25" layout-padding></div>
+									<div flex-gt-xs="15" flex-sm="15" flex="auto" class="tools actions" flex-order-xs="-3">
+										<div flex="100" layout="row" layout-xs="column" class="divider"></div>
+										<div class="amount">
+											{{ feeLineItem.amount | currency:'USD':true:'1.2-2' }}
+										</div>
+									</div>
+								</li>
+							</ul>
+						</section>
+
 					</div>
 				</section>
 

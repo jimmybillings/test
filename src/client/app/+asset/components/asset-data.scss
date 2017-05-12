@@ -1,9 +1,5 @@
 
 .data-bk, .tabs-section {
-  background-color: transparent !important;
-  & > div > div {
-    background: rgba(mat-color($background, background),.7);
-  }
   md-tab-group {
     min-width: 100%;
     & > div {
@@ -14,9 +10,6 @@
       &:last-child {
         margin-bottom: rem(4.6);
       }
-    }
-    .mat-tab-header {
-      background-color: mat-color($background, card);
     }
     .mat-tab-header .mat-tab-list .mat-tab-labels {
       text-transform: uppercase;

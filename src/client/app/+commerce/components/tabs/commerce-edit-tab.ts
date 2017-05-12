@@ -232,6 +232,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         this.dialogService.openComponentInDialog(
           {
             componentType: WzSubclipEditorComponent,
+            dialogConfig: { width: '530px', position: { top: '14%' } },
             inputOptions: {
               window: this.window.nativeWindow,
               asset: lineItem.asset,
