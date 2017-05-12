@@ -45,7 +45,11 @@ export function main() {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' }))
       };
       mockQuoteEditService = { addAssetToProjectInQuote: jasmine.createSpy('addAssetToProjectInQuote') };
-      mockPricingStore = { priceForDialog: Observable.of(1000), priceForDetails: Observable.of(100) };
+      mockPricingStore = {
+        priceForDialog: Observable.of(1000),
+        priceForDetails: Observable.of(100),
+        state: { priceForDetails: 100, priceForDialog: 1000 }
+      };
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
         mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore, mockCart,
