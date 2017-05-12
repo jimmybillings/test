@@ -119,7 +119,7 @@ export class AssetComponent implements OnInit {
             timeEnd: asset.markers ? asset.markers.markers.out : undefined
           }
         },
-        attributes: this.selectedAttrbutes
+        attributes: this.pricingStore.state.priceForDetails ? this.selectedAttrbutes : null
       };
       this.userCan.administerQuotes() ?
         this.quoteEditService.addAssetToProjectInQuote(options) :

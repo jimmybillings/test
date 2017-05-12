@@ -270,7 +270,7 @@
 
             <!--Start Rights Managed Asset-->
             <div layout="row" *ngIf="asset.primary[3].value === 'Rights Managed'">
-              <div *ngIf="asset.price && asset.price !== 0 && !usagePrice" class="list-price">
+              <div *ngIf="asset.price && asset.price !== 0 && !(usagePrice | async)" class="list-price">
                 <span class="starting">{{ 'ASSET.DETAIL.BASE_PRICE' | translate }}</span>
                 <span class="price">{{ asset.price | currency:'USD':true:'1.2-2' }}</span>
               </div>
