@@ -16,6 +16,9 @@
         </span>
       </div>
       <div class="tools" flex="auto" layout-align="end center">
+				<a [routerLink]="['/commerce/quotes']" md-icon-button color="primary" title="{{ 'QUOTE.SHOW.BACK_TO_INDEX_TITLE' | translate }}">
+					<md-icon>inbox</md-icon>
+				</a>
         <button md-icon-button color="primary" [md-menu-trigger-for]="quoteOptionsMenu" title="{{ 'QUOTE.MORE_OPTIONS_TITLE' | translate }}">
           <md-icon>more_vert</md-icon>
         </button>

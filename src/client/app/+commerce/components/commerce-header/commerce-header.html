@@ -31,13 +31,13 @@
 				<button
 					*ngIf="filterOptions"
 					md-icon-button
-					title="sort"
+					title="{{ type + '.INDEX.FILTER_BTN_TITLE' | translate }}"
 					[md-menu-trigger-for]="commerceFilterMenu"><md-icon>filter_list</md-icon>
 				</button>
 				<button
 					*ngIf="sortOptions"
 					md-icon-button
-					title="sort"
+					title="{{ type + '.INDEX.SORT_BTN_TITLE' | translate }}"
 					[md-menu-trigger-for]="commerceSortMenu"><md-icon>sort</md-icon>
 				</button>
 			</div>
