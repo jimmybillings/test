@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Quotes Service', () => {
-    let serviceUnderTest: QuotesService, mockApi: MockApiService, mockCartService: any, mockQuotesStore: any;
+    let serviceUnderTest: QuotesService, mockApi: MockApiService, mockCartService: any, mockQuotesStore: any, mockActiveQuoteStore: any;
 
     beforeEach(() => {
       mockApi = new MockApiService();
@@ -17,8 +17,13 @@ export function main() {
         state: [{ id: 3, ownerUserId: 10 }, { id: 12, ownerUserId: 4 }],
         setQuotes: jasmine.createSpy('setQuotes')
       };
+      mockActiveQuoteStore = {
+        data: Observable.of([{ id: 11, total: 2, createdUserId: 13, ownerUserId: 14, quoteStatus: 'PENDING' }]),
+        state: [{ id: 11, total: 2, createdUserId: 13, ownerUserId: 14, quoteStatus: 'PENDING' }],
+        replaceQuote: jasmine.createSpy('replaceQuote')
+      };
       jasmine.addMatchers(mockApiMatchers);
-      serviceUnderTest = new QuotesService(mockApi.injector, mockCartService, mockQuotesStore);
+      serviceUnderTest = new QuotesService(mockApi.injector, mockCartService, mockQuotesStore, mockActiveQuoteStore);
     });
 
     describe('data getter', () => {
