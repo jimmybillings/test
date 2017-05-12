@@ -20,18 +20,17 @@ import { WzPricingComponent } from '../shared/components/wz-pricing/wz.pricing.c
 import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
+import { PricingStore } from '../shared/stores/pricing.store';
 
 @Component({
   moduleId: module.id,
   selector: 'asset-component',
   templateUrl: 'asset.html',
-  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class AssetComponent implements OnInit {
   public pricingAttributes: any;
   public rightsReproduction: string = '';
-  public usagePrice: Observable<any> = Observable.of(null);
   private selectedAttrbutes: any;
   private pageSize: number = 50;
 
@@ -50,7 +49,8 @@ export class AssetComponent implements OnInit {
     private snackBar: MdSnackBar,
     private translate: TranslateService,
     private dialogService: WzDialogService,
-    private quoteEditService: QuoteEditService) {
+    private quoteEditService: QuoteEditService,
+    private pricingStore: PricingStore) {
     this.window = this.window;
   }
 
@@ -62,6 +62,10 @@ export class AssetComponent implements OnInit {
 
   public get userEmail(): Observable<any> {
     return this.currentUser.data.map(user => user.emailAddress);
+  }
+
+  public get priceForDetails(): Observable<number> {
+    return this.pricingStore.priceForDetails;
   }
 
   public showSnackBar(message: any) {
@@ -104,7 +108,7 @@ export class AssetComponent implements OnInit {
   }
 
   public addAssetToCart(asset: any): void {
-    this.usagePrice.take(1).subscribe((price: any) => {
+    this.pricingStore.priceForDetails.take(1).subscribe((price: any) => {
       let options: AddAssetParameters = {
         lineItem: {
           selectedTranscodeTarget: asset.selectedTranscodeTarget,
@@ -115,7 +119,7 @@ export class AssetComponent implements OnInit {
             timeEnd: asset.markers ? asset.markers.markers.out : undefined
           }
         },
-        attributes: this.selectedAttrbutes
+        attributes: this.pricingStore.state.priceForDetails ? this.selectedAttrbutes : null
       };
       this.userCan.administerQuotes() ?
         this.quoteEditService.addAssetToProjectInQuote(options) :
@@ -125,13 +129,6 @@ export class AssetComponent implements OnInit {
       key: this.userCan.administerQuotes() ? 'ASSET.ADD_TO_QUOTE_TOAST' : 'ASSET.ADD_TO_CART_TOAST',
       value: { assetId: asset.assetId }
     });
-  }
-
-  public calculatePrice(attributes: any): Observable<number> {
-    this.selectedAttrbutes = attributes;
-    return this.assetService.getPrice(this.assetService.state.assetId, attributes)
-      .map((data: any) => { return data.price; })
-      .share();
   }
 
   public getPricingAttributes(rightsReproduction: string): void {
@@ -153,7 +150,7 @@ export class AssetComponent implements OnInit {
         inputOptions: {
           attributes: this.pricingAttributes,
           pricingPreferences: this.userPreference.state.pricingPreferences,
-          usagePrice: null
+          usagePrice: this.pricingStore.priceForDialog
         },
         outputOptions: [
           {
@@ -168,13 +165,13 @@ export class AssetComponent implements OnInit {
   private applyPricing = (event: WzEvent, dialogRef: MdDialogRef<WzPricingComponent>) => {
     switch (event.type) {
       case 'CALCULATE_PRICE':
-        this.calculatePrice(event.payload).subscribe(usagePrice => {
-          dialogRef.componentInstance.usagePrice = Observable.of(usagePrice);
-          this.usagePrice = Observable.of(usagePrice);
+        this.calculatePrice(event.payload).subscribe((price: number) => {
+          this.pricingStore.setPriceForDialog(price);
         });
         break;
-      case 'UPDATE_PREFERENCES':
-        this.userPreference.updatePricingPreferences(event.payload);
+      case 'APPLY_PRICE':
+        this.pricingStore.setPriceForDetails(event.payload.price);
+        this.userPreference.updatePricingPreferences(event.payload.attributes);
         dialogRef.close();
         break;
       case 'ERROR':
@@ -183,5 +180,10 @@ export class AssetComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  private calculatePrice(attributes: any): Observable<number> {
+    this.selectedAttrbutes = attributes;
+    return this.assetService.getPrice(this.assetService.state.assetId, attributes);
   }
 }

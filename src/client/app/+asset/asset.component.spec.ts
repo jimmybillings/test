@@ -6,7 +6,8 @@ export function main() {
 
     let mockCurrentUserService: any, mockCapabilities: any, mockActiveCollection: any, mockSearchContext: any, mockUiState: any;
     let mockUserPreference: any, mockAssetService: any, mockUiConfig: any, mockErrorStore: any, mockCart: any,
-      mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any;
+      mockWindow: any, mockDialogService: any, mockTranslate: any, mockSnackBar: any, mockQuoteEditService: any,
+      mockPricingStore: any;
     let componentUnderTest: AssetComponent;
 
     beforeEach(() => {
@@ -27,7 +28,8 @@ export function main() {
         downloadComp: jasmine.createSpy('downloadComp').and.returnValue(Observable.of({})),
         getPrice: jasmine.createSpy('getPrice').and.returnValue(Observable.of({ price: 10, some: 'data' })),
         getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({})),
-        state: { assetId: 123456 }
+        state: { asset: { assetId: 123456 } },
+        priceForDetails: Observable.of(100)
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
       mockErrorStore = { dispatch: jasmine.createSpy('dispatch') };
@@ -42,14 +44,17 @@ export function main() {
       mockDialogService = {
         openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' }))
       };
-
       mockQuoteEditService = { addAssetToProjectInQuote: jasmine.createSpy('addAssetToProjectInQuote') };
-
+      mockPricingStore = {
+        priceForDialog: Observable.of(1000),
+        priceForDetails: Observable.of(100),
+        state: { priceForDetails: 100, priceForDialog: 1000 }
+      };
       componentUnderTest = new AssetComponent(
         mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
         mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore, mockCart,
-        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService);
-
+        mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore
+      );
     });
 
     describe('ngOnInit()', () => {
@@ -110,7 +115,8 @@ export function main() {
         componentUnderTest = new AssetComponent(
           mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
           mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore,
-          mockCart, mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService);
+          mockCart, mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore
+        );
         componentUnderTest.downloadComp({ assetId: '123123', compType: 'New Comp' });
         expect(mockWindow.nativeWindow.location.href).toEqual('http://downloadcomp.url');
       });
@@ -120,29 +126,11 @@ export function main() {
     describe('addAssetToCart()', () => {
       describe('Should call the cart summary service with the correct params', () => {
         it('with a price', () => {
-          componentUnderTest.usagePrice = Observable.of(100);
           componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
           expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
             lineItem: {
               selectedTranscodeTarget: 'Target',
               price: 100,
-              asset: {
-                assetId: 123123,
-                timeStart: undefined,
-                timeEnd: undefined
-              }
-            },
-            attributes: undefined
-          });
-        });
-
-        it('without a price', () => {
-          componentUnderTest.addAssetToCart({ assetId: 123123, selectedTranscodeTarget: 'Target' });
-
-          expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
-            lineItem: {
-              selectedTranscodeTarget: 'Target',
-              price: undefined,
               asset: {
                 assetId: 123123,
                 timeStart: undefined,
@@ -161,7 +149,7 @@ export function main() {
           expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
             lineItem: {
               selectedTranscodeTarget: 'Target',
-              price: undefined,
+              price: 100,
               asset: {
                 assetId: 123123,
                 timeStart: 1,
@@ -171,24 +159,6 @@ export function main() {
             attributes: undefined
           });
         });
-      });
-    });
-
-    describe('calculatePrice', () => {
-      it('should call the getPrice method on the assetService', () => {
-        componentUnderTest.calculatePrice({ 'a': 'b', 'c': 'd' });
-
-        expect(mockAssetService.getPrice).toHaveBeenCalledWith(123456, { 'a': 'b', 'c': 'd' });
-      });
-
-      it('should return an observable of the price', () => {
-        let result: Observable<number>;
-        result = componentUnderTest.calculatePrice({ a: 'b', c: 'd' });
-
-        result.subscribe((price: number) => {
-          expect(price).toBe(10);
-        });
-        expect(result instanceof Observable).toBe(true);
       });
     });
 

@@ -1,9 +1,10 @@
 import { Frame } from 'wazee-frame-formatter';
 import { Asset, Pagination } from './common.interface';
 
-export interface AssetDetailI {
-  name: string;
-  metadata?: Array<Object>;
+export interface AssetState {
+  asset: Asset;
+  priceForDialog: number;
+  priceForDetails: number;
 }
 
 export interface SearchResult extends Pagination {

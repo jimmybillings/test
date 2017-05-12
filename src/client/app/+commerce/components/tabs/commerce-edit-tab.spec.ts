@@ -7,7 +7,7 @@ export function main() {
   describe('Commerce Edit tab', () => {
     let componentUnderTest: CommerceEditTab, mockCartService: any, mockUiConfig: any, mockDialogService: any,
       mockAssetService: any, mockUserPreference: any, mockDocument: any, mockWindow: any, mockState: any,
-      mockQuoteService: any, mockTranslateService: any, mockSnackbar: any;
+      mockQuoteService: any, mockTranslateService: any, mockSnackbar: any, mockPricingStore: any;
 
     beforeEach(() => {
       mockState = {
@@ -78,11 +78,15 @@ export function main() {
         open: jasmine.createSpy('open')
       };
 
+      mockPricingStore = {
+        priceForDialog: Observable.of(1000)
+      };
+
       componentUnderTest = new CommerceEditTab(
         null, mockCartService, mockUiConfig, mockDialogService,
         mockAssetService, mockWindow, mockUserPreference,
         null, mockDocument, mockSnackbar,
-        mockTranslateService
+        mockTranslateService, mockPricingStore
       );
     });
 
@@ -109,7 +113,8 @@ export function main() {
 
         componentUnderTest = new CommerceEditTab(
           null, mockCartService, mockUiConfig, mockDialogService,
-          null, mockWindow, mockUserPreference, null, null, null, null
+          null, mockWindow, mockUserPreference, null, null, null, null,
+          null
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
@@ -143,7 +148,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);
@@ -157,7 +162,7 @@ export function main() {
         };
 
         componentUnderTest = new CommerceEditTab(
-          null, mockCartService, null, null, null, null, null, null, null, null, null
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null
         );
 
         expect(componentUnderTest.rmAssetsHaveAttributes).toBe(true);

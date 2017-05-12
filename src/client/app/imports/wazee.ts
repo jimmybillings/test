@@ -50,6 +50,7 @@ import { quotes, QuotesStore } from '../shared/stores/quotes.store';
 import { activeQuote, ActiveQuoteStore } from '../shared/stores/active-quote.store';
 import { checkout, CheckoutStore } from '../shared/stores/checkout.store';
 import { feeConfig, FeeConfigStore } from '../shared/stores/fee-config.store';
+import { pricingReducer, PricingStore } from '../shared/stores/pricing.store';
 
 
 import { asset } from '../shared/services/asset.service';
@@ -144,7 +145,8 @@ const WAZEE_STORE_INTERFACES = [
   QuotesStore,
   ActiveQuoteStore,
   CheckoutStore,
-  FeeConfigStore
+  FeeConfigStore,
+  PricingStore
 ];
 
 export const WAZEE_PROVIDERS: any = [
@@ -178,5 +180,6 @@ export const WAZEE_STORES: any = {
   quotes: quotes,
   activeQuote: activeQuote,
   checkout: checkout,
-  feeConfig: feeConfig
+  feeConfig: feeConfig,
+  paymentReducer: pricingReducer
 };
