@@ -49,7 +49,11 @@ export class FeatureStore {
 
   private format(data: any): Features {
     for (let key in data) {
-      data[key] = JSON.parse(data[key]);
+      try {
+        data[key] = JSON.parse(data[key]);
+      } catch (error) {
+        data[key] = data[key];
+      }
     }
     return data;
   }
