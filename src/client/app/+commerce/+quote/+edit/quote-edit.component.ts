@@ -175,11 +175,7 @@ export class QuoteEditComponent extends CommerceEditTab {
     this.dialogService.openFormDialog(
       this.config.addCostMultiplier.items,
       { title: 'QUOTE.ADD_MULTIPLIER_TITLE', submitLabel: 'QUOTE.ADD_MULTIPLIER_FORM_SUBMIT' },
-      this.onSubmitCostMultiplierDialog
+      (result: { multiplier: string }): void => this.quoteEditService.editLineItem(lineItem, result)
     );
-  }
-
-  private onSubmitCostMultiplierDialog = (form: any) => {
-    return;
   }
 }
