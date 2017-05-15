@@ -72,4 +72,8 @@ export class LineItemsComponent {
   public get shouldDisplayPricing(): boolean {
     return this.quoteType !== 'ProvisionalOrder';
   }
+
+  public onAddCostMultiplier(lineItem: AssetLineItem): void {
+    this.lineItemsNotify.emit({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: lineItem });
+  }
 }

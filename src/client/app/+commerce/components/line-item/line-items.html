@@ -20,12 +20,14 @@
 				[hasAttributes]="!!lineItem.attributes"
 				[otherProjects]="otherProjects"
 				[userCanCreateSubclips]="userCan.createSubclips(lineItem)"
+				[userCanAdministerQuotes]="userCan.administerQuotes()"
 				[timeStart]="lineItem.timeStart"
 				[quoteType]="quoteType"
 				(showPricingDialog)="onShowPricingDialog(lineItem)"
 				(clone)="onClone(lineItem)"
 				(moveTo)="onMoveTo($event, lineItem)"
 				(editMarkers)="onEditMarkers(lineItem)"
+				(addCostMultiplier)="onAddCostMultiplier(lineItem)"
 				(remove)="onRemove(lineItem)">
 			</line-item-actions-component>
 			<line-item-price-component

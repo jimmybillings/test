@@ -11,7 +11,7 @@ import { UserPreferenceService } from '../../../shared/services/user-preference.
 import { ErrorStore } from '../../../shared/stores/error.store';
 import { WindowRef } from '../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
-import { QuoteOptions, Project, FeeLineItem, Quote } from '../../../shared/interfaces/commerce.interface';
+import { QuoteOptions, Project, FeeLineItem, Quote, AssetLineItem } from '../../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { User } from '../../../shared/interfaces/user.interface';
 import { WzEvent } from '../../../shared/interfaces/common.interface';
@@ -68,6 +68,10 @@ export class QuoteEditComponent extends CommerceEditTab {
 
       case 'REMOVE_QUOTE_FEE':
         this.quoteEditService.removeFee(message.payload);
+        break;
+
+      case 'SHOW_COST_MULTIPLIER_DIALOG':
+        this.openCostMultiplierDialog(message.payload);
         break;
 
       default:
@@ -165,5 +169,13 @@ export class QuoteEditComponent extends CommerceEditTab {
       item.value = value ? value : '';
       return item;
     });
+  }
+
+  private openCostMultiplierDialog(lineItem: AssetLineItem): void {
+    this.dialogService.openFormDialog(
+      this.config.addCostMultiplier.items,
+      { title: 'QUOTE.ADD_MULTIPLIER_TITLE', submitLabel: 'QUOTE.ADD_MULTIPLIER_FORM_SUBMIT' },
+      (result: { multiplier: string }): void => this.quoteEditService.editLineItem(lineItem, result)
+    );
   }
 }
