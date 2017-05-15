@@ -47,10 +47,19 @@ export function main() {
     });
 
     describe('set', () => {
-      it('should call dispatch on the store with the right action', () => {
+      it('should call dispatch on the store with the right action - for expected data', () => {
         storeUnderTest.set({ disableCartAccess: 'true' });
 
         expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'FEATURE.SET_STATE', payload: { disableCartAccess: true } });
+      });
+
+      it('should call dispatch on the store with the right action - for unexpected data', () => {
+        storeUnderTest.set({ stripePublicKey: 'pk_lbkjo87eta89nca' });
+
+        expect(mockStore.dispatch).toHaveBeenCalledWith({
+          type: 'FEATURE.SET_STATE',
+          payload: { stripePublicKey: 'pk_lbkjo87eta89nca' }
+        });
       });
     });
   });
