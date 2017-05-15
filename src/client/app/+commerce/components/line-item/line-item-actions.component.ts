@@ -7,8 +7,6 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="tools" flex="100">
-      <!-- CRUX-1715 -->
-      <!-- this rights button can go away when it added to the project -->
       <button
         md-icon-button
         *ngIf="displayPriceButton"
@@ -45,6 +43,10 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
         <md-icon>theaters</md-icon>
         <span>{{ trStringForSubclipping | translate }}</span>
       </button>
+      <button md-menu-item (click)="addCostMultiplier.emit()" *ngIf="userCanAdministerQuotes">
+        <md-icon>attach_money</md-icon>
+        <span>{{ 'QUOTE.ADD_MULTIPLIER_TITLE' | translate }}</span>
+      </button>
     </md-menu>
   `
 })
@@ -52,7 +54,8 @@ export class LineItemActionsComponent {
   @Input() rightsManaged: string;
   @Input() hasAttributes: boolean;
   @Input() otherProjects: any[];
-  @Input() userCanCreateSubclips: any[];
+  @Input() userCanCreateSubclips: boolean;
+  @Input() userCanAdministerQuotes: boolean;
   @Input() timeStart: number;
   @Input() quoteType: QuoteType;
   @Output() showPricingDialog: EventEmitter<any> = new EventEmitter();
@@ -60,6 +63,7 @@ export class LineItemActionsComponent {
   @Output() clone: EventEmitter<any> = new EventEmitter();
   @Output() moveTo: EventEmitter<any> = new EventEmitter();
   @Output() editMarkers: EventEmitter<any> = new EventEmitter();
+  @Output() addCostMultiplier: EventEmitter<null> = new EventEmitter();
 
   public get displayPriceButton(): boolean {
     return this.rightsManaged === 'Rights Managed' && this.quoteType !== 'ProvisionalOrder';
