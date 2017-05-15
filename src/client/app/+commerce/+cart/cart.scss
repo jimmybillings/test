@@ -1,13 +1,14 @@
 cart-component .tabs-section, 
 quote-show-component .tabs-section,
 quote-edit-component .tabs-section {
+  padding-bottom: rem(6.0);
   md-tab-group > div {
     margin-bottom: 0;
     margin-top: 0;
     margin-left: rem(2.6);
     margin-right: rem(2.6);
     &:last-child {
-      margin-bottom: rem(6.0);
+      margin-bottom: rem(2.8);
     }
     @media screen and (max-width: $layout-breakpoint-sm)  {
       margin-left: rem(1.2);
@@ -15,7 +16,7 @@ quote-edit-component .tabs-section {
     }
   }
 }
-quote-show-component .tabs-section md-tab-group > div .project:first-child {
+quote-show-component .tabs-section md-tab-group > div {
   margin-top: rem(2.2);
 }
 cart-component section.header, quote-edit-component section.header {
@@ -155,7 +156,7 @@ quote-edit-component .quote-section {
     }
   }
   .cart-total {
-    padding: 0 rem(.4) rem(6.0) 0;
+    padding: rem(.4) rem(.4) rem(.8) 0;
   }
 }
 .bulk-order {

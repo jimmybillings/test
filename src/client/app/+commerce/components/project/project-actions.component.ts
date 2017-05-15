@@ -1,12 +1,12 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { AssetLineItem } from '../../../shared/interfaces/commerce.interface';
+import { AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.interface';
 @Component({
   moduleId: module.id,
   selector: 'project-actions-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button md-button type="button"
-      *ngIf="projectHasRmAssets"
+      *ngIf="showRightsPricingBtn"
       (click)="editProjectPricing()" 
       class="is-outlined rights-pkg"
       [ngClass]="{'select-usage': !rmAssetsHaveAttributes }">
@@ -33,6 +33,7 @@ import { AssetLineItem } from '../../../shared/interfaces/commerce.interface';
   `
 })
 export class ProjectActionsComponent {
+  @Input() quoteType: QuoteType;
   @Input() includeFees: boolean = false;
   @Input() projectHasRmAssets: boolean = false;
   @Input() rmAssetsHaveAttributes: boolean = false;
@@ -55,5 +56,9 @@ export class ProjectActionsComponent {
 
   public editProjectPricing() {
     this.projectActionsNotify.emit({ type: 'EDIT_PROJECT_PRICING' });
+  }
+
+  public get showRightsPricingBtn(): boolean {
+    return this.quoteType !== 'ProvisionalOrder' && this.projectHasRmAssets;
   }
 }

@@ -54,12 +54,12 @@
     </div>
     <div flex="100" layout="row" layout-xs="column" class="divider"></div>
     <div flex-gt-sm="33" layout-sm="100" flex="auto" class="md-headline">
-      <div class="total" layout="column" layout-align="center center" layout-align-gt-sm="space-between end">
+      <div class="total" layout="column" layout-align="right center" layout-align-gt-sm="space-between end">
         <div flex>
           <h5 flex *ngIf="type === 'QUOTE'" class="md-subhead status {{ item.quoteStatus.toLowerCase() }}">
             {{ item.quoteStatus }}
           </h5>
-          <div *ngIf="shouldShowRefundIndicatorFor(item)" class="indicate-refund">
+          <div flex *ngIf="shouldShowRefundIndicatorFor(item)" class="indicate-refund">
             <span class="total-label">
               {{ 'ORDER.INDEX.INDICATE_REFUND' | translate }}
             </span>
@@ -67,7 +67,7 @@
               {{ item.total | currency:'USD':true:'1.2-2' | slice:1 }}
             </span>
           </div>
-          <div *ngIf="!item.creditMemoForOrderId">
+          <div flex *ngIf="!item.creditMemoForOrderId">
             <span class="total-label">
               {{ type + '.INDEX.TOTAL_LABEL' | translate }}
             </span>

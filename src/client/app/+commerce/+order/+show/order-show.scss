@@ -15,7 +15,10 @@ order-show-component {
         text-align: right;
       }
     }
-  } 
+  }
+  section.project {
+    padding-bottom: rem(6.0);
+  }
 }
 order-show-component .project .assets,
 order-show-component .project .fees {

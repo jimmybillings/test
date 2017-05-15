@@ -1,4 +1,11 @@
 .commerce-list {
+  position: relative;
+  .new-quote {
+    position: absolute;
+    top: rem(.6);
+    left: 0;
+    z-index: 2;
+  }
   ul {
     margin: 0;
     margin-top: rem(1.5);
@@ -74,8 +81,10 @@
         }
       }
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-        text-align: center;
-        padding-top: rem(.4);
+        padding-bottom: rem(.4);
+        & > div {
+          padding-bottom: rem(1.2);
+        }
       }
     }
     .projects {
