@@ -108,6 +108,7 @@ export class WzFormBase implements OnInit, OnChanges {
       field.validation === 'MULTIEMAIL' ||
       field.validation === 'PASSWORD' ||
       field.validation === 'TERMS' ||
+      field.validation === 'GREATER_THAN' ||
       field.validation === 'COLLECTION') ? true : false;
   }
 
