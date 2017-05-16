@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../services/api.service';
+import { Router } from '@angular/router';
 import { Api, ApiBody, ApiParameters } from '../interfaces/api.interface';
 import { Address, ViewAddress } from '../interfaces/user.interface';
 import {
@@ -16,7 +17,8 @@ export class QuoteEditService {
   constructor(
     private store: ActiveQuoteStore,
     private feeConfigStore: FeeConfigStore,
-    private api: ApiService
+    private api: ApiService,
+    private router: Router
   ) { }
 
   // Store Accessors
@@ -146,13 +148,14 @@ export class QuoteEditService {
       { body: this.state.data, loading: true },
     ).subscribe(this.replaceQuote);
   }
-
+  // this does the send request and then takes user to the review page of the active quote.
+  // But it does not make another focused, or create a new focused quote.
   public sendQuote(options: QuoteOptions): Observable<any> {
     return this.api.put(
       Api.Orders,
       `quote/send/${this.quoteId}`,
-      { parameters: options as ApiParameters }
-    );
+      { parameters: options as ApiParameters, loading: true }
+    ).do((response: any) => this.router.navigate([`/commerce/quotes/${this.quoteId}`]));
   }
 
   public addFeeTo(project: Project, fee: FeeLineItem): void {

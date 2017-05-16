@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Quote Edit Service', () => {
-    let serviceUnderTest: QuoteEditService, mockApi: MockApiService, mockQuoteStore: any, mockFeeConfigStore: any;
+    let serviceUnderTest: QuoteEditService, mockApi: MockApiService, mockQuoteStore: any, mockFeeConfigStore: any, mockRouter: any;
     let mockState: any = { data: { id: 3, ownerUserId: 10, total: 90, subTotal: 100, projects: [{ name: 'Project A' }] } };
 
     beforeEach(() => {
@@ -18,7 +18,9 @@ export function main() {
       };
       mockFeeConfigStore = {};
       jasmine.addMatchers(mockApiMatchers);
-      serviceUnderTest = new QuoteEditService(mockQuoteStore, mockFeeConfigStore, mockApi.injector);
+      mockRouter = { navigate: jasmine.createSpy('navigate') };
+
+      serviceUnderTest = new QuoteEditService(mockQuoteStore, mockFeeConfigStore, mockApi.injector, mockRouter);
     });
 
     describe('Store Accessors', () => {
@@ -61,17 +63,17 @@ export function main() {
       describe('get hasHAssets', () => {
         it('should return false if the quote does not have the itemCount property', () => {
           mockQuoteStore = { data: Observable.of({ data: {} }) };
-          new QuoteEditService(mockQuoteStore, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
+          new QuoteEditService(mockQuoteStore, null, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
         });
 
         it('should return false if the quote itemCount is 0', () => {
           mockQuoteStore = { data: Observable.of({ data: { itemCount: 0 } }) };
-          new QuoteEditService(mockQuoteStore, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
+          new QuoteEditService(mockQuoteStore, null, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
         });
 
         it('should return true if the quote itemCount is greater than 0', () => {
           mockQuoteStore = { data: Observable.of({ data: { itemCount: 1 } }) };
-          new QuoteEditService(mockQuoteStore, null, null).hasAssets.subscribe(d => expect(d).toBe(true));
+          new QuoteEditService(mockQuoteStore, null, null, null).hasAssets.subscribe(d => expect(d).toBe(true));
         });
       });
 
