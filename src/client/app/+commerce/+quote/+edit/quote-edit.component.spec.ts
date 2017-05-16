@@ -13,7 +13,8 @@ export function main() {
         removeFee: jasmine.createSpy('removeFee'),
         hasProperty: jasmine.createSpy('hasProperty').and.returnValue(Observable.of('someProp')),
         updateQuoteField: jasmine.createSpy('updateQuoteField'),
-        sendQuote: jasmine.createSpy('sendQuote').and.returnValue(Observable.of({}))
+        sendQuote: jasmine.createSpy('sendQuote').and.returnValue(Observable.of({})),
+        editLineItem: jasmine.createSpy('editLineItem')
       };
 
       mockUiConfig = {
@@ -21,7 +22,8 @@ export function main() {
           config: {
             createQuote: { items: ['yay'] },
             addBulkOrderId: { items: [{ some: 'bulk' }] },
-            addDiscount: { items: [{ some: 'discount' }] }
+            addDiscount: { items: [{ some: 'discount' }] },
+            addCostMultiplier: { items: [{ some: 'multiplier' }] }
           }
         }))
       };
@@ -67,7 +69,8 @@ export function main() {
         expect(componentUnderTest.config).toEqual({
           createQuote: { items: ['yay'] },
           addBulkOrderId: { items: [{ some: 'bulk' }] },
-          addDiscount: { items: [{ some: 'discount' }] }
+          addDiscount: { items: [{ some: 'discount' }] },
+          addCostMultiplier: { items: [{ some: 'multiplier' }] }
         });
       });
     });
@@ -137,6 +140,24 @@ export function main() {
           );
 
           expect(mockQuoteEditService.removeFee).toHaveBeenCalledWith({ some: 'fee' });
+        });
+      });
+
+      describe('SHOW_COST_MULTIPLIER_DIALOG', () => {
+        it('should open a form dialog', () => {
+          componentUnderTest.onNotification({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: { id: 1 } });
+
+          expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+            [{ some: 'multiplier' }],
+            { title: 'QUOTE.ADD_MULTIPLIER_TITLE', submitLabel: 'QUOTE.ADD_MULTIPLIER_FORM_SUBMIT' },
+            jasmine.any(Function)
+          );
+        });
+
+        it('calls the callback on form submit', () => {
+          componentUnderTest.onNotification({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: { id: 1 } });
+          mockDialogService.onSubmitCallback({ multiplier: '1.2' });
+          expect(mockQuoteEditService.editLineItem).toHaveBeenCalledWith({ id: 1 }, { multiplier: '1.2' });
         });
       });
     });
