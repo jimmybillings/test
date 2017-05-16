@@ -76,4 +76,8 @@ export class LineItemsComponent {
   public onOpenCostMultiplierForm(lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: lineItem });
   }
+
+  public onRemoveCostMultiplier(lineItem: AssetLineItem): void {
+    this.lineItemsNotify.emit({ type: 'REMOVE_COST_MULTIPLIER', payload: lineItem });
+  }
 }
