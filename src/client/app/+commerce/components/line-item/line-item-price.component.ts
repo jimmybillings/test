@@ -6,11 +6,11 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div flex="100" layout="row" layout-xs="column" class="divider"></div>
-    <div class="price" [ngClass]="{'select-usage': needsAttributes }">
-      {{ price | currency:'USD':true:'1.2-2' }}
-    </div>
     <div class="multiplier" *ngIf="shouldShowMultiplier">
       <span>{{ 'QUOTE.MULTIPLIER_INDICATOR' | translate:{multiplier: multiplier} }}</span>
+    </div>
+    <div class="price" [ngClass]="{'select-usage': needsAttributes }">
+      {{ price | currency:'USD':true:'1.2-2' }}
     </div>
   `
 })
