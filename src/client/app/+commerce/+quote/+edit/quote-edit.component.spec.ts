@@ -160,12 +160,11 @@ export function main() {
           expect(mockQuoteEditService.editLineItem).toHaveBeenCalledWith({ id: 1 }, { multiplier: '1.2' });
         });
 
-        it('uses the correct strings for edit', () => {
+        it('uses the correct strings for edit and merges form values', () => {
           componentUnderTest.onNotification({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: { id: 1, multiplier: 1.5 } });
 
-
           expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
-            [{ some: 'multiplier' }],
+            [{ some: 'multiplier', value: 1.5 }],
             { title: 'QUOTE.EDIT_MULTIPLIER_TITLE', submitLabel: 'QUOTE.EDIT_MULTIPLIER_FORM_SUBMIT' },
             jasmine.any(Function)
           );
