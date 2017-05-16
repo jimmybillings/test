@@ -6,6 +6,9 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div flex="100" layout="row" layout-xs="column" class="divider"></div>
+    <div class="multiplier" *ngIf="shouldShowMultiplier">
+      <span>{{ 'QUOTE.MULTIPLIER_INDICATOR' | translate:{multiplier: multiplier} }}</span>
+    </div>
     <div class="price" [ngClass]="{'select-usage': needsAttributes }">
       {{ price | currency:'USD':true:'1.2-2' }}
     </div>
@@ -13,10 +16,16 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 })
 export class LineItemPriceComponent {
   @Input() price: number;
+  @Input() multiplier: number;
+  @Input() userCanAdministerQuotes: boolean;
   @Input() rightsManaged: string;
   @Input() hasAttributes: boolean;
 
   public get needsAttributes(): boolean {
     return this.rightsManaged === 'Rights Managed' && !this.hasAttributes;
+  }
+
+  public get shouldShowMultiplier(): boolean {
+    return this.userCanAdministerQuotes && this.multiplier > 1;
   }
 }

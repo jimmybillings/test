@@ -33,8 +33,10 @@
 			<line-item-price-component
 				*ngIf="shouldDisplayPricing"
 				[price]="lineItem.price"
+				[multiplier]="lineItem.multiplier"
 				[rightsManaged]="lineItem.rightsManaged"
-				[hasAttributes]="!!lineItem.attributes">
+				[hasAttributes]="!!lineItem.attributes"
+				[userCanAdministerQuotes]="userCan.administerQuotes()">
 			</line-item-price-component>
 		</div>
 	</li>

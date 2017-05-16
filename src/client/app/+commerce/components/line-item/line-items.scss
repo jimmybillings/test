@@ -91,17 +91,24 @@ li.cart-asset {
     }
   }
 
-  .price {
+  line-item-price-component {
     position: absolute;
     bottom: rem(.7);
     right: rem(.7);
     font-size: rem(1.8);
-    &::first-letter {
-      font-size: .83em;
-      vertical-align: top;
+    text-align: right;
+    .price {
+      &::first-letter {
+        font-size: .83em;
+        vertical-align: top;
+      }
+      &.select-usage::after {
+        content: " *";
+      }
     }
-    &.select-usage::after {
-      content: " *";
+    .multiplier {
+      padding-bottom: rem(.6);
+      font-size: rem(1.4);
     }
   }
   .divider {
