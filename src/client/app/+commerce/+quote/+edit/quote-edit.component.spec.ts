@@ -170,6 +170,14 @@ export function main() {
           );
         });
       });
+
+      describe('REMOVE_COST_MULTIPLIER', () => {
+        it('should call the editLineItem method on the api service', () => {
+          componentUnderTest.onNotification({ type: 'REMOVE_COST_MULTIPLIER', payload: { id: 1, multiplier: 2 } });
+
+          expect(mockQuoteEditService.editLineItem).toHaveBeenCalledWith({ id: 1, multiplier: 2 }, { multiplier: 1 });
+        });
+      });
     });
 
     describe('get bulkOrderIdActionLabel', () => {

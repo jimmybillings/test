@@ -43,9 +43,14 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
         <md-icon>theaters</md-icon>
         <span>{{ trStringForSubclipping | translate }}</span>
       </button>
+      <div class="divider"></div>
       <button md-menu-item (click)="openCostMultiplierForm.emit()" *ngIf="userCanAdministerQuotes">
         <md-icon>attach_money</md-icon>
         <span>{{ trStringForCostMultiplier | translate }}</span>
+      </button>
+      <button md-menu-item (click)="removeCostMultiplier.emit()" *ngIf="showDeleteCostMultiplierBtn">
+        <md-icon>remove_circle</md-icon>
+        <span>{{ 'QUOTE.REMOVE_MULTIPLIER' | translate }}</span>
       </button>
     </md-menu>
   `
@@ -65,6 +70,7 @@ export class LineItemActionsComponent {
   @Output() moveTo: EventEmitter<any> = new EventEmitter();
   @Output() editMarkers: EventEmitter<any> = new EventEmitter();
   @Output() openCostMultiplierForm: EventEmitter<null> = new EventEmitter();
+  @Output() removeCostMultiplier: EventEmitter<null> = new EventEmitter();
 
   public get displayPriceButton(): boolean {
     return this.rightsReproduction === 'Rights Managed' && this.quoteType !== 'ProvisionalOrder';
@@ -90,5 +96,9 @@ export class LineItemActionsComponent {
 
   public get trStringForCostMultiplier(): string {
     return this.hasMultiplier ? 'QUOTE.EDIT_MULTIPLIER_TITLE' : 'QUOTE.ADD_MULTIPLIER_TITLE';
+  }
+
+  public get showDeleteCostMultiplierBtn(): boolean {
+    return this.userCanAdministerQuotes && this.hasMultiplier;
   }
 }
