@@ -16,18 +16,19 @@
 		<div flex-gt-xs="15" flex="auto" class="actions" flex-order-xs="-3">
 			<line-item-actions-component
 				*ngIf="!readOnly"
-				[rightsManaged]="lineItem.rightsManaged"
+				[rightsReproduction]="lineItem.rightsManaged"
 				[hasAttributes]="!!lineItem.attributes"
 				[otherProjects]="otherProjects"
 				[userCanCreateSubclips]="userCan.createSubclips(lineItem)"
 				[userCanAdministerQuotes]="userCan.administerQuotes()"
-				[timeStart]="lineItem.timeStart"
+				[timeStart]="lineItem.asset.timeStart"
 				[quoteType]="quoteType"
+				[hasMultiplier]="lineItem.multiplier > 1"
 				(showPricingDialog)="onShowPricingDialog(lineItem)"
 				(clone)="onClone(lineItem)"
 				(moveTo)="onMoveTo($event, lineItem)"
 				(editMarkers)="onEditMarkers(lineItem)"
-				(addCostMultiplier)="onAddCostMultiplier(lineItem)"
+				(openCostMultiplierForm)="onOpenCostMultiplierForm(lineItem)"
 				(remove)="onRemove(lineItem)">
 			</line-item-actions-component>
 			<line-item-price-component
