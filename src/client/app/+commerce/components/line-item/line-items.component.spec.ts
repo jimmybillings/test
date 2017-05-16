@@ -122,7 +122,7 @@ export function main() {
           expect(event).toEqual({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: lineItem });
         });
 
-        classUnderTest.onAddCostMultiplier(lineItem);
+        classUnderTest.onOpenCostMultiplierForm(lineItem);
       });
     });
   });

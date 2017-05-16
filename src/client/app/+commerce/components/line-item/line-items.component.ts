@@ -73,7 +73,7 @@ export class LineItemsComponent {
     return this.quoteType !== 'ProvisionalOrder';
   }
 
-  public onAddCostMultiplier(lineItem: AssetLineItem): void {
+  public onOpenCostMultiplierForm(lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: lineItem });
   }
 }

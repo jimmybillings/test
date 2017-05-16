@@ -174,8 +174,16 @@ export class QuoteEditComponent extends CommerceEditTab {
   private openCostMultiplierDialog(lineItem: AssetLineItem): void {
     this.dialogService.openFormDialog(
       this.config.addCostMultiplier.items,
-      { title: 'QUOTE.ADD_MULTIPLIER_TITLE', submitLabel: 'QUOTE.ADD_MULTIPLIER_FORM_SUBMIT' },
+      { title: this.costMultiplierFormTitle(lineItem), submitLabel: this.costMultiplierFormSubmitLabel(lineItem) },
       (result: { multiplier: string }): void => this.quoteEditService.editLineItem(lineItem, result)
     );
+  }
+
+  private costMultiplierFormTitle(lineItem: AssetLineItem): string {
+    return lineItem.multiplier > 1 ? 'QUOTE.EDIT_MULTIPLIER_TITLE' : 'QUOTE.ADD_MULTIPLIER_TITLE';
+  }
+
+  private costMultiplierFormSubmitLabel(lineItem: AssetLineItem): string {
+    return lineItem.multiplier > 1 ? 'QUOTE.EDIT_MULTIPLIER_FORM_SUBMIT' : 'QUOTE.ADD_MULTIPLIER_FORM_SUBMIT';
   }
 }

@@ -159,6 +159,17 @@ export function main() {
           mockDialogService.onSubmitCallback({ multiplier: '1.2' });
           expect(mockQuoteEditService.editLineItem).toHaveBeenCalledWith({ id: 1 }, { multiplier: '1.2' });
         });
+
+        it('uses the correct strings for edit', () => {
+          componentUnderTest.onNotification({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: { id: 1, multiplier: 1.5 } });
+
+
+          expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+            [{ some: 'multiplier' }],
+            { title: 'QUOTE.EDIT_MULTIPLIER_TITLE', submitLabel: 'QUOTE.EDIT_MULTIPLIER_FORM_SUBMIT' },
+            jasmine.any(Function)
+          );
+        });
       });
     });
 

@@ -43,36 +43,39 @@ import { QuoteType } from '../../../shared/interfaces/commerce.interface';
         <md-icon>theaters</md-icon>
         <span>{{ trStringForSubclipping | translate }}</span>
       </button>
-      <button md-menu-item (click)="addCostMultiplier.emit()" *ngIf="userCanAdministerQuotes">
+      <button md-menu-item (click)="openCostMultiplierForm.emit()" *ngIf="userCanAdministerQuotes">
         <md-icon>attach_money</md-icon>
-        <span>{{ 'QUOTE.ADD_MULTIPLIER_TITLE' | translate }}</span>
+        <span>{{ trStringForCostMultiplier | translate }}</span>
       </button>
     </md-menu>
   `
 })
 export class LineItemActionsComponent {
-  @Input() rightsManaged: string;
+  @Input() rightsReproduction: string;
   @Input() hasAttributes: boolean;
   @Input() otherProjects: any[];
   @Input() userCanCreateSubclips: boolean;
   @Input() userCanAdministerQuotes: boolean;
   @Input() timeStart: number;
   @Input() quoteType: QuoteType;
+  @Input() hasMultiplier: boolean;
   @Output() showPricingDialog: EventEmitter<any> = new EventEmitter();
   @Output() remove: EventEmitter<any> = new EventEmitter();
   @Output() clone: EventEmitter<any> = new EventEmitter();
   @Output() moveTo: EventEmitter<any> = new EventEmitter();
   @Output() editMarkers: EventEmitter<any> = new EventEmitter();
-  @Output() addCostMultiplier: EventEmitter<null> = new EventEmitter();
+  @Output() openCostMultiplierForm: EventEmitter<null> = new EventEmitter();
 
   public get displayPriceButton(): boolean {
-    return this.rightsManaged === 'Rights Managed' && this.quoteType !== 'ProvisionalOrder';
+    return this.rightsReproduction === 'Rights Managed' && this.quoteType !== 'ProvisionalOrder';
   }
+
   public get needsAttributes(): boolean {
-    return this.rightsManaged === 'Rights Managed' && !this.hasAttributes;
+    return this.rightsReproduction === 'Rights Managed' && !this.hasAttributes;
   }
+
   public get shouldShowSubclipButton(): boolean {
-    return this.userCanCreateSubclips && this.otherProjects.length > 0;
+    return this.userCanCreateSubclips && this.otherProjectsExist;
   }
 
   public get otherProjectsExist(): boolean {
@@ -80,8 +83,12 @@ export class LineItemActionsComponent {
   }
 
   public get trStringForSubclipping(): string {
-    return !this.timeStart ?
+    return this.timeStart > -1 ?
       'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING' :
       'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING';
+  }
+
+  public get trStringForCostMultiplier(): string {
+    return this.hasMultiplier ? 'QUOTE.EDIT_MULTIPLIER_TITLE' : 'QUOTE.ADD_MULTIPLIER_TITLE';
   }
 }
