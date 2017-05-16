@@ -11,7 +11,9 @@ li.cart-asset {
     color: mat-color($foreground, secondary-text);
     background-color: rgba(mat-color($primary), .1);
   }
-
+  .multiplier {
+    color: mat-color($primary, lighter);
+  }
   .price.select-usage {
     color: lighten(mat-color($mat-warn, darker), 30%);
     &::after {
