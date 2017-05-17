@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import { CurrentUserService } from './current-user.service';
-declare var baseUrl: string;
 
 const cmsApi: any = {
   root: 'https://cms.dev.wzplatform.com/',
@@ -19,7 +18,7 @@ export class ApiConfig {
   }
 
   public baseUrl(): string {
-    return baseUrl;
+    return (<any>window).baseUrl;
   }
 
   public headers(overridingToken: string = '', headerType: string = 'json'): Headers {

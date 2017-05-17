@@ -62,6 +62,7 @@ export class AppComponent implements OnInit {
     private translate: TranslateService,
     private zone: NgZone,
     private quoteEditService: QuoteEditService) {
+    this.loadConfig();
     this.userCan = capabilities;
     zone.runOutsideAngular(() => {
       document.addEventListener('scroll', () => {
@@ -149,5 +150,13 @@ export class AppComponent implements OnInit {
     this.sortDefinition.getSortDefinitions().subscribe((data: any) => {
       this.userPreference.updateSortPreference(data.currentSort.id);
     });
+  }
+
+  private loadConfig() {
+    if (this.uiConfig.hasLoaded()) {
+      this.router.initialNavigation();
+    } else {
+      this.uiConfig.load().subscribe(() => this.router.initialNavigation());
+    }
   }
 }
