@@ -8,6 +8,8 @@ import { Collection } from '../../interfaces/collection.interface';
 import { Asset } from '../../interfaces/common.interface';
 import { Capabilities } from '../../services/capabilities.service';
 import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
+import { AssetService } from '../../../shared/services/asset.service';
+import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 
 export class WzAsset {
   public currentCollection: Collection;
@@ -18,17 +20,30 @@ export class WzAsset {
   @Output() onShowSpeedview = new EventEmitter();
   @Output() onHideSpeedview = new EventEmitter();
   @Output() onEditAsset = new EventEmitter();
-  @Input() public assets: Array<Asset>;
+  @Input() public set assets(assets: Asset[]) {
+    this._assets = assets;
+    for (const asset of assets) {
+      this.enhancedAssets[asset.assetId] = this.assetService.enhance(asset);
+    }
+  }
   @Input() public userCan: Capabilities;
   @Input() public assetType: string = 'search';
-  @Input() set collection(value: Collection) {
+  @Input() public set collection(value: Collection) {
     this.currentCollection = value;
-    this.assetsArr = value.assets.items.map((x) => x.assetId);
+    this.assetIdsInCurrentCollection = value.assets.items.map((x) => x.assetId);
   };
 
   public assetId: number;
   public hasComp: boolean;
-  private assetsArr: Array<number> = [];
+  private _assets: Asset[];
+  private assetIdsInCurrentCollection: number[] = [];
+  private enhancedAssets: { [assetId: string]: EnhancedAsset } = {};
+
+  constructor(private assetService: AssetService) { }
+
+  public get assets(): Asset[] {
+    return this._assets;
+  }
 
   public addToCollection(collection: Collection, asset: Asset) {
     this.onAddToCollection.emit({
@@ -63,116 +78,93 @@ export class WzAsset {
   }
 
   public inCollection(asset: any): boolean {
-    return this.assetsArr.indexOf(asset.assetId) > -1;
-  }
-
-  public assetParams(asset: any) {
-    return Object.assign({},
-      asset.uuid ? { uuid: asset.uuid } : null,
-      asset.timeStart ? { timeStart: asset.timeStart } : null,
-      asset.timeEnd ? { timeEnd: asset.timeEnd } : null
-    );
-  }
-
-  public frame(framesPerSecond: any, frameNumber: any) {
-    return new Frame(framesPerSecond.split(' fps')[0]).setFromFrameNumber(frameNumber);
-  }
-
-  public durationAsFrames(framesPerSecond: any, duration: any) {
-    return new Frame(
-      framesPerSecond.split(' fps')[0])
-      .setFromString(`${duration};00`, TimecodeFormat.SIMPLE_TIME_CONVERSION)
-      .asFrameNumber();
-  }
-  public calcSegmentWidthPecentage(startFrame: number, totalFrames: number) {
-    return startFrame * 100 / totalFrames;
-  }
-
-  public calcSubClipSegments(asset: any) {
-    let totalFrames: number = this.durationAsFrames(asset.metaData[6].value, asset.metaData[3].value);
-    let startPoint: number = this.calcSegmentWidthPecentage(asset.timeStart, totalFrames);
-    let segmentWidth: number = this.calcSegmentWidthPecentage(asset.timeEnd - asset.timeStart, totalFrames);
-    return { 'width.%': segmentWidth, 'margin-left.%': startPoint, 'min-width.px': 2 };
-  }
-
-  public formatType(format: string): string {
-    switch (format) {
-      case 'High Definition':
-        return 'hd';
-      case 'Standard Definition':
-        return 'sd';
-      case 'Digital Video':
-        return 'dv';
-      default:
-        return 'hd';
-    }
+    return this.assetIdsInCurrentCollection.indexOf(asset.assetId) > -1;
   }
 
   public nameOf(asset: Asset): string {
-    return asset.name;
+    return this.enhancedAssetFor(asset).name;
   }
 
   public routerLinkFor(asset: Asset): any[] {
-    return ['/asset/', asset.assetId, this.assetParams(asset)];
+    return ['/asset/', asset.assetId, this.routerParametersFor(this.enhancedAssetFor(asset))];
   }
 
   public hasThumbnail(asset: Asset): boolean {
-    return !!asset.thumbnail;
+    return !!this.thumbnailUrlFor(asset);
   }
 
   public thumbnailUrlFor(asset: Asset): string {
-    return this.hasThumbnail(asset) ? asset.thumbnail.urls.https : '';
+    return this.enhancedAssetFor(asset).thumbnailUrl;
   }
 
   public hasTitle(asset: Asset): boolean {
-    return !!asset.metaData[0];
+    return !!this.titleOf(asset);
   }
 
   public titleOf(asset: Asset): string {
-    return asset.metaData[0].value;
+    return this.enhancedAssetFor(asset).title;
   }
 
   public hasFormatType(asset: Asset): boolean {
-    return asset.metaData[2] && asset.metaData[2].value != '';
+    return !!this.formatTypeOf(asset);
   }
 
   public formatTypeOf(asset: Asset): string {
-    return asset.metaData[2].value;
+    return this.enhancedAssetFor(asset).formatType;
   }
 
   public formatClassNameFor(asset: Asset): string {
-    return this.formatType(asset.metaData[2].value);
+    switch (this.formatTypeOf(asset)) {
+      case 'High Definition': return 'hd';
+      case 'Standard Definition': return 'sd';
+      case 'Digital Video': return 'dv';
+      default: return 'hd';
+    }
   }
 
-  public hasFullDuration(asset: Asset): boolean {
-    return !asset.timeStart && !!asset.metaData[3];
-  }
-
-  public fullDurationOf(asset: Asset): string {
-    return asset.metaData[3].value;
-  }
-
-  public hasSubclipDuration(asset: Asset): boolean {
-    return !!asset.timeStart;
+  public hasDuration(asset: Asset): boolean {
+    return !!this.subclipDurationFrameFor(asset);
   }
 
   public subclipDurationFrameFor(asset: Asset): Frame {
-    return this.frame(asset.metaData[6].value, asset.timeEnd - asset.timeStart);
+    return this.enhancedAssetFor(asset).subclipDurationFrame;
   }
 
   public isImage(asset: Asset): boolean {
-    return asset.metaData[4] && asset.metaData[4].name === 'Resource.Class' && asset.metaData[4].value === 'Image';
+    return this.enhancedAssetFor(asset).isImage;
   }
 
   public isSubclipped(asset: Asset): boolean {
-    return !!asset.timeStart;
+    return this.enhancedAssetFor(asset).isSubclipped;
+  }
+
+  public subclipSegmentStylesFor(asset: Asset): object {
+    const enhancedAsset: EnhancedAsset = this.enhancedAssetFor(asset);
+
+    return {
+      'margin-left.%': enhancedAsset.inMarkerPercentage,
+      'width.%': enhancedAsset.subclipDurationPercentage,
+      'min-width.px': 2
+    };
   }
 
   public hasDescription(asset: Asset): boolean {
-    return !!asset.metaData[1];
+    return !!this.descriptionOf(asset);
   }
 
   public descriptionOf(asset: Asset): string {
-    return asset.metaData[1].value;
+    return this.enhancedAssetFor(asset).description;
+  }
+
+  private enhancedAssetFor(asset: Asset): EnhancedAsset {
+    return this.enhancedAssets[asset.assetId];
+  }
+
+  private routerParametersFor(enhancedAsset: EnhancedAsset): object {
+    return Object.assign({},
+      enhancedAsset.uuid ? { uuid: enhancedAsset.uuid } : null,
+      enhancedAsset.timeStart ? { timeStart: enhancedAsset.timeStart } : null,
+      enhancedAsset.timeEnd ? { timeEnd: enhancedAsset.timeEnd } : null
+    );
   }
 }

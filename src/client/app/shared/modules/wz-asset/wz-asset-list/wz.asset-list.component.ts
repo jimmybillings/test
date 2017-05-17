@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { WzAsset } from '../wz-asset';
+import { AssetService } from '../../../../shared/services/asset.service';
 
 @Component({
   moduleId: module.id,
@@ -9,7 +10,7 @@ import { WzAsset } from '../wz-asset';
 })
 
 export class WzAssetListComponent extends WzAsset {
-  constructor() {
-    super();
+  constructor(assetService: AssetService) {
+    super(assetService);
   }
 }

@@ -1,23 +1,37 @@
-import { Frame } from 'wazee-frame-formatter';
-import { Asset, Metadatum } from '../interfaces/commerce.interface';
+import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
+import * as commerce from '../interfaces/commerce.interface';
+import * as common from '../interfaces/common.interface';
 
 interface InternalCache {
   [index: string]: any;
 }
 
-export class EnhancedAsset implements Asset {
-  public readonly assetId?: number;
+export class EnhancedAsset implements commerce.Asset, common.Asset {
+  // defined in both commerce.Asset and common.Asset
+  public readonly assetId: number;
+  public readonly uuid?: string;
+  public readonly timeStart?: number;
+  public readonly timeEnd?: number;
+
+  // defined in commerce.Asset only
   public readonly assetName?: string;
   public readonly assetDuration?: number;
-  public readonly metadata?: Metadatum[];
+  public readonly metadata?: commerce.Metadatum[];
   public readonly rightsManaged?: string;
   public readonly supplierId?: number;
   public readonly supplierName?: string;
   public readonly thumbnailUrl?: string;
-  public readonly timeStart?: number;
-  public readonly timeEnd?: number;
   public readonly clipUrl?: string;
-  public readonly uuid?: string;
+
+  // defined in common.Asset only
+  public readonly name: string;
+  public readonly metaData?: commerce.Metadatum[];
+  public readonly thumbnail?: { name: string, urls: common.AssetUrls };
+  public readonly smallPreview?: { name: string, urls: common.AssetUrls };
+  public readonly hasDownloadableComp?: boolean;
+  public readonly transcodeTargets?: string[];
+  public readonly primary?: Array<{ value: string }>;
+  public readonly detailTypeMap?: any;
 
   private calculationCache: InternalCache = {};
 
@@ -103,6 +117,18 @@ export class EnhancedAsset implements Asset {
 
   //// other assorted information
 
+  public get title(): string {
+    return this.getCached('title');
+  }
+
+  public get description(): string {
+    return this.getCached('description');
+  }
+
+  public get formatType(): string {
+    return this.getCached('formatType');
+  }
+
   public get resourceClass(): string {
     return this.getCached('resourceClass');
   }
@@ -119,6 +145,26 @@ export class EnhancedAsset implements Asset {
     return this.timeStart >= 0 || this.timeEnd >= 0;
   }
 
+  //// for initialization -- merges differently defined asset properties into a normalized set
+
+  public normalize(): EnhancedAsset {
+    // make 'assetName' available as 'name'
+    if (!this.name && !!this.assetName) Object.assign(this, { name: this.assetName });
+
+    // make the deeply nested thumbnail URL available as 'thumbnailUrl'
+    if (!this.thumbnailUrl && !!this.thumbnail && !!this.thumbnail.urls && !!this.thumbnail.urls.https) {
+      Object.assign(this, { thumbnailUrl: this.thumbnail.urls.https });
+    }
+
+    // make 'metaData' (uppercase 'D') available as 'metadata' (lowercase 'd')
+    if (!this.metadata && !!this.metaData) Object.assign(this, { metadata: this.metaData });
+
+    // ensure that 'timeStart' and 'timeEnd' are numbers (commerce.Asset), not strings (common.Asset)
+    Object.assign(this, { timeStart: parseInt(`${this.timeStart}`), timeEnd: parseInt(`${this.timeEnd}`) });
+
+    return this;
+  }
+
   //// private methods
 
   private getCached(key: string): any {
@@ -129,13 +175,30 @@ export class EnhancedAsset implements Asset {
 
   private calculateValueFor(key: string): any {
     switch (key) {
+      case 'description':
+        // TODO: Site config should set the name of the metadata that holds whichever description field the current site
+        // wants to use, and this function should call this.getMetadataFor() with that metadata name.
+        // But for now, we must rely on the site config to place the 'description' metadata into array location 1.
+        return this.findMetadataValueAtIndex(1);
+
       case 'durationFrame':
         return this.framesPerSecond && this.durationMilliseconds
-          ? this.newFrame.setFromSeconds(this.durationMilliseconds / 1000.0)
+          ? this.newFrame.setFromSeconds(this.durationMilliseconds / 1000)
           : undefined;
 
       case 'durationMilliseconds':
-        return this.convertMetadataValueFor('Format.Duration', value => parseInt(value));
+        return this.convertMetadataValueFor('Format.Duration', value => {
+          // If value is formatted as 'HH:MM:SS', add ';00' to make it 'HH:MM:SS;FF', and treat it as a timecode.
+          // Otherwise, treat it as a numeric value of milliseconds.
+          return value.indexOf(':') === -1
+            ? parseInt(value)
+            : (this.framesPerSecond
+              ? this.millisecondsFrom(this.newFrame.setFromString(`${value};00`, TimecodeFormat.SIMPLE_TIME_CONVERSION))
+              : undefined);
+        });
+
+      case 'formatType':
+        return this.getMetadataValueFor('TE.DigitalFormat');
 
       case 'framesPerSecond':
         return this.convertMetadataValueFor('Format.FrameRate', value => parseFloat(value));
@@ -158,6 +221,12 @@ export class EnhancedAsset implements Asset {
           ? this.newFrame.setFromFrameNumber(this.outMarkerFrameNumber - this.inMarkerFrameNumber)
           : undefined;
 
+      case 'title':
+        // TODO: Site config should set the name of the metadata that holds whichever title field the current site
+        // wants to use, and this function should call this.getMetadataFor() with that metadata name.
+        // But for now, we must rely on the site config to place the 'title' metadata into array location 0.
+        return this.findMetadataValueAtIndex(0);
+
       default:
         throw new Error(`Value calculation for '${key}' is missing.`);
     }
@@ -172,7 +241,7 @@ export class EnhancedAsset implements Asset {
   }
 
   private millisecondsFrom(frame: Frame): number {
-    return frame ? frame.asSeconds() * 1000 : undefined;
+    return frame ? frame.asSeconds(3) * 1000 : undefined;
   }
 
   private percentageFor(frame: Frame): number {
@@ -196,5 +265,9 @@ export class EnhancedAsset implements Asset {
     }
 
     return undefined;
+  }
+
+  private findMetadataValueAtIndex(index: number): string {
+    return this.metadata && this.metadata[index] ? this.metadata[index].value : undefined;
   }
 }

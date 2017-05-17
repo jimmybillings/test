@@ -25,7 +25,9 @@ export function main() {
           );
 
           if (test.frameRate) assetUnderTest.metadata[0] = { name: 'Format.FrameRate', value: '30 fps' };
-          if (test.duration) assetUnderTest.metadata[1] = { name: 'Format.Duration', value: `${1000 * durationInFrames / 30}` };
+          if (test.duration) assetUnderTest.metadata[1] = {
+            name: 'Format.Duration', value: `${Math.round(1000 * durationInFrames / 30)}`
+          };
 
           if (test.expected >= 0) {
             const expectedFrame: Frame = new Frame(30).setFromFrameNumber(test.expected);
@@ -33,7 +35,7 @@ export function main() {
             expect((assetUnderTest as any)[frameGetterName]).toEqual(expectedFrame);
             expect((assetUnderTest as any)[frameNumberGetterName]).toEqual(test.expected);
             if (millisecondsGetterName) {
-              expect((assetUnderTest as any)[millisecondsGetterName]).toEqual(expectedFrame.asSeconds() * 1000);
+              expect((assetUnderTest as any)[millisecondsGetterName]).toEqual(expectedFrame.asSeconds(3) * 1000);
             }
             if (percentageGetterName) {
               expect((assetUnderTest as any)[percentageGetterName])
@@ -49,6 +51,66 @@ export function main() {
               expect((assetUnderTest as any)[percentageGetterName]).toBe(0);
             }
           }
+        });
+      }
+    };
+
+    const generateMetadataTestsFor: Function = (
+      getterName: string,
+      metadataName: string,
+      getterReturnValues: { [metadataValue: string]: any },
+      index: number = -1
+    ) => {
+      const isIndexed: boolean = index >= 0;
+
+      for (const metadataValue of Object.keys(getterReturnValues)) {
+        const getterReturnValue: any = getterReturnValues[metadataValue];
+
+        it(`returns the ${isIndexed ? `metadata value at index ${index}` : `${metadataName} metadata value`}`, () => {
+          const metadata = [];
+          metadata[isIndexed ? index : 0] = { name: metadataName, value: metadataValue };
+          Object.assign(assetUnderTest, { metadata: metadata });
+
+          expect((assetUnderTest as any)[getterName]).toEqual(getterReturnValue);
+        });
+
+        if (isIndexed) {
+          it('does not care about the metadata name', () => {
+            const metadata = [];
+            metadata[isIndexed ? index : 0] = { name: `Not.${metadataName}`, value: metadataValue };
+            Object.assign(assetUnderTest, { metadata: metadata });
+
+            expect((assetUnderTest as any)[getterName]).toEqual(getterReturnValue);
+          });
+        }
+      }
+
+      it('returns undefined if the asset is missing the requested metadata', () => {
+        expect((assetUnderTest as any)[getterName]).toBeUndefined();
+      });
+
+      if (isIndexed) {
+        it('returns undefined if the asset has the requested metadata at a different index', () => {
+          const metadata = [];
+          metadata[(isIndexed ? index : 0) + 1] = { name: metadataName, value: 'the metadata value' };
+          Object.assign(assetUnderTest, { metadata: metadata });
+
+          expect((assetUnderTest as any)[getterName]).toBeUndefined();
+        });
+      }
+
+      if (!isIndexed) {
+        it('caches its value', () => {
+          const metadata = [];
+          metadata[isIndexed ? index : 0] = { name: metadataName, value: 'the metadata value' };
+          Object.assign(assetUnderTest, { metadata: metadata });
+
+          spyOn(assetUnderTest, 'getMetadataValueFor');
+
+          let value: any = (assetUnderTest as any)[getterName];
+          value = (assetUnderTest as any)[getterName];
+
+          expect(assetUnderTest.getMetadataValueFor).toHaveBeenCalledTimes(1);
         });
       }
     };
@@ -69,34 +131,19 @@ export function main() {
     });
 
     describe('durationMilliseconds getter', () => {
-      let returnedMetadataValue: string;
+      generateMetadataTestsFor(
+        'durationMilliseconds',
+        'Format.Duration',
+        { '12345678': 12345678, '12345678.9': 12345678, '00:01:00': undefined }
+      );
 
-      beforeEach(() => {
-        returnedMetadataValue = '12345678';
-        spyOn(assetUnderTest, 'getMetadataValueFor').and.callFake(() => returnedMetadataValue);
-      });
+      it('can handle HH:MM:SS duration metadata when a frame rate is defined', () => {
+        Object.assign(
+          assetUnderTest,
+          { metadata: [{ name: 'Format.FrameRate', value: '30 fps' }, { name: 'Format.Duration', value: '00:01:00' }] }
+        );
 
-      it('returns the number from the metadata value', () => {
-        expect(assetUnderTest.durationMilliseconds).toEqual(12345678);
-      });
-
-      it('assumes milliseconds value is integral', () => {
-        returnedMetadataValue = '12345678.9';
-
-        expect(assetUnderTest.durationMilliseconds).toEqual(12345678);
-      });
-
-      it('returns undefined if the asset is missing the needed metadata', () => {
-        returnedMetadataValue = undefined;
-
-        expect(assetUnderTest.durationMilliseconds).toBeUndefined();
-      });
-
-      it('caches its value', () => {
-        let value: number = assetUnderTest.durationMilliseconds;
-        value = assetUnderTest.durationMilliseconds;
-
-        expect(assetUnderTest.getMetadataValueFor).toHaveBeenCalledTimes(1);
+        expect(assetUnderTest.durationMilliseconds).toBe(60000);
       });
     });
 
@@ -246,81 +293,42 @@ export function main() {
       });
     });
 
+    describe('title getter', () => {
+      generateMetadataTestsFor('title', 'Title', { 'This Is a Title': 'This Is a Title' }, 0);
+    });
+
+    describe('description getter', () => {
+      generateMetadataTestsFor('description', 'Description', { 'This is a description.': 'This is a description.' }, 1);
+    });
+
+    describe('formatType getter', () => {
+      generateMetadataTestsFor('formatType', 'TE.DigitalFormat', { 'High Definition': 'High Definition' });
+    });
+
     describe('resourceClass getter', () => {
-      let returnedMetadataValue: string;
-
-      beforeEach(() => {
-        returnedMetadataValue = 'Image';
-        spyOn(assetUnderTest, 'getMetadataValueFor').and.callFake(() => returnedMetadataValue);
-      });
-
-      it('returns "Image" for an image', () => {
-        expect(assetUnderTest.resourceClass).toEqual('Image');
-      });
-
-      it('returns undefined if the asset is missing the needed metadata', () => {
-        returnedMetadataValue = undefined;
-
-        expect(assetUnderTest.resourceClass).toBeUndefined();
-      });
-
-      it('caches its value', () => {
-        let value: string = assetUnderTest.resourceClass;
-        value = assetUnderTest.resourceClass;
-
-        expect(assetUnderTest.getMetadataValueFor).toHaveBeenCalledTimes(1);
-      });
+      generateMetadataTestsFor('resourceClass', 'Resource.Class', { 'Image': 'Image' });
     });
 
     describe('isImage getter', () => {
-      let returnedMetadataValue: string;
-
-      beforeEach(() => {
-        returnedMetadataValue = 'Image';
-        spyOn(assetUnderTest, 'getMetadataValueFor').and.callFake(() => returnedMetadataValue);
-      });
-
       it('returns true for an image', () => {
+        Object.assign(assetUnderTest, { metadata: { name: 'Resource.Class', value: 'Image' } });
+
         expect(assetUnderTest.isImage).toBe(true);
       });
 
       it('returns false for a non-image', () => {
-        returnedMetadataValue = 'blah';
+        Object.assign(assetUnderTest, { metadata: { name: 'Resource.Class', value: 'blah' } });
 
         expect(assetUnderTest.isImage).toBe(false);
       });
 
-      it('returns false if the asset is missing the needed metadata', () => {
-        returnedMetadataValue = undefined;
-
+      it('returns false if the asset is missing Resource.Class metadata', () => {
         expect(assetUnderTest.isImage).toBe(false);
       });
     });
 
     describe('framesPerSecond getter', () => {
-      let returnedMetadataValue: string;
-
-      beforeEach(() => {
-        returnedMetadataValue = '29.97 fps';
-        spyOn(assetUnderTest, 'getMetadataValueFor').and.callFake(() => returnedMetadataValue);
-      });
-
-      it('returns the number from the metadata value', () => {
-        expect(assetUnderTest.framesPerSecond).toEqual(29.97);
-      });
-
-      it('returns undefined if the asset is missing the needed metadata', () => {
-        returnedMetadataValue = undefined;
-
-        expect(assetUnderTest.framesPerSecond).toBeUndefined();
-      });
-
-      it('caches its value', () => {
-        let value: number = assetUnderTest.framesPerSecond;
-        value = assetUnderTest.framesPerSecond;
-
-        expect(assetUnderTest.getMetadataValueFor).toHaveBeenCalledTimes(1);
-      });
+      generateMetadataTestsFor('framesPerSecond', 'Format.FrameRate', { '29.97 fps': 29.97 });
     });
 
     describe('isSubclipped getter', () => {
@@ -360,6 +368,104 @@ export function main() {
           expect(assetUnderTest.isSubclipped).toBe(test.expected);
         });
       }
+    });
+
+    describe('normalize()', () => {
+      it('returns its containing object to enable chaining', () => {
+        expect(assetUnderTest.normalize()).toEqual(assetUnderTest);
+      });
+
+      describe('name', () => {
+        it('is not changed if it already exists', () => {
+          Object.assign(assetUnderTest, { name: 'some name', assetName: 'some other name' });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.name).toEqual('some name');
+        });
+
+        it('is updated if it doesn\'t already exist', () => {
+          Object.assign(assetUnderTest, { assetName: 'some other name' });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.name).toEqual('some other name');
+        });
+      });
+
+      describe('thumbnailUrl', () => {
+        it('is not changed if it already exists', () => {
+          Object.assign(assetUnderTest, { thumbnailUrl: 'some URL', thumbnail: { urls: { https: 'some other URL' } } });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.thumbnailUrl).toEqual('some URL');
+        });
+
+        it('is updated if it doesn\'t already exist', () => {
+          Object.assign(assetUnderTest, { thumbnail: { urls: { https: 'some other URL' } } });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.thumbnailUrl).toEqual('some other URL');
+        });
+      });
+
+      describe('metadata', () => {
+        it('is not changed if it already exists', () => {
+          Object.assign(assetUnderTest, { metadata: 'some metadata', metaData: 'some other metadata' });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.metadata).toEqual('some metadata');
+        });
+
+        it('is updated if it doesn\'t already exist', () => {
+          Object.assign(assetUnderTest, { metaData: 'some other metadata' });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.metadata).toEqual('some other metadata');
+        });
+      });
+
+      describe('timeStart', () => {
+        it('is a number if it was defined as a number', () => {
+          Object.assign(assetUnderTest, { timeStart: 42 });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.timeStart).toEqual(42);
+          expect(assetUnderTest.timeStart).toEqual(jasmine.any(Number));
+        });
+
+        it('is a number if it was defined as a string', () => {
+          Object.assign(assetUnderTest, { timeStart: '42' });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.timeStart).toEqual(42);
+          expect(assetUnderTest.timeStart).toEqual(jasmine.any(Number));
+        });
+      });
+
+      describe('timeEnd', () => {
+        it('is a number if it was defined as a number', () => {
+          Object.assign(assetUnderTest, { timeEnd: 99 });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.timeEnd).toEqual(99);
+        });
+
+        it('is a number if it was defined as a string', () => {
+          Object.assign(assetUnderTest, { timeEnd: '99' });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.timeEnd).toEqual(99);
+        });
+      });
     });
   });
 }

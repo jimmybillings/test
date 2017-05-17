@@ -16,17 +16,14 @@
         <span *ngIf="hasFormatType(asset)" class="mdata-2">
           <span [ngClass]="formatClassNameFor(asset)" class="sd-hd">{{ formatTypeOf(asset) }}</span>
         </span>
-        <span *ngIf="hasFullDuration(asset)" class="mdata-3">
-          <span>{{ fullDurationOf(asset) }}</span>
-        </span>
-        <span  *ngIf="hasSubclipDuration(asset)" class="mdata-3">
+        <span *ngIf="hasDuration(asset)" class="mdata-3">
           <span>{{ subclipDurationFrameFor(asset) | timecode }}</span>
         </span>
         <span *ngIf="isImage(asset)" class="mdata-4">
           <span class="image"></span>
         </span>
         <span *ngIf="isSubclipped(asset)" class="subclip-timeline">
-          <span class="subclip-segment" [ngStyle]="calcSubClipSegments(asset)"></span>
+          <span class="subclip-segment" [ngStyle]="subclipSegmentStylesFor(asset)"></span>
         </span>
       </a>
       <section class="actions">

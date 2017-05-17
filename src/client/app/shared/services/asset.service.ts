@@ -7,7 +7,8 @@ import { Api, ApiOptions } from '../../shared/interfaces/api.interface';
 import { AssetState } from '../../shared/interfaces/asset.interface';
 import { PriceAttribute } from '../../shared/interfaces/commerce.interface';
 import { CurrentUserService } from '../../shared/services/current-user.service';
-import { Asset } from '../interfaces/commerce.interface';
+import * as commerce from '../interfaces/commerce.interface';
+import * as common from '../interfaces/common.interface';
 import { EnhancedAsset } from '../interfaces/enhanced-asset';
 
 
@@ -121,8 +122,8 @@ export class AssetService {
     return state;
   }
 
-  public enhance(asset: Asset): EnhancedAsset {
-    return Object.assign(new EnhancedAsset(), asset);
+  public enhance(asset: commerce.Asset | common.Asset): EnhancedAsset {
+    return Object.assign(new EnhancedAsset(), asset).normalize();
   }
 
   private formatAttributes(attrs: any): any {
