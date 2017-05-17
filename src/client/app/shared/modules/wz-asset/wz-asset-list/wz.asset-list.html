@@ -184,7 +184,9 @@
           <button md-menu-item (click)="editAsset(asset)">
             <md-icon>theaters</md-icon>
             <span>
-              {{ (asset.timeStart !== '' ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING' : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
+              {{ (isSubclipped(asset)
+                  ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING'
+                  : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
             </span>
           </button>
           <button [disabled]="true" md-menu-item (click)="editAsset(asset)">
