@@ -145,6 +145,10 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
     return this.timeStart >= 0 || this.timeEnd >= 0;
   }
 
+  public get routerLink(): any[] {
+    return this.getCached('routerLink');
+  }
+
   //// for initialization -- merges differently defined asset properties into a normalized set
 
   public normalize(): EnhancedAsset {
@@ -216,6 +220,9 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
       case 'resourceClass':
         return this.getMetadataValueFor('Resource.Class');
 
+      case 'routerLink':
+        return ['/asset', this.assetId, this.routerParameters];
+
       case 'subclipDurationFrame':
         return this.framesPerSecond && this.inMarkerFrame && this.outMarkerFrame
           ? this.newFrame.setFromFrameNumber(this.outMarkerFrameNumber - this.inMarkerFrameNumber)
@@ -269,5 +276,14 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
 
   private findMetadataValueAtIndex(index: number): string {
     return this.metadata && this.metadata[index] ? this.metadata[index].value : undefined;
+  }
+
+  private get routerParameters(): any {
+    return Object.assign(
+      {},
+      this.uuid ? { uuid: this.uuid } : null,
+      this.timeStart >= 0 ? { timeStart: this.timeStart } : null,
+      this.timeEnd >= 0 ? { timeEnd: this.timeEnd } : null
+    );
   }
 }

@@ -29,90 +29,10 @@ export function main() {
     });
 
     describe('routerLink()', () => {
-      it('has the correct base path', () => {
-        expect(componentUnderTest.routerLink[0]).toEqual('/asset');
-      });
+      it('returns the enhanced asset\'s router link array', () => {
+        mockEnhancedAsset.routerLink = ['/some', 'id', { some: 'parameters' }];
 
-      it('adds the assetId', () => {
-        expect(componentUnderTest.routerLink[1]).toEqual(47);
-      });
-
-      it('adds an empty parameters object by default', () => {
-        expect(componentUnderTest.routerLink[2]).toEqual({});
-      });
-
-      it('adds a full parameters object when everything is proper', () => {
-        mockEnhancedAsset.uuid = 'some UUID';
-        mockEnhancedAsset.timeStart = 1;
-        mockEnhancedAsset.timeEnd = 2;
-
-        expect(componentUnderTest.routerLink[2]).toEqual({ uuid: 'some UUID', timeStart: 1, timeEnd: 2 });
-      });
-
-      describe('UUID', () => {
-        it('gets added when it is defined', () => {
-          mockEnhancedAsset.uuid = 'some UUID';
-
-          expect(componentUnderTest.routerLink[2]).toEqual({ uuid: 'some UUID' });
-        });
-
-        it('does not get added when it is undefined', () => {
-          mockEnhancedAsset.uuid = undefined;
-
-          expect(componentUnderTest.routerLink[2]).toEqual({});
-        });
-      });
-
-      describe('timeStart', () => {
-        it('gets added when it is positive', () => {
-          mockEnhancedAsset.timeStart = 1;
-
-          expect(componentUnderTest.routerLink[2]).toEqual({ timeStart: 1 });
-        });
-
-        it('gets added when it is zero', () => {
-          mockEnhancedAsset.timeStart = 0;
-
-          expect(componentUnderTest.routerLink[2]).toEqual({ timeStart: 0 });
-        });
-
-        it('does not get added when it is negative', () => {
-          mockEnhancedAsset.timeStart = -1;
-
-          expect(componentUnderTest.routerLink[2]).toEqual({});
-        });
-
-        it('does not get added when it is undefined', () => {
-          mockEnhancedAsset.timeStart = undefined;
-
-          expect(componentUnderTest.routerLink[2]).toEqual({});
-        });
-      });
-
-      describe('timeEnd', () => {
-        it('gets added when it is positive', () => {
-          mockEnhancedAsset.timeEnd = 1;
-
-          expect(componentUnderTest.routerLink[2]).toEqual({ timeEnd: 1 });
-        });
-
-        it('gets added when it is zero', () => {
-          mockEnhancedAsset.timeEnd = 0;
-
-          expect(componentUnderTest.routerLink[2]).toEqual({ timeEnd: 0 });
-        });
-
-        it('does not get added when it is negative', () => {
-          mockEnhancedAsset.timeEnd = -1;
-
-          expect(componentUnderTest.routerLink[2]).toEqual({});
-        });
-
-        it('does not get added when it is undefined', () => {
-          mockEnhancedAsset.timeEnd = undefined;
-
-          expect(componentUnderTest.routerLink[2]).toEqual({});
-        });
+        expect(componentUnderTest.routerLink).toEqual(['/some', 'id', { some: 'parameters' }]);
       });
     });
 

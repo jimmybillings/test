@@ -33,7 +33,7 @@ export class AssetThumbnailComponent {
   }
 
   public get routerLink(): any[] {
-    return ['/asset', this.enhancedAsset.assetId, this.routerParameters];
+    return this.enhancedAsset.routerLink;
   }
 
   public get durationFrame(): Frame {
@@ -46,14 +46,5 @@ export class AssetThumbnailComponent {
 
   public get thumbnailUrl(): string {
     return this.enhancedAsset.thumbnailUrl;
-  }
-
-  private get routerParameters(): any {
-    return Object.assign(
-      {},
-      this.enhancedAsset.uuid ? { uuid: this.enhancedAsset.uuid } : null,
-      this.enhancedAsset.timeStart >= 0 ? { timeStart: this.enhancedAsset.timeStart } : null,
-      this.enhancedAsset.timeEnd >= 0 ? { timeEnd: this.enhancedAsset.timeEnd } : null
-    );
   }
 }

@@ -86,7 +86,7 @@ export class WzAsset {
   }
 
   public routerLinkFor(asset: Asset): any[] {
-    return ['/asset/', asset.assetId, this.routerParametersFor(this.enhancedAssetFor(asset))];
+    return this.enhancedAssetFor(asset).routerLink;
   }
 
   public hasThumbnail(asset: Asset): boolean {
@@ -166,13 +166,5 @@ export class WzAsset {
 
   private enhancedAssetFor(asset: Asset): EnhancedAsset {
     return this.enhancedAssets[asset.assetId];
-  }
-
-  private routerParametersFor(enhancedAsset: EnhancedAsset): object {
-    return Object.assign({},
-      enhancedAsset.uuid ? { uuid: enhancedAsset.uuid } : null,
-      enhancedAsset.timeStart ? { timeStart: enhancedAsset.timeStart } : null,
-      enhancedAsset.timeEnd ? { timeEnd: enhancedAsset.timeEnd } : null
-    );
   }
 }

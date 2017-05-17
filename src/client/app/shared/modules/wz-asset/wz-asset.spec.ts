@@ -102,6 +102,14 @@ export function main() {
       });
     });
 
+    describe('routerLinkFor()', () => {
+      it('returns the enhanced asset\'s router link array', () => {
+        mockEnhancedAsset.routerLink = ['/some', 'id', { some: 'parameters' }];
+
+        expect(componentUnderTest.routerLinkFor(mockAsset)).toEqual(['/some', 'id', { some: 'parameters' }]);
+      });
+    });
+
     describe('hasThumbnail()', () => {
       it('returns true if the asset has a thumbnail URL', () => {
         mockEnhancedAsset.thumbnailUrl = 'some URL';

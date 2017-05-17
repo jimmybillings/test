@@ -370,6 +370,88 @@ export function main() {
       }
     });
 
+    describe('routerLink()', () => {
+      it('has the correct base path', () => {
+        expect(assetUnderTest.routerLink[0]).toEqual('/asset');
+      });
+
+      it('adds the assetId', () => {
+        Object.assign(assetUnderTest, { assetId: 47 });
+
+        expect(assetUnderTest.routerLink[1]).toEqual(47);
+      });
+
+      it('adds an empty parameters object by default', () => {
+        expect(assetUnderTest.routerLink[2]).toEqual({});
+      });
+
+      it('adds a full parameters object when everything is proper', () => {
+        Object.assign(assetUnderTest, { uuid: 'some UUID', timeStart: 1, timeEnd: 2 });
+
+        expect(assetUnderTest.routerLink[2]).toEqual({ uuid: 'some UUID', timeStart: 1, timeEnd: 2 });
+      });
+
+      describe('UUID', () => {
+        it('gets added when it is defined', () => {
+          Object.assign(assetUnderTest, { uuid: 'some UUID' });
+
+          expect(assetUnderTest.routerLink[2]).toEqual({ uuid: 'some UUID' });
+        });
+
+        it('does not get added when it is undefined', () => {
+          expect(assetUnderTest.routerLink[2]).toEqual({});
+        });
+      });
+
+      describe('timeStart', () => {
+        it('gets added when it is positive', () => {
+          Object.assign(assetUnderTest, { timeStart: 1 });
+
+          expect(assetUnderTest.routerLink[2]).toEqual({ timeStart: 1 });
+        });
+
+        it('gets added when it is zero', () => {
+          Object.assign(assetUnderTest, { timeStart: 0 });
+
+          expect(assetUnderTest.routerLink[2]).toEqual({ timeStart: 0 });
+        });
+
+        it('does not get added when it is negative', () => {
+          Object.assign(assetUnderTest, { timeStart: -1 });
+
+          expect(assetUnderTest.routerLink[2]).toEqual({});
+        });
+
+        it('does not get added when it is undefined', () => {
+          expect(assetUnderTest.routerLink[2]).toEqual({});
+        });
+      });
+
+      describe('timeEnd', () => {
+        it('gets added when it is positive', () => {
+          Object.assign(assetUnderTest, { timeEnd: 1 });
+
+          expect(assetUnderTest.routerLink[2]).toEqual({ timeEnd: 1 });
+        });
+
+        it('gets added when it is zero', () => {
+          Object.assign(assetUnderTest, { timeEnd: 0 });
+
+          expect(assetUnderTest.routerLink[2]).toEqual({ timeEnd: 0 });
+        });
+
+        it('does not get added when it is negative', () => {
+          Object.assign(assetUnderTest, { timeEnd: -1 });
+
+          expect(assetUnderTest.routerLink[2]).toEqual({});
+        });
+
+        it('does not get added when it is undefined', () => {
+          expect(assetUnderTest.routerLink[2]).toEqual({});
+        });
+      });
+    });
+
     describe('normalize()', () => {
       it('returns its containing object to enable chaining', () => {
         expect(assetUnderTest.normalize()).toEqual(assetUnderTest);
