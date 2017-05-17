@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Project, AssetLineItem, QuoteType } from '../../../shared/interfaces/commerce.interface';
 import { Capabilities } from '../../../shared/services/capabilities.service';
+import { AssetService } from '../../../shared/services/asset.service';
+import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
 
 @Component({
   moduleId: module.id,
@@ -10,11 +12,14 @@ import { Capabilities } from '../../../shared/services/capabilities.service';
 })
 export class LineItemsComponent {
   public targets: any = {};
+  public enhancedAssets: { [lineItemId: string]: EnhancedAsset } = {};
   public items: AssetLineItem[];
+
   @Input() set lineItems(items: AssetLineItem[]) {
     if (items) {
       items.forEach((item: AssetLineItem, index: number) => {
         this.targets[index] = item.selectedTranscodeTarget;
+        this.enhancedAssets[item.id] = this.assetService.enhance(item.asset);
       });
       this.items = items;
     }
@@ -25,6 +30,8 @@ export class LineItemsComponent {
   @Input() readOnly: boolean = false;
   @Output() lineItemsNotify: EventEmitter<Object> = new EventEmitter<Object>();
   public selectedLineItem: AssetLineItem;
+
+  constructor(public assetService: AssetService) { }
 
   public onMoveTo(otherProject: Project, lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({
@@ -79,5 +86,9 @@ export class LineItemsComponent {
 
   public onRemoveCostMultiplier(lineItem: AssetLineItem): void {
     this.lineItemsNotify.emit({ type: 'REMOVE_COST_MULTIPLIER', payload: lineItem });
+  }
+
+  public isSubclipped(lineItem: AssetLineItem): boolean {
+    return this.enhancedAssets[lineItem.id].isSubclipped;
   }
 }
