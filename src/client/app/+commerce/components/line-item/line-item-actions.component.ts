@@ -89,9 +89,9 @@ export class LineItemActionsComponent {
   }
 
   public get trStringForSubclipping(): string {
-    return this.timeStart > -1 ?
-      'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING' :
-      'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING';
+    return this.timeStart >= 0
+      ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING'
+      : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING';
   }
 
   public get trStringForCostMultiplier(): string {
