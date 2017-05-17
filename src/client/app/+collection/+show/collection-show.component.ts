@@ -213,7 +213,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
             dialogConfig: { width: '544px' },
             inputOptions: {
               window: this.window.nativeWindow,
-              asset: asset,
+              enhancedAsset: this.asset.enhance(asset),
               usagePrice: null
             },
             outputOptions: [

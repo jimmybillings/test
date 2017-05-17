@@ -59,7 +59,8 @@ export function main() {
       mockAssetService = {
         getClipPreviewData: jasmine.createSpy('getClipPreviewData').and.returnValue(Observable.of({ url: 'fake url' })),
         getPriceAttributes: jasmine.createSpy('getPriceAttributes').and.returnValue(Observable.of({ some: 'attribute' })),
-        getPrice: jasmine.createSpy('getPrice').and.returnValue(Observable.of({ price: 100 }))
+        getPrice: jasmine.createSpy('getPrice').and.returnValue(Observable.of({ price: 100 })),
+        enhance: () => { }
       };
 
       mockUserPreference = {

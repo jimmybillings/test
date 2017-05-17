@@ -1,5 +1,6 @@
 import { WzSubclipEditorComponent } from './wz.subclip-editor.component';
 import { Frame } from 'wazee-frame-formatter';
+import { EnhancedAsset } from '../../interfaces/enhanced-asset';
 
 export function main() {
   describe('Wz Subclip Editor Component', () => {
@@ -17,9 +18,9 @@ export function main() {
     });
 
     describe('markersAreRemovable getter', () => {
-      beforeEach(() => componentUnderTest.asset = {});
+      describe('when asset.isSubclipped is false', () => {
+        beforeEach(() => componentUnderTest.enhancedAsset = { isSubclipped: false } as EnhancedAsset);
 
-      describe('when asset.timeStart is undefined', () => {
         it('returns false if player\'s markers are both set', () => {
           componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: outMarkerFrame });
 
@@ -46,7 +47,7 @@ export function main() {
       });
 
       describe('when asset.timeStart is defined', () => {
-        beforeEach(() => componentUnderTest.asset.timeStart = 7);
+        beforeEach(() => componentUnderTest.enhancedAsset = { isSubclipped: true } as EnhancedAsset);
 
         it('returns false if player\'s markers are both set', () => {
           componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: outMarkerFrame });
