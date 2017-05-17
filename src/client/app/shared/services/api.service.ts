@@ -106,9 +106,11 @@ export class ApiService {
   private searchParametersFrom(parameters: ApiParameters): Array<any> {
     const search: URLSearchParams = new URLSearchParams();
 
-    for (const parameter in parameters) {
-      search.set(parameter, parameters[parameter]);
-    }
+    if (parameters['siteName']) console.error('Cannot set siteName externally.');
+
+    Object.keys(parameters)
+      .filter(parameter => (parameter !== 'siteName'))
+      .forEach(parameter => search.set(parameter, parameters[parameter]));
 
     search.set('siteName', this.apiConfig.getPortal());
 

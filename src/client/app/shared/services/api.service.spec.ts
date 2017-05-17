@@ -111,6 +111,14 @@ export function main() {
             methodUnderTest.call(serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd' } })
               .subscribe(() => expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d&siteName=PORTAL'));
           });
+
+          it('is disregarding the siteName key on the parameters if passed in from outside the ApiService', () => {
+            methodUnderTest.call(
+              serviceUnderTest, Api.Identities, 'end/point', { parameters: { a: 'b', c: 'd', siteName: 'TEST' } })
+              .subscribe(() => {
+                expect(connection.request.url).toEqual('BASE/identities-api/v1/end/point?a=b&c=d&siteName=PORTAL');
+              });
+          });
         });
 
         describe('headers', () => {
