@@ -1,11 +1,8 @@
-// Require hammerjs - Needed for Material Design
 require('hammerjs');
-// Application class that will handle loading external
-// dependencies if needed before bootstrapping the app
-import { Application } from './application';
+import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AppModule } from './app.module';
 
-// Determine whether to run in production mode.
-const productionMode = String('<%= BUILD_TYPE %>') === 'prod';
+if (String('<%= BUILD_TYPE %>') === 'prod') { enableProdMode(); }
 
-// Load up the app
-new Application(productionMode).load();
+platformBrowserDynamic().bootstrapModule(AppModule/*, options*/);

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
@@ -20,13 +20,11 @@ import { UiConfig } from './shared/services/ui.config';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { APP_ROUTES } from './app.routes';
 
-declare var portal: string;
-
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(APP_ROUTES),
+    RouterModule.forRoot(APP_ROUTES, { initialNavigation: false }),
     SharedModule.forRoot(),
     HomeModule,
     SearchModule,
@@ -49,8 +47,8 @@ export class AppModule {
     private uiConfig: UiConfig,
     private apiConfig: ApiConfig,
     private currentUser: CurrentUserService) {
-    this.apiConfig.setPortal(portal);
-    this.currentUser.set();
-    this.uiConfig.initialize(this.apiConfig.getPortal());
+    apiConfig.setPortal(localStorage.getItem('currentSite') || (<any>window).portal);
+    currentUser.set();
+    uiConfig.initialize(apiConfig.getPortal());
   }
 }

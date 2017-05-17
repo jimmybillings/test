@@ -12,10 +12,17 @@ export function main() {
     let loggedInState = false, canViewCollections = true;
     let nextNavigation: NavigationEnd = new NavigationEnd(1, '/', '/');
     let componentUnderTest: AppComponent;
-
+    let configHasLoaded = true;
     beforeEach(() => {
-      mockUiConfig = { initialize: jasmine.createSpy('initialize').and.returnValue(Observable.of({})) };
-      mockRouter = { events: Observable.of(nextNavigation) };
+      mockUiConfig = {
+        initialize: jasmine.createSpy('initialize').and.returnValue(Observable.of({})),
+        hasLoaded: () => configHasLoaded,
+        load: jasmine.createSpy('load').and.returnValue(Observable.of({}))
+      };
+      mockRouter = {
+        events: Observable.of(nextNavigation),
+        initialNavigation: jasmine.createSpy('initialNavigation')
+      };
       mockMultiLingual = {
         setLanguage: jasmine.createSpy('setLanguage'),
         setBaseUrl: jasmine.createSpy('setBaseUrl')
@@ -161,6 +168,32 @@ export function main() {
             q: 'dogs', i: 1, n: 100, sortId: 23, filterIds: '1517',
             filterValues: '1517:2015-12-10 - 2016-12-12'
           }, true);
+      });
+    });
+
+    describe('loadConfig', () => {
+      it('Should initialize the navigation immediatly if the config is already loaded', () => {
+        componentUnderTest = new AppComponent(
+          mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
+          mockCollections, mockActiveCollection, mockUiState, mockUserPreference,
+          mockNotification, mockApiConfig, mockUserCan,
+          mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null);
+
+        expect(mockRouter.initialNavigation).toHaveBeenCalled();
+        expect(mockUiConfig.load).not.toHaveBeenCalled();
+      });
+
+      it('Should load the config if it is not loaded and then initialize the navigation', () => {
+        configHasLoaded = false;
+
+        componentUnderTest = new AppComponent(
+          mockUiConfig, mockRouter, mockMultiLingual, mockSearchContext, mockCurrentUserService,
+          mockCollections, mockActiveCollection, mockUiState, mockUserPreference,
+          mockNotification, mockApiConfig, mockUserCan,
+          mockCart, mockWindow, mockFilter, mockSortDefinition, null, null, mockNgZone, null);
+
+        expect(mockUiConfig.load).toHaveBeenCalled();
+        expect(mockRouter.initialNavigation).toHaveBeenCalled();
       });
     });
 

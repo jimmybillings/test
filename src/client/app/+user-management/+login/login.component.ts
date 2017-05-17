@@ -11,8 +11,6 @@ import { WzTermsComponent } from '../../shared/components/wz-terms/wz.terms.comp
 import { FeatureStore } from '../../shared/stores/feature.store';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
 
-declare var portal: string;
-
 @Component({
   moduleId: module.id,
   selector: 'login-component',
@@ -71,7 +69,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.showTerms();
       } else {
         this.router.navigate(['/']).then((_: any) => {
-          this.uiConfig.load(res.user.siteName).subscribe((_: any) => _);
+          this.uiConfig.load().subscribe((_: any) => _);
         });
       }
     });

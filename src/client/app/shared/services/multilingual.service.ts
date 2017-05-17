@@ -3,10 +3,8 @@ import { Injectable } from '@angular/core';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { ILang, MultilingualStateI } from '../interfaces/language.interface';
-import 'rxjs/add/operator/take';
+import { ApiConfig } from './api.config';
 
-declare let portal: string;
-declare let baseUrl: string;
 const initialState: MultilingualStateI = {
   lang: ''
 };
@@ -39,6 +37,7 @@ export class MultilingualService {
 
   constructor(
     private translate: TranslateService,
+    private apiConfig: ApiConfig,
     public store: Store<any>) {
     // subscribe to changes
     this.setLanguage('en');
@@ -48,7 +47,7 @@ export class MultilingualService {
   }
 
   public setLanguage(lang: string) {
-    lang = `${baseUrl.split(':/')[1]}identities-api/v1/translation/${portal}/${lang}`;
+    lang = `${this.apiConfig.baseUrl().split(':/')[1]}identities-api/v1/translation/${this.apiConfig.getPortal()}/${lang}`;
     this.store.dispatch({ type: MULTILINGUAL_ACTIONS.LANG_CHANGE, payload: { lang } });
   }
 }
