@@ -172,7 +172,7 @@ export class CartService {
       stripeToken: this.checkoutState.authorization.id,
       stripeTokenType: this.checkoutState.authorization.type
     };
-    return this.api.post(Api.Orders, 'cart/stripe/process', { body: stripe, loading: true })
+    return this.api.post(Api.Orders, 'cart/stripe/process', { body: { options: stripe }, loading: true })
       .do(() => this.initializeData().subscribe())
       .map(_ => _ as Number);
 

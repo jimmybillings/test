@@ -74,6 +74,10 @@ export class QuoteEditComponent extends CommerceEditTab {
         this.openCostMultiplierDialog(message.payload);
         break;
 
+      case 'REMOVE_COST_MULTIPLIER':
+        this.removeCostMultiplierFrom(message.payload);
+        break;
+
       default:
         super.onNotification(message);
     };
@@ -191,5 +195,9 @@ export class QuoteEditComponent extends CommerceEditTab {
 
   private costMultiplierFormSubmitLabel(lineItem: AssetLineItem): string {
     return lineItem.multiplier > 1 ? 'QUOTE.EDIT_MULTIPLIER_FORM_SUBMIT' : 'QUOTE.ADD_MULTIPLIER_FORM_SUBMIT';
+  }
+
+  private removeCostMultiplierFrom(lineItem: AssetLineItem): void {
+    this.quoteEditService.editLineItem(lineItem, { multiplier: 1 });
   }
 }

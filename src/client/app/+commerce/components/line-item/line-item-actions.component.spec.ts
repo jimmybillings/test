@@ -155,5 +155,39 @@ export function main() {
         expect(componentUnderTest.trStringForCostMultiplier).toBe('QUOTE.ADD_MULTIPLIER_TITLE');
       });
     });
+
+    describe('get showDeleteCostMultiplierBtn()', () => {
+      describe('returns true', () => {
+        it('when the user can administer quotes and the line item has a multiplier', () => {
+          componentUnderTest.userCanAdministerQuotes = true;
+          componentUnderTest.hasMultiplier = true;
+
+          expect(componentUnderTest.showDeleteCostMultiplierBtn).toBe(true);
+        });
+      });
+
+      describe('returns false', () => {
+        it('when the user can\'t administer quotes', () => {
+          componentUnderTest.userCanAdministerQuotes = false;
+          componentUnderTest.hasMultiplier = true;
+
+          expect(componentUnderTest.showDeleteCostMultiplierBtn).toBe(false);
+        });
+
+        it('when the line item doesn\'t have a multiplier', () => {
+          componentUnderTest.userCanAdministerQuotes = true;
+          componentUnderTest.hasMultiplier = false;
+
+          expect(componentUnderTest.showDeleteCostMultiplierBtn).toBe(false);
+        });
+
+        it('when the line item doesn\'t have a multiplier AND the user can\'t adminster quotes', () => {
+          componentUnderTest.userCanAdministerQuotes = false;
+          componentUnderTest.hasMultiplier = false;
+
+          expect(componentUnderTest.showDeleteCostMultiplierBtn).toBe(false);
+        });
+      });
+    });
   });
 }

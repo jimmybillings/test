@@ -83,7 +83,7 @@ export class QuoteService {
     return this.api.post(
       Api.Orders,
       `quote/${this.state.data.id}/stripe/process`,
-      { body: stripe, loading: true }
+      { body: { options: stripe }, loading: true }
     ).map(_ => _ as Number);
   }
 

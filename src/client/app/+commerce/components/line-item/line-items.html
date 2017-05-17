@@ -13,7 +13,7 @@
 			(selectTarget)="onSelectTarget($event, lineItem.selectedTranscodeTarget, lineItem)"
 			flex-gt-xs="30" flex-gt-sm="25" flex="auto" class="delivery-format" layout-padding>
 		</line-item-transcode-select-component>
-		<div flex-gt-xs="15" flex="auto" class="actions" flex-order-xs="-3">
+		<div flex-gt-xs="20" flex="auto" class="actions" flex-order-xs="-3">
 			<line-item-actions-component
 				*ngIf="!readOnly"
 				[rightsReproduction]="lineItem.rightsManaged"
@@ -29,8 +29,10 @@
 				(moveTo)="onMoveTo($event, lineItem)"
 				(editMarkers)="onEditMarkers(lineItem)"
 				(openCostMultiplierForm)="onOpenCostMultiplierForm(lineItem)"
+				(removeCostMultiplier)="onRemoveCostMultiplier(lineItem)"
 				(remove)="onRemove(lineItem)">
 			</line-item-actions-component>
+			<div flex="100" layout="row" layout-xs="column" class="divider"></div>
 			<line-item-price-component
 				*ngIf="shouldDisplayPricing"
 				[price]="lineItem.price"
