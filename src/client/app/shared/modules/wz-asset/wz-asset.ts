@@ -156,6 +156,14 @@ export class WzAsset {
     return this.enhancedAssetFor(asset).description;
   }
 
+  public inMarkerFrameFor(asset: Asset): Frame {
+    return this.enhancedAssetFor(asset).inMarkerFrame;
+  }
+
+  public outMarkerFrameFor(asset: Asset): Frame {
+    return this.enhancedAssetFor(asset).outMarkerFrame;
+  }
+
   private enhancedAssetFor(asset: Asset): EnhancedAsset {
     return this.enhancedAssets[asset.assetId];
   }

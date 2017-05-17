@@ -265,6 +265,22 @@ export function main() {
         expect(componentUnderTest.descriptionOf(mockAsset)).toEqual('some description');
       });
     });
+
+    describe('inMarkerFrameFor()', () => {
+      it('returns the duration frame object for the asset', () => {
+        mockEnhancedAsset.inMarkerFrame = { some: 'frame object' };
+
+        expect(componentUnderTest.inMarkerFrameFor(mockAsset)).toEqual({ some: 'frame object' });
+      });
+    });
+
+    describe('outMarkerFrameFor()', () => {
+      it('returns the duration frame object for the asset', () => {
+        mockEnhancedAsset.outMarkerFrame = { some: 'frame object' };
+
+        expect(componentUnderTest.outMarkerFrameFor(mockAsset)).toEqual({ some: 'frame object' });
+      });
+    });
   });
 }
 
