@@ -1,7 +1,7 @@
 wz-advanced-player {
   .tool-bar {
     background-color: lighten(mat-color($foreground, base), 21%);
-    border-top: 1px solid lighten(mat-color($foreground, base), 27%);
+    border-top-color: lighten(mat-color($foreground, base), 27%);
   }
   .timecode {
     background-color: rgba(mat-color($foreground, base), .16);

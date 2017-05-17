@@ -1,4 +1,4 @@
-$mat-icon-button-width: rem(3.4);
+$mat-icon-button-width: 34px;
 $mat-icon-button-height: $mat-icon-button-width;
 
 wz-advanced-player {
@@ -10,10 +10,14 @@ wz-advanced-player {
       cursor: pointer;
     }
   }
-
   .tool-bar {
+    border-top-width: 0;
+    border-top-style: solid;
+    &:last-child {
+      border-top-width: 1px;
+    }
     section {
-      padding: 0 rem(.5);
+      padding: 0 5px;
     }
     nav {
       text-align: right;
@@ -21,51 +25,43 @@ wz-advanced-player {
   }
   .timecode {
     display: inline-flex;
-    font-size: rem(1.25);
-    padding: rem(.5);
-    min-width: rem(6.7);
-    min-height: rem(1.3);
+    font-size: .75em;
+    padding: 5px;
+    min-width: 61px;
+    min-height: 12px;
     vertical-align: middle;
     text-align: center;
-    margin-bottom: rem(.1);
     &.duration  {
       background-color: transparent;
       border-color: transparent;
       opacity: .8;
       padding-left: 0;
-      min-width: rem(5.9);
+      min-width: 59px;
     }
     &.divider  {
       background-color: transparent;
       border-color: transparent;
       opacity: .75;
-      padding: rem(.5) 0;
+      padding: 5px 0;
       min-width: 0;
     }
   }
   [md-button].is-outlined {
-    line-height: rem(2.3);
-    min-width: rem(4.4);
-    padding: 0 rem(.7);
-    height: rem(2.5);
+    line-height: 23px;
+    min-width: 44px;
+    padding: 0 7px;
+    height: 25px;
     vertical-align: middle;
   }
 
   [md-icon-button] {
-    line-height: $mat-icon-button-height;
+    line-height: 33px;
     height: $mat-icon-button-height;
     width: $mat-icon-button-width;
-    md-icon {
-      line-height: rem(2.1);
-      height: rem(2.3);
-      width: rem(2.3);
-      &.material-icons {
-        font-size: rem(2.3);
-      }
-    }
+    position: relative;
     &.seek-out md-icon {
       transform: rotate(180deg);
-      line-height: rem(2.5);
+      line-height: 25px;
     }
   }
   button[disabled] {

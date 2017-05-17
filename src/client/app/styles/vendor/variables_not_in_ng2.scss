@@ -1,6 +1,34 @@
 // Typography
 // ------------------------------
 
+// Implement the rem unit with SCSS so we don't have to actually set a font-size on
+// the user's body element.
+@function rem($multiplier) {
+  $font-size: 10px;
+  @return $multiplier * $font-size;
+}
+
+// $display-4-font-size-base: 8rem !default;
+// $display-3-font-size-base: 4rem !default;
+// $display-2-font-size-base: 3.214rem !default;
+// $display-1-font-size-base: 2.43rem !default;
+// $headline-font-size-base: 1.714rem !default;
+// $title-font-size-base: 1.43rem !default;
+// $subhead-font-size-base: 1.14rem !default;
+
+// $caption-font-size-base: .857rem !default;
+
+
+// $display-4-font-size-base: 7rem !default;
+// $display-3-font-size-base: 3.5rem !default;
+// $display-2-font-size-base: 2.8125rem !default;
+// $display-1-font-size-base: 2.125rem !default;
+// $headline-font-size-base: 1.5rem !default;
+// $title-font-size-base: 1.25rem !default;
+// $subhead-font-size-base: 1rem !default;
+
+// $caption-font-size-base: .75rem !default;
+
 $display-4-font-size-base: rem(11.20) !default;
 $display-3-font-size-base: rem(5.600) !default;
 $display-2-font-size-base: rem(4.500) !default;

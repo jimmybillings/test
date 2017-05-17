@@ -10,7 +10,7 @@ import { PlayerState, MarkerType, SeekToMarkerRequest } from '../../../interface
   template: `
     <button md-icon-button
       [disabled]="!frame || alreadyAtMarker" 
-      class="{{ class }}" 
+      class="mat-icon-button {{ class }}" 
       title="{{ title | translate }}" 
       (click)="onClick()">
         <md-icon>keyboard_tab</md-icon>
