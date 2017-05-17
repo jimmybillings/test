@@ -2,7 +2,7 @@ import { Component, Input, ChangeDetectionStrategy, OnInit, Output, EventEmitter
 import { CollectionLinkComponent } from '../../+collection/components/collection-link.component';
 import { CollectionFormComponent } from './components/collection-form.component';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { WzEvent } from '../../shared/interfaces/common.interface';
+import { Asset, WzEvent } from '../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -24,6 +24,22 @@ export class CollectionTrayComponent implements OnInit {
     this.uiConfig.get('global').take(1).subscribe((config: any) => {
       this.pageSize = config.config.pageSize.value;
     });
+  }
+
+  public hasId(asset: Asset): boolean {
+    return !!asset && !!(asset.assetId);
+  }
+
+  public routerLinkFor(asset: Asset): any[] {
+    return ['/asset/', asset.assetId, this.assetParams(asset)]
+  }
+
+  public hasThumbnail(asset: Asset): boolean {
+    return !!asset.thumbnail;
+  }
+
+  public thumbnailUrlFor(asset: Asset): string {
+    return asset.thumbnail.urls.https;
   }
 
   public getAssetsForLink(): void {

@@ -4,8 +4,8 @@
     <ul class="asset-list" *ngIf="collection.assets">
       <li *ngFor="let asset of collection.assets.items">
         <div class="asset">
-          <a *ngIf="asset?.assetId" flex="" [routerLink]="['/asset/', asset.assetId, assetParams(asset)]" class="asset-thb">
-            <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
+          <a *ngIf="hasId(asset)" flex="" [routerLink]="routerLinkFor(asset)" class="asset-thb">
+            <img *ngIf="hasThumbnail(asset)" src="{{ thumbnailUrlFor(asset) }}"/>
           </a>
         </div>
       </li>
