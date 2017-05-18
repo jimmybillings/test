@@ -7,11 +7,16 @@ interface InternalCache {
 }
 
 export class EnhancedAsset implements commerce.Asset, common.Asset {
-  // defined in both commerce.Asset and common.Asset
+  // defined in two or more of the following sources
   public readonly assetId: number;
   public readonly uuid?: string;
   public readonly timeStart?: number;
   public readonly timeEnd?: number;
+  public readonly clipUrl?: string;
+  public readonly hasDownloadableComp?: boolean;
+  public readonly name: string;  // clip name in common.Asset, something else in clip API response
+  public readonly primary?: Array<{ value: string }> | commerce.Metadatum[];
+  public readonly transcodeTargets?: string[];
 
   // defined in commerce.Asset only
   public readonly assetName?: string;
@@ -21,17 +26,21 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
   public readonly supplierId?: number;
   public readonly supplierName?: string;
   public readonly thumbnailUrl?: string;
-  public readonly clipUrl?: string;
 
   // defined in common.Asset only
-  public readonly name: string;
   public readonly metaData?: commerce.Metadatum[];
   public readonly thumbnail?: { name: string, urls: common.AssetUrls };
   public readonly smallPreview?: { name: string, urls: common.AssetUrls };
-  public readonly hasDownloadableComp?: boolean;
-  public readonly transcodeTargets?: string[];
-  public readonly primary?: Array<{ value: string }>;
   public readonly detailTypeMap?: any;
+
+  // defined by API response to clip/<id>/clipData
+  public readonly clipThumbnailUrl?: string;
+  public readonly common?: commerce.Metadatum[];
+  public readonly filter?: string;
+  public readonly price?: number;
+  public readonly resourceClass?: string;
+  public readonly secondary?: object[];
+
 
   private calculationCache: InternalCache = {};
 
@@ -129,10 +138,6 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
     return this.getCached('formatType');
   }
 
-  public get resourceClass(): string {
-    return this.getCached('resourceClass');
-  }
-
   public get isImage(): boolean {
     return this.resourceClass === 'Image';
   }
@@ -160,11 +165,18 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
       Object.assign(this, { thumbnailUrl: this.thumbnail.urls.https });
     }
 
-    // make 'metaData' (uppercase 'D') available as 'metadata' (lowercase 'd')
-    if (!this.metadata && !!this.metaData) Object.assign(this, { metadata: this.metaData });
+    // make 'clipThumbnailUrl' available as 'thumbnailUrl'
+    if (!this.thumbnailUrl && !!this.clipThumbnailUrl) {
+      Object.assign(this, { thumbnailUrl: this.clipThumbnailUrl });
+    }
 
     // ensure that 'timeStart' and 'timeEnd' are numbers (commerce.Asset), not strings (common.Asset)
     Object.assign(this, { timeStart: parseInt(`${this.timeStart}`), timeEnd: parseInt(`${this.timeEnd}`) });
+
+    // pull 'resourceClass' from metadata if it wasn't passed in explicitly
+    if (!this.resourceClass) {
+      Object.assign(this, { resourceClass: this.getMetadataValueFor('Resource.Class') });
+    }
 
     return this;
   }
@@ -217,9 +229,6 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
           ? (this.timeEnd >= 0 ? this.newFrame.setFromFrameNumber(this.timeEnd) : this.durationFrame)
           : undefined;
 
-      case 'resourceClass':
-        return this.getMetadataValueFor('Resource.Class');
-
       case 'routerLink':
         return ['/asset', this.assetId, this.routerParameters];
 
@@ -255,7 +264,7 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
     return frame && this.durationFrameNumber ? this.frameNumberFrom(frame) * 100 / this.durationFrameNumber : 0;
   }
 
-  private findMetadataValueFor(metadataName: string, object: any = this.metadata): string {
+  private findMetadataValueFor(metadataName: string, object: any = this): string {
     if (object !== Object(object)) return undefined;
 
     const keys: string[] = Object.keys(object);

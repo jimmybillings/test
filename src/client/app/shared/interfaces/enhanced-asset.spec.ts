@@ -305,24 +305,20 @@ export function main() {
       generateMetadataTestsFor('formatType', 'TE.DigitalFormat', { 'High Definition': 'High Definition' });
     });
 
-    describe('resourceClass getter', () => {
-      generateMetadataTestsFor('resourceClass', 'Resource.Class', { 'Image': 'Image' });
-    });
-
     describe('isImage getter', () => {
       it('returns true for an image', () => {
-        Object.assign(assetUnderTest, { metadata: { name: 'Resource.Class', value: 'Image' } });
+        Object.assign(assetUnderTest, { resourceClass: 'Image' });
 
         expect(assetUnderTest.isImage).toBe(true);
       });
 
       it('returns false for a non-image', () => {
-        Object.assign(assetUnderTest, { metadata: { name: 'Resource.Class', value: 'blah' } });
+        Object.assign(assetUnderTest, { resourceClass: 'blah' });
 
         expect(assetUnderTest.isImage).toBe(false);
       });
 
-      it('returns false if the asset is missing Resource.Class metadata', () => {
+      it('returns false if the asset is missing resourceClass', () => {
         expect(assetUnderTest.isImage).toBe(false);
       });
     });
@@ -484,30 +480,61 @@ export function main() {
           expect(assetUnderTest.thumbnailUrl).toEqual('some URL');
         });
 
-        it('is updated if it doesn\'t already exist', () => {
+        it('is updated from the deeply nested object if it doesn\'t already exist', () => {
           Object.assign(assetUnderTest, { thumbnail: { urls: { https: 'some other URL' } } });
 
           assetUnderTest.normalize();
 
           expect(assetUnderTest.thumbnailUrl).toEqual('some other URL');
         });
-      });
 
-      describe('metadata', () => {
-        it('is not changed if it already exists', () => {
-          Object.assign(assetUnderTest, { metadata: 'some metadata', metaData: 'some other metadata' });
+        it('is updated from clipThumbnailUrl if it doesn\'t already exist', () => {
+          Object.assign(assetUnderTest, { clipThumbnailUrl: 'yet another URL' });
 
           assetUnderTest.normalize();
 
-          expect(assetUnderTest.metadata).toEqual('some metadata');
+          expect(assetUnderTest.thumbnailUrl).toEqual('yet another URL');
         });
 
-        it('is updated if it doesn\'t already exist', () => {
-          Object.assign(assetUnderTest, { metaData: 'some other metadata' });
+        it('is updated from the deeply nested object if it AND clipThumbnailUrl are both defined for some reason', () => {
+          Object.assign(
+            assetUnderTest,
+            { thumbnail: { urls: { https: 'some other URL' } }, clipThumbnailUrl: 'yet another URL' }
+          );
 
           assetUnderTest.normalize();
 
-          expect(assetUnderTest.metadata).toEqual('some other metadata');
+          expect(assetUnderTest.thumbnailUrl).toEqual('some other URL');
+        });
+
+        describe('resourceClass', () => {
+          it('is not changed if it already exists', () => {
+            Object.assign(
+              assetUnderTest,
+              { resourceClass: 'some resourceClass', metadata: [{ name: 'Resource.Class', value: 'some other resourceClass' }] }
+            );
+
+            assetUnderTest.normalize();
+
+            expect(assetUnderTest.resourceClass).toEqual('some resourceClass');
+          });
+
+          it('is updated from metadata if it doesn\'t already exist', () => {
+            Object.assign(
+              assetUnderTest,
+              { metadata: [{ name: 'Resource.Class', value: 'some other resourceClass' }] }
+            );
+
+            assetUnderTest.normalize();
+
+            expect(assetUnderTest.resourceClass).toEqual('some other resourceClass');
+          });
+
+          it('is undefined if it doesn\'t already exist and is not found in metadata', () => {
+            assetUnderTest.normalize();
+
+            expect(assetUnderTest.resourceClass).toBeUndefined();
+          });
         });
       });
 
