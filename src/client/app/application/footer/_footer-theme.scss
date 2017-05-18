@@ -2,7 +2,6 @@
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
   $primary: map-get($theme, primary);
-  // $accent: map-get($theme, accent);
 
 
   app-footer {
@@ -17,7 +16,7 @@
       ul.social {
         li {
           a {
-            @include text-contrast(mat-color($mat-grey, 200), mat-color($foreground, text), $white-87-opacity);
+            color: mat-color($foreground, text);
             &:hover {
               color: mat-color($primary, default, .9);
             } 
@@ -25,6 +24,9 @@
         }
       }
       .language-selector {
+        &::before {
+          color: rgba(mat-color($mat-grey, 100),0.18);
+        }
         .mat-select-value {
           color: rgba(mat-color($background, background), .55);
         }

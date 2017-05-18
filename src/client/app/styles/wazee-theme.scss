@@ -22,6 +22,7 @@
 
 @import '../+home/components/home-call-to-action-theme';
 @import '../+home/components/home-hero-theme';
+@import '../+home/components/home-highlights-theme';
 
 @import '../+search/search-theme';
 @import '../+search/filter-theme';
@@ -60,8 +61,6 @@
 @import 'wz-ui/modifiers-theme';
 @import 'wz-ui/sticky-footer-theme';
 
-
-
 @mixin wz-theme($theme) {
   @include wz-asset-data-theme($theme);
   @include wz-asset-detail-theme($theme);
@@ -88,6 +87,7 @@
   
   @include wz-home-call-to-action-theme($theme);
   @include wz-home-hero-theme($theme);
+  @include wz-home-highlights-theme($theme);
 
   @include wz-filter-theme($theme);
   @include wz-search-theme($theme);
