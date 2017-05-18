@@ -274,7 +274,9 @@ export function main() {
       let mockCheckoutStoreState: any;
       describe('for a credit card', () => {
         beforeEach(() => {
-          mockCheckoutStoreState = { selectedPurchaseType: 'CreditCard', authorization: { id: 123 } };
+          mockCheckoutStoreState = {
+            selectedPurchaseType: 'CreditCard', authorization: { id: 123 }, selectedAddress: { addressEntityId: 12 }
+          };
           mockCheckoutStore = {
             state: mockCheckoutStoreState,
             updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
@@ -307,7 +309,9 @@ export function main() {
 
       describe('for purchase on credit', () => {
         beforeEach(() => {
-          mockCheckoutStoreState = { selectedPurchaseType: 'PurchaseOnCredit' };
+          mockCheckoutStoreState = {
+            selectedPurchaseType: 'PurchaseOnCredit', authorization: { id: 123 }, selectedAddress: { addressEntityId: 12 }
+          };
           mockCheckoutStore = {
             state: mockCheckoutStoreState,
             updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')

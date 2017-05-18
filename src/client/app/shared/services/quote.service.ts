@@ -4,7 +4,16 @@ import { CartService } from '../../shared/services/cart.service';
 import { Api, ApiResponse } from '../../shared/interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
 import {
-  Quote, Order, QuoteOptions, QuoteState, CheckoutState, OrderType, QuoteType
+  Quote,
+  Order,
+  QuoteOptions,
+  QuoteState,
+  CheckoutState,
+  OrderType,
+  QuoteType,
+  AddressPurchaseOptions,
+  CreditCardPurchaseOptions,
+  PurchaseOptions
 } from '../../shared/interfaces/commerce.interface';
 import { QuoteStore } from '../../shared/stores/quote.store';
 import { CheckoutStore } from '../../shared/stores/checkout.store';
@@ -76,30 +85,47 @@ export class QuoteService {
   // Private Methods
 
   private purchaseWithCreditCard(): Observable<number> {
-    const stripe: any = {
-      stripeToken: this.checkoutState.authorization.id,
-      stripeTokenType: this.checkoutState.authorization.type
-    };
+    const options: PurchaseOptions = this.purchaseOptions;
     return this.api.post(
       Api.Orders,
       `quote/${this.state.data.id}/stripe/process`,
-      { body: { options: stripe }, loading: true }
+      { body: { options }, loading: true }
     ).map(_ => _ as Number);
   }
 
   private purchaseOnCredit(): Observable<number> {
+    const options: AddressPurchaseOptions = this.addressPurchaseOptions;
     return this.api.post(
       Api.Orders,
       `quote/${this.state.data.id}/checkout/convertToOrder`,
-      { loading: true }
+      { body: { options }, loading: true }
     ).map((order: Order) => order.id);
   }
 
   private purchaseQuoteType(type: QuoteType): Observable<number> {
+    const options: AddressPurchaseOptions = Object.assign({}, { orderType: type }, this.addressPurchaseOptions);
     return this.api.post(
       Api.Orders,
       `quote/${this.state.data.id}/checkout/convertToOrder`,
-      { loading: true, body: { options: { orderType: type } } }
+      { body: { options }, loading: true }
     ).map((order: Order) => order.id);
+  }
+
+  private get purchaseOptions(): PurchaseOptions {
+    return Object.assign({}, this.addressPurchaseOptions, this.creditCardPurchaseOptions) as PurchaseOptions;
+  }
+
+  private get addressPurchaseOptions(): AddressPurchaseOptions {
+    return {
+      orderAddressId: this.checkoutState.selectedAddress.addressEntityId,
+      orderAddressType: this.checkoutState.selectedAddress.type
+    };
+  }
+
+  private get creditCardPurchaseOptions(): CreditCardPurchaseOptions {
+    return {
+      stripeToken: this.checkoutState.authorization.id,
+      stripeTokenType: this.checkoutState.authorization.type
+    };
   }
 }

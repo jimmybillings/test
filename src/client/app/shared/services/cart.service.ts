@@ -18,6 +18,9 @@ import {
   QuoteOptions,
   CheckoutState,
   OrderType,
+  AddressPurchaseOptions,
+  CreditCardPurchaseOptions,
+  PurchaseOptions
 } from '../interfaces/commerce.interface';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
 
@@ -168,21 +171,17 @@ export class CartService {
   // Private methods
 
   private purchaseWithCreditCard(): Observable<number> {
-    const stripe: any = {
-      stripeToken: this.checkoutState.authorization.id,
-      stripeTokenType: this.checkoutState.authorization.type
-    };
-    return this.api.post(Api.Orders, 'cart/stripe/process', { body: { options: stripe }, loading: true })
+    const options: PurchaseOptions = this.purchaseOptions;
+    return this.api.post(Api.Orders, 'cart/stripe/process', { body: { options }, loading: true })
       .do(() => this.initializeData().subscribe())
       .map(_ => _ as Number);
-
   }
 
   private purchaseOnCredit(): Observable<number> {
-    return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { loading: true })
+    const options: AddressPurchaseOptions = this.addressPurchaseOptions;
+    return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { body: { options }, loading: true })
       .do(() => this.initializeData().subscribe())
       .map((order: Order) => order.id);
-
   }
 
   private formatBody(parameters: AddAssetParameters): any {
@@ -222,5 +221,23 @@ export class CartService {
   // every time we use this function as a callback.
   private replaceCartWith = (wholeCartResponse: any): void => {
     this.cartStore.replaceCartWith(wholeCartResponse);
+  }
+
+  private get purchaseOptions(): PurchaseOptions {
+    return Object.assign({}, this.addressPurchaseOptions, this.creditCardPurchaseOptions) as PurchaseOptions;
+  }
+
+  private get addressPurchaseOptions(): AddressPurchaseOptions {
+    return {
+      orderAddressId: this.checkoutState.selectedAddress.addressEntityId,
+      orderAddressType: this.checkoutState.selectedAddress.type
+    };
+  }
+
+  private get creditCardPurchaseOptions(): CreditCardPurchaseOptions {
+    return {
+      stripeToken: this.checkoutState.authorization.id,
+      stripeTokenType: this.checkoutState.authorization.type
+    };
   }
 }
