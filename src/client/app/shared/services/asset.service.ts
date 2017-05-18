@@ -105,8 +105,8 @@ export class AssetService {
         transcodeTargets: asset.transcodeTargets || [],
         price: asset.price,
         uuid: asset.uuid || null,
-        timeStart: asset.timeStart || null,
-        timeEnd: asset.timeEnd || null,
+        timeStart: asset.timeStart >= 0 ? asset.timeStart : null,
+        timeEnd: asset.timeEnd >= 0 ? asset.timeEnd : null,
       }
     });
   }
