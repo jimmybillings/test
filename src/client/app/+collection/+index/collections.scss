@@ -86,10 +86,10 @@ collections-component .query-details {
     border-radius: $mat-button-border-radius;
     transition: $swift-ease-out;
     .actions {
-      min-height: rem(4.5);
+      min-height: 45px;
       position: relative;
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-        padding-top: rem(.4);
+        min-height: 50px;
       }
     }
     .tools {
