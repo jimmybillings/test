@@ -1,8 +1,9 @@
 @import 'styles/vendor';
+@import 'styles/wz-ui';
+@import '../assets/styles/config';
 
 // change theme colors and any other global variables
 @import '../assets/styles/theme';
 
-@import '../assets/styles/config';
 @import 'styles/wazee';
-@import 'styles/wazee-theme';
+// @import 'styles/wazee-theme';

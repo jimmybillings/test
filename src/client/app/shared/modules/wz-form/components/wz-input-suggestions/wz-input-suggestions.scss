@@ -47,7 +47,7 @@
         transition: $swift-ease-out;
         padding-left: rem(1.6);
         padding-right: rem(1.6);
-        // box-shadow: inset 0 1px 0 0 mat-color($mat-foreground, divider);
+        // box-shadow: inset 0 1px 0 0 mat-color($foreground, divider);
         &:hover, &:focus, &.active {
           cursor: pointer;
           outline: none;

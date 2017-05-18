@@ -1,4 +1,3 @@
-
 one-level-view {
   width: 100%;
   display: block;
@@ -35,17 +34,12 @@ one-level-view ul {
       width: 100%;
       position: relative;
       padding: 56.25% 0 0 0;
-      background-image:
-        linear-gradient(rgba(mat-color($mat-grey, 900),1), rgba(mat-color($mat-grey, 900),.6)),
-        linear-gradient(rgba(mat-color($mat-grey, 900),.5), rgba(mat-color($mat-grey, 900),1))
-      ;
       transition: $swift-ease-out;
       &:hover, &:active {
         cursor: pointer;
-        // box-shadow: 0 rem(.8) 0 0 mat-color($background, card);
         section.item-hover-effect {
-          border-color: mat-color($background, card);
-          box-shadow: 0 1px 3px 0 rgba(mat-color($mat-grey, 900), .4);
+          @include mat-elevation(1);
+          // box-shadow: 0 1px 3px 0 rgba(mat-color($mat-grey, 900), .4);
         }
       }
       img {
@@ -69,9 +63,7 @@ one-level-view ul {
         left:0;
         width: 100%;
         padding: rem(.5) rem(1.0);
-        background-color: rgba(mat-color($mat-grey, 900),.6);
         min-height: 23.333%;
-        @include text-contrast(mat-color($mat-grey, 900));
         .item-label {
           font-size: rem(1.8);
           line-height: rem(2.7);
@@ -93,7 +85,6 @@ one-level-view ul {
     }
   }
 }
-
 
 one-level-view ul li.disabled {
   a {

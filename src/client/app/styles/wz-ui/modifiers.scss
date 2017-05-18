@@ -12,20 +12,7 @@
   text-transform: uppercase;
 }
 [md-button] {
-// outlined button
-  &.is-outlined {
-    border: 1px solid mat-color($mat-foreground, divider);
-    line-height: rem(3.300);
-    &.mat-primary {
-      border: 1px solid mat-color($mat-primary, default, .4);
-    }
-    &.mat-accent {
-      border: 1px solid mat-color($mat-accent, 500, .4);
-    }
-    &.mat-warn {
-      border: 1px solid mat-color($mat-warn, 500, .4);
-    }
-  }
+
 // drop down indicator on a button
   &.is-dd {
     position: relative;
@@ -38,7 +25,6 @@
     //   display: none;
     // }
     .mat-button-wrapper::after {
-      color: mat-color($mat-foreground, secondary-text);
       transition: opacity 0.4s;
       font-family: 'Material Icons';
       content: "\e5c5";
@@ -46,15 +32,6 @@
       position: absolute;
       right: rem(.2);
       top: 0;
-    }
-    &.mat-primary .mat-button-wrapper::after {
-      color: contrast-color(mat-color($mat-primary));
-    }
-    &.mat-accent .mat-button-wrapper::after {
-      color: contrast-contrast(mat-color($mat-accent));
-    }
-    &.mat-warn .mat-button-wrapper::after {
-      color: contrast-color(mat-color($mat-warn));
     }
     &.icon-dd-button {
       min-width: rem(4.0);

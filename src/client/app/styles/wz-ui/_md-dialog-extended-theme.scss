@@ -1,0 +1,22 @@
+@mixin wz-md-dialog-extended-theme($theme) {
+  $foreground: map-get($theme, foreground);
+
+  // This sets the defaults for dialogs. Override widths can be set on specific components.
+  // like: md-dialog-content collection-form .wz-dialog {}
+  .mat-dialog-container .wz-dialog {
+    color: mat-color($foreground, secondary-text);
+    .mat-select-value {
+      color: mat-color($foreground, secondary-text);
+    }
+  }
+  // For the notification dialog, these match the MD specs. The md-dialog currently does not.
+  md-dialog-container.mat-dialog-container wz-confirmation-dialog,
+  md-dialog-container.mat-dialog-container wz-notification-dialog {
+    [md-dialog-title] {
+      color: mat-color($foreground, text);
+    }
+    md-dialog-content {
+      color: mat-color($foreground, secondary-text);
+    }
+  }
+}

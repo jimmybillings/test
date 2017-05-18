@@ -2,31 +2,25 @@ wz-advanced-player {
   $scrubber-slider-height: rem(1.0);
   $thumb-width: rem(0.3);
   $scrubber-thumb-height: $scrubber-slider-height;
-
   $marker-slider-height: 0;
   $marker-thumb-height: $thumb-width;
+
   wz-scrubber {
     position: relative;
     text-align: center;
     width: 100%;
     height: $scrubber-slider-height;
-    background-color: transparent;
   }
-
   md-slider.mat-slider-horizontal {
     width: 100%;
     padding: 0;
     vertical-align: top;
-    background-color: lighten(mat-color($foreground, base), 38%);
-
     .mat-slider-wrapper {
       height: $scrubber-slider-height;
-      // width: calc(100% - #{$thumb-width});
       width: 100%;
       top: 0;
       left: 0;
       right: 0;
-      // background-color: lighten(mat-color($foreground, base), 38%);
       opacity: .9;
       cursor: pointer;
     }
@@ -36,11 +30,9 @@ wz-advanced-player {
     .mat-slider-track-background {
       height: 100%;
       width: calc(100% - #{$thumb-width});
-      background-color: lighten(mat-color($foreground, base), 38%);
     }
     .mat-slider-track-fill {
       height: $scrubber-slider-height;
-      background-color: lighten(mat-color($background, background), 0%);
       transition: none;
     }
 
@@ -77,7 +69,6 @@ wz-advanced-player {
 
       .mat-slider-thumb {
         height: $scrubber-thumb-height;
-        background-color: lighten(mat-color($foreground, text), 5%);
       }
     }
 
@@ -101,7 +92,6 @@ wz-advanced-player {
 
       .mat-slider-thumb {
         height: $marker-thumb-height;
-        background-color: mat-color($accent, darker);
       }
 
       &.in {
@@ -117,7 +107,6 @@ wz-advanced-player {
     position: absolute;
     top: rem(-3.5);
     border-radius: $mat-button-border-radius;
-    background-color: rgba(mat-color($foreground, base), .5);
     font-size: rem(1.1);
     line-height: 1;
     padding: rem(.8) rem(1.0);

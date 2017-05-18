@@ -1,0 +1,10 @@
+@mixin wz-login-theme($theme) {
+  $foreground: map-get($theme, foreground);
+
+  .mat-card.wz-form-card {
+    color: mat-color($foreground, secondary-text);
+    .mat-select-value {
+      color: mat-color($foreground, secondary-text);
+    }
+  }
+}

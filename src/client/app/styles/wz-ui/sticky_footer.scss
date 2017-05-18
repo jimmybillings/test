@@ -21,7 +21,6 @@ body > wazee-digital-platform > div app-footer {
 .main-content {
   flex: 1 0 auto; /* 2 */
   width: 100%;
-  background-color: mat-color($mat-background, status-bar);
 }
 .main-content::after {
   content: '\00a0'; /* &nbsp; */

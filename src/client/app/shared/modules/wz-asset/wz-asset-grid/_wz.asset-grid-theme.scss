@@ -1,0 +1,53 @@
+@mixin wz-asset-grid-theme($theme) {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $accent: map-get($theme, accent);
+
+  wz-asset-grid ul.asset-grid-view {
+    & > li {
+      .asset {      
+        background-color: mat-color($background, app-bar);
+      }
+      .asset-name {
+        @include text-contrast(mat-color($background, app-bar));
+      }
+      .asset a.asset-desc {
+        span.mdata-1 {
+          @include text-contrast(mat-color($background, background));
+        }
+      }
+      .asset:hover a.asset-desc, .asset:active a.asset-desc {
+        span.mdata-1 {
+          @include text-contrast(mat-color($foreground, base));
+        }
+      }
+      .asset section.actions {
+        nav.asset-options {
+          background-color: rgba(mat-color($foreground, base), .6);
+          button[md-icon-button] {
+            @include text-contrast(mat-color($foreground, base));
+            &:hover {
+              background-color: rgba(mat-color($foreground, base), .18);
+            }
+            &:disabled {
+              md-icon {
+                color: rgba(mat-color($background, background),.2);;
+              }
+            }
+          }
+        }
+      }
+      span {
+        &.mdata-3 {
+          @include text-contrast(mat-color($foreground, base));
+        }
+        &.subclip-timeline {
+          background-color: darken(mat-color($background, status-bar), 1%);
+          .subclip-segment {
+            background-color: rgba(mat-color($accent, darker), .95);
+          }
+        } 
+      }
+    }
+  }
+}
