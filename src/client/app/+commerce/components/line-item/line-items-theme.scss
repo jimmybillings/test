@@ -1,0 +1,30 @@
+li.cart-asset {
+  background-color: mat-color($background, card);
+  color: rgba(mat-color($foreground, text), .7);
+  .subclip-timeline {
+    background-color: darken(mat-color($background, status-bar), 10%);
+    .subclip-segment {
+      background-color: rgba(mat-color($accent, darker), .6);
+    }
+  }
+  ul.subclip-data {
+    color: mat-color($foreground, secondary-text);
+    background-color: rgba(mat-color($primary), .1);
+  }
+  .multiplier {
+    color: mat-color($primary, lighter);
+  }
+  .price.select-usage {
+    color: lighten(mat-color($mat-warn, darker), 30%);
+    &::after {
+      color: mat-color($mat-warn, darker);
+    }
+  }
+  .divider {
+    box-shadow: inset 0 1px 0 0 mat-color($foreground, divider);
+  }
+}
+
+button.mat-icon-button.select-usage {
+  color: mat-color($mat-warn, darker);
+}

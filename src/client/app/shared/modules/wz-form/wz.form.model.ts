@@ -15,7 +15,7 @@ export class FormModel {
     let newForm: any = {};
     form.forEach((field: FormFields) => {
       newForm[field.name] = [field.value];
-      newForm[field.name].push(this._getValidator(field.validation));
+      newForm[field.name].push(this._getValidator(field));
     });
     return newForm;
   }
@@ -37,8 +37,8 @@ export class FormModel {
     }
   }
 
-  private _getValidator(type: any): Validators {
-    switch (type) {
+  private _getValidator(field: FormFields): Validators {
+    switch (field.validation) {
       case 'REQUIRED':
         return this._getRequiredValidator();
       case 'EMAIL':
@@ -51,6 +51,8 @@ export class FormModel {
         return this._getMultiEmailValidator();
       case 'TERMS':
         return this._getTermsValidator();
+      case 'GREATER_THAN':
+        return this._getGreaterThanValidator(field.min);
       default:
         return this._getOptionalValidator;
     }
@@ -97,6 +99,10 @@ export class FormModel {
 
   private _getTermsValidator(): Validators {
     return this.checkboxRequired;
+  }
+
+  private _getGreaterThanValidator(testValue: string): Validators {
+    return (control: FormControl) => (parseFloat(control.value) <= parseFloat(testValue)) ? { tooLow: 'number too low' } : null;
   }
 
   private checkboxRequired(control: FormGroup) {

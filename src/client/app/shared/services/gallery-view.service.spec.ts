@@ -38,25 +38,25 @@ export function main() {
 
         expect(mockApi.get).toHaveBeenCalledWithApi(Api.Assets);
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('galleryResult');
-        expect(mockApi.get).toHaveBeenCalledWithParameters({ query: '1:"Name 1",2:"Name 2",3:"Name 3"', siteName: 'core' });
+        expect(mockApi.get).toHaveBeenCalledWithParameters({ query: '1:"Name 1",2:"Name 2",3:"Name 3"' });
       });
 
       it('calls the apiService with a null query when the path is null', () => {
         serviceUnderTest.load(null);
 
-        expect(mockApi.get).toHaveBeenCalledWithParameters({ query: null, siteName: 'core' });
+        expect(mockApi.get).toHaveBeenCalledWithParameters({ query: null });
       });
 
       it('calls the apiService with a null query when the path is undefined', () => {
         serviceUnderTest.load(undefined);
 
-        expect(mockApi.get).toHaveBeenCalledWithParameters({ query: null, siteName: 'core' });
+        expect(mockApi.get).toHaveBeenCalledWithParameters({ query: null });
       });
 
       it('calls the apiService with a null query when the path is empty', () => {
         serviceUnderTest.load([]);
 
-        expect(mockApi.get).toHaveBeenCalledWithParameters({ query: null, siteName: 'core' });
+        expect(mockApi.get).toHaveBeenCalledWithParameters({ query: null });
       });
 
       it('returns the API service\'s Observable', () => {

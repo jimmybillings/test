@@ -7,11 +7,21 @@ import {
 import { MultilingualService } from './multilingual.service';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ApiConfig } from './api.config';
 
 import { Http } from '@angular/http';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, 'assets/i18n', '.json');
+}
+
+class MockApiConfig {
+  public getPortal() {
+    return 'core';
+  }
+  public baseUrl() {
+    return 'http://crxextapi.dev.wzplatform.com/';
+  }
 }
 
 export function main() {
@@ -30,7 +40,8 @@ export function main() {
         ],
         providers: [
           ...beforeEachProvidersArray,
-          MultilingualService
+          MultilingualService,
+          { provide: ApiConfig, useClass: MockApiConfig },
         ]
       });
     });

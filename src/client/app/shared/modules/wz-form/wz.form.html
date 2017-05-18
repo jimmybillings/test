@@ -5,7 +5,8 @@
 		<!--
         START: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
-      <md-input-container *ngIf="(field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date' || field.type == 'number')">
+      <md-input-container
+        *ngIf="(field.type == 'text' || field.type == 'password' || field.type == 'email' || field.type == 'date')">
         <input mdInput
         class="md-block"
         [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
@@ -48,6 +49,40 @@
 		<!--
         END: FORM INPUT FOR TEXT, PASSWORD, EMAIL, DATE
       -->
+
+    <!--    
+      START: FORM INPUT FOR NUMBER
+    -->
+    <md-input-container *ngIf="field.type === 'number'">
+      <input
+        mdInput
+        type="number"
+        class="md-block"
+        name={{field.name}}
+        id="{{field.name}}"
+        min="{{field.min}}"
+        max="{{field.max}}"
+        formControlName="{{field.name}}"
+        placeholder="{{field.label | translate}}"
+        [ngClass]="{'show-errors': hasErrorType(form.controls[field.name])}"
+        [required]="isRequiredField(field)">
+      <md-hint
+        *ngIf="!form.controls[field.name].valid && !form.controls[field.name].pristine"
+        [hidden]="form.controls[field.name].valid || form.controls[field.name].pristine && !submitAttempt"
+				align="start"
+        class="error">
+        <span *ngIf="form.controls[field.name].hasError('required')">
+          {{ 'ERRORS.MISSING_REQUIRED_FIELD' | translate:{fieldName:field.label | translate} }}
+        </span>
+        <span *ngIf="form.controls[field.name].hasError('tooLow')">
+          {{ 'ERRORS.NUMBER_TOO_LOW' | translate:{min:field.min} }}
+        </span>
+      </md-hint>
+    </md-input-container>
+    <!--
+      END: FORM INPUT FOR NUMBER
+    -->
+
 		<!--
         START: FORM INPUT FOR wzdate
       -->

@@ -13,28 +13,33 @@
 			(selectTarget)="onSelectTarget($event, lineItem.selectedTranscodeTarget, lineItem)"
 			flex-gt-xs="30" flex-gt-sm="25" flex="auto" class="delivery-format" layout-padding>
 		</line-item-transcode-select-component>
-		<div flex-gt-xs="15" flex="auto" class="actions" flex-order-xs="-3">
+		<div flex-gt-xs="20" flex="auto" class="actions" flex-order-xs="-3">
 			<line-item-actions-component
 				*ngIf="!readOnly"
-				[rightsManaged]="lineItem.rightsManaged"
+				[rightsReproduction]="lineItem.rightsManaged"
 				[hasAttributes]="!!lineItem.attributes"
 				[otherProjects]="otherProjects"
 				[userCanCreateSubclips]="userCan.createSubclips(lineItem)"
 				[userCanAdministerQuotes]="userCan.administerQuotes()"
-				[timeStart]="lineItem.timeStart"
+				[timeStart]="lineItem.asset.timeStart"
 				[quoteType]="quoteType"
+				[hasMultiplier]="lineItem.multiplier > 1"
 				(showPricingDialog)="onShowPricingDialog(lineItem)"
 				(clone)="onClone(lineItem)"
 				(moveTo)="onMoveTo($event, lineItem)"
 				(editMarkers)="onEditMarkers(lineItem)"
-				(addCostMultiplier)="onAddCostMultiplier(lineItem)"
+				(openCostMultiplierForm)="onOpenCostMultiplierForm(lineItem)"
+				(removeCostMultiplier)="onRemoveCostMultiplier(lineItem)"
 				(remove)="onRemove(lineItem)">
 			</line-item-actions-component>
+			<div flex="100" layout="row" layout-xs="column" class="divider"></div>
 			<line-item-price-component
 				*ngIf="shouldDisplayPricing"
 				[price]="lineItem.price"
+				[multiplier]="lineItem.multiplier"
 				[rightsManaged]="lineItem.rightsManaged"
-				[hasAttributes]="!!lineItem.attributes">
+				[hasAttributes]="!!lineItem.attributes"
+				[userCanAdministerQuotes]="userCan.administerQuotes()">
 			</line-item-price-component>
 		</div>
 	</li>

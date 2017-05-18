@@ -159,6 +159,24 @@ export function main() {
           mockDialogService.onSubmitCallback({ multiplier: '1.2' });
           expect(mockQuoteEditService.editLineItem).toHaveBeenCalledWith({ id: 1 }, { multiplier: '1.2' });
         });
+
+        it('uses the correct strings for edit and merges form values', () => {
+          componentUnderTest.onNotification({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: { id: 1, multiplier: 1.5 } });
+
+          expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+            [{ some: 'multiplier', value: 1.5 }],
+            { title: 'QUOTE.EDIT_MULTIPLIER_TITLE', submitLabel: 'QUOTE.EDIT_MULTIPLIER_FORM_SUBMIT' },
+            jasmine.any(Function)
+          );
+        });
+      });
+
+      describe('REMOVE_COST_MULTIPLIER', () => {
+        it('should call the editLineItem method on the api service', () => {
+          componentUnderTest.onNotification({ type: 'REMOVE_COST_MULTIPLIER', payload: { id: 1, multiplier: 2 } });
+
+          expect(mockQuoteEditService.editLineItem).toHaveBeenCalledWith({ id: 1, multiplier: 2 }, { multiplier: 1 });
+        });
       });
     });
 

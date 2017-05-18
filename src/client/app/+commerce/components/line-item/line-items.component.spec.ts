@@ -122,7 +122,19 @@ export function main() {
           expect(event).toEqual({ type: 'SHOW_COST_MULTIPLIER_DIALOG', payload: lineItem });
         });
 
-        classUnderTest.onAddCostMultiplier(lineItem);
+        classUnderTest.onOpenCostMultiplierForm(lineItem);
+      });
+    });
+
+    describe('onRemoveCostMultiplier', () => {
+      it('emits the proper event with the lineItem', () => {
+        let lineItem: any = { some: 'lineItem' };
+
+        classUnderTest.lineItemsNotify.subscribe((event: Object) => {
+          expect(event).toEqual({ type: 'REMOVE_COST_MULTIPLIER', payload: lineItem });
+        });
+
+        classUnderTest.onRemoveCostMultiplier(lineItem);
       });
     });
   });

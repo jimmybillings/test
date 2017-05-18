@@ -74,6 +74,10 @@ export class QuoteEditComponent extends CommerceEditTab {
         this.openCostMultiplierDialog(message.payload);
         break;
 
+      case 'REMOVE_COST_MULTIPLIER':
+        this.removeCostMultiplierFrom(message.payload);
+        break;
+
       default:
         super.onNotification(message);
     };
@@ -173,9 +177,27 @@ export class QuoteEditComponent extends CommerceEditTab {
 
   private openCostMultiplierDialog(lineItem: AssetLineItem): void {
     this.dialogService.openFormDialog(
-      this.config.addCostMultiplier.items,
-      { title: 'QUOTE.ADD_MULTIPLIER_TITLE', submitLabel: 'QUOTE.ADD_MULTIPLIER_FORM_SUBMIT' },
+      this.costMultiplierFormItems(lineItem),
+      { title: this.costMultiplierFormTitle(lineItem), submitLabel: this.costMultiplierFormSubmitLabel(lineItem) },
       (result: { multiplier: string }): void => this.quoteEditService.editLineItem(lineItem, result)
     );
+  }
+
+  private costMultiplierFormItems(lineItem: AssetLineItem): Array<FormFields> {
+    return lineItem.multiplier > 1 ?
+      [Object.assign({}, this.config.addCostMultiplier.items[0], { value: lineItem.multiplier })] :
+      this.config.addCostMultiplier.items;
+  }
+
+  private costMultiplierFormTitle(lineItem: AssetLineItem): string {
+    return lineItem.multiplier > 1 ? 'QUOTE.EDIT_MULTIPLIER_TITLE' : 'QUOTE.ADD_MULTIPLIER_TITLE';
+  }
+
+  private costMultiplierFormSubmitLabel(lineItem: AssetLineItem): string {
+    return lineItem.multiplier > 1 ? 'QUOTE.EDIT_MULTIPLIER_FORM_SUBMIT' : 'QUOTE.ADD_MULTIPLIER_FORM_SUBMIT';
+  }
+
+  private removeCostMultiplierFrom(lineItem: AssetLineItem): void {
+    this.quoteEditService.editLineItem(lineItem, { multiplier: 1 });
   }
 }

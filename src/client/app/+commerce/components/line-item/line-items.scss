@@ -91,19 +91,39 @@ li.cart-asset {
     }
   }
 
-  .price {
-    position: absolute;
-    bottom: rem(.7);
-    right: rem(.7);
-    font-size: rem(1.8);
-    &::first-letter {
-      font-size: .83em;
-      vertical-align: top;
+  line-item-price-component {
+    @media screen and (min-width: $layout-breakpoint-xs) {
+      position: absolute;
+      bottom: rem(.7);
+      right: rem(.7);
+      font-size: rem(1.8);
     }
-    &.select-usage::after {
-      content: " *";
+    .line-item-price {
+      text-align: right;
+      @media screen and (max-width: $layout-breakpoint-xs) {
+        padding: rem(1);
+      }
+      .price {
+        &::first-letter {
+          font-size: .83em;
+          vertical-align: top;
+        }
+        &.select-usage::after {
+          content: " *";
+        }
+      }
+      .multiplier {
+        min-width: rem(15);
+        padding-bottom: rem(.6);
+        font-size: rem(1.4);
+        @media screen and (max-width: $layout-breakpoint-sm) {
+          padding: 0;
+          margin-right: rem(1);
+        }
+      }
     }
   }
+
   .divider {
     margin: rem(.6) rem(.8) 0 rem(.8);
     padding-bottom: rem(.6);

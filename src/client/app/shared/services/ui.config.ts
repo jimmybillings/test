@@ -28,11 +28,10 @@ export class UiConfig {
     this.set(JSON.parse(localConfig));
   }
 
-  public load(siteName: string): Observable<any> {
+  public load(): Observable<any> {
     return this.api.get(
       Api.Identities,
       'configuration/site',
-      { parameters: { siteName: siteName } }
     ).do(response => this.set(Object.assign(response, { loaded: true })));
   }
 
