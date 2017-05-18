@@ -18,7 +18,7 @@ export function main() {
     });
 
     describe('markersAreRemovable getter', () => {
-      describe('when asset.isSubclipped is false', () => {
+      describe('when asset is not subclipped', () => {
         beforeEach(() => componentUnderTest.enhancedAsset = { isSubclipped: false } as EnhancedAsset);
 
         it('returns false if player\'s markers are both set', () => {
@@ -46,7 +46,7 @@ export function main() {
         });
       });
 
-      describe('when asset.timeStart is defined', () => {
+      describe('when asset is subclipped', () => {
         beforeEach(() => componentUnderTest.enhancedAsset = { isSubclipped: true } as EnhancedAsset);
 
         it('returns false if player\'s markers are both set', () => {
