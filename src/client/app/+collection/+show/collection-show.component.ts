@@ -173,15 +173,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    let params: AddAssetParameters = {
-      lineItem: {
-        asset: {
-          assetId: asset.assetId,
-          timeStart: asset.timeStart ? asset.timeStart : undefined,
-          timeEnd: asset.timeEnd ? asset.timeEnd : undefined
-        }
-      }
-    };
+    let params: AddAssetParameters = { lineItem: { asset: asset } };
+
     if (this.userCan.administerQuotes()) {
       this.quoteEditService.addAssetToProjectInQuote(params);
     } else {

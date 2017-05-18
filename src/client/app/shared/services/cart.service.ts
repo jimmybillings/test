@@ -23,6 +23,7 @@ import {
   PurchaseOptions
 } from '../interfaces/commerce.interface';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
+import { SubclipMarkers } from '../interfaces/asset.interface';
 
 @Injectable()
 export class CartService {
@@ -186,11 +187,25 @@ export class CartService {
 
   private formatBody(parameters: AddAssetParameters): any {
     let formatted = {};
-    Object.assign(formatted, { lineItem: parameters.lineItem });
+    Object.assign(formatted, { lineItem: this.formatLineItem(parameters.lineItem, parameters.markers) });
     if (parameters.attributes) {
       Object.assign(formatted, { attributes: this.formatAttributes(parameters.attributes) });
     }
     return formatted;
+  }
+
+  private formatLineItem(lineItem: any, markers: SubclipMarkers): any {
+    return Object.assign({}, lineItem, { asset: this.formatAsset(lineItem.asset, markers) });
+  }
+
+  private formatAsset(asset: any, markers: SubclipMarkers): any {
+    return Object.assign(
+      { assetId: asset.assetId },
+      asset.timeStart >= 0 ? { timeStart: asset.timeStart } : null,
+      asset.timeEnd >= 0 ? { timeEnd: asset.timeEnd } : null,
+      markers && markers.in >= 0 ? { timeStart: markers.in } : null,
+      markers && markers.out >= 0 ? { timeEnd: markers.out } : null
+    );
   }
 
   private formatAttributes(attributes: any): Array<any> {

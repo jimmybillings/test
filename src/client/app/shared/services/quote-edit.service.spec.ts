@@ -145,13 +145,13 @@ export function main() {
     describe('addAssetToProjectInQuote()', () => {
       it('should call the API service correctly', () => {
         serviceUnderTest.addAssetToProjectInQuote({
-          lineItem: { id: '123', asset: {} }, attributes: { Distribution: 'Online Streaming' }
+          lineItem: { id: '123', asset: { assetId: 456 } }, attributes: { Distribution: 'Online Streaming' }
         });
 
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3/asset/lineItem');
         expect(mockApi.put).toHaveBeenCalledWithBody({
-          lineItem: { id: '123', asset: {} },
+          lineItem: { id: '123', asset: { assetId: 456 } },
           attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
         expect(mockApi.put).toHaveBeenCalledWithParameters({
@@ -160,8 +160,46 @@ export function main() {
         });
       });
 
+      it('sends timeStart and timeEnd if defined', () => {
+        serviceUnderTest.addAssetToProjectInQuote({
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: 33, timeEnd: 66 } },
+          attributes: { Distribution: 'Online Streaming' }
+        });
+
+        expect(mockApi.put).toHaveBeenCalledWithBody({
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: 33, timeEnd: 66 } },
+          attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
+        });
+      });
+
+      it('sends timeStart and timeEnd if defined as markers', () => {
+        serviceUnderTest.addAssetToProjectInQuote({
+          lineItem: { id: '123', asset: { assetId: 456 } },
+          markers: { in: 33, out: 66 },
+          attributes: { Distribution: 'Online Streaming' }
+        });
+
+        expect(mockApi.put).toHaveBeenCalledWithBody({
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: 33, timeEnd: 66 } },
+          attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
+        });
+      });
+
+      it('overrides asset timeStart and timeEnd with markers if both are defined', () => {
+        serviceUnderTest.addAssetToProjectInQuote({
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: 33, timeEnd: 66 } },
+          markers: { in: 44, out: 77 },
+          attributes: { Distribution: 'Online Streaming' }
+        });
+
+        expect(mockApi.put).toHaveBeenCalledWithBody({
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: 44, timeEnd: 77 } },
+          attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
+        });
+      });
+
       it('replace the quote store with the response', () => {
-        serviceUnderTest.addAssetToProjectInQuote({ id: '123' } as any);
+        serviceUnderTest.addAssetToProjectInQuote({ lineItem: { id: '123', asset: { assetId: 456 } } });
 
         expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.putResponse);
       });

@@ -1,4 +1,5 @@
 import { ViewAddress, Pagination, Common, SelectedPriceAttributes, Store } from './common.interface';
+import { SubclipMarkers } from './asset.interface';
 
 export type QuoteType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
 export type QuoteStatus = 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED' | 'CANCELLED';
@@ -181,6 +182,7 @@ export interface Quotes extends Store {
 
 export interface AddAssetParameters {
   lineItem: AssetLineItem;
+  markers?: SubclipMarkers;
   attributes?: {
     [index: string]: any;
   };

@@ -131,12 +131,9 @@ export function main() {
             lineItem: {
               selectedTranscodeTarget: 'Target',
               price: 100,
-              asset: {
-                assetId: 123123,
-                timeStart: undefined,
-                timeEnd: undefined
-              }
+              asset: { assetId: 123123 }
             },
+            markers: undefined,
             attributes: undefined
           });
         });
@@ -150,12 +147,9 @@ export function main() {
             lineItem: {
               selectedTranscodeTarget: 'Target',
               price: 100,
-              asset: {
-                assetId: 123123,
-                timeStart: 1,
-                timeEnd: 10
-              }
+              asset: { assetId: 123123 }
             },
+            markers: { in: 1, out: 10 },
             attributes: undefined
           });
         });

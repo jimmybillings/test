@@ -7,6 +7,7 @@ import { Address, ViewAddress } from '../interfaces/user.interface';
 import {
   Project, AssetLineItem, FeeLineItem, AddAssetParameters, Quote, QuoteState, QuoteOptions, EditableQuoteFields, FeeConfig
 } from '../interfaces/commerce.interface';
+import { SubclipMarkers } from '../interfaces/asset.interface';
 import { ActiveQuoteStore } from '../stores/active-quote.store';
 
 import { FeeConfigStore } from '../stores/fee-config.store';
@@ -181,11 +182,25 @@ export class QuoteEditService {
   // Private helper methods
   private formatAssetBody(parameters: AddAssetParameters): any {
     let formatted = {};
-    Object.assign(formatted, { lineItem: parameters.lineItem });
+    Object.assign(formatted, { lineItem: this.formatLineItem(parameters.lineItem, parameters.markers) });
     if (parameters.attributes) {
       Object.assign(formatted, { attributes: this.formatAttributes(parameters.attributes) });
     }
     return formatted;
+  }
+
+  private formatLineItem(lineItem: any, markers: SubclipMarkers): any {
+    return Object.assign({}, lineItem, { asset: this.formatAsset(lineItem.asset, markers) });
+  }
+
+  private formatAsset(asset: any, markers: SubclipMarkers): any {
+    return Object.assign(
+      { assetId: asset.assetId },
+      asset.timeStart >= 0 ? { timeStart: asset.timeStart } : null,
+      asset.timeEnd >= 0 ? { timeEnd: asset.timeEnd } : null,
+      markers && markers.in >= 0 ? { timeStart: markers.in } : null,
+      markers && markers.out >= 0 ? { timeEnd: markers.out } : null
+    );
   }
 
   private formatAttributes(attributes: any): Array<any> {
