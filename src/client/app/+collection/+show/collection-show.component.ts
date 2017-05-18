@@ -217,14 +217,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
               },
               {
                 event: 'save',
-                callback: (event: any) => {
-                  const body = {
-                    uuid: asset.uuid,
-                    assetId: asset.assetId,
-                    timeStart: event.in,
-                    timeEnd: event.out
-                  };
-                  this.activeCollection.updateAsset(this.collection.id, body).subscribe();
+                callback: (updatedMarkers: SubclipMarkers) => {
+                  this.activeCollection.updateAsset(this.collection.id, asset, updatedMarkers).subscribe();
                 },
                 closeOnEvent: true
               }
