@@ -49,7 +49,7 @@ export class AssetService {
   }
 
   // TODO:  Rewrite this a bit?  After creating getPriceFor(asset, attributes) below,
-  // the only remaining use of this method is called as:
+  // the only remaining use of this method is called from AssetComponent as:
   //     this.assetService.getPrice(this.assetService.state.assetId, attributes);
   // The component shouldn't need to ask this service for its state's assetId,
   // only to pass it to this method in the same service!  And duration is no longer used in this method.
