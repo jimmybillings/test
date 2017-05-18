@@ -165,6 +165,12 @@ export class CartService {
       .subscribe(this.replaceCartWith);
   }
 
+  public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkers): void {
+    Object.assign(lineItem.asset, { timeStart: newMarkers.in, timeEnd: newMarkers.out });
+
+    this.editLineItem(lineItem, {});
+  }
+
   public updateOrderInProgress(type: string, data: any): void {
     this.checkoutStore.updateOrderInProgress(type, data);
   }

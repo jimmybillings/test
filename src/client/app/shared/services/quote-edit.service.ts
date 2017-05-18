@@ -135,6 +135,12 @@ export class QuoteEditService {
     ).subscribe(this.replaceQuote);
   }
 
+  public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkers): void {
+    Object.assign(lineItem.asset, { timeStart: newMarkers.in, timeEnd: newMarkers.out });
+
+    this.editLineItem(lineItem, {});
+  }
+
   public updateQuoteField(quoteField: { [index: string]: any }) {
     let property: EditableQuoteFields = Object.keys(quoteField)[0] as EditableQuoteFields;
     if (quoteField[property] === '') {
