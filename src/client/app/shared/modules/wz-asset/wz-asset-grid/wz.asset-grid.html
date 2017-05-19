@@ -1,26 +1,29 @@
 <ul class="asset-grid-view" *ngIf="assets">
   <li *ngFor="let asset of assets">
     <div class="asset">
-      <div class="asset-name">{{asset.name}}</div>
-      <a flex="" [routerLink]="['/asset/', asset.assetId, assetParams(asset)]" class="asset-thb" wzSpeedview (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})" (hidePreview)="onHideSpeedview.emit()">
-        <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
-        <span *ngIf="asset.metaData[0]" class="mdata-0">
-          <span>{{asset.metaData[0].value}}</span>
+      <a
+        flex=""
+        [routerLink]="routerLinkFor(asset)"
+        class="asset-thb"
+        wzSpeedview
+        (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})"
+        (hidePreview)="onHideSpeedview.emit()">
+        <div class="asset-name">{{ nameOf(asset) }}</div>
+        <img *ngIf="hasThumbnail(asset)" src="{{ thumbnailUrlFor(asset) }}"/>
+        <span *ngIf="hasTitle(asset)" class="mdata-0">
+          <span>{{ titleOf(asset) }}</span>
         </span>
-        <span *ngIf="asset.metaData[2] && asset.metaData[2].value != ''" class="mdata-2">
-          <span [ngClass]="formatType(asset.metaData[2].value)" class="sd-hd">{{asset.metaData[2].value}}</span>
+        <span *ngIf="hasFormatType(asset)" class="mdata-2">
+          <span [ngClass]="formatClassNameFor(asset)" class="sd-hd">{{ formatTypeOf(asset) }}</span>
         </span>
-        <span *ngIf="!asset.timeStart && asset.metaData[3]" class="mdata-3">
-          <span>{{asset.metaData[3].value}}</span>
+        <span *ngIf="hasDuration(asset)" class="mdata-3">
+          <span>{{ subclipDurationFrameFor(asset) | timecode }}</span>
         </span>
-        <span  *ngIf="asset.timeStart" class="mdata-3">
-          <span>{{frame(asset.metaData[6].value, asset.timeEnd - asset.timeStart) | timecode}}</span>
+        <span *ngIf="isImage(asset)" class="mdata-4">
+          <span class="image"></span>
         </span>
-        <span *ngIf="asset.metaData[4] && asset.metaData[4].name === 'Resource.Class' && asset.metaData[4].value === 'Image'" class="mdata-4">
-          <span class="{{asset.metaData[4].value | lowercase}}"></span>
-        </span>
-        <span *ngIf="asset.timeStart" class="subclip-timeline">
-          <span class="subclip-segment" [ngStyle]="calcSubClipSegments(asset)"></span>
+        <span *ngIf="isSubclipped(asset)" class="subclip-timeline">
+          <span class="subclip-segment" [ngStyle]="subclipSegmentStylesFor(asset)"></span>
         </span>
       </a>
       <section class="actions">
@@ -68,7 +71,9 @@
             <button md-menu-item (click)="editAsset(asset)">
               <md-icon>theaters</md-icon>
               <span>
-                {{ (asset.timeStart !== '' ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING' : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
+                {{ (isSubclipped(asset)
+                    ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING'
+                    : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
               </span>
             </button>
             <button [disabled]="true" md-menu-item>
@@ -83,7 +88,7 @@
               {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.ASSET_SHARING' | translate }}
               </span>
             </button>
-            <a md-menu-item [routerLink]="['/asset/', asset.assetId, assetParams(asset)]">
+            <a md-menu-item [routerLink]="routerLinkFor(asset)">
               <md-icon>details</md-icon>
               <span>
                 {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_DETAILS' | translate }}
@@ -92,9 +97,9 @@
           </md-menu>
         </nav>
       </section>
-      <a [routerLink]="['/asset/', asset.assetId]" class="asset-desc">
-        <span *ngIf="asset.metaData[1]" class="mdata-1">
-          {{asset.metaData[1].value}}
+      <a [routerLink]="[]" class="asset-desc">
+        <span *ngIf="hasDescription(asset)" class="mdata-1">
+          {{ descriptionOf(asset) }}
         </span>
       </a>
     </div>
