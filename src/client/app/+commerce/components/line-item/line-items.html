@@ -32,7 +32,7 @@
 				(removeCostMultiplier)="onRemoveCostMultiplier(lineItem)"
 				(remove)="onRemove(lineItem)">
 			</line-item-actions-component>
-			<div flex="100" layout="row" layout-xs="column" class="divider"></div>
+			<div *ngIf="!readOnly" flex="100" layout="row" layout-xs="column" class="divider"></div>
 			<line-item-price-component
 				*ngIf="shouldDisplayPricing"
 				[price]="lineItem.price"

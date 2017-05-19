@@ -19,10 +19,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
       <span class="md-caption asset-name">{{ 'ASSET.TRANSCODE_TARGETS.FORM_PLACEHOLDER' | translate }}</span>
       <div>{{ 'ASSET.TRANSCODE_TARGETS.' + selectedTarget | translate }}</div>
     </div>
-  `,
-  styles: [
-    `.read-only-transcode { margin-top: -5px; margin-left: 40px;}`
-  ]
+  `
 })
 export class LineItemTranscodeSelectComponent {
   @Input() transcodeTargets: string[];
