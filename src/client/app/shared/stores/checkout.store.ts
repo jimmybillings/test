@@ -10,7 +10,7 @@ const emptyCheckout: CheckoutState = {
   },
   addresses: [],
   selectedAddress: {
-    type: '',
+    type: null,
     name: '',
     defaultAddress: undefined,
     addressEntityId: undefined,

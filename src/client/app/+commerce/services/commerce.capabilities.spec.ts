@@ -64,14 +64,14 @@ export function main() {
         mockFeature = { isAvailable: () => true };
       });
 
-      it('returns false when user does not have purchaseOnCredit', () => {
+      it('returns false when User does not have purchaseOnCredit', () => {
         hasPurchaseOnCredit = false;
 
         expect(new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).purchaseOnCredit())
           .toBe(false);
       });
 
-      it('returns true when user has purchaseOnCredit', () => {
+      it('returns true when User has purchaseOnCredit', () => {
         hasPurchaseOnCredit = true;
 
         expect(new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).purchaseOnCredit())
@@ -80,35 +80,35 @@ export function main() {
     });
 
     describe('editAddress', () => {
-      it('should return true for an address of type "user" that has a valid address', () => {
-        let addr: any = { type: 'user', address: {} };
+      it('should return true for an address of type "User" that has a valid address', () => {
+        let addr: any = { type: 'User', address: {} };
         expect(capabilitiesUnderTest.editAddress(addr)).toBe(true);
       });
 
-      it('should return false for an address of type "account" that has a valid address', () => {
-        let addr: any = { type: 'account', address: {} };
+      it('should return false for an address of type "Account" that has a valid address', () => {
+        let addr: any = { type: 'Account', address: {} };
         expect(capabilitiesUnderTest.editAddress(addr)).toBe(false);
       });
 
-      it('should return false for an address of type "user" that does not have a valid address', () => {
-        let addr: any = { type: 'account' };
+      it('should return false for an address of type "User" that does not have a valid address', () => {
+        let addr: any = { type: 'Account' };
         expect(capabilitiesUnderTest.editAddress(addr)).toBe(false);
       });
     });
 
     describe('addAddress', () => {
-      it('should return false for an address of type "user" that has a valid address', () => {
-        let addr: any = { type: 'user', address: {} };
+      it('should return false for an address of type "User" that has a valid address', () => {
+        let addr: any = { type: 'User', address: {} };
         expect(capabilitiesUnderTest.addAddress(addr)).toBe(false);
       });
 
-      it('should return false for an address of type "account" that does not have a valid address', () => {
-        let addr: any = { type: 'account' };
+      it('should return false for an address of type "Account" that does not have a valid address', () => {
+        let addr: any = { type: 'Account' };
         expect(capabilitiesUnderTest.addAddress(addr)).toBe(false);
       });
 
-      it('should return true for an address of type "user" that does not have a valid address', () => {
-        let addr: any = { type: 'user' };
+      it('should return true for an address of type "User" that does not have a valid address', () => {
+        let addr: any = { type: 'User' };
         expect(capabilitiesUnderTest.addAddress(addr)).toBe(true);
       });
     });
@@ -120,29 +120,29 @@ export function main() {
         mockCurrentUserService = { hasPermission: () => hasPermission };
       });
 
-      it('should return false if the user doesnt have the permission', () => {
-        addr = { type: 'account', address: {} };
+      it('should return false if the User doesnt have the permission', () => {
+        addr = { type: 'Account', address: {} };
         hasPermission = false;
         capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(false);
       });
 
-      it('should return false if the address is of type "user"', () => {
-        addr = { type: 'user', address: {} };
+      it('should return false if the address is of type "User"', () => {
+        addr = { type: 'User', address: {} };
         hasPermission = true;
         capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(false);
       });
 
       it('should return false if there is no address', () => {
-        addr = { type: 'account' };
+        addr = { type: 'Account' };
         hasPermission = true;
         capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(false);
       });
 
       it('should return true if all conditions are met', () => {
-        addr = { type: 'account', address: {} };
+        addr = { type: 'Account', address: {} };
         hasPermission = true;
         capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.editAccountAddress(addr)).toBe(true);
@@ -156,29 +156,29 @@ export function main() {
         mockCurrentUserService = { hasPermission: () => hasPermission };
       });
 
-      it('should return false if the user doesnt have the permission', () => {
-        addr = { type: 'account' };
+      it('should return false if the User doesnt have the permission', () => {
+        addr = { type: 'Account' };
         hasPermission = false;
         capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(false);
       });
 
-      it('should return false if the address is of type "user"', () => {
-        addr = { type: 'user' };
+      it('should return false if the address is of type "User"', () => {
+        addr = { type: 'User' };
         hasPermission = true;
         capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(false);
       });
 
       it('should return false if there is an address', () => {
-        addr = { type: 'account', address: {} };
+        addr = { type: 'Account', address: {} };
         hasPermission = true;
         capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(false);
       });
 
       it('should return true if all conditions are met', () => {
-        addr = { type: 'account' };
+        addr = { type: 'Account' };
         hasPermission = true;
         capabilitiesUnderTest = new CommerceCapabilities(mockCurrentUserService, null, null);
         expect(capabilitiesUnderTest.addAccountAddress(addr)).toBe(true);
@@ -192,14 +192,14 @@ export function main() {
         mockCurrentUserService = { hasPermission: () => hasPermission };
       });
 
-      it('returns false when user does not have permission', () => {
+      it('returns false when User does not have permission', () => {
         hasPermission = false;
 
         expect(new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).userHas('whatever'))
           .toBe(false);
       });
 
-      it('returns true when user has permission', () => {
+      it('returns true when User has permission', () => {
         hasPermission = true;
 
         expect(new CommerceCapabilities(mockCurrentUserService, mockUiState, mockFeature).userHas('whatever'))
