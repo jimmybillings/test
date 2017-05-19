@@ -1,16 +1,7 @@
 import {
-  Component,
-  ChangeDetectionStrategy,
-  Input,
-  Output,
-  ElementRef,
-  Renderer,
-  EventEmitter,
-  NgZone,
-  OnDestroy
+  Component, ChangeDetectionStrategy, Input, Output, ElementRef, Renderer, EventEmitter, NgZone, OnDestroy
 } from '@angular/core';
-
-import { AssetInfo } from './assetInfo';
+import { EnhancedAsset } from '../../../../interfaces/enhanced-asset';
 import { PlayerMode, PlaybackDirection, PlayerStateChanges } from '../../interfaces/player.interface';
 declare var jwplayer: any;
 
@@ -20,7 +11,7 @@ type MarkersPlaybackMode = 'off' | 'initializing' | 'on';
 @Component({
   moduleId: module.id,
   selector: 'wz-player',
-  template: ``,
+  template: ' ',
   // styles: ['img { width:100%; height:100%; }'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -30,21 +21,23 @@ export class WzPlayerComponent implements OnDestroy {
   @Input() window: any;
 
   @Input()
-  public set asset(newAsset: any) {
+  public set asset(asset: any) {
     this.reset();
-    this.assetInfo.asset = newAsset;
+    this.currentAsset = asset;
+    console.log(asset);
+    this.enhancedAsset = Object.assign(new EnhancedAsset(), asset).normalize();
 
-    newAsset.resourceClass === 'Image' ? this.setupImage() : this.setupVideo();
+    this.enhancedAsset.isImage ? this.setupImage() : this.setupVideo();
   }
 
   public get asset(): any {
-    return this.assetInfo.asset;
+    return this.currentAsset;
   }
 
   @Output() stateChangeRequest: EventEmitter<PlayerStateChanges> = new EventEmitter<PlayerStateChanges>();
 
   private currentAsset: any;
-  private assetInfo: AssetInfo = new AssetInfo();
+  private enhancedAsset: EnhancedAsset;
   private jwPlayer: any;
   private videoElement: any;
   private currentAssetType: AssetType = 'unknown';
@@ -190,13 +183,13 @@ export class WzPlayerComponent implements OnDestroy {
   private setupVideo(): void {
     this.currentAssetType = 'video';
     this.jwPlayer = this.window.jwplayer(this.element.nativeElement);
-    this.inMarker = this.assetInfo.inMarkerAsSeconds;
-    this.outMarker = this.assetInfo.outMarkerAsSeconds;
+    this.setupInMarker();
+    this.setupOutMarker();
     const autostartInAdvancedMode: boolean = !this.inMarker || !this.outMarker;
 
     this.jwPlayer.setup({
-      image: this.assetInfo.asset.clipThumbnailUrl || null,
-      file: this.assetInfo.asset.clipUrl,
+      image: this.enhancedAsset.thumbnailUrl || null,
+      file: this.enhancedAsset.clipUrl,
       autostart: this.mode === 'basic' || autostartInAdvancedMode
     });
 
@@ -220,7 +213,7 @@ export class WzPlayerComponent implements OnDestroy {
           this.emitStateChangeRequestWith({
             ready: true,
             canSupportCustomControls: true,
-            framesPerSecond: this.assetInfo.framesPerSecond,
+            framesPerSecond: this.enhancedAsset.framesPerSecond,
             inMarker: this.inMarker,
             outMarker: this.outMarker,
             volume: this.currentVolume
@@ -233,6 +226,20 @@ export class WzPlayerComponent implements OnDestroy {
         }
       });
     }
+  }
+
+  private setupInMarker(): void {
+    this.inMarker =
+      this.enhancedAsset.inMarkerFrame && this.enhancedAsset.inMarkerFrameNumber !== 0
+        ? this.enhancedAsset.inMarkerFrame.asSeconds(3)
+        : undefined;
+  }
+
+  private setupOutMarker(): void {
+    this.outMarker =
+      this.enhancedAsset.outMarkerFrame && this.enhancedAsset.outMarkerFrameNumber !== this.enhancedAsset.durationFrameNumber
+        ? this.enhancedAsset.outMarkerFrame.asSeconds(3)
+        : undefined;
   }
 
   private startVideoEventListeners(): void {
@@ -344,7 +351,7 @@ export class WzPlayerComponent implements OnDestroy {
     let imgWrapper: HTMLElement = document.createElement('div');
     imgWrapper.className = 'photo-container';
     let elem: HTMLImageElement = document.createElement('img');
-    elem.src = this.assetInfo.asset.clipUrl;
+    elem.src = this.enhancedAsset.clipUrl;
     imgWrapper.appendChild(elem);
     this.element.nativeElement.appendChild(imgWrapper);
   }

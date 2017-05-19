@@ -7,32 +7,29 @@
     <div flex="100" flex-gt-xs="75">
       <div flex="100" layout="row" layout-xs="column">
         <div flex-gt-xs="40" flex-gt-md="30" flex-gt-lg="25" flex="100" layout-padding>
-          <a [routerLink]="['/asset/', asset.assetId, assetParams(asset)]" wzSpeedview (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})" (hidePreview)="onHideSpeedview.emit()">
+          <a [routerLink]="routerLinkFor(asset)" wzSpeedview (showPreview)="onShowSpeedview.emit({position: $event, asset: asset})" (hidePreview)="onHideSpeedview.emit()">
             <div class="asset-thb">
-              <img *ngIf="asset.thumbnail" src="{{asset.thumbnail.urls.https}}"/>
-              <span *ngIf="asset.metaData[2] && asset.metaData[2].value != ''" class="mdata-2">
-                <span [ngClass]="formatType(asset.metaData[2].value)" class="sd-hd">{{asset.metaData[2].value}}</span>
+              <img *ngIf="hasThumbnail(asset)" src="{{ thumbnailUrlFor(asset) }}"/>
+              <span *ngIf="hasFormatType(asset)" class="mdata-2">
+                <span [ngClass]="formatClassNameFor(asset)" class="sd-hd">{{ formatTypeOf(asset) }}</span>
               </span>
-              <span *ngIf="!asset.timeStart && asset.metaData[3]" class="mdata-3">
-                <span>{{asset.metaData[3].value}}</span>
+              <span *ngIf="hasDuration(asset)" class="mdata-3">
+                <span>{{ subclipDurationFrameFor(asset) | timecode }}</span>
               </span>
-              <span  *ngIf="asset.timeStart" class="mdata-3">
-                <span>{{frame(asset.metaData[6].value, asset.timeEnd - asset.timeStart) | timecode}}</span>
-              </span>
-              <span *ngIf="asset.metaData[4] && asset.metaData[4].name === 'Resource.Class' && asset.metaData[4].value === 'Image'" class="mdata-4">
-                <span class="{{asset.metaData[4].value | lowercase}}"></span>
+              <span *ngIf="isImage(asset)" class="mdata-4">
+                <span class="image"></span>
               </span>
             </div>
           </a>
         </div>
         <div flex-gt-xs="60" flex-gt-md="70" flex-gt-lg="75" flex="100" layout-padding>
           <div class="md-caption asset-name">{{asset.name}}</div>
-          <a class="asset-title-desc" [routerLink]="['/asset/', asset.assetId]">
-            <h4 class="asset-title mdata-0" *ngIf="asset.metaData[0]">
-              {{asset.metaData[0].value}}
+          <a class="asset-title-desc" [routerLink]="routerLinkFor(asset)">
+            <h4 class="asset-title mdata-0" *ngIf="hasTitle(asset)">
+              {{ titleOf(asset) }}
             </h4>
-            <p class="asset-description mdata-1" *ngIf="asset.metaData[1]">
-              {{asset.metaData[1].value}}
+            <p class="asset-description mdata-1" *ngIf="hasDescription(asset)">
+              {{ descriptionOf(asset) }}
             </p>
           </a>
           <!--keywords coming soon. we need the meta-data then we can comment this in  JH-->
@@ -44,23 +41,23 @@
             <button class="is-outlined keyword" md-button color="primary">peru</button>
             <button class="is-outlined keyword" md-button color="primary">lima</button>
           </div>-->
-          <div *ngIf="asset.timeStart" class="asset-sub-clip md-caption">
+          <div *ngIf="isSubclipped(asset)" class="asset-sub-clip md-caption">
             <strong>{{ 'COLLECTION.SHOW.SUB_CLIPPING_LABEL' | translate }} </strong>
             <div class="subclip-timeline">
-              <span class="subclip-segment" [ngStyle]="calcSubClipSegments(asset)"></span>
+              <span class="subclip-segment" [ngStyle]="subclipSegmentStylesFor(asset)"></span>
             </div>
             <ul class="subclip-data" layout="row">
               <li flex-gt-sm="30" flex-gt-md="25" flex="35">
                 <strong>{{ 'COLLECTION.SHOW.START_TIME_LABEL' | translate }} </strong>
-                {{frame(asset.metaData[6].value, asset.timeStart - 0) | timecode}}
+                {{ inMarkerFrameFor(asset) | timecode}}
               </li>
               <li flex="none">
                 <strong>{{ 'COLLECTION.SHOW.END_TIME_LABEL' | translate }} </strong>
-                {{frame(asset.metaData[6].value, asset.timeEnd - 0) | timecode}}
+                {{ outMarkerFrameFor(asset) | timecode}}
               </li>
               <li flex="" layout-align="end center">
                 <strong>{{ 'COLLECTION.SHOW.SUB_CLIP_LENGTH_LABEL' | translate }} </strong>
-                {{frame(asset.metaData[6].value, asset.timeEnd - asset.timeStart) | timecode}}
+                {{ subclipDurationFrameFor(asset) | timecode}}
               </li>
             </ul>
           </div>
@@ -187,7 +184,9 @@
           <button md-menu-item (click)="editAsset(asset)">
             <md-icon>theaters</md-icon>
             <span>
-              {{ (asset.timeStart !== '' ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING' : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
+              {{ (isSubclipped(asset)
+                  ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING'
+                  : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING') | translate }}
             </span>
           </button>
           <button [disabled]="true" md-menu-item (click)="editAsset(asset)">
@@ -202,7 +201,7 @@
             {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.ASSET_SHARING' | translate }}
             </span>
           </button>
-          <a md-menu-item [routerLink]="['/asset/', asset.assetId, assetParams(asset)]">
+          <a md-menu-item [routerLink]="routerLinkFor(asset)">
             <md-icon>details</md-icon>
             <span>
               {{ 'COLLECTION.SHOW.ASSET_MORE_MENU.OPEN_DETAILS' | translate }}

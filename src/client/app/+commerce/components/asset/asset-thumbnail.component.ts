@@ -1,75 +1,50 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { Frame, TimecodeFormat } from 'wazee-frame-formatter';
+
+import { Frame } from 'wazee-frame-formatter';
+import { Asset } from '../../../shared/interfaces/commerce.interface';
+import { EnhancedAsset } from '../../../shared/interfaces/enhanced-asset';
+import { AssetService } from '../../../shared/services/asset.service';
 
 @Component({
   moduleId: module.id,
   selector: 'asset-thumbnail-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <a [routerLink]="['/asset', asset.assetId, assetParams(asset)]">
+    <a [routerLink]="routerLink">
       <div class="cart-asset-thb">
-          <span *ngIf="isNotSubclipped" class="asset-duration">
-            <span>{{ fullTimecode | timecode }}</span>
-          </span>
-          <span *ngIf="isSubclipped" class="asset-duration">
-            <span>{{ subclipTimecode | timecode }}</span>
-          </span>
-          <span
-            *ngIf="isImage" class="indicate-photo">
-            <span class="{{ asset.metadata[6].value | lowercase }}"></span>
-          </span>
-          <img src="{{ asset.thumbnailUrl }}"/>
+        <span class="asset-duration">
+          <span>{{ durationFrame | timecode }}</span>
+        </span>
+        <span *ngIf="isImage" class="indicate-photo">
+          <span class="image"></span>
+        </span>
+        <img src="{{ thumbnailUrl }}"/>
       </div>
     </a>
   `
 })
 export class AssetThumbnailComponent {
-  @Input() asset: any;
+  private enhancedAsset: EnhancedAsset;
 
-  public get isNotSubclipped(): boolean {
-    return this.asset.timeStart === -2 && this.asset.metadata[2].value;
+  constructor(private assetService: AssetService) { }
+
+  @Input() public set asset(asset: Asset) {
+    this.enhancedAsset = this.assetService.enhance(asset);
   }
 
-  public get isSubclipped(): boolean {
-    return this.asset.timeStart !== -2;
+  public get routerLink(): any[] {
+    return this.enhancedAsset.routerLink;
+  }
+
+  public get durationFrame(): Frame {
+    return this.enhancedAsset.subclipDurationFrame;
   }
 
   public get isImage(): boolean {
-    return this.asset.metadata[6] &&
-      this.asset.metadata[6].name === 'Resource.Class' &&
-      this.asset.metadata[6].value === 'Image';
+    return this.enhancedAsset.isImage;
   }
 
-  public get fullTimecode(): Frame {
-    return this.frame(
-      this.asset.metadata[2].value,
-      this.durationAsFrames(this.asset.metadata[2].value, this.asset.metadata[5].value / 1000.0)
-    );
-  }
-
-  public get subclipTimecode(): Frame {
-    return this.frame(
-      this.asset.metadata[2].value,
-      this.asset.timeEnd - this.asset.timeStart
-    );
-  }
-
-  public assetParams(asset: any): any {
-    return Object.assign({},
-      asset.uuid ? { uuid: asset.uuid } : null,
-      asset.timeStart && asset.timeStart >= 0 ? { timeStart: asset.timeStart } : null,
-      asset.timeEnd && asset.timeEnd >= 0 ? { timeEnd: asset.timeEnd } : null
-    );
-  }
-
-  public durationAsFrames(framesPerSecond: any, duration: any): number {
-    return new Frame(
-      framesPerSecond.split(' fps')[0])
-      .setFromString(`${duration};00`, TimecodeFormat.SIMPLE_TIME_CONVERSION)
-      .asFrameNumber();
-  }
-
-  public frame(framesPerSecond: any, frameNumber: number): Frame {
-    return new Frame(framesPerSecond.split(' fps')[0]).setFromFrameNumber(frameNumber);
+  public get thumbnailUrl(): string {
+    return this.enhancedAsset.thumbnailUrl;
   }
 }

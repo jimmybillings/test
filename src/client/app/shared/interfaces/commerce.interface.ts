@@ -1,4 +1,5 @@
 import { ViewAddress, Pagination, Common, SelectedPriceAttributes, Store } from './common.interface';
+import { SubclipMarkers } from './asset.interface';
 
 export type QuoteType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
 export type QuoteStatus = 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED' | 'CANCELLED';
@@ -64,6 +65,7 @@ export interface Asset {
   timeStart?: number;
   timeEnd?: number;
   clipUrl?: string;
+  uuid?: string;
 }
 
 export interface Metadatum {
@@ -180,6 +182,7 @@ export interface Quotes extends Store {
 
 export interface AddAssetParameters {
   lineItem: AssetLineItem;
+  markers?: SubclipMarkers;
   attributes?: {
     [index: string]: any;
   };
@@ -224,4 +227,21 @@ export interface PriceAttribute {
 export interface PricingState {
   priceForDetails: number;
   priceForDialog: number;
+}
+
+export interface AddressPurchaseOptions {
+  orderAddressId: number;
+  orderAddressType: string;
+}
+
+export interface CreditCardPurchaseOptions {
+  stripeToken: string;
+  stripeTokenType: string;
+}
+
+export interface PurchaseOptions {
+  orderAddressId: number;
+  orderAddressType: string;
+  stripeToken: string;
+  stripeTokenType: string;
 }

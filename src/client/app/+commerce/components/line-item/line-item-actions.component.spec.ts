@@ -129,14 +129,14 @@ export function main() {
     });
 
     describe('get trStringForSubclipping()', () => {
-      it('returns "COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING" when timeStart exists', () => {
-        componentUnderTest.timeStart = 22;
+      it('returns "COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING" when the asset is subclipped', () => {
+        componentUnderTest.assetIsSubclipped = true;
 
         expect(componentUnderTest.trStringForSubclipping).toBe('COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING');
       });
 
-      it('returns "COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING" when timeStart is not set', () => {
-        componentUnderTest.timeStart = -2;
+      it('returns "COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING" when the asset is not subclipped', () => {
+        componentUnderTest.assetIsSubclipped = false;
 
         expect(componentUnderTest.trStringForSubclipping).toBe('COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING');
       });

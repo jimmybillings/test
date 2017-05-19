@@ -2,7 +2,6 @@
 	<li *ngFor="let lineItem of items" class="cart-asset" flex="100" layout="row" layout-xs="column">
 		<cart-asset-component
 			[asset]="lineItem.asset"
-			(assetNotify)="delegate($event)"
 			flex="100" flex-gt-xs="60">
 		</cart-asset-component>
 		<line-item-transcode-select-component
@@ -21,7 +20,7 @@
 				[otherProjects]="otherProjects"
 				[userCanCreateSubclips]="userCan.createSubclips(lineItem)"
 				[userCanAdministerQuotes]="userCan.administerQuotes()"
-				[timeStart]="lineItem.asset.timeStart"
+				[assetIsSubclipped]="isSubclipped(lineItem)"
 				[quoteType]="quoteType"
 				[hasMultiplier]="lineItem.multiplier > 1"
 				(showPricingDialog)="onShowPricingDialog(lineItem)"

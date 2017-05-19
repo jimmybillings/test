@@ -110,7 +110,7 @@ export class SearchComponent implements OnDestroy, OnInit {
   }
 
   public addAssetToCart(asset: any): void {
-    let params: AddAssetParameters = { lineItem: { asset: { assetId: asset.assetId } } };
+    let params: AddAssetParameters = { lineItem: { asset: asset } };
     if (this.userCan.administerQuotes()) {
       this.quoteEditService.addAssetToProjectInQuote(params);
     } else {

@@ -61,7 +61,7 @@ export class LineItemActionsComponent {
   @Input() otherProjects: any[];
   @Input() userCanCreateSubclips: boolean;
   @Input() userCanAdministerQuotes: boolean;
-  @Input() timeStart: number;
+  @Input() assetIsSubclipped: boolean;
   @Input() quoteType: QuoteType;
   @Input() hasMultiplier: boolean;
   @Output() showPricingDialog: EventEmitter<any> = new EventEmitter();
@@ -89,9 +89,9 @@ export class LineItemActionsComponent {
   }
 
   public get trStringForSubclipping(): string {
-    return this.timeStart > -1 ?
-      'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING' :
-      'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING';
+    return this.assetIsSubclipped
+      ? 'COLLECTION.SHOW.ASSET_MORE_MENU.EDIT_SUBCLIPPING'
+      : 'COLLECTION.SHOW.ASSET_MORE_MENU.ADD_SUBCLIPPING';
   }
 
   public get trStringForCostMultiplier(): string {

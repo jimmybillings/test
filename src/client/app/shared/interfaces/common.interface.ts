@@ -41,13 +41,20 @@ export interface Asset extends Common {
   assetId: number;
   name: string;
   metaData?: { name: string, value: string }[];
-  thumbnail?: { name: string, urls: {} };
-  smallPreview?: { name: string, urls: {} };
+  thumbnail?: { name: string, urls: AssetUrls };
+  smallPreview?: { name: string, urls: AssetUrls };
   hasDownloadableComp?: boolean;
   transcodeTargets?: string[];
   primary?: Array<{ value: string }>;
   detailTypeMap?: any;
   uuid?: string;
+  timeStart?: number;
+  timeEnd?: number;
+}
+
+export interface AssetUrls {
+  http?: string;
+  https?: string;
 }
 
 export interface Poj {

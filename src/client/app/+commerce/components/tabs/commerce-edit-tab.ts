@@ -235,7 +235,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
             dialogConfig: { width: '530px', position: { top: '14%' } },
             inputOptions: {
               window: this.window.nativeWindow,
-              asset: lineItem.asset,
+              enhancedAsset: this.assetService.enhance(lineItem.asset),
               usagePrice: null
             },
             outputOptions: [
@@ -246,10 +246,8 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
               },
               {
                 event: 'save',
-                callback: (event: any) => {
-                  Object.assign(lineItem.asset,
-                    { timeStart: event.in, timeEnd: event.out });
-                  this.commerceService.editLineItem(lineItem, {});
+                callback: (newMarkers: SubclipMarkers) => {
+                  this.commerceService.editLineItemMarkers(lineItem, newMarkers);
                 },
                 closeOnEvent: true
               }
@@ -283,10 +281,6 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   protected calculatePrice(attributes: Poj, lineItem: AssetLineItem): Observable<number> {
-    return this.assetService.getPrice(
-      lineItem.asset.assetId,
-      attributes,
-      { startSecond: lineItem.asset.timeStart, endSecond: lineItem.asset.timeEnd }
-    );
+    return this.assetService.getPriceFor(lineItem.asset, attributes);
   }
 }

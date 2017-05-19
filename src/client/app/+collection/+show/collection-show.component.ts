@@ -173,15 +173,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   }
 
   public addAssetToCart(asset: any): void {
-    let params: AddAssetParameters = {
-      lineItem: {
-        asset: {
-          assetId: asset.assetId,
-          timeStart: asset.timeStart ? asset.timeStart : undefined,
-          timeEnd: asset.timeEnd ? asset.timeEnd : undefined
-        }
-      }
-    };
+    let params: AddAssetParameters = { lineItem: { asset: asset } };
+
     if (this.userCan.administerQuotes()) {
       this.quoteEditService.addAssetToProjectInQuote(params);
     } else {
@@ -213,7 +206,7 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
             dialogConfig: { width: '544px' },
             inputOptions: {
               window: this.window.nativeWindow,
-              asset: asset,
+              enhancedAsset: this.asset.enhance(asset),
               usagePrice: null
             },
             outputOptions: [
@@ -224,14 +217,8 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
               },
               {
                 event: 'save',
-                callback: (event: any) => {
-                  const body = {
-                    uuid: asset.uuid,
-                    assetId: asset.assetId,
-                    timeStart: event.in,
-                    timeEnd: event.out
-                  };
-                  this.activeCollection.updateAsset(this.collection.id, body).subscribe();
+                callback: (updatedMarkers: SubclipMarkers) => {
+                  this.activeCollection.updateAsset(this.collection.id, asset, updatedMarkers).subscribe();
                 },
                 closeOnEvent: true
               }

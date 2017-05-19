@@ -3,9 +3,18 @@ import { LineItemsComponent } from './line-items.component';
 export function main() {
   describe('Line Items', () => {
     let classUnderTest: LineItemsComponent;
+    let mockAsset: any;
+    let mockEnhancedAsset: any;
+    let mockAssetService: any;
 
     beforeEach(() => {
-      classUnderTest = new LineItemsComponent();
+      mockAsset = {};
+      mockEnhancedAsset = {};
+
+      mockAssetService = { enhance: (asset: any): any => mockEnhancedAsset };
+
+      classUnderTest = new LineItemsComponent(mockAssetService);
+      classUnderTest.lineItems = [{ id: '27', asset: mockAsset }];
     });
 
     describe('onMoveTo()', () => {
@@ -135,6 +144,20 @@ export function main() {
         });
 
         classUnderTest.onRemoveCostMultiplier(lineItem);
+      });
+    });
+
+    describe('isSubclipped()', () => {
+      it('returns true when the enhanced asset is subclipped', () => {
+        mockEnhancedAsset.isSubclipped = true;
+
+        expect(classUnderTest.isSubclipped(classUnderTest.items[0])).toBe(true);
+      });
+
+      it('returns false when the enhanced asset is not subclipped', () => {
+        mockEnhancedAsset.isSubclipped = false;
+
+        expect(classUnderTest.isSubclipped(classUnderTest.items[0])).toBe(false);
       });
     });
   });

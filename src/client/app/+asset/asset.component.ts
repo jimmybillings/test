@@ -107,18 +107,15 @@ export class AssetComponent implements OnInit {
     });
   }
 
-  public addAssetToCart(asset: any): void {
+  public addAssetToCart(parameters: any): void {
     this.pricingStore.priceForDetails.take(1).subscribe((price: any) => {
       let options: AddAssetParameters = {
         lineItem: {
-          selectedTranscodeTarget: asset.selectedTranscodeTarget,
+          selectedTranscodeTarget: parameters.selectedTranscodeTarget,
           price: price ? price : undefined,
-          asset: {
-            assetId: asset.assetId,
-            timeStart: asset.markers ? asset.markers.markers.in : undefined,
-            timeEnd: asset.markers ? asset.markers.markers.out : undefined
-          }
+          asset: { assetId: parameters.assetId }
         },
+        markers: parameters.markers ? parameters.markers.markers : undefined,
         attributes: this.pricingStore.state.priceForDetails ? this.selectedAttrbutes : null
       };
       this.userCan.administerQuotes() ?
@@ -127,7 +124,7 @@ export class AssetComponent implements OnInit {
     });
     this.showSnackBar({
       key: this.userCan.administerQuotes() ? 'ASSET.ADD_TO_QUOTE_TOAST' : 'ASSET.ADD_TO_CART_TOAST',
-      value: { assetId: asset.assetId }
+      value: { assetId: parameters.assetId }
     });
   }
 

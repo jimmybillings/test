@@ -18,8 +18,12 @@ import {
   QuoteOptions,
   CheckoutState,
   OrderType,
+  AddressPurchaseOptions,
+  CreditCardPurchaseOptions,
+  PurchaseOptions
 } from '../interfaces/commerce.interface';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
+import { SubclipMarkers } from '../interfaces/asset.interface';
 
 @Injectable()
 export class CartService {
@@ -161,6 +165,12 @@ export class CartService {
       .subscribe(this.replaceCartWith);
   }
 
+  public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkers): void {
+    Object.assign(lineItem.asset, { timeStart: newMarkers.in, timeEnd: newMarkers.out });
+
+    this.editLineItem(lineItem, {});
+  }
+
   public updateOrderInProgress(type: string, data: any): void {
     this.checkoutStore.updateOrderInProgress(type, data);
   }
@@ -168,30 +178,40 @@ export class CartService {
   // Private methods
 
   private purchaseWithCreditCard(): Observable<number> {
-    const stripe: any = {
-      stripeToken: this.checkoutState.authorization.id,
-      stripeTokenType: this.checkoutState.authorization.type
-    };
-    return this.api.post(Api.Orders, 'cart/stripe/process', { body: { options: stripe }, loading: true })
+    const options: PurchaseOptions = this.purchaseOptions;
+    return this.api.post(Api.Orders, 'cart/stripe/process', { body: { options }, loading: true })
       .do(() => this.initializeData().subscribe())
       .map(_ => _ as Number);
-
   }
 
   private purchaseOnCredit(): Observable<number> {
-    return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { loading: true })
+    const options: AddressPurchaseOptions = this.addressPurchaseOptions;
+    return this.api.post(Api.Orders, 'cart/checkout/purchaseOnCredit', { body: { options }, loading: true })
       .do(() => this.initializeData().subscribe())
       .map((order: Order) => order.id);
-
   }
 
   private formatBody(parameters: AddAssetParameters): any {
     let formatted = {};
-    Object.assign(formatted, { lineItem: parameters.lineItem });
+    Object.assign(formatted, { lineItem: this.formatLineItem(parameters.lineItem, parameters.markers) });
     if (parameters.attributes) {
       Object.assign(formatted, { attributes: this.formatAttributes(parameters.attributes) });
     }
     return formatted;
+  }
+
+  private formatLineItem(lineItem: any, markers: SubclipMarkers): any {
+    return Object.assign({}, lineItem, { asset: this.formatAsset(lineItem.asset, markers) });
+  }
+
+  private formatAsset(asset: any, markers: SubclipMarkers): any {
+    return Object.assign(
+      { assetId: asset.assetId },
+      asset.timeStart >= 0 ? { timeStart: asset.timeStart } : null,
+      asset.timeEnd >= 0 ? { timeEnd: asset.timeEnd } : null,
+      markers && markers.in >= 0 ? { timeStart: markers.in } : null,
+      markers && markers.out >= 0 ? { timeEnd: markers.out } : null
+    );
   }
 
   private formatAttributes(attributes: any): Array<any> {
@@ -222,5 +242,23 @@ export class CartService {
   // every time we use this function as a callback.
   private replaceCartWith = (wholeCartResponse: any): void => {
     this.cartStore.replaceCartWith(wholeCartResponse);
+  }
+
+  private get purchaseOptions(): PurchaseOptions {
+    return Object.assign({}, this.addressPurchaseOptions, this.creditCardPurchaseOptions) as PurchaseOptions;
+  }
+
+  private get addressPurchaseOptions(): AddressPurchaseOptions {
+    return {
+      orderAddressId: this.checkoutState.selectedAddress.addressEntityId,
+      orderAddressType: this.checkoutState.selectedAddress.type
+    };
+  }
+
+  private get creditCardPurchaseOptions(): CreditCardPurchaseOptions {
+    return {
+      stripeToken: this.checkoutState.authorization.id,
+      stripeTokenType: this.checkoutState.authorization.type
+    };
   }
 }

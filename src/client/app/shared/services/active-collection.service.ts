@@ -84,12 +84,12 @@ export class ActiveCollectionService implements OnInit {
     }
   }
 
-  public updateAsset(id: any, body: any): Observable<any> {
+  public updateAsset(id: any, asset: any, updatedMarkers: SubclipMarkers): Observable<any> {
     return this.api.put(
       Api.Identities,
       `collection/${id}/updateAsset`,
-      { body: body })
-      .do((data) => this.store.updateAsset(data));
+      { body: { uuid: asset.uuid, assetId: asset.assetId, timeStart: updatedMarkers.in, timeEnd: updatedMarkers.out } }
+    ).do(data => this.store.updateAsset(data));
   }
 
   public getItems(collectionId: number, collectionParams: any, set: boolean = true, loading: boolean = true): Observable<any> {
