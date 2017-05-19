@@ -51,7 +51,7 @@ export interface Address {
 export interface ViewAddress {
   addressEntityId: number;
   defaultAddress: boolean;
-  type: string;
+  type: 'User' | 'Account';
   name: string;
   address?: Address;
   [index: string]: any;

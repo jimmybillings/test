@@ -29,19 +29,19 @@ export class CommerceCapabilities {
   }
 
   public editAddress(address: ViewAddress): boolean {
-    return address.type === 'user' && !!address.address;
+    return address.type === 'User' && !!address.address;
   }
 
   public addAddress(address: ViewAddress): boolean {
-    return address.type === 'user' && !address.address;
+    return address.type === 'User' && !address.address;
   }
 
   public editAccountAddress(address: ViewAddress): boolean {
-    return address.type === 'account' && this.userHas('EditAccounts') && !!address.address;
+    return address.type === 'Account' && this.userHas('EditAccounts') && !!address.address;
   }
 
   public addAccountAddress(address: ViewAddress): boolean {
-    return address.type === 'account' && this.userHas('EditAccounts') && !address.address;
+    return address.type === 'Account' && this.userHas('EditAccounts') && !address.address;
   }
 
   public administerQuotes(): boolean {

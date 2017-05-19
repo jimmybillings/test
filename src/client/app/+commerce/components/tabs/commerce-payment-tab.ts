@@ -75,7 +75,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
   public get userCanPurchaseOnCredit(): Observable<boolean> {
     return this.commerceService.checkoutData.map((state: CheckoutState) => {
       let options: any = state.purchaseOptions;
-      if (state.selectedAddress.type === 'user') {
+      if (state.selectedAddress.type === 'User') {
         return options.purchaseOnCredit;
       } else {
         if (options.purchaseOnCredit) {

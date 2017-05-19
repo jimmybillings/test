@@ -49,7 +49,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   public selectAddress(address: ViewAddress, nextTab: boolean = true): void {
-    if (address.type === 'account') {
+    if (address.type === 'Account') {
       this.user.getAccount(address.addressEntityId).subscribe((account: any) => {
         this.commerceService.updateOrderInProgress('purchaseOptions', {
           purchaseOnCredit: !!account.purchaseOnCredit,
