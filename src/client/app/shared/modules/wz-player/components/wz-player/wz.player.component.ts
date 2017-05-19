@@ -24,7 +24,6 @@ export class WzPlayerComponent implements OnDestroy {
   public set asset(asset: any) {
     this.reset();
     this.currentAsset = asset;
-    console.log(asset);
     this.enhancedAsset = Object.assign(new EnhancedAsset(), asset).normalize();
 
     this.enhancedAsset.isImage ? this.setupImage() : this.setupVideo();
