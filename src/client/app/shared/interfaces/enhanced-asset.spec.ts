@@ -575,6 +575,43 @@ export function main() {
           expect(assetUnderTest.timeEnd).toEqual(99);
         });
       });
+
+      describe('metadata', () => {
+        it('is not changed if it already exists', () => {
+          Object.assign(
+            assetUnderTest,
+            { metadata: 'some metadata', metaData: 'some other metadata', primary: 'yet another metadata' }
+          );
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.metadata).toEqual('some metadata');
+        });
+
+        it('is updated from metaData (uppercase D) if metadata (lowercase d) doesn\'t already exist', () => {
+          Object.assign(assetUnderTest, { metaData: 'some other metadata' });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.metadata).toEqual('some other metadata');
+        });
+
+        it('is updated from primary if metadata doesn\'t already exist', () => {
+          Object.assign(assetUnderTest, { primary: 'yet another metadata' });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.metadata).toEqual('yet another metadata');
+        });
+
+        it('favors metaData (uppercase D) over primary if both are defined somehow', () => {
+          Object.assign(assetUnderTest, { metaData: 'some other metadata', primary: 'yet another metadata' });
+
+          assetUnderTest.normalize();
+
+          expect(assetUnderTest.metadata).toEqual('some other metadata');
+        });
+      });
     });
   });
 }

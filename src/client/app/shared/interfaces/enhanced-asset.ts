@@ -178,6 +178,16 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
       Object.assign(this, { resourceClass: this.getMetadataValueFor('Resource.Class') });
     }
 
+    // make 'metaData' (uppercase D) available as 'metadata' (lowercase d)
+    if (!this.metadata && !!this.metaData) {
+      Object.assign(this, { metadata: this.metaData });
+    }
+
+    // make 'primary' available as 'metadata'
+    if (!this.metadata && !!this.primary) {
+      Object.assign(this, { metadata: this.primary });
+    }
+
     return this;
   }
 
