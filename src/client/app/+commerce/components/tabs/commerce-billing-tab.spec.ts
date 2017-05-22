@@ -9,14 +9,14 @@ export function main() {
     let mockUserAccountPermission: boolean;
 
     let mockEmptyAddress: ViewAddress = {
-      type: '',
+      type: null,
       name: '',
       addressEntityId: NaN,
       defaultAddress: false
     };
 
     let mockAddressA: ViewAddress = {
-      type: 'user',
+      type: 'User',
       name: 'Ross Edfort',
       addressEntityId: 10,
       defaultAddress: false,
@@ -31,7 +31,7 @@ export function main() {
     };
 
     let mockAddressB: ViewAddress = {
-      type: 'account',
+      type: 'Account',
       name: 'Wazee Digital',
       addressEntityId: 1,
       defaultAddress: false,
