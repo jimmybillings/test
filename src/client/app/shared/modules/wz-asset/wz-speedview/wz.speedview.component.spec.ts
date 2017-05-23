@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: WzSpeedviewComponent;
 
     beforeEach(() => {
-      componentUnderTest = new WzSpeedviewComponent(null, null);
+      componentUnderTest = new WzSpeedviewComponent(null);
     });
 
     it('has no tests!', () => {
