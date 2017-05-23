@@ -28,7 +28,7 @@
       layout-align-gt-xs="space-between end">
       <div layout="column" layout-gt-xs="row" flex="100" layout-align-gt-xs="space-between end">
         <div flex-gt-xs="55" flex="100" class="details">
-          <div class="md-caption quote-info">
+          <div class="md-caption quote-info" flex-order-xs="2">
             <span class="quote-number">
               <strong>{{ 'QUOTE.SHOW.NUMBER_LABEL' | translate }}</strong>
               <span class="number">{{ (quote | async).id }}</span>
@@ -51,8 +51,8 @@
             </span>
           </div>
         </div>
-        <div flex="100" layout="row" layout-xs="column" class="divider"></div>
-        <div class="cart-total" flex-gt-xs="60" flex="100" class="cart-total">
+        <!--<div flex="100" layout="row" layout-xs="column" class="divider"></div>-->
+        <div class="cart-total" flex-gt-xs="60" flex="100" class="cart-total" flex-order-xs="-1">
           <h5 class="md-subhead status {{ (quote | async).quoteStatus.toLowerCase() }}">
             {{ (quote | async).quoteStatus }}
           </h5>

@@ -1,0 +1,26 @@
+@mixin wz-md-menu-extended-theme($theme) {
+  $foreground: map-get($theme, foreground);
+
+  .mat-menu-content a[md-menu-item][disabled] md-icon.material-icons,
+  .mat-menu-content button[md-menu-item][disabled] md-icon.material-icons {
+    color: mat-color($foreground, disabled);
+  }
+  .mat-menu-content .divider {
+    box-shadow: inset 0 1px 0 0 mat-color($foreground, divider);
+  }
+  /************
+  * Aspera download options
+  * unique menu list. they have an inactive label width two buttons as icon for each menu item
+  ************/
+  .mat-list.aspera-download-options .mat-list-item {
+    [md-menu-item][disabled] {
+      color: mat-color($foreground, secondary-text);
+    }
+    .actions button[md-icon-button] {
+      color: mat-color($foreground, base, .7);
+    }
+    .actions button[md-icon-button][disabled] {
+      color: mat-color($foreground, disabled);
+    }
+  }
+}

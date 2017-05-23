@@ -23,11 +23,11 @@ import { CollectionDeleteComponent } from '../components/collection-delete.compo
 import { WzSpeedviewComponent } from '../../shared/modules/wz-asset/wz-speedview/wz.speedview.component';
 import { WzSubclipEditorComponent } from '../../shared/components/wz-subclip-editor/wz.subclip-editor.component';
 import { WindowRef } from '../../shared/services/window-ref.service';
-import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
+import { SubclipMarkers, SpeedviewData, SpeedviewEvent } from '../../shared/interfaces/asset.interface';
 import { AddAssetParameters } from '../../shared/interfaces/commerce.interface';
 import { QuoteEditService } from '../../shared/services/quote-edit.service';
 import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dialog.service';
-import { WzEvent } from '../../shared/interfaces/common.interface';
+import { WzEvent, Coords } from '../../shared/interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -36,7 +36,6 @@ import { WzEvent } from '../../shared/interfaces/common.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-
 export class CollectionShowComponent implements OnInit, OnDestroy {
   public focusedCollection: Collection;
   public collection: Collection;
@@ -44,12 +43,10 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
   public routeParams: any;
   public errorMessage: string;
   public config: Object;
-  public speedviewData: any;
   public screenWidth: number;
   private activeCollectionSubscription: Subscription;
   private routeSubscription: Subscription;
   @ViewChild(WzSpeedviewComponent) private wzSpeedview: WzSpeedviewComponent;
-
 
   constructor(
     public userCan: Capabilities,
@@ -95,22 +92,32 @@ export class CollectionShowComponent implements OnInit, OnDestroy {
       });
   }
 
-  public showSpeedview(event: { asset: any, position: any }): void {
-    if (event.asset.speedviewData) {
-      this.speedviewData = Observable.of(event.asset.speedviewData);
-      this.wzSpeedview.show(event.position);
+  public showSpeedview(speedviewEvent: SpeedviewEvent): void {
+    if (speedviewEvent.asset.speedviewData) {
+      // set the data on the wzSpeedview component instance
+      this.wzSpeedview.speedviewAssetInfo = speedviewEvent.asset.speedviewData;
+      // show the speedview overlay in the calculated position
+      this.wzSpeedview.show(speedviewEvent.position);
+      // force the video player to start playing
+      this.wzSpeedview.previewUrl = speedviewEvent.asset.speedviewData.url;
     } else {
-      this.speedviewData = this.asset.getSpeedviewData(event.asset.assetId)
-        .do((data: any) => {
-          event.asset.speedviewData = data;
-          this.wzSpeedview.show(event.position);
-        });
+      this.asset.getSpeedviewData(speedviewEvent.asset.assetId).subscribe((data: SpeedviewData) => {
+        // cache the speedview data on the asset
+        speedviewEvent.asset.speedviewData = data;
+        // set the data on the wzSpeedview component instance
+        this.wzSpeedview.speedviewAssetInfo = data;
+        // show the speedview overlay in the calculated position
+        this.wzSpeedview.show(speedviewEvent.position);
+        // force the video player to start playing
+        this.wzSpeedview.previewUrl = data.url;
+      });
     }
     this.renderer.listenGlobal('document', 'scroll', () => this.wzSpeedview.destroy());
   }
 
   public hideSpeedview(): void {
-    this.speedviewData = null;
+    this.wzSpeedview.previewUrl = null;
+    this.wzSpeedview.speedviewAssetInfo = null;
     this.wzSpeedview.destroy();
   }
 

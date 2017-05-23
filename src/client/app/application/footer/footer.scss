@@ -32,19 +32,18 @@ app-footer {
     }
     .language-selector {
       position: relative;
-      padding-left: rem(3.8);
-      padding-top: rem(2.2);
+      padding-left: 38px;
+      padding-top: 22px;
       &::before {
         content: "\e80b";
         font-family: 'Material Icons';
-        color: rgba(mat-color($mat-grey, 100),0.18);
         position: absolute;
-        top: rem(2.0);
-        left: rem(.4);
+        top: 20px;
+        left: 4px;
         font-size: 1.7em;
       }
       .mat-select {
-        min-width: rem(16.7);
+        min-width: 167px;
       }  
     }
     h3.md-title {
@@ -56,12 +55,8 @@ app-footer {
     }
     .help-link {
       font-size: .9em;
-      color: mat-color($mat-grey, 500);
       text-decoration: none;
       transition: $swift-ease-in;
-      &:hover {
-        color: mat-color($mat-grey, 200);
-      }
     }
     .sales {
       md-list {

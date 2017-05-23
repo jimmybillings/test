@@ -1,8 +1,0 @@
-.data-bk, .tabs-section {
-  & > div > div {
-    background: rgba(mat-color($background, background),.7);
-  }
-  md-tab-group .mat-tab-header {
-    background-color: mat-color($background, card);
-  }
-}

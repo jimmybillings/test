@@ -67,7 +67,6 @@
       .total-amount {
         display: inline-block;
         &::first-letter {
-          // display: inline-block;
           font-size: .68em;
           line-height: 1.7;
           vertical-align: top;
@@ -81,9 +80,8 @@
         }
       }
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-        padding-bottom: rem(.4);
         & > div {
-          padding-bottom: rem(1.2);
+          padding-top: rem(1.2);
         }
       }
     }

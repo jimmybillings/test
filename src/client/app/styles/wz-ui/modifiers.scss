@@ -1,71 +1,36 @@
-// button modifiers
-@mixin md-button-reset {
-  background: transparent;
-  cursor: pointer;
-  user-select: none;
-  outline: none;
-  border: none;
-}
 // not sure what is going on with these not being uppercase
 // hopefully this could be removed after material update.
 [md-raised-button] {
   text-transform: uppercase;
 }
 [md-button] {
-// outlined button
-  &.is-outlined {
-    border: 1px solid mat-color($mat-foreground, divider);
-    line-height: rem(3.300);
-    &.mat-primary {
-      border: 1px solid mat-color($mat-primary, default, .4);
-    }
-    &.mat-accent {
-      border: 1px solid mat-color($mat-accent, 500, .4);
-    }
-    &.mat-warn {
-      border: 1px solid mat-color($mat-warn, 500, .4);
-    }
-  }
 // drop down indicator on a button
   &.is-dd {
     position: relative;
-    padding-right: rem(2.40);
-    padding-left: rem(1.00);
+    padding-right: 24px;
+    padding-left: 10px;
     &:not[hide] {
       display: block;
     }
-    // &[hide] {
-    //   display: none;
-    // }
     .mat-button-wrapper::after {
-      color: mat-color($mat-foreground, secondary-text);
       transition: opacity 0.4s;
       font-family: 'Material Icons';
       content: "\e5c5";
-      font-size: rem(2.1);
+      font-size: 1.5em;
       position: absolute;
-      right: rem(.2);
+      right: 2px;
       top: 0;
     }
-    &.mat-primary .mat-button-wrapper::after {
-      color: contrast-color(mat-color($mat-primary));
-    }
-    &.mat-accent .mat-button-wrapper::after {
-      color: contrast-contrast(mat-color($mat-accent));
-    }
-    &.mat-warn .mat-button-wrapper::after {
-      color: contrast-color(mat-color($mat-warn));
-    }
     &.icon-dd-button {
-      min-width: rem(4.0);
-      max-height: rem(4.0);
-      min-height: rem(4.0);
-      border-radius: rem(.2);
-      padding-left: rem(.4);
-      padding-right: rem(1.2);
+      min-width: 40px;
+      max-height: 40px;
+      min-height: 40px;
+      border-radius: 2px;
+      padding-left: 4px;
+      padding-right: 12px;
       .mat-button-wrapper::after {
-        right: rem(-.3);
-        top: rem(.3);
+        right: -3px;
+        top: -3px;
       }
     }
   }

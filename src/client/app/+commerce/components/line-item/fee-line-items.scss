@@ -17,7 +17,7 @@ li.fee-item {
   .fee-indicator {
     height: 100%;
     position: relative;
-    margin-right: rem(-0.2);
+    margin-right: 2px;
     padding: rem(.8) 0 rem(.8) rem(3.5);
     .fee-title {
       font-weight: 500;
@@ -38,6 +38,12 @@ li.fee-item {
       top: rem(.6);
     }
   }
+  & > div > div  > div + div {
+    padding-left: 5px;
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+      padding-left: 8px;
+    }
+  } 
 
   .md-caption.fee-type {
     font-size: rem(1.1);
@@ -52,20 +58,42 @@ li.fee-item {
     min-height: rem(4.5);
   }
 
-  .amount {
-    position: absolute;
-    bottom: rem(.7);
-    right: rem(.7);
-    font-size: rem(1.8);
-    &::first-letter {
+  .fee-line-item-amount {
+    @media screen and (min-width: $layout-breakpoint-xs) {
+      position: absolute;
+      bottom: 7px;
+      right: 7px;
+      font-size: 1.1em;
+    }
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+      padding: 10px;
+    }
+    .price::first-letter {
       font-size: .83em;
       vertical-align: top;
+    }
+  }
+  .actions {
+    min-height: rem(4.5);
+    position: relative;
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+      padding-top: rem(.4);
     }
   }
   .tools {
     opacity: .85;
     text-align: right;
   }
+  .tools button {
+    @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
+      margin-bottom: 3px;
+    }
+  }
+
+
+
+
+
   .divider {
     margin: rem(.6) rem(.8) 0 rem(.8);
     padding-bottom: rem(.6);
