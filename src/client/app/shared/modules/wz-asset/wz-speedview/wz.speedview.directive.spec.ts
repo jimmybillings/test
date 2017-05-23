@@ -1,5 +1,5 @@
 import { WzSpeedviewDirective } from './wz.speedview.directive';
-import { Viewport } from '../../../interfaces/event.interface';
+import { Viewport } from '../../../interfaces/common.interface';
 
 export function main() {
   const mockViewportWidth: number = 240;

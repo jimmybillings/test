@@ -1,5 +1,5 @@
 import { Directive, HostListener, Output, EventEmitter } from '@angular/core';
-import { Viewport, Coordinates } from '../../../interfaces/event.interface';
+import { Viewport, Coords } from '../../../interfaces/common.interface';
 
 const previewWidth: number = 420;     // How wide the speed preview dialog is
 const previewHeight: number = 300;    // How tall the speed preview dialog is
@@ -28,7 +28,7 @@ export class WzSpeedviewDirective {
   }
 
   // Determines the x and y coordinate that the preview's top left corner should start at
-  private get previewPosition(): Coordinates {
+  private get previewPosition(): Coords {
     let x: number = this.determineHorizontalPreviewPlacement;
     let y: number = this.determineVerticalPreviewPlacement;
     return { x, y };

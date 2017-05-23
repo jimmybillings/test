@@ -302,49 +302,41 @@ export function main() {
     });
 
     describe('showSpeedview()', () => {
-      it('Speedview data has been cached already so not call the server for it', () => {
-        componentUnderTest.wzSpeedview = { show: jasmine.createSpy('show'), destroy: jasmine.createSpy('destroy') };
-        componentUnderTest.showSpeedview({ asset: { speedviewData: 'mockSpeedViewData' }, position: 'mockPosition' });
+      let mockSpeedview: any;
+
+      beforeEach(() => {
+        mockSpeedview = { show: jasmine.createSpy('show'), destroy: jasmine.createSpy('destroy') };
+      });
+
+      it('when speedview data has been cached already so not call the server for it', () => {
+        componentUnderTest.wzSpeedview = mockSpeedview;
+        componentUnderTest.showSpeedview({ asset: { speedviewData: 'mockSpeedViewData' }, position: 'mockPosition' } as any);
         expect(mockAssetService.getSpeedviewData).not.toHaveBeenCalled();
       });
 
       it('Should show speedview with cached data', () => {
-        componentUnderTest.wzSpeedview = { show: jasmine.createSpy('show'), destroy: jasmine.createSpy('destroy') };
-        componentUnderTest.showSpeedview({ asset: { speedviewData: 'mockSpeedViewData' }, position: 'mockPosition' });
+        componentUnderTest.wzSpeedview = mockSpeedview;
+        componentUnderTest.showSpeedview({ asset: { speedviewData: 'mockSpeedViewData' }, position: 'mockPosition' } as any);
         expect(mockAssetService.getSpeedviewData).not.toHaveBeenCalled();
         expect(componentUnderTest.wzSpeedview.show).toHaveBeenCalled();
       });
 
       it('Should call the asset service to request speedview data from api', () => {
-        componentUnderTest.wzSpeedview = { show: jasmine.createSpy('show'), destroy: jasmine.createSpy('destroy') };
-        componentUnderTest.showSpeedview({ asset: { assetId: 'mockAssetId' }, position: 'mockPosition' });
+        componentUnderTest.wzSpeedview = mockSpeedview;
+        componentUnderTest.showSpeedview({ asset: { assetId: 'mockAssetId' }, position: 'mockPosition' } as any);
         expect(mockAssetService.getSpeedviewData).toHaveBeenCalledWith('mockAssetId');
       });
 
-      it('Should show speedview after calling asset service to request speedview data from api', () => {
-        componentUnderTest.wzSpeedview = { show: jasmine.createSpy('show'), destroy: jasmine.createSpy('destroy') };
-        componentUnderTest.showSpeedview({ asset: { assetId: 'mockAssetId' }, position: 'mockPosition' });
-        componentUnderTest.speedviewData.subscribe((data: any) => {
-          expect(componentUnderTest.wzSpeedview.show).toHaveBeenCalled();
-        });
-      });
-
       it('Should set up a window scoll listener to destory speedview on scroll', () => {
-        componentUnderTest.wzSpeedview = { show: jasmine.createSpy('show'), destroy: jasmine.createSpy('destroy') };
-        componentUnderTest.showSpeedview({ asset: { assetId: 'mockAssetId' }, position: 'mockPosition' });
+        componentUnderTest.wzSpeedview = mockSpeedview;
+        componentUnderTest.showSpeedview({ asset: { assetId: 'mockAssetId' }, position: 'mockPosition' } as any);
         expect(mockRenderer.listenGlobal).toHaveBeenCalledWith('document', 'scroll', jasmine.any(Function));
       });
     });
 
     describe('hideSpeedview()', () => {
-      it('Should set the speed view data variable to null', () => {
-        componentUnderTest.wzSpeedview = { destroy: jasmine.createSpy('destroy') };
-        componentUnderTest.hideSpeedview();
-        expect(componentUnderTest.speedviewData).toEqual(null);
-      });
-
       it('Should call destroy on the speedview component', () => {
-        componentUnderTest.wzSpeedview = { destroy: jasmine.createSpy('destroy') };
+        componentUnderTest.wzSpeedview = { destroy: jasmine.createSpy('destroy') } as any;
         componentUnderTest.hideSpeedview();
         expect(componentUnderTest.wzSpeedview.destroy).toHaveBeenCalled();
       });

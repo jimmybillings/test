@@ -93,7 +93,6 @@
 				[userCan]="userCan" 
 				[assetType]="'collection'"
 				[collection]="activeCollection.data | async"
-				(onAddToCollection)="addToCollection($event)" 
 				(onRemoveFromCollection)="removeFromCollection($event)"
 				(onAddToCart)="addAssetToCart($event)" 
 				(onDownloadComp)="downloadComp($event)" 
@@ -107,7 +106,6 @@
 				[userCan]="userCan" 
 				[assetType]="'collection'"
 				[collection]="activeCollection.data | async"
-				(onAddToCollection)="addToCollection($event)" 
 				(onRemoveFromCollection)="removeFromCollection($event)"
 				(onAddToCart)="addAssetToCart($event)" 
 				(onDownloadComp)="downloadComp($event)" 
@@ -121,5 +119,5 @@
 	</div>
 </section>
 
-<wz-speedview [speedviewData]="speedviewData | async"></wz-speedview>
+<wz-speedview></wz-speedview>
 

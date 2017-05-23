@@ -1,4 +1,5 @@
 export { ViewAddress } from './user.interface';
+import { SpeedviewData } from './asset.interface';
 
 export interface Pagination {
   totalCount: number;
@@ -50,6 +51,7 @@ export interface Asset extends Common {
   uuid?: string;
   timeStart?: number;
   timeEnd?: number;
+  speedviewData?: SpeedviewData;
 }
 
 export interface AssetUrls {
@@ -59,4 +61,18 @@ export interface AssetUrls {
 
 export interface Poj {
   [index: string]: any;
+}
+
+export interface Viewport {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+  width: number;
+  height: number;
+}
+
+export interface Coords {
+  x?: number;
+  y?: number;
 }
