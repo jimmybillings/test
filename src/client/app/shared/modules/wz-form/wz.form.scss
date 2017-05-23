@@ -4,7 +4,7 @@ form button {
   }
 }
 form {
-  padding-top:rem(1.8);
+  padding-top: 18px;
 }
 wz-cc-form,
 wz-form {
@@ -14,8 +14,8 @@ wz-form {
     md-select,
     .mat-input-container {
       width: 100%;
-      margin-top: rem(1.1);
-      margin-bottom: rem(1.1);
+      margin-top: 11px;
+      margin-bottom: 11px;
     }
     md-select {
       position: relative;
@@ -26,18 +26,18 @@ wz-form {
     }
     md-card-actions.mat-card-actions {
       display: flex;
-      margin: rem(1.6) 0 0 0;
-      padding: rem(.4) 0;
+      margin: 16px 0 0 0;
+      padding: 4px 0;
     }
     .indicate-required {
       font-size: 84%;
-      margin-top: rem(3.2);
-      margin-bottom: rem(.8);
+      margin-top: 32px;
+      margin-bottom: 8px;
       opacity: .8;
       > span {
         display: block;
         position: relative;
-        padding-left: rem(1.1);
+        padding-left: 11px;
         &::before {
           content: "*";
           font-size: 130%;
@@ -56,9 +56,13 @@ wz-cc-form form {
   //show hide edit button 
 wz-cc-form button.mini.is-outlined {
   position: absolute;
-  top: rem(-2.2);
-  right: rem(-2.4);
+  top: -22px;
+  right: -24px;
   margin-right: 0;
+  @media screen and (max-width: $layout-breakpoint-xs) {
+    top: -12px;
+    right: -9px;
+  }
 }
 
 *[md-button] {
@@ -67,14 +71,14 @@ wz-cc-form button.mini.is-outlined {
 
 md-checkbox.ng-dirty.ng-invalid {  
   md-hint.mat-hint.error {
-    bottom: rem(10);
+    bottom: 100px;
   }  
 }
 
 // two shorter inputs on 1 line
 form .two-col div[flex="50"]:first-child {
-  padding: 0 rem(.5) 0 0;
+  padding: 0 5px 0 0;
 }
 form .two-col div[flex="50"]:last-child {
-  padding: 0 0 0 rem(.5);
+  padding: 0 0 0 5px;
 }
