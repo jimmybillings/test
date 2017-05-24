@@ -1,4 +1,8 @@
 section.login.hero {
+  @include text-contrast(mat-color($mat-grey, 900));
+  background-image:
+    linear-gradient(mat-color($mat-grey, 900, .75), mat-color($mat-grey, 900, .5)),
+    url($bk-img-user-management);
   div.first-time-user {
     text-align: center;
     p {

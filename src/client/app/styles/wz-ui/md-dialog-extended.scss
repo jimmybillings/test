@@ -24,7 +24,6 @@ md-dialog-container.mat-dialog-container {
   padding: rem(1.6) rem(1.5) rem(1.6);
   position: relative;
   width: rem(37.8);
-  color: mat-color($mat-foreground, secondary-text);
   @media screen and (max-width: $layout-breakpoint-md) and (min-width: 0)  {
     width: rem(36.5);
   }
@@ -58,9 +57,6 @@ md-dialog-container.mat-dialog-container {
     font-size: rem(2.4);
     font-weight: 400;
   }
-  .mat-select-value {
-    color: mat-color($mat-foreground, secondary-text);
-  }
 }
 
 // For the notification dialog, these match the MD specs. The md-dialog currently does not.
@@ -68,12 +64,10 @@ md-dialog-container.mat-dialog-container wz-confirmation-dialog,
 md-dialog-container.mat-dialog-container wz-notification-dialog {
   [md-dialog-title] {
     font-weight: 500;
-    color: mat-color($mat-foreground, text);
     margin-bottom: rem(1.2);
   }
   md-dialog-content {
     margin-bottom: rem(.8);
-    color: mat-color($mat-foreground, secondary-text);
     line-height: 1.44;
   }
   md-dialog-actions button:last-child {

@@ -27,15 +27,15 @@ header.app-header {
       width: rem(9.5);
       height: rem(5.7);
     }
-    @media (max-width: $layout-breakpoint-sm) and (orientation: landscape)  {
-      .logo img {
-        background-position: rem(-.5) rem(.6);
-        background-repeat: no-repeat;
-        background-size: rem(20.5);
-        height: rem(4.2);
-        width: rem(6.5);
-      }
-    }
+    // @media (max-width: $layout-breakpoint-sm) and (orientation: landscape)  {
+    //   .logo img {
+    //     background-position: rem(-.5) rem(.6);
+    //     background-repeat: no-repeat;
+    //     background-size: rem(20.5);
+    //     height: rem(4.2);
+    //     width: rem(6.5);
+    //   }
+    // }
     @media (max-width: $layout-breakpoint-xs) and (orientation: portrait) {
       .logo img {
         background-position: rem(-.3) rem(1.0);

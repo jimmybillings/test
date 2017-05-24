@@ -1,5 +1,5 @@
 import { Frame } from 'wazee-frame-formatter';
-import { Asset, Pagination } from './common.interface';
+import { Asset, Pagination, Poj, Coords } from './common.interface';
 
 export interface AssetState {
   asset: Asset;
@@ -19,4 +19,17 @@ export interface SubclipMarkers {
 export interface SubclipMarkerFrames {
   in?: Frame;
   out?: Frame;
+}
+
+export interface SpeedviewEvent {
+  asset: Asset;
+  position: Coords;
+}
+
+export interface SpeedviewData {
+  imageQuickView?: boolean;
+  price?: number;
+  pricingType?: 'Royalty Free' | 'Rights Managed';
+  url?: string;
+  values?: Array<Poj>;
 }

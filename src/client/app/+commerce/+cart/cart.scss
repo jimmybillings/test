@@ -1,36 +1,37 @@
 cart-component .tabs-section, 
 quote-show-component .tabs-section,
 quote-edit-component .tabs-section {
-  padding-bottom: rem(6.0);
+  padding-bottom: 60px;
   md-tab-group > div {
     margin-bottom: 0;
     margin-top: 0;
-    margin-left: rem(2.6);
-    margin-right: rem(2.6);
+    margin-left: 26px;
+    margin-right: 26px;
     &:last-child {
-      margin-bottom: rem(2.8);
+      margin-bottom: 28px;
     }
     @media screen and (max-width: $layout-breakpoint-sm)  {
-      margin-left: rem(1.2);
-      margin-right: rem(1.2);
+      margin-left: 12px;
+      margin-right: 12px;
     }
   }
 }
 quote-show-component .tabs-section md-tab-group > div {
-  margin-top: rem(2.2);
+  margin-top: 22px;
 }
 cart-component section.header, quote-edit-component section.header {
-  padding-left: rem(.6);
-  padding-right: rem(.6);
+  padding-left: 6px;
+  padding-right: 6px;
   header {
-    padding-top: rem(.6);
-    padding-bottom: rem(.5);
+    padding-top: 6px;
+    padding-bottom: 5px;
     position: relative;
     .md-display-1 {
       margin: 0;
       width: calc(100% - 120px);
-      max-width: rem(19.8);
-      font-size: rem(2.6);
+      max-width: 198px;
+      min-width: 180px;
+      font-size: 26px;
     }
     .tools  {
       text-align: right;
@@ -41,7 +42,7 @@ cart-component section.header, quote-edit-component section.header {
 .commerce-total,
 .cart-total {
   .select-usage-warn {
-    margin-top: rem(.2);
+    margin-top: 2px;
     font-size: rem(1.5);
     &::after {
       content: " *";

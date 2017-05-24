@@ -19,6 +19,7 @@ import { UiState } from '../shared/services/ui.state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { AddAssetParameters } from '../shared/interfaces/commerce.interface';
+import { SpeedviewEvent, SpeedviewData } from '../shared/interfaces/asset.interface';
 
 /**
  * Asset search page component - renders search page results
@@ -37,7 +38,7 @@ export class SearchComponent implements OnDestroy, OnInit {
   public userPreferences: UserPreferenceService;
   public search: SearchService;
   public sortDefinition: SortDefinitionsService;
-  @ViewChild(WzSpeedviewComponent) public wzSpeedview: any;
+  @ViewChild(WzSpeedviewComponent) public wzSpeedview: WzSpeedviewComponent;
 
   constructor(
     public uiState: UiState,
@@ -132,22 +133,32 @@ export class SearchComponent implements OnDestroy, OnInit {
     });
   }
 
-  public showSpeedview(event: { asset: any, position: any }): void {
-    if (event.asset.speedviewData) {
-      this.speedviewData = Observable.of(event.asset.speedviewData);
-      this.wzSpeedview.show(event.position);
+  public showSpeedview(speedviewEvent: SpeedviewEvent): void {
+    if (speedviewEvent.asset.speedviewData) {
+      // set the data on the wzSpeedview component instance
+      this.wzSpeedview.speedviewAssetInfo = speedviewEvent.asset.speedviewData;
+      // show the speedview overlay in the calculated position
+      this.wzSpeedview.show(speedviewEvent.position);
+      // force the video player to start playing
+      this.wzSpeedview.previewUrl = speedviewEvent.asset.speedviewData.url;
     } else {
-      this.speedviewData = this.assetService.getSpeedviewData(event.asset.assetId)
-        .do((data: any) => {
-          event.asset.speedviewData = data;
-          this.wzSpeedview.show(event.position);
-        });
+      this.assetService.getSpeedviewData(speedviewEvent.asset.assetId).subscribe((data: SpeedviewData) => {
+        // cache the speedview data on the asset
+        speedviewEvent.asset.speedviewData = data;
+        // set the data on the wzSpeedview component instance
+        this.wzSpeedview.speedviewAssetInfo = data;
+        // show the speedview overlay in the calculated position
+        this.wzSpeedview.show(speedviewEvent.position);
+        // force the video player to start playing
+        this.wzSpeedview.previewUrl = data.url;
+      });
     }
     this.renderer.listenGlobal('document', 'scroll', () => this.wzSpeedview.destroy());
   }
 
   public hideSpeedview(): void {
-    this.speedviewData = null;
+    this.wzSpeedview.previewUrl = null;
+    this.wzSpeedview.speedviewAssetInfo = null;
     this.wzSpeedview.destroy();
   }
 

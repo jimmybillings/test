@@ -28,6 +28,30 @@ order-show-component .project .fees {
 order-show-component .project .fees {
   padding-bottom: 0;
 }
+order-show-component .project .fees .amount,
+order-show-component .project .assets .price {
+  position: absolute;
+  bottom: 4px;
+  right: 8px;
+}
+order-show-component .project li.fee-item > div > div > div  {
+  padding-right: 0;
+  .fee-indicator {
+    margin-right: -1px;
+    @media screen and (max-width: $layout-breakpoint-xs)  {
+      margin-right: 8px;
+    }
+  }
+  & + div {
+    padding-left: 16px;
+  }
+}
+order-show-component .project li.cart-asset .tools {
+  @media screen and (max-width: $layout-breakpoint-xs)  {
+    text-align: left;
+    min-height: 72px;
+  }
+}
 .order-summary {
   padding-left: rem(.4);
   padding-right: rem(.4);

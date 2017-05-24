@@ -16,8 +16,6 @@ cart-confirm-tab-component, quote-confirm-tab {
   }
   .payment,
   .billing {
-    background-color: rgba(mat-color($background, card), .65);
-    color: rgba(mat-color($foreground, text), .7);
     padding: rem(1.4);
     margin-left: rem(1.2);
     border-radius: $mat-button-border-radius;
