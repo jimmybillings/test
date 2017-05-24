@@ -1,9 +1,15 @@
 
 <section class="header" layout="row" layout-align="center center">
 	<header flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-    <div flex="100" layout="row" layout-align="space-between end">
+    <div 
+			flex="100" 
+			layout="row" 
+			layout-xs="column" 
+			layout-align="space-between end" 
+			layout-align-xs="start" 
+			flex-order-xs="2">
 			<h2 flex="grow" class="md-display-1">{{ 'ORDER.SHOW.PAGE_TITLE' | translate }}</h2>
-			<div class="tools" flex="auto">
+			<div class="tools" flex="auto" flex-order-xs="-1">
 				<button md-button color="primary" class="is-outlined mini">
 					View/print invoice
 				</button>
@@ -116,7 +122,7 @@
 												{{ 'ORDER.SHOW.DOWNLOAD_ASPERA_BTN_TITLE' | translate }}
 											</button>
 										</div>
-										<div flex="100" layout="row" layout-xs="column" class="divider"></div>
+										<!--<div flex="100" layout="row" layout-xs="column" class="divider"></div>-->
 										<div *ngIf="isRefundedLineItem(lineItem)" class="price indicate-refund" >
 											{{ lineItem.price | currency:'USD':true:'1.2-2' | slice:1 }}
 										</div>
