@@ -71,7 +71,7 @@ export class ApiService {
   }
 
   private urlFor(api: Api, endpoint: string) {
-    return `${this.apiConfig.baseUrl()}${this.pathSegmentFor(api)}-api/${this.versionFor(api)}/${endpoint}`;
+    return `${this.apiConfig.baseUrl}${this.pathSegmentFor(api)}-api/${this.versionFor(api)}/${endpoint}`;
   }
 
   private pathSegmentFor(api: Api): string {
@@ -88,7 +88,7 @@ export class ApiService {
   }
 
   private bodyJsonFrom(bodyObject: ApiBody): string {
-    bodyObject = Object.assign({}, bodyObject, { siteName: this.apiConfig.getPortal() });
+    bodyObject = Object.assign({}, bodyObject, { siteName: this.apiConfig.portal });
 
     return JSON.stringify(bodyObject);
   }
@@ -112,7 +112,7 @@ export class ApiService {
       .filter(parameter => (parameter !== 'siteName'))
       .forEach(parameter => search.set(parameter, parameters[parameter]));
 
-    search.set('siteName', this.apiConfig.getPortal());
+    search.set('siteName', this.apiConfig.portal);
 
     return [search, search.toString().length > 0];
   }

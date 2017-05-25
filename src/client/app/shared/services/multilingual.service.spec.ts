@@ -16,10 +16,10 @@ export function createTranslateLoader(http: Http) {
 }
 
 class MockApiConfig {
-  public getPortal() {
+  public get portal(): string {
     return 'core';
   }
-  public baseUrl() {
+  public get baseUrl(): string {
     return 'http://crxextapi.dev.wzplatform.com/';
   }
 }

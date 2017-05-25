@@ -28,8 +28,8 @@ export function main() {
     beforeEach(() => {
       mockApiConfig = {
         headers: (token: string = '') => new Headers({ 'Authorization': token === '' ? 'STANDARD TOKEN' : token }),
-        baseUrl: () => 'BASE/',
-        getPortal: () => 'PORTAL'
+        baseUrl: 'BASE/',
+        portal: 'PORTAL'
       };
 
       mockUiState = jasmine.createSpyObj('mockUiState', ['loading']);
