@@ -1,26 +1,65 @@
-import {
-  beforeEachProvidersArray,
-  inject,
-  TestBed
-} from '../../imports/test.imports';
-
 import { AppNavComponent } from './app-nav.component';
-
 
 export function main() {
   describe('App Nav Component', () => {
+    let componentUnderTest: AppNavComponent;
 
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        ...beforeEachProvidersArray,
-        AppNavComponent
-      ]
-    }));
+    beforeEach(() => {
+      componentUnderTest = new AppNavComponent();
+      componentUnderTest.trigger = { closeMenu: jasmine.createSpy('closeMenu') } as any;
+      componentUnderTest.prefs = {
+        toggleSearch: jasmine.createSpy('toggleSearch'),
+        toggleCollectionTray: jasmine.createSpy('toggleCollectionTray')
+      };
+      componentUnderTest.uiState = { showNewCollection: jasmine.createSpy('showNewCollection') };
+    });
 
-    it('Should fire an event to logout a user', inject([AppNavComponent], (component: any) => {
-      // spyOn(component.onLogOut, 'emit');
-      // component.logOut(event);
-      // expect(component.onLogOut.emit).toHaveBeenCalledWith(event);
-    }));
+    describe('logOut()', () => {
+      it('should fire an event to logout a user', () => {
+        spyOn(componentUnderTest.onLogOut, 'emit');
+        componentUnderTest.logOut(event);
+        expect(componentUnderTest.onLogOut.emit).toHaveBeenCalledWith(event);
+      });
+
+      it('close the menu', () => {
+        componentUnderTest.logOut(event);
+        expect(componentUnderTest.trigger.closeMenu).toHaveBeenCalled();
+      });
+    });
+
+    describe('toggleSearch', () => {
+      it('should call toggleSearch() on the user preference object', () => {
+        componentUnderTest.toggleSearch();
+        expect(componentUnderTest.prefs.toggleSearch).toHaveBeenCalled();
+      });
+    });
+
+    describe('toggleCollectionTray', () => {
+      it('should call toggleCollectionTray() on the user preference object', () => {
+        componentUnderTest.toggleCollectionTray();
+        expect(componentUnderTest.prefs.toggleCollectionTray).toHaveBeenCalled();
+      });
+    });
+
+    describe('showNewCollection()', () => {
+      it('should call showNewCollection() on the uiState object', () => {
+        componentUnderTest.showNewCollection();
+        expect(componentUnderTest.uiState.showNewCollection).toHaveBeenCalled();
+      });
+    });
+
+    describe('formatBadgeNumber()', () => {
+      const numbers = [0, 1, 99];
+
+      numbers.forEach((num: number) => {
+        it(`should return "${num}" when the size is ${num}`, () => {
+          expect(componentUnderTest.formatBadgeNumber(num)).toBe(num.toString());
+        });
+      });
+
+      it('should return "99+" if the number is larger than 99', () => {
+        expect(componentUnderTest.formatBadgeNumber(100)).toBe('99+');
+      });
+    });
   });
 }

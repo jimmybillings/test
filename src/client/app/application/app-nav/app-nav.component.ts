@@ -36,7 +36,7 @@ export class AppNavComponent {
     this.prefs.toggleCollectionTray();
   }
 
-  public showNewCollection(event: Event) {
+  public showNewCollection() {
     this.uiState.showNewCollection();
   }
 
