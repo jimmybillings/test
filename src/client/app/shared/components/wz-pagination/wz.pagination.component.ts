@@ -1,6 +1,10 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
+/**
+ * The Pagination component takes an input of the Pagination Object that is returned with
+ * all API calls. It ouputs a getPage event with the pageNumber for the API to get.
+ */
 
 @Component({
   moduleId: module.id,
@@ -8,15 +12,9 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
   templateUrl: 'wz.pagination.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
-/**
- * The Pagination component takes an input of the Pagination Object that is returned with
- * all API calls. It ouputs a getPage event with the pageNumber for the API to get.
- */
 export class WzPaginationComponent implements OnInit {
   @Input() pagination: any;
   @Output() getPage = new EventEmitter();
-
   public form: FormGroup;
 
   constructor(public fb: FormBuilder) { }
