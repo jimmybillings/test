@@ -19,12 +19,11 @@ export class FooterComponent implements OnInit {
   public config: any;
   public configSubscription: Subscription;
 
-  constructor(
-    public uiConfig: UiConfig) { }
+  constructor(public uiConfig: UiConfig) { }
 
   ngOnInit() {
     this.lang = this.supportedLanguages[0].code;
-    this.configSubscription = this.uiConfig.get('footer').subscribe((config) => {
+    this.uiConfig.get('footer').take(1).subscribe((config) => {
       this.config = config.config;
     });
   }
