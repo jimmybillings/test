@@ -126,8 +126,8 @@ if [ ! -d "$TMPDIR/wazee-crux-version-control/.git" ]; then
 fi
 packageJson=$(pwd)
 cd "$TMPDIR/wazee-crux-version-control"
-git checkout --force 8354abdb86dd1664068a6b594957a627d2eb4dc0
-# git pull origin develop
+git checkout --force develop
+git pull origin develop
 python /home/video/bin/tools/jenkins/incrementUIPortalVersionFile.py ${project} $(git rev-parse HEAD) ${packageJson}/package.json
 buildVersion=$(python /home/video/bin/tools/jenkins/currentVersion.py $TMPDIR/wazee-crux-version-control/${project}.version)
 cd -
@@ -139,7 +139,7 @@ npm install
 build_prod
 
 # build the UI library
-build_library
+#build_library
 
 cd "$TMPDIR/wazee-crux-version-control"
 git pull origin develop
