@@ -1,6 +1,6 @@
-import { Observable } from '../../imports/test.imports';
+import { Observable } from 'rxjs/Observable';
 import { RegisterComponent } from './register.component';
-import { Response, ResponseOptions } from '../../imports/test.imports';
+import { Response, ResponseOptions } from '@angular/http';
 
 const user: any = {
   emailAddress: 'jamesbonline@yahoo.com', firstName: 'james',
