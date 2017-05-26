@@ -23,7 +23,7 @@ export class OrdersService {
     ).do(response => this.store.storeOrders(response));
   }
 
-  private buildSearchParams(params: UrlParams) {
+  private buildSearchParams(params: UrlParams): any {
     params.i = (params.i && params.i > 0) ? params.i - 1 : 0;
     return Object.assign({}, { q: '', s: '', d: '', i: 0, n: 20 }, params);
   }
