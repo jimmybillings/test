@@ -14,7 +14,7 @@ export function searchContext(state: any = initSearchContext, action: Action) {
   switch (action.type) {
     case 'SEARCHCONTEXT.CREATE':
       return Object.assign({}, action.payload);
-    case 'SEARCHCONTEXT.UDPATE':
+    case 'SEARCHCONTEXT.UPDATE':
       return Object.assign({}, state, action.payload);
     case 'SEARCHCONTEXT.RESET':
       return Object.assign({}, initSearchContext);
@@ -52,7 +52,7 @@ export class SearchContext {
   }
 
   public set update(params: any) {
-    this.store.dispatch({ type: 'SEARCHCONTEXT.UDPATE', payload: this.decodeParams(params) });
+    this.store.dispatch({ type: 'SEARCHCONTEXT.UPDATE', payload: this.decodeParams(params) });
   }
 
   public set create(params: any) {

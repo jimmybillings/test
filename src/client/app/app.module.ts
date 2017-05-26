@@ -47,8 +47,8 @@ export class AppModule {
     private uiConfig: UiConfig,
     private apiConfig: ApiConfig,
     private currentUser: CurrentUserService) {
-    apiConfig.setPortal(localStorage.getItem('currentSite') || (<any>window).portal);
+    apiConfig.portal = localStorage.getItem('currentSite') || (<any>window).portal;
     currentUser.set();
-    uiConfig.initialize(apiConfig.getPortal());
+    uiConfig.initialize(apiConfig.portal);
   }
 }

@@ -1,114 +1,95 @@
-import {
-  inject,
-  beforeEachProvidersArray,
-  TestBed
-} from '../../imports/test.imports';
-import { UiState, } from './ui.state';
+import { UiState, InitUiState } from './ui.state';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
-  describe('UI State', () => {
+  let serviceUnderTest: UiState, mockStore: any, mockState: any;
 
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        ...beforeEachProvidersArray,
-        UiState
-      ]
-    }));
+  beforeEach(() => {
+    mockState = { showFixedHeader: true };
+    mockStore = {
+      select: jasmine.createSpy('select').and.returnValue(Observable.of(mockState)),
+      dispatch: jasmine.createSpy('dispatch')
+    };
+    serviceUnderTest = new UiState(mockStore);
+  });
 
-    it('Should initialize booleans in the store to define default positioning and state',
-      inject([UiState], (service: UiState) => {
-        service.data.first().subscribe(data => {
-          expect(data).toEqual(mockState());
-        });
-      }));
+  describe('Ui State Service', () => {
+    it('Should have an update method that updates the store with the payload', () => {
+      serviceUnderTest.update({ collectionTrayIsOpen: true });
+      expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UI.STATE.UPDATE', payload: { collectionTrayIsOpen: true } });
+    });
 
-    it('Should have an update method that updates the store with the payload',
-      inject([UiState], (service: UiState) => {
-        service.update({ collectionTrayIsOpen: true });
-        service.data.first().subscribe(data => {
-          expect(data.collectionTrayIsOpen).toEqual(true);
-        });
-      }));
+    it('Should have a reset() method that resets the store to the initial state', () => {
+      serviceUnderTest.reset();
+      expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UI.STATE.RESET', payload: InitUiState });
+    });
 
-    it('Should have a reset() method that resets the store to the initial state',
-      inject([UiState], (service: UiState) => {
-        service.data.first().subscribe(data => {
-          expect(data).toEqual(mockState());
-        });
-        service.reset();
-        service.data.first().subscribe(data => {
-          expect(data).toEqual(mockState());
-        });
-      }));
+    describe('showFixedHeader()', () => {
+      it('should set false for a number less than 111', () => {
+        serviceUnderTest.showFixedHeader(108);
+        expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UI.STATE.UPDATE', payload: { showFixedHeader: false } });
+      });
 
-    it('Should set the header to absolute by setting \'showFixedHeader\' to be false if the page scrolls less than 111px\'s',
-      inject([UiState], (service: UiState) => {
-        service.showFixedHeader(108);
-        service.data.first().subscribe(data => {
-          expect(data.showFixedHeader).toEqual(false);
-        });
-      }));
+      it('should set true for a number 111 or higher', () => {
+        mockState = { showFixedHeader: false };
+        mockStore = {
+          select: jasmine.createSpy('select').and.returnValue(Observable.of(mockState)),
+          dispatch: jasmine.createSpy('dispatch')
+        };
+        serviceUnderTest = new UiState(mockStore);
+        serviceUnderTest.showFixedHeader(114);
+        expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UI.STATE.UPDATE', payload: { showFixedHeader: true } });
+      });
+    });
 
-    it('Should set the header to fixed by setting \'showFixedHeader\' to be true if the page scrolls down more than 111px\'s',
-      inject([UiState], (service: UiState) => {
-        service.showFixedHeader(114);
-        service.data.first().subscribe(data => {
-          expect(data.showFixedHeader).toEqual(true);
-        });
-      }));
-
-    it('Should hide the search bar on certain routes', inject([UiState], (service: UiState) => {
+    it('Should hide the search bar on certain routes', () => {
       ['/', 'user/register', 'user/login', 'notification'].forEach(item => {
-        service.checkRouteForSearchBar(item);
-        service.data.first().subscribe(data => {
-          expect(data.headerIsExpanded).toEqual(false);
-        });
+        serviceUnderTest.checkRouteForSearchBar(item);
+        expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UI.STATE.UPDATE', payload: { headerIsExpanded: false } });
       });
-    }));
+    });
 
-    it('Should show the search bar on other routes', inject([UiState], (service: UiState) => {
+    it('Should show the search bar on other routes', () => {
       ['asdf', 'fdsadsf', 'fdsf', 'wefwer', 'aasfasdf'].forEach((item) => {
-        service.checkRouteForSearchBar(item);
-        service.data.first().subscribe(data => {
-          expect(data.headerIsExpanded).toEqual(true);
-        });
+        serviceUnderTest.checkRouteForSearchBar(item);
+        expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UI.STATE.UPDATE', payload: { headerIsExpanded: true } });
       });
-    }));
+    });
 
-    it('Should hide the filter button by default if \'headerIsExpanded\' is false and by pass the url check',
-      inject([UiState], (service: UiState) => {
-        service.update({ headerIsExpanded: false });
-        service.checkForFilters('search');
-        service.data.first().subscribe(data => {
-          expect(data.filtersAreAvailable).toEqual(false);
-        });
-      }));
-
-    it('Should hide the filter button if \'headerIsExpanded\' is true but the url check return false',
-      inject([UiState], (service: UiState) => {
-        service.update({ headerIsExpanded: true });
-        service.checkForFilters('user/login');
-        service.data.first().subscribe(data => {
-          expect(data.filtersAreAvailable).toEqual(false);
-        });
-      }));
-
-    it('Should show the filter button if \'headerIsExpanded\' is true and the url check return true',
-      inject([UiState], (service: UiState) => {
-        service.update({ headerIsExpanded: true });
-        service.checkForFilters('search/234');
-        service.data.first().subscribe(data => {
-          expect(data.filtersAreAvailable).toEqual(true);
-        });
-      }));
-
-    function mockState() {
-      return {
-        headerIsExpanded: false,
-        showFixedHeader: false,
-        loading: false,
-        filtersAreAvailable: false
+    it('Should hide the filter button by default if \'headerIsExpanded\' is false and by pass the url check', () => {
+      mockState = { headerIsExpanded: false };
+      mockStore = {
+        select: jasmine.createSpy('select').and.returnValue(Observable.of(mockState)),
+        dispatch: jasmine.createSpy('dispatch')
       };
-    }
+      serviceUnderTest = new UiState(mockStore);
+
+      serviceUnderTest.checkForFilters('search');
+      expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UI.STATE.UPDATE', payload: { filtersAreAvailable: false } });
+    });
+
+    it('Should hide the filter button if \'headerIsExpanded\' is true but the url check return false', () => {
+      mockState = { headerIsExpanded: true };
+      mockStore = {
+        select: jasmine.createSpy('select').and.returnValue(Observable.of(mockState)),
+        dispatch: jasmine.createSpy('dispatch')
+      };
+      serviceUnderTest = new UiState(mockStore);
+
+      serviceUnderTest.checkForFilters('user/login');
+      expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UI.STATE.UPDATE', payload: { filtersAreAvailable: false } });
+    });
+
+    it('Should show the filter button if \'headerIsExpanded\' is true and the url check return true', () => {
+      mockState = { headerIsExpanded: true };
+      mockStore = {
+        select: jasmine.createSpy('select').and.returnValue(Observable.of(mockState)),
+        dispatch: jasmine.createSpy('dispatch')
+      };
+      serviceUnderTest = new UiState(mockStore);
+
+      serviceUnderTest.checkForFilters('search/234');
+      expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'UI.STATE.UPDATE', payload: { filtersAreAvailable: true } });
+    });
   });
 }

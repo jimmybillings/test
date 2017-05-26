@@ -66,7 +66,6 @@ export class CollectionFormComponent implements OnInit {
       this.collectionContext.resetCollectionOptions();
       this.getActiveCollection();
       this.loadCollections();
-      this.activeCollection.load().subscribe();
     }, this.error.bind(this));
   }
 

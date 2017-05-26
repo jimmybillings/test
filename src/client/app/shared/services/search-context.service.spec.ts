@@ -1,66 +1,66 @@
-import {
-  beforeEachProvidersArray,
-  inject,
-  TestBed
-} from '../../imports/test.imports';
-
 import { SearchContext } from './search-context.service';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
-  describe('Search Context', () => {
+  let serviceUnderTest: SearchContext, mockStore: any, mockRouter: any;
 
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        ...beforeEachProvidersArray,
-        SearchContext
-      ]
-    }));
+  beforeEach(() => {
+    mockStore = {
+      select: jasmine.createSpy('select').and.returnValue(Observable.of({ the: 'store' })),
+      dispatch: jasmine.createSpy('dispatch')
+    };
+    mockRouter = { navigate: jasmine.createSpy('navigate') };
+    serviceUnderTest = new SearchContext(mockRouter, mockStore);
+  });
 
-    it('Should initialize with router, context, and store',
-      inject([SearchContext], (service: SearchContext) => {
-        expect(service.router).toBeDefined();
-        expect(service.store).toBeDefined();
-        expect(service.data).toBeDefined();
-      }));
+  describe('Search Context Service', () => {
+    describe('instantiation', () => {
+      it('Should set up the data instance variable', () => {
+        serviceUnderTest.data.subscribe((d: any) => expect(d).toEqual({ the: 'store' }));
+      });
+    });
 
-    it('Should initialize the store with a default state',
-      inject([SearchContext], (service: SearchContext) => {
-        service.data.subscribe(data => {
-          expect(data).toEqual({ q: null, i: 1, n: 100, sortId: 0 });
+    describe('new()', () => {
+      beforeEach(() => {
+        serviceUnderTest.new({ q: 'cat', i: 1, n: 100 });
+      });
+
+      it('Should set the store', () => {
+        expect(mockStore.dispatch).toHaveBeenCalledWith({
+          type: 'SEARCHCONTEXT.CREATE',
+          payload: { q: 'cat', i: '1', n: '100' }
         });
-      }));
+      });
 
-    it('Should have a new() method that updates the store and calls go()',
-      inject([SearchContext], (service: SearchContext) => {
-        spyOn(service, 'go');
-        service.new({ q: 'cat', i: 1, n: 100 });
-        service.data.subscribe(data => {
-          expect(data).toEqual({ q: 'cat', i: '1', n: '100' });
+      it('should call "navigate" on the router', () => {
+        expect(mockRouter.navigate).toHaveBeenCalled();
+      });
+    });
+
+    describe('state getter', () => {
+      it('returns the searchContext', () => {
+        expect(serviceUnderTest.state).toEqual({ the: 'store' });
+      });
+    });
+
+    describe('update setter', () => {
+      it('updates the store with params', () => {
+        serviceUnderTest.update = { q: 'cat', i: 1, n: 100 };
+
+        expect(mockStore.dispatch).toHaveBeenCalledWith({
+          type: 'SEARCHCONTEXT.UPDATE',
+          payload: { q: 'cat', i: '1', n: '100' }
         });
-        expect(service.go).toHaveBeenCalled();
-      }));
+      });
 
-    it('Should have a state getter method that returns the searchContext',
-      inject([SearchContext], (service: SearchContext) => {
-        expect(service.state).toEqual({ q: null, i: 1, n: 100, sortId: 0 });
-        service.update = { q: 'cat', i: 1, n: 100 };
-        expect(service.state).toEqual({ q: 'cat', i: '1', n: '100', sortId: 0 });
-      }));
+      it('Should have an update setter method that updates the store with decoded params', () => {
+        serviceUnderTest.update = { q: 'cats%20and%20dogs', i: 1, n: 100 };
 
-    it('Should have an update setter method that updates the store with params',
-      inject([SearchContext], (service: SearchContext) => {
-        service.update = { q: 'cat', i: 1, n: 100 };
-        service.data.subscribe(data => {
-          expect(data).toEqual({ q: 'cat', i: '1', n: '100', sortId: 0 });
+        expect(mockStore.dispatch).toHaveBeenCalledWith({
+          type: 'SEARCHCONTEXT.UPDATE',
+          payload: { q: 'cats and dogs', i: '1', n: '100' }
         });
-      }));
-
-    it('Should have an update setter method that updates the store with decoded params',
-      inject([SearchContext], (service: SearchContext) => {
-        service.update = { q: 'cats%20and%20dogs', i: 1, n: 100 };
-        service.data.subscribe(data => {
-          expect(data).toEqual({ q: 'cats and dogs', i: '1', n: '100', sortId: 0 });
-        });
-      }));
+      });
+    });
   });
 }

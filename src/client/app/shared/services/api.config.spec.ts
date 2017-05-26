@@ -1,90 +1,76 @@
-import {
-  Headers,
-  inject,
-  beforeEachProvidersArray,
-  TestBed
-} from '../../imports/test.imports';
-
 import { ApiConfig } from './api.config';
 
 export function main() {
-  describe('Api config', () => {
+  let serviceUnderTest: ApiConfig, mockCurrentUserService: any;
 
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        ...beforeEachProvidersArray,
-        ApiConfig
-      ]
-    }));
-
-    it('should return portal name. If none is set, it should return null', inject([ApiConfig], (service: ApiConfig) => {
-      expect(service.getPortal()).toEqual(null);
-    }));
-
-    it('Should set portal name with value passed in', inject([ApiConfig], (service: ApiConfig) => {
-      let portalName = 'newportalname';
-      service.setPortal(portalName);
-      expect(service.getPortal()).toEqual(portalName);
-    }));
-
-    it('Should return the Root, path, query for the CMS enpoint', inject([ApiConfig], (service: ApiConfig) => {
-      expect(service.cms('root')).toEqual('https://cms.dev.wzplatform.com/');
-      expect(service.cms('path')).toEqual('/wp-json/wp/v2/pages');
-      expect(service.cms('query')).toEqual('?filter[name]=');
-    }));
-  });
-
-  describe('headers()', () => {
-    let loggedIn: boolean;
-    let mockCurrentUserService: any;
-    let returnedHeaders: Headers;
-
+  describe('Api Config', () => {
     beforeEach(() => {
-      localStorage.clear();
-      localStorage.setItem('token', 'LOGIN_TOKEN');
-      mockCurrentUserService = {
-        loggedIn: () => loggedIn
-      };
+      serviceUnderTest = new ApiConfig(null);
     });
 
-    afterEach(() => {
-      localStorage.clear();
+    describe('get portalName', () => {
+      it('should return null if none is set', () => {
+        expect(serviceUnderTest.portal).toBe(null);
+      });
+
+      it('should return the name of the portal', () => {
+        serviceUnderTest.portal = 'commerce';
+        expect(serviceUnderTest.portal).toBe('commerce');
+      });
     });
 
-    it('returns appropriate headers for a logged out user', () => {
-      loggedIn = false;
-      returnedHeaders = new ApiConfig(mockCurrentUserService).headers();
+    describe('headers()', () => {
+      let loggedIn: boolean;
+      let mockCurrentUserService: any;
+      let returnedHeaders: Headers;
 
-      expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
-      expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
-      expect(returnedHeaders.has('Authorization')).toBeFalsy();
-    });
+      beforeEach(() => {
+        localStorage.clear();
+        localStorage.setItem('token', 'LOGIN_TOKEN');
+        mockCurrentUserService = {
+          loggedIn: () => loggedIn
+        };
+      });
 
-    it('returns appropriate headers for a logged in user', () => {
-      loggedIn = true;
-      returnedHeaders = new ApiConfig(mockCurrentUserService).headers();
+      afterEach(() => {
+        localStorage.clear();
+      });
 
-      expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
-      expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
-      expect(returnedHeaders.getAll('Authorization')).toEqual(['Bearer LOGIN_TOKEN']);
-    });
+      it('returns appropriate headers for a logged out user', () => {
+        loggedIn = false;
+        returnedHeaders = new ApiConfig(mockCurrentUserService).headers();
 
-    it('adds overriding auth header for a logged out user', () => {
-      loggedIn = false;
-      returnedHeaders = new ApiConfig(mockCurrentUserService).headers('OVERRIDING_TOKEN');
+        expect(returnedHeaders.get('Content-Type')).toEqual('application/json');
+        expect(returnedHeaders.get('Accept')).toEqual('application/json');
+        expect(returnedHeaders.has('Authorization')).toBe(false);
+      });
 
-      expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
-      expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
-      expect(returnedHeaders.getAll('Authorization')).toEqual(['Bearer OVERRIDING_TOKEN']);
-    });
+      it('returns appropriate headers for a logged in user', () => {
+        loggedIn = true;
+        returnedHeaders = new ApiConfig(mockCurrentUserService).headers();
 
-    it('overrides the normal auth header for a logged in user', () => {
-      loggedIn = true;
-      returnedHeaders = new ApiConfig(mockCurrentUserService).headers('OVERRIDING_TOKEN');
+        expect(returnedHeaders.get('Content-Type')).toEqual('application/json');
+        expect(returnedHeaders.get('Accept')).toEqual('application/json');
+        expect(returnedHeaders.get('Authorization')).toEqual('Bearer LOGIN_TOKEN');
+      });
 
-      expect(returnedHeaders.getAll('Content-Type')).toEqual(['application/json']);
-      expect(returnedHeaders.getAll('Accept')).toEqual(['application/json']);
-      expect(returnedHeaders.getAll('Authorization')).toEqual(['Bearer OVERRIDING_TOKEN']);
+      it('adds overriding auth header for a logged out user', () => {
+        loggedIn = false;
+        returnedHeaders = new ApiConfig(mockCurrentUserService).headers('OVERRIDING_TOKEN');
+
+        expect(returnedHeaders.get('Content-Type')).toEqual('application/json');
+        expect(returnedHeaders.get('Accept')).toEqual('application/json');
+        expect(returnedHeaders.get('Authorization')).toEqual('Bearer OVERRIDING_TOKEN');
+      });
+
+      it('overrides the normal auth header for a logged in user', () => {
+        loggedIn = true;
+        returnedHeaders = new ApiConfig(mockCurrentUserService).headers('OVERRIDING_TOKEN');
+
+        expect(returnedHeaders.get('Content-Type')).toEqual('application/json');
+        expect(returnedHeaders.get('Accept')).toEqual('application/json');
+        expect(returnedHeaders.get('Authorization')).toEqual('Bearer OVERRIDING_TOKEN');
+      });
     });
   });
 }

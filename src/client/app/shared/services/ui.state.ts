@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store, ActionReducer, Action } from '@ngrx/store';
 
-const InitUiState: any = {
+export const InitUiState: any = {
   headerIsExpanded: false,
   showFixedHeader: false,
   loading: false,

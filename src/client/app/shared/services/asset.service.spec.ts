@@ -1,67 +1,31 @@
-import {
-  beforeEachProvidersArray,
-  ResponseOptions,
-  MockBackend,
-  Response,
-  inject,
-  TestBed
-} from '../../imports/test.imports';
-
 import { AssetService } from './asset.service';
+import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
+import { Api } from '../interfaces/api.interface';
 
 export function main() {
-  describe('Asset service', () => {
+  let serviceUnderTest: AssetService, mockApi: MockApiService, mockStore: any;
+  mockApi = new MockApiService();
+  mockStore = { dispatch: jasmine.createSpy('dispatch') };
+  jasmine.addMatchers(mockApiMatchers);
 
-    beforeEach(() => TestBed.configureTestingModule({
-      providers: [
-        ...beforeEachProvidersArray,
-        AssetService
-      ]
-    }));
-
-    it('Should call the api endpoint for Asset and return a correctly formatted payload to cache in the Asset Store',
-      inject([AssetService, MockBackend], (service: AssetService, mockBackend: MockBackend) => {
-        let connection: any;
-        connection = mockBackend.connections.subscribe((c: any) => connection = c);
-        service.initialize(26307591).subscribe(payload => {
-          expect(connection.request.url.indexOf('/assets-api/v1/clip/26307591/clipDetail') !== -1).toBe(true);
-
-          // expect(payload).toEqual( { type: 'SET_ASSET', payload: MockAssetResponse()});
-        });
-        connection.mockRespond(new Response(
-          new ResponseOptions({
-            body: MockAssetResponse()
-          })
-        ));
-      }));
-
-    it('Should expect a correctly formatted payload it add it to the Asset Store', inject([AssetService], (service: AssetService) => {
-      spyOn(service.store, 'dispatch');
-      service.set({ type: 'SET_ASSET', payload: MockAssetResponse() });
-      expect(service.store.dispatch).toHaveBeenCalledWith({ type: 'SET_ASSET', payload: MockAssetResponse() });
-    }));
-
+  beforeEach(() => {
+    serviceUnderTest = new AssetService(mockStore, mockApi.injector, null);
   });
 
-  function MockAssetResponse() {
-    return {
-      'items': [
-        {
-          'assetId': 28068744, 'name': '80805947_032',
-          'metaData': [
-            { 'name': 'Title', 'value': '' },
-            { 'name': 'Description', 'value': 'Rubber dog toys fill a bin at Kirkhill Rubber Manufacturing.' },
-            { 'name': 'TE.DigitalFormat', 'value': 'High Definition' },
-            { 'name': 'Format.Duration', 'value': '9600' }
-          ],
-          'thumbnail': {
-            'name': '80805947_032_lt.jpg',
-            'urls': {
-              'http-download': 'http://s3-t3m-previewpub-or-1.s3.amazonaws.com/808/059/47/80805947_032_lt.jpg'
-            }
-          }
-        }
-      ]
-    };
-  }
+  describe('Asset Service', () => {
+    describe('initialize()', () => {
+      it('Should call the api endpoint for Asset and return a correctly formatted payload to cache in the Asset Store', () => {
+        serviceUnderTest.initialize(26307591);
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('clip/26307591/clipDetail');
+      });
+
+      it('should set the response in the store', () => {
+        serviceUnderTest.initialize(26307591);
+
+        expect(mockStore.dispatch).toHaveBeenCalledWith({ type: 'SET_ASSET', payload: mockApi.getResponse });
+      });
+    });
+  });
 }
