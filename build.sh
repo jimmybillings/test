@@ -139,7 +139,7 @@ npm install
 build_prod
 
 # build the UI library
-#build_library
+# build_library
 
 cd "$TMPDIR/wazee-crux-version-control"
 git pull origin develop
