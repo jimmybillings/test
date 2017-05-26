@@ -1,4 +1,4 @@
-import { Observable } from '../../imports/test.imports';
+import { Observable } from 'rxjs/Observable';
 import { ResetPasswordComponent } from './reset-password.component';
 import { Response, ResponseOptions } from '@angular/http';
 

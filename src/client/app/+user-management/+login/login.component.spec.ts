@@ -1,4 +1,4 @@
-import { Observable } from '../../imports/test.imports';
+import { Observable } from 'rxjs/Observable';
 import { LoginComponent } from './login.component';
 
 export function main() {

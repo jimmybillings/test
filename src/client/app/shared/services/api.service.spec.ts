@@ -1,13 +1,6 @@
-import {
-  inject,
-  TestBed,
-  MockBackend,
-  Headers,
-  Response,
-  RequestMethod,
-  ResponseOptions
-} from '../../imports/test.imports';
-import { BaseRequestOptions, Http, ConnectionBackend } from '@angular/http';
+import { Headers, Response, BaseRequestOptions, RequestMethod, Http, ResponseOptions, ConnectionBackend } from '@angular/http';
+import { inject, TestBed } from '@angular/core/testing';
+import { MockBackend } from '@angular/http/testing';
 import { ApiService } from './api.service';
 import { Api, ApiResponse } from '../interfaces/api.interface';
 import { ApiConfig } from './api.config';

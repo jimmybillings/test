@@ -1,5 +1,5 @@
 import { ProfileComponent } from './profile.component';
-import { Observable } from '../../imports/test.imports';
+import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Profile Component', () => {

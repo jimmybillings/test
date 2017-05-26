@@ -1,4 +1,4 @@
-import { Observable } from '../../imports/test.imports';
+import { Observable } from 'rxjs/Observable';
 import { ForgotPasswordComponent } from './forgot-password.component';
 
 export function main() {
