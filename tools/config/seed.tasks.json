@@ -7,7 +7,7 @@
     "clean.once",
     "build.assets.dev",
     "build.html_css",
-    "build.sass",
+    "build.all.scss",
     "build.js.dev",
     "build.index.dev"
   ],
@@ -43,7 +43,7 @@
     "tslint",
     "build.assets.prod",
     "build.html_css",
-    "build.sass",
+    "build.all.scss",
     "copy.prod",
     "compile.ahead.prod",
     "build.js.prod.aot",

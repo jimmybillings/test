@@ -6,14 +6,10 @@ import { makeTsProject, TemplateLocalsBuilder } from '../../utils';
 
 const plugins = <any>gulpLoadPlugins();
 
-
-/**
- * Publish the main js file to Amazon S3 bucket.
- */
 function publishToS3() {
   var aws: any = readFileSync('./aws-keys.json');
   aws = JSON.parse(aws);
-  return gulp.src('./dist/prod/js/**')
+  return gulp.src('./dist/dev/layout.css')
     .pipe(plugins.s3(aws));
 }
 

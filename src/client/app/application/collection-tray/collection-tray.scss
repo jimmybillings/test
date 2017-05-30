@@ -23,7 +23,7 @@ collection-tray {
         width: auto;
         white-space: nowrap;
         .asset-count {
-          border-radius: $mat-button-border-radius;
+          border-radius: 2px;
           min-width: rem(2.4);
           line-height: 1em;
           margin-right: 0;

@@ -6,6 +6,8 @@ import { AssetDataComponent } from './components/asset-data.component';
 import { AssetShareComponent } from './components/asset-share.component';
 import { AssetShareLinkComponent } from './components/asset-share-link.component';
 import { AssetSaveSubclipComponent } from './components/asset-save-subclip.component';
+import { AssetResolver } from './services/asset.resolver';
+import { AssetGuard } from './services/asset.guard';
 
 
 @NgModule({
@@ -19,6 +21,7 @@ import { AssetSaveSubclipComponent } from './components/asset-save-subclip.compo
         AssetSaveSubclipComponent
     ],
     exports: [AssetComponent],
+    providers: [AssetResolver, AssetGuard]
 })
 
 export class AssetModule { }

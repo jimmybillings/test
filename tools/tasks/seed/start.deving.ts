@@ -47,7 +47,7 @@ gulp.task('watch.while_deving', function () {
 
 export = (done: any) =>
   runSequence('build.test',
-    'build.sass',
+    'build.all.scss',
     'watch.while_deving',
     'server.start',
     'karma.run.with_coverage',

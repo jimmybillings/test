@@ -16,7 +16,7 @@
     "tslint",
     "build.assets.prod",
     "build.html_css",
-    "build.sass",
+    "build.all.scss",
     "copy.prod",
     "compile.ahead.prod",
     "build.js.prod.aot",
@@ -28,5 +28,9 @@
   ],
   "publish": [
     "s3.publish"
+  ],
+  "build.all.scss": [
+    "build.layout.scss",
+    "build.theme.scss"
   ]
 }

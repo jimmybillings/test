@@ -13,7 +13,7 @@ li.cart-asset {
   position: relative;
   margin: rem(1.2) 0 0 0;
   padding: rem(.2);
-  border-radius: $mat-button-border-radius;
+  border-radius: 2px;
   transition: $swift-ease-out;
   .actions {
     min-height: rem(4.5);

@@ -7,11 +7,7 @@ import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MaterialModule } from './modules/wz-design/wz-design.module';
-
-// WAZEE PROVIDERS
-import { WAZEE_PROVIDERS } from '../imports/wazee';
 import { StoreModule } from '@ngrx/store';
-import { WAZEE_STORES } from '../imports/wazee';
 
 // Shared Wazee Modules
 import { WzPlayerModule } from './modules/wz-player/wz.player.module';
@@ -40,6 +36,149 @@ import { WzGalleryBreadcrumbComponent } from './components/wz-gallery-breadcrumb
 import { WzSiteChangerComponent } from './components/wz-site-changer/wz-site-changer.component';
 import { WzNotFoundComponent } from './components/wz-not-found/wz-not-found.component';
 
+// WAZEE SERVICES
+import { ApiConfig } from './services/api.config';
+import { MultilingualService } from './services/multilingual.service';
+import { TranslateService } from '@ngx-translate/core';
+import { CurrentUserService } from './services/current-user.service';
+import { UserService } from './services/user.service';
+import { UiConfig } from './services/ui.config';
+import { WzNotificationService } from './services/wz.notification.service';
+import { AssetService } from './services/asset.service';
+import { SearchContext } from './services/search-context.service';
+import { CollectionsService } from './services/collections.service';
+import { ActiveCollectionService } from './services/active-collection.service';
+import { UiState } from './services/ui.state';
+import { UserPreferenceService } from './services/user-preference.service';
+import { ApiService } from './services/api.service';
+import { SortDefinitionsService } from './services/sort-definitions.service';
+import { FilterService } from './services/filter.service';
+import { Authentication } from './services/authentication.data.service';
+import { PendoService } from './services/pendo.service';
+import { CartService } from './services/cart.service';
+import { SearchService } from './services/search.service';
+import { OrderService } from './services/order.service';
+import { OrdersService } from './services/orders.service';
+import { CollectionContextService } from './services/collection-context.service';
+import { GalleryViewService } from './services/gallery-view.service';
+import { WindowRef } from './services/window-ref.service';
+import { QuoteService } from './services/quote.service';
+import { QuotesService } from './services/quotes.service';
+import { QuoteEditService } from './services/quote-edit.service';
+
+
+// WAZEE STORES
+import { searchStore, SearchStore } from './stores/search.store';
+import { cart, CartStore } from './stores/cart.store';
+import { collections, CollectionsStore } from './stores/collections.store';
+import { activeCollection, ActiveCollectionStore } from './stores/active-collection.store';
+import { errorStore, ErrorStore } from './stores/error.store';
+import { order, OrderStore } from './stores/order.store';
+import { orders, OrdersStore } from './stores/orders.store';
+import { features, FeatureStore } from './stores/feature.store';
+import { gallery, GalleryViewStore } from './stores/gallery-view.store';
+import { quote, QuoteStore } from './stores/quote.store';
+import { quotes, QuotesStore } from './stores/quotes.store';
+import { activeQuote, ActiveQuoteStore } from './stores/active-quote.store';
+import { checkout, CheckoutStore } from './stores/checkout.store';
+import { feeConfig, FeeConfigStore } from './stores/fee-config.store';
+import { pricingReducer, PricingStore } from './stores/pricing.store';
+
+
+import { asset } from './services/asset.service';
+import { currentUser } from './services/current-user.service';
+import { config } from './services/ui.config';
+import { uiState } from './services/ui.state';
+import { Capabilities } from './services/capabilities.service';
+import { searchContext } from './services/search-context.service';
+import { multilingualActionReducer } from './services/multilingual.service';
+import { filters } from './services/filter.service';
+import { userPreferences } from './services/user-preference.service';
+import { collectionOptions } from './services/collection-context.service';
+import { sortDefinitions } from './services/sort-definitions.service';
+
+const WAZEE_SERVICES = [
+  ApiConfig,
+  CurrentUserService,
+  UiConfig,
+  AssetService,
+  WzNotificationService,
+  CollectionsService,
+  ActiveCollectionService,
+  SearchContext,
+  MultilingualService,
+  UiState,
+  UserPreferenceService,
+  CollectionContextService,
+  ApiService,
+  SortDefinitionsService,
+  Capabilities,
+  FilterService,
+  Authentication,
+  PendoService,
+  CartService,
+  SearchService,
+  UserService,
+  OrderService,
+  OrdersService,
+  TranslateService,
+  GalleryViewService,
+  WindowRef,
+  QuoteService,
+  QuotesService,
+  QuoteEditService
+];
+
+const WAZEE_STORE_INTERFACES = [
+  ErrorStore,
+  CollectionsStore,
+  ActiveCollectionStore,
+  CartStore,
+  FeatureStore,
+  SearchStore,
+  OrdersStore,
+  OrderStore,
+  GalleryViewStore,
+  QuoteStore,
+  QuotesStore,
+  ActiveQuoteStore,
+  CheckoutStore,
+  FeeConfigStore,
+  PricingStore
+];
+
+const WAZEE_PROVIDERS: any = [
+  ...WAZEE_SERVICES,
+  ...WAZEE_STORE_INTERFACES
+];
+
+const WAZEE_STORES: any = {
+  config: config,
+  searchStore: searchStore,
+  asset: asset,
+  currentUser: currentUser,
+  searchContext: searchContext,
+  collections: collections,
+  activeCollection: activeCollection,
+  uiState: uiState,
+  filters: filters,
+  userPreferences: userPreferences,
+  collectionOptions: collectionOptions,
+  i18n: multilingualActionReducer,
+  errorStore: errorStore,
+  cart: cart,
+  sortDefinitions: sortDefinitions,
+  order: order,
+  orders: orders,
+  features: features,
+  gallery: gallery,
+  quote: quote,
+  quotes: quotes,
+  activeQuote: activeQuote,
+  checkout: checkout,
+  feeConfig: feeConfig,
+  paymentReducer: pricingReducer
+};
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
 

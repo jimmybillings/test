@@ -5,6 +5,7 @@ import { HomeHeroComponent } from './components/home-hero.component';
 import { HomeHighlightsComponent } from './components/home-highlights.component';
 import { HomeVendorMarqueeComponent } from './components/home-vendor-marquee.component';
 import { HomeCallToActionComponent } from './components/home-call-to-action.component';
+import { HomeResolver } from './services/home.resolver';
 
 @NgModule({
   imports: [SharedModule],
@@ -14,6 +15,7 @@ import { HomeCallToActionComponent } from './components/home-call-to-action.comp
     HomeHighlightsComponent,
     HomeVendorMarqueeComponent,
     HomeCallToActionComponent],
+  providers: [HomeResolver],
   exports: [HomeComponent],
 })
 

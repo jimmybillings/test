@@ -18,7 +18,7 @@ cart-confirm-tab-component, quote-confirm-tab {
   .billing {
     padding: rem(1.4);
     margin-left: rem(1.2);
-    border-radius: $mat-button-border-radius;
+    border-radius: 2px;
     max-width: calc(100% - 12px);
     min-width: calc(100% - 12px);
     @media screen and (min-width: $layout-breakpoint-lg)  {

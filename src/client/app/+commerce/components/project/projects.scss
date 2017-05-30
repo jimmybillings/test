@@ -25,7 +25,7 @@ projects-component section.header {
 div.project {
   margin-bottom: 0;
   header.project-info {
-    border-radius: $mat-button-border-radius $mat-button-border-radius 0 0;
+    border-radius: 2px 2px 0 0;
     position: relative;
     h5[md-display-1] {
       margin: 0 0 rem(.2) 0;

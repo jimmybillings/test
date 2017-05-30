@@ -1,4 +1,4 @@
-@import 'styles/wazee-theme';
+@import '../../app/styles/wazee-theme';
 
 // Include the base styles for Angular Material core. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -15,11 +15,7 @@ $warn: mat-palette($mat-red, A700, 600, 900);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $theme: mat-light-theme($primary, $accent, $warn);
-
-// this should probably go elsewhere
-// or just hard code it the few places it's used.
-$mat-button-border-radius: 2px;
-
+ 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.

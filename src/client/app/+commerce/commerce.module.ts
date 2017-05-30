@@ -4,6 +4,14 @@ import { SharedModule } from '../shared/shared.module';
 import { CommerceComponent } from './commerce.component';
 import { CommerceCapabilities } from './services/commerce.capabilities';
 import { COMMERCE_ROUTES } from './commerce.routes';
+import { CartResolver } from '../+commerce/+cart/services/cart.resolver';
+import { OrderResolver } from '../+commerce/+order/services/order.resolver';
+import { OrdersResolver } from '../+commerce/+order/services/orders.resolver';
+import { QuoteResolver } from '../+commerce/+quote/services/quote.resolver';
+import { QuotesResolver } from '../+commerce/+quote/services/quotes.resolver';
+import { QuoteEditResolver } from '../+commerce/+quote/services/quote-edit.resolver';
+import { CartGuard } from './+cart/services/cart.guard';
+import { QuoteEditGuard } from './+quote/services/quote-edit.guard';
 
 // Cart Stuff
 import { CartComponent } from './+cart/cart.component';
@@ -95,7 +103,17 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     QuoteConfirmTabComponent
   ],
   exports: [CommerceComponent, CartComponent, OrderShowComponent, OrdersComponent],
-  providers: [CommerceCapabilities],
+  providers: [
+    CommerceCapabilities,
+    CartResolver,
+    OrderResolver,
+    OrdersResolver,
+    QuoteResolver,
+    QuotesResolver,
+    QuoteEditResolver,
+    CartGuard,
+    QuoteEditGuard
+  ],
   entryComponents: [AddressFormComponent]
 })
 

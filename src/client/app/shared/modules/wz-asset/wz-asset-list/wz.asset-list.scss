@@ -10,7 +10,7 @@ wz-asset-list ul.asset-list-view {
     position: relative;
     margin-bottom: rem(1.2);
     padding: rem(.2);
-    border-radius: $mat-button-border-radius;
+    border-radius: 2px;
     transition: $swift-ease-out;
     .actions {
       min-height: rem(4.5);

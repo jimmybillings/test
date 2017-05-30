@@ -8,12 +8,15 @@ import { ResetPasswordComponent } from './+reset-password/reset-password.compone
 import { SharedModule } from '../shared/shared.module';
 import { USER_ROUTES } from './user-management.routes';
 import { RouterModule } from '@angular/router';
+import { LoggedInGuard } from './services/logged-in.guard';
+import { LoggedOutGuard } from './services/logged-out.guard';
 
 @NgModule({
     imports: [SharedModule, RouterModule.forChild(USER_ROUTES)],
     declarations: [UserManagementComponent, LoginComponent,
         RegisterComponent, ProfileComponent, ForgotPasswordComponent, ResetPasswordComponent],
     exports: [UserManagementComponent],
+    providers: [LoggedInGuard, LoggedOutGuard]
 })
 
 export class UserManagementModule { }

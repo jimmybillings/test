@@ -83,7 +83,7 @@ collections-component .query-details {
     position: relative;
     margin-bottom: rem(1.2);
     padding: rem(.2);
-    border-radius: $mat-button-border-radius;
+    border-radius: 2px;
     transition: $swift-ease-out;
     .actions {
       min-height: 45px;
@@ -113,7 +113,7 @@ collections-component .query-details {
     }
     .asset-count {
       display: inline-block;
-      border-radius: $mat-button-border-radius - 1;
+      border-radius: 2px - 1;
       min-width: rem(2.1);
       font-size: .7em;
       line-height: 1em;
