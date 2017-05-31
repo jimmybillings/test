@@ -32,7 +32,7 @@ function buildTS() {
     .pipe(plugins.inlineNg2Template(INLINE_OPTIONS))
     .pipe(tsProject());
 
-  gulp.src('library/package.json')
+  gulp.src(['node_modules/@angular/material/_theming.scss', 'library/package.json'])
     .pipe(gulp.dest(Config.APP_DEST));
 
   return merge2([
