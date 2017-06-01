@@ -23,6 +23,9 @@
   img.tbn_missing {
     width: 100%;
   }
+  video {
+    max-height: 225px;
+  }
   .info {
     min-height: rem(5.5);
     min-width: 100%;

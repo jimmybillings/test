@@ -305,7 +305,10 @@ export function main() {
       let mockSpeedview: any;
 
       beforeEach(() => {
-        mockSpeedview = { show: jasmine.createSpy('show'), destroy: jasmine.createSpy('destroy') };
+        mockSpeedview = {
+          show: jasmine.createSpy('show').and.returnValue(Promise.resolve()),
+          destroy: jasmine.createSpy('destroy').and.returnValue(Promise.resolve())
+        };
       });
 
       it('when speedview data has been cached already so not call the server for it', () => {

@@ -138,9 +138,10 @@ export class SearchComponent implements OnDestroy, OnInit {
       // set the data on the wzSpeedview component instance
       this.wzSpeedview.speedviewAssetInfo = speedviewEvent.asset.speedviewData;
       // show the speedview overlay in the calculated position
-      this.wzSpeedview.show(speedviewEvent.position);
-      // force the video player to start playing
-      this.wzSpeedview.previewUrl = speedviewEvent.asset.speedviewData.url;
+      this.wzSpeedview.show(speedviewEvent.position).then((speedview: WzSpeedviewComponent) => {
+        // force the video player to start playing
+        speedview.previewUrl = speedviewEvent.asset.speedviewData.url;
+      });
     } else {
       this.assetService.getSpeedviewData(speedviewEvent.asset.assetId).subscribe((data: SpeedviewData) => {
         // cache the speedview data on the asset
@@ -148,9 +149,10 @@ export class SearchComponent implements OnDestroy, OnInit {
         // set the data on the wzSpeedview component instance
         this.wzSpeedview.speedviewAssetInfo = data;
         // show the speedview overlay in the calculated position
-        this.wzSpeedview.show(speedviewEvent.position);
-        // force the video player to start playing
-        this.wzSpeedview.previewUrl = data.url;
+        this.wzSpeedview.show(speedviewEvent.position).then((speedview: WzSpeedviewComponent) => {
+          // force the video player to start playing
+          speedview.previewUrl = data.url;
+        });
       });
     }
     this.renderer.listenGlobal('document', 'scroll', () => this.wzSpeedview.destroy());
