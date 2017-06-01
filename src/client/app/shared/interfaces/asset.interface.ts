@@ -12,13 +12,13 @@ export interface SearchResult extends Pagination {
 }
 
 export interface SubclipMarkers {
-  in?: number;
-  out?: number;
+  inMilliseconds?: number;
+  outMilliseconds?: number;
 }
 
 export interface SubclipMarkerFrames {
-  in?: Frame;
-  out?: Frame;
+  inFrame?: Frame;
+  outFrame?: Frame;
 }
 
 export interface SpeedviewEvent {

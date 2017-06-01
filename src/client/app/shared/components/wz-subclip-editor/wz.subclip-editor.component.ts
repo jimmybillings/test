@@ -43,14 +43,14 @@ export class WzSubclipEditorComponent {
   @Output() cancel: EventEmitter<null> = new EventEmitter<null>();
   @Output() save: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
 
-  private playerMarkers: SubclipMarkerFrames = { in: undefined, out: undefined };
+  private playerMarkers: SubclipMarkerFrames = { inFrame: undefined, outFrame: undefined };
 
   public get markersAreRemovable(): boolean {
     return this.enhancedAsset.isSubclipped && !this.markersAreSavable;
   }
 
   public get markersAreSavable(): boolean {
-    return !!this.playerMarkers.in && !!this.playerMarkers.out;
+    return !!this.playerMarkers.inFrame && !!this.playerMarkers.outFrame;
   }
 
   public onPlayerMarkerChange(newMarkers: SubclipMarkerFrames): void {
@@ -72,8 +72,8 @@ export class WzSubclipEditorComponent {
   private emitSaveEvent(): void {
     this.save.emit(
       this.markersAreSavable
-        ? { in: this.playerMarkers.in.frameNumber, out: this.playerMarkers.out.frameNumber }
-        : { in: undefined, out: undefined }
+        ? { inMilliseconds: this.playerMarkers.inFrame.frameNumber, outMilliseconds: this.playerMarkers.outFrame.frameNumber }
+        : { inMilliseconds: undefined, outMilliseconds: undefined }
     );
   }
 }

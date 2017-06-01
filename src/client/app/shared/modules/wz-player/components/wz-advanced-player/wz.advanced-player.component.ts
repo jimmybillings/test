@@ -102,10 +102,10 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
 
   private onStateChange(newState: PlayerState) {
     if (!this.playerReady && newState.ready) {
-      this.markersInitialization.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
+      this.markersInitialization.emit({ inFrame: newState.inMarkerFrame, outFrame: newState.outMarkerFrame });
       this.playerReady = true;
     } else if (this.markersChangedIn(newState)) {
-      this.markerChange.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
+      this.markerChange.emit({ inFrame: newState.inMarkerFrame, outFrame: newState.outMarkerFrame });
     }
 
     this.currentState = newState;

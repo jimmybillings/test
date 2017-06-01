@@ -81,9 +81,12 @@ export function main() {
     describe('addToCollection()', () => {
       it('Should emit an event to add an asset to a collection with the right parameters', () => {
         spyOn(componentUnderTest.onAddToCollection, 'emit');
-        componentUnderTest.addToCollection(collection, { value: 1234 }, { in: 1234, out: 1234 });
+        componentUnderTest.addToCollection(collection, { value: 1234 }, { inMilliseconds: 1234, outMilliseconds: 1234 });
         expect(componentUnderTest.onAddToCollection.emit)
-          .toHaveBeenCalledWith({ collection: collection, asset: { value: 1234, assetId: 1234 }, markers: { in: 1234, out: 1234 } });
+          .toHaveBeenCalledWith({
+            collection: collection,
+            asset: { value: 1234, assetId: 1234 }, markers: { inMilliseconds: 1234, outMilliseconds: 1234 }
+          });
       });
     });
 

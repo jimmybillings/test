@@ -22,25 +22,25 @@ export function main() {
         beforeEach(() => componentUnderTest.enhancedAsset = { isSubclipped: false } as EnhancedAsset);
 
         it('returns false if player\'s markers are both set', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: outMarkerFrame });
+          componentUnderTest.onPlayerMarkerChange({ inFrame: inMarkerFrame, outFrame: outMarkerFrame });
 
           expect(componentUnderTest.markersAreRemovable).toBe(false);
         });
 
         it('returns false if player\'s in marker is unset', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: undefined, out: outMarkerFrame });
+          componentUnderTest.onPlayerMarkerChange({ inFrame: undefined, outFrame: outMarkerFrame });
 
           expect(componentUnderTest.markersAreRemovable).toBe(false);
         });
 
         it('returns false if player\'s out marker is unset', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: undefined });
+          componentUnderTest.onPlayerMarkerChange({ inFrame: inMarkerFrame, outFrame: undefined });
 
           expect(componentUnderTest.markersAreRemovable).toBe(false);
         });
 
         it('returns false if player\'s markers are both unset', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: undefined, out: undefined });
+          componentUnderTest.onPlayerMarkerChange({ inFrame: undefined, outFrame: undefined });
 
           expect(componentUnderTest.markersAreRemovable).toBe(false);
         });
@@ -50,25 +50,25 @@ export function main() {
         beforeEach(() => componentUnderTest.enhancedAsset = { isSubclipped: true } as EnhancedAsset);
 
         it('returns false if player\'s markers are both set', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: outMarkerFrame });
+          componentUnderTest.onPlayerMarkerChange({ inFrame: inMarkerFrame, outFrame: outMarkerFrame });
 
           expect(componentUnderTest.markersAreRemovable).toBe(false);
         });
 
         it('returns true if player\'s in marker is unset', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: undefined, out: outMarkerFrame });
+          componentUnderTest.onPlayerMarkerChange({ inFrame: undefined, outFrame: outMarkerFrame });
 
           expect(componentUnderTest.markersAreRemovable).toBe(true);
         });
 
         it('returns true if player\'s out marker is unset', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: undefined });
+          componentUnderTest.onPlayerMarkerChange({ inFrame: inMarkerFrame, outFrame: undefined });
 
           expect(componentUnderTest.markersAreRemovable).toBe(true);
         });
 
         it('returns true if player\'s markers are both unset', () => {
-          componentUnderTest.onPlayerMarkerChange({ in: undefined, out: undefined });
+          componentUnderTest.onPlayerMarkerChange({ inFrame: undefined, outFrame: undefined });
 
           expect(componentUnderTest.markersAreRemovable).toBe(true);
         });
@@ -77,25 +77,25 @@ export function main() {
 
     describe('markersAreSavable getter', () => {
       it('returns true if player\'s markers are both set', () => {
-        componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: outMarkerFrame });
+        componentUnderTest.onPlayerMarkerChange({ inFrame: inMarkerFrame, outFrame: outMarkerFrame });
 
         expect(componentUnderTest.markersAreSavable).toBe(true);
       });
 
       it('returns false if player\'s in marker is unset', () => {
-        componentUnderTest.onPlayerMarkerChange({ in: undefined, out: outMarkerFrame });
+        componentUnderTest.onPlayerMarkerChange({ inFrame: undefined, outFrame: outMarkerFrame });
 
         expect(componentUnderTest.markersAreSavable).toBe(false);
       });
 
       it('returns false if player\'s out marker is unset', () => {
-        componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: undefined });
+        componentUnderTest.onPlayerMarkerChange({ inFrame: inMarkerFrame, outFrame: undefined });
 
         expect(componentUnderTest.markersAreSavable).toBe(false);
       });
 
       it('returns false if player\'s markers are both unset', () => {
-        componentUnderTest.onPlayerMarkerChange({ in: undefined, out: undefined });
+        componentUnderTest.onPlayerMarkerChange({ inFrame: undefined, outFrame: undefined });
 
         expect(componentUnderTest.markersAreSavable).toBe(false);
       });
@@ -111,21 +111,21 @@ export function main() {
 
     describe('onSaveButtonClick()', () => {
       it('emits the updated markers', () => {
-        componentUnderTest.onPlayerMarkerChange({ in: inMarkerFrame, out: outMarkerFrame });
+        componentUnderTest.onPlayerMarkerChange({ inFrame: inMarkerFrame, outFrame: outMarkerFrame });
 
         componentUnderTest.onSaveButtonClick();
 
-        expect(componentUnderTest.save.emit).toHaveBeenCalledWith({ in: 42, out: 4242 });
+        expect(componentUnderTest.save.emit).toHaveBeenCalledWith({ inMilliseconds: 42, outMilliseconds: 4242 });
       });
     });
 
     describe('onRemoveButtonClick()', () => {
       it('emits the updated markers', () => {
-        componentUnderTest.onPlayerMarkerChange({ in: undefined, out: undefined });
+        componentUnderTest.onPlayerMarkerChange({ inFrame: undefined, outFrame: undefined });
 
         componentUnderTest.onRemoveButtonClick();
 
-        expect(componentUnderTest.save.emit).toHaveBeenCalledWith({ in: undefined, out: undefined });
+        expect(componentUnderTest.save.emit).toHaveBeenCalledWith({ inMilliseconds: undefined, outMilliseconds: undefined });
       });
     });
   });

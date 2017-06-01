@@ -175,7 +175,7 @@ export function main() {
       it('sends timeStart and timeEnd if defined as markers', () => {
         serviceUnderTest.addAssetToProjectInQuote({
           lineItem: { id: '123', asset: { assetId: 456 } },
-          markers: { in: 33, out: 66 },
+          markers: { inMilliseconds: 33, outMilliseconds: 66 },
           attributes: { Distribution: 'Online Streaming' }
         });
 
@@ -188,7 +188,7 @@ export function main() {
       it('overrides asset timeStart and timeEnd with markers if both are defined', () => {
         serviceUnderTest.addAssetToProjectInQuote({
           lineItem: { id: '123', asset: { assetId: 456, timeStart: 33, timeEnd: 66 } },
-          markers: { in: 44, out: 77 },
+          markers: { inMilliseconds: 44, outMilliseconds: 77 },
           attributes: { Distribution: 'Online Streaming' }
         });
 

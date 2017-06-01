@@ -141,7 +141,7 @@ export function main() {
         it('with asset markers', () => {
           componentUnderTest.addAssetToCart({
             assetId: 123123, selectedTranscodeTarget: 'Target', markers:
-            { markers: { in: 1, out: 10 } }
+            { markers: { inMilliseconds: 1, outMilliseconds: 10 } }
           });
           expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
             lineItem: {
@@ -149,7 +149,7 @@ export function main() {
               price: 100,
               asset: { assetId: 123123 }
             },
-            markers: { in: 1, out: 10 },
+            markers: { inMilliseconds: 1, outMilliseconds: 10 },
             attributes: undefined
           });
         });

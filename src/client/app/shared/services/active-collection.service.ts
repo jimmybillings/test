@@ -52,7 +52,7 @@ export class ActiveCollectionService implements OnInit {
 
   public addAsset(collectionId: any, asset: any, markers: SubclipMarkers = null): Observable<any> {
     let list: any = (markers) ?
-      { assetId: asset.assetId, timeStart: markers.in, timeEnd: markers.out } : { assetId: asset.assetId };
+      { assetId: asset.assetId, timeStart: markers.inMilliseconds, timeEnd: markers.outMilliseconds } : { assetId: asset.assetId };
     return this.api.post(
       Api.Identities,
       `collection/${collectionId}/addAssets`,
@@ -88,7 +88,7 @@ export class ActiveCollectionService implements OnInit {
     return this.api.put(
       Api.Identities,
       `collection/${id}/updateAsset`,
-      { body: { uuid: asset.uuid, assetId: asset.assetId, timeStart: updatedMarkers.in, timeEnd: updatedMarkers.out } }
+      { body: { uuid: asset.uuid, assetId: asset.assetId, timeStart: updatedMarkers.inMilliseconds, timeEnd: updatedMarkers.outMilliseconds } }
     ).do(data => this.store.updateAsset(data));
   }
 
