@@ -38,7 +38,7 @@ export class WzSpeedviewComponent implements OnDestroy {
 
   public destroy(): Promise<WzSpeedviewComponent> {
     if (!this.overlayRef) {
-      return Promise.resolve<any>(this);
+      return Promise.resolve(this);
     } else {
       return Promise.resolve()
         .then(() => {
@@ -52,7 +52,7 @@ export class WzSpeedviewComponent implements OnDestroy {
     }
   }
 
-  public translationReady(field: any) {
+  public translationReady(field: string) {
     return 'assetmetadata.' + field.replace(/\./g, '_');
   }
 
