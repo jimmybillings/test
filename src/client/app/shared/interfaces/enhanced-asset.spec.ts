@@ -4,7 +4,10 @@ import { EnhancedAsset } from './enhanced-asset';
 export function main() {
   describe('Enhanced Asset', () => {
     let assetUnderTest: EnhancedAsset;
-    const durationInFrames: number = 400;
+    const frameRate: number = 30;
+    const frameRateMetadatum: string = `${frameRate} fps`;
+    const durationInMilliseconds: number = 900000;
+    const durationInFrames: number = durationInMilliseconds * frameRate / 1000;
 
     const generateFrameTestsFrom: Function = (
       tests: any[],
@@ -14,9 +17,9 @@ export function main() {
       percentageGetterName: string = undefined
     ) => {
       for (const test of tests) {
-        const expectedResultDescription: string = test.expected ? 'the expected values' : 'undefined';
+        const expectedResultDescription: string = test.expected ? 'its expected value' : 'undefined';
 
-        it(`return ${expectedResultDescription} when the asset ${test.condition}`, () => {
+        it(`returns ${expectedResultDescription} when the asset ${test.condition}`, () => {
           Object.assign(
             assetUnderTest,
             { metadata: [] },
@@ -24,22 +27,20 @@ export function main() {
             test.hasOwnProperty('timeEnd') ? { timeEnd: test.timeEnd } : null
           );
 
-          if (test.frameRate) assetUnderTest.metadata[0] = { name: 'Format.FrameRate', value: '30 fps' };
-          if (test.duration) assetUnderTest.metadata[1] = {
-            name: 'Format.Duration', value: `${Math.round(1000 * durationInFrames / 30)}`
-          };
+          if (test.frameRate) assetUnderTest.metadata[0] = { name: 'Format.FrameRate', value: frameRateMetadatum };
+          if (test.duration) assetUnderTest.metadata[1] = { name: 'Format.Duration', value: `${durationInMilliseconds}` };
 
-          if (test.expected >= 0) {
-            const expectedFrame: Frame = new Frame(30).setFromFrameNumber(test.expected);
+          if (test.expectedFrameNumber >= 0) {
+            const expectedFrame: Frame = new Frame(frameRate).setFromFrameNumber(test.expectedFrameNumber);
 
             expect((assetUnderTest as any)[frameGetterName]).toEqual(expectedFrame);
-            expect((assetUnderTest as any)[frameNumberGetterName]).toEqual(test.expected);
+            expect((assetUnderTest as any)[frameNumberGetterName]).toEqual(test.expectedFrameNumber);
             if (millisecondsGetterName) {
               expect((assetUnderTest as any)[millisecondsGetterName]).toEqual(expectedFrame.asSeconds(3) * 1000);
             }
             if (percentageGetterName) {
               expect((assetUnderTest as any)[percentageGetterName])
-                .toEqual(test.duration ? test.expected * 100 / durationInFrames : 0);
+                .toEqual(test.duration ? test.expectedFrameNumber * 100 / durationInFrames : 0);
             }
           } else {
             expect((assetUnderTest as any)[frameGetterName]).toBeUndefined();
@@ -119,12 +120,12 @@ export function main() {
       assetUnderTest = new EnhancedAsset();
     });
 
-    describe('durationFrame and durationFrameNumber getters', () => {
+    describe('each getter in [durationFrame, durationFrameNumber]', () => {
       const tests: any = [
-        { condition: 'has no duration and no frame rate', expected: undefined },
-        { condition: 'has only a frame rate', frameRate: true, expected: undefined },
-        { condition: 'has only a duration', duration: true, expected: undefined },
-        { condition: 'has a duration and a frame rate', duration: true, frameRate: true, expected: durationInFrames },
+        { condition: 'has no duration and no frame rate', expectedFrameNumber: undefined },
+        { condition: 'has only a frame rate', frameRate: true, expectedFrameNumber: undefined },
+        { condition: 'has only a duration', duration: true, expectedFrameNumber: undefined },
+        { condition: 'has a duration and a frame rate', duration: true, frameRate: true, expectedFrameNumber: durationInFrames },
       ];
 
       generateFrameTestsFrom(tests, 'durationFrame', 'durationFrameNumber');
@@ -148,39 +149,42 @@ export function main() {
     });
 
     describe(
-      'subclipDurationFrame, subclipDurationFrameNumber, subclipDurationMilliseconds, and subclipDurationPercentage getters',
+      'each getter in [subclipDurationFrame, subclipDurationFrameNumber, subclipDurationMilliseconds, subclipDurationPercentage]',
       () => {
         const tests: any = [
-          { condition: 'has no timeStart, no timeEnd, no duration, and no frame rate', expected: undefined },
-          { condition: 'has only a frame rate', frameRate: true, expected: undefined },
-          { condition: 'has only a duration', duration: true, expected: undefined },
-          { condition: 'has a duration and a frame rate', duration: true, frameRate: true, expected: durationInFrames - 0 },
-          { condition: 'has only a timeEnd', timeEnd: 200, expected: undefined },
-          { condition: 'has a timeEnd and a frame rate', timeEnd: 200, frameRate: true, expected: 200 - 0 },
-          { condition: 'has a timeEnd and a duration', timeEnd: 200, duration: true, expected: undefined },
+          { condition: 'has no timeStart, no timeEnd, no duration, and no frame rate', expectedFrameNumber: undefined },
+          { condition: 'has only a frame rate', frameRate: true, expectedFrameNumber: undefined },
+          { condition: 'has only a duration', duration: true, expectedFrameNumber: undefined },
+          {
+            condition: 'has a duration and a frame rate',
+            duration: true, frameRate: true, expectedFrameNumber: durationInFrames - 0
+          },
+          { condition: 'has only a timeEnd', timeEnd: 6000, expectedFrameNumber: undefined },
+          { condition: 'has a timeEnd and a frame rate', timeEnd: 6000, frameRate: true, expectedFrameNumber: 6000 - 0 },
+          { condition: 'has a timeEnd and a duration', timeEnd: 6000, duration: true, expectedFrameNumber: undefined },
           {
             condition: 'has a timeEnd, a duration, and a frame rate',
-            timeEnd: 200, duration: true, frameRate: true, expected: 200 - 0
+            timeEnd: 6000, duration: true, frameRate: true, expectedFrameNumber: 6000 - 0
           },
-          { condition: 'has only a timeStart', timeStart: 100, expected: undefined },
-          { condition: 'has a timeStart and a frame rate', timeStart: 100, frameRate: true, expected: undefined },
-          { condition: 'has a timeStart and a duration', timeStart: 100, duration: true, expected: undefined },
+          { condition: 'has only a timeStart', timeStart: 3000, expectedFrameNumber: undefined },
+          { condition: 'has a timeStart and a frame rate', timeStart: 3000, frameRate: true, expectedFrameNumber: undefined },
+          { condition: 'has a timeStart and a duration', timeStart: 3000, duration: true, expectedFrameNumber: undefined },
           {
             condition: 'has a timeStart, a frame rate, and a duration',
-            timeStart: 100, frameRate: true, duration: true, expected: durationInFrames - 100
+            timeStart: 3000, frameRate: true, duration: true, expectedFrameNumber: durationInFrames - 3000
           },
-          { condition: 'has a timeStart and a timeEnd', timeStart: 100, timeEnd: 200, expected: undefined },
+          { condition: 'has a timeStart and a timeEnd', timeStart: 3000, timeEnd: 6000, expectedFrameNumber: undefined },
           {
             condition: 'has a timeStart, a timeEnd, and a frame rate',
-            timeStart: 100, timeEnd: 200, frameRate: true, expected: 200 - 100
+            timeStart: 3000, timeEnd: 6000, frameRate: true, expectedFrameNumber: 6000 - 3000
           },
           {
             condition: 'has a timeStart, a timeEnd, and a duration',
-            timeStart: 100, timeEnd: 200, duration: true, expected: undefined
+            timeStart: 3000, timeEnd: 6000, duration: true, expectedFrameNumber: undefined
           },
           {
             condition: 'has a timeStart, a timeEnd, a duration, and a frame rate',
-            timeStart: 100, timeEnd: 200, duration: true, frameRate: true, expected: 200 - 100
+            timeStart: 3000, timeEnd: 6000, duration: true, frameRate: true, expectedFrameNumber: 6000 - 3000
           }
         ];
 
@@ -189,47 +193,47 @@ export function main() {
         );
       });
 
-    describe('inMarkerFrame, inMarkerFrameNumber, inMarkerMilliseconds, and inMarkerPercentage getters', () => {
+    describe('each getter in [inMarkerFrame, inMarkerFrameNumber, inMarkerMilliseconds, inMarkerPercentage]', () => {
       const tests: any = [
-        { condition: 'has no timeStart and no frame rate', expected: undefined },
-        { condition: 'has only a frame rate', frameRate: true, expected: 0 },
-        { condition: 'has only a positive timeStart', timeStart: 100, expected: undefined },
-        { condition: 'has a positive timeStart and a frame rate', timeStart: 100, frameRate: true, expected: 100 },
-        { condition: 'has only a zero timeStart', timeStart: 0, expected: undefined },
-        { condition: 'has a zero timeStart and a frame rate', timeStart: 0, frameRate: true, expected: 0 },
-        { condition: 'has only a negative timeStart', timeStart: -1, expected: undefined },
-        { condition: 'has a negative timeStart and a frame rate', timeStart: -1, frameRate: true, expected: 0 }
+        { condition: 'has no timeStart and no frame rate', expectedFrameNumber: undefined },
+        { condition: 'has only a frame rate', frameRate: true, expectedFrameNumber: 0 },
+        { condition: 'has only a positive timeStart', timeStart: 3000, expectedFrameNumber: undefined },
+        { condition: 'has a positive timeStart and a frame rate', timeStart: 3000, frameRate: true, expectedFrameNumber: 3000 },
+        { condition: 'has only a zero timeStart', timeStart: 0, expectedFrameNumber: undefined },
+        { condition: 'has a zero timeStart and a frame rate', timeStart: 0, frameRate: true, expectedFrameNumber: 0 },
+        { condition: 'has only a negative timeStart', timeStart: -1, expectedFrameNumber: undefined },
+        { condition: 'has a negative timeStart and a frame rate', timeStart: -1, frameRate: true, expectedFrameNumber: 0 }
       ];
 
       generateFrameTestsFrom(tests, 'inMarkerFrame', 'inMarkerFrameNumber', 'inMarkerMilliseconds', 'inMarkerPercentage');
     });
 
-    describe('outMarkerFrame, outMarkerFrameNumber, outMarkerMilliseconds, and outMarkerPercentage getters', () => {
+    describe('each getter in [outMarkerFrame, outMarkerFrameNumber, outMarkerMilliseconds, outMarkerPercentage]', () => {
       const tests: any = [
-        { condition: 'has no timeEnd, no duration, and no frame rate', expected: undefined },
-        { condition: 'has only a frame rate', frameRate: true, expected: undefined },
-        { condition: 'has only a duration', duration: true, expected: undefined },
-        { condition: 'has a duration and a frame rate', duration: true, frameRate: true, expected: durationInFrames },
-        { condition: 'has only a positive timeEnd', timeEnd: 200, expected: undefined },
-        { condition: 'has a positive timeEnd and a frame rate', timeEnd: 200, frameRate: true, expected: 200 },
-        { condition: 'has a positive timeEnd and a duration', timeEnd: 200, duration: true, expected: undefined },
+        { condition: 'has no timeEnd, no duration, and no frame rate', expectedFrameNumber: undefined },
+        { condition: 'has only a frame rate', frameRate: true, expectedFrameNumber: undefined },
+        { condition: 'has only a duration', duration: true, expectedFrameNumber: undefined },
+        { condition: 'has a duration and a frame rate', duration: true, frameRate: true, expectedFrameNumber: durationInFrames },
+        { condition: 'has only a positive timeEnd', timeEnd: 6000, expectedFrameNumber: undefined },
+        { condition: 'has a positive timeEnd and a frame rate', timeEnd: 6000, frameRate: true, expectedFrameNumber: 6000 },
+        { condition: 'has a positive timeEnd and a duration', timeEnd: 6000, duration: true, expectedFrameNumber: undefined },
         {
           condition: 'has a positive timeEnd, a duration, and a frame rate',
-          timeEnd: 200, duration: true, frameRate: true, expected: 200
+          timeEnd: 6000, duration: true, frameRate: true, expectedFrameNumber: 6000
         },
-        { condition: 'has only a zero timeEnd', timeEnd: 0, expected: undefined },
-        { condition: 'has a zero timeEnd and a frame rate', timeEnd: 0, frameRate: true, expected: 0 },
-        { condition: 'has a zero timeEnd and a duration', timeEnd: 0, duration: true, expected: undefined },
+        { condition: 'has only a zero timeEnd', timeEnd: 0, expectedFrameNumber: undefined },
+        { condition: 'has a zero timeEnd and a frame rate', timeEnd: 0, frameRate: true, expectedFrameNumber: 0 },
+        { condition: 'has a zero timeEnd and a duration', timeEnd: 0, duration: true, expectedFrameNumber: undefined },
         {
           condition: 'has a zero timeEnd, a duration, and a frame rate',
-          timeEnd: 0, duration: true, frameRate: true, expected: 0
+          timeEnd: 0, duration: true, frameRate: true, expectedFrameNumber: 0
         },
-        { condition: 'has only a negative timeEnd', timeEnd: -2, expected: undefined },
-        { condition: 'has a negative timeEnd and a frame rate', timeEnd: -2, frameRate: true, expected: undefined },
-        { condition: 'has a negative timeEnd and a duration', timeEnd: -2, duration: true, expected: undefined },
+        { condition: 'has only a negative timeEnd', timeEnd: -2, expectedFrameNumber: undefined },
+        { condition: 'has a negative timeEnd and a frame rate', timeEnd: -2, frameRate: true, expectedFrameNumber: undefined },
+        { condition: 'has a negative timeEnd and a duration', timeEnd: -2, duration: true, expectedFrameNumber: undefined },
         {
           condition: 'has a negative timeEnd, a duration, and a frame rate',
-          timeEnd: -2, duration: true, frameRate: true, expected: durationInFrames
+          timeEnd: -2, duration: true, frameRate: true, expectedFrameNumber: durationInFrames
         }
       ];
 
@@ -329,31 +333,26 @@ export function main() {
 
     describe('isSubclipped getter', () => {
       const tests: any = [
-        { condition: 'has no timeStart and no timeEnd', expected: false },
-
-        { condition: 'has only a positive timeStart', timeStart: 100, expected: true },
-        { condition: 'has only a zero timeStart', timeStart: 0, expected: true },
-        { condition: 'has only a negative timeStart', timeStart: -1, expected: false },
-
-        { condition: 'has only a positive timeEnd', timeEnd: 200, expected: true },
-        { condition: 'has only a zero timeEnd', timeEnd: 0, expected: true },
-        { condition: 'has only a negative timeEnd', timeEnd: -2, expected: false },
-
-        { condition: 'has a positive timeStart and a positive timeEnd', timeStart: 100, timeEnd: 200, expected: true },
-        { condition: 'has a zero timeStart and a positive timeEnd', timeStart: 0, timeEnd: 200, expected: true },
-        { condition: 'has a negative timeStart and a positive timeEnd', timeStart: -1, timeEnd: 200, expected: true },
-
-        { condition: 'has a positive timeStart and a zero timeEnd', timeStart: 100, timeEnd: 0, expected: true },
-        { condition: 'has a zero timeStart and a zero timeEnd', timeStart: 0, timeEnd: 0, expected: true },
-        { condition: 'has a negative timeStart and a zero timeEnd', timeStart: -1, timeEnd: 0, expected: true },
-
-        { condition: 'has a positive timeStart and a negative timeEnd', timeStart: 100, timeEnd: -2, expected: true },
-        { condition: 'has a zero timeStart and a negative timeEnd', timeStart: 0, timeEnd: -2, expected: true },
-        { condition: 'has a negative timeStart and a negative timeEnd', timeStart: -1, timeEnd: -2, expected: false }
+        { condition: 'has no timeStart and no timeEnd', expectedResult: false },
+        { condition: 'has only a positive timeStart', timeStart: 3000, expectedResult: true },
+        { condition: 'has only a zero timeStart', timeStart: 0, expectedResult: true },
+        { condition: 'has only a negative timeStart', timeStart: -1, expectedResult: false },
+        { condition: 'has only a positive timeEnd', timeEnd: 6000, expectedResult: true },
+        { condition: 'has only a zero timeEnd', timeEnd: 0, expectedResult: true },
+        { condition: 'has only a negative timeEnd', timeEnd: -2, expectedResult: false },
+        { condition: 'has a positive timeStart and a positive timeEnd', timeStart: 3000, timeEnd: 6000, expectedResult: true },
+        { condition: 'has a zero timeStart and a positive timeEnd', timeStart: 0, timeEnd: 6000, expectedResult: true },
+        { condition: 'has a negative timeStart and a positive timeEnd', timeStart: -1, timeEnd: 6000, expectedResult: true },
+        { condition: 'has a positive timeStart and a zero timeEnd', timeStart: 3000, timeEnd: 0, expectedResult: true },
+        { condition: 'has a zero timeStart and a zero timeEnd', timeStart: 0, timeEnd: 0, expectedResult: true },
+        { condition: 'has a negative timeStart and a zero timeEnd', timeStart: -1, timeEnd: 0, expectedResult: true },
+        { condition: 'has a positive timeStart and a negative timeEnd', timeStart: 3000, timeEnd: -2, expectedResult: true },
+        { condition: 'has a zero timeStart and a negative timeEnd', timeStart: 0, timeEnd: -2, expectedResult: true },
+        { condition: 'has a negative timeStart and a negative timeEnd', timeStart: -1, timeEnd: -2, expectedResult: false }
       ];
 
       for (const test of tests) {
-        it(`returns ${test.expected} for an asset that ${test.condition}`, () => {
+        it(`returns ${test.expectedResult} for an asset that ${test.condition}`, () => {
           Object.assign(
             assetUnderTest,
             { metadata: [] },
@@ -361,7 +360,7 @@ export function main() {
             test.hasOwnProperty('timeEnd') ? { timeEnd: test.timeEnd } : null
           );
 
-          expect(assetUnderTest.isSubclipped).toBe(test.expected);
+          expect(assetUnderTest.isSubclipped).toBe(test.expectedResult);
         });
       }
     });
