@@ -156,27 +156,29 @@ export function main() {
           { condition: 'has only a frame rate', frameRate: true, expectedFrameNumber: undefined },
           { condition: 'has only a duration', duration: true, expectedFrameNumber: undefined },
           {
-            condition: 'has a duration and a frame rate',
-            duration: true, frameRate: true, expectedFrameNumber: durationInFrames - 0
+            condition: 'has a duration and a frame rate', duration: true, frameRate: true, expectedFrameNumber: durationInFrames
           },
           { condition: 'has only a timeEnd', timeEnd: 6000, expectedFrameNumber: undefined },
-          { condition: 'has a timeEnd and a frame rate', timeEnd: 6000, frameRate: true, expectedFrameNumber: 6000 - 0 },
+          {
+            condition: 'has a timeEnd and a frame rate',
+            timeEnd: 6000, frameRate: true, expectedFrameNumber: (6000 - 0) * 30 / 1000
+          },
           { condition: 'has a timeEnd and a duration', timeEnd: 6000, duration: true, expectedFrameNumber: undefined },
           {
             condition: 'has a timeEnd, a duration, and a frame rate',
-            timeEnd: 6000, duration: true, frameRate: true, expectedFrameNumber: 6000 - 0
+            timeEnd: 6000, duration: true, frameRate: true, expectedFrameNumber: (6000 - 0) * 30 / 1000
           },
           { condition: 'has only a timeStart', timeStart: 3000, expectedFrameNumber: undefined },
           { condition: 'has a timeStart and a frame rate', timeStart: 3000, frameRate: true, expectedFrameNumber: undefined },
           { condition: 'has a timeStart and a duration', timeStart: 3000, duration: true, expectedFrameNumber: undefined },
           {
             condition: 'has a timeStart, a frame rate, and a duration',
-            timeStart: 3000, frameRate: true, duration: true, expectedFrameNumber: durationInFrames - 3000
+            timeStart: 3000, frameRate: true, duration: true, expectedFrameNumber: (durationInMilliseconds - 3000) * 30 / 1000
           },
           { condition: 'has a timeStart and a timeEnd', timeStart: 3000, timeEnd: 6000, expectedFrameNumber: undefined },
           {
             condition: 'has a timeStart, a timeEnd, and a frame rate',
-            timeStart: 3000, timeEnd: 6000, frameRate: true, expectedFrameNumber: 6000 - 3000
+            timeStart: 3000, timeEnd: 6000, frameRate: true, expectedFrameNumber: (6000 - 3000) * 30 / 1000
           },
           {
             condition: 'has a timeStart, a timeEnd, and a duration',
@@ -184,7 +186,7 @@ export function main() {
           },
           {
             condition: 'has a timeStart, a timeEnd, a duration, and a frame rate',
-            timeStart: 3000, timeEnd: 6000, duration: true, frameRate: true, expectedFrameNumber: 6000 - 3000
+            timeStart: 3000, timeEnd: 6000, duration: true, frameRate: true, expectedFrameNumber: (6000 - 3000) * 30 / 1000
           }
         ];
 
@@ -198,7 +200,10 @@ export function main() {
         { condition: 'has no timeStart and no frame rate', expectedFrameNumber: undefined },
         { condition: 'has only a frame rate', frameRate: true, expectedFrameNumber: 0 },
         { condition: 'has only a positive timeStart', timeStart: 3000, expectedFrameNumber: undefined },
-        { condition: 'has a positive timeStart and a frame rate', timeStart: 3000, frameRate: true, expectedFrameNumber: 3000 },
+        {
+          condition: 'has a positive timeStart and a frame rate',
+          timeStart: 3000, frameRate: true, expectedFrameNumber: 3000 * 30 / 1000
+        },
         { condition: 'has only a zero timeStart', timeStart: 0, expectedFrameNumber: undefined },
         { condition: 'has a zero timeStart and a frame rate', timeStart: 0, frameRate: true, expectedFrameNumber: 0 },
         { condition: 'has only a negative timeStart', timeStart: -1, expectedFrameNumber: undefined },
@@ -213,13 +218,19 @@ export function main() {
         { condition: 'has no timeEnd, no duration, and no frame rate', expectedFrameNumber: undefined },
         { condition: 'has only a frame rate', frameRate: true, expectedFrameNumber: undefined },
         { condition: 'has only a duration', duration: true, expectedFrameNumber: undefined },
-        { condition: 'has a duration and a frame rate', duration: true, frameRate: true, expectedFrameNumber: durationInFrames },
+        {
+          condition: 'has a duration and a frame rate',
+          duration: true, frameRate: true, expectedFrameNumber: durationInFrames
+        },
         { condition: 'has only a positive timeEnd', timeEnd: 6000, expectedFrameNumber: undefined },
-        { condition: 'has a positive timeEnd and a frame rate', timeEnd: 6000, frameRate: true, expectedFrameNumber: 6000 },
+        {
+          condition: 'has a positive timeEnd and a frame rate',
+          timeEnd: 6000, frameRate: true, expectedFrameNumber: 6000 * 30 / 1000
+        },
         { condition: 'has a positive timeEnd and a duration', timeEnd: 6000, duration: true, expectedFrameNumber: undefined },
         {
           condition: 'has a positive timeEnd, a duration, and a frame rate',
-          timeEnd: 6000, duration: true, frameRate: true, expectedFrameNumber: 6000
+          timeEnd: 6000, duration: true, frameRate: true, expectedFrameNumber: 6000 * 30 / 1000
         },
         { condition: 'has only a zero timeEnd', timeEnd: 0, expectedFrameNumber: undefined },
         { condition: 'has a zero timeEnd and a frame rate', timeEnd: 0, frameRate: true, expectedFrameNumber: 0 },
