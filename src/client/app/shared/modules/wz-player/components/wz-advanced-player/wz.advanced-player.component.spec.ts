@@ -100,7 +100,7 @@ export function main() {
 
           it('is emitted', () => {
             expect(componentUnderTest.markersInitialization.emit)
-              .toHaveBeenCalledWith({ in: { some: 'in marker' }, out: { some: 'out marker' } });
+              .toHaveBeenCalledWith({ inFrame: { some: 'in marker' }, outFrame: { some: 'out marker' } });
           });
 
           describe('and the player state is updated again', () => {
@@ -139,7 +139,7 @@ export function main() {
               it('is emitted again', () => {
                 expect(componentUnderTest.markersInitialization.emit).toHaveBeenCalledTimes(2);
                 expect((componentUnderTest.markersInitialization.emit as jasmine.Spy).calls.mostRecent().args)
-                  .toEqual([{ in: { some: 'new in marker' }, out: { some: 'new out marker' } }]);
+                  .toEqual([{ inFrame: { some: 'new in marker' }, outFrame: { some: 'new out marker' } }]);
               });
             });
           });
@@ -160,51 +160,51 @@ export function main() {
 
           let tests: any = [
             {
-              start: { in: 10, out: 20 },
+              start: { inMilliseconds: 10, outMilliseconds: 20 },
               updates: [
-                { next: { in: 10, out: 20 }, shouldEmit: false },
-                { next: { in: 10, out: 15 }, shouldEmit: true },
-                { next: { in: 10, out: undefined }, shouldEmit: true },
-                { next: { in: 15, out: 20 }, shouldEmit: true },
-                { next: { in: undefined, out: 20 }, shouldEmit: true },
-                { next: { in: 20, out: 30 }, shouldEmit: true },
-                { next: { in: undefined, out: undefined }, shouldEmit: true }
+                { next: { inMilliseconds: 10, outMilliseconds: 20 }, shouldEmit: false },
+                { next: { inMilliseconds: 10, outMilliseconds: 15 }, shouldEmit: true },
+                { next: { inMilliseconds: 10, outMilliseconds: undefined }, shouldEmit: true },
+                { next: { inMilliseconds: 15, outMilliseconds: 20 }, shouldEmit: true },
+                { next: { inMilliseconds: undefined, outMilliseconds: 20 }, shouldEmit: true },
+                { next: { inMilliseconds: 20, outMilliseconds: 30 }, shouldEmit: true },
+                { next: { inMilliseconds: undefined, outMilliseconds: undefined }, shouldEmit: true }
               ]
             },
             {
-              start: { in: undefined, out: 20 },
+              start: { inMilliseconds: undefined, outMilliseconds: 20 },
               updates: [
-                { next: { in: 10, out: 20 }, shouldEmit: true },
-                { next: { in: 10, out: 15 }, shouldEmit: true },
-                { next: { in: 10, out: undefined }, shouldEmit: true },
-                { next: { in: 15, out: 20 }, shouldEmit: true },
-                { next: { in: undefined, out: 20 }, shouldEmit: false },
-                { next: { in: 20, out: 30 }, shouldEmit: true },
-                { next: { in: undefined, out: undefined }, shouldEmit: true }
+                { next: { inMilliseconds: 10, outMilliseconds: 20 }, shouldEmit: true },
+                { next: { inMilliseconds: 10, outMilliseconds: 15 }, shouldEmit: true },
+                { next: { inMilliseconds: 10, outMilliseconds: undefined }, shouldEmit: true },
+                { next: { inMilliseconds: 15, outMilliseconds: 20 }, shouldEmit: true },
+                { next: { inMilliseconds: undefined, outMilliseconds: 20 }, shouldEmit: false },
+                { next: { inMilliseconds: 20, outMilliseconds: 30 }, shouldEmit: true },
+                { next: { inMilliseconds: undefined, outMilliseconds: undefined }, shouldEmit: true }
               ]
             },
             {
-              start: { in: 10, out: undefined },
+              start: { inMilliseconds: 10, outMilliseconds: undefined },
               updates: [
-                { next: { in: 10, out: 20 }, shouldEmit: true },
-                { next: { in: 10, out: 15 }, shouldEmit: true },
-                { next: { in: 10, out: undefined }, shouldEmit: false },
-                { next: { in: 15, out: 20 }, shouldEmit: true },
-                { next: { in: undefined, out: 20 }, shouldEmit: true },
-                { next: { in: 20, out: 30 }, shouldEmit: true },
-                { next: { in: undefined, out: undefined }, shouldEmit: true }
+                { next: { inMilliseconds: 10, outMilliseconds: 20 }, shouldEmit: true },
+                { next: { inMilliseconds: 10, outMilliseconds: 15 }, shouldEmit: true },
+                { next: { inMilliseconds: 10, outMilliseconds: undefined }, shouldEmit: false },
+                { next: { inMilliseconds: 15, outMilliseconds: 20 }, shouldEmit: true },
+                { next: { inMilliseconds: undefined, outMilliseconds: 20 }, shouldEmit: true },
+                { next: { inMilliseconds: 20, outMilliseconds: 30 }, shouldEmit: true },
+                { next: { inMilliseconds: undefined, outMilliseconds: undefined }, shouldEmit: true }
               ]
             },
             {
-              start: { in: undefined, out: undefined },
+              start: { inMilliseconds: undefined, outMilliseconds: undefined },
               updates: [
-                { next: { in: 10, out: 20 }, shouldEmit: true },
-                { next: { in: 10, out: 15 }, shouldEmit: true },
-                { next: { in: 10, out: undefined }, shouldEmit: true },
-                { next: { in: 15, out: 20 }, shouldEmit: true },
-                { next: { in: undefined, out: 20 }, shouldEmit: true },
-                { next: { in: 20, out: 30 }, shouldEmit: true },
-                { next: { in: undefined, out: undefined }, shouldEmit: false }
+                { next: { inMilliseconds: 10, outMilliseconds: 20 }, shouldEmit: true },
+                { next: { inMilliseconds: 10, outMilliseconds: 15 }, shouldEmit: true },
+                { next: { inMilliseconds: 10, outMilliseconds: undefined }, shouldEmit: true },
+                { next: { inMilliseconds: 15, outMilliseconds: 20 }, shouldEmit: true },
+                { next: { inMilliseconds: undefined, outMilliseconds: 20 }, shouldEmit: true },
+                { next: { inMilliseconds: 20, outMilliseconds: 30 }, shouldEmit: true },
+                { next: { inMilliseconds: undefined, outMilliseconds: undefined }, shouldEmit: false }
               ]
             }
           ];
@@ -214,8 +214,8 @@ export function main() {
               beforeEach(() => {
                 simulatedStateSubject.next({
                   ready: true,
-                  inMarkerFrame: test.start.in ? { frameNumber: test.start.in } : undefined,
-                  outMarkerFrame: test.start.out ? { frameNumber: test.start.out } : undefined
+                  inMarkerFrame: test.start.inMilliseconds ? { frameNumber: test.start.inMilliseconds } : undefined,
+                  outMarkerFrame: test.start.outMilliseconds ? { frameNumber: test.start.outMilliseconds } : undefined
                 });
               });
 
@@ -228,8 +228,8 @@ export function main() {
                   describe(`with ${JSON.stringify(update.next)}`, () => {
                     beforeEach(() => {
                       simulatedStateSubject.next({
-                        inMarkerFrame: update.next.in ? { frameNumber: update.next.in } : undefined,
-                        outMarkerFrame: update.next.out ? { frameNumber: update.next.out } : undefined
+                        inMarkerFrame: update.next.inMilliseconds ? { frameNumber: update.next.inMilliseconds } : undefined,
+                        outMarkerFrame: update.next.outMilliseconds ? { frameNumber: update.next.outMilliseconds } : undefined
                       });
                     });
 

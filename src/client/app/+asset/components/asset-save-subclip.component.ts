@@ -5,6 +5,7 @@ import {
 import { FormFields } from '../../shared/interfaces/forms.interface';
 import { WzFormComponent } from '../../shared/modules/wz-form/wz.form.component';
 import { Capabilities } from '../../shared/services/capabilities.service';
+import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
 
 @Component({
   moduleId: module.id,
@@ -18,9 +19,9 @@ export class AssetSaveSubclipComponent {
   @Input() public userCan: Capabilities;
   @Input() collectionName: string;
   @Input() subclipData: any;
-  @Output() onAddSubclipToCollection = new EventEmitter();
-  @Output() onAddSubclipToCart = new EventEmitter();
-  @Output() ontoggleSubclipPanel = new EventEmitter();
+  @Output() onAddSubclipToCollection: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
+  @Output() onAddSubclipToCart: EventEmitter<any> = new EventEmitter<any>();
+  @Output() ontoggleSubclipPanel: EventEmitter<null> = new EventEmitter<null>();
 
   public showAssetSaveSubclip: boolean;
   public serverErrors: any;
@@ -33,7 +34,10 @@ export class AssetSaveSubclipComponent {
   }
 
   public addSubclipToCollection(comment: any): void {
-    this.onAddSubclipToCollection.emit({ in: this.subclipData.in.frameNumber, out: this.subclipData.out.frameNumber });
+    this.onAddSubclipToCollection.emit({
+      inMilliseconds: this.subclipData.in.frameNumber,
+      outMilliseconds: this.subclipData.out.frameNumber
+    });
     this.clearAndClose();
   }
 

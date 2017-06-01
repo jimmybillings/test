@@ -59,11 +59,11 @@ export class AssetDetailComponent implements OnChanges {
 
   public onPlayerMarkerChange(newMarkers: SubclipMarkerFrames): void {
     this.subclipData = newMarkers;
-    this.showAssetSaveSubclip = !!newMarkers.in && !!newMarkers.out;
+    this.showAssetSaveSubclip = !!newMarkers.inFrame && !!newMarkers.outFrame;
   }
 
   public get markersSaveButtonEnabled(): boolean {
-    return !this.showAssetSaveSubclip && this.subclipData && !!this.subclipData.in && !!this.subclipData.out;
+    return !this.showAssetSaveSubclip && this.subclipData && !!this.subclipData.inFrame && !!this.subclipData.outFrame;
   }
 
   public onPlayerMarkerSaveButtonClick(): void {
