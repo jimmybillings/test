@@ -17,4 +17,9 @@ export class QuoteTabComponent extends Tab {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
   }
+
+  public checkout(): void {
+    this.quoteService.getPaymentOptions();
+    this.goToNextTab();
+  }
 }

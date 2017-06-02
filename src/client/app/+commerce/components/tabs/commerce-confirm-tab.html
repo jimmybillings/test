@@ -17,7 +17,7 @@
         <span class="phone">{{ (orderInProgress | async).selectedAddress.address.phone }}</span>
       </address>
     </section>
-    <section *ngIf="(purchaseType | async) !== 'ProvisionalOrder'" class="payment" flex="auto">
+    <section *ngIf="(paymentType | async) !== 'ProvisionalOrder'" class="payment" flex="auto">
       <div layout="row" layout-align="space-between">
         <h5 class="md-title">{{ 'CART.CONFIRM.PAYMENT_TITLE' | translate }}</h5>
         <button md-button class="mini is-outlined" color="primary" (click)="goToTab(2)">{{ 'CART.CONFIRM.EDIT' | translate }}</button>
@@ -25,7 +25,7 @@
       <div class="payment-info">
         <div 
           class="credit-card"
-          *ngIf="(orderInProgress | async).authorization.card.last4 && (purchaseType | async) === 'CreditCard'">
+          *ngIf="(orderInProgress | async).authorization.card.last4 && (paymentType | async) === 'CreditCard'">
           <span class="indicate-cc">
             <strong>{{ (orderInProgress | async).authorization.card.brand }}:</strong>
             ending in {{ (orderInProgress | async).authorization.card.last4 }}
@@ -35,12 +35,12 @@
             {{ (orderInProgress | async).authorization.card.exp_month }}/{{ (orderInProgress | async).authorization.card.exp_year }}
           </span>
         </div>
-        <div class="purchase-on-credit" *ngIf="(purchaseType | async) === 'PurchaseOnCredit'">
+        <div class="purchase-on-credit" *ngIf="(paymentType | async) === 'PurchaseOnCredit'">
           <span class="indicate-credit">
             <strong>Purchase on credit</strong>
           </span>
         </div>
-        <div class="offline-agreement" *ngIf="(purchaseType | async) === 'OfflineAgreement'">
+        <div class="offline-agreement" *ngIf="(paymentType | async) === 'OfflineAgreement'">
           <span class="indicate-offline">
             <strong>Offline Agreement</strong>
           </span>
@@ -58,7 +58,7 @@
   flex="100"
   [readOnly]="true"
   [projects]="(data | async).projects"
-  [quoteType]="(purchaseType | async)"
+  [quoteType]="(paymentType | async)"
   [userCan]="userCan">
 </projects-component>
 

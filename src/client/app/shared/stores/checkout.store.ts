@@ -4,10 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { CheckoutState } from '../interfaces/commerce.interface';
 
 const emptyCheckout: CheckoutState = {
-  purchaseOptions: {
-    purchaseOnCredit: false,
-    creditExemption: false
-  },
+  paymentOptions: null,
   addresses: [],
   selectedAddress: {
     type: null,
@@ -31,7 +28,7 @@ const emptyCheckout: CheckoutState = {
       exp_year: ''
     }
   },
-  selectedPurchaseType: 'CreditCard'
+  selectedPaymentType: null
 };
 
 export function checkout(state: any = emptyCheckout, action: Action) {

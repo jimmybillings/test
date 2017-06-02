@@ -1,7 +1,10 @@
 cart-payment-tab-component, quote-payment-tab {
-  .md-title {
-    margin: 0;
-    opacity: .7;
+  .cart-payment {
+    padding: rem(1);
+    .md-title, .md-headline {
+      opacity: .6;
+      margin: 0;
+    }
   }
   md-card.cc-form {
     // padding: rem(.6) rem(2.4);
