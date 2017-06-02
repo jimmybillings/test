@@ -6,7 +6,19 @@ import { Observable } from 'rxjs/Observable';
 export function main() {
   describe('Quote Service', () => {
     let serviceUnderTest: QuoteService, mockApi: MockApiService, mockCartService: any,
-      mockQuoteStore: any, mockCheckoutStore: any;
+      mockQuoteStore: any, mockCheckoutStore: any, mockPaymentOptions: any;
+
+    function setupFor(options: Array<PaymentOptions> = null) {
+      mockPaymentOptions = options ? {
+        paymentOptions: options,
+        explanation: 'Please select either of the payment options below',
+        noCheckout: false
+      } : null;
+
+      mockCheckoutStore = { data: Observable.of({ paymentOptions: mockPaymentOptions }) };
+
+      return new QuoteService(null, null, null, mockCheckoutStore);
+    }
 
     beforeEach(() => {
       mockApi = new MockApiService();
@@ -49,10 +61,40 @@ export function main() {
         serviceUnderTest.getQuote(1).take(1).subscribe();
         expect(mockQuoteStore.updateQuote).toHaveBeenCalled();
       });
+    });
 
-      it('should set the purchaseType in the checkout store', () => {
-        serviceUnderTest.getQuote(1).take(1).subscribe();
-        expect(mockCheckoutStore.updateOrderInProgress).toHaveBeenCalled();
+
+    describe('paymentOptionsEqual()', () => {
+      describe('returns false', () => {
+        it('when the store\'s paymentOptions don\'t contain the option to check', () => {
+          serviceUnderTest = setupFor(['Hold']);
+          serviceUnderTest.paymentOptionsEqual(['CreditCard']).take(1).subscribe((result: boolean) => {
+            expect(result).toBe(false);
+          });
+        });
+
+        it('when the store\'s paymentOptions DO contain the option to check, but the lengths are different', () => {
+          serviceUnderTest = setupFor(['Hold']);
+          serviceUnderTest.paymentOptionsEqual(['Hold', 'CreditCard']).take(1).subscribe((result: boolean) => {
+            expect(result).toBe(false);
+          });
+        });
+      });
+
+      describe('returns true', () => {
+        it('when the store\'s paymentOptions contain only the option to check', () => {
+          serviceUnderTest = setupFor(['Hold']);
+          serviceUnderTest.paymentOptionsEqual(['Hold']).take(1).subscribe((result: boolean) => {
+            expect(result).toBe(true);
+          });
+        });
+
+        it('when the payment options contain both options AND the lengths are the same', () => {
+          serviceUnderTest = setupFor(['CreditCard', 'PurchaseOnCredit']);
+          serviceUnderTest.paymentOptionsEqual(['CreditCard', 'PurchaseOnCredit']).take(1).subscribe((result: boolean) => {
+            expect(result).toBe(true);
+          });
+        });
       });
     });
   });

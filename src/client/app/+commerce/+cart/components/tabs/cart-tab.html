@@ -21,7 +21,7 @@
         *ngIf="cartService.hasAssets | async"
         [disabled]="!userCanProceed"
         md-raised-button class="checkout"
-        (click)="goToNextTab()">
+        (click)="checkout()">
           {{ 'CART.PROCEED_BTN_LABEL' | translate }}
       </button>
     </div>

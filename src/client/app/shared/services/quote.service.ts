@@ -13,7 +13,8 @@ import {
   QuoteType,
   AddressPurchaseOptions,
   CreditCardPurchaseOptions,
-  PurchaseOptions
+  PurchaseOptions,
+  PaymentOptions
 } from '../../shared/interfaces/commerce.interface';
 import { QuoteStore } from '../../shared/stores/quote.store';
 import { CheckoutStore } from '../../shared/stores/checkout.store';
@@ -49,18 +50,19 @@ export class QuoteService {
     return this.data.map((state: QuoteState) => state.data.total);
   }
 
-  public get purchaseType(): Observable<OrderType> {
-    return this.checkoutData.map((state: CheckoutState) => state.selectedPurchaseType);
+  public get paymentType(): Observable<OrderType> {
+    return this.checkoutData.map((state: CheckoutState) => state.selectedPaymentType);
+  }
+
+  public get paymentOptions(): Observable<PaymentOptions> {
+    return this.checkoutData.map((data: CheckoutState) => data.paymentOptions);
   }
 
   // Public Interface
 
   public getQuote(quoteId: number): Observable<Quote> {
     return this.api.get(Api.Orders, `quote/${quoteId}`, { loading: true })
-      .do((quote: Quote) => {
-        this.quoteStore.updateQuote(quote);
-        this.updateOrderInProgress('selectedPurchaseType', quote.purchaseType);
-      });
+      .do((quote: Quote) => this.quoteStore.updateQuote(quote));
   }
 
   public updateOrderInProgress(type: string, data: any): void {
@@ -68,7 +70,7 @@ export class QuoteService {
   }
 
   public purchase(): Observable<number> {
-    switch (this.checkoutState.selectedPurchaseType) {
+    switch (this.checkoutState.selectedPaymentType) {
       case 'CreditCard':
         return this.purchaseWithCreditCard();
       case 'PurchaseOnCredit':
@@ -82,7 +84,73 @@ export class QuoteService {
     }
   }
 
+  public getPaymentOptions() {
+    this.api.get(Api.Orders, `quote/paymentOptions/${this.state.data.id}`).subscribe((options: PaymentOptions) => {
+      this.updateOrderInProgress('paymentOptions', options);
+      if (options.paymentOptions.length === 1) this.updateOrderInProgress('selectedPaymentType', options.paymentOptions[0]);
+    });
+    /* ------------------------------ mocks ------------------------------- */
+    // this.updateOrderInProgress('paymentOptions', this.mockHold);
+    // this.updateOrderInProgress('paymentOptions', this.mockCreditCard);
+    // this.updateOrderInProgress('paymentOptions', this.mockProvisional);
+    // this.updateOrderInProgress('paymentOptions', this.mockOfflineAgreement);
+    // this.updateOrderInProgress('paymentOptions', this.mockCreditCardAndPurchaseOnCredit);
+    /* -------------------------------------------------------------------- */
+  }
+
+  public paymentOptionsEqual(options: Array<OrderType>): Observable<boolean> {
+    return this.paymentOptions.map((pmtOpts: PaymentOptions) => {
+      if (!pmtOpts) return false;
+      return options.length === pmtOpts.paymentOptions.length &&
+        options.every((option: OrderType, index: number) => option === pmtOpts.paymentOptions[index]);
+    });
+  }
+
   // Private Methods
+
+  /* BEGIN MOCKS FOR PAYMENT OPTIONS - TO BE REMOVED EVENTUALLY */
+
+  private get mockCreditCardAndPurchaseOnCredit(): PaymentOptions {
+    return {
+      paymentOptions: ['CreditCard', 'PurchaseOnCredit'],
+      explanation: 'Please select either of the payment options below',
+      noCheckout: false
+    };
+  }
+
+  private get mockHold(): PaymentOptions {
+    return {
+      paymentOptions: ['Hold'],
+      explanation: 'You are not authorized to complete a purchase at this time',
+      noCheckout: true
+    };
+  }
+
+  private get mockCreditCard(): PaymentOptions {
+    return {
+      paymentOptions: ['CreditCard'],
+      explanation: 'Please enter your Credit Card information below',
+      noCheckout: false
+    };
+  }
+
+  private get mockProvisional(): PaymentOptions {
+    return {
+      paymentOptions: ['ProvisionalOrder'],
+      explanation: 'This quote has been approved to be purchased as a Provisional Order',
+      noCheckout: false
+    };
+  }
+
+  private get mockOfflineAgreement(): PaymentOptions {
+    return {
+      paymentOptions: ['OfflineAgreement'],
+      explanation: 'You may elect to pay for this quote now, or later',
+      noCheckout: false
+    };
+  }
+
+  /* END MOCKS FOR PAYMENT OPTIONS */
 
   private purchaseWithCreditCard(): Observable<number> {
     const options: PurchaseOptions = this.purchaseOptions;

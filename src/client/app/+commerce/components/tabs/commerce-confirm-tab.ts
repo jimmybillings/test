@@ -29,18 +29,18 @@ export class CommerceConfirmTab extends Tab {
     return this.commerceService.data.map((state: QuoteState | CartState) => state.data);
   }
 
-  public get purchaseType(): Observable<OrderType> {
-    return this.commerceService.purchaseType;
+  public get paymentType(): Observable<OrderType> {
+    return this.commerceService.paymentType;
   }
 
   public get showPurchaseBtn(): Observable<boolean> {
-    return this.purchaseType.map((type: OrderType) => {
+    return this.paymentType.map((type: OrderType) => {
       return type === 'CreditCard';
     });
   }
 
   public get showPurchaseOnCreditBtn(): Observable<boolean> {
-    return this.purchaseType.map((type: OrderType) => {
+    return this.paymentType.map((type: OrderType) => {
       return type === 'PurchaseOnCredit' || type === 'ProvisionalOrder';
     });
   }

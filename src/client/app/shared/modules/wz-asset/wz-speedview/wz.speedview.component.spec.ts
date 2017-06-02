@@ -39,24 +39,9 @@ export function main() {
         });
       });
 
-      it('should call \'create\' on the overlay service with the config', () => {
-        componentUnderTest.show({}).then(() => {
-          expect(mockOverlay.create).toHaveBeenCalledWith(mockConfig);
-        });
-      });
-
       it('should call \'attach\' on the overlayRef', () => {
         componentUnderTest.show({}).then(() => {
           expect(mockOverlayRef.attach).toHaveBeenCalled();
-        });
-      });
-
-      it('should call \'detach\' and \'dispose\' on the overlayRef if there is already an overlayRef', () => {
-        componentUnderTest.show({}).then(() => {
-          componentUnderTest.destroy().then(() => {
-            expect(mockOverlayRef.detach).toHaveBeenCalled();
-            expect(mockOverlayRef.dispose).toHaveBeenCalled();
-          });
         });
       });
     });

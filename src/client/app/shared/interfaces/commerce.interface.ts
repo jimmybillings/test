@@ -4,9 +4,8 @@ import { SubclipMarkers } from './asset.interface';
 export type QuoteType = 'standard' | 'ProvisionalOrder' | 'OfflineAgreement';
 export type QuoteStatus = 'ACTIVE' | 'PENDING' | 'ORDERED' | 'EXPIRED' | 'CANCELLED';
 export type TranscodeStatus = 'Submitted' | 'Completed' | 'Failed' | 'UrlError' | 'Deleted';
-export type OrderType = 'PurchaseOnCredit' | 'CreditCard' | 'BadDebt' | 'ChannelOrder'
-  | 'PromotionalOrder' | 'FulfillmentOrder' | 'OfflineAgreement'
-  | 'ProvisionalOrder' | 'PurchaseOrder' | 'RevenueOnly' | 'SubscriptionOrder';
+export type OrderType = 'PurchaseOnCredit' | 'CreditCard' | 'BadDebt' | 'ChannelOrder' | 'FulfillmentOrder' | 'OfflineAgreement'
+  | 'ProvisionalOrder' | 'PurchaseOrder' | 'RevenueOnly' | 'SubscriptionOrder' | 'Hold';
 export type OrderStatus = 'Order';
 export type EditableQuoteFields = 'bulkOrderId' | 'discount';
 // Base interfaces
@@ -98,14 +97,11 @@ export interface QuoteState {
 };
 
 export interface CheckoutState {
-  purchaseOptions: {
-    purchaseOnCredit: boolean;
-    creditExemption: boolean;
-  };
+  paymentOptions: PaymentOptions;
   addresses: ViewAddress[];
   selectedAddress: ViewAddress;
   authorization: any;
-  selectedPurchaseType: OrderType;
+  selectedPaymentType: OrderType;
 }
 
 export interface FeeConfigState {
@@ -244,4 +240,10 @@ export interface PurchaseOptions {
   orderAddressType: string;
   stripeToken: string;
   stripeTokenType: string;
+}
+
+export interface PaymentOptions {
+  paymentOptions: Array<OrderType>;
+  explanation: string;
+  noCheckout: boolean;
 }

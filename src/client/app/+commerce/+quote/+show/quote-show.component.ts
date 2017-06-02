@@ -22,11 +22,7 @@ export class QuoteShowComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.quoteService.state.data.purchaseType === 'ProvisionalOrder') {
-      this.tabLabelKeys = ['quote', 'billing', 'confirm'];
-    } else {
-      this.tabLabelKeys = ['quote', 'billing', 'payment', 'confirm'];
-    }
+    this.tabLabelKeys = ['quote', 'billing', 'payment', 'confirm'];
 
     // Enable the first tab and disable the rest.
     this.tabEnabled = this.tabLabelKeys.map((_, index) => index === 0);

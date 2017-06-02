@@ -18,6 +18,7 @@ import {
   QuoteOptions,
   CheckoutState,
   OrderType,
+  PaymentOptions,
   AddressPurchaseOptions,
   CreditCardPurchaseOptions,
   PurchaseOptions
@@ -66,12 +67,16 @@ export class CartService {
     return this.cart.map(cart => (cart.itemCount || 0) > 0);
   }
 
-  public get purchaseType(): Observable<OrderType> {
-    return this.checkoutData.map((state: CheckoutState) => state.selectedPurchaseType);
+  public get paymentType(): Observable<OrderType> {
+    return this.checkoutData.map((state: CheckoutState) => state.selectedPaymentType);
   }
 
   public get loaded(): boolean {
     return !isNaN(this.state.data.userId);
+  }
+
+  public get paymentOptions(): Observable<PaymentOptions> {
+    return this.checkoutData.map((data: CheckoutState) => data.paymentOptions);
   }
 
   // Loads the cart and returns just the observable's termination notification,
@@ -92,7 +97,7 @@ export class CartService {
   }
 
   public purchase(): Observable<number> {
-    switch (this.checkoutState.selectedPurchaseType) {
+    switch (this.checkoutState.selectedPaymentType) {
       case 'CreditCard':
         return this.purchaseWithCreditCard();
       case 'PurchaseOnCredit':
@@ -167,15 +172,62 @@ export class CartService {
 
   public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkers): void {
     Object.assign(lineItem.asset, { timeStart: newMarkers.in, timeEnd: newMarkers.out });
-
     this.editLineItem(lineItem, {});
+  }
+
+  public getPaymentOptions() {
+    this.api.get(Api.Orders, 'cart/paymentOptions').subscribe((options: PaymentOptions) => {
+      this.updateOrderInProgress('paymentOptions', options);
+      if (options.paymentOptions.length === 1) this.updateOrderInProgress('selectedPaymentType', options.paymentOptions[0]);
+    });
+    /* ------------------------------ mocks ------------------------------- */
+    // this.updateOrderInProgress('paymentOptions', this.mockHold);
+    // this.updateOrderInProgress('paymentOptions', this.mockCreditCard);
+    // this.updateOrderInProgress('paymentOptions', this.mockCreditCardAndPurchaseOnCredit);
+    /* -------------------------------------------------------------------- */
   }
 
   public updateOrderInProgress(type: string, data: any): void {
     this.checkoutStore.updateOrderInProgress(type, data);
   }
 
+  public paymentOptionsEqual(options: Array<OrderType>): Observable<boolean> {
+    return this.paymentOptions.map((pmtOpts: PaymentOptions) => {
+      if (!pmtOpts) return false;
+      return options.length === pmtOpts.paymentOptions.length &&
+        options.every((option: OrderType, index: number) => option === pmtOpts.paymentOptions[index]);
+    });
+  }
+
   // Private methods
+
+  /* BEGIN MOCKS FOR PAYMENT OPTIONS - TO BE REMOVED EVENTUALLY */
+
+  private get mockCreditCardAndPurchaseOnCredit(): PaymentOptions {
+    return {
+      paymentOptions: ['CreditCard', 'PurchaseOnCredit'],
+      explanation: 'Please select either Purchase on Credit or Pay With Credit Card',
+      noCheckout: false
+    };
+  }
+
+  private get mockHold(): PaymentOptions {
+    return {
+      paymentOptions: ['Hold'],
+      explanation: 'You are not authorized to complete a purchase at this time',
+      noCheckout: true
+    };
+  }
+
+  private get mockCreditCard(): PaymentOptions {
+    return {
+      paymentOptions: ['CreditCard'],
+      explanation: 'Please enter your Credit Card information below',
+      noCheckout: false
+    };
+  }
+
+  /* END MOCKS */
 
   private purchaseWithCreditCard(): Observable<number> {
     const options: PurchaseOptions = this.purchaseOptions;
