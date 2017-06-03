@@ -9,7 +9,7 @@ const plugins = <any>gulpLoadPlugins();
 function publishToS3() {
   var aws: any = readFileSync('./aws-keys.json');
   aws = JSON.parse(aws);
-  return gulp.src('./dist/dev/layout.css')
+  return gulp.src(['./dist/prod/layout.css'])
     .pipe(plugins.s3(aws));
 }
 

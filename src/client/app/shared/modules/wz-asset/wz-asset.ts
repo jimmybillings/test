@@ -21,7 +21,6 @@ export class WzAsset {
   @Output() onHideSpeedview = new EventEmitter();
   @Output() onEditAsset = new EventEmitter();
   @Input() public set assets(assets: Asset[]) {
-    this._assets = assets;
     for (const asset of assets) {
       this.enhancedAssets[asset.assetId] = this.assetService.enhance(asset);
     }

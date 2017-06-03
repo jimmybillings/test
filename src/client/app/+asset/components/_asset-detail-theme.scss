@@ -11,6 +11,9 @@
         linear-gradient(mat-color($primary, 900, .07), mat-color($primary, 700, .07)),
         linear-gradient(mat-color($foreground, base, .57), mat-color($foreground, base, .56))
       ;
+      &::after {
+        background-image: url("assets/img/bk/tex/bktx_dgl_lines_light.png");
+      }
     }
     .preview::before {
       background-color: rgba(mat-color($mat-grey, 50), 1);
