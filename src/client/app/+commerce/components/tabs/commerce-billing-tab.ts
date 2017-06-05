@@ -49,26 +49,8 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   public selectAddress(address: ViewAddress, nextTab: boolean = true): void {
-    if (address.type === 'Account') {
-      this.user.getAccount(address.addressEntityId).subscribe((account: any) => {
-        this.commerceService.updateOrderInProgress('purchaseOptions', {
-          purchaseOnCredit: !!account.purchaseOnCredit,
-          creditExemption: account.creditExemption
-        });
-        this.commerceService.updateOrderInProgress('selectedAddress', address);
-        if (nextTab) this.goToNextTab();
-      }, () => {
-        this.orderInProgress.take(1).subscribe(data => {
-          this.commerceService.updateOrderInProgress('selectedAddress', data.addresses[0]);
-        });
-      });
-    } else {
-      this.commerceService.updateOrderInProgress('purchaseOptions', {
-        purchaseOnCredit: !!this.currentUser.state.purchaseOnCredit
-      });
-      this.commerceService.updateOrderInProgress('selectedAddress', address);
-      if (nextTab) this.goToNextTab();
-    }
+    this.commerceService.updateOrderInProgress('selectedAddress', address);
+    if (nextTab) this.goToNextTab();
   }
 
   public get userCanProceed(): Observable<boolean> {

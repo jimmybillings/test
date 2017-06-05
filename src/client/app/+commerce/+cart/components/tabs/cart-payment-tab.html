@@ -1,19 +1,57 @@
-<div class="cart-payment" layout="row" layout-align="center start">
+<div class="cart-payment" layout="row" layout-align="center center">
   <div flex="100" flex-gt-lg="85" class="payment-select">
     
-    <div *ngIf="userCanPurchaseOnCredit | async" layout="column" layout-gt-xs="row" layout-padding>
+     <!--Hold-->
+    <section *ngIf="showHoldMessage | async"
+      layout="column"
+      layout-align="center center"
+      md-scroll-y=""
+      flex-gt-lg="30">
+      <h2 class="md-headline">{{ (paymentOptions | async).explanation }}</h2>
+    </section>
+
+    <!--Credit Card-->
+    <section *ngIf="showCreditCardForm | async"
+      layout="column"
+      layout-align="center center"
+      md-scroll-y=""
+      flex-gt-lg="30"
+      flex="100">
+      <h2 class="md-headline">{{ (paymentOptions | async).explanation }}</h2>
+      <md-card class="wz-form-card cc-form">
+        <md-card-content>
+          <wz-cc-form 
+            [items]="formItems | async" 
+            [serverErrors]="serverErrors"
+            [successfullyVerified]="successfullyVerified | async"
+            submitLabel="{{'CART.PAYMENT.VERIFY' | translate}}"
+            (onEdit)="editCreditCard()"
+            (formSubmit)="preAuthorize($event)"></wz-cc-form>
+        </md-card-content>
+      </md-card>
+    </section>
+
+    <!--Credit Card AND Purchase on Credit-->
+    <div *ngIf="showCreditCardAndPurchaseOnCredit | async"
+      layout="column" layout-gt-xs="row" layout-padding>
       <section flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex="100">
         <header layout="column" layout-align="start">
-          <h2 class="commerce-heading">{{ 'CART.PAYMENT.SELECT_PAYMENT' | translate }}</h2>
-          <span class="sub-head">{{ 'CART.PAYMENT.ORDER_REVIEW_EXPLAINED' | translate }}</span>
+          <h2 class="md-headline">{{ (paymentOptions | async).explanation }}</h2>
         </header>
-        <md-radio-group layout="column" class="example-radio-group" (click)="disableTab(3)" [(ngModel)]="paymentMethod">
-          <md-radio-button class="example-radio-button" *ngFor="let method of paymentMethods" [value]="method">
-            {{method}}
+        <md-radio-group layout="column" class="example-radio-group" (click)="disableTab(3)" [(ngModel)]="selectedPaymentOption">
+          <md-radio-button *ngFor="let option of (paymentOptions | async).paymentOptions"
+            class="example-radio-button"
+            [value]="option">
+            {{option}}
           </md-radio-button>
         </md-radio-group>
       </section>
-      <section *ngIf="paymentMethod === 'Credit Card'" md-scroll-y="" flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex="100">
+      <section *ngIf="selectedPaymentOption === 'CreditCard'"
+        md-scroll-y=""
+        flex-gt-lg="30"
+        flex-gt-md="35"
+        flex-md="40"
+        flex="100">
         <md-card class="wz-form-card cc-form">
           <md-card-content>
             <wz-cc-form 
@@ -26,7 +64,7 @@
           </md-card-content>
         </md-card>
       </section>
-      <section *ngIf="paymentMethod === 'Purchase on Credit'" flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex="100">
+      <section *ngIf="selectedPaymentOption === 'PurchaseOnCredit'" flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex="100">
         <div>
           <h5 class="md-title">{{ 'CART.PAYMENT.PURCHASE_ON_CREDIT' | translate }}</h5>
           <p class="instructions">{{ 'CART.PAYMENT.PURCHASE_ON_CREDIT_INSTRUCTIONS' | translate }}</p>
@@ -37,23 +75,8 @@
           </md-checkbox>
         </div>
       </section>
-    </div>
+      </div>
 
-    <div *ngIf="!(userCanPurchaseOnCredit | async)" layout="column" flex="100" flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex-sm="60" class="payment-select" layout-padding>        
-        <header>
-          <span class="sub-head">{{ 'CART.PAYMENT.ORDER_REVIEW_EXPLAINED' | translate }}</span>
-        </header>
-        <md-card class="wz-form-card cc-form">
-          <md-card-content>
-            <wz-cc-form 
-              [items]="formItems | async" 
-              [serverErrors]="serverErrors"
-              [successfullyVerified]="successfullyVerified | async"
-              submitLabel="{{'CART.PAYMENT.VERIFY' | translate}}"
-              (onEdit)="editCreditCard()"
-              (formSubmit)="preAuthorize($event)"></wz-cc-form>
-          </md-card-content>
-        </md-card>
-    </div>
   </div>
 </div>
+

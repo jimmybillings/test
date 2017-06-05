@@ -42,4 +42,9 @@ export class CartTabComponent extends CommerceEditTab {
       userPreference, error, document, snackBar, translate, pricingStore
     );
   }
+
+  public checkout(): void {
+    this.goToNextTab();
+    this.cartService.getPaymentOptions();
+  }
 }

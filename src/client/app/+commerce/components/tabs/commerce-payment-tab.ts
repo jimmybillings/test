@@ -6,15 +6,14 @@ import { UiConfig } from '../../../shared/services/ui.config';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import { QuoteState, CartState, CheckoutState, OrderType } from '../../../shared/interfaces/commerce.interface';
+import { QuoteState, CartState, CheckoutState, OrderType, PaymentOptions } from '../../../shared/interfaces/commerce.interface';
 
 export class CommercePaymentTab extends Tab implements OnInit {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
   public serverErrors: any = null;
   public config: any;
-  public paymentMethods: string[] = ['Credit Card', 'Purchase on Credit'];
-  public paymentMethod: string;
   public successfullyVerified: Subject<any> = new Subject();
+  public selectedPaymentOption: OrderType = null;
   private configSubscription: Subscription;
 
   constructor(
@@ -34,13 +33,25 @@ export class CommercePaymentTab extends Tab implements OnInit {
     return this.uiConfig.get('cart').map((config: any) => config.config.payment.items);
   }
 
-  public get purchaseType(): Observable<OrderType> {
-    return this.commerceService.purchaseType;
+  public get paymentOptions(): Observable<PaymentOptions> {
+    return this.commerceService.paymentOptions;
+  }
+
+  public get showHoldMessage(): Observable<boolean> {
+    return this.commerceService.paymentOptionsEqual(['Hold']);
+  }
+
+  public get showCreditCardForm(): Observable<boolean> {
+    return this.commerceService.paymentOptionsEqual(['CreditCard']);
+  }
+
+  public get showCreditCardAndPurchaseOnCredit(): Observable<boolean> {
+    return this.commerceService.paymentOptionsEqual(['CreditCard', 'PurchaseOnCredit']);
   }
 
   public selectPurchaseOnCredit(event: any) {
     if (event.checked) {
-      this.commerceService.updateOrderInProgress('selectedPurchaseType', 'PurchaseOnCredit');
+      this.commerceService.updateOrderInProgress('selectedPaymentType', 'PurchaseOnCredit');
       this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
     } else {
       this.disableTab(3);
@@ -54,7 +65,7 @@ export class CommercePaymentTab extends Tab implements OnInit {
         this._zone.run(() => {
           if (status === 200) {
             this.commerceService.updateOrderInProgress('authorization', response);
-            this.commerceService.updateOrderInProgress('selectedPurchaseType', 'CreditCard');
+            this.commerceService.updateOrderInProgress('selectedPaymentType', 'CreditCard');
             this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
             this.successfullyVerified.next(true);
             this.ref.markForCheck();
@@ -70,25 +81,6 @@ export class CommercePaymentTab extends Tab implements OnInit {
           }
         });
       });
-  }
-
-  public get userCanPurchaseOnCredit(): Observable<boolean> {
-    return this.commerceService.checkoutData.map((state: CheckoutState) => {
-      let options: any = state.purchaseOptions;
-      if (state.selectedAddress.type === 'User') {
-        return options.purchaseOnCredit;
-      } else {
-        if (options.purchaseOnCredit) {
-          if (options.creditExemption) {
-            return this.commerceService.state.data.total > parseInt(options.creditExemption);
-          } else {
-            return true;
-          }
-        } else {
-          return options.purchaseOnCredit;
-        }
-      }
-    });
   }
 
   public editCreditCard() {
