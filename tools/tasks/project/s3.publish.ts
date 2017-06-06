@@ -7,10 +7,20 @@ import { makeTsProject, TemplateLocalsBuilder } from '../../utils';
 const plugins = <any>gulpLoadPlugins();
 
 function publishToS3() {
+  var options = {
+    headers: {
+      'Content-Encoding': 'gzip',
+    }
+  };
   var aws: any = readFileSync('./aws-keys.json');
   aws = JSON.parse(aws);
-  return gulp.src(['./dist/prod/layout.css'])
-    .pipe(plugins.s3(aws));
+  return gulp.src([
+    './dist/prod/layout.css',
+    './dist/prod/js/app.js',
+    './dist/prod/js/shims.js'
+  ])
+    .pipe(plugins.gzip({ append: false }))
+    .pipe(plugins.s3(aws, options));
 }
 
 export = () => publishToS3();

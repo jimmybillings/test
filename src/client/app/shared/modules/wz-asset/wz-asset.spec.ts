@@ -26,7 +26,7 @@ export function main() {
       componentUnderTest.assets = [mockAsset];
     });
 
-    describe('assets getter', () => {
+    xdescribe('assets getter', () => {
       it('returns the original input assets', () => {
         expect(componentUnderTest.assets).toEqual([mockAsset]);
       });
