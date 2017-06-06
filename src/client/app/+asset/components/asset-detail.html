@@ -226,11 +226,11 @@
       <asset-save-subclip *ngIf="showAssetSaveSubclip" flex=""
         [userCan]="userCan"
         [collectionName]="collection.name"
-        [subclipData]="subclipData"
+        [subclipMarkers]="subclipMarkers"
         [config]="(uiConfig.get('assetSaveSubclip') | async).config"
         (ontoggleSubclipPanel)="toggleAssetSaveSubclip()"
-        (onAddSubclipToCart)="addAssetToCart(asset.assetId, $event)"
-        (onAddSubclipToCollection)="subclip($event)">
+        (onAddSubclipToCart)="addSubclipToCart()"
+        (onAddSubclipToCollection)="addSubclipToCollection()">
       </asset-save-subclip>
 
       <div flex-gt-xs="33" flex="100">
@@ -259,7 +259,7 @@
                   <button
                     md-raised-button
                     [disabled]="!userCan.addToCart()"
-                    (click)="addAssetToCart(asset.assetId)"
+                    (click)="addAssetToCart()"
                     class="mat-primary mat-hue-7">
                     {{ (userCan.administerQuotes() ? 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL') | translate }}
                     </button>
@@ -285,7 +285,7 @@
                   <button [disabled]="!userCan.addToCart()" md-button (click)="getPricingAttributes()" class="is-outlined">
                     {{ 'PRICING.CALCULATE_HEADING' | translate }}
                   </button>
-                  <button [disabled]="!userCan.addToCart()" md-raised-button (click)="addAssetToCart(asset.assetId)"
+                  <button [disabled]="!userCan.addToCart()" md-raised-button (click)="addAssetToCart()"
                     class="md-primary md-hue-7" color="primary">
                     {{ (userCan.administerQuotes() ? 'ASSET.DETAIL.ADD_TO_QUOTE_BTN_LABEL' : 'ASSET.DETAIL.ADD_TO_CART_BTN_LABEL') | translate}}
                   </button>

@@ -100,7 +100,7 @@ export function main() {
 
           it('is emitted', () => {
             expect(componentUnderTest.markersInitialization.emit)
-              .toHaveBeenCalledWith({ inFrame: { some: 'in marker' }, outFrame: { some: 'out marker' } });
+              .toHaveBeenCalledWith({ in: { some: 'in marker' }, out: { some: 'out marker' } });
           });
 
           describe('and the player state is updated again', () => {
@@ -139,7 +139,7 @@ export function main() {
               it('is emitted again', () => {
                 expect(componentUnderTest.markersInitialization.emit).toHaveBeenCalledTimes(2);
                 expect((componentUnderTest.markersInitialization.emit as jasmine.Spy).calls.mostRecent().args)
-                  .toEqual([{ inFrame: { some: 'new in marker' }, outFrame: { some: 'new out marker' } }]);
+                  .toEqual([{ in: { some: 'new in marker' }, out: { some: 'new out marker' } }]);
               });
             });
           });

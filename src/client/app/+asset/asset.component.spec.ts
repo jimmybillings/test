@@ -74,7 +74,7 @@ export function main() {
       it('Should call the service to add and item to a collection', () => {
         componentUnderTest.ngOnInit();
         componentUnderTest.addToCollection({ collection: { id: 1 }, asset: { name: 123123 } });
-        expect(mockActiveCollection.addAsset).toHaveBeenCalledWith(1, { name: 123123 });
+        expect(mockActiveCollection.addAsset).toHaveBeenCalledWith(1, { name: 123123 }, undefined);
       });
 
       it('Should call the service to get active collection items after an asset has succesfully been added', () => {
@@ -140,8 +140,7 @@ export function main() {
 
         it('with asset markers', () => {
           componentUnderTest.addAssetToCart({
-            assetId: 123123, selectedTranscodeTarget: 'Target', markers:
-            { markers: { inMilliseconds: 1, outMilliseconds: 10 } }
+            assetId: 123123, selectedTranscodeTarget: 'Target', markers: { some: 'markers' }
           });
           expect(mockCart.addAssetToProjectInCart).toHaveBeenCalledWith({
             lineItem: {
@@ -149,7 +148,7 @@ export function main() {
               price: 100,
               asset: { assetId: 123123 }
             },
-            markers: { inMilliseconds: 1, outMilliseconds: 10 },
+            markers: { some: 'markers' },
             attributes: undefined
           });
         });

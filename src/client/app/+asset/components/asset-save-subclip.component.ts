@@ -18,9 +18,9 @@ export class AssetSaveSubclipComponent {
   @Input() config: any;
   @Input() public userCan: Capabilities;
   @Input() collectionName: string;
-  @Input() subclipData: any;
-  @Output() onAddSubclipToCollection: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
-  @Output() onAddSubclipToCart: EventEmitter<any> = new EventEmitter<any>();
+  @Input() subclipMarkers: SubclipMarkers;
+  @Output() onAddSubclipToCollection: EventEmitter<null> = new EventEmitter<null>();
+  @Output() onAddSubclipToCart: EventEmitter<null> = new EventEmitter<null>();
   @Output() ontoggleSubclipPanel: EventEmitter<null> = new EventEmitter<null>();
 
   public showAssetSaveSubclip: boolean;
@@ -34,15 +34,12 @@ export class AssetSaveSubclipComponent {
   }
 
   public addSubclipToCollection(comment: any): void {
-    this.onAddSubclipToCollection.emit({
-      inMilliseconds: this.subclipData.in.frameNumber,
-      outMilliseconds: this.subclipData.out.frameNumber
-    });
+    this.onAddSubclipToCollection.emit();
     this.clearAndClose();
   }
 
   public addSubclipToCart(): void {
-    this.onAddSubclipToCart.emit({ markers: { in: this.subclipData.in.frameNumber, out: this.subclipData.out.frameNumber } });
+    this.onAddSubclipToCart.emit();
     this.clearAndClose();
   }
 

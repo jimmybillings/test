@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, V
 
 import { PlayerStateService } from '../../services/player-state.service';
 import { WzPlayerComponent } from '../wz-player/wz.player.component';
-import { SubclipMarkers, SubclipMarkerFrames } from '../../../../interfaces/asset.interface';
+import { SubclipMarkers } from '../../../../interfaces/asset.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
@@ -28,8 +28,8 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
     this.currentAsset = newAsset;
   }
 
-  @Output() markersInitialization: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
-  @Output() markerChange: EventEmitter<SubclipMarkerFrames> = new EventEmitter<SubclipMarkerFrames>();
+  @Output() markersInitialization: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
+  @Output() markerChange: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
   @Output() markerSaveButtonClick: EventEmitter<null> = new EventEmitter<null>();
 
   @ViewChild(WzPlayerComponent) player: WzPlayerComponent;
@@ -102,10 +102,10 @@ export class WzAdvancedPlayerComponent implements OnInit, OnDestroy {
 
   private onStateChange(newState: PlayerState) {
     if (!this.playerReady && newState.ready) {
-      this.markersInitialization.emit({ inFrame: newState.inMarkerFrame, outFrame: newState.outMarkerFrame });
+      this.markersInitialization.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
       this.playerReady = true;
     } else if (this.markersChangedIn(newState)) {
-      this.markerChange.emit({ inFrame: newState.inMarkerFrame, outFrame: newState.outMarkerFrame });
+      this.markerChange.emit({ in: newState.inMarkerFrame, out: newState.outMarkerFrame });
     }
 
     this.currentState = newState;

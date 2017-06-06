@@ -2,6 +2,7 @@ import { QuoteEditService } from './quote-edit.service';
 import { MockApiService, mockApiMatchers } from '../mocks/mock-api.service';
 import { Api } from '../interfaces/api.interface';
 import { Observable } from 'rxjs/Observable';
+import { Frame } from 'wazee-frame-formatter';
 
 export function main() {
   describe('Quote Edit Service', () => {
@@ -151,7 +152,7 @@ export function main() {
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3/asset/lineItem');
         expect(mockApi.put).toHaveBeenCalledWithBody({
-          lineItem: { id: '123', asset: { assetId: 456 } },
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: '-1', timeEnd: '-2' } },
           attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
         expect(mockApi.put).toHaveBeenCalledWithParameters({
@@ -167,7 +168,7 @@ export function main() {
         });
 
         expect(mockApi.put).toHaveBeenCalledWithBody({
-          lineItem: { id: '123', asset: { assetId: 456, timeStart: 33, timeEnd: 66 } },
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: '33', timeEnd: '66' } },
           attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
       });
@@ -175,12 +176,12 @@ export function main() {
       it('sends timeStart and timeEnd if defined as markers', () => {
         serviceUnderTest.addAssetToProjectInQuote({
           lineItem: { id: '123', asset: { assetId: 456 } },
-          markers: { inMilliseconds: 33, outMilliseconds: 66 },
+          markers: { in: new Frame(30).setFromSeconds(10), out: new Frame(30).setFromSeconds(20) },
           attributes: { Distribution: 'Online Streaming' }
         });
 
         expect(mockApi.put).toHaveBeenCalledWithBody({
-          lineItem: { id: '123', asset: { assetId: 456, timeStart: 33, timeEnd: 66 } },
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: '10000', timeEnd: '20000' } },
           attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
       });
@@ -188,12 +189,12 @@ export function main() {
       it('overrides asset timeStart and timeEnd with markers if both are defined', () => {
         serviceUnderTest.addAssetToProjectInQuote({
           lineItem: { id: '123', asset: { assetId: 456, timeStart: 33, timeEnd: 66 } },
-          markers: { inMilliseconds: 44, outMilliseconds: 77 },
+          markers: { in: new Frame(30).setFromSeconds(10), out: new Frame(30).setFromSeconds(20) },
           attributes: { Distribution: 'Online Streaming' }
         });
 
         expect(mockApi.put).toHaveBeenCalledWithBody({
-          lineItem: { id: '123', asset: { assetId: 456, timeStart: 44, timeEnd: 77 } },
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: '10000', timeEnd: '20000' } },
           attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
       });
