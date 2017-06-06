@@ -77,11 +77,7 @@ export class AssetComponent implements OnInit {
 
   public addToCollection(params: any): void {
     this.userPreference.openCollectionTray();
-    if (params.markers) {
-      this.activeCollection.addAsset(params.collection.id, params.asset, params.markers).subscribe();
-    } else {
-      this.activeCollection.addAsset(params.collection.id, params.asset).subscribe();
-    };
+    this.activeCollection.addAsset(params.collection.id, params.asset, params.markers).subscribe();
     this.showSnackBar({
       key: 'COLLECTION.ADD_TO_COLLECTION_TOAST',
       value: { collectionName: params.collection.name }
@@ -115,7 +111,7 @@ export class AssetComponent implements OnInit {
           price: price ? price : undefined,
           asset: { assetId: parameters.assetId }
         },
-        markers: parameters.markers ? parameters.markers.markers : undefined,
+        markers: parameters.markers,
         attributes: this.pricingStore.state.priceForDetails ? this.selectedAttrbutes : null
       };
       this.userCan.administerQuotes() ?

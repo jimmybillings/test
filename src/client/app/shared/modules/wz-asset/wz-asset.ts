@@ -23,7 +23,7 @@ export class WzAsset {
   @Input() public set assets(assets: Asset[]) {
     this._assets = assets;
     for (const asset of assets) {
-      this.enhancedAssets[asset.assetId] = this.assetService.enhance(asset);
+      this.enhancedAssets[asset.uuid || asset.assetId] = this.assetService.enhance(asset);
     }
   }
   @Input() public userCan: Capabilities;
@@ -37,7 +37,7 @@ export class WzAsset {
   public hasComp: boolean;
   private _assets: Asset[];
   private assetIdsInCurrentCollection: number[] = [];
-  private enhancedAssets: { [assetId: string]: EnhancedAsset } = {};
+  private enhancedAssets: { [lookupId: string]: EnhancedAsset } = {};
 
   constructor(private assetService: AssetService) { }
 
@@ -165,6 +165,6 @@ export class WzAsset {
   }
 
   private enhancedAssetFor(asset: Asset): EnhancedAsset {
-    return this.enhancedAssets[asset.assetId];
+    return this.enhancedAssets[asset.uuid || asset.assetId];
   }
 }
