@@ -137,10 +137,7 @@ export class QuoteEditService {
   }
 
   public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkers): void {
-    Object.assign(
-      lineItem.asset,
-      { timeStart: this.timeStartFrom(newMarkers).toString(), timeEnd: this.timeEndFrom(newMarkers).toString() }
-    );
+    Object.assign(lineItem.asset, { timeStart: this.timeStartFrom(newMarkers), timeEnd: this.timeEndFrom(newMarkers) });
 
     this.editLineItem(lineItem, {});
   }
@@ -215,11 +212,7 @@ export class QuoteEditService {
       timeEnd = asset.timeEnd;
     }
 
-    return {
-      assetId: asset.assetId,
-      timeStart: (timeStart >= 0 ? timeStart : -1).toString(),
-      timeEnd: (timeEnd >= 0 ? timeEnd : -2).toString()
-    };
+    return { assetId: asset.assetId, timeStart: timeStart >= 0 ? timeStart : -1, timeEnd: timeEnd >= 0 ? timeEnd : -2 };
   }
 
   private formatAttributes(attributes: any): Array<any> {

@@ -152,7 +152,7 @@ export function main() {
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3/asset/lineItem');
         expect(mockApi.put).toHaveBeenCalledWithBody({
-          lineItem: { id: '123', asset: { assetId: 456, timeStart: '-1', timeEnd: '-2' } },
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: -1, timeEnd: -2 } },
           attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
         expect(mockApi.put).toHaveBeenCalledWithParameters({
@@ -168,7 +168,7 @@ export function main() {
         });
 
         expect(mockApi.put).toHaveBeenCalledWithBody({
-          lineItem: { id: '123', asset: { assetId: 456, timeStart: '33', timeEnd: '66' } },
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: 33, timeEnd: 66 } },
           attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
       });
@@ -181,7 +181,7 @@ export function main() {
         });
 
         expect(mockApi.put).toHaveBeenCalledWithBody({
-          lineItem: { id: '123', asset: { assetId: 456, timeStart: '10000', timeEnd: '20000' } },
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: 10000, timeEnd: 20000 } },
           attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
       });
@@ -194,7 +194,7 @@ export function main() {
         });
 
         expect(mockApi.put).toHaveBeenCalledWithBody({
-          lineItem: { id: '123', asset: { assetId: 456, timeStart: '10000', timeEnd: '20000' } },
+          lineItem: { id: '123', asset: { assetId: 456, timeStart: 10000, timeEnd: 20000 } },
           attributes: [{ priceAttributeName: 'Distribution', selectedAttributeValue: 'Online Streaming' }]
         });
       });
