@@ -14,11 +14,7 @@ function publishToS3() {
   };
   var aws: any = readFileSync('./aws-keys.json');
   aws = JSON.parse(aws);
-  return gulp.src([
-    './dist/prod/layout.css',
-    './dist/prod/js/app.js',
-    './dist/prod/js/shims.js'
-  ])
+  return gulp.src(['./dist/prod/**'])
     .pipe(plugins.gzip({ append: false }))
     .pipe(plugins.s3(aws, options));
 }
