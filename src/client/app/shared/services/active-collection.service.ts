@@ -6,6 +6,7 @@ import { Collection } from '../interfaces/collection.interface';
 import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
 import { SubclipMarkers } from '../interfaces/asset.interface';
+import { Frame } from 'wazee-frame-formatter';
 
 @Injectable()
 export class ActiveCollectionService implements OnInit {
@@ -51,12 +52,16 @@ export class ActiveCollectionService implements OnInit {
   }
 
   public addAsset(collectionId: any, asset: any, markers: SubclipMarkers = null): Observable<any> {
-    let list: any = (markers) ?
-      { assetId: asset.assetId, timeStart: markers.in, timeEnd: markers.out } : { assetId: asset.assetId };
+    const assetToAdd: object = {
+      assetId: asset.assetId,
+      timeStart: this.timeStartFrom(markers).toString(),
+      timeEnd: this.timeEndFrom(markers).toString()
+    };
+
     return this.api.post(
       Api.Identities,
       `collection/${collectionId}/addAssets`,
-      { body: { list: [list] } }
+      { body: { list: [assetToAdd] } }
     ).flatMap((response: any) => {
       return this.getItems(collectionId, { i: 1, n: 100 });
     });
@@ -88,7 +93,14 @@ export class ActiveCollectionService implements OnInit {
     return this.api.put(
       Api.Identities,
       `collection/${id}/updateAsset`,
-      { body: { uuid: asset.uuid, assetId: asset.assetId, timeStart: updatedMarkers.in, timeEnd: updatedMarkers.out } }
+      {
+        body: {
+          uuid: asset.uuid,
+          assetId: asset.assetId,
+          timeStart: this.timeStartFrom(updatedMarkers),
+          timeEnd: this.timeEndFrom(updatedMarkers)
+        }
+      }
     ).do(data => this.store.updateAsset(data));
   }
 
@@ -115,5 +127,17 @@ export class ActiveCollectionService implements OnInit {
 
   private setSearchParams() {
     this.params = { 's': '', 'd': '', 'i': '0', 'n': '50' };
+  }
+
+  private timeStartFrom(markers: SubclipMarkers): number {
+    return markers && markers.in ? this.toMilliseconds(markers.in) : -1;
+  }
+
+  private timeEndFrom(markers: SubclipMarkers): number {
+    return markers && markers.out ? this.toMilliseconds(markers.out) : -2;
+  }
+
+  private toMilliseconds(frame: Frame): number {
+    return frame.asSeconds(3) * 1000;
   }
 }

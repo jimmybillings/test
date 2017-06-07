@@ -7,7 +7,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   template: `
     <div class="md-caption asset-name">{{ asset.assetName }}</div>
     <p class="asset-description">
-      {{ asset.metadata[0].value  | slice:0:100 }}
+      {{ (asset.metadata ? asset.metadata[0].value : '') | slice:0:100 }}
     </p>
     <div class="cart-asset-metadata md-caption">
       <span *ngFor="let meta of asset.metadata">

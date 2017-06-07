@@ -152,7 +152,7 @@ export function main() {
 
         expect(mockApi.post).toHaveBeenCalledWithApi(Api.Identities);
         expect(mockApi.post).toHaveBeenCalledWithEndpoint('collection/732/addAssets');
-        expect(mockApi.post).toHaveBeenCalledWithBody({ list: [{ assetId: 12 }] });
+        expect(mockApi.post).toHaveBeenCalledWithBody({ list: [{ assetId: 12, timeStart: '-1', timeEnd: '-2' }] });
       });
 
       it('should call getItems in the flatMap', () => {

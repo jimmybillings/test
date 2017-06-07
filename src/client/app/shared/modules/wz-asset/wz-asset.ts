@@ -20,12 +20,20 @@ export class WzAsset {
   @Output() onShowSpeedview = new EventEmitter();
   @Output() onHideSpeedview = new EventEmitter();
   @Output() onEditAsset = new EventEmitter();
+
   @Input() public set assets(assets: Asset[]) {
-    this._assets = assets;
-    for (const asset of assets) {
-      this.enhancedAssets[asset.assetId] = this.assetService.enhance(asset);
+    this._assets = [];
+
+    for (const asset of (assets || [])) {
+      const bestId: string | number = asset.uuid || asset.assetId;
+
+      if (bestId) {
+        this.enhancedAssets[bestId] = this.assetService.enhance(asset);
+        this._assets.push(asset);
+      }
     }
   }
+
   @Input() public userCan: Capabilities;
   @Input() public assetType: string = 'search';
   @Input() public set collection(value: Collection) {
@@ -37,7 +45,7 @@ export class WzAsset {
   public hasComp: boolean;
   private _assets: Asset[];
   private assetIdsInCurrentCollection: number[] = [];
-  private enhancedAssets: { [assetId: string]: EnhancedAsset } = {};
+  private enhancedAssets: { [lookupId: string]: EnhancedAsset } = {};
 
   constructor(private assetService: AssetService) { }
 
@@ -165,6 +173,6 @@ export class WzAsset {
   }
 
   private enhancedAssetFor(asset: Asset): EnhancedAsset {
-    return this.enhancedAssets[asset.assetId];
+    return this.enhancedAssets[asset.uuid || asset.assetId];
   }
 }

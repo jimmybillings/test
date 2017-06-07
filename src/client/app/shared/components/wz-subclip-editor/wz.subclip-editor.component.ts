@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
-import { SubclipMarkers, SubclipMarkerFrames } from '../../interfaces/asset.interface';
+import { SubclipMarkers } from '../../interfaces/asset.interface';
 import { EnhancedAsset } from '../../interfaces/enhanced-asset';
 
 @Component({
@@ -43,7 +43,7 @@ export class WzSubclipEditorComponent {
   @Output() cancel: EventEmitter<null> = new EventEmitter<null>();
   @Output() save: EventEmitter<SubclipMarkers> = new EventEmitter<SubclipMarkers>();
 
-  private playerMarkers: SubclipMarkerFrames = { in: undefined, out: undefined };
+  private playerMarkers: SubclipMarkers = { in: undefined, out: undefined };
 
   public get markersAreRemovable(): boolean {
     return this.enhancedAsset.isSubclipped && !this.markersAreSavable;
@@ -53,7 +53,7 @@ export class WzSubclipEditorComponent {
     return !!this.playerMarkers.in && !!this.playerMarkers.out;
   }
 
-  public onPlayerMarkerChange(newMarkers: SubclipMarkerFrames): void {
+  public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
     this.playerMarkers = newMarkers;
   }
 
@@ -70,10 +70,6 @@ export class WzSubclipEditorComponent {
   }
 
   private emitSaveEvent(): void {
-    this.save.emit(
-      this.markersAreSavable
-        ? { in: this.playerMarkers.in.frameNumber, out: this.playerMarkers.out.frameNumber }
-        : { in: undefined, out: undefined }
-    );
+    this.save.emit(this.playerMarkers);
   }
 }

@@ -115,7 +115,7 @@ export function main() {
 
         componentUnderTest.onSaveButtonClick();
 
-        expect(componentUnderTest.save.emit).toHaveBeenCalledWith({ in: 42, out: 4242 });
+        expect(componentUnderTest.save.emit).toHaveBeenCalledWith({ in: inMarkerFrame, out: outMarkerFrame });
       });
     });
 

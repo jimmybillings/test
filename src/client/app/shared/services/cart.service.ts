@@ -25,6 +25,7 @@ import {
 } from '../interfaces/commerce.interface';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
 import { SubclipMarkers } from '../interfaces/asset.interface';
+import { Frame } from 'wazee-frame-formatter';
 
 @Injectable()
 export class CartService {
@@ -171,7 +172,8 @@ export class CartService {
   }
 
   public editLineItemMarkers(lineItem: AssetLineItem, newMarkers: SubclipMarkers): void {
-    Object.assign(lineItem.asset, { timeStart: newMarkers.in, timeEnd: newMarkers.out });
+    Object.assign(lineItem.asset, { timeStart: this.timeStartFrom(newMarkers), timeEnd: this.timeEndFrom(newMarkers) });
+
     this.editLineItem(lineItem, {});
   }
 
@@ -257,13 +259,18 @@ export class CartService {
   }
 
   private formatAsset(asset: any, markers: SubclipMarkers): any {
-    return Object.assign(
-      { assetId: asset.assetId },
-      asset.timeStart >= 0 ? { timeStart: asset.timeStart } : null,
-      asset.timeEnd >= 0 ? { timeEnd: asset.timeEnd } : null,
-      markers && markers.in >= 0 ? { timeStart: markers.in } : null,
-      markers && markers.out >= 0 ? { timeEnd: markers.out } : null
-    );
+    let timeStart: number;
+    let timeEnd: number;
+
+    if (markers) {
+      timeStart = this.timeStartFrom(markers);
+      timeEnd = this.timeEndFrom(markers);
+    } else {
+      timeStart = asset.timeStart;
+      timeEnd = asset.timeEnd;
+    }
+
+    return { assetId: asset.assetId, timeStart: timeStart >= 0 ? timeStart : -1, timeEnd: timeEnd >= 0 ? timeEnd : -2 };
   }
 
   private formatAttributes(attributes: any): Array<any> {
@@ -312,5 +319,18 @@ export class CartService {
       stripeToken: this.checkoutState.authorization.id,
       stripeTokenType: this.checkoutState.authorization.type
     };
+  }
+
+  private timeStartFrom(markers: SubclipMarkers): number {
+    return markers && markers.in ? this.toMilliseconds(markers.in) : -1;
+  }
+
+  private timeEndFrom(markers: SubclipMarkers): number {
+    return markers && markers.out ? this.toMilliseconds(markers.out) : -2;
+  }
+
+
+  private toMilliseconds(frame: Frame): number {
+    return frame.asSeconds(3) * 1000;
   }
 }
