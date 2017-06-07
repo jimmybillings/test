@@ -169,7 +169,7 @@ export function main() {
             clipUrl: 'clipUrl',
             someMetadata: {
               name: 'Format.FrameRate',
-              value: '25'
+              value: '30'
             }
           };
         });
@@ -189,7 +189,7 @@ export function main() {
             clipUrl: 'anotherClipUrl',
             someMetadata: {
               name: 'Format.FrameRate',
-              value: '25'
+              value: '30'
             }
           };
 
@@ -276,29 +276,29 @@ export function main() {
           {
             state: 'no markers',
             markers: {},
-            inSeconds: undefined,
-            outSeconds: undefined,
+            expectedInSeconds: undefined,
+            expectedOutSeconds: undefined,
             expectedAutoStart: true
           },
           {
             state: 'only timeStart',
-            markers: { timeStart: '25' },
-            inSeconds: 1,
-            outSeconds: undefined,
+            markers: { timeStart: '3000' },
+            expectedInSeconds: 3,
+            expectedOutSeconds: undefined,
             expectedAutoStart: true
           },
           {
             state: 'only timeEnd',
-            markers: { timeEnd: '50' },
-            inSeconds: undefined,
-            outSeconds: 2,
+            markers: { timeEnd: '6000' },
+            expectedInSeconds: undefined,
+            expectedOutSeconds: 6,
             expectedAutoStart: true
           },
           {
             state: 'timeStart and timeEnd',
-            markers: { timeStart: '25', timeEnd: '50' },
-            inSeconds: 1,
-            outSeconds: 2,
+            markers: { timeStart: '3000', timeEnd: '6000' },
+            expectedInSeconds: 3,
+            expectedOutSeconds: 6,
             expectedAutoStart: false
           }
         ].forEach(assetTest => {
@@ -312,7 +312,7 @@ export function main() {
                   clipUrl: 'clipUrl',
                   someMetadata: {
                     name: 'Format.FrameRate',
-                    value: '25'
+                    value: '30'
                   }
                 }, assetTest.markers);
             });
@@ -333,7 +333,7 @@ export function main() {
                   clipUrl: 'anotherClipUrl',
                   someMetadata: {
                     name: 'Format.FrameRate',
-                    value: '25'
+                    value: '30'
                   }
                 };
 
@@ -463,9 +463,9 @@ export function main() {
                   expect(stateChangeRequestEmitter.calls.allArgs()).toEqual([[{
                     ready: true,
                     canSupportCustomControls: true,
-                    framesPerSecond: 25,
-                    inMarker: assetTest.inSeconds,
-                    outMarker: assetTest.outSeconds,
+                    framesPerSecond: 30,
+                    inMarker: assetTest.expectedInSeconds,
+                    outMarker: assetTest.expectedOutSeconds,
                     volume: 100
                   }]]);
                 });
@@ -488,7 +488,7 @@ export function main() {
                         .toEqual([
                           [{ playingMarkers: true }],
                           [{ playing: true }],
-                          [{ currentTime: assetTest.inSeconds }]
+                          [{ currentTime: assetTest.expectedInSeconds }]
                         ]);
                     });
                   }
@@ -819,7 +819,7 @@ export function main() {
 
                           expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
                           expect(stateChangeRequestEmitter.calls.mostRecent().args)
-                            .toEqual([{ currentTime: assetTest.inSeconds }]);
+                            .toEqual([{ currentTime: assetTest.expectedInSeconds }]);
                         });
                       } else {
                         it('throws an error', () => {
@@ -836,7 +836,7 @@ export function main() {
 
                           expect(stateChangeRequestEmitter).toHaveBeenCalledTimes(1);
                           expect(stateChangeRequestEmitter.calls.mostRecent().args)
-                            .toEqual([{ currentTime: assetTest.outSeconds }]);
+                            .toEqual([{ currentTime: assetTest.expectedOutSeconds }]);
                         });
                       } else {
                         it('throws an error', () => {
@@ -967,7 +967,7 @@ export function main() {
                                     .toEqual([
                                       [{ playingMarkers: true }],
                                       [{ playing: true }],
-                                      [{ currentTime: assetTest.inSeconds }]
+                                      [{ currentTime: assetTest.expectedInSeconds }]
                                     ]);
                                 });
                               } else {
@@ -975,7 +975,7 @@ export function main() {
                                   expect(stateChangeRequestEmitter.calls.allArgs())
                                     .toEqual([
                                       [{ playingMarkers: true }],
-                                      [{ currentTime: assetTest.inSeconds }]
+                                      [{ currentTime: assetTest.expectedInSeconds }]
                                     ]);
                                 });
                               }
@@ -1135,7 +1135,7 @@ export function main() {
                               });
 
                               describe('when setInMarkerToCurrentTime() is called before the out marker is reached', () => {
-                                const newTime: number = assetTest.outSeconds - 0.3;
+                                const newTime: number = assetTest.expectedOutSeconds - 0.3;
 
                                 beforeEach(() => {
                                   mockVideoElement.simulateTimeChangeTo(newTime); // happens because the player is playing
@@ -1158,7 +1158,7 @@ export function main() {
                               });
 
                               describe('when setOutMarkerToCurrentTime() is called before the out marker is reached', () => {
-                                const newTime: number = assetTest.outSeconds - 0.2;
+                                const newTime: number = assetTest.expectedOutSeconds - 0.2;
 
                                 beforeEach(() => {
                                   mockVideoElement.simulateTimeChangeTo(newTime); // happens because the player is playing
@@ -1184,7 +1184,7 @@ export function main() {
                               });
 
                               describe('when clearMarkers() is called before the out marker is reached', () => {
-                                const newTime: number = assetTest.outSeconds - 0.1;
+                                const newTime: number = assetTest.expectedOutSeconds - 0.1;
 
                                 beforeEach(() => {
                                   mockVideoElement.simulateTimeChangeTo(newTime); // happens because the player is playing
@@ -1209,8 +1209,8 @@ export function main() {
                               });
 
                               [
-                                { condition: 'equal to', time: assetTest.outSeconds },
-                                { condition: 'greater than', time: assetTest.outSeconds + 0.001 }
+                                { condition: 'equal to', time: assetTest.expectedOutSeconds },
+                                { condition: 'greater than', time: assetTest.expectedOutSeconds + 0.001 }
                               ].forEach(innerTest => {
                                 describe(`as soon as a time ${innerTest.condition} the out marker is reported`, () => {
                                   beforeEach(() => mockVideoElement.simulateTimeChangeTo(innerTest.time));
@@ -1252,7 +1252,7 @@ export function main() {
                                         expect(stateChangeRequestEmitter)
                                           .toHaveBeenCalledTimes(stateTest.initialState === 'paused' ? 7 : 6);
                                         expect(stateChangeRequestEmitter.calls.mostRecent().args)
-                                          .toEqual([{ currentTime: assetTest.outSeconds }]);
+                                          .toEqual([{ currentTime: assetTest.expectedOutSeconds }]);
                                       });
 
                                       it('is still paused', () => {

@@ -81,9 +81,11 @@ export function main() {
     describe('addToCollection()', () => {
       it('Should emit an event to add an asset to a collection with the right parameters', () => {
         spyOn(componentUnderTest.onAddToCollection, 'emit');
-        componentUnderTest.addToCollection(collection, { value: 1234 }, { in: 1234, out: 1234 });
-        expect(componentUnderTest.onAddToCollection.emit)
-          .toHaveBeenCalledWith({ collection: collection, asset: { value: 1234, assetId: 1234 }, markers: { in: 1234, out: 1234 } });
+        componentUnderTest.addToCollection(collection, { value: 1234 });
+
+        expect(componentUnderTest.onAddToCollection.emit).toHaveBeenCalledWith(
+          { collection: collection, asset: { value: 1234, assetId: 1234 }, markers: null }
+        );
       });
     });
 
@@ -107,9 +109,12 @@ export function main() {
 
     describe('addAssetToCart()', () => {
       it('Should emit an event to add an asset to the cart with the correct parameters', () => {
-        componentUnderTest.ngOnChanges({ asset: { currentValue: asset } });
+        // Gotta do both of these to set the asset as expected.
+        componentUnderTest.asset = { assetId: 1234, transcodeTargets: transcodeTargets };
+        componentUnderTest.ngOnChanges({ asset: { assetId: 1234, currentValue: asset }, subclipMarkers: null });
+
         spyOn(componentUnderTest.addToCart, 'emit');
-        componentUnderTest.addAssetToCart(1234);
+        componentUnderTest.addAssetToCart();
         expect(componentUnderTest.addToCart.emit)
           .toHaveBeenCalledWith({ assetId: 1234, markers: null, selectedTranscodeTarget: 'master_copy' });
       });

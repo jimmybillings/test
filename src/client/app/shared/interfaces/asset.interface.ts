@@ -12,11 +12,6 @@ export interface SearchResult extends Pagination {
 }
 
 export interface SubclipMarkers {
-  in?: number;
-  out?: number;
-}
-
-export interface SubclipMarkerFrames {
   in?: Frame;
   out?: Frame;
 }

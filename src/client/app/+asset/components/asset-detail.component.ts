@@ -3,9 +3,10 @@ import { Collection } from '../../shared/interfaces/collection.interface';
 import { UiConfig } from '../../shared/services/ui.config';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
-import { SubclipMarkers, SubclipMarkerFrames } from '../../shared/interfaces/asset.interface';
+import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
 import { SearchContext } from '../../shared/services/search-context.service';
 import { Observable } from 'rxjs/Observable';
+import { Frame } from 'wazee-frame-formatter';
 
 @Component({
   moduleId: module.id,
@@ -32,7 +33,7 @@ export class AssetDetailComponent implements OnChanges {
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
-  public subclipData: SubclipMarkerFrames;
+  public subclipMarkers: SubclipMarkers;
   private assetsArr: Array<number> = [];
 
   ngOnChanges(changes: any): void {
@@ -47,23 +48,22 @@ export class AssetDetailComponent implements OnChanges {
     return this.assetsArr.indexOf(assetId) > -1;
   }
 
-  // rename this method to something more meaningful
-  public subclip(markers: SubclipMarkers): void {
-    this.onAddToCollection.emit({ 'collection': this.collection, 'asset': this.asset, 'markers': markers });
+  public addSubclipToCollection(): void {
+    this.onAddToCollection.emit({ 'collection': this.collection, 'asset': this.asset, 'markers': this.subclipMarkers });
   }
 
-  public onPlayerMarkersInitialization(initialMarkers: SubclipMarkerFrames): void {
-    this.subclipData = initialMarkers;
+  public onPlayerMarkersInitialization(initialMarkers: SubclipMarkers): void {
+    this.subclipMarkers = initialMarkers;
     this.showAssetSaveSubclip = false;
   }
 
-  public onPlayerMarkerChange(newMarkers: SubclipMarkerFrames): void {
-    this.subclipData = newMarkers;
-    this.showAssetSaveSubclip = !!newMarkers.in && !!newMarkers.out;
+  public onPlayerMarkerChange(newMarkers: SubclipMarkers): void {
+    this.subclipMarkers = newMarkers;
+    this.showAssetSaveSubclip = this.markersAreDefined;
   }
 
   public get markersSaveButtonEnabled(): boolean {
-    return !this.showAssetSaveSubclip && this.subclipData && !!this.subclipData.in && !!this.subclipData.out;
+    return !this.showAssetSaveSubclip && this.markersAreDefined;
   }
 
   public onPlayerMarkerSaveButtonClick(): void {
@@ -74,9 +74,9 @@ export class AssetDetailComponent implements OnChanges {
     this.showAssetSaveSubclip = !this.showAssetSaveSubclip;
   }
 
-  public addToCollection(collection: Collection, asset: any, markers: SubclipMarkers = null): void {
+  public addToCollection(collection: Collection, asset: any): void {
     asset.assetId = asset.value;
-    this.onAddToCollection.emit({ 'collection': collection, 'asset': asset, 'markers': markers });
+    this.onAddToCollection.emit({ 'collection': collection, 'asset': asset, markers: null });
   }
 
   public removeFromCollection(collection: Collection, asset: any): void {
@@ -88,8 +88,20 @@ export class AssetDetailComponent implements OnChanges {
     this.onDownloadComp.emit({ 'compType': compType, 'assetId': assetId });
   }
 
-  public addAssetToCart(assetId: any, markers: SubclipMarkers = null, pricingAttributes?: any): void {
-    this.addToCart.emit({ assetId: assetId, markers: markers, selectedTranscodeTarget: this.selectedTarget });
+  public addAssetToCart(): void {
+    this.addToCart.emit({
+      assetId: this.asset.assetId,
+      markers: null,
+      selectedTranscodeTarget: this.selectedTarget
+    });
+  }
+
+  public addSubclipToCart(): void {
+    this.addToCart.emit({
+      assetId: this.asset.assetId,
+      markers: this.subclipMarkers,
+      selectedTranscodeTarget: this.selectedTarget
+    });
   }
 
   public getPricingAttributes(): void {
@@ -100,6 +112,10 @@ export class AssetDetailComponent implements OnChanges {
     this.selectedTarget = target.value;
   }
 
+  public showComments(event: any): void {
+    // This is referenced in the template, but did not exist.  Assuming this is for future implementation.
+  }
+
   private parseNewAsset(asset: any) {
     this.usagePrice = null;
     if (Object.keys(asset.currentValue.detailTypeMap.common).length > 0) {
@@ -107,5 +123,9 @@ export class AssetDetailComponent implements OnChanges {
       delete this.asset.detailTypeMap;
     }
     this.selectedTarget = this.asset.transcodeTargets[0];
+  }
+
+  private get markersAreDefined(): boolean {
+    return !!this.subclipMarkers && !!this.subclipMarkers.in && !!this.subclipMarkers.out;
   }
 }

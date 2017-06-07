@@ -120,7 +120,7 @@ export function main() {
 
       it('calls the api service correctly', () => {
         const body: ApiBody = {
-          lineItem: { asset: { assetId: 10836 }, selectedTranscodeTarget: '1080p', price: 100.5 },
+          lineItem: { asset: { assetId: 10836, timeStart: -1, timeEnd: -2 }, selectedTranscodeTarget: '1080p', price: 100.5 },
           attributes: [{ priceAttributeName: 'key', selectedAttributeValue: 'value' }]
         };
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
@@ -135,11 +135,9 @@ export function main() {
       });
 
       it('calls the api service correctly - no transcode target', () => {
-        const body: ApiBody = { lineItem: { asset: { assetId: 10836 } } };
+        const body: ApiBody = { lineItem: { asset: { assetId: 10836, timeStart: -1, timeEnd: -2 } } };
         const parameters: ApiParameters = { projectName: 'Project A', region: 'AAA' };
-        const addAssetParameters: AddAssetParameters = {
-          lineItem: { asset: { assetId: 10836 } }
-        };
+        const addAssetParameters: AddAssetParameters = { lineItem: { asset: { assetId: 10836 } } };
 
         serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
 
@@ -155,7 +153,8 @@ export function main() {
 
         serviceUnderTest.addAssetToProjectInCart(addAssetParameters);
 
-        expect(mockCartStore.replaceCartWith).toHaveBeenCalledWith({ lineItem: { asset: { assetId: 10836 } } });
+        expect(mockCartStore.replaceCartWith)
+          .toHaveBeenCalledWith({ lineItem: { asset: { assetId: 10836 } } });
       });
 
     });

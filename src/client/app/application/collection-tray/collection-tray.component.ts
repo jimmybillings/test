@@ -21,7 +21,7 @@ export class CollectionTrayComponent implements OnInit {
     this._collection = collection;
 
     for (const asset of collection.assets.items) {
-      this.enhancedAssets[asset.assetId] = this.assetService.enhance(asset);
+      this.enhancedAssets[asset.uuid] = this.assetService.enhance(asset);
     }
   };
 
@@ -34,7 +34,7 @@ export class CollectionTrayComponent implements OnInit {
   }
 
   private _collection: any;
-  private enhancedAssets: { [assetId: string]: EnhancedAsset } = {};
+  private enhancedAssets: { [uuid: string]: EnhancedAsset } = {};
 
   constructor(private dialogService: WzDialogService, private assetService: AssetService) { }
 
@@ -84,6 +84,6 @@ export class CollectionTrayComponent implements OnInit {
   }
 
   private enhancedAssetFor(asset: Asset): EnhancedAsset {
-    return this.enhancedAssets[asset.assetId];
+    return this.enhancedAssets[asset.uuid];
   }
 }

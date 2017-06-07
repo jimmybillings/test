@@ -231,12 +231,12 @@ export class EnhancedAsset implements commerce.Asset, common.Asset {
 
       case 'inMarkerFrame':
         return this.framesPerSecond
-          ? this.newFrame.setFromFrameNumber(this.timeStart >= 0 ? this.timeStart : 0)
+          ? this.newFrame.setFromSeconds(this.timeStart >= 0 ? this.timeStart / 1000 : 0)
           : undefined;
 
       case 'outMarkerFrame':
         return this.framesPerSecond
-          ? (this.timeEnd >= 0 ? this.newFrame.setFromFrameNumber(this.timeEnd) : this.durationFrame)
+          ? (this.timeEnd >= 0 ? this.newFrame.setFromSeconds(this.timeEnd / 1000) : this.durationFrame)
           : undefined;
 
       case 'routerLink':
