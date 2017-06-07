@@ -24,7 +24,7 @@ export class WzAsset {
   @Input() public set assets(assets: Asset[]) {
     this._assets = [];
 
-    for (const asset of assets) {
+    for (const asset of (assets || [])) {
       const bestId: string | number = asset.uuid || asset.assetId;
 
       if (bestId) {
