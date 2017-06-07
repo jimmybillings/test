@@ -20,12 +20,20 @@ export class WzAsset {
   @Output() onShowSpeedview = new EventEmitter();
   @Output() onHideSpeedview = new EventEmitter();
   @Output() onEditAsset = new EventEmitter();
+
   @Input() public set assets(assets: Asset[]) {
-    this._assets = assets;
+    this._assets = [];
+
     for (const asset of assets) {
-      this.enhancedAssets[asset.uuid || asset.assetId] = this.assetService.enhance(asset);
+      const bestId: string | number = asset.uuid || asset.assetId;
+
+      if (bestId) {
+        this.enhancedAssets[bestId] = this.assetService.enhance(asset);
+        this._assets.push(asset);
+      }
     }
   }
+
   @Input() public userCan: Capabilities;
   @Input() public assetType: string = 'search';
   @Input() public set collection(value: Collection) {
