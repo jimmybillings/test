@@ -32,7 +32,7 @@ function buildTS() {
     .pipe(plugins.inlineNg2Template(INLINE_OPTIONS))
     .pipe(tsProject());
 
-  gulp.src(['node_modules/@angular/material/_theming.scss', 'library/package.json'])
+  gulp.src(['node_modules/@angular/material/_theming.scss', 'library/package.json', 'dist/prod/layout.css'])
     .pipe(gulp.dest(Config.APP_DEST));
 
   gulp.src(['dist/prod/js/shims.js', 'dist/prod/js/app.js'])

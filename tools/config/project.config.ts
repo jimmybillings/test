@@ -13,42 +13,17 @@ export class ProjectConfig extends SeedConfig {
 
   constructor() {
     super();
-    // this.APP_TITLE = 'Put name of your app here';
-    // this.GOOGLE_ANALYTICS_ID = 'Your site's ID';
-
-    /* Enable typeless compiler runs (faster) between typed compiler runs. */
-    // this.TYPED_COMPILE_INTERVAL = 5;
-
-    // Add `NPM` third-party libraries to be injected/bundled.
     this.NPM_DEPENDENCIES = [
       ...this.NPM_DEPENDENCIES,
-      // {src: 'jquery/dist/jquery.min.js', inject: 'libs'},
       { src: 'pikaday/pikaday.js', inject: 'libs' },
       { src: 'clipboard/dist/clipboard.min.js', inject: 'libs' },
+      { src: 'hammerjs/hammer.js', inject: 'libs'}
     ];
 
-    // Add `local` third-party libraries to be injected/bundled.
     this.APP_ASSETS = [
       { src: `${this.APP_SRC}/app/shared/components/wz-aspera-download/connectinstaller-4.js`, inject: true, vendor: false },
       { src: `${this.APP_SRC}/app/shared/components/wz-aspera-download/asperaweb-4.js`, inject: true, vendor: false }
     ];
-
-    // Add packages (e.g. ng2-translate)
-    // let additionalPackages: ExtendPackages[] = [{
-    //   name: 'ng2-translate',
-    //   // Path to the package's bundle
-    //   path: 'node_modules/ng2-translate/bundles/ng2-translate.umd.js'
-    // }];
-    //
-    // this.addPackagesBundles(additionalPackages);
-
-    /* Add proxy middlewar */
-    // this.PROXY_MIDDLEWARE = [
-    //   require('http-proxy-middleware')({ ws: false, target: 'http://localhost:3003' })
-    // ];
-
-    /* Add to or override NPM module configurations: */
-    // this.PLUGIN_CONFIGS['browser-sync'] = { ghostMode: false };
   }
 
 }
