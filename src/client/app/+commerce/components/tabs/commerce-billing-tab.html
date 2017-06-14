@@ -24,7 +24,7 @@
       <li *ngFor="let address of (orderInProgress | async).addresses" class="billing-address">
         <section [ngClass]="{'active': address === (orderInProgress | async).selectedAddress}" layout="column">
           <header>
-            <span class="{{address.type}}">{{address.type}}</span>
+            <span class="{{address.type | lowercase}}">{{address.type}}</span>
             <span>{{address.name}}</span>
           </header>
           <address *ngIf="address.address">
