@@ -41,27 +41,41 @@
     </div>
 
     <!--Provisional Order-->
-    <div *ngIf="showProvisionalOrderMessage | async"
+    <section *ngIf="showProvisionalOrderMessage | async"
       layout="column"
       layout-align="center center"
       md-scroll-y=""
-      flex-gt-lg="30">
-      <h2 class="md-headline">{{ (paymentOptions | async).explanation }}</h2>
-      <button
-        md-raised-button
-        color="primary"
-        (click)="goToNextTab()">
-          Proceed
-      </button>
-    </div>
+      flex="100">
+
+      <header flex="100" layout="column" layout-align="center center">
+        <h2 class="commerce-heading">{{ (paymentOptions | async).explanation | translate }}</h2>
+        <p class="instructions">{{ 'CHECKOUT.PAYMENT.PROVISIONAL_MSG' | translate }}</p>
+      </header>
+
+      <div class="proceed" flex="100" layout="row" layout-align="end end">
+        <div>
+          <button
+            md-raised-button
+            color="primary"
+            (click)="goToNextTab()">
+              {{ 'CART.PAYMENT.FORWARD_BTN' | translate}}
+          </button>
+        </div>
+      </div>
+    </section>
     
     <section *ngIf="showCreditCardForm | async"
       layout="column"
-      layout-align="center center"
+      layout-align="center start"
       md-scroll-y=""
       flex-gt-lg="30"
       flex="100">
-      <h2 class="md-headline">{{ (paymentOptions | async).explanation }}</h2>
+
+      <header flex="100" layout="column" layout-align="start">
+        <h2 class="commerce-heading">{{ (paymentOptions | async).explanation | translate }}</h2>
+        <p class="instructions">{{ 'CHECKOUT.PAYMENT.PROVISIONAL_MSG' | translate}}</p>
+      </header>
+
       <md-card class="wz-form-card cc-form">
         <md-card-content>
           <wz-cc-form 

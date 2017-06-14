@@ -1,10 +1,9 @@
 <div class="cart-payment" layout="row" layout-align="center center">
   <div flex="100" flex-gt-lg="85" class="payment-select">
-    
      <!--Hold-->
     <section *ngIf="showHoldMessage | async"
       layout="column"
-      layout-align="center center"
+      layout-align="center start"
       md-scroll-y=""
       flex-gt-lg="30">
       <h2 class="md-headline">{{ (paymentOptions | async).explanation }}</h2>
@@ -13,7 +12,7 @@
     <!--Credit Card-->
     <section *ngIf="showCreditCardForm | async"
       layout="column"
-      layout-align="center center"
+      layout-align="center start"
       md-scroll-y=""
       flex-gt-lg="30"
       flex="100">
