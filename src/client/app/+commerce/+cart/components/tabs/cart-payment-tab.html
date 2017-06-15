@@ -87,15 +87,10 @@
           </md-card-content>
           <md-card-actions align="end">
             <button md-button color="primary" (click)="selectPurchaseOnCredit()">
-              Proceed with credit purchase
+              {{ 'CART.PAYMENT.PURCHASE_ON_CREDIT_BTN' | translate }}
             </button>
           </md-card-actions>
         </md-card>
-          <!--<md-checkbox
-            (change)="selectPurchaseOnCredit($event)"
-            color="primary">
-            {{ 'CART.PAYMENT.PURCHASE_ON_CREDIT' | translate }}
-          </md-checkbox>-->
       </section>
       <section flex-lg="35" flex="30" hide-sm hide-xs></section>
     </div>
