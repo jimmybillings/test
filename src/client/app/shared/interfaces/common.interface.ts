@@ -54,6 +54,14 @@ export interface Asset extends Common {
   speedviewData?: SpeedviewData;
 }
 
+export interface AssetLoadParameters {
+  id: string;
+  share_key?: string;
+  uuid?: string;
+  timeStart?: string;
+  timeEnd?: string;
+}
+
 export interface AssetUrls {
   http?: string;
   https?: string;
