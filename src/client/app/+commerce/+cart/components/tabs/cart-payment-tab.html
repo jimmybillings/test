@@ -3,10 +3,14 @@
      <!--Hold-->
     <section *ngIf="showHoldMessage | async"
       layout="column"
-      layout-align="center start"
+      layout-align="center center"
       md-scroll-y=""
-      flex-gt-lg="30">
-      <h2 class="md-headline">{{ (paymentOptions | async).explanation }}</h2>
+      flex="100">
+      <header flex="100" layout="column" layout-align="start center" class="account-on-hold">
+        <h2 class="commerce-heading">{{ (paymentOptions | async).explanation | translate }}</h2>
+        <p class="instructions">{{ 'CHECKOUT.PAYMENT.HOLD_MSG' | translate:{email_link:'sales-support@wazeedigital.com'} }}</p>
+        <a md-button color="primary" href="{{'mailto:'+('CHECKOUT.PAYMENT.SALES_SUPPORT_EMAIL' | translate)}}">{{ 'CHECKOUT.PAYMENT.SALES_SUPPORT_EMAIL' | translate }}</a>
+      </header>
     </section>
 
     <!--Credit Card-->
@@ -16,7 +20,12 @@
       md-scroll-y=""
       flex-gt-lg="30"
       flex="100">
-      <h2 class="md-headline">{{ (paymentOptions | async).explanation }}</h2>
+
+      <header flex="100" layout="column" layout-align="start">
+        <h2 class="commerce-heading test">{{ (paymentOptions | async).explanation | translate }}</h2>
+        <p class="instructions">{{ 'CHECKOUT.PAYMENT.CREDIT_CARD_MSG' | translate}}</p>
+      </header>
+
       <md-card class="wz-form-card cc-form">
         <md-card-content>
           <wz-cc-form 

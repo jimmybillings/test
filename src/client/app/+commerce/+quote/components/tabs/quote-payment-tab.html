@@ -93,6 +93,9 @@
             (formSubmit)="preAuthorize($event)"></wz-cc-form>
         </md-card-content>
       </md-card>
+      <div flex="100" layout="column" layout-align="start center">
+        <span class="md-caption">{{ ((paymentOptions | async).explanation)+'_MSG' | translate }}</span>
+      </div>
     </section>
 
     <!--Credit Card AND Purchase on Credit-->
@@ -126,6 +129,8 @@
           </md-card-content>
         </md-card>
       </section>
+
+      <!--Purchase on Credit only-->
       <section *ngIf="selectedPaymentOption === 'PurchaseOnCredit'" flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex="100">
         <div>
           <h5 class="md-title">{{ 'CART.PAYMENT.PURCHASE_ON_CREDIT' | translate }}</h5>
