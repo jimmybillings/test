@@ -101,8 +101,9 @@ export class QuoteService {
   public paymentOptionsEqual(options: Array<OrderType>): Observable<boolean> {
     return this.paymentOptions.map((pmtOpts: PaymentOptions) => {
       if (!pmtOpts) return false;
+      pmtOpts.paymentOptions.sort();
       return options.length === pmtOpts.paymentOptions.length &&
-        options.every((option: OrderType, index: number) => option === pmtOpts.paymentOptions[index]);
+        options.sort().every((option: OrderType, index: number) => option === pmtOpts.paymentOptions[index]);
     });
   }
 

@@ -29,6 +29,10 @@ export class CommercePaymentTab extends Tab implements OnInit {
     this.loadStripe();
   }
 
+  public get data(): Observable<any> {
+    return this.commerceService.data.map((state: QuoteState | CartState) => state.data);
+  }
+
   public get formItems(): Observable<any> {
     return this.uiConfig.get('cart').map((config: any) => config.config.payment.items);
   }
@@ -49,13 +53,13 @@ export class CommercePaymentTab extends Tab implements OnInit {
     return this.commerceService.paymentOptionsEqual(['CreditCard', 'PurchaseOnCredit']);
   }
 
-  public selectPurchaseOnCredit(event: any) {
-    if (event.checked) {
-      this.commerceService.updateOrderInProgress('selectedPaymentType', 'PurchaseOnCredit');
-      this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
-    } else {
-      this.disableTab(3);
-    }
+  public selectPurchaseOnCredit() {
+    // if (event.checked) {
+    this.commerceService.updateOrderInProgress('selectedPaymentType', 'PurchaseOnCredit');
+    this.tabNotify.emit({ type: 'GO_TO_NEXT_TAB' });
+    // } else {
+    // this.disableTab(3);
+    // }
   }
 
   public preAuthorize(form: any) {

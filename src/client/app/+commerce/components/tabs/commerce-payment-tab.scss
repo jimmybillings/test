@@ -19,4 +19,17 @@ cart-payment-tab-component, quote-payment-tab {
   .account-on-hold {
     min-height: 286px;
   }
+  .credit-card-and-account-credit {
+    min-height: 360px;
+    md-radio-group {
+      padding: 2px 0 0 18px;
+    }
+    md-card.mat-card.wz-form-card,
+    md-card {
+      margin: 38px 0 8px 0;
+      md-card-content {
+        min-height: 150px;
+      }
+    }
+  }
 }  

@@ -13,7 +13,7 @@
       </header>
     </section>
 
-    <!--Credit Card-->
+    <!--Credit Card only-->
     <section *ngIf="showCreditCardForm | async"
       layout="column"
       layout-align="center start"
@@ -22,7 +22,7 @@
       flex="100">
 
       <header flex="100" layout="column" layout-align="start">
-        <h2 class="commerce-heading test">{{ (paymentOptions | async).explanation | translate }}</h2>
+        <h2 class="commerce-heading">{{ (paymentOptions | async).explanation | translate }}</h2>
         <p class="instructions">{{ 'CHECKOUT.PAYMENT.CREDIT_CARD_MSG' | translate}}</p>
       </header>
 
@@ -37,26 +37,30 @@
             (formSubmit)="preAuthorize($event)"></wz-cc-form>
         </md-card-content>
       </md-card>
+      <div flex="100" layout="column" layout-align="start center">
+        <span class="md-caption">{{ ((paymentOptions | async).explanation)+'_MSG' | translate }}</span>
+      </div>
     </section>
 
     <!--Credit Card AND Purchase on Credit-->
     <div *ngIf="showCreditCardAndPurchaseOnCredit | async"
-      layout="column" layout-gt-xs="row" layout-padding>
-      <section flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex="100">
+      layout="column" layout-gt-xs="row" class="credit-card-and-account-credit">
+      <section flex-gt-lg="35" flex-gt-md="35" flex-md="40" flex="100">
         <header layout="column" layout-align="start">
-          <h2 class="md-headline">{{ (paymentOptions | async).explanation }}</h2>
+          <h2 class="commerce-heading">{{ (paymentOptions | async).explanation | translate }}</h2>
+          <p class="instructions">{{ ((paymentOptions | async).explanation)+'_MSG' | translate }}</p>
         </header>
         <md-radio-group layout="column" class="example-radio-group" (click)="disableTab(3)" [(ngModel)]="selectedPaymentOption">
           <md-radio-button *ngFor="let option of (paymentOptions | async).paymentOptions"
             class="example-radio-button"
             [value]="option">
-            {{option}}
+            {{ ('CHECKOUT.PAYMENT.OPTION'+'_'+option) | uppercase | translate }}
           </md-radio-button>
         </md-radio-group>
       </section>
       <section *ngIf="selectedPaymentOption === 'CreditCard'"
         md-scroll-y=""
-        flex-gt-lg="30"
+        flex-gt-lg="35"
         flex-gt-md="35"
         flex-md="40"
         flex="100">
@@ -68,22 +72,33 @@
               [successfullyVerified]="successfullyVerified | async"
               submitLabel="{{'CART.PAYMENT.VERIFY' | translate}}"
               (onEdit)="editCreditCard()"
-              (formSubmit)="preAuthorize($event)"></wz-cc-form>
+              (formSubmit)="preAuthorize($event)">
+            </wz-cc-form>
           </md-card-content>
         </md-card>
       </section>
       <section *ngIf="selectedPaymentOption === 'PurchaseOnCredit'" flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex="100">
-        <div>
-          <h5 class="md-title">{{ 'CART.PAYMENT.PURCHASE_ON_CREDIT' | translate }}</h5>
-          <p class="instructions">{{ 'CART.PAYMENT.PURCHASE_ON_CREDIT_INSTRUCTIONS' | translate }}</p>
-          <md-checkbox
+        <md-card class="poc-details">
+          <md-card-title>{{ 'CART.PAYMENT.PURCHASE_ON_CREDIT' | translate }}</md-card-title>
+          <md-card-content>
+            <md-card-subtitle class="poc instructions">
+              {{ 'CART.PAYMENT.PURCHASE_ON_CREDIT_INSTRUCTIONS' | translate:{total:(data | async).total | currency:'USD':true:'1.2-2'} }}
+            </md-card-subtitle>
+          </md-card-content>
+          <md-card-actions align="end">
+            <button md-button color="primary" (click)="selectPurchaseOnCredit()">
+              Proceed with credit purchase
+            </button>
+          </md-card-actions>
+        </md-card>
+          <!--<md-checkbox
             (change)="selectPurchaseOnCredit($event)"
             color="primary">
             {{ 'CART.PAYMENT.PURCHASE_ON_CREDIT' | translate }}
-          </md-checkbox>
-        </div>
+          </md-checkbox>-->
       </section>
-      </div>
+      <section flex-lg="35" flex="30" hide-sm hide-xs></section>
+    </div>
 
   </div>
 </div>
