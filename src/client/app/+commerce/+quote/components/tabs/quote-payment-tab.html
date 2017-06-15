@@ -16,13 +16,14 @@
 
     <!--Offline Agreement-->
     <div *ngIf="showOfflineAgreementMessage | async"
-      layout-align-gt-sm="space-between center"
-      layout-align="center center"
+      layout-align="center start"
       layout="column"
-      layout-padding
-      layout-gt-sm="row">
-      <section flex-gt-lg="60" flex-gt-md="55" flex-md="50">
-        <h2 class="md-headline">{{ (paymentOptions | async).explanation }}</h2>
+      layout-gt-xs="row">
+      <section flex-gt-md="30" flex-md="40" flex="100">
+        <header layout="column" layout-align="start">
+          <h2 class="commerce-heading">{{ (paymentOptions | async).explanation | translate }}</h2>
+          <p class="instructions">{{ ((paymentOptions | async).explanation)+'_MSG' | translate }}</p>
+        </header>
         <button
           md-raised-button
           color="primary"
@@ -30,7 +31,12 @@
             Pay Later
         </button>
       </section>
-      <section md-scroll-y="" flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex="100">
+      <section        
+        md-scroll-y=""
+        flex-gt-lg="35"
+        flex-gt-md="35"
+        flex-md="40"
+        flex="100">
         <md-card class="wz-form-card cc-form">
           <md-card-content>
             <wz-cc-form 
@@ -43,6 +49,7 @@
           </md-card-content>
         </md-card>
       </section>
+      <section flex-lg="35" flex="30" hide-sm hide-xs></section>
     </div>
 
     <!--Provisional Order-->
@@ -78,7 +85,7 @@
       flex="100">
 
       <header flex="100" layout="column" layout-align="start">
-        <h2 class="commerce-heading test">{{ (paymentOptions | async).explanation | translate }}</h2>
+        <h2 class="commerce-heading">{{ (paymentOptions | async).explanation | translate }}</h2>
         <p class="instructions">{{ 'CHECKOUT.PAYMENT.CREDIT_CARD_MSG' | translate}}</p>
       </header>
 
