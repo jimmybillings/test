@@ -1,7 +1,7 @@
   <asset-detail #target
     [userEmail]="userEmail"
     [userCan]="userCan"
-    [asset]="assetService.data | async"
+    [asset]="asset"
     [collection]="activeCollection.data | async"
     [uiConfig]="uiConfig"
     [usagePrice]="priceForDetails"
@@ -16,6 +16,7 @@
   >
   </asset-detail>
   <asset-data
-    [asset]="assetService.data | async">
+    [asset]="asset"
+  >
   </asset-data>
 

@@ -8,6 +8,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MaterialModule } from './modules/wz-design/wz-design.module';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 // Shared Wazee Modules
 import { WzPlayerModule } from './modules/wz-player/wz.player.module';
@@ -45,6 +46,7 @@ import { UserService } from './services/user.service';
 import { UiConfig } from './services/ui.config';
 import { WzNotificationService } from './services/wz.notification.service';
 import { AssetService } from './services/asset.service';
+import { FutureAssetService } from './future_services/asset.service';
 import { SearchContext } from './services/search-context.service';
 import { CollectionsService } from './services/collections.service';
 import { ActiveCollectionService } from './services/active-collection.service';
@@ -83,9 +85,8 @@ import { activeQuote, ActiveQuoteStore } from './stores/active-quote.store';
 import { checkout, CheckoutStore } from './stores/checkout.store';
 import { feeConfig, FeeConfigStore } from './stores/fee-config.store';
 import { pricingReducer, PricingStore } from './stores/pricing.store';
+import { reducers } from '../app.store';
 
-
-import { asset } from './services/asset.service';
 import { currentUser } from './services/current-user.service';
 import { config } from './services/ui.config';
 import { uiState } from './services/ui.state';
@@ -97,11 +98,15 @@ import { userPreferences } from './services/user-preference.service';
 import { collectionOptions } from './services/collection-context.service';
 import { sortDefinitions } from './services/sort-definitions.service';
 
+// WAZEE EFFECTS
+import { AssetEffects } from './effects/asset.effects';
+
 const WAZEE_SERVICES = [
   ApiConfig,
   CurrentUserService,
   UiConfig,
   AssetService,
+  FutureAssetService,
   WzNotificationService,
   CollectionsService,
   ActiveCollectionService,
@@ -155,7 +160,6 @@ const WAZEE_PROVIDERS: any = [
 const WAZEE_STORES: any = {
   config: config,
   searchStore: searchStore,
-  asset: asset,
   currentUser: currentUser,
   searchContext: searchContext,
   collections: collections,
@@ -179,6 +183,11 @@ const WAZEE_STORES: any = {
   feeConfig: feeConfig,
   paymentReducer: pricingReducer
 };
+
+const WAZEE_EFFECTS = [
+  EffectsModule.run(AssetEffects)
+];
+
 // Shared pipes
 import { ValuesPipe } from './pipes/values.pipe';
 
@@ -206,7 +215,8 @@ export function createTranslateLoader(http: Http) {
     WzFormModule,
     WzAssetModule,
     WzDialogModule,
-    StoreModule.provideStore(WAZEE_STORES)
+    StoreModule.provideStore({ ...reducers, ...WAZEE_STORES }),  // Eventually this will be just the reducers object...
+    ...WAZEE_EFFECTS
   ],
   declarations: [
     WzGalleryBreadcrumbComponent,

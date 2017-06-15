@@ -20,7 +20,7 @@ export const APP_ROUTES: Routes = [
   { path: 'notification', component: HomeComponent },
   { path: 'user', component: UserManagementComponent },
   { path: 'search', component: SearchComponent, resolve: { search: SearchResolver } },
-  { path: 'asset/:name', component: AssetComponent, canActivate: [AssetGuard], resolve: { asset: AssetResolver } },
+  { path: 'asset/:id', component: AssetComponent, canActivate: [AssetGuard], resolve: { asset: AssetResolver } },
   { path: 'collections', component: CollectionsComponent },
   { path: 'commerce', component: CommerceComponent },
   { path: 'gallery-view', component: GalleryViewComponent, resolve: { gallery: GalleryViewResolver } },

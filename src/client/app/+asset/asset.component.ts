@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CurrentUserService } from '../shared/services/current-user.service';
 import { AssetService } from '../shared/services/asset.service';
 import { ActiveCollectionService } from '../shared/services/active-collection.service';
@@ -20,6 +20,10 @@ import { ErrorStore } from '../shared/stores/error.store';
 import { WindowRef } from '../shared/services/window-ref.service';
 import { QuoteEditService } from '../shared/services/quote-edit.service';
 import { PricingStore } from '../shared/stores/pricing.store';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs/Subscription';
+import { Asset } from '../shared/interfaces/common.interface';
+import { State } from '../app.store';
 
 @Component({
   moduleId: module.id,
@@ -27,9 +31,11 @@ import { PricingStore } from '../shared/stores/pricing.store';
   templateUrl: 'asset.html',
 })
 
-export class AssetComponent implements OnInit {
+export class AssetComponent implements OnInit, OnDestroy {
   public pricingAttributes: any;
   public rightsReproduction: string = '';
+  public asset: Asset;
+  private assetSubscription: Subscription;
   private selectedAttrbutes: any;
   private pageSize: number = 50;
 
@@ -41,6 +47,7 @@ export class AssetComponent implements OnInit {
     public assetService: AssetService,
     public uiConfig: UiConfig,
     public window: WindowRef,
+    private store: Store<State>,
     private userPreference: UserPreferenceService,
     private error: ErrorStore,
     private cart: CartService,
@@ -51,10 +58,18 @@ export class AssetComponent implements OnInit {
     private pricingStore: PricingStore) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
+
+    // Hopefully temporary:  Maintaining a subscription instead of an Observable<Asset> because we need the current asset's
+    // assetId in calculatePrice() below.
+    this.assetSubscription = this.store.select(state => state.asset.currentAsset).subscribe(asset => this.asset = asset);
+  }
+
+  public ngOnDestroy(): void {
+    if (this.assetSubscription) this.assetSubscription.unsubscribe();
   }
 
   public previousPage() {
@@ -178,6 +193,6 @@ export class AssetComponent implements OnInit {
 
   private calculatePrice(attributes: any): Observable<number> {
     this.selectedAttrbutes = attributes;
-    return this.assetService.getPrice(this.assetService.state.assetId, attributes);
+    return this.assetService.getPrice(this.asset.assetId, attributes);
   }
 }
