@@ -57,10 +57,10 @@
 @import '../shared/modules/wz-player/components/wz-advanced-player/wz.advanced-player-theme';
 
 
-@import 'wz-ui/md-dialog-extended-theme';
-@import 'wz-ui/md-menu-extended-theme';
-@import 'wz-ui/modifiers-theme';
-@import 'wz-ui/sticky-footer-theme';
+@import 'theme/md-dialog-extended-theme';
+@import 'theme/md-menu-extended-theme';
+@import 'theme/modifiers-theme';
+@import 'theme/sticky-footer-theme';
 
 @mixin wz-theme($theme) {
   @include wz-asset-data-theme($theme);
