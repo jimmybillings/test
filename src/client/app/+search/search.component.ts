@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, Renderer, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnDestroy, ViewChild, Renderer, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { SearchService } from '../shared/services/search.service';
 import { UiConfig } from '../shared/services/ui.config';
 import { Observable } from 'rxjs/Observable';
@@ -31,7 +31,7 @@ import { SpeedviewEvent, SpeedviewData } from '../shared/interfaces/asset.interf
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class SearchComponent implements OnDestroy, OnInit {
+export class SearchComponent implements OnDestroy {
   public speedviewData: any;
   public screenWidth: number;
   public path: any;
@@ -66,9 +66,6 @@ export class SearchComponent implements OnDestroy, OnInit {
     this.userPreferences = userPreferencesService;
     this.search = searchService;
     this.sortDefinition = sortDefinitionService;
-  }
-
-  ngOnInit(): void {
     this.router.events.subscribe(route => {
       this.path = (this.route.snapshot.params['gq']) ? JSON.parse(this.route.snapshot.params['gq']) : '';
       this.detector.markForCheck();

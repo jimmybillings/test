@@ -104,19 +104,17 @@ export function main() {
         mockUserPreferences, mockRenderer, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, MockRefDetecor, null);
     });
 
-    describe('ngOnInit()', () => {
+    describe('contrustor()', () => {
       it('should not set the path if the "gq" parameter doesn\'t exist', () => {
         mockActivatedRoute = { snapshot: { params: { i: 1, n: 100 } } };
         componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart,
           mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
           mockUserPreferences, mockRenderer, mockWindow, mockSnackBar, mockTranslate, mockActivatedRoute, mockRouter, MockRefDetecor, null);
 
-        componentUnderTest.ngOnInit();
         expect(componentUnderTest.path).toEqual('');
       });
 
       it('should set the path if there is a "gq" parameter', () => {
-        componentUnderTest.ngOnInit();
 
         expect(componentUnderTest.path).toEqual([
           { 'ids': [13, 18], 'names': ['press packet', 'day 04'] },
@@ -259,7 +257,8 @@ export function main() {
         };
         componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter,
           mockCart, mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext,
-          mockUiConfig, mockAssetData, mockUserPreferences, mockRenderer, mockWindow, null, null, null, null, MockRefDetecor, null);
+          mockUiConfig, mockAssetData, mockUserPreferences, mockRenderer, mockWindow, null, null,
+          mockActivatedRoute, mockRouter, MockRefDetecor, null);
         componentUnderTest.downloadComp({ assetId: 3, compType: 'small' });
         expect(mockErrorStore.dispatch).toHaveBeenCalledWith({ status: 'COMPS.NO_COMP' });
       });
@@ -350,7 +349,7 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
           mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, null, null, null, null, MockRefDetecor, null);
+          mockUserPreferences, mockRenderer, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ i: 1 });
       });
@@ -359,7 +358,7 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [1, 2, 3], values: [] });
         componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
           mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, null, null, null, null, MockRefDetecor, null);
+          mockUserPreferences, mockRenderer, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ 'filterIds': '1,2,3' });
       });
@@ -368,7 +367,7 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
           mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, null, null, null, null, MockRefDetecor, null);
+          mockUserPreferences, mockRenderer, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.remove).toEqual('filterIds');
       });
@@ -377,7 +376,7 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: ['cat', 'dog'] });
         componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart,
           mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, null, null, null, null, MockRefDetecor, null);
+          mockUserPreferences, mockRenderer, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.update).toEqual({ 'filterValues': 'cat,dog' });
       });
@@ -386,7 +385,7 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart, mockAssetService,
           mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, null, null, null, null, MockRefDetecor, null);
+          mockUserPreferences, mockRenderer, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.remove).toEqual('filterValues');
       });
@@ -395,7 +394,7 @@ export function main() {
         mockFilter.getActive = jasmine.createSpy('getActive').and.returnValue({ filters: [], ids: [], values: [] });
         componentUnderTest = new SearchComponent(null, mockUserCan, mockActiveCollection, mockFilter, mockCart,
           mockAssetService, mockSortDefinition, mockErrorStore, mockSearchContext, mockUiConfig, mockAssetData,
-          mockUserPreferences, mockRenderer, mockWindow, null, null, null, null, MockRefDetecor, null);
+          mockUserPreferences, mockRenderer, mockWindow, null, null, mockActivatedRoute, mockRouter, MockRefDetecor, null);
         componentUnderTest.filterEvent({ event: 'clearFilters', filter: { filterId: 1 } });
         expect(mockSearchContext.go).toHaveBeenCalled();
       });

@@ -28,7 +28,7 @@
     "tslint",
     "build.assets.prod",
     "build.html_css",
-    "build.sass",
+    "build.all.scss",
     "copy.prod",
     "build.js.prod",
     "build.bundles",
