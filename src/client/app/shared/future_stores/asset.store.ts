@@ -8,7 +8,7 @@ export interface State {
   loaded: boolean;
 };
 
-const initialState: State = {
+export const initialState: State = {
   currentAsset: { assetId: 0, name: '' },
   loaded: false
 };
@@ -16,7 +16,7 @@ const initialState: State = {
 export function reducer(state: State = initialState, action: AssetActions.All): State {
   switch (action.type) {
     case AssetActions.LOAD: {
-      return initialState;
+      return JSON.parse(JSON.stringify(initialState));
     }
 
     case AssetActions.LOAD_SUCCESS: {

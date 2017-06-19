@@ -1,33 +1,30 @@
 import * as AssetStore from './asset.store';
 import * as AssetActions from '../actions/asset.actions';
-import { addStandardReducerTestsFor } from '../tests/reducer';
+import { addFutureStandardReducerTestsFor } from '../tests/reducer';
 
 export function main() {
   describe('Asset Reducer', () => {
-    const initialState: AssetStore.State = {
-      currentAsset: { assetId: 0, name: '' },
-      loaded: false
-    };
-
     describe('for AssetActions.LOAD', () => {
-      addStandardReducerTestsFor(AssetStore.reducer, AssetActions.LOAD, initialState);
+      const tempCurrentState = { currentAsset: { assetId: 123, name: 'George' }, loaded: true };
+
+      addFutureStandardReducerTestsFor(AssetStore.reducer, AssetActions.LOAD, AssetStore.initialState, null, tempCurrentState);
 
       it('returns initialState when current state is passed in', () => {
         expect(AssetStore.reducer(
           { currentAsset: { assetId: 123, name: 'fred' }, loaded: true },
           new AssetActions.Load({} as any)
-        )).toEqual(initialState);
+        )).toEqual(AssetStore.initialState);
       });
 
       it('returns initialState when current state is not passed in', () => {
         expect(AssetStore.reducer(
           undefined, new AssetActions.Load({} as any)
-        )).toEqual(initialState);
+        )).toEqual(AssetStore.initialState);
       });
     });
 
     describe('for AssetActions.LOAD_SUCCESS', () => {
-      addStandardReducerTestsFor(AssetStore.reducer, AssetActions.LOAD_SUCCESS, initialState);
+      addFutureStandardReducerTestsFor(AssetStore.reducer, AssetActions.LOAD_SUCCESS, AssetStore.initialState);
 
       it('returns an updated state when current state is passed in', () => {
         expect(AssetStore.reducer(
@@ -56,7 +53,7 @@ export function main() {
         expect(AssetStore.reducer(
           undefined,
           { type: 'BLAH', payload: { someKey: 'someValue' } } as any
-        )).toEqual(initialState);
+        )).toEqual(AssetStore.initialState);
       });
     });
   });
