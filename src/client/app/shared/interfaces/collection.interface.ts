@@ -24,3 +24,10 @@ export interface CollectionItems {
   items?: Asset[];
   pagination?: Pagination;
 }
+
+export interface CollectionItemMarkersUpdater {
+  uuid: string,
+  assetId: number,
+  timeStart: string,
+  timeEnd: string
+}
