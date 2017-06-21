@@ -3,16 +3,16 @@ $tr-duration: 300ms;
 
 two-level-view {
   width: 100%;
-  padding: rem(3.2) 0 rem(3.0) 0;
+  padding: 32px 0 30px 0;
   & > section {
-    margin: rem(1.0) 0;
+    margin: 10px 0;
     h3 {
       text-transform: capitalize;
       font-weight: 500;
       font-size: 1.4em;
-      margin: 0 0  rem(-.8) rem(5.0);
+      margin: 0 0  -8px 50px;
       @media screen and (max-width: $layout-breakpoint-sm) {
-        margin-left: rem(3.0);
+        margin-left: 30px;
       }
     }
   }
@@ -26,13 +26,13 @@ two-level-view .carousel-hover-trigger {
 two-level-view .carousel {
   font-size: 0;
   line-height: 0;
-  padding: rem(1.6) rem(5.0);
-  margin: 0 0 0 rem(-.4);
+  padding: 16px 50px;
+  margin: 0 0 0 -4px;
   @media screen and (min-width: $layout-breakpoint-md) {
-    margin: 0 0 0 rem(-.5);
+    margin: 0 0 0 -5px;
   }
   @media screen and (max-width: $layout-breakpoint-sm) {
-    padding: rem(1.6) rem(3.0);
+    padding: 16px 30px;
   }
   overflow-x: scroll;
   .carousel-mask {
@@ -46,9 +46,9 @@ two-level-view .carousel {
     top: 0;
     bottom: 0;
     height: 100%;
-    width: rem(5.0);
+    width: 50px;
     @media screen and (max-width: $layout-breakpoint-sm) {
-      width: rem(3.0);
+      width: 30px;
     }
   }
   .carousel-previous {
@@ -118,26 +118,26 @@ two-level-view .carousel .carousel-content-12 .carousel-item {
     display: inline-block;
     box-sizing: border-box;
     vertical-align: bottom;
-    margin: 0 0 0 rem(.4);
+    margin: 0 0 0 4px;
     @media screen and (min-width: $layout-breakpoint-md) {
-      margin: 0 0 0 rem(.5);
+      margin: 0 0 0 5px;
       width: calc(16.6666% - 5px);
     }
     @media screen and (max-width: $layout-breakpoint-md) {
-      // margin: 0 0 0 rem(.4);
+      // margin: 0 0 0 4px;
       width: calc(20% - 4px);
     }
     @media screen and (max-width: $layout-breakpoint-sm) {
-      // margin: 0 0 0 rem(.4);
+      // margin: 0 0 0 4px;
       width: calc(25% - 4px);
       // width: 25%;
     }
     @media screen and (max-width: $layout-breakpoint-xs) and (orientation: landscape) {
-      // margin: 0 0 0 rem(.4);
+      // margin: 0 0 0 4px;
       width: calc(33.3333% - 4px);
     }
     @media screen and (max-width: $layout-breakpoint-xs) and (orientation: portrait)  {
-      // margin: 0 0 0 rem(.4);
+      // margin: 0 0 0 4px;
       width: calc(50% - 4px);
     }
     transform-origin: center center;
@@ -238,7 +238,7 @@ two-level-view .carousel .carousel-content-12 .carousel-item {
         left:0;
         width: calc(100% - 20px);
         height: calc(100% - 10px);
-        padding: rem(.5) rem(1.0);
+        padding: 5px 10px;
         min-height: 23.333%;
         .item-label {
           position: absolute;
@@ -246,16 +246,12 @@ two-level-view .carousel .carousel-content-12 .carousel-item {
           bottom: 24%;
           text-align: center;
           text-transform: uppercase;
-          font-weight: 500;
-          font-size: rem(3.0);
+          font-weight: 400;
+          font-size: 21px;
           line-height: 1;
           white-space: normal;
           text-shadow: mat-color($mat-grey, 900, .66) 0 1px 4px;
           z-index: 2;
-          &.promotional {
-            font-weight: 400;
-            font-size: rem(2.7);
-          }
         }
       }
     }
