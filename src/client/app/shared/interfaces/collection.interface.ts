@@ -25,6 +25,16 @@ export interface CollectionItems {
   pagination?: Pagination;
 }
 
+export interface CollectionItemsResponse {
+  items: Asset[],
+  totalCount: number,
+  currentPage: number,
+  pageSize: number,
+  hasNextPage: boolean,
+  hasPreviousPage: boolean,
+  numberOfPages: number
+}
+
 export interface CollectionItemMarkersUpdater {
   uuid: string,
   assetId: number,

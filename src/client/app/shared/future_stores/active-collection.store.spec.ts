@@ -7,34 +7,19 @@ import { addFutureStandardReducerTestsFor } from '../tests/reducer';
 
 export function main() {
   describe('Active Collection Reducer', () => {
-    describe('for ActiveCollectionActions.UPDATE', () => {
+    describe('for ActiveCollectionActions.UPDATE_SUMMARY', () => {
       addFutureStandardReducerTestsFor(
-        ActiveCollectionStore.reducer, ActiveCollectionActions.UPDATE, ActiveCollectionStore.initialState
+        ActiveCollectionStore.reducer, ActiveCollectionActions.UPDATE_SUMMARY, ActiveCollectionStore.initialState
       );
 
-      it('returns current state merged with payload when current state is passed in', () => {
-        expect(ActiveCollectionStore.reducer(
-          { property1: 'existing1', property2: 'existing2' } as any,
-          new ActiveCollectionActions.Update({ property1: 'new', other: 'stuff' } as any)
-        )).toEqual({ property1: 'new', property2: 'existing2', other: 'stuff', assetsCount: 0 });
-      });
+      it('returns initial state merged with payload when current state is passed in', () => {
+        const expectedResult = JSON.parse(JSON.stringify(ActiveCollectionStore.initialState));
+        expectedResult.name = 'Fred';
 
-      it('does not update assetCount if payload assets do not contain pagination information', () => {
         expect(ActiveCollectionStore.reducer(
           { property1: 'existing1', property2: 'existing2' } as any,
-          new ActiveCollectionActions.Update({ property1: 'new', other: 'stuff', assets: {} } as any)
-        )).toEqual({ property1: 'new', property2: 'existing2', other: 'stuff', assets: {}, assetsCount: 0 });
-      });
-
-      it('updates assetCount if payload assets contains pagination information', () => {
-        expect(ActiveCollectionStore.reducer(
-          { property1: 'existing1', property2: 'existing2' } as any,
-          new ActiveCollectionActions.Update({
-            property1: 'new', other: 'stuff', assets: { pagination: { totalCount: 42 } }
-          } as any)
-        )).toEqual({
-          property1: 'new', property2: 'existing2', other: 'stuff', assets: { pagination: { totalCount: 42 } }, assetsCount: 42
-        });
+          new ActiveCollectionActions.UpdateSummary({ name: 'Fred' } as any)
+        )).toEqual(expectedResult);
       });
 
       it('returns initial state merged with payload when current state is not passed in', () => {
@@ -43,8 +28,73 @@ export function main() {
 
         expect(ActiveCollectionStore.reducer(
           undefined,
-          new ActiveCollectionActions.Update({ name: 'Fred' } as any)
+          new ActiveCollectionActions.UpdateSummary({ name: 'Fred' } as any)
         )).toEqual(expectedResult);
+      });
+    });
+
+    describe('for ActiveCollectionActions.UPDATE_ASSETS', () => {
+      addFutureStandardReducerTestsFor(
+        ActiveCollectionStore.reducer, ActiveCollectionActions.UPDATE_ASSETS, ActiveCollectionStore.initialState
+      );
+
+      it('returns current state merged with payload when current state is passed in', () => {
+        expect(ActiveCollectionStore.reducer(
+          { property1: 'existing1', property2: 'existing2' } as any,
+          new ActiveCollectionActions.UpdateAssets({
+            items: [{ some: 'item1' }, { some: 'item2' }],
+            totalCount: 2,
+            currentPage: 0,
+            pageSize: 100,
+            hasNextPage: false,
+            hasPreviousPage: false,
+            numberOfPages: 1
+          } as any)
+        )).toEqual({
+          property1: 'existing1',
+          property2: 'existing2',
+          assets: {
+            items: [{ some: 'item1' }, { some: 'item2' }],
+            pagination: {
+              totalCount: 2,
+              currentPage: 1,
+              pageSize: 100,
+              hasNextPage: false,
+              hasPreviousPage: false,
+              numberOfPages: 1
+            }
+          },
+          assetsCount: 2
+        });
+      });
+
+      it('returns initial state merged with payload when current state is not passed in', () => {
+        expect(ActiveCollectionStore.reducer(
+          undefined,
+          new ActiveCollectionActions.UpdateAssets({
+            items: [{ some: 'item1' }, { some: 'item2' }],
+            totalCount: 2,
+            currentPage: 0,
+            pageSize: 100,
+            hasNextPage: false,
+            hasPreviousPage: false,
+            numberOfPages: 1
+          } as any)
+        )).toEqual({
+          ...JSON.parse(JSON.stringify(ActiveCollectionStore.initialState)),
+          assets: {
+            items: [{ some: 'item1' }, { some: 'item2' }],
+            pagination: {
+              totalCount: 2,
+              currentPage: 1,
+              pageSize: 100,
+              hasNextPage: false,
+              hasPreviousPage: false,
+              numberOfPages: 1
+            }
+          },
+          assetsCount: 2
+        });
       });
     });
 
@@ -207,7 +257,7 @@ export function main() {
             },
             assetsCount: 2
           } as any,
-          new ActiveCollectionActions.UpdateAsset({ assetId: 42, uuid: 't123', timeStart: '1234', timeEnd: '5678' })
+          new ActiveCollectionActions.UpdateAssetMarkers({ assetId: 42, uuid: 't123', timeStart: '1234', timeEnd: '5678' })
         )).toEqual({
           assets: {
             pagination: { totalCount: 2 },
@@ -226,7 +276,7 @@ export function main() {
             },
             assetsCount: 2
           } as any,
-          new ActiveCollectionActions.UpdateAsset({ assetId: 86, uuid: 't789', timeStart: '1234', timeEnd: '5678' })
+          new ActiveCollectionActions.UpdateAssetMarkers({ assetId: 86, uuid: 't789', timeStart: '1234', timeEnd: '5678' })
         )).toEqual({
           assets: {
             pagination: { totalCount: 2 },
@@ -239,21 +289,21 @@ export function main() {
       it('returns current state when current state is passed in with assets undefined', () => {
         expect(ActiveCollectionStore.reducer(
           {} as any,
-          new ActiveCollectionActions.UpdateAsset({ assetId: 86, uuid: 't456', timeStart: '1234', timeEnd: '5678' })
+          new ActiveCollectionActions.UpdateAssetMarkers({ assetId: 86, uuid: 't456', timeStart: '1234', timeEnd: '5678' })
         )).toEqual({});
       });
 
       it('returns current state when current state is passed in with items undefined', () => {
         expect(ActiveCollectionStore.reducer(
           { assets: {} } as any,
-          new ActiveCollectionActions.UpdateAsset({ assetId: 86, uuid: 't456', timeStart: '1234', timeEnd: '5678' })
+          new ActiveCollectionActions.UpdateAssetMarkers({ assetId: 86, uuid: 't456', timeStart: '1234', timeEnd: '5678' })
         )).toEqual({ assets: {} });
       });
 
       it('ignores payload and returns initial state when state is not passed in', () => {
         expect(ActiveCollectionStore.reducer(
           undefined,
-          new ActiveCollectionActions.UpdateAsset({ assetId: 86, uuid: 't456', timeStart: '1234', timeEnd: '5678' })
+          new ActiveCollectionActions.UpdateAssetMarkers({ assetId: 86, uuid: 't456', timeStart: '1234', timeEnd: '5678' })
         )).toEqual(ActiveCollectionStore.initialState);
       });
     });
