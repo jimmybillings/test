@@ -1,17 +1,23 @@
 import { Action } from '@ngrx/store';
 
-import { Collection, CollectionItemMarkersUpdater } from '../interfaces/collection.interface';
+import { Collection, CollectionItemMarkersUpdater, CollectionItemsResponse } from '../interfaces/collection.interface';
 import { Asset } from '../interfaces/common.interface';
 
-export const UPDATE = '[Active Collection] Update';
+export const UPDATE_SUMMARY = '[Active Collection] Update';
+export const UPDATE_ASSETS = '[Active Collection] Update Assets';
 export const RESET = '[Active Collection] Reset';
 export const ADD_ASSET = '[Active Collection] Add Asset';
 export const REMOVE_ASSET = '[Active Collection] Remove Asset';
 export const UPDATE_ASSET_MARKERS = '[Active Collection] Update Asset Markers';
 
-export class Update implements Action {
-  readonly type = UPDATE;
+export class UpdateSummary implements Action {
+  readonly type = UPDATE_SUMMARY;
   constructor(public payload: Collection) { }
+}
+
+export class UpdateAssets implements Action {
+  readonly type = UPDATE_ASSETS;
+  constructor(public payload: CollectionItemsResponse) { }
 }
 
 export class Reset implements Action {
@@ -28,9 +34,9 @@ export class RemoveAsset implements Action {
   constructor(public payload: Asset) { }
 }
 
-export class UpdateAsset implements Action {
+export class UpdateAssetMarkers implements Action {
   readonly type = UPDATE_ASSET_MARKERS;
   constructor(public payload: CollectionItemMarkersUpdater) { }
 }
 
-export type All = Update | Reset | AddAsset | RemoveAsset | UpdateAsset;
+export type All = UpdateSummary | UpdateAssets | Reset | AddAsset | RemoveAsset | UpdateAssetMarkers;

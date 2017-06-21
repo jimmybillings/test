@@ -73,7 +73,6 @@ import { QuoteEditService } from './services/quote-edit.service';
 import { searchStore, SearchStore } from './stores/search.store';
 import { cart, CartStore } from './stores/cart.store';
 import { collections, CollectionsStore } from './stores/collections.store';
-import { activeCollection, ActiveCollectionStore } from './stores/active-collection.store';
 import { errorStore, ErrorStore } from './stores/error.store';
 import { order, OrderStore } from './stores/order.store';
 import { orders, OrdersStore } from './stores/orders.store';
@@ -137,7 +136,6 @@ const WAZEE_SERVICES = [
 const WAZEE_STORE_INTERFACES = [
   ErrorStore,
   CollectionsStore,
-  ActiveCollectionStore,
   CartStore,
   FeatureStore,
   SearchStore,
@@ -163,7 +161,6 @@ const WAZEE_STORES: any = {
   currentUser: currentUser,
   searchContext: searchContext,
   collections: collections,
-  activeCollection: activeCollection,
   uiState: uiState,
   filters: filters,
   userPreferences: userPreferences,

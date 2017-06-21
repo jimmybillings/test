@@ -1,34 +1,39 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
 
-import { ActiveCollectionStore } from '../stores/active-collection.store';
-import { Collection } from '../interfaces/collection.interface';
+import { Collection, CollectionItemsResponse, CollectionItemMarkersUpdater } from '../interfaces/collection.interface';
+import { Asset } from '../interfaces/common.interface';
 import { ApiService } from './api.service';
 import { Api } from '../interfaces/api.interface';
 import { SubclipMarkers } from '../interfaces/asset.interface';
 import { Frame } from 'wazee-frame-formatter';
+import { State } from '../../app.store';
+import * as ActiveCollectionActions from '../actions/active-collection.actions';
 
 @Injectable()
 export class ActiveCollectionService implements OnInit {
   public params: any;
 
-  constructor(private store: ActiveCollectionStore, public api: ApiService) { }
+  constructor(private store: Store<State>, public api: ApiService) { }
 
   ngOnInit(): void {
     this.setSearchParams();
   }
 
   public get data(): Observable<Collection> {
-    return this.store.data;
+    return this.store.select(state => state.activeCollection);
   }
 
-  public get state(): any {
-    return this.store.state;
+  public get state(): Collection {
+    let state: Collection;
+    this.data.take(1).subscribe(latestState => state = latestState);
+    return state;
   }
 
   // TODO: Outside world shouldn't need to call this.
   public resetStore(): void {
-    this.store.reset();
+    this.store.dispatch(new ActiveCollectionActions.Reset());
   }
 
   public isActiveCollection(collectionId: number): boolean {
@@ -36,14 +41,14 @@ export class ActiveCollectionService implements OnInit {
   }
 
   public collectionIncludes(uuid: string) {
-    return this.state.assets.items.find((item: any) => uuid === item.uuid);
+    return this.state.assets.items.find((item: Asset) => uuid === item.uuid);
   }
 
   public load(collectionId?: number, params: any = { i: 0, n: 100 }): Observable<any> {
     if (!collectionId) {
       return this.api.get(Api.Assets, 'collectionSummary/focused', { loadingIndicator: true })
         .flatMap((response: any) => {
-          this.store.updateTo(response as Collection);
+          this.store.dispatch(new ActiveCollectionActions.UpdateSummary(response));
           return this.getItems(response.id, { i: 1, n: 100 });
         });
     } else {
@@ -83,25 +88,22 @@ export class ActiveCollectionService implements OnInit {
         Api.Identities,
         `collection/${collection.id}/removeAssets`,
         { body: { list: [uuid] }, loadingIndicator: true })
-        .do(response => this.store.remove(response['list'][0]));
+        .do(response => this.store.dispatch(new ActiveCollectionActions.RemoveAsset(assetToBeRemoved)));
     } else {
       return Observable.of({});
     }
   }
 
   public updateAsset(id: any, asset: any, updatedMarkers: SubclipMarkers): Observable<any> {
-    return this.api.put(
-      Api.Identities,
-      `collection/${id}/updateAsset`,
-      {
-        body: {
-          uuid: asset.uuid,
-          assetId: asset.assetId,
-          timeStart: this.timeStartFrom(updatedMarkers),
-          timeEnd: this.timeEndFrom(updatedMarkers)
-        }
-      }
-    ).do(data => this.store.updateAsset(data));
+    const updater: CollectionItemMarkersUpdater = {
+      uuid: asset.uuid,
+      assetId: asset.assetId,
+      timeStart: this.timeStartFrom(updatedMarkers),
+      timeEnd: this.timeEndFrom(updatedMarkers)
+    };
+
+    return this.api.put(Api.Identities, `collection/${id}/updateAsset`, { body: updater })
+      .do(data => this.store.dispatch(new ActiveCollectionActions.UpdateAssetMarkers(updater)));
   }
 
   public getItems(collectionId: number, collectionParams: any, set: boolean = true, loadingIndicator: boolean = true): Observable<any> {
@@ -112,7 +114,9 @@ export class ActiveCollectionService implements OnInit {
       Api.Assets,
       `collectionSummary/assets/${collectionId}`,
       { parameters: this.params, loadingIndicator: loadingIndicator }
-    ).do(response => { if (set) { this.store.updateAssetsTo(response); } });
+    ).do(response => {
+      if (set) { this.store.dispatch(new ActiveCollectionActions.UpdateAssets(response as CollectionItemsResponse)) }
+    });
   }
 
   private set(collectionId: number, params?: any): Observable<any> {
@@ -120,8 +124,8 @@ export class ActiveCollectionService implements OnInit {
       this.api.put(Api.Assets, `collectionSummary/setFocused/${collectionId}`, { loadingIndicator: true }),
       this.getItems(collectionId, params, false)
     ]).do((data: any) => {
-      this.store.updateTo(data[0]);
-      this.store.updateAssetsTo(data[1]);
+      this.store.dispatch(new ActiveCollectionActions.UpdateSummary(data[0]));
+      this.store.dispatch(new ActiveCollectionActions.UpdateAssets(data[1]));
     });
   }
 
@@ -129,12 +133,12 @@ export class ActiveCollectionService implements OnInit {
     this.params = { 's': '', 'd': '', 'i': '0', 'n': '50' };
   }
 
-  private timeStartFrom(markers: SubclipMarkers): number {
-    return markers && markers.in ? this.toMilliseconds(markers.in) : -1;
+  private timeStartFrom(markers: SubclipMarkers): string {
+    return String(markers && markers.in ? this.toMilliseconds(markers.in) : -1);
   }
 
-  private timeEndFrom(markers: SubclipMarkers): number {
-    return markers && markers.out ? this.toMilliseconds(markers.out) : -2;
+  private timeEndFrom(markers: SubclipMarkers): string {
+    return String(markers && markers.out ? this.toMilliseconds(markers.out) : -2);
   }
 
   private toMilliseconds(frame: Frame): number {
