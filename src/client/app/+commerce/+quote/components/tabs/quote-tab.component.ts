@@ -4,6 +4,8 @@ import { Quote } from '../../../../shared/interfaces/commerce.interface';
 import { Tab } from '../../../components/tabs/tab';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { Observable } from 'rxjs/Observable';
+import { FeatureStore } from '../../../../shared/stores/feature.store';
+import { Feature } from '../../../../shared/interfaces/feature.interface';
 
 @Component({
   moduleId: module.id,
@@ -13,7 +15,8 @@ import { Observable } from 'rxjs/Observable';
 
 export class QuoteTabComponent extends Tab {
   public quote: Observable<Quote>;
-  constructor(public quoteService: QuoteService, public userCan: CommerceCapabilities) {
+
+  constructor(public quoteService: QuoteService, public userCan: CommerceCapabilities, public featureStore: FeatureStore) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
   }
@@ -21,5 +24,15 @@ export class QuoteTabComponent extends Tab {
   public checkout(): void {
     this.quoteService.getPaymentOptions();
     this.goToNextTab();
+  }
+
+  public get shouldShowLicenseDetailsBtn(): boolean {
+    let hasAssets: boolean;
+    this.quoteService.hasAssets.take(1).subscribe((has: boolean) => hasAssets = has);
+    return hasAssets && this.featureStore.isAvailable(Feature.disableCommerceAgreements);
+  }
+
+  public showLicenseAgreements(): void {
+    console.log('show license agreements');
   }
 }

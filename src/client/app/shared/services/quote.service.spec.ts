@@ -27,8 +27,8 @@ export function main() {
         state: { cart: { projects: [] } }
       };
       mockQuoteStore = {
-        data: Observable.of({ id: 3, ownerUserId: 10 }),
-        state: { id: 3, ownerUserId: 10 },
+        data: Observable.of({ data: { id: 3, ownerUserId: 10, itemCount: 1 } }),
+        state: { data: { id: 3, ownerUserId: 10, itemCount: 1 } },
         updateQuote: jasmine.createSpy('updateQuote')
       };
       mockCheckoutStore = { updateOrderInProgress: jasmine.createSpy('updateOrderInProgress') };
@@ -39,14 +39,20 @@ export function main() {
     describe('data getter', () => {
       it('should return the right data', () => {
         serviceUnderTest.data.take(1).subscribe(d => {
-          expect(d).toEqual({ id: 3, ownerUserId: 10 });
+          expect(d).toEqual({ data: { id: 3, ownerUserId: 10, itemCount: 1 } });
         });
       });
     });
 
     describe('state getter', () => {
       it('should return the right state', () => {
-        expect(serviceUnderTest.state).toEqual({ id: 3, ownerUserId: 10 });
+        expect(serviceUnderTest.state).toEqual({ data: { id: 3, ownerUserId: 10, itemCount: 1 } });
+      });
+    });
+
+    describe('get hasAssets', () => {
+      it('should return true if there are assets in the quote', () => {
+        serviceUnderTest.hasAssets.take(1).subscribe((has: boolean) => expect(has).toBe(true));
       });
     });
 

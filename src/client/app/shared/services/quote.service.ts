@@ -58,6 +58,10 @@ export class QuoteService {
     return this.checkoutData.map((data: CheckoutState) => data.paymentOptions);
   }
 
+  public get hasAssets(): Observable<boolean> {
+    return this.data.map((state: QuoteState) => (state.data.itemCount || 0) > 0);
+  }
+
   // Public Interface
 
   public getQuote(quoteId: number): Observable<Quote> {
