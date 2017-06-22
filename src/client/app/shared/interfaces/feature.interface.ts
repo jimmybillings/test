@@ -1,6 +1,7 @@
 export enum Feature {
   disableCollectionAccess,
-  disableCartAccess
+  disableCartAccess,
+  disableCommerceAgreements
 };
 
 export interface Features {

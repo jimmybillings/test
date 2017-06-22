@@ -5,7 +5,8 @@ import { Feature, Features } from '../interfaces/feature.interface';
 
 const initState: Features = {
   disableCartAccess: false,
-  disableCollectionAccess: false
+  disableCollectionAccess: false,
+  disableCommerceAgreements: false
 };
 
 export function features(state: Features = initState, action: Action) {

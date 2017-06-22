@@ -13,6 +13,8 @@ import { ErrorStore } from '../../../../shared/stores/error.store';
 import { WindowRef } from '../../../../shared/services/window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PricingStore } from '../../../../shared/stores/pricing.store';
+import { FeatureStore } from '../../../../shared/stores/feature.store';
+import { Feature } from '../../../../shared/interfaces/feature.interface';
 
 @Component({
   moduleId: module.id,
@@ -22,7 +24,6 @@ import { PricingStore } from '../../../../shared/stores/pricing.store';
 })
 
 export class CartTabComponent extends CommerceEditTab {
-
   constructor(
     public userCan: CommerceCapabilities,
     public cartService: CartService,
@@ -35,7 +36,8 @@ export class CartTabComponent extends CommerceEditTab {
     @Inject(DOCUMENT) public document: any,
     public snackBar: MdSnackBar,
     public translate: TranslateService,
-    public pricingStore: PricingStore
+    public pricingStore: PricingStore,
+    public featureStore: FeatureStore
   ) {
     super(
       userCan, cartService, uiConfig, dialogService, assetService, window,
@@ -46,5 +48,15 @@ export class CartTabComponent extends CommerceEditTab {
   public checkout(): void {
     this.goToNextTab();
     this.cartService.getPaymentOptions();
+  }
+
+  public get shouldShowLicenseDetailsBtn(): boolean {
+    let hasAssets: boolean;
+    this.commerceService.hasAssets.take(1).subscribe((has: boolean) => hasAssets = has);
+    return hasAssets && this.featureStore.isAvailable(Feature.disableCommerceAgreements);
+  }
+
+  public showLicenseAgreements(): void {
+    console.log('show license agreements');
   }
 }
