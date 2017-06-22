@@ -27,7 +27,7 @@
 				<md-card-title>You currently do not have any quotes</md-card-title>
 			</md-card>
       <commerce-list
-				*ngIf="(quotes | async).items.length > 0"
+				*ngIf="(quotes | async).items"
 				[type]="'QUOTE'"
 				[items]="(quotes | async).items"
 				[userCanAdministerQuotes]="userCan.administerQuotes()"
