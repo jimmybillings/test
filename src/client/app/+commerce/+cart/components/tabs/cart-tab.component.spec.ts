@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: CartTabComponent;
 
     beforeEach(() => {
-      componentUnderTest = new CartTabComponent(null, null, null, null, null, null, null, null, null, null, null, null);
+      componentUnderTest = new CartTabComponent(null, null, null, null, null, null, null, null, null, null, null, null, null);
     });
 
     it('has no tests!', () => {

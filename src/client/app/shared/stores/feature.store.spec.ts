@@ -5,7 +5,8 @@ import { Observable } from 'rxjs/Observable';
 export function main() {
   const initState: any = {
     disableCartAccess: false,
-    disableCollectionAccess: false
+    disableCollectionAccess: false,
+    disableCommerceAgreements: false,
   };
 
   describe('features reducer', () => {
@@ -14,6 +15,7 @@ export function main() {
         .toEqual({
           disableCartAccess: false,
           disableCollectionAccess: false,
+          disableCommerceAgreements: false,
           key: 'value'
         });
     });
