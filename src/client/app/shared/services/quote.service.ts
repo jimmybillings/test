@@ -14,7 +14,8 @@ import {
   AddressPurchaseOptions,
   CreditCardPurchaseOptions,
   PurchaseOptions,
-  PaymentOptions
+  PaymentOptions,
+  Project
 } from '../../shared/interfaces/commerce.interface';
 import { QuoteStore } from '../../shared/stores/quote.store';
 import { CheckoutStore } from '../../shared/stores/checkout.store';
@@ -60,6 +61,14 @@ export class QuoteService {
 
   public get hasAssets(): Observable<boolean> {
     return this.data.map((state: QuoteState) => (state.data.itemCount || 0) > 0);
+  }
+
+  public get hasAssetLineItems(): Observable<boolean> {
+    return this.data.map((state: QuoteState) => {
+      return state.data.projects.reduce((previous: number, current: Project) => {
+        return current.lineItems ? previous += current.lineItems.length : 0;
+      }, 0) > 0;
+    });
   }
 
   // Public Interface

@@ -61,6 +61,14 @@ export class QuoteEditService {
     return this.quote.map((data: any) => data[prop]);
   }
 
+  public get hasAssetLineItems(): Observable<boolean> {
+    return this.data.map((state: QuoteState) => {
+      return state.data.projects.reduce((previous: number, current: Project) => {
+        return current.lineItems ? previous += current.lineItems.length : 0;
+      }, 0) > 0;
+    });
+  }
+
   // Public Api
 
   public getFocusedQuote(): Observable<Quote> {

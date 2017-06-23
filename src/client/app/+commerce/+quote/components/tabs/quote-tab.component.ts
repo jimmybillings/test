@@ -27,9 +27,7 @@ export class QuoteTabComponent extends Tab {
   }
 
   public get shouldShowLicenseDetailsBtn(): boolean {
-    let hasAssets: boolean;
-    this.quoteService.hasAssets.take(1).subscribe((has: boolean) => hasAssets = has);
-    return hasAssets && this.featureStore.isAvailable(Feature.disableCommerceAgreements);
+    return this.userCan.viewLicenseAgreementsButton(this.quoteService.hasAssetLineItems);
   }
 
   public showLicenseAgreements(): void {

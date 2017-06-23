@@ -72,4 +72,10 @@ export class CommerceCapabilities {
 
     return null;
   }
+
+  public viewLicenseAgreementsButton(cartHasAssets: Observable<boolean>): boolean {
+    let hasAssets: boolean;
+    cartHasAssets.take(1).subscribe((has: boolean) => hasAssets = has);
+    return this.feature.isAvailable(Feature.disableCommerceAgreements) && hasAssets;
+  }
 }

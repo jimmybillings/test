@@ -80,6 +80,14 @@ export class CartService {
     return this.checkoutData.map((data: CheckoutState) => data.paymentOptions);
   }
 
+  public get hasAssetLineItems(): Observable<boolean> {
+    return this.cart.map((cart: Cart) => {
+      return cart.projects.reduce((previous: number, current: Project) => {
+        return current.lineItems ? previous += current.lineItems.length : 0;
+      }, 0) > 0;
+    });
+  }
+
   // Loads the cart and returns just the observable's termination notification,
   // because our subscribers care about the fact that we are complete, but they
   // should be getting the data elsewhere.  Also, we take a detour to add a project
