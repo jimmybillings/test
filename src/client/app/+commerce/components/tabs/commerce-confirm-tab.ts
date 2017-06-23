@@ -13,6 +13,8 @@ export class CommerceConfirmTab extends Tab {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
   public store: any;
   public storeSubscription: Subscription;
+  public licenseAgreement: boolean = false;
+
   constructor(
     protected router: Router,
     public commerceService: CartService | QuoteService,

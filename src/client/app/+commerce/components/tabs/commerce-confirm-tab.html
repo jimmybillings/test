@@ -63,7 +63,7 @@
 </projects-component>
 
 <section class="commerce-total" layout="column" layout-align="end end">
-  <div flex="100" class="total md-headline" layout-align="end center">
+  <div flex="100" class="total md-headline">
     <span class="total-label">
       {{ 'CART.CONFIRM.TOTAL' | translate }} 
     </span>
@@ -71,7 +71,12 @@
       {{ (data | async).total | currency:'USD':true:'1.2-2' }}
     </span>
   </div>
-  <div flex="100" flex-order-xs="2" layout-align="end center">
+  <div *ngIf="shouldShowLicenseDetailsBtn" flex="100" class="license-agreement-ckbox">
+    <md-checkbox [(ngModel)]="licenseAgreement" color="primary">
+      {{'CART.CONFIRM.AGREE_TO_LIC_PLEDGE_TXT' | translate}}
+    </md-checkbox>
+  </div>
+  <div flex="100">
     <button
       md-button
       color="primary"
@@ -80,7 +85,7 @@
       (click)="showLicenseAgreements()">
       {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
     </button>
-    <button md-raised-button class="checkout" (click)="purchase()">
+    <button md-raised-button class="checkout" (click)="purchase()" [disabled]='!licenseAgreement'>
       {{ 'CART.CONFIRM.PURCHASE_BTN' | translate }}
     </button>
   </div>
