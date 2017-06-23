@@ -62,18 +62,26 @@
   [userCan]="userCan">
 </projects-component>
 
-<section class="commerce-total" layout="column" layout-gt-xs="row" layout-align="space-between">
-  <span flex="100" class="total md-headline" layout-align="end center">
+<section class="commerce-total" layout="column" layout-align="end end">
+  <div flex="100" class="total md-headline" layout-align="end center">
     <span class="total-label">
       {{ 'CART.CONFIRM.TOTAL' | translate }} 
     </span>
     <span class="total-amount">
       {{ (data | async).total | currency:'USD':true:'1.2-2' }}
     </span>
-  </span>
-  <span flex="" flex-order-xs="2" layout-align="end center">
+  </div>
+  <div flex="100" flex-order-xs="2" layout-align="end center">
+    <button
+      md-button
+      color="primary"
+      class="is-outlined show-licenses"
+      *ngIf="shouldShowLicenseDetailsBtn"
+      (click)="showLicenseAgreements()">
+      {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
+    </button>
     <button md-raised-button class="checkout" (click)="purchase()">
       {{ 'CART.CONFIRM.PURCHASE_BTN' | translate }}
     </button>
-  </span>
+  </div>
 </section>

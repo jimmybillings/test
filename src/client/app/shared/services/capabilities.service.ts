@@ -35,6 +35,7 @@ export class Capabilities implements CommerceCapabilities, CollectionCapabilitie
   editAccountAddress: () => boolean;
   addAccountAddress: () => boolean;
   administerQuotes: () => boolean;
+  viewLicenseAgreementsButton: () => boolean;
   findMetadataValueFor: (metadataName: string, object: any) => string | null;
 
   constructor(

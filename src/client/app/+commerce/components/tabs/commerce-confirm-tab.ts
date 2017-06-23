@@ -67,4 +67,12 @@ export class CommerceConfirmTab extends Tab {
       return `There is no address on record for this ${address.type}`;
     }
   }
+
+  public get shouldShowLicenseDetailsBtn(): boolean {
+    return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssets);
+  }
+
+  public showLicenseAgreements(): void {
+    console.log('show license agreements');
+  }
 }

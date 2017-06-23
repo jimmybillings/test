@@ -51,9 +51,7 @@ export class CartTabComponent extends CommerceEditTab {
   }
 
   public get shouldShowLicenseDetailsBtn(): boolean {
-    let hasAssets: boolean;
-    this.commerceService.hasAssets.take(1).subscribe((has: boolean) => hasAssets = has);
-    return hasAssets && this.featureStore.isAvailable(Feature.disableCommerceAgreements);
+    return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems);
   }
 
   public showLicenseAgreements(): void {
