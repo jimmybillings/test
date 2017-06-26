@@ -21,7 +21,8 @@ import {
   PaymentOptions,
   AddressPurchaseOptions,
   CreditCardPurchaseOptions,
-  PurchaseOptions
+  PurchaseOptions,
+  LicenseAgreements
 } from '../interfaces/commerce.interface';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
 import { SubclipMarkers } from '../interfaces/asset.interface';
@@ -208,6 +209,10 @@ export class CartService {
       return options.length === pmtOpts.paymentOptions.length &&
         options.sort().every((option: OrderType, index: number) => option === pmtOpts.paymentOptions[index]);
     });
+  }
+
+  public retrieveLicenseAgreements(): Observable<LicenseAgreements> {
+    return this.api.get(Api.Orders, 'cart/licensing');
   }
 
   // Private methods

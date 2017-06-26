@@ -1,7 +1,7 @@
 import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../../components/tabs/commerce-edit-tab';
-
+import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interface';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { MdSnackBar } from '@angular/material';
@@ -55,6 +55,10 @@ export class CartTabComponent extends CommerceEditTab {
   }
 
   public showLicenseAgreements(): void {
-    console.log('show license agreements');
+    this.commerceService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
+      // Jeff, this is where you will probably want to open up the dialog and assign the 'agreements' variable
+      // to the dialog instance
+      console.log(agreements);
+    });
   }
 }
