@@ -85,7 +85,7 @@
       (click)="showLicenseAgreements()">
       {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
     </button>
-    <button md-raised-button class="checkout" (click)="purchase()" [disabled]='!licenseAgreement'>
+    <button md-raised-button class="checkout" (click)="purchase()" [disabled]='!licenseAgreement && shouldShowLicenseDetailsBtn'>
       {{ 'CART.CONFIRM.PURCHASE_BTN' | translate }}
     </button>
   </div>
