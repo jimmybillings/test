@@ -5,7 +5,16 @@ import { Router } from '@angular/router';
 import { Api, ApiBody, ApiParameters } from '../interfaces/api.interface';
 import { Address, ViewAddress } from '../interfaces/user.interface';
 import {
-  Project, AssetLineItem, FeeLineItem, AddAssetParameters, Quote, QuoteState, QuoteOptions, EditableQuoteFields, FeeConfig
+  Project,
+  AssetLineItem,
+  FeeLineItem,
+  AddAssetParameters,
+  Quote,
+  QuoteState,
+  QuoteOptions,
+  EditableQuoteFields,
+  FeeConfig,
+  LicenseAgreements
 } from '../interfaces/commerce.interface';
 import { SubclipMarkers } from '../interfaces/asset.interface';
 import { Frame } from 'wazee-frame-formatter';
@@ -192,6 +201,11 @@ export class QuoteEditService {
 
   public get feeConfig(): Observable<FeeConfig> {
     return this.feeConfigStore.initialized ? Observable.of(this.feeConfigStore.feeConfig) : this.loadFeeConfig();
+  }
+
+  // This method is here only cause the linter gets mad if it isn't
+  public retrieveLicenseAgreements(): Observable<LicenseAgreements> {
+    return this.api.get(Api.Orders, 'cart/licensing');
   }
 
   // Private helper methods

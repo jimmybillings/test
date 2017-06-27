@@ -21,7 +21,8 @@ import {
   PaymentOptions,
   AddressPurchaseOptions,
   CreditCardPurchaseOptions,
-  PurchaseOptions
+  PurchaseOptions,
+  LicenseAgreements
 } from '../interfaces/commerce.interface';
 import { SelectedPriceAttributes } from '../interfaces/common.interface';
 import { SubclipMarkers } from '../interfaces/asset.interface';
@@ -190,11 +191,6 @@ export class CartService {
       this.updateOrderInProgress('paymentOptions', options);
       if (options.paymentOptions.length === 1) this.updateOrderInProgress('selectedPaymentType', options.paymentOptions[0]);
     });
-    /* ------------------------------ mocks ------------------------------- */
-    // this.updateOrderInProgress('paymentOptions', this.mockHold);
-    // this.updateOrderInProgress('paymentOptions', this.mockCreditCard);
-    // this.updateOrderInProgress('paymentOptions', this.mockCreditCardAndPurchaseOnCredit);
-    /* -------------------------------------------------------------------- */
   }
 
   public updateOrderInProgress(type: string, data: any): void {
@@ -210,35 +206,11 @@ export class CartService {
     });
   }
 
+  public retrieveLicenseAgreements(): Observable<LicenseAgreements> {
+    return this.api.get(Api.Orders, 'cart/licensing');
+  }
+
   // Private methods
-
-  /* BEGIN MOCKS FOR PAYMENT OPTIONS - TO BE REMOVED EVENTUALLY */
-
-  private get mockCreditCardAndPurchaseOnCredit(): PaymentOptions {
-    return {
-      paymentOptions: ['CreditCard', 'PurchaseOnCredit'],
-      explanation: 'Please select either Purchase on Credit or Pay With Credit Card',
-      noCheckout: false
-    };
-  }
-
-  private get mockHold(): PaymentOptions {
-    return {
-      paymentOptions: ['Hold'],
-      explanation: 'You are not authorized to complete a purchase at this time',
-      noCheckout: true
-    };
-  }
-
-  private get mockCreditCard(): PaymentOptions {
-    return {
-      paymentOptions: ['CreditCard'],
-      explanation: 'Please enter your Credit Card information below',
-      noCheckout: false
-    };
-  }
-
-  /* END MOCKS */
 
   private purchaseWithCreditCard(): Observable<number> {
     const options: PurchaseOptions = this.purchaseOptions;

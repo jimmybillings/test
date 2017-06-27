@@ -247,3 +247,19 @@ export interface PaymentOptions {
   explanation: string;
   noCheckout: boolean;
 }
+
+export interface Document {
+  name: string;
+  text: string;
+}
+
+export interface LicenseAgreement {
+  projectType?: string;
+  rights?: string;
+  matchingAssets: Array<Asset>;
+  document: Document;
+}
+
+export interface LicenseAgreements {
+  items: Array<LicenseAgreement>;
+}

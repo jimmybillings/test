@@ -74,7 +74,7 @@ export class CommerceConfirmTab extends Tab {
   }
 
   public get shouldShowLicenseDetailsBtn(): boolean {
-    return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssets);
+    return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems);
   }
 
   protected showLicenseAgreements(): void {

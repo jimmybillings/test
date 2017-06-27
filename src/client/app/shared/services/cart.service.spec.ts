@@ -360,5 +360,14 @@ export function main() {
         expect(mockCheckoutStore.updateOrderInProgress).toHaveBeenCalledWith('addresses', [{}, {}]);
       });
     });
+
+    describe('retrieveLicenseAgreements()', () => {
+      it('should call the api service correctly', () => {
+        serviceUnderTest.retrieveLicenseAgreements();
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('cart/licensing');
+      });
+    });
   });
 }
