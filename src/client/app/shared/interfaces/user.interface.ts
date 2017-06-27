@@ -38,6 +38,8 @@ export interface User extends Common {
   [index: string]: any;
 }
 
+export const AddressKeys: Array<string> = ['address', 'state', 'city', 'country', 'zipcode', 'phone'];
+
 export interface Address {
   address: string;
   state: string;
