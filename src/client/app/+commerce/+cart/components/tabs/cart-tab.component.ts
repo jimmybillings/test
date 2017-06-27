@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PricingStore } from '../../../../shared/stores/pricing.store';
 import { FeatureStore } from '../../../../shared/stores/feature.store';
 import { Feature } from '../../../../shared/interfaces/feature.interface';
+import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
 
 @Component({
   moduleId: module.id,
@@ -56,9 +57,17 @@ export class CartTabComponent extends CommerceEditTab {
 
   public showLicenseAgreements(): void {
     this.commerceService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
-      // Jeff, this is where you will probably want to open up the dialog and assign the 'agreements' variable
-      // to the dialog instance
-      console.log(agreements);
+      this.dialogService.openComponentInDialog(
+        {
+          componentType: LicenseAgreementComponent,
+          dialogConfig: { width: '60%', position: { top: '14%' } },
+          inputOptions: {
+            licenses: JSON.parse(JSON.stringify(agreements)),
+          },
+        }
+      );
     });
   }
+
+
 }

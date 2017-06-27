@@ -16,6 +16,7 @@
 @import '../+commerce/components/project/projects-theme';
 @import '../+commerce/components/tabs/commerce-billing-tab-theme';
 @import '../+commerce/components/tabs/commerce-confirm-tab-theme';
+@import '../+commerce/components/license-agreement/license-agreement-theme';
 
 @import '../+gallery-view/gallery-view-theme';
 @import '../+gallery-view/components/one-level-view-theme';
@@ -81,6 +82,7 @@
   @include wz-projects-theme($theme);
   @include wz-commerce-billing-tab-theme($theme);
   @include wz-commerce-confirm-tab-theme($theme);
+  @include wz-commerce-license-agreement-theme($theme);
 
   @include wz-gallery-view-theme($theme);
   @include wz-gallery-one-level-theme($theme);

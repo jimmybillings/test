@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -7,8 +7,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class LicenseAgreementComponent implements OnInit {
-  ngOnInit() {
-    console.log('Go get the license agreement data');
-  }
+export class LicenseAgreementComponent {
+  @Input() licenses: any;
+
 }

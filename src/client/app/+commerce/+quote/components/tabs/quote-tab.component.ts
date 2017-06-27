@@ -6,6 +6,9 @@ import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { Observable } from 'rxjs/Observable';
 import { FeatureStore } from '../../../../shared/stores/feature.store';
 import { Feature } from '../../../../shared/interfaces/feature.interface';
+import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interface';
+import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
 
 @Component({
   moduleId: module.id,
@@ -16,7 +19,11 @@ import { Feature } from '../../../../shared/interfaces/feature.interface';
 export class QuoteTabComponent extends Tab {
   public quote: Observable<Quote>;
 
-  constructor(public quoteService: QuoteService, public userCan: CommerceCapabilities, public featureStore: FeatureStore) {
+  constructor(
+    public quoteService: QuoteService,
+    public userCan: CommerceCapabilities,
+    public featureStore: FeatureStore,
+    public dialogService: WzDialogService) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
   }
@@ -30,7 +37,19 @@ export class QuoteTabComponent extends Tab {
     return this.userCan.viewLicenseAgreementsButton(this.quoteService.hasAssetLineItems);
   }
 
+
   public showLicenseAgreements(): void {
-    console.log('show license agreements');
+    this.quoteService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
+      this.dialogService.openComponentInDialog(
+        {
+          componentType: LicenseAgreementComponent,
+          dialogConfig: { width: '60%', position: { top: '14%' } },
+          inputOptions: {
+            licenses: JSON.parse(JSON.stringify(agreements)),
+          },
+        }
+      );
+    });
   }
+
 }

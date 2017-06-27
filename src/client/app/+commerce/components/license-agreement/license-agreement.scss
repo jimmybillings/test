@@ -1,8 +1,20 @@
-license-agreement-component {
-  .wz-dialog.license-agreements {
-    min-width: 100%;
+license-agreement-component .wz-dialog.license-agreements {
+  min-width: 100%;
+  .mat-tab-label {
+    text-transform: uppercase;
   }
-  .mat-dialog-container .wz-dialog [md-dialog-title] {
-    text-align: left;
+  .mat-tab-body-wrapper {
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
   }
+  .mat-dialog-content {
+    border-width: 0 0 1px 0;
+    border-style: solid;
+  }
+  .license.legal-txt {
+    padding: 30px;
+  }
+}
+.mat-dialog-container .wz-dialog.license-agreements [md-dialog-title] {
+  text-align: left;
 }

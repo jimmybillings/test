@@ -1,0 +1,13 @@
+@mixin wz-commerce-license-agreement-theme($theme) {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $primary: map-get($theme, primary);
+  $warn: map-get($theme, warn);
+
+  license-agreement-component .wz-dialog.license-agreements {
+    min-width: 100%;
+    .mat-tab-body-wrapper, .mat-dialog-content {
+      border-color:  mat-color($foreground, divider);
+    }
+  }
+}

@@ -9,6 +9,7 @@ import { ViewAddress } from '../../../shared/interfaces/user.interface';
 import { CartState, QuoteState, CheckoutState, OrderType } from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { LicenseAgreements } from '../../../shared/interfaces/commerce.interface';
 import { LicenseAgreementComponent } from '../../components/license-agreement/license-agreement.component';
 
 export class CommerceConfirmTab extends Tab {
@@ -77,12 +78,17 @@ export class CommerceConfirmTab extends Tab {
     return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems);
   }
 
-  protected showLicenseAgreements(): void {
-    this.dialogService.openComponentInDialog(
-      {
-        componentType: LicenseAgreementComponent,
-        dialogConfig: { width: '60%', position: { top: '14%' } }
-      }
-    );
+  public showLicenseAgreements(): void {
+    this.commerceService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
+      this.dialogService.openComponentInDialog(
+        {
+          componentType: LicenseAgreementComponent,
+          dialogConfig: { width: '60%', position: { top: '14%' } },
+          inputOptions: {
+            licenses: JSON.parse(JSON.stringify(agreements)),
+          },
+        }
+      );
+    });
   }
 }
