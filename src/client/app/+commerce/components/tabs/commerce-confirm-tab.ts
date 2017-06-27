@@ -8,6 +8,8 @@ import { Observable } from 'rxjs/Observable';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
 import { CartState, QuoteState, CheckoutState, OrderType } from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
+import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { LicenseAgreementComponent } from '../../components/license-agreement/license-agreement.component';
 
 export class CommerceConfirmTab extends Tab {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
@@ -18,6 +20,7 @@ export class CommerceConfirmTab extends Tab {
   constructor(
     protected router: Router,
     public commerceService: CartService | QuoteService,
+    protected dialogService: WzDialogService,
     public userCan: CommerceCapabilities
   ) {
     super();
@@ -74,7 +77,12 @@ export class CommerceConfirmTab extends Tab {
     return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssets);
   }
 
-  public showLicenseAgreements(): void {
-    console.log('show license agreements');
+  protected showLicenseAgreements(): void {
+    this.dialogService.openComponentInDialog(
+      {
+        componentType: LicenseAgreementComponent,
+        dialogConfig: { width: '60%', position: { top: '14%' } }
+      }
+    );
   }
 }

@@ -3,6 +3,7 @@ import { CommerceConfirmTab } from '../../../components/tabs/commerce-confirm-ta
 import { CartService } from '../../../../shared/services/cart.service';
 import { Router } from '@angular/router';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
+import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
 
 @Component({
   moduleId: module.id,
@@ -12,13 +13,12 @@ import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 })
 
 export class CartConfirmTabComponent extends CommerceConfirmTab {
-
   constructor(
-    router: Router,
-    cartService: CartService,
-    userCan: CommerceCapabilities
+    protected router: Router,
+    public cartService: CartService,
+    public dialogService: WzDialogService,
+    public userCan: CommerceCapabilities
   ) {
-    super(router, cartService, userCan);
+    super(router, cartService, dialogService, userCan);
   }
-
 }
