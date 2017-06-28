@@ -33,10 +33,9 @@ export class QuoteTabComponent extends Tab {
     this.goToNextTab();
   }
 
-  public get shouldShowLicenseDetailsBtn(): boolean {
+  public shouldShowLicenseDetailsBtn(): boolean {
     return this.userCan.viewLicenseAgreementsButton(this.quoteService.hasAssetLineItems);
   }
-
 
   public showLicenseAgreements(): void {
     this.quoteService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {

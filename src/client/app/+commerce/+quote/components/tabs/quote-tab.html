@@ -20,7 +20,7 @@
     <div flex="100" layout="row" layout-align="end center">
       <button
         md-button
-        *ngIf="shouldShowLicenseDetailsBtn"
+        *ngIf="shouldShowLicenseDetailsBtn()"
         color="primary"
         class="is-outlined show-licenses"
         (click)="showLicenseAgreements()">
