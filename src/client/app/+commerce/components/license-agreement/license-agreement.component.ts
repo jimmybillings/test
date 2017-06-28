@@ -9,5 +9,4 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 export class LicenseAgreementComponent {
   @Input() licenses: any;
-
 }
