@@ -4,7 +4,6 @@ import { Quote } from '../../../../shared/interfaces/commerce.interface';
 import { Tab } from '../../../components/tabs/tab';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
 import { Observable } from 'rxjs/Observable';
-import { FeatureStore } from '../../../../shared/stores/feature.store';
 import { Feature } from '../../../../shared/interfaces/feature.interface';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interface';
@@ -22,7 +21,6 @@ export class QuoteTabComponent extends Tab {
   constructor(
     public quoteService: QuoteService,
     public userCan: CommerceCapabilities,
-    public featureStore: FeatureStore,
     public dialogService: WzDialogService) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
