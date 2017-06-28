@@ -103,5 +103,14 @@ export function main() {
         });
       });
     });
+
+    describe('retrieveLicenseAgreements()', () => {
+      it('should call the api service correctly', () => {
+        serviceUnderTest.retrieveLicenseAgreements();
+
+        expect(mockApi.get).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.get).toHaveBeenCalledWithEndpoint('quote/licensing/3');
+      });
+    });
   });
 }

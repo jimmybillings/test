@@ -51,12 +51,12 @@ export class CartTabComponent extends CommerceEditTab {
     this.cartService.getPaymentOptions();
   }
 
-  public get shouldShowLicenseDetailsBtn(): boolean {
-    return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems);
+  public shouldShowLicenseDetailsBtn(): boolean {
+    return this.userCan.viewLicenseAgreementsButton(this.cartService.hasAssetLineItems);
   }
 
   public showLicenseAgreements(): void {
-    this.commerceService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
+    this.cartService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
       this.dialogService.openComponentInDialog(
         {
           componentType: LicenseAgreementComponent,
@@ -68,6 +68,4 @@ export class CartTabComponent extends CommerceEditTab {
       );
     });
   }
-
-
 }
