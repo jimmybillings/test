@@ -140,9 +140,9 @@
     "systemjs-builder": "0.15.34",
     "tildify": "^1.2.0",
     "traceur": "^0.0.111",
-    "ts-node": "^2.0.0",
+    "ts-node": "3.1.0",
     "tslint": "^4.3.0",
-    "typescript": "^2.2",
+    "typescript": "2.3.4",
     "walk": "^2.3.9",
     "yargs": "^6.0.0"
   },
