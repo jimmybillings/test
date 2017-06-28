@@ -5,7 +5,7 @@ export function main() {
     let componentUnderTest: CommerceConfirmTab;
 
     beforeEach(() => {
-      componentUnderTest = new CommerceConfirmTab(null, null, null);
+      componentUnderTest = new CommerceConfirmTab(null, null, null, null);
     });
 
     it('has no functionality yet', () => {

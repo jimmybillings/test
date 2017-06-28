@@ -7,7 +7,7 @@ export function main() {
 
     beforeEach(() => {
       mockQuoteService = { data: Observable.of({}) };
-      componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null);
+      componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null);
     });
 
     it('has no tests!', () => {
