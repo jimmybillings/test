@@ -6,25 +6,22 @@
     License agreements
   </h1>
   <md-dialog-content>
-    <!--<div flex>{{licenses | json}}</div>-->
-
-      <md-tab-group>
-        <md-tab *ngFor='let lic of licenses.items' label="lic.rights">
-          <ng-template md-tab-label>{{lic.rights }}</ng-template>
-          <div flex="100" class="asset-carousel grid">
-            <ul class="asset-list" *ngIf="lic.matchingAssets">
-              <li *ngFor="let asset of lic.matchingAssets">
-                <div class="asset">
-                  <a flex="" class="asset-thb" routerLink="">
-                    <img *ngIf="asset.thumbnailUrl" src="{{ asset.thumbnailUrl }}"/>
-                  </a>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <div class="license legal-txt" [innerHtml]="lic.document.text"></div>
-        </md-tab>
-      </md-tab-group>
+    <md-tab-group>
+      <md-tab *ngFor='let lic of licenses.items' label="lic.rights">
+        <ng-template md-tab-label>{{lic.rights }}</ng-template>
+        <div flex="100" class="asset-carousel grid">
+          <ul class="asset-list" *ngIf="lic.matchingAssets">
+            <li *ngFor="let asset of lic.matchingAssets">
+              <div class="asset">
+                <a flex="" class="asset-thb" [routerLink]="['/asset/', asset.assetId]">
+                  <img *ngIf="asset.thumbnailUrl" src="{{ asset.thumbnailUrl }}"/>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="license legal-txt" [innerHtml]="lic.document.text"></div>
+      </md-tab>
+    </md-tab-group>
   </md-dialog-content>
 </div>
