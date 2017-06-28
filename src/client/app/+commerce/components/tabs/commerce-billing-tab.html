@@ -29,8 +29,18 @@
           </header>
           <address *ngIf="address.address">
             <span class="line-1">{{address.address.address}}</span>
-            <span class="line-2">{{address.address.city}}, {{address.address.state}} {{address.address.zipcode}}, {{address.address.country}}</span>
+            <span class="line-2">
+              {{address.address.city ? address.address.city + ',' : ''}}
+              {{address.address.state}}
+              {{address.address.zipcode ? address.address.zipcode + ',' : ''}}
+              {{address.address.country}}
+            </span>
             <span class="phone">{{address.address.phone}}</span>
+            <span class="address-error" *ngIf="displayAddressErrors(address.addressEntityId)">
+              {{
+                'CART.BILLING.ADDRESS_ERROR_WARN' | translate:{addressKeys: formatAddressErrors(address) }
+              }}
+            </span>
           </address>
           <address *ngIf="!address.address">
             <span>{{ 'CART.BILLING.EMPTY_ADDRESS' | translate:{type: address.type} }}</span>
@@ -66,7 +76,11 @@
                 md-button class="is-outlined" color="primary" >
                   {{ 'CART.BILLING.ADD_ACCOUNT_ADDRESS' | translate }}
               </button>        
-              <button md-raised-button color="primary" (click)="selectAddress(address)" [disabled]="!address.address">
+              <button
+                md-raised-button
+                color="primary"
+                (click)="selectAddress(address)"
+                [disabled]="!address.address || addressErrors[address.addressEntityId].length > 0">
                 {{ 'CART.BILLING.SELECT_ADDRESS_BTN' | translate }}
               </button>
             </div>

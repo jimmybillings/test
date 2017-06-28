@@ -3,7 +3,7 @@ import { CartService } from '../../../shared/services/cart.service';
 import { QuoteService } from '../../../shared/services/quote.service';
 import { UserService } from '../../../shared/services/user.service';
 import { CurrentUserService } from '../../../shared/services/current-user.service';
-import { Address, User, ViewAddress } from '../../../shared/interfaces/user.interface';
+import { Address, User, ViewAddress, AddressKeys } from '../../../shared/interfaces/user.interface';
 import { CheckoutState } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
@@ -17,6 +17,7 @@ import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.d
 export class CommerceBillingTab extends Tab implements OnInit {
   public orderInProgress: Observable<CheckoutState>;
   public items: Array<any>;
+  public addressErrors: any = {};
   @Output() tabNotify: EventEmitter<Object> = this.notify;
 
   constructor(
@@ -98,8 +99,17 @@ export class CommerceBillingTab extends Tab implements OnInit {
     );
   }
 
+  public displayAddressErrors(addresId: number): boolean {
+    return this.addressErrors[addresId].length > 0;
+  }
+
+  public formatAddressErrors(address: ViewAddress): string {
+    return this.addressErrors[address.addressEntityId].join(', and ');
+  }
+
   private fetchAddresses(): Observable<Array<ViewAddress>> {
     return this.user.getAddresses().do((addresses: Array<ViewAddress>) => {
+      this.validate(addresses);
       this.commerceService.updateOrderInProgress('addresses', addresses);
     });
   }
@@ -124,5 +134,17 @@ export class CommerceBillingTab extends Tab implements OnInit {
       })[0];
     });
     return previouslySelected;
+  }
+
+  private validate(addresses: Array<ViewAddress>): void {
+    addresses.forEach((address: ViewAddress) => {
+      let actualAddressKeys: Array<String> = Object.keys(address.address);
+      this.addressErrors[address.addressEntityId] = [];
+      AddressKeys.forEach((key: string) => {
+        if (actualAddressKeys.indexOf(key) < 0 || address.address[key] === '') {
+          this.addressErrors[address.addressEntityId].push(key);
+        }
+      });
+    });
   }
 }

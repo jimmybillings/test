@@ -60,7 +60,7 @@ export function main() {
       };
 
       mockUserService = {
-        getAddresses: jasmine.createSpy('getAddresses').and.returnValue(Observable.of({ list: [mockAddressA, mockAddressB] })),
+        getAddresses: jasmine.createSpy('getAddresses').and.returnValue(Observable.of([mockAddressA, mockAddressB])),
         addBillingAddress: jasmine.createSpy('addBillingAddress').and.returnValue(Observable.of({})),
         addAccountBillingAddress: jasmine.createSpy('addAccountBillingAddress').and.returnValue(Observable.of({}))
       };
@@ -164,6 +164,30 @@ export function main() {
           expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
           // expect(mockUserService.addAccountBillingAddress).toHaveBeenCalled();
         });
+      });
+    });
+
+    describe('displayAddressErrors()', () => {
+      it('should return true when the address has errors', () => {
+        componentUnderTest.addressErrors = { 123: ['city'] };
+        expect(componentUnderTest.displayAddressErrors(123)).toBe(true);
+      });
+
+      it('should return false when the address does not have errors', () => {
+        componentUnderTest.addressErrors = { 123: [] };
+        expect(componentUnderTest.displayAddressErrors(123)).toBe(false);
+      });
+    });
+
+    describe('formatAddressErrors()', () => {
+      it('should return the right string for 1 error', () => {
+        componentUnderTest.addressErrors = { 10: ['city'] };
+        expect(componentUnderTest.formatAddressErrors(mockAddressA)).toBe('city');
+      });
+
+      it('should return the right string for more than 1 error', () => {
+        componentUnderTest.addressErrors = { 10: ['city', 'state'] };
+        expect(componentUnderTest.formatAddressErrors(mockAddressA)).toBe('city, and state');
       });
     });
 
