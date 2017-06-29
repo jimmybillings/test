@@ -15,7 +15,8 @@ import {
   CreditCardPurchaseOptions,
   PurchaseOptions,
   PaymentOptions,
-  Project
+  Project,
+  LicenseAgreements
 } from '../../shared/interfaces/commerce.interface';
 import { QuoteStore } from '../../shared/stores/quote.store';
 import { CheckoutStore } from '../../shared/stores/checkout.store';
@@ -111,6 +112,10 @@ export class QuoteService {
       return options.length === pmtOpts.paymentOptions.length &&
         options.sort().every((option: OrderType, index: number) => option === pmtOpts.paymentOptions[index]);
     });
+  }
+
+  public retrieveLicenseAgreements(): Observable<LicenseAgreements> {
+    return this.api.get(Api.Orders, `quote/licensing/${this.state.data.id}`);
   }
 
   // Private Methods

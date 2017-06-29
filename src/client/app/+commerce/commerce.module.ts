@@ -43,6 +43,7 @@ import { QuoteConfirmTabComponent } from './+quote/components/tabs/quote-confirm
 import { CommerceListComponent } from './components/commerce-list/commerce-list.component';
 import { CommerceHeaderComponent } from './components/commerce-header/commerce-header.component';
 import { AddressFormComponent } from './components/address-form/address-form.component';
+import { LicenseAgreementComponent } from './components/license-agreement/license-agreement.component';
 
 // project
 import { ProjectsComponent } from './components/project/projects.component';
@@ -92,6 +93,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     CommerceListComponent,
     CommerceHeaderComponent,
     AddressFormComponent,
+    LicenseAgreementComponent,
     QuoteShowComponent,
     QuotesComponent,
     AdministerQuoteComponent,
@@ -114,7 +116,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     CartGuard,
     QuoteEditGuard
   ],
-  entryComponents: [AddressFormComponent]
+  entryComponents: [AddressFormComponent, LicenseAgreementComponent]
 })
 
 export class CommerceModule { }

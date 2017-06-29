@@ -8,6 +8,9 @@ import { Observable } from 'rxjs/Observable';
 import { ViewAddress } from '../../../shared/interfaces/user.interface';
 import { CartState, QuoteState, CheckoutState, OrderType } from '../../../shared/interfaces/commerce.interface';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
+import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
+import { LicenseAgreements } from '../../../shared/interfaces/commerce.interface';
+import { LicenseAgreementComponent } from '../../components/license-agreement/license-agreement.component';
 
 export class CommerceConfirmTab extends Tab {
   @Output() tabNotify: EventEmitter<Object> = this.notify;
@@ -18,6 +21,7 @@ export class CommerceConfirmTab extends Tab {
   constructor(
     protected router: Router,
     public commerceService: CartService | QuoteService,
+    protected dialogService: WzDialogService,
     public userCan: CommerceCapabilities
   ) {
     super();
@@ -70,11 +74,21 @@ export class CommerceConfirmTab extends Tab {
     }
   }
 
-  public get shouldShowLicenseDetailsBtn(): boolean {
+  public shouldShowLicenseDetailsBtn(): boolean {
     return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems);
   }
 
   public showLicenseAgreements(): void {
-    console.log('show license agreements');
+    this.commerceService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
+      this.dialogService.openComponentInDialog(
+        {
+          componentType: LicenseAgreementComponent,
+          dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
+          inputOptions: {
+            licenses: JSON.parse(JSON.stringify(agreements)),
+          },
+        }
+      );
+    });
   }
 }

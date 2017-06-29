@@ -1,0 +1,27 @@
+<div class="wz-dialog license-agreements">
+  <button md-icon-button md-dialog-close title="{{'CART.CLOSE_HOVER_TITLE' | translate}}" type="button" class="close">
+    <md-icon>close</md-icon>
+  </button>
+  <h1 md-dialog-title>
+    {{'CART.LICENSE_DIALOG_HEAD' | translate}}
+  </h1>
+  <div class="license-agreement-content">
+    <md-tab-group>
+      <md-tab *ngFor='let lic of licenses.items' label="lic.rights">
+        <ng-template md-tab-label>{{lic.rights }}</ng-template>
+        <div flex="100" class="asset-carousel grid">
+          <ul class="asset-list" *ngIf="lic.matchingAssets">
+            <li *ngFor="let asset of lic.matchingAssets">
+              <div class="asset">
+                <a flex="" class="asset-thb" [routerLink]="['/asset/', asset.assetId]">
+                  <img *ngIf="asset.thumbnailUrl" src="{{ asset.thumbnailUrl }}"/>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="license legal-txt" [innerHtml]="lic.document.text"></div>
+      </md-tab>
+    </md-tab-group>
+  </div>
+</div>

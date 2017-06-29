@@ -1,7 +1,7 @@
 import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../../components/tabs/commerce-edit-tab';
-
+import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interface';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
 import { MdSnackBar } from '@angular/material';
@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PricingStore } from '../../../../shared/stores/pricing.store';
 import { FeatureStore } from '../../../../shared/stores/feature.store';
 import { Feature } from '../../../../shared/interfaces/feature.interface';
+import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
 
 @Component({
   moduleId: module.id,
@@ -50,11 +51,21 @@ export class CartTabComponent extends CommerceEditTab {
     this.cartService.getPaymentOptions();
   }
 
-  public get shouldShowLicenseDetailsBtn(): boolean {
-    return this.userCan.viewLicenseAgreementsButton(this.commerceService.hasAssetLineItems);
+  public shouldShowLicenseDetailsBtn(): boolean {
+    return this.userCan.viewLicenseAgreementsButton(this.cartService.hasAssetLineItems);
   }
 
   public showLicenseAgreements(): void {
-    console.log('show license agreements');
+    this.cartService.retrieveLicenseAgreements().take(1).subscribe((agreements: LicenseAgreements) => {
+      this.dialogService.openComponentInDialog(
+        {
+          componentType: LicenseAgreementComponent,
+          dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
+          inputOptions: {
+            licenses: JSON.parse(JSON.stringify(agreements)),
+          },
+        }
+      );
+    });
   }
 }
