@@ -9,10 +9,10 @@
       border-color:  mat-color($foreground, divider);
     }
     .asset-carousel.grid ul.asset-list {
-      background-color: mat-color($background, status-bar);
+      background-color: mat-color($foreground, base, .2);
     }
     .license.legal-txt {
-      background-color: mat-color($background, app-bar, .5);
+      border-color:  mat-color($foreground, divider);
       a {
         color: mat-color($primary);
       }

@@ -5,7 +5,7 @@
   <h1 md-dialog-title>
     License agreements
   </h1>
-  <md-dialog-content>
+  <div class="license-agreement-content">
     <md-tab-group>
       <md-tab *ngFor='let lic of licenses.items' label="lic.rights">
         <ng-template md-tab-label>{{lic.rights }}</ng-template>
@@ -23,5 +23,5 @@
         <div class="license legal-txt" [innerHtml]="lic.document.text"></div>
       </md-tab>
     </md-tab-group>
-  </md-dialog-content>
+  </div>
 </div>

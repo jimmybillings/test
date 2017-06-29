@@ -83,7 +83,7 @@ export class CommerceConfirmTab extends Tab {
       this.dialogService.openComponentInDialog(
         {
           componentType: LicenseAgreementComponent,
-          dialogConfig: { width: '60%', position: { top: '14%' } },
+          dialogConfig: { panelClass: 'license-pane', position: { top: '14%' } },
           inputOptions: {
             licenses: JSON.parse(JSON.stringify(agreements)),
           },
