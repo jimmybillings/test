@@ -40,7 +40,7 @@ export class QuoteTabComponent extends Tab {
       this.dialogService.openComponentInDialog(
         {
           componentType: LicenseAgreementComponent,
-          dialogConfig: { panelClass: 'license-pane', position: { top: '14%' } },
+          dialogConfig: { panelClass: 'license-pane', position: { top: '10%' } },
           inputOptions: {
             licenses: JSON.parse(JSON.stringify(agreements)),
           },
