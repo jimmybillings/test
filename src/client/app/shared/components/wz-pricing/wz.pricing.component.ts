@@ -1,17 +1,10 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { MdOption } from '@angular/material';
+import { MdOption, MdOptionSelectionChange } from '@angular/material';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { PriceAttribute, PriceOption } from '../../interfaces/commerce.interface';
 import { Poj, WzEvent } from '../../interfaces/common.interface';
-// temporary interface until material gets their shit together - remove with new release
-// see here https://github.com/angular/material2/commit/af978cd6edc75113941b3e0e8df7a220e8d730be
-// and here https://github.com/angular/material2/blob/master/src/lib/core/option/option.ts#L26
-export interface MdOptionSelectionChange {
-  source: MdOption;
-  isUserInput: boolean;
-};
 
 @Component({
   moduleId: module.id,
@@ -30,7 +23,7 @@ export class WzPricingComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    if (this.pricingPreferences && !this.pricingStructureChanged) {
+    if (this.pricingPreferences && !this.priceBookChanged) {
       this.pricingEvent.emit({ type: 'CALCULATE_PRICE', payload: this.pricingPreferences });
       this.form = this.prePopulatedForm;
     } else {
@@ -122,9 +115,12 @@ export class WzPricingComponent implements OnInit, OnDestroy {
 
   private get prePopulatedForm(): FormGroup {
     let form: Poj = {};
-    for (let pref in this.pricingPreferences) {
-      form[pref] = new FormControl({ value: this.pricingPreferences[pref], disabled: false }, Validators.required);
-    }
+    this.attributes.forEach((attribute: PriceAttribute) => {
+      form[attribute.name] = new FormControl(
+        { value: this.pricingPreferences[attribute.name], disabled: false },
+        Validators.required
+      );
+    });
     return this.fb.group(form);
   }
 
@@ -149,9 +145,12 @@ export class WzPricingComponent implements OnInit, OnDestroy {
     }
   }
 
-  private get pricingStructureChanged(): boolean {
-    return Object.keys(this.pricingPreferences).filter((pref: string, index: number) => {
-      return pref !== this.attributes[index].name;
-    }).length > 0;
+  // this does a comparison of the user's preferences and the current price attributes to make sure
+  // that the price book hasn't changed drastically - i.e. should we prepopulate the form. It ignores order
+  // NOTE: ['a', 'b', 'c'] === ['b', 'c', 'a']
+  private get priceBookChanged(): boolean {
+    let attributeNames: Array<string> = this.attributes.map((attr: PriceAttribute) => attr.name).sort();
+    let prefNames: Array<string> = Object.keys(this.pricingPreferences).sort();
+    return !prefNames.every((pref: string, index: number) => pref === attributeNames[index]);
   }
 }

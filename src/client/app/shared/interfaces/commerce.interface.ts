@@ -21,6 +21,7 @@ export interface Project {
   subtotal: number;
   creditMemoForProjectId?: number;
   lineItems?: Array<AssetLineItem | FeeLineItem>;
+  attributes?: Array<SelectedPriceAttributes>;
   [index: string]: any;
 }
 

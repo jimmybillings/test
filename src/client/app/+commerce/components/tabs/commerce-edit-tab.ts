@@ -131,29 +131,54 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   protected editProjectPricing(project: Project) {
-    this.assetService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
-      this.openProjectPricingDialog(priceAttributes, project);
-    });
-  }
-
-  protected showPricingDialog(lineItem: AssetLineItem): void {
+    let preferences: Poj = project.attributes ? this.mapAttributesToPreferences(project.attributes) : this.pricingPreferences;
     if (this.priceAttributes) {
-      this.openPricingDialog(lineItem);
+      this.openProjectPricingDialog(this.priceAttributes, preferences, project);
     } else {
       this.assetService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
         this.priceAttributes = priceAttributes;
-        this.openPricingDialog(lineItem);
+        this.openProjectPricingDialog(priceAttributes, preferences, project);
       });
     }
   }
 
-  protected openProjectPricingDialog(priceAttributes: Array<PriceAttribute>, project: Project): void {
+  protected showPricingDialog(lineItem: AssetLineItem): void {
+    let preferences: Poj = lineItem.attributes ? this.mapAttributesToPreferences(lineItem.attributes) : this.pricingPreferences;
+    if (this.priceAttributes) {
+      this.openPricingDialog(this.priceAttributes, preferences, lineItem);
+    } else {
+      this.assetService.getPriceAttributes().subscribe((priceAttributes: Array<PriceAttribute>) => {
+        this.priceAttributes = priceAttributes;
+        this.openPricingDialog(priceAttributes, preferences, lineItem);
+      });
+    }
+  }
+
+  protected mapAttributesToPreferences(attributes: any): Poj {
+    if (Array.isArray(attributes)) {
+      // if the attributes came from a lineItem, they are an Array of SelectedPriceAttributes
+      // we need to map them to a Poj to pass on to the pricing component
+      let mapped: any = {};
+      attributes.forEach((attr: SelectedPriceAttributes) => {
+        mapped[attr.priceAttributeName] = attr.selectedAttributeValue;
+      });
+      delete mapped['siteName'];
+      return mapped;
+    } else {
+      // if the attributes came from a project, they are a Poj.
+      // we do not need to map them before passing them to the pricing component
+      delete attributes['siteName'];
+      return attributes;
+    }
+  }
+
+  protected openProjectPricingDialog(priceAttributes: Array<PriceAttribute>, preferences: Poj, project: Project): void {
     this.dialogService.openComponentInDialog(
       {
         componentType: WzPricingComponent,
         inputOptions: {
           attributes: priceAttributes,
-          pricingPreferences: this.pricingPreferences,
+          pricingPreferences: preferences,
           usagePrice: null
         },
         outputOptions: [
@@ -183,13 +208,13 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     }
   }
 
-  protected openPricingDialog(lineItem: AssetLineItem): void {
+  protected openPricingDialog(priceAttributes: Array<PriceAttribute>, preferences: Poj, lineItem: AssetLineItem): void {
     this.dialogService.openComponentInDialog(
       {
         componentType: WzPricingComponent,
         inputOptions: {
-          attributes: this.priceAttributes,
-          pricingPreferences: this.pricingPreferences,
+          attributes: priceAttributes,
+          pricingPreferences: preferences,
           usagePrice: this.pricingStore.priceForDialog
         },
         outputOptions: [

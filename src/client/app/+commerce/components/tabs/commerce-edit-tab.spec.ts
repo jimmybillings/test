@@ -236,7 +236,7 @@ export function main() {
         expect(mockCartService.editLineItem).toHaveBeenCalledWith(mockLineItem, { selectedTranscodeTarget: '1080i' });
       });
 
-      it('edits the assets in and out markers with  EDIT_LINE_ITEM_MARKERS', () => {
+      it('edits the assets in and out markers with EDIT_LINE_ITEM_MARKERS', () => {
         let mockAsset = { assetId: 1234 };
         componentUnderTest.onNotification({ type: 'EDIT_LINE_ITEM_MARKERS', payload: { asset: mockAsset } });
 
@@ -251,20 +251,23 @@ export function main() {
       });
 
       describe('calls openPricingDialog with SHOW_PRICING_DIALOG', () => {
-        it('should get the price attributes if they dont already exist', () => {
-          let mockLineItem = { asset: { assetId: 123456 } };
-          componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
-
-          expect(mockAssetService.getPriceAttributes).toHaveBeenCalled();
-          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
-        });
-
         it('should not get the attributes if they already exist', () => {
           let mockLineItem = { asset: { assetId: 123456 } };
           componentUnderTest.priceAttributes = { some: 'attr' } as any;
           componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
 
           expect(mockAssetService.getPriceAttributes).not.toHaveBeenCalled();
+          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
+        });
+
+        it('should get the price attributes if they don\'t already exist', () => {
+          let mockLineItem = {
+            asset: { assetId: 123456 },
+            attributes: [{ priceAttributeName: 'Use', selectedAttributeValue: 'Feature Film' }]
+          };
+          componentUnderTest.onNotification({ type: 'SHOW_PRICING_DIALOG', payload: mockLineItem });
+
+          expect(mockAssetService.getPriceAttributes).toHaveBeenCalled();
           expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
         });
       });
