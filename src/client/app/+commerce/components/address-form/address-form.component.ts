@@ -4,18 +4,22 @@ import { Address } from '../../../shared/interfaces/user.interface';
 @Component({
   moduleId: module.id,
   selector: 'address-form-component',
-  template: `<div class="wz-dialog">
-    <button md-icon-button md-dialog-close title="Close" type="button" class="close">
-      <md-icon>close</md-icon>
-    </button>
-    <h1 md-dialog-title>
-      {{ 'CART.BILLING.MODIFY_ADDRESS' | translate:{mode: capitalize(mode), resource: capitalize(resourceType)} }}
-    </h1>
-    <md-dialog-content>
-      <wz-form [items]="items" submitLabel="{{ 'CART.BILLING.SAVE_ADDRESS_BTN_LABEL' | translate }}"
-      (formSubmit)="saveAddress($event)"></wz-form>
-    </md-dialog-content>
-  </div>`,
+  template: `
+    <div class="wz-dialog">
+      <div layout="row" layout-align="center center">
+        <h1 md-dialog-title>
+          {{ 'CART.BILLING.MODIFY_ADDRESS' | translate:{mode: capitalize(mode), resource: capitalize(resourceType)} }}
+        </h1>
+      </div>
+      <md-dialog-content>
+        <wz-form
+          [items]="items"
+          [submitLabel]="'CART.BILLING.SAVE_ADDRESS_BTN_LABEL' | translate"
+          (formSubmit)="saveAddress($event)">
+        </wz-form>
+      </md-dialog-content>
+    </div>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressFormComponent implements OnInit {

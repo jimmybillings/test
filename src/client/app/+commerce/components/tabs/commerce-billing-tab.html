@@ -1,21 +1,44 @@
 <div class="commerce-billing" layout="row" layout-align="center start">
-  <div *ngIf="addressesAreEmpty | async" flex-gt-lg="30" flex-gt-md="35" flex-md="40" flex-gt-sm="55" flex-gt-xs="60" flex="100">
+  <div *ngIf="showAddAddressForm | async"
+    flex-gt-lg="30"
+    flex-gt-md="35"
+    flex-md="40"
+    flex-gt-sm="55"
+    flex-gt-xs="60"
+    flex="100">
     <md-card class="billing-card wz-form-card">
-      <md-card-title>
-        {{ 'CART.BILLING.ENTER_BILLING_ADDRESS' | translate }}
-      </md-card-title>
       <md-card-content>
-        <wz-form
+        <address-form-component
+          [mode]="'create'"
           [items]="items"
-          [submitLabel]="'CART.BILLING.SAVE_ADDRESS_BTN_LABEL'"
-          (formSubmit)="addUserAddress($event)">
-        </wz-form>
+          [resourceType]="'user'"
+          (onSaveAddress)="addUserAddress($event)">
+        </address-form-component>
       </md-card-content>
     </md-card>
   </div>
 
+  <div *ngIf="showEditAddressForm | async"
+    flex-gt-lg="30"
+    flex-gt-md="35"
+    flex-md="40"
+    flex-gt-sm="55"
+    flex-gt-xs="60"
+    flex="100">
+    <md-card class="billing-card wz-form-card">
+      <md-card-content>
+        <address-form-component
+          [address]="(orderInProgress | async).addresses[0].address"
+          [mode]="'edit'"
+          [items]="items"
+          [resourceType]="'user'"
+          (onSaveAddress)="addUserAddress($event)">
+        </address-form-component>
+      </md-card-content>
+    </md-card>
+  </div>
 
-  <div *ngIf="!(addressesAreEmpty | async)" flex="100" flex-gt-lg="85" class="addresses">
+  <div *ngIf="!(showAddAddressForm | async) && !(showEditAddressForm | async)" flex="100" flex-gt-lg="85" class="addresses">
     <header layout="column" layout-align="start">
       <h2 class="commerce-heading">{{ 'CART.BILLING.SELECT_BILLING_ADDRESS' | translate }}</h2>
     </header>
@@ -90,13 +113,3 @@
     </ul>
   </div>
 </div>
-<!--<nav flex="100" layout="row" layout-align="space-between">
-  <button md-button color="primary" (click)="goToPreviousTab()" class="checkout-back">
-    <md-icon>keyboard_backspace</md-icon>
-    {{ 'CART.BILLING.BACK_BTN' | translate }}
-  </button>
-  <button md-button color="primary" (click)="goToNextTab()" class="checkout-forward" [disabled]="!(userCanProceed | async)">
-    {{ 'CART.BILLING.FORWARD_BTN' | translate }}
-    <md-icon>keyboard_backspace</md-icon>
-  </button>
-</nav>-->

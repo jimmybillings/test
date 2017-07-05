@@ -191,7 +191,7 @@ export function main() {
       });
     });
 
-    describe('addressesAreEmpty', () => {
+    describe('showAddAddressForm', () => {
       it('should return true if the addresses are empty', () => {
         let mockStore: any = {
           addresses: [{ type: '', name: '' }, { type: '', name: '' }],
@@ -206,7 +206,7 @@ export function main() {
           null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null
         );
         componentUnderTest.ngOnInit();
-        componentUnderTest.addressesAreEmpty.take(1).subscribe((data: any) => {
+        componentUnderTest.showAddAddressForm.take(1).subscribe((data: any) => {
           expect(data).toBe(true);
         });
       });
@@ -222,7 +222,7 @@ export function main() {
           null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null
         );
         componentUnderTest.ngOnInit();
-        componentUnderTest.addressesAreEmpty.take(1).subscribe((data: any) => {
+        componentUnderTest.showAddAddressForm.take(1).subscribe((data: any) => {
           expect(data).toBe(false);
         });
       });

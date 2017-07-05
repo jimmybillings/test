@@ -66,9 +66,20 @@ export class CommerceBillingTab extends Tab implements OnInit {
     });
   }
 
-  public get addressesAreEmpty(): Observable<boolean> {
+  // If GET /currentUsersAssociatedAddresses does not return ANY addresses,
+  // we automatically show the add form for a new user address
+  public get showAddAddressForm(): Observable<boolean> {
     return this.orderInProgress.map((data: any) => {
       return data.addresses.filter((a: ViewAddress) => !!a.address).length === 0;
+    });
+  }
+
+  // if GET /currentUsersAssociatedAddresses returns only 1 address, but it is not complete,
+  // we automatically show the edit form for that address
+  public get showEditAddressForm(): Observable<boolean> {
+    return this.orderInProgress.map((data: any) => {
+      return data.addresses.filter((a: ViewAddress) => !!a.address).length === 1 &&
+        this.addressErrors[data.addresses[0].addressEntityId].length > 0;
     });
   }
 
@@ -137,6 +148,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   private validate(addresses: Array<ViewAddress>): void {
+    this.addressErrors = {};
     addresses.forEach((address: ViewAddress) => {
       let actualAddressKeys: Array<String> = Object.keys(address.address);
       this.addressErrors[address.addressEntityId] = [];
