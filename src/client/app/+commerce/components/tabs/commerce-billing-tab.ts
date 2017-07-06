@@ -68,7 +68,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   public openFormFor(resourceType: 'account' | 'user', mode: 'edit' | 'create', address?: ViewAddress): void {
-    let items: Array<any> = mode === 'edit' ? this.prePopulatedForm : this.items;
+    let items: Array<any> = mode === 'edit' ? this.prePopulateFormWith(address) : this.items;
     let title: string = mode === 'edit' ? this.editFormTitle(resourceType) : this.createFormTitle(resourceType);
 
     this.dialog.openFormDialog(
@@ -112,9 +112,9 @@ export class CommerceBillingTab extends Tab implements OnInit {
     return `CART.BILLING.CREATE_${resourceType.toUpperCase()}_ADDRESS_TITLE`;
   }
 
-  private get prePopulatedForm(): Array<any> {
+  private prePopulateFormWith(address: ViewAddress): Array<any> {
     return this.items.map((item: any) => {
-      item.value = this.commerceService.checkoutState.addresses[0].address[item.name];
+      item.value = address.address[item.name];
       return item;
     });
   }
