@@ -24,6 +24,12 @@ license-agreement-component .wz-dialog.license-agreements {
     border-width: 1px;
     border-style: solid;
     margin: 0 1px 1px 1px;
+    min-height: 220px;
+    h4 {
+      font-size: 1.1em;
+      font-weight: normal;
+      margin: 0;
+    }
   }
   .asset-carousel.grid ul.asset-list {
     margin-top: 8px;

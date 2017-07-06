@@ -7,8 +7,8 @@
   </h1>
   <div class="license-agreement-content">
     <md-tab-group>
-      <md-tab *ngFor='let lic of licenses.items' label="lic.rights">
-        <ng-template md-tab-label>{{lic.rights }}</ng-template>
+      <md-tab *ngFor='let lic of licenses.items' label="lic.projectType">
+        <ng-template md-tab-label>{{lic.projectType ? lic.projectType : lic.rights}}</ng-template>
         <div flex="100" class="asset-carousel grid">
           <ul class="asset-list" *ngIf="lic.matchingAssets">
             <li *ngFor="let asset of lic.matchingAssets">
@@ -20,7 +20,11 @@
             </li>
           </ul>
         </div>
-        <div class="license legal-txt" [innerHtml]="lic.document.text"></div>
+        <div *ngIf="lic.document" class="license legal-txt" [innerHtml]="lic.document.text"></div>
+        <div *ngIf="!lic.document" class="license legal-txt">
+          <h2 md-dialog-title class="warn">{{'CART.NO_LICENSE_AVAILABLE' | translate}}</h2>
+          <h4>{{'CART.CHECKOUT_DISABLED_MSG' | translate}}</h4>
+        </div>
       </md-tab>
     </md-tab-group>
   </div>
