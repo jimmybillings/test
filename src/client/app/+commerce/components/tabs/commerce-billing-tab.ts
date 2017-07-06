@@ -109,13 +109,14 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   private createFormTitle(resourceType: 'user' | 'account'): string {
-    return `CART.BILLING.CREATE_${resourceType.toUpperCase()}_ADDRESS_TITLE`;
+    return `CART.BILLING.ADD_${resourceType.toUpperCase()}_ADDRESS_TITLE`;
   }
 
   private prePopulateFormWith(address: ViewAddress): Array<any> {
     return this.items.map((item: any) => {
-      item.value = address.address[item.name];
-      return item;
+      let newItem: any = JSON.parse(JSON.stringify(item));
+      newItem.value = address.address[newItem.name];
+      return newItem;
     });
   }
 
