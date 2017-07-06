@@ -51,12 +51,13 @@ export function main() {
           cart: { itemCount: 1, projects: [] }
         }),
         checkoutData: Observable.of({ selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] }),
+        checkoutState: { selectedAddress: mockAddressA, addresses: [mockAddressA, mockAddressB] },
         determineNewSelectedAddress: jasmine.createSpy('determineNewSelectedAddress'),
         updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
       };
 
       mockUiConfig = {
-        get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: ['1', '2', '3'] } } }))
+        get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { form: { items: [{ name: '', value: '' }] } } }))
       };
 
       mockUserService = {
@@ -66,7 +67,7 @@ export function main() {
       };
 
       mockDialogService = {
-        openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' })),
+        openFormDialog: jasmine.createSpy('openFormDialog').and.returnValue(Observable.of({ data: 'Test data' })),
       };
 
       mockCurrentUserService = {
@@ -92,7 +93,7 @@ export function main() {
       });
 
       it('should set up the form items from the uiConfig', () => {
-        expect(componentUnderTest.items).toEqual(['1', '2', '3']);
+        expect(componentUnderTest.items).toEqual([{ name: '', value: '' }]);
       });
     });
 
@@ -138,15 +139,13 @@ export function main() {
         it('should open a dialog and call addBillingAddress if mode is "edit"', () => {
           componentUnderTest.openFormFor('user', 'edit', mockAddressB);
 
-          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
-          // expect(mockUserService.addBillingAddress).toHaveBeenCalled();
+          expect(mockDialogService.openFormDialog).toHaveBeenCalled();
         });
 
         it('should open a dialog and call addUserAddress if mode is "create"', () => {
           componentUnderTest.openFormFor('user', 'create');
 
-          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
-          // expect(mockUserService.addBillingAddress).toHaveBeenCalled();
+          expect(mockDialogService.openFormDialog).toHaveBeenCalled();
         });
       });
 
@@ -154,15 +153,13 @@ export function main() {
         it('should open a dialog and call addAccountBillingAddress if mode is "edit"', () => {
           componentUnderTest.openFormFor('account', 'edit', mockAddressB);
 
-          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
-          // expect(mockUserService.addAccountBillingAddress).toHaveBeenCalled();
+          expect(mockDialogService.openFormDialog).toHaveBeenCalled();
         });
 
         it('should open a dialog and call addAccountBillingAddress if mode is "create"', () => {
           componentUnderTest.openFormFor('account', 'create');
 
-          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
-          // expect(mockUserService.addAccountBillingAddress).toHaveBeenCalled();
+          expect(mockDialogService.openFormDialog).toHaveBeenCalled();
         });
       });
     });
@@ -185,46 +182,14 @@ export function main() {
         expect(componentUnderTest.formatAddressErrors(mockAddressA)).toBe('city');
       });
 
-      it('should return the right string for more than 1 error', () => {
+      it('should return the right string for 2 errors', () => {
         componentUnderTest.addressErrors = { 10: ['city', 'state'] };
         expect(componentUnderTest.formatAddressErrors(mockAddressA)).toBe('city, and state');
       });
-    });
 
-    describe('showAddAddressForm', () => {
-      it('should return true if the addresses are empty', () => {
-        let mockStore: any = {
-          addresses: [{ type: '', name: '' }, { type: '', name: '' }],
-          selectedAddress: { type: '', name: '' }
-        };
-        mockCartService = {
-          checkoutData: Observable.of(mockStore),
-          data: Observable.of({}),
-          updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
-        };
-        componentUnderTest = new CommerceBillingTab(
-          null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null
-        );
-        componentUnderTest.ngOnInit();
-        componentUnderTest.showAddAddressForm.take(1).subscribe((data: any) => {
-          expect(data).toBe(true);
-        });
-      });
-
-      it('should return false if there is at least one full address', () => {
-        let mockStore: any = { addresses: [mockAddressA], selectedAddress: mockAddressA };
-        mockCartService = {
-          checkoutData: Observable.of(mockStore),
-          data: Observable.of({}),
-          updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
-        };
-        componentUnderTest = new CommerceBillingTab(
-          null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null
-        );
-        componentUnderTest.ngOnInit();
-        componentUnderTest.showAddAddressForm.take(1).subscribe((data: any) => {
-          expect(data).toBe(false);
-        });
+      it('should return the right string for more than 2 errors', () => {
+        componentUnderTest.addressErrors = { 10: ['city', 'state', 'phone', 'zipcode'] };
+        expect(componentUnderTest.formatAddressErrors(mockAddressA)).toBe('city, state, phone, and zipcode');
       });
     });
 

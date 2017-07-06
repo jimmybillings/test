@@ -8,7 +8,7 @@ import { Address } from '../../../shared/interfaces/user.interface';
     <div class="wz-dialog">
       <div layout="row" layout-align="center center">
         <h1 md-dialog-title>
-          {{ 'CART.BILLING.MODIFY_ADDRESS' | translate:{mode: capitalize(mode), resource: capitalize(resourceType)} }}
+          {{ title | translate }}
         </h1>
       </div>
       <md-dialog-content>
@@ -23,9 +23,8 @@ import { Address } from '../../../shared/interfaces/user.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressFormComponent implements OnInit {
+  @Input() title: string;
   @Input() items: any[];
-  @Input() resourceType: 'user' | 'account';
-  @Input() mode: 'create' | 'edit';
   @Input() address: Address;
   @Output() onSaveAddress = new EventEmitter();
 
@@ -39,10 +38,6 @@ export class AddressFormComponent implements OnInit {
 
   public saveAddress(form: any) {
     this.onSaveAddress.emit(form);
-  }
-
-  public capitalize(s: string): string {
-    return s.charAt(0).toUpperCase().concat(s.slice(1));
   }
 
   private clearForm(): void {
