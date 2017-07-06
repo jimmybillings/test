@@ -85,8 +85,8 @@ export class CommerceBillingTab extends Tab implements OnInit {
     );
   }
 
-  public displayAddressErrors(addresId: number): boolean {
-    return this.addressErrors[addresId].length > 0;
+  public displayAddressErrors(addressId: number): boolean {
+    return this.addressErrors[addressId] && this.addressErrors[addressId].length > 0;
   }
 
   public formatAddressErrors(address: ViewAddress): string {
@@ -97,6 +97,11 @@ export class CommerceBillingTab extends Tab implements OnInit {
       if (i === errors.length - 2) prev += 'and ';
       return prev;
     }, '');
+  }
+
+  public disableSelectBtnFor(address: ViewAddress): boolean {
+    return !address.address ||
+      (this.addressErrors[address.addressEntityId] && this.addressErrors[address.addressEntityId].length > 0);
   }
 
   private editFormTitle(resourceType: 'user' | 'account'): string {

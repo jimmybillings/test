@@ -101,7 +101,7 @@
                 md-raised-button
                 color="primary"
                 (click)="selectAddress(address)"
-                [disabled]="!address.address || addressErrors[address.addressEntityId].length > 0">
+                [disabled]="disableSelectBtnFor(address)">
                 {{ 'CART.BILLING.SELECT_ADDRESS_BTN' | translate }}
               </button>
             </div>
