@@ -35,6 +35,7 @@ export interface User extends Common {
   focusedCollection?: number;
   root?: boolean;
   billingInfo?: Address;
+  allUserpermissions?: Array<string>;
   [index: string]: any;
 }
 

@@ -4,7 +4,7 @@ import { User } from '../interfaces/user.interface';
 import { ErrorStore } from '../stores/error.store';
 
 export function main() {
-  describe('Current User model', () => {
+  describe('Current User Service', () => {
     let mockUser: any;
     let mockData: any;
     let mockStore: any;
@@ -12,7 +12,6 @@ export function main() {
     let serviceUnderTest: any;
 
     describe('hasPermission() - individual permissions', () => {
-
       beforeEach(() => {
         mockUser = {
           'lastUpdated': '2016-01-14T16:46:21Z',
@@ -24,7 +23,17 @@ export function main() {
           'lastName': 'last',
           'siteName': 'cnn',
           'accountIds': [4],
+          'roles': {
+            'id': 1,
+            'permissions': [
+              'ViewClips',
+              'ViewCollections',
+            ]
+          },
           'permissions': [
+            'ViewCarts'
+          ],
+          'allUserPermissions': [
             'ViewClips',
             'ViewCollections',
             'ViewCarts'
@@ -50,61 +59,7 @@ export function main() {
       });
     });
 
-    describe('hasPermission() - roles', () => {
-      beforeEach(() => {
-        mockUser = {
-          'lastUpdated': '2016-01-14T16:46:21Z',
-          'createdOn': '2016-01-14T16:46:21Z',
-          'id': 6,
-          'emailAddress': 'test_email@email.com',
-          'password': '5daf7de08c0014ec2baa13a64b35a4e0',
-          'firstName': 'first',
-          'lastName': 'last',
-          'siteName': 'cnn',
-          'accountIds': [4],
-          'roles': [
-            {
-              'lastUpdated': '2016-09-27T19:02:50Z',
-              'createdOn': '2016-09-19T21:25:57Z',
-              'id': 1,
-              'siteName': 'core',
-              'name': 'DefaultUser',
-              'description': 'Default User Role for a Registered User',
-              'permissions': [
-                'DeleteCollections',
-                'EditCollections',
-                'CreateCollections',
-                'ViewCollections',
-                'ViewClips'
-              ]
-            }
-          ]
-        };
-        mockData = {};
-        mockStore = {
-          select: (_: string) => Observable.of(mockUser),
-          dispatch: () => true
-        };
-        serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
-      });
-
-      it('returns true if a user has a certain permission', () => {
-        expect(serviceUnderTest.hasPermission('DeleteCollections')).toBe(true);
-        expect(serviceUnderTest.hasPermission('EditCollections')).toBe(true);
-        expect(serviceUnderTest.hasPermission('CreateCollections')).toBe(true);
-        expect(serviceUnderTest.hasPermission('ViewCollections')).toBe(true);
-        expect(serviceUnderTest.hasPermission('ViewClips')).toBe(true);
-      });
-
-      it('returns false if a user doesn\'t have a certain permission', () => {
-        expect(serviceUnderTest.hasPermission('Root')).toBe(false);
-        expect(serviceUnderTest.hasPermission('NotAPermission')).toBe(false);
-      });
-
-    });
-
     describe('hasPermission() - empty', () => {
-
       it('Should return an false if has no permissions or roles', () => {
         mockUser = {
           'lastUpdated': '2016-01-14T16:46:21Z',
@@ -156,7 +111,6 @@ export function main() {
         serviceUnderTest = new CurrentUserService(mockStore, mockErrorStore);
         expect(serviceUnderTest.hasPermission('DeleteCollections')).toBe(false);
       });
-
     });
 
     describe('CurrentUserService Model', () => {

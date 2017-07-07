@@ -4,24 +4,27 @@ import { Address } from '../../../shared/interfaces/user.interface';
 @Component({
   moduleId: module.id,
   selector: 'address-form-component',
-  template: `<div class="wz-dialog">
-    <button md-icon-button md-dialog-close title="Close" type="button" class="close">
-      <md-icon>close</md-icon>
-    </button>
-    <h1 md-dialog-title>
-      {{ 'CART.BILLING.MODIFY_ADDRESS' | translate:{mode: capitalize(mode), resource: capitalize(resourceType)} }}
-    </h1>
-    <md-dialog-content>
-      <wz-form [items]="items" submitLabel="{{ 'CART.BILLING.SAVE_ADDRESS_BTN_LABEL' | translate }}"
-      (formSubmit)="saveAddress($event)"></wz-form>
-    </md-dialog-content>
-  </div>`,
+  template: `
+    <div class="wz-dialog">
+      <div layout="row" layout-align="center center">
+        <h1 md-dialog-title>
+          {{ title | translate }}
+        </h1>
+      </div>
+      <md-dialog-content>
+        <wz-form
+          [items]="items"
+          [submitLabel]="'CART.BILLING.SAVE_ADDRESS_BTN_LABEL' | translate"
+          (formSubmit)="saveAddress($event)">
+        </wz-form>
+      </md-dialog-content>
+    </div>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressFormComponent implements OnInit {
+  @Input() title: string;
   @Input() items: any[];
-  @Input() resourceType: 'user' | 'account';
-  @Input() mode: 'create' | 'edit';
   @Input() address: Address;
   @Output() onSaveAddress = new EventEmitter();
 
@@ -35,10 +38,6 @@ export class AddressFormComponent implements OnInit {
 
   public saveAddress(form: any) {
     this.onSaveAddress.emit(form);
-  }
-
-  public capitalize(s: string): string {
-    return s.charAt(0).toUpperCase().concat(s.slice(1));
   }
 
   private clearForm(): void {
