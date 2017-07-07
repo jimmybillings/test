@@ -9,7 +9,6 @@ import { Capabilities } from '../shared/services/capabilities.service';
 import { WzNotificationService } from '../shared/services/wz.notification.service';
 import { CartService } from '../shared/services/cart.service';
 import { UserPreferenceService } from '../shared/services/user-preference.service';
-import { SearchContext } from '../shared/services/search-context.service';
 import { UiState } from '../shared/services/ui.state';
 import { Observable } from 'rxjs/Observable';
 import { MdSnackBar } from '@angular/material';
@@ -38,7 +37,6 @@ export class AssetComponent implements OnInit {
     public currentUser: CurrentUserService,
     public userCan: Capabilities,
     public activeCollection: ActiveCollectionService,
-    public searchContext: SearchContext,
     public uiState: UiState,
     public assetService: AssetService,
     public uiConfig: UiConfig,
@@ -51,13 +49,16 @@ export class AssetComponent implements OnInit {
     private dialogService: WzDialogService,
     private quoteEditService: QuoteEditService,
     private pricingStore: PricingStore) {
-    this.window = this.window;
   }
 
   ngOnInit(): void {
     this.uiConfig.get('global').take(1).subscribe(config => {
       this.pageSize = config.config.pageSize.value;
     });
+  }
+
+  public previousPage() {
+    this.window.nativeWindow.history.back();
   }
 
   public get userEmail(): Observable<any> {

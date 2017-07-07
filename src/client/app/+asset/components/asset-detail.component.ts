@@ -4,7 +4,6 @@ import { UiConfig } from '../../shared/services/ui.config';
 import { Capabilities } from '../../shared/services/capabilities.service';
 import { MdMenuTrigger } from '@angular/material';
 import { SubclipMarkers } from '../../shared/interfaces/asset.interface';
-import { SearchContext } from '../../shared/services/search-context.service';
 import { Observable } from 'rxjs/Observable';
 import { Frame } from 'wazee-frame-formatter';
 
@@ -21,7 +20,6 @@ export class AssetDetailComponent implements OnChanges {
   @Input() public userCan: Capabilities;
   @Input() public uiConfig: UiConfig;
   @Input() public collection: Collection;
-  @Input() public searchContext: SearchContext;
   @Input() public usagePrice: Observable<number>;
   @Input() public window: Window;
   @Output() onAddToCollection = new EventEmitter();
@@ -30,6 +28,7 @@ export class AssetDetailComponent implements OnChanges {
   @Output() addToCart = new EventEmitter();
   @Output() getPriceAttributes = new EventEmitter();
   @Output() onShowSnackBar = new EventEmitter();
+  @Output() onPreviousPage = new EventEmitter();
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   public selectedTarget: string;
   public showAssetSaveSubclip: boolean = false;
@@ -41,6 +40,14 @@ export class AssetDetailComponent implements OnChanges {
     if (changes.collection) {
       this.assetsArr = changes.collection.currentValue.assets.items.map((x: any) => x.assetId);
     }
+  }
+
+  public get hasPageHistory() {
+    return this.window.history.length > 2;
+  }
+
+  public previousPage() {
+    this.onPreviousPage.emit();
   }
 
   public alreadyInCollection(assetId: any): boolean {
