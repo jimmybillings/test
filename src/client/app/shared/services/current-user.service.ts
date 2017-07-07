@@ -67,13 +67,7 @@ export class CurrentUserService {
   public hasPermission(permission: string): boolean {
     let hasPermission: boolean;
     this.data.map((user: any) => {
-      if (user.permissions) {
-        return user.permissions;
-      } else if (user.roles) {
-        return user.roles[0].permissions || [];
-      } else {
-        return [];
-      }
+      return user.allUserPermissions || [];
     }).take(1).subscribe((permissions: any) => {
       hasPermission = permissions.indexOf(permission) > -1;
     });
