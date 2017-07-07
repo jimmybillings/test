@@ -3,22 +3,26 @@ import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Quote Tab Component', () => {
-    let componentUnderTest: QuoteTabComponent, mockQuoteService: any, mockUserCan: any, mockDialogService: any;
+    let componentUnderTest: QuoteTabComponent, mockQuoteService: any, mockUserCan: any, mockDialogService: any, mockRouter: any;
 
     beforeEach(() => {
       mockQuoteService = {
         data: Observable.of({ data: {} }),
         getPaymentOptions: jasmine.createSpy('getPaymentOptions'),
-        retrieveLicenseAgreements: jasmine.createSpy('retrieveLicenseAgreements').and.returnValue(Observable.of({}))
+        retrieveLicenseAgreements: jasmine.createSpy('retrieveLicenseAgreements').and.returnValue(Observable.of({})),
+        mockRouter: { navigate: jasmine.createSpy('navigate') }
       };
 
       mockUserCan = {
         viewLicenseAgreementsButton: jasmine.createSpy('viewLicenseAgreementsButton')
       };
 
-      mockDialogService = { openComponentInDialog: jasmine.createSpy('openComponentInDialog') };
+      mockDialogService = {
+        openComponentInDialog: jasmine.createSpy('openComponentInDialog'),
+        openConfirmationDialog: jasmine.createSpy('openConfirmationDialog')
+      };
 
-      componentUnderTest = new QuoteTabComponent(mockQuoteService, mockUserCan, mockDialogService);
+      componentUnderTest = new QuoteTabComponent(mockQuoteService, mockUserCan, mockDialogService, mockRouter);
     });
 
     describe('checkout()', () => {
@@ -49,6 +53,14 @@ export function main() {
         componentUnderTest.showLicenseAgreements();
 
         expect(mockQuoteService.retrieveLicenseAgreements).toHaveBeenCalled();
+      });
+    });
+
+    describe('openRejectQuoteDialog()', () => {
+      it('should call openConfirmationDialog() on the dialog service', () => {
+        componentUnderTest.openRejectQuoteDialog();
+
+        expect(mockDialogService.openConfirmationDialog).toHaveBeenCalled();
       });
     });
   });

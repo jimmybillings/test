@@ -27,6 +27,14 @@
           {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
       </button>
       <button
+        *ngIf="shouldShowRejectQuoteButton()"
+        (click)="openRejectQuoteDialog()"
+        md-button
+        class="is-outlined reject-quote"
+        color="warn">
+        {{ 'QUOTE.REJECT_BTN' | translate }}
+      </button>
+      <button
         md-raised-button class="checkout"
         (click)="checkout()">
           {{ 'CART.PROCEED_BTN_LABEL' | translate }}

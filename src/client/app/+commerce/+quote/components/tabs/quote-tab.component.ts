@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { QuoteService } from '../../../../shared/services/quote.service';
 import { Quote } from '../../../../shared/interfaces/commerce.interface';
 import { Tab } from '../../../components/tabs/tab';
@@ -21,7 +22,8 @@ export class QuoteTabComponent extends Tab {
   constructor(
     public quoteService: QuoteService,
     public userCan: CommerceCapabilities,
-    public dialogService: WzDialogService) {
+    public dialogService: WzDialogService,
+    private router: Router) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
   }
@@ -49,4 +51,22 @@ export class QuoteTabComponent extends Tab {
     });
   }
 
+  public openRejectQuoteDialog(): void {
+    this.dialogService.openConfirmationDialog({
+      title: 'QUOTE.REJECT.TITLE',
+      message: 'QUOTE.REJECT.MESSAGE',
+      accept: 'QUOTE.REJECT.ACCEPT',
+      decline: 'QUOTE.REJECT.DECLINE'
+    }, this.rejectQuote);
+  }
+
+  public shouldShowRejectQuoteButton(): boolean {
+    return !this.userCan.administerQuotes();
+  }
+
+  private rejectQuote = (): void => {
+    this.quoteService.rejectQuote().take(1).subscribe(() => {
+      this.router.navigate(['commerce/quotes']);
+    });
+  }
 }
