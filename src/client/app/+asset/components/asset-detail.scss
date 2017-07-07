@@ -176,6 +176,20 @@ section.preview-bk {
   background-color:  transparent;
   position: relative;
 	height: auto;
+  & > div.jw-error {
+    @media screen and (min-width: $layout-breakpoint-lg)  {
+      min-height: 540px;
+    }
+    @media screen and (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg)  {
+      min-height: 480px;
+    }
+    @media screen and (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md)  {
+      min-height: 400px;
+    }
+    @media screen and (max-width: $layout-breakpoint-sm)  {
+      min-height: 320px;
+    }
+  }
   .photo-container {
     text-align: center;
     img {
