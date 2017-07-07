@@ -2,7 +2,6 @@
     [userEmail]="userEmail"
     [userCan]="userCan"
     [asset]="assetService.data | async"
-    [searchContext]="searchContext"
     [collection]="activeCollection.data | async"
     [uiConfig]="uiConfig"
     [usagePrice]="priceForDetails"
@@ -13,6 +12,7 @@
     (addToCart)="addAssetToCart($event)"
     (getPriceAttributes)="getPricingAttributes($event)"
     (onShowSnackBar)="showSnackBar($event)"
+    (onPreviousPage)="previousPage()"
   >
   </asset-detail>
   <asset-data
