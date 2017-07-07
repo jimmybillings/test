@@ -27,10 +27,10 @@
           {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
       </button>
       <button
-        *ngIf="true"
+        *ngIf="shouldShowRejectQuoteButton()"
         (click)="openRejectQuoteDialog()"
         md-button
-        class="is-outlined show-licenses"
+        class="is-outlined reject-quote"
         color="warn">
         {{ 'QUOTE.REJECT_BTN' | translate }}
       </button>

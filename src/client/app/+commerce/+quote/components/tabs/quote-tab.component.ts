@@ -60,6 +60,10 @@ export class QuoteTabComponent extends Tab {
     }, this.rejectQuote);
   }
 
+  public shouldShowRejectQuoteButton(): boolean {
+    return !this.userCan.administerQuotes();
+  }
+
   private rejectQuote = (): void => {
     this.quoteService.rejectQuote().take(1).subscribe(() => {
       this.router.navigate(['commerce/quotes']);
