@@ -33,8 +33,20 @@ export class QuoteTabComponent extends Tab {
     this.goToNextTab();
   }
 
-  public shouldShowLicenseDetailsBtn(): boolean {
+  public get shouldShowLicenseDetailsBtn(): boolean {
     return this.userCan.viewLicenseAgreementsButton(this.quoteService.hasAssetLineItems);
+  }
+
+  public get shouldShowExpireQuoteButton(): boolean {
+    return this.userCan.administerQuotes() && this.isActiveQuote;
+  }
+
+  public get shouldShowCheckoutOptions(): boolean {
+    return !this.userCan.administerQuotes() && this.isActiveQuote;
+  }
+
+  public get shouldShowRejectQuoteButton(): boolean {
+    return !this.userCan.administerQuotes();
   }
 
   public showLicenseAgreements(): void {
@@ -49,14 +61,6 @@ export class QuoteTabComponent extends Tab {
         }
       );
     });
-  }
-
-  public get showExpireQuoteButton(): boolean {
-    return this.userCan.administerQuotes() && this.isActiveQuote;
-  }
-
-  public get showCheckoutOptions(): boolean {
-    return !this.userCan.administerQuotes() && this.isActiveQuote;
   }
 
   public showExpireConfirmationDialog(): void {
@@ -75,10 +79,6 @@ export class QuoteTabComponent extends Tab {
       accept: 'QUOTE.REJECT.ACCEPT',
       decline: 'QUOTE.REJECT.DECLINE'
     }, this.rejectQuote);
-  }
-
-  public shouldShowRejectQuoteButton(): boolean {
-    return !this.userCan.administerQuotes();
   }
 
   private get isActiveQuote(): boolean {

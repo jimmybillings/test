@@ -44,7 +44,7 @@ export function main() {
 
     describe('shouldShowLicenseDetailsBtn()', () => {
       it('should cal viewLicenseAgreementsButton on the commerce capabilities', () => {
-        componentUnderTest.shouldShowLicenseDetailsBtn();
+        let res: boolean = componentUnderTest.shouldShowLicenseDetailsBtn;
 
         expect(mockUserCan.viewLicenseAgreementsButton).toHaveBeenCalled();
       });
