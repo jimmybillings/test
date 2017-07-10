@@ -30,6 +30,7 @@ export interface User extends Common {
   phoneNumber?: string;
   zipcode?: string;
   accountIds?: number[];
+  accountId?: number;
   ownedCollections?: string[];
   editableCollections?: number[];
   accessibleCollections?: number[];
