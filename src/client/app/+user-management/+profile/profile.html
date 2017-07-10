@@ -118,6 +118,14 @@
             </div>
             <div class="row">
               <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_COUNTRY_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="md-body-1">{{user.billingInfo.address.country}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cell">
                 <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_PHONE_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
@@ -136,20 +144,12 @@
         <md-tab label="'PROFILE.PERMISSION_TAB_LABEL' | uppercase | translate">
           <ng-template md-tab-label>{{'PROFILE.PERMISSION_TAB_LABEL' | translate }}</ng-template>
           <div class="m-data">
-            <div class="row" *ngIf="user.permissions">
+            <div class="row" *ngIf="user.allUserPermissions">
               <div class="cell">
                 <h5 class="md-subhead">{{'PROFILE.PERMISSION_TAB_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1" *ngFor='let perm of user.permissions; let i=index'>{{perm}}</p>
-              </div>
-            </div>
-            <div class="row" *ngIf="user.roles">
-              <div class="cell">
-                <h5 class="md-subhead">{{'PROFILE.PERMISSION_TAB_LABEL' | translate }}</h5>
-              </div>
-              <div class="cell">
-                <p class="md-body-1" *ngFor='let perm of user.roles[0].permissions; let i=index'>{{perm}}</p>
+                <p class="md-body-1" *ngFor='let perm of user.allUserPermissions; let i=index'>{{perm}}</p>
               </div>
             </div>
             <div class="row" *ngIf="user.roles">

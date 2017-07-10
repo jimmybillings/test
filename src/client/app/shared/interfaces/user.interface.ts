@@ -25,6 +25,7 @@ export interface User extends Common {
     }
   ];
   permissions?: string[];
+  allUserPermissions?: string[];
   purchaseOnCredit?: boolean;
   phoneNumber?: string;
   zipcode?: string;
@@ -34,7 +35,7 @@ export interface User extends Common {
   accessibleCollections?: number[];
   focusedCollection?: number;
   root?: boolean;
-  billingInfo?: Address;
+  billingInfo?: { address: Address };
   allUserpermissions?: Array<string>;
   [index: string]: any;
 }
