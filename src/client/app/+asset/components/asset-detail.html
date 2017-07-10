@@ -281,7 +281,7 @@
               </div>
               <ng-container *ngIf="userCan.haveCart()">
                 <md-card-actions *ngIf="(asset.price && asset.price !== 0)" layout="column" layout-align="center center" layout-wrap="">
-                  <button [disabled]="!userCan.addToCart()" md-button (click)="getPricingAttributes()" class="is-outlined">
+                  <button *ngIf="userCan.calculatePrice()" md-button (click)="getPricingAttributes()" class="is-outlined">
                     {{ 'PRICING.CALCULATE_HEADING' | translate }}
                   </button>
                   <button [disabled]="!userCan.addToCart()" md-raised-button (click)="addAssetToCart()"
