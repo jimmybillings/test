@@ -6,14 +6,17 @@
           <button md-button title="{{ 'PROFILE.SETTING_BTN_HOVER_TITLE' | translate }}" [md-menu-trigger-for]="profileSettings" class="icon-dd-button is-dd" color="primary"><md-icon>settings</md-icon></button>
           <md-menu x-position="before" #profileSettings="mdMenu">
             <button md-menu-item disabled>
-              <md-icon>settings_applications</md-icon>User preferences
+              <md-icon>settings_applications</md-icon>
+              {{ 'PROFILE.SETTINGS_DD_MENU.USER_PREFS_LINK' | translate }}
             </button>
             <button md-menu-item disabled>
-              <md-icon>business</md-icon>Account settings
+              <md-icon>business</md-icon>
+              {{ 'PROFILE.SETTINGS_DD_MENU.ACCOUNT_SETTINGS_LINK' | translate }}
             </button>
             <div class="divider"></div>
             <button md-menu-item [routerLink]="['/user/reset-password']">
-              <md-icon>lock</md-icon>Change Password
+              <md-icon>lock</md-icon>
+              {{ 'PROFILE.SETTINGS_DD_MENU.CHANGE_PASSWORD_LINK' | translate }}
             </button>
           </md-menu>
         </div>
@@ -57,6 +60,14 @@
             </div>
             <div class="row">
               <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.ACCOUNT_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="md-body-1">{{user.accountId}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cell">
                 <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.PASSWORD_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
@@ -69,45 +80,56 @@
           <div layout="row" layout-align="end center">
             <button md-button (click)="comingSoonDialog()" color="primary" class="edit-basic">
               <md-icon class="md-24">edit</md-icon>
-              Edit basic info
+              {{'PROFILE.BASIC_INFO.EDIT_BTN_LABEL' | translate }}
             </button>
-            <!--<button md-mini-fab color="primary" (click)="comingSoonDialog()">
-              <md-icon class="md-24">edit</md-icon>
-            </button>-->
           </div>
           <div class="m-data">
             <div class="row">
               <div class="cell">
-                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.CREATED_ON_LABEL' | translate }}</h5>
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1">{{user.createdOn}}</p>
+                <p class="md-body-1">{{user.billingInfo.address.address}}</p>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.UPDATED_ON_LABEL' | translate }}</h5>
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_CITY_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1">{{user.lastUpdated}}</p>
+                <p class="md-body-1">{{user.billingInfo.address.city}}</p>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.USER_ID_LABEL' | translate }}</h5>
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_STATE_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1">{{user.id}}</p>
+                <p class="md-body-1">{{user.billingInfo.address.state}}</p>
               </div>
             </div>
             <div class="row">
               <div class="cell">
-                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.USER_STATUS_LABEL' | translate }}</h5>
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_ZIPCODE_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1">{{user.wazeeStatus}}</p>
+                <p class="md-body-1">{{user.billingInfo.address.zipcode}}</p>
               </div>
             </div>
+            <div class="row">
+              <div class="cell">
+                <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_PHONE_LABEL' | translate }}</h5>
+              </div>
+              <div class="cell">
+                <p class="md-body-1">{{user.billingInfo.address.phone}}</p>
+              </div>
+            </div>
+          </div>
+          <div layout="row" layout-align="end center">
+            <button md-button (click)="comingSoonDialog()" color="primary" class="edit-basic">
+              <md-icon class="md-24">edit</md-icon>
+              {{'PROFILE.BASIC_INFO.BILLING_ADDRESS_EDIT_BTN_LABEL' | translate }}
+            </button>
           </div>
         </md-tab>
 
@@ -132,7 +154,7 @@
             </div>
             <div class="row" *ngIf="user.roles">
               <div class="cell">
-                <h5 class="md-subhead">Role</h5>
+                <h5 class="md-subhead">{{'PROFILE.PERMISSIONS.ROLE_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
                 <p class="md-body-1">{{user.roles[0].description}}</p>
@@ -140,8 +162,6 @@
             </div>
           </div>
         </md-tab>
-
-
       </md-tab-group>
     </div>
   </div>

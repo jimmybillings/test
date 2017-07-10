@@ -29,3 +29,7 @@ profile-component .mat-primary.edit-basic {
     top:rem(.3);
   }
 }
+
+profile-component md-tab-body {
+  min-height: 560px;
+}
