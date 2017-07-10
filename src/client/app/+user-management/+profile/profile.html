@@ -63,7 +63,9 @@
                 <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.ACCOUNT_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1">{{user.accountId}}</p>
+                <p class="md-body-1" *ngFor='let account of user.accountIds; let i=index'>
+                  {{account}}
+                </p>
               </div>
             </div>
             <div class="row">
