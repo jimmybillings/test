@@ -16,6 +16,9 @@
       a {
         color: mat-color($primary);
       }
+      .warn {
+        color: mat-color($warn, darker);
+      }
     }
   }
 }

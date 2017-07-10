@@ -74,6 +74,11 @@ section.preview-bk {
       min-height: rem(33.5);
     }
     div.primary-content {
+      @media screen and (max-width: $layout-breakpoint-sm) and (min-width: $layout-breakpoint-xs)   {
+        font-size: .92em;
+        max-height: 55%;
+        overflow: hidden;
+      }
       .title-txt {
         margin-top: 0;
         margin-bottom: rem(1.2);
@@ -81,7 +86,7 @@ section.preview-bk {
         opacity: .5;
         @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
           margin-top: rem(1.2);
-          font-size: 1.1em;
+          font-size: 1em;
           opacity: .65;
         }
       }
@@ -176,6 +181,20 @@ section.preview-bk {
   background-color:  transparent;
   position: relative;
 	height: auto;
+  & > div.jw-error {
+    @media screen and (min-width: $layout-breakpoint-lg)  {
+      min-height: 540px;
+    }
+    @media screen and (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg)  {
+      min-height: 480px;
+    }
+    @media screen and (min-width: $layout-breakpoint-sm) and (max-width: $layout-breakpoint-md)  {
+      min-height: 400px;
+    }
+    @media screen and (max-width: $layout-breakpoint-sm)  {
+      min-height: 320px;
+    }
+  }
   .photo-container {
     text-align: center;
     img {

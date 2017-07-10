@@ -123,6 +123,10 @@ export class QuoteService {
     return this.api.put(Api.Orders, `quote/${this.state.data.id}`, { body: newQuote });
   }
 
+  public rejectQuote(): Observable<Quote> {
+    return this.api.put(Api.Orders, `quote/reject/${this.state.data.id}`);
+  }
+
   // Private Methods
 
   private purchaseWithCreditCard(): Observable<number> {

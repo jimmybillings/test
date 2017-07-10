@@ -119,6 +119,16 @@ export function main() {
 
         expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3');
+
+      });
+    });
+
+    describe('rejectQuote()', () => {
+      it('calls the api service correctly', () => {
+        serviceUnderTest.rejectQuote();
+
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/reject/3');
       });
     });
   });

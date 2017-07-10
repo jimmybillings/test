@@ -107,8 +107,8 @@
             (click)="rejectQuote.emit(item)"
             md-button
             class="is-outlined"
-            color="primary">
-            reject quote
+            color="warn">
+            {{ 'QUOTE.REJECT_BTN' | translate }}
           </button>
           <button
             *ngIf="shouldShowViewOrderButton"

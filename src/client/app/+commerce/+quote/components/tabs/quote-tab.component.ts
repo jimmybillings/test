@@ -68,12 +68,31 @@ export class QuoteTabComponent extends Tab {
     }, this.expireQuote);
   }
 
+  public openRejectQuoteDialog(): void {
+    this.dialogService.openConfirmationDialog({
+      title: 'QUOTE.REJECT.TITLE',
+      message: 'QUOTE.REJECT.MESSAGE',
+      accept: 'QUOTE.REJECT.ACCEPT',
+      decline: 'QUOTE.REJECT.DECLINE'
+    }, this.rejectQuote);
+  }
+
+  public shouldShowRejectQuoteButton(): boolean {
+    return !this.userCan.administerQuotes();
+  }
+
   private get isActiveQuote(): boolean {
     return this.quoteService.state.data.quoteStatus === 'ACTIVE';
   }
 
   private expireQuote = (): void => {
     this.quoteService.expireQuote().subscribe(() => {
+      this.router.navigate(['commerce/quotes']);
+    });
+  }
+
+  private rejectQuote = (): void => {
+    this.quoteService.rejectQuote().take(1).subscribe(() => {
       this.router.navigate(['commerce/quotes']);
     });
   }

@@ -75,10 +75,10 @@ export class QuotesComponent {
   public onRejectQuote(quote: Quote): void {
     this.quoteToReject = quote;
     this.dialogService.openConfirmationDialog({
-      title: 'QUOTE.INDEX.REJECT.TITLE',
-      message: 'QUOTE.INDEX.REJECT.MESSAGE',
-      accept: 'QUOTE.INDEX.REJECT.ACCEPT',
-      decline: 'QUOTE.INDEX.REJECT.DECLINE'
+      title: 'QUOTE.REJECT.TITLE',
+      message: 'QUOTE.REJECT.MESSAGE',
+      accept: 'QUOTE.REJECT.ACCEPT',
+      decline: 'QUOTE.REJECT.DECLINE'
     }, this.rejectQuote);
   }
 

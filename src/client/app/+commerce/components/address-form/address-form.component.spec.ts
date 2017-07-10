@@ -27,12 +27,6 @@ export function main() {
       componentUnderTest = new AddressFormComponent();
     });
 
-    describe('capitalize()', () => {
-      it('should capitalize a string', () => {
-        expect(componentUnderTest.capitalize('ross')).toEqual('Ross');
-      });
-    });
-
     describe('ngOnInit()', () => {
       it('initializes correctly with an address', () => {
         componentUnderTest.address = mockAddress;

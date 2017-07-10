@@ -9,7 +9,8 @@ export function main() {
       mockQuoteService = {
         data: Observable.of({ data: {} }),
         getPaymentOptions: jasmine.createSpy('getPaymentOptions'),
-        retrieveLicenseAgreements: jasmine.createSpy('retrieveLicenseAgreements').and.returnValue(Observable.of({}))
+        retrieveLicenseAgreements: jasmine.createSpy('retrieveLicenseAgreements').and.returnValue(Observable.of({})),
+        mockRouter: { navigate: jasmine.createSpy('navigate') }
       };
 
       mockUserCan = {
@@ -60,6 +61,12 @@ export function main() {
     describe('showExpireConfirmationDialog', () => {
       it('should call openConfirmationDialog() on the dialog serice', () => {
         componentUnderTest.showExpireConfirmationDialog();
+      });
+    });
+
+    describe('openRejectQuoteDialog()', () => {
+      it('should call openConfirmationDialog() on the dialog service', () => {
+        componentUnderTest.openRejectQuoteDialog();
 
         expect(mockDialogService.openConfirmationDialog).toHaveBeenCalled();
       });
