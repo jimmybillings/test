@@ -113,6 +113,16 @@ export function main() {
       });
     });
 
+    describe('expireQuote()', () => {
+      it('should call the api service correctly', () => {
+        serviceUnderTest.expireQuote();
+
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3');
+
+      });
+    });
+
     describe('rejectQuote()', () => {
       it('calls the api service correctly', () => {
         serviceUnderTest.rejectQuote();

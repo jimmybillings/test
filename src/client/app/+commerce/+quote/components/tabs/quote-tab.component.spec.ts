@@ -22,6 +22,8 @@ export function main() {
         openConfirmationDialog: jasmine.createSpy('openConfirmationDialog')
       };
 
+      mockRouter = { navigate: jasmine.createSpy('navigate') };
+
       componentUnderTest = new QuoteTabComponent(mockQuoteService, mockUserCan, mockDialogService, mockRouter);
     });
 
@@ -42,7 +44,7 @@ export function main() {
 
     describe('shouldShowLicenseDetailsBtn()', () => {
       it('should cal viewLicenseAgreementsButton on the commerce capabilities', () => {
-        componentUnderTest.shouldShowLicenseDetailsBtn();
+        let res: boolean = componentUnderTest.shouldShowLicenseDetailsBtn;
 
         expect(mockUserCan.viewLicenseAgreementsButton).toHaveBeenCalled();
       });
@@ -53,6 +55,12 @@ export function main() {
         componentUnderTest.showLicenseAgreements();
 
         expect(mockQuoteService.retrieveLicenseAgreements).toHaveBeenCalled();
+      });
+    });
+
+    describe('showExpireConfirmationDialog', () => {
+      it('should call openConfirmationDialog() on the dialog serice', () => {
+        componentUnderTest.showExpireConfirmationDialog();
       });
     });
 

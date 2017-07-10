@@ -33,8 +33,20 @@ export class QuoteTabComponent extends Tab {
     this.goToNextTab();
   }
 
-  public shouldShowLicenseDetailsBtn(): boolean {
+  public get shouldShowLicenseDetailsBtn(): boolean {
     return this.userCan.viewLicenseAgreementsButton(this.quoteService.hasAssetLineItems);
+  }
+
+  public get shouldShowExpireQuoteButton(): boolean {
+    return this.userCan.administerQuotes() && this.isActiveQuote;
+  }
+
+  public get shouldShowCheckoutOptions(): boolean {
+    return !this.userCan.administerQuotes() && this.isActiveQuote;
+  }
+
+  public get shouldShowRejectQuoteButton(): boolean {
+    return !this.userCan.administerQuotes();
   }
 
   public showLicenseAgreements(): void {
@@ -51,6 +63,15 @@ export class QuoteTabComponent extends Tab {
     });
   }
 
+  public showExpireConfirmationDialog(): void {
+    this.dialogService.openConfirmationDialog({
+      title: 'QUOTE.EXPIRE.TITLE',
+      message: 'QUOTE.EXPIRE.MESSAGE',
+      accept: 'QUOTE.EXPIRE.ACCEPT',
+      decline: 'QUOTE.EXPIRE.DECLINE'
+    }, this.expireQuote);
+  }
+
   public openRejectQuoteDialog(): void {
     this.dialogService.openConfirmationDialog({
       title: 'QUOTE.REJECT.TITLE',
@@ -60,8 +81,14 @@ export class QuoteTabComponent extends Tab {
     }, this.rejectQuote);
   }
 
-  public shouldShowRejectQuoteButton(): boolean {
-    return !this.userCan.administerQuotes();
+  private get isActiveQuote(): boolean {
+    return this.quoteService.state.data.quoteStatus === 'ACTIVE';
+  }
+
+  private expireQuote = (): void => {
+    this.quoteService.expireQuote().subscribe(() => {
+      this.router.navigate(['commerce/quotes']);
+    });
   }
 
   private rejectQuote = (): void => {
