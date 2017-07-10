@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 export function main() {
   describe('Quote Tab Component', () => {
-    let componentUnderTest: QuoteTabComponent, mockQuoteService: any, mockUserCan: any, mockDialogService: any;
+    let componentUnderTest: QuoteTabComponent, mockQuoteService: any, mockUserCan: any, mockDialogService: any, mockRouter: any;
 
     beforeEach(() => {
       mockQuoteService = {
@@ -16,9 +16,14 @@ export function main() {
         viewLicenseAgreementsButton: jasmine.createSpy('viewLicenseAgreementsButton')
       };
 
-      mockDialogService = { openComponentInDialog: jasmine.createSpy('openComponentInDialog') };
+      mockDialogService = {
+        openComponentInDialog: jasmine.createSpy('openComponentInDialog'),
+        openConfirmationDialog: jasmine.createSpy('openConfirmationDialog')
+      };
 
-      componentUnderTest = new QuoteTabComponent(mockQuoteService, mockUserCan, mockDialogService);
+      mockRouter = { navigate: jasmine.createSpy('navigate') };
+
+      componentUnderTest = new QuoteTabComponent(mockQuoteService, mockUserCan, mockDialogService, mockRouter);
     });
 
     describe('checkout()', () => {
@@ -49,6 +54,14 @@ export function main() {
         componentUnderTest.showLicenseAgreements();
 
         expect(mockQuoteService.retrieveLicenseAgreements).toHaveBeenCalled();
+      });
+    });
+
+    describe('showExpireConfirmationDialog', () => {
+      it('should call openConfirmationDialog() on the dialog serice', () => {
+        componentUnderTest.showExpireConfirmationDialog();
+
+        expect(mockDialogService.openConfirmationDialog).toHaveBeenCalled();
       });
     });
   });

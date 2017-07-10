@@ -112,5 +112,14 @@ export function main() {
         expect(mockApi.get).toHaveBeenCalledWithEndpoint('quote/licensing/3');
       });
     });
+
+    describe('expireQuote()', () => {
+      it('should call the api service correctly', () => {
+        serviceUnderTest.expireQuote();
+
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3');
+      });
+    });
   });
 }

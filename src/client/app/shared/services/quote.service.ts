@@ -118,6 +118,11 @@ export class QuoteService {
     return this.api.get(Api.Orders, `quote/licensing/${this.state.data.id}`);
   }
 
+  public expireQuote(): Observable<Quote> {
+    let newQuote: Quote = Object.assign({}, this.state.data, { expirationDate: new Date().toISOString() });
+    return this.api.put(Api.Orders, `quote/${this.state.data.id}`, { body: newQuote });
+  }
+
   // Private Methods
 
   private purchaseWithCreditCard(): Observable<number> {

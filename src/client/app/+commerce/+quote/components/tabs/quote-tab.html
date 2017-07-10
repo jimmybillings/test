@@ -5,8 +5,16 @@
   [userCan]="userCan">
 </projects-component>
 
+<div *ngIf="showExpireQuoteButton" flex="100">
+  <div layout="row" layout-align="end center" layout-padding>
+    <button md-button color="warn" class="is-outlined" (click)="showExpireConfirmationDialog()">
+      {{ 'QUOTE.EXPIRE_BTN' | translate }}
+    </button>
+  </div>
+</div>
+
 <section
-	*ngIf="!userCan.administerQuotes() && (quote | async).quoteStatus === 'ACTIVE'"
+	*ngIf="showCheckoutOptions"
 	class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
     <div flex="100" layout="row" layout-align="end center" class="total md-headline">

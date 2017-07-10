@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { QuoteService } from '../../../../shared/services/quote.service';
 import { Quote } from '../../../../shared/interfaces/commerce.interface';
 import { Tab } from '../../../components/tabs/tab';
@@ -21,7 +22,8 @@ export class QuoteTabComponent extends Tab {
   constructor(
     public quoteService: QuoteService,
     public userCan: CommerceCapabilities,
-    public dialogService: WzDialogService) {
+    public dialogService: WzDialogService,
+    private router: Router) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
   }
@@ -49,4 +51,30 @@ export class QuoteTabComponent extends Tab {
     });
   }
 
+  public get showExpireQuoteButton(): boolean {
+    return this.userCan.administerQuotes() && this.isActiveQuote;
+  }
+
+  public get showCheckoutOptions(): boolean {
+    return !this.userCan.administerQuotes() && this.isActiveQuote;
+  }
+
+  public showExpireConfirmationDialog(): void {
+    this.dialogService.openConfirmationDialog({
+      title: 'QUOTE.EXPIRE.TITLE',
+      message: 'QUOTE.EXPIRE.MESSAGE',
+      accept: 'QUOTE.EXPIRE.ACCEPT',
+      decline: 'QUOTE.EXPIRE.DECLINE'
+    }, this.expireQuote);
+  }
+
+  private get isActiveQuote(): boolean {
+    return this.quoteService.state.data.quoteStatus === 'ACTIVE';
+  }
+
+  private expireQuote = (): void => {
+    this.quoteService.expireQuote().subscribe(() => {
+      this.router.navigate(['commerce/quotes']);
+    });
+  }
 }
