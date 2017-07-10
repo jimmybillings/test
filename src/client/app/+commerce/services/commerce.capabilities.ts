@@ -56,6 +56,10 @@ export class CommerceCapabilities {
     return this.userHas('CreateSubclips') && typeof this.findMetadataValueFor('Format.FrameRate', asset) === 'string';
   }
 
+  public calculatePrice(): boolean {
+    return this.userHas('ViewPriceAttributes');
+  }
+
   public findMetadataValueFor(metadataName: string, object: any): string | null {
     if (object !== Object(object)) return null;
 
