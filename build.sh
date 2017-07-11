@@ -64,7 +64,7 @@ build_prod() {
   find . -type f -exec gzip "{}" \; -exec mv "{}.gz" "{}" \;
   # Upload to S3
   cd -
-  aws s3 cp "${baseDir}/dist/prod" s3://dmhint01.dv.wzplatform.com/ --profile tem-dv-svc-aws-upload-1 --recursive --add-header="Content-Encoding:gzip"
+  aws s3 cp "${baseDir}/dist/prod" s3://dmhint01.dv.wzplatform.com/ --profile tem-dv-svc-aws-upload-1 --recursive --content-encoding="gzip"
 
   # create build.properties file
   set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion}
