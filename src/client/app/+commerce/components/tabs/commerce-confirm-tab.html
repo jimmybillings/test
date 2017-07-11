@@ -51,7 +51,7 @@
 </div>
 
 <h5 class="md-title order-summary">{{ 'CART.CONFIRM.ORDER_TITLE' | translate }}</h5>
-<button md-button class="mini is-outlined" color="primary" (click)="goToTab(0)">
+<button *ngIf="!(data | async).expirationDate" md-button class="mini is-outlined" color="primary" (click)="goToTab(0)">
   {{ 'CART.CONFIRM.EDIT' | translate }}
 </button>
 <projects-component
