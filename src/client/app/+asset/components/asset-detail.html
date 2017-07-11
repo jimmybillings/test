@@ -8,11 +8,10 @@
           <div class="primary-content-t" layout="row">
             <button
               class="back-to-search"
-              *ngIf="searchContext.state.q" 
-              [disabled]="!searchContext.state.q" 
+              *ngIf="hasPageHistory"
               title="Back to search results"
               md-icon-button 
-              [routerLink]="['/search/', searchContext.state]">
+              (click)="previousPage()">
                 <md-icon>arrow_back</md-icon>
             </button>
             <div flex="auto">
@@ -282,7 +281,7 @@
               </div>
               <ng-container *ngIf="userCan.haveCart()">
                 <md-card-actions *ngIf="(asset.price && asset.price !== 0)" layout="column" layout-align="center center" layout-wrap="">
-                  <button [disabled]="!userCan.addToCart()" md-button (click)="getPricingAttributes()" class="is-outlined">
+                  <button *ngIf="userCan.calculatePrice()" md-button (click)="getPricingAttributes()" class="is-outlined">
                     {{ 'PRICING.CALCULATE_HEADING' | translate }}
                   </button>
                   <button [disabled]="!userCan.addToCart()" md-raised-button (click)="addAssetToCart()"

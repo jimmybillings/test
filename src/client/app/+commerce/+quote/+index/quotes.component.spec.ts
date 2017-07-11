@@ -93,10 +93,10 @@ export function main() {
         componentUnderTest.onRejectQuote({ id: 1 } as any);
 
         expect(mockDialogService.openConfirmationDialog).toHaveBeenCalledWith({
-          title: 'QUOTE.INDEX.REJECT.TITLE',
-          message: 'QUOTE.INDEX.REJECT.MESSAGE',
-          accept: 'QUOTE.INDEX.REJECT.ACCEPT',
-          decline: 'QUOTE.INDEX.REJECT.DECLINE'
+          title: 'QUOTE.REJECT.TITLE',
+          message: 'QUOTE.REJECT.MESSAGE',
+          accept: 'QUOTE.REJECT.ACCEPT',
+          decline: 'QUOTE.REJECT.DECLINE'
         }, jasmine.any(Function));
       });
     });

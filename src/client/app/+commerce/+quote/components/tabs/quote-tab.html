@@ -5,8 +5,16 @@
   [userCan]="userCan">
 </projects-component>
 
+<div *ngIf="shouldShowExpireQuoteButton" flex="100">
+  <div layout="row" layout-align="end center" layout-padding>
+    <button md-button color="warn" class="is-outlined" (click)="showExpireConfirmationDialog()">
+      {{ 'QUOTE.EXPIRE_BTN' | translate }}
+    </button>
+  </div>
+</div>
+
 <section
-	*ngIf="!userCan.administerQuotes() && (quote | async).quoteStatus === 'ACTIVE'"
+	*ngIf="shouldShowCheckoutOptions"
 	class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
     <div flex="100" layout="row" layout-align="end center" class="total md-headline">
@@ -20,11 +28,19 @@
     <div flex="100" layout="row" layout-align="end center">
       <button
         md-button
-        *ngIf="shouldShowLicenseDetailsBtn()"
+        *ngIf="shouldShowLicenseDetailsBtn"
         color="primary"
         class="is-outlined show-licenses"
         (click)="showLicenseAgreements()">
           {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
+      </button>
+      <button
+        *ngIf="shouldShowRejectQuoteButton"
+        (click)="openRejectQuoteDialog()"
+        md-button
+        class="is-outlined reject-quote"
+        color="warn">
+        {{ 'QUOTE.REJECT_BTN' | translate }}
       </button>
       <button
         md-raised-button class="checkout"

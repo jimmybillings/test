@@ -23,6 +23,7 @@ export function main() {
       componentUnderTest.asset = {
         assetId: 1, clipData: [], clipThumbnailUrl: 'clipUrl.jpg', clipUrl: 'clipUrl', transcodeTargets: transcodeTargets
       };
+      componentUnderTest.window = window;
     });
 
     describe('ngOnChanges()', () => {
@@ -117,6 +118,28 @@ export function main() {
         componentUnderTest.addAssetToCart();
         expect(componentUnderTest.addToCart.emit)
           .toHaveBeenCalledWith({ assetId: 1234, markers: null, selectedTranscodeTarget: 'master_copy' });
+      });
+    });
+
+    describe('previousPage()', () => {
+      it('Should emit an event to go back to the previous page', () => {
+        spyOn(componentUnderTest.onPreviousPage, 'emit');
+        componentUnderTest.previousPage();
+        expect(componentUnderTest.onPreviousPage.emit)
+          .toHaveBeenCalled();
+      });
+    });
+
+    describe('hasPageHistory', () => {
+      it('Should return false if the browser has not yet loaded previous page history', () => {
+        expect(componentUnderTest.hasPageHistory).toBe(false);
+      });
+
+      it('Should return true if the browser has loaded previous page history', () => {
+        componentUnderTest.window.history.pushState({ data: 'somedata1' }, 'test1');
+        componentUnderTest.window.history.pushState({ data: 'somedata2' }, 'test2');
+        componentUnderTest.window.history.pushState({ data: 'somedata3' }, 'test3');
+        expect(componentUnderTest.hasPageHistory).toBe(true);
       });
     });
   });

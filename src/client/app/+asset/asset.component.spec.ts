@@ -18,7 +18,6 @@ export function main() {
         removeAsset: jasmine.createSpy('removeAsset').and.returnValue(Observable.of({})),
         getItems: jasmine.createSpy('getItems').and.returnValue(Observable.of({}))
       };
-      mockSearchContext = {};
       mockUiState = {};
       mockUserPreference = {
         openCollectionTray: jasmine.createSpy('openCollectionTray'),
@@ -34,7 +33,7 @@ export function main() {
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({ config: { pageSize: { value: 20 } } })) };
       mockErrorStore = { dispatch: jasmine.createSpy('dispatch') };
       mockCart = { addAssetToProjectInCart: jasmine.createSpy('addAssetToProjectInCart') };
-      mockWindow = { nativeWindow: { location: { href: {} } } };
+      mockWindow = { nativeWindow: { location: { href: {} }, history: { back: jasmine.createSpy('back') } } };
       mockTranslate = {
         get: jasmine.createSpy('get').and.returnValue(Observable.of([]))
       };
@@ -51,7 +50,7 @@ export function main() {
         state: { priceForDetails: 100, priceForDialog: 1000 }
       };
       componentUnderTest = new AssetComponent(
-        mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
+        mockCurrentUserService, mockCapabilities, mockActiveCollection, mockUiState,
         mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore, mockCart,
         mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore
       );
@@ -113,7 +112,7 @@ export function main() {
             Observable.of({ url: 'http://downloadcomp.url' }))
         };
         componentUnderTest = new AssetComponent(
-          mockCurrentUserService, mockCapabilities, mockActiveCollection, mockSearchContext, mockUiState,
+          mockCurrentUserService, mockCapabilities, mockActiveCollection, mockUiState,
           mockAssetService, mockUiConfig, mockWindow, mockUserPreference, mockErrorStore,
           mockCart, mockSnackBar, mockTranslate, mockDialogService, mockQuoteEditService, mockPricingStore
         );
@@ -167,6 +166,13 @@ export function main() {
         componentUnderTest.getPricingAttributes('Rights Managed');
 
         expect(mockAssetService.getPriceAttributes).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('previousPage()', () => {
+      it('should call the back method on the window api', () => {
+        componentUnderTest.previousPage();
+        expect(mockWindow.nativeWindow.history.back).toHaveBeenCalled();
       });
     });
   });

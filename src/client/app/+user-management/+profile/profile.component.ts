@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CurrentUserService } from '../../shared/services/current-user.service';
+import { UserService } from '../../shared/services/user.service';
 import { User } from '../../shared/interfaces/user.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { WzComingSoonComponent } from '../../shared/components/wz-coming-soon/wz-coming-soon.component';
@@ -14,9 +15,10 @@ import { WzDialogService } from '../../shared/modules/wz-dialog/services/wz.dial
 
 export class ProfileComponent implements OnDestroy, OnInit {
   public user: User;
+  public accountName: string;
   private userSubscription: Subscription;
 
-  constructor(private currentUser: CurrentUserService, private dialogService: WzDialogService) { }
+  constructor(private currentUser: CurrentUserService, private dialogService: WzDialogService, private u: UserService, ) { }
 
   ngOnInit() {
     this.userSubscription =
@@ -33,5 +35,11 @@ export class ProfileComponent implements OnDestroy, OnInit {
       componentType: WzComingSoonComponent,
       dialogConfig: { position: { top: '16%' } }
     });
+  }
+
+  public userAccountName(id: number): string {
+    this.u.getAccount(this.user.accountId).take(1).subscribe((account: any) =>
+      this.accountName = account.name);
+    return this.accountName;
   }
 }

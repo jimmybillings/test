@@ -25,16 +25,18 @@ export interface User extends Common {
     }
   ];
   permissions?: string[];
+  allUserPermissions?: string[];
   purchaseOnCredit?: boolean;
   phoneNumber?: string;
   zipcode?: string;
   accountIds?: number[];
+  accountId?: number;
   ownedCollections?: string[];
   editableCollections?: number[];
   accessibleCollections?: number[];
   focusedCollection?: number;
   root?: boolean;
-  billingInfo?: Address;
+  billingInfo?: { address: Address };
   [index: string]: any;
 }
 

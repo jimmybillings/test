@@ -13,7 +13,7 @@ export function main() {
 
     beforeEach(() => {
       mockCurrentUserService = { data: Observable.of(user) };
-      componentUnderTest = new ProfileComponent(mockCurrentUserService, null);
+      componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null);
     });
 
     describe('ngOnInit()', () => {
@@ -28,7 +28,7 @@ export function main() {
         let mockSubscription = { unsubscribe: jasmine.createSpy('unsubscribe') };
         let mockObservable = { subscribe: () => mockSubscription };
         mockCurrentUserService = { data: mockObservable };
-        componentUnderTest = new ProfileComponent(mockCurrentUserService, null);
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null);
         componentUnderTest.ngOnInit();
         componentUnderTest.ngOnDestroy();
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();
