@@ -35,12 +35,7 @@ function buildTS() {
   gulp.src(['node_modules/@angular/material/_theming.scss', 'library/package.json', 'dist/prod/layout.css'])
     .pipe(gulp.dest(Config.APP_DEST));
 
-  gulp.src(['dist/prod/layout.css'])
-    .pipe(plugins.gzip({ append: false }))
-    .pipe(gulp.dest(Config.APP_DEST));
-
   gulp.src(['dist/prod/js/shims.js', 'dist/prod/js/app.js'])
-    .pipe(plugins.gzip({ append: false }))
     .pipe(plugins.concat('app.js'))
     .pipe(gulp.dest(Config.APP_DEST));
 
