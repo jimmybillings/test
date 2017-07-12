@@ -85,7 +85,7 @@
                 (openQuoteDialog)="onNotification({type: 'OPEN_QUOTE_DIALOG'})">
               </administer-quote-component>
             </div>
-            <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!userCanProceed">
+            <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="showUsageWarning">
               {{ 'CART.SELECT_USAGE_WARN' | translate }}
             </div>
           </div>

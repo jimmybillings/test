@@ -170,6 +170,108 @@ export function main() {
       });
     });
 
+
+
+    describe('cartContainsNoAssets()', () => {
+
+      it('should return true if the cart is empty', () => {
+        mockState = { data: { itemCount: 0 } };
+
+        mockCartService = {
+          state: mockState
+        };
+
+        componentUnderTest = new CommerceEditTab(
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null
+        );
+
+        expect(componentUnderTest.cartContainsNoAssets).toBe(true);
+      });
+
+      it('should return false if the cart is has 1 or more assets', () => {
+        mockState = { data: { itemCount: 1 } };
+
+        mockCartService = {
+          state: mockState
+        };
+
+        componentUnderTest = new CommerceEditTab(
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null
+        );
+
+        expect(componentUnderTest.cartContainsNoAssets).toBe(false);
+      });
+    });
+
+
+    describe('showUsageWarning()', () => {
+
+      it('should return false if the cart is empty', () => {
+        mockState = { data: { itemCount: 0 } };
+
+        mockCartService = {
+          state: mockState
+        };
+
+        componentUnderTest = new CommerceEditTab(
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null
+        );
+
+        expect(componentUnderTest.showUsageWarning).toBe(false);
+      });
+
+      it('should return true if cart has assets and 1 or more RM assets are missing attributes ', () => {
+        mockState = {
+          data: {
+            itemCount: 3,
+            projects: [{
+              lineItems: [
+                { id: '1', price: 100, rightsManaged: 'Rights Managed' },
+                { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+                { id: '3', price: 59, rightsManaged: 'Royalty Free' }
+              ]
+            }]
+          }
+        };
+
+        mockCartService = {
+          state: mockState
+        };
+
+        componentUnderTest = new CommerceEditTab(
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null
+        );
+
+        expect(componentUnderTest.showUsageWarning).toBe(true);
+      });
+
+      it('should return false if cart has assets and all RM assets have attributes ', () => {
+        mockState = {
+          data: {
+            itemCount: 3,
+            projects: [{
+              lineItems: [
+                { id: '1', price: 189, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+                { id: '2', price: 100, attributes: ['a', 'b', 'c'], rightsManaged: 'Rights Managed' },
+                { id: '3', price: 59, rightsManaged: 'Royalty Free' }
+              ]
+            }]
+          }
+        };
+
+        mockCartService = {
+          state: mockState
+        };
+
+        componentUnderTest = new CommerceEditTab(
+          null, mockCartService, null, null, null, null, null, null, null, null, null, null
+        );
+
+        expect(componentUnderTest.showUsageWarning).toBe(false);
+      });
+    });
+
+
     describe('onSelectQuoteType()', () => {
       it('should set the quoteType instance variable', () => {
         componentUnderTest.onSelectQuoteType({ type: 'OfflineAgreement' });
