@@ -58,6 +58,7 @@ trap clean_up EXIT
 build_prod() {
   npm run build.prod.aot || exit 1
 
+
   # create build.properties file
   set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion}
   create-status-html.sh "${baseDir}/dist/prod/build.properties" "${baseDir}/dist/prod/status.html"
