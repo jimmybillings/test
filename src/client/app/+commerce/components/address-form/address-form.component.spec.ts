@@ -24,30 +24,7 @@ export function main() {
     ];
 
     beforeEach(() => {
-      componentUnderTest = new AddressFormComponent();
-    });
-
-    describe('ngOnInit()', () => {
-      it('initializes correctly with an address', () => {
-        componentUnderTest.address = mockAddress;
-        componentUnderTest.items = items;
-        componentUnderTest.ngOnInit();
-        expect(componentUnderTest.items).toEqual([
-          { name: 'address', value: '123 Oak Street' },
-          { name: 'state', value: 'CO' },
-          { name: 'country', value: 'USA' },
-          { name: 'zipcode', value: '11111' },
-          { name: 'phone', value: '2223334444' },
-          { name: 'city', value: 'Denver' }
-        ]);
-      });
-
-      it('initializes correctly without an address', () => {
-        componentUnderTest.address = null;
-        componentUnderTest.items = items;
-        componentUnderTest.ngOnInit();
-        expect(componentUnderTest.items).toEqual(items);
-      });
+      componentUnderTest = new AddressFormComponent(null, null);
     });
   });
 }

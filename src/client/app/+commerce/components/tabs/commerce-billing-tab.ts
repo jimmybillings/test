@@ -1,4 +1,4 @@
-import { Component, Output, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Output, Input, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CartService } from '../../../shared/services/cart.service';
 import { QuoteService } from '../../../shared/services/quote.service';
 import { UserService } from '../../../shared/services/user.service';
@@ -19,6 +19,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
   public addressErrors: any = {};
   public showAddAddressForm: boolean;
   public showEditAddressForm: boolean;
+  @Input() loaded: boolean;
   @Output() tabNotify: EventEmitter<Object> = this.notify;
 
   constructor(
@@ -125,6 +126,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
       this.validate(addresses);
       this.showAddAddressForm = this.showAddForm(addresses);
       this.showEditAddressForm = this.showEditForm(addresses);
+      console.log({ showAdd: this.showAddAddressForm, showEdit: this.showEditAddressForm });
       this.commerceService.updateOrderInProgress('addresses', addresses);
     });
   }
@@ -167,9 +169,9 @@ export class CommerceBillingTab extends Tab implements OnInit {
   private validate(addresses: Array<ViewAddress>): void {
     this.addressErrors = {};
     addresses.forEach((address: ViewAddress) => {
+      this.addressErrors[address.addressEntityId] = [];
       if (!address.address) return;
       let actualAddressKeys: Array<String> = Object.keys(address.address);
-      this.addressErrors[address.addressEntityId] = [];
       AddressKeys.forEach((key: string) => {
         if (actualAddressKeys.indexOf(key) < 0 || address.address[key] === '') {
           this.addressErrors[address.addressEntityId].push(key);

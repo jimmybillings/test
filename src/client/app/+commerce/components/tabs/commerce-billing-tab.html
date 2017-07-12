@@ -9,8 +9,9 @@
     <md-card class="billing-card wz-form-card">
       <md-card-content>
         <address-form-component
-          [title]="createFormTitle('user')"
           [items]="items"
+          [loaded]="loaded"
+          [title]="createFormTitle('user')"
           (onSaveAddress)="addUserAddress($event)">
         </address-form-component>
       </md-card-content>
@@ -27,9 +28,10 @@
     <md-card class="billing-card wz-form-card">
       <md-card-content>
         <address-form-component
+          [items]="items"
+          [loaded]="loaded"
           [title]="'CART.BILLING.COMPLETE_ADDRESS_ERROR'"
           [address]="(orderInProgress | async).addresses[0].address"
-          [items]="items"
           (onSaveAddress)="addUserAddress($event)">
         </address-form-component>
       </md-card-content>
