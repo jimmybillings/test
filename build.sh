@@ -57,15 +57,6 @@ trap clean_up EXIT
 build_prod() {
   npm run build.prod.aot || exit 1
 
-  # Upload to S3
-  # aws s3 cp "${baseDir}/dist/prod" s3://dmhint01.dv.wzplatform.com/ --profile tem-dv-svc-aws-upload-1 --recursive
-
-  cd "${baseDir}/dist/prod"
-  find . -type f -exec gzip "{}" \; -exec mv "{}.gz" "{}" \;
-  # Upload to S3
-  cd -
-  aws s3 cp "${baseDir}/dist/prod" s3://dmhint01.dv.wzplatform.com/ --profile tem-dv-svc-aws-upload-1 --recursive --content-encoding="gzip"
-
   # create build.properties file
   set-maven-build-information.sh --path=${baseDir}/dist/prod --version=${buildVersion}
   create-status-html.sh "${baseDir}/dist/prod/build.properties" "${baseDir}/dist/prod/status.html"
@@ -90,6 +81,7 @@ build_prod() {
     # put the calculated artifact version into a properties file so jenkins can find it
     create-jenkins-properties.sh ${buildVersion}
   fi
+
   return 0
 }
 
@@ -123,6 +115,14 @@ build_library() {
   return 0
 }
 
+s3_deploy() {
+  cd "${baseDir}/dist/prod"
+  find . -type f -exec gzip "{}" \; -exec mv "{}.gz" "{}" \;
+  # Upload to S3
+  cd -
+  aws s3 cp "${baseDir}/dist/prod" s3://dmhint01.dv.wzplatform.com/ --profile tem-dv-svc-aws-upload-1 --recursive --content-encoding="gzip"
+}
+
 # debugging information
 print-build-environment.sh
 
@@ -148,7 +148,10 @@ npm install
 build_prod
 
 # build the UI library
-build_library
+# build_library
+
+# Deploy to S3
+s3_deploy
 
 cd "$TMPDIR/wazee-crux-version-control"
 git pull origin develop
