@@ -54,6 +54,7 @@ clean_up() {
 }
 trap clean_up EXIT 
 
+
 build_prod() {
   npm run build.prod.aot || exit 1
 
