@@ -54,6 +54,7 @@ clean_up() {
 }
 trap clean_up EXIT 
 
+
 build_prod() {
   npm run build.prod.aot || exit 1
 
@@ -64,6 +65,7 @@ build_prod() {
   # package into an rpm
   cp -f ${baseDir}/post_install.sh ${baseDir}/dist/prod
   build-rpm.sh --srcDir=dist/prod --dstDir=. --artifactName=${project} --targetDir=/opt/app/apache/htdocs/hosts/${siteName}/docs --postInstall=post_install.sh --version=${buildVersion} || exit 1
+
 
   # Only deploy & tag if we're on Jenkins
   if [ -n "$JENKINS_HOME" ]; then
