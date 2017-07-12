@@ -26,14 +26,13 @@
           {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
       </button>
       <button
-        *ngIf="cartService.hasAssets | async"
         [disabled]="!userCanProceed"
         md-raised-button class="checkout"
         (click)="checkout()">
           {{ 'CART.PROCEED_BTN_LABEL' | translate }}
       </button>
     </div>
-    <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="!rmAssetsHaveAttributes">
+    <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf='showUsageWarning'>
       {{ 'CART.SELECT_USAGE_WARN' | translate }}
     </div>
 	</div>

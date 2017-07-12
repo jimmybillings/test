@@ -107,7 +107,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   public get userCanProceed(): boolean {
-    return (this.quoteType === 'ProvisionalOrder') || this.rmAssetsHaveAttributes;
+    return (this.quoteType === 'ProvisionalOrder') || (this.rmAssetsHaveAttributes && !this.cartContainsNoAssets);
   }
 
   public get rmAssetsHaveAttributes(): boolean {
@@ -122,8 +122,15 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         });
       }
     });
-
     return validAssets.indexOf(false) === -1;
+  }
+
+  public get cartContainsNoAssets(): boolean {
+    return (this.commerceService.state.data.itemCount === 0) ? true : false;
+  }
+
+  public get showUsageWarning(): boolean {
+    return !this.cartContainsNoAssets && !this.userCanProceed;
   }
 
   public onSelectQuoteType(event: { type: QuoteType }): void {
