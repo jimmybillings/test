@@ -115,14 +115,6 @@ build_library() {
   return 0
 }
 
-s3_deploy() {
-  cd "${baseDir}/dist/prod"
-  find . -type f -exec gzip "{}" \; -exec mv "{}.gz" "{}" \;
-  # Upload to S3
-  cd -
-  aws s3 cp "${baseDir}/dist/prod" s3://dmhint01.dv.wzplatform.com/ --profile tem-dv-svc-aws-upload-1 --recursive --content-encoding="gzip"
-}
-
 # debugging information
 print-build-environment.sh
 
@@ -149,9 +141,6 @@ build_prod
 
 # build the UI library
 # build_library
-
-# Deploy to S3
-s3_deploy
 
 cd "$TMPDIR/wazee-crux-version-control"
 git pull origin develop
