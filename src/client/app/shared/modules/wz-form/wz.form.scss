@@ -4,7 +4,7 @@ form button {
   }
 }
 form {
-  padding-top: 18px;
+  padding-top: 5px;
 }
 wz-cc-form,
 wz-form {
@@ -14,8 +14,8 @@ wz-form {
     md-select,
     .mat-input-container {
       width: 100%;
-      margin-top: 11px;
-      margin-bottom: 11px;
+      margin-top: 6px;
+      margin-bottom: 6px;
     }
     md-select {
       position: relative;
@@ -81,4 +81,8 @@ form .two-col div[flex="50"]:first-child {
 }
 form .two-col div[flex="50"]:last-child {
   padding: 0 0 0 5px;
+}
+
+.mat-radio-group .mat-radio-button {
+  padding: 3px 0;
 }
