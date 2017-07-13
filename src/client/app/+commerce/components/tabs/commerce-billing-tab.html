@@ -31,7 +31,7 @@
           [items]="items"
           [loaded]="loaded"
           [title]="'CART.BILLING.COMPLETE_ADDRESS_ERROR'"
-          [address]="(orderInProgress | async).addresses[0].address"
+          [address]="(orderInProgress | async).addresses[0]"
           (onSaveAddress)="addUserAddress($event)">
         </address-form-component>
       </md-card-content>

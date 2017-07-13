@@ -6,7 +6,7 @@ export function main() {
   describe('Billing Tab Component', () => {
     let componentUnderTest: CommerceBillingTab;
     let mockCartService: any, mockUiConfig: any, mockUserService: any, mockDialogService: any, mockCurrentUserService: any;
-    let mockUserAccountPermission: boolean;
+    let mockUserAccountPermission: boolean, mockRef: any;
 
     let mockEmptyAddress: ViewAddress = {
       type: null,
@@ -67,15 +67,17 @@ export function main() {
       };
 
       mockDialogService = {
-        openFormDialog: jasmine.createSpy('openFormDialog').and.returnValue(Observable.of({ data: 'Test data' })),
+        openComponentInDialog: jasmine.createSpy('openComponentInDialog').and.returnValue(Observable.of({ data: 'Test data' })),
       };
 
       mockCurrentUserService = {
         state: { purchaseOnCredit: true }
       };
 
+      mockRef = { detectChanges: jasmine.createSpy('detectChanges') };
+
       componentUnderTest = new CommerceBillingTab(
-        null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, mockDialogService
+        null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, mockDialogService, mockRef
       );
     });
 
@@ -139,13 +141,13 @@ export function main() {
         it('should open a dialog and call addBillingAddress if mode is "edit"', () => {
           componentUnderTest.openFormFor('user', 'edit', mockAddressB);
 
-          expect(mockDialogService.openFormDialog).toHaveBeenCalled();
+          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
         });
 
         it('should open a dialog and call addUserAddress if mode is "create"', () => {
           componentUnderTest.openFormFor('user', 'create');
 
-          expect(mockDialogService.openFormDialog).toHaveBeenCalled();
+          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
         });
       });
 
@@ -153,13 +155,13 @@ export function main() {
         it('should open a dialog and call addAccountBillingAddress if mode is "edit"', () => {
           componentUnderTest.openFormFor('account', 'edit', mockAddressB);
 
-          expect(mockDialogService.openFormDialog).toHaveBeenCalled();
+          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
         });
 
         it('should open a dialog and call addAccountBillingAddress if mode is "create"', () => {
           componentUnderTest.openFormFor('account', 'create');
 
-          expect(mockDialogService.openFormDialog).toHaveBeenCalled();
+          expect(mockDialogService.openComponentInDialog).toHaveBeenCalled();
         });
       });
     });
@@ -203,7 +205,7 @@ export function main() {
           updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
         };
         componentUnderTest = new CommerceBillingTab(
-          null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null
+          null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null, mockRef
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.userCanProceed.take(1).subscribe((data: any) => {
@@ -220,7 +222,7 @@ export function main() {
           updateOrderInProgress: jasmine.createSpy('updateOrderInProgress')
         };
         componentUnderTest = new CommerceBillingTab(
-          null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null
+          null, mockCartService, mockUiConfig, mockUserService, mockCurrentUserService, null, mockRef
         );
         componentUnderTest.ngOnInit();
         componentUnderTest.userCanProceed.take(1).subscribe((data: any) => {

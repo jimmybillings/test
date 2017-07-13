@@ -1,4 +1,4 @@
-import { Component, Output, Input, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Output, Input, OnInit, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CartService } from '../../../shared/services/cart.service';
 import { QuoteService } from '../../../shared/services/quote.service';
 import { UserService } from '../../../shared/services/user.service';
@@ -28,7 +28,8 @@ export class CommerceBillingTab extends Tab implements OnInit {
     protected uiConfig: UiConfig,
     protected user: UserService,
     protected currentUser: CurrentUserService,
-    protected dialog: WzDialogService) {
+    protected dialog: WzDialogService,
+    protected ref: ChangeDetectorRef) {
     super();
   }
 
@@ -69,19 +70,29 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   public openFormFor(resourceType: 'account' | 'user', mode: 'edit' | 'create', address?: ViewAddress): void {
-    let items: Array<any> = mode === 'edit' ? this.prePopulateFormWith(address) : this.items;
     let title: string = mode === 'edit' ? this.editFormTitle(resourceType) : this.createFormTitle(resourceType);
-
-    this.dialog.openFormDialog(
-      items,
-      { title },
-      (form: any) => {
-        if (typeof form === 'undefined') return;
-        if (resourceType === 'user') {
-          this.addUserAddress(form);
-        } else {
-          this.addAccountAddress(form, address);
-        }
+    this.dialog.openComponentInDialog(
+      {
+        componentType: AddressFormComponent,
+        dialogConfig: { position: { top: '6%' } },
+        inputOptions: {
+          loaded: this.loaded,
+          items: this.items,
+          title: title,
+          address: mode === 'edit' ? address : null
+        },
+        outputOptions: [{
+          event: 'onSaveAddress',
+          callback: (form: any) => {
+            if (typeof form === 'undefined') return;
+            if (resourceType === 'user') {
+              this.addUserAddress(form);
+            } else {
+              this.addAccountAddress(form, address);
+            }
+          },
+          closeOnEvent: true
+        }]
       }
     );
   }
@@ -113,20 +124,12 @@ export class CommerceBillingTab extends Tab implements OnInit {
     return `CART.BILLING.ADD_${resourceType.toUpperCase()}_ADDRESS_TITLE`;
   }
 
-  private prePopulateFormWith(address: ViewAddress): Array<any> {
-    return this.items.map((item: any) => {
-      let newItem: any = JSON.parse(JSON.stringify(item));
-      newItem.value = address.address[newItem.name];
-      return newItem;
-    });
-  }
-
   private fetchAddresses(): Observable<Array<ViewAddress>> {
     return this.user.getAddresses().do((addresses: Array<ViewAddress>) => {
       this.validate(addresses);
       this.showAddAddressForm = this.showAddForm(addresses);
       this.showEditAddressForm = this.showEditForm(addresses);
-      console.log({ showAdd: this.showAddAddressForm, showEdit: this.showEditAddressForm });
+      this.ref.detectChanges();
       this.commerceService.updateOrderInProgress('addresses', addresses);
     });
   }
