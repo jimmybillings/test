@@ -21,7 +21,9 @@ import { ViewAddress, Address } from '../../../shared/interfaces/user.interface'
           <div class="address-form" layout="column" layout-align="center center">
             <div layout="row" layout-align="space-between center">
               <md-input-container flex="30">
-                <input mdInput placeholder="Street Number" type="text" formControlName='street_number' />
+                <input mdInput placeholder="Street Number" type="text" formControlName='street_number'
+                  autocomplete='address-line1'
+                />
               </md-input-container>
               <md-input-container flex="70">
                 <input mdInput placeholder="Street Name" type="text" formControlName='route' />
@@ -29,12 +31,14 @@ import { ViewAddress, Address } from '../../../shared/interfaces/user.interface'
             </div>
             <div class="apt">
               <md-input-container class="apt">
-                <input mdInput placeholder="Apartment/Suite" type="text" formControlName='apt' />
+                <input mdInput placeholder="Apartment/Suite" type="text" formControlName='apt'
+                  autocomplete='address-line2'
+                />
               </md-input-container>
             </div>
             <div flex="100">
               <md-input-container>
-                <input mdInput placeholder="City" type="text" formControlName='locality' />
+                <input mdInput placeholder="City" type="text" formControlName='locality' name='city' />
               </md-input-container>
               <md-input-container>
                 <input mdInput placeholder="State/Province" type="text" formControlName='administrative_area_level_1' />
@@ -42,14 +46,16 @@ import { ViewAddress, Address } from '../../../shared/interfaces/user.interface'
             </div>
             <div flex="100">
               <md-input-container>
-                <input mdInput placeholder="Country" type="text" formControlName='country' />
+                <input mdInput placeholder="Country" type="text" formControlName='country' autocomplete='country'/>
               </md-input-container>
               <md-input-container>
-                <input mdInput placeholder="Zip/Postal Code" type="text" formControlName='postal_code' />
+                <input mdInput placeholder="Zip/Postal Code" type="text" formControlName='postal_code'
+                  autocomplete='postal-code'
+                />
               </md-input-container>
             </div>
             <md-input-container class="phone">
-              <input mdInput placeholder="Phone Number" type="text" formControlName='phone' />
+              <input mdInput placeholder="Phone Number" type="text" formControlName='phone' autocomplete='tel' />
             </md-input-container>
             <button md-raised-button [disabled]="!addressForm.valid" color="primary" type="submit">Submit</button>
           </div>
@@ -130,7 +136,8 @@ export class AddressFormComponent implements OnChanges, OnInit, AfterViewInit {
       newForm = this.prepopulateForm(address.address);
     } else {
       this.items.forEach((item: any) => {
-        newForm[item.name] = new FormControl({ value: '', disabled: false }, Validators.required);
+        let validator = item.validation === 'REQUIRED' ? Validators.required : null;
+        newForm[item.name] = new FormControl({ value: '', disabled: false }, validator);
       });
     }
     return this.fb.group(newForm);
