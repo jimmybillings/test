@@ -12,11 +12,24 @@
     </button>
   </div>
 </div>
-
 <section
 	*ngIf="shouldShowCheckoutOptions"
-	class="cart-total" layout="row" layout-align="center center">
+  class="cart-total" layout="row" layout-align="center center">
 	<div flex="100">
+    <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+      <span class="total-label" flex="100">
+        {{ 'CART.CART_SUBTOTAL' | translate }} 
+      </span>
+      <span class="total-amount" flex="nogrow">
+        {{ (quote | async).subTotal | currency:'USD':true:'1.2-2' }}
+      </span>
+    </div>
+    <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="discount md-headline">
+      <span class="total-label" flex="100">
+        {{ 'CART.CART_DISCOUNT' | translate }} 
+      </span>
+      <span class="total-amount" flex="nogrow">{{ (quote | async).discount }}</span>
+    </div> 
     <div flex="100" layout="row" layout-align="end center" class="total md-headline">
       <span class="total-label">
         {{ 'CART.CART_TOTAL' | translate }} 

@@ -28,6 +28,10 @@ export class QuoteTabComponent extends Tab {
     this.quote = this.quoteService.data.map(state => state.data);
   }
 
+  public get hasDiscount(): boolean {
+    return !!this.quoteService.state.data.discount;
+  }
+
   public checkout(): void {
     this.quoteService.getPaymentOptions();
     this.goToNextTab();
