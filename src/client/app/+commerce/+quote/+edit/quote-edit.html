@@ -82,7 +82,8 @@
                 flex="100"
                 [cart]="cart | async"
                 [userCanProceed]="userCanProceed"
-                (openQuoteDialog)="onNotification({type: 'OPEN_QUOTE_DIALOG'})">
+                (openQuoteDialog)="openQuoteDialog()"
+                (openDeleteDialog)="openDeleteQuoteDialog()">
               </administer-quote-component>
             </div>
             <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="showUsageWarning">

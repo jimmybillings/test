@@ -203,6 +203,10 @@ export class QuoteEditService {
     return this.feeConfigStore.initialized ? Observable.of(this.feeConfigStore.feeConfig) : this.loadFeeConfig();
   }
 
+  public deleteQuote(): Observable<Quote> {
+    return this.api.delete(Api.Orders, `quote/${this.state.data.id}`);
+  }
+
   // This method is here only cause the linter gets mad if it isn't
   public retrieveLicenseAgreements(): Observable<LicenseAgreements> {
     return this.api.get(Api.Orders, 'cart/licensing');

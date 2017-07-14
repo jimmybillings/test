@@ -1,7 +1,7 @@
 import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { CommerceEditTab } from '../../components/tabs/commerce-edit-tab';
-
+import { Router } from '@angular/router';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { MdSnackBar } from '@angular/material';
 import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.dialog.service';
@@ -26,7 +26,6 @@ import { PricingStore } from '../../../shared/stores/pricing.store';
 })
 
 export class QuoteEditComponent extends CommerceEditTab {
-
   constructor(
     public userCan: Capabilities,
     public quoteEditService: QuoteEditService,
@@ -39,7 +38,8 @@ export class QuoteEditComponent extends CommerceEditTab {
     @Inject(DOCUMENT) public document: any,
     public snackBar: MdSnackBar,
     public translate: TranslateService,
-    public pricingStore: PricingStore
+    public pricingStore: PricingStore,
+    public router: Router
   ) {
     super(
       userCan, quoteEditService, uiConfig, dialogService, assetService, window,
@@ -49,11 +49,6 @@ export class QuoteEditComponent extends CommerceEditTab {
 
   public onNotification(message: WzEvent): void {
     switch (message.type) {
-
-      case 'OPEN_QUOTE_DIALOG':
-        this.openQuoteDialog();
-        break;
-
       case 'ADD_BULK_ORDER_ID':
         this.addBulkOrderId();
         break;
@@ -127,12 +122,21 @@ export class QuoteEditComponent extends CommerceEditTab {
     );
   }
 
-  private openQuoteDialog(): void {
+  public openQuoteDialog(): void {
     this.dialogService.openFormDialog(
       this.config.createQuote.items,
       { title: 'QUOTE.CREATE_HEADER', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
       this.onSubmitQuoteDialog
     );
+  }
+
+  public openDeleteQuoteDialog(): void {
+    this.dialogService.openConfirmationDialog({
+      title: 'QUOTE.DELETE.TITLE',
+      message: 'QUOTE.DELETE.MESSAGE',
+      accept: 'QUOTE.DELETE.ACCEPT',
+      decline: 'QUOTE.DELETE.DECLINE'
+    }, this.deleteQuote);
   }
 
   private updateQuoteField = (options: any): void => {
@@ -199,5 +203,11 @@ export class QuoteEditComponent extends CommerceEditTab {
 
   private removeCostMultiplierFrom(lineItem: AssetLineItem): void {
     this.quoteEditService.editLineItem(lineItem, { multiplier: 1 });
+  }
+
+  private deleteQuote = (): void => {
+    this.quoteEditService.deleteQuote().subscribe(() => {
+      this.router.navigate(['/commerce/quotes']);
+    });
   }
 }
