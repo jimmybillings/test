@@ -63,11 +63,25 @@
 </projects-component>
 
 <section class="commerce-total" layout="column" layout-align="end end">
-  <div flex="100" class="total md-headline">
-    <span class="total-label">
+  <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+    <span class="total-label" flex="100">
+      {{ 'CART.CART_SUBTOTAL' | translate }} 
+    </span>
+    <span class="total-amount" flex="nogrow">
+      {{ (data | async).subTotal | currency:'USD':true:'1.2-2' }}
+    </span>
+  </div>
+  <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="discount md-headline">
+    <span class="total-label" flex="100">
+      {{ 'CART.CART_DISCOUNT' | translate }} 
+    </span>
+    <span class="total-amount" flex="nogrow">{{ (data | async).discount }}</span>
+  </div> 
+  <div class="total md-headline" layout="row" flex="100" layout-align="end center">
+    <span class="total-label" flex="100">
       {{ 'CART.CONFIRM.TOTAL' | translate }} 
     </span>
-    <span class="total-amount">
+    <span class="total-amount" flex="nogrow">
       {{ (data | async).total | currency:'USD':true:'1.2-2' }}
     </span>
   </div>
