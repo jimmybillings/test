@@ -8,7 +8,7 @@ import { Cart } from '../../../shared/interfaces/commerce.interface';
     <div class="create-quote-actions">
       <button
         md-button
-        class="reject-quote is-outlined"
+        class="large-text is-outlined"
         color="warn"
         (click)="openDeleteDialog.emit()">
         {{ 'QUOTE.DELETE_BTN' | translate }}

@@ -30,7 +30,7 @@
         md-button
         *ngIf="shouldShowLicenseDetailsBtn"
         color="primary"
-        class="is-outlined show-licenses"
+        class="is-outlined large-text"
         (click)="showLicenseAgreements()">
           {{ 'CART.SHOW_LICENSES_BTN_LABEL' | translate }}
       </button>
@@ -38,7 +38,7 @@
         *ngIf="shouldShowRejectQuoteButton"
         (click)="openRejectQuoteDialog()"
         md-button
-        class="is-outlined reject-quote"
+        class="is-outlined large-text"
         color="warn">
         {{ 'QUOTE.REJECT_BTN' | translate }}
       </button>
