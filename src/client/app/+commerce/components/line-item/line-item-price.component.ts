@@ -7,12 +7,25 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
   template: `
     <div
       layout="row"
-      layout-gt-sm="column"
+      layout-gt-xs="column"
       class="line-item-price"
       layout-align="end center"
-      layout-align-gt-sm="center end">
-        <div class="multiplier" *ngIf="shouldShowMultiplier">
-          <span>{{ 'QUOTE.MULTIPLIER_INDICATOR' | translate:{multiplier: multiplier} }}</span>
+      layout-align-gt-xs="center end">
+        <div *ngIf="shouldShowMultiplier" 
+          class="multiplier-base"
+          layout="row"
+          layout-align="end center"
+          >
+          <div class="label" flex="100">{{ 'QUOTE.MULTIPLIER_BASE_PRICE_LABEL' | translate }}</div>
+          <div class="price" flex="no-grow">{{ price/multiplier | currency:'USD':true:'1.2-2' }}</div>
+        </div>
+        <div *ngIf="shouldShowMultiplier" 
+          class="multiplier"
+          layout="row"
+          layout-align="end center"
+          >
+          <div class="label" flex="100">{{ 'QUOTE.MULTIPLIER_LABEL' | translate }}</div>
+          <div class="multiplier-value" flex="no-grow">{{ 'QUOTE.MULTIPLIER_VALUE' | translate:{multiplier: multiplier} }}</div>
         </div>
         <div class="price" [ngClass]="{'select-usage': needsAttributes }">
           {{ price | currency:'USD':true:'1.2-2' }}
