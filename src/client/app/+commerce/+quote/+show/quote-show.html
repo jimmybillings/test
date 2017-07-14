@@ -45,24 +45,39 @@
               <strong>{{ 'QUOTE.PURCHASE_TYPE_LABEL' | translate }} </strong>
               {{ (quote | async).purchaseType ? (quote | async).purchaseType : 'none' }}
             </span>
-            <span>
-              <strong>{{ 'QUOTE.EXPIRATION_LABEL' | translate }} </strong>
+            <span [ngClass]="{expired: isExpired}">
+              <strong>{{ ( isExpired ? 'QUOTE.EXPIRED_LABEL' : 'QUOTE.EXPIRATION_LABEL') | translate }} </strong>
               {{ (quote | async).expirationDate | date:'short' }}
             </span>
           </div>
         </div>
-        <!--<div flex="100" layout="row" layout-xs="column" class="divider"></div>-->
         <div class="cart-total" flex-gt-xs="60" flex="100" class="cart-total" flex-order-xs="-1">
           <h5 class="md-subhead status {{ (quote | async).quoteStatus.toLowerCase() }}">
             {{ (quote | async).quoteStatus }}
           </h5>
-          <div class="total md-headline" flex="auto" layout="row" layout-align="end center">
-            <span class="total-label">
-                {{ 'QUOTE.INDEX.TOTAL_LABEL' | translate }}
+          <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="subtotal md-headline">
+            <span class="total-label" flex="100">
+              {{ 'CART.CART_SUBTOTAL' | translate }} 
             </span>
-            <span class="total-amount">
-                {{ (quote | async).total | currency:'USD':true:'1.2-2' }}
+            <span class="total-amount" flex="nogrow">
+              {{ (quote | async).subTotal | currency:'USD':true:'1.2-2' }}
             </span>
+          </div>
+          <div *ngIf="hasDiscount" flex="100" layout="row" layout-align="end center" class="discount md-headline">
+            <span class="total-label" flex="100">
+              {{ 'CART.CART_DISCOUNT' | translate }} 
+            </span>
+            <span class="total-amount" flex="nogrow">{{ (quote | async).discount }}</span>
+          </div> 
+          <div>
+            <div class="total md-headline" flex="auto" layout="row" layout-align="end center">
+              <span class="total-label">
+                  {{ 'QUOTE.INDEX.TOTAL_LABEL' | translate }}
+              </span>
+              <span class="total-amount">
+                  {{ (quote | async).total | currency:'USD':true:'1.2-2' }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
