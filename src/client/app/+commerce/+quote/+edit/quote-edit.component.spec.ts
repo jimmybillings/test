@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 export function main() {
   describe('Quote Edit Component', () => {
     let componentUnderTest: QuoteEditComponent, mockCapabilities: any, mockQuoteEditService: any, mockUiConfig: any,
-      mockDialogService: any, mockAssetService: any, mockWindow: any, mockUserPreference: any,
+      mockDialogService: any, mockAssetService: any, mockWindow: any, mockUserPreference: any, mockRouter: any,
       mockErrorStore: any, mockDocument: any, mockSnackbar: any, mockTranslateService: any;
 
     beforeEach(() => {
@@ -14,7 +14,8 @@ export function main() {
         hasProperty: jasmine.createSpy('hasProperty').and.returnValue(Observable.of('someProp')),
         updateQuoteField: jasmine.createSpy('updateQuoteField'),
         sendQuote: jasmine.createSpy('sendQuote').and.returnValue(Observable.of({})),
-        editLineItem: jasmine.createSpy('editLineItem')
+        editLineItem: jasmine.createSpy('editLineItem'),
+        deleteQuote: jasmine.createSpy('deleteQuote').and.returnValue(Observable.of({}))
       };
 
       mockUiConfig = {
@@ -31,6 +32,9 @@ export function main() {
       mockDialogService = {
         openFormDialog: jasmine.createSpy('openFormDialog').and.callFake((_: any, __: any, onSubmitCallback: Function) => {
           mockDialogService.onSubmitCallback = onSubmitCallback;
+        }),
+        openConfirmationDialog: jasmine.createSpy('openConfirmationDialog').and.callFake((_: any, onAcceptCallback: Function) => {
+          mockDialogService.onAcceptCallback = onAcceptCallback;
         })
       };
 
@@ -40,11 +44,13 @@ export function main() {
 
       mockTranslateService = { get: jasmine.createSpy('createQuote').and.returnValue(Observable.of('')) };
 
+      mockRouter = { navigate: jasmine.createSpy('navigate') };
+
       componentUnderTest =
         new QuoteEditComponent(
           mockCapabilities, mockQuoteEditService, mockUiConfig, mockDialogService, mockAssetService,
           mockWindow, mockUserPreference, mockErrorStore, mockDocument, mockSnackbar, mockTranslateService,
-          null
+          null, mockRouter
         );
     });
 
@@ -55,7 +61,8 @@ export function main() {
         updateQuoteField: jasmine.createSpy('updateQuoteField')
       };
       componentUnderTest = new QuoteEditComponent(
-        null, mockQuoteEditService, mockUiConfig, mockDialogService, null, null, mockUserPreference, null, null, null, null, null
+        null, mockQuoteEditService, mockUiConfig, mockDialogService, null, null,
+        mockUserPreference, null, null, null, null, null, mockRouter
       );
       return componentUnderTest;
     };
@@ -78,29 +85,6 @@ export function main() {
     describe('onNotification()', () => {
       beforeEach(() => {
         componentUnderTest.ngOnInit();
-      });
-
-      describe('OPEN_QUOTE_DIALOG', () => {
-        it('calls openFormDialog() on the dialogService with the proper args', () => {
-          componentUnderTest.onNotification({ type: 'OPEN_QUOTE_DIALOG' });
-
-          expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
-            ['yay'],
-            { title: 'QUOTE.CREATE_HEADER', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
-            jasmine.any(Function)
-          );
-        });
-
-        it('calls the callback on form submit', () => {
-          componentUnderTest.quoteType = 'ProvisionalOrder';
-          componentUnderTest.onNotification({ type: 'OPEN_QUOTE_DIALOG' });
-          mockDialogService.onSubmitCallback({ emailAddress: 'ross.edfort@wazeedigital.com', expirationDate: '2017/05/03' });
-          expect(mockQuoteEditService.sendQuote).toHaveBeenCalledWith({
-            ownerEmail: 'ross.edfort@wazeedigital.com',
-            expirationDate: '2017-05-03T06:00:00.000Z',
-            purchaseType: 'ProvisionalOrder'
-          });
-        });
       });
 
       describe('ADD_BULK_ORDER_ID', () => {
@@ -176,6 +160,61 @@ export function main() {
           componentUnderTest.onNotification({ type: 'REMOVE_COST_MULTIPLIER', payload: { id: 1, multiplier: 2 } });
 
           expect(mockQuoteEditService.editLineItem).toHaveBeenCalledWith({ id: 1, multiplier: 2 }, { multiplier: 1 });
+        });
+      });
+    });
+
+    describe('openQuoteDialog', () => {
+      beforeEach(() => {
+        componentUnderTest.ngOnInit();
+      });
+
+      it('calls openFormDialog() on the dialogService with the proper args', () => {
+        componentUnderTest.openQuoteDialog();
+
+        expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
+          ['yay'],
+          { title: 'QUOTE.CREATE_HEADER', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
+          jasmine.any(Function)
+        );
+      });
+
+      it('calls the callback on form submit', () => {
+        componentUnderTest.quoteType = 'ProvisionalOrder';
+        componentUnderTest.openQuoteDialog();
+        mockDialogService.onSubmitCallback({ emailAddress: 'ross.edfort@wazeedigital.com', expirationDate: '2017/05/03' });
+        expect(mockQuoteEditService.sendQuote).toHaveBeenCalledWith({
+          ownerEmail: 'ross.edfort@wazeedigital.com',
+          expirationDate: '2017-05-03T06:00:00.000Z',
+          purchaseType: 'ProvisionalOrder'
+        });
+      });
+    });
+
+    describe('openDeleteQuoteDialog()', () => {
+      it('calls openConfirmationDialog() on the dialog service', () => {
+        componentUnderTest.openDeleteQuoteDialog();
+
+        expect(mockDialogService.openConfirmationDialog).toHaveBeenCalledWith({
+          title: 'QUOTE.DELETE.TITLE',
+          message: 'QUOTE.DELETE.MESSAGE',
+          accept: 'QUOTE.DELETE.ACCEPT',
+          decline: 'QUOTE.DELETE.DECLINE'
+        }, jasmine.any(Function));
+      });
+
+      describe('onAccept callback', () => {
+        beforeEach(() => {
+          componentUnderTest.openDeleteQuoteDialog();
+          mockDialogService.onAcceptCallback();
+        });
+
+        it('deletes the quote', () => {
+          expect(mockQuoteEditService.deleteQuote).toHaveBeenCalled();
+        });
+
+        it('navigates to the correct route', () => {
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/quotes']);
         });
       });
     });
