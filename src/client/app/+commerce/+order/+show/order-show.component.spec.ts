@@ -90,5 +90,29 @@ export function main() {
         new OrderShowComponent(null, mockOrderService).creditMemoForOrderId.subscribe(id => expect(id).toBe(undefined));
       });
     });
+
+    describe('get showDiscount()', () => {
+      let mockOrder: any;
+      it('return an observable of true if the order has a discount value greater than zero', () => {
+        mockOrder = { discount: 16 };
+        mockOrderService = { data: Observable.of(mockOrder) };
+        new OrderShowComponent(null, mockOrderService).showDiscount.subscribe(show => expect(show).toBe(true));
+      });
+      it('return an observable of false if the order has a discount value of zero', () => {
+        mockOrder = { discount: 0 };
+        mockOrderService = { data: Observable.of(mockOrder) };
+        new OrderShowComponent(null, mockOrderService).showDiscount.subscribe(show => expect(show).toBe(false));
+      });
+      it('return an observable of false if the order has a discount value greater than zero, but is a refund', () => {
+        mockOrder = { discount: 16, creditMemoForOrderId: 12345 };
+        mockOrderService = { data: Observable.of(mockOrder) };
+        new OrderShowComponent(null, mockOrderService).showDiscount.subscribe(show => expect(show).toBe(false));
+      });
+      it('return an observable of false if the order has a no discount value', () => {
+        mockOrder = { id: 16 };
+        mockOrderService = { data: Observable.of(mockOrder) };
+        new OrderShowComponent(null, mockOrderService).showDiscount.subscribe(show => expect(show).toBe(false));
+      });
+    });
   });
 };

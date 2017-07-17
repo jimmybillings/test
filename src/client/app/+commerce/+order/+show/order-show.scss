@@ -1,15 +1,15 @@
 order-show-component {
   section.header {
-    padding-left: rem(.4);
-    padding-right: rem(.4);
+    padding-left: 4px;
+    padding-right: 4px;
     header {
-      padding-top: rem(.6);
-      padding-bottom: rem(.5);
+      padding-top: 6px;
+      padding-bottom: 5px;
       position: relative;
       .md-display-1 {
         margin: 0;
         width: calc(100% - 120px);
-        font-size: rem(2.6);
+        font-size: 26px;
       }
       .tools {
         text-align: right;
@@ -17,12 +17,12 @@ order-show-component {
     }
   }
   section.project {
-    padding-bottom: rem(6.0);
+    padding-bottom: 60px;
   }
 }
 order-show-component .project .assets,
 order-show-component .project .fees {
-  padding: 0 rem(1.2) rem(1.2) rem(1.2);
+  padding: 0 12px 12px 12px;
   display: flex;
 }
 order-show-component .project .fees {
@@ -53,18 +53,18 @@ order-show-component .project li.cart-asset .tools {
   }
 }
 .order-summary {
-  padding-left: rem(.4);
-  padding-right: rem(.4);
+  padding-left: 4px;
+  padding-right: 4px;
   .details {
     opacity: .7;
-    margin: rem(1.8) 0 rem(.7) 0;
+    margin: 18px 0 7px 0;
   }
   .order-info {
     line-height: 1.4;
     & > span {
       display: flex;
       strong {
-        padding-right: rem(.5);
+        padding-right: 5px;
       }
     }
     a.indicate-refund {
@@ -73,5 +73,8 @@ order-show-component .project li.cart-asset .tools {
         text-decoration: underline;
       } 
     }
+  }
+  .cart-total .subtotal {
+    margin-top: 11px;
   }
 }
