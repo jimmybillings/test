@@ -53,5 +53,14 @@ export function main() {
         expect(mockQuotesStore.setQuotes).toHaveBeenCalled();
       });
     });
+
+    describe('createEmpty()', () => {
+      it('should call the api service correctly', () => {
+        serviceUnderTest.createEmpty();
+
+        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
+      });
+    });
   });
 }

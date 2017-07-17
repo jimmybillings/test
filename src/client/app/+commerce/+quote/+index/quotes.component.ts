@@ -82,6 +82,12 @@ export class QuotesComponent {
     }, this.rejectQuote);
   }
 
+  public createNewQuote(): void {
+    this.quotesService.createEmpty().subscribe(() => {
+      this.router.navigate(['/commerce/activeQuote']);
+    });
+  }
+
   private rejectQuote = () => {
     this.quotesService.rejectQuote(this.quoteToReject.id).subscribe(() => {
       this.quotesService.getQuotes(this.userCan.administerQuotes(), this.params).subscribe();
