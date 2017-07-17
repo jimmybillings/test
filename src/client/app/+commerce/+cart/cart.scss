@@ -117,30 +117,11 @@ cart-component section.header, quote-edit-component section.header {
     }
   }
 }
-button.reject-quote,
-button.show-licenses,
+button.large-text,
 button.checkout {
   font-size: 1.1em;
   line-height: 48px;
   margin: 0 0 0 8px;
-}
-button.checkout-back {
-  margin: 0;
-  padding: 0 14px 0 10px;
-  md-icon {
-    padding: 0 0 2px 0;
-  }
-}
-button.checkout-forward {
-  margin: 0;
-  padding: 0 14px 0 10px;
-  &:disabled {
-    background-color: transparent;
-  }
-  md-icon {
-    padding: 0;
-    transform: rotate(180deg);
-  }
 }
 .mat-tab-body-content header {
   .commerce-heading {
