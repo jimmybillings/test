@@ -5,13 +5,30 @@
   [userCan]="userCan">
 </projects-component>
 
-<div *ngIf="shouldShowExpireQuoteButton" flex="100">
-  <div layout="row" layout-align="end center" layout-padding>
-    <button md-button color="warn" class="is-outlined" (click)="showExpireConfirmationDialog()">
-      {{ 'QUOTE.EXPIRE_BTN' | translate }}
-    </button>
+<div *ngIf="userCan.administerQuotes()">
+  <div layout="column" layout-align="center end">
+    <div flex="100" layout-padding>
+      <button
+        *ngIf="shouldShowExpireQuoteButton"
+        md-button
+        color="warn"
+        class="is-outlined large-text"
+        (click)="showExpireConfirmationDialog()">
+        {{ 'QUOTE.EXPIRE_BTN' | translate }}
+      </button>
+      <button
+        *ngIf="shouldShowResendButton"
+        (click)="openResendDialog()"
+        md-button
+        class="is-outlined large-text"
+        color="primary">
+        {{ 'QUOTE.EXTEND_EXPIRATION' | translate }}
+      </button>
+    </div>
   </div>
 </div>
+
+
 
 <section
 	*ngIf="shouldShowCheckoutOptions"
