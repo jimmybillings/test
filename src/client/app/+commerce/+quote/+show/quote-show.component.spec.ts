@@ -84,5 +84,21 @@ export function main() {
         });
       });
     });
+    describe('hasDiscount()', () => {
+      it('should return false when discount does NOT exists', () => {
+        expect(componentUnderTest.hasDiscount).toBe(false);
+      });
+
+      it('should return true if discount has a value', () => {
+        let mockState = { data: { discount: 12.0 } };
+
+        mockQuoteService = {
+          data: Observable.of({ data: {} }),
+          state: mockState,
+        };
+        componentUnderTest = new QuoteShowComponent(null, mockQuoteService);
+        expect(componentUnderTest.hasDiscount).toBe(true);
+      });
+    });
   });
 }
