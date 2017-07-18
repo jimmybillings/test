@@ -27,6 +27,10 @@ export class CommerceConfirmTab extends Tab {
     super();
   }
 
+  public get hasDiscount(): boolean {
+    return !!this.commerceService.state.data.discount;
+  }
+
   public get orderInProgress(): Observable<CheckoutState> {
     return this.commerceService.checkoutData;
   }

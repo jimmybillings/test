@@ -38,4 +38,8 @@ export class OrderShowComponent {
   public get creditMemoForOrderId(): Observable<number> {
     return this.order.data.map((order: Order) => order.creditMemoForOrderId);
   }
+
+  public get showDiscount(): Observable<boolean> {
+    return this.order.data.map((order: Order) => (order.discount || 0) > 0 && !order.creditMemoForOrderId);
+  }
 }

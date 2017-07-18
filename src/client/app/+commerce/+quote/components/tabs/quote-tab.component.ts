@@ -33,6 +33,10 @@ export class QuoteTabComponent extends Tab {
     this.uiConfig.get('cart').take(1).subscribe((config: any) => this.config = config.config);
   }
 
+  public get hasDiscount(): boolean {
+    return !!this.quoteService.state.data.discount;
+  }
+
   public checkout(): void {
     this.quoteService.getPaymentOptions();
     this.goToNextTab();

@@ -34,6 +34,14 @@ export class QuoteShowComponent implements OnInit {
     return !!this.quoteService.state.data.purchaseType;
   }
 
+  public get hasDiscount(): boolean {
+    return !!this.quoteService.state.data.discount;
+  }
+
+  public get isExpired(): boolean {
+    return this.quoteService.state.data.quoteStatus === 'EXPIRED';
+  }
+
   public get shouldDisplayReview(): boolean {
     return this.userCan.administerQuotes() || this.quoteService.state.data.quoteStatus !== 'ACTIVE';
   }

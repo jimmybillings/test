@@ -2,51 +2,51 @@
   position: relative;
   .new-quote {
     position: absolute;
-    top: rem(.6);
+    top: 6px;
     left: 0;
     z-index: 2;
   }
   ul {
     margin: 0;
-    margin-top: rem(1.5);
+    margin-top: 15px;
     padding: 0;
     list-style: none;
   }
   li.item {
     position: relative;
-    margin-bottom: rem(1.2);
-    padding: rem(.2);
+    margin-bottom: 12px;
+    padding: 2px;
     border-radius: 2px;
     transition: $swift-ease-out;
     &.focused {
       @include mat-elevation(2);
     }
     .details {
-      padding: rem(.7) rem(1.0);
-      margin: rem(.7) rem(.2) rem(.7) rem(.7);
+      padding: 7px 10px;
+      margin: 7px 2px 7px 7px;
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-        margin-right: rem(.7);
+        margin-right: 7px;
       }
       .item-number {
         position: relative;
-        padding: 0 0 rem(.6) rem(4.0);
+        padding: 0 0 6px 40px;
         &::after {
           content: "\e873";
           font-family: 'Material Icons';
-          font-size: rem(4.5);
+          font-size: 45px;
           font-weight: 100;
-          line-height: rem(4.0);
-          height: rem(4.0);
-          width: rem(4.0);
+          line-height: 40px;
+          height: 40px;
+          width: 40px;
           position: absolute;
-          left: rem(-.7);
-          top: rem(.2);
+          left: -7px;
+          top: 2px;
           opacity:.3;
         }
         span {
           display: block;
           &.number {
-            font-size: rem(2.4);
+            font-size: 24px;
             font-weight: 500;
           }
         }
@@ -55,9 +55,9 @@
     .total {
       text-align: right;
       letter-spacing: -.05em;
-      padding-right: rem(.8);
-      padding-left: rem(.8);
-      padding-top: rem(.2);
+      padding-right: 8px;
+      padding-left: 8px;
+      padding-top: 2px;
       position: relative;
       min-height: 100%;
       .total-label {
@@ -74,32 +74,32 @@
         }
       }
       button {
-        margin-bottom: rem(1);
+        margin-bottom: 10px;
         &:last-child {
-          margin-left: rem(1);
+          margin-left: 10px;
         }
       }
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         & > div {
-          padding-top: rem(1.2);
+          padding-top: 12px;
         }
       }
     }
     .projects {
-      margin-top: rem(1.8);
+      margin-top: 18px;
       position: relative;
       &:first-child {
         margin-top: 0;
       }
     }
     h3 {
-      margin-top: rem(-.6);
-      margin-bottom: rem(.6);
+      margin-top: -6px;
+      margin-bottom: 6px;
       .project-label {
         font-weight: 300;
       }
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
-        padding-right: rem(3.4);
+        padding-right: 34px;
       }
     }
     .item-info {
@@ -108,25 +108,25 @@
     .asset-count {
       display: inline-block;
       border-radius: 2px - 1;
-      min-width: rem(2.1);
+      min-width: 21px;
       font-size: .7em;
-      line-height: 1em;
-      padding: rem(.4)  rem(.4);
+      line-height: 1;
+      padding: 4px 4px;
       text-align: center;
       vertical-align: text-top;
-      margin-top: rem(.2);
+      margin-top: 2px;
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         position: absolute;
         right: 0;
-        top: rem(.4);
+        top: 4px;
       }
     }
     .md-caption span {
       display: block;
     }
     .divider {
-      margin: rem(.6) rem(.8) 0 rem(.8);
-      padding-bottom: rem(.6);
+      margin: 6px 8px 0 8px;
+      padding-bottom: 6px;
       display: none;
       @media screen and (max-width: $layout-breakpoint-xs) and (min-width: 0) and (orientation: portrait)  {
         display: flex;
@@ -139,4 +139,5 @@
   letter-spacing: .04em;
   font-weight: 600;
   text-align: right;
+  padding-top: 5px;
 }

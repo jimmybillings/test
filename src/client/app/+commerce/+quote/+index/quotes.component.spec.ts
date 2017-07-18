@@ -12,7 +12,8 @@ export function main() {
       mockQuotesService = {
         data: Observable.of({}),
         getQuotes: jasmine.createSpy('getQuotes').and.returnValue(Observable.of({})),
-        setFocused: jasmine.createSpy('setFocused').and.returnValue(Observable.of({}))
+        setFocused: jasmine.createSpy('setFocused').and.returnValue(Observable.of({})),
+        createEmpty: jasmine.createSpy('createEmpty').and.returnValue(Observable.of({}))
       };
       mockUiConfig = { get: jasmine.createSpy('get').and.returnValue(Observable.of({})) };
       mockRouter = { navigate: jasmine.createSpy('navigate') };
@@ -98,6 +99,20 @@ export function main() {
           accept: 'QUOTE.REJECT.ACCEPT',
           decline: 'QUOTE.REJECT.DECLINE'
         }, jasmine.any(Function));
+      });
+    });
+
+    describe('createNewQuote', () => {
+      beforeEach(() => {
+        componentUnderTest.createNewQuote();
+      });
+
+      it('should call the createEmpty() method on the quotes service', () => {
+        expect(mockQuotesService.createEmpty).toHaveBeenCalled();
+      });
+
+      it('should navigate to /commerce/activeQuote', () => {
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['/commerce/activeQuote']);
       });
     });
   });

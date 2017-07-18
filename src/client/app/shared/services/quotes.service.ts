@@ -37,18 +37,22 @@ export class QuotesService {
   }
 
   public getFocused(): Observable<Quote> {
-    return this.api.get(Api.Orders, 'quote/focused');
+    return this.api.get(Api.Orders, 'quote/focused') as Observable<Quote>;
   }
 
   public setFocused(quoteId: number): Observable<Quote> {
     return this.api.put(Api.Orders, `quote/focused/${quoteId}`).do((quote: Quote) => {
       this.updateNewFocusedQuote(quote.id);
       this.activeQuoteStore.replaceQuote(quote);
-    });
+    }) as Observable<Quote>;
   }
 
   public rejectQuote(quoteId: number): Observable<Quote> {
-    return this.api.put(Api.Orders, `quote/reject/${quoteId}`);
+    return this.api.put(Api.Orders, `quote/reject/${quoteId}`) as Observable<Quote>;
+  }
+
+  public createEmpty(): Observable<Quote> {
+    return this.api.post(Api.Orders, 'quote') as Observable<Quote>;
   }
 
   private findNewFocused(quotes: Quote[], activeQuoteId: number): Quote[] {
