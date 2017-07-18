@@ -35,7 +35,8 @@ export class CommerceBillingTab extends Tab implements OnInit {
 
   ngOnInit() {
     this.orderInProgress = this.commerceService.checkoutData;
-    this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
+    // this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
+    this.items = this.formItems;
     this.fetchAddresses().subscribe();
   }
 
@@ -181,5 +182,82 @@ export class CommerceBillingTab extends Tab implements OnInit {
         }
       });
     });
+  }
+
+  // ------------------------------------------------------- //
+  // Mock UI Config to support rows in wz-form - to be removed
+  // ------------------------------------------------------- //
+  private get formItems(): any {
+    return [
+      {
+        items: [
+          {
+            name: 'addressLineOne',
+            label: 'Address Line 1',
+            type: 'text',
+            value: '',
+            validation: 'REQUIRED'
+          }
+        ]
+      },
+      {
+        items: [
+          {
+            name: 'addressLineTwo',
+            label: 'Address Line 2',
+            type: 'text',
+            value: '',
+            validation: 'OPTIONAL'
+          }
+        ]
+      },
+      {
+        items: [
+          {
+            name: 'city',
+            label: 'City',
+            type: 'text',
+            value: '',
+            validation: 'REQUIRED'
+          },
+          {
+            name: 'state',
+            label: 'State',
+            type: 'text',
+            value: '',
+            validation: 'REQUIRED'
+          }
+        ]
+      },
+      {
+        items: [
+          {
+            name: 'zipcode',
+            label: 'Zipcode/Postal Code',
+            type: 'text',
+            value: '',
+            validation: 'REQUIRED'
+          },
+          {
+            name: 'country',
+            label: 'Country',
+            type: 'text',
+            value: '',
+            validation: 'REQUIRED'
+          }
+        ]
+      },
+      {
+        items: [
+          {
+            name: 'phone',
+            label: 'Phone Number',
+            type: 'text',
+            value: '',
+            validation: 'REQUIRED'
+          }
+        ]
+      }
+    ];
   }
 }

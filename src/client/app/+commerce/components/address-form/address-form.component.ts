@@ -1,6 +1,7 @@
 import {
   Component, Input, OnChanges, OnInit, ChangeDetectionStrategy,
-  Output, EventEmitter, ChangeDetectorRef, AfterViewInit
+  Output, EventEmitter, ChangeDetectorRef, AfterViewInit, ViewChild,
+  ElementRef
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { ViewAddress, Address } from '../../../shared/interfaces/user.interface';
@@ -16,56 +17,32 @@ import { ViewAddress, Address } from '../../../shared/interfaces/user.interface'
       <div layout="column" layout-align="center center">
         <form [formGroup]="addressForm" *ngIf="loaded" (ngSubmit)="saveAddress()">
           <md-input-container class="autocomplete">
-            <input mdInput id="autocomplete" placeholder="Enter your full address" (focus)="geolocate()" type="text" />
+            <input #search mdInput id="autocomplete" placeholder="Enter your full address" (focus)="geolocate()" type="text" />
           </md-input-container>
           <div class="address-form" layout="column" layout-align="center center">
-            <div layout="row" layout-align="space-between center">
-              <md-input-container flex="30">
-                <input mdInput placeholder="Street Number" type="text" formControlName='street_number'
-                  autocomplete='address-line1'
-                />
-              </md-input-container>
-              <md-input-container flex="70">
-                <input mdInput placeholder="Street Name" type="text" formControlName='route' />
-              </md-input-container>
-            </div>
-            <div class="apt">
-              <md-input-container class="apt">
-                <input mdInput placeholder="Apartment/Suite" type="text" formControlName='apt'
-                  autocomplete='address-line2'
-                />
-              </md-input-container>
-            </div>
             <div flex="100">
-              <md-input-container>
-                <input mdInput placeholder="City" type="text" formControlName='locality' name='city' />
-              </md-input-container>
-              <md-input-container>
-                <input mdInput placeholder="State/Province" type="text" formControlName='administrative_area_level_1' />
-              </md-input-container>
+              <div *ngFor="let row of items" layout="row" layout-align="center center">
+                <div flex="100">
+                  <md-input-container flex="100" *ngFor="let field of row.items" id={{field.name}}>
+                    <input
+                      mdInput
+                      type={{field.type}}
+                      formControlName={{field.name}}
+                      placeholder={{field.label}}
+                    />
+                  </md-input-container>
+                </div>
+              </div>
             </div>
-            <div flex="100">
-              <md-input-container>
-                <input mdInput placeholder="Country" type="text" formControlName='country' autocomplete='country'/>
-              </md-input-container>
-              <md-input-container>
-                <input mdInput placeholder="Zip/Postal Code" type="text" formControlName='postal_code'
-                  autocomplete='postal-code'
-                />
-              </md-input-container>
-            </div>
-            <md-input-container class="phone">
-              <input mdInput placeholder="Phone Number" type="text" formControlName='phone' autocomplete='tel' />
-            </md-input-container>
-            <button md-raised-button [disabled]="!addressForm.valid" color="primary" type="submit">Submit</button>
+          <button md-raised-button [disabled]="!addressForm.valid" color="primary" type="submit">Submit</button>
           </div>
         </form>
       </div>
     </div>
   `,
   styles: [`
-    .autocomplete,.phone{width: 100%; margin-bottom: 20px}
-    .apt{width: 100%;}
+    .autocomplete,#phone{width: 100%; margin-bottom: 20px}
+    #addressLineOne,#addressLineTwo{width: 100%;}
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -79,6 +56,17 @@ export class AddressFormComponent implements OnChanges, OnInit, AfterViewInit {
   private autocomplete: any;
   private readonly scriptSrc: string =
   'https://maps.googleapis.com/maps/api/js?key=AIzaSyCzyGsK3zaRGFAEC72nWbdRvBY1Lo92Cfw&libraries=places';
+  private readonly fieldMap: any = {
+    addressLineOne: ['street_number', 'route', 'neighborhood'],
+    addressLineTwo: [],
+    city: ['locality'],
+    state: ['administrative_area_level_1'],
+    zipcode: ['postal_code'],
+    country: ['country'],
+    phone: []
+  };
+  @ViewChild('search') private searchElement: ElementRef;
+
   constructor(private fb: FormBuilder, private ref: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -87,7 +75,6 @@ export class AddressFormComponent implements OnChanges, OnInit, AfterViewInit {
 
   ngOnChanges(changes: any) {
     if (changes.address && changes.address.currentValue) {
-      console.log(changes.address);
       this.addressForm = this.buildForm(changes.address.currentValue);
     }
 
@@ -102,16 +89,8 @@ export class AddressFormComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   public saveAddress() {
-    const formValue: any = this.addressForm.value;
-    let newAddress: any = {
-      address: `${formValue['street_number']} ${formValue['route']} ${formValue['apt']}`,
-      city: formValue['locality'],
-      state: formValue['administrative_area_level_1'],
-      country: formValue['country'],
-      zipcode: formValue['postal_code'],
-      phone: formValue['phone']
-    };
-    this.onSaveAddress.emit(newAddress);
+    console.log(this.addressForm.value);
+    // this.onSaveAddress.emit(this.addressForm.value);
   }
 
   public geolocate(): void {
@@ -133,36 +112,27 @@ export class AddressFormComponent implements OnChanges, OnInit, AfterViewInit {
   private buildForm(address: ViewAddress): FormGroup {
     let newForm: any = {};
     if (address) {
-      newForm = this.prepopulateForm(address.address);
+      this.items.forEach((row: any) => {
+        row.items.forEach((item: any) => {
+          let validator = item.validation === 'REQUIRED' ? Validators.required : null;
+          newForm[item.name] = new FormControl({ value: address.address[item.name], disabled: false }, validator);
+        });
+      });
     } else {
-      this.items.forEach((item: any) => {
-        let validator = item.validation === 'REQUIRED' ? Validators.required : null;
-        newForm[item.name] = new FormControl({ value: '', disabled: false }, validator);
+      this.items.forEach((row: any) => {
+        row.items.forEach((item: any) => {
+          let validator = item.validation === 'REQUIRED' ? Validators.required : null;
+          newForm[item.name] = new FormControl({ value: '', disabled: false }, validator);
+        });
       });
     }
     return this.fb.group(newForm);
   }
 
-  private prepopulateForm(address: Address): any {
-    let streetNumber: string = address.address ? address.address.match(/\d{1,}/).join('').trim() : '';
-    let streetName: string = address.address ? address.address.match(/\D\w{1,}/g).join('').trim() : '';
-    console.log(streetNumber, streetName);
-    return {
-      street_number: [streetNumber, Validators.required],
-      route: [streetName, Validators.required],
-      apt: [''],
-      locality: [address.city || '', Validators.required],
-      administrative_area_level_1: [address.state || '', Validators.required],
-      country: [address.country || '', Validators.required],
-      postal_code: [address.zipcode || '', Validators.required],
-      phone: [address.phone || '', Validators.required]
-    };
-  }
-
   private initAutocomplete = (): void => {
     if ((<any>window).google) {
       this.autocomplete = new (<any>window).google.maps.places.Autocomplete(
-        (document.getElementById('autocomplete')),
+        this.searchElement.nativeElement,
         { types: ['geocode'] }
       );
 
@@ -172,13 +142,19 @@ export class AddressFormComponent implements OnChanges, OnInit, AfterViewInit {
 
   private fillInAddress = (): void => {
     let place: any = this.autocomplete.getPlace();
-    for (let i = 0; i < place.address_components.length; i++) {
-      let addressType = place.address_components[i].types[0];
-      if (this.addressForm.controls[addressType]) {
-        let value: string = place.address_components[i]['long_name'];
-        let control: AbstractControl = this.addressForm.controls[addressType];
-        control.setValue(value);
-      }
+
+    let googleAddress: any = place.address_components.reduce((prev: any, current: any) => {
+      prev[current.types[0]] = { long_name: current['long_name'], short_name: current['long_name'] };
+      return prev;
+    }, {});
+
+    for (let control in this.addressForm.controls) {
+      let value: string = this.fieldMap[control].reduce((prev: Array<string>, field: string) => {
+        let val: string = googleAddress[field] ? googleAddress[field].long_name : '';
+        prev.push(val);
+        return prev;
+      }, []).join(' ');
+      if (value !== '') this.addressForm.controls[control].setValue(value);
     }
 
     this.ref.detectChanges();
@@ -204,3 +180,46 @@ export class AddressFormComponent implements OnChanges, OnInit, AfterViewInit {
     }
   }
 }
+
+// <div class="address-form" layout="column" layout-align="center center">
+// <md-input-container class="stretch">
+//   <input
+//     mdInput
+//     placeholder="Address Line 1"
+//     type="text"
+//     formControlName='street_number'
+//     autocomplete='address-line1'
+//   />
+// </md-input-container>
+// <md-input-container class="stretch">
+//   <input
+//     mdInput
+//     placeholder="Address Line 2"
+//     type="text"
+//     formControlName='apt'
+//     autocomplete='address-line2'
+//   />
+// </md-input-container>
+// <div flex="100">
+//   <md-input-container>
+//     <input mdInput placeholder="City" type="text" formControlName='locality' name='city' />
+//   </md-input-container>
+//   <md-input-container>
+//     <input mdInput placeholder="State/Province" type="text" formControlName='administrative_area_level_1' />
+//   </md-input-container>
+// </div>
+// <div flex="100">
+//   <md-input-container>
+//     <input mdInput placeholder="Country" type="text" formControlName='country' autocomplete='country'/>
+//   </md-input-container>
+//   <md-input-container>
+//     <input mdInput placeholder="Zip/Postal Code" type="text" formControlName='postal_code'
+//       autocomplete='postal-code'
+//     />
+//   </md-input-container>
+// </div>
+// <md-input-container class="phone">
+//   <input mdInput placeholder="Phone Number" type="text" formControlName='phone' autocomplete='tel' />
+// </md-input-container>
+// <button md-raised-button [disabled]="!addressForm.valid" color="primary" type="submit">Submit</button>
+// </div>
