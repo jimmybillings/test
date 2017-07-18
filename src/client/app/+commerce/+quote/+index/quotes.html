@@ -11,12 +11,11 @@
 <section>
 	<div layout="row" flex="100" layout-margin layout-align="center start">
 		<section class="commerce-list" flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
-			<!--when we have a new quote method-->
-			<!--<div class="new-quote">	
+			 <div class="new-quote">	
 				<button md-raised-button color="accent" (click)="createNewQuote()">
 					{{ 'QUOTE.INDEX.NEW_QUOTE_BTN' | translate }}
 				</button>
-			</div>-->
+			</div> 
 			<wz-pagination 
 				*ngIf="(quotes | async).pagination.totalCount > 0" 
 				[pagination]="(quotes | async).pagination" 
