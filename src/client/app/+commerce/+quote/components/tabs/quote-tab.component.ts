@@ -9,6 +9,8 @@ import { Feature } from '../../../../shared/interfaces/feature.interface';
 import { WzDialogService } from '../../../../shared/modules/wz-dialog/services/wz.dialog.service';
 import { LicenseAgreements } from '../../../../shared/interfaces/commerce.interface';
 import { LicenseAgreementComponent } from '../../../components/license-agreement/license-agreement.component';
+import { UiConfig } from '../../../../shared/services/ui.config';
+import { FormFields } from '../../../../shared/interfaces/forms.interface';
 
 @Component({
   moduleId: module.id,
@@ -18,14 +20,17 @@ import { LicenseAgreementComponent } from '../../../components/license-agreement
 
 export class QuoteTabComponent extends Tab {
   public quote: Observable<Quote>;
+  private config: any;
 
   constructor(
     public quoteService: QuoteService,
     public userCan: CommerceCapabilities,
     public dialogService: WzDialogService,
-    private router: Router) {
+    private router: Router,
+    private uiConfig: UiConfig) {
     super();
     this.quote = this.quoteService.data.map(state => state.data);
+    this.uiConfig.get('cart').take(1).subscribe((config: any) => this.config = config.config);
   }
 
   public get hasDiscount(): boolean {
@@ -51,6 +56,10 @@ export class QuoteTabComponent extends Tab {
 
   public get shouldShowRejectQuoteButton(): boolean {
     return !this.userCan.administerQuotes();
+  }
+
+  public get shouldShowResendButton(): boolean {
+    return this.userCan.administerQuotes() && (this.isExpiredQuote || this.isActiveQuote);
   }
 
   public showLicenseAgreements(): void {
@@ -85,8 +94,24 @@ export class QuoteTabComponent extends Tab {
     }, this.rejectQuote);
   }
 
+  public openResendDialog(): void {
+    this.dialogService.openFormDialog(this.config.extendQuote.items, {
+      title: 'QUOTE.EXTEND_EXPIRATION'
+    }, this.extendQuoteExpiration);
+  }
+
   private get isActiveQuote(): boolean {
     return this.quoteService.state.data.quoteStatus === 'ACTIVE';
+  }
+
+  private get isExpiredQuote(): boolean {
+    return this.quoteService.state.data.quoteStatus === 'EXPIRED';
+  }
+
+  private extendQuoteExpiration = (newDate: { expirationDate: string }): void => {
+    this.quoteService.extendExpirationDate(newDate.expirationDate).subscribe(() => {
+      this.router.navigate(['/commerce/quotes']);
+    });
   }
 
   private expireQuote = (): void => {

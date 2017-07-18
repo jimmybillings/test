@@ -127,6 +127,16 @@ export class QuoteService {
     return this.api.put(Api.Orders, `quote/reject/${this.state.data.id}`);
   }
 
+  public extendExpirationDate(newDate: string): Observable<ApiResponse> {
+    let newQuote: Quote = Object.assign({}, this.state.data, {
+      expirationDate: new Date(newDate).toISOString(),
+      quoteStatus: 'ACTIVE'
+    });
+    return this.api.put(Api.Orders, `quote/${this.state.data.id}`, { body: newQuote }).do((quote: Quote) => {
+      this.quoteStore.replaceQuote(quote);
+    });
+  }
+
   // Private Methods
 
   private purchaseWithCreditCard(): Observable<number> {

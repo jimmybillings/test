@@ -131,5 +131,17 @@ export function main() {
         expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/reject/3');
       });
     });
+
+    describe('extendExpiration()', () => {
+      it('should call the api service correctly', () => {
+        serviceUnderTest.extendExpirationDate('2017-01-01');
+
+        expect(mockApi.put).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.put).toHaveBeenCalledWithEndpoint('quote/3');
+        expect(mockApi.put).toHaveBeenCalledWithBody({
+          id: 3, ownerUserId: 10, itemCount: 1, expirationDate: new Date('2017-01-01').toISOString(), quoteStatus: 'ACTIVE'
+        });
+      });
+    });
   });
 }
