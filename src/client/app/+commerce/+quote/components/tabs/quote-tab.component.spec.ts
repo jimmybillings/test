@@ -6,8 +6,10 @@ export function main() {
     let componentUnderTest: QuoteTabComponent, mockQuoteService: any, mockUserCan: any, mockDialogService: any, mockRouter: any;
 
     beforeEach(() => {
+
       mockQuoteService = {
         data: Observable.of({ data: {} }),
+        state: { data: { projects: [], total: 1759.824, discount: undefined } },
         getPaymentOptions: jasmine.createSpy('getPaymentOptions'),
         retrieveLicenseAgreements: jasmine.createSpy('retrieveLicenseAgreements').and.returnValue(Observable.of({})),
         mockRouter: { navigate: jasmine.createSpy('navigate') }
@@ -69,6 +71,23 @@ export function main() {
         componentUnderTest.openRejectQuoteDialog();
 
         expect(mockDialogService.openConfirmationDialog).toHaveBeenCalled();
+      });
+    });
+
+    describe('hasDiscount()', () => {
+      it('should return false when discount does NOT exists', () => {
+        expect(componentUnderTest.hasDiscount).toBe(false);
+      });
+
+      it('should return true if discount has a value', () => {
+        let mockState = { data: { discount: 12.0 } };
+
+        mockQuoteService = {
+          data: Observable.of({ data: {} }),
+          state: mockState,
+        };
+        componentUnderTest = new QuoteTabComponent(mockQuoteService, null, null, null);
+        expect(componentUnderTest.hasDiscount).toBe(true);
       });
     });
   });

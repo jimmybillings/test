@@ -6,7 +6,7 @@
 
   order-show-component {
     .indicate-refund {
-      color: mat-color($warn);
+      color: mat-color($warn, darker);
     }
     section.header {
       color: mat-color($primary, default);
