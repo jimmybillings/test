@@ -29,6 +29,7 @@ export interface AssetLineItem {
   id?: string;
   asset?: Asset;
   notes?: Array<any>;
+  itemPrice?: number;
   multiplier?: number;
   transcodeStatus?: TranscodeStatus;
   downloadUrl?: string;

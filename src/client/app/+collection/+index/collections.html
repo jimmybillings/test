@@ -40,22 +40,20 @@
 	</div>
 </div>
 
-<section class="hero">
-	<div layout="row" flex="100" layout-margin layout-align="center start">
-		<section class="collections-list" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80">
-			<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination"
-				flex layout-align="end stretch" (getPage)="changePage($event)">
-			</wz-pagination>
-			<!-- COLLECTION LIST -->
-			<wz-collection-item-list [collections]="(collections.data | async).items" (editCollection)="editCollection($event)"
-				[activeCollection]="(activeCollection.data | async).id" (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event);"
-				(generateCollectionLink)="getAssetsForLink($event);">
-			</wz-collection-item-list>
-			<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination"
-				flex layout-align="end stretch" (getPage)="changePage($event)">
-			</wz-pagination>
-		</section>
-	</div>
+<section layout="row" flex="100" layout-margin-gt-xs layout-align="center start">
+	<section class="collections-list" flex="100" flex-gt-sm="95" flex-gt-md="85" flex-gt-lg="80" layout-margin>
+		<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination"
+			flex layout-align="end stretch" (getPage)="changePage($event)">
+		</wz-pagination>
+		<!-- COLLECTION LIST -->
+		<wz-collection-item-list [collections]="(collections.data | async).items" (editCollection)="editCollection($event)"
+			[activeCollection]="(activeCollection.data | async).id" (setActiveCollection)="selectActiveCollection($event)" (deleteCollection)="setCollectionForDelete($event);"
+			(generateCollectionLink)="getAssetsForLink($event);">
+		</wz-collection-item-list>
+		<wz-pagination *ngIf="(collections.data | async).pagination.totalCount > 0" [pagination]="(collections.data | async).pagination"
+			flex layout-align="end stretch" (getPage)="changePage($event)">
+		</wz-pagination>
+	</section>
 </section>
 
 <md-menu x-position="before" #filterCollectionOptions="mdMenu">

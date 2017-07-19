@@ -17,7 +17,7 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
           layout-align="end center"
           >
           <div class="label" flex="100">{{ 'QUOTE.MULTIPLIER_BASE_PRICE_LABEL' | translate }}</div>
-          <div class="price" flex="no-grow">{{ price/multiplier | currency:'USD':true:'1.2-2' }}</div>
+          <div class="price" flex="no-grow">{{ itemPrice | currency:'USD':true:'1.2-2' }}</div>
         </div>
         <div *ngIf="shouldShowMultiplier" 
           class="multiplier"
@@ -35,6 +35,7 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 })
 export class LineItemPriceComponent {
   @Input() price: number;
+  @Input() itemPrice: number;
   @Input() multiplier: number;
   @Input() userCanAdministerQuotes: boolean;
   @Input() rightsManaged: string;
