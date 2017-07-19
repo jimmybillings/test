@@ -185,7 +185,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
   }
 
   // ------------------------------------------------------- //
-  // Mock UI Config to support rows in wz-form - to be removed
+  // UI Config to support rows in wz-form - to be removed
   // ------------------------------------------------------- //
   private get formItems(): any {
     return [
