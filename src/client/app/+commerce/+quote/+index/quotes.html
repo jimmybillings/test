@@ -9,19 +9,26 @@
 	(onFilterResults)="onFilterResults($event)">
 </commerce-header>
 <section>
-	<div layout="row" flex="100" layout-margin layout-align="center start">
-		<section class="commerce-list" flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
-			 <div class="new-quote">	
-				<button md-raised-button color="accent" (click)="createNewQuote()">
-					{{ 'QUOTE.INDEX.NEW_QUOTE_BTN' | translate }}
-				</button>
-			</div> 
-			<wz-pagination 
-				*ngIf="(quotes | async).pagination.totalCount > 0" 
-				[pagination]="(quotes | async).pagination" 
-				flex layout-align="end stretch"
-				(getPage)="changePage($event)">
-			</wz-pagination>
+	<div layout="row" flex="100" layout-align="center start">
+		<section class="commerce-list" layout-margin flex-gt-lg="85" flex-lg="85" flex-gt-sm="95" flex="100">
+			<div layout-gt-xs="row" layout="column" layout-align="end end" layout-align-gt-xs="space-between end">
+				<div class="new-quote" flex-gt-xs="auto" flex="100">	
+					<!-- <button md-raised-button color="accent" (click)="createNewQuote()">
+						{{ 'QUOTE.INDEX.NEW_QUOTE_BTN' | translate }}
+					</button> -->
+					<button md-button color="primary" (click)="createNewQuote()">
+						<md-icon>add_circle_outline</md-icon>{{ 'QUOTE.INDEX.NEW_QUOTE_BTN' | translate }}
+					</button>
+				</div>
+				<wz-pagination 
+					*ngIf="(quotes | async).pagination.totalCount > 0" 
+					[pagination]="(quotes | async).pagination" 
+					flex="auto" 
+					layout-align="end stretch"
+					(getPage)="changePage($event)">
+				</wz-pagination>
+			</div>
+
 			<md-card *ngIf="!(quotes | async).items">
 				<md-card-title>You currently do not have any quotes</md-card-title>
 			</md-card>
