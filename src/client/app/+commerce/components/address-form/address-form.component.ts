@@ -22,8 +22,8 @@ import { GoogleService } from '../../services/google.service';
           </md-input-container>
           <div class="address-form" layout="column" layout-align="center center">
             <div flex="100">
-              <div *ngFor="let row of items" layout="row" layout-align="center center">
-                <md-input-container flex="100" *ngFor="let field of row.items" id={{field.name}}>
+              <div *ngFor="let row of formItems" layout="row" layout-align="center center">
+                <md-input-container flex="100" *ngFor="let field of row.fields" id={{field.name}}>
                   <input
                     mdInput
                     type={{field.type}}
@@ -53,7 +53,7 @@ import { GoogleService } from '../../services/google.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressFormComponent implements OnChanges, OnInit, AfterViewInit {
-  @Input() items: RowFormFields;
+  @Input() formItems: RowFormFields;
   @Input() loaded: boolean;
   @Input() title: string;
   @Input() address: ViewAddress;
@@ -97,8 +97,8 @@ export class AddressFormComponent implements OnChanges, OnInit, AfterViewInit {
   private fillInAddress = (): void => {
     let googleAddress: FormattedGoogleAddress = this.google.getPlace();
 
-    this.items.forEach((row: FormRow) => {
-      row.items.forEach((item: FormFields) => {
+    this.formItems.forEach((row: FormRow) => {
+      row.fields.forEach((item: FormFields) => {
         let value: string = item.googleFields.reduce((prev: Array<string>, field: string) => {
           prev.push(googleAddress[field][item.addressType] || '');
           return prev;
@@ -110,8 +110,8 @@ export class AddressFormComponent implements OnChanges, OnInit, AfterViewInit {
 
   private buildForm(address: ViewAddress): FormGroup {
     let newForm: any = {};
-    this.items.forEach((row: FormRow) => {
-      row.items.forEach((item: FormFields) => {
+    this.formItems.forEach((row: FormRow) => {
+      row.fields.forEach((item: FormFields) => {
         let validator = item.validation === 'REQUIRED' ? Validators.required : null;
         let value: string = address && address.address ? address.address[item.name] : '';
         newForm[item.name] = new FormControl(value, validator);

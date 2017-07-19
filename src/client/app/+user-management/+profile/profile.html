@@ -91,7 +91,12 @@
                 <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1">{{user.billingInfo.address.address}}</p>
+                <p class="md-body-1">
+                  {{
+                    user.billingInfo.address.address +
+                    (user.billingInfo.address.address2 ? ', ' + user.billingInfo.address.address2 : '')
+                  }}
+                </p>
               </div>
             </div>
             <div class="row">

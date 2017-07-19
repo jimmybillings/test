@@ -9,7 +9,7 @@
     <md-card class="billing-card wz-form-card">
       <md-card-content>
         <address-form-component
-          [items]="items"
+          [formItems]="formItems"
           [loaded]="loaded"
           [title]="createFormTitle('user')"
           (onSaveAddress)="addUserAddress($event)">
@@ -28,7 +28,7 @@
     <md-card class="billing-card wz-form-card">
       <md-card-content>
         <address-form-component
-          [items]="items"
+          [formItems]="formItems"
           [loaded]="loaded"
           [title]="'CART.BILLING.COMPLETE_ADDRESS_ERROR'"
           [address]="(orderInProgress | async).addresses[0]"
@@ -51,7 +51,9 @@
             <span>{{address.name}}</span>
           </header>
           <address *ngIf="address.address">
-            <span class="line-1">{{address.address.address}}</span>
+            <span class="line-1">
+              {{address.address.address + (address.address.address2 ? ', ' + address.address.address2 : '') }}
+            </span>
             <span class="line-2">
               {{address.address.city ? address.address.city + ',' : ''}}
               {{address.address.state}}

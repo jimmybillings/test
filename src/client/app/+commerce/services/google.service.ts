@@ -10,7 +10,6 @@ export class GoogleService {
   public script: HTMLElement;
   private readonly scriptSrc: string =
   'https://maps.googleapis.com/maps/api/js?key=AIzaSyCzyGsK3zaRGFAEC72nWbdRvBY1Lo92Cfw&libraries=places';
-  private callback: Function;
   constructor(private window: WindowRef, @Inject(DOCUMENT) private document: Document) { }
 
   public geolocate(): void {
@@ -28,7 +27,6 @@ export class GoogleService {
   }
 
   public loadPlacesLibrary(callback: Function): void {
-    this.callback = callback;
     let scripts: NodeListOf<HTMLScriptElement> = this.document.getElementsByTagName('script');
     let i: number = scripts.length, scriptLoaded: boolean = false;
 
@@ -39,22 +37,22 @@ export class GoogleService {
     }
 
     if (scriptLoaded) {
-      this.initAutocomplete();
+      this.initAutocomplete(callback);
     } else {
       this.script = this.document.createElement('script');
       Object.assign(this.script, { src: this.scriptSrc, type: 'text/javascript' });
       this.document.body.appendChild(this.script);
-      this.script.onload = this.initAutocomplete;
+      this.script.onload = () => this.initAutocomplete(callback);
     }
   }
 
-  public initAutocomplete = (): void => {
+  public initAutocomplete = (callback: Function): void => {
     if (this.window.nativeWindow.google) {
       this.autocomplete = new this.window.nativeWindow.google.maps.places.Autocomplete(
         this.document.getElementById('autocomplete'),
         { types: ['geocode'] }
       );
-      this.autocomplete.addListener('place_changed', this.callback);
+      this.autocomplete.addListener('place_changed', callback);
     }
   }
 

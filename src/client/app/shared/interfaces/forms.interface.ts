@@ -10,7 +10,7 @@ export interface FormFields {
   tags?: Array<string>;
   min?: string;
   max?: string;
-  addressType?: 'long_name' | 'short_name';
+  addressType?: 'long_name' | 'short_name' | '';
   googleFields?: Array<String>;
   // Use the following to control an input from a select.
   // The number of options should equal the number
@@ -22,7 +22,7 @@ export interface FormFields {
 }
 
 export interface FormRow {
-  items: Array<FormFields>;
+  fields: Array<FormFields>;
 }
 
 export type RowFormFields = Array<FormRow>;

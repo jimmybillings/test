@@ -1,9 +1,10 @@
-import { Component, Output, Input, OnInit, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, Output, Input, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CartService } from '../../../shared/services/cart.service';
 import { QuoteService } from '../../../shared/services/quote.service';
 import { UserService } from '../../../shared/services/user.service';
 import { CurrentUserService } from '../../../shared/services/current-user.service';
 import { Address, User, ViewAddress, AddressKeys } from '../../../shared/interfaces/user.interface';
+import { RowFormFields } from '../../../shared/interfaces/forms.interface';
 import { CheckoutState } from '../../../shared/interfaces/commerce.interface';
 import { UiConfig } from '../../../shared/services/ui.config';
 import { CommerceCapabilities } from '../../services/commerce.capabilities';
@@ -15,7 +16,7 @@ import { WzDialogService } from '../../../shared/modules/wz-dialog/services/wz.d
 
 export class CommerceBillingTab extends Tab implements OnInit {
   public orderInProgress: Observable<CheckoutState>;
-  public items: Array<any>;
+  public formItems: RowFormFields;
   public addressErrors: any = {};
   public showAddAddressForm: boolean;
   public showEditAddressForm: boolean;
@@ -28,15 +29,14 @@ export class CommerceBillingTab extends Tab implements OnInit {
     protected uiConfig: UiConfig,
     protected user: UserService,
     protected currentUser: CurrentUserService,
-    protected dialog: WzDialogService,
-    protected ref: ChangeDetectorRef) {
+    protected dialog: WzDialogService) {
     super();
   }
 
   ngOnInit() {
     this.orderInProgress = this.commerceService.checkoutData;
     // this.uiConfig.get('billing').take(1).subscribe((config: any) => this.items = config.config.form.items);
-    this.items = this.formItems;
+    this.formItems = this.items;
     this.fetchAddresses().subscribe();
   }
 
@@ -78,7 +78,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
         dialogConfig: { position: { top: '6%' } },
         inputOptions: {
           loaded: this.loaded,
-          items: this.items,
+          formItems: this.formItems,
           title: title,
           address: mode === 'edit' ? address : null
         },
@@ -130,7 +130,6 @@ export class CommerceBillingTab extends Tab implements OnInit {
       this.validate(addresses);
       this.showAddAddressForm = this.showAddForm(addresses);
       this.showEditAddressForm = this.showEditForm(addresses);
-      this.ref.detectChanges();
       this.commerceService.updateOrderInProgress('addresses', addresses);
     });
   }
@@ -187,10 +186,10 @@ export class CommerceBillingTab extends Tab implements OnInit {
   // ------------------------------------------------------- //
   // UI Config to support rows in wz-form - to be removed
   // ------------------------------------------------------- //
-  private get formItems(): any {
+  private get items(): RowFormFields {
     return [
       {
-        items: [
+        fields: [
           {
             name: 'address',
             label: 'Address Line 1',
@@ -203,7 +202,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
         ]
       },
       {
-        items: [
+        fields: [
           {
             name: 'address2',
             label: 'Address Line 2',
@@ -216,7 +215,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
         ]
       },
       {
-        items: [
+        fields: [
           {
             name: 'city',
             label: 'City',
@@ -238,7 +237,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
         ]
       },
       {
-        items: [
+        fields: [
           {
             name: 'zipcode',
             label: 'Zipcode/Postal Code',
@@ -260,7 +259,7 @@ export class CommerceBillingTab extends Tab implements OnInit {
         ]
       },
       {
-        items: [
+        fields: [
           {
             name: 'phone',
             label: 'Phone Number',

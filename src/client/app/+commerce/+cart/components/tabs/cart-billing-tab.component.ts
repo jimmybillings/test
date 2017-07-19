@@ -1,4 +1,4 @@
-import { Component, Inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommerceBillingTab } from '../../../components/tabs/commerce-billing-tab';
 import { CartService } from '../../../../shared/services/cart.service';
 import { UiConfig } from '../../../../shared/services/ui.config';
@@ -21,9 +21,8 @@ export class CartBillingTabComponent extends CommerceBillingTab {
     uiConfig: UiConfig,
     user: UserService,
     currentUser: CurrentUserService,
-    dialog: WzDialogService,
-    ref: ChangeDetectorRef
+    dialog: WzDialogService
   ) {
-    super(userCan, cartService, uiConfig, user, currentUser, dialog, ref);
+    super(userCan, cartService, uiConfig, user, currentUser, dialog);
   }
 }

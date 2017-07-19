@@ -33,7 +33,7 @@ export function main() {
 
     describe('ngOnInit()', () => {
       beforeEach(() => {
-        componentUnderTest.items = formItems();
+        componentUnderTest.formItems = formItems();
       });
 
       it('builds the form - with blank values', () => {
@@ -60,7 +60,7 @@ export function main() {
 
     describe('ngOnChanges()', () => {
       beforeEach(() => {
-        componentUnderTest.items = formItems();
+        componentUnderTest.formItems = formItems();
       });
 
       it('builds the form if the address value is truthy', () => {
@@ -83,7 +83,7 @@ export function main() {
 
     describe('ngAfterViewInit()', () => {
       beforeEach(() => {
-        componentUnderTest.items = formItems();
+        componentUnderTest.formItems = formItems();
       });
 
       it('should build the addressForm if it doesn\'t exist', () => {
@@ -95,7 +95,7 @@ export function main() {
 
     describe('saveAddress()', () => {
       it('emits the onSaveAddress event with the form value', () => {
-        componentUnderTest.items = formItems();
+        componentUnderTest.formItems = formItems();
         componentUnderTest.ngOnInit();
         spyOn(componentUnderTest.onSaveAddress, 'emit');
         componentUnderTest.saveAddress();
@@ -107,7 +107,7 @@ export function main() {
   function formItems(): any {
     return [
       {
-        items: [
+        fields: [
           {
             name: 'address',
             label: 'Address Line 1',
@@ -120,7 +120,7 @@ export function main() {
         ]
       },
       {
-        items: [
+        fields: [
           {
             name: 'address2',
             label: 'Address Line 2',
@@ -133,7 +133,7 @@ export function main() {
         ]
       },
       {
-        items: [
+        fields: [
           {
             name: 'city',
             label: 'City',
@@ -155,7 +155,7 @@ export function main() {
         ]
       },
       {
-        items: [
+        fields: [
           {
             name: 'zipcode',
             label: 'Zipcode/Postal Code',
@@ -177,7 +177,7 @@ export function main() {
         ]
       },
       {
-        items: [
+        fields: [
           {
             name: 'phone',
             label: 'Phone Number',

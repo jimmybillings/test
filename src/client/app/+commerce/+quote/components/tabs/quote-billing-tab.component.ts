@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommerceBillingTab } from '../../../components/tabs/commerce-billing-tab';
 import { QuoteService } from '../../../../shared/services/quote.service';
 import { CommerceCapabilities } from '../../../services/commerce.capabilities';
@@ -21,9 +21,8 @@ export class QuoteBillingTabComponent extends CommerceBillingTab {
     protected uiConfig: UiConfig,
     protected user: UserService,
     protected currentUser: CurrentUserService,
-    protected dialog: WzDialogService,
-    protected ref: ChangeDetectorRef
+    protected dialog: WzDialogService
   ) {
-    super(userCan, quoteService, uiConfig, user, currentUser, dialog, ref);
+    super(userCan, quoteService, uiConfig, user, currentUser, dialog);
   }
 }
