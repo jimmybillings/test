@@ -192,22 +192,26 @@ export class CommerceBillingTab extends Tab implements OnInit {
       {
         items: [
           {
-            name: 'addressLineOne',
+            name: 'address',
             label: 'Address Line 1',
             type: 'text',
             value: '',
-            validation: 'REQUIRED'
+            validation: 'REQUIRED',
+            googleFields: ['street_number', 'route'],
+            addressType: 'long_name'
           }
         ]
       },
       {
         items: [
           {
-            name: 'addressLineTwo',
+            name: 'address2',
             label: 'Address Line 2',
             type: 'text',
             value: '',
-            validation: 'OPTIONAL'
+            validation: 'OPTIONAL',
+            googleFields: [],
+            addressType: ''
           }
         ]
       },
@@ -218,14 +222,18 @@ export class CommerceBillingTab extends Tab implements OnInit {
             label: 'City',
             type: 'text',
             value: '',
-            validation: 'REQUIRED'
+            validation: 'REQUIRED',
+            googleFields: ['locality'],
+            addressType: 'long_name'
           },
           {
             name: 'state',
             label: 'State',
             type: 'text',
             value: '',
-            validation: 'REQUIRED'
+            validation: 'REQUIRED',
+            googleFields: ['administrative_area_level_1'],
+            addressType: 'short_name'
           }
         ]
       },
@@ -236,14 +244,18 @@ export class CommerceBillingTab extends Tab implements OnInit {
             label: 'Zipcode/Postal Code',
             type: 'text',
             value: '',
-            validation: 'REQUIRED'
+            validation: 'REQUIRED',
+            googleFields: ['postal_code'],
+            addressType: 'short_name'
           },
           {
             name: 'country',
             label: 'Country',
             type: 'text',
             value: '',
-            validation: 'REQUIRED'
+            validation: 'REQUIRED',
+            googleFields: ['country'],
+            addressType: 'long_name'
           }
         ]
       },
@@ -254,7 +266,9 @@ export class CommerceBillingTab extends Tab implements OnInit {
             label: 'Phone Number',
             type: 'text',
             value: '',
-            validation: 'REQUIRED'
+            validation: 'REQUIRED',
+            googleFields: [],
+            addressType: ''
           }
         ]
       }

@@ -1,16 +1,14 @@
 import { AddressFormComponent } from './address-form.component';
-import { Address, ViewAddress } from '../../../shared/interfaces/user.interface';
 import { FormBuilder } from '@angular/forms';
 
 export function main() {
   describe('Address Form Component', () => {
-    let componentUnderTest: AddressFormComponent, fb: FormBuilder = new FormBuilder(), mockChangeDetector: any,
-      mockGoogleService: any;
+    let componentUnderTest: AddressFormComponent, fb: FormBuilder = new FormBuilder(), mockGoogleService: any;
 
     const mockAddress = {
       address: {
-        addressLineOne: '123 Oak Street',
-        addressLineTwo: 'Apartment 10',
+        address: '123 Oak Street',
+        address2: 'Apartment 10',
         state: 'CO',
         country: 'USA',
         zipcode: '11111',
@@ -24,14 +22,13 @@ export function main() {
     };
 
     beforeEach(() => {
-      mockChangeDetector = { detectChanges: jasmine.createSpy('detectChanges') };
       mockGoogleService = {
         loadPlacesLibrary: jasmine.createSpy('loadPlacesLibrary'),
         autocomplete: {
           addListener: jasmine.createSpy('addListener')
         }
       };
-      componentUnderTest = new AddressFormComponent(fb, mockChangeDetector, mockGoogleService);
+      componentUnderTest = new AddressFormComponent(fb, mockGoogleService);
     });
 
     describe('ngOnInit()', () => {
@@ -43,8 +40,8 @@ export function main() {
         expect(componentUnderTest.addressForm).toBeUndefined();
         componentUnderTest.ngOnInit();
         expect(componentUnderTest.addressForm.value).toEqual({
-          addressLineOne: '',
-          addressLineTwo: '',
+          address: '',
+          address2: '',
           state: '',
           country: '',
           zipcode: '',
@@ -68,7 +65,7 @@ export function main() {
 
       it('builds the form if the address value is truthy', () => {
         expect(componentUnderTest.addressForm).toBeUndefined();
-        componentUnderTest.ngOnChanges({ address: { currentValue: mockAddress } });
+        componentUnderTest.ngOnChanges({ address: { currentValue: mockAddress } } as any);
         expect(componentUnderTest.addressForm.value).toEqual(mockAddress.address);
       });
 
@@ -79,7 +76,7 @@ export function main() {
       });
 
       it('calls loadPlacesLibrary() on the google service', () => {
-        componentUnderTest.ngOnChanges({ loaded: { currentValue: true } });
+        componentUnderTest.ngOnChanges({ loaded: { currentValue: true } } as any);
         expect(mockGoogleService.loadPlacesLibrary).toHaveBeenCalled();
       });
     });
@@ -97,12 +94,12 @@ export function main() {
     });
 
     describe('saveAddress()', () => {
-      it('console.logs for now', () => {
+      it('emits the onSaveAddress event with the form value', () => {
         componentUnderTest.items = formItems();
         componentUnderTest.ngOnInit();
-        spyOn(console, 'log');
+        spyOn(componentUnderTest.onSaveAddress, 'emit');
         componentUnderTest.saveAddress();
-        expect(console.log).toHaveBeenCalledWith(componentUnderTest.addressForm.value);
+        expect(componentUnderTest.onSaveAddress.emit).toHaveBeenCalledWith(componentUnderTest.addressForm.value);
       });
     });
   });
@@ -112,22 +109,26 @@ export function main() {
       {
         items: [
           {
-            name: 'addressLineOne',
+            name: 'address',
             label: 'Address Line 1',
             type: 'text',
             value: '',
-            validation: 'REQUIRED'
+            validation: 'REQUIRED',
+            googleFields: ['street_number', 'route'],
+            addressType: 'long_name'
           }
         ]
       },
       {
         items: [
           {
-            name: 'addressLineTwo',
+            name: 'address2',
             label: 'Address Line 2',
             type: 'text',
             value: '',
-            validation: 'OPTIONAL'
+            validation: 'OPTIONAL',
+            googleFields: [],
+            addressType: ''
           }
         ]
       },
@@ -138,14 +139,18 @@ export function main() {
             label: 'City',
             type: 'text',
             value: '',
-            validation: 'REQUIRED'
+            validation: 'REQUIRED',
+            googleFields: ['locality'],
+            addressType: 'long_name'
           },
           {
             name: 'state',
             label: 'State',
             type: 'text',
             value: '',
-            validation: 'REQUIRED'
+            validation: 'REQUIRED',
+            googleFields: ['administrative_area_level_1'],
+            addressType: 'short_name'
           }
         ]
       },
@@ -156,14 +161,18 @@ export function main() {
             label: 'Zipcode/Postal Code',
             type: 'text',
             value: '',
-            validation: 'REQUIRED'
+            validation: 'REQUIRED',
+            googleFields: ['postal_code'],
+            addressType: 'short_name'
           },
           {
             name: 'country',
             label: 'Country',
             type: 'text',
             value: '',
-            validation: 'REQUIRED'
+            validation: 'REQUIRED',
+            googleFields: ['country'],
+            addressType: 'long_name'
           }
         ]
       },
@@ -174,7 +183,9 @@ export function main() {
             label: 'Phone Number',
             type: 'text',
             value: '',
-            validation: 'REQUIRED'
+            validation: 'REQUIRED',
+            googleFields: [],
+            addressType: ''
           }
         ]
       }

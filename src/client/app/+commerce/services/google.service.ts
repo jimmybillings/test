@@ -1,23 +1,25 @@
 import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { WindowRef } from '../../shared/services/window-ref.service';
+import { GoogleAddress, FormattedGoogleAddress, GoogleAddressComponent } from '../../shared/interfaces/user.interface';
+import { Geolocation, Position, Circle, Autocomplete } from '../../shared/interfaces/common.interface';
 
 @Injectable()
 export class GoogleService {
-  public autocomplete: any;
+  public autocomplete: Autocomplete;
   public script: HTMLElement;
   private readonly scriptSrc: string =
   'https://maps.googleapis.com/maps/api/js?key=AIzaSyCzyGsK3zaRGFAEC72nWbdRvBY1Lo92Cfw&libraries=places';
   private callback: Function;
-  constructor(private window: WindowRef, @Inject(DOCUMENT) private document: any) { }
+  constructor(private window: WindowRef, @Inject(DOCUMENT) private document: Document) { }
 
   public geolocate(): void {
-    navigator.geolocation.getCurrentPosition((position: any) => {
-      let geolocation: any = {
+    navigator.geolocation.getCurrentPosition((position: Position) => {
+      let geolocation: Geolocation = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-      let circle: any = new this.window.nativeWindow.google.maps.Circle({
+      let circle: Circle = new this.window.nativeWindow.google.maps.Circle({
         center: geolocation,
         radius: position.coords.accuracy
       });
@@ -27,7 +29,7 @@ export class GoogleService {
 
   public loadPlacesLibrary(callback: Function): void {
     this.callback = callback;
-    let scripts: any = this.document.getElementsByTagName('script');
+    let scripts: NodeListOf<HTMLScriptElement> = this.document.getElementsByTagName('script');
     let i: number = scripts.length, scriptLoaded: boolean = false;
 
     while (i--) {
@@ -56,11 +58,11 @@ export class GoogleService {
     }
   }
 
-  public getPlace(): any {
-    let place: any = this.autocomplete.getPlace();
+  public getPlace(): FormattedGoogleAddress {
+    let place: GoogleAddress = this.autocomplete.getPlace();
 
-    return place.address_components.reduce((prev: any, current: any) => {
-      prev[current.types[0]] = { long_name: current['long_name'], short_name: current['long_name'] };
+    return place.address_components.reduce((prev: FormattedGoogleAddress, current: GoogleAddressComponent) => {
+      prev[current.types[0]] = { long_name: current.long_name, short_name: current.short_name };
       return prev;
     }, {});
   }

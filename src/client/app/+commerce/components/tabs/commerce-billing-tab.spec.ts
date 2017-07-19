@@ -94,7 +94,7 @@ export function main() {
         });
       });
 
-      xit('should set up the form items from the uiConfig', () => {
+      it('should set up the form items from the uiConfig', () => {
         expect(componentUnderTest.items).toEqual([{ name: '', value: '' }]);
       });
     });
