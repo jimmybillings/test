@@ -17,7 +17,7 @@ export function main() {
         sendQuote: jasmine.createSpy('sendQuote').and.returnValue(Observable.of({})),
         editLineItem: jasmine.createSpy('editLineItem'),
         deleteQuote: jasmine.createSpy('deleteQuote').and.returnValue(Observable.of({})),
-        createQuote: jasmine.createSpy('createQuote')
+        createQuote: jasmine.createSpy('createQuote').and.returnValue(Observable.of({}))
       };
 
       mockUiConfig = {
@@ -347,9 +347,14 @@ export function main() {
 
     describe('createQuote()', () => {
       it('Calls the quote service createQuote method', () => {
+        spyOn(componentUnderTest, 'showSnackBar');
         componentUnderTest.onCreateQuote();
 
         expect(mockQuoteEditService.createQuote).toHaveBeenCalled();
+        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
+          key: 'QUOTE.QUOTE_CREATED_PREVIOUS_SAVED',
+          value: null
+        });
       });
     });
 

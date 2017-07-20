@@ -140,7 +140,14 @@ export class QuoteEditComponent extends CommerceEditTab {
   }
 
   public onCreateQuote() {
-    this.quoteEditService.createQuote();
+    this.quoteEditService.createQuote()
+      .do(() => {
+        this.showSnackBar({
+          key: 'QUOTE.QUOTE_CREATED_PREVIOUS_SAVED',
+          value: null
+        });
+      })
+      .subscribe();
   }
 
   private updateQuoteField = (options: any): void => {

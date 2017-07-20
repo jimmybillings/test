@@ -129,17 +129,17 @@ export function main() {
 
     describe('createQuote()', () => {
       it('calls the API service correctly', () => {
-        serviceUnderTest.createQuote();
-
-        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
-        expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
-        expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+        serviceUnderTest.createQuote().subscribe(() => {
+          expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
+          expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
+          expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+        });
       });
 
       it('replaces the quote store with the response of the newly created quote', () => {
-        serviceUnderTest.createQuote();
-
-        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.postResponse);
+        serviceUnderTest.createQuote().subscribe(() => {
+          expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.postResponse);
+        });
       });
     });
 

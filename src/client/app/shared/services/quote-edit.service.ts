@@ -77,10 +77,9 @@ export class QuoteEditService {
   }
 
   // Public Api
-  public createQuote(): void {
-    this.api.post(Api.Orders, 'quote', { loading: true })
-      .do(this.replaceQuote)
-      .subscribe();
+  public createQuote(): Observable<Quote> {
+    return this.api.post(Api.Orders, 'quote', { loading: true })
+      .do(this.replaceQuote);
   }
 
   public getFocusedQuote(): Observable<Quote> {
