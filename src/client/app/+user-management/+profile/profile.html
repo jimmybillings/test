@@ -91,7 +91,7 @@
                 <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1">{{user.billingInfo.address.address}}</p>
+                <p class="md-body-1">{{getBillingAddressInfo('address')}}</p>
               </div>
             </div>
             <div class="row">
@@ -99,7 +99,7 @@
                 <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_CITY_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1">{{user.billingInfo.address.city}}</p>
+                <p class="md-body-1">{{getBillingAddressInfo('city')}}</p>
               </div>
             </div>
             <div class="row">
@@ -107,7 +107,7 @@
                 <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_STATE_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1">{{user.billingInfo.address.state}}</p>
+                <p class="md-body-1">{{getBillingAddressInfo('state')}}</p>
               </div>
             </div>
             <div class="row">
@@ -115,7 +115,7 @@
                 <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_ZIPCODE_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1">{{user.billingInfo.address.zipcode}}</p>
+                <p class="md-body-1">{{getBillingAddressInfo('zipcode')}}</p>
               </div>
             </div>
             <div class="row">
@@ -123,7 +123,7 @@
                 <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_COUNTRY_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1">{{user.billingInfo.address.country}}</p>
+                <p class="md-body-1">{{getBillingAddressInfo('country')}}</p>
               </div>
             </div>
             <div class="row">
@@ -131,7 +131,7 @@
                 <h5 class="md-subhead">{{'PROFILE.BASIC_INFO.BILLING_ADDRESS_PHONE_LABEL' | translate }}</h5>
               </div>
               <div class="cell">
-                <p class="md-body-1">{{user.billingInfo.address.phone}}</p>
+                <p class="md-body-1">{{getBillingAddressInfo('phone')}}</p>
               </div>
             </div>
           </div>

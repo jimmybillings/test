@@ -18,7 +18,7 @@ export class ProfileComponent implements OnDestroy, OnInit {
   public accountName: string;
   private userSubscription: Subscription;
 
-  constructor(private currentUser: CurrentUserService, private dialogService: WzDialogService, private u: UserService, ) { }
+  constructor(private currentUser: CurrentUserService, private dialogService: WzDialogService, private userService: UserService, ) { }
 
   ngOnInit() {
     this.userSubscription =
@@ -38,8 +38,12 @@ export class ProfileComponent implements OnDestroy, OnInit {
   }
 
   public userAccountName(id: number): string {
-    this.u.getAccount(this.user.accountId).take(1).subscribe((account: any) =>
+    this.userService.getAccount(this.user.accountId).take(1).subscribe((account: any) =>
       this.accountName = account.name);
     return this.accountName;
+  }
+
+  public getBillingAddressInfo(segment: string): string {
+    return this.user.billingInfo && this.user.billingInfo.address ? this.user.billingInfo.address[segment] : '';
   }
 }
