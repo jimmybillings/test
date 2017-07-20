@@ -1,5 +1,5 @@
 import { Frame } from 'wazee-frame-formatter';
-import { Asset, Pagination, Poj, Coords } from './common.interface';
+import { Asset, Pagination, Pojo, Coords } from './common.interface';
 
 export interface AssetState {
   asset: Asset;
@@ -26,5 +26,5 @@ export interface SpeedviewData {
   price?: number;
   pricingType?: 'Royalty Free' | 'Rights Managed';
   url?: string;
-  values?: Array<Poj>;
+  values?: Array<Pojo>;
 }

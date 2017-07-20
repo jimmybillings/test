@@ -59,7 +59,7 @@ export interface AssetUrls {
   https?: string;
 }
 
-export interface Poj {
+export interface Pojo {
   [index: string]: any;
 }
 
