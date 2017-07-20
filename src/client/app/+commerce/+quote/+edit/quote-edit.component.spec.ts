@@ -9,13 +9,15 @@ export function main() {
 
     beforeEach(() => {
       mockQuoteEditService = {
+        quoteId: 1,
         addFeeTo: jasmine.createSpy('addFeeTo'),
         removeFee: jasmine.createSpy('removeFee'),
         hasProperty: jasmine.createSpy('hasProperty').and.returnValue(Observable.of('someProp')),
         updateQuoteField: jasmine.createSpy('updateQuoteField'),
         sendQuote: jasmine.createSpy('sendQuote').and.returnValue(Observable.of({})),
         editLineItem: jasmine.createSpy('editLineItem'),
-        deleteQuote: jasmine.createSpy('deleteQuote').and.returnValue(Observable.of({}))
+        deleteQuote: jasmine.createSpy('deleteQuote').and.returnValue(Observable.of({})),
+        createQuote: jasmine.createSpy('createQuote').and.returnValue(Observable.of({}))
       };
 
       mockUiConfig = {
@@ -170,7 +172,7 @@ export function main() {
       });
 
       it('calls openFormDialog() on the dialogService with the proper args', () => {
-        componentUnderTest.openQuoteDialog();
+        componentUnderTest.onOpenQuoteDialog();
 
         expect(mockDialogService.openFormDialog).toHaveBeenCalledWith(
           ['yay'],
@@ -181,7 +183,7 @@ export function main() {
 
       it('calls the callback on form submit', () => {
         componentUnderTest.quoteType = 'ProvisionalOrder';
-        componentUnderTest.openQuoteDialog();
+        componentUnderTest.onOpenQuoteDialog();
         mockDialogService.onSubmitCallback({ emailAddress: 'ross.edfort@wazeedigital.com', expirationDate: '2017/05/03' });
         expect(mockQuoteEditService.sendQuote).toHaveBeenCalledWith({
           ownerEmail: 'ross.edfort@wazeedigital.com',
@@ -189,11 +191,29 @@ export function main() {
           purchaseType: 'ProvisionalOrder'
         });
       });
+
+      it('Navigates to the quote detail page on succesfull submit', () => {
+        componentUnderTest.quoteType = 'ProvisionalOrder';
+        componentUnderTest.onOpenQuoteDialog();
+        mockDialogService.onSubmitCallback({ emailAddress: 'ross.edfort@wazeedigital.com', expirationDate: '2017/05/03' });
+        expect(mockRouter.navigate).toHaveBeenCalledWith([`/commerce/quotes/1`]);
+      });
+
+      it('Shows a success snack bar notification on succesfull submit', () => {
+        componentUnderTest.quoteType = 'ProvisionalOrder';
+        componentUnderTest.onOpenQuoteDialog();
+        spyOn(componentUnderTest, 'showSnackBar');
+        mockDialogService.onSubmitCallback({ emailAddress: 'ross.edfort@wazeedigital.com', expirationDate: '2017/05/03' });
+        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
+          key: 'QUOTE.CREATED_FOR_TOAST',
+          value: { emailAddress: 'ross.edfort@wazeedigital.com' }
+        });
+      });
     });
 
     describe('openDeleteQuoteDialog()', () => {
       it('calls openConfirmationDialog() on the dialog service', () => {
-        componentUnderTest.openDeleteQuoteDialog();
+        componentUnderTest.onOpenDeleteQuoteDialog();
 
         expect(mockDialogService.openConfirmationDialog).toHaveBeenCalledWith({
           title: 'QUOTE.DELETE.TITLE',
@@ -205,7 +225,7 @@ export function main() {
 
       describe('onAccept callback', () => {
         beforeEach(() => {
-          componentUnderTest.openDeleteQuoteDialog();
+          componentUnderTest.onOpenDeleteQuoteDialog();
           mockDialogService.onAcceptCallback();
         });
 
@@ -321,6 +341,19 @@ export function main() {
           mockDialogService.onSubmitCallback({ some: 'options' });
 
           expect(mockQuoteEditService.updateQuoteField).toHaveBeenCalledWith({ some: 'options' });
+        });
+      });
+    });
+
+    describe('createQuote()', () => {
+      it('Calls the quote service createQuote method', () => {
+        spyOn(componentUnderTest, 'showSnackBar');
+        componentUnderTest.onCreateQuote();
+
+        expect(mockQuoteEditService.createQuote).toHaveBeenCalled();
+        expect(componentUnderTest.showSnackBar).toHaveBeenCalledWith({
+          key: 'QUOTE.QUOTE_CREATED_PREVIOUS_SAVED',
+          value: null
         });
       });
     });

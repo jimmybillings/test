@@ -20,14 +20,14 @@ import { SubclipMarkers } from '../../../shared/interfaces/asset.interface';
 import { TranslateService } from '@ngx-translate/core';
 import { QuoteEditService } from '../../../shared/services/quote-edit.service';
 import { WzPricingComponent } from '../../../shared/components/wz-pricing/wz.pricing.component';
-import { SelectedPriceAttributes, WzEvent, Poj } from '../../../shared/interfaces/common.interface';
+import { SelectedPriceAttributes, WzEvent, Pojo } from '../../../shared/interfaces/common.interface';
 import { PricingStore } from '../../../shared/stores/pricing.store';
 
 export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   public cart: Observable<any>;
   public config: any;
   public priceAttributes: Array<PriceAttribute> = null;
-  public pricingPreferences: Poj;
+  public pricingPreferences: Pojo;
   public quoteType: QuoteType = null;
   protected configSubscription: Subscription;
   protected preferencesSubscription: Subscription;
@@ -137,8 +137,15 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     this.quoteType = event.type;
   }
 
+  public showSnackBar(message: Pojo) {
+    this.translate.get(message.key, message.value)
+      .subscribe((res: string) => {
+        this.snackBar.open(res, '', { duration: 2000 });
+      });
+  }
+
   protected editProjectPricing(project: Project) {
-    let preferences: Poj = project.attributes ? this.mapAttributesToPreferences(project.attributes) : this.pricingPreferences;
+    let preferences: Pojo = project.attributes ? this.mapAttributesToPreferences(project.attributes) : this.pricingPreferences;
     if (this.priceAttributes) {
       this.openProjectPricingDialog(this.priceAttributes, preferences, project);
     } else {
@@ -150,7 +157,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
   }
 
   protected showPricingDialog(lineItem: AssetLineItem): void {
-    let preferences: Poj = lineItem.attributes ? this.mapAttributesToPreferences(lineItem.attributes) : this.pricingPreferences;
+    let preferences: Pojo = lineItem.attributes ? this.mapAttributesToPreferences(lineItem.attributes) : this.pricingPreferences;
     if (this.priceAttributes) {
       this.openPricingDialog(this.priceAttributes, preferences, lineItem);
     } else {
@@ -161,10 +168,10 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     }
   }
 
-  protected mapAttributesToPreferences(attributes: any): Poj {
+  protected mapAttributesToPreferences(attributes: any): Pojo {
     if (Array.isArray(attributes)) {
       // if the attributes came from a lineItem, they are an Array of SelectedPriceAttributes
-      // we need to map them to a Poj to pass on to the pricing component
+      // we need to map them to a Pojo to pass on to the pricing component
       let mapped: any = {};
       attributes.forEach((attr: SelectedPriceAttributes) => {
         mapped[attr.priceAttributeName] = attr.selectedAttributeValue;
@@ -172,14 +179,14 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
       delete mapped['siteName'];
       return mapped;
     } else {
-      // if the attributes came from a project, they are a Poj.
+      // if the attributes came from a project, they are a Pojo.
       // we do not need to map them before passing them to the pricing component
       delete attributes['siteName'];
       return attributes;
     }
   }
 
-  protected openProjectPricingDialog(priceAttributes: Array<PriceAttribute>, preferences: Poj, project: Project): void {
+  protected openProjectPricingDialog(priceAttributes: Array<PriceAttribute>, preferences: Pojo, project: Project): void {
     this.dialogService.openComponentInDialog(
       {
         componentType: WzPricingComponent,
@@ -215,7 +222,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     }
   }
 
-  protected openPricingDialog(priceAttributes: Array<PriceAttribute>, preferences: Poj, lineItem: AssetLineItem): void {
+  protected openPricingDialog(priceAttributes: Array<PriceAttribute>, preferences: Pojo, lineItem: AssetLineItem): void {
     this.dialogService.openComponentInDialog(
       {
         componentType: WzPricingComponent,
@@ -305,14 +312,7 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     );
   }
 
-  protected showSnackBar(message: Poj) {
-    this.translate.get(message.key, message.value)
-      .subscribe((res: string) => {
-        this.snackBar.open(res, '', { duration: 2000 });
-      });
-  }
-
-  protected calculatePrice(attributes: Poj, lineItem: AssetLineItem): Observable<number> {
+  protected calculatePrice(attributes: Pojo, lineItem: AssetLineItem): Observable<number> {
     return this.assetService.getPriceFor(lineItem.asset, attributes);
   }
 }

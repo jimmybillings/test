@@ -8,8 +8,44 @@ export function main() {
       componentUnderTest = new AdministerQuoteComponent();
     });
 
-    it('has no tests!', () => {
-      expect(true).toBe(true);
+    describe('onSaveAndNew()', () => {
+      it('Should emit the onSaveAndNew event', () => {
+        spyOn(componentUnderTest.saveAndNew, 'emit');
+        componentUnderTest.onSaveAndNew();
+
+        expect(componentUnderTest.saveAndNew.emit).toHaveBeenCalled();
+
+      });
+    });
+
+    describe('onOpenDeleteDialog()', () => {
+      it('Should emit the openDeleteDialog event', () => {
+        spyOn(componentUnderTest.openDeleteDialog, 'emit');
+        componentUnderTest.onOpenDeleteDialog();
+
+        expect(componentUnderTest.openDeleteDialog.emit).toHaveBeenCalled();
+
+      });
+    });
+
+    describe('onOpenQuoteDialog()', () => {
+      it('Should emit the openQuoteDialog event', () => {
+        spyOn(componentUnderTest.openQuoteDialog, 'emit');
+        componentUnderTest.onOpenQuoteDialog();
+
+        expect(componentUnderTest.openQuoteDialog.emit).toHaveBeenCalled();
+
+      });
+    });
+
+    describe('onSaveAsDraft()', () => {
+      it('Should emit the saveAsDraft event', () => {
+        spyOn(componentUnderTest.saveAsDraft, 'emit');
+        componentUnderTest.onSaveAsDraft();
+
+        expect(componentUnderTest.saveAsDraft.emit).toHaveBeenCalled();
+
+      });
     });
   });
 }

@@ -4,7 +4,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { PriceAttribute, PriceOption } from '../../interfaces/commerce.interface';
-import { Poj, WzEvent } from '../../interfaces/common.interface';
+import { Pojo, WzEvent } from '../../interfaces/common.interface';
 
 @Component({
   moduleId: module.id,
@@ -17,7 +17,7 @@ export class WzPricingComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   @Input() attributes: Array<PriceAttribute>;
   @Input() usagePrice: Observable<number>;
-  @Input() pricingPreferences: Poj;
+  @Input() pricingPreferences: Pojo;
   @Output() pricingEvent: EventEmitter<WzEvent> = new EventEmitter<WzEvent>();
   private formSubscription: Subscription;
   constructor(private fb: FormBuilder) { }
@@ -114,7 +114,7 @@ export class WzPricingComponent implements OnInit, OnDestroy {
   }
 
   private get prePopulatedForm(): FormGroup {
-    let form: Poj = {};
+    let form: Pojo = {};
     this.attributes.forEach((attribute: PriceAttribute) => {
       form[attribute.name] = new FormControl(
         { value: this.pricingPreferences[attribute.name], disabled: false },
@@ -125,7 +125,7 @@ export class WzPricingComponent implements OnInit, OnDestroy {
   }
 
   private get blankForm(): FormGroup {
-    let form: Poj = {};
+    let form: Pojo = {};
     this.attributes.forEach((attribute: PriceAttribute, index: number) => {
       form[attribute.name] = new FormControl({ value: '', disabled: index !== 0 }, Validators.required);
     });
