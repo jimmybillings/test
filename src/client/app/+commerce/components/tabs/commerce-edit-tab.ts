@@ -137,6 +137,13 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
     this.quoteType = event.type;
   }
 
+  public showSnackBar(message: Poj) {
+    this.translate.get(message.key, message.value)
+      .subscribe((res: string) => {
+        this.snackBar.open(res, '', { duration: 2000 });
+      });
+  }
+
   protected editProjectPricing(project: Project) {
     let preferences: Poj = project.attributes ? this.mapAttributesToPreferences(project.attributes) : this.pricingPreferences;
     if (this.priceAttributes) {
@@ -303,13 +310,6 @@ export class CommerceEditTab extends Tab implements OnInit, OnDestroy {
         this.commerceService.updateProject(Object.assign(project.project, data));
       }
     );
-  }
-
-  protected showSnackBar(message: Poj) {
-    this.translate.get(message.key, message.value)
-      .subscribe((res: string) => {
-        this.snackBar.open(res, '', { duration: 2000 });
-      });
   }
 
   protected calculatePrice(attributes: Poj, lineItem: AssetLineItem): Observable<number> {

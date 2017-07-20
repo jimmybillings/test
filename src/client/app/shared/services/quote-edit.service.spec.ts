@@ -21,7 +21,7 @@ export function main() {
       jasmine.addMatchers(mockApiMatchers);
       mockRouter = { navigate: jasmine.createSpy('navigate') };
 
-      serviceUnderTest = new QuoteEditService(mockQuoteStore, mockFeeConfigStore, mockApi.injector, mockRouter);
+      serviceUnderTest = new QuoteEditService(mockQuoteStore, mockFeeConfigStore, mockApi.injector);
     });
 
     describe('Store Accessors', () => {
@@ -64,17 +64,17 @@ export function main() {
       describe('get hasHAssets', () => {
         it('should return false if the quote does not have the itemCount property', () => {
           mockQuoteStore = { data: Observable.of({ data: {} }) };
-          new QuoteEditService(mockQuoteStore, null, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
+          new QuoteEditService(mockQuoteStore, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
         });
 
         it('should return false if the quote itemCount is 0', () => {
           mockQuoteStore = { data: Observable.of({ data: { itemCount: 0 } }) };
-          new QuoteEditService(mockQuoteStore, null, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
+          new QuoteEditService(mockQuoteStore, null, null).hasAssets.subscribe(d => expect(d).toBe(false));
         });
 
         it('should return true if the quote itemCount is greater than 0', () => {
           mockQuoteStore = { data: Observable.of({ data: { itemCount: 1 } }) };
-          new QuoteEditService(mockQuoteStore, null, null, null).hasAssets.subscribe(d => expect(d).toBe(true));
+          new QuoteEditService(mockQuoteStore, null, null).hasAssets.subscribe(d => expect(d).toBe(true));
         });
       });
 
@@ -122,6 +122,22 @@ export function main() {
 
       it('replaces the quote store with the response', () => {
         serviceUnderTest.addProject();
+
+        expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.postResponse);
+      });
+    });
+
+    describe('createQuote()', () => {
+      it('calls the API service correctly', () => {
+        serviceUnderTest.createQuote();
+
+        expect(mockApi.post).toHaveBeenCalledWithApi(Api.Orders);
+        expect(mockApi.post).toHaveBeenCalledWithEndpoint('quote');
+        expect(mockApi.post).toHaveBeenCalledWithLoading(true);
+      });
+
+      it('replaces the quote store with the response of the newly created quote', () => {
+        serviceUnderTest.createQuote();
 
         expect(mockQuoteStore.replaceQuote).toHaveBeenCalledWith(mockApi.postResponse);
       });

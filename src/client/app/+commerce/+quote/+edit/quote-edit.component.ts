@@ -122,7 +122,7 @@ export class QuoteEditComponent extends CommerceEditTab {
     );
   }
 
-  public openQuoteDialog(): void {
+  public onOpenQuoteDialog(): void {
     this.dialogService.openFormDialog(
       this.config.createQuote.items,
       { title: 'QUOTE.CREATE_HEADER', submitLabel: 'QUOTE.SEND_BTN', autocomplete: 'off' },
@@ -130,13 +130,17 @@ export class QuoteEditComponent extends CommerceEditTab {
     );
   }
 
-  public openDeleteQuoteDialog(): void {
+  public onOpenDeleteQuoteDialog(): void {
     this.dialogService.openConfirmationDialog({
       title: 'QUOTE.DELETE.TITLE',
       message: 'QUOTE.DELETE.MESSAGE',
       accept: 'QUOTE.DELETE.ACCEPT',
       decline: 'QUOTE.DELETE.DECLINE'
     }, this.deleteQuote);
+  }
+
+  public onCreateQuote() {
+    this.quoteEditService.createQuote();
   }
 
   private updateQuoteField = (options: any): void => {
@@ -152,14 +156,14 @@ export class QuoteEditComponent extends CommerceEditTab {
   }
 
   private sendQuote(options: QuoteOptions): void {
-    this.quoteEditService.sendQuote(options).take(1).subscribe((res: Quote) => {
-      this.showSnackBar({
-        key: 'QUOTE.CREATED_FOR_TOAST',
-        value: { emailAddress: options.ownerEmail }
-      });
-    }, (err) => {
-      console.error(err);
-    });
+    this.quoteEditService.sendQuote(options)
+      .do(() => {
+        this.router.navigate([`/commerce/quotes/${this.quoteEditService.quoteId}`]);
+        this.showSnackBar({
+          key: 'QUOTE.CREATED_FOR_TOAST',
+          value: { emailAddress: options.ownerEmail }
+        });
+      }).subscribe();
   }
 
   private hasProperty = (property: string): string | undefined => {

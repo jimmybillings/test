@@ -80,10 +80,10 @@
             <div flex="100" layout="row" layout-align="center center">
               <administer-quote-component
                 flex="100"
-                [cart]="cart | async"
                 [userCanProceed]="userCanProceed"
-                (openQuoteDialog)="openQuoteDialog()"
-                (openDeleteDialog)="openDeleteQuoteDialog()">
+                (openQuoteDialog)="onOpenQuoteDialog()"
+                (openDeleteDialog)="onOpenDeleteQuoteDialog()"
+                (saveAndNew)="onCreateQuote()">
               </administer-quote-component>
             </div>
             <div flex="100" layout="row" layout-align="end center" class='select-usage-warn' *ngIf="showUsageWarning">
