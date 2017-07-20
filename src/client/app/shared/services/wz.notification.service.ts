@@ -33,6 +33,9 @@ export class WzNotificationService {
       case 451:
         this.cantRegister();
         break;
+      case 404:
+        this.notFound();
+        break;
       default:
         this.callInProgress = false;
         if (isNaN(error.status)) this.customError(error.status);
@@ -97,5 +100,9 @@ export class WzNotificationService {
       title: error,
       prompt: 'NOTIFICATION.CLOSE'
     });
+  }
+
+  private notFound(): void {
+    this.router.navigate(['/404']);
   }
 }
