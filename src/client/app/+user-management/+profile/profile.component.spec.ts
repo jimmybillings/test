@@ -34,5 +34,58 @@ export function main() {
         expect(mockSubscription.unsubscribe).toHaveBeenCalled();
       });
     });
+
+    describe('getBillingAddressInfo()', () => {
+      let mockUser: any;
+      it('should return an empty string when billingInfo does not exist on the user', () => {
+        mockUser = {
+          emailAddress: 'jdoe@gmail.com',
+          firstName: 'John', lastName: 'Doe', password: '3978f324e14ac256b2994b754586e05f',
+        };
+        mockCurrentUserService = { data: Observable.of(mockUser) };
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null);
+        componentUnderTest.ngOnInit();
+        let result = componentUnderTest.getBillingAddressInfo('state');
+        expect(result).toBe('');
+      });
+      it('should return undefined when part of billingInfo exist but requested part is missing', () => {
+        mockUser = {
+          emailAddress: 'jdoe@gmail.com',
+          firstName: 'John', lastName: 'Doe', password: '3978f324e14ac256b2994b754586e05f',
+          emailOptOut: false,
+          billingInfo: { address: { state: 'CO', phone: '720 291-2524' } },
+        };
+        mockCurrentUserService = { data: Observable.of(mockUser) };
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null);
+        componentUnderTest.ngOnInit();
+        let result = componentUnderTest.getBillingAddressInfo('address');
+        expect(result).toBeUndefined();
+      });
+      it('should return correct part of billingInfo address if it exists', () => {
+        mockUser = {
+          emailAddress: 'jdoe@gmail.com',
+          firstName: 'John', lastName: 'Doe', password: '3978f324e14ac256b2994b754586e05f',
+          emailOptOut: false,
+          billingInfo: { address: { state: 'CO', phone: '720 291-2524' } },
+        };
+        mockCurrentUserService = { data: Observable.of(mockUser) };
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null);
+        componentUnderTest.ngOnInit();
+        let result = componentUnderTest.getBillingAddressInfo('state');
+        expect(result).toBe('CO');
+      });
+      it('should return empty string if billingInfo.address does not exist', () => {
+        mockUser = {
+          emailAddress: 'jdoe@gmail.com',
+          emailOptOut: false,
+          billingInfo: {},
+        };
+        mockCurrentUserService = { data: Observable.of(mockUser) };
+        componentUnderTest = new ProfileComponent(mockCurrentUserService, null, null);
+        componentUnderTest.ngOnInit();
+        let result = componentUnderTest.getBillingAddressInfo('state');
+        expect(result).toBe('');
+      });
+    });
   });
 }
