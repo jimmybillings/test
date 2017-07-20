@@ -1,11 +1,12 @@
 import { AddressFormComponent } from './address-form.component';
 import { FormBuilder } from '@angular/forms';
+import { ViewAddress } from '../../../shared/interfaces/user.interface';
 
 export function main() {
   describe('Address Form Component', () => {
     let componentUnderTest: AddressFormComponent, fb: FormBuilder = new FormBuilder(), mockGoogleService: any;
 
-    const mockAddress = {
+    const mockAddress: ViewAddress = {
       address: {
         address: '123 Oak Street',
         address2: 'Apartment 10',
@@ -28,75 +29,33 @@ export function main() {
           addListener: jasmine.createSpy('addListener')
         }
       };
-      componentUnderTest = new AddressFormComponent(fb, mockGoogleService);
+      componentUnderTest = new AddressFormComponent(fb, mockGoogleService, null);
     });
 
-    describe('ngOnInit()', () => {
+    describe('address setter', () => {
       beforeEach(() => {
         componentUnderTest.formItems = formItems();
       });
 
-      it('builds the form - with blank values', () => {
+      it('builds the addressForm', () => {
         expect(componentUnderTest.addressForm).toBeUndefined();
-        componentUnderTest.ngOnInit();
-        expect(componentUnderTest.addressForm.value).toEqual({
-          address: '',
-          address2: '',
-          state: '',
-          country: '',
-          zipcode: '',
-          phone: '',
-          city: ''
-        });
-      });
-
-      it('builds the form - with prepopulated values', () => {
-        componentUnderTest.address = mockAddress as any;
-        expect(componentUnderTest.addressForm).toBeUndefined();
-        componentUnderTest.ngOnInit();
+        componentUnderTest.address = mockAddress;
         expect(componentUnderTest.addressForm.value).toEqual(mockAddress.address);
       });
     });
 
-    describe('ngOnChanges()', () => {
-      beforeEach(() => {
-        componentUnderTest.formItems = formItems();
-      });
-
-      it('builds the form if the address value is truthy', () => {
-        expect(componentUnderTest.addressForm).toBeUndefined();
-        componentUnderTest.ngOnChanges({ address: { currentValue: mockAddress } } as any);
-        expect(componentUnderTest.addressForm.value).toEqual(mockAddress.address);
-      });
-
-      it('doesn\'t build the form if the address value hasn\'t changed', () => {
-        expect(componentUnderTest.addressForm).toBeUndefined();
-        componentUnderTest.ngOnChanges({});
-        expect(componentUnderTest.addressForm).toBeUndefined();
-      });
-
+    describe('loaded setter', () => {
       it('calls loadPlacesLibrary() on the google service', () => {
-        componentUnderTest.ngOnChanges({ loaded: { currentValue: true } } as any);
+        componentUnderTest.loaded = true;
         expect(mockGoogleService.loadPlacesLibrary).toHaveBeenCalled();
-      });
-    });
-
-    describe('ngAfterViewInit()', () => {
-      beforeEach(() => {
-        componentUnderTest.formItems = formItems();
-      });
-
-      it('should build the addressForm if it doesn\'t exist', () => {
-        expect(componentUnderTest.addressForm).toBeUndefined();
-        componentUnderTest.ngAfterViewInit();
-        expect(componentUnderTest.addressForm).toBeDefined();
       });
     });
 
     describe('saveAddress()', () => {
       it('emits the onSaveAddress event with the form value', () => {
         componentUnderTest.formItems = formItems();
-        componentUnderTest.ngOnInit();
+        componentUnderTest.address = mockAddress;
+
         spyOn(componentUnderTest.onSaveAddress, 'emit');
         componentUnderTest.saveAddress();
         expect(componentUnderTest.onSaveAddress.emit).toHaveBeenCalledWith(componentUnderTest.addressForm.value);

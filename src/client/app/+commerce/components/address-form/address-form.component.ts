@@ -1,88 +1,41 @@
 import {
-  Component, Input, OnChanges, OnInit, ChangeDetectionStrategy,
-  Output, EventEmitter, AfterViewInit, SimpleChanges
+  Component, Input, ChangeDetectionStrategy,
+  Output, EventEmitter, SimpleChanges, ChangeDetectorRef
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ViewAddress, Address, FormattedGoogleAddress } from '../../../shared/interfaces/user.interface';
 import { RowFormFields, FormRow, FormFields } from '../../../shared/interfaces/forms.interface';
-import { GoogleService } from '../../services/google.service';
+import { GooglePlacesService } from '../../services/google-places.service';
 
 @Component({
   moduleId: module.id,
   selector: 'address-form-component',
-  template: `
-    <div class="wz-dialog">
-      <div layout="column" layout-align="center center">
-        <h1 md-dialog-title>{{ title | translate }}</h1>
-      </div>
-      <div layout="column" layout-align="center center">
-        <form [formGroup]="addressForm" *ngIf="loaded" (ngSubmit)="saveAddress()">
-          <md-input-container class="autocomplete">
-            <input mdInput id="autocomplete" placeholder="Enter your full address" (focus)="geolocate()" type="text" />
-          </md-input-container>
-          <div class="address-form" layout="column" layout-align="center center">
-            <div flex="100">
-              <div *ngFor="let row of formItems" layout="row" layout-align="center center">
-                <md-input-container flex="100" *ngFor="let field of row.fields" id={{field.name}}>
-                  <input
-                    mdInput
-                    type={{field.type}}
-                    formControlName={{field.name}}
-                    placeholder={{field.label}}
-                  />
-                </md-input-container>
-              </div>
-            </div>
-            <button
-              class="submit-btn"
-              md-raised-button
-              [disabled]="!addressForm.valid"
-              color="primary"
-              type="submit">
-                Submit
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  `,
+  templateUrl: './address-form.html',
   styles: [`
     .autocomplete{width: 100%; margin-bottom: 20px;}
     .submit-btn{width: 40%; margin-top: 20px;}
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddressFormComponent implements OnChanges, OnInit, AfterViewInit {
+export class AddressFormComponent {
   @Input() formItems: RowFormFields;
-  @Input() loaded: boolean;
   @Input() title: string;
-  @Input() address: ViewAddress;
+  @Input()
+  public set address(address: ViewAddress) {
+    this.buildForm(address);
+  }
+  @Input()
+  public set loaded(loaded: boolean) {
+    if (loaded) this.loadGooglePlaces();
+  }
   @Output() onSaveAddress = new EventEmitter();
   public addressForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private google: GoogleService
+    private google: GooglePlacesService,
+    private ref: ChangeDetectorRef
   ) { }
-
-  ngOnInit(): void {
-    this.addressForm = this.buildForm(this.address);
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.address && changes.address.currentValue) {
-      this.addressForm = this.buildForm(changes.address.currentValue);
-    }
-
-    if (changes.loaded && changes.loaded.currentValue) {
-      this.loadGooglePlaces();
-    }
-  }
-
-  ngAfterViewInit(): void {
-    if (!this.addressForm) this.addressForm = this.buildForm(this.address);
-    if (this.loaded) this.loadGooglePlaces();
-  }
 
   public saveAddress() {
     this.onSaveAddress.emit(this.addressForm.value);
@@ -97,27 +50,39 @@ export class AddressFormComponent implements OnChanges, OnInit, AfterViewInit {
   private fillInAddress = (): void => {
     let googleAddress: FormattedGoogleAddress = this.google.getPlace();
 
-    this.formItems.forEach((row: FormRow) => {
-      row.fields.forEach((item: FormFields) => {
-        let value: string = item.googleFields.reduce((prev: Array<string>, field: string) => {
-          prev.push(googleAddress[field][item.addressType] || '');
-          return prev;
-        }, []).join(' ');
-        if (value.length) this.addressForm.controls[item.name].setValue(value);
-      });
+    this.forEachFormItem((item: FormFields) => {
+      this.setControlValue(item, googleAddress);
     });
+
+    this.ref.detectChanges();
   }
 
-  private buildForm(address: ViewAddress): FormGroup {
+  private setControlValue(item: FormFields, googleAddress: FormattedGoogleAddress): void {
+    let value: string = item.googleFields.reduce((prev: Array<string>, field: string) => {
+      prev.push(googleAddress[field][item.addressType] || '');
+      return prev;
+    }, []).join(' ');
+    if (value.length) this.addressForm.controls[item.name].setValue(value);
+  }
+
+  private buildForm(address: ViewAddress): void {
     let newForm: any = {};
-    this.formItems.forEach((row: FormRow) => {
-      row.fields.forEach((item: FormFields) => {
-        let validator = item.validation === 'REQUIRED' ? Validators.required : null;
-        let value: string = address && address.address ? address.address[item.name] : '';
-        newForm[item.name] = new FormControl(value, validator);
-      });
+
+    this.forEachFormItem((item: FormFields) => {
+      newForm[item.name] = this.buildFormControl(item, address);
     });
-    return this.fb.group(newForm);
+
+    this.addressForm = this.fb.group(newForm);
+  }
+
+  private buildFormControl(item: FormFields, address: ViewAddress): FormControl {
+    let validator = item.validation === 'REQUIRED' ? Validators.required : null;
+    let value: string = address && address.address ? address.address[item.name] : '';
+    return new FormControl(value, validator);
+  }
+
+  private forEachFormItem(processor: (item: FormFields) => void): void {
+    this.formItems.forEach((row: FormRow) => row.fields.forEach(processor));
   }
 
   private loadGooglePlaces(): void {

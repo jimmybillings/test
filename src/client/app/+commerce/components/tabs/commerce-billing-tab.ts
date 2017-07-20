@@ -40,6 +40,38 @@ export class CommerceBillingTab extends Tab implements OnInit {
     this.fetchAddresses().subscribe();
   }
 
+  public typeFor(address: ViewAddress): string {
+    return address.type ? address.type : '';
+  }
+
+  public nameFor(address: ViewAddress): string {
+    return address.name ? address.name : '';
+  }
+
+  public lineOneFor(address: ViewAddress): string {
+    return this.addressJoinSegment(address, 'address', 'address2');
+  }
+
+  public cityFor(address: ViewAddress): string {
+    return this.addressSegmentWithComma(address, 'city');
+  }
+
+  public stateFor(address: ViewAddress): string {
+    return this.addressSegment(address, 'state');
+  }
+
+  public zipcodeFor(address: ViewAddress): string {
+    return this.addressSegmentWithComma(address, 'zipcode');
+  }
+
+  public countryFor(address: ViewAddress): string {
+    return this.addressSegment(address, 'country');
+  }
+
+  public phoneFor(address: ViewAddress): string {
+    return this.addressSegment(address, 'phone');
+  }
+
   public addUserAddress(form: Address): void {
     this.user.addBillingAddress(form).subscribe((user: User) => {
       this.fetchAddresses().subscribe(this.determineNewSelectedAddress);
@@ -115,6 +147,19 @@ export class CommerceBillingTab extends Tab implements OnInit {
   public disableSelectBtnFor(address: ViewAddress): boolean {
     return !address.address ||
       (this.addressErrors[address.addressEntityId] && this.addressErrors[address.addressEntityId].length > 0);
+  }
+
+  private addressSegment(address: ViewAddress, segment: string): string | null {
+    return address.address && address.address[segment] ? address.address[segment] : null;
+  }
+
+  private addressSegmentWithComma(address: ViewAddress, segment: string): string {
+    return this.addressSegment(address, segment) ? this.addressSegment(address, segment) + ',' : '';
+  }
+
+  private addressJoinSegment(address: ViewAddress, segmentOne: string, segmentTwo: string): string {
+    return (address.address[segmentOne] ? address.address[segmentOne] : '') +
+      (address.address[segmentTwo] ? ', ' + address.address[segmentTwo] : '');
   }
 
   private editFormTitle(resourceType: 'user' | 'account'): string {

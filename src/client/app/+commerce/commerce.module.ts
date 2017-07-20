@@ -44,7 +44,7 @@ import { CommerceListComponent } from './components/commerce-list/commerce-list.
 import { CommerceHeaderComponent } from './components/commerce-header/commerce-header.component';
 import { AddressFormComponent } from './components/address-form/address-form.component';
 import { LicenseAgreementComponent } from './components/license-agreement/license-agreement.component';
-import { GoogleService } from './services/google.service';
+import { GooglePlacesService } from './services/google-places.service';
 
 // project
 import { ProjectsComponent } from './components/project/projects.component';
@@ -116,7 +116,7 @@ import { AssetSubclipDisplayComponent } from './components/asset/asset-subclip-d
     QuoteEditResolver,
     CartGuard,
     QuoteEditGuard,
-    GoogleService
+    GooglePlacesService
   ],
   entryComponents: [AddressFormComponent, LicenseAgreementComponent]
 })

@@ -5,7 +5,7 @@ import { GoogleAddress, FormattedGoogleAddress, GoogleAddressComponent } from '.
 import { Geolocation, Position, Circle, Autocomplete } from '../../shared/interfaces/common.interface';
 
 @Injectable()
-export class GoogleService {
+export class GooglePlacesService {
   public autocomplete: Autocomplete;
   public script: HTMLElement;
   private readonly scriptSrc: string =

@@ -1,4 +1,4 @@
-import { GoogleService } from './google.service';
+import { GooglePlacesService } from './google-places.service';
 
 export function main() {
   class MockAutocomplete {
@@ -13,7 +13,7 @@ export function main() {
   }
 
   describe('Google Service', () => {
-    let serviceUnderTest: GoogleService, mockWindow: any, mockDocument: any;
+    let serviceUnderTest: GooglePlacesService, mockWindow: any, mockDocument: any;
     const scriptSrc = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCzyGsK3zaRGFAEC72nWbdRvBY1Lo92Cfw&libraries=places';
 
     beforeEach(() => {
@@ -29,7 +29,7 @@ export function main() {
         nativeWindow: { google: { maps: { places: { Autocomplete: MockAutocomplete }, Circle: MockCircle } } }
       };
 
-      serviceUnderTest = new GoogleService(mockWindow, mockDocument);
+      serviceUnderTest = new GooglePlacesService(mockWindow, mockDocument);
     });
 
     describe('loadPlacesLibrary()', () => {
@@ -39,7 +39,7 @@ export function main() {
             getElementsByTagName: jasmine.createSpy('getElementsByTagName').and.returnValue([{ src: scriptSrc }]),
             getElementById: jasmine.createSpy('getElementById').and.returnValue({})
           };
-          serviceUnderTest = new GoogleService(mockWindow, mockDocument);
+          serviceUnderTest = new GooglePlacesService(mockWindow, mockDocument);
           serviceUnderTest.loadPlacesLibrary(null);
         });
 
