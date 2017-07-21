@@ -1,0 +1,5 @@
+@mixin wz-not-found-theme($theme) {
+  .not-found-header {
+    color: mat-color($mat-grey, 700)
+  }
+}
