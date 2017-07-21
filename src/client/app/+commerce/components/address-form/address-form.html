@@ -3,10 +3,10 @@
     <h1 md-dialog-title>{{ title | translate }}</h1>
   </div>
   <div layout="column" layout-align="center center">
+    <md-input-container class="autocomplete">
+      <input mdInput id="autocomplete" placeholder="Enter your full address" (focus)="geolocate()" type="text" />
+    </md-input-container>
     <form [formGroup]="addressForm" (ngSubmit)="saveAddress()">
-      <md-input-container class="autocomplete">
-        <input mdInput id="autocomplete" placeholder="Enter your full address" (focus)="geolocate()" type="text" />
-      </md-input-container>
       <div class="address-form" layout="column" layout-align="center center">
         <div flex="100">
           <div *ngFor="let row of formItems" layout="row" layout-align="center center">

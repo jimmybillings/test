@@ -50,7 +50,7 @@ export class GooglePlacesService {
     if (this.window.nativeWindow.google) {
       this.autocomplete = new this.window.nativeWindow.google.maps.places.Autocomplete(
         this.document.getElementById('autocomplete'),
-        { types: ['geocode'] }
+        { types: ['address'] }
       );
       this.autocomplete.addListener('place_changed', callback);
     }

@@ -59,9 +59,9 @@ export class AddressFormComponent {
 
   private setControlValue(item: FormFields, googleAddress: FormattedGoogleAddress): void {
     let value: string = item.googleFields.reduce((prev: Array<string>, field: string) => {
-      prev.push(googleAddress[field][item.addressType] || '');
+      prev.push(googleAddress[field] ? googleAddress[field][item.addressType] : '');
       return prev;
-    }, []).join(' ');
+    }, []).join(' ').trim();
     if (value.length) this.addressForm.controls[item.name].setValue(value);
   }
 
